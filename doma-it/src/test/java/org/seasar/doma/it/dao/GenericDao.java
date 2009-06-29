@@ -2,14 +2,14 @@ package org.seasar.doma.it.dao;
 
 import java.util.List;
 
-import doma.BatchDelete;
-import doma.BatchInsert;
-import doma.BatchUpdate;
-import doma.Delete;
-import doma.Insert;
-import doma.Update;
+import org.seasar.doma.BatchDelete;
+import org.seasar.doma.BatchInsert;
+import org.seasar.doma.BatchUpdate;
+import org.seasar.doma.Delete;
+import org.seasar.doma.Insert;
+import org.seasar.doma.Update;
 
-@doma.GenericDao
+@org.seasar.doma.GenericDao
 public interface GenericDao<E> {
 
     @Insert

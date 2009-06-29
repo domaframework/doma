@@ -2,15 +2,14 @@ package org.seasar.doma.it.dao;
 
 import java.util.List;
 
+import org.seasar.doma.Dao;
+import org.seasar.doma.Function;
+import org.seasar.doma.In;
+import org.seasar.doma.domain.IntegerDomain;
+import org.seasar.doma.domain.TimeDomain;
 import org.seasar.doma.it.ItConfig;
 import org.seasar.doma.it.domain.IdDomain;
 import org.seasar.doma.it.entity.Employee;
-
-import doma.Dao;
-import doma.Function;
-import doma.In;
-import doma.domain.IntegerDomain;
-import doma.domain.TimeDomain;
 
 @Dao(config = ItConfig.class)
 public interface FunctionDao {

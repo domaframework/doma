@@ -9,9 +9,8 @@ import org.seasar.doma.it.dao.EmployeeDao;
 import org.seasar.doma.it.dao.EmployeeDao_;
 import org.seasar.doma.it.domain.IdDomain;
 import org.seasar.doma.it.entity.Employee;
+import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.framework.unit.Seasar2;
-
-import doma.jdbc.SelectOptions;
 
 @RunWith(Seasar2.class)
 public class SqlFileSelectPagingTest {

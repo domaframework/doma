@@ -3,7 +3,7 @@ package org.seasar.doma.it.entity;
 import java.sql.Timestamp;
 import java.util.Date;
 
-import doma.jdbc.EntityListener;
+import org.seasar.doma.jdbc.EntityListener;
 
 public class EmpListener implements EntityListener<Emp> {
 

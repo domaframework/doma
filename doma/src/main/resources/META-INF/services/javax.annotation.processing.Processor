@@ -1,2 +1,2 @@
-doma.internal.apt.EntityProcessor
-doma.internal.apt.DaoProcessor
+org.seasar.doma.internal.apt.EntityProcessor
+org.seasar.doma.internal.apt.DaoProcessor

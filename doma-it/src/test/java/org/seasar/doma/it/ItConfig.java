@@ -2,11 +2,10 @@ package org.seasar.doma.it;
 
 import javax.sql.DataSource;
 
+import org.seasar.doma.jdbc.Dialect;
+import org.seasar.doma.jdbc.DomaAbstractConfig;
+import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.framework.container.SingletonS2Container;
-
-import doma.jdbc.Dialect;
-import doma.jdbc.DomaAbstractConfig;
-import doma.jdbc.JdbcLogger;
 
 public class ItConfig extends DomaAbstractConfig {
 

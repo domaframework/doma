@@ -10,11 +10,10 @@ import org.seasar.doma.it.dao.EmployeeDao;
 import org.seasar.doma.it.dao.EmployeeDao_;
 import org.seasar.doma.it.domain.SalaryDomain;
 import org.seasar.doma.it.entity.Employee;
+import org.seasar.doma.jdbc.IterationCallback;
+import org.seasar.doma.jdbc.IterationContext;
+import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.framework.unit.Seasar2;
-
-import doma.jdbc.IterationCallback;
-import doma.jdbc.IterationContext;
-import doma.jdbc.SelectOptions;
 
 @RunWith(Seasar2.class)
 public class SqlFileSelectIterationCallbackTest {

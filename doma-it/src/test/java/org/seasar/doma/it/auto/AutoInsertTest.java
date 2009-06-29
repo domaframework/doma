@@ -32,11 +32,10 @@ import org.seasar.doma.it.entity.SequenceStrategy;
 import org.seasar.doma.it.entity.SequenceStrategy_;
 import org.seasar.doma.it.entity.TableStrategy;
 import org.seasar.doma.it.entity.TableStrategy_;
+import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.message.MessageCode;
 import org.seasar.framework.unit.Seasar2;
 import org.seasar.framework.unit.annotation.Prerequisite;
-
-import doma.jdbc.JdbcException;
-import doma.message.MessageCode;
 
 @RunWith(Seasar2.class)
 public class AutoInsertTest {

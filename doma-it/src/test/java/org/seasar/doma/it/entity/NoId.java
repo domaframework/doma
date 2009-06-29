@@ -1,8 +1,8 @@
 package org.seasar.doma.it.entity;
 
-import doma.Entity;
-import doma.Table;
-import doma.domain.IntegerDomain;
+import org.seasar.doma.Entity;
+import org.seasar.doma.Table;
+import org.seasar.doma.domain.IntegerDomain;
 
 @Entity
 @Table(name = "NO_ID")

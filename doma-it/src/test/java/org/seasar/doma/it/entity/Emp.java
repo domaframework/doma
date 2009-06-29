@@ -1,12 +1,12 @@
 package org.seasar.doma.it.entity;
 
-import doma.Entity;
-import doma.Id;
-import doma.Version;
-import doma.domain.BigDecimalDomain;
-import doma.domain.IntegerDomain;
-import doma.domain.StringDomain;
-import doma.domain.TimestampDomain;
+import org.seasar.doma.Entity;
+import org.seasar.doma.Id;
+import org.seasar.doma.Version;
+import org.seasar.doma.domain.BigDecimalDomain;
+import org.seasar.doma.domain.IntegerDomain;
+import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.TimestampDomain;
 
 /**
  * 

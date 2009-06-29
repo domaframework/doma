@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.runner.RunWith;
+import org.seasar.doma.domain.IntegerDomain;
+import org.seasar.doma.domain.TimeDomain;
 import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDao_;
 import org.seasar.doma.it.dao.ProcedureDao;
@@ -17,9 +19,6 @@ import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.framework.unit.Seasar2;
 import org.seasar.framework.unit.annotation.Prerequisite;
-
-import doma.domain.IntegerDomain;
-import doma.domain.TimeDomain;
 
 @RunWith(Seasar2.class)
 @Prerequisite("#ENV not in {'hsqldb'}")

@@ -1,6 +1,6 @@
 package org.seasar.doma.it.domain;
 
-import doma.domain.AbstractIntegerDomain;
+import org.seasar.doma.domain.AbstractIntegerDomain;
 
 public class IdDomain extends AbstractIntegerDomain<IdDomain> {
 

@@ -2,15 +2,14 @@ package org.seasar.doma.it.dao;
 
 import java.util.List;
 
+import org.seasar.doma.Dao;
+import org.seasar.doma.Delete;
+import org.seasar.doma.Insert;
+import org.seasar.doma.Select;
+import org.seasar.doma.Update;
+import org.seasar.doma.domain.IntegerDomain;
 import org.seasar.doma.it.ItConfig;
 import org.seasar.doma.it.entity.Emp;
-
-import doma.Dao;
-import doma.Delete;
-import doma.Insert;
-import doma.Select;
-import doma.Update;
-import doma.domain.IntegerDomain;
 
 /**
  * @author taedium

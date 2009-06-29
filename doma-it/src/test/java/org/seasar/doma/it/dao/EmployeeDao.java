@@ -2,15 +2,14 @@ package org.seasar.doma.it.dao;
 
 import java.util.List;
 
+import org.seasar.doma.Dao;
+import org.seasar.doma.Select;
 import org.seasar.doma.it.ItConfig;
 import org.seasar.doma.it.domain.IdDomain;
 import org.seasar.doma.it.domain.SalaryDomain;
 import org.seasar.doma.it.entity.Employee;
-
-import doma.Dao;
-import doma.Select;
-import doma.jdbc.IterationCallback;
-import doma.jdbc.SelectOptions;
+import org.seasar.doma.jdbc.IterationCallback;
+import org.seasar.doma.jdbc.SelectOptions;
 
 @Dao(config = ItConfig.class)
 public interface EmployeeDao extends GenericDao<Employee> {

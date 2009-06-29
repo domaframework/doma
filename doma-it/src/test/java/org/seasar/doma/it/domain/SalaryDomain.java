@@ -2,7 +2,7 @@ package org.seasar.doma.it.domain;
 
 import java.math.BigDecimal;
 
-import doma.domain.AbstractBigDecimalDomain;
+import org.seasar.doma.domain.AbstractBigDecimalDomain;
 
 public class SalaryDomain extends AbstractBigDecimalDomain<SalaryDomain> {
 

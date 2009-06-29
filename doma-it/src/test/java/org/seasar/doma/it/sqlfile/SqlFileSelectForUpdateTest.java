@@ -7,12 +7,11 @@ import org.seasar.doma.it.dao.EmployeeDao;
 import org.seasar.doma.it.dao.EmployeeDao_;
 import org.seasar.doma.it.domain.IdDomain;
 import org.seasar.doma.it.entity.Employee;
+import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.SelectOptions;
+import org.seasar.doma.message.MessageCode;
 import org.seasar.framework.unit.Seasar2;
 import org.seasar.framework.unit.annotation.Prerequisite;
-
-import doma.jdbc.JdbcException;
-import doma.jdbc.SelectOptions;
-import doma.message.MessageCode;
 
 @RunWith(Seasar2.class)
 public class SqlFileSelectForUpdateTest {

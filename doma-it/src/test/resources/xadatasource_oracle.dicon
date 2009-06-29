@@ -34,5 +34,5 @@
 			<arg>"true"</arg>
 		</initMethod>
 	</component>
-	<component class="doma.jdbc.dialect.OracleDialect"/>
+	<component class="org.seasar.doma.jdbc.dialect.OracleDialect"/>
 </components>

@@ -2,18 +2,17 @@ package org.seasar.doma.it.dao;
 
 import java.util.List;
 
+import org.seasar.doma.Dao;
+import org.seasar.doma.In;
+import org.seasar.doma.InOut;
+import org.seasar.doma.Out;
+import org.seasar.doma.Procedure;
+import org.seasar.doma.ResultSet;
+import org.seasar.doma.domain.IntegerDomain;
+import org.seasar.doma.domain.TimeDomain;
 import org.seasar.doma.it.ItConfig;
 import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.Employee;
-
-import doma.Dao;
-import doma.In;
-import doma.InOut;
-import doma.Out;
-import doma.Procedure;
-import doma.ResultSet;
-import doma.domain.IntegerDomain;
-import doma.domain.TimeDomain;
 
 @Dao(config = ItConfig.class)
 public interface ProcedureDao {

@@ -4,10 +4,9 @@ import java.sql.SQLException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import doma.jdbc.JdbcLogger;
-import doma.jdbc.Sql;
-import doma.jdbc.SqlFile;
+import org.seasar.doma.jdbc.JdbcLogger;
+import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.SqlFile;
 
 public class ItLogger implements JdbcLogger {
 

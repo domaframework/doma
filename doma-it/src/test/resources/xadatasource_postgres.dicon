@@ -25,5 +25,5 @@
 		</property>
 		-->
 	</component>
-	<component class="doma.jdbc.dialect.PostgresDialect"/>
+	<component class="org.seasar.doma.jdbc.dialect.PostgresDialect"/>
 </components>

@@ -1,6 +1,6 @@
 package org.seasar.doma.it.domain;
 
-import doma.domain.AbstractStringDomain;
+import org.seasar.doma.domain.AbstractStringDomain;
 
 public class NameDomain extends AbstractStringDomain<NameDomain> {
 

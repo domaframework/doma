@@ -18,11 +18,10 @@ import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.it.entity.Employee_;
 import org.seasar.doma.it.entity.NoId;
 import org.seasar.doma.it.entity.NoId_;
+import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.OptimisticLockException;
+import org.seasar.doma.message.MessageCode;
 import org.seasar.framework.unit.Seasar2;
-
-import doma.jdbc.JdbcException;
-import doma.jdbc.OptimisticLockException;
-import doma.message.MessageCode;
 
 @RunWith(Seasar2.class)
 public class AutoBatchDeleteTest {

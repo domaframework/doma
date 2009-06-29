@@ -1,16 +1,15 @@
 package org.seasar.doma.it.entity;
 
+import org.seasar.doma.Entity;
+import org.seasar.doma.Id;
+import org.seasar.doma.Table;
+import org.seasar.doma.Version;
+import org.seasar.doma.domain.DateDomain;
 import org.seasar.doma.it.domain.IdDomain;
 import org.seasar.doma.it.domain.NameDomain;
 import org.seasar.doma.it.domain.NoDomain;
 import org.seasar.doma.it.domain.SalaryDomain;
 import org.seasar.doma.it.domain.VersionDomain;
-
-import doma.Entity;
-import doma.Id;
-import doma.Table;
-import doma.Version;
-import doma.domain.DateDomain;
 
 @Entity
 @Table(name = "COMP_KEY_EMPLOYEE")

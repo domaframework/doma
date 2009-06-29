@@ -21,5 +21,5 @@
 		<property name="password">"s2container"</property>
 		-->
 	</component>
-	<component class="doma.jdbc.dialect.MysqlDialect"/>
+	<component class="org.seasar.doma.jdbc.dialect.MysqlDialect"/>
 </components>
