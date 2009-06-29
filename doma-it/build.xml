@@ -1,0 +1,14 @@
+<project name="doma-it" default="copy" basedir=".">
+
+    <property file="build.properties" />
+
+    <target name="prepare">
+        <ant dir="../doma"/>
+    </target>
+
+    <target name="copy" depends="prepare">
+        <copy todir="lib" file="../doma/target/doma-${ver}.jar"/>
+        <copy todir="libsrc" file="../doma/target/doma-${ver}-sources.jar"/>
+    </target>
+
+</project>
