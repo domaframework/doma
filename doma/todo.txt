@@ -1,0 +1,7 @@
+-Domainの拡充
+-JdbcTypeの拡充（BlobやArrayへの対応）
+-1.6から導入されたSQLExceptionの精査
+-JDOHelperっぽいもの、内部的なクラスにキャストして値を返す
+-debug用のログをしこむ
+-メッセージコードの整理
+-テストの強化

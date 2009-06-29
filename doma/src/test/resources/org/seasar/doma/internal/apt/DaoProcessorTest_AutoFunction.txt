@@ -1,0 +1,43 @@
+package org.seasar.doma.internal.apt.dao;
+
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
+public class AutoFunctionDao_ extends org.seasar.doma.jdbc.DomaAbstractDao implements org.seasar.doma.internal.apt.dao.AutoFunctionDao {
+
+    public AutoFunctionDao_() {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig(), null);
+    }
+
+    public AutoFunctionDao_(javax.sql.DataSource dataSource) {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
+    }
+
+    protected AutoFunctionDao_(org.seasar.doma.jdbc.Config config) {
+        super(config, config.dataSource());
+    }
+
+    @Override
+    public org.seasar.doma.domain.StringDomain executeFunction(org.seasar.doma.domain.IntegerDomain arg1, org.seasar.doma.domain.IntegerDomain arg2) {
+        entering("org.seasar.doma.internal.apt.dao.AutoFunctionDao_", "executeFunction", arg1, arg2);
+        if (arg1 == null) {
+            throw new org.seasar.doma.DomaIllegalArgumentException("arg1", arg1);
+        }
+        if (arg2 == null) {
+            throw new org.seasar.doma.DomaIllegalArgumentException("arg2", arg2);
+        }
+        org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<org.seasar.doma.domain.StringDomain> query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<org.seasar.doma.domain.StringDomain>();
+        query.setConfig(config);
+        query.setFunctionName("executeFunction");
+        query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.DomainResultParameter<org.seasar.doma.domain.StringDomain>(org.seasar.doma.domain.StringDomain.class));
+        query.addParameter(new org.seasar.doma.internal.jdbc.sql.InParameter(arg1));
+        query.addParameter(new org.seasar.doma.internal.jdbc.sql.OutParameter(arg2));
+        query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoFunctionDao_");
+        query.setCallerMethodName("executeFunction");
+        query.setQueryTimeout(-1);
+        query.compile();
+        org.seasar.doma.internal.jdbc.command.FunctionCommand<org.seasar.doma.domain.StringDomain> command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<org.seasar.doma.domain.StringDomain>(query);
+        org.seasar.doma.domain.StringDomain result = command.execute();
+        exiting("org.seasar.doma.internal.apt.dao.AutoFunctionDao_", "executeFunction", result);
+        return result;
+    }
+
+}

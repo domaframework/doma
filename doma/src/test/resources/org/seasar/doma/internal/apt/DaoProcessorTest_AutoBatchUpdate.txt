@@ -1,0 +1,39 @@
+package org.seasar.doma.internal.apt.dao;
+
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
+public class AutoBatchUpdateDao_ extends org.seasar.doma.jdbc.DomaAbstractDao implements org.seasar.doma.internal.apt.dao.AutoBatchUpdateDao {
+
+    public AutoBatchUpdateDao_() {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig(), null);
+    }
+
+    public AutoBatchUpdateDao_(javax.sql.DataSource dataSource) {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
+    }
+
+    protected AutoBatchUpdateDao_(org.seasar.doma.jdbc.Config config) {
+        super(config, config.dataSource());
+    }
+
+    @Override
+    public int[] update(java.util.List<org.seasar.doma.internal.apt.entity.Emp> entities) {
+        entering("org.seasar.doma.internal.apt.dao.AutoBatchUpdateDao_", "update", entities);
+        if (entities == null) {
+            throw new org.seasar.doma.DomaIllegalArgumentException("entities", entities);
+        }
+        org.seasar.doma.internal.jdbc.query.AutoBatchUpdateQuery<org.seasar.doma.internal.apt.entity.Emp, org.seasar.doma.internal.apt.entity.Emp_> query = new org.seasar.doma.internal.jdbc.query.AutoBatchUpdateQuery<org.seasar.doma.internal.apt.entity.Emp, org.seasar.doma.internal.apt.entity.Emp_>(org.seasar.doma.internal.apt.entity.Emp_.class);
+        query.setConfig(config);
+        query.setEntities(entities);
+        query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoBatchUpdateDao_");
+        query.setCallerMethodName("update");
+        query.setQueryTimeout(-1);
+        query.setVersionIncluded(false);
+        query.setOptimisticLockExceptionSuppressed(false);
+        query.compile();
+        org.seasar.doma.internal.jdbc.command.BatchUpdateCommand command = new org.seasar.doma.internal.jdbc.command.BatchUpdateCommand(query);
+        int[] result = command.execute();
+        exiting("org.seasar.doma.internal.apt.dao.AutoBatchUpdateDao_", "update", result);
+        return result;
+    }
+
+}

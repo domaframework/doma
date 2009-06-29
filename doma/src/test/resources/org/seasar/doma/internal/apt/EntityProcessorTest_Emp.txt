@@ -1,0 +1,116 @@
+package org.seasar.doma.internal.apt.entity;
+
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
+public class Emp_ extends org.seasar.doma.internal.jdbc.DomaAbstractEntity<org.seasar.doma.internal.apt.entity.Emp> implements org.seasar.doma.internal.apt.entity.Emp {
+
+    private static final org.seasar.doma.internal.jdbc.id.IdGenerator __idGenerator = new org.seasar.doma.internal.jdbc.id.SequenceIdGenerator("EMP_ID", 1, 1);
+
+    private final org.seasar.doma.internal.apt.entity.EmpListener __listener = new org.seasar.doma.internal.apt.entity.EmpListener();
+
+    private final org.seasar.doma.internal.jdbc.GeneratedIdProperty<org.seasar.doma.domain.IntegerDomain> id = new org.seasar.doma.internal.jdbc.GeneratedIdProperty<org.seasar.doma.domain.IntegerDomain>("id", null, new org.seasar.doma.domain.IntegerDomain(), true, true, __idGenerator);
+
+    private final org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.StringDomain> name = new org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.StringDomain>("name", null, new org.seasar.doma.domain.StringDomain(), true, true);
+
+    private final org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.BigDecimalDomain> salary = new org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.BigDecimalDomain>("salary", "SALARY", new org.seasar.doma.domain.BigDecimalDomain(), false, false);
+
+    private final org.seasar.doma.internal.jdbc.VersionProperty<org.seasar.doma.domain.IntegerDomain> version = new org.seasar.doma.internal.jdbc.VersionProperty<org.seasar.doma.domain.IntegerDomain>("version", null, new org.seasar.doma.domain.IntegerDomain(), true, true);
+
+    private final org.seasar.doma.domain.StringDomain temp = new org.seasar.doma.domain.StringDomain();
+
+    private final String __name = "Emp";
+
+    private java.util.List<org.seasar.doma.internal.jdbc.Property<?>> __properties;
+
+    private java.util.Map<String, org.seasar.doma.internal.jdbc.Property<?>> __propertyMap;
+
+    public Emp_() {
+        super(null, "AAA", null);
+    }
+
+    @Override
+    public org.seasar.doma.domain.IntegerDomain id() {
+        return id.getDomain();
+    }
+
+    @Override
+    public org.seasar.doma.domain.StringDomain name() {
+        return name.getDomain();
+    }
+
+    @Override
+    public org.seasar.doma.domain.BigDecimalDomain salary() {
+        return salary.getDomain();
+    }
+
+    @Override
+    public org.seasar.doma.domain.IntegerDomain version() {
+        return version.getDomain();
+    }
+
+    @Override
+    public org.seasar.doma.domain.StringDomain temp() {
+        return temp;
+    }
+
+    @Override
+    public String __getName() {
+        return __name;
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.entity.Emp __asInterface() {
+        return this;
+    }
+
+    @Override
+    public void __preInsert() {
+        __listener.preInsert(this);
+    }
+
+    @Override
+    public void __preUpdate() {
+        __listener.preUpdate(this);
+    }
+
+    @Override
+    public void __preDelete() {
+        __listener.preDelete(this);
+    }
+
+    @Override
+    public java.util.List<org.seasar.doma.internal.jdbc.Property<?>> __getProperties() {
+        if (__properties == null) {
+            java.util.List<org.seasar.doma.internal.jdbc.Property<?>> list = new java.util.ArrayList<org.seasar.doma.internal.jdbc.Property<?>>();
+            list.add(id);
+            list.add(name);
+            list.add(salary);
+            list.add(version);
+            __properties = java.util.Collections.unmodifiableList(list);
+        }
+        return __properties;
+    }
+
+    @Override
+    public org.seasar.doma.internal.jdbc.Property<?> __getPropertyByName(String propertyName) {
+        if (__propertyMap == null) {
+            java.util.Map<String, org.seasar.doma.internal.jdbc.Property<?>> map = new java.util.HashMap<String, org.seasar.doma.internal.jdbc.Property<?>>();
+            map.put("id", id);
+            map.put("name", name);
+            map.put("salary", salary);
+            map.put("version", version);
+            __propertyMap = java.util.Collections.unmodifiableMap(map);
+        }
+        return __propertyMap.get(propertyName);
+    }
+
+    @Override
+    public org.seasar.doma.internal.jdbc.GeneratedIdProperty<?> __getGeneratedIdProperty() {
+        return id;
+    }
+
+    @Override
+    public org.seasar.doma.internal.jdbc.VersionProperty<?> __getVersionProperty() {
+        return version;
+    }
+
+}

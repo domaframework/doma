@@ -1,0 +1,1 @@
+update emp set name = /*e.name*/'aaa', salary = /*e.salary*/999 where id = /*e.id*/999

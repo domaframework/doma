@@ -1,0 +1,42 @@
+package org.seasar.doma.internal.apt.dao;
+
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
+public class SqlFileInsertDao_ extends org.seasar.doma.jdbc.DomaAbstractDao implements org.seasar.doma.internal.apt.dao.SqlFileInsertDao {
+
+    public SqlFileInsertDao_() {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig(), null);
+    }
+
+    public SqlFileInsertDao_(javax.sql.DataSource dataSource) {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
+    }
+
+    protected SqlFileInsertDao_(org.seasar.doma.jdbc.Config config) {
+        super(config, config.dataSource());
+    }
+
+    @Override
+    public int insert(org.seasar.doma.domain.IntegerDomain id, org.seasar.doma.domain.BigDecimalDomain salary) {
+        entering("org.seasar.doma.internal.apt.dao.SqlFileInsertDao_", "insert", id, salary);
+        if (id == null) {
+            throw new org.seasar.doma.DomaIllegalArgumentException("id", id);
+        }
+        if (salary == null) {
+            throw new org.seasar.doma.DomaIllegalArgumentException("salary", salary);
+        }
+        org.seasar.doma.internal.jdbc.query.SqlFileInsertQuery query = new org.seasar.doma.internal.jdbc.query.SqlFileInsertQuery();
+        query.setConfig(config);
+        query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFiles.buildPath("org.seasar.doma.internal.apt.dao.SqlFileInsertDao", "insert"));
+        query.addParameter("id", id);
+        query.addParameter("salary", salary);
+        query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileInsertDao_");
+        query.setCallerMethodName("insert");
+        query.setQueryTimeout(-1);
+        query.compile();
+        org.seasar.doma.internal.jdbc.command.InsertCommand command = new org.seasar.doma.internal.jdbc.command.InsertCommand(query);
+        int result = command.execute();
+        exiting("org.seasar.doma.internal.apt.dao.SqlFileInsertDao_", "insert", result);
+        return result;
+    }
+
+}

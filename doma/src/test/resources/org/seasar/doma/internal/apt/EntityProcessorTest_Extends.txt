@@ -1,0 +1,98 @@
+package org.seasar.doma.internal.apt.entity;
+
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
+public class ChildEntity_ extends org.seasar.doma.internal.jdbc.DomaAbstractEntity<org.seasar.doma.internal.apt.entity.ChildEntity> implements org.seasar.doma.internal.apt.entity.ChildEntity {
+
+    private final org.seasar.doma.internal.jdbc.NullEntityListener __listener = new org.seasar.doma.internal.jdbc.NullEntityListener();
+
+    private final org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.IntegerDomain> aaa = new org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.IntegerDomain>("aaa", null, new org.seasar.doma.domain.IntegerDomain(), true, true);
+
+    private final org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.IntegerDomain> bbb = new org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.IntegerDomain>("bbb", null, new org.seasar.doma.domain.IntegerDomain(), true, true);
+
+    private final org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.StringDomain> ccc = new org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.StringDomain>("ccc", null, new org.seasar.doma.domain.StringDomain(), true, true);
+
+    private final String __name = "ChildEntity";
+
+    private java.util.List<org.seasar.doma.internal.jdbc.Property<?>> __properties;
+
+    private java.util.Map<String, org.seasar.doma.internal.jdbc.Property<?>> __propertyMap;
+
+    public ChildEntity_() {
+        super(null, null, null);
+    }
+
+    @Override
+    public org.seasar.doma.domain.IntegerDomain aaa() {
+        return aaa.getDomain();
+    }
+
+    @Override
+    public org.seasar.doma.domain.IntegerDomain bbb() {
+        return bbb.getDomain();
+    }
+
+    @Override
+    public org.seasar.doma.domain.StringDomain ccc() {
+        return ccc.getDomain();
+    }
+
+    @Override
+    public String __getName() {
+        return __name;
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.entity.ChildEntity __asInterface() {
+        return this;
+    }
+
+    @Override
+    public void __preInsert() {
+        __listener.preInsert(this);
+    }
+
+    @Override
+    public void __preUpdate() {
+        __listener.preUpdate(this);
+    }
+
+    @Override
+    public void __preDelete() {
+        __listener.preDelete(this);
+    }
+
+    @Override
+    public java.util.List<org.seasar.doma.internal.jdbc.Property<?>> __getProperties() {
+        if (__properties == null) {
+            java.util.List<org.seasar.doma.internal.jdbc.Property<?>> list = new java.util.ArrayList<org.seasar.doma.internal.jdbc.Property<?>>();
+            list.add(aaa);
+            list.add(bbb);
+            list.add(ccc);
+            __properties = java.util.Collections.unmodifiableList(list);
+        }
+        return __properties;
+    }
+
+    @Override
+    public org.seasar.doma.internal.jdbc.Property<?> __getPropertyByName(String propertyName) {
+        if (__propertyMap == null) {
+            java.util.Map<String, org.seasar.doma.internal.jdbc.Property<?>> map = new java.util.HashMap<String, org.seasar.doma.internal.jdbc.Property<?>>();
+            map.put("aaa", aaa);
+            map.put("bbb", bbb);
+            map.put("ccc", ccc);
+            __propertyMap = java.util.Collections.unmodifiableMap(map);
+        }
+        return __propertyMap.get(propertyName);
+    }
+
+    @Override
+    public org.seasar.doma.internal.jdbc.GeneratedIdProperty<?> __getGeneratedIdProperty() {
+        return null;
+    }
+
+    @Override
+    public org.seasar.doma.internal.jdbc.VersionProperty<?> __getVersionProperty() {
+        return null;
+    }
+
+}

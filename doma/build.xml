@@ -1,0 +1,37 @@
+<project name="doma" default="dist" basedir=".">
+
+    <property file="build.properties" />
+
+    <path id="classpath">
+    </path>
+
+    <target name="dist" depends="clean,compile,copy">
+        <jar jarfile="target/doma-${ver}.jar" basedir="${build}" />
+        <jar jarfile="target/doma-${ver}-sources.jar" basedir="${src}" />
+    </target>
+
+    <target name="clean">
+        <delete dir="target" failonerror="false"/>
+        <mkdir dir="target"/>
+        <mkdir dir="${build}"/>
+    </target>
+
+    <target name="compile">
+        <javac fork="yes" srcdir="${src}" compiler="javac1.6"
+            classpathref="classpath" destdir="${build}" debug="on" encoding="UTF-8">
+        </javac>
+    </target>
+
+    <target name="copy" depends="compile">
+        <filter token="VERSION" value="${ver}" />
+        <copy todir="${build}" filtering="true">
+            <fileset dir="${resources}">
+                <include name="**/*.properties" />
+                <include name="**/*.xml" />
+                <include name="**/*.dtd" />
+            	<include name="META-INF/**" />
+            </fileset>
+        </copy>
+    </target>
+
+</project>
