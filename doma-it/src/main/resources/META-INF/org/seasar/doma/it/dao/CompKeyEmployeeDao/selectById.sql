@@ -1,1 +1,1 @@
-select * from comp_key_employee where employee_id1 = /*employee_id1*/0 and employee_id2 = /*employee_id2*/0
+select * from COMP_KEY_EMPLOYEE where EMPLOYEE_ID1 = /*employee_id1*/0 and EMPLOYEE_ID2 = /*employee_id2*/0

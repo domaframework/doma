@@ -1,1 +1,1 @@
-select * from emp
+select * from EMP

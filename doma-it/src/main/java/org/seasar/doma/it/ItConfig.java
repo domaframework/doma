@@ -20,14 +20,17 @@ import javax.sql.DataSource;
 import org.seasar.doma.jdbc.Dialect;
 import org.seasar.doma.jdbc.DomaAbstractConfig;
 import org.seasar.doma.jdbc.JdbcLogger;
+import org.seasar.doma.jdbc.NameConvention;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.framework.container.SingletonS2Container;
 
 public class ItConfig extends DomaAbstractConfig {
 
-    protected static final JdbcLogger logger = new ItLogger();
+    protected static final JdbcLogger jdbcLogger = new ItLogger();
 
-    protected static final RequiresNewController controller = new S2RequiresNewController();
+    protected static final NameConvention nameConvention = new ItNameConvention();
+
+    protected static final RequiresNewController requiresNewController = new S2RequiresNewController();
 
     @Override
     public DataSource dataSource() {
@@ -41,12 +44,17 @@ public class ItConfig extends DomaAbstractConfig {
 
     @Override
     public JdbcLogger jdbcLogger() {
-        return logger;
+        return jdbcLogger;
+    }
+
+    @Override
+    public NameConvention nameConvention() {
+        return nameConvention;
     }
 
     @Override
     public RequiresNewController requiresNewController() {
-        return controller;
+        return requiresNewController;
     }
 
 }

@@ -1,1 +1,1 @@
-select * from comp_key_department where department_id1 = /*department_id1*/0 and department_id2 = /*department_id2*/0
+select * from COMP_KEY_DEPARTMENT where DEPARTMENT_ID1 = /*department_id1*/0 and DEPARTMENT_ID2 = /*department_id2*/0

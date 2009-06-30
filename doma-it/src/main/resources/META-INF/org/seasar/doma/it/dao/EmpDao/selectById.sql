@@ -1,1 +1,1 @@
-select * from emp where id = /*id*/100
+select * from EMP where ID = /*id*/100

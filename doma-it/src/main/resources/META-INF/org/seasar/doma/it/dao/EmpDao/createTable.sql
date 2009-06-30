@@ -1,8 +1,8 @@
-create table emp (
-    id integer primary key,
-    name varchar(20),
-    salary decimal(15,2),
-    version integer,
-    insertTimestamp timestamp,
-    updateTimestamp timestamp
+create table EMP (
+    ID integer primary key,
+    NAME varchar(20),
+    SALARY decimal(15,2),
+    VERSION integer,
+    INSERTTIMESTAMP timestamp,
+    UPDATETIMESTAMP timestamp
 )
