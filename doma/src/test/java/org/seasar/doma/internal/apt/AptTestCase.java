@@ -52,9 +52,7 @@ public abstract class AptTestCase extends AptinaTestCase {
             throws Exception {
         String generatedClassName = originalClass.getName()
                 + Options.DEFAULT_SUFFIX;
-        String expected = getExpectedContent();
-        String actual = getGeneratedSource(generatedClassName);
-        assertEquals(expected == null ? null : expected.toString(), actual);
+        assertEqualsGeneratedSource(getExpectedContent(), generatedClassName);
     }
 
     protected void assertMessageCode(MessageCode messageCode) {
