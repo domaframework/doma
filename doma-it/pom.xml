@@ -333,6 +333,13 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.13</version>
+			<type>jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
 			<version>1.8.0.1</version>
