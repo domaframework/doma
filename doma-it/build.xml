@@ -1,14 +1,25 @@
-<project name="doma-it" default="copy" basedir=".">
+<project name="doma-it" default="check-database" basedir=".">
 
-    <property file="build.properties" />
+	<taskdef name="exec-sql" classname="org.seasar.doma.it.util.ExecuteSqlTask" classpath="${classpath}"/>
 
-    <target name="prepare">
-        <ant dir="../doma"/>
-    </target>
+	<target name="setup-data" if="isTargetDatabase" depends="check-database">
+		<exec-sql 
+			haltOnError="false"
+			sqlFile="sql/drop_${database}.sql"/>
+		<exec-sql 
+			haltOnError="true"
+			sqlFile="sql/create_${database}.sql"/>
+	</target>
 
-    <target name="copy" depends="prepare">
-        <copy todir="lib" file="../doma/target/doma-${ver}.jar"/>
-        <copy todir="libsrc" file="../doma/target/doma-${ver}-sources.jar"/>
-    </target>
+	<target name="check-database">
+		<echo message="database=${database}"/>
+		<condition property="isTargetDatabase">
+			<or>
+				<equals arg1="${database}" arg2="mysql"/>
+				<equals arg1="${database}" arg2="oracle"/>
+				<equals arg1="${database}" arg2="postgres"/>
+			</or>
+		</condition>
+	</target>
 
 </project>

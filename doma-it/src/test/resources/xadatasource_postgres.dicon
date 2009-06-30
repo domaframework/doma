@@ -7,21 +7,24 @@
 		<property name="driverClassName">
 			"org.postgresql.Driver"
 		</property>
-		<property name="URL">"jdbc:postgresql://10.24.1.65:5432/SCOTT"</property>
-		<property name="user">"scott"</property>
-		<property name="password">"tiger"</property>
-		<!--
 		<property name="URL">
-			"jdbc:postgresql://localhost/s2container_2_4_s2jdbc_it"
-			 + (@java.lang.System@getProperty("jdk") == "JDK-1.5" ? "" : "_1")
+			"jdbc:postgresql://localhost/doma_it"
 		</property>
 		<property name="user">
-			"s2container_2_4_s2jdbc_it"
-			+ (@java.lang.System@getProperty("jdk") == "JDK-1.5" ? "" : "_1")
+			"doma_it"
 		</property>
 		<property name="password">
-			"s2container_2_4_s2jdbc_it"
-			+ (@java.lang.System@getProperty("jdk") == "JDK-1.5" ? "" : "_1")
+			"doma_it"
+		</property>
+		<!--
+		<property name="URL">
+			"jdbc:postgresql://10.24.1.65:5432/SCOTT"
+		</property>
+		<property name="user">
+			"scott"
+		</property>
+		<property name="password">
+			"tiger"
 		</property>
 		-->
 	</component>

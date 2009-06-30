@@ -105,7 +105,7 @@
 				<dependency>
 					<groupId>postgresql</groupId>
 					<artifactId>postgresql</artifactId>
-					<version>8.3-603.jdbc3</version>
+					<version>8.3-603.jdbc4</version>
 					<type>jar</type>
 					<scope>test</scope>
 				</dependency>
@@ -128,8 +128,8 @@
 			<dependencies>
 				<dependency>
 					<groupId>com.oracle</groupId>
-					<artifactId>ojdbc14</artifactId>
-					<version>10.2.0.4</version>
+					<artifactId>ojdbc6</artifactId>
+					<version>11.1.0.7.0</version>
 					<type>jar</type>
 					<scope>test</scope>
 				</dependency>
@@ -215,6 +215,50 @@
 					</headerDefinitions>
 				</configuration>
 			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>ant-setup-env</id>
+						<phase>generate-test-resources</phase>
+						<configuration>
+							<tasks>
+								<echo message="${database}" file="src/test/resources/env_ut.txt"/>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>ant-setup-data</id>
+						<phase>test-compile</phase>
+						<configuration>
+							<tasks>
+								<ant antfile="build.xml" target="setup-data">
+									<property name="database" value="${database}"/>
+									<property name="classpath" refid="maven.test.classpath"/>
+								</ant>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>ant-teardown-env</id>
+						<phase>test</phase>
+						<configuration>
+							<tasks>
+								<echo message="hsqldb" file="src/test/resources/env_ut.txt"/>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 		<extensions>
 			<extension>
@@ -234,10 +278,18 @@
 			<type>jar</type>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.ant</groupId>
+			<artifactId>ant</artifactId>
+			<version>1.7.0</version>
+			<type>jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.seasar.container</groupId>
 			<artifactId>s2-tiger</artifactId>
 			<version>2.4.38</version>
 			<type>jar</type>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.geronimo.specs</groupId>

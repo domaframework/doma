@@ -8,17 +8,24 @@
 			"com.mysql.jdbc.Driver"
 		</property>
 		<property name="URL">
-			"jdbc:mysql://10.24.1.65:3306/SCOTT"
+			"jdbc:mysql://localhost:3306/doma_it"
 		</property>
-		<property name="user">"scott"</property>
-		<property name="password">"tiger"</property>
+		<property name="user">
+			"doma"
+		</property>
+		<property name="password">
+			"doma"
+		</property>
 		<!--
 		<property name="URL">
-			"jdbc:mysql://localhost:3306/s2container_2_4_s2jdbc_it"
-			+ (@java.lang.System@getProperty("jdk") == "JDK-1.5" ? "" : "_1")
+			"jdbc:mysql://10.24.1.65:3306/SCOTT"
 		</property>
-		<property name="user">"s2container"</property>
-		<property name="password">"s2container"</property>
+		<property name="user">
+			"scott"
+		</property>
+		<property name="password">
+			"tiger"
+		</property>
 		-->
 	</component>
 	<component class="org.seasar.doma.jdbc.dialect.MysqlDialect"/>

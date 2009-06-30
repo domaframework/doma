@@ -8,25 +8,23 @@
 			"oracle.jdbc.driver.OracleDriver"
 		</property>
 		<property name="URL">
-			"jdbc:oracle:thin:@10.24.1.65:1521:XE"
-		</property>
-		<property name="user">"scott"</property>
-		<property name="password">"tiger"</property>
-		<initMethod name="addProperty">
-			<arg>"includeSynonyms"</arg>
-			<arg>"true"</arg>
-		</initMethod>
-		<!--
-		<property name="URL">
 			"jdbc:oracle:thin:@localhost:1521:xe"
 		</property>
 		<property name="user">
-			"s2container_2_4_s2jdbc_it"
-			+ (@java.lang.System@getProperty("jdk") == "JDK-1.5" ? "" : "_1")
+			"doma_it"
 		</property>
 		<property name="password">
-			"s2container_2_4_s2jdbc_it"
-			+ (@java.lang.System@getProperty("jdk") == "JDK-1.5" ? "" : "_1")
+			"doma_it"
+		</property>
+		<!--
+		<property name="URL">
+			"jdbc:oracle:thin:@10.24.1.65:1521:XE"
+		</property>
+		<property name="user">
+			"scott"
+		</property>
+		<property name="password">
+			"tiger"
 		</property>
 		-->
 		<initMethod name="addProperty">
