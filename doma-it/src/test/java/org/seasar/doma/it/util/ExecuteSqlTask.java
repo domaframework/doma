@@ -82,7 +82,7 @@ public class ExecuteSqlTask extends Task {
             Thread.currentThread().setContextClassLoader(
                     getClass().getClassLoader());
             Env.setFilePath("env_ut.txt");
-            SingletonS2ContainerFactory.setConfigPath("s2jdbc.dicon");
+            SingletonS2ContainerFactory.setConfigPath("jdbc.dicon");
             SingletonS2ContainerFactory.init();
             try {
                 executeSql();
