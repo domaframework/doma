@@ -44,14 +44,14 @@ public class ItLogger implements JdbcLogger {
     public void logMethodEntering(String callerClassName,
             String callerMethodName, Object... parameters) {
         Log log = LogFactory.getLog(callerClassName);
-        log.info("entering " + callerClassName + "#" + callerMethodName);
+        log.info("START " + callerClassName + "#" + callerMethodName);
     }
 
     @Override
     public void logMethodExiting(String callerClassName,
             String callerMethodName, Object result) {
         Log log = LogFactory.getLog(callerClassName);
-        log.info("exiting " + callerClassName + "#" + callerMethodName);
+        log.info("END   " + callerClassName + "#" + callerMethodName);
     }
 
     @Override
