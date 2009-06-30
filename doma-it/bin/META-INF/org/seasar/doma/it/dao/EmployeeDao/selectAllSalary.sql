@@ -1,1 +1,0 @@
-select salary from employee order by employee_id

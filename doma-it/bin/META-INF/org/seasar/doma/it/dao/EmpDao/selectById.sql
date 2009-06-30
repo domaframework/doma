@@ -1,1 +1,0 @@
-select * from emp where id = /*id*/100

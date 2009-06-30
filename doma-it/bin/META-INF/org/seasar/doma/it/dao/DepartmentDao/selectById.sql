@@ -1,1 +1,0 @@
-select * from department where department_id = /*department_id*/0

@@ -1,1 +1,0 @@
-select * from comp_key_employee where employee_id1 = /*employee_id1*/0 and employee_id2 = /*employee_id2*/0
