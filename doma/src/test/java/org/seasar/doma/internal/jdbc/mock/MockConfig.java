@@ -11,13 +11,14 @@ import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.NameConvention;
+import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.SqlFileRepository;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.StandardJdbcLogger;
 import org.seasar.doma.jdbc.StandardNameConvention;
+import org.seasar.doma.jdbc.StandardRequiresNewController;
 import org.seasar.doma.jdbc.StandardSqlFileRepository;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
-
 
 /**
  * @author taedium
@@ -38,6 +39,8 @@ public class MockConfig implements Config {
     protected DomainVisitor<String, Void, RuntimeException> sqlLogFormattingVisitor = new SqlLogFormattingVisitor();
 
     protected JdbcLogger sqlLogger = new StandardJdbcLogger();
+
+    protected RequiresNewController requiresNewController = new StandardRequiresNewController();
 
     @Override
     public DataSource dataSource() {
@@ -80,6 +83,11 @@ public class MockConfig implements Config {
     }
 
     @Override
+    public RequiresNewController requiresNewController() {
+        return requiresNewController;
+    }
+
+    @Override
     public int fetchSize() {
         return 0;
     }
@@ -115,11 +123,11 @@ public class MockConfig implements Config {
         this.dialect = dialect;
     }
 
-    public NameConvention getNameConverter() {
+    public NameConvention getNameConvention() {
         return nameConvention;
     }
 
-    public void setNameConverter(NameConvention nameConvention) {
+    public void setNameConvention(NameConvention nameConvention) {
         this.nameConvention = nameConvention;
     }
 
@@ -155,6 +163,15 @@ public class MockConfig implements Config {
 
     public void setSqlLogger(JdbcLogger sqlLogger) {
         this.sqlLogger = sqlLogger;
+    }
+
+    public RequiresNewController getRequiresNewController() {
+        return requiresNewController;
+    }
+
+    public void setRequiresNewController(
+            RequiresNewController requiresNewController) {
+        this.requiresNewController = requiresNewController;
     }
 
 }

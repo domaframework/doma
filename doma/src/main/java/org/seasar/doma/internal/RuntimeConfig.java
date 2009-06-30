@@ -12,8 +12,8 @@ import org.seasar.doma.jdbc.Dialect;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.NameConvention;
+import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.SqlFileRepository;
-
 
 /**
  * @author taedium
@@ -37,6 +37,8 @@ public class RuntimeConfig implements Config {
 
     protected final JdbcLogger jdbcLogger;
 
+    protected final RequiresNewController requiresNewController;
+
     protected final int fetchSize;
 
     protected final int maxRows;
@@ -59,6 +61,7 @@ public class RuntimeConfig implements Config {
         assertNotNull(config.sqlLogFormattingVisitor());
         assertNotNull(config.sqlFileRepository());
         assertNotNull(config.jdbcLogger());
+        assertNotNull(config.requiresNewController());
         this.dataSource = dataSource;
         this.dataSourceName = config.dataSourceName();
         this.dialect = config.dialect();
@@ -67,6 +70,7 @@ public class RuntimeConfig implements Config {
         this.sqlLogFormattingVisitor = config.sqlLogFormattingVisitor();
         this.sqlFileRepository = config.sqlFileRepository();
         this.jdbcLogger = config.jdbcLogger();
+        this.requiresNewController = config.requiresNewController();
         this.fetchSize = config.fetchSize();
         this.maxRows = config.maxRows();
         this.queryTimeout = config.queryTimeout();
@@ -105,6 +109,11 @@ public class RuntimeConfig implements Config {
 
     public JdbcLogger jdbcLogger() {
         return jdbcLogger;
+    }
+
+    @Override
+    public RequiresNewController requiresNewController() {
+        return requiresNewController;
     }
 
     @Override

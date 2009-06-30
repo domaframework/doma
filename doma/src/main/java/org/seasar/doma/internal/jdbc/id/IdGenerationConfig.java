@@ -8,7 +8,7 @@ import org.seasar.doma.internal.jdbc.Entity;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Dialect;
 import org.seasar.doma.jdbc.JdbcLogger;
-
+import org.seasar.doma.jdbc.RequiresNewController;
 
 /**
  * @author taedium
@@ -47,6 +47,10 @@ public class IdGenerationConfig {
 
     public JdbcLogger getJdbcLogger() {
         return config.jdbcLogger();
+    }
+
+    public RequiresNewController getRequiresNewController() {
+        return config.requiresNewController();
     }
 
     public int getFetchSize() {

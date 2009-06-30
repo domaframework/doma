@@ -6,7 +6,6 @@ import javax.sql.DataSource;
 
 import org.seasar.doma.domain.DomainVisitor;
 
-
 /**
  * @author taedium
  * 
@@ -28,6 +27,8 @@ public interface Config {
     DomainVisitor<String, Void, RuntimeException> sqlLogFormattingVisitor();
 
     JdbcLogger jdbcLogger();
+
+    RequiresNewController requiresNewController();
 
     int maxRows();
 

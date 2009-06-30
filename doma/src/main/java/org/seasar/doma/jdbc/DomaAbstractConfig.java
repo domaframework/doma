@@ -4,7 +4,6 @@ import java.sql.SQLException;
 
 import org.seasar.doma.domain.DomainVisitor;
 
-
 /**
  * @author taedium
  * 
@@ -16,6 +15,8 @@ public abstract class DomaAbstractConfig implements Config {
     protected static SqlFileRepository sqlFileRepository = new StandardSqlFileRepository();
 
     protected static JdbcLogger jdbcLogger = new StandardJdbcLogger();
+
+    protected static RequiresNewController requiresNewController = new StandardRequiresNewController();
 
     protected static DomainVisitor<Void, JdbcMappingFunction, SQLException> jdbcMappingVisitor = new JdbcMappingVisitor();
 
@@ -49,6 +50,11 @@ public abstract class DomaAbstractConfig implements Config {
     @Override
     public JdbcLogger jdbcLogger() {
         return jdbcLogger;
+    }
+
+    @Override
+    public RequiresNewController requiresNewController() {
+        return requiresNewController;
     }
 
     @Override

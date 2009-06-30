@@ -14,8 +14,8 @@ import org.seasar.doma.internal.jdbc.sql.BindParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcLogger;
+import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.message.MessageCode;
-
 
 /**
  * @author taedium
@@ -113,10 +113,23 @@ public class TableIdGenerator extends AbstractPreAllocateIdGenerator {
     }
 
     @Override
-    protected long getNewInitialValue(IdGenerationConfig config) {
-        updateId(config, updateSql);
-        long value = selectId(config, selectSql);
-        return value - allocationSize;
+    protected long getNewInitialValue(final IdGenerationConfig config) {
+        RequiresNewController controller = config.getRequiresNewController();
+        try {
+            Long value = controller
+                    .requiresNew(new RequiresNewController.Callback<Long>() {
+
+                        @Override
+                        public Long execute() {
+                            updateId(config, updateSql);
+                            return selectId(config, selectSql);
+                        }
+                    });
+            return value - allocationSize;
+        } catch (Throwable t) {
+            throw new JdbcException(MessageCode.DOMA2018, t, config.getEntity()
+                    .__getName(), t);
+        }
     }
 
     protected void updateId(IdGenerationConfig config, PreparedSql sql) {
