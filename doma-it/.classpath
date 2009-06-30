@@ -23,7 +23,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/hsqldb-1.8.0.1.jar"/>
-	<classpathentry kind="lib" path="lib/doma-EA1-SNAPSHOT.jar" sourcepath="libsrc/doma-EA1-SNAPSHOT-sources.jar"/>
 	<classpathentry kind="lib" path="lib/postgresql-8.3-604.jdbc4.jar"/>
+	<classpathentry kind="lib" path="lib/doma-0.9.0-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

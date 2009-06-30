@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- The Basics -->
+	<groupId>org.seasar.doma</groupId>
+	<artifactId>doma-it</artifactId>
+	<version>0.9.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<!-- More Project Information -->
+	<name>Doma IT</name>
+	<description>Doma Integration Test</description>
+	<url>http://doma.sandbox.seasar.org/</url>
+	<inceptionYear>2009</inceptionYear>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<organization>
+		<name>The Seasar Foundation</name>
+		<url>http://www.seasarfoundation.org/</url>
+	</organization>
+	<developers>
+		<developer>
+			<id>taedium</id>
+			<name>NAKAMURA Toshihiro</name>
+			<email></email>
+			<url>http://d.hatena.ne.jp/taedium/</url>
+			<timezone>+9</timezone>
+		</developer>
+	</developers>
+
+	<!-- Environment Settings -->
+	<issueManagement>
+		<system>JIRA</system>
+		<url><![CDATA[https://www.seasar.org/issues/browse/DOMA]]></url>
+	</issueManagement>
+	<mailingLists>
+		<mailingList>
+			<name>Seasar-user</name>
+			<subscribe>https://www.seasar.org/mailman/listinfo/seasar-user</subscribe>
+			<unsubscribe>https://www.seasar.org/mailman/listinfo/seasar-user</unsubscribe>
+			<post>seasar-user@ml.seasar.org</post>
+			<archive>https://www.seasar.org/mailman/listinfo/seasar-user</archive>
+		</mailingList>
+		<mailingList>
+			<name>Seasar-dev</name>
+			<subscribe>https://www.seasar.org/mailman/listinfo/seasar-dev</subscribe>
+			<unsubscribe>https://www.seasar.org/mailman/listinfo/seasar-dev</unsubscribe>
+			<post>seasar-dev@ml.seasar.org</post>
+			<archive>https://www.seasar.org/mailman/listinfo/seasar-dev</archive>
+		</mailingList>
+		<mailingList>
+			<name>Seasar-user-en</name>
+			<subscribe>https://www.seasar.org/mailman/listinfo/seasar-user-en</subscribe>
+			<unsubscribe>https://www.seasar.org/mailman/listinfo/seasar-user-en</unsubscribe>
+			<post>seasar-user-en@ml.seasar.org</post>
+			<archive>http://ml.seasar.org/archives/seasar-user-en/</archive>
+		</mailingList>
+	</mailingLists>
+	<scm>
+		<connection>scm:svn:https://www.seasar.org/svn/sandbox/doma/trunk/doma/</connection>
+		<developerConnection>scm:svn:https://www.seasar.org/svn/sandbox/doma/trunk/doma/</developerConnection>
+		<url>http://svn.seasar.org/browse/?root=sandbox.doma</url>
+	</scm>
+	<repositories>
+		<repository>
+			<id>maven.seasar.org</id>
+			<name>The Seasar Foundation Maven2 Repository</name>
+			<url>http://maven.seasar.org/maven2</url>
+		</repository>
+	</repositories>
+	<distributionManagement>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>maven.seasar.org</id>
+			<name>The Seasar Foundation Maven2 Repository</name>
+			<url>dav:https://www.seasar.org/maven/maven2</url>
+		</repository>
+		<snapshotRepository>
+			<uniqueVersion>true</uniqueVersion>
+			<id>maven.seasar.org</id>
+			<name>The Seasar Foundation Maven2 Snapshot Repository</name>
+			<url>dav:https://www.seasar.org/maven/maven2-snapshot</url>
+		</snapshotRepository>
+		<site>
+			<id>maven.seasar.org</id>
+			<url>dav:https://www.seasar.org/site/sandbox/doma/</url>
+		</site>
+	</distributionManagement>
+
+	<!-- Build Settings -->
+	<build>
+		<defaultGoal>validate</defaultGoal>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.6</source>
+						<target>1.6</target>
+						<encoding>UTF-8</encoding>
+						<compilerArgument>-XprintProcessorInfo</compilerArgument>
+					</configuration>
+				</plugin>
+				<plugin>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<configuration>
+						<updateReleaseInfo>true</updateReleaseInfo>
+					</configuration>
+				</plugin>
+				<plugin>
+					<artifactId>maven-site-plugin</artifactId>
+					<configuration>
+						<locales>ja</locales>
+						<inputEncoding>UTF-8</inputEncoding>
+						<outputEncoding>UTF-8</outputEncoding>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>source-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<encoding>UTF-8</encoding>
+					<docencoding>UTF-8</docencoding>
+					<charset>UTF-8</charset>
+					<links>
+						<link>http://java.sun.com/javase/ja/6/docs/ja/api/</link>
+						<link>http://www.junit.org/junit/javadoc/3.8.1/</link>
+					</links>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>site</phase>
+						<goals>
+							<goal>javadoc</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.google.code.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<version>1.4.0</version>
+				<configuration>
+					<header>src/main/resources/header.txt</header>
+					<includes>
+						<include>src/**/*.java</include>
+					</includes>
+					<encoding>UTF-8</encoding>
+					<headerDefinitions>
+						<headerDefinition>src/main/resources/header-definition.xml</headerDefinition>
+					</headerDefinitions>
+				</configuration>
+			</plugin>
+		</plugins>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav</artifactId>
+				<version>1.0-beta-2</version>
+			</extension>
+		</extensions>
+	</build>
+
+	<!-- Dependency Settings -->
+	<dependencies>
+		<dependency>
+			<groupId>org.seasar.doma</groupId>
+			<artifactId>doma</artifactId>
+			<version>0.9.0-SNAPSHOT</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.seasar.container</groupId>
+			<artifactId>s2-tiger</artifactId>
+			<version>2.4.38</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-annotation_1.0_spec</artifactId>
+			<version>1.0</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-ejb_3.0_spec</artifactId>
+			<version>1.0</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-interceptor_3.0_spec</artifactId>
+			<version>1.0</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-jpa_3.0_spec</artifactId>
+			<version>1.0</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.4</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
