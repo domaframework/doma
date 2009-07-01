@@ -95,7 +95,7 @@ public class SqlLogFormattingVisitor implements
         if (domain.isNull()) {
             return NULL;
         }
-        return domain.get().toString();
+        return "'" + domain.get() + "'";
     }
 
     @Override
