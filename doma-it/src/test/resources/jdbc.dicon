@@ -14,7 +14,7 @@
 	</component>
 
 	<component name="dataSource"
-		class="org.seasar.extension.dbcp.impl.DataSourceImpl"
+		class="org.seasar.doma.it.ItDataSource"
 	/>
 
 </components>
