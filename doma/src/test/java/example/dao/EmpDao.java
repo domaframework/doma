@@ -17,6 +17,8 @@ package example.dao;
 
 import java.util.List;
 
+import org.seasar.doma.ArrayFactory;
+import org.seasar.doma.BlobFactory;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Delete;
 import org.seasar.doma.Function;
@@ -31,6 +33,8 @@ import org.seasar.doma.domain.IntegerDomain;
 import org.seasar.doma.domain.StringDomain;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.SelectOptions;
+import org.seasar.doma.jdbc.domain.ArrayDomain;
+import org.seasar.doma.jdbc.domain.BlobDomain;
 
 import example.entity.Emp;
 
@@ -69,4 +73,10 @@ public interface EmpDao {
 
     @Procedure
     void exec(@In IntegerDomain arg1, @In IntegerDomain arg2);
+
+    @ArrayFactory(typeName = "varchar")
+    ArrayDomain<String> createStringArrayDomain(String[] element);
+
+    @BlobFactory
+    BlobDomain createBlobDomain();
 }

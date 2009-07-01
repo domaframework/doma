@@ -23,6 +23,10 @@ import org.seasar.doma.domain.AbstractTimeDomain;
 import org.seasar.doma.domain.AbstractTimestampDomain;
 import org.seasar.doma.domain.BuiltInDomainVisitor;
 import org.seasar.doma.domain.Domain;
+import org.seasar.doma.jdbc.domain.AbstractArrayDomain;
+import org.seasar.doma.jdbc.domain.AbstractBlobDomain;
+import org.seasar.doma.jdbc.domain.AbstractClobDomain;
+import org.seasar.doma.jdbc.domain.AbstractNClobDomain;
 
 /**
  * @author taedium
@@ -83,6 +87,42 @@ public class SqlLogFormattingVisitor implements
             return NULL;
         }
         return "'" + domain.get() + "'";
+    }
+
+    @Override
+    public String visitAbstractArrayDomain(AbstractArrayDomain<?> domain, Void p)
+            throws RuntimeException {
+        if (domain.isNull()) {
+            return NULL;
+        }
+        return domain.get().toString();
+    }
+
+    @Override
+    public String visitAbstractBlobDomain(AbstractBlobDomain domain, Void p)
+            throws RuntimeException {
+        if (domain.isNull()) {
+            return NULL;
+        }
+        return domain.get().toString();
+    }
+
+    @Override
+    public String visitAbstractClobDomain(AbstractClobDomain domain, Void p)
+            throws RuntimeException {
+        if (domain.isNull()) {
+            return NULL;
+        }
+        return domain.get().toString();
+    }
+
+    @Override
+    public String visitAbstractNClobDomain(AbstractNClobDomain domain, Void p)
+            throws RuntimeException {
+        if (domain.isNull()) {
+            return NULL;
+        }
+        return domain.get().toString();
     }
 
     @Override

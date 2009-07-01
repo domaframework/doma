@@ -35,4 +35,6 @@ public interface QueryMetaVisitor<R, P> {
 
     R visitAutoProcedureQueryMeta(AutoProcedureQueryMeta m, P p);
 
+    R visitArrayCreateQueryMeta(ArrayCreateQueryMeta m, P p);
+
 }

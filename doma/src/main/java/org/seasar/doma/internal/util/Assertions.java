@@ -91,7 +91,7 @@ public final class Assertions {
         for (int i = 0; i < objects.length; i++) {
             Object object = objects[i];
             if (object == null) {
-                throw new AssertionError("Null. index = " + i + 1);
+                throw new AssertionError("Null. index = " + (i + 1));
             }
         }
     }

@@ -25,8 +25,11 @@ import org.seasar.doma.domain.AbstractTimeDomain;
 import org.seasar.doma.domain.AbstractTimestampDomain;
 import org.seasar.doma.domain.BuiltInDomainVisitor;
 import org.seasar.doma.domain.Domain;
+import org.seasar.doma.jdbc.domain.AbstractArrayDomain;
+import org.seasar.doma.jdbc.domain.AbstractBlobDomain;
+import org.seasar.doma.jdbc.domain.AbstractClobDomain;
+import org.seasar.doma.jdbc.domain.AbstractNClobDomain;
 import org.seasar.doma.message.MessageCode;
-
 
 /**
  * @author taedium
@@ -75,6 +78,34 @@ public class JdbcMappingVisitor implements
     public Void visitAbstractTimeDomain(AbstractTimeDomain<?> domain,
             JdbcMappingFunction p) throws SQLException {
         p.apply(domain, JdbcTypes.TIME);
+        return null;
+    }
+
+    @Override
+    public Void visitAbstractArrayDomain(AbstractArrayDomain<?> domain,
+            JdbcMappingFunction p) throws SQLException {
+        p.apply(domain, JdbcTypes.ARRAY);
+        return null;
+    }
+
+    @Override
+    public Void visitAbstractBlobDomain(AbstractBlobDomain domain,
+            JdbcMappingFunction p) throws SQLException {
+        p.apply(domain, JdbcTypes.BLOB);
+        return null;
+    }
+
+    @Override
+    public Void visitAbstractClobDomain(AbstractClobDomain domain,
+            JdbcMappingFunction p) throws SQLException {
+        p.apply(domain, JdbcTypes.CLOB);
+        return null;
+    }
+
+    @Override
+    public Void visitAbstractNClobDomain(AbstractNClobDomain domain,
+            JdbcMappingFunction p) throws SQLException {
+        p.apply(domain, JdbcTypes.NCLOB);
         return null;
     }
 

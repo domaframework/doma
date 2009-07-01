@@ -15,9 +15,9 @@
  */
 package org.seasar.doma.internal.apt;
 
-import org.seasar.doma.internal.apt.DaoProcessor;
 import org.seasar.doma.internal.apt.dao.AbstractImplementedByDao;
 import org.seasar.doma.internal.apt.dao.AnnotationNotFoundDao;
+import org.seasar.doma.internal.apt.dao.ArrayFactoryDao;
 import org.seasar.doma.internal.apt.dao.AutoBatchUpdateDao;
 import org.seasar.doma.internal.apt.dao.AutoDeleteDao;
 import org.seasar.doma.internal.apt.dao.AutoFunctionDao;
@@ -40,7 +40,6 @@ import org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao;
 import org.seasar.doma.internal.apt.entity.Emp;
 import org.seasar.doma.internal.apt.entity.Emp_;
 import org.seasar.doma.message.MessageCode;
-
 
 /**
  * @author taedium
@@ -282,6 +281,16 @@ public class DaoProcessorTest extends AptTestCase {
 
     public void testAutoProcedure() throws Exception {
         Class<?> target = AutoProcedureDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testArrayFactory() throws Exception {
+        Class<?> target = ArrayFactoryDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
         addCompilationUnit(target);

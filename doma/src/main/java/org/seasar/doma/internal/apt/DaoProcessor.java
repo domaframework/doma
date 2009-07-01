@@ -28,6 +28,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 
+import org.seasar.doma.internal.apt.meta.ArrayCreateQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.AutoBatchModifyQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.AutoFunctionQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.AutoModifyQueryMetaFactory;
@@ -98,6 +99,8 @@ public class DaoProcessor extends DomaAbstractProcessor {
                 .add(new AutoFunctionQueryMetaFactory(processingEnv));
         commandMetaFactories.add(new AutoProcedureQueryMetaFactory(
                 processingEnv));
+        commandMetaFactories
+                .add(new ArrayCreateQueryMetaFactory(processingEnv));
         commandMetaFactories.add(new SqlFileSelectQueryMetaFactory(
                 processingEnv));
         commandMetaFactories.add(new SqlFileModifyQueryMetaFactory(

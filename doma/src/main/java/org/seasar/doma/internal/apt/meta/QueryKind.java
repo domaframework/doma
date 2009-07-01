@@ -19,12 +19,14 @@ import org.seasar.doma.internal.jdbc.command.BatchDeleteCommand;
 import org.seasar.doma.internal.jdbc.command.BatchInsertCommand;
 import org.seasar.doma.internal.jdbc.command.BatchUpdateCommand;
 import org.seasar.doma.internal.jdbc.command.Command;
+import org.seasar.doma.internal.jdbc.command.CreateCommand;
 import org.seasar.doma.internal.jdbc.command.DeleteCommand;
 import org.seasar.doma.internal.jdbc.command.FunctionCommand;
 import org.seasar.doma.internal.jdbc.command.InsertCommand;
 import org.seasar.doma.internal.jdbc.command.ProcedureCommand;
 import org.seasar.doma.internal.jdbc.command.SelectCommand;
 import org.seasar.doma.internal.jdbc.command.UpdateCommand;
+import org.seasar.doma.internal.jdbc.query.ArrayCreateQuery;
 import org.seasar.doma.internal.jdbc.query.AutoBatchDeleteQuery;
 import org.seasar.doma.internal.jdbc.query.AutoBatchInsertQuery;
 import org.seasar.doma.internal.jdbc.query.AutoBatchUpdateQuery;
@@ -33,6 +35,9 @@ import org.seasar.doma.internal.jdbc.query.AutoFunctionQuery;
 import org.seasar.doma.internal.jdbc.query.AutoInsertQuery;
 import org.seasar.doma.internal.jdbc.query.AutoProcedureQuery;
 import org.seasar.doma.internal.jdbc.query.AutoUpdateQuery;
+import org.seasar.doma.internal.jdbc.query.BlobCreateQuery;
+import org.seasar.doma.internal.jdbc.query.ClobCreateQuery;
+import org.seasar.doma.internal.jdbc.query.NClobCreateQuery;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.internal.jdbc.query.SqlFileBatchDeleteQuery;
 import org.seasar.doma.internal.jdbc.query.SqlFileBatchInsertQuery;
@@ -257,7 +262,64 @@ public enum QueryKind {
             return ProcedureCommand.class;
         }
 
-    };
+    },
+    ARRAY_FACTORY {
+
+        @Override
+        public Class<? extends Query> getQueryClass() {
+            return ArrayCreateQuery.class;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public Class<? extends Command> getCommandClass() {
+            return CreateCommand.class;
+        }
+
+    },
+    BLOB_FACTORY {
+
+        @Override
+        public Class<? extends Query> getQueryClass() {
+            return BlobCreateQuery.class;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public Class<? extends Command> getCommandClass() {
+            return CreateCommand.class;
+        }
+
+    },
+    CLOB_FACTORY {
+
+        @Override
+        public Class<? extends Query> getQueryClass() {
+            return ClobCreateQuery.class;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public Class<? extends Command> getCommandClass() {
+            return CreateCommand.class;
+        }
+
+    },
+    NCLOB_FACTORY {
+
+        @Override
+        public Class<? extends Query> getQueryClass() {
+            return NClobCreateQuery.class;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public Class<? extends Command> getCommandClass() {
+            return CreateCommand.class;
+        }
+
+    },
+    ;
 
     public abstract Class<? extends Query> getQueryClass();
 

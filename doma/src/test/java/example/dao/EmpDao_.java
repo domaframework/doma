@@ -23,6 +23,7 @@ import javax.sql.DataSource;
 import org.seasar.doma.domain.BigDecimalDomain;
 import org.seasar.doma.domain.IntegerDomain;
 import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.internal.jdbc.command.CreateCommand;
 import org.seasar.doma.internal.jdbc.command.DeleteCommand;
 import org.seasar.doma.internal.jdbc.command.EntityIterationHandler;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
@@ -32,11 +33,13 @@ import org.seasar.doma.internal.jdbc.command.InsertCommand;
 import org.seasar.doma.internal.jdbc.command.ProcedureCommand;
 import org.seasar.doma.internal.jdbc.command.SelectCommand;
 import org.seasar.doma.internal.jdbc.command.UpdateCommand;
+import org.seasar.doma.internal.jdbc.query.ArrayCreateQuery;
 import org.seasar.doma.internal.jdbc.query.AutoDeleteQuery;
 import org.seasar.doma.internal.jdbc.query.AutoFunctionQuery;
 import org.seasar.doma.internal.jdbc.query.AutoInsertQuery;
 import org.seasar.doma.internal.jdbc.query.AutoProcedureQuery;
 import org.seasar.doma.internal.jdbc.query.AutoUpdateQuery;
+import org.seasar.doma.internal.jdbc.query.BlobCreateQuery;
 import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.sql.DomainResultParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListResultParameter;
@@ -46,6 +49,8 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.DomaAbstractDao;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.SelectOptions;
+import org.seasar.doma.jdbc.domain.ArrayDomain;
+import org.seasar.doma.jdbc.domain.BlobDomain;
 
 import example.entity.Emp;
 import example.entity.Emp_;
@@ -203,5 +208,30 @@ public class EmpDao_ extends DomaAbstractDao implements EmpDao {
         query.compile();
         ProcedureCommand command = new ProcedureCommand(query);
         command.execute();
+    }
+
+    @Override
+    public ArrayDomain<String> createStringArrayDomain(String[] element) {
+        ArrayCreateQuery<ArrayDomain<String>> query = new ArrayCreateQuery<ArrayDomain<String>>();
+        query.setConfig(config);
+        query.setCallerClassName("example.dao.EmpDao");
+        query.setCallerMethodName("createStringArray");
+        query.setResult(new ArrayDomain<String>());
+        query.compile();
+        CreateCommand<ArrayDomain<String>> command = new CreateCommand<ArrayDomain<String>>(
+                query);
+        return command.execute();
+    }
+
+    @Override
+    public BlobDomain createBlobDomain() {
+        BlobCreateQuery<BlobDomain> query = new BlobCreateQuery<BlobDomain>();
+        query.setConfig(config);
+        query.setCallerClassName("example.dao.EmpDao");
+        query.setCallerMethodName("createStringArray");
+        query.setResult(new BlobDomain());
+        query.compile();
+        CreateCommand<BlobDomain> command = new CreateCommand<BlobDomain>(query);
+        return command.execute();
     }
 }

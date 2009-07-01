@@ -19,7 +19,6 @@ import java.math.BigDecimal;
 
 import org.seasar.doma.DomaIllegalArgumentException;
 
-
 /**
  * @author taedium
  * 
@@ -55,7 +54,7 @@ public abstract class AbstractBigDecimalDomain<D extends AbstractBigDecimalDomai
         if (visitor == null) {
             throw new DomaIllegalArgumentException("visitor", visitor);
         }
-        if (AbstractDateDomainVisitor.class.isInstance(visitor)) {
+        if (AbstractBigDecimalDomainVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
             AbstractBigDecimalDomainVisitor<R, P, TH> v = AbstractBigDecimalDomainVisitor.class
                     .cast(visitor);
