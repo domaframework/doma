@@ -14,4 +14,6 @@ public interface SalEmp {
     StringDomain name();
 
     ArrayDomain<Integer> pay_by_quarter();
+
+    ArrayDomain<String[]> schedule();
 }

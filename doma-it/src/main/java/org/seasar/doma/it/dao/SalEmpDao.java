@@ -17,4 +17,7 @@ public interface SalEmpDao extends GenericDao<SalEmp> {
 
     @ArrayFactory(typeName = "integer")
     ArrayDomain<Integer> createIntegerArray(Integer[] elements);
+
+    @ArrayFactory(typeName = "text")
+    ArrayDomain<String[]> createString2DArray(String[][] elements);
 }
