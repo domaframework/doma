@@ -21,7 +21,7 @@ import static org.seasar.doma.internal.util.Assertions.*;
  * @author taedium
  * 
  */
-public class DomainResultParameterMeta extends AbstractParameterMeta implements
+public class DomainResultParameterMeta extends AbstractCallableSqlParameterMeta implements
         ResultParameterMeta {
 
     protected final String domainTypeName;
@@ -36,7 +36,7 @@ public class DomainResultParameterMeta extends AbstractParameterMeta implements
     }
 
     @Override
-    public <R, P> R accept(CallableStatementParameterMetaVisitor<R, P> visitor, P p) {
+    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
         return visitor.visistDomainResultParameterMeta(this, p);
     }
 

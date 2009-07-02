@@ -21,7 +21,7 @@ import static org.seasar.doma.internal.util.Assertions.*;
  * @author taedium
  * 
  */
-public class EntityListParameterMeta extends AbstractParameterMeta {
+public class EntityListParameterMeta extends AbstractCallableSqlParameterMeta {
 
     protected final String entityTypeName;
 
@@ -35,7 +35,7 @@ public class EntityListParameterMeta extends AbstractParameterMeta {
     }
 
     @Override
-    public <R, P> R accept(CallableStatementParameterMetaVisitor<R, P> visitor, P p) {
+    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
         return visitor.visistEntityListParameterMeta(this, p);
     }
 

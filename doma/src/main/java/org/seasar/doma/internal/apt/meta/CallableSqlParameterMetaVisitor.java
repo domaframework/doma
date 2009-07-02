@@ -19,7 +19,7 @@ package org.seasar.doma.internal.apt.meta;
  * @author taedium
  * 
  */
-public interface CallableStatementParameterMetaVisitor<R, P> {
+public interface CallableSqlParameterMetaVisitor<R, P> {
 
     R visitInParameterMeta(InParameterMeta m, P p);
 

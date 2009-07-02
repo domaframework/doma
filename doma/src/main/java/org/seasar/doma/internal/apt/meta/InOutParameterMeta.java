@@ -19,10 +19,10 @@ package org.seasar.doma.internal.apt.meta;
  * @author taedium
  * 
  */
-public class InOutParameterMeta extends AbstractParameterMeta {
+public class InOutParameterMeta extends AbstractCallableSqlParameterMeta {
 
     @Override
-    public <R, P> R accept(CallableStatementParameterMetaVisitor<R, P> visitor, P p) {
+    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
         return visitor.visistInOutParameterMeta(this, p);
     }
 

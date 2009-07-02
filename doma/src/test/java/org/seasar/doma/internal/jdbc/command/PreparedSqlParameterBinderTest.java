@@ -19,18 +19,17 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import junit.framework.TestCase;
+
 import org.seasar.doma.domain.BigDecimalDomain;
 import org.seasar.doma.domain.StringDomain;
-import org.seasar.doma.internal.jdbc.command.PreparedSqlParameterBinder;
 import org.seasar.doma.internal.jdbc.mock.BindValue;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockPreparedStatement;
 import org.seasar.doma.internal.jdbc.query.Query;
-import org.seasar.doma.internal.jdbc.sql.BindParameter;
+import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
-
-import junit.framework.TestCase;
 
 public class PreparedSqlParameterBinderTest extends TestCase {
 
@@ -38,10 +37,10 @@ public class PreparedSqlParameterBinderTest extends TestCase {
 
     public void testBind() throws Exception {
         MockPreparedStatement preparedStatement = new MockPreparedStatement();
-        List<BindParameter> parameters = new ArrayList<BindParameter>();
-        parameters.add(new BindParameter(new StringDomain("aaa")));
-        parameters.add(new BindParameter(new BigDecimalDomain(
-                new BigDecimal(10))));
+        List<InParameter> parameters = new ArrayList<InParameter>();
+        parameters.add(new InParameter(new StringDomain("aaa")));
+        parameters
+                .add(new InParameter(new BigDecimalDomain(new BigDecimal(10))));
         PreparedSqlParameterBinder binder = new PreparedSqlParameterBinder(
                 new MyQuery());
         binder.bind(preparedStatement, parameters);

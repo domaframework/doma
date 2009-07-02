@@ -32,8 +32,8 @@ import org.seasar.doma.internal.apt.meta.AutoBatchModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoFunctionQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoProcedureQueryMeta;
-import org.seasar.doma.internal.apt.meta.CallableStatementParameterMeta;
-import org.seasar.doma.internal.apt.meta.CallableStatementParameterMetaVisitor;
+import org.seasar.doma.internal.apt.meta.CallableSqlParameterMeta;
+import org.seasar.doma.internal.apt.meta.CallableSqlParameterMetaVisitor;
 import org.seasar.doma.internal.apt.meta.DaoMeta;
 import org.seasar.doma.internal.apt.meta.DomainListParameterMeta;
 import org.seasar.doma.internal.apt.meta.DomainListResultParameterMeta;
@@ -164,51 +164,56 @@ public class DaoGenerator implements Generator {
     }
 
     protected void doMethods(Printer p) {
-        MethodGenerator methodGenerator = new MethodGenerator();
-        for (QueryMeta m : daoMeta.getQueryMetas()) {
-            p.p("@Override%n");
-            p.p("public ");
-            if (m.getTypeParameterNames().hasNext()) {
-                p.pp("<");
-                for (Iterator<String> it = m.getTypeParameterNames(); it
-                        .hasNext();) {
-                    p.pp("%s", it.next());
-                    if (it.hasNext()) {
-                        p.pp(", ");
-                    }
-                }
-                p.pp("> ");
-            }
-            p.pp("%s %s(", m.getReturnTypeName(), m.getName());
-            for (Iterator<Map.Entry<String, String>> it = m
-                    .getMethodParameters(); it.hasNext();) {
-                Map.Entry<String, String> entry = it.next();
-                p.pp("%s %s", entry.getValue(), entry.getKey());
+        MethodBodyGenerator generator = new MethodBodyGenerator();
+        for (QueryMeta queryMeta : daoMeta.getQueryMetas()) {
+            doMethod(p, generator, queryMeta);
+        }
+    }
+
+    protected void doMethod(Printer p, MethodBodyGenerator generator,
+            QueryMeta m) {
+        p.p("@Override%n");
+        p.p("public ");
+        if (m.getTypeParameterNames().hasNext()) {
+            p.pp("<");
+            for (Iterator<String> it = m.getTypeParameterNames(); it.hasNext();) {
+                p.pp("%s", it.next());
                 if (it.hasNext()) {
                     p.pp(", ");
                 }
             }
-            p.pp(") ");
-            if (m.getThrownTypeNames().hasNext()) {
-                p.pp("throws ");
-                for (Iterator<String> it = m.getThrownTypeNames(); it.hasNext();) {
-                    p.pp("%s", it.next());
-                    if (it.hasNext()) {
-                        p.pp(", ");
-                    }
-                }
-                p.pp(" ");
-            }
-            p.pp("{%n");
-            p.indent();
-            m.accept(methodGenerator, p);
-            p.unindent();
-            p.p("}%n");
-            p.p("%n");
+            p.pp("> ");
         }
+        p.pp("%s %s(", m.getReturnTypeName(), m.getName());
+        for (Iterator<Map.Entry<String, String>> it = m.getMethodParameters(); it
+                .hasNext();) {
+            Map.Entry<String, String> entry = it.next();
+            p.pp("%s %s", entry.getValue(), entry.getKey());
+            if (it.hasNext()) {
+                p.pp(", ");
+            }
+        }
+        p.pp(") ");
+        if (m.getThrownTypeNames().hasNext()) {
+            p.pp("throws ");
+            for (Iterator<String> it = m.getThrownTypeNames(); it.hasNext();) {
+                p.pp("%s", it.next());
+                if (it.hasNext()) {
+                    p.pp(", ");
+                }
+            }
+            p.pp(" ");
+        }
+        p.pp("{%n");
+        p.indent();
+        m.accept(generator, p);
+        p.unindent();
+        p.p("}%n");
+        p.p("%n");
     }
 
-    protected class MethodGenerator implements QueryMetaVisitor<Void, Printer> {
+    protected class MethodBodyGenerator implements
+            QueryMetaVisitor<Void, Printer> {
 
         @Override
         public Void visistAutoModifyQueryMeta(AutoModifyQueryMeta m, Printer p) {
@@ -495,17 +500,15 @@ public class DaoGenerator implements Generator {
                 Printer p) {
             p.p("entering(\"%1$s\", \"%2$s\"", daoImplQualifiedName, m
                     .getName());
-            for (Iterator<CallableStatementParameterMeta> it = m
-                    .getCallableStatementParameterMetas().iterator(); it
-                    .hasNext();) {
-                CallableStatementParameterMeta parameterMeta = it.next();
+            for (Iterator<CallableSqlParameterMeta> it = m
+                    .getCallableSqlParameterMetas().iterator(); it.hasNext();) {
+                CallableSqlParameterMeta parameterMeta = it.next();
                 p.pp(", %s", parameterMeta.getName());
             }
             p.pp(");%n");
-            for (Iterator<CallableStatementParameterMeta> it = m
-                    .getCallableStatementParameterMetas().iterator(); it
-                    .hasNext();) {
-                CallableStatementParameterMeta parameterMeta = it.next();
+            for (Iterator<CallableSqlParameterMeta> it = m
+                    .getCallableSqlParameterMetas().iterator(); it.hasNext();) {
+                CallableSqlParameterMeta parameterMeta = it.next();
                 p.p("if (%s == null) {%n", parameterMeta.getName());
                 p
                         .p("    throw new %1$s(\"%2$s\", %2$s);%n", DomaIllegalArgumentException.class
@@ -516,10 +519,10 @@ public class DaoGenerator implements Generator {
                     .getName(), m.getReturnTypeName());
             p.p("query.setConfig(config);%n");
             p.p("query.setFunctionName(\"%s\");%n", m.getFunctionName());
-            ParameterGenerator parameterGenerator = new ParameterGenerator();
+            AddCallableSqlParameterGenerator parameterGenerator = new AddCallableSqlParameterGenerator();
             m.getResultParameterMeta().accept(parameterGenerator, p);
-            for (CallableStatementParameterMeta parameterMeta : m
-                    .getCallableStatementParameterMetas()) {
+            for (CallableSqlParameterMeta parameterMeta : m
+                    .getCallableSqlParameterMetas()) {
                 parameterMeta.accept(parameterGenerator, p);
             }
             p.p("query.setCallerClassName(\"%s\");%n", daoImplQualifiedName);
@@ -543,17 +546,15 @@ public class DaoGenerator implements Generator {
                 Printer p) {
             p.p("entering(\"%1$s\", \"%2$s\"", daoImplQualifiedName, m
                     .getName());
-            for (Iterator<CallableStatementParameterMeta> it = m
-                    .getCallableStatementParameterMetas().iterator(); it
-                    .hasNext();) {
-                CallableStatementParameterMeta parameterMeta = it.next();
+            for (Iterator<CallableSqlParameterMeta> it = m
+                    .getCallableSqlParameterMetas().iterator(); it.hasNext();) {
+                CallableSqlParameterMeta parameterMeta = it.next();
                 p.pp(", %s", parameterMeta.getName());
             }
             p.pp(");%n");
-            for (Iterator<CallableStatementParameterMeta> it = m
-                    .getCallableStatementParameterMetas().iterator(); it
-                    .hasNext();) {
-                CallableStatementParameterMeta parameterMeta = it.next();
+            for (Iterator<CallableSqlParameterMeta> it = m
+                    .getCallableSqlParameterMetas().iterator(); it.hasNext();) {
+                CallableSqlParameterMeta parameterMeta = it.next();
                 p.p("if (%s == null) {%n", parameterMeta.getName());
                 p
                         .p("    throw new %1$s(\"%2$s\", %2$s);%n", DomaIllegalArgumentException.class
@@ -563,9 +564,9 @@ public class DaoGenerator implements Generator {
             p.p("%1$s query = new %1$s();%n", m.getQueryClass().getName());
             p.p("query.setConfig(config);%n");
             p.p("query.setProcedureName(\"%s\");%n", m.getProcedureName());
-            ParameterGenerator parameterGenerator = new ParameterGenerator();
-            for (CallableStatementParameterMeta parameterMeta : m
-                    .getCallableStatementParameterMetas()) {
+            AddCallableSqlParameterGenerator parameterGenerator = new AddCallableSqlParameterGenerator();
+            for (CallableSqlParameterMeta parameterMeta : m
+                    .getCallableSqlParameterMetas()) {
                 parameterMeta.accept(parameterGenerator, p);
             }
             p.p("query.setCallerClassName(\"%s\");%n", daoImplQualifiedName);
@@ -635,8 +636,8 @@ public class DaoGenerator implements Generator {
 
     }
 
-    protected class ParameterGenerator implements
-            CallableStatementParameterMetaVisitor<Void, Printer> {
+    protected class AddCallableSqlParameterGenerator implements
+            CallableSqlParameterMetaVisitor<Void, Printer> {
 
         @Override
         public Void visistDomainListParameterMeta(DomainListParameterMeta m,

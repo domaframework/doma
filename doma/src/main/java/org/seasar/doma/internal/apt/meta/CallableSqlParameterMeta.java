@@ -13,27 +13,21 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.sql;
-
-import static org.seasar.doma.internal.util.Assertions.*;
-
-import org.seasar.doma.domain.Domain;
+package org.seasar.doma.internal.apt.meta;
 
 /**
  * @author taedium
  * 
  */
-public class BindParameter implements PreparedSqlParameter {
+public interface CallableSqlParameterMeta {
 
-    protected final Domain<?, ?> domain;
+    String getName();
 
-    public BindParameter(Domain<?, ?> domain) {
-        assertNotNull(domain);
-        this.domain = domain;
-    }
+    void setName(String name);
 
-    public Domain<?, ?> getDomain() {
-        return domain;
-    }
+    String getTypeName();
 
+    void setTypeName(String typeName);
+
+    <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p);
 }

@@ -24,15 +24,14 @@ import java.util.List;
  */
 public abstract class AutoModuleQueryMeta extends AbstractQueryMeta {
 
-    protected final List<CallableStatementParameterMeta> callableStatementParameterMetas = new ArrayList<CallableStatementParameterMeta>();
+    protected final List<CallableSqlParameterMeta> sqlParameterMetas = new ArrayList<CallableSqlParameterMeta>();
 
-    public void addCallableStatementParameterMeta(
-            CallableStatementParameterMeta parameterMeta) {
-        callableStatementParameterMetas.add(parameterMeta);
+    public void addCallableSqlParameterMeta(
+            CallableSqlParameterMeta sqlParameterMeta) {
+        sqlParameterMetas.add(sqlParameterMeta);
     }
 
-    public List<CallableStatementParameterMeta> getCallableStatementParameterMetas() {
-        return callableStatementParameterMetas;
+    public List<CallableSqlParameterMeta> getCallableSqlParameterMetas() {
+        return sqlParameterMetas;
     }
-
 }

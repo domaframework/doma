@@ -23,14 +23,13 @@ import java.util.List;
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.domain.DomainVisitor;
 
-
 /**
  * @author taedium
  * 
  */
 public class PreparedSqlBuilder {
 
-    protected final List<BindParameter> parameters = new ArrayList<BindParameter>();
+    protected final List<InParameter> parameters = new ArrayList<InParameter>();
 
     protected final StringBuilder rawSql = new StringBuilder(200);
 
@@ -57,7 +56,7 @@ public class PreparedSqlBuilder {
     public void appendDomain(Domain<?, ?> domain) {
         rawSql.append("?");
         formattedSql.append(domain.accept(sqlLogFormattingVisitor, null));
-        parameters.add(new BindParameter(domain));
+        parameters.add(new InParameter(domain));
     }
 
     public PreparedSql build() {

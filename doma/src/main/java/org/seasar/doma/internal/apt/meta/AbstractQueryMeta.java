@@ -164,7 +164,8 @@ public abstract class AbstractQueryMeta implements QueryMeta {
         return methodParameters.entrySet().iterator();
     }
 
-    public void addMethodParameter(String parameterName, String parameterTypeName) {
+    public void addMethodParameter(String parameterName,
+            String parameterTypeName) {
         this.methodParameters.put(parameterName, parameterTypeName);
     }
 

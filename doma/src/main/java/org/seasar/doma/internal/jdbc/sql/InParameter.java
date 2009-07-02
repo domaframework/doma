@@ -23,7 +23,7 @@ import org.seasar.doma.domain.Domain;
  * @author taedium
  * 
  */
-public class InParameter implements CallableSqlParameter {
+public class InParameter implements PreparedSqlParameter, CallableSqlParameter {
 
     protected final Domain<?, ?> domain;
 

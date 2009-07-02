@@ -51,15 +51,15 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
             String typeName = Models.getTypeName(paramType, daoMeta
                     .getTypeParameterMap(), env);
             String name = Models.getParameterName(param);
-            CallableStatementParameterMeta parameterMeta = createParameterMeta(queryMeta, param, method, daoMeta);
+            CallableSqlParameterMeta parameterMeta = createParameterMeta(queryMeta, param, method, daoMeta);
             parameterMeta.setName(name);
             parameterMeta.setTypeName(typeName);
-            queryMeta.addCallableStatementParameterMeta(parameterMeta);
+            queryMeta.addCallableSqlParameterMeta(parameterMeta);
             queryMeta.addMethodParameter(name, typeName);
         }
     }
 
-    protected CallableStatementParameterMeta createParameterMeta(
+    protected CallableSqlParameterMeta createParameterMeta(
             AutoModuleQueryMeta queryMeta, VariableElement param,
             ExecutableElement method, DaoMeta daoMeta) {
         TypeMirror paramType = Models.resolveTypeParameter(daoMeta

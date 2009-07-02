@@ -76,7 +76,6 @@ import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 import org.seasar.doma.message.MessageCode;
 
-
 /**
  * @author taedium
  * 
@@ -500,7 +499,7 @@ public class NodePreparedSqlBuilder implements
         }
 
         protected void addBindValue(Domain<?, ?> value) {
-            parameters.add(new BindParameter(value));
+            parameters.add(new InParameter(value));
             rawSqlBuf.append("?");
             formattedSqlBuf.append(value.accept(sqlLogFormattingVisitor, null));
         }

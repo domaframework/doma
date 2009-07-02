@@ -25,7 +25,7 @@ import org.seasar.doma.GenerationType;
 import org.seasar.doma.domain.LongDomain;
 import org.seasar.doma.domain.StringDomain;
 import org.seasar.doma.internal.jdbc.command.Jdbcs;
-import org.seasar.doma.internal.jdbc.sql.BindParameter;
+import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcLogger;
@@ -61,11 +61,11 @@ public class TableIdGenerator extends AbstractPreAllocateIdGenerator {
         LongDomain allocationSizeDomain = new LongDomain(allocationSize);
         StringDomain pkColumnValueDomain = new StringDomain(pkColumnValue);
         updateSql = new PreparedSql(createUpdateRawSql(),
-                createUpdateFormattedSql(), Arrays.asList(new BindParameter(
-                        allocationSizeDomain), new BindParameter(
+                createUpdateFormattedSql(), Arrays.asList(new InParameter(
+                        allocationSizeDomain), new InParameter(
                         pkColumnValueDomain)));
         selectSql = new PreparedSql(createSelectRawSql(),
-                createSelectFormattedSql(), Arrays.asList(new BindParameter(
+                createSelectFormattedSql(), Arrays.asList(new InParameter(
                         pkColumnValueDomain)));
     }
 
