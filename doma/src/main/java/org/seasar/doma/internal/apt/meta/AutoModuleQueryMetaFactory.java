@@ -31,20 +31,20 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Models;
 import org.seasar.doma.message.MessageCode;
 
-
 /**
  * @author taedium
  * 
  */
-public abstract class AutoModuleQueryMetaFactory extends
-        AbstractQueryMetaFactory {
+public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
+        extends AbstractQueryMetaFactory<M> {
 
     public AutoModuleQueryMetaFactory(ProcessingEnvironment env) {
         super(env);
     }
 
-    protected void doParameters(AutoModuleQueryMeta queryMeta,
-            ExecutableElement method, DaoMeta daoMeta) {
+    @Override
+    protected void doParameters(M queryMeta, ExecutableElement method,
+            DaoMeta daoMeta) {
         for (VariableElement param : method.getParameters()) {
             TypeMirror paramType = Models.resolveTypeParameter(daoMeta
                     .getTypeParameterMap(), param.asType());
@@ -55,11 +55,13 @@ public abstract class AutoModuleQueryMetaFactory extends
             parameterMeta.setName(name);
             parameterMeta.setTypeName(typeName);
             queryMeta.addCallableStatementParameterMeta(parameterMeta);
+            queryMeta.addMethodParameter(name, typeName);
         }
     }
 
-    protected CallableStatementParameterMeta createParameterMeta(AutoModuleQueryMeta queryMeta,
-            VariableElement param, ExecutableElement method, DaoMeta daoMeta) {
+    protected CallableStatementParameterMeta createParameterMeta(
+            AutoModuleQueryMeta queryMeta, VariableElement param,
+            ExecutableElement method, DaoMeta daoMeta) {
         TypeMirror paramType = Models.resolveTypeParameter(daoMeta
                 .getTypeParameterMap(), param.asType());
         if (param.getAnnotation(ResultSet.class) != null) {

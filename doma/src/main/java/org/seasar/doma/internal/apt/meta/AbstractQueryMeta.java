@@ -17,13 +17,14 @@ package org.seasar.doma.internal.apt.meta;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.internal.jdbc.command.Command;
 import org.seasar.doma.internal.jdbc.query.Query;
-
 
 /**
  * @author taedium
@@ -52,6 +53,8 @@ public abstract class AbstractQueryMeta implements QueryMeta {
     protected Boolean nullExcluded;
 
     protected Boolean optimisticLockExceptionSuppressed;
+
+    protected Map<String, String> methodParameters = new LinkedHashMap<String, String>();
 
     public String getName() {
         return name;
@@ -155,6 +158,14 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
     public void setNullExcluded(Boolean nullExcluded) {
         this.nullExcluded = nullExcluded;
+    }
+
+    public Iterator<Map.Entry<String, String>> getMethodParameters() {
+        return methodParameters.entrySet().iterator();
+    }
+
+    public void addMethodParameter(String parameterName, String parameterTypeName) {
+        this.methodParameters.put(parameterName, parameterTypeName);
     }
 
 }

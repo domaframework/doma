@@ -36,12 +36,12 @@ import org.seasar.doma.internal.apt.Models;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.Options;
 
-
 /**
  * @author taedium
  * 
  */
-public abstract class AbstractQueryMetaFactory implements QueryMetaFactory {
+public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
+        implements QueryMetaFactory {
 
     protected final ProcessingEnvironment env;
 
@@ -50,8 +50,8 @@ public abstract class AbstractQueryMetaFactory implements QueryMetaFactory {
         this.env = env;
     }
 
-    protected void doTypeParameters(AbstractQueryMeta queryMeta,
-            ExecutableElement method, DaoMeta daoMeta) {
+    protected void doTypeParameters(M queryMeta, ExecutableElement method,
+            DaoMeta daoMeta) {
         for (TypeParameterElement element : method.getTypeParameters()) {
             String name = Models.getTypeName(element.asType(), daoMeta
                     .getTypeParameterMap(), env);
@@ -59,8 +59,14 @@ public abstract class AbstractQueryMetaFactory implements QueryMetaFactory {
         }
     }
 
-    protected void doThrowTypes(AbstractQueryMeta queryMeta,
-            ExecutableElement method, DaoMeta daoMeta) {
+    protected abstract void doReturnType(M queryMeta, ExecutableElement method,
+            DaoMeta daoMeta);
+
+    protected abstract void doParameters(M queryMeta,
+            ExecutableElement method, DaoMeta daoMeta);
+
+    protected void doThrowTypes(M queryMeta, ExecutableElement method,
+            DaoMeta daoMeta) {
         for (TypeMirror thrownType : method.getThrownTypes()) {
             queryMeta.addThrownTypeName(Models.getTypeName(thrownType, daoMeta
                     .getTypeParameterMap(), env));

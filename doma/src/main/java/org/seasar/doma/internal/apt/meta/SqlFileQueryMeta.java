@@ -23,5 +23,5 @@ import javax.lang.model.type.TypeMirror;
  */
 public interface SqlFileQueryMeta {
 
-    TypeMirror getParameterType(String parameterName);
+    TypeMirror getMethodParameterType(String parameterName);
 }

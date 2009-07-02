@@ -15,6 +15,9 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
+import java.util.Iterator;
+import java.util.Map;
+
 import javax.lang.model.element.ExecutableElement;
 
 /**
@@ -24,6 +27,14 @@ import javax.lang.model.element.ExecutableElement;
 public interface QueryMeta {
 
     String getName();
+
+    Iterator<String> getTypeParameterNames();
+
+    String getReturnTypeName();
+
+    Iterator<Map.Entry<String, String>> getMethodParameters();
+
+    Iterator<String> getThrownTypeNames();
 
     ExecutableElement getExecutableElement();
 

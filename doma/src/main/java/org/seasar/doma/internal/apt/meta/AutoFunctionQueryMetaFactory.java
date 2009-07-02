@@ -29,12 +29,12 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Models;
 import org.seasar.doma.message.MessageCode;
 
-
 /**
  * @author taedium
  * 
  */
-public class AutoFunctionQueryMetaFactory extends AutoModuleQueryMetaFactory {
+public class AutoFunctionQueryMetaFactory extends
+        AutoModuleQueryMetaFactory<AutoFunctionQueryMeta> {
 
     public AutoFunctionQueryMetaFactory(ProcessingEnvironment env) {
         super(env);
@@ -80,6 +80,7 @@ public class AutoFunctionQueryMetaFactory extends AutoModuleQueryMetaFactory {
         queryMeta.setFunctionName(buf.toString());
     }
 
+    @Override
     protected void doReturnType(AutoFunctionQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         TypeMirror returnType = method.getReturnType();

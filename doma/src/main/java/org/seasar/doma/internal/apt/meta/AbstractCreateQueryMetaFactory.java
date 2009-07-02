@@ -37,7 +37,7 @@ import org.seasar.doma.message.MessageCode;
  * 
  */
 public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQueryMeta>
-        extends AbstractQueryMetaFactory {
+        extends AbstractQueryMetaFactory<M> {
 
     protected final Class<?> domainValueClass;
 
@@ -48,6 +48,7 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
         this.domainValueClass = domainValueClass;
     }
 
+    @Override
     protected void doReturnType(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
         TypeMirror returnType = method.getReturnType();
@@ -98,6 +99,7 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
         return null;
     }
 
+    @Override
     protected void doParameters(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
         List<? extends VariableElement> params = method.getParameters();

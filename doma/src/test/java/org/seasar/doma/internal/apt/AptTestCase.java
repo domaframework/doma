@@ -21,6 +21,8 @@ import java.util.Locale;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
+import junit.framework.AssertionFailedError;
+
 import org.seasar.aptina.unit.AptinaTestCase;
 import org.seasar.doma.internal.util.Resources;
 import org.seasar.doma.message.MessageCode;
@@ -52,7 +54,12 @@ public abstract class AptTestCase extends AptinaTestCase {
             throws Exception {
         String generatedClassName = originalClass.getName()
                 + Options.DEFAULT_SUFFIX;
-        assertEqualsGeneratedSource(getExpectedContent(), generatedClassName);
+        try {
+            assertEqualsGeneratedSource(getExpectedContent(), generatedClassName);
+        } catch (AssertionFailedError error) {
+            System.out.println(getGeneratedSource(generatedClassName));
+            throw error;
+        }
     }
 
     protected void assertMessageCode(MessageCode messageCode) {

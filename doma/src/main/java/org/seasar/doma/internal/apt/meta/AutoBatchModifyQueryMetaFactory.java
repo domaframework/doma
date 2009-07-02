@@ -32,12 +32,12 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Models;
 import org.seasar.doma.message.MessageCode;
 
-
 /**
  * @author taedium
  * 
  */
-public class AutoBatchModifyQueryMetaFactory extends AbstractQueryMetaFactory {
+public class AutoBatchModifyQueryMetaFactory extends
+        AbstractQueryMetaFactory<AutoBatchModifyQueryMeta> {
 
     public AutoBatchModifyQueryMetaFactory(ProcessingEnvironment env) {
         super(env);
@@ -89,6 +89,7 @@ public class AutoBatchModifyQueryMetaFactory extends AbstractQueryMetaFactory {
         return queryMeta;
     }
 
+    @Override
     protected void doReturnType(AutoBatchModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         TypeMirror returnType = method.getReturnType();
@@ -99,6 +100,7 @@ public class AutoBatchModifyQueryMetaFactory extends AbstractQueryMetaFactory {
                 .getTypeParameterMap(), env));
     }
 
+    @Override
     protected void doParameters(AutoBatchModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         List<? extends VariableElement> params = method.getParameters();
@@ -122,13 +124,14 @@ public class AutoBatchModifyQueryMetaFactory extends AbstractQueryMetaFactory {
         if (!isEntity(elementType, daoMeta)) {
             throw new AptException(MessageCode.DOMA4043, env, method);
         }
-        queryMeta.setEntityListName(Models.getParameterName(entityList));
-        queryMeta
-                .setEntityListTypeName(Models
-                        .getTypeName(entityListType, daoMeta
-                                .getTypeParameterMap(), env));
+        String entityListName = Models.getParameterName(entityList);
+        String entityListTypeName = Models.getTypeName(entityListType, daoMeta
+                .getTypeParameterMap(), env);
+        queryMeta.setEntityListName(entityListName);
+        queryMeta.setEntityListTypeName(entityListTypeName);
         queryMeta.setElementTypeName(Models.getTypeName(elementType, daoMeta
                 .getTypeParameterMap(), env));
+        queryMeta.addMethodParameter(entityListName, entityListTypeName);
     }
 
 }

@@ -31,12 +31,12 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Models;
 import org.seasar.doma.message.MessageCode;
 
-
 /**
  * @author taedium
  * 
  */
-public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory {
+public class AutoModifyQueryMetaFactory extends
+        AbstractQueryMetaFactory<AutoModifyQueryMeta> {
 
     public AutoModifyQueryMetaFactory(ProcessingEnvironment env) {
         super(env);
@@ -90,6 +90,7 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory {
         return queryMeta;
     }
 
+    @Override
     protected void doReturnType(AutoModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         TypeMirror returnType = method.getReturnType();
@@ -100,6 +101,7 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory {
                 .getTypeParameterMap(), env));
     }
 
+    @Override
     protected void doParameters(AutoModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         List<? extends VariableElement> params = method.getParameters();
@@ -113,9 +115,12 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory {
         if (!isEntity(entityType, daoMeta)) {
             throw new AptException(MessageCode.DOMA4003, env, entity);
         }
-        queryMeta.setEntityName(Models.getParameterName(entity));
-        queryMeta.setEntityTypeName(Models.getTypeName(entityType, daoMeta
-                .getTypeParameterMap(), env));
+        String entityName = Models.getParameterName(entity);
+        String entityTypeName = Models.getTypeName(entityType, daoMeta
+                .getTypeParameterMap(), env);
+        queryMeta.setEntityName(entityName);
+        queryMeta.setEntityTypeName(entityTypeName);
+        queryMeta.addMethodParameter(entityName, entityTypeName);
     }
 
 }

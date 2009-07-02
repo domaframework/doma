@@ -173,8 +173,8 @@ public class SqlFileSelectQueryMetaFactory extends
             } else if (!isDomain(paramType) && !isEntity(paramType, daoMeta)) {
                 throw new AptException(MessageCode.DOMA4010, env, method);
             }
-            queryMeta.addParameter(parameterName, parameterTypeName);
-            queryMeta.addParameterType(parameterName, paramType);
+            queryMeta.addMethodParameter(parameterName, parameterTypeName);
+            queryMeta.addMethodParameterType(parameterName, paramType);
         }
         if (queryMeta.isIteration()
                 && queryMeta.getIterationCallbackName() == null) {

@@ -75,8 +75,11 @@ public class ArrayCreateQueryMetaFactory extends
         if (arrayType.getKind() != TypeKind.ARRAY) {
             throw new AptException(MessageCode.DOMA4076, env, param);
         }
-        queryMeta.setArrayTypeName(Models.getTypeName(arrayType, daoMeta
-                .getTypeParameterMap(), env));
-        queryMeta.setArrayName(Models.getParameterName(param));
+        String arrayName = Models.getParameterName(param);
+        String arrayTypeName = Models.getTypeName(arrayType, daoMeta
+                .getTypeParameterMap(), env);
+        queryMeta.setArrayName(arrayName);
+        queryMeta.setArrayTypeName(arrayTypeName);
+        queryMeta.addMethodParameter(arrayName, arrayTypeName);
     }
 }

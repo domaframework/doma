@@ -71,9 +71,7 @@ import org.seasar.doma.jdbc.DomaAbstractDao;
  * @author taedium
  * 
  */
-public class DaoGenerator implements Generator,
-        QueryMetaVisitor<Void, Printer>,
-        CallableStatementParameterMetaVisitor<Void, Printer> {
+public class DaoGenerator implements Generator {
 
     protected final ProcessingEnvironment env;
 
@@ -166,269 +164,245 @@ public class DaoGenerator implements Generator,
     }
 
     protected void doMethods(Printer p) {
-        for (QueryMeta queryMeta : daoMeta.getQueryMetas()) {
-            queryMeta.accept(this, p);
+        MethodGenerator methodGenerator = new MethodGenerator();
+        for (QueryMeta m : daoMeta.getQueryMetas()) {
+            p.p("@Override%n");
+            p.p("public ");
+            if (m.getTypeParameterNames().hasNext()) {
+                p.pp("<");
+                for (Iterator<String> it = m.getTypeParameterNames(); it
+                        .hasNext();) {
+                    p.pp("%s", it.next());
+                    if (it.hasNext()) {
+                        p.pp(", ");
+                    }
+                }
+                p.pp("> ");
+            }
+            p.pp("%s %s(", m.getReturnTypeName(), m.getName());
+            for (Iterator<Map.Entry<String, String>> it = m
+                    .getMethodParameters(); it.hasNext();) {
+                Map.Entry<String, String> entry = it.next();
+                p.pp("%s %s", entry.getValue(), entry.getKey());
+                if (it.hasNext()) {
+                    p.pp(", ");
+                }
+            }
+            p.pp(") ");
+            if (m.getThrownTypeNames().hasNext()) {
+                p.pp("throws ");
+                for (Iterator<String> it = m.getThrownTypeNames(); it.hasNext();) {
+                    p.pp("%s", it.next());
+                    if (it.hasNext()) {
+                        p.pp(", ");
+                    }
+                }
+                p.pp(" ");
+            }
+            p.pp("{%n");
+            p.indent();
+            m.accept(methodGenerator, p);
+            p.unindent();
+            p.p("}%n");
             p.p("%n");
         }
     }
 
-    @Override
-    public Void visistAutoModifyQueryMeta(AutoModifyQueryMeta m, Printer p) {
-        p.p("@Override%n");
-        p.p("public ");
-        if (m.getTypeParameterNames().hasNext()) {
-            p.pp("<");
-            for (Iterator<String> it = m.getTypeParameterNames(); it.hasNext();) {
-                p.pp("%s", it.next());
-                if (it.hasNext()) {
-                    p.pp(", ");
-                }
-            }
-            p.pp("> ");
-        }
-        p.pp("%s %s(", m.getReturnTypeName(), m.getName());
-        p.pp("%s %s) ", m.getEntityTypeName(), m.getEntityName());
-        if (m.getThrownTypeNames().hasNext()) {
-            p.pp("throws ");
-            for (Iterator<String> it = m.getThrownTypeNames(); it.hasNext();) {
-                p.pp("%s", it.next());
-                if (it.hasNext()) {
-                    p.pp(", ");
-                }
-            }
-            p.pp(" ");
-        }
-        p.pp("{%n");
-        p.indent();
+    protected class MethodGenerator implements QueryMetaVisitor<Void, Printer> {
 
-        p.p("entering(\"%1$s\", \"%2$s\", %3$s);%n", daoImplQualifiedName, m
-                .getName(), m.getEntityName());
-        p.p("if (%s == null) {%n", m.getEntityName());
-        p
-                .p("    throw new %1$s(\"%2$s\", %2$s);%n", DomaIllegalArgumentException.class
-                        .getName(), m.getEntityName());
-        p.p("}%n");
-        p
-                .p("%1$s<%2$s, %2$s%3$s> query = new %1$s<%2$s, %2$s%3$s>(%2$s%3$s.class);%n", m
-                        .getQueryClass().getName(), m.getEntityTypeName(), Options
-                        .getSuffix(env));
-        p.p("query.setConfig(config);%n");
-        p.p("query.setEntity(%1$s);%n", m.getEntityName());
-        p.p("query.setCallerClassName(\"%s\");%n", daoImplQualifiedName);
-        p.p("query.setCallerMethodName(\"%s\");%n", m.getName());
-        if (m.getQueryTimeout() != null) {
-            p.p("query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
-        }
-        if (m.isNullExcluded() != null) {
-            p.p("query.setNullExcluded(%1$s);%n", m.isNullExcluded());
-        }
-        if (m.isVersionIncluded() != null) {
-            p.p("query.setVersionIncluded(%1$s);%n", m.isVersionIncluded());
-        }
-        if (m.isVersionIgnored() != null) {
-            p.p("query.setVersionIgnored(%1$s);%n", m.isVersionIgnored());
-        }
-        if (m.isOptimisticLockExceptionSuppressed() != null) {
-            p.p("query.setOptimisticLockExceptionSuppressed(%1$s);%n", m
-                    .isOptimisticLockExceptionSuppressed());
-        }
-        p.p("query.compile();%n");
-        p.p("%1$s command = new %s(query);%n", m.getCommandClass().getName());
-        p.p("%1$s result = command.execute();%n", m.getReturnTypeName());
-        p.p("exiting(\"%1$s\", \"%2$s\", result);%n", daoImplQualifiedName, m
-                .getName());
-        p.p("return result;%n");
-        p.unindent();
-        p.p("}%n");
-        return null;
-    }
-
-    @Override
-    public Void visistSqlFileModifyQueryMeta(SqlFileModifyQueryMeta m, Printer p) {
-        p.p("@Override%n");
-        p.p("public ");
-        if (m.getTypeParameterNames().hasNext()) {
-            p.pp("<");
-            for (Iterator<String> it = m.getTypeParameterNames(); it.hasNext();) {
-                p.pp("%s", it.next());
-                if (it.hasNext()) {
-                    p.pp(", ");
-                }
-            }
-            p.pp("> ");
-        }
-        p.pp("%s %s(", m.getReturnTypeName(), m.getName());
-        for (Iterator<Map.Entry<String, String>> it = m.getParameters(); it
-                .hasNext();) {
-            Map.Entry<String, String> entry = it.next();
-            p.pp("%s %s", entry.getValue(), entry.getKey());
-            if (it.hasNext()) {
-                p.pp(", ");
-            }
-        }
-        p.pp(") ");
-        if (m.getThrownTypeNames().hasNext()) {
-            p.pp("throws ");
-            for (Iterator<String> it = m.getThrownTypeNames(); it.hasNext();) {
-                p.pp("%s", it.next());
-                if (it.hasNext()) {
-                    p.pp(", ");
-                }
-            }
-            p.pp(" ");
-        }
-        p.pp("{%n");
-        p.indent();
-
-        p.p("entering(\"%1$s\", \"%2$s\"", daoImplQualifiedName, m.getName());
-        for (Iterator<Map.Entry<String, String>> it = m.getParameters(); it
-                .hasNext();) {
-            Map.Entry<String, String> entry = it.next();
-            p.pp(", %s", entry.getKey());
-        }
-        p.pp(");%n");
-
-        for (Iterator<Map.Entry<String, String>> it = m.getParameters(); it
-                .hasNext();) {
-            Map.Entry<String, String> entry = it.next();
-            String parameter = entry.getKey();
-            p.p("if (%s == null) {%n", parameter);
+        @Override
+        public Void visistAutoModifyQueryMeta(AutoModifyQueryMeta m, Printer p) {
+            p
+                    .p("entering(\"%1$s\", \"%2$s\", %3$s);%n", daoImplQualifiedName, m
+                            .getName(), m.getEntityName());
+            p.p("if (%s == null) {%n", m.getEntityName());
             p
                     .p("    throw new %1$s(\"%2$s\", %2$s);%n", DomaIllegalArgumentException.class
-                            .getName(), parameter);
+                            .getName(), m.getEntityName());
             p.p("}%n");
-        }
-
-        p.p("%1$s query = new %1$s();%n", m.getQueryClass().getName());
-        p.p("query.setConfig(config);%n");
-        p
-                .p("query.setSqlFilePath(%1$s.buildPath(\"%2$s\", \"%3$s\"));%n", SqlFiles.class
-                        .getName(), daoMeta.getDaoElement().getQualifiedName(), m
-                        .getName());
-        for (Iterator<Map.Entry<String, String>> it = m.getParameters(); it
-                .hasNext();) {
-            Map.Entry<String, String> entry = it.next();
-            p.p("query.addParameter(\"%1$s\", %1$s);%n", entry.getKey());
-        }
-        p.p("query.setCallerClassName(\"%s\");%n", daoImplQualifiedName);
-        p.p("query.setCallerMethodName(\"%s\");%n", m.getName());
-        if (m.getQueryTimeout() != null) {
-            p.p("query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
-        }
-        p.p("query.compile();%n");
-        p.p("%1$s command = new %s(query);%n", m.getCommandClass().getName());
-        p.p("%1$s result = command.execute();%n", m.getReturnTypeName());
-        p.p("exiting(\"%1$s\", \"%2$s\", result);%n", daoImplQualifiedName, m
-                .getName());
-        p.p("return result;%n");
-        p.unindent();
-        p.p("}%n");
-        return null;
-    }
-
-    @Override
-    public Void visistSqlFileSelectQueryMeta(SqlFileSelectQueryMeta m, Printer p) {
-        p.p("@Override%n");
-        p.p("public ");
-        if (m.getTypeParameterNames().hasNext()) {
-            p.pp("<");
-            for (Iterator<String> it = m.getTypeParameterNames(); it.hasNext();) {
-                p.pp("%s", it.next());
-                if (it.hasNext()) {
-                    p.pp(", ");
-                }
-            }
-            p.pp("> ");
-        }
-        p.pp("%s %s(", m.getReturnTypeName(), m.getName());
-        for (Iterator<Map.Entry<String, String>> it = m.getParameters(); it
-                .hasNext();) {
-            Map.Entry<String, String> entry = it.next();
-            p.pp("%s %s", entry.getValue(), entry.getKey());
-            if (it.hasNext()) {
-                p.pp(", ");
-            }
-        }
-        p.pp(") ");
-        if (m.getThrownTypeNames().hasNext()) {
-            p.pp("throws ");
-            for (Iterator<String> it = m.getThrownTypeNames(); it.hasNext();) {
-                p.pp("%s", it.next());
-                if (it.hasNext()) {
-                    p.pp(", ");
-                }
-            }
-            p.pp(" ");
-        }
-        p.pp("{%n");
-        p.indent();
-
-        p.p("entering(\"%1$s\", \"%2$s\"", daoImplQualifiedName, m.getName());
-        for (Iterator<Map.Entry<String, String>> it = m.getParameters(); it
-                .hasNext();) {
-            Map.Entry<String, String> entry = it.next();
-            p.pp(", %s", entry.getKey());
-        }
-        p.pp(");%n");
-        for (Iterator<Map.Entry<String, String>> it = m.getParameters(); it
-                .hasNext();) {
-            Map.Entry<String, String> entry = it.next();
-            String paramName = entry.getKey();
-            p.p("if (%s == null) {%n", paramName);
             p
-                    .p("    throw new %1$s(\"%2$s\", %2$s);%n", DomaIllegalArgumentException.class
-                            .getName(), paramName);
-            p.p("}%n");
-        }
-        p.p("%1$s query = new %1$s();%n", m.getQueryClass().getName());
-        p.p("query.setConfig(config);%n");
-        p
-                .p("query.setSqlFilePath(%1$s.buildPath(\"%2$s\", \"%3$s\"));%n", SqlFiles.class
-                        .getName(), daoMeta.getDaoElement().getQualifiedName(), m
-                        .getName());
-        if (m.getOptionsName() != null) {
-            p.p("query.setOptions(%1$s);%n", m.getOptionsName());
-        }
-        for (Iterator<Map.Entry<String, String>> it = m.getParameters(); it
-                .hasNext();) {
-            Map.Entry<String, String> entry = it.next();
-            String paramName = entry.getKey();
-            p.p("query.addParameter(\"%1$s\", %1$s);%n", paramName);
-        }
-        p.p("query.setCallerClassName(\"%s\");%n", daoImplQualifiedName);
-        p.p("query.setCallerMethodName(\"%s\");%n", m.getName());
-        if (m.getQueryTimeout() != null) {
-            p.p("query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
-        }
-        if (m.getMaxRows() != null) {
-            p.p("query.setMaxRows(%1$s);%n", m.getMaxRows());
-        }
-        if (m.getFetchSize() != null) {
-            p.p("query.setFetchSize(%1$s);%n", m.getFetchSize());
-        }
-        p.p("query.compile();%n");
-        if (m.isIteration()) {
-            if (m.getEntityTypeName() != null) {
-                p
-                        .p("%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s, %4$s, %4$s%5$s>(%4$s%5$s.class, %6$s));%n", m
-                                .getCommandClass().getName(), m
-                                .getIterationCallbackResultType(), EntityIterationHandler.class
-                                .getName(), m.getEntityTypeName(), Options
-                                .getSuffix(env), m.getIterationCallbackName());
-            } else {
-                p
-                        .p("%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s, %4$s>(%4$s.class, %5$s));%n", m
-                                .getCommandClass().getName(), m
-                                .getReturnTypeName(), DomainIterationHandler.class
-                                .getName(), m.getDomainTypeName(), m
-                                .getIterationCallbackName());
+                    .p("%1$s<%2$s, %2$s%3$s> query = new %1$s<%2$s, %2$s%3$s>(%2$s%3$s.class);%n", m
+                            .getQueryClass().getName(), m.getEntityTypeName(), Options
+                            .getSuffix(env));
+            p.p("query.setConfig(config);%n");
+            p.p("query.setEntity(%1$s);%n", m.getEntityName());
+            p.p("query.setCallerClassName(\"%s\");%n", daoImplQualifiedName);
+            p.p("query.setCallerMethodName(\"%s\");%n", m.getName());
+            if (m.getQueryTimeout() != null) {
+                p.p("query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             }
-            if ("void".equals(m.getReturnTypeName())) {
-                p.p("command.execute();%n");
+            if (m.isNullExcluded() != null) {
+                p.p("query.setNullExcluded(%1$s);%n", m.isNullExcluded());
+            }
+            if (m.isVersionIncluded() != null) {
+                p.p("query.setVersionIncluded(%1$s);%n", m.isVersionIncluded());
+            }
+            if (m.isVersionIgnored() != null) {
+                p.p("query.setVersionIgnored(%1$s);%n", m.isVersionIgnored());
+            }
+            if (m.isOptimisticLockExceptionSuppressed() != null) {
+                p.p("query.setOptimisticLockExceptionSuppressed(%1$s);%n", m
+                        .isOptimisticLockExceptionSuppressed());
+            }
+            p.p("query.compile();%n");
+            p.p("%1$s command = new %s(query);%n", m.getCommandClass()
+                    .getName());
+            p.p("%1$s result = command.execute();%n", m.getReturnTypeName());
+            p
+                    .p("exiting(\"%1$s\", \"%2$s\", result);%n", daoImplQualifiedName, m
+                            .getName());
+            p.p("return result;%n");
+            return null;
+        }
+
+        @Override
+        public Void visistSqlFileModifyQueryMeta(SqlFileModifyQueryMeta m,
+                Printer p) {
+            p.p("entering(\"%1$s\", \"%2$s\"", daoImplQualifiedName, m
+                    .getName());
+            for (Iterator<Map.Entry<String, String>> it = m
+                    .getMethodParameters(); it.hasNext();) {
+                Map.Entry<String, String> entry = it.next();
+                p.pp(", %s", entry.getKey());
+            }
+            p.pp(");%n");
+
+            for (Iterator<Map.Entry<String, String>> it = m
+                    .getMethodParameters(); it.hasNext();) {
+                Map.Entry<String, String> entry = it.next();
+                String parameter = entry.getKey();
+                p.p("if (%s == null) {%n", parameter);
                 p
-                        .p("exiting(\"%1$s\", \"%2$s\", null);%n", daoImplQualifiedName, m
-                                .getName());
+                        .p("    throw new %1$s(\"%2$s\", %2$s);%n", DomaIllegalArgumentException.class
+                                .getName(), parameter);
+                p.p("}%n");
+            }
+
+            p.p("%1$s query = new %1$s();%n", m.getQueryClass().getName());
+            p.p("query.setConfig(config);%n");
+            p
+                    .p("query.setSqlFilePath(%1$s.buildPath(\"%2$s\", \"%3$s\"));%n", SqlFiles.class
+                            .getName(), daoMeta.getDaoElement()
+                            .getQualifiedName(), m.getName());
+            for (Iterator<Map.Entry<String, String>> it = m
+                    .getMethodParameters(); it.hasNext();) {
+                Map.Entry<String, String> entry = it.next();
+                p.p("query.addParameter(\"%1$s\", %1$s);%n", entry.getKey());
+            }
+            p.p("query.setCallerClassName(\"%s\");%n", daoImplQualifiedName);
+            p.p("query.setCallerMethodName(\"%s\");%n", m.getName());
+            if (m.getQueryTimeout() != null) {
+                p.p("query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
+            }
+            p.p("query.compile();%n");
+            p.p("%1$s command = new %s(query);%n", m.getCommandClass()
+                    .getName());
+            p.p("%1$s result = command.execute();%n", m.getReturnTypeName());
+            p
+                    .p("exiting(\"%1$s\", \"%2$s\", result);%n", daoImplQualifiedName, m
+                            .getName());
+            p.p("return result;%n");
+            return null;
+        }
+
+        @Override
+        public Void visistSqlFileSelectQueryMeta(SqlFileSelectQueryMeta m,
+                Printer p) {
+            p.p("entering(\"%1$s\", \"%2$s\"", daoImplQualifiedName, m
+                    .getName());
+            for (Iterator<Map.Entry<String, String>> it = m
+                    .getMethodParameters(); it.hasNext();) {
+                Map.Entry<String, String> entry = it.next();
+                p.pp(", %s", entry.getKey());
+            }
+            p.pp(");%n");
+            for (Iterator<Map.Entry<String, String>> it = m
+                    .getMethodParameters(); it.hasNext();) {
+                Map.Entry<String, String> entry = it.next();
+                String paramName = entry.getKey();
+                p.p("if (%s == null) {%n", paramName);
+                p
+                        .p("    throw new %1$s(\"%2$s\", %2$s);%n", DomaIllegalArgumentException.class
+                                .getName(), paramName);
+                p.p("}%n");
+            }
+            p.p("%1$s query = new %1$s();%n", m.getQueryClass().getName());
+            p.p("query.setConfig(config);%n");
+            p
+                    .p("query.setSqlFilePath(%1$s.buildPath(\"%2$s\", \"%3$s\"));%n", SqlFiles.class
+                            .getName(), daoMeta.getDaoElement()
+                            .getQualifiedName(), m.getName());
+            if (m.getOptionsName() != null) {
+                p.p("query.setOptions(%1$s);%n", m.getOptionsName());
+            }
+            for (Iterator<Map.Entry<String, String>> it = m
+                    .getMethodParameters(); it.hasNext();) {
+                Map.Entry<String, String> entry = it.next();
+                String paramName = entry.getKey();
+                p.p("query.addParameter(\"%1$s\", %1$s);%n", paramName);
+            }
+            p.p("query.setCallerClassName(\"%s\");%n", daoImplQualifiedName);
+            p.p("query.setCallerMethodName(\"%s\");%n", m.getName());
+            if (m.getQueryTimeout() != null) {
+                p.p("query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
+            }
+            if (m.getMaxRows() != null) {
+                p.p("query.setMaxRows(%1$s);%n", m.getMaxRows());
+            }
+            if (m.getFetchSize() != null) {
+                p.p("query.setFetchSize(%1$s);%n", m.getFetchSize());
+            }
+            p.p("query.compile();%n");
+            if (m.isIteration()) {
+                if (m.getEntityTypeName() != null) {
+                    p
+                            .p("%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s, %4$s, %4$s%5$s>(%4$s%5$s.class, %6$s));%n", m
+                                    .getCommandClass().getName(), m
+                                    .getIterationCallbackResultType(), EntityIterationHandler.class
+                                    .getName(), m.getEntityTypeName(), Options
+                                    .getSuffix(env), m
+                                    .getIterationCallbackName());
+                } else {
+                    p
+                            .p("%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s, %4$s>(%4$s.class, %5$s));%n", m
+                                    .getCommandClass().getName(), m
+                                    .getReturnTypeName(), DomainIterationHandler.class
+                                    .getName(), m.getDomainTypeName(), m
+                                    .getIterationCallbackName());
+                }
+                if ("void".equals(m.getReturnTypeName())) {
+                    p.p("command.execute();%n");
+                    p
+                            .p("exiting(\"%1$s\", \"%2$s\", null);%n", daoImplQualifiedName, m
+                                    .getName());
+                } else {
+                    p.p("%1$s result = command.execute();%n", m
+                            .getReturnTypeName());
+                    p
+                            .p("exiting(\"%1$s\", \"%2$s\", result);%n", daoImplQualifiedName, m
+                                    .getName());
+                    p.p("return result;%n");
+                }
+
             } else {
+                if (m.getEntityTypeName() != null) {
+                    Class<?> handlerClass = m.isSingleResult() ? EntitySingleResultHandler.class
+                            : EntityResultListHandler.class;
+                    p
+                            .p("%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s, %4$s%5$s>(%4$s%5$s.class));%n", m
+                                    .getCommandClass().getName(), m
+                                    .getReturnTypeName(), handlerClass
+                                    .getName(), m.getEntityTypeName(), Options
+                                    .getSuffix(env));
+                } else {
+                    Class<?> handlerClass = m.isSingleResult() ? DomainSingleResultHandler.class
+                            : DomainResultListHandler.class;
+                    p
+                            .p("%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s>(%4$s.class));%n", m
+                                    .getCommandClass().getName(), m
+                                    .getReturnTypeName(), handlerClass
+                                    .getName(), m.getDomainTypeName());
+                }
                 p
                         .p("%1$s result = command.execute();%n", m
                                 .getReturnTypeName());
@@ -437,499 +411,300 @@ public class DaoGenerator implements Generator,
                                 .getName());
                 p.p("return result;%n");
             }
+            return null;
+        }
 
-        } else {
-            if (m.getEntityTypeName() != null) {
-                Class<?> handlerClass = m.isSingleResult() ? EntitySingleResultHandler.class
-                        : EntityResultListHandler.class;
-                p
-                        .p("%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s, %4$s%5$s>(%4$s%5$s.class));%n", m
-                                .getCommandClass().getName(), m
-                                .getReturnTypeName(), handlerClass.getName(), m
-                                .getEntityTypeName(), Options.getSuffix(env));
-            } else {
-                Class<?> handlerClass = m.isSingleResult() ? DomainSingleResultHandler.class
-                        : DomainResultListHandler.class;
-                p
-                        .p("%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s>(%4$s.class));%n", m
-                                .getCommandClass().getName(), m
-                                .getReturnTypeName(), handlerClass.getName(), m
-                                .getDomainTypeName());
+        @Override
+        public Void visitAutoBatchModifyQueryMeta(AutoBatchModifyQueryMeta m,
+                Printer p) {
+            p
+                    .p("entering(\"%1$s\", \"%2$s\", %3$s);%n", daoImplQualifiedName, m
+                            .getName(), m.getEntityListName());
+            p.p("if (%s == null) {%n", m.getEntityListName());
+            p
+                    .p("    throw new %1$s(\"%2$s\", %2$s);%n", DomaIllegalArgumentException.class
+                            .getName(), m.getEntityListName());
+            p.p("}%n");
+            p
+                    .p("%1$s<%2$s, %2$s%3$s> query = new %1$s<%2$s, %2$s%3$s>(%2$s%3$s.class);%n", m
+                            .getQueryClass().getName(), m.getElementTypeName(), Options
+                            .getSuffix(env));
+            p.p("query.setConfig(config);%n");
+            p.p("query.setEntities(%1$s);%n", m.getEntityListName());
+            p.p("query.setCallerClassName(\"%s\");%n", daoImplQualifiedName);
+            p.p("query.setCallerMethodName(\"%s\");%n", m.getName());
+            if (m.getQueryTimeout() != null) {
+                p.p("query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             }
+            if (m.isVersionIncluded() != null) {
+                p.p("query.setVersionIncluded(%1$s);%n", m.isVersionIncluded());
+            }
+            if (m.isVersionIgnored() != null) {
+                p.p("query.setVersionIgnored(%1$s);%n", m.isVersionIgnored());
+            }
+            if (m.isOptimisticLockExceptionSuppressed() != null) {
+                p.p("query.setOptimisticLockExceptionSuppressed(%1$s);%n", m
+                        .isOptimisticLockExceptionSuppressed());
+            }
+            p.p("query.compile();%n");
+            p.p("%1$s command = new %s(query);%n", m.getCommandClass()
+                    .getName());
             p.p("%1$s result = command.execute();%n", m.getReturnTypeName());
             p
                     .p("exiting(\"%1$s\", \"%2$s\", result);%n", daoImplQualifiedName, m
                             .getName());
             p.p("return result;%n");
+            return null;
         }
-        p.unindent();
-        p.p("}%n");
-        return null;
-    }
 
-    @Override
-    public Void visitAutoBatchModifyQueryMeta(AutoBatchModifyQueryMeta m,
-            Printer p) {
-        p.p("@Override%n");
-        p.p("public ");
-        if (m.getTypeParameterNames().hasNext()) {
-            p.pp("<");
-            for (Iterator<String> it = m.getTypeParameterNames(); it.hasNext();) {
-                p.pp("%s", it.next());
-                if (it.hasNext()) {
-                    p.pp(", ");
-                }
-            }
-            p.pp("> ");
-        }
-        p.pp("%s %s(", m.getReturnTypeName(), m.getName());
-        p.pp("%s %s) ", m.getEntityListTypeName(), m.getEntityListName());
-        if (m.getThrownTypeNames().hasNext()) {
-            p.pp("throws ");
-            for (Iterator<String> it = m.getThrownTypeNames(); it.hasNext();) {
-                p.pp("%s", it.next());
-                if (it.hasNext()) {
-                    p.pp(", ");
-                }
-            }
-            p.pp(" ");
-        }
-        p.pp("{%n");
-        p.indent();
-
-        p.p("entering(\"%1$s\", \"%2$s\", %3$s);%n", daoImplQualifiedName, m
-                .getName(), m.getEntityListName());
-        p.p("if (%s == null) {%n", m.getEntityListName());
-        p
-                .p("    throw new %1$s(\"%2$s\", %2$s);%n", DomaIllegalArgumentException.class
-                        .getName(), m.getEntityListName());
-        p.p("}%n");
-        p
-                .p("%1$s<%2$s, %2$s%3$s> query = new %1$s<%2$s, %2$s%3$s>(%2$s%3$s.class);%n", m
-                        .getQueryClass().getName(), m.getElementTypeName(), Options
-                        .getSuffix(env));
-        p.p("query.setConfig(config);%n");
-        p.p("query.setEntities(%1$s);%n", m.getEntityListName());
-        p.p("query.setCallerClassName(\"%s\");%n", daoImplQualifiedName);
-        p.p("query.setCallerMethodName(\"%s\");%n", m.getName());
-        if (m.getQueryTimeout() != null) {
-            p.p("query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
-        }
-        if (m.isVersionIncluded() != null) {
-            p.p("query.setVersionIncluded(%1$s);%n", m.isVersionIncluded());
-        }
-        if (m.isVersionIgnored() != null) {
-            p.p("query.setVersionIgnored(%1$s);%n", m.isVersionIgnored());
-        }
-        if (m.isOptimisticLockExceptionSuppressed() != null) {
-            p.p("query.setOptimisticLockExceptionSuppressed(%1$s);%n", m
-                    .isOptimisticLockExceptionSuppressed());
-        }
-        p.p("query.compile();%n");
-        p.p("%1$s command = new %s(query);%n", m.getCommandClass().getName());
-        p.p("%1$s result = command.execute();%n", m.getReturnTypeName());
-        p.p("exiting(\"%1$s\", \"%2$s\", result);%n", daoImplQualifiedName, m
-                .getName());
-        p.p("return result;%n");
-        p.unindent();
-        p.p("}%n");
-        return null;
-    }
-
-    @Override
-    public Void visitSqlFileBatchModifyQueryMeta(SqlFileBatchModifyQueryMeta m,
-            Printer p) {
-        p.p("@Override%n");
-        p.p("public ");
-        if (m.getTypeParameterNames().hasNext()) {
-            p.pp("<");
-            for (Iterator<String> it = m.getTypeParameterNames(); it.hasNext();) {
-                p.pp("%s", it.next());
-                if (it.hasNext()) {
-                    p.pp(", ");
-                }
-            }
-            p.pp("> ");
-        }
-        p.pp("%s %s(", m.getReturnTypeName(), m.getName());
-        for (Iterator<Map.Entry<String, String>> it = m.getParameters(); it
-                .hasNext();) {
-            Map.Entry<String, String> entry = it.next();
-            p.pp("%s %s", entry.getValue(), entry.getKey());
-            if (it.hasNext()) {
-                p.pp(", ");
-            }
-        }
-        p.pp(") ");
-        if (m.getThrownTypeNames().hasNext()) {
-            p.pp("throws ");
-            for (Iterator<String> it = m.getThrownTypeNames(); it.hasNext();) {
-                p.pp("%s", it.next());
-                if (it.hasNext()) {
-                    p.pp(", ");
-                }
-            }
-            p.pp(" ");
-        }
-        p.pp("{%n");
-        p.indent();
-
-        p.p("entering(\"%1$s\", \"%2$s\", %3$s);%n", daoImplQualifiedName, m
-                .getName(), m.getEntityListName());
-        p.p("if (%s == null) {%n", m.getEntityListName());
-        p
-                .p("    throw new %1$s(\"%2$s\", %2$s);%n", DomaIllegalArgumentException.class
-                        .getName(), m.getEntityListName());
-        p.p("}%n");
-        p
-                .p("%1$s<%2$s, %2$s%3$s> query = new %1$s<%2$s, %2$s%3$s>(%2$s%3$s.class);%n", m
-                        .getQueryClass().getName(), m.getElementTypeName(), Options
-                        .getSuffix(env));
-        p.p("query.setConfig(config);%n");
-        p.p("query.setEntities(%1$s);%n", m.getEntityListName());
-        p.p("query.setCallerClassName(\"%s\");%n", daoImplQualifiedName);
-        p.p("query.setCallerMethodName(\"%s\");%n", m.getName());
-        if (m.getQueryTimeout() != null) {
-            p.p("query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
-        }
-        p.p("query.compile();%n");
-        p.p("%1$s command = new %s(query);%n", m.getCommandClass().getName());
-        p.p("%1$s result = command.execute();%n", m.getReturnTypeName());
-        p.p("exiting(\"%1$s\", \"%2$s\", result);%n", daoImplQualifiedName, m
-                .getName());
-        p.p("return result;%n");
-        p.unindent();
-        p.p("}%n");
-        return null;
-    }
-
-    @Override
-    public Void visitAutoFunctionQueryMeta(AutoFunctionQueryMeta m, Printer p) {
-        p.p("@Override%n");
-        p.p("public ");
-        if (m.getTypeParameterNames().hasNext()) {
-            p.pp("<");
-            for (Iterator<String> it = m.getTypeParameterNames(); it.hasNext();) {
-                p.pp("%s", it.next());
-                if (it.hasNext()) {
-                    p.pp(", ");
-                }
-            }
-            p.pp("> ");
-        }
-        p.pp("%s %s(", m.getReturnTypeName(), m.getName());
-        for (Iterator<CallableStatementParameterMeta> it = m
-                .getCallableStatementParameterMetas().iterator(); it.hasNext();) {
-            CallableStatementParameterMeta parameterMeta = it.next();
-            p.pp("%s %s", parameterMeta.getTypeName(), parameterMeta.getName());
-            if (it.hasNext()) {
-                p.pp(", ");
-            }
-        }
-        p.pp(") ");
-        if (m.getThrownTypeNames().hasNext()) {
-            p.pp("throws ");
-            for (Iterator<String> it = m.getThrownTypeNames(); it.hasNext();) {
-                p.pp("%s", it.next());
-                if (it.hasNext()) {
-                    p.pp(", ");
-                }
-            }
-            p.pp(" ");
-        }
-        p.pp("{%n");
-        p.indent();
-
-        p.p("entering(\"%1$s\", \"%2$s\"", daoImplQualifiedName, m.getName());
-        for (Iterator<CallableStatementParameterMeta> it = m
-                .getCallableStatementParameterMetas().iterator(); it.hasNext();) {
-            CallableStatementParameterMeta parameterMeta = it.next();
-            p.pp(", %s", parameterMeta.getName());
-        }
-        p.pp(");%n");
-        for (Iterator<CallableStatementParameterMeta> it = m
-                .getCallableStatementParameterMetas().iterator(); it.hasNext();) {
-            CallableStatementParameterMeta parameterMeta = it.next();
-            p.p("if (%s == null) {%n", parameterMeta.getName());
+        @Override
+        public Void visitSqlFileBatchModifyQueryMeta(
+                SqlFileBatchModifyQueryMeta m, Printer p) {
+            p
+                    .p("entering(\"%1$s\", \"%2$s\", %3$s);%n", daoImplQualifiedName, m
+                            .getName(), m.getEntityListName());
+            p.p("if (%s == null) {%n", m.getEntityListName());
             p
                     .p("    throw new %1$s(\"%2$s\", %2$s);%n", DomaIllegalArgumentException.class
-                            .getName(), parameterMeta.getName());
+                            .getName(), m.getEntityListName());
             p.p("}%n");
+            p
+                    .p("%1$s<%2$s, %2$s%3$s> query = new %1$s<%2$s, %2$s%3$s>(%2$s%3$s.class);%n", m
+                            .getQueryClass().getName(), m.getElementTypeName(), Options
+                            .getSuffix(env));
+            p.p("query.setConfig(config);%n");
+            p.p("query.setEntities(%1$s);%n", m.getEntityListName());
+            p.p("query.setCallerClassName(\"%s\");%n", daoImplQualifiedName);
+            p.p("query.setCallerMethodName(\"%s\");%n", m.getName());
+            if (m.getQueryTimeout() != null) {
+                p.p("query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
+            }
+            p.p("query.compile();%n");
+            p.p("%1$s command = new %s(query);%n", m.getCommandClass()
+                    .getName());
+            p.p("%1$s result = command.execute();%n", m.getReturnTypeName());
+            p
+                    .p("exiting(\"%1$s\", \"%2$s\", result);%n", daoImplQualifiedName, m
+                            .getName());
+            p.p("return result;%n");
+            return null;
         }
-        p.p("%1$s<%2$s> query = new %1$s<%2$s>();%n", m.getQueryClass()
-                .getName(), m.getReturnTypeName());
-        p.p("query.setConfig(config);%n");
-        p.p("query.setFunctionName(\"%s\");%n", m.getFunctionName());
-        m.getResultParameterMeta().accept(this, p);
-        for (CallableStatementParameterMeta parameterMeta : m
-                .getCallableStatementParameterMetas()) {
-            parameterMeta.accept(this, p);
-        }
-        p.p("query.setCallerClassName(\"%s\");%n", daoImplQualifiedName);
-        p.p("query.setCallerMethodName(\"%s\");%n", m.getName());
-        if (m.getQueryTimeout() != null) {
-            p.p("query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
-        }
-        p.p("query.compile();%n");
-        p.p("%1$s<%2$s> command = new %1$s<%2$s>(query);%n", m
-                .getCommandClass().getName(), m.getReturnTypeName());
-        p.p("%1$s result = command.execute();%n", m.getReturnTypeName());
-        p.p("exiting(\"%1$s\", \"%2$s\", result);%n", daoImplQualifiedName, m
-                .getName());
-        p.p("return result;%n");
-        p.unindent();
-        p.p("}%n");
-        return null;
-    }
 
-    @Override
-    public Void visitAutoProcedureQueryMeta(AutoProcedureQueryMeta m, Printer p) {
-        p.p("@Override%n");
-        p.p("public ");
-        if (m.getTypeParameterNames().hasNext()) {
-            p.pp("<");
-            for (Iterator<String> it = m.getTypeParameterNames(); it.hasNext();) {
-                p.pp("%s", it.next());
-                if (it.hasNext()) {
-                    p.pp(", ");
-                }
+        @Override
+        public Void visitAutoFunctionQueryMeta(AutoFunctionQueryMeta m,
+                Printer p) {
+            p.p("entering(\"%1$s\", \"%2$s\"", daoImplQualifiedName, m
+                    .getName());
+            for (Iterator<CallableStatementParameterMeta> it = m
+                    .getCallableStatementParameterMetas().iterator(); it
+                    .hasNext();) {
+                CallableStatementParameterMeta parameterMeta = it.next();
+                p.pp(", %s", parameterMeta.getName());
             }
-            p.pp("> ");
-        }
-        p.pp("%s %s(", m.getReturnTypeName(), m.getName());
-        for (Iterator<CallableStatementParameterMeta> it = m
-                .getCallableStatementParameterMetas().iterator(); it.hasNext();) {
-            CallableStatementParameterMeta parameterMeta = it.next();
-            p.pp("%s %s", parameterMeta.getTypeName(), parameterMeta.getName());
-            if (it.hasNext()) {
-                p.pp(", ");
+            p.pp(");%n");
+            for (Iterator<CallableStatementParameterMeta> it = m
+                    .getCallableStatementParameterMetas().iterator(); it
+                    .hasNext();) {
+                CallableStatementParameterMeta parameterMeta = it.next();
+                p.p("if (%s == null) {%n", parameterMeta.getName());
+                p
+                        .p("    throw new %1$s(\"%2$s\", %2$s);%n", DomaIllegalArgumentException.class
+                                .getName(), parameterMeta.getName());
+                p.p("}%n");
             }
-        }
-        p.pp(") ");
-        if (m.getThrownTypeNames().hasNext()) {
-            p.pp("throws ");
-            for (Iterator<String> it = m.getThrownTypeNames(); it.hasNext();) {
-                p.pp("%s", it.next());
-                if (it.hasNext()) {
-                    p.pp(", ");
-                }
+            p.p("%1$s<%2$s> query = new %1$s<%2$s>();%n", m.getQueryClass()
+                    .getName(), m.getReturnTypeName());
+            p.p("query.setConfig(config);%n");
+            p.p("query.setFunctionName(\"%s\");%n", m.getFunctionName());
+            ParameterGenerator parameterGenerator = new ParameterGenerator();
+            m.getResultParameterMeta().accept(parameterGenerator, p);
+            for (CallableStatementParameterMeta parameterMeta : m
+                    .getCallableStatementParameterMetas()) {
+                parameterMeta.accept(parameterGenerator, p);
             }
-            p.pp(" ");
+            p.p("query.setCallerClassName(\"%s\");%n", daoImplQualifiedName);
+            p.p("query.setCallerMethodName(\"%s\");%n", m.getName());
+            if (m.getQueryTimeout() != null) {
+                p.p("query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
+            }
+            p.p("query.compile();%n");
+            p.p("%1$s<%2$s> command = new %1$s<%2$s>(query);%n", m
+                    .getCommandClass().getName(), m.getReturnTypeName());
+            p.p("%1$s result = command.execute();%n", m.getReturnTypeName());
+            p
+                    .p("exiting(\"%1$s\", \"%2$s\", result);%n", daoImplQualifiedName, m
+                            .getName());
+            p.p("return result;%n");
+            return null;
         }
-        p.pp("{%n");
-        p.indent();
 
-        p.p("entering(\"%1$s\", \"%2$s\"", daoImplQualifiedName, m.getName());
-        for (Iterator<CallableStatementParameterMeta> it = m
-                .getCallableStatementParameterMetas().iterator(); it.hasNext();) {
-            CallableStatementParameterMeta parameterMeta = it.next();
-            p.pp(", %s", parameterMeta.getName());
+        @Override
+        public Void visitAutoProcedureQueryMeta(AutoProcedureQueryMeta m,
+                Printer p) {
+            p.p("entering(\"%1$s\", \"%2$s\"", daoImplQualifiedName, m
+                    .getName());
+            for (Iterator<CallableStatementParameterMeta> it = m
+                    .getCallableStatementParameterMetas().iterator(); it
+                    .hasNext();) {
+                CallableStatementParameterMeta parameterMeta = it.next();
+                p.pp(", %s", parameterMeta.getName());
+            }
+            p.pp(");%n");
+            for (Iterator<CallableStatementParameterMeta> it = m
+                    .getCallableStatementParameterMetas().iterator(); it
+                    .hasNext();) {
+                CallableStatementParameterMeta parameterMeta = it.next();
+                p.p("if (%s == null) {%n", parameterMeta.getName());
+                p
+                        .p("    throw new %1$s(\"%2$s\", %2$s);%n", DomaIllegalArgumentException.class
+                                .getName(), parameterMeta.getName());
+                p.p("}%n");
+            }
+            p.p("%1$s query = new %1$s();%n", m.getQueryClass().getName());
+            p.p("query.setConfig(config);%n");
+            p.p("query.setProcedureName(\"%s\");%n", m.getProcedureName());
+            ParameterGenerator parameterGenerator = new ParameterGenerator();
+            for (CallableStatementParameterMeta parameterMeta : m
+                    .getCallableStatementParameterMetas()) {
+                parameterMeta.accept(parameterGenerator, p);
+            }
+            p.p("query.setCallerClassName(\"%s\");%n", daoImplQualifiedName);
+            p.p("query.setCallerMethodName(\"%s\");%n", m.getName());
+            if (m.getQueryTimeout() != null) {
+                p.p("query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
+            }
+            p.p("query.compile();%n");
+            p.p("%1$s command = new %1$s(query);%n", m.getCommandClass()
+                    .getName());
+            p.p("command.execute();%n");
+            p.p("exiting(\"%1$s\", \"%2$s\", null);%n", daoImplQualifiedName, m
+                    .getName());
+            return null;
         }
-        p.pp(");%n");
-        for (Iterator<CallableStatementParameterMeta> it = m
-                .getCallableStatementParameterMetas().iterator(); it.hasNext();) {
-            CallableStatementParameterMeta parameterMeta = it.next();
-            p.p("if (%s == null) {%n", parameterMeta.getName());
+
+        @Override
+        public Void visitArrayCreateQueryMeta(ArrayCreateQueryMeta m, Printer p) {
+            p
+                    .p("entering(\"%1$s\", \"%2$s\", (Object)%3$s);%n", daoImplQualifiedName, m
+                            .getName(), m.getArrayName());
+            p.p("if (%s == null) {%n", m.getArrayName());
             p
                     .p("    throw new %1$s(\"%2$s\", %2$s);%n", DomaIllegalArgumentException.class
-                            .getName(), parameterMeta.getName());
+                            .getName(), m.getArrayName());
             p.p("}%n");
+            p.p("%1$s<%2$s> query = new %1$s<%2$s>();%n", m.getQueryClass()
+                    .getName(), m.getReturnTypeName());
+            p.p("query.setConfig(config);%n");
+            p.p("query.setCallerClassName(\"%s\");%n", daoImplQualifiedName);
+            p.p("query.setCallerMethodName(\"%s\");%n", m.getName());
+            p.p("query.setTypeName(\"%s\");%n", m.getJdbcTypeName());
+            p.p("query.setElements(%s);%n", m.getArrayName());
+            p.p("query.setResult(new %s());%n", m.getReturnTypeName());
+            p.p("query.compile();%n");
+            p.p("%1$s<%2$s> command = new %1$s<%2$s>(query);%n", m
+                    .getCommandClass().getName(), m.getReturnTypeName());
+            p.p("%1$s result = command.execute();%n", m.getReturnTypeName());
+            p
+                    .p("exiting(\"%1$s\", \"%2$s\", result);%n", daoImplQualifiedName, m
+                            .getName());
+            p.p("return result;%n");
+            return null;
         }
-        p.p("%1$s query = new %1$s();%n", m.getQueryClass().getName());
-        p.p("query.setConfig(config);%n");
-        p.p("query.setProcedureName(\"%s\");%n", m.getProcedureName());
-        for (CallableStatementParameterMeta parameterMeta : m
-                .getCallableStatementParameterMetas()) {
-            parameterMeta.accept(this, p);
+
+        @Override
+        public Void visitAbstractCreateQueryMeta(AbstractCreateQueryMeta m,
+                Printer p) {
+            p.p("entering(\"%1$s\", \"%2$s\");%n", daoImplQualifiedName, m
+                    .getName());
+            p.p("%1$s<%2$s> query = new %1$s<%2$s>();%n", m.getQueryClass()
+                    .getName(), m.getReturnTypeName());
+            p.p("query.setConfig(config);%n");
+            p.p("query.setCallerClassName(\"%s\");%n", daoImplQualifiedName);
+            p.p("query.setCallerMethodName(\"%s\");%n", m.getName());
+            p.p("query.setResult(new %s());%n", m.getReturnTypeName());
+            p.p("query.compile();%n");
+            p.p("%1$s<%2$s> command = new %1$s<%2$s>(query);%n", m
+                    .getCommandClass().getName(), m.getReturnTypeName());
+            p.p("%1$s result = command.execute();%n", m.getReturnTypeName());
+            p
+                    .p("exiting(\"%1$s\", \"%2$s\", result);%n", daoImplQualifiedName, m
+                            .getName());
+            p.p("return result;%n");
+            return null;
         }
-        p.p("query.setCallerClassName(\"%s\");%n", daoImplQualifiedName);
-        p.p("query.setCallerMethodName(\"%s\");%n", m.getName());
-        if (m.getQueryTimeout() != null) {
-            p.p("query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
+
+    }
+
+    protected class ParameterGenerator implements
+            CallableStatementParameterMetaVisitor<Void, Printer> {
+
+        @Override
+        public Void visistDomainListParameterMeta(DomainListParameterMeta m,
+                Printer p) {
+            p
+                    .p("query.addParameter(new %1$s(%2$s.class, %3%s));%n", DomainListParameter.class
+                            .getName(), m.getDomainTypeName(), m.getName());
+            return null;
         }
-        p.p("query.compile();%n");
-        p.p("%1$s command = new %1$s(query);%n", m.getCommandClass().getName());
-        p.p("command.execute();%n");
-        p.p("exiting(\"%1$s\", \"%2$s\", null);%n", daoImplQualifiedName, m
-                .getName());
-        p.unindent();
-        p.p("}%n");
-        return null;
-    }
 
-    @Override
-    public Void visitArrayCreateQueryMeta(ArrayCreateQueryMeta m, Printer p) {
-        p.p("@Override%n");
-        p.p("public ");
-        if (m.getTypeParameterNames().hasNext()) {
-            p.pp("<");
-            for (Iterator<String> it = m.getTypeParameterNames(); it.hasNext();) {
-                p.pp("%s", it.next());
-                if (it.hasNext()) {
-                    p.pp(", ");
-                }
-            }
-            p.pp("> ");
+        @Override
+        public Void visistEntityListParameterMeta(EntityListParameterMeta m,
+                Printer p) {
+            p
+                    .p("query.addParameter(new %1$s<%2$s, %2$s%3$s>(%2$s%3$s.class, %4$s));%n", EntityListParameter.class
+                            .getName(), m.getEntityTypeName(), Options
+                            .getSuffix(env), m.getName());
+            return null;
         }
-        p.pp("%1$s %2$s(%3$s %4$s) ", m.getReturnTypeName(), m.getName(), m
-                .getArrayTypeName(), m.getArrayName());
-        if (m.getThrownTypeNames().hasNext()) {
-            p.pp("throws ");
-            for (Iterator<String> it = m.getThrownTypeNames(); it.hasNext();) {
-                p.pp("%s", it.next());
-                if (it.hasNext()) {
-                    p.pp(", ");
-                }
-            }
-            p.pp(" ");
+
+        @Override
+        public Void visistInOutParameterMeta(InOutParameterMeta m, Printer p) {
+            p.p("query.addParameter(new %1$s(%2$s));%n", InOutParameter.class
+                    .getName(), m.getName());
+            return null;
         }
-        p.pp("{%n");
-        p.indent();
 
-        p
-                .p("entering(\"%1$s\", \"%2$s\", (Object)%3$s);%n", daoImplQualifiedName, m
-                        .getName(), m.getArrayName());
-        p.p("if (%s == null) {%n", m.getArrayName());
-        p
-                .p("    throw new %1$s(\"%2$s\", %2$s);%n", DomaIllegalArgumentException.class
-                        .getName(), m.getArrayName());
-        p.p("}%n");
-        p.p("%1$s<%2$s> query = new %1$s<%2$s>();%n", m.getQueryClass()
-                .getName(), m.getReturnTypeName());
-        p.p("query.setConfig(config);%n");
-        p.p("query.setCallerClassName(\"%s\");%n", daoImplQualifiedName);
-        p.p("query.setCallerMethodName(\"%s\");%n", m.getName());
-        p.p("query.setTypeName(\"%s\");%n", m.getJdbcTypeName());
-        p.p("query.setElements(%s);%n", m.getArrayName());
-        p.p("query.setResult(new %s());%n", m.getReturnTypeName());
-        p.p("query.compile();%n");
-        p.p("%1$s<%2$s> command = new %1$s<%2$s>(query);%n", m
-                .getCommandClass().getName(), m.getReturnTypeName());
-        p.p("%1$s result = command.execute();%n", m.getReturnTypeName());
-        p.p("exiting(\"%1$s\", \"%2$s\", result);%n", daoImplQualifiedName, m
-                .getName());
-        p.p("return result;%n");
-        p.unindent();
-        p.p("}%n");
-        return null;
-    }
-
-    @Override
-    public Void visitAbstractCreateQueryMeta(AbstractCreateQueryMeta m,
-            Printer p) {
-        p.p("@Override%n");
-        p.p("public ");
-        if (m.getTypeParameterNames().hasNext()) {
-            p.pp("<");
-            for (Iterator<String> it = m.getTypeParameterNames(); it.hasNext();) {
-                p.pp("%s", it.next());
-                if (it.hasNext()) {
-                    p.pp(", ");
-                }
-            }
-            p.pp("> ");
+        @Override
+        public Void visistOutParameterMeta(OutParameterMeta m, Printer p) {
+            p.p("query.addParameter(new %1$s(%2$s));%n", OutParameter.class
+                    .getName(), m.getName());
+            return null;
         }
-        p.pp("%1$s %2$s() ", m.getReturnTypeName(), m.getName());
-        if (m.getThrownTypeNames().hasNext()) {
-            p.pp("throws ");
-            for (Iterator<String> it = m.getThrownTypeNames(); it.hasNext();) {
-                p.pp("%s", it.next());
-                if (it.hasNext()) {
-                    p.pp(", ");
-                }
-            }
-            p.pp(" ");
+
+        @Override
+        public Void visitInParameterMeta(InParameterMeta m, Printer p) {
+            p.p("query.addParameter(new %1$s(%2$s));%n", InParameter.class
+                    .getName(), m.getName());
+            return null;
         }
-        p.pp("{%n");
-        p.indent();
 
-        p.p("entering(\"%1$s\", \"%2$s\");%n", daoImplQualifiedName, m
-                .getName());
-        p.p("%1$s<%2$s> query = new %1$s<%2$s>();%n", m.getQueryClass()
-                .getName(), m.getReturnTypeName());
-        p.p("query.setConfig(config);%n");
-        p.p("query.setCallerClassName(\"%s\");%n", daoImplQualifiedName);
-        p.p("query.setCallerMethodName(\"%s\");%n", m.getName());
-        p.p("query.setResult(new %s());%n", m.getReturnTypeName());
-        p.p("query.compile();%n");
-        p.p("%1$s<%2$s> command = new %1$s<%2$s>(query);%n", m
-                .getCommandClass().getName(), m.getReturnTypeName());
-        p.p("%1$s result = command.execute();%n", m.getReturnTypeName());
-        p.p("exiting(\"%1$s\", \"%2$s\", result);%n", daoImplQualifiedName, m
-                .getName());
-        p.p("return result;%n");
-        p.unindent();
-        p.p("}%n");
-        return null;
+        @Override
+        public Void visistDomainResultParameterMeta(
+                DomainResultParameterMeta m, Printer p) {
+            p
+                    .p("query.setResultParameter(new %1$s<%2$s>(%2$s.class));%n", DomainResultParameter.class
+                            .getName(), m.getDomainTypeName());
+            return null;
+        }
+
+        @Override
+        public Void visistDomainListResultParameterMeta(
+                DomainListResultParameterMeta m, Printer p) {
+            p
+                    .p("query.setResultParameter(new %1$s<%2$s>(%2$s.class));%n", DomainListResultParameter.class
+                            .getName(), m.getDomainTypeName());
+            return null;
+        }
+
+        @Override
+        public Void visistEntityListResultParameterMeta(
+                EntityListResultParameterMeta m, Printer p) {
+            p
+                    .p("query.setResultParameter(new %1$s<%2$s, %2$s%3$s>(%2$s%3$s.class));%n", EntityListResultParameter.class
+                            .getName(), m.getEntityTypeName(), Options
+                            .getSuffix(env));
+
+            return null;
+        }
     }
-
-    @Override
-    public Void visistDomainListParameterMeta(DomainListParameterMeta m,
-            Printer p) {
-        p
-                .p("query.addParameter(new %1$s(%2$s.class, %3%s));%n", DomainListParameter.class
-                        .getName(), m.getDomainTypeName(), m.getName());
-        return null;
-    }
-
-    @Override
-    public Void visistEntityListParameterMeta(EntityListParameterMeta m,
-            Printer p) {
-        p
-                .p("query.addParameter(new %1$s<%2$s, %2$s%3$s>(%2$s%3$s.class, %4$s));%n", EntityListParameter.class
-                        .getName(), m.getEntityTypeName(), Options
-                        .getSuffix(env), m.getName());
-        return null;
-    }
-
-    @Override
-    public Void visistInOutParameterMeta(InOutParameterMeta m, Printer p) {
-        p.p("query.addParameter(new %1$s(%2$s));%n", InOutParameter.class
-                .getName(), m.getName());
-        return null;
-    }
-
-    @Override
-    public Void visistOutParameterMeta(OutParameterMeta m, Printer p) {
-        p.p("query.addParameter(new %1$s(%2$s));%n", OutParameter.class
-                .getName(), m.getName());
-        return null;
-    }
-
-    @Override
-    public Void visitInParameterMeta(InParameterMeta m, Printer p) {
-        p.p("query.addParameter(new %1$s(%2$s));%n", InParameter.class
-                .getName(), m.getName());
-        return null;
-    }
-
-    @Override
-    public Void visistDomainResultParameterMeta(DomainResultParameterMeta m,
-            Printer p) {
-        p
-                .p("query.setResultParameter(new %1$s<%2$s>(%2$s.class));%n", DomainResultParameter.class
-                        .getName(), m.getDomainTypeName());
-        return null;
-    }
-
-    @Override
-    public Void visistDomainListResultParameterMeta(
-            DomainListResultParameterMeta m, Printer p) {
-        p
-                .p("query.setResultParameter(new %1$s<%2$s>(%2$s.class));%n", DomainListResultParameter.class
-                        .getName(), m.getDomainTypeName());
-        return null;
-    }
-
-    @Override
-    public Void visistEntityListResultParameterMeta(
-            EntityListResultParameterMeta m, Printer p) {
-        p
-                .p("query.setResultParameter(new %1$s<%2$s, %2$s%3$s>(%2$s%3$s.class));%n", EntityListResultParameter.class
-                        .getName(), m.getEntityTypeName(), Options
-                        .getSuffix(env));
-
-        return null;
-    }
-
 }

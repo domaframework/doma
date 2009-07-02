@@ -21,7 +21,6 @@ import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
@@ -37,27 +36,18 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.MessageCode;
 
-
 /**
  * @author taedium
  * 
  */
 public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQueryMeta>
-        extends AbstractQueryMetaFactory {
+        extends AbstractQueryMetaFactory<M> {
 
     public AbstractSqlFileQueryMetaFactory(ProcessingEnvironment env) {
         super(env);
     }
 
-    protected void doTypeParameters(M queryMeta, ExecutableElement method,
-            DaoMeta daoMeta) {
-        for (TypeParameterElement element : method.getTypeParameters()) {
-            String name = Models.getTypeName(element.asType(), daoMeta
-                    .getTypeParameterMap(), env);
-            queryMeta.addTypeParameterName(name);
-        }
-    }
-
+    @Override
     protected void doParameters(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
         LinkedList<VariableElement> params = new LinkedList<VariableElement>(
@@ -82,13 +72,10 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
             String parameterName = Models.getParameterName(param);
             String parameterTypeName = Models.getTypeName(paramType, daoMeta
                     .getTypeParameterMap(), env);
-            queryMeta.addParameter(parameterName, parameterTypeName);
-            queryMeta.addParameterType(parameterName, paramType);
+            queryMeta.addMethodParameter(parameterName, parameterTypeName);
+            queryMeta.addMethodParameterType(parameterName, paramType);
         }
     }
-
-    protected abstract void doReturnType(M queryMeta, ExecutableElement method,
-            DaoMeta daoMeta);
 
     protected void doSqlFile(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
