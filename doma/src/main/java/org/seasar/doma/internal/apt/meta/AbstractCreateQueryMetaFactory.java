@@ -15,25 +15,61 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
+import static org.seasar.doma.internal.util.Assertions.*;
+
 import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.domain.Domain;
+import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Models;
+import org.seasar.doma.message.MessageCode;
 
 /**
  * @author taedium
  * 
  */
-public abstract class AbstractCreateQueryMetaFactory extends
-        AbstractQueryMetaFactory {
+public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQueryMeta>
+        extends AbstractQueryMetaFactory {
 
-    public AbstractCreateQueryMetaFactory(ProcessingEnvironment env) {
+    protected final Class<?> domainValueClass;
+
+    public AbstractCreateQueryMetaFactory(ProcessingEnvironment env,
+            Class<?> domainValueClass) {
         super(env);
+        assertNotNull(domainValueClass);
+        this.domainValueClass = domainValueClass;
+    }
+
+    protected void doReturnType(M queryMeta, ExecutableElement method,
+            DaoMeta daoMeta) {
+        TypeMirror returnType = method.getReturnType();
+        if (!isDomain(returnType)) {
+            throw new AptException(MessageCode.DOMA4022, env, method);
+        }
+        TypeMirror domainValueType = getDomainValueType(returnType);
+        if (domainValueType == null) {
+            throw new AptIllegalStateException();
+        }
+        TypeElement domainValueElement = Models
+                .toTypeElement(domainValueType, env);
+        if (domainValueElement == null) {
+            throw new AptIllegalStateException();
+        }
+        if (!domainValueElement.getQualifiedName()
+                .contentEquals(domainValueClass.getName())) {
+            throw new AptException(MessageCode.DOMA4075, env, method,
+                    domainValueClass.getName());
+        }
+        queryMeta.setReturnTypeName(Models.getTypeName(returnType, daoMeta
+                .getTypeParameterMap(), env));
     }
 
     protected TypeMirror getDomainValueType(TypeMirror domainType) {
@@ -60,6 +96,15 @@ public abstract class AbstractCreateQueryMetaFactory extends
             }
         }
         return null;
+    }
+
+    protected void doParameters(M queryMeta, ExecutableElement method,
+            DaoMeta daoMeta) {
+        List<? extends VariableElement> params = method.getParameters();
+        int size = params.size();
+        if (size != 0) {
+            throw new AptException(MessageCode.DOMA4078, env, method);
+        }
     }
 
 }

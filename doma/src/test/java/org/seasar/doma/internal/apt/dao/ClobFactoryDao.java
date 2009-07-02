@@ -13,17 +13,19 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.meta;
+package org.seasar.doma.internal.apt.dao;
+
+import org.seasar.doma.ClobFactory;
+import org.seasar.doma.Dao;
+import org.seasar.doma.jdbc.domain.ClobDomain;
 
 /**
  * @author taedium
  * 
  */
-public abstract class AbstractCreateQueryMeta extends AbstractQueryMeta {
+@Dao(config = MyConfig.class)
+public interface ClobFactoryDao {
 
-    @Override
-    public <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitAbstractCreateQueryMeta(this, p);
-    }
-
+    @ClobFactory
+    ClobDomain create();
 }

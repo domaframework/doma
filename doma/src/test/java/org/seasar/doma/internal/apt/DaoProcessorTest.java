@@ -24,12 +24,15 @@ import org.seasar.doma.internal.apt.dao.AutoFunctionDao;
 import org.seasar.doma.internal.apt.dao.AutoInsertDao;
 import org.seasar.doma.internal.apt.dao.AutoProcedureDao;
 import org.seasar.doma.internal.apt.dao.AutoUpdateDao;
+import org.seasar.doma.internal.apt.dao.BlobFactoryDao;
+import org.seasar.doma.internal.apt.dao.ClobFactoryDao;
 import org.seasar.doma.internal.apt.dao.ElementOfParamListNotDomainDao;
 import org.seasar.doma.internal.apt.dao.ElementOfParamListUnspecifiedDao;
 import org.seasar.doma.internal.apt.dao.GenericDaoEx;
 import org.seasar.doma.internal.apt.dao.ImplementedByDao;
 import org.seasar.doma.internal.apt.dao.InterfaceNotImplementedDao;
 import org.seasar.doma.internal.apt.dao.IterationCallbackDao;
+import org.seasar.doma.internal.apt.dao.NClobFactoryDao;
 import org.seasar.doma.internal.apt.dao.NameUnsafeDao_;
 import org.seasar.doma.internal.apt.dao.NotInterfaceDao;
 import org.seasar.doma.internal.apt.dao.NotTopLevelDao;
@@ -291,6 +294,36 @@ public class DaoProcessorTest extends AptTestCase {
 
     public void testArrayFactory() throws Exception {
         Class<?> target = ArrayFactoryDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testBlobFactory() throws Exception {
+        Class<?> target = BlobFactoryDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testClobFactory() throws Exception {
+        Class<?> target = ClobFactoryDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testNClobFactory() throws Exception {
+        Class<?> target = NClobFactoryDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
         addCompilationUnit(target);

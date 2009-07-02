@@ -19,7 +19,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.seasar.doma.DomaIllegalArgumentException;
@@ -34,7 +33,6 @@ import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.MessageCode;
-
 
 /**
  * @author taedium
@@ -123,8 +121,7 @@ public class StandardDialect implements Dialect {
 
     protected SQLException getCauseSQLException(SQLException sqlException) {
         SQLException cause = sqlException;
-        for (Iterator<Throwable> it = sqlException.iterator(); it.hasNext();) {
-            Throwable t = it.next();
+        for (Throwable t : sqlException) {
             if (SQLException.class.isInstance(t)) {
                 cause = SQLException.class.cast(t);
             }

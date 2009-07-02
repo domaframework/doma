@@ -22,14 +22,12 @@ import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.ArrayFactory;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Models;
 import org.seasar.doma.message.MessageCode;
 
@@ -37,10 +35,11 @@ import org.seasar.doma.message.MessageCode;
  * @author taedium
  * 
  */
-public class ArrayCreateQueryMetaFactory extends AbstractCreateQueryMetaFactory {
+public class ArrayCreateQueryMetaFactory extends
+        AbstractCreateQueryMetaFactory<ArrayCreateQueryMeta> {
 
     public ArrayCreateQueryMetaFactory(ProcessingEnvironment env) {
-        super(env);
+        super(env, Array.class);
     }
 
     @Override
@@ -62,29 +61,7 @@ public class ArrayCreateQueryMetaFactory extends AbstractCreateQueryMetaFactory 
         return queryMeta;
     }
 
-    protected void doReturnType(ArrayCreateQueryMeta queryMeta,
-            ExecutableElement method, DaoMeta daoMeta) {
-        TypeMirror returnType = method.getReturnType();
-        if (!isDomain(returnType)) {
-            throw new AptException(MessageCode.DOMA4022, env, method);
-        }
-        TypeMirror domainValueType = getDomainValueType(returnType);
-        if (domainValueType == null) {
-            throw new AptIllegalStateException();
-        }
-        TypeElement domainValueElement = Models
-                .toTypeElement(domainValueType, env);
-        if (domainValueElement == null) {
-            throw new AptIllegalStateException();
-        }
-        if (!domainValueElement.getQualifiedName().contentEquals(Array.class
-                .getName())) {
-            throw new AptException(MessageCode.DOMA4075, env, method);
-        }
-        queryMeta.setReturnTypeName(Models.getTypeName(returnType, daoMeta
-                .getTypeParameterMap(), env));
-    }
-
+    @Override
     protected void doParameters(ArrayCreateQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         List<? extends VariableElement> params = method.getParameters();

@@ -27,5 +27,5 @@ import org.seasar.doma.jdbc.domain.ArrayDomain;
 public interface ArrayFactoryDao {
 
     @ArrayFactory(typeName = "varchar")
-    ArrayDomain<String> update(String[] elements);
+    ArrayDomain<String> create(String[] elements);
 }

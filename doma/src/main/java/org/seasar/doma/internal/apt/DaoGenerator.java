@@ -26,6 +26,7 @@ import javax.sql.DataSource;
 
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.internal.ProductInfo;
+import org.seasar.doma.internal.apt.meta.AbstractCreateQueryMeta;
 import org.seasar.doma.internal.apt.meta.ArrayCreateQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoBatchModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoFunctionQueryMeta;
@@ -800,6 +801,55 @@ public class DaoGenerator implements Generator,
         p.p("query.setCallerMethodName(\"%s\");%n", m.getName());
         p.p("query.setTypeName(\"%s\");%n", m.getJdbcTypeName());
         p.p("query.setElements(%s);%n", m.getArrayName());
+        p.p("query.setResult(new %s());%n", m.getReturnTypeName());
+        p.p("query.compile();%n");
+        p.p("%1$s<%2$s> command = new %1$s<%2$s>(query);%n", m
+                .getCommandClass().getName(), m.getReturnTypeName());
+        p.p("%1$s result = command.execute();%n", m.getReturnTypeName());
+        p.p("exiting(\"%1$s\", \"%2$s\", result);%n", daoImplQualifiedName, m
+                .getName());
+        p.p("return result;%n");
+        p.unindent();
+        p.p("}%n");
+        return null;
+    }
+
+    @Override
+    public Void visitAbstractCreateQueryMeta(AbstractCreateQueryMeta m,
+            Printer p) {
+        p.p("@Override%n");
+        p.p("public ");
+        if (m.getTypeParameterNames().hasNext()) {
+            p.pp("<");
+            for (Iterator<String> it = m.getTypeParameterNames(); it.hasNext();) {
+                p.pp("%s", it.next());
+                if (it.hasNext()) {
+                    p.pp(", ");
+                }
+            }
+            p.pp("> ");
+        }
+        p.pp("%1$s %2$s() ", m.getReturnTypeName(), m.getName());
+        if (m.getThrownTypeNames().hasNext()) {
+            p.pp("throws ");
+            for (Iterator<String> it = m.getThrownTypeNames(); it.hasNext();) {
+                p.pp("%s", it.next());
+                if (it.hasNext()) {
+                    p.pp(", ");
+                }
+            }
+            p.pp(" ");
+        }
+        p.pp("{%n");
+        p.indent();
+
+        p.p("entering(\"%1$s\", \"%2$s\");%n", daoImplQualifiedName, m
+                .getName());
+        p.p("%1$s<%2$s> query = new %1$s<%2$s>();%n", m.getQueryClass()
+                .getName(), m.getReturnTypeName());
+        p.p("query.setConfig(config);%n");
+        p.p("query.setCallerClassName(\"%s\");%n", daoImplQualifiedName);
+        p.p("query.setCallerMethodName(\"%s\");%n", m.getName());
         p.p("query.setResult(new %s());%n", m.getReturnTypeName());
         p.p("query.compile();%n");
         p.p("%1$s<%2$s> command = new %1$s<%2$s>(query);%n", m
