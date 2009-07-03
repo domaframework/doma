@@ -21,7 +21,7 @@ import java.sql.Clob;
  * @author taedium
  * 
  */
-public class ClobDomain extends AbstractClobDomain {
+public class ClobDomain extends AbstractClobDomain<ClobDomain> {
 
     public ClobDomain() {
         super();

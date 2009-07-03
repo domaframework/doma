@@ -25,8 +25,8 @@ import org.seasar.doma.domain.DomainVisitor;
  * @author taedium
  * 
  */
-public abstract class AbstractNClobDomain extends
-        AbstractDomain<NClob, AbstractNClobDomain> {
+public abstract class AbstractNClobDomain<D extends AbstractNClobDomain<D>>
+        extends AbstractDomain<NClob, D> {
 
     public AbstractNClobDomain() {
         super(null);

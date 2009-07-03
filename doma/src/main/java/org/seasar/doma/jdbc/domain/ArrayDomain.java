@@ -21,7 +21,7 @@ import java.sql.Array;
  * @author taedium
  * 
  */
-public class ArrayDomain<E> extends AbstractArrayDomain<E> {
+public class ArrayDomain<E> extends AbstractArrayDomain<ArrayDomain<E>, E> {
 
     public ArrayDomain() {
         super();

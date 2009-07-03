@@ -24,5 +24,5 @@ import org.seasar.doma.domain.DomainVisitor;
 public interface AbstractClobDomainVisitor<R, P, TH extends Throwable> extends
         DomainVisitor<R, P, TH> {
 
-    R visitAbstractClobDomain(AbstractClobDomain domain, P p) throws TH;
+    R visitAbstractClobDomain(AbstractClobDomain<?> domain, P p) throws TH;
 }

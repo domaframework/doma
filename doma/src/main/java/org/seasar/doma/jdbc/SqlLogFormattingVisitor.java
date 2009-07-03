@@ -75,25 +75,25 @@ public class SqlLogFormattingVisitor
     }
 
     @Override
-    public String visitAbstractArrayDomain(AbstractArrayDomain<?> domain,
+    public String visitAbstractArrayDomain(AbstractArrayDomain<?, ?> domain,
             SqlLogFormattingFunction p) throws RuntimeException {
         return p.apply(domain, JdbcTypes.ARRAY);
     }
 
     @Override
-    public String visitAbstractBlobDomain(AbstractBlobDomain domain,
+    public String visitAbstractBlobDomain(AbstractBlobDomain<?> domain,
             SqlLogFormattingFunction p) throws RuntimeException {
         return p.apply(domain, JdbcTypes.BLOB);
     }
 
     @Override
-    public String visitAbstractClobDomain(AbstractClobDomain domain,
+    public String visitAbstractClobDomain(AbstractClobDomain<?> domain,
             SqlLogFormattingFunction p) throws RuntimeException {
         return p.apply(domain, JdbcTypes.CLOB);
     }
 
     @Override
-    public String visitAbstractNClobDomain(AbstractNClobDomain domain,
+    public String visitAbstractNClobDomain(AbstractNClobDomain<?> domain,
             SqlLogFormattingFunction p) throws RuntimeException {
         return p.apply(domain, JdbcTypes.NCLOB);
     }

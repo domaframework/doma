@@ -25,8 +25,8 @@ import org.seasar.doma.domain.DomainVisitor;
  * @author taedium
  * 
  */
-public abstract class AbstractClobDomain extends
-        AbstractDomain<Clob, AbstractClobDomain> {
+public abstract class AbstractClobDomain<D extends AbstractClobDomain<D>>
+        extends AbstractDomain<Clob, D> {
 
     public AbstractClobDomain() {
         super(null);

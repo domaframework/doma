@@ -78,25 +78,25 @@ public class JdbcMappingVisitor implements
     }
 
     @Override
-    public Void visitAbstractArrayDomain(AbstractArrayDomain<?> domain,
+    public Void visitAbstractArrayDomain(AbstractArrayDomain<?, ?> domain,
             JdbcMappingFunction p) throws SQLException {
         return p.apply(domain, JdbcTypes.ARRAY);
     }
 
     @Override
-    public Void visitAbstractBlobDomain(AbstractBlobDomain domain,
+    public Void visitAbstractBlobDomain(AbstractBlobDomain<?> domain,
             JdbcMappingFunction p) throws SQLException {
         return p.apply(domain, JdbcTypes.BLOB);
     }
 
     @Override
-    public Void visitAbstractClobDomain(AbstractClobDomain domain,
+    public Void visitAbstractClobDomain(AbstractClobDomain<?> domain,
             JdbcMappingFunction p) throws SQLException {
         return p.apply(domain, JdbcTypes.CLOB);
     }
 
     @Override
-    public Void visitAbstractNClobDomain(AbstractNClobDomain domain,
+    public Void visitAbstractNClobDomain(AbstractNClobDomain<?> domain,
             JdbcMappingFunction p) throws SQLException {
         return p.apply(domain, JdbcTypes.NCLOB);
     }
