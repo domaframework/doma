@@ -13,8 +13,9 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.type;
+package org.seasar.doma.jdbc.type;
 
+import java.sql.Array;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,44 +26,33 @@ import java.sql.Types;
  * @author taedium
  * 
  */
-public class IntAdaptiveBooleanType extends AbstractJdbcType<Boolean> {
+public class ArrayType extends AbstractJdbcType<Array> {
 
-    public IntAdaptiveBooleanType() {
-        super(Types.INTEGER);
+    public ArrayType() {
+        super(Types.ARRAY);
     }
 
     @Override
-    protected Boolean doGetValue(ResultSet resultSet, int index)
+    protected Array doGetValue(ResultSet resultSet, int index)
             throws SQLException {
-        int value = resultSet.getInt(index);
-        return formIntToBoolean(value);
+        return resultSet.getArray(index);
     }
 
     @Override
     protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Boolean value) throws SQLException {
-        int i = fromBooleanToInt(value);
-        preparedStatement.setInt(index, i);
+            Array value) throws SQLException {
+        preparedStatement.setArray(index, value);
     }
 
     @Override
-    protected Boolean doGetValue(CallableStatement callableStatement, int index)
+    protected Array doGetValue(CallableStatement callableStatement, int index)
             throws SQLException {
-        int value = callableStatement.getInt(index);
-        return formIntToBoolean(value);
+        return callableStatement.getArray(index);
     }
 
     @Override
-    protected String doConvertToLogFormat(Boolean value) {
-        int i = fromBooleanToInt(value);
-        return String.valueOf(i);
+    protected String doConvertToLogFormat(Array value) {
+        return "'" + value + "'";
     }
 
-    protected int fromBooleanToInt(Boolean value) {
-        return value ? 1 : 0;
-    }
-
-    protected Boolean formIntToBoolean(int value) {
-        return value == 1 ? Boolean.TRUE : Boolean.FALSE;
-    }
 }

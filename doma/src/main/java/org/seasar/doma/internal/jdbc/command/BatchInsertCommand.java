@@ -21,9 +21,8 @@ import java.util.List;
 
 import org.seasar.doma.internal.jdbc.query.BatchInsertQuery;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
-import org.seasar.doma.jdbc.Dialect;
-import org.seasar.doma.jdbc.UniqueConstraintException;
-
+import org.seasar.doma.jdbc.BatchUniqueConstraintException;
+import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
  * @author taedium
@@ -60,7 +59,7 @@ public class BatchInsertCommand extends BatchModifyCommand<BatchInsertQuery> {
         } catch (SQLException e) {
             Dialect dialect = query.getConfig().dialect();
             if (dialect.isUniqueConstraintViolated(e)) {
-                throw new UniqueConstraintException(sql.getRawSql(), "", e);
+                throw new BatchUniqueConstraintException(sql, e);
             }
             throw e;
         }

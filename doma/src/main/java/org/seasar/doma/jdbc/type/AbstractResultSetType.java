@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.type;
+package org.seasar.doma.jdbc.type;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
@@ -36,14 +36,14 @@ public abstract class AbstractResultSetType extends AbstractJdbcType<ResultSet> 
     public ResultSet getValue(ResultSet resultSet, int index)
             throws SQLException {
         throw new DomaUnsupportedOperationException(getClass().getName(),
-                "doGetValue");
+                "getValue");
     }
 
     @Override
     public void setValue(PreparedStatement preparedStatement, int index,
             ResultSet value) throws SQLException {
         throw new DomaUnsupportedOperationException(getClass().getName(),
-                "doSetValue");
+                "setValue");
     }
 
     @Override

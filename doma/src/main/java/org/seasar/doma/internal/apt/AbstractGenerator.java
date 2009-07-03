@@ -89,7 +89,7 @@ public abstract class AbstractGenerator implements Generator {
     protected void throwExceptionIfNecessary() {
         IOException ioException = formatter.ioException();
         if (ioException != null) {
-            close();
+            formatter.close();
             throw new AptException(MessageCode.DOMA4079, env, typeElement,
                     ioException, qualifiedName, ioException);
         }

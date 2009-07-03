@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import org.seasar.doma.domain.DomainVisitor;
+import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
  * @author taedium

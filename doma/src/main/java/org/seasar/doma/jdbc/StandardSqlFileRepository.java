@@ -22,6 +22,7 @@ import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.internal.util.Resources;
+import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.message.MessageCode;
 
 

@@ -37,9 +37,9 @@ import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.ListParameter;
 import org.seasar.doma.internal.jdbc.sql.OutParameter;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.Dialect;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
-import org.seasar.doma.jdbc.JdbcType;
+import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.jdbc.type.JdbcType;
 
 /**
  * 

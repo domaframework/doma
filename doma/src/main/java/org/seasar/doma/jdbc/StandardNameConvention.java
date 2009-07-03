@@ -16,6 +16,7 @@
 package org.seasar.doma.jdbc;
 
 import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
  * @author taedium

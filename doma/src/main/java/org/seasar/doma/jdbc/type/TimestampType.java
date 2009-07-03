@@ -13,45 +13,45 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.type;
+package org.seasar.doma.jdbc.type;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
+import java.sql.Timestamp;
 import java.sql.Types;
 
 /**
  * @author taedium
  * 
  */
-public class TimeType extends AbstractJdbcType<Time> {
+public class TimestampType extends AbstractJdbcType<Timestamp> {
 
-    public TimeType() {
-        super(Types.TIME);
+    public TimestampType() {
+        super(Types.TIMESTAMP);
     }
 
     @Override
-    protected Time doGetValue(ResultSet resultSet, int index)
+    protected Timestamp doGetValue(ResultSet resultSet, int index)
             throws SQLException {
-        return resultSet.getTime(index);
+        return resultSet.getTimestamp(index);
     }
 
     @Override
     protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Time value) throws SQLException {
-        preparedStatement.setTime(index, value);
+            Timestamp value) throws SQLException {
+        preparedStatement.setTimestamp(index, value);
     }
 
     @Override
-    protected Time doGetValue(CallableStatement callableStatement, int index)
-            throws SQLException {
-        return callableStatement.getTime(index);
+    protected Timestamp doGetValue(CallableStatement callableStatement,
+            int index) throws SQLException {
+        return callableStatement.getTimestamp(index);
     }
 
     @Override
-    protected String doConvertToLogFormat(Time value) {
+    protected String doConvertToLogFormat(Timestamp value) {
         return "'" + value + "'";
     }
 

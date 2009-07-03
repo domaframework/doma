@@ -13,10 +13,9 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.type;
+package org.seasar.doma.jdbc.type;
 
 import java.sql.CallableStatement;
-import java.sql.Clob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,33 +25,33 @@ import java.sql.Types;
  * @author taedium
  * 
  */
-public class ClobType extends AbstractJdbcType<Clob> {
+public class ObjectType extends AbstractJdbcType<Object> {
 
-    public ClobType() {
-        super(Types.CLOB);
+    public ObjectType() {
+        super(Types.OTHER);
     }
 
     @Override
-    protected Clob doGetValue(ResultSet resultSet, int index)
+    protected Object doGetValue(ResultSet resultSet, int index)
             throws SQLException {
-        return resultSet.getClob(index);
+        return resultSet.getObject(index);
     }
 
     @Override
     protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Clob value) throws SQLException {
-        preparedStatement.setClob(index, value);
+            Object value) throws SQLException {
+        preparedStatement.setObject(index, value);
     }
 
     @Override
-    protected Clob doGetValue(CallableStatement callableStatement, int index)
+    protected Object doGetValue(CallableStatement callableStatement, int index)
             throws SQLException {
-        return callableStatement.getClob(index);
+        return callableStatement.getObject(index);
     }
 
     @Override
-    protected String doConvertToLogFormat(Clob value) {
-        return value.toString();
+    protected String doConvertToLogFormat(Object value) {
+        return "'" + value + "'";
     }
 
 }

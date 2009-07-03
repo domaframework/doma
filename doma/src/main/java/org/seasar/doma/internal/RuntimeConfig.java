@@ -23,13 +23,13 @@ import javax.sql.DataSource;
 
 import org.seasar.doma.domain.DomainVisitor;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.Dialect;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.NameConvention;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.SqlFileRepository;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
+import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
  * @author taedium

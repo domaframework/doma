@@ -13,10 +13,10 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.type;
+package org.seasar.doma.jdbc.type;
 
 import java.sql.CallableStatement;
-import java.sql.Date;
+import java.sql.Clob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,32 +26,33 @@ import java.sql.Types;
  * @author taedium
  * 
  */
-public class DateType extends AbstractJdbcType<Date> {
+public class ClobType extends AbstractJdbcType<Clob> {
 
-    public DateType() {
-        super(Types.DATE);
+    public ClobType() {
+        super(Types.CLOB);
     }
 
     @Override
-    public Date doGetValue(ResultSet resultSet, int index) throws SQLException {
-        return resultSet.getDate(index);
+    protected Clob doGetValue(ResultSet resultSet, int index)
+            throws SQLException {
+        return resultSet.getClob(index);
     }
 
     @Override
     protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Date value) throws SQLException {
-        preparedStatement.setDate(index, value);
+            Clob value) throws SQLException {
+        preparedStatement.setClob(index, value);
     }
 
     @Override
-    protected Date doGetValue(CallableStatement callableStatement, int index)
+    protected Clob doGetValue(CallableStatement callableStatement, int index)
             throws SQLException {
-        return callableStatement.getDate(index);
+        return callableStatement.getClob(index);
     }
 
     @Override
-    protected String doConvertToLogFormat(Date value) {
-        return "'" + value + "'";
+    protected String doConvertToLogFormat(Clob value) {
+        return value.toString();
     }
 
 }

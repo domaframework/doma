@@ -27,7 +27,6 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.MessageCode;
 
-
 /**
  * @author taedium
  * 
@@ -60,7 +59,8 @@ public class SelectCommand<R> implements Command<R, SelectQuery> {
                 bindParameters(preparedStatement);
                 return executeQuery(preparedStatement);
             } catch (SQLException e) {
-                throw new JdbcException(MessageCode.DOMA2009, e, e);
+                throw new JdbcException(MessageCode.DOMA2009, e, sql
+                        .getFormattedSql(), e);
             } finally {
                 Jdbcs.close(preparedStatement, query.getConfig().jdbcLogger());
             }

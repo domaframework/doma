@@ -26,7 +26,7 @@ import org.seasar.doma.domain.DomainVisitor;
  * @author taedium
  * 
  */
-public class AbstractArrayDomain<D extends AbstractArrayDomain<D, E>, E>
+public abstract class AbstractArrayDomain<D extends AbstractArrayDomain<D, E>, E>
         extends AbstractDomain<Array, AbstractArrayDomain<D, E>> {
 
     public AbstractArrayDomain() {

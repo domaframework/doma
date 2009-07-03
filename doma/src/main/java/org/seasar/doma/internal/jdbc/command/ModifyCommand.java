@@ -23,12 +23,11 @@ import java.sql.SQLException;
 
 import org.seasar.doma.internal.jdbc.query.ModifyQuery;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
-import org.seasar.doma.jdbc.Dialect;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.doma.jdbc.UniqueConstraintException;
+import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.message.MessageCode;
-
 
 /**
  * @author taedium
@@ -63,7 +62,8 @@ public abstract class ModifyCommand<Q extends ModifyQuery> implements
                 bindValues(preparedStatement);
                 return executeInternal(preparedStatement);
             } catch (SQLException e) {
-                throw new JdbcException(MessageCode.DOMA2009, e, e);
+                throw new JdbcException(MessageCode.DOMA2009, e, sql
+                        .getFormattedSql(), e);
             } finally {
                 Jdbcs.close(preparedStatement, query.getConfig().jdbcLogger());
             }

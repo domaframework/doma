@@ -21,7 +21,6 @@ import javax.sql.DataSource;
 
 import org.seasar.doma.domain.DomainVisitor;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.Dialect;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
@@ -34,6 +33,7 @@ import org.seasar.doma.jdbc.StandardJdbcLogger;
 import org.seasar.doma.jdbc.StandardNameConvention;
 import org.seasar.doma.jdbc.StandardRequiresNewController;
 import org.seasar.doma.jdbc.StandardSqlFileRepository;
+import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
 
 /**

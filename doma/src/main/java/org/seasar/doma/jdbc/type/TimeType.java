@@ -13,44 +13,45 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.type;
+package org.seasar.doma.jdbc.type;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.sql.Types;
 
 /**
  * @author taedium
  * 
  */
-public class ObjectType extends AbstractJdbcType<Object> {
+public class TimeType extends AbstractJdbcType<Time> {
 
-    public ObjectType() {
-        super(Types.OTHER);
+    public TimeType() {
+        super(Types.TIME);
     }
 
     @Override
-    protected Object doGetValue(ResultSet resultSet, int index)
+    protected Time doGetValue(ResultSet resultSet, int index)
             throws SQLException {
-        return resultSet.getObject(index);
+        return resultSet.getTime(index);
     }
 
     @Override
     protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Object value) throws SQLException {
-        preparedStatement.setObject(index, value);
+            Time value) throws SQLException {
+        preparedStatement.setTime(index, value);
     }
 
     @Override
-    protected Object doGetValue(CallableStatement callableStatement, int index)
+    protected Time doGetValue(CallableStatement callableStatement, int index)
             throws SQLException {
-        return callableStatement.getObject(index);
+        return callableStatement.getTime(index);
     }
 
     @Override
-    protected String doConvertToLogFormat(Object value) {
+    protected String doConvertToLogFormat(Time value) {
         return "'" + value + "'";
     }
 

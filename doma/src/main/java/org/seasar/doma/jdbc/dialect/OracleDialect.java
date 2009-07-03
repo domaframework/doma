@@ -24,10 +24,10 @@ import org.seasar.doma.internal.jdbc.dialect.OracleForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.OraclePagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
-import org.seasar.doma.internal.jdbc.type.AbstractResultSetType;
-import org.seasar.doma.jdbc.JdbcType;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.jdbc.type.AbstractResultSetType;
+import org.seasar.doma.jdbc.type.JdbcType;
 
 /**
  * @author taedium

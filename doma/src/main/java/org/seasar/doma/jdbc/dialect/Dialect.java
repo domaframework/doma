@@ -13,10 +13,16 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc;
+package org.seasar.doma.jdbc.dialect;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import org.seasar.doma.jdbc.SelectForUpdateType;
+import org.seasar.doma.jdbc.SelectOptions;
+import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.jdbc.type.JdbcType;
 
 /**
  * @author taedium

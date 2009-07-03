@@ -27,10 +27,12 @@ import org.seasar.doma.domain.AbstractTimeDomain;
 import org.seasar.doma.domain.AbstractTimestampDomain;
 import org.seasar.doma.domain.BuiltInDomainVisitor;
 import org.seasar.doma.domain.Domain;
+import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.domain.AbstractArrayDomain;
 import org.seasar.doma.jdbc.domain.AbstractBlobDomain;
 import org.seasar.doma.jdbc.domain.AbstractClobDomain;
 import org.seasar.doma.jdbc.domain.AbstractNClobDomain;
+import org.seasar.doma.jdbc.type.JdbcTypes;
 import org.seasar.doma.message.MessageCode;
 
 /**

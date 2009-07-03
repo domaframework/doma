@@ -21,9 +21,9 @@ import javax.sql.DataSource;
 
 import org.seasar.doma.internal.jdbc.Entity;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.Dialect;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.RequiresNewController;
+import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
  * @author taedium

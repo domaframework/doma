@@ -16,6 +16,7 @@
 package org.seasar.doma.jdbc;
 
 import org.seasar.doma.domain.Domain;
+import org.seasar.doma.jdbc.type.JdbcType;
 
 /**
  * @author taedium

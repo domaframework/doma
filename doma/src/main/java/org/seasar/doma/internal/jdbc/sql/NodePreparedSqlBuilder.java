@@ -28,7 +28,6 @@ import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.ExpressionException;
 import org.seasar.doma.internal.expr.ExpressionParser;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
-import org.seasar.doma.internal.jdbc.ConvertToStringFunction;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;

@@ -18,8 +18,8 @@ package example.dao;
 import javax.sql.DataSource;
 
 import org.seasar.doma.internal.jdbc.mock.MockDataSource;
-import org.seasar.doma.jdbc.Dialect;
 import org.seasar.doma.jdbc.DomaAbstractConfig;
+import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
 
 

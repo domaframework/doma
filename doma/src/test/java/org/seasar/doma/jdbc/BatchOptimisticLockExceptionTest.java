@@ -13,16 +13,20 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.domain;
+package org.seasar.doma.jdbc;
 
-import org.seasar.doma.domain.DomainVisitor;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
  * 
  */
-public interface AbstractArrayDomainVisitor<R, P, TH extends Throwable> extends
-        DomainVisitor<R, P, TH> {
+public class BatchOptimisticLockExceptionTest extends TestCase {
 
-    R visitAbstractArrayDomain(AbstractArrayDomain<?, ?> domain, P p) throws TH;
+    public void test() throws Exception {
+        BatchOptimisticLockException e = new BatchOptimisticLockException("aaa");
+        System.out.println(e.getMessage());
+        assertEquals("aaa", e.getRawSql());
+        assertNull(e.getFormattedSql());
+    }
 }

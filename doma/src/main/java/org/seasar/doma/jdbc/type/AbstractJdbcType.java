@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.type;
+package org.seasar.doma.jdbc.type;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
@@ -21,7 +21,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.seasar.doma.DomaIllegalArgumentException;
-import org.seasar.doma.jdbc.JdbcType;
 
 /**
  * @author taedium

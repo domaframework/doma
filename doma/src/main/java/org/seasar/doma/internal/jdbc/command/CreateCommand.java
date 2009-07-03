@@ -19,6 +19,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import org.seasar.doma.internal.jdbc.query.CreateQuery;
+import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.message.MessageCode;
 
 /**
  * @author taedium
@@ -39,8 +41,7 @@ public class CreateCommand<R> implements Command<R, CreateQuery<R>> {
         try {
             return query.create(connection);
         } catch (SQLException e) {
-            // TODO
-            throw new RuntimeException(e);
+            throw new JdbcException(MessageCode.DOMA2008, e, e);
         } finally {
             Jdbcs.close(connection, query.getConfig().jdbcLogger());
         }

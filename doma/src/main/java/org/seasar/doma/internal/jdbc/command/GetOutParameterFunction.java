@@ -24,7 +24,7 @@ import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
-import org.seasar.doma.jdbc.JdbcType;
+import org.seasar.doma.jdbc.type.JdbcType;
 
 /**
  * 

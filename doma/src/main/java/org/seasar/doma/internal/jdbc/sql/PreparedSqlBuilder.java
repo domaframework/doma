@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.seasar.doma.domain.Domain;
-import org.seasar.doma.internal.jdbc.ConvertToStringFunction;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 

@@ -34,7 +34,7 @@ public class NonUniqueResultException extends JdbcException {
     }
 
     public NonUniqueResultException(String rawSql, String formattedSql) {
-        super(MessageCode.DOMA2001, rawSql, formattedSql);
+        super(MessageCode.DOMA2001, formattedSql, rawSql);
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;
     }

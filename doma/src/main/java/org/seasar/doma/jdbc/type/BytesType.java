@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.type;
+package org.seasar.doma.jdbc.type;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
@@ -25,33 +25,32 @@ import java.sql.Types;
  * @author taedium
  * 
  */
-public class IntType extends AbstractJdbcType<Integer> {
+public class BytesType extends AbstractJdbcType<byte[]> {
 
-    public IntType() {
-        super(Types.INTEGER);
+    public BytesType() {
+        super(Types.BINARY);
     }
 
     @Override
-    protected Integer doGetValue(ResultSet resultSet, int index)
+    protected byte[] doGetValue(ResultSet resultSet, int index)
             throws SQLException {
-        return resultSet.getInt(index);
+        return resultSet.getBytes(index);
     }
 
     @Override
     protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Integer value) throws SQLException {
-        preparedStatement.setInt(index, value);
+            byte[] value) throws SQLException {
+        preparedStatement.setBytes(index, value);
     }
 
     @Override
-    protected Integer doGetValue(CallableStatement callableStatement, int index)
+    protected byte[] doGetValue(CallableStatement callableStatement, int index)
             throws SQLException {
-        return callableStatement.getInt(index);
+        return callableStatement.getBytes(index);
     }
 
     @Override
-    protected String doConvertToLogFormat(Integer value) {
-        return String.valueOf(value);
+    protected String doConvertToLogFormat(byte[] value) {
+        return value.toString();
     }
-
 }

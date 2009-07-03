@@ -13,42 +13,45 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.type;
+package org.seasar.doma.jdbc.type;
 
 import java.sql.CallableStatement;
-import java.sql.NClob;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
-public class NClobType extends AbstractJdbcType<NClob> {
+/**
+ * @author taedium
+ * 
+ */
+public class DateType extends AbstractJdbcType<Date> {
 
-    public NClobType() {
-        super(Types.NCLOB);
+    public DateType() {
+        super(Types.DATE);
     }
 
     @Override
-    protected NClob doGetValue(ResultSet resultSet, int index)
-            throws SQLException {
-        return resultSet.getNClob(index);
+    public Date doGetValue(ResultSet resultSet, int index) throws SQLException {
+        return resultSet.getDate(index);
     }
 
     @Override
     protected void doSetValue(PreparedStatement preparedStatement, int index,
-            NClob value) throws SQLException {
-        preparedStatement.setNClob(index, value);
+            Date value) throws SQLException {
+        preparedStatement.setDate(index, value);
     }
 
     @Override
-    protected NClob doGetValue(CallableStatement callableStatement, int index)
+    protected Date doGetValue(CallableStatement callableStatement, int index)
             throws SQLException {
-        return callableStatement.getNClob(index);
+        return callableStatement.getDate(index);
     }
 
     @Override
-    protected String doConvertToLogFormat(NClob value) {
-        return String.valueOf(value);
+    protected String doConvertToLogFormat(Date value) {
+        return "'" + value + "'";
     }
 
 }

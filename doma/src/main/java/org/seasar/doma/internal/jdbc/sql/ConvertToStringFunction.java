@@ -13,14 +13,14 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc;
+package org.seasar.doma.internal.jdbc.sql;
 
 import static org.seasar.doma.internal.util.Assertions.*;
 
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.JdbcType;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
+import org.seasar.doma.jdbc.type.JdbcType;
 
 /**
  * @author taedium

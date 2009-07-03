@@ -35,9 +35,16 @@ public class UniqueConstraintException extends JdbcException {
 
     public UniqueConstraintException(String rawSql, String formattedSql,
             Throwable cause) {
-        super(MessageCode.DOMA2004, cause, rawSql, formattedSql, cause);
+        super(MessageCode.DOMA2004, formattedSql, rawSql, cause);
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;
+    }
+
+    protected UniqueConstraintException(MessageCode messageCode, String rawSql,
+            Throwable cause) {
+        super(messageCode, cause, rawSql, cause);
+        this.rawSql = rawSql;
+        this.formattedSql = null;
     }
 
     public String getRawSql() {

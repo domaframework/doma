@@ -26,12 +26,11 @@ import org.seasar.doma.DomaUnsupportedOperationException;
 import org.seasar.doma.internal.jdbc.dialect.StandardForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.StandardPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
-import org.seasar.doma.jdbc.Dialect;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.jdbc.JdbcType;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.message.MessageCode;
 
 /**

@@ -13,45 +13,42 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.type;
+package org.seasar.doma.jdbc.type;
 
 import java.sql.CallableStatement;
+import java.sql.NClob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
-/**
- * @author taedium
- * 
- */
-public class StringType extends AbstractJdbcType<String> {
+public class NClobType extends AbstractJdbcType<NClob> {
 
-    public StringType() {
-        super(Types.VARCHAR);
+    public NClobType() {
+        super(Types.NCLOB);
     }
 
     @Override
-    protected String doGetValue(ResultSet resultSet, int index)
+    protected NClob doGetValue(ResultSet resultSet, int index)
             throws SQLException {
-        return resultSet.getString(index);
+        return resultSet.getNClob(index);
     }
 
     @Override
     protected void doSetValue(PreparedStatement preparedStatement, int index,
-            String value) throws SQLException {
-        preparedStatement.setString(index, value);
+            NClob value) throws SQLException {
+        preparedStatement.setNClob(index, value);
     }
 
     @Override
-    protected String doGetValue(CallableStatement callableStatement, int index)
+    protected NClob doGetValue(CallableStatement callableStatement, int index)
             throws SQLException {
-        return callableStatement.getString(index);
+        return callableStatement.getNClob(index);
     }
 
     @Override
-    protected String doConvertToLogFormat(String value) {
-        return "'" + value + "'";
+    protected String doConvertToLogFormat(NClob value) {
+        return String.valueOf(value);
     }
 
 }

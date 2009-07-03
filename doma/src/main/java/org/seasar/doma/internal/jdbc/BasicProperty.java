@@ -17,8 +17,8 @@ package org.seasar.doma.internal.jdbc;
 
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.Dialect;
 import org.seasar.doma.jdbc.NameConvention;
+import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
  * @author taedium

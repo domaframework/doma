@@ -26,7 +26,6 @@ import org.seasar.doma.internal.jdbc.sql.CallableSql;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.MessageCode;
 
-
 /**
  * @author taedium
  * 
@@ -57,7 +56,8 @@ public abstract class ModuleCommand<R, Q extends ModuleQuery> implements
                 bindParameters(callableStatement);
                 return executeInternal(callableStatement);
             } catch (SQLException e) {
-                throw new JdbcException(MessageCode.DOMA2009, e, e);
+                throw new JdbcException(MessageCode.DOMA2009, e, sql
+                        .getFormattedSql(), e);
             } finally {
                 Jdbcs.close(callableStatement, query.getConfig().jdbcLogger());
             }

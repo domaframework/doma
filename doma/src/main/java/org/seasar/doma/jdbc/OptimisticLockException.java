@@ -34,9 +34,15 @@ public class OptimisticLockException extends JdbcException {
     }
 
     public OptimisticLockException(String rawSql, String formattedSql) {
-        super(MessageCode.DOMA2003, rawSql, formattedSql);
+        super(MessageCode.DOMA2003, formattedSql, rawSql);
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;
+    }
+
+    protected OptimisticLockException(MessageCode messageCode, String rawSql) {
+        super(messageCode, rawSql);
+        this.rawSql = rawSql;
+        this.formattedSql = null;
     }
 
     public String getRawSql() {
