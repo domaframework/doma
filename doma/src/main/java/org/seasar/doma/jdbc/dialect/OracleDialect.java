@@ -15,22 +15,19 @@
  */
 package org.seasar.doma.jdbc.dialect;
 
-import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
 
 import org.seasar.doma.DomaIllegalArgumentException;
-import org.seasar.doma.DomaUnsupportedOperationException;
 import org.seasar.doma.internal.jdbc.dialect.OracleForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.OraclePagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
+import org.seasar.doma.internal.jdbc.type.AbstractResultSetType;
 import org.seasar.doma.jdbc.JdbcType;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlNode;
-
 
 /**
  * @author taedium
@@ -39,6 +36,8 @@ import org.seasar.doma.jdbc.SqlNode;
 public class OracleDialect extends StandardDialect {
 
     protected static final int UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE = 1;
+
+    protected static JdbcType<ResultSet> RESULT_SET = new OracleResultSetType();
 
     @Override
     public String getName() {
@@ -110,53 +109,21 @@ public class OracleDialect extends StandardDialect {
     }
 
     @Override
-    public JdbcType<ResultSet> getResultSetType() {
-        return new ResultSetType();
+    public boolean supportsBooleanType() {
+        return false;
     }
 
-    public static class ResultSetType implements JdbcType<ResultSet> {
+    @Override
+    public JdbcType<ResultSet> getResultSetType() {
+        return RESULT_SET;
+    }
+
+    public static class OracleResultSetType extends AbstractResultSetType {
 
         protected static int CURSOR = -10;
 
-        @Override
-        public ResultSet getValue(ResultSet resultSet, int index)
-                throws SQLException {
-            throw new DomaUnsupportedOperationException(getClass().getName(),
-                    "getValue");
-        }
-
-        @Override
-        public void setValue(PreparedStatement preparedStatement, int index,
-                ResultSet value) throws SQLException {
-            throw new DomaUnsupportedOperationException(getClass().getName(),
-                    "setValue");
-        }
-
-        @Override
-        public void registerOutParameter(CallableStatement callableStatement,
-                int index) throws SQLException {
-            if (callableStatement == null) {
-                throw new DomaIllegalArgumentException("callableStatement",
-                        callableStatement);
-            }
-            if (index < 1) {
-                throw new DomaIllegalArgumentException("index", index);
-            }
-            callableStatement.registerOutParameter(index, CURSOR);
-        }
-
-        @Override
-        public ResultSet getValue(CallableStatement callableStatement, int index)
-                throws SQLException {
-            if (callableStatement == null) {
-                throw new DomaIllegalArgumentException("callableStatement",
-                        callableStatement);
-            }
-            if (index < 1) {
-                throw new DomaIllegalArgumentException("index", index);
-            }
-            Object resultSet = callableStatement.getObject(index);
-            return ResultSet.class.cast(resultSet);
+        public OracleResultSetType() {
+            super(CURSOR);
         }
     }
 

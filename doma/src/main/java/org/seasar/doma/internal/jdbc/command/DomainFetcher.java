@@ -24,7 +24,6 @@ import java.sql.SQLException;
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.internal.jdbc.query.Query;
 
-
 /**
  * @author taedium
  * 
@@ -42,7 +41,8 @@ public class DomainFetcher {
             throws SQLException {
         ResultSetMetaData resultSetMeta = resultSet.getMetaData();
         if (resultSetMeta.getColumnCount() > 0) {
-            GetValueFunction function = new GetValueFunction(resultSet, 1);
+            GetValueFunction function = new GetValueFunction(query.getConfig(),
+                    resultSet, 1);
             domain.accept(query.getConfig().jdbcMappingVisitor(), function);
         }
     }

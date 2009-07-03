@@ -36,10 +36,10 @@ import org.seasar.doma.internal.jdbc.sql.InOutParameter;
 import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.ListParameter;
 import org.seasar.doma.internal.jdbc.sql.OutParameter;
+import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Dialect;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.JdbcType;
-
 
 /**
  * 
@@ -68,6 +68,8 @@ public class CallableSqlParameterBinder {
     protected static class BindingVisitor implements
             CallableSqlParameterVisitor<Void, Void, SQLException> {
 
+        protected final Config config;
+
         protected final Dialect dialect;
 
         protected final DomainVisitor<Void, JdbcMappingFunction, SQLException> jdbcMappingVisitor;
@@ -77,8 +79,9 @@ public class CallableSqlParameterBinder {
         protected int index = 1;
 
         public BindingVisitor(Query query, CallableStatement callableStatement) {
-            this.dialect = query.getConfig().dialect();
-            this.jdbcMappingVisitor = query.getConfig().jdbcMappingVisitor();
+            this.config = query.getConfig();
+            this.dialect = config.dialect();
+            this.jdbcMappingVisitor = config.jdbcMappingVisitor();
             this.callableStatement = callableStatement;
         }
 
@@ -126,10 +129,10 @@ public class CallableSqlParameterBinder {
         public Void visitInOutParameter(InOutParameter parameter, Void p)
                 throws SQLException {
             Domain<?, ?> domain = parameter.getDomain();
-            domain.accept(jdbcMappingVisitor, new SetValueFunction(
+            domain.accept(jdbcMappingVisitor, new SetValueFunction(config,
                     callableStatement, index));
             domain.accept(jdbcMappingVisitor, new RegisterOutParameterFunction(
-                    callableStatement, index));
+                    config, callableStatement, index));
             index++;
             return null;
         }
@@ -138,7 +141,7 @@ public class CallableSqlParameterBinder {
         public Void visitInParameter(InParameter parameter, Void p)
                 throws SQLException {
             Domain<?, ?> domain = parameter.getDomain();
-            domain.accept(jdbcMappingVisitor, new SetValueFunction(
+            domain.accept(jdbcMappingVisitor, new SetValueFunction(config,
                     callableStatement, index));
             index++;
             return null;
@@ -149,7 +152,7 @@ public class CallableSqlParameterBinder {
                 throws SQLException {
             Domain<?, ?> domain = parameter.getDomain();
             domain.accept(jdbcMappingVisitor, new RegisterOutParameterFunction(
-                    callableStatement, index));
+                    config, callableStatement, index));
             index++;
             return null;
         }
@@ -159,7 +162,7 @@ public class CallableSqlParameterBinder {
                 DomainResultParameter<?> parameter, Void p) throws SQLException {
             Domain<?, ?> domain = parameter.getDomain();
             domain.accept(jdbcMappingVisitor, new RegisterOutParameterFunction(
-                    callableStatement, index));
+                    config, callableStatement, index));
             index++;
             return null;
         }

@@ -19,40 +19,54 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.sql.Types;
+
+import org.seasar.doma.DomaUnsupportedOperationException;
 
 /**
  * @author taedium
  * 
  */
-public class TimestampType extends AbstractJdbcType<Timestamp> {
+public abstract class AbstractResultSetType extends AbstractJdbcType<ResultSet> {
 
-    public TimestampType() {
-        super(Types.TIMESTAMP);
+    public AbstractResultSetType(int type) {
+        super(type);
     }
 
     @Override
-    protected Timestamp doGetValue(ResultSet resultSet, int index)
+    public ResultSet getValue(ResultSet resultSet, int index)
             throws SQLException {
-        return resultSet.getTimestamp(index);
+        throw new DomaUnsupportedOperationException(getClass().getName(),
+                "doGetValue");
+    }
+
+    @Override
+    public void setValue(PreparedStatement preparedStatement, int index,
+            ResultSet value) throws SQLException {
+        throw new DomaUnsupportedOperationException(getClass().getName(),
+                "doSetValue");
+    }
+
+    @Override
+    protected ResultSet doGetValue(ResultSet resultSet, int index)
+            throws SQLException {
+        return null;
     }
 
     @Override
     protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Timestamp value) throws SQLException {
-        preparedStatement.setTimestamp(index, value);
+            ResultSet value) throws SQLException {
     }
 
     @Override
-    protected Timestamp doGetValue(CallableStatement callableStatement,
+    protected ResultSet doGetValue(CallableStatement callableStatement,
             int index) throws SQLException {
-        return callableStatement.getTimestamp(index);
+        Object resultSet = callableStatement.getObject(index);
+        return ResultSet.class.cast(resultSet);
     }
 
     @Override
-    protected String doConvertToLogFormat(Timestamp value) {
-        return "'" + value + "'";
+    protected String doConvertToLogFormat(ResultSet value) {
+        return value.toString();
     }
 
 }

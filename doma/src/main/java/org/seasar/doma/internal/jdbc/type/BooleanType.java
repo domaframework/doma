@@ -19,40 +19,38 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.sql.Types;
 
 /**
  * @author taedium
  * 
  */
-public class TimeType extends AbstractJdbcType<Time> {
+public class BooleanType extends AbstractJdbcType<Boolean> {
 
-    public TimeType() {
-        super(Types.TIME);
+    public BooleanType() {
+        super(Types.BOOLEAN);
     }
 
     @Override
-    protected Time doGetValue(ResultSet resultSet, int index)
+    protected Boolean doGetValue(ResultSet resultSet, int index)
             throws SQLException {
-        return resultSet.getTime(index);
+        return resultSet.getBoolean(index);
     }
 
     @Override
     protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Time value) throws SQLException {
-        preparedStatement.setTime(index, value);
+            Boolean value) throws SQLException {
+        preparedStatement.setBoolean(index, value);
     }
 
     @Override
-    protected Time doGetValue(CallableStatement callableStatement, int index)
+    protected Boolean doGetValue(CallableStatement callableStatement, int index)
             throws SQLException {
-        return callableStatement.getTime(index);
+        return callableStatement.getBoolean(index);
     }
 
     @Override
-    protected String doConvertToLogFormat(Time value) {
+    protected String doConvertToLogFormat(Boolean value) {
         return "'" + value + "'";
     }
-
 }

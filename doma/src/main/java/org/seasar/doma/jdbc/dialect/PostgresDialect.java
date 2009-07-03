@@ -15,23 +15,20 @@
  */
 package org.seasar.doma.jdbc.dialect;
 
-import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Collections;
 
 import org.seasar.doma.DomaIllegalArgumentException;
-import org.seasar.doma.DomaUnsupportedOperationException;
 import org.seasar.doma.internal.jdbc.dialect.PostgresForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.PostgresPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
+import org.seasar.doma.internal.jdbc.type.AbstractResultSetType;
 import org.seasar.doma.jdbc.JdbcType;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlNode;
-
 
 /**
  * @author taedium
@@ -40,6 +37,8 @@ import org.seasar.doma.jdbc.SqlNode;
 public class PostgresDialect extends StandardDialect {
 
     protected static final String UNIQUE_CONSTRAINT_VIOLATION_STATE_CODE = "23505";
+
+    protected static JdbcType<ResultSet> RESULT_SET = new PostgresResultSetType();
 
     @Override
     public String getName() {
@@ -126,50 +125,13 @@ public class PostgresDialect extends StandardDialect {
 
     @Override
     public JdbcType<ResultSet> getResultSetType() {
-        return new ResultSetType();
+        return RESULT_SET;
     }
 
-    public static class ResultSetType implements JdbcType<ResultSet> {
+    public static class PostgresResultSetType extends AbstractResultSetType {
 
-        @Override
-        public ResultSet getValue(ResultSet resultSet, int index)
-                throws SQLException {
-            throw new DomaUnsupportedOperationException(getClass().getName(),
-                    "getValue");
-        }
-
-        @Override
-        public void setValue(PreparedStatement preparedStatement, int index,
-                ResultSet value) throws SQLException {
-            throw new DomaUnsupportedOperationException(getClass().getName(),
-                    "setValue");
-        }
-
-        @Override
-        public void registerOutParameter(CallableStatement callableStatement,
-                int index) throws SQLException {
-            if (callableStatement == null) {
-                throw new DomaIllegalArgumentException("callableStatement",
-                        callableStatement);
-            }
-            if (index < 1) {
-                throw new DomaIllegalArgumentException("index", index);
-            }
-            callableStatement.registerOutParameter(index, Types.OTHER);
-        }
-
-        @Override
-        public ResultSet getValue(CallableStatement callableStatement, int index)
-                throws SQLException {
-            if (callableStatement == null) {
-                throw new DomaIllegalArgumentException("callableStatement",
-                        callableStatement);
-            }
-            if (index < 1) {
-                throw new DomaIllegalArgumentException("index", index);
-            }
-            Object resultSet = callableStatement.getObject(index);
-            return ResultSet.class.cast(resultSet);
+        public PostgresResultSetType() {
+            super(Types.OTHER);
         }
     }
 

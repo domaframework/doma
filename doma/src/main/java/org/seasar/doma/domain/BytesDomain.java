@@ -13,20 +13,20 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc;
-
-import java.sql.SQLException;
-
-import org.seasar.doma.domain.Domain;
+package org.seasar.doma.domain;
 
 /**
  * @author taedium
  * 
  */
-public interface JdbcMappingFunction {
+public class BytesDomain extends AbstractBytesDomain<BytesDomain> {
 
-    Config getConfig();
+    public BytesDomain() {
+        super();
+    }
 
-    <R, V> R apply(Domain<V, ?> domain, JdbcType<V> jdbcType)
-            throws SQLException;
+    public BytesDomain(byte[] value) {
+        super(value);
+    }
+
 }

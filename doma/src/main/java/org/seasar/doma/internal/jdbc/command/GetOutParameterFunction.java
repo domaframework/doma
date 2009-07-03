@@ -22,9 +22,9 @@ import java.sql.SQLException;
 
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.domain.Domain;
+import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.JdbcType;
-
 
 /**
  * 
@@ -33,20 +33,28 @@ import org.seasar.doma.jdbc.JdbcType;
  */
 public class GetOutParameterFunction implements JdbcMappingFunction {
 
+    protected final Config config;
+
     protected final CallableStatement callableStatement;
 
     protected final int index;
 
-    public GetOutParameterFunction(CallableStatement callableStatement,
-            int index) {
-        assertNotNull(callableStatement);
+    public GetOutParameterFunction(Config config,
+            CallableStatement callableStatement, int index) {
+        assertNotNull(config, callableStatement);
         assertTrue(index > 0, index);
+        this.config = config;
         this.callableStatement = callableStatement;
         this.index = index;
     }
 
     @Override
-    public <V> void apply(Domain<V, ?> domain, JdbcType<V> jdbcType)
+    public Config getConfig() {
+        return config;
+    }
+
+    @Override
+    public <R, V> R apply(Domain<V, ?> domain, JdbcType<V> jdbcType)
             throws SQLException {
         if (domain == null) {
             throw new DomaIllegalArgumentException("domain", domain);
@@ -57,5 +65,6 @@ public class GetOutParameterFunction implements JdbcMappingFunction {
         V value = jdbcType.getValue(callableStatement, index);
         domain.set(value);
         domain.setChanged(false);
+        return null;
     }
 }

@@ -18,9 +18,12 @@ package org.seasar.doma.jdbc;
 import org.seasar.doma.internal.jdbc.type.ArrayType;
 import org.seasar.doma.internal.jdbc.type.BigDecimalType;
 import org.seasar.doma.internal.jdbc.type.BlobType;
+import org.seasar.doma.internal.jdbc.type.BooleanType;
+import org.seasar.doma.internal.jdbc.type.BytesType;
 import org.seasar.doma.internal.jdbc.type.ClobType;
 import org.seasar.doma.internal.jdbc.type.DateType;
-import org.seasar.doma.internal.jdbc.type.IntegerType;
+import org.seasar.doma.internal.jdbc.type.IntAdaptiveBooleanType;
+import org.seasar.doma.internal.jdbc.type.IntType;
 import org.seasar.doma.internal.jdbc.type.NClobType;
 import org.seasar.doma.internal.jdbc.type.StringType;
 import org.seasar.doma.internal.jdbc.type.TimeType;
@@ -34,7 +37,7 @@ public final class JdbcTypes {
 
     public static final StringType STRING = new StringType();
 
-    public static final IntegerType INTEGER = new IntegerType();
+    public static final IntType INT = new IntType();
 
     public static final BigDecimalType BIGDECIMAL = new BigDecimalType();
 
@@ -51,5 +54,11 @@ public final class JdbcTypes {
     public static final ClobType CLOB = new ClobType();
 
     public static final NClobType NCLOB = new NClobType();
+
+    public static final BooleanType BOOLEAN = new BooleanType();
+
+    public static final IntAdaptiveBooleanType INT_ADAPTIVE_BOOLEAN = new IntAdaptiveBooleanType();
+
+    public static final BytesType BYTES = new BytesType();
 
 }

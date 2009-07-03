@@ -45,6 +45,8 @@ public interface Dialect {
 
     boolean supportsResultSetReturningAsOutParameter();
 
+    boolean supportsBooleanType();
+
     Sql<?> getIdentitySelectSql(String qualifiedTableName, String columnName);
 
     Sql<?> getSequenceNextValSql(String qualifiedSequenceName,

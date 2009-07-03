@@ -25,7 +25,6 @@ import org.seasar.doma.domain.Domain;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 
-
 /**
  * 
  * @author taedium
@@ -45,8 +44,8 @@ public class PreparedSqlParameterBinder {
         assertNotNull(preparedStatement, paramters);
         int index = 1;
         for (PreparedSqlParameter p : paramters) {
-            SetValueFunction function = new SetValueFunction(preparedStatement,
-                    index);
+            SetValueFunction function = new SetValueFunction(query.getConfig(),
+                    preparedStatement, index);
             Domain<?, ?> domain = p.getDomain();
             domain.accept(query.getConfig().jdbcMappingVisitor(), function);
             index++;

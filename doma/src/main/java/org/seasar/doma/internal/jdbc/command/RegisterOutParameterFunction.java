@@ -22,9 +22,9 @@ import java.sql.SQLException;
 
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.domain.Domain;
+import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.JdbcType;
-
 
 /**
  * 
@@ -33,24 +33,33 @@ import org.seasar.doma.jdbc.JdbcType;
  */
 public class RegisterOutParameterFunction implements JdbcMappingFunction {
 
+    protected final Config config;
+
     protected final CallableStatement callableStatement;
 
     protected final int index;
 
-    public RegisterOutParameterFunction(CallableStatement callableStatement,
-            int index) {
-        assertNotNull(callableStatement);
+    public RegisterOutParameterFunction(Config config,
+            CallableStatement callableStatement, int index) {
+        assertNotNull(config, callableStatement);
         assertTrue(index > 0, index);
+        this.config = config;
         this.callableStatement = callableStatement;
         this.index = index;
     }
 
     @Override
-    public <V> void apply(Domain<V, ?> domain, JdbcType<V> jdbcType)
+    public Config getConfig() {
+        return config;
+    }
+
+    @Override
+    public <R, V> R apply(Domain<V, ?> domain, JdbcType<V> jdbcType)
             throws SQLException {
         if (jdbcType == null) {
             throw new DomaIllegalArgumentException("jdbcType", jdbcType);
         }
         jdbcType.registerOutParameter(callableStatement, index);
+        return null;
     }
 }

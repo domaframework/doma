@@ -166,6 +166,11 @@ public class StandardDialect implements Dialect {
     }
 
     @Override
+    public boolean supportsBooleanType() {
+        return true;
+    }
+
+    @Override
     public JdbcType<ResultSet> getResultSetType() {
         throw new DomaUnsupportedOperationException(getClass().getName(),
                 "getResultSetType");

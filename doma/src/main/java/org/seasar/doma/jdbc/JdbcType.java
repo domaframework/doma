@@ -37,4 +37,6 @@ public interface JdbcType<T> {
     T getValue(CallableStatement callableStatement, int index)
             throws SQLException;
 
+    String convertToLogFormat(T value);
+
 }

@@ -19,40 +19,50 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.sql.Types;
 
 /**
  * @author taedium
  * 
  */
-public class TimeType extends AbstractJdbcType<Time> {
+public class IntAdaptiveBooleanType extends AbstractJdbcType<Boolean> {
 
-    public TimeType() {
-        super(Types.TIME);
+    public IntAdaptiveBooleanType() {
+        super(Types.INTEGER);
     }
 
     @Override
-    protected Time doGetValue(ResultSet resultSet, int index)
+    protected Boolean doGetValue(ResultSet resultSet, int index)
             throws SQLException {
-        return resultSet.getTime(index);
+        int value = resultSet.getInt(index);
+        return formIntToBoolean(value);
     }
 
     @Override
     protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Time value) throws SQLException {
-        preparedStatement.setTime(index, value);
+            Boolean value) throws SQLException {
+        int i = fromBooleanToInt(value);
+        preparedStatement.setInt(index, i);
     }
 
     @Override
-    protected Time doGetValue(CallableStatement callableStatement, int index)
+    protected Boolean doGetValue(CallableStatement callableStatement, int index)
             throws SQLException {
-        return callableStatement.getTime(index);
+        int value = callableStatement.getInt(index);
+        return formIntToBoolean(value);
     }
 
     @Override
-    protected String doConvertToLogFormat(Time value) {
-        return "'" + value + "'";
+    protected String doConvertToLogFormat(Boolean value) {
+        int i = fromBooleanToInt(value);
+        return String.valueOf(i);
     }
 
+    protected int fromBooleanToInt(Boolean value) {
+        return value ? 1 : 0;
+    }
+
+    protected Boolean formIntToBoolean(int value) {
+        return value == 1 ? Boolean.TRUE : Boolean.FALSE;
+    }
 }

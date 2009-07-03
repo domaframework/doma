@@ -16,6 +16,8 @@
 package org.seasar.doma.jdbc;
 
 import org.seasar.doma.domain.AbstractBigDecimalDomain;
+import org.seasar.doma.domain.AbstractBooleanDomain;
+import org.seasar.doma.domain.AbstractBytesDomain;
 import org.seasar.doma.domain.AbstractDateDomain;
 import org.seasar.doma.domain.AbstractIntegerDomain;
 import org.seasar.doma.domain.AbstractStringDomain;
@@ -118,6 +120,24 @@ public class SqlLogFormattingVisitor implements
 
     @Override
     public String visitAbstractNClobDomain(AbstractNClobDomain domain, Void p)
+            throws RuntimeException {
+        if (domain.isNull()) {
+            return NULL;
+        }
+        return domain.get().toString();
+    }
+
+    @Override
+    public String visitAbstractBooleanDomain(AbstractBooleanDomain<?> domain,
+            Void p) throws RuntimeException {
+        if (domain.isNull()) {
+            return NULL;
+        }
+        return domain.get().toString();
+    }
+
+    @Override
+    public String visitAbstractBytesDomain(AbstractBytesDomain<?> domain, Void p)
             throws RuntimeException {
         if (domain.isNull()) {
             return NULL;

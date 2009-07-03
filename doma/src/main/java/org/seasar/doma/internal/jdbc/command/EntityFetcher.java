@@ -29,7 +29,6 @@ import org.seasar.doma.internal.jdbc.Entity;
 import org.seasar.doma.internal.jdbc.Property;
 import org.seasar.doma.internal.jdbc.query.Query;
 
-
 /**
  * @author taedium
  * 
@@ -58,7 +57,8 @@ public class EntityFetcher {
             Property<?> property = entity.__getPropertyByName(propertyName);
             if (property != null) {
                 Domain<?, ?> domain = property.getDomain();
-                GetValueFunction function = new GetValueFunction(resultSet, i);
+                GetValueFunction function = new GetValueFunction(query
+                        .getConfig(), resultSet, i);
                 domain.accept(query.getConfig().jdbcMappingVisitor(), function);
             }
         }

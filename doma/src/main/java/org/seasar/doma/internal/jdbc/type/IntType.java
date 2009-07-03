@@ -19,40 +19,39 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.sql.Types;
 
 /**
  * @author taedium
  * 
  */
-public class TimeType extends AbstractJdbcType<Time> {
+public class IntType extends AbstractJdbcType<Integer> {
 
-    public TimeType() {
-        super(Types.TIME);
+    public IntType() {
+        super(Types.INTEGER);
     }
 
     @Override
-    protected Time doGetValue(ResultSet resultSet, int index)
+    protected Integer doGetValue(ResultSet resultSet, int index)
             throws SQLException {
-        return resultSet.getTime(index);
+        return resultSet.getInt(index);
     }
 
     @Override
     protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Time value) throws SQLException {
-        preparedStatement.setTime(index, value);
+            Integer value) throws SQLException {
+        preparedStatement.setInt(index, value);
     }
 
     @Override
-    protected Time doGetValue(CallableStatement callableStatement, int index)
+    protected Integer doGetValue(CallableStatement callableStatement, int index)
             throws SQLException {
-        return callableStatement.getTime(index);
+        return callableStatement.getInt(index);
     }
 
     @Override
-    protected String doConvertToLogFormat(Time value) {
-        return "'" + value + "'";
+    protected String doConvertToLogFormat(Integer value) {
+        return String.valueOf(value);
     }
 
 }

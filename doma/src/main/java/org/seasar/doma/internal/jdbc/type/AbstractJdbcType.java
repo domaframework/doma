@@ -19,32 +19,36 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.jdbc.JdbcType;
-
 
 /**
  * @author taedium
  * 
  */
-public class IntegerType implements JdbcType<Integer> {
+public abstract class AbstractJdbcType<T> implements JdbcType<T> {
+
+    protected final int type;
+
+    protected AbstractJdbcType(int type) {
+        this.type = type;
+    }
 
     @Override
-    public Integer getValue(ResultSet resultSet, int index) throws SQLException {
+    public T getValue(ResultSet resultSet, int index) throws SQLException {
         if (resultSet == null) {
             throw new DomaIllegalArgumentException("resultSet", resultSet);
         }
         if (index < 1) {
             throw new DomaIllegalArgumentException("index", index);
         }
-        return resultSet.getInt(index);
+        return doGetValue(resultSet, index);
     }
 
     @Override
-    public void setValue(PreparedStatement preparedStatement, int index,
-            Integer value) throws SQLException {
+    public void setValue(PreparedStatement preparedStatement, int index, T value)
+            throws SQLException {
         if (preparedStatement == null) {
             throw new DomaIllegalArgumentException("preparedStatement",
                     preparedStatement);
@@ -53,9 +57,9 @@ public class IntegerType implements JdbcType<Integer> {
             throw new DomaIllegalArgumentException("index", index);
         }
         if (value == null) {
-            preparedStatement.setNull(index, Types.INTEGER);
+            preparedStatement.setNull(index, type);
         } else {
-            preparedStatement.setInt(index, value);
+            doSetValue(preparedStatement, index, value);
         }
     }
 
@@ -69,11 +73,11 @@ public class IntegerType implements JdbcType<Integer> {
         if (index < 1) {
             throw new DomaIllegalArgumentException("index", index);
         }
-        callableStatement.registerOutParameter(index, Types.INTEGER);
+        callableStatement.registerOutParameter(index, type);
     }
 
     @Override
-    public Integer getValue(CallableStatement callableStatement, int index)
+    public T getValue(CallableStatement callableStatement, int index)
             throws SQLException {
         if (callableStatement == null) {
             throw new DomaIllegalArgumentException("callableStatement",
@@ -82,7 +86,25 @@ public class IntegerType implements JdbcType<Integer> {
         if (index < 1) {
             throw new DomaIllegalArgumentException("index", index);
         }
-        return callableStatement.getInt(index);
+        return doGetValue(callableStatement, index);
     }
 
+    @Override
+    public String convertToLogFormat(T value) {
+        if (value == null) {
+            return "null";
+        }
+        return doConvertToLogFormat(value);
+    }
+
+    protected abstract T doGetValue(ResultSet resultSet, int index)
+            throws SQLException;
+
+    protected abstract void doSetValue(PreparedStatement preparedStatement,
+            int index, T value) throws SQLException;
+
+    protected abstract T doGetValue(CallableStatement callableStatement,
+            int index) throws SQLException;
+
+    protected abstract String doConvertToLogFormat(T value);
 }
