@@ -21,7 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.seasar.doma.domain.Domain;
-import org.seasar.doma.domain.DomainVisitor;
+import org.seasar.doma.internal.jdbc.ConvertToStringFunction;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 
 /**
  * @author taedium
@@ -35,12 +37,14 @@ public class PreparedSqlBuilder {
 
     protected final StringBuilder formattedSql = new StringBuilder(200);
 
-    protected final DomainVisitor<String, Void, RuntimeException> sqlLogFormattingVisitor;
+    protected final Config config;
 
-    public PreparedSqlBuilder(
-            DomainVisitor<String, Void, RuntimeException> sqlLogFormattingVisitor) {
-        assertNotNull(sqlLogFormattingVisitor);
-        this.sqlLogFormattingVisitor = sqlLogFormattingVisitor;
+    protected final SqlLogFormattingFunction formattingFunction;
+
+    public PreparedSqlBuilder(Config config) {
+        assertNotNull(config);
+        this.config = config;
+        this.formattingFunction = new ConvertToStringFunction(config);
     }
 
     public void appendSql(String sql) {
@@ -55,7 +59,8 @@ public class PreparedSqlBuilder {
 
     public void appendDomain(Domain<?, ?> domain) {
         rawSql.append("?");
-        formattedSql.append(domain.accept(sqlLogFormattingVisitor, null));
+        formattedSql.append(domain
+                .accept(config.sqlLogFormattingVisitor(), formattingFunction));
         parameters.add(new InParameter(domain));
     }
 

@@ -24,7 +24,6 @@ import org.seasar.doma.internal.jdbc.Property;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 
-
 /**
  * @author taedium
  * 
@@ -77,8 +76,7 @@ public class AutoBatchDeleteQuery<I, E extends Entity<I>> extends
     }
 
     protected void prepareSql() {
-        PreparedSqlBuilder builder = new PreparedSqlBuilder(config
-                .sqlLogFormattingVisitor());
+        PreparedSqlBuilder builder = new PreparedSqlBuilder(config);
         builder.appendSql("delete from ");
         builder.appendSql(tableName);
         if (idProperties.size() > 0) {

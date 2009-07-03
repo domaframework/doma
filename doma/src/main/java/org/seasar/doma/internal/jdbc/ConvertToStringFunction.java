@@ -13,36 +13,36 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.query;
+package org.seasar.doma.internal.jdbc;
 
 import static org.seasar.doma.internal.util.Assertions.*;
 
-import org.seasar.doma.internal.jdbc.sql.CallableSqlBuilder;
+import org.seasar.doma.domain.Domain;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.JdbcType;
+import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 
 /**
  * @author taedium
  * 
  */
-public class AutoProcedureQuery extends AutoModuleQuery implements
-        ProcedureQuery {
+public class ConvertToStringFunction implements SqlLogFormattingFunction {
 
-    protected String procedureName;
+    protected final Config config;
 
-    public void compile() {
-        assertNotNull(config, procedureName, callerClassName, callerMethodName);
-        prepareOptions();
-        prepareSql();
-        assertNotNull(sql);
+    public ConvertToStringFunction(Config config) {
+        assertNotNull(config);
+        this.config = config;
     }
 
-    protected void prepareSql() {
-        CallableSqlBuilder builder = new CallableSqlBuilder(config,
-                procedureName, parameters);
-        sql = builder.build();
+    @Override
+    public Config getConfig() {
+        return config;
     }
 
-    public void setProcedureName(String procedureName) {
-        this.procedureName = procedureName;
+    @Override
+    public <V> String apply(Domain<V, ?> domain, JdbcType<V> jdbcType) {
+        return jdbcType.convertToLogFormat(domain.get());
     }
 
 }

@@ -17,25 +17,27 @@ package org.seasar.doma.internal.jdbc;
 
 import java.util.Arrays;
 
+import junit.framework.TestCase;
+
 import org.seasar.doma.domain.IntegerDomain;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
+import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlFileNotFoundException;
-import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.StandardSqlFileRepository;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
 import org.seasar.doma.message.MessageCode;
-
-import junit.framework.TestCase;
 
 /**
  * @author taedium
  * 
  */
 public class JdbcExceptionTest extends TestCase {
+
+    private MockConfig config = new MockConfig();
 
     public void testSqlFileNotFound() throws Exception {
         StandardSqlFileRepository repository = new StandardSqlFileRepository();
@@ -179,8 +181,7 @@ public class JdbcExceptionTest extends TestCase {
         SqlParser parser = new SqlParser(
                 "select * from aaa where bbb = \n/*bbb*/'ccc'");
         SqlNode sqlNode = parser.parse();
-        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(
-                new SqlLogFormattingVisitor());
+        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config);
         try {
             builder.build(sqlNode);
             fail();
@@ -196,8 +197,8 @@ public class JdbcExceptionTest extends TestCase {
         SqlNode sqlNode = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("bbb", new IntegerDomain(1));
-        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(evaluator,
-                new SqlLogFormattingVisitor());
+        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
+                evaluator);
         try {
             builder.build(sqlNode);
             fail();
@@ -214,8 +215,8 @@ public class JdbcExceptionTest extends TestCase {
         SqlNode sqlNode = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("bbb", Arrays.asList(1));
-        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(evaluator,
-                new SqlLogFormattingVisitor());
+        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
+                evaluator);
         try {
             builder.build(sqlNode);
             fail();
@@ -231,8 +232,8 @@ public class JdbcExceptionTest extends TestCase {
         SqlNode sqlNode = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("bbb", 1);
-        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(evaluator,
-                new SqlLogFormattingVisitor());
+        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
+                evaluator);
         try {
             builder.build(sqlNode);
             fail();
@@ -248,8 +249,8 @@ public class JdbcExceptionTest extends TestCase {
         SqlNode sqlNode = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("bbb", Arrays.asList(new IntegerDomain(1), null));
-        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(evaluator,
-                new SqlLogFormattingVisitor());
+        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
+                evaluator);
         try {
             builder.build(sqlNode);
             fail();

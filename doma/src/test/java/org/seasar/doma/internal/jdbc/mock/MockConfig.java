@@ -28,6 +28,7 @@ import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.NameConvention;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.SqlFileRepository;
+import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.StandardJdbcLogger;
 import org.seasar.doma.jdbc.StandardNameConvention;
@@ -51,7 +52,7 @@ public class MockConfig implements Config {
 
     protected DomainVisitor<Void, JdbcMappingFunction, SQLException> jdbcMappingVisitor = new JdbcMappingVisitor();
 
-    protected DomainVisitor<String, Void, RuntimeException> sqlLogFormattingVisitor = new SqlLogFormattingVisitor();
+    protected DomainVisitor<String, SqlLogFormattingFunction, RuntimeException> sqlLogFormattingVisitor = new SqlLogFormattingVisitor();
 
     protected JdbcLogger sqlLogger = new StandardJdbcLogger();
 
@@ -88,7 +89,7 @@ public class MockConfig implements Config {
     }
 
     @Override
-    public DomainVisitor<String, Void, RuntimeException> sqlLogFormattingVisitor() {
+    public DomainVisitor<String, SqlLogFormattingFunction, RuntimeException> sqlLogFormattingVisitor() {
         return sqlLogFormattingVisitor;
     }
 
@@ -163,12 +164,12 @@ public class MockConfig implements Config {
         this.jdbcMappingVisitor = jdbcMappingVisitor;
     }
 
-    public DomainVisitor<String, Void, RuntimeException> getSqlLogFormattingVisitor() {
+    public DomainVisitor<String, SqlLogFormattingFunction, RuntimeException> getSqlLogFormattingVisitor() {
         return sqlLogFormattingVisitor;
     }
 
     public void setSqlLogFormattingVisitor(
-            DomainVisitor<String, Void, RuntimeException> sqlLogFormattingVisitor) {
+            DomainVisitor<String, SqlLogFormattingFunction, RuntimeException> sqlLogFormattingVisitor) {
         this.sqlLogFormattingVisitor = sqlLogFormattingVisitor;
     }
 

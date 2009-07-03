@@ -28,7 +28,6 @@ import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SqlFile;
 import org.seasar.doma.jdbc.SqlNode;
 
-
 /**
  * @author taedium
  * 
@@ -76,8 +75,8 @@ public class SqlFileSelectQuery implements SelectQuery {
 
     protected void prepareSql() {
         ExpressionEvaluator evaluator = new ExpressionEvaluator(parameters);
-        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                evaluator, config.sqlLogFormattingVisitor());
+        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
+                evaluator);
         SqlFile sqlFile = config.sqlFileRepository()
                 .getSqlFile(sqlFilePath, config.dialect());
         config.jdbcLogger()

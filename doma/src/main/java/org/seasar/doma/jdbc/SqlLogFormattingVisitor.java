@@ -34,123 +34,91 @@ import org.seasar.doma.jdbc.domain.AbstractNClobDomain;
  * @author taedium
  * 
  */
-public class SqlLogFormattingVisitor implements
-        BuiltInDomainVisitor<String, Void, RuntimeException> {
-
-    protected static final String NULL = "null";
+public class SqlLogFormattingVisitor
+        implements
+        BuiltInDomainVisitor<String, SqlLogFormattingFunction, RuntimeException> {
 
     @Override
     public String visitAbstractBigDecimalDomain(
-            AbstractBigDecimalDomain<?> domain, Void p) {
-        if (domain.isNull()) {
-            return NULL;
-        }
-        return domain.get().toPlainString();
+            AbstractBigDecimalDomain<?> domain, SqlLogFormattingFunction p) {
+        return p.apply(domain, JdbcTypes.BIGDECIMAL);
     }
 
     @Override
-    public String visitAbstractDateDomain(AbstractDateDomain<?> domain, Void p) {
-        if (domain.isNull()) {
-            return NULL;
-        }
-        return "'" + domain.get() + "'";
+    public String visitAbstractDateDomain(AbstractDateDomain<?> domain,
+            SqlLogFormattingFunction p) {
+        return p.apply(domain, JdbcTypes.DATE);
     }
 
     @Override
     public String visitAbstractIntegerDomain(AbstractIntegerDomain<?> domain,
-            Void p) {
-        if (domain.isNull()) {
-            return NULL;
-        }
-        return domain.get().toString();
+            SqlLogFormattingFunction p) {
+        return p.apply(domain, JdbcTypes.INT);
     }
 
     @Override
     public String visitAbstractStringDomain(AbstractStringDomain<?> domain,
-            Void p) {
-        if (domain.isNull()) {
-            return NULL;
-        }
-        return "'" + domain.get() + "'";
+            SqlLogFormattingFunction p) {
+        return p.apply(domain, JdbcTypes.STRING);
     }
 
     @Override
-    public String visitAbstractTimeDomain(AbstractTimeDomain<?> domain, Void p) {
-        if (domain.isNull()) {
-            return NULL;
-        }
-        return "'" + domain.get() + "'";
+    public String visitAbstractTimeDomain(AbstractTimeDomain<?> domain,
+            SqlLogFormattingFunction p) {
+        return p.apply(domain, JdbcTypes.TIME);
     }
 
     @Override
     public String visitAbstractTimestampDomain(
-            AbstractTimestampDomain<?> domain, Void p) {
-        if (domain.isNull()) {
-            return NULL;
-        }
-        return "'" + domain.get() + "'";
+            AbstractTimestampDomain<?> domain, SqlLogFormattingFunction p) {
+        return p.apply(domain, JdbcTypes.TIMESTAMP);
     }
 
     @Override
-    public String visitAbstractArrayDomain(AbstractArrayDomain<?> domain, Void p)
-            throws RuntimeException {
-        if (domain.isNull()) {
-            return NULL;
-        }
-        return "'" + domain.get() + "'";
+    public String visitAbstractArrayDomain(AbstractArrayDomain<?> domain,
+            SqlLogFormattingFunction p) throws RuntimeException {
+        return p.apply(domain, JdbcTypes.ARRAY);
     }
 
     @Override
-    public String visitAbstractBlobDomain(AbstractBlobDomain domain, Void p)
-            throws RuntimeException {
-        if (domain.isNull()) {
-            return NULL;
-        }
-        return domain.get().toString();
+    public String visitAbstractBlobDomain(AbstractBlobDomain domain,
+            SqlLogFormattingFunction p) throws RuntimeException {
+        return p.apply(domain, JdbcTypes.BLOB);
     }
 
     @Override
-    public String visitAbstractClobDomain(AbstractClobDomain domain, Void p)
-            throws RuntimeException {
-        if (domain.isNull()) {
-            return NULL;
-        }
-        return domain.get().toString();
+    public String visitAbstractClobDomain(AbstractClobDomain domain,
+            SqlLogFormattingFunction p) throws RuntimeException {
+        return p.apply(domain, JdbcTypes.CLOB);
     }
 
     @Override
-    public String visitAbstractNClobDomain(AbstractNClobDomain domain, Void p)
-            throws RuntimeException {
-        if (domain.isNull()) {
-            return NULL;
-        }
-        return domain.get().toString();
+    public String visitAbstractNClobDomain(AbstractNClobDomain domain,
+            SqlLogFormattingFunction p) throws RuntimeException {
+        return p.apply(domain, JdbcTypes.NCLOB);
     }
 
     @Override
     public String visitAbstractBooleanDomain(AbstractBooleanDomain<?> domain,
-            Void p) throws RuntimeException {
-        if (domain.isNull()) {
-            return NULL;
+            SqlLogFormattingFunction p) throws RuntimeException {
+        Dialect dialect = p.getConfig().dialect();
+        if (dialect.supportsBooleanType()) {
+            return p.apply(domain, JdbcTypes.BOOLEAN);
         }
-        return domain.get().toString();
+        return p.apply(domain, JdbcTypes.INT_ADAPTIVE_BOOLEAN);
     }
 
     @Override
-    public String visitAbstractBytesDomain(AbstractBytesDomain<?> domain, Void p)
-            throws RuntimeException {
-        if (domain.isNull()) {
-            return NULL;
-        }
-        return domain.get().toString();
+    public String visitAbstractBytesDomain(AbstractBytesDomain<?> domain,
+            SqlLogFormattingFunction p) throws RuntimeException {
+        return p.apply(domain, JdbcTypes.BYTES);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public String visitUnknownDomain(Domain<?, ?> domain, Void p) {
-        if (domain.isNull()) {
-            return NULL;
-        }
-        return domain.toString();
+    public String visitUnknownDomain(Domain<?, ?> domain,
+            SqlLogFormattingFunction p) {
+        return p.apply((Domain<Object, ?>) domain, JdbcTypes.OBJECT);
     }
 
 }

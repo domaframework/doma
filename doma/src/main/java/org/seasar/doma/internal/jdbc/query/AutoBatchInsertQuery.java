@@ -31,7 +31,6 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.MessageCode;
 
-
 /**
  * @author taedium
  * 
@@ -131,8 +130,7 @@ public class AutoBatchInsertQuery<I, E extends Entity<I>> extends
     }
 
     protected void prepareSql() {
-        PreparedSqlBuilder builder = new PreparedSqlBuilder(config
-                .sqlLogFormattingVisitor());
+        PreparedSqlBuilder builder = new PreparedSqlBuilder(config);
         builder.appendSql("insert into ");
         builder.appendSql(tableName);
         builder.appendSql(" (");

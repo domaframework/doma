@@ -24,7 +24,6 @@ import org.seasar.doma.Delete;
 import org.seasar.doma.Function;
 import org.seasar.doma.In;
 import org.seasar.doma.Insert;
-import org.seasar.doma.Iterate;
 import org.seasar.doma.Procedure;
 import org.seasar.doma.Select;
 import org.seasar.doma.Update;
@@ -53,7 +52,7 @@ public interface EmpDao {
     List<Emp> selectByNameAndSalary(StringDomain name, BigDecimalDomain salary,
             SelectOptions option);
 
-    @Iterate
+    @Select(iteration = true)
     Integer iterate(IterationCallback<Integer, Emp> callback);
 
     @Insert

@@ -17,13 +17,11 @@ package org.seasar.doma.internal.jdbc.sql;
 
 import java.math.BigDecimal;
 
+import junit.framework.TestCase;
+
 import org.seasar.doma.domain.BigDecimalDomain;
 import org.seasar.doma.domain.StringDomain;
-import org.seasar.doma.internal.jdbc.sql.PreparedSql;
-import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
-import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
-
-import junit.framework.TestCase;
+import org.seasar.doma.internal.jdbc.mock.MockConfig;
 
 /**
  * @author taedium
@@ -31,11 +29,10 @@ import junit.framework.TestCase;
  */
 public class PreparedSqlBuilderTest extends TestCase {
 
-    private SqlLogFormattingVisitor sqlLogFormattingVisitor = new SqlLogFormattingVisitor();
+    private MockConfig config = new MockConfig();
 
     public void testAppend() throws Exception {
-        PreparedSqlBuilder builder = new PreparedSqlBuilder(
-                sqlLogFormattingVisitor);
+        PreparedSqlBuilder builder = new PreparedSqlBuilder(config);
         builder.appendSql("select * from aaa where name = ");
         builder.appendDomain(new StringDomain("hoge"));
         builder.appendSql(" and salary = ");
@@ -46,8 +43,7 @@ public class PreparedSqlBuilderTest extends TestCase {
     }
 
     public void testCutBackSql() {
-        PreparedSqlBuilder builder = new PreparedSqlBuilder(
-                sqlLogFormattingVisitor);
+        PreparedSqlBuilder builder = new PreparedSqlBuilder(config);
         builder.appendSql("select * from aaa where name = ");
         builder.cutBackSql(14);
         PreparedSql sql = builder.build();

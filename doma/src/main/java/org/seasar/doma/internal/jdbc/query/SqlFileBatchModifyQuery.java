@@ -29,7 +29,6 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlFile;
 
-
 /**
  * @author taedium
  * 
@@ -95,8 +94,8 @@ public abstract class SqlFileBatchModifyQuery<I, E extends Entity<I>>
     protected void prepareSql() {
         ExpressionEvaluator evaluator = new ExpressionEvaluator(Collections
                 .singletonMap(parameterName, entity));
-        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                evaluator, config.sqlLogFormattingVisitor());
+        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
+                evaluator);
         SqlFile sqlFile = config.sqlFileRepository()
                 .getSqlFile(sqlFilePath, config.dialect());
         config.jdbcLogger()

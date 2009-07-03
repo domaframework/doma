@@ -18,7 +18,6 @@ package org.seasar.doma.internal.apt;
 import static org.seasar.doma.internal.util.Assertions.*;
 
 import java.io.BufferedWriter;
-import java.io.Closeable;
 import java.io.IOException;
 import java.util.Formatter;
 
@@ -36,7 +35,7 @@ import org.seasar.doma.message.MessageCode;
  * @author taedium
  * 
  */
-public class AbstractGenerator implements Closeable {
+public abstract class AbstractGenerator implements Generator {
 
     protected static final String INDENT_SPACE = "    ";
 

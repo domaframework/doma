@@ -15,16 +15,15 @@
  */
 package org.seasar.doma.internal.jdbc.dialect;
 
-import org.seasar.doma.internal.jdbc.dialect.StandardPagingTransformer;
+import junit.framework.TestCase;
+
+import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.MessageCode;
-
-import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -39,7 +38,7 @@ public class StandardPagingTransformerTest extends TestCase {
         SqlParser parser = new SqlParser("select * from emp order by emp.id");
         SqlNode sqlNode = transformer.transform(parser.parse());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                new SqlLogFormattingVisitor());
+                new MockConfig());
         PreparedSql sql = sqlBuilder.build(sqlNode);
         assertEquals(expected, sql.getRawSql());
     }
@@ -51,7 +50,7 @@ public class StandardPagingTransformerTest extends TestCase {
         SqlParser parser = new SqlParser("select * from emp order by emp.id");
         SqlNode sqlNode = transformer.transform(parser.parse());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                new SqlLogFormattingVisitor());
+                new MockConfig());
         PreparedSql sql = sqlBuilder.build(sqlNode);
         assertEquals(expected, sql.getRawSql());
     }
@@ -63,7 +62,7 @@ public class StandardPagingTransformerTest extends TestCase {
         SqlParser parser = new SqlParser("select * from emp order by emp.id");
         SqlNode sqlNode = transformer.transform(parser.parse());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                new SqlLogFormattingVisitor());
+                new MockConfig());
         PreparedSql sql = sqlBuilder.build(sqlNode);
         assertEquals(expected, sql.getRawSql());
     }

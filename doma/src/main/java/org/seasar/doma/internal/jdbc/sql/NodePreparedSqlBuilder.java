@@ -23,12 +23,12 @@ import java.util.List;
 
 import org.seasar.doma.DomaUnsupportedOperationException;
 import org.seasar.doma.domain.Domain;
-import org.seasar.doma.domain.DomainVisitor;
 import org.seasar.doma.internal.expr.EvaluationResult;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.ExpressionException;
 import org.seasar.doma.internal.expr.ExpressionParser;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
+import org.seasar.doma.internal.jdbc.ConvertToStringFunction;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
@@ -71,7 +71,9 @@ import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.WordNode;
 import org.seasar.doma.internal.jdbc.sql.node.WordNodeVisitor;
+import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 import org.seasar.doma.message.MessageCode;
@@ -105,19 +107,19 @@ public class NodePreparedSqlBuilder implements
 
     protected final ExpressionEvaluator evaluator;
 
-    protected final DomainVisitor<String, Void, RuntimeException> sqlLogFormattingVisitor;
+    protected final Config config;
 
-    public NodePreparedSqlBuilder(
-            DomainVisitor<String, Void, RuntimeException> sqlLogFormattingVisitor) {
-        this(new ExpressionEvaluator(), sqlLogFormattingVisitor);
+    protected final SqlLogFormattingFunction formattingFunction;
+
+    public NodePreparedSqlBuilder(Config config) {
+        this(config, new ExpressionEvaluator());
     }
 
-    public NodePreparedSqlBuilder(
-            ExpressionEvaluator evaluator,
-            DomainVisitor<String, Void, RuntimeException> sqlLogFormattingVisitor) {
-        assertNotNull(evaluator, sqlLogFormattingVisitor);
+    public NodePreparedSqlBuilder(Config config, ExpressionEvaluator evaluator) {
+        assertNotNull(config, evaluator);
+        this.config = config;
         this.evaluator = evaluator;
-        this.sqlLogFormattingVisitor = sqlLogFormattingVisitor;
+        this.formattingFunction = new ConvertToStringFunction(config);
     }
 
     public PreparedSql build(SqlNode sqlNode) {
@@ -501,7 +503,8 @@ public class NodePreparedSqlBuilder implements
         protected void addBindValue(Domain<?, ?> value) {
             parameters.add(new InParameter(value));
             rawSqlBuf.append("?");
-            formattedSqlBuf.append(value.accept(sqlLogFormattingVisitor, null));
+            formattedSqlBuf.append(value.accept(config
+                    .sqlLogFormattingVisitor(), formattingFunction));
         }
 
         protected void addAllParameters(List<PreparedSqlParameter> values) {

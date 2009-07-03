@@ -58,8 +58,7 @@ public class AutoDeleteQuery<I, E extends Entity<I>> extends
     }
 
     protected void prepareSql() {
-        PreparedSqlBuilder builder = new PreparedSqlBuilder(config
-                .sqlLogFormattingVisitor());
+        PreparedSqlBuilder builder = new PreparedSqlBuilder(config);
         builder.appendSql("delete from ");
         builder.appendSql(tableName);
         if (idProperties.size() > 0) {

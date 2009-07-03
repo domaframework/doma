@@ -39,7 +39,7 @@ public interface Config {
 
     DomainVisitor<Void, JdbcMappingFunction, SQLException> jdbcMappingVisitor();
 
-    DomainVisitor<String, Void, RuntimeException> sqlLogFormattingVisitor();
+    DomainVisitor<String, SqlLogFormattingFunction, RuntimeException> sqlLogFormattingVisitor();
 
     JdbcLogger jdbcLogger();
 

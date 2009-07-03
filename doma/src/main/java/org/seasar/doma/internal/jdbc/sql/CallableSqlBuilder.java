@@ -22,9 +22,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.seasar.doma.domain.Domain;
-import org.seasar.doma.domain.DomainVisitor;
-import org.seasar.doma.jdbc.Dialect;
-
+import org.seasar.doma.internal.jdbc.ConvertToStringFunction;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 
 /**
  * @author taedium
@@ -34,36 +34,32 @@ public class CallableSqlBuilder
         implements
         CallableSqlParameterVisitor<Void, CallableSqlBuilder.Context, RuntimeException> {
 
+    protected final Config config;
+
     protected final ResultParameter<?> resultParameter;
 
     protected final List<CallableSqlParameter> parameters;
 
     protected final String moduleName;
 
-    protected final DomainVisitor<String, Void, RuntimeException> sqlLogFormattingVisitor;
-
-    protected final Dialect dialect;
+    protected final SqlLogFormattingFunction formattingFunction;
 
     protected boolean began;
 
-    public CallableSqlBuilder(
-            Dialect dialect,
-            DomainVisitor<String, Void, RuntimeException> sqlLogFormattingVisitor,
-            String moduleName, List<CallableSqlParameter> parameters) {
-        this(dialect, sqlLogFormattingVisitor, moduleName, parameters, null);
+    public CallableSqlBuilder(Config config, String moduleName,
+            List<CallableSqlParameter> parameters) {
+        this(config, moduleName, parameters, null);
     }
 
-    public CallableSqlBuilder(
-            Dialect dialect,
-            DomainVisitor<String, Void, RuntimeException> sqlLogFormattingVisitor,
-            String moduleName, List<CallableSqlParameter> parameters,
+    public CallableSqlBuilder(Config config, String moduleName,
+            List<CallableSqlParameter> parameters,
             ResultParameter<?> resultParameter) {
-        assertNotNull(parameters, moduleName, sqlLogFormattingVisitor, dialect);
+        assertNotNull(config, parameters, moduleName);
+        this.config = config;
         this.resultParameter = resultParameter;
         this.parameters = parameters;
         this.moduleName = moduleName;
-        this.sqlLogFormattingVisitor = sqlLogFormattingVisitor;
-        this.dialect = dialect;
+        this.formattingFunction = new ConvertToStringFunction(config);
     }
 
     public CallableSql build() {
@@ -133,7 +129,7 @@ public class CallableSqlBuilder
     }
 
     protected void handelListParameter(ListParameter<?> parameter, Context p) {
-        if (dialect.supportsResultSetReturningAsOutParameter()) {
+        if (config.dialect().supportsResultSetReturningAsOutParameter()) {
             p.appendRawSql("?, ");
             p.appendFormattedSql("?, ");
             p.addParentheticParameter(parameter);
@@ -145,7 +141,8 @@ public class CallableSqlBuilder
             throws RuntimeException {
         Domain<?, ?> domain = parameter.getDomain();
         p.appendRawSql("?, ");
-        p.appendFormattedSql(domain.accept(sqlLogFormattingVisitor, null));
+        p.appendFormattedSql(domain
+                .accept(config.sqlLogFormattingVisitor(), formattingFunction));
         p.appendFormattedSql(", ");
         p.addParentheticParameter(parameter);
         return null;
@@ -156,7 +153,8 @@ public class CallableSqlBuilder
             throws RuntimeException {
         Domain<?, ?> domain = parameter.getDomain();
         p.appendRawSql("?, ");
-        p.appendFormattedSql(domain.accept(sqlLogFormattingVisitor, null));
+        p.appendFormattedSql(domain
+                .accept(config.sqlLogFormattingVisitor(), formattingFunction));
         p.appendFormattedSql(", ");
         p.addParentheticParameter(parameter);
         return null;

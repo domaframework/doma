@@ -17,11 +17,12 @@ package org.seasar.doma.internal.jdbc.sql;
 
 import java.math.BigDecimal;
 
+import junit.framework.TestCase;
+
 import org.seasar.doma.domain.BigDecimalDomain;
 import org.seasar.doma.domain.StringDomain;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
-import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
-import org.seasar.doma.internal.jdbc.sql.PreparedSql;
+import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseNode;
@@ -36,9 +37,6 @@ import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
 import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
 import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.WordNode;
-import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
-
-import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -48,7 +46,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
 
     private SqlLocation location = new SqlLocation("dummy sql", 0, 0);
 
-    private SqlLogFormattingVisitor sqlLogFormattingVisitor = new SqlLogFormattingVisitor();
+    private MockConfig config = new MockConfig();
 
     public void testBindVariableNode() throws Exception {
         SelectClauseNode select = new SelectClauseNode("select");
@@ -85,8 +83,8 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("name", new StringDomain("hoge"));
         evaluator.add("salary", new BigDecimalDomain(new BigDecimal(100)));
-        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(evaluator,
-                sqlLogFormattingVisitor);
+        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
+                evaluator);
         PreparedSql sql = builder.build(root);
         assertEquals("select * from aaa where bbb = ? and ccc = ?", sql
                 .getRawSql());
@@ -125,8 +123,8 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         root.addNode(statement);
 
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(evaluator,
-                sqlLogFormattingVisitor);
+        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
+                evaluator);
         PreparedSql sql = builder.build(statement);
         assertEquals("select * from aaa where bbb = ccc", sql.getRawSql());
         assertEquals("select * from aaa where /*if true*/bbb = ccc/*end*/", root
@@ -159,8 +157,8 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         root.addNode(statement);
 
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(evaluator,
-                sqlLogFormattingVisitor);
+        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
+                evaluator);
         PreparedSql sql = builder.build(statement);
         assertEquals("select * from aaa", sql.getRawSql());
         assertEquals("select * from aaa where /*if false*/bbb = ccc/*end*/", root
@@ -199,8 +197,8 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         root.addNode(statement);
 
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(evaluator,
-                sqlLogFormattingVisitor);
+        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
+                evaluator);
         PreparedSql sql = builder.build(statement);
         assertEquals("select * from aaa where ddd = eee", sql.getRawSql());
         assertEquals("select * from aaa where /*if false*/bbb = ccc/*else*/ddd = eee/*end*/", root
@@ -247,8 +245,8 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         root.addNode(statement);
 
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(evaluator,
-                sqlLogFormattingVisitor);
+        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
+                evaluator);
         PreparedSql sql = builder.build(statement);
         assertEquals("select * from aaa where bbb = ccc and ddd = eee", sql
                 .getRawSql());
@@ -296,8 +294,8 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         root.addNode(statement);
 
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(evaluator,
-                sqlLogFormattingVisitor);
+        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
+                evaluator);
         PreparedSql sql = builder.build(statement);
         assertEquals("select * from aaa where  ddd = eee", sql.getRawSql());
         assertEquals("select * from aaa where/*if false*/ bbb = ccc/*end*//*if true*/ and ddd = eee/*end*/", root

@@ -25,6 +25,7 @@ import org.seasar.doma.internal.jdbc.type.DateType;
 import org.seasar.doma.internal.jdbc.type.IntAdaptiveBooleanType;
 import org.seasar.doma.internal.jdbc.type.IntType;
 import org.seasar.doma.internal.jdbc.type.NClobType;
+import org.seasar.doma.internal.jdbc.type.ObjectType;
 import org.seasar.doma.internal.jdbc.type.StringType;
 import org.seasar.doma.internal.jdbc.type.TimeType;
 import org.seasar.doma.internal.jdbc.type.TimestampType;
@@ -60,5 +61,7 @@ public final class JdbcTypes {
     public static final IntAdaptiveBooleanType INT_ADAPTIVE_BOOLEAN = new IntAdaptiveBooleanType();
 
     public static final BytesType BYTES = new BytesType();
+
+    public static final ObjectType OBJECT = new ObjectType();
 
 }

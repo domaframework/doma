@@ -29,6 +29,7 @@ import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.NameConvention;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.SqlFileRepository;
+import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 
 /**
  * @author taedium
@@ -46,7 +47,7 @@ public class RuntimeConfig implements Config {
 
     protected final DomainVisitor<Void, JdbcMappingFunction, SQLException> jdbcMappingVisitor;
 
-    protected final DomainVisitor<String, Void, RuntimeException> sqlLogFormattingVisitor;
+    protected final DomainVisitor<String, SqlLogFormattingFunction, RuntimeException> sqlLogFormattingVisitor;
 
     protected final SqlFileRepository sqlFileRepository;
 
@@ -114,7 +115,7 @@ public class RuntimeConfig implements Config {
         return jdbcMappingVisitor;
     }
 
-    public DomainVisitor<String, Void, RuntimeException> sqlLogFormattingVisitor() {
+    public DomainVisitor<String, SqlLogFormattingFunction, RuntimeException> sqlLogFormattingVisitor() {
         return sqlLogFormattingVisitor;
     }
 

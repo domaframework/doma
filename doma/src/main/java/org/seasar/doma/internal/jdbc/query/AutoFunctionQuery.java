@@ -39,9 +39,8 @@ public class AutoFunctionQuery<R> extends AutoModuleQuery implements
     }
 
     protected void prepareSql() {
-        CallableSqlBuilder builder = new CallableSqlBuilder(config.dialect(),
-                config.sqlLogFormattingVisitor(), functionName, parameters,
-                resultParameter);
+        CallableSqlBuilder builder = new CallableSqlBuilder(config,
+                functionName, parameters, resultParameter);
         sql = builder.build();
     }
 

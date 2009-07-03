@@ -18,17 +18,17 @@ package org.seasar.doma.internal.jdbc.sqlnode;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
+import junit.framework.TestCase;
+
 import org.seasar.doma.domain.BigDecimalDomain;
 import org.seasar.doma.domain.IntegerDomain;
 import org.seasar.doma.domain.StringDomain;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
+import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
-import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
-
-import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -36,7 +36,7 @@ import junit.framework.TestCase;
  */
 public class SqlParserTest extends TestCase {
 
-    private SqlLogFormattingVisitor sqlLogFormattingVisitor = new SqlLogFormattingVisitor();
+    private MockConfig config = new MockConfig();
 
     public void testBindVariable() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -45,8 +45,8 @@ public class SqlParserTest extends TestCase {
         String testSql = "select * from aaa where ename = /*name*/'aaa' and sal = /*salary*/2000";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
-        PreparedSql sql = new NodePreparedSqlBuilder(evaluator,
-                sqlLogFormattingVisitor).build(sqlNode);
+        PreparedSql sql = new NodePreparedSqlBuilder(config, evaluator)
+                .build(sqlNode);
         assertEquals("select * from aaa where ename = ? and sal = ?", sql
                 .getRawSql());
         assertEquals("select * from aaa where ename = 'hoge' and sal = 10000", sql
@@ -66,8 +66,8 @@ public class SqlParserTest extends TestCase {
         String testSql = "select * from aaa where ename in /*name*/('aaa', 'bbb')";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
-        PreparedSql sql = new NodePreparedSqlBuilder(evaluator,
-                sqlLogFormattingVisitor).build(sqlNode);
+        PreparedSql sql = new NodePreparedSqlBuilder(config, evaluator)
+                .build(sqlNode);
         assertEquals("select * from aaa where ename in (?, ?)", sql.getRawSql());
         assertEquals("select * from aaa where ename in ('hoge', 'foo')", sql
                 .getFormattedSql());
@@ -85,8 +85,8 @@ public class SqlParserTest extends TestCase {
         String testSql = "select * from aaa where /*%if name != null*/bbb = /*name*/'ccc' /*%end*/";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
-        PreparedSql sql = new NodePreparedSqlBuilder(evaluator,
-                sqlLogFormattingVisitor).build(sqlNode);
+        PreparedSql sql = new NodePreparedSqlBuilder(config, evaluator)
+                .build(sqlNode);
         assertEquals("select * from aaa where bbb = ?", sql.getRawSql());
         assertEquals("select * from aaa where bbb = 'hoge'", sql
                 .getFormattedSql());
@@ -102,8 +102,8 @@ public class SqlParserTest extends TestCase {
         String testSql = "select * from aaa where /*%if name != null*/bbb = /*name*/'ccc' /*%end*/";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
-        PreparedSql sql = new NodePreparedSqlBuilder(evaluator,
-                sqlLogFormattingVisitor).build(sqlNode);
+        PreparedSql sql = new NodePreparedSqlBuilder(config, evaluator)
+                .build(sqlNode);
         assertEquals("select * from aaa", sql.getRawSql());
         assertEquals("select * from aaa", sql.getFormattedSql());
         assertEquals(testSql, sqlNode.toString());
@@ -116,8 +116,8 @@ public class SqlParserTest extends TestCase {
         String testSql = "select * from aaa where /*%if name != null*/bbb = /*name*/'ccc' /*%if name == \"hoge\"*/and ddd = eee/*%end*//*%end*/";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
-        PreparedSql sql = new NodePreparedSqlBuilder(evaluator,
-                sqlLogFormattingVisitor).build(sqlNode);
+        PreparedSql sql = new NodePreparedSqlBuilder(config, evaluator)
+                .build(sqlNode);
         assertEquals("select * from aaa where bbb = ? and ddd = eee", sql
                 .getRawSql());
         assertEquals("select * from aaa where bbb = 'hoge' and ddd = eee", sql
@@ -132,8 +132,8 @@ public class SqlParserTest extends TestCase {
         String testSql = "select * from aaa where /*%if name == null*/bbb is null--elseif name ==\"\"--bbb = /*name*/'ccc'/*%end*/";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
-        PreparedSql sql = new NodePreparedSqlBuilder(evaluator,
-                sqlLogFormattingVisitor).build(sqlNode);
+        PreparedSql sql = new NodePreparedSqlBuilder(config, evaluator)
+                .build(sqlNode);
         assertEquals("select * from aaa where bbb = ?", sql.getRawSql());
         assertEquals("select * from aaa where bbb = ''", sql.getFormattedSql());
         assertEquals(testSql, sqlNode.toString());
@@ -148,8 +148,8 @@ public class SqlParserTest extends TestCase {
         String testSql = "select * from aaa where /*%if name == null*/bbb is null--elseif name == \"\"----else bbb = /*name*/'ccc'/*%end*/";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
-        PreparedSql sql = new NodePreparedSqlBuilder(evaluator,
-                sqlLogFormattingVisitor).build(sqlNode);
+        PreparedSql sql = new NodePreparedSqlBuilder(config, evaluator)
+                .build(sqlNode);
         assertEquals("select * from aaa where  bbb = ?", sql.getRawSql());
         assertEquals("select * from aaa where  bbb = 'hoge'", sql
                 .getFormattedSql());
@@ -166,8 +166,8 @@ public class SqlParserTest extends TestCase {
         String testSql = "select aaa.deptname, count(*) from aaa join bbb on aaa.id = bbb.id where aaa.name = /*name*/'ccc' group by aaa.deptname having count(*) > /*count*/10 order by aaa.name for update bbb";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
-        PreparedSql sql = new NodePreparedSqlBuilder(evaluator,
-                sqlLogFormattingVisitor).build(sqlNode);
+        PreparedSql sql = new NodePreparedSqlBuilder(config, evaluator)
+                .build(sqlNode);
         assertEquals("select aaa.deptname, count(*) from aaa join bbb on aaa.id = bbb.id where aaa.name = ? group by aaa.deptname having count(*) > ? order by aaa.name for update bbb", sql
                 .getRawSql());
         assertEquals("select aaa.deptname, count(*) from aaa join bbb on aaa.id = bbb.id where aaa.name = 'hoge' group by aaa.deptname having count(*) > 5 order by aaa.name for update bbb", sql
@@ -188,8 +188,8 @@ public class SqlParserTest extends TestCase {
         String testSql = "update aaa set no = /*no*/1, set name = /*name*/'name' where id = /*id*/1";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
-        PreparedSql sql = new NodePreparedSqlBuilder(evaluator,
-                sqlLogFormattingVisitor).build(sqlNode);
+        PreparedSql sql = new NodePreparedSqlBuilder(config, evaluator)
+                .build(sqlNode);
         assertEquals("update aaa set no = ?, set name = ? where id = ?", sql
                 .getRawSql());
         assertEquals("update aaa set no = 10, set name = 'hoge' where id = 100", sql

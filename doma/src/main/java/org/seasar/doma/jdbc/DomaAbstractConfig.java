@@ -35,7 +35,7 @@ public abstract class DomaAbstractConfig implements Config {
 
     protected static DomainVisitor<Void, JdbcMappingFunction, SQLException> jdbcMappingVisitor = new JdbcMappingVisitor();
 
-    protected static DomainVisitor<String, Void, RuntimeException> sqlLogFormattingVisitor = new SqlLogFormattingVisitor();
+    protected static DomainVisitor<String, SqlLogFormattingFunction, RuntimeException> sqlLogFormattingVisitor = new SqlLogFormattingVisitor();
 
     @Override
     public String dataSourceName() {
@@ -58,7 +58,7 @@ public abstract class DomaAbstractConfig implements Config {
     }
 
     @Override
-    public DomainVisitor<String, Void, RuntimeException> sqlLogFormattingVisitor() {
+    public DomainVisitor<String, SqlLogFormattingFunction, RuntimeException> sqlLogFormattingVisitor() {
         return sqlLogFormattingVisitor;
     }
 

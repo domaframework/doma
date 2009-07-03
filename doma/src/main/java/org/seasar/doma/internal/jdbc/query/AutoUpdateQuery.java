@@ -82,8 +82,7 @@ public class AutoUpdateQuery<I, E extends Entity<I>> extends
     }
 
     protected void prepareSql() {
-        PreparedSqlBuilder builder = new PreparedSqlBuilder(config
-                .sqlLogFormattingVisitor());
+        PreparedSqlBuilder builder = new PreparedSqlBuilder(config);
         builder.appendSql("update ");
         builder.appendSql(tableName);
         builder.appendSql(" set ");
