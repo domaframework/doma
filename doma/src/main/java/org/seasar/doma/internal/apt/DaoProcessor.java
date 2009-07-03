@@ -15,10 +15,12 @@
  */
 package org.seasar.doma.internal.apt;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
@@ -42,6 +44,7 @@ import org.seasar.doma.internal.apt.meta.QueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileBatchModifyQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileModifyQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileSelectQueryMetaFactory;
+import org.seasar.doma.internal.util.IOs;
 import org.seasar.doma.message.MessageCode;
 
 /**
@@ -52,7 +55,7 @@ import org.seasar.doma.message.MessageCode;
 @SupportedAnnotationTypes( { "org.seasar.doma.Dao",
         "org.seasar.doma.GenericDao" })
 @SupportedOptions( { Options.TEST, Options.DEBUG, Options.SUFFIX })
-public class DaoProcessor extends DomaAbstractProcessor {
+public class DaoProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations,
@@ -87,13 +90,6 @@ public class DaoProcessor extends DomaAbstractProcessor {
         return true;
     }
 
-    protected void generateDao(TypeElement daoElement, DaoMeta daoMeta) {
-        String qualifiedName = daoElement.getQualifiedName()
-                + Options.getSuffix(processingEnv);
-        Generator generator = createDaoGenerator(qualifiedName, daoMeta);
-        generate(generator, qualifiedName, daoElement);
-    }
-
     protected List<QueryMetaFactory> createQueryMetaFactory() {
         List<QueryMetaFactory> factories = new ArrayList<QueryMetaFactory>();
         factories.add(new AutoModifyQueryMetaFactory(processingEnv));
@@ -115,8 +111,21 @@ public class DaoProcessor extends DomaAbstractProcessor {
         return new DaoMetaFactory(processingEnv, queryMetaFactories);
     }
 
-    protected DaoGenerator createDaoGenerator(String qualifiedName,
-            DaoMeta daoMeta) {
-        return new DaoGenerator(processingEnv, qualifiedName, daoMeta);
+    protected void generateDao(TypeElement daoElement, DaoMeta daoMeta) {
+        DaoGenerator daoGenerator = null;
+        try {
+            daoGenerator = createDaoGenerator(daoElement, daoMeta);
+            daoGenerator.generate();
+        } catch (IOException e) {
+            throw new AptException(MessageCode.DOMA4011, processingEnv,
+                    daoElement, e, daoElement.getQualifiedName(), e);
+        } finally {
+            IOs.close(daoGenerator);
+        }
+    }
+
+    protected DaoGenerator createDaoGenerator(TypeElement daoElement,
+            DaoMeta daoMeta) throws IOException {
+        return new DaoGenerator(processingEnv, daoElement, daoMeta);
     }
 }

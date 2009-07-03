@@ -15,8 +15,10 @@
  */
 package org.seasar.doma.internal.apt;
 
+import java.io.IOException;
 import java.util.Set;
 
+import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
@@ -29,6 +31,7 @@ import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.internal.apt.meta.EntityMeta;
 import org.seasar.doma.internal.apt.meta.EntityMetaFactory;
 import org.seasar.doma.internal.apt.meta.PropertyMetaFactory;
+import org.seasar.doma.internal.util.IOs;
 import org.seasar.doma.message.MessageCode;
 
 /**
@@ -39,7 +42,7 @@ import org.seasar.doma.message.MessageCode;
 @SupportedAnnotationTypes( { "org.seasar.doma.Entity",
         "org.seasar.doma.MappedSuperclass" })
 @SupportedOptions( { Options.TEST, Options.DEBUG, Options.SUFFIX })
-public class EntityProcessor extends DomaAbstractProcessor {
+public class EntityProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations,
@@ -82,14 +85,20 @@ public class EntityProcessor extends DomaAbstractProcessor {
 
     protected void generateEntity(TypeElement entityElement,
             EntityMeta entityMeta) {
-        String qualifiedName = entityElement.getQualifiedName()
-                + Options.getSuffix(processingEnv);
-        Generator generator = createGenerator(qualifiedName, entityMeta);
-        generate(generator, qualifiedName, entityElement);
+        EntityGenerator entityGenerator = null;
+        try {
+            entityGenerator = createEntityGenerator(entityElement, entityMeta);
+            entityGenerator.generate();
+        } catch (IOException e) {
+            throw new AptException(MessageCode.DOMA4011, processingEnv,
+                    entityElement, e, entityElement.getQualifiedName(), e);
+        } finally {
+            IOs.close(entityGenerator);
+        }
     }
 
-    protected Generator createGenerator(String qualifiedName,
-            EntityMeta entityMeta) {
-        return new EntityGenerator(processingEnv, qualifiedName, entityMeta);
+    protected EntityGenerator createEntityGenerator(TypeElement entityElement,
+            EntityMeta entityMeta) throws IOException {
+        return new EntityGenerator(processingEnv, entityElement, entityMeta);
     }
 }

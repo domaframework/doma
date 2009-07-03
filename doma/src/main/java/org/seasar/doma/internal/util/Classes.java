@@ -15,10 +15,11 @@
  */
 package org.seasar.doma.internal.util;
 
+import static org.seasar.doma.internal.util.Assertions.*;
+
 import java.lang.reflect.Method;
 
 import org.seasar.doma.internal.WrapException;
-
 
 /**
  * @author taedium
@@ -79,6 +80,24 @@ public final class Classes {
             return double.class;
         }
         return clazz;
+    }
+
+    public static String getPackageName(String qualifiedName) {
+        assertNotNull(qualifiedName);
+        int pos = qualifiedName.lastIndexOf('.');
+        if (pos < 0) {
+            return "";
+        }
+        return qualifiedName.substring(0, pos);
+    }
+
+    public static String getSimpleName(String qualifiedName) {
+        assertNotNull(qualifiedName);
+        int pos = qualifiedName.lastIndexOf('.');
+        if (pos < 0) {
+            return qualifiedName;
+        }
+        return qualifiedName.substring(pos + 1);
     }
 
 }

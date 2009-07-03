@@ -17,9 +17,6 @@ package org.seasar.doma.internal.apt;
 
 import static org.seasar.doma.internal.util.Assertions.*;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Formatter;
 
 /**
@@ -30,21 +27,17 @@ public class Printer {
 
     protected static final String INDENT_SPACE = "    ";
 
-    protected final Formatter formatter;
-
     protected StringBuilder indent = new StringBuilder();
 
-    public Printer(Writer writer) throws IOException {
-        assertNotNull(writer);
-        formatter = new Formatter(new BufferedWriter(writer));
+    protected final Formatter formatter;
+
+    public Printer(Appendable appendable) {
+        assertNotNull(appendable);
+        formatter = new Formatter(appendable);
     }
 
     public void p(String format, Object... args) {
-        if (format.equals("%n")) {
-            formatter.format(format, args);
-        } else {
-            formatter.format(indent + format, args);
-        }
+        formatter.format(indent + format, args);
     }
 
     public void pp(String format, Object... args) {

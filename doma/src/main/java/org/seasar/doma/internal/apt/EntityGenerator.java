@@ -17,10 +17,11 @@ package org.seasar.doma.internal.apt;
 
 import static org.seasar.doma.internal.util.Assertions.*;
 
-import javax.annotation.Generated;
-import javax.annotation.processing.ProcessingEnvironment;
+import java.io.IOException;
 
-import org.seasar.doma.internal.ProductInfo;
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.TypeElement;
+
 import org.seasar.doma.internal.apt.meta.ColumnMeta;
 import org.seasar.doma.internal.apt.meta.EntityMeta;
 import org.seasar.doma.internal.apt.meta.IdGeneratorMeta;
@@ -38,81 +39,61 @@ import org.seasar.doma.internal.jdbc.Property;
 import org.seasar.doma.internal.jdbc.VersionProperty;
 import org.seasar.doma.internal.jdbc.id.IdGenerator;
 
-
 /**
  * 
  * @author taedium
  * 
  */
-public class EntityGenerator implements Generator,
-        IdGeneratorMetaVisitor<Void, Printer> {
-
-    protected final ProcessingEnvironment env;
-
-    protected final String entityImplPackageName;
-
-    protected final String entityImplSimpleName;
+public class EntityGenerator extends AbstractGenerator {
 
     protected final EntityMeta entityMeta;
 
     public EntityGenerator(ProcessingEnvironment env,
-            String entityQualifiedName, EntityMeta entityMeta) {
-        assertNotNull(env, entityQualifiedName, entityMeta);
-        this.env = env;
-        int pos = entityQualifiedName.lastIndexOf('.');
-        if (pos > -1) {
-            this.entityImplPackageName = entityQualifiedName.substring(0, pos);
-            this.entityImplSimpleName = entityQualifiedName.substring(pos + 1);
-        } else {
-            this.entityImplPackageName = "";
-            this.entityImplSimpleName = entityQualifiedName;
-        }
+            TypeElement entityElement, EntityMeta entityMeta)
+            throws IOException {
+        super(env, entityElement);
+        assertNotNull(entityMeta);
         this.entityMeta = entityMeta;
     }
 
-    public void generate(Printer p) {
-        doPackage(p);
-        doClass(p);
+    public void generate() {
+        printPackage();
+        printClass();
     }
 
-    protected void doPackage(Printer p) {
-        if (!entityImplPackageName.isEmpty()) {
-            p.p("package %s;%n", entityImplPackageName);
-            p.p("%n");
+    protected void printPackage() {
+        if (!packageName.isEmpty()) {
+            print("package %1$s;%n", packageName);
+            print("%n");
         }
     }
 
-    protected void doClass(Printer p) {
-        p
-                .p("@%s(value = { \"%s\", \"%s\" }, date = \"%tF %<tT\")%n", Generated.class
-                        .getName(), ProductInfo.getName(), ProductInfo
-                        .getVersion(), Options.getDate(env));
-        p
-                .p("public class %1$s extends %2$s<%3$s> implements %3$s {%n", entityImplSimpleName, DomaAbstractEntity.class
-                        .getName(), entityMeta.getEntityElement()
-                        .getQualifiedName());
-        p.p("%n");
-        p.indent();
-        doFields(p);
-        doConstructor(p);
-        doMethods(p);
-        p.unindent();
-        p.p("}%n");
+    protected void printClass() {
+        printGenerated();
+        print("public class %1$s extends %2$s<%3$s> implements %3$s {%n", simpleName, DomaAbstractEntity.class
+                .getName(), entityMeta.getEntityElement().getQualifiedName());
+        put("%n");
+        indent();
+        printFields();
+        printConstructor();
+        printMethods();
+        unindent();
+        print("}%n");
     }
 
-    protected void doFields(Printer p) {
+    protected void printFields() {
         if (entityMeta.hasGeneratedIdPropertyMeta()) {
             PropertyMeta propertyMeta = entityMeta.getGeneratedIdPropertyMeta();
             IdGeneratorMeta idGeneratorMeta = propertyMeta.getIdGeneratorMeta();
-            idGeneratorMeta.accept(this, p);
-            p.p("%n");
+            idGeneratorMeta.accept(new IdGeneratorGenerator(), null);
+            put("%n");
         }
-        p.p("private final %1$s __listener = new %1$s();%n", entityMeta
+        print("private final %1$s __listener = new %1$s();%n", entityMeta
                 .getListenerType());
-        p.p("%n");
+        put("%n");
         for (PropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             if (pm.isTrnsient()) {
-                p.p("private final %1$s %2$s = new %1$s();%n", pm
+                print("private final %1$s %2$s = new %1$s();%n", pm
                         .getReturnTypeName(), pm.getName());
             } else {
                 Class<?> propertyClass = getPropertyClass(pm);
@@ -127,22 +108,20 @@ public class EntityGenerator implements Generator,
                 if (propertyClass == GeneratedIdProperty.class) {
                     format = "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", %7$s%4$s%7$s, new %2$s(), %5$s, %6$s, __idGenerator);%n";
                 }
-                p
-                        .p(format, /* 1 */propertyClass.getName(), /* 2 */pm
-                                .getReturnTypeName(), /* 3 */pm.getName(), /* 4 */columnName, /* 5 */cm
-                                .isInsertable(), /* 6 */cm.isUpdatable(), /* 7 */quote);
+                print(format, /* 1 */propertyClass.getName(), /* 2 */pm
+                        .getReturnTypeName(), /* 3 */pm.getName(), /* 4 */columnName, /* 5 */cm
+                        .isInsertable(), /* 6 */cm.isUpdatable(), /* 7 */quote);
             }
-            p.p("%n");
+            put("%n");
         }
-        p.p("private final String __name = \"%s\";%n", entityMeta.getName());
-        p.p("%n");
-        p.p("private java.util.List<%s<?>> __properties;%n", Property.class
+        print("private final String __name = \"%1$s\";%n", entityMeta.getName());
+        put("%n");
+        print("private java.util.List<%1$s<?>> __properties;%n", Property.class
                 .getName());
-        p.p("%n");
-        p
-                .p("private java.util.Map<String, %s<?>> __propertyMap;%n", Property.class
-                        .getName());
-        p.p("%n");
+        put("%n");
+        print("private java.util.Map<String, %1$s<?>> __propertyMap;%n", Property.class
+                .getName());
+        put("%n");
     }
 
     protected Class<?> getPropertyClass(PropertyMeta propertyMeta) {
@@ -157,8 +136,8 @@ public class EntityGenerator implements Generator,
         return BasicProperty.class;
     }
 
-    protected void doConstructor(Printer p) {
-        p.p("public %1$s() {%n", entityImplSimpleName);
+    protected void printConstructor() {
+        print("public %1$s() {%n", simpleName);
         TableMeta tm = entityMeta.getTableMeta();
         String catalog = null;
         String catalogQuote = "";
@@ -178,154 +157,151 @@ public class EntityGenerator implements Generator,
             table = tm.getName();
             tableQuote = "\"";
         }
-        p
-                .p("    super(%2$s%1$s%2$s, %4$s%3$s%4$s, %6$s%5$s%6$s);%n", catalog, catalogQuote, schema, schemaQuote, table, tableQuote);
-        p.p("}%n");
-        p.p("%n");
+        print("    super(%2$s%1$s%2$s, %4$s%3$s%4$s, %6$s%5$s%6$s);%n", catalog, catalogQuote, schema, schemaQuote, table, tableQuote);
+        print("}%n");
+        put("%n");
     }
 
-    protected void doMethods(Printer p) {
+    protected void printMethods() {
         for (PropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             if (pm.isTrnsient()) {
-                p.p("@Override%n");
-                p.p("public %s %s() {%n", pm.getReturnTypeName(), pm.getName());
-                p.p("    return %s;%n", pm.getName());
-                p.p("}%n");
-                p.p("%n");
+                print("@Override%n");
+                print("public %1$s %2$s() {%n", pm.getReturnTypeName(), pm
+                        .getName());
+                print("    return %1$s;%n", pm.getName());
+                print("}%n");
+                put("%n");
             } else {
-                p.p("@Override%n");
-                p.p("public %s %s() {%n", pm.getReturnTypeName(), pm.getName());
-                p.p("    return %s.getDomain();%n", pm.getName());
-                p.p("}%n");
-                p.p("%n");
+                print("@Override%n");
+                print("public %1$s %2$s() {%n", pm.getReturnTypeName(), pm
+                        .getName());
+                print("    return %1$s.getDomain();%n", pm.getName());
+                print("}%n");
+                put("%n");
             }
         }
-        p.p("@Override%n");
-        p.p("public String __getName() {%n");
-        p.p("    return __name;%n");
-        p.p("}%n");
-        p.p("%n");
-        p.p("@Override%n");
-        p.p("public %s __asInterface() {%n", entityMeta.getEntityElement()
+        print("@Override%n");
+        print("public String __getName() {%n");
+        print("    return __name;%n");
+        print("}%n");
+        put("%n");
+        print("@Override%n");
+        print("public %1$s __asInterface() {%n", entityMeta.getEntityElement()
                 .getQualifiedName());
-        p.p("    return this;%n");
-        p.p("}%n");
-        p.p("%n");
-        p.p("@Override%n");
-        p.p("public void __preInsert() {%n");
-        p.p("    __listener.preInsert(this);%n");
-        p.p("}%n");
-        p.p("%n");
-        p.p("@Override%n");
-        p.p("public void __preUpdate() {%n");
-        p.p("    __listener.preUpdate(this);%n");
-        p.p("}%n");
-        p.p("%n");
-        p.p("@Override%n");
-        p.p("public void __preDelete() {%n");
-        p.p("    __listener.preDelete(this);%n");
-        p.p("}%n");
-        p.p("%n");
-        p.p("@Override%n");
-        p
-                .p("public java.util.List<%s<?>> __getProperties() {%n", Property.class
-                        .getName());
-        p.indent();
-        p.p("if (__properties == null) {%n");
-        p.indent();
-        p
-                .p("java.util.List<%1$s<?>> list = new java.util.ArrayList<%1$s<?>>();%n", Property.class
-                        .getName());
+        print("    return this;%n");
+        print("}%n");
+        put("%n");
+        print("@Override%n");
+        print("public void __preInsert() {%n");
+        print("    __listener.preInsert(this);%n");
+        print("}%n");
+        put("%n");
+        print("@Override%n");
+        print("public void __preUpdate() {%n");
+        print("    __listener.preUpdate(this);%n");
+        print("}%n");
+        put("%n");
+        print("@Override%n");
+        print("public void __preDelete() {%n");
+        print("    __listener.preDelete(this);%n");
+        print("}%n");
+        put("%n");
+        print("@Override%n");
+        print("public java.util.List<%1$s<?>> __getProperties() {%n", Property.class
+                .getName());
+        indent();
+        print("if (__properties == null) {%n");
+        indent();
+        print("java.util.List<%1$s<?>> list = new java.util.ArrayList<%1$s<?>>();%n", Property.class
+                .getName());
         for (PropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             if (pm.isTrnsient()) {
                 continue;
             }
-            p.p("list.add(%1$s);%n", pm.getName());
+            print("list.add(%1$s);%n", pm.getName());
         }
-        p.p("__properties = java.util.Collections.unmodifiableList(list);%n");
-        p.unindent();
-        p.p("}%n");
-        p.p("return __properties;%n");
-        p.unindent();
-        p.p("}%n");
-        p.p("%n");
-        p.p("@Override%n");
-        p
-                .p("public %s<?> __getPropertyByName(String propertyName) {%n", Property.class
-                        .getName());
-        p.indent();
-        p.p("if (__propertyMap == null) {%n");
-        p.indent();
-        p
-                .p("java.util.Map<String, %1$s<?>> map = new java.util.HashMap<String, %1$s<?>>();%n", Property.class
-                        .getName());
+        print("__properties = java.util.Collections.unmodifiableList(list);%n");
+        unindent();
+        print("}%n");
+        print("return __properties;%n");
+        unindent();
+        print("}%n");
+        put("%n");
+        print("@Override%n");
+        print("public %1$s<?> __getPropertyByName(String propertyName) {%n", Property.class
+                .getName());
+        indent();
+        print("if (__propertyMap == null) {%n");
+        indent();
+        print("java.util.Map<String, %1$s<?>> map = new java.util.HashMap<String, %1$s<?>>();%n", Property.class
+                .getName());
         for (PropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             if (pm.isTrnsient()) {
                 continue;
             }
-            p.p("map.put(\"%1$s\", %1$s);%n", pm.getName());
+            print("map.put(\"%1$s\", %1$s);%n", pm.getName());
         }
-        p.p("__propertyMap = java.util.Collections.unmodifiableMap(map);%n");
-        p.unindent();
-        p.p("}%n");
-        p.p("return __propertyMap.get(propertyName);%n");
-        p.unindent();
-        p.p("}%n");
-        p.p("%n");
-        p.p("@Override%n");
-        p
-                .p("public %s<?> __getGeneratedIdProperty() {%n", GeneratedIdProperty.class
-                        .getName());
+        print("__propertyMap = java.util.Collections.unmodifiableMap(map);%n");
+        unindent();
+        print("}%n");
+        print("return __propertyMap.get(propertyName);%n");
+        unindent();
+        print("}%n");
+        put("%n");
+        print("@Override%n");
+        print("public %1$s<?> __getGeneratedIdProperty() {%n", GeneratedIdProperty.class
+                .getName());
         String idName = "null";
         if (entityMeta.hasGeneratedIdPropertyMeta()) {
             PropertyMeta pm = entityMeta.getGeneratedIdPropertyMeta();
             idName = pm.getName();
         }
-        p.p("    return %1$s;%n", idName);
-        p.p("}%n");
-        p.p("%n");
-        p.p("@Override%n");
-        p.p("public %s<?> __getVersionProperty() {%n", VersionProperty.class
+        print("    return %1$s;%n", idName);
+        print("}%n");
+        put("%n");
+        print("@Override%n");
+        print("public %1$s<?> __getVersionProperty() {%n", VersionProperty.class
                 .getName());
         String versionName = "null";
         if (entityMeta.hasVersionPropertyMeta()) {
             PropertyMeta pm = entityMeta.getVersionPropertyMeta();
             versionName = pm.getName();
         }
-        p.p("    return %1$s;%n", versionName);
-        p.p("}%n");
-        p.p("%n");
+        print("    return %1$s;%n", versionName);
+        print("}%n");
+        put("%n");
     }
 
-    @Override
-    public Void visistIdentityIdGeneratorMeta(IdentityIdGeneratorMeta m,
-            Printer p) {
-        p
-                .p("private static final %1$s __idGenerator = new %2$s();%n", IdGenerator.class
-                        .getName(), m.getIdGeneratorClassName());
-        return null;
-    }
+    protected class IdGeneratorGenerator implements
+            IdGeneratorMetaVisitor<Void, Void> {
 
-    @Override
-    public Void visistSequenceIdGeneratorMeta(SequenceIdGeneratorMeta m,
-            Printer p) {
-        p
-                .p("private static final %1$s __idGenerator = new %2$s(\"%3$s\", %4$s, %5$s);%n", IdGenerator.class
-                        .getName(), m.getIdGeneratorClassName(), m
-                        .getQualifiedSequenceName(), m.getInitialValue(), m
-                        .getAllocationSize());
-        return null;
-    }
+        @Override
+        public Void visistIdentityIdGeneratorMeta(IdentityIdGeneratorMeta m,
+                Void p) {
+            print("private static final %1$s __idGenerator = new %2$s();%n", IdGenerator.class
+                    .getName(), m.getIdGeneratorClassName());
+            return null;
+        }
 
-    @Override
-    public Void visistTableIdGeneratorMeta(TableIdGeneratorMeta m, Printer p) {
-        p
-                .p("private static final %1$s __idGenerator = new %2$s(\"%3$s\", \"%4$s\", \"%5$s\", \"%6$s\", %7$s, %8$s);%n", IdGenerator.class
-                        .getName(), m.getIdGeneratorClassName(), m
-                        .getQualifiedTableName(), m.getPkColumnName(), m
-                        .getValueColumnName(), m.getPkColumnValue(), m
-                        .getInitialValue(), m.getAllocationSize());
-        return null;
+        @Override
+        public Void visistSequenceIdGeneratorMeta(SequenceIdGeneratorMeta m,
+                Void p) {
+            print("private static final %1$s __idGenerator = new %2$s(\"%3$s\", %4$s, %5$s);%n", IdGenerator.class
+                    .getName(), m.getIdGeneratorClassName(), m
+                    .getQualifiedSequenceName(), m.getInitialValue(), m
+                    .getAllocationSize());
+            return null;
+        }
+
+        @Override
+        public Void visistTableIdGeneratorMeta(TableIdGeneratorMeta m, Void p) {
+            print("private static final %1$s __idGenerator = new %2$s(\"%3$s\", \"%4$s\", \"%5$s\", \"%6$s\", %7$s, %8$s);%n", IdGenerator.class
+                    .getName(), m.getIdGeneratorClassName(), m
+                    .getQualifiedTableName(), m.getPkColumnName(), m
+                    .getValueColumnName(), m.getPkColumnValue(), m
+                    .getInitialValue(), m.getAllocationSize());
+            return null;
+        }
     }
 
 }
