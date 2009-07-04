@@ -1,21 +1,23 @@
 package org.seasar.doma.internal.apt.entity;
 
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
-public class ChildEntity_ extends org.seasar.doma.internal.jdbc.DomaAbstractEntity<org.seasar.doma.internal.apt.entity.ChildEntity> implements org.seasar.doma.internal.apt.entity.ChildEntity {
+public class ChildEntity_ extends org.seasar.doma.internal.jdbc.DomaAbstractEntity<org.seasar.doma.internal.apt.entity.ChildEntity> implements org.seasar.doma.internal.apt.entity.ChildEntity, java.io.Serializable {
 
-    private final org.seasar.doma.internal.jdbc.NullEntityListener __listener = new org.seasar.doma.internal.jdbc.NullEntityListener();
+    private static final long serialVersionUID = 1L;
 
-    private final org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.IntegerDomain> aaa = new org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.IntegerDomain>("aaa", null, new org.seasar.doma.domain.IntegerDomain(), true, true);
+    private static final org.seasar.doma.internal.jdbc.NullEntityListener __listener = new org.seasar.doma.internal.jdbc.NullEntityListener();
 
-    private final org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.IntegerDomain> bbb = new org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.IntegerDomain>("bbb", null, new org.seasar.doma.domain.IntegerDomain(), true, true);
+    private transient org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.IntegerDomain> aaa = new org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.IntegerDomain>("aaa", null, new org.seasar.doma.domain.IntegerDomain(), true, true);
 
-    private final org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.StringDomain> ccc = new org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.StringDomain>("ccc", null, new org.seasar.doma.domain.StringDomain(), true, true);
+    private transient org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.IntegerDomain> bbb = new org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.IntegerDomain>("bbb", null, new org.seasar.doma.domain.IntegerDomain(), true, true);
+
+    private transient org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.StringDomain> ccc = new org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.StringDomain>("ccc", null, new org.seasar.doma.domain.StringDomain(), true, true);
 
     private final String __name = "ChildEntity";
 
-    private java.util.List<org.seasar.doma.internal.jdbc.Property<?>> __properties;
+    private transient java.util.List<org.seasar.doma.internal.jdbc.Property<?>> __properties;
 
-    private java.util.Map<String, org.seasar.doma.internal.jdbc.Property<?>> __propertyMap;
+    private transient java.util.Map<String, org.seasar.doma.internal.jdbc.Property<?>> __propertyMap;
 
     public ChildEntity_() {
         super(null, null, null);
@@ -93,6 +95,20 @@ public class ChildEntity_ extends org.seasar.doma.internal.jdbc.DomaAbstractEnti
     @Override
     public org.seasar.doma.internal.jdbc.VersionProperty<?> __getVersionProperty() {
         return null;
+    }
+
+    private void readObject(java.io.ObjectInputStream inputStream) throws java.io.IOException, java.lang.ClassNotFoundException {
+        inputStream.defaultReadObject();
+        aaa = new org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.IntegerDomain>("aaa", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject(), true, true);
+        bbb = new org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.IntegerDomain>("bbb", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject(), true, true);
+        ccc = new org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.StringDomain>("ccc", null, (org.seasar.doma.domain.StringDomain)inputStream.readObject(), true, true);
+    }
+
+    private void writeObject(java.io.ObjectOutputStream outputStream) throws java.io.IOException {
+        outputStream.defaultWriteObject();
+        outputStream.writeObject(aaa.getDomain());
+        outputStream.writeObject(bbb.getDomain());
+        outputStream.writeObject(ccc.getDomain());
     }
 
 }

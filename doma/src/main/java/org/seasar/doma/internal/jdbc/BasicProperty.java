@@ -85,4 +85,9 @@ public class BasicProperty<D extends Domain<?, ?>> implements Property<D> {
         return updatable;
     }
 
+    @Override
+    public String toString() {
+        return domain != null ? domain.toString() : null;
+    }
+
 }

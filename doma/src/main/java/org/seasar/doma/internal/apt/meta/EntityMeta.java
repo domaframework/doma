@@ -59,6 +59,8 @@ public class EntityMeta {
 
     protected boolean mappedSuperclass;
 
+    protected long serialVersionUID;
+
     public EntityMeta() {
         typeParamMapStack.push(Collections.<TypeMirror, TypeMirror> emptyMap());
     }
@@ -175,6 +177,14 @@ public class EntityMeta {
 
     public void setMappedSuperclass(boolean mappedSuperclass) {
         this.mappedSuperclass = mappedSuperclass;
+    }
+
+    public long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public void setSerialVersionUID(long serialVersionUID) {
+        this.serialVersionUID = serialVersionUID;
     }
 
 }

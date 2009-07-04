@@ -15,6 +15,7 @@
  */
 package example.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,29 +35,30 @@ import org.seasar.doma.internal.jdbc.NullEntityListener;
 import org.seasar.doma.internal.jdbc.Property;
 import org.seasar.doma.internal.jdbc.VersionProperty;
 
-
 @Generated("")
-public class Emp_ extends DomaAbstractEntity<Emp> implements Emp {
+public class Emp_ extends DomaAbstractEntity<Emp> implements Emp, Serializable {
 
-    private final NullEntityListener __listener = new NullEntityListener();
+    private static final long serialVersionUID = 1L;
 
-    private final AssignedIdProperty<IntegerDomain> id = new AssignedIdProperty<IntegerDomain>(
+    private static final NullEntityListener __listener = new NullEntityListener();
+
+    private transient AssignedIdProperty<IntegerDomain> id = new AssignedIdProperty<IntegerDomain>(
             "id", null, new IntegerDomain(), true, true);
 
-    private final BasicProperty<StringDomain> name = new BasicProperty<StringDomain>(
+    private transient BasicProperty<StringDomain> name = new BasicProperty<StringDomain>(
             "name", null, new StringDomain(), true, true);
 
-    private final BasicProperty<BigDecimalDomain> salary = new BasicProperty<BigDecimalDomain>(
+    private transient BasicProperty<BigDecimalDomain> salary = new BasicProperty<BigDecimalDomain>(
             "salary", null, new BigDecimalDomain(), true, true);
 
-    private final VersionProperty<IntegerDomain> version = new VersionProperty<IntegerDomain>(
+    private transient VersionProperty<IntegerDomain> version = new VersionProperty<IntegerDomain>(
             "version", null, new IntegerDomain(), true, true);
 
     private final String __name = "emp";
 
-    private List<Property<?>> __properties;
+    private transient List<Property<?>> __properties;
 
-    private Map<String, Property<?>> __propertyMap;
+    private transient Map<String, Property<?>> __propertyMap;
 
     public Emp_() {
         super(null, null, null);

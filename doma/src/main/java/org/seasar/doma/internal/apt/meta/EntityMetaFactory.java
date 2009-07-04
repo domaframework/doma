@@ -41,7 +41,6 @@ import org.seasar.doma.jdbc.EntityListener;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.MessageCode;
 
-
 /**
  * 
  * @author taedium
@@ -101,6 +100,7 @@ public class EntityMetaFactory {
             }
             doListener(entityAnnotation, entityElement, entityMeta);
             doTableMeta(entityElement, entityMeta);
+            doSerialVersionUID(entityAnnotation, entityElement, entityMeta);
         } else if (mappedSuperclassAnnotation != null) {
             if (!entityElement.getTypeParameters().isEmpty()) {
                 throw new JdbcException(MessageCode.DOMA4050, entityElement);
@@ -172,6 +172,11 @@ public class EntityMetaFactory {
             tableMeta.setName(table.name());
         }
         entityMeta.setTableMeta(tableMeta);
+    }
+
+    protected void doSerialVersionUID(Entity entityAnnotation,
+            TypeElement entityElement, EntityMeta entityMeta) {
+        entityMeta.setSerialVersionUID(entityAnnotation.serialVersionUID());
     }
 
     protected void doSuperInterfaceMethodElements(TypeElement typeElement,

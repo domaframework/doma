@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.apt.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.seasar.doma.domain.BigDecimalDomain;
@@ -25,12 +26,13 @@ import org.seasar.doma.internal.jdbc.GeneratedIdProperty;
 import org.seasar.doma.internal.jdbc.Property;
 import org.seasar.doma.internal.jdbc.VersionProperty;
 
-
 /**
  * @author taedium
  * 
  */
-public class Emp_ extends DomaAbstractEntity<Emp> implements Emp {
+public class Emp_ extends DomaAbstractEntity<Emp> implements Emp, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     public Emp_() {
         super(null, null, null);

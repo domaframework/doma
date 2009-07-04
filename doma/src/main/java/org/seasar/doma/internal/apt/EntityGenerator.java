@@ -18,6 +18,9 @@ package org.seasar.doma.internal.apt;
 import static org.seasar.doma.internal.util.Assertions.*;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
@@ -70,8 +73,9 @@ public class EntityGenerator extends AbstractGenerator {
 
     protected void printClass() {
         printGenerated();
-        print("public class %1$s extends %2$s<%3$s> implements %3$s {%n", simpleName, DomaAbstractEntity.class
-                .getName(), entityMeta.getEntityElement().getQualifiedName());
+        print("public class %1$s extends %2$s<%3$s> implements %3$s, %4$s {%n", simpleName, DomaAbstractEntity.class
+                .getName(), entityMeta.getEntityElement().getQualifiedName(), Serializable.class
+                .getName());
         put("%n");
         indent();
         printFields();
@@ -82,15 +86,37 @@ public class EntityGenerator extends AbstractGenerator {
     }
 
     protected void printFields() {
+        printSerialVersionUIDField();
+        printGeneratedIdPropertyField();
+        printListenerField();
+        printPropertyField();
+        printNameField();
+        printPropertiesField();
+        printPropertyMapField();
+    }
+
+    protected void printSerialVersionUIDField() {
+        print("private static final long serialVersionUID = %1$sL;%n", entityMeta
+                .getSerialVersionUID());
+        put("%n");
+    }
+
+    protected void printGeneratedIdPropertyField() {
         if (entityMeta.hasGeneratedIdPropertyMeta()) {
             PropertyMeta propertyMeta = entityMeta.getGeneratedIdPropertyMeta();
             IdGeneratorMeta idGeneratorMeta = propertyMeta.getIdGeneratorMeta();
             idGeneratorMeta.accept(new IdGeneratorGenerator(), null);
             put("%n");
         }
-        print("private final %1$s __listener = new %1$s();%n", entityMeta
+    }
+
+    protected void printListenerField() {
+        print("private static final %1$s __listener = new %1$s();%n", entityMeta
                 .getListenerType());
         put("%n");
+    }
+
+    protected void printPropertyField() {
         for (PropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             if (pm.isTrnsient()) {
                 print("private final %1$s %2$s = new %1$s();%n", pm
@@ -104,9 +130,9 @@ public class EntityGenerator extends AbstractGenerator {
                     columnName = "null";
                     quote = "";
                 }
-                String format = "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", %7$s%4$s%7$s, new %2$s(), %5$s, %6$s);%n";
+                String format = "private transient %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", %7$s%4$s%7$s, new %2$s(), %5$s, %6$s);%n";
                 if (propertyClass == GeneratedIdProperty.class) {
-                    format = "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", %7$s%4$s%7$s, new %2$s(), %5$s, %6$s, __idGenerator);%n";
+                    format = "private transient %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", %7$s%4$s%7$s, new %2$s(), %5$s, %6$s, __idGenerator);%n";
                 }
                 print(format, /* 1 */propertyClass.getName(), /* 2 */pm
                         .getReturnTypeName(), /* 3 */pm.getName(), /* 4 */columnName, /* 5 */cm
@@ -114,26 +140,23 @@ public class EntityGenerator extends AbstractGenerator {
             }
             put("%n");
         }
+    }
+
+    protected void printNameField() {
         print("private final String __name = \"%1$s\";%n", entityMeta.getName());
         put("%n");
-        print("private java.util.List<%1$s<?>> __properties;%n", Property.class
-                .getName());
-        put("%n");
-        print("private java.util.Map<String, %1$s<?>> __propertyMap;%n", Property.class
+    }
+
+    protected void printPropertiesField() {
+        print("private transient java.util.List<%1$s<?>> __properties;%n", Property.class
                 .getName());
         put("%n");
     }
 
-    protected Class<?> getPropertyClass(PropertyMeta propertyMeta) {
-        if (propertyMeta.isId()) {
-            if (propertyMeta.getIdGeneratorMeta() != null) {
-                return GeneratedIdProperty.class;
-            }
-            return AssignedIdProperty.class;
-        } else if (propertyMeta.isVersion()) {
-            return VersionProperty.class;
-        }
-        return BasicProperty.class;
+    protected void printPropertyMapField() {
+        print("private transient java.util.Map<String, %1$s<?>> __propertyMap;%n", Property.class
+                .getName());
+        put("%n");
     }
 
     protected void printConstructor() {
@@ -163,6 +186,21 @@ public class EntityGenerator extends AbstractGenerator {
     }
 
     protected void printMethods() {
+        printPropertyMethod();
+        printGetNameMethod();
+        printAsInterfaceMethod();
+        printPreInsertMethod();
+        printPreUpdateMethod();
+        printPreDeleteMethod();
+        printGetPropertiesMethod();
+        printGetPropertyByNameMethod();
+        printGetGeneratedIdProperty();
+        printGetVersionProperty();
+        printReadObjectMethod();
+        printWriteObjectMethod();
+    }
+
+    protected void printPropertyMethod() {
         for (PropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             if (pm.isTrnsient()) {
                 print("@Override%n");
@@ -170,42 +208,59 @@ public class EntityGenerator extends AbstractGenerator {
                         .getName());
                 print("    return %1$s;%n", pm.getName());
                 print("}%n");
-                put("%n");
             } else {
                 print("@Override%n");
                 print("public %1$s %2$s() {%n", pm.getReturnTypeName(), pm
                         .getName());
                 print("    return %1$s.getDomain();%n", pm.getName());
                 print("}%n");
-                put("%n");
             }
+            put("%n");
         }
+    }
+
+    protected void printGetNameMethod() {
         print("@Override%n");
         print("public String __getName() {%n");
         print("    return __name;%n");
         print("}%n");
         put("%n");
+    }
+
+    protected void printAsInterfaceMethod() {
         print("@Override%n");
         print("public %1$s __asInterface() {%n", entityMeta.getEntityElement()
                 .getQualifiedName());
         print("    return this;%n");
         print("}%n");
         put("%n");
+    }
+
+    protected void printPreInsertMethod() {
         print("@Override%n");
         print("public void __preInsert() {%n");
         print("    __listener.preInsert(this);%n");
         print("}%n");
         put("%n");
+    }
+
+    protected void printPreUpdateMethod() {
         print("@Override%n");
         print("public void __preUpdate() {%n");
         print("    __listener.preUpdate(this);%n");
         print("}%n");
         put("%n");
+    }
+
+    protected void printPreDeleteMethod() {
         print("@Override%n");
         print("public void __preDelete() {%n");
         print("    __listener.preDelete(this);%n");
         print("}%n");
         put("%n");
+    }
+
+    protected void printGetPropertiesMethod() {
         print("@Override%n");
         print("public java.util.List<%1$s<?>> __getProperties() {%n", Property.class
                 .getName());
@@ -227,6 +282,9 @@ public class EntityGenerator extends AbstractGenerator {
         unindent();
         print("}%n");
         put("%n");
+    }
+
+    protected void printGetPropertyByNameMethod() {
         print("@Override%n");
         print("public %1$s<?> __getPropertyByName(String propertyName) {%n", Property.class
                 .getName());
@@ -248,6 +306,9 @@ public class EntityGenerator extends AbstractGenerator {
         unindent();
         print("}%n");
         put("%n");
+    }
+
+    protected void printGetGeneratedIdProperty() {
         print("@Override%n");
         print("public %1$s<?> __getGeneratedIdProperty() {%n", GeneratedIdProperty.class
                 .getName());
@@ -259,6 +320,9 @@ public class EntityGenerator extends AbstractGenerator {
         print("    return %1$s;%n", idName);
         print("}%n");
         put("%n");
+    }
+
+    protected void printGetVersionProperty() {
         print("@Override%n");
         print("public %1$s<?> __getVersionProperty() {%n", VersionProperty.class
                 .getName());
@@ -270,6 +334,64 @@ public class EntityGenerator extends AbstractGenerator {
         print("    return %1$s;%n", versionName);
         print("}%n");
         put("%n");
+    }
+
+    protected void printReadObjectMethod() {
+        print("private void readObject(%1$s inputStream) throws %2$s, %3$s {%n", ObjectInputStream.class
+                .getName(), IOException.class.getName(), ClassNotFoundException.class
+                .getName());
+        indent();
+        print("inputStream.defaultReadObject();%n");
+        for (PropertyMeta pm : entityMeta.getAllPropertyMetas()) {
+            if (!pm.isTrnsient()) {
+                Class<?> propertyClass = getPropertyClass(pm);
+                ColumnMeta cm = pm.getColumnMeta();
+                String columnName = cm.getName();
+                String quote = "\"";
+                if (columnName == null) {
+                    columnName = "null";
+                    quote = "";
+                }
+                String format = "%3$s = new %1$s<%2$s>(\"%3$s\", %7$s%4$s%7$s, (%2$s)inputStream.readObject(), %5$s, %6$s);%n";
+                if (propertyClass == GeneratedIdProperty.class) {
+                    format = "%3$s = new %1$s<%2$s>(\"%3$s\", %7$s%4$s%7$s, (%2$s)inputStream.readObject(), %5$s, %6$s, __idGenerator);%n";
+                }
+                print(format, /* 1 */propertyClass.getName(), /* 2 */pm
+                        .getReturnTypeName(), /* 3 */pm.getName(), /* 4 */columnName, /* 5 */cm
+                        .isInsertable(), /* 6 */cm.isUpdatable(), /* 7 */quote);
+            }
+        }
+        unindent();
+        print("}%n");
+        put("%n");
+    }
+
+    protected void printWriteObjectMethod() {
+        print("private void writeObject(%1$s outputStream) throws %2$s {%n", ObjectOutputStream.class
+                .getName(), IOException.class.getName());
+        indent();
+        print("outputStream.defaultWriteObject();%n");
+        for (PropertyMeta pm : entityMeta.getAllPropertyMetas()) {
+            if (!pm.isTrnsient()) {
+                print("outputStream.writeObject(%1$s.getDomain());%n", pm
+                        .getName());
+            }
+        }
+        unindent();
+        print("}%n");
+        put("%n");
+    }
+
+    protected Class<?> getPropertyClass(PropertyMeta propertyMeta) {
+        if (propertyMeta.isId()) {
+            if (propertyMeta.getIdGeneratorMeta() != null) {
+                return GeneratedIdProperty.class;
+            }
+            return AssignedIdProperty.class;
+        } else if (propertyMeta.isVersion()) {
+            return VersionProperty.class;
+        }
+        return BasicProperty.class;
     }
 
     protected class IdGeneratorGenerator implements

@@ -23,7 +23,6 @@ import java.lang.annotation.Target;
 import org.seasar.doma.internal.jdbc.NullEntityListener;
 import org.seasar.doma.jdbc.EntityListener;
 
-
 /**
  * @author taedium
  * 
@@ -33,4 +32,6 @@ import org.seasar.doma.jdbc.EntityListener;
 public @interface Entity {
 
     Class<? extends EntityListener<?>> listener() default NullEntityListener.class;
+
+    long serialVersionUID() default 1L;
 }

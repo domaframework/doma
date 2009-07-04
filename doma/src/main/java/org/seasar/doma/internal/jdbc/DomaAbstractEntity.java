@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.internal.jdbc;
 
+import java.io.Serializable;
+
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.NameConvention;
 import org.seasar.doma.jdbc.dialect.Dialect;
@@ -23,7 +25,9 @@ import org.seasar.doma.jdbc.dialect.Dialect;
  * @author taedium
  * 
  */
-public abstract class DomaAbstractEntity<I> implements Entity<I> {
+public abstract class DomaAbstractEntity<I> implements Entity<I>, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final String __catalogName;
 
