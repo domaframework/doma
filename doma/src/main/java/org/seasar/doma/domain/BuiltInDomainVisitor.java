@@ -36,5 +36,6 @@ public interface BuiltInDomainVisitor<R, P, TH extends Throwable> extends
         AbstractClobDomainVisitor<R, P, TH>,
         AbstractNClobDomainVisitor<R, P, TH>,
         AbstractBooleanDomainVisitor<R, P, TH>,
-        AbstractBytesDomainVisitor<R, P, TH> {
+        AbstractBytesDomainVisitor<R, P, TH>,
+        AbstractDoubleDomainVisitor<R, P, TH> {
 }

@@ -15,6 +15,10 @@
  */
 package org.seasar.doma.domain;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import org.seasar.doma.DomaIllegalArgumentException;
 
 /**
@@ -23,10 +27,11 @@ import org.seasar.doma.DomaIllegalArgumentException;
  */
 public abstract class AbstractIntegerDomain<D extends AbstractIntegerDomain<D>>
         extends AbstractComparableDomain<Integer, D> implements
-        NumberDomain<Integer, D> {
+        NumberDomain<Integer, D>, SerializableDomain<Integer, D> {
+
+    private static final long serialVersionUID = 1L;
 
     public AbstractIntegerDomain() {
-        super(null);
     }
 
     public AbstractIntegerDomain(Integer value) {
@@ -89,4 +94,17 @@ public abstract class AbstractIntegerDomain<D extends AbstractIntegerDomain<D>>
         return value != null ? value.toString() : null;
     }
 
+    private void readObject(ObjectInputStream inputStream) throws IOException,
+            ClassNotFoundException {
+        inputStream.defaultReadObject();
+        value = Integer.class.cast(inputStream.readObject());
+        changed = inputStream.readBoolean();
+    }
+
+    private void writeObject(ObjectOutputStream outputStream)
+            throws IOException {
+        outputStream.defaultWriteObject();
+        outputStream.writeObject(value);
+        outputStream.writeBoolean(changed);
+    }
 }

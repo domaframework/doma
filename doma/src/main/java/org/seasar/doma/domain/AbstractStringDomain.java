@@ -15,6 +15,10 @@
  */
 package org.seasar.doma.domain;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import org.seasar.doma.DomaIllegalArgumentException;
 
 /**
@@ -22,10 +26,12 @@ import org.seasar.doma.DomaIllegalArgumentException;
  * 
  */
 public abstract class AbstractStringDomain<D extends AbstractStringDomain<D>>
-        extends AbstractComparableDomain<String, D> implements CharSequence {
+        extends AbstractComparableDomain<String, D> implements CharSequence,
+        SerializableDomain<String, D> {
+
+    private static final long serialVersionUID = 1L;
 
     public AbstractStringDomain() {
-        super(null);
     }
 
     public AbstractStringDomain(String value) {
@@ -133,4 +139,17 @@ public abstract class AbstractStringDomain<D extends AbstractStringDomain<D>>
         return value != null ? value.toString() : null;
     }
 
+    private void readObject(ObjectInputStream inputStream) throws IOException,
+            ClassNotFoundException {
+        inputStream.defaultReadObject();
+        value = String.class.cast(inputStream.readObject());
+        changed = inputStream.readBoolean();
+    }
+
+    private void writeObject(ObjectOutputStream outputStream)
+            throws IOException {
+        outputStream.defaultWriteObject();
+        outputStream.writeObject(value);
+        outputStream.writeBoolean(changed);
+    }
 }

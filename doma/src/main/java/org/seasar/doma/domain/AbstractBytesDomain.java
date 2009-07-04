@@ -15,6 +15,11 @@
  */
 package org.seasar.doma.domain;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Arrays;
+
 import org.seasar.doma.DomaIllegalArgumentException;
 
 /**
@@ -22,10 +27,12 @@ import org.seasar.doma.DomaIllegalArgumentException;
  * 
  */
 public abstract class AbstractBytesDomain<D extends AbstractBytesDomain<D>>
-        extends AbstractDomain<byte[], D> {
+        extends AbstractDomain<byte[], D> implements
+        SerializableDomain<byte[], D> {
+
+    private static final long serialVersionUID = 1L;
 
     public AbstractBytesDomain() {
-        super(null);
     }
 
     public AbstractBytesDomain(byte[] value) {
@@ -62,17 +69,31 @@ public abstract class AbstractBytesDomain<D extends AbstractBytesDomain<D>>
         if (value == null) {
             return other.value == null;
         }
-        return value.equals(other.value);
+        return Arrays.equals(value, other.value);
     }
 
     @Override
     public int hashCode() {
-        return value != null ? value.hashCode() : 0;
+        return value != null ? Arrays.hashCode(value) : 0;
     }
 
     @Override
     public String toString() {
-        return value != null ? value.toString() : null;
+        return value != null ? Arrays.toString(value) : null;
+    }
+
+    private void readObject(ObjectInputStream inputStream) throws IOException,
+            ClassNotFoundException {
+        inputStream.defaultReadObject();
+        value = byte[].class.cast(inputStream.readObject());
+        changed = inputStream.readBoolean();
+    }
+
+    private void writeObject(ObjectOutputStream outputStream)
+            throws IOException {
+        outputStream.defaultWriteObject();
+        outputStream.writeObject(value);
+        outputStream.writeBoolean(changed);
     }
 
 }

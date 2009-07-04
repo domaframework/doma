@@ -19,10 +19,11 @@ package org.seasar.doma.domain;
  * @author taedium
  * 
  */
-public class BytesDomain extends AbstractBytesDomain<BytesDomain> {
+public final class BytesDomain extends AbstractBytesDomain<BytesDomain> {
+
+    private static final long serialVersionUID = 1L;
 
     public BytesDomain() {
-        super();
     }
 
     public BytesDomain(byte[] value) {

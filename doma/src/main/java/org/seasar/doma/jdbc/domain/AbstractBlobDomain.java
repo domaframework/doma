@@ -29,7 +29,6 @@ public abstract class AbstractBlobDomain<D extends AbstractBlobDomain<D>>
         extends AbstractDomain<Blob, D> {
 
     public AbstractBlobDomain() {
-        super(null);
     }
 
     public AbstractBlobDomain(Blob v) {

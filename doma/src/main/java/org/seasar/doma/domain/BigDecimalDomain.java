@@ -21,11 +21,12 @@ import java.math.BigDecimal;
  * @author taedium
  * 
  */
-public class BigDecimalDomain extends
+public final class BigDecimalDomain extends
         AbstractBigDecimalDomain<BigDecimalDomain> {
 
+    private static final long serialVersionUID = 1L;
+
     public BigDecimalDomain() {
-        super();
     }
 
     public BigDecimalDomain(BigDecimal value) {

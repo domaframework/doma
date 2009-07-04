@@ -21,10 +21,11 @@ import java.sql.Date;
  * @author taedium
  * 
  */
-public class DateDomain extends AbstractDateDomain<DateDomain> {
+public final class DateDomain extends AbstractDateDomain<DateDomain> {
+
+    private static final long serialVersionUID = 1L;
 
     public DateDomain() {
-        super();
     }
 
     public DateDomain(Date value) {

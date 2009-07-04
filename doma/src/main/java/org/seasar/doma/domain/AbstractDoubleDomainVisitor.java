@@ -19,15 +19,9 @@ package org.seasar.doma.domain;
  * @author taedium
  * 
  */
-public final class IntegerDomain extends AbstractIntegerDomain<IntegerDomain> {
+public interface AbstractDoubleDomainVisitor<R, P, TH extends Throwable>
+        extends DomainVisitor<R, P, TH> {
 
-    private static final long serialVersionUID = 1L;
-
-    public IntegerDomain() {
-    }
-
-    public IntegerDomain(Integer value) {
-        super(value);
-    }
+    R visitAbstractDoubleDomain(AbstractDoubleDomain<?> domain, P p) throws TH;
 
 }

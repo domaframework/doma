@@ -28,6 +28,9 @@ public abstract class AbstractDomain<V, D extends AbstractDomain<V, D>>
 
     protected boolean changed;
 
+    public AbstractDomain() {
+    }
+
     public AbstractDomain(V v) {
         setInternal(v);
     }

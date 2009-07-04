@@ -15,6 +15,9 @@
  */
 package org.seasar.doma.domain;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 
 import org.seasar.doma.DomaIllegalArgumentException;
@@ -25,10 +28,11 @@ import org.seasar.doma.DomaIllegalArgumentException;
  */
 public abstract class AbstractBigDecimalDomain<D extends AbstractBigDecimalDomain<D>>
         extends AbstractComparableDomain<BigDecimal, D> implements
-        NumberDomain<BigDecimal, D> {
+        NumberDomain<BigDecimal, D>, SerializableDomain<BigDecimal, D> {
+
+    private static final long serialVersionUID = 1L;
 
     public AbstractBigDecimalDomain() {
-        super(null);
     }
 
     public AbstractBigDecimalDomain(BigDecimal value) {
@@ -92,4 +96,17 @@ public abstract class AbstractBigDecimalDomain<D extends AbstractBigDecimalDomai
         return value != null ? value.toPlainString() : null;
     }
 
+    private void readObject(ObjectInputStream inputStream) throws IOException,
+            ClassNotFoundException {
+        inputStream.defaultReadObject();
+        value = BigDecimal.class.cast(inputStream.readObject());
+        changed = inputStream.readBoolean();
+    }
+
+    private void writeObject(ObjectOutputStream outputStream)
+            throws IOException {
+        outputStream.defaultWriteObject();
+        outputStream.writeObject(value);
+        outputStream.writeBoolean(changed);
+    }
 }

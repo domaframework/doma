@@ -21,10 +21,12 @@ import java.sql.Timestamp;
  * @author taedium
  * 
  */
-public class TimestampDomain extends AbstractTimestampDomain<TimestampDomain> {
+public final class TimestampDomain extends
+        AbstractTimestampDomain<TimestampDomain> {
+
+    private static final long serialVersionUID = 1L;
 
     public TimestampDomain() {
-        super();
     }
 
     public TimestampDomain(Timestamp value) {

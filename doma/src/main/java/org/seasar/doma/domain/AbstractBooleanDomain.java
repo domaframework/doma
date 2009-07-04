@@ -15,6 +15,10 @@
  */
 package org.seasar.doma.domain;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import org.seasar.doma.DomaIllegalArgumentException;
 
 /**
@@ -22,10 +26,12 @@ import org.seasar.doma.DomaIllegalArgumentException;
  * 
  */
 public abstract class AbstractBooleanDomain<D extends AbstractBooleanDomain<D>>
-        extends AbstractComparableDomain<Boolean, D> {
+        extends AbstractComparableDomain<Boolean, D> implements
+        SerializableDomain<Boolean, D> {
+
+    private static final long serialVersionUID = 1L;
 
     public AbstractBooleanDomain() {
-        super(null);
     }
 
     public AbstractBooleanDomain(Boolean value) {
@@ -73,6 +79,20 @@ public abstract class AbstractBooleanDomain<D extends AbstractBooleanDomain<D>>
     @Override
     public String toString() {
         return value != null ? value.toString() : null;
+    }
+
+    private void readObject(ObjectInputStream inputStream) throws IOException,
+            ClassNotFoundException {
+        inputStream.defaultReadObject();
+        value = Boolean.class.cast(inputStream.readObject());
+        changed = inputStream.readBoolean();
+    }
+
+    private void writeObject(ObjectOutputStream outputStream)
+            throws IOException {
+        outputStream.defaultWriteObject();
+        outputStream.writeObject(value);
+        outputStream.writeBoolean(changed);
     }
 
 }

@@ -21,10 +21,9 @@ import java.sql.NClob;
  * @author taedium
  * 
  */
-public class NClobDomain extends AbstractNClobDomain<NClobDomain> {
+public final class NClobDomain extends AbstractNClobDomain<NClobDomain> {
 
     public NClobDomain() {
-        super();
     }
 
     public NClobDomain(NClob v) {

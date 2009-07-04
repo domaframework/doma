@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.jdbc.type;
 
-
 /**
  * @author taedium
  * 
@@ -47,6 +46,8 @@ public final class JdbcTypes {
     public static final IntAdaptiveBooleanType INT_ADAPTIVE_BOOLEAN = new IntAdaptiveBooleanType();
 
     public static final BytesType BYTES = new BytesType();
+
+    public static final DoubleType DOUBLE = new DoubleType();
 
     public static final ObjectType OBJECT = new ObjectType();
 

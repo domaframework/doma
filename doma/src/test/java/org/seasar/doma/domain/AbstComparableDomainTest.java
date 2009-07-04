@@ -15,12 +15,9 @@
  */
 package org.seasar.doma.domain;
 
-import org.seasar.doma.DomaIllegalArgumentException;
-import org.seasar.doma.domain.AbstractComparableDomain;
-import org.seasar.doma.domain.DomainIncomparableException;
-import org.seasar.doma.domain.DomainVisitor;
-
 import junit.framework.TestCase;
+
+import org.seasar.doma.DomaIllegalArgumentException;
 
 /**
  * @author taedium
@@ -124,10 +121,6 @@ public class AbstComparableDomainTest extends TestCase {
 
     private static class AbstComparableDomain extends
             AbstractComparableDomain<String, AbstComparableDomain> {
-
-        public AbstComparableDomain() {
-            super(null);
-        }
 
         public AbstComparableDomain(String value) {
             super(value);

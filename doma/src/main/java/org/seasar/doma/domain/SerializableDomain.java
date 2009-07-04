@@ -15,19 +15,12 @@
  */
 package org.seasar.doma.domain;
 
+import java.io.Serializable;
+
 /**
  * @author taedium
  * 
  */
-public final class IntegerDomain extends AbstractIntegerDomain<IntegerDomain> {
-
-    private static final long serialVersionUID = 1L;
-
-    public IntegerDomain() {
-    }
-
-    public IntegerDomain(Integer value) {
-        super(value);
-    }
-
+public interface SerializableDomain<V extends Serializable, D extends SerializableDomain<V, D>>
+        extends Domain<V, D>, Serializable {
 }

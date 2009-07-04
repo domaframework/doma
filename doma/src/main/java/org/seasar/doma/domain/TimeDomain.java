@@ -21,10 +21,11 @@ import java.sql.Time;
  * @author taedium
  * 
  */
-public class TimeDomain extends AbstractTimeDomain<TimeDomain> {
+public final class TimeDomain extends AbstractTimeDomain<TimeDomain> {
+
+    private static final long serialVersionUID = 1L;
 
     public TimeDomain() {
-        super();
     }
 
     public TimeDomain(Time value) {

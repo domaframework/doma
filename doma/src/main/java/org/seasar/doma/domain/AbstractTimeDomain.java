@@ -15,20 +15,24 @@
  */
 package org.seasar.doma.domain;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.sql.Time;
 
 import org.seasar.doma.DomaIllegalArgumentException;
-
 
 /**
  * @author taedium
  * 
  */
 public abstract class AbstractTimeDomain<D extends AbstractTimeDomain<D>>
-        extends AbstractComparableDomain<Time, D> {
+        extends AbstractComparableDomain<Time, D> implements
+        SerializableDomain<Time, D> {
+
+    private static final long serialVersionUID = 1L;
 
     public AbstractTimeDomain() {
-        super(null);
     }
 
     public AbstractTimeDomain(Time value) {
@@ -78,4 +82,17 @@ public abstract class AbstractTimeDomain<D extends AbstractTimeDomain<D>>
         return value != null ? value.toString() : null;
     }
 
+    private void readObject(ObjectInputStream inputStream) throws IOException,
+            ClassNotFoundException {
+        inputStream.defaultReadObject();
+        value = Time.class.cast(inputStream.readObject());
+        changed = inputStream.readBoolean();
+    }
+
+    private void writeObject(ObjectOutputStream outputStream)
+            throws IOException {
+        outputStream.defaultWriteObject();
+        outputStream.writeObject(value);
+        outputStream.writeBoolean(changed);
+    }
 }

@@ -19,14 +19,14 @@ package org.seasar.doma.domain;
  * @author taedium
  * 
  */
-public final class IntegerDomain extends AbstractIntegerDomain<IntegerDomain> {
+public final class DoubleDomain extends AbstractDoubleDomain<DoubleDomain> {
 
     private static final long serialVersionUID = 1L;
 
-    public IntegerDomain() {
+    public DoubleDomain() {
     }
 
-    public IntegerDomain(Integer value) {
+    public DoubleDomain(Double value) {
         super(value);
     }
 

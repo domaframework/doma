@@ -25,26 +25,26 @@ import org.seasar.doma.DomaIllegalArgumentException;
  * @author taedium
  * 
  */
-public abstract class AbstractLongDomain<D extends AbstractLongDomain<D>>
-        extends AbstractComparableDomain<Long, D> implements
-        NumberDomain<Long, D>, SerializableDomain<Long, D> {
+public abstract class AbstractDoubleDomain<D extends AbstractDoubleDomain<D>>
+        extends AbstractComparableDomain<Double, D> implements
+        NumberDomain<Double, D>, SerializableDomain<Double, D> {
 
     private static final long serialVersionUID = 1L;
 
-    public AbstractLongDomain() {
+    public AbstractDoubleDomain() {
     }
 
-    public AbstractLongDomain(Long value) {
+    public AbstractDoubleDomain(Double value) {
         super(value);
     }
 
     @Override
     public void set(Number v) {
-        setInternal(v.longValue());
+        setInternal(v.doubleValue());
     }
 
     @Override
-    public void set(NumberDomain<Long, D> other) {
+    public void set(NumberDomain<Double, D> other) {
         if (other == null) {
             throw new DomaIllegalArgumentException("other", other);
         }
@@ -57,11 +57,11 @@ public abstract class AbstractLongDomain<D extends AbstractLongDomain<D>>
         if (visitor == null) {
             throw new DomaIllegalArgumentException("visitor", visitor);
         }
-        if (AbstractLongDomainVisitor.class.isInstance(visitor)) {
+        if (AbstractDoubleDomainVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            AbstractLongDomainVisitor<R, P, TH> v = AbstractLongDomainVisitor.class
+            AbstractDoubleDomainVisitor<R, P, TH> v = AbstractDoubleDomainVisitor.class
                     .cast(visitor);
-            return v.visitAbstractLongDomain(this, p);
+            return v.visitAbstractDoubleDomain(this, p);
         }
         return visitor.visitUnknownDomain(this, p);
     }
@@ -77,7 +77,7 @@ public abstract class AbstractLongDomain<D extends AbstractLongDomain<D>>
         if (getClass() != o.getClass()) {
             return false;
         }
-        AbstractLongDomain<?> other = AbstractLongDomain.class.cast(o);
+        AbstractDoubleDomain<?> other = AbstractDoubleDomain.class.cast(o);
         if (value == null) {
             return other.value == null;
         }
@@ -97,7 +97,7 @@ public abstract class AbstractLongDomain<D extends AbstractLongDomain<D>>
     private void readObject(ObjectInputStream inputStream) throws IOException,
             ClassNotFoundException {
         inputStream.defaultReadObject();
-        value = Long.class.cast(inputStream.readObject());
+        value = Double.class.cast(inputStream.readObject());
         changed = inputStream.readBoolean();
     }
 
@@ -107,4 +107,5 @@ public abstract class AbstractLongDomain<D extends AbstractLongDomain<D>>
         outputStream.writeObject(value);
         outputStream.writeBoolean(changed);
     }
+
 }

@@ -21,6 +21,7 @@ import org.seasar.doma.domain.AbstractBigDecimalDomain;
 import org.seasar.doma.domain.AbstractBooleanDomain;
 import org.seasar.doma.domain.AbstractBytesDomain;
 import org.seasar.doma.domain.AbstractDateDomain;
+import org.seasar.doma.domain.AbstractDoubleDomain;
 import org.seasar.doma.domain.AbstractIntegerDomain;
 import org.seasar.doma.domain.AbstractStringDomain;
 import org.seasar.doma.domain.AbstractTimeDomain;
@@ -117,6 +118,12 @@ public class JdbcMappingVisitor implements
     public Void visitAbstractBytesDomain(AbstractBytesDomain<?> domain,
             JdbcMappingFunction p) throws SQLException {
         return p.apply(domain, JdbcTypes.BYTES);
+    }
+
+    @Override
+    public Void visitAbstractDoubleDomain(AbstractDoubleDomain<?> domain,
+            JdbcMappingFunction p) throws SQLException {
+        return p.apply(domain, JdbcTypes.DOUBLE);
     }
 
     @Override

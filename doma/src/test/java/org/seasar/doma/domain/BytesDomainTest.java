@@ -19,7 +19,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.math.BigDecimal;
 
 import junit.framework.TestCase;
 
@@ -27,11 +26,11 @@ import junit.framework.TestCase;
  * @author taedium
  * 
  */
-public class BigDecimalDomainTest extends TestCase {
+public class BytesDomainTest extends TestCase {
 
     public void testEquals() throws Exception {
-        BigDecimalDomain domain = new BigDecimalDomain(new BigDecimal(10));
-        BigDecimalDomain domain2 = new BigDecimalDomain(new BigDecimal(10));
+        BytesDomain domain = new BytesDomain(new byte[] { 1, 2, 3 });
+        BytesDomain domain2 = new BytesDomain(new byte[] { 1, 2, 3 });
         assertTrue(domain.equals(domain2));
 
         domain.setNull();
@@ -40,12 +39,12 @@ public class BigDecimalDomainTest extends TestCase {
         domain2.setNull();
         assertTrue(domain.equals(domain2));
 
-        domain.set(new BigDecimal(10));
+        domain.set(new byte[] { 1 });
         assertFalse(domain.equals(domain2));
     }
 
     public void testSerializable() throws Exception {
-        BigDecimalDomain domain = new BigDecimalDomain(new BigDecimal(10));
+        BytesDomain domain = new BytesDomain(new byte[] { 1, 2, 3 });
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(domain);

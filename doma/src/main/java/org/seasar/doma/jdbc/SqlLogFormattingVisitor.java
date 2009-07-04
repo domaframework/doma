@@ -19,6 +19,7 @@ import org.seasar.doma.domain.AbstractBigDecimalDomain;
 import org.seasar.doma.domain.AbstractBooleanDomain;
 import org.seasar.doma.domain.AbstractBytesDomain;
 import org.seasar.doma.domain.AbstractDateDomain;
+import org.seasar.doma.domain.AbstractDoubleDomain;
 import org.seasar.doma.domain.AbstractIntegerDomain;
 import org.seasar.doma.domain.AbstractStringDomain;
 import org.seasar.doma.domain.AbstractTimeDomain;
@@ -31,6 +32,7 @@ import org.seasar.doma.jdbc.domain.AbstractBlobDomain;
 import org.seasar.doma.jdbc.domain.AbstractClobDomain;
 import org.seasar.doma.jdbc.domain.AbstractNClobDomain;
 import org.seasar.doma.jdbc.type.JdbcTypes;
+import org.seasar.doma.message.MessageCode;
 
 /**
  * @author taedium
@@ -116,11 +118,17 @@ public class SqlLogFormattingVisitor
         return p.apply(domain, JdbcTypes.BYTES);
     }
 
-    @SuppressWarnings("unchecked")
+    @Override
+    public String visitAbstractDoubleDomain(AbstractDoubleDomain<?> domain,
+            SqlLogFormattingFunction p) throws RuntimeException {
+        return p.apply(domain, JdbcTypes.DOUBLE);
+    }
+
     @Override
     public String visitUnknownDomain(Domain<?, ?> domain,
             SqlLogFormattingFunction p) {
-        return p.apply((Domain<Object, ?>) domain, JdbcTypes.OBJECT);
+        throw new JdbcException(MessageCode.DOMA2019, domain.getClass()
+                .getName());
     }
 
 }

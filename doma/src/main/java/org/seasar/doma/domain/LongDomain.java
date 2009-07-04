@@ -19,10 +19,11 @@ package org.seasar.doma.domain;
  * @author taedium
  * 
  */
-public class LongDomain extends AbstractLongDomain<LongDomain> {
+public final class LongDomain extends AbstractLongDomain<LongDomain> {
+
+    private static final long serialVersionUID = 1L;
 
     public LongDomain() {
-        super();
     }
 
     public LongDomain(Long value) {

@@ -21,10 +21,9 @@ import java.sql.Blob;
  * @author taedium
  * 
  */
-public class BlobDomain extends AbstractBlobDomain<BlobDomain> {
+public final class BlobDomain extends AbstractBlobDomain<BlobDomain> {
 
     public BlobDomain() {
-        super();
     }
 
     public BlobDomain(Blob v) {

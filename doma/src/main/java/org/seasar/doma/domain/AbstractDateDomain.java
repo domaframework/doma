@@ -15,20 +15,24 @@
  */
 package org.seasar.doma.domain;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.sql.Date;
 
 import org.seasar.doma.DomaIllegalArgumentException;
-
 
 /**
  * @author taedium
  * 
  */
 public abstract class AbstractDateDomain<D extends AbstractDateDomain<D>>
-        extends AbstractComparableDomain<Date, D> {
+        extends AbstractComparableDomain<Date, D> implements
+        SerializableDomain<Date, D> {
+
+    private static final long serialVersionUID = 1L;
 
     public AbstractDateDomain() {
-        super(null);
     }
 
     public AbstractDateDomain(Date value) {
@@ -76,6 +80,20 @@ public abstract class AbstractDateDomain<D extends AbstractDateDomain<D>>
     @Override
     public String toString() {
         return value != null ? value.toString() : null;
+    }
+
+    private void readObject(ObjectInputStream inputStream) throws IOException,
+            ClassNotFoundException {
+        inputStream.defaultReadObject();
+        value = Date.class.cast(inputStream.readObject());
+        changed = inputStream.readBoolean();
+    }
+
+    private void writeObject(ObjectOutputStream outputStream)
+            throws IOException {
+        outputStream.defaultWriteObject();
+        outputStream.writeObject(value);
+        outputStream.writeBoolean(changed);
     }
 
 }

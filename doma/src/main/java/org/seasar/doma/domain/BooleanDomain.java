@@ -19,10 +19,11 @@ package org.seasar.doma.domain;
  * @author taedium
  * 
  */
-public class BooleanDomain extends AbstractBooleanDomain<BooleanDomain> {
+public final class BooleanDomain extends AbstractBooleanDomain<BooleanDomain> {
+
+    private static final long serialVersionUID = 1L;
 
     public BooleanDomain() {
-        super();
     }
 
     public BooleanDomain(Boolean value) {
