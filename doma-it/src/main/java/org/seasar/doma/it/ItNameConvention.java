@@ -1,7 +1,7 @@
 package org.seasar.doma.it;
 
-import org.seasar.doma.jdbc.Dialect;
 import org.seasar.doma.jdbc.NameConvention;
+import org.seasar.doma.jdbc.dialect.Dialect;
 
 public class ItNameConvention implements NameConvention {
 

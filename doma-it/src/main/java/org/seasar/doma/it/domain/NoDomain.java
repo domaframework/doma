@@ -15,9 +15,14 @@
  */
 package org.seasar.doma.it.domain;
 
+import java.io.Serializable;
+
 import org.seasar.doma.domain.AbstractIntegerDomain;
 
-public class NoDomain extends AbstractIntegerDomain<NoDomain> {
+public class NoDomain extends AbstractIntegerDomain<NoDomain> implements
+        Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     public NoDomain() {
         super();

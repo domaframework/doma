@@ -15,9 +15,14 @@
  */
 package org.seasar.doma.it.domain;
 
+import java.io.Serializable;
+
 import org.seasar.doma.domain.AbstractIntegerDomain;
 
-public class IdDomain extends AbstractIntegerDomain<IdDomain> {
+public class IdDomain extends AbstractIntegerDomain<IdDomain> implements
+        Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     public IdDomain() {
         super();
