@@ -97,6 +97,11 @@ public class ChildEntity_ extends org.seasar.doma.internal.jdbc.DomaAbstractEnti
         return null;
     }
 
+    @Override
+    public String toString() {
+        return "ChildEntity_ [aaa=" + aaa + ", bbb=" + bbb + ", ccc=" + ccc + "]";
+    }
+
     private void readObject(java.io.ObjectInputStream inputStream) throws java.io.IOException, java.lang.ClassNotFoundException {
         inputStream.defaultReadObject();
         aaa = new org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.IntegerDomain>("aaa", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject(), true, true);

@@ -115,6 +115,11 @@ public class Emp_ extends org.seasar.doma.internal.jdbc.DomaAbstractEntity<org.s
         return version;
     }
 
+    @Override
+    public String toString() {
+        return "Emp_ [id=" + id + ", name=" + name + ", salary=" + salary + ", version=" + version + ", temp=" + temp + "]";
+    }
+
     private void readObject(java.io.ObjectInputStream inputStream) throws java.io.IOException, java.lang.ClassNotFoundException {
         inputStream.defaultReadObject();
         id = new org.seasar.doma.internal.jdbc.GeneratedIdProperty<org.seasar.doma.domain.IntegerDomain>("id", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject(), true, true, __idGenerator);

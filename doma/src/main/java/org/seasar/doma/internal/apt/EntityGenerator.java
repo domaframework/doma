@@ -196,6 +196,7 @@ public class EntityGenerator extends AbstractGenerator {
         printGetPropertyByNameMethod();
         printGetGeneratedIdProperty();
         printGetVersionProperty();
+        printToStringMethod();
         printReadObjectMethod();
         printWriteObjectMethod();
     }
@@ -318,6 +319,30 @@ public class EntityGenerator extends AbstractGenerator {
             idName = pm.getName();
         }
         print("    return %1$s;%n", idName);
+        print("}%n");
+        put("%n");
+    }
+
+    protected void printToStringMethod() {
+        print("@Override%n");
+        print("public String toString() {%n");
+        StringBuilder buf = new StringBuilder(200);
+        buf.append("\"");
+        buf.append(simpleName);
+        buf.append(" [");
+        java.util.List<PropertyMeta> propertyMetas = entityMeta
+                .getAllPropertyMetas();
+        if (!propertyMetas.isEmpty()) {
+            for (PropertyMeta pm : entityMeta.getAllPropertyMetas()) {
+                buf.append(pm.getName());
+                buf.append("=\" + ");
+                buf.append(pm.getName());
+                buf.append(" + \", ");
+            }
+            buf.setLength(buf.length() - 2);
+        }
+        buf.append("]\"");
+        print("    return %1$s;%n", buf);
         print("}%n");
         put("%n");
     }
