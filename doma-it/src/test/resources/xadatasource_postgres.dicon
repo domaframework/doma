@@ -8,14 +8,25 @@
 			"org.postgresql.Driver"
 		</property>
 		<property name="URL">
-			"jdbc:postgresql://localhost:5432/scott"
+			"jdbc:postgresql://localhost/doma_it"
 		</property>
 		<property name="user">
-			"postgres"
+			"doma_it"
 		</property>
 		<property name="password">
-			"postgres"
+			"doma_it"
 		</property>
+		<!--
+		<property name="URL">
+			"jdbc:postgresql://10.24.1.65:5432/SCOTT"
+		</property>
+		<property name="user">
+			"scott"
+		</property>
+		<property name="password">
+			"tiger"
+		</property>
+		-->
 	</component>
 	<component class="org.seasar.doma.jdbc.dialect.PostgresDialect"/>
 </components>
