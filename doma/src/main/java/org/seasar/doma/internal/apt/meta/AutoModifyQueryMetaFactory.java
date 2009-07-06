@@ -62,24 +62,24 @@ public class AutoModifyQueryMetaFactory extends
         Insert insert = method.getAnnotation(Insert.class);
         if (insert != null && !insert.sqlFile()) {
             queryMeta.setQueryTimeout(insert.queryTimeout());
-            queryMeta.setNullExcluded(insert.excludesNull());
+            queryMeta.setNullExcluded(insert.excludeNull());
             queryMeta.setQueryKind(QueryKind.AUTO_INSERT);
         }
         Update update = method.getAnnotation(Update.class);
         if (update != null && !update.sqlFile()) {
             queryMeta.setQueryTimeout(update.queryTimeout());
-            queryMeta.setNullExcluded(update.excludesNull());
-            queryMeta.setVersionIncluded(update.includesVersion());
+            queryMeta.setNullExcluded(update.excludeNull());
+            queryMeta.setVersionIncluded(update.includeVersion());
             queryMeta.setOptimisticLockExceptionSuppressed(update
-                    .suppressesOptimisticLockException());
+                    .suppressOptimisticLockException());
             queryMeta.setQueryKind(QueryKind.AUTO_UPDATE);
         }
         Delete delete = method.getAnnotation(Delete.class);
         if (delete != null && !delete.sqlFile()) {
             queryMeta.setQueryTimeout(delete.queryTimeout());
-            queryMeta.setVersionIgnored(delete.ignoresVersion());
+            queryMeta.setVersionIgnored(delete.ignoreVersion());
             queryMeta.setOptimisticLockExceptionSuppressed(delete
-                    .suppressesOptimisticLockException());
+                    .suppressOptimisticLockException());
             queryMeta.setQueryKind(QueryKind.AUTO_DELETE);
         }
         if (queryMeta.getQueryKind() == null) {

@@ -32,5 +32,5 @@ public @interface Insert {
 
     int queryTimeout() default -1;
 
-    boolean excludesNull() default false;
+    boolean excludeNull() default false;
 }

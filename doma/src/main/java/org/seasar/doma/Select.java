@@ -34,5 +34,5 @@ public @interface Select {
 
     int maxRows() default -1;
 
-    boolean iteration() default false;
+    boolean iterate() default false;
 }

@@ -94,7 +94,7 @@ public class DomainIterationHandlerTest extends TestCase {
                     public String iterate(StringDomain target,
                             IterationContext iterationContext) {
                         result += target.get();
-                        iterationContext.exits();
+                        iterationContext.exit();
                         return result;
                     }
                 });

@@ -95,7 +95,7 @@ public class EntityIterationHandlerTest extends TestCase {
                     @Override
                     public Integer iterate(Emp target,
                             IterationContext iterationContext) {
-                        iterationContext.exits();
+                        iterationContext.exit();
                         count++;
                         return count;
                     }

@@ -34,5 +34,5 @@ public @interface BatchUpdate {
 
     boolean includesVersion() default false;
 
-    boolean suppressesOptimisticLockException() default false;
+    boolean suppressOptimisticLockException() default false;
 }

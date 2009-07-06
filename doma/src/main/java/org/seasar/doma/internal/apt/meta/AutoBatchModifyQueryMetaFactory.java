@@ -70,15 +70,15 @@ public class AutoBatchModifyQueryMetaFactory extends
             queryMeta.setQueryTimeout(update.queryTimeout());
             queryMeta.setVersionIncluded(update.includesVersion());
             queryMeta.setOptimisticLockExceptionSuppressed(update
-                    .suppressesOptimisticLockException());
+                    .suppressOptimisticLockException());
             queryMeta.setQueryKind(QueryKind.AUTO_BATCH_UPDATE);
         }
         BatchDelete delete = method.getAnnotation(BatchDelete.class);
         if (delete != null && !delete.sqlFile()) {
             queryMeta.setQueryTimeout(delete.queryTimeout());
-            queryMeta.setVersionIgnored(delete.ignoresVersion());
+            queryMeta.setVersionIgnored(delete.ignoreVersion());
             queryMeta.setOptimisticLockExceptionSuppressed(delete
-                    .suppressesOptimisticLockException());
+                    .suppressOptimisticLockException());
             queryMeta.setQueryKind(QueryKind.AUTO_BATCH_DELETE);
         }
         if (queryMeta.getQueryKind() == null) {

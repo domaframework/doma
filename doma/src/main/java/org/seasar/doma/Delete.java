@@ -32,8 +32,8 @@ public @interface Delete {
 
     int queryTimeout() default -1;
 
-    boolean ignoresVersion() default false;
+    boolean ignoreVersion() default false;
 
-    boolean suppressesOptimisticLockException() default false;
+    boolean suppressOptimisticLockException() default false;
 
 }

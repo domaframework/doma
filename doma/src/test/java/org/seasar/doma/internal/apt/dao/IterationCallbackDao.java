@@ -30,10 +30,10 @@ import org.seasar.doma.jdbc.IterationCallback;
 @Dao(config = MyConfig.class)
 public interface IterationCallbackDao {
 
-    @Select(iteration = true)
+    @Select(iterate = true)
     Integer iterate(IntegerDomain id, StringDomain name,
             IterationCallback<Integer, Emp> callback);
 
-    @Select(iteration = true)
+    @Select(iterate = true)
     String iterate(HogeIterationCallback callback);
 }

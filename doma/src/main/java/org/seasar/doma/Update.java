@@ -32,10 +32,10 @@ public @interface Update {
 
     int queryTimeout() default -1;
 
-    boolean excludesNull() default false;
+    boolean excludeNull() default false;
 
-    boolean includesVersion() default false;
+    boolean includeVersion() default false;
 
-    boolean suppressesOptimisticLockException() default false;
+    boolean suppressOptimisticLockException() default false;
 
 }

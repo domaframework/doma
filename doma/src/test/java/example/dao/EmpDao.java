@@ -52,7 +52,7 @@ public interface EmpDao {
     List<Emp> selectByNameAndSalary(StringDomain name, BigDecimalDomain salary,
             SelectOptions option);
 
-    @Select(iteration = true)
+    @Select(iterate = true)
     Integer iterate(IterationCallback<Integer, Emp> callback);
 
     @Insert

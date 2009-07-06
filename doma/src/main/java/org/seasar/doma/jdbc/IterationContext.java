@@ -27,7 +27,7 @@ public class IterationContext {
         return exited;
     }
 
-    public void exits() {
+    public void exit() {
         this.exited = true;
     }
 

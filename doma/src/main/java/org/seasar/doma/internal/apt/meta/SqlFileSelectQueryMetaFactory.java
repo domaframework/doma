@@ -69,7 +69,7 @@ public class SqlFileSelectQueryMetaFactory extends
         queryMeta.setQueryTimeout(select.queryTimeout());
         queryMeta.setFetchSize(select.fetchSize());
         queryMeta.setMaxRows(select.maxRows());
-        queryMeta.setIteration(select.iteration());
+        queryMeta.setIteration(select.iterate());
         queryMeta.setQueryKind(QueryKind.SQLFILE_SELECT);
         queryMeta.setName(method.getSimpleName().toString());
         queryMeta.setExecutableElement(method);
