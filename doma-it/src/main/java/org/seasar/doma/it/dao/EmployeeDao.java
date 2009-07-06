@@ -41,17 +41,17 @@ public interface EmployeeDao extends GenericDao<Employee> {
     @Select
     List<Employee> selectAll(SelectOptions options);
 
-    @Select(iteration = true)
+    @Select(iterate = true)
     <R> R selectAll(IterationCallback<R, Employee> callback);
 
-    @Select(iteration = true)
+    @Select(iterate = true)
     <R> R selectAll(IterationCallback<R, Employee> callback,
             SelectOptions options);
 
-    @Select(iteration = true)
+    @Select(iterate = true)
     <R> R selectAllSalary(IterationCallback<R, SalaryDomain> callback);
 
-    @Select(iteration = true)
+    @Select(iterate = true)
     <R> R selectAllSalary(IterationCallback<R, SalaryDomain> callback,
             SelectOptions options);
 }

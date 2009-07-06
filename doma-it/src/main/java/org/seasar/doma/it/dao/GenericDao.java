@@ -30,7 +30,7 @@ public interface GenericDao<E> {
     @Insert
     int insert(E entity);
 
-    @Insert(excludesNull = true)
+    @Insert(excludeNull = true)
     int insert_excludesNull(E entity);
 
     @BatchInsert
@@ -39,13 +39,13 @@ public interface GenericDao<E> {
     @Update
     int update(E entity);
 
-    @Update(excludesNull = true)
+    @Update(excludeNull = true)
     int update_excludesNull(E entity);
 
-    @Update(includesVersion = true)
+    @Update(includeVersion = true)
     int update_includesVersion(E entity);
 
-    @Update(suppressesOptimisticLockException = true)
+    @Update(suppressOptimisticLockException = true)
     int update_suppressesOptimisticLockException(E entity);
 
     @BatchUpdate
@@ -54,24 +54,24 @@ public interface GenericDao<E> {
     @BatchUpdate(includesVersion = true)
     int[] update_includesVersion(List<E> entities);
 
-    @BatchUpdate(suppressesOptimisticLockException = true)
+    @BatchUpdate(suppressOptimisticLockException = true)
     int[] update_suppressesOptimisticLockException(List<E> entities);
 
     @Delete
     int delete(E entity);
 
-    @Delete(ignoresVersion = true)
+    @Delete(ignoreVersion = true)
     int delete_ignoresVersion(E entity);
 
-    @Delete(suppressesOptimisticLockException = true)
+    @Delete(suppressOptimisticLockException = true)
     int delete_suppressesOptimisticLockException(E entity);
 
     @BatchDelete
     int[] delete(List<E> entity);
 
-    @BatchDelete(ignoresVersion = true)
+    @BatchDelete(ignoreVersion = true)
     int[] delete_ignoresVersion(List<E> entity);
 
-    @BatchDelete(suppressesOptimisticLockException = true)
+    @BatchDelete(suppressOptimisticLockException = true)
     int[] delete_suppressesOptimisticLockException(List<E> entity);
 }
