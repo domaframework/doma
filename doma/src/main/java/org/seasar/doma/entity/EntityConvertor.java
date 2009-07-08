@@ -19,7 +19,9 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.Map;
 
+import org.seasar.doma.converter.Converter;
 import org.seasar.doma.domain.AbstractBigDecimalDomain;
 import org.seasar.doma.domain.AbstractBigDecimalDomainVisitor;
 import org.seasar.doma.domain.AbstractBooleanDomain;
@@ -48,132 +50,167 @@ import org.seasar.doma.internal.util.Classes;
  */
 public class EntityConvertor {
 
-    protected final Convertor convertor;
+    protected Map<Class<?>, Converter<?>> converterMapByClass;
 
-    protected final DomainVisitor<Void, Object, RuntimeException> settingVisitor;
+    protected Map<String, Converter<?>> converterMapByName;
 
     public EntityConvertor() {
-        this.convertor = createConvertor();
-        this.settingVisitor = createValueSettingVisitor();
     }
 
     public <I, E extends Entity<I>> I toEntity(Object bean, Class<E> entityClass)
             throws Exception {
-        ObjectWrapper objectWrapper = createObjectWrapper(bean);
+        DomainVisitor<Void, BeanPropertyAccessor, RuntimeException> settingVisitor = new ValueSettingVisitor();
         E entity = Classes.newInstance(entityClass);
         for (Property<?> p : entity.__getProperties()) {
-            Object value = objectWrapper.get(p.getName());
-            p.getDomain().accept(settingVisitor, value);
+            BeanPropertyAccessor accessor = createBeanPropertyAccessor(bean, p
+                    .getName());
+            p.getDomain().accept(settingVisitor, accessor);
         }
         return entity.__asInterface();
     }
 
     public <T> T toBean(Object entity, Class<T> beanClazz) throws Exception {
         T bean = Classes.newInstance(beanClazz);
-        ObjectWrapper objectWrapper = createObjectWrapper(bean);
         Entity<?> e = Entity.class.cast(entity);
         for (Property<?> p : e.__getProperties()) {
+            BeanPropertyAccessor accessor = new FieldPropertyAccessor(bean, p
+                    .getName());
             Object value = p.getDomain().get();
             if (value == null) {
                 continue;
             }
-            objectWrapper.set(p.getName(), value);
+            Converter<?> converter = converterMapByName.get(p.getName());
+            if (converter == null) {
+                converter = converterMapByClass.get(value.getClass());
+            }
+            if (converter == null) {
+                continue;
+            }
+            accessor.setValue(converter.convert(value));
         }
         return bean;
     }
 
-    protected Convertor createConvertor() {
-        return new Convertor();
+    protected BeanPropertyAccessor createBeanPropertyAccessor(Object bean,
+            String name) {
+        return new FieldPropertyAccessor(bean, name);
     }
 
-    protected DomainVisitor<Void, Object, RuntimeException> createValueSettingVisitor() {
-        return new ValueSettingVisitor();
-    }
+    public class ValueSettingVisitor
+            implements
+            DomainVisitor<Void, BeanPropertyAccessor, RuntimeException>,
+            AbstractBigDecimalDomainVisitor<Void, BeanPropertyAccessor, RuntimeException>,
+            AbstractDateDomainVisitor<Void, BeanPropertyAccessor, RuntimeException>,
+            AbstractIntegerDomainVisitor<Void, BeanPropertyAccessor, RuntimeException>,
+            AbstractStringDomainVisitor<Void, BeanPropertyAccessor, RuntimeException>,
+            AbstractTimeDomainVisitor<Void, BeanPropertyAccessor, RuntimeException>,
+            AbstractTimestampDomainVisitor<Void, BeanPropertyAccessor, RuntimeException>,
+            AbstractBooleanDomainVisitor<Void, BeanPropertyAccessor, RuntimeException>,
+            AbstractDoubleDomainVisitor<Void, BeanPropertyAccessor, RuntimeException> {
 
-    protected ObjectWrapper createObjectWrapper(Object object) {
-        return new FieldAccessObjectWrapper(object);
-    }
+        protected Converter<?> getConverter(BeanPropertyAccessor p) {
+            if (converterMapByName.containsKey(p.getName())) {
+                return converterMapByName.get(p.getName());
+            }
+            if (converterMapByClass.containsKey(p.getPropertyClass())) {
+                return converterMapByClass.get(p.getPropertyClass());
+            }
+            return null;
+        }
 
-    public class ValueSettingVisitor implements
-            DomainVisitor<Void, Object, RuntimeException>,
-            AbstractBigDecimalDomainVisitor<Void, Object, RuntimeException>,
-            AbstractDateDomainVisitor<Void, Object, RuntimeException>,
-            AbstractIntegerDomainVisitor<Void, Object, RuntimeException>,
-            AbstractStringDomainVisitor<Void, Object, RuntimeException>,
-            AbstractTimeDomainVisitor<Void, Object, RuntimeException>,
-            AbstractTimestampDomainVisitor<Void, Object, RuntimeException>,
-            AbstractBooleanDomainVisitor<Void, Object, RuntimeException>,
-            AbstractDoubleDomainVisitor<Void, Object, RuntimeException> {
+        protected Object getValue(BeanPropertyAccessor p) {
+            Converter<?> converter = getConverter(p);
+            if (p == null) {
+                return null;
+            }
+            return converter.convert(p.getValue());
+        }
 
         @Override
         public Void visitAbstractTimestampDomain(
-                AbstractTimestampDomain<?> domain, Object p)
+                AbstractTimestampDomain<?> domain, BeanPropertyAccessor p)
                 throws RuntimeException {
-            Timestamp value = convertor.toTimestamp(p);
-            domain.set(value);
+            Object value = getValue(p);
+            if (Timestamp.class.isInstance(value)) {
+                domain.set(Timestamp.class.cast(value));
+            }
             return null;
         }
 
         @Override
         public Void visitAbstractDoubleDomain(AbstractDoubleDomain<?> domain,
-                Object p) throws RuntimeException {
-            Double value = convertor.toDouble(p);
-            domain.set(value);
+                BeanPropertyAccessor p) throws RuntimeException {
+            Object value = getValue(p);
+            if (Double.class.isInstance(value)) {
+                domain.set(Double.class.cast(value));
+            }
             return null;
         }
 
         @Override
         public Void visitAbstractBigDecimalDomain(
-                AbstractBigDecimalDomain<?> domain, Object p)
+                AbstractBigDecimalDomain<?> domain, BeanPropertyAccessor p)
                 throws RuntimeException {
-            BigDecimal value = convertor.toBigDecimal(p);
-            domain.set(value);
+            Object value = getValue(p);
+            if (BigDecimal.class.isInstance(value)) {
+                domain.set(BigDecimal.class.cast(value));
+            }
             return null;
         }
 
         @Override
         public Void visitAbstractDateDomain(AbstractDateDomain<?> domain,
-                Object p) throws RuntimeException {
-            Date value = convertor.toDate(p);
-            domain.set(value);
+                BeanPropertyAccessor p) throws RuntimeException {
+            Object value = getValue(p);
+            if (Date.class.isInstance(value)) {
+                domain.set(Date.class.cast(value));
+            }
             return null;
         }
 
         @Override
         public Void visitAbstractTimeDomain(AbstractTimeDomain<?> domain,
-                Object p) throws RuntimeException {
-            Time value = convertor.toTime(p);
-            domain.set(value);
+                BeanPropertyAccessor p) throws RuntimeException {
+            Object value = getValue(p);
+            if (Time.class.isInstance(value)) {
+                domain.set(Time.class.cast(value));
+            }
             return null;
         }
 
         @Override
         public Void visitAbstractIntegerDomain(AbstractIntegerDomain<?> domain,
-                Object p) throws RuntimeException {
-            Integer value = convertor.toInteger(p);
-            domain.set(value);
+                BeanPropertyAccessor p) throws RuntimeException {
+            Object value = getValue(p);
+            if (Integer.class.isInstance(value)) {
+                domain.set(Integer.class.cast(value));
+            }
             return null;
         }
 
         @Override
         public Void visitAbstractBooleanDomain(AbstractBooleanDomain<?> domain,
-                Object p) throws RuntimeException {
-            Boolean value = convertor.toBoolean(p);
-            domain.set(value);
+                BeanPropertyAccessor p) throws RuntimeException {
+            Object value = getValue(p);
+            if (Boolean.class.isInstance(value)) {
+                domain.set(Boolean.class.cast(value));
+            }
             return null;
         }
 
         @Override
         public Void visitAbstractStringDomain(AbstractStringDomain<?> domain,
-                Object p) throws RuntimeException {
-            String value = convertor.toString(p);
-            domain.set(value);
+                BeanPropertyAccessor p) throws RuntimeException {
+            Object value = getValue(p);
+            if (String.class.isInstance(value)) {
+                domain.set(String.class.cast(value));
+            }
             return null;
         }
 
         @Override
-        public Void visitUnknownDomain(Domain<?, ?> domain, Object p)
-                throws RuntimeException {
+        public Void visitUnknownDomain(Domain<?, ?> domain,
+                BeanPropertyAccessor p) throws RuntimeException {
             return null;
         }
 

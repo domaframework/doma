@@ -21,30 +21,36 @@ import java.lang.reflect.Field;
  * @author taedium
  * 
  */
-public class FieldAccessObjectWrapper implements ObjectWrapper {
+public class FieldPropertyAccessor implements BeanPropertyAccessor {
 
-    protected final Object object;
+    protected final Object bean;
 
-    protected final Class<?> clazz;
+    protected final String name;
 
-    public FieldAccessObjectWrapper(Object object) {
-        this.object = object;
-        this.clazz = object.getClass();
-    }
+    protected Field field;
 
-    @Override
-    public Object get(String propertyName) {
-        Field field = null;
+    public FieldPropertyAccessor(Object bean, String name) {
+        this.bean = bean;
+        this.name = name;
         try {
-            field = clazz.getField(propertyName);
+            field = bean.getClass().getField(name);
         } catch (SecurityException e) {
             e.printStackTrace();
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
         field.setAccessible(true);
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public Object getValue() {
         try {
-            return field.get(object);
+            return field.get(bean);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -54,18 +60,9 @@ public class FieldAccessObjectWrapper implements ObjectWrapper {
     }
 
     @Override
-    public void set(String propertyName, Object value) {
-        Field field = null;
+    public void setValue(Object value) {
         try {
-            field = clazz.getField(propertyName);
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-        field.setAccessible(true);
-        try {
-            field.set(object, value);
+            field.set(bean, value);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -74,15 +71,7 @@ public class FieldAccessObjectWrapper implements ObjectWrapper {
     }
 
     @Override
-    public Class<?> getClass(String propertyName) {
-        Field field = null;
-        try {
-            field = clazz.getField(propertyName);
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
+    public Class<?> getPropertyClass() {
         return field.getType();
     }
 

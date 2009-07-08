@@ -13,17 +13,30 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.entity;
+package org.seasar.doma.converter;
+
+import java.math.BigDecimal;
 
 /**
  * @author taedium
  * 
  */
-public interface ObjectWrapper {
+public class BigDecimalConverter extends AbstractConverter<BigDecimal> {
 
-    Object get(String propertyName);
+    @Override
+    public BigDecimal doConvert(Object value) {
+        if (BigDecimal.class.isInstance(value)) {
+            return BigDecimal.class.cast(value);
+        }
+        if (Number.class.isInstance(value)) {
+            return new BigDecimal(value.toString());
+        }
+        if (String.class.isInstance(value)) {
+            String s = String.class.cast(value);
+            return new BigDecimal(s);
+        }
+        // TODO
+        throw new IllegalArgumentException();
+    }
 
-    void set(String propertyName, Object value);
-
-    Class<?> getClass(String propertyName);
 }
