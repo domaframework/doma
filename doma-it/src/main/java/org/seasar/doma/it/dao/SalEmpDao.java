@@ -5,9 +5,9 @@ import java.util.List;
 import org.seasar.doma.ArrayFactory;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
+import org.seasar.doma.domain.ArrayDomain;
 import org.seasar.doma.it.ItConfig;
 import org.seasar.doma.it.entity.SalEmp;
-import org.seasar.doma.jdbc.domain.ArrayDomain;
 
 @Dao(config = ItConfig.class)
 public interface SalEmpDao extends GenericDao<SalEmp> {
