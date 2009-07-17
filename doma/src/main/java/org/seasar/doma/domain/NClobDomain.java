@@ -13,21 +13,20 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.domain;
+package org.seasar.doma.domain;
 
-import java.sql.Array;
+import java.sql.NClob;
 
 /**
  * @author taedium
  * 
  */
-public final class ArrayDomain<E> extends
-        AbstractArrayDomain<ArrayDomain<E>, E> {
+public final class NClobDomain extends AbstractNClobDomain<NClobDomain> {
 
-    public ArrayDomain() {
+    public NClobDomain() {
     }
 
-    public ArrayDomain(Array v) {
+    public NClobDomain(NClob v) {
         super(v);
     }
 

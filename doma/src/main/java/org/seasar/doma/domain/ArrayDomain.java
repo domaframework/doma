@@ -13,20 +13,21 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.domain;
+package org.seasar.doma.domain;
 
-import java.sql.Blob;
+import java.sql.Array;
 
 /**
  * @author taedium
  * 
  */
-public final class BlobDomain extends AbstractBlobDomain<BlobDomain> {
+public final class ArrayDomain<E> extends
+        AbstractArrayDomain<ArrayDomain<E>, E> {
 
-    public BlobDomain() {
+    public ArrayDomain() {
     }
 
-    public BlobDomain(Blob v) {
+    public ArrayDomain(Array v) {
         super(v);
     }
 

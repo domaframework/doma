@@ -123,7 +123,7 @@ public class AbstComparableDomainTest extends TestCase {
             AbstractComparableDomain<String, AbstComparableDomain> {
 
         public AbstComparableDomain(String value) {
-            super(value);
+            super(String.class, value);
         }
 
         @Override

@@ -17,7 +17,7 @@ package org.seasar.doma.internal.apt.dao;
 
 import org.seasar.doma.ArrayFactory;
 import org.seasar.doma.Dao;
-import org.seasar.doma.jdbc.domain.ArrayDomain;
+import org.seasar.doma.domain.ArrayDomain;
 
 /**
  * @author taedium

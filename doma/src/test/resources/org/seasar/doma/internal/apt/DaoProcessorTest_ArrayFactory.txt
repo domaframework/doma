@@ -16,21 +16,21 @@ public class ArrayFactoryDao_ extends org.seasar.doma.jdbc.DomaAbstractDao imple
     }
 
     @Override
-    public org.seasar.doma.jdbc.domain.ArrayDomain<java.lang.String> create(java.lang.String[] elements) {
+    public org.seasar.doma.domain.ArrayDomain<java.lang.String> create(java.lang.String[] elements) {
         entering("org.seasar.doma.internal.apt.dao.ArrayFactoryDao_", "create", (Object)elements);
         if (elements == null) {
             throw new org.seasar.doma.DomaIllegalArgumentException("elements", elements);
         }
-        org.seasar.doma.internal.jdbc.query.ArrayCreateQuery<org.seasar.doma.jdbc.domain.ArrayDomain<java.lang.String>> query = new org.seasar.doma.internal.jdbc.query.ArrayCreateQuery<org.seasar.doma.jdbc.domain.ArrayDomain<java.lang.String>>();
+        org.seasar.doma.internal.jdbc.query.ArrayCreateQuery<org.seasar.doma.domain.ArrayDomain<java.lang.String>> query = new org.seasar.doma.internal.jdbc.query.ArrayCreateQuery<org.seasar.doma.domain.ArrayDomain<java.lang.String>>();
         query.setConfig(config);
         query.setCallerClassName("org.seasar.doma.internal.apt.dao.ArrayFactoryDao_");
         query.setCallerMethodName("create");
         query.setTypeName("varchar");
         query.setElements(elements);
-        query.setResult(new org.seasar.doma.jdbc.domain.ArrayDomain<java.lang.String>());
+        query.setResult(new org.seasar.doma.domain.ArrayDomain<java.lang.String>());
         query.compile();
-        org.seasar.doma.internal.jdbc.command.CreateCommand<org.seasar.doma.jdbc.domain.ArrayDomain<java.lang.String>> command = new org.seasar.doma.internal.jdbc.command.CreateCommand<org.seasar.doma.jdbc.domain.ArrayDomain<java.lang.String>>(query);
-        org.seasar.doma.jdbc.domain.ArrayDomain<java.lang.String> result = command.execute();
+        org.seasar.doma.internal.jdbc.command.CreateCommand<org.seasar.doma.domain.ArrayDomain<java.lang.String>> command = new org.seasar.doma.internal.jdbc.command.CreateCommand<org.seasar.doma.domain.ArrayDomain<java.lang.String>>(query);
+        org.seasar.doma.domain.ArrayDomain<java.lang.String> result = command.execute();
         exiting("org.seasar.doma.internal.apt.dao.ArrayFactoryDao_", "create", result);
         return result;
     }

@@ -13,21 +13,15 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.domain;
+package org.seasar.doma.domain;
 
-import java.sql.NClob;
 
 /**
  * @author taedium
  * 
  */
-public final class NClobDomain extends AbstractNClobDomain<NClobDomain> {
+public interface AbstractClobDomainVisitor<R, P, TH extends Throwable> extends
+        DomainVisitor<R, P, TH> {
 
-    public NClobDomain() {
-    }
-
-    public NClobDomain(NClob v) {
-        super(v);
-    }
-
+    R visitAbstractClobDomain(AbstractClobDomain<?> domain, P p) throws TH;
 }

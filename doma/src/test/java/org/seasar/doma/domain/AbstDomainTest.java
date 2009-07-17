@@ -15,9 +15,6 @@
  */
 package org.seasar.doma.domain;
 
-import org.seasar.doma.domain.AbstractDomain;
-import org.seasar.doma.domain.DomainVisitor;
-
 import junit.framework.TestCase;
 
 /**
@@ -58,7 +55,7 @@ public class AbstDomainTest extends TestCase {
         }
 
         public MyDomain(String v) {
-            super(v);
+            super(String.class, v);
         }
 
         @Override

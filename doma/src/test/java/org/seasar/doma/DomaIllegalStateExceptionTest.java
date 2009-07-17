@@ -13,16 +13,19 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.domain;
+package org.seasar.doma;
 
-import org.seasar.doma.domain.DomainVisitor;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
  * 
  */
-public interface AbstractBlobDomainVisitor<R, P, TH extends Throwable> extends
-        DomainVisitor<R, P, TH> {
+public class DomaIllegalStateExceptionTest extends TestCase {
 
-    R visitAbstractBlobDomain(AbstractBlobDomain<?> domain, P p) throws TH;
+    public void test() throws Exception {
+        DomaIllegalStateException e = new DomaIllegalStateException(
+                new Exception());
+        System.out.println(e.getMessage());
+    }
 }

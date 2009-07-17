@@ -31,11 +31,11 @@ public abstract class AbstractDoubleDomain<D extends AbstractDoubleDomain<D>>
 
     private static final long serialVersionUID = 1L;
 
-    public AbstractDoubleDomain() {
+    protected AbstractDoubleDomain() {
     }
 
-    public AbstractDoubleDomain(Double value) {
-        super(value);
+    protected AbstractDoubleDomain(Double value) {
+        super(Double.class, value);
     }
 
     @Override

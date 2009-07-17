@@ -13,16 +13,15 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.domain;
+package org.seasar.doma.domain;
 
-import org.seasar.doma.domain.DomainVisitor;
 
 /**
  * @author taedium
  * 
  */
-public interface AbstractArrayDomainVisitor<R, P, TH extends Throwable> extends
+public interface AbstractBlobDomainVisitor<R, P, TH extends Throwable> extends
         DomainVisitor<R, P, TH> {
 
-    R visitAbstractArrayDomain(AbstractArrayDomain<?, ?> domain, P p) throws TH;
+    R visitAbstractBlobDomain(AbstractBlobDomain<?> domain, P p) throws TH;
 }

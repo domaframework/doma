@@ -13,16 +13,20 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.domain;
+package org.seasar.doma;
 
-import org.seasar.doma.domain.DomainVisitor;
+import org.seasar.doma.message.MessageCode;
 
 /**
  * @author taedium
  * 
  */
-public interface AbstractClobDomainVisitor<R, P, TH extends Throwable> extends
-        DomainVisitor<R, P, TH> {
+public class DomaIllegalStateException extends DomaException {
 
-    R visitAbstractClobDomain(AbstractClobDomain<?> domain, P p) throws TH;
+    private static final long serialVersionUID = 1L;
+
+    public DomaIllegalStateException(Throwable cause) {
+        super(MessageCode.DOMA0005, cause, cause);
+    }
+
 }

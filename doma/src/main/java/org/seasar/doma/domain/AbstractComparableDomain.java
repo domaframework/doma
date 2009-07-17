@@ -24,11 +24,11 @@ import org.seasar.doma.DomaIllegalArgumentException;
 public abstract class AbstractComparableDomain<V extends Comparable<? super V>, D extends AbstractDomain<V, D> & ComparableDomain<V, D>>
         extends AbstractDomain<V, D> implements ComparableDomain<V, D> {
 
-    public AbstractComparableDomain() {
+    protected AbstractComparableDomain() {
     }
 
-    public AbstractComparableDomain(V v) {
-        super(v);
+    protected AbstractComparableDomain(Class<V> valueClass, V v) {
+        super(valueClass, v);
     }
 
     @Override

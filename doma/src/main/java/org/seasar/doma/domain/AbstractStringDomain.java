@@ -31,11 +31,11 @@ public abstract class AbstractStringDomain<D extends AbstractStringDomain<D>>
 
     private static final long serialVersionUID = 1L;
 
-    public AbstractStringDomain() {
+    protected AbstractStringDomain() {
     }
 
-    public AbstractStringDomain(String value) {
-        super(value);
+    protected AbstractStringDomain(String value) {
+        super(String.class, value);
     }
 
     @Override

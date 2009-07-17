@@ -32,11 +32,11 @@ public abstract class AbstractTimeDomain<D extends AbstractTimeDomain<D>>
 
     private static final long serialVersionUID = 1L;
 
-    public AbstractTimeDomain() {
+    protected AbstractTimeDomain() {
     }
 
-    public AbstractTimeDomain(Time value) {
-        super(value);
+    protected AbstractTimeDomain(Time value) {
+        super(Time.class, value);
     }
 
     @Override

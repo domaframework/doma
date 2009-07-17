@@ -17,7 +17,7 @@ package org.seasar.doma.internal.apt.dao;
 
 import org.seasar.doma.Dao;
 import org.seasar.doma.NClobFactory;
-import org.seasar.doma.jdbc.domain.NClobDomain;
+import org.seasar.doma.domain.NClobDomain;
 
 /**
  * @author taedium

@@ -13,37 +13,24 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.domain;
+package org.seasar.doma.domain;
 
-import java.sql.Array;
-import java.sql.SQLException;
+import java.sql.Blob;
 
 import org.seasar.doma.DomaIllegalArgumentException;
-import org.seasar.doma.domain.AbstractDomain;
-import org.seasar.doma.domain.DomainVisitor;
 
 /**
  * @author taedium
  * 
  */
-public abstract class AbstractArrayDomain<D extends AbstractArrayDomain<D, E>, E>
-        extends AbstractDomain<Array, AbstractArrayDomain<D, E>> {
+public abstract class AbstractBlobDomain<D extends AbstractBlobDomain<D>>
+        extends AbstractDomain<Blob, D> {
 
-    public AbstractArrayDomain() {
-        super(null);
+    protected AbstractBlobDomain() {
     }
 
-    public AbstractArrayDomain(Array v) {
-        super(v);
-    }
-
-    @SuppressWarnings("unchecked")
-    public E[] getArray() {
-        try {
-            return (E[]) value.getArray();
-        } catch (SQLException e) {
-            throw new JdbcArrayException(e);
-        }
+    protected AbstractBlobDomain(Blob v) {
+        super(Blob.class, v);
     }
 
     @Override
@@ -52,11 +39,11 @@ public abstract class AbstractArrayDomain<D extends AbstractArrayDomain<D, E>, E
         if (visitor == null) {
             throw new DomaIllegalArgumentException("visitor", visitor);
         }
-        if (AbstractArrayDomainVisitor.class.isInstance(visitor)) {
+        if (AbstractBlobDomainVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            AbstractArrayDomainVisitor<R, P, TH> v = AbstractArrayDomainVisitor.class
+            AbstractBlobDomainVisitor<R, P, TH> v = AbstractBlobDomainVisitor.class
                     .cast(visitor);
-            return v.visitAbstractArrayDomain(this, p);
+            return v.visitAbstractBlobDomain(this, p);
         }
         return visitor.visitUnknownDomain(this, p);
     }

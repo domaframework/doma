@@ -20,7 +20,9 @@ import java.util.List;
 import javax.annotation.Generated;
 import javax.sql.DataSource;
 
+import org.seasar.doma.domain.ArrayDomain;
 import org.seasar.doma.domain.BigDecimalDomain;
+import org.seasar.doma.domain.BlobDomain;
 import org.seasar.doma.domain.IntegerDomain;
 import org.seasar.doma.domain.StringDomain;
 import org.seasar.doma.internal.jdbc.command.CreateCommand;
@@ -49,8 +51,6 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.DomaAbstractDao;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.SelectOptions;
-import org.seasar.doma.jdbc.domain.ArrayDomain;
-import org.seasar.doma.jdbc.domain.BlobDomain;
 
 import example.entity.Emp;
 import example.entity.Emp_;

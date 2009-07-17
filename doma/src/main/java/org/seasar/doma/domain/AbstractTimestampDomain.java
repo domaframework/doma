@@ -32,11 +32,11 @@ public abstract class AbstractTimestampDomain<D extends AbstractTimestampDomain<
 
     private static final long serialVersionUID = 1L;
 
-    public AbstractTimestampDomain() {
+    protected AbstractTimestampDomain() {
     }
 
-    public AbstractTimestampDomain(Timestamp value) {
-        super(value);
+    protected AbstractTimestampDomain(Timestamp value) {
+        super(Timestamp.class, value);
     }
 
     @Override

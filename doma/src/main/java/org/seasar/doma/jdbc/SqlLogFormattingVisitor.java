@@ -15,22 +15,22 @@
  */
 package org.seasar.doma.jdbc;
 
+import org.seasar.doma.domain.AbstractArrayDomain;
 import org.seasar.doma.domain.AbstractBigDecimalDomain;
+import org.seasar.doma.domain.AbstractBlobDomain;
 import org.seasar.doma.domain.AbstractBooleanDomain;
 import org.seasar.doma.domain.AbstractBytesDomain;
+import org.seasar.doma.domain.AbstractClobDomain;
 import org.seasar.doma.domain.AbstractDateDomain;
 import org.seasar.doma.domain.AbstractDoubleDomain;
 import org.seasar.doma.domain.AbstractIntegerDomain;
+import org.seasar.doma.domain.AbstractNClobDomain;
 import org.seasar.doma.domain.AbstractStringDomain;
 import org.seasar.doma.domain.AbstractTimeDomain;
 import org.seasar.doma.domain.AbstractTimestampDomain;
 import org.seasar.doma.domain.BuiltInDomainVisitor;
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.domain.AbstractArrayDomain;
-import org.seasar.doma.jdbc.domain.AbstractBlobDomain;
-import org.seasar.doma.jdbc.domain.AbstractClobDomain;
-import org.seasar.doma.jdbc.domain.AbstractNClobDomain;
 import org.seasar.doma.jdbc.type.JdbcTypes;
 import org.seasar.doma.message.MessageCode;
 

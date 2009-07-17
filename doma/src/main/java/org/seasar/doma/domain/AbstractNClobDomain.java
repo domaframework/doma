@@ -13,13 +13,11 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.domain;
+package org.seasar.doma.domain;
 
 import java.sql.NClob;
 
 import org.seasar.doma.DomaIllegalArgumentException;
-import org.seasar.doma.domain.AbstractDomain;
-import org.seasar.doma.domain.DomainVisitor;
 
 /**
  * @author taedium
@@ -28,11 +26,11 @@ import org.seasar.doma.domain.DomainVisitor;
 public abstract class AbstractNClobDomain<D extends AbstractNClobDomain<D>>
         extends AbstractDomain<NClob, D> {
 
-    public AbstractNClobDomain() {
+    protected AbstractNClobDomain() {
     }
 
-    public AbstractNClobDomain(NClob v) {
-        super(v);
+    protected AbstractNClobDomain(NClob v) {
+        super(NClob.class, v);
     }
 
     @Override

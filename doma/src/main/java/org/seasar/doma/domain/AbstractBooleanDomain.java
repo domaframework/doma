@@ -31,11 +31,11 @@ public abstract class AbstractBooleanDomain<D extends AbstractBooleanDomain<D>>
 
     private static final long serialVersionUID = 1L;
 
-    public AbstractBooleanDomain() {
+    protected AbstractBooleanDomain() {
     }
 
-    public AbstractBooleanDomain(Boolean value) {
-        super(value);
+    protected AbstractBooleanDomain(Boolean value) {
+        super(Boolean.class, value);
     }
 
     @Override

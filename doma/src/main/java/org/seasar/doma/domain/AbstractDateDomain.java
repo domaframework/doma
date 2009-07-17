@@ -32,11 +32,11 @@ public abstract class AbstractDateDomain<D extends AbstractDateDomain<D>>
 
     private static final long serialVersionUID = 1L;
 
-    public AbstractDateDomain() {
+    protected AbstractDateDomain() {
     }
 
-    public AbstractDateDomain(Date value) {
-        super(value);
+    protected AbstractDateDomain(Date value) {
+        super(Date.class, value);
     }
 
     @Override

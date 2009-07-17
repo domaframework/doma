@@ -13,26 +13,35 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.domain;
+package org.seasar.doma.domain;
 
-import java.sql.Clob;
+import java.sql.Array;
+import java.sql.SQLException;
 
 import org.seasar.doma.DomaIllegalArgumentException;
-import org.seasar.doma.domain.AbstractDomain;
-import org.seasar.doma.domain.DomainVisitor;
+import org.seasar.doma.DomaIllegalStateException;
 
 /**
  * @author taedium
  * 
  */
-public abstract class AbstractClobDomain<D extends AbstractClobDomain<D>>
-        extends AbstractDomain<Clob, D> {
+public abstract class AbstractArrayDomain<D extends AbstractArrayDomain<D, E>, E>
+        extends AbstractDomain<Array, AbstractArrayDomain<D, E>> {
 
-    public AbstractClobDomain() {
+    protected AbstractArrayDomain() {
     }
 
-    public AbstractClobDomain(Clob v) {
-        super(v);
+    protected AbstractArrayDomain(Array v) {
+        super(Array.class, v);
+    }
+
+    @SuppressWarnings("unchecked")
+    public E[] getArray() {
+        try {
+            return (E[]) value.getArray();
+        } catch (SQLException e) {
+            throw new DomaIllegalStateException(e);
+        }
     }
 
     @Override
@@ -41,11 +50,11 @@ public abstract class AbstractClobDomain<D extends AbstractClobDomain<D>>
         if (visitor == null) {
             throw new DomaIllegalArgumentException("visitor", visitor);
         }
-        if (AbstractClobDomainVisitor.class.isInstance(visitor)) {
+        if (AbstractArrayDomainVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            AbstractClobDomainVisitor<R, P, TH> v = AbstractClobDomainVisitor.class
+            AbstractArrayDomainVisitor<R, P, TH> v = AbstractArrayDomainVisitor.class
                     .cast(visitor);
-            return v.visitAbstractClobDomain(this, p);
+            return v.visitAbstractArrayDomain(this, p);
         }
         return visitor.visitUnknownDomain(this, p);
     }

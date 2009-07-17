@@ -2,8 +2,8 @@ package org.seasar.doma.internal.jdbc.query;
 
 import junit.framework.TestCase;
 
+import org.seasar.doma.domain.ArrayDomain;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
-import org.seasar.doma.jdbc.domain.ArrayDomain;
 
 /**
  * @author taedium

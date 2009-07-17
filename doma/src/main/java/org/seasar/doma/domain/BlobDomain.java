@@ -13,19 +13,21 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.dao;
+package org.seasar.doma.domain;
 
-import org.seasar.doma.BlobFactory;
-import org.seasar.doma.Dao;
-import org.seasar.doma.domain.BlobDomain;
+import java.sql.Blob;
 
 /**
  * @author taedium
  * 
  */
-@Dao(config = MyConfig.class)
-public interface BlobFactoryDao {
+public final class BlobDomain extends AbstractBlobDomain<BlobDomain> {
 
-    @BlobFactory
-    BlobDomain create();
+    public BlobDomain() {
+    }
+
+    public BlobDomain(Blob v) {
+        super(v);
+    }
+
 }

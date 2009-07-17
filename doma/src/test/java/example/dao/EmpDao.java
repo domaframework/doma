@@ -27,13 +27,13 @@ import org.seasar.doma.Insert;
 import org.seasar.doma.Procedure;
 import org.seasar.doma.Select;
 import org.seasar.doma.Update;
+import org.seasar.doma.domain.ArrayDomain;
 import org.seasar.doma.domain.BigDecimalDomain;
+import org.seasar.doma.domain.BlobDomain;
 import org.seasar.doma.domain.IntegerDomain;
 import org.seasar.doma.domain.StringDomain;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.SelectOptions;
-import org.seasar.doma.jdbc.domain.ArrayDomain;
-import org.seasar.doma.jdbc.domain.BlobDomain;
 
 import example.entity.Emp;
 

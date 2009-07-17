@@ -15,10 +15,6 @@
  */
 package org.seasar.doma.domain;
 
-import org.seasar.doma.jdbc.domain.AbstractArrayDomainVisitor;
-import org.seasar.doma.jdbc.domain.AbstractBlobDomainVisitor;
-import org.seasar.doma.jdbc.domain.AbstractClobDomainVisitor;
-import org.seasar.doma.jdbc.domain.AbstractNClobDomainVisitor;
 
 /**
  * @author taedium

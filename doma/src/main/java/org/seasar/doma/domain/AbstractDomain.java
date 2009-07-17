@@ -24,14 +24,20 @@ import org.seasar.doma.DomaIllegalArgumentException;
 public abstract class AbstractDomain<V, D extends AbstractDomain<V, D>>
         implements Domain<V, D> {
 
+    protected Class<V> valueClass;
+
     protected V value;
 
     protected boolean changed;
 
-    public AbstractDomain() {
+    protected AbstractDomain() {
     }
 
-    public AbstractDomain(V v) {
+    protected AbstractDomain(Class<V> valueClass, V v) {
+        if (valueClass == null) {
+            throw new DomaIllegalArgumentException("valueClass", valueClass);
+        }
+        this.valueClass = valueClass;
         setInternal(v);
     }
 
@@ -58,6 +64,7 @@ public abstract class AbstractDomain<V, D extends AbstractDomain<V, D>>
         return value == null;
     }
 
+    @Override
     public boolean isNotNull() {
         return value != null;
     }
@@ -70,6 +77,11 @@ public abstract class AbstractDomain<V, D extends AbstractDomain<V, D>>
     @Override
     public void setChanged(boolean changed) {
         this.changed = changed;
+    }
+
+    @Override
+    public Class<V> getValueClass() {
+        return valueClass;
     }
 
     public void setNull() {

@@ -13,26 +13,24 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.domain;
+package org.seasar.doma.domain;
 
-import java.sql.Blob;
+import java.sql.Clob;
 
 import org.seasar.doma.DomaIllegalArgumentException;
-import org.seasar.doma.domain.AbstractDomain;
-import org.seasar.doma.domain.DomainVisitor;
 
 /**
  * @author taedium
  * 
  */
-public abstract class AbstractBlobDomain<D extends AbstractBlobDomain<D>>
-        extends AbstractDomain<Blob, D> {
+public abstract class AbstractClobDomain<D extends AbstractClobDomain<D>>
+        extends AbstractDomain<Clob, D> {
 
-    public AbstractBlobDomain() {
+    protected AbstractClobDomain() {
     }
 
-    public AbstractBlobDomain(Blob v) {
-        super(v);
+    protected AbstractClobDomain(Clob v) {
+        super(Clob.class, v);
     }
 
     @Override
@@ -41,11 +39,11 @@ public abstract class AbstractBlobDomain<D extends AbstractBlobDomain<D>>
         if (visitor == null) {
             throw new DomaIllegalArgumentException("visitor", visitor);
         }
-        if (AbstractBlobDomainVisitor.class.isInstance(visitor)) {
+        if (AbstractClobDomainVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            AbstractBlobDomainVisitor<R, P, TH> v = AbstractBlobDomainVisitor.class
+            AbstractClobDomainVisitor<R, P, TH> v = AbstractClobDomainVisitor.class
                     .cast(visitor);
-            return v.visitAbstractBlobDomain(this, p);
+            return v.visitAbstractClobDomain(this, p);
         }
         return visitor.visitUnknownDomain(this, p);
     }

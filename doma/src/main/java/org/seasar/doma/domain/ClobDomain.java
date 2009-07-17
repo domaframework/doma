@@ -13,21 +13,21 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.domain;
+package org.seasar.doma.domain;
 
-import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.message.MessageCode;
+import java.sql.Clob;
 
 /**
  * @author taedium
  * 
  */
-public class JdbcArrayException extends JdbcException {
+public final class ClobDomain extends AbstractClobDomain<ClobDomain> {
 
-    private static final long serialVersionUID = 1L;
+    public ClobDomain() {
+    }
 
-    public JdbcArrayException(Throwable cause, Object... args) {
-        super(MessageCode.DOMA2027, cause, args);
+    public ClobDomain(Clob v) {
+        super(v);
     }
 
 }
