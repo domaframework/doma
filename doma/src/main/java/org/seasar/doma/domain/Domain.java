@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.domain;
 
+
 /**
  * @author taedium
  * 
@@ -26,6 +27,8 @@ public interface Domain<V, D extends Domain<V, D>> {
     void set(V value);
 
     void set(D other);
+
+    void setByReflection(Object value);
 
     boolean isNull();
 

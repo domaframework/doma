@@ -15,17 +15,24 @@
  */
 package org.seasar.doma.converter;
 
+import org.seasar.doma.DomaException;
+import org.seasar.doma.message.MessageCode;
+
 /**
  * @author taedium
  * 
  */
-public abstract class AbstractConverter<T> implements Converter<T> {
+public class ConversionException extends DomaException {
 
-    @Override
-    public T convert(Object value) {
-        return doConvert(value);
+    private static final long serialVersionUID = 1L;
+
+    public ConversionException(MessageCode messageCode, Object... args) {
+        super(messageCode, args);
     }
 
-    protected abstract T doConvert(Object value);
+    public ConversionException(MessageCode messageCode, Throwable cause,
+            Object... args) {
+        super(messageCode, cause, args);
+    }
 
 }

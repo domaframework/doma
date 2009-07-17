@@ -16,15 +16,29 @@
 package org.seasar.doma.converter;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author taedium
  * 
  */
-public class StringConverter extends AbstractConverter<String> {
+public class StringConverter implements Converter<String> {
 
     @Override
-    protected String doConvert(Object value) {
+    public String convert(Object value, String pattern) {
+        if (value == null) {
+            return null;
+        }
+        if (pattern != null) {
+            if (Number.class.isInstance(value)) {
+                return format(Number.class.cast(value), pattern);
+            }
+            if (Date.class.isInstance(value)) {
+                return format(Date.class.cast(value), pattern);
+            }
+        }
         if (BigDecimal.class.isInstance(value)) {
             BigDecimal decimal = BigDecimal.class.cast(value);
             return decimal.toPlainString();
@@ -32,4 +46,13 @@ public class StringConverter extends AbstractConverter<String> {
         return value.toString();
     }
 
+    protected String format(Number value, String pattern) {
+        DecimalFormat decimalFormat = new DecimalFormat(pattern);
+        return decimalFormat.format(value);
+    }
+
+    protected String format(Date value, String pattern) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+        return dateFormat.format(value);
+    }
 }

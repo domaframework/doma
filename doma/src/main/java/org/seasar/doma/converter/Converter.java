@@ -21,6 +21,6 @@ package org.seasar.doma.converter;
  */
 public interface Converter<T> {
 
-    T convert(Object value);
+    T convert(Object value, String pattern);
 
 }

@@ -15,25 +15,25 @@
  */
 package org.seasar.doma.converter;
 
-import java.text.DecimalFormat;
-import java.text.ParseException;
+import org.seasar.doma.message.MessageCode;
 
 /**
  * @author taedium
  * 
  */
-public class NumberConverter {
+public class ParseConversionException extends ConversionException {
 
-    protected static String DEFAULT_PATTERN = "#";
+    private static final long serialVersionUID = 1L;
 
-    protected Number parse(String value, String pattern) {
-        String p = pattern != null ? pattern : DEFAULT_PATTERN;
-        DecimalFormat decimalFormat = new DecimalFormat(p);
-        try {
-            return decimalFormat.parse(value);
-        } catch (ParseException e) {
-            throw new org.seasar.doma.converter.ParseConversionException(Number.class
-                    .getName(), e);
-        }
+    protected final String destClassName;
+
+    public ParseConversionException(String destClassName, Throwable cause) {
+        super(MessageCode.DOMA5002, destClassName, cause, cause);
+        this.destClassName = destClassName;
     }
+
+    public String getDestClassName() {
+        return destClassName;
+    }
+
 }

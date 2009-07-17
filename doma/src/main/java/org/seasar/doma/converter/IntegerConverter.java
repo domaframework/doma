@@ -15,14 +15,19 @@
  */
 package org.seasar.doma.converter;
 
+
 /**
  * @author taedium
  * 
  */
-public class IntegerConverter extends AbstractConverter<Integer> {
+public class IntegerConverter extends NumberConverter implements
+        Converter<Integer> {
 
     @Override
-    public Integer doConvert(Object value) {
+    public Integer convert(Object value, String pattern) {
+        if (value == null) {
+            return null;
+        }
         if (Integer.class.isInstance(value)) {
             return Integer.class.cast(value);
         }
@@ -31,11 +36,15 @@ public class IntegerConverter extends AbstractConverter<Integer> {
             return number.intValue();
         }
         if (String.class.isInstance(value)) {
-            String s = String.class.cast(value);
-            return Integer.valueOf(s);
+            return parse(String.class.cast(value), pattern);
         }
-        // TODO
-        throw new IllegalArgumentException();
+        throw new UnsupportedConversionException(value.getClass().getName(),
+                Integer.class.getName(), value);
     }
 
+    @Override
+    protected Integer parse(String value, String pattern) {
+        Number number = super.parse(value, pattern);
+        return number.intValue();
+    }
 }

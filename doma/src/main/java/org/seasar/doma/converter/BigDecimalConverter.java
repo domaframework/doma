@@ -21,10 +21,14 @@ import java.math.BigDecimal;
  * @author taedium
  * 
  */
-public class BigDecimalConverter extends AbstractConverter<BigDecimal> {
+public class BigDecimalConverter extends NumberConverter implements
+        Converter<BigDecimal> {
 
     @Override
-    public BigDecimal doConvert(Object value) {
+    public BigDecimal convert(Object value, String pattern) {
+        if (value == null) {
+            return null;
+        }
         if (BigDecimal.class.isInstance(value)) {
             return BigDecimal.class.cast(value);
         }
@@ -32,11 +36,16 @@ public class BigDecimalConverter extends AbstractConverter<BigDecimal> {
             return new BigDecimal(value.toString());
         }
         if (String.class.isInstance(value)) {
-            String s = String.class.cast(value);
-            return new BigDecimal(s);
+            return parse(String.class.cast(value), pattern);
         }
-        // TODO
-        throw new IllegalArgumentException();
+        throw new UnsupportedConversionException(value.getClass().getName(),
+                BigDecimal.class.getName(), value);
+    }
+
+    @Override
+    protected BigDecimal parse(String value, String pattern) {
+        Number number = super.parse(value, pattern);
+        return new BigDecimal(number.doubleValue());
     }
 
 }

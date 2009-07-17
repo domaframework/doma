@@ -13,27 +13,20 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.converter;
+package org.seasar.doma.util;
 
-import java.text.DecimalFormat;
-import java.text.ParseException;
+import java.util.Map;
 
 /**
  * @author taedium
  * 
  */
-public class NumberConverter {
+public interface Copier {
 
-    protected static String DEFAULT_PATTERN = "#";
+    void copy(Object src, Object dest, CopyOptions copyOptions);
 
-    protected Number parse(String value, String pattern) {
-        String p = pattern != null ? pattern : DEFAULT_PATTERN;
-        DecimalFormat decimalFormat = new DecimalFormat(p);
-        try {
-            return decimalFormat.parse(value);
-        } catch (ParseException e) {
-            throw new org.seasar.doma.converter.ParseConversionException(Number.class
-                    .getName(), e);
-        }
-    }
+    void copy(Object src, Map<String, Object> dest, CopyOptions copyOptions);
+
+    void copy(Map<String, Object> src, Object dest, CopyOptions copyOptions);
+
 }

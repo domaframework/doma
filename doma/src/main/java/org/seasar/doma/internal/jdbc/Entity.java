@@ -19,7 +19,6 @@ import java.util.List;
 
 import org.seasar.doma.jdbc.Config;
 
-
 public interface Entity<I> {
 
     String MEMBER_PREFIX = "__";
@@ -32,7 +31,7 @@ public interface Entity<I> {
 
     VersionProperty<?> __getVersionProperty();
 
-    Property<?> __getPropertyByName(String propertyName);
+    Property<?> __getPropertyByName(String name);
 
     List<Property<?>> __getProperties();
 

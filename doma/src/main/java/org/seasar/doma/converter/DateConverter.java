@@ -23,32 +23,35 @@ import java.text.SimpleDateFormat;
  * @author taedium
  * 
  */
-public class DateConverter extends AbstractConverter<Date> {
+public class DateConverter implements Converter<Date> {
 
-    protected String pattern = "yyyy-MM-dd";
+    protected static String DEFAULT_PATTERN = "yyyy-MM-dd";
 
     @Override
-    public Date doConvert(Object object) {
-        if (Date.class.isInstance(object)) {
-            return Date.class.cast(object);
+    public Date convert(Object value, String pattern) {
+        if (value == null) {
+            return null;
         }
-        if (java.util.Date.class.isInstance(object)) {
-            java.util.Date date = java.util.Date.class.cast(object);
+        if (Date.class.isInstance(value)) {
+            return Date.class.cast(value);
+        }
+        if (java.util.Date.class.isInstance(value)) {
+            java.util.Date date = java.util.Date.class.cast(value);
             return new Date(date.getTime());
         }
-        if (String.class.isInstance(object)) {
-            String s = String.class.cast(object);
-            return parse(s);
+        if (String.class.isInstance(value)) {
+            String p = pattern != null ? pattern : DEFAULT_PATTERN;
+            return parse(String.class.cast(value), p);
         }
-        // TODO
-        throw new IllegalArgumentException();
+        throw new UnsupportedConversionException(value.getClass().getName(),
+                Date.class.getName(), value);
     }
 
-    protected Date parse(String value) {
-        SimpleDateFormat df = new SimpleDateFormat(pattern);
+    public Date parse(String value, String pattern) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
         java.util.Date date = null;
         try {
-            date = df.parse(value);
+            date = dateFormat.parse(value);
         } catch (ParseException e) {
             // TODO
             e.printStackTrace();
