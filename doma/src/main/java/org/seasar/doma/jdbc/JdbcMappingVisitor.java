@@ -30,7 +30,7 @@ import org.seasar.doma.domain.AbstractNClobDomain;
 import org.seasar.doma.domain.AbstractStringDomain;
 import org.seasar.doma.domain.AbstractTimeDomain;
 import org.seasar.doma.domain.AbstractTimestampDomain;
-import org.seasar.doma.domain.BuiltInDomainVisitor;
+import org.seasar.doma.domain.BuiltInDomainVisitor2;
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.type.JdbcTypes;
@@ -41,7 +41,7 @@ import org.seasar.doma.message.MessageCode;
  * 
  */
 public class JdbcMappingVisitor implements
-        BuiltInDomainVisitor<Void, JdbcMappingFunction, SQLException> {
+        BuiltInDomainVisitor2<Void, JdbcMappingFunction, SQLException> {
 
     @Override
     public Void visitAbstractStringDomain(AbstractStringDomain<?> domain,
