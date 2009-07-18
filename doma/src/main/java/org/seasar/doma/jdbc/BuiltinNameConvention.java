@@ -22,7 +22,7 @@ import org.seasar.doma.jdbc.dialect.Dialect;
  * @author taedium
  * 
  */
-public class StandardNameConvention implements NameConvention {
+public class BuiltinNameConvention implements NameConvention {
 
     @Override
     public String fromEntityToTable(String entityName, Dialect dialect) {

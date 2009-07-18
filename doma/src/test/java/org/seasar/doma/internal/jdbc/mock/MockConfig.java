@@ -29,10 +29,10 @@ import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.SqlFileRepository;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
-import org.seasar.doma.jdbc.StandardJdbcLogger;
-import org.seasar.doma.jdbc.StandardNameConvention;
-import org.seasar.doma.jdbc.StandardRequiresNewController;
-import org.seasar.doma.jdbc.StandardSqlFileRepository;
+import org.seasar.doma.jdbc.BuiltinJdbcLogger;
+import org.seasar.doma.jdbc.BuiltinNameConvention;
+import org.seasar.doma.jdbc.BuiltinRequiresNewController;
+import org.seasar.doma.jdbc.BuiltinSqlFileRepository;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
 
@@ -46,17 +46,17 @@ public class MockConfig implements Config {
 
     protected Dialect dialect = new StandardDialect();
 
-    protected NameConvention nameConvention = new StandardNameConvention();
+    protected NameConvention nameConvention = new BuiltinNameConvention();
 
-    protected SqlFileRepository sqlFileRepository = new StandardSqlFileRepository();
+    protected SqlFileRepository sqlFileRepository = new BuiltinSqlFileRepository();
 
     protected DomainVisitor<Void, JdbcMappingFunction, SQLException> jdbcMappingVisitor = new JdbcMappingVisitor();
 
     protected DomainVisitor<String, SqlLogFormattingFunction, RuntimeException> sqlLogFormattingVisitor = new SqlLogFormattingVisitor();
 
-    protected JdbcLogger sqlLogger = new StandardJdbcLogger();
+    protected JdbcLogger sqlLogger = new BuiltinJdbcLogger();
 
-    protected RequiresNewController requiresNewController = new StandardRequiresNewController();
+    protected RequiresNewController requiresNewController = new BuiltinRequiresNewController();
 
     @Override
     public DataSource dataSource() {

@@ -25,13 +25,13 @@ import org.seasar.doma.domain.DomainVisitor;
  */
 public abstract class DomaAbstractConfig implements Config {
 
-    protected static NameConvention nameConvention = new StandardNameConvention();
+    protected static NameConvention nameConvention = new BuiltinNameConvention();
 
-    protected static SqlFileRepository sqlFileRepository = new StandardSqlFileRepository();
+    protected static SqlFileRepository sqlFileRepository = new BuiltinSqlFileRepository();
 
-    protected static JdbcLogger jdbcLogger = new StandardJdbcLogger();
+    protected static JdbcLogger jdbcLogger = new BuiltinJdbcLogger();
 
-    protected static RequiresNewController requiresNewController = new StandardRequiresNewController();
+    protected static RequiresNewController requiresNewController = new BuiltinRequiresNewController();
 
     protected static DomainVisitor<Void, JdbcMappingFunction, SQLException> jdbcMappingVisitor = new JdbcMappingVisitor();
 

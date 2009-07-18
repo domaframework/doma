@@ -30,7 +30,7 @@ import org.seasar.doma.message.MessageCode;
  * @author taedium
  * 
  */
-public class StandardSqlFileRepository implements SqlFileRepository {
+public class BuiltinSqlFileRepository implements SqlFileRepository {
 
     protected static final String SQL_EXTENSION = ".sql";
 

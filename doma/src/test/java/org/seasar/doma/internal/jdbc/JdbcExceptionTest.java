@@ -27,7 +27,7 @@ import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlFileNotFoundException;
 import org.seasar.doma.jdbc.SqlNode;
-import org.seasar.doma.jdbc.StandardSqlFileRepository;
+import org.seasar.doma.jdbc.BuiltinSqlFileRepository;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
 import org.seasar.doma.message.MessageCode;
 
@@ -40,7 +40,7 @@ public class JdbcExceptionTest extends TestCase {
     private MockConfig config = new MockConfig();
 
     public void testSqlFileNotFound() throws Exception {
-        StandardSqlFileRepository repository = new StandardSqlFileRepository();
+        BuiltinSqlFileRepository repository = new BuiltinSqlFileRepository();
         try {
             repository.getSqlFile("aaa/bbb.sql", new StandardDialect());
             fail();

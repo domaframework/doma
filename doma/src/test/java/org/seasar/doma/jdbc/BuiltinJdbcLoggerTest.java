@@ -15,15 +15,24 @@
  */
 package org.seasar.doma.jdbc;
 
+import java.util.Collections;
+
+import org.seasar.doma.internal.jdbc.sql.PreparedSql;
+import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
+import org.seasar.doma.jdbc.BuiltinJdbcLogger;
+
+import junit.framework.TestCase;
+
 /**
  * @author taedium
  * 
  */
-public class StandardRequiresNewController implements RequiresNewController {
+public class BuiltinJdbcLoggerTest extends TestCase {
 
-    @Override
-    public <R> R requiresNew(Callback<R> callback) throws Throwable {
-        return callback.execute();
+    public void test() throws Exception {
+        PreparedSql sql = new PreparedSql("aaa", "bbb", Collections
+                .<PreparedSqlParameter> emptyList());
+        BuiltinJdbcLogger logger = new BuiltinJdbcLogger();
+        logger.logSql("ccc", "ddd", sql);
     }
-
 }

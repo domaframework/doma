@@ -26,22 +26,22 @@ import org.seasar.doma.DomaIllegalArgumentException;
  * @author taedium
  * 
  */
-public class StandardJdbcLogger implements JdbcLogger {
+public class BuiltinJdbcLogger implements JdbcLogger {
 
     protected final Level level;
 
     protected final Logger logger;
 
-    public StandardJdbcLogger() {
+    public BuiltinJdbcLogger() {
         this(Level.INFO);
     }
 
-    public StandardJdbcLogger(Level level) {
+    public BuiltinJdbcLogger(Level level) {
         if (level == null) {
             throw new DomaIllegalArgumentException("level", level);
         }
         this.level = level;
-        this.logger = Logger.getLogger(StandardJdbcLogger.class.getName());
+        this.logger = Logger.getLogger(BuiltinJdbcLogger.class.getName());
     }
 
     @Override

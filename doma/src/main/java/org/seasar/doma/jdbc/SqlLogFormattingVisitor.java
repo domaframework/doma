@@ -28,7 +28,7 @@ import org.seasar.doma.domain.AbstractNClobDomain;
 import org.seasar.doma.domain.AbstractStringDomain;
 import org.seasar.doma.domain.AbstractTimeDomain;
 import org.seasar.doma.domain.AbstractTimestampDomain;
-import org.seasar.doma.domain.BuiltInDomainVisitor2;
+import org.seasar.doma.domain.BuiltinDomainVisitor;
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.type.JdbcTypes;
@@ -40,7 +40,7 @@ import org.seasar.doma.message.MessageCode;
  */
 public class SqlLogFormattingVisitor
         implements
-        BuiltInDomainVisitor2<String, SqlLogFormattingFunction, RuntimeException> {
+        BuiltinDomainVisitor<String, SqlLogFormattingFunction, RuntimeException> {
 
     @Override
     public String visitAbstractBigDecimalDomain(
