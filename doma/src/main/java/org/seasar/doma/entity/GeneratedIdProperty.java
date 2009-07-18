@@ -20,10 +20,10 @@ import java.sql.Statement;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.GenerationType;
 import org.seasar.doma.domain.NumberDomain;
-import org.seasar.doma.internal.jdbc.id.IdGenerationConfig;
-import org.seasar.doma.internal.jdbc.id.IdGenerator;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.jdbc.id.IdGenerationConfig;
+import org.seasar.doma.jdbc.id.IdGenerator;
 import org.seasar.doma.message.MessageCode;
 
 /**

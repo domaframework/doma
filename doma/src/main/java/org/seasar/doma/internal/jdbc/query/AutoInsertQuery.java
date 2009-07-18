@@ -22,9 +22,9 @@ import java.sql.Statement;
 import org.seasar.doma.entity.Entity;
 import org.seasar.doma.entity.EntityProperty;
 import org.seasar.doma.entity.GeneratedIdProperty;
-import org.seasar.doma.internal.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.message.MessageCode;
 
 /**

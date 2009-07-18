@@ -23,7 +23,7 @@ import java.util.Map;
  */
 public final class CopyUtil {
 
-    private static Copier copier = new StandardCopier();
+    private static Copier copier = new BuiltinCopier();
 
     public static synchronized void setCopier(Copier c) {
         copier = c;

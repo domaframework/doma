@@ -40,7 +40,7 @@ import org.seasar.doma.internal.util.Classes;
  * @author taedium
  * 
  */
-public class StandardCopier implements Copier {
+public class BuiltinCopier implements Copier {
 
     protected final static BeanFactory DEFAULT_BEAN_FACTORY = new FieldAccessBeanFactory();
 
@@ -48,11 +48,11 @@ public class StandardCopier implements Copier {
 
     protected final BeanFactory beanFactory;
 
-    public StandardCopier() {
+    public BuiltinCopier() {
         this(DEFAULT_BEAN_FACTORY);
     }
 
-    protected StandardCopier(BeanFactory beanFactory) {
+    protected BuiltinCopier(BeanFactory beanFactory) {
         if (beanFactory == null) {
             throw new DomaIllegalArgumentException("beanFactory", beanFactory);
         }

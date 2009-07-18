@@ -20,6 +20,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.seasar.doma.jdbc.id.TableIdGenerator;
+
 /**
  * @author taedium
  * 
@@ -43,4 +45,6 @@ public @interface TableGenerator {
     int initialValue() default 1;
 
     int allocationSize() default 1;
+
+    Class<? extends TableIdGenerator> idGeneratorImplementer() default TableIdGenerator.class;
 }

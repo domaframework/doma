@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import org.seasar.doma.internal.jdbc.id.TableIdGenerator;
+import static org.seasar.doma.internal.util.Assertions.*;
 
 /**
  * @author taedium
@@ -35,15 +35,19 @@ public class TableIdGeneratorMeta implements IdGeneratorMeta {
 
     protected final int allocationSize;
 
+    protected final String idGeneratorClassName;
+
     public TableIdGeneratorMeta(String qualifiedTableName, String pkColumnName,
             String valueColumnName, String pkColumnValue, int initialValue,
-            int allocationSize) {
+            int allocationSize, String idGeneratorClassName) {
+        assertNotNull(qualifiedTableName, pkColumnName, valueColumnName, pkColumnName, idGeneratorClassName);
         this.qualifiedTableName = qualifiedTableName;
         this.pkColumnName = pkColumnName;
         this.valueColumnName = valueColumnName;
         this.pkColumnValue = pkColumnValue;
         this.initialValue = initialValue;
         this.allocationSize = allocationSize;
+        this.idGeneratorClassName = idGeneratorClassName;
     }
 
     public String getQualifiedTableName() {
@@ -72,7 +76,7 @@ public class TableIdGeneratorMeta implements IdGeneratorMeta {
 
     @Override
     public String getIdGeneratorClassName() {
-        return TableIdGenerator.class.getName();
+        return idGeneratorClassName;
     }
 
     @Override

@@ -27,9 +27,9 @@ import example.entity.Emp_;
  * @author taedium
  * 
  */
-public class StandardCopierTest extends TestCase {
+public class BuiltinCopierTest extends TestCase {
 
-    private StandardCopier copier = new StandardCopier();
+    private BuiltinCopier copier = new BuiltinCopier();
 
     public void testFromEntityToEntity() throws Exception {
         Emp src = new Emp_();

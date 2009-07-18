@@ -27,6 +27,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.Column;
@@ -39,6 +40,7 @@ import org.seasar.doma.Version;
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.domain.NumberDomain;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Models;
 import org.seasar.doma.message.MessageCode;
 
@@ -47,19 +49,19 @@ import org.seasar.doma.message.MessageCode;
  * @author taedium
  * 
  */
-public class PropertyMetaFactory {
+public class EntityPropertyMetaFactory {
 
     protected final ProcessingEnvironment env;
 
-    public PropertyMetaFactory(ProcessingEnvironment env) {
+    public EntityPropertyMetaFactory(ProcessingEnvironment env) {
         assertNotNull(env);
         this.env = env;
     }
 
-    public PropertyMeta createPropertyMeta(ExecutableElement method,
+    public EntityPropertyMeta createPropertyMeta(ExecutableElement method,
             EntityMeta entityMeta) {
         assertNotNull(method);
-        PropertyMeta propertyMeta = new PropertyMeta();
+        EntityPropertyMeta propertyMeta = new EntityPropertyMeta();
         propertyMeta.setExecutableElement(method);
         doName(propertyMeta, method, entityMeta);
         doId(propertyMeta, method, entityMeta);
@@ -73,8 +75,8 @@ public class PropertyMetaFactory {
         return propertyMeta;
     }
 
-    protected void doId(PropertyMeta propertyMeta, ExecutableElement method,
-            EntityMeta entityMeta) {
+    protected void doId(EntityPropertyMeta propertyMeta,
+            ExecutableElement method, EntityMeta entityMeta) {
         Id id = method.getAnnotation(Id.class);
         if (id == null) {
             return;
@@ -107,12 +109,12 @@ public class PropertyMetaFactory {
         }
     }
 
-    protected void doIdentityIdGeneratorMeta(PropertyMeta propertyMeta,
+    protected void doIdentityIdGeneratorMeta(EntityPropertyMeta propertyMeta,
             ExecutableElement method, EntityMeta entityMeta) {
         propertyMeta.setIdGeneratorMeta(new IdentityIdGeneratorMeta());
     }
 
-    protected void doSequenceIdGeneratorMeta(PropertyMeta propertyMeta,
+    protected void doSequenceIdGeneratorMeta(EntityPropertyMeta propertyMeta,
             ExecutableElement method, EntityMeta entityMeta) {
         SequenceGenerator generator = method
                 .getAnnotation(SequenceGenerator.class);
@@ -128,14 +130,27 @@ public class PropertyMetaFactory {
             buf.append(generator.schema());
             buf.append(".");
         }
+        TypeMirror idGeneratorImplementerType = getIdGeneratorImplementerType(generator);
         buf.append(generator.sequence());
         SequenceIdGeneratorMeta idGeneratorMeta = new SequenceIdGeneratorMeta(
                 buf.toString(), generator.initialValue(), generator
-                        .allocationSize());
+                        .allocationSize(), Models
+                        .getTypeName(idGeneratorImplementerType, entityMeta
+                                .getTypeParameterMap(), env));
         propertyMeta.setIdGeneratorMeta(idGeneratorMeta);
     }
 
-    protected void doTableIdGeneratorMeta(PropertyMeta propertyMeta,
+    protected TypeMirror getIdGeneratorImplementerType(
+            SequenceGenerator generator) {
+        try {
+            generator.idGeneratorImplementer();
+        } catch (MirroredTypeException e) {
+            return e.getTypeMirror();
+        }
+        throw new AptIllegalStateException();
+    }
+
+    protected void doTableIdGeneratorMeta(EntityPropertyMeta propertyMeta,
             ExecutableElement method, EntityMeta entityMeta) {
         TableGenerator generator = method.getAnnotation(TableGenerator.class);
         if (generator == null) {
@@ -150,16 +165,28 @@ public class PropertyMetaFactory {
             buf.append(generator.schema());
             buf.append(".");
         }
+        TypeMirror idGeneratorImplementerType = getIdGeneratorImplementerType(generator);
         buf.append(generator.table());
         TableIdGeneratorMeta idGeneratorMeta = new TableIdGeneratorMeta(buf
                 .toString(), generator.pkColumnName(), generator
                 .valueColumnName(), generator.pkColumnValue(), generator
-                .initialValue(), generator.allocationSize());
+                .initialValue(), generator.allocationSize(), Models
+                .getTypeName(idGeneratorImplementerType, entityMeta
+                        .getTypeParameterMap(), env));
         propertyMeta.setIdGeneratorMeta(idGeneratorMeta);
     }
 
-    protected void doName(PropertyMeta propertyMeta, ExecutableElement method,
-            EntityMeta entityMeta) {
+    protected TypeMirror getIdGeneratorImplementerType(TableGenerator generator) {
+        try {
+            generator.idGeneratorImplementer();
+        } catch (MirroredTypeException e) {
+            return e.getTypeMirror();
+        }
+        throw new AptIllegalStateException();
+    }
+
+    protected void doName(EntityPropertyMeta propertyMeta,
+            ExecutableElement method, EntityMeta entityMeta) {
         String name = method.getSimpleName().toString();
         if (name.startsWith("__")) {
             throw new AptException(MessageCode.DOMA4025, env, method, "__");
@@ -167,13 +194,13 @@ public class PropertyMetaFactory {
         propertyMeta.setName(name);
     }
 
-    protected void doTransient(PropertyMeta propertyMeta,
+    protected void doTransient(EntityPropertyMeta propertyMeta,
             ExecutableElement method, EntityMeta entityMeta) {
         Transient trnsient = method.getAnnotation(Transient.class);
         propertyMeta.setTrnsient(trnsient != null);
     }
 
-    protected void doVersion(PropertyMeta propertyMeta,
+    protected void doVersion(EntityPropertyMeta propertyMeta,
             ExecutableElement method, EntityMeta entityMeta) {
         Version version = method.getAnnotation(Version.class);
         if (version != null) {
@@ -184,7 +211,7 @@ public class PropertyMetaFactory {
         }
     }
 
-    protected void doColumnMeta(PropertyMeta propertyMeta,
+    protected void doColumnMeta(EntityPropertyMeta propertyMeta,
             ExecutableElement method, EntityMeta entityMeta) {
         Column column = method.getAnnotation(Column.class);
         if (column == null) {
@@ -199,7 +226,7 @@ public class PropertyMetaFactory {
         propertyMeta.setColumnMeta(columnMeta);
     }
 
-    protected void doTypeParameters(PropertyMeta propertyMeta,
+    protected void doTypeParameters(EntityPropertyMeta propertyMeta,
             ExecutableElement method, EntityMeta entityMeta) {
         for (TypeParameterElement element : method.getTypeParameters()) {
             String name = Models.getTypeName(element.asType(), entityMeta
@@ -208,7 +235,7 @@ public class PropertyMetaFactory {
         }
     }
 
-    protected void doReturnType(PropertyMeta propertyMeta,
+    protected void doReturnType(EntityPropertyMeta propertyMeta,
             ExecutableElement method, EntityMeta entityMeta) {
         TypeMirror returnType = Models.resolveTypeParameter(entityMeta
                 .getTypeParameterMap(), method.getReturnType());
@@ -249,7 +276,7 @@ public class PropertyMetaFactory {
                         .getTypeParameterMap(), env));
     }
 
-    protected void doParameters(PropertyMeta propertyMeta,
+    protected void doParameters(EntityPropertyMeta propertyMeta,
             ExecutableElement method, EntityMeta entityMeta) {
         List<? extends VariableElement> params = method.getParameters();
         if (!params.isEmpty()) {
@@ -257,7 +284,7 @@ public class PropertyMetaFactory {
         }
     }
 
-    protected void doThrowTypes(PropertyMeta propertyMeta,
+    protected void doThrowTypes(EntityPropertyMeta propertyMeta,
             ExecutableElement method, EntityMeta entityMeta) {
         for (TypeMirror thrownType : method.getThrownTypes()) {
             String typeName = Models.getTypeName(thrownType, entityMeta

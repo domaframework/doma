@@ -37,15 +37,15 @@ public class EntityMeta {
 
     protected final List<TypeMirror> supertypes = new ArrayList<TypeMirror>();
 
-    protected List<PropertyMeta> idPropertyMetas = new ArrayList<PropertyMeta>();
+    protected List<EntityPropertyMeta> idPropertyMetas = new ArrayList<EntityPropertyMeta>();
 
-    protected List<PropertyMeta> columnPropertyMetas = new ArrayList<PropertyMeta>();
+    protected List<EntityPropertyMeta> columnPropertyMetas = new ArrayList<EntityPropertyMeta>();
 
-    protected List<PropertyMeta> allPropertyMetas = new ArrayList<PropertyMeta>();
+    protected List<EntityPropertyMeta> allPropertyMetas = new ArrayList<EntityPropertyMeta>();
 
-    protected PropertyMeta versionPropertyMeta;
+    protected EntityPropertyMeta versionPropertyMeta;
 
-    protected PropertyMeta generatedIdPropertyMeta;
+    protected EntityPropertyMeta generatedIdPropertyMeta;
 
     protected TableMeta tableMeta;
 
@@ -105,7 +105,7 @@ public class EntityMeta {
         this.listenerType = listenerType;
     }
 
-    public void addPropertyMeta(PropertyMeta propertyMeta) {
+    public void addPropertyMeta(EntityPropertyMeta propertyMeta) {
         assertNotNull(propertyMeta);
         allPropertyMetas.add(propertyMeta);
         if (propertyMeta.isTrnsient()) {
@@ -123,7 +123,7 @@ public class EntityMeta {
         columnPropertyMetas.add(propertyMeta);
     }
 
-    public List<PropertyMeta> getAllPropertyMetas() {
+    public List<EntityPropertyMeta> getAllPropertyMetas() {
         return allPropertyMetas;
     }
 
@@ -131,11 +131,11 @@ public class EntityMeta {
         return idPropertyMetas.size() > 0;
     }
 
-    public List<PropertyMeta> getIdPropertyMetas() {
+    public List<EntityPropertyMeta> getIdPropertyMetas() {
         return idPropertyMetas;
     }
 
-    public List<PropertyMeta> getColumnPropertyMetas() {
+    public List<EntityPropertyMeta> getColumnPropertyMetas() {
         return columnPropertyMetas;
     }
 
@@ -143,7 +143,7 @@ public class EntityMeta {
         return versionPropertyMeta != null;
     }
 
-    public PropertyMeta getVersionPropertyMeta() {
+    public EntityPropertyMeta getVersionPropertyMeta() {
         return versionPropertyMeta;
     }
 
@@ -151,7 +151,7 @@ public class EntityMeta {
         return generatedIdPropertyMeta != null;
     }
 
-    public PropertyMeta getGeneratedIdPropertyMeta() {
+    public EntityPropertyMeta getGeneratedIdPropertyMeta() {
         return generatedIdPropertyMeta;
     }
 

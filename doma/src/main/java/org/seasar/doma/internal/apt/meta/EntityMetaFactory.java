@@ -50,10 +50,10 @@ public class EntityMetaFactory {
 
     protected final ProcessingEnvironment env;
 
-    protected final PropertyMetaFactory propertyMetaFactory;
+    protected final EntityPropertyMetaFactory propertyMetaFactory;
 
     public EntityMetaFactory(ProcessingEnvironment env,
-            PropertyMetaFactory propertyMetaFactory) {
+            EntityPropertyMetaFactory propertyMetaFactory) {
         assertNotNull(env, propertyMetaFactory);
         this.env = env;
         this.propertyMetaFactory = propertyMetaFactory;
@@ -223,12 +223,12 @@ public class EntityMetaFactory {
 
     protected void doMethodElement(ExecutableElement methodElement,
             EntityMeta entityMeta) {
-        PropertyMeta propertyMeta = propertyMetaFactory
+        EntityPropertyMeta propertyMeta = propertyMetaFactory
                 .createPropertyMeta(methodElement, entityMeta);
         if (entityMeta.getSupertypes().size() > 0) {
-            for (Iterator<PropertyMeta> it = entityMeta.getAllPropertyMetas()
+            for (Iterator<EntityPropertyMeta> it = entityMeta.getAllPropertyMetas()
                     .iterator(); it.hasNext();) {
-                PropertyMeta overridenMeta = it.next();
+                EntityPropertyMeta overridenMeta = it.next();
                 ExecutableElement overriden = overridenMeta
                         .getExecutableElement();
                 ExecutableElement overrider = propertyMeta

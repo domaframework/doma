@@ -26,7 +26,7 @@ import javax.lang.model.element.ExecutableElement;
  * @author taedium
  * 
  */
-public class PropertyMeta {
+public class EntityPropertyMeta {
 
     protected String name;
 

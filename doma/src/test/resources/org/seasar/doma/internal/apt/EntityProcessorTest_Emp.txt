@@ -5,7 +5,7 @@ public class Emp_ extends org.seasar.doma.entity.DomaAbstractEntity<org.seasar.d
 
     private static final long serialVersionUID = 1L;
 
-    private static final org.seasar.doma.internal.jdbc.id.IdGenerator __idGenerator = new org.seasar.doma.internal.jdbc.id.SequenceIdGenerator("EMP_ID", 1, 1);
+    private static final org.seasar.doma.jdbc.id.IdGenerator __idGenerator = new org.seasar.doma.jdbc.id.SequenceIdGenerator("EMP_ID", 1, 1);
 
     private static final org.seasar.doma.internal.apt.entity.EmpListener __listener = new org.seasar.doma.internal.apt.entity.EmpListener();
 

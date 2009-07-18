@@ -20,6 +20,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.seasar.doma.jdbc.id.SequenceIdGenerator;
+
 /**
  * @author taedium
  * 
@@ -38,4 +40,5 @@ public @interface SequenceGenerator {
 
     int allocationSize() default 1;
 
+    Class<? extends SequenceIdGenerator> idGeneratorImplementer() default SequenceIdGenerator.class;
 }

@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import org.seasar.doma.internal.jdbc.id.IdentityIdGenerator;
+import org.seasar.doma.jdbc.id.IdentityIdGenerator;
 
 /**
  * @author taedium

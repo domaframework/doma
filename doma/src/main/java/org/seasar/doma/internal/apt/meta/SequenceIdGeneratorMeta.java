@@ -17,8 +17,6 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.Assertions.*;
 
-import org.seasar.doma.internal.jdbc.id.SequenceIdGenerator;
-
 /**
  * @author taedium
  * 
@@ -31,12 +29,15 @@ public class SequenceIdGeneratorMeta implements IdGeneratorMeta {
 
     protected final int allocationSize;
 
+    protected final String idGeneratorClassName;
+
     public SequenceIdGeneratorMeta(String qualifiedSequenceName,
-            int initialValue, int allocationSize) {
-        assertNotNull(qualifiedSequenceName);
+            int initialValue, int allocationSize, String idGeneratorClassName) {
+        assertNotNull(qualifiedSequenceName, idGeneratorClassName);
         this.qualifiedSequenceName = qualifiedSequenceName;
         this.initialValue = initialValue;
         this.allocationSize = allocationSize;
+        this.idGeneratorClassName = idGeneratorClassName;
     }
 
     public String getQualifiedSequenceName() {
@@ -53,7 +54,7 @@ public class SequenceIdGeneratorMeta implements IdGeneratorMeta {
 
     @Override
     public String getIdGeneratorClassName() {
-        return SequenceIdGenerator.class.getName();
+        return idGeneratorClassName;
     }
 
     @Override

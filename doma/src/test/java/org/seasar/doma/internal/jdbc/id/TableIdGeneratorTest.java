@@ -19,14 +19,14 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.LinkedList;
 
-import org.seasar.doma.internal.jdbc.id.IdGenerationConfig;
-import org.seasar.doma.internal.jdbc.id.TableIdGenerator;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockConnection;
 import org.seasar.doma.internal.jdbc.mock.MockDataSource;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.jdbc.dialect.PostgresDialect;
+import org.seasar.doma.jdbc.id.IdGenerationConfig;
+import org.seasar.doma.jdbc.id.TableIdGenerator;
 
 import junit.framework.TestCase;
 import example.entity.Emp_;
