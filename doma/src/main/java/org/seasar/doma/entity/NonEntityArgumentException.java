@@ -13,20 +13,34 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.copy;
+package org.seasar.doma.entity;
 
-import java.util.Map;
+import org.seasar.doma.message.MessageCode;
 
 /**
  * @author taedium
  * 
  */
-public interface Copier {
+public class NonEntityArgumentException extends EntityException {
 
-    void copy(Object src, Object dest, CopyOptions copyOptions);
+    private static final long serialVersionUID = 1L;
 
-    void copy(Object src, Map<String, Object> dest, CopyOptions copyOptions);
+    protected final String parameterName;
 
-    void copy(Map<String, Object> src, Object dest, CopyOptions copyOptions);
+    protected final Object argument;
+
+    public NonEntityArgumentException(String parameterName, Object argument) {
+        super(MessageCode.DOMA8001, parameterName, argument);
+        this.parameterName = parameterName;
+        this.argument = argument;
+    }
+
+    public String getParameterName() {
+        return parameterName;
+    }
+
+    public Object getArgument() {
+        return argument;
+    }
 
 }

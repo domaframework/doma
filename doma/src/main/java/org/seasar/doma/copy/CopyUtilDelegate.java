@@ -13,34 +13,20 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma;
+package org.seasar.doma.copy;
 
-import org.seasar.doma.message.MessageCode;
+import java.util.Map;
 
 /**
  * @author taedium
  * 
  */
-public class DomaIllegalArgumentException extends DomaException {
+public interface CopyUtilDelegate {
 
-    private static final long serialVersionUID = 1L;
+    void copy(Object src, Object dest, CopyOptions copyOptions);
 
-    protected final String parameterName;
+    void copy(Object src, Map<String, Object> dest, CopyOptions copyOptions);
 
-    protected final Object argument;
-
-    public DomaIllegalArgumentException(String parameterName, Object argument) {
-        super(MessageCode.DOMA0001, parameterName, argument);
-        this.parameterName = parameterName;
-        this.argument = argument;
-    }
-
-    public String getParameterName() {
-        return parameterName;
-    }
-
-    public Object getArgument() {
-        return argument;
-    }
+    void copy(Map<String, Object> src, Object dest, CopyOptions copyOptions);
 
 }

@@ -23,35 +23,35 @@ import java.util.Map;
  */
 public final class CopyUtil {
 
-    private static Copier copier = new BuiltinCopier();
+    private static CopyUtilDelegate delegate = new BuiltinCopyUtilDelegate();
 
-    public static synchronized void setCopier(Copier c) {
-        copier = c;
+    public static synchronized void setDelegate(CopyUtilDelegate delegate) {
+        CopyUtil.delegate = delegate;
     }
 
     public static void copy(Object src, Object dest) {
-        copier.copy(src, dest, new CopyOptions());
+        delegate.copy(src, dest, new CopyOptions());
     }
 
     public static void copy(Object src, Object dest, CopyOptions copyOptions) {
-        copier.copy(src, dest, copyOptions);
+        delegate.copy(src, dest, copyOptions);
     }
 
     public static void copy(Object src, Map<String, Object> dest) {
-        copier.copy(src, dest, new CopyOptions());
+        delegate.copy(src, dest, new CopyOptions());
     }
 
     public static void copy(Object src, Map<String, Object> dest,
             CopyOptions copyOptions) {
-        copier.copy(src, dest, copyOptions);
+        delegate.copy(src, dest, copyOptions);
     }
 
     public static void copy(Map<String, Object> src, Object dest) {
-        copier.copy(src, dest, new CopyOptions());
+        delegate.copy(src, dest, new CopyOptions());
     }
 
     public static void copy(Map<String, Object> src, Object dest,
             CopyOptions copyOptions) {
-        copier.copy(src, dest, copyOptions);
+        delegate.copy(src, dest, copyOptions);
     }
 }

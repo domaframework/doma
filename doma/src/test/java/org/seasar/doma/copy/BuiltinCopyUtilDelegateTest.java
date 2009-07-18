@@ -27,9 +27,9 @@ import example.entity.Emp_;
  * @author taedium
  * 
  */
-public class BuiltinCopierTest extends TestCase {
+public class BuiltinCopyUtilDelegateTest extends TestCase {
 
-    private BuiltinCopier copier = new BuiltinCopier();
+    private BuiltinCopyUtilDelegate delegate = new BuiltinCopyUtilDelegate();
 
     public void testFromEntityToEntity() throws Exception {
         Emp src = new Emp_();
@@ -38,7 +38,7 @@ public class BuiltinCopierTest extends TestCase {
         src.salary().set(new BigDecimal("100"));
         src.version().set(20);
         Emp dest = new Emp_();
-        copier.copy(src, dest, new CopyOptions());
+        delegate.copy(src, dest, new CopyOptions());
 
         assertEquals(src.id(), dest.id());
         assertEquals(src.name(), dest.name());
@@ -53,7 +53,7 @@ public class BuiltinCopierTest extends TestCase {
         src.salary().set(new BigDecimal("100"));
         src.version().set(20);
         EmpBean dest = new EmpBean();
-        copier.copy(src, dest, new CopyOptions());
+        delegate.copy(src, dest, new CopyOptions());
 
         assertEquals(src.id().get(), dest.id);
         assertEquals(src.name().get(), dest.name);
@@ -68,7 +68,7 @@ public class BuiltinCopierTest extends TestCase {
         src.salary().set(new BigDecimal("100"));
         src.version().set(20);
         Map<String, Object> dest = new HashMap<String, Object>();
-        copier.copy(src, dest, new CopyOptions());
+        delegate.copy(src, dest, new CopyOptions());
 
         assertEquals(src.id().get(), dest.get("id"));
         assertEquals(src.name().get(), dest.get("name"));
@@ -83,7 +83,7 @@ public class BuiltinCopierTest extends TestCase {
         src.salary = new BigDecimal("100");
         src.version = 20;
         Emp dest = new Emp_();
-        copier.copy(src, dest, new CopyOptions());
+        delegate.copy(src, dest, new CopyOptions());
 
         assertEquals(src.id, dest.id().get());
         assertEquals(src.name, dest.name().get());
@@ -98,7 +98,7 @@ public class BuiltinCopierTest extends TestCase {
         src.salary = new BigDecimal("100");
         src.version = 20;
         EmpBean dest = new EmpBean();
-        copier.copy(src, dest, new CopyOptions());
+        delegate.copy(src, dest, new CopyOptions());
 
         assertEquals(src.id, dest.id);
         assertEquals(src.name, dest.name);
@@ -113,7 +113,7 @@ public class BuiltinCopierTest extends TestCase {
         src.salary = new BigDecimal("100");
         src.version = 20;
         Map<String, Object> dest = new HashMap<String, Object>();
-        copier.copy(src, dest, new CopyOptions());
+        delegate.copy(src, dest, new CopyOptions());
 
         assertEquals(src.id, dest.get("id"));
         assertEquals(src.name, dest.get("name"));
@@ -128,7 +128,7 @@ public class BuiltinCopierTest extends TestCase {
         src.put("salary", new BigDecimal("100"));
         src.put("version", 20);
         Emp dest = new Emp_();
-        copier.copy(src, dest, new CopyOptions());
+        delegate.copy(src, dest, new CopyOptions());
 
         assertEquals(src.get("id"), dest.id().get());
         assertEquals(src.get("name"), dest.name().get());
@@ -143,7 +143,7 @@ public class BuiltinCopierTest extends TestCase {
         src.put("salary", new BigDecimal("100"));
         src.put("version", 20);
         EmpBean dest = new EmpBean();
-        copier.copy(src, dest, new CopyOptions());
+        delegate.copy(src, dest, new CopyOptions());
 
         assertEquals(src.get("id"), dest.id);
         assertEquals(src.get("name"), dest.name);
@@ -156,7 +156,7 @@ public class BuiltinCopierTest extends TestCase {
         src.put("id", "aaa");
         EmpBean dest = new EmpBean();
         try {
-            copier.copy(src, dest, new CopyOptions());
+            delegate.copy(src, dest, new CopyOptions());
             fail();
         } catch (PropertyCopyException expected) {
         }

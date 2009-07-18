@@ -28,7 +28,7 @@ public class DomaIllegalArgumentExceptionTest extends TestCase {
     public void test() throws Exception {
         DomaIllegalArgumentException e = new DomaIllegalArgumentException(
                 "aaa", null);
-        assertEquals("aaa", e.getArgumentName());
-        assertNull(e.getValue());
+        assertEquals("aaa", e.getParameterName());
+        assertNull(e.getArgument());
     }
 }

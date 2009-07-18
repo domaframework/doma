@@ -13,34 +13,21 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma;
+package org.seasar.doma.entity;
 
-import org.seasar.doma.message.MessageCode;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
  * 
  */
-public class DomaIllegalArgumentException extends DomaException {
+public class NonEntityExceptionTest extends TestCase {
 
-    private static final long serialVersionUID = 1L;
-
-    protected final String parameterName;
-
-    protected final Object argument;
-
-    public DomaIllegalArgumentException(String parameterName, Object argument) {
-        super(MessageCode.DOMA0001, parameterName, argument);
-        this.parameterName = parameterName;
-        this.argument = argument;
+    public void test() throws Exception {
+        NonEntityArgumentException e = new NonEntityArgumentException("aaa",
+                "bbb");
+        assertEquals("aaa", e.getParameterName());
+        assertEquals("bbb", e.getArgument());
+        System.out.println(e.getMessage());
     }
-
-    public String getParameterName() {
-        return parameterName;
-    }
-
-    public Object getArgument() {
-        return argument;
-    }
-
 }

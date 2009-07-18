@@ -13,34 +13,25 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma;
+package org.seasar.doma.entity;
 
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.domain.Domain;
 
 /**
  * @author taedium
  * 
  */
-public class DomaIllegalArgumentException extends DomaException {
+public final class EntityUtil {
 
-    private static final long serialVersionUID = 1L;
+    private static EntityUtilDelegate delegate = new BuiltinEntityUtilDelegate();
 
-    protected final String parameterName;
-
-    protected final Object argument;
-
-    public DomaIllegalArgumentException(String parameterName, Object argument) {
-        super(MessageCode.DOMA0001, parameterName, argument);
-        this.parameterName = parameterName;
-        this.argument = argument;
+    public static synchronized void setDelegate(EntityUtilDelegate delegate) {
+        EntityUtil.delegate = delegate;
     }
 
-    public String getParameterName() {
-        return parameterName;
-    }
-
-    public Object getArgument() {
-        return argument;
+    public <D extends Domain<?, ?>> D getDomain(Object entity,
+            Class<D> domainClass, String propertyName) {
+        return delegate.getDomain(entity, domainClass, propertyName);
     }
 
 }
