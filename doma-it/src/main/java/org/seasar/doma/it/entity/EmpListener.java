@@ -18,7 +18,7 @@ package org.seasar.doma.it.entity;
 import java.sql.Timestamp;
 import java.util.Date;
 
-import org.seasar.doma.jdbc.EntityListener;
+import org.seasar.doma.entity.EntityListener;
 
 public class EmpListener implements EntityListener<Emp> {
 

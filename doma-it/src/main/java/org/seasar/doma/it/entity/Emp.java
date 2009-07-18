@@ -15,8 +15,11 @@
  */
 package org.seasar.doma.it.entity;
 
+import java.util.List;
+
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
+import org.seasar.doma.Transient;
 import org.seasar.doma.Version;
 import org.seasar.doma.domain.BigDecimalDomain;
 import org.seasar.doma.domain.IntegerDomain;
@@ -44,5 +47,11 @@ public interface Emp {
     TimestampDomain insertTimestamp();
 
     TimestampDomain updateTimestamp();
+
+    @Transient
+    StringDomain temp();
+
+    @Transient
+    List<StringDomain> tempList();
 
 }
