@@ -25,11 +25,13 @@ import java.io.Serializable;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 
+import org.seasar.doma.domain.ArrayListDomain;
 import org.seasar.doma.entity.AssignedIdProperty;
 import org.seasar.doma.entity.BasicProperty;
 import org.seasar.doma.entity.DomaAbstractEntity;
 import org.seasar.doma.entity.EntityProperty;
 import org.seasar.doma.entity.GeneratedIdProperty;
+import org.seasar.doma.entity.TransientProperty;
 import org.seasar.doma.entity.VersionProperty;
 import org.seasar.doma.internal.apt.meta.ColumnMeta;
 import org.seasar.doma.internal.apt.meta.EntityMeta;
@@ -119,8 +121,16 @@ public class EntityGenerator extends AbstractGenerator {
     protected void printPropertyField() {
         for (PropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             if (pm.isTrnsient()) {
-                print("private final %1$s %2$s = new %1$s();%n", pm
-                        .getReturnTypeName(), pm.getName());
+                if (pm.isListReturnType()) {
+                    print("private transient %1$s<%2$s<%3$s>> %4$s = new %1$s<%2$s<%3$s>>(\"%4$s\", new %2$s<%3$s>(new %5$s()));%n", /* 1 */TransientProperty.class
+                            .getName(), /* 2 */ArrayListDomain.class.getName(),/* 3 */pm
+                            .getReturnElementTypeName(), /* 4 */pm.getName(), /* 5 */pm
+                            .getReturnTypeName());
+                } else {
+                    print("private transient %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", new %2$s());%n", /* 1 */TransientProperty.class
+                            .getName(), /* 2 */pm.getReturnTypeName(), /* 3 */pm
+                            .getName());
+                }
             } else {
                 Class<?> propertyClass = getPropertyClass(pm);
                 ColumnMeta cm = pm.getColumnMeta();
@@ -203,19 +213,15 @@ public class EntityGenerator extends AbstractGenerator {
 
     protected void printPropertyMethod() {
         for (PropertyMeta pm : entityMeta.getAllPropertyMetas()) {
-            if (pm.isTrnsient()) {
-                print("@Override%n");
-                print("public %1$s %2$s() {%n", pm.getReturnTypeName(), pm
-                        .getName());
-                print("    return %1$s;%n", pm.getName());
-                print("}%n");
+            print("@Override%n");
+            print("public %1$s %2$s() {%n", pm.getReturnTypeName(), pm
+                    .getName());
+            if (pm.isTrnsient() && pm.isListReturnType()) {
+                print("    return %1$s.getDomain().get();%n", pm.getName());
             } else {
-                print("@Override%n");
-                print("public %1$s %2$s() {%n", pm.getReturnTypeName(), pm
-                        .getName());
                 print("    return %1$s.getDomain();%n", pm.getName());
-                print("}%n");
             }
+            print("}%n");
             put("%n");
         }
     }
@@ -271,9 +277,6 @@ public class EntityGenerator extends AbstractGenerator {
         print("java.util.List<%1$s<?>> __list = new java.util.ArrayList<%1$s<?>>();%n", EntityProperty.class
                 .getName());
         for (PropertyMeta pm : entityMeta.getAllPropertyMetas()) {
-            if (pm.isTrnsient()) {
-                continue;
-            }
             print("__list.add(%1$s);%n", pm.getName());
         }
         print("__entityProperties = java.util.Collections.unmodifiableList(__list);%n");
@@ -295,9 +298,6 @@ public class EntityGenerator extends AbstractGenerator {
         print("java.util.Map<String, %1$s<?>> __map = new java.util.HashMap<String, %1$s<?>>();%n", EntityProperty.class
                 .getName());
         for (PropertyMeta pm : entityMeta.getAllPropertyMetas()) {
-            if (pm.isTrnsient()) {
-                continue;
-            }
             print("__map.put(\"%1$s\", %1$s);%n", pm.getName());
         }
         print("__entityPropertyMap = java.util.Collections.unmodifiableMap(__map);%n");
@@ -362,13 +362,25 @@ public class EntityGenerator extends AbstractGenerator {
     }
 
     protected void printReadObjectMethod() {
+        print("@SuppressWarnings(\"unchecked\")%n");
         print("private void readObject(%1$s inputStream) throws %2$s, %3$s {%n", ObjectInputStream.class
                 .getName(), IOException.class.getName(), ClassNotFoundException.class
                 .getName());
         indent();
         print("inputStream.defaultReadObject();%n");
         for (PropertyMeta pm : entityMeta.getAllPropertyMetas()) {
-            if (!pm.isTrnsient()) {
+            if (pm.isTrnsient()) {
+                if (pm.isListReturnType()) {
+                    print("%4$s = new %1$s<%2$s<%3$s>>(\"%4$s\", (%2$s<%3$s>)inputStream.readObject());%n", /* 1 */TransientProperty.class
+                            .getName(), /* 2 */ArrayListDomain.class.getName(),/* 3 */pm
+                            .getReturnElementTypeName(), /* 4 */pm.getName(), /* 5 */pm
+                            .getReturnTypeName());
+                } else {
+                    print("%3$s = new %1$s<%2$s>(\"%3$s\", (%2$s)inputStream.readObject());%n", /* 1 */TransientProperty.class
+                            .getName(), /* 2 */pm.getReturnTypeName(), /* 3 */pm
+                            .getName());
+                }
+            } else {
                 Class<?> propertyClass = getPropertyClass(pm);
                 ColumnMeta cm = pm.getColumnMeta();
                 String columnName = cm.getName();
@@ -397,10 +409,7 @@ public class EntityGenerator extends AbstractGenerator {
         indent();
         print("outputStream.defaultWriteObject();%n");
         for (PropertyMeta pm : entityMeta.getAllPropertyMetas()) {
-            if (!pm.isTrnsient()) {
-                print("outputStream.writeObject(%1$s.getDomain());%n", pm
-                        .getName());
-            }
+            print("outputStream.writeObject(%1$s.getDomain());%n", pm.getName());
         }
         unindent();
         print("}%n");

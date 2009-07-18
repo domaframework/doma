@@ -18,27 +18,19 @@ package org.seasar.doma.entity;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.NameConvention;
-import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
  * @author taedium
  * 
  */
-public class BasicProperty<D extends Domain<?, ?>> implements EntityProperty<D> {
+public class TransientProperty<D extends Domain<?, ?>> implements
+        EntityProperty<D> {
 
     protected final String name;
 
-    protected final String columnName;
-
     protected final D domain;
 
-    protected final boolean insertable;
-
-    protected final boolean updatable;
-
-    public BasicProperty(String name, String columnName, D domain,
-            boolean insertable, boolean updatable) {
+    public TransientProperty(String name, D domain) {
         if (name == null) {
             throw new DomaIllegalArgumentException("name", name);
         }
@@ -46,25 +38,12 @@ public class BasicProperty<D extends Domain<?, ?>> implements EntityProperty<D> 
             throw new DomaIllegalArgumentException("domain", domain);
         }
         this.name = name;
-        this.columnName = columnName;
         this.domain = domain;
-        this.insertable = insertable;
-        this.updatable = updatable;
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 
     @Override
     public String getColumnName(Config config) {
-        if (columnName != null) {
-            return columnName;
-        }
-        Dialect dialect = config.dialect();
-        NameConvention nameConvention = config.nameConvention();
-        return nameConvention.fromPropertyToColumn(name, dialect);
+        return null;
     }
 
     @Override
@@ -73,7 +52,22 @@ public class BasicProperty<D extends Domain<?, ?>> implements EntityProperty<D> 
     }
 
     @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
     public boolean isId() {
+        return false;
+    }
+
+    @Override
+    public boolean isInsertable() {
+        return false;
+    }
+
+    @Override
+    public boolean isUpdatable() {
         return false;
     }
 
@@ -83,23 +77,12 @@ public class BasicProperty<D extends Domain<?, ?>> implements EntityProperty<D> 
     }
 
     @Override
-    public boolean isInsertable() {
-        return insertable;
-    }
-
-    @Override
-    public boolean isUpdatable() {
-        return updatable;
-    }
-
-    @Override
     public boolean isTransient() {
-        return false;
+        return true;
     }
 
     @Override
     public String toString() {
         return domain != null ? domain.toString() : null;
     }
-
 }

@@ -17,7 +17,7 @@ public class Emp_ extends org.seasar.doma.entity.DomaAbstractEntity<org.seasar.d
 
     private transient org.seasar.doma.entity.VersionProperty<org.seasar.doma.domain.IntegerDomain> version = new org.seasar.doma.entity.VersionProperty<org.seasar.doma.domain.IntegerDomain>("version", null, new org.seasar.doma.domain.IntegerDomain(), true, true);
 
-    private final org.seasar.doma.domain.StringDomain temp = new org.seasar.doma.domain.StringDomain();
+    private transient org.seasar.doma.entity.TransientProperty<org.seasar.doma.domain.StringDomain> temp = new org.seasar.doma.entity.TransientProperty<org.seasar.doma.domain.StringDomain>("temp", new org.seasar.doma.domain.StringDomain());
 
     private final String __name = "Emp";
 
@@ -51,7 +51,7 @@ public class Emp_ extends org.seasar.doma.entity.DomaAbstractEntity<org.seasar.d
 
     @Override
     public org.seasar.doma.domain.StringDomain temp() {
-        return temp;
+        return temp.getDomain();
     }
 
     @Override
@@ -87,6 +87,7 @@ public class Emp_ extends org.seasar.doma.entity.DomaAbstractEntity<org.seasar.d
             __list.add(name);
             __list.add(salary);
             __list.add(version);
+            __list.add(temp);
             __entityProperties = java.util.Collections.unmodifiableList(__list);
         }
         return __entityProperties;
@@ -100,6 +101,7 @@ public class Emp_ extends org.seasar.doma.entity.DomaAbstractEntity<org.seasar.d
             __map.put("name", name);
             __map.put("salary", salary);
             __map.put("version", version);
+            __map.put("temp", temp);
             __entityPropertyMap = java.util.Collections.unmodifiableMap(__map);
         }
         return __entityPropertyMap.get(__name);
@@ -120,12 +122,14 @@ public class Emp_ extends org.seasar.doma.entity.DomaAbstractEntity<org.seasar.d
         return "Emp_ [id=" + id + ", name=" + name + ", salary=" + salary + ", version=" + version + ", temp=" + temp + "]";
     }
 
+    @SuppressWarnings("unchecked")
     private void readObject(java.io.ObjectInputStream inputStream) throws java.io.IOException, java.lang.ClassNotFoundException {
         inputStream.defaultReadObject();
         id = new org.seasar.doma.entity.GeneratedIdProperty<org.seasar.doma.domain.IntegerDomain>("id", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject(), true, true, __idGenerator);
         name = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.StringDomain>("name", null, (org.seasar.doma.domain.StringDomain)inputStream.readObject(), true, true);
         salary = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.BigDecimalDomain>("salary", "SALARY", (org.seasar.doma.domain.BigDecimalDomain)inputStream.readObject(), false, false);
         version = new org.seasar.doma.entity.VersionProperty<org.seasar.doma.domain.IntegerDomain>("version", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject(), true, true);
+        temp = new org.seasar.doma.entity.TransientProperty<org.seasar.doma.domain.StringDomain>("temp", (org.seasar.doma.domain.StringDomain)inputStream.readObject());
     }
 
     private void writeObject(java.io.ObjectOutputStream outputStream) throws java.io.IOException {
@@ -134,6 +138,7 @@ public class Emp_ extends org.seasar.doma.entity.DomaAbstractEntity<org.seasar.d
         outputStream.writeObject(name.getDomain());
         outputStream.writeObject(salary.getDomain());
         outputStream.writeObject(version.getDomain());
+        outputStream.writeObject(temp.getDomain());
     }
 
 }

@@ -23,8 +23,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.seasar.doma.entity.Entity;
-import org.seasar.doma.entity.GeneratedIdProperty;
 import org.seasar.doma.entity.EntityProperty;
+import org.seasar.doma.entity.GeneratedIdProperty;
 import org.seasar.doma.internal.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
@@ -105,6 +105,9 @@ public class AutoBatchInsertQuery<I, E extends Entity<I>> extends
 
     protected void prepareTargetProperties() {
         for (EntityProperty<?> p : entity.__getEntityProperties()) {
+            if (p.isTransient()) {
+                continue;
+            }
             if (!p.isInsertable()) {
                 continue;
             }

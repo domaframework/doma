@@ -20,8 +20,8 @@ import static org.seasar.doma.internal.util.Assertions.*;
 import java.sql.Statement;
 
 import org.seasar.doma.entity.Entity;
-import org.seasar.doma.entity.GeneratedIdProperty;
 import org.seasar.doma.entity.EntityProperty;
+import org.seasar.doma.entity.GeneratedIdProperty;
 import org.seasar.doma.internal.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.JdbcException;
@@ -76,6 +76,9 @@ public class AutoInsertQuery<I, E extends Entity<I>> extends
 
     protected void prepareTargetProperties() {
         for (EntityProperty<?> p : entity.__getEntityProperties()) {
+            if (p.isTransient()) {
+                continue;
+            }
             if (!p.isInsertable()) {
                 continue;
             }

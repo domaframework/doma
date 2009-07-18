@@ -34,7 +34,11 @@ public class PropertyMeta {
 
     protected List<String> typeParameterNames = new ArrayList<String>();
 
+    protected boolean listReturnType;
+
     protected String returnTypeName;
+
+    protected String returnElementTypeName;
 
     protected List<String> thrownTypeNames = new ArrayList<String>();
 
@@ -126,6 +130,22 @@ public class PropertyMeta {
 
     public void setIdGeneratorMeta(IdGeneratorMeta idGeneratorMeta) {
         this.idGeneratorMeta = idGeneratorMeta;
+    }
+
+    public boolean isListReturnType() {
+        return listReturnType;
+    }
+
+    public void setListReturnType(boolean listReturnType) {
+        this.listReturnType = listReturnType;
+    }
+
+    public String getReturnElementTypeName() {
+        return returnElementTypeName;
+    }
+
+    public void setReturnElementTypeName(String elementTypeName) {
+        this.returnElementTypeName = elementTypeName;
     }
 
 }

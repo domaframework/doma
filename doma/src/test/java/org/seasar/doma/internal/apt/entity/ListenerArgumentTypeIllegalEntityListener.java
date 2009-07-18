@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.entity;
 
-import org.seasar.doma.jdbc.EntityListener;
+import org.seasar.doma.entity.EntityListener;
 
 /**
  * @author taedium

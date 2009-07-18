@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.entity;
 
-import org.seasar.doma.jdbc.EntityListener;
 
 /**
  * @author taedium

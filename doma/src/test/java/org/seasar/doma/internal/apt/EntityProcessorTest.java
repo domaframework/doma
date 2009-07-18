@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.internal.apt;
 
-import org.seasar.doma.internal.apt.EntityProcessor;
 import org.seasar.doma.internal.apt.entity.ChildEntity;
 import org.seasar.doma.internal.apt.entity.ElementOfReturnListNotDomainEntity;
 import org.seasar.doma.internal.apt.entity.ElementOfReturnListUnspecifiedEntity;
@@ -32,7 +31,6 @@ import org.seasar.doma.internal.apt.entity.ReturnTypeNotDomainEntity;
 import org.seasar.doma.internal.apt.entity.VersionDuplicatedEntity;
 import org.seasar.doma.internal.apt.entity.VersionNotNumberEntity;
 import org.seasar.doma.message.MessageCode;
-
 
 /**
  * @author taedium
@@ -170,6 +168,7 @@ public class EntityProcessorTest extends AptTestCase {
         addProcessor(processor);
         addCompilationUnit(target);
         compile();
+        assertGeneratedSource(ReturnListTransientEntity.class);
         assertTrue(getCompiledResult());
     }
 

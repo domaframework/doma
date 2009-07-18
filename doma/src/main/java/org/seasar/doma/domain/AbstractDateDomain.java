@@ -42,6 +42,9 @@ public abstract class AbstractDateDomain<D extends AbstractDateDomain<D>>
 
     @Override
     public Date get() {
+        if (value == null) {
+            return null;
+        }
         return new Date(value.getTime());
     }
 

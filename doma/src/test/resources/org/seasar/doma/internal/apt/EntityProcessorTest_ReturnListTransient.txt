@@ -1,41 +1,34 @@
 package org.seasar.doma.internal.apt.entity;
 
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
-public class ChildEntity_ extends org.seasar.doma.entity.DomaAbstractEntity<org.seasar.doma.internal.apt.entity.ChildEntity> implements org.seasar.doma.internal.apt.entity.ChildEntity, java.io.Serializable {
+public class ReturnListTransientEntity_ extends org.seasar.doma.entity.DomaAbstractEntity<org.seasar.doma.internal.apt.entity.ReturnListTransientEntity> implements org.seasar.doma.internal.apt.entity.ReturnListTransientEntity, java.io.Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private static final org.seasar.doma.entity.NullEntityListener __listener = new org.seasar.doma.entity.NullEntityListener();
 
-    private transient org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain> aaa = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain>("aaa", null, new org.seasar.doma.domain.IntegerDomain(), true, true);
+    private transient org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain> id = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain>("id", null, new org.seasar.doma.domain.IntegerDomain(), true, true);
 
-    private transient org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain> bbb = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain>("bbb", null, new org.seasar.doma.domain.IntegerDomain(), true, true);
+    private transient org.seasar.doma.entity.TransientProperty<org.seasar.doma.domain.ArrayListDomain<org.seasar.doma.domain.IntegerDomain>> list = new org.seasar.doma.entity.TransientProperty<org.seasar.doma.domain.ArrayListDomain<org.seasar.doma.domain.IntegerDomain>>("list", new org.seasar.doma.domain.ArrayListDomain<org.seasar.doma.domain.IntegerDomain>(new java.util.ArrayList<org.seasar.doma.domain.IntegerDomain>()));
 
-    private transient org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.StringDomain> ccc = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.StringDomain>("ccc", null, new org.seasar.doma.domain.StringDomain(), true, true);
-
-    private final String __name = "ChildEntity";
+    private final String __name = "ReturnListTransientEntity";
 
     private transient java.util.List<org.seasar.doma.entity.EntityProperty<?>> __entityProperties;
 
     private transient java.util.Map<String, org.seasar.doma.entity.EntityProperty<?>> __entityPropertyMap;
 
-    public ChildEntity_() {
+    public ReturnListTransientEntity_() {
         super(null, null, null);
     }
 
     @Override
-    public org.seasar.doma.domain.IntegerDomain aaa() {
-        return aaa.getDomain();
+    public org.seasar.doma.domain.IntegerDomain id() {
+        return id.getDomain();
     }
 
     @Override
-    public org.seasar.doma.domain.IntegerDomain bbb() {
-        return bbb.getDomain();
-    }
-
-    @Override
-    public org.seasar.doma.domain.StringDomain ccc() {
-        return ccc.getDomain();
+    public java.util.ArrayList<org.seasar.doma.domain.IntegerDomain> list() {
+        return list.getDomain().get();
     }
 
     @Override
@@ -44,7 +37,7 @@ public class ChildEntity_ extends org.seasar.doma.entity.DomaAbstractEntity<org.
     }
 
     @Override
-    public org.seasar.doma.internal.apt.entity.ChildEntity __asInterface() {
+    public org.seasar.doma.internal.apt.entity.ReturnListTransientEntity __asInterface() {
         return this;
     }
 
@@ -67,9 +60,8 @@ public class ChildEntity_ extends org.seasar.doma.entity.DomaAbstractEntity<org.
     public java.util.List<org.seasar.doma.entity.EntityProperty<?>> __getEntityProperties() {
         if (__entityProperties == null) {
             java.util.List<org.seasar.doma.entity.EntityProperty<?>> __list = new java.util.ArrayList<org.seasar.doma.entity.EntityProperty<?>>();
-            __list.add(aaa);
-            __list.add(bbb);
-            __list.add(ccc);
+            __list.add(id);
+            __list.add(list);
             __entityProperties = java.util.Collections.unmodifiableList(__list);
         }
         return __entityProperties;
@@ -79,9 +71,8 @@ public class ChildEntity_ extends org.seasar.doma.entity.DomaAbstractEntity<org.
     public org.seasar.doma.entity.EntityProperty<?> __getEntityProperty(String __name) {
         if (__entityPropertyMap == null) {
             java.util.Map<String, org.seasar.doma.entity.EntityProperty<?>> __map = new java.util.HashMap<String, org.seasar.doma.entity.EntityProperty<?>>();
-            __map.put("aaa", aaa);
-            __map.put("bbb", bbb);
-            __map.put("ccc", ccc);
+            __map.put("id", id);
+            __map.put("list", list);
             __entityPropertyMap = java.util.Collections.unmodifiableMap(__map);
         }
         return __entityPropertyMap.get(__name);
@@ -99,22 +90,20 @@ public class ChildEntity_ extends org.seasar.doma.entity.DomaAbstractEntity<org.
 
     @Override
     public String toString() {
-        return "ChildEntity_ [aaa=" + aaa + ", bbb=" + bbb + ", ccc=" + ccc + "]";
+        return "ReturnListTransientEntity_ [id=" + id + ", list=" + list + "]";
     }
 
     @SuppressWarnings("unchecked")
     private void readObject(java.io.ObjectInputStream inputStream) throws java.io.IOException, java.lang.ClassNotFoundException {
         inputStream.defaultReadObject();
-        aaa = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain>("aaa", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject(), true, true);
-        bbb = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain>("bbb", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject(), true, true);
-        ccc = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.StringDomain>("ccc", null, (org.seasar.doma.domain.StringDomain)inputStream.readObject(), true, true);
+        id = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain>("id", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject(), true, true);
+        list = new org.seasar.doma.entity.TransientProperty<org.seasar.doma.domain.ArrayListDomain<org.seasar.doma.domain.IntegerDomain>>("list", (org.seasar.doma.domain.ArrayListDomain<org.seasar.doma.domain.IntegerDomain>)inputStream.readObject());
     }
 
     private void writeObject(java.io.ObjectOutputStream outputStream) throws java.io.IOException {
         outputStream.defaultWriteObject();
-        outputStream.writeObject(aaa.getDomain());
-        outputStream.writeObject(bbb.getDomain());
-        outputStream.writeObject(ccc.getDomain());
+        outputStream.writeObject(id.getDomain());
+        outputStream.writeObject(list.getDomain());
     }
 
 }

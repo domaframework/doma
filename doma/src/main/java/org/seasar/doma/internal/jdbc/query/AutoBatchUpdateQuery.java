@@ -80,6 +80,9 @@ public class AutoBatchUpdateQuery<I, E extends Entity<I>> extends
 
     protected void prepareTargetProperties() {
         for (EntityProperty<?> p : entity.__getEntityProperties()) {
+            if (p.isTransient()) {
+                continue;
+            }
             if (!p.isUpdatable()) {
                 continue;
             }

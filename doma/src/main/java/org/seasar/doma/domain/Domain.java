@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.domain;
 
-
 /**
  * @author taedium
  * 
@@ -38,7 +37,7 @@ public interface Domain<V, D extends Domain<V, D>> {
 
     void setChanged(boolean changed);
 
-    Class<V> getValueClass();
+    Class<?> getValueClass();
 
     <R, P, TH extends Throwable> R accept(DomainVisitor<R, P, TH> visitor, P p)
             throws TH;

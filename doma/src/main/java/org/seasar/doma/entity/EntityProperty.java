@@ -22,16 +22,18 @@ public interface EntityProperty<D extends Domain<?, ?>> {
 
     D getDomain();
 
-    public String getName();
+    String getName();
 
-    public String getColumnName(Config config);
+    String getColumnName(Config config);
 
-    public boolean isId();
+    boolean isId();
 
-    public boolean isVersion();
+    boolean isVersion();
 
-    public boolean isInsertable();
+    boolean isInsertable();
 
-    public boolean isUpdatable();
+    boolean isUpdatable();
+
+    boolean isTransient();
 
 }

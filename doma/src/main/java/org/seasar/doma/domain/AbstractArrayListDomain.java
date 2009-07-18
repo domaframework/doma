@@ -18,7 +18,7 @@ package org.seasar.doma.domain;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import org.seasar.doma.DomaIllegalArgumentException;
 
@@ -26,39 +26,19 @@ import org.seasar.doma.DomaIllegalArgumentException;
  * @author taedium
  * 
  */
-public abstract class AbstractTimestampDomain<D extends AbstractTimestampDomain<D>>
-        extends AbstractComparableDomain<Timestamp, D> implements
-        SerializableDomain<Timestamp, D> {
+public class AbstractArrayListDomain<E, D extends AbstractArrayListDomain<E, D>>
+        extends AbstractDomain<ArrayList<E>, AbstractArrayListDomain<E, D>>
+        implements
+        SerializableDomain<ArrayList<E>, AbstractArrayListDomain<E, D>> {
 
     private static final long serialVersionUID = 1L;
 
-    protected AbstractTimestampDomain() {
+    public AbstractArrayListDomain() {
         this(null);
     }
 
-    protected AbstractTimestampDomain(Timestamp value) {
-        super(Timestamp.class, value);
-    }
-
-    @Override
-    public Timestamp get() {
-        if (value == null) {
-            return null;
-        }
-        Timestamp timestamp = new Timestamp(value.getTime());
-        timestamp.setNanos(value.getNanos());
-        return timestamp;
-    }
-
-    @Override
-    protected void setInternal(Timestamp v) {
-        if (v == null) {
-            super.setInternal(v);
-        } else {
-            Timestamp timestamp = new Timestamp(v.getTime());
-            timestamp.setNanos(v.getNanos());
-            super.setInternal(timestamp);
-        }
+    public AbstractArrayListDomain(ArrayList<E> v) {
+        super(ArrayList.class, v);
     }
 
     @Override
@@ -67,11 +47,11 @@ public abstract class AbstractTimestampDomain<D extends AbstractTimestampDomain<
         if (visitor == null) {
             throw new DomaIllegalArgumentException("visitor", visitor);
         }
-        if (AbstractTimestampDomainVisitor.class.isInstance(visitor)) {
+        if (AbstractArrayListDomainVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            AbstractTimestampDomainVisitor<R, P, TH> v = AbstractTimestampDomainVisitor.class
+            AbstractArrayListDomainVisitor<R, P, TH> v = AbstractArrayListDomainVisitor.class
                     .cast(visitor);
-            return v.visitAbstractTimestampDomain(this, p);
+            return v.visitAbstractArrayListDomain(this, p);
         }
         return visitor.visitUnknownDomain(this, p);
     }
@@ -87,7 +67,7 @@ public abstract class AbstractTimestampDomain<D extends AbstractTimestampDomain<
         if (getClass() != o.getClass()) {
             return false;
         }
-        AbstractTimestampDomain<?> other = AbstractTimestampDomain.class
+        AbstractArrayListDomain<?, ?> other = AbstractArrayListDomain.class
                 .cast(o);
         if (value == null) {
             return other.value == null;
@@ -105,10 +85,11 @@ public abstract class AbstractTimestampDomain<D extends AbstractTimestampDomain<
         return value != null ? value.toString() : null;
     }
 
+    @SuppressWarnings("unchecked")
     private void readObject(ObjectInputStream inputStream) throws IOException,
             ClassNotFoundException {
         inputStream.defaultReadObject();
-        value = Timestamp.class.cast(inputStream.readObject());
+        value = (ArrayList<E>) inputStream.readObject();
         changed = inputStream.readBoolean();
     }
 
@@ -118,5 +99,4 @@ public abstract class AbstractTimestampDomain<D extends AbstractTimestampDomain<
         outputStream.writeObject(value);
         outputStream.writeBoolean(changed);
     }
-
 }

@@ -13,26 +13,15 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.entity;
-
-import org.seasar.doma.entity.EntityListener;
+package org.seasar.doma.domain;
 
 /**
  * @author taedium
  * 
  */
-public class EmpListener implements EntityListener<Emp> {
+public interface AbstractArrayListDomainVisitor<R, P, TH extends Throwable> extends
+        DomainVisitor<R, P, TH> {
 
-    @Override
-    public void preDelete(Emp entity) {
-    }
-
-    @Override
-    public void preInsert(Emp entity) {
-    }
-
-    @Override
-    public void preUpdate(Emp entity) {
-    }
-
+    R visitAbstractArrayListDomain(AbstractArrayListDomain<?, ?> domain, P p)
+            throws TH;
 }

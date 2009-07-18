@@ -15,10 +15,9 @@
  */
 package org.seasar.doma.entity;
 
-import static org.seasar.doma.internal.util.Assertions.*;
-
 import java.sql.Statement;
 
+import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.GenerationType;
 import org.seasar.doma.domain.NumberDomain;
 import org.seasar.doma.internal.jdbc.id.IdGenerationConfig;
@@ -26,7 +25,6 @@ import org.seasar.doma.internal.jdbc.id.IdGenerator;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.message.MessageCode;
-
 
 /**
  * @author taedium
@@ -40,7 +38,9 @@ public class GeneratedIdProperty<D extends NumberDomain<?, ?>> extends
     public GeneratedIdProperty(String name, String columnName, D domain,
             boolean insertable, boolean updatable, IdGenerator idGenerator) {
         super(name, columnName, domain, insertable, updatable);
-        assertNotNull(idGenerator);
+        if (idGenerator == null) {
+            throw new DomaIllegalArgumentException("idGenerator", idGenerator);
+        }
         this.idGenerator = idGenerator;
     }
 

@@ -42,6 +42,9 @@ public abstract class AbstractTimeDomain<D extends AbstractTimeDomain<D>>
 
     @Override
     public Time get() {
+        if (value == null) {
+            return null;
+        }
         return new Time(value.getTime());
     }
 

@@ -226,10 +226,12 @@ public class PropertyMetaFactory {
             if (!propertyMeta.isTrnsient()) {
                 throw new AptException(MessageCode.DOMA4031, env, method);
             }
-            String domainTypeName = Models.getTypeName(elementType, entityMeta
+            propertyMeta.setListReturnType(true);
+            String elementTypeName = Models.getTypeName(elementType, entityMeta
                     .getTypeParameterMap(), env);
+            propertyMeta.setReturnElementTypeName(elementTypeName);
             propertyMeta.setReturnTypeName(ArrayList.class.getName() + "<"
-                    + domainTypeName + ">");
+                    + elementTypeName + ">");
             return;
         } else if (!isDomain(returnType) || isAbstract(returnType)) {
             throw new AptException(MessageCode.DOMA4022, env, method);

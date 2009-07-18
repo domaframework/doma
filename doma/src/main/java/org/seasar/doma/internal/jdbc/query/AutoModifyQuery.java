@@ -30,7 +30,6 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.MessageCode;
 
-
 /**
  * @author taedium
  * 
@@ -76,12 +75,18 @@ public abstract class AutoModifyQuery<I, E extends Entity<I>> implements
     protected void prepareTableAndColumnNames() {
         tableName = entity.__getQualifiedTableName(config);
         for (EntityProperty<?> p : entity.__getEntityProperties()) {
+            if (p.isTransient()) {
+                continue;
+            }
             columnNameMap.put(p.getName(), p.getColumnName(config));
         }
     }
 
     protected void prepareIdAndVersionProperties() {
         for (EntityProperty<?> p : entity.__getEntityProperties()) {
+            if (p.isTransient()) {
+                continue;
+            }
             if (p.isId()) {
                 idProperties.add(p);
             }

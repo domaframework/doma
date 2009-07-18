@@ -32,12 +32,12 @@ import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.Entity;
 import org.seasar.doma.MappedSuperclass;
 import org.seasar.doma.Table;
+import org.seasar.doma.entity.EntityListener;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Models;
 import org.seasar.doma.internal.apt.Notifier;
 import org.seasar.doma.internal.apt.Options;
-import org.seasar.doma.jdbc.EntityListener;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.MessageCode;
 

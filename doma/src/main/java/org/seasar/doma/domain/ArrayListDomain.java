@@ -13,26 +13,24 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.entity;
+package org.seasar.doma.domain;
 
-import org.seasar.doma.entity.EntityListener;
+import java.util.ArrayList;
 
 /**
  * @author taedium
  * 
  */
-public class EmpListener implements EntityListener<Emp> {
+public class ArrayListDomain<E> extends
+        AbstractArrayListDomain<E, ArrayListDomain<E>> {
 
-    @Override
-    public void preDelete(Emp entity) {
+    private static final long serialVersionUID = 1L;
+
+    public ArrayListDomain() {
     }
 
-    @Override
-    public void preInsert(Emp entity) {
-    }
-
-    @Override
-    public void preUpdate(Emp entity) {
+    public ArrayListDomain(ArrayList<E> v) {
+        super(v);
     }
 
 }
