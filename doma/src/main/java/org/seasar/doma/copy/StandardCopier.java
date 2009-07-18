@@ -30,8 +30,8 @@ import org.seasar.doma.bean.FieldAccessBean;
 import org.seasar.doma.converter.Converter;
 import org.seasar.doma.converter.Converters;
 import org.seasar.doma.domain.Domain;
-import org.seasar.doma.internal.jdbc.Entity;
-import org.seasar.doma.internal.jdbc.Property;
+import org.seasar.doma.entity.Entity;
+import org.seasar.doma.entity.EntityProperty;
 import org.seasar.doma.internal.util.Classes;
 
 /**
@@ -125,7 +125,7 @@ public class StandardCopier implements Copier {
 
     protected void copyFromEntityToEntity(Entity<?> src, Entity<?> dest,
             CopyOptions copyOptions) {
-        for (Property<?> srcProperty : src.__getProperties()) {
+        for (EntityProperty<?> srcProperty : src.__getEntityProperties()) {
             if (!copyOptions.isTargetProperty(srcProperty.getName())) {
                 continue;
             }
@@ -136,7 +136,7 @@ public class StandardCopier implements Copier {
 
     protected void copyFromEntityToMap(Entity<?> src, Map<String, Object> dest,
             CopyOptions copyOptions) {
-        for (Property<?> srcProperty : src.__getProperties()) {
+        for (EntityProperty<?> srcProperty : src.__getEntityProperties()) {
             if (!copyOptions.isTargetProperty(srcProperty.getName())) {
                 continue;
             }
@@ -149,7 +149,7 @@ public class StandardCopier implements Copier {
 
     protected void copyFromEntityToBean(Entity<?> src, Bean dest,
             CopyOptions copyOptions) {
-        for (Property<?> srcProperty : src.__getProperties()) {
+        for (EntityProperty<?> srcProperty : src.__getEntityProperties()) {
             if (!copyOptions.isTargetProperty(srcProperty.getName())) {
                 continue;
             }
@@ -228,7 +228,7 @@ public class StandardCopier implements Copier {
 
     protected void copyToEntityProperty(String srcPropertyName,
             Object srcValue, Entity<?> dest, CopyOptions copyOptions) {
-        Property<?> destProperty = dest.__getPropertyByName(srcPropertyName);
+        EntityProperty<?> destProperty = dest.__getEntityProperty(srcPropertyName);
         if (destProperty == null) {
             return;
         }

@@ -27,13 +27,13 @@ import javax.annotation.Generated;
 import org.seasar.doma.domain.BigDecimalDomain;
 import org.seasar.doma.domain.IntegerDomain;
 import org.seasar.doma.domain.StringDomain;
-import org.seasar.doma.internal.jdbc.AssignedIdProperty;
-import org.seasar.doma.internal.jdbc.BasicProperty;
-import org.seasar.doma.internal.jdbc.DomaAbstractEntity;
-import org.seasar.doma.internal.jdbc.GeneratedIdProperty;
-import org.seasar.doma.internal.jdbc.NullEntityListener;
-import org.seasar.doma.internal.jdbc.Property;
-import org.seasar.doma.internal.jdbc.VersionProperty;
+import org.seasar.doma.entity.AssignedIdProperty;
+import org.seasar.doma.entity.BasicProperty;
+import org.seasar.doma.entity.DomaAbstractEntity;
+import org.seasar.doma.entity.GeneratedIdProperty;
+import org.seasar.doma.entity.NullEntityListener;
+import org.seasar.doma.entity.EntityProperty;
+import org.seasar.doma.entity.VersionProperty;
 
 @Generated("")
 public class Emp_ extends DomaAbstractEntity<Emp> implements Emp, Serializable {
@@ -56,9 +56,9 @@ public class Emp_ extends DomaAbstractEntity<Emp> implements Emp, Serializable {
 
     private final String __name = "emp";
 
-    private transient List<Property<?>> __properties;
+    private transient List<EntityProperty<?>> __properties;
 
-    private transient Map<String, Property<?>> __propertyMap;
+    private transient Map<String, EntityProperty<?>> __propertyMap;
 
     public Emp_() {
         super(null, null, null);
@@ -95,9 +95,9 @@ public class Emp_ extends DomaAbstractEntity<Emp> implements Emp, Serializable {
     }
 
     @Override
-    public List<Property<?>> __getProperties() {
+    public List<EntityProperty<?>> __getEntityProperties() {
         if (__properties == null) {
-            List<Property<?>> list = new ArrayList<Property<?>>();
+            List<EntityProperty<?>> list = new ArrayList<EntityProperty<?>>();
             list.add(id);
             list.add(name);
             list.add(salary);
@@ -108,9 +108,9 @@ public class Emp_ extends DomaAbstractEntity<Emp> implements Emp, Serializable {
     }
 
     @Override
-    public Property<?> __getPropertyByName(String propertyName) {
+    public EntityProperty<?> __getEntityProperty(String propertyName) {
         if (__propertyMap == null) {
-            Map<String, Property<?>> map = new HashMap<String, Property<?>>();
+            Map<String, EntityProperty<?>> map = new HashMap<String, EntityProperty<?>>();
             map.put("id", id);
             map.put("name", name);
             map.put("salary", salary);

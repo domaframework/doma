@@ -20,8 +20,8 @@ import static org.seasar.doma.internal.util.Assertions.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.seasar.doma.entity.Entity;
 import org.seasar.doma.internal.WrapException;
-import org.seasar.doma.internal.jdbc.Entity;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.internal.util.Classes;
 import org.seasar.doma.jdbc.JdbcException;

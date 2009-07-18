@@ -17,7 +17,7 @@ package org.seasar.doma.internal.jdbc.query;
 
 import java.sql.Statement;
 
-import org.seasar.doma.internal.jdbc.Entity;
+import org.seasar.doma.entity.Entity;
 
 
 /**

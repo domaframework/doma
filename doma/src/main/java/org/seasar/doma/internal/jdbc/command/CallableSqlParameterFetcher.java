@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.domain.DomainVisitor;
-import org.seasar.doma.internal.jdbc.Entity;
+import org.seasar.doma.entity.Entity;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlParameter;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlParameterVisitor;

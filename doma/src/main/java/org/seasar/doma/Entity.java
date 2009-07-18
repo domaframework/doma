@@ -20,7 +20,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.seasar.doma.internal.jdbc.NullEntityListener;
+import org.seasar.doma.entity.NullEntityListener;
 import org.seasar.doma.jdbc.EntityListener;
 
 /**

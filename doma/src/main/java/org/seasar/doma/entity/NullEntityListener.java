@@ -13,26 +13,26 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc;
+package org.seasar.doma.entity;
 
-import java.util.Collections;
-
-import org.seasar.doma.internal.jdbc.sql.PreparedSql;
-import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
-import org.seasar.doma.jdbc.StandardJdbcLogger;
-
-import junit.framework.TestCase;
+import org.seasar.doma.jdbc.EntityListener;
 
 /**
  * @author taedium
  * 
  */
-public class StandardJdbcLoggerTest extends TestCase {
+public class NullEntityListener implements EntityListener<Object> {
 
-    public void test() throws Exception {
-        PreparedSql sql = new PreparedSql("aaa", "bbb", Collections
-                .<PreparedSqlParameter> emptyList());
-        StandardJdbcLogger logger = new StandardJdbcLogger();
-        logger.logSql("ccc", "ddd", sql);
+    @Override
+    public void preInsert(Object entity) {
     }
+
+    @Override
+    public void preUpdate(Object entity) {
+    }
+
+    @Override
+    public void preDelete(Object entity) {
+    }
+
 }

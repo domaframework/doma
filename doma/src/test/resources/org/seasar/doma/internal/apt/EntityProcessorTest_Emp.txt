@@ -1,7 +1,7 @@
 package org.seasar.doma.internal.apt.entity;
 
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
-public class Emp_ extends org.seasar.doma.internal.jdbc.DomaAbstractEntity<org.seasar.doma.internal.apt.entity.Emp> implements org.seasar.doma.internal.apt.entity.Emp, java.io.Serializable {
+public class Emp_ extends org.seasar.doma.entity.DomaAbstractEntity<org.seasar.doma.internal.apt.entity.Emp> implements org.seasar.doma.internal.apt.entity.Emp, java.io.Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -9,21 +9,21 @@ public class Emp_ extends org.seasar.doma.internal.jdbc.DomaAbstractEntity<org.s
 
     private static final org.seasar.doma.internal.apt.entity.EmpListener __listener = new org.seasar.doma.internal.apt.entity.EmpListener();
 
-    private transient org.seasar.doma.internal.jdbc.GeneratedIdProperty<org.seasar.doma.domain.IntegerDomain> id = new org.seasar.doma.internal.jdbc.GeneratedIdProperty<org.seasar.doma.domain.IntegerDomain>("id", null, new org.seasar.doma.domain.IntegerDomain(), true, true, __idGenerator);
+    private transient org.seasar.doma.entity.GeneratedIdProperty<org.seasar.doma.domain.IntegerDomain> id = new org.seasar.doma.entity.GeneratedIdProperty<org.seasar.doma.domain.IntegerDomain>("id", null, new org.seasar.doma.domain.IntegerDomain(), true, true, __idGenerator);
 
-    private transient org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.StringDomain> name = new org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.StringDomain>("name", null, new org.seasar.doma.domain.StringDomain(), true, true);
+    private transient org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.StringDomain> name = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.StringDomain>("name", null, new org.seasar.doma.domain.StringDomain(), true, true);
 
-    private transient org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.BigDecimalDomain> salary = new org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.BigDecimalDomain>("salary", "SALARY", new org.seasar.doma.domain.BigDecimalDomain(), false, false);
+    private transient org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.BigDecimalDomain> salary = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.BigDecimalDomain>("salary", "SALARY", new org.seasar.doma.domain.BigDecimalDomain(), false, false);
 
-    private transient org.seasar.doma.internal.jdbc.VersionProperty<org.seasar.doma.domain.IntegerDomain> version = new org.seasar.doma.internal.jdbc.VersionProperty<org.seasar.doma.domain.IntegerDomain>("version", null, new org.seasar.doma.domain.IntegerDomain(), true, true);
+    private transient org.seasar.doma.entity.VersionProperty<org.seasar.doma.domain.IntegerDomain> version = new org.seasar.doma.entity.VersionProperty<org.seasar.doma.domain.IntegerDomain>("version", null, new org.seasar.doma.domain.IntegerDomain(), true, true);
 
     private final org.seasar.doma.domain.StringDomain temp = new org.seasar.doma.domain.StringDomain();
 
     private final String __name = "Emp";
 
-    private transient java.util.List<org.seasar.doma.internal.jdbc.Property<?>> __properties;
+    private transient java.util.List<org.seasar.doma.entity.EntityProperty<?>> __entityProperties;
 
-    private transient java.util.Map<String, org.seasar.doma.internal.jdbc.Property<?>> __propertyMap;
+    private transient java.util.Map<String, org.seasar.doma.entity.EntityProperty<?>> __entityPropertyMap;
 
     public Emp_() {
         super(null, "AAA", null);
@@ -80,38 +80,38 @@ public class Emp_ extends org.seasar.doma.internal.jdbc.DomaAbstractEntity<org.s
     }
 
     @Override
-    public java.util.List<org.seasar.doma.internal.jdbc.Property<?>> __getProperties() {
-        if (__properties == null) {
-            java.util.List<org.seasar.doma.internal.jdbc.Property<?>> list = new java.util.ArrayList<org.seasar.doma.internal.jdbc.Property<?>>();
-            list.add(id);
-            list.add(name);
-            list.add(salary);
-            list.add(version);
-            __properties = java.util.Collections.unmodifiableList(list);
+    public java.util.List<org.seasar.doma.entity.EntityProperty<?>> __getEntityProperties() {
+        if (__entityProperties == null) {
+            java.util.List<org.seasar.doma.entity.EntityProperty<?>> __list = new java.util.ArrayList<org.seasar.doma.entity.EntityProperty<?>>();
+            __list.add(id);
+            __list.add(name);
+            __list.add(salary);
+            __list.add(version);
+            __entityProperties = java.util.Collections.unmodifiableList(__list);
         }
-        return __properties;
+        return __entityProperties;
     }
 
     @Override
-    public org.seasar.doma.internal.jdbc.Property<?> __getPropertyByName(String propertyName) {
-        if (__propertyMap == null) {
-            java.util.Map<String, org.seasar.doma.internal.jdbc.Property<?>> map = new java.util.HashMap<String, org.seasar.doma.internal.jdbc.Property<?>>();
-            map.put("id", id);
-            map.put("name", name);
-            map.put("salary", salary);
-            map.put("version", version);
-            __propertyMap = java.util.Collections.unmodifiableMap(map);
+    public org.seasar.doma.entity.EntityProperty<?> __getEntityProperty(String __name) {
+        if (__entityPropertyMap == null) {
+            java.util.Map<String, org.seasar.doma.entity.EntityProperty<?>> __map = new java.util.HashMap<String, org.seasar.doma.entity.EntityProperty<?>>();
+            __map.put("id", id);
+            __map.put("name", name);
+            __map.put("salary", salary);
+            __map.put("version", version);
+            __entityPropertyMap = java.util.Collections.unmodifiableMap(__map);
         }
-        return __propertyMap.get(propertyName);
+        return __entityPropertyMap.get(__name);
     }
 
     @Override
-    public org.seasar.doma.internal.jdbc.GeneratedIdProperty<?> __getGeneratedIdProperty() {
+    public org.seasar.doma.entity.GeneratedIdProperty<?> __getGeneratedIdProperty() {
         return id;
     }
 
     @Override
-    public org.seasar.doma.internal.jdbc.VersionProperty<?> __getVersionProperty() {
+    public org.seasar.doma.entity.VersionProperty<?> __getVersionProperty() {
         return version;
     }
 
@@ -122,10 +122,10 @@ public class Emp_ extends org.seasar.doma.internal.jdbc.DomaAbstractEntity<org.s
 
     private void readObject(java.io.ObjectInputStream inputStream) throws java.io.IOException, java.lang.ClassNotFoundException {
         inputStream.defaultReadObject();
-        id = new org.seasar.doma.internal.jdbc.GeneratedIdProperty<org.seasar.doma.domain.IntegerDomain>("id", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject(), true, true, __idGenerator);
-        name = new org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.StringDomain>("name", null, (org.seasar.doma.domain.StringDomain)inputStream.readObject(), true, true);
-        salary = new org.seasar.doma.internal.jdbc.BasicProperty<org.seasar.doma.domain.BigDecimalDomain>("salary", "SALARY", (org.seasar.doma.domain.BigDecimalDomain)inputStream.readObject(), false, false);
-        version = new org.seasar.doma.internal.jdbc.VersionProperty<org.seasar.doma.domain.IntegerDomain>("version", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject(), true, true);
+        id = new org.seasar.doma.entity.GeneratedIdProperty<org.seasar.doma.domain.IntegerDomain>("id", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject(), true, true, __idGenerator);
+        name = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.StringDomain>("name", null, (org.seasar.doma.domain.StringDomain)inputStream.readObject(), true, true);
+        salary = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.BigDecimalDomain>("salary", "SALARY", (org.seasar.doma.domain.BigDecimalDomain)inputStream.readObject(), false, false);
+        version = new org.seasar.doma.entity.VersionProperty<org.seasar.doma.domain.IntegerDomain>("version", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject(), true, true);
     }
 
     private void writeObject(java.io.ObjectOutputStream outputStream) throws java.io.IOException {

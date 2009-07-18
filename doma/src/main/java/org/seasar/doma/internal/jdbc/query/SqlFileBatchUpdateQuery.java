@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.query;
 
-import org.seasar.doma.internal.jdbc.Entity;
+import org.seasar.doma.entity.Entity;
 
 /**
  * @author taedium

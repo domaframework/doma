@@ -22,9 +22,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.seasar.doma.internal.jdbc.Entity;
-import org.seasar.doma.internal.jdbc.GeneratedIdProperty;
-import org.seasar.doma.internal.jdbc.Property;
+import org.seasar.doma.entity.Entity;
+import org.seasar.doma.entity.GeneratedIdProperty;
+import org.seasar.doma.entity.EntityProperty;
 import org.seasar.doma.internal.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
@@ -104,7 +104,7 @@ public class AutoBatchInsertQuery<I, E extends Entity<I>> extends
     }
 
     protected void prepareTargetProperties() {
-        for (Property<?> p : entity.__getProperties()) {
+        for (EntityProperty<?> p : entity.__getEntityProperties()) {
             if (!p.isInsertable()) {
                 continue;
             }
@@ -134,13 +134,13 @@ public class AutoBatchInsertQuery<I, E extends Entity<I>> extends
         builder.appendSql("insert into ");
         builder.appendSql(tableName);
         builder.appendSql(" (");
-        for (Property<?> p : targetProperties) {
+        for (EntityProperty<?> p : targetProperties) {
             builder.appendSql(columnNameMap.get(p.getName()));
             builder.appendSql(", ");
         }
         builder.cutBackSql(2);
         builder.appendSql(") values (");
-        for (Property<?> p : targetProperties) {
+        for (EntityProperty<?> p : targetProperties) {
             builder.appendDomain(p.getDomain());
             builder.appendSql(", ");
         }

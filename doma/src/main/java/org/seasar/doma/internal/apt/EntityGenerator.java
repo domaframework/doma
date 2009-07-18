@@ -25,6 +25,12 @@ import java.io.Serializable;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 
+import org.seasar.doma.entity.AssignedIdProperty;
+import org.seasar.doma.entity.BasicProperty;
+import org.seasar.doma.entity.DomaAbstractEntity;
+import org.seasar.doma.entity.EntityProperty;
+import org.seasar.doma.entity.GeneratedIdProperty;
+import org.seasar.doma.entity.VersionProperty;
 import org.seasar.doma.internal.apt.meta.ColumnMeta;
 import org.seasar.doma.internal.apt.meta.EntityMeta;
 import org.seasar.doma.internal.apt.meta.IdGeneratorMeta;
@@ -34,12 +40,6 @@ import org.seasar.doma.internal.apt.meta.PropertyMeta;
 import org.seasar.doma.internal.apt.meta.SequenceIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.TableIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.TableMeta;
-import org.seasar.doma.internal.jdbc.AssignedIdProperty;
-import org.seasar.doma.internal.jdbc.BasicProperty;
-import org.seasar.doma.internal.jdbc.DomaAbstractEntity;
-import org.seasar.doma.internal.jdbc.GeneratedIdProperty;
-import org.seasar.doma.internal.jdbc.Property;
-import org.seasar.doma.internal.jdbc.VersionProperty;
 import org.seasar.doma.internal.jdbc.id.IdGenerator;
 
 /**
@@ -148,13 +148,13 @@ public class EntityGenerator extends AbstractGenerator {
     }
 
     protected void printPropertiesField() {
-        print("private transient java.util.List<%1$s<?>> __properties;%n", Property.class
+        print("private transient java.util.List<%1$s<?>> __entityProperties;%n", EntityProperty.class
                 .getName());
         put("%n");
     }
 
     protected void printPropertyMapField() {
-        print("private transient java.util.Map<String, %1$s<?>> __propertyMap;%n", Property.class
+        print("private transient java.util.Map<String, %1$s<?>> __entityPropertyMap;%n", EntityProperty.class
                 .getName());
         put("%n");
     }
@@ -192,8 +192,8 @@ public class EntityGenerator extends AbstractGenerator {
         printPreInsertMethod();
         printPreUpdateMethod();
         printPreDeleteMethod();
-        printGetPropertiesMethod();
-        printGetPropertyByNameMethod();
+        printGetEntityPropertiesMethod();
+        printGetEntityPropertyMethod();
         printGetGeneratedIdProperty();
         printGetVersionProperty();
         printToStringMethod();
@@ -261,49 +261,49 @@ public class EntityGenerator extends AbstractGenerator {
         put("%n");
     }
 
-    protected void printGetPropertiesMethod() {
+    protected void printGetEntityPropertiesMethod() {
         print("@Override%n");
-        print("public java.util.List<%1$s<?>> __getProperties() {%n", Property.class
+        print("public java.util.List<%1$s<?>> __getEntityProperties() {%n", EntityProperty.class
                 .getName());
         indent();
-        print("if (__properties == null) {%n");
+        print("if (__entityProperties == null) {%n");
         indent();
-        print("java.util.List<%1$s<?>> list = new java.util.ArrayList<%1$s<?>>();%n", Property.class
+        print("java.util.List<%1$s<?>> __list = new java.util.ArrayList<%1$s<?>>();%n", EntityProperty.class
                 .getName());
         for (PropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             if (pm.isTrnsient()) {
                 continue;
             }
-            print("list.add(%1$s);%n", pm.getName());
+            print("__list.add(%1$s);%n", pm.getName());
         }
-        print("__properties = java.util.Collections.unmodifiableList(list);%n");
+        print("__entityProperties = java.util.Collections.unmodifiableList(__list);%n");
         unindent();
         print("}%n");
-        print("return __properties;%n");
+        print("return __entityProperties;%n");
         unindent();
         print("}%n");
         put("%n");
     }
 
-    protected void printGetPropertyByNameMethod() {
+    protected void printGetEntityPropertyMethod() {
         print("@Override%n");
-        print("public %1$s<?> __getPropertyByName(String propertyName) {%n", Property.class
+        print("public %1$s<?> __getEntityProperty(String __name) {%n", EntityProperty.class
                 .getName());
         indent();
-        print("if (__propertyMap == null) {%n");
+        print("if (__entityPropertyMap == null) {%n");
         indent();
-        print("java.util.Map<String, %1$s<?>> map = new java.util.HashMap<String, %1$s<?>>();%n", Property.class
+        print("java.util.Map<String, %1$s<?>> __map = new java.util.HashMap<String, %1$s<?>>();%n", EntityProperty.class
                 .getName());
         for (PropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             if (pm.isTrnsient()) {
                 continue;
             }
-            print("map.put(\"%1$s\", %1$s);%n", pm.getName());
+            print("__map.put(\"%1$s\", %1$s);%n", pm.getName());
         }
-        print("__propertyMap = java.util.Collections.unmodifiableMap(map);%n");
+        print("__entityPropertyMap = java.util.Collections.unmodifiableMap(__map);%n");
         unindent();
         print("}%n");
-        print("return __propertyMap.get(propertyName);%n");
+        print("return __entityPropertyMap.get(__name);%n");
         unindent();
         print("}%n");
         put("%n");

@@ -13,33 +13,25 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc;
+package org.seasar.doma.entity;
 
-import java.util.List;
-
+import org.seasar.doma.domain.Domain;
 import org.seasar.doma.jdbc.Config;
 
-public interface Entity<I> {
+public interface EntityProperty<D extends Domain<?, ?>> {
 
-    String MEMBER_PREFIX = "__";
+    D getDomain();
 
-    String __getName();
+    public String getName();
 
-    String __getQualifiedTableName(Config config);
+    public String getColumnName(Config config);
 
-    GeneratedIdProperty<?> __getGeneratedIdProperty();
+    public boolean isId();
 
-    VersionProperty<?> __getVersionProperty();
+    public boolean isVersion();
 
-    Property<?> __getPropertyByName(String name);
+    public boolean isInsertable();
 
-    List<Property<?>> __getProperties();
+    public boolean isUpdatable();
 
-    I __asInterface();
-
-    void __preInsert();
-
-    void __preUpdate();
-
-    void __preDelete();
 }

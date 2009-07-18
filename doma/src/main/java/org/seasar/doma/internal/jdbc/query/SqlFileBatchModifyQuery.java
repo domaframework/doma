@@ -22,8 +22,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.seasar.doma.entity.Entity;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
-import org.seasar.doma.internal.jdbc.Entity;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.Config;

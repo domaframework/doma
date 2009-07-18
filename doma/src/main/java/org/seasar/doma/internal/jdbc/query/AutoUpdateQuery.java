@@ -17,8 +17,8 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.Assertions.*;
 
-import org.seasar.doma.internal.jdbc.Entity;
-import org.seasar.doma.internal.jdbc.Property;
+import org.seasar.doma.entity.Entity;
+import org.seasar.doma.entity.EntityProperty;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 
 /**
@@ -60,7 +60,7 @@ public class AutoUpdateQuery<I, E extends Entity<I>> extends
     }
 
     protected void prepareTargetProperties() {
-        for (Property<?> p : entity.__getProperties()) {
+        for (EntityProperty<?> p : entity.__getEntityProperties()) {
             if (!p.isUpdatable()) {
                 continue;
             }
@@ -86,7 +86,7 @@ public class AutoUpdateQuery<I, E extends Entity<I>> extends
         builder.appendSql("update ");
         builder.appendSql(tableName);
         builder.appendSql(" set ");
-        for (Property<?> p : targetProperties) {
+        for (EntityProperty<?> p : targetProperties) {
             builder.appendSql(columnNameMap.get(p.getName()));
             builder.appendSql(" = ");
             builder.appendDomain(p.getDomain());
@@ -98,7 +98,7 @@ public class AutoUpdateQuery<I, E extends Entity<I>> extends
         builder.cutBackSql(2);
         if (idProperties.size() > 0) {
             builder.appendSql(" where ");
-            for (Property<?> p : idProperties) {
+            for (EntityProperty<?> p : idProperties) {
                 builder.appendSql(columnNameMap.get(p.getName()));
                 builder.appendSql(" = ");
                 builder.appendDomain(p.getDomain());

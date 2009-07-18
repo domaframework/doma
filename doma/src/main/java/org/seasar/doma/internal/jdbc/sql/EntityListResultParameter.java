@@ -20,8 +20,8 @@ import static org.seasar.doma.internal.util.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.seasar.doma.entity.Entity;
 import org.seasar.doma.internal.WrapException;
-import org.seasar.doma.internal.jdbc.Entity;
 import org.seasar.doma.internal.util.Classes;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.MessageCode;

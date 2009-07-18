@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc;
+package org.seasar.doma.entity;
 
 import java.io.Serializable;
 
@@ -35,14 +35,14 @@ public abstract class DomaAbstractEntity<I> implements Entity<I>, Serializable {
 
     private final String __tableName;
 
-    public DomaAbstractEntity(String catalogName, String schemaName,
-            String tableName) {
-        __catalogName = catalogName;
-        __schemaName = schemaName;
-        __tableName = tableName;
+    public DomaAbstractEntity(String __catalogName, String __schemaName,
+            String __tableName) {
+        this.__catalogName = __catalogName;
+        this.__schemaName = __schemaName;
+        this.__tableName = __tableName;
     }
 
-    public String __getQualifiedTableName(Config config) {
+    public String __getQualifiedTableName(Config __config) {
         StringBuilder buf = new StringBuilder();
         if (__catalogName != null) {
             buf.append(__catalogName).append(".");
@@ -53,8 +53,8 @@ public abstract class DomaAbstractEntity<I> implements Entity<I>, Serializable {
         if (__tableName != null) {
             buf.append(__tableName);
         } else {
-            Dialect dialect = config.dialect();
-            NameConvention nameConvention = config.nameConvention();
+            Dialect dialect = __config.dialect();
+            NameConvention nameConvention = __config.nameConvention();
             String tableName = nameConvention
                     .fromEntityToTable(__getName(), dialect);
             buf.append(tableName);

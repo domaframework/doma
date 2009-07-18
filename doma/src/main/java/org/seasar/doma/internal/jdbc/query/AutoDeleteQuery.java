@@ -17,8 +17,8 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.Assertions.*;
 
-import org.seasar.doma.internal.jdbc.Entity;
-import org.seasar.doma.internal.jdbc.Property;
+import org.seasar.doma.entity.Entity;
+import org.seasar.doma.entity.EntityProperty;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 
 /**
@@ -63,7 +63,7 @@ public class AutoDeleteQuery<I, E extends Entity<I>> extends
         builder.appendSql(tableName);
         if (idProperties.size() > 0) {
             builder.appendSql(" where ");
-            for (Property<?> p : idProperties) {
+            for (EntityProperty<?> p : idProperties) {
                 builder.appendSql(columnNameMap.get(p.getName()));
                 builder.appendSql(" = ");
                 builder.appendDomain(p.getDomain());

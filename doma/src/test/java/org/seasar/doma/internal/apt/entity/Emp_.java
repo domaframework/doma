@@ -21,10 +21,10 @@ import java.util.List;
 import org.seasar.doma.domain.BigDecimalDomain;
 import org.seasar.doma.domain.IntegerDomain;
 import org.seasar.doma.domain.StringDomain;
-import org.seasar.doma.internal.jdbc.DomaAbstractEntity;
-import org.seasar.doma.internal.jdbc.GeneratedIdProperty;
-import org.seasar.doma.internal.jdbc.Property;
-import org.seasar.doma.internal.jdbc.VersionProperty;
+import org.seasar.doma.entity.DomaAbstractEntity;
+import org.seasar.doma.entity.GeneratedIdProperty;
+import org.seasar.doma.entity.EntityProperty;
+import org.seasar.doma.entity.VersionProperty;
 
 /**
  * @author taedium
@@ -74,12 +74,12 @@ public class Emp_ extends DomaAbstractEntity<Emp> implements Emp, Serializable {
     }
 
     @Override
-    public Property<?> __getPropertyByName(String propertyName) {
+    public EntityProperty<?> __getEntityProperty(String propertyName) {
         return null;
     }
 
     @Override
-    public List<Property<?>> __getProperties() {
+    public List<EntityProperty<?>> __getEntityProperties() {
         return null;
     }
 

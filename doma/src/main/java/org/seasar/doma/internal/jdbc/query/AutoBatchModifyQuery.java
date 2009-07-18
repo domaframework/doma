@@ -23,9 +23,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.seasar.doma.internal.jdbc.Entity;
-import org.seasar.doma.internal.jdbc.Property;
-import org.seasar.doma.internal.jdbc.VersionProperty;
+import org.seasar.doma.entity.Entity;
+import org.seasar.doma.entity.EntityProperty;
+import org.seasar.doma.entity.VersionProperty;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
@@ -49,9 +49,9 @@ public abstract class AutoBatchModifyQuery<I, E extends Entity<I>> implements
 
     protected String callerMethodName;
 
-    protected final List<Property<?>> targetProperties = new ArrayList<Property<?>>();
+    protected final List<EntityProperty<?>> targetProperties = new ArrayList<EntityProperty<?>>();
 
-    protected final List<Property<?>> idProperties = new ArrayList<Property<?>>();
+    protected final List<EntityProperty<?>> idProperties = new ArrayList<EntityProperty<?>>();
 
     protected VersionProperty<?> versionProperty;
 
@@ -80,7 +80,7 @@ public abstract class AutoBatchModifyQuery<I, E extends Entity<I>> implements
 
     protected void prepareTableAndColumnNames() {
         tableName = entity.__getQualifiedTableName(config);
-        for (Property<?> p : entity.__getProperties()) {
+        for (EntityProperty<?> p : entity.__getEntityProperties()) {
             if (!p.isUpdatable()) {
                 continue;
             }
@@ -89,7 +89,7 @@ public abstract class AutoBatchModifyQuery<I, E extends Entity<I>> implements
     }
 
     protected void prepareIdAndVersionProperties() {
-        for (Property<?> p : entity.__getProperties()) {
+        for (EntityProperty<?> p : entity.__getEntityProperties()) {
             if (p.isId()) {
                 idProperties.add(p);
             }

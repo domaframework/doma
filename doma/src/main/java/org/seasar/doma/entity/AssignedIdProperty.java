@@ -13,25 +13,25 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc;
+package org.seasar.doma.entity;
 
 import org.seasar.doma.domain.Domain;
-import org.seasar.doma.jdbc.Config;
 
-public interface Property<D extends Domain<?, ?>> {
+/**
+ * @author taedium
+ * 
+ */
+public class AssignedIdProperty<D extends Domain<?, ?>> extends
+        BasicProperty<D> {
 
-    D getDomain();
+    public AssignedIdProperty(String name, String columnName, D domain,
+            boolean insertable, boolean updatable) {
+        super(name, columnName, domain, insertable, updatable);
+    }
 
-    public String getName();
-
-    public String getColumnName(Config config);
-
-    public boolean isId();
-
-    public boolean isVersion();
-
-    public boolean isInsertable();
-
-    public boolean isUpdatable();
+    @Override
+    public boolean isId() {
+        return true;
+    }
 
 }

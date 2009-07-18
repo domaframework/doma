@@ -40,9 +40,7 @@ import org.seasar.doma.domain.Domain;
 import org.seasar.doma.domain.NumberDomain;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Models;
-import org.seasar.doma.internal.jdbc.Entity;
 import org.seasar.doma.message.MessageCode;
-
 
 /**
  * 
@@ -163,9 +161,8 @@ public class PropertyMetaFactory {
     protected void doName(PropertyMeta propertyMeta, ExecutableElement method,
             EntityMeta entityMeta) {
         String name = method.getSimpleName().toString();
-        if (name.startsWith(Entity.MEMBER_PREFIX)) {
-            throw new AptException(MessageCode.DOMA4025, env,
-                    method, Entity.MEMBER_PREFIX);
+        if (name.startsWith("__")) {
+            throw new AptException(MessageCode.DOMA4025, env, method, "__");
         }
         propertyMeta.setName(name);
     }
