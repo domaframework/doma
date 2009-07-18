@@ -41,6 +41,24 @@ public abstract class AbstractTimestampDomain<D extends AbstractTimestampDomain<
     }
 
     @Override
+    public Timestamp get() {
+        Timestamp timestamp = new Timestamp(value.getTime());
+        timestamp.setNanos(value.getNanos());
+        return timestamp;
+    }
+
+    @Override
+    protected void setInternal(Timestamp v) {
+        if (v == null) {
+            super.setInternal(v);
+        } else {
+            Timestamp timestamp = new Timestamp(v.getTime());
+            timestamp.setNanos(v.getNanos());
+            super.setInternal(timestamp);
+        }
+    }
+
+    @Override
     public <R, P, TH extends Throwable> R accept(
             DomainVisitor<R, P, TH> visitor, P p) throws TH {
         if (visitor == null) {

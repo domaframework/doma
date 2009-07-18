@@ -41,6 +41,20 @@ public abstract class AbstractTimeDomain<D extends AbstractTimeDomain<D>>
     }
 
     @Override
+    public Time get() {
+        return new Time(value.getTime());
+    }
+
+    @Override
+    protected void setInternal(Time v) {
+        if (v == null) {
+            super.setInternal(v);
+        } else {
+            super.setInternal(new Time(v.getTime()));
+        }
+    }
+
+    @Override
     public <R, P, TH extends Throwable> R accept(
             DomainVisitor<R, P, TH> visitor, P p) throws TH {
         if (visitor == null) {

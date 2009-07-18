@@ -41,6 +41,20 @@ public abstract class AbstractDateDomain<D extends AbstractDateDomain<D>>
     }
 
     @Override
+    public Date get() {
+        return new Date(value.getTime());
+    }
+
+    @Override
+    protected void setInternal(Date v) {
+        if (v == null) {
+            super.setInternal(v);
+        } else {
+            super.setInternal(new Date(v.getTime()));
+        }
+    }
+
+    @Override
     public <R, P, TH extends Throwable> R accept(
             DomainVisitor<R, P, TH> visitor, P p) throws TH {
         if (visitor == null) {
