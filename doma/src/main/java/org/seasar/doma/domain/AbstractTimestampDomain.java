@@ -33,6 +33,7 @@ public abstract class AbstractTimestampDomain<D extends AbstractTimestampDomain<
     private static final long serialVersionUID = 1L;
 
     protected AbstractTimestampDomain() {
+        this(null);
     }
 
     protected AbstractTimestampDomain(Timestamp value) {

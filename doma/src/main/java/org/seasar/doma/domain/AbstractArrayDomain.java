@@ -29,6 +29,7 @@ public abstract class AbstractArrayDomain<D extends AbstractArrayDomain<D, E>, E
         extends AbstractDomain<Array, AbstractArrayDomain<D, E>> {
 
     protected AbstractArrayDomain() {
+        this(null);
     }
 
     protected AbstractArrayDomain(Array v) {

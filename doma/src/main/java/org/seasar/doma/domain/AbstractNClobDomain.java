@@ -27,6 +27,7 @@ public abstract class AbstractNClobDomain<D extends AbstractNClobDomain<D>>
         extends AbstractDomain<NClob, D> {
 
     protected AbstractNClobDomain() {
+        this(null);
     }
 
     protected AbstractNClobDomain(NClob v) {

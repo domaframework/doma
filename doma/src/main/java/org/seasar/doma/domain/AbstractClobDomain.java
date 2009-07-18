@@ -27,6 +27,7 @@ public abstract class AbstractClobDomain<D extends AbstractClobDomain<D>>
         extends AbstractDomain<Clob, D> {
 
     protected AbstractClobDomain() {
+        this(null);
     }
 
     protected AbstractClobDomain(Clob v) {

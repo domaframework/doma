@@ -13,22 +13,26 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.util;
+package org.seasar.doma.copy;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.seasar.doma.DomaIllegalArgumentException;
-import org.seasar.doma.converter.BigDecimalConverter;
+import org.seasar.doma.bean.Bean;
+import org.seasar.doma.bean.BeanProperty;
+import org.seasar.doma.bean.FieldAccessBean;
 import org.seasar.doma.converter.Converter;
-import org.seasar.doma.converter.DateConverter;
-import org.seasar.doma.converter.IntegerConverter;
-import org.seasar.doma.converter.StringConverter;
+import org.seasar.doma.converter.Converters;
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.internal.jdbc.Entity;
 import org.seasar.doma.internal.jdbc.Property;
+import org.seasar.doma.internal.util.Classes;
 
 /**
  * @author taedium
@@ -36,12 +40,21 @@ import org.seasar.doma.internal.jdbc.Property;
  */
 public class StandardCopier implements Copier {
 
-    protected static Map<Class<?>, Converter<?>> converterMapByClass;
-    static {
-        converterMapByClass.put(BigDecimal.class, new BigDecimalConverter());
-        converterMapByClass.put(Date.class, new DateConverter());
-        converterMapByClass.put(Integer.class, new IntegerConverter());
-        converterMapByClass.put(String.class, new StringConverter());
+    protected final Map<Class<?>, Converter<?>> converterMap = new HashMap<Class<?>, Converter<?>>();
+
+    public StandardCopier() {
+        converterMap.put(String.class, Converters.STRING);
+        converterMap.put(BigDecimal.class, Converters.BIG_DECIMAL);
+        converterMap.put(Byte.class, Converters.BYTE);
+        converterMap.put(Short.class, Converters.SHORT);
+        converterMap.put(Integer.class, Converters.INTEGER);
+        converterMap.put(Long.class, Converters.LONG);
+        converterMap.put(Float.class, Converters.FLOAT);
+        converterMap.put(Double.class, Converters.DOUBLE);
+        converterMap.put(java.util.Date.class, Converters.UTIL_DATE);
+        converterMap.put(Date.class, Converters.DATE);
+        converterMap.put(Time.class, Converters.TIME);
+        converterMap.put(Timestamp.class, Converters.TIMESTAMP);
     }
 
     @Override
@@ -51,6 +64,9 @@ public class StandardCopier implements Copier {
         }
         if (dest == null) {
             throw new DomaIllegalArgumentException("dest", dest);
+        }
+        if (copyOptions == null) {
+            throw new DomaIllegalArgumentException("copyOptions", copyOptions);
         }
         if (Entity.class.isInstance(src)) {
             Entity<?> srcEntity = Entity.class.cast(src);
@@ -78,6 +94,9 @@ public class StandardCopier implements Copier {
         if (dest == null) {
             throw new DomaIllegalArgumentException("dest", dest);
         }
+        if (copyOptions == null) {
+            throw new DomaIllegalArgumentException("copyOptions", copyOptions);
+        }
         if (Entity.class.isInstance(src)) {
             copyFromEntityToMap(Entity.class.cast(src), dest, copyOptions);
         } else {
@@ -94,8 +113,11 @@ public class StandardCopier implements Copier {
         if (dest == null) {
             throw new DomaIllegalArgumentException("dest", dest);
         }
+        if (copyOptions == null) {
+            throw new DomaIllegalArgumentException("copyOptions", copyOptions);
+        }
         if (Entity.class.isInstance(dest)) {
-            copyFromMapToEntity(src, Entity.class.cast(src), copyOptions);
+            copyFromMapToEntity(src, Entity.class.cast(dest), copyOptions);
         } else {
             copyFromMapToBean(src, createBean(dest), copyOptions);
         }
@@ -107,21 +129,8 @@ public class StandardCopier implements Copier {
             if (!copyOptions.isTargetProperty(srcProperty.getName())) {
                 continue;
             }
-            Property<?> destProperty = dest.__getPropertyByName(srcProperty
-                    .getName());
-            if (destProperty == null) {
-                continue;
-            }
-            Domain<?, ?> destDomain = destProperty.getDomain();
-            Converter<?> converter = getConverter(destProperty.getName(), destDomain
-                    .getValueClass(), copyOptions);
-            if (converter == null) {
-                continue;
-            }
-            String pattern = copyOptions.getPattern(destProperty.getName());
-            Object value = converter
-                    .convert(srcProperty.getDomain().get(), pattern);
-            destDomain.setByReflection(value);
+            copyToEntityProperty(srcProperty.getName(), srcProperty.getDomain()
+                    .get(), dest, copyOptions);
         }
     }
 
@@ -147,20 +156,8 @@ public class StandardCopier implements Copier {
             if (!copyOptions.isTargetValue(srcProperty.getDomain().get())) {
                 continue;
             }
-            BeanProperty destProperty = dest.getBeanProperty(srcProperty
-                    .getName());
-            if (destProperty == null) {
-                continue;
-            }
-            Converter<?> converter = getConverter(destProperty.getName(), destProperty
-                    .getClass(), copyOptions);
-            if (converter == null) {
-                continue;
-            }
-            String pattern = copyOptions.getPattern(destProperty.getName());
-            Object value = converter
-                    .convert(srcProperty.getDomain().get(), pattern);
-            destProperty.setValue(value);
+            copyToBeanProperty(srcProperty.getName(), srcProperty.getDomain()
+                    .get(), dest, copyOptions);
         }
     }
 
@@ -173,20 +170,7 @@ public class StandardCopier implements Copier {
             if (!copyOptions.isTargetValue(srcProperty.getValue())) {
                 continue;
             }
-            Property<?> destProperty = dest.__getPropertyByName(srcProperty
-                    .getName());
-            if (destProperty == null) {
-                continue;
-            }
-            Domain<?, ?> destDomain = destProperty.getDomain();
-            Converter<?> converter = getConverter(destProperty.getName(), destDomain
-                    .getValueClass(), copyOptions);
-            if (converter == null) {
-                continue;
-            }
-            String pattern = copyOptions.getPattern(destProperty.getName());
-            Object value = converter.convert(srcProperty.getValue(), pattern);
-            destDomain.setByReflection(value);
+            copyToEntityProperty(srcProperty.getName(), srcProperty.getValue(), dest, copyOptions);
         }
     }
 
@@ -212,19 +196,7 @@ public class StandardCopier implements Copier {
             if (!copyOptions.isTargetValue(srcProperty.getValue())) {
                 continue;
             }
-            BeanProperty destProperty = dest.getBeanProperty(srcProperty
-                    .getName());
-            if (destProperty == null) {
-                continue;
-            }
-            Converter<?> converter = getConverter(destProperty.getName(), destProperty
-                    .getPropertyClass(), copyOptions);
-            if (converter == null) {
-                continue;
-            }
-            String pattern = copyOptions.getPattern(destProperty.getName());
-            Object value = converter.convert(srcProperty.getValue(), pattern);
-            destProperty.setValue(value);
+            copyToBeanProperty(srcProperty.getName(), srcProperty.getValue(), dest, copyOptions);
         }
     }
 
@@ -237,20 +209,7 @@ public class StandardCopier implements Copier {
             if (!copyOptions.isTargetValue(srcEntry.getValue())) {
                 continue;
             }
-            Property<?> destProperty = dest.__getPropertyByName(srcEntry
-                    .getKey());
-            if (destProperty == null) {
-                continue;
-            }
-            Domain<?, ?> destDomain = destProperty.getDomain();
-            Converter<?> converter = getConverter(destProperty.getName(), destDomain
-                    .getValueClass(), copyOptions);
-            if (converter == null) {
-                continue;
-            }
-            String pattern = copyOptions.getPattern(destProperty.getName());
-            Object value = converter.convert(srcEntry.getValue(), pattern);
-            destDomain.setByReflection(value);
+            copyToEntityProperty(srcEntry.getKey(), srcEntry.getValue(), dest, copyOptions);
         }
     }
 
@@ -263,33 +222,51 @@ public class StandardCopier implements Copier {
             if (!copyOptions.isTargetValue(srcEntry.getValue())) {
                 continue;
             }
-            BeanProperty destProperty = dest.getBeanProperty(srcEntry.getKey());
-            if (destProperty == null) {
-                continue;
-            }
-            Converter<?> converter = getConverter(destProperty.getName(), destProperty
-                    .getPropertyClass(), copyOptions);
-            if (converter == null) {
-                continue;
-            }
-            String pattern = copyOptions.getPattern(destProperty.getName());
-            Object value = converter.convert(srcEntry.getValue(), pattern);
-            destProperty.setValue(value);
+            copyToBeanProperty(srcEntry.getKey(), srcEntry.getValue(), dest, copyOptions);
         }
     }
 
-    protected Converter<?> getConverter(String name, Class<?> destClass,
-            CopyOptions copyOptions) {
-        Converter<?> converter = copyOptions.getConverter(name, destClass);
+    protected void copyToEntityProperty(String srcPropertyName,
+            Object srcValue, Entity<?> dest, CopyOptions copyOptions) {
+        Property<?> destProperty = dest.__getPropertyByName(srcPropertyName);
+        if (destProperty == null) {
+            return;
+        }
+        Domain<?, ?> destDomain = destProperty.getDomain();
+        Converter<?> converter = findConverter(destProperty.getName(), destDomain
+                .getValueClass(), copyOptions);
         if (converter == null) {
-            converter = converterMapByClass.get(destClass);
+            return;
         }
+        String pattern = copyOptions.getPattern(destProperty.getName());
+        Object destValue = converter.convert(srcValue, pattern);
+        destDomain.setByReflection(destValue);
+    }
 
-        String pattern = copyOptions.getPattern(name);
-        if (pattern != null) {
-
+    protected void copyToBeanProperty(String srcPropertyName, Object srcValue,
+            Bean dest, CopyOptions copyOptions) {
+        BeanProperty destProperty = dest.getBeanProperty(srcPropertyName);
+        if (destProperty == null) {
+            return;
         }
+        Converter<?> converter = findConverter(destProperty.getName(), destProperty
+                .getPropertyClass(), copyOptions);
+        if (converter == null) {
+            return;
+        }
+        String pattern = copyOptions.getPattern(destProperty.getName());
+        Object destValue = converter.convert(srcValue, pattern);
+        destProperty.setValue(destValue);
+    }
 
+    protected Converter<?> findConverter(String name, Class<?> destClass,
+            CopyOptions copyOptions) {
+        Converter<?> converter = copyOptions.getConverter(name);
+        if (converter == null) {
+            Class<?> wrapperClass = Classes
+                    .getWrapperClassIfPrimitive(destClass);
+            converter = converterMap.get(wrapperClass);
+        }
         return converter;
     }
 

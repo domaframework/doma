@@ -15,13 +15,15 @@
  */
 package org.seasar.doma.converter;
 
-
 /**
  * @author taedium
  * 
  */
-public class IntegerConverter extends NumberConverter implements
-        Converter<Integer> {
+public class IntegerConverter implements Converter<Integer> {
+
+    protected static final String DEFAULT_PATTERN = "0";
+
+    protected final ConversionSupport conversionSupport = new ConversionSupport();
 
     @Override
     public Integer convert(Object value, String pattern) {
@@ -36,15 +38,16 @@ public class IntegerConverter extends NumberConverter implements
             return number.intValue();
         }
         if (String.class.isInstance(value)) {
-            return parse(String.class.cast(value), pattern);
+            Number number = parse(String.class.cast(value), pattern);
+            return number.intValue();
         }
         throw new UnsupportedConversionException(value.getClass().getName(),
                 Integer.class.getName(), value);
     }
 
-    @Override
-    protected Integer parse(String value, String pattern) {
-        Number number = super.parse(value, pattern);
-        return number.intValue();
+    protected Number parse(String value, String pattern) {
+        String p = pattern != null ? pattern : DEFAULT_PATTERN;
+        return conversionSupport.parseToNumber(value, p);
     }
+
 }

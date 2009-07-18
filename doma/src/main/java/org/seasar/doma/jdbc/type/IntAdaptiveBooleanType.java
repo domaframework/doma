@@ -63,6 +63,6 @@ public class IntAdaptiveBooleanType extends AbstractJdbcType<Boolean> {
     }
 
     protected Boolean formIntToBoolean(int value) {
-        return value == 1 ? Boolean.TRUE : Boolean.FALSE;
+        return value == 1;
     }
 }

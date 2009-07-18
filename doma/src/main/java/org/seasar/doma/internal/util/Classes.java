@@ -81,4 +81,32 @@ public final class Classes {
         return qualifiedName.substring(pos + 1);
     }
 
+    public static Class<?> getWrapperClassIfPrimitive(Class<?> clazz) {
+        assertNotNull(clazz);
+        if (clazz == void.class) {
+            return Void.class;
+        }
+        if (clazz == boolean.class) {
+            return Boolean.class;
+        }
+        if (clazz == byte.class) {
+            return Byte.class;
+        }
+        if (clazz == short.class) {
+            return Short.class;
+        }
+        if (clazz == int.class) {
+            return Integer.class;
+        }
+        if (clazz == long.class) {
+            return Long.class;
+        }
+        if (clazz == float.class) {
+            return Float.class;
+        }
+        if (clazz == double.class) {
+            return Double.class;
+        }
+        return clazz;
+    }
 }

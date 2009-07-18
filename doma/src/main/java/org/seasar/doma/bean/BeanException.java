@@ -13,19 +13,26 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.util;
+package org.seasar.doma.bean;
+
+import org.seasar.doma.DomaException;
+import org.seasar.doma.message.MessageCode;
 
 /**
  * @author taedium
  * 
  */
-public interface BeanProperty {
+public class BeanException extends DomaException {
 
-    String getName();
+    private static final long serialVersionUID = 1L;
 
-    Object getValue();
+    public BeanException(MessageCode messageCode, Object... args) {
+        super(messageCode, args);
+    }
 
-    void setValue(Object value);
+    public BeanException(MessageCode messageCode, Throwable cause,
+            Object... args) {
+        super(messageCode, cause, args);
+    }
 
-    Class<?> getPropertyClass();
 }

@@ -32,6 +32,7 @@ public abstract class AbstractIntegerDomain<D extends AbstractIntegerDomain<D>>
     private static final long serialVersionUID = 1L;
 
     protected AbstractIntegerDomain() {
+        this(null);
     }
 
     protected AbstractIntegerDomain(Integer value) {

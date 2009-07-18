@@ -15,33 +15,32 @@
  */
 package org.seasar.doma.converter;
 
-import org.seasar.doma.message.MessageCode;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
  * 
  */
-public class ParseConversionException extends ConversionException {
+public class BooleanConverterTest extends TestCase {
 
-    private static final long serialVersionUID = 1L;
+    private BooleanConverter converter = new BooleanConverter();
 
-    protected final String value;
-
-    protected final String pattern;
-
-    public ParseConversionException(String value, String pattern,
-            Throwable cause) {
-        super(MessageCode.DOMA5002, value, pattern, cause, cause);
-        this.value = value;
-        this.pattern = pattern;
+    public void testNull() throws Exception {
+        Boolean value = converter.convert(null, null);
+        assertNull(value);
     }
 
-    public String getValue() {
-        return value;
+    public void testInt() throws Exception {
+        Boolean value = converter.convert(1, null);
+        assertTrue(value);
+        value = converter.convert(2, null);
+        assertFalse(value);
     }
 
-    public String getPattern() {
-        return pattern;
+    public void testString() throws Exception {
+        Boolean value = converter.convert("true", null);
+        assertTrue(value);
+        value = converter.convert("hoge", null);
+        assertFalse(value);
     }
-
 }

@@ -15,42 +15,35 @@
  */
 package org.seasar.doma.converter;
 
-import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * @author taedium
  * 
  */
-public class StringConverter implements Converter<String> {
+public class UtilDateConverter implements Converter<java.util.Date> {
+
+    protected static String DEFAULT_PATTERN = "yyyy-MM-dd";
 
     protected final ConversionSupport conversionSupport = new ConversionSupport();
 
     @Override
-    public String convert(Object value, String pattern) {
+    public java.util.Date convert(Object value, String pattern) {
         if (value == null) {
             return null;
         }
-        if (pattern != null) {
-            if (Number.class.isInstance(value)) {
-                return format(Number.class.cast(value), pattern);
-            }
-            if (Date.class.isInstance(value)) {
-                return format(Date.class.cast(value), pattern);
-            }
+        if (java.util.Date.class.isInstance(value)) {
+            return java.util.Date.class.cast(value);
         }
-        if (BigDecimal.class.isInstance(value)) {
-            BigDecimal decimal = BigDecimal.class.cast(value);
-            return decimal.toPlainString();
+        if (String.class.isInstance(value)) {
+            return parse(String.class.cast(value), pattern);
         }
-        return value.toString();
+        throw new UnsupportedConversionException(value.getClass().getName(),
+                java.util.Date.class.getName(), value);
     }
 
-    protected String format(Number value, String pattern) {
-        return conversionSupport.formatFromNumber(value, pattern);
+    protected java.util.Date parse(String value, String pattern) {
+        String p = pattern != null ? pattern : DEFAULT_PATTERN;
+        return conversionSupport.parseToDate(value, p);
     }
 
-    protected String format(Date value, String pattern) {
-        return conversionSupport.formatFromDate(value, pattern);
-    }
 }

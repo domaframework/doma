@@ -32,6 +32,7 @@ public abstract class AbstractStringDomain<D extends AbstractStringDomain<D>>
     private static final long serialVersionUID = 1L;
 
     protected AbstractStringDomain() {
+        this(null);
     }
 
     protected AbstractStringDomain(String value) {

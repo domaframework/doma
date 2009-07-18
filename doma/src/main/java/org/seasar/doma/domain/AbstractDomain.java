@@ -15,11 +15,12 @@
  */
 package org.seasar.doma.domain;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.seasar.doma.DomaIllegalArgumentException;
-import org.seasar.doma.DomaIllegalStateException;
+import org.seasar.doma.internal.WrapException;
+import org.seasar.doma.internal.util.Methods;
+import org.seasar.doma.message.MessageCode;
 
 /**
  * @author taedium
@@ -65,25 +66,12 @@ public abstract class AbstractDomain<V, D extends AbstractDomain<V, D>>
 
     @Override
     public void setByReflection(Object value) {
-        Method setter = getValueSetterMethod();
         try {
-            setter.invoke(this, value);
-        } catch (IllegalArgumentException e) {
-            throw new DomaIllegalStateException(e);
-        } catch (IllegalAccessException e) {
-            throw new DomaIllegalStateException(e);
-        } catch (InvocationTargetException e) {
-            throw new DomaIllegalStateException(e);
-        }
-    }
-
-    protected Method getValueSetterMethod() {
-        try {
-            return valueClass.getMethod("set", valueClass);
-        } catch (SecurityException e) {
-            throw new DomaIllegalStateException(e);
-        } catch (NoSuchMethodException e) {
-            throw new DomaIllegalStateException(e);
+            Method setter = Methods.getMethod(getClass(), "set", Object.class);
+            Methods.invoke(setter, this, value);
+        } catch (WrapException e) {
+            Throwable cause = e.getCause();
+            throw new DomainException(MessageCode.DOMA1004, cause, cause);
         }
     }
 

@@ -13,8 +13,9 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.util;
+package org.seasar.doma.copy;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.seasar.doma.DomaIllegalArgumentException;
@@ -26,17 +27,21 @@ import org.seasar.doma.converter.Converter;
  */
 public class CopyOptions {
 
-    protected String[] includedPropertyNames;
+    protected static final String[] EMPTY_STRINGS = new String[] {};
 
-    protected String[] excludedPropertyNames;
+    protected final Map<String, Converter<?>> converterMap = new HashMap<String, Converter<?>>();
 
-    protected Map<String, Converter<?>> converterMapByName;
+    protected final Map<String, String> patterns = new HashMap<String, String>();
 
-    protected Map<String, String> patterns;
+    protected String[] includedPropertyNames = EMPTY_STRINGS;
 
-    protected boolean nullCopied;
+    protected String[] excludedPropertyNames = EMPTY_STRINGS;
 
-    protected boolean emptyStringCopied;
+    protected boolean nullIncluded;
+
+    protected boolean emptyStringIncluded;
+
+    protected boolean whitespaceIncluded = true;
 
     public CopyOptions include(String... propertyNames) {
         includedPropertyNames = propertyNames;
@@ -48,13 +53,18 @@ public class CopyOptions {
         return this;
     }
 
-    public CopyOptions copyNull() {
-        nullCopied = true;
+    public CopyOptions includeNull() {
+        nullIncluded = true;
         return this;
     }
 
-    public CopyOptions copyEmptyString() {
-        emptyStringCopied = true;
+    public CopyOptions includeEmptyString() {
+        emptyStringIncluded = true;
+        return this;
+    }
+
+    public CopyOptions excludeWhitespace() {
+        whitespaceIncluded = false;
         return this;
     }
 
@@ -64,7 +74,7 @@ public class CopyOptions {
             throw new DomaIllegalArgumentException("converter", converter);
         }
         for (String propertyName : propertyNames) {
-            converterMapByName.put(propertyName, converter);
+            converterMap.put(propertyName, converter);
         }
         return this;
     }
@@ -79,13 +89,8 @@ public class CopyOptions {
         return this;
     }
 
-    protected Converter<?> getConverter(String propertyName, Class<?> destClass) {
-        Converter<?> converter = converterMapByName.get(propertyName);
-        if (converter != null) {
-            return converter;
-        }
-
-        return null;
+    protected Converter<?> getConverter(String propertyName) {
+        return converterMap.get(propertyName);
     }
 
     protected String getPattern(String propertyName) {
@@ -93,7 +98,7 @@ public class CopyOptions {
     }
 
     protected boolean isTargetProperty(String propertyName) {
-        if (includedPropertyNames != null) {
+        if (includedPropertyNames.length > 0) {
             for (String included : includedPropertyNames) {
                 if (included.equals(propertyName)) {
                     for (String excluded : excludedPropertyNames) {
@@ -106,7 +111,7 @@ public class CopyOptions {
             }
             return false;
         }
-        if (excludedPropertyNames != null) {
+        if (excludedPropertyNames.length > 0) {
             for (String excluded : excludedPropertyNames) {
                 if (excluded.equals(propertyName)) {
                     return false;
@@ -118,10 +123,16 @@ public class CopyOptions {
 
     protected boolean isTargetValue(Object value) {
         if (value == null) {
-            return nullCopied;
+            return nullIncluded;
         }
         if ("".equals(value)) {
-            return emptyStringCopied;
+            return emptyStringIncluded;
+        }
+        if (String.class.isInstance(value)) {
+            String s = String.class.cast(value);
+            if (s.trim().isEmpty()) {
+                return whitespaceIncluded;
+            }
         }
         return true;
     }

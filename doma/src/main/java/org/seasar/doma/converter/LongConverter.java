@@ -15,42 +15,39 @@
  */
 package org.seasar.doma.converter;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 /**
  * @author taedium
  * 
  */
-public class StringConverter implements Converter<String> {
+public class LongConverter implements Converter<Long> {
+
+    protected static final String DEFAULT_PATTERN = "0";
 
     protected final ConversionSupport conversionSupport = new ConversionSupport();
 
     @Override
-    public String convert(Object value, String pattern) {
+    public Long convert(Object value, String pattern) {
         if (value == null) {
             return null;
         }
-        if (pattern != null) {
-            if (Number.class.isInstance(value)) {
-                return format(Number.class.cast(value), pattern);
-            }
-            if (Date.class.isInstance(value)) {
-                return format(Date.class.cast(value), pattern);
-            }
+        if (Long.class.isInstance(value)) {
+            return Long.class.cast(value);
         }
-        if (BigDecimal.class.isInstance(value)) {
-            BigDecimal decimal = BigDecimal.class.cast(value);
-            return decimal.toPlainString();
+        if (Number.class.isInstance(value)) {
+            Number number = Number.class.cast(value);
+            return number.longValue();
         }
-        return value.toString();
+        if (String.class.isInstance(value)) {
+            Number number = parse(String.class.cast(value), pattern);
+            return number.longValue();
+        }
+        throw new UnsupportedConversionException(value.getClass().getName(),
+                Long.class.getName(), value);
     }
 
-    protected String format(Number value, String pattern) {
-        return conversionSupport.formatFromNumber(value, pattern);
+    protected Number parse(String value, String pattern) {
+        String p = pattern != null ? pattern : DEFAULT_PATTERN;
+        return conversionSupport.parseToNumber(value, p);
     }
 
-    protected String format(Date value, String pattern) {
-        return conversionSupport.formatFromDate(value, pattern);
-    }
 }

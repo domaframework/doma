@@ -32,6 +32,7 @@ public abstract class AbstractDoubleDomain<D extends AbstractDoubleDomain<D>>
     private static final long serialVersionUID = 1L;
 
     protected AbstractDoubleDomain() {
+        this(null);
     }
 
     protected AbstractDoubleDomain(Double value) {

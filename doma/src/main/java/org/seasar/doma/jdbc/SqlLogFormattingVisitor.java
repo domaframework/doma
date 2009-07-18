@@ -45,7 +45,7 @@ public class SqlLogFormattingVisitor
     @Override
     public String visitAbstractBigDecimalDomain(
             AbstractBigDecimalDomain<?> domain, SqlLogFormattingFunction p) {
-        return p.apply(domain, JdbcTypes.BIGDECIMAL);
+        return p.apply(domain, JdbcTypes.BIG_DECIMAL);
     }
 
     @Override

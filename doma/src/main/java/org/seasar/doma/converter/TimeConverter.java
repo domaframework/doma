@@ -15,39 +15,41 @@
  */
 package org.seasar.doma.converter;
 
-import java.math.BigDecimal;
+import java.sql.Time;
 
 /**
  * @author taedium
  * 
  */
-public class BigDecimalConverter implements Converter<BigDecimal> {
+public class TimeConverter implements Converter<Time> {
 
-    protected final static String DEFAULT_PATTERN = "0";
+    protected static final String DEFAULT_PATTERN = "HH:mm:ss";
 
     protected final ConversionSupport conversionSupport = new ConversionSupport();
 
     @Override
-    public BigDecimal convert(Object value, String pattern) {
+    public Time convert(Object value, String pattern) {
         if (value == null) {
             return null;
         }
-        if (BigDecimal.class.isInstance(value)) {
-            return BigDecimal.class.cast(value);
+        if (Time.class.isInstance(value)) {
+            Time time = Time.class.cast(value);
+            return new Time(time.getTime());
         }
-        if (Number.class.isInstance(value)) {
-            return new BigDecimal(value.toString());
+        if (java.util.Date.class.isInstance(value)) {
+            java.util.Date date = java.util.Date.class.cast(value);
+            return new Time(date.getTime());
         }
         if (String.class.isInstance(value)) {
-            Number number = parse(String.class.cast(value), pattern);
-            return new BigDecimal(number.toString());
+            java.util.Date date = parse(String.class.cast(value), pattern);
+            return new Time(date.getTime());
         }
         throw new UnsupportedConversionException(value.getClass().getName(),
-                BigDecimal.class.getName(), value);
+                Time.class.getName(), value);
     }
 
-    protected Number parse(String value, String pattern) {
+    protected java.util.Date parse(String value, String pattern) {
         String p = pattern != null ? pattern : DEFAULT_PATTERN;
-        return conversionSupport.parseToNumber(value, p);
+        return conversionSupport.parseToDate(value, p);
     }
 }

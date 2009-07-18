@@ -53,7 +53,7 @@ public class JdbcMappingVisitor implements
     public Void visitAbstractBigDecimalDomain(
             AbstractBigDecimalDomain<?> domain, JdbcMappingFunction p)
             throws SQLException {
-        return p.apply(domain, JdbcTypes.BIGDECIMAL);
+        return p.apply(domain, JdbcTypes.BIG_DECIMAL);
     }
 
     @Override

@@ -21,7 +21,7 @@ import org.seasar.doma.message.MessageCode;
  * @author taedium
  * 
  */
-public class ParseConversionException extends ConversionException {
+public class FormatConversionException extends ConversionException {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,9 +29,9 @@ public class ParseConversionException extends ConversionException {
 
     protected final String pattern;
 
-    public ParseConversionException(String value, String pattern,
+    public FormatConversionException(String value, String pattern,
             Throwable cause) {
-        super(MessageCode.DOMA5002, value, pattern, cause, cause);
+        super(MessageCode.DOMA5003, value, pattern, cause, cause);
         this.value = value;
         this.pattern = pattern;
     }

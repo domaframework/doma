@@ -25,7 +25,7 @@ public final class JdbcTypes {
 
     public static final IntType INT = new IntType();
 
-    public static final BigDecimalType BIGDECIMAL = new BigDecimalType();
+    public static final BigDecimalType BIG_DECIMAL = new BigDecimalType();
 
     public static final DateType DATE = new DateType();
 

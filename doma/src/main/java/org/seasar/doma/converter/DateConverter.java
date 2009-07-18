@@ -16,8 +16,6 @@
 package org.seasar.doma.converter;
 
 import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 /**
  * @author taedium
@@ -25,7 +23,9 @@ import java.text.SimpleDateFormat;
  */
 public class DateConverter implements Converter<Date> {
 
-    protected static String DEFAULT_PATTERN = "yyyy-MM-dd";
+    protected static final String DEFAULT_PATTERN = "yyyy-MM-dd";
+
+    protected final ConversionSupport conversionSupport = new ConversionSupport();
 
     @Override
     public Date convert(Object value, String pattern) {
@@ -33,30 +33,23 @@ public class DateConverter implements Converter<Date> {
             return null;
         }
         if (Date.class.isInstance(value)) {
-            return Date.class.cast(value);
+            Date date = Date.class.cast(value);
+            return new Date(date.getTime());
         }
         if (java.util.Date.class.isInstance(value)) {
             java.util.Date date = java.util.Date.class.cast(value);
             return new Date(date.getTime());
         }
         if (String.class.isInstance(value)) {
-            String p = pattern != null ? pattern : DEFAULT_PATTERN;
-            return parse(String.class.cast(value), p);
+            java.util.Date date = parse(String.class.cast(value), pattern);
+            return new Date(date.getTime());
         }
         throw new UnsupportedConversionException(value.getClass().getName(),
                 Date.class.getName(), value);
     }
 
-    public Date parse(String value, String pattern) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
-        java.util.Date date = null;
-        try {
-            date = dateFormat.parse(value);
-        } catch (ParseException e) {
-            // TODO
-            e.printStackTrace();
-        }
-        return new Date(date.getTime());
+    protected java.util.Date parse(String value, String pattern) {
+        String p = pattern != null ? pattern : DEFAULT_PATTERN;
+        return conversionSupport.parseToDate(value, p);
     }
-
 }

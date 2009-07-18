@@ -15,33 +15,29 @@
  */
 package org.seasar.doma.converter;
 
-import org.seasar.doma.message.MessageCode;
-
 /**
  * @author taedium
  * 
  */
-public class ParseConversionException extends ConversionException {
+public class BooleanConverter implements Converter<Boolean> {
 
-    private static final long serialVersionUID = 1L;
-
-    protected final String value;
-
-    protected final String pattern;
-
-    public ParseConversionException(String value, String pattern,
-            Throwable cause) {
-        super(MessageCode.DOMA5002, value, pattern, cause, cause);
-        this.value = value;
-        this.pattern = pattern;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public String getPattern() {
-        return pattern;
+    @Override
+    public Boolean convert(Object value, String pattern) {
+        if (value == null) {
+            return null;
+        }
+        if (Boolean.class.isInstance(value)) {
+            return Boolean.class.cast(value);
+        }
+        if (Number.class.isInstance(value)) {
+            Number number = Number.class.cast(value);
+            return number.intValue() == 1;
+        }
+        if (String.class.isInstance(value)) {
+            return Boolean.valueOf(String.class.cast(value));
+        }
+        throw new UnsupportedConversionException(value.getClass().getName(),
+                Boolean.class.getName(), value);
     }
 
 }

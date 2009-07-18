@@ -33,6 +33,7 @@ public abstract class AbstractDateDomain<D extends AbstractDateDomain<D>>
     private static final long serialVersionUID = 1L;
 
     protected AbstractDateDomain() {
+        this(null);
     }
 
     protected AbstractDateDomain(Date value) {

@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.util;
+package org.seasar.doma.copy;
 
 import java.util.Map;
 
@@ -24,10 +24,6 @@ import java.util.Map;
 public final class CopyUtil {
 
     private static Copier copier = new StandardCopier();
-
-    public static synchronized Copier getCopier() {
-        return copier;
-    }
 
     public static synchronized void setCopier(Copier c) {
         copier = c;

@@ -33,6 +33,7 @@ public abstract class AbstractBytesDomain<D extends AbstractBytesDomain<D>>
     private static final long serialVersionUID = 1L;
 
     protected AbstractBytesDomain() {
+        this(null);
     }
 
     protected AbstractBytesDomain(byte[] value) {

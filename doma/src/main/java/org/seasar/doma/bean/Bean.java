@@ -13,9 +13,9 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.util;
+package org.seasar.doma.bean;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * @author taedium
@@ -25,7 +25,7 @@ public interface Bean {
 
     BeanProperty getBeanProperty(String name);
 
-    Collection<BeanProperty> getBeanProperties();
+    List<BeanProperty> getBeanProperties();
 
     Class<?> getBeanClass();
 }

@@ -13,15 +13,19 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.util;
+package org.seasar.doma.bean;
 
 import java.lang.reflect.Field;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.internal.WrapException;
+import org.seasar.doma.internal.util.Fields;
+import org.seasar.doma.message.MessageCode;
 
 /**
  * @author taedium
@@ -33,7 +37,7 @@ public class FieldAccessBean implements Bean {
 
     protected final Class<?> beanClass;
 
-    protected final Collection<BeanProperty> propertyWrappers;
+    protected final List<BeanProperty> propertyWrappers;
 
     protected final Map<String, BeanProperty> propertyWrapperMap;
 
@@ -43,9 +47,10 @@ public class FieldAccessBean implements Bean {
         }
         this.bean = bean;
         this.beanClass = bean.getClass();
-        this.propertyWrapperMap = createPropertyWrapperMap(bean, beanClass);
+        this.propertyWrapperMap = createPropertyWrapperMap(beanClass);
         this.propertyWrappers = Collections
-                .unmodifiableCollection(propertyWrapperMap.values());
+                .unmodifiableList(new ArrayList<BeanProperty>(
+                        propertyWrapperMap.values()));
     }
 
     @Override
@@ -54,7 +59,7 @@ public class FieldAccessBean implements Bean {
     }
 
     @Override
-    public Collection<BeanProperty> getBeanProperties() {
+    public List<BeanProperty> getBeanProperties() {
         return propertyWrappers;
     }
 
@@ -64,13 +69,13 @@ public class FieldAccessBean implements Bean {
     }
 
     protected LinkedHashMap<String, BeanProperty> createPropertyWrapperMap(
-            Object bean, Class<?> beanClass) {
+            Class<?> beanClass) {
         LinkedHashMap<String, BeanProperty> result = new LinkedHashMap<String, BeanProperty>();
         for (Class<?> clazz = beanClass; clazz != Object.class; clazz = clazz
                 .getSuperclass()) {
             for (Field field : beanClass.getFields()) {
                 BeanProperty propertyWrapper = new FieldAccessPropertyWrapper(
-                        bean, field);
+                        field);
                 String name = propertyWrapper.getName();
                 if (result.containsKey(name)) {
                     continue;
@@ -81,14 +86,11 @@ public class FieldAccessBean implements Bean {
         return result;
     }
 
-    protected static class FieldAccessPropertyWrapper implements BeanProperty {
-
-        protected final Object bean;
+    protected class FieldAccessPropertyWrapper implements BeanProperty {
 
         protected final Field field;
 
-        public FieldAccessPropertyWrapper(Object bean, Field field) {
-            this.bean = bean;
+        public FieldAccessPropertyWrapper(Field field) {
             this.field = field;
         }
 
@@ -105,23 +107,22 @@ public class FieldAccessBean implements Bean {
         @Override
         public Object getValue() {
             try {
-                return field.get(bean);
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                return Fields.get(field, bean);
+            } catch (WrapException e) {
+                Throwable cause = e.getCause();
+                throw new BeanException(MessageCode.DOMA6001, beanClass, field
+                        .getName(), cause, cause);
             }
-            return null;
         }
 
         @Override
         public void setValue(Object value) {
             try {
-                field.set(bean, value);
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                Fields.set(field, bean, value);
+            } catch (WrapException e) {
+                Throwable cause = e.getCause();
+                throw new BeanException(MessageCode.DOMA6002, beanClass, field
+                        .getName(), cause, cause);
             }
         }
 

@@ -33,6 +33,7 @@ public abstract class AbstractBigDecimalDomain<D extends AbstractBigDecimalDomai
     private static final long serialVersionUID = 1L;
 
     protected AbstractBigDecimalDomain() {
+        this(null);
     }
 
     protected AbstractBigDecimalDomain(BigDecimal value) {
