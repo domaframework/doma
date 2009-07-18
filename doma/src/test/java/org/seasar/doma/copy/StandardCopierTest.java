@@ -151,6 +151,17 @@ public class StandardCopierTest extends TestCase {
         assertEquals(src.get("version"), dest.version);
     }
 
+    public void testPropertyCopyException() throws Exception {
+        Map<String, Object> src = new HashMap<String, Object>();
+        src.put("id", "aaa");
+        EmpBean dest = new EmpBean();
+        try {
+            copier.copy(src, dest, new CopyOptions());
+            fail();
+        } catch (PropertyCopyException expected) {
+        }
+    }
+
     public static class EmpBean {
 
         public Integer id;

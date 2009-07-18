@@ -33,7 +33,7 @@ import org.seasar.doma.message.MessageCode;
  */
 public class FieldAccessBean implements Bean {
 
-    protected final Object bean;
+    protected final Object obj;
 
     protected final Class<?> beanClass;
 
@@ -41,12 +41,12 @@ public class FieldAccessBean implements Bean {
 
     protected final Map<String, BeanProperty> propertyWrapperMap;
 
-    public FieldAccessBean(Object bean) {
-        if (bean == null) {
-            throw new DomaIllegalArgumentException("bean", bean);
+    public FieldAccessBean(Object obj) {
+        if (obj == null) {
+            throw new DomaIllegalArgumentException("obj", obj);
         }
-        this.bean = bean;
-        this.beanClass = bean.getClass();
+        this.obj = obj;
+        this.beanClass = obj.getClass();
         this.propertyWrapperMap = createPropertyWrapperMap(beanClass);
         this.propertyWrappers = Collections
                 .unmodifiableList(new ArrayList<BeanProperty>(
@@ -107,7 +107,7 @@ public class FieldAccessBean implements Bean {
         @Override
         public Object getValue() {
             try {
-                return Fields.get(field, bean);
+                return Fields.get(field, obj);
             } catch (WrapException e) {
                 Throwable cause = e.getCause();
                 throw new BeanException(MessageCode.DOMA6001, beanClass, field
@@ -118,7 +118,7 @@ public class FieldAccessBean implements Bean {
         @Override
         public void setValue(Object value) {
             try {
-                Fields.set(field, bean, value);
+                Fields.set(field, obj, value);
             } catch (WrapException e) {
                 Throwable cause = e.getCause();
                 throw new BeanException(MessageCode.DOMA6002, beanClass, field
