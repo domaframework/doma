@@ -19,7 +19,7 @@ import java.sql.Array;
 import java.sql.SQLException;
 
 import org.seasar.doma.DomaIllegalArgumentException;
-import org.seasar.doma.DomaIllegalStateException;
+import org.seasar.doma.DomaUnexpectedException;
 
 /**
  * @author taedium
@@ -41,7 +41,7 @@ public abstract class AbstractArrayDomain<D extends AbstractArrayDomain<D, E>, E
         try {
             return (E[]) value.getArray();
         } catch (SQLException e) {
-            throw new DomaIllegalStateException(e);
+            throw new DomaUnexpectedException(e);
         }
     }
 

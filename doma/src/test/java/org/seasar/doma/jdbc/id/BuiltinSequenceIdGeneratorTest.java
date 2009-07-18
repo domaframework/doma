@@ -13,23 +13,22 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.id;
+package org.seasar.doma.jdbc.id;
+
+import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.jdbc.dialect.PostgresDialect;
-import org.seasar.doma.jdbc.id.IdGenerationConfig;
-import org.seasar.doma.jdbc.id.SequenceIdGenerator;
 
-import junit.framework.TestCase;
 import example.entity.Emp_;
 
 /**
  * @author taedium
  * 
  */
-public class SequenceIdGeneratorTest extends TestCase {
+public class BuiltinSequenceIdGeneratorTest extends TestCase {
 
     public void test() throws Exception {
         MockConfig config = new MockConfig();
@@ -37,7 +36,10 @@ public class SequenceIdGeneratorTest extends TestCase {
         MockResultSet resultSet = config.dataSource.connection.preparedStatement.resultSet;
         resultSet.rows.add(new RowData(11L));
 
-        SequenceIdGenerator idGenerator = new SequenceIdGenerator("aaa", 1, 1);
+        BuiltinSequenceIdGenerator idGenerator = new BuiltinSequenceIdGenerator();
+        idGenerator.setQualifiedSequenceName("aaa");
+        idGenerator.setInitialValue(1);
+        idGenerator.setAllocationSize(1);
         IdGenerationConfig idGenerationConfig = new IdGenerationConfig(config,
                 new Emp_(), "EMP", "ID");
         Long value = idGenerator.generatePreInsert(idGenerationConfig);

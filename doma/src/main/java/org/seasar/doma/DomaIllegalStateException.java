@@ -25,8 +25,30 @@ public class DomaIllegalStateException extends DomaException {
 
     private static final long serialVersionUID = 1L;
 
-    public DomaIllegalStateException(Throwable cause) {
-        super(MessageCode.DOMA0005, cause, cause);
+    protected final Object object;
+
+    protected final String memberVariableName;
+
+    protected final Object value;
+
+    public DomaIllegalStateException(Object object, String memberVariableName,
+            Object value) {
+        super(MessageCode.DOMA0006, object, memberVariableName, value);
+        this.object = object;
+        this.memberVariableName = memberVariableName;
+        this.value = value;
+    }
+
+    public Object getObject() {
+        return object;
+    }
+
+    public String getMemberVariableName() {
+        return memberVariableName;
+    }
+
+    public Object getValue() {
+        return value;
     }
 
 }

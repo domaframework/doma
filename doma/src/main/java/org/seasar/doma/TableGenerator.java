@@ -20,6 +20,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.seasar.doma.jdbc.id.BuiltinTableIdGenerator;
 import org.seasar.doma.jdbc.id.TableIdGenerator;
 
 /**
@@ -42,9 +43,9 @@ public @interface TableGenerator {
 
     String pkColumnValue();
 
-    int initialValue() default 1;
+    long initialValue() default 1;
 
-    int allocationSize() default 1;
+    long allocationSize() default 1;
 
-    Class<? extends TableIdGenerator> idGeneratorImplementer() default TableIdGenerator.class;
+    Class<? extends TableIdGenerator> idGeneratorImplementer() default BuiltinTableIdGenerator.class;
 }

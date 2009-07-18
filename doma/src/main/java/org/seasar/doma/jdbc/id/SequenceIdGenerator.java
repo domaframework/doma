@@ -15,32 +15,17 @@
  */
 package org.seasar.doma.jdbc.id;
 
-import org.seasar.doma.GenerationType;
-import org.seasar.doma.jdbc.Sql;
-
 /**
  * @author taedium
  * 
  */
-public class SequenceIdGenerator extends AbstractPreAllocateIdGenerator {
+public interface SequenceIdGenerator extends IdGenerator {
 
-    protected final String qualifiedSequenceName;
+    void setQualifiedSequenceName(String qualifiedSequenceName);
 
-    public SequenceIdGenerator(String qualifiedSequenceName, int initialValue,
-            int allocationSize) {
-        super(initialValue, allocationSize);
-        this.qualifiedSequenceName = qualifiedSequenceName;
-    }
+    void setInitialValue(long initialValue);
 
-    @Override
-    protected long getNewInitialValue(IdGenerationConfig config) {
-        Sql<?> sql = config.getDialect()
-                .getSequenceNextValSql(qualifiedSequenceName, allocationSize);
-        return getGeneratedValue(config, sql);
-    }
+    void setAllocationSize(long allocationSize);
 
-    @Override
-    public GenerationType getGenerationType() {
-        return GenerationType.SEQUENCE;
-    }
+    void initialize();
 }

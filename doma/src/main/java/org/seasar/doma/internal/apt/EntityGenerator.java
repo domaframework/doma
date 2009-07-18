@@ -35,14 +35,13 @@ import org.seasar.doma.entity.TransientProperty;
 import org.seasar.doma.entity.VersionProperty;
 import org.seasar.doma.internal.apt.meta.ColumnMeta;
 import org.seasar.doma.internal.apt.meta.EntityMeta;
+import org.seasar.doma.internal.apt.meta.EntityPropertyMeta;
 import org.seasar.doma.internal.apt.meta.IdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.IdGeneratorMetaVisitor;
 import org.seasar.doma.internal.apt.meta.IdentityIdGeneratorMeta;
-import org.seasar.doma.internal.apt.meta.EntityPropertyMeta;
 import org.seasar.doma.internal.apt.meta.SequenceIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.TableIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.TableMeta;
-import org.seasar.doma.jdbc.id.IdGenerator;
 
 /**
  * 
@@ -105,7 +104,8 @@ public class EntityGenerator extends AbstractGenerator {
 
     protected void printGeneratedIdPropertyField() {
         if (entityMeta.hasGeneratedIdPropertyMeta()) {
-            EntityPropertyMeta propertyMeta = entityMeta.getGeneratedIdPropertyMeta();
+            EntityPropertyMeta propertyMeta = entityMeta
+                    .getGeneratedIdPropertyMeta();
             IdGeneratorMeta idGeneratorMeta = propertyMeta.getIdGeneratorMeta();
             idGeneratorMeta.accept(new IdGeneratorGenerator(), null);
             put("%n");
@@ -434,28 +434,49 @@ public class EntityGenerator extends AbstractGenerator {
         @Override
         public Void visistIdentityIdGeneratorMeta(IdentityIdGeneratorMeta m,
                 Void p) {
-            print("private static final %1$s __idGenerator = new %2$s();%n", IdGenerator.class
-                    .getName(), m.getIdGeneratorClassName());
+            print("private static final %1$s __idGenerator = new %1$s();%n", m
+                    .getIdGeneratorClassName());
             return null;
         }
 
         @Override
         public Void visistSequenceIdGeneratorMeta(SequenceIdGeneratorMeta m,
                 Void p) {
-            print("private static final %1$s __idGenerator = new %2$s(\"%3$s\", %4$s, %5$s);%n", IdGenerator.class
-                    .getName(), m.getIdGeneratorClassName(), m
-                    .getQualifiedSequenceName(), m.getInitialValue(), m
+            print("private static final %1$s __idGenerator = new %1$s();%n", m
+                    .getIdGeneratorClassName());
+            print("static {%n");
+            indent();
+            print("__idGenerator.setQualifiedSequenceName(\"%1$s\");%n", m
+                    .getQualifiedSequenceName());
+            print("__idGenerator.setInitialValue(%1$s);%n", m.getInitialValue());
+            print("__idGenerator.setAllocationSize(%1$s);%n", m
                     .getAllocationSize());
+            print("__idGenerator.initialize();%n");
+            unindent();
+            print("}%n");
             return null;
         }
 
         @Override
         public Void visistTableIdGeneratorMeta(TableIdGeneratorMeta m, Void p) {
-            print("private static final %1$s __idGenerator = new %2$s(\"%3$s\", \"%4$s\", \"%5$s\", \"%6$s\", %7$s, %8$s);%n", IdGenerator.class
-                    .getName(), m.getIdGeneratorClassName(), m
-                    .getQualifiedTableName(), m.getPkColumnName(), m
-                    .getValueColumnName(), m.getPkColumnValue(), m
-                    .getInitialValue(), m.getAllocationSize());
+            print("private static final %1$s __idGenerator = new %1$s();%n", m
+                    .getIdGeneratorClassName());
+            print("static {%n");
+            indent();
+            print("__idGenerator.setQualifiedTableName(\"%1$s\");%n", m
+                    .getQualifiedTableName());
+            print("__idGenerator.setInitialValue(%1$s);%n", m.getInitialValue());
+            print("__idGenerator.setAllocationSize(%1$s);%n", m
+                    .getAllocationSize());
+            print("__idGenerator.setPkColumnName(\"%1$s\");%n", m
+                    .getPkColumnName());
+            print("__idGenerator.setPkColumnValue(\"%1$s\");%n", m
+                    .getPkColumnValue());
+            print("__idGenerator.setValueColumnName(\"%1$s\");%n", m
+                    .getValueColumnName());
+            print("__idGenerator.initialize();%n");
+            unindent();
+            print("}%n");
             return null;
         }
     }

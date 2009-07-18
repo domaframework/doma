@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.seasar.doma.entity.EntityListener;
-import org.seasar.doma.entity.NullEntityListener;
+import org.seasar.doma.entity.BuiltinEntityListener;
 
 /**
  * @author taedium
@@ -31,7 +31,7 @@ import org.seasar.doma.entity.NullEntityListener;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Entity {
 
-    Class<? extends EntityListener<?>> listener() default NullEntityListener.class;
+    Class<? extends EntityListener<?>> listener() default BuiltinEntityListener.class;
 
     long serialVersionUID() default 1L;
 }

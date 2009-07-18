@@ -31,7 +31,7 @@ import org.seasar.doma.entity.AssignedIdProperty;
 import org.seasar.doma.entity.BasicProperty;
 import org.seasar.doma.entity.DomaAbstractEntity;
 import org.seasar.doma.entity.GeneratedIdProperty;
-import org.seasar.doma.entity.NullEntityListener;
+import org.seasar.doma.entity.BuiltinEntityListener;
 import org.seasar.doma.entity.EntityProperty;
 import org.seasar.doma.entity.VersionProperty;
 
@@ -40,7 +40,7 @@ public class Emp_ extends DomaAbstractEntity<Emp> implements Emp, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private static final NullEntityListener __listener = new NullEntityListener();
+    private static final BuiltinEntityListener __listener = new BuiltinEntityListener();
 
     private transient AssignedIdProperty<IntegerDomain> id = new AssignedIdProperty<IntegerDomain>(
             "id", null, new IntegerDomain(), true, true);

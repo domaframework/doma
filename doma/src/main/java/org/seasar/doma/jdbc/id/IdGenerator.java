@@ -19,7 +19,6 @@ import java.sql.Statement;
 
 import org.seasar.doma.GenerationType;
 
-
 /**
  * @author taedium
  * 

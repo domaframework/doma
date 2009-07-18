@@ -5,7 +5,7 @@ public class ChildEntity_ extends org.seasar.doma.entity.DomaAbstractEntity<org.
 
     private static final long serialVersionUID = 1L;
 
-    private static final org.seasar.doma.entity.NullEntityListener __listener = new org.seasar.doma.entity.NullEntityListener();
+    private static final org.seasar.doma.entity.BuiltinEntityListener __listener = new org.seasar.doma.entity.BuiltinEntityListener();
 
     private transient org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain> aaa = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain>("aaa", null, new org.seasar.doma.domain.IntegerDomain(), true, true);
 

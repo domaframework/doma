@@ -13,14 +13,14 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.id;
+package org.seasar.doma.jdbc.id;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.jdbc.dialect.PostgresDialect;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
-import org.seasar.doma.jdbc.id.IdentityIdGenerator;
+import org.seasar.doma.jdbc.id.BuiltinIdentityIdGenerator;
 
 import junit.framework.TestCase;
 import example.entity.Emp_;
@@ -29,7 +29,7 @@ import example.entity.Emp_;
  * @author taedium
  * 
  */
-public class IdentityIdGeneratorTest extends TestCase {
+public class BuiltinIdentityIdGeneratorTest extends TestCase {
 
     public void test_identitySelectSql() throws Exception {
         MockConfig config = new MockConfig();
@@ -37,7 +37,7 @@ public class IdentityIdGeneratorTest extends TestCase {
         MockResultSet resultSet = config.dataSource.connection.preparedStatement.resultSet;
         resultSet.rows.add(new RowData(11L));
 
-        IdentityIdGenerator identityIdGenerator = new IdentityIdGenerator();
+        BuiltinIdentityIdGenerator identityIdGenerator = new BuiltinIdentityIdGenerator();
         IdGenerationConfig idGenerationConfig = new IdGenerationConfig(config,
                 new Emp_(), "EMP", "ID");
         Long value = identityIdGenerator

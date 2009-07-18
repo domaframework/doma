@@ -26,7 +26,6 @@ import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.message.MessageCode;
 
-
 /**
  * @author taedium
  * 

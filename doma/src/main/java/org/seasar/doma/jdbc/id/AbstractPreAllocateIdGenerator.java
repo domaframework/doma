@@ -26,14 +26,17 @@ import java.util.concurrent.ConcurrentMap;
 public abstract class AbstractPreAllocateIdGenerator extends
         AbstractIdGenerator {
 
-    protected final long initialValue;
+    protected long initialValue;
 
-    protected final long allocationSize;
+    protected long allocationSize;
 
     protected ConcurrentMap<String, IdContext> idContextMap = new ConcurrentHashMap<String, IdContext>();
 
-    public AbstractPreAllocateIdGenerator(long initialValue, long allocationSize) {
+    public void setInitialValue(long initialValue) {
         this.initialValue = initialValue;
+    }
+
+    public void setAllocationSize(long allocationSize) {
         this.allocationSize = allocationSize;
     }
 

@@ -5,7 +5,7 @@ public class ReturnListTransientEntity_ extends org.seasar.doma.entity.DomaAbstr
 
     private static final long serialVersionUID = 1L;
 
-    private static final org.seasar.doma.entity.NullEntityListener __listener = new org.seasar.doma.entity.NullEntityListener();
+    private static final org.seasar.doma.entity.BuiltinEntityListener __listener = new org.seasar.doma.entity.BuiltinEntityListener();
 
     private transient org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain> id = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain>("id", null, new org.seasar.doma.domain.IntegerDomain(), true, true);
 

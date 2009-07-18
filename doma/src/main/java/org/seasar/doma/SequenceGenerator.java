@@ -20,6 +20,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.seasar.doma.jdbc.id.BuiltinSequenceIdGenerator;
 import org.seasar.doma.jdbc.id.SequenceIdGenerator;
 
 /**
@@ -36,9 +37,9 @@ public @interface SequenceGenerator {
 
     String sequence();
 
-    int initialValue() default 1;
+    long initialValue() default 1;
 
-    int allocationSize() default 1;
+    long allocationSize() default 1;
 
-    Class<? extends SequenceIdGenerator> idGeneratorImplementer() default SequenceIdGenerator.class;
+    Class<? extends SequenceIdGenerator> idGeneratorImplementer() default BuiltinSequenceIdGenerator.class;
 }

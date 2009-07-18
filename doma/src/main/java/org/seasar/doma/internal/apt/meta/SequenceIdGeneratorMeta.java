@@ -25,14 +25,14 @@ public class SequenceIdGeneratorMeta implements IdGeneratorMeta {
 
     protected final String qualifiedSequenceName;
 
-    protected final int initialValue;
+    protected final long initialValue;
 
-    protected final int allocationSize;
+    protected final long allocationSize;
 
     protected final String idGeneratorClassName;
 
     public SequenceIdGeneratorMeta(String qualifiedSequenceName,
-            int initialValue, int allocationSize, String idGeneratorClassName) {
+            long initialValue, long allocationSize, String idGeneratorClassName) {
         assertNotNull(qualifiedSequenceName, idGeneratorClassName);
         this.qualifiedSequenceName = qualifiedSequenceName;
         this.initialValue = initialValue;
@@ -44,11 +44,11 @@ public class SequenceIdGeneratorMeta implements IdGeneratorMeta {
         return qualifiedSequenceName;
     }
 
-    public int getInitialValue() {
+    public long getInitialValue() {
         return initialValue;
     }
 
-    public int getAllocationSize() {
+    public long getAllocationSize() {
         return allocationSize;
     }
 

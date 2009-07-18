@@ -13,11 +13,13 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.id;
+package org.seasar.doma.jdbc.id;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.LinkedList;
+
+import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockConnection;
@@ -25,17 +27,14 @@ import org.seasar.doma.internal.jdbc.mock.MockDataSource;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.jdbc.dialect.PostgresDialect;
-import org.seasar.doma.jdbc.id.IdGenerationConfig;
-import org.seasar.doma.jdbc.id.TableIdGenerator;
 
-import junit.framework.TestCase;
 import example.entity.Emp_;
 
 /**
  * @author taedium
  * 
  */
-public class TableIdGeneratorTest extends TestCase {
+public class BuiltinTableIdGeneratorTest extends TestCase {
 
     public void test() throws Exception {
         MockConfig config = new MockConfig();
@@ -55,8 +54,14 @@ public class TableIdGeneratorTest extends TestCase {
             }
         };
 
-        TableIdGenerator idGenerator = new TableIdGenerator("aaa", "PK",
-                "VALUE", "EMP_ID", 1, 1);
+        BuiltinTableIdGenerator idGenerator = new BuiltinTableIdGenerator();
+        idGenerator.setQualifiedTableName("aaa");
+        idGenerator.setPkColumnName("PK");
+        idGenerator.setPkColumnValue("EMP_ID");
+        idGenerator.setValueColumnName("VALUE");
+        idGenerator.setInitialValue(1);
+        idGenerator.setAllocationSize(1);
+        idGenerator.initialize();
         IdGenerationConfig idGenerationConfig = new IdGenerationConfig(config,
                 new Emp_(), "EMP", "ID");
         Long value = idGenerator.generatePreInsert(idGenerationConfig);

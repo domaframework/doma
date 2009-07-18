@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import org.seasar.doma.jdbc.id.IdentityIdGenerator;
+import org.seasar.doma.jdbc.id.BuiltinIdentityIdGenerator;
 
 /**
  * @author taedium
@@ -25,7 +25,7 @@ public class IdentityIdGeneratorMeta implements IdGeneratorMeta {
 
     @Override
     public String getIdGeneratorClassName() {
-        return IdentityIdGenerator.class.getName();
+        return BuiltinIdentityIdGenerator.class.getName();
     }
 
     @Override

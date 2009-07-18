@@ -20,7 +20,7 @@ package org.seasar.doma.entity;
  * @author taedium
  * 
  */
-public class NullEntityListener implements EntityListener<Object> {
+public class BuiltinEntityListener implements EntityListener<Object> {
 
     @Override
     public void preInsert(Object entity) {

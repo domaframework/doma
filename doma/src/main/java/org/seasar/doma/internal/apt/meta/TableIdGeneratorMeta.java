@@ -31,15 +31,15 @@ public class TableIdGeneratorMeta implements IdGeneratorMeta {
 
     protected final String pkColumnValue;
 
-    protected final int initialValue;
+    protected final long initialValue;
 
-    protected final int allocationSize;
+    protected final long allocationSize;
 
     protected final String idGeneratorClassName;
 
     public TableIdGeneratorMeta(String qualifiedTableName, String pkColumnName,
-            String valueColumnName, String pkColumnValue, int initialValue,
-            int allocationSize, String idGeneratorClassName) {
+            String valueColumnName, String pkColumnValue, long initialValue,
+            long allocationSize, String idGeneratorClassName) {
         assertNotNull(qualifiedTableName, pkColumnName, valueColumnName, pkColumnName, idGeneratorClassName);
         this.qualifiedTableName = qualifiedTableName;
         this.pkColumnName = pkColumnName;
@@ -66,11 +66,11 @@ public class TableIdGeneratorMeta implements IdGeneratorMeta {
         return pkColumnValue;
     }
 
-    public int getInitialValue() {
+    public long getInitialValue() {
         return initialValue;
     }
 
-    public int getAllocationSize() {
+    public long getAllocationSize() {
         return allocationSize;
     }
 
