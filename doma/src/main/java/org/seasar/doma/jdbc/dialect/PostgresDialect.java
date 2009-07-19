@@ -25,7 +25,9 @@ import org.seasar.doma.internal.jdbc.dialect.PostgresForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.PostgresPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
+import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
+import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.type.AbstractResultSetType;
 import org.seasar.doma.jdbc.type.JdbcType;
@@ -38,7 +40,17 @@ public class PostgresDialect extends StandardDialect {
 
     protected static final String UNIQUE_CONSTRAINT_VIOLATION_STATE_CODE = "23505";
 
-    protected static JdbcType<ResultSet> RESULT_SET = new PostgresResultSetType();
+    protected static final JdbcType<ResultSet> RESULT_SET = new PostgresResultSetType();
+
+    public PostgresDialect() {
+        this(new PostgresJdbcMappingVisitor(),
+                new PostgresSqlLogFormattingVisitor());
+    }
+
+    public PostgresDialect(JdbcMappingVisitor jdbcMappingVisitor,
+            SqlLogFormattingVisitor sqlLogFormattingVisitor) {
+        super(jdbcMappingVisitor, sqlLogFormattingVisitor);
+    }
 
     @Override
     public String getName() {
@@ -133,6 +145,14 @@ public class PostgresDialect extends StandardDialect {
         public PostgresResultSetType() {
             super(Types.OTHER);
         }
+    }
+
+    public static class PostgresJdbcMappingVisitor extends
+            StandardJdbcMappingVisitor {
+    }
+
+    public static class PostgresSqlLogFormattingVisitor extends
+            StandardSqlLogFormattingVisitor {
     }
 
 }

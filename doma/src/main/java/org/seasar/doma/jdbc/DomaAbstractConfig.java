@@ -15,9 +15,6 @@
  */
 package org.seasar.doma.jdbc;
 
-import java.sql.SQLException;
-
-import org.seasar.doma.domain.DomainVisitor;
 
 /**
  * @author taedium
@@ -33,10 +30,6 @@ public abstract class DomaAbstractConfig implements Config {
 
     protected static RequiresNewController requiresNewController = new BuiltinRequiresNewController();
 
-    protected static DomainVisitor<Void, JdbcMappingFunction, SQLException> jdbcMappingVisitor = new JdbcMappingVisitor();
-
-    protected static DomainVisitor<String, SqlLogFormattingFunction, RuntimeException> sqlLogFormattingVisitor = new SqlLogFormattingVisitor();
-
     @Override
     public String dataSourceName() {
         return getClass().getName();
@@ -50,16 +43,6 @@ public abstract class DomaAbstractConfig implements Config {
     @Override
     public SqlFileRepository sqlFileRepository() {
         return sqlFileRepository;
-    }
-
-    @Override
-    public DomainVisitor<Void, JdbcMappingFunction, SQLException> jdbcMappingVisitor() {
-        return jdbcMappingVisitor;
-    }
-
-    @Override
-    public DomainVisitor<String, SqlLogFormattingFunction, RuntimeException> sqlLogFormattingVisitor() {
-        return sqlLogFormattingVisitor;
     }
 
     @Override

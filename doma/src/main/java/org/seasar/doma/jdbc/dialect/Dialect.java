@@ -18,9 +18,11 @@ package org.seasar.doma.jdbc.dialect;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.type.JdbcType;
 
@@ -51,8 +53,6 @@ public interface Dialect {
 
     boolean supportsResultSetReturningAsOutParameter();
 
-    boolean supportsBooleanType();
-
     Sql<?> getIdentitySelectSql(String qualifiedTableName, String columnName);
 
     Sql<?> getSequenceNextValSql(String qualifiedSequenceName,
@@ -63,5 +63,9 @@ public interface Dialect {
     String applyQuote(String name);
 
     String removeQuote(String name);
+
+    JdbcMappingVisitor getJdbcMappingVisitor();
+
+    SqlLogFormattingVisitor getSqlLogFormattingVisitor();
 
 }

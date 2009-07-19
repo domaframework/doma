@@ -20,14 +20,20 @@ import java.sql.SQLException;
 import java.util.Collections;
 
 import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.domain.AbstractBooleanDomain;
 import org.seasar.doma.internal.jdbc.dialect.OracleForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.OraclePagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
+import org.seasar.doma.jdbc.JdbcMappingFunction;
+import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
+import org.seasar.doma.jdbc.SqlLogFormattingFunction;
+import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.type.AbstractResultSetType;
 import org.seasar.doma.jdbc.type.JdbcType;
+import org.seasar.doma.jdbc.type.JdbcTypes;
 
 /**
  * @author taedium
@@ -37,7 +43,17 @@ public class OracleDialect extends StandardDialect {
 
     protected static final int UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE = 1;
 
-    protected static JdbcType<ResultSet> RESULT_SET = new OracleResultSetType();
+    protected static final JdbcType<ResultSet> RESULT_SET = new OracleResultSetType();
+
+    public OracleDialect() {
+        super(new OracleJdbcMappingVisitor(),
+                new OracleSqlLogFormattingVisitor());
+    }
+
+    public OracleDialect(JdbcMappingVisitor jdbcMappingVisitor,
+            SqlLogFormattingVisitor sqlLogFormattingVisitor) {
+        super(jdbcMappingVisitor, sqlLogFormattingVisitor);
+    }
 
     @Override
     public String getName() {
@@ -109,11 +125,6 @@ public class OracleDialect extends StandardDialect {
     }
 
     @Override
-    public boolean supportsBooleanType() {
-        return false;
-    }
-
-    @Override
     public JdbcType<ResultSet> getResultSetType() {
         return RESULT_SET;
     }
@@ -127,4 +138,24 @@ public class OracleDialect extends StandardDialect {
         }
     }
 
+    public static class OracleJdbcMappingVisitor extends
+            StandardJdbcMappingVisitor {
+
+        @Override
+        public Void visitAbstractBooleanDomain(AbstractBooleanDomain<?> domain,
+                JdbcMappingFunction p) throws SQLException {
+            return p.apply(domain, JdbcTypes.INT_ADAPTIVE_BOOLEAN);
+        }
+    }
+
+    public static class OracleSqlLogFormattingVisitor extends
+            StandardSqlLogFormattingVisitor {
+
+        @Override
+        public String visitAbstractBooleanDomain(
+                AbstractBooleanDomain<?> domain, SqlLogFormattingFunction p)
+                throws RuntimeException {
+            return p.apply(domain, JdbcTypes.INT_ADAPTIVE_BOOLEAN);
+        }
+    }
 }

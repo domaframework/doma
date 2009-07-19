@@ -26,8 +26,6 @@ import org.seasar.doma.jdbc.type.JdbcType;
  */
 public interface JdbcMappingFunction {
 
-    Config getConfig();
-
     <R, V> R apply(Domain<V, ?> domain, JdbcType<V> jdbcType)
             throws SQLException;
 }

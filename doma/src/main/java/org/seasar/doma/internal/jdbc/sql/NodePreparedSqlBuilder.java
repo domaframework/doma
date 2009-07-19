@@ -118,7 +118,7 @@ public class NodePreparedSqlBuilder implements
         assertNotNull(config, evaluator);
         this.config = config;
         this.evaluator = evaluator;
-        this.formattingFunction = new ConvertToStringFunction(config);
+        this.formattingFunction = new ConvertToLogFormatFunction();
     }
 
     public PreparedSql build(SqlNode sqlNode) {
@@ -502,8 +502,8 @@ public class NodePreparedSqlBuilder implements
         protected void addBindValue(Domain<?, ?> value) {
             parameters.add(new InParameter(value));
             rawSqlBuf.append("?");
-            formattedSqlBuf.append(value.accept(config
-                    .sqlLogFormattingVisitor(), formattingFunction));
+            formattedSqlBuf.append(value.accept(config.dialect()
+                    .getSqlLogFormattingVisitor(), formattingFunction));
         }
 
         protected void addAllParameters(List<PreparedSqlParameter> values) {

@@ -15,11 +15,8 @@
  */
 package org.seasar.doma.jdbc;
 
-import java.sql.SQLException;
-
 import javax.sql.DataSource;
 
-import org.seasar.doma.domain.DomainVisitor;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
@@ -37,10 +34,6 @@ public interface Config {
     NameConvention nameConvention();
 
     SqlFileRepository sqlFileRepository();
-
-    DomainVisitor<Void, JdbcMappingFunction, SQLException> jdbcMappingVisitor();
-
-    DomainVisitor<String, SqlLogFormattingFunction, RuntimeException> sqlLogFormattingVisitor();
 
     JdbcLogger jdbcLogger();
 

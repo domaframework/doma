@@ -28,6 +28,7 @@ import org.seasar.doma.domain.Domain;
 import org.seasar.doma.entity.Entity;
 import org.seasar.doma.entity.EntityProperty;
 import org.seasar.doma.internal.jdbc.query.Query;
+import org.seasar.doma.jdbc.JdbcMappingVisitor;
 
 /**
  * @author taedium
@@ -51,15 +52,17 @@ public class EntityFetcher {
         }
         ResultSetMetaData resultSetMeta = resultSet.getMetaData();
         int count = resultSetMeta.getColumnCount();
+        JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().dialect()
+                .getJdbcMappingVisitor();
         for (int i = 1; i < count + 1; i++) {
             String columnName = resultSetMeta.getColumnLabel(i);
             String propertyName = nameMap.get(columnName.toLowerCase());
-            EntityProperty<?> property = entity.__getEntityProperty(propertyName);
+            EntityProperty<?> property = entity
+                    .__getEntityProperty(propertyName);
             if (property != null) {
                 Domain<?, ?> domain = property.getDomain();
-                GetValueFunction function = new GetValueFunction(query
-                        .getConfig(), resultSet, i);
-                domain.accept(query.getConfig().jdbcMappingVisitor(), function);
+                GetValueFunction function = new GetValueFunction(resultSet, i);
+                domain.accept(jdbcMappingVisitor, function);
             }
         }
     }

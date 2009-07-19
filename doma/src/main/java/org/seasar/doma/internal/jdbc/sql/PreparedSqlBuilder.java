@@ -43,7 +43,7 @@ public class PreparedSqlBuilder {
     public PreparedSqlBuilder(Config config) {
         assertNotNull(config);
         this.config = config;
-        this.formattingFunction = new ConvertToStringFunction(config);
+        this.formattingFunction = new ConvertToLogFormatFunction();
     }
 
     public void appendSql(String sql) {
@@ -58,8 +58,8 @@ public class PreparedSqlBuilder {
 
     public void appendDomain(Domain<?, ?> domain) {
         rawSql.append("?");
-        formattedSql.append(domain
-                .accept(config.sqlLogFormattingVisitor(), formattingFunction));
+        formattedSql.append(domain.accept(config.dialect()
+                .getSqlLogFormattingVisitor(), formattingFunction));
         parameters.add(new InParameter(domain));
     }
 

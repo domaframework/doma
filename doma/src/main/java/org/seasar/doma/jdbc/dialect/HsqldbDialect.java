@@ -22,9 +22,10 @@ import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.internal.jdbc.dialect.HsqldbPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
+import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
+import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
-
 
 /**
  * @author taedium
@@ -33,6 +34,16 @@ import org.seasar.doma.jdbc.SqlNode;
 public class HsqldbDialect extends StandardDialect {
 
     protected static final int UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE = -104;
+
+    public HsqldbDialect() {
+        super(new HsqldbJdbcMappingVisitor(),
+                new HsqldbSqlLogFormattingVisitor());
+    }
+
+    public HsqldbDialect(JdbcMappingVisitor jdbcMappingVisitor,
+            SqlLogFormattingVisitor sqlLogFormattingVisitor) {
+        super(jdbcMappingVisitor, sqlLogFormattingVisitor);
+    }
 
     @Override
     public String getName() {
@@ -105,4 +116,13 @@ public class HsqldbDialect extends StandardDialect {
     public boolean supportsSequence() {
         return true;
     }
+
+    public static class HsqldbJdbcMappingVisitor extends
+            StandardJdbcMappingVisitor {
+    }
+
+    public static class HsqldbSqlLogFormattingVisitor extends
+            StandardSqlLogFormattingVisitor {
+    }
+
 }

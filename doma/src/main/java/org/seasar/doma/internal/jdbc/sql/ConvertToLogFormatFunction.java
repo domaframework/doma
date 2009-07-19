@@ -15,10 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.Assertions.*;
-
 import org.seasar.doma.domain.Domain;
-import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.jdbc.type.JdbcType;
 
@@ -26,19 +23,7 @@ import org.seasar.doma.jdbc.type.JdbcType;
  * @author taedium
  * 
  */
-public class ConvertToStringFunction implements SqlLogFormattingFunction {
-
-    protected final Config config;
-
-    public ConvertToStringFunction(Config config) {
-        assertNotNull(config);
-        this.config = config;
-    }
-
-    @Override
-    public Config getConfig() {
-        return config;
-    }
+public class ConvertToLogFormatFunction implements SqlLogFormattingFunction {
 
     @Override
     public <V> String apply(Domain<V, ?> domain, JdbcType<V> jdbcType) {

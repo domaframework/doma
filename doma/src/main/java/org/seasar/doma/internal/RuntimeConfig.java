@@ -17,18 +17,13 @@ package org.seasar.doma.internal;
 
 import static org.seasar.doma.internal.util.Assertions.*;
 
-import java.sql.SQLException;
-
 import javax.sql.DataSource;
 
-import org.seasar.doma.domain.DomainVisitor;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcLogger;
-import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.NameConvention;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.SqlFileRepository;
-import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
@@ -44,10 +39,6 @@ public class RuntimeConfig implements Config {
     protected final Dialect dialect;
 
     protected final NameConvention nameConvention;
-
-    protected final DomainVisitor<Void, JdbcMappingFunction, SQLException> jdbcMappingVisitor;
-
-    protected final DomainVisitor<String, SqlLogFormattingFunction, RuntimeException> sqlLogFormattingVisitor;
 
     protected final SqlFileRepository sqlFileRepository;
 
@@ -73,8 +64,6 @@ public class RuntimeConfig implements Config {
         assertNotNull(config.dataSourceName());
         assertNotNull(config.dialect());
         assertNotNull(config.nameConvention());
-        assertNotNull(config.jdbcMappingVisitor());
-        assertNotNull(config.sqlLogFormattingVisitor());
         assertNotNull(config.sqlFileRepository());
         assertNotNull(config.jdbcLogger());
         assertNotNull(config.requiresNewController());
@@ -82,8 +71,6 @@ public class RuntimeConfig implements Config {
         this.dataSourceName = config.dataSourceName();
         this.dialect = config.dialect();
         this.nameConvention = config.nameConvention();
-        this.jdbcMappingVisitor = config.jdbcMappingVisitor();
-        this.sqlLogFormattingVisitor = config.sqlLogFormattingVisitor();
         this.sqlFileRepository = config.sqlFileRepository();
         this.jdbcLogger = config.jdbcLogger();
         this.requiresNewController = config.requiresNewController();
@@ -109,14 +96,6 @@ public class RuntimeConfig implements Config {
 
     public NameConvention nameConvention() {
         return nameConvention;
-    }
-
-    public DomainVisitor<Void, JdbcMappingFunction, SQLException> jdbcMappingVisitor() {
-        return jdbcMappingVisitor;
-    }
-
-    public DomainVisitor<String, SqlLogFormattingFunction, RuntimeException> sqlLogFormattingVisitor() {
-        return sqlLogFormattingVisitor;
     }
 
     public SqlFileRepository sqlFileRepository() {

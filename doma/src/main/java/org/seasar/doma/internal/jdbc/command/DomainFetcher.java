@@ -23,6 +23,7 @@ import java.sql.SQLException;
 
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.internal.jdbc.query.Query;
+import org.seasar.doma.jdbc.JdbcMappingVisitor;
 
 /**
  * @author taedium
@@ -40,10 +41,11 @@ public class DomainFetcher {
     public void fetch(ResultSet resultSet, Domain<?, ?> domain)
             throws SQLException {
         ResultSetMetaData resultSetMeta = resultSet.getMetaData();
+        JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().dialect()
+                .getJdbcMappingVisitor();
         if (resultSetMeta.getColumnCount() > 0) {
-            GetValueFunction function = new GetValueFunction(query.getConfig(),
-                    resultSet, 1);
-            domain.accept(query.getConfig().jdbcMappingVisitor(), function);
+            GetValueFunction function = new GetValueFunction(resultSet, 1);
+            domain.accept(jdbcMappingVisitor, function);
         }
     }
 }

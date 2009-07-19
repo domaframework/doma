@@ -22,7 +22,6 @@ import java.sql.SQLException;
 
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.domain.Domain;
-import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.type.JdbcType;
 
@@ -33,24 +32,15 @@ import org.seasar.doma.jdbc.type.JdbcType;
  */
 public class SetValueFunction implements JdbcMappingFunction {
 
-    protected final Config config;
-
     protected final PreparedStatement preparedStatement;
 
     protected final int index;
 
-    public SetValueFunction(Config config, PreparedStatement preparedStatement,
-            int index) {
-        assertNotNull(config, preparedStatement);
+    public SetValueFunction(PreparedStatement preparedStatement, int index) {
+        assertNotNull(preparedStatement);
         assertTrue(index > 0, index);
-        this.config = config;
         this.preparedStatement = preparedStatement;
         this.index = index;
-    }
-
-    @Override
-    public Config getConfig() {
-        return config;
     }
 
     @Override

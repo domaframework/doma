@@ -15,24 +15,17 @@
  */
 package org.seasar.doma.internal.jdbc.mock;
 
-import java.sql.SQLException;
-
 import javax.sql.DataSource;
 
-import org.seasar.doma.domain.DomainVisitor;
-import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.JdbcLogger;
-import org.seasar.doma.jdbc.JdbcMappingFunction;
-import org.seasar.doma.jdbc.JdbcMappingVisitor;
-import org.seasar.doma.jdbc.NameConvention;
-import org.seasar.doma.jdbc.RequiresNewController;
-import org.seasar.doma.jdbc.SqlFileRepository;
-import org.seasar.doma.jdbc.SqlLogFormattingFunction;
-import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.BuiltinJdbcLogger;
 import org.seasar.doma.jdbc.BuiltinNameConvention;
 import org.seasar.doma.jdbc.BuiltinRequiresNewController;
 import org.seasar.doma.jdbc.BuiltinSqlFileRepository;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.JdbcLogger;
+import org.seasar.doma.jdbc.NameConvention;
+import org.seasar.doma.jdbc.RequiresNewController;
+import org.seasar.doma.jdbc.SqlFileRepository;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
 
@@ -49,10 +42,6 @@ public class MockConfig implements Config {
     protected NameConvention nameConvention = new BuiltinNameConvention();
 
     protected SqlFileRepository sqlFileRepository = new BuiltinSqlFileRepository();
-
-    protected DomainVisitor<Void, JdbcMappingFunction, SQLException> jdbcMappingVisitor = new JdbcMappingVisitor();
-
-    protected DomainVisitor<String, SqlLogFormattingFunction, RuntimeException> sqlLogFormattingVisitor = new SqlLogFormattingVisitor();
 
     protected JdbcLogger sqlLogger = new BuiltinJdbcLogger();
 
@@ -74,11 +63,6 @@ public class MockConfig implements Config {
     }
 
     @Override
-    public DomainVisitor<Void, JdbcMappingFunction, SQLException> jdbcMappingVisitor() {
-        return jdbcMappingVisitor;
-    }
-
-    @Override
     public NameConvention nameConvention() {
         return nameConvention;
     }
@@ -86,11 +70,6 @@ public class MockConfig implements Config {
     @Override
     public SqlFileRepository sqlFileRepository() {
         return sqlFileRepository;
-    }
-
-    @Override
-    public DomainVisitor<String, SqlLogFormattingFunction, RuntimeException> sqlLogFormattingVisitor() {
-        return sqlLogFormattingVisitor;
     }
 
     @Override
@@ -153,24 +132,6 @@ public class MockConfig implements Config {
 
     public void setSqlFileRepository(SqlFileRepository sqlFileRepository) {
         this.sqlFileRepository = sqlFileRepository;
-    }
-
-    public DomainVisitor<Void, JdbcMappingFunction, SQLException> getJdbcMappingVisitor() {
-        return jdbcMappingVisitor;
-    }
-
-    public void setJdbcMappingVisitor(
-            DomainVisitor<Void, JdbcMappingFunction, SQLException> jdbcMappingVisitor) {
-        this.jdbcMappingVisitor = jdbcMappingVisitor;
-    }
-
-    public DomainVisitor<String, SqlLogFormattingFunction, RuntimeException> getSqlLogFormattingVisitor() {
-        return sqlLogFormattingVisitor;
-    }
-
-    public void setSqlLogFormattingVisitor(
-            DomainVisitor<String, SqlLogFormattingFunction, RuntimeException> sqlLogFormattingVisitor) {
-        this.sqlLogFormattingVisitor = sqlLogFormattingVisitor;
     }
 
     public JdbcLogger getSqlLogger() {

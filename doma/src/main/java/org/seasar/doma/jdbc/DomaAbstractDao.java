@@ -20,7 +20,6 @@ import javax.sql.DataSource;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.internal.RuntimeConfig;
 
-
 /**
  * @author taedium
  * 
@@ -51,14 +50,6 @@ public abstract class DomaAbstractDao {
             throw new DomaConfigException(config.getClass().getName(),
                     "nameConvention");
         }
-        if (config.jdbcMappingVisitor() == null) {
-            throw new DomaConfigException(config.getClass().getName(),
-                    "jdbcMappingVisitor");
-        }
-        if (config.sqlLogFormattingVisitor() == null) {
-            throw new DomaConfigException(config.getClass().getName(),
-                    "sqlLogFormattingVisitor");
-        }
         if (config.sqlFileRepository() == null) {
             throw new DomaConfigException(config.getClass().getName(),
                     "sqlFileRepository");
@@ -77,7 +68,8 @@ public abstract class DomaAbstractDao {
 
     protected void entering(String callerClassName, String callerMethodName,
             Object... parameters) {
-        config.jdbcLogger()
+        config
+                .jdbcLogger()
                 .logMethodEntering(callerClassName, callerMethodName, parameters);
     }
 

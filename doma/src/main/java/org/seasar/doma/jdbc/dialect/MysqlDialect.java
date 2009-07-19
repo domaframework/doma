@@ -22,9 +22,10 @@ import java.util.Set;
 
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.internal.jdbc.dialect.MysqlPagingTransformer;
+import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
+import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
-
 
 /**
  * @author taedium
@@ -34,6 +35,15 @@ public class MysqlDialect extends StandardDialect {
 
     protected static final Set<Integer> UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODES = new HashSet<Integer>(
             Arrays.asList(1022, 1062));
+
+    public MysqlDialect() {
+        this(new MysqlJdbcMappingVisitor(), new MysqlSqlLogFormattingVisitor());
+    }
+
+    public MysqlDialect(JdbcMappingVisitor jdbcMappingVisitor,
+            SqlLogFormattingVisitor sqlLogFormattingVisitor) {
+        super(jdbcMappingVisitor, sqlLogFormattingVisitor);
+    }
 
     @Override
     public String getName() {
@@ -70,6 +80,14 @@ public class MysqlDialect extends StandardDialect {
         MysqlPagingTransformer transformer = new MysqlPagingTransformer(offset,
                 limit);
         return transformer.transform(sqlNode);
+    }
+
+    public static class MysqlJdbcMappingVisitor extends
+            StandardJdbcMappingVisitor {
+    }
+
+    public static class MysqlSqlLogFormattingVisitor extends
+            StandardSqlLogFormattingVisitor {
     }
 
 }

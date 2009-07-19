@@ -24,7 +24,6 @@ import java.sql.Statement;
 import java.util.List;
 
 import org.seasar.doma.domain.Domain;
-import org.seasar.doma.domain.DomainVisitor;
 import org.seasar.doma.entity.Entity;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlParameter;
@@ -38,8 +37,7 @@ import org.seasar.doma.internal.jdbc.sql.InOutParameter;
 import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.ListParameter;
 import org.seasar.doma.internal.jdbc.sql.OutParameter;
-import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.JdbcMappingFunction;
+import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.type.JdbcType;
 
@@ -78,11 +76,9 @@ public class CallableSqlParameterFetcher {
 
         protected final Query query;
 
-        protected final Config config;
-
         protected final Dialect dialect;
 
-        protected final DomainVisitor<Void, JdbcMappingFunction, SQLException> jdbcMappingVisitor;
+        protected final JdbcMappingVisitor jdbcMappingVisitor;
 
         protected final CallableStatement callableStatement;
 
@@ -90,9 +86,8 @@ public class CallableSqlParameterFetcher {
 
         public FetchingVisitor(Query query, CallableStatement callableStatement) {
             this.query = query;
-            this.config = query.getConfig();
-            this.dialect = config.dialect();
-            this.jdbcMappingVisitor = config.jdbcMappingVisitor();
+            this.dialect = query.getConfig().dialect();
+            this.jdbcMappingVisitor = dialect.getJdbcMappingVisitor();
             this.callableStatement = callableStatement;
         }
 
@@ -101,7 +96,7 @@ public class CallableSqlParameterFetcher {
                 throws SQLException {
             Domain<?, ?> domain = parameter.getDomain();
             domain.accept(jdbcMappingVisitor, new GetOutParameterFunction(
-                    config, callableStatement, index));
+                    callableStatement, index));
             index++;
             return null;
         }
@@ -118,7 +113,7 @@ public class CallableSqlParameterFetcher {
                 throws SQLException {
             Domain<?, ?> domain = parameter.getDomain();
             domain.accept(jdbcMappingVisitor, new GetOutParameterFunction(
-                    config, callableStatement, index));
+                    callableStatement, index));
             index++;
             return null;
         }
@@ -128,7 +123,7 @@ public class CallableSqlParameterFetcher {
                 DomainResultParameter<?> parameter, Void p) throws SQLException {
             Domain<?, ?> domain = parameter.getDomain();
             domain.accept(jdbcMappingVisitor, new GetOutParameterFunction(
-                    config, callableStatement, index));
+                    callableStatement, index));
             index++;
             return null;
         }

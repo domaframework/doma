@@ -58,7 +58,7 @@ public class CallableSqlBuilder
         this.resultParameter = resultParameter;
         this.parameters = parameters;
         this.moduleName = moduleName;
-        this.formattingFunction = new ConvertToStringFunction(config);
+        this.formattingFunction = new ConvertToLogFormatFunction();
     }
 
     public CallableSql build() {
@@ -140,8 +140,8 @@ public class CallableSqlBuilder
             throws RuntimeException {
         Domain<?, ?> domain = parameter.getDomain();
         p.appendRawSql("?, ");
-        p.appendFormattedSql(domain
-                .accept(config.sqlLogFormattingVisitor(), formattingFunction));
+        p.appendFormattedSql(domain.accept(config.dialect()
+                .getSqlLogFormattingVisitor(), formattingFunction));
         p.appendFormattedSql(", ");
         p.addParentheticParameter(parameter);
         return null;
@@ -152,8 +152,8 @@ public class CallableSqlBuilder
             throws RuntimeException {
         Domain<?, ?> domain = parameter.getDomain();
         p.appendRawSql("?, ");
-        p.appendFormattedSql(domain
-                .accept(config.sqlLogFormattingVisitor(), formattingFunction));
+        p.appendFormattedSql(domain.accept(config.dialect()
+                .getSqlLogFormattingVisitor(), formattingFunction));
         p.appendFormattedSql(", ");
         p.addParentheticParameter(parameter);
         return null;

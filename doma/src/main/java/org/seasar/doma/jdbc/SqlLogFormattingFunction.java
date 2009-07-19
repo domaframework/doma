@@ -24,7 +24,5 @@ import org.seasar.doma.jdbc.type.JdbcType;
  */
 public interface SqlLogFormattingFunction {
 
-    Config getConfig();
-
     <V> String apply(Domain<V, ?> domain, JdbcType<V> jdbcType);
 }
