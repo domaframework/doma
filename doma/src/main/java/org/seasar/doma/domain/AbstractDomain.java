@@ -15,12 +15,7 @@
  */
 package org.seasar.doma.domain;
 
-import java.lang.reflect.Method;
-
 import org.seasar.doma.DomaIllegalArgumentException;
-import org.seasar.doma.internal.WrapException;
-import org.seasar.doma.internal.util.Methods;
-import org.seasar.doma.message.MessageCode;
 
 /**
  * @author taedium
@@ -62,17 +57,6 @@ public abstract class AbstractDomain<V, D extends AbstractDomain<V, D>>
             throw new DomaIllegalArgumentException("other", other);
         }
         setInternal(other.get());
-    }
-
-    @Override
-    public void setByReflection(Object value) {
-        try {
-            Method setter = Methods.getMethod(getClass(), "set", Object.class);
-            Methods.invoke(setter, this, value);
-        } catch (WrapException e) {
-            Throwable cause = e.getCause();
-            throw new DomainException(MessageCode.DOMA1004, cause, cause);
-        }
     }
 
     @Override

@@ -19,24 +19,7 @@ package org.seasar.doma.domain;
  * @author taedium
  * 
  */
-public interface Domain<V, D extends Domain<V, D>> {
+public interface DomainUtilDelegate {
 
-    V get();
-
-    void set(V value);
-
-    void set(D other);
-
-    boolean isNull();
-
-    boolean isNotNull();
-
-    boolean isChanged();
-
-    void setChanged(boolean changed);
-
-    Class<?> getValueClass();
-
-    <R, P, TH extends Throwable> R accept(DomainVisitor<R, P, TH> visitor, P p)
-            throws TH;
+    void set(Domain<?, ?> domain, Object value);
 }

@@ -26,7 +26,7 @@ import org.seasar.doma.DomaIllegalArgumentException;
  * @author taedium
  * 
  */
-public class AbstractArrayListDomain<E, D extends AbstractArrayListDomain<E, D>>
+public abstract class AbstractArrayListDomain<E, D extends AbstractArrayListDomain<E, D>>
         extends AbstractDomain<ArrayList<E>, AbstractArrayListDomain<E, D>>
         implements
         SerializableDomain<ArrayList<E>, AbstractArrayListDomain<E, D>> {

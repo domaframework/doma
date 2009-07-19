@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * @author taedium
  * 
  */
-public class ArrayListDomain<E> extends
+public final class ArrayListDomain<E> extends
         AbstractArrayListDomain<E, ArrayListDomain<E>> {
 
     private static final long serialVersionUID = 1L;

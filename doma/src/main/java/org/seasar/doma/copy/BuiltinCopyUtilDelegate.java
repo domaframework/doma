@@ -32,6 +32,7 @@ import org.seasar.doma.converter.ConversionException;
 import org.seasar.doma.converter.Converter;
 import org.seasar.doma.converter.Converters;
 import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.DomainUtil;
 import org.seasar.doma.entity.Entity;
 import org.seasar.doma.entity.EntityProperty;
 import org.seasar.doma.internal.util.Classes;
@@ -265,7 +266,7 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
             return;
         }
         Object destValue = convert(converter, srcClass, srcPropertyName, srcPropertyValue, copyOptions);
-        destDomain.setByReflection(destValue);
+        DomainUtil.set(destDomain, destValue);
     }
 
     protected void copyToBeanProperty(Class<?> srcClass,

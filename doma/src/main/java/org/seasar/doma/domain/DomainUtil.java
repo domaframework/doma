@@ -13,29 +13,21 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.entity;
-
-import org.seasar.doma.DomaIllegalArgumentException;
-import org.seasar.doma.domain.Domain;
+package org.seasar.doma.domain;
 
 /**
  * @author taedium
  * 
  */
-public final class EntityUtil {
+public final class DomainUtil {
 
-    private static volatile EntityUtilDelegate delegate = new BuiltinEntityUtilDelegate();
+    private static volatile DomainUtilDelegate delegate = new BuiltinDomainUtilDelegate();
 
-    public static void setDelegate(EntityUtilDelegate delegate) {
-        if (delegate == null) {
-            throw new DomaIllegalArgumentException("delegate", delegate);
-        }
-        EntityUtil.delegate = delegate;
+    public static void setDelegate(DomainUtilDelegate delegate) {
+        DomainUtil.delegate = delegate;
     }
 
-    public <D extends Domain<?, ?>> D getDomain(Object entity,
-            Class<D> domainClass, String propertyName) {
-        return delegate.getDomain(entity, domainClass, propertyName);
+    public static void set(Domain<?, ?> domain, Object value) {
+        delegate.set(domain, value);
     }
-
 }

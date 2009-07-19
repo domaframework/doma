@@ -25,16 +25,16 @@ import org.seasar.doma.DomaIllegalArgumentException;
  */
 public final class CopyUtil {
 
-    private static CopyUtilDelegate delegate = new BuiltinCopyUtilDelegate();
+    private static volatile CopyUtilDelegate delegate = new BuiltinCopyUtilDelegate();
 
-    public static synchronized void setDelegate(CopyUtilDelegate delegate) {
+    public static void setDelegate(CopyUtilDelegate delegate) {
+        if (delegate == null) {
+            throw new DomaIllegalArgumentException("delegate", delegate);
+        }
         CopyUtil.delegate = delegate;
     }
 
     public static void copy(Object src, Object dest) {
-        if (delegate == null) {
-            throw new DomaIllegalArgumentException("delegate", delegate);
-        }
         delegate.copy(src, dest, new CopyOptions());
     }
 
