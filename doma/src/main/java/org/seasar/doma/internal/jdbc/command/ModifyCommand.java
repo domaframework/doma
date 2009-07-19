@@ -23,6 +23,7 @@ import java.sql.SQLException;
 
 import org.seasar.doma.internal.jdbc.query.ModifyQuery;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
+import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.doma.jdbc.SqlExecutionException;
 import org.seasar.doma.jdbc.UniqueConstraintException;
@@ -47,6 +48,9 @@ public abstract class ModifyCommand<Q extends ModifyQuery> implements
 
     public Integer execute() {
         if (!query.isExecutable()) {
+            JdbcLogger logger = query.getConfig().jdbcLogger();
+            logger.logSqlExecutionSkipping(query.getClassName(), query
+                    .getMethodName(), query.getSqlExecutionSkipCause());
             return 0;
         }
         Connection connection = Jdbcs.getConnection(query.getConfig()
@@ -75,8 +79,8 @@ public abstract class ModifyCommand<Q extends ModifyQuery> implements
             throws SQLException;
 
     protected void log() {
-        query.getConfig().jdbcLogger().logSql(query.getClassName(), query
-                .getMethodName(), sql);
+        JdbcLogger logger = query.getConfig().jdbcLogger();
+        logger.logSql(query.getClassName(), query.getMethodName(), sql);
     }
 
     protected void setupOptions(PreparedStatement preparedStatement)

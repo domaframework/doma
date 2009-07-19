@@ -21,7 +21,6 @@ import java.util.logging.Logger;
 
 import org.seasar.doma.DomaIllegalArgumentException;
 
-
 /**
  * @author taedium
  * 
@@ -45,7 +44,7 @@ public class BuiltinJdbcLogger implements JdbcLogger {
     }
 
     @Override
-    public void logMethodEntering(String callerClassName,
+    public void logDaoMethodEntering(String callerClassName,
             String callerMethodName, Object... parameters) {
         if (callerClassName == null) {
             throw new DomaIllegalArgumentException("callerClassName",
@@ -65,7 +64,7 @@ public class BuiltinJdbcLogger implements JdbcLogger {
     }
 
     @Override
-    public void logMethodExiting(String callerClassName,
+    public void logDaoMethodExiting(String callerClassName,
             String callerMethodName, Object result) {
         if (callerClassName == null) {
             throw new DomaIllegalArgumentException("callerClassName",
@@ -77,6 +76,23 @@ public class BuiltinJdbcLogger implements JdbcLogger {
         }
         logger
                 .logp(level, callerClassName, callerMethodName, "RETURN {0}", result);
+    }
+
+    @Override
+    public void logSqlExecutionSkipping(String callerClassName,
+            String callerMethodName, SqlExecutionSkipCause cause) {
+        if (callerClassName == null) {
+            throw new DomaIllegalArgumentException("callerClassName",
+                    callerClassName);
+        }
+        if (callerMethodName == null) {
+            throw new DomaIllegalArgumentException("callerMethodName",
+                    callerMethodName);
+        }
+        if (cause == null) {
+            throw new DomaIllegalArgumentException("cause", cause);
+        }
+        logger.logp(level, callerClassName, callerMethodName, cause.name());
     }
 
     @Override

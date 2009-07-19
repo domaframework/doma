@@ -21,6 +21,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlFile;
 
 public class ItLogger implements JdbcLogger {
@@ -41,17 +42,25 @@ public class ItLogger implements JdbcLogger {
     }
 
     @Override
-    public void logMethodEntering(String callerClassName,
+    public void logDaoMethodEntering(String callerClassName,
             String callerMethodName, Object... parameters) {
         Log log = LogFactory.getLog(callerClassName);
         log.info("START " + callerClassName + "#" + callerMethodName);
     }
 
     @Override
-    public void logMethodExiting(String callerClassName,
+    public void logDaoMethodExiting(String callerClassName,
             String callerMethodName, Object result) {
         Log log = LogFactory.getLog(callerClassName);
         log.info("END   " + callerClassName + "#" + callerMethodName);
+    }
+
+    @Override
+    public void logSqlExecutionSkipping(String callerClassName,
+            String callerMethodName, SqlExecutionSkipCause cause) {
+        Log log = LogFactory.getLog(callerClassName);
+        log.info("SKIPPED(" + cause.name() + ") " + callerClassName + "#"
+                + callerMethodName);
     }
 
     @Override

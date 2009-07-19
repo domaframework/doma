@@ -28,6 +28,7 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.BatchOptimisticLockException;
 import org.seasar.doma.jdbc.BatchSqlExecutionException;
 import org.seasar.doma.jdbc.BatchUniqueConstraintException;
+import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
@@ -47,6 +48,9 @@ public abstract class BatchModifyCommand<Q extends BatchModifyQuery> implements
     @Override
     public int[] execute() {
         if (!query.isExecutable()) {
+            JdbcLogger logger = query.getConfig().jdbcLogger();
+            logger.logSqlExecutionSkipping(query.getClassName(), query
+                    .getMethodName(), query.getSqlExecutionSkipCause());
             return new int[] {};
         }
         Connection connection = Jdbcs.getConnection(query.getConfig()
@@ -117,8 +121,8 @@ public abstract class BatchModifyCommand<Q extends BatchModifyQuery> implements
     }
 
     protected void log(PreparedSql sql) {
-        query.getConfig().jdbcLogger().logSql(query.getClassName(), query
-                .getMethodName(), sql);
+        JdbcLogger logger = query.getConfig().jdbcLogger();
+        logger.logSql(query.getClassName(), query.getMethodName(), sql);
     }
 
     protected void bindParameters(PreparedStatement preparedStatement,

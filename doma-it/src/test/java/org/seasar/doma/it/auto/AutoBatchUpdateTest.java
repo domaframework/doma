@@ -17,6 +17,7 @@ package org.seasar.doma.it.auto;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.runner.RunWith;
@@ -190,5 +191,11 @@ public class AutoBatchUpdateTest {
         } catch (JdbcException expected) {
             assertEquals(MessageCode.DOMA2022, expected.getMessageCode());
         }
+    }
+
+    public void testSqlExecutionSkip() throws Exception {
+        DepartmentDao dao = new DepartmentDao_();
+        int[] result = dao.update(new ArrayList<Department>());
+        assertEquals(0, result.length);
     }
 }

@@ -44,6 +44,7 @@ public class AutoBatchDeleteQuery<I, E extends Entity<I>> extends
         Iterator<? extends E> it = entities.iterator();
         if (it.hasNext()) {
             executable = true;
+            executionSkipCause = null;
             entity = it.next();
             entity.__preDelete();
             prepareTableAndColumnNames();

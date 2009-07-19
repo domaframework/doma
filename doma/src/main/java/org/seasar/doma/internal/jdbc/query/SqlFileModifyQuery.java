@@ -22,6 +22,7 @@ import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlFile;
 
 /**
@@ -113,6 +114,11 @@ public abstract class SqlFileModifyQuery implements ModifyQuery {
     @Override
     public boolean isExecutable() {
         return true;
+    }
+
+    @Override
+    public SqlExecutionSkipCause getSqlExecutionSkipCause() {
+        return null;
     }
 
     public int getQueryTimeout() {

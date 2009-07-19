@@ -156,4 +156,11 @@ public class AutoUpdateTest {
             assertEquals(MessageCode.DOMA2022, expected.getMessageCode());
         }
     }
+
+    public void testSqlExecutionSkip() throws Exception {
+        DepartmentDao dao = new DepartmentDao_();
+        Department department = dao.selectById(new IdDomain(1));
+        int result = dao.update(department);
+        assertEquals(0, result);
+    }
 }

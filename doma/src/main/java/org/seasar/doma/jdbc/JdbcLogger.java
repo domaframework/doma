@@ -23,11 +23,14 @@ import java.sql.SQLException;
  */
 public interface JdbcLogger {
 
-    void logMethodEntering(String callerClassName, String callerMethodName,
+    void logDaoMethodEntering(String callerClassName, String callerMethodName,
             Object... parameters);
 
-    void logMethodExiting(String callerClassName, String callerMethodName,
+    void logDaoMethodExiting(String callerClassName, String callerMethodName,
             Object result);
+
+    void logSqlExecutionSkipping(String callerClassName, String callerMethodName,
+            SqlExecutionSkipCause cause);
 
     void logSqlFile(String callerClassName, String callerMethodName,
             SqlFile sqlFile);

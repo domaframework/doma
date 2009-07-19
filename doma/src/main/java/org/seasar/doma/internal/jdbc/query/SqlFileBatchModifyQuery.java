@@ -27,6 +27,7 @@ import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlFile;
 
 /**
@@ -56,6 +57,8 @@ public abstract class SqlFileBatchModifyQuery<I, E extends Entity<I>>
 
     protected boolean executable;
 
+    protected SqlExecutionSkipCause sqlExecutionSkipCause = SqlExecutionSkipCause.BATCH_TARGET_NONEXISTENT;
+
     protected int queryTimeout;
 
     protected int batchSize;
@@ -72,6 +75,7 @@ public abstract class SqlFileBatchModifyQuery<I, E extends Entity<I>>
         Iterator<? extends E> it = entities.iterator();
         if (it.hasNext()) {
             executable = true;
+            sqlExecutionSkipCause = null;
             entity = it.next();
             prepareOptions();
             prepareSql();
@@ -179,6 +183,11 @@ public abstract class SqlFileBatchModifyQuery<I, E extends Entity<I>>
     @Override
     public boolean isExecutable() {
         return executable;
+    }
+
+    @Override
+    public SqlExecutionSkipCause getSqlExecutionSkipCause() {
+        return sqlExecutionSkipCause;
     }
 
     public int getQueryTimeout() {

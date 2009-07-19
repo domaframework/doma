@@ -80,6 +80,7 @@ public class AutoUpdateQuery<I, E extends Entity<I>> extends
             if (p.getDomain().isChanged()) {
                 targetProperties.add(p);
                 executable = true;
+                sqlExecutionSkipCause = null;
             }
         }
     }

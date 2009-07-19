@@ -70,13 +70,13 @@ public abstract class DomaAbstractDao {
             Object... parameters) {
         config
                 .jdbcLogger()
-                .logMethodEntering(callerClassName, callerMethodName, parameters);
+                .logDaoMethodEntering(callerClassName, callerMethodName, parameters);
     }
 
     protected void exiting(String callerClassName, String callerMethodName,
             Object result) {
         config.jdbcLogger()
-                .logMethodExiting(callerClassName, callerMethodName, result);
+                .logDaoMethodExiting(callerClassName, callerMethodName, result);
     }
 
 }

@@ -23,6 +23,7 @@ import java.sql.SQLException;
 
 import org.seasar.doma.internal.jdbc.query.ModuleQuery;
 import org.seasar.doma.internal.jdbc.sql.CallableSql;
+import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.SqlExecutionException;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
@@ -91,8 +92,8 @@ public abstract class ModuleCommand<R, Q extends ModuleQuery> implements
     }
 
     protected void log() {
-        query.getConfig().jdbcLogger().logSql(query.getClassName(), query
-                .getMethodName(), sql);
+        JdbcLogger logger = query.getConfig().jdbcLogger();
+        logger.logSql(query.getClassName(), query.getMethodName(), sql);
     }
 
 }
