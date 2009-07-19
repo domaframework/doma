@@ -1,5 +1,7 @@
 -debug用のログをしこむ
 -メッセージコードの整理
 -テストの強化
--バッチのときのエラーをわかりやすく
--SQLの例外にフォーマット済みSQLを含める
+-GenericDaoの廃止
+-Entity & Dao自動生成機能
+-S2用のAdapter
+-Spring用のAdapter

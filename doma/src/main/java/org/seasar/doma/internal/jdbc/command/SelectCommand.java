@@ -24,8 +24,8 @@ import java.sql.SQLException;
 
 import org.seasar.doma.internal.jdbc.query.SelectQuery;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
-import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.jdbc.SqlExecutionException;
+import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
  * @author taedium
@@ -59,8 +59,8 @@ public class SelectCommand<R> implements Command<R, SelectQuery> {
                 bindParameters(preparedStatement);
                 return executeQuery(preparedStatement);
             } catch (SQLException e) {
-                throw new JdbcException(MessageCode.DOMA2009, e, sql
-                        .getFormattedSql(), e);
+                Dialect dialect = query.getConfig().dialect();
+                throw new SqlExecutionException(sql, e, dialect.getRootCause(e));
             } finally {
                 Jdbcs.close(preparedStatement, query.getConfig().jdbcLogger());
             }

@@ -23,8 +23,8 @@ import java.sql.SQLException;
 
 import org.seasar.doma.internal.jdbc.query.ModuleQuery;
 import org.seasar.doma.internal.jdbc.sql.CallableSql;
-import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.jdbc.SqlExecutionException;
+import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
  * @author taedium
@@ -56,8 +56,8 @@ public abstract class ModuleCommand<R, Q extends ModuleQuery> implements
                 bindParameters(callableStatement);
                 return executeInternal(callableStatement);
             } catch (SQLException e) {
-                throw new JdbcException(MessageCode.DOMA2009, e, sql
-                        .getFormattedSql(), e);
+                Dialect dialect = query.getConfig().dialect();
+                throw new SqlExecutionException(sql, e, dialect.getRootCause(e));
             } finally {
                 Jdbcs.close(callableStatement, query.getConfig().jdbcLogger());
             }

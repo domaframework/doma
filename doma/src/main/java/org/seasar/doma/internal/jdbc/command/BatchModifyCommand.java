@@ -26,10 +26,9 @@ import java.util.List;
 import org.seasar.doma.internal.jdbc.query.BatchModifyQuery;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.BatchOptimisticLockException;
+import org.seasar.doma.jdbc.BatchSqlExecutionException;
 import org.seasar.doma.jdbc.BatchUniqueConstraintException;
-import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.message.MessageCode;
 
 /**
  * @author taedium
@@ -61,8 +60,9 @@ public abstract class BatchModifyCommand<Q extends BatchModifyQuery> implements
                 setupOptions(preparedStatement);
                 return executeInternal(preparedStatement, query.getSqls());
             } catch (SQLException e) {
-                throw new JdbcException(MessageCode.DOMA2009, e, sql
-                        .getRawSql(), e);
+                Dialect dialect = query.getConfig().dialect();
+                throw new BatchSqlExecutionException(sql, e, dialect
+                        .getRootCause(e));
             } finally {
                 Jdbcs.close(preparedStatement, query.getConfig().jdbcLogger());
             }

@@ -64,6 +64,8 @@ public interface Dialect {
 
     String removeQuote(String name);
 
+    Throwable getRootCause(SQLException sqlException);
+
     JdbcMappingVisitor getJdbcMappingVisitor();
 
     SqlLogFormattingVisitor getSqlLogFormattingVisitor();
