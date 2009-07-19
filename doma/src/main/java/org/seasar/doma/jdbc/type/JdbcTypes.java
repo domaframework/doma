@@ -21,34 +21,40 @@ package org.seasar.doma.jdbc.type;
  */
 public final class JdbcTypes {
 
-    public static final StringType STRING = new StringType();
-
-    public static final IntType INT = new IntType();
+    public static final ArrayType ARRAY = new ArrayType();
 
     public static final BigDecimalType BIG_DECIMAL = new BigDecimalType();
 
+    public static final BlobType BLOB = new BlobType();
+
+    public static final BooleanType BOOLEAN = new BooleanType();
+
+    public static final ByteType BYTE = new ByteType();
+
+    public static final BytesType BYTES = new BytesType();
+
+    public static final ClobType CLOB = new ClobType();
+
     public static final DateType DATE = new DateType();
+
+    public static final DoubleType DOUBLE = new DoubleType();
+
+    public static final FloatType FLOAT = new FloatType();
+
+    public static final IntAdaptiveBooleanType INT_ADAPTIVE_BOOLEAN = new IntAdaptiveBooleanType();
+
+    public static final IntegerType INTEGER = new IntegerType();
+
+    public static final NClobType NCLOB = new NClobType();
+
+    public static final ObjectType OBJECT = new ObjectType();
+
+    public static final ShortType SHORT = new ShortType();
+
+    public static final StringType STRING = new StringType();
 
     public static final TimeType TIME = new TimeType();
 
     public static final TimestampType TIMESTAMP = new TimestampType();
-
-    public static final ArrayType ARRAY = new ArrayType();
-
-    public static final BlobType BLOB = new BlobType();
-
-    public static final ClobType CLOB = new ClobType();
-
-    public static final NClobType NCLOB = new NClobType();
-
-    public static final BooleanType BOOLEAN = new BooleanType();
-
-    public static final IntAdaptiveBooleanType INT_ADAPTIVE_BOOLEAN = new IntAdaptiveBooleanType();
-
-    public static final BytesType BYTES = new BytesType();
-
-    public static final DoubleType DOUBLE = new DoubleType();
-
-    public static final ObjectType OBJECT = new ObjectType();
 
 }

@@ -17,6 +17,8 @@ package org.seasar.doma.copy;
 
 import java.util.Map;
 
+import org.seasar.doma.DomaIllegalArgumentException;
+
 /**
  * @author taedium
  * 
@@ -30,6 +32,9 @@ public final class CopyUtil {
     }
 
     public static void copy(Object src, Object dest) {
+        if (delegate == null) {
+            throw new DomaIllegalArgumentException("delegate", delegate);
+        }
         delegate.copy(src, dest, new CopyOptions());
     }
 

@@ -15,23 +15,25 @@
  */
 package org.seasar.doma.domain;
 
-
 /**
  * @author taedium
  * 
  */
 public interface BuiltinDomainVisitor<R, P, TH extends Throwable> extends
-        DomainVisitor<R, P, TH>, AbstractBigDecimalDomainVisitor<R, P, TH>,
+        AbstractArrayDomainVisitor<R, P, TH>,
+        AbstractBigDecimalDomainVisitor<R, P, TH>,
+        AbstractBlobDomainVisitor<R, P, TH>,
+        AbstractBooleanDomainVisitor<R, P, TH>,
+        AbstractByteDomainVisitor<R, P, TH>,
+        AbstractBytesDomainVisitor<R, P, TH>,
+        AbstractClobDomainVisitor<R, P, TH>,
         AbstractDateDomainVisitor<R, P, TH>,
+        AbstractDoubleDomainVisitor<R, P, TH>,
+        AbstractFloatDomainVisitor<R, P, TH>,
         AbstractIntegerDomainVisitor<R, P, TH>,
+        AbstractNClobDomainVisitor<R, P, TH>,
+        AbstractShortDomainVisitor<R, P, TH>,
         AbstractStringDomainVisitor<R, P, TH>,
         AbstractTimeDomainVisitor<R, P, TH>,
-        AbstractTimestampDomainVisitor<R, P, TH>,
-        AbstractArrayDomainVisitor<R, P, TH>,
-        AbstractBlobDomainVisitor<R, P, TH>,
-        AbstractClobDomainVisitor<R, P, TH>,
-        AbstractNClobDomainVisitor<R, P, TH>,
-        AbstractBooleanDomainVisitor<R, P, TH>,
-        AbstractBytesDomainVisitor<R, P, TH>,
-        AbstractDoubleDomainVisitor<R, P, TH> {
+        AbstractTimestampDomainVisitor<R, P, TH> {
 }

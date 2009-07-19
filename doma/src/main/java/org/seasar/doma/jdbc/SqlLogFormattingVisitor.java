@@ -19,12 +19,15 @@ import org.seasar.doma.domain.AbstractArrayDomain;
 import org.seasar.doma.domain.AbstractBigDecimalDomain;
 import org.seasar.doma.domain.AbstractBlobDomain;
 import org.seasar.doma.domain.AbstractBooleanDomain;
+import org.seasar.doma.domain.AbstractByteDomain;
 import org.seasar.doma.domain.AbstractBytesDomain;
 import org.seasar.doma.domain.AbstractClobDomain;
 import org.seasar.doma.domain.AbstractDateDomain;
 import org.seasar.doma.domain.AbstractDoubleDomain;
+import org.seasar.doma.domain.AbstractFloatDomain;
 import org.seasar.doma.domain.AbstractIntegerDomain;
 import org.seasar.doma.domain.AbstractNClobDomain;
+import org.seasar.doma.domain.AbstractShortDomain;
 import org.seasar.doma.domain.AbstractStringDomain;
 import org.seasar.doma.domain.AbstractTimeDomain;
 import org.seasar.doma.domain.AbstractTimestampDomain;
@@ -43,9 +46,49 @@ public class SqlLogFormattingVisitor
         BuiltinDomainVisitor<String, SqlLogFormattingFunction, RuntimeException> {
 
     @Override
+    public String visitAbstractArrayDomain(AbstractArrayDomain<?, ?> domain,
+            SqlLogFormattingFunction p) throws RuntimeException {
+        return p.apply(domain, JdbcTypes.ARRAY);
+    }
+
+    @Override
     public String visitAbstractBigDecimalDomain(
             AbstractBigDecimalDomain<?> domain, SqlLogFormattingFunction p) {
         return p.apply(domain, JdbcTypes.BIG_DECIMAL);
+    }
+
+    @Override
+    public String visitAbstractBlobDomain(AbstractBlobDomain<?> domain,
+            SqlLogFormattingFunction p) throws RuntimeException {
+        return p.apply(domain, JdbcTypes.BLOB);
+    }
+
+    @Override
+    public String visitAbstractBooleanDomain(AbstractBooleanDomain<?> domain,
+            SqlLogFormattingFunction p) throws RuntimeException {
+        Dialect dialect = p.getConfig().dialect();
+        if (dialect.supportsBooleanType()) {
+            return p.apply(domain, JdbcTypes.BOOLEAN);
+        }
+        return p.apply(domain, JdbcTypes.INT_ADAPTIVE_BOOLEAN);
+    }
+
+    @Override
+    public String visitAbstractByteDomain(AbstractByteDomain<?> domain,
+            SqlLogFormattingFunction p) throws RuntimeException {
+        return p.apply(domain, JdbcTypes.BYTE);
+    }
+
+    @Override
+    public String visitAbstractBytesDomain(AbstractBytesDomain<?> domain,
+            SqlLogFormattingFunction p) throws RuntimeException {
+        return p.apply(domain, JdbcTypes.BYTES);
+    }
+
+    @Override
+    public String visitAbstractClobDomain(AbstractClobDomain<?> domain,
+            SqlLogFormattingFunction p) throws RuntimeException {
+        return p.apply(domain, JdbcTypes.CLOB);
     }
 
     @Override
@@ -55,9 +98,33 @@ public class SqlLogFormattingVisitor
     }
 
     @Override
+    public String visitAbstractDoubleDomain(AbstractDoubleDomain<?> domain,
+            SqlLogFormattingFunction p) throws RuntimeException {
+        return p.apply(domain, JdbcTypes.DOUBLE);
+    }
+
+    @Override
+    public String visitAbstractFloatDomain(AbstractFloatDomain<?> domain,
+            SqlLogFormattingFunction p) throws RuntimeException {
+        return p.apply(domain, JdbcTypes.FLOAT);
+    }
+
+    @Override
     public String visitAbstractIntegerDomain(AbstractIntegerDomain<?> domain,
             SqlLogFormattingFunction p) {
-        return p.apply(domain, JdbcTypes.INT);
+        return p.apply(domain, JdbcTypes.INTEGER);
+    }
+
+    @Override
+    public String visitAbstractNClobDomain(AbstractNClobDomain<?> domain,
+            SqlLogFormattingFunction p) throws RuntimeException {
+        return p.apply(domain, JdbcTypes.NCLOB);
+    }
+
+    @Override
+    public String visitAbstractShortDomain(AbstractShortDomain<?> domain,
+            SqlLogFormattingFunction p) throws RuntimeException {
+        return p.apply(domain, JdbcTypes.SHORT);
     }
 
     @Override
@@ -76,52 +143,6 @@ public class SqlLogFormattingVisitor
     public String visitAbstractTimestampDomain(
             AbstractTimestampDomain<?> domain, SqlLogFormattingFunction p) {
         return p.apply(domain, JdbcTypes.TIMESTAMP);
-    }
-
-    @Override
-    public String visitAbstractArrayDomain(AbstractArrayDomain<?, ?> domain,
-            SqlLogFormattingFunction p) throws RuntimeException {
-        return p.apply(domain, JdbcTypes.ARRAY);
-    }
-
-    @Override
-    public String visitAbstractBlobDomain(AbstractBlobDomain<?> domain,
-            SqlLogFormattingFunction p) throws RuntimeException {
-        return p.apply(domain, JdbcTypes.BLOB);
-    }
-
-    @Override
-    public String visitAbstractClobDomain(AbstractClobDomain<?> domain,
-            SqlLogFormattingFunction p) throws RuntimeException {
-        return p.apply(domain, JdbcTypes.CLOB);
-    }
-
-    @Override
-    public String visitAbstractNClobDomain(AbstractNClobDomain<?> domain,
-            SqlLogFormattingFunction p) throws RuntimeException {
-        return p.apply(domain, JdbcTypes.NCLOB);
-    }
-
-    @Override
-    public String visitAbstractBooleanDomain(AbstractBooleanDomain<?> domain,
-            SqlLogFormattingFunction p) throws RuntimeException {
-        Dialect dialect = p.getConfig().dialect();
-        if (dialect.supportsBooleanType()) {
-            return p.apply(domain, JdbcTypes.BOOLEAN);
-        }
-        return p.apply(domain, JdbcTypes.INT_ADAPTIVE_BOOLEAN);
-    }
-
-    @Override
-    public String visitAbstractBytesDomain(AbstractBytesDomain<?> domain,
-            SqlLogFormattingFunction p) throws RuntimeException {
-        return p.apply(domain, JdbcTypes.BYTES);
-    }
-
-    @Override
-    public String visitAbstractDoubleDomain(AbstractDoubleDomain<?> domain,
-            SqlLogFormattingFunction p) throws RuntimeException {
-        return p.apply(domain, JdbcTypes.DOUBLE);
     }
 
     @Override

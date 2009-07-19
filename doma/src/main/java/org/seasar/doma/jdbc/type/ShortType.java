@@ -25,32 +25,31 @@ import java.sql.Types;
  * @author taedium
  * 
  */
-public class IntType extends AbstractJdbcType<Integer> {
+public class ShortType extends AbstractJdbcType<Short> {
 
-    public IntType() {
-        super(Types.INTEGER);
+    public ShortType() {
+        super(Types.SMALLINT);
     }
 
     @Override
-    protected Integer doGetValue(ResultSet resultSet, int index)
-            throws SQLException {
-        return resultSet.getInt(index);
+    public Short doGetValue(ResultSet resultSet, int index) throws SQLException {
+        return resultSet.getShort(index);
     }
 
     @Override
     protected void doSetValue(PreparedStatement preparedStatement, int index,
-            Integer value) throws SQLException {
-        preparedStatement.setInt(index, value);
+            Short value) throws SQLException {
+        preparedStatement.setShort(index, value);
     }
 
     @Override
-    protected Integer doGetValue(CallableStatement callableStatement, int index)
+    protected Short doGetValue(CallableStatement callableStatement, int index)
             throws SQLException {
-        return callableStatement.getInt(index);
+        return callableStatement.getShort(index);
     }
 
     @Override
-    protected String doConvertToLogFormat(Integer value) {
+    protected String doConvertToLogFormat(Short value) {
         return String.valueOf(value);
     }
 

@@ -21,12 +21,15 @@ import org.seasar.doma.domain.AbstractArrayDomain;
 import org.seasar.doma.domain.AbstractBigDecimalDomain;
 import org.seasar.doma.domain.AbstractBlobDomain;
 import org.seasar.doma.domain.AbstractBooleanDomain;
+import org.seasar.doma.domain.AbstractByteDomain;
 import org.seasar.doma.domain.AbstractBytesDomain;
 import org.seasar.doma.domain.AbstractClobDomain;
 import org.seasar.doma.domain.AbstractDateDomain;
 import org.seasar.doma.domain.AbstractDoubleDomain;
+import org.seasar.doma.domain.AbstractFloatDomain;
 import org.seasar.doma.domain.AbstractIntegerDomain;
 import org.seasar.doma.domain.AbstractNClobDomain;
+import org.seasar.doma.domain.AbstractShortDomain;
 import org.seasar.doma.domain.AbstractStringDomain;
 import org.seasar.doma.domain.AbstractTimeDomain;
 import org.seasar.doma.domain.AbstractTimestampDomain;
@@ -44,9 +47,9 @@ public class JdbcMappingVisitor implements
         BuiltinDomainVisitor<Void, JdbcMappingFunction, SQLException> {
 
     @Override
-    public Void visitAbstractStringDomain(AbstractStringDomain<?> domain,
+    public Void visitAbstractArrayDomain(AbstractArrayDomain<?, ?> domain,
             JdbcMappingFunction p) throws SQLException {
-        return p.apply(domain, JdbcTypes.STRING);
+        return p.apply(domain, JdbcTypes.ARRAY);
     }
 
     @Override
@@ -57,51 +60,9 @@ public class JdbcMappingVisitor implements
     }
 
     @Override
-    public Void visitAbstractDateDomain(AbstractDateDomain<?> domain,
-            JdbcMappingFunction p) throws SQLException {
-        return p.apply(domain, JdbcTypes.DATE);
-    }
-
-    @Override
-    public Void visitAbstractIntegerDomain(AbstractIntegerDomain<?> domain,
-            JdbcMappingFunction p) throws SQLException {
-        return p.apply(domain, JdbcTypes.INT);
-    }
-
-    @Override
-    public Void visitAbstractTimestampDomain(AbstractTimestampDomain<?> domain,
-            JdbcMappingFunction p) throws SQLException {
-        return p.apply(domain, JdbcTypes.TIMESTAMP);
-    }
-
-    @Override
-    public Void visitAbstractTimeDomain(AbstractTimeDomain<?> domain,
-            JdbcMappingFunction p) throws SQLException {
-        return p.apply(domain, JdbcTypes.TIME);
-    }
-
-    @Override
-    public Void visitAbstractArrayDomain(AbstractArrayDomain<?, ?> domain,
-            JdbcMappingFunction p) throws SQLException {
-        return p.apply(domain, JdbcTypes.ARRAY);
-    }
-
-    @Override
     public Void visitAbstractBlobDomain(AbstractBlobDomain<?> domain,
             JdbcMappingFunction p) throws SQLException {
         return p.apply(domain, JdbcTypes.BLOB);
-    }
-
-    @Override
-    public Void visitAbstractClobDomain(AbstractClobDomain<?> domain,
-            JdbcMappingFunction p) throws SQLException {
-        return p.apply(domain, JdbcTypes.CLOB);
-    }
-
-    @Override
-    public Void visitAbstractNClobDomain(AbstractNClobDomain<?> domain,
-            JdbcMappingFunction p) throws SQLException {
-        return p.apply(domain, JdbcTypes.NCLOB);
     }
 
     @Override
@@ -115,15 +76,75 @@ public class JdbcMappingVisitor implements
     }
 
     @Override
+    public Void visitAbstractByteDomain(AbstractByteDomain<?> domain,
+            JdbcMappingFunction p) throws SQLException {
+        return p.apply(domain, JdbcTypes.BYTE);
+    }
+
+    @Override
     public Void visitAbstractBytesDomain(AbstractBytesDomain<?> domain,
             JdbcMappingFunction p) throws SQLException {
         return p.apply(domain, JdbcTypes.BYTES);
     }
 
     @Override
+    public Void visitAbstractClobDomain(AbstractClobDomain<?> domain,
+            JdbcMappingFunction p) throws SQLException {
+        return p.apply(domain, JdbcTypes.CLOB);
+    }
+
+    @Override
+    public Void visitAbstractDateDomain(AbstractDateDomain<?> domain,
+            JdbcMappingFunction p) throws SQLException {
+        return p.apply(domain, JdbcTypes.DATE);
+    }
+
+    @Override
     public Void visitAbstractDoubleDomain(AbstractDoubleDomain<?> domain,
             JdbcMappingFunction p) throws SQLException {
         return p.apply(domain, JdbcTypes.DOUBLE);
+    }
+
+    @Override
+    public Void visitAbstractFloatDomain(AbstractFloatDomain<?> domain,
+            JdbcMappingFunction p) throws SQLException {
+        return p.apply(domain, JdbcTypes.FLOAT);
+    }
+
+    @Override
+    public Void visitAbstractIntegerDomain(AbstractIntegerDomain<?> domain,
+            JdbcMappingFunction p) throws SQLException {
+        return p.apply(domain, JdbcTypes.INTEGER);
+    }
+
+    @Override
+    public Void visitAbstractNClobDomain(AbstractNClobDomain<?> domain,
+            JdbcMappingFunction p) throws SQLException {
+        return p.apply(domain, JdbcTypes.NCLOB);
+    }
+
+    @Override
+    public Void visitAbstractShortDomain(AbstractShortDomain<?> domain,
+            JdbcMappingFunction p) throws SQLException {
+        return p.apply(domain, JdbcTypes.SHORT);
+    }
+
+    @Override
+    public Void visitAbstractStringDomain(AbstractStringDomain<?> domain,
+            JdbcMappingFunction p) throws SQLException {
+        return p.apply(domain, JdbcTypes.STRING);
+    }
+
+    @Override
+    public Void visitAbstractTimeDomain(AbstractTimeDomain<?> domain,
+            JdbcMappingFunction p) throws SQLException {
+        return p.apply(domain, JdbcTypes.TIME);
+    }
+
+    @Override
+    public Void visitAbstractTimestampDomain(AbstractTimestampDomain<?> domain,
+            JdbcMappingFunction p) throws SQLException {
+        return p.apply(domain, JdbcTypes.TIMESTAMP);
     }
 
     @Override
