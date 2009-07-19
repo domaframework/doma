@@ -17,7 +17,9 @@ package org.seasar.doma.it.dao;
 
 import java.util.List;
 
+import org.seasar.doma.BatchDelete;
 import org.seasar.doma.Dao;
+import org.seasar.doma.Delete;
 import org.seasar.doma.Select;
 import org.seasar.doma.it.ItConfig;
 import org.seasar.doma.it.domain.IdDomain;
@@ -27,7 +29,7 @@ import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.SelectOptions;
 
 @Dao(config = ItConfig.class)
-public interface EmployeeDao extends GenericDao<Employee> {
+public interface EmployeeDao {
 
     @Select
     Employee selectById(IdDomain employee_id);
@@ -54,4 +56,22 @@ public interface EmployeeDao extends GenericDao<Employee> {
     @Select(iterate = true)
     <R> R selectAllSalary(IterationCallback<R, SalaryDomain> callback,
             SelectOptions options);
+
+    @Delete
+    int delete(Employee entity);
+
+    @Delete(ignoreVersion = true)
+    int delete_ignoresVersion(Employee entity);
+
+    @Delete(suppressOptimisticLockException = true)
+    int delete_suppressesOptimisticLockException(Employee entity);
+
+    @BatchDelete
+    int[] delete(List<Employee> entities);
+
+    @BatchDelete(ignoreVersion = true)
+    int[] delete_ignoresVersion(List<Employee> entities);
+
+    @BatchDelete(suppressOptimisticLockException = true)
+    int[] delete_suppressesOptimisticLockException(List<Employee> entities);
 }

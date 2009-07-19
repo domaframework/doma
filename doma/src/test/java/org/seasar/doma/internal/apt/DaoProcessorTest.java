@@ -28,7 +28,7 @@ import org.seasar.doma.internal.apt.dao.BlobFactoryDao;
 import org.seasar.doma.internal.apt.dao.ClobFactoryDao;
 import org.seasar.doma.internal.apt.dao.ElementOfParamListNotDomainDao;
 import org.seasar.doma.internal.apt.dao.ElementOfParamListUnspecifiedDao;
-import org.seasar.doma.internal.apt.dao.GenericDaoEx;
+import org.seasar.doma.internal.apt.dao.ExtendsDao;
 import org.seasar.doma.internal.apt.dao.ImplementedByDao;
 import org.seasar.doma.internal.apt.dao.InterfaceNotImplementedDao;
 import org.seasar.doma.internal.apt.dao.IterationCallbackDao;
@@ -40,8 +40,6 @@ import org.seasar.doma.internal.apt.dao.SqlFileBatchUpdateDao;
 import org.seasar.doma.internal.apt.dao.SqlFileInsertDao;
 import org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDao;
 import org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao;
-import org.seasar.doma.internal.apt.entity.Emp;
-import org.seasar.doma.internal.apt.entity.Emp_;
 import org.seasar.doma.message.MessageCode;
 
 /**
@@ -110,18 +108,6 @@ public class DaoProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
-    public void testGenericDao() throws Exception {
-        Class<?> target = GenericDaoEx.class;
-        DaoProcessor processor = new DaoProcessor();
-        addProcessor(processor);
-        addCompilationUnit(target);
-        addCompilationUnit(Emp.class);
-        addCompilationUnit(Emp_.class);
-        compile();
-        assertGeneratedSource(target);
-        assertTrue(getCompiledResult());
-    }
-
     public void testImplementedBy() throws Exception {
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
@@ -161,46 +147,6 @@ public class DaoProcessorTest extends AptTestCase {
         assertFalse(getCompiledResult());
         assertMessageCode(MessageCode.DOMA4017);
     }
-
-    // public void testIllegalDaoE4019_select() throws Exception {
-    // Class<?> target = IllegalDaoE4019_select.class;
-    // DaoProcessor processor = new DaoProcessor();
-    // addProcessor(processor);
-    // addCompilationUnit(target);
-    // compile();
-    // assertFalse(getCompiledResult());
-    // assertMessageCode(MessageCode.E4019);
-    // }
-    //
-    // public void testIllegalDaoE4019_insert() throws Exception {
-    // Class<?> target = IllegalDaoE4019_insert.class;
-    // DaoProcessor processor = new DaoProcessor();
-    // addProcessor(processor);
-    // addCompilationUnit(target);
-    // compile();
-    // assertFalse(getCompiledResult());
-    // assertMessageCode(MessageCode.E4019);
-    // }
-    //
-    // public void testIllegalDaoE4019_update() throws Exception {
-    // Class<?> target = IllegalDaoE4019_update.class;
-    // DaoProcessor processor = new DaoProcessor();
-    // addProcessor(processor);
-    // addCompilationUnit(target);
-    // compile();
-    // assertFalse(getCompiledResult());
-    // assertMessageCode(MessageCode.E4019);
-    // }
-    //
-    // public void testIllegalDaoE4019_delete() throws Exception {
-    // Class<?> target = IllegalDaoE4019_delete.class;
-    // DaoProcessor processor = new DaoProcessor();
-    // addProcessor(processor);
-    // addCompilationUnit(target);
-    // compile();
-    // assertFalse(getCompiledResult());
-    // assertMessageCode(MessageCode.E4019);
-    // }
 
     public void testInterfaceNotImplemented() throws Exception {
         Class<?> target = InterfaceNotImplementedDao.class;
@@ -330,5 +276,15 @@ public class DaoProcessorTest extends AptTestCase {
         compile();
         assertGeneratedSource(target);
         assertTrue(getCompiledResult());
+    }
+
+    public void testExtendsDao() throws Exception {
+        Class<?> target = ExtendsDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessageCode(MessageCode.DOMA4045);
     }
 }

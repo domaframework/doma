@@ -15,16 +15,34 @@
  */
 package org.seasar.doma.it.dao;
 
+import java.util.List;
+
+import org.seasar.doma.BatchInsert;
+import org.seasar.doma.BatchUpdate;
 import org.seasar.doma.Dao;
+import org.seasar.doma.Insert;
 import org.seasar.doma.Select;
+import org.seasar.doma.Update;
 import org.seasar.doma.it.ItConfig;
 import org.seasar.doma.it.domain.IdDomain;
 import org.seasar.doma.it.entity.CompKeyDepartment;
 
 @Dao(config = ItConfig.class)
-public interface CompKeyDepartmentDao extends GenericDao<CompKeyDepartment> {
+public interface CompKeyDepartmentDao {
 
     @Select
     CompKeyDepartment selectById(IdDomain department_id1,
             IdDomain department_id2);
+
+    @Insert
+    int insert(CompKeyDepartment entity);
+
+    @Update
+    int update(CompKeyDepartment entity);
+
+    @BatchInsert
+    int[] insert(List<CompKeyDepartment> entities);
+
+    @BatchUpdate
+    int[] update(List<CompKeyDepartment> entities);
 }

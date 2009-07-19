@@ -15,15 +15,51 @@
  */
 package org.seasar.doma.it.dao;
 
+import java.util.List;
+
+import org.seasar.doma.BatchInsert;
+import org.seasar.doma.BatchUpdate;
 import org.seasar.doma.Dao;
+import org.seasar.doma.Insert;
 import org.seasar.doma.Select;
+import org.seasar.doma.Update;
 import org.seasar.doma.it.ItConfig;
 import org.seasar.doma.it.domain.IdDomain;
 import org.seasar.doma.it.entity.Department;
 
 @Dao(config = ItConfig.class)
-public interface DepartmentDao extends GenericDao<Department> {
+public interface DepartmentDao {
 
     @Select
     Department selectById(IdDomain department_id);
+
+    @Insert
+    int insert(Department entity);
+
+    @Insert(excludeNull = true)
+    int insert_excludesNull(Department entity);
+
+    @Update
+    int update(Department entity);
+
+    @Update(excludeNull = true)
+    int update_excludesNull(Department entity);
+
+    @Update(includeVersion = true)
+    int update_includesVersion(Department entity);
+
+    @Update(suppressOptimisticLockException = true)
+    int update_suppressesOptimisticLockException(Department entity);
+
+    @BatchInsert
+    int[] insert(List<Department> entities);
+
+    @BatchUpdate
+    int[] update(List<Department> entities);
+
+    @BatchUpdate(includesVersion = true)
+    int[] update_includesVersion(List<Department> entities);
+
+    @BatchUpdate(suppressOptimisticLockException = true)
+    int[] update_suppressesOptimisticLockException(List<Department> entities);
 }

@@ -15,11 +15,20 @@
  */
 package org.seasar.doma.it.dao;
 
+import java.util.List;
+
+import org.seasar.doma.BatchInsert;
 import org.seasar.doma.Dao;
+import org.seasar.doma.Insert;
 import org.seasar.doma.it.ItConfig;
 import org.seasar.doma.it.entity.SequenceStrategy;
 
 @Dao(config = ItConfig.class)
-public interface SequenceStrategyDao extends GenericDao<SequenceStrategy> {
+public interface SequenceStrategyDao {
 
+    @Insert
+    int insert(SequenceStrategy entity);
+
+    @BatchInsert
+    int[] insert(List<SequenceStrategy> entities);
 }

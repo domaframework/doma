@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -35,7 +34,6 @@ import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.Dao;
-import org.seasar.doma.GenericDao;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Models;
@@ -43,7 +41,6 @@ import org.seasar.doma.internal.apt.Notifier;
 import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.jdbc.DomaAbstractDao;
 import org.seasar.doma.message.MessageCode;
-
 
 /**
  * @author taedium
@@ -67,7 +64,6 @@ public class DaoMetaFactory {
         DaoMeta daoMeta = new DaoMeta();
         doDaoElement(daoElement, daoMeta);
         List<ExecutableElement> concreteMethodElements = getConcreteMethodElements(daoMeta);
-        doSuperInterfaceMethodElements(daoElement, concreteMethodElements, daoMeta);
         doMethodElements(daoElement, concreteMethodElements, daoMeta);
         return daoMeta;
     }
@@ -81,6 +77,9 @@ public class DaoMetaFactory {
             throw new AptException(MessageCode.DOMA4014, env, daoElement,
                     daoElement.getQualifiedName());
         }
+        if (!daoElement.getInterfaces().isEmpty()) {
+            throw new AptException(MessageCode.DOMA4045, env, daoElement);
+        }
         String name = daoElement.getSimpleName().toString();
         String suffix = Options.getSuffix(env);
         if (name.endsWith(suffix)) {
@@ -91,23 +90,11 @@ public class DaoMetaFactory {
         daoMeta.setDaoElement(daoElement);
         daoMeta.setDaoType(daoElement.asType());
         Dao daoAnnotation = daoElement.getAnnotation(Dao.class);
-        GenericDao genericDaoAnnotation = daoElement
-                .getAnnotation(GenericDao.class);
-        if (daoAnnotation != null && genericDaoAnnotation != null) {
-            throw new AptException(MessageCode.DOMA4047, env, daoElement);
+        if (!daoElement.getTypeParameters().isEmpty()) {
+            throw new AptException(MessageCode.DOMA4059, env, daoElement);
         }
-        if (daoAnnotation != null) {
-            if (!daoElement.getTypeParameters().isEmpty()) {
-                throw new AptException(MessageCode.DOMA4059, env, daoElement);
-            }
-            doConfig(daoAnnotation, daoMeta);
-            doImplementedBy(daoAnnotation, daoMeta);
-        } else if (genericDaoAnnotation != null) {
-            if (daoElement.getTypeParameters().size() != 1) {
-                throw new AptException(MessageCode.DOMA4046, env, daoElement);
-            }
-            daoMeta.setGenericDao(true);
-        }
+        doConfig(daoAnnotation, daoMeta);
+        doImplementedBy(daoAnnotation, daoMeta);
     }
 
     protected void doConfig(Dao daoAnnotation, DaoMeta daoMeta) {
@@ -175,30 +162,6 @@ public class DaoMetaFactory {
             }
         }
         return concreteMethodElements;
-    }
-
-    protected void doSuperInterfaceMethodElements(TypeElement typeElement,
-            List<ExecutableElement> concreteMethodElements, DaoMeta daoMeta) {
-        for (TypeMirror interfaceTypeMirror : env.getTypeUtils()
-                .directSupertypes(typeElement.asType())) {
-            TypeElement interfaceTypeElement = Models
-                    .toTypeElement(interfaceTypeMirror, env);
-            if (interfaceTypeElement == null
-                    || !interfaceTypeElement.getKind().isInterface()) {
-                continue;
-            }
-            if (interfaceTypeElement.getAnnotation(GenericDao.class) == null) {
-                throw new AptException(MessageCode.DOMA4045, env, typeElement);
-            }
-            if (!interfaceTypeElement.getTypeParameters().isEmpty()) {
-                Map<TypeMirror, TypeMirror> typeParameterMap = Models
-                        .createTypeParameterMap(interfaceTypeElement, interfaceTypeMirror, env);
-                daoMeta.addTypeParameterMap(typeParameterMap);
-            }
-            doSuperInterfaceMethodElements(interfaceTypeElement, concreteMethodElements, daoMeta);
-            doMethodElements(interfaceTypeElement, concreteMethodElements, daoMeta);
-            daoMeta.addSupertype(interfaceTypeMirror);
-        }
     }
 
     protected void doMethodElements(TypeElement typeElement,

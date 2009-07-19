@@ -20,13 +20,12 @@ import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
 import org.seasar.doma.internal.apt.entity.Emp;
 
-
 /**
  * @author taedium
  * 
  */
 @Dao(config = MyConfig.class, implementedBy = AbstractImplementedByDao.class)
-public interface ImplementedByDao extends GenericDao<Emp> {
+public interface ImplementedByDao {
 
     @Insert
     int aaa(Emp entity);

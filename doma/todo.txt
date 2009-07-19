@@ -1,7 +1,6 @@
 -debug用のログをしこむ
 -メッセージコードの整理
 -テストの強化
--GenericDaoの廃止
 -Entity & Dao自動生成機能
 -S2用のAdapter
 -Spring用のAdapter

@@ -52,8 +52,7 @@ import org.seasar.doma.message.MessageCode;
  * 
  */
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
-@SupportedAnnotationTypes( { "org.seasar.doma.Dao",
-        "org.seasar.doma.GenericDao" })
+@SupportedAnnotationTypes( { "org.seasar.doma.Dao" })
 @SupportedOptions( { Options.TEST, Options.DEBUG, Options.SUFFIX })
 public class DaoProcessor extends AbstractProcessor {
 
