@@ -18,7 +18,7 @@ package org.seasar.doma.internal.jdbc.mock;
 import java.sql.SQLException;
 import java.sql.Wrapper;
 
-import org.seasar.doma.internal.util.Assertions;
+import org.seasar.doma.internal.util.AssertionUtil;
 
 
 /**
@@ -30,13 +30,13 @@ public class MockWrapper implements Wrapper {
 
     @Override
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
-        Assertions.notYetImplemented();
+        AssertionUtil.notYetImplemented();
         return false;
     }
 
     @Override
     public <T> T unwrap(Class<T> iface) throws SQLException {
-        Assertions.notYetImplemented();
+        AssertionUtil.notYetImplemented();
         return null;
     }
 

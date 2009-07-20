@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;

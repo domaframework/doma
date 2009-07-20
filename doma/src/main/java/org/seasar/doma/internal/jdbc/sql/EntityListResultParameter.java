@@ -15,14 +15,14 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.seasar.doma.entity.Entity;
 import org.seasar.doma.internal.WrapException;
-import org.seasar.doma.internal.util.Classes;
+import org.seasar.doma.internal.util.ClasseUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.MessageCode;
 
@@ -51,7 +51,7 @@ public class EntityListResultParameter<I, E extends Entity<I>> implements
 
     protected E createEntity() {
         try {
-            return Classes.newInstance(entityClass);
+            return ClasseUtil.newInstance(entityClass);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
             throw new JdbcException(MessageCode.DOMA2005, cause, entityClass

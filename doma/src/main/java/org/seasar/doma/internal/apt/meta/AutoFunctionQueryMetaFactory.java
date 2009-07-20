@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.Function;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.Models;
+import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.message.MessageCode;
 
 /**
@@ -84,7 +84,7 @@ public class AutoFunctionQueryMetaFactory extends
     protected void doReturnType(AutoFunctionQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         TypeMirror returnType = method.getReturnType();
-        String typeName = Models.getTypeName(returnType, daoMeta
+        String typeName = TypeUtil.getTypeName(returnType, daoMeta
                 .getTypeParameterMap(), env);
         queryMeta.setReturnTypeName(typeName);
         ResultParameterMeta resultParameterMeta = createResultParameterMeta(queryMeta, returnType, method, daoMeta);
@@ -95,14 +95,14 @@ public class AutoFunctionQueryMetaFactory extends
             AutoFunctionQueryMeta queryMeta, TypeMirror returnType,
             ExecutableElement method, DaoMeta daoMeta) {
         if (isList(returnType)) {
-            DeclaredType listTyep = Models.toDeclaredType(returnType, env);
+            DeclaredType listTyep = TypeUtil.toDeclaredType(returnType, env);
             List<? extends TypeMirror> args = listTyep.getTypeArguments();
             if (args.isEmpty()) {
                 throw new AptException(MessageCode.DOMA4029, env, method);
             }
-            TypeMirror elementType = Models.resolveTypeParameter(daoMeta
+            TypeMirror elementType = TypeUtil.resolveTypeParameter(daoMeta
                     .getTypeParameterMap(), args.get(0));
-            String elementTypeName = Models.getTypeName(elementType, daoMeta
+            String elementTypeName = TypeUtil.getTypeName(elementType, daoMeta
                     .getTypeParameterMap(), env);
             if (isEntity(elementType, daoMeta)) {
                 return new EntityListResultParameterMeta(elementTypeName);

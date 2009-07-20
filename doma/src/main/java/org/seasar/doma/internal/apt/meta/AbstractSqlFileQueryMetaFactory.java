@@ -27,11 +27,12 @@ import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.ElementUtil;
 import org.seasar.doma.internal.apt.FileObjects;
-import org.seasar.doma.internal.apt.Models;
+import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.internal.jdbc.sql.SqlFiles;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
-import org.seasar.doma.internal.util.IOs;
+import org.seasar.doma.internal.util.IOUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.MessageCode;
@@ -53,15 +54,15 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
         LinkedList<VariableElement> params = new LinkedList<VariableElement>(
                 method.getParameters());
         for (VariableElement param : params) {
-            TypeMirror paramType = Models.resolveTypeParameter(daoMeta
+            TypeMirror paramType = TypeUtil.resolveTypeParameter(daoMeta
                     .getTypeParameterMap(), param.asType());
             if (isList(paramType)) {
-                DeclaredType listTyep = Models.toDeclaredType(paramType, env);
+                DeclaredType listTyep = TypeUtil.toDeclaredType(paramType, env);
                 List<? extends TypeMirror> args = listTyep.getTypeArguments();
                 if (args.isEmpty()) {
                     throw new AptException(MessageCode.DOMA4027, env, method);
                 }
-                TypeMirror elementType = Models.resolveTypeParameter(daoMeta
+                TypeMirror elementType = TypeUtil.resolveTypeParameter(daoMeta
                         .getTypeParameterMap(), args.get(0));
                 if (!isDomain(elementType)) {
                     throw new AptException(MessageCode.DOMA4028, env, method);
@@ -69,8 +70,8 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
             } else if (!isDomain(paramType) && !isEntity(paramType, daoMeta)) {
                 throw new AptException(MessageCode.DOMA4010, env, method);
             }
-            String parameterName = Models.getParameterName(param);
-            String parameterTypeName = Models.getTypeName(paramType, daoMeta
+            String parameterName = ElementUtil.getParameterName(param);
+            String parameterTypeName = TypeUtil.getTypeName(paramType, daoMeta
                     .getTypeParameterMap(), env);
             queryMeta.addMethodParameter(parameterName, parameterTypeName);
             queryMeta.addMethodParameterType(parameterName, paramType);
@@ -98,13 +99,13 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
             if (inputStream == null) {
                 return null;
             }
-            return IOs.readAsString(inputStream);
+            return IOUtil.readAsString(inputStream);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
             throw new AptException(MessageCode.DOMA4068, env, method, cause,
                     path, cause);
         } finally {
-            IOs.close(inputStream);
+            IOUtil.close(inputStream);
         }
     }
 

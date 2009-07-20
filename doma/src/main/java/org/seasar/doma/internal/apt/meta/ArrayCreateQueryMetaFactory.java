@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.sql.Array;
 import java.util.List;
@@ -28,7 +28,8 @@ import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.ArrayFactory;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.Models;
+import org.seasar.doma.internal.apt.ElementUtil;
+import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.message.MessageCode;
 
 /**
@@ -70,13 +71,13 @@ public class ArrayCreateQueryMetaFactory extends
             throw new AptException(MessageCode.DOMA4002, env, method);
         }
         VariableElement param = params.get(0);
-        TypeMirror arrayType = Models.resolveTypeParameter(daoMeta
+        TypeMirror arrayType = TypeUtil.resolveTypeParameter(daoMeta
                 .getTypeParameterMap(), param.asType());
         if (arrayType.getKind() != TypeKind.ARRAY) {
             throw new AptException(MessageCode.DOMA4076, env, param);
         }
-        String arrayName = Models.getParameterName(param);
-        String arrayTypeName = Models.getTypeName(arrayType, daoMeta
+        String arrayName = ElementUtil.getParameterName(param);
+        String arrayTypeName = TypeUtil.getTypeName(arrayType, daoMeta
                 .getTypeParameterMap(), env);
         queryMeta.setArrayName(arrayName);
         queryMeta.setArrayTypeName(arrayTypeName);

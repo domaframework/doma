@@ -16,7 +16,7 @@
 package org.seasar.doma.internal.expr;
 
 import static org.seasar.doma.internal.expr.ExpressionTokenType.*;
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.math.BigDecimal;
 import java.util.Deque;

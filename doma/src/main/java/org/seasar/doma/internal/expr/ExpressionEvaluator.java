@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.expr;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -54,8 +54,8 @@ import org.seasar.doma.internal.expr.node.OrOperatorNode;
 import org.seasar.doma.internal.expr.node.ParensNode;
 import org.seasar.doma.internal.expr.node.SubtractOperatorNode;
 import org.seasar.doma.internal.expr.node.VariableNode;
-import org.seasar.doma.internal.util.Constructors;
-import org.seasar.doma.internal.util.Methods;
+import org.seasar.doma.internal.util.ConstructorUtil;
+import org.seasar.doma.internal.util.MethodUtil;
 import org.seasar.doma.message.MessageCode;
 
 
@@ -327,7 +327,7 @@ public class ExpressionEvaluator implements
             }
         }
         throw new ExpressionException(MessageCode.DOMA3006, location
-                .getExpression(), location.getPosition(), Constructors
+                .getExpression(), location.getPosition(), ConstructorUtil
                 .toSignature(clazz, paramTypes));
     }
 
@@ -335,11 +335,11 @@ public class ExpressionEvaluator implements
             Class<?> clazz, Constructor<?> constructor, Object... params) {
         Object value = null;
         try {
-            value = Constructors.newInstance(constructor, params);
+            value = ConstructorUtil.newInstance(constructor, params);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
             throw new ExpressionException(MessageCode.DOMA3007, cause, location
-                    .getExpression(), location.getPosition(), Constructors
+                    .getExpression(), location.getPosition(), ConstructorUtil
                     .toSignature(constructor), cause);
         }
         return new EvaluationResult(value, clazz);
@@ -374,7 +374,7 @@ public class ExpressionEvaluator implements
             Method method, Object target, Class<?>[] paramTypes, Object[] params) {
         Object value;
         try {
-            value = Methods.invoke(method, target, params);
+            value = MethodUtil.invoke(method, target, params);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
             throw new ExpressionException(MessageCode.DOMA3001, cause, location

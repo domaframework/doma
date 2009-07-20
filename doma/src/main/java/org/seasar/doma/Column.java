@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.seasar.doma.internal.WrapException;
-import org.seasar.doma.internal.util.Methods;
+import org.seasar.doma.internal.util.MethodUtil;
 
 
 /**
@@ -37,7 +37,7 @@ public @interface Column {
         private static final Column column;
         static {
             try {
-                column = Methods
+                column = MethodUtil
                         .getMethod(Default.class, "get", new Class<?>[] {})
                         .getAnnotation(Column.class);
             } catch (WrapException e) {

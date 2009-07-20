@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.util;
 
-public final class Assertions {
+public final class AssertionUtil {
 
     public static void assertNull(Object o) {
         if (o != null) {

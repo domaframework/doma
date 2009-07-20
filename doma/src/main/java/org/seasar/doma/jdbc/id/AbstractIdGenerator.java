@@ -20,7 +20,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.seasar.doma.internal.jdbc.command.Jdbcs;
+import org.seasar.doma.internal.jdbc.command.JdbcUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.Sql;
@@ -34,9 +34,9 @@ public abstract class AbstractIdGenerator implements IdGenerator {
 
     protected long getGeneratedValue(IdGenerationConfig config, Sql<?> sql) {
         JdbcLogger logger = config.getJdbcLogger();
-        Connection connection = Jdbcs.getConnection(config.getDataSource());
+        Connection connection = JdbcUtil.getConnection(config.getDataSource());
         try {
-            PreparedStatement preparedStatement = Jdbcs
+            PreparedStatement preparedStatement = JdbcUtil
                     .prepareStatement(connection, sql.getRawSql());
             try {
                 logger.logSql(getClass().getName(), "getGeneratedId", sql);
@@ -47,10 +47,10 @@ public abstract class AbstractIdGenerator implements IdGenerator {
                 throw new JdbcException(MessageCode.DOMA2018, e, config
                         .getEntity().__getName(), e);
             } finally {
-                Jdbcs.close(preparedStatement, logger);
+                JdbcUtil.close(preparedStatement, logger);
             }
         } finally {
-            Jdbcs.close(connection, logger);
+            JdbcUtil.close(connection, logger);
         }
     }
 
@@ -80,7 +80,7 @@ public abstract class AbstractIdGenerator implements IdGenerator {
             throw new JdbcException(MessageCode.DOMA2018, e, context
                     .getEntity().__getName(), e);
         } finally {
-            Jdbcs.close(resultSet, logger);
+            JdbcUtil.close(resultSet, logger);
         }
     }
 }

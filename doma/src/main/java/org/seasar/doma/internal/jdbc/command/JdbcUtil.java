@@ -33,7 +33,7 @@ import org.seasar.doma.message.MessageCode;
  * @author taedium
  * 
  */
-public final class Jdbcs {
+public final class JdbcUtil {
 
     public static Connection getConnection(DataSource dataSource) {
         try {
@@ -80,7 +80,7 @@ public final class Jdbcs {
                 connection.close();
             } catch (SQLException e) {
                 logger
-                        .logConnectionClosingFailure(Jdbcs.class.getName(), "close", e);
+                        .logConnectionClosingFailure(JdbcUtil.class.getName(), "close", e);
             }
         }
     }
@@ -91,7 +91,7 @@ public final class Jdbcs {
                 statement.close();
             } catch (SQLException e) {
                 logger
-                        .logStatementClosingFailure(Jdbcs.class.getName(), "close", e);
+                        .logStatementClosingFailure(JdbcUtil.class.getName(), "close", e);
             }
         }
     }
@@ -102,7 +102,7 @@ public final class Jdbcs {
                 resultSet.close();
             } catch (SQLException e) {
                 logger
-                        .logResultSetClosingFailure(Jdbcs.class.getName(), "close", e);
+                        .logResultSetClosingFailure(JdbcUtil.class.getName(), "close", e);
             }
         }
     }

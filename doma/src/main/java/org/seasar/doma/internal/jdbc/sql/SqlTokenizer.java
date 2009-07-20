@@ -16,7 +16,7 @@
 package org.seasar.doma.internal.jdbc.sql;
 
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.*;
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.nio.CharBuffer;
 

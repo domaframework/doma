@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Models;
+import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.message.MessageCode;
 
 /**
@@ -59,7 +59,7 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
         if (domainValueType == null) {
             throw new AptIllegalStateException();
         }
-        TypeElement domainValueElement = Models
+        TypeElement domainValueElement = TypeUtil
                 .toTypeElement(domainValueType, env);
         if (domainValueElement == null) {
             throw new AptIllegalStateException();
@@ -69,20 +69,20 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
             throw new AptException(MessageCode.DOMA4075, env, method,
                     domainValueClass.getName());
         }
-        queryMeta.setReturnTypeName(Models.getTypeName(returnType, daoMeta
+        queryMeta.setReturnTypeName(TypeUtil.getTypeName(returnType, daoMeta
                 .getTypeParameterMap(), env));
     }
 
     protected TypeMirror getDomainValueType(TypeMirror domainType) {
         for (TypeMirror supertype : env.getTypeUtils()
                 .directSupertypes(domainType)) {
-            TypeElement typeElement = Models.toTypeElement(supertype, env);
+            TypeElement typeElement = TypeUtil.toTypeElement(supertype, env);
             if (typeElement == null) {
                 continue;
             }
             if (typeElement.getQualifiedName().contentEquals(Domain.class
                     .getName())) {
-                DeclaredType declaredType = Models
+                DeclaredType declaredType = TypeUtil
                         .toDeclaredType(supertype, env);
                 if (declaredType == null) {
                     continue;

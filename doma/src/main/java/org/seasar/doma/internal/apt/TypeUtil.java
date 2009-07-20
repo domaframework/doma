@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -25,7 +25,6 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.TypeParameterElement;
-import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.NoType;
@@ -38,14 +37,11 @@ import javax.lang.model.util.SimpleElementVisitor6;
 import javax.lang.model.util.SimpleTypeVisitor6;
 import javax.lang.model.util.TypeKindVisitor6;
 
-import org.seasar.doma.ParameterName;
-
-
 /**
  * @author taedium
  * 
  */
-public final class Models {
+public final class TypeUtil {
 
     public static TypeElement toTypeElement(TypeMirror typeMirror,
             ProcessingEnvironment env) {
@@ -155,7 +151,7 @@ public final class Models {
             public Void visitTypeVariable(TypeVariable t, StringBuilder p) {
                 p.append(resolveTypeVariable(t));
                 TypeMirror upperBound = t.getUpperBound();
-                String upperBoundName = Models
+                String upperBoundName = TypeUtil
                         .getTypeName(upperBound, typeParameterMap, env);
                 if (!Object.class.getName().equals(upperBoundName)) {
                     p.append(" extends ");
@@ -203,16 +199,6 @@ public final class Models {
         return p.toString();
     }
 
-    public static String getParameterName(VariableElement variableElement) {
-        assertNotNull(variableElement);
-        ParameterName parameterName = variableElement
-                .getAnnotation(ParameterName.class);
-        if (parameterName != null && !parameterName.value().isEmpty()) {
-            return parameterName.value();
-        }
-        return variableElement.getSimpleName().toString();
-    }
-
     public static Map<TypeMirror, TypeMirror> createTypeParameterMap(
             TypeElement typeElement, TypeMirror typeMirror,
             ProcessingEnvironment env) {
@@ -220,7 +206,7 @@ public final class Models {
         Map<TypeMirror, TypeMirror> typeParameterMap = new HashMap<TypeMirror, TypeMirror>();
         Iterator<? extends TypeParameterElement> formalParams = typeElement
                 .getTypeParameters().iterator();
-        DeclaredType declaredType = Models.toDeclaredType(typeMirror, env);
+        DeclaredType declaredType = TypeUtil.toDeclaredType(typeMirror, env);
         Iterator<? extends TypeMirror> actualParams = declaredType
                 .getTypeArguments().iterator();
         for (; formalParams.hasNext() && actualParams.hasNext();) {
@@ -239,21 +225,6 @@ public final class Models {
             return typeParameterMap.get(formalTypeParam);
         }
         return formalTypeParam;
-    }
-
-    public static boolean isEnclosing(Element enclosingElement,
-            Element enclosedElement) {
-        assertNotNull(enclosingElement, enclosedElement);
-        if (enclosingElement.equals(enclosedElement)) {
-            return true;
-        }
-        for (Element e = enclosedElement; e != null; e = e
-                .getEnclosingElement()) {
-            if (enclosingElement.equals(e)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public static TypeMirror toWrapperTypeIfPrimitive(TypeMirror typeMirror,

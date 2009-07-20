@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.message;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.text.MessageFormat;
 import java.util.ResourceBundle;

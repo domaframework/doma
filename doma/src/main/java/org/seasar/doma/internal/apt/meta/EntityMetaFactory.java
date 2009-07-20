@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.Iterator;
 import java.util.List;
@@ -35,7 +35,7 @@ import org.seasar.doma.Table;
 import org.seasar.doma.entity.EntityListener;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Models;
+import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.internal.apt.Notifier;
 import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.jdbc.JdbcException;
@@ -114,7 +114,7 @@ public class EntityMetaFactory {
         TypeMirror entityListenerType = getListenerType(entityAnnotation);
         TypeMirror argumentType = getListenerArgumentType(entityListenerType);
         assertNotNull(argumentType);
-        if (!Models.isAssignable(entityMeta.getEntityType(), argumentType, env)) {
+        if (!TypeUtil.isAssignable(entityMeta.getEntityType(), argumentType, env)) {
             throw new AptException(MessageCode.DOMA4038, env, entityElement,
                     entityListenerType, argumentType, entityElement
                             .getQualifiedName());
@@ -134,13 +134,13 @@ public class EntityMetaFactory {
     protected TypeMirror getListenerArgumentType(TypeMirror typeMirror) {
         for (TypeMirror supertype : env.getTypeUtils()
                 .directSupertypes(typeMirror)) {
-            TypeElement superElement = Models.toTypeElement(supertype, env);
+            TypeElement superElement = TypeUtil.toTypeElement(supertype, env);
             if (superElement == null || !superElement.getKind().isInterface()) {
                 continue;
             }
             if (superElement.getQualifiedName()
                     .contentEquals(EntityListener.class.getName())) {
-                DeclaredType declaredType = Models
+                DeclaredType declaredType = TypeUtil
                         .toDeclaredType(supertype, env);
                 assertNotNull(declaredType);
                 List<? extends TypeMirror> args = declaredType
@@ -184,7 +184,7 @@ public class EntityMetaFactory {
         boolean mappedSuperclass = mappedSuperclassAnnotated;
         for (TypeMirror interfaceTypeMirror : env.getTypeUtils()
                 .directSupertypes(typeElement.asType())) {
-            TypeElement interfaceTypeElement = Models
+            TypeElement interfaceTypeElement = TypeUtil
                     .toTypeElement(interfaceTypeMirror, env);
             if (interfaceTypeElement == null
                     || !interfaceTypeElement.getKind().isInterface()) {

@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.sql.node;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.HashMap;
 import java.util.Map;

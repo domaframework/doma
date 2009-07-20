@@ -25,7 +25,7 @@ import org.seasar.doma.internal.WrapException;
  * @author taedium
  * 
  */
-public final class Constructors {
+public final class ConstructorUtil {
 
     public static <T> T newInstance(Constructor<T> constructor,
             Object... params) throws WrapException {

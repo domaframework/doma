@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.List;
 
@@ -29,9 +29,9 @@ import org.seasar.doma.BatchDelete;
 import org.seasar.doma.BatchInsert;
 import org.seasar.doma.BatchUpdate;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.Models;
+import org.seasar.doma.internal.apt.ElementUtil;
+import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.message.MessageCode;
-
 
 /**
  * @author taedium
@@ -91,7 +91,7 @@ public class SqlFileBatchModifyQueryMetaFactory extends
         if (!isPrimitiveIntArray(returnType)) {
             throw new AptException(MessageCode.DOMA4040, env, method);
         }
-        queryMeta.setReturnTypeName(Models.getTypeName(returnType, daoMeta
+        queryMeta.setReturnTypeName(TypeUtil.getTypeName(returnType, daoMeta
                 .getTypeParameterMap(), env));
     }
 
@@ -104,27 +104,27 @@ public class SqlFileBatchModifyQueryMetaFactory extends
             throw new AptException(MessageCode.DOMA4002, env, method);
         }
         VariableElement entityList = params.get(0);
-        TypeMirror entityListType = Models.resolveTypeParameter(daoMeta
+        TypeMirror entityListType = TypeUtil.resolveTypeParameter(daoMeta
                 .getTypeParameterMap(), entityList.asType());
         if (!isList(entityListType)) {
             throw new AptException(MessageCode.DOMA4042, env, method);
         }
-        DeclaredType listTyep = Models.toDeclaredType(entityListType, env);
+        DeclaredType listTyep = TypeUtil.toDeclaredType(entityListType, env);
         List<? extends TypeMirror> args = listTyep.getTypeArguments();
         if (args.isEmpty()) {
             throw new AptException(MessageCode.DOMA4041, env, method);
         }
-        TypeMirror elementType = Models.resolveTypeParameter(daoMeta
+        TypeMirror elementType = TypeUtil.resolveTypeParameter(daoMeta
                 .getTypeParameterMap(), args.get(0));
         if (!isEntity(elementType, daoMeta)) {
             throw new AptException(MessageCode.DOMA4043, env, method);
         }
-        String entityListName = Models.getParameterName(entityList);
-        String entityListTypeName = Models.getTypeName(entityListType, daoMeta
-                .getTypeParameterMap(), env);
+        String entityListName = ElementUtil.getParameterName(entityList);
+        String entityListTypeName = TypeUtil
+                .getTypeName(entityListType, daoMeta.getTypeParameterMap(), env);
         queryMeta.setEntityListName(entityListName);
         queryMeta.setEntityListTypeName(entityListTypeName);
-        queryMeta.setElementTypeName(Models.getTypeName(elementType, daoMeta
+        queryMeta.setElementTypeName(TypeUtil.getTypeName(elementType, daoMeta
                 .getTypeParameterMap(), env));
         queryMeta.addMethodParameter(entityListName, entityListTypeName);
         queryMeta.addMethodParameterType(entityListName, entityListType);

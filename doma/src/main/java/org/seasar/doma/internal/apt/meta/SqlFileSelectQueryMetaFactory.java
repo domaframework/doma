@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.List;
 
@@ -28,10 +28,10 @@ import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.Select;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.Models;
+import org.seasar.doma.internal.apt.ElementUtil;
+import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.message.MessageCode;
-
 
 /**
  * @author taedium
@@ -79,10 +79,10 @@ public class SqlFileSelectQueryMetaFactory extends
     @Override
     protected void doReturnType(SqlFileSelectQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        TypeMirror returnType = Models.resolveTypeParameter(daoMeta
+        TypeMirror returnType = TypeUtil.resolveTypeParameter(daoMeta
                 .getTypeParameterMap(), method.getReturnType());
         if (queryMeta.isIteration()) {
-            TypeMirror wrapperType = Models
+            TypeMirror wrapperType = TypeUtil
                     .toWrapperTypeIfPrimitive(returnType, env);
             if (returnType == null
                     || !env.getTypeUtils().isSameType(wrapperType, queryMeta
@@ -90,26 +90,27 @@ public class SqlFileSelectQueryMetaFactory extends
                 throw new AptException(MessageCode.DOMA4055, env, method,
                         returnType, queryMeta.getIterationCallbackResultType());
             }
-            queryMeta.setReturnTypeName(Models.getTypeName(returnType, daoMeta
-                    .getTypeParameterMap(), env));
+            queryMeta
+                    .setReturnTypeName(TypeUtil.getTypeName(returnType, daoMeta
+                            .getTypeParameterMap(), env));
             return;
         }
         if (isList(returnType)) {
-            DeclaredType listTyep = Models.toDeclaredType(returnType, env);
+            DeclaredType listTyep = TypeUtil.toDeclaredType(returnType, env);
             List<? extends TypeMirror> args = listTyep.getTypeArguments();
             if (args.isEmpty()) {
                 throw new AptException(MessageCode.DOMA4006, env, method);
             }
-            TypeMirror elementType = Models.resolveTypeParameter(daoMeta
+            TypeMirror elementType = TypeUtil.resolveTypeParameter(daoMeta
                     .getTypeParameterMap(), args.get(0));
             if (isEntity(elementType, daoMeta)) {
                 queryMeta
-                        .setEntityTypeName(Models
+                        .setEntityTypeName(TypeUtil
                                 .getTypeName(elementType, daoMeta
                                         .getTypeParameterMap(), env));
             } else {
                 if (isDomain(elementType) && !isAbstract(elementType)) {
-                    queryMeta.setDomainTypeName(Models
+                    queryMeta.setDomainTypeName(TypeUtil
                             .getTypeName(elementType, daoMeta
                                     .getTypeParameterMap(), env));
                 } else {
@@ -120,12 +121,12 @@ public class SqlFileSelectQueryMetaFactory extends
             queryMeta.setSingleResult(true);
             if (isEntity(returnType, daoMeta)) {
                 queryMeta
-                        .setEntityTypeName(Models
+                        .setEntityTypeName(TypeUtil
                                 .getTypeName(returnType, daoMeta
                                         .getTypeParameterMap(), env));
             } else {
                 if (isDomain(returnType) && !isAbstract(returnType)) {
-                    queryMeta.setDomainTypeName(Models
+                    queryMeta.setDomainTypeName(TypeUtil
                             .getTypeName(returnType, daoMeta
                                     .getTypeParameterMap(), env));
                 } else {
@@ -133,7 +134,7 @@ public class SqlFileSelectQueryMetaFactory extends
                 }
             }
         }
-        queryMeta.setReturnTypeName(Models.getTypeName(returnType, daoMeta
+        queryMeta.setReturnTypeName(TypeUtil.getTypeName(returnType, daoMeta
                 .getTypeParameterMap(), env));
     }
 
@@ -141,10 +142,10 @@ public class SqlFileSelectQueryMetaFactory extends
     protected void doParameters(SqlFileSelectQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         for (VariableElement param : method.getParameters()) {
-            TypeMirror paramType = Models.resolveTypeParameter(daoMeta
+            TypeMirror paramType = TypeUtil.resolveTypeParameter(daoMeta
                     .getTypeParameterMap(), param.asType());
-            String parameterName = Models.getParameterName(param);
-            String parameterTypeName = Models.getTypeName(paramType, daoMeta
+            String parameterName = ElementUtil.getParameterName(param);
+            String parameterTypeName = TypeUtil.getTypeName(paramType, daoMeta
                     .getTypeParameterMap(), env);
             if (isOptions(paramType, queryMeta.getOptionsClass())) {
                 if (queryMeta.getOptionsName() != null) {
@@ -160,12 +161,12 @@ public class SqlFileSelectQueryMetaFactory extends
                 queryMeta.setIterationCallbackTypeName(parameterTypeName);
                 doIterationCallbackParameter(paramType, queryMeta, method, daoMeta);
             } else if (isList(paramType)) {
-                DeclaredType listTyep = Models.toDeclaredType(paramType, env);
+                DeclaredType listTyep = TypeUtil.toDeclaredType(paramType, env);
                 List<? extends TypeMirror> args = listTyep.getTypeArguments();
                 if (args.isEmpty()) {
                     throw new AptException(MessageCode.DOMA4027, env, method);
                 }
-                TypeMirror elementType = Models.resolveTypeParameter(daoMeta
+                TypeMirror elementType = TypeUtil.resolveTypeParameter(daoMeta
                         .getTypeParameterMap(), args.get(0));
                 if (!isDomain(elementType)) {
                     throw new AptException(MessageCode.DOMA4028, env, method);
@@ -192,13 +193,14 @@ public class SqlFileSelectQueryMetaFactory extends
         if (queryMeta.getIterationCallbackResultType() != null) {
             return;
         }
-        TypeElement parameterElement = Models.toTypeElement(parameterType, env);
+        TypeElement parameterElement = TypeUtil
+                .toTypeElement(parameterType, env);
         if (parameterElement == null) {
             return;
         }
         if (parameterElement.getQualifiedName()
                 .contentEquals(IterationCallback.class.getName())) {
-            DeclaredType declaredType = Models
+            DeclaredType declaredType = TypeUtil
                     .toDeclaredType(parameterType, env);
             assertNotNull(declaredType);
             List<? extends TypeMirror> actualArgs = declaredType
@@ -208,7 +210,7 @@ public class SqlFileSelectQueryMetaFactory extends
             TypeMirror targetType = actualArgs.get(1);
             queryMeta.setIterationCallbackResultType(resultType);
             queryMeta.setIterationCallbackTargetType(targetType);
-            String targetTypeName = Models.getTypeName(targetType, daoMeta
+            String targetTypeName = TypeUtil.getTypeName(targetType, daoMeta
                     .getTypeParameterMap(), env);
             if (isDomain(targetType)) {
                 queryMeta.setDomainTypeName(targetTypeName);

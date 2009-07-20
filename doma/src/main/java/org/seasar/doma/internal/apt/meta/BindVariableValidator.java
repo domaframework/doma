@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
@@ -24,7 +24,7 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.Models;
+import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNodeVisitor;
 import org.seasar.doma.jdbc.SqlNode;
@@ -71,7 +71,7 @@ public class BindVariableValidator implements
         if (names.length == 1) {
             return null;
         }
-        TypeElement typeElement = Models.toTypeElement(parameterType, env);
+        TypeElement typeElement = TypeUtil.toTypeElement(parameterType, env);
         if (typeElement == null) {
             throw new AptException(MessageCode.DOMA4072, env, method, path,
                     variableName, names[0], parameterType);
@@ -86,7 +86,7 @@ public class BindVariableValidator implements
             }
             if (i + 1 < length) {
                 TypeMirror returnType = foundMethod.getReturnType();
-                typeElement = Models.toTypeElement(returnType, env);
+                typeElement = TypeUtil.toTypeElement(returnType, env);
                 if (typeElement == null) {
                     throw new AptException(MessageCode.DOMA4070, env, method,
                             path, variableName, i + 1, names[i], returnType);

@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.util;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -27,7 +27,7 @@ import org.seasar.doma.internal.WrapException;
  * @author taedium
  * 
  */
-public final class Methods {
+public final class MethodUtil {
 
     public static <T> T invoke(Method method, Object target, Object... params)
             throws WrapException {

@@ -31,7 +31,7 @@ import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.internal.apt.meta.EntityMeta;
 import org.seasar.doma.internal.apt.meta.EntityMetaFactory;
 import org.seasar.doma.internal.apt.meta.EntityPropertyMetaFactory;
-import org.seasar.doma.internal.util.IOs;
+import org.seasar.doma.internal.util.IOUtil;
 import org.seasar.doma.message.MessageCode;
 
 /**
@@ -93,7 +93,7 @@ public class EntityProcessor extends AbstractProcessor {
             throw new AptException(MessageCode.DOMA4011, processingEnv,
                     entityElement, e, entityElement.getQualifiedName(), e);
         } finally {
-            IOs.close(entityGenerator);
+            IOUtil.close(entityGenerator);
         }
     }
 

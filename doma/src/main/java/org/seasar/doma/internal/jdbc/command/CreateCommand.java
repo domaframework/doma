@@ -36,14 +36,14 @@ public class CreateCommand<R> implements Command<R, CreateQuery<R>> {
 
     @Override
     public R execute() {
-        Connection connection = Jdbcs.getConnection(query.getConfig()
+        Connection connection = JdbcUtil.getConnection(query.getConfig()
                 .dataSource());
         try {
             return query.create(connection);
         } catch (SQLException e) {
             throw new JdbcException(MessageCode.DOMA2008, e, e);
         } finally {
-            Jdbcs.close(connection, query.getConfig().jdbcLogger());
+            JdbcUtil.close(connection, query.getConfig().jdbcLogger());
         }
     }
 

@@ -44,7 +44,7 @@ import org.seasar.doma.internal.apt.meta.QueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileBatchModifyQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileModifyQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileSelectQueryMetaFactory;
-import org.seasar.doma.internal.util.IOs;
+import org.seasar.doma.internal.util.IOUtil;
 import org.seasar.doma.message.MessageCode;
 
 /**
@@ -119,7 +119,7 @@ public class DaoProcessor extends AbstractProcessor {
             throw new AptException(MessageCode.DOMA4011, processingEnv,
                     daoElement, e, daoElement.getQualifiedName(), e);
         } finally {
-            IOs.close(daoGenerator);
+            IOUtil.close(daoGenerator);
         }
     }
 

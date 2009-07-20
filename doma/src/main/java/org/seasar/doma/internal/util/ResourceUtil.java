@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.util;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.io.InputStream;
 
@@ -26,7 +26,7 @@ import org.seasar.doma.internal.WrapException;
  * @author taedium
  * 
  */
-public final class Resources {
+public final class ResourceUtil {
 
     public static InputStream getResourceAsStream(String path) {
         assertNotNull(path);
@@ -44,6 +44,6 @@ public final class Resources {
         if (inputStream == null) {
             return null;
         }
-        return IOs.readAsString(inputStream);
+        return IOUtil.readAsString(inputStream);
     }
 }

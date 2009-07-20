@@ -24,7 +24,7 @@ import java.util.Map;
 
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.internal.WrapException;
-import org.seasar.doma.internal.util.Fields;
+import org.seasar.doma.internal.util.FieldUtil;
 import org.seasar.doma.message.MessageCode;
 
 /**
@@ -107,7 +107,7 @@ public class FieldAccessBean implements Bean {
         @Override
         public Object getValue() {
             try {
-                return Fields.get(field, obj);
+                return FieldUtil.get(field, obj);
             } catch (WrapException e) {
                 Throwable cause = e.getCause();
                 throw new BeanException(MessageCode.DOMA6001, beanClass, field
@@ -118,7 +118,7 @@ public class FieldAccessBean implements Bean {
         @Override
         public void setValue(Object value) {
             try {
-                Fields.set(field, obj, value);
+                FieldUtil.set(field, obj, value);
             } catch (WrapException e) {
                 Throwable cause = e.getCause();
                 throw new BeanException(MessageCode.DOMA6002, beanClass, field

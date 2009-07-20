@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;

@@ -28,7 +28,8 @@ import org.seasar.doma.InOut;
 import org.seasar.doma.Out;
 import org.seasar.doma.ResultSet;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.Models;
+import org.seasar.doma.internal.apt.ElementUtil;
+import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.message.MessageCode;
 
 /**
@@ -46,11 +47,11 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     protected void doParameters(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
         for (VariableElement param : method.getParameters()) {
-            TypeMirror paramType = Models.resolveTypeParameter(daoMeta
+            TypeMirror paramType = TypeUtil.resolveTypeParameter(daoMeta
                     .getTypeParameterMap(), param.asType());
-            String typeName = Models.getTypeName(paramType, daoMeta
+            String typeName = TypeUtil.getTypeName(paramType, daoMeta
                     .getTypeParameterMap(), env);
-            String name = Models.getParameterName(param);
+            String name = ElementUtil.getParameterName(param);
             CallableSqlParameterMeta parameterMeta = createParameterMeta(queryMeta, param, method, daoMeta);
             parameterMeta.setName(name);
             parameterMeta.setTypeName(typeName);
@@ -62,18 +63,18 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     protected CallableSqlParameterMeta createParameterMeta(
             AutoModuleQueryMeta queryMeta, VariableElement param,
             ExecutableElement method, DaoMeta daoMeta) {
-        TypeMirror paramType = Models.resolveTypeParameter(daoMeta
+        TypeMirror paramType = TypeUtil.resolveTypeParameter(daoMeta
                 .getTypeParameterMap(), param.asType());
         if (param.getAnnotation(ResultSet.class) != null) {
             if (isList(paramType)) {
-                DeclaredType listTyep = Models.toDeclaredType(paramType, env);
+                DeclaredType listTyep = TypeUtil.toDeclaredType(paramType, env);
                 List<? extends TypeMirror> args = listTyep.getTypeArguments();
                 if (args.isEmpty()) {
                     throw new AptException(MessageCode.DOMA4041, env, method);
                 }
-                TypeMirror elementType = Models.resolveTypeParameter(daoMeta
+                TypeMirror elementType = TypeUtil.resolveTypeParameter(daoMeta
                         .getTypeParameterMap(), args.get(0));
-                String elementTypeName = Models
+                String elementTypeName = TypeUtil
                         .getTypeName(elementType, daoMeta.getTypeParameterMap(), env);
                 if (isEntity(elementType, daoMeta)) {
                     return new EntityListParameterMeta(elementTypeName);

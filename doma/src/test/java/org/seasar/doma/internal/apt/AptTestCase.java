@@ -24,7 +24,7 @@ import javax.tools.JavaFileObject;
 import junit.framework.AssertionFailedError;
 
 import org.seasar.aptina.unit.AptinaTestCase;
-import org.seasar.doma.internal.util.Resources;
+import org.seasar.doma.internal.util.ResourceUtil;
 import org.seasar.doma.message.MessageCode;
 
 /**
@@ -47,7 +47,7 @@ public abstract class AptTestCase extends AptinaTestCase {
     protected String getExpectedContent() throws Exception {
         String path = getClass().getName().replace(".", "/");
         String suffix = "_" + getName().substring("test".length()) + ".txt";
-        return Resources.getResourceAsString(path + suffix);
+        return ResourceUtil.getResourceAsString(path + suffix);
     }
 
     protected void assertGeneratedSource(Class<?> originalClass)

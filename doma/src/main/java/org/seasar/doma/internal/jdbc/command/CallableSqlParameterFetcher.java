@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
@@ -172,7 +172,7 @@ public class CallableSqlParameterFetcher {
                         fetcher.fetch(resultSet, parameter.add());
                     }
                 } finally {
-                    Jdbcs.close(resultSet, query.getConfig().jdbcLogger());
+                    JdbcUtil.close(resultSet, query.getConfig().jdbcLogger());
                 }
                 index++;
             } else {
@@ -203,7 +203,7 @@ public class CallableSqlParameterFetcher {
                         fetcher.fetch(resultSet, parameter.add());
                     }
                 } finally {
-                    Jdbcs.close(resultSet, query.getConfig().jdbcLogger());
+                    JdbcUtil.close(resultSet, query.getConfig().jdbcLogger());
                 }
                 index++;
             } else {

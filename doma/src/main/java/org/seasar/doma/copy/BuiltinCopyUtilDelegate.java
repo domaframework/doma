@@ -35,7 +35,7 @@ import org.seasar.doma.domain.Domain;
 import org.seasar.doma.domain.DomainUtil;
 import org.seasar.doma.entity.Entity;
 import org.seasar.doma.entity.EntityProperty;
-import org.seasar.doma.internal.util.Classes;
+import org.seasar.doma.internal.util.ClasseUtil;
 
 /**
  * @author taedium
@@ -301,7 +301,7 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
             CopyOptions copyOptions) {
         Converter<?> converter = copyOptions.getConverter(name);
         if (converter == null) {
-            Class<?> wrapperClass = Classes
+            Class<?> wrapperClass = ClasseUtil
                     .getWrapperClassIfPrimitive(destClass);
             converter = converterMap.get(wrapperClass);
         }

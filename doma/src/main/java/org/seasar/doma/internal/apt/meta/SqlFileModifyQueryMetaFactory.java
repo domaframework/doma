@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
@@ -25,7 +25,7 @@ import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
 import org.seasar.doma.Update;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.Models;
+import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.message.MessageCode;
 
 
@@ -84,12 +84,12 @@ public class SqlFileModifyQueryMetaFactory extends
     @Override
     protected void doReturnType(SqlFileModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        TypeMirror returnType = Models.resolveTypeParameter(daoMeta
+        TypeMirror returnType = TypeUtil.resolveTypeParameter(daoMeta
                 .getTypeParameterMap(), method.getReturnType());
         if (!isPrimitiveInt(returnType)) {
             throw new AptException(MessageCode.DOMA4001, env, method);
         }
-        queryMeta.setReturnTypeName(Models.getTypeName(returnType, daoMeta
+        queryMeta.setReturnTypeName(TypeUtil.getTypeName(returnType, daoMeta
                 .getTypeParameterMap(), env));
     }
 }

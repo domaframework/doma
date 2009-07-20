@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.List;
 
@@ -28,7 +28,8 @@ import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
 import org.seasar.doma.Update;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.Models;
+import org.seasar.doma.internal.apt.ElementUtil;
+import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.message.MessageCode;
 
 /**
@@ -97,7 +98,7 @@ public class AutoModifyQueryMetaFactory extends
         if (!isPrimitiveInt(returnType)) {
             throw new AptException(MessageCode.DOMA4001, env, method);
         }
-        queryMeta.setReturnTypeName(Models.getTypeName(returnType, daoMeta
+        queryMeta.setReturnTypeName(TypeUtil.getTypeName(returnType, daoMeta
                 .getTypeParameterMap(), env));
     }
 
@@ -110,13 +111,13 @@ public class AutoModifyQueryMetaFactory extends
             throw new AptException(MessageCode.DOMA4002, env, method);
         }
         VariableElement entity = params.get(0);
-        TypeMirror entityType = Models.resolveTypeParameter(daoMeta
+        TypeMirror entityType = TypeUtil.resolveTypeParameter(daoMeta
                 .getTypeParameterMap(), entity.asType());
         if (!isEntity(entityType, daoMeta)) {
             throw new AptException(MessageCode.DOMA4003, env, entity);
         }
-        String entityName = Models.getParameterName(entity);
-        String entityTypeName = Models.getTypeName(entityType, daoMeta
+        String entityName = ElementUtil.getParameterName(entity);
+        String entityTypeName = TypeUtil.getTypeName(entityType, daoMeta
                 .getTypeParameterMap(), env);
         queryMeta.setEntityName(entityName);
         queryMeta.setEntityTypeName(entityTypeName);

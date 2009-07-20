@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ import javax.lang.model.util.TypeKindVisitor6;
 
 import org.seasar.doma.Entity;
 import org.seasar.doma.domain.Domain;
-import org.seasar.doma.internal.apt.Models;
+import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.Options;
 
@@ -53,7 +53,7 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
     protected void doTypeParameters(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
         for (TypeParameterElement element : method.getTypeParameters()) {
-            String name = Models.getTypeName(element.asType(), daoMeta
+            String name = TypeUtil.getTypeName(element.asType(), daoMeta
                     .getTypeParameterMap(), env);
             queryMeta.addTypeParameterName(name);
         }
@@ -68,7 +68,7 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
     protected void doThrowTypes(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
         for (TypeMirror thrownType : method.getThrownTypes()) {
-            queryMeta.addThrownTypeName(Models.getTypeName(thrownType, daoMeta
+            queryMeta.addThrownTypeName(TypeUtil.getTypeName(thrownType, daoMeta
                     .getTypeParameterMap(), env));
         }
     }
@@ -105,30 +105,30 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
     }
 
     protected boolean isVoid(TypeMirror typeMirror) {
-        return Models.isAssignable(typeMirror, Void.class, env);
+        return TypeUtil.isAssignable(typeMirror, Void.class, env);
     }
 
     protected boolean isEntity(TypeMirror typeMirror, DaoMeta daoMeta) {
         if (daoMeta.isGenericDao()) {
             return true;
         }
-        TypeElement typeElement = Models.toTypeElement(typeMirror, env);
+        TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
         return typeElement != null
                 && typeElement.getAnnotation(Entity.class) != null;
     }
 
     protected boolean isDomain(TypeMirror typeMirror) {
-        return Models.isAssignable(typeMirror, Domain.class, env);
+        return TypeUtil.isAssignable(typeMirror, Domain.class, env);
     }
 
     protected boolean isAbstract(TypeMirror typeMirror) {
-        TypeElement typeElement = Models.toTypeElement(typeMirror, env);
+        TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
         return typeElement != null
                 && typeElement.getModifiers().contains(Modifier.ABSTRACT);
     }
 
     protected boolean isList(TypeMirror typeMirror) {
-        TypeElement typeElement = Models.toTypeElement(typeMirror, env);
+        TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
         if (typeElement != null) {
             return typeElement.getQualifiedName().contentEquals(List.class
                     .getName());
@@ -138,7 +138,7 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
 
     protected boolean isOptions(TypeMirror typeMirror,
             Class<? extends Options> optionsClass) {
-        TypeElement typeElement = Models.toTypeElement(typeMirror, env);
+        TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
         if (typeElement != null) {
             TypeElement optionTypeElement = env.getElementUtils()
                     .getTypeElement(optionsClass.getName());
@@ -150,7 +150,7 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
     }
 
     protected boolean isIterationCallback(TypeMirror typeMirror) {
-        return Models.isAssignable(typeMirror, IterationCallback.class, env);
+        return TypeUtil.isAssignable(typeMirror, IterationCallback.class, env);
     }
 
 }

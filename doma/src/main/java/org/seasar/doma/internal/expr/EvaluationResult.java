@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.expr;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 /**
  * @author taedium

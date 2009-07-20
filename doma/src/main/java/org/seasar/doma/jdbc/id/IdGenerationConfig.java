@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.id;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import javax.sql.DataSource;
 

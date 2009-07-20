@@ -19,7 +19,7 @@ import java.lang.reflect.Method;
 
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.internal.WrapException;
-import org.seasar.doma.internal.util.Methods;
+import org.seasar.doma.internal.util.MethodUtil;
 import org.seasar.doma.message.MessageCode;
 
 /**
@@ -34,9 +34,9 @@ public class BuiltinDomainUtilDelegate implements DomainUtilDelegate {
             throw new DomaIllegalArgumentException("domain", domain);
         }
         try {
-            Method setter = Methods
+            Method setter = MethodUtil
                     .getMethod(domain.getClass(), "set", Object.class);
-            Methods.invoke(setter, domain, value);
+            MethodUtil.invoke(setter, domain, value);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
             throw new DomainException(MessageCode.DOMA1004, cause, cause);

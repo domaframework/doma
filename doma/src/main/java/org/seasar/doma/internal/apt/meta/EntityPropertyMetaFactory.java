@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ import org.seasar.doma.domain.Domain;
 import org.seasar.doma.domain.NumberDomain;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Models;
+import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.message.MessageCode;
 
 /**
@@ -134,7 +134,7 @@ public class EntityPropertyMetaFactory {
         buf.append(generator.sequence());
         SequenceIdGeneratorMeta idGeneratorMeta = new SequenceIdGeneratorMeta(
                 buf.toString(), generator.initialValue(), generator
-                        .allocationSize(), Models
+                        .allocationSize(), TypeUtil
                         .getTypeName(idGeneratorImplementerType, entityMeta
                                 .getTypeParameterMap(), env));
         propertyMeta.setIdGeneratorMeta(idGeneratorMeta);
@@ -170,7 +170,7 @@ public class EntityPropertyMetaFactory {
         TableIdGeneratorMeta idGeneratorMeta = new TableIdGeneratorMeta(buf
                 .toString(), generator.pkColumnName(), generator
                 .valueColumnName(), generator.pkColumnValue(), generator
-                .initialValue(), generator.allocationSize(), Models
+                .initialValue(), generator.allocationSize(), TypeUtil
                 .getTypeName(idGeneratorImplementerType, entityMeta
                         .getTypeParameterMap(), env));
         propertyMeta.setIdGeneratorMeta(idGeneratorMeta);
@@ -229,7 +229,7 @@ public class EntityPropertyMetaFactory {
     protected void doTypeParameters(EntityPropertyMeta propertyMeta,
             ExecutableElement method, EntityMeta entityMeta) {
         for (TypeParameterElement element : method.getTypeParameters()) {
-            String name = Models.getTypeName(element.asType(), entityMeta
+            String name = TypeUtil.getTypeName(element.asType(), entityMeta
                     .getTypeParameterMap(), env);
             propertyMeta.addTypeParameterName(name);
         }
@@ -237,15 +237,15 @@ public class EntityPropertyMetaFactory {
 
     protected void doReturnType(EntityPropertyMeta propertyMeta,
             ExecutableElement method, EntityMeta entityMeta) {
-        TypeMirror returnType = Models.resolveTypeParameter(entityMeta
+        TypeMirror returnType = TypeUtil.resolveTypeParameter(entityMeta
                 .getTypeParameterMap(), method.getReturnType());
         if (isList(returnType)) {
-            DeclaredType listTyep = Models.toDeclaredType(returnType, env);
+            DeclaredType listTyep = TypeUtil.toDeclaredType(returnType, env);
             List<? extends TypeMirror> args = listTyep.getTypeArguments();
             if (args.isEmpty()) {
                 throw new AptException(MessageCode.DOMA4029, env, method);
             }
-            TypeMirror elementType = Models.resolveTypeParameter(entityMeta
+            TypeMirror elementType = TypeUtil.resolveTypeParameter(entityMeta
                     .getTypeParameterMap(), args.get(0));
             if (!isDomain(elementType)) {
                 throw new AptException(MessageCode.DOMA4030, env, method);
@@ -254,7 +254,7 @@ public class EntityPropertyMetaFactory {
                 throw new AptException(MessageCode.DOMA4031, env, method);
             }
             propertyMeta.setListReturnType(true);
-            String elementTypeName = Models.getTypeName(elementType, entityMeta
+            String elementTypeName = TypeUtil.getTypeName(elementType, entityMeta
                     .getTypeParameterMap(), env);
             propertyMeta.setReturnElementTypeName(elementTypeName);
             propertyMeta.setReturnTypeName(ArrayList.class.getName() + "<"
@@ -272,7 +272,7 @@ public class EntityPropertyMetaFactory {
             throw new AptException(MessageCode.DOMA4033, env, method);
         }
         propertyMeta
-                .setReturnTypeName(Models.getTypeName(returnType, entityMeta
+                .setReturnTypeName(TypeUtil.getTypeName(returnType, entityMeta
                         .getTypeParameterMap(), env));
     }
 
@@ -287,28 +287,28 @@ public class EntityPropertyMetaFactory {
     protected void doThrowTypes(EntityPropertyMeta propertyMeta,
             ExecutableElement method, EntityMeta entityMeta) {
         for (TypeMirror thrownType : method.getThrownTypes()) {
-            String typeName = Models.getTypeName(thrownType, entityMeta
+            String typeName = TypeUtil.getTypeName(thrownType, entityMeta
                     .getTypeParameterMap(), env);
             propertyMeta.addThrownTypeName(typeName);
         }
     }
 
     protected boolean isDomain(TypeMirror typeMirror) {
-        return Models.isAssignable(typeMirror, Domain.class, env);
+        return TypeUtil.isAssignable(typeMirror, Domain.class, env);
     }
 
     protected boolean isNumberDomain(TypeMirror typeMirror) {
-        return Models.isAssignable(typeMirror, NumberDomain.class, env);
+        return TypeUtil.isAssignable(typeMirror, NumberDomain.class, env);
     }
 
     protected boolean isAbstract(TypeMirror typeMirror) {
-        TypeElement typeElement = Models.toTypeElement(typeMirror, env);
+        TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
         return typeElement != null
                 && typeElement.getModifiers().contains(Modifier.ABSTRACT);
     }
 
     protected boolean isList(TypeMirror typeMirror) {
-        TypeElement typeElement = Models.toTypeElement(typeMirror, env);
+        TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
         if (typeElement != null) {
             return typeElement.getQualifiedName().contentEquals(List.class
                     .getName());

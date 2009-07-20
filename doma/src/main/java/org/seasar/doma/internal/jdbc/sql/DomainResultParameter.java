@@ -15,11 +15,11 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.internal.WrapException;
-import org.seasar.doma.internal.util.Classes;
+import org.seasar.doma.internal.util.ClasseUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.MessageCode;
 
@@ -44,7 +44,7 @@ public class DomainResultParameter<D extends Domain<?, ?>> implements
 
     protected D createDomain() {
         try {
-            return Classes.newInstance(domainClass);
+            return ClasseUtil.newInstance(domainClass);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
             throw new JdbcException(MessageCode.DOMA2006, cause, domainClass

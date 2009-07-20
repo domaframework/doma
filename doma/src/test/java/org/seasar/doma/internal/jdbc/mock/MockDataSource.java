@@ -21,7 +21,7 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import org.seasar.doma.internal.util.Assertions;
+import org.seasar.doma.internal.util.AssertionUtil;
 
 
 /**
@@ -48,31 +48,31 @@ public class MockDataSource extends MockWrapper implements DataSource {
     @Override
     public Connection getConnection(String username, String password)
             throws SQLException {
-        Assertions.notYetImplemented();
+        AssertionUtil.notYetImplemented();
         return null;
     }
 
     @Override
     public int getLoginTimeout() throws SQLException {
-        Assertions.notYetImplemented();
+        AssertionUtil.notYetImplemented();
         return 0;
     }
 
     @Override
     public PrintWriter getLogWriter() throws SQLException {
-        Assertions.notYetImplemented();
+        AssertionUtil.notYetImplemented();
         return null;
     }
 
     @Override
     public void setLoginTimeout(int seconds) throws SQLException {
-        Assertions.notYetImplemented();
+        AssertionUtil.notYetImplemented();
 
     }
 
     @Override
     public void setLogWriter(PrintWriter out) throws SQLException {
-        Assertions.notYetImplemented();
+        AssertionUtil.notYetImplemented();
 
     }
 

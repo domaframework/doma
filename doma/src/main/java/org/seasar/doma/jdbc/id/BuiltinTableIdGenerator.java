@@ -25,7 +25,7 @@ import org.seasar.doma.DomaIllegalStateException;
 import org.seasar.doma.GenerationType;
 import org.seasar.doma.domain.LongDomain;
 import org.seasar.doma.domain.StringDomain;
-import org.seasar.doma.internal.jdbc.command.Jdbcs;
+import org.seasar.doma.internal.jdbc.command.JdbcUtil;
 import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.JdbcException;
@@ -181,9 +181,9 @@ public class BuiltinTableIdGenerator extends AbstractPreAllocateIdGenerator
 
     protected void updateId(IdGenerationConfig config, PreparedSql sql) {
         JdbcLogger logger = config.getJdbcLogger();
-        Connection connection = Jdbcs.getConnection(config.getDataSource());
+        Connection connection = JdbcUtil.getConnection(config.getDataSource());
         try {
-            PreparedStatement preparedStatement = Jdbcs
+            PreparedStatement preparedStatement = JdbcUtil
                     .prepareStatement(connection, sql.getRawSql());
             try {
                 logger.logSql(getClass().getName(), "updateId", sql);
@@ -199,18 +199,18 @@ public class BuiltinTableIdGenerator extends AbstractPreAllocateIdGenerator
                 throw new JdbcException(MessageCode.DOMA2018, e, config
                         .getEntity().__getName(), e);
             } finally {
-                Jdbcs.close(preparedStatement, logger);
+                JdbcUtil.close(preparedStatement, logger);
             }
         } finally {
-            Jdbcs.close(connection, logger);
+            JdbcUtil.close(connection, logger);
         }
     }
 
     protected long selectId(IdGenerationConfig config, PreparedSql sql) {
         JdbcLogger logger = config.getJdbcLogger();
-        Connection connection = Jdbcs.getConnection(config.getDataSource());
+        Connection connection = JdbcUtil.getConnection(config.getDataSource());
         try {
-            PreparedStatement preparedStatement = Jdbcs
+            PreparedStatement preparedStatement = JdbcUtil
                     .prepareStatement(connection, sql.getRawSql());
             try {
                 logger.logSql(getClass().getName(), "selectId", sql);
@@ -229,10 +229,10 @@ public class BuiltinTableIdGenerator extends AbstractPreAllocateIdGenerator
                 throw new JdbcException(MessageCode.DOMA2018, e, config
                         .getEntity().__getName(), e);
             } finally {
-                Jdbcs.close(preparedStatement, logger);
+                JdbcUtil.close(preparedStatement, logger);
             }
         } finally {
-            Jdbcs.close(connection, logger);
+            JdbcUtil.close(connection, logger);
         }
     }
 

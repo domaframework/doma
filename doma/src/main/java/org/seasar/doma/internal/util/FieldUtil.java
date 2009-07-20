@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.util;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.lang.reflect.Field;
 
@@ -25,7 +25,7 @@ import org.seasar.doma.internal.WrapException;
  * @author taedium
  * 
  */
-public final class Fields {
+public final class FieldUtil {
 
     public static Object get(Field field, Object target) throws WrapException {
         assertNotNull(field);

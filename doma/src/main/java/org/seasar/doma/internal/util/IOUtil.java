@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.util;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -32,7 +32,7 @@ import org.seasar.doma.internal.WrapException;
  * @author taedium
  * 
  */
-public final class IOs {
+public final class IOUtil {
 
     protected static final int BUF_SIZE = 8192;
 
@@ -52,7 +52,7 @@ public final class IOs {
         } catch (IOException e) {
             throw new WrapException(e);
         } finally {
-            IOs.close(reader);
+            IOUtil.close(reader);
         }
         return buf.toString();
     }

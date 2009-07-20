@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.mock;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.io.InputStream;
 import java.io.Reader;

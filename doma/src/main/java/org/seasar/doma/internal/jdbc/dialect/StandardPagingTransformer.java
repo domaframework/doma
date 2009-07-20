@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.dialect;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;

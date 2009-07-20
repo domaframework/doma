@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,9 +36,10 @@ import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.Dao;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Models;
+import org.seasar.doma.internal.apt.ElementUtil;
 import org.seasar.doma.internal.apt.Notifier;
 import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.jdbc.DomaAbstractDao;
 import org.seasar.doma.message.MessageCode;
 
@@ -113,7 +114,7 @@ public class DaoMetaFactory {
 
     protected void doImplementedBy(Dao daoAnnotation, DaoMeta daoMeta) {
         TypeMirror implementedByType = getImplementedByType(daoAnnotation, daoMeta);
-        TypeElement implementedByElement = Models
+        TypeElement implementedByElement = TypeUtil
                 .toTypeElement(implementedByType, env);
         if (implementedByElement == null) {
             throw new AptIllegalStateException();
@@ -125,7 +126,7 @@ public class DaoMetaFactory {
             daoMeta.setMostSubtypeElement(daoMeta.getDaoElement());
         } else {
             daoMeta.setMostSubtypeElement(implementedByElement);
-            if (!Models
+            if (!TypeUtil
                     .isAssignable(implementedByType, daoMeta.getDaoType(), env)) {
                 throw new AptException(MessageCode.DOMA4020, env,
                         implementedByElement, implementedByElement
@@ -149,7 +150,7 @@ public class DaoMetaFactory {
             return Collections.emptyList();
         }
         TypeMirror implementedByType = daoMeta.getImplementedByType();
-        TypeElement implementedByElement = Models
+        TypeElement implementedByElement = TypeUtil
                 .toTypeElement(implementedByType, env);
         List<ExecutableElement> concreteMethodElements = new ArrayList<ExecutableElement>();
         for (ExecutableElement methodElement : ElementFilter
@@ -178,7 +179,8 @@ public class DaoMetaFactory {
             try {
                 doMethodElement(methodElement, daoMeta);
             } catch (AptException e) {
-                if (Models.isEnclosing(daoMeta.getDaoElement(), e.getElement())) {
+                if (ElementUtil.isEnclosing(daoMeta.getDaoElement(), e
+                        .getElement())) {
                     Notifier.notify(env, e);
                 } else {
                     Notifier

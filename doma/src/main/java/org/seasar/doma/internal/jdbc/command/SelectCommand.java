@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -49,10 +49,10 @@ public class SelectCommand<R> implements Command<R, SelectQuery> {
 
     public R execute() {
         PreparedSql sql = query.getSql();
-        Connection connection = Jdbcs.getConnection(query.getConfig()
+        Connection connection = JdbcUtil.getConnection(query.getConfig()
                 .dataSource());
         try {
-            PreparedStatement preparedStatement = Jdbcs
+            PreparedStatement preparedStatement = JdbcUtil
                     .prepareStatement(connection, sql.getRawSql());
             try {
                 log();
@@ -63,10 +63,10 @@ public class SelectCommand<R> implements Command<R, SelectQuery> {
                 Dialect dialect = query.getConfig().dialect();
                 throw new SqlExecutionException(sql, e, dialect.getRootCause(e));
             } finally {
-                Jdbcs.close(preparedStatement, query.getConfig().jdbcLogger());
+                JdbcUtil.close(preparedStatement, query.getConfig().jdbcLogger());
             }
         } finally {
-            Jdbcs.close(connection, query.getConfig().jdbcLogger());
+            JdbcUtil.close(connection, query.getConfig().jdbcLogger());
         }
     }
 
@@ -101,7 +101,7 @@ public class SelectCommand<R> implements Command<R, SelectQuery> {
         try {
             return resultSetHandler.handle(resultSet, query);
         } finally {
-            Jdbcs.close(resultSet, query.getConfig().jdbcLogger());
+            JdbcUtil.close(resultSet, query.getConfig().jdbcLogger());
         }
     }
 

@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentMap;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
-import org.seasar.doma.internal.util.Resources;
+import org.seasar.doma.internal.util.ResourceUtil;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.message.MessageCode;
 
@@ -84,7 +84,7 @@ public class BuiltinSqlFileRepository implements SqlFileRepository {
 
     protected String getSql(String path) {
         try {
-            return Resources.getResourceAsString(path);
+            return ResourceUtil.getResourceAsString(path);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
             throw new JdbcException(MessageCode.DOMA2010, cause, path, cause);

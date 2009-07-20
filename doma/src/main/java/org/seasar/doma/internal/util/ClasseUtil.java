@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.util;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.lang.reflect.Method;
 
@@ -25,7 +25,7 @@ import org.seasar.doma.internal.WrapException;
  * @author taedium
  * 
  */
-public final class Classes {
+public final class ClasseUtil {
 
     public static <T> T newInstance(Class<T> clazz) throws WrapException {
         try {

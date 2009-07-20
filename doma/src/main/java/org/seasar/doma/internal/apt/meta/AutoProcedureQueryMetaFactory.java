@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
@@ -23,7 +23,7 @@ import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.Procedure;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.Models;
+import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.message.MessageCode;
 
 /**
@@ -84,7 +84,7 @@ public class AutoProcedureQueryMetaFactory extends
         if (!isPrimitiveVoid(returnType)) {
             throw new AptException(MessageCode.DOMA4064, env, method);
         }
-        String typeName = Models.getTypeName(returnType, daoMeta
+        String typeName = TypeUtil.getTypeName(returnType, daoMeta
                 .getTypeParameterMap(), env);
         queryMeta.setReturnTypeName(typeName);
     }

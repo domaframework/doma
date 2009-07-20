@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.Assertions.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,7 +25,7 @@ import java.util.List;
 import org.seasar.doma.entity.Entity;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.jdbc.query.Query;
-import org.seasar.doma.internal.util.Classes;
+import org.seasar.doma.internal.util.ClasseUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.MessageCode;
 
@@ -51,7 +51,7 @@ public class EntityResultListHandler<I, E extends Entity<I>> implements
         while (resultSet.next()) {
             E entity = null;
             try {
-                entity = Classes.newInstance(entityClass);
+                entity = ClasseUtil.newInstance(entityClass);
             } catch (WrapException e) {
                 Throwable cause = e.getCause();
                 throw new JdbcException(MessageCode.DOMA2005, cause,
