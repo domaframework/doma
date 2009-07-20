@@ -37,8 +37,9 @@ public abstract class AbstractArrayListDomain<E, D extends AbstractArrayListDoma
         this(null);
     }
 
+    @SuppressWarnings("unchecked")
     public AbstractArrayListDomain(ArrayList<E> v) {
-        super(ArrayList.class, v);
+        super((Class<ArrayList<E>>) new ArrayList<E>().getClass(), v);
     }
 
     @Override
@@ -89,6 +90,7 @@ public abstract class AbstractArrayListDomain<E, D extends AbstractArrayListDoma
     private void readObject(ObjectInputStream inputStream) throws IOException,
             ClassNotFoundException {
         inputStream.defaultReadObject();
+        valueClass = (Class<ArrayList<E>>) inputStream.readObject();
         value = (ArrayList<E>) inputStream.readObject();
         changed = inputStream.readBoolean();
     }
@@ -96,6 +98,7 @@ public abstract class AbstractArrayListDomain<E, D extends AbstractArrayListDoma
     private void writeObject(ObjectOutputStream outputStream)
             throws IOException {
         outputStream.defaultWriteObject();
+        outputStream.writeObject(valueClass);
         outputStream.writeObject(value);
         outputStream.writeBoolean(changed);
     }

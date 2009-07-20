@@ -35,7 +35,7 @@ public interface Domain<V, D extends Domain<V, D>> {
 
     void setChanged(boolean changed);
 
-    Class<?> getValueClass();
+    Class<V> getValueClass();
 
     <R, P, TH extends Throwable> R accept(DomainVisitor<R, P, TH> visitor, P p)
             throws TH;

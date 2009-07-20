@@ -24,7 +24,7 @@ import org.seasar.doma.DomaIllegalArgumentException;
 public abstract class AbstractDomain<V, D extends AbstractDomain<V, D>>
         implements Domain<V, D> {
 
-    protected Class<?> valueClass;
+    protected Class<V> valueClass;
 
     protected V value;
 
@@ -33,7 +33,7 @@ public abstract class AbstractDomain<V, D extends AbstractDomain<V, D>>
     protected AbstractDomain() {
     }
 
-    protected AbstractDomain(Class<?> valueClass, V v) {
+    protected AbstractDomain(Class<V> valueClass, V v) {
         if (valueClass == null) {
             throw new DomaIllegalArgumentException("valueClass", valueClass);
         }
@@ -80,7 +80,7 @@ public abstract class AbstractDomain<V, D extends AbstractDomain<V, D>>
     }
 
     @Override
-    public Class<?> getValueClass() {
+    public Class<V> getValueClass() {
         return valueClass;
     }
 

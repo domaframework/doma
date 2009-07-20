@@ -97,9 +97,11 @@ public abstract class AbstractBigDecimalDomain<D extends AbstractBigDecimalDomai
         return value != null ? value.toPlainString() : null;
     }
 
+    @SuppressWarnings("unchecked")
     private void readObject(ObjectInputStream inputStream) throws IOException,
             ClassNotFoundException {
         inputStream.defaultReadObject();
+        valueClass = (Class<BigDecimal>) inputStream.readObject();
         value = BigDecimal.class.cast(inputStream.readObject());
         changed = inputStream.readBoolean();
     }
@@ -107,6 +109,7 @@ public abstract class AbstractBigDecimalDomain<D extends AbstractBigDecimalDomai
     private void writeObject(ObjectOutputStream outputStream)
             throws IOException {
         outputStream.defaultWriteObject();
+        outputStream.writeObject(valueClass);
         outputStream.writeObject(value);
         outputStream.writeBoolean(changed);
     }

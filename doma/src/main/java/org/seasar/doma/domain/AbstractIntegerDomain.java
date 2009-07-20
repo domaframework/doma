@@ -95,9 +95,11 @@ public abstract class AbstractIntegerDomain<D extends AbstractIntegerDomain<D>>
         return value != null ? value.toString() : null;
     }
 
+    @SuppressWarnings("unchecked")
     private void readObject(ObjectInputStream inputStream) throws IOException,
             ClassNotFoundException {
         inputStream.defaultReadObject();
+        valueClass = (Class<Integer>) inputStream.readObject();
         value = Integer.class.cast(inputStream.readObject());
         changed = inputStream.readBoolean();
     }
@@ -105,6 +107,7 @@ public abstract class AbstractIntegerDomain<D extends AbstractIntegerDomain<D>>
     private void writeObject(ObjectOutputStream outputStream)
             throws IOException {
         outputStream.defaultWriteObject();
+        outputStream.writeObject(valueClass);
         outputStream.writeObject(value);
         outputStream.writeBoolean(changed);
     }

@@ -52,6 +52,10 @@ public class BigDecimalDomainTest extends TestCase {
         oos.flush();
         ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
         ObjectInputStream ois = new ObjectInputStream(bais);
-        assertEquals(domain, ois.readObject());
+        BigDecimalDomain domain2 = BigDecimalDomain.class
+                .cast(ois.readObject());
+        assertEquals(domain.valueClass, domain2.valueClass);
+        assertEquals(domain.value, domain2.value);
+        assertEquals(domain.changed, domain2.changed);
     }
 }

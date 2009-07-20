@@ -95,9 +95,11 @@ public abstract class AbstractShortDomain<D extends AbstractShortDomain<D>>
         return value != null ? value.toString() : null;
     }
 
+    @SuppressWarnings("unchecked")
     private void readObject(ObjectInputStream inputStream) throws IOException,
             ClassNotFoundException {
         inputStream.defaultReadObject();
+        valueClass = (Class<Short>) inputStream.readObject();
         value = Short.class.cast(inputStream.readObject());
         changed = inputStream.readBoolean();
     }
@@ -105,6 +107,7 @@ public abstract class AbstractShortDomain<D extends AbstractShortDomain<D>>
     private void writeObject(ObjectOutputStream outputStream)
             throws IOException {
         outputStream.defaultWriteObject();
+        outputStream.writeObject(valueClass);
         outputStream.writeObject(value);
         outputStream.writeBoolean(changed);
     }

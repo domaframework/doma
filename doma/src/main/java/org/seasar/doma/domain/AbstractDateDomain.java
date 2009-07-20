@@ -100,9 +100,11 @@ public abstract class AbstractDateDomain<D extends AbstractDateDomain<D>>
         return value != null ? value.toString() : null;
     }
 
+    @SuppressWarnings("unchecked")
     private void readObject(ObjectInputStream inputStream) throws IOException,
             ClassNotFoundException {
         inputStream.defaultReadObject();
+        valueClass = (Class<Date>) inputStream.readObject();
         value = Date.class.cast(inputStream.readObject());
         changed = inputStream.readBoolean();
     }
@@ -110,6 +112,7 @@ public abstract class AbstractDateDomain<D extends AbstractDateDomain<D>>
     private void writeObject(ObjectOutputStream outputStream)
             throws IOException {
         outputStream.defaultWriteObject();
+        outputStream.writeObject(valueClass);
         outputStream.writeObject(value);
         outputStream.writeBoolean(changed);
     }

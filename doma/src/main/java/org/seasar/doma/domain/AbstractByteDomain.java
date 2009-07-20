@@ -95,9 +95,11 @@ public abstract class AbstractByteDomain<D extends AbstractByteDomain<D>>
         return value != null ? value.toString() : null;
     }
 
+    @SuppressWarnings("unchecked")
     private void readObject(ObjectInputStream inputStream) throws IOException,
             ClassNotFoundException {
         inputStream.defaultReadObject();
+        valueClass = (Class<Byte>) inputStream.readObject();
         value = Byte.class.cast(inputStream.readObject());
         changed = inputStream.readBoolean();
     }
@@ -105,6 +107,7 @@ public abstract class AbstractByteDomain<D extends AbstractByteDomain<D>>
     private void writeObject(ObjectOutputStream outputStream)
             throws IOException {
         outputStream.defaultWriteObject();
+        outputStream.writeObject(valueClass);
         outputStream.writeObject(value);
         outputStream.writeBoolean(changed);
     }

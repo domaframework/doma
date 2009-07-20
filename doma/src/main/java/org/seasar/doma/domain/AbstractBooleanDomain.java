@@ -82,9 +82,11 @@ public abstract class AbstractBooleanDomain<D extends AbstractBooleanDomain<D>>
         return value != null ? value.toString() : null;
     }
 
+    @SuppressWarnings("unchecked")
     private void readObject(ObjectInputStream inputStream) throws IOException,
             ClassNotFoundException {
         inputStream.defaultReadObject();
+        valueClass = (Class<Boolean>) inputStream.readObject();
         value = Boolean.class.cast(inputStream.readObject());
         changed = inputStream.readBoolean();
     }
@@ -92,6 +94,7 @@ public abstract class AbstractBooleanDomain<D extends AbstractBooleanDomain<D>>
     private void writeObject(ObjectOutputStream outputStream)
             throws IOException {
         outputStream.defaultWriteObject();
+        outputStream.writeObject(valueClass);
         outputStream.writeObject(value);
         outputStream.writeBoolean(changed);
     }

@@ -105,9 +105,11 @@ public abstract class AbstractTimestampDomain<D extends AbstractTimestampDomain<
         return value != null ? value.toString() : null;
     }
 
+    @SuppressWarnings("unchecked")
     private void readObject(ObjectInputStream inputStream) throws IOException,
             ClassNotFoundException {
         inputStream.defaultReadObject();
+        valueClass = (Class<Timestamp>) inputStream.readObject();
         value = Timestamp.class.cast(inputStream.readObject());
         changed = inputStream.readBoolean();
     }
@@ -115,6 +117,7 @@ public abstract class AbstractTimestampDomain<D extends AbstractTimestampDomain<
     private void writeObject(ObjectOutputStream outputStream)
             throws IOException {
         outputStream.defaultWriteObject();
+        outputStream.writeObject(valueClass);
         outputStream.writeObject(value);
         outputStream.writeBoolean(changed);
     }
