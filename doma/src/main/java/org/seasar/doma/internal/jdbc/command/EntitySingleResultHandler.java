@@ -23,7 +23,7 @@ import java.sql.SQLException;
 import org.seasar.doma.entity.Entity;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.jdbc.query.Query;
-import org.seasar.doma.internal.util.ClasseUtil;
+import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.message.MessageCode;
@@ -49,7 +49,7 @@ public class EntitySingleResultHandler<I, E extends Entity<I>> implements
         E entity = null;
         if (resultSet.next()) {
             try {
-                entity = ClasseUtil.newInstance(entityClass);
+                entity = ClassUtil.newInstance(entityClass);
             } catch (WrapException e) {
                 Throwable cause = e.getCause();
                 throw new JdbcException(MessageCode.DOMA2005, cause,

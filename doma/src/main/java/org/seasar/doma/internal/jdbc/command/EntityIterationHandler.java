@@ -23,7 +23,7 @@ import java.sql.SQLException;
 import org.seasar.doma.entity.Entity;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.jdbc.query.Query;
-import org.seasar.doma.internal.util.ClasseUtil;
+import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
 import org.seasar.doma.jdbc.JdbcException;
@@ -56,7 +56,7 @@ public class EntityIterationHandler<R, I, E extends Entity<I>> implements
         while (resultSet.next()) {
             E entity = null;
             try {
-                entity = ClasseUtil.newInstance(entityClass);
+                entity = ClassUtil.newInstance(entityClass);
             } catch (WrapException e) {
                 Throwable cause = e.getCause();
                 throw new JdbcException(MessageCode.DOMA2005, cause,

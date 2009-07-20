@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.internal.WrapException;
-import org.seasar.doma.internal.util.ClasseUtil;
+import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.MessageCode;
 
@@ -51,7 +51,7 @@ public class DomainListParameter implements ListParameter<Domain<?, ?>> {
 
     protected Domain<?, ?> createDomain() {
         try {
-            return ClasseUtil.newInstance(domainClass);
+            return ClassUtil.newInstance(domainClass);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
             throw new JdbcException(MessageCode.DOMA2006, cause, domainClass

@@ -25,7 +25,7 @@ import java.util.List;
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.jdbc.query.Query;
-import org.seasar.doma.internal.util.ClasseUtil;
+import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.MessageCode;
 
@@ -51,7 +51,7 @@ public class DomainResultListHandler<D extends Domain<?, ?>> implements
         while (resultSet.next()) {
             D domain = null;
             try {
-                domain = ClasseUtil.newInstance(domainClass);
+                domain = ClassUtil.newInstance(domainClass);
             } catch (WrapException e) {
                 Throwable cause = e.getCause();
                 throw new JdbcException(MessageCode.DOMA2006, cause,

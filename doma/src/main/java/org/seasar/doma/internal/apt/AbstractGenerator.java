@@ -28,7 +28,7 @@ import javax.lang.model.element.TypeElement;
 import javax.tools.JavaFileObject;
 
 import org.seasar.doma.internal.ProductInfo;
-import org.seasar.doma.internal.util.ClasseUtil;
+import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.message.MessageCode;
 
 /**
@@ -60,8 +60,8 @@ public abstract class AbstractGenerator implements Generator {
         this.typeElement = typeElement;
         this.qualifiedName = typeElement.getQualifiedName()
                 + Options.getSuffix(env);
-        this.packageName = ClasseUtil.getPackageName(qualifiedName);
-        this.simpleName = ClasseUtil.getSimpleName(qualifiedName);
+        this.packageName = ClassUtil.getPackageName(qualifiedName);
+        this.simpleName = ClassUtil.getSimpleName(qualifiedName);
         Filer filer = env.getFiler();
         JavaFileObject file = filer
                 .createSourceFile(qualifiedName, typeElement);

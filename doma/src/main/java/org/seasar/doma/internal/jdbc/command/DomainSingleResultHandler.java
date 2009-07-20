@@ -23,7 +23,7 @@ import java.sql.SQLException;
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.jdbc.query.Query;
-import org.seasar.doma.internal.util.ClasseUtil;
+import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.message.MessageCode;
@@ -49,7 +49,7 @@ public class DomainSingleResultHandler<D extends Domain<?, ?>> implements
         D domain = null;
         if (resultSet.next()) {
             try {
-                domain = ClasseUtil.newInstance(domainClass);
+                domain = ClassUtil.newInstance(domainClass);
             } catch (WrapException e) {
                 Throwable cause = e.getCause();
                 throw new JdbcException(MessageCode.DOMA2006, cause,
