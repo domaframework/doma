@@ -25,6 +25,8 @@ public final class JdbcTypes {
 
     public static final BigDecimalType BIG_DECIMAL = new BigDecimalType();
 
+    public static final BigIntegerType BIG_INTEGER = new BigIntegerType();
+
     public static final BlobType BLOB = new BlobType();
 
     public static final BooleanType BOOLEAN = new BooleanType();
@@ -46,6 +48,8 @@ public final class JdbcTypes {
     public static final IntegerType INTEGER = new IntegerType();
 
     public static final NClobType NCLOB = new NClobType();
+
+    public static final NStringType NSTRING = new NStringType();
 
     public static final ObjectType OBJECT = new ObjectType();
 

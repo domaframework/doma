@@ -25,6 +25,16 @@ import java.util.Map;
 
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.domain.AbstractBooleanDomain;
+import org.seasar.doma.domain.BigDecimalDomain;
+import org.seasar.doma.domain.BigIntegerDomain;
+import org.seasar.doma.domain.BytesDomain;
+import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.DoubleDomain;
+import org.seasar.doma.domain.FloatDomain;
+import org.seasar.doma.domain.IntegerDomain;
+import org.seasar.doma.domain.LongDomain;
+import org.seasar.doma.domain.ShortDomain;
+import org.seasar.doma.domain.StringDomain;
 import org.seasar.doma.internal.jdbc.command.JdbcUtil;
 import org.seasar.doma.internal.jdbc.dialect.OracleForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.OraclePagingTransformer;
@@ -58,6 +68,14 @@ public class OracleDialect extends StandardDialect {
     public OracleDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         super(jdbcMappingVisitor, sqlLogFormattingVisitor);
+
+        domainClassMap.put("binary_double", DoubleDomain.class);
+        domainClassMap.put("binary_float", FloatDomain.class);
+        domainClassMap.put("long", StringDomain.class);
+        domainClassMap.put("long raw", BytesDomain.class);
+        domainClassMap.put("nvarchar2", StringDomain.class);
+        domainClassMap.put("raw", BytesDomain.class);
+        domainClassMap.put("varchar2", StringDomain.class);
     }
 
     @Override
@@ -197,6 +215,28 @@ public class OracleDialect extends StandardDialect {
         } finally {
             JdbcUtil.close(preparedStatement, null);
         }
+    }
+
+    @Override
+    public Class<? extends Domain<?, ?>> getDomainClass(String typeName,
+            int sqlType, int length, int precision, int scale) {
+        if ("number".equalsIgnoreCase(typeName)) {
+            if (scale != 0) {
+                return BigDecimalDomain.class;
+            }
+            if (precision < 5) {
+                return ShortDomain.class;
+            }
+            if (precision < 10) {
+                return IntegerDomain.class;
+            }
+            if (precision < 19) {
+                return LongDomain.class;
+            }
+            return BigIntegerDomain.class;
+        }
+        return super
+                .getDomainClass(typeName, sqlType, length, precision, scale);
     }
 
     public static class OracleResultSetType extends AbstractResultSetType {

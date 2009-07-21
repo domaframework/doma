@@ -86,6 +86,9 @@ public final class ClassUtil {
         if (clazz == void.class) {
             return Void.class;
         }
+        if (clazz == char.class) {
+            return Character.class;
+        }
         if (clazz == boolean.class) {
             return Boolean.class;
         }

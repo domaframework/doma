@@ -22,6 +22,7 @@ package org.seasar.doma.domain;
 public interface BuiltinDomainVisitor<R, P, TH extends Throwable> extends
         AbstractArrayDomainVisitor<R, P, TH>,
         AbstractBigDecimalDomainVisitor<R, P, TH>,
+        AbstractBigIntegerDomainVisitor<R, P, TH>,
         AbstractBlobDomainVisitor<R, P, TH>,
         AbstractBooleanDomainVisitor<R, P, TH>,
         AbstractByteDomainVisitor<R, P, TH>,

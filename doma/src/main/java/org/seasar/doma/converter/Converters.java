@@ -25,6 +25,8 @@ public class Converters {
 
     public static final BigDecimalConverter BIG_DECIMAL = new BigDecimalConverter();
 
+    public static final BigIntegerConverter BIG_INTEGER = new BigIntegerConverter();
+
     public static final BooleanConverter BOOLEAN = new BooleanConverter();
 
     public static final ByteConverter BYTE = new ByteConverter();

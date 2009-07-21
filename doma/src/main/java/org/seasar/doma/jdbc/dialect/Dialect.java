@@ -20,6 +20,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
+import org.seasar.doma.domain.Domain;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SelectOptions;
@@ -92,4 +93,6 @@ public interface Dialect {
             String catalogName, String schemaName, String tableName)
             throws SQLException;
 
+    Class<? extends Domain<?, ?>> getDomainClass(String typeName, int sqlType,
+            int length, int precision, int scale);
 }

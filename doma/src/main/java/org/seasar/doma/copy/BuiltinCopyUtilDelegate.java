@@ -16,6 +16,7 @@
 package org.seasar.doma.copy;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -60,6 +61,7 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
         this.beanFactory = beanFactory;
         converterMap.put(String.class, Converters.STRING);
         converterMap.put(BigDecimal.class, Converters.BIG_DECIMAL);
+        converterMap.put(BigInteger.class, Converters.BIG_INTEGER);
         converterMap.put(Boolean.class, Converters.BOOLEAN);
         converterMap.put(Byte.class, Converters.BYTE);
         converterMap.put(Short.class, Converters.SHORT);

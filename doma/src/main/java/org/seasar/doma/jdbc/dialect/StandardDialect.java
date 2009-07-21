@@ -20,7 +20,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -29,6 +31,7 @@ import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaUnsupportedOperationException;
 import org.seasar.doma.domain.AbstractArrayDomain;
 import org.seasar.doma.domain.AbstractBigDecimalDomain;
+import org.seasar.doma.domain.AbstractBigIntegerDomain;
 import org.seasar.doma.domain.AbstractBlobDomain;
 import org.seasar.doma.domain.AbstractBooleanDomain;
 import org.seasar.doma.domain.AbstractByteDomain;
@@ -43,8 +46,23 @@ import org.seasar.doma.domain.AbstractShortDomain;
 import org.seasar.doma.domain.AbstractStringDomain;
 import org.seasar.doma.domain.AbstractTimeDomain;
 import org.seasar.doma.domain.AbstractTimestampDomain;
+import org.seasar.doma.domain.BigDecimalDomain;
+import org.seasar.doma.domain.BlobDomain;
+import org.seasar.doma.domain.BooleanDomain;
 import org.seasar.doma.domain.BuiltinDomainVisitor;
+import org.seasar.doma.domain.BytesDomain;
+import org.seasar.doma.domain.ClobDomain;
+import org.seasar.doma.domain.DateDomain;
 import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.DoubleDomain;
+import org.seasar.doma.domain.FloatDomain;
+import org.seasar.doma.domain.IntegerDomain;
+import org.seasar.doma.domain.LongDomain;
+import org.seasar.doma.domain.NClobDomain;
+import org.seasar.doma.domain.ShortDomain;
+import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.TimeDomain;
+import org.seasar.doma.domain.TimestampDomain;
 import org.seasar.doma.internal.jdbc.command.JdbcUtil;
 import org.seasar.doma.internal.jdbc.dialect.StandardForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.StandardPagingTransformer;
@@ -79,6 +97,10 @@ public class StandardDialect implements Dialect {
 
     protected final SqlLogFormattingVisitor sqlLogFormattingVisitor;
 
+    protected final Map<String, Class<? extends Domain<?, ?>>> domainClassMap = new HashMap<String, Class<? extends Domain<?, ?>>>();
+
+    protected final Map<Integer, Class<? extends Domain<?, ?>>> fallbackDomainClassMap = new HashMap<Integer, Class<? extends Domain<?, ?>>>();
+
     public StandardDialect() {
         this(new StandardJdbcMappingVisitor(),
                 new StandardSqlLogFormattingVisitor());
@@ -96,6 +118,60 @@ public class StandardDialect implements Dialect {
         }
         this.jdbcMappingVisitor = jdbcMappingVisitor;
         this.sqlLogFormattingVisitor = sqlLogFormattingVisitor;
+
+        domainClassMap.put("bigint", LongDomain.class);
+        domainClassMap.put("binary", BytesDomain.class);
+        domainClassMap.put("bit", BooleanDomain.class);
+        domainClassMap.put("blob", BlobDomain.class);
+        domainClassMap.put("boolean", BooleanDomain.class);
+        domainClassMap.put("char", StringDomain.class);
+        domainClassMap.put("clob", ClobDomain.class);
+        domainClassMap.put("date", DateDomain.class);
+        domainClassMap.put("decimal", BigDecimalDomain.class);
+        domainClassMap.put("double", DoubleDomain.class);
+        domainClassMap.put("float", FloatDomain.class);
+        domainClassMap.put("integer", IntegerDomain.class);
+        domainClassMap.put("longnvarchar", StringDomain.class);
+        domainClassMap.put("longvarbinary", BytesDomain.class);
+        domainClassMap.put("longvarchar", StringDomain.class);
+        domainClassMap.put("nclob", NClobDomain.class);
+        domainClassMap.put("nchar", StringDomain.class);
+        domainClassMap.put("numeric", BigDecimalDomain.class);
+        domainClassMap.put("nvarchar", StringDomain.class);
+        domainClassMap.put("real", FloatDomain.class);
+        domainClassMap.put("smallint", ShortDomain.class);
+        domainClassMap.put("time", TimeDomain.class);
+        domainClassMap.put("timestamp", TimestampDomain.class);
+        domainClassMap.put("tinyint", ShortDomain.class);
+        domainClassMap.put("varbinary", BytesDomain.class);
+        domainClassMap.put("varchar", StringDomain.class);
+
+        fallbackDomainClassMap.put(Types.BIGINT, LongDomain.class);
+        fallbackDomainClassMap.put(Types.BINARY, BytesDomain.class);
+        fallbackDomainClassMap.put(Types.BIT, BooleanDomain.class);
+        fallbackDomainClassMap.put(Types.BLOB, BlobDomain.class);
+        fallbackDomainClassMap.put(Types.BOOLEAN, BooleanDomain.class);
+        fallbackDomainClassMap.put(Types.CHAR, StringDomain.class);
+        fallbackDomainClassMap.put(Types.CLOB, ClobDomain.class);
+        fallbackDomainClassMap.put(Types.DATE, DateDomain.class);
+        fallbackDomainClassMap.put(Types.DECIMAL, BigDecimalDomain.class);
+        fallbackDomainClassMap.put(Types.DOUBLE, DoubleDomain.class);
+        fallbackDomainClassMap.put(Types.FLOAT, FloatDomain.class);
+        fallbackDomainClassMap.put(Types.INTEGER, IntegerDomain.class);
+        fallbackDomainClassMap.put(Types.LONGNVARCHAR, StringDomain.class);
+        fallbackDomainClassMap.put(Types.LONGVARBINARY, BytesDomain.class);
+        fallbackDomainClassMap.put(Types.LONGVARCHAR, StringDomain.class);
+        fallbackDomainClassMap.put(Types.NCHAR, StringDomain.class);
+        fallbackDomainClassMap.put(Types.NCLOB, NClobDomain.class);
+        fallbackDomainClassMap.put(Types.NUMERIC, BigDecimalDomain.class);
+        fallbackDomainClassMap.put(Types.REAL, FloatDomain.class);
+        fallbackDomainClassMap.put(Types.SMALLINT, ShortDomain.class);
+        fallbackDomainClassMap.put(Types.TIME, TimeDomain.class);
+        fallbackDomainClassMap.put(Types.TIMESTAMP, TimestampDomain.class);
+        fallbackDomainClassMap.put(Types.TINYINT, ShortDomain.class);
+        fallbackDomainClassMap.put(Types.VARBINARY, BytesDomain.class);
+        fallbackDomainClassMap.put(Types.VARCHAR, StringDomain.class);
+        fallbackDomainClassMap.put(Types.NVARCHAR, StringDomain.class);
     }
 
     @Override
@@ -316,14 +392,33 @@ public class StandardDialect implements Dialect {
     @Override
     public String getTableComment(Connection connection, String catalogName,
             String schemaName, String tableName) throws SQLException {
-        throw new UnsupportedOperationException("getTableComment");
+        throw new DomaUnsupportedOperationException(getClass().getName(),
+                "getTableComment");
     }
 
     @Override
     public Map<String, String> getColumnCommentMap(Connection connection,
             String catalogName, String schemaName, String tableName)
             throws SQLException {
-        throw new UnsupportedOperationException("getColumnCommentMap");
+        throw new DomaUnsupportedOperationException(getClass().getName(),
+                "getColumnCommentMap");
+    }
+
+    @Override
+    public Class<? extends Domain<?, ?>> getDomainClass(String typeName,
+            int sqlType, int length, int precision, int scale) {
+        Class<? extends Domain<?, ?>> domainClass = null;
+        if (typeName != null) {
+            domainClass = domainClassMap.get(typeName.toLowerCase());
+            if (domainClass != null) {
+                return domainClass;
+            }
+        }
+        domainClass = fallbackDomainClassMap.get(sqlType);
+        if (domainClass != null) {
+            return domainClass;
+        }
+        throw new UnsupportedColumnTypeException(typeName, sqlType);
     }
 
     public static class StandardJdbcMappingVisitor implements
@@ -341,6 +436,13 @@ public class StandardDialect implements Dialect {
                 AbstractBigDecimalDomain<?> domain, JdbcMappingFunction p)
                 throws SQLException {
             return p.apply(domain, JdbcTypes.BIG_DECIMAL);
+        }
+
+        @Override
+        public Void visitAbstractBigIntegerDomain(
+                AbstractBigIntegerDomain<?> domain, JdbcMappingFunction p)
+                throws SQLException {
+            return p.apply(domain, JdbcTypes.BIG_INTEGER);
         }
 
         @Override
@@ -452,6 +554,13 @@ public class StandardDialect implements Dialect {
         public String visitAbstractBigDecimalDomain(
                 AbstractBigDecimalDomain<?> domain, SqlLogFormattingFunction p) {
             return p.apply(domain, JdbcTypes.BIG_DECIMAL);
+        }
+
+        @Override
+        public String visitAbstractBigIntegerDomain(
+                AbstractBigIntegerDomain<?> domain, SqlLogFormattingFunction p)
+                throws RuntimeException {
+            return p.apply(domain, JdbcTypes.BIG_INTEGER);
         }
 
         @Override
