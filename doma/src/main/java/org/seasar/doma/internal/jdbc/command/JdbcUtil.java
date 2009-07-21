@@ -28,7 +28,6 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.message.MessageCode;
 
-
 /**
  * @author taedium
  * 
@@ -79,8 +78,11 @@ public final class JdbcUtil {
             try {
                 connection.close();
             } catch (SQLException e) {
-                logger
-                        .logConnectionClosingFailure(JdbcUtil.class.getName(), "close", e);
+                if (logger != null) {
+                    logger
+                            .logConnectionClosingFailure(JdbcUtil.class
+                                    .getName(), "close", e);
+                }
             }
         }
     }
@@ -90,8 +92,11 @@ public final class JdbcUtil {
             try {
                 statement.close();
             } catch (SQLException e) {
-                logger
-                        .logStatementClosingFailure(JdbcUtil.class.getName(), "close", e);
+                if (logger != null) {
+                    logger
+                            .logStatementClosingFailure(JdbcUtil.class
+                                    .getName(), "close", e);
+                }
             }
         }
     }
@@ -101,8 +106,11 @@ public final class JdbcUtil {
             try {
                 resultSet.close();
             } catch (SQLException e) {
-                logger
-                        .logResultSetClosingFailure(JdbcUtil.class.getName(), "close", e);
+                if (logger != null) {
+                    logger
+                            .logResultSetClosingFailure(JdbcUtil.class
+                                    .getName(), "close", e);
+                }
             }
         }
     }

@@ -36,6 +36,17 @@ public class BuiltinNameConvention implements NameConvention {
     }
 
     @Override
+    public String fromTableToEntity(String tableName, Dialect dialect) {
+        if (tableName == null) {
+            throw new DomaIllegalArgumentException("tableName", tableName);
+        }
+        if (dialect == null) {
+            throw new DomaIllegalArgumentException("dialect", dialect);
+        }
+        return tableName;
+    }
+
+    @Override
     public String fromPropertyToColumn(String propertyName, Dialect dialect) {
         if (propertyName == null) {
             throw new DomaIllegalArgumentException("propertyName", propertyName);
@@ -44,6 +55,17 @@ public class BuiltinNameConvention implements NameConvention {
             throw new DomaIllegalArgumentException("dialect", dialect);
         }
         return propertyName;
+    }
+
+    @Override
+    public String fromColumnToProperty(String columnName, Dialect dialect) {
+        if (columnName == null) {
+            throw new DomaIllegalArgumentException("columnName", columnName);
+        }
+        if (dialect == null) {
+            throw new DomaIllegalArgumentException("dialect", dialect);
+        }
+        return columnName;
     }
 
 }

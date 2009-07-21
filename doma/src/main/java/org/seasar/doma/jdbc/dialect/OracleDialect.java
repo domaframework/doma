@@ -15,12 +15,17 @@
  */
 package org.seasar.doma.jdbc.dialect;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.domain.AbstractBooleanDomain;
+import org.seasar.doma.internal.jdbc.command.JdbcUtil;
 import org.seasar.doma.internal.jdbc.dialect.OracleForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.OraclePagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
@@ -127,6 +132,71 @@ public class OracleDialect extends StandardDialect {
     @Override
     public JdbcType<ResultSet> getResultSetType() {
         return RESULT_SET;
+    }
+
+    @Override
+    public boolean isJdbcCommentAvailable() {
+        return true;
+    }
+
+    @Override
+    public String getTableComment(Connection connection, String catalogName,
+            String schemaName, String tableName) throws SQLException {
+        if (connection == null) {
+            throw new DomaIllegalArgumentException("connection", connection);
+        }
+        if (tableName == null) {
+            throw new DomaIllegalArgumentException("tableName", tableName);
+        }
+        String sql = "select comments from all_tab_comments where owner = "
+                + schemaName + " and table_name = " + tableName
+                + " and table_type = 'TABLE'";
+        PreparedStatement preparedStatement = JdbcUtil
+                .prepareStatement(connection, sql);
+        try {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            try {
+                if (resultSet.next()) {
+                    return resultSet.getString(1);
+                }
+                return null;
+            } finally {
+                JdbcUtil.close(resultSet, null);
+            }
+        } finally {
+            JdbcUtil.close(preparedStatement, null);
+        }
+    }
+
+    @Override
+    public Map<String, String> getColumnCommentMap(Connection connection,
+            String catalogName, String schemaName, String tableName)
+            throws SQLException {
+        if (connection == null) {
+            throw new DomaIllegalArgumentException("connection", connection);
+        }
+        if (tableName == null) {
+            throw new DomaIllegalArgumentException("tableName", tableName);
+        }
+        String sql = "select column_name, comments from all_col_comments where owner = "
+                + schemaName + " and table_name = " + tableName;
+        PreparedStatement preparedStatement = JdbcUtil
+                .prepareStatement(connection, sql);
+        try {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            try {
+                Map<String, String> commentMap = new HashMap<String, String>();
+                if (resultSet.next()) {
+                    commentMap.put(resultSet.getString(1), resultSet
+                            .getString(2));
+                }
+                return commentMap;
+            } finally {
+                JdbcUtil.close(resultSet, null);
+            }
+        } finally {
+            JdbcUtil.close(preparedStatement, null);
+        }
     }
 
     public static class OracleResultSetType extends AbstractResultSetType {

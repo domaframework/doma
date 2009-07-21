@@ -13,22 +13,23 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc;
-
-import org.seasar.doma.jdbc.dialect.Dialect;
+package org.seasar.doma.internal.util;
 
 /**
  * @author taedium
  * 
  */
-public interface NameConvention {
+public final class TableUtil {
 
-    String fromEntityToTable(String entityName, Dialect dialect);
-
-    String fromTableToEntity(String tableName, Dialect dialect);
-
-    String fromPropertyToColumn(String propertyName, Dialect dialect);
-
-    String fromColumnToProperty(String columnName, Dialect dialect);
-
+    public static String buildFullTableName(String catalogName,
+            String schemaName, String tableName) {
+        StringBuilder buf = new StringBuilder();
+        if (catalogName != null && !catalogName.isEmpty()) {
+            buf.append(catalogName).append(".");
+        }
+        if (schemaName != null && !schemaName.isEmpty()) {
+            buf.append(schemaName).append(".");
+        }
+        return buf.append(tableName).toString();
+    }
 }

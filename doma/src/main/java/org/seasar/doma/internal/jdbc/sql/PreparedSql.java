@@ -21,7 +21,6 @@ import java.util.List;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.jdbc.Sql;
 
-
 /**
  * 
  * @author taedium
@@ -34,6 +33,10 @@ public class PreparedSql implements Sql<PreparedSqlParameter> {
     protected final String formattedSql;
 
     protected final List<PreparedSqlParameter> parameters;
+
+    public PreparedSql(CharSequence rawSql) {
+        this(rawSql, rawSql, Collections.<PreparedSqlParameter> emptyList());
+    }
 
     public PreparedSql(CharSequence rawSql, CharSequence formattedSql,
             List<? extends PreparedSqlParameter> parameters) {

@@ -15,8 +15,10 @@
  */
 package org.seasar.doma.jdbc.dialect;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
@@ -69,5 +71,25 @@ public interface Dialect {
     JdbcMappingVisitor getJdbcMappingVisitor();
 
     SqlLogFormattingVisitor getSqlLogFormattingVisitor();
+
+    // TODO
+    boolean isJdbcCommentAvailable();
+
+    // TODO
+    String getDefaultSchemaName(String userName);
+
+    // TODO
+    boolean isAutoIncrement(Connection connection, String catalogName,
+            String schemaName, String tableName, String columnName)
+            throws SQLException;
+
+    // TODO
+    String getTableComment(Connection connection, String catalogName,
+            String schemaName, String tableName) throws SQLException;
+
+    // TODO
+    Map<String, String> getColumnCommentMap(Connection connection,
+            String catalogName, String schemaName, String tableName)
+            throws SQLException;
 
 }

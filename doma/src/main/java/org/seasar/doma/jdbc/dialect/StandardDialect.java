@@ -15,10 +15,14 @@
  */
 package org.seasar.doma.jdbc.dialect;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.seasar.doma.DomaIllegalArgumentException;
@@ -41,9 +45,11 @@ import org.seasar.doma.domain.AbstractTimeDomain;
 import org.seasar.doma.domain.AbstractTimestampDomain;
 import org.seasar.doma.domain.BuiltinDomainVisitor;
 import org.seasar.doma.domain.Domain;
+import org.seasar.doma.internal.jdbc.command.JdbcUtil;
 import org.seasar.doma.internal.jdbc.dialect.StandardForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.StandardPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
+import org.seasar.doma.internal.util.TableUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
@@ -264,6 +270,60 @@ public class StandardDialect implements Dialect {
     @Override
     public SqlLogFormattingVisitor getSqlLogFormattingVisitor() {
         return sqlLogFormattingVisitor;
+    }
+
+    @Override
+    public boolean isJdbcCommentAvailable() {
+        return true;
+    }
+
+    public String getDefaultSchemaName(String userName) {
+        return userName;
+    }
+
+    @Override
+    public boolean isAutoIncrement(Connection connection, String catalogName,
+            String schemaName, String tableName, String columnName)
+            throws SQLException {
+        if (connection == null) {
+            throw new DomaIllegalArgumentException("connection", connection);
+        }
+        if (tableName == null) {
+            throw new DomaIllegalArgumentException("tableName", tableName);
+        }
+        if (columnName == null) {
+            throw new DomaIllegalArgumentException("columnName", columnName);
+        }
+        String fullTableName = TableUtil
+                .buildFullTableName(catalogName, schemaName, tableName);
+        String sql = "select " + columnName + " from " + fullTableName
+                + " where 1 = 0";
+        PreparedStatement preparedStatement = JdbcUtil
+                .prepareStatement(connection, sql);
+        try {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            try {
+                ResultSetMetaData rsMetaData = resultSet.getMetaData();
+                return rsMetaData.isAutoIncrement(1);
+            } finally {
+                JdbcUtil.close(resultSet, null);
+            }
+        } finally {
+            JdbcUtil.close(preparedStatement, null);
+        }
+    }
+
+    @Override
+    public String getTableComment(Connection connection, String catalogName,
+            String schemaName, String tableName) throws SQLException {
+        throw new UnsupportedOperationException("getTableComment");
+    }
+
+    @Override
+    public Map<String, String> getColumnCommentMap(Connection connection,
+            String catalogName, String schemaName, String tableName)
+            throws SQLException {
+        throw new UnsupportedOperationException("getColumnCommentMap");
     }
 
     public static class StandardJdbcMappingVisitor implements

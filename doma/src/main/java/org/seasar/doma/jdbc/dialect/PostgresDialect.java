@@ -140,6 +140,11 @@ public class PostgresDialect extends StandardDialect {
         return RESULT_SET;
     }
 
+    @Override
+    public String getDefaultSchemaName(String userName) {
+        return null;
+    }
+
     public static class PostgresResultSetType extends AbstractResultSetType {
 
         public PostgresResultSetType() {

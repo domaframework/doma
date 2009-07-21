@@ -17,6 +17,7 @@ package org.seasar.doma.entity;
 
 import java.io.Serializable;
 
+import org.seasar.doma.internal.util.TableUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.NameConvention;
 import org.seasar.doma.jdbc.dialect.Dialect;
@@ -42,24 +43,19 @@ public abstract class DomaAbstractEntity<I> implements Entity<I>, Serializable {
         this.__tableName = __tableName;
     }
 
-    public String __getQualifiedTableName(Config __config) {
-        StringBuilder buf = new StringBuilder();
-        if (__catalogName != null) {
-            buf.append(__catalogName).append(".");
-        }
-        if (__schemaName != null) {
-            buf.append(__schemaName).append(".");
-        }
+    public String __getQualifiedTableName(Config config) {
+        String tableName = getTableName(config);
+        return TableUtil
+                .buildFullTableName(__catalogName, __schemaName, tableName);
+    }
+
+    protected String getTableName(Config config) {
         if (__tableName != null) {
-            buf.append(__tableName);
-        } else {
-            Dialect dialect = __config.dialect();
-            NameConvention nameConvention = __config.nameConvention();
-            String tableName = nameConvention
-                    .fromEntityToTable(__getName(), dialect);
-            buf.append(tableName);
+            return __tableName;
         }
-        return buf.toString();
+        Dialect dialect = config.dialect();
+        NameConvention nameConvention = config.nameConvention();
+        return nameConvention.fromEntityToTable(__getName(), dialect);
     }
 
 }
