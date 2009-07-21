@@ -11,8 +11,18 @@ public class ItNameConvention implements NameConvention {
     }
 
     @Override
+    public String fromTableToEntity(String tableName, Dialect dialect) {
+        return tableName;
+    }
+
+    @Override
     public String fromPropertyToColumn(String propertyName, Dialect dialect) {
         return propertyName.toUpperCase();
+    }
+
+    @Override
+    public String fromColumnToProperty(String columnName, Dialect dialect) {
+        return columnName;
     }
 
 }
