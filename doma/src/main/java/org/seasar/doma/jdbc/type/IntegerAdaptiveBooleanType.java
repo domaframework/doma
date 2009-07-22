@@ -25,9 +25,9 @@ import java.sql.Types;
  * @author taedium
  * 
  */
-public class IntAdaptiveBooleanType extends AbstractJdbcType<Boolean> {
+public class IntegerAdaptiveBooleanType extends AbstractJdbcType<Boolean> {
 
-    public IntAdaptiveBooleanType() {
+    public IntegerAdaptiveBooleanType() {
         super(Types.INTEGER);
     }
 

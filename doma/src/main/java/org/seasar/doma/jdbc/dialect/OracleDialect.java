@@ -19,6 +19,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -154,7 +155,7 @@ public class OracleDialect extends StandardDialect {
 
     @Override
     public boolean isJdbcCommentAvailable() {
-        return true;
+        return false;
     }
 
     @Override
@@ -254,7 +255,7 @@ public class OracleDialect extends StandardDialect {
         @Override
         public Void visitAbstractBooleanDomain(AbstractBooleanDomain<?> domain,
                 JdbcMappingFunction p) throws SQLException {
-            return p.apply(domain, JdbcTypes.INT_ADAPTIVE_BOOLEAN);
+            return p.apply(domain, JdbcTypes.INTEGER_ADAPTIVE_BOOLEAN);
         }
     }
 
@@ -265,7 +266,24 @@ public class OracleDialect extends StandardDialect {
         public String visitAbstractBooleanDomain(
                 AbstractBooleanDomain<?> domain, SqlLogFormattingFunction p)
                 throws RuntimeException {
-            return p.apply(domain, JdbcTypes.INT_ADAPTIVE_BOOLEAN);
+            return p.apply(domain, JdbcTypes.INTEGER_ADAPTIVE_BOOLEAN);
+        }
+    }
+
+    public static class OracleSqlBlockContext extends StandardSqlBlockContext {
+
+        protected OracleSqlBlockContext() {
+            sqlBlockStartKeywordsList.add(Arrays
+                    .asList("create", "or", "replace", "procedure"));
+            sqlBlockStartKeywordsList.add(Arrays
+                    .asList("create", "or", "replace", "function"));
+            sqlBlockStartKeywordsList.add(Arrays
+                    .asList("create", "or", "replace", "triger"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("create", "procedure"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("create", "function"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("create", "trigger"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("declare"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("begin"));
         }
     }
 }

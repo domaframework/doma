@@ -122,6 +122,16 @@ public class HsqldbDialect extends StandardDialect {
         return true;
     }
 
+    @Override
+    public String getDefaultSchemaName(String userName) {
+        return null;
+    }
+
+    @Override
+    public boolean isJdbcCommentAvailable() {
+        return false;
+    }
+
     public static class HsqldbJdbcMappingVisitor extends
             StandardJdbcMappingVisitor {
     }

@@ -190,4 +190,19 @@ public class PostgresDialect extends StandardDialect {
             StandardSqlLogFormattingVisitor {
     }
 
+    public static class PostgreSqlBlockContext implements SqlBlockContext {
+
+        protected boolean inSqlBlock;
+
+        public void addKeyword(String keyword) {
+            if ("$$".equals(keyword)) {
+                inSqlBlock = !inSqlBlock;
+            }
+        }
+
+        public boolean isInSqlBlock() {
+            return inSqlBlock;
+        }
+    }
+
 }

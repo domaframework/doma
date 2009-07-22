@@ -95,4 +95,15 @@ public interface Dialect {
 
     Class<? extends Domain<?, ?>> getDomainClass(String typeName, int sqlType,
             int length, int precision, int scale);
+
+    SqlBlockContext createSqlBlockContext();
+
+    String getSqlBlockDelimiter();
+
+    public static interface SqlBlockContext {
+
+        void addKeyword(String keyword);
+
+        boolean isInSqlBlock();
+    }
 }

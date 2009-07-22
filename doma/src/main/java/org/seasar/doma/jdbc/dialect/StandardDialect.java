@@ -21,9 +21,11 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -402,6 +404,64 @@ public class StandardDialect implements Dialect {
             throws SQLException {
         throw new DomaUnsupportedOperationException(getClass().getName(),
                 "getColumnCommentMap");
+    }
+
+    public SqlBlockContext createSqlBlockContext() {
+        return new StandardSqlBlockContext();
+    }
+
+    public String getSqlBlockDelimiter() {
+        return null;
+    }
+
+    /**
+     * 標準の{@link SqlBlockContext}の実装クラスです。
+     * 
+     * @author taedium
+     */
+    public static class StandardSqlBlockContext implements SqlBlockContext {
+
+        /** SQLブロックの開始を表すキーワードの連なりのリスト */
+        protected List<List<String>> sqlBlockStartKeywordsList = new ArrayList<List<String>>();
+
+        /** 追加されたキーワードの連なり */
+        protected List<String> keywords = new ArrayList<String>();
+
+        /** SQLブロックの内側の場合{@code true} */
+        protected boolean inSqlBlock;
+
+        public void addKeyword(String keyword) {
+            if (!inSqlBlock) {
+                keywords.add(keyword);
+                check();
+            }
+        }
+
+        /**
+         * ブロックの内側かどうかチェックします。
+         */
+        protected void check() {
+            for (List<String> startKeywords : sqlBlockStartKeywordsList) {
+                if (startKeywords.size() > keywords.size()) {
+                    continue;
+                }
+                for (int i = 0; i < startKeywords.size(); i++) {
+                    String word1 = startKeywords.get(i);
+                    String word2 = keywords.get(i);
+                    inSqlBlock = word1.equalsIgnoreCase(word2);
+                    if (!inSqlBlock) {
+                        break;
+                    }
+                }
+                if (inSqlBlock) {
+                    break;
+                }
+            }
+        }
+
+        public boolean isInSqlBlock() {
+            return inSqlBlock;
+        }
     }
 
     @Override

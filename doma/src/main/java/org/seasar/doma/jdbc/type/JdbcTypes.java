@@ -43,7 +43,7 @@ public final class JdbcTypes {
 
     public static final FloatType FLOAT = new FloatType();
 
-    public static final IntAdaptiveBooleanType INT_ADAPTIVE_BOOLEAN = new IntAdaptiveBooleanType();
+    public static final IntegerAdaptiveBooleanType INTEGER_ADAPTIVE_BOOLEAN = new IntegerAdaptiveBooleanType();
 
     public static final IntegerType INTEGER = new IntegerType();
 

@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.internal.util;
 
+import static org.seasar.doma.internal.util.AssertionUtil.*;
+
 /**
  * @author taedium
  * 
@@ -23,6 +25,7 @@ public final class TableUtil {
 
     public static String buildFullTableName(String catalogName,
             String schemaName, String tableName) {
+        assertNotNull(tableName);
         StringBuilder buf = new StringBuilder();
         if (catalogName != null && !catalogName.isEmpty()) {
             buf.append(catalogName).append(".");

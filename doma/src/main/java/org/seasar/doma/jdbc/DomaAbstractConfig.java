@@ -15,20 +15,19 @@
  */
 package org.seasar.doma.jdbc;
 
-
 /**
  * @author taedium
  * 
  */
 public abstract class DomaAbstractConfig implements Config {
 
-    protected static NameConvention nameConvention = new BuiltinNameConvention();
+    private static NameConvention nameConvention = new BuiltinNameConvention();
 
-    protected static SqlFileRepository sqlFileRepository = new BuiltinSqlFileRepository();
+    private static SqlFileRepository sqlFileRepository = new BuiltinSqlFileRepository();
 
-    protected static JdbcLogger jdbcLogger = new BuiltinJdbcLogger();
+    private static JdbcLogger jdbcLogger = new BuiltinJdbcLogger();
 
-    protected static RequiresNewController requiresNewController = new BuiltinRequiresNewController();
+    private static RequiresNewController requiresNewController = new BuiltinRequiresNewController();
 
     @Override
     public String dataSourceName() {

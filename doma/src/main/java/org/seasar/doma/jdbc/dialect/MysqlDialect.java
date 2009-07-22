@@ -130,4 +130,18 @@ public class MysqlDialect extends StandardDialect {
             StandardSqlLogFormattingVisitor {
     }
 
+    public static class MysqlSqlBlockContext extends StandardSqlBlockContext {
+
+        protected MysqlSqlBlockContext() {
+            sqlBlockStartKeywordsList.add(Arrays.asList("create", "procedure"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("create", "function"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("create", "trigger"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("alter", "procedure"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("alter", "function"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("alter", "trigger"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("declare"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("begin"));
+        }
+    }
+
 }

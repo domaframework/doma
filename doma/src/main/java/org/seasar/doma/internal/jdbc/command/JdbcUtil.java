@@ -42,6 +42,14 @@ public final class JdbcUtil {
         }
     }
 
+    public static Statement createStatement(Connection connection) {
+        try {
+            return connection.createStatement();
+        } catch (SQLException e) {
+            throw new JdbcException(MessageCode.DOMA2032, e, e);
+        }
+    }
+
     public static PreparedStatement prepareStatement(Connection connection,
             String sql) {
         try {
