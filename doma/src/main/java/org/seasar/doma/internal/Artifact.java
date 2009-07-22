@@ -23,7 +23,7 @@ import java.util.Properties;
  * @author taedium
  * 
  */
-public class Artifact {
+public final class Artifact {
 
     private static final String PATH = "/META-INF/maven/org.seasar.doma/doma/pom.properties";
 
@@ -51,7 +51,7 @@ public class Artifact {
         }
     }
 
-    protected static Properties loadProperties() {
+    private static Properties loadProperties() {
         InputStream is = Artifact.class.getResourceAsStream(PATH);
         Properties props = new Properties();
         if (is != null) {
