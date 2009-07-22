@@ -28,7 +28,7 @@ import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.bean.Bean;
 import org.seasar.doma.bean.BeanFactory;
 import org.seasar.doma.bean.BeanProperty;
-import org.seasar.doma.bean.FieldAccessBeanFactory;
+import org.seasar.doma.bean.BeanUtil;
 import org.seasar.doma.converter.ConversionException;
 import org.seasar.doma.converter.Converter;
 import org.seasar.doma.converter.Converters;
@@ -44,21 +44,9 @@ import org.seasar.doma.internal.util.ClassUtil;
  */
 public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
 
-    protected final static BeanFactory DEFAULT_BEAN_FACTORY = new FieldAccessBeanFactory();
-
     protected final Map<Class<?>, Converter<?>> converterMap = new HashMap<Class<?>, Converter<?>>();
 
-    protected final BeanFactory beanFactory;
-
-    public BuiltinCopyUtilDelegate() {
-        this(DEFAULT_BEAN_FACTORY);
-    }
-
-    protected BuiltinCopyUtilDelegate(BeanFactory beanFactory) {
-        if (beanFactory == null) {
-            throw new DomaIllegalArgumentException("beanFactory", beanFactory);
-        }
-        this.beanFactory = beanFactory;
+    protected BuiltinCopyUtilDelegate() {
         converterMap.put(String.class, Converters.STRING);
         converterMap.put(BigDecimal.class, Converters.BIG_DECIMAL);
         converterMap.put(BigInteger.class, Converters.BIG_INTEGER);
@@ -312,10 +300,10 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
 
     protected Bean createBean(Object obj, CopyOptions copyOptions) {
         BeanFactory beanFactory = copyOptions.getBeanFactory();
-        if (beanFactory == null) {
-            beanFactory = this.beanFactory;
+        if (beanFactory != null) {
+            return beanFactory.create(obj);
         }
-        return beanFactory.create(obj);
+        return BeanUtil.createBean(obj);
     }
 
 }
