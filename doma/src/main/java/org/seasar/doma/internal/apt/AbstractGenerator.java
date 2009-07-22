@@ -27,7 +27,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.tools.JavaFileObject;
 
-import org.seasar.doma.internal.ProductInfo;
+import org.seasar.doma.internal.Artifact;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.message.MessageCode;
 
@@ -69,19 +69,19 @@ public abstract class AbstractGenerator implements Generator {
     }
 
     protected void printGenerated() {
-        print("@%s(value = { \"%s\", \"%s\" }, date = \"%tF %<tT\")%n", Generated.class
-                .getName(), ProductInfo.getName(), ProductInfo.getVersion(), Options
+        iprint("@%s(value = { \"%s\", \"%s\" }, date = \"%tF %<tT\")%n", Generated.class
+                .getName(), Artifact.getName(), Artifact.getVersion(), Options
                 .getDate(env));
     }
 
-    protected void print(String format, Object... args) {
+    protected void iprint(String format, Object... args) {
         formatter.format(indentBuffer.toString());
         throwExceptionIfNecessary();
         formatter.format(format, args);
         throwExceptionIfNecessary();
     }
 
-    protected void put(String format, Object... args) {
+    protected void print(String format, Object... args) {
         formatter.format(format, args);
         throwExceptionIfNecessary();
     }

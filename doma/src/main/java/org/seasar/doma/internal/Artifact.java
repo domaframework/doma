@@ -23,13 +23,17 @@ import java.util.Properties;
  * @author taedium
  * 
  */
-public class ProductInfo {
+public class Artifact {
 
-    protected static final String PATH = "/META-INF/product.properties";
+    private static final String PATH = "/META-INF/maven/org.seasar.doma/doma/pom.properties";
 
-    protected static String name = "Doma";
+    private static final String name = "Doma";
 
-    protected static String version;
+    private static String version;
+
+    private static String groupId;
+
+    private static String artifactId;
 
     static {
         Properties props = loadProperties();
@@ -37,10 +41,18 @@ public class ProductInfo {
         if (version == null) {
             version = "unknown";
         }
+        groupId = props.getProperty("groupId");
+        if (groupId == null) {
+            groupId = "unknown";
+        }
+        artifactId = props.getProperty("artifactId");
+        if (artifactId == null) {
+            artifactId = "unknown";
+        }
     }
 
     protected static Properties loadProperties() {
-        InputStream is = ProductInfo.class.getResourceAsStream(PATH);
+        InputStream is = Artifact.class.getResourceAsStream(PATH);
         Properties props = new Properties();
         if (is != null) {
             try {
@@ -65,4 +77,13 @@ public class ProductInfo {
     public static String getVersion() {
         return version;
     }
+
+    public static String getGroupId() {
+        return groupId;
+    }
+
+    public static String getArtifactId() {
+        return artifactId;
+    }
+
 }
