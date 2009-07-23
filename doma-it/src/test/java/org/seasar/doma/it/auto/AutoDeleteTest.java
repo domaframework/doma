@@ -33,7 +33,7 @@ import org.seasar.doma.it.entity.NoId;
 import org.seasar.doma.it.entity.NoId_;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.OptimisticLockException;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 import org.seasar.framework.unit.Seasar2;
 
 @RunWith(Seasar2.class)
@@ -109,7 +109,7 @@ public class AutoDeleteTest {
             dao.delete(entity);
             fail();
         } catch (JdbcException expected) {
-            assertEquals(MessageCode.DOMA2022, expected.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA2022, expected.getMessageCode());
         }
     }
 }

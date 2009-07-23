@@ -24,7 +24,7 @@ import org.seasar.doma.it.domain.IdDomain;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SelectOptions;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 import org.seasar.framework.unit.Seasar2;
 import org.seasar.framework.unit.annotation.Prerequisite;
 
@@ -38,7 +38,7 @@ public class SqlFileSelectForUpdateTest {
             dao.selectById(new IdDomain(1), SelectOptions.get().forUpdate());
             fail();
         } catch (JdbcException expected) {
-            assertEquals(MessageCode.DOMA2023, expected.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA2023, expected.getMessageCode());
         }
     }
 

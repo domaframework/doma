@@ -48,7 +48,7 @@ import org.seasar.doma.it.entity.SequenceStrategy_;
 import org.seasar.doma.it.entity.TableStrategy;
 import org.seasar.doma.it.entity.TableStrategy_;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 import org.seasar.framework.unit.Seasar2;
 import org.seasar.framework.unit.annotation.Prerequisite;
 
@@ -120,7 +120,7 @@ public class AutoInsertTest {
             dao.insert(department);
             fail();
         } catch (JdbcException expected) {
-            assertEquals(MessageCode.DOMA2020, expected.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA2020, expected.getMessageCode());
         }
     }
 
