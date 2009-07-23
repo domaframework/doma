@@ -21,38 +21,38 @@ import junit.framework.TestCase;
  * @author taedium
  * 
  */
-public class FieldAccessBeanTest extends TestCase {
+public class FieldAccessBeanWrapperTest extends TestCase {
 
     public void testGetBeanClass() throws Exception {
         Foo foo = new Foo();
-        FieldAccessBean bean = new FieldAccessBean(foo);
+        FieldAccessBeanWrapper bean = new FieldAccessBeanWrapper(foo);
         assertEquals(Foo.class, bean.getBeanClass());
     }
 
-    public void testGetBeanProperties() throws Exception {
+    public void testGetBeanPropertyWrappers() throws Exception {
         Foo foo = new Foo();
-        FieldAccessBean bean = new FieldAccessBean(foo);
-        assertEquals(3, bean.getBeanProperties().size());
+        FieldAccessBeanWrapper bean = new FieldAccessBeanWrapper(foo);
+        assertEquals(3, bean.getBeanPropertyWrappers().size());
     }
 
-    public void testGetBeanProperty() throws Exception {
+    public void testGetBeanPropertyWrapper() throws Exception {
         Foo foo = new Foo();
-        FieldAccessBean bean = new FieldAccessBean(foo);
+        FieldAccessBeanWrapper bean = new FieldAccessBeanWrapper(foo);
 
-        BeanProperty property = bean.getBeanProperty("aaa");
+        BeanPropertyWrapper property = bean.getBeanPropertyWrapper("aaa");
         assertNotNull(property);
         assertEquals("aaa", property.getName());
         assertEquals(int.class, property.getPropertyClass());
 
-        property = bean.getBeanProperty("bbb");
+        property = bean.getBeanPropertyWrapper("bbb");
         assertNull(property);
 
-        property = bean.getBeanProperty("ccc");
+        property = bean.getBeanPropertyWrapper("ccc");
         assertNotNull(property);
         assertEquals("ccc", property.getName());
         assertEquals(String.class, property.getPropertyClass());
 
-        property = bean.getBeanProperty("ddd");
+        property = bean.getBeanPropertyWrapper("ddd");
         assertNotNull(property);
         assertEquals("ddd", property.getName());
         assertEquals(String.class, property.getPropertyClass());
@@ -60,19 +60,19 @@ public class FieldAccessBeanTest extends TestCase {
 
     public void testSetValue() throws Exception {
         Foo foo = new Foo();
-        FieldAccessBean bean = new FieldAccessBean(foo);
+        FieldAccessBeanWrapper bean = new FieldAccessBeanWrapper(foo);
 
-        BeanProperty property = bean.getBeanProperty("aaa");
+        BeanPropertyWrapper property = bean.getBeanPropertyWrapper("aaa");
         property.setValue(100);
         assertEquals(100, foo.aaa);
     }
 
     public void testGetValue() throws Exception {
         Foo foo = new Foo();
-        FieldAccessBean bean = new FieldAccessBean(foo);
+        FieldAccessBeanWrapper bean = new FieldAccessBeanWrapper(foo);
 
         foo.aaa = 100;
-        BeanProperty property = bean.getBeanProperty("aaa");
+        BeanPropertyWrapper property = bean.getBeanPropertyWrapper("aaa");
         assertEquals(100, property.getValue());
     }
 

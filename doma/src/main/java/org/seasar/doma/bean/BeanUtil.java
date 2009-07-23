@@ -32,7 +32,7 @@ public final class BeanUtil {
         BeanUtil.delegate = delegate;
     }
 
-    public static Bean createBean(Object obj) {
-        return delegate.createBean(obj);
+    public static BeanWrapper wrap(Object bean) {
+        return delegate.wrap(bean);
     }
 }

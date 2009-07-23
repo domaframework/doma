@@ -19,11 +19,11 @@ package org.seasar.doma.bean;
  * @author taedium
  * 
  */
-public class FieldAccessBeanFactory implements BeanFactory {
+public class FieldAccessBeanWrapperFactory implements BeanWrapperFactory {
 
     @Override
-    public Bean create(Object obj) {
-        return new FieldAccessBean(obj);
+    public BeanWrapper create(Object bean) {
+        return new FieldAccessBeanWrapper(bean);
     }
 
 }

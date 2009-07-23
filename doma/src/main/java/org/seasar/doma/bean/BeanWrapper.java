@@ -15,17 +15,17 @@
  */
 package org.seasar.doma.bean;
 
+import java.util.List;
+
 /**
  * @author taedium
  * 
  */
-public interface BeanProperty {
+public interface BeanWrapper {
 
-    String getName();
+    BeanPropertyWrapper getBeanPropertyWrapper(String name);
 
-    Object getValue();
+    List<BeanPropertyWrapper> getBeanPropertyWrappers();
 
-    void setValue(Object value);
-
-    Class<?> getPropertyClass();
+    Class<?> getBeanClass();
 }

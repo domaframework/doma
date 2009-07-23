@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.seasar.doma.DomaIllegalArgumentException;
-import org.seasar.doma.bean.BeanFactory;
+import org.seasar.doma.bean.BeanWrapperFactory;
 import org.seasar.doma.converter.Converter;
 
 /**
@@ -44,7 +44,7 @@ public class CopyOptions {
 
     protected boolean whitespaceIncluded = true;
 
-    protected BeanFactory beanFactory;
+    protected BeanWrapperFactory beanWrapperFactory;
 
     public CopyOptions include(String... propertyNames) {
         includedPropertyNames = propertyNames;
@@ -92,8 +92,8 @@ public class CopyOptions {
         return this;
     }
 
-    public CopyOptions beanFactory(BeanFactory beanFactory) {
-        this.beanFactory = beanFactory;
+    public CopyOptions beanWrapperFactory(BeanWrapperFactory beanWrapperFactory) {
+        this.beanWrapperFactory = beanWrapperFactory;
         return this;
     }
 
@@ -105,8 +105,8 @@ public class CopyOptions {
         return patterns.get(propertyName);
     }
 
-    public BeanFactory getBeanFactory() {
-        return beanFactory;
+    public BeanWrapperFactory getBeanFactory() {
+        return beanWrapperFactory;
     }
 
     public boolean isTargetProperty(String propertyName) {

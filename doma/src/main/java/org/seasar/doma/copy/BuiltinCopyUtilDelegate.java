@@ -25,9 +25,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.seasar.doma.DomaIllegalArgumentException;
-import org.seasar.doma.bean.Bean;
-import org.seasar.doma.bean.BeanFactory;
-import org.seasar.doma.bean.BeanProperty;
+import org.seasar.doma.bean.BeanWrapper;
+import org.seasar.doma.bean.BeanWrapperFactory;
+import org.seasar.doma.bean.BeanPropertyWrapper;
 import org.seasar.doma.bean.BeanUtil;
 import org.seasar.doma.converter.ConversionException;
 import org.seasar.doma.converter.Converter;
@@ -79,14 +79,14 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
             if (Entity.class.isInstance(dest)) {
                 copyFromEntityToEntity(srcEntity, Entity.class.cast(dest), copyOptions);
             } else {
-                copyFromEntityToBean(srcEntity, createBean(dest, copyOptions), copyOptions);
+                copyFromEntityToBean(srcEntity, wrap(dest, copyOptions), copyOptions);
             }
         } else {
-            Bean srcBean = createBean(src, copyOptions);
+            BeanWrapper srcBean = wrap(src, copyOptions);
             if (Entity.class.isInstance(dest)) {
                 copyFromBeanToEntity(srcBean, Entity.class.cast(dest), copyOptions);
             } else {
-                copyFromBeanToBean(srcBean, createBean(dest, copyOptions), copyOptions);
+                copyFromBeanToBean(srcBean, wrap(dest, copyOptions), copyOptions);
             }
         }
     }
@@ -106,7 +106,7 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
         if (Entity.class.isInstance(src)) {
             copyFromEntityToMap(Entity.class.cast(src), dest, copyOptions);
         } else {
-            copyFromBeanToMap(createBean(src, copyOptions), dest, copyOptions);
+            copyFromBeanToMap(wrap(src, copyOptions), dest, copyOptions);
         }
     }
 
@@ -125,7 +125,7 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
         if (Entity.class.isInstance(dest)) {
             copyFromMapToEntity(src, Entity.class.cast(dest), copyOptions);
         } else {
-            copyFromMapToBean(src, createBean(dest, copyOptions), copyOptions);
+            copyFromMapToBean(src, wrap(dest, copyOptions), copyOptions);
         }
     }
 
@@ -154,7 +154,7 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
         }
     }
 
-    protected void copyFromEntityToBean(Entity<?> src, Bean dest,
+    protected void copyFromEntityToBean(Entity<?> src, BeanWrapper dest,
             CopyOptions copyOptions) {
         Class<?> srcClass = src.getClass();
         for (EntityProperty<?> srcProperty : src.__getEntityProperties()) {
@@ -169,10 +169,10 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
         }
     }
 
-    protected void copyFromBeanToEntity(Bean src, Entity<?> dest,
+    protected void copyFromBeanToEntity(BeanWrapper src, Entity<?> dest,
             CopyOptions copyOptions) {
         Class<?> srcClass = src.getBeanClass();
-        for (BeanProperty srcProperty : src.getBeanProperties()) {
+        for (BeanPropertyWrapper srcProperty : src.getBeanPropertyWrappers()) {
             if (!copyOptions.isTargetProperty(srcProperty.getName())) {
                 continue;
             }
@@ -184,9 +184,9 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
         }
     }
 
-    protected void copyFromBeanToMap(Bean src, Map<String, Object> dest,
+    protected void copyFromBeanToMap(BeanWrapper src, Map<String, Object> dest,
             CopyOptions copyOptions) {
-        for (BeanProperty srcProperty : src.getBeanProperties()) {
+        for (BeanPropertyWrapper srcProperty : src.getBeanPropertyWrappers()) {
             if (!copyOptions.isTargetProperty(srcProperty.getName())) {
                 continue;
             }
@@ -197,10 +197,10 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
         }
     }
 
-    protected void copyFromBeanToBean(Bean src, Bean dest,
+    protected void copyFromBeanToBean(BeanWrapper src, BeanWrapper dest,
             CopyOptions copyOptions) {
         Class<?> srcClass = src.getBeanClass();
-        for (BeanProperty srcProperty : src.getBeanProperties()) {
+        for (BeanPropertyWrapper srcProperty : src.getBeanPropertyWrappers()) {
             if (!copyOptions.isTargetProperty(srcProperty.getName())) {
                 continue;
             }
@@ -227,7 +227,7 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
         }
     }
 
-    protected void copyFromMapToBean(Map<String, Object> src, Bean dest,
+    protected void copyFromMapToBean(Map<String, Object> src, BeanWrapper dest,
             CopyOptions copyOptions) {
         Class<?> srcClass = src.getClass();
         for (Entry<String, Object> srcEntry : src.entrySet()) {
@@ -260,9 +260,9 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
     }
 
     protected void copyToBeanProperty(Class<?> srcClass,
-            String srcPropertyName, Object srcPropertyValue, Bean dest,
+            String srcPropertyName, Object srcPropertyValue, BeanWrapper dest,
             CopyOptions copyOptions) {
-        BeanProperty destProperty = dest.getBeanProperty(srcPropertyName);
+        BeanPropertyWrapper destProperty = dest.getBeanPropertyWrapper(srcPropertyName);
         if (destProperty == null) {
             return;
         }
@@ -298,12 +298,12 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
         return converter;
     }
 
-    protected Bean createBean(Object obj, CopyOptions copyOptions) {
-        BeanFactory beanFactory = copyOptions.getBeanFactory();
-        if (beanFactory != null) {
-            return beanFactory.create(obj);
+    protected BeanWrapper wrap(Object bean, CopyOptions copyOptions) {
+        BeanWrapperFactory beanWrapperFactory = copyOptions.getBeanFactory();
+        if (beanWrapperFactory != null) {
+            return beanWrapperFactory.create(bean);
         }
-        return BeanUtil.createBean(obj);
+        return BeanUtil.wrap(bean);
     }
 
 }

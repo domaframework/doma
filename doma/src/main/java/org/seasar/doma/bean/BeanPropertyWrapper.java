@@ -19,7 +19,13 @@ package org.seasar.doma.bean;
  * @author taedium
  * 
  */
-public interface BeanFactory {
+public interface BeanPropertyWrapper {
 
-    Bean create(Object obj);
+    String getName();
+
+    Object getValue();
+
+    void setValue(Object value);
+
+    Class<?> getPropertyClass();
 }

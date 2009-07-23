@@ -31,35 +31,35 @@ import org.seasar.doma.message.MessageCode;
  * @author taedium
  * 
  */
-public class FieldAccessBean implements Bean {
+public class FieldAccessBeanWrapper implements BeanWrapper {
 
-    protected final Object obj;
+    protected final Object bean;
 
     protected final Class<?> beanClass;
 
-    protected final List<BeanProperty> propertyWrappers;
+    protected final List<BeanPropertyWrapper> propertyWrappers;
 
-    protected final Map<String, BeanProperty> propertyWrapperMap;
+    protected final Map<String, BeanPropertyWrapper> propertyWrapperMap;
 
-    public FieldAccessBean(Object obj) {
-        if (obj == null) {
-            throw new DomaIllegalArgumentException("obj", obj);
+    public FieldAccessBeanWrapper(Object bean) {
+        if (bean == null) {
+            throw new DomaIllegalArgumentException("obj", bean);
         }
-        this.obj = obj;
-        this.beanClass = obj.getClass();
+        this.bean = bean;
+        this.beanClass = bean.getClass();
         this.propertyWrapperMap = createPropertyWrapperMap(beanClass);
         this.propertyWrappers = Collections
-                .unmodifiableList(new ArrayList<BeanProperty>(
+                .unmodifiableList(new ArrayList<BeanPropertyWrapper>(
                         propertyWrapperMap.values()));
     }
 
     @Override
-    public BeanProperty getBeanProperty(String name) {
+    public BeanPropertyWrapper getBeanPropertyWrapper(String name) {
         return propertyWrapperMap.get(name);
     }
 
     @Override
-    public List<BeanProperty> getBeanProperties() {
+    public List<BeanPropertyWrapper> getBeanPropertyWrappers() {
         return propertyWrappers;
     }
 
@@ -68,13 +68,13 @@ public class FieldAccessBean implements Bean {
         return beanClass;
     }
 
-    protected LinkedHashMap<String, BeanProperty> createPropertyWrapperMap(
+    protected LinkedHashMap<String, BeanPropertyWrapper> createPropertyWrapperMap(
             Class<?> beanClass) {
-        LinkedHashMap<String, BeanProperty> result = new LinkedHashMap<String, BeanProperty>();
+        LinkedHashMap<String, BeanPropertyWrapper> result = new LinkedHashMap<String, BeanPropertyWrapper>();
         for (Class<?> clazz = beanClass; clazz != Object.class; clazz = clazz
                 .getSuperclass()) {
             for (Field field : beanClass.getFields()) {
-                BeanProperty propertyWrapper = new FieldAccessPropertyWrapper(
+                BeanPropertyWrapper propertyWrapper = new FieldAccessPropertyWrapper(
                         field);
                 String name = propertyWrapper.getName();
                 if (result.containsKey(name)) {
@@ -86,7 +86,7 @@ public class FieldAccessBean implements Bean {
         return result;
     }
 
-    protected class FieldAccessPropertyWrapper implements BeanProperty {
+    protected class FieldAccessPropertyWrapper implements BeanPropertyWrapper {
 
         protected final Field field;
 
@@ -107,7 +107,7 @@ public class FieldAccessBean implements Bean {
         @Override
         public Object getValue() {
             try {
-                return FieldUtil.get(field, obj);
+                return FieldUtil.get(field, bean);
             } catch (WrapException e) {
                 Throwable cause = e.getCause();
                 throw new BeanException(MessageCode.DOMA6001, beanClass, field
@@ -118,7 +118,7 @@ public class FieldAccessBean implements Bean {
         @Override
         public void setValue(Object value) {
             try {
-                FieldUtil.set(field, obj, value);
+                FieldUtil.set(field, bean, value);
             } catch (WrapException e) {
                 Throwable cause = e.getCause();
                 throw new BeanException(MessageCode.DOMA6002, beanClass, field

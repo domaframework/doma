@@ -21,5 +21,5 @@ package org.seasar.doma.bean;
  */
 public interface BeanUtilDelegate {
 
-    Bean createBean(Object obj);
+    BeanWrapper wrap(Object bean);
 }

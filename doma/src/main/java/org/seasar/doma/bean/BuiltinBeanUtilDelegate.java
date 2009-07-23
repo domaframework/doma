@@ -22,8 +22,8 @@ package org.seasar.doma.bean;
 public class BuiltinBeanUtilDelegate implements BeanUtilDelegate {
 
     @Override
-    public Bean createBean(Object obj) {
-        return new FieldAccessBean(obj);
+    public BeanWrapper wrap(Object bean) {
+        return new FieldAccessBeanWrapper(bean);
     }
 
 }
