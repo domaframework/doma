@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -32,7 +32,7 @@ public class BatchSqlExecutionException extends SqlExecutionException {
 
     public BatchSqlExecutionException(String rawSql, Throwable cause,
             Throwable rootCause) {
-        super(MessageCode.DOMA2030, rawSql, null, cause, rootCause);
+        super(DomaMessageCode.DOMA2030, rawSql, null, cause, rootCause);
     }
 
 }

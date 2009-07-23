@@ -29,7 +29,7 @@ import org.seasar.doma.internal.jdbc.query.BatchUpdateQuery;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 import junit.framework.TestCase;
 import example.entity.Emp;
@@ -169,7 +169,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
             query.setEntities(Arrays.<Emp> asList(new MyEmp()));
             fail();
         } catch (JdbcException expected) {
-            assertEquals(MessageCode.DOMA2026, expected.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA2026, expected.getMessageCode());
         }
     }
 

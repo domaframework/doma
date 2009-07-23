@@ -29,7 +29,7 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -118,7 +118,7 @@ public class AutoBatchInsertQuery<I, E extends Entity<I>> extends
                     targetProperties.add(p);
                 }
                 if (generatedIdProperty == null && p.getDomain().isNull()) {
-                    throw new JdbcException(MessageCode.DOMA2020, entity
+                    throw new JdbcException(DomaMessageCode.DOMA2020, entity
                             .__getName(), p.getName());
                 }
                 continue;

@@ -29,7 +29,7 @@ import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.WordNode;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlNode;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -67,7 +67,7 @@ public class StandardPagingTransformer implements
 
         OrderByClauseNode originalOrderBy = node.getOrderByClauseNode();
         if (originalOrderBy == null) {
-            throw new JdbcException(MessageCode.DOMA2201);
+            throw new JdbcException(DomaMessageCode.DOMA2201);
         }
         SelectStatementNode subStatement = new SelectStatementNode();
         subStatement.setSelectClauseNode(node.getSelectClauseNode());

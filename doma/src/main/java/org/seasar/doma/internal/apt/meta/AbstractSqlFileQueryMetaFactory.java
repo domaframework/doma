@@ -35,7 +35,7 @@ import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.internal.util.IOUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlNode;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -60,15 +60,15 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
                 DeclaredType listTyep = TypeUtil.toDeclaredType(paramType, env);
                 List<? extends TypeMirror> args = listTyep.getTypeArguments();
                 if (args.isEmpty()) {
-                    throw new AptException(MessageCode.DOMA4027, env, method);
+                    throw new AptException(DomaMessageCode.DOMA4027, env, method);
                 }
                 TypeMirror elementType = TypeUtil.resolveTypeParameter(daoMeta
                         .getTypeParameterMap(), args.get(0));
                 if (!isDomain(elementType)) {
-                    throw new AptException(MessageCode.DOMA4028, env, method);
+                    throw new AptException(DomaMessageCode.DOMA4028, env, method);
                 }
             } else if (!isDomain(paramType) && !isEntity(paramType, daoMeta)) {
-                throw new AptException(MessageCode.DOMA4010, env, method);
+                throw new AptException(DomaMessageCode.DOMA4010, env, method);
             }
             String parameterName = ElementUtil.getParameterName(param);
             String parameterTypeName = TypeUtil.getTypeName(paramType, daoMeta
@@ -84,7 +84,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
                 .getQualifiedName().toString(), queryMeta.getName());
         String sql = getSql(queryMeta, method, daoMeta, path);
         if (sql == null) {
-            throw new AptException(MessageCode.DOMA4019, env, method, path);
+            throw new AptException(DomaMessageCode.DOMA4019, env, method, path);
         }
         SqlNode sqlNode = createSqlNode(queryMeta, method, daoMeta, path, sql);
         BindVariableValidator validator = new BindVariableValidator(env,
@@ -102,7 +102,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
             return IOUtil.readAsString(inputStream);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
-            throw new AptException(MessageCode.DOMA4068, env, method, cause,
+            throw new AptException(DomaMessageCode.DOMA4068, env, method, cause,
                     path, cause);
         } finally {
             IOUtil.close(inputStream);
@@ -115,7 +115,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
             SqlParser sqlParser = new SqlParser(sql);
             return sqlParser.parse();
         } catch (JdbcException e) {
-            throw new AptException(MessageCode.DOMA4069, env, method, e, path,
+            throw new AptException(DomaMessageCode.DOMA4069, env, method, e, path,
                     e);
         }
     }

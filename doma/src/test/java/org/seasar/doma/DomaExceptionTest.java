@@ -17,7 +17,7 @@ package org.seasar.doma;
 
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.domain.StringDomain;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 import junit.framework.TestCase;
 
@@ -34,7 +34,7 @@ public class DomaExceptionTest extends TestCase {
             fail();
         } catch (DomaIllegalArgumentException e) {
             System.out.println(e.getMessage());
-            assertEquals(MessageCode.DOMA0001, e.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA0001, e.getMessageCode());
         }
     }
 

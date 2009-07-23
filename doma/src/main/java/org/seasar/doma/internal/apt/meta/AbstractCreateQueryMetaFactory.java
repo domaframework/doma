@@ -30,7 +30,7 @@ import org.seasar.doma.domain.Domain;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.TypeUtil;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -53,7 +53,7 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
             DaoMeta daoMeta) {
         TypeMirror returnType = method.getReturnType();
         if (!isDomain(returnType)) {
-            throw new AptException(MessageCode.DOMA4022, env, method);
+            throw new AptException(DomaMessageCode.DOMA4022, env, method);
         }
         TypeMirror domainValueType = getDomainValueType(returnType);
         if (domainValueType == null) {
@@ -66,7 +66,7 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
         }
         if (!domainValueElement.getQualifiedName()
                 .contentEquals(domainValueClass.getName())) {
-            throw new AptException(MessageCode.DOMA4075, env, method,
+            throw new AptException(DomaMessageCode.DOMA4075, env, method,
                     domainValueClass.getName());
         }
         queryMeta.setReturnTypeName(TypeUtil.getTypeName(returnType, daoMeta
@@ -105,7 +105,7 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
         List<? extends VariableElement> params = method.getParameters();
         int size = params.size();
         if (size != 0) {
-            throw new AptException(MessageCode.DOMA4078, env, method);
+            throw new AptException(DomaMessageCode.DOMA4078, env, method);
         }
     }
 

@@ -15,7 +15,7 @@
  */
 package org.seasar.doma;
 
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -30,7 +30,7 @@ public class DomaIllegalArgumentException extends DomaException {
     protected final Object argument;
 
     public DomaIllegalArgumentException(String parameterName, Object argument) {
-        super(MessageCode.DOMA0001, parameterName, argument);
+        super(DomaMessageCode.DOMA0001, parameterName, argument);
         this.parameterName = parameterName;
         this.argument = argument;
     }

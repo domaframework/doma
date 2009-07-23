@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -28,7 +28,7 @@ public class SqlFileNotFoundException extends JdbcException {
     protected final String path;
 
     public SqlFileNotFoundException(String path) {
-        super(MessageCode.DOMA2011, path);
+        super(DomaMessageCode.DOMA2011, path);
         this.path = path;
     }
 

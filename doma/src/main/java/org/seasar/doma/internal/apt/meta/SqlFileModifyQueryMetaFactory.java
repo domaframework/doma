@@ -26,7 +26,7 @@ import org.seasar.doma.Insert;
 import org.seasar.doma.Update;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.TypeUtil;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 
 /**
@@ -87,7 +87,7 @@ public class SqlFileModifyQueryMetaFactory extends
         TypeMirror returnType = TypeUtil.resolveTypeParameter(daoMeta
                 .getTypeParameterMap(), method.getReturnType());
         if (!isPrimitiveInt(returnType)) {
-            throw new AptException(MessageCode.DOMA4001, env, method);
+            throw new AptException(DomaMessageCode.DOMA4001, env, method);
         }
         queryMeta.setReturnTypeName(TypeUtil.getTypeName(returnType, daoMeta
                 .getTypeParameterMap(), env));

@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.converter;
 
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -33,7 +33,7 @@ public class UnsupportedConversionException extends ConversionException {
 
     public UnsupportedConversionException(String srcClassName,
             String destClassName, Object value) {
-        super(MessageCode.DOMA5001, srcClassName, value, destClassName);
+        super(DomaMessageCode.DOMA5001, srcClassName, value, destClassName);
         this.srcClassName = srcClassName;
         this.destClassName = destClassName;
         this.value = value;

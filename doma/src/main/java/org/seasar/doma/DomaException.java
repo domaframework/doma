@@ -15,8 +15,6 @@
  */
 package org.seasar.doma;
 
-import org.seasar.doma.message.MessageCode;
-import org.seasar.doma.message.Messages;
 
 /**
  * @author taedium
@@ -26,7 +24,7 @@ public class DomaException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
-    protected final Enum<?> messageCode;
+    protected final MessageCode messageCode;
 
     protected final Object args;
 
@@ -36,12 +34,12 @@ public class DomaException extends RuntimeException {
 
     public DomaException(MessageCode messageCode, Throwable cause,
             Object... args) {
-        super(Messages.getMessage(messageCode, args), cause);
+        super(messageCode.getMessage(args), cause);
         this.messageCode = messageCode;
         this.args = args;
     }
 
-    public Enum<?> getMessageCode() {
+    public MessageCode getMessageCode() {
         return messageCode;
     }
 

@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.expr.node.ExpressionNode;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -338,7 +338,7 @@ public class ExpressionParserTest extends TestCase {
         try {
             evaluator.evaluate(expression);
         } catch (ExpressionException expected) {
-            assertEquals(MessageCode.DOMA3009, expected.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
         }
 
         parser = new ExpressionParser("null >= 1");
@@ -347,7 +347,7 @@ public class ExpressionParserTest extends TestCase {
         try {
             evaluator.evaluate(expression);
         } catch (ExpressionException expected) {
-            assertEquals(MessageCode.DOMA3009, expected.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
         }
 
         parser = new ExpressionParser("1 >= null");
@@ -356,7 +356,7 @@ public class ExpressionParserTest extends TestCase {
         try {
             evaluator.evaluate(expression);
         } catch (ExpressionException expected) {
-            assertEquals(MessageCode.DOMA3009, expected.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
         }
     }
 
@@ -390,7 +390,7 @@ public class ExpressionParserTest extends TestCase {
             fail();
 
         } catch (ExpressionException expected) {
-            assertEquals(MessageCode.DOMA3009, expected.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
         }
 
         parser = new ExpressionParser("null <= 1");
@@ -401,7 +401,7 @@ public class ExpressionParserTest extends TestCase {
             fail();
 
         } catch (ExpressionException expected) {
-            assertEquals(MessageCode.DOMA3009, expected.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
         }
 
         parser = new ExpressionParser("1 <= null");
@@ -412,7 +412,7 @@ public class ExpressionParserTest extends TestCase {
             fail();
 
         } catch (ExpressionException expected) {
-            assertEquals(MessageCode.DOMA3009, expected.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
         }
     }
 
@@ -446,7 +446,7 @@ public class ExpressionParserTest extends TestCase {
             evaluator.evaluate(expression);
             fail();
         } catch (ExpressionException expected) {
-            assertEquals(MessageCode.DOMA3009, expected.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
         }
 
         parser = new ExpressionParser("null > 1");
@@ -457,7 +457,7 @@ public class ExpressionParserTest extends TestCase {
             fail();
 
         } catch (ExpressionException expected) {
-            assertEquals(MessageCode.DOMA3009, expected.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
         }
 
         parser = new ExpressionParser("1 > null");
@@ -468,7 +468,7 @@ public class ExpressionParserTest extends TestCase {
             fail();
 
         } catch (ExpressionException expected) {
-            assertEquals(MessageCode.DOMA3009, expected.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
         }
     }
 
@@ -503,7 +503,7 @@ public class ExpressionParserTest extends TestCase {
             evaluator.evaluate(expression);
             fail();
         } catch (ExpressionException expected) {
-            assertEquals(MessageCode.DOMA3009, expected.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
         }
 
         parser = new ExpressionParser("null < 1");
@@ -513,7 +513,7 @@ public class ExpressionParserTest extends TestCase {
             evaluator.evaluate(expression);
             fail();
         } catch (ExpressionException expected) {
-            assertEquals(MessageCode.DOMA3009, expected.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
         }
 
         parser = new ExpressionParser("1 < null");
@@ -523,7 +523,7 @@ public class ExpressionParserTest extends TestCase {
             evaluator.evaluate(expression);
             fail();
         } catch (ExpressionException expected) {
-            assertEquals(MessageCode.DOMA3009, expected.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
         }
     }
 
@@ -533,7 +533,7 @@ public class ExpressionParserTest extends TestCase {
             parser.parse();
             fail();
         } catch (ExpressionException expected) {
-            assertEquals(MessageCode.DOMA3011, expected.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3011, expected.getMessageCode());
         }
     }
 
@@ -543,7 +543,7 @@ public class ExpressionParserTest extends TestCase {
             parser.parse();
             fail();
         } catch (ExpressionException expected) {
-            assertEquals(MessageCode.DOMA3012, expected.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3012, expected.getMessageCode());
         }
     }
 

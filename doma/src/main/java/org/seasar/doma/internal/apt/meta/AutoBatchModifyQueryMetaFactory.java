@@ -31,7 +31,7 @@ import org.seasar.doma.BatchUpdate;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.ElementUtil;
 import org.seasar.doma.internal.apt.TypeUtil;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -95,7 +95,7 @@ public class AutoBatchModifyQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         TypeMirror returnType = method.getReturnType();
         if (!isPrimitiveIntArray(returnType)) {
-            throw new AptException(MessageCode.DOMA4040, env, method);
+            throw new AptException(DomaMessageCode.DOMA4040, env, method);
         }
         queryMeta.setReturnTypeName(TypeUtil.getTypeName(returnType, daoMeta
                 .getTypeParameterMap(), env));
@@ -107,23 +107,23 @@ public class AutoBatchModifyQueryMetaFactory extends
         List<? extends VariableElement> params = method.getParameters();
         int size = params.size();
         if (size != 1) {
-            throw new AptException(MessageCode.DOMA4002, env, method);
+            throw new AptException(DomaMessageCode.DOMA4002, env, method);
         }
         VariableElement entityList = params.get(0);
         TypeMirror entityListType = TypeUtil.resolveTypeParameter(daoMeta
                 .getTypeParameterMap(), entityList.asType());
         if (!isList(entityListType)) {
-            throw new AptException(MessageCode.DOMA4042, env, method);
+            throw new AptException(DomaMessageCode.DOMA4042, env, method);
         }
         DeclaredType listTyep = TypeUtil.toDeclaredType(entityListType, env);
         List<? extends TypeMirror> args = listTyep.getTypeArguments();
         if (args.isEmpty()) {
-            throw new AptException(MessageCode.DOMA4041, env, method);
+            throw new AptException(DomaMessageCode.DOMA4041, env, method);
         }
         TypeMirror elementType = TypeUtil.resolveTypeParameter(daoMeta
                 .getTypeParameterMap(), args.get(0));
         if (!isEntity(elementType, daoMeta)) {
-            throw new AptException(MessageCode.DOMA4043, env, method);
+            throw new AptException(DomaMessageCode.DOMA4043, env, method);
         }
         String entityListName = ElementUtil.getParameterName(entityList);
         String entityListTypeName = TypeUtil

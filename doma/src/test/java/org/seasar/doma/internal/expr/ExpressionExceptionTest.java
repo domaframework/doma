@@ -19,7 +19,7 @@ import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.ExpressionException;
 import org.seasar.doma.internal.expr.ExpressionParser;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 import junit.framework.TestCase;
 
@@ -39,7 +39,7 @@ public class ExpressionExceptionTest extends TestCase {
             fail();
         } catch (ExpressionException e) {
             System.out.println(e.getMessage());
-            assertEquals(MessageCode.DOMA3001, e.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3001, e.getMessageCode());
         }
     }
 
@@ -52,7 +52,7 @@ public class ExpressionExceptionTest extends TestCase {
             fail();
         } catch (ExpressionException e) {
             System.out.println(e.getMessage());
-            assertEquals(MessageCode.DOMA3002, e.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3002, e.getMessageCode());
         }
     }
 
@@ -65,7 +65,7 @@ public class ExpressionExceptionTest extends TestCase {
             fail();
         } catch (ExpressionException e) {
             System.out.println(e.getMessage());
-            assertEquals(MessageCode.DOMA3003, e.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3003, e.getMessageCode());
         }
     }
 
@@ -76,7 +76,7 @@ public class ExpressionExceptionTest extends TestCase {
             fail();
         } catch (ExpressionException e) {
             System.out.println(e.getMessage());
-            assertEquals(MessageCode.DOMA3004, e.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3004, e.getMessageCode());
         }
     }
 
@@ -89,7 +89,7 @@ public class ExpressionExceptionTest extends TestCase {
             fail();
         } catch (ExpressionException e) {
             System.out.println(e.getMessage());
-            assertEquals(MessageCode.DOMA3005, e.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3005, e.getMessageCode());
         }
     }
 
@@ -103,7 +103,7 @@ public class ExpressionExceptionTest extends TestCase {
             fail();
         } catch (ExpressionException e) {
             System.out.println(e.getMessage());
-            assertEquals(MessageCode.DOMA3006, e.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3006, e.getMessageCode());
         }
     }
 
@@ -117,7 +117,7 @@ public class ExpressionExceptionTest extends TestCase {
             fail();
         } catch (ExpressionException e) {
             System.out.println(e.getMessage());
-            assertEquals(MessageCode.DOMA3007, e.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3007, e.getMessageCode());
         }
     }
 
@@ -130,7 +130,7 @@ public class ExpressionExceptionTest extends TestCase {
             fail();
         } catch (ExpressionException e) {
             System.out.println(e.getMessage());
-            assertEquals(MessageCode.DOMA3008, e.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3008, e.getMessageCode());
         }
     }
 
@@ -143,7 +143,7 @@ public class ExpressionExceptionTest extends TestCase {
             fail();
         } catch (ExpressionException e) {
             System.out.println(e.getMessage());
-            assertEquals(MessageCode.DOMA3009, e.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3009, e.getMessageCode());
         }
     }
 
@@ -154,7 +154,7 @@ public class ExpressionExceptionTest extends TestCase {
             fail();
         } catch (ExpressionException e) {
             System.out.println(e.getMessage());
-            assertEquals(MessageCode.DOMA3010, e.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3010, e.getMessageCode());
         }
     }
 
@@ -165,7 +165,7 @@ public class ExpressionExceptionTest extends TestCase {
             fail();
         } catch (ExpressionException e) {
             System.out.println(e.getMessage());
-            assertEquals(MessageCode.DOMA3011, e.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3011, e.getMessageCode());
         }
     }
 
@@ -176,7 +176,7 @@ public class ExpressionExceptionTest extends TestCase {
             fail();
         } catch (ExpressionException e) {
             System.out.println(e.getMessage());
-            assertEquals(MessageCode.DOMA3012, e.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3012, e.getMessageCode());
         }
     }
 
@@ -189,7 +189,7 @@ public class ExpressionExceptionTest extends TestCase {
             fail();
         } catch (ExpressionException e) {
             System.out.println(e.getMessage());
-            assertEquals(MessageCode.DOMA3013, e.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3013, e.getMessageCode());
         }
     }
 
@@ -202,7 +202,7 @@ public class ExpressionExceptionTest extends TestCase {
             fail();
         } catch (ExpressionException e) {
             System.out.println(e.getMessage());
-            assertEquals(MessageCode.DOMA3014, e.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3014, e.getMessageCode());
         }
     }
 
@@ -215,7 +215,7 @@ public class ExpressionExceptionTest extends TestCase {
             fail();
         } catch (ExpressionException e) {
             System.out.println(e.getMessage());
-            assertEquals(MessageCode.DOMA3015, e.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3015, e.getMessageCode());
         }
     }
 
@@ -226,7 +226,7 @@ public class ExpressionExceptionTest extends TestCase {
             fail();
         } catch (ExpressionException e) {
             System.out.println(e.getMessage());
-            assertEquals(MessageCode.DOMA3016, e.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA3016, e.getMessageCode());
         }
     }
 }

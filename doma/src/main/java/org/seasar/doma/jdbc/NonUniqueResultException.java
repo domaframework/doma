@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -34,7 +34,7 @@ public class NonUniqueResultException extends JdbcException {
     }
 
     public NonUniqueResultException(String rawSql, String formattedSql) {
-        super(MessageCode.DOMA2001, formattedSql, rawSql);
+        super(DomaMessageCode.DOMA2001, formattedSql, rawSql);
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;
     }

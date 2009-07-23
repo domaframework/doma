@@ -40,7 +40,7 @@ import org.seasar.doma.internal.apt.dao.SqlFileBatchUpdateDao;
 import org.seasar.doma.internal.apt.dao.SqlFileInsertDao;
 import org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDao;
 import org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -125,7 +125,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(MessageCode.DOMA4005);
+        assertMessageCode(DomaMessageCode.DOMA4005);
     }
 
     public void testNotInterface() throws Exception {
@@ -135,7 +135,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(MessageCode.DOMA4014);
+        assertMessageCode(DomaMessageCode.DOMA4014);
     }
 
     public void testNotTopLevel() throws Exception {
@@ -145,7 +145,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(MessageCode.DOMA4017);
+        assertMessageCode(DomaMessageCode.DOMA4017);
     }
 
     public void testInterfaceNotImplemented() throws Exception {
@@ -155,7 +155,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(MessageCode.DOMA4020);
+        assertMessageCode(DomaMessageCode.DOMA4020);
     }
 
     public void testNameUnsafe() throws Exception {
@@ -165,7 +165,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertTrue(getCompiledResult());
-        assertMessageCode(MessageCode.DOMA4026);
+        assertMessageCode(DomaMessageCode.DOMA4026);
     }
 
     public void testElementOfParamListUnspecified() throws Exception {
@@ -175,7 +175,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(MessageCode.DOMA4027);
+        assertMessageCode(DomaMessageCode.DOMA4027);
     }
 
     public void testElementOfParamListNotDomain() throws Exception {
@@ -185,7 +185,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(MessageCode.DOMA4028);
+        assertMessageCode(DomaMessageCode.DOMA4028);
     }
 
     public void testAutoBatchUpdate() throws Exception {
@@ -285,6 +285,6 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(MessageCode.DOMA4045);
+        assertMessageCode(DomaMessageCode.DOMA4045);
     }
 }

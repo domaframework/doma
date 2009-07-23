@@ -27,7 +27,7 @@ import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 
 /**
@@ -59,7 +59,7 @@ public class DomainIterationHandler<R, D extends Domain<?, ?>> implements
                 domain = ClassUtil.newInstance(domainClass);
             } catch (WrapException e) {
                 Throwable cause = e.getCause();
-                throw new JdbcException(MessageCode.DOMA2006, cause,
+                throw new JdbcException(DomaMessageCode.DOMA2006, cause,
                         domainClass.getName(), cause);
             }
             fetcher.fetch(resultSet, domain);

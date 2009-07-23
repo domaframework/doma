@@ -24,7 +24,7 @@ import org.seasar.doma.entity.Entity;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 
 /**
@@ -54,7 +54,7 @@ public class EntityListResultParameter<I, E extends Entity<I>> implements
             return ClassUtil.newInstance(entityClass);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
-            throw new JdbcException(MessageCode.DOMA2005, cause, entityClass
+            throw new JdbcException(DomaMessageCode.DOMA2005, cause, entityClass
                     .getName(), cause);
         }
     }

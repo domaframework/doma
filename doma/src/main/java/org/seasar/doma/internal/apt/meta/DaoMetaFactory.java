@@ -41,7 +41,7 @@ import org.seasar.doma.internal.apt.Notifier;
 import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.jdbc.DomaAbstractDao;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -71,28 +71,28 @@ public class DaoMetaFactory {
 
     protected void doDaoElement(TypeElement daoElement, DaoMeta daoMeta) {
         if (daoElement.getNestingKind().isNested()) {
-            throw new AptException(MessageCode.DOMA4017, env, daoElement,
+            throw new AptException(DomaMessageCode.DOMA4017, env, daoElement,
                     daoElement.getQualifiedName());
         }
         if (!daoElement.getKind().isInterface()) {
-            throw new AptException(MessageCode.DOMA4014, env, daoElement,
+            throw new AptException(DomaMessageCode.DOMA4014, env, daoElement,
                     daoElement.getQualifiedName());
         }
         if (!daoElement.getInterfaces().isEmpty()) {
-            throw new AptException(MessageCode.DOMA4045, env, daoElement);
+            throw new AptException(DomaMessageCode.DOMA4045, env, daoElement);
         }
         String name = daoElement.getSimpleName().toString();
         String suffix = Options.getSuffix(env);
         if (name.endsWith(suffix)) {
             Notifier
-                    .notify(env, Kind.WARNING, MessageCode.DOMA4026, daoElement, suffix);
+                    .notify(env, Kind.WARNING, DomaMessageCode.DOMA4026, daoElement, suffix);
         }
         daoMeta.setName(name);
         daoMeta.setDaoElement(daoElement);
         daoMeta.setDaoType(daoElement.asType());
         Dao daoAnnotation = daoElement.getAnnotation(Dao.class);
         if (!daoElement.getTypeParameters().isEmpty()) {
-            throw new AptException(MessageCode.DOMA4059, env, daoElement);
+            throw new AptException(DomaMessageCode.DOMA4059, env, daoElement);
         }
         doConfig(daoAnnotation, daoMeta);
         doImplementedBy(daoAnnotation, daoMeta);
@@ -128,7 +128,7 @@ public class DaoMetaFactory {
             daoMeta.setMostSubtypeElement(implementedByElement);
             if (!TypeUtil
                     .isAssignable(implementedByType, daoMeta.getDaoType(), env)) {
-                throw new AptException(MessageCode.DOMA4020, env,
+                throw new AptException(DomaMessageCode.DOMA4020, env,
                         implementedByElement, implementedByElement
                                 .getQualifiedName(), daoMeta.getDaoElement()
                                 .getQualifiedName());
@@ -184,7 +184,7 @@ public class DaoMetaFactory {
                     Notifier.notify(env, e);
                 } else {
                     Notifier
-                            .notify(env, e.getKind(), MessageCode.DOMA4044, daoMeta
+                            .notify(env, e.getKind(), DomaMessageCode.DOMA4044, daoMeta
                                     .getDaoElement(), typeElement, e
                                     .getElement(), e.getMessage());
                 }
@@ -221,6 +221,6 @@ public class DaoMetaFactory {
                 return queryMeta;
             }
         }
-        throw new AptException(MessageCode.DOMA4005, env, method);
+        throw new AptException(DomaMessageCode.DOMA4005, env, method);
     }
 }

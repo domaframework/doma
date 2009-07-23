@@ -23,7 +23,7 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlNode;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -76,7 +76,7 @@ public class StandardPagingTransformerTest extends TestCase {
             fail();
         } catch (JdbcException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(MessageCode.DOMA2201, expected.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA2201, expected.getMessageCode());
         }
     }
 }

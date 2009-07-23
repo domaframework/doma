@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.entity;
 
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -30,7 +30,7 @@ public class NonEntityArgumentException extends EntityException {
     protected final Object argument;
 
     public NonEntityArgumentException(String parameterName, Object argument) {
-        super(MessageCode.DOMA8001, parameterName, argument);
+        super(DomaMessageCode.DOMA8001, parameterName, argument);
         this.parameterName = parameterName;
         this.argument = argument;
     }

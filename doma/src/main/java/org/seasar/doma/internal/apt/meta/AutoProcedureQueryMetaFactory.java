@@ -24,7 +24,7 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.Procedure;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.TypeUtil;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -82,7 +82,7 @@ public class AutoProcedureQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         TypeMirror returnType = method.getReturnType();
         if (!isPrimitiveVoid(returnType)) {
-            throw new AptException(MessageCode.DOMA4064, env, method);
+            throw new AptException(DomaMessageCode.DOMA4064, env, method);
         }
         String typeName = TypeUtil.getTypeName(returnType, daoMeta
                 .getTypeParameterMap(), env);

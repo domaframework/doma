@@ -13,26 +13,11 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc;
-
-import org.seasar.doma.DomaException;
-import org.seasar.doma.MessageCode;
+package org.seasar.doma.message;
 
 /**
  * @author taedium
  * 
  */
-public class JdbcException extends DomaException {
-
-    private static final long serialVersionUID = 1L;
-
-    public JdbcException(MessageCode messageCode, Object... args) {
-        super(messageCode, args);
-    }
-
-    public JdbcException(MessageCode messageCode, Throwable cause,
-            Object... args) {
-        super(messageCode, cause, args);
-    }
-
+public class DomaMessageResource_ja extends DomaMessageResource {
 }

@@ -75,7 +75,7 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -162,7 +162,7 @@ public class NodePreparedSqlBuilder implements
             if (Collection.class.isAssignableFrom(valueClass)) {
                 handleCollectionBindVarialbeNode(node, p, value, valueClass);
             } else {
-                throw new JdbcException(MessageCode.DOMA2112,
+                throw new JdbcException(DomaMessageCode.DOMA2112,
                         location.getSql(), location.getLineNumber(), location
                                 .getPosition(), node.getText(), valueClass);
             }
@@ -178,7 +178,7 @@ public class NodePreparedSqlBuilder implements
             Context p, Object value, Class<?> valueClass) {
         if (!Domain.class.isAssignableFrom(valueClass)) {
             SqlLocation location = node.getLocation();
-            throw new JdbcException(MessageCode.DOMA2114, location.getSql(),
+            throw new JdbcException(DomaMessageCode.DOMA2114, location.getSql(),
                     location.getLineNumber(), location.getPosition(), node
                             .getText(), valueClass.getName());
         }
@@ -194,13 +194,13 @@ public class NodePreparedSqlBuilder implements
         for (Object v : values) {
             if (v == null) {
                 SqlLocation location = node.getLocation();
-                throw new JdbcException(MessageCode.DOMA2115,
+                throw new JdbcException(DomaMessageCode.DOMA2115,
                         location.getSql(), location.getLineNumber(), location
                                 .getPosition(), node.getText(), index);
             }
             if (!Domain.class.isInstance(v)) {
                 SqlLocation location = node.getLocation();
-                throw new JdbcException(MessageCode.DOMA2113,
+                throw new JdbcException(DomaMessageCode.DOMA2113,
                         location.getSql(), location.getLineNumber(), location
                                 .getPosition(), node.getText(), v.getClass()
                                 .getName());
@@ -460,7 +460,7 @@ public class NodePreparedSqlBuilder implements
             ExpressionNode expressionNode = parser.parse();
             return evaluator.evaluate(expressionNode);
         } catch (ExpressionException e) {
-            throw new JdbcException(MessageCode.DOMA2111, e, location.getSql(),
+            throw new JdbcException(DomaMessageCode.DOMA2111, e, location.getSql(),
                     location.getLineNumber(), location.getPosition(), e);
         }
     }

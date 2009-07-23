@@ -42,7 +42,7 @@ import org.seasar.doma.domain.NumberDomain;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.TypeUtil;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * 
@@ -82,7 +82,7 @@ public class EntityPropertyMetaFactory {
             return;
         }
         if (entityMeta.hasGeneratedIdPropertyMeta()) {
-            throw new AptException(MessageCode.DOMA4036, env, method);
+            throw new AptException(DomaMessageCode.DOMA4036, env, method);
         }
         propertyMeta.setId(true);
         GeneratedValue generatedValue = method
@@ -91,7 +91,7 @@ public class EntityPropertyMetaFactory {
             return;
         }
         if (entityMeta.hasGeneratedIdPropertyMeta()) {
-            throw new AptException(MessageCode.DOMA4037, env, method);
+            throw new AptException(DomaMessageCode.DOMA4037, env, method);
         }
         switch (generatedValue.strategy()) {
         case IDENTITY:
@@ -121,7 +121,7 @@ public class EntityPropertyMetaFactory {
         SequenceGenerator generator = method
                 .getAnnotation(SequenceGenerator.class);
         if (generator == null) {
-            throw new AptException(MessageCode.DOMA4034, env, method);
+            throw new AptException(DomaMessageCode.DOMA4034, env, method);
         }
         StringBuilder buf = new StringBuilder();
         if (!generator.catalog().isEmpty()) {
@@ -156,7 +156,7 @@ public class EntityPropertyMetaFactory {
             ExecutableElement method, EntityMeta entityMeta) {
         TableGenerator generator = method.getAnnotation(TableGenerator.class);
         if (generator == null) {
-            throw new AptException(MessageCode.DOMA4035, env, method);
+            throw new AptException(DomaMessageCode.DOMA4035, env, method);
         }
         StringBuilder buf = new StringBuilder();
         if (!generator.catalog().isEmpty()) {
@@ -191,7 +191,7 @@ public class EntityPropertyMetaFactory {
             ExecutableElement method, EntityMeta entityMeta) {
         String name = method.getSimpleName().toString();
         if (name.startsWith("__")) {
-            throw new AptException(MessageCode.DOMA4025, env, method, "__");
+            throw new AptException(DomaMessageCode.DOMA4025, env, method, "__");
         }
         propertyMeta.setName(name);
     }
@@ -207,7 +207,7 @@ public class EntityPropertyMetaFactory {
         Version version = method.getAnnotation(Version.class);
         if (version != null) {
             if (entityMeta.hasVersionPropertyMeta()) {
-                throw new AptException(MessageCode.DOMA4024, env, method);
+                throw new AptException(DomaMessageCode.DOMA4024, env, method);
             }
             propertyMeta.setVersion(true);
         }
@@ -245,15 +245,15 @@ public class EntityPropertyMetaFactory {
             DeclaredType listTyep = TypeUtil.toDeclaredType(returnType, env);
             List<? extends TypeMirror> args = listTyep.getTypeArguments();
             if (args.isEmpty()) {
-                throw new AptException(MessageCode.DOMA4029, env, method);
+                throw new AptException(DomaMessageCode.DOMA4029, env, method);
             }
             TypeMirror elementType = TypeUtil.resolveTypeParameter(entityMeta
                     .getTypeParameterMap(), args.get(0));
             if (!isDomain(elementType)) {
-                throw new AptException(MessageCode.DOMA4030, env, method);
+                throw new AptException(DomaMessageCode.DOMA4030, env, method);
             }
             if (!propertyMeta.isTrnsient()) {
-                throw new AptException(MessageCode.DOMA4031, env, method);
+                throw new AptException(DomaMessageCode.DOMA4031, env, method);
             }
             propertyMeta.setListReturnType(true);
             String elementTypeName = TypeUtil
@@ -263,15 +263,15 @@ public class EntityPropertyMetaFactory {
                     + elementTypeName + ">");
             return;
         } else if (!isDomain(returnType) || isAbstract(returnType)) {
-            throw new AptException(MessageCode.DOMA4022, env, method);
+            throw new AptException(DomaMessageCode.DOMA4022, env, method);
         }
         if (propertyMeta.isVersion()
                 && (!isNumberDomain(returnType) || isAbstract(returnType))) {
-            throw new AptException(MessageCode.DOMA4032, env, method);
+            throw new AptException(DomaMessageCode.DOMA4032, env, method);
         }
         if (propertyMeta.getIdGeneratorMeta() != null
                 && (!isNumberDomain(returnType) || isAbstract(returnType))) {
-            throw new AptException(MessageCode.DOMA4033, env, method);
+            throw new AptException(DomaMessageCode.DOMA4033, env, method);
         }
         propertyMeta
                 .setReturnTypeName(TypeUtil.getTypeName(returnType, entityMeta
@@ -282,7 +282,7 @@ public class EntityPropertyMetaFactory {
             ExecutableElement method, EntityMeta entityMeta) {
         List<? extends VariableElement> params = method.getParameters();
         if (!params.isEmpty()) {
-            throw new AptException(MessageCode.DOMA4023, env, method);
+            throw new AptException(DomaMessageCode.DOMA4023, env, method);
         }
     }
 

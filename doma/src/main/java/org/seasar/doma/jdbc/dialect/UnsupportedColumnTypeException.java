@@ -16,7 +16,7 @@
 package org.seasar.doma.jdbc.dialect;
 
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -31,7 +31,7 @@ public class UnsupportedColumnTypeException extends JdbcException {
     protected final int sqlType;
 
     public UnsupportedColumnTypeException(String typeName, int sqlType) {
-        super(MessageCode.DOMA2031, typeName, sqlType);
+        super(DomaMessageCode.DOMA2031, typeName, sqlType);
         this.typeName = typeName;
         this.sqlType = sqlType;
     }

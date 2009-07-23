@@ -29,7 +29,7 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -99,7 +99,7 @@ public abstract class AutoModifyQuery<I, E extends Entity<I>> implements
 
     protected void validateIdExistent() {
         if (idProperties.isEmpty()) {
-            throw new JdbcException(MessageCode.DOMA2022, entity.__getName());
+            throw new JdbcException(DomaMessageCode.DOMA2022, entity.__getName());
         }
     }
 
@@ -115,7 +115,7 @@ public abstract class AutoModifyQuery<I, E extends Entity<I>> implements
 
     public void setEntity(I entity) {
         if (!entityClass.isInstance(entity)) {
-            throw new JdbcException(MessageCode.DOMA2026, entity, entityClass
+            throw new JdbcException(DomaMessageCode.DOMA2026, entity, entityClass
                     .getName());
         }
         this.entity = entityClass.cast(entity);

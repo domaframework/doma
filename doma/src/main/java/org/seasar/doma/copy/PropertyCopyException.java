@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.copy;
 
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -33,7 +33,7 @@ public class PropertyCopyException extends CopyException {
 
     public PropertyCopyException(String srcClassName, String srcPropertyName,
             Object srcPropertyValue, Throwable cause) {
-        super(MessageCode.DOMA7001, cause, srcClassName, srcPropertyName,
+        super(DomaMessageCode.DOMA7001, cause, srcClassName, srcPropertyName,
                 srcPropertyValue, cause);
         this.srcClassName = srcClassName;
         this.srcPropertyName = srcPropertyName;

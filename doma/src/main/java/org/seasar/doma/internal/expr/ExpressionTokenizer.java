@@ -20,7 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.nio.CharBuffer;
 
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 
 /**
@@ -246,7 +246,7 @@ public class ExpressionTokenizer {
                     }
                 }
             }
-            throw new ExpressionException(MessageCode.DOMA3016, expression, buf
+            throw new ExpressionException(DomaMessageCode.DOMA3016, expression, buf
                     .position());
         } else if (c == '"') {
             type = STRING_LITERAL;
@@ -268,7 +268,7 @@ public class ExpressionTokenizer {
                 }
             }
             if (!closed) {
-                throw new ExpressionException(MessageCode.DOMA3004, expression,
+                throw new ExpressionException(DomaMessageCode.DOMA3004, expression,
                         buf.position());
             }
             binOperationAvailable = true;

@@ -15,7 +15,7 @@
  */
 package org.seasar.doma;
 
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -30,7 +30,7 @@ public class DomaUnsupportedOperationException extends DomaException {
     protected final String methodName;
 
     public DomaUnsupportedOperationException(String className, String methodName) {
-        super(MessageCode.DOMA0004, className, methodName);
+        super(DomaMessageCode.DOMA0004, className, methodName);
         this.className = className;
         this.methodName = methodName;
     }

@@ -80,7 +80,7 @@ import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.jdbc.type.JdbcTypes;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -199,11 +199,11 @@ public class StandardDialect implements Dialect {
             SelectForUpdateType forUpdateType = options.getForUpdateType();
             String[] aliases = options.getAliases();
             if (!supportsSelectForUpdate(forUpdateType, false)) {
-                throw new JdbcException(MessageCode.DOMA2023, getName());
+                throw new JdbcException(DomaMessageCode.DOMA2023, getName());
             }
             if (aliases.length > 0) {
                 if (!supportsSelectForUpdate(forUpdateType, true)) {
-                    throw new JdbcException(MessageCode.DOMA2024, getName());
+                    throw new JdbcException(DomaMessageCode.DOMA2024, getName());
                 }
             }
             transformed = toForUpdateSqlNode(transformed, forUpdateType, options
@@ -593,7 +593,7 @@ public class StandardDialect implements Dialect {
         @Override
         public Void visitUnknownDomain(Domain<?, ?> domain,
                 JdbcMappingFunction p) throws SQLException {
-            throw new JdbcException(MessageCode.DOMA2019, domain.getClass()
+            throw new JdbcException(DomaMessageCode.DOMA2019, domain.getClass()
                     .getName());
         }
     }
@@ -711,7 +711,7 @@ public class StandardDialect implements Dialect {
         @Override
         public String visitUnknownDomain(Domain<?, ?> domain,
                 SqlLogFormattingFunction p) {
-            throw new JdbcException(MessageCode.DOMA2019, domain.getClass()
+            throw new JdbcException(DomaMessageCode.DOMA2019, domain.getClass()
                     .getName());
         }
 

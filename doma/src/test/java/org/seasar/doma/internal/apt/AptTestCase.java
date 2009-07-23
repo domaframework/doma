@@ -25,7 +25,7 @@ import junit.framework.AssertionFailedError;
 
 import org.seasar.aptina.unit.AptinaTestCase;
 import org.seasar.doma.internal.util.ResourceUtil;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -62,7 +62,7 @@ public abstract class AptTestCase extends AptinaTestCase {
         }
     }
 
-    protected void assertMessageCode(MessageCode messageCode) {
+    protected void assertMessageCode(DomaMessageCode messageCode) {
         List<Diagnostic<? extends JavaFileObject>> diagnostics = getDiagnostics();
         if (diagnostics.size() == 1) {
             if (messageCode == extractMessageCode(diagnostics.get(0))) {
@@ -72,14 +72,14 @@ public abstract class AptTestCase extends AptinaTestCase {
         fail();
     }
 
-    protected MessageCode getMessageCode() {
+    protected DomaMessageCode getMessageCode() {
         for (Diagnostic<? extends JavaFileObject> diagnostic : getDiagnostics()) {
             return extractMessageCode(diagnostic);
         }
         return null;
     }
 
-    protected MessageCode extractMessageCode(
+    protected DomaMessageCode extractMessageCode(
             Diagnostic<? extends JavaFileObject> diagnostic) {
         String message = diagnostic.getMessage(locale);
         int start = message.indexOf('[');
@@ -87,7 +87,7 @@ public abstract class AptTestCase extends AptinaTestCase {
         if (start > 0 && end > 0) {
             String code = message.substring(start + 1, end);
             if (code.startsWith("DOMA")) {
-                return Enum.valueOf(MessageCode.class, code);
+                return Enum.valueOf(DomaMessageCode.class, code);
             }
         }
         return null;

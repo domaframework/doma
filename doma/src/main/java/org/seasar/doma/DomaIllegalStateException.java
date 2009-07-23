@@ -15,7 +15,7 @@
  */
 package org.seasar.doma;
 
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -33,7 +33,7 @@ public class DomaIllegalStateException extends DomaException {
 
     public DomaIllegalStateException(Object object, String memberVariableName,
             Object value) {
-        super(MessageCode.DOMA0006, object, memberVariableName, value);
+        super(DomaMessageCode.DOMA0006, object, memberVariableName, value);
         this.object = object;
         this.memberVariableName = memberVariableName;
         this.value = value;

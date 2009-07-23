@@ -20,8 +20,8 @@ import javax.lang.model.element.Element;
 import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.DomaException;
-import org.seasar.doma.message.MessageCode;
-
+import org.seasar.doma.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -56,7 +56,7 @@ public class AptException extends DomaException {
         this.kind = kind;
         this.element = element;
         if (Options.isDebugEnabled(env)) {
-            Notifier.debug(env, MessageCode.DOMA4074, messageCode, cause);
+            Notifier.debug(env, DomaMessageCode.DOMA4074, messageCode, cause);
         }
     }
 

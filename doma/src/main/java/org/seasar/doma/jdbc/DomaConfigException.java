@@ -16,7 +16,7 @@
 package org.seasar.doma.jdbc;
 
 import org.seasar.doma.DomaException;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -31,7 +31,7 @@ public class DomaConfigException extends DomaException {
     protected final String methodName;
 
     public DomaConfigException(String className, String methodName) {
-        super(MessageCode.DOMA0003, className, methodName);
+        super(DomaMessageCode.DOMA0003, className, methodName);
         this.className = className;
         this.methodName = methodName;
     }

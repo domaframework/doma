@@ -15,11 +15,18 @@
  */
 package org.seasar.doma.message;
 
+import static org.seasar.doma.internal.util.AssertionUtil.*;
+
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
+
+import org.seasar.doma.MessageCode;
+
 /**
  * @author taedium
  * 
  */
-public enum MessageCode {
+public enum DomaMessageCode implements MessageCode {
     // general
     DOMA0001("パラメータ[{0}]の値[{1}]が不正です。"),
     DOMA0002("予期しない例外が発生しました。原因は次のものです。{0}"),
@@ -194,9 +201,23 @@ public enum MessageCode {
     // other
     DOMA9001("java.io.Closeableのclose()に失敗しました。原因は次のものです。{0}");
 
-    final String message;
+    private static ResourceBundle bundle = ResourceBundle
+            .getBundle(DomaMessageResource.class.getName());
 
-    private MessageCode(String message) {
-        this.message = message;
+    private final String pattern;
+
+    private DomaMessageCode(String pattern) {
+        this.pattern = pattern;
+    }
+
+    public String getPattern() {
+        return pattern;
+    }
+
+    @Override
+    public String getMessage(Object... args) {
+        String pattern = bundle.getString(name());
+        assertNotNull(pattern);
+        return MessageFormat.format("[" + name() + "] " + pattern, args);
     }
 }

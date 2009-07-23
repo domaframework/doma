@@ -29,7 +29,7 @@ import javax.tools.JavaFileObject;
 
 import org.seasar.doma.internal.Artifact;
 import org.seasar.doma.internal.util.ClassUtil;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -90,7 +90,7 @@ public abstract class AbstractGenerator implements Generator {
         IOException ioException = formatter.ioException();
         if (ioException != null) {
             formatter.close();
-            throw new AptException(MessageCode.DOMA4079, env, typeElement,
+            throw new AptException(DomaMessageCode.DOMA4079, env, typeElement,
                     ioException, qualifiedName, ioException);
         }
     }

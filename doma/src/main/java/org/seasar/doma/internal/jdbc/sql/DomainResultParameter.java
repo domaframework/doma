@@ -21,7 +21,7 @@ import org.seasar.doma.domain.Domain;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -47,7 +47,7 @@ public class DomainResultParameter<D extends Domain<?, ?>> implements
             return ClassUtil.newInstance(domainClass);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
-            throw new JdbcException(MessageCode.DOMA2006, cause, domainClass
+            throw new JdbcException(DomaMessageCode.DOMA2006, cause, domainClass
                     .getName(), cause);
         }
     }

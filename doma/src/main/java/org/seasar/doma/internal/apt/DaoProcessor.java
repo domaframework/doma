@@ -45,7 +45,7 @@ import org.seasar.doma.internal.apt.meta.SqlFileBatchModifyQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileModifyQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileSelectQueryMetaFactory;
 import org.seasar.doma.internal.util.IOUtil;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -77,11 +77,11 @@ public class DaoProcessor extends AbstractProcessor {
                     Notifier.notify(processingEnv, e);
                 } catch (AptIllegalStateException e) {
                     Notifier
-                            .notify(processingEnv, Kind.ERROR, MessageCode.DOMA4039, daoElement);
+                            .notify(processingEnv, Kind.ERROR, DomaMessageCode.DOMA4039, daoElement);
                     throw e;
                 } catch (RuntimeException e) {
                     Notifier
-                            .notify(processingEnv, Kind.ERROR, MessageCode.DOMA4016, daoElement);
+                            .notify(processingEnv, Kind.ERROR, DomaMessageCode.DOMA4016, daoElement);
                     throw e;
                 }
             }
@@ -116,7 +116,7 @@ public class DaoProcessor extends AbstractProcessor {
             daoGenerator = createDaoGenerator(daoElement, daoMeta);
             daoGenerator.generate();
         } catch (IOException e) {
-            throw new AptException(MessageCode.DOMA4011, processingEnv,
+            throw new AptException(DomaMessageCode.DOMA4011, processingEnv,
                     daoElement, e, daoElement.getQualifiedName(), e);
         } finally {
             IOUtil.close(daoGenerator);

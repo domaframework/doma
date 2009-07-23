@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.domain;
 
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -26,7 +26,7 @@ public class DomainValueNullPointerException extends DomainException {
     private static final long serialVersionUID = 1L;
 
     public DomainValueNullPointerException() {
-        super(MessageCode.DOMA1002);
+        super(DomaMessageCode.DOMA1002);
     }
 
 }

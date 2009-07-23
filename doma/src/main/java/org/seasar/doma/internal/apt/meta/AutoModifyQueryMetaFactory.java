@@ -30,7 +30,7 @@ import org.seasar.doma.Update;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.ElementUtil;
 import org.seasar.doma.internal.apt.TypeUtil;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -96,7 +96,7 @@ public class AutoModifyQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         TypeMirror returnType = method.getReturnType();
         if (!isPrimitiveInt(returnType)) {
-            throw new AptException(MessageCode.DOMA4001, env, method);
+            throw new AptException(DomaMessageCode.DOMA4001, env, method);
         }
         queryMeta.setReturnTypeName(TypeUtil.getTypeName(returnType, daoMeta
                 .getTypeParameterMap(), env));
@@ -108,13 +108,13 @@ public class AutoModifyQueryMetaFactory extends
         List<? extends VariableElement> params = method.getParameters();
         int size = params.size();
         if (size != 1) {
-            throw new AptException(MessageCode.DOMA4002, env, method);
+            throw new AptException(DomaMessageCode.DOMA4002, env, method);
         }
         VariableElement entity = params.get(0);
         TypeMirror entityType = TypeUtil.resolveTypeParameter(daoMeta
                 .getTypeParameterMap(), entity.asType());
         if (!isEntity(entityType, daoMeta)) {
-            throw new AptException(MessageCode.DOMA4003, env, entity);
+            throw new AptException(DomaMessageCode.DOMA4003, env, entity);
         }
         String entityName = ElementUtil.getParameterName(entity);
         String entityTypeName = TypeUtil.getTypeName(entityType, daoMeta

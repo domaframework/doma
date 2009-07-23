@@ -30,7 +30,7 @@ import org.seasar.doma.ResultSet;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.ElementUtil;
 import org.seasar.doma.internal.apt.TypeUtil;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -70,7 +70,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                 DeclaredType listTyep = TypeUtil.toDeclaredType(paramType, env);
                 List<? extends TypeMirror> args = listTyep.getTypeArguments();
                 if (args.isEmpty()) {
-                    throw new AptException(MessageCode.DOMA4041, env, method);
+                    throw new AptException(DomaMessageCode.DOMA4041, env, method);
                 }
                 TypeMirror elementType = TypeUtil.resolveTypeParameter(daoMeta
                         .getTypeParameterMap(), args.get(0));
@@ -82,12 +82,12 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                 if (isDomain(elementType)) {
                     return new DomainListParameterMeta(elementTypeName);
                 }
-                throw new AptException(MessageCode.DOMA4061, env, param);
+                throw new AptException(DomaMessageCode.DOMA4061, env, param);
             }
-            throw new AptException(MessageCode.DOMA4062, env, param);
+            throw new AptException(DomaMessageCode.DOMA4062, env, param);
         }
         if (!isDomain(paramType)) {
-            throw new AptException(MessageCode.DOMA4060, env, param);
+            throw new AptException(DomaMessageCode.DOMA4060, env, param);
         }
         if (param.getAnnotation(Out.class) != null) {
             return new OutParameterMeta();
@@ -98,6 +98,6 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         if (param.getAnnotation(In.class) != null) {
             return new InParameterMeta();
         }
-        throw new AptException(MessageCode.DOMA4066, env, param);
+        throw new AptException(DomaMessageCode.DOMA4066, env, param);
     }
 }

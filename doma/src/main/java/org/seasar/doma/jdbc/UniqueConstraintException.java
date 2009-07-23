@@ -15,7 +15,8 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -35,13 +36,13 @@ public class UniqueConstraintException extends JdbcException {
 
     public UniqueConstraintException(String rawSql, String formattedSql,
             Throwable cause) {
-        super(MessageCode.DOMA2004, formattedSql, rawSql, cause);
+        super(DomaMessageCode.DOMA2004, formattedSql, rawSql, cause);
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;
     }
 
-    protected UniqueConstraintException(MessageCode messageCode, String rawSql,
-            Throwable cause) {
+    protected UniqueConstraintException(MessageCode messageCode,
+            String rawSql, Throwable cause) {
         super(messageCode, cause, rawSql, cause);
         this.rawSql = rawSql;
         this.formattedSql = null;

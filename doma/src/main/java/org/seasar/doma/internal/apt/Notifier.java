@@ -22,9 +22,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.tools.Diagnostic.Kind;
 
-import org.seasar.doma.message.MessageCode;
-import org.seasar.doma.message.Messages;
-
+import org.seasar.doma.MessageCode;
 
 /**
  * @author taedium
@@ -36,8 +34,7 @@ public final class Notifier {
             MessageCode messageCode, Object... args) {
         assertNotNull(env, messageCode, args);
         Messager messager = env.getMessager();
-        messager.printMessage(Kind.OTHER, Messages
-                .getMessage(messageCode, args));
+        messager.printMessage(Kind.OTHER, messageCode.getMessage(args));
     }
 
     public static void debug(ProcessingEnvironment env, String message) {
@@ -50,15 +47,14 @@ public final class Notifier {
             MessageCode messageCode, Object... args) {
         assertNotNull(env, messageCode, args);
         Messager messager = env.getMessager();
-        messager.printMessage(kind, Messages.getMessage(messageCode, args));
+        messager.printMessage(kind, messageCode.getMessage(args));
     }
 
     public static void notify(ProcessingEnvironment env, Kind kind,
             MessageCode messageCode, Element element, Object... args) {
         assertNotNull(env, kind, element, args);
         Messager messager = env.getMessager();
-        messager
-                .printMessage(kind, Messages.getMessage(messageCode, args), element);
+        messager.printMessage(kind, messageCode.getMessage(args), element);
     }
 
     public static void notify(ProcessingEnvironment env, AptException e) {

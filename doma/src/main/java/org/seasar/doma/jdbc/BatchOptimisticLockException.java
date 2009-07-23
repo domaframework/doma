@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -30,7 +30,7 @@ public class BatchOptimisticLockException extends OptimisticLockException {
     }
 
     public BatchOptimisticLockException(String rawSql) {
-        super(MessageCode.DOMA2028, rawSql);
+        super(DomaMessageCode.DOMA2028, rawSql);
     }
 
 }

@@ -43,7 +43,7 @@ import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.WordNode;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlNode;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 
 /**
@@ -260,7 +260,7 @@ public class SqlParser {
 
     protected void parseClosedParens() {
         if (!isInParens()) {
-            throw new JdbcException(MessageCode.DOMA2109, sql, tokenizer
+            throw new JdbcException(DomaMessageCode.DOMA2109, sql, tokenizer
                     .getLineNumber(), tokenizer.getPosition());
         }
         removeNodesTo(ParensNode.class);
@@ -288,13 +288,13 @@ public class SqlParser {
 
     protected void parseElseifLineComment() {
         if (!isInIfBlock()) {
-            throw new JdbcException(MessageCode.DOMA2106, sql, tokenizer
+            throw new JdbcException(DomaMessageCode.DOMA2106, sql, tokenizer
                     .getLineNumber(), tokenizer.getPosition());
         }
         removeNodesTo(IfBlockNode.class);
         IfBlockNode ifBlockNode = peek();
         if (ifBlockNode.isElseNodeExistent()) {
-            throw new JdbcException(MessageCode.DOMA2108, sql, tokenizer
+            throw new JdbcException(DomaMessageCode.DOMA2108, sql, tokenizer
                     .getLineNumber(), tokenizer.getPosition());
         }
         String expression = tokenType.extractExpression(token);
@@ -305,13 +305,13 @@ public class SqlParser {
 
     protected void parseElseLineComment() {
         if (!isInIfBlock()) {
-            throw new JdbcException(MessageCode.DOMA2105, sql, tokenizer
+            throw new JdbcException(DomaMessageCode.DOMA2105, sql, tokenizer
                     .getLineNumber(), tokenizer.getPosition());
         }
         removeNodesTo(IfBlockNode.class);
         IfBlockNode ifBlockNode = peek();
         if (ifBlockNode.isElseNodeExistent()) {
-            throw new JdbcException(MessageCode.DOMA2107, sql, tokenizer
+            throw new JdbcException(DomaMessageCode.DOMA2107, sql, tokenizer
                     .getLineNumber(), tokenizer.getPosition());
         }
         ElseNode node = new ElseNode(token);
@@ -321,7 +321,7 @@ public class SqlParser {
 
     protected void parseEndBlockComment() {
         if (!isInIfBlock()) {
-            throw new JdbcException(MessageCode.DOMA2104, sql, tokenizer
+            throw new JdbcException(DomaMessageCode.DOMA2104, sql, tokenizer
                     .getLineNumber(), tokenizer.getPosition());
         }
         removeNodesTo(IfBlockNode.class);
@@ -389,7 +389,7 @@ public class SqlParser {
                 parensNode.setAttachedWithBindVariable(true);
                 bindVariableNode.setParensNode(parensNode);
             } else {
-                throw new JdbcException(MessageCode.DOMA2110, sql, tokenizer
+                throw new JdbcException(DomaMessageCode.DOMA2110, sql, tokenizer
                         .getLineNumber(), tokenizer.getPosition(),
                         bindVariableNode.getText());
             }

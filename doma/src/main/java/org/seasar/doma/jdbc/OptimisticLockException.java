@@ -15,7 +15,8 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -34,7 +35,7 @@ public class OptimisticLockException extends JdbcException {
     }
 
     public OptimisticLockException(String rawSql, String formattedSql) {
-        super(MessageCode.DOMA2003, formattedSql, rawSql);
+        super(DomaMessageCode.DOMA2003, formattedSql, rawSql);
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;
     }

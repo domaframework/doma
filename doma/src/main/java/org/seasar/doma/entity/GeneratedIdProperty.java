@@ -24,7 +24,7 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.jdbc.id.IdGenerator;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -54,7 +54,7 @@ public class GeneratedIdProperty<D extends NumberDomain<?, ?>> extends
         GenerationType generationType = idGenerator.getGenerationType();
         if (!isGenerationTypeSupported(generationType, dialect)) {
             Entity<?> entity = config.getEntity();
-            throw new JdbcException(MessageCode.DOMA2021, entity.__getName(),
+            throw new JdbcException(DomaMessageCode.DOMA2021, entity.__getName(),
                     name, generationType.name(), dialect.getName());
         }
     }

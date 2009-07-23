@@ -31,7 +31,7 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.ElementUtil;
 import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.jdbc.IterationCallback;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -87,7 +87,7 @@ public class SqlFileSelectQueryMetaFactory extends
             if (returnType == null
                     || !env.getTypeUtils().isSameType(wrapperType, queryMeta
                             .getIterationCallbackResultType())) {
-                throw new AptException(MessageCode.DOMA4055, env, method,
+                throw new AptException(DomaMessageCode.DOMA4055, env, method,
                         returnType, queryMeta.getIterationCallbackResultType());
             }
             queryMeta
@@ -99,7 +99,7 @@ public class SqlFileSelectQueryMetaFactory extends
             DeclaredType listTyep = TypeUtil.toDeclaredType(returnType, env);
             List<? extends TypeMirror> args = listTyep.getTypeArguments();
             if (args.isEmpty()) {
-                throw new AptException(MessageCode.DOMA4006, env, method);
+                throw new AptException(DomaMessageCode.DOMA4006, env, method);
             }
             TypeMirror elementType = TypeUtil.resolveTypeParameter(daoMeta
                     .getTypeParameterMap(), args.get(0));
@@ -114,7 +114,7 @@ public class SqlFileSelectQueryMetaFactory extends
                             .getTypeName(elementType, daoMeta
                                     .getTypeParameterMap(), env));
                 } else {
-                    throw new AptException(MessageCode.DOMA4007, env, method);
+                    throw new AptException(DomaMessageCode.DOMA4007, env, method);
                 }
             }
         } else {
@@ -130,7 +130,7 @@ public class SqlFileSelectQueryMetaFactory extends
                             .getTypeName(returnType, daoMeta
                                     .getTypeParameterMap(), env));
                 } else {
-                    throw new AptException(MessageCode.DOMA4008, env, method);
+                    throw new AptException(DomaMessageCode.DOMA4008, env, method);
                 }
             }
         }
@@ -149,13 +149,13 @@ public class SqlFileSelectQueryMetaFactory extends
                     .getTypeParameterMap(), env);
             if (isOptions(paramType, queryMeta.getOptionsClass())) {
                 if (queryMeta.getOptionsName() != null) {
-                    throw new AptException(MessageCode.DOMA4053, env, method);
+                    throw new AptException(DomaMessageCode.DOMA4053, env, method);
                 }
                 queryMeta.setOptionsName(parameterName);
                 queryMeta.setOptionsTypeName(parameterTypeName);
             } else if (isIterationCallback(paramType)) {
                 if (queryMeta.getIterationCallbackName() != null) {
-                    throw new AptException(MessageCode.DOMA4054, env, method);
+                    throw new AptException(DomaMessageCode.DOMA4054, env, method);
                 }
                 queryMeta.setIterationCallbackName(parameterName);
                 queryMeta.setIterationCallbackTypeName(parameterTypeName);
@@ -164,26 +164,26 @@ public class SqlFileSelectQueryMetaFactory extends
                 DeclaredType listTyep = TypeUtil.toDeclaredType(paramType, env);
                 List<? extends TypeMirror> args = listTyep.getTypeArguments();
                 if (args.isEmpty()) {
-                    throw new AptException(MessageCode.DOMA4027, env, method);
+                    throw new AptException(DomaMessageCode.DOMA4027, env, method);
                 }
                 TypeMirror elementType = TypeUtil.resolveTypeParameter(daoMeta
                         .getTypeParameterMap(), args.get(0));
                 if (!isDomain(elementType)) {
-                    throw new AptException(MessageCode.DOMA4028, env, method);
+                    throw new AptException(DomaMessageCode.DOMA4028, env, method);
                 }
             } else if (!isDomain(paramType) && !isEntity(paramType, daoMeta)) {
-                throw new AptException(MessageCode.DOMA4010, env, method);
+                throw new AptException(DomaMessageCode.DOMA4010, env, method);
             }
             queryMeta.addMethodParameter(parameterName, parameterTypeName);
             queryMeta.addMethodParameterType(parameterName, paramType);
         }
         if (queryMeta.isIteration()
                 && queryMeta.getIterationCallbackName() == null) {
-            throw new AptException(MessageCode.DOMA4056, env, method);
+            throw new AptException(DomaMessageCode.DOMA4056, env, method);
         }
         if (!queryMeta.isIteration()
                 && queryMeta.getIterationCallbackName() != null) {
-            throw new AptException(MessageCode.DOMA4057, env, method);
+            throw new AptException(DomaMessageCode.DOMA4057, env, method);
         }
     }
 
@@ -217,7 +217,7 @@ public class SqlFileSelectQueryMetaFactory extends
             } else if (isEntity(targetType, daoMeta)) {
                 queryMeta.setEntityTypeName(targetTypeName);
             } else {
-                throw new AptException(MessageCode.DOMA4058, env, method);
+                throw new AptException(DomaMessageCode.DOMA4058, env, method);
             }
             return;
         }

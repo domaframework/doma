@@ -15,7 +15,7 @@
  */
 package org.seasar.doma;
 
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -26,7 +26,7 @@ public class DomaUnexpectedException extends DomaException {
     private static final long serialVersionUID = 1L;
 
     public DomaUnexpectedException(Throwable cause) {
-        super(MessageCode.DOMA0002, cause, cause);
+        super(DomaMessageCode.DOMA0002, cause, cause);
     }
 
 }

@@ -18,7 +18,7 @@ package org.seasar.doma.domain;
 import org.seasar.doma.domain.DomainIncomparableException;
 import org.seasar.doma.domain.DomainValueNullPointerException;
 import org.seasar.doma.domain.StringDomain;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 import junit.framework.TestCase;
 
@@ -35,7 +35,7 @@ public class DomainExceptionTest extends TestCase {
             fail();
         } catch (DomainIncomparableException e) {
             System.out.println(e.getMessage());
-            assertEquals(MessageCode.DOMA1001, e.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA1001, e.getMessageCode());
         }
     }
 
@@ -46,7 +46,7 @@ public class DomainExceptionTest extends TestCase {
             fail();
         } catch (DomainValueNullPointerException e) {
             System.out.println(e.getMessage());
-            assertEquals(MessageCode.DOMA1002, e.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA1002, e.getMessageCode());
         }
     }
 

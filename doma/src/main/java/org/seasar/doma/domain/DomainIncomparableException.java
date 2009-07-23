@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.domain;
 
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -26,7 +26,7 @@ public class DomainIncomparableException extends DomainException {
     private static final long serialVersionUID = 1L;
 
     public DomainIncomparableException() {
-        super(MessageCode.DOMA1001);
+        super(DomaMessageCode.DOMA1001);
     }
 
 }

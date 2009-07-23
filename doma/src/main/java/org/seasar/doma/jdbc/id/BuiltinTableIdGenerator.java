@@ -31,7 +31,7 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.RequiresNewController;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -174,7 +174,7 @@ public class BuiltinTableIdGenerator extends AbstractPreAllocateIdGenerator
                     });
             return value - allocationSize;
         } catch (Throwable t) {
-            throw new JdbcException(MessageCode.DOMA2018, t, config.getEntity()
+            throw new JdbcException(DomaMessageCode.DOMA2018, t, config.getEntity()
                     .__getName(), t);
         }
     }
@@ -192,11 +192,11 @@ public class BuiltinTableIdGenerator extends AbstractPreAllocateIdGenerator
                 preparedStatement.setString(2, pkColumnValue);
                 int rows = preparedStatement.executeUpdate();
                 if (rows != 1) {
-                    throw new JdbcException(MessageCode.DOMA2017, config
+                    throw new JdbcException(DomaMessageCode.DOMA2017, config
                             .getEntity().__getName());
                 }
             } catch (SQLException e) {
-                throw new JdbcException(MessageCode.DOMA2018, e, config
+                throw new JdbcException(DomaMessageCode.DOMA2018, e, config
                         .getEntity().__getName(), e);
             } finally {
                 JdbcUtil.close(preparedStatement, logger);
@@ -223,10 +223,10 @@ public class BuiltinTableIdGenerator extends AbstractPreAllocateIdGenerator
                         return Number.class.cast(result).longValue();
                     }
                 }
-                throw new JdbcException(MessageCode.DOMA2017, config
+                throw new JdbcException(DomaMessageCode.DOMA2017, config
                         .getEntity().__getName());
             } catch (SQLException e) {
-                throw new JdbcException(MessageCode.DOMA2018, e, config
+                throw new JdbcException(DomaMessageCode.DOMA2018, e, config
                         .getEntity().__getName(), e);
             } finally {
                 JdbcUtil.close(preparedStatement, logger);

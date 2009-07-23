@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -30,7 +30,7 @@ public class BatchUniqueConstraintException extends UniqueConstraintException {
     }
 
     public BatchUniqueConstraintException(String rawSql, Throwable cause) {
-        super(MessageCode.DOMA2029, rawSql, cause);
+        super(DomaMessageCode.DOMA2029, rawSql, cause);
     }
 
 }

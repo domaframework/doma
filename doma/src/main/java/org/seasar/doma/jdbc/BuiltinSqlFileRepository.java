@@ -23,7 +23,7 @@ import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.internal.util.ResourceUtil;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 
 /**
@@ -87,7 +87,7 @@ public class BuiltinSqlFileRepository implements SqlFileRepository {
             return ResourceUtil.getResourceAsString(path);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
-            throw new JdbcException(MessageCode.DOMA2010, cause, path, cause);
+            throw new JdbcException(DomaMessageCode.DOMA2010, cause, path, cause);
         }
     }
 

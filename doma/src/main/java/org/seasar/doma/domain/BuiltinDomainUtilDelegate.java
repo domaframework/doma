@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.MethodUtil;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -39,7 +39,7 @@ public class BuiltinDomainUtilDelegate implements DomainUtilDelegate {
             MethodUtil.invoke(setter, domain, value);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
-            throw new DomainException(MessageCode.DOMA1004, cause, cause);
+            throw new DomainException(DomaMessageCode.DOMA1004, cause, cause);
         }
     }
 

@@ -27,7 +27,7 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.Function;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.TypeUtil;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -98,7 +98,7 @@ public class AutoFunctionQueryMetaFactory extends
             DeclaredType listTyep = TypeUtil.toDeclaredType(returnType, env);
             List<? extends TypeMirror> args = listTyep.getTypeArguments();
             if (args.isEmpty()) {
-                throw new AptException(MessageCode.DOMA4029, env, method);
+                throw new AptException(DomaMessageCode.DOMA4029, env, method);
             }
             TypeMirror elementType = TypeUtil.resolveTypeParameter(daoMeta
                     .getTypeParameterMap(), args.get(0));
@@ -110,11 +110,11 @@ public class AutoFunctionQueryMetaFactory extends
             if (isDomain(elementType)) {
                 return new DomainListResultParameterMeta(elementTypeName);
             }
-            throw new AptException(MessageCode.DOMA4065, env, method);
+            throw new AptException(DomaMessageCode.DOMA4065, env, method);
         }
         if (isDomain(returnType)) {
             return new DomainResultParameterMeta(queryMeta.getReturnTypeName());
         }
-        throw new AptException(MessageCode.DOMA4063, env, method);
+        throw new AptException(DomaMessageCode.DOMA4063, env, method);
     }
 }

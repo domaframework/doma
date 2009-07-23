@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.converter;
 
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -31,7 +31,7 @@ public class FormatConversionException extends ConversionException {
 
     public FormatConversionException(String value, String pattern,
             Throwable cause) {
-        super(MessageCode.DOMA5003, value, pattern, cause, cause);
+        super(DomaMessageCode.DOMA5003, value, pattern, cause, cause);
         this.value = value;
         this.pattern = pattern;
     }

@@ -22,7 +22,7 @@ import java.sql.Statement;
 import org.seasar.doma.GenerationType;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.Sql;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -66,7 +66,7 @@ public class BuiltinIdentityIdGenerator extends AbstractIdGenerator implements
             final ResultSet resultSet = statement.getGeneratedKeys();
             return getGeneratedValue(context, resultSet);
         } catch (final SQLException e) {
-            throw new JdbcException(MessageCode.DOMA2018, e, context
+            throw new JdbcException(DomaMessageCode.DOMA2018, e, context
                     .getEntity().__getName(), e);
         }
     }

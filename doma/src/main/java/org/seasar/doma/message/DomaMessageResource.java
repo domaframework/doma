@@ -15,9 +15,11 @@
  */
 package org.seasar.doma.message;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
-
-import java.text.MessageFormat;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import org.seasar.doma.DomaIllegalArgumentException;
@@ -27,21 +29,23 @@ import org.seasar.doma.DomaIllegalArgumentException;
  * @author taedium
  * 
  */
-public final class Messages {
+public class DomaMessageResource extends ResourceBundle {
 
-    protected static ResourceBundle bundle = ResourceBundle
-            .getBundle(MessageResource.class.getName());
+    @Override
+    public Enumeration<String> getKeys() {
+        List<String> keys = new LinkedList<String>();
+        for (DomaMessageCode messageCode : EnumSet.allOf(DomaMessageCode.class)) {
+            keys.add(messageCode.getPattern());
+        }
+        return Collections.enumeration(keys);
+    }
 
-    public static String getMessage(MessageCode messageCode, Object... args) {
-        if (messageCode == null) {
-            new DomaIllegalArgumentException("messageCode", messageCode);
+    @Override
+    protected Object handleGetObject(String key) {
+        if (key == null) {
+            new DomaIllegalArgumentException("key", key);
         }
-        if (args == null) {
-            new DomaIllegalArgumentException("args", args);
-        }
-        String pattern = bundle.getString(messageCode.name());
-        assertNotNull(pattern);
-        return MessageFormat
-                .format("[" + messageCode.name() + "] " + pattern, args);
+        DomaMessageCode m = Enum.valueOf(DomaMessageCode.class, key);
+        return m.getPattern();
     }
 }

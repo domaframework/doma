@@ -32,7 +32,7 @@ import org.seasar.doma.internal.apt.meta.EntityMeta;
 import org.seasar.doma.internal.apt.meta.EntityMetaFactory;
 import org.seasar.doma.internal.apt.meta.EntityPropertyMetaFactory;
 import org.seasar.doma.internal.util.IOUtil;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -65,11 +65,11 @@ public class EntityProcessor extends AbstractProcessor {
                     Notifier.notify(processingEnv, e);
                 } catch (AptIllegalStateException e) {
                     Notifier
-                            .notify(processingEnv, Kind.ERROR, MessageCode.DOMA4039, entityElement);
+                            .notify(processingEnv, Kind.ERROR, DomaMessageCode.DOMA4039, entityElement);
                     throw e;
                 } catch (RuntimeException e) {
                     Notifier
-                            .notify(processingEnv, Kind.ERROR, MessageCode.DOMA4016, entityElement);
+                            .notify(processingEnv, Kind.ERROR, DomaMessageCode.DOMA4016, entityElement);
                     throw e;
                 }
             }
@@ -90,7 +90,7 @@ public class EntityProcessor extends AbstractProcessor {
             entityGenerator = createEntityGenerator(entityElement, entityMeta);
             entityGenerator.generate();
         } catch (IOException e) {
-            throw new AptException(MessageCode.DOMA4011, processingEnv,
+            throw new AptException(DomaMessageCode.DOMA4011, processingEnv,
                     entityElement, e, entityElement.getQualifiedName(), e);
         } finally {
             IOUtil.close(entityGenerator);

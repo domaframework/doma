@@ -26,7 +26,7 @@ import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 import javax.tools.Diagnostic.Kind;
 
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -50,6 +50,6 @@ public final class FileObjects {
     protected static void ignoreException(Exception e, ProcessingEnvironment env) {
         StringWriter stringWriter = new StringWriter();
         e.printStackTrace(new PrintWriter(stringWriter));
-        Notifier.notify(env, Kind.NOTE, MessageCode.DOMA4021, stringWriter);
+        Notifier.notify(env, Kind.NOTE, DomaMessageCode.DOMA4021, stringWriter);
     }
 }

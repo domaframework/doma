@@ -15,7 +15,8 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -38,7 +39,7 @@ public class SqlExecutionException extends JdbcException {
 
     public SqlExecutionException(String rawSql, String formattedSql,
             Throwable cause, Throwable rootCause) {
-        super(MessageCode.DOMA2009, cause, formattedSql, rawSql, cause,
+        super(DomaMessageCode.DOMA2009, cause, formattedSql, rawSql, cause,
                 rootCause);
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;

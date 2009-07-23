@@ -39,7 +39,7 @@ import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.internal.apt.Notifier;
 import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.message.MessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * 
@@ -72,18 +72,18 @@ public class EntityMetaFactory {
     protected void doEntityElement(TypeElement entityElement,
             EntityMeta entityMeta) {
         if (entityElement.getNestingKind().isNested()) {
-            throw new AptException(MessageCode.DOMA4018, env, entityElement,
+            throw new AptException(DomaMessageCode.DOMA4018, env, entityElement,
                     entityElement.getQualifiedName());
         }
         if (!entityElement.getKind().isInterface()) {
-            throw new AptException(MessageCode.DOMA4015, env, entityElement,
+            throw new AptException(DomaMessageCode.DOMA4015, env, entityElement,
                     entityElement.getQualifiedName());
         }
         String name = entityElement.getSimpleName().toString();
         String suffix = Options.getSuffix(env);
         if (name.endsWith(suffix)) {
             Notifier
-                    .notify(env, Kind.WARNING, MessageCode.DOMA4026, entityElement, suffix);
+                    .notify(env, Kind.WARNING, DomaMessageCode.DOMA4026, entityElement, suffix);
         }
         entityMeta.setName(name);
         entityMeta.setEntityElement(entityElement);
@@ -92,18 +92,18 @@ public class EntityMetaFactory {
         MappedSuperclass mappedSuperclassAnnotation = entityElement
                 .getAnnotation(MappedSuperclass.class);
         if (entityAnnotation != null && mappedSuperclassAnnotation != null) {
-            throw new JdbcException(MessageCode.DOMA4049, entityElement);
+            throw new JdbcException(DomaMessageCode.DOMA4049, entityElement);
         }
         if (entityAnnotation != null) {
             if (!entityElement.getTypeParameters().isEmpty()) {
-                throw new JdbcException(MessageCode.DOMA4051, entityElement);
+                throw new JdbcException(DomaMessageCode.DOMA4051, entityElement);
             }
             doListener(entityAnnotation, entityElement, entityMeta);
             doTableMeta(entityElement, entityMeta);
             doSerialVersionUID(entityAnnotation, entityElement, entityMeta);
         } else if (mappedSuperclassAnnotation != null) {
             if (!entityElement.getTypeParameters().isEmpty()) {
-                throw new JdbcException(MessageCode.DOMA4050, entityElement);
+                throw new JdbcException(DomaMessageCode.DOMA4050, entityElement);
             }
             entityMeta.setMappedSuperclass(true);
         }
@@ -115,7 +115,7 @@ public class EntityMetaFactory {
         TypeMirror argumentType = getListenerArgumentType(entityListenerType);
         assertNotNull(argumentType);
         if (!TypeUtil.isAssignable(entityMeta.getEntityType(), argumentType, env)) {
-            throw new AptException(MessageCode.DOMA4038, env, entityElement,
+            throw new AptException(DomaMessageCode.DOMA4038, env, entityElement,
                     entityListenerType, argumentType, entityElement
                             .getQualifiedName());
         }
@@ -192,14 +192,14 @@ public class EntityMetaFactory {
             }
             if (mappedSuperclass) {
                 if (interfaceTypeElement.getAnnotation(MappedSuperclass.class) == null) {
-                    throw new AptException(MessageCode.DOMA4048, env,
+                    throw new AptException(DomaMessageCode.DOMA4048, env,
                             typeElement);
                 }
             } else {
                 if (interfaceTypeElement.getAnnotation(MappedSuperclass.class) != null) {
                     mappedSuperclass = true;
                 } else if (interfaceTypeElement.getAnnotation(Entity.class) == null) {
-                    throw new AptException(MessageCode.DOMA4052, env,
+                    throw new AptException(DomaMessageCode.DOMA4052, env,
                             typeElement);
                 }
             }
