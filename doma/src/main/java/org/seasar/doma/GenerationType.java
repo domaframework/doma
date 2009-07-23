@@ -21,6 +21,7 @@ package org.seasar.doma;
  */
 public enum GenerationType {
 
+    ASSIGNED,
     IDENTITY,
     SEQUENCE,
     TABLE

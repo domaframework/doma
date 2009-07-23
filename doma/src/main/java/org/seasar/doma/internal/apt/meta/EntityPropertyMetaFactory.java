@@ -103,6 +103,8 @@ public class EntityPropertyMetaFactory {
         case TABLE:
             doTableIdGeneratorMeta(propertyMeta, method, entityMeta);
             break;
+        case ASSIGNED:
+            break;
         default:
             assertUnreachable();
             break;
@@ -254,8 +256,8 @@ public class EntityPropertyMetaFactory {
                 throw new AptException(MessageCode.DOMA4031, env, method);
             }
             propertyMeta.setListReturnType(true);
-            String elementTypeName = TypeUtil.getTypeName(elementType, entityMeta
-                    .getTypeParameterMap(), env);
+            String elementTypeName = TypeUtil
+                    .getTypeName(elementType, entityMeta.getTypeParameterMap(), env);
             propertyMeta.setReturnElementTypeName(elementTypeName);
             propertyMeta.setReturnTypeName(ArrayList.class.getName() + "<"
                     + elementTypeName + ">");
