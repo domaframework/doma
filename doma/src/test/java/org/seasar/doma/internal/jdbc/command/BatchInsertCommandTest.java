@@ -17,11 +17,11 @@ package org.seasar.doma.internal.jdbc.command;
 
 import java.util.Arrays;
 
-import org.seasar.doma.internal.jdbc.command.BatchInsertCommand;
+import junit.framework.TestCase;
+
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.query.AutoBatchInsertQuery;
 
-import junit.framework.TestCase;
 import example.entity.Emp;
 import example.entity.Emp_;
 
@@ -55,7 +55,7 @@ public class BatchInsertCommandTest extends TestCase {
 
         assertEquals(2, rows.length);
         String sql = runtimeConfig.dataSource.connection.preparedStatement.sql;
-        assertEquals("insert into emp (id, name, salary, version) values (?, ?, ?, ?)", sql);
+        assertEquals("insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)", sql);
     }
 
 }

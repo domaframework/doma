@@ -20,18 +20,17 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import junit.framework.TestCase;
+
 import org.seasar.doma.domain.BigDecimalDomain;
 import org.seasar.doma.domain.IntegerDomain;
 import org.seasar.doma.domain.StringDomain;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
-import org.seasar.doma.internal.jdbc.query.AutoBatchUpdateQuery;
-import org.seasar.doma.internal.jdbc.query.BatchUpdateQuery;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.DomaMessageCode;
 
-import junit.framework.TestCase;
 import example.entity.Emp;
 import example.entity.Emp_;
 
@@ -86,7 +85,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
         query.compile();
 
         PreparedSql sql = query.getSqls().get(0);
-        assertEquals("update emp set name = ?, salary = ?, version = ? + 1 where id = ? and version = ?", sql
+        assertEquals("update EMP set NAME = ?, SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql
                 .getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(5, parameters.size());
@@ -97,7 +96,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
         assertEquals(new IntegerDomain(100), parameters.get(4).getDomain());
 
         sql = query.getSqls().get(1);
-        assertEquals("update emp set name = ?, salary = ?, version = ? + 1 where id = ? and version = ?", sql
+        assertEquals("update EMP set NAME = ?, SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql
                 .getRawSql());
         parameters = sql.getParameters();
         assertEquals(5, parameters.size());
@@ -130,7 +129,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
         query.compile();
 
         PreparedSql sql = query.getSqls().get(0);
-        assertEquals("update emp set name = ?, salary = ?, version = ? where id = ?", sql
+        assertEquals("update EMP set NAME = ?, SALARY = ?, VERSION = ? where ID = ?", sql
                 .getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
@@ -140,7 +139,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
         assertEquals(new IntegerDomain(10), parameters.get(3).getDomain());
 
         sql = query.getSqls().get(1);
-        assertEquals("update emp set name = ?, salary = ?, version = ? where id = ?", sql
+        assertEquals("update EMP set NAME = ?, SALARY = ?, VERSION = ? where ID = ?", sql
                 .getRawSql());
         parameters = sql.getParameters();
         assertEquals(4, parameters.size());

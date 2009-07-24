@@ -17,15 +17,14 @@ package org.seasar.doma.internal.jdbc.query;
 
 import java.util.List;
 
+import junit.framework.TestCase;
+
 import org.seasar.doma.domain.IntegerDomain;
 import org.seasar.doma.domain.StringDomain;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
-import org.seasar.doma.internal.jdbc.query.AutoInsertQuery;
-import org.seasar.doma.internal.jdbc.query.InsertQuery;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 
-import junit.framework.TestCase;
 import example.entity.Emp;
 import example.entity.Emp_;
 
@@ -68,7 +67,7 @@ public class AutoInsertQueryTest extends TestCase {
         query.compile();
 
         PreparedSql sql = query.getSql();
-        assertEquals("insert into emp (id, name, salary, version) values (?, ?, ?, ?)", sql
+        assertEquals("insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)", sql
                 .getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
@@ -93,7 +92,7 @@ public class AutoInsertQueryTest extends TestCase {
         query.compile();
 
         PreparedSql sql = query.getSql();
-        assertEquals("insert into emp (id, name, version) values (?, ?, ?)", sql
+        assertEquals("insert into EMP (ID, NAME, VERSION) values (?, ?, ?)", sql
                 .getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(3, parameters.size());

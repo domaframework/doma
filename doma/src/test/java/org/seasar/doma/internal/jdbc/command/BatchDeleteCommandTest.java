@@ -17,11 +17,11 @@ package org.seasar.doma.internal.jdbc.command;
 
 import java.util.Arrays;
 
-import org.seasar.doma.internal.jdbc.command.BatchDeleteCommand;
+import junit.framework.TestCase;
+
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.query.AutoBatchDeleteQuery;
 
-import junit.framework.TestCase;
 import example.entity.Emp;
 import example.entity.Emp_;
 
@@ -55,7 +55,7 @@ public class BatchDeleteCommandTest extends TestCase {
 
         assertEquals(2, rows.length);
         String sql = runtimeConfig.dataSource.connection.preparedStatement.sql;
-        assertEquals("delete from emp where id = ? and version = ?", sql);
+        assertEquals("delete from EMP where ID = ? and VERSION = ?", sql);
     }
 
 }

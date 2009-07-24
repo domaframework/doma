@@ -18,12 +18,12 @@ package org.seasar.doma.internal.jdbc.command;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.seasar.doma.internal.jdbc.command.InsertCommand;
+import junit.framework.TestCase;
+
 import org.seasar.doma.internal.jdbc.mock.BindValue;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.query.AutoInsertQuery;
 
-import junit.framework.TestCase;
 import example.entity.Emp;
 import example.entity.Emp_;
 
@@ -53,7 +53,7 @@ public class InsertCommandTest extends TestCase {
 
         assertEquals(1, rows);
         String sql = runtimeConfig.dataSource.connection.preparedStatement.sql;
-        assertEquals("insert into emp (id, name, salary, version) values (?, ?, ?, ?)", sql);
+        assertEquals("insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)", sql);
 
         List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
         assertEquals(new Integer(1), bindValues.get(0).getValue());
@@ -80,7 +80,7 @@ public class InsertCommandTest extends TestCase {
 
         assertEquals(1, rows);
         String sql = runtimeConfig.dataSource.connection.preparedStatement.sql;
-        assertEquals("insert into emp (id, name, salary, version) values (?, ?, ?, ?)", sql);
+        assertEquals("insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)", sql);
 
         List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
         assertEquals(4, bindValues.size());

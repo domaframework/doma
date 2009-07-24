@@ -19,14 +19,13 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
+import junit.framework.TestCase;
+
 import org.seasar.doma.domain.IntegerDomain;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
-import org.seasar.doma.internal.jdbc.query.AutoBatchDeleteQuery;
-import org.seasar.doma.internal.jdbc.query.BatchDeleteQuery;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 
-import junit.framework.TestCase;
 import example.entity.Emp;
 import example.entity.Emp_;
 
@@ -78,7 +77,7 @@ public class AutoBatchDeleteQueryTest extends TestCase {
         query.compile();
 
         PreparedSql sql = query.getSqls().get(0);
-        assertEquals("delete from emp where id = ? and version = ?", sql
+        assertEquals("delete from EMP where ID = ? and VERSION = ?", sql
                 .getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(2, parameters.size());
@@ -86,7 +85,7 @@ public class AutoBatchDeleteQueryTest extends TestCase {
         assertTrue(parameters.get(1).getDomain().isNull());
 
         sql = query.getSqls().get(1);
-        assertEquals("delete from emp where id = ? and version = ?", sql
+        assertEquals("delete from EMP where ID = ? and VERSION = ?", sql
                 .getRawSql());
         parameters = sql.getParameters();
         assertEquals(2, parameters.size());
@@ -114,13 +113,13 @@ public class AutoBatchDeleteQueryTest extends TestCase {
         query.compile();
 
         PreparedSql sql = query.getSqls().get(0);
-        assertEquals("delete from emp where id = ?", sql.getRawSql());
+        assertEquals("delete from EMP where ID = ?", sql.getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(1, parameters.size());
         assertEquals(new IntegerDomain(10), parameters.get(0).getDomain());
 
         sql = query.getSqls().get(1);
-        assertEquals("delete from emp where id = ?", sql.getRawSql());
+        assertEquals("delete from EMP where ID = ?", sql.getRawSql());
         parameters = sql.getParameters();
         assertEquals(1, parameters.size());
         assertEquals(new IntegerDomain(20), parameters.get(0).getDomain());

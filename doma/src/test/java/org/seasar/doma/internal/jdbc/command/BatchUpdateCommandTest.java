@@ -17,13 +17,13 @@ package org.seasar.doma.internal.jdbc.command;
 
 import java.util.Arrays;
 
+import junit.framework.TestCase;
+
 import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.internal.jdbc.command.BatchUpdateCommand;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.query.AutoBatchUpdateQuery;
 import org.seasar.doma.jdbc.OptimisticLockException;
 
-import junit.framework.TestCase;
 import example.entity.Emp;
 import example.entity.Emp_;
 
@@ -57,7 +57,7 @@ public class BatchUpdateCommandTest extends TestCase {
 
         assertEquals(2, rows.length);
         String sql = runtimeConfig.dataSource.connection.preparedStatement.sql;
-        assertEquals("update emp set name = ?, salary = ?, version = ? + 1 where id = ? and version = ?", sql);
+        assertEquals("update EMP set NAME = ?, SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql);
         assertEquals(new IntegerDomain(11), emp1.version());
         assertEquals(new IntegerDomain(21), emp2.version());
     }

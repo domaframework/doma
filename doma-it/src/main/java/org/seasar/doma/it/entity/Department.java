@@ -16,7 +16,6 @@
 package org.seasar.doma.it.entity;
 
 import org.seasar.doma.Entity;
-import org.seasar.doma.Id;
 import org.seasar.doma.Version;
 import org.seasar.doma.it.domain.IdDomain;
 import org.seasar.doma.it.domain.LocationDomain;
@@ -27,7 +26,7 @@ import org.seasar.doma.it.domain.VersionDomain;
 @Entity
 public interface Department {
 
-    @Id
+    @org.seasar.doma.Id
     IdDomain department_id();
 
     NoDomain department_no();

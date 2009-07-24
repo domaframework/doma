@@ -19,16 +19,15 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
+import junit.framework.TestCase;
+
 import org.seasar.doma.domain.BigDecimalDomain;
 import org.seasar.doma.domain.IntegerDomain;
 import org.seasar.doma.domain.StringDomain;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
-import org.seasar.doma.internal.jdbc.query.AutoBatchInsertQuery;
-import org.seasar.doma.internal.jdbc.query.BatchInsertQuery;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 
-import junit.framework.TestCase;
 import example.entity.Emp;
 import example.entity.Emp_;
 
@@ -77,7 +76,7 @@ public class AutoBatchInsertQueryTest extends TestCase {
         query.compile();
 
         PreparedSql sql = query.getSqls().get(0);
-        assertEquals("insert into emp (id, name, salary, version) values (?, ?, ?, ?)", sql
+        assertEquals("insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)", sql
                 .getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
@@ -87,7 +86,7 @@ public class AutoBatchInsertQueryTest extends TestCase {
         assertEquals(new IntegerDomain(1), parameters.get(3).getDomain());
 
         sql = query.getSqls().get(1);
-        assertEquals("insert into emp (id, name, salary, version) values (?, ?, ?, ?)", sql
+        assertEquals("insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)", sql
                 .getRawSql());
         parameters = sql.getParameters();
         assertEquals(4, parameters.size());

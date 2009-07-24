@@ -17,6 +17,7 @@ package org.seasar.doma.jdbc;
 
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.util.StringUtil;
 
 /**
  * @author taedium
@@ -32,18 +33,7 @@ public class BuiltinNameConvention implements NameConvention {
         if (dialect == null) {
             throw new DomaIllegalArgumentException("dialect", dialect);
         }
-        return entityName;
-    }
-
-    @Override
-    public String fromTableToEntity(String tableName, Dialect dialect) {
-        if (tableName == null) {
-            throw new DomaIllegalArgumentException("tableName", tableName);
-        }
-        if (dialect == null) {
-            throw new DomaIllegalArgumentException("dialect", dialect);
-        }
-        return tableName;
+        return StringUtil.decamelize(entityName);
     }
 
     @Override
@@ -54,7 +44,19 @@ public class BuiltinNameConvention implements NameConvention {
         if (dialect == null) {
             throw new DomaIllegalArgumentException("dialect", dialect);
         }
-        return propertyName;
+        return StringUtil.decamelize(propertyName);
+    }
+
+    @Override
+    public String fromTableToEntity(String tableName, Dialect dialect) {
+        if (tableName == null) {
+            throw new DomaIllegalArgumentException("tableName", tableName);
+        }
+        if (dialect == null) {
+            throw new DomaIllegalArgumentException("dialect", dialect);
+        }
+        String name = StringUtil.camelize(tableName);
+        return StringUtil.capitalize(name);
     }
 
     @Override
@@ -65,7 +67,7 @@ public class BuiltinNameConvention implements NameConvention {
         if (dialect == null) {
             throw new DomaIllegalArgumentException("dialect", dialect);
         }
-        return columnName;
+        return StringUtil.camelize(columnName);
     }
 
 }

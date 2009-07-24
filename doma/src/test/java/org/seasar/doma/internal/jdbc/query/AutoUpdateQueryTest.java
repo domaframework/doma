@@ -17,18 +17,17 @@ package org.seasar.doma.internal.jdbc.query;
 
 import java.util.List;
 
+import junit.framework.TestCase;
+
 import org.seasar.doma.domain.BigDecimalDomain;
 import org.seasar.doma.domain.IntegerDomain;
 import org.seasar.doma.domain.StringDomain;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
-import org.seasar.doma.internal.jdbc.query.AutoUpdateQuery;
-import org.seasar.doma.internal.jdbc.query.UpdateQuery;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.DomaMessageCode;
 
-import junit.framework.TestCase;
 import example.entity.Emp;
 import example.entity.Emp_;
 
@@ -73,7 +72,7 @@ public class AutoUpdateQueryTest extends TestCase {
         query.compile();
 
         PreparedSql sql = query.getSql();
-        assertEquals("update emp set name = ?, version = ? + 1 where id = ? and version = ?", sql
+        assertEquals("update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql
                 .getRawSql());
 
         List<PreparedSqlParameter> parameters = sql.getParameters();
@@ -99,7 +98,7 @@ public class AutoUpdateQueryTest extends TestCase {
         query.compile();
 
         PreparedSql sql = query.getSql();
-        assertEquals("update emp set version = ? + 1 where id = ? and version = ?", sql
+        assertEquals("update EMP set VERSION = ? + 1 where ID = ? and VERSION = ?", sql
                 .getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
@@ -124,7 +123,7 @@ public class AutoUpdateQueryTest extends TestCase {
         query.compile();
 
         PreparedSql sql = query.getSql();
-        assertEquals("update emp set name = ?, version = ? where id = ?", sql
+        assertEquals("update EMP set NAME = ?, VERSION = ? where ID = ?", sql
                 .getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(3, parameters.size());

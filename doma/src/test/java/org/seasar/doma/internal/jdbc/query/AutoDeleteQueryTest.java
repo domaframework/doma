@@ -17,14 +17,13 @@ package org.seasar.doma.internal.jdbc.query;
 
 import java.util.List;
 
+import junit.framework.TestCase;
+
 import org.seasar.doma.domain.IntegerDomain;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
-import org.seasar.doma.internal.jdbc.query.AutoDeleteQuery;
-import org.seasar.doma.internal.jdbc.query.DeleteQuery;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 
-import junit.framework.TestCase;
 import example.entity.Emp;
 import example.entity.Emp_;
 
@@ -66,7 +65,7 @@ public class AutoDeleteQueryTest extends TestCase {
         query.compile();
 
         PreparedSql sql = query.getSql();
-        assertEquals("delete from emp where id = ? and version = ?", sql
+        assertEquals("delete from EMP where ID = ? and VERSION = ?", sql
                 .getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(2, parameters.size());
@@ -90,7 +89,7 @@ public class AutoDeleteQueryTest extends TestCase {
         query.compile();
 
         PreparedSql sql = query.getSql();
-        assertEquals("delete from emp where id = ?", sql.getRawSql());
+        assertEquals("delete from EMP where ID = ?", sql.getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(1, parameters.size());
         assertEquals(new IntegerDomain(10), parameters.get(0).getDomain());
