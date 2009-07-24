@@ -1,6 +1,0 @@
--debug用のログをしこむ
--メッセージコードの整理
--テストの強化
--Entity & Dao自動生成機能
--S2用のAdapter
--Spring用のAdapter

@@ -1,4 +1,4 @@
-<project name="doma-it" default="check-database" basedir=".">
+<project name="doma-it" default="update-dependent-jars" basedir=".">
 
 	<path id="taskdefClasspath">
 		<pathelement location="bin"/>
@@ -29,6 +29,11 @@
 				<equals arg1="${database}" arg2="postgres"/>
 			</or>
 		</condition>
+	</target>
+
+	<target name="update-dependent-jars">
+		<ant antfile="build-doma.xml"/>
+		<ant antfile="build-doma-tool.xml"/>
 	</target>
 
 </project>

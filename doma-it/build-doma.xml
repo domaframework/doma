@@ -1,0 +1,37 @@
+<project name="build-doma" default="jar" basedir=".">
+
+	<property name="build" value="target/build"/>
+	<property name="src" value="../doma/src/main/java"/>
+	<property name="resources" value="../doma/src/main/resources"/>
+
+	<path id="classpath">
+	</path>
+
+	<target name="jar" depends="clean,compile,copy">
+		<jar jarfile="lib/doma-SNAPSHOT.jar" basedir="${build}" />
+		<jar jarfile="libsrc/doma-SNAPSHOT-sources.jar" basedir="${src}" />
+	</target>
+
+	<target name="clean">
+		<delete dir="target" failonerror="false"/>
+		<mkdir dir="target"/>
+		<mkdir dir="${build}"/>
+	</target>
+
+	<target name="compile">
+		<javac fork="yes" srcdir="${src}" compiler="javac1.6"
+			classpathref="classpath" destdir="${build}" debug="on" encoding="UTF-8" >
+		</javac>
+	</target>
+
+	<target name="copy" depends="compile">
+		<copy todir="${build}" filtering="true">
+			<fileset dir="${resources}">
+				<include name="**/*.properties" />
+				<include name="**/*.xml" />
+				<include name="**/*.dtd" />
+				<include name="META-INF/**" />
+			</fileset>
+		</copy>
+	</target>
+</project>
