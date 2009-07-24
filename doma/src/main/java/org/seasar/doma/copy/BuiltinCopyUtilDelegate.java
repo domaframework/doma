@@ -25,10 +25,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.seasar.doma.DomaIllegalArgumentException;
-import org.seasar.doma.bean.BeanWrapper;
-import org.seasar.doma.bean.BeanWrapperFactory;
 import org.seasar.doma.bean.BeanPropertyWrapper;
 import org.seasar.doma.bean.BeanUtil;
+import org.seasar.doma.bean.BeanWrapper;
+import org.seasar.doma.bean.BeanWrapperFactory;
 import org.seasar.doma.converter.ConversionException;
 import org.seasar.doma.converter.Converter;
 import org.seasar.doma.converter.Converters;
@@ -179,6 +179,9 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
             if (!copyOptions.isTargetValue(srcProperty.getValue())) {
                 continue;
             }
+            if (!srcProperty.isValueGettable()) {
+                continue;
+            }
             copyToEntityProperty(srcClass, srcProperty.getName(), srcProperty
                     .getValue(), dest, copyOptions);
         }
@@ -193,6 +196,9 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
             if (!copyOptions.isTargetValue(srcProperty.getValue())) {
                 continue;
             }
+            if (!srcProperty.isValueGettable()) {
+                continue;
+            }
             dest.put(srcProperty.getName(), srcProperty.getValue());
         }
     }
@@ -205,6 +211,9 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
                 continue;
             }
             if (!copyOptions.isTargetValue(srcProperty.getValue())) {
+                continue;
+            }
+            if (!srcProperty.isValueGettable()) {
                 continue;
             }
             copyToBeanProperty(srcClass, srcProperty.getName(), srcProperty
@@ -262,8 +271,12 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
     protected void copyToBeanProperty(Class<?> srcClass,
             String srcPropertyName, Object srcPropertyValue, BeanWrapper dest,
             CopyOptions copyOptions) {
-        BeanPropertyWrapper destProperty = dest.getBeanPropertyWrapper(srcPropertyName);
+        BeanPropertyWrapper destProperty = dest
+                .getBeanPropertyWrapper(srcPropertyName);
         if (destProperty == null) {
+            return;
+        }
+        if (!destProperty.isValueSettable()) {
             return;
         }
         Converter<?> converter = findConverter(destProperty.getName(), destProperty

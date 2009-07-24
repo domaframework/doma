@@ -15,15 +15,16 @@
  */
 package org.seasar.doma.bean;
 
+import junit.framework.TestCase;
+
 /**
  * @author taedium
  * 
  */
-public class BuiltinBeanUtilDelegate implements BeanUtilDelegate {
+public class IntrospectionExceptionTest extends TestCase {
 
-    @Override
-    public BeanWrapper wrap(Object bean) {
-        return new MethodAccessBeanWrapper(bean);
+    public void test() throws Exception {
+        IntrospectionException e = new IntrospectionException(new Exception());
+        System.out.println(e.getMessage());
     }
-
 }

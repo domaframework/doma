@@ -15,15 +15,33 @@
  */
 package org.seasar.doma.bean;
 
+import org.seasar.doma.message.DomaMessageCode;
+
 /**
  * @author taedium
  * 
  */
-public class BuiltinBeanUtilDelegate implements BeanUtilDelegate {
+public class PropertyWriteAccessException extends BeanException {
 
-    @Override
-    public BeanWrapper wrap(Object bean) {
-        return new MethodAccessBeanWrapper(bean);
+    private static final long serialVersionUID = 1L;
+
+    protected final String className;
+
+    protected final String propertyName;
+
+    public PropertyWriteAccessException(String className, String propertyName,
+            Throwable cause) {
+        super(DomaMessageCode.DOMA6001, cause, className, propertyName, cause);
+        this.className = className;
+        this.propertyName = propertyName;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public String getPropertyName() {
+        return propertyName;
     }
 
 }

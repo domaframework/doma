@@ -15,15 +15,18 @@
  */
 package org.seasar.doma.bean;
 
+import org.seasar.doma.message.DomaMessageCode;
+
 /**
  * @author taedium
  * 
  */
-public class BuiltinBeanUtilDelegate implements BeanUtilDelegate {
+public class IntrospectionException extends BeanException {
 
-    @Override
-    public BeanWrapper wrap(Object bean) {
-        return new MethodAccessBeanWrapper(bean);
+    private static final long serialVersionUID = 1L;
+
+    public IntrospectionException(Throwable cause) {
+        super(DomaMessageCode.DOMA6003, cause, cause);
     }
 
 }

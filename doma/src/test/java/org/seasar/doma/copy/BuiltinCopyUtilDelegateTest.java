@@ -55,10 +55,10 @@ public class BuiltinCopyUtilDelegateTest extends TestCase {
         EmpBean dest = new EmpBean();
         delegate.copy(src, dest, new CopyOptions());
 
-        assertEquals(src.id().get(), dest.id);
-        assertEquals(src.name().get(), dest.name);
-        assertEquals(src.salary().get(), dest.salary);
-        assertEquals(src.version().get(), dest.version);
+        assertEquals(src.id().get(), dest.getId());
+        assertEquals(src.name().get(), dest.getName());
+        assertEquals(src.salary().get(), dest.getSalary());
+        assertEquals(src.version().get(), dest.getVersion());
     }
 
     public void testFromEntityToMap() throws Exception {
@@ -78,47 +78,47 @@ public class BuiltinCopyUtilDelegateTest extends TestCase {
 
     public void testFromBeanToEntity() throws Exception {
         EmpBean src = new EmpBean();
-        src.id = 10;
-        src.name = "aaa";
-        src.salary = new BigDecimal("100");
-        src.version = 20;
+        src.setId(10);
+        src.setName("aaa");
+        src.setSalary(new BigDecimal("100"));
+        src.setVersion(20);
         Emp dest = new Emp_();
         delegate.copy(src, dest, new CopyOptions());
 
-        assertEquals(src.id, dest.id().get());
-        assertEquals(src.name, dest.name().get());
-        assertEquals(src.salary, dest.salary().get());
-        assertEquals(src.version, dest.version().get());
+        assertEquals(src.getId(), dest.id().get());
+        assertEquals(src.getName(), dest.name().get());
+        assertEquals(src.getSalary(), dest.salary().get());
+        assertEquals(src.getVersion(), dest.version().get());
     }
 
     public void testFromBeanToBean() throws Exception {
         EmpBean src = new EmpBean();
-        src.id = 10;
-        src.name = "aaa";
-        src.salary = new BigDecimal("100");
-        src.version = 20;
+        src.setId(10);
+        src.setName("aaa");
+        src.setSalary(new BigDecimal("100"));
+        src.setVersion(20);
         EmpBean dest = new EmpBean();
         delegate.copy(src, dest, new CopyOptions());
 
-        assertEquals(src.id, dest.id);
-        assertEquals(src.name, dest.name);
-        assertEquals(src.salary, dest.salary);
-        assertEquals(src.version, dest.version);
+        assertEquals(src.getId(), dest.getId());
+        assertEquals(src.getName(), dest.getName());
+        assertEquals(src.getSalary(), dest.getSalary());
+        assertEquals(src.getVersion(), dest.getVersion());
     }
 
     public void testFromBeanToMap() throws Exception {
         EmpBean src = new EmpBean();
-        src.id = 10;
-        src.name = "aaa";
-        src.salary = new BigDecimal("100");
-        src.version = 20;
+        src.setId(10);
+        src.setName("aaa");
+        src.setSalary(new BigDecimal("100"));
+        src.setVersion(20);
         Map<String, Object> dest = new HashMap<String, Object>();
         delegate.copy(src, dest, new CopyOptions());
 
-        assertEquals(src.id, dest.get("id"));
-        assertEquals(src.name, dest.get("name"));
-        assertEquals(src.salary, dest.get("salary"));
-        assertEquals(src.version, dest.get("version"));
+        assertEquals(src.getId(), dest.get("id"));
+        assertEquals(src.getName(), dest.get("name"));
+        assertEquals(src.getSalary(), dest.get("salary"));
+        assertEquals(src.getVersion(), dest.get("version"));
     }
 
     public void testFromMapToEntity() throws Exception {
@@ -145,10 +145,10 @@ public class BuiltinCopyUtilDelegateTest extends TestCase {
         EmpBean dest = new EmpBean();
         delegate.copy(src, dest, new CopyOptions());
 
-        assertEquals(src.get("id"), dest.id);
-        assertEquals(src.get("name"), dest.name);
-        assertEquals(src.get("salary"), dest.salary);
-        assertEquals(src.get("version"), dest.version);
+        assertEquals(src.get("id"), dest.getId());
+        assertEquals(src.get("name"), dest.getName());
+        assertEquals(src.get("salary"), dest.getSalary());
+        assertEquals(src.get("version"), dest.getVersion());
     }
 
     public void testPropertyCopyException() throws Exception {
@@ -164,12 +164,44 @@ public class BuiltinCopyUtilDelegateTest extends TestCase {
 
     public static class EmpBean {
 
-        public Integer id;
+        private Integer id;
 
-        public String name;
+        private String name;
 
-        public BigDecimal salary;
+        private BigDecimal salary;
 
-        public Integer version;
+        private Integer version;
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setSalary(BigDecimal salary) {
+            this.salary = salary;
+        }
+
+        public BigDecimal getSalary() {
+            return salary;
+        }
+
+        public void setVersion(Integer version) {
+            this.version = version;
+        }
+
+        public Integer getVersion() {
+            return version;
+        }
     }
 }

@@ -15,7 +15,10 @@
  */
 package org.seasar.doma.bean;
 
-import java.lang.reflect.Field;
+import java.beans.BeanInfo;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -24,13 +27,13 @@ import java.util.Map;
 
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.internal.WrapException;
-import org.seasar.doma.internal.util.FieldUtil;
+import org.seasar.doma.internal.util.MethodUtil;
 
 /**
  * @author taedium
  * 
  */
-public class FieldAccessBeanWrapper implements BeanWrapper {
+public class MethodAccessBeanWrapper implements BeanWrapper {
 
     protected final Object bean;
 
@@ -40,7 +43,7 @@ public class FieldAccessBeanWrapper implements BeanWrapper {
 
     protected final Map<String, BeanPropertyWrapper> propertyWrapperMap;
 
-    public FieldAccessBeanWrapper(Object bean) {
+    public MethodAccessBeanWrapper(Object bean) {
         if (bean == null) {
             throw new DomaIllegalArgumentException("bean", bean);
         }
@@ -70,69 +73,81 @@ public class FieldAccessBeanWrapper implements BeanWrapper {
     protected LinkedHashMap<String, BeanPropertyWrapper> createPropertyWrapperMap(
             Class<?> beanClass) {
         LinkedHashMap<String, BeanPropertyWrapper> result = new LinkedHashMap<String, BeanPropertyWrapper>();
-        for (Class<?> clazz = beanClass; clazz != Object.class; clazz = clazz
-                .getSuperclass()) {
-            for (Field field : beanClass.getFields()) {
-                BeanPropertyWrapper propertyWrapper = new FieldAccessPropertyWrapper(
-                        field);
-                String name = propertyWrapper.getName();
-                if (result.containsKey(name)) {
-                    continue;
-                }
-                result.put(name, propertyWrapper);
-            }
+        BeanInfo beanInfo = getBeanInfo(beanClass);
+        for (PropertyDescriptor propertyDescriptor : beanInfo
+                .getPropertyDescriptors()) {
+            BeanPropertyWrapper propertyWrapper = new MethodAccessPropertyWrapper(
+                    propertyDescriptor);
+            String name = propertyWrapper.getName();
+            result.put(name, propertyWrapper);
         }
         return result;
     }
 
-    protected class FieldAccessPropertyWrapper implements BeanPropertyWrapper {
+    protected BeanInfo getBeanInfo(Class<?> beanClass) {
+        try {
+            return Introspector.getBeanInfo(beanClass);
+        } catch (java.beans.IntrospectionException e) {
+            throw new IntrospectionException(e);
+        }
+    }
 
-        protected final Field field;
+    protected class MethodAccessPropertyWrapper implements BeanPropertyWrapper {
 
-        public FieldAccessPropertyWrapper(Field field) {
-            this.field = field;
+        protected final PropertyDescriptor propertyDescriptor;
+
+        protected final Method readMethod;
+
+        protected final Method writeMethod;
+
+        public MethodAccessPropertyWrapper(PropertyDescriptor propertyDescriptor) {
+            this.propertyDescriptor = propertyDescriptor;
+            this.readMethod = propertyDescriptor.getReadMethod();
+            this.writeMethod = propertyDescriptor.getWriteMethod();
         }
 
         @Override
         public String getName() {
-            return field.getName();
+            return propertyDescriptor.getName();
         }
 
         @Override
         public Class<?> getPropertyClass() {
-            return field.getType();
+            return propertyDescriptor.getPropertyType();
         }
 
         @Override
         public boolean isValueGettable() {
-            return true;
+            return readMethod != null;
         }
 
         @Override
         public Object getValue() {
             try {
-                return FieldUtil.get(field, bean);
+                return MethodUtil.invoke(readMethod, bean);
             } catch (WrapException e) {
                 Throwable cause = e.getCause();
-                throw new PropertyReadAccessException(beanClass.getName(), field
-                        .getName(), cause);
+                throw new PropertyReadAccessException(beanClass.getName(),
+                        propertyDescriptor.getName(), cause);
             }
         }
 
         @Override
         public boolean isValueSettable() {
-            return true;
+            return writeMethod != null;
         }
 
         @Override
         public void setValue(Object value) {
             try {
-                FieldUtil.set(field, bean, value);
+                MethodUtil.invoke(writeMethod, bean, value);
             } catch (WrapException e) {
                 Throwable cause = e.getCause();
-                throw new PropertyWriteAccessException(beanClass.getName(), field
-                        .getName(), cause);
+                throw new PropertyWriteAccessException(beanClass.getName(),
+                        propertyDescriptor.getName(), cause);
             }
         }
+
     }
+
 }

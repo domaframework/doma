@@ -15,15 +15,19 @@
  */
 package org.seasar.doma.bean;
 
+import junit.framework.TestCase;
+
 /**
  * @author taedium
  * 
  */
-public class BuiltinBeanUtilDelegate implements BeanUtilDelegate {
+public class PropertyWriteAccessExceptionTest extends TestCase {
 
-    @Override
-    public BeanWrapper wrap(Object bean) {
-        return new MethodAccessBeanWrapper(bean);
+    public void test() throws Exception {
+        PropertyWriteAccessException e = new PropertyWriteAccessException(
+                "aaa", "bbb", new Exception());
+        assertEquals("aaa", e.getClassName());
+        assertEquals("bbb", e.getPropertyName());
+        System.out.println(e.getMessage());
     }
-
 }

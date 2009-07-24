@@ -19,10 +19,10 @@ package org.seasar.doma.bean;
  * @author taedium
  * 
  */
-public class BuiltinBeanUtilDelegate implements BeanUtilDelegate {
+public class MethodAccessBeanWrapperFactory implements BeanWrapperFactory {
 
     @Override
-    public BeanWrapper wrap(Object bean) {
+    public BeanWrapper create(Object bean) {
         return new MethodAccessBeanWrapper(bean);
     }
 

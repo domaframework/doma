@@ -23,9 +23,14 @@ public interface BeanPropertyWrapper {
 
     String getName();
 
+    boolean isValueGettable();
+
     Object getValue();
+
+    boolean isValueSettable();
 
     void setValue(Object value);
 
     Class<?> getPropertyClass();
+
 }

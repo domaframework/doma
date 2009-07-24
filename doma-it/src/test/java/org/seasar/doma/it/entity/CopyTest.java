@@ -27,26 +27,26 @@ public class CopyTest {
         EmpBean dest = new EmpBean();
         CopyUtil.copy(src, dest);
 
-        assertEquals(new Integer(1), dest.id);
-        assertEquals("aaa", dest.name);
-        assertEquals(new BigDecimal(100), dest.salary);
-        assertEquals(new Integer(2), dest.version);
-        assertEquals(Timestamp.valueOf("2001-02-03 12:34:56"),
-                dest.insertTimestamp);
-        assertEquals(Timestamp.valueOf("3001-02-03 12:34:56"),
-                dest.updateTimestamp);
+        assertEquals(new Integer(1), dest.getId());
+        assertEquals("aaa", dest.getName());
+        assertEquals(new BigDecimal(100), dest.getSalary());
+        assertEquals(new Integer(2), dest.getVersion());
+        assertEquals(Timestamp.valueOf("2001-02-03 12:34:56"), dest
+                .getInsertTimestamp());
+        assertEquals(Timestamp.valueOf("3001-02-03 12:34:56"), dest
+                .getUpdateTimestamp());
     }
 
     @TxBehavior(TxBehaviorType.NONE)
     public void testFromBeanToEntity() throws Exception {
         EmpBean src = new EmpBean();
-        src.id = 1;
-        src.name = "aaa";
-        src.salary = new BigDecimal(100);
-        src.version = 2;
-        src.insertTimestamp = Timestamp.valueOf("2001-02-03 12:34:56");
-        src.updateTimestamp = Timestamp.valueOf("3001-02-03 12:34:56");
-        src.temp = "bbb";
+        src.setId(1);
+        src.setName("aaa");
+        src.setSalary(new BigDecimal(100));
+        src.setVersion(2);
+        src.setInsertTimestamp(Timestamp.valueOf("2001-02-03 12:34:56"));
+        src.setUpdateTimestamp(Timestamp.valueOf("3001-02-03 12:34:56"));
+        src.setTemp("bbb");
         Emp dest = new Emp_();
         CopyUtil.copy(src, dest);
 
@@ -62,18 +62,74 @@ public class CopyTest {
 
     public static class EmpBean {
 
-        public Integer id;
+        private Integer id;
 
-        public String name;
+        private String name;
 
-        public BigDecimal salary;
+        private BigDecimal salary;
 
-        public Integer version;
+        private Integer version;
 
-        public Timestamp insertTimestamp;
+        private Timestamp insertTimestamp;
 
-        public Timestamp updateTimestamp;
+        private Timestamp updateTimestamp;
 
-        public String temp;
+        private String temp;
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setSalary(BigDecimal salary) {
+            this.salary = salary;
+        }
+
+        public BigDecimal getSalary() {
+            return salary;
+        }
+
+        public void setVersion(Integer version) {
+            this.version = version;
+        }
+
+        public Integer getVersion() {
+            return version;
+        }
+
+        public void setInsertTimestamp(Timestamp insertTimestamp) {
+            this.insertTimestamp = insertTimestamp;
+        }
+
+        public Timestamp getInsertTimestamp() {
+            return insertTimestamp;
+        }
+
+        public void setUpdateTimestamp(Timestamp updateTimestamp) {
+            this.updateTimestamp = updateTimestamp;
+        }
+
+        public Timestamp getUpdateTimestamp() {
+            return updateTimestamp;
+        }
+
+        public void setTemp(String temp) {
+            this.temp = temp;
+        }
+
+        public String getTemp() {
+            return temp;
+        }
     }
 }
