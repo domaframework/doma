@@ -20,8 +20,8 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.nio.CharBuffer;
 
+import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.message.DomaMessageCode;
 
 
 /**

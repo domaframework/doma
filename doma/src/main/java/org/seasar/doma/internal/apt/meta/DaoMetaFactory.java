@@ -34,6 +34,7 @@ import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.Dao;
+import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.ElementUtil;
@@ -41,7 +42,6 @@ import org.seasar.doma.internal.apt.Notifier;
 import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.jdbc.DomaAbstractDao;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

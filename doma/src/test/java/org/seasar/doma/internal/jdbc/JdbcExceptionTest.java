@@ -19,6 +19,7 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 
+import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.domain.IntegerDomain;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
@@ -29,7 +30,6 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.BuiltinSqlFileRepository;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

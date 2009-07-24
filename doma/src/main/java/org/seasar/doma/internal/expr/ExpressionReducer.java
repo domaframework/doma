@@ -20,6 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.Deque;
 import java.util.Iterator;
 
+import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.internal.expr.node.AddOperatorNode;
 import org.seasar.doma.internal.expr.node.AndOperatorNode;
 import org.seasar.doma.internal.expr.node.CommaOperatorNode;
@@ -44,7 +45,6 @@ import org.seasar.doma.internal.expr.node.OrOperatorNode;
 import org.seasar.doma.internal.expr.node.ParensNode;
 import org.seasar.doma.internal.expr.node.SubtractOperatorNode;
 import org.seasar.doma.internal.expr.node.VariableNode;
-import org.seasar.doma.message.DomaMessageCode;
 
 
 /**

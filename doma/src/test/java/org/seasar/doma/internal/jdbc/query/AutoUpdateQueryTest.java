@@ -19,6 +19,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.domain.BigDecimalDomain;
 import org.seasar.doma.domain.IntegerDomain;
 import org.seasar.doma.domain.StringDomain;
@@ -26,7 +27,6 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.message.DomaMessageCode;
 
 import example.entity.Emp;
 import example.entity.Emp_;

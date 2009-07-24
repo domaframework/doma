@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.DomaUnsupportedOperationException;
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.internal.expr.EvaluationResult;
@@ -75,7 +76,6 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

@@ -13,26 +13,23 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.expr;
+package org.seasar.doma.internal.util;
 
-import org.seasar.doma.DomaException;
-import org.seasar.doma.DomaMessageCode;
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
+
+import org.seasar.doma.MessageCode;
 
 /**
  * @author taedium
  * 
  */
-public class ExpressionException extends DomaException {
+public final class MessageFormatter {
 
-    private static final long serialVersionUID = 1L;
-
-    public ExpressionException(DomaMessageCode messageCode, Object... args) {
-        super(messageCode, args);
+    public static String getMessage(MessageCode messageCode,
+            ResourceBundle bundle, Object... args) {
+        String pattern = bundle.getString(messageCode.getKey());
+        return MessageFormat
+                .format("[" + messageCode.getKey() + "] " + pattern, args);
     }
-
-    public ExpressionException(DomaMessageCode messageCode, Throwable cause,
-            Object... args) {
-        super(messageCode, cause, args);
-    }
-
 }

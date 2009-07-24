@@ -17,11 +17,11 @@ package org.seasar.doma.internal.jdbc.sql;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

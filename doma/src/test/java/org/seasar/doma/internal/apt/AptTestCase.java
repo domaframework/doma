@@ -24,8 +24,8 @@ import javax.tools.JavaFileObject;
 import junit.framework.AssertionFailedError;
 
 import org.seasar.aptina.unit.AptinaTestCase;
+import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.internal.util.ResourceUtil;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

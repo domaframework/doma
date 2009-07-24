@@ -15,37 +15,17 @@
  */
 package org.seasar.doma.message;
 
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Enumeration;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ResourceBundle;
-
-import org.seasar.doma.DomaIllegalArgumentException;
-
+import org.seasar.doma.DomaMessageCode;
 
 /**
  * @author taedium
  * 
  */
-public class DomaMessageResource extends ResourceBundle {
+public class DomaMessageResource extends
+        AbstractMessageResource<DomaMessageCode> {
 
-    @Override
-    public Enumeration<String> getKeys() {
-        List<String> keys = new LinkedList<String>();
-        for (DomaMessageCode messageCode : EnumSet.allOf(DomaMessageCode.class)) {
-            keys.add(messageCode.getPattern());
-        }
-        return Collections.enumeration(keys);
+    public DomaMessageResource() {
+        super(DomaMessageCode.class);
     }
 
-    @Override
-    protected Object handleGetObject(String key) {
-        if (key == null) {
-            new DomaIllegalArgumentException("key", key);
-        }
-        DomaMessageCode m = Enum.valueOf(DomaMessageCode.class, key);
-        return m.getPattern();
-    }
 }

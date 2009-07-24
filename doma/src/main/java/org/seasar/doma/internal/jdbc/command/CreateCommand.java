@@ -18,9 +18,9 @@ package org.seasar.doma.internal.jdbc.command;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.internal.jdbc.query.CreateQuery;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

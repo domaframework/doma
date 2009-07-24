@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.entity.Entity;
 import org.seasar.doma.entity.EntityProperty;
 import org.seasar.doma.entity.VersionProperty;
@@ -30,7 +31,6 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

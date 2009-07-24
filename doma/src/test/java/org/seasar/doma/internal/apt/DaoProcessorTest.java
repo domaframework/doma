@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.apt;
 
+import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.internal.apt.dao.AbstractImplementedByDao;
 import org.seasar.doma.internal.apt.dao.AnnotationNotFoundDao;
 import org.seasar.doma.internal.apt.dao.ArrayFactoryDao;
@@ -40,7 +41,6 @@ import org.seasar.doma.internal.apt.dao.SqlFileBatchUpdateDao;
 import org.seasar.doma.internal.apt.dao.SqlFileInsertDao;
 import org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDao;
 import org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

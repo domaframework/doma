@@ -20,8 +20,8 @@ import javax.lang.model.element.Element;
 import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.DomaException;
+import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.MessageCode;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

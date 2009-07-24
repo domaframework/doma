@@ -23,6 +23,7 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 
+import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.In;
 import org.seasar.doma.InOut;
 import org.seasar.doma.Out;
@@ -30,7 +31,6 @@ import org.seasar.doma.ResultSet;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.ElementUtil;
 import org.seasar.doma.internal.apt.TypeUtil;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

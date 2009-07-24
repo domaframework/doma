@@ -17,7 +17,6 @@ package org.seasar.doma;
 
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.domain.StringDomain;
-import org.seasar.doma.message.DomaMessageCode;
 
 import junit.framework.TestCase;
 

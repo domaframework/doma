@@ -21,5 +21,9 @@ package org.seasar.doma;
  */
 public interface MessageCode {
 
+    String getKey();
+
+    String getMessagePattern();
+
     String getMessage(Object... args);
 }

@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.message;
+package org.seasar.doma;
 
 import junit.framework.TestCase;
 
@@ -21,10 +21,11 @@ import junit.framework.TestCase;
  * @author taedium
  * 
  */
-public class MessagesTest extends TestCase {
+public class DomaMessageCodeTest extends TestCase {
 
     public void test() throws Exception {
-        String message = DomaMessageCode.DOMA0001.getMessage();
+        String message = DomaMessageCode.DOMA0001.getMessage("aaa", "bbb");
         assertNotNull(message);
+        System.out.println(message);
     }
 }

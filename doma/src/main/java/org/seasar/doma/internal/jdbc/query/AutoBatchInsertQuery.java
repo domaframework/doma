@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.entity.Entity;
 import org.seasar.doma.entity.EntityProperty;
 import org.seasar.doma.entity.GeneratedIdProperty;
@@ -29,7 +30,6 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

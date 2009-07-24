@@ -25,12 +25,12 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.Delete;
+import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.Insert;
 import org.seasar.doma.Update;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.ElementUtil;
 import org.seasar.doma.internal.apt.TypeUtil;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

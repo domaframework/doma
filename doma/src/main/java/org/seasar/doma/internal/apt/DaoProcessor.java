@@ -30,6 +30,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 
+import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.internal.apt.meta.ArrayCreateQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.AutoBatchModifyQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.AutoFunctionQueryMetaFactory;
@@ -45,7 +46,6 @@ import org.seasar.doma.internal.apt.meta.SqlFileBatchModifyQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileModifyQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileSelectQueryMetaFactory;
 import org.seasar.doma.internal.util.IOUtil;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.DomaUnsupportedOperationException;
 import org.seasar.doma.domain.AbstractArrayDomain;
 import org.seasar.doma.domain.AbstractBigDecimalDomain;
@@ -80,7 +81,6 @@ import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.jdbc.type.JdbcTypes;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

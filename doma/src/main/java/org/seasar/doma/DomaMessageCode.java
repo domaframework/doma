@@ -13,14 +13,12 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.message;
+package org.seasar.doma;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
-
-import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
-import org.seasar.doma.MessageCode;
+import org.seasar.doma.internal.util.MessageFormatter;
+import org.seasar.doma.message.DomaMessageResource;
 
 /**
  * @author taedium
@@ -205,20 +203,24 @@ public enum DomaMessageCode implements MessageCode {
     private static ResourceBundle bundle = ResourceBundle
             .getBundle(DomaMessageResource.class.getName());
 
-    private final String pattern;
+    private final String messagePattern;
 
-    private DomaMessageCode(String pattern) {
-        this.pattern = pattern;
+    private DomaMessageCode(String messagePattern) {
+        this.messagePattern = messagePattern;
     }
 
-    public String getPattern() {
-        return pattern;
+    @Override
+    public String getKey() {
+        return name();
+    }
+
+    @Override
+    public String getMessagePattern() {
+        return messagePattern;
     }
 
     @Override
     public String getMessage(Object... args) {
-        String pattern = bundle.getString(name());
-        assertNotNull(pattern);
-        return MessageFormat.format("[" + name() + "] " + pattern, args);
+        return MessageFormatter.getMessage(this, bundle, args);
     }
 }

@@ -22,6 +22,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 
 import org.seasar.doma.DomaIllegalStateException;
+import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.GenerationType;
 import org.seasar.doma.domain.LongDomain;
 import org.seasar.doma.domain.StringDomain;
@@ -31,7 +32,6 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.RequiresNewController;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
