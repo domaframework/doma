@@ -102,7 +102,6 @@ public class ChildEntity_ extends org.seasar.doma.entity.DomaAbstractEntity<org.
         return "ChildEntity_ [aaa=" + aaa + ", bbb=" + bbb + ", ccc=" + ccc + "]";
     }
 
-    @SuppressWarnings("unchecked")
     private void readObject(java.io.ObjectInputStream inputStream) throws java.io.IOException, java.lang.ClassNotFoundException {
         inputStream.defaultReadObject();
         aaa = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain>("aaa", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject(), true, true);

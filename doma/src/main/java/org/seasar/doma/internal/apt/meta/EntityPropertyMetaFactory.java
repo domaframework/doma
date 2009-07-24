@@ -260,6 +260,7 @@ public class EntityPropertyMetaFactory {
             propertyMeta.setReturnElementTypeName(elementTypeName);
             propertyMeta.setReturnTypeName(ArrayList.class.getName() + "<"
                     + elementTypeName + ">");
+            propertyMeta.setParameterizedReturnType(true);
             return;
         } else if (!isDomain(returnType) || isAbstract(returnType)) {
             throw new AptException(DomaMessageCode.DOMA4022, env, method);
@@ -275,6 +276,11 @@ public class EntityPropertyMetaFactory {
         propertyMeta
                 .setReturnTypeName(TypeUtil.getTypeName(returnType, entityMeta
                         .getTypeParameterMap(), env));
+        TypeElement returnElement = TypeUtil.toTypeElement(returnType, env);
+        if (returnElement != null
+                && !returnElement.getTypeParameters().isEmpty()) {
+            propertyMeta.setParameterizedReturnType(true);
+        }
     }
 
     protected void doParameters(EntityPropertyMeta propertyMeta,

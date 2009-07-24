@@ -153,7 +153,8 @@ public class EntityGenerator extends AbstractGenerator {
     }
 
     protected void printNameField() {
-        iprint("private final String __name = \"%1$s\";%n", entityMeta.getName());
+        iprint("private final String __name = \"%1$s\";%n", entityMeta
+                .getName());
         print("%n");
     }
 
@@ -362,7 +363,9 @@ public class EntityGenerator extends AbstractGenerator {
     }
 
     protected void printReadObjectMethod() {
-        iprint("@SuppressWarnings(\"unchecked\")%n");
+        if (entityMeta.hasParametalizedDomain()) {
+            iprint("@SuppressWarnings(\"unchecked\")%n");
+        }
         iprint("private void readObject(%1$s inputStream) throws %2$s, %3$s {%n", ObjectInputStream.class
                 .getName(), IOException.class.getName(), ClassNotFoundException.class
                 .getName());
@@ -409,7 +412,8 @@ public class EntityGenerator extends AbstractGenerator {
         indent();
         iprint("outputStream.defaultWriteObject();%n");
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
-            iprint("outputStream.writeObject(%1$s.getDomain());%n", pm.getName());
+            iprint("outputStream.writeObject(%1$s.getDomain());%n", pm
+                    .getName());
         }
         unindent();
         iprint("}%n");
@@ -448,7 +452,8 @@ public class EntityGenerator extends AbstractGenerator {
             indent();
             iprint("__idGenerator.setQualifiedSequenceName(\"%1$s\");%n", m
                     .getQualifiedSequenceName());
-            iprint("__idGenerator.setInitialValue(%1$s);%n", m.getInitialValue());
+            iprint("__idGenerator.setInitialValue(%1$s);%n", m
+                    .getInitialValue());
             iprint("__idGenerator.setAllocationSize(%1$s);%n", m
                     .getAllocationSize());
             iprint("__idGenerator.initialize();%n");
@@ -465,7 +470,8 @@ public class EntityGenerator extends AbstractGenerator {
             indent();
             iprint("__idGenerator.setQualifiedTableName(\"%1$s\");%n", m
                     .getQualifiedTableName());
-            iprint("__idGenerator.setInitialValue(%1$s);%n", m.getInitialValue());
+            iprint("__idGenerator.setInitialValue(%1$s);%n", m
+                    .getInitialValue());
             iprint("__idGenerator.setAllocationSize(%1$s);%n", m
                     .getAllocationSize());
             iprint("__idGenerator.setPkColumnName(\"%1$s\");%n", m

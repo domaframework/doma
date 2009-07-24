@@ -61,6 +61,8 @@ public class EntityMeta {
 
     protected long serialVersionUID;
 
+    protected boolean parametalizedDomain;
+
     public EntityMeta() {
         typeParamMapStack.push(Collections.<TypeMirror, TypeMirror> emptyMap());
     }
@@ -108,6 +110,9 @@ public class EntityMeta {
     public void addPropertyMeta(EntityPropertyMeta propertyMeta) {
         assertNotNull(propertyMeta);
         allPropertyMetas.add(propertyMeta);
+        if (propertyMeta.isParameterizedReturnType()) {
+            parametalizedDomain = true;
+        }
         if (propertyMeta.isTrnsient()) {
             return;
         }
@@ -185,6 +190,10 @@ public class EntityMeta {
 
     public void setSerialVersionUID(long serialVersionUID) {
         this.serialVersionUID = serialVersionUID;
+    }
+
+    public boolean hasParametalizedDomain() {
+        return parametalizedDomain;
     }
 
 }

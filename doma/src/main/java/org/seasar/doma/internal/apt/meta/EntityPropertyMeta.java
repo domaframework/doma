@@ -38,6 +38,8 @@ public class EntityPropertyMeta {
 
     protected String returnTypeName;
 
+    protected boolean parameterizedReturnType;
+
     protected String returnElementTypeName;
 
     protected List<String> thrownTypeNames = new ArrayList<String>();
@@ -146,6 +148,14 @@ public class EntityPropertyMeta {
 
     public void setReturnElementTypeName(String elementTypeName) {
         this.returnElementTypeName = elementTypeName;
+    }
+
+    public boolean isParameterizedReturnType() {
+        return parameterizedReturnType;
+    }
+
+    public void setParameterizedReturnType(boolean parameterizedReturnType) {
+        this.parameterizedReturnType = parameterizedReturnType;
     }
 
 }
