@@ -24,9 +24,9 @@ public class ColumnMeta {
 
     protected String name;
 
-    protected boolean insertable;
+    protected boolean insertable = true;
 
-    protected boolean updatable;
+    protected boolean updatable = true;
 
     public String getName() {
         return name;

@@ -20,10 +20,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.seasar.doma.internal.WrapException;
-import org.seasar.doma.internal.util.MethodUtil;
-
-
 /**
  * @author taedium
  * 
@@ -31,25 +27,6 @@ import org.seasar.doma.internal.util.MethodUtil;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Column {
-
-    static class Default {
-
-        private static final Column column;
-        static {
-            try {
-                column = MethodUtil
-                        .getMethod(Default.class, "get", new Class<?>[] {})
-                        .getAnnotation(Column.class);
-            } catch (WrapException e) {
-                throw new DomaUnexpectedException(e.getCause());
-            }
-        }
-
-        @Column
-        public static Column get() {
-            return column;
-        }
-    }
 
     String name() default "";
 

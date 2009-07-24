@@ -36,9 +36,9 @@ import org.seasar.doma.Table;
 import org.seasar.doma.entity.EntityListener;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.internal.apt.Notifier;
 import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.jdbc.JdbcException;
 
 /**
@@ -72,12 +72,12 @@ public class EntityMetaFactory {
     protected void doEntityElement(TypeElement entityElement,
             EntityMeta entityMeta) {
         if (entityElement.getNestingKind().isNested()) {
-            throw new AptException(DomaMessageCode.DOMA4018, env, entityElement,
-                    entityElement.getQualifiedName());
+            throw new AptException(DomaMessageCode.DOMA4018, env,
+                    entityElement, entityElement.getQualifiedName());
         }
         if (!entityElement.getKind().isInterface()) {
-            throw new AptException(DomaMessageCode.DOMA4015, env, entityElement,
-                    entityElement.getQualifiedName());
+            throw new AptException(DomaMessageCode.DOMA4015, env,
+                    entityElement, entityElement.getQualifiedName());
         }
         String name = entityElement.getSimpleName().toString();
         String suffix = Options.getSuffix(env);
@@ -114,10 +114,11 @@ public class EntityMetaFactory {
         TypeMirror entityListenerType = getListenerType(entityAnnotation);
         TypeMirror argumentType = getListenerArgumentType(entityListenerType);
         assertNotNull(argumentType);
-        if (!TypeUtil.isAssignable(entityMeta.getEntityType(), argumentType, env)) {
-            throw new AptException(DomaMessageCode.DOMA4038, env, entityElement,
-                    entityListenerType, argumentType, entityElement
-                            .getQualifiedName());
+        if (!TypeUtil
+                .isAssignable(entityMeta.getEntityType(), argumentType, env)) {
+            throw new AptException(DomaMessageCode.DOMA4038, env,
+                    entityElement, entityListenerType, argumentType,
+                    entityElement.getQualifiedName());
         }
         entityMeta.setListenerType(entityListenerType);
     }
@@ -157,19 +158,18 @@ public class EntityMetaFactory {
     }
 
     protected void doTableMeta(TypeElement entityElement, EntityMeta entityMeta) {
-        Table table = entityElement.getAnnotation(Table.class);
-        if (table == null) {
-            table = Table.Default.get();
-        }
         TableMeta tableMeta = new TableMeta();
-        if (!table.catalog().isEmpty()) {
-            tableMeta.setCatalog(table.catalog());
-        }
-        if (!table.schema().isEmpty()) {
-            tableMeta.setSchema(table.schema());
-        }
-        if (!table.name().isEmpty()) {
-            tableMeta.setName(table.name());
+        Table table = entityElement.getAnnotation(Table.class);
+        if (table != null) {
+            if (!table.catalog().isEmpty()) {
+                tableMeta.setCatalog(table.catalog());
+            }
+            if (!table.schema().isEmpty()) {
+                tableMeta.setSchema(table.schema());
+            }
+            if (!table.name().isEmpty()) {
+                tableMeta.setName(table.name());
+            }
         }
         entityMeta.setTableMeta(tableMeta);
     }
@@ -226,8 +226,8 @@ public class EntityMetaFactory {
         EntityPropertyMeta propertyMeta = propertyMetaFactory
                 .createPropertyMeta(methodElement, entityMeta);
         if (entityMeta.getSupertypes().size() > 0) {
-            for (Iterator<EntityPropertyMeta> it = entityMeta.getAllPropertyMetas()
-                    .iterator(); it.hasNext();) {
+            for (Iterator<EntityPropertyMeta> it = entityMeta
+                    .getAllPropertyMetas().iterator(); it.hasNext();) {
                 EntityPropertyMeta overridenMeta = it.next();
                 ExecutableElement overriden = overridenMeta
                         .getExecutableElement();

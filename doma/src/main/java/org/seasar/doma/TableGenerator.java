@@ -20,8 +20,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.seasar.doma.internal.WrapException;
-import org.seasar.doma.internal.util.MethodUtil;
 import org.seasar.doma.jdbc.id.BuiltinTableIdGenerator;
 import org.seasar.doma.jdbc.id.TableIdGenerator;
 
@@ -32,25 +30,6 @@ import org.seasar.doma.jdbc.id.TableIdGenerator;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TableGenerator {
-
-    static class Default {
-
-        private static final TableGenerator tableGenerator;
-        static {
-            try {
-                tableGenerator = MethodUtil
-                        .getMethod(Default.class, "get", new Class<?>[] {})
-                        .getAnnotation(TableGenerator.class);
-            } catch (WrapException e) {
-                throw new DomaUnexpectedException(e.getCause());
-            }
-        }
-
-        @Column
-        public static TableGenerator get() {
-            return tableGenerator;
-        }
-    }
 
     String catalog() default "";
 

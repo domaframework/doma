@@ -20,8 +20,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.seasar.doma.entity.EntityListener;
 import org.seasar.doma.entity.BuiltinEntityListener;
+import org.seasar.doma.entity.EntityListener;
 
 /**
  * @author taedium

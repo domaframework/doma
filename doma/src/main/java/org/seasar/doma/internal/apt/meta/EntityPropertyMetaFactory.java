@@ -215,16 +215,15 @@ public class EntityPropertyMetaFactory {
 
     protected void doColumnMeta(EntityPropertyMeta propertyMeta,
             ExecutableElement method, EntityMeta entityMeta) {
-        Column column = method.getAnnotation(Column.class);
-        if (column == null) {
-            column = Column.Default.get();
-        }
         ColumnMeta columnMeta = new ColumnMeta();
-        if (!column.name().isEmpty()) {
-            columnMeta.setName(column.name());
+        Column column = method.getAnnotation(Column.class);
+        if (column != null) {
+            if (!column.name().isEmpty()) {
+                columnMeta.setName(column.name());
+            }
+            columnMeta.setInsertable(column.insertable());
+            columnMeta.setUpdatable(column.updatable());
         }
-        columnMeta.setInsertable(column.insertable());
-        columnMeta.setUpdatable(column.updatable());
         propertyMeta.setColumnMeta(columnMeta);
     }
 

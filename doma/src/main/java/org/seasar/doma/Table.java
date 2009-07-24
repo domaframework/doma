@@ -28,16 +28,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Table {
 
-    @Table
-    static class Default {
-
-        private static Table table = Default.class.getAnnotation(Table.class);
-
-        public static Table get() {
-            return table;
-        }
-    }
-
     String catalog() default "";
 
     String schema() default "";
