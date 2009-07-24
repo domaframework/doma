@@ -1,13 +1,22 @@
 <project name="doma-it" default="check-database" basedir=".">
 
-	<taskdef name="exec-sql" classname="org.seasar.doma.it.util.ExecuteSqlTask" classpath="${classpath}"/>
+	<path id="taskdefClasspath">
+		<pathelement location="bin"/>
+		<fileset dir="lib"/>
+	</path>
+	
+	<property name="classpath" refid="taskdefClasspath"/>
+			
+	<taskdef name="exec-sql" classname="org.seasar.doma.it.ItExecSqlFileTask" classpath="${classpath}" loaderref="taskdefLoaderref"/>
 
 	<target name="setup-data" if="isTargetDatabase" depends="check-database">
 		<exec-sql 
 			haltOnError="false"
+			configClassName="org.seasar.doma.it.ItConfig"
 			sqlFile="sql/drop_${database}.sql"/>
 		<exec-sql 
 			haltOnError="true"
+			configClassName="org.seasar.doma.it.ItConfig"
 			sqlFile="sql/create_${database}.sql"/>
 	</target>
 
