@@ -175,6 +175,11 @@ public class PostgresDialect extends StandardDialect {
         return null;
     }
 
+    @Override
+    public SqlBlockContext createSqlBlockContext() {
+        return new PostgresSqlBlockContext();
+    }
+
     public static class PostgresResultSetType extends AbstractResultSetType {
 
         public PostgresResultSetType() {
@@ -190,7 +195,7 @@ public class PostgresDialect extends StandardDialect {
             StandardSqlLogFormattingVisitor {
     }
 
-    public static class PostgreSqlBlockContext implements SqlBlockContext {
+    public static class PostgresSqlBlockContext implements SqlBlockContext {
 
         protected boolean inSqlBlock;
 

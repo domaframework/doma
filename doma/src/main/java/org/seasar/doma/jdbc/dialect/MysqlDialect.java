@@ -122,6 +122,16 @@ public class MysqlDialect extends StandardDialect {
                 .getDomainClass(typeName, sqlType, length, precision, scale);
     }
 
+    @Override
+    public SqlBlockContext createSqlBlockContext() {
+        return new MysqlSqlBlockContext();
+    }
+
+    @Override
+    public String getSqlBlockDelimiter() {
+        return "/";
+    }
+
     public static class MysqlJdbcMappingVisitor extends
             StandardJdbcMappingVisitor {
     }

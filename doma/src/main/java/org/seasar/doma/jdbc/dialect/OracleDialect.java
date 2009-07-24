@@ -240,6 +240,16 @@ public class OracleDialect extends StandardDialect {
                 .getDomainClass(typeName, sqlType, length, precision, scale);
     }
 
+    @Override
+    public SqlBlockContext createSqlBlockContext() {
+        return new OracleSqlBlockContext();
+    }
+
+    @Override
+    public String getSqlBlockDelimiter() {
+        return "/";
+    }
+
     public static class OracleResultSetType extends AbstractResultSetType {
 
         protected static int CURSOR = -10;
