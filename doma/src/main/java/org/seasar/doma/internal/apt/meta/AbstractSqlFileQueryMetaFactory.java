@@ -29,9 +29,9 @@ import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.ElementUtil;
-import org.seasar.doma.internal.apt.FileObjects;
+import org.seasar.doma.internal.apt.FileObjectUtil;
 import org.seasar.doma.internal.apt.TypeUtil;
-import org.seasar.doma.internal.jdbc.sql.SqlFiles;
+import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.internal.util.IOUtil;
 import org.seasar.doma.jdbc.JdbcException;
@@ -80,7 +80,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
 
     protected void doSqlFile(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
-        String path = SqlFiles.buildPath(daoMeta.getDaoElement()
+        String path = SqlFileUtil.buildPath(daoMeta.getDaoElement()
                 .getQualifiedName().toString(), queryMeta.getName());
         String sql = getSql(queryMeta, method, daoMeta, path);
         if (sql == null) {
@@ -94,7 +94,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
 
     protected String getSql(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta, String path) {
-        InputStream inputStream = FileObjects.getResourceAsStream(path, env);
+        InputStream inputStream = FileObjectUtil.getResourceAsStream(path, env);
         try {
             if (inputStream == null) {
                 return null;

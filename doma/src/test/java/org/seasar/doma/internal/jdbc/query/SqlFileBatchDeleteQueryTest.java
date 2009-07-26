@@ -24,7 +24,7 @@ import org.seasar.doma.internal.jdbc.query.BatchDeleteQuery;
 import org.seasar.doma.internal.jdbc.query.SqlFileBatchDeleteQuery;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
-import org.seasar.doma.internal.jdbc.sql.SqlFiles;
+import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 
 import junit.framework.TestCase;
 import example.entity.Emp;
@@ -52,7 +52,7 @@ public class SqlFileBatchDeleteQueryTest extends TestCase {
         SqlFileBatchDeleteQuery<Emp, Emp_> query = new SqlFileBatchDeleteQuery<Emp, Emp_>(
                 Emp_.class);
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFiles
+        query.setSqlFilePath(SqlFileUtil
                 .buildPath(getClass().getName(), getName()));
         query.setParameterName("e");
         query.setEntities(Arrays.asList(emp1, emp2));
@@ -74,7 +74,7 @@ public class SqlFileBatchDeleteQueryTest extends TestCase {
         SqlFileBatchDeleteQuery<Emp, Emp_> query = new SqlFileBatchDeleteQuery<Emp, Emp_>(
                 Emp_.class);
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFiles
+        query.setSqlFilePath(SqlFileUtil
                 .buildPath(getClass().getName(), getName()));
         query.setParameterName("e");
         query.setEntities(Arrays.asList(emp1, emp2));

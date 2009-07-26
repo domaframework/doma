@@ -46,7 +46,7 @@ import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.sql.DomainResultParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListResultParameter;
 import org.seasar.doma.internal.jdbc.sql.InParameter;
-import org.seasar.doma.internal.jdbc.sql.SqlFiles;
+import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.DomaAbstractDao;
 import org.seasar.doma.jdbc.IterationCallback;
@@ -78,7 +78,7 @@ public class EmpDao_ extends DomaAbstractDao implements EmpDao {
     public Emp selectById(IntegerDomain id, SelectOptions option) {
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(config);
-        query.setSqlFilePath(SqlFiles
+        query.setSqlFilePath(SqlFileUtil
                 .buildPath("example.dao.EmpDao", "selectById"));
         query.addParameter("id", id);
         query.setOptions(option);
@@ -95,7 +95,7 @@ public class EmpDao_ extends DomaAbstractDao implements EmpDao {
             BigDecimalDomain salary, SelectOptions option) {
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(config);
-        query.setSqlFilePath(SqlFiles
+        query.setSqlFilePath(SqlFileUtil
                 .buildPath("example.dao.EmpDao", "selectByNameAndSalary"));
         query.addParameter("name", name);
         query.addParameter("salary", salary);
@@ -151,7 +151,7 @@ public class EmpDao_ extends DomaAbstractDao implements EmpDao {
     public Integer iterate(IterationCallback<Integer, Emp> callback) {
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(config);
-        query.setSqlFilePath(SqlFiles
+        query.setSqlFilePath(SqlFileUtil
                 .buildPath("example.dao.EmpDao", "selectById"));
         query.setCallerClassName("example.dao.EmpDao");
         query.setCallerMethodName("selectById");

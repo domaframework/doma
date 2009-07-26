@@ -32,7 +32,7 @@ import org.seasar.doma.DomaMessageCode;
  * @author taedium
  * 
  */
-public final class FileObjects {
+public final class FileObjectUtil {
 
     public static InputStream getResourceAsStream(String path,
             ProcessingEnvironment env) {

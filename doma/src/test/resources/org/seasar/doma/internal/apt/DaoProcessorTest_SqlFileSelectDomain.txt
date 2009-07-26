@@ -23,7 +23,7 @@ public class SqlFileSelectDomainDao_ extends org.seasar.doma.jdbc.DomaAbstractDa
         }
         org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
         query.setConfig(config);
-        query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFiles.buildPath("org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDao", "selectById"));
+        query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFileUtil.buildPath("org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDao", "selectById"));
         query.addParameter("id", id);
         query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDao_");
         query.setCallerMethodName("selectById");
@@ -51,7 +51,7 @@ public class SqlFileSelectDomainDao_ extends org.seasar.doma.jdbc.DomaAbstractDa
         }
         org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
         query.setConfig(config);
-        query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFiles.buildPath("org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDao", "selectByNameAndSalary"));
+        query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFileUtil.buildPath("org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDao", "selectByNameAndSalary"));
         query.setOptions(options);
         query.addParameter("name", name);
         query.addParameter("salary", salary);

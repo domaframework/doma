@@ -22,7 +22,7 @@ import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
 import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
-import org.seasar.doma.internal.jdbc.sql.SqlFiles;
+import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
 
@@ -48,7 +48,7 @@ public class EntityIterationHandlerTest extends TestCase {
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFiles
+        query.setSqlFilePath(SqlFileUtil
                 .buildPath(getClass().getName(), getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
@@ -81,7 +81,7 @@ public class EntityIterationHandlerTest extends TestCase {
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFiles
+        query.setSqlFilePath(SqlFileUtil
                 .buildPath(getClass().getName(), getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");

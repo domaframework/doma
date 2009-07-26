@@ -62,7 +62,7 @@ import org.seasar.doma.internal.jdbc.sql.EntityListResultParameter;
 import org.seasar.doma.internal.jdbc.sql.InOutParameter;
 import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.OutParameter;
-import org.seasar.doma.internal.jdbc.sql.SqlFiles;
+import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.DomaAbstractDao;
 
@@ -212,7 +212,7 @@ public class DaoGenerator extends AbstractGenerator {
             }
             iprint("%1$s query = new %1$s();%n", m.getQueryClass().getName());
             iprint("query.setConfig(config);%n");
-            iprint("query.setSqlFilePath(%1$s.buildPath(\"%2$s\", \"%3$s\"));%n", SqlFiles.class
+            iprint("query.setSqlFilePath(%1$s.buildPath(\"%2$s\", \"%3$s\"));%n", SqlFileUtil.class
                     .getName(), daoMeta.getDaoElement().getQualifiedName(), m
                     .getName());
             if (m.getOptionsName() != null) {
@@ -350,7 +350,7 @@ public class DaoGenerator extends AbstractGenerator {
 
             iprint("%1$s query = new %1$s();%n", m.getQueryClass().getName());
             iprint("query.setConfig(config);%n");
-            iprint("query.setSqlFilePath(%1$s.buildPath(\"%2$s\", \"%3$s\"));%n", SqlFiles.class
+            iprint("query.setSqlFilePath(%1$s.buildPath(\"%2$s\", \"%3$s\"));%n", SqlFileUtil.class
                     .getName(), daoMeta.getDaoElement().getQualifiedName(), m
                     .getName());
             for (Iterator<Map.Entry<String, String>> it = m

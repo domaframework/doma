@@ -26,7 +26,7 @@ public class SqlFileSelectEntityDao_ extends org.seasar.doma.jdbc.DomaAbstractDa
         }
         org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
         query.setConfig(config);
-        query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFiles.buildPath("org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao", "selectById"));
+        query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFileUtil.buildPath("org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao", "selectById"));
         query.setOptions(options);
         query.addParameter("id", id);
         query.addParameter("options", options);
@@ -56,7 +56,7 @@ public class SqlFileSelectEntityDao_ extends org.seasar.doma.jdbc.DomaAbstractDa
         }
         org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
         query.setConfig(config);
-        query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFiles.buildPath("org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao", "selectByNameAndSalary"));
+        query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFileUtil.buildPath("org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao", "selectByNameAndSalary"));
         query.setOptions(options);
         query.addParameter("name", name);
         query.addParameter("salary", salary);

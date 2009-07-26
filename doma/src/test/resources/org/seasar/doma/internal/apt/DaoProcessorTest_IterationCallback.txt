@@ -29,7 +29,7 @@ public class IterationCallbackDao_ extends org.seasar.doma.jdbc.DomaAbstractDao 
         }
         org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
         query.setConfig(config);
-        query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFiles.buildPath("org.seasar.doma.internal.apt.dao.IterationCallbackDao", "iterate"));
+        query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFileUtil.buildPath("org.seasar.doma.internal.apt.dao.IterationCallbackDao", "iterate"));
         query.addParameter("id", id);
         query.addParameter("name", name);
         query.addParameter("callback", callback);
@@ -53,7 +53,7 @@ public class IterationCallbackDao_ extends org.seasar.doma.jdbc.DomaAbstractDao 
         }
         org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
         query.setConfig(config);
-        query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFiles.buildPath("org.seasar.doma.internal.apt.dao.IterationCallbackDao", "iterate"));
+        query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFileUtil.buildPath("org.seasar.doma.internal.apt.dao.IterationCallbackDao", "iterate"));
         query.addParameter("callback", callback);
         query.setCallerClassName("org.seasar.doma.internal.apt.dao.IterationCallbackDao_");
         query.setCallerMethodName("iterate");

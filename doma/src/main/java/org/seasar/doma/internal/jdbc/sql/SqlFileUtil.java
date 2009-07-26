@@ -21,7 +21,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
  * @author taedium
  * 
  */
-public final class SqlFiles {
+public final class SqlFileUtil {
 
     public static String buildPath(String className, String methodName) {
         assertNotNull(className, methodName);

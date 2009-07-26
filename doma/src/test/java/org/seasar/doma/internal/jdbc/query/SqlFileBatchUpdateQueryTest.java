@@ -28,7 +28,7 @@ import org.seasar.doma.internal.jdbc.query.BatchUpdateQuery;
 import org.seasar.doma.internal.jdbc.query.SqlFileBatchUpdateQuery;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
-import org.seasar.doma.internal.jdbc.sql.SqlFiles;
+import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 
 import junit.framework.TestCase;
 import example.entity.Emp;
@@ -56,7 +56,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
         SqlFileBatchUpdateQuery<Emp, Emp_> query = new SqlFileBatchUpdateQuery<Emp, Emp_>(
                 Emp_.class);
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFiles
+        query.setSqlFilePath(SqlFileUtil
                 .buildPath(getClass().getName(), getName()));
         query.setParameterName("e");
         query.setEntities(Arrays.asList(emp1, emp2));
@@ -82,7 +82,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
         SqlFileBatchUpdateQuery<Emp, Emp_> query = new SqlFileBatchUpdateQuery<Emp, Emp_>(
                 Emp_.class);
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFiles
+        query.setSqlFilePath(SqlFileUtil
                 .buildPath(getClass().getName(), getName()));
         query.setParameterName("e");
         query.setEntities(Arrays.asList(emp1, emp2));
@@ -114,7 +114,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
         SqlFileBatchUpdateQuery<Emp, Emp_> query = new SqlFileBatchUpdateQuery<Emp, Emp_>(
                 Emp_.class);
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFiles
+        query.setSqlFilePath(SqlFileUtil
                 .buildPath(getClass().getName(), getName()));
         query.setParameterName("e");
         query.setEntities(Collections.<Emp> emptyList());
