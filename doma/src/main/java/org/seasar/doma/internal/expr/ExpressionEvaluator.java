@@ -589,8 +589,8 @@ public class ExpressionEvaluator implements
                 BigDecimal newValue) {
             Class<?> realClass = this.priority >= other.priority ? this.realClass
                     : other.realClass;
-            Object narrwedValue = narrowValue(newValue, realClass);
-            return new EvaluationResult(narrwedValue, realClass);
+            Object narrowedValue = narrowValue(newValue, realClass);
+            return new EvaluationResult(narrowedValue, realClass);
         }
 
     }
