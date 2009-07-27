@@ -69,7 +69,7 @@ public class SqlFileSelectQueryMetaFactory extends
         queryMeta.setQueryTimeout(select.queryTimeout());
         queryMeta.setFetchSize(select.fetchSize());
         queryMeta.setMaxRows(select.maxRows());
-        queryMeta.setIteration(select.iterate());
+        queryMeta.setIterated(select.iterate());
         queryMeta.setQueryKind(QueryKind.SQLFILE_SELECT);
         queryMeta.setName(method.getSimpleName().toString());
         queryMeta.setExecutableElement(method);
@@ -81,7 +81,7 @@ public class SqlFileSelectQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         TypeMirror returnType = TypeUtil.resolveTypeParameter(daoMeta
                 .getTypeParameterMap(), method.getReturnType());
-        if (queryMeta.isIteration()) {
+        if (queryMeta.isIterated()) {
             TypeMirror wrapperType = TypeUtil
                     .toWrapperTypeIfPrimitive(returnType, env);
             if (returnType == null
@@ -177,11 +177,11 @@ public class SqlFileSelectQueryMetaFactory extends
             queryMeta.addMethodParameter(parameterName, parameterTypeName);
             queryMeta.addMethodParameterType(parameterName, paramType);
         }
-        if (queryMeta.isIteration()
+        if (queryMeta.isIterated()
                 && queryMeta.getIterationCallbackName() == null) {
             throw new AptException(DomaMessageCode.DOMA4056, env, method);
         }
-        if (!queryMeta.isIteration()
+        if (!queryMeta.isIterated()
                 && queryMeta.getIterationCallbackName() != null) {
             throw new AptException(DomaMessageCode.DOMA4057, env, method);
         }

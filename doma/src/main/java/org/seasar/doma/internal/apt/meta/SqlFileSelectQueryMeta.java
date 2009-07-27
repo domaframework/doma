@@ -20,7 +20,6 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.jdbc.Options;
 import org.seasar.doma.jdbc.SelectOptions;
 
-
 /**
  * @author taedium
  * 
@@ -45,7 +44,7 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
     protected String domainTypeName;
 
-    protected boolean iteration;
+    protected boolean iterated;
 
     protected Integer maxRows;
 
@@ -129,12 +128,12 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
         return SelectOptions.class;
     }
 
-    public boolean isIteration() {
-        return iteration;
+    public boolean isIterated() {
+        return iterated;
     }
 
-    public void setIteration(boolean iteration) {
-        this.iteration = iteration;
+    public void setIterated(boolean iterated) {
+        this.iterated = iterated;
     }
 
     public Integer getMaxRows() {

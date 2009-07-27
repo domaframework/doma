@@ -33,6 +33,7 @@ import javax.lang.model.util.TypeKindVisitor6;
 import org.seasar.doma.Entity;
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.internal.apt.TypeUtil;
+import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.Options;
 
@@ -62,14 +63,15 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
     protected abstract void doReturnType(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta);
 
-    protected abstract void doParameters(M queryMeta,
-            ExecutableElement method, DaoMeta daoMeta);
+    protected abstract void doParameters(M queryMeta, ExecutableElement method,
+            DaoMeta daoMeta);
 
     protected void doThrowTypes(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
         for (TypeMirror thrownType : method.getThrownTypes()) {
-            queryMeta.addThrownTypeName(TypeUtil.getTypeName(thrownType, daoMeta
-                    .getTypeParameterMap(), env));
+            queryMeta
+                    .addThrownTypeName(TypeUtil.getTypeName(thrownType, daoMeta
+                            .getTypeParameterMap(), env));
         }
     }
 
@@ -119,6 +121,10 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
 
     protected boolean isDomain(TypeMirror typeMirror) {
         return TypeUtil.isAssignable(typeMirror, Domain.class, env);
+    }
+
+    protected boolean isConfig(TypeMirror typeMirror) {
+        return TypeUtil.isAssignable(typeMirror, Config.class, env);
     }
 
     protected boolean isAbstract(TypeMirror typeMirror) {

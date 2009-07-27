@@ -17,8 +17,12 @@ package org.seasar.doma.internal.apt;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.ExecutableType;
+import javax.lang.model.util.SimpleTypeVisitor6;
 
 import org.seasar.doma.ParameterName;
 
@@ -51,5 +55,19 @@ public class ElementUtil {
             }
         }
         return false;
+    }
+
+    public static ExecutableType toExecutableType(ExecutableElement element,
+            ProcessingEnvironment env) {
+        assertNotNull(element, env);
+        return element.asType()
+                .accept(new SimpleTypeVisitor6<ExecutableType, Void>() {
+
+                    @Override
+                    public ExecutableType visitExecutable(ExecutableType t,
+                            Void p) {
+                        return t;
+                    }
+                }, null);
     }
 }

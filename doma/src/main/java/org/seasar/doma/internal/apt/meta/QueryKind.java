@@ -319,6 +319,20 @@ public enum QueryKind {
         }
 
     },
+    DELEGATE {
+
+        @Override
+        public Class<? extends Query> getQueryClass() {
+            return null;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public Class<? extends Command> getCommandClass() {
+            return null;
+        }
+
+    },
     ;
 
     public abstract Class<? extends Query> getQueryClass();

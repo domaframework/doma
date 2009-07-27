@@ -27,6 +27,7 @@ import org.seasar.doma.internal.apt.dao.AutoProcedureDao;
 import org.seasar.doma.internal.apt.dao.AutoUpdateDao;
 import org.seasar.doma.internal.apt.dao.BlobFactoryDao;
 import org.seasar.doma.internal.apt.dao.ClobFactoryDao;
+import org.seasar.doma.internal.apt.dao.DelegateSourceDao;
 import org.seasar.doma.internal.apt.dao.ElementOfParamListNotDomainDao;
 import org.seasar.doma.internal.apt.dao.ElementOfParamListUnspecifiedDao;
 import org.seasar.doma.internal.apt.dao.ExtendsDao;
@@ -286,5 +287,15 @@ public class DaoProcessorTest extends AptTestCase {
         compile();
         assertFalse(getCompiledResult());
         assertMessageCode(DomaMessageCode.DOMA4045);
+    }
+
+    public void testDelegateSource() throws Exception {
+        Class<?> target = DelegateSourceDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
     }
 }

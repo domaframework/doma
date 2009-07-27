@@ -15,30 +15,27 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
+import javax.lang.model.type.TypeMirror;
+
 /**
  * @author taedium
  * 
  */
-public interface QueryMetaVisitor<R, P> {
+public class DelegateQueryMeta extends AbstractQueryMeta {
 
-    R visistSqlFileSelectQueryMeta(SqlFileSelectQueryMeta m, P p);
+    protected TypeMirror targetType;
 
-    R visistSqlFileModifyQueryMeta(SqlFileModifyQueryMeta m, P p);
+    public TypeMirror getTargetType() {
+        return targetType;
+    }
 
-    R visitSqlFileBatchModifyQueryMeta(SqlFileBatchModifyQueryMeta m, P p);
+    public void setTargetType(TypeMirror targetType) {
+        this.targetType = targetType;
+    }
 
-    R visistAutoModifyQueryMeta(AutoModifyQueryMeta m, P p);
-
-    R visitAutoBatchModifyQueryMeta(AutoBatchModifyQueryMeta m, P p);
-
-    R visitAutoFunctionQueryMeta(AutoFunctionQueryMeta m, P p);
-
-    R visitAutoProcedureQueryMeta(AutoProcedureQueryMeta m, P p);
-
-    R visitArrayCreateQueryMeta(ArrayCreateQueryMeta m, P p);
-
-    R visitAbstractCreateQueryMeta(AbstractCreateQueryMeta m, P p);
-
-    R visitDelegateQueryMeta(DelegateQueryMeta m, P p);
+    @Override
+    public <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p) {
+        return visitor.visitDelegateQueryMeta(this, p);
+    }
 
 }

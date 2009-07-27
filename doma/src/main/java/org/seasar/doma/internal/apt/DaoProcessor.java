@@ -40,6 +40,7 @@ import org.seasar.doma.internal.apt.meta.BlobCreateQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.ClobCreateQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.DaoMeta;
 import org.seasar.doma.internal.apt.meta.DaoMetaFactory;
+import org.seasar.doma.internal.apt.meta.DelegateQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.NClobCreateQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.QueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileBatchModifyQueryMetaFactory;
@@ -91,6 +92,7 @@ public class DaoProcessor extends AbstractProcessor {
 
     protected List<QueryMetaFactory> createQueryMetaFactory() {
         List<QueryMetaFactory> factories = new ArrayList<QueryMetaFactory>();
+        factories.add(new DelegateQueryMetaFactory(processingEnv));
         factories.add(new AutoModifyQueryMetaFactory(processingEnv));
         factories.add(new AutoBatchModifyQueryMetaFactory(processingEnv));
         factories.add(new AutoFunctionQueryMetaFactory(processingEnv));

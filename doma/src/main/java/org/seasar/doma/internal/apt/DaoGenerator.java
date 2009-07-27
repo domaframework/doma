@@ -35,6 +35,7 @@ import org.seasar.doma.internal.apt.meta.AutoProcedureQueryMeta;
 import org.seasar.doma.internal.apt.meta.CallableSqlParameterMeta;
 import org.seasar.doma.internal.apt.meta.CallableSqlParameterMetaVisitor;
 import org.seasar.doma.internal.apt.meta.DaoMeta;
+import org.seasar.doma.internal.apt.meta.DelegateQueryMeta;
 import org.seasar.doma.internal.apt.meta.DomainListParameterMeta;
 import org.seasar.doma.internal.apt.meta.DomainListResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.DomainResultParameterMeta;
@@ -236,7 +237,7 @@ public class DaoGenerator extends AbstractGenerator {
                 iprint("query.setFetchSize(%1$s);%n", m.getFetchSize());
             }
             iprint("query.compile();%n");
-            if (m.isIteration()) {
+            if (m.isIterated()) {
                 if (m.getEntityTypeName() != null) {
                     iprint("%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s, %4$s, %4$s%5$s>(%4$s%5$s.class, %6$s));%n", m
                             .getCommandClass().getName(), m
@@ -526,7 +527,8 @@ public class DaoGenerator extends AbstractGenerator {
         @Override
         public Void visitAbstractCreateQueryMeta(AbstractCreateQueryMeta m,
                 Void p) {
-            iprint("entering(\"%1$s\", \"%2$s\");%n", qualifiedName, m.getName());
+            iprint("entering(\"%1$s\", \"%2$s\");%n", qualifiedName, m
+                    .getName());
             iprint("%1$s<%2$s> query = new %1$s<%2$s>();%n", m.getQueryClass()
                     .getName(), m.getReturnTypeName());
             iprint("query.setConfig(config);%n");
@@ -563,6 +565,34 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("%1$s<%2$s> command = new %1$s<%2$s>(query);%n", m
                     .getCommandClass().getName(), m.getReturnTypeName());
             iprint("%1$s result = command.execute();%n", m.getReturnTypeName());
+            iprint("exiting(\"%1$s\", \"%2$s\", result);%n", qualifiedName, m
+                    .getName());
+            iprint("return result;%n");
+            return null;
+        }
+
+        @Override
+        public Void visitDelegateQueryMeta(DelegateQueryMeta m, Void p) {
+            iprint("entering(\"%1$s\", \"%2$s\");%n", qualifiedName, m
+                    .getName());
+            iprint("%1$s delegate = new %1$s(config);%n", m.getTargetType());
+            if ("void".equals(m.getReturnTypeName())) {
+                iprint("Object result = null;%n");
+                iprint("");
+            } else {
+                iprint("%1$s result = ", m.getReturnTypeName());
+            }
+            print("delegate.%1$s(", m.getName());
+            for (Iterator<Map.Entry<String, String>> it = m
+                    .getMethodParameters(); it.hasNext();) {
+                Map.Entry<String, String> entry = it.next();
+                String parameter = entry.getKey();
+                print("%1$s", parameter);
+                if (it.hasNext()) {
+                    print(", ");
+                }
+            }
+            print(");%n");
             iprint("exiting(\"%1$s\", \"%2$s\", result);%n", qualifiedName, m
                     .getName());
             iprint("return result;%n");
