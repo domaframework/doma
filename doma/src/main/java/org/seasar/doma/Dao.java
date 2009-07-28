@@ -21,8 +21,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.DomaAbstractDao;
-
 
 /**
  * @author taedium
@@ -33,7 +31,5 @@ import org.seasar.doma.jdbc.DomaAbstractDao;
 public @interface Dao {
 
     Class<? extends Config> config();
-
-    Class<? extends DomaAbstractDao> implementedBy() default DomaAbstractDao.class;
 
 }

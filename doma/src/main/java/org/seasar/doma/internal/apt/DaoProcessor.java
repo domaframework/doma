@@ -70,9 +70,6 @@ public class DaoProcessor extends AbstractProcessor {
                     .getElementsAnnotatedWith(a))) {
                 try {
                     DaoMeta daoMeta = daoMetaFactory.createDaoMeta(daoElement);
-                    if (daoMeta.isGenericDao()) {
-                        continue;
-                    }
                     generateDao(daoElement, daoMeta);
                 } catch (AptException e) {
                     Notifier.notify(processingEnv, e);

@@ -15,13 +15,14 @@
  */
 package org.seasar.doma.internal.apt.dao;
 
-import org.seasar.doma.Dao;
+import org.seasar.doma.jdbc.Config;
 
 /**
  * @author taedium
  * 
  */
-@Dao(config = MyConfig.class, implementedBy = AbstractInterfaceNotImplementedDao.class)
-public interface InterfaceNotImplementedDao {
+public class IllegalMethodDelegateDaoDelegate {
 
+    public IllegalMethodDelegateDaoDelegate(Config config) {
+    }
 }

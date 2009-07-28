@@ -28,6 +28,8 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 
 import org.seasar.doma.Delegate;
+import org.seasar.doma.DomaMessageCode;
+import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.ElementUtil;
 import org.seasar.doma.internal.apt.TypeUtil;
@@ -111,12 +113,12 @@ public class DelegateQueryMetaFactory extends
             return;
         }
         if (!hasSuitableConstructor(delegateTypeElement)) {
-            // TODO
-            throw new RuntimeException();
+            throw new AptException(DomaMessageCode.DOMA4080, env, method,
+                    delegateTypeElement.getQualifiedName());
         }
         if (!hasDelegatableMethod(method, delegateTypeElement)) {
-            // TODO
-            throw new RuntimeException();
+            throw new AptException(DomaMessageCode.DOMA4081, env, method,
+                    delegateTypeElement.getQualifiedName());
         }
     }
 

@@ -180,6 +180,9 @@ public enum DomaMessageCode implements MessageCode {
     DOMA4076("パラメータの型は配列型でなければいけません。"),
     DOMA4078("パラメータの数は0でなければいけません。"),
     DOMA4079("クラス[{0}]のソースファイルの生成に失敗しました。原因は次のものです。{1}"),
+    DOMA4080("@Delegateのtarget要素で指定したクラス[{0}]に、org.seasar.doma.jdbc.Config型を受け取るpublicなコンストラクタがみつかりません。"),
+    DOMA4081("@Delegateのtarget要素で指定したクラス[{0}]に、このメソッドと同じシグニチャのメソッドがみつかりません。"),
+    DOMA4082("@Delegateのtarget要素で指定したクラス[{0}]は、インタフェースであってはいけません。"),
 
     // converter
     DOMA5001("クラス[{0}]の値[{1}]をクラス[{2}]に変換することはサポートされていません。"),

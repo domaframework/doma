@@ -111,9 +111,6 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
     }
 
     protected boolean isEntity(TypeMirror typeMirror, DaoMeta daoMeta) {
-        if (daoMeta.isGenericDao()) {
-            return true;
-        }
         TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
         return typeElement != null
                 && typeElement.getAnnotation(Entity.class) != null;

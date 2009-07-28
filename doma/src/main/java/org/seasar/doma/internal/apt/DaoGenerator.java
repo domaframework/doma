@@ -97,14 +97,8 @@ public class DaoGenerator extends AbstractGenerator {
 
     protected void printClass() {
         printGenerated();
-        if (daoMeta.getImplementedByElement().getQualifiedName()
-                .contentEquals(DomaAbstractDao.class.getName())) {
-            iprint("public class %1$s extends %2$s implements %3$s {%n", simpleName, DomaAbstractDao.class
-                    .getName(), daoMeta.getDaoType());
-        } else {
-            iprint("public class %1$s extends %2$s {%n", simpleName, daoMeta
-                    .getImplementedByType());
-        }
+        iprint("public class %1$s extends %2$s implements %3$s {%n", simpleName, DomaAbstractDao.class
+                .getName(), daoMeta.getDaoType());
         print("%n");
         indent();
         printFields();

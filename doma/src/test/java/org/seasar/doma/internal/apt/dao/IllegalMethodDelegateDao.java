@@ -16,21 +16,15 @@
 package org.seasar.doma.internal.apt.dao;
 
 import org.seasar.doma.Dao;
-import org.seasar.doma.Delete;
-import org.seasar.doma.Insert;
-import org.seasar.doma.internal.apt.entity.Emp;
+import org.seasar.doma.Delegate;
 
 /**
  * @author taedium
  * 
  */
-@Dao(config = MyConfig.class, implementedBy = AbstractImplementedByDao.class)
-public interface ImplementedByDao {
+@Dao(config = MyConfig.class)
+public interface IllegalMethodDelegateDao {
 
-    @Insert
-    int aaa(Emp entity);
-
-    @Delete
-    int bbb(Emp entity);
-
+    @Delegate(target = IllegalMethodDelegateDaoDelegate.class)
+    void hoge();
 }

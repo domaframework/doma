@@ -16,7 +16,6 @@
 package org.seasar.doma.internal.apt;
 
 import org.seasar.doma.DomaMessageCode;
-import org.seasar.doma.internal.apt.dao.AbstractImplementedByDao;
 import org.seasar.doma.internal.apt.dao.AnnotationNotFoundDao;
 import org.seasar.doma.internal.apt.dao.ArrayFactoryDao;
 import org.seasar.doma.internal.apt.dao.AutoBatchUpdateDao;
@@ -27,12 +26,12 @@ import org.seasar.doma.internal.apt.dao.AutoProcedureDao;
 import org.seasar.doma.internal.apt.dao.AutoUpdateDao;
 import org.seasar.doma.internal.apt.dao.BlobFactoryDao;
 import org.seasar.doma.internal.apt.dao.ClobFactoryDao;
-import org.seasar.doma.internal.apt.dao.DelegateSourceDao;
+import org.seasar.doma.internal.apt.dao.DelegateDao;
 import org.seasar.doma.internal.apt.dao.ElementOfParamListNotDomainDao;
 import org.seasar.doma.internal.apt.dao.ElementOfParamListUnspecifiedDao;
 import org.seasar.doma.internal.apt.dao.ExtendsDao;
-import org.seasar.doma.internal.apt.dao.ImplementedByDao;
-import org.seasar.doma.internal.apt.dao.InterfaceNotImplementedDao;
+import org.seasar.doma.internal.apt.dao.IllegalConstructorDelegateDao;
+import org.seasar.doma.internal.apt.dao.IllegalMethodDelegateDao;
 import org.seasar.doma.internal.apt.dao.IterationCallbackDao;
 import org.seasar.doma.internal.apt.dao.NClobFactoryDao;
 import org.seasar.doma.internal.apt.dao.NameUnsafeDao_;
@@ -109,16 +108,6 @@ public class DaoProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
-    public void testImplementedBy() throws Exception {
-        DaoProcessor processor = new DaoProcessor();
-        addProcessor(processor);
-        addCompilationUnit(ImplementedByDao.class);
-        addCompilationUnit(AbstractImplementedByDao.class);
-        compile();
-        assertGeneratedSource(ImplementedByDao.class);
-        assertTrue(getCompiledResult());
-    }
-
     public void testAnnotationNotFound() throws Exception {
         Class<?> target = AnnotationNotFoundDao.class;
         DaoProcessor processor = new DaoProcessor();
@@ -147,16 +136,6 @@ public class DaoProcessorTest extends AptTestCase {
         compile();
         assertFalse(getCompiledResult());
         assertMessageCode(DomaMessageCode.DOMA4017);
-    }
-
-    public void testInterfaceNotImplemented() throws Exception {
-        Class<?> target = InterfaceNotImplementedDao.class;
-        DaoProcessor processor = new DaoProcessor();
-        addProcessor(processor);
-        addCompilationUnit(target);
-        compile();
-        assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4020);
     }
 
     public void testNameUnsafe() throws Exception {
@@ -289,13 +268,33 @@ public class DaoProcessorTest extends AptTestCase {
         assertMessageCode(DomaMessageCode.DOMA4045);
     }
 
-    public void testDelegateSource() throws Exception {
-        Class<?> target = DelegateSourceDao.class;
+    public void testDelegate() throws Exception {
+        Class<?> target = DelegateDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
         addCompilationUnit(target);
         compile();
         assertGeneratedSource(target);
         assertTrue(getCompiledResult());
+    }
+
+    public void testIllegalConstructorDelegate() throws Exception {
+        Class<?> target = IllegalConstructorDelegateDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessageCode(DomaMessageCode.DOMA4080);
+    }
+
+    public void testIllegalMethodDelegate() throws Exception {
+        Class<?> target = IllegalMethodDelegateDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessageCode(DomaMessageCode.DOMA4081);
     }
 }

@@ -27,7 +27,6 @@ import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.jdbc.Config;
 
-
 /**
  * 
  * @author taedium
@@ -37,25 +36,15 @@ public class DaoMeta {
 
     protected final Deque<Map<TypeMirror, TypeMirror>> typeParamMapStack = new LinkedList<Map<TypeMirror, TypeMirror>>();
 
-    protected final List<TypeMirror> supertypes = new ArrayList<TypeMirror>();
-
     protected final List<QueryMeta> queryMetas = new ArrayList<QueryMeta>();
 
     protected TypeMirror configType;
-
-    protected TypeMirror implementedByType;
-
-    protected TypeElement implementedByElement;
 
     protected TypeMirror daoType;
 
     protected TypeElement daoElement;
 
-    protected TypeElement mostSubtypeElement;
-
     protected String name;
-
-    protected boolean genericDao;
 
     protected Config config;
 
@@ -77,30 +66,6 @@ public class DaoMeta {
 
     public void setConfigType(TypeMirror configType) {
         this.configType = configType;
-    }
-
-    public TypeMirror getImplementedByType() {
-        return implementedByType;
-    }
-
-    public void setImplementedByType(TypeMirror implementedByType) {
-        this.implementedByType = implementedByType;
-    }
-
-    public TypeElement getImplementedByElement() {
-        return implementedByElement;
-    }
-
-    public void setImplementedByElement(TypeElement implementedByElement) {
-        this.implementedByElement = implementedByElement;
-    }
-
-    public TypeElement getMostSubtypeElement() {
-        return mostSubtypeElement;
-    }
-
-    public void setMostSubtypeElement(TypeElement mostSubtypeElement) {
-        this.mostSubtypeElement = mostSubtypeElement;
     }
 
     public TypeMirror getDaoType() {
@@ -133,22 +98,6 @@ public class DaoMeta {
 
     public Map<TypeMirror, TypeMirror> getTypeParameterMap() {
         return typeParamMapStack.peek();
-    }
-
-    public void addSupertype(TypeMirror supertype) {
-        supertypes.add(supertype);
-    }
-
-    public List<TypeMirror> getSupertypes() {
-        return supertypes;
-    }
-
-    public boolean isGenericDao() {
-        return genericDao;
-    }
-
-    public void setGenericDao(boolean genericDao) {
-        this.genericDao = genericDao;
     }
 
 }

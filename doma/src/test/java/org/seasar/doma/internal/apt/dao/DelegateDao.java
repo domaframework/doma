@@ -15,27 +15,19 @@
  */
 package org.seasar.doma.internal.apt.dao;
 
-import javax.sql.DataSource;
+import java.math.BigDecimal;
 
-import org.seasar.doma.internal.apt.entity.Emp;
-import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.DomaAbstractDao;
+import org.seasar.doma.Dao;
+import org.seasar.doma.Delegate;
 
 /**
  * @author taedium
  * 
  */
+@Dao(config = MyConfig.class)
+public interface DelegateDao {
 
-public abstract class AbstractImplementedByDao extends DomaAbstractDao
-        implements ImplementedByDao {
-
-    public AbstractImplementedByDao(Config config, DataSource dataSource) {
-        super(config, dataSource);
-    }
-
-    @Override
-    public int bbb(Emp entity) {
-        return 0;
-    }
+    @Delegate(target = DelegateDaoDelegate.class)
+    BigDecimal execute(String aaa, Integer bbb);
 
 }
