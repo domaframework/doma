@@ -50,12 +50,16 @@ public class EntityMetaFactory {
 
     protected final ProcessingEnvironment env;
 
+    protected final EntityDelegateMetaFactory delegateMetaFactory;
+
     protected final EntityPropertyMetaFactory propertyMetaFactory;
 
     public EntityMetaFactory(ProcessingEnvironment env,
+            EntityDelegateMetaFactory delegateMetaFactory,
             EntityPropertyMetaFactory propertyMetaFactory) {
-        assertNotNull(env, propertyMetaFactory);
+        assertNotNull(env, delegateMetaFactory, propertyMetaFactory);
         this.env = env;
+        this.delegateMetaFactory = delegateMetaFactory;
         this.propertyMetaFactory = propertyMetaFactory;
     }
 
@@ -214,25 +218,42 @@ public class EntityMetaFactory {
         for (ExecutableElement methodElement : ElementFilter
                 .methodsIn(typeElement.getEnclosedElements())) {
             try {
-                doMethodElement(methodElement, entityMeta);
+                EntityDelegateMeta delegateMeta = createEntityDelegateMeta(methodElement, entityMeta);
+                if (delegateMeta != null) {
+                    removeOverridenMethod(delegateMeta, entityMeta);
+                    entityMeta.addDelegateMeta(delegateMeta);
+                } else {
+                    EntityPropertyMeta propertyMeta = createEntityPropertyMeta(methodElement, entityMeta);
+                    removeOverridenMethod(propertyMeta, entityMeta);
+                    entityMeta.addPropertyMeta(propertyMeta);
+                }
             } catch (AptException e) {
                 Notifier.notify(env, e);
             }
         }
     }
 
-    protected void doMethodElement(ExecutableElement methodElement,
+    protected EntityDelegateMeta createEntityDelegateMeta(
+            ExecutableElement methodElement, EntityMeta entityMeta) {
+        return delegateMetaFactory
+                .createEntityDelegateMeta(methodElement, entityMeta);
+    }
+
+    protected EntityPropertyMeta createEntityPropertyMeta(
+            ExecutableElement methodElement, EntityMeta entityMeta) {
+        return propertyMetaFactory
+                .createEntityPropertyMeta(methodElement, entityMeta);
+    }
+
+    protected void removeOverridenMethod(EntityMethodMeta methodMeta,
             EntityMeta entityMeta) {
-        EntityPropertyMeta propertyMeta = propertyMetaFactory
-                .createPropertyMeta(methodElement, entityMeta);
         if (entityMeta.getSupertypes().size() > 0) {
-            for (Iterator<EntityPropertyMeta> it = entityMeta
-                    .getAllPropertyMetas().iterator(); it.hasNext();) {
-                EntityPropertyMeta overridenMeta = it.next();
+            for (Iterator<? extends EntityMethodMeta> it = entityMeta
+                    .getAllMethodMetaIterator(); it.hasNext();) {
+                EntityMethodMeta overridenMeta = it.next();
                 ExecutableElement overriden = overridenMeta
                         .getExecutableElement();
-                ExecutableElement overrider = propertyMeta
-                        .getExecutableElement();
+                ExecutableElement overrider = methodMeta.getExecutableElement();
                 if (env.getElementUtils()
                         .overrides(overrider, overriden, entityMeta
                                 .getEntityElement())) {
@@ -241,7 +262,6 @@ public class EntityMetaFactory {
                 }
             }
         }
-        entityMeta.addPropertyMeta(propertyMeta);
     }
 
 }

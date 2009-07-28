@@ -20,12 +20,15 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
+
+import org.seasar.doma.internal.util.CompositeIterator;
 
 /**
  * @author taedium
@@ -37,11 +40,9 @@ public class EntityMeta {
 
     protected final List<TypeMirror> supertypes = new ArrayList<TypeMirror>();
 
-    protected List<EntityPropertyMeta> idPropertyMetas = new ArrayList<EntityPropertyMeta>();
+    protected final List<EntityPropertyMeta> allPropertyMetas = new ArrayList<EntityPropertyMeta>();
 
-    protected List<EntityPropertyMeta> columnPropertyMetas = new ArrayList<EntityPropertyMeta>();
-
-    protected List<EntityPropertyMeta> allPropertyMetas = new ArrayList<EntityPropertyMeta>();
+    protected final List<EntityDelegateMeta> allDelegateMetas = new ArrayList<EntityDelegateMeta>();
 
     protected EntityPropertyMeta versionPropertyMeta;
 
@@ -117,7 +118,6 @@ public class EntityMeta {
             return;
         }
         if (propertyMeta.isId()) {
-            idPropertyMetas.add(propertyMeta);
             if (propertyMeta.getIdGeneratorMeta() != null) {
                 generatedIdPropertyMeta = propertyMeta;
             }
@@ -125,23 +125,10 @@ public class EntityMeta {
         if (propertyMeta.isVersion()) {
             versionPropertyMeta = propertyMeta;
         }
-        columnPropertyMetas.add(propertyMeta);
     }
 
     public List<EntityPropertyMeta> getAllPropertyMetas() {
         return allPropertyMetas;
-    }
-
-    public boolean hasIdPropertyMeta() {
-        return idPropertyMetas.size() > 0;
-    }
-
-    public List<EntityPropertyMeta> getIdPropertyMetas() {
-        return idPropertyMetas;
-    }
-
-    public List<EntityPropertyMeta> getColumnPropertyMetas() {
-        return columnPropertyMetas;
     }
 
     public boolean hasVersionPropertyMeta() {
@@ -158,6 +145,22 @@ public class EntityMeta {
 
     public EntityPropertyMeta getGeneratedIdPropertyMeta() {
         return generatedIdPropertyMeta;
+    }
+
+    public void addDelegateMeta(EntityDelegateMeta delegateMeta) {
+        assertNotNull(delegateMeta);
+        allDelegateMetas.add(delegateMeta);
+    }
+
+    public List<EntityDelegateMeta> getAllDelegateMetas() {
+        return allDelegateMetas;
+    }
+
+    public Iterator<? extends EntityMethodMeta> getAllMethodMetaIterator() {
+        List<Iterator<? extends EntityMethodMeta>> iterators = new ArrayList<Iterator<? extends EntityMethodMeta>>();
+        iterators.add(allPropertyMetas.iterator());
+        iterators.add(allDelegateMetas.iterator());
+        return new CompositeIterator<EntityMethodMeta>(iterators);
     }
 
     public void addTypeParameterMap(Map<TypeMirror, TypeMirror> typeParameterMap) {

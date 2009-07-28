@@ -17,9 +17,12 @@ package org.seasar.doma.internal.apt;
 
 import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.internal.apt.entity.ChildEntity;
+import org.seasar.doma.internal.apt.entity.DelegateEntity;
 import org.seasar.doma.internal.apt.entity.ElementOfReturnListNotDomainEntity;
 import org.seasar.doma.internal.apt.entity.ElementOfReturnListUnspecifiedEntity;
 import org.seasar.doma.internal.apt.entity.Emp;
+import org.seasar.doma.internal.apt.entity.IllegalConstructorDelegateEntity;
+import org.seasar.doma.internal.apt.entity.IllegalMethodDelegateEntity;
 import org.seasar.doma.internal.apt.entity.ListenerArgumentTypeIllegalEntity;
 import org.seasar.doma.internal.apt.entity.NameUnsafeEntity_;
 import org.seasar.doma.internal.apt.entity.NotTopLevelEntity;
@@ -190,5 +193,35 @@ public class EntityProcessorTest extends AptTestCase {
         compile();
         assertFalse(getCompiledResult());
         assertMessageCode(DomaMessageCode.DOMA4038);
+    }
+
+    public void testDelegate() throws Exception {
+        Class<?> target = DelegateEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(DelegateEntity.class);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testIllegalConstructorDelegate() throws Exception {
+        Class<?> target = IllegalConstructorDelegateEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessageCode(DomaMessageCode.DOMA4082);
+    }
+
+    public void testIllegalMethodDelegate() throws Exception {
+        Class<?> target = IllegalMethodDelegateEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessageCode(DomaMessageCode.DOMA4083);
     }
 }

@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
@@ -34,6 +36,7 @@ import org.seasar.doma.entity.GeneratedIdProperty;
 import org.seasar.doma.entity.TransientProperty;
 import org.seasar.doma.entity.VersionProperty;
 import org.seasar.doma.internal.apt.meta.ColumnMeta;
+import org.seasar.doma.internal.apt.meta.EntityDelegateMeta;
 import org.seasar.doma.internal.apt.meta.EntityMeta;
 import org.seasar.doma.internal.apt.meta.EntityPropertyMeta;
 import org.seasar.doma.internal.apt.meta.IdGeneratorMeta;
@@ -198,6 +201,7 @@ public class EntityGenerator extends AbstractGenerator {
 
     protected void printMethods() {
         printPropertyMethod();
+        printDelegateMethod();
         printGetNameMethod();
         printAsInterfaceMethod();
         printPreInsertMethod();
@@ -222,6 +226,45 @@ public class EntityGenerator extends AbstractGenerator {
             } else {
                 iprint("    return %1$s.getDomain();%n", pm.getName());
             }
+            iprint("}%n");
+            print("%n");
+        }
+    }
+
+    protected void printDelegateMethod() {
+        for (EntityDelegateMeta dm : entityMeta.getAllDelegateMetas()) {
+            iprint("@Override%n");
+            iprint("public %1$s %2$s(", dm.getReturnTypeName(), dm.getName());
+            for (Iterator<Map.Entry<String, String>> it = dm
+                    .getMethodParameters(); it.hasNext();) {
+                Map.Entry<String, String> entry = it.next();
+                String paramType = entry.getValue();
+                String paramName = entry.getKey();
+                print("%1$s %2$s", paramType, paramName);
+                if (it.hasNext()) {
+                    print(", ");
+                }
+            }
+            print(") {%n");
+            indent();
+            iprint("%1$s __delegate = new %1$s(this);%n", dm.getTargetType());
+            if ("void".equals(dm.getReturnTypeName())) {
+                iprint("");
+            } else {
+                iprint("return ");
+            }
+            print("__delegate.%1$s(", dm.getName());
+            for (Iterator<Map.Entry<String, String>> it = dm
+                    .getMethodParameters(); it.hasNext();) {
+                Map.Entry<String, String> entry = it.next();
+                String paramName = entry.getKey();
+                print("%1$s", paramName);
+                if (it.hasNext()) {
+                    print(", ");
+                }
+            }
+            print(");%n");
+            unindent();
             iprint("}%n");
             print("%n");
         }
@@ -334,7 +377,7 @@ public class EntityGenerator extends AbstractGenerator {
         java.util.List<EntityPropertyMeta> propertyMetas = entityMeta
                 .getAllPropertyMetas();
         if (!propertyMetas.isEmpty()) {
-            for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
+            for (EntityPropertyMeta pm : propertyMetas) {
                 buf.append(pm.getName());
                 buf.append("=\" + ");
                 buf.append(pm.getName());

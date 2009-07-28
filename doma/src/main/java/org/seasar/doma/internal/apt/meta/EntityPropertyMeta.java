@@ -15,34 +15,18 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.lang.model.element.ExecutableElement;
-
 /**
  * 
  * @author taedium
  * 
  */
-public class EntityPropertyMeta {
-
-    protected String name;
-
-    protected ExecutableElement executableElement;
-
-    protected List<String> typeParameterNames = new ArrayList<String>();
+public class EntityPropertyMeta extends AbstractEntityMethodMeta {
 
     protected boolean listReturnType;
-
-    protected String returnTypeName;
 
     protected boolean parameterizedReturnType;
 
     protected String returnElementTypeName;
-
-    protected List<String> thrownTypeNames = new ArrayList<String>();
 
     protected boolean id;
 
@@ -53,14 +37,6 @@ public class EntityPropertyMeta {
     protected ColumnMeta columnMeta;
 
     protected IdGeneratorMeta idGeneratorMeta;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public boolean isId() {
         return id;
@@ -92,38 +68,6 @@ public class EntityPropertyMeta {
 
     public void setColumnMeta(ColumnMeta columnMeta) {
         this.columnMeta = columnMeta;
-    }
-
-    public ExecutableElement getExecutableElement() {
-        return executableElement;
-    }
-
-    public void setExecutableElement(ExecutableElement executableElement) {
-        this.executableElement = executableElement;
-    }
-
-    public void addTypeParameterName(String typeParameterName) {
-        typeParameterNames.add(typeParameterName);
-    }
-
-    public Iterator<String> getTypeParameterNames() {
-        return typeParameterNames.iterator();
-    }
-
-    public void addThrownTypeName(String thrownTypeName) {
-        thrownTypeNames.add(thrownTypeName);
-    }
-
-    public Iterator<String> getThrownTypeNames() {
-        return thrownTypeNames.iterator();
-    }
-
-    public String getReturnTypeName() {
-        return returnTypeName;
-    }
-
-    public void setReturnTypeName(String returnTypeName) {
-        this.returnTypeName = returnTypeName;
     }
 
     public IdGeneratorMeta getIdGeneratorMeta() {

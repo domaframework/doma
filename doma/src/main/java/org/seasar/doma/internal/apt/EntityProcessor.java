@@ -29,6 +29,7 @@ import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.DomaMessageCode;
+import org.seasar.doma.internal.apt.meta.EntityDelegateMetaFactory;
 import org.seasar.doma.internal.apt.meta.EntityMeta;
 import org.seasar.doma.internal.apt.meta.EntityMetaFactory;
 import org.seasar.doma.internal.apt.meta.EntityPropertyMetaFactory;
@@ -78,9 +79,12 @@ public class EntityProcessor extends AbstractProcessor {
     }
 
     protected EntityMetaFactory createEntityMetaFactory() {
+        EntityDelegateMetaFactory delegateMetaFactory = new EntityDelegateMetaFactory(
+                processingEnv);
         EntityPropertyMetaFactory propertyMetaFactory = new EntityPropertyMetaFactory(
                 processingEnv);
-        return new EntityMetaFactory(processingEnv, propertyMetaFactory);
+        return new EntityMetaFactory(processingEnv, delegateMetaFactory,
+                propertyMetaFactory);
     }
 
     protected void generateEntity(TypeElement entityElement,

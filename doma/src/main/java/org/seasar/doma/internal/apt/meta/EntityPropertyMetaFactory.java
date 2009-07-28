@@ -58,9 +58,9 @@ public class EntityPropertyMetaFactory {
         this.env = env;
     }
 
-    public EntityPropertyMeta createPropertyMeta(ExecutableElement method,
-            EntityMeta entityMeta) {
-        assertNotNull(method);
+    public EntityPropertyMeta createEntityPropertyMeta(
+            ExecutableElement method, EntityMeta entityMeta) {
+        assertNotNull(method, entityMeta);
         EntityPropertyMeta propertyMeta = new EntityPropertyMeta();
         propertyMeta.setExecutableElement(method);
         doName(propertyMeta, method, entityMeta);

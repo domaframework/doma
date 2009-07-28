@@ -21,6 +21,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.ExecutableType;
 import javax.lang.model.type.MirroredTypeException;
@@ -38,40 +39,32 @@ import org.seasar.doma.internal.apt.TypeUtil;
  * @author taedium
  * 
  */
-public class DelegateQueryMetaFactory extends
-        AbstractQueryMetaFactory<DelegateQueryMeta> {
+public class EntityDelegateMetaFactory {
 
-    public DelegateQueryMetaFactory(ProcessingEnvironment env) {
-        super(env);
+    protected final ProcessingEnvironment env;
+
+    public EntityDelegateMetaFactory(ProcessingEnvironment env) {
+        assertNotNull(env);
+        this.env = env;
     }
 
-    @Override
-    public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
-        assertNotNull(method, daoMeta);
-        DelegateQueryMeta queryMeta = createDelegateQueryMeta(method, daoMeta);
-        if (queryMeta == null) {
-            return null;
-        }
-        doTypeParameters(queryMeta, method, daoMeta);
-        doParameters(queryMeta, method, daoMeta);
-        doReturnType(queryMeta, method, daoMeta);
-        doThrowTypes(queryMeta, method, daoMeta);
-        doDelegate(queryMeta, method, daoMeta);
-        return queryMeta;
-    }
-
-    protected DelegateQueryMeta createDelegateQueryMeta(
-            ExecutableElement method, DaoMeta daoMeta) {
+    public EntityDelegateMeta createEntityDelegateMeta(
+            ExecutableElement method, EntityMeta entityMeta) {
+        assertNotNull(method, entityMeta);
         Delegate delegate = method.getAnnotation(Delegate.class);
         if (delegate == null) {
             return null;
         }
-        DelegateQueryMeta queryMeta = new DelegateQueryMeta();
-        queryMeta.setQueryKind(QueryKind.DELEGATE);
-        queryMeta.setTargetType(getTargetType(delegate));
-        queryMeta.setName(method.getSimpleName().toString());
-        queryMeta.setExecutableElement(method);
-        return queryMeta;
+        EntityDelegateMeta delegateMeta = new EntityDelegateMeta();
+        delegateMeta.setExecutableElement(method);
+        delegateMeta.setName(method.getSimpleName().toString());
+        delegateMeta.setTargetType(getTargetType(delegate));
+        doTypeParameters(delegateMeta, method, entityMeta);
+        doReturnType(delegateMeta, method, entityMeta);
+        doParameters(delegateMeta, method, entityMeta);
+        doThrowTypes(delegateMeta, method, entityMeta);
+        doDelegate(delegateMeta, method, entityMeta);
+        return delegateMeta;
     }
 
     protected TypeMirror getTargetType(Delegate delegate) {
@@ -83,52 +76,73 @@ public class DelegateQueryMetaFactory extends
         throw new AptIllegalStateException();
     }
 
-    @Override
-    protected void doParameters(DelegateQueryMeta queryMeta,
-            ExecutableElement method, DaoMeta daoMeta) {
-        for (VariableElement param : method.getParameters()) {
-            TypeMirror paramType = TypeUtil.resolveTypeParameter(daoMeta
-                    .getTypeParameterMap(), param.asType());
-            String parameterName = ElementUtil.getParameterName(param);
-            String parameterTypeName = TypeUtil.getTypeName(paramType, daoMeta
+    protected void doTypeParameters(EntityDelegateMeta delegateMeta,
+            ExecutableElement method, EntityMeta entityMeta) {
+        for (TypeParameterElement element : method.getTypeParameters()) {
+            String name = TypeUtil.getTypeName(element.asType(), entityMeta
                     .getTypeParameterMap(), env);
-            queryMeta.addMethodParameter(parameterName, parameterTypeName);
+            delegateMeta.addTypeParameterName(name);
         }
     }
 
-    @Override
-    protected void doReturnType(DelegateQueryMeta queryMeta,
-            ExecutableElement method, DaoMeta daoMeta) {
-        TypeMirror returnType = TypeUtil.resolveTypeParameter(daoMeta
+    protected void doReturnType(EntityDelegateMeta delegateMeta,
+            ExecutableElement method, EntityMeta entityMeta) {
+        TypeMirror returnType = TypeUtil.resolveTypeParameter(entityMeta
                 .getTypeParameterMap(), method.getReturnType());
-        queryMeta.setReturnTypeName(TypeUtil.getTypeName(returnType, daoMeta
-                .getTypeParameterMap(), env));
+        delegateMeta
+                .setReturnTypeName(TypeUtil.getTypeName(returnType, entityMeta
+                        .getTypeParameterMap(), env));
     }
 
-    protected void doDelegate(DelegateQueryMeta queryMeta,
-            ExecutableElement method, DaoMeta daoMeta) {
-        TypeElement delegateTypeElement = TypeUtil.toTypeElement(queryMeta
+    protected void doParameters(EntityDelegateMeta delegateMeta,
+            ExecutableElement method, EntityMeta entityMeta) {
+        for (VariableElement param : method.getParameters()) {
+            TypeMirror paramType = TypeUtil.resolveTypeParameter(entityMeta
+                    .getTypeParameterMap(), param.asType());
+            String parameterName = ElementUtil.getParameterName(param);
+            String parameterTypeName = TypeUtil
+                    .getTypeName(paramType, entityMeta.getTypeParameterMap(), env);
+            delegateMeta.addMethodParameter(parameterName, parameterTypeName);
+        }
+    }
+
+    protected void doThrowTypes(EntityDelegateMeta delegateMeta,
+            ExecutableElement method, EntityMeta entityMeta) {
+        for (TypeMirror thrownType : method.getThrownTypes()) {
+            String typeName = TypeUtil.getTypeName(thrownType, entityMeta
+                    .getTypeParameterMap(), env);
+            delegateMeta.addThrownTypeName(typeName);
+        }
+    }
+
+    protected void doDelegate(EntityDelegateMeta delegateMeta,
+            ExecutableElement method, EntityMeta entityMeta) {
+        TypeElement delegateTypeElement = TypeUtil.toTypeElement(delegateMeta
                 .getTargetType(), env);
         if (delegateTypeElement == null) {
             throw new AptIllegalStateException();
         }
-        if (!hasSuitableConstructor(delegateTypeElement)) {
-            throw new AptException(DomaMessageCode.DOMA4080, env, method,
-                    delegateTypeElement.getQualifiedName());
+        if (!hasSuitableConstructor(delegateTypeElement, entityMeta)) {
+            throw new AptException(DomaMessageCode.DOMA4082, env, method,
+                    delegateTypeElement.getQualifiedName(), entityMeta
+                            .getEntityElement().getQualifiedName());
         }
         if (!hasDelegatableMethod(method, delegateTypeElement)) {
-            throw new AptException(DomaMessageCode.DOMA4081, env, method,
+            throw new AptException(DomaMessageCode.DOMA4083, env, method,
                     delegateTypeElement.getQualifiedName());
         }
     }
 
-    protected boolean hasSuitableConstructor(TypeElement targetElement) {
+    protected boolean hasSuitableConstructor(TypeElement targetElement,
+            EntityMeta entityMeta) {
         for (ExecutableElement e : ElementFilter.constructorsIn(targetElement
                 .getEnclosedElements())) {
             if (e.getModifiers().contains(Modifier.PUBLIC)) {
                 if (e.getParameters().size() == 1) {
                     VariableElement variableElement = e.getParameters().get(0);
-                    if (isConfig(variableElement.asType())) {
+                    if (TypeUtil
+                            .isAssignable(entityMeta.getEntityType(), variableElement
+                                    .asType(), env)) {
                         return true;
                     }
                 }
