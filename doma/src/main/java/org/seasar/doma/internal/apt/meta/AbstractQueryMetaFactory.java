@@ -18,6 +18,7 @@ package org.seasar.doma.internal.apt.meta;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
@@ -30,8 +31,10 @@ import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.TypeKindVisitor6;
 
+import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.Entity;
 import org.seasar.doma.domain.Domain;
+import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.IterationCallback;
@@ -156,4 +159,28 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
         return TypeUtil.isAssignable(typeMirror, IterationCallback.class, env);
     }
 
+    protected void validateEntityPropertyNames(TypeMirror entityType,
+            ExecutableElement method, M queryMeta) {
+        String[] includedPropertyNames = queryMeta.getIncludedPropertyNames();
+        String[] excludedPropertyNames = queryMeta.getExcludedPropertyNames();
+        if (includedPropertyNames != null && includedPropertyNames.length > 0
+                || excludedPropertyNames != null
+                && excludedPropertyNames.length > 0) {
+            EntityPropertyNameCollector collector = new EntityPropertyNameCollector(
+                    env);
+            Set<String> names = collector.collect(entityType);
+            for (String included : queryMeta.getIncludedPropertyNames()) {
+                if (!names.contains(included)) {
+                    throw new AptException(DomaMessageCode.DOMA4084, env,
+                            method, included, entityType);
+                }
+            }
+            for (String excluded : queryMeta.getExcludedPropertyNames()) {
+                if (!names.contains(excluded)) {
+                    throw new AptException(DomaMessageCode.DOMA4085, env,
+                            method, excluded, entityType);
+                }
+            }
+        }
+    }
 }

@@ -184,6 +184,8 @@ public enum DomaMessageCode implements MessageCode {
     DOMA4081("@Delegateのtarget要素で指定したクラス[{0}]に、このメソッドと同じシグニチャをもつpublicなメソッドがみつかりません。"),
     DOMA4082("@Delegateのtarget要素で指定したクラス[{0}]に、Entityインタフェース[{1}]を受けつけるpublicなコンストラクタがみつかりません。"),
     DOMA4083("@Delegateのtarget要素で指定したクラス[{0}]に、このメソッドと同じシグニチャをもつpublicなメソッドがみつかりません。"),
+    DOMA4084("include要素で指定したプロパティ[{0}]が、Entityインタフェース[{1}]に見つかりません。"),
+    DOMA4085("exclude要素で指定したプロパティ[{0}]が、Entityインタフェース[{1}]に見つかりません。"),
 
     // converter
     DOMA5001("クラス[{0}]の値[{1}]をクラス[{2}]に変換することはサポートされていません。"),

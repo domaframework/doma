@@ -32,6 +32,7 @@ import org.seasar.doma.internal.apt.dao.ElementOfParamListUnspecifiedDao;
 import org.seasar.doma.internal.apt.dao.ExtendsDao;
 import org.seasar.doma.internal.apt.dao.IllegalConstructorDelegateDao;
 import org.seasar.doma.internal.apt.dao.IllegalMethodDelegateDao;
+import org.seasar.doma.internal.apt.dao.IncludeAndExcludeDao;
 import org.seasar.doma.internal.apt.dao.IterationCallbackDao;
 import org.seasar.doma.internal.apt.dao.NClobFactoryDao;
 import org.seasar.doma.internal.apt.dao.NameUnsafeDao_;
@@ -296,5 +297,15 @@ public class DaoProcessorTest extends AptTestCase {
         compile();
         assertFalse(getCompiledResult());
         assertMessageCode(DomaMessageCode.DOMA4081);
+    }
+
+    public void testIncludeAndExclude() throws Exception {
+        Class<?> target = IncludeAndExcludeDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
     }
 }

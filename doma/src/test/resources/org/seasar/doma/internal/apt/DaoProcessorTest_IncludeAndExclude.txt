@@ -1,0 +1,43 @@
+package org.seasar.doma.internal.apt.dao;
+
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
+public class IncludeAndExcludeDao_ extends org.seasar.doma.jdbc.DomaAbstractDao implements org.seasar.doma.internal.apt.dao.IncludeAndExcludeDao {
+
+    public IncludeAndExcludeDao_() {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig(), null);
+    }
+
+    public IncludeAndExcludeDao_(javax.sql.DataSource dataSource) {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
+    }
+
+    protected IncludeAndExcludeDao_(org.seasar.doma.jdbc.Config config) {
+        super(config, config.dataSource());
+    }
+
+    @Override
+    public int update(org.seasar.doma.internal.apt.entity.Emp emp) {
+        entering("org.seasar.doma.internal.apt.dao.IncludeAndExcludeDao_", "update", emp);
+        if (emp == null) {
+            throw new org.seasar.doma.DomaIllegalArgumentException("emp", emp);
+        }
+        org.seasar.doma.internal.jdbc.query.AutoUpdateQuery<org.seasar.doma.internal.apt.entity.Emp, org.seasar.doma.internal.apt.entity.Emp_> query = new org.seasar.doma.internal.jdbc.query.AutoUpdateQuery<org.seasar.doma.internal.apt.entity.Emp, org.seasar.doma.internal.apt.entity.Emp_>(org.seasar.doma.internal.apt.entity.Emp_.class);
+        query.setConfig(config);
+        query.setEntity(emp);
+        query.setCallerClassName("org.seasar.doma.internal.apt.dao.IncludeAndExcludeDao_");
+        query.setCallerMethodName("update");
+        query.setQueryTimeout(-1);
+        query.setNullExcluded(false);
+        query.setVersionIncluded(false);
+        query.setIncludedPropertyNames("name", "salary");
+        query.setExcludedPropertyNames("salary");
+        query.setUnchangedPropertyIncluded(false);
+        query.setOptimisticLockExceptionSuppressed(false);
+        query.compile();
+        org.seasar.doma.internal.jdbc.command.UpdateCommand command = new org.seasar.doma.internal.jdbc.command.UpdateCommand(query);
+        int result = command.execute();
+        exiting("org.seasar.doma.internal.apt.dao.IncludeAndExcludeDao_", "update", result);
+        return result;
+    }
+
+}

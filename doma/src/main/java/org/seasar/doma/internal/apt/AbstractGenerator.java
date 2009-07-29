@@ -109,7 +109,9 @@ public abstract class AbstractGenerator implements Generator {
         StringBuilder buf = new StringBuilder();
         if (array.length > 0) {
             for (String s : array) {
+                buf.append("\"");
                 buf.append(s);
+                buf.append("\"");
                 buf.append(", ");
             }
             buf.setLength(buf.length() - 2);

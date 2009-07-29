@@ -137,6 +137,8 @@ public class AutoBatchModifyQueryMetaFactory extends
         queryMeta.setElementTypeName(TypeUtil.getTypeName(elementType, daoMeta
                 .getTypeParameterMap(), env));
         queryMeta.addMethodParameter(entityListName, entityListTypeName);
+
+        validateEntityPropertyNames(elementType, method, queryMeta);
     }
 
 }

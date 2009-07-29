@@ -127,6 +127,8 @@ public class AutoModifyQueryMetaFactory extends
         queryMeta.setEntityName(entityName);
         queryMeta.setEntityTypeName(entityTypeName);
         queryMeta.addMethodParameter(entityName, entityTypeName);
+
+        validateEntityPropertyNames(entityType, method, queryMeta);
     }
 
 }
