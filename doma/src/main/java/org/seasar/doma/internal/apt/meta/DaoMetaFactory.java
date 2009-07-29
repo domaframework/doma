@@ -21,8 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
@@ -30,10 +32,12 @@ import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.Dao;
 import org.seasar.doma.DomaMessageCode;
+import org.seasar.doma.Query;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Notifier;
 import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.TypeUtil;
 
 /**
  * @author taedium
@@ -115,8 +119,27 @@ public class DaoMetaFactory {
 
     protected void doMethodElement(ExecutableElement methodElement,
             DaoMeta daoMeta) {
+        validateMethod(methodElement, daoMeta);
         QueryMeta queryMeta = createQueryMeta(methodElement, daoMeta);
         daoMeta.addQueryMeta(queryMeta);
+    }
+
+    protected void validateMethod(ExecutableElement methodElement,
+            DaoMeta daoMeta) {
+        TypeElement foundAnnotationTypeElement = null;
+        for (AnnotationMirror annotation : methodElement.getAnnotationMirrors()) {
+            DeclaredType declaredType = annotation.getAnnotationType();
+            TypeElement typeElement = TypeUtil.toTypeElement(declaredType, env);
+            if (typeElement.getAnnotation(Query.class) != null) {
+                if (foundAnnotationTypeElement != null) {
+                    throw new AptException(DomaMessageCode.DOMA4086, env,
+                            methodElement, foundAnnotationTypeElement
+                                    .getQualifiedName(), typeElement
+                                    .getQualifiedName());
+                }
+                foundAnnotationTypeElement = typeElement;
+            }
+        }
     }
 
     protected QueryMeta createQueryMeta(ExecutableElement method,
@@ -129,4 +152,5 @@ public class DaoMetaFactory {
         }
         throw new AptException(DomaMessageCode.DOMA4005, env, method);
     }
+
 }

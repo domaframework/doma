@@ -13,28 +13,21 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma;
+package org.seasar.doma.internal.apt.dao;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.seasar.doma.Dao;
+import org.seasar.doma.Delete;
+import org.seasar.doma.Update;
+import org.seasar.doma.internal.apt.entity.Emp;
 
 /**
  * @author taedium
  * 
  */
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-@Query
-public @interface BatchDelete {
+@Dao(config = MyConfig.class)
+public interface AnnotationConflictedDao {
 
-    boolean sqlFile() default false;
-
-    int queryTimeout() default -1;
-
-    boolean ignoreVersion() default false;
-
-    boolean suppressOptimisticLockException() default false;
-
+    @Update
+    @Delete
+    int delete(Emp entity);
 }

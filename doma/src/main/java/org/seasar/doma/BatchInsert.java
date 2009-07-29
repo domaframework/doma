@@ -26,6 +26,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
+@Query
 public @interface BatchInsert {
 
     boolean sqlFile() default false;

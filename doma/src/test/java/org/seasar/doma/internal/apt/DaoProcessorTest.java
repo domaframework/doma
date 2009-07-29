@@ -16,6 +16,7 @@
 package org.seasar.doma.internal.apt;
 
 import org.seasar.doma.DomaMessageCode;
+import org.seasar.doma.internal.apt.dao.AnnotationConflictedDao;
 import org.seasar.doma.internal.apt.dao.AnnotationNotFoundDao;
 import org.seasar.doma.internal.apt.dao.ArrayFactoryDao;
 import org.seasar.doma.internal.apt.dao.AutoBatchUpdateDao;
@@ -307,5 +308,15 @@ public class DaoProcessorTest extends AptTestCase {
         compile();
         assertGeneratedSource(target);
         assertTrue(getCompiledResult());
+    }
+
+    public void testAnnotationConflicted() throws Exception {
+        Class<?> target = AnnotationConflictedDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessageCode(DomaMessageCode.DOMA4086);
     }
 }

@@ -24,17 +24,7 @@ import java.lang.annotation.Target;
  * @author taedium
  * 
  */
-@Target(ElementType.METHOD)
+@Target(ElementType.ANNOTATION_TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Query
-public @interface BatchDelete {
-
-    boolean sqlFile() default false;
-
-    int queryTimeout() default -1;
-
-    boolean ignoreVersion() default false;
-
-    boolean suppressOptimisticLockException() default false;
-
+public @interface Query {
 }
