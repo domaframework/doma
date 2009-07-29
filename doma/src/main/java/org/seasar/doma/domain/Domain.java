@@ -25,7 +25,7 @@ public interface Domain<V, D extends Domain<V, D>> {
 
     void set(V value);
 
-    void set(D other);
+    void setDomain(D other);
 
     boolean isNull();
 

@@ -60,7 +60,7 @@ public class ArrayTest {
         Integer[] array = new Integer[] { 10, 20, 30, 40 };
         SalEmp entity = new SalEmp_();
         entity.name().set("hoge");
-        entity.pay_by_quarter().set(dao.createIntegerArray(array));
+        entity.pay_by_quarter().setDomain(dao.createIntegerArray(array));
         dao.insert(entity);
         List<SalEmp> entities = dao.selectAll();
         assertEquals(3, entities.size());
@@ -73,7 +73,7 @@ public class ArrayTest {
         String[][] array = new String[][] { { "aaa", "bbb" }, { "ccc", "ddd" } };
         SalEmp entity = new SalEmp_();
         entity.name().set("hoge");
-        entity.schedule().set(dao.createString2DArray(array));
+        entity.schedule().setDomain(dao.createString2DArray(array));
         dao.insert(entity);
         List<SalEmp> entities = dao.selectAll();
         assertEquals(3, entities.size());
@@ -96,7 +96,7 @@ public class ArrayTest {
         Integer[] array = entity.pay_by_quarter().getArray();
         assertEquals(4, array.length);
         array[0] = 10;
-        entity.pay_by_quarter().set(dao.createIntegerArray(array));
+        entity.pay_by_quarter().setDomain(dao.createIntegerArray(array));
         dao.update(entity);
 
         entities = dao.selectAll();
@@ -114,7 +114,7 @@ public class ArrayTest {
         assertEquals(2, array[0].length);
         assertEquals(2, array[1].length);
         array[0][0] = "aaa";
-        entity.schedule().set(dao.createString2DArray(array));
+        entity.schedule().setDomain(dao.createString2DArray(array));
         dao.update(entity);
 
         entities = dao.selectAll();

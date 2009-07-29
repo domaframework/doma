@@ -52,7 +52,7 @@ public abstract class AbstractDomain<V, D extends AbstractDomain<V, D>>
     }
 
     @Override
-    public void set(D other) {
+    public void setDomain(D other) {
         if (other == null) {
             throw new DomaIllegalArgumentException("other", other);
         }

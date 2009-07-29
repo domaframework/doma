@@ -35,7 +35,7 @@ public class StringDomainTest extends TestCase {
 
     public void testSet_domain() throws Exception {
         StringDomain domain = new StringDomain("aaa");
-        domain.set(new StringDomain("bbb"));
+        domain.setDomain(new StringDomain("bbb"));
         assertEquals("bbb", domain.get());
     }
 
