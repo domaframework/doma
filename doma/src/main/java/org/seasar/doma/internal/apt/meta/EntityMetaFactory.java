@@ -84,7 +84,7 @@ public class EntityMetaFactory {
                     entityElement, entityElement.getQualifiedName());
         }
         String name = entityElement.getSimpleName().toString();
-        String suffix = Options.getSuffix(env);
+        String suffix = Options.getEntitySuffix(env);
         if (name.endsWith(suffix)) {
             Notifier
                     .notify(env, Kind.WARNING, DomaMessageCode.DOMA4026, entityElement, suffix);

@@ -52,8 +52,7 @@ public abstract class AptTestCase extends AptinaTestCase {
 
     protected void assertGeneratedSource(Class<?> originalClass)
             throws Exception {
-        String generatedClassName = originalClass.getName()
-                + Options.DEFAULT_SUFFIX;
+        String generatedClassName = originalClass.getName() + "_";
         try {
             assertEqualsGeneratedSource(getExpectedContent(), generatedClassName);
         } catch (AssertionFailedError error) {

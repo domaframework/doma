@@ -58,7 +58,7 @@ public class EntityGenerator extends AbstractGenerator {
     public EntityGenerator(ProcessingEnvironment env,
             TypeElement entityElement, EntityMeta entityMeta)
             throws IOException {
-        super(env, entityElement);
+        super(env, entityElement, Options.getEntitySuffix(env));
         assertNotNull(entityMeta);
         this.entityMeta = entityMeta;
     }

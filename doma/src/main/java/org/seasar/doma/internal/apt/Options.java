@@ -29,9 +29,13 @@ public final class Options {
 
     public static final String DEBUG = "debug";
 
-    public static final String SUFFIX = "suffix";
+    public static final String DAO_SUFFIX = "dao.suffix";
 
-    public static final String DEFAULT_SUFFIX = "_";
+    public static final String ENTITY_SUFFIX = "entity.suffix";
+
+    private static final String DEFAULT_DAO_SUFFIX = "_";
+
+    private static final String DEFAULT_ENTITY_SUFFIX = "_";
 
     public static boolean isTestEnabled(ProcessingEnvironment env) {
         String test = env.getOptions().get(Options.TEST);
@@ -43,9 +47,14 @@ public final class Options {
         return Boolean.valueOf(debug).booleanValue();
     }
 
-    public static String getSuffix(ProcessingEnvironment env) {
-        String suffix = env.getOptions().get(Options.SUFFIX);
-        return suffix != null ? suffix : DEFAULT_SUFFIX;
+    public static String getDaoSuffix(ProcessingEnvironment env) {
+        String suffix = env.getOptions().get(Options.DAO_SUFFIX);
+        return suffix != null ? suffix : DEFAULT_DAO_SUFFIX;
+    }
+
+    public static String getEntitySuffix(ProcessingEnvironment env) {
+        String suffix = env.getOptions().get(Options.ENTITY_SUFFIX);
+        return suffix != null ? suffix : DEFAULT_ENTITY_SUFFIX;
     }
 
     public static Date getDate(ProcessingEnvironment env) {

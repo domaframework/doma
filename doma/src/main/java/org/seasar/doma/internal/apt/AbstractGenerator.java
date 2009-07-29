@@ -53,13 +53,12 @@ public abstract class AbstractGenerator implements Generator {
 
     protected final StringBuilder indentBuffer = new StringBuilder();
 
-    public AbstractGenerator(ProcessingEnvironment env, TypeElement typeElement)
-            throws IOException {
-        assertNotNull(env, typeElement);
+    public AbstractGenerator(ProcessingEnvironment env,
+            TypeElement typeElement, String suffix) throws IOException {
+        assertNotNull(env, typeElement, suffix);
         this.env = env;
         this.typeElement = typeElement;
-        this.qualifiedName = typeElement.getQualifiedName()
-                + Options.getSuffix(env);
+        this.qualifiedName = typeElement.getQualifiedName() + suffix;
         this.packageName = ClassUtil.getPackageName(qualifiedName);
         this.simpleName = ClassUtil.getSimpleName(qualifiedName);
         Filer filer = env.getFiler();

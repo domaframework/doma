@@ -54,7 +54,7 @@ import org.seasar.doma.internal.util.IOUtil;
  */
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 @SupportedAnnotationTypes( { "org.seasar.doma.Dao" })
-@SupportedOptions( { Options.TEST, Options.DEBUG, Options.SUFFIX })
+@SupportedOptions( { Options.TEST, Options.DEBUG, Options.DAO_SUFFIX })
 public class DaoProcessor extends AbstractProcessor {
 
     @Override

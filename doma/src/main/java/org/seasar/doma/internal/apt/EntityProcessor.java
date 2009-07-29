@@ -42,7 +42,7 @@ import org.seasar.doma.internal.util.IOUtil;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 @SupportedAnnotationTypes( { "org.seasar.doma.Entity",
         "org.seasar.doma.MappedSuperclass" })
-@SupportedOptions( { Options.TEST, Options.DEBUG, Options.SUFFIX })
+@SupportedOptions( { Options.TEST, Options.DEBUG, Options.ENTITY_SUFFIX })
 public class EntityProcessor extends AbstractProcessor {
 
     @Override

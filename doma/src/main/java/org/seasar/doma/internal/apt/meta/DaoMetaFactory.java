@@ -73,7 +73,7 @@ public class DaoMetaFactory {
             throw new AptException(DomaMessageCode.DOMA4045, env, daoElement);
         }
         String name = daoElement.getSimpleName().toString();
-        String suffix = Options.getSuffix(env);
+        String suffix = Options.getDaoSuffix(env);
         if (name.endsWith(suffix)) {
             Notifier
                     .notify(env, Kind.WARNING, DomaMessageCode.DOMA4026, daoElement, suffix);
