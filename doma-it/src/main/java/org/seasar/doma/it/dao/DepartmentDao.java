@@ -57,7 +57,7 @@ public interface DepartmentDao {
     @BatchUpdate
     int[] update(List<Department> entities);
 
-    @BatchUpdate(includesVersion = true)
+    @BatchUpdate(includeVersion = true)
     int[] update_includesVersion(List<Department> entities);
 
     @BatchUpdate(suppressOptimisticLockException = true)

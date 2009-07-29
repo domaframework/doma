@@ -19,21 +19,74 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.sql.Statement;
+
+import org.seasar.doma.domain.Domain;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.JdbcException;
 
 /**
- * @author taedium
+ * ストアドプロシージャーの呼び出しを示します。
+ * <p>
+ * このアノテーションが指定されるメソッドは、{@link Dao}が注釈されたインタフェースのメンバでなければいけません。
  * 
+ * 注釈されるメソッドは、次の制約を満たす必要があります。
+ * <ul>
+ * <li>パラメータは0個以上である。
+ * <li>パラメータは {@link Domain}の実装クラスである。
+ * <li>パラメータには、パラメータの種別を示す {@link In}、 {@link InOut}、 {@link Out}、
+ * {@link ResultSet} のいずれかのアノテーションが必須である。これらは、ストアドプロシージャーの定義に合わせて注釈しなければいけない。
+ * <li>戻り値の型は {@code void}である。
+ * </ul>
+ * 
+ * <pre>
+ * &#064;Dao(config = AppConfig.class)
+ * public interface EmployeeDao {
+ * 
+ *     &#064;Procedure
+ *     void updateSalary(@In IntegerDomain id, @InOut BigDecimalDomain salary);
+ * }
+ * </pre>
+ * 
+ * 注釈されるメソッドは、次の例外をスローすることがあります。
+ * <ul>
+ * <li> {@link DomaIllegalArgumentException} パラメータに {@code null}を渡した場合
+ * <li> {@link JdbcException} JDBCに関する例外が発生した場合
+ * </ul>
+ * 
+ * ストアドプロシージャーの完全修飾名には、{@link #catalog()}、{@link #schema()}、{@link #name()}を
+ * {@literal .}で連結したものが使用されます。
+ * 
+ * @author taedium
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Query
 public @interface Procedure {
 
+    /**
+     * カタログ名です。
+     */
     String catalog() default "";
 
+    /**
+     * スキーマ名です。
+     */
     String schema() default "";
 
+    /**
+     * ストアドプロシージャーの名前です。
+     * <p>
+     * 指定しない場合、注釈されたメソッドの名前が使用されます。
+     */
     String name() default "";
 
+    /**
+     * クエリタイムアウト（秒）です。
+     * <p>
+     * 指定しない場合、{@link Config#queryTimeout()}が使用されます。
+     * 
+     * @see Statement#setQueryTimeout(int)
+     */
     int queryTimeout() default -1;
 }

@@ -19,15 +19,51 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.sql.Array;
+import java.sql.Connection;
+
+import org.seasar.doma.domain.Domain;
+import org.seasar.doma.jdbc.JdbcException;
 
 /**
- * @author taedium
+ * {@link Array}のインスタンスを生成することを示します。
+ * <p>
+ * このアノテーションが指定されるメソッドは、{@link Dao}が注釈されたインタフェースのメンバでなければいけません。
  * 
+ * 注釈されるメソッドは、次の制約を満たす必要があります。
+ * <li>パラメータを1つだけ受け取る。
+ * <li>パラメータの型は配列である。この配列は{@link Connection#createArrayOf(String, Object[])}
+ * の2番目のパラメータに渡される。
+ * <li>戻り値の型は {@code Array}を値とする {@link Domain}の実装クラスである。
+ * <li>戻り値の型は、 配列の要素の型を型パラメータとして受け取る。
+ * 
+ * <pre>
+ * &#064;Dao(config = AppConfig.class)
+ * public interface EmployeeDao {
+ * 
+ *     &#064;ArrayFactory(typeName = &quot;integer&quot;)
+ *     ArrayDomain&lt;Integer&gt; createIntegerArray(Integer[] elements);
+ * }
+ * </pre>
+ * 
+ * 注釈されるメソッドは、次の例外をスローすることがあります。
+ * <ul>
+ * <li> {@link DomaIllegalArgumentException} パラメータに {@code null}を渡した場合
+ * <li> {@link JdbcException} JDBCに関する例外が発生した場合
+ * </ul>
+ * 
+ * @author taedium
+ * @see Connection#createArrayOf(String, Object[])
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Query
 public @interface ArrayFactory {
 
+    /**
+     * 配列の要素がマッピングされる型のSQL名です。
+     * <p>
+     * この値は、 {@link Connection#createArrayOf(String, Object[])} の最初のパラメータに渡されます。
+     */
     String typeName();
 }

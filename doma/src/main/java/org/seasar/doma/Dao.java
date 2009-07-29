@@ -23,13 +23,31 @@ import java.lang.annotation.Target;
 import org.seasar.doma.jdbc.Config;
 
 /**
- * @author taedium
+ * {@literal Data Access Object}であることを示します。
+ * <p>
+ * このアノテーションは、トップレベルのインタフェースに指定できます。 インタフェースのメンバメソッドは、メタアノテーション {@link Query}
+ * でマークされたアノテーションで注釈されなければいけません。
  * 
+ * <pre>
+ * &#064;Dao(config = AppConfig.class)
+ * public interface EmployeeDao {
+ * 
+ *     &#064;Insert
+ *     int insert(Employee employee);
+ * }
+ * </pre>
+ * 
+ * @author taedium
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Dao {
 
+    /**
+     * {@literal Data Access Object}を実行する際の設定（JDBCの接続情報やRDBMSの方言等）です。
+     * <p>
+     * ここに指定されたクラスは、{@code Dao}が注釈されたインタフェースの実装クラスがインスタンス化されるのに伴ってインスタンス化されます。
+     */
     Class<? extends Config> config();
 
 }

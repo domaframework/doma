@@ -19,21 +19,81 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.sql.Statement;
+import java.util.List;
+
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.SqlFileNotFoundException;
+import org.seasar.doma.jdbc.UniqueConstraintException;
 
 /**
- * @author taedium
+ * バッチ挿入処理を示します。
+ * <p>
+ * このアノテーションが指定されるメソッドは、{@link Dao}が注釈されたインタフェースのメンバでなければいけません。
  * 
+ * 注釈されるメソッドは、次の制約を満たす必要があります。
+ * <ul>
+ * <li>パラメータを1つだけ受け取る。
+ * <li>パラメータは {@link Entity}が注釈された型を要素とする {@link List}である。
+ * <li>戻り値の型は {@code int[]}である。
+ * </ul>
+ * 
+ * <pre>
+ * &#064;Entity
+ * public interface Employee {
+ *     ...
+ * }
+ * 
+ * &#064;Dao(config = AppConfig.class)
+ * public interface EmployeeDao {
+ * 
+ *     &#064;BatchInsert
+ *     int[] insert(List&lt;Employee&gt; employee);
+ * }
+ * </pre>
+ * 
+ * 注釈されるメソッドは、次の例外をスローすることがあります。
+ * <ul>
+ * <li> {@link DomaIllegalArgumentException} パラメータに {@code null} を渡した場合
+ * <li> {@link UniqueConstraintException} 一意制約違反が発生した場合
+ * <li> {@link SqlFileNotFoundException}
+ * SQLファイルにマッピングしている場合で、かつSQLファイルが見つからなかった場合
+ * <li> {@link JdbcException} 上記以外でJDBCに関する例外が発生した場合
+ * </ul>
+ * 
+ * @author taedium
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Query
 public @interface BatchInsert {
 
+    /**
+     * SQLファイルにマッピングするかどうかを示します。
+     */
     boolean sqlFile() default false;
 
+    /**
+     * クエリタイムアウト（秒）です。
+     * <p>
+     * 指定しない場合、{@link Config#queryTimeout()}が使用されます。
+     * 
+     * @see Statement#setQueryTimeout(int)
+     */
     int queryTimeout() default -1;
 
+    /**
+     * INSERT文に含めるプロパティ名の配列です。
+     * <p>
+     * ここに指定できるのは、カラム名ではなくプロパティ名です。 プロパティ名とは、カラムにマッピングされたエンティティのメソッド名のことです。
+     */
     String[] include() default {};
 
+    /**
+     * INSERT文から除去するプロパティ名の配列です。
+     * <p>
+     * ここに指定できるのは、カラム名ではなくプロパティ名です。 プロパティ名とは、カラムにマッピングされたエンティティのメソッド名のことです。
+     */
     String[] exclude() default {};
 }

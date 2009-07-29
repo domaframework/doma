@@ -192,8 +192,8 @@ public class StandardDialect implements Dialect {
         }
         SqlNode transformed = original;
         if (options.getOffset() >= 0 || options.getLimit() >= 0) {
-            transformed = toPagingSqlNode(transformed, options.getOffset(), options
-                    .getLimit());
+            transformed = toPagingSqlNode(transformed, options.getOffset(),
+                    options.getLimit());
         }
         if (options.getForUpdateType() != null) {
             SelectForUpdateType forUpdateType = options.getForUpdateType();
@@ -206,8 +206,8 @@ public class StandardDialect implements Dialect {
                     throw new JdbcException(DomaMessageCode.DOMA2024, getName());
                 }
             }
-            transformed = toForUpdateSqlNode(transformed, forUpdateType, options
-                    .getWaitSeconds(), aliases);
+            transformed = toForUpdateSqlNode(transformed, forUpdateType,
+                    options.getWaitSeconds(), aliases);
         }
         return transformed;
     }
@@ -372,12 +372,12 @@ public class StandardDialect implements Dialect {
         if (columnName == null) {
             throw new DomaIllegalArgumentException("columnName", columnName);
         }
-        String fullTableName = TableUtil
-                .buildFullTableName(catalogName, schemaName, tableName);
+        String fullTableName = TableUtil.buildFullTableName(catalogName,
+                schemaName, tableName);
         String sql = "select " + columnName + " from " + fullTableName
                 + " where 1 = 0";
-        PreparedStatement preparedStatement = JdbcUtil
-                .prepareStatement(connection, sql);
+        PreparedStatement preparedStatement = JdbcUtil.prepareStatement(
+                connection, sql);
         try {
             ResultSet resultSet = preparedStatement.executeQuery();
             try {
@@ -414,11 +414,6 @@ public class StandardDialect implements Dialect {
         return null;
     }
 
-    /**
-     * 標準の{@link SqlBlockContext}の実装クラスです。
-     * 
-     * @author taedium
-     */
     public static class StandardSqlBlockContext implements SqlBlockContext {
 
         /** SQLブロックの開始を表すキーワードの連なりのリスト */

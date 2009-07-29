@@ -20,12 +20,38 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.seasar.doma.domain.Domain;
+import org.seasar.doma.jdbc.JdbcException;
+
 /**
- * @author taedium
+ * ストアドファンクションやストアドプロシージャーへのINOUTパラメータを示します。
+ * <p>
+ * このアノテーションが指定されるパラメータは、 {@link Function}もしくは {@link Procedure}
+ * が注釈されたメソッドのパラメータでなければいけません。
  * 
+ * 注釈されるパラメータは、次の制約を満たす必要があります。
+ * <ul>
+ * <li>型は{@link Domain}の実装クラスである。
+ * </ul>
+ * 
+ * <pre>
+ * &#064;Dao(config = AppConfig.class)
+ * public interface EmployeeDao {
+ * 
+ *     &#064;Procedure
+ *     void updateSalary(@In IntegerDomain id, @InOut BigDecimalDomain salary);
+ * }
+ * </pre>
+ * 
+ * 注釈されるメソッドは、次の例外をスローすることがあります。
+ * <ul>
+ * <li> {@link DomaIllegalArgumentException} パラメータに {@code null}を渡した場合
+ * <li> {@link JdbcException} JDBCに関する例外が発生した場合
+ * </ul>
+ * 
+ * @author taedium
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface InOut {
-
 }

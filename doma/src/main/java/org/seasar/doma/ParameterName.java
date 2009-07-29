@@ -21,6 +21,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * パラメータの名前を示します。
+ * <p>
+ * クラスファイルにパラメータ名を保持させたい場合に使用します。
+ * 通常は、ソースファイルからパラメータ名を取得できるため、このアノテーションを利用する必要はありません。
+ * 
  * @author taedium
  * 
  */

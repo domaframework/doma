@@ -71,7 +71,7 @@ public class AutoBatchModifyQueryMetaFactory extends
         BatchUpdate update = method.getAnnotation(BatchUpdate.class);
         if (update != null && !update.sqlFile()) {
             queryMeta.setQueryTimeout(update.queryTimeout());
-            queryMeta.setVersionIncluded(update.includesVersion());
+            queryMeta.setVersionIncluded(update.includeVersion());
             queryMeta.setIncludedPropertyNames(update.include());
             queryMeta.setExcludedPropertyNames(update.exclude());
             queryMeta.setOptimisticLockExceptionSuppressed(update

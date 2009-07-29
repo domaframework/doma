@@ -114,8 +114,8 @@ public class FieldAccessBeanWrapper implements BeanWrapper {
                 return FieldUtil.get(field, bean);
             } catch (WrapException e) {
                 Throwable cause = e.getCause();
-                throw new PropertyReadAccessException(beanClass.getName(), field
-                        .getName(), cause);
+                throw new PropertyReadAccessException(beanClass.getName(),
+                        field.getName(), cause);
             }
         }
 
@@ -130,8 +130,8 @@ public class FieldAccessBeanWrapper implements BeanWrapper {
                 FieldUtil.set(field, bean, value);
             } catch (WrapException e) {
                 Throwable cause = e.getCause();
-                throw new PropertyWriteAccessException(beanClass.getName(), field
-                        .getName(), cause);
+                throw new PropertyWriteAccessException(beanClass.getName(),
+                        field.getName(), cause);
             }
         }
     }

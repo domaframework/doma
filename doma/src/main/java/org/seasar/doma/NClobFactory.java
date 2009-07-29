@@ -19,10 +19,38 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.sql.Connection;
+import java.sql.NClob;
+
+import org.seasar.doma.domain.Domain;
+import org.seasar.doma.jdbc.JdbcException;
 
 /**
- * @author taedium
+ * {@link NClob}のインスタンスを生成することを示します。
+ * <p>
+ * このアノテーションが指定されるメソッドは、{@link Dao}が注釈されたインタフェースのメンバでなければいけません。
  * 
+ * 注釈されるメソッドは、次の制約を満たす必要があります。
+ * <li>パラメータを受け取らない。
+ * <li>戻り値の型は {@code NClob}を値とする {@link Domain}の実装クラスである。
+ * 
+ * <pre>
+ * &#064;Dao(config = AppConfig.class)
+ * public interface EmployeeDao {
+ * 
+ *     &#064;NClobFactory
+ *     NClobDomain createNClob();
+ * }
+ * </pre>
+ * 
+ * 注釈されるメソッドは、次の例外をスローすることがあります。
+ * <ul>
+ * <li> {@link DomaIllegalArgumentException} パラメータに {@code null}を渡した場合
+ * <li> {@link JdbcException} JDBCに関する例外が発生した場合
+ * </ul>
+ * 
+ * @author taedium
+ * @see Connection#createNClob()
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
