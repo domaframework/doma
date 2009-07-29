@@ -123,6 +123,9 @@ public class AutoBatchInsertQuery<I, E extends Entity<I>> extends
                 }
                 continue;
             }
+            if (!isTargetPropertyName(p.getName())) {
+                continue;
+            }
             targetProperties.add(p);
         }
     }

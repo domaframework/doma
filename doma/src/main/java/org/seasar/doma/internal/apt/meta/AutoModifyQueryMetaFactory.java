@@ -64,6 +64,8 @@ public class AutoModifyQueryMetaFactory extends
         if (insert != null && !insert.sqlFile()) {
             queryMeta.setQueryTimeout(insert.queryTimeout());
             queryMeta.setNullExcluded(insert.excludeNull());
+            queryMeta.setIncludedPropertyNames(insert.include());
+            queryMeta.setExcludedPropertyNames(insert.exclude());
             queryMeta.setQueryKind(QueryKind.AUTO_INSERT);
         }
         Update update = method.getAnnotation(Update.class);
@@ -73,6 +75,9 @@ public class AutoModifyQueryMetaFactory extends
             queryMeta.setVersionIncluded(update.includeVersion());
             queryMeta.setOptimisticLockExceptionSuppressed(update
                     .suppressOptimisticLockException());
+            queryMeta.setUnchangedPropertyIncluded(update.includeUnchanged());
+            queryMeta.setIncludedPropertyNames(update.include());
+            queryMeta.setExcludedPropertyNames(update.exclude());
             queryMeta.setQueryKind(QueryKind.AUTO_UPDATE);
         }
         Delete delete = method.getAnnotation(Delete.class);

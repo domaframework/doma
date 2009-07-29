@@ -29,6 +29,9 @@ public class AutoUpdateDao_ extends org.seasar.doma.jdbc.DomaAbstractDao impleme
         query.setQueryTimeout(-1);
         query.setNullExcluded(false);
         query.setVersionIncluded(false);
+        query.setIncludedPropertyNames();
+        query.setExcludedPropertyNames();
+        query.setUnchangedPropertyIncluded(false);
         query.setOptimisticLockExceptionSuppressed(false);
         query.compile();
         org.seasar.doma.internal.jdbc.command.UpdateCommand command = new org.seasar.doma.internal.jdbc.command.UpdateCommand(query);

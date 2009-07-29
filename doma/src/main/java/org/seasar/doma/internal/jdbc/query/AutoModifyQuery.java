@@ -38,6 +38,12 @@ import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 public abstract class AutoModifyQuery<I, E extends Entity<I>> implements
         ModifyQuery {
 
+    protected static final String[] EMPTY_STRINGS = new String[] {};
+
+    protected String[] includedPropertyNames = EMPTY_STRINGS;
+
+    protected String[] excludedPropertyNames = EMPTY_STRINGS;
+
     protected Class<E> entityClass;
 
     protected Config config;
@@ -99,7 +105,8 @@ public abstract class AutoModifyQuery<I, E extends Entity<I>> implements
 
     protected void validateIdExistent() {
         if (idProperties.isEmpty()) {
-            throw new JdbcException(DomaMessageCode.DOMA2022, entity.__getName());
+            throw new JdbcException(DomaMessageCode.DOMA2022, entity
+                    .__getName());
         }
     }
 
@@ -109,14 +116,39 @@ public abstract class AutoModifyQuery<I, E extends Entity<I>> implements
         }
     }
 
+    protected boolean isTargetPropertyName(String name) {
+        if (includedPropertyNames.length > 0) {
+            for (String includedName : includedPropertyNames) {
+                if (includedName.equals(name)) {
+                    for (String excludedName : excludedPropertyNames) {
+                        if (excludedName.equals(name)) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+        if (excludedPropertyNames.length > 0) {
+            for (String excludedName : excludedPropertyNames) {
+                if (excludedName.equals(name)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return true;
+    }
+
     public void setConfig(Config config) {
         this.config = config;
     }
 
     public void setEntity(I entity) {
         if (!entityClass.isInstance(entity)) {
-            throw new JdbcException(DomaMessageCode.DOMA2026, entity, entityClass
-                    .getName());
+            throw new JdbcException(DomaMessageCode.DOMA2026, entity,
+                    entityClass.getName());
         }
         this.entity = entityClass.cast(entity);
     }
@@ -131,6 +163,14 @@ public abstract class AutoModifyQuery<I, E extends Entity<I>> implements
 
     public void setQueryTimeout(int queryTimeout) {
         this.queryTimeout = queryTimeout;
+    }
+
+    public void setIncludedPropertyNames(String... includedPropertyNames) {
+        this.includedPropertyNames = includedPropertyNames;
+    }
+
+    public void setExcludedPropertyNames(String... excludedPropertyNames) {
+        this.excludedPropertyNames = excludedPropertyNames;
     }
 
     public PreparedSql getSql() {

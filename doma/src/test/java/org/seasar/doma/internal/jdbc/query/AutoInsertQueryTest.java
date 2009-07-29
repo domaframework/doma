@@ -15,10 +15,12 @@
  */
 package org.seasar.doma.internal.jdbc.query;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.seasar.doma.domain.BigDecimalDomain;
 import org.seasar.doma.domain.IntegerDomain;
 import org.seasar.doma.domain.StringDomain;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
@@ -77,7 +79,7 @@ public class AutoInsertQueryTest extends TestCase {
         assertEquals(new IntegerDomain(1), parameters.get(3).getDomain());
     }
 
-    public void testOption_excludesNull() throws Exception {
+    public void testOption_excludeNull() throws Exception {
         Emp emp = new Emp_();
         emp.id().set(10);
         emp.name().set("aaa");
@@ -98,6 +100,57 @@ public class AutoInsertQueryTest extends TestCase {
         assertEquals(3, parameters.size());
         assertEquals(new IntegerDomain(10), parameters.get(0).getDomain());
         assertEquals(new StringDomain("aaa"), parameters.get(1).getDomain());
+        assertEquals(new IntegerDomain(1), parameters.get(2).getDomain());
+    }
+
+    public void testOption_include() throws Exception {
+        Emp emp = new Emp_();
+        emp.id().set(10);
+        emp.name().set("aaa");
+        emp.salary().set(new BigDecimal(200));
+
+        AutoInsertQuery<Emp, Emp_> query = new AutoInsertQuery<Emp, Emp_>(
+                Emp_.class);
+        query.setConfig(runtimeConfig);
+        query.setEntity(emp);
+        query.setIncludedPropertyNames("name");
+        query.setCallerClassName("aaa");
+        query.setCallerMethodName("bbb");
+        query.compile();
+
+        PreparedSql sql = query.getSql();
+        assertEquals("insert into EMP (ID, NAME, VERSION) values (?, ?, ?)", sql
+                .getRawSql());
+        List<PreparedSqlParameter> parameters = sql.getParameters();
+        assertEquals(3, parameters.size());
+        assertEquals(new IntegerDomain(10), parameters.get(0).getDomain());
+        assertEquals(new StringDomain("aaa"), parameters.get(1).getDomain());
+        assertEquals(new IntegerDomain(1), parameters.get(2).getDomain());
+    }
+
+    public void testOption_exclude() throws Exception {
+        Emp emp = new Emp_();
+        emp.id().set(10);
+        emp.name().set("aaa");
+        emp.salary().set(new BigDecimal(200));
+
+        AutoInsertQuery<Emp, Emp_> query = new AutoInsertQuery<Emp, Emp_>(
+                Emp_.class);
+        query.setConfig(runtimeConfig);
+        query.setEntity(emp);
+        query.setExcludedPropertyNames("name");
+        query.setCallerClassName("aaa");
+        query.setCallerMethodName("bbb");
+        query.compile();
+
+        PreparedSql sql = query.getSql();
+        assertEquals("insert into EMP (ID, SALARY, VERSION) values (?, ?, ?)", sql
+                .getRawSql());
+        List<PreparedSqlParameter> parameters = sql.getParameters();
+        assertEquals(3, parameters.size());
+        assertEquals(new IntegerDomain(10), parameters.get(0).getDomain());
+        assertEquals(new BigDecimalDomain(new BigDecimal(200)), parameters
+                .get(1).getDomain());
         assertEquals(new IntegerDomain(1), parameters.get(2).getDomain());
     }
 }

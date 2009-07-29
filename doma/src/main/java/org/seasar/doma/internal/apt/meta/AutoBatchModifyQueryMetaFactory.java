@@ -64,12 +64,16 @@ public class AutoBatchModifyQueryMetaFactory extends
         BatchInsert insert = method.getAnnotation(BatchInsert.class);
         if (insert != null && !insert.sqlFile()) {
             queryMeta.setQueryTimeout(insert.queryTimeout());
+            queryMeta.setIncludedPropertyNames(insert.include());
+            queryMeta.setExcludedPropertyNames(insert.exclude());
             queryMeta.setQueryKind(QueryKind.AUTO_BATCH_INSERT);
         }
         BatchUpdate update = method.getAnnotation(BatchUpdate.class);
         if (update != null && !update.sqlFile()) {
             queryMeta.setQueryTimeout(update.queryTimeout());
             queryMeta.setVersionIncluded(update.includesVersion());
+            queryMeta.setIncludedPropertyNames(update.include());
+            queryMeta.setExcludedPropertyNames(update.exclude());
             queryMeta.setOptimisticLockExceptionSuppressed(update
                     .suppressOptimisticLockException());
             queryMeta.setQueryKind(QueryKind.AUTO_BATCH_UPDATE);

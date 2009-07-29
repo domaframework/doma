@@ -73,7 +73,7 @@ public class AutoDeleteQueryTest extends TestCase {
         assertEquals(new IntegerDomain(100), parameters.get(1).getDomain());
     }
 
-    public void testOption_ignoresVersion() throws Exception {
+    public void testOption_ignoreVersion() throws Exception {
         Emp emp = new Emp_();
         emp.id().set(10);
         emp.name().set("aaa");

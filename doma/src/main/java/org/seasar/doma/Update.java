@@ -36,6 +36,12 @@ public @interface Update {
 
     boolean includeVersion() default false;
 
+    boolean includeUnchanged() default false;
+
+    String[] include() default {};
+
+    String[] exclude() default {};
+
     boolean suppressOptimisticLockException() default false;
 
 }

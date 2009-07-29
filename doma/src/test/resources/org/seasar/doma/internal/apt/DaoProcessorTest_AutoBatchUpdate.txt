@@ -28,6 +28,8 @@ public class AutoBatchUpdateDao_ extends org.seasar.doma.jdbc.DomaAbstractDao im
         query.setCallerMethodName("update");
         query.setQueryTimeout(-1);
         query.setVersionIncluded(false);
+        query.setIncludedPropertyNames();
+        query.setExcludedPropertyNames();
         query.setOptimisticLockExceptionSuppressed(false);
         query.compile();
         org.seasar.doma.internal.jdbc.command.BatchUpdateCommand command = new org.seasar.doma.internal.jdbc.command.BatchUpdateCommand(query);

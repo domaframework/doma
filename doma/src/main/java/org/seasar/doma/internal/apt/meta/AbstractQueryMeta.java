@@ -54,6 +54,12 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
     protected Boolean optimisticLockExceptionSuppressed;
 
+    protected Boolean unchangedPropertyIncluded;
+
+    protected String[] includedPropertyNames;
+
+    protected String[] excludedPropertyNames;
+
     protected Map<String, String> methodParameters = new LinkedHashMap<String, String>();
 
     public String getName() {
@@ -167,6 +173,30 @@ public abstract class AbstractQueryMeta implements QueryMeta {
     public void addMethodParameter(String parameterName,
             String parameterTypeName) {
         this.methodParameters.put(parameterName, parameterTypeName);
+    }
+
+    public Boolean isUnchangedPropertyIncluded() {
+        return unchangedPropertyIncluded;
+    }
+
+    public void setUnchangedPropertyIncluded(Boolean unchangedPropertyIncluded) {
+        this.unchangedPropertyIncluded = unchangedPropertyIncluded;
+    }
+
+    public String[] getIncludedPropertyNames() {
+        return includedPropertyNames;
+    }
+
+    public void setIncludedPropertyNames(String[] includedPropertyNames) {
+        this.includedPropertyNames = includedPropertyNames;
+    }
+
+    public String[] getExcludedPropertyNames() {
+        return excludedPropertyNames;
+    }
+
+    public void setExcludedPropertyNames(String[] excludedPropertyNames) {
+        this.excludedPropertyNames = excludedPropertyNames;
     }
 
 }

@@ -108,7 +108,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
         assertEquals(new IntegerDomain(200), parameters.get(4).getDomain());
     }
 
-    public void testOption_includesVersion() throws Exception {
+    public void testOption_includeVersion() throws Exception {
         Emp emp1 = new Emp_();
         emp1.id().set(10);
         emp1.name().set("aaa");
@@ -148,6 +148,89 @@ public class AutoBatchUpdateQueryTest extends TestCase {
                 .get(1).getDomain());
         assertEquals(new IntegerDomain(200), parameters.get(2).getDomain());
         assertEquals(new IntegerDomain(20), parameters.get(3).getDomain());
+    }
+
+    public void testOption_include() throws Exception {
+        Emp emp1 = new Emp_();
+        emp1.id().set(10);
+        emp1.name().set("aaa");
+        emp1.salary().set(new BigDecimal(200));
+        emp1.version().set(100);
+
+        Emp emp2 = new Emp_();
+        emp2.id().set(20);
+        emp2.version().set(200);
+
+        AutoBatchUpdateQuery<Emp, Emp_> query = new AutoBatchUpdateQuery<Emp, Emp_>(
+                Emp_.class);
+        query.setConfig(runtimeConfig);
+        query.setEntities(Arrays.asList(emp1, emp2));
+        query.setIncludedPropertyNames("name");
+        query.setCallerClassName("aaa");
+        query.setCallerMethodName("bbb");
+        query.compile();
+
+        PreparedSql sql = query.getSqls().get(0);
+        assertEquals("update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql
+                .getRawSql());
+        List<PreparedSqlParameter> parameters = sql.getParameters();
+        assertEquals(4, parameters.size());
+        assertEquals(new StringDomain("aaa"), parameters.get(0).getDomain());
+        assertEquals(new IntegerDomain(100), parameters.get(1).getDomain());
+        assertEquals(new IntegerDomain(10), parameters.get(2).getDomain());
+        assertEquals(new IntegerDomain(100), parameters.get(3).getDomain());
+
+        sql = query.getSqls().get(1);
+        assertEquals("update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql
+                .getRawSql());
+        parameters = sql.getParameters();
+        assertEquals(4, parameters.size());
+        assertTrue(parameters.get(0).getDomain().isNull());
+        assertEquals(new IntegerDomain(200), parameters.get(1).getDomain());
+        assertEquals(new IntegerDomain(20), parameters.get(2).getDomain());
+        assertEquals(new IntegerDomain(200), parameters.get(3).getDomain());
+    }
+
+    public void testOption_exclude() throws Exception {
+        Emp emp1 = new Emp_();
+        emp1.id().set(10);
+        emp1.name().set("aaa");
+        emp1.salary().set(new BigDecimal(200));
+        emp1.version().set(100);
+
+        Emp emp2 = new Emp_();
+        emp2.id().set(20);
+        emp2.version().set(200);
+
+        AutoBatchUpdateQuery<Emp, Emp_> query = new AutoBatchUpdateQuery<Emp, Emp_>(
+                Emp_.class);
+        query.setConfig(runtimeConfig);
+        query.setEntities(Arrays.asList(emp1, emp2));
+        query.setExcludedPropertyNames("name");
+        query.setCallerClassName("aaa");
+        query.setCallerMethodName("bbb");
+        query.compile();
+
+        PreparedSql sql = query.getSqls().get(0);
+        assertEquals("update EMP set SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql
+                .getRawSql());
+        List<PreparedSqlParameter> parameters = sql.getParameters();
+        assertEquals(4, parameters.size());
+        assertEquals(new BigDecimalDomain(new BigDecimal(200)), parameters
+                .get(0).getDomain());
+        assertEquals(new IntegerDomain(100), parameters.get(1).getDomain());
+        assertEquals(new IntegerDomain(10), parameters.get(2).getDomain());
+        assertEquals(new IntegerDomain(100), parameters.get(3).getDomain());
+
+        sql = query.getSqls().get(1);
+        assertEquals("update EMP set SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql
+                .getRawSql());
+        parameters = sql.getParameters();
+        assertEquals(4, parameters.size());
+        assertTrue(parameters.get(0).getDomain().isNull());
+        assertEquals(new IntegerDomain(200), parameters.get(1).getDomain());
+        assertEquals(new IntegerDomain(20), parameters.get(2).getDomain());
+        assertEquals(new IntegerDomain(200), parameters.get(3).getDomain());
     }
 
     public void testIsExecutable() throws Exception {

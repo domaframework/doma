@@ -31,4 +31,8 @@ public @interface BatchInsert {
     boolean sqlFile() default false;
 
     int queryTimeout() default -1;
+
+    String[] include() default {};
+
+    String[] exclude() default {};
 }

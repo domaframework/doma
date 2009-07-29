@@ -309,6 +309,18 @@ public class DaoGenerator extends AbstractGenerator {
             if (m.isVersionIgnored() != null) {
                 iprint("query.setVersionIgnored(%1$s);%n", m.isVersionIgnored());
             }
+            if (m.getIncludedPropertyNames() != null) {
+                String s = formatStringArray(m.getIncludedPropertyNames());
+                iprint("query.setIncludedPropertyNames(%1$s);%n", s);
+            }
+            if (m.getExcludedPropertyNames() != null) {
+                String s = formatStringArray(m.getExcludedPropertyNames());
+                iprint("query.setExcludedPropertyNames(%1$s);%n", s);
+            }
+            if (m.isUnchangedPropertyIncluded() != null) {
+                iprint("query.setUnchangedPropertyIncluded(%1$s);%n", m
+                        .isUnchangedPropertyIncluded());
+            }
             if (m.isOptimisticLockExceptionSuppressed() != null) {
                 iprint("query.setOptimisticLockExceptionSuppressed(%1$s);%n", m
                         .isOptimisticLockExceptionSuppressed());
@@ -393,6 +405,14 @@ public class DaoGenerator extends AbstractGenerator {
             }
             if (m.isVersionIgnored() != null) {
                 iprint("query.setVersionIgnored(%1$s);%n", m.isVersionIgnored());
+            }
+            if (m.getIncludedPropertyNames() != null) {
+                String s = formatStringArray(m.getIncludedPropertyNames());
+                iprint("query.setIncludedPropertyNames(%1$s);%n", s);
+            }
+            if (m.getExcludedPropertyNames() != null) {
+                String s = formatStringArray(m.getExcludedPropertyNames());
+                iprint("query.setExcludedPropertyNames(%1$s);%n", s);
             }
             if (m.isOptimisticLockExceptionSuppressed() != null) {
                 iprint("query.setOptimisticLockExceptionSuppressed(%1$s);%n", m

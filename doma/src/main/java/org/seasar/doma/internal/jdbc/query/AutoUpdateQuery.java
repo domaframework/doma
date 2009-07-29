@@ -34,6 +34,8 @@ public class AutoUpdateQuery<I, E extends Entity<I>> extends
 
     protected boolean optimisticLockExceptionSuppressed;
 
+    protected boolean unchangedPropertyIncluded;
+
     public AutoUpdateQuery(Class<E> entityClass) {
         super(entityClass);
     }
@@ -77,7 +79,10 @@ public class AutoUpdateQuery<I, E extends Entity<I>> extends
             if (nullExcluded && p.getDomain().isNull()) {
                 continue;
             }
-            if (p.getDomain().isChanged()) {
+            if (unchangedPropertyIncluded || p.getDomain().isChanged()) {
+                if (!isTargetPropertyName(p.getName())) {
+                    continue;
+                }
                 targetProperties.add(p);
                 executable = true;
                 sqlExecutionSkipCause = null;
@@ -142,6 +147,10 @@ public class AutoUpdateQuery<I, E extends Entity<I>> extends
     public void setOptimisticLockExceptionSuppressed(
             boolean optimisticLockExceptionSuppressed) {
         this.optimisticLockExceptionSuppressed = optimisticLockExceptionSuppressed;
+    }
+
+    public void setUnchangedPropertyIncluded(Boolean unchangedPropertyIncluded) {
+        this.unchangedPropertyIncluded = unchangedPropertyIncluded;
     }
 
 }

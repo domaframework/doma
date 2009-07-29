@@ -33,4 +33,8 @@ public @interface Insert {
     int queryTimeout() default -1;
 
     boolean excludeNull() default false;
+
+    String[] include() default {};
+
+    String[] exclude() default {};
 }

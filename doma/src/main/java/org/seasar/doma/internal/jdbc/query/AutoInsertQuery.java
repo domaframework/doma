@@ -100,6 +100,9 @@ public class AutoInsertQuery<I, E extends Entity<I>> extends
             if (nullExcluded && p.getDomain().isNull()) {
                 continue;
             }
+            if (!isTargetPropertyName(p.getName())) {
+                continue;
+            }
             targetProperties.add(p);
         }
     }

@@ -105,9 +105,22 @@ public abstract class AbstractGenerator implements Generator {
         }
     }
 
+    protected String formatStringArray(String[] array) {
+        StringBuilder buf = new StringBuilder();
+        if (array.length > 0) {
+            for (String s : array) {
+                buf.append(s);
+                buf.append(", ");
+            }
+            buf.setLength(buf.length() - 2);
+        }
+        return buf.toString();
+    }
+
     public void close() {
         if (formatter != null) {
             formatter.close();
         }
     }
+
 }

@@ -28,6 +28,8 @@ public class AutoInsertDao_ extends org.seasar.doma.jdbc.DomaAbstractDao impleme
         query.setCallerMethodName("insert");
         query.setQueryTimeout(-1);
         query.setNullExcluded(false);
+        query.setIncludedPropertyNames();
+        query.setExcludedPropertyNames();
         query.compile();
         org.seasar.doma.internal.jdbc.command.InsertCommand command = new org.seasar.doma.internal.jdbc.command.InsertCommand(query);
         int result = command.execute();

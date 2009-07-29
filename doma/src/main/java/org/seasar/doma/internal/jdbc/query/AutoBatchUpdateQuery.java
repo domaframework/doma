@@ -94,6 +94,9 @@ public class AutoBatchUpdateQuery<I, E extends Entity<I>> extends
                 targetProperties.add(p);
                 continue;
             }
+            if (!isTargetPropertyName(p.getName())) {
+                continue;
+            }
             targetProperties.add(p);
         }
     }

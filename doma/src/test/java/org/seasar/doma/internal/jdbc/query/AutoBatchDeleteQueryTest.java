@@ -93,7 +93,7 @@ public class AutoBatchDeleteQueryTest extends TestCase {
         assertEquals(new IntegerDomain(10), parameters.get(1).getDomain());
     }
 
-    public void testOption_ignoresVersion() throws Exception {
+    public void testOption_ignoreVersion() throws Exception {
         Emp emp1 = new Emp_();
         emp1.id().set(10);
         emp1.name().set("aaa");

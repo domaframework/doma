@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.query;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -83,7 +84,7 @@ public class AutoUpdateQueryTest extends TestCase {
         assertEquals(new IntegerDomain(100), parameters.get(3).getDomain());
     }
 
-    public void testOption_excludesNull() throws Exception {
+    public void testOption_excludeNull() throws Exception {
         Emp emp = new Emp_();
         emp.id().set(10);
         emp.version().set(100);
@@ -107,7 +108,7 @@ public class AutoUpdateQueryTest extends TestCase {
         assertEquals(new IntegerDomain(100), parameters.get(2).getDomain());
     }
 
-    public void testOption_includesVersion() throws Exception {
+    public void testOption_includeVersion() throws Exception {
         Emp emp = new Emp_();
         emp.id().set(10);
         emp.name().set("aaa");
@@ -130,6 +131,61 @@ public class AutoUpdateQueryTest extends TestCase {
         assertEquals(new StringDomain("aaa"), parameters.get(0).getDomain());
         assertEquals(new IntegerDomain(100), parameters.get(1).getDomain());
         assertEquals(new IntegerDomain(10), parameters.get(2).getDomain());
+    }
+
+    public void testOption_include() throws Exception {
+        Emp emp = new Emp_();
+        emp.id().set(10);
+        emp.name().set("aaa");
+        emp.salary().set(new BigDecimal(200));
+        emp.version().set(100);
+
+        AutoUpdateQuery<Emp, Emp_> query = new AutoUpdateQuery<Emp, Emp_>(
+                Emp_.class);
+        query.setConfig(runtimeConfig);
+        query.setEntity(emp);
+        query.setIncludedPropertyNames("name");
+        query.setCallerClassName("aaa");
+        query.setCallerMethodName("bbb");
+        query.compile();
+
+        PreparedSql sql = query.getSql();
+        assertEquals("update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql
+                .getRawSql());
+        List<PreparedSqlParameter> parameters = sql.getParameters();
+        assertEquals(4, parameters.size());
+        assertEquals(new StringDomain("aaa"), parameters.get(0).getDomain());
+        assertEquals(new IntegerDomain(100), parameters.get(1).getDomain());
+        assertEquals(new IntegerDomain(10), parameters.get(2).getDomain());
+        assertEquals(new IntegerDomain(100), parameters.get(3).getDomain());
+    }
+
+    public void testOption_exclude() throws Exception {
+        Emp emp = new Emp_();
+        emp.id().set(10);
+        emp.name().set("aaa");
+        emp.salary().set(new BigDecimal(200));
+        emp.version().set(100);
+
+        AutoUpdateQuery<Emp, Emp_> query = new AutoUpdateQuery<Emp, Emp_>(
+                Emp_.class);
+        query.setConfig(runtimeConfig);
+        query.setEntity(emp);
+        query.setExcludedPropertyNames("name");
+        query.setCallerClassName("aaa");
+        query.setCallerMethodName("bbb");
+        query.compile();
+
+        PreparedSql sql = query.getSql();
+        assertEquals("update EMP set SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql
+                .getRawSql());
+        List<PreparedSqlParameter> parameters = sql.getParameters();
+        assertEquals(4, parameters.size());
+        assertEquals(new BigDecimalDomain(new BigDecimal(200)), parameters
+                .get(0).getDomain());
+        assertEquals(new IntegerDomain(100), parameters.get(1).getDomain());
+        assertEquals(new IntegerDomain(10), parameters.get(2).getDomain());
+        assertEquals(new IntegerDomain(100), parameters.get(1).getDomain());
     }
 
     public void testIsExecutable() throws Exception {
