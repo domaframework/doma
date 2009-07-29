@@ -145,7 +145,7 @@ public class EntityPropertyMetaFactory {
     protected TypeMirror getIdGeneratorImplementerType(
             SequenceGenerator generator) {
         try {
-            generator.idGeneratorImplementer();
+            generator.implementer();
         } catch (MirroredTypeException e) {
             return e.getTypeMirror();
         }
@@ -180,7 +180,7 @@ public class EntityPropertyMetaFactory {
 
     protected TypeMirror getIdGeneratorImplementerType(TableGenerator generator) {
         try {
-            generator.idGeneratorImplementer();
+            generator.implementer();
         } catch (MirroredTypeException e) {
             return e.getTypeMirror();
         }

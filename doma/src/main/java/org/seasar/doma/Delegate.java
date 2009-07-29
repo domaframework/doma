@@ -29,5 +29,5 @@ import java.lang.annotation.Target;
 @Query
 public @interface Delegate {
 
-    Class<?> target();
+    Class<?> to();
 }

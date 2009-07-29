@@ -76,7 +76,7 @@ public class DelegateQueryMetaFactory extends
 
     protected TypeMirror getTargetType(Delegate delegate) {
         try {
-            delegate.target();
+            delegate.to();
         } catch (MirroredTypeException e) {
             return e.getTypeMirror();
         }

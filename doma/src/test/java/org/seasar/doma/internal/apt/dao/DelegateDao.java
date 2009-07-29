@@ -27,7 +27,7 @@ import org.seasar.doma.Delegate;
 @Dao(config = MyConfig.class)
 public interface DelegateDao {
 
-    @Delegate(target = DelegateDaoDelegate.class)
+    @Delegate(to = DelegateDaoDelegate.class)
     BigDecimal execute(String aaa, Integer bbb);
 
 }

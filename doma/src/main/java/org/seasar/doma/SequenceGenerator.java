@@ -41,5 +41,5 @@ public @interface SequenceGenerator {
 
     long allocationSize() default 1;
 
-    Class<? extends SequenceIdGenerator> idGeneratorImplementer() default BuiltinSequenceIdGenerator.class;
+    Class<? extends SequenceIdGenerator> implementer() default BuiltinSequenceIdGenerator.class;
 }

@@ -25,6 +25,6 @@ import org.seasar.doma.Delegate;
 @Dao(config = MyConfig.class)
 public interface IllegalMethodDelegateDao {
 
-    @Delegate(target = IllegalMethodDelegateDaoDelegate.class)
+    @Delegate(to = IllegalMethodDelegateDaoDelegate.class)
     void hoge();
 }

@@ -69,7 +69,7 @@ public class EntityDelegateMetaFactory {
 
     protected TypeMirror getTargetType(Delegate delegate) {
         try {
-            delegate.target();
+            delegate.to();
         } catch (MirroredTypeException e) {
             return e.getTypeMirror();
         }

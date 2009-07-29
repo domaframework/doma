@@ -23,12 +23,15 @@ import junit.framework.TestCase;
  */
 public class DomaIllegalStateExceptionTest extends TestCase {
 
+    public void testCauseOntly() throws Exception {
+        DomaIllegalStateException e = new DomaIllegalStateException(
+                new Exception());
+        System.out.println(e.getMessage());
+    }
+
     public void test() throws Exception {
         DomaIllegalStateException e = new DomaIllegalStateException("aaa",
                 "bbb", "ccc");
-        assertEquals("aaa", e.getObject());
-        assertEquals("bbb", e.getMemberVariableName());
-        assertEquals("ccc", e.getValue());
         System.out.println(e.getMessage());
     }
 }

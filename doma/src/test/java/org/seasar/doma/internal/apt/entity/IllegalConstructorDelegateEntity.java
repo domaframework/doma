@@ -27,6 +27,6 @@ import org.seasar.doma.Entity;
 @Entity
 public interface IllegalConstructorDelegateEntity {
 
-    @Delegate(target = IllegalConstructorDelegateEntityDelegate.class)
+    @Delegate(to = IllegalConstructorDelegateEntityDelegate.class)
     String hoge(Integer aaa, BigDecimal bbb);
 }

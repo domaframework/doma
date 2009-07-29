@@ -47,5 +47,5 @@ public @interface TableGenerator {
 
     long allocationSize() default 1;
 
-    Class<? extends TableIdGenerator> idGeneratorImplementer() default BuiltinTableIdGenerator.class;
+    Class<? extends TableIdGenerator> implementer() default BuiltinTableIdGenerator.class;
 }
