@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.internal.apt;
 
-import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.internal.apt.entity.ChildEntity;
 import org.seasar.doma.internal.apt.entity.DelegateEntity;
 import org.seasar.doma.internal.apt.entity.ElementOfReturnListNotDomainEntity;
@@ -34,6 +33,7 @@ import org.seasar.doma.internal.apt.entity.ReturnTypeNotConcreteDomainEntity;
 import org.seasar.doma.internal.apt.entity.ReturnTypeNotDomainEntity;
 import org.seasar.doma.internal.apt.entity.VersionDuplicatedEntity;
 import org.seasar.doma.internal.apt.entity.VersionNotNumberEntity;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

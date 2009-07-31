@@ -17,7 +17,6 @@ package org.seasar.doma.internal.jdbc.dialect;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.FragmentNode;
@@ -30,6 +29,7 @@ import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.WordNode;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

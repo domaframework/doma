@@ -15,8 +15,8 @@
  */
 package org.seasar.doma.jdbc.dialect;
 
-import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

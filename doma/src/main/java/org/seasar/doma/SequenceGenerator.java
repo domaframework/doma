@@ -24,22 +24,59 @@ import org.seasar.doma.jdbc.id.BuiltinSequenceIdGenerator;
 import org.seasar.doma.jdbc.id.SequenceIdGenerator;
 
 /**
- * @author taedium
+ * シーケンスを利用する識別子ジェネレータを示します。
+ * <p>
+ * このアノテーションが注釈されるメソッドは、{@link Entity} もしくは {@link MappedSuperclass}
+ * が注釈されたインタフェースのメンバでなければいけません。 このアノテーションは{@link Id} 、 {@link GeneratedValue}
+ * と併わせて使用しなければいけません。
+ * <p>
  * 
+ * <h5>例:</h5>
+ * 
+ * <pre>
+ * &#064;Entity
+ * public interface Employee {
+ * 
+ *     &#064;Id
+ *     &#064;GeneratedValue(strategy = GenerationType.SEQUENCE)
+ *     &#064;SequenceGenerator(sequence = &quot;EMPLOYEE_SEQ&quot;)
+ *     IntegerDomain id();
+ * }
+ * </pre>
+ * 
+ * @author taedium
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SequenceGenerator {
 
+    /**
+     * カタログ名です。
+     */
     String catalog() default "";
 
+    /**
+     * スキーマ名です。
+     */
     String schema() default "";
 
+    /**
+     * シーケンス名です。
+     */
     String sequence();
 
+    /**
+     * 初期値です。
+     */
     long initialValue() default 1;
 
+    /**
+     * 割り当てサイズです。
+     */
     long allocationSize() default 1;
 
+    /**
+     * ジェネレータの実装クラスです。
+     */
     Class<? extends SequenceIdGenerator> implementer() default BuiltinSequenceIdGenerator.class;
 }

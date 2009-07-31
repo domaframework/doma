@@ -28,12 +28,12 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 
-import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.internal.apt.meta.EntityDelegateMetaFactory;
 import org.seasar.doma.internal.apt.meta.EntityMeta;
 import org.seasar.doma.internal.apt.meta.EntityMetaFactory;
 import org.seasar.doma.internal.apt.meta.EntityPropertyMetaFactory;
 import org.seasar.doma.internal.util.IOUtil;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

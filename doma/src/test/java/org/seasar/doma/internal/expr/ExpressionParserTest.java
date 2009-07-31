@@ -19,8 +19,8 @@ import java.math.BigDecimal;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

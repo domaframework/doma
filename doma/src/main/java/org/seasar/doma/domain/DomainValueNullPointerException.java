@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.domain;
 
-import org.seasar.doma.DomaMessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

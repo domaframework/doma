@@ -27,9 +27,9 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.tools.JavaFileObject;
 
-import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.internal.Artifact;
 import org.seasar.doma.internal.util.ClassUtil;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

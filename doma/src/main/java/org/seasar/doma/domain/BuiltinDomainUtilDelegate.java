@@ -18,9 +18,9 @@ package org.seasar.doma.domain;
 import java.lang.reflect.Method;
 
 import org.seasar.doma.DomaIllegalArgumentException;
-import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.MethodUtil;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

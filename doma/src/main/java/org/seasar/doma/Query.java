@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 /**
  * データベースへのクエリを行うアノテーションであることを示します。
  * <p>
- * {@literal Doma}がアノテーション処理に利用するメタアノテーションです。
+ * {@literal Doma} がアノテーション処理に利用するメタアノテーションです。
  * 
  * @author taedium
  * 

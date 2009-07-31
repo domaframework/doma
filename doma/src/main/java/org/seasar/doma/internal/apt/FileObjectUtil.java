@@ -26,7 +26,7 @@ import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 import javax.tools.Diagnostic.Kind;
 
-import org.seasar.doma.DomaMessageCode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

@@ -15,10 +15,10 @@
  */
 package org.seasar.doma.domain;
 
-import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.domain.DomainIncomparableException;
 import org.seasar.doma.domain.DomainValueNullPointerException;
 import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.message.DomaMessageCode;
 
 import junit.framework.TestCase;
 

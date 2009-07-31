@@ -23,10 +23,12 @@ import java.lang.annotation.Target;
 import org.seasar.doma.jdbc.Config;
 
 /**
- * {@literal Data Access Object}であることを示します。
+ * {@literal Data Access Object} であることを示します。
  * <p>
- * このアノテーションは、トップレベルのインタフェースに指定できます。 インタフェースのメンバメソッドは、メタアノテーション {@link Query}
- * でマークされたアノテーションで注釈されなければいけません。
+ * このアノテーションは、トップレベルのインタフェースに指定できます。 インタフェースのメンバメソッドには、メタアノテーション {@link Query}
+ * でマークされたアノテーションを指定しなければいけません。
+ * 
+ * <h5>例:</h5>
  * 
  * <pre>
  * &#064;Dao(config = AppConfig.class)
@@ -37,6 +39,8 @@ import org.seasar.doma.jdbc.Config;
  * }
  * </pre>
  * 
+ * 注釈されたインタフェースの実装はスレッドセーフでなければいけません。
+ * 
  * @author taedium
  */
 @Target(ElementType.TYPE)
@@ -46,7 +50,7 @@ public @interface Dao {
     /**
      * {@literal Data Access Object}を実行する際の設定（JDBCの接続情報やRDBMSの方言等）です。
      * <p>
-     * ここに指定されたクラスは、{@code Dao}が注釈されたインタフェースの実装クラスがインスタンス化されるのに伴ってインスタンス化されます。
+     * ここに指定されたクラスは、{@code Dao}が注釈されたインタフェースの実装クラスがインスタンス化されるごとにインスタンス化されます。
      */
     Class<? extends Config> config();
 

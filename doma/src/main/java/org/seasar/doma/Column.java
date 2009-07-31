@@ -20,7 +20,29 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.seasar.doma.jdbc.NameConvention;
+
 /**
+ * データベースのテーブルのカラムを示します。
+ * <p>
+ * このアノテーションが注釈されるメソッドは、 {@link Entity} もしくは {@link MappedSuperclass}
+ * が注釈されたインタフェースのメンバでなければいけません。
+ * <p>
+ * 
+ * <h5>例:</h5>
+ * 
+ * <pre>
+ * &#064;Entity
+ * public interface Employee {
+ * 
+ *     &#064;Column(name = &quot;EMPLOYEE_NAME&quot;)
+ *     StringDomain employeeName();
+ * 
+ *     &#064;Column(name = &quot;SALARY&quot;)
+ *     BigDecimalDomain salary();
+ * }
+ * </pre>
+ * 
  * @author taedium
  * 
  */
@@ -28,10 +50,23 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Column {
 
+    /**
+     * カラム名です。
+     * <p>
+     * 指定しない場合、カラム名は
+     * {@link NameConvention#fromPropertyToColumn(String, org.seasar.doma.jdbc.dialect.Dialect)}
+     * によって解決されます。
+     */
     String name() default "";
 
+    /**
+     * INSERT文に含めるかどうかを示します。
+     */
     boolean insertable() default true;
 
+    /**
+     * UPDATE文のSET句に含めるかどうかを示します。
+     */
     boolean updatable() default true;
 
 }

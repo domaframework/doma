@@ -20,7 +20,6 @@ import static org.junit.Assert.*;
 import java.util.Arrays;
 
 import org.junit.runner.RunWith;
-import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.it.dao.CompKeyDepartmentDao;
 import org.seasar.doma.it.dao.CompKeyDepartmentDao_;
 import org.seasar.doma.it.dao.DepartmentDao;
@@ -50,6 +49,7 @@ import org.seasar.doma.it.entity.SequenceStrategy_;
 import org.seasar.doma.it.entity.TableStrategy;
 import org.seasar.doma.it.entity.TableStrategy_;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.message.DomaMessageCode;
 import org.seasar.framework.unit.Seasar2;
 import org.seasar.framework.unit.annotation.Prerequisite;
 

@@ -21,8 +21,26 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author taedium
+ * 識別子を示します。
+ * <p>
+ * このアノテーションが注釈されるメソッドは、{@link Entity} もしくは {@link MappedSuperclass}
+ * が注釈されたインタフェースのメンバでなければいけません。
  * 
+ * <h5>例:</h5>
+ * 
+ * <pre>
+ * &#064;Entity
+ * public interface Employee {
+ * 
+ *     &#064;Id
+ *     &#064;Column(name = &quot;ID&quot;)
+ *     IntegerDomain id();
+ * }
+ * </pre>
+ * 
+ * 識別子を自動生成する場合は、 {@link GeneratedValue}を合わせて注釈します。
+ * 
+ * @author taedium
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

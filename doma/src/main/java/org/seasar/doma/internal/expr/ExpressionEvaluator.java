@@ -27,7 +27,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.expr.node.AddOperatorNode;
@@ -57,6 +56,7 @@ import org.seasar.doma.internal.expr.node.SubtractOperatorNode;
 import org.seasar.doma.internal.expr.node.VariableNode;
 import org.seasar.doma.internal.util.ConstructorUtil;
 import org.seasar.doma.internal.util.MethodUtil;
+import org.seasar.doma.message.DomaMessageCode;
 
 
 /**

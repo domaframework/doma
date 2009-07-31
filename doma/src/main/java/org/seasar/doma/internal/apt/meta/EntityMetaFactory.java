@@ -29,7 +29,6 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 
-import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.Entity;
 import org.seasar.doma.MappedSuperclass;
 import org.seasar.doma.Table;
@@ -40,6 +39,7 @@ import org.seasar.doma.internal.apt.Notifier;
 import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * 

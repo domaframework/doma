@@ -33,14 +33,16 @@ import org.seasar.doma.jdbc.JdbcException;
  * 。そうでないRDBMSにおいては、IN、INOUT、OUTのいずれのパラメータにもみなされません。
  * {@link Statement#getResultSet()}で取得される結果セットにマッピングされます。
  * <p>
- * このアノテーションが指定されるパラメータは、 {@link Function}もしくは {@link Procedure}
+ * このアノテーションが注釈されるパラメータは、 {@link Function} もしくは {@link Procedure}
  * が注釈されたメソッドのパラメータでなければいけません。
  * 
  * 注釈されるパラメータは、次の制約を満たす必要があります。
  * <ul>
- * <li>型は{@link Domain}の実装クラスを要素にもつ {@link List}、もしくは {@link Entity}
- * が注釈されたインタフェースを要素にもつ {@link List}である。
+ * <li>型は {@link Domain} の実装クラスを要素にもつ {@link List}、もしくは {@link Entity}
+ * が注釈されたインタフェースを要素にもつ {@link List} である。
  * </ul>
+ * 
+ * <h5>例:</h5>
  * 
  * <pre>
  * &#064;Dao(config = AppConfig.class)

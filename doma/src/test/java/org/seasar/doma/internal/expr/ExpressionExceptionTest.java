@@ -15,11 +15,11 @@
  */
 package org.seasar.doma.internal.expr;
 
-import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.ExpressionException;
 import org.seasar.doma.internal.expr.ExpressionParser;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
+import org.seasar.doma.message.DomaMessageCode;
 
 import junit.framework.TestCase;
 

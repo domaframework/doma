@@ -29,18 +29,20 @@ import org.seasar.doma.jdbc.JdbcException;
 /**
  * ストアドファンクションの呼び出しを示します。
  * <p>
- * このアノテーションが指定されるメソッドは、{@link Dao}が注釈されたインタフェースのメンバでなければいけません。
+ * このアノテーションが注釈されるメソッドは、{@link Dao} が注釈されたインタフェースのメンバでなければいけません。
  * 
  * 注釈されるメソッドは、次の制約を満たす必要があります。
  * <ul>
  * <li>パラメータは0個以上である。
  * <li>パラメータは {@link Domain}の実装クラスである。
- * <li>パラメータには、パラメータの種別を示す {@link In}、 {@link InOut}、 {@link Out}、
+ * <li>パラメータには、パラメータの種別を示す {@link In} 、 {@link InOut} 、 {@link Out} 、
  * {@link ResultSet} のいずれかのアノテーションが必須である。これらは、ストアドファンクションの定義に合わせて注釈しなければいけない。
- * <li>戻り値の型は、{@code void}、{@code Domain}の実装クラス、{@code Domain}の実装クラスを要素とする
- * {@link List}、 {@link Entity}が注釈されたインタフェースを要素とする {@code List}のいずれかである。戻り値を
- * {@code List}にできるのは、ストアドファンクションがカーソルをOUTパラメータとして返す場合のみである。
+ * <li>戻り値の型は、{@code void} 、{@code Domain} の実装クラス、{@code Domain} の実装クラスを要素とする。
+ * {@link List} 、 {@link Entity} が注釈されたインタフェースを要素とする {@code List} のいずれかである。戻り値を
+ * {@code List} にできるのは、ストアドファンクションがカーソルをOUTパラメータとして返す場合のみである。
  * </ul>
+ * 
+ * <h5>例:</h5>
  * 
  * <pre>
  * &#064;Dao(config = AppConfig.class)
@@ -56,9 +58,6 @@ import org.seasar.doma.jdbc.JdbcException;
  * <li> {@link DomaIllegalArgumentException} パラメータに {@code null}を渡した場合
  * <li> {@link JdbcException} JDBCに関する例外が発生した場合
  * </ul>
- * 
- * ストアドファンクションの完全修飾名には、{@link #catalog()}、{@link #schema()}、{@link #name()}を
- * {@literal .}で連結したものが使用されます。
  * 
  * @author taedium
  */

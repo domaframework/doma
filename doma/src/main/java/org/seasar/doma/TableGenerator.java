@@ -24,28 +24,75 @@ import org.seasar.doma.jdbc.id.BuiltinTableIdGenerator;
 import org.seasar.doma.jdbc.id.TableIdGenerator;
 
 /**
- * @author taedium
+ * テーブルを利用する識別子ジェネレータを示します。
+ * <p>
+ * <p>
+ * このアノテーションが注釈されるメソッドは、{@link Entity} もしくは {@link MappedSuperclass}
+ * が注釈されたインタフェースのメンバでなければいけません。 このアノテーションは{@link Id} 、 {@link GeneratedValue}
+ * と併わせて使用しなければいけません。
+ * <p>
  * 
+ * <h5>例:</h5>
+ * 
+ * <pre>
+ * &#064;Entity
+ * public interface Employee {
+ * 
+ *     &#064;Id
+ *     &#064;GeneratedValue(strategy = GenerationType.TABLE)
+ *     &#064;TableGenerator(pkColumnValue = &quot;EMPLOYEE_ID&quot;)
+ *     IntegerDomain id();
+ * }
+ * </pre>
+ * 
+ * @author taedium
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TableGenerator {
 
+    /**
+     * カタログ名です。
+     */
     String catalog() default "";
 
+    /**
+     * シーケンス名です。
+     */
     String schema() default "";
 
+    /**
+     * テーブル名です。
+     */
     String table() default "ID_GENERATOR";
 
+    /**
+     * 主キーのカラムの名前です。
+     */
     String pkColumnName() default "PK";
 
+    /**
+     * 生成される識別子を保持するカラムの名前です。
+     */
     String valueColumnName() default "VALUE";
 
+    /**
+     * 主キーのカラムの値です。
+     */
     String pkColumnValue();
 
+    /**
+     * 初期値です。
+     */
     long initialValue() default 1;
 
+    /**
+     * 割り当てサイズです。
+     */
     long allocationSize() default 1;
 
+    /**
+     * ジェネレータの実装クラスです。
+     */
     Class<? extends TableIdGenerator> implementer() default BuiltinTableIdGenerator.class;
 }

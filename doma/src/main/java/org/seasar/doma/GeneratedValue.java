@@ -20,13 +20,44 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.seasar.doma.domain.NumberDomain;
+
 /**
- * @author taedium
+ * 識別子を自動生成する方法を示します。
+ * <p>
+ * このアノテーションが注釈されるメソッドは、{@link Entity} もしくは {@link MappedSuperclass}
+ * が注釈されたインタフェースのメンバでなければいけません。 このアノテーションは{@link Id}と併わせて使用しなければいけません。
+ * <p>
+ * 注釈されるメソッドの戻り値の型は、{@link NumberDomain} のサブタイプでなければいけません。
+ * <p>
+ * {@code strategy} 要素に指定する値によっては追加のアノテーションが必要です。
+ * <ul>
+ * <li> {@link GenerationType#SEQUENCE} を指定した場合、{@link SequenceGenerator}が必要です。
+ * <li>
+ * {@link GenerationType#TABLE} を指定した場合、 {@link TableGenerator}が必要です。
+ * </ul>
  * 
+ * <h5>例:</h5>
+ * 
+ * <pre>
+ * &#064;Entity
+ * public interface Employee {
+ * 
+ *     &#064;Id
+ *     &#064;GeneratedValue(strategy = GenerationType.SEQUENCE)
+ *     &#064;SequenceGenerator(sequence = &quot;EMPLOYEE_SEQ&quot;)
+ *     IntegerDomain id();
+ * }
+ * </pre>
+ * 
+ * @author taedium
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface GeneratedValue {
 
+    /**
+     * 識別子を自動生成する方法です。
+     */
     GenerationType strategy();
 }

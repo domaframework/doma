@@ -26,16 +26,18 @@ import org.seasar.doma.domain.Domain;
 import org.seasar.doma.jdbc.JdbcException;
 
 /**
- * {@link Array}のインスタンスを生成することを示します。
+ * {@link Array} のインスタンスを生成することを示します。
  * <p>
- * このアノテーションが指定されるメソッドは、{@link Dao}が注釈されたインタフェースのメンバでなければいけません。
+ * このアノテーションが注釈されるメソッドは、 {@link Dao} が注釈されたインタフェースのメンバでなければいけません。
  * 
  * 注釈されるメソッドは、次の制約を満たす必要があります。
  * <li>パラメータを1つだけ受け取る。
- * <li>パラメータの型は配列である。この配列は{@link Connection#createArrayOf(String, Object[])}
+ * <li>パラメータの型は配列である。この配列は {@link Connection#createArrayOf(String, Object[])}
  * の2番目のパラメータに渡される。
- * <li>戻り値の型は {@code Array}を値とする {@link Domain}の実装クラスである。
+ * <li>戻り値の型は {@code Array} を値とする {@link Domain} の実装クラスである。
  * <li>戻り値の型は、 配列の要素の型を型パラメータとして受け取る。
+ * 
+ * <h5>例:</h5>
  * 
  * <pre>
  * &#064;Dao(config = AppConfig.class)

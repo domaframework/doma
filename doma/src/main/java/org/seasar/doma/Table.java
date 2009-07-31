@@ -20,7 +20,23 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.seasar.doma.jdbc.NameConvention;
+
 /**
+ * データベースのテーブルを示します。
+ * <p>
+ * このアノテーションは、{@link Entity} が注釈されたインタフェースに対してのみ指定できます。
+ * 
+ * <h5>例:</h5>
+ * 
+ * <pre>
+ * &#064;Entity
+ * &#064;Table(name = &quot;EMP&quot;)
+ * public interface Employee {
+ *     ...
+ * }
+ * </pre>
+ * 
  * @author taedium
  * 
  */
@@ -28,9 +44,22 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Table {
 
+    /**
+     * カタログ名です。
+     */
     String catalog() default "";
 
+    /**
+     * スキーマ名です。
+     */
     String schema() default "";
 
+    /**
+     * テーブル名です。
+     * <p>
+     * 指定しない場合、テーブル名は
+     * {@link NameConvention#fromEntityToTable(String, org.seasar.doma.jdbc.dialect.Dialect)}
+     * によって解決されます。
+     */
     String name() default "";
 }

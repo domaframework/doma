@@ -21,7 +21,6 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseNode;
@@ -44,6 +43,7 @@ import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.WordNode;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.message.DomaMessageCode;
 
 
 /**

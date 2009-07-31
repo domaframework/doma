@@ -28,11 +28,13 @@ import org.seasar.doma.jdbc.JdbcException;
 /**
  * {@link Clob}のインスタンスを生成することを示します。
  * <p>
- * このアノテーションが指定されるメソッドは、{@link Dao}が注釈されたインタフェースのメンバでなければいけません。
+ * このアノテーションが注釈されるメソッドは、{@link Dao} が注釈されたインタフェースのメンバでなければいけません。
  * 
  * 注釈されるメソッドは、次の制約を満たす必要があります。
  * <li>パラメータを受け取らない。
- * <li>戻り値の型は {@code Clob}を値とする {@link Domain}の実装クラスである。
+ * <li>戻り値の型は {@code Clob} を値とする {@link Domain} の実装クラスである。
+ * 
+ * <h5>例:</h5>
  * 
  * <pre>
  * &#064;Dao(config = AppConfig.class)

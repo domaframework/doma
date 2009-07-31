@@ -15,14 +15,51 @@
  */
 package org.seasar.doma;
 
+import java.io.Serializable;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.seasar.doma.domain.Domain;
+
 /**
- * @author taedium
+ * テーブル、結果セット、もしくはパラメータの集合の抽象を示します。
+ * <p>
+ * このアノテーションは、トップレベルのインタフェースに指定できます。 インタフェースのメンバメソッドは、 {@link Delegate}
+ * で注釈されていない限り、次の制約を満たす必要があります。
+ * <ul>
+ * <li>パラメータは受け取らない。
+ * <li>戻り値の型は {@link Domain}の実装クラスである。
+ * </ul>
  * 
+ * <pre>
+ * &#064;MappedSuperclass
+ * public interface AbstractEmployee {
+ * 
+ *     &#064;Id
+ *     &#064;Column(name = &quot;ID&quot;)
+ *     IntegerDomain id();
+ * 
+ *     &#064;Column(name = &quot;EMPLOYEE_NAME&quot;)
+ *     StringDomain employeeName();
+ * 
+ *     &#064;Version
+ *     &#064;Column(name = &quot;VERSION&quot;)
+ *     IntegerDomain version();
+ * }
+ * </pre>
+ * 
+ * 注釈されたインタフェースは、 {@link Entity}もしくは {@link MappedSuperclass}
+ * が注釈されたインタフェースのみを継承できます。
+ * <p>
+ * {@link Delegate} が注釈されていないメソッドの 戻り値の型がすべて {@link Serializable}
+ * のサブタイプであれば、注釈されたインタフェースの実装は直列化可能です。
+ * <p>
+ * 注釈されたインタフェースの実装はスレッドセーフであることを要求されません。
+ * <p>
+ * 
+ * @author taedium
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

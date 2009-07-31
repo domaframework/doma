@@ -20,18 +20,64 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.SerializableDomain;
 import org.seasar.doma.entity.BuiltinEntityListener;
 import org.seasar.doma.entity.EntityListener;
 
 /**
- * @author taedium
+ * テーブル、結果セット、もしくはパラメータの集合を示します。
+ * <p>
+ * このアノテーションは、トップレベルのインタフェースに指定できます。 インタフェースのメンバメソッドは、 {@link Delegate}
+ * で注釈されていない限り、次の制約を満たす必要があります。
+ * <ul>
+ * <li>パラメータは受け取らない。
+ * <li>戻り値の型は {@link Domain} の実装クラスである。
+ * </ul>
  * 
+ * <h5>例:</h5>
+ * 
+ * <pre>
+ * &#064;Entity
+ * public interface Employee {
+ * 
+ *     &#064;Id
+ *     &#064;Column(name = &quot;ID&quot;)
+ *     IntegerDomain id();
+ * 
+ *     &#064;Column(name = &quot;EMPLOYEE_NAME&quot;)
+ *     StringDomain employeeName();
+ * 
+ *     &#064;Version
+ *     &#064;Column(name = &quot;VERSION&quot;)
+ *     IntegerDomain version();
+ * }
+ * </pre>
+ * 
+ * 注釈されたインタフェースは、 {@link Entity} もしくは {@link MappedSuperclass}
+ * が注釈されたインタフェースのみを継承できます。
+ * <p>
+ * {@link Delegate} が注釈されていないメソッドの 戻り値の型がすべて {@link SerializableDomain}
+ * のサブタイプであれば、注釈されたインタフェースの実装は直列化可能です。
+ * <p>
+ * 注釈されたインタフェースの実装はスレッドセーフであることを要求されません。
+ * <p>
+ * 
+ * @author taedium
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Entity {
 
+    /**
+     * リスナーです。
+     * <p>
+     * 指定しない場合、デフォルトのリスナーが設定されます。 リスナーは、クラスごとに1つだけインスタンス化されます。
+     */
     Class<? extends EntityListener<?>> listener() default BuiltinEntityListener.class;
 
+    /**
+     * 注釈されたインタフェースの実装で使用されるserialVersionUIDです。
+     */
     long serialVersionUID() default 1L;
 }

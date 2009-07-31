@@ -31,7 +31,6 @@ import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.Column;
-import org.seasar.doma.DomaMessageCode;
 import org.seasar.doma.GeneratedValue;
 import org.seasar.doma.Id;
 import org.seasar.doma.SequenceGenerator;
@@ -43,6 +42,7 @@ import org.seasar.doma.domain.NumberDomain;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.TypeUtil;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * 

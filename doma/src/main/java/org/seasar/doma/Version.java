@@ -20,7 +20,29 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.seasar.doma.domain.NumberDomain;
+
 /**
+ * バージョンを示します。
+ * <p>
+ * このアノテーションが注釈されるメソッドは、{@link Entity} もしくは {@link MappedSuperclass}
+ * が注釈されたインタフェースのメンバでなければいけません。
+ * <p>
+ * 注釈されるメソッドの戻り値の型は、{@link NumberDomain} のサブタイプでなければいけません。
+ * 
+ * <h5>例:</h5>
+ * 
+ * <pre>
+ * &#064;Entity
+ * public interface Employee {
+ *     ...
+ * 
+ *     &#064;Version
+ *     &#064;Column(name = &quot;VERSION_NO&quot;)
+ *     IntegerDomain versionNo();
+ * }
+ * </pre>
+ * 
  * @author taedium
  * 
  */

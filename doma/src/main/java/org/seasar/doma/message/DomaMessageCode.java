@@ -13,18 +13,19 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma;
+package org.seasar.doma.message;
 
 import java.util.ResourceBundle;
 
+import org.seasar.doma.MessageCode;
 import org.seasar.doma.internal.util.MessageFormatter;
-import org.seasar.doma.message.DomaMessageResource;
 
 /**
  * @author taedium
  * 
  */
 public enum DomaMessageCode implements MessageCode {
+
     // general
     DOMA0001("パラメータ[{0}]の値[{1}]が不正です。"),
     DOMA0002("予期しない例外が発生しました。原因は次のものです。{0}"),

@@ -33,11 +33,11 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
 /**
  * 検索処理を示します。
  * <p>
- * このアノテーションが指定されるメソッドは、{@link Dao}が注釈されたインタフェースのメンバでなければいけません。
+ * このアノテーションが注釈されるメソッドは、{@link Dao} が注釈されたインタフェースのメンバでなければいけません。
  * <p>
  * 注釈されるメソッドは、次の制約を満たす必要があります。
  * <ul>
- * <li>{@link #iterate()}が {@code false}の場合
+ * <li>{@code iterate} 要素が {@code false} の場合
  * <ul>
  * <li>パラメータは0個以上である。
  * <li>パラメータは {@link Domain}の実装クラス、 {@link Entity}が注釈されたインタフェース、もしくは
@@ -65,17 +65,18 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * </tr>
  * </table>
  * </ul>
- * <li>{@link #iterate()}が {@code true}の場合
+ * <li>{@code iterate} 要素が {@code true} の場合
  * <ul>
- * <li>パラメータは {@link IterationCallback}型のものが必須である。そのほか、{@code Domain}の実装クラス、
- * {@code Entity}が注釈されたインタフェース、もしくは {@code SelectOptions}を渡せる。ただし、 {@code
+ * <li>パラメータは {@link IterationCallback} 型のものが必須である。そのほか、{@code Domain} の実装クラス、
+ * {@code Entity} が注釈されたインタフェース、もしくは {@code SelectOptions}を渡せる。ただし、 {@code
  * SelectOptions}は最大でも1つしか渡せない。
- * <li>戻り値の型は パラメータで利用する{@link IterationCallback}の型パラメータと同じ型になる。
+ * <li>戻り値の型は パラメータで利用する {@link IterationCallback} の型パラメータと同じ型になる。
  * </ul>
  * </ul>
  * <p>
  * 
  * 注釈されるメソッドのパラメータの役割は次のとおりです。
+ * <ul>
  * <table border=1>
  * <tr>
  * <th>パラメータの型</th>
@@ -97,7 +98,9 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * <td>検索結果にマッピングされたインスタンスを1件ずつ処理するハンドラです。</td>
  * </tr>
  * </table>
+ * </ul>
  * 
+ * <h5>例:</h5>
  * 
  * <pre>
  * &#064;Entity
@@ -127,7 +130,7 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * 
  * 注釈されるメソッドは、次の例外をスローすることがあります。
  * <ul>
- * <li> {@link DomaIllegalArgumentException} パラメータに {@code null}を渡した場合
+ * <li> {@link DomaIllegalArgumentException} パラメータに {@code null} を渡した場合
  * <li> {@link SqlFileNotFoundException} SQLファイルが見つからなかった場合
  * <li> {@link NonUniqueResultException} 戻り値の型が {@code List}
  * でない場合で、かつ結果が2件以上返された場合
@@ -144,7 +147,7 @@ public @interface Select {
     /**
      * クエリタイムアウト（秒）です。
      * <p>
-     * 指定しない場合、{@link Config#queryTimeout()}が使用されます。
+     * 指定しない場合、 {@link Config#queryTimeout()} が使用されます。
      * 
      * @see Statement#setQueryTimeout(int)
      */
@@ -153,7 +156,7 @@ public @interface Select {
     /**
      * フェッチサイズです。
      * <p>
-     * 指定しない場合、{@link Config#fetchSize()}が使用されます。
+     * 指定しない場合、 {@link Config#fetchSize()} が使用されます。
      * 
      * @see Statement#setFetchSize(int)
      */
@@ -162,7 +165,7 @@ public @interface Select {
     /**
      * 最大行数の制限値です。
      * <p>
-     * 指定しない場合、{@link Config#maxRows()}が使用されます。
+     * 指定しない場合、 {@link Config#maxRows()} が使用されます。
      * 
      * @see Statement#setMaxRows(int)
      */
@@ -171,7 +174,7 @@ public @interface Select {
     /**
      * 結果のインスタンスを1件ずつ処理するかどうかを示します。
      * <p>
-     * {@code true}の場合、注釈されたメソッドのパラメータに {@link IterationCallback}
+     * {@code true} の場合、注釈されたメソッドのパラメータに {@link IterationCallback}
      * 型のパラメータを含める必要があります。
      */
     boolean iterate() default false;

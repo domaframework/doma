@@ -30,7 +30,7 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
 /**
  * バッチ削除処理を示します。
  * <p>
- * このアノテーションが指定されるメソッドは、{@link Dao}が注釈されたインタフェースのメンバでなければいけません。
+ * このアノテーションが注釈されるメソッドは、 {@link Dao} が注釈されたインタフェースのメンバでなければいけません。
  * 
  * 注釈されるメソッドは、次の制約を満たす必要があります。
  * <ul>
@@ -38,6 +38,8 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * <li>パラメータは {@link Entity}が注釈された型を要素とする {@link List}である。
  * <li>戻り値の型は {@code int[]}である。
  * </ul>
+ * 
+ * <h5>例:</h5>
  * 
  * <pre>
  * &#064;Entity

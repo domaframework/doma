@@ -30,14 +30,16 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
 /**
  * 更新処理を示します。
  * <p>
- * このアノテーションが指定されるメソッドは、{@link Dao}が注釈されたインタフェースのメンバでなければいけません。
+ * このアノテーションが注釈されるメソッドは、{@link Dao} が注釈されたインタフェースのメンバでなければいけません。
  * <p>
  * 注釈されるメソッドは、次の制約を満たす必要があります。
  * <ul>
  * <li>パラメータを1つだけ受け取る。
- * <li>パラメータは {@link Entity}が注釈された型である。
- * <li>戻り値の型は {@code int}である。
+ * <li>パラメータは {@link Entity} が注釈された型である。
+ * <li>戻り値の型は {@code int} である。
  * </ul>
+ * 
+ * <h5>例:</h5>
  * 
  * <pre>
  * &#064;Entity
@@ -55,7 +57,7 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
  * 
  * 注釈されるメソッドは、次の例外をスローすることがあります。
  * <ul>
- * <li> {@link DomaIllegalArgumentException} パラメータに {@code null}を渡した場合
+ * <li> {@link DomaIllegalArgumentException} パラメータに {@code null} を渡した場合
  * <li> {@link OptimisticLockException} 更新件数が1件でなかった場合
  * <li> {@link UniqueConstraintException} 一意制約違反が発生した場合
  * <li> {@link SqlFileNotFoundException}
