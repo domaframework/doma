@@ -136,8 +136,8 @@ public class EntityPropertyMetaFactory {
         buf.append(generator.sequence());
         SequenceIdGeneratorMeta idGeneratorMeta = new SequenceIdGeneratorMeta(
                 buf.toString(), generator.initialValue(), generator
-                        .allocationSize(), TypeUtil
-                        .getTypeName(idGeneratorImplementerType, entityMeta
+                        .allocationSize(), TypeUtil.getTypeName(
+                        idGeneratorImplementerType, entityMeta
                                 .getTypeParameterMap(), env));
         propertyMeta.setIdGeneratorMeta(idGeneratorMeta);
     }
@@ -218,6 +218,19 @@ public class EntityPropertyMetaFactory {
         ColumnMeta columnMeta = new ColumnMeta();
         Column column = method.getAnnotation(Column.class);
         if (column != null) {
+            if (propertyMeta.isTrnsient()) {
+                throw new AptException(DomaMessageCode.DOMA4087, env, method);
+            }
+            if (propertyMeta.isId() || propertyMeta.isVersion()) {
+                if (!column.insertable()) {
+                    throw new AptException(DomaMessageCode.DOMA4088, env,
+                            method);
+                }
+                if (!column.updatable()) {
+                    throw new AptException(DomaMessageCode.DOMA4089, env,
+                            method);
+                }
+            }
             if (!column.name().isEmpty()) {
                 columnMeta.setName(column.name());
             }
@@ -255,8 +268,8 @@ public class EntityPropertyMetaFactory {
                 throw new AptException(DomaMessageCode.DOMA4031, env, method);
             }
             propertyMeta.setListReturnType(true);
-            String elementTypeName = TypeUtil
-                    .getTypeName(elementType, entityMeta.getTypeParameterMap(), env);
+            String elementTypeName = TypeUtil.getTypeName(elementType,
+                    entityMeta.getTypeParameterMap(), env);
             propertyMeta.setReturnElementTypeName(elementTypeName);
             propertyMeta.setReturnTypeName(ArrayList.class.getName() + "<"
                     + elementTypeName + ">");
@@ -273,9 +286,8 @@ public class EntityPropertyMetaFactory {
                 && (!isNumberDomain(returnType) || isAbstract(returnType))) {
             throw new AptException(DomaMessageCode.DOMA4033, env, method);
         }
-        propertyMeta
-                .setReturnTypeName(TypeUtil.getTypeName(returnType, entityMeta
-                        .getTypeParameterMap(), env));
+        propertyMeta.setReturnTypeName(TypeUtil.getTypeName(returnType,
+                entityMeta.getTypeParameterMap(), env));
         TypeElement returnElement = TypeUtil.toTypeElement(returnType, env);
         if (returnElement != null
                 && !returnElement.getTypeParameters().isEmpty()) {
@@ -317,8 +329,8 @@ public class EntityPropertyMetaFactory {
     protected boolean isList(TypeMirror typeMirror) {
         TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
         if (typeElement != null) {
-            return typeElement.getQualifiedName().contentEquals(List.class
-                    .getName());
+            return typeElement.getQualifiedName().contentEquals(
+                    List.class.getName());
         }
         return false;
     }

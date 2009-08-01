@@ -24,9 +24,8 @@ import org.seasar.doma.domain.NumberDomain;
 public class VersionProperty<D extends NumberDomain<?, ?>> extends
         BasicProperty<D> {
 
-    public VersionProperty(String name, String columnName, D domain,
-            boolean insertable, boolean updatable) {
-        super(name, columnName, domain, insertable, updatable);
+    public VersionProperty(String name, String columnName, D domain) {
+        super(name, columnName, domain, true, true);
     }
 
     @Override

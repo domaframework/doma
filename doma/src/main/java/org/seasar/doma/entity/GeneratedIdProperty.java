@@ -36,8 +36,8 @@ public class GeneratedIdProperty<D extends NumberDomain<?, ?>> extends
     protected final IdGenerator idGenerator;
 
     public GeneratedIdProperty(String name, String columnName, D domain,
-            boolean insertable, boolean updatable, IdGenerator idGenerator) {
-        super(name, columnName, domain, insertable, updatable);
+            IdGenerator idGenerator) {
+        super(name, columnName, domain, true, true);
         if (idGenerator == null) {
             throw new DomaNullPointerException("idGenerator");
         }
@@ -54,8 +54,9 @@ public class GeneratedIdProperty<D extends NumberDomain<?, ?>> extends
         GenerationType generationType = idGenerator.getGenerationType();
         if (!isGenerationTypeSupported(generationType, dialect)) {
             Entity<?> entity = config.getEntity();
-            throw new JdbcException(DomaMessageCode.DOMA2021, entity.__getName(),
-                    name, generationType.name(), dialect.getName());
+            throw new JdbcException(DomaMessageCode.DOMA2021, entity
+                    .__getName(), name, generationType.name(), dialect
+                    .getName());
         }
     }
 

@@ -188,6 +188,9 @@ public enum DomaMessageCode implements MessageCode {
     DOMA4084("include要素で指定したプロパティ[{0}]が、Entityインタフェース[{1}]に見つかりません。"),
     DOMA4085("exclude要素で指定したプロパティ[{0}]が、Entityインタフェース[{1}]に見つかりません。"),
     DOMA4086("アノテーション[{0}]とアノテーション[{1}]が競合しています。これらは同じメソッドに注釈できません。"),
+    DOMA4087("@Transientを注釈したメソッドには@Columnを注釈できません。"),
+    DOMA4088("@Idもしくは@Versionを注釈したした場合、@Columnのinsertable要素にfalseを指定してはいけません。"),
+    DOMA4089("@Idもしくは@Versionを注釈したした場合、@Columnのupdatable要素にfalseを指定してはいけません。"),
 
     // converter
     DOMA5001("クラス[{0}]の値[{1}]をクラス[{2}]に変換することはサポートされていません。"),

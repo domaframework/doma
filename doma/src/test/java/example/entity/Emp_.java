@@ -29,10 +29,10 @@ import org.seasar.doma.domain.IntegerDomain;
 import org.seasar.doma.domain.StringDomain;
 import org.seasar.doma.entity.AssignedIdProperty;
 import org.seasar.doma.entity.BasicProperty;
-import org.seasar.doma.entity.DomaAbstractEntity;
-import org.seasar.doma.entity.GeneratedIdProperty;
 import org.seasar.doma.entity.BuiltinEntityListener;
+import org.seasar.doma.entity.DomaAbstractEntity;
 import org.seasar.doma.entity.EntityProperty;
+import org.seasar.doma.entity.GeneratedIdProperty;
 import org.seasar.doma.entity.VersionProperty;
 
 @Generated("")
@@ -42,17 +42,17 @@ public class Emp_ extends DomaAbstractEntity<Emp> implements Emp, Serializable {
 
     private static final BuiltinEntityListener __listener = new BuiltinEntityListener();
 
-    private transient AssignedIdProperty<IntegerDomain> id = new AssignedIdProperty<IntegerDomain>(
-            "id", null, new IntegerDomain(), true, true);
+    private transient final AssignedIdProperty<IntegerDomain> id = new AssignedIdProperty<IntegerDomain>(
+            "id", null, new IntegerDomain());
 
-    private transient BasicProperty<StringDomain> name = new BasicProperty<StringDomain>(
+    private transient final BasicProperty<StringDomain> name = new BasicProperty<StringDomain>(
             "name", null, new StringDomain(), true, true);
 
-    private transient BasicProperty<BigDecimalDomain> salary = new BasicProperty<BigDecimalDomain>(
+    private transient final BasicProperty<BigDecimalDomain> salary = new BasicProperty<BigDecimalDomain>(
             "salary", null, new BigDecimalDomain(), true, true);
 
-    private transient VersionProperty<IntegerDomain> version = new VersionProperty<IntegerDomain>(
-            "version", null, new IntegerDomain(), true, true);
+    private transient final VersionProperty<IntegerDomain> version = new VersionProperty<IntegerDomain>(
+            "version", null, new IntegerDomain());
 
     private final String __name = "emp";
 

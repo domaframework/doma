@@ -15,13 +15,13 @@ public class Emp_ extends org.seasar.doma.entity.DomaAbstractEntity<org.seasar.d
 
     private static final org.seasar.doma.internal.apt.entity.EmpListener __listener = new org.seasar.doma.internal.apt.entity.EmpListener();
 
-    private transient org.seasar.doma.entity.GeneratedIdProperty<org.seasar.doma.domain.IntegerDomain> id = new org.seasar.doma.entity.GeneratedIdProperty<org.seasar.doma.domain.IntegerDomain>("id", null, new org.seasar.doma.domain.IntegerDomain(), true, true, __idGenerator);
+    private transient org.seasar.doma.entity.GeneratedIdProperty<org.seasar.doma.domain.IntegerDomain> id = new org.seasar.doma.entity.GeneratedIdProperty<org.seasar.doma.domain.IntegerDomain>("id", null, new org.seasar.doma.domain.IntegerDomain(), __idGenerator);
 
     private transient org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.StringDomain> name = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.StringDomain>("name", null, new org.seasar.doma.domain.StringDomain(), true, true);
 
     private transient org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.BigDecimalDomain> salary = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.BigDecimalDomain>("salary", "SALARY", new org.seasar.doma.domain.BigDecimalDomain(), false, false);
 
-    private transient org.seasar.doma.entity.VersionProperty<org.seasar.doma.domain.IntegerDomain> version = new org.seasar.doma.entity.VersionProperty<org.seasar.doma.domain.IntegerDomain>("version", null, new org.seasar.doma.domain.IntegerDomain(), true, true);
+    private transient org.seasar.doma.entity.VersionProperty<org.seasar.doma.domain.IntegerDomain> version = new org.seasar.doma.entity.VersionProperty<org.seasar.doma.domain.IntegerDomain>("version", null, new org.seasar.doma.domain.IntegerDomain());
 
     private transient org.seasar.doma.entity.TransientProperty<org.seasar.doma.domain.StringDomain> temp = new org.seasar.doma.entity.TransientProperty<org.seasar.doma.domain.StringDomain>("temp", new org.seasar.doma.domain.StringDomain());
 
@@ -130,10 +130,10 @@ public class Emp_ extends org.seasar.doma.entity.DomaAbstractEntity<org.seasar.d
 
     private void readObject(java.io.ObjectInputStream inputStream) throws java.io.IOException, java.lang.ClassNotFoundException {
         inputStream.defaultReadObject();
-        id = new org.seasar.doma.entity.GeneratedIdProperty<org.seasar.doma.domain.IntegerDomain>("id", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject(), true, true, __idGenerator);
+        id = new org.seasar.doma.entity.GeneratedIdProperty<org.seasar.doma.domain.IntegerDomain>("id", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject(), __idGenerator);
         name = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.StringDomain>("name", null, (org.seasar.doma.domain.StringDomain)inputStream.readObject(), true, true);
         salary = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.BigDecimalDomain>("salary", "SALARY", (org.seasar.doma.domain.BigDecimalDomain)inputStream.readObject(), false, false);
-        version = new org.seasar.doma.entity.VersionProperty<org.seasar.doma.domain.IntegerDomain>("version", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject(), true, true);
+        version = new org.seasar.doma.entity.VersionProperty<org.seasar.doma.domain.IntegerDomain>("version", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject());
         temp = new org.seasar.doma.entity.TransientProperty<org.seasar.doma.domain.StringDomain>("temp", (org.seasar.doma.domain.StringDomain)inputStream.readObject());
     }
 
