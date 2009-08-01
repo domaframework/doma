@@ -22,6 +22,8 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
+ * {@link Boolean} を JDBCの {@link Integer} に適応させる {@link JdbcType} の実装です。
+ * 
  * @author taedium
  * 
  */

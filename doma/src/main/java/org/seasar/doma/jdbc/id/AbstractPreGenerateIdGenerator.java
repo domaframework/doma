@@ -20,22 +20,39 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
+ * INSERT文の実行前に識別子を生成するジェネレータの抽象クラスです。
+ * 
  * @author taedium
  * 
  */
-public abstract class AbstractPreAllocateIdGenerator extends
+public abstract class AbstractPreGenerateIdGenerator extends
         AbstractIdGenerator {
 
+    /** 初期値 */
     protected long initialValue;
 
+    /** 割り当てサイズ */
     protected long allocationSize;
 
+    /** データソース名をキー、識別子コンテキストを値とするマップ */
     protected ConcurrentMap<String, IdContext> idContextMap = new ConcurrentHashMap<String, IdContext>();
 
+    /**
+     * 初期値を設定します。
+     * 
+     * @param initialValue
+     *            初期値
+     */
     public void setInitialValue(long initialValue) {
         this.initialValue = initialValue;
     }
 
+    /**
+     * 割り当てサイズを設定します。
+     * 
+     * @param allocationSize
+     *            割り当てサイズ
+     */
     public void setAllocationSize(long allocationSize) {
         this.allocationSize = allocationSize;
     }
@@ -67,6 +84,13 @@ public abstract class AbstractPreAllocateIdGenerator extends
         return null;
     }
 
+    /**
+     * 識別子コンテキストを返します。
+     * 
+     * @param config
+     *            識別子生成の設定
+     * @return 識別子コンテキスト
+     */
     protected IdContext getIdContext(IdGenerationConfig config) {
         String dataSourceName = config.getDataSourceName();
         IdContext context = idContextMap.get(dataSourceName);
@@ -81,14 +105,38 @@ public abstract class AbstractPreAllocateIdGenerator extends
         return context;
     }
 
+    /**
+     * 新しい初期値を返します。
+     * 
+     * @param config
+     *            識別子生成の設定
+     * @return 新しい初期値
+     */
     protected abstract long getNewInitialValue(IdGenerationConfig config);
 
+    /**
+     * 識別子コンテキストです。
+     * <p>
+     * 識別子の増分と保持を行います。識別子の増分処理は同期化されます。
+     * 
+     * @author taedium
+     * 
+     */
     public class IdContext {
 
-        protected long initValue = AbstractPreAllocateIdGenerator.this.initialValue;
+        /** 初期値 */
+        protected long initValue = AbstractPreGenerateIdGenerator.this.initialValue;
 
+        /** 割り当てサイズ */
         protected long allocated = Long.MAX_VALUE;
 
+        /**
+         * 次の識別子を返します。
+         * 
+         * @param config
+         *            識別子生成の設定
+         * @return 次の識別子
+         */
         public synchronized long getNextValue(IdGenerationConfig config) {
             if (allocated < allocationSize) {
                 return initValue + allocated++;

@@ -17,6 +17,9 @@ package org.seasar.doma;
 
 /**
  * メッセージコードを表します。
+ * <p>
+ * このインタフェースの実装はスレッドセーフでなければいけません。
+ * <p>
  * 
  * @author taedium
  * 

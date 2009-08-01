@@ -18,11 +18,21 @@ package org.seasar.doma.util;
 import java.nio.CharBuffer;
 
 /**
+ * {@link String} のユーティリティクラスです。
+ * 
  * @author taedium
  * 
  */
 public final class StringUtil {
 
+    /**
+     * 先頭の文字を大文字に変換します。
+     * 
+     * @param text
+     *            文字列
+     * @return 変換された文字列。 ただし、{@code text} が {@code null} の場合は {@code null}、
+     *         {@code text} が空文字の場合は空文字を返します。
+     */
     public static String capitalize(String text) {
         if (isNullOrEmpty(text)) {
             return text;
@@ -32,6 +42,14 @@ public final class StringUtil {
         return new String(chars);
     }
 
+    /**
+     * 先頭の文字を小文字に変換します。
+     * 
+     * @param text
+     *            文字列
+     * @return 変換された文字列。 ただし、{@code text} が {@code null} の場合は {@code null}、
+     *         {@code text} が空文字の場合は空文字を返します。
+     */
     public static String decapitalize(String text) {
         if (isNullOrEmpty(text)) {
             return text;
@@ -41,6 +59,14 @@ public final class StringUtil {
         return new String(chars);
     }
 
+    /**
+     * アンダースコア区切りの文字列をキャメルケースの文字列に変換します。
+     * 
+     * @param text
+     *            文字列
+     * @return 変換された文字列。 ただし、{@code text} が {@code null} の場合は {@code null}、
+     *         {@code text} が空文字の場合は空文字を返します。
+     */
     public static String camelize(String text) {
         if (isNullOrEmpty(text)) {
             return text;
@@ -58,6 +84,14 @@ public final class StringUtil {
         return result.toString();
     }
 
+    /**
+     * キャメルケースをアンダースコア区切りの大文字に変換します。
+     * 
+     * @param text
+     *            文字列
+     * @return 変換された文字列。 ただし、{@code text} が {@code null} の場合は {@code null}、
+     *         {@code text} が空文字の場合は空文字を返します。
+     */
     public static String decamelize(String text) {
         if (isNullOrEmpty(text)) {
             return text;
@@ -79,6 +113,13 @@ public final class StringUtil {
         return result.toString();
     }
 
+    /**
+     * {@code null} もしくは空文字の場合 {@code true} を返します。
+     * 
+     * @param text
+     *            文字列
+     * @return {@code text} が {@code null} もしくは空文字の場合 {@code true}
+     */
     public static boolean isNullOrEmpty(String text) {
         return text == null || text.isEmpty();
     }

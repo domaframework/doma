@@ -26,6 +26,8 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.MessageCode;
 
 /**
+ * {@link Enum} で表現されたメッセージコードを扱うリソースバンドルです。
+ * 
  * @author taedium
  * 
  */

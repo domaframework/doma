@@ -23,6 +23,8 @@ import java.sql.Time;
 import java.sql.Types;
 
 /**
+ * {@link Time} 用の {@link JdbcType} の実装です。
+ * 
  * @author taedium
  * 
  */

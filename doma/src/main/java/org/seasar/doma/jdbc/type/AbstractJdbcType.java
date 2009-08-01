@@ -19,17 +19,34 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
+import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
+ * {@link JdbcType} の骨格実装です。
+ * 
  * @author taedium
  * 
+ * @param <T>
+ *            JDBCで扱う型
  */
 public abstract class AbstractJdbcType<T> implements JdbcType<T> {
 
+    /**
+     * SQL型
+     * 
+     * @see Types
+     */
     protected final int type;
 
+    /**
+     * SQL型を指定してインスタンスを構築します。
+     * 
+     * @param type
+     *            SQL型
+     */
     protected AbstractJdbcType(int type) {
         this.type = type;
     }
@@ -40,7 +57,7 @@ public abstract class AbstractJdbcType<T> implements JdbcType<T> {
             throw new DomaNullPointerException("resultSet");
         }
         if (index < 1) {
-            throw new DomaNullPointerException("index");
+            throw new DomaIllegalArgumentException("index", "index < 1");
         }
         return doGetValue(resultSet, index);
     }
@@ -52,7 +69,7 @@ public abstract class AbstractJdbcType<T> implements JdbcType<T> {
             throw new DomaNullPointerException("preparedStatement");
         }
         if (index < 1) {
-            throw new DomaNullPointerException("index");
+            throw new DomaIllegalArgumentException("index", "index < 1");
         }
         if (value == null) {
             preparedStatement.setNull(index, type);
@@ -68,7 +85,7 @@ public abstract class AbstractJdbcType<T> implements JdbcType<T> {
             throw new DomaNullPointerException("callableStatement");
         }
         if (index < 1) {
-            throw new DomaNullPointerException("index");
+            throw new DomaIllegalArgumentException("index", "index < 1");
         }
         callableStatement.registerOutParameter(index, type);
     }
@@ -93,14 +110,45 @@ public abstract class AbstractJdbcType<T> implements JdbcType<T> {
         return doConvertToLogFormat(value);
     }
 
+    /**
+     * サブクラスで {@link ResultSet} から値を取得します。
+     * 
+     * @param resultSet
+     * @param index
+     * @return 値
+     * @throws SQLException
+     */
     protected abstract T doGetValue(ResultSet resultSet, int index)
             throws SQLException;
 
+    /**
+     * サブクラスで {@link PreparedStatement} に値を設定します。
+     * 
+     * @param preparedStatement
+     * @param index
+     * @param value
+     * @throws SQLException
+     */
     protected abstract void doSetValue(PreparedStatement preparedStatement,
             int index, T value) throws SQLException;
 
+    /**
+     * サブクラスで {@link CallableStatement} から値を取得します。
+     * 
+     * @param callableStatement
+     * @param index
+     * @return 値
+     * @throws SQLException
+     */
     protected abstract T doGetValue(CallableStatement callableStatement,
             int index) throws SQLException;
 
+    /**
+     * サブクラスで値をログ用フォーマットの文字列に変換します。
+     * 
+     * @param value
+     *            値
+     * @return ログ用フォーマットの文字列
+     */
     protected abstract String doConvertToLogFormat(T value);
 }

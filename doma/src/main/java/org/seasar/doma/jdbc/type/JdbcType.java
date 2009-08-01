@@ -21,22 +21,67 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
+ * JDBCの型を表現します。 型ごとに異なる処理を抽象化します。
+ * <p>
+ * このインタフェースの実装はスレッドセーフでなければいけません。
+ * <p>
+ * 
  * @author taedium
  * 
+ * @param <T>
+ *            JDBCで扱う型
  */
 public interface JdbcType<T> {
 
+    /**
+     * {@link ResultSet} から値を取得します。
+     * 
+     * @param resultSet
+     * @param index
+     * @return 値
+     * @throws SQLException
+     */
     T getValue(ResultSet resultSet, int index) throws SQLException;
 
+    /**
+     * {@link PreparedStatement} に値を設定します。
+     * 
+     * @param preparedStatement
+     * @param index
+     * @param value
+     * @throws SQLException
+     */
     void setValue(PreparedStatement preparedStatement, int index, T value)
             throws SQLException;
 
+    /**
+     * {@link CallableStatement} にOUTパラメータを登録します。
+     * 
+     * @param callableStatement
+     * @param index
+     * @throws SQLException
+     */
     void registerOutParameter(CallableStatement callableStatement, int index)
             throws SQLException;
 
+    /**
+     * {@link CallableStatement} から値を取得します。
+     * 
+     * @param callableStatement
+     * @param index
+     * @return 値
+     * @throws SQLException
+     */
     T getValue(CallableStatement callableStatement, int index)
             throws SQLException;
 
+    /**
+     * 値をログ用フォーマットの文字列に変換します。
+     * 
+     * @param value
+     *            値
+     * @return ログ用フォーマットの文字列
+     */
     String convertToLogFormat(T value);
 
 }

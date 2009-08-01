@@ -21,6 +21,8 @@ import org.seasar.doma.MessageCode;
 import org.seasar.doma.internal.util.MessageFormatter;
 
 /**
+ * デフォルトロケール用のメッセージパターンの列挙です。
+ * 
  * @author taedium
  * 
  */

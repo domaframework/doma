@@ -16,6 +16,8 @@
 package org.seasar.doma.jdbc.type;
 
 /**
+ * {@link JdbcType} の実装のインスタンスを提供するクラスです。
+ * 
  * @author taedium
  * 
  */

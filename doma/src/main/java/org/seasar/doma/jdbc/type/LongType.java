@@ -22,6 +22,8 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
+ * {@link Long} 用の {@link JdbcType} の実装です。
+ * 
  * @author taedium
  * 
  */

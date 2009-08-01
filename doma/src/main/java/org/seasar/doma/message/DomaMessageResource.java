@@ -15,14 +15,18 @@
  */
 package org.seasar.doma.message;
 
-
 /**
+ * {@link DomaMessageCode} を扱うリソースバンドルです。
+ * 
  * @author taedium
  * 
  */
 public class DomaMessageResource extends
         AbstractMessageResource<DomaMessageCode> {
 
+    /**
+     * インスタンスを構築します。
+     */
     public DomaMessageResource() {
         super(DomaMessageCode.class);
     }

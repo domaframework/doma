@@ -23,6 +23,8 @@ import java.sql.Timestamp;
 import java.sql.Types;
 
 /**
+ * {@link Timestamp} 用の {@link JdbcType} の実装です。
+ * 
  * @author taedium
  * 
  */

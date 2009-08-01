@@ -26,19 +26,37 @@ import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
+ * 識別子の生成に関する設定です。
+ * 
  * @author taedium
  * 
  */
 public class IdGenerationConfig {
 
+    /** JDBCの設定 */
     protected final Config config;
 
+    /** 識別子が属するエンティティ */
     protected final Entity<?> entity;
 
+    /** 識別子が属するエンティティに対応するテーブルの完全修飾名 */
     protected final String qualifiedTableName;
 
+    /** 識別子にマッピングされたカラムの名前 */
     protected final String idColumnName;
 
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param config
+     *            JDBCの設定
+     * @param entity
+     *            識別子が属するエンティティ
+     * @param qualifiedTableName
+     *            識別子が属するエンティティに対応するテーブルの完全修飾名
+     * @param idColumnName
+     *            識別子にマッピングされたカラムの名前
+     */
     public IdGenerationConfig(Config config, Entity<?> entity,
             String qualifiedTableName, String idColumnName) {
         assertNotNull(config, entity, qualifiedTableName, idColumnName);

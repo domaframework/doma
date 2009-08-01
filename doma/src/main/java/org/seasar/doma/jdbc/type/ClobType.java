@@ -23,6 +23,8 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
+ * {@link Clob} 用の {@link JdbcType} の実装です。
+ * 
  * @author taedium
  * 
  */

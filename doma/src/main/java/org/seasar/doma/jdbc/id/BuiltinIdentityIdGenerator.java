@@ -25,6 +25,8 @@ import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
+ * {@link IdentityIdGenerator} のデフォルトの実装です。
+ * 
  * @author taedium
  * 
  */
@@ -60,22 +62,37 @@ public class BuiltinIdentityIdGenerator extends AbstractIdGenerator implements
         return getGeneratedValue(config);
     }
 
-    protected long getGeneratedValue(IdGenerationConfig context,
+    /**
+     * {@link Statement#getGeneratedKeys()} を使用してデータベースで生成された値を取得します。
+     * 
+     * @param config
+     *            識別子生成の設定
+     * @param statement
+     * @return 識別子
+     */
+    protected long getGeneratedValue(IdGenerationConfig config,
             Statement statement) {
         try {
             final ResultSet resultSet = statement.getGeneratedKeys();
-            return getGeneratedValue(context, resultSet);
+            return getGeneratedValue(config, resultSet);
         } catch (final SQLException e) {
-            throw new JdbcException(DomaMessageCode.DOMA2018, e, context
+            throw new JdbcException(DomaMessageCode.DOMA2018, e, config
                     .getEntity().__getName(), e);
         }
     }
 
+    /**
+     * 専用のSQLを使用してデータベースで生成された値を取得します。
+     * 
+     * @param config
+     *            識別子生成の設定
+     * @return 識別子
+     */
     protected long getGeneratedValue(IdGenerationConfig config) {
         String qualifiedTableName = config.getQualifiedTableName();
         String idColumnName = config.getIdColumnName();
-        Sql<?> sql = config.getDialect()
-                .getIdentitySelectSql(qualifiedTableName, idColumnName);
+        Sql<?> sql = config.getDialect().getIdentitySelectSql(
+                qualifiedTableName, idColumnName);
         return getGeneratedValue(config, sql);
     }
 

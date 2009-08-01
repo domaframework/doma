@@ -23,15 +23,26 @@ import java.sql.SQLException;
 import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
 
 /**
+ * {@link ResultSet} 用の {@link JdbcType} のための骨格実装です。
+ * 
  * @author taedium
  * 
  */
 public abstract class AbstractResultSetType extends AbstractJdbcType<ResultSet> {
 
-    public AbstractResultSetType(int type) {
+    /**
+     * SQL型を指定してインスタンスを構築します。
+     * 
+     * @param type
+     *            SQL型
+     */
+    protected AbstractResultSetType(int type) {
         super(type);
     }
 
+    /**
+     * サポートしません。
+     */
     @Override
     public ResultSet getValue(ResultSet resultSet, int index)
             throws SQLException {
@@ -39,6 +50,9 @@ public abstract class AbstractResultSetType extends AbstractJdbcType<ResultSet> 
                 "getValue");
     }
 
+    /**
+     * サポートしません。
+     */
     @Override
     public void setValue(PreparedStatement preparedStatement, int index,
             ResultSet value) throws SQLException {
@@ -46,12 +60,18 @@ public abstract class AbstractResultSetType extends AbstractJdbcType<ResultSet> 
                 "setValue");
     }
 
+    /**
+     * {@code null} を返します。
+     */
     @Override
     protected ResultSet doGetValue(ResultSet resultSet, int index)
             throws SQLException {
         return null;
     }
 
+    /**
+     * 何も行いません。
+     */
     @Override
     protected void doSetValue(PreparedStatement preparedStatement, int index,
             ResultSet value) throws SQLException {
