@@ -15,7 +15,7 @@
  */
 package org.seasar.doma;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.domain.StringDomain;
 import org.seasar.doma.message.DomaMessageCode;
 
@@ -32,7 +32,7 @@ public class DomaExceptionTest extends TestCase {
         try {
             domain.compareTo(null);
             fail();
-        } catch (DomaIllegalArgumentException e) {
+        } catch (DomaNullPointerException e) {
             System.out.println(e.getMessage());
             assertEquals(DomaMessageCode.DOMA0001, e.getMessageCode());
         }

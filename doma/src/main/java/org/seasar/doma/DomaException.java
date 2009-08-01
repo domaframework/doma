@@ -15,8 +15,11 @@
  */
 package org.seasar.doma;
 
-
 /**
+ * {@literal Doma}の中でルートとなる実行時例外です。
+ * <p>
+ * {@literal Doma}で定義される実行時例外はすべてこのクラスのサブタイプとなります。
+ * 
  * @author taedium
  * 
  */
@@ -24,14 +27,34 @@ public class DomaException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
+    /** メッセージコード */
     protected final MessageCode messageCode;
 
+    /** メッセージへの引数 */
     protected final Object args;
 
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param messageCode
+     *            メッセージコード
+     * @param args
+     *            メッセージへの引数
+     */
     public DomaException(MessageCode messageCode, Object... args) {
         this(messageCode, null, args);
     }
 
+    /**
+     * この例外の原因となった {@link Throwable} を指定してインスタンスを構築します。
+     * 
+     * @param messageCode
+     *            メッセージコード
+     * @param cause
+     *            原因
+     * @param args
+     *            メッセージへの引数
+     */
     public DomaException(MessageCode messageCode, Throwable cause,
             Object... args) {
         super(messageCode.getMessage(args), cause);

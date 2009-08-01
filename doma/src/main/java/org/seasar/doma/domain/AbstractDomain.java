@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.domain;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 
 /**
  * @author taedium
@@ -35,7 +35,7 @@ public abstract class AbstractDomain<V, D extends AbstractDomain<V, D>>
 
     protected AbstractDomain(Class<V> valueClass, V v) {
         if (valueClass == null) {
-            throw new DomaIllegalArgumentException("valueClass", valueClass);
+            throw new DomaNullPointerException("valueClass");
         }
         this.valueClass = valueClass;
         setInternal(v);
@@ -54,7 +54,7 @@ public abstract class AbstractDomain<V, D extends AbstractDomain<V, D>>
     @Override
     public void setDomain(D other) {
         if (other == null) {
-            throw new DomaIllegalArgumentException("other", other);
+            throw new DomaNullPointerException("other");
         }
         setInternal(other.get());
     }

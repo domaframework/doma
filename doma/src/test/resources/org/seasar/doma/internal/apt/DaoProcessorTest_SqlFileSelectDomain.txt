@@ -19,7 +19,7 @@ public class SqlFileSelectDomainDao_ extends org.seasar.doma.jdbc.DomaAbstractDa
     public org.seasar.doma.domain.StringDomain selectById(org.seasar.doma.domain.IntegerDomain id) {
         entering("org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDao_", "selectById", id);
         if (id == null) {
-            throw new org.seasar.doma.DomaIllegalArgumentException("id", id);
+            throw new org.seasar.doma.DomaNullPointerException("id");
         }
         org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
         query.setConfig(config);
@@ -41,13 +41,13 @@ public class SqlFileSelectDomainDao_ extends org.seasar.doma.jdbc.DomaAbstractDa
     public java.util.List<org.seasar.doma.domain.StringDomain> selectByNameAndSalary(org.seasar.doma.domain.StringDomain name, org.seasar.doma.domain.BigDecimalDomain salary, org.seasar.doma.jdbc.SelectOptions options) {
         entering("org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDao_", "selectByNameAndSalary", name, salary, options);
         if (name == null) {
-            throw new org.seasar.doma.DomaIllegalArgumentException("name", name);
+            throw new org.seasar.doma.DomaNullPointerException("name");
         }
         if (salary == null) {
-            throw new org.seasar.doma.DomaIllegalArgumentException("salary", salary);
+            throw new org.seasar.doma.DomaNullPointerException("salary");
         }
         if (options == null) {
-            throw new org.seasar.doma.DomaIllegalArgumentException("options", options);
+            throw new org.seasar.doma.DomaNullPointerException("options");
         }
         org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
         query.setConfig(config);

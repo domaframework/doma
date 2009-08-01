@@ -74,7 +74,7 @@ public class ItLogger implements JdbcLogger {
     public void logSqlFile(String callerClassName, String callerMethodName,
             SqlFile sqlFile) {
         Log log = LogFactory.getLog(callerMethodName);
-        log.info(sqlFile.getRealPath());
+        log.info(sqlFile.getPath());
     }
 
 }

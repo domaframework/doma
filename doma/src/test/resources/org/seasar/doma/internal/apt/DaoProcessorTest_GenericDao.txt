@@ -19,7 +19,7 @@ public class GenericDaoEx_ extends org.seasar.doma.jdbc.DomaAbstractDao implemen
     public int insert(org.seasar.doma.internal.apt.entity.Emp entity) {
         entering("org.seasar.doma.internal.apt.dao.GenericDaoEx_", "insert", entity);
         if (entity == null) {
-            throw new org.seasar.doma.DomaIllegalArgumentException("entity", entity);
+            throw new org.seasar.doma.DomaNullPointerException("entity", entity);
         }
         org.seasar.doma.internal.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.entity.Emp, org.seasar.doma.internal.apt.entity.Emp_> query = new org.seasar.doma.internal.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.entity.Emp, org.seasar.doma.internal.apt.entity.Emp_>(org.seasar.doma.internal.apt.entity.Emp_.class);
         query.setConfig(config);
@@ -39,7 +39,7 @@ public class GenericDaoEx_ extends org.seasar.doma.jdbc.DomaAbstractDao implemen
     public int delete(org.seasar.doma.internal.apt.entity.Emp entity) {
         entering("org.seasar.doma.internal.apt.dao.GenericDaoEx_", "delete", entity);
         if (entity == null) {
-            throw new org.seasar.doma.DomaIllegalArgumentException("entity", entity);
+            throw new org.seasar.doma.DomaNullPointerException("entity");
         }
         org.seasar.doma.internal.jdbc.query.AutoDeleteQuery<org.seasar.doma.internal.apt.entity.Emp, org.seasar.doma.internal.apt.entity.Emp_> query = new org.seasar.doma.internal.jdbc.query.AutoDeleteQuery<org.seasar.doma.internal.apt.entity.Emp, org.seasar.doma.internal.apt.entity.Emp_>(org.seasar.doma.internal.apt.entity.Emp_.class);
         query.setConfig(config);
@@ -60,7 +60,7 @@ public class GenericDaoEx_ extends org.seasar.doma.jdbc.DomaAbstractDao implemen
     public int update(org.seasar.doma.internal.apt.entity.Emp entity) {
         entering("org.seasar.doma.internal.apt.dao.GenericDaoEx_", "update", entity);
         if (entity == null) {
-            throw new org.seasar.doma.DomaIllegalArgumentException("entity", entity);
+            throw new org.seasar.doma.DomaNullPointerException("entity");
         }
         org.seasar.doma.internal.jdbc.query.AutoUpdateQuery<org.seasar.doma.internal.apt.entity.Emp, org.seasar.doma.internal.apt.entity.Emp_> query = new org.seasar.doma.internal.jdbc.query.AutoUpdateQuery<org.seasar.doma.internal.apt.entity.Emp, org.seasar.doma.internal.apt.entity.Emp_>(org.seasar.doma.internal.apt.entity.Emp_.class);
         query.setConfig(config);
@@ -82,7 +82,7 @@ public class GenericDaoEx_ extends org.seasar.doma.jdbc.DomaAbstractDao implemen
     public int update2(org.seasar.doma.internal.apt.entity.Emp entity) {
         entering("org.seasar.doma.internal.apt.dao.GenericDaoEx_", "update2", entity);
         if (entity == null) {
-            throw new org.seasar.doma.DomaIllegalArgumentException("entity", entity);
+            throw new org.seasar.doma.DomaNullPointerException("entity");
         }
         org.seasar.doma.internal.jdbc.query.AutoUpdateQuery<org.seasar.doma.internal.apt.entity.Emp, org.seasar.doma.internal.apt.entity.Emp_> query = new org.seasar.doma.internal.jdbc.query.AutoUpdateQuery<org.seasar.doma.internal.apt.entity.Emp, org.seasar.doma.internal.apt.entity.Emp_>(org.seasar.doma.internal.apt.entity.Emp_.class);
         query.setConfig(config);

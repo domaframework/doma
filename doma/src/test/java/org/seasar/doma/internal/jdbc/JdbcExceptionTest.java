@@ -24,10 +24,10 @@ import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
+import org.seasar.doma.jdbc.BuiltinSqlFileRepository;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlFileNotFoundException;
 import org.seasar.doma.jdbc.SqlNode;
-import org.seasar.doma.jdbc.BuiltinSqlFileRepository;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
 import org.seasar.doma.message.DomaMessageCode;
 
@@ -37,12 +37,13 @@ import org.seasar.doma.message.DomaMessageCode;
  */
 public class JdbcExceptionTest extends TestCase {
 
-    private MockConfig config = new MockConfig();
+    private final MockConfig config = new MockConfig();
 
     public void testSqlFileNotFound() throws Exception {
         BuiltinSqlFileRepository repository = new BuiltinSqlFileRepository();
         try {
-            repository.getSqlFile("aaa/bbb.sql", new StandardDialect());
+            repository
+                    .getSqlFile("META-INF/aaa/bbb.sql", new StandardDialect());
             fail();
         } catch (SqlFileNotFoundException e) {
             System.out.println(e.getMessage());

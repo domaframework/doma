@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Collections;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.domain.BlobDomain;
 import org.seasar.doma.domain.BooleanDomain;
 import org.seasar.doma.domain.BytesDomain;
@@ -106,7 +106,7 @@ public class PostgresDialect extends StandardDialect {
     @Override
     public boolean isUniqueConstraintViolated(SQLException sqlException) {
         if (sqlException == null) {
-            throw new DomaIllegalArgumentException("sqlException", sqlException);
+            throw new DomaNullPointerException("sqlException");
         }
         String state = getSQLState(sqlException);
         return UNIQUE_CONSTRAINT_VIOLATION_STATE_CODE.equals(state);
@@ -116,11 +116,10 @@ public class PostgresDialect extends StandardDialect {
     public PreparedSql getIdentitySelectSql(String qualifiedTableName,
             String columnName) {
         if (qualifiedTableName == null) {
-            throw new DomaIllegalArgumentException("qualifiedTableName",
-                    qualifiedTableName);
+            throw new DomaNullPointerException("qualifiedTableName");
         }
         if (columnName == null) {
-            throw new DomaIllegalArgumentException("columnName", columnName);
+            throw new DomaNullPointerException("columnName");
         }
         StringBuilder buf = new StringBuilder(64);
         buf.append("select currval('");
@@ -136,8 +135,7 @@ public class PostgresDialect extends StandardDialect {
     public PreparedSql getSequenceNextValSql(String qualifiedSequenceName,
             long allocationSize) {
         if (qualifiedSequenceName == null) {
-            throw new DomaIllegalArgumentException("qualifiedSequenceName",
-                    qualifiedSequenceName);
+            throw new DomaNullPointerException("qualifiedSequenceName");
         }
         String rawSql = "select nextval('" + qualifiedSequenceName + "')";
         return new PreparedSql(rawSql, rawSql, Collections

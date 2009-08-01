@@ -32,6 +32,7 @@ public interface BuiltinDomainVisitor<R, P, TH extends Throwable> extends
         AbstractDoubleDomainVisitor<R, P, TH>,
         AbstractFloatDomainVisitor<R, P, TH>,
         AbstractIntegerDomainVisitor<R, P, TH>,
+        AbstractLongDomainVisitor<R, P, TH>,
         AbstractNClobDomainVisitor<R, P, TH>,
         AbstractShortDomainVisitor<R, P, TH>,
         AbstractStringDomainVisitor<R, P, TH>,

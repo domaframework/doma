@@ -18,7 +18,7 @@ package org.seasar.doma.internal.jdbc.sql.node;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.SqlNode;
 
 
@@ -32,7 +32,7 @@ public abstract class AbstractSqlNode implements SqlNode {
 
     public void addNode(SqlNode child) {
         if (child == null) {
-            throw new DomaIllegalArgumentException("child", child);
+            throw new DomaNullPointerException("child");
         }
         children.add(child);
     }

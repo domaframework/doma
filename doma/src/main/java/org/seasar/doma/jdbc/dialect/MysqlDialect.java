@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.domain.BigIntegerDomain;
 import org.seasar.doma.domain.BlobDomain;
 import org.seasar.doma.domain.BooleanDomain;
@@ -83,7 +83,7 @@ public class MysqlDialect extends StandardDialect {
     @Override
     public boolean isUniqueConstraintViolated(SQLException sqlException) {
         if (sqlException == null) {
-            throw new DomaIllegalArgumentException("sqlException", sqlException);
+            throw new DomaNullPointerException("sqlException");
         }
         int code = getErrorCode(sqlException);
         return UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODES.contains(code);

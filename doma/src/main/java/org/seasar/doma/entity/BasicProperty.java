@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.entity;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.NameConvention;
@@ -40,10 +40,10 @@ public class BasicProperty<D extends Domain<?, ?>> implements EntityProperty<D> 
     public BasicProperty(String name, String columnName, D domain,
             boolean insertable, boolean updatable) {
         if (name == null) {
-            throw new DomaIllegalArgumentException("name", name);
+            throw new DomaNullPointerException("name");
         }
         if (domain == null) {
-            throw new DomaIllegalArgumentException("domain", domain);
+            throw new DomaNullPointerException("domain");
         }
         this.name = name;
         this.columnName = columnName;

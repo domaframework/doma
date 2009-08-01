@@ -25,7 +25,7 @@ public class S2RequiresNewController implements RequiresNewController {
     @SuppressWarnings("unchecked")
     @Override
     public <R> R requiresNew(final Callback<R> callback) throws Throwable {
-        final TransactionManagerAdapter txAdapter = SingletonS2Container
+        TransactionManagerAdapter txAdapter = SingletonS2Container
                 .getComponent(TransactionManagerAdapter.class);
         Object result = txAdapter.requiresNew(new TransactionCallback() {
 
@@ -37,5 +37,4 @@ public class S2RequiresNewController implements RequiresNewController {
         });
         return (R) result;
     }
-
 }

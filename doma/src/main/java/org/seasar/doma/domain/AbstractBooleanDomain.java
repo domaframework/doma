@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 
 /**
  * @author taedium
@@ -43,7 +43,7 @@ public abstract class AbstractBooleanDomain<D extends AbstractBooleanDomain<D>>
     public <R, P, TH extends Throwable> R accept(
             DomainVisitor<R, P, TH> visitor, P p) throws TH {
         if (visitor == null) {
-            throw new DomaIllegalArgumentException("visitor", visitor);
+            throw new DomaNullPointerException("visitor");
         }
         if (AbstractBooleanDomainVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")

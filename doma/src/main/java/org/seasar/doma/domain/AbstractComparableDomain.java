@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.domain;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 
 /**
  * @author taedium
@@ -34,7 +34,7 @@ public abstract class AbstractComparableDomain<V extends Comparable<? super V>, 
     @Override
     public int compareTo(D other) {
         if (other == null) {
-            throw new DomaIllegalArgumentException("other", other);
+            throw new DomaNullPointerException("other");
         }
         assertComparable(other);
         return value.compareTo(other.value);
@@ -54,7 +54,7 @@ public abstract class AbstractComparableDomain<V extends Comparable<? super V>, 
     @Override
     public boolean eq(D other) {
         if (other == null) {
-            throw new DomaIllegalArgumentException("other", other);
+            throw new DomaNullPointerException("other");
         }
         if (value == null && other.value == null) {
             return true;

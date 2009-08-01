@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.domain.AbstractBooleanDomain;
 import org.seasar.doma.domain.BigDecimalDomain;
 import org.seasar.doma.domain.BigIntegerDomain;
@@ -108,7 +108,7 @@ public class OracleDialect extends StandardDialect {
     @Override
     public boolean isUniqueConstraintViolated(SQLException sqlException) {
         if (sqlException == null) {
-            throw new DomaIllegalArgumentException("sqlException", sqlException);
+            throw new DomaNullPointerException("sqlException");
         }
         int code = getErrorCode(sqlException);
         return UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE == code;
@@ -118,8 +118,7 @@ public class OracleDialect extends StandardDialect {
     public PreparedSql getSequenceNextValSql(String qualifiedSequenceName,
             long allocationSize) {
         if (qualifiedSequenceName == null) {
-            throw new DomaIllegalArgumentException("qualifiedSequenceName",
-                    qualifiedSequenceName);
+            throw new DomaNullPointerException("qualifiedSequenceName");
         }
         String rawSql = "select " + qualifiedSequenceName
                 + ".nextval from dual";
@@ -162,10 +161,10 @@ public class OracleDialect extends StandardDialect {
     public String getTableComment(Connection connection, String catalogName,
             String schemaName, String tableName) throws SQLException {
         if (connection == null) {
-            throw new DomaIllegalArgumentException("connection", connection);
+            throw new DomaNullPointerException("connection");
         }
         if (tableName == null) {
-            throw new DomaIllegalArgumentException("tableName", tableName);
+            throw new DomaNullPointerException("tableName");
         }
         String sql = "select comments from all_tab_comments where owner = "
                 + schemaName + " and table_name = " + tableName
@@ -192,10 +191,10 @@ public class OracleDialect extends StandardDialect {
             String catalogName, String schemaName, String tableName)
             throws SQLException {
         if (connection == null) {
-            throw new DomaIllegalArgumentException("connection", connection);
+            throw new DomaNullPointerException("connection");
         }
         if (tableName == null) {
-            throw new DomaIllegalArgumentException("tableName", tableName);
+            throw new DomaNullPointerException("tableName");
         }
         String sql = "select column_name, comments from all_col_comments where owner = "
                 + schemaName + " and table_name = " + tableName;

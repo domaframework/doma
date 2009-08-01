@@ -19,7 +19,7 @@ public class ArrayFactoryDao_ extends org.seasar.doma.jdbc.DomaAbstractDao imple
     public org.seasar.doma.domain.ArrayDomain<java.lang.String> create(java.lang.String[] elements) {
         entering("org.seasar.doma.internal.apt.dao.ArrayFactoryDao_", "create", (Object)elements);
         if (elements == null) {
-            throw new org.seasar.doma.DomaIllegalArgumentException("elements", elements);
+            throw new org.seasar.doma.DomaNullPointerException("elements");
         }
         org.seasar.doma.internal.jdbc.query.ArrayCreateQuery<org.seasar.doma.domain.ArrayDomain<java.lang.String>> query = new org.seasar.doma.internal.jdbc.query.ArrayCreateQuery<org.seasar.doma.domain.ArrayDomain<java.lang.String>>();
         query.setConfig(config);

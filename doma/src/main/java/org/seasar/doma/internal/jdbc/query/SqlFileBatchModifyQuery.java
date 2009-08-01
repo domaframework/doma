@@ -71,7 +71,8 @@ public abstract class SqlFileBatchModifyQuery<I, E extends Entity<I>>
     }
 
     public void compile() {
-        assertNotNull(config, sqlFilePath, parameterName, callerClassName, callerMethodName);
+        assertNotNull(config, sqlFilePath, parameterName, callerClassName,
+                callerMethodName);
         Iterator<? extends E> it = entities.iterator();
         if (it.hasNext()) {
             executable = true;
@@ -93,6 +94,9 @@ public abstract class SqlFileBatchModifyQuery<I, E extends Entity<I>>
         if (queryTimeout <= 0) {
             queryTimeout = config.queryTimeout();
         }
+        if (batchSize <= 0) {
+            batchSize = config.batchSize();
+        }
     }
 
     protected void prepareSql() {
@@ -100,10 +104,10 @@ public abstract class SqlFileBatchModifyQuery<I, E extends Entity<I>>
                 .singletonMap(parameterName, entity));
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
                 evaluator);
-        SqlFile sqlFile = config.sqlFileRepository()
-                .getSqlFile(sqlFilePath, config.dialect());
-        config.jdbcLogger()
-                .logSqlFile(callerClassName, callerMethodName, sqlFile);
+        SqlFile sqlFile = config.sqlFileRepository().getSqlFile(sqlFilePath,
+                config.dialect());
+        config.jdbcLogger().logSqlFile(callerClassName, callerMethodName,
+                sqlFile);
         PreparedSql sql = sqlBuilder.build(sqlFile.getSqlNode());
         sqls.add(sql);
     }

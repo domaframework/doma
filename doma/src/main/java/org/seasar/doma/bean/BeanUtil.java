@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.bean;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 
 /**
  * @author taedium
@@ -27,7 +27,7 @@ public final class BeanUtil {
 
     public static void setDelegate(BeanUtilDelegate delegate) {
         if (delegate == null) {
-            throw new DomaIllegalArgumentException("delegate", delegate);
+            throw new DomaNullPointerException("delegate");
         }
         BeanUtil.delegate = delegate;
     }

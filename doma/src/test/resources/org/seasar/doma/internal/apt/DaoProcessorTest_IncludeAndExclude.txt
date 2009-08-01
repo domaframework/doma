@@ -19,7 +19,7 @@ public class IncludeAndExcludeDao_ extends org.seasar.doma.jdbc.DomaAbstractDao 
     public int update(org.seasar.doma.internal.apt.entity.Emp emp) {
         entering("org.seasar.doma.internal.apt.dao.IncludeAndExcludeDao_", "update", emp);
         if (emp == null) {
-            throw new org.seasar.doma.DomaIllegalArgumentException("emp", emp);
+            throw new org.seasar.doma.DomaNullPointerException("emp");
         }
         org.seasar.doma.internal.jdbc.query.AutoUpdateQuery<org.seasar.doma.internal.apt.entity.Emp, org.seasar.doma.internal.apt.entity.Emp_> query = new org.seasar.doma.internal.jdbc.query.AutoUpdateQuery<org.seasar.doma.internal.apt.entity.Emp, org.seasar.doma.internal.apt.entity.Emp_>(org.seasar.doma.internal.apt.entity.Emp_.class);
         query.setConfig(config);

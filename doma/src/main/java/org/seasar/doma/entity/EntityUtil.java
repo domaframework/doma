@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.entity;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.domain.Domain;
 
 /**
@@ -28,7 +28,7 @@ public final class EntityUtil {
 
     public static void setDelegate(EntityUtilDelegate delegate) {
         if (delegate == null) {
-            throw new DomaIllegalArgumentException("delegate", delegate);
+            throw new DomaNullPointerException("delegate");
         }
         EntityUtil.delegate = delegate;
     }

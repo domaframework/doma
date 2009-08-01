@@ -15,20 +15,79 @@
  */
 package org.seasar.doma.jdbc;
 
+import org.seasar.doma.Delegate;
+import org.seasar.doma.Entity;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
+ * ネーミング規約です。
+ * <p>
+ * <ul>
+ * <li>エンティティ名とは {@link Entity} が注釈されたインタフェースの単純名です。
+ * <li>プロパティ名とは {@code Entity} が注釈されたインタフェースのメンバメソッド（ただし、 {@link Delegate}
+ * が注釈されたものは除く ）の名前です。
+ * <li>テーブル名とは、データベースのテーブルの名前です。カタログ名やスキーマ名は含みません。
+ * <li>カラム名とは、データベースのテーブルのカラムの名前です。
+ * </ul>
+ * <p>
+ * このインタフェースの実装はスレッドセーフでなければいけません。
+ * 
  * @author taedium
  * 
  */
 public interface NameConvention {
 
+    /**
+     * エンティティ名からテーブル名へ変換します。
+     * <p>
+     * 更新系SQLの自動生成時、テーブル名が明示されていない場合に呼び出されます。
+     * 
+     * @param entityName
+     *            エンティティ名
+     * @param dialect
+     *            方言
+     * @return テーブル名
+     */
     String fromEntityToTable(String entityName, Dialect dialect);
 
+    /**
+     * テーブル名からエンティティ名へ変換します。
+     * <p>
+     * データベースから {@link Entity} が注釈されたインタフェースのソースコードを生成する場合に、コード生成ツールにより呼び出されます。
+     * 
+     * @param tableName
+     *            テーブル名
+     * @param dialect
+     *            方言
+     * @return エンティティ名
+     */
     String fromTableToEntity(String tableName, Dialect dialect);
 
+    /**
+     * プロパティ名からカラム名へ変換します。
+     * <p>
+     * 更新系SQLの自動生成時、カラム名が明示されていない場合に呼び出されます。また、
+     * 検索系SQLの結果セットをプロパティにマッピングする際に呼び出されます。
+     * 
+     * @param propertyName
+     *            プロパティ名
+     * @param dialect
+     *            方言
+     * @return カラム名
+     */
     String fromPropertyToColumn(String propertyName, Dialect dialect);
 
+    /**
+     * カラム名からプロパティ名へ変換します。
+     * <p>
+     * データベースから {@link Entity} が注釈されたインタフェースのソースコードを生成する場合に、コード生成ツールにより呼び出されます。
+     * 
+     * @param columnName
+     *            カラム名
+     * @param dialect
+     *            方言
+     * @return プロパティ名
+     */
     String fromColumnToProperty(String columnName, Dialect dialect);
 
 }

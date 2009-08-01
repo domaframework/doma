@@ -24,43 +24,102 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 /**
+ * {@link DriverManager#getConnection(String, Properties)}を使用して
+ * {@link Connection} を返す単純なデータソースです。
+ * <p>
+ * ごく単純なアプリケーションやサンプルプログラムで使用されることを想定しています。 通常は、{@literal JTA}トランザクションと連携する
+ * {@link DataSource} の実装を使用してください。
+ * 
  * @author taedium
  * 
  */
 public class SimpleDataSource implements DataSource {
 
+    /**
+     * {@code jdbc:subprotocol:subname}という形式のデータベースへの接続URLです。
+     */
     protected String url;
 
+    /**
+     * データベースの接続ユーザーです。
+     */
     protected String user;
 
+    /**
+     * データベースの接続パスワードです。
+     */
     protected String password;
 
+    /**
+     * JDBCドライバへのプロパティです。
+     */
     protected final Properties properties = new Properties();
 
+    /**
+     * データベースへの接続URLを返します。
+     * 
+     * @return データベースへの接続URL
+     */
     public String getUrl() {
         return url;
     }
 
+    /**
+     * データベースの接続URLを設定します。
+     * 
+     * @param url
+     *            {@code jdbc:subprotocol:subname}という形式のデータベースへの接続URL
+     */
     public void setUrl(String url) {
         this.url = url;
     }
 
+    /**
+     * データベースの接続ユーザーを返します。
+     * 
+     * @return データベースの接続ユーザー
+     */
     public String getUser() {
         return user;
     }
 
+    /**
+     * データベースの接続ユーザーを設定します。
+     * 
+     * @param user
+     *            データベースの接続ユーザー
+     */
     public void setUser(String user) {
         this.user = user;
     }
 
+    /**
+     * データベースの接続パスワードを返します。
+     * 
+     * @return データベースの接続パスワード
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * データベースの接続パスワードを設定します。
+     * 
+     * @param password
+     *            データベースの接続パスワード
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * JDBCドライバへのプロパティを追加します。
+     * 
+     * @param key
+     *            プロパティのキー
+     * @param value
+     *            プロパティの値
+     */
     public void addProperty(String key, String value) {
         properties.setProperty(key, value);
     }

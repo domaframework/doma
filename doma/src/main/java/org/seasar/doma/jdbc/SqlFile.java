@@ -15,50 +15,83 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 
 /**
+ * SQLファイルです。
+ * <p>
+ * SQLファイルのパス、SQLの文字列、SQLの文字列を解析した結果をカプセル化します。
+ * 
  * @author taedium
  * 
  */
 public class SqlFile {
 
-    protected final String realPath;
+    /** SQLファイルのパス */
+    protected final String path;
 
+    /** SQLの文字列 */
     protected final String sql;
 
+    /** SQLの解析結果 */
     protected final SqlNode sqlNode;
 
-    public SqlFile(String realPath, String sql, SqlNode sqlNode) {
-        if (realPath == null) {
-            throw new DomaIllegalArgumentException("realPath", realPath);
+    /**
+     * 
+     * @param path
+     *            SQLファイルのパス
+     * @param sql
+     *            SQLの文字列
+     * @param sqlNode
+     *            SQLの解析結果
+     */
+    public SqlFile(String path, String sql, SqlNode sqlNode) {
+        if (path == null) {
+            throw new DomaNullPointerException("path");
         }
         if (sql == null) {
-            throw new DomaIllegalArgumentException("sql", sql);
+            throw new DomaNullPointerException("sql");
         }
         if (sqlNode == null) {
-            throw new DomaIllegalArgumentException("sqlNode", sqlNode);
+            throw new DomaNullPointerException("sqlNode");
         }
-        this.realPath = realPath;
+        this.path = path;
         this.sql = sql;
         this.sqlNode = sqlNode;
     }
 
-    public String getRealPath() {
-        return realPath;
+    /**
+     * SQLファイルのパスを返します。
+     * 
+     * @return SQLファイルのパス
+     */
+    public String getPath() {
+        return path;
     }
 
+    /**
+     * SQLの文字列を返します。
+     * 
+     * @return SQLの文字列
+     */
     public String getSql() {
         return sql;
     }
 
+    /**
+     * SQLの解析結果を返します。
+     * <p>
+     * 呼び出し側で {@link SqlNode} を変更しても、このインスタンス保持したSQLの解析結果は影響を受けません。
+     * 
+     * @return SQLの解析結果
+     */
     public SqlNode getSqlNode() {
         return sqlNode.copy();
     }
 
     @Override
     public String toString() {
-        return realPath;
+        return path;
     }
 
 }

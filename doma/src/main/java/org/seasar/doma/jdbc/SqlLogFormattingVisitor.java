@@ -15,13 +15,18 @@
  */
 package org.seasar.doma.jdbc;
 
+import org.seasar.doma.domain.Domain;
 import org.seasar.doma.domain.DomainVisitor;
 
 /**
+ * SQLのバインド変数にマッピングされる {@link Domain} をログ用のフォーマットされた文字列へと変換する
+ * {@link DomainVisitor} の拡張です。
+ * <p>
+ * このインタフェースの実装はスレッドセーフでなければいけません。
+ * 
  * @author taedium
  * 
  */
 public interface SqlLogFormattingVisitor extends
         DomainVisitor<String, SqlLogFormattingFunction, RuntimeException> {
-
 }

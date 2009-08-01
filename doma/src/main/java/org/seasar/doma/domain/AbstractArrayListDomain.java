@@ -20,7 +20,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 
 /**
  * @author taedium
@@ -46,7 +46,7 @@ public abstract class AbstractArrayListDomain<E, D extends AbstractArrayListDoma
     public <R, P, TH extends Throwable> R accept(
             DomainVisitor<R, P, TH> visitor, P p) throws TH {
         if (visitor == null) {
-            throw new DomaIllegalArgumentException("visitor", visitor);
+            throw new DomaNullPointerException("visitor");
         }
         if (AbstractArrayListDomainVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")

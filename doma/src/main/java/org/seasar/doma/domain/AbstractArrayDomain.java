@@ -18,8 +18,7 @@ package org.seasar.doma.domain;
 import java.sql.Array;
 import java.sql.SQLException;
 
-import org.seasar.doma.DomaIllegalArgumentException;
-import org.seasar.doma.DomaIllegalStateException;
+import org.seasar.doma.DomaNullPointerException;
 
 /**
  * @author taedium
@@ -41,7 +40,7 @@ public abstract class AbstractArrayDomain<D extends AbstractArrayDomain<D, E>, E
         try {
             return (E[]) value.getArray();
         } catch (SQLException e) {
-            throw new DomaIllegalStateException(e);
+            throw new DomainIllegalStateException(e);
         }
     }
 
@@ -49,7 +48,7 @@ public abstract class AbstractArrayDomain<D extends AbstractArrayDomain<D, E>, E
     public <R, P, TH extends Throwable> R accept(
             DomainVisitor<R, P, TH> visitor, P p) throws TH {
         if (visitor == null) {
-            throw new DomaIllegalArgumentException("visitor", visitor);
+            throw new DomaNullPointerException("visitor");
         }
         if (AbstractArrayDomainVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")

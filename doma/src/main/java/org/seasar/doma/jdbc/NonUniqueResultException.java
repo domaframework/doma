@@ -18,6 +18,8 @@ package org.seasar.doma.jdbc;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
+ * 1件であることを期待する検索系SQLの結果が2件以上である場合にスローされる例外です。
+ * 
  * @author taedium
  * 
  */
@@ -25,14 +27,30 @@ public class NonUniqueResultException extends JdbcException {
 
     private static final long serialVersionUID = 1L;
 
+    /** 未加工SQL */
     protected final String rawSql;
 
+    /** フォーマット済みSQL */
     protected final String formattedSql;
 
+    /**
+     * 2件以上の結果を返したSQLを指定してインスタンスを構築します。
+     * 
+     * @param sql
+     *            SQL
+     */
     public NonUniqueResultException(Sql<?> sql) {
         this(sql.getRawSql(), sql.getFormattedSql());
     }
 
+    /**
+     * 2件以上の結果を返した未加工SQLとフォーマット済みSQLを指定してインスタンスを構築します。
+     * 
+     * @param rawSql
+     *            未加工SQL
+     * @param formattedSql
+     *            フォーマット済みｓQL
+     */
     public NonUniqueResultException(String rawSql, String formattedSql) {
         super(DomaMessageCode.DOMA2001, formattedSql, rawSql);
         this.rawSql = rawSql;

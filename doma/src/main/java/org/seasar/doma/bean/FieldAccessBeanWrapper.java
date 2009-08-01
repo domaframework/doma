@@ -22,7 +22,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.FieldUtil;
 
@@ -42,7 +42,7 @@ public class FieldAccessBeanWrapper implements BeanWrapper {
 
     public FieldAccessBeanWrapper(Object bean) {
         if (bean == null) {
-            throw new DomaIllegalArgumentException("bean", bean);
+            throw new DomaNullPointerException("bean");
         }
         this.bean = bean;
         this.beanClass = bean.getClass();

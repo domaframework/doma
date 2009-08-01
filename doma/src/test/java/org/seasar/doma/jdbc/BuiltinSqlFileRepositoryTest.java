@@ -29,29 +29,32 @@ public class BuiltinSqlFileRepositoryTest extends TestCase {
 
     public void testGetSqlFile() throws Exception {
         StandardDialect dialect = new StandardDialect();
-        String path = getClass().getName().replace(".", "/") + ".sql";
+        String path = "META-INF/" + getClass().getName().replace(".", "/")
+                + ".sql";
         BuiltinSqlFileRepository repository = new BuiltinSqlFileRepository();
         SqlFile sqlFile = repository.getSqlFile(path, dialect);
         assertNotNull(sqlFile);
         SqlFile sqlFile2 = repository.getSqlFile(path, dialect);
         assertSame(sqlFile, sqlFile2);
-        assertEquals(path, sqlFile.getRealPath());
+        assertEquals(path, sqlFile.getPath());
     }
 
     public void testGetSqlFile_oracle() throws Exception {
         OracleDialect dialect = new OracleDialect();
-        String path = getClass().getName().replace(".", "/") + ".sql";
+        String path = "META-INF/" + getClass().getName().replace(".", "/")
+                + ".sql";
         BuiltinSqlFileRepository repository = new BuiltinSqlFileRepository();
         SqlFile sqlFile = repository.getSqlFile(path, dialect);
-        assertEquals(getClass().getName().replace(".", "/") + "_oracle.sql", sqlFile
-                .getRealPath());
+        assertEquals("META-INF/" + getClass().getName().replace(".", "/")
+                + "_oracle.sql", sqlFile.getPath());
     }
 
     public void testGetSqlFile_postgres() throws Exception {
         PostgresDialect dialect = new PostgresDialect();
-        String path = getClass().getName().replace(".", "/") + ".sql";
+        String path = "META-INF/" + getClass().getName().replace(".", "/")
+                + ".sql";
         BuiltinSqlFileRepository repository = new BuiltinSqlFileRepository();
         SqlFile sqlFile = repository.getSqlFile(path, dialect);
-        assertEquals(path, sqlFile.getRealPath());
+        assertEquals(path, sqlFile.getPath());
     }
 }

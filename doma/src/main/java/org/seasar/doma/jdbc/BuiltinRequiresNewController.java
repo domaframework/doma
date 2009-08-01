@@ -16,6 +16,11 @@
 package org.seasar.doma.jdbc;
 
 /**
+ * {@literal REQUIRES_NEW} のトランザクション属性について何ら制御を行わない
+ * {@link RequiresNewController}の実装です。
+ * <p>
+ * 通常は、このクラスを使用せず、環境にあわせた実装を作成し使用してください。
+ * 
  * @author taedium
  * 
  */

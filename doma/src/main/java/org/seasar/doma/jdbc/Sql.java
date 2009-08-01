@@ -19,16 +19,43 @@ import java.util.List;
 
 import org.seasar.doma.internal.jdbc.sql.SqlParameter;
 
-
 /**
- * @author taedium
+ * SQLを表します。
+ * <p>
+ * SQLの文字列とSQL実行時のパラメータをカプセル化します。また、SQLのバインド変数をパラメータで置換した文字列も保持します。
  * 
+ * <p>
+ * このインタフェースの実装はスレッドセーフであることを要求されません。
+ * 
+ * @author taedium
+ * @param <P>
+ *            パラメータの種別を表す型
  */
 public interface Sql<P extends SqlParameter> {
 
+    /**
+     * 未加工SQLを返します。
+     * <p>
+     * バインド変数は {@code ?} で表されます。
+     * 
+     * @return 未加工SQL
+     */
     String getRawSql();
 
+    /**
+     * フォーマット済みSQLを返します。
+     * <p>
+     * バインド変数 {@code ?} が、 {@link SqlLogFormattingVisitor}
+     * の実装によって適切な文字列に置換されたSQLです。
+     * 
+     * @return フォーマット済みSQL
+     */
     String getFormattedSql();
 
+    /**
+     * バインド変数へのパラメータのリストを返します。
+     * 
+     * @return バインド変数のパラメータのリスト
+     */
     List<P> getParameters();
 }

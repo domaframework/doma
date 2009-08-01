@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.entity;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.jdbc.Config;
 
@@ -32,10 +32,10 @@ public class TransientProperty<D extends Domain<?, ?>> implements
 
     public TransientProperty(String name, D domain) {
         if (name == null) {
-            throw new DomaIllegalArgumentException("name", name);
+            throw new DomaNullPointerException("name");
         }
         if (domain == null) {
-            throw new DomaIllegalArgumentException("domain", domain);
+            throw new DomaNullPointerException("domain");
         }
         this.name = name;
         this.domain = domain;

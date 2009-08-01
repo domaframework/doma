@@ -17,7 +17,7 @@ package org.seasar.doma.domain;
 
 import java.sql.Blob;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 
 /**
  * @author taedium
@@ -38,7 +38,7 @@ public abstract class AbstractBlobDomain<D extends AbstractBlobDomain<D>>
     public <R, P, TH extends Throwable> R accept(
             DomainVisitor<R, P, TH> visitor, P p) throws TH {
         if (visitor == null) {
-            throw new DomaIllegalArgumentException("visitor", visitor);
+            throw new DomaNullPointerException("visitor");
         }
         if (AbstractBlobDomainVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")

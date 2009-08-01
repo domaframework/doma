@@ -19,10 +19,25 @@ import org.seasar.doma.domain.Domain;
 import org.seasar.doma.jdbc.type.JdbcType;
 
 /**
+ * SQLのバインド変数の値をSQLのログ出力用フォーマットに変換する処理を表します。
+ * <p>
+ * このインタフェースの実装はスレッドセーフであることを要求されません。
+ * 
  * @author taedium
  * 
  */
 public interface SqlLogFormattingFunction {
 
+    /**
+     * 処理を実行します。
+     * 
+     * @param <V>
+     *            値の型
+     * @param domain
+     *            SQLのバインド変数にマッピングされるドメイン
+     * @param jdbcType
+     *            JDBC型
+     * @return フォーマットされた文字列
+     */
     <V> String apply(Domain<V, ?> domain, JdbcType<V> jdbcType);
 }

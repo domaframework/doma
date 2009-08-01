@@ -19,10 +19,10 @@ public class AutoProcedureDao_ extends org.seasar.doma.jdbc.DomaAbstractDao impl
     public void executeProcedure(org.seasar.doma.domain.IntegerDomain arg1, org.seasar.doma.domain.IntegerDomain arg2) {
         entering("org.seasar.doma.internal.apt.dao.AutoProcedureDao_", "executeProcedure", arg1, arg2);
         if (arg1 == null) {
-            throw new org.seasar.doma.DomaIllegalArgumentException("arg1", arg1);
+            throw new org.seasar.doma.DomaNullPointerException("arg1");
         }
         if (arg2 == null) {
-            throw new org.seasar.doma.DomaIllegalArgumentException("arg2", arg2);
+            throw new org.seasar.doma.DomaNullPointerException("arg2");
         }
         org.seasar.doma.internal.jdbc.query.AutoProcedureQuery query = new org.seasar.doma.internal.jdbc.query.AutoProcedureQuery();
         query.setConfig(config);

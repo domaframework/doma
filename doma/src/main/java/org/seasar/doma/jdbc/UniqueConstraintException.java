@@ -19,6 +19,8 @@ import org.seasar.doma.MessageCode;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
+ * 一意制約違反が発生した場合にスローされる例外です。
+ * 
  * @author taedium
  * 
  */
@@ -26,14 +28,34 @@ public class UniqueConstraintException extends JdbcException {
 
     private static final long serialVersionUID = 1L;
 
+    /** 未加工SQL */
     protected final String rawSql;
 
+    /** フォーマット済みSQL、バッチ処理時にスローされた場合 {@code null} */
     protected final String formattedSql;
 
+    /**
+     * SQLを指定してインスタンスを構築します。
+     * 
+     * @param sql
+     *            SQL
+     * @param cause
+     *            原因
+     */
     public UniqueConstraintException(Sql<?> sql, Throwable cause) {
         this(sql.getRawSql(), sql.getFormattedSql(), cause);
     }
 
+    /**
+     * 未加工SQLとフォーマット済みSQLを指定してインスタンスを構築します。
+     * 
+     * @param rawSql
+     *            未加工SQL
+     * @param formattedSql
+     *            フォーマット済みSQL
+     * @param cause
+     *            原因
+     */
     public UniqueConstraintException(String rawSql, String formattedSql,
             Throwable cause) {
         super(DomaMessageCode.DOMA2004, formattedSql, rawSql, cause);
@@ -41,8 +63,18 @@ public class UniqueConstraintException extends JdbcException {
         this.formattedSql = formattedSql;
     }
 
-    protected UniqueConstraintException(MessageCode messageCode,
-            String rawSql, Throwable cause) {
+    /**
+     * メッセージコードと未加工SQLを指定してインスタンスを構築します。
+     * 
+     * @param messageCode
+     *            メッセージコード
+     * @param rawSql
+     *            未加工SQL
+     * @param cause
+     *            原因
+     */
+    protected UniqueConstraintException(MessageCode messageCode, String rawSql,
+            Throwable cause) {
         super(messageCode, cause, rawSql, cause);
         this.rawSql = rawSql;
         this.formattedSql = null;

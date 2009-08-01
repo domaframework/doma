@@ -15,14 +15,56 @@
  */
 package org.seasar.doma.jdbc;
 
+import org.seasar.doma.Dao;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
+ * {@link SqlFile} のリポジトリです。
+ * <p>
+ * SQLファイルのパスは次の制約を満たさねばなりません。
+ * <ul>
+ * <li>'META-INF/'で始まる。
+ * <li>その後ろに、 {@link Dao} が注釈されたインタフェースの完全修飾名の {@code .} を {@code /} に置換したものが続く。
+ * <li>その後ろに、{@code _} が続く。
+ * <li>その後ろに、{@link Dao} が注釈されたインタフェースのメンバメソッド名が続く。
+ * <li>'.sql'で終わる。
+ * </ul>
+ * 
+ * <h5>SQLファイルのパスの例</h5>
+ * 
+ * <pre>
+ * /META-INF/org/example/ExampleDao_selectAll.sql
+ * </pre>
+ * 
+ * このインタフェースの実装クラスは、まず、RDBMS固有のSQLファイルがあるかどうか調べ、あればそちらを使用しなければいけません。
+ * RDBMS固有のSQLファイルのパスは、 {@link Dao} が注釈されたインタフェースのメンバメソッド名 と
+ * '.sql'の間に次の文字列を挿入することで求められます。
+ * <li>{@code _} 。
+ * <li>{@link Dialect#getName()} で返される値。
+ * 
+ * <h5>RDBMS固有のSQLファイルのパスの例</h5>
+ * 
+ * <pre>
+ * /META-INF/org/example/ExampleDao_selectAll_oracle.sql
+ * </pre>
+ * 
+ * <p>
+ * このインタフェースの実装はスレッドセーフでなければいけません。
+ * 
  * @author taedium
  * 
  */
 public interface SqlFileRepository {
 
+    /**
+     * SQLファイルを返します。
+     * 
+     * @param path
+     *            SQLファイルのパス。
+     * @param dialect
+     *            方言
+     * @return SQLファイル
+     */
     SqlFile getSqlFile(String path, Dialect dialect);
 
 }

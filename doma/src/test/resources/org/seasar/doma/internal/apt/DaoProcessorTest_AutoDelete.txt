@@ -19,7 +19,7 @@ public class AutoDeleteDao_ extends org.seasar.doma.jdbc.DomaAbstractDao impleme
     public int delete(org.seasar.doma.internal.apt.entity.Emp entity) {
         entering("org.seasar.doma.internal.apt.dao.AutoDeleteDao_", "delete", entity);
         if (entity == null) {
-            throw new org.seasar.doma.DomaIllegalArgumentException("entity", entity);
+            throw new org.seasar.doma.DomaNullPointerException("entity");
         }
         org.seasar.doma.internal.jdbc.query.AutoDeleteQuery<org.seasar.doma.internal.apt.entity.Emp, org.seasar.doma.internal.apt.entity.Emp_> query = new org.seasar.doma.internal.jdbc.query.AutoDeleteQuery<org.seasar.doma.internal.apt.entity.Emp, org.seasar.doma.internal.apt.entity.Emp_>(org.seasar.doma.internal.apt.entity.Emp_.class);
         query.setConfig(config);

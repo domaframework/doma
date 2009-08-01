@@ -17,7 +17,7 @@ package org.seasar.doma.domain;
 
 import java.lang.reflect.Method;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.MethodUtil;
 import org.seasar.doma.message.DomaMessageCode;
@@ -31,7 +31,7 @@ public class BuiltinDomainUtilDelegate implements DomainUtilDelegate {
     @Override
     public void set(Domain<?, ?> domain, Object value) {
         if (domain == null) {
-            throw new DomaIllegalArgumentException("domain", domain);
+            throw new DomaNullPointerException("domain");
         }
         try {
             Method setter = MethodUtil

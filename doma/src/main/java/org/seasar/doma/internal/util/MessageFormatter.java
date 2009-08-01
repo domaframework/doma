@@ -28,8 +28,8 @@ public final class MessageFormatter {
 
     public static String getMessage(MessageCode messageCode,
             ResourceBundle bundle, Object... args) {
-        String pattern = bundle.getString(messageCode.getKey());
+        String pattern = bundle.getString(messageCode.getCode());
         return MessageFormat
-                .format("[" + messageCode.getKey() + "] " + pattern, args);
+                .format("[" + messageCode.getCode() + "] " + pattern, args);
     }
 }

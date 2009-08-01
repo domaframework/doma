@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.seasar.doma.DomaUnsupportedOperationException;
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.internal.expr.EvaluationResult;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
@@ -72,6 +71,7 @@ import org.seasar.doma.internal.jdbc.sql.node.WordNode;
 import org.seasar.doma.internal.jdbc.sql.node.WordNodeVisitor;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
@@ -450,7 +450,7 @@ public class NodePreparedSqlBuilder implements
 
     @Override
     public Void visitUnknownNode(SqlNode node, Context p) {
-        throw new DomaUnsupportedOperationException(getClass().getName(),
+        throw new JdbcUnsupportedOperationException(getClass().getName(),
                 "visitUnknownNode");
     }
 

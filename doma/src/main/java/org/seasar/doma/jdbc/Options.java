@@ -16,9 +16,12 @@
 package org.seasar.doma.jdbc;
 
 /**
+ * クエリに対する実行時のオプションです。
+ * <p>
+ * このインタフェースの実装はスレッドセーフであることを要求されません。
+ * 
  * @author taedium
  * 
  */
 public interface Options {
-
 }

@@ -20,7 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.type.JdbcType;
@@ -47,10 +47,10 @@ public class SetValueFunction implements JdbcMappingFunction {
     public <R, V> R apply(Domain<V, ?> domain, JdbcType<V> jdbcType)
             throws SQLException {
         if (domain == null) {
-            throw new DomaIllegalArgumentException("domain", domain);
+            throw new DomaNullPointerException("domain");
         }
         if (jdbcType == null) {
-            throw new DomaIllegalArgumentException("jdbcType", jdbcType);
+            throw new DomaNullPointerException("jdbcType");
         }
         jdbcType.setValue(preparedStatement, index, domain.get());
         return null;

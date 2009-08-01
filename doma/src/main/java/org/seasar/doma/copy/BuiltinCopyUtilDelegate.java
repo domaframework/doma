@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.bean.BeanPropertyWrapper;
 import org.seasar.doma.bean.BeanUtil;
 import org.seasar.doma.bean.BeanWrapper;
@@ -66,13 +66,13 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
     @Override
     public void copy(Object src, Object dest, CopyOptions copyOptions) {
         if (src == null) {
-            throw new DomaIllegalArgumentException("src", src);
+            throw new DomaNullPointerException("src");
         }
         if (dest == null) {
-            throw new DomaIllegalArgumentException("dest", dest);
+            throw new DomaNullPointerException("dest");
         }
         if (copyOptions == null) {
-            throw new DomaIllegalArgumentException("copyOptions", copyOptions);
+            throw new DomaNullPointerException("copyOptions");
         }
         if (Entity.class.isInstance(src)) {
             Entity<?> srcEntity = Entity.class.cast(src);
@@ -95,13 +95,13 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
     public void copy(Object src, Map<String, Object> dest,
             CopyOptions copyOptions) {
         if (src == null) {
-            throw new DomaIllegalArgumentException("src", src);
+            throw new DomaNullPointerException("src");
         }
         if (dest == null) {
-            throw new DomaIllegalArgumentException("dest", dest);
+            throw new DomaNullPointerException("dest");
         }
         if (copyOptions == null) {
-            throw new DomaIllegalArgumentException("copyOptions", copyOptions);
+            throw new DomaNullPointerException("copyOptions");
         }
         if (Entity.class.isInstance(src)) {
             copyFromEntityToMap(Entity.class.cast(src), dest, copyOptions);
@@ -114,13 +114,13 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
     public void copy(Map<String, Object> src, Object dest,
             CopyOptions copyOptions) {
         if (src == null) {
-            throw new DomaIllegalArgumentException("src", src);
+            throw new DomaNullPointerException("src");
         }
         if (dest == null) {
-            throw new DomaIllegalArgumentException("dest", dest);
+            throw new DomaNullPointerException("dest");
         }
         if (copyOptions == null) {
-            throw new DomaIllegalArgumentException("copyOptions", copyOptions);
+            throw new DomaNullPointerException("copyOptions");
         }
         if (Entity.class.isInstance(dest)) {
             copyFromMapToEntity(src, Entity.class.cast(dest), copyOptions);

@@ -15,13 +15,29 @@
  */
 package org.seasar.doma.jdbc;
 
-
 /**
+ * {@link SqlNode} へのビジターです。
+ * <p>
+ * このインタフェースの実装はスレッドセーフでなければいけません。
+ * 
  * @author taedium
  * 
+ * @param <R>
+ *            戻り値の型
+ * @param <P>
+ *            パラメータの型
  */
 public interface SqlNodeVisitor<R, P> {
 
+    /**
+     * 未知のノードを処理します。
+     * 
+     * @param node
+     *            ノード
+     * @param p
+     *            パラメータ
+     * @return 処理された値
+     */
     R visitUnknownNode(SqlNode node, P p);
 
 }

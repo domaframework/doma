@@ -17,7 +17,7 @@ package org.seasar.doma.domain;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 
 /**
  * @author taedium
@@ -110,12 +110,12 @@ public class AbstComparableDomainTest extends TestCase {
         try {
             d.eq(AbstComparableDomain.class.cast(null));
             fail();
-        } catch (DomaIllegalArgumentException expected) {
+        } catch (DomaNullPointerException expected) {
         }
         try {
             d.lt(AbstComparableDomain.class.cast(null));
             fail();
-        } catch (DomaIllegalArgumentException expected) {
+        } catch (DomaNullPointerException expected) {
         }
     }
 

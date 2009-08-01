@@ -22,7 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.MessageCode;
 
 /**
@@ -36,8 +36,7 @@ public abstract class AbstractMessageResource<M extends Enum<M> & MessageCode>
 
     public AbstractMessageResource(Class<M> messageCodeClass) {
         if (messageCodeClass == null) {
-            throw new DomaIllegalArgumentException("messageCodeClass",
-                    messageCodeClass);
+            throw new DomaNullPointerException("messageCodeClass");
         }
         this.messageCodeClass = messageCodeClass;
     }
@@ -46,7 +45,7 @@ public abstract class AbstractMessageResource<M extends Enum<M> & MessageCode>
     public Enumeration<String> getKeys() {
         List<String> keys = new LinkedList<String>();
         for (M messageCode : EnumSet.allOf(messageCodeClass)) {
-            keys.add(messageCode.getKey());
+            keys.add(messageCode.getCode());
         }
         return Collections.enumeration(keys);
     }
@@ -54,7 +53,7 @@ public abstract class AbstractMessageResource<M extends Enum<M> & MessageCode>
     @Override
     protected Object handleGetObject(String key) {
         if (key == null) {
-            new DomaIllegalArgumentException("key", key);
+            new DomaNullPointerException("key");
         }
         M messageCode = Enum.valueOf(messageCodeClass, key);
         return messageCode.getMessagePattern();

@@ -13,19 +13,18 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.domain;
+package org.seasar.doma;
 
-import org.seasar.doma.message.DomaMessageCode;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
  * 
  */
-public class DomainUnsupportedOperationException extends DomainException {
+public class DomaNullPointerExceptionTest extends TestCase {
 
-    private static final long serialVersionUID = 1L;
-
-    public DomainUnsupportedOperationException() {
-        super(DomaMessageCode.DOMA1003);
+    public void test() throws Exception {
+        DomaNullPointerException e = new DomaNullPointerException("aaa");
+        assertEquals("aaa", e.getParameterName());
     }
 }

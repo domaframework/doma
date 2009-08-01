@@ -21,7 +21,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 
-import org.seasar.doma.DomaIllegalStateException;
 import org.seasar.doma.GenerationType;
 import org.seasar.doma.domain.LongDomain;
 import org.seasar.doma.domain.StringDomain;
@@ -75,20 +74,17 @@ public class BuiltinTableIdGenerator extends AbstractPreAllocateIdGenerator
     @Override
     public void initialize() {
         if (qualifiedTableName == null) {
-            throw new DomaIllegalStateException(this, "qualifiedTableName",
-                    qualifiedTableName);
+            throw new JdbcException(DomaMessageCode.DOMA2033,
+                    "qualifiedTableName");
         }
         if (pkColumnName == null) {
-            throw new DomaIllegalStateException(this, "pkColumnName",
-                    pkColumnName);
+            throw new JdbcException(DomaMessageCode.DOMA2033, "pkColumnName");
         }
         if (pkColumnValue == null) {
-            throw new DomaIllegalStateException(this, "pkColumnValue",
-                    pkColumnValue);
+            throw new JdbcException(DomaMessageCode.DOMA2033, "pkColumnValue");
         }
         if (valueColumnName == null) {
-            throw new DomaIllegalStateException(this, "valueColumnName",
-                    valueColumnName);
+            throw new JdbcException(DomaMessageCode.DOMA2033, "valueColumnName");
         }
         LongDomain allocationSizeDomain = new LongDomain(allocationSize);
         StringDomain pkColumnValueDomain = new StringDomain(pkColumnValue);
@@ -174,8 +170,8 @@ public class BuiltinTableIdGenerator extends AbstractPreAllocateIdGenerator
                     });
             return value - allocationSize;
         } catch (Throwable t) {
-            throw new JdbcException(DomaMessageCode.DOMA2018, t, config.getEntity()
-                    .__getName(), t);
+            throw new JdbcException(DomaMessageCode.DOMA2018, t, config
+                    .getEntity().__getName(), t);
         }
     }
 
@@ -183,8 +179,8 @@ public class BuiltinTableIdGenerator extends AbstractPreAllocateIdGenerator
         JdbcLogger logger = config.getJdbcLogger();
         Connection connection = JdbcUtil.getConnection(config.getDataSource());
         try {
-            PreparedStatement preparedStatement = JdbcUtil
-                    .prepareStatement(connection, sql.getRawSql());
+            PreparedStatement preparedStatement = JdbcUtil.prepareStatement(
+                    connection, sql.getRawSql());
             try {
                 logger.logSql(getClass().getName(), "updateId", sql);
                 setupOptions(config, preparedStatement);
@@ -210,8 +206,8 @@ public class BuiltinTableIdGenerator extends AbstractPreAllocateIdGenerator
         JdbcLogger logger = config.getJdbcLogger();
         Connection connection = JdbcUtil.getConnection(config.getDataSource());
         try {
-            PreparedStatement preparedStatement = JdbcUtil
-                    .prepareStatement(connection, sql.getRawSql());
+            PreparedStatement preparedStatement = JdbcUtil.prepareStatement(
+                    connection, sql.getRawSql());
             try {
                 logger.logSql(getClass().getName(), "selectId", sql);
                 setupOptions(config, preparedStatement);

@@ -17,7 +17,7 @@ package org.seasar.doma.copy;
 
 import java.util.Map;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 
 /**
  * @author taedium
@@ -29,7 +29,7 @@ public final class CopyUtil {
 
     public static void setDelegate(CopyUtilDelegate delegate) {
         if (delegate == null) {
-            throw new DomaIllegalArgumentException("delegate", delegate);
+            throw new DomaNullPointerException("delegate");
         }
         CopyUtil.delegate = delegate;
     }

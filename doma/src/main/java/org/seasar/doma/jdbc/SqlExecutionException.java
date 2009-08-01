@@ -19,6 +19,8 @@ import org.seasar.doma.MessageCode;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
+ * SQLの実行に失敗した場合にスローされる例外です。
+ * 
  * @author taedium
  * 
  */
@@ -26,17 +28,42 @@ public class SqlExecutionException extends JdbcException {
 
     private static final long serialVersionUID = 1L;
 
+    /** 未加工SQL */
     protected final String rawSql;
 
+    /** フォーマット済みSQL、バッチ処理時にスローされた場合 {@code null} */
     protected final String formattedSql;
 
+    /** 根本原因 */
     protected final Throwable rootCause;
 
+    /**
+     * SQLを指定してインスタンスを構築します。
+     * 
+     * @param sql
+     *            SQL
+     * @param cause
+     *            原因
+     * @param rootCause
+     *            根本原因
+     */
     public SqlExecutionException(Sql<?> sql, Throwable cause,
             Throwable rootCause) {
         this(sql.getRawSql(), sql.getFormattedSql(), cause, rootCause);
     }
 
+    /**
+     * 未加工SQLとフォーマット済みSQLを指定してインスタンスを構築します。
+     * 
+     * @param rawSql
+     *            未加工SQL
+     * @param formattedSql
+     *            フォーマット済みSQL
+     * @param cause
+     *            原因
+     * @param rootCause
+     *            根本原因
+     */
     public SqlExecutionException(String rawSql, String formattedSql,
             Throwable cause, Throwable rootCause) {
         super(DomaMessageCode.DOMA2009, cause, formattedSql, rawSql, cause,
@@ -46,6 +73,20 @@ public class SqlExecutionException extends JdbcException {
         this.rootCause = rootCause;
     }
 
+    /**
+     * メッセージコード、未加工SQL、フォーマット済みSQLを指定してインスタンスを構築します。
+     * 
+     * @param messageCode
+     *            メッセージコード
+     * @param rawSql
+     *            未加工SQL
+     * @param formattedSql
+     *            フォーマット済みSQL
+     * @param cause
+     *            原因
+     * @param rootCause
+     *            根本原因
+     */
     protected SqlExecutionException(MessageCode messageCode, String rawSql,
             String formattedSql, Throwable cause, Throwable rootCause) {
         super(messageCode, cause, rawSql, cause, rootCause);

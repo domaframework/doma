@@ -25,7 +25,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.sql.DataSource;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.apt.meta.AbstractCreateQueryMeta;
 import org.seasar.doma.internal.apt.meta.ArrayCreateQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoBatchModifyQueryMeta;
@@ -100,8 +100,9 @@ public class DaoGenerator extends AbstractGenerator {
 
     protected void printClass() {
         printGenerated();
-        iprint("public class %1$s extends %2$s implements %3$s {%n", simpleName, DomaAbstractDao.class
-                .getName(), daoMeta.getDaoType());
+        iprint("public class %1$s extends %2$s implements %3$s {%n",
+                simpleName, DomaAbstractDao.class.getName(), daoMeta
+                        .getDaoType());
         print("%n");
         indent();
         printFields();
@@ -204,15 +205,16 @@ public class DaoGenerator extends AbstractGenerator {
                 Map.Entry<String, String> entry = it.next();
                 String paramName = entry.getKey();
                 iprint("if (%1$s == null) {%n", paramName);
-                iprint("    throw new %1$s(\"%2$s\", %2$s);%n", DomaIllegalArgumentException.class
-                        .getName(), paramName);
+                iprint("    throw new %1$s(\"%2$s\");%n",
+                        DomaNullPointerException.class.getName(), paramName);
                 iprint("}%n");
             }
             iprint("%1$s query = new %1$s();%n", m.getQueryClass().getName());
             iprint("query.setConfig(config);%n");
-            iprint("query.setSqlFilePath(%1$s.buildPath(\"%2$s\", \"%3$s\"));%n", SqlFileUtil.class
-                    .getName(), daoMeta.getDaoElement().getQualifiedName(), m
-                    .getName());
+            iprint(
+                    "query.setSqlFilePath(%1$s.buildPath(\"%2$s\", \"%3$s\"));%n",
+                    SqlFileUtil.class.getName(), daoMeta.getDaoElement()
+                            .getQualifiedName(), m.getName());
             if (m.getOptionsName() != null) {
                 iprint("query.setOptions(%1$s);%n", m.getOptionsName());
             }
@@ -236,26 +238,31 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("query.compile();%n");
             if (m.isIterated()) {
                 if (m.getEntityTypeName() != null) {
-                    iprint("%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s, %4$s, %4$s%5$s>(%4$s%5$s.class, %6$s));%n", m
-                            .getCommandClass().getName(), m
-                            .getIterationCallbackResultType(), EntityIterationHandler.class
-                            .getName(), m.getEntityTypeName(), entitySuffix, m
-                            .getIterationCallbackName());
+                    iprint(
+                            "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s, %4$s, %4$s%5$s>(%4$s%5$s.class, %6$s));%n",
+                            m.getCommandClass().getName(), m
+                                    .getIterationCallbackResultType(),
+                            EntityIterationHandler.class.getName(), m
+                                    .getEntityTypeName(), entitySuffix, m
+                                    .getIterationCallbackName());
                 } else {
-                    iprint("%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s, %4$s>(%4$s.class, %5$s));%n", m
-                            .getCommandClass().getName(), m.getReturnTypeName(), DomainIterationHandler.class
-                            .getName(), m.getDomainTypeName(), m
-                            .getIterationCallbackName());
+                    iprint(
+                            "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s, %4$s>(%4$s.class, %5$s));%n",
+                            m.getCommandClass().getName(), m
+                                    .getReturnTypeName(),
+                            DomainIterationHandler.class.getName(), m
+                                    .getDomainTypeName(), m
+                                    .getIterationCallbackName());
                 }
                 if ("void".equals(m.getReturnTypeName())) {
                     iprint("command.execute();%n");
-                    iprint("exiting(\"%1$s\", \"%2$s\", null);%n", qualifiedName, m
-                            .getName());
+                    iprint("exiting(\"%1$s\", \"%2$s\", null);%n",
+                            qualifiedName, m.getName());
                 } else {
                     iprint("%1$s result = command.execute();%n", m
                             .getReturnTypeName());
-                    iprint("exiting(\"%1$s\", \"%2$s\", result);%n", qualifiedName, m
-                            .getName());
+                    iprint("exiting(\"%1$s\", \"%2$s\", result);%n",
+                            qualifiedName, m.getName());
                     iprint("return result;%n");
                 }
 
@@ -263,20 +270,25 @@ public class DaoGenerator extends AbstractGenerator {
                 if (m.getEntityTypeName() != null) {
                     Class<?> handlerClass = m.isSingleResult() ? EntitySingleResultHandler.class
                             : EntityResultListHandler.class;
-                    iprint("%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s, %4$s%5$s>(%4$s%5$s.class));%n", m
-                            .getCommandClass().getName(), m.getReturnTypeName(), handlerClass
-                            .getName(), m.getEntityTypeName(), entitySuffix);
+                    iprint(
+                            "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s, %4$s%5$s>(%4$s%5$s.class));%n",
+                            m.getCommandClass().getName(), m
+                                    .getReturnTypeName(), handlerClass
+                                    .getName(), m.getEntityTypeName(),
+                            entitySuffix);
                 } else {
                     Class<?> handlerClass = m.isSingleResult() ? DomainSingleResultHandler.class
                             : DomainResultListHandler.class;
-                    iprint("%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s>(%4$s.class));%n", m
-                            .getCommandClass().getName(), m.getReturnTypeName(), handlerClass
-                            .getName(), m.getDomainTypeName());
+                    iprint(
+                            "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s>(%4$s.class));%n",
+                            m.getCommandClass().getName(), m
+                                    .getReturnTypeName(), handlerClass
+                                    .getName(), m.getDomainTypeName());
                 }
                 iprint("%1$s result = command.execute();%n", m
                         .getReturnTypeName());
-                iprint("exiting(\"%1$s\", \"%2$s\", result);%n", qualifiedName, m
-                        .getName());
+                iprint("exiting(\"%1$s\", \"%2$s\", result);%n", qualifiedName,
+                        m.getName());
                 iprint("return result;%n");
             }
             return null;
@@ -287,11 +299,13 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("entering(\"%1$s\", \"%2$s\", %3$s);%n", qualifiedName, m
                     .getName(), m.getEntityName());
             iprint("if (%1$s == null) {%n", m.getEntityName());
-            iprint("    throw new %1$s(\"%2$s\", %2$s);%n", DomaIllegalArgumentException.class
-                    .getName(), m.getEntityName());
+            iprint("    throw new %1$s(\"%2$s\");%n",
+                    DomaNullPointerException.class.getName(), m.getEntityName());
             iprint("}%n");
-            iprint("%1$s<%2$s, %2$s%3$s> query = new %1$s<%2$s, %2$s%3$s>(%2$s%3$s.class);%n", m
-                    .getQueryClass().getName(), m.getEntityTypeName(), entitySuffix);
+            iprint(
+                    "%1$s<%2$s, %2$s%3$s> query = new %1$s<%2$s, %2$s%3$s>(%2$s%3$s.class);%n",
+                    m.getQueryClass().getName(), m.getEntityTypeName(),
+                    entitySuffix);
             iprint("query.setConfig(config);%n");
             iprint("query.setEntity(%1$s);%n", m.getEntityName());
             iprint("query.setCallerClassName(\"%1$s\");%n", qualifiedName);
@@ -351,16 +365,17 @@ public class DaoGenerator extends AbstractGenerator {
                 Map.Entry<String, String> entry = it.next();
                 String parameter = entry.getKey();
                 iprint("if (%1$s == null) {%n", parameter);
-                iprint("    throw new %1$s(\"%2$s\", %2$s);%n", DomaIllegalArgumentException.class
-                        .getName(), parameter);
+                iprint("    throw new %1$s(\"%2$s\");%n",
+                        DomaNullPointerException.class.getName(), parameter);
                 iprint("}%n");
             }
 
             iprint("%1$s query = new %1$s();%n", m.getQueryClass().getName());
             iprint("query.setConfig(config);%n");
-            iprint("query.setSqlFilePath(%1$s.buildPath(\"%2$s\", \"%3$s\"));%n", SqlFileUtil.class
-                    .getName(), daoMeta.getDaoElement().getQualifiedName(), m
-                    .getName());
+            iprint(
+                    "query.setSqlFilePath(%1$s.buildPath(\"%2$s\", \"%3$s\"));%n",
+                    SqlFileUtil.class.getName(), daoMeta.getDaoElement()
+                            .getQualifiedName(), m.getName());
             for (Iterator<Map.Entry<String, String>> it = m
                     .getMethodParameters(); it.hasNext();) {
                 Map.Entry<String, String> entry = it.next();
@@ -387,11 +402,14 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("entering(\"%1$s\", \"%2$s\", %3$s);%n", qualifiedName, m
                     .getName(), m.getEntityListName());
             iprint("if (%1$s == null) {%n", m.getEntityListName());
-            iprint("    throw new %1$s(\"%2$s\", %2$s);%n", DomaIllegalArgumentException.class
-                    .getName(), m.getEntityListName());
+            iprint("    throw new %1$s(\"%2$s\");%n",
+                    DomaNullPointerException.class.getName(), m
+                            .getEntityListName());
             iprint("}%n");
-            iprint("%1$s<%2$s, %2$s%3$s> query = new %1$s<%2$s, %2$s%3$s>(%2$s%3$s.class);%n", m
-                    .getQueryClass().getName(), m.getElementTypeName(), entitySuffix);
+            iprint(
+                    "%1$s<%2$s, %2$s%3$s> query = new %1$s<%2$s, %2$s%3$s>(%2$s%3$s.class);%n",
+                    m.getQueryClass().getName(), m.getElementTypeName(),
+                    entitySuffix);
             iprint("query.setConfig(config);%n");
             iprint("query.setEntities(%1$s);%n", m.getEntityListName());
             iprint("query.setCallerClassName(\"%1$s\");%n", qualifiedName);
@@ -434,11 +452,14 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("entering(\"%1$s\", \"%2$s\", %3$s);%n", qualifiedName, m
                     .getName(), m.getEntityListName());
             iprint("if (%1$s == null) {%n", m.getEntityListName());
-            iprint("    throw new %1$s(\"%2$s\", %2$s);%n", DomaIllegalArgumentException.class
-                    .getName(), m.getEntityListName());
+            iprint("    throw new %1$s(\"%2$s\");%n",
+                    DomaNullPointerException.class.getName(), m
+                            .getEntityListName());
             iprint("}%n");
-            iprint("%1$s<%2$s, %2$s%3$s> query = new %1$s<%2$s, %2$s%3$s>(%2$s%3$s.class);%n", m
-                    .getQueryClass().getName(), m.getElementTypeName(), entitySuffix);
+            iprint(
+                    "%1$s<%2$s, %2$s%3$s> query = new %1$s<%2$s, %2$s%3$s>(%2$s%3$s.class);%n",
+                    m.getQueryClass().getName(), m.getElementTypeName(),
+                    entitySuffix);
             iprint("query.setConfig(config);%n");
             iprint("query.setEntities(%1$s);%n", m.getEntityListName());
             iprint("query.setCallerClassName(\"%1$s\");%n", qualifiedName);
@@ -469,8 +490,9 @@ public class DaoGenerator extends AbstractGenerator {
                     .getCallableSqlParameterMetas().iterator(); it.hasNext();) {
                 CallableSqlParameterMeta parameterMeta = it.next();
                 iprint("if (%1$s == null) {%n", parameterMeta.getName());
-                iprint("    throw new %1$s(\"%2$s\", %2$s);%n", DomaIllegalArgumentException.class
-                        .getName(), parameterMeta.getName());
+                iprint("    throw new %1$s(\"%2$s\");%n",
+                        DomaNullPointerException.class.getName(), parameterMeta
+                                .getName());
                 iprint("}%n");
             }
             iprint("%1$s<%2$s> query = new %1$s<%2$s>();%n", m.getQueryClass()
@@ -511,8 +533,9 @@ public class DaoGenerator extends AbstractGenerator {
                     .getCallableSqlParameterMetas().iterator(); it.hasNext();) {
                 CallableSqlParameterMeta parameterMeta = it.next();
                 iprint("if (%1$s == null) {%n", parameterMeta.getName());
-                iprint("    throw new %1$s(\"%2$s\", %2$s);%n", DomaIllegalArgumentException.class
-                        .getName(), parameterMeta.getName());
+                iprint("    throw new %1$s(\"%2$s\");%n",
+                        DomaNullPointerException.class.getName(), parameterMeta
+                                .getName());
                 iprint("}%n");
             }
             iprint("%1$s query = new %1$s();%n", m.getQueryClass().getName());
@@ -560,11 +583,11 @@ public class DaoGenerator extends AbstractGenerator {
 
         @Override
         public Void visitArrayCreateQueryMeta(ArrayCreateQueryMeta m, Void p) {
-            iprint("entering(\"%1$s\", \"%2$s\", (Object)%3$s);%n", qualifiedName, m
-                    .getName(), m.getArrayName());
+            iprint("entering(\"%1$s\", \"%2$s\", (Object)%3$s);%n",
+                    qualifiedName, m.getName(), m.getArrayName());
             iprint("if (%1$s == null) {%n", m.getArrayName());
-            iprint("    throw new %1$s(\"%2$s\", %2$s);%n", DomaIllegalArgumentException.class
-                    .getName(), m.getArrayName());
+            iprint("    throw new %1$s(\"%2$s\");%n",
+                    DomaNullPointerException.class.getName(), m.getArrayName());
             iprint("}%n");
             iprint("%1$s<%2$s> query = new %1$s<%2$s>();%n", m.getQueryClass()
                     .getName(), m.getReturnTypeName());
@@ -620,24 +643,26 @@ public class DaoGenerator extends AbstractGenerator {
         @Override
         public Void visistDomainListParameterMeta(DomainListParameterMeta m,
                 Void p) {
-            iprint("query.addParameter(new %1$s(%2$s.class, %3$s));%n", DomainListParameter.class
-                    .getName(), m.getDomainTypeName(), m.getName());
+            iprint("query.addParameter(new %1$s(%2$s.class, %3$s));%n",
+                    DomainListParameter.class.getName(), m.getDomainTypeName(),
+                    m.getName());
             return null;
         }
 
         @Override
         public Void visistEntityListParameterMeta(EntityListParameterMeta m,
                 Void p) {
-            iprint("query.addParameter(new %1$s<%2$s, %2$s%3$s>(%2$s%3$s.class, %4$s));%n", EntityListParameter.class
-                    .getName(), m.getEntityTypeName(), entitySuffix, m
-                    .getName());
+            iprint(
+                    "query.addParameter(new %1$s<%2$s, %2$s%3$s>(%2$s%3$s.class, %4$s));%n",
+                    EntityListParameter.class.getName(), m.getEntityTypeName(),
+                    entitySuffix, m.getName());
             return null;
         }
 
         @Override
         public Void visistInOutParameterMeta(InOutParameterMeta m, Void p) {
-            iprint("query.addParameter(new %1$s(%2$s));%n", InOutParameter.class
-                    .getName(), m.getName());
+            iprint("query.addParameter(new %1$s(%2$s));%n",
+                    InOutParameter.class.getName(), m.getName());
             return null;
         }
 
@@ -658,24 +683,28 @@ public class DaoGenerator extends AbstractGenerator {
         @Override
         public Void visistDomainResultParameterMeta(
                 DomainResultParameterMeta m, Void p) {
-            iprint("query.setResultParameter(new %1$s<%2$s>(%2$s.class));%n", DomainResultParameter.class
-                    .getName(), m.getDomainTypeName());
+            iprint("query.setResultParameter(new %1$s<%2$s>(%2$s.class));%n",
+                    DomainResultParameter.class.getName(), m
+                            .getDomainTypeName());
             return null;
         }
 
         @Override
         public Void visistDomainListResultParameterMeta(
                 DomainListResultParameterMeta m, Void p) {
-            iprint("query.setResultParameter(new %1$s<%2$s>(%2$s.class));%n", DomainListResultParameter.class
-                    .getName(), m.getDomainTypeName());
+            iprint("query.setResultParameter(new %1$s<%2$s>(%2$s.class));%n",
+                    DomainListResultParameter.class.getName(), m
+                            .getDomainTypeName());
             return null;
         }
 
         @Override
         public Void visistEntityListResultParameterMeta(
                 EntityListResultParameterMeta m, Void p) {
-            iprint("query.setResultParameter(new %1$s<%2$s, %2$s%3$s>(%2$s%3$s.class));%n", EntityListResultParameter.class
-                    .getName(), m.getEntityTypeName(), entitySuffix);
+            iprint(
+                    "query.setResultParameter(new %1$s<%2$s, %2$s%3$s>(%2$s%3$s.class));%n",
+                    EntityListResultParameter.class.getName(), m
+                            .getEntityTypeName(), entitySuffix);
             return null;
         }
     }

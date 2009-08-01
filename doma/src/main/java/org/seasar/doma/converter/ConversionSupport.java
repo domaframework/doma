@@ -5,7 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 
 /*
  * Copyright 2004-2009 the Seasar Foundation and the Others.
@@ -31,10 +31,10 @@ public class ConversionSupport {
 
     public Number parseToNumber(String value, String pattern) {
         if (value == null) {
-            throw new DomaIllegalArgumentException("value", value);
+            throw new DomaNullPointerException("value");
         }
         if (pattern == null) {
-            throw new DomaIllegalArgumentException("pattern", pattern);
+            throw new DomaNullPointerException("pattern");
         }
         DecimalFormat decimalFormat = new DecimalFormat(pattern);
         try {
@@ -47,10 +47,10 @@ public class ConversionSupport {
 
     public Date parseToDate(String value, String pattern) {
         if (value == null) {
-            throw new DomaIllegalArgumentException("value", value);
+            throw new DomaNullPointerException("value");
         }
         if (pattern == null) {
-            throw new DomaIllegalArgumentException("pattern", pattern);
+            throw new DomaNullPointerException("pattern");
         }
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
         try {
@@ -63,10 +63,10 @@ public class ConversionSupport {
 
     public String formatFromNumber(Number value, String pattern) {
         if (value == null) {
-            throw new DomaIllegalArgumentException("value", value);
+            throw new DomaNullPointerException("value");
         }
         if (pattern == null) {
-            throw new DomaIllegalArgumentException("pattern", pattern);
+            throw new DomaNullPointerException("pattern");
         }
         DecimalFormat decimalFormat = new DecimalFormat(pattern);
         try {
@@ -78,10 +78,10 @@ public class ConversionSupport {
 
     public String formatFromDate(Date value, String pattern) {
         if (value == null) {
-            throw new DomaIllegalArgumentException("value", value);
+            throw new DomaNullPointerException("value");
         }
         if (pattern == null) {
-            throw new DomaIllegalArgumentException("pattern", pattern);
+            throw new DomaNullPointerException("pattern");
         }
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
         try {

@@ -17,7 +17,7 @@ package org.seasar.doma.entity;
 
 import java.sql.Statement;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.GenerationType;
 import org.seasar.doma.domain.NumberDomain;
 import org.seasar.doma.jdbc.JdbcException;
@@ -39,7 +39,7 @@ public class GeneratedIdProperty<D extends NumberDomain<?, ?>> extends
             boolean insertable, boolean updatable, IdGenerator idGenerator) {
         super(name, columnName, domain, insertable, updatable);
         if (idGenerator == null) {
-            throw new DomaIllegalArgumentException("idGenerator", idGenerator);
+            throw new DomaNullPointerException("idGenerator");
         }
         this.idGenerator = idGenerator;
     }

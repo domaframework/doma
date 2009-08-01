@@ -17,8 +17,8 @@ package org.seasar.doma.internal.jdbc.sql.node;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import org.seasar.doma.DomaIllegalArgumentException;
-import org.seasar.doma.DomaUnsupportedOperationException;
+import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
@@ -72,14 +72,14 @@ public class BindVariableNode extends AbstractSqlNode {
 
     @Override
     public void addNode(SqlNode child) {
-        throw new DomaUnsupportedOperationException(getClass().getName(),
+        throw new JdbcUnsupportedOperationException(getClass().getName(),
                 "addNode");
     }
 
     @Override
     public <R, P> R accept(SqlNodeVisitor<R, P> visitor, P p) {
         if (visitor == null) {
-            throw new DomaIllegalArgumentException("visitor", visitor);
+            throw new DomaNullPointerException("visitor");
         }
         if (BindVariableNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")

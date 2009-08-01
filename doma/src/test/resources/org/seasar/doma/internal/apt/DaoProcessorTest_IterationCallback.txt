@@ -19,13 +19,13 @@ public class IterationCallbackDao_ extends org.seasar.doma.jdbc.DomaAbstractDao 
     public java.lang.Integer iterate(org.seasar.doma.domain.IntegerDomain id, org.seasar.doma.domain.StringDomain name, org.seasar.doma.jdbc.IterationCallback<java.lang.Integer, org.seasar.doma.internal.apt.entity.Emp> callback) {
         entering("org.seasar.doma.internal.apt.dao.IterationCallbackDao_", "iterate", id, name, callback);
         if (id == null) {
-            throw new org.seasar.doma.DomaIllegalArgumentException("id", id);
+            throw new org.seasar.doma.DomaNullPointerException("id");
         }
         if (name == null) {
-            throw new org.seasar.doma.DomaIllegalArgumentException("name", name);
+            throw new org.seasar.doma.DomaNullPointerException("name");
         }
         if (callback == null) {
-            throw new org.seasar.doma.DomaIllegalArgumentException("callback", callback);
+            throw new org.seasar.doma.DomaNullPointerException("callback");
         }
         org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
         query.setConfig(config);
@@ -49,7 +49,7 @@ public class IterationCallbackDao_ extends org.seasar.doma.jdbc.DomaAbstractDao 
     public java.lang.String iterate(org.seasar.doma.internal.apt.dao.HogeIterationCallback callback) {
         entering("org.seasar.doma.internal.apt.dao.IterationCallbackDao_", "iterate", callback);
         if (callback == null) {
-            throw new org.seasar.doma.DomaIllegalArgumentException("callback", callback);
+            throw new org.seasar.doma.DomaNullPointerException("callback");
         }
         org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
         query.setConfig(config);

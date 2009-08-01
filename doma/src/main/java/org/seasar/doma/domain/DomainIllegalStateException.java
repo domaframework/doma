@@ -13,35 +13,20 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma;
+package org.seasar.doma.domain;
 
 import org.seasar.doma.message.DomaMessageCode;
-
 
 /**
  * @author taedium
  * 
  */
-public class DomaUnsupportedOperationException extends DomaException {
+public class DomainIllegalStateException extends DomainException {
 
     private static final long serialVersionUID = 1L;
 
-    protected final String className;
-
-    protected final String methodName;
-
-    public DomaUnsupportedOperationException(String className, String methodName) {
-        super(DomaMessageCode.DOMA0004, className, methodName);
-        this.className = className;
-        this.methodName = methodName;
-    }
-
-    public String getClassName() {
-        return className;
-    }
-
-    public String getMethodName() {
-        return methodName;
+    public DomainIllegalStateException(Throwable cause) {
+        super(DomaMessageCode.DOMA1005, cause, cause);
     }
 
 }

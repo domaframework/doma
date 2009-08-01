@@ -18,7 +18,7 @@ package org.seasar.doma.jdbc.dialect;
 import java.sql.SQLException;
 import java.util.Collections;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.domain.IntegerDomain;
 import org.seasar.doma.domain.StringDomain;
 import org.seasar.doma.internal.jdbc.dialect.HsqldbPagingTransformer;
@@ -64,11 +64,10 @@ public class HsqldbDialect extends StandardDialect {
     public PreparedSql getIdentitySelectSql(String qualifiedTableName,
             String columnName) {
         if (qualifiedTableName == null) {
-            throw new DomaIllegalArgumentException("qualifiedTableName",
-                    qualifiedTableName);
+            throw new DomaNullPointerException("qualifiedTableName");
         }
         if (columnName == null) {
-            throw new DomaIllegalArgumentException("columnName", columnName);
+            throw new DomaNullPointerException("columnName");
         }
         String rawSql = "call identity()";
         return new PreparedSql(rawSql, rawSql, Collections
@@ -79,8 +78,7 @@ public class HsqldbDialect extends StandardDialect {
     public PreparedSql getSequenceNextValSql(String qualifiedSequenceName,
             long allocationSize) {
         if (qualifiedSequenceName == null) {
-            throw new DomaIllegalArgumentException("qualifiedSequenceName",
-                    qualifiedSequenceName);
+            throw new DomaNullPointerException("qualifiedSequenceName");
         }
         String rawSql = "select next value for "
                 + qualifiedSequenceName
@@ -92,7 +90,7 @@ public class HsqldbDialect extends StandardDialect {
     @Override
     public boolean isUniqueConstraintViolated(SQLException sqlException) {
         if (sqlException == null) {
-            throw new DomaIllegalArgumentException("sqlException", sqlException);
+            throw new DomaNullPointerException("sqlException");
         }
         int code = getErrorCode(sqlException);
         return UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE == code;

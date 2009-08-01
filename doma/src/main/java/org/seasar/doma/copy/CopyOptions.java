@@ -18,7 +18,7 @@ package org.seasar.doma.copy;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.bean.BeanWrapperFactory;
 import org.seasar.doma.converter.Converter;
 
@@ -74,7 +74,7 @@ public class CopyOptions {
     public CopyOptions converter(Converter<?> converter,
             String... propertyNames) {
         if (converter == null) {
-            throw new DomaIllegalArgumentException("converter", converter);
+            throw new DomaNullPointerException("converter");
         }
         for (String propertyName : propertyNames) {
             converterMap.put(propertyName, converter);
@@ -84,7 +84,7 @@ public class CopyOptions {
 
     public CopyOptions pattern(String pattern, String... propertyNames) {
         if (pattern == null) {
-            throw new DomaIllegalArgumentException("pattern", pattern);
+            throw new DomaNullPointerException("pattern");
         }
         for (String propertyName : propertyNames) {
             patterns.put(propertyName, pattern);

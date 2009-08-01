@@ -19,25 +19,41 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 
 /**
+ * 出力先に {@link Logger} を使用したJDBCロガーです。
+ * <p>
+ * 
  * @author taedium
  * 
  */
 public class BuiltinJdbcLogger implements JdbcLogger {
 
+    /** ログレベルです。 */
     protected final Level level;
 
+    /** このインスタンスで使用するロガーです。 */
     protected final Logger logger;
 
+    /**
+     * インスタンスを構築します。
+     * <p>
+     * ログレベルは {@link Level#INFO} になります。
+     */
     public BuiltinJdbcLogger() {
         this(Level.INFO);
     }
 
+    /**
+     * ログレベルを指定してインスタンスを構築します。
+     * 
+     * @param level
+     *            ログレベル
+     */
     public BuiltinJdbcLogger(Level level) {
         if (level == null) {
-            throw new DomaIllegalArgumentException("level", level);
+            throw new DomaNullPointerException("level");
         }
         this.level = level;
         this.logger = Logger.getLogger(BuiltinJdbcLogger.class.getName());
@@ -45,20 +61,16 @@ public class BuiltinJdbcLogger implements JdbcLogger {
 
     @Override
     public void logDaoMethodEntering(String callerClassName,
-            String callerMethodName, Object... parameters) {
+            String callerMethodName, Object... args) {
         if (callerClassName == null) {
-            throw new DomaIllegalArgumentException("callerClassName",
-                    callerClassName);
+            throw new DomaNullPointerException("callerClassName");
         }
         if (callerMethodName == null) {
-            throw new DomaIllegalArgumentException("callerMethodName",
-                    callerMethodName);
+            throw new DomaNullPointerException("callerMethodName");
         }
-        if (parameters == null) {
-            throw new DomaIllegalArgumentException("parameters", parameters);
+        if (args == null) {
+            throw new DomaNullPointerException("args");
         }
-        StringBuilder buf = new StringBuilder(100);
-        buf.append("entering");
         logger.logp(level, callerClassName, callerMethodName, "ENTRY");
 
     }
@@ -67,30 +79,26 @@ public class BuiltinJdbcLogger implements JdbcLogger {
     public void logDaoMethodExiting(String callerClassName,
             String callerMethodName, Object result) {
         if (callerClassName == null) {
-            throw new DomaIllegalArgumentException("callerClassName",
-                    callerClassName);
+            throw new DomaNullPointerException("callerClassName");
         }
         if (callerMethodName == null) {
-            throw new DomaIllegalArgumentException("callerMethodName",
-                    callerMethodName);
+            throw new DomaNullPointerException("callerMethodName");
         }
-        logger
-                .logp(level, callerClassName, callerMethodName, "RETURN {0}", result);
+        logger.logp(level, callerClassName, callerMethodName, "RETURN {0}",
+                result);
     }
 
     @Override
     public void logSqlExecutionSkipping(String callerClassName,
             String callerMethodName, SqlExecutionSkipCause cause) {
         if (callerClassName == null) {
-            throw new DomaIllegalArgumentException("callerClassName",
-                    callerClassName);
+            throw new DomaNullPointerException("callerClassName");
         }
         if (callerMethodName == null) {
-            throw new DomaIllegalArgumentException("callerMethodName",
-                    callerMethodName);
+            throw new DomaNullPointerException("callerMethodName");
         }
         if (cause == null) {
-            throw new DomaIllegalArgumentException("cause", cause);
+            throw new DomaNullPointerException("cause");
         }
         logger.logp(level, callerClassName, callerMethodName, cause.name());
     }
@@ -99,33 +107,30 @@ public class BuiltinJdbcLogger implements JdbcLogger {
     public void logSqlFile(String callerClassName, String callerMethodName,
             SqlFile sqlFile) {
         if (callerClassName == null) {
-            throw new DomaIllegalArgumentException("callerClassName",
-                    callerClassName);
+            throw new DomaNullPointerException("callerClassName");
         }
         if (callerMethodName == null) {
-            throw new DomaIllegalArgumentException("callerMethodName",
-                    callerMethodName);
+            throw new DomaNullPointerException("callerMethodName");
         }
         if (sqlFile == null) {
-            throw new DomaIllegalArgumentException("sqlFile", sqlFile);
+            throw new DomaNullPointerException("sqlFile");
         }
-        logger.logp(level, callerClassName, callerMethodName, sqlFile
-                .getRealPath());
+        logger
+                .logp(level, callerClassName, callerMethodName, sqlFile
+                        .getPath());
     }
 
     @Override
     public void logSql(String callerClassName, String callerMethodName,
             Sql<?> sql) {
         if (callerClassName == null) {
-            throw new DomaIllegalArgumentException("callerClassName",
-                    callerClassName);
+            throw new DomaNullPointerException("callerClassName");
         }
         if (callerMethodName == null) {
-            throw new DomaIllegalArgumentException("callerMethodName",
-                    callerMethodName);
+            throw new DomaNullPointerException("callerMethodName");
         }
         if (sql == null) {
-            throw new DomaIllegalArgumentException("sql", sql);
+            throw new DomaNullPointerException("sql");
         }
         logger.logp(level, callerClassName, callerMethodName, sql
                 .getFormattedSql());

@@ -18,6 +18,8 @@ package org.seasar.doma.jdbc;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
+ * バッチ処理時に楽観的排他制御に失敗した場合にスローされる例外です。
+ * 
  * @author taedium
  * 
  */
@@ -25,10 +27,22 @@ public class BatchOptimisticLockException extends OptimisticLockException {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 楽観的排他制御に失敗したSQLを指定してインスタンスを構築します。
+     * 
+     * @param sql
+     *            SQL
+     */
     public BatchOptimisticLockException(Sql<?> sql) {
         this(sql.getRawSql());
     }
 
+    /**
+     * 楽観的排他制御に失敗した未加工SQLを指定してインスタンスを構築します。
+     * 
+     * @param rawSql
+     *            未加工SQL
+     */
     public BatchOptimisticLockException(String rawSql) {
         super(DomaMessageCode.DOMA2028, rawSql);
     }

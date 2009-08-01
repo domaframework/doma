@@ -20,7 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.sql.CallableStatement;
 import java.sql.SQLException;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.type.JdbcType;
@@ -48,7 +48,7 @@ public class RegisterOutParameterFunction implements JdbcMappingFunction {
     public <R, V> R apply(Domain<V, ?> domain, JdbcType<V> jdbcType)
             throws SQLException {
         if (jdbcType == null) {
-            throw new DomaIllegalArgumentException("jdbcType", jdbcType);
+            throw new DomaNullPointerException("jdbcType");
         }
         jdbcType.registerOutParameter(callableStatement, index);
         return null;

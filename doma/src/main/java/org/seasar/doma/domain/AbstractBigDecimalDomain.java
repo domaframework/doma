@@ -20,7 +20,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 
 /**
  * @author taedium
@@ -48,7 +48,7 @@ public abstract class AbstractBigDecimalDomain<D extends AbstractBigDecimalDomai
     @Override
     public void set(NumberDomain<BigDecimal, D> other) {
         if (other == null) {
-            throw new DomaIllegalArgumentException("other", other);
+            throw new DomaNullPointerException("other");
         }
         setInternal(other.get());
     }
@@ -57,7 +57,7 @@ public abstract class AbstractBigDecimalDomain<D extends AbstractBigDecimalDomai
     public <R, P, TH extends Throwable> R accept(
             DomainVisitor<R, P, TH> visitor, P p) throws TH {
         if (visitor == null) {
-            throw new DomaIllegalArgumentException("visitor", visitor);
+            throw new DomaNullPointerException("visitor");
         }
         if (AbstractBigDecimalDomainVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")

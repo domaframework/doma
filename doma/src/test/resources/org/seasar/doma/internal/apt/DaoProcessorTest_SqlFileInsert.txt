@@ -19,10 +19,10 @@ public class SqlFileInsertDao_ extends org.seasar.doma.jdbc.DomaAbstractDao impl
     public int insert(org.seasar.doma.domain.IntegerDomain id, org.seasar.doma.domain.BigDecimalDomain salary) {
         entering("org.seasar.doma.internal.apt.dao.SqlFileInsertDao_", "insert", id, salary);
         if (id == null) {
-            throw new org.seasar.doma.DomaIllegalArgumentException("id", id);
+            throw new org.seasar.doma.DomaNullPointerException("id");
         }
         if (salary == null) {
-            throw new org.seasar.doma.DomaIllegalArgumentException("salary", salary);
+            throw new org.seasar.doma.DomaNullPointerException("salary");
         }
         org.seasar.doma.internal.jdbc.query.SqlFileInsertQuery query = new org.seasar.doma.internal.jdbc.query.SqlFileInsertQuery();
         query.setConfig(config);

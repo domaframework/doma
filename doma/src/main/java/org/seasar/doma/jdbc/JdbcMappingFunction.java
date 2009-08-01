@@ -21,11 +21,29 @@ import org.seasar.doma.domain.Domain;
 import org.seasar.doma.jdbc.type.JdbcType;
 
 /**
+ * {@link Domain} と {@link JdbcType} をマッピングする処理を表します。
+ * <p>
+ * このインタフェースの実装はスレッドセーフであることを要求されません。
+ * 
  * @author taedium
  * 
  */
 public interface JdbcMappingFunction {
 
+    /**
+     * 
+     * @param <R>
+     *            戻り値の型
+     * @param <V>
+     *            マッピング対象の値の型
+     * @param domain
+     *            ドメイン
+     * @param jdbcType
+     *            JDBC型
+     * @return マッピング処理の結果
+     * @throws SQLException
+     *             SQLに関する例外が発生した場合
+     */
     <R, V> R apply(Domain<V, ?> domain, JdbcType<V> jdbcType)
             throws SQLException;
 }

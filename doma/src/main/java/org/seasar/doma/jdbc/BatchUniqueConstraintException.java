@@ -18,6 +18,8 @@ package org.seasar.doma.jdbc;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
+ * バッチ処理で一意制約違反が発生した場合にスローされる例外です。
+ * 
  * @author taedium
  * 
  */
@@ -25,10 +27,26 @@ public class BatchUniqueConstraintException extends UniqueConstraintException {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * SQLと原因を指定してインスタンスを構築します。
+     * 
+     * @param sql
+     *            SQL
+     * @param cause
+     *            原因
+     */
     public BatchUniqueConstraintException(Sql<?> sql, Throwable cause) {
         this(sql.getRawSql(), cause);
     }
 
+    /**
+     * 未加工SQLと原因を指定してインスタンスを構築します。
+     * 
+     * @param rawSql
+     *            未加工SQL
+     * @param cause
+     *            原因
+     */
     public BatchUniqueConstraintException(String rawSql, Throwable cause) {
         super(DomaMessageCode.DOMA2029, rawSql, cause);
     }

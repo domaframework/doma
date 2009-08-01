@@ -13,9 +13,9 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma;
+package org.seasar.doma.jdbc;
 
-import org.seasar.doma.DomaUnsupportedOperationException;
+import org.seasar.doma.jdbc.ConfigException;
 
 import junit.framework.TestCase;
 
@@ -23,12 +23,11 @@ import junit.framework.TestCase;
  * @author taedium
  * 
  */
-public class DomaUnsupportedOperationExceptionTest extends TestCase {
+public class ConfigExceptionTest extends TestCase {
 
     public void test() throws Exception {
-        DomaUnsupportedOperationException e = new DomaUnsupportedOperationException(
-                "aaa", "bbb");
-        System.out.println(e.getMessage());
+        ConfigException e = new ConfigException("aaa", "bbb");
+        System.out.println(e);
         assertEquals("aaa", e.getClassName());
         assertEquals("bbb", e.getMethodName());
     }

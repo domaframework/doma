@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.entity;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.domain.Domain;
 
 /**
@@ -28,16 +28,16 @@ public class BuiltinEntityUtilDelegate implements EntityUtilDelegate {
     public <D extends Domain<?, ?>> D getDomain(Object entity,
             Class<D> domainClass, String propertyName) {
         if (entity == null) {
-            throw new DomaIllegalArgumentException("entity", entity);
+            throw new DomaNullPointerException("entity");
         }
         if (!Entity.class.isInstance(entity)) {
             throw new NonEntityArgumentException("entity", entity);
         }
         if (domainClass == null) {
-            throw new DomaIllegalArgumentException("domainClass", domainClass);
+            throw new DomaNullPointerException("domainClass");
         }
         if (propertyName == null) {
-            throw new DomaIllegalArgumentException("propertyName", propertyName);
+            throw new DomaNullPointerException("propertyName");
         }
         Entity<?> e = Entity.class.cast(entity);
         EntityProperty<?> property = e.__getEntityProperty(propertyName);

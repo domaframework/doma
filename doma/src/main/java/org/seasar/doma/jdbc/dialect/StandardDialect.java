@@ -29,8 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.seasar.doma.DomaIllegalArgumentException;
-import org.seasar.doma.DomaUnsupportedOperationException;
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.domain.AbstractArrayDomain;
 import org.seasar.doma.domain.AbstractBigDecimalDomain;
 import org.seasar.doma.domain.AbstractBigIntegerDomain;
@@ -43,6 +42,7 @@ import org.seasar.doma.domain.AbstractDateDomain;
 import org.seasar.doma.domain.AbstractDoubleDomain;
 import org.seasar.doma.domain.AbstractFloatDomain;
 import org.seasar.doma.domain.AbstractIntegerDomain;
+import org.seasar.doma.domain.AbstractLongDomain;
 import org.seasar.doma.domain.AbstractNClobDomain;
 import org.seasar.doma.domain.AbstractShortDomain;
 import org.seasar.doma.domain.AbstractStringDomain;
@@ -73,6 +73,7 @@ import org.seasar.doma.internal.util.TableUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
@@ -111,12 +112,10 @@ public class StandardDialect implements Dialect {
     public StandardDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         if (jdbcMappingVisitor == null) {
-            throw new DomaIllegalArgumentException("jdbcMappingVisitor",
-                    jdbcMappingVisitor);
+            throw new DomaNullPointerException("jdbcMappingVisitor");
         }
         if (sqlLogFormattingVisitor == null) {
-            throw new DomaIllegalArgumentException("sqlLogFormattingVisitor",
-                    sqlLogFormattingVisitor);
+            throw new DomaNullPointerException("sqlLogFormattingVisitor");
         }
         this.jdbcMappingVisitor = jdbcMappingVisitor;
         this.sqlLogFormattingVisitor = sqlLogFormattingVisitor;
@@ -185,10 +184,10 @@ public class StandardDialect implements Dialect {
     public SqlNode transformSelectSqlNode(SqlNode original,
             SelectOptions options) {
         if (original == null) {
-            throw new DomaIllegalArgumentException("original", original);
+            throw new DomaNullPointerException("original");
         }
         if (options == null) {
-            throw new DomaIllegalArgumentException("options", options);
+            throw new DomaNullPointerException("options");
         }
         SqlNode transformed = original;
         if (options.getOffset() >= 0 || options.getLimit() >= 0) {
@@ -228,7 +227,7 @@ public class StandardDialect implements Dialect {
 
     public boolean isUniqueConstraintViolated(SQLException sqlException) {
         if (sqlException == null) {
-            throw new DomaIllegalArgumentException("sqlException", sqlException);
+            throw new DomaNullPointerException("sqlException");
         }
         String state = getSQLState(sqlException);
         if (state != null && state.length() >= 2) {
@@ -305,21 +304,21 @@ public class StandardDialect implements Dialect {
 
     @Override
     public JdbcType<ResultSet> getResultSetType() {
-        throw new DomaUnsupportedOperationException(getClass().getName(),
+        throw new JdbcUnsupportedOperationException(getClass().getName(),
                 "getResultSetType");
     }
 
     @Override
     public PreparedSql getIdentitySelectSql(String qualifiedTableName,
             String columnName) {
-        throw new DomaUnsupportedOperationException(getClass().getName(),
+        throw new JdbcUnsupportedOperationException(getClass().getName(),
                 "getIdentitySelectSql");
     }
 
     @Override
     public PreparedSql getSequenceNextValSql(String qualifiedSequenceName,
             long allocationSize) {
-        throw new DomaUnsupportedOperationException(getClass().getName(),
+        throw new JdbcUnsupportedOperationException(getClass().getName(),
                 "getSequenceNextValString");
     }
 
@@ -364,13 +363,13 @@ public class StandardDialect implements Dialect {
             String schemaName, String tableName, String columnName)
             throws SQLException {
         if (connection == null) {
-            throw new DomaIllegalArgumentException("connection", connection);
+            throw new DomaNullPointerException("connection");
         }
         if (tableName == null) {
-            throw new DomaIllegalArgumentException("tableName", tableName);
+            throw new DomaNullPointerException("tableName");
         }
         if (columnName == null) {
-            throw new DomaIllegalArgumentException("columnName", columnName);
+            throw new DomaNullPointerException("columnName");
         }
         String fullTableName = TableUtil.buildFullTableName(catalogName,
                 schemaName, tableName);
@@ -394,7 +393,7 @@ public class StandardDialect implements Dialect {
     @Override
     public String getTableComment(Connection connection, String catalogName,
             String schemaName, String tableName) throws SQLException {
-        throw new DomaUnsupportedOperationException(getClass().getName(),
+        throw new JdbcUnsupportedOperationException(getClass().getName(),
                 "getTableComment");
     }
 
@@ -402,7 +401,7 @@ public class StandardDialect implements Dialect {
     public Map<String, String> getColumnCommentMap(Connection connection,
             String catalogName, String schemaName, String tableName)
             throws SQLException {
-        throw new DomaUnsupportedOperationException(getClass().getName(),
+        throw new JdbcUnsupportedOperationException(getClass().getName(),
                 "getColumnCommentMap");
     }
 
@@ -555,6 +554,12 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
+        public Void visitAbstractLongDomain(AbstractLongDomain<?> domain,
+                JdbcMappingFunction p) throws SQLException {
+            return p.apply(domain, JdbcTypes.LONG);
+        }
+
+        @Override
         public Void visitAbstractNClobDomain(AbstractNClobDomain<?> domain,
                 JdbcMappingFunction p) throws SQLException {
             return p.apply(domain, JdbcTypes.NCLOB);
@@ -671,6 +676,12 @@ public class StandardDialect implements Dialect {
         public String visitAbstractIntegerDomain(
                 AbstractIntegerDomain<?> domain, SqlLogFormattingFunction p) {
             return p.apply(domain, JdbcTypes.INTEGER);
+        }
+
+        @Override
+        public String visitAbstractLongDomain(AbstractLongDomain<?> domain,
+                SqlLogFormattingFunction p) {
+            return p.apply(domain, JdbcTypes.LONG);
         }
 
         @Override

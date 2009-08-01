@@ -47,6 +47,8 @@ public final class JdbcTypes {
 
     public static final IntegerType INTEGER = new IntegerType();
 
+    public static final LongType LONG = new LongType();
+
     public static final NClobType NCLOB = new NClobType();
 
     public static final NStringType NSTRING = new NStringType();

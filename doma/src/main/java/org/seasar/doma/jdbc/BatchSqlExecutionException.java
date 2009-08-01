@@ -18,6 +18,8 @@ package org.seasar.doma.jdbc;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
+ * バッチ処理に失敗した場合にスローされる例外です。
+ * 
  * @author taedium
  * 
  */
@@ -25,11 +27,31 @@ public class BatchSqlExecutionException extends SqlExecutionException {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * SQL、スローされた原因、根本原因を指定してインスタンスを構築します。
+     * 
+     * @param sql
+     *            SQL
+     * @param cause
+     *            スローされた原因
+     * @param rootCause
+     *            根本原因
+     */
     public BatchSqlExecutionException(Sql<?> sql, Throwable cause,
             Throwable rootCause) {
         this(sql.getRawSql(), cause, rootCause);
     }
 
+    /**
+     * 未加工SQL、スローされた原因、根本原因を指定してインスタンスを構築します。
+     * 
+     * @param rawSql
+     *            未加工SQL
+     * @param cause
+     *            スローされた原因
+     * @param rootCause
+     *            根本原因
+     */
     public BatchSqlExecutionException(String rawSql, Throwable cause,
             Throwable rootCause) {
         super(DomaMessageCode.DOMA2030, rawSql, null, cause, rootCause);

@@ -20,7 +20,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.seasar.doma.DomaUnsupportedOperationException;
+import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
 
 /**
  * @author taedium
@@ -35,14 +35,14 @@ public abstract class AbstractResultSetType extends AbstractJdbcType<ResultSet> 
     @Override
     public ResultSet getValue(ResultSet resultSet, int index)
             throws SQLException {
-        throw new DomaUnsupportedOperationException(getClass().getName(),
+        throw new JdbcUnsupportedOperationException(getClass().getName(),
                 "getValue");
     }
 
     @Override
     public void setValue(PreparedStatement preparedStatement, int index,
             ResultSet value) throws SQLException {
-        throw new DomaUnsupportedOperationException(getClass().getName(),
+        throw new JdbcUnsupportedOperationException(getClass().getName(),
                 "setValue");
     }
 

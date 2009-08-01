@@ -20,7 +20,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.math.BigInteger;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 
 /**
  * @author taedium
@@ -48,7 +48,7 @@ public abstract class AbstractBigIntegerDomain<D extends AbstractBigIntegerDomai
     @Override
     public void set(NumberDomain<BigInteger, D> other) {
         if (other == null) {
-            throw new DomaIllegalArgumentException("other", other);
+            throw new DomaNullPointerException("other");
         }
         setInternal(other.get());
     }
@@ -57,7 +57,7 @@ public abstract class AbstractBigIntegerDomain<D extends AbstractBigIntegerDomai
     public <R, P, TH extends Throwable> R accept(
             DomainVisitor<R, P, TH> visitor, P p) throws TH {
         if (visitor == null) {
-            throw new DomaIllegalArgumentException("visitor", visitor);
+            throw new DomaNullPointerException("visitor");
         }
         if (AbstractBigIntegerDomainVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")

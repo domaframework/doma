@@ -17,13 +17,17 @@ package org.seasar.doma.jdbc;
 
 import java.sql.SQLException;
 
+import org.seasar.doma.domain.Domain;
 import org.seasar.doma.domain.DomainVisitor;
 
 /**
+ * {@link Domain} をJDBCの型とマッピングする {@link DomainVisitor} の拡張です。
+ * <p>
+ * このインタフェースの実装はスレッドセーフでなければいけません。
+ * 
  * @author taedium
  * 
  */
 public interface JdbcMappingVisitor extends
         DomainVisitor<Void, JdbcMappingFunction, SQLException> {
-
 }

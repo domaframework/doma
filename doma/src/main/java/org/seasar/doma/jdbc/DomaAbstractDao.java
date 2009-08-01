@@ -17,66 +17,101 @@ package org.seasar.doma.jdbc;
 
 import javax.sql.DataSource;
 
-import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.Dao;
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.RuntimeConfig;
 
 /**
+ * {@link Dao}が注釈されたインタフェースの実装クラスのための骨格実装です。
+ * <p>
+ * 
  * @author taedium
  * 
  */
 public abstract class DomaAbstractDao {
 
+    /**
+     * この {@literal Data Access Object} の実行時用の設定です。
+     */
     protected final Config config;
 
+    /**
+     * 実行時用の設定を作成します。
+     * 
+     * @param config
+     * @param dataSource
+     */
     public DomaAbstractDao(Config config, DataSource dataSource) {
         if (config == null) {
-            new DomaIllegalArgumentException("config", config);
+            new DomaNullPointerException("config");
         }
         if (dataSource == null) {
             if (config.dataSource() == null) {
-                throw new DomaConfigException(config.getClass().getName(),
+                throw new ConfigException(config.getClass().getName(),
                         "dataSource");
             }
         }
         if (config.dataSourceName() == null) {
-            throw new DomaConfigException(config.getClass().getName(),
+            throw new ConfigException(config.getClass().getName(),
                     "dataSourceName");
         }
         if (config.dialect() == null) {
-            throw new DomaConfigException(config.getClass().getName(),
-                    "dialect");
+            throw new ConfigException(config.getClass().getName(), "dialect");
         }
         if (config.nameConvention() == null) {
-            throw new DomaConfigException(config.getClass().getName(),
+            throw new ConfigException(config.getClass().getName(),
                     "nameConvention");
         }
         if (config.sqlFileRepository() == null) {
-            throw new DomaConfigException(config.getClass().getName(),
+            throw new ConfigException(config.getClass().getName(),
                     "sqlFileRepository");
         }
         if (config.jdbcLogger() == null) {
-            throw new DomaConfigException(config.getClass().getName(),
-                    "jdbcLogger");
+            throw new ConfigException(config.getClass().getName(), "jdbcLogger");
         }
         this.config = new RuntimeConfig(config, dataSource != null ? dataSource
                 : config.dataSource());
     }
 
+    /**
+     * データソースを返します。
+     * 
+     * @return データソース
+     */
     protected DataSource getDataSource() {
         return config.dataSource();
     }
 
+    /**
+     * この {@literal Data Access Object} の {@literal public} なメソッドの実行開始を記録します。
+     * 
+     * @param callerClassName
+     *            クラス名前
+     * @param callerMethodName
+     *            メソッド名
+     * @param args
+     *            引数
+     */
     protected void entering(String callerClassName, String callerMethodName,
-            Object... parameters) {
-        config
-                .jdbcLogger()
-                .logDaoMethodEntering(callerClassName, callerMethodName, parameters);
+            Object... args) {
+        config.jdbcLogger().logDaoMethodEntering(callerClassName,
+                callerMethodName, args);
     }
 
+    /**
+     * この {@literal Data Access Object} の {@literal public} なメソッドの実行終了を記録します。
+     * 
+     * @param callerClassName
+     *            クラス名
+     * @param callerMethodName
+     *            メソッド名
+     * @param result
+     *            結果の値
+     */
     protected void exiting(String callerClassName, String callerMethodName,
             Object result) {
-        config.jdbcLogger()
-                .logDaoMethodExiting(callerClassName, callerMethodName, result);
+        config.jdbcLogger().logDaoMethodExiting(callerClassName,
+                callerMethodName, result);
     }
 
 }

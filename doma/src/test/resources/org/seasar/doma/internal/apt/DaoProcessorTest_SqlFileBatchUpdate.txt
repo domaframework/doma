@@ -19,7 +19,7 @@ public class SqlFileBatchUpdateDao_ extends org.seasar.doma.jdbc.DomaAbstractDao
     public int[] update(java.util.List<org.seasar.doma.internal.apt.entity.Emp> entities) {
         entering("org.seasar.doma.internal.apt.dao.SqlFileBatchUpdateDao_", "update", entities);
         if (entities == null) {
-            throw new org.seasar.doma.DomaIllegalArgumentException("entities", entities);
+            throw new org.seasar.doma.DomaNullPointerException("entities");
         }
         org.seasar.doma.internal.jdbc.query.SqlFileBatchUpdateQuery<org.seasar.doma.internal.apt.entity.Emp, org.seasar.doma.internal.apt.entity.Emp_> query = new org.seasar.doma.internal.jdbc.query.SqlFileBatchUpdateQuery<org.seasar.doma.internal.apt.entity.Emp, org.seasar.doma.internal.apt.entity.Emp_>(org.seasar.doma.internal.apt.entity.Emp_.class);
         query.setConfig(config);

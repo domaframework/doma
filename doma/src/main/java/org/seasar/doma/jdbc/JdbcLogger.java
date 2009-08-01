@@ -15,34 +15,115 @@
  */
 package org.seasar.doma.jdbc;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
+ * JDBCに関する処理を記録するロガーです。
+ * <p>
+ * このインタフェースの実装はスレッドセーフでなければいけません。
+ * 
  * @author taedium
  * 
  */
 public interface JdbcLogger {
 
+    /**
+     * {@literal Data Access Object} のメソッドの実行開始を記録します。
+     * 
+     * @param callerClassName
+     *            {@literal Data Access Object}のクラス名
+     * @param callerMethodName
+     *            {@literal Data Access Object}のメソッド名
+     * @param args
+     *            メソッドの引数
+     */
     void logDaoMethodEntering(String callerClassName, String callerMethodName,
-            Object... parameters);
+            Object... args);
 
+    /**
+     * {@literal Data Access Object} のメソッドの実行終了を記録します。
+     * 
+     * @param callerClassName
+     *            {@literal Data Access Object}のクラス名
+     * @param callerMethodName
+     *            {@literal Data Access Object}のメソッド名
+     * @param args
+     *            メソッドの引数
+     */
     void logDaoMethodExiting(String callerClassName, String callerMethodName,
             Object result);
 
-    void logSqlExecutionSkipping(String callerClassName, String callerMethodName,
-            SqlExecutionSkipCause cause);
+    /**
+     * SQLの実行がスキップされたことを記録します。
+     * 
+     * @param callerClassName
+     *            呼び出し元のクラス名
+     * @param callerMethodName
+     *            呼び出し元のメソッド名
+     * @param cause
+     *            原因
+     */
+    void logSqlExecutionSkipping(String callerClassName,
+            String callerMethodName, SqlExecutionSkipCause cause);
 
+    /**
+     * 実行するSQLを格納したSQLファイルを記録します。
+     * 
+     * @param callerClassName
+     *            呼び出し元のクラス名
+     * @param callerMethodName
+     *            呼び出し元のメソッド名
+     * @param sqlFile
+     *            SQLファイル
+     */
     void logSqlFile(String callerClassName, String callerMethodName,
             SqlFile sqlFile);
 
+    /**
+     * 実行するSQLを記録します。
+     * 
+     * @param callerClassName
+     *            呼び出し元のクラス名
+     * @param callerMethodName
+     *            呼び出し元のメソッド名
+     * @param sql
+     *            SQL
+     */
     void logSql(String callerClassName, String callerMethodName, Sql<?> sql);
 
+    /**
+     * {@link Connection#close()} 時に発生した {@link SQLException} を記録します。
+     * 
+     * @param callerClassName
+     * @param callerMethodName
+     * @param e
+     *            {@link Connection#close()} 時に発生した {@link SQLException}
+     */
     void logConnectionClosingFailure(String callerClassName,
             String callerMethodName, SQLException e);
 
+    /**
+     * {@link Statement#close()} 時に発生した {@link SQLException} を記録します。
+     * 
+     * @param callerClassName
+     * @param callerMethodName
+     * @param e
+     *            {@link Statement#close()} 時に発生した {@link SQLException}
+     */
     void logStatementClosingFailure(String callerClassName,
             String callerMethodName, SQLException e);
 
+    /**
+     * {@link ResultSet#close()} 時に発生した {@link SQLException} を記録します。
+     * 
+     * @param callerClassName
+     * @param callerMethodName
+     * @param e
+     *            {@link ResultSet#close()} 時に発生した {@link SQLException}
+     */
     void logResultSetClosingFailure(String callerClassName,
             String callerMethodName, SQLException e);
 
