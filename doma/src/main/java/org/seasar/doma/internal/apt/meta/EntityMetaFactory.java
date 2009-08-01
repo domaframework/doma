@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
@@ -30,6 +31,7 @@ import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.Entity;
+import org.seasar.doma.EntityMethod;
 import org.seasar.doma.MappedSuperclass;
 import org.seasar.doma.Table;
 import org.seasar.doma.entity.EntityListener;
@@ -86,8 +88,8 @@ public class EntityMetaFactory {
         String name = entityElement.getSimpleName().toString();
         String suffix = Options.getEntitySuffix(env);
         if (name.endsWith(suffix)) {
-            Notifier
-                    .notify(env, Kind.WARNING, DomaMessageCode.DOMA4026, entityElement, suffix);
+            Notifier.notify(env, Kind.WARNING, DomaMessageCode.DOMA4026,
+                    entityElement, suffix);
         }
         entityMeta.setName(name);
         entityMeta.setEntityElement(entityElement);
@@ -118,8 +120,8 @@ public class EntityMetaFactory {
         TypeMirror entityListenerType = getListenerType(entityAnnotation);
         TypeMirror argumentType = getListenerArgumentType(entityListenerType);
         assertNotNull(argumentType);
-        if (!TypeUtil
-                .isAssignable(entityMeta.getEntityType(), argumentType, env)) {
+        if (!TypeUtil.isAssignable(entityMeta.getEntityType(), argumentType,
+                env)) {
             throw new AptException(DomaMessageCode.DOMA4038, env,
                     entityElement, entityListenerType, argumentType,
                     entityElement.getQualifiedName());
@@ -137,16 +139,16 @@ public class EntityMetaFactory {
     }
 
     protected TypeMirror getListenerArgumentType(TypeMirror typeMirror) {
-        for (TypeMirror supertype : env.getTypeUtils()
-                .directSupertypes(typeMirror)) {
+        for (TypeMirror supertype : env.getTypeUtils().directSupertypes(
+                typeMirror)) {
             TypeElement superElement = TypeUtil.toTypeElement(supertype, env);
             if (superElement == null || !superElement.getKind().isInterface()) {
                 continue;
             }
-            if (superElement.getQualifiedName()
-                    .contentEquals(EntityListener.class.getName())) {
-                DeclaredType declaredType = TypeUtil
-                        .toDeclaredType(supertype, env);
+            if (superElement.getQualifiedName().contentEquals(
+                    EntityListener.class.getName())) {
+                DeclaredType declaredType = TypeUtil.toDeclaredType(supertype,
+                        env);
                 assertNotNull(declaredType);
                 List<? extends TypeMirror> args = declaredType
                         .getTypeArguments();
@@ -188,8 +190,8 @@ public class EntityMetaFactory {
         boolean mappedSuperclass = mappedSuperclassAnnotated;
         for (TypeMirror interfaceTypeMirror : env.getTypeUtils()
                 .directSupertypes(typeElement.asType())) {
-            TypeElement interfaceTypeElement = TypeUtil
-                    .toTypeElement(interfaceTypeMirror, env);
+            TypeElement interfaceTypeElement = TypeUtil.toTypeElement(
+                    interfaceTypeMirror, env);
             if (interfaceTypeElement == null
                     || !interfaceTypeElement.getKind().isInterface()) {
                 continue;
@@ -207,7 +209,8 @@ public class EntityMetaFactory {
                             typeElement);
                 }
             }
-            doSuperInterfaceMethodElements(interfaceTypeElement, entityMeta, mappedSuperclass);
+            doSuperInterfaceMethodElements(interfaceTypeElement, entityMeta,
+                    mappedSuperclass);
             doMethodElements(interfaceTypeElement, entityMeta);
             entityMeta.addSupertype(interfaceTypeMirror);
         }
@@ -218,31 +221,57 @@ public class EntityMetaFactory {
         for (ExecutableElement methodElement : ElementFilter
                 .methodsIn(typeElement.getEnclosedElements())) {
             try {
-                EntityDelegateMeta delegateMeta = createEntityDelegateMeta(methodElement, entityMeta);
-                if (delegateMeta != null) {
-                    removeOverridenMethod(delegateMeta, entityMeta);
-                    entityMeta.addDelegateMeta(delegateMeta);
-                } else {
-                    EntityPropertyMeta propertyMeta = createEntityPropertyMeta(methodElement, entityMeta);
-                    removeOverridenMethod(propertyMeta, entityMeta);
-                    entityMeta.addPropertyMeta(propertyMeta);
-                }
+                doMethodElement(methodElement, entityMeta);
             } catch (AptException e) {
                 Notifier.notify(env, e);
             }
         }
     }
 
+    protected void doMethodElement(ExecutableElement methodElement,
+            EntityMeta entityMeta) {
+        validateMethod(methodElement, entityMeta);
+        EntityDelegateMeta delegateMeta = createEntityDelegateMeta(
+                methodElement, entityMeta);
+        if (delegateMeta != null) {
+            removeOverridenMethod(delegateMeta, entityMeta);
+            entityMeta.addDelegateMeta(delegateMeta);
+        } else {
+            EntityPropertyMeta propertyMeta = createEntityPropertyMeta(
+                    methodElement, entityMeta);
+            removeOverridenMethod(propertyMeta, entityMeta);
+            entityMeta.addPropertyMeta(propertyMeta);
+        }
+    }
+
+    protected void validateMethod(ExecutableElement methodElement,
+            EntityMeta entityMeta) {
+        TypeElement foundAnnotationTypeElement = null;
+        for (AnnotationMirror annotation : methodElement.getAnnotationMirrors()) {
+            DeclaredType declaredType = annotation.getAnnotationType();
+            TypeElement typeElement = TypeUtil.toTypeElement(declaredType, env);
+            if (typeElement.getAnnotation(EntityMethod.class) != null) {
+                if (foundAnnotationTypeElement != null) {
+                    throw new AptException(DomaMessageCode.DOMA4086, env,
+                            methodElement, foundAnnotationTypeElement
+                                    .getQualifiedName(), typeElement
+                                    .getQualifiedName());
+                }
+                foundAnnotationTypeElement = typeElement;
+            }
+        }
+    }
+
     protected EntityDelegateMeta createEntityDelegateMeta(
             ExecutableElement methodElement, EntityMeta entityMeta) {
-        return delegateMetaFactory
-                .createEntityDelegateMeta(methodElement, entityMeta);
+        return delegateMetaFactory.createEntityDelegateMeta(methodElement,
+                entityMeta);
     }
 
     protected EntityPropertyMeta createEntityPropertyMeta(
             ExecutableElement methodElement, EntityMeta entityMeta) {
-        return propertyMetaFactory
-                .createEntityPropertyMeta(methodElement, entityMeta);
+        return propertyMetaFactory.createEntityPropertyMeta(methodElement,
+                entityMeta);
     }
 
     protected void removeOverridenMethod(EntityMethodMeta methodMeta,
@@ -254,9 +283,8 @@ public class EntityMetaFactory {
                 ExecutableElement overriden = overridenMeta
                         .getExecutableElement();
                 ExecutableElement overrider = methodMeta.getExecutableElement();
-                if (env.getElementUtils()
-                        .overrides(overrider, overriden, entityMeta
-                                .getEntityElement())) {
+                if (env.getElementUtils().overrides(overrider, overriden,
+                        entityMeta.getEntityElement())) {
                     it.remove();
                     break;
                 }

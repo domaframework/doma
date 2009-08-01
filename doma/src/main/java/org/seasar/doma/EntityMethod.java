@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * データベースへのクエリを行うアノテーションであることを示します。
+ * エンティティ用のアノテーションであることを示します。
  * <p>
  * {@literal Doma} がアノテーション処理に利用するメタアノテーションです。
  * 
@@ -30,5 +30,5 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.ANNOTATION_TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Query {
+public @interface EntityMethod {
 }

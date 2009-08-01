@@ -60,7 +60,7 @@ import org.seasar.doma.jdbc.JdbcException;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@Query
+@DaoMethod
 public @interface Procedure {
 
     /**

@@ -48,5 +48,6 @@ import org.seasar.doma.domain.NumberDomain;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
+@EntityMethod
 public @interface Version {
 }

@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.apt;
 
+import org.seasar.doma.internal.apt.entity.AnnotationConflictedEntity;
 import org.seasar.doma.internal.apt.entity.ChildEntity;
 import org.seasar.doma.internal.apt.entity.DelegateEntity;
 import org.seasar.doma.internal.apt.entity.ElementOfReturnListNotDomainEntity;
@@ -223,5 +224,15 @@ public class EntityProcessorTest extends AptTestCase {
         compile();
         assertFalse(getCompiledResult());
         assertMessageCode(DomaMessageCode.DOMA4083);
+    }
+
+    public void testAnnotationConflicted() throws Exception {
+        Class<?> target = AnnotationConflictedEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessageCode(DomaMessageCode.DOMA4086);
     }
 }

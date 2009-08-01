@@ -19,36 +19,16 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.List;
 
 /**
- * 永続化非対象を示します。
+ * {@literal Data Access Object}用のアノテーションであることを示します。
  * <p>
- * 注釈されたメソッドは、テーブルのカラムに対応付けされません。一時的な値や、SQLのIN句のパラメータにバインドするための {@link List}
- * を保持するのに適しています。
- * <p>
- * このアノテーションが注釈されるメソッドは、{@link Entity}もしくは {@link MappedSuperclass}
- * が注釈されたインタフェースのメンバでなければいけません。
- * 
- * <h5>例:</h5>
- * 
- * <pre>
- * &#064;Entity
- * public interface Employee {
- *     ...
- *     &#064;Transient
- *     IntegerDomain tempNumber();
- *     
- *     &#064;Transient
- *     List&lt;StringDomain&gt; names();
- * }
- * </pre>
+ * {@literal Doma} がアノテーション処理に利用するメタアノテーションです。
  * 
  * @author taedium
  * 
  */
-@Target(ElementType.METHOD)
+@Target(ElementType.ANNOTATION_TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@EntityMethod
-public @interface Transient {
+public @interface DaoMethod {
 }

@@ -31,7 +31,7 @@ import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.Dao;
-import org.seasar.doma.Query;
+import org.seasar.doma.DaoMethod;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Notifier;
@@ -130,7 +130,7 @@ public class DaoMetaFactory {
         for (AnnotationMirror annotation : methodElement.getAnnotationMirrors()) {
             DeclaredType declaredType = annotation.getAnnotationType();
             TypeElement typeElement = TypeUtil.toTypeElement(declaredType, env);
-            if (typeElement.getAnnotation(Query.class) != null) {
+            if (typeElement.getAnnotation(DaoMethod.class) != null) {
                 if (foundAnnotationTypeElement != null) {
                     throw new AptException(DomaMessageCode.DOMA4086, env,
                             methodElement, foundAnnotationTypeElement

@@ -141,7 +141,7 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@Query
+@DaoMethod
 public @interface Select {
 
     /**

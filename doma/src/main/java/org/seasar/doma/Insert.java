@@ -67,7 +67,7 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@Query
+@DaoMethod
 public @interface Insert {
 
     /**
