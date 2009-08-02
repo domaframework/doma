@@ -17,16 +17,54 @@ package org.seasar.doma.copy;
 
 import java.util.Map;
 
+import org.seasar.doma.DomaNullPointerException;
+
 /**
- * @author taedium
+ * {@link CopyUtil} から処理を委譲されるクラスです。
+ * <p>
+ * メソッドの仕様は {@link CopyUtil} に従います。
+ * <p>
+ * このインタフェースの実装はスレッドセーフではければいけません。
+ * </p>
  * 
+ * @author taedium
  */
 public interface CopyUtilDelegate {
 
-    void copy(Object src, Object dest, CopyOptions copyOptions);
+    /**
+     * @param src
+     * @param dest
+     * @param copyOptions
+     * @throws DomaNullPointerException
+     * @throws CopyException
+     * @see CopyUtil#copy(Object, Object)
+     * @see CopyUtil#copy(Object, Object, CopyOptions)
+     */
+    void copy(Object src, Object dest, CopyOptions copyOptions)
+            throws DomaNullPointerException, CopyException;
 
-    void copy(Object src, Map<String, Object> dest, CopyOptions copyOptions);
+    /**
+     * @param src
+     * @param dest
+     * @param copyOptions
+     * @throws DomaNullPointerException
+     * @throws CopyException
+     * @see CopyUtil#copy(Object, Map)
+     * @see CopyUtil#copy(Object, Map, CopyOptions)
+     */
+    void copy(Object src, Map<String, Object> dest, CopyOptions copyOptions)
+            throws DomaNullPointerException, CopyException;
 
-    void copy(Map<String, Object> src, Object dest, CopyOptions copyOptions);
+    /**
+     * @param src
+     * @param dest
+     * @param copyOptions
+     * @throws DomaNullPointerException
+     * @throws CopyException
+     * @see CopyUtil#copy(Map, Object)
+     * @see CopyUtil#copy(Map, Object, CopyOptions)
+     */
+    void copy(Map<String, Object> src, Object dest, CopyOptions copyOptions)
+            throws DomaNullPointerException, CopyException;
 
 }

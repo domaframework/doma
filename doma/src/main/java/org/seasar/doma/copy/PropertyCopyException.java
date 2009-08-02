@@ -18,6 +18,8 @@ package org.seasar.doma.copy;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
+ * プロパティの変換に失敗した場合にスローされる例外です。
+ * 
  * @author taedium
  * 
  */
@@ -25,12 +27,27 @@ public class PropertyCopyException extends CopyException {
 
     private static final long serialVersionUID = 1L;
 
+    /** コピー元のクラス名 */
     protected final String srcClassName;
 
+    /** コピー元のプロパティ名 */
     protected final String srcPropertyName;
 
+    /** コピー元の値 */
     protected final Object srcPropertyValue;
 
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param srcClassName
+     *            コピー元のクラス名
+     * @param srcPropertyName
+     *            コピー元のプロパティ名
+     * @param srcPropertyValue
+     *            コピー元の値
+     * @param cause
+     *            失敗した原因
+     */
     public PropertyCopyException(String srcClassName, String srcPropertyName,
             Object srcPropertyValue, Throwable cause) {
         super(DomaMessageCode.DOMA7001, cause, srcClassName, srcPropertyName,

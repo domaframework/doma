@@ -39,13 +39,40 @@ import org.seasar.doma.entity.EntityProperty;
 import org.seasar.doma.internal.util.ClassUtil;
 
 /**
+ * {@link CopyUtilDelegate} のデフォルトの実装です。
+ * <p>
+ * 次の型への変換をサポートします。
+ * <ul>
+ * <li> {@link String}
+ * <li> {@link BigDecimal}
+ * <li> {@link BigInteger}
+ * <li> {@link Boolean}
+ * <li> {@link Byte}
+ * <li> {@link Short}
+ * <li> {@link Integer}
+ * <li> {@link Long}
+ * <li> {@link Float}
+ * <li> {@link Double}
+ * <li> {@link java.util.Date}
+ * <li> {@link Date}
+ * <li> {@link Time}
+ * <li> {@link Timestamp}
+ * </ul>
+ * 
+ * コピー先がエンティティのプロパティ、つまり {@link Domain} の場合、 {@link Domain}
+ * の値の型が上記のリストに含まれればコピー対象となります。
+ * 
  * @author taedium
  * 
  */
 public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
 
+    /** 変換先のクラスをキー、コンバーターを値とするマップ */
     protected final Map<Class<?>, Converter<?>> converterMap = new HashMap<Class<?>, Converter<?>>();
 
+    /**
+     * インスタンス化します。
+     */
     protected BuiltinCopyUtilDelegate() {
         converterMap.put(String.class, Converters.STRING);
         converterMap.put(BigDecimal.class, Converters.BIG_DECIMAL);
@@ -64,7 +91,8 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
     }
 
     @Override
-    public void copy(Object src, Object dest, CopyOptions copyOptions) {
+    public void copy(Object src, Object dest, CopyOptions copyOptions)
+            throws DomaNullPointerException, CopyException {
         if (src == null) {
             throw new DomaNullPointerException("src");
         }
@@ -77,23 +105,28 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
         if (Entity.class.isInstance(src)) {
             Entity<?> srcEntity = Entity.class.cast(src);
             if (Entity.class.isInstance(dest)) {
-                copyFromEntityToEntity(srcEntity, Entity.class.cast(dest), copyOptions);
+                copyFromEntityToEntity(srcEntity, Entity.class.cast(dest),
+                        copyOptions);
             } else {
-                copyFromEntityToBean(srcEntity, wrap(dest, copyOptions), copyOptions);
+                copyFromEntityToBean(srcEntity, wrap(dest, copyOptions),
+                        copyOptions);
             }
         } else {
             BeanWrapper srcBean = wrap(src, copyOptions);
             if (Entity.class.isInstance(dest)) {
-                copyFromBeanToEntity(srcBean, Entity.class.cast(dest), copyOptions);
+                copyFromBeanToEntity(srcBean, Entity.class.cast(dest),
+                        copyOptions);
             } else {
-                copyFromBeanToBean(srcBean, wrap(dest, copyOptions), copyOptions);
+                copyFromBeanToBean(srcBean, wrap(dest, copyOptions),
+                        copyOptions);
             }
         }
     }
 
     @Override
     public void copy(Object src, Map<String, Object> dest,
-            CopyOptions copyOptions) {
+            CopyOptions copyOptions) throws DomaNullPointerException,
+            CopyException {
         if (src == null) {
             throw new DomaNullPointerException("src");
         }
@@ -112,7 +145,8 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
 
     @Override
     public void copy(Map<String, Object> src, Object dest,
-            CopyOptions copyOptions) {
+            CopyOptions copyOptions) throws DomaNullPointerException,
+            CopyException {
         if (src == null) {
             throw new DomaNullPointerException("src");
         }
@@ -129,8 +163,20 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
         }
     }
 
+    /**
+     * エンティティからエンティティにコピーします。
+     * 
+     * @param src
+     *            コピー元
+     * @param dest
+     *            コピー先
+     * @param copyOptions
+     *            オプション
+     * @throws CopyException
+     *             コピーに失敗した場合
+     */
     protected void copyFromEntityToEntity(Entity<?> src, Entity<?> dest,
-            CopyOptions copyOptions) {
+            CopyOptions copyOptions) throws CopyException {
         Class<?> srcClass = src.getClass();
         for (EntityProperty<?> srcProperty : src.__getEntityProperties()) {
             if (!copyOptions.isTargetProperty(srcProperty.getName())) {
@@ -141,6 +187,16 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
         }
     }
 
+    /**
+     * エンティティから {@link Map} にコピーします。
+     * 
+     * @param src
+     *            コピー元
+     * @param dest
+     *            コピー先
+     * @param copyOptions
+     *            オプション
+     */
     protected void copyFromEntityToMap(Entity<?> src, Map<String, Object> dest,
             CopyOptions copyOptions) {
         for (EntityProperty<?> srcProperty : src.__getEntityProperties()) {
@@ -154,8 +210,20 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
         }
     }
 
+    /**
+     * エンティティから {@literal JavaBeans} にコピーします。
+     * 
+     * @param src
+     *            コピー元
+     * @param dest
+     *            コピー先
+     * @param copyOptions
+     *            オプション
+     * @throws CopyException
+     *             コピーに失敗した場合
+     */
     protected void copyFromEntityToBean(Entity<?> src, BeanWrapper dest,
-            CopyOptions copyOptions) {
+            CopyOptions copyOptions) throws CopyException {
         Class<?> srcClass = src.getClass();
         for (EntityProperty<?> srcProperty : src.__getEntityProperties()) {
             if (!copyOptions.isTargetProperty(srcProperty.getName())) {
@@ -169,8 +237,20 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
         }
     }
 
+    /**
+     * {@literal JavaBeans} から エンティティにコピーします。
+     * 
+     * @param src
+     *            コピー元
+     * @param dest
+     *            コピー先
+     * @param copyOptions
+     *            オプション
+     * @throws CopyException
+     *             コピーに失敗した場合
+     */
     protected void copyFromBeanToEntity(BeanWrapper src, Entity<?> dest,
-            CopyOptions copyOptions) {
+            CopyOptions copyOptions) throws CopyException {
         Class<?> srcClass = src.getBeanClass();
         for (BeanPropertyWrapper srcProperty : src.getBeanPropertyWrappers()) {
             if (!copyOptions.isTargetProperty(srcProperty.getName())) {
@@ -187,6 +267,16 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
         }
     }
 
+    /**
+     * {@literal JavaBeans} から {@link Map} にコピーします。
+     * 
+     * @param src
+     *            コピー元
+     * @param dest
+     *            コピー先
+     * @param copyOptions
+     *            オプション
+     */
     protected void copyFromBeanToMap(BeanWrapper src, Map<String, Object> dest,
             CopyOptions copyOptions) {
         for (BeanPropertyWrapper srcProperty : src.getBeanPropertyWrappers()) {
@@ -203,8 +293,20 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
         }
     }
 
+    /**
+     * {@literal JavaBeans} から {@literal JavaBeans} にコピーします。
+     * 
+     * @param src
+     *            コピー元
+     * @param dest
+     *            コピー先
+     * @param copyOptions
+     *            オプション
+     * @throws CopyException
+     *             コピーに失敗した場合
+     */
     protected void copyFromBeanToBean(BeanWrapper src, BeanWrapper dest,
-            CopyOptions copyOptions) {
+            CopyOptions copyOptions) throws CopyException {
         Class<?> srcClass = src.getBeanClass();
         for (BeanPropertyWrapper srcProperty : src.getBeanPropertyWrappers()) {
             if (!copyOptions.isTargetProperty(srcProperty.getName())) {
@@ -221,8 +323,20 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
         }
     }
 
+    /**
+     * {@link Map} からエンティティにコピーします。
+     * 
+     * @param src
+     *            コピー元
+     * @param dest
+     *            コピー先
+     * @param copyOptions
+     *            オプション
+     * @throws CopyException
+     *             コピーに失敗した場合
+     */
     protected void copyFromMapToEntity(Map<String, Object> src, Entity<?> dest,
-            CopyOptions copyOptions) {
+            CopyOptions copyOptions) throws CopyException {
         Class<?> srcClass = src.getClass();
         for (Entry<String, Object> srcEntry : src.entrySet()) {
             if (!copyOptions.isTargetProperty(srcEntry.getKey())) {
@@ -236,8 +350,20 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
         }
     }
 
+    /**
+     * {@link Map} から {@literal JavaBeans} にコピーします。
+     * 
+     * @param src
+     *            コピー元
+     * @param dest
+     *            コピー先
+     * @param copyOptions
+     *            オプション
+     * @throws CopyException
+     *             コピーに失敗した場合
+     */
     protected void copyFromMapToBean(Map<String, Object> src, BeanWrapper dest,
-            CopyOptions copyOptions) {
+            CopyOptions copyOptions) throws CopyException {
         Class<?> srcClass = src.getClass();
         for (Entry<String, Object> srcEntry : src.entrySet()) {
             if (!copyOptions.isTargetProperty(srcEntry.getKey())) {
@@ -246,31 +372,65 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
             if (!copyOptions.isTargetValue(srcEntry.getValue())) {
                 continue;
             }
-            copyToBeanProperty(srcClass, srcEntry.getKey(), srcEntry.getValue(), dest, copyOptions);
+            copyToBeanProperty(srcClass, srcEntry.getKey(),
+                    srcEntry.getValue(), dest, copyOptions);
         }
     }
 
+    /**
+     * エンティティのプロパティにコピーします。
+     * 
+     * @param srcClass
+     *            コピー元のクラス
+     * @param srcPropertyName
+     *            コピー元のプロパティ名
+     * @param srcPropertyValue
+     *            コピー元の値
+     * @param dest
+     *            コピー先
+     * @param copyOptions
+     *            オプション
+     * @throws CopyException
+     *             コピーに失敗した場合
+     */
     protected void copyToEntityProperty(Class<?> srcClass,
             String srcPropertyName, Object srcPropertyValue, Entity<?> dest,
-            CopyOptions copyOptions) {
+            CopyOptions copyOptions) throws CopyException {
         EntityProperty<?> destProperty = dest
                 .__getEntityProperty(srcPropertyName);
         if (destProperty == null) {
             return;
         }
         Domain<?, ?> destDomain = destProperty.getDomain();
-        Converter<?> converter = findConverter(destProperty.getName(), destDomain
-                .getValueClass(), copyOptions);
+        Converter<?> converter = findConverter(destProperty.getName(),
+                destDomain.getValueClass(), copyOptions);
         if (converter == null) {
             return;
         }
-        Object destValue = convert(converter, srcClass, srcPropertyName, srcPropertyValue, copyOptions);
+        Object destValue = convert(converter, srcClass, srcPropertyName,
+                srcPropertyValue, copyOptions);
         DomainUtil.set(destDomain, destValue);
     }
 
+    /**
+     * {@literal JavaBeans}のプロパティにコピーします。
+     * 
+     * @param srcClass
+     *            コピー元のクラス
+     * @param srcPropertyName
+     *            コピー元のプロパティ名
+     * @param srcPropertyValue
+     *            コピー元の値
+     * @param dest
+     *            コピー先
+     * @param copyOptions
+     *            オプション
+     * @throws CopyException
+     *             コピーに失敗した場合
+     */
     protected void copyToBeanProperty(Class<?> srcClass,
             String srcPropertyName, Object srcPropertyValue, BeanWrapper dest,
-            CopyOptions copyOptions) {
+            CopyOptions copyOptions) throws CopyException {
         BeanPropertyWrapper destProperty = dest
                 .getBeanPropertyWrapper(srcPropertyName);
         if (destProperty == null) {
@@ -279,18 +439,36 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
         if (!destProperty.isValueSettable()) {
             return;
         }
-        Converter<?> converter = findConverter(destProperty.getName(), destProperty
-                .getPropertyClass(), copyOptions);
+        Converter<?> converter = findConverter(destProperty.getName(),
+                destProperty.getPropertyClass(), copyOptions);
         if (converter == null) {
             return;
         }
-        Object destValue = convert(converter, srcClass, srcPropertyName, srcPropertyValue, copyOptions);
+        Object destValue = convert(converter, srcClass, srcPropertyName,
+                srcPropertyValue, copyOptions);
         destProperty.setValue(destValue);
     }
 
+    /**
+     * 値を変換します。
+     * 
+     * @param converter
+     *            変換に使用するコンバーター
+     * @param srcClass
+     *            コピー元のクラス
+     * @param srcPropertyName
+     *            コピー元のプロパティ名
+     * @param srcPropertyValue
+     *            コピー元の値
+     * @param copyOptions
+     *            オプション
+     * @return 変換された値
+     * @throws CopyException
+     *             コピーに失敗した場合
+     */
     protected Object convert(Converter<?> converter, Class<?> srcClass,
             String srcPropertyName, Object srcPropertyValue,
-            CopyOptions copyOptions) {
+            CopyOptions copyOptions) throws CopyException {
         String pattern = copyOptions.getPattern(srcPropertyName);
         try {
             return converter.convert(srcPropertyValue, pattern);
@@ -300,17 +478,39 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
         }
     }
 
-    protected Converter<?> findConverter(String name, Class<?> destClass,
-            CopyOptions copyOptions) {
-        Converter<?> converter = copyOptions.getConverter(name);
+    /**
+     * コンバーターを探します。
+     * 
+     * @param propertyName
+     *            プロパティ名
+     * @param destPropertyClass
+     *            コピー先のプロパティのクラス
+     * @param copyOptions
+     *            オプション
+     * @return コンバーター、存在しない場合 {@code null}
+     * @throws CopyException
+     */
+    protected Converter<?> findConverter(String propertyName,
+            Class<?> destPropertyClass, CopyOptions copyOptions)
+            throws CopyException {
+        Converter<?> converter = copyOptions.getConverter(propertyName);
         if (converter == null) {
             Class<?> wrapperClass = ClassUtil
-                    .getWrapperClassIfPrimitive(destClass);
+                    .getWrapperClassIfPrimitive(destPropertyClass);
             converter = converterMap.get(wrapperClass);
         }
         return converter;
     }
 
+    /**
+     * {@literal JavaBeans} のラッパーを返します。
+     * 
+     * @param bean
+     *            {@literal JavaBeans}
+     * @param copyOptions
+     *            オプション
+     * @return {@literal JavaBeans} のラッパー
+     */
     protected BeanWrapper wrap(Object bean, CopyOptions copyOptions) {
         BeanWrapperFactory beanWrapperFactory = copyOptions.getBeanFactory();
         if (beanWrapperFactory != null) {

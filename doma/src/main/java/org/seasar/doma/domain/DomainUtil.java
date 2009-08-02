@@ -28,10 +28,10 @@ public final class DomainUtil {
     private static volatile DomainUtilDelegate delegate = new BuiltinDomainUtilDelegate();
 
     /**
-     * 委譲先のインスタンスを設定します。
+     * 委譲先を設定します。
      * 
      * @param delegate
-     *            委譲先のインスタンス
+     *            委譲先
      */
     public static void setDelegate(DomainUtilDelegate delegate) {
         DomainUtil.delegate = delegate;
