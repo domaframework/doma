@@ -20,6 +20,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
+
 /**
  * JDBCの型を表現します。 型ごとに異なる処理を抽象化します。
  * <p>
@@ -39,9 +42,14 @@ public interface JdbcType<T> {
      * @param resultSet
      * @param index
      * @return 値
+     * @throws DomaNullPointerException
+     *             {@code resultSet} が {@code null} の場合
+     * @throws DomaIllegalArgumentException
+     *             {@code index} が {@literal 1} 以下の場合
      * @throws SQLException
      */
-    T getValue(ResultSet resultSet, int index) throws SQLException;
+    T getValue(ResultSet resultSet, int index) throws DomaNullPointerException,
+            DomaIllegalArgumentException, SQLException;
 
     /**
      * {@link PreparedStatement} に値を設定します。
@@ -49,20 +57,30 @@ public interface JdbcType<T> {
      * @param preparedStatement
      * @param index
      * @param value
+     * @throws DomaNullPointerException
+     *             {@code preparedStatement} が {@code null} の場合
+     * @throws DomaIllegalArgumentException
+     *             {@code index} が {@literal 1} 以下の場合
      * @throws SQLException
      */
     void setValue(PreparedStatement preparedStatement, int index, T value)
-            throws SQLException;
+            throws DomaNullPointerException, DomaIllegalArgumentException,
+            SQLException;
 
     /**
      * {@link CallableStatement} にOUTパラメータを登録します。
      * 
      * @param callableStatement
      * @param index
+     * @throws DomaNullPointerException
+     *             {@code callableStatement} が {@code null} の場合
+     * @throws DomaIllegalArgumentException
+     *             {@code index} が {@literal 1} 以下の場合
      * @throws SQLException
      */
     void registerOutParameter(CallableStatement callableStatement, int index)
-            throws SQLException;
+            throws DomaNullPointerException, DomaIllegalArgumentException,
+            SQLException;
 
     /**
      * {@link CallableStatement} から値を取得します。
@@ -70,10 +88,15 @@ public interface JdbcType<T> {
      * @param callableStatement
      * @param index
      * @return 値
+     * @throws DomaNullPointerException
+     *             {@code callableStatement} が {@code null} の場合
+     * @throws DomaIllegalArgumentException
+     *             {@code index} が {@literal 1} 以下の場合
      * @throws SQLException
      */
     T getValue(CallableStatement callableStatement, int index)
-            throws SQLException;
+            throws DomaNullPointerException, DomaIllegalArgumentException,
+            SQLException;
 
     /**
      * 値をログ用フォーマットの文字列に変換します。

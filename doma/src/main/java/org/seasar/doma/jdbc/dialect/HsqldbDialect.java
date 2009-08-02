@@ -73,7 +73,7 @@ public class HsqldbDialect extends StandardDialect {
 
     @Override
     public PreparedSql getIdentitySelectSql(String qualifiedTableName,
-            String columnName) {
+            String columnName) throws DomaNullPointerException {
         if (qualifiedTableName == null) {
             throw new DomaNullPointerException("qualifiedTableName");
         }
@@ -87,7 +87,7 @@ public class HsqldbDialect extends StandardDialect {
 
     @Override
     public PreparedSql getSequenceNextValSql(String qualifiedSequenceName,
-            long allocationSize) {
+            long allocationSize) throws DomaNullPointerException {
         if (qualifiedSequenceName == null) {
             throw new DomaNullPointerException("qualifiedSequenceName");
         }
@@ -99,7 +99,8 @@ public class HsqldbDialect extends StandardDialect {
     }
 
     @Override
-    public boolean isUniqueConstraintViolated(SQLException sqlException) {
+    public boolean isUniqueConstraintViolated(SQLException sqlException)
+            throws DomaNullPointerException {
         if (sqlException == null) {
             throw new DomaNullPointerException("sqlException");
         }

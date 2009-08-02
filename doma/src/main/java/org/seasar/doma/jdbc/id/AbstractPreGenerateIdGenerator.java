@@ -19,6 +19,8 @@ import java.sql.Statement;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import org.seasar.doma.jdbc.JdbcException;
+
 /**
  * INSERT文の実行前に識別子を生成するジェネレータの抽象クラスです。
  * 
@@ -73,14 +75,15 @@ public abstract class AbstractPreGenerateIdGenerator extends
     }
 
     @Override
-    public Long generatePreInsert(IdGenerationConfig config) {
+    public Long generatePreInsert(IdGenerationConfig config)
+            throws JdbcException {
         IdContext idContext = getIdContext(config);
         return idContext.getNextValue(config);
     }
 
     @Override
     public Long generatePostInsert(IdGenerationConfig config,
-            Statement statement) {
+            Statement statement) throws JdbcException {
         return null;
     }
 
@@ -111,8 +114,11 @@ public abstract class AbstractPreGenerateIdGenerator extends
      * @param config
      *            識別子生成の設定
      * @return 新しい初期値
+     * @throws JdbcException
+     *             新しい初期値の取得に失敗した場合
      */
-    protected abstract long getNewInitialValue(IdGenerationConfig config);
+    protected abstract long getNewInitialValue(IdGenerationConfig config)
+            throws JdbcException;
 
     /**
      * 識別子コンテキストです。
@@ -136,8 +142,11 @@ public abstract class AbstractPreGenerateIdGenerator extends
          * @param config
          *            識別子生成の設定
          * @return 次の識別子
+         * @throws JdbcException
+         *             次の識別子の生成に失敗した場合
          */
-        public synchronized long getNextValue(IdGenerationConfig config) {
+        public synchronized long getNextValue(IdGenerationConfig config)
+                throws JdbcException {
             if (allocated < allocationSize) {
                 return initValue + allocated++;
             }

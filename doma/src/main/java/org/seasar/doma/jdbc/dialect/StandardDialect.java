@@ -117,15 +117,15 @@ public class StandardDialect implements Dialect {
     }
 
     @Override
-    public SqlNode transformSelectSqlNode(SqlNode original,
-            SelectOptions options) {
-        if (original == null) {
-            throw new DomaNullPointerException("original");
+    public SqlNode transformSelectSqlNode(SqlNode sqlNode, SelectOptions options)
+            throws DomaNullPointerException {
+        if (sqlNode == null) {
+            throw new DomaNullPointerException("sqlNode");
         }
         if (options == null) {
             throw new DomaNullPointerException("options");
         }
-        SqlNode transformed = original;
+        SqlNode transformed = sqlNode;
         if (options.getOffset() >= 0 || options.getLimit() >= 0) {
             transformed = toPagingSqlNode(transformed, options.getOffset(),
                     options.getLimit());
@@ -181,7 +181,8 @@ public class StandardDialect implements Dialect {
         return transformer.transform(sqlNode);
     }
 
-    public boolean isUniqueConstraintViolated(SQLException sqlException) {
+    public boolean isUniqueConstraintViolated(SQLException sqlException)
+            throws DomaNullPointerException {
         if (sqlException == null) {
             throw new DomaNullPointerException("sqlException");
         }
@@ -235,7 +236,11 @@ public class StandardDialect implements Dialect {
     }
 
     @Override
-    public Throwable getRootCause(SQLException sqlException) {
+    public Throwable getRootCause(SQLException sqlException)
+            throws DomaNullPointerException {
+        if (sqlException == null) {
+            throw new DomaNullPointerException("sqlException");
+        }
         Throwable cause = sqlException;
         for (Throwable t : sqlException) {
             cause = t;
@@ -287,14 +292,14 @@ public class StandardDialect implements Dialect {
 
     @Override
     public PreparedSql getIdentitySelectSql(String qualifiedTableName,
-            String columnName) {
+            String columnName) throws DomaNullPointerException {
         throw new JdbcUnsupportedOperationException(getClass().getName(),
                 "getIdentitySelectSql");
     }
 
     @Override
     public PreparedSql getSequenceNextValSql(String qualifiedSequenceName,
-            long allocationSize) {
+            long allocationSize) throws DomaNullPointerException {
         throw new JdbcUnsupportedOperationException(getClass().getName(),
                 "getSequenceNextValString");
     }

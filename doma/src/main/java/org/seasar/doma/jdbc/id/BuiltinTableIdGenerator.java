@@ -184,7 +184,8 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
     }
 
     @Override
-    protected long getNewInitialValue(final IdGenerationConfig config) {
+    protected long getNewInitialValue(final IdGenerationConfig config)
+            throws JdbcException {
         RequiresNewController controller = config.getRequiresNewController();
         try {
             Long value = controller
@@ -210,8 +211,11 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
      *            識別子生成の設定
      * @param sql
      *            更新用SQL
+     * @throws JdbcException
+     *             識別子の更新に失敗した場合
      */
-    protected void updateId(IdGenerationConfig config, PreparedSql sql) {
+    protected void updateId(IdGenerationConfig config, PreparedSql sql)
+            throws JdbcException {
         JdbcLogger logger = config.getJdbcLogger();
         Connection connection = JdbcUtil.getConnection(config.getDataSource());
         try {
@@ -246,8 +250,11 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
      * @param sql
      *            取得用SQL
      * @return 取得した識別子
+     * @throws JdbcException
+     *             識別子の取得に失敗した場合
      */
-    protected long selectId(IdGenerationConfig config, PreparedSql sql) {
+    protected long selectId(IdGenerationConfig config, PreparedSql sql)
+            throws JdbcException {
         JdbcLogger logger = config.getJdbcLogger();
         Connection connection = JdbcUtil.getConnection(config.getDataSource());
         try {

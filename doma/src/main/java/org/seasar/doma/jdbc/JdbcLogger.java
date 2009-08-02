@@ -20,6 +20,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.seasar.doma.DomaNullPointerException;
+
 /**
  * JDBCに関する処理を記録するロガーです。
  * <p>
@@ -39,9 +41,11 @@ public interface JdbcLogger {
      *            {@literal Data Access Object}のメソッド名
      * @param args
      *            メソッドの引数
+     * @throws DomaNullPointerException
+     *             引数のいずれかが {@code null} の場合
      */
     void logDaoMethodEntering(String callerClassName, String callerMethodName,
-            Object... args);
+            Object... args) throws DomaNullPointerException;
 
     /**
      * {@literal Data Access Object} のメソッドの実行終了を記録します。
@@ -52,9 +56,12 @@ public interface JdbcLogger {
      *            {@literal Data Access Object}のメソッド名
      * @param args
      *            メソッドの引数
+     * @throws DomaNullPointerException
+     *             {@code callerClassName} もしくは {@code callerMethodName} が
+     *             {@code null} の場合
      */
     void logDaoMethodExiting(String callerClassName, String callerMethodName,
-            Object result);
+            Object result) throws DomaNullPointerException;
 
     /**
      * SQLの実行がスキップされたことを記録します。
@@ -65,9 +72,12 @@ public interface JdbcLogger {
      *            呼び出し元のメソッド名
      * @param cause
      *            原因
+     * @throws DomaNullPointerException
+     *             引数のいずれかが {@code null} の場合
      */
     void logSqlExecutionSkipping(String callerClassName,
-            String callerMethodName, SqlExecutionSkipCause cause);
+            String callerMethodName, SqlExecutionSkipCause cause)
+            throws DomaNullPointerException;
 
     /**
      * 実行するSQLを格納したSQLファイルを記録します。
@@ -78,9 +88,11 @@ public interface JdbcLogger {
      *            呼び出し元のメソッド名
      * @param sqlFile
      *            SQLファイル
+     * @throws DomaNullPointerException
+     *             引数のいずれかが {@code null} の場合
      */
     void logSqlFile(String callerClassName, String callerMethodName,
-            SqlFile sqlFile);
+            SqlFile sqlFile) throws DomaNullPointerException;
 
     /**
      * 実行するSQLを記録します。
@@ -91,8 +103,11 @@ public interface JdbcLogger {
      *            呼び出し元のメソッド名
      * @param sql
      *            SQL
+     * @throws DomaNullPointerException
+     *             引数のいずれかが {@code null} の場合
      */
-    void logSql(String callerClassName, String callerMethodName, Sql<?> sql);
+    void logSql(String callerClassName, String callerMethodName, Sql<?> sql)
+            throws DomaNullPointerException;
 
     /**
      * {@link Connection#close()} 時に発生した {@link SQLException} を記録します。
@@ -101,9 +116,12 @@ public interface JdbcLogger {
      * @param callerMethodName
      * @param e
      *            {@link Connection#close()} 時に発生した {@link SQLException}
+     * @throws DomaNullPointerException
+     *             引数のいずれかが {@code null} の場合
      */
     void logConnectionClosingFailure(String callerClassName,
-            String callerMethodName, SQLException e);
+            String callerMethodName, SQLException e)
+            throws DomaNullPointerException;
 
     /**
      * {@link Statement#close()} 時に発生した {@link SQLException} を記録します。
@@ -112,9 +130,12 @@ public interface JdbcLogger {
      * @param callerMethodName
      * @param e
      *            {@link Statement#close()} 時に発生した {@link SQLException}
+     * @throws DomaNullPointerException
+     *             引数のいずれかが {@code null} の場合
      */
     void logStatementClosingFailure(String callerClassName,
-            String callerMethodName, SQLException e);
+            String callerMethodName, SQLException e)
+            throws DomaNullPointerException;
 
     /**
      * {@link ResultSet#close()} 時に発生した {@link SQLException} を記録します。
@@ -123,8 +144,11 @@ public interface JdbcLogger {
      * @param callerMethodName
      * @param e
      *            {@link ResultSet#close()} 時に発生した {@link SQLException}
+     * @throws DomaNullPointerException
+     *             引数のいずれかが {@code null} の場合
      */
     void logResultSetClosingFailure(String callerClassName,
-            String callerMethodName, SQLException e);
+            String callerMethodName, SQLException e)
+            throws DomaNullPointerException;
 
 }

@@ -31,9 +31,12 @@ public class BuiltinNameConvention implements NameConvention {
      * キャメルケースのエンティティ名を大文字のアンダースコア区切りテーブル名に変換します。
      * <p>
      * 変換には {@link StringUtil#decamelize(String)} を使用しています。
+     * <p>
+     * {@inheritDoc}
      */
     @Override
-    public String fromEntityToTable(String entityName, Dialect dialect) {
+    public String fromEntityToTable(String entityName, Dialect dialect)
+            throws DomaNullPointerException {
         if (entityName == null) {
             throw new DomaNullPointerException("entityName");
         }
@@ -47,9 +50,12 @@ public class BuiltinNameConvention implements NameConvention {
      * キャメルケースのプロパティ名を大文字のアンダースコア区切りカラム名に変換します。
      * <p>
      * 変換には {@link StringUtil#decamelize(String)} を使用しています。
+     * <p>
+     * {@inheritDoc}
      */
     @Override
-    public String fromPropertyToColumn(String propertyName, Dialect dialect) {
+    public String fromPropertyToColumn(String propertyName, Dialect dialect)
+            throws DomaNullPointerException {
         if (propertyName == null) {
             throw new DomaNullPointerException("propertyName");
         }
@@ -63,9 +69,12 @@ public class BuiltinNameConvention implements NameConvention {
      * アンダースコア区切りのテーブル名をキャメルケースのエンティティ名に変換します。
      * <p>
      * 変換には {@link StringUtil#capitalize(String)}を使用しています。
+     * <p>
+     * {@inheritDoc}
      */
     @Override
-    public String fromTableToEntity(String tableName, Dialect dialect) {
+    public String fromTableToEntity(String tableName, Dialect dialect)
+            throws DomaNullPointerException {
         if (tableName == null) {
             throw new DomaNullPointerException("tableName");
         }
@@ -80,9 +89,12 @@ public class BuiltinNameConvention implements NameConvention {
      * アンダースコア区切りのカラム名をキャメルケースのプロパティ名に変換します。
      * <p>
      * 変換には {@link StringUtil#capitalize(String)}を使用しています。
+     * <p>
+     * {@inheritDoc}
      */
     @Override
-    public String fromColumnToProperty(String columnName, Dialect dialect) {
+    public String fromColumnToProperty(String columnName, Dialect dialect)
+            throws DomaNullPointerException {
         if (columnName == null) {
             throw new DomaNullPointerException("columnName");
         }

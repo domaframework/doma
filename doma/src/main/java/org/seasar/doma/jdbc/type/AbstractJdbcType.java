@@ -52,7 +52,9 @@ public abstract class AbstractJdbcType<T> implements JdbcType<T> {
     }
 
     @Override
-    public T getValue(ResultSet resultSet, int index) throws SQLException {
+    public T getValue(ResultSet resultSet, int index)
+            throws DomaNullPointerException, DomaIllegalArgumentException,
+            SQLException {
         if (resultSet == null) {
             throw new DomaNullPointerException("resultSet");
         }
@@ -64,7 +66,8 @@ public abstract class AbstractJdbcType<T> implements JdbcType<T> {
 
     @Override
     public void setValue(PreparedStatement preparedStatement, int index, T value)
-            throws SQLException {
+            throws DomaNullPointerException, DomaIllegalArgumentException,
+            SQLException {
         if (preparedStatement == null) {
             throw new DomaNullPointerException("preparedStatement");
         }
@@ -80,7 +83,8 @@ public abstract class AbstractJdbcType<T> implements JdbcType<T> {
 
     @Override
     public void registerOutParameter(CallableStatement callableStatement,
-            int index) throws SQLException {
+            int index) throws DomaNullPointerException,
+            DomaIllegalArgumentException, SQLException {
         if (callableStatement == null) {
             throw new DomaNullPointerException("callableStatement");
         }
@@ -92,12 +96,13 @@ public abstract class AbstractJdbcType<T> implements JdbcType<T> {
 
     @Override
     public T getValue(CallableStatement callableStatement, int index)
-            throws SQLException {
+            throws DomaNullPointerException, DomaIllegalArgumentException,
+            SQLException {
         if (callableStatement == null) {
             throw new DomaNullPointerException("callableStatement");
         }
         if (index < 1) {
-            throw new DomaNullPointerException("index");
+            throw new DomaIllegalArgumentException("index", "index < 1");
         }
         return doGetValue(callableStatement, index);
     }

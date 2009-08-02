@@ -67,7 +67,8 @@ public class MysqlDialect extends StandardDialect {
     }
 
     @Override
-    public boolean isUniqueConstraintViolated(SQLException sqlException) {
+    public boolean isUniqueConstraintViolated(SQLException sqlException)
+            throws DomaNullPointerException {
         if (sqlException == null) {
             throw new DomaNullPointerException("sqlException");
         }

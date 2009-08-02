@@ -16,6 +16,7 @@
 package org.seasar.doma.jdbc;
 
 import org.seasar.doma.Delegate;
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Entity;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
@@ -47,8 +48,11 @@ public interface NameConvention {
      * @param dialect
      *            方言
      * @return テーブル名
+     * @throws DomaNullPointerException
+     *             いずれかの引数が {@code null} の場合
      */
-    String fromEntityToTable(String entityName, Dialect dialect);
+    String fromEntityToTable(String entityName, Dialect dialect)
+            throws DomaNullPointerException;
 
     /**
      * テーブル名からエンティティ名へ変換します。
@@ -60,8 +64,11 @@ public interface NameConvention {
      * @param dialect
      *            方言
      * @return エンティティ名
+     * @throws DomaNullPointerException
+     *             いずれかの引数が {@code null} の場合
      */
-    String fromTableToEntity(String tableName, Dialect dialect);
+    String fromTableToEntity(String tableName, Dialect dialect)
+            throws DomaNullPointerException;
 
     /**
      * プロパティ名からカラム名へ変換します。
@@ -74,8 +81,11 @@ public interface NameConvention {
      * @param dialect
      *            方言
      * @return カラム名
+     * @throws DomaNullPointerException
+     *             いずれかの引数が {@code null} の場合
      */
-    String fromPropertyToColumn(String propertyName, Dialect dialect);
+    String fromPropertyToColumn(String propertyName, Dialect dialect)
+            throws DomaNullPointerException;
 
     /**
      * カラム名からプロパティ名へ変換します。
@@ -87,7 +97,10 @@ public interface NameConvention {
      * @param dialect
      *            方言
      * @return プロパティ名
+     * @throws DomaNullPointerException
+     *             いずれかの引数が {@code null} の場合
      */
-    String fromColumnToProperty(String columnName, Dialect dialect);
+    String fromColumnToProperty(String columnName, Dialect dialect)
+            throws DomaNullPointerException;
 
 }

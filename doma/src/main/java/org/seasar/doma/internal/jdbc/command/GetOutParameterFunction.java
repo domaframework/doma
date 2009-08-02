@@ -46,7 +46,7 @@ public class GetOutParameterFunction implements JdbcMappingFunction {
 
     @Override
     public <R, V> R apply(Domain<V, ?> domain, JdbcType<V> jdbcType)
-            throws SQLException {
+            throws DomaNullPointerException, SQLException {
         if (domain == null) {
             throw new DomaNullPointerException("domain");
         }

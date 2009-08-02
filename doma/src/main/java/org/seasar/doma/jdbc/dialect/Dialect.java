@@ -19,7 +19,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.domain.Domain;
+import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SelectOptions;
@@ -54,8 +56,13 @@ public interface Dialect {
      * @param options
      *            オプション
      * @return 変換されたSQLノード
+     * @throws DomaNullPointerException
+     *             引数のいずれかが {@code null} の場合
+     * @throws JdbcException
+     *             オプションの指定に対応するSQLの変換がサポートされていない場合
      */
-    SqlNode transformSelectSqlNode(SqlNode sqlNode, SelectOptions options);
+    SqlNode transformSelectSqlNode(SqlNode sqlNode, SelectOptions options)
+            throws DomaNullPointerException;
 
     /**
      * 一意制約違反かどうかを返します。
@@ -63,8 +70,11 @@ public interface Dialect {
      * @param sqlException
      *            SQL例外
      * @return 一意制約違反ならば {@code true}
+     * @throws DomaNullPointerException
+     *             {@code sqlException} が {@code null} の場合
      */
-    boolean isUniqueConstraintViolated(SQLException sqlException);
+    boolean isUniqueConstraintViolated(SQLException sqlException)
+            throws DomaNullPointerException;
 
     /**
      * INSERT文にIDENTITYカラムを含むかどうかを返します。
@@ -131,8 +141,11 @@ public interface Dialect {
      * @param columnName
      *            IDENTITYカラムの名前
      * @return IDENTITYを取得するためのSQL
+     * @throws DomaNullPointerException
+     *             引数のいずれかが {@code null} の場合
      */
-    Sql<?> getIdentitySelectSql(String qualifiedTableName, String columnName);
+    Sql<?> getIdentitySelectSql(String qualifiedTableName, String columnName)
+            throws DomaNullPointerException;
 
     /**
      * シーケンスの次の値を取得するためのSQLを返します。
@@ -144,9 +157,11 @@ public interface Dialect {
      * @param allocationSize
      *            割り当てサイズ
      * @return シーケンスの次の値を取得するためのSQL
+     * @throws DomaNullPointerException
+     *             {@code qualifiedSequenceName} が {@code null} の場合
      */
     Sql<?> getSequenceNextValSql(String qualifiedSequenceName,
-            long allocationSize);
+            long allocationSize) throws DomaNullPointerException;
 
     /**
      * {@link ResultSet} の {@link JdbcType} を返します。
@@ -182,8 +197,11 @@ public interface Dialect {
      * @param sqlException
      *            SQL例外
      * @return 根本原因
+     * @throws DomaNullPointerException
+     *             {@code sqlException} が {@code null} の場合
      */
-    Throwable getRootCause(SQLException sqlException);
+    Throwable getRootCause(SQLException sqlException)
+            throws DomaNullPointerException;
 
     /**
      * {@link Domain} をJDBCの型とマッピングするビジターを返します。

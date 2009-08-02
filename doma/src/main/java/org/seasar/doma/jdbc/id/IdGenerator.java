@@ -18,6 +18,7 @@ package org.seasar.doma.jdbc.id;
 import java.sql.Statement;
 
 import org.seasar.doma.GenerationType;
+import org.seasar.doma.jdbc.JdbcException;
 
 /**
  * 識別子のジェネレータです。
@@ -66,8 +67,10 @@ public interface IdGenerator {
      * @param config
      *            識別子生成の設定
      * @return 生成された識別子、サポートしていない場合 {@code null}
+     * @throws JdbcException
+     *             識別子の生成に失敗した場合
      */
-    Long generatePreInsert(IdGenerationConfig config);
+    Long generatePreInsert(IdGenerationConfig config) throws JdbcException;
 
     /**
      * INSERTの実行後に識別子を生成します。
@@ -77,8 +80,11 @@ public interface IdGenerator {
      * @param statement
      *            INSERT文を実行した文
      * @return 生成された識別子、サポートしていない場合 {@code null}
+     * @throws JdbcException
+     *             識別子の生成に失敗した場合
      */
-    Long generatePostInsert(IdGenerationConfig config, Statement statement);
+    Long generatePostInsert(IdGenerationConfig config, Statement statement)
+            throws JdbcException;
 
     /**
      * 識別子を生成する方法を返します。

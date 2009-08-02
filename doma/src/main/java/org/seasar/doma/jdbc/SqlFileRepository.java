@@ -16,6 +16,8 @@
 package org.seasar.doma.jdbc;
 
 import org.seasar.doma.Dao;
+import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
@@ -60,11 +62,22 @@ public interface SqlFileRepository {
      * SQLファイルを返します。
      * 
      * @param path
-     *            SQLファイルのパス。
+     *            SQLファイルのパス
      * @param dialect
      *            方言
      * @return SQLファイル
+     * @throws DomaNullPointerException
+     *             引数のいずれかが {@code null} の場合
+     * @throws DomaIllegalArgumentException
+     *             {@code path} が'META-INF/'で始まらない場合、 もしくは、{@code path} 
+     *             が'.sql'で終わらない場合
+     * @throws SqlFileNotFoundException
+     *             SQLファイルが見つからない場合
+     * @throws JdbcException
+     *             上記以外で例外が発生した場合
      */
-    SqlFile getSqlFile(String path, Dialect dialect);
+    SqlFile getSqlFile(String path, Dialect dialect)
+            throws DomaNullPointerException, DomaIllegalArgumentException,
+            SqlFileNotFoundException, JdbcException;
 
 }

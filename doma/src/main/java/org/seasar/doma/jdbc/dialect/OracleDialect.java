@@ -99,7 +99,8 @@ public class OracleDialect extends StandardDialect {
     }
 
     @Override
-    public boolean isUniqueConstraintViolated(SQLException sqlException) {
+    public boolean isUniqueConstraintViolated(SQLException sqlException)
+            throws DomaNullPointerException {
         if (sqlException == null) {
             throw new DomaNullPointerException("sqlException");
         }
@@ -109,7 +110,7 @@ public class OracleDialect extends StandardDialect {
 
     @Override
     public PreparedSql getSequenceNextValSql(String qualifiedSequenceName,
-            long allocationSize) {
+            long allocationSize) throws DomaNullPointerException {
         if (qualifiedSequenceName == null) {
             throw new DomaNullPointerException("qualifiedSequenceName");
         }

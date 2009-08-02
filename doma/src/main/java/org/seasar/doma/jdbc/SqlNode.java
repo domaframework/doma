@@ -17,6 +17,8 @@ package org.seasar.doma.jdbc;
 
 import java.util.List;
 
+import org.seasar.doma.DomaNullPointerException;
+
 /**
  * SQLの文字列の解析結果です。
  * <p>
@@ -61,6 +63,9 @@ public interface SqlNode {
      * @param p
      *            パラメータ
      * @return ビジターで処理された値
+     * @throws DomaNullPointerException
+     *             ビジターが {@code null} の場合
      */
-    <R, P> R accept(SqlNodeVisitor<R, P> visitor, P p);
+    <R, P> R accept(SqlNodeVisitor<R, P> visitor, P p)
+            throws DomaNullPointerException;
 }

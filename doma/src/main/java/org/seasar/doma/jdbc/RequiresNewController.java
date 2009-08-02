@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.jdbc;
 
+import org.seasar.doma.DomaNullPointerException;
+
 /**
  * {@literal REQUIRES_NEW} の属性をもつトランザクションを制御するコントローラです。
  * <p>
@@ -66,10 +68,13 @@ public interface RequiresNewController {
      * @param callback
      *            {@literal REQUIRES_NEW} のトランザクション属性下で扱いたい処理
      * @return 任意の値
+     * @throws DomaNullPointerException
+     *             ｛@code callback} が {@code null} の場合
      * @throws Throwable
-     *             ｛@code callback}の処理中に何らかの例外が発生した場合
+     *             ｛@code callback} の処理中に何らかの例外が発生した場合
      */
-    <R> R requiresNew(Callback<R> callback) throws Throwable;
+    <R> R requiresNew(Callback<R> callback) throws DomaNullPointerException,
+            Throwable;
 
     /**
      * {@literal REQUIRES_NEW} のトランザクション属性下で実行される処理です。

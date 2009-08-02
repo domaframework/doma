@@ -17,6 +17,7 @@ package org.seasar.doma.jdbc;
 
 import java.sql.SQLException;
 
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.jdbc.type.JdbcType;
 
@@ -41,9 +42,11 @@ public interface JdbcMappingFunction {
      * @param jdbcType
      *            JDBC型
      * @return マッピング処理の結果
+     * @throws DomaNullPointerException
+     *             いずれかの引数が {@code null} の場合
      * @throws SQLException
      *             SQLに関する例外が発生した場合
      */
     <R, V> R apply(Domain<V, ?> domain, JdbcType<V> jdbcType)
-            throws SQLException;
+            throws DomaNullPointerException, SQLException;
 }

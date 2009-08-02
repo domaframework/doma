@@ -69,9 +69,11 @@ public class BuiltinIdentityIdGenerator extends AbstractIdGenerator implements
      *            識別子生成の設定
      * @param statement
      * @return 識別子
+     * @throws JdbcException
+     *             識別子の取得に失敗した場合
      */
     protected long getGeneratedValue(IdGenerationConfig config,
-            Statement statement) {
+            Statement statement) throws JdbcException {
         try {
             final ResultSet resultSet = statement.getGeneratedKeys();
             return getGeneratedValue(config, resultSet);
@@ -87,8 +89,11 @@ public class BuiltinIdentityIdGenerator extends AbstractIdGenerator implements
      * @param config
      *            識別子生成の設定
      * @return 識別子
+     * @throws JdbcException
+     *             識別子の取得に失敗した場合
      */
-    protected long getGeneratedValue(IdGenerationConfig config) {
+    protected long getGeneratedValue(IdGenerationConfig config)
+            throws JdbcException {
         String qualifiedTableName = config.getQualifiedTableName();
         String idColumnName = config.getIdColumnName();
         Sql<?> sql = config.getDialect().getIdentitySelectSql(

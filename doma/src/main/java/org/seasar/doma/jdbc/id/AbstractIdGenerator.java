@@ -42,8 +42,11 @@ public abstract class AbstractIdGenerator implements IdGenerator {
      * @param sql
      *            生成された識別子を取得するSQL
      * @return SQLにより取得された値
+     * @throws JdbcException
+     *             生成された識別子の取得に失敗した場合
      */
-    protected long getGeneratedValue(IdGenerationConfig config, Sql<?> sql) {
+    protected long getGeneratedValue(IdGenerationConfig config, Sql<?> sql)
+            throws JdbcException {
         JdbcLogger logger = config.getJdbcLogger();
         Connection connection = JdbcUtil.getConnection(config.getDataSource());
         try {
@@ -93,10 +96,11 @@ public abstract class AbstractIdGenerator implements IdGenerator {
      *            識別子生成の設定
      * @param resultSet
      * @return 生成された識別子の値
-     * @throws SQLException
+     * @throws JdbcException
+     *             識別子の取得に失敗した場合
      */
     protected long getGeneratedValue(IdGenerationConfig config,
-            ResultSet resultSet) throws SQLException {
+            ResultSet resultSet) throws JdbcException {
         JdbcLogger logger = config.getJdbcLogger();
         try {
             if (resultSet.next()) {

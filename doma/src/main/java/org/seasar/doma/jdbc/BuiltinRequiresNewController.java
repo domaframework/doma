@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.jdbc;
 
+import org.seasar.doma.DomaNullPointerException;
+
 /**
  * {@literal REQUIRES_NEW} のトランザクション属性について何ら制御を行わない
  * {@link RequiresNewController}の実装です。
@@ -27,7 +29,11 @@ package org.seasar.doma.jdbc;
 public class BuiltinRequiresNewController implements RequiresNewController {
 
     @Override
-    public <R> R requiresNew(Callback<R> callback) throws Throwable {
+    public <R> R requiresNew(Callback<R> callback)
+            throws DomaNullPointerException, Throwable {
+        if (callback == null) {
+            throw new DomaNullPointerException("callback");
+        }
         return callback.execute();
     }
 
