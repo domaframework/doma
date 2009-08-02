@@ -16,10 +16,26 @@
 package org.seasar.doma.domain;
 
 /**
+ * {@link DomainUtil} から処理を委譲されるクラスです。
+ * <p>
+ * このインタフェースの実装はスレッドセーフではければいけません。
+ * </p>
+ * 
  * @author taedium
  * 
  */
 public interface DomainUtilDelegate {
 
-    void set(Domain<?, ?> domain, Object value);
+    /**
+     * リフレクションを使って値を設定します。
+     * 
+     * @param domain
+     *            ドメイン
+     * @param value
+     *            値
+     * @throws DomainReflectionException
+     *             値の設定に失敗した場合
+     */
+    void set(Domain<?, ?> domain, Object value)
+            throws DomainReflectionException;
 }

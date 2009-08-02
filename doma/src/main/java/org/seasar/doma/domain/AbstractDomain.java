@@ -15,25 +15,51 @@
  */
 package org.seasar.doma.domain;
 
+import java.io.Serializable;
+
 import org.seasar.doma.DomaNullPointerException;
 
 /**
+ * {@link Domain} の骨格実装です。
+ * <p>
+ * サブクラスに {@link Serializable} な実装を認めるために、デフォルトコンストラクタを持ちます。
+ * <p>
+ * 
  * @author taedium
  * 
  */
 public abstract class AbstractDomain<V, D extends AbstractDomain<V, D>>
         implements Domain<V, D> {
 
+    /** 値のクラス */
     protected Class<V> valueClass;
 
+    /** 値 */
     protected V value;
 
+    /** 値が変更されているかどうか */
     protected boolean changed;
 
+    /**
+     * サブクラスに {@link Serializable} な実装を認めるための、デフォルトコンストラクタです。
+     * <p>
+     * アプリケーションが呼び出してはいけません。
+     */
     protected AbstractDomain() {
     }
 
-    protected AbstractDomain(Class<V> valueClass, V v) {
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param valueClass
+     *            値のクラス
+     * @param v
+     *            値
+     * @throws DomaNullPointerException
+     *             値のクラスが {@code null} の場合
+     */
+    protected AbstractDomain(Class<V> valueClass, V v)
+            throws DomaNullPointerException {
         if (valueClass == null) {
             throw new DomaNullPointerException("valueClass");
         }
@@ -46,13 +72,19 @@ public abstract class AbstractDomain<V, D extends AbstractDomain<V, D>>
         return value;
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * このメソッドはオーバーライドできません。値の設定処理をカスタマイズしたい場合は、代わりに、
+     * {@link #setInternal(Object)}をオーバーライドしてください。
+     */
     @Override
-    public void set(V v) {
+    public final void set(V v) {
         setInternal(v);
     }
 
     @Override
-    public void setDomain(D other) {
+    public void setDomain(D other) throws DomaNullPointerException {
         if (other == null) {
             throw new DomaNullPointerException("other");
         }
@@ -88,6 +120,12 @@ public abstract class AbstractDomain<V, D extends AbstractDomain<V, D>>
         setInternal(null);
     }
 
+    /**
+     * 内部的に値を設定します。
+     * 
+     * @param v
+     *            値
+     */
     protected void setInternal(V v) {
         if (value == null) {
             if (v == null) {

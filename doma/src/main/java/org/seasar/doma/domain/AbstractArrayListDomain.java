@@ -23,8 +23,14 @@ import java.util.ArrayList;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
+ * {@link ArrayList} を値の型とするドメインのための骨格実装です。
+ * 
  * @author taedium
  * 
+ * @param <E>
+ *            要素の型
+ * @param <D>
+ *            ドメインの型
  */
 public abstract class AbstractArrayListDomain<E, D extends AbstractArrayListDomain<E, D>>
         extends AbstractDomain<ArrayList<E>, AbstractArrayListDomain<E, D>>
@@ -33,13 +39,22 @@ public abstract class AbstractArrayListDomain<E, D extends AbstractArrayListDoma
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * デフォルトの値でインスタンス化します。
+     */
     public AbstractArrayListDomain() {
         this(null);
     }
 
+    /**
+     * 値を指定してインスタンス化します。
+     * 
+     * @param value
+     *            値
+     */
     @SuppressWarnings("unchecked")
-    public AbstractArrayListDomain(ArrayList<E> v) {
-        super((Class<ArrayList<E>>) new ArrayList<E>().getClass(), v);
+    public AbstractArrayListDomain(ArrayList<E> value) {
+        super((Class<ArrayList<E>>) new ArrayList<E>().getClass(), value);
     }
 
     @Override

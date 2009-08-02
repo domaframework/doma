@@ -23,8 +23,12 @@ import java.math.BigInteger;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
+ * {@link BigInteger} を値の型とするドメインの骨格実装です。
+ * 
  * @author taedium
  * 
+ * @param <D>
+ *            ドメインの型
  */
 public abstract class AbstractBigIntegerDomain<D extends AbstractBigIntegerDomain<D>>
         extends AbstractComparableDomain<BigInteger, D> implements
@@ -32,10 +36,19 @@ public abstract class AbstractBigIntegerDomain<D extends AbstractBigIntegerDomai
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * デフォルトの値でインスタンス化します。
+     */
     protected AbstractBigIntegerDomain() {
         this(null);
     }
 
+    /**
+     * 値を指定してインスタンス化します。
+     * 
+     * @param value
+     *            値
+     */
     protected AbstractBigIntegerDomain(BigInteger value) {
         super(BigInteger.class, value);
     }
@@ -46,7 +59,7 @@ public abstract class AbstractBigIntegerDomain<D extends AbstractBigIntegerDomai
     }
 
     @Override
-    public void set(NumberDomain<BigInteger, D> other) {
+    public void setDomain(NumberDomain<BigInteger, D> other) {
         if (other == null) {
             throw new DomaNullPointerException("other");
         }

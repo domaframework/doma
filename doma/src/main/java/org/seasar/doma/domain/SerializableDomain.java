@@ -18,8 +18,14 @@ package org.seasar.doma.domain;
 import java.io.Serializable;
 
 /**
+ * 直列化可能な {@link Domain} です。
+ * 
  * @author taedium
  * 
+ * @param <V>
+ *            値の型
+ * @param <D>
+ *            ドメインの型
  */
 public interface SerializableDomain<V extends Serializable, D extends SerializableDomain<V, D>>
         extends Domain<V, D>, Serializable {

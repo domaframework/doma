@@ -16,6 +16,8 @@
 package org.seasar.doma.domain;
 
 /**
+ * {@link Boolean} を値の型とする組み込みのドメインです。
+ * 
  * @author taedium
  * 
  */
@@ -23,9 +25,18 @@ public final class BooleanDomain extends AbstractBooleanDomain<BooleanDomain> {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * デフォルトの値でインスタンス化します。
+     */
     public BooleanDomain() {
     }
 
+    /**
+     * 値を指定してインスタンス化します。
+     * 
+     * @param value
+     *            値
+     */
     public BooleanDomain(Boolean value) {
         super(value);
     }

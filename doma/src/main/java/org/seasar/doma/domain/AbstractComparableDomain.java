@@ -15,19 +15,42 @@
  */
 package org.seasar.doma.domain;
 
+import java.io.Serializable;
+
 import org.seasar.doma.DomaNullPointerException;
 
 /**
+ * {@link ComparableDomain} の骨格実装です。
+ * <p>
+ * サブクラスに {@link Serializable} な実装を認めるために、デフォルトコンストラクタを持ちます。
+ * <p>
+ * 
  * @author taedium
  * 
  */
 public abstract class AbstractComparableDomain<V extends Comparable<? super V>, D extends AbstractDomain<V, D> & ComparableDomain<V, D>>
         extends AbstractDomain<V, D> implements ComparableDomain<V, D> {
 
+    /**
+     * サブクラスに {@link Serializable} な実装を認めるための、デフォルトコンストラクタです。
+     * <p>
+     * アプリケーションが呼び出してはいけません。
+     */
     protected AbstractComparableDomain() {
     }
 
-    protected AbstractComparableDomain(Class<V> valueClass, V v) {
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param valueClass
+     *            値のクラス
+     * @param v
+     *            値
+     * @throws DomaNullPointerException
+     *             値のクラスが {@code null} の場合
+     */
+    protected AbstractComparableDomain(Class<V> valueClass, V v)
+            throws DomaNullPointerException {
         super(valueClass, v);
     }
 
@@ -36,6 +59,17 @@ public abstract class AbstractComparableDomain<V extends Comparable<? super V>, 
         if (other == null) {
             throw new DomaNullPointerException("other");
         }
+        return compareToInternal(other);
+    }
+
+    /**
+     * 内部的に比較をします。
+     * 
+     * @param other
+     *            比較対象のドメイン
+     * @return このドメインの値が比較対象のドメインの値より小さい場合は負の整数、等しい場合はゼロ、大きい場合は正の整数
+     */
+    protected int compareToInternal(D other) throws DomainIncomparableException {
         assertComparable(other);
         return value.compareTo(other.value);
     }
@@ -52,7 +86,7 @@ public abstract class AbstractComparableDomain<V extends Comparable<? super V>, 
     }
 
     @Override
-    public boolean eq(D other) {
+    public boolean eq(D other) throws DomaNullPointerException {
         if (other == null) {
             throw new DomaNullPointerException("other");
         }
@@ -62,60 +96,76 @@ public abstract class AbstractComparableDomain<V extends Comparable<? super V>, 
         if (value == null || other.value == null) {
             return false;
         }
-        return compareTo(other) == 0;
+        return compareToInternal(other) == 0;
     }
 
     @Override
-    public boolean ge(V other) {
+    public boolean ge(V other) throws DomainIncomparableException {
         assertComparable(other);
         return value.compareTo(other) >= 0;
     }
 
     @Override
-    public boolean ge(D other) {
-        return compareTo(other) >= 0;
+    public boolean ge(D other) throws DomaNullPointerException,
+            DomainIncomparableException {
+        if (other == null) {
+            throw new DomaNullPointerException("other");
+        }
+        return compareToInternal(other) >= 0;
     }
 
     @Override
-    public boolean gt(V other) {
+    public boolean gt(V other) throws DomainIncomparableException {
         assertComparable(other);
         return value.compareTo(other) > 0;
     }
 
     @Override
-    public boolean gt(D other) {
-        return compareTo(other) > 0;
+    public boolean gt(D other) throws DomaNullPointerException,
+            DomainIncomparableException {
+        if (other == null) {
+            throw new DomaNullPointerException("other");
+        }
+        return compareToInternal(other) > 0;
     }
 
     @Override
-    public boolean le(V other) {
+    public boolean le(V other) throws DomainIncomparableException {
         assertComparable(other);
         return value.compareTo(other) <= 0;
     }
 
     @Override
-    public boolean le(D other) {
-        return compareTo(other) <= 0;
+    public boolean le(D other) throws DomaNullPointerException,
+            DomainIncomparableException {
+        if (other == null) {
+            throw new DomaNullPointerException("other");
+        }
+        return compareToInternal(other) <= 0;
     }
 
     @Override
-    public boolean lt(V other) {
+    public boolean lt(V other) throws DomainIncomparableException {
         assertComparable(other);
         return value.compareTo(other) < 0;
     }
 
     @Override
-    public boolean lt(D other) {
-        return compareTo(other) < 0;
+    public boolean lt(D other) throws DomaNullPointerException,
+            DomainIncomparableException {
+        if (other == null) {
+            throw new DomaNullPointerException("other");
+        }
+        return compareToInternal(other) < 0;
     }
 
-    protected void assertComparable(V other) {
+    protected void assertComparable(V other) throws DomainIncomparableException {
         if (value == null || other == null) {
             throw new DomainIncomparableException();
         }
     }
 
-    protected void assertComparable(D other) {
+    protected void assertComparable(D other) throws DomainIncomparableException {
         if (value == null || other.value == null) {
             throw new DomainIncomparableException();
         }

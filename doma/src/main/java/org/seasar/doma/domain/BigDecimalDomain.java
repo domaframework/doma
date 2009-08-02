@@ -18,6 +18,8 @@ package org.seasar.doma.domain;
 import java.math.BigDecimal;
 
 /**
+ * {@link BigDecimal} を値の型とする組み込みのドメインです。
+ * 
  * @author taedium
  * 
  */
@@ -26,9 +28,18 @@ public final class BigDecimalDomain extends
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * デフォルトの値でインスタンス化します。
+     */
     public BigDecimalDomain() {
     }
 
+    /**
+     * 値を指定してインスタンス化します。
+     * 
+     * @param value
+     *            値
+     */
     public BigDecimalDomain(BigDecimal value) {
         super(value);
     }

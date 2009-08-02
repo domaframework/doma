@@ -18,17 +18,30 @@ package org.seasar.doma.domain;
 import java.sql.Array;
 
 /**
+ * {@link Array} を値の型とする組み込みのドメインです。
+ * 
  * @author taedium
  * 
+ * @param <E>
+ *            要素の型
  */
 public final class ArrayDomain<E> extends
         AbstractArrayDomain<ArrayDomain<E>, E> {
 
+    /**
+     * デフォルトの値でインスタンス化します。
+     */
     public ArrayDomain() {
     }
 
-    public ArrayDomain(Array v) {
-        super(v);
+    /**
+     * 値を指定してインスタンス化します。
+     * 
+     * @param value
+     *            値
+     */
+    public ArrayDomain(Array value) {
+        super(value);
     }
 
 }

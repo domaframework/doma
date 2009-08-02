@@ -19,6 +19,8 @@ import org.seasar.doma.DomaException;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
+ * {@link Domain} に関する例外を表します。
+ * 
  * @author taedium
  * 
  */

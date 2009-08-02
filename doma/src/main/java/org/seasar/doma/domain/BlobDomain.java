@@ -18,16 +18,27 @@ package org.seasar.doma.domain;
 import java.sql.Blob;
 
 /**
+ * {@link Blob} を値の型とする組み込みのドメインです。
+ * 
  * @author taedium
  * 
  */
 public final class BlobDomain extends AbstractBlobDomain<BlobDomain> {
 
+    /**
+     * デフォルトの値でインスタンス化します。
+     */
     public BlobDomain() {
     }
 
-    public BlobDomain(Blob v) {
-        super(v);
+    /**
+     * 値を指定してインスタンス化します。
+     * 
+     * @param value
+     *            値
+     */
+    public BlobDomain(Blob value) {
+        super(value);
     }
 
 }

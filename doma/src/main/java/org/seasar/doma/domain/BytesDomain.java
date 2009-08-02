@@ -16,6 +16,8 @@
 package org.seasar.doma.domain;
 
 /**
+ * {@code byte[]} を値の型とする組み込みのドメインです。
+ * 
  * @author taedium
  * 
  */
@@ -23,9 +25,18 @@ public final class BytesDomain extends AbstractBytesDomain<BytesDomain> {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * デフォルトの値でインスタンス化します。
+     */
     public BytesDomain() {
     }
 
+    /**
+     * 値を指定してインスタンス化します。
+     * 
+     * @param value
+     *            値
+     */
     public BytesDomain(byte[] value) {
         super(value);
     }

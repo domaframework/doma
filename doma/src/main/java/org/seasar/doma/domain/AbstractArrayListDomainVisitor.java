@@ -16,11 +16,19 @@
 package org.seasar.doma.domain;
 
 /**
+ * {@link AbstractArrayListDomain} のビジターです。
+ * 
  * @author taedium
  * 
+ * @param <R>
+ *            戻り値の型
+ * @param <P>
+ *            パラメータの型
+ * @param <TH>
+ *            例外の型
  */
-public interface AbstractArrayListDomainVisitor<R, P, TH extends Throwable> extends
-        DomainVisitor<R, P, TH> {
+public interface AbstractArrayListDomainVisitor<R, P, TH extends Throwable>
+        extends DomainVisitor<R, P, TH> {
 
     R visitAbstractArrayListDomain(AbstractArrayListDomain<?, ?> domain, P p)
             throws TH;

@@ -18,6 +18,8 @@ package org.seasar.doma.domain;
 import java.sql.Date;
 
 /**
+ * {@link Date} を値の型とする組み込みのドメインです。
+ * 
  * @author taedium
  * 
  */
@@ -25,9 +27,18 @@ public final class DateDomain extends AbstractDateDomain<DateDomain> {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * デフォルトの値でインスタンス化します。
+     */
     public DateDomain() {
     }
 
+    /**
+     * 値を指定してインスタンス化します。
+     * 
+     * @param value
+     *            値
+     */
     public DateDomain(Date value) {
         super(value);
     }

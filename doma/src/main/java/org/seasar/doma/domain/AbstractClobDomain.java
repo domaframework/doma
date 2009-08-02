@@ -20,18 +20,30 @@ import java.sql.Clob;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
+ * {@link Clob} を値の型とするドメインの骨格実装です。
+ * 
  * @author taedium
  * 
+ * @param <D>
+ *            ドメインの型
  */
 public abstract class AbstractClobDomain<D extends AbstractClobDomain<D>>
         extends AbstractDomain<Clob, D> {
-
+    /**
+     * デフォルトの値でインスタンス化します。
+     */
     protected AbstractClobDomain() {
         this(null);
     }
 
-    protected AbstractClobDomain(Clob v) {
-        super(Clob.class, v);
+    /**
+     * 値を指定してインスタンス化します。
+     * 
+     * @param value
+     *            値
+     */
+    protected AbstractClobDomain(Clob value) {
+        super(Clob.class, value);
     }
 
     @Override

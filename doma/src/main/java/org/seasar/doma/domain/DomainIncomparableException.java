@@ -18,6 +18,8 @@ package org.seasar.doma.domain;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
+ * {@link Domain} 同士の比較が不可能な場合にスローされる例外です。
+ * 
  * @author taedium
  * 
  */

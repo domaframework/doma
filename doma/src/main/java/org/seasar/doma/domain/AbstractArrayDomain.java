@@ -21,22 +21,46 @@ import java.sql.SQLException;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
+ * {@link Array} を値の型とするドメインのための骨格実装です。
+ * 
  * @author taedium
  * 
+ * @param <D>
+ *            ドメインの型
+ * @param <E>
+ *            配列の要素の型
  */
 public abstract class AbstractArrayDomain<D extends AbstractArrayDomain<D, E>, E>
         extends AbstractDomain<Array, AbstractArrayDomain<D, E>> {
 
+    /**
+     * デフォルトの値でインスタンス化します。
+     */
     protected AbstractArrayDomain() {
         this(null);
     }
 
-    protected AbstractArrayDomain(Array v) {
-        super(Array.class, v);
+    /**
+     * 値を指定してインスタンス化します。
+     * 
+     * @param value
+     *            値
+     */
+    protected AbstractArrayDomain(Array value) {
+        super(Array.class, value);
     }
 
+    /**
+     * 配列を返します。
+     * <p>
+     * {@link Array#getArray()} を 要素の型の配列にキャストして返します。
+     * 
+     * @return 配列
+     * @throws DomainIllegalStateException
+     *             SQL例外が発生した場合
+     */
     @SuppressWarnings("unchecked")
-    public E[] getArray() {
+    public E[] getArray() throws DomainIllegalStateException {
         try {
             return (E[]) value.getArray();
         } catch (SQLException e) {

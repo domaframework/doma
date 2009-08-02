@@ -22,8 +22,12 @@ import java.io.ObjectOutputStream;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
+ * {@link Boolean} を値の型とするドメインの骨格実装です。
+ * 
  * @author taedium
  * 
+ * @param <D>
+ *            ドメインの型
  */
 public abstract class AbstractBooleanDomain<D extends AbstractBooleanDomain<D>>
         extends AbstractComparableDomain<Boolean, D> implements
@@ -31,10 +35,19 @@ public abstract class AbstractBooleanDomain<D extends AbstractBooleanDomain<D>>
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * デフォルトの値でインスタンス化します。
+     */
     protected AbstractBooleanDomain() {
         this(null);
     }
 
+    /**
+     * 値を指定してインスタンス化します。
+     * 
+     * @param value
+     *            値
+     */
     protected AbstractBooleanDomain(Boolean value) {
         super(Boolean.class, value);
     }

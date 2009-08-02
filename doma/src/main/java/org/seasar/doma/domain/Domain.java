@@ -15,28 +15,103 @@
  */
 package org.seasar.doma.domain;
 
+import org.seasar.doma.DomaNullPointerException;
+
 /**
+ * ドメイン（値の定義域）を表現します。
+ * <p>
+ * このインタフェースの実装はスレッドセーフであることを要求されません。
+ * 
  * @author taedium
  * 
+ * @param <V>
+ *            値の型
+ * @param <D>
+ *            ドメインの型
  */
 public interface Domain<V, D extends Domain<V, D>> {
 
+    /**
+     * 値を返します。
+     * 
+     * @return 値、{@code null} でありうる
+     */
     V get();
 
+    /**
+     * 値を設定します。
+     * 
+     * @param value
+     *            値
+     */
     void set(V value);
 
-    void setDomain(D other);
+    /**
+     * ドメインを設定します。
+     * 
+     * @param other
+     *            ドメイン
+     * @throws DomaNullPointerException
+     *             ドメイン が {@code null} の場合
+     */
+    void setDomain(D other) throws DomaNullPointerException;
 
+    /**
+     * 値が {@code null} かどうかを返します。
+     * 
+     * @return {@code null} の場合 {@code true}
+     */
     boolean isNull();
 
+    /**
+     * 値が {@code null} でないかどうかを返します。
+     * 
+     * @return {@code null} でない場合 {@code true}
+     */
     boolean isNotNull();
 
+    /**
+     * 値が変更されているかどうかを返します。
+     * 
+     * @return 変更されている場合 {@code true}
+     */
     boolean isChanged();
 
+    /**
+     * 値が変更されているかどうかを設定します。
+     * 
+     * @param changed
+     *            変更されているマークしたい場合 {@code true}
+     */
     void setChanged(boolean changed);
 
+    /**
+     * 値のクラスを返します。
+     * 
+     * @return 値のクラス
+     */
     Class<V> getValueClass();
 
+    /**
+     * ビジターを受け入れます。
+     * 
+     * @param <R>
+     *            戻り値の型
+     * @param <P>
+     *            パラメータの型
+     * @param <TH>
+     *            例外の型
+     * @param visitor
+     *            ビジター
+     * @param p
+     *            パラメータ
+     * @return 戻り値
+     * @throws TH
+     *             例外
+     * @throws DomaNullPointerException
+     *             ビジターが {@code null} の場合
+     */
     <R, P, TH extends Throwable> R accept(DomainVisitor<R, P, TH> visitor, P p)
-            throws TH;
+            throws TH, DomaNullPointerException;
+
 }

@@ -16,6 +16,8 @@
 package org.seasar.doma.domain;
 
 /**
+ * {@link Integer} を値の型とする組み込みのドメインです。
+ * 
  * @author taedium
  * 
  */
@@ -23,9 +25,18 @@ public final class IntegerDomain extends AbstractIntegerDomain<IntegerDomain> {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * デフォルトの値でインスタンス化します。
+     */
     public IntegerDomain() {
     }
 
+    /**
+     * 値を指定してインスタンス化します。
+     * 
+     * @param value
+     *            値
+     */
     public IntegerDomain(Integer value) {
         super(value);
     }

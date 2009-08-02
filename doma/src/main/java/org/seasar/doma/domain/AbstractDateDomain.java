@@ -23,8 +23,12 @@ import java.sql.Date;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
+ * {@link Date} を値の型とするドメインの骨格実装です。
+ * 
  * @author taedium
  * 
+ * @param <D>
+ *            ドメインの型
  */
 public abstract class AbstractDateDomain<D extends AbstractDateDomain<D>>
         extends AbstractComparableDomain<Date, D> implements
@@ -32,10 +36,19 @@ public abstract class AbstractDateDomain<D extends AbstractDateDomain<D>>
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * デフォルトの値でインスタンス化します。
+     */
     protected AbstractDateDomain() {
         this(null);
     }
 
+    /**
+     * 値を指定してインスタンス化します。
+     * 
+     * @param value
+     *            値
+     */
     protected AbstractDateDomain(Date value) {
         super(Date.class, value);
     }

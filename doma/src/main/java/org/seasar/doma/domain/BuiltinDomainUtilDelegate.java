@@ -20,9 +20,10 @@ import java.lang.reflect.Method;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.MethodUtil;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
+ * {@link DomainUtilDelegate} のデフォルトの実装です。
+ * 
  * @author taedium
  * 
  */
@@ -34,12 +35,12 @@ public class BuiltinDomainUtilDelegate implements DomainUtilDelegate {
             throw new DomaNullPointerException("domain");
         }
         try {
-            Method setter = MethodUtil
-                    .getMethod(domain.getClass(), "set", Object.class);
+            Method setter = MethodUtil.getMethod(domain.getClass(), "set",
+                    Object.class);
             MethodUtil.invoke(setter, domain, value);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
-            throw new DomainException(DomaMessageCode.DOMA1004, cause, cause);
+            throw new DomainReflectionException(cause);
         }
     }
 

@@ -20,16 +20,29 @@ import java.sql.NClob;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
+ * {@link NClob} を値の型とするドメインの骨格実装です。
+ * 
  * @author taedium
  * 
+ * @param <D>
+ *            ドメインの型
  */
 public abstract class AbstractNClobDomain<D extends AbstractNClobDomain<D>>
         extends AbstractDomain<NClob, D> {
 
+    /**
+     * デフォルトの値でインスタンス化します。
+     */
     protected AbstractNClobDomain() {
         this(null);
     }
 
+    /**
+     * 値を指定してインスタンス化します。
+     * 
+     * @param v
+     *            値
+     */
     protected AbstractNClobDomain(NClob v) {
         super(NClob.class, v);
     }

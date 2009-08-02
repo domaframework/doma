@@ -23,8 +23,12 @@ import java.sql.Time;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
+ * {@link Time} を値の型とするドメインの骨格実装です。
+ * 
  * @author taedium
  * 
+ * @param <D>
+ *            ドメインの型
  */
 public abstract class AbstractTimeDomain<D extends AbstractTimeDomain<D>>
         extends AbstractComparableDomain<Time, D> implements
@@ -32,10 +36,19 @@ public abstract class AbstractTimeDomain<D extends AbstractTimeDomain<D>>
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * デフォルトの値でインスタンス化します。
+     */
     protected AbstractTimeDomain() {
         this(null);
     }
 
+    /**
+     * 値を指定してインスタンス化します。
+     * 
+     * @param value
+     *            値
+     */
     protected AbstractTimeDomain(Time value) {
         super(Time.class, value);
     }

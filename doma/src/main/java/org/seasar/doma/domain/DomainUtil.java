@@ -16,6 +16,10 @@
 package org.seasar.doma.domain;
 
 /**
+ * {@link Domain} のユーティリティクラスです。
+ * <p>
+ * {@link #setDelegate(DomainUtilDelegate)} により振る舞いを変更できます。
+ * 
  * @author taedium
  * 
  */
@@ -23,11 +27,28 @@ public final class DomainUtil {
 
     private static volatile DomainUtilDelegate delegate = new BuiltinDomainUtilDelegate();
 
+    /**
+     * 委譲先のインスタンスを設定します。
+     * 
+     * @param delegate
+     *            委譲先のインスタンス
+     */
     public static void setDelegate(DomainUtilDelegate delegate) {
         DomainUtil.delegate = delegate;
     }
 
-    public static void set(Domain<?, ?> domain, Object value) {
+    /**
+     * リフレクションを使って値を設定します。
+     * 
+     * @param domain
+     *            ドメイン
+     * @param value
+     *            値
+     * @throws DomainReflectionException
+     *             値の設定に失敗した場合
+     */
+    public static void set(Domain<?, ?> domain, Object value)
+            throws DomainReflectionException {
         delegate.set(domain, value);
     }
 }

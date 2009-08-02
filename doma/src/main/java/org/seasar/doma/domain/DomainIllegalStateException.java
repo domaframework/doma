@@ -18,12 +18,18 @@ package org.seasar.doma.domain;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
+ * {@link Domain} の状態が不正な場合にスローされる例外です。
+ * 
  * @author taedium
  * 
  */
 public class DomainIllegalStateException extends DomainException {
 
     private static final long serialVersionUID = 1L;
+
+    public DomainIllegalStateException(String description) {
+        super(DomaMessageCode.DOMA1005, description);
+    }
 
     public DomainIllegalStateException(Throwable cause) {
         super(DomaMessageCode.DOMA1005, cause, cause);

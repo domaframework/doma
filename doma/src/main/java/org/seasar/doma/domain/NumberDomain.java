@@ -15,15 +15,32 @@
  */
 package org.seasar.doma.domain;
 
+import org.seasar.doma.DomaNullPointerException;
+
 /**
+ * 値の型が {@link Number} である {@link Domain} です。
+ * 
  * @author taedium
  * 
+ * @param <V>
+ *            値の型
+ * @param <D>
+ *            ドメインの型
  */
 public interface NumberDomain<V extends Number, D extends NumberDomain<V, D>>
         extends Domain<V, D> {
 
+    @Override
     void set(Number value);
 
-    void set(NumberDomain<V, D> value);
+    /**
+     * ドメインを設定します。
+     * 
+     * @param other
+     *            ドメイン
+     * @throws DomaNullPointerException
+     *             ドメイン が {@code null} の場合
+     */
+    void setDomain(NumberDomain<V, D> other) throws DomaNullPointerException;
 
 }

@@ -22,8 +22,12 @@ import java.io.ObjectOutputStream;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
+ * {@link Long} を値の型とするドメインの骨格実装です。
+ * 
  * @author taedium
  * 
+ * @param <D>
+ *            ドメインの型
  */
 public abstract class AbstractLongDomain<D extends AbstractLongDomain<D>>
         extends AbstractComparableDomain<Long, D> implements
@@ -31,10 +35,19 @@ public abstract class AbstractLongDomain<D extends AbstractLongDomain<D>>
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * デフォルトの値でインスタンス化します。
+     */
     protected AbstractLongDomain() {
         this(null);
     }
 
+    /**
+     * 値を指定してインスタンス化します。
+     * 
+     * @param value
+     *            値
+     */
     protected AbstractLongDomain(Long value) {
         super(Long.class, value);
     }
@@ -45,7 +58,7 @@ public abstract class AbstractLongDomain<D extends AbstractLongDomain<D>>
     }
 
     @Override
-    public void set(NumberDomain<Long, D> other) {
+    public void setDomain(NumberDomain<Long, D> other) {
         if (other == null) {
             throw new DomaNullPointerException("other");
         }

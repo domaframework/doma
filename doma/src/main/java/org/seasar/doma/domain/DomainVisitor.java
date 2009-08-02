@@ -16,13 +16,29 @@
 package org.seasar.doma.domain;
 
 /**
+ * {@link Domain} のビジターです。
  * 
  * @author taedium
  * 
+ * @param <R>
+ *            戻り値の型
  * @param <P>
+ *            パラメータの型
  * @param <TH>
+ *            例外の型
  */
 public interface DomainVisitor<R, P, TH extends Throwable> {
 
+    /**
+     * 未知のドメインを扱います。
+     * 
+     * @param domain
+     *            ドメイン
+     * @param p
+     *            パラメータ
+     * @return 処理結果
+     * @throws TH
+     *             例外
+     */
     R visitUnknownDomain(Domain<?, ?> domain, P p) throws TH;
 }

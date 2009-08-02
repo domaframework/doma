@@ -16,11 +16,19 @@
 package org.seasar.doma.domain;
 
 /**
+ * {@link AbstractBigDecimalDomain} のビジターです。
+ * 
  * @author taedium
  * 
+ * @param <R>
+ *            戻り値の型
+ * @param <P>
+ *            パラメータの型
+ * @param <TH>
+ *            例外の型
  */
-public interface AbstractBigDecimalDomainVisitor<R, P, TH extends Throwable> extends
-        DomainVisitor<R, P, TH> {
+public interface AbstractBigDecimalDomainVisitor<R, P, TH extends Throwable>
+        extends DomainVisitor<R, P, TH> {
 
     R visitAbstractBigDecimalDomain(AbstractBigDecimalDomain<?> domain, P p)
             throws TH;

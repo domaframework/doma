@@ -18,6 +18,8 @@ package org.seasar.doma.domain;
 import java.sql.Timestamp;
 
 /**
+ * {@link Timestamp} を値の型とする組み込みのドメインです。
+ * 
  * @author taedium
  * 
  */
@@ -26,9 +28,18 @@ public final class TimestampDomain extends
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * デフォルトの値でインスタンス化します。
+     */
     public TimestampDomain() {
     }
 
+    /**
+     * 値を指定してインスタンス化します。
+     * 
+     * @param value
+     *            値
+     */
     public TimestampDomain(Timestamp value) {
         super(value);
     }

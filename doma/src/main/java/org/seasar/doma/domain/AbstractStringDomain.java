@@ -18,12 +18,17 @@ package org.seasar.doma.domain;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.regex.PatternSyntaxException;
 
 import org.seasar.doma.DomaNullPointerException;
 
 /**
+ * {@link String} を値の型とするドメインの骨格実装です。
+ * 
  * @author taedium
  * 
+ * @param <D>
+ *            ドメインの型
  */
 public abstract class AbstractStringDomain<D extends AbstractStringDomain<D>>
         extends AbstractComparableDomain<String, D> implements CharSequence,
@@ -31,10 +36,19 @@ public abstract class AbstractStringDomain<D extends AbstractStringDomain<D>>
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * デフォルトの値でインスタンス化します。
+     */
     protected AbstractStringDomain() {
         this(null);
     }
 
+    /**
+     * 値を指定してインスタンス化します。
+     * 
+     * @param value
+     *            値
+     */
     protected AbstractStringDomain(String value) {
         super(String.class, value);
     }
@@ -54,60 +68,135 @@ public abstract class AbstractStringDomain<D extends AbstractStringDomain<D>>
         return visitor.visitUnknownDomain(this, p);
     }
 
-    public boolean isEmpty() {
+    /**
+     * ドメインの値が空文字の場合 {@code true} を返します。
+     * 
+     * @return 空文字の場合 {@code true}
+     * @throws DomainIllegalStateException
+     *             ドメインの値が {@code null} の場合
+     */
+    public boolean isEmpty() throws DomainIllegalStateException {
         if (value == null) {
-            throw new DomainValueNullPointerException();
+            throw new DomainIllegalStateException("value == null");
         }
         return value.isEmpty();
     }
 
-    public boolean startsWith(String prefix) {
+    /**
+     * ドメインの値がプレフィックスで始まっている場合 {@code true} を返します。
+     * 
+     * @param prefix
+     *            プレフィックス
+     * @return プレフィックスで始まっている場合 {@code true}
+     * @throws DomainIllegalStateException
+     *             ドメインの値が {@code null} の場合
+     */
+    public boolean startsWith(String prefix) throws DomainIllegalStateException {
         if (value == null) {
-            throw new DomainValueNullPointerException();
+            throw new DomainIllegalStateException("value == null");
         }
         return value.startsWith(prefix);
     }
 
-    public boolean endsWith(String suffix) {
+    /**
+     * ドメインの値がサフィックスで終わっている場合 {@code true} を返します。
+     * 
+     * @param suffix
+     *            サフィックス
+     * @return サフィックスで終わっている場合 {@code true}
+     * @throws DomainIllegalStateException
+     *             ドメインの値が {@code null} の場合
+     */
+    public boolean endsWith(String suffix) throws DomainIllegalStateException {
         if (value == null) {
-            throw new DomainValueNullPointerException();
+            throw new DomainIllegalStateException("value == null");
         }
         return value.endsWith(suffix);
     }
 
-    public int length() {
+    /**
+     * ドメインの値の長さを返します。
+     * 
+     * @return 長さ
+     * @throws DomainIllegalStateException
+     *             ドメインの値が {@code null} の場合
+     */
+    public int length() throws DomainIllegalStateException {
         if (value == null) {
-            throw new DomainValueNullPointerException();
+            throw new DomainIllegalStateException("value == null");
         }
         return value.length();
     }
 
-    public boolean matches(String regex) {
+    /**
+     * ドメインの値が正規表現にマッチした場合に {@code true} を返します。
+     * 
+     * @param regex
+     *            正規表現
+     * @return 正規表現にマッチした場合に {@code true}
+     * @throws DomainIllegalStateException
+     *             ドメインの値が {@code null} の場合
+     * @throws PatternSyntaxException
+     *             正規表現の構文が無効な場合
+     */
+    public boolean matches(String regex) throws DomainIllegalStateException {
         if (value == null) {
-            throw new DomainValueNullPointerException();
+            throw new DomainIllegalStateException("value == null");
         }
         return value.matches(regex);
     }
 
-    public boolean contains(CharSequence s) {
+    /**
+     * ドメインの値が文字シーケンスを含んでいる場合 {@code true} を返します。
+     * 
+     * @param s
+     *            文字シーケンス
+     * @return 文字シーケンス含んでいる場合 {@code true}
+     * @throws DomainIllegalStateException
+     *             ドメインの値が {@code null} の場合
+     * @throws NullPointerException
+     *             文字シーケンスが {@code null} の場合
+     */
+    public boolean contains(CharSequence s) throws DomainIllegalStateException {
         if (value == null) {
-            throw new DomainValueNullPointerException();
+            throw new DomainIllegalStateException("value == null");
         }
         return value.contains(s);
     }
 
+    /**
+     * ドメインの値から、指定されたインデックス位置にある {@code char} 値を返します
+     * 
+     * @param index
+     *            インデックス
+     * @return 指定されたインデックス位置にある {@code char}
+     * @throws DomainIllegalStateException
+     *             ドメインの値が {@code null} の場合
+     * @throws IndexOutOfBoundsException
+     *             インデックスが負の値、またはドメインの値の長さ以上である場合
+     */
     @Override
-    public char charAt(int index) {
+    public char charAt(int index) throws DomainIllegalStateException {
         if (value == null) {
-            throw new DomainValueNullPointerException();
+            throw new DomainIllegalStateException("value == null");
         }
         return value.charAt(index);
     }
 
+    /**
+     * ドメインの値のサブシーケンスである新規文字シーケンスを返します
+     * 
+     * @throws DomainIllegalStateException
+     *             ドメインの値が {@code null} の場合
+     * @throws IndexOutOfBoundsException
+     *             {@code start} または {@code end} が負の値の場合、{@code end} の値が
+     *             ドメインの値の長さ より大きい場合、{@code start} の値が {@code end} よりも大きい場合
+     */
     @Override
-    public CharSequence subSequence(int start, int end) {
+    public CharSequence subSequence(int start, int end)
+            throws DomainIllegalStateException {
         if (value == null) {
-            throw new DomainValueNullPointerException();
+            throw new DomainIllegalStateException("value == null");
         }
         return value.subSequence(start, end);
     }

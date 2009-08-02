@@ -16,6 +16,8 @@
 package org.seasar.doma.domain;
 
 /**
+ * {@link Short} を値の型とする組み込みのドメインです。
+ * 
  * @author taedium
  * 
  */
@@ -23,9 +25,18 @@ public final class ShortDomain extends AbstractShortDomain<ShortDomain> {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * デフォルトの値でインスタンス化します。
+     */
     public ShortDomain() {
     }
 
+    /**
+     * 値を指定してインスタンス化します。
+     * 
+     * @param value
+     *            値
+     */
     public ShortDomain(Short value) {
         super(value);
     }

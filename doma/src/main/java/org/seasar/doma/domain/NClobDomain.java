@@ -18,16 +18,27 @@ package org.seasar.doma.domain;
 import java.sql.NClob;
 
 /**
+ * {@link NClob} を値の型とする組み込みのドメインです。
+ * 
  * @author taedium
  * 
  */
 public final class NClobDomain extends AbstractNClobDomain<NClobDomain> {
 
+    /**
+     * デフォルトの値でインスタンス化します。
+     */
     public NClobDomain() {
     }
 
-    public NClobDomain(NClob v) {
-        super(v);
+    /**
+     * 値を指定してインスタンス化します。
+     * 
+     * @param value
+     *            値
+     */
+    public NClobDomain(NClob value) {
+        super(value);
     }
 
 }

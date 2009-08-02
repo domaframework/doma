@@ -23,8 +23,12 @@ import java.util.Arrays;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
+ * {@code byte[]} を値の型とするドメインの骨格実装です。
+ * 
  * @author taedium
  * 
+ * @param <D>
+ *            ドメインの型
  */
 public abstract class AbstractBytesDomain<D extends AbstractBytesDomain<D>>
         extends AbstractDomain<byte[], D> implements
@@ -32,10 +36,19 @@ public abstract class AbstractBytesDomain<D extends AbstractBytesDomain<D>>
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * デフォルトの値でインスタンス化します。
+     */
     protected AbstractBytesDomain() {
         this(null);
     }
 
+    /**
+     * 値を指定してインスタンス化します。
+     * 
+     * @param value
+     *            値
+     */
     protected AbstractBytesDomain(byte[] value) {
         super(byte[].class, value);
     }

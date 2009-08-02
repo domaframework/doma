@@ -18,19 +18,32 @@ package org.seasar.doma.domain;
 import java.util.ArrayList;
 
 /**
+ * {@link ArrayList} を値の型とする組み込みのドメインです。
+ * 
  * @author taedium
  * 
+ * @param <E>
+ *            要素の型
  */
 public final class ArrayListDomain<E> extends
         AbstractArrayListDomain<E, ArrayListDomain<E>> {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * デフォルトの値でインスタンス化します。
+     */
     public ArrayListDomain() {
     }
 
-    public ArrayListDomain(ArrayList<E> v) {
-        super(v);
+    /**
+     * 値を指定してインスタンス化します。
+     * 
+     * @param value
+     *            値
+     */
+    public ArrayListDomain(ArrayList<E> value) {
+        super(value);
     }
 
 }

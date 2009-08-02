@@ -23,8 +23,12 @@ import java.sql.Timestamp;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
+ * {@link Timestamp} を値の型とするドメインの骨格実装です。
+ * 
  * @author taedium
  * 
+ * @param <D>
+ *            ドメインの型
  */
 public abstract class AbstractTimestampDomain<D extends AbstractTimestampDomain<D>>
         extends AbstractComparableDomain<Timestamp, D> implements
@@ -32,10 +36,19 @@ public abstract class AbstractTimestampDomain<D extends AbstractTimestampDomain<
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * デフォルトの値でインスタンス化します。
+     */
     protected AbstractTimestampDomain() {
         this(null);
     }
 
+    /**
+     * 値を指定してインスタンス化します。
+     * 
+     * @param value
+     *            値
+     */
     protected AbstractTimestampDomain(Timestamp value) {
         super(Timestamp.class, value);
     }

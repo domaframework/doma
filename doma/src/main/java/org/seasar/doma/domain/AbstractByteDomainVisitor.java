@@ -16,8 +16,16 @@
 package org.seasar.doma.domain;
 
 /**
+ * {@link AbstractByteDomain} のビジターです。
+ * 
  * @author taedium
  * 
+ * @param <R>
+ *            戻り値の型
+ * @param <P>
+ *            パラメータの型
+ * @param <TH>
+ *            例外の型
  */
 public interface AbstractByteDomainVisitor<R, P, TH extends Throwable> extends
         DomainVisitor<R, P, TH> {

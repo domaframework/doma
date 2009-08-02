@@ -18,16 +18,27 @@ package org.seasar.doma.domain;
 import java.sql.Clob;
 
 /**
+ * {@link Clob} を値の型とする組み込みのドメインです。
+ * 
  * @author taedium
  * 
  */
 public final class ClobDomain extends AbstractClobDomain<ClobDomain> {
 
+    /**
+     * デフォルトの値でインスタンス化します。
+     */
     public ClobDomain() {
     }
 
-    public ClobDomain(Clob v) {
-        super(v);
+    /**
+     * 値を指定してインスタンス化します。
+     * 
+     * @param value
+     *            値
+     */
+    public ClobDomain(Clob value) {
+        super(value);
     }
 
 }

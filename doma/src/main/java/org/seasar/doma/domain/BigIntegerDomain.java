@@ -18,6 +18,8 @@ package org.seasar.doma.domain;
 import java.math.BigInteger;
 
 /**
+ * {@link BigInteger} を値の型とする組み込みのドメインです。
+ * 
  * @author taedium
  * 
  */
@@ -26,9 +28,18 @@ public final class BigIntegerDomain extends
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * デフォルトの値でインスタンス化します。
+     */
     public BigIntegerDomain() {
     }
 
+    /**
+     * 値を指定してインスタンス化します。
+     * 
+     * @param value
+     *            値
+     */
     public BigIntegerDomain(BigInteger value) {
         super(value);
     }

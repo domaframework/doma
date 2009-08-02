@@ -16,6 +16,8 @@
 package org.seasar.doma.domain;
 
 /**
+ * {@link Double} を値の型とする組み込みのドメインです。
+ * 
  * @author taedium
  * 
  */
@@ -23,9 +25,18 @@ public final class DoubleDomain extends AbstractDoubleDomain<DoubleDomain> {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * デフォルトの値でインスタンス化します。
+     */
     public DoubleDomain() {
     }
 
+    /**
+     * 値を指定してインスタンス化します。
+     * 
+     * @param value
+     *            値
+     */
     public DoubleDomain(Double value) {
         super(value);
     }
