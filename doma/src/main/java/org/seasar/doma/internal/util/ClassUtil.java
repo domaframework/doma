@@ -17,6 +17,7 @@ package org.seasar.doma.internal.util;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 import org.seasar.doma.internal.WrapException;
@@ -48,6 +49,17 @@ public final class ClassUtil {
             Class<T> clazz = (Class<T>) Class.forName(name);
             return clazz;
         } catch (ClassNotFoundException e) {
+            throw new WrapException(e);
+        }
+    }
+
+    public static <T> Constructor<T> getConstructor(Class<T> clazz,
+            Class<?>... parameterTypes) throws WrapException {
+        try {
+            return clazz.getConstructor(parameterTypes);
+        } catch (SecurityException e) {
+            throw new WrapException(e);
+        } catch (NoSuchMethodException e) {
             throw new WrapException(e);
         }
     }

@@ -23,9 +23,6 @@ package org.seasar.doma;
  */
 public enum GenerationType {
 
-    /** アプリケーションが明示的に識別子を設定することを示します。 */
-    ASSIGNED,
-
     /** データベースのIDENTITYカラムを使って識別子を自動生成することを示します。 */
     IDENTITY,
 

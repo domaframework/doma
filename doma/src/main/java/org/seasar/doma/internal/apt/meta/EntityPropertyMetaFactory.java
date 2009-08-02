@@ -103,8 +103,6 @@ public class EntityPropertyMetaFactory {
         case TABLE:
             doTableIdGeneratorMeta(propertyMeta, method, entityMeta);
             break;
-        case ASSIGNED:
-            break;
         default:
             assertUnreachable();
             break;

@@ -20,7 +20,6 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.seasar.doma.internal.WrapException;
 
-
 /**
  * @author taedium
  * 

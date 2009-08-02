@@ -19,8 +19,6 @@ import java.sql.SQLException;
 import java.util.Collections;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.StringDomain;
 import org.seasar.doma.internal.jdbc.dialect.HsqldbPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
@@ -45,9 +43,6 @@ public class HsqldbDialect extends StandardDialect {
     public HsqldbDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         super(jdbcMappingVisitor, sqlLogFormattingVisitor);
-
-        domainClassMap.put("int", IntegerDomain.class);
-        domainClassMap.put("varchar_ignorecase", StringDomain.class);
     }
 
     @Override
@@ -118,16 +113,6 @@ public class HsqldbDialect extends StandardDialect {
     @Override
     public boolean supportsSequence() {
         return true;
-    }
-
-    @Override
-    public String getDefaultSchemaName(String userName) {
-        return null;
-    }
-
-    @Override
-    public boolean isJdbcCommentAvailable() {
-        return false;
     }
 
     public static class HsqldbJdbcMappingVisitor extends

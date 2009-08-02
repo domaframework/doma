@@ -110,10 +110,6 @@ public class MockConfig implements Config {
         this.dataSource = dataSource;
     }
 
-    public Dialect getDialect() {
-        return dialect;
-    }
-
     public void setDialect(Dialect dialect) {
         this.dialect = dialect;
     }

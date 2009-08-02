@@ -15,28 +15,12 @@
  */
 package org.seasar.doma.jdbc.dialect;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.domain.AbstractBooleanDomain;
-import org.seasar.doma.domain.BigDecimalDomain;
-import org.seasar.doma.domain.BigIntegerDomain;
-import org.seasar.doma.domain.BytesDomain;
-import org.seasar.doma.domain.Domain;
-import org.seasar.doma.domain.DoubleDomain;
-import org.seasar.doma.domain.FloatDomain;
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.LongDomain;
-import org.seasar.doma.domain.ShortDomain;
-import org.seasar.doma.domain.StringDomain;
-import org.seasar.doma.internal.jdbc.command.JdbcUtil;
 import org.seasar.doma.internal.jdbc.dialect.OracleForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.OraclePagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
@@ -69,14 +53,6 @@ public class OracleDialect extends StandardDialect {
     public OracleDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         super(jdbcMappingVisitor, sqlLogFormattingVisitor);
-
-        domainClassMap.put("binary_double", DoubleDomain.class);
-        domainClassMap.put("binary_float", FloatDomain.class);
-        domainClassMap.put("long", StringDomain.class);
-        domainClassMap.put("long raw", BytesDomain.class);
-        domainClassMap.put("nvarchar2", StringDomain.class);
-        domainClassMap.put("raw", BytesDomain.class);
-        domainClassMap.put("varchar2", StringDomain.class);
     }
 
     @Override
@@ -152,103 +128,6 @@ public class OracleDialect extends StandardDialect {
         return RESULT_SET;
     }
 
-    @Override
-    public boolean isJdbcCommentAvailable() {
-        return false;
-    }
-
-    @Override
-    public String getTableComment(Connection connection, String catalogName,
-            String schemaName, String tableName) throws SQLException {
-        if (connection == null) {
-            throw new DomaNullPointerException("connection");
-        }
-        if (tableName == null) {
-            throw new DomaNullPointerException("tableName");
-        }
-        String sql = "select comments from all_tab_comments where owner = "
-                + schemaName + " and table_name = " + tableName
-                + " and table_type = 'TABLE'";
-        PreparedStatement preparedStatement = JdbcUtil
-                .prepareStatement(connection, sql);
-        try {
-            ResultSet resultSet = preparedStatement.executeQuery();
-            try {
-                if (resultSet.next()) {
-                    return resultSet.getString(1);
-                }
-                return null;
-            } finally {
-                JdbcUtil.close(resultSet, null);
-            }
-        } finally {
-            JdbcUtil.close(preparedStatement, null);
-        }
-    }
-
-    @Override
-    public Map<String, String> getColumnCommentMap(Connection connection,
-            String catalogName, String schemaName, String tableName)
-            throws SQLException {
-        if (connection == null) {
-            throw new DomaNullPointerException("connection");
-        }
-        if (tableName == null) {
-            throw new DomaNullPointerException("tableName");
-        }
-        String sql = "select column_name, comments from all_col_comments where owner = "
-                + schemaName + " and table_name = " + tableName;
-        PreparedStatement preparedStatement = JdbcUtil
-                .prepareStatement(connection, sql);
-        try {
-            ResultSet resultSet = preparedStatement.executeQuery();
-            try {
-                Map<String, String> commentMap = new HashMap<String, String>();
-                if (resultSet.next()) {
-                    commentMap.put(resultSet.getString(1), resultSet
-                            .getString(2));
-                }
-                return commentMap;
-            } finally {
-                JdbcUtil.close(resultSet, null);
-            }
-        } finally {
-            JdbcUtil.close(preparedStatement, null);
-        }
-    }
-
-    @Override
-    public Class<? extends Domain<?, ?>> getDomainClass(String typeName,
-            int sqlType, int length, int precision, int scale) {
-        if ("number".equalsIgnoreCase(typeName)) {
-            if (scale != 0) {
-                return BigDecimalDomain.class;
-            }
-            if (precision < 5) {
-                return ShortDomain.class;
-            }
-            if (precision < 10) {
-                return IntegerDomain.class;
-            }
-            if (precision < 19) {
-                return LongDomain.class;
-            }
-            return BigIntegerDomain.class;
-        }
-        return super
-                .getDomainClass(typeName, sqlType, length, precision, scale);
-    }
-
-    @Override
-    public SqlBlockContext createSqlBlockContext() {
-        return new OracleSqlBlockContext();
-    }
-
-    @Override
-    public String getSqlBlockDelimiter() {
-        return "/";
-    }
-
     public static class OracleResultSetType extends AbstractResultSetType {
 
         protected static int CURSOR = -10;
@@ -279,20 +158,4 @@ public class OracleDialect extends StandardDialect {
         }
     }
 
-    public static class OracleSqlBlockContext extends StandardSqlBlockContext {
-
-        protected OracleSqlBlockContext() {
-            sqlBlockStartKeywordsList.add(Arrays
-                    .asList("create", "or", "replace", "procedure"));
-            sqlBlockStartKeywordsList.add(Arrays
-                    .asList("create", "or", "replace", "function"));
-            sqlBlockStartKeywordsList.add(Arrays
-                    .asList("create", "or", "replace", "triger"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("create", "procedure"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("create", "function"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("create", "trigger"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("declare"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("begin"));
-        }
-    }
 }

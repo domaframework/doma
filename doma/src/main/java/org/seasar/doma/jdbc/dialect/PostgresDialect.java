@@ -21,17 +21,6 @@ import java.sql.Types;
 import java.util.Collections;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.domain.BlobDomain;
-import org.seasar.doma.domain.BooleanDomain;
-import org.seasar.doma.domain.BytesDomain;
-import org.seasar.doma.domain.DoubleDomain;
-import org.seasar.doma.domain.FloatDomain;
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.LongDomain;
-import org.seasar.doma.domain.ShortDomain;
-import org.seasar.doma.domain.StringDomain;
-import org.seasar.doma.domain.TimeDomain;
-import org.seasar.doma.domain.TimestampDomain;
 import org.seasar.doma.internal.jdbc.dialect.PostgresForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.PostgresPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
@@ -61,25 +50,6 @@ public class PostgresDialect extends StandardDialect {
     public PostgresDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         super(jdbcMappingVisitor, sqlLogFormattingVisitor);
-
-        domainClassMap.put("bigserial", LongDomain.class);
-        domainClassMap.put("bit", BytesDomain.class);
-        domainClassMap.put("bool", BooleanDomain.class);
-        domainClassMap.put("bpchar", StringDomain.class);
-        domainClassMap.put("bytea", BytesDomain.class);
-        domainClassMap.put("float4", FloatDomain.class);
-        domainClassMap.put("float8", DoubleDomain.class);
-        domainClassMap.put("int2", ShortDomain.class);
-        domainClassMap.put("int4", IntegerDomain.class);
-        domainClassMap.put("int8", LongDomain.class);
-        domainClassMap.put("money", FloatDomain.class);
-        domainClassMap.put("oid", BlobDomain.class);
-        domainClassMap.put("serial", IntegerDomain.class);
-        domainClassMap.put("text", StringDomain.class);
-        domainClassMap.put("timestamptz", TimestampDomain.class);
-        domainClassMap.put("timetz", TimeDomain.class);
-        domainClassMap.put("varbit", BytesDomain.class);
-        domainClassMap.put("varchar", StringDomain.class);
     }
 
     @Override
@@ -168,16 +138,6 @@ public class PostgresDialect extends StandardDialect {
         return RESULT_SET;
     }
 
-    @Override
-    public String getDefaultSchemaName(String userName) {
-        return null;
-    }
-
-    @Override
-    public SqlBlockContext createSqlBlockContext() {
-        return new PostgresSqlBlockContext();
-    }
-
     public static class PostgresResultSetType extends AbstractResultSetType {
 
         public PostgresResultSetType() {
@@ -191,21 +151,6 @@ public class PostgresDialect extends StandardDialect {
 
     public static class PostgresSqlLogFormattingVisitor extends
             StandardSqlLogFormattingVisitor {
-    }
-
-    public static class PostgresSqlBlockContext implements SqlBlockContext {
-
-        protected boolean inSqlBlock;
-
-        public void addKeyword(String keyword) {
-            if ("$$".equals(keyword)) {
-                inSqlBlock = !inSqlBlock;
-            }
-        }
-
-        public boolean isInSqlBlock() {
-            return inSqlBlock;
-        }
     }
 
 }

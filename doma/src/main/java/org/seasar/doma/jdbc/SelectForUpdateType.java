@@ -16,7 +16,7 @@
 package org.seasar.doma.jdbc;
 
 /**
- *悲観的排他制御の種別です。
+ * 悲観的排他制御の種別です。
  * 
  * @author taedium
  * 

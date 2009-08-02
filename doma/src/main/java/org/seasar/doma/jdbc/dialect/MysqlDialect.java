@@ -21,18 +21,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.domain.BigIntegerDomain;
-import org.seasar.doma.domain.BlobDomain;
-import org.seasar.doma.domain.BooleanDomain;
-import org.seasar.doma.domain.ByteDomain;
-import org.seasar.doma.domain.BytesDomain;
-import org.seasar.doma.domain.ClobDomain;
-import org.seasar.doma.domain.DateDomain;
-import org.seasar.doma.domain.Domain;
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.LongDomain;
-import org.seasar.doma.domain.ShortDomain;
-import org.seasar.doma.domain.TimestampDomain;
 import org.seasar.doma.internal.jdbc.dialect.MysqlPagingTransformer;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
@@ -55,24 +43,6 @@ public class MysqlDialect extends StandardDialect {
     public MysqlDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         super(jdbcMappingVisitor, sqlLogFormattingVisitor);
-
-        domainClassMap.put("bigint unsigned", BigIntegerDomain.class);
-        domainClassMap.put("datetime", TimestampDomain.class);
-        domainClassMap.put("int", IntegerDomain.class);
-        domainClassMap.put("int unsigned", LongDomain.class);
-        domainClassMap.put("longblob", BlobDomain.class);
-        domainClassMap.put("longtext", ClobDomain.class);
-        domainClassMap.put("mediumblob", BlobDomain.class);
-        domainClassMap.put("mediumint", IntegerDomain.class);
-        domainClassMap.put("mediumint unsigned", IntegerDomain.class);
-        domainClassMap.put("mediumtext", ClobDomain.class);
-        domainClassMap.put("smallint unsigned", IntegerDomain.class);
-        domainClassMap.put("tinyblob", BlobDomain.class);
-        domainClassMap.put("tinyint", ByteDomain.class);
-        domainClassMap.put("tinyint unsigned", ShortDomain.class);
-        domainClassMap.put("tinytext", ClobDomain.class);
-        domainClassMap.put("text", ClobDomain.class);
-        domainClassMap.put("year", DateDomain.class);
     }
 
     @Override
@@ -112,46 +82,12 @@ public class MysqlDialect extends StandardDialect {
         return transformer.transform(sqlNode);
     }
 
-    @Override
-    public Class<? extends Domain<?, ?>> getDomainClass(String typeName,
-            int sqlType, int length, int precision, int scale) {
-        if ("bit".equalsIgnoreCase(typeName)) {
-            return length == 1 ? BooleanDomain.class : BytesDomain.class;
-        }
-        return super
-                .getDomainClass(typeName, sqlType, length, precision, scale);
-    }
-
-    @Override
-    public SqlBlockContext createSqlBlockContext() {
-        return new MysqlSqlBlockContext();
-    }
-
-    @Override
-    public String getSqlBlockDelimiter() {
-        return "/";
-    }
-
     public static class MysqlJdbcMappingVisitor extends
             StandardJdbcMappingVisitor {
     }
 
     public static class MysqlSqlLogFormattingVisitor extends
             StandardSqlLogFormattingVisitor {
-    }
-
-    public static class MysqlSqlBlockContext extends StandardSqlBlockContext {
-
-        protected MysqlSqlBlockContext() {
-            sqlBlockStartKeywordsList.add(Arrays.asList("create", "procedure"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("create", "function"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("create", "trigger"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("alter", "procedure"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("alter", "function"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("alter", "trigger"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("declare"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("begin"));
-        }
     }
 
 }
