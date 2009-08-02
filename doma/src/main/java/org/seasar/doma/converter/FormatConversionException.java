@@ -18,6 +18,8 @@ package org.seasar.doma.converter;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
+ * フォーマット変換に失敗した場合にスローされる例外です。
+ * 
  * @author taedium
  * 
  */
@@ -25,10 +27,22 @@ public class FormatConversionException extends ConversionException {
 
     private static final long serialVersionUID = 1L;
 
+    /** フォーマット対象の値 */
     protected final String value;
 
+    /** フォーマットに使用されるパターン */
     protected final String pattern;
 
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param value
+     *            フォーマット対象の値
+     * @param pattern
+     *            フォーマットに使用されるパターン
+     * @param cause
+     *            原因
+     */
     public FormatConversionException(String value, String pattern,
             Throwable cause) {
         super(DomaMessageCode.DOMA5003, value, pattern, cause, cause);

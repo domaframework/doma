@@ -18,17 +18,22 @@ package org.seasar.doma.converter;
 import java.sql.Time;
 
 /**
+ * {@link Time} へのコンバーターです。
+ * 
  * @author taedium
  * 
  */
 public class TimeConverter implements Converter<Time> {
 
+    /** デフォルトパターン */
     protected static final String DEFAULT_PATTERN = "HH:mm:ss";
 
+    /** 変換サポート */
     protected final ConversionSupport conversionSupport = new ConversionSupport();
 
     @Override
-    public Time convert(Object value, String pattern) {
+    public Time convert(Object value, String pattern)
+            throws ConversionException {
         if (value == null) {
             return null;
         }
@@ -48,7 +53,19 @@ public class TimeConverter implements Converter<Time> {
                 Time.class.getName(), value);
     }
 
-    protected java.util.Date parse(String value, String pattern) {
+    /**
+     * 文字列をパースします。
+     * 
+     * @param value
+     *            文字列
+     * @param pattern
+     *            パターン
+     * @return パースされた結果
+     * @throws ConversionException
+     *             変換に失敗した場合
+     */
+    protected java.util.Date parse(String value, String pattern)
+            throws ConversionException {
         String p = pattern != null ? pattern : DEFAULT_PATTERN;
         return conversionSupport.parseToDate(value, p);
     }

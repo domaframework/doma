@@ -19,6 +19,8 @@ import org.seasar.doma.DomaException;
 import org.seasar.doma.MessageCode;
 
 /**
+ * 変換に関する例外です。
+ * 
  * @author taedium
  * 
  */

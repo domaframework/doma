@@ -18,6 +18,8 @@ package org.seasar.doma.converter;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
+ * あるクラスから別のクラスへの変換がサポートされていない場合にスローされる例外です。
+ * 
  * @author taedium
  * 
  */
@@ -25,12 +27,25 @@ public class UnsupportedConversionException extends ConversionException {
 
     private static final long serialVersionUID = 1L;
 
+    /** 変換元のクラス */
     protected final String srcClassName;
 
+    /** 変換先のクラス */
     protected final String destClassName;
 
+    /** 変換対象の値 */
     protected final Object value;
 
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param srcClassName
+     *            変換元のクラス
+     * @param destClassName
+     *            変換先のクラス
+     * @param value
+     *            変換対象の値
+     */
     public UnsupportedConversionException(String srcClassName,
             String destClassName, Object value) {
         super(DomaMessageCode.DOMA5001, srcClassName, value, destClassName);

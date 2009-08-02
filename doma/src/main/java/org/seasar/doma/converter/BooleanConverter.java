@@ -15,14 +15,18 @@
  */
 package org.seasar.doma.converter;
 
+
 /**
+ * {@link Boolean} へのコンバーターです。
+ * 
  * @author taedium
  * 
  */
 public class BooleanConverter implements Converter<Boolean> {
 
     @Override
-    public Boolean convert(Object value, String pattern) {
+    public Boolean convert(Object value, String pattern)
+            throws ConversionException {
         if (value == null) {
             return null;
         }

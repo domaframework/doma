@@ -16,11 +16,29 @@
 package org.seasar.doma.converter;
 
 /**
+ * 値を特定の型へ変換するコンバーターです。
+ * <p>
+ * このインタフェースの実装はスレッドセーフでなければいけません。
+ * <p>
+ * 
  * @author taedium
  * 
+ * @param <T>
+ *            変換先の型
  */
 public interface Converter<T> {
 
-    T convert(Object value, String pattern);
+    /**
+     * 変換します。
+     * 
+     * @param value
+     *            値
+     * @param pattern
+     *            変換時に利用するパターン
+     * @return 変換された値、値が {@code null} の場合は {@code null}
+     * @throws ConversionException
+     *             変換に失敗した場合
+     */
+    T convert(Object value, String pattern) throws ConversionException;
 
 }

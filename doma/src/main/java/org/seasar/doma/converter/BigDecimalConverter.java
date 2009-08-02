@@ -18,17 +18,22 @@ package org.seasar.doma.converter;
 import java.math.BigDecimal;
 
 /**
+ * {@link BigDecimal} へのコンバーターです。
+ * 
  * @author taedium
  * 
  */
 public class BigDecimalConverter implements Converter<BigDecimal> {
 
+    /** デフォルトパターン */
     protected final static String DEFAULT_PATTERN = "0";
 
+    /** 変換サポート */
     protected final ConversionSupport conversionSupport = new ConversionSupport();
 
     @Override
-    public BigDecimal convert(Object value, String pattern) {
+    public BigDecimal convert(Object value, String pattern)
+            throws ConversionException {
         if (value == null) {
             return null;
         }
@@ -46,7 +51,19 @@ public class BigDecimalConverter implements Converter<BigDecimal> {
                 BigDecimal.class.getName(), value);
     }
 
-    protected Number parse(String value, String pattern) {
+    /**
+     * 文字列をパースします。
+     * 
+     * @param value
+     *            文字列
+     * @param pattern
+     *            パターン
+     * @return パースされた値
+     * @throws ConversionException
+     *             変換に失敗した場合
+     */
+    protected Number parse(String value, String pattern)
+            throws ConversionException {
         String p = pattern != null ? pattern : DEFAULT_PATTERN;
         return conversionSupport.parseToNumber(value, p);
     }

@@ -18,17 +18,22 @@ package org.seasar.doma.converter;
 import java.sql.Date;
 
 /**
+ * {@link Date} へのコンバーターです。
+ * 
  * @author taedium
  * 
  */
 public class DateConverter implements Converter<Date> {
 
+    /** デフォルトパターン */
     protected static final String DEFAULT_PATTERN = "yyyy-MM-dd";
 
+    /** 変換サポート */
     protected final ConversionSupport conversionSupport = new ConversionSupport();
 
     @Override
-    public Date convert(Object value, String pattern) {
+    public Date convert(Object value, String pattern)
+            throws ConversionException {
         if (value == null) {
             return null;
         }
@@ -48,7 +53,19 @@ public class DateConverter implements Converter<Date> {
                 Date.class.getName(), value);
     }
 
-    protected java.util.Date parse(String value, String pattern) {
+    /**
+     * 文字列をパースします。
+     * 
+     * @param value
+     *            文字列
+     * @param pattern
+     *            パターン
+     * @return パースされた結果
+     * @throws ConversionException
+     *             変換に失敗した場合
+     */
+    protected java.util.Date parse(String value, String pattern)
+            throws ConversionException {
         String p = pattern != null ? pattern : DEFAULT_PATTERN;
         return conversionSupport.parseToDate(value, p);
     }

@@ -19,7 +19,7 @@ import org.seasar.doma.DomaException;
 import org.seasar.doma.MessageCode;
 
 /**
- * コピーに関する例外を表します。
+ * コピーに関する例外です。
  * 
  * @author taedium
  * 

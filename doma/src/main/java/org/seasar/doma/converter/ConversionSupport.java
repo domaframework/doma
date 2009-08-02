@@ -24,12 +24,26 @@ import org.seasar.doma.DomaNullPointerException;
  */
 
 /**
+ * 変換をサポートするクラスです。
+ * 
  * @author taedium
  * 
  */
 public class ConversionSupport {
 
-    public Number parseToNumber(String value, String pattern) {
+    /**
+     * 文字列をパースし数値に変換します。
+     * 
+     * @param value
+     *            文字列
+     * @param pattern
+     *            パターン
+     * @return 変換された数値
+     * @throws ConversionException
+     *             パースに失敗した場合
+     */
+    public Number parseToNumber(String value, String pattern)
+            throws ConversionException {
         if (value == null) {
             throw new DomaNullPointerException("value");
         }
@@ -45,7 +59,19 @@ public class ConversionSupport {
         }
     }
 
-    public Date parseToDate(String value, String pattern) {
+    /**
+     * 文字列をパースし日付に変換します。
+     * 
+     * @param value
+     *            文字列
+     * @param pattern
+     *            パターン
+     * @return 変換された日付
+     * @throws ConversionException
+     *             パースに失敗した場合
+     */
+    public Date parseToDate(String value, String pattern)
+            throws ConversionException {
         if (value == null) {
             throw new DomaNullPointerException("value");
         }
@@ -61,7 +87,19 @@ public class ConversionSupport {
         }
     }
 
-    public String formatFromNumber(Number value, String pattern) {
+    /**
+     * 数値から文字列にフォーマットします。
+     * 
+     * @param value
+     *            数値
+     * @param pattern
+     *            パターン
+     * @return フォーマットされた文字列
+     * @throws ConversionException
+     *             フォーマットに失敗した場合
+     */
+    public String formatFromNumber(Number value, String pattern)
+            throws ConversionException {
         if (value == null) {
             throw new DomaNullPointerException("value");
         }
@@ -76,7 +114,19 @@ public class ConversionSupport {
         }
     }
 
-    public String formatFromDate(Date value, String pattern) {
+    /**
+     * 日付から文字列にフォーマットします。
+     * 
+     * @param value
+     *            日付
+     * @param pattern
+     *            パターン
+     * @return フォーマットされた文字列
+     * @throws ConversionException
+     *             フォーマットに失敗した場合
+     */
+    public String formatFromDate(Date value, String pattern)
+            throws ConversionException {
         if (value == null) {
             throw new DomaNullPointerException("value");
         }

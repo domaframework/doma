@@ -464,7 +464,7 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
      *            オプション
      * @return 変換された値
      * @throws CopyException
-     *             コピーに失敗した場合
+     *             変換に失敗した場合
      */
     protected Object convert(Converter<?> converter, Class<?> srcClass,
             String srcPropertyName, Object srcPropertyValue,
@@ -488,7 +488,6 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
      * @param copyOptions
      *            オプション
      * @return コンバーター、存在しない場合 {@code null}
-     * @throws CopyException
      */
     protected Converter<?> findConverter(String propertyName,
             Class<?> destPropertyClass, CopyOptions copyOptions)

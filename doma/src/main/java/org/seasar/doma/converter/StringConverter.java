@@ -19,15 +19,19 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
+ * {@link String} へのコンバーターです。
+ * 
  * @author taedium
  * 
  */
 public class StringConverter implements Converter<String> {
 
+    /** 変換サポート */
     protected final ConversionSupport conversionSupport = new ConversionSupport();
 
     @Override
-    public String convert(Object value, String pattern) {
+    public String convert(Object value, String pattern)
+            throws ConversionException {
         if (value == null) {
             return null;
         }
@@ -46,11 +50,35 @@ public class StringConverter implements Converter<String> {
         return value.toString();
     }
 
-    protected String format(Number value, String pattern) {
+    /**
+     * 数値をフォーマットします。
+     * 
+     * @param value
+     *            数値
+     * @param pattern
+     *            パターン
+     * @return フォーマットされた文字列
+     * @throws ConversionException
+     *             変換に失敗した場合
+     */
+    protected String format(Number value, String pattern)
+            throws ConversionException {
         return conversionSupport.formatFromNumber(value, pattern);
     }
 
-    protected String format(Date value, String pattern) {
+    /**
+     * 日付をフォーマットします。
+     * 
+     * @param value
+     *            日付
+     * @param pattern
+     *            パターン
+     * @return フォーマットされた文字列
+     * @throws ConversionException
+     *             変換に失敗した場合
+     */
+    protected String format(Date value, String pattern)
+            throws ConversionException {
         return conversionSupport.formatFromDate(value, pattern);
     }
 }

@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.DomaException;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -24,7 +23,7 @@ import org.seasar.doma.message.DomaMessageCode;
  * @author taedium
  * 
  */
-public class JdbcUnsupportedOperationException extends DomaException {
+public class JdbcUnsupportedOperationException extends JdbcException {
 
     private static final long serialVersionUID = 1L;
 

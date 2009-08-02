@@ -15,7 +15,10 @@
  */
 package org.seasar.doma.converter;
 
+
 /**
+ * {@link Converter} の実装のインスタンスを提供するクラスです。
+ * 
  * @author taedium
  * 
  */

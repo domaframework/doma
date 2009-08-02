@@ -18,6 +18,8 @@ package org.seasar.doma.converter;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
+ * パース変換に失敗した場合にスローされる例外です。
+ * 
  * @author taedium
  * 
  */
@@ -25,10 +27,22 @@ public class ParseConversionException extends ConversionException {
 
     private static final long serialVersionUID = 1L;
 
+    /** パース対象の文字列 */
     protected final String value;
 
+    /** パースに使用されるパターン */
     protected final String pattern;
 
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param value
+     *            パース対象の文字列
+     * @param pattern
+     *            パースに使用されるパターン
+     * @param cause
+     *            原因
+     */
     public ParseConversionException(String value, String pattern,
             Throwable cause) {
         super(DomaMessageCode.DOMA5002, value, pattern, cause, cause);
