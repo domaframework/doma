@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.domain.Domain;
 import org.seasar.doma.internal.jdbc.dialect.MysqlPagingTransformer;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
@@ -28,18 +29,33 @@ import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
 
 /**
+ * MySQL用の方言です。
+ * 
  * @author taedium
  * 
  */
 public class MysqlDialect extends StandardDialect {
 
+    /** 一意制約違反を表すエラーコードのセット */
     protected static final Set<Integer> UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODES = new HashSet<Integer>(
             Arrays.asList(1022, 1062));
 
+    /**
+     * インスタンスを構築します。
+     */
     public MysqlDialect() {
         this(new MysqlJdbcMappingVisitor(), new MysqlSqlLogFormattingVisitor());
     }
 
+    /**
+     * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor}
+     * を指定してインスタンスを構築します。
+     * 
+     * @param jdbcMappingVisitor
+     *            {@link Domain} をJDBCの型とマッピングするビジター
+     * @param sqlLogFormattingVisitor
+     *            SQLのバインド変数にマッピングされる {@link Domain} をログ用のフォーマットされた文字列へと変換するビジター
+     */
     public MysqlDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         super(jdbcMappingVisitor, sqlLogFormattingVisitor);
@@ -82,10 +98,22 @@ public class MysqlDialect extends StandardDialect {
         return transformer.transform(sqlNode);
     }
 
+    /**
+     * MySQL用の {@link JdbcMappingVisitor} の実装です。
+     * 
+     * @author taedium
+     * 
+     */
     public static class MysqlJdbcMappingVisitor extends
             StandardJdbcMappingVisitor {
     }
 
+    /**
+     * MySQL用の {@link SqlLogFormattingVisitor} です。
+     * 
+     * @author taedium
+     * 
+     */
     public static class MysqlSqlLogFormattingVisitor extends
             StandardSqlLogFormattingVisitor {
     }

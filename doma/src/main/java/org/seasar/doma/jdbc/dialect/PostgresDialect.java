@@ -21,6 +21,7 @@ import java.sql.Types;
 import java.util.Collections;
 
 import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.domain.Domain;
 import org.seasar.doma.internal.jdbc.dialect.PostgresForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.PostgresPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
@@ -33,20 +34,36 @@ import org.seasar.doma.jdbc.type.AbstractResultSetType;
 import org.seasar.doma.jdbc.type.JdbcType;
 
 /**
+ * PostgreSQL用の方言です。
+ * 
  * @author taedium
  * 
  */
 public class PostgresDialect extends StandardDialect {
 
+    /** 一意制約違反を表す {@literal SQLState} */
     protected static final String UNIQUE_CONSTRAINT_VIOLATION_STATE_CODE = "23505";
 
+    /** {@link ResultSet} の JDBC型 */
     protected static final JdbcType<ResultSet> RESULT_SET = new PostgresResultSetType();
 
+    /**
+     * インスタンスを構築します。
+     */
     public PostgresDialect() {
         this(new PostgresJdbcMappingVisitor(),
                 new PostgresSqlLogFormattingVisitor());
     }
 
+    /**
+     * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor}
+     * を指定してインスタンスを構築します。
+     * 
+     * @param jdbcMappingVisitor
+     *            {@link Domain} をJDBCの型とマッピングするビジター
+     * @param sqlLogFormattingVisitor
+     *            SQLのバインド変数にマッピングされる {@link Domain} をログ用のフォーマットされた文字列へと変換するビジター
+     */
     public PostgresDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         super(jdbcMappingVisitor, sqlLogFormattingVisitor);
@@ -138,6 +155,12 @@ public class PostgresDialect extends StandardDialect {
         return RESULT_SET;
     }
 
+    /**
+     * PostgreSQL用の {@link ResultSet} の {@link JdbcType} の実装です。
+     * 
+     * @author taedium
+     * 
+     */
     public static class PostgresResultSetType extends AbstractResultSetType {
 
         public PostgresResultSetType() {
@@ -145,10 +168,22 @@ public class PostgresDialect extends StandardDialect {
         }
     }
 
+    /**
+     * PostgreSQL用の {@link JdbcMappingVisitor} の実装です。
+     * 
+     * @author taedium
+     * 
+     */
     public static class PostgresJdbcMappingVisitor extends
             StandardJdbcMappingVisitor {
     }
 
+    /**
+     * PostgreSQL用の {@link SqlLogFormattingVisitor} の実装です。
+     * 
+     * @author taedium
+     * 
+     */
     public static class PostgresSqlLogFormattingVisitor extends
             StandardSqlLogFormattingVisitor {
     }

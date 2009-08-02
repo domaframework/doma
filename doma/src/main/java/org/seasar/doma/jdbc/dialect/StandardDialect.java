@@ -59,27 +59,46 @@ import org.seasar.doma.jdbc.type.JdbcTypes;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
+ * 標準の方言です。
+ * 
  * @author taedium
  * 
  */
 public class StandardDialect implements Dialect {
 
+    /** 開始の引用符 */
     protected static final char OPEN_QUOTE = '"';
 
+    /** 終了の引用符 */
     protected static final char CLOSE_QUOTE = '"';
 
+    /** 一意制約違反を表す {@literal SQLState} のセット */
     protected static final Set<String> UNIQUE_CONSTRAINT_VIOLATION_STATE_CODES = new HashSet<String>(
             Arrays.asList("23", "27", "44"));
 
+    /** {@link Domain} をJDBCの型とマッピングするビジター */
     protected final JdbcMappingVisitor jdbcMappingVisitor;
 
+    /** SQLのバインド変数にマッピングされる {@link Domain} をログ用のフォーマットされた文字列へと変換するビジター */
     protected final SqlLogFormattingVisitor sqlLogFormattingVisitor;
 
+    /**
+     * インスタンスを構築します。
+     */
     public StandardDialect() {
         this(new StandardJdbcMappingVisitor(),
                 new StandardSqlLogFormattingVisitor());
     }
 
+    /**
+     * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor}
+     * を指定してインスタンスを構築します。
+     * 
+     * @param jdbcMappingVisitor
+     *            {@link Domain} をJDBCの型とマッピングするビジター
+     * @param sqlLogFormattingVisitor
+     *            SQLのバインド変数にマッピングされる {@link Domain} をログ用のフォーマットされた文字列へと変換するビジター
+     */
     public StandardDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         if (jdbcMappingVisitor == null) {
@@ -128,12 +147,32 @@ public class StandardDialect implements Dialect {
         return transformed;
     }
 
+    /**
+     * ページング用のSQLノードに変換します。
+     * 
+     * @param sqlNode
+     *            SQLノード
+     * @param offset
+     *            オフセット
+     * @param limit
+     *            リミット
+     * @return 変換されたSQLノード
+     */
     protected SqlNode toPagingSqlNode(SqlNode sqlNode, int offset, int limit) {
         StandardPagingTransformer transformer = new StandardPagingTransformer(
                 offset, limit);
         return transformer.transform(sqlNode);
     }
 
+    /**
+     * 悲観的排他制御用のSQLノードに変換します。
+     * 
+     * @param sqlNode
+     * @param forUpdateType
+     * @param waitSeconds
+     * @param aliases
+     * @return 変換されたSQLノード
+     */
     protected SqlNode toForUpdateSqlNode(SqlNode sqlNode,
             SelectForUpdateType forUpdateType, int waitSeconds,
             String... aliases) {
@@ -154,16 +193,37 @@ public class StandardDialect implements Dialect {
         return false;
     }
 
+    /**
+     * {@literal SQLState} を返します。
+     * 
+     * @param sqlException
+     *            SQL例外
+     * @return ステータスコード
+     */
     protected String getSQLState(SQLException sqlException) {
         SQLException cause = getCauseSQLException(sqlException);
         return cause.getSQLState();
     }
 
+    /**
+     * ベンダー固有のエラーコードを返します。
+     * 
+     * @param sqlException
+     *            SQL例外
+     * @return エラーコード
+     */
     protected int getErrorCode(SQLException sqlException) {
         SQLException cause = getCauseSQLException(sqlException);
         return cause.getErrorCode();
     }
 
+    /**
+     * チェーンされたもっとも上位の {@link SQLException} を返します。
+     * 
+     * @param sqlException
+     *            SQL例外
+     * @return 原因となったより上位のSQL例外
+     */
     protected SQLException getCauseSQLException(SQLException sqlException) {
         SQLException cause = sqlException;
         for (Throwable t : sqlException) {
@@ -266,6 +326,12 @@ public class StandardDialect implements Dialect {
         return sqlLogFormattingVisitor;
     }
 
+    /**
+     * 標準の {@link JdbcMappingVisitor} の実装です。
+     * 
+     * @author taedium
+     * 
+     */
     public static class StandardJdbcMappingVisitor implements
             JdbcMappingVisitor,
             BuiltinDomainVisitor<Void, JdbcMappingFunction, SQLException> {
@@ -389,6 +455,12 @@ public class StandardDialect implements Dialect {
         }
     }
 
+    /**
+     * 標準の {@link SqlLogFormattingVisitor} の実装です。
+     * 
+     * @author taedium
+     * 
+     */
     public static class StandardSqlLogFormattingVisitor
             implements
             SqlLogFormattingVisitor,

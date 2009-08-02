@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 
 import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.domain.Domain;
 import org.seasar.doma.internal.jdbc.dialect.HsqldbPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
@@ -28,18 +29,33 @@ import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
 
 /**
+ * HSQLDB用の方言です。
+ * 
  * @author taedium
  * 
  */
 public class HsqldbDialect extends StandardDialect {
 
+    /** 一意制約違反を表すエラーコード */
     protected static final int UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE = -104;
 
+    /**
+     * インスタンスを構築します。
+     */
     public HsqldbDialect() {
         super(new HsqldbJdbcMappingVisitor(),
                 new HsqldbSqlLogFormattingVisitor());
     }
 
+    /**
+     * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor}
+     * を指定してインスタンスを構築します。
+     * 
+     * @param jdbcMappingVisitor
+     *            {@link Domain} をJDBCの型とマッピングするビジター
+     * @param sqlLogFormattingVisitor
+     *            SQLのバインド変数にマッピングされる {@link Domain} をログ用のフォーマットされた文字列へと変換するビジター
+     */
     public HsqldbDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         super(jdbcMappingVisitor, sqlLogFormattingVisitor);
@@ -115,10 +131,22 @@ public class HsqldbDialect extends StandardDialect {
         return true;
     }
 
+    /**
+     * HSQLDB用の {@link JdbcMappingVisitor} の実装です。
+     * 
+     * @author taedium
+     * 
+     */
     public static class HsqldbJdbcMappingVisitor extends
             StandardJdbcMappingVisitor {
     }
 
+    /**
+     * HSQLDB用の {@link SqlLogFormattingVisitor} の実装です。
+     * 
+     * @author taedium
+     * 
+     */
     public static class HsqldbSqlLogFormattingVisitor extends
             StandardSqlLogFormattingVisitor {
     }

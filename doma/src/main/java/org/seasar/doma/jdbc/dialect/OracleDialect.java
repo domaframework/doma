@@ -21,6 +21,7 @@ import java.util.Collections;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.domain.AbstractBooleanDomain;
+import org.seasar.doma.domain.Domain;
 import org.seasar.doma.internal.jdbc.dialect.OracleForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.OraclePagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
@@ -36,20 +37,36 @@ import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.jdbc.type.JdbcTypes;
 
 /**
+ * Oracle用の方言です。
+ * 
  * @author taedium
  * 
  */
 public class OracleDialect extends StandardDialect {
 
+    /** 一意制約違反を表すエラーコード */
     protected static final int UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE = 1;
 
+    /** {@link ResultSet} の JDBC型 */
     protected static final JdbcType<ResultSet> RESULT_SET = new OracleResultSetType();
 
+    /**
+     * インスタンスを構築します。
+     */
     public OracleDialect() {
         super(new OracleJdbcMappingVisitor(),
                 new OracleSqlLogFormattingVisitor());
     }
 
+    /**
+     * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor}
+     * を指定してインスタンスを構築します。
+     * 
+     * @param jdbcMappingVisitor
+     *            {@link Domain} をJDBCの型とマッピングするビジター
+     * @param sqlLogFormattingVisitor
+     *            SQLのバインド変数にマッピングされる {@link Domain} をログ用のフォーマットされた文字列へと変換するビジター
+     */
     public OracleDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         super(jdbcMappingVisitor, sqlLogFormattingVisitor);
@@ -128,6 +145,12 @@ public class OracleDialect extends StandardDialect {
         return RESULT_SET;
     }
 
+    /**
+     * Oracle用の {@link ResultSet} の {@link JdbcType} の実装です。
+     * 
+     * @author taedium
+     * 
+     */
     public static class OracleResultSetType extends AbstractResultSetType {
 
         protected static int CURSOR = -10;
@@ -137,6 +160,12 @@ public class OracleDialect extends StandardDialect {
         }
     }
 
+    /**
+     * Oracle用の {@link JdbcMappingVisitor} の実装です。
+     * 
+     * @author taedium
+     * 
+     */
     public static class OracleJdbcMappingVisitor extends
             StandardJdbcMappingVisitor {
 
@@ -147,6 +176,12 @@ public class OracleDialect extends StandardDialect {
         }
     }
 
+    /**
+     * Oracle用の {@link SqlLogFormattingVisitor} の実装です。
+     * 
+     * @author taedium
+     * 
+     */
     public static class OracleSqlLogFormattingVisitor extends
             StandardSqlLogFormattingVisitor {
 
