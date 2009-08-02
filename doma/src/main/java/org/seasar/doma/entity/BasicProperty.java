@@ -22,21 +22,44 @@ import org.seasar.doma.jdbc.NameConvention;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
+ * 基本のプロパティです。
+ * 
  * @author taedium
  * 
  */
 public class BasicProperty<D extends Domain<?, ?>> implements EntityProperty<D> {
 
+    /** 名前 */
     protected final String name;
 
+    /** カラム名 */
     protected final String columnName;
 
+    /** ドメイン */
     protected final D domain;
 
+    /** INSERT文に含める対象かどうか */
     protected final boolean insertable;
 
+    /** UPDATE文のSET句に含める対象かどうか */
     protected final boolean updatable;
 
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param name
+     *            名前
+     * @param columnName
+     *            カラム名
+     * @param domain
+     *            ドメイン
+     * @param insertable
+     *            INSERT文に含める対象かどうか
+     * @param updatable
+     *            UPDATE文のSET句に含める対象かどうか
+     * @throws DomaNullPointerException
+     *             {@code name} もしくは {@code domain} が {@code null} の場合
+     */
     public BasicProperty(String name, String columnName, D domain,
             boolean insertable, boolean updatable) {
         if (name == null) {

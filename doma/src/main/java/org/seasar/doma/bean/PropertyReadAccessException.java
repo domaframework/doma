@@ -18,6 +18,8 @@ package org.seasar.doma.bean;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
+ * プロパティの値の取得に失敗した場合にスローされる例外です。
+ * 
  * @author taedium
  * 
  */
@@ -25,10 +27,22 @@ public class PropertyReadAccessException extends BeanException {
 
     private static final long serialVersionUID = 1L;
 
+    /** クラス名 */
     protected final String className;
 
+    /** プロパティ名 */
     protected final String propertyName;
 
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param className
+     *            クラス名
+     * @param propertyName
+     *            プロパティ名
+     * @param cause
+     *            原因
+     */
     public PropertyReadAccessException(String className, String propertyName,
             Throwable cause) {
         super(DomaMessageCode.DOMA6002, cause, className, propertyName, cause);

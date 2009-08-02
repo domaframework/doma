@@ -15,14 +15,21 @@
  */
 package org.seasar.doma.bean;
 
+import org.seasar.doma.DomaNullPointerException;
+
 /**
+ * {@link MethodAccessBeanWrapper} のファクトリです。
+ * 
  * @author taedium
  * 
  */
 public class MethodAccessBeanWrapperFactory implements BeanWrapperFactory {
 
     @Override
-    public BeanWrapper create(Object bean) {
+    public BeanWrapper create(Object bean) throws DomaNullPointerException {
+        if (bean == null) {
+            throw new DomaNullPointerException("bean");
+        }
         return new MethodAccessBeanWrapper(bean);
     }
 

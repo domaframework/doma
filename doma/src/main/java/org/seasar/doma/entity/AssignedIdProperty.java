@@ -18,12 +18,24 @@ package org.seasar.doma.entity;
 import org.seasar.doma.domain.Domain;
 
 /**
+ * アプリケーションにより割り当てられる識別子のプロパティです。
+ * 
  * @author taedium
  * 
  */
 public class AssignedIdProperty<D extends Domain<?, ?>> extends
         BasicProperty<D> {
 
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param name
+     *            名前
+     * @param columnName
+     *            カラム名
+     * @param domain
+     *            ドメイン
+     */
     public AssignedIdProperty(String name, String columnName, D domain) {
         super(name, columnName, domain, true, true);
     }

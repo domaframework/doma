@@ -16,6 +16,8 @@
 package org.seasar.doma.bean;
 
 /**
+ * {@link BeanUtilDelegate} のデフォルトの実装です。
+ * 
  * @author taedium
  * 
  */

@@ -15,11 +15,27 @@
  */
 package org.seasar.doma.bean;
 
+import org.seasar.doma.DomaNullPointerException;
+
 /**
+ * {@link BeanWrapper} のファクトリです。
+ * <p>
+ * このインタフェースの実装はスレッドセーフではければいけません。
+ * </p>
+ * 
  * @author taedium
  * 
  */
 public interface BeanWrapperFactory {
 
-    BeanWrapper create(Object bean);
+    /**
+     * {@link BeanWrapper} の実装を作成します。
+     * 
+     * @param bean
+     *            {@literal JavaBeans}
+     * @return {@link BeanWrapper} の実装
+     * @throws DomaNullPointerException
+     *             {@code bean} が {@code null} の場合
+     */
+    BeanWrapper create(Object bean) throws DomaNullPointerException;
 }

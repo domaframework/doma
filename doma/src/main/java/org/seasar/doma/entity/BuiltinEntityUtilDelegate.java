@@ -15,10 +15,13 @@
  */
 package org.seasar.doma.entity;
 
+import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.domain.Domain;
 
 /**
+ * {@link EntityUtilDelegate} のデフォルトの実装です。
+ * 
  * @author taedium
  * 
  */
@@ -26,12 +29,14 @@ public class BuiltinEntityUtilDelegate implements EntityUtilDelegate {
 
     @Override
     public <D extends Domain<?, ?>> D getDomain(Object entity,
-            Class<D> domainClass, String propertyName) {
+            Class<D> domainClass, String propertyName)
+            throws DomaNullPointerException, DomaIllegalArgumentException {
         if (entity == null) {
             throw new DomaNullPointerException("entity");
         }
         if (!Entity.class.isInstance(entity)) {
-            throw new NonEntityArgumentException("entity", entity);
+            throw new DomaIllegalArgumentException("entity", entity
+                    + " is not entity.");
         }
         if (domainClass == null) {
             throw new DomaNullPointerException("domainClass");

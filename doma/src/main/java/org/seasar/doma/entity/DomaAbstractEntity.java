@@ -23,6 +23,8 @@ import org.seasar.doma.jdbc.NameConvention;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
+ * {@link Entity} の骨格実装です。
+ * 
  * @author taedium
  * 
  */
@@ -36,6 +38,16 @@ public abstract class DomaAbstractEntity<I> implements Entity<I>, Serializable {
 
     private final String __tableName;
 
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param __catalogName
+     *            カタログ名
+     * @param __schemaName
+     *            スキーマ名
+     * @param __tableName
+     *            テーブル名
+     */
     public DomaAbstractEntity(String __catalogName, String __schemaName,
             String __tableName) {
         this.__catalogName = __catalogName;
@@ -45,10 +57,17 @@ public abstract class DomaAbstractEntity<I> implements Entity<I>, Serializable {
 
     public String __getQualifiedTableName(Config config) {
         String tableName = getTableName(config);
-        return TableUtil
-                .buildFullTableName(__catalogName, __schemaName, tableName);
+        return TableUtil.buildFullTableName(__catalogName, __schemaName,
+                tableName);
     }
 
+    /**
+     * テーブル名を返します。
+     * 
+     * @param config
+     *            JDBCの設定
+     * @return テーブル名
+     */
     protected String getTableName(Config config) {
         if (__tableName != null) {
             return __tableName;

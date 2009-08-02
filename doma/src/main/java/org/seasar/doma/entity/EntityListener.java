@@ -16,14 +16,40 @@
 package org.seasar.doma.entity;
 
 /**
+ * エンティティのリスナーです。
+ * 
+ * <p>
+ * このインタフェースの実装はスレッドセーフでなければいけません。
+ * </p>
+ * 
  * @author taedium
  * 
+ * @param <E>
+ *            エンティティの型
  */
 public interface EntityListener<E> {
 
+    /**
+     * 挿入処理の前処理を行います。
+     * 
+     * @param entity
+     *            エンティティ
+     */
     void preInsert(E entity);
 
+    /**
+     * 更新処理の前処理を行います。
+     * 
+     * @param entity
+     *            エンティティ
+     */
     void preUpdate(E entity);
 
+    /**
+     * 削除処理の前処理を行います。
+     * 
+     * @param entity
+     *            エンティティ
+     */
     void preDelete(E entity);
 }

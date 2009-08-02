@@ -27,19 +27,33 @@ import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.FieldUtil;
 
 /**
+ * {@literal public} なフィールドを介してプロパティにアクセスする {@link BeanWrapper} の実装です。
+ * 
  * @author taedium
  * 
  */
 public class FieldAccessBeanWrapper implements BeanWrapper {
 
+    /** {@literal JavaBeans} */
     protected final Object bean;
 
+    /** {@literal JavaBeans}のクラス */
     protected final Class<?> beanClass;
 
+    /** {@link BeanPropertyWrapper}のリスト */
     protected final List<BeanPropertyWrapper> propertyWrappers;
 
+    /** プロパティ名をキー、 {@link BeanPropertyWrapper} を値とするマップ */
     protected final Map<String, BeanPropertyWrapper> propertyWrapperMap;
 
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param bean
+     *            {@literal JavaBeans}
+     * @throws DomaNullPointerException
+     *             {@code bean} が {@code null} の場合
+     */
     public FieldAccessBeanWrapper(Object bean) {
         if (bean == null) {
             throw new DomaNullPointerException("bean");
@@ -67,6 +81,13 @@ public class FieldAccessBeanWrapper implements BeanWrapper {
         return beanClass;
     }
 
+    /**
+     * プロパティ名をキー、 {@link BeanPropertyWrapper} を値とするマップを作成します。
+     * 
+     * @param beanClass
+     *            {@literal JavaBeans} のクラス
+     * @return プロパティ名をキー、 {@link BeanPropertyWrapper} を値とするマップ
+     */
     protected LinkedHashMap<String, BeanPropertyWrapper> createPropertyWrapperMap(
             Class<?> beanClass) {
         LinkedHashMap<String, BeanPropertyWrapper> result = new LinkedHashMap<String, BeanPropertyWrapper>();
@@ -85,10 +106,24 @@ public class FieldAccessBeanWrapper implements BeanWrapper {
         return result;
     }
 
+    /**
+     * {@literal public} なフィールドを介してプロパティにアクセスする {@link BeanPropertyWrapper}
+     * の実装です。
+     * 
+     * @author taedium
+     * 
+     */
     protected class FieldAccessPropertyWrapper implements BeanPropertyWrapper {
 
+        /** {@literal public} なフィールド */
         protected final Field field;
 
+        /**
+         * インスタンスを構築します。
+         * 
+         * @param field
+         *            {@literal public} なフィールド
+         */
         public FieldAccessPropertyWrapper(Field field) {
             this.field = field;
         }

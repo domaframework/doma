@@ -16,10 +16,22 @@
 package org.seasar.doma.bean;
 
 /**
+ * {@link BeanUtil} から処理を委譲されるクラスです。
+ * <p>
+ * このインタフェースの実装はスレッドセーフではければいけません。
+ * </p>
+ * 
  * @author taedium
  * 
  */
 public interface BeanUtilDelegate {
 
+    /**
+     * {@literal JavaBeans} をラップします。
+     * 
+     * @param bean
+     *            {@literal JavaBeans}
+     * @return {@literal JavaBeans} のラッパー
+     */
     BeanWrapper wrap(Object bean);
 }

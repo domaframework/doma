@@ -15,10 +15,13 @@
  */
 package org.seasar.doma.entity;
 
+import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.domain.Domain;
 
 /**
+ * エンティティに関するユーティリティです。
+ * 
  * @author taedium
  * 
  */
@@ -26,13 +29,39 @@ public final class EntityUtil {
 
     private static volatile EntityUtilDelegate delegate = new BuiltinEntityUtilDelegate();
 
-    public static void setDelegate(EntityUtilDelegate delegate) {
+    /**
+     * 委譲先を設定します。
+     * 
+     * @param delegate
+     *            委譲先
+     * @throws DomaNullPointerException
+     *             {@code delegate} が {@code null} の場合
+     */
+    public static void setDelegate(EntityUtilDelegate delegate)
+            throws DomaNullPointerException {
         if (delegate == null) {
             throw new DomaNullPointerException("delegate");
         }
         EntityUtil.delegate = delegate;
     }
 
+    /**
+     * エンティティが保持するドメインをプロパティ名で返します。
+     * 
+     * @param <D>
+     *            ドメインの型
+     * @param entity
+     *            エンティティ
+     * @param domainClass
+     *            ドメインのクラス
+     * @param propertyName
+     *            プロパティ名
+     * @return ドメイン
+     * @throws DomaNullPointerException
+     *             引数のいずれかが {@code null} の場合
+     * @throws DomaIllegalArgumentException
+     *             {@code entity} がエンティティでない場合
+     */
     public <D extends Domain<?, ?>> D getDomain(Object entity,
             Class<D> domainClass, String propertyName) {
         return delegate.getDomain(entity, domainClass, propertyName);

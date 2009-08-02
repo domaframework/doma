@@ -18,14 +18,36 @@ package org.seasar.doma.bean;
 import java.util.List;
 
 /**
+ * {@literal JavaBeans} のラッパーです。
+ * <p>
+ * このインタフェースの実装はスレッドセーフであることを要求されません。
+ * </p>
+ * 
  * @author taedium
  * 
  */
 public interface BeanWrapper {
 
+    /**
+     * プロパティのラッパーを返します。
+     * 
+     * @param name
+     *            プロパティ名
+     * @return プロパティのラッパー
+     */
     BeanPropertyWrapper getBeanPropertyWrapper(String name);
 
+    /**
+     * プロパティのラッパーのリストを返します。
+     * 
+     * @return プロパティのラッパーのリスト
+     */
     List<BeanPropertyWrapper> getBeanPropertyWrappers();
 
+    /**
+     * {@literal JavaBeans} のクラスを返します。
+     * 
+     * @return {@literal JavaBeans} のクラス
+     */
     Class<?> getBeanClass();
 }

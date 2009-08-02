@@ -18,6 +18,8 @@ package org.seasar.doma.bean;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
+ * {@literal JavaBeans} をイントロスペクションに失敗した際にスローされる例外です。
+ * 
  * @author taedium
  * 
  */
@@ -25,6 +27,12 @@ public class IntrospectionException extends BeanException {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param cause
+     *            原因
+     */
     public IntrospectionException(Throwable cause) {
         super(DomaMessageCode.DOMA6003, cause, cause);
     }

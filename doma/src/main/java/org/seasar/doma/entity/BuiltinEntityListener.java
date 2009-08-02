@@ -15,8 +15,12 @@
  */
 package org.seasar.doma.entity;
 
-
 /**
+ * {@link EntityListener} のデフォルトの実装です。
+ * <p>
+ * 何も行いません。
+ * <p>
+ * 
  * @author taedium
  * 
  */

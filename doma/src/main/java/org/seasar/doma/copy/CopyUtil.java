@@ -76,6 +76,8 @@ public final class CopyUtil {
      * 
      * @param delegate
      *            委譲先
+     * @throws DomaNullPointerException
+     *             {@code delegate} が {@code null} の場合
      */
     public static void setDelegate(CopyUtilDelegate delegate)
             throws DomaNullPointerException {
@@ -104,6 +106,7 @@ public final class CopyUtil {
      *             引数のいずれかが {@code null} の場合
      * @throws CopyException
      *             コピーに失敗した場合
+     * @see CopyUtilDelegate#copy(Object, Object, CopyOptions)
      */
     public static void copy(Object src, Object dest)
             throws DomaNullPointerException, CopyException {
@@ -131,6 +134,7 @@ public final class CopyUtil {
      *             引数のいずれかが {@code null} の場合
      * @throws CopyException
      *             コピーに失敗した場合
+     * @see CopyUtilDelegate#copy(Object, Object, CopyOptions)
      */
     public static void copy(Object src, Object dest, CopyOptions copyOptions)
             throws DomaNullPointerException, CopyException {
@@ -154,6 +158,7 @@ public final class CopyUtil {
      *             引数のいずれかが {@code null} の場合
      * @throws CopyException
      *             コピーに失敗した場合
+     * @see CopyUtilDelegate#copy(Map, Object, CopyOptions)
      */
     public static void copy(Object src, Map<String, Object> dest)
             throws DomaNullPointerException, CopyException {
@@ -179,6 +184,7 @@ public final class CopyUtil {
      *             引数のいずれかが {@code null} の場合
      * @throws CopyException
      *             コピーに失敗した場合
+     * @see CopyUtilDelegate#copy(Map, Object, CopyOptions)
      */
     public static void copy(Object src, Map<String, Object> dest,
             CopyOptions copyOptions) throws DomaNullPointerException,
@@ -203,6 +209,7 @@ public final class CopyUtil {
      *             引数のいずれかが {@code null} の場合
      * @throws CopyException
      *             コピーに失敗した場合
+     * @see CopyUtilDelegate#copy(Object, Map, CopyOptions)
      */
     public static void copy(Map<String, Object> src, Object dest)
             throws DomaNullPointerException, CopyException {
@@ -228,6 +235,7 @@ public final class CopyUtil {
      *             引数のいずれかが {@code null} の場合
      * @throws CopyException
      *             コピーに失敗した場合
+     * @see CopyUtilDelegate#copy(Object, Map, CopyOptions)
      */
     public static void copy(Map<String, Object> src, Object dest,
             CopyOptions copyOptions) throws DomaNullPointerException,

@@ -20,17 +20,30 @@ import org.seasar.doma.domain.Domain;
 import org.seasar.doma.jdbc.Config;
 
 /**
+ * 非永続性プロパティです。
+ * 
  * @author taedium
  * 
  */
 public class TransientProperty<D extends Domain<?, ?>> implements
         EntityProperty<D> {
 
+    /** 名前 */
     protected final String name;
 
+    /** ドメイン */
     protected final D domain;
 
-    public TransientProperty(String name, D domain) {
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param name
+     *            名前
+     * @param domain
+     *            ドメイン
+     */
+    public TransientProperty(String name, D domain)
+            throws DomaNullPointerException {
         if (name == null) {
             throw new DomaNullPointerException("name");
         }

@@ -18,6 +18,13 @@ package org.seasar.doma.bean;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
+ * {@literal JavaBeans} に関するユーティリティです。
+ * 
+ * <h4>振る舞いの変更</h4>
+ * 
+ * このクラスの振る舞いは、 {@link #setDelegate(BeanUtilDelegate)} に任意の実装を設定することより変更できます。
+ * <p>
+ * 
  * @author taedium
  * 
  */
@@ -25,13 +32,29 @@ public final class BeanUtil {
 
     private static volatile BeanUtilDelegate delegate = new BuiltinBeanUtilDelegate();
 
-    public static void setDelegate(BeanUtilDelegate delegate) {
+    /**
+     * 委譲先を設定します。
+     * 
+     * @param delegate
+     *            委譲先
+     * @throws DomaNullPointerException
+     *             {@code delegate} が {@code null} の場合
+     */
+    public static void setDelegate(BeanUtilDelegate delegate)
+            throws DomaNullPointerException {
         if (delegate == null) {
             throw new DomaNullPointerException("delegate");
         }
         BeanUtil.delegate = delegate;
     }
 
+    /**
+     * {@literal JavaBeans} をラップします。
+     * 
+     * @param bean
+     *            {@literal JavaBeans}
+     * @return {@literal JavaBeans} のラッパー
+     */
     public static BeanWrapper wrap(Object bean) {
         return delegate.wrap(bean);
     }

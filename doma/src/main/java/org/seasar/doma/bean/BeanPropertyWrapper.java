@@ -16,21 +16,59 @@
 package org.seasar.doma.bean;
 
 /**
+ * {@literal JavaBeans} のプロパティのラッパーです。
+ * <p>
+ * このインタフェースの実装はスレッドセーフであることを要求されません。
+ * </p>
+ * 
  * @author taedium
  * 
  */
 public interface BeanPropertyWrapper {
 
+    /**
+     * 名前を返します。
+     * 
+     * @return 名前
+     */
     String getName();
 
+    /**
+     * プロパティから値を取得できるかどうかを返します。
+     * 
+     * @return 値を返却できる場合 {@code true}
+     */
     boolean isValueGettable();
 
-    Object getValue();
+    /**
+     * プロパティの値を取得します。
+     * 
+     * @return 値
+     * @throws PropertyReadAccessException
+     *             取得に失敗した場合
+     */
+    Object getValue() throws PropertyReadAccessException;
 
+    /**
+     * プロパティに値を設定できるかどうかを返します。
+     * 
+     * @return 値を設定できる場合 {@code true}
+     */
     boolean isValueSettable();
 
-    void setValue(Object value);
+    /**
+     * プロパティに値を設定します。
+     * 
+     * @param value
+     * @throws PropertyWriteAccessException
+     */
+    void setValue(Object value) throws PropertyWriteAccessException;
 
+    /**
+     * プロパティのクラスを返します。
+     * 
+     * @return プロパティのクラス
+     */
     Class<?> getPropertyClass();
 
 }

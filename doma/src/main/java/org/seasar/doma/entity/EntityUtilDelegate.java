@@ -15,14 +15,39 @@
  */
 package org.seasar.doma.entity;
 
+import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.domain.Domain;
 
 /**
+ * {@link EntityUtil} から処理を委譲されるクラスです。
+ * <p>
+ * このインタフェースの実装はスレッドセーフでなければいけません。
+ * </p>
+ * 
  * @author taedium
  * 
  */
 public interface EntityUtilDelegate {
 
-    <D extends Domain<?, ?>> D getDomain(Object entity, Class<D> propertyClass,
-            String propertyName);
+    /**
+     * エンティティが保持するドメインをプロパティ名で返します。
+     * 
+     * @param <D>
+     *            ドメインの型
+     * @param entity
+     *            エンティティ
+     * @param domainClass
+     *            ドメインのクラス
+     * @param propertyName
+     *            プロパティ名
+     * @return ドメイン
+     * @throws DomaNullPointerException
+     *             引数のいずれかが {@code null} の場合
+     * @throws DomaIllegalArgumentException
+     *             {@code entity} がエンティティでない場合
+     */
+    <D extends Domain<?, ?>> D getDomain(Object entity, Class<D> domainClass,
+            String propertyName) throws DomaNullPointerException,
+            DomaIllegalArgumentException;
 }

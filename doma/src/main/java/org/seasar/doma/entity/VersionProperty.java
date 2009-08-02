@@ -18,12 +18,24 @@ package org.seasar.doma.entity;
 import org.seasar.doma.domain.NumberDomain;
 
 /**
+ * バージョンプロパティです。
+ * 
  * @author taedium
  * 
  */
 public class VersionProperty<D extends NumberDomain<?, ?>> extends
         BasicProperty<D> {
 
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param name
+     *            名前
+     * @param columnName
+     *            カラム名
+     * @param domain
+     *            ドメイン
+     */
     public VersionProperty(String name, String columnName, D domain) {
         super(name, columnName, domain, true, true);
     }
@@ -33,12 +45,21 @@ public class VersionProperty<D extends NumberDomain<?, ?>> extends
         return true;
     }
 
+    /**
+     * 必要ならばバージョン番号を設定します。
+     * 
+     * @param value
+     *            バージョン番号
+     */
     public void setIfNecessary(Number value) {
         if (domain.isNull() || domain.get().intValue() < 0) {
             domain.set(value);
         }
     }
 
+    /**
+     * バージョン番号を増分します。
+     */
     public void increment() {
         if (domain.isNotNull()) {
             int i = domain.get().intValue();

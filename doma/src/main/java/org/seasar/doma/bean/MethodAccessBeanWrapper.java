@@ -30,20 +30,35 @@ import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.MethodUtil;
 
 /**
+ * {@literal public} な{@literal getter/setter} メソッドを介してプロパティにアクセスする
+ * {@link BeanWrapper} です。
+ * 
  * @author taedium
  * 
  */
 public class MethodAccessBeanWrapper implements BeanWrapper {
 
+    /** {@literal JavaBeans} */
     protected final Object bean;
 
+    /** {@literal JavaBeans}のクラス */
     protected final Class<?> beanClass;
 
+    /** {@link BeanPropertyWrapper}のリスト */
     protected final List<BeanPropertyWrapper> propertyWrappers;
 
+    /** プロパティ名をキー、 {@link BeanPropertyWrapper} を値とするマップ */
     protected final Map<String, BeanPropertyWrapper> propertyWrapperMap;
 
-    public MethodAccessBeanWrapper(Object bean) {
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param bean
+     *            {@literal JavaBeans}
+     * @throws DomaNullPointerException
+     *             {@code bean} が {@code null} の場合
+     */
+    public MethodAccessBeanWrapper(Object bean) throws DomaNullPointerException {
         if (bean == null) {
             throw new DomaNullPointerException("bean");
         }
@@ -70,6 +85,13 @@ public class MethodAccessBeanWrapper implements BeanWrapper {
         return beanClass;
     }
 
+    /**
+     * プロパティ名をキー、 {@link BeanPropertyWrapper} を値とするマップを作成します。
+     * 
+     * @param beanClass
+     *            {@literal JavaBeans} のクラス
+     * @return プロパティ名をキー、 {@link BeanPropertyWrapper} を値とするマップ
+     */
     protected LinkedHashMap<String, BeanPropertyWrapper> createPropertyWrapperMap(
             Class<?> beanClass) {
         LinkedHashMap<String, BeanPropertyWrapper> result = new LinkedHashMap<String, BeanPropertyWrapper>();
@@ -84,6 +106,13 @@ public class MethodAccessBeanWrapper implements BeanWrapper {
         return result;
     }
 
+    /**
+     * {@link BeanInfo} を取得します。
+     * 
+     * @param beanClass
+     *            {@literal JavaBeans} のクラス
+     * @return {@link BeanInfo}
+     */
     protected BeanInfo getBeanInfo(Class<?> beanClass) {
         try {
             return Introspector.getBeanInfo(beanClass);
@@ -92,14 +121,30 @@ public class MethodAccessBeanWrapper implements BeanWrapper {
         }
     }
 
+    /**
+     * {@literal public} な{@literal getter/setter} メソッドを介してプロパティにアクセスする
+     * {@link BeanPropertyWrapper} の実装です。
+     * 
+     * @author taedium
+     * 
+     */
     protected class MethodAccessPropertyWrapper implements BeanPropertyWrapper {
 
+        /** プロパティ記述 */
         protected final PropertyDescriptor propertyDescriptor;
 
+        /** {@literal getter} メソッド */
         protected final Method readMethod;
 
+        /** {@literal setter} メソッド */
         protected final Method writeMethod;
 
+        /**
+         * インスタンスを構築します。
+         * 
+         * @param propertyDescriptor
+         *            プロパティ記述
+         */
         public MethodAccessPropertyWrapper(PropertyDescriptor propertyDescriptor) {
             this.propertyDescriptor = propertyDescriptor;
             this.readMethod = propertyDescriptor.getReadMethod();
@@ -147,7 +192,6 @@ public class MethodAccessBeanWrapper implements BeanWrapper {
                         propertyDescriptor.getName(), cause);
             }
         }
-
     }
 
 }

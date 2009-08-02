@@ -19,6 +19,8 @@ import org.seasar.doma.DomaException;
 import org.seasar.doma.MessageCode;
 
 /**
+ * {@liteal JavaBeans} に関する例外です。
+ * 
  * @author taedium
  * 
  */
