@@ -1,23 +1,23 @@
 package org.seasar.doma.internal.apt.entity;
 
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
-public class ChildEntity_ extends org.seasar.doma.entity.DomaAbstractEntity<org.seasar.doma.internal.apt.entity.ChildEntity> implements org.seasar.doma.internal.apt.entity.ChildEntity, java.io.Serializable {
+public class ChildEntity_ extends org.seasar.doma.jdbc.entity.DomaAbstractEntity<org.seasar.doma.internal.apt.entity.ChildEntity> implements org.seasar.doma.internal.apt.entity.ChildEntity, java.io.Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private static final org.seasar.doma.entity.BuiltinEntityListener __listener = new org.seasar.doma.entity.BuiltinEntityListener();
+    private static final org.seasar.doma.jdbc.entity.BuiltinEntityListener __listener = new org.seasar.doma.jdbc.entity.BuiltinEntityListener();
 
-    private transient org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain> aaa = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain>("aaa", null, new org.seasar.doma.domain.IntegerDomain(), true, true);
+    private transient org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain> aaa = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain>("aaa", null, new org.seasar.doma.domain.IntegerDomain(), true, true);
 
-    private transient org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain> bbb = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain>("bbb", null, new org.seasar.doma.domain.IntegerDomain(), true, true);
+    private transient org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain> bbb = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain>("bbb", null, new org.seasar.doma.domain.IntegerDomain(), true, true);
 
-    private transient org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.StringDomain> ccc = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.StringDomain>("ccc", null, new org.seasar.doma.domain.StringDomain(), true, true);
+    private transient org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.StringDomain> ccc = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.StringDomain>("ccc", null, new org.seasar.doma.domain.StringDomain(), true, true);
 
     private final String __name = "ChildEntity";
 
-    private transient java.util.List<org.seasar.doma.entity.EntityProperty<?>> __entityProperties;
+    private transient java.util.List<org.seasar.doma.jdbc.entity.EntityProperty<?>> __entityProperties;
 
-    private transient java.util.Map<String, org.seasar.doma.entity.EntityProperty<?>> __entityPropertyMap;
+    private transient java.util.Map<String, org.seasar.doma.jdbc.entity.EntityProperty<?>> __entityPropertyMap;
 
     public ChildEntity_() {
         super(null, null, null);
@@ -64,9 +64,9 @@ public class ChildEntity_ extends org.seasar.doma.entity.DomaAbstractEntity<org.
     }
 
     @Override
-    public java.util.List<org.seasar.doma.entity.EntityProperty<?>> __getEntityProperties() {
+    public java.util.List<org.seasar.doma.jdbc.entity.EntityProperty<?>> __getEntityProperties() {
         if (__entityProperties == null) {
-            java.util.List<org.seasar.doma.entity.EntityProperty<?>> __list = new java.util.ArrayList<org.seasar.doma.entity.EntityProperty<?>>();
+            java.util.List<org.seasar.doma.jdbc.entity.EntityProperty<?>> __list = new java.util.ArrayList<org.seasar.doma.jdbc.entity.EntityProperty<?>>();
             __list.add(aaa);
             __list.add(bbb);
             __list.add(ccc);
@@ -76,9 +76,9 @@ public class ChildEntity_ extends org.seasar.doma.entity.DomaAbstractEntity<org.
     }
 
     @Override
-    public org.seasar.doma.entity.EntityProperty<?> __getEntityProperty(String __name) {
+    public org.seasar.doma.jdbc.entity.EntityProperty<?> __getEntityProperty(String __name) {
         if (__entityPropertyMap == null) {
-            java.util.Map<String, org.seasar.doma.entity.EntityProperty<?>> __map = new java.util.HashMap<String, org.seasar.doma.entity.EntityProperty<?>>();
+            java.util.Map<String, org.seasar.doma.jdbc.entity.EntityProperty<?>> __map = new java.util.HashMap<String, org.seasar.doma.jdbc.entity.EntityProperty<?>>();
             __map.put("aaa", aaa);
             __map.put("bbb", bbb);
             __map.put("ccc", ccc);
@@ -88,12 +88,12 @@ public class ChildEntity_ extends org.seasar.doma.entity.DomaAbstractEntity<org.
     }
 
     @Override
-    public org.seasar.doma.entity.GeneratedIdProperty<?> __getGeneratedIdProperty() {
+    public org.seasar.doma.jdbc.entity.GeneratedIdProperty<?> __getGeneratedIdProperty() {
         return null;
     }
 
     @Override
-    public org.seasar.doma.entity.VersionProperty<?> __getVersionProperty() {
+    public org.seasar.doma.jdbc.entity.VersionProperty<?> __getVersionProperty() {
         return null;
     }
 
@@ -104,9 +104,9 @@ public class ChildEntity_ extends org.seasar.doma.entity.DomaAbstractEntity<org.
 
     private void readObject(java.io.ObjectInputStream inputStream) throws java.io.IOException, java.lang.ClassNotFoundException {
         inputStream.defaultReadObject();
-        aaa = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain>("aaa", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject(), true, true);
-        bbb = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain>("bbb", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject(), true, true);
-        ccc = new org.seasar.doma.entity.BasicProperty<org.seasar.doma.domain.StringDomain>("ccc", null, (org.seasar.doma.domain.StringDomain)inputStream.readObject(), true, true);
+        aaa = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain>("aaa", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject(), true, true);
+        bbb = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain>("bbb", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject(), true, true);
+        ccc = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.StringDomain>("ccc", null, (org.seasar.doma.domain.StringDomain)inputStream.readObject(), true, true);
     }
 
     private void writeObject(java.io.ObjectOutputStream outputStream) throws java.io.IOException {

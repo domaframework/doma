@@ -34,9 +34,9 @@ import org.seasar.doma.converter.Converter;
 import org.seasar.doma.converter.Converters;
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.domain.DomainUtil;
-import org.seasar.doma.entity.Entity;
-import org.seasar.doma.entity.EntityProperty;
 import org.seasar.doma.internal.util.ClassUtil;
+import org.seasar.doma.jdbc.entity.Entity;
+import org.seasar.doma.jdbc.entity.EntityProperty;
 
 /**
  * {@link CopyUtilDelegate} のデフォルトの実装です。

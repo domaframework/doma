@@ -25,10 +25,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.seasar.doma.domain.Domain;
-import org.seasar.doma.entity.Entity;
-import org.seasar.doma.entity.EntityProperty;
 import org.seasar.doma.internal.jdbc.query.Query;
+import org.seasar.doma.internal.jdbc.util.ColumnUtil;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.entity.Entity;
+import org.seasar.doma.jdbc.entity.EntityProperty;
 
 /**
  * @author taedium
@@ -71,7 +72,8 @@ public class EntityFetcher {
         List<EntityProperty<?>> properties = entity.__getEntityProperties();
         nameMap = new HashMap<String, String>(properties.size());
         for (EntityProperty<?> property : properties) {
-            String columnName = property.getColumnName(query.getConfig());
+            String columnName = ColumnUtil.getColumnName(query.getConfig(),
+                    property);
             nameMap.put(columnName.toLowerCase(), property.getName());
         }
     }

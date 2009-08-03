@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.seasar.doma.internal.jdbc.query.BatchModifyQuery;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
+import org.seasar.doma.internal.jdbc.util.JdbcUtil;
 import org.seasar.doma.jdbc.BatchOptimisticLockException;
 import org.seasar.doma.jdbc.BatchSqlExecutionException;
 import org.seasar.doma.jdbc.BatchUniqueConstraintException;

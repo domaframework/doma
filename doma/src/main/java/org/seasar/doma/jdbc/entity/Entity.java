@@ -13,11 +13,10 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.entity;
+package org.seasar.doma.jdbc.entity;
 
 import java.util.List;
 
-import org.seasar.doma.jdbc.Config;
 
 /**
  * エンティティを表します。
@@ -41,13 +40,25 @@ public interface Entity<I> {
     String __getName();
 
     /**
-     * テーブルの完全修飾名を返します。
+     * カタログ名を返します。
      * 
-     * @param __config
-     *            JDBCの設定
-     * @return テーブルの完全修飾名
+     * @return カタログ名、存在しない場合 {@code null}
      */
-    String __getQualifiedTableName(Config __config);
+    String __getCatalogName();
+
+    /**
+     * スキーマ名を返します。
+     * 
+     * @return スキーマ名、存在しない場合 {@code null}
+     */
+    String __getSchemaName();
+
+    /**
+     * テーブル名を返します。
+     * 
+     * @return テーブル名、存在しない場合 {@code null}
+     */
+    String __getTableName();
 
     /**
      * 生成される識別子プロパティを返します。

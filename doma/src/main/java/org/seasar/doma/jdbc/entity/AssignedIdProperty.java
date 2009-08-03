@@ -13,17 +13,17 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.entity;
+package org.seasar.doma.jdbc.entity;
 
-import org.seasar.doma.domain.NumberDomain;
+import org.seasar.doma.domain.Domain;
 
 /**
- * バージョンプロパティです。
+ * アプリケーションにより割り当てられる識別子のプロパティです。
  * 
  * @author taedium
  * 
  */
-public class VersionProperty<D extends NumberDomain<?, ?>> extends
+public class AssignedIdProperty<D extends Domain<?, ?>> extends
         BasicProperty<D> {
 
     /**
@@ -36,35 +36,13 @@ public class VersionProperty<D extends NumberDomain<?, ?>> extends
      * @param domain
      *            ドメイン
      */
-    public VersionProperty(String name, String columnName, D domain) {
+    public AssignedIdProperty(String name, String columnName, D domain) {
         super(name, columnName, domain, true, true);
     }
 
     @Override
-    public boolean isVersion() {
+    public boolean isId() {
         return true;
-    }
-
-    /**
-     * 必要ならばバージョン番号を設定します。
-     * 
-     * @param value
-     *            バージョン番号
-     */
-    public void setIfNecessary(Number value) {
-        if (domain.isNull() || domain.get().intValue() < 0) {
-            domain.set(value);
-        }
-    }
-
-    /**
-     * バージョン番号を増分します。
-     */
-    public void increment() {
-        if (domain.isNotNull()) {
-            int i = domain.get().intValue();
-            domain.set(i + 1);
-        }
     }
 
 }

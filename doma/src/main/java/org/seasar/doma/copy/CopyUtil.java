@@ -20,7 +20,7 @@ import java.util.Map;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.bean.BeanUtil;
 import org.seasar.doma.bean.BeanUtilDelegate;
-import org.seasar.doma.entity.Entity;
+import org.seasar.doma.jdbc.entity.Entity;
 
 /**
  * コピーに関するユーティリティです。

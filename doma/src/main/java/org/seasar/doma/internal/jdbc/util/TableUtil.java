@@ -13,9 +13,14 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.util;
+package org.seasar.doma.internal.jdbc.util;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
+
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.NameConvention;
+import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.jdbc.entity.Entity;
 
 /**
  * @author taedium
@@ -23,7 +28,15 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
  */
 public final class TableUtil {
 
-    public static String buildFullTableName(String catalogName,
+    public static String getQualifiedTableName(Config config, Entity<?> entity) {
+        assertNotNull(config, entity);
+        String catalogName = entity.__getCatalogName();
+        String schemaName = entity.__getSchemaName();
+        String tableName = getTableName(config, entity);
+        return getQualifiedTableName(catalogName, schemaName, tableName);
+    }
+
+    public static String getQualifiedTableName(String catalogName,
             String schemaName, String tableName) {
         assertNotNull(tableName);
         StringBuilder buf = new StringBuilder();
@@ -34,5 +47,14 @@ public final class TableUtil {
             buf.append(schemaName).append(".");
         }
         return buf.append(tableName).toString();
+    }
+
+    protected static String getTableName(Config config, Entity<?> entity) {
+        if (entity.__getTableName() != null) {
+            return entity.__getTableName();
+        }
+        Dialect dialect = config.dialect();
+        NameConvention nameConvention = config.nameConvention();
+        return nameConvention.fromEntityToTable(entity.__getName(), dialect);
     }
 }

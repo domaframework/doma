@@ -13,14 +13,10 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.entity;
+package org.seasar.doma.jdbc.entity;
 
 import java.io.Serializable;
 
-import org.seasar.doma.internal.util.TableUtil;
-import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.NameConvention;
-import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
  * {@link Entity} の骨格実装です。
@@ -55,26 +51,35 @@ public abstract class DomaAbstractEntity<I> implements Entity<I>, Serializable {
         this.__tableName = __tableName;
     }
 
-    public String __getQualifiedTableName(Config config) {
-        String tableName = getTableName(config);
-        return TableUtil.buildFullTableName(__catalogName, __schemaName,
-                tableName);
+    @Override
+    public String __getCatalogName() {
+        return __catalogName;
     }
 
-    /**
-     * テーブル名を返します。
-     * 
-     * @param config
-     *            JDBCの設定
-     * @return テーブル名
-     */
-    protected String getTableName(Config config) {
-        if (__tableName != null) {
-            return __tableName;
-        }
-        Dialect dialect = config.dialect();
-        NameConvention nameConvention = config.nameConvention();
-        return nameConvention.fromEntityToTable(__getName(), dialect);
+    @Override
+    public String __getSchemaName() {
+        return __schemaName;
     }
+
+    @Override
+    public String __getTableName() {
+        return __tableName;
+    }
+
+    // /**
+    // * テーブル名を返します。
+    // *
+    // * @param config
+    // * JDBCの設定
+    // * @return テーブル名
+    // */
+    // protected String getTableName(Config config) {
+    // if (__tableName != null) {
+    // return __tableName;
+    // }
+    // Dialect dialect = config.dialect();
+    // NameConvention nameConvention = config.nameConvention();
+    // return nameConvention.fromEntityToTable(__getName(), dialect);
+    // }
 
 }

@@ -13,10 +13,9 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.entity;
+package org.seasar.doma.jdbc.entity;
 
 import org.seasar.doma.domain.Domain;
-import org.seasar.doma.jdbc.Config;
 
 /**
  * エンティティのプロパティを表します。
@@ -49,11 +48,9 @@ public interface EntityProperty<D extends Domain<?, ?>> {
     /**
      * カラム名を返します。
      * 
-     * @param config
-     *            JDBCの設定
-     * @return カラム名
+     * @return カラム名、存在しない場合 {@code null}
      */
-    String getColumnName(Config config);
+    String getColumnName();
 
     /**
      * 識別子かどうかを返します。

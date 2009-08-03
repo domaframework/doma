@@ -19,11 +19,11 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.Iterator;
 
-import org.seasar.doma.entity.Entity;
-import org.seasar.doma.entity.EntityProperty;
-import org.seasar.doma.entity.VersionProperty;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
+import org.seasar.doma.jdbc.entity.Entity;
+import org.seasar.doma.jdbc.entity.EntityProperty;
+import org.seasar.doma.jdbc.entity.VersionProperty;
 
 /**
  * @author taedium

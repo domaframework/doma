@@ -22,8 +22,8 @@ import java.lang.annotation.Target;
 
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.domain.SerializableDomain;
-import org.seasar.doma.entity.BuiltinEntityListener;
-import org.seasar.doma.entity.EntityListener;
+import org.seasar.doma.jdbc.entity.BuiltinEntityListener;
+import org.seasar.doma.jdbc.entity.EntityListener;
 
 /**
  * テーブル、結果セット、もしくはパラメータの集合を示します。

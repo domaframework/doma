@@ -24,6 +24,7 @@ import java.sql.SQLException;
 
 import org.seasar.doma.internal.jdbc.query.SelectQuery;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
+import org.seasar.doma.internal.jdbc.util.JdbcUtil;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.SqlExecutionException;
 import org.seasar.doma.jdbc.dialect.Dialect;

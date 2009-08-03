@@ -28,13 +28,6 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.domain.ArrayListDomain;
-import org.seasar.doma.entity.AssignedIdProperty;
-import org.seasar.doma.entity.BasicProperty;
-import org.seasar.doma.entity.DomaAbstractEntity;
-import org.seasar.doma.entity.EntityProperty;
-import org.seasar.doma.entity.GeneratedIdProperty;
-import org.seasar.doma.entity.TransientProperty;
-import org.seasar.doma.entity.VersionProperty;
 import org.seasar.doma.internal.apt.meta.ColumnMeta;
 import org.seasar.doma.internal.apt.meta.EntityDelegateMeta;
 import org.seasar.doma.internal.apt.meta.EntityMeta;
@@ -45,6 +38,13 @@ import org.seasar.doma.internal.apt.meta.IdentityIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.SequenceIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.TableIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.TableMeta;
+import org.seasar.doma.jdbc.entity.AssignedIdProperty;
+import org.seasar.doma.jdbc.entity.BasicProperty;
+import org.seasar.doma.jdbc.entity.DomaAbstractEntity;
+import org.seasar.doma.jdbc.entity.EntityProperty;
+import org.seasar.doma.jdbc.entity.GeneratedIdProperty;
+import org.seasar.doma.jdbc.entity.TransientProperty;
+import org.seasar.doma.jdbc.entity.VersionProperty;
 
 /**
  * 

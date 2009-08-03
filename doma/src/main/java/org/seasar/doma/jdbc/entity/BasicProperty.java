@@ -13,36 +13,52 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.entity;
+package org.seasar.doma.jdbc.entity;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.domain.Domain;
-import org.seasar.doma.jdbc.Config;
 
 /**
- * 非永続性プロパティです。
+ * 基本のプロパティです。
  * 
  * @author taedium
  * 
  */
-public class TransientProperty<D extends Domain<?, ?>> implements
-        EntityProperty<D> {
+public class BasicProperty<D extends Domain<?, ?>> implements EntityProperty<D> {
 
     /** 名前 */
     protected final String name;
 
+    /** カラム名 */
+    protected final String columnName;
+
     /** ドメイン */
     protected final D domain;
+
+    /** INSERT文に含める対象かどうか */
+    protected final boolean insertable;
+
+    /** UPDATE文のSET句に含める対象かどうか */
+    protected final boolean updatable;
 
     /**
      * インスタンスを構築します。
      * 
      * @param name
      *            名前
+     * @param columnName
+     *            カラム名
      * @param domain
      *            ドメイン
+     * @param insertable
+     *            INSERT文に含める対象かどうか
+     * @param updatable
+     *            UPDATE文のSET句に含める対象かどうか
+     * @throws DomaNullPointerException
+     *             {@code name} もしくは {@code domain} が {@code null} の場合
      */
-    public TransientProperty(String name, D domain) {
+    public BasicProperty(String name, String columnName, D domain,
+            boolean insertable, boolean updatable) {
         if (name == null) {
             throw new DomaNullPointerException("name");
         }
@@ -50,17 +66,10 @@ public class TransientProperty<D extends Domain<?, ?>> implements
             throw new DomaNullPointerException("domain");
         }
         this.name = name;
+        this.columnName = columnName;
         this.domain = domain;
-    }
-
-    @Override
-    public String getColumnName(Config config) {
-        return null;
-    }
-
-    @Override
-    public D getDomain() {
-        return domain;
+        this.insertable = insertable;
+        this.updatable = updatable;
     }
 
     @Override
@@ -69,17 +78,17 @@ public class TransientProperty<D extends Domain<?, ?>> implements
     }
 
     @Override
+    public String getColumnName() {
+        return columnName;
+    }
+
+    @Override
+    public D getDomain() {
+        return domain;
+    }
+
+    @Override
     public boolean isId() {
-        return false;
-    }
-
-    @Override
-    public boolean isInsertable() {
-        return false;
-    }
-
-    @Override
-    public boolean isUpdatable() {
         return false;
     }
 
@@ -89,12 +98,23 @@ public class TransientProperty<D extends Domain<?, ?>> implements
     }
 
     @Override
+    public boolean isInsertable() {
+        return insertable;
+    }
+
+    @Override
+    public boolean isUpdatable() {
+        return updatable;
+    }
+
+    @Override
     public boolean isTransient() {
-        return true;
+        return false;
     }
 
     @Override
     public String toString() {
         return domain != null ? domain.toString() : null;
     }
+
 }

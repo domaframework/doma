@@ -13,37 +13,22 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.entity;
+package org.seasar.doma.jdbc.entity;
 
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.domain.Domain;
 
 /**
- * エンティティに関するユーティリティです。
+ * {@link EntityUtil} から処理を委譲されるクラスです。
+ * <p>
+ * このインタフェースの実装はスレッドセーフでなければいけません。
+ * </p>
  * 
  * @author taedium
  * 
  */
-public final class EntityUtil {
-
-    private static volatile EntityUtilDelegate delegate = new BuiltinEntityUtilDelegate();
-
-    /**
-     * 委譲先を設定します。
-     * 
-     * @param delegate
-     *            委譲先
-     * @throws DomaNullPointerException
-     *             {@code delegate} が {@code null} の場合
-     */
-    public static void setDelegate(EntityUtilDelegate delegate)
-            throws DomaNullPointerException {
-        if (delegate == null) {
-            throw new DomaNullPointerException("delegate");
-        }
-        EntityUtil.delegate = delegate;
-    }
+public interface EntityUtilDelegate {
 
     /**
      * エンティティが保持するドメインをプロパティ名で返します。
@@ -62,9 +47,6 @@ public final class EntityUtil {
      * @throws DomaIllegalArgumentException
      *             {@code entity} がエンティティでない場合
      */
-    public <D extends Domain<?, ?>> D getDomain(Object entity,
-            Class<D> domainClass, String propertyName) {
-        return delegate.getDomain(entity, domainClass, propertyName);
-    }
-
+    <D extends Domain<?, ?>> D getDomain(Object entity, Class<D> domainClass,
+            String propertyName);
 }

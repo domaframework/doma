@@ -23,6 +23,7 @@ import java.sql.SQLException;
 
 import org.seasar.doma.internal.jdbc.query.ModifyQuery;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
+import org.seasar.doma.internal.jdbc.util.JdbcUtil;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.doma.jdbc.SqlExecutionException;

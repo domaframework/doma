@@ -13,36 +13,29 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.entity;
-
-import org.seasar.doma.domain.Domain;
+package org.seasar.doma.jdbc.entity;
 
 /**
- * アプリケーションにより割り当てられる識別子のプロパティです。
+ * {@link EntityListener} のデフォルトの実装です。
+ * <p>
+ * 何も行いません。
+ * <p>
  * 
  * @author taedium
  * 
  */
-public class AssignedIdProperty<D extends Domain<?, ?>> extends
-        BasicProperty<D> {
+public class BuiltinEntityListener implements EntityListener<Object> {
 
-    /**
-     * インスタンスを構築します。
-     * 
-     * @param name
-     *            名前
-     * @param columnName
-     *            カラム名
-     * @param domain
-     *            ドメイン
-     */
-    public AssignedIdProperty(String name, String columnName, D domain) {
-        super(name, columnName, domain, true, true);
+    @Override
+    public void preInsert(Object entity) {
     }
 
     @Override
-    public boolean isId() {
-        return true;
+    public void preUpdate(Object entity) {
+    }
+
+    @Override
+    public void preDelete(Object entity) {
     }
 
 }

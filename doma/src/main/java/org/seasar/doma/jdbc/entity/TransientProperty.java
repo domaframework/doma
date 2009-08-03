@@ -13,55 +13,35 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.entity;
+package org.seasar.doma.jdbc.entity;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.domain.Domain;
-import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.NameConvention;
-import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
- * 基本のプロパティです。
+ * 非永続性プロパティです。
  * 
  * @author taedium
  * 
  */
-public class BasicProperty<D extends Domain<?, ?>> implements EntityProperty<D> {
+public class TransientProperty<D extends Domain<?, ?>> implements
+        EntityProperty<D> {
 
     /** 名前 */
     protected final String name;
 
-    /** カラム名 */
-    protected final String columnName;
-
     /** ドメイン */
     protected final D domain;
-
-    /** INSERT文に含める対象かどうか */
-    protected final boolean insertable;
-
-    /** UPDATE文のSET句に含める対象かどうか */
-    protected final boolean updatable;
 
     /**
      * インスタンスを構築します。
      * 
      * @param name
      *            名前
-     * @param columnName
-     *            カラム名
      * @param domain
      *            ドメイン
-     * @param insertable
-     *            INSERT文に含める対象かどうか
-     * @param updatable
-     *            UPDATE文のSET句に含める対象かどうか
-     * @throws DomaNullPointerException
-     *             {@code name} もしくは {@code domain} が {@code null} の場合
      */
-    public BasicProperty(String name, String columnName, D domain,
-            boolean insertable, boolean updatable) {
+    public TransientProperty(String name, D domain) {
         if (name == null) {
             throw new DomaNullPointerException("name");
         }
@@ -69,25 +49,12 @@ public class BasicProperty<D extends Domain<?, ?>> implements EntityProperty<D> 
             throw new DomaNullPointerException("domain");
         }
         this.name = name;
-        this.columnName = columnName;
         this.domain = domain;
-        this.insertable = insertable;
-        this.updatable = updatable;
     }
 
     @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String getColumnName(Config config) {
-        if (columnName != null) {
-            return columnName;
-        }
-        Dialect dialect = config.dialect();
-        NameConvention nameConvention = config.nameConvention();
-        return nameConvention.fromPropertyToColumn(name, dialect);
+    public String getColumnName() {
+        return null;
     }
 
     @Override
@@ -96,7 +63,22 @@ public class BasicProperty<D extends Domain<?, ?>> implements EntityProperty<D> 
     }
 
     @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
     public boolean isId() {
+        return false;
+    }
+
+    @Override
+    public boolean isInsertable() {
+        return false;
+    }
+
+    @Override
+    public boolean isUpdatable() {
         return false;
     }
 
@@ -106,23 +88,12 @@ public class BasicProperty<D extends Domain<?, ?>> implements EntityProperty<D> 
     }
 
     @Override
-    public boolean isInsertable() {
-        return insertable;
-    }
-
-    @Override
-    public boolean isUpdatable() {
-        return updatable;
-    }
-
-    @Override
     public boolean isTransient() {
-        return false;
+        return true;
     }
 
     @Override
     public String toString() {
         return domain != null ? domain.toString() : null;
     }
-
 }

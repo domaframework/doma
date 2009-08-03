@@ -22,13 +22,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.seasar.doma.entity.Entity;
-import org.seasar.doma.entity.EntityProperty;
-import org.seasar.doma.entity.VersionProperty;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
+import org.seasar.doma.internal.jdbc.util.ColumnUtil;
+import org.seasar.doma.internal.jdbc.util.TableUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
+import org.seasar.doma.jdbc.entity.Entity;
+import org.seasar.doma.jdbc.entity.EntityProperty;
+import org.seasar.doma.jdbc.entity.VersionProperty;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -82,12 +84,13 @@ public abstract class AutoModifyQuery<I, E extends Entity<I>> implements
     }
 
     protected void prepareTableAndColumnNames() {
-        tableName = entity.__getQualifiedTableName(config);
+        tableName = TableUtil.getQualifiedTableName(config, entity);
         for (EntityProperty<?> p : entity.__getEntityProperties()) {
             if (p.isTransient()) {
                 continue;
             }
-            columnNameMap.put(p.getName(), p.getColumnName(config));
+            String columnName = ColumnUtil.getColumnName(config, p);
+            columnNameMap.put(p.getName(), columnName);
         }
     }
 

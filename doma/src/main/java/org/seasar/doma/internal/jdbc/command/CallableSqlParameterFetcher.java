@@ -24,7 +24,6 @@ import java.sql.Statement;
 import java.util.List;
 
 import org.seasar.doma.domain.Domain;
-import org.seasar.doma.entity.Entity;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlParameter;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlParameterVisitor;
@@ -37,8 +36,10 @@ import org.seasar.doma.internal.jdbc.sql.InOutParameter;
 import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.ListParameter;
 import org.seasar.doma.internal.jdbc.sql.OutParameter;
+import org.seasar.doma.internal.jdbc.util.JdbcUtil;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.jdbc.entity.Entity;
 import org.seasar.doma.jdbc.type.JdbcType;
 
 /**

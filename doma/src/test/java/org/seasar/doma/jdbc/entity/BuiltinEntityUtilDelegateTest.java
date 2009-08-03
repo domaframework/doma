@@ -13,13 +13,14 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.entity;
+package org.seasar.doma.jdbc.entity;
 
 import junit.framework.TestCase;
 
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.domain.IntegerDomain;
 import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.jdbc.entity.BuiltinEntityUtilDelegate;
 
 import example.entity.Emp;
 import example.entity.Emp_;

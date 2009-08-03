@@ -21,10 +21,10 @@ import java.util.List;
 import org.seasar.doma.domain.BigDecimalDomain;
 import org.seasar.doma.domain.IntegerDomain;
 import org.seasar.doma.domain.StringDomain;
-import org.seasar.doma.entity.DomaAbstractEntity;
-import org.seasar.doma.entity.GeneratedIdProperty;
-import org.seasar.doma.entity.EntityProperty;
-import org.seasar.doma.entity.VersionProperty;
+import org.seasar.doma.jdbc.entity.DomaAbstractEntity;
+import org.seasar.doma.jdbc.entity.EntityProperty;
+import org.seasar.doma.jdbc.entity.GeneratedIdProperty;
+import org.seasar.doma.jdbc.entity.VersionProperty;
 
 /**
  * @author taedium
