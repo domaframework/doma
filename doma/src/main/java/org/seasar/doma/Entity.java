@@ -56,8 +56,6 @@ import org.seasar.doma.jdbc.entity.EntityListener;
  * }
  * </pre>
  * 
- * 注釈されたインタフェースは、 {@link Entity} もしくは {@link MappedSuperclass}
- * が注釈されたインタフェースのみを継承できます。
  * <p>
  * {@link Delegate} が注釈されていないメソッドの 戻り値の型がすべて {@link SerializableDomain}
  * のサブタイプであれば、注釈されたインタフェースの実装は直列化可能です。
