@@ -16,9 +16,9 @@
 package org.seasar.doma;
 
 /**
- * {@literal Doma}の中でルートとなる実行時例外です。
+ * {@literal Doma} の中でルートとなる実行時例外です。
  * <p>
- * {@literal Doma}で定義される実行時例外はすべてこのクラスのサブタイプとなります。
+ * {@literal Doma} で定義される実行時例外はすべてこのクラスのサブタイプとなります。
  * 
  * @author taedium
  * 

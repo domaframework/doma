@@ -60,6 +60,10 @@ import org.seasar.doma.jdbc.JdbcException;
  * </ul>
  * 
  * @author taedium
+ * @see In
+ * @see InOut
+ * @see Out
+ * @see ResultSet
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

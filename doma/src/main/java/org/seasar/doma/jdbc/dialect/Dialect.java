@@ -31,7 +31,7 @@ import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.type.JdbcType;
 
 /**
- * RDBMSの方言です。RDBMSの差異を吸収します。
+ * {@literal RDBMS} の方言です。{@literal RDBMS} の差異を吸収します。
  * <p>
  * このインタフェースの実装はスレッドセーフでなければいけません。
  * <p>

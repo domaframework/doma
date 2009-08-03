@@ -28,8 +28,10 @@ import org.seasar.doma.jdbc.entity.EntityListener;
 /**
  * テーブル、結果セット、もしくはパラメータの集合を示します。
  * <p>
- * このアノテーションは、トップレベルのインタフェースに指定できます。 インタフェースのメンバメソッドは、 {@link Delegate}
- * で注釈されていない限り、次の制約を満たす必要があります。
+ * このアノテーションは、トップレベルのインタフェースに指定できます。 注釈されたインタフェースは {@link MappedSuperclass} および
+ * {@link Entity} が注釈されたインタフェースのみを拡張できます。
+ * <p>
+ * インタフェースのメンバメソッドは、 {@link Delegate} で注釈されていない限り、次の制約を満たす必要があります。
  * <ul>
  * <li>パラメータは受け取らない。
  * <li>戻り値の型は {@link Domain} の実装クラスである。
@@ -64,6 +66,13 @@ import org.seasar.doma.jdbc.entity.EntityListener;
  * <p>
  * 
  * @author taedium
+ * @see MappedSuperclass
+ * @see Table
+ * @see Column
+ * @see Delegate
+ * @see Id
+ * @see Transient
+ * @see Version
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

@@ -24,7 +24,7 @@ import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * JDBCの型を表現します。 型ごとに異なる処理を抽象化します。
+ * {@literal JDBC} の型を表現します。 型ごとに異なる処理を抽象化します。
  * <p>
  * このインタフェースの実装はスレッドセーフでなければいけません。
  * <p>

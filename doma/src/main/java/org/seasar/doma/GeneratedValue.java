@@ -51,6 +51,9 @@ import org.seasar.doma.domain.NumberDomain;
  * </pre>
  * 
  * @author taedium
+ * @see GenerationType
+ * @see SequenceGenerator
+ * @see TableGenerator
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

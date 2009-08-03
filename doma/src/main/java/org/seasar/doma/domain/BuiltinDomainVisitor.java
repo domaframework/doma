@@ -16,6 +16,8 @@
 package org.seasar.doma.domain;
 
 /**
+ * あらかじめ用意された {@link DomainVisitor} です。
+ * 
  * @author taedium
  * 
  */

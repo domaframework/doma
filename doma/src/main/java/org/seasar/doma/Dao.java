@@ -25,8 +25,10 @@ import org.seasar.doma.jdbc.Config;
 /**
  * {@literal Data Access Object} であることを示します。
  * <p>
- * このアノテーションは、トップレベルのインタフェースに指定できます。 インタフェースのメンバメソッドには、メタアノテーション {@link DaoMethod}
- * でマークされたアノテーションを指定しなければいけません。
+ * このアノテーションは、トップレベルのインタフェースに指定できます。注釈されたインタフェースは他のインタフェースを拡張できません。
+ * 
+ * <p>
+ * インタフェースのメンバメソッドには、メタアノテーション {@link DaoMethod} でマークされたアノテーションを指定しなければいけません。
  * 
  * <h5>例:</h5>
  * 
@@ -42,15 +44,30 @@ import org.seasar.doma.jdbc.Config;
  * 注釈されたインタフェースの実装はスレッドセーフでなければいけません。
  * 
  * @author taedium
+ * @see ArrayFactory
+ * @see BatchDelete
+ * @see BatchInsert
+ * @see BatchUpdate
+ * @see BlobFactory
+ * @see ClobFactory
+ * @see Delegate
+ * @see Delete
+ * @see Function
+ * @see Insert
+ * @see NClobFactory
+ * @see Procedure
+ * @see Select
+ * @see Update
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Dao {
 
     /**
-     * {@literal Data Access Object}を実行する際の設定（JDBCの接続情報やRDBMSの方言等）です。
+     * {@literal Data Access Object} を実行する際の設定（ {@literal JDBC} の接続情報や
+     * {@literal RDBMS} の方言等）です。
      * <p>
-     * ここに指定されたクラスは、{@code Dao}が注釈されたインタフェースの実装クラスがインスタンス化されるごとにインスタンス化されます。
+     * ここに指定されたクラスは、{@code Dao} が注釈されたインタフェースの実装クラスがインスタンス化されるごとにインスタンス化されます。
      */
     Class<? extends Config> config();
 

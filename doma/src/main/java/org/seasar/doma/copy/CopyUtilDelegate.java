@@ -22,7 +22,7 @@ import org.seasar.doma.DomaNullPointerException;
 /**
  * {@link CopyUtil} から処理を委譲されるクラスです。
  * <p>
- * このインタフェースの実装はスレッドセーフではければいけません。
+ * このインタフェースの実装はスレッドセーフでなければいけません。
  * </p>
  * 
  * @author taedium
