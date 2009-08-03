@@ -15,7 +15,7 @@ public class DomaIllegalArgumentException extends DomaException {
 
     private static final long serialVersionUID = 1L;
 
-    /** 不正な引数のパラメータの名前 */
+    /** 不正な引数のパラメータ名 */
     protected final String parameterName;
 
     /** 不正な引数であることの説明 */
@@ -25,7 +25,7 @@ public class DomaIllegalArgumentException extends DomaException {
      * インスタンスを構築します。
      * 
      * @param parameterName
-     *            不正な引数のパラメータの名前
+     *            不正な引数のパラメータ名
      * @param description
      *            不正な引数であることの説明
      */
@@ -35,10 +35,20 @@ public class DomaIllegalArgumentException extends DomaException {
         this.description = description;
     }
 
+    /**
+     * 不正な引数のパラメータ名を返します。
+     * 
+     * @return 不正な引数のパラメータ名
+     */
     public String getParameterName() {
         return parameterName;
     }
 
+    /**
+     * 不正な引数であることの説明を返します。
+     * 
+     * @return 不正な引数であることの説明
+     */
     public String getDescription() {
         return description;
     }

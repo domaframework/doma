@@ -33,7 +33,7 @@ public class UnsupportedConversionException extends ConversionException {
     /** 変換先のクラス */
     protected final String destClassName;
 
-    /** 変換対象の値 */
+    /** 変換元の値 */
     protected final Object value;
 
     /**
@@ -44,7 +44,7 @@ public class UnsupportedConversionException extends ConversionException {
      * @param destClassName
      *            変換先のクラス
      * @param value
-     *            変換対象の値
+     *            変換元の値
      */
     public UnsupportedConversionException(String srcClassName,
             String destClassName, Object value) {
@@ -54,14 +54,29 @@ public class UnsupportedConversionException extends ConversionException {
         this.value = value;
     }
 
+    /**
+     * 変換元のクラスを返します。
+     * 
+     * @return 変換元のクラス
+     */
     public String getSrcClassName() {
         return srcClassName;
     }
 
+    /**
+     * 変換先のクラスを返します。
+     * 
+     * @return 変換先のクラス
+     */
     public String getDestClassName() {
         return destClassName;
     }
 
+    /**
+     * 変換元の値を返します。
+     * 
+     * @return 変換元の値
+     */
     public Object getValue() {
         return value;
     }

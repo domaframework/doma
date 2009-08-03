@@ -19,6 +19,8 @@ import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * バッチ処理時に楽観的排他制御に失敗した場合にスローされる例外です。
+ * <p>
+ * {@link #getFormattedSql()}は {@code null} を返します。
  * 
  * @author taedium
  * 

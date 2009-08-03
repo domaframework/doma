@@ -58,7 +58,7 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * 注釈されるメソッドは、次の例外をスローすることがあります。
  * <ul>
  * <li> {@link DomaNullPointerException} パラメータに {@code null} を渡した場合
- * <li> {@link OptimisticLockException} 個々の処理において更新件数が1件でなかった場合
+ * <li> {@link OptimisticLockException} バッチのそれぞれの処理において更新件数が1件でなかった場合
  * <li> {@link SqlFileNotFoundException}
  * SQLファイルにマッピングしている場合で、かつSQLファイルが見つからなかった場合
  * <li> {@link JdbcException} 上記以外でJDBCに関する例外が発生した場合

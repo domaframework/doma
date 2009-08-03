@@ -27,10 +27,22 @@ public class DomainIllegalStateException extends DomainException {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 不正な状態の説明を指定してインスタンスを構築します。
+     * 
+     * @param description
+     *            不正な状態の説明
+     */
     public DomainIllegalStateException(String description) {
         super(DomaMessageCode.DOMA1005, description);
     }
 
+    /**
+     * 不正な状態の原因を指定してインスタンスを構築します。
+     * 
+     * @param cause
+     *            不正な状態の原因
+     */
     public DomainIllegalStateException(Throwable cause) {
         super(DomaMessageCode.DOMA1005, cause, cause);
     }

@@ -39,7 +39,9 @@ public abstract class DomaAbstractDao {
      * 実行時用の設定を作成します。
      * 
      * @param config
+     *            JDBCの設定
      * @param dataSource
+     *            データソース
      */
     public DomaAbstractDao(Config config, DataSource dataSource) {
         if (config == null) {

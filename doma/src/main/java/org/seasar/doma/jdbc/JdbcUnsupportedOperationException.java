@@ -27,7 +27,7 @@ public class JdbcUnsupportedOperationException extends JdbcException {
 
     private static final long serialVersionUID = 1L;
 
-    /** サポートされていないメソッドが属するクラスの名前 */
+    /** サポートされていないメソッドを持つクラスの名前 */
     protected final String className;
 
     /** サポートされていないメソッドの名前 */
@@ -37,7 +37,7 @@ public class JdbcUnsupportedOperationException extends JdbcException {
      * インスタンスを構築します。
      * 
      * @param className
-     *            サポートされていないメソッドが属するクラスの名前
+     *            サポートされていないメソッドを持つクラスの名前
      * @param methodName
      *            サポートされていないメソッドの名前
      */
@@ -47,10 +47,20 @@ public class JdbcUnsupportedOperationException extends JdbcException {
         this.methodName = methodName;
     }
 
+    /**
+     * サポートされていないメソッドを持つクラスの名前を返します。
+     * 
+     * @return サポートされていないメソッドを持つクラスの名前
+     */
     public String getClassName() {
         return className;
     }
 
+    /**
+     * サポートされていないメソッドの名前を返します。
+     * 
+     * @return サポートされていないメソッドの名前
+     */
     public String getMethodName() {
         return methodName;
     }

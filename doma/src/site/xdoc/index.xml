@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>Welcome to Doma Project</title>
+	</properties>
+	<body>
+		<section name="Doma Project">
+			<p>
+				<strong>Aptina</strong>
+				Domaプロジェクトは，
+				<a href="http://jcp.org/en/jsr/detail?id=269">
+					Pluggable Annotation Processing API (JSR 269)
+				</a>
+				を利用した O/R Mapping フレームワークを提供します。
+			</p>
+		</section>
+		<section name="News">
+			<dl>
+			</dl>
+		</section>
+	</body>
+</document>

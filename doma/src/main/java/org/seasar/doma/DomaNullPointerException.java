@@ -44,6 +44,11 @@ public class DomaNullPointerException extends DomaException {
         this.parameterName = parameterName;
     }
 
+    /**
+     * {@code null} であるパラメータの名前を返します。
+     * 
+     * @return {@code null} であるパラメータの名前
+     */
     public String getParameterName() {
         return parameterName;
     }

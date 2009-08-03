@@ -164,6 +164,7 @@ public class CopyOptions {
      * {@literal JavaBeans} にどのようにアクセスするかを決める {@link BeanWrapper} のファクトリを設定します。
      * 
      * @param beanWrapperFactory
+     *            {@link BeanWrapper} のファクトリ
      * @return このインスタンス
      */
     public CopyOptions beanWrapperFactory(BeanWrapperFactory beanWrapperFactory) {

@@ -57,14 +57,29 @@ public class PropertyCopyException extends CopyException {
         this.srcPropertyValue = srcPropertyValue;
     }
 
+    /**
+     * コピー元のクラス名を返します。
+     * 
+     * @return コピー元のクラス名
+     */
     public String getSrcClassName() {
         return srcClassName;
     }
 
+    /**
+     * コピー元のプロパティ名を返します。
+     * 
+     * @return コピー元のプロパティ名
+     */
     public String getSrcPropertyName() {
         return srcPropertyName;
     }
 
+    /**
+     * コピー元の値を返します。
+     * 
+     * @return コピー元の値
+     */
     public Object getSrcPropertyValue() {
         return srcPropertyValue;
     }

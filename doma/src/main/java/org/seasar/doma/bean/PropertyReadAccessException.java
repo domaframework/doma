@@ -27,7 +27,7 @@ public class PropertyReadAccessException extends BeanException {
 
     private static final long serialVersionUID = 1L;
 
-    /** クラス名 */
+    /** プロパティを持つクラスの名前 */
     protected final String className;
 
     /** プロパティ名 */
@@ -37,7 +37,7 @@ public class PropertyReadAccessException extends BeanException {
      * インスタンスを構築します。
      * 
      * @param className
-     *            クラス名
+     *            プロパティを持つクラスの名前
      * @param propertyName
      *            プロパティ名
      * @param cause
@@ -50,10 +50,20 @@ public class PropertyReadAccessException extends BeanException {
         this.propertyName = propertyName;
     }
 
+    /**
+     * プロパティを持つクラスの名前を返します。
+     * 
+     * @return プロパティを持つクラスの名前
+     */
     public String getClassName() {
         return className;
     }
 
+    /**
+     * プロパティ名を返します。
+     * 
+     * @return プロパティ名
+     */
     public String getPropertyName() {
         return propertyName;
     }

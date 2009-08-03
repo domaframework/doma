@@ -62,10 +62,20 @@ public class DomaException extends RuntimeException {
         this.args = args;
     }
 
+    /**
+     * メッセージコードを返します。
+     * 
+     * @return メッセージコード
+     */
     public MessageCode getMessageCode() {
         return messageCode;
     }
 
+    /**
+     * メッセージへの引数を返します。
+     * 
+     * @return メッセージへの引数
+     */
     public Object getArgs() {
         return args;
     }

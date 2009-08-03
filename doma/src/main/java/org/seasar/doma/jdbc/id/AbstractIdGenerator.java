@@ -73,7 +73,9 @@ public abstract class AbstractIdGenerator implements IdGenerator {
      * @param config
      *            識別子生成の設定
      * @param preparedStatement
+     *            準備された文
      * @throws SQLException
+     *             SQL例外が発生した場合
      */
     protected void setupOptions(IdGenerationConfig config,
             PreparedStatement preparedStatement) throws SQLException {
@@ -94,6 +96,7 @@ public abstract class AbstractIdGenerator implements IdGenerator {
      * @param config
      *            識別子生成の設定
      * @param resultSet
+     *            結果セット
      * @return 生成された識別子の値
      * @throws JdbcException
      *             識別子の取得に失敗した場合

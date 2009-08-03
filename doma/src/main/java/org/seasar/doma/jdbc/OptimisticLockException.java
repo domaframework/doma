@@ -74,10 +74,20 @@ public class OptimisticLockException extends JdbcException {
         this.formattedSql = null;
     }
 
+    /**
+     * 未加工SQLを返します。
+     * 
+     * @return 未加工SQL
+     */
     public String getRawSql() {
         return rawSql;
     }
 
+    /**
+     * フォーマット済みSQLを返します。
+     * 
+     * @return フォーマット済みSQL、存在しない場合 {@code null}
+     */
     public String getFormattedSql() {
         return formattedSql;
     }

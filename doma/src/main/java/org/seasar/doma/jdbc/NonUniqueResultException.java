@@ -57,10 +57,20 @@ public class NonUniqueResultException extends JdbcException {
         this.formattedSql = formattedSql;
     }
 
+    /**
+     * 未加工SQLを返します。
+     * 
+     * @return 未加工SQL
+     */
     public String getRawSql() {
         return rawSql;
     }
 
+    /**
+     * フォーマット済みSQLを返します。
+     * 
+     * @return フォーマット済みSQL
+     */
     public String getFormattedSql() {
         return formattedSql;
     }

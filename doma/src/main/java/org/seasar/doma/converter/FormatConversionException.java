@@ -50,10 +50,20 @@ public class FormatConversionException extends ConversionException {
         this.pattern = pattern;
     }
 
+    /**
+     * フォーマット対象の値を返します。
+     * 
+     * @return フォーマット対象の値
+     */
     public String getValue() {
         return value;
     }
 
+    /**
+     * フォーマットに使用されるパターンを返します。
+     * 
+     * @return フォーマットに使用されるパターン
+     */
     public String getPattern() {
         return pattern;
     }

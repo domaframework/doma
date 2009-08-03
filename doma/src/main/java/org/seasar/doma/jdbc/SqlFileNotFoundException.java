@@ -27,20 +27,25 @@ public class SqlFileNotFoundException extends JdbcException {
 
     private static final long serialVersionUID = 1L;
 
-    /** SQLファイルのパス */
+    /** 見つからないSQLファイルのパス */
     protected final String path;
 
     /**
      * SQLファイルのパスを指定してインスタンスを構築します。
      * 
      * @param path
-     *            SQLファイルのパス
+     *            見つからないSQLファイルのパス
      */
     public SqlFileNotFoundException(String path) {
         super(DomaMessageCode.DOMA2011, path);
         this.path = path;
     }
 
+    /**
+     * 見つからないSQLファイルのパスを返します。
+     * 
+     * @return 見つからないSQLファイルのパス
+     */
     public String getPath() {
         return path;
     }

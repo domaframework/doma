@@ -68,6 +68,7 @@ public class BuiltinIdentityIdGenerator extends AbstractIdGenerator implements
      * @param config
      *            識別子生成の設定
      * @param statement
+     *            INSERT文を実行した {@link Statement}
      * @return 識別子
      * @throws JdbcException
      *             識別子の取得に失敗した場合

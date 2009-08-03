@@ -47,7 +47,7 @@ public interface SqlNode {
     /**
      * このノードをコピー(deep copy)します。
      * 
-     * @retur このノードのコピー
+     * @return このノードのコピー
      */
     SqlNode copy();
 

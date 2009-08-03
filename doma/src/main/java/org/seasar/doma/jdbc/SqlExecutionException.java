@@ -95,14 +95,29 @@ public class SqlExecutionException extends JdbcException {
         this.rootCause = rootCause;
     }
 
+    /**
+     * 未加工SQLを返します。
+     * 
+     * @return 未加工SQL
+     */
     public String getRawSql() {
         return rawSql;
     }
 
+    /**
+     * フォーマット済みSQLを返します。
+     * 
+     * @return フォーマット済みSQL、存在しない場合 {@code null}
+     */
     public String getFormattedSql() {
         return formattedSql;
     }
 
+    /**
+     * 根本原因を返します。
+     * 
+     * @return 根本原因
+     */
     public Throwable getRootCause() {
         return rootCause;
     }

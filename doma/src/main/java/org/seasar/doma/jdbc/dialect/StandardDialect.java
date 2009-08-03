@@ -167,9 +167,13 @@ public class StandardDialect implements Dialect {
      * 悲観的排他制御用のSQLノードに変換します。
      * 
      * @param sqlNode
+     *            SQLノード
      * @param forUpdateType
+     *            悲観的排他制御の種別
      * @param waitSeconds
+     *            ロック取得の待機時間（秒）
      * @param aliases
+     *            ロック対象のカラムやテーブルのエイリアス
      * @return 変換されたSQLノード
      */
     protected SqlNode toForUpdateSqlNode(SqlNode sqlNode,

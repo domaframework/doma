@@ -68,7 +68,7 @@ import org.seasar.doma.jdbc.Config;
  * <p>
  * {@code to}要素に指定されるクラスは次の制約を満たさなければいけません。
  * <ul>
- * <li> {@config Entity} が注釈されたインタフェース型のパラメータを受け取る {@code public} なコンストラクタをもつ。
+ * <li> {@code Entity} が注釈されたインタフェース型のパラメータを受け取る {@code public} なコンストラクタをもつ。
  * <li>注釈されたメソッドと同じシグニチャのメソッドをもつ。
  * </ul>
  * 

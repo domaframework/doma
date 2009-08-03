@@ -114,9 +114,12 @@ public abstract class AbstractJdbcType<T> implements JdbcType<T> {
      * サブクラスで {@link ResultSet} から値を取得します。
      * 
      * @param resultSet
+     *            結果セット
      * @param index
+     *            インデックス
      * @return 値
      * @throws SQLException
+     *             SQL例外が発生した場合
      */
     protected abstract T doGetValue(ResultSet resultSet, int index)
             throws SQLException;
@@ -125,9 +128,13 @@ public abstract class AbstractJdbcType<T> implements JdbcType<T> {
      * サブクラスで {@link PreparedStatement} に値を設定します。
      * 
      * @param preparedStatement
+     *            準備された文
      * @param index
+     *            インデックス
      * @param value
+     *            値
      * @throws SQLException
+     *             SQL例外が発生した場合
      */
     protected abstract void doSetValue(PreparedStatement preparedStatement,
             int index, T value) throws SQLException;
@@ -136,9 +143,12 @@ public abstract class AbstractJdbcType<T> implements JdbcType<T> {
      * サブクラスで {@link CallableStatement} から値を取得します。
      * 
      * @param callableStatement
+     *            ストアドファンクションまたはプロシージャーを実行可能な文
      * @param index
+     *            インデックス
      * @return 値
      * @throws SQLException
+     *             SQL例外が発生した場合
      */
     protected abstract T doGetValue(CallableStatement callableStatement,
             int index) throws SQLException;

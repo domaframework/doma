@@ -54,8 +54,8 @@ public interface JdbcLogger {
      *            {@literal Data Access Object}のクラス名
      * @param callerMethodName
      *            {@literal Data Access Object}のメソッド名
-     * @param args
-     *            メソッドの引数
+     * @param result
+     *            メソッドの実行結果
      * @throws DomaNullPointerException
      *             {@code callerClassName} もしくは {@code callerMethodName} が
      *             {@code null} の場合
