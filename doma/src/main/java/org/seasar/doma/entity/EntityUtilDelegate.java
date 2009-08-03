@@ -48,6 +48,5 @@ public interface EntityUtilDelegate {
      *             {@code entity} がエンティティでない場合
      */
     <D extends Domain<?, ?>> D getDomain(Object entity, Class<D> domainClass,
-            String propertyName) throws DomaNullPointerException,
-            DomaIllegalArgumentException;
+            String propertyName);
 }

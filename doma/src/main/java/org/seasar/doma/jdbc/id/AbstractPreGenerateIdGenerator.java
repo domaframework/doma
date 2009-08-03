@@ -75,15 +75,14 @@ public abstract class AbstractPreGenerateIdGenerator extends
     }
 
     @Override
-    public Long generatePreInsert(IdGenerationConfig config)
-            throws JdbcException {
+    public Long generatePreInsert(IdGenerationConfig config) {
         IdContext idContext = getIdContext(config);
         return idContext.getNextValue(config);
     }
 
     @Override
     public Long generatePostInsert(IdGenerationConfig config,
-            Statement statement) throws JdbcException {
+            Statement statement) {
         return null;
     }
 
@@ -117,8 +116,7 @@ public abstract class AbstractPreGenerateIdGenerator extends
      * @throws JdbcException
      *             新しい初期値の取得に失敗した場合
      */
-    protected abstract long getNewInitialValue(IdGenerationConfig config)
-            throws JdbcException;
+    protected abstract long getNewInitialValue(IdGenerationConfig config);
 
     /**
      * 識別子コンテキストです。
@@ -145,8 +143,7 @@ public abstract class AbstractPreGenerateIdGenerator extends
          * @throws JdbcException
          *             次の識別子の生成に失敗した場合
          */
-        public synchronized long getNextValue(IdGenerationConfig config)
-                throws JdbcException {
+        public synchronized long getNextValue(IdGenerationConfig config) {
             if (allocated < allocationSize) {
                 return initValue + allocated++;
             }

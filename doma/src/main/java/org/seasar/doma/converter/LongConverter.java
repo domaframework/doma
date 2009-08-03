@@ -30,8 +30,7 @@ public class LongConverter implements Converter<Long> {
     protected final ConversionSupport conversionSupport = new ConversionSupport();
 
     @Override
-    public Long convert(Object value, String pattern)
-            throws ConversionException {
+    public Long convert(Object value, String pattern) {
         if (value == null) {
             return null;
         }
@@ -57,12 +56,9 @@ public class LongConverter implements Converter<Long> {
      *            文字列
      * @param pattern
      *            パターン
-     * @return パースされた値
-     * @throws ConversionException
-     *             変換に失敗した場合
+     * @return パースされた値 @ 変換に失敗した場合
      */
-    protected Number parse(String value, String pattern)
-            throws ConversionException {
+    protected Number parse(String value, String pattern) {
         String p = pattern != null ? pattern : DEFAULT_PATTERN;
         return conversionSupport.parseToNumber(value, p);
     }

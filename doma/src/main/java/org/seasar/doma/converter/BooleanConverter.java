@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.converter;
 
-
 /**
  * {@link Boolean} へのコンバーターです。
  * 
@@ -25,8 +24,7 @@ package org.seasar.doma.converter;
 public class BooleanConverter implements Converter<Boolean> {
 
     @Override
-    public Boolean convert(Object value, String pattern)
-            throws ConversionException {
+    public Boolean convert(Object value, String pattern) {
         if (value == null) {
             return null;
         }

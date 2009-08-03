@@ -91,8 +91,7 @@ public class PostgresDialect extends StandardDialect {
     }
 
     @Override
-    public boolean isUniqueConstraintViolated(SQLException sqlException)
-            throws DomaNullPointerException {
+    public boolean isUniqueConstraintViolated(SQLException sqlException) {
         if (sqlException == null) {
             throw new DomaNullPointerException("sqlException");
         }
@@ -102,7 +101,7 @@ public class PostgresDialect extends StandardDialect {
 
     @Override
     public PreparedSql getIdentitySelectSql(String qualifiedTableName,
-            String columnName) throws DomaNullPointerException {
+            String columnName) {
         if (qualifiedTableName == null) {
             throw new DomaNullPointerException("qualifiedTableName");
         }
@@ -121,7 +120,7 @@ public class PostgresDialect extends StandardDialect {
 
     @Override
     public PreparedSql getSequenceNextValSql(String qualifiedSequenceName,
-            long allocationSize) throws DomaNullPointerException {
+            long allocationSize) {
         if (qualifiedSequenceName == null) {
             throw new DomaNullPointerException("qualifiedSequenceName");
         }

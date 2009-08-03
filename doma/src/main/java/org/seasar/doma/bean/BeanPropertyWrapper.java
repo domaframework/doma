@@ -47,7 +47,7 @@ public interface BeanPropertyWrapper {
      * @throws PropertyReadAccessException
      *             取得に失敗した場合
      */
-    Object getValue() throws PropertyReadAccessException;
+    Object getValue();
 
     /**
      * プロパティに値を設定できるかどうかを返します。
@@ -62,7 +62,7 @@ public interface BeanPropertyWrapper {
      * @param value
      * @throws PropertyWriteAccessException
      */
-    void setValue(Object value) throws PropertyWriteAccessException;
+    void setValue(Object value);
 
     /**
      * プロパティのクラスを返します。

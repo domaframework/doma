@@ -47,8 +47,7 @@ public final class DomainUtil {
      * @throws DomainReflectionException
      *             値の設定に失敗した場合
      */
-    public static void set(Domain<?, ?> domain, Object value)
-            throws DomainReflectionException {
+    public static void set(Domain<?, ?> domain, Object value) {
         delegate.set(domain, value);
     }
 }

@@ -44,9 +44,7 @@ public class BuiltinSqlFileRepository implements SqlFileRepository {
     protected final ConcurrentMap<String, SqlFile> sqlFileMap = new ConcurrentHashMap<String, SqlFile>(
             200);
 
-    public SqlFile getSqlFile(String path, Dialect dialect)
-            throws DomaNullPointerException, DomaIllegalArgumentException,
-            SqlFileNotFoundException, JdbcException {
+    public SqlFile getSqlFile(String path, Dialect dialect) {
         if (path == null) {
             throw new DomaNullPointerException("path");
         }
@@ -79,8 +77,7 @@ public class BuiltinSqlFileRepository implements SqlFileRepository {
      *            方言
      * @return SQLファイル
      */
-    protected SqlFile createSqlFile(String path, Dialect dialect)
-            throws SqlFileNotFoundException, JdbcException {
+    protected SqlFile createSqlFile(String path, Dialect dialect) {
         String primaryPath = getPrimaryPath(path, dialect);
         String sql = getSql(primaryPath);
         if (sql != null) {
@@ -129,7 +126,7 @@ public class BuiltinSqlFileRepository implements SqlFileRepository {
      *            パス
      * @return SQLの文字列
      */
-    protected String getSql(String path) throws JdbcException {
+    protected String getSql(String path) {
         try {
             return ResourceUtil.getResourceAsString(path);
         } catch (WrapException e) {

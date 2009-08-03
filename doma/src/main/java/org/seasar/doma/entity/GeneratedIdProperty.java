@@ -53,7 +53,7 @@ public class GeneratedIdProperty<D extends NumberDomain<?, ?>> extends
      *             {@code idGenerator} が {@code null} の場合
      */
     public GeneratedIdProperty(String name, String columnName, D domain,
-            IdGenerator idGenerator) throws DomaNullPointerException {
+            IdGenerator idGenerator) {
         super(name, columnName, domain, true, true);
         if (idGenerator == null) {
             throw new DomaNullPointerException("idGenerator");
@@ -74,8 +74,7 @@ public class GeneratedIdProperty<D extends NumberDomain<?, ?>> extends
      * @throws JdbcException
      *             識別子を生成する方法がサポートされてない場合
      */
-    public void validateGenerationStrategy(IdGenerationConfig config)
-            throws JdbcException {
+    public void validateGenerationStrategy(IdGenerationConfig config) {
         Dialect dialect = config.getDialect();
         GenerationType generationType = idGenerator.getGenerationType();
         if (!isGenerationTypeSupported(generationType, dialect)) {

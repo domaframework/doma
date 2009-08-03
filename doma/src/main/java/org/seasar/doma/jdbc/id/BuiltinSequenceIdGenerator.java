@@ -16,7 +16,6 @@
 package org.seasar.doma.jdbc.id;
 
 import org.seasar.doma.GenerationType;
-import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.Sql;
 
 /**
@@ -41,8 +40,7 @@ public class BuiltinSequenceIdGenerator extends AbstractPreGenerateIdGenerator
     }
 
     @Override
-    protected long getNewInitialValue(IdGenerationConfig config)
-            throws JdbcException {
+    protected long getNewInitialValue(IdGenerationConfig config) {
         Sql<?> sql = config.getDialect().getSequenceNextValSql(
                 qualifiedSequenceName, allocationSize);
         return getGeneratedValue(config, sql);

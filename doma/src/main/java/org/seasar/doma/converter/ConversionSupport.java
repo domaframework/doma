@@ -42,8 +42,7 @@ public class ConversionSupport {
      * @throws ConversionException
      *             パースに失敗した場合
      */
-    public Number parseToNumber(String value, String pattern)
-            throws ConversionException {
+    public Number parseToNumber(String value, String pattern) {
         if (value == null) {
             throw new DomaNullPointerException("value");
         }
@@ -70,8 +69,7 @@ public class ConversionSupport {
      * @throws ConversionException
      *             パースに失敗した場合
      */
-    public Date parseToDate(String value, String pattern)
-            throws ConversionException {
+    public Date parseToDate(String value, String pattern) {
         if (value == null) {
             throw new DomaNullPointerException("value");
         }
@@ -98,8 +96,7 @@ public class ConversionSupport {
      * @throws ConversionException
      *             フォーマットに失敗した場合
      */
-    public String formatFromNumber(Number value, String pattern)
-            throws ConversionException {
+    public String formatFromNumber(Number value, String pattern) {
         if (value == null) {
             throw new DomaNullPointerException("value");
         }
@@ -125,8 +122,7 @@ public class ConversionSupport {
      * @throws ConversionException
      *             フォーマットに失敗した場合
      */
-    public String formatFromDate(Date value, String pattern)
-            throws ConversionException {
+    public String formatFromDate(Date value, String pattern) {
         if (value == null) {
             throw new DomaNullPointerException("value");
         }

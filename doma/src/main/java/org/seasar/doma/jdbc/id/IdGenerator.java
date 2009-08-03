@@ -70,7 +70,7 @@ public interface IdGenerator {
      * @throws JdbcException
      *             識別子の生成に失敗した場合
      */
-    Long generatePreInsert(IdGenerationConfig config) throws JdbcException;
+    Long generatePreInsert(IdGenerationConfig config);
 
     /**
      * INSERTの実行後に識別子を生成します。
@@ -83,8 +83,7 @@ public interface IdGenerator {
      * @throws JdbcException
      *             識別子の生成に失敗した場合
      */
-    Long generatePostInsert(IdGenerationConfig config, Statement statement)
-            throws JdbcException;
+    Long generatePostInsert(IdGenerationConfig config, Statement statement);
 
     /**
      * 識別子を生成する方法を返します。

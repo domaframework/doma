@@ -29,8 +29,7 @@ import org.seasar.doma.DomaNullPointerException;
 public class BuiltinRequiresNewController implements RequiresNewController {
 
     @Override
-    public <R> R requiresNew(Callback<R> callback)
-            throws DomaNullPointerException, Throwable {
+    public <R> R requiresNew(Callback<R> callback) throws Throwable {
         if (callback == null) {
             throw new DomaNullPointerException("callback");
         }

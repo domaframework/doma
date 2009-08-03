@@ -26,7 +26,7 @@ import org.seasar.doma.DomaNullPointerException;
 public class MethodAccessBeanWrapperFactory implements BeanWrapperFactory {
 
     @Override
-    public BeanWrapper create(Object bean) throws DomaNullPointerException {
+    public BeanWrapper create(Object bean) {
         if (bean == null) {
             throw new DomaNullPointerException("bean");
         }

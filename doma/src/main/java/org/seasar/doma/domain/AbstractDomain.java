@@ -58,8 +58,7 @@ public abstract class AbstractDomain<V, D extends AbstractDomain<V, D>>
      * @throws DomaNullPointerException
      *             値のクラスが {@code null} の場合
      */
-    protected AbstractDomain(Class<V> valueClass, V v)
-            throws DomaNullPointerException {
+    protected AbstractDomain(Class<V> valueClass, V v) {
         if (valueClass == null) {
             throw new DomaNullPointerException("valueClass");
         }
@@ -84,7 +83,7 @@ public abstract class AbstractDomain<V, D extends AbstractDomain<V, D>>
     }
 
     @Override
-    public void setDomain(D other) throws DomaNullPointerException {
+    public void setDomain(D other) {
         if (other == null) {
             throw new DomaNullPointerException("other");
         }

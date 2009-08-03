@@ -39,6 +39,6 @@ public interface Converter<T> {
      * @throws ConversionException
      *             変換に失敗した場合
      */
-    T convert(Object value, String pattern) throws ConversionException;
+    T convert(Object value, String pattern);
 
 }

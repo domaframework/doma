@@ -42,8 +42,7 @@ public class TransientProperty<D extends Domain<?, ?>> implements
      * @param domain
      *            ドメイン
      */
-    public TransientProperty(String name, D domain)
-            throws DomaNullPointerException {
+    public TransientProperty(String name, D domain) {
         if (name == null) {
             throw new DomaNullPointerException("name");
         }

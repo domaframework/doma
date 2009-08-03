@@ -60,7 +60,7 @@ public abstract class AbstractArrayDomain<D extends AbstractArrayDomain<D, E>, E
      *             SQL例外が発生した場合
      */
     @SuppressWarnings("unchecked")
-    public E[] getArray() throws DomainIllegalStateException {
+    public E[] getArray() {
         try {
             return (E[]) value.getArray();
         } catch (SQLException e) {

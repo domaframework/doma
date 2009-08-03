@@ -79,8 +79,7 @@ public final class CopyUtil {
      * @throws DomaNullPointerException
      *             {@code delegate} が {@code null} の場合
      */
-    public static void setDelegate(CopyUtilDelegate delegate)
-            throws DomaNullPointerException {
+    public static void setDelegate(CopyUtilDelegate delegate) {
         if (delegate == null) {
             throw new DomaNullPointerException("delegate");
         }
@@ -108,8 +107,7 @@ public final class CopyUtil {
      *             コピーに失敗した場合
      * @see CopyUtilDelegate#copy(Object, Object, CopyOptions)
      */
-    public static void copy(Object src, Object dest)
-            throws DomaNullPointerException, CopyException {
+    public static void copy(Object src, Object dest) {
         delegate.copy(src, dest, new CopyOptions());
     }
 
@@ -136,8 +134,7 @@ public final class CopyUtil {
      *             コピーに失敗した場合
      * @see CopyUtilDelegate#copy(Object, Object, CopyOptions)
      */
-    public static void copy(Object src, Object dest, CopyOptions copyOptions)
-            throws DomaNullPointerException, CopyException {
+    public static void copy(Object src, Object dest, CopyOptions copyOptions) {
         delegate.copy(src, dest, copyOptions);
     }
 
@@ -160,8 +157,7 @@ public final class CopyUtil {
      *             コピーに失敗した場合
      * @see CopyUtilDelegate#copy(Map, Object, CopyOptions)
      */
-    public static void copy(Object src, Map<String, Object> dest)
-            throws DomaNullPointerException, CopyException {
+    public static void copy(Object src, Map<String, Object> dest) {
         delegate.copy(src, dest, new CopyOptions());
     }
 
@@ -187,8 +183,7 @@ public final class CopyUtil {
      * @see CopyUtilDelegate#copy(Map, Object, CopyOptions)
      */
     public static void copy(Object src, Map<String, Object> dest,
-            CopyOptions copyOptions) throws DomaNullPointerException,
-            CopyException {
+            CopyOptions copyOptions) {
         delegate.copy(src, dest, copyOptions);
     }
 
@@ -211,8 +206,7 @@ public final class CopyUtil {
      *             コピーに失敗した場合
      * @see CopyUtilDelegate#copy(Object, Map, CopyOptions)
      */
-    public static void copy(Map<String, Object> src, Object dest)
-            throws DomaNullPointerException, CopyException {
+    public static void copy(Map<String, Object> src, Object dest) {
         delegate.copy(src, dest, new CopyOptions());
     }
 
@@ -238,8 +232,7 @@ public final class CopyUtil {
      * @see CopyUtilDelegate#copy(Object, Map, CopyOptions)
      */
     public static void copy(Map<String, Object> src, Object dest,
-            CopyOptions copyOptions) throws DomaNullPointerException,
-            CopyException {
+            CopyOptions copyOptions) {
         delegate.copy(src, dest, copyOptions);
     }
 }

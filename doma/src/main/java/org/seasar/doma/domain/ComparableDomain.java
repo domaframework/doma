@@ -54,7 +54,7 @@ public interface ComparableDomain<V extends Comparable<? super V>, D extends Dom
      * @throws DomaNullPointerException
      *             比較対象のドメインが {@code null} の場合
      */
-    boolean eq(D other) throws DomaNullPointerException;
+    boolean eq(D other);
 
     /**
      * このインスタンスの値が比較対象の値よりも大きいか等しい場合 {@code true} を返します。
@@ -65,21 +65,18 @@ public interface ComparableDomain<V extends Comparable<? super V>, D extends Dom
      * @thorows DomainIncomparableException このインスタンスの値もしくは、比較対象の値が {@code null}
      *          の場合
      */
-    boolean ge(V other) throws DomainIncomparableException;
+    boolean ge(V other);
 
     /**
      * このインスタンスの値が比較対象のドメインの値と大きいか等しい場合 {@code true} を返します。
      * 
      * @param other
      *            比較対象のドメイン
-     * @return 大きいか等しい場合 {@code true}
-     * @throws DomaNullPointerException
-     *             比較対象のドメインが {@code null} の場合
+     * @return 大きいか等しい場合 {@code true} @ 比較対象のドメインが {@code null} の場合
      * @thorows DomainIncomparableException このインスタンスの値もしくは、比較対象のドメイン値が {@code
      *          null} の場合
      */
-    boolean ge(D other) throws DomaNullPointerException,
-            DomainIncomparableException;
+    boolean ge(D other);
 
     /**
      * このインスタンスの値が比較対象の値よりも大きい場合 {@code true} を返します。
@@ -90,21 +87,18 @@ public interface ComparableDomain<V extends Comparable<? super V>, D extends Dom
      * @thorows DomainIncomparableException このインスタンスの値もしくは、比較対象の値が {@code null}
      *          の場合
      */
-    boolean gt(V other) throws DomainIncomparableException;
+    boolean gt(V other);
 
     /**
      * このインスタンスの値が比較対象のドメインの値よりも大きい場合 {@code true} を返します。
      * 
      * @param other
      *            比較対象のドメイン
-     * @return 大きい場合 {@code true}
-     * @throws DomaNullPointerException
-     *             比較対象のドメインが {@code null} の場合
+     * @return 大きい場合 {@code true} @ 比較対象のドメインが {@code null} の場合
      * @thorows DomainIncomparableException このインスタンスの値もしくは、比較対象のドメイン値が {@code
      *          null} の場合
      */
-    boolean gt(D other) throws DomaNullPointerException,
-            DomainIncomparableException;
+    boolean gt(D other);
 
     /**
      * このインスタンスの値が比較対象の値よりも小さいか等しい場合 {@code true} を返します。
@@ -115,21 +109,18 @@ public interface ComparableDomain<V extends Comparable<? super V>, D extends Dom
      * @thorows DomainIncomparableException このインスタンスの値もしくは、比較対象の値が {@code null}
      *          の場合
      */
-    boolean le(V other) throws DomainIncomparableException;
+    boolean le(V other);
 
     /**
      * このインスタンスの値が比較対象のドメインの値よりも小さいか等しい場合 {@code true} を返します。
      * 
      * @param other
      *            比較対象のドメイン
-     * @return 小さいか等しい場合 {@code true}
-     * @throws DomaNullPointerException
-     *             比較対象のドメインが {@code null} の場合
+     * @return 小さいか等しい場合 {@code true} @ 比較対象のドメインが {@code null} の場合
      * @thorows DomainIncomparableException このインスタンスの値もしくは、比較対象のドメイン値が {@code
      *          null} の場合
      */
-    boolean le(D other) throws DomaNullPointerException,
-            DomainIncomparableException;
+    boolean le(D other);
 
     /**
      * このインスタンスの値が比較対象の値よりも小さい場合 {@code true} を返します。
@@ -140,20 +131,17 @@ public interface ComparableDomain<V extends Comparable<? super V>, D extends Dom
      * @thorows DomainIncomparableException このインスタンスの値もしくは、比較対象の値が {@code null}
      *          の場合
      */
-    boolean lt(V other) throws DomainIncomparableException;
+    boolean lt(V other);
 
     /**
      * このインスタンスの値が比較対象のドメインの値よりも小さい場合 {@code true} を返します。
      * 
      * @param other
      *            比較対象のドメイン
-     * @return 小さいか等しい場合 {@code true}
-     * @throws DomaNullPointerException
-     *             比較対象のドメインが {@code null} の場合
+     * @return 小さいか等しい場合 {@code true} @ 比較対象のドメインが {@code null} の場合
      * @thorows DomainIncomparableException このインスタンスの値もしくは、比較対象のドメイン値が {@code
      *          null} の場合
      */
-    boolean lt(D other) throws DomaNullPointerException,
-            DomainIncomparableException;
+    boolean lt(D other);
 
 }

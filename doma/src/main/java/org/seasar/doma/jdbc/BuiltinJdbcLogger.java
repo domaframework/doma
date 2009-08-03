@@ -61,8 +61,7 @@ public class BuiltinJdbcLogger implements JdbcLogger {
 
     @Override
     public void logDaoMethodEntering(String callerClassName,
-            String callerMethodName, Object... args)
-            throws DomaNullPointerException {
+            String callerMethodName, Object... args) {
         if (callerClassName == null) {
             throw new DomaNullPointerException("callerClassName");
         }
@@ -78,8 +77,7 @@ public class BuiltinJdbcLogger implements JdbcLogger {
 
     @Override
     public void logDaoMethodExiting(String callerClassName,
-            String callerMethodName, Object result)
-            throws DomaNullPointerException {
+            String callerMethodName, Object result) {
         if (callerClassName == null) {
             throw new DomaNullPointerException("callerClassName");
         }
@@ -92,8 +90,7 @@ public class BuiltinJdbcLogger implements JdbcLogger {
 
     @Override
     public void logSqlExecutionSkipping(String callerClassName,
-            String callerMethodName, SqlExecutionSkipCause cause)
-            throws DomaNullPointerException {
+            String callerMethodName, SqlExecutionSkipCause cause) {
         if (callerClassName == null) {
             throw new DomaNullPointerException("callerClassName");
         }
@@ -108,7 +105,7 @@ public class BuiltinJdbcLogger implements JdbcLogger {
 
     @Override
     public void logSqlFile(String callerClassName, String callerMethodName,
-            SqlFile sqlFile) throws DomaNullPointerException {
+            SqlFile sqlFile) {
         if (callerClassName == null) {
             throw new DomaNullPointerException("callerClassName");
         }
@@ -125,7 +122,7 @@ public class BuiltinJdbcLogger implements JdbcLogger {
 
     @Override
     public void logSql(String callerClassName, String callerMethodName,
-            Sql<?> sql) throws DomaNullPointerException {
+            Sql<?> sql) {
         if (callerClassName == null) {
             throw new DomaNullPointerException("callerClassName");
         }
@@ -141,20 +138,17 @@ public class BuiltinJdbcLogger implements JdbcLogger {
 
     @Override
     public void logConnectionClosingFailure(String callerClassName,
-            String callerMethodName, SQLException e)
-            throws DomaNullPointerException {
+            String callerMethodName, SQLException e) {
     }
 
     @Override
     public void logStatementClosingFailure(String callerClassName,
-            String callerMethodName, SQLException e)
-            throws DomaNullPointerException {
+            String callerMethodName, SQLException e) {
     }
 
     @Override
     public void logResultSetClosingFailure(String callerClassName,
-            String callerMethodName, SQLException e)
-            throws DomaNullPointerException {
+            String callerMethodName, SQLException e) {
     }
 
 }

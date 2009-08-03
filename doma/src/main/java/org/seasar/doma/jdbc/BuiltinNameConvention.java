@@ -35,8 +35,7 @@ public class BuiltinNameConvention implements NameConvention {
      * {@inheritDoc}
      */
     @Override
-    public String fromEntityToTable(String entityName, Dialect dialect)
-            throws DomaNullPointerException {
+    public String fromEntityToTable(String entityName, Dialect dialect) {
         if (entityName == null) {
             throw new DomaNullPointerException("entityName");
         }
@@ -54,8 +53,7 @@ public class BuiltinNameConvention implements NameConvention {
      * {@inheritDoc}
      */
     @Override
-    public String fromPropertyToColumn(String propertyName, Dialect dialect)
-            throws DomaNullPointerException {
+    public String fromPropertyToColumn(String propertyName, Dialect dialect) {
         if (propertyName == null) {
             throw new DomaNullPointerException("propertyName");
         }
@@ -73,8 +71,7 @@ public class BuiltinNameConvention implements NameConvention {
      * {@inheritDoc}
      */
     @Override
-    public String fromTableToEntity(String tableName, Dialect dialect)
-            throws DomaNullPointerException {
+    public String fromTableToEntity(String tableName, Dialect dialect) {
         if (tableName == null) {
             throw new DomaNullPointerException("tableName");
         }
@@ -93,8 +90,7 @@ public class BuiltinNameConvention implements NameConvention {
      * {@inheritDoc}
      */
     @Override
-    public String fromColumnToProperty(String columnName, Dialect dialect)
-            throws DomaNullPointerException {
+    public String fromColumnToProperty(String columnName, Dialect dialect) {
         if (columnName == null) {
             throw new DomaNullPointerException("columnName");
         }

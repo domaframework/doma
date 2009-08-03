@@ -61,8 +61,7 @@ public interface Dialect {
      * @throws JdbcException
      *             オプションの指定に対応するSQLの変換がサポートされていない場合
      */
-    SqlNode transformSelectSqlNode(SqlNode sqlNode, SelectOptions options)
-            throws DomaNullPointerException;
+    SqlNode transformSelectSqlNode(SqlNode sqlNode, SelectOptions options);
 
     /**
      * 一意制約違反かどうかを返します。
@@ -73,8 +72,7 @@ public interface Dialect {
      * @throws DomaNullPointerException
      *             {@code sqlException} が {@code null} の場合
      */
-    boolean isUniqueConstraintViolated(SQLException sqlException)
-            throws DomaNullPointerException;
+    boolean isUniqueConstraintViolated(SQLException sqlException);
 
     /**
      * INSERT文にIDENTITYカラムを含むかどうかを返します。
@@ -144,8 +142,7 @@ public interface Dialect {
      * @throws DomaNullPointerException
      *             引数のいずれかが {@code null} の場合
      */
-    Sql<?> getIdentitySelectSql(String qualifiedTableName, String columnName)
-            throws DomaNullPointerException;
+    Sql<?> getIdentitySelectSql(String qualifiedTableName, String columnName);
 
     /**
      * シーケンスの次の値を取得するためのSQLを返します。
@@ -161,7 +158,7 @@ public interface Dialect {
      *             {@code qualifiedSequenceName} が {@code null} の場合
      */
     Sql<?> getSequenceNextValSql(String qualifiedSequenceName,
-            long allocationSize) throws DomaNullPointerException;
+            long allocationSize);
 
     /**
      * {@link ResultSet} の {@link JdbcType} を返します。
@@ -200,8 +197,7 @@ public interface Dialect {
      * @throws DomaNullPointerException
      *             {@code sqlException} が {@code null} の場合
      */
-    Throwable getRootCause(SQLException sqlException)
-            throws DomaNullPointerException;
+    Throwable getRootCause(SQLException sqlException);
 
     /**
      * {@link Domain} をJDBCの型とマッピングするビジターを返します。

@@ -50,8 +50,7 @@ public interface CopyUtilDelegate {
      *             コピーに失敗した場合
      * @see CopyUtilDelegate#copy(Object, Object, CopyOptions)
      */
-    void copy(Object src, Object dest, CopyOptions copyOptions)
-            throws DomaNullPointerException, CopyException;
+    void copy(Object src, Object dest, CopyOptions copyOptions);
 
     /**
      * オプションを指定してオブジェクトを {@link Map} にコピーします。
@@ -74,8 +73,7 @@ public interface CopyUtilDelegate {
      *             コピーに失敗した場合
      * @see CopyUtilDelegate#copy(Map, Object, CopyOptions)
      */
-    void copy(Object src, Map<String, Object> dest, CopyOptions copyOptions)
-            throws DomaNullPointerException, CopyException;
+    void copy(Object src, Map<String, Object> dest, CopyOptions copyOptions);
 
     /**
      * オプションを指定して{@link Map} をオブジェクトにコピーします。
@@ -98,7 +96,6 @@ public interface CopyUtilDelegate {
      *             コピーに失敗した場合
      * @see CopyUtilDelegate#copy(Object, Map, CopyOptions)
      */
-    void copy(Map<String, Object> src, Object dest, CopyOptions copyOptions)
-            throws DomaNullPointerException, CopyException;
+    void copy(Map<String, Object> src, Object dest, CopyOptions copyOptions);
 
 }

@@ -32,8 +32,7 @@ public class DateConverter implements Converter<Date> {
     protected final ConversionSupport conversionSupport = new ConversionSupport();
 
     @Override
-    public Date convert(Object value, String pattern)
-            throws ConversionException {
+    public Date convert(Object value, String pattern) {
         if (value == null) {
             return null;
         }
@@ -64,8 +63,7 @@ public class DateConverter implements Converter<Date> {
      * @throws ConversionException
      *             変換に失敗した場合
      */
-    protected java.util.Date parse(String value, String pattern)
-            throws ConversionException {
+    protected java.util.Date parse(String value, String pattern) {
         String p = pattern != null ? pattern : DEFAULT_PATTERN;
         return conversionSupport.parseToDate(value, p);
     }

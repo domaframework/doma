@@ -49,7 +49,7 @@ public interface JdbcType<T> {
      * @throws SQLException
      */
     T getValue(ResultSet resultSet, int index) throws DomaNullPointerException,
-            DomaIllegalArgumentException, SQLException;
+            SQLException;
 
     /**
      * {@link PreparedStatement} に値を設定します。
@@ -64,8 +64,7 @@ public interface JdbcType<T> {
      * @throws SQLException
      */
     void setValue(PreparedStatement preparedStatement, int index, T value)
-            throws DomaNullPointerException, DomaIllegalArgumentException,
-            SQLException;
+            throws SQLException;
 
     /**
      * {@link CallableStatement} にOUTパラメータを登録します。
@@ -79,8 +78,7 @@ public interface JdbcType<T> {
      * @throws SQLException
      */
     void registerOutParameter(CallableStatement callableStatement, int index)
-            throws DomaNullPointerException, DomaIllegalArgumentException,
-            SQLException;
+            throws SQLException;
 
     /**
      * {@link CallableStatement} から値を取得します。
@@ -95,8 +93,7 @@ public interface JdbcType<T> {
      * @throws SQLException
      */
     T getValue(CallableStatement callableStatement, int index)
-            throws DomaNullPointerException, DomaIllegalArgumentException,
-            SQLException;
+            throws SQLException;
 
     /**
      * 値をログ用フォーマットの文字列に変換します。

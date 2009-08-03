@@ -54,7 +54,7 @@ public interface Domain<V, D extends Domain<V, D>> {
      * @throws DomaNullPointerException
      *             ドメイン が {@code null} の場合
      */
-    void setDomain(D other) throws DomaNullPointerException;
+    void setDomain(D other);
 
     /**
      * 値が {@code null} かどうかを返します。

@@ -48,5 +48,5 @@ public interface JdbcMappingFunction {
      *             SQLに関する例外が発生した場合
      */
     <R, V> R apply(Domain<V, ?> domain, JdbcType<V> jdbcType)
-            throws DomaNullPointerException, SQLException;
+            throws SQLException;
 }

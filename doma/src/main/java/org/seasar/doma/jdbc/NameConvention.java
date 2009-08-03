@@ -51,8 +51,7 @@ public interface NameConvention {
      * @throws DomaNullPointerException
      *             いずれかの引数が {@code null} の場合
      */
-    String fromEntityToTable(String entityName, Dialect dialect)
-            throws DomaNullPointerException;
+    String fromEntityToTable(String entityName, Dialect dialect);
 
     /**
      * テーブル名からエンティティ名へ変換します。
@@ -67,8 +66,7 @@ public interface NameConvention {
      * @throws DomaNullPointerException
      *             いずれかの引数が {@code null} の場合
      */
-    String fromTableToEntity(String tableName, Dialect dialect)
-            throws DomaNullPointerException;
+    String fromTableToEntity(String tableName, Dialect dialect);
 
     /**
      * プロパティ名からカラム名へ変換します。
@@ -84,8 +82,7 @@ public interface NameConvention {
      * @throws DomaNullPointerException
      *             いずれかの引数が {@code null} の場合
      */
-    String fromPropertyToColumn(String propertyName, Dialect dialect)
-            throws DomaNullPointerException;
+    String fromPropertyToColumn(String propertyName, Dialect dialect);
 
     /**
      * カラム名からプロパティ名へ変換します。
@@ -100,7 +97,6 @@ public interface NameConvention {
      * @throws DomaNullPointerException
      *             いずれかの引数が {@code null} の場合
      */
-    String fromColumnToProperty(String columnName, Dialect dialect)
-            throws DomaNullPointerException;
+    String fromColumnToProperty(String columnName, Dialect dialect);
 
 }

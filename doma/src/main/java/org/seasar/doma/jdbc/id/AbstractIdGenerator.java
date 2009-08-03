@@ -45,8 +45,7 @@ public abstract class AbstractIdGenerator implements IdGenerator {
      * @throws JdbcException
      *             生成された識別子の取得に失敗した場合
      */
-    protected long getGeneratedValue(IdGenerationConfig config, Sql<?> sql)
-            throws JdbcException {
+    protected long getGeneratedValue(IdGenerationConfig config, Sql<?> sql) {
         JdbcLogger logger = config.getJdbcLogger();
         Connection connection = JdbcUtil.getConnection(config.getDataSource());
         try {
@@ -100,7 +99,7 @@ public abstract class AbstractIdGenerator implements IdGenerator {
      *             識別子の取得に失敗した場合
      */
     protected long getGeneratedValue(IdGenerationConfig config,
-            ResultSet resultSet) throws JdbcException {
+            ResultSet resultSet) {
         JdbcLogger logger = config.getJdbcLogger();
         try {
             if (resultSet.next()) {

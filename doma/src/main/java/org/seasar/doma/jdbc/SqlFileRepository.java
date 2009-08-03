@@ -76,8 +76,6 @@ public interface SqlFileRepository {
      * @throws JdbcException
      *             上記以外で例外が発生した場合
      */
-    SqlFile getSqlFile(String path, Dialect dialect)
-            throws DomaNullPointerException, DomaIllegalArgumentException,
-            SqlFileNotFoundException, JdbcException;
+    SqlFile getSqlFile(String path, Dialect dialect);
 
 }

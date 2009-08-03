@@ -66,6 +66,5 @@ public interface SqlNode {
      * @throws DomaNullPointerException
      *             ビジターが {@code null} の場合
      */
-    <R, P> R accept(SqlNodeVisitor<R, P> visitor, P p)
-            throws DomaNullPointerException;
+    <R, P> R accept(SqlNodeVisitor<R, P> visitor, P p);
 }

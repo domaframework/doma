@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.jdbc.id;
 
+import org.seasar.doma.jdbc.JdbcException;
+
 /**
  * データベースのシーケンスを使用するジェネレータです。
  * 
@@ -49,6 +51,9 @@ public interface SequenceIdGenerator extends IdGenerator {
 
     /**
      * このジェネレータを初期化します。
+     * 
+     * @throws JdbcException
+     *             初期化に失敗した場合
      */
     void initialize();
 }

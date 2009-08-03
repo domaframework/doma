@@ -32,8 +32,7 @@ public class TimestampConverter implements Converter<Timestamp> {
     protected final ConversionSupport conversionSupport = new ConversionSupport();
 
     @Override
-    public Timestamp convert(Object value, String pattern)
-            throws ConversionException {
+    public Timestamp convert(Object value, String pattern) {
         if (value == null) {
             return null;
         }
@@ -60,12 +59,9 @@ public class TimestampConverter implements Converter<Timestamp> {
      *            文字列
      * @param pattern
      *            パターン
-     * @return パースされた結果
-     * @throws ConversionException
-     *             変換に失敗した場合
+     * @return パースされた結果 @ 変換に失敗した場合
      */
-    protected java.util.Date parse(String value, String pattern)
-            throws ConversionException {
+    protected java.util.Date parse(String value, String pattern) {
         String p = pattern != null ? pattern : DEFAULT_PATTERN;
         return conversionSupport.parseToDate(value, p);
     }

@@ -91,8 +91,7 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
     }
 
     @Override
-    public void copy(Object src, Object dest, CopyOptions copyOptions)
-            throws DomaNullPointerException, CopyException {
+    public void copy(Object src, Object dest, CopyOptions copyOptions) {
         if (src == null) {
             throw new DomaNullPointerException("src");
         }
@@ -125,8 +124,7 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
 
     @Override
     public void copy(Object src, Map<String, Object> dest,
-            CopyOptions copyOptions) throws DomaNullPointerException,
-            CopyException {
+            CopyOptions copyOptions) {
         if (src == null) {
             throw new DomaNullPointerException("src");
         }
@@ -145,8 +143,7 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
 
     @Override
     public void copy(Map<String, Object> src, Object dest,
-            CopyOptions copyOptions) throws DomaNullPointerException,
-            CopyException {
+            CopyOptions copyOptions) {
         if (src == null) {
             throw new DomaNullPointerException("src");
         }
@@ -176,7 +173,7 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
      *             コピーに失敗した場合
      */
     protected void copyFromEntityToEntity(Entity<?> src, Entity<?> dest,
-            CopyOptions copyOptions) throws CopyException {
+            CopyOptions copyOptions) {
         Class<?> srcClass = src.getClass();
         for (EntityProperty<?> srcProperty : src.__getEntityProperties()) {
             if (!copyOptions.isTargetProperty(srcProperty.getName())) {
@@ -223,7 +220,7 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
      *             コピーに失敗した場合
      */
     protected void copyFromEntityToBean(Entity<?> src, BeanWrapper dest,
-            CopyOptions copyOptions) throws CopyException {
+            CopyOptions copyOptions) {
         Class<?> srcClass = src.getClass();
         for (EntityProperty<?> srcProperty : src.__getEntityProperties()) {
             if (!copyOptions.isTargetProperty(srcProperty.getName())) {
@@ -250,7 +247,7 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
      *             コピーに失敗した場合
      */
     protected void copyFromBeanToEntity(BeanWrapper src, Entity<?> dest,
-            CopyOptions copyOptions) throws CopyException {
+            CopyOptions copyOptions) {
         Class<?> srcClass = src.getBeanClass();
         for (BeanPropertyWrapper srcProperty : src.getBeanPropertyWrappers()) {
             if (!copyOptions.isTargetProperty(srcProperty.getName())) {
@@ -306,7 +303,7 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
      *             コピーに失敗した場合
      */
     protected void copyFromBeanToBean(BeanWrapper src, BeanWrapper dest,
-            CopyOptions copyOptions) throws CopyException {
+            CopyOptions copyOptions) {
         Class<?> srcClass = src.getBeanClass();
         for (BeanPropertyWrapper srcProperty : src.getBeanPropertyWrappers()) {
             if (!copyOptions.isTargetProperty(srcProperty.getName())) {
@@ -336,7 +333,7 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
      *             コピーに失敗した場合
      */
     protected void copyFromMapToEntity(Map<String, Object> src, Entity<?> dest,
-            CopyOptions copyOptions) throws CopyException {
+            CopyOptions copyOptions) {
         Class<?> srcClass = src.getClass();
         for (Entry<String, Object> srcEntry : src.entrySet()) {
             if (!copyOptions.isTargetProperty(srcEntry.getKey())) {
@@ -363,7 +360,7 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
      *             コピーに失敗した場合
      */
     protected void copyFromMapToBean(Map<String, Object> src, BeanWrapper dest,
-            CopyOptions copyOptions) throws CopyException {
+            CopyOptions copyOptions) {
         Class<?> srcClass = src.getClass();
         for (Entry<String, Object> srcEntry : src.entrySet()) {
             if (!copyOptions.isTargetProperty(srcEntry.getKey())) {
@@ -395,7 +392,7 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
      */
     protected void copyToEntityProperty(Class<?> srcClass,
             String srcPropertyName, Object srcPropertyValue, Entity<?> dest,
-            CopyOptions copyOptions) throws CopyException {
+            CopyOptions copyOptions) {
         EntityProperty<?> destProperty = dest
                 .__getEntityProperty(srcPropertyName);
         if (destProperty == null) {
@@ -430,7 +427,7 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
      */
     protected void copyToBeanProperty(Class<?> srcClass,
             String srcPropertyName, Object srcPropertyValue, BeanWrapper dest,
-            CopyOptions copyOptions) throws CopyException {
+            CopyOptions copyOptions) {
         BeanPropertyWrapper destProperty = dest
                 .getBeanPropertyWrapper(srcPropertyName);
         if (destProperty == null) {
@@ -468,7 +465,7 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
      */
     protected Object convert(Converter<?> converter, Class<?> srcClass,
             String srcPropertyName, Object srcPropertyValue,
-            CopyOptions copyOptions) throws CopyException {
+            CopyOptions copyOptions) {
         String pattern = copyOptions.getPattern(srcPropertyName);
         try {
             return converter.convert(srcPropertyValue, pattern);
@@ -490,8 +487,7 @@ public class BuiltinCopyUtilDelegate implements CopyUtilDelegate {
      * @return コンバーター、存在しない場合 {@code null}
      */
     protected Converter<?> findConverter(String propertyName,
-            Class<?> destPropertyClass, CopyOptions copyOptions)
-            throws CopyException {
+            Class<?> destPropertyClass, CopyOptions copyOptions) {
         Converter<?> converter = copyOptions.getConverter(propertyName);
         if (converter == null) {
             Class<?> wrapperClass = ClassUtil

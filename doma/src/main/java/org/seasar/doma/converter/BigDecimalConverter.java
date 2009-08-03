@@ -32,8 +32,7 @@ public class BigDecimalConverter implements Converter<BigDecimal> {
     protected final ConversionSupport conversionSupport = new ConversionSupport();
 
     @Override
-    public BigDecimal convert(Object value, String pattern)
-            throws ConversionException {
+    public BigDecimal convert(Object value, String pattern) {
         if (value == null) {
             return null;
         }
@@ -62,8 +61,7 @@ public class BigDecimalConverter implements Converter<BigDecimal> {
      * @throws ConversionException
      *             変換に失敗した場合
      */
-    protected Number parse(String value, String pattern)
-            throws ConversionException {
+    protected Number parse(String value, String pattern) {
         String p = pattern != null ? pattern : DEFAULT_PATTERN;
         return conversionSupport.parseToNumber(value, p);
     }

@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.jdbc.id;
 
+import org.seasar.doma.jdbc.JdbcException;
+
 /**
  * データベースのテーブルを使用するジェネレータです。
  * 
@@ -73,6 +75,9 @@ public interface TableIdGenerator extends IdGenerator {
 
     /**
      * このジェネレータを初期化します。
+     * 
+     * @throws JdbcException
+     *             初期化に失敗した場合
      */
     void initialize();
 }

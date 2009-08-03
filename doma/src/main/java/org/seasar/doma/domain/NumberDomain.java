@@ -41,6 +41,6 @@ public interface NumberDomain<V extends Number, D extends NumberDomain<V, D>>
      * @throws DomaNullPointerException
      *             ドメイン が {@code null} の場合
      */
-    void setDomain(NumberDomain<V, D> other) throws DomaNullPointerException;
+    void setDomain(NumberDomain<V, D> other);
 
 }

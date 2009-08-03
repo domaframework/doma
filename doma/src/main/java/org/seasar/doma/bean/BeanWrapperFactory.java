@@ -37,5 +37,5 @@ public interface BeanWrapperFactory {
      * @throws DomaNullPointerException
      *             {@code bean} が {@code null} の場合
      */
-    BeanWrapper create(Object bean) throws DomaNullPointerException;
+    BeanWrapper create(Object bean);
 }

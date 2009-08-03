@@ -30,8 +30,7 @@ public class StringConverter implements Converter<String> {
     protected final ConversionSupport conversionSupport = new ConversionSupport();
 
     @Override
-    public String convert(Object value, String pattern)
-            throws ConversionException {
+    public String convert(Object value, String pattern) {
         if (value == null) {
             return null;
         }
@@ -57,12 +56,9 @@ public class StringConverter implements Converter<String> {
      *            数値
      * @param pattern
      *            パターン
-     * @return フォーマットされた文字列
-     * @throws ConversionException
-     *             変換に失敗した場合
+     * @return フォーマットされた文字列 @ 変換に失敗した場合
      */
-    protected String format(Number value, String pattern)
-            throws ConversionException {
+    protected String format(Number value, String pattern) {
         return conversionSupport.formatFromNumber(value, pattern);
     }
 
@@ -73,12 +69,9 @@ public class StringConverter implements Converter<String> {
      *            日付
      * @param pattern
      *            パターン
-     * @return フォーマットされた文字列
-     * @throws ConversionException
-     *             変換に失敗した場合
+     * @return フォーマットされた文字列 @ 変換に失敗した場合
      */
-    protected String format(Date value, String pattern)
-            throws ConversionException {
+    protected String format(Date value, String pattern) {
         return conversionSupport.formatFromDate(value, pattern);
     }
 }
