@@ -54,7 +54,8 @@ import org.seasar.doma.message.DomaMessageCode;
  */
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 @SupportedAnnotationTypes( { "org.seasar.doma.Dao" })
-@SupportedOptions( { Options.TEST, Options.DEBUG, Options.DAO_SUFFIX })
+@SupportedOptions( { Options.TEST, Options.DEBUG, Options.DAO_SUFFIX,
+        Options.DAO_SUBPACKAGE })
 public class DaoProcessor extends AbstractProcessor {
 
     @Override
@@ -74,12 +75,12 @@ public class DaoProcessor extends AbstractProcessor {
                 } catch (AptException e) {
                     Notifier.notify(processingEnv, e);
                 } catch (AptIllegalStateException e) {
-                    Notifier
-                            .notify(processingEnv, Kind.ERROR, DomaMessageCode.DOMA4039, daoElement);
+                    Notifier.notify(processingEnv, Kind.ERROR,
+                            DomaMessageCode.DOMA4039, daoElement);
                     throw e;
                 } catch (RuntimeException e) {
-                    Notifier
-                            .notify(processingEnv, Kind.ERROR, DomaMessageCode.DOMA4016, daoElement);
+                    Notifier.notify(processingEnv, Kind.ERROR,
+                            DomaMessageCode.DOMA4016, daoElement);
                     throw e;
                 }
             }

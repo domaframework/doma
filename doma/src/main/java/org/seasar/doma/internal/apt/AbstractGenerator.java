@@ -24,6 +24,7 @@ import java.util.Formatter;
 import javax.annotation.Generated;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.tools.JavaFileObject;
 
@@ -54,11 +55,13 @@ public abstract class AbstractGenerator implements Generator {
     protected final StringBuilder indentBuffer = new StringBuilder();
 
     public AbstractGenerator(ProcessingEnvironment env,
-            TypeElement typeElement, String suffix) throws IOException {
+            TypeElement typeElement, String subpackage, String suffix)
+            throws IOException {
         assertNotNull(env, typeElement, suffix);
         this.env = env;
         this.typeElement = typeElement;
-        this.qualifiedName = typeElement.getQualifiedName() + suffix;
+        this.qualifiedName = createQualifiedName(env, typeElement, subpackage,
+                suffix);
         this.packageName = ClassUtil.getPackageName(qualifiedName);
         this.simpleName = ClassUtil.getSimpleName(qualifiedName);
         Filer filer = env.getFiler();
@@ -67,10 +70,23 @@ public abstract class AbstractGenerator implements Generator {
         formatter = new Formatter(new BufferedWriter(file.openWriter()));
     }
 
+    protected String createQualifiedName(ProcessingEnvironment env,
+            TypeElement typeElement, String subpackage, String suffix) {
+        if (subpackage == null) {
+            return typeElement.getQualifiedName() + suffix;
+        }
+        PackageElement packageElement = env.getElementUtils().getPackageOf(
+                typeElement);
+        String base = packageElement.isUnnamed() ? "" : packageElement
+                .getQualifiedName()
+                + ".";
+        return base + subpackage + "." + typeElement.getSimpleName() + suffix;
+    }
+
     protected void printGenerated() {
-        iprint("@%s(value = { \"%s\", \"%s\" }, date = \"%tF %<tT\")%n", Generated.class
-                .getName(), Artifact.getName(), Artifact.getVersion(), Options
-                .getDate(env));
+        iprint("@%s(value = { \"%s\", \"%s\" }, date = \"%tF %<tT\")%n",
+                Generated.class.getName(), Artifact.getName(), Artifact
+                        .getVersion(), Options.getDate(env));
     }
 
     protected void iprint(String format, Object... args) {

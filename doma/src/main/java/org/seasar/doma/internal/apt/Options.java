@@ -29,6 +29,10 @@ public final class Options {
 
     public static final String DEBUG = "debug";
 
+    public static final String DAO_SUBPACKAGE = "dao.subpackage";
+
+    public static final String ENTITY_SUBPACKAGE = "entity.subpackage";
+
     public static final String DAO_SUFFIX = "dao.suffix";
 
     public static final String ENTITY_SUFFIX = "entity.suffix";
@@ -45,6 +49,16 @@ public final class Options {
     public static boolean isDebugEnabled(ProcessingEnvironment env) {
         String debug = env.getOptions().get(Options.DEBUG);
         return Boolean.valueOf(debug).booleanValue();
+    }
+
+    public static String getDaoSubpackage(ProcessingEnvironment env) {
+        String subpackage = env.getOptions().get(Options.DAO_SUBPACKAGE);
+        return subpackage != null ? subpackage : null;
+    }
+
+    public static String getEntitySubpackage(ProcessingEnvironment env) {
+        String subpackage = env.getOptions().get(Options.ENTITY_SUBPACKAGE);
+        return subpackage != null ? subpackage : null;
     }
 
     public static String getDaoSuffix(ProcessingEnvironment env) {

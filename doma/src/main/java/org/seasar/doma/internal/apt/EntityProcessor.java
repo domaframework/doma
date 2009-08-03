@@ -42,7 +42,8 @@ import org.seasar.doma.message.DomaMessageCode;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 @SupportedAnnotationTypes( { "org.seasar.doma.Entity",
         "org.seasar.doma.MappedSuperclass" })
-@SupportedOptions( { Options.TEST, Options.DEBUG, Options.ENTITY_SUFFIX })
+@SupportedOptions( { Options.TEST, Options.DEBUG, Options.ENTITY_SUFFIX,
+        Options.DAO_SUBPACKAGE })
 public class EntityProcessor extends AbstractProcessor {
 
     @Override
@@ -65,12 +66,12 @@ public class EntityProcessor extends AbstractProcessor {
                 } catch (AptException e) {
                     Notifier.notify(processingEnv, e);
                 } catch (AptIllegalStateException e) {
-                    Notifier
-                            .notify(processingEnv, Kind.ERROR, DomaMessageCode.DOMA4039, entityElement);
+                    Notifier.notify(processingEnv, Kind.ERROR,
+                            DomaMessageCode.DOMA4039, entityElement);
                     throw e;
                 } catch (RuntimeException e) {
-                    Notifier
-                            .notify(processingEnv, Kind.ERROR, DomaMessageCode.DOMA4016, entityElement);
+                    Notifier.notify(processingEnv, Kind.ERROR,
+                            DomaMessageCode.DOMA4016, entityElement);
                     throw e;
                 }
             }
