@@ -33,6 +33,7 @@
 		</breadcrumbs>
 		<menu name="About" inherit="top">
 			<item name="ホーム" href="index.html" />
+			<item name="FAQ" href="faq.html" />
 			<item name="Javadoc" href="apidocs/index.html" />
 			<!--
 			<item name="ダウンロード" href="downloads.html" />

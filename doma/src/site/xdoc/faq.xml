@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>Frequently Asked Questions</title>
+	</properties>
+	<body>
+		<section name="よくある質問">
+			<subsection name="一般的な質問">
+				<ol>
+					<li>Domaとはどのような意味ですか？</li>
+					<li>Domaの特長は何ですか？</li>
+					<li>Domain（ドメイン）とは何ですか？</li>
+					<li>apt（アプト）とは何ですか？</li>
+				</ol>
+			</subsection>
+			<subsection name="動作環境に関する質問">
+				<ol>
+					<li>Javaのどのバージョンをサポートしていますか？</li>
+					<li>Domaの動作させるのにSeasar2は必要ですか？</li>
+					<li>どのようなライブラリに依存していますか？</li>
+					<li>Google App Engine上で動かすことはできますか？</li>
+				</ol>
+			</subsection>
+			<subsection name="開発環境に関する質問">
+				<ol>
+					<li>おすすめのIDE（統合開発環境）は何ですか？</li>
+					<li>Factory Pathとは何ですか？</li>
+					<li>aptにより生成されたコードはバージョン管理システムで管理すべきですか？</li>
+					<li>データベースにすでに存在するテーブルからDoma用のJavaコードを生成するツールはありますか？</li>
+				</ol>
+			</subsection>
+			<subsection name="機能に関する質問">
+				<ol>
+					<li>どのRDBMSをサポートしていますか？</li>
+					<li>SQLの自動生成機能はありますか？</li>
+					<li>条件が動的に変わるSQLはどのように実行できますか？</li>
+					<li>プログラミングで問い合わせ条件を組み立てるためのクライテリアAPIはありますか？</li>
+					<li>バッチ更新はサポートしていますか？</li>
+					<li>楽観的排他制御はサポートしていますか？</li>
+					<li>悲観的排他制御はサポートしていますか？</li>
+					<li>ページングはサポートしていますか？</li>
+					<li>1:n や 1:1 などエンティティ間のリレーションシップを表現できますか？</li>
+					<li>遅延ローディングはサポートしていますか？</li>
+					<li>ストアドプロシージャーはサポートしていますか？</li>
+					<li>ストアドファンクションはサポートしていますか？</li>
+					<li>コネクションプーリングの機能はありますか？</li>
+					<li>トランザクションの機能はありますか？</li>
+					<li>DomaのDaoをDIコンテナで管理できますか？</li>
+					<li>DomaをSeasar2と組み合わせて利用できますか？</li>
+					<li>DomaをSpringと組み合わせて利用できますか？</li>
+				</ol>
+			</subsection>
+		</section>
+		<section name="答え">
+		</section>
+	</body>
+</document>
