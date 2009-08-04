@@ -23,7 +23,6 @@ import java.sql.Statement;
 import java.util.List;
 
 import org.seasar.doma.domain.Domain;
-import org.seasar.doma.jdbc.JdbcException;
 
 /**
  * ストアドファンクションやストアドプロシージャーから返される結果セットにマッピングされることを示します。
@@ -53,12 +52,6 @@ import org.seasar.doma.jdbc.JdbcException;
  *             &#064;ResultSet List&lt;Employee&gt; employees);
  * }
  * </pre>
- * 
- * 注釈されるメソッドは、次の例外をスローすることがあります。
- * <ul>
- * <li> {@link DomaNullPointerException} パラメータに {@code null}を渡した場合
- * <li> {@link JdbcException} JDBCに関する例外が発生した場合
- * </ul>
  * 
  * @author taedium
  */

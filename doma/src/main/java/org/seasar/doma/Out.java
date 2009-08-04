@@ -21,7 +21,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.seasar.doma.domain.Domain;
-import org.seasar.doma.jdbc.JdbcException;
 
 /**
  * ストアドファンクションやストアドプロシージャーへのOUTパラメータを示します。
@@ -44,12 +43,6 @@ import org.seasar.doma.jdbc.JdbcException;
  *     void updateSalary(@In IntegerDomain id, @Out BigDecimalDomain salary);
  * }
  * </pre>
- * 
- * 注釈されるメソッドは、次の例外をスローすることがあります。
- * <ul>
- * <li> {@link DomaNullPointerException} パラメータに {@code null}を渡した場合
- * <li> {@link JdbcException} JDBCに関する例外が発生した場合
- * </ul>
  * 
  * @author taedium
  */

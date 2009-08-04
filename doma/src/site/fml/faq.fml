@@ -55,22 +55,22 @@
 				<p>
 					Domaでは、Pluggable Annotation Processing APIを使用して、
 					エンティティやData Access Objectのインタフェースから実装クラスを生成しています。
-					また、SQLファイルの存在チェックや、不正なメソッド定義の検証も行っています。
+					また、SQLファイルの存在チェックや、メソッド定義が規約に合致しているかどうかの検証も行っています。
 				</p>
 			</answer>
 		</faq>
 	</part>
-	<part id="environment">
+	<part id="runtime-environment">
 		<title>動作環境に関する質問</title>
-		<faq id="environment-1">
-			<question>Javaのどのバージョンをサポートしていますか？</question>
+		<faq id="runtime-environment-1">
+			<question>どのバージョンのJREをサポートしていますか？</question>
 			<answer>
 				<p>
-					Java 6 以上をサポートしています。Java 5 以前はサポートしていません。
+					JRE 6 以上をサポートしています。JRE 5 以前はサポートしていません。
 				</p>
 			</answer>
 		</faq>
-		<faq id="environment-2">
+		<faq id="runtime-environment-2">
 			<question>Domaを動作させるのにSeasar2は必須ですか？</question>
 			<answer>
 				<p>
@@ -78,11 +78,48 @@
 				</p>
 			</answer>
 		</faq>
-		<faq id="environment-3">
+		<faq id="runtime-environment-3">
 			<question>Domaを動作させるのに必要なライブラリには何がありますか？</question>
 			<answer>
 				<p>
 					Domaはどのライブラリにも依存していません。単独で動作します。
+				</p>
+			</answer>
+		</faq>
+	</part>
+	<part id="development-environment">
+		<title>開発環境に関する質問</title>
+		<faq id="development-environment-1">
+			<question>どのバージョンのJDKをサポートしていますか？</question>
+			<answer>
+				<p>
+					JDK 6 以上をサポートしています。JDK 5 以前はサポートしていません。
+				</p>
+			</answer>
+		</faq>
+		<faq id="development-environment-2">
+			<question>お奨めのIDE（統合開発環境）はありますか？</question>
+			<answer>
+				<p>
+					Eclipseをお奨めします。Eclipseのバージョンは3.5以上でなければいけません。
+				</p>
+				<p>
+					Eclipse 3.5 は JDK 6 で動作させる必要があります。
+					また、プロジェクトでも JDK 6 を使用する必要があります。
+				</p>
+			</answer>
+		</faq>
+		<faq id="development-environment-3">
+			<question>DomaのjarファイルをEclipseのビルドパスに指定しましたが、アノテーション処理が行われません。何が足りないのでしょうか？</question>
+			<answer>
+				<p>
+					Factory PathにもDomaのjarファイルを登録してください。
+				<p>
+				</p>
+					Factory Pathの設定画面は、プロジェクトのプロパティ設定画面から、
+					Java - Compiler - Annotation Processing - Factory Path と辿れます。
+					Annotation ProcessingとFactory Pathの画面では、
+					「Enable project specific settings」のチェックボックスをチェックしてください。
 				</p>
 			</answer>
 		</faq>
@@ -177,7 +214,7 @@
 			</answer>
 		</faq>
 		<faq id="feature-11">
-			<question>1対1 や 1対n などテーブルのリレーションシップをJavaオブジェクトにマッピングできますか？</question>
+			<question>1対1 や 1対n などデータベース上のリレーションシップをJavaオブジェクトにマッピングできますか？</question>
 			<answer>
 				<p>
 					いいえ、できません。
