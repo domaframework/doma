@@ -1,0 +1,231 @@
+<faqs title="よくある質問 " toplink="true">
+	<part id="general">
+		<title>一般的な質問</title>
+		<faq id="general-1">
+			<question>Domaとはどのような意味ですか？</question>
+			<answer>
+				<p>
+					<b>D</b>omain <b>O</b>riented <b>MA</b>pping Framework の略です。
+				</p>
+			</answer>
+		</faq>
+		<faq id="general-2">
+			<question>Domain（ドメイン）とは何ですか？</question>
+			<answer>
+				<p>
+					値のとり得る範囲（定義域）のことです。
+					Domaでは、テーブルのカラムの値を、ドメインと呼ばれるJavaオブジェクトで扱います。
+				</p>
+				<p>
+					たとえば、一般的なO/Rマッパーでは、データベースのVARCHAR型をJavaのStringにマッピングしますが、
+					Domaでは、アプリケーション固有の型にマッピングすることを推奨しています。
+					なぜならば、データベース上では同じVARHCAR型でも、従業員名を表すVARCHAR型と電話番号を表すVARCHAR型は、
+					異なるJavaの型で扱うべきと考えるからです。
+					このアプリケーション固有の型をドメインと呼びます。
+				</p>
+			</answer>
+		</faq>
+		<faq id="general-3">
+			<question>Domain（ドメイン）を利用する利点は何ですか？</question>
+			<answer>
+				<p>
+					主要な利点は次のものです。
+					<ol>
+					<li>異なる型で表すことで意味を明確にできる。</li>
+					<li>異なる型で表すことでまちがって代入してしまうなどのプログラミングミスを事前に防ぐことができる。</li>
+					<li>アプリケーション独自の型であるために、アプリケーションに適した振る舞いをもたせられる。</li>
+					</ol>
+				</p>
+			</answer>
+		</faq>
+		<faq id="general-4">
+			<question>apt（アプト）とは何ですか？</question>
+			<answer>
+				<p>
+					Annotation Processing Toolの略です。
+					狭義では、Java 5 で導入された
+					<a href="http://java.sun.com/j2se/1.5.0/ja/docs/ja/guide/apt/">注釈処理ツール</a>
+					を意味しますが、広義では、Java 6 で導入された 
+					<a href="http://jcp.org/en/jsr/detail?id=269">Pluggable Annotation Processing API (JSR 269)</a>
+					を含みます。
+				</p>
+				<p>
+					aptを利用することで、コンパイル時のソースコード検証や、ソースコード生成が可能です。
+				</p>
+				<p>
+					Domaでは、Pluggable Annotation Processing APIを使用して、
+					エンティティやData Access Objectのインタフェースから実装クラスを生成しています。
+					また、SQLファイルの存在チェックや、不正なメソッド定義の検証も行っています。
+				</p>
+			</answer>
+		</faq>
+	</part>
+	<part id="environment">
+		<title>動作環境に関する質問</title>
+		<faq id="environment-1">
+			<question>Javaのどのバージョンをサポートしていますか？</question>
+			<answer>
+				<p>
+					Java 6 以上をサポートしています。Java 5 以前はサポートしていません。
+				</p>
+			</answer>
+		</faq>
+		<faq id="environment-2">
+			<question>Domaを動作させるのにSeasar2は必須ですか？</question>
+			<answer>
+				<p>
+					いいえ、必須ではありません。
+				</p>
+			</answer>
+		</faq>
+		<faq id="environment-3">
+			<question>Domaを動作させるのに必要なライブラリには何がありますか？</question>
+			<answer>
+				<p>
+					Domaはどのライブラリにも依存していません。単独で動作します。
+				</p>
+			</answer>
+		</faq>
+	</part>
+	<part id="feature">
+		<title>O/Rマッパーの機能に関する質問</title>
+		<faq id="feature-1">
+			<question>どのRDBMSをサポートしていますか？</question>
+			<answer>
+				<p>
+					Oracle Database、PostgreSQL、MySQL、HSQLDBに対応しています。
+					要望があれば他のRDBMSへの対応も検討します。
+					また、利用者が独自に対応モジュールを作成することも可能です。
+				</p>
+			</answer>
+		</faq>
+		<faq id="feature-2">
+			<question>SQLを自動生成する機能はありますか？</question>
+			<answer>
+				<p>
+					はい。更新系SQL、ストアドプロシージャー/ファンクション呼び出しについてはSQLを自動で生成できます。
+					検索系のSQLについては、自動生成機能はありませんが、ファイルに外部化したSQLを実行し、その結果をJavaのオブジェクトにマッピングする機能があります。
+					更新系のSQLについても、必要であれば、ファイルに外部化したSQLを利用できます。
+				</p>
+			</answer>
+		</faq>
+		<faq id="feature-3">
+			<question>条件が動的に変わるSQLはどのように実行できますか？</question>
+			<answer>
+				<p>
+					SQLファイルに、SQLコメントを使って条件を指定できます。
+					SQLコメントは実行時に解析され、条件によって異なるSQLが生成されます。
+				</p>
+			</answer>
+		</faq>
+		<faq id="feature-4">
+			<question>プログラミングで問い合わせ条件を組み立てるためのクライテリアAPIはありますか？</question>
+			<answer>
+				<p>
+					いいえ、ありません。
+					しかし、動的なSQLは、SQLコメントを使って条件指定できます。
+					また、外部化されたオリジナルのSQLをページング用のSQLや悲観的ロック用のSQLに変換する機能があります。
+				</p>
+			</answer>
+		</faq>
+		<faq id="feature-5">
+			<question>バッチ更新はサポートしていますか？</question>
+			<answer>
+				<p>
+					はい、サポートしています。
+				</p>
+			</answer>
+		</faq>
+		<faq id="feature-6">
+			<question>楽観的排他制御はサポートしていますか？</question>
+			<answer>
+				<p>
+					はい、バージョン番号による楽観的排他制御をサポートしています。
+				</p>
+			</answer>
+		</faq>
+		<faq id="feature-7">
+			<question>悲観的排他制御はサポートしていますか？</question>
+			<answer>
+				<p>
+					はい、RDBMSがサポートしていれば、ファイルに外部化したオリジナルのSQLを悲観的排他制御用SQLに変換できます。
+				</p>
+			</answer>
+		</faq>
+		<faq id="feature-8">
+			<question>ページングはサポートしていますか？</question>
+			<answer>
+				<p>
+					はい、ファイルに外部化したオリジナルのSQLをページング用SQLに変換できます。
+				</p>
+			</answer>
+		</faq>
+		<faq id="feature-9">
+			<question>主キーの自動生成はサポートしていますか？</question>
+			<answer>
+				<p>
+					はい。データベースのIDENTITY、シーケンス、テーブルを利用した自動生成がサポートされています。
+				</p>
+			</answer>
+		</faq>
+		<faq id="feature-10">
+			<question>複合主キーはサポートしていますか？</question>
+			<answer>
+				<p>
+					はい、サポートしています。
+				</p>
+			</answer>
+		</faq>
+		<faq id="feature-11">
+			<question>1対1 や 1対n などテーブルのリレーションシップをJavaオブジェクトにマッピングできますか？</question>
+			<answer>
+				<p>
+					いいえ、できません。
+					Domaでは、SQLの結果セットを1行をそのまま1つのエンティティのインスタンスにマッピングします。
+				</p>
+			</answer>
+		</faq>
+		<faq id="feature-12">
+			<question>遅延ローディングをサポートしていますか？</question>
+			<answer>
+				<p>
+					いいえ、サポートしていません。
+				</p>
+			</answer>
+		</faq>
+		<faq id="feature-13">
+			<question>ストアドプロシージャーやストアドファンクションをサポートしていますか？</question>
+			<answer>
+				<p>
+					はい、サポートしています。
+				</p>
+			</answer>
+		</faq>
+		<faq id="feature-14">
+			<question>データベースから取得した結果をキャッシュする機能はありますか？</question>
+			<answer>
+				<p>
+					いいえ、ありません。
+				</p>
+			</answer>
+		</faq>
+		<faq id="feature-15">
+			<question>コネクションプーリングの機能はありますか？</question>
+			<answer>
+				<p>
+					いいえ、ありません。
+					コネクションプーリング機能をもつフレームワークやライブラリと組み合わせて使用してください。
+				</p>
+			</answer>
+		</faq>
+		<faq id="feature-16">
+			<question>トランザクションを制御する機能はありますか？</question>
+			<answer>
+				<p>
+					いいえ、Domaでは特に提供していません。
+					Java Transaction API (JTA) など、データーソースと連動するトランザクション機能と組み合わせて使用してください。
+				</p>
+			</answer>
+		</faq>
+	</part>
+</faqs>
