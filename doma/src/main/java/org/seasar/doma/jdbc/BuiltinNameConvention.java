@@ -16,8 +16,8 @@
 package org.seasar.doma.jdbc;
 
 import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.internal.util.StringUtil;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.util.StringUtil;
 
 /**
  * キャメルケースを大文字のアンダースコア区切りに、また逆に、アンダースコア区切りをキャメルケースに変換するネーミング規約です。
@@ -29,8 +29,6 @@ public class BuiltinNameConvention implements NameConvention {
 
     /**
      * キャメルケースのエンティティ名を大文字のアンダースコア区切りテーブル名に変換します。
-     * <p>
-     * 変換には {@link StringUtil#decamelize(String)} を使用しています。
      * <p>
      * {@inheritDoc}
      */
@@ -48,8 +46,6 @@ public class BuiltinNameConvention implements NameConvention {
     /**
      * キャメルケースのプロパティ名を大文字のアンダースコア区切りカラム名に変換します。
      * <p>
-     * 変換には {@link StringUtil#decamelize(String)} を使用しています。
-     * <p>
      * {@inheritDoc}
      */
     @Override
@@ -65,8 +61,6 @@ public class BuiltinNameConvention implements NameConvention {
 
     /**
      * アンダースコア区切りのテーブル名をキャメルケースのエンティティ名に変換します。
-     * <p>
-     * 変換には {@link StringUtil#capitalize(String)}を使用しています。
      * <p>
      * {@inheritDoc}
      */
@@ -84,8 +78,6 @@ public class BuiltinNameConvention implements NameConvention {
 
     /**
      * アンダースコア区切りのカラム名をキャメルケースのプロパティ名に変換します。
-     * <p>
-     * 変換には {@link StringUtil#capitalize(String)}を使用しています。
      * <p>
      * {@inheritDoc}
      */

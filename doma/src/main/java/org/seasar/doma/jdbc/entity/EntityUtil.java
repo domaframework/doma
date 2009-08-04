@@ -56,7 +56,9 @@ public final class EntityUtil {
      *            ドメインのクラス
      * @param propertyName
      *            プロパティ名
-     * @return ドメイン
+     * @return ドメイン、 ただしエンティティが {@code propertyName} に対応するプロパティを持たない場合 {@code
+     *         null} 、 また、 プロパティのドメインのクラスが、 {@code domainClass} のサブタイプでない場合
+     *         {@code null}
      * @throws DomaNullPointerException
      *             引数のいずれかが {@code null} の場合
      * @throws DomaIllegalArgumentException

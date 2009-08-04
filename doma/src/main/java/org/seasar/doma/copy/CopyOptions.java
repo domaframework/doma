@@ -22,6 +22,7 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.bean.BeanWrapper;
 import org.seasar.doma.bean.BeanWrapperFactory;
 import org.seasar.doma.converter.Converter;
+import org.seasar.doma.internal.util.StringUtil;
 
 /**
  * コピーのオプションです。
@@ -251,10 +252,11 @@ public class CopyOptions {
         }
         if (String.class.isInstance(srcValue)) {
             String s = String.class.cast(srcValue);
-            if (s.trim().isEmpty()) {
+            if (StringUtil.isWhitespace(s)) {
                 return whitespaceIncluded;
             }
         }
         return true;
     }
+
 }

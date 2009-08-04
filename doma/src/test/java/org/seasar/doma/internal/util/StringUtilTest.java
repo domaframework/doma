@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.util;
+package org.seasar.doma.internal.util;
 
 import junit.framework.TestCase;
 
@@ -41,5 +41,12 @@ public class StringUtilTest extends TestCase {
     public void testDecamelize() throws Exception {
         assertEquals("AAA_BBB_CCC", StringUtil.decamelize("aaaBbbCcc"));
         assertEquals("ABC", StringUtil.decamelize("abc"));
+    }
+
+    public void testIsWhitespace() throws Exception {
+        assertFalse(StringUtil.isWhitespace(""));
+        assertTrue(StringUtil.isWhitespace(" "));
+        assertTrue(StringUtil.isWhitespace("  "));
+        assertTrue(StringUtil.isWhitespace(" \t"));
     }
 }

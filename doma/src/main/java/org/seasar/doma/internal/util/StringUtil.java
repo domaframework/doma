@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.util;
+package org.seasar.doma.internal.util;
 
 import java.nio.CharBuffer;
 
@@ -111,6 +111,25 @@ public final class StringUtil {
             }
         }
         return result.toString();
+    }
+
+    /**
+     * 文字列が空白文字だけからなるかどうかを返します。
+     * 
+     * @param text
+     *            文字列
+     * @return 文字列が空白文字のみを含む場合 {@code true}
+     */
+    public static boolean isWhitespace(String text) {
+        if (isNullOrEmpty(text)) {
+            return false;
+        }
+        for (char ch : text.toCharArray()) {
+            if (!Character.isWhitespace(ch)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
