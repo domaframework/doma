@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>クイックスタート</title>
+	</properties>
+	<body>
+		<section name="クイックスタート">
+			<p>
+				PostgresSQLにサンプルテーブルとデータを用意し、取得と更新を行ってみます。
+			</p>
+			<p>
+				DDL、データベースの接続情報、方言（Dialect）の実装を書き換えれば他のRDBMSでも動作します
+				（ただし、現状サポートしているRDBMSは、PosrgreSQL以外では、Oracle Database、MySQL、HSQLDBの3つです）。
+			</p>
+			<subsection name="サンプルテーブルの作成">
+				<p>
+					データベースに従業員テーブルを作成し、データを登録します。テーブルの定義とデータは次のとおりです。
+				</p>
+<pre>create table EMPLOYEE (
+  EMPLOYEE_ID integer not null primary key, 
+  EMPLOYEE_NAME varchar(20), 
+  HIREDATE date,
+  SALARY numeric(7,2),
+  VERSION_NO integer
+);
+
+insert into EMPLOYEE values(1, 'SMITH', '1980-12-17', 800, 1);
+insert into EMPLOYEE values(2, 'ALLEN', '1981-02-20', 1600, 1);
+insert into EMPLOYEE values(3, 'WARD', '1981-02-22', 1250, 1);</pre>
+			</subsection>
+			<subsection name="エンティティインタフェースの作成">
+				<p>
+					テーブルにマッピングするエンティティを作成します。
+					エンティティであることを示すために@Entityを注釈します。
+				</p>
+				<p>
+					主キーには@Id、楽観的排他制御で使用するバージョン番号には@Versionを注釈します。
+				</p>
+<pre>package example;
+
+import org.seasar.doma.Entity;
+import org.seasar.doma.Id;
+import org.seasar.doma.Version;
+import org.seasar.doma.domain.BigDecimalDomain;
+import org.seasar.doma.domain.DateDomain;
+import org.seasar.doma.domain.IntegerDomain;
+import org.seasar.doma.domain.StringDomain;
+
+@Entity
+public interface Employee {
+
+    @Id
+    IntegerDomain employeeId();
+
+    StringDomain employeeName();
+
+    DateDomain hiredate();
+
+    BigDecimalDomain salary();
+
+    @Version
+    IntegerDomain versionNo();
+}</pre>
+			</subsection>
+			<subsection name="設定クラスの作成">
+				<p>
+					設定情報を提供するクラスを作成します。
+					ここでは、PostgreSQLのデータソースと方言を利用することを示します。
+				</p>
+				<p>
+					<code>DomaAbstractConfig</code> を継承すると簡単に作成できます。
+				</p>
+<pre>package example;
+
+import javax.sql.DataSource;
+
+import org.seasar.doma.jdbc.DomaAbstractConfig;
+import org.seasar.doma.jdbc.SimpleDataSource;
+import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.jdbc.dialect.PostgresDialect;
+
+public class AppConfig extends DomaAbstractConfig {
+
+	private static DataSource dataSource = createDataSource();
+
+	private static Dialect dialect = new PostgresDialect();
+
+	@Override
+	public DataSource dataSource() {
+		return dataSource;
+	}
+
+	@Override
+	public Dialect dialect() {
+		return dialect;
+	}
+
+	private static DataSource createDataSource() {
+		SimpleDataSource dataSource = new SimpleDataSource();
+		dataSource.setUrl("jdbc:postgresql://localhost/demo");
+		dataSource.setUser("postgres");
+		dataSource.setPassword("postgres");
+		return dataSource;
+	}
+}</pre>
+			</subsection>
+			<subsection name="DAOインタフェースの作成">
+				<p>
+					データアクセスを行うためのDAOを作成します。
+					DAOであることを示すために@Daoを注釈します。
+					@Daoのconfig要素には、先ほど作成したAppConfigクラスを指定してください。
+				</p>
+				<p>
+					検索のメソッドには@Select、更新のメソッドには@Updateを注釈します。
+				</p>
+<pre>package example;
+
+import org.seasar.doma.Dao;
+import org.seasar.doma.Select;
+import org.seasar.doma.Update;
+import org.seasar.doma.domain.IntegerDomain;
+
+@Dao(config = AppConfig.class)
+public interface EmployeeDao {
+
+    @Select
+    Employee selectById(IntegerDomain employeeId);
+
+    @Update
+    int update(Employee employee);
+}</pre>
+				<p>
+					selectByIdメソッドに、対応するSQLファイルが存在しないことを示すエラーが表示されることを確認します。
+				</p>
+			</subsection>
+			<subsection name="SQLファイルの作成">
+				<p>
+					selectByIdメソッドに対応するSQLファイルを作成します。
+					SQLファイルのパスは「META-INF/example/EmployeeDao/selectById.sq」にします。
+					このパスはクラスパスに通っていなければいけません。
+				</p>
+<pre>select * from employee where employee_id = /*employeeId*/99</pre>
+				<p>
+					ファイルを作成したら、EmployeeDaoを再度ビルドしてください。
+					ビルドをするとSQLファイルの存在チェックが再度行われエラーが消えます。
+				</p>
+			</subsection>
+			<subsection name="起動クラスの作成">
+				<p>
+					エンティティやDAOを利用してデータベースアクセスを行うクラスを作成します。従業員テーブルから1件を主キーで検索し、従業員名を更新しています。
+				</p>
+<pre>package example;
+
+import org.seasar.doma.domain.IntegerDomain;
+
+public class Main {
+
+    public static void main(String[] args) {
+        EmployeeDao dao = new EmployeeDao_();
+        Employee employee = dao.selectById(new IntegerDomain(3));
+        employee.employeeName().set("KING");
+        dao.update(employee);
+    }
+}</pre>
+			</subsection>
+			<subsection name="実行結果（実行時のログ出力）">
+				<p>
+					実行すると、java.util.loggingを使用したログがコンソールに出力されます。
+					わかりやすいように、検索処理のログと更新処理のログの間に空行を入れています。
+				</p>
+<pre>2009/08/07 1:18:57 example.EmployeeDao_ selectById
+情報: ENTRY
+2009/08/07 1:18:57 example.EmployeeDao_ selectById
+情報: META-INF/example/EmployeeDao/selectById.sql
+2009/08/07 1:18:58 example.EmployeeDao_ selectById
+情報: select * from employee where employee_id = 3
+2009/08/07 1:18:58 example.EmployeeDao_ selectById
+情報: RETURN Employee_ [employeeId=3, employeeName=WARD, hiredate=1981-02-22, salary=1250.00, versionNo=1]
+
+2009/08/07 1:18:58 example.EmployeeDao_ update
+情報: ENTRY
+2009/08/07 1:18:58 example.EmployeeDao_ update
+情報: update EMPLOYEE set EMPLOYEE_NAME = 'KING', VERSION_NO = 1 + 1 where EMPLOYEE_ID = 3 and VERSION_NO = 1
+2009/08/07 1:18:58 example.EmployeeDao_ update
+情報: RETURN 1</pre>
+			</subsection>
+		</section>
+	</body>
+</document>

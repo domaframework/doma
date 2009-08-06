@@ -1,4 +1,4 @@
-<faqs title="よくある質問 " toplink="true">
+<faqs title="FAQ" toplink="true">
 	<part id="general">
 		<title>一般的な質問</title>
 		<faq id="general-1">
@@ -185,7 +185,8 @@
 			<question>悲観的排他制御はサポートしていますか？</question>
 			<answer>
 				<p>
-					はい、RDBMSがサポートしていれば、ファイルに外部化したオリジナルのSQLを悲観的排他制御用SQLに変換できます。
+					はい、ファイルに外部化したオリジナルのSQLを悲観的排他制御用SQLに変換できます。
+					ただし、RDBMSが悲観的排他制御に対応している必要があります。
 				</p>
 			</answer>
 		</faq>
@@ -250,7 +251,7 @@
 			<question>コネクションプーリングの機能はありますか？</question>
 			<answer>
 				<p>
-					いいえ、ありません。
+					いいえ、Domaでは提供していません。
 					コネクションプーリング機能をもつフレームワークやライブラリと組み合わせて使用してください。
 				</p>
 			</answer>
@@ -259,7 +260,7 @@
 			<question>トランザクションを制御する機能はありますか？</question>
 			<answer>
 				<p>
-					いいえ、Domaでは特に提供していません。
+					いいえ、Domaでは提供していません。
 					Java Transaction API (JTA) など、データーソースと連動するトランザクション機能と組み合わせて使用してください。
 				</p>
 			</answer>

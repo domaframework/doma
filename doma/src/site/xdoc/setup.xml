@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>セットアップ</title>
+	</properties>
+	<body>
+		<section name="セットアップ">
+			<subsection name="JDKのインストール">
+				<p>
+					バージョン6以上のJDKをインストールします。
+					JREではなくJDKが必要であることに注意してください。
+					JDK 6 は以下のURLのサイトからダウンロードできます。
+				</p>
+				<p>
+					<a href="http://java.sun.com/javase/ja/6/download.html">http://java.sun.com/javase/ja/6/download.html</a>
+				</p>
+			</subsection>
+			<subsection name="Eclipseのインストール">
+				<p>
+					バージョン3.5以上のEclipseをインストールします。
+					<a href="http://jcp.org/en/jsr/detail?id=269">Pluggable Annotation Processing API</a>
+					をサポートしていれば、Eclipse以外のIDEであってもかまいませんが、
+					このドキュメントではEclipseを使うことを前提に説明を進めます。
+					Eclipseは以下のURLのサイトからダウンロードできます。
+				</p>
+				<p>
+					<a href="http://www.eclipse.org/downloads/">http://www.eclipse.org/downloads/</a>
+				</p>
+				<p>
+					Eclipseは、バージョン6以上のJDKに含まれるJREで起動されるようにしてください。
+					明示的にJREを指定するには、-vm オプションを使用します。
+				</p>
+				<pre>-vm %JAVA_HOME%\bin\javaw.exe</pre>
+			</subsection>
+			<subsection name="プロジェクトの設定">
+				EclipseのJavaプロジェクトや動的Webプロジェクトに対し、以下の設定を行います。
+				<h4>JREの設定</h4>
+				<p>
+					プロジェクトのJREの設定項目には、バージョン6以上のJREを指定してください。
+					JREはJDKに含まれたものでなければいけません。
+				</p>
+				<h4>ビルドパス（Build Path）の設定</h4>
+				<p>
+					doma-x.x.x.jarをプロジェクトのビルドパスに追加してください。
+				</p>
+				<h4>注釈処理（Annotation Processing）の設定</h4>
+				<p>
+					プロジェクトのプロパティ画面を開き、左側のツリーメニューから Java Compiler - Annotation Processing と辿り、
+					「Enable project specific settings」のチェックボックスにチェックを入れてください。
+				</p>
+				<p>
+					「Generated source directory」のテキストボックスに記入された値を確認してください。
+					デフォルトでは「.apt_generated」です。
+					注釈処理により生成されたソースコードはプロジェクト直下のこの名前のディレクトリに格納されます。
+				</p>
+				<h4>ファクトリパス（Factory Path）の設定</h4>
+				<p>
+					プロジェクトのプロパティ画面を開き、左側のツリーメニューから Java Compiler - Annotation Processing - Factory Path と辿り、
+					「Enable project specific settings」のチェックボックスにチェックを入れてください。
+				</p>
+				<p>
+					次に、「Add JARs...」ボタンを押して、ビルドパスに通したdoma-x.x.x.jarと同じjarをファクトリパスにも追加してください。
+				</p>
+			</subsection>
+		</section>
+		<section name="セットアップの確認">
+			<subsection name="エンティティクラスの作成">
+				<p>
+					注釈処理が行われることを確認するため、エンティティクラスを作成します。
+					Javaエディタを開き、次のようなクラスを作成してください。
+				</p>
+				<pre>package example;
+
+import org.seasar.doma.Entity;
+import org.seasar.doma.domain.StringDomain;
+
+@Entity
+public interface Employee {
+
+    StringDomain name();
+}</pre>
+				<p>
+					ビルド後（自動でビルドされる設定ならばエディタの保存後）に、実装クラス「example.Employee_」が自動生成されれば、セットアップは成功していると言えます。
+					生成されたソースコードは、注釈処理（Annotation Processing）の設定画面で変更していなければ、プロジェクト直下の「.apt_generated」というディレクトリに保存されます。
+				</p>
+			</subsection>
+		</section>
+	</body>
+</document>

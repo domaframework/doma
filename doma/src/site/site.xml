@@ -33,12 +33,16 @@
 		</breadcrumbs>
 		<menu name="About" inherit="top">
 			<item name="ホーム" href="index.html" />
-			<item name="FAQ" href="faq.html" />
-			<item name="Javadoc" href="apidocs/index.html" />
 			<!--
 			<item name="ダウンロード" href="downloads.html" />
 			<item name="変更履歴" href="changelog.html" />
 			-->
+		</menu>
+		<menu name="ドキュメント" inherit="top">
+			<item name="セットアップ" href="setup.html" />
+			<item name="クイックスタート" href="quick_start.html" />
+			<item name="FAQ" href="faq.html" />
+			<item name="Javadoc" href="apidocs/index.html" />
 		</menu>
 		${reports}
 	</body>
