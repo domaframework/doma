@@ -41,6 +41,7 @@
 		<menu name="ドキュメント" inherit="top">
 			<item name="セットアップ" href="setup.html" />
 			<item name="クイックスタート" href="quick_start.html" />
+			<item name="リファレンス" href="reference/index.html" />
 			<item name="FAQ" href="faq.html" />
 			<item name="Javadoc" href="apidocs/index.html" />
 		</menu>
