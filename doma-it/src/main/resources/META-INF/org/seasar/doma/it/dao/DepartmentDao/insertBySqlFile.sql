@@ -1,0 +1,1 @@
+insert into DEPARTMENT (DEPARTMENT_ID, DEPARTMENT_NO) values (/*entity.department_id*/1, /*entity.department_no*/1)

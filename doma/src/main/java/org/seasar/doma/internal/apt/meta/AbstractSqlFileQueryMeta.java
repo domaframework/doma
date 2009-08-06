@@ -27,14 +27,15 @@ import javax.lang.model.type.TypeMirror;
 public abstract class AbstractSqlFileQueryMeta extends AbstractQueryMeta
         implements SqlFileQueryMeta {
 
-    protected Map<String, TypeMirror> methodParameterTypes = new LinkedHashMap<String, TypeMirror>();
+    protected Map<String, TypeMirror> bindVariableTypes = new LinkedHashMap<String, TypeMirror>();
 
-    public TypeMirror getMethodParameterType(String parameterName) {
-        return methodParameterTypes.get(parameterName);
+    public TypeMirror getBindVariableType(String bindVariableName) {
+        return bindVariableTypes.get(bindVariableName);
     }
 
-    public void addMethodParameterType(String parameterName, TypeMirror parameterType) {
-        this.methodParameterTypes.put(parameterName, parameterType);
+    public void addBindVariableType(String bindVariableName,
+            TypeMirror bindVariableType) {
+        this.bindVariableTypes.put(bindVariableName, bindVariableType);
     }
 
 }

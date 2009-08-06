@@ -24,6 +24,8 @@ public class SqlFileBatchUpdateDao_ extends org.seasar.doma.jdbc.DomaAbstractDao
         org.seasar.doma.internal.jdbc.query.SqlFileBatchUpdateQuery<org.seasar.doma.internal.apt.entity.Emp, org.seasar.doma.internal.apt.entity.Emp_> query = new org.seasar.doma.internal.jdbc.query.SqlFileBatchUpdateQuery<org.seasar.doma.internal.apt.entity.Emp, org.seasar.doma.internal.apt.entity.Emp_>(org.seasar.doma.internal.apt.entity.Emp_.class);
         query.setConfig(config);
         query.setEntities(entities);
+        query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFileUtil.buildPath("org.seasar.doma.internal.apt.dao.SqlFileBatchUpdateDao", "update"));
+        query.setParameterName("entities");
         query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileBatchUpdateDao_");
         query.setCallerMethodName("update");
         query.setQueryTimeout(-1);

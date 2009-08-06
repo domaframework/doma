@@ -463,6 +463,11 @@ public class DaoGenerator extends AbstractGenerator {
                     entitySuffix);
             iprint("query.setConfig(config);%n");
             iprint("query.setEntities(%1$s);%n", m.getEntityListName());
+            iprint(
+                    "query.setSqlFilePath(%1$s.buildPath(\"%2$s\", \"%3$s\"));%n",
+                    SqlFileUtil.class.getName(), daoMeta.getDaoElement()
+                            .getQualifiedName(), m.getName());
+            iprint("query.setParameterName(\"%1$s\");%n", m.getEntityListName());
             iprint("query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("query.setCallerMethodName(\"%1$s\");%n", m.getName());
             if (m.getQueryTimeout() != null) {

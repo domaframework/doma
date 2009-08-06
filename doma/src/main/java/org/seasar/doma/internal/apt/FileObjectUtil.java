@@ -17,16 +17,11 @@ package org.seasar.doma.internal.apt;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
-import javax.tools.Diagnostic.Kind;
-
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -38,18 +33,12 @@ public final class FileObjectUtil {
             ProcessingEnvironment env) {
         Filer filer = env.getFiler();
         try {
-            FileObject fileObject = filer
-                    .getResource(StandardLocation.CLASS_OUTPUT, "", path);
+            FileObject fileObject = filer.getResource(
+                    StandardLocation.CLASS_OUTPUT, "", path);
             return fileObject.openInputStream();
-        } catch (IOException e) {
-            ignoreException(e, env);
+        } catch (IOException ignored) {
         }
         return null;
     }
 
-    protected static void ignoreException(Exception e, ProcessingEnvironment env) {
-        StringWriter stringWriter = new StringWriter();
-        e.printStackTrace(new PrintWriter(stringWriter));
-        Notifier.notify(env, Kind.NOTE, DomaMessageCode.DOMA4021, stringWriter);
-    }
 }

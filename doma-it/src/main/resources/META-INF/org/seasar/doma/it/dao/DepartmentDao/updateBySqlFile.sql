@@ -1,0 +1,1 @@
+update DEPARTMENT set DEPARTMENT_NAME = /*entity.department_name*/'aaa' where DEPARTMENT_ID = /*entity.department_id*/1

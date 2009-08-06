@@ -60,6 +60,9 @@ public interface EmployeeDao {
     @Delete
     int delete(Employee entity);
 
+    @Delete(sqlFile = true)
+    int deleteBySqlFile(Employee entity);
+
     @Delete(ignoreVersion = true)
     int delete_ignoresVersion(Employee entity);
 
@@ -67,11 +70,14 @@ public interface EmployeeDao {
     int delete_suppressesOptimisticLockException(Employee entity);
 
     @BatchDelete
-    int[] delete(List<Employee> entities);
+    int[] delete(List<Employee> entity);
 
     @BatchDelete(ignoreVersion = true)
-    int[] delete_ignoresVersion(List<Employee> entities);
+    int[] delete_ignoresVersion(List<Employee> entity);
 
     @BatchDelete(suppressOptimisticLockException = true)
-    int[] delete_suppressesOptimisticLockException(List<Employee> entities);
+    int[] delete_suppressesOptimisticLockException(List<Employee> entity);
+
+    @BatchDelete(sqlFile = true)
+    int[] deleteBySqlFile(List<Employee> entity);
 }

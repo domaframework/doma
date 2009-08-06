@@ -74,7 +74,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
             String parameterTypeName = TypeUtil.getTypeName(paramType, daoMeta
                     .getTypeParameterMap(), env);
             queryMeta.addMethodParameter(parameterName, parameterTypeName);
-            queryMeta.addMethodParameterType(parameterName, paramType);
+            queryMeta.addBindVariableType(parameterName, paramType);
         }
     }
 

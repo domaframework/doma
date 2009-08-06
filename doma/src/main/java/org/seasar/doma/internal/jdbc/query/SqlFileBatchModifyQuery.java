@@ -51,6 +51,8 @@ public abstract class SqlFileBatchModifyQuery<I, E extends Entity<I>>
 
     protected String callerMethodName;
 
+    protected SqlFile sqlFile;
+
     protected final List<PreparedSql> sqls = new ArrayList<PreparedSql>();
 
     protected boolean optimisticLockCheckRequired;
@@ -78,6 +80,7 @@ public abstract class SqlFileBatchModifyQuery<I, E extends Entity<I>>
             executable = true;
             sqlExecutionSkipCause = null;
             entity = it.next();
+            prepareSqlFile();
             prepareOptions();
             prepareSql();
         } else {
@@ -88,6 +91,13 @@ public abstract class SqlFileBatchModifyQuery<I, E extends Entity<I>>
             prepareSql();
         }
         assertEquals(entities.size(), sqls.size());
+    }
+
+    protected void prepareSqlFile() {
+        sqlFile = config.sqlFileRepository().getSqlFile(sqlFilePath,
+                config.dialect());
+        config.jdbcLogger().logSqlFile(callerClassName, callerMethodName,
+                sqlFile);
     }
 
     protected void prepareOptions() {
@@ -104,10 +114,6 @@ public abstract class SqlFileBatchModifyQuery<I, E extends Entity<I>>
                 .singletonMap(parameterName, entity));
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
                 evaluator);
-        SqlFile sqlFile = config.sqlFileRepository().getSqlFile(sqlFilePath,
-                config.dialect());
-        config.jdbcLogger().logSqlFile(callerClassName, callerMethodName,
-                sqlFile);
         PreparedSql sql = sqlBuilder.build(sqlFile.getSqlNode());
         sqls.add(sql);
     }

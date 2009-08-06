@@ -47,7 +47,8 @@ public class SqlFileBatchModifyQueryMetaFactory extends
     @Override
     public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
         assertNotNull(method, daoMeta);
-        SqlFileBatchModifyQueryMeta queryMeta = createSqlFileBatchModifyQueryMeta(method, daoMeta);
+        SqlFileBatchModifyQueryMeta queryMeta = createSqlFileBatchModifyQueryMeta(
+                method, daoMeta);
         if (queryMeta == null) {
             return null;
         }
@@ -55,6 +56,7 @@ public class SqlFileBatchModifyQueryMetaFactory extends
         doReturnType(queryMeta, method, daoMeta);
         doParameters(queryMeta, method, daoMeta);
         doThrowTypes(queryMeta, method, daoMeta);
+        doSqlFile(queryMeta, method, daoMeta);
         return queryMeta;
     }
 
@@ -120,14 +122,14 @@ public class SqlFileBatchModifyQueryMetaFactory extends
             throw new AptException(DomaMessageCode.DOMA4043, env, method);
         }
         String entityListName = ElementUtil.getParameterName(entityList);
-        String entityListTypeName = TypeUtil
-                .getTypeName(entityListType, daoMeta.getTypeParameterMap(), env);
+        String entityListTypeName = TypeUtil.getTypeName(entityListType,
+                daoMeta.getTypeParameterMap(), env);
         queryMeta.setEntityListName(entityListName);
         queryMeta.setEntityListTypeName(entityListTypeName);
         queryMeta.setElementTypeName(TypeUtil.getTypeName(elementType, daoMeta
                 .getTypeParameterMap(), env));
         queryMeta.addMethodParameter(entityListName, entityListTypeName);
-        queryMeta.addMethodParameterType(entityListName, entityListType);
+        queryMeta.addBindVariableType(entityListName, elementType);
     }
 
 }

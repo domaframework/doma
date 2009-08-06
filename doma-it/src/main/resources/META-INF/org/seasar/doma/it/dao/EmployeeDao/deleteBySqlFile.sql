@@ -1,0 +1,1 @@
+delete from EMPLOYEE where EMPLOYEE_ID = /*entity.employee_id*/0

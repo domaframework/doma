@@ -63,7 +63,7 @@ public class BindVariableValidator implements
     public Void visitBindVariableNode(BindVariableNode node, Void p) {
         String variableName = node.getVariableName();
         String[] names = variableName.split("\\.");
-        TypeMirror parameterType = queryMeta.getMethodParameterType(names[0]);
+        TypeMirror parameterType = queryMeta.getBindVariableType(names[0]);
         if (parameterType == null) {
             throw new AptException(DomaMessageCode.DOMA4067, env, method, path,
                     variableName, names[0]);
