@@ -17,13 +17,13 @@ package org.seasar.doma.internal.jdbc.mock;
 
 import javax.sql.DataSource;
 
-import org.seasar.doma.jdbc.BuiltinJdbcLogger;
-import org.seasar.doma.jdbc.BuiltinNameConvention;
-import org.seasar.doma.jdbc.BuiltinRequiresNewController;
-import org.seasar.doma.jdbc.BuiltinSqlFileRepository;
+import org.seasar.doma.jdbc.UtilLoggingJdbcLogger;
+import org.seasar.doma.jdbc.CamelNamingConvention;
+import org.seasar.doma.jdbc.NullRequiresNewController;
+import org.seasar.doma.jdbc.CachedSqlFileRepository;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcLogger;
-import org.seasar.doma.jdbc.NameConvention;
+import org.seasar.doma.jdbc.NamingConvention;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.SqlFileRepository;
 import org.seasar.doma.jdbc.dialect.Dialect;
@@ -39,13 +39,13 @@ public class MockConfig implements Config {
 
     protected Dialect dialect = new StandardDialect();
 
-    protected NameConvention nameConvention = new BuiltinNameConvention();
+    protected NamingConvention namingConvention = new CamelNamingConvention();
 
-    protected SqlFileRepository sqlFileRepository = new BuiltinSqlFileRepository();
+    protected SqlFileRepository sqlFileRepository = new CachedSqlFileRepository();
 
-    protected JdbcLogger sqlLogger = new BuiltinJdbcLogger();
+    protected JdbcLogger sqlLogger = new UtilLoggingJdbcLogger();
 
-    protected RequiresNewController requiresNewController = new BuiltinRequiresNewController();
+    protected RequiresNewController requiresNewController = new NullRequiresNewController();
 
     @Override
     public DataSource dataSource() {
@@ -63,8 +63,8 @@ public class MockConfig implements Config {
     }
 
     @Override
-    public NameConvention nameConvention() {
-        return nameConvention;
+    public NamingConvention namingConvention() {
+        return namingConvention;
     }
 
     @Override
@@ -114,12 +114,12 @@ public class MockConfig implements Config {
         this.dialect = dialect;
     }
 
-    public NameConvention getNameConvention() {
-        return nameConvention;
+    public NamingConvention getNameConvention() {
+        return namingConvention;
     }
 
-    public void setNameConvention(NameConvention nameConvention) {
-        this.nameConvention = nameConvention;
+    public void setNameConvention(NamingConvention namingConvention) {
+        this.namingConvention = namingConvention;
     }
 
     public SqlFileRepository getSqlFileRepository() {

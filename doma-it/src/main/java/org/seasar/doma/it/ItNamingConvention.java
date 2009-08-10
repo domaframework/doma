@@ -1,9 +1,9 @@
 package org.seasar.doma.it;
 
-import org.seasar.doma.jdbc.NameConvention;
+import org.seasar.doma.jdbc.NamingConvention;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
-public class ItNameConvention implements NameConvention {
+public class ItNamingConvention implements NamingConvention {
 
     @Override
     public String fromEntityToTable(String entityName, Dialect dialect) {

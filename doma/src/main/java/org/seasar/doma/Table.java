@@ -20,7 +20,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.seasar.doma.jdbc.NameConvention;
+import org.seasar.doma.jdbc.NamingConvention;
 
 /**
  * データベースのテーブルを示します。
@@ -58,7 +58,7 @@ public @interface Table {
      * テーブル名です。
      * <p>
      * 指定しない場合、テーブル名は
-     * {@link NameConvention#fromEntityToTable(String, org.seasar.doma.jdbc.dialect.Dialect)}
+     * {@link NamingConvention#fromEntityToTable(String, org.seasar.doma.jdbc.dialect.Dialect)}
      * によって解決されます。
      */
     String name() default "";

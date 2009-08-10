@@ -36,7 +36,7 @@ import org.seasar.doma.jdbc.dialect.Dialect;
  * @author taedium
  * 
  */
-public interface NameConvention {
+public interface NamingConvention {
 
     /**
      * エンティティ名からテーブル名へ変換します。

@@ -35,7 +35,7 @@ public interface Converter<T> {
      *            値
      * @param pattern
      *            変換時に利用するパターン
-     * @return 変換された値、値が {@code null} の場合は {@code null}
+     * @return 変換された値、{@code value} が {@code null} の場合は {@code null}
      * @throws ConversionException
      *             変換に失敗した場合
      */

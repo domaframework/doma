@@ -25,7 +25,7 @@ import org.seasar.doma.jdbc.dialect.Dialect;
  * @author taedium
  * 
  */
-public class BuiltinNameConvention implements NameConvention {
+public class CamelNamingConvention implements NamingConvention {
 
     /**
      * キャメルケースのエンティティ名を大文字のアンダースコア区切りテーブル名に変換します。

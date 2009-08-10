@@ -32,7 +32,7 @@ import org.seasar.doma.message.DomaMessageCode;
  * @author taedium
  * 
  */
-public class BuiltinSqlFileRepository implements SqlFileRepository {
+public class CachedSqlFileRepository implements SqlFileRepository {
 
     /** SQLのパスのプレフィックスです。 */
     protected static final String SQL_PATH_PREFIX = "META-INF/";

@@ -25,6 +25,8 @@ import org.seasar.doma.jdbc.dialect.Dialect;
 /**
  * JDBCに関する設定です。
  * <p>
+ * このインタフェースの実装は {@code public} なデフォルトコンストラクタを持たなければいけません。
+ * <p>
  * このインタフェースの実装はスレッドセーフでなければいけません。
  * 
  * @author taedium
@@ -61,7 +63,7 @@ public interface Config {
      * 
      * @return ネーミング規約
      */
-    NameConvention nameConvention();
+    NamingConvention namingConvention();
 
     /**
      * SQLファイルのリポジトリです。
@@ -121,7 +123,7 @@ public interface Config {
      * バッチサイズを返します。
      * <p>
      * <p>
-     * 1以下の値は、 1とみなされます。
+     * {@literal 1} 以下の値は、 {@literal 1} とみなされます。
      * 
      * {@link PreparedStatement#executeBatch()} を実行する際のバッチサイズです。
      * バッチ対象の数がバッチサイズを上回る場合、バッチサイズの数だけ {@link PreparedStatement#addBatch()}

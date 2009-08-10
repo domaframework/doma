@@ -17,10 +17,10 @@ package org.seasar.doma.jdbc.entity;
 
 /**
  * エンティティのリスナーです。
- * 
+ * <p>
+ * このインタフェースの実装は {@literal public} なデフォルトコンストラクタを持たねばいけません。
  * <p>
  * このインタフェースの実装はスレッドセーフでなければいけません。
- * </p>
  * 
  * @author taedium
  * 

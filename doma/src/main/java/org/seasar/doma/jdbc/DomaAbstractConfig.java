@@ -16,22 +16,22 @@
 package org.seasar.doma.jdbc;
 
 /**
- * {@link Config}の骨格実装です。
+ * {@link Config} の骨格実装です。
  * <p>
- * 多くの場合、このクラスを継承して利用すると便利ですが、アプリケーションの要件に応じた実装を作成し、使用することを検討してください。
+ * 多くの場合、このクラスを継承して利用すると便利ですが、アプリケーションの要件に応じた実装を作成し使用することを検討してください。
  * 
  * @author taedium
  * 
  */
 public abstract class DomaAbstractConfig implements Config {
 
-    private static NameConvention nameConvention = new BuiltinNameConvention();
+    private static NamingConvention namingConvention = new CamelNamingConvention();
 
-    private static SqlFileRepository sqlFileRepository = new BuiltinSqlFileRepository();
+    private static SqlFileRepository sqlFileRepository = new CachedSqlFileRepository();
 
-    private static JdbcLogger jdbcLogger = new BuiltinJdbcLogger();
+    private static JdbcLogger jdbcLogger = new UtilLoggingJdbcLogger();
 
-    private static RequiresNewController requiresNewController = new BuiltinRequiresNewController();
+    private static RequiresNewController requiresNewController = new NullRequiresNewController();
 
     @Override
     public String dataSourceName() {
@@ -39,8 +39,8 @@ public abstract class DomaAbstractConfig implements Config {
     }
 
     @Override
-    public NameConvention nameConvention() {
-        return nameConvention;
+    public NamingConvention namingConvention() {
+        return namingConvention;
     }
 
     @Override

@@ -22,13 +22,13 @@ import java.util.logging.Logger;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * 出力先に {@link Logger} を使用したJDBCロガーです。
+ * 出力先に {@link java.util.logging.Logger} を使用したJDBCロガーです。
  * <p>
  * 
  * @author taedium
  * 
  */
-public class BuiltinJdbcLogger implements JdbcLogger {
+public class UtilLoggingJdbcLogger implements JdbcLogger {
 
     /** ログレベルです。 */
     protected final Level level;
@@ -41,7 +41,7 @@ public class BuiltinJdbcLogger implements JdbcLogger {
      * <p>
      * ログレベルは {@link Level#INFO} になります。
      */
-    public BuiltinJdbcLogger() {
+    public UtilLoggingJdbcLogger() {
         this(Level.INFO);
     }
 
@@ -51,12 +51,12 @@ public class BuiltinJdbcLogger implements JdbcLogger {
      * @param level
      *            ログレベル
      */
-    public BuiltinJdbcLogger(Level level) {
+    public UtilLoggingJdbcLogger(Level level) {
         if (level == null) {
             throw new DomaNullPointerException("level");
         }
         this.level = level;
-        this.logger = Logger.getLogger(BuiltinJdbcLogger.class.getName());
+        this.logger = Logger.getLogger(UtilLoggingJdbcLogger.class.getName());
     }
 
     @Override

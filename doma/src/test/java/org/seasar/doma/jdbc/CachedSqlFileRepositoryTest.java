@@ -25,13 +25,13 @@ import org.seasar.doma.jdbc.dialect.StandardDialect;
  * @author taedium
  * 
  */
-public class BuiltinSqlFileRepositoryTest extends TestCase {
+public class CachedSqlFileRepositoryTest extends TestCase {
 
     public void testGetSqlFile() throws Exception {
         StandardDialect dialect = new StandardDialect();
         String path = "META-INF/" + getClass().getName().replace(".", "/")
                 + ".sql";
-        BuiltinSqlFileRepository repository = new BuiltinSqlFileRepository();
+        CachedSqlFileRepository repository = new CachedSqlFileRepository();
         SqlFile sqlFile = repository.getSqlFile(path, dialect);
         assertNotNull(sqlFile);
         SqlFile sqlFile2 = repository.getSqlFile(path, dialect);
@@ -43,7 +43,7 @@ public class BuiltinSqlFileRepositoryTest extends TestCase {
         OracleDialect dialect = new OracleDialect();
         String path = "META-INF/" + getClass().getName().replace(".", "/")
                 + ".sql";
-        BuiltinSqlFileRepository repository = new BuiltinSqlFileRepository();
+        CachedSqlFileRepository repository = new CachedSqlFileRepository();
         SqlFile sqlFile = repository.getSqlFile(path, dialect);
         assertEquals("META-INF/" + getClass().getName().replace(".", "/")
                 + "_oracle.sql", sqlFile.getPath());
@@ -53,7 +53,7 @@ public class BuiltinSqlFileRepositoryTest extends TestCase {
         PostgresDialect dialect = new PostgresDialect();
         String path = "META-INF/" + getClass().getName().replace(".", "/")
                 + ".sql";
-        BuiltinSqlFileRepository repository = new BuiltinSqlFileRepository();
+        CachedSqlFileRepository repository = new CachedSqlFileRepository();
         SqlFile sqlFile = repository.getSqlFile(path, dialect);
         assertEquals(path, sqlFile.getPath());
     }

@@ -15,24 +15,25 @@
  */
 package org.seasar.doma.jdbc;
 
-import java.util.Collections;
-
-import org.seasar.doma.internal.jdbc.sql.PreparedSql;
-import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
-import org.seasar.doma.jdbc.BuiltinJdbcLogger;
-
-import junit.framework.TestCase;
+import org.seasar.doma.DomaNullPointerException;
 
 /**
+ * {@literal REQUIRES_NEW} のトランザクション属性について何ら制御を行わない
+ * {@link RequiresNewController}の実装です。
+ * <p>
+ * 通常は、このクラスを使用せず、環境にあわせた実装を作成し使用してください。
+ * 
  * @author taedium
  * 
  */
-public class BuiltinJdbcLoggerTest extends TestCase {
+public class NullRequiresNewController implements RequiresNewController {
 
-    public void test() throws Exception {
-        PreparedSql sql = new PreparedSql("aaa", "bbb", Collections
-                .<PreparedSqlParameter> emptyList());
-        BuiltinJdbcLogger logger = new BuiltinJdbcLogger();
-        logger.logSql("ccc", "ddd", sql);
+    @Override
+    public <R> R requiresNew(Callback<R> callback) throws Throwable {
+        if (callback == null) {
+            throw new DomaNullPointerException("callback");
+        }
+        return callback.execute();
     }
+
 }

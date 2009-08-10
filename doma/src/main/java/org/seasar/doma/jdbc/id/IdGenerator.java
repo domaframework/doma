@@ -27,6 +27,8 @@ import org.seasar.doma.jdbc.JdbcException;
  * {@link #generatePostInsert(IdGenerationConfig, Statement)} の両方が {@code null}
  * を返してはいけません。
  * <p>
+ * このインタフェースの実装は {@code public} なデフォルトコンストラクタを持たなければいけません。
+ * <p>
  * このインタフェースの実装はスレッドセーフでなければいけません。
  * 
  * @author taedium
