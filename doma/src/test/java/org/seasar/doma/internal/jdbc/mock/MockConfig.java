@@ -17,15 +17,15 @@ package org.seasar.doma.internal.jdbc.mock;
 
 import javax.sql.DataSource;
 
-import org.seasar.doma.jdbc.UtilLoggingJdbcLogger;
-import org.seasar.doma.jdbc.CamelNamingConvention;
-import org.seasar.doma.jdbc.NullRequiresNewController;
 import org.seasar.doma.jdbc.CachedSqlFileRepository;
+import org.seasar.doma.jdbc.CamelNamingConvention;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.NamingConvention;
+import org.seasar.doma.jdbc.NullRequiresNewController;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.SqlFileRepository;
+import org.seasar.doma.jdbc.UtilLoggingJdbcLogger;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
 
@@ -114,11 +114,11 @@ public class MockConfig implements Config {
         this.dialect = dialect;
     }
 
-    public NamingConvention getNameConvention() {
+    public NamingConvention getNamingConvention() {
         return namingConvention;
     }
 
-    public void setNameConvention(NamingConvention namingConvention) {
+    public void setNamingConvention(NamingConvention namingConvention) {
         this.namingConvention = namingConvention;
     }
 
