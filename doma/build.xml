@@ -1,6 +1,6 @@
 <project name="doma" default="update-version" basedir=".">
 
-	<property name="newVersion" value="0.9.0-SNAPSHOT" />
+	<property name="newVersion" value="0.9.0" />
 
 	<target name="update-version">
 		<replaceregexp
@@ -21,8 +21,8 @@
 	<target name="dist">
 		<mkdir dir="${zipDir}"/>
 		<zip zipfile="${zipDir}/doma-${ver}.zip">
-			<zipfileset prefix="doma" dir="..">
-				<exclude name="**/build/**"/>
+			<zipfileset prefix="doma" dir=".">
+				<exclude name="**/bin**"/>
 				<exclude name="**/target/**"/>
 				<exclude name="**/site/**"/>
 				<exclude name="src/**"/>
@@ -30,10 +30,10 @@
 			<zipfileset prefix="doma/lib" dir="target">
 				<include name="doma-${ver}.jar"/>
 			</zipfileset>
-			<zipfileset prefix="doma/lib/sources" dir="target">
+			<zipfileset prefix="doma/libsrc" dir="target">
 				<include name="doma-${ver}-sources.jar"/>
 			</zipfileset>
-			<zipfileset prefix="seasar2/doc" dir="target/site">
+			<zipfileset prefix="doma/doc" dir="target/site">
 				<exclude name="**/download/**"/>
 			</zipfileset>
 		</zip>

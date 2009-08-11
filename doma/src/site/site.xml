@@ -33,8 +33,8 @@
 		</breadcrumbs>
 		<menu name="About" inherit="top">
 			<item name="ホーム" href="index.html" />
-			<!--
 			<item name="ダウンロード" href="downloads.html" />
+			<!--
 			<item name="変更履歴" href="changelog.html" />
 			-->
 		</menu>
