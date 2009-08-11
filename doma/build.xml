@@ -13,4 +13,29 @@
 		</replaceregexp>
 	</target>
 
+	<tstamp>
+		<format property="releaseDate" pattern="yyyy-MM-dd" locale="ja,JP"/>
+	</tstamp>
+	<property name="zipDir" value="target/site/download/${releaseDate}"/>
+
+	<target name="dist">
+		<mkdir dir="${zipDir}"/>
+		<zip zipfile="${zipDir}/doma-${ver}.zip">
+			<zipfileset prefix="doma" dir="..">
+				<exclude name="**/build/**"/>
+				<exclude name="**/target/**"/>
+				<exclude name="**/site/**"/>
+				<exclude name="src/**"/>
+			</zipfileset>
+			<zipfileset prefix="doma/lib" dir="target">
+				<include name="doma-${ver}.jar"/>
+			</zipfileset>
+			<zipfileset prefix="doma/lib/sources" dir="target">
+				<include name="doma-${ver}-sources.jar"/>
+			</zipfileset>
+			<zipfileset prefix="seasar2/doc" dir="target/site">
+				<exclude name="**/download/**"/>
+			</zipfileset>
+		</zip>
+	</target>
 </project>
