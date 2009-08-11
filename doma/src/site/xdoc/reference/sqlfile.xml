@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>SQL</title>
+	</properties>
+	<body>
+		<section name="概要">
+			<p>
+				SQLファイルは、SQL文を格納したテキストファイルで、<code>Data Access Object</code> のメソッドにマッピングされます。
+				SQLのブロックコメント(/* */)や行コメント(--)を使用することで、バインド変数や動的なSQLのための条件分岐を表現できます。
+				SQLのツールですぐにそのSQLを実行できるように、バインド変数にはテスト用のデータを指定できます。テスト用のデータは、実行時には使用されません。
+				たとえば、SQLファイルには次のようなSQL文が格納されます。
+			</p>
+<source>select * from employee where employee_id = /*employeeId*/99</source>
+			<p>
+				ここでは、ブロックコメントで囲まれた  <code>employeeId</code> が <code>Data Access Object</code> のメソッドのパラメータに対応します。
+				直後の <code>99</code> はテスト用の条件になります。
+			</p>
+		</section>
+		<section name="SQLファイルにマッピングするためのアノテーション">
+			<p>
+				SQLファイルとマッピングするには、<code>Data Access Object</code> のメソッドに次のアノテーションを注釈しなければいけません。
+			</p>
+			<ul>
+				<li>
+					<code>@Select</code>が注釈されたメソッド
+				</li>
+				<li>
+					<code>@Insert(sqlFile = true)</code>が注釈されたメソッド
+				</li>
+				<li>
+					<code>@Update(sqlFile = true)</code>が注釈されたメソッド
+				</li>
+				<li>
+					<code>@Delete(sqlFile = true)</code>が注釈されたメソッド
+				</li>
+				<li>
+					<code>@BatchInsert(sqlFile = true)</code>が注釈されたメソッド
+				</li>
+				<li>
+					<code>@BatchUpdate(sqlFile = true)</code>が注釈されたメソッド
+				</li>
+				<li>
+					<code>@BatchDelete(sqlFile = true)</code>が注釈されたメソッド
+				</li>
+			</ul>
+		</section>
+		<section name="SQLファイル">
+			<subsection name="配置場所">
+				<p>
+					クラスパスが通った  <code>META-INF</code> ディレクトリ以下に配置しなければいけません。
+				</p>
+			</subsection>
+			<subsection name="ファイル名の形式">
+				<p>
+					ファイル名は、次の形式でなければいけません。
+				</p>
+<source>META-INF/Data Access Objectのクラスの完全修飾名をディレクトリに変換したもの/Data Access Objectのメソッド名.sql</source>
+				<p>
+					例えば、 <code>Data Access Object</code> のクラスが <code>aaa.bbb.EmployeeDao</code> で
+					マッピングしたいメソッドが <code>selectById</code> の場合、パス名は次のようになります。
+				</p>
+<source>META-INF/aaa/bbb/EmployeeDao/selectById.sql</source>
+				<p>
+					複数のRDBMSに対応する必要があり特定のRDBMSでは別のSQLファイルを使いたい場合、
+					<code>.sql</code> の前にRDBMS名を入れることで、優先的に使用するファイルを指示できます。
+					たとえば、PostgreSQL専用のSQLファイルは次の名前にします。
+				</p>
+<source>META-INF/aaa/bbb/EmployeeDao/selectById_postgres.sql</source>
+				<p>
+					この場合、PostgreSQLを使用している場合に限り、<code>META-INF/aaa/bbb/EmployeeDao/selectById.sql</code> よりも
+					<code>META-INF/aaa/bbb/EmployeeDao/selectById_postgres.sql</code> が優先的に使用されます。
+				</p>
+				<p>
+					RDBMS名は、 <code>org.seasar.doma.jdbc.dialect.Dialect</code> の <code>getName</code> メソッドの値が使用されます。
+				</p>
+			</subsection>
+			<subsection name="エンコーディング">
+				<p>
+					SQLファイルのエンコーディングは UTF-8 でなければいけません。
+				</p>
+			</subsection>
+		</section>
+		<section name="SQLコメント">
+			<subsection name="バインド変数コメント">
+				<h4><code>1つのバインド変数</code></h4>
+				<p>
+					バインド変数はブロックコメントで囲んで示します。バインド変数はメソッドのパラメータ名になります。/* の後ろや */ の直前に空白を入れてはいけません。
+					ブロックコメント直後のテスト用データは必須です。テスト用データは、実行時には使用されません。
+					<code>Data Access Object</code> のメソッドと、対応するSQLの例は次のとおりです。
+				</p>
+<source>List&lt;Employee&gt; selectById(IntegerDomain employeeId);</source>
+<source>select * from employee where employee_id = /*employeeId*/99</source>
+				<h4><code>リストのバインド変数（IN句にバインドする場合）</code></h4>
+				<p>
+					IN句にバインドする場合は、INの直後にブロックコメントをおき、ブロックコメントの直後には括弧つきでテスト用データを指定します。テスト用データは、実行時には使用されません。
+					<code>Data Access Object</code> のメソッドと、対応するSQLの例は次のとおりです。
+				</p>
+<source>List&lt;Employee&gt; selectByIdList(List&lt;IntegerDomain&gt; employeeIdList);</source>
+<source>select * from employee where employee_id in /*employeeIdList*/(1,2,3)</source>
+				<h4><code>エンティティ型パラメータをバインド変数に利用する場合</code></h4>
+				<p>
+					メソッドでエンティティを渡す場合、バインド変数コメント内でドット（.）を使用することでエンティティのプロパティにアクセスできます。
+					<code>Data Access Object</code> のメソッドと、対応するSQLの例は次のとおりです。
+				</p>
+<source>List&lt;Employee&gt; selectById(Employee employee);</source>
+<source>select * from employee where employee_id = /*employee.employeeId*/99</source>
+			</subsection>
+			<subsection name="条件コメント">
+				<h4><code>if</code> と <code>end</code></h4>
+				<p>
+					条件によってSQLを組み立てる場合は、<code>/*%if 条件*/ ～ /*%end*/</code> という構文を使用できます。
+				</p>
+<source>select * from employee where /*%if employeeId != null*/employee_id = /*employeeId*/99/*%end*/</source>
+				<p>
+					このSQL文は、 <code>employeeId</code> が <code>null</code> でない場合 次のような準備された文に変換されます。
+				</p>
+<source>select * from employee where employee_id = ?</source>
+				<p>
+					このSQL文は、 <code>employeeId</code> が <code>null</code> の場合に次のような準備された文に変換されます。
+				</p>
+<source>select * from employee</source>
+				<h4><code>ANDの自動除去</code></h4>
+				<p>
+					条件コメントを使用した場合、条件の後ろにつづく AND や OR について、自動で出力の要/不要を判定します。
+					たとえば、次のようなSQLで<code>employeeId</code> が <code>null</code> の場合、
+				</p>
+<source>select * from employee where /*%if employeeId != null*/employee_id = /*employeeId*/99/*%end*/ and employeeName like 's%'</source>
+				<p>
+					<code>/*%end*/</code> の後ろの <code>and</code> は自動で除去されます。
+				</p>
+<source>select * from employee where employeeName like 's%'</source>
+				<h4><code>elseif</code> と <code>else</code></h4>
+				<p>
+					<code>/*%if 条件*/</code> と <code>/*%end*/</code> の間では、
+					行コメントを使用した <code>--elseif 条件--</code> や <code>--else</code> という構文も使用できます。
+				</p>
+<source>select * from employee where 
+/*%if employeeId != null*/   employee_id = /*employeeId*/99
+--elseif employeeId == 999-- department_id is null
+--else                       employee_id is null
+/*%end*/</source>
+			</subsection>
+			<subsection name="通常のコメント">
+				<p>
+					<code>/*</code> の直後に、Javaの変数で使用できない値が続く場合、それは通常のSQLコメントだとみなされます。
+					ただし、条件コメントである <code>%if</code> や <code>%end</code> がつづく場合は例外です。
+				</p>
+<source>select * from employee /* 通常のコメント */</source>
+			</subsection>
+		</section>
+		<section name="式言語">
+			<p>
+				条件コメントの <code>/*%if 条件*/</code> や、 <code>--elseif 条件--</code> の条件部には、式を記述できます。
+			</p>
+			<subsection name="定数">
+				<p>
+					次の定数が用意されています。
+				</p>
+				<table>
+					<tr><td>定数</td><td>型</td></tr>
+					<tr><td><code>null</code></td><td>void</td></tr>
+					<tr><td><code>true</code></td><td>boolean</td></tr>
+					<tr><td><code>false</code></td><td>boolean</td></tr>
+					<tr><td><code>10</code></td><td>int</td></tr>
+					<tr><td><code>10L</code></td><td>long</td></tr>
+					<tr><td><code>0.123F</code></td><td>float</td></tr>
+					<tr><td><code>0.123D</code></td><td>doubl</td></tr>
+					<tr><td><code>0.123B</code></td><td>java.math.BigDecimal</td></tr>
+					<tr><td><code>'a'</code></td><td>char</td></tr>
+					<tr><td><code>"a"</code></td><td>String</td></tr>
+				</table>
+			</subsection>
+			<subsection name="比較演算子">
+				<p>
+					<code>==</code> と <code>!=</code> 以外の比較演算子は、 被演算子が <code>java.lang.Comparable</code> を実装している必要があります。
+				</p>
+				<table>
+					<tr><td>比較演算子</td></tr>
+					<tr><td><code>==</code></td></tr>
+					<tr><td><code>!=</code></td></tr>
+					<tr><td><code>&lt;</code></td></tr>
+					<tr><td><code>&lt;=</code></td></tr>
+					<tr><td><code>&gt;</code></td></tr>
+					<tr><td><code>&gt;=</code></td></tr>
+				</table>
+			</subsection>
+			<subsection name="メソッド呼び出し">
+				<p>
+					ドット（.）で区切ってメソッドを指定することでメソッドを実行可能です。
+				</p>
+<source>select * from employee where /*%if employeeName.startsWith("s") */ employee_name = /*employeeName*/'smith'/*%end*/</source>
+				<p>
+					引数がない場合は、メソッド名の後ろの()を省略してもかまいません。
+				</p>
+<source>select * from employee where /*%if employeeName.length > 10 */ employee_name = /*employeeName*/'smith'/*%end*/</source>
+			</subsection>
+		</section>
+	</body>
+</document>

@@ -7,7 +7,10 @@
 	<body>
 		<section name="クイックスタート">
 			<p>
-				PostgresSQLにサンプルテーブルとデータを用意し、取得と更新を行ってみます。
+				あらかじめセットアップを完了させてください。
+			</p>
+			<p>
+				このクイックスタートでは、PostgresSQLにサンプルテーブルとデータを用意し、取得と更新を行います。
 			</p>
 			<p>
 				DDL、データベースの接続情報、方言（Dialect）の実装を書き換えれば他のRDBMSでも動作します
@@ -17,7 +20,7 @@
 				<p>
 					データベースに従業員テーブルを作成し、データを登録します。テーブルの定義とデータは次のとおりです。
 				</p>
-<pre>create table EMPLOYEE (
+<source>create table EMPLOYEE (
   EMPLOYEE_ID integer not null primary key, 
   EMPLOYEE_NAME varchar(20), 
   HIREDATE date,
@@ -27,7 +30,7 @@
 
 insert into EMPLOYEE values(1, 'SMITH', '1980-12-17', 800, 1);
 insert into EMPLOYEE values(2, 'ALLEN', '1981-02-20', 1600, 1);
-insert into EMPLOYEE values(3, 'WARD', '1981-02-22', 1250, 1);</pre>
+insert into EMPLOYEE values(3, 'WARD', '1981-02-22', 1250, 1);</source>
 			</subsection>
 			<subsection name="エンティティインタフェースの作成">
 				<p>
@@ -37,7 +40,7 @@ insert into EMPLOYEE values(3, 'WARD', '1981-02-22', 1250, 1);</pre>
 				<p>
 					主キーには@Id、楽観的排他制御で使用するバージョン番号には@Versionを注釈します。
 				</p>
-<pre>package example;
+<source>package example;
 
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
@@ -61,7 +64,7 @@ public interface Employee {
 
     @Version
     IntegerDomain versionNo();
-}</pre>
+}</source>
 			</subsection>
 			<subsection name="設定クラスの作成">
 				<p>
@@ -71,7 +74,7 @@ public interface Employee {
 				<p>
 					<code>DomaAbstractConfig</code> を継承すると簡単に作成できます。
 				</p>
-<pre>package example;
+<source>package example;
 
 import javax.sql.DataSource;
 
@@ -103,7 +106,7 @@ public class AppConfig extends DomaAbstractConfig {
 		dataSource.setPassword("postgres");
 		return dataSource;
 	}
-}</pre>
+}</source>
 			</subsection>
 			<subsection name="DAOインタフェースの作成">
 				<p>
@@ -114,7 +117,7 @@ public class AppConfig extends DomaAbstractConfig {
 				<p>
 					検索のメソッドには@Select、更新のメソッドには@Updateを注釈します。
 				</p>
-<pre>package example;
+<source>package example;
 
 import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
@@ -129,7 +132,7 @@ public interface EmployeeDao {
 
     @Update
     int update(Employee employee);
-}</pre>
+}</source>
 				<p>
 					selectByIdメソッドに、対応するSQLファイルが存在しないことを示すエラーが表示されることを確認します。
 				</p>
@@ -140,7 +143,7 @@ public interface EmployeeDao {
 					SQLファイルのパスは「META-INF/example/EmployeeDao/selectById.sq」にします。
 					このパスはクラスパスに通っていなければいけません。
 				</p>
-<pre>select * from employee where employee_id = /*employeeId*/99</pre>
+<source>select * from employee where employee_id = /*employeeId*/99</source>
 				<p>
 					ファイルを作成したら、EmployeeDaoを再度ビルドしてください。
 					ビルドをするとSQLファイルの存在チェックが再度行われエラーが消えます。
@@ -150,7 +153,7 @@ public interface EmployeeDao {
 				<p>
 					エンティティやDAOを利用してデータベースアクセスを行うクラスを作成します。従業員テーブルから1件を主キーで検索し、従業員名を更新しています。
 				</p>
-<pre>package example;
+<source>package example;
 
 import org.seasar.doma.domain.IntegerDomain;
 
@@ -162,14 +165,14 @@ public class Main {
         employee.employeeName().set("KING");
         dao.update(employee);
     }
-}</pre>
+}</source>
 			</subsection>
 			<subsection name="実行結果（実行時のログ出力）">
 				<p>
 					実行すると、java.util.loggingを使用したログがコンソールに出力されます。
 					わかりやすいように、検索処理のログと更新処理のログの間に空行を入れています。
 				</p>
-<pre>2009/08/07 1:18:57 example.EmployeeDao_ selectById
+<source>2009/08/07 1:18:57 example.EmployeeDao_ selectById
 情報: ENTRY
 2009/08/07 1:18:57 example.EmployeeDao_ selectById
 情報: META-INF/example/EmployeeDao/selectById.sql
@@ -183,7 +186,7 @@ public class Main {
 2009/08/07 1:18:58 example.EmployeeDao_ update
 情報: update EMPLOYEE set EMPLOYEE_NAME = 'KING', VERSION_NO = 1 + 1 where EMPLOYEE_ID = 3 and VERSION_NO = 1
 2009/08/07 1:18:58 example.EmployeeDao_ update
-情報: RETURN 1</pre>
+情報: RETURN 1</source>
 			</subsection>
 		</section>
 	</body>

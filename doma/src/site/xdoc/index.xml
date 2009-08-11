@@ -15,9 +15,19 @@
 				を利用した O/R Mapping フレームワークを提供します。
 			</p>
 		</section>
+		<section name="コンセプト">
+			<p>
+				Domaは次のコンセプトの下で開発されています。
+			</p>
+			<ul>
+				<li>暗黙的な規約よりも明示的な設定を重視する</li>
+				<li>他のライブラリに依存しない</li>
+				<li>実行時ではなくコンパイル時にエラーを検出する</li>
+				<li>わかりやすいエラーメッセージを出力する</li>
+				<li>できる限りキャッシュしない</li>
+			</ul>
+		</section>
 		<section name="News">
-			<dl>
-			</dl>
 		</section>
 	</body>
 </document>

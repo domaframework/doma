@@ -34,7 +34,9 @@
 				<pre>-vm %JAVA_HOME%\bin\javaw.exe</pre>
 			</subsection>
 			<subsection name="プロジェクトの設定">
-				EclipseのJavaプロジェクトや動的Webプロジェクトに対し、以下の設定を行います。
+				<p>
+					EclipseのJavaプロジェクトや動的Webプロジェクトに対し、以下の設定を行います。
+				</p>
 				<h4>JREの設定</h4>
 				<p>
 					プロジェクトのJREの設定項目には、バージョン6以上のJREを指定してください。
@@ -70,7 +72,7 @@
 					注釈処理が行われることを確認するため、エンティティクラスを作成します。
 					Javaエディタを開き、次のようなクラスを作成してください。
 				</p>
-				<pre>package example;
+				<source>package example;
 
 import org.seasar.doma.Entity;
 import org.seasar.doma.domain.StringDomain;
@@ -79,7 +81,7 @@ import org.seasar.doma.domain.StringDomain;
 public interface Employee {
 
     StringDomain name();
-}</pre>
+}</source>
 				<p>
 					ビルド後（自動でビルドされる設定ならばエディタの保存後）に、実装クラス「example.Employee_」が自動生成されれば、セットアップは成功していると言えます。
 					生成されたソースコードは、注釈処理（Annotation Processing）の設定画面で変更していなければ、プロジェクト直下の「.apt_generated」というディレクトリに保存されます。

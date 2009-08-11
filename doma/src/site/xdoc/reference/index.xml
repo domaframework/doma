@@ -8,6 +8,9 @@
 		<section name="リファレンス">
 			<ul>
 				<li>
+					<a href="domain.html">ドメイン</a>
+				</li>
+				<li>
 					<a href="sqlfile.html">SQLファイル</a>
 				</li>
 			</ul>

@@ -48,7 +48,6 @@ import org.seasar.doma.internal.expr.node.SubtractOperatorNode;
 import org.seasar.doma.internal.expr.node.VariableNode;
 import org.seasar.doma.message.DomaMessageCode;
 
-
 /**
  * @author taedium
  * 
@@ -132,8 +131,8 @@ public class ExpressionParser {
             }
             case ILLEGAL_NUMBER_LITERAL: {
                 ExpressionLocation location = getLocation();
-                throw new ExpressionException(DomaMessageCode.DOMA3012, location
-                        .getExpression(), location.getPosition(), token);
+                throw new ExpressionException(DomaMessageCode.DOMA3012,
+                        location.getExpression(), location.getPosition(), token);
             }
             case TRUE_LITERAL: {
                 parseTrueLiteral();
@@ -216,8 +215,8 @@ public class ExpressionParser {
             }
             case OTHER: {
                 ExpressionLocation location = getLocation();
-                throw new ExpressionException(DomaMessageCode.DOMA3011, location
-                        .getExpression(), location.getPosition(), token);
+                throw new ExpressionException(DomaMessageCode.DOMA3011,
+                        location.getExpression(), location.getPosition(), token);
             }
             case EOE: {
                 break outer;
@@ -328,7 +327,7 @@ public class ExpressionParser {
 
     protected void parseNullLiteral() {
         LiteralNode node = new LiteralNode(getLocation(), token, null,
-                Void.class);
+                void.class);
         expressionNodes.push(node);
     }
 

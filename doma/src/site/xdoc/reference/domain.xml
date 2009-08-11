@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>SQL</title>
+	</properties>
+	<body>
+		<section name="概要">
+			<p>
+				Domain（ドメイン）とは、値のとり得る範囲（定義域）のことです。
+				Domaでは、テーブルのカラムの値を、ドメインと呼ばれるJavaオブジェクトで扱います。
+			</p>
+			<p>
+				一般的なドメインについては、あらかじめ、Domaに組み込まれていますが、
+				アプリケーションごとに適切なドメインを独自に作成することを推奨します。
+				あらかじめ組み込まれているドメインクラスは、<code>org.seasar.doma.domain</code>パッケージに具象クラスとして用意されています。
+			</p>
+		</section>
+		<section name="カスタムドメインクラスの作成">
+			<p>
+				ドメインクラスは <code>org.seasar.doma.domain.Domain</code> インタフェースを実装している必要があります。
+				このインタフェースを直接実装してもかまいませんが、通常は、 <code>org.seasar.doma.domain</code> パッケージで提供される抽象クラスを継承することで簡単に作成できます。
+			</p>
+			<p>
+				以下の例では、 <code>org.seasar.doma.domain.AbstractBigDecimalDomain</code> を継承して、給料を表すドメインクラスを作成しています。
+			</p>
+<source>package example;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+
+import org.seasar.doma.domain.AbstractBigDecimalDomain;
+
+public class Salary extends AbstractBigDecimalDomain&lt;Salary&gt; implements
+        Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    public Salary() {
+        super();
+    }
+
+    public Salary(BigDecimal value) {
+        super(value);
+    }
+}</source>
+			<p>
+				必要であれば、コンストラクタや<code>setInternal</code>メソッドで、より厳密に値のとりうる範囲を限定してください。
+				また、アプリケーションに固有の任意のメソッドを実装させることもできます。
+			</p>
+			<p>
+				<code>org.seasar.doma.domain.Domain</code> インタフェースやその実装クラスの詳細についてはJavadocを参照してください。
+			</p>
+		</section>
+		<section name="エンティティでの利用">
+			<p>
+				ドメインクラスは、エンティティのプロパティの型を定義するために使用されます。
+			</p>
+<source>@Entity
+public interface Employee {
+
+    @Id
+    Identity employeeId();
+
+    EmployeeNo employeeNo();
+
+    EmployeeName employeeName();
+
+    Salary salary();
+
+    @Version
+    VersionNo versionNo();
+}</source>
+		</section>
+		<section name="DAOでの利用">
+			<p>
+				ドメインクラスは、Data Access Objectのクラスのメソッドのパラメータの型に使用されます。
+			</p>
+<source>@Dao(config = AppConfig.class)
+public interface EmployeeDao {
+
+    @Select
+    Employee selectBySalary(Salary salary);
+}</source>
+		</section>
+	</body>
+</document>

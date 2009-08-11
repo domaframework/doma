@@ -41,7 +41,10 @@
 		<menu name="ドキュメント" inherit="top">
 			<item name="セットアップ" href="setup.html" />
 			<item name="クイックスタート" href="quick_start.html" />
-			<item name="リファレンス" href="reference/index.html" />
+			<item name="リファレンス" href="reference/index.html" collapse="true" >
+				<item name="ドメイン" href="reference/domain.html" />
+				<item name="SQLファイル" href="reference/sqlfile.html" />
+			</item>
 			<item name="FAQ" href="faq.html" />
 			<item name="Javadoc" href="apidocs/index.html" />
 		</menu>

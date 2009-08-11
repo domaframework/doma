@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.sqlnode;
+package org.seasar.doma.internal.jdbc.sql;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
