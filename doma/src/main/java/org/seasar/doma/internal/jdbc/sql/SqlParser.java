@@ -45,7 +45,6 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.DomaMessageCode;
 
-
 /**
  * @author taedium
  * 
@@ -141,9 +140,6 @@ public class SqlParser {
             }
             case END_BLOCK_COMMENT: {
                 parseEndBlockComment();
-                break;
-            }
-            case EOL: {
                 break;
             }
             case DELIMITER:
@@ -389,8 +385,8 @@ public class SqlParser {
                 parensNode.setAttachedWithBindVariable(true);
                 bindVariableNode.setParensNode(parensNode);
             } else {
-                throw new JdbcException(DomaMessageCode.DOMA2110, sql, tokenizer
-                        .getLineNumber(), tokenizer.getPosition(),
+                throw new JdbcException(DomaMessageCode.DOMA2110, sql,
+                        tokenizer.getLineNumber(), tokenizer.getPosition(),
                         bindVariableNode.getText());
             }
         } else {
