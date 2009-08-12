@@ -158,7 +158,7 @@ public enum DomaMessageCode implements MessageCode {
     DOMA4053("SelectOption型のパラメータは複数指定できません。"),
     DOMA4054("IterationCallback型のパラメータは複数指定できません。"),
     DOMA4055("戻り値の型[{0}]とIterationCallbackの1番目の型パラメータの型[{1}]が一致していません。"),
-    DOMA4056("@Selectのiteration要素にtrueを設定した場合、IterationCallback型のパラメータが必要です。"),
+    DOMA4056("@Selectのiterate要素にtrueを設定した場合、IterationCallback型のパラメータが必要です。"),
     DOMA4057("IterationCallback型のパラメータを利用するには、@Selectのiteration要素にtrueを設定しなければいけません。"),
     DOMA4058("IterationCallbackの2番目の型パラメータは、@Entityが指定されたインタフェースもしくはDomainインタフェースのサブタイプのいずれかでなければいけません。"),
     DOMA4059("@Daoが注釈されたインタフェースは型パラメータを受け取ってはいけません。"),
