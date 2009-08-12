@@ -1,6 +1,6 @@
 <project name="doma" default="update-version" basedir=".">
 
-	<property name="newVersion" value="0.9.0" />
+	<property name="newVersion" value="0.9.1" />
 
 	<target name="update-version">
 		<replaceregexp
