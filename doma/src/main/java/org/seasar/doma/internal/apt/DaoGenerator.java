@@ -80,8 +80,8 @@ public class DaoGenerator extends AbstractGenerator {
 
     public DaoGenerator(ProcessingEnvironment env, TypeElement daoElement,
             DaoMeta daoMeta) throws IOException {
-        super(env, daoElement, Options.getDaoSubpackage(env), Options
-                .getDaoSuffix(env));
+        super(env, daoElement, createQualifiedName(env, daoElement, Options
+                .getDaoSubpackage(env), Options.getDaoSuffix(env)));
         assertNotNull(daoMeta);
         this.daoMeta = daoMeta;
         this.entitySuffix = Options.getEntitySuffix(env);

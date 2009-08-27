@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 
 import org.junit.runner.RunWith;
 import org.seasar.doma.copy.CopyUtil;
+import org.seasar.doma.it.dto.EmpDto;
 import org.seasar.framework.unit.Seasar2;
 import org.seasar.framework.unit.annotation.TxBehavior;
 import org.seasar.framework.unit.annotation.TxBehaviorType;
@@ -24,7 +25,7 @@ public class CopyTest {
         src.insertTimestamp().set(Timestamp.valueOf("2001-02-03 12:34:56"));
         src.updateTimestamp().set(Timestamp.valueOf("3001-02-03 12:34:56"));
         src.temp().set("bbb");
-        EmpBean dest = new EmpBean();
+        EmpDto dest = new EmpDto();
         CopyUtil.copy(src, dest);
 
         assertEquals(new Integer(1), dest.getId());
@@ -39,7 +40,7 @@ public class CopyTest {
 
     @TxBehavior(TxBehaviorType.NONE)
     public void testFromBeanToEntity() throws Exception {
-        EmpBean src = new EmpBean();
+        EmpDto src = new EmpDto();
         src.setId(1);
         src.setName("aaa");
         src.setSalary(new BigDecimal(100));
@@ -60,76 +61,4 @@ public class CopyTest {
                 .updateTimestamp().get());
     }
 
-    public static class EmpBean {
-
-        private Integer id;
-
-        private String name;
-
-        private BigDecimal salary;
-
-        private Integer version;
-
-        private Timestamp insertTimestamp;
-
-        private Timestamp updateTimestamp;
-
-        private String temp;
-
-        public void setId(Integer id) {
-            this.id = id;
-        }
-
-        public Integer getId() {
-            return id;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setSalary(BigDecimal salary) {
-            this.salary = salary;
-        }
-
-        public BigDecimal getSalary() {
-            return salary;
-        }
-
-        public void setVersion(Integer version) {
-            this.version = version;
-        }
-
-        public Integer getVersion() {
-            return version;
-        }
-
-        public void setInsertTimestamp(Timestamp insertTimestamp) {
-            this.insertTimestamp = insertTimestamp;
-        }
-
-        public Timestamp getInsertTimestamp() {
-            return insertTimestamp;
-        }
-
-        public void setUpdateTimestamp(Timestamp updateTimestamp) {
-            this.updateTimestamp = updateTimestamp;
-        }
-
-        public Timestamp getUpdateTimestamp() {
-            return updateTimestamp;
-        }
-
-        public void setTemp(String temp) {
-            this.temp = temp;
-        }
-
-        public String getTemp() {
-            return temp;
-        }
-    }
 }

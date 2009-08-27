@@ -43,7 +43,8 @@ import org.seasar.doma.message.DomaMessageCode;
 @SupportedAnnotationTypes( { "org.seasar.doma.Entity",
         "org.seasar.doma.MappedSuperclass" })
 @SupportedOptions( { Options.TEST, Options.DEBUG, Options.ENTITY_SUFFIX,
-        Options.DAO_SUBPACKAGE })
+        Options.ENTITY_SUBPACKAGE, Options.DTO_SUFFIX, Options.DTO_PACKAGE,
+        Options.DTO_GENERATION })
 public class EntityProcessor extends AbstractProcessor {
 
     @Override
@@ -63,6 +64,9 @@ public class EntityProcessor extends AbstractProcessor {
                         continue;
                     }
                     generateEntity(entityElement, entityMeta);
+                    if (Options.isDtoGenerationEnabled(processingEnv)) {
+                        generateDto(entityElement, entityMeta);
+                    }
                 } catch (AptException e) {
                     Notifier.notify(processingEnv, e);
                 } catch (AptIllegalStateException e) {
@@ -105,5 +109,23 @@ public class EntityProcessor extends AbstractProcessor {
     protected EntityGenerator createEntityGenerator(TypeElement entityElement,
             EntityMeta entityMeta) throws IOException {
         return new EntityGenerator(processingEnv, entityElement, entityMeta);
+    }
+
+    protected void generateDto(TypeElement entityElement, EntityMeta entityMeta) {
+        DtoGenerator dtoGenerator = null;
+        try {
+            dtoGenerator = createDtoGenerator(entityElement, entityMeta);
+            dtoGenerator.generate();
+        } catch (IOException e) {
+            throw new AptException(DomaMessageCode.DOMA4011, processingEnv,
+                    entityElement, e, entityElement.getQualifiedName(), e);
+        } finally {
+            IOUtil.close(dtoGenerator);
+        }
+    }
+
+    protected DtoGenerator createDtoGenerator(TypeElement entityElement,
+            EntityMeta entityMeta) throws IOException {
+        return new DtoGenerator(processingEnv, entityElement, entityMeta);
     }
 }

@@ -33,13 +33,21 @@ public final class Options {
 
     public static final String ENTITY_SUBPACKAGE = "entity.subpackage";
 
+    public static final String DTO_PACKAGE = "dto.package";
+
     public static final String DAO_SUFFIX = "dao.suffix";
 
     public static final String ENTITY_SUFFIX = "entity.suffix";
 
+    public static final String DTO_SUFFIX = "dto.suffix";
+
+    public static final String DTO_GENERATION = "dto.generation";
+
     private static final String DEFAULT_DAO_SUFFIX = "_";
 
     private static final String DEFAULT_ENTITY_SUFFIX = "_";
+
+    private static final String DEFAULT_DTO_SUFFIX = "Dto";
 
     public static boolean isTestEnabled(ProcessingEnvironment env) {
         String test = env.getOptions().get(Options.TEST);
@@ -49,6 +57,11 @@ public final class Options {
     public static boolean isDebugEnabled(ProcessingEnvironment env) {
         String debug = env.getOptions().get(Options.DEBUG);
         return Boolean.valueOf(debug).booleanValue();
+    }
+
+    public static boolean isDtoGenerationEnabled(ProcessingEnvironment env) {
+        String generation = env.getOptions().get(Options.DTO_GENERATION);
+        return Boolean.valueOf(generation).booleanValue();
     }
 
     public static String getDaoSubpackage(ProcessingEnvironment env) {
@@ -61,6 +74,11 @@ public final class Options {
         return subpackage != null ? subpackage : null;
     }
 
+    public static String getDtoPackage(ProcessingEnvironment env) {
+        String pkg = env.getOptions().get(Options.DTO_PACKAGE);
+        return pkg != null ? pkg : null;
+    }
+
     public static String getDaoSuffix(ProcessingEnvironment env) {
         String suffix = env.getOptions().get(Options.DAO_SUFFIX);
         return suffix != null ? suffix : DEFAULT_DAO_SUFFIX;
@@ -69,6 +87,11 @@ public final class Options {
     public static String getEntitySuffix(ProcessingEnvironment env) {
         String suffix = env.getOptions().get(Options.ENTITY_SUFFIX);
         return suffix != null ? suffix : DEFAULT_ENTITY_SUFFIX;
+    }
+
+    public static String getDtoSuffix(ProcessingEnvironment env) {
+        String suffix = env.getOptions().get(Options.DTO_SUFFIX);
+        return suffix != null ? suffix : DEFAULT_DTO_SUFFIX;
     }
 
     public static Date getDate(ProcessingEnvironment env) {

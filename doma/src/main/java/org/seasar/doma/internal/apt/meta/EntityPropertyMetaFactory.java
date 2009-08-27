@@ -266,6 +266,8 @@ public class EntityPropertyMetaFactory {
                 throw new AptException(DomaMessageCode.DOMA4031, env, method);
             }
             propertyMeta.setListReturnType(true);
+            propertyMeta.setDomainValueTypeName(getDomainValueTypeName(
+                    elementType, entityMeta, env));
             String elementTypeName = TypeUtil.getTypeName(elementType,
                     entityMeta.getTypeParameterMap(), env);
             propertyMeta.setReturnElementTypeName(elementTypeName);
@@ -284,6 +286,8 @@ public class EntityPropertyMetaFactory {
                 && (!isNumberDomain(returnType) || isAbstract(returnType))) {
             throw new AptException(DomaMessageCode.DOMA4033, env, method);
         }
+        propertyMeta.setDomainValueTypeName(getDomainValueTypeName(returnType,
+                entityMeta, env));
         propertyMeta.setReturnTypeName(TypeUtil.getTypeName(returnType,
                 entityMeta.getTypeParameterMap(), env));
         TypeElement returnElement = TypeUtil.toTypeElement(returnType, env);
@@ -291,6 +295,37 @@ public class EntityPropertyMetaFactory {
                 && !returnElement.getTypeParameters().isEmpty()) {
             propertyMeta.setParameterizedReturnType(true);
         }
+    }
+
+    protected String getDomainValueTypeName(TypeMirror domainType,
+            EntityMeta entityMeta, ProcessingEnvironment env) {
+        TypeMirror valueType = getDomainValueType(domainType, entityMeta, env);
+        if (valueType != null) {
+            return TypeUtil.getTypeName(valueType, entityMeta
+                    .getTypeParameterMap(), env);
+        }
+        throw new AptIllegalStateException();
+    }
+
+    protected TypeMirror getDomainValueType(TypeMirror domainType,
+            EntityMeta entityMeta, ProcessingEnvironment env) {
+        for (TypeMirror supertype : env.getTypeUtils().directSupertypes(
+                domainType)) {
+            TypeMirror valueType = getDomainValueType(supertype, entityMeta,
+                    env);
+            if (valueType != null) {
+                return valueType;
+            }
+        }
+        TypeElement domainElement = TypeUtil.toTypeElement(domainType, env);
+        if (domainElement != null
+                && domainElement.getQualifiedName().contentEquals(
+                        Domain.class.getName())) {
+            DeclaredType declaredType = TypeUtil
+                    .toDeclaredType(domainType, env);
+            return declaredType.getTypeArguments().get(0);
+        }
+        return null;
     }
 
     protected void doParameters(EntityPropertyMeta propertyMeta,

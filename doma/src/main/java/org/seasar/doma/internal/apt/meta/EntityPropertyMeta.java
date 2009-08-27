@@ -28,6 +28,8 @@ public class EntityPropertyMeta extends AbstractEntityMethodMeta {
 
     protected String returnElementTypeName;
 
+    protected String domainValueTypeName;
+
     protected boolean id;
 
     protected boolean trnsient;
@@ -100,6 +102,14 @@ public class EntityPropertyMeta extends AbstractEntityMethodMeta {
 
     public void setParameterizedReturnType(boolean parameterizedReturnType) {
         this.parameterizedReturnType = parameterizedReturnType;
+    }
+
+    public String getDomainValueTypeName() {
+        return domainValueTypeName;
+    }
+
+    public void setDomainValueTypeName(String domainValueTypeName) {
+        this.domainValueTypeName = domainValueTypeName;
     }
 
 }
