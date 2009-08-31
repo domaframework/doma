@@ -74,6 +74,7 @@ public class DtoGenerator extends AbstractGenerator {
     }
 
     protected void printClass() {
+        iprint("//");
         printGenerated();
         iprint("public class %1$s implements %2$s {%n", simpleName,
                 Serializable.class.getName());
