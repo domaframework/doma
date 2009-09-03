@@ -148,7 +148,7 @@
 						<source>1.6</source>
 						<target>1.6</target>
 						<encoding>UTF-8</encoding>
-						<compilerArgument>-XprintProcessorInfo -Adto.generation=true -Adto.package=org.seasar.doma.it.dto</compilerArgument>
+						<compilerArgument>-Adto.package=org.seasar.doma.it.dto</compilerArgument>
 					</configuration>
 				</plugin>
 				<plugin>
@@ -179,6 +179,12 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
