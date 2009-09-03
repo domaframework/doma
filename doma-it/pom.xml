@@ -148,7 +148,7 @@
 						<source>1.6</source>
 						<target>1.6</target>
 						<encoding>UTF-8</encoding>
-						<compilerArgument>-Adto.package=org.seasar.doma.it.dto</compilerArgument>
+						<compilerArgument>-Adto.generation=true -Adto.package=org.seasar.doma.it.dto</compilerArgument>
 					</configuration>
 				</plugin>
 				<plugin>
