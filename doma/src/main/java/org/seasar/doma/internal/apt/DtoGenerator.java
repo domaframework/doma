@@ -113,6 +113,7 @@ public class DtoGenerator extends AbstractGenerator {
 
     protected void printMethods() {
         printPropertyMethods();
+        printToStringMethod();
     }
 
     protected void printPropertyMethods() {
@@ -145,5 +146,29 @@ public class DtoGenerator extends AbstractGenerator {
                 print("%n");
             }
         }
+    }
+
+    protected void printToStringMethod() {
+        iprint("@Override%n");
+        iprint("public String toString() {%n");
+        StringBuilder buf = new StringBuilder(200);
+        buf.append("\"");
+        buf.append(simpleName);
+        buf.append(" [");
+        java.util.List<EntityPropertyMeta> propertyMetas = entityMeta
+                .getAllPropertyMetas();
+        if (!propertyMetas.isEmpty()) {
+            for (EntityPropertyMeta pm : propertyMetas) {
+                buf.append(pm.getName());
+                buf.append("=\" + ");
+                buf.append(pm.getName());
+                buf.append(" + \", ");
+            }
+            buf.setLength(buf.length() - 2);
+        }
+        buf.append("]\"");
+        iprint("    return %1$s;%n", buf);
+        iprint("}%n");
+        print("%n");
     }
 }
