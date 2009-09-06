@@ -40,5 +40,11 @@
 		<ant dir="../doma-tutorial" antfile="build.xml" target="dist">
 			<property name="zipDir" value="../doma/${zipDir}"/>
 		</ant>
+		<ant dir="../doma-sastruts-demo" antfile="build.xml" target="dist">
+			<property name="zipDir" value="../doma/${zipDir}"/>
+		</ant>
+		<ant dir="../doma-gwt-demo" antfile="build.xml" target="dist">
+			<property name="zipDir" value="../doma/${zipDir}"/>
+		</ant>
 	</target>
 </project>
