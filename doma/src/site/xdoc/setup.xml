@@ -75,12 +75,12 @@
 				<source>package example;
 
 import org.seasar.doma.Entity;
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 
 @Entity
 public interface Employee {
 
-    StringDomain name();
+    BuiltinStringDomain name();
 }</source>
 				<p>
 					ビルド後（自動でビルドされる設定ならばエディタの保存後）に、実装クラス「example.Employee_」が自動生成されれば、セットアップは成功していると言えます。

@@ -90,14 +90,14 @@
 					ブロックコメント直後のテスト用データは必須です。テスト用データは、実行時には使用されません。
 					<code>Data Access Object</code> のメソッドと、対応するSQLの例は次のとおりです。
 				</p>
-<source>List&lt;Employee&gt; selectById(IntegerDomain employeeId);</source>
+<source>List&lt;Employee&gt; selectById(Identity employeeId);</source>
 <source>select * from employee where employee_id = /*employeeId*/99</source>
 				<h4><code>リストのバインド変数（IN句にバインドする場合）</code></h4>
 				<p>
 					IN句にバインドする場合は、INの直後にブロックコメントをおき、ブロックコメントの直後には括弧つきでテスト用データを指定します。テスト用データは、実行時には使用されません。
 					<code>Data Access Object</code> のメソッドと、対応するSQLの例は次のとおりです。
 				</p>
-<source>List&lt;Employee&gt; selectByIdList(List&lt;IntegerDomain&gt; employeeIdList);</source>
+<source>List&lt;Employee&gt; selectByIdList(List&lt;Identity&gt; employeeIdList);</source>
 <source>select * from employee where employee_id in /*employeeIdList*/(1,2,3)</source>
 				<h4><code>エンティティ型パラメータをバインド変数に利用する場合</code></h4>
 				<p>
