@@ -56,6 +56,7 @@
 					デフォルトでは「.apt_generated」です。
 					注釈処理により生成されたソースコードはプロジェクト直下のこの名前のディレクトリに格納されます。
 				</p>
+				<img src="images/eclipse_apt_settings.png" width="454" height="152" alt="注釈処理の設定" />
 				<h4>ファクトリパス（Factory Path）の設定</h4>
 				<p>
 					プロジェクトのプロパティ画面を開き、左側のツリーメニューから Java Compiler - Annotation Processing - Factory Path と辿り、
@@ -64,6 +65,7 @@
 				<p>
 					次に、「Add JARs...」ボタンを押して、ビルドパスに通したdoma-x.x.x.jarと同じjarをファクトリパスにも追加してください。
 				</p>
+				<img src="images/eclipse_factorypath_settings.png" width="454" height="152" alt="ファクトリパスの設定" />
 			</subsection>
 		</section>
 		<section name="セットアップの確認">

@@ -6,16 +6,55 @@
 	</properties>
 	<body>
 		<section name="ダウンロード">
-			<table>
-				<tr>
-					<td><a href="download/2009-08-13/doma-0.9.1.zip">doma-0.9.1</a></td>
-					<td><a href="download/2009-08-13/doma-tutorial-0.9.1.zip">doma-tutorial-0.9.1</a></td>
-				</tr>
-				<tr>
-					<td><a href="download/2009-08-12/doma-0.9.0.zip">doma-0.9.0</a></td>
-					<td></td>
-				</tr>
-			</table>
+			<subsection name="説明">
+				<p>
+					いずれもEclipseのプロジェクト形式です。JDK 6 と Eclipse 3.5 の組み合わせで動作確認をしています。
+				</p>
+				<h4>Doma本体</h4>
+				<p>
+					Domaのjarファイル、ソースコード、ドキュメントを含んでいます。
+				</p>
+				<h4>JUnitを利用したチュートリアル</h4>
+				<p>
+					Domaの基本機能の使用例をJUnitを用いて示したコンソールアプリケーションです。
+				</p>
+				<h4>SAStrutsを利用したデモアプリ</h4>
+				<p>
+					<a href="http://s2container.seasar.org/2.4/ja/">Seasar2（S2Container）</a>との連携方法を示すデモ用Webアプリケーションです。
+					このアプリケーションでは、Seasar2で管理されたデータソースの利用方法、publicフィールドだけをもつBeanとDomaのエンティティ間のコピー方法、ログ管理の統合方法等を示しています。
+					「SAStrutsを利用したデモアプリ」を動作させるには、Sysdeo/SQLI Tomcat Launcher の利用を想定しています。
+					Sysdeo/SQLI Tomcat Launcher は <a href="http://eclipse.seasar.org/updates/3.2/">http://eclipse.seasar.org/updates/3.2/</a>
+					の更新サイトからインストールできます。
+				</p>
+				<h4>GWTを利用したデモアプリ</h4>
+				<p>
+					<a href="http://code.google.com/intl/ja/webtoolkit/">Google Web Toolkit</a>との連携方法を示すデモ用Webアプリケーションです。
+					このアプリケーションでは、GWTのクライアントで利用するDTOを任意のパッケージに作成する方法やDTOとDomaのエンティティ間のコピー方法を示しています。
+					「GWTを利用したデモアプリ」を動作させるには、<a href="http://code.google.com/intl/ja/eclipse/">Google Plugin for Eclipse</a> の利用を想定しています。
+				</p>
+			</subsection>
+			<subsection name="配布ファイル">
+				<table>
+					<tr>
+						<th>Doma本体</th>
+						<th>JUnitを利用したチュートリアル</th>
+						<th>SAStrutsを利用したデモアプリ</th>
+						<th>GWTを利用したデモアプリ</th>
+					</tr>
+					<tr>
+						<td><a href="download/2009-08-13/doma-0.9.1.zip">doma-0.9.1</a></td>
+						<td><a href="download/2009-08-13/doma-tutorial-0.9.1.zip">doma-tutorial-0.9.1</a></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td><a href="download/2009-08-12/doma-0.9.0.zip">doma-0.9.0</a></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</table>
+			</subsection>
 		</section>
 	</body>
 </document>
