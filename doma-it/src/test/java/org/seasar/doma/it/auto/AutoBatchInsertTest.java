@@ -145,8 +145,8 @@ public class AutoBatchInsertTest {
             IdentityStrategy entity = new IdentityStrategy_();
             IdentityStrategy entity2 = new IdentityStrategy_();
             dao.insert(Arrays.asList(entity, entity2));
-            assertTrue(entity.id().isNotNull());
-            assertTrue(entity2.id().isNotNull());
+            assertFalse(entity.id().isNull());
+            assertFalse(entity2.id().isNull());
             assertTrue(entity.id().lt(entity2.id()));
         }
     }
@@ -158,8 +158,8 @@ public class AutoBatchInsertTest {
             SequenceStrategy entity = new SequenceStrategy_();
             SequenceStrategy entity2 = new SequenceStrategy_();
             dao.insert(Arrays.asList(entity, entity2));
-            assertTrue(entity.id().isNotNull());
-            assertTrue(entity2.id().isNotNull());
+            assertFalse(entity.id().isNull());
+            assertFalse(entity2.id().isNull());
             assertTrue(entity.id().lt(entity2.id()));
         }
     }
@@ -170,8 +170,8 @@ public class AutoBatchInsertTest {
             TableStrategy entity = new TableStrategy_();
             TableStrategy entity2 = new TableStrategy_();
             dao.insert(Arrays.asList(entity, entity2));
-            assertTrue(entity.id().isNotNull());
-            assertTrue(entity2.id().isNotNull());
+            assertFalse(entity.id().isNull());
+            assertFalse(entity2.id().isNull());
             assertTrue(entity.id().lt(entity2.id()));
         }
     }

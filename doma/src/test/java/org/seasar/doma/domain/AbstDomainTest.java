@@ -28,11 +28,6 @@ public class AbstDomainTest extends TestCase {
         assertTrue(domain.isNull());
     }
 
-    public void testIsNotNull() throws Exception {
-        MyDomain domain = new MyDomain("");
-        assertTrue(domain.isNotNull());
-    }
-
     public void testToString() throws Exception {
         MyDomain domain = new MyDomain("aaa");
         assertEquals("aaa", domain.toString());

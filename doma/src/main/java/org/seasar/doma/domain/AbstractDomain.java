@@ -96,11 +96,6 @@ public abstract class AbstractDomain<V, D extends AbstractDomain<V, D>>
     }
 
     @Override
-    public boolean isNotNull() {
-        return value != null;
-    }
-
-    @Override
     public boolean isChanged() {
         return changed;
     }

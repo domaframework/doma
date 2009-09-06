@@ -130,7 +130,7 @@ public class AutoInsertTest {
         for (int i = 0; i < 110; i++) {
             IdentityStrategy entity = new IdentityStrategy_();
             dao.insert(entity);
-            assertTrue(entity.id().isNotNull());
+            assertFalse(entity.id().isNull());
         }
     }
 
@@ -140,7 +140,7 @@ public class AutoInsertTest {
         for (int i = 0; i < 110; i++) {
             SequenceStrategy entity = new SequenceStrategy_();
             dao.insert(entity);
-            assertTrue(entity.id().isNotNull());
+            assertFalse(entity.id().isNull());
         }
     }
 
@@ -149,7 +149,7 @@ public class AutoInsertTest {
         for (int i = 0; i < 110; i++) {
             TableStrategy entity = new TableStrategy_();
             dao.insert(entity);
-            assertTrue(entity.id().isNotNull());
+            assertFalse(entity.id().isNull());
         }
     }
 

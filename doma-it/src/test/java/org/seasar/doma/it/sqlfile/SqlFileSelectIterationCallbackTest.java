@@ -80,7 +80,7 @@ public class SqlFileSelectIterationCallbackTest {
                     @Override
                     public SalaryDomain iterate(SalaryDomain target,
                             IterationContext context) {
-                        if (target.isNotNull()) {
+                        if (!target.isNull()) {
                             total = total.add(target.get());
                         }
                         return new SalaryDomain(total);
@@ -100,7 +100,7 @@ public class SqlFileSelectIterationCallbackTest {
                     @Override
                     public SalaryDomain iterate(SalaryDomain target,
                             IterationContext context) {
-                        if (target.isNotNull()) {
+                        if (!target.isNull()) {
                             total = total.add(target.get());
                         }
                         return new SalaryDomain(total);

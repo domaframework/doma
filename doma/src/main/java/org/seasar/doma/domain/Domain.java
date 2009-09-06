@@ -64,13 +64,6 @@ public interface Domain<V, D extends Domain<V, D>> {
     boolean isNull();
 
     /**
-     * 値が {@code null} でないかどうかを返します。
-     * 
-     * @return {@code null} でない場合 {@code true}
-     */
-    boolean isNotNull();
-
-    /**
      * 値が変更されているかどうかを返します。
      * 
      * @return 変更されている場合 {@code true}

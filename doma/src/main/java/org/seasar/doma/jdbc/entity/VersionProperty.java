@@ -61,7 +61,7 @@ public class VersionProperty<D extends NumberDomain<?, ?>> extends
      * バージョン番号を増分します。
      */
     public void increment() {
-        if (domain.isNotNull()) {
+        if (!domain.isNull()) {
             int i = domain.get().intValue();
             domain.set(i + 1);
         }
