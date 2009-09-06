@@ -18,10 +18,10 @@ package org.seasar.doma.it.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import org.seasar.doma.domain.AbstractBigDecimalDomain;
+import org.seasar.doma.domain.BigDecimalDomain;
 
-public class SalaryDomain extends AbstractBigDecimalDomain<SalaryDomain>
-        implements Serializable {
+public class SalaryDomain extends BigDecimalDomain<SalaryDomain> implements
+        Serializable {
 
     private static final long serialVersionUID = 1L;
 

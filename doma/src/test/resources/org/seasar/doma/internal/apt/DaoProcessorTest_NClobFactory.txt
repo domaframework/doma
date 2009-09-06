@@ -16,16 +16,16 @@ public class NClobFactoryDao_ extends org.seasar.doma.jdbc.DomaAbstractDao imple
     }
 
     @Override
-    public org.seasar.doma.domain.NClobDomain create() {
+    public org.seasar.doma.domain.BuiltinNClobDomain create() {
         entering("org.seasar.doma.internal.apt.dao.NClobFactoryDao_", "create");
-        org.seasar.doma.internal.jdbc.query.NClobCreateQuery<org.seasar.doma.domain.NClobDomain> query = new org.seasar.doma.internal.jdbc.query.NClobCreateQuery<org.seasar.doma.domain.NClobDomain>();
+        org.seasar.doma.internal.jdbc.query.NClobCreateQuery<org.seasar.doma.domain.BuiltinNClobDomain> query = new org.seasar.doma.internal.jdbc.query.NClobCreateQuery<org.seasar.doma.domain.BuiltinNClobDomain>();
         query.setConfig(config);
         query.setCallerClassName("org.seasar.doma.internal.apt.dao.NClobFactoryDao_");
         query.setCallerMethodName("create");
-        query.setResult(new org.seasar.doma.domain.NClobDomain());
+        query.setResult(new org.seasar.doma.domain.BuiltinNClobDomain());
         query.compile();
-        org.seasar.doma.internal.jdbc.command.CreateCommand<org.seasar.doma.domain.NClobDomain> command = new org.seasar.doma.internal.jdbc.command.CreateCommand<org.seasar.doma.domain.NClobDomain>(query);
-        org.seasar.doma.domain.NClobDomain result = command.execute();
+        org.seasar.doma.internal.jdbc.command.CreateCommand<org.seasar.doma.domain.BuiltinNClobDomain> command = new org.seasar.doma.internal.jdbc.command.CreateCommand<org.seasar.doma.domain.BuiltinNClobDomain>(query);
+        org.seasar.doma.domain.BuiltinNClobDomain result = command.execute();
         exiting("org.seasar.doma.internal.apt.dao.NClobFactoryDao_", "create", result);
         return result;
     }

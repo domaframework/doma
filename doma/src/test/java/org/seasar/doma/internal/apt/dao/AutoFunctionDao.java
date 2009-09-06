@@ -19,8 +19,8 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Function;
 import org.seasar.doma.In;
 import org.seasar.doma.Out;
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 
 /**
  * @author taedium
@@ -30,6 +30,6 @@ import org.seasar.doma.domain.StringDomain;
 public interface AutoFunctionDao {
 
     @Function
-    StringDomain executeFunction(@In IntegerDomain arg1, @Out IntegerDomain arg2);
+    BuiltinStringDomain executeFunction(@In BuiltinIntegerDomain arg1, @Out BuiltinIntegerDomain arg2);
 
 }

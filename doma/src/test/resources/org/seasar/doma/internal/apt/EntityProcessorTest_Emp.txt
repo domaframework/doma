@@ -15,15 +15,15 @@ public class Emp_ extends org.seasar.doma.jdbc.entity.DomaAbstractEntity<org.sea
 
     private static final org.seasar.doma.internal.apt.entity.EmpListener __listener = new org.seasar.doma.internal.apt.entity.EmpListener();
 
-    private transient org.seasar.doma.jdbc.entity.GeneratedIdProperty<org.seasar.doma.domain.IntegerDomain> id = new org.seasar.doma.jdbc.entity.GeneratedIdProperty<org.seasar.doma.domain.IntegerDomain>("id", null, new org.seasar.doma.domain.IntegerDomain(), __idGenerator);
+    private transient org.seasar.doma.jdbc.entity.GeneratedIdProperty<org.seasar.doma.domain.BuiltinIntegerDomain> id = new org.seasar.doma.jdbc.entity.GeneratedIdProperty<org.seasar.doma.domain.BuiltinIntegerDomain>("id", null, new org.seasar.doma.domain.BuiltinIntegerDomain(), __idGenerator);
 
-    private transient org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.StringDomain> name = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.StringDomain>("name", null, new org.seasar.doma.domain.StringDomain(), true, true);
+    private transient org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.BuiltinStringDomain> name = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.BuiltinStringDomain>("name", null, new org.seasar.doma.domain.BuiltinStringDomain(), true, true);
 
-    private transient org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.BigDecimalDomain> salary = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.BigDecimalDomain>("salary", "SALARY", new org.seasar.doma.domain.BigDecimalDomain(), false, false);
+    private transient org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.BuiltinBigDecimalDomain> salary = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.BuiltinBigDecimalDomain>("salary", "SALARY", new org.seasar.doma.domain.BuiltinBigDecimalDomain(), false, false);
 
-    private transient org.seasar.doma.jdbc.entity.VersionProperty<org.seasar.doma.domain.IntegerDomain> version = new org.seasar.doma.jdbc.entity.VersionProperty<org.seasar.doma.domain.IntegerDomain>("version", null, new org.seasar.doma.domain.IntegerDomain());
+    private transient org.seasar.doma.jdbc.entity.VersionProperty<org.seasar.doma.domain.BuiltinIntegerDomain> version = new org.seasar.doma.jdbc.entity.VersionProperty<org.seasar.doma.domain.BuiltinIntegerDomain>("version", null, new org.seasar.doma.domain.BuiltinIntegerDomain());
 
-    private transient org.seasar.doma.jdbc.entity.TransientProperty<org.seasar.doma.domain.StringDomain> temp = new org.seasar.doma.jdbc.entity.TransientProperty<org.seasar.doma.domain.StringDomain>("temp", new org.seasar.doma.domain.StringDomain());
+    private transient org.seasar.doma.jdbc.entity.TransientProperty<org.seasar.doma.domain.BuiltinStringDomain> temp = new org.seasar.doma.jdbc.entity.TransientProperty<org.seasar.doma.domain.BuiltinStringDomain>("temp", new org.seasar.doma.domain.BuiltinStringDomain());
 
     private final String __name = "Emp";
 
@@ -36,27 +36,27 @@ public class Emp_ extends org.seasar.doma.jdbc.entity.DomaAbstractEntity<org.sea
     }
 
     @Override
-    public org.seasar.doma.domain.IntegerDomain id() {
+    public org.seasar.doma.domain.BuiltinIntegerDomain id() {
         return id.getDomain();
     }
 
     @Override
-    public org.seasar.doma.domain.StringDomain name() {
+    public org.seasar.doma.domain.BuiltinStringDomain name() {
         return name.getDomain();
     }
 
     @Override
-    public org.seasar.doma.domain.BigDecimalDomain salary() {
+    public org.seasar.doma.domain.BuiltinBigDecimalDomain salary() {
         return salary.getDomain();
     }
 
     @Override
-    public org.seasar.doma.domain.IntegerDomain version() {
+    public org.seasar.doma.domain.BuiltinIntegerDomain version() {
         return version.getDomain();
     }
 
     @Override
-    public org.seasar.doma.domain.StringDomain temp() {
+    public org.seasar.doma.domain.BuiltinStringDomain temp() {
         return temp.getDomain();
     }
 
@@ -130,11 +130,11 @@ public class Emp_ extends org.seasar.doma.jdbc.entity.DomaAbstractEntity<org.sea
 
     private void readObject(java.io.ObjectInputStream inputStream) throws java.io.IOException, java.lang.ClassNotFoundException {
         inputStream.defaultReadObject();
-        id = new org.seasar.doma.jdbc.entity.GeneratedIdProperty<org.seasar.doma.domain.IntegerDomain>("id", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject(), __idGenerator);
-        name = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.StringDomain>("name", null, (org.seasar.doma.domain.StringDomain)inputStream.readObject(), true, true);
-        salary = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.BigDecimalDomain>("salary", "SALARY", (org.seasar.doma.domain.BigDecimalDomain)inputStream.readObject(), false, false);
-        version = new org.seasar.doma.jdbc.entity.VersionProperty<org.seasar.doma.domain.IntegerDomain>("version", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject());
-        temp = new org.seasar.doma.jdbc.entity.TransientProperty<org.seasar.doma.domain.StringDomain>("temp", (org.seasar.doma.domain.StringDomain)inputStream.readObject());
+        id = new org.seasar.doma.jdbc.entity.GeneratedIdProperty<org.seasar.doma.domain.BuiltinIntegerDomain>("id", null, (org.seasar.doma.domain.BuiltinIntegerDomain)inputStream.readObject(), __idGenerator);
+        name = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.BuiltinStringDomain>("name", null, (org.seasar.doma.domain.BuiltinStringDomain)inputStream.readObject(), true, true);
+        salary = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.BuiltinBigDecimalDomain>("salary", "SALARY", (org.seasar.doma.domain.BuiltinBigDecimalDomain)inputStream.readObject(), false, false);
+        version = new org.seasar.doma.jdbc.entity.VersionProperty<org.seasar.doma.domain.BuiltinIntegerDomain>("version", null, (org.seasar.doma.domain.BuiltinIntegerDomain)inputStream.readObject());
+        temp = new org.seasar.doma.jdbc.entity.TransientProperty<org.seasar.doma.domain.BuiltinStringDomain>("temp", (org.seasar.doma.domain.BuiltinStringDomain)inputStream.readObject());
     }
 
     private void writeObject(java.io.ObjectOutputStream outputStream) throws java.io.IOException {

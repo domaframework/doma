@@ -17,8 +17,8 @@ package org.seasar.doma.internal.jdbc.command;
 
 import java.util.List;
 
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
@@ -62,10 +62,10 @@ public class EntityResultListHandlerTest extends TestCase {
 
         assertEquals(2, entities.size());
         Emp emp = entities.get(0);
-        assertEquals(new IntegerDomain(1), emp.id());
-        assertEquals(new StringDomain("aaa"), emp.name());
+        assertEquals(new BuiltinIntegerDomain(1), emp.id());
+        assertEquals(new BuiltinStringDomain("aaa"), emp.name());
         emp = entities.get(1);
-        assertEquals(new IntegerDomain(2), emp.id());
-        assertEquals(new StringDomain("bbb"), emp.name());
+        assertEquals(new BuiltinIntegerDomain(2), emp.id());
+        assertEquals(new BuiltinStringDomain("bbb"), emp.name());
     }
 }

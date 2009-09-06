@@ -17,7 +17,7 @@ package org.seasar.doma.internal.apt.entity;
 
 import org.seasar.doma.Entity;
 import org.seasar.doma.Version;
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 
 /**
  * @author taedium
@@ -27,5 +27,5 @@ import org.seasar.doma.domain.StringDomain;
 public interface VersionNotNumberEntity {
 
     @Version
-    StringDomain version();
+    BuiltinStringDomain version();
 }

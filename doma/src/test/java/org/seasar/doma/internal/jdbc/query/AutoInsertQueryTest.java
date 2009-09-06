@@ -20,9 +20,9 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.domain.BigDecimalDomain;
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinBigDecimalDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
@@ -73,10 +73,10 @@ public class AutoInsertQueryTest extends TestCase {
                 .getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
-        assertEquals(new IntegerDomain(10), parameters.get(0).getDomain());
-        assertEquals(new StringDomain("aaa"), parameters.get(1).getDomain());
+        assertEquals(new BuiltinIntegerDomain(10), parameters.get(0).getDomain());
+        assertEquals(new BuiltinStringDomain("aaa"), parameters.get(1).getDomain());
         assertTrue(parameters.get(2).getDomain().isNull());
-        assertEquals(new IntegerDomain(1), parameters.get(3).getDomain());
+        assertEquals(new BuiltinIntegerDomain(1), parameters.get(3).getDomain());
     }
 
     public void testOption_excludeNull() throws Exception {
@@ -98,9 +98,9 @@ public class AutoInsertQueryTest extends TestCase {
                 .getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
-        assertEquals(new IntegerDomain(10), parameters.get(0).getDomain());
-        assertEquals(new StringDomain("aaa"), parameters.get(1).getDomain());
-        assertEquals(new IntegerDomain(1), parameters.get(2).getDomain());
+        assertEquals(new BuiltinIntegerDomain(10), parameters.get(0).getDomain());
+        assertEquals(new BuiltinStringDomain("aaa"), parameters.get(1).getDomain());
+        assertEquals(new BuiltinIntegerDomain(1), parameters.get(2).getDomain());
     }
 
     public void testOption_include() throws Exception {
@@ -123,9 +123,9 @@ public class AutoInsertQueryTest extends TestCase {
                 .getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
-        assertEquals(new IntegerDomain(10), parameters.get(0).getDomain());
-        assertEquals(new StringDomain("aaa"), parameters.get(1).getDomain());
-        assertEquals(new IntegerDomain(1), parameters.get(2).getDomain());
+        assertEquals(new BuiltinIntegerDomain(10), parameters.get(0).getDomain());
+        assertEquals(new BuiltinStringDomain("aaa"), parameters.get(1).getDomain());
+        assertEquals(new BuiltinIntegerDomain(1), parameters.get(2).getDomain());
     }
 
     public void testOption_exclude() throws Exception {
@@ -148,9 +148,9 @@ public class AutoInsertQueryTest extends TestCase {
                 .getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
-        assertEquals(new IntegerDomain(10), parameters.get(0).getDomain());
-        assertEquals(new BigDecimalDomain(new BigDecimal(200)), parameters
+        assertEquals(new BuiltinIntegerDomain(10), parameters.get(0).getDomain());
+        assertEquals(new BuiltinBigDecimalDomain(new BigDecimal(200)), parameters
                 .get(1).getDomain());
-        assertEquals(new IntegerDomain(1), parameters.get(2).getDomain());
+        assertEquals(new BuiltinIntegerDomain(1), parameters.get(2).getDomain());
     }
 }

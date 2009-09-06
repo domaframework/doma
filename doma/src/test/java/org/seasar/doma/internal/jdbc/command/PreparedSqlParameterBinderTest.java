@@ -21,8 +21,8 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.domain.BigDecimalDomain;
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinBigDecimalDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.internal.jdbc.mock.BindValue;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockPreparedStatement;
@@ -38,9 +38,9 @@ public class PreparedSqlParameterBinderTest extends TestCase {
     public void testBind() throws Exception {
         MockPreparedStatement preparedStatement = new MockPreparedStatement();
         List<InParameter> parameters = new ArrayList<InParameter>();
-        parameters.add(new InParameter(new StringDomain("aaa")));
+        parameters.add(new InParameter(new BuiltinStringDomain("aaa")));
         parameters
-                .add(new InParameter(new BigDecimalDomain(new BigDecimal(10))));
+                .add(new InParameter(new BuiltinBigDecimalDomain(new BigDecimal(10))));
         PreparedSqlParameterBinder binder = new PreparedSqlParameterBinder(
                 new MyQuery());
         binder.bind(preparedStatement, parameters);

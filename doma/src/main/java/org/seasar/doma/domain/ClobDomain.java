@@ -17,18 +17,23 @@ package org.seasar.doma.domain;
 
 import java.sql.Clob;
 
+import org.seasar.doma.DomaNullPointerException;
+
 /**
- * {@link Clob} を値の型とする組み込みのドメインです。
+ * {@link Clob} を値の型とするドメインの骨格実装です。
  * 
  * @author taedium
  * 
+ * @param <D>
+ *            ドメインの型
  */
-public final class ClobDomain extends AbstractClobDomain<ClobDomain> {
-
+public abstract class ClobDomain<D extends ClobDomain<D>>
+        extends AbstractDomain<Clob, D> {
     /**
      * デフォルトの値でインスタンス化します。
      */
-    public ClobDomain() {
+    protected ClobDomain() {
+        this(null);
     }
 
     /**
@@ -37,8 +42,23 @@ public final class ClobDomain extends AbstractClobDomain<ClobDomain> {
      * @param value
      *            値
      */
-    public ClobDomain(Clob value) {
-        super(value);
+    protected ClobDomain(Clob value) {
+        super(Clob.class, value);
+    }
+
+    @Override
+    public <R, P, TH extends Throwable> R accept(
+            DomainVisitor<R, P, TH> visitor, P p) throws TH {
+        if (visitor == null) {
+            throw new DomaNullPointerException("visitor");
+        }
+        if (ClobDomainVisitor.class.isInstance(visitor)) {
+            @SuppressWarnings("unchecked")
+            ClobDomainVisitor<R, P, TH> v = ClobDomainVisitor.class
+                    .cast(visitor);
+            return v.visitAbstractClobDomain(this, p);
+        }
+        return visitor.visitUnknownDomain(this, p);
     }
 
 }

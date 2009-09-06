@@ -18,9 +18,9 @@ package org.seasar.doma.internal.apt.entity;
 import java.io.Serializable;
 import java.util.List;
 
-import org.seasar.doma.domain.BigDecimalDomain;
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinBigDecimalDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.jdbc.entity.DomaAbstractEntity;
 import org.seasar.doma.jdbc.entity.EntityProperty;
 import org.seasar.doma.jdbc.entity.GeneratedIdProperty;
@@ -39,27 +39,27 @@ public class Emp_ extends DomaAbstractEntity<Emp> implements Emp, Serializable {
     }
 
     @Override
-    public IntegerDomain id() {
+    public BuiltinIntegerDomain id() {
         return null;
     }
 
     @Override
-    public StringDomain name() {
+    public BuiltinStringDomain name() {
         return null;
     }
 
     @Override
-    public BigDecimalDomain salary() {
+    public BuiltinBigDecimalDomain salary() {
         return null;
     }
 
     @Override
-    public StringDomain temp() {
+    public BuiltinStringDomain temp() {
         return null;
     }
 
     @Override
-    public IntegerDomain version() {
+    public BuiltinIntegerDomain version() {
         return null;
     }
 

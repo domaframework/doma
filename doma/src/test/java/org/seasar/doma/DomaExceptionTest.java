@@ -16,7 +16,7 @@
 package org.seasar.doma;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.message.DomaMessageCode;
 
 import junit.framework.TestCase;
@@ -28,7 +28,7 @@ import junit.framework.TestCase;
 public class DomaExceptionTest extends TestCase {
 
     public void testE0001() throws Exception {
-        StringDomain domain = new StringDomain("aaa");
+        BuiltinStringDomain domain = new BuiltinStringDomain("aaa");
         try {
             domain.compareTo(null);
             fail();

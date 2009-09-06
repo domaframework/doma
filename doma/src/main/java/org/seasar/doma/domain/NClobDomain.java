@@ -17,28 +17,49 @@ package org.seasar.doma.domain;
 
 import java.sql.NClob;
 
+import org.seasar.doma.DomaNullPointerException;
+
 /**
- * {@link NClob} を値の型とする組み込みのドメインです。
+ * {@link NClob} を値の型とするドメインの骨格実装です。
  * 
  * @author taedium
  * 
+ * @param <D>
+ *            ドメインの型
  */
-public final class NClobDomain extends AbstractNClobDomain<NClobDomain> {
+public abstract class NClobDomain<D extends NClobDomain<D>>
+        extends AbstractDomain<NClob, D> {
 
     /**
      * デフォルトの値でインスタンス化します。
      */
-    public NClobDomain() {
+    protected NClobDomain() {
+        this(null);
     }
 
     /**
      * 値を指定してインスタンス化します。
      * 
-     * @param value
+     * @param v
      *            値
      */
-    public NClobDomain(NClob value) {
-        super(value);
+    protected NClobDomain(NClob v) {
+        super(NClob.class, v);
+    }
+
+    @Override
+    public <R, P, TH extends Throwable> R accept(
+            DomainVisitor<R, P, TH> visitor, P p) throws TH {
+        if (visitor == null) {
+            throw new DomaNullPointerException("visitor");
+        }
+        if (NClobDomainVisitor.class.isInstance(visitor)) {
+            @SuppressWarnings("unchecked")
+            NClobDomainVisitor<R, P, TH> v = NClobDomainVisitor.class
+                    .cast(visitor);
+            return v.visitAbstractNClobDomain(this, p);
+        }
+        return visitor.visitUnknownDomain(this, p);
     }
 
 }

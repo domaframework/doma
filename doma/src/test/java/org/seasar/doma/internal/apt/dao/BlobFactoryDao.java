@@ -17,7 +17,7 @@ package org.seasar.doma.internal.apt.dao;
 
 import org.seasar.doma.BlobFactory;
 import org.seasar.doma.Dao;
-import org.seasar.doma.domain.BlobDomain;
+import org.seasar.doma.domain.BuiltinBlobDomain;
 
 /**
  * @author taedium
@@ -27,5 +27,5 @@ import org.seasar.doma.domain.BlobDomain;
 public interface BlobFactoryDao {
 
     @BlobFactory
-    BlobDomain create();
+    BuiltinBlobDomain create();
 }

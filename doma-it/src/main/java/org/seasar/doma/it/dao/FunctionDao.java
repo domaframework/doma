@@ -20,8 +20,8 @@ import java.util.List;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Function;
 import org.seasar.doma.In;
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.TimeDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
+import org.seasar.doma.domain.BuiltinTimeDomain;
 import org.seasar.doma.it.ItConfig;
 import org.seasar.doma.it.domain.IdDomain;
 import org.seasar.doma.it.entity.Employee;
@@ -30,21 +30,21 @@ import org.seasar.doma.it.entity.Employee;
 public interface FunctionDao {
 
     @Function
-    IntegerDomain func_none_param();
+    BuiltinIntegerDomain func_none_param();
 
     @Function
-    IntegerDomain func_simpletype_param(@In IntegerDomain param1);
+    BuiltinIntegerDomain func_simpletype_param(@In BuiltinIntegerDomain param1);
 
     @Function
-    TimeDomain func_simpletype_time_param(@In TimeDomain param1);
+    BuiltinTimeDomain func_simpletype_time_param(@In BuiltinTimeDomain param1);
 
     @Function
-    IntegerDomain func_dto_param(@In IntegerDomain param1,
-            @In IntegerDomain param2);
+    BuiltinIntegerDomain func_dto_param(@In BuiltinIntegerDomain param1,
+            @In BuiltinIntegerDomain param2);
 
     @Function
-    TimeDomain func_dto_time_param(@In TimeDomain param1,
-            @In IntegerDomain param2);
+    BuiltinTimeDomain func_dto_time_param(@In BuiltinTimeDomain param1,
+            @In BuiltinIntegerDomain param2);
 
     @Function
     List<Employee> func_resultset(@In IdDomain employee_id);

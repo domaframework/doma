@@ -16,7 +16,7 @@ public class IterationCallbackDao_ extends org.seasar.doma.jdbc.DomaAbstractDao 
     }
 
     @Override
-    public java.lang.Integer iterate(org.seasar.doma.domain.IntegerDomain id, org.seasar.doma.domain.StringDomain name, org.seasar.doma.jdbc.IterationCallback<java.lang.Integer, org.seasar.doma.internal.apt.entity.Emp> callback) {
+    public java.lang.Integer iterate(org.seasar.doma.domain.BuiltinIntegerDomain id, org.seasar.doma.domain.BuiltinStringDomain name, org.seasar.doma.jdbc.IterationCallback<java.lang.Integer, org.seasar.doma.internal.apt.entity.Emp> callback) {
         entering("org.seasar.doma.internal.apt.dao.IterationCallbackDao_", "iterate", id, name, callback);
         if (id == null) {
             throw new org.seasar.doma.DomaNullPointerException("id");

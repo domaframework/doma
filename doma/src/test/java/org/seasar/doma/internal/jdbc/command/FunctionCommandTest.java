@@ -17,7 +17,7 @@ package org.seasar.doma.internal.jdbc.command;
 
 import java.util.List;
 
-import org.seasar.doma.domain.IntegerDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
 import org.seasar.doma.internal.jdbc.command.FunctionCommand;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.query.AutoFunctionQuery;
@@ -43,22 +43,22 @@ public class FunctionCommandTest extends TestCase {
         outParameters.add(20);
         outParameters.add(30);
 
-        IntegerDomain aaa = new IntegerDomain(40);
-        IntegerDomain bbb = new IntegerDomain(50);
-        IntegerDomain ccc = new IntegerDomain(60);
+        BuiltinIntegerDomain aaa = new BuiltinIntegerDomain(40);
+        BuiltinIntegerDomain bbb = new BuiltinIntegerDomain(50);
+        BuiltinIntegerDomain ccc = new BuiltinIntegerDomain(60);
 
-        AutoFunctionQuery<IntegerDomain> query = new AutoFunctionQuery<IntegerDomain>();
+        AutoFunctionQuery<BuiltinIntegerDomain> query = new AutoFunctionQuery<BuiltinIntegerDomain>();
         query.setConfig(runtimeConfig);
         query.setFunctionName("aaa");
-        query.setResultParameter(new DomainResultParameter<IntegerDomain>(
-                IntegerDomain.class));
+        query.setResultParameter(new DomainResultParameter<BuiltinIntegerDomain>(
+                BuiltinIntegerDomain.class));
         query.addParameter(new InParameter(aaa));
         query.addParameter(new OutParameter(bbb));
         query.addParameter(new InOutParameter(ccc));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.compile();
-        IntegerDomain result = new FunctionCommand<IntegerDomain>(query)
+        BuiltinIntegerDomain result = new FunctionCommand<BuiltinIntegerDomain>(query)
                 .execute();
         assertNotNull(result);
         assertEquals(new Integer(10), result.get());

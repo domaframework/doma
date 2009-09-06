@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.expr.node;
 
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.internal.expr.EvaluationResult;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.node.CommaOperatorNode;
@@ -42,7 +42,7 @@ public class MethodOperatorNodeTest extends TestCase {
                 String.class));
         node.setParametersNode(parametersNode);
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("hoge", new StringDomain("aaa"));
+        evaluator.add("hoge", new BuiltinStringDomain("aaa"));
         EvaluationResult evaluationResult = evaluator.evaluate(node);
         assertTrue(evaluationResult.getBooleanValue());
     }

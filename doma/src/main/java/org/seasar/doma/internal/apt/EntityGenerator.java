@@ -27,7 +27,7 @@ import java.util.Map;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 
-import org.seasar.doma.domain.ArrayListDomain;
+import org.seasar.doma.domain.BuiltinArrayListDomain;
 import org.seasar.doma.internal.apt.meta.ColumnMeta;
 import org.seasar.doma.internal.apt.meta.EntityDelegateMeta;
 import org.seasar.doma.internal.apt.meta.EntityMeta;
@@ -131,7 +131,7 @@ public class EntityGenerator extends AbstractGenerator {
                     iprint(
                             "private transient %1$s<%2$s<%3$s>> %4$s = new %1$s<%2$s<%3$s>>(\"%4$s\", new %2$s<%3$s>(new %5$s()));%n", /* 1 */
                             TransientProperty.class.getName(), /* 2 */
-                            ArrayListDomain.class.getName(),/* 3 */pm
+                            BuiltinArrayListDomain.class.getName(),/* 3 */pm
                                     .getReturnElementTypeName(), /* 4 */pm
                                     .getName(), /* 5 */pm.getReturnTypeName());
                 } else {
@@ -454,7 +454,7 @@ public class EntityGenerator extends AbstractGenerator {
                     iprint(
                             "%4$s = new %1$s<%2$s<%3$s>>(\"%4$s\", (%2$s<%3$s>)inputStream.readObject());%n", /* 1 */
                             TransientProperty.class.getName(), /* 2 */
-                            ArrayListDomain.class.getName(),/* 3 */pm
+                            BuiltinArrayListDomain.class.getName(),/* 3 */pm
                                     .getReturnElementTypeName(), /* 4 */pm
                                     .getName(), /* 5 */pm.getReturnTypeName());
                 } else {

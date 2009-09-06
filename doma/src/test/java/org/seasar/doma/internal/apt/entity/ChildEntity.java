@@ -16,8 +16,8 @@
 package org.seasar.doma.internal.apt.entity;
 
 import org.seasar.doma.Entity;
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 
 /**
  * @author taedium
@@ -26,7 +26,7 @@ import org.seasar.doma.domain.StringDomain;
 @Entity
 public interface ChildEntity extends ParentEntity {
 
-    IntegerDomain bbb();
+    BuiltinIntegerDomain bbb();
 
-    StringDomain ccc();
+    BuiltinStringDomain ccc();
 }

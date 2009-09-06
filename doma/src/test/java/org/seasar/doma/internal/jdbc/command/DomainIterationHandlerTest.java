@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.internal.jdbc.command.DomainIterationHandler;
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
@@ -52,14 +52,14 @@ public class DomainIterationHandlerTest extends TestCase {
         query.setCallerMethodName("bbb");
         query.compile();
 
-        DomainIterationHandler<String, StringDomain> handler = new DomainIterationHandler<String, StringDomain>(
-                StringDomain.class,
-                new IterationCallback<String, StringDomain>() {
+        DomainIterationHandler<String, BuiltinStringDomain> handler = new DomainIterationHandler<String, BuiltinStringDomain>(
+                BuiltinStringDomain.class,
+                new IterationCallback<String, BuiltinStringDomain>() {
 
                     private String result = "";
 
                     @Override
-                    public String iterate(StringDomain target,
+                    public String iterate(BuiltinStringDomain target,
                             IterationContext iterationContext) {
                         result += target.get();
                         return result;
@@ -84,14 +84,14 @@ public class DomainIterationHandlerTest extends TestCase {
         query.setCallerMethodName("bbb");
         query.compile();
 
-        DomainIterationHandler<String, StringDomain> handler = new DomainIterationHandler<String, StringDomain>(
-                StringDomain.class,
-                new IterationCallback<String, StringDomain>() {
+        DomainIterationHandler<String, BuiltinStringDomain> handler = new DomainIterationHandler<String, BuiltinStringDomain>(
+                BuiltinStringDomain.class,
+                new IterationCallback<String, BuiltinStringDomain>() {
 
                     private String result = "";
 
                     @Override
-                    public String iterate(StringDomain target,
+                    public String iterate(BuiltinStringDomain target,
                             IterationContext iterationContext) {
                         result += target.get();
                         iterationContext.exit();

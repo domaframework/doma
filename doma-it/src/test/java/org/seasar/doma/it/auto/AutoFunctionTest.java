@@ -21,8 +21,8 @@ import java.sql.Time;
 import java.util.List;
 
 import org.junit.runner.RunWith;
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.TimeDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
+import org.seasar.doma.domain.BuiltinTimeDomain;
 import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDao_;
 import org.seasar.doma.it.dao.FunctionDao;
@@ -40,35 +40,38 @@ public class AutoFunctionTest {
 
     public void testNoParam() throws Exception {
         FunctionDao dao = new FunctionDao_();
-        IntegerDomain result = dao.func_none_param();
-        assertEquals(new IntegerDomain(10), result);
+        BuiltinIntegerDomain result = dao.func_none_param();
+        assertEquals(new BuiltinIntegerDomain(10), result);
     }
 
     public void testOneParam() throws Exception {
         FunctionDao dao = new FunctionDao_();
-        IntegerDomain result = dao.func_simpletype_param(new IntegerDomain(10));
-        assertEquals(new IntegerDomain(20), result);
+        BuiltinIntegerDomain result = dao
+                .func_simpletype_param(new BuiltinIntegerDomain(10));
+        assertEquals(new BuiltinIntegerDomain(20), result);
     }
 
     public void testOneParam_time() throws Exception {
         FunctionDao dao = new FunctionDao_();
-        TimeDomain result = dao.func_simpletype_time_param(new TimeDomain(Time
-                .valueOf("12:34:56")));
-        assertEquals(new TimeDomain(Time.valueOf("12:34:56")), result);
+        BuiltinTimeDomain result = dao
+                .func_simpletype_time_param(new BuiltinTimeDomain(Time
+                        .valueOf("12:34:56")));
+        assertEquals(new BuiltinTimeDomain(Time.valueOf("12:34:56")), result);
     }
 
     public void testTwoParams() throws Exception {
         FunctionDao dao = new FunctionDao_();
-        IntegerDomain result = dao.func_dto_param(new IntegerDomain(10),
-                new IntegerDomain(20));
-        assertEquals(new IntegerDomain(30), result);
+        BuiltinIntegerDomain result = dao.func_dto_param(
+                new BuiltinIntegerDomain(10), new BuiltinIntegerDomain(20));
+        assertEquals(new BuiltinIntegerDomain(30), result);
     }
 
     public void testTwoParams_time() throws Exception {
         FunctionDao dao = new FunctionDao_();
-        TimeDomain result = dao.func_dto_time_param(new TimeDomain(Time
-                .valueOf("12:34:56")), new IntegerDomain(20));
-        assertEquals(new TimeDomain(Time.valueOf("12:34:56")), result);
+        BuiltinTimeDomain result = dao.func_dto_time_param(
+                new BuiltinTimeDomain(Time.valueOf("12:34:56")),
+                new BuiltinIntegerDomain(20));
+        assertEquals(new BuiltinTimeDomain(Time.valueOf("12:34:56")), result);
     }
 
     @Prerequisite("#ENV not in {'mysql'}")

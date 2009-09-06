@@ -16,22 +16,28 @@
 package org.seasar.doma.domain;
 
 import java.sql.Array;
+import java.sql.SQLException;
+
+import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@link Array} を値の型とする組み込みのドメインです。
+ * {@link Array} を値の型とするドメインのための骨格実装です。
  * 
  * @author taedium
  * 
+ * @param <D>
+ *            ドメインの型
  * @param <E>
- *            要素の型
+ *            配列の要素の型
  */
-public final class ArrayDomain<E> extends
-        AbstractArrayDomain<ArrayDomain<E>, E> {
+public abstract class ArrayDomain<D extends ArrayDomain<D, E>, E>
+        extends AbstractDomain<Array, ArrayDomain<D, E>> {
 
     /**
      * デフォルトの値でインスタンス化します。
      */
-    public ArrayDomain() {
+    protected ArrayDomain() {
+        this(null);
     }
 
     /**
@@ -40,8 +46,41 @@ public final class ArrayDomain<E> extends
      * @param value
      *            値
      */
-    public ArrayDomain(Array value) {
-        super(value);
+    protected ArrayDomain(Array value) {
+        super(Array.class, value);
+    }
+
+    /**
+     * 配列を返します。
+     * <p>
+     * {@link Array#getArray()} を 要素の型の配列にキャストして返します。
+     * 
+     * @return 配列
+     * @throws DomainIllegalStateException
+     *             SQL例外が発生した場合
+     */
+    @SuppressWarnings("unchecked")
+    public E[] getArray() {
+        try {
+            return (E[]) value.getArray();
+        } catch (SQLException e) {
+            throw new DomainIllegalStateException(e);
+        }
+    }
+
+    @Override
+    public <R, P, TH extends Throwable> R accept(
+            DomainVisitor<R, P, TH> visitor, P p) throws TH {
+        if (visitor == null) {
+            throw new DomaNullPointerException("visitor");
+        }
+        if (ArrayDomainVisitor.class.isInstance(visitor)) {
+            @SuppressWarnings("unchecked")
+            ArrayDomainVisitor<R, P, TH> v = ArrayDomainVisitor.class
+                    .cast(visitor);
+            return v.visitAbstractArrayDomain(this, p);
+        }
+        return visitor.visitUnknownDomain(this, p);
     }
 
 }

@@ -15,23 +15,32 @@
  */
 package org.seasar.doma.domain;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.sql.Timestamp;
 
+import org.seasar.doma.DomaNullPointerException;
+
 /**
- * {@link Timestamp} を値の型とする組み込みのドメインです。
+ * {@link Timestamp} を値の型とするドメインの骨格実装です。
  * 
  * @author taedium
  * 
+ * @param <D>
+ *            ドメインの型
  */
-public final class TimestampDomain extends
-        AbstractTimestampDomain<TimestampDomain> {
+public abstract class TimestampDomain<D extends TimestampDomain<D>>
+        extends AbstractComparableDomain<Timestamp, D> implements
+        SerializableDomain<Timestamp, D> {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * デフォルトの値でインスタンス化します。
      */
-    public TimestampDomain() {
+    protected TimestampDomain() {
+        this(null);
     }
 
     /**
@@ -40,8 +49,90 @@ public final class TimestampDomain extends
      * @param value
      *            値
      */
-    public TimestampDomain(Timestamp value) {
-        super(value);
+    protected TimestampDomain(Timestamp value) {
+        super(Timestamp.class, value);
+    }
+
+    @Override
+    public Timestamp get() {
+        if (value == null) {
+            return null;
+        }
+        Timestamp timestamp = new Timestamp(value.getTime());
+        timestamp.setNanos(value.getNanos());
+        return timestamp;
+    }
+
+    @Override
+    protected void setInternal(Timestamp v) {
+        if (v == null) {
+            super.setInternal(v);
+        } else {
+            Timestamp timestamp = new Timestamp(v.getTime());
+            timestamp.setNanos(v.getNanos());
+            super.setInternal(timestamp);
+        }
+    }
+
+    @Override
+    public <R, P, TH extends Throwable> R accept(
+            DomainVisitor<R, P, TH> visitor, P p) throws TH {
+        if (visitor == null) {
+            throw new DomaNullPointerException("visitor");
+        }
+        if (TimestampDomainVisitor.class.isInstance(visitor)) {
+            @SuppressWarnings("unchecked")
+            TimestampDomainVisitor<R, P, TH> v = TimestampDomainVisitor.class
+                    .cast(visitor);
+            return v.visitAbstractTimestampDomain(this, p);
+        }
+        return visitor.visitUnknownDomain(this, p);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null) {
+            return false;
+        }
+        if (getClass() != o.getClass()) {
+            return false;
+        }
+        TimestampDomain<?> other = TimestampDomain.class
+                .cast(o);
+        if (value == null) {
+            return other.value == null;
+        }
+        return value.equals(other.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return value != null ? value.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return value != null ? value.toString() : null;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void readObject(ObjectInputStream inputStream) throws IOException,
+            ClassNotFoundException {
+        inputStream.defaultReadObject();
+        valueClass = (Class<Timestamp>) inputStream.readObject();
+        value = Timestamp.class.cast(inputStream.readObject());
+        changed = inputStream.readBoolean();
+    }
+
+    private void writeObject(ObjectOutputStream outputStream)
+            throws IOException {
+        outputStream.defaultWriteObject();
+        outputStream.writeObject(valueClass);
+        outputStream.writeObject(value);
+        outputStream.writeBoolean(changed);
     }
 
 }

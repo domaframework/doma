@@ -18,7 +18,7 @@ package org.seasar.doma.internal.expr;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.internal.expr.EvaluationResult;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.ExpressionException;
@@ -48,7 +48,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 
     public void testFindMethod() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        Method method = evaluator.findMethod(location, "eq", new StringDomain(
+        Method method = evaluator.findMethod(location, "eq", new BuiltinStringDomain(
                 "aaa"), new Class[] { String.class });
         assertNotNull(method);
     }
@@ -57,7 +57,7 @@ public class ExpressionEvaluatorTest extends TestCase {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         try {
             evaluator
-                    .findMethod(location, "inexistentMethod", new StringDomain(
+                    .findMethod(location, "inexistentMethod", new BuiltinStringDomain(
                             "aaa"), new Class[] { String.class });
             fail();
         } catch (ExpressionException ignored) {

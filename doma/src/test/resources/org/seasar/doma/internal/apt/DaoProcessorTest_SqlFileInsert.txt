@@ -16,7 +16,7 @@ public class SqlFileInsertDao_ extends org.seasar.doma.jdbc.DomaAbstractDao impl
     }
 
     @Override
-    public int insert(org.seasar.doma.domain.IntegerDomain id, org.seasar.doma.domain.BigDecimalDomain salary) {
+    public int insert(org.seasar.doma.domain.BuiltinIntegerDomain id, org.seasar.doma.domain.BuiltinBigDecimalDomain salary) {
         entering("org.seasar.doma.internal.apt.dao.SqlFileInsertDao_", "insert", id, salary);
         if (id == null) {
             throw new org.seasar.doma.DomaNullPointerException("id");

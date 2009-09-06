@@ -15,22 +15,32 @@
  */
 package org.seasar.doma.domain;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.sql.Date;
 
+import org.seasar.doma.DomaNullPointerException;
+
 /**
- * {@link Date} を値の型とする組み込みのドメインです。
+ * {@link Date} を値の型とするドメインの骨格実装です。
  * 
  * @author taedium
  * 
+ * @param <D>
+ *            ドメインの型
  */
-public final class DateDomain extends AbstractDateDomain<DateDomain> {
+public abstract class DateDomain<D extends DateDomain<D>>
+        extends AbstractComparableDomain<Date, D> implements
+        SerializableDomain<Date, D> {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * デフォルトの値でインスタンス化します。
      */
-    public DateDomain() {
+    protected DateDomain() {
+        this(null);
     }
 
     /**
@@ -39,8 +49,85 @@ public final class DateDomain extends AbstractDateDomain<DateDomain> {
      * @param value
      *            値
      */
-    public DateDomain(Date value) {
-        super(value);
+    protected DateDomain(Date value) {
+        super(Date.class, value);
+    }
+
+    @Override
+    public Date get() {
+        if (value == null) {
+            return null;
+        }
+        return new Date(value.getTime());
+    }
+
+    @Override
+    protected void setInternal(Date v) {
+        if (v == null) {
+            super.setInternal(v);
+        } else {
+            super.setInternal(new Date(v.getTime()));
+        }
+    }
+
+    @Override
+    public <R, P, TH extends Throwable> R accept(
+            DomainVisitor<R, P, TH> visitor, P p) throws TH {
+        if (visitor == null) {
+            throw new DomaNullPointerException("visitor");
+        }
+        if (DateDomainVisitor.class.isInstance(visitor)) {
+            @SuppressWarnings("unchecked")
+            DateDomainVisitor<R, P, TH> v = DateDomainVisitor.class
+                    .cast(visitor);
+            return v.visitAbstractDateDomain(this, p);
+        }
+        return visitor.visitUnknownDomain(this, p);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null) {
+            return false;
+        }
+        if (getClass() != o.getClass()) {
+            return false;
+        }
+        DateDomain<?> other = DateDomain.class.cast(o);
+        if (value == null) {
+            return other.value == null;
+        }
+        return value.equals(other.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return value != null ? value.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return value != null ? value.toString() : null;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void readObject(ObjectInputStream inputStream) throws IOException,
+            ClassNotFoundException {
+        inputStream.defaultReadObject();
+        valueClass = (Class<Date>) inputStream.readObject();
+        value = Date.class.cast(inputStream.readObject());
+        changed = inputStream.readBoolean();
+    }
+
+    private void writeObject(ObjectOutputStream outputStream)
+            throws IOException {
+        outputStream.defaultWriteObject();
+        outputStream.writeObject(valueClass);
+        outputStream.writeObject(value);
+        outputStream.writeBoolean(changed);
     }
 
 }

@@ -18,7 +18,7 @@ package org.seasar.doma.internal.jdbc.query;
 import java.util.Arrays;
 import java.util.List;
 
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.query.BatchDeleteQuery;
 import org.seasar.doma.internal.jdbc.query.SqlFileBatchDeleteQuery;
@@ -86,13 +86,13 @@ public class SqlFileBatchDeleteQueryTest extends TestCase {
         assertEquals("delete from emp where name = ?", sql.getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(1, parameters.size());
-        assertEquals(new StringDomain("aaa"), parameters.get(0).getDomain());
+        assertEquals(new BuiltinStringDomain("aaa"), parameters.get(0).getDomain());
 
         sql = query.getSqls().get(1);
         assertEquals("delete from emp where name = ?", sql.getRawSql());
         parameters = sql.getParameters();
         assertEquals(1, parameters.size());
-        assertEquals(new StringDomain("bbb"), parameters.get(0).getDomain());
+        assertEquals(new BuiltinStringDomain("bbb"), parameters.get(0).getDomain());
     }
 
 }

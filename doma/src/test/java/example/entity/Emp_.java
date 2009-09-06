@@ -24,9 +24,9 @@ import java.util.Map;
 
 import javax.annotation.Generated;
 
-import org.seasar.doma.domain.BigDecimalDomain;
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinBigDecimalDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.jdbc.entity.AssignedIdProperty;
 import org.seasar.doma.jdbc.entity.BasicProperty;
 import org.seasar.doma.jdbc.entity.BuiltinEntityListener;
@@ -42,17 +42,17 @@ public class Emp_ extends DomaAbstractEntity<Emp> implements Emp, Serializable {
 
     private static final BuiltinEntityListener __listener = new BuiltinEntityListener();
 
-    private transient final AssignedIdProperty<IntegerDomain> id = new AssignedIdProperty<IntegerDomain>(
-            "id", null, new IntegerDomain());
+    private transient final AssignedIdProperty<BuiltinIntegerDomain> id = new AssignedIdProperty<BuiltinIntegerDomain>(
+            "id", null, new BuiltinIntegerDomain());
 
-    private transient final BasicProperty<StringDomain> name = new BasicProperty<StringDomain>(
-            "name", null, new StringDomain(), true, true);
+    private transient final BasicProperty<BuiltinStringDomain> name = new BasicProperty<BuiltinStringDomain>(
+            "name", null, new BuiltinStringDomain(), true, true);
 
-    private transient final BasicProperty<BigDecimalDomain> salary = new BasicProperty<BigDecimalDomain>(
-            "salary", null, new BigDecimalDomain(), true, true);
+    private transient final BasicProperty<BuiltinBigDecimalDomain> salary = new BasicProperty<BuiltinBigDecimalDomain>(
+            "salary", null, new BuiltinBigDecimalDomain(), true, true);
 
-    private transient final VersionProperty<IntegerDomain> version = new VersionProperty<IntegerDomain>(
-            "version", null, new IntegerDomain());
+    private transient final VersionProperty<BuiltinIntegerDomain> version = new VersionProperty<BuiltinIntegerDomain>(
+            "version", null, new BuiltinIntegerDomain());
 
     private final String __name = "emp";
 
@@ -65,22 +65,22 @@ public class Emp_ extends DomaAbstractEntity<Emp> implements Emp, Serializable {
     }
 
     @Override
-    public IntegerDomain id() {
+    public BuiltinIntegerDomain id() {
         return id.getDomain();
     }
 
     @Override
-    public StringDomain name() {
+    public BuiltinStringDomain name() {
         return name.getDomain();
     }
 
     @Override
-    public BigDecimalDomain salary() {
+    public BuiltinBigDecimalDomain salary() {
         return salary.getDomain();
     }
 
     @Override
-    public IntegerDomain version() {
+    public BuiltinIntegerDomain version() {
         return version.getDomain();
     }
 

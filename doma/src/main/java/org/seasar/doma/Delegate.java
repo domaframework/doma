@@ -90,7 +90,7 @@ import org.seasar.doma.jdbc.Config;
  *         this.employee = employee;
  *     }
  *     
- *     public int execute(Employee employee) {
+ *     public BigDecimalDomain calculate(BigDecimalDomain salary) {
  *         ...
  *     }
  * }

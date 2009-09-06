@@ -15,22 +15,32 @@
  */
 package org.seasar.doma.domain;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.sql.Time;
 
+import org.seasar.doma.DomaNullPointerException;
+
 /**
- * {@link Time} を値の型とする組み込みのドメインです。
+ * {@link Time} を値の型とするドメインの骨格実装です。
  * 
  * @author taedium
  * 
+ * @param <D>
+ *            ドメインの型
  */
-public final class TimeDomain extends AbstractTimeDomain<TimeDomain> {
+public abstract class TimeDomain<D extends TimeDomain<D>>
+        extends AbstractComparableDomain<Time, D> implements
+        SerializableDomain<Time, D> {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * デフォルトの値でインスタンス化します。
      */
-    public TimeDomain() {
+    protected TimeDomain() {
+        this(null);
     }
 
     /**
@@ -39,8 +49,84 @@ public final class TimeDomain extends AbstractTimeDomain<TimeDomain> {
      * @param value
      *            値
      */
-    public TimeDomain(Time value) {
-        super(value);
+    protected TimeDomain(Time value) {
+        super(Time.class, value);
     }
 
+    @Override
+    public Time get() {
+        if (value == null) {
+            return null;
+        }
+        return new Time(value.getTime());
+    }
+
+    @Override
+    protected void setInternal(Time v) {
+        if (v == null) {
+            super.setInternal(v);
+        } else {
+            super.setInternal(new Time(v.getTime()));
+        }
+    }
+
+    @Override
+    public <R, P, TH extends Throwable> R accept(
+            DomainVisitor<R, P, TH> visitor, P p) throws TH {
+        if (visitor == null) {
+            throw new DomaNullPointerException("visitor");
+        }
+        if (TimeDomainVisitor.class.isInstance(visitor)) {
+            @SuppressWarnings("unchecked")
+            TimeDomainVisitor<R, P, TH> v = TimeDomainVisitor.class
+                    .cast(visitor);
+            return v.visitAbstractTimeDomain(this, p);
+        }
+        return visitor.visitUnknownDomain(this, p);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null) {
+            return false;
+        }
+        if (getClass() != o.getClass()) {
+            return false;
+        }
+        TimeDomain<?> other = TimeDomain.class.cast(o);
+        if (value == null) {
+            return other.value == null;
+        }
+        return value.equals(other.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return value != null ? value.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return value != null ? value.toString() : null;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void readObject(ObjectInputStream inputStream) throws IOException,
+            ClassNotFoundException {
+        inputStream.defaultReadObject();
+        valueClass = (Class<Time>) inputStream.readObject();
+        value = Time.class.cast(inputStream.readObject());
+        changed = inputStream.readBoolean();
+    }
+
+    private void writeObject(ObjectOutputStream outputStream)
+            throws IOException {
+        outputStream.defaultWriteObject();
+        outputStream.writeObject(valueClass);
+        outputStream.writeObject(value);
+        outputStream.writeBoolean(changed);
+    }
 }

@@ -17,8 +17,8 @@ package org.seasar.doma.internal.apt.dao;
 
 import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.internal.apt.entity.Emp;
 import org.seasar.doma.jdbc.IterationCallback;
 
@@ -31,7 +31,7 @@ import org.seasar.doma.jdbc.IterationCallback;
 public interface IterationCallbackDao {
 
     @Select(iterate = true)
-    Integer iterate(IntegerDomain id, StringDomain name,
+    Integer iterate(BuiltinIntegerDomain id, BuiltinStringDomain name,
             IterationCallback<Integer, Emp> callback);
 
     @Select(iterate = true)

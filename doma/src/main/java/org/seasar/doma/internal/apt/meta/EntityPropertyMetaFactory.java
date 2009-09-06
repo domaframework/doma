@@ -323,6 +323,9 @@ public class EntityPropertyMetaFactory {
                         Domain.class.getName())) {
             DeclaredType declaredType = TypeUtil
                     .toDeclaredType(domainType, env);
+            if (declaredType.getTypeArguments().isEmpty()) {
+                throw new AptIllegalStateException();
+            }
             return declaredType.getTypeArguments().get(0);
         }
         return null;

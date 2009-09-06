@@ -17,7 +17,7 @@ package org.seasar.doma.internal.jdbc.command;
 
 import java.util.List;
 
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.internal.jdbc.command.DomainResultListHandler;
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
@@ -52,11 +52,11 @@ public class DomainResultListHandlerTest extends TestCase {
         query.setCallerMethodName("bbb");
         query.compile();
 
-        DomainResultListHandler<StringDomain> handler = new DomainResultListHandler<StringDomain>(
-                StringDomain.class);
-        List<StringDomain> domains = handler.handle(resultSet, query);
+        DomainResultListHandler<BuiltinStringDomain> handler = new DomainResultListHandler<BuiltinStringDomain>(
+                BuiltinStringDomain.class);
+        List<BuiltinStringDomain> domains = handler.handle(resultSet, query);
         assertEquals(2, domains.size());
-        assertEquals(new StringDomain("aaa"), domains.get(0));
-        assertEquals(new StringDomain("bbb"), domains.get(1));
+        assertEquals(new BuiltinStringDomain("aaa"), domains.get(0));
+        assertEquals(new BuiltinStringDomain("bbb"), domains.get(1));
     }
 }

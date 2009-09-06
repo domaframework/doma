@@ -17,7 +17,7 @@ package org.seasar.doma.internal.apt.dao;
 
 import org.seasar.doma.ClobFactory;
 import org.seasar.doma.Dao;
-import org.seasar.doma.domain.ClobDomain;
+import org.seasar.doma.domain.BuiltinClobDomain;
 
 /**
  * @author taedium
@@ -27,5 +27,5 @@ import org.seasar.doma.domain.ClobDomain;
 public interface ClobFactoryDao {
 
     @ClobFactory
-    ClobDomain create();
+    BuiltinClobDomain create();
 }

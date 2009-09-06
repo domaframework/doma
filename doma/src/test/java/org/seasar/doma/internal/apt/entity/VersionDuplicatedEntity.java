@@ -18,7 +18,7 @@ package org.seasar.doma.internal.apt.entity;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
 import org.seasar.doma.Version;
-import org.seasar.doma.domain.IntegerDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
 
 /**
  * @author taedium
@@ -28,12 +28,12 @@ import org.seasar.doma.domain.IntegerDomain;
 public interface VersionDuplicatedEntity {
 
     @Id
-    IntegerDomain id();
+    BuiltinIntegerDomain id();
 
     @Version
-    IntegerDomain version();
+    BuiltinIntegerDomain version();
 
     @Version
-    IntegerDomain version2();
+    BuiltinIntegerDomain version2();
 
 }

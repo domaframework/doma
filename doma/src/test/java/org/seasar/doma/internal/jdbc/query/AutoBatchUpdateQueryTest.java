@@ -22,9 +22,9 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.domain.BigDecimalDomain;
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinBigDecimalDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
@@ -89,11 +89,11 @@ public class AutoBatchUpdateQueryTest extends TestCase {
                 .getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(5, parameters.size());
-        assertEquals(new StringDomain("aaa"), parameters.get(0).getDomain());
+        assertEquals(new BuiltinStringDomain("aaa"), parameters.get(0).getDomain());
         assertTrue(parameters.get(1).getDomain().isNull());
-        assertEquals(new IntegerDomain(100), parameters.get(2).getDomain());
-        assertEquals(new IntegerDomain(10), parameters.get(3).getDomain());
-        assertEquals(new IntegerDomain(100), parameters.get(4).getDomain());
+        assertEquals(new BuiltinIntegerDomain(100), parameters.get(2).getDomain());
+        assertEquals(new BuiltinIntegerDomain(10), parameters.get(3).getDomain());
+        assertEquals(new BuiltinIntegerDomain(100), parameters.get(4).getDomain());
 
         sql = query.getSqls().get(1);
         assertEquals("update EMP set NAME = ?, SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql
@@ -101,11 +101,11 @@ public class AutoBatchUpdateQueryTest extends TestCase {
         parameters = sql.getParameters();
         assertEquals(5, parameters.size());
         assertTrue(parameters.get(0).getDomain().isNull());
-        assertEquals(new BigDecimalDomain(new BigDecimal(2000)), parameters
+        assertEquals(new BuiltinBigDecimalDomain(new BigDecimal(2000)), parameters
                 .get(1).getDomain());
-        assertEquals(new IntegerDomain(200), parameters.get(2).getDomain());
-        assertEquals(new IntegerDomain(20), parameters.get(3).getDomain());
-        assertEquals(new IntegerDomain(200), parameters.get(4).getDomain());
+        assertEquals(new BuiltinIntegerDomain(200), parameters.get(2).getDomain());
+        assertEquals(new BuiltinIntegerDomain(20), parameters.get(3).getDomain());
+        assertEquals(new BuiltinIntegerDomain(200), parameters.get(4).getDomain());
     }
 
     public void testOption_includeVersion() throws Exception {
@@ -133,10 +133,10 @@ public class AutoBatchUpdateQueryTest extends TestCase {
                 .getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
-        assertEquals(new StringDomain("aaa"), parameters.get(0).getDomain());
+        assertEquals(new BuiltinStringDomain("aaa"), parameters.get(0).getDomain());
         assertTrue(parameters.get(1).getDomain().isNull());
-        assertEquals(new IntegerDomain(100), parameters.get(2).getDomain());
-        assertEquals(new IntegerDomain(10), parameters.get(3).getDomain());
+        assertEquals(new BuiltinIntegerDomain(100), parameters.get(2).getDomain());
+        assertEquals(new BuiltinIntegerDomain(10), parameters.get(3).getDomain());
 
         sql = query.getSqls().get(1);
         assertEquals("update EMP set NAME = ?, SALARY = ?, VERSION = ? where ID = ?", sql
@@ -144,10 +144,10 @@ public class AutoBatchUpdateQueryTest extends TestCase {
         parameters = sql.getParameters();
         assertEquals(4, parameters.size());
         assertTrue(parameters.get(0).getDomain().isNull());
-        assertEquals(new BigDecimalDomain(new BigDecimal(2000)), parameters
+        assertEquals(new BuiltinBigDecimalDomain(new BigDecimal(2000)), parameters
                 .get(1).getDomain());
-        assertEquals(new IntegerDomain(200), parameters.get(2).getDomain());
-        assertEquals(new IntegerDomain(20), parameters.get(3).getDomain());
+        assertEquals(new BuiltinIntegerDomain(200), parameters.get(2).getDomain());
+        assertEquals(new BuiltinIntegerDomain(20), parameters.get(3).getDomain());
     }
 
     public void testOption_include() throws Exception {
@@ -175,10 +175,10 @@ public class AutoBatchUpdateQueryTest extends TestCase {
                 .getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
-        assertEquals(new StringDomain("aaa"), parameters.get(0).getDomain());
-        assertEquals(new IntegerDomain(100), parameters.get(1).getDomain());
-        assertEquals(new IntegerDomain(10), parameters.get(2).getDomain());
-        assertEquals(new IntegerDomain(100), parameters.get(3).getDomain());
+        assertEquals(new BuiltinStringDomain("aaa"), parameters.get(0).getDomain());
+        assertEquals(new BuiltinIntegerDomain(100), parameters.get(1).getDomain());
+        assertEquals(new BuiltinIntegerDomain(10), parameters.get(2).getDomain());
+        assertEquals(new BuiltinIntegerDomain(100), parameters.get(3).getDomain());
 
         sql = query.getSqls().get(1);
         assertEquals("update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql
@@ -186,9 +186,9 @@ public class AutoBatchUpdateQueryTest extends TestCase {
         parameters = sql.getParameters();
         assertEquals(4, parameters.size());
         assertTrue(parameters.get(0).getDomain().isNull());
-        assertEquals(new IntegerDomain(200), parameters.get(1).getDomain());
-        assertEquals(new IntegerDomain(20), parameters.get(2).getDomain());
-        assertEquals(new IntegerDomain(200), parameters.get(3).getDomain());
+        assertEquals(new BuiltinIntegerDomain(200), parameters.get(1).getDomain());
+        assertEquals(new BuiltinIntegerDomain(20), parameters.get(2).getDomain());
+        assertEquals(new BuiltinIntegerDomain(200), parameters.get(3).getDomain());
     }
 
     public void testOption_exclude() throws Exception {
@@ -216,11 +216,11 @@ public class AutoBatchUpdateQueryTest extends TestCase {
                 .getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
-        assertEquals(new BigDecimalDomain(new BigDecimal(200)), parameters
+        assertEquals(new BuiltinBigDecimalDomain(new BigDecimal(200)), parameters
                 .get(0).getDomain());
-        assertEquals(new IntegerDomain(100), parameters.get(1).getDomain());
-        assertEquals(new IntegerDomain(10), parameters.get(2).getDomain());
-        assertEquals(new IntegerDomain(100), parameters.get(3).getDomain());
+        assertEquals(new BuiltinIntegerDomain(100), parameters.get(1).getDomain());
+        assertEquals(new BuiltinIntegerDomain(10), parameters.get(2).getDomain());
+        assertEquals(new BuiltinIntegerDomain(100), parameters.get(3).getDomain());
 
         sql = query.getSqls().get(1);
         assertEquals("update EMP set SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql
@@ -228,9 +228,9 @@ public class AutoBatchUpdateQueryTest extends TestCase {
         parameters = sql.getParameters();
         assertEquals(4, parameters.size());
         assertTrue(parameters.get(0).getDomain().isNull());
-        assertEquals(new IntegerDomain(200), parameters.get(1).getDomain());
-        assertEquals(new IntegerDomain(20), parameters.get(2).getDomain());
-        assertEquals(new IntegerDomain(200), parameters.get(3).getDomain());
+        assertEquals(new BuiltinIntegerDomain(200), parameters.get(1).getDomain());
+        assertEquals(new BuiltinIntegerDomain(20), parameters.get(2).getDomain());
+        assertEquals(new BuiltinIntegerDomain(200), parameters.get(3).getDomain());
     }
 
     public void testIsExecutable() throws Exception {
@@ -258,22 +258,22 @@ public class AutoBatchUpdateQueryTest extends TestCase {
     private static class MyEmp implements Emp {
 
         @Override
-        public IntegerDomain version() {
+        public BuiltinIntegerDomain version() {
             return null;
         }
 
         @Override
-        public BigDecimalDomain salary() {
+        public BuiltinBigDecimalDomain salary() {
             return null;
         }
 
         @Override
-        public StringDomain name() {
+        public BuiltinStringDomain name() {
             return null;
         }
 
         @Override
-        public IntegerDomain id() {
+        public BuiltinIntegerDomain id() {
             return null;
         }
     }

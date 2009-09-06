@@ -27,11 +27,11 @@ import org.seasar.doma.Insert;
 import org.seasar.doma.Procedure;
 import org.seasar.doma.Select;
 import org.seasar.doma.Update;
-import org.seasar.doma.domain.ArrayDomain;
-import org.seasar.doma.domain.BigDecimalDomain;
-import org.seasar.doma.domain.BlobDomain;
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinArrayDomain;
+import org.seasar.doma.domain.BuiltinBigDecimalDomain;
+import org.seasar.doma.domain.BuiltinBlobDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.SelectOptions;
 
@@ -46,10 +46,10 @@ import example.entity.Emp;
 public interface EmpDao {
 
     @Select
-    Emp selectById(IntegerDomain id, SelectOptions option);
+    Emp selectById(BuiltinIntegerDomain id, SelectOptions option);
 
     @Select
-    List<Emp> selectByNameAndSalary(StringDomain name, BigDecimalDomain salary,
+    List<Emp> selectByNameAndSalary(BuiltinStringDomain name, BuiltinBigDecimalDomain salary,
             SelectOptions option);
 
     @Select(iterate = true)
@@ -65,17 +65,17 @@ public interface EmpDao {
     int delete(Emp entity);
 
     @Function
-    IntegerDomain add(@In IntegerDomain arg1, @In IntegerDomain arg2);
+    BuiltinIntegerDomain add(@In BuiltinIntegerDomain arg1, @In BuiltinIntegerDomain arg2);
 
     @Function
-    List<Emp> getEmps(@In IntegerDomain arg1, @In IntegerDomain arg2);
+    List<Emp> getEmps(@In BuiltinIntegerDomain arg1, @In BuiltinIntegerDomain arg2);
 
     @Procedure
-    void exec(@In IntegerDomain arg1, @In IntegerDomain arg2);
+    void exec(@In BuiltinIntegerDomain arg1, @In BuiltinIntegerDomain arg2);
 
     @ArrayFactory(typeName = "varchar")
-    ArrayDomain<String> createStringArrayDomain(String[] element);
+    BuiltinArrayDomain<String> createStringArrayDomain(String[] element);
 
     @BlobFactory
-    BlobDomain createBlobDomain();
+    BuiltinBlobDomain createBlobDomain();
 }

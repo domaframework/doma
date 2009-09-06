@@ -21,10 +21,12 @@ import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
 import org.seasar.doma.Transient;
 import org.seasar.doma.Version;
-import org.seasar.doma.domain.BigDecimalDomain;
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.StringDomain;
-import org.seasar.doma.domain.TimestampDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
+import org.seasar.doma.domain.BuiltinTimestampDomain;
+import org.seasar.doma.it.domain.IdDomain;
+import org.seasar.doma.it.domain.NameDomain;
+import org.seasar.doma.it.domain.SalaryDomain;
+import org.seasar.doma.it.domain.VersionDomain;
 
 /**
  * 
@@ -35,23 +37,23 @@ import org.seasar.doma.domain.TimestampDomain;
 public interface Emp {
 
     @Id
-    IntegerDomain id();
+    IdDomain id();
 
-    StringDomain name();
+    NameDomain name();
 
-    BigDecimalDomain salary();
+    SalaryDomain salary();
 
     @Version
-    IntegerDomain version();
+    VersionDomain version();
 
-    TimestampDomain insertTimestamp();
+    BuiltinTimestampDomain insertTimestamp();
 
-    TimestampDomain updateTimestamp();
-
-    @Transient
-    StringDomain temp();
+    BuiltinTimestampDomain updateTimestamp();
 
     @Transient
-    List<StringDomain> tempList();
+    BuiltinStringDomain temp();
+
+    @Transient
+    List<BuiltinStringDomain> tempList();
 
 }

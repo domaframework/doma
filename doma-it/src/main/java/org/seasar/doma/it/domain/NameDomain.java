@@ -17,9 +17,9 @@ package org.seasar.doma.it.domain;
 
 import java.io.Serializable;
 
-import org.seasar.doma.domain.AbstractStringDomain;
+import org.seasar.doma.domain.StringDomain;
 
-public class NameDomain extends AbstractStringDomain<NameDomain> implements
+public class NameDomain extends StringDomain<NameDomain> implements
         Serializable {
 
     private static final long serialVersionUID = 1L;

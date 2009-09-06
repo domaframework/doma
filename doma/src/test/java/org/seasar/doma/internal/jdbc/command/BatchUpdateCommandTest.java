@@ -19,7 +19,7 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.domain.IntegerDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.query.AutoBatchUpdateQuery;
 import org.seasar.doma.jdbc.OptimisticLockException;
@@ -58,8 +58,8 @@ public class BatchUpdateCommandTest extends TestCase {
         assertEquals(2, rows.length);
         String sql = runtimeConfig.dataSource.connection.preparedStatement.sql;
         assertEquals("update EMP set NAME = ?, SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql);
-        assertEquals(new IntegerDomain(11), emp1.version());
-        assertEquals(new IntegerDomain(21), emp2.version());
+        assertEquals(new BuiltinIntegerDomain(11), emp1.version());
+        assertEquals(new BuiltinIntegerDomain(21), emp2.version());
     }
 
     public void testExecute_throwsOptimisticLockException() throws Exception {

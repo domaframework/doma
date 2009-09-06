@@ -18,8 +18,8 @@ package org.seasar.doma.jdbc.entity;
 import junit.framework.TestCase;
 
 import org.seasar.doma.DomaIllegalArgumentException;
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.jdbc.entity.BuiltinEntityUtilDelegate;
 
 import example.entity.Emp;
@@ -35,18 +35,18 @@ public class BuiltinEntityUtilDelegateTest extends TestCase {
 
     public void testGetDomain() throws Exception {
         Emp emp = new Emp_();
-        IntegerDomain id = delegate.getDomain(emp, IntegerDomain.class, "id");
+        BuiltinIntegerDomain id = delegate.getDomain(emp, BuiltinIntegerDomain.class, "id");
         assertNotNull(id);
-        StringDomain id2 = delegate.getDomain(emp, StringDomain.class, "id");
+        BuiltinStringDomain id2 = delegate.getDomain(emp, BuiltinStringDomain.class, "id");
         assertNull(id2);
-        StringDomain nonexistent = delegate.getDomain(emp, StringDomain.class,
+        BuiltinStringDomain nonexistent = delegate.getDomain(emp, BuiltinStringDomain.class,
                 "nonexistent");
         assertNull(nonexistent);
     }
 
     public void testNonEntityArgumentException() throws Exception {
         try {
-            delegate.getDomain("aaa", IntegerDomain.class, "id");
+            delegate.getDomain("aaa", BuiltinIntegerDomain.class, "id");
             fail();
         } catch (DomaIllegalArgumentException expected) {
         }

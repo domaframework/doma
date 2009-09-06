@@ -20,9 +20,9 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.domain.BigDecimalDomain;
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinBigDecimalDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
@@ -78,10 +78,10 @@ public class AutoUpdateQueryTest extends TestCase {
 
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
-        assertEquals(new StringDomain("aaa"), parameters.get(0).getDomain());
-        assertEquals(new IntegerDomain(100), parameters.get(1).getDomain());
-        assertEquals(new IntegerDomain(10), parameters.get(2).getDomain());
-        assertEquals(new IntegerDomain(100), parameters.get(3).getDomain());
+        assertEquals(new BuiltinStringDomain("aaa"), parameters.get(0).getDomain());
+        assertEquals(new BuiltinIntegerDomain(100), parameters.get(1).getDomain());
+        assertEquals(new BuiltinIntegerDomain(10), parameters.get(2).getDomain());
+        assertEquals(new BuiltinIntegerDomain(100), parameters.get(3).getDomain());
     }
 
     public void testOption_excludeNull() throws Exception {
@@ -103,9 +103,9 @@ public class AutoUpdateQueryTest extends TestCase {
                 .getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
-        assertEquals(new IntegerDomain(100), parameters.get(0).getDomain());
-        assertEquals(new IntegerDomain(10), parameters.get(1).getDomain());
-        assertEquals(new IntegerDomain(100), parameters.get(2).getDomain());
+        assertEquals(new BuiltinIntegerDomain(100), parameters.get(0).getDomain());
+        assertEquals(new BuiltinIntegerDomain(10), parameters.get(1).getDomain());
+        assertEquals(new BuiltinIntegerDomain(100), parameters.get(2).getDomain());
     }
 
     public void testOption_includeVersion() throws Exception {
@@ -128,9 +128,9 @@ public class AutoUpdateQueryTest extends TestCase {
                 .getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
-        assertEquals(new StringDomain("aaa"), parameters.get(0).getDomain());
-        assertEquals(new IntegerDomain(100), parameters.get(1).getDomain());
-        assertEquals(new IntegerDomain(10), parameters.get(2).getDomain());
+        assertEquals(new BuiltinStringDomain("aaa"), parameters.get(0).getDomain());
+        assertEquals(new BuiltinIntegerDomain(100), parameters.get(1).getDomain());
+        assertEquals(new BuiltinIntegerDomain(10), parameters.get(2).getDomain());
     }
 
     public void testOption_include() throws Exception {
@@ -154,10 +154,10 @@ public class AutoUpdateQueryTest extends TestCase {
                 .getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
-        assertEquals(new StringDomain("aaa"), parameters.get(0).getDomain());
-        assertEquals(new IntegerDomain(100), parameters.get(1).getDomain());
-        assertEquals(new IntegerDomain(10), parameters.get(2).getDomain());
-        assertEquals(new IntegerDomain(100), parameters.get(3).getDomain());
+        assertEquals(new BuiltinStringDomain("aaa"), parameters.get(0).getDomain());
+        assertEquals(new BuiltinIntegerDomain(100), parameters.get(1).getDomain());
+        assertEquals(new BuiltinIntegerDomain(10), parameters.get(2).getDomain());
+        assertEquals(new BuiltinIntegerDomain(100), parameters.get(3).getDomain());
     }
 
     public void testOption_exclude() throws Exception {
@@ -181,11 +181,11 @@ public class AutoUpdateQueryTest extends TestCase {
                 .getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
-        assertEquals(new BigDecimalDomain(new BigDecimal(200)), parameters
+        assertEquals(new BuiltinBigDecimalDomain(new BigDecimal(200)), parameters
                 .get(0).getDomain());
-        assertEquals(new IntegerDomain(100), parameters.get(1).getDomain());
-        assertEquals(new IntegerDomain(10), parameters.get(2).getDomain());
-        assertEquals(new IntegerDomain(100), parameters.get(1).getDomain());
+        assertEquals(new BuiltinIntegerDomain(100), parameters.get(1).getDomain());
+        assertEquals(new BuiltinIntegerDomain(10), parameters.get(2).getDomain());
+        assertEquals(new BuiltinIntegerDomain(100), parameters.get(1).getDomain());
     }
 
     public void testIsExecutable() throws Exception {
@@ -216,22 +216,22 @@ public class AutoUpdateQueryTest extends TestCase {
     private static class MyEmp implements Emp {
 
         @Override
-        public IntegerDomain version() {
+        public BuiltinIntegerDomain version() {
             return null;
         }
 
         @Override
-        public BigDecimalDomain salary() {
+        public BuiltinBigDecimalDomain salary() {
             return null;
         }
 
         @Override
-        public StringDomain name() {
+        public BuiltinStringDomain name() {
             return null;
         }
 
         @Override
-        public IntegerDomain id() {
+        public BuiltinIntegerDomain id() {
             return null;
         }
     }

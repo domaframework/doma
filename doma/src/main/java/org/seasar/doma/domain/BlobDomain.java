@@ -17,18 +17,24 @@ package org.seasar.doma.domain;
 
 import java.sql.Blob;
 
+import org.seasar.doma.DomaNullPointerException;
+
 /**
- * {@link Blob} を値の型とする組み込みのドメインです。
+ * {@link Blob} を値の型とするドメインの骨格実装です。
  * 
  * @author taedium
  * 
+ * @param <D>
+ *            ドメインの型
  */
-public final class BlobDomain extends AbstractBlobDomain<BlobDomain> {
+public abstract class BlobDomain<D extends BlobDomain<D>>
+        extends AbstractDomain<Blob, D> {
 
     /**
      * デフォルトの値でインスタンス化します。
      */
-    public BlobDomain() {
+    protected BlobDomain() {
+        this(null);
     }
 
     /**
@@ -37,8 +43,23 @@ public final class BlobDomain extends AbstractBlobDomain<BlobDomain> {
      * @param value
      *            値
      */
-    public BlobDomain(Blob value) {
-        super(value);
+    protected BlobDomain(Blob value) {
+        super(Blob.class, value);
+    }
+
+    @Override
+    public <R, P, TH extends Throwable> R accept(
+            DomainVisitor<R, P, TH> visitor, P p) throws TH {
+        if (visitor == null) {
+            throw new DomaNullPointerException("visitor");
+        }
+        if (BlobDomainVisitor.class.isInstance(visitor)) {
+            @SuppressWarnings("unchecked")
+            BlobDomainVisitor<R, P, TH> v = BlobDomainVisitor.class
+                    .cast(visitor);
+            return v.visitAbstractBlobDomain(this, p);
+        }
+        return visitor.visitUnknownDomain(this, p);
     }
 
 }

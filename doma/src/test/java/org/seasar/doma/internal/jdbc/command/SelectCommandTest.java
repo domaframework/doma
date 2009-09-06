@@ -18,8 +18,8 @@ package org.seasar.doma.internal.jdbc.command;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.seasar.doma.domain.BigDecimalDomain;
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinBigDecimalDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.SelectCommand;
@@ -61,9 +61,9 @@ public class SelectCommandTest extends TestCase {
         query.setConfig(runtimeConfig);
         query.setSqlFilePath(SqlFileUtil
                 .buildPath(getClass().getName(), getName()));
-        query.addParameter("name", new StringDomain("hoge"));
+        query.addParameter("name", new BuiltinStringDomain("hoge"));
         query
-                .addParameter("salary", new BigDecimalDomain(new BigDecimal(
+                .addParameter("salary", new BuiltinBigDecimalDomain(new BigDecimal(
                         10000)));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
@@ -106,7 +106,7 @@ public class SelectCommandTest extends TestCase {
         query.setSqlFilePath(SqlFileUtil
                 .buildPath(getClass().getName(), getName()));
         query
-                .addParameter("salary", new BigDecimalDomain(new BigDecimal(
+                .addParameter("salary", new BuiltinBigDecimalDomain(new BigDecimal(
                         5000)));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");

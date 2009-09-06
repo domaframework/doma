@@ -19,9 +19,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seasar.doma.domain.BigDecimalDomain;
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinBigDecimalDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.internal.jdbc.command.CallableSqlParameterBinder;
 import org.seasar.doma.internal.jdbc.mock.BindValue;
 import org.seasar.doma.internal.jdbc.mock.MockCallableStatement;
@@ -50,12 +50,12 @@ public class CallableSqlParameterBinderTest extends TestCase {
         MockCallableStatement callableStatement = new MockCallableStatement();
 
         List<CallableSqlParameter> parameters = new ArrayList<CallableSqlParameter>();
-        parameters.add(new DomainResultParameter<IntegerDomain>(
-                IntegerDomain.class));
-        parameters.add(new InParameter(new StringDomain("aaa")));
-        parameters.add(new InOutParameter(new BigDecimalDomain(new BigDecimal(
+        parameters.add(new DomainResultParameter<BuiltinIntegerDomain>(
+                BuiltinIntegerDomain.class));
+        parameters.add(new InParameter(new BuiltinStringDomain("aaa")));
+        parameters.add(new InOutParameter(new BuiltinBigDecimalDomain(new BigDecimal(
                 10))));
-        parameters.add(new OutParameter(new StringDomain("bbb")));
+        parameters.add(new OutParameter(new BuiltinStringDomain("bbb")));
         CallableSqlParameterBinder binder = new CallableSqlParameterBinder(
                 new MyQuery());
         binder.bind(callableStatement, parameters);

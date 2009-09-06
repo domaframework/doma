@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.query;
 
-import org.seasar.doma.domain.IntegerDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.query.AutoFunctionQuery;
 import org.seasar.doma.internal.jdbc.query.FunctionQuery;
@@ -32,16 +32,16 @@ public class AutoFunctionQueryTest extends TestCase {
     private MockConfig runtimeConfig = new MockConfig();
 
     public void testCompile() throws Exception {
-        AutoFunctionQuery<IntegerDomain> query = new AutoFunctionQuery<IntegerDomain>();
+        AutoFunctionQuery<BuiltinIntegerDomain> query = new AutoFunctionQuery<BuiltinIntegerDomain>();
         query.setConfig(runtimeConfig);
         query.setFunctionName("aaa");
-        query.setResultParameter(new DomainResultParameter<IntegerDomain>(
-                IntegerDomain.class));
+        query.setResultParameter(new DomainResultParameter<BuiltinIntegerDomain>(
+                BuiltinIntegerDomain.class));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.compile();
 
-        FunctionQuery<IntegerDomain> functionQuery = query;
+        FunctionQuery<BuiltinIntegerDomain> functionQuery = query;
         assertNotNull(functionQuery.getSql());
     }
 }

@@ -17,7 +17,7 @@ package org.seasar.doma.internal.apt.dao;
 
 import org.seasar.doma.ArrayFactory;
 import org.seasar.doma.Dao;
-import org.seasar.doma.domain.ArrayDomain;
+import org.seasar.doma.domain.BuiltinArrayDomain;
 
 /**
  * @author taedium
@@ -27,5 +27,5 @@ import org.seasar.doma.domain.ArrayDomain;
 public interface ArrayFactoryDao {
 
     @ArrayFactory(typeName = "varchar")
-    ArrayDomain<String> create(String[] elements);
+    BuiltinArrayDomain<String> create(String[] elements);
 }

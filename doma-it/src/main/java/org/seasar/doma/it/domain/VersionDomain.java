@@ -17,10 +17,10 @@ package org.seasar.doma.it.domain;
 
 import java.io.Serializable;
 
-import org.seasar.doma.domain.AbstractIntegerDomain;
+import org.seasar.doma.domain.IntegerDomain;
 
-public class VersionDomain extends AbstractIntegerDomain<VersionDomain>
-        implements Serializable {
+public class VersionDomain extends IntegerDomain<VersionDomain> implements
+        Serializable {
 
     private static final long serialVersionUID = 1L;
 

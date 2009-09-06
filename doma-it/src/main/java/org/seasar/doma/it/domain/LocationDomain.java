@@ -17,10 +17,10 @@ package org.seasar.doma.it.domain;
 
 import java.io.Serializable;
 
-import org.seasar.doma.domain.AbstractStringDomain;
+import org.seasar.doma.domain.StringDomain;
 
-public class LocationDomain extends AbstractStringDomain<LocationDomain>
-        implements Serializable {
+public class LocationDomain extends StringDomain<LocationDomain> implements
+        Serializable {
 
     private static final long serialVersionUID = 1L;
 

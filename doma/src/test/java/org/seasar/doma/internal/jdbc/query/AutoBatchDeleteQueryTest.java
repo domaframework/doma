@@ -21,7 +21,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.domain.IntegerDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
@@ -81,7 +81,7 @@ public class AutoBatchDeleteQueryTest extends TestCase {
                 .getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(2, parameters.size());
-        assertEquals(new IntegerDomain(10), parameters.get(0).getDomain());
+        assertEquals(new BuiltinIntegerDomain(10), parameters.get(0).getDomain());
         assertTrue(parameters.get(1).getDomain().isNull());
 
         sql = query.getSqls().get(1);
@@ -89,8 +89,8 @@ public class AutoBatchDeleteQueryTest extends TestCase {
                 .getRawSql());
         parameters = sql.getParameters();
         assertEquals(2, parameters.size());
-        assertEquals(new IntegerDomain(20), parameters.get(0).getDomain());
-        assertEquals(new IntegerDomain(10), parameters.get(1).getDomain());
+        assertEquals(new BuiltinIntegerDomain(20), parameters.get(0).getDomain());
+        assertEquals(new BuiltinIntegerDomain(10), parameters.get(1).getDomain());
     }
 
     public void testOption_ignoreVersion() throws Exception {
@@ -116,12 +116,12 @@ public class AutoBatchDeleteQueryTest extends TestCase {
         assertEquals("delete from EMP where ID = ?", sql.getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(1, parameters.size());
-        assertEquals(new IntegerDomain(10), parameters.get(0).getDomain());
+        assertEquals(new BuiltinIntegerDomain(10), parameters.get(0).getDomain());
 
         sql = query.getSqls().get(1);
         assertEquals("delete from EMP where ID = ?", sql.getRawSql());
         parameters = sql.getParameters();
         assertEquals(1, parameters.size());
-        assertEquals(new IntegerDomain(20), parameters.get(0).getDomain());
+        assertEquals(new BuiltinIntegerDomain(20), parameters.get(0).getDomain());
     }
 }

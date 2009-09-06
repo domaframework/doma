@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.seasar.doma.Entity;
 import org.seasar.doma.Transient;
-import org.seasar.doma.domain.IntegerDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
 
 
 /**
@@ -29,8 +29,8 @@ import org.seasar.doma.domain.IntegerDomain;
 @Entity
 public interface ReturnListTransientEntity {
 
-    IntegerDomain id();
+    BuiltinIntegerDomain id();
 
     @Transient
-    List<IntegerDomain> list();
+    List<BuiltinIntegerDomain> list();
 }

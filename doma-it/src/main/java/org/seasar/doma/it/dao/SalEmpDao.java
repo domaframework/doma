@@ -7,7 +7,7 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Insert;
 import org.seasar.doma.Select;
 import org.seasar.doma.Update;
-import org.seasar.doma.domain.ArrayDomain;
+import org.seasar.doma.domain.BuiltinArrayDomain;
 import org.seasar.doma.it.ItConfig;
 import org.seasar.doma.it.entity.SalEmp;
 
@@ -24,8 +24,8 @@ public interface SalEmpDao {
     int update(SalEmp entity);
 
     @ArrayFactory(typeName = "integer")
-    ArrayDomain<Integer> createIntegerArray(Integer[] elements);
+    BuiltinArrayDomain<Integer> createIntegerArray(Integer[] elements);
 
     @ArrayFactory(typeName = "text")
-    ArrayDomain<String[]> createString2DArray(String[][] elements);
+    BuiltinArrayDomain<String[]> createString2DArray(String[][] elements);
 }

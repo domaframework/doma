@@ -19,7 +19,7 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.In;
 import org.seasar.doma.Out;
 import org.seasar.doma.Procedure;
-import org.seasar.doma.domain.IntegerDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
 
 /**
  * @author taedium
@@ -29,6 +29,6 @@ import org.seasar.doma.domain.IntegerDomain;
 public interface AutoProcedureDao {
 
     @Procedure
-    void executeProcedure(@In IntegerDomain arg1, @Out IntegerDomain arg2);
+    void executeProcedure(@In BuiltinIntegerDomain arg1, @Out BuiltinIntegerDomain arg2);
 
 }

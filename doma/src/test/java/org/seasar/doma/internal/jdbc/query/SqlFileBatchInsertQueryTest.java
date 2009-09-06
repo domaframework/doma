@@ -19,9 +19,9 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
-import org.seasar.doma.domain.BigDecimalDomain;
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinBigDecimalDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.query.BatchInsertQuery;
 import org.seasar.doma.internal.jdbc.query.SqlFileBatchInsertQuery;
@@ -94,8 +94,8 @@ public class SqlFileBatchInsertQueryTest extends TestCase {
                 .getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
-        assertEquals(new IntegerDomain(10), parameters.get(0).getDomain());
-        assertEquals(new StringDomain("aaa"), parameters.get(1).getDomain());
+        assertEquals(new BuiltinIntegerDomain(10), parameters.get(0).getDomain());
+        assertEquals(new BuiltinStringDomain("aaa"), parameters.get(1).getDomain());
         assertTrue(parameters.get(2).getDomain().isNull());
 
         sql = query.getSqls().get(1);
@@ -103,9 +103,9 @@ public class SqlFileBatchInsertQueryTest extends TestCase {
                 .getRawSql());
         parameters = sql.getParameters();
         assertEquals(3, parameters.size());
-        assertEquals(new IntegerDomain(20), parameters.get(0).getDomain());
+        assertEquals(new BuiltinIntegerDomain(20), parameters.get(0).getDomain());
         assertTrue(parameters.get(1).getDomain().isNull());
-        assertEquals(new BigDecimalDomain(new BigDecimal(2000)), parameters
+        assertEquals(new BuiltinBigDecimalDomain(new BigDecimal(2000)), parameters
                 .get(2).getDomain());
     }
 

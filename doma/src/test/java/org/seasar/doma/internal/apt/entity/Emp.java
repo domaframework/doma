@@ -24,9 +24,9 @@ import org.seasar.doma.SequenceGenerator;
 import org.seasar.doma.Table;
 import org.seasar.doma.Transient;
 import org.seasar.doma.Version;
-import org.seasar.doma.domain.BigDecimalDomain;
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinBigDecimalDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 
 @Entity(listener = EmpListener.class)
 @Table(schema = "AAA")
@@ -35,17 +35,17 @@ public interface Emp {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(sequence = "EMP_ID")
-    IntegerDomain id();
+    BuiltinIntegerDomain id();
 
-    StringDomain name();
+    BuiltinStringDomain name();
 
     @Column(name = "SALARY", insertable = false, updatable = false)
-    BigDecimalDomain salary();
+    BuiltinBigDecimalDomain salary();
 
     @Version
-    IntegerDomain version();
+    BuiltinIntegerDomain version();
 
     @Transient
-    StringDomain temp();
+    BuiltinStringDomain temp();
 
 }

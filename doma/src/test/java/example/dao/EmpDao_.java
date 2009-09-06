@@ -20,11 +20,11 @@ import java.util.List;
 import javax.annotation.Generated;
 import javax.sql.DataSource;
 
-import org.seasar.doma.domain.ArrayDomain;
-import org.seasar.doma.domain.BigDecimalDomain;
-import org.seasar.doma.domain.BlobDomain;
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinArrayDomain;
+import org.seasar.doma.domain.BuiltinBigDecimalDomain;
+import org.seasar.doma.domain.BuiltinBlobDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.internal.jdbc.command.CreateCommand;
 import org.seasar.doma.internal.jdbc.command.DeleteCommand;
 import org.seasar.doma.internal.jdbc.command.EntityIterationHandler;
@@ -75,7 +75,7 @@ public class EmpDao_ extends DomaAbstractDao implements EmpDao {
     }
 
     @Override
-    public Emp selectById(IntegerDomain id, SelectOptions option) {
+    public Emp selectById(BuiltinIntegerDomain id, SelectOptions option) {
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(config);
         query.setSqlFilePath(SqlFileUtil
@@ -91,8 +91,8 @@ public class EmpDao_ extends DomaAbstractDao implements EmpDao {
     }
 
     @Override
-    public List<Emp> selectByNameAndSalary(StringDomain name,
-            BigDecimalDomain salary, SelectOptions option) {
+    public List<Emp> selectByNameAndSalary(BuiltinStringDomain name,
+            BuiltinBigDecimalDomain salary, SelectOptions option) {
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(config);
         query.setSqlFilePath(SqlFileUtil
@@ -163,24 +163,24 @@ public class EmpDao_ extends DomaAbstractDao implements EmpDao {
     }
 
     @Override
-    public IntegerDomain add(IntegerDomain arg1, IntegerDomain arg2) {
-        AutoFunctionQuery<IntegerDomain> query = new AutoFunctionQuery<IntegerDomain>();
+    public BuiltinIntegerDomain add(BuiltinIntegerDomain arg1, BuiltinIntegerDomain arg2) {
+        AutoFunctionQuery<BuiltinIntegerDomain> query = new AutoFunctionQuery<BuiltinIntegerDomain>();
         query.setConfig(config);
         query.setFunctionName("add");
-        query.setResultParameter((new DomainResultParameter<IntegerDomain>(
-                IntegerDomain.class)));
+        query.setResultParameter((new DomainResultParameter<BuiltinIntegerDomain>(
+                BuiltinIntegerDomain.class)));
         query.addParameter(new InParameter(arg1));
         query.addParameter(new InParameter(arg2));
         query.setCallerClassName("example.dao.EmpDao");
         query.setCallerMethodName("add");
         query.compile();
-        FunctionCommand<IntegerDomain> command = new FunctionCommand<IntegerDomain>(
+        FunctionCommand<BuiltinIntegerDomain> command = new FunctionCommand<BuiltinIntegerDomain>(
                 query);
         return command.execute();
     }
 
     @Override
-    public List<Emp> getEmps(IntegerDomain arg1, IntegerDomain arg2) {
+    public List<Emp> getEmps(BuiltinIntegerDomain arg1, BuiltinIntegerDomain arg2) {
         AutoFunctionQuery<List<Emp>> query = new AutoFunctionQuery<List<Emp>>();
         query.setConfig(config);
         query.setFunctionName("add");
@@ -197,7 +197,7 @@ public class EmpDao_ extends DomaAbstractDao implements EmpDao {
     }
 
     @Override
-    public void exec(IntegerDomain arg1, IntegerDomain arg2) {
+    public void exec(BuiltinIntegerDomain arg1, BuiltinIntegerDomain arg2) {
         AutoProcedureQuery query = new AutoProcedureQuery();
         query.setConfig(config);
         query.setProcedureName("exec");
@@ -211,27 +211,27 @@ public class EmpDao_ extends DomaAbstractDao implements EmpDao {
     }
 
     @Override
-    public ArrayDomain<String> createStringArrayDomain(String[] element) {
-        ArrayCreateQuery<ArrayDomain<String>> query = new ArrayCreateQuery<ArrayDomain<String>>();
+    public BuiltinArrayDomain<String> createStringArrayDomain(String[] element) {
+        ArrayCreateQuery<BuiltinArrayDomain<String>> query = new ArrayCreateQuery<BuiltinArrayDomain<String>>();
         query.setConfig(config);
         query.setCallerClassName("example.dao.EmpDao");
         query.setCallerMethodName("createStringArray");
-        query.setResult(new ArrayDomain<String>());
+        query.setResult(new BuiltinArrayDomain<String>());
         query.compile();
-        CreateCommand<ArrayDomain<String>> command = new CreateCommand<ArrayDomain<String>>(
+        CreateCommand<BuiltinArrayDomain<String>> command = new CreateCommand<BuiltinArrayDomain<String>>(
                 query);
         return command.execute();
     }
 
     @Override
-    public BlobDomain createBlobDomain() {
-        BlobCreateQuery<BlobDomain> query = new BlobCreateQuery<BlobDomain>();
+    public BuiltinBlobDomain createBlobDomain() {
+        BlobCreateQuery<BuiltinBlobDomain> query = new BlobCreateQuery<BuiltinBlobDomain>();
         query.setConfig(config);
         query.setCallerClassName("example.dao.EmpDao");
         query.setCallerMethodName("createStringArray");
-        query.setResult(new BlobDomain());
+        query.setResult(new BuiltinBlobDomain());
         query.compile();
-        CreateCommand<BlobDomain> command = new CreateCommand<BlobDomain>(query);
+        CreateCommand<BuiltinBlobDomain> command = new CreateCommand<BuiltinBlobDomain>(query);
         return command.execute();
     }
 }

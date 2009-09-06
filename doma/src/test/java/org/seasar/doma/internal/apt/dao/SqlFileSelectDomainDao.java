@@ -19,9 +19,9 @@ import java.util.List;
 
 import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
-import org.seasar.doma.domain.BigDecimalDomain;
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinBigDecimalDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.jdbc.SelectOptions;
 
 
@@ -34,9 +34,9 @@ import org.seasar.doma.jdbc.SelectOptions;
 public interface SqlFileSelectDomainDao {
 
     @Select
-    StringDomain selectById(IntegerDomain id);
+    BuiltinStringDomain selectById(BuiltinIntegerDomain id);
 
     @Select
-    List<StringDomain> selectByNameAndSalary(StringDomain name,
-            BigDecimalDomain salary, SelectOptions options);
+    List<BuiltinStringDomain> selectByNameAndSalary(BuiltinStringDomain name,
+            BuiltinBigDecimalDomain salary, SelectOptions options);
 }

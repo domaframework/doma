@@ -18,7 +18,7 @@ package org.seasar.doma.it.entity;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
 import org.seasar.doma.Version;
-import org.seasar.doma.domain.DateDomain;
+import org.seasar.doma.it.domain.HiredateDomain;
 import org.seasar.doma.it.domain.IdDomain;
 import org.seasar.doma.it.domain.NameDomain;
 import org.seasar.doma.it.domain.NoDomain;
@@ -37,7 +37,7 @@ public interface Employee {
 
     IdDomain manager_id();
 
-    DateDomain hiredate();
+    HiredateDomain hiredate();
 
     SalaryDomain salary();
 

@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.domain.AbstractBooleanDomain;
+import org.seasar.doma.domain.BooleanDomain;
 import org.seasar.doma.domain.Domain;
 import org.seasar.doma.internal.jdbc.dialect.OracleForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.OraclePagingTransformer;
@@ -170,7 +170,7 @@ public class OracleDialect extends StandardDialect {
             StandardJdbcMappingVisitor {
 
         @Override
-        public Void visitAbstractBooleanDomain(AbstractBooleanDomain<?> domain,
+        public Void visitAbstractBooleanDomain(BooleanDomain<?> domain,
                 JdbcMappingFunction p) throws SQLException {
             return p.apply(domain, JdbcTypes.INTEGER_ADAPTIVE_BOOLEAN);
         }
@@ -187,7 +187,7 @@ public class OracleDialect extends StandardDialect {
 
         @Override
         public String visitAbstractBooleanDomain(
-                AbstractBooleanDomain<?> domain, SqlLogFormattingFunction p)
+                BooleanDomain<?> domain, SqlLogFormattingFunction p)
                 throws RuntimeException {
             return p.apply(domain, JdbcTypes.INTEGER_ADAPTIVE_BOOLEAN);
         }

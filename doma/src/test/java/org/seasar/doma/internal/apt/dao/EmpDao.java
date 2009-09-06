@@ -22,9 +22,9 @@ import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
 import org.seasar.doma.Select;
 import org.seasar.doma.Update;
-import org.seasar.doma.domain.BigDecimalDomain;
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinBigDecimalDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.jdbc.SelectOptions;
 
 import example.entity.Emp;
@@ -38,10 +38,10 @@ import example.entity.Emp;
 public interface EmpDao {
 
     @Select
-    Emp selectById(IntegerDomain id, SelectOptions options);
+    Emp selectById(BuiltinIntegerDomain id, SelectOptions options);
 
     @Select
-    List<Emp> selectByNameAndSalary(StringDomain name, BigDecimalDomain salary,
+    List<Emp> selectByNameAndSalary(BuiltinStringDomain name, BuiltinBigDecimalDomain salary,
             SelectOptions options);
 
     @Insert

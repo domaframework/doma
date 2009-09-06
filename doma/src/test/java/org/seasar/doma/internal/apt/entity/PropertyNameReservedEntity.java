@@ -16,7 +16,7 @@
 package org.seasar.doma.internal.apt.entity;
 
 import org.seasar.doma.Entity;
-import org.seasar.doma.domain.IntegerDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
 
 /**
  * @author taedium
@@ -25,5 +25,5 @@ import org.seasar.doma.domain.IntegerDomain;
 @Entity
 public interface PropertyNameReservedEntity {
 
-    IntegerDomain __name();
+    BuiltinIntegerDomain __name();
 }

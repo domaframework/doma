@@ -18,7 +18,7 @@ package org.seasar.doma.internal.apt.entity;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
 import org.seasar.doma.domain.Domain;
-import org.seasar.doma.domain.IntegerDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
 
 /**
  * @author taedium
@@ -28,7 +28,7 @@ import org.seasar.doma.domain.IntegerDomain;
 public interface ReturnTypeNotConcreteDomainEntity {
 
     @Id
-    IntegerDomain id();
+    BuiltinIntegerDomain id();
 
     Domain<?, ?> name();
 

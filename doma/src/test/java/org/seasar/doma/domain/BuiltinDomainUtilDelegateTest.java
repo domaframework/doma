@@ -24,7 +24,7 @@ import junit.framework.TestCase;
 public class BuiltinDomainUtilDelegateTest extends TestCase {
 
     public void testSet() throws Exception {
-        Domain<?, ?> domain = new StringDomain();
+        Domain<?, ?> domain = new BuiltinStringDomain();
         DomainUtil.set(domain, "aaa");
         assertEquals("aaa", domain.get());
     }

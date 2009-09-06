@@ -220,7 +220,7 @@ public class ExpressionParserTest extends TestCase {
 
     public void testEq_domain() throws Exception {
         ExpressionParser parser = new ExpressionParser(
-                "new org.seasar.doma.domain.IntegerDomain(new java.lang.Integer(10)) == 10");
+                "new org.seasar.doma.domain.BuiltinIntegerDomain(new java.lang.Integer(10)) == 10");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         EvaluationResult evaluationResult = evaluator.evaluate(expression);
@@ -229,7 +229,7 @@ public class ExpressionParserTest extends TestCase {
 
     public void testNotEq_domain() throws Exception {
         ExpressionParser parser = new ExpressionParser(
-                "new org.seasar.doma.domain.IntegerDomain(new java.lang.Integer(11)) == 10");
+                "new org.seasar.doma.domain.BuiltinIntegerDomain(new java.lang.Integer(11)) == 10");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         EvaluationResult evaluationResult = evaluator.evaluate(expression);
@@ -274,7 +274,7 @@ public class ExpressionParserTest extends TestCase {
 
     public void testNe_domain() throws Exception {
         ExpressionParser parser = new ExpressionParser(
-                "new org.seasar.doma.domain.IntegerDomain(new java.lang.Integer(10)) != 11");
+                "new org.seasar.doma.domain.BuiltinIntegerDomain(new java.lang.Integer(10)) != 11");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         EvaluationResult evaluationResult = evaluator.evaluate(expression);
@@ -283,7 +283,7 @@ public class ExpressionParserTest extends TestCase {
 
     public void testNotNe_domain() throws Exception {
         ExpressionParser parser = new ExpressionParser(
-                "new org.seasar.doma.domain.IntegerDomain(new java.lang.Integer(10)) != 10");
+                "new org.seasar.doma.domain.BuiltinIntegerDomain(new java.lang.Integer(10)) != 10");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         EvaluationResult evaluationResult = evaluator.evaluate(expression);
@@ -713,7 +713,7 @@ public class ExpressionParserTest extends TestCase {
 
     public class Hoge {
 
-        private String foo = "abcdef";
+        private final String foo = "abcdef";
 
         public String foo() {
             return foo;

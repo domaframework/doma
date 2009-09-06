@@ -22,8 +22,8 @@ import java.sql.SQLException;
 import java.util.Arrays;
 
 import org.seasar.doma.GenerationType;
-import org.seasar.doma.domain.LongDomain;
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinLongDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
@@ -94,8 +94,8 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
         if (valueColumnName == null) {
             throw new JdbcException(DomaMessageCode.DOMA2033, "valueColumnName");
         }
-        LongDomain allocationSizeDomain = new LongDomain(allocationSize);
-        StringDomain pkColumnValueDomain = new StringDomain(pkColumnValue);
+        BuiltinLongDomain allocationSizeDomain = new BuiltinLongDomain(allocationSize);
+        BuiltinStringDomain pkColumnValueDomain = new BuiltinStringDomain(pkColumnValue);
         updateSql = new PreparedSql(createUpdateRawSql(),
                 createUpdateFormattedSql(), Arrays.asList(new InParameter(
                         allocationSizeDomain), new InParameter(

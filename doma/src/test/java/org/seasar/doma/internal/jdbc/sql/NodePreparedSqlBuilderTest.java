@@ -19,8 +19,8 @@ import java.math.BigDecimal;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.domain.BigDecimalDomain;
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinBigDecimalDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
@@ -81,8 +81,8 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         root.addNode(statement);
 
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("name", new StringDomain("hoge"));
-        evaluator.add("salary", new BigDecimalDomain(new BigDecimal(100)));
+        evaluator.add("name", new BuiltinStringDomain("hoge"));
+        evaluator.add("salary", new BuiltinBigDecimalDomain(new BigDecimal(100)));
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
                 evaluator);
         PreparedSql sql = builder.build(root);
@@ -91,9 +91,9 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         assertEquals("select * from aaa where bbb = /*#name*/'hoge' and ccc = /*#salary*/100", root
                 .toString());
         assertEquals(2, sql.getParameters().size());
-        assertEquals(new StringDomain("hoge"), sql.getParameters().get(0)
+        assertEquals(new BuiltinStringDomain("hoge"), sql.getParameters().get(0)
                 .getDomain());
-        assertEquals(new BigDecimalDomain(new BigDecimal(100)), sql
+        assertEquals(new BuiltinBigDecimalDomain(new BigDecimal(100)), sql
                 .getParameters().get(1).getDomain());
     }
 

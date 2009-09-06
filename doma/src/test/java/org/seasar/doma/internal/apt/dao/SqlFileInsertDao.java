@@ -17,8 +17,8 @@ package org.seasar.doma.internal.apt.dao;
 
 import org.seasar.doma.Dao;
 import org.seasar.doma.Insert;
-import org.seasar.doma.domain.BigDecimalDomain;
-import org.seasar.doma.domain.IntegerDomain;
+import org.seasar.doma.domain.BuiltinBigDecimalDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
 
 /**
  * @author taedium
@@ -28,5 +28,5 @@ import org.seasar.doma.domain.IntegerDomain;
 public interface SqlFileInsertDao {
 
     @Insert(sqlFile = true)
-    int insert(IntegerDomain id, BigDecimalDomain salary);
+    int insert(BuiltinIntegerDomain id, BuiltinBigDecimalDomain salary);
 }

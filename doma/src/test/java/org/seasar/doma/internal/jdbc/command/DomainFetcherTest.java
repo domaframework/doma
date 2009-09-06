@@ -17,7 +17,7 @@ package org.seasar.doma.internal.jdbc.command;
 
 import java.math.BigDecimal;
 
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.internal.jdbc.command.DomainFetcher;
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
@@ -49,7 +49,7 @@ public class DomainFetcherTest extends TestCase {
         resultSet.rows.add(new RowData("hoge", "foo", new BigDecimal(10), 100));
         resultSet.next();
 
-        StringDomain aaa = new StringDomain();
+        BuiltinStringDomain aaa = new BuiltinStringDomain();
         DomainFetcher fetcher = new DomainFetcher(new MySelectQuery());
         fetcher.fetch(resultSet, aaa);
 

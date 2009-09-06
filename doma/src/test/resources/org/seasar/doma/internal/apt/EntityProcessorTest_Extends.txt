@@ -7,11 +7,11 @@ public class ChildEntity_ extends org.seasar.doma.jdbc.entity.DomaAbstractEntity
 
     private static final org.seasar.doma.jdbc.entity.BuiltinEntityListener __listener = new org.seasar.doma.jdbc.entity.BuiltinEntityListener();
 
-    private transient org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain> aaa = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain>("aaa", null, new org.seasar.doma.domain.IntegerDomain(), true, true);
+    private transient org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.BuiltinIntegerDomain> aaa = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.BuiltinIntegerDomain>("aaa", null, new org.seasar.doma.domain.BuiltinIntegerDomain(), true, true);
 
-    private transient org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain> bbb = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain>("bbb", null, new org.seasar.doma.domain.IntegerDomain(), true, true);
+    private transient org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.BuiltinIntegerDomain> bbb = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.BuiltinIntegerDomain>("bbb", null, new org.seasar.doma.domain.BuiltinIntegerDomain(), true, true);
 
-    private transient org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.StringDomain> ccc = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.StringDomain>("ccc", null, new org.seasar.doma.domain.StringDomain(), true, true);
+    private transient org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.BuiltinStringDomain> ccc = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.BuiltinStringDomain>("ccc", null, new org.seasar.doma.domain.BuiltinStringDomain(), true, true);
 
     private final String __name = "ChildEntity";
 
@@ -24,17 +24,17 @@ public class ChildEntity_ extends org.seasar.doma.jdbc.entity.DomaAbstractEntity
     }
 
     @Override
-    public org.seasar.doma.domain.IntegerDomain aaa() {
+    public org.seasar.doma.domain.BuiltinIntegerDomain aaa() {
         return aaa.getDomain();
     }
 
     @Override
-    public org.seasar.doma.domain.IntegerDomain bbb() {
+    public org.seasar.doma.domain.BuiltinIntegerDomain bbb() {
         return bbb.getDomain();
     }
 
     @Override
-    public org.seasar.doma.domain.StringDomain ccc() {
+    public org.seasar.doma.domain.BuiltinStringDomain ccc() {
         return ccc.getDomain();
     }
 
@@ -104,9 +104,9 @@ public class ChildEntity_ extends org.seasar.doma.jdbc.entity.DomaAbstractEntity
 
     private void readObject(java.io.ObjectInputStream inputStream) throws java.io.IOException, java.lang.ClassNotFoundException {
         inputStream.defaultReadObject();
-        aaa = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain>("aaa", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject(), true, true);
-        bbb = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain>("bbb", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject(), true, true);
-        ccc = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.StringDomain>("ccc", null, (org.seasar.doma.domain.StringDomain)inputStream.readObject(), true, true);
+        aaa = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.BuiltinIntegerDomain>("aaa", null, (org.seasar.doma.domain.BuiltinIntegerDomain)inputStream.readObject(), true, true);
+        bbb = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.BuiltinIntegerDomain>("bbb", null, (org.seasar.doma.domain.BuiltinIntegerDomain)inputStream.readObject(), true, true);
+        ccc = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.BuiltinStringDomain>("ccc", null, (org.seasar.doma.domain.BuiltinStringDomain)inputStream.readObject(), true, true);
     }
 
     private void writeObject(java.io.ObjectOutputStream outputStream) throws java.io.IOException {

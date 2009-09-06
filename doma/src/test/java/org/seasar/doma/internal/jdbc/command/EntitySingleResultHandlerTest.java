@@ -15,8 +15,8 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
@@ -57,8 +57,8 @@ public class EntitySingleResultHandlerTest extends TestCase {
         EntitySingleResultHandler<Emp, Emp_> handler = new EntitySingleResultHandler<Emp, Emp_>(
                 Emp_.class);
         Emp emp = handler.handle(resultSet, query);
-        assertEquals(new IntegerDomain(1), emp.id());
-        assertEquals(new StringDomain("aaa"), emp.name());
+        assertEquals(new BuiltinIntegerDomain(1), emp.id());
+        assertEquals(new BuiltinStringDomain("aaa"), emp.name());
     }
 
     public void testHandle_NonUniqueResultException() throws Exception {

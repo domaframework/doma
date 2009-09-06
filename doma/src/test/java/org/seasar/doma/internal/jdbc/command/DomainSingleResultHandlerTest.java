@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler;
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
@@ -50,10 +50,10 @@ public class DomainSingleResultHandlerTest extends TestCase {
         query.setCallerMethodName("bbb");
         query.compile();
 
-        DomainSingleResultHandler<StringDomain> handler = new DomainSingleResultHandler<StringDomain>(
-                StringDomain.class);
-        StringDomain domain = handler.handle(resultSet, query);
-        assertEquals(domain, new StringDomain("aaa"));
+        DomainSingleResultHandler<BuiltinStringDomain> handler = new DomainSingleResultHandler<BuiltinStringDomain>(
+                BuiltinStringDomain.class);
+        BuiltinStringDomain domain = handler.handle(resultSet, query);
+        assertEquals(domain, new BuiltinStringDomain("aaa"));
     }
 
     public void testHandle_NonUniqueResultException() throws Exception {
@@ -69,8 +69,8 @@ public class DomainSingleResultHandlerTest extends TestCase {
         query.setCallerMethodName("bbb");
         query.compile();
 
-        DomainSingleResultHandler<StringDomain> handler = new DomainSingleResultHandler<StringDomain>(
-                StringDomain.class);
+        DomainSingleResultHandler<BuiltinStringDomain> handler = new DomainSingleResultHandler<BuiltinStringDomain>(
+                BuiltinStringDomain.class);
         try {
             handler.handle(resultSet, query);
             fail();

@@ -7,9 +7,9 @@ public class ReturnListTransientEntity_ extends org.seasar.doma.jdbc.entity.Doma
 
     private static final org.seasar.doma.jdbc.entity.BuiltinEntityListener __listener = new org.seasar.doma.jdbc.entity.BuiltinEntityListener();
 
-    private transient org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain> id = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain>("id", null, new org.seasar.doma.domain.IntegerDomain(), true, true);
+    private transient org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.BuiltinIntegerDomain> id = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.BuiltinIntegerDomain>("id", null, new org.seasar.doma.domain.BuiltinIntegerDomain(), true, true);
 
-    private transient org.seasar.doma.jdbc.entity.TransientProperty<org.seasar.doma.domain.ArrayListDomain<org.seasar.doma.domain.IntegerDomain>> list = new org.seasar.doma.jdbc.entity.TransientProperty<org.seasar.doma.domain.ArrayListDomain<org.seasar.doma.domain.IntegerDomain>>("list", new org.seasar.doma.domain.ArrayListDomain<org.seasar.doma.domain.IntegerDomain>(new java.util.ArrayList<org.seasar.doma.domain.IntegerDomain>()));
+    private transient org.seasar.doma.jdbc.entity.TransientProperty<org.seasar.doma.domain.BuiltinArrayListDomain<org.seasar.doma.domain.BuiltinIntegerDomain>> list = new org.seasar.doma.jdbc.entity.TransientProperty<org.seasar.doma.domain.BuiltinArrayListDomain<org.seasar.doma.domain.BuiltinIntegerDomain>>("list", new org.seasar.doma.domain.BuiltinArrayListDomain<org.seasar.doma.domain.BuiltinIntegerDomain>(new java.util.ArrayList<org.seasar.doma.domain.BuiltinIntegerDomain>()));
 
     private final String __name = "ReturnListTransientEntity";
 
@@ -22,12 +22,12 @@ public class ReturnListTransientEntity_ extends org.seasar.doma.jdbc.entity.Doma
     }
 
     @Override
-    public org.seasar.doma.domain.IntegerDomain id() {
+    public org.seasar.doma.domain.BuiltinIntegerDomain id() {
         return id.getDomain();
     }
 
     @Override
-    public java.util.ArrayList<org.seasar.doma.domain.IntegerDomain> list() {
+    public java.util.ArrayList<org.seasar.doma.domain.BuiltinIntegerDomain> list() {
         return list.getDomain().get();
     }
 
@@ -96,8 +96,8 @@ public class ReturnListTransientEntity_ extends org.seasar.doma.jdbc.entity.Doma
     @SuppressWarnings("unchecked")
     private void readObject(java.io.ObjectInputStream inputStream) throws java.io.IOException, java.lang.ClassNotFoundException {
         inputStream.defaultReadObject();
-        id = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.IntegerDomain>("id", null, (org.seasar.doma.domain.IntegerDomain)inputStream.readObject(), true, true);
-        list = new org.seasar.doma.jdbc.entity.TransientProperty<org.seasar.doma.domain.ArrayListDomain<org.seasar.doma.domain.IntegerDomain>>("list", (org.seasar.doma.domain.ArrayListDomain<org.seasar.doma.domain.IntegerDomain>)inputStream.readObject());
+        id = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.BuiltinIntegerDomain>("id", null, (org.seasar.doma.domain.BuiltinIntegerDomain)inputStream.readObject(), true, true);
+        list = new org.seasar.doma.jdbc.entity.TransientProperty<org.seasar.doma.domain.BuiltinArrayListDomain<org.seasar.doma.domain.BuiltinIntegerDomain>>("list", (org.seasar.doma.domain.BuiltinArrayListDomain<org.seasar.doma.domain.BuiltinIntegerDomain>)inputStream.readObject());
     }
 
     private void writeObject(java.io.ObjectOutputStream outputStream) throws java.io.IOException {

@@ -18,20 +18,20 @@ package example.entity;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
 import org.seasar.doma.Version;
-import org.seasar.doma.domain.BigDecimalDomain;
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.StringDomain;
+import org.seasar.doma.domain.BuiltinBigDecimalDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
+import org.seasar.doma.domain.BuiltinStringDomain;
 
 @Entity
 public interface Emp {
 
     @Id
-    IntegerDomain id();
+    BuiltinIntegerDomain id();
 
-    StringDomain name();
+    BuiltinStringDomain name();
 
-    BigDecimalDomain salary();
+    BuiltinBigDecimalDomain salary();
 
     @Version
-    IntegerDomain version();
+    BuiltinIntegerDomain version();
 }
