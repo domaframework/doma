@@ -37,7 +37,7 @@ public final class Notifier {
         messager.printMessage(Kind.OTHER, messageCode.getMessage(args));
     }
 
-    public static void debug(ProcessingEnvironment env, String message) {
+    public static void debug(ProcessingEnvironment env, CharSequence message) {
         assertNotNull(env, message);
         Messager messager = env.getMessager();
         messager.printMessage(Kind.OTHER, message);

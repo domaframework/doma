@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.internal.apt.meta.EntityMeta;
@@ -41,24 +40,10 @@ public class DtoGenerator extends AbstractGenerator {
 
     public DtoGenerator(ProcessingEnvironment env, TypeElement entityElement,
             EntityMeta entityMeta) throws IOException {
-        super(env, entityElement, createQualifiedName(env, entityElement));
+        super(env, entityElement, Options.getDtoPackage(env), Options
+                .getDtoSubpackage(env), Options.getDtoSuffix(env));
         assertNotNull(entityMeta);
         this.entityMeta = entityMeta;
-    }
-
-    protected static String createQualifiedName(ProcessingEnvironment env,
-            TypeElement typeElement) {
-        assertNotNull(typeElement);
-        String base = Options.getDtoPackage(env);
-        if (base == null) {
-            PackageElement packageElement = env.getElementUtils().getPackageOf(
-                    typeElement);
-            base = packageElement.getQualifiedName().toString();
-        }
-        if (!base.isEmpty()) {
-            base += ".";
-        }
-        return base + typeElement.getSimpleName() + Options.getDtoSuffix(env);
     }
 
     public void generate() {

@@ -191,6 +191,8 @@ public enum DomaMessageCode implements MessageCode {
     DOMA4087("@Transientを注釈したメソッドには@Columnを注釈できません。"),
     DOMA4088("@Idもしくは@Versionを注釈したした場合、@Columnのinsertable要素にfalseを指定してはいけません。"),
     DOMA4089("@Idもしくは@Versionを注釈したした場合、@Columnのupdatable要素にfalseを指定してはいけません。"),
+    DOMA4090("注釈プロセッサ[{0}]でクラス[{1}]の処理を開始しました。"),
+    DOMA4091("注釈プロセッサ[{0}]でクラス[{1}]の処理を終了しました。"),
 
     // converter
     DOMA5001("クラス[{0}]の値[{1}]をクラス[{2}]に変換することはサポートされていません。"),

@@ -42,9 +42,10 @@ import org.seasar.doma.message.DomaMessageCode;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 @SupportedAnnotationTypes( { "org.seasar.doma.Entity",
         "org.seasar.doma.MappedSuperclass" })
-@SupportedOptions( { Options.TEST, Options.DEBUG, Options.ENTITY_SUFFIX,
-        Options.ENTITY_SUBPACKAGE, Options.DTO_SUFFIX, Options.DTO_PACKAGE,
-        Options.DTO_GENERATION })
+@SupportedOptions( { Options.TEST, Options.DEBUG, Options.ENTITY_PACKAGE,
+        Options.ENTITY_SUBPACKAGE, Options.ENTITY_SUFFIX,
+        Options.DTO_GENERATION, Options.DTO_PACKAGE, Options.DTO_SUBPACKAGE,
+        Options.DTO_SUFFIX })
 public class EntityProcessor extends AbstractProcessor {
 
     @Override
@@ -57,6 +58,11 @@ public class EntityProcessor extends AbstractProcessor {
             EntityMetaFactory entityMetaFactory = createEntityMetaFactory();
             for (TypeElement entityElement : ElementFilter.typesIn(roundEnv
                     .getElementsAnnotatedWith(a))) {
+                if (Options.isDebugEnabled(processingEnv)) {
+                    Notifier.debug(processingEnv, DomaMessageCode.DOMA4090,
+                            getClass().getName(), entityElement
+                                    .getQualifiedName());
+                }
                 try {
                     EntityMeta entityMeta = entityMetaFactory
                             .createEntityMeta(entityElement);
@@ -77,6 +83,11 @@ public class EntityProcessor extends AbstractProcessor {
                     Notifier.notify(processingEnv, Kind.ERROR,
                             DomaMessageCode.DOMA4016, entityElement);
                     throw e;
+                }
+                if (Options.isDebugEnabled(processingEnv)) {
+                    Notifier.debug(processingEnv, DomaMessageCode.DOMA4091,
+                            getClass().getName(), entityElement
+                                    .getQualifiedName());
                 }
             }
         }

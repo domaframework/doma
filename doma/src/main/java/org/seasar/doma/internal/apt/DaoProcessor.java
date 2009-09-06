@@ -54,8 +54,8 @@ import org.seasar.doma.message.DomaMessageCode;
  */
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 @SupportedAnnotationTypes( { "org.seasar.doma.Dao" })
-@SupportedOptions( { Options.TEST, Options.DEBUG, Options.DAO_SUFFIX,
-        Options.DAO_SUBPACKAGE })
+@SupportedOptions( { Options.TEST, Options.DEBUG, Options.DAO_PACKAGE,
+        Options.DAO_SUBPACKAGE, Options.DAO_SUFFIX })
 public class DaoProcessor extends AbstractProcessor {
 
     @Override
@@ -69,6 +69,12 @@ public class DaoProcessor extends AbstractProcessor {
             DaoMetaFactory daoMetaFactory = createDaoMetaFactory(queryMetaFactories);
             for (TypeElement daoElement : ElementFilter.typesIn(roundEnv
                     .getElementsAnnotatedWith(a))) {
+                if (Options.isDebugEnabled(processingEnv)) {
+                    Notifier
+                            .debug(processingEnv, DomaMessageCode.DOMA4090,
+                                    getClass().getName(), daoElement
+                                            .getQualifiedName());
+                }
                 try {
                     DaoMeta daoMeta = daoMetaFactory.createDaoMeta(daoElement);
                     generateDao(daoElement, daoMeta);
@@ -82,6 +88,12 @@ public class DaoProcessor extends AbstractProcessor {
                     Notifier.notify(processingEnv, Kind.ERROR,
                             DomaMessageCode.DOMA4016, daoElement);
                     throw e;
+                }
+                if (Options.isDebugEnabled(processingEnv)) {
+                    Notifier
+                            .debug(processingEnv, DomaMessageCode.DOMA4091,
+                                    getClass().getName(), daoElement
+                                            .getQualifiedName());
                 }
             }
         }

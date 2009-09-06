@@ -1,8 +1,16 @@
-#Sun Sep 06 11:39:06 JST 2009
+#Sun Sep 06 19:26:26 JST 2009
 eclipse.preferences.version=1
 org.eclipse.jdt.apt.aptEnabled=true
 org.eclipse.jdt.apt.genSrcDir=.apt_generated
+org.eclipse.jdt.apt.processorOptions/dao.package=org.eclipse.jdt.apt.NULLVALUE
+org.eclipse.jdt.apt.processorOptions/dao.subpackage=org.eclipse.jdt.apt.NULLVALUE
+org.eclipse.jdt.apt.processorOptions/dao.suffix=org.eclipse.jdt.apt.NULLVALUE
 org.eclipse.jdt.apt.processorOptions/debug=true
 org.eclipse.jdt.apt.processorOptions/dto.generation=false
 org.eclipse.jdt.apt.processorOptions/dto.package=org.seasar.doma.it.dto
+org.eclipse.jdt.apt.processorOptions/dto.subpackage=org.eclipse.jdt.apt.NULLVALUE
+org.eclipse.jdt.apt.processorOptions/dto.suffix=org.eclipse.jdt.apt.NULLVALUE
+org.eclipse.jdt.apt.processorOptions/entity.package=org.eclipse.jdt.apt.NULLVALUE
+org.eclipse.jdt.apt.processorOptions/entity.subpackage=org.eclipse.jdt.apt.NULLVALUE
+org.eclipse.jdt.apt.processorOptions/entity.suffix=org.eclipse.jdt.apt.NULLVALUE
 org.eclipse.jdt.apt.reconcileEnabled=false

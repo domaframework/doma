@@ -55,11 +55,13 @@ public abstract class AbstractGenerator implements Generator {
     protected final StringBuilder indentBuffer = new StringBuilder();
 
     public AbstractGenerator(ProcessingEnvironment env,
-            TypeElement typeElement, String qualifiedName) throws IOException {
-        assertNotNull(env, typeElement);
+            TypeElement typeElement, String fullpackage, String subpackage,
+            String suffix) throws IOException {
+        assertNotNull(env, typeElement, suffix);
         this.env = env;
         this.typeElement = typeElement;
-        this.qualifiedName = qualifiedName;
+        this.qualifiedName = createQualifiedName(env, typeElement, fullpackage,
+                subpackage, suffix);
         this.packageName = ClassUtil.getPackageName(qualifiedName);
         this.simpleName = ClassUtil.getSimpleName(qualifiedName);
         Filer filer = env.getFiler();
@@ -68,17 +70,28 @@ public abstract class AbstractGenerator implements Generator {
         formatter = new Formatter(new BufferedWriter(file.openWriter()));
     }
 
-    protected static String createQualifiedName(ProcessingEnvironment env,
-            TypeElement typeElement, String subpackage, String suffix) {
-        if (subpackage == null) {
-            return typeElement.getQualifiedName() + suffix;
+    protected String createQualifiedName(ProcessingEnvironment env,
+            TypeElement typeElement, String fullpackage, String subpackage,
+            String suffix) {
+        String prefix = getQualifiedNamePrefix(env, typeElement, fullpackage,
+                subpackage);
+        return prefix + typeElement.getSimpleName() + suffix;
+    }
+
+    protected String getQualifiedNamePrefix(ProcessingEnvironment env,
+            TypeElement typeElement, String fullpackage, String subpackage) {
+        if (fullpackage != null) {
+            return fullpackage + ".";
         }
         PackageElement packageElement = env.getElementUtils().getPackageOf(
                 typeElement);
         String base = packageElement.isUnnamed() ? "" : packageElement
                 .getQualifiedName()
                 + ".";
-        return base + subpackage + "." + typeElement.getSimpleName() + suffix;
+        if (subpackage != null) {
+            return base + subpackage + ".";
+        }
+        return base;
     }
 
     protected void printGenerated() {
