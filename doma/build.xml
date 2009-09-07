@@ -1,6 +1,6 @@
 <project name="doma" default="update-pom-version" basedir=".">
 
-	<property name="newVersion" value="0.9.3-SNAPSHOT" />
+	<property name="newVersion" value="0.9.3" />
 
 	<target name="update-pom-version">
 		<replaceregexp
