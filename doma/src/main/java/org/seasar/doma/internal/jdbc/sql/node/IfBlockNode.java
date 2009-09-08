@@ -84,7 +84,6 @@ public class IfBlockNode extends AbstractSqlNode {
     public void addNode(SqlNode child) {
         throw new JdbcUnsupportedOperationException(getClass().getName(),
                 "addNode");
-
     }
 
     protected void addNodeInternal(SqlNode child) {
@@ -105,7 +104,7 @@ public class IfBlockNode extends AbstractSqlNode {
         }
         clone.endNode = endNode.copy();
         for (SqlNode child : children) {
-            clone.addNode(child.copy());
+            clone.addNodeInternal(child.copy());
         }
         return clone;
     }
