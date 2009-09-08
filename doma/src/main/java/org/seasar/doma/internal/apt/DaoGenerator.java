@@ -151,9 +151,10 @@ public class DaoGenerator extends AbstractGenerator {
     protected void printMethod(MethodBodyGenerator generator, QueryMeta m) {
         iprint("@Override%n");
         iprint("public ");
-        if (m.getTypeParameterNames().hasNext()) {
+        if (!m.getTypeParameterNames().isEmpty()) {
             print("<");
-            for (Iterator<String> it = m.getTypeParameterNames(); it.hasNext();) {
+            for (Iterator<String> it = m.getTypeParameterNames().iterator(); it
+                    .hasNext();) {
                 print("%1$s", it.next());
                 if (it.hasNext()) {
                     print(", ");
@@ -162,8 +163,8 @@ public class DaoGenerator extends AbstractGenerator {
             print("> ");
         }
         print("%1$s %2$s(", m.getReturnTypeName(), m.getName());
-        for (Iterator<Map.Entry<String, String>> it = m.getMethodParameters(); it
-                .hasNext();) {
+        for (Iterator<Map.Entry<String, String>> it = m.getMethodParameterNames()
+                .entrySet().iterator(); it.hasNext();) {
             Map.Entry<String, String> entry = it.next();
             print("%1$s %2$s", entry.getValue(), entry.getKey());
             if (it.hasNext()) {
@@ -171,9 +172,10 @@ public class DaoGenerator extends AbstractGenerator {
             }
         }
         print(") ");
-        if (m.getThrownTypeNames().hasNext()) {
+        if (!m.getThrownTypeNames().isEmpty()) {
             print("throws ");
-            for (Iterator<String> it = m.getThrownTypeNames(); it.hasNext();) {
+            for (Iterator<String> it = m.getThrownTypeNames().iterator(); it
+                    .hasNext();) {
                 print("%1$s", it.next());
                 if (it.hasNext()) {
                     print(", ");
@@ -196,13 +198,13 @@ public class DaoGenerator extends AbstractGenerator {
                 Void p) {
             iprint("entering(\"%1$s\", \"%2$s\"", qualifiedName, m.getName());
             for (Iterator<Map.Entry<String, String>> it = m
-                    .getMethodParameters(); it.hasNext();) {
+                    .getMethodParameterNames().entrySet().iterator(); it.hasNext();) {
                 Map.Entry<String, String> entry = it.next();
                 print(", %1$s", entry.getKey());
             }
             print(");%n");
             for (Iterator<Map.Entry<String, String>> it = m
-                    .getMethodParameters(); it.hasNext();) {
+                    .getMethodParameterNames().entrySet().iterator(); it.hasNext();) {
                 Map.Entry<String, String> entry = it.next();
                 String paramName = entry.getKey();
                 iprint("if (%1$s == null) {%n", paramName);
@@ -220,7 +222,7 @@ public class DaoGenerator extends AbstractGenerator {
                 iprint("query.setOptions(%1$s);%n", m.getOptionsName());
             }
             for (Iterator<Map.Entry<String, String>> it = m
-                    .getMethodParameters(); it.hasNext();) {
+                    .getMethodParameterNames().entrySet().iterator(); it.hasNext();) {
                 Map.Entry<String, String> entry = it.next();
                 String paramName = entry.getKey();
                 iprint("query.addParameter(\"%1$s\", %1$s);%n", paramName);
@@ -355,14 +357,14 @@ public class DaoGenerator extends AbstractGenerator {
                 Void p) {
             iprint("entering(\"%1$s\", \"%2$s\"", qualifiedName, m.getName());
             for (Iterator<Map.Entry<String, String>> it = m
-                    .getMethodParameters(); it.hasNext();) {
+                    .getMethodParameterNames().entrySet().iterator(); it.hasNext();) {
                 Map.Entry<String, String> entry = it.next();
                 print(", %1$s", entry.getKey());
             }
             print(");%n");
 
             for (Iterator<Map.Entry<String, String>> it = m
-                    .getMethodParameters(); it.hasNext();) {
+                    .getMethodParameterNames().entrySet().iterator(); it.hasNext();) {
                 Map.Entry<String, String> entry = it.next();
                 String parameter = entry.getKey();
                 iprint("if (%1$s == null) {%n", parameter);
@@ -378,7 +380,7 @@ public class DaoGenerator extends AbstractGenerator {
                     SqlFileUtil.class.getName(), daoMeta.getDaoElement()
                             .getQualifiedName(), m.getName());
             for (Iterator<Map.Entry<String, String>> it = m
-                    .getMethodParameters(); it.hasNext();) {
+                    .getMethodParameterNames().entrySet().iterator(); it.hasNext();) {
                 Map.Entry<String, String> entry = it.next();
                 iprint("query.addParameter(\"%1$s\", %1$s);%n", entry.getKey());
             }
@@ -626,7 +628,7 @@ public class DaoGenerator extends AbstractGenerator {
             }
             print("delegate.%1$s(", m.getName());
             for (Iterator<Map.Entry<String, String>> it = m
-                    .getMethodParameters(); it.hasNext();) {
+                    .getMethodParameterNames().entrySet().iterator(); it.hasNext();) {
                 Map.Entry<String, String> entry = it.next();
                 String parameter = entry.getKey();
                 print("%1$s", parameter);

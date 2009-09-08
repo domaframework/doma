@@ -16,12 +16,12 @@
 package org.seasar.doma.internal.apt.meta;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.jdbc.command.Command;
 import org.seasar.doma.internal.jdbc.query.Query;
@@ -60,7 +60,9 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
     protected String[] excludedPropertyNames;
 
-    protected Map<String, String> methodParameters = new LinkedHashMap<String, String>();
+    protected Map<String, String> methodParameterNames = new LinkedHashMap<String, String>();
+
+    protected Map<String, TypeMirror> expressionParameterTypes = new LinkedHashMap<String, TypeMirror>();
 
     public String getName() {
         return name;
@@ -82,8 +84,8 @@ public abstract class AbstractQueryMeta implements QueryMeta {
         typeParameterNames.add(typeParameterName);
     }
 
-    public Iterator<String> getTypeParameterNames() {
-        return typeParameterNames.iterator();
+    public List<String> getTypeParameterNames() {
+        return typeParameterNames;
     }
 
     public String getReturnTypeName() {
@@ -98,8 +100,8 @@ public abstract class AbstractQueryMeta implements QueryMeta {
         thrownTypeNames.add(thrownTypeName);
     }
 
-    public Iterator<String> getThrownTypeNames() {
-        return thrownTypeNames.iterator();
+    public List<String> getThrownTypeNames() {
+        return thrownTypeNames;
     }
 
     public Class<? extends Query> getQueryClass() {
@@ -166,13 +168,22 @@ public abstract class AbstractQueryMeta implements QueryMeta {
         this.nullExcluded = nullExcluded;
     }
 
-    public Iterator<Map.Entry<String, String>> getMethodParameters() {
-        return methodParameters.entrySet().iterator();
+    public Map<String, String> getMethodParameterNames() {
+        return methodParameterNames;
     }
 
-    public void addMethodParameter(String parameterName,
+    public void addMethodParameterName(String parameterName,
             String parameterTypeName) {
-        this.methodParameters.put(parameterName, parameterTypeName);
+        this.methodParameterNames.put(parameterName, parameterTypeName);
+    }
+
+    public Map<String, TypeMirror> getExpressionParameterTypes() {
+        return expressionParameterTypes;
+    }
+
+    public void addExpressionParameterType(String parameterName,
+            TypeMirror parameterType) {
+        this.expressionParameterTypes.put(parameterName, parameterType);
     }
 
     public Boolean isUnchangedPropertyIncluded() {

@@ -15,27 +15,11 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import javax.lang.model.type.TypeMirror;
 
 /**
  * @author taedium
  * 
  */
-public abstract class AbstractSqlFileQueryMeta extends AbstractQueryMeta
-        implements SqlFileQueryMeta {
-
-    protected Map<String, TypeMirror> bindVariableTypes = new LinkedHashMap<String, TypeMirror>();
-
-    public TypeMirror getBindVariableType(String bindVariableName) {
-        return bindVariableTypes.get(bindVariableName);
-    }
-
-    public void addBindVariableType(String bindVariableName,
-            TypeMirror bindVariableType) {
-        this.bindVariableTypes.put(bindVariableName, bindVariableType);
-    }
+public abstract class AbstractSqlFileQueryMeta extends AbstractQueryMeta {
 
 }

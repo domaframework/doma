@@ -15,10 +15,11 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.type.TypeMirror;
 
 /**
  * @author taedium
@@ -28,13 +29,15 @@ public interface QueryMeta {
 
     String getName();
 
-    Iterator<String> getTypeParameterNames();
+    List<String> getTypeParameterNames();
 
     String getReturnTypeName();
 
-    Iterator<Map.Entry<String, String>> getMethodParameters();
+    Map<String, String> getMethodParameterNames();
 
-    Iterator<String> getThrownTypeNames();
+    Map<String, TypeMirror> getExpressionParameterTypes();
+
+    List<String> getThrownTypeNames();
 
     ExecutableElement getExecutableElement();
 

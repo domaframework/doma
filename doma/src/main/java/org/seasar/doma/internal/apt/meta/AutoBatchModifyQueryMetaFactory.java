@@ -47,7 +47,8 @@ public class AutoBatchModifyQueryMetaFactory extends
     @Override
     public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
         assertNotNull(method, daoMeta);
-        AutoBatchModifyQueryMeta queryMeta = createAutoBatchModifyQueryMeta(method, daoMeta);
+        AutoBatchModifyQueryMeta queryMeta = createAutoBatchModifyQueryMeta(
+                method, daoMeta);
         if (queryMeta == null) {
             return null;
         }
@@ -130,13 +131,14 @@ public class AutoBatchModifyQueryMetaFactory extends
             throw new AptException(DomaMessageCode.DOMA4043, env, method);
         }
         String entityListName = ElementUtil.getParameterName(entityList);
-        String entityListTypeName = TypeUtil
-                .getTypeName(entityListType, daoMeta.getTypeParameterMap(), env);
+        String entityListTypeName = TypeUtil.getTypeName(entityListType,
+                daoMeta.getTypeParameterMap(), env);
         queryMeta.setEntityListName(entityListName);
         queryMeta.setEntityListTypeName(entityListTypeName);
         queryMeta.setElementTypeName(TypeUtil.getTypeName(elementType, daoMeta
                 .getTypeParameterMap(), env));
-        queryMeta.addMethodParameter(entityListName, entityListTypeName);
+        queryMeta.addMethodParameterName(entityListName, entityListTypeName);
+        queryMeta.addExpressionParameterType(entityListName, elementType);
 
         validateEntityPropertyNames(elementType, method, queryMeta);
     }

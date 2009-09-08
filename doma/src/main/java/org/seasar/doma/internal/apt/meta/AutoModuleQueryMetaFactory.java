@@ -47,16 +47,18 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     protected void doParameters(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
         for (VariableElement param : method.getParameters()) {
-            TypeMirror paramType = TypeUtil.resolveTypeParameter(daoMeta
+            TypeMirror parameterType = TypeUtil.resolveTypeParameter(daoMeta
                     .getTypeParameterMap(), param.asType());
-            String typeName = TypeUtil.getTypeName(paramType, daoMeta
+            String typeName = TypeUtil.getTypeName(parameterType, daoMeta
                     .getTypeParameterMap(), env);
             String name = ElementUtil.getParameterName(param);
-            CallableSqlParameterMeta parameterMeta = createParameterMeta(queryMeta, param, method, daoMeta);
+            CallableSqlParameterMeta parameterMeta = createParameterMeta(
+                    queryMeta, param, method, daoMeta);
             parameterMeta.setName(name);
             parameterMeta.setTypeName(typeName);
             queryMeta.addCallableSqlParameterMeta(parameterMeta);
-            queryMeta.addMethodParameter(name, typeName);
+            queryMeta.addMethodParameterName(name, typeName);
+            queryMeta.addExpressionParameterType(name, parameterType);
         }
     }
 
@@ -70,12 +72,13 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                 DeclaredType listTyep = TypeUtil.toDeclaredType(paramType, env);
                 List<? extends TypeMirror> args = listTyep.getTypeArguments();
                 if (args.isEmpty()) {
-                    throw new AptException(DomaMessageCode.DOMA4041, env, method);
+                    throw new AptException(DomaMessageCode.DOMA4041, env,
+                            method);
                 }
                 TypeMirror elementType = TypeUtil.resolveTypeParameter(daoMeta
                         .getTypeParameterMap(), args.get(0));
-                String elementTypeName = TypeUtil
-                        .getTypeName(elementType, daoMeta.getTypeParameterMap(), env);
+                String elementTypeName = TypeUtil.getTypeName(elementType,
+                        daoMeta.getTypeParameterMap(), env);
                 if (isEntity(elementType, daoMeta)) {
                     return new EntityListParameterMeta(elementTypeName);
                 }

@@ -87,12 +87,13 @@ public class DelegateQueryMetaFactory extends
     protected void doParameters(DelegateQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         for (VariableElement param : method.getParameters()) {
-            TypeMirror paramType = TypeUtil.resolveTypeParameter(daoMeta
+            TypeMirror parameterType = TypeUtil.resolveTypeParameter(daoMeta
                     .getTypeParameterMap(), param.asType());
             String parameterName = ElementUtil.getParameterName(param);
-            String parameterTypeName = TypeUtil.getTypeName(paramType, daoMeta
+            String parameterTypeName = TypeUtil.getTypeName(parameterType, daoMeta
                     .getTypeParameterMap(), env);
-            queryMeta.addMethodParameter(parameterName, parameterTypeName);
+            queryMeta.addMethodParameterName(parameterName, parameterTypeName);
+            queryMeta.addExpressionParameterType(parameterName, parameterType);
         }
     }
 

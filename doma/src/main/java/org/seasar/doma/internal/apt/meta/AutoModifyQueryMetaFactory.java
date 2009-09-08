@@ -46,7 +46,8 @@ public class AutoModifyQueryMetaFactory extends
     @Override
     public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
         assertNotNull(method, daoMeta);
-        AutoModifyQueryMeta queryMeta = createAutoModifyQueryMeta(method, daoMeta);
+        AutoModifyQueryMeta queryMeta = createAutoModifyQueryMeta(method,
+                daoMeta);
         if (queryMeta == null) {
             return null;
         }
@@ -126,7 +127,8 @@ public class AutoModifyQueryMetaFactory extends
                 .getTypeParameterMap(), env);
         queryMeta.setEntityName(entityName);
         queryMeta.setEntityTypeName(entityTypeName);
-        queryMeta.addMethodParameter(entityName, entityTypeName);
+        queryMeta.addMethodParameterName(entityName, entityTypeName);
+        queryMeta.addExpressionParameterType(entityName, entityType);
 
         validateEntityPropertyNames(entityType, method, queryMeta);
     }

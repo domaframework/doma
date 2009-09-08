@@ -81,6 +81,7 @@ public class ArrayCreateQueryMetaFactory extends
                 .getTypeParameterMap(), env);
         queryMeta.setArrayName(arrayName);
         queryMeta.setArrayTypeName(arrayTypeName);
-        queryMeta.addMethodParameter(arrayName, arrayTypeName);
+        queryMeta.addMethodParameterName(arrayName, arrayTypeName);
+        queryMeta.addExpressionParameterType(arrayName, arrayType);
     }
 }

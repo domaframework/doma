@@ -54,27 +54,29 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
         LinkedList<VariableElement> params = new LinkedList<VariableElement>(
                 method.getParameters());
         for (VariableElement param : params) {
-            TypeMirror paramType = TypeUtil.resolveTypeParameter(daoMeta
+            TypeMirror parameterType = TypeUtil.resolveTypeParameter(daoMeta
                     .getTypeParameterMap(), param.asType());
-            if (isList(paramType)) {
-                DeclaredType listTyep = TypeUtil.toDeclaredType(paramType, env);
+            if (isList(parameterType)) {
+                DeclaredType listTyep = TypeUtil.toDeclaredType(parameterType, env);
                 List<? extends TypeMirror> args = listTyep.getTypeArguments();
                 if (args.isEmpty()) {
-                    throw new AptException(DomaMessageCode.DOMA4027, env, method);
+                    throw new AptException(DomaMessageCode.DOMA4027, env,
+                            method);
                 }
                 TypeMirror elementType = TypeUtil.resolveTypeParameter(daoMeta
                         .getTypeParameterMap(), args.get(0));
                 if (!isDomain(elementType)) {
-                    throw new AptException(DomaMessageCode.DOMA4028, env, method);
+                    throw new AptException(DomaMessageCode.DOMA4028, env,
+                            method);
                 }
-            } else if (!isDomain(paramType) && !isEntity(paramType, daoMeta)) {
+            } else if (!isDomain(parameterType) && !isEntity(parameterType, daoMeta)) {
                 throw new AptException(DomaMessageCode.DOMA4010, env, method);
             }
             String parameterName = ElementUtil.getParameterName(param);
-            String parameterTypeName = TypeUtil.getTypeName(paramType, daoMeta
+            String parameterTypeName = TypeUtil.getTypeName(parameterType, daoMeta
                     .getTypeParameterMap(), env);
-            queryMeta.addMethodParameter(parameterName, parameterTypeName);
-            queryMeta.addBindVariableType(parameterName, paramType);
+            queryMeta.addMethodParameterName(parameterName, parameterTypeName);
+            queryMeta.addExpressionParameterType(parameterName, parameterType);
         }
     }
 
@@ -87,8 +89,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
             throw new AptException(DomaMessageCode.DOMA4019, env, method, path);
         }
         SqlNode sqlNode = createSqlNode(queryMeta, method, daoMeta, path, sql);
-        BindVariableValidator validator = new BindVariableValidator(env,
-                queryMeta, method, path);
+        SqlValidator validator = new SqlValidator(env, queryMeta, method, path);
         validator.validate(sqlNode);
     }
 
@@ -102,8 +103,8 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
             return IOUtil.readAsString(inputStream);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
-            throw new AptException(DomaMessageCode.DOMA4068, env, method, cause,
-                    path, cause);
+            throw new AptException(DomaMessageCode.DOMA4068, env, method,
+                    cause, path, cause);
         } finally {
             IOUtil.close(inputStream);
         }
@@ -115,8 +116,8 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
             SqlParser sqlParser = new SqlParser(sql);
             return sqlParser.parse();
         } catch (JdbcException e) {
-            throw new AptException(DomaMessageCode.DOMA4069, env, method, e, path,
-                    e);
+            throw new AptException(DomaMessageCode.DOMA4069, env, method, e,
+                    path, e);
         }
     }
 

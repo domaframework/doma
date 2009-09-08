@@ -219,10 +219,10 @@ public class NodePreparedSqlBuilder implements
 
     @Override
     public Void visitIfBlockNode(IfBlockNode node, Context p) {
-        if (handleIfNode(node, p)) {
-        } else if (handleElseifNode(node, p)) {
-        } else {
-            handleElseNode(node, p);
+        if (!handleIfNode(node, p)) {
+            if (!handleElseifNode(node, p)) {
+                handleElseNode(node, p);
+            }
         }
         EndNode endNode = node.getEndNode();
         endNode.accept(this, p);

@@ -128,8 +128,8 @@ public class SqlFileBatchModifyQueryMetaFactory extends
         queryMeta.setEntityListTypeName(entityListTypeName);
         queryMeta.setElementTypeName(TypeUtil.getTypeName(elementType, daoMeta
                 .getTypeParameterMap(), env));
-        queryMeta.addMethodParameter(entityListName, entityListTypeName);
-        queryMeta.addBindVariableType(entityListName, elementType);
+        queryMeta.addMethodParameterName(entityListName, entityListTypeName);
+        queryMeta.addExpressionParameterType(entityListName, elementType);
     }
 
 }
