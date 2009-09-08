@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 
@@ -49,7 +48,7 @@ public class ExpressionValidator implements ExpressionNodeVisitor<Void, Void> {
 
     protected final String path;
 
-    protected final Map<ExpressionNode, TypeMirrorHolder> typeMirrorHolderMap = new HashMap<ExpressionNode, TypeMirrorHolder>();
+    protected final Map<ExpressionNode, TypeMirrorContext> typeMirrorContextMap = new HashMap<ExpressionNode, TypeMirrorContext>();
 
     public ExpressionValidator(ProcessingEnvironment env, QueryMeta queryMeta,
             ExecutableElement method, String path) {
@@ -176,45 +175,45 @@ public class ExpressionValidator implements ExpressionNodeVisitor<Void, Void> {
         node.getTargetObjectNode().accept(this, p);
         node.getParametersNode().accept(this, p);
 
-        TypeMirrorHolder typeMirrorHolder = typeMirrorHolderMap.get(node
+        TypeMirrorContext typeMirrorContext = typeMirrorContextMap.get(node
                 .getTargetObjectNode());
-        if (typeMirrorHolder == null) {
+        if (typeMirrorContext == null) {
             return null;
         }
         String methodName = node.getName();
-        ExecutableElement foundMethod = findMethod(node, typeMirrorHolder,
-                methodName);
-        if (foundMethod == null) {
+        TypeMirror methodReturnType = getMethodReturnType(node,
+                typeMirrorContext, methodName);
+        if (methodReturnType == null) {
             ExpressionLocation location = node.getLocation();
             throw new AptException(DomaMessageCode.DOMA4071, env, method,
                     location.getExpression(), location.getPosition(),
-                    typeMirrorHolder.name, typeMirrorHolder.typeMirror
+                    typeMirrorContext.name, typeMirrorContext.typeMirror
                             .toString(), methodName);
         }
         if (!new ParameterInquirer().exists(node.getParametersNode())) {
-            typeMirrorHolderMap.put(node, new TypeMirrorHolder(methodName,
-                    foundMethod.getReturnType()));
+            typeMirrorContextMap.put(node, createTypeMirrorContext(methodName,
+                    methodReturnType));
         }
         return null;
     }
 
-    public ExecutableElement findMethod(MethodOperatorNode node,
-            TypeMirrorHolder typeMirrorHolder, String methodName) {
-        TypeElement typeElement = null;
-        for (TypeMirror t = typeMirrorHolder.typeMirror; t.getKind() != TypeKind.NONE; t = typeElement
-                .getSuperclass()) {
-            typeElement = TypeUtil.toTypeElement(t, env);
+    public TypeMirror getMethodReturnType(MethodOperatorNode node,
+            TypeMirrorContext typeMirrorContext, String methodName) {
+        for (Map.Entry<TypeMirror, Map<TypeMirror, TypeMirror>> entry : typeMirrorContext.mapOfTypeParamMap
+                .entrySet()) {
+            TypeMirror typeMirror = entry.getKey();
+            TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
             if (typeElement == null) {
                 ExpressionLocation location = node.getLocation();
                 throw new AptException(DomaMessageCode.DOMA4072, env, method,
                         location.getExpression(), location.getPosition(),
-                        typeMirrorHolder.name, typeMirrorHolder.typeMirror
-                                .toString());
+                        typeMirrorContext.name, typeMirror.toString());
             }
-            for (ExecutableElement e : ElementFilter.methodsIn(typeElement
+            for (ExecutableElement method : ElementFilter.methodsIn(typeElement
                     .getEnclosedElements())) {
-                if (e.getSimpleName().contentEquals(methodName)) {
-                    return e;
+                if (method.getSimpleName().contentEquals(methodName)) {
+                    return TypeUtil.resolveTypeParameter(entry.getValue(),
+                            method.getReturnType());
                 }
             }
         }
@@ -232,9 +231,36 @@ public class ExpressionValidator implements ExpressionNodeVisitor<Void, Void> {
                     location.getExpression(), location.getPosition(),
                     variableName);
         }
-        typeMirrorHolderMap.put(node, new TypeMirrorHolder(variableName,
+        typeMirrorContextMap.put(node, createTypeMirrorContext(variableName,
                 typeMirror));
         return null;
+    }
+
+    protected TypeMirrorContext createTypeMirrorContext(String name,
+            TypeMirror typeMirror) {
+        Map<TypeMirror, Map<TypeMirror, TypeMirror>> mapOfTypeParamMap = new HashMap<TypeMirror, Map<TypeMirror, TypeMirror>>();
+        fillMapOfTypeParamMap(typeMirror, mapOfTypeParamMap);
+        return new TypeMirrorContext(name, typeMirror, mapOfTypeParamMap);
+    }
+
+    protected void fillMapOfTypeParamMap(TypeMirror typeMirror,
+            Map<TypeMirror, Map<TypeMirror, TypeMirror>> mapOfTypeParamMap) {
+        TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
+        if (typeElement == null) {
+            return;
+        }
+        mapOfTypeParamMap.put(typeMirror, TypeUtil.createTypeParameterMap(
+                typeElement, typeMirror, env));
+        for (TypeMirror superType : env.getTypeUtils().directSupertypes(
+                typeMirror)) {
+            TypeElement superElement = TypeUtil.toTypeElement(superType, env);
+            if (superElement == null) {
+                continue;
+            }
+            mapOfTypeParamMap.put(superType, TypeUtil.createTypeParameterMap(
+                    superElement, superType, env));
+            fillMapOfTypeParamMap(superType, mapOfTypeParamMap);
+        }
     }
 
     @Override
@@ -247,16 +273,20 @@ public class ExpressionValidator implements ExpressionNodeVisitor<Void, Void> {
         return null;
     }
 
-    protected static class TypeMirrorHolder {
+    protected static class TypeMirrorContext {
 
         protected final String name;
 
         protected final TypeMirror typeMirror;
 
-        public TypeMirrorHolder(String name, TypeMirror typeMirror) {
+        protected final Map<TypeMirror, Map<TypeMirror, TypeMirror>> mapOfTypeParamMap;
+
+        public TypeMirrorContext(String name, TypeMirror typeMirror,
+                Map<TypeMirror, Map<TypeMirror, TypeMirror>> mapOfTypeParamMap) {
             assertNotNull(name, typeMirror);
             this.name = name;
             this.typeMirror = typeMirror;
+            this.mapOfTypeParamMap = mapOfTypeParamMap;
         }
     }
 
