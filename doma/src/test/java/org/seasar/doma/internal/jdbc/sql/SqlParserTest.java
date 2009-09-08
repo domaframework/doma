@@ -40,7 +40,7 @@ public class SqlParserTest extends TestCase {
         evaluator.add("name", new BuiltinStringDomain("hoge"));
         evaluator.add("salary", new BuiltinBigDecimalDomain(new BigDecimal(
                 10000)));
-        String testSql = "select * from aaa where ename = /*name*/'aaa' and sal = /*salary*/2000";
+        String testSql = "select * from aaa where ename = /*name*/'aaa' and sal = /*salary*/-2000";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, evaluator)

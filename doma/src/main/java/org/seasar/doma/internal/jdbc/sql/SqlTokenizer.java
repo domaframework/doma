@@ -23,7 +23,6 @@ import java.nio.CharBuffer;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.DomaMessageCode;
 
-
 /**
  * @author taedium
  * 
@@ -115,14 +114,19 @@ public class SqlTokenizer {
                                             char c9 = buf.get();
                                             if (buf.hasRemaining()) {
                                                 char c10 = buf.get();
-                                                peekTenChars(c, c2, c3, c4, c5, c6, c7, c8, c9, c10);
-                                            } else
-                                                peekNineChars(c, c2, c3, c4, c5, c6, c7, c8, c9);
+                                                peekTenChars(c, c2, c3, c4, c5,
+                                                        c6, c7, c8, c9, c10);
+                                            } else {
+                                                peekNineChars(c, c2, c3, c4,
+                                                        c5, c6, c7, c8, c9);
+                                            }
                                         } else {
-                                            peekEightChars(c, c2, c3, c4, c5, c6, c7, c8);
+                                            peekEightChars(c, c2, c3, c4, c5,
+                                                    c6, c7, c8);
                                         }
                                     } else {
-                                        peekSevenChars(c, c2, c3, c4, c5, c6, c7);
+                                        peekSevenChars(c, c2, c3, c4, c5, c6,
+                                                c7);
                                     }
                                 } else {
                                     peekSixChars(c, c2, c3, c4, c5, c6);
@@ -188,8 +192,8 @@ public class SqlTokenizer {
                     }
                 }
                 int pos = buf.position() - lineStartPosition;
-                throw new JdbcException(DomaMessageCode.DOMA2103, sql, lineNumber,
-                        pos);
+                throw new JdbcException(DomaMessageCode.DOMA2103, sql,
+                        lineNumber, pos);
             }
         } else if ((c == 'g' || c == 'G') && (c2 == 'r' || c2 == 'R')
                 && (c3 == 'o' || c3 == 'O') && (c4 == 'u' || c4 == 'U')
@@ -336,7 +340,8 @@ public class SqlTokenizer {
                 }
             }
             int pos = buf.position() - lineStartPosition;
-            throw new JdbcException(DomaMessageCode.DOMA2102, sql, lineNumber, pos);
+            throw new JdbcException(DomaMessageCode.DOMA2102, sql, lineNumber,
+                    pos);
         } else if (c == '-' && c2 == '-') {
             type = LINE_COMMENT;
             while (buf.hasRemaining()) {
@@ -387,8 +392,9 @@ public class SqlTokenizer {
                 return;
             }
             int pos = buf.position() - lineStartPosition;
-            throw new JdbcException(DomaMessageCode.DOMA2101, sql, lineNumber, pos);
-        } else if (!isOther(c)) {
+            throw new JdbcException(DomaMessageCode.DOMA2101, sql, lineNumber,
+                    pos);
+        } else if (isWordStart(c)) {
             type = WORD;
             while (buf.hasRemaining()) {
                 if (isWordTerminated()) {
@@ -403,6 +409,20 @@ public class SqlTokenizer {
         } else {
             type = OTHER;
         }
+    }
+
+    protected boolean isWordStart(char c) {
+        if (c == '+' || c == '-') {
+            buf.mark();
+            if (buf.hasRemaining()) {
+                char c2 = buf.get();
+                buf.reset();
+                if (Character.isDigit(c2)) {
+                    return true;
+                }
+            }
+        }
+        return !isOther(c);
     }
 
     protected boolean isWordTerminated() {
