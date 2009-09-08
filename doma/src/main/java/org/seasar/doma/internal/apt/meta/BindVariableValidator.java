@@ -30,7 +30,6 @@ import org.seasar.doma.internal.jdbc.sql.node.BindVariableNodeVisitor;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.DomaMessageCode;
 
-
 /**
  * @author taedium
  * 
@@ -81,15 +80,16 @@ public class BindVariableValidator implements
             String methodName = names[i];
             ExecutableElement foundMethod = findMethod(typeElement, methodName);
             if (foundMethod == null) {
-                throw new AptException(DomaMessageCode.DOMA4071, env, method, path,
-                        variableName, i + 1, names[i], parameterType);
+                throw new AptException(DomaMessageCode.DOMA4071, env, method,
+                        path, variableName, i + 1, names[i], parameterType);
             }
             if (i + 1 < length) {
                 TypeMirror returnType = foundMethod.getReturnType();
                 typeElement = TypeUtil.toTypeElement(returnType, env);
                 if (typeElement == null) {
-                    throw new AptException(DomaMessageCode.DOMA4070, env, method,
-                            path, variableName, i + 1, names[i], returnType);
+                    throw new AptException(DomaMessageCode.DOMA4070, env,
+                            method, path, variableName, i + 1, names[i],
+                            returnType);
                 }
             }
         }

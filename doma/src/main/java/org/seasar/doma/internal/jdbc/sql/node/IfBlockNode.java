@@ -23,7 +23,6 @@ import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
-
 /**
  * @author taedium
  * 
@@ -43,6 +42,7 @@ public class IfBlockNode extends AbstractSqlNode {
 
     public void setIfNode(IfNode ifNode) {
         this.ifNode = ifNode;
+        addNodeInternal(ifNode);
     }
 
     public IfNode getIfNode() {
@@ -51,6 +51,7 @@ public class IfBlockNode extends AbstractSqlNode {
 
     public void addElseifNode(ElseifNode elseIfNode) {
         elseifNodes.add(elseIfNode);
+        addNodeInternal(elseIfNode);
     }
 
     public List<ElseifNode> getElseifNodes() {
@@ -59,6 +60,7 @@ public class IfBlockNode extends AbstractSqlNode {
 
     public void setElseNode(ElseNode elseNode) {
         this.elseNode = elseNode;
+        addNodeInternal(elseNode);
     }
 
     public ElseNode getElseNode() {
@@ -67,6 +69,7 @@ public class IfBlockNode extends AbstractSqlNode {
 
     public void setEndNode(EndNode endNode) {
         this.endNode = endNode;
+        addNodeInternal(endNode);
     }
 
     public EndNode getEndNode() {
@@ -82,6 +85,12 @@ public class IfBlockNode extends AbstractSqlNode {
         throw new JdbcUnsupportedOperationException(getClass().getName(),
                 "addNode");
 
+    }
+
+    protected void addNodeInternal(SqlNode child) {
+        if (child != null) {
+            super.addNode(child);
+        }
     }
 
     @Override
