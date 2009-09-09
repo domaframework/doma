@@ -15,6 +15,9 @@
  */
 package org.seasar.doma.internal.apt;
 
+import javax.tools.Diagnostic;
+import javax.tools.JavaFileObject;
+
 import org.seasar.doma.internal.apt.dao.AnnotationConflictedDao;
 import org.seasar.doma.internal.apt.dao.AnnotationNotFoundDao;
 import org.seasar.doma.internal.apt.dao.ArrayFactoryDao;
@@ -42,6 +45,7 @@ import org.seasar.doma.internal.apt.dao.SqlFileBatchUpdateDao;
 import org.seasar.doma.internal.apt.dao.SqlFileInsertDao;
 import org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDao;
 import org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao;
+import org.seasar.doma.internal.apt.dao.SqlValidationDao;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -318,5 +322,18 @@ public class DaoProcessorTest extends AptTestCase {
         compile();
         assertFalse(getCompiledResult());
         assertMessageCode(DomaMessageCode.DOMA4086);
+    }
+
+    public void testSqlValidationDao() throws Exception {
+        Class<?> target = SqlValidationDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        for (Diagnostic<? extends JavaFileObject> diagnostic : getDiagnostics()) {
+            assertEquals(DomaMessageCode.DOMA4092,
+                    extractMessageCode(diagnostic));
+        }
     }
 }

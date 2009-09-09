@@ -1,0 +1,1 @@
+select * from Emp where /*%if hoge != null*/ id = /*id*/1 /*%end*/

@@ -39,6 +39,7 @@ public abstract class AptTestCase extends AptinaTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         addSourcePath("src/test/java");
+        addClassOutputPath("src/test/resources");
         addOption("-Atest=true");
         setCharset("UTF-8");
         setLocale(locale);
@@ -54,7 +55,8 @@ public abstract class AptTestCase extends AptinaTestCase {
             throws Exception {
         String generatedClassName = originalClass.getName() + "_";
         try {
-            assertEqualsGeneratedSource(getExpectedContent(), generatedClassName);
+            assertEqualsGeneratedSource(getExpectedContent(),
+                    generatedClassName);
         } catch (AssertionFailedError error) {
             System.out.println(getGeneratedSource(generatedClassName));
             throw error;
