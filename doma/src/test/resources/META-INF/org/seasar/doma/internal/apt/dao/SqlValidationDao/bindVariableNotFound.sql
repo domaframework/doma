@@ -1,1 +1,0 @@
-select * from Emp where id = /*hoge*/1

@@ -15,9 +15,6 @@
  */
 package org.seasar.doma.internal.apt;
 
-import javax.tools.Diagnostic;
-import javax.tools.JavaFileObject;
-
 import org.seasar.doma.internal.apt.dao.AnnotationConflictedDao;
 import org.seasar.doma.internal.apt.dao.AnnotationNotFoundDao;
 import org.seasar.doma.internal.apt.dao.ArrayFactoryDao;
@@ -29,6 +26,7 @@ import org.seasar.doma.internal.apt.dao.AutoProcedureDao;
 import org.seasar.doma.internal.apt.dao.AutoUpdateDao;
 import org.seasar.doma.internal.apt.dao.BlobFactoryDao;
 import org.seasar.doma.internal.apt.dao.ClobFactoryDao;
+import org.seasar.doma.internal.apt.dao.CustomDomainSqlValidationDao;
 import org.seasar.doma.internal.apt.dao.DelegateDao;
 import org.seasar.doma.internal.apt.dao.ElementOfParamListNotDomainDao;
 import org.seasar.doma.internal.apt.dao.ElementOfParamListUnspecifiedDao;
@@ -37,6 +35,8 @@ import org.seasar.doma.internal.apt.dao.IllegalConstructorDelegateDao;
 import org.seasar.doma.internal.apt.dao.IllegalMethodDelegateDao;
 import org.seasar.doma.internal.apt.dao.IncludeAndExcludeDao;
 import org.seasar.doma.internal.apt.dao.IterationCallbackDao;
+import org.seasar.doma.internal.apt.dao.MethodAccessSqlValidationDao;
+import org.seasar.doma.internal.apt.dao.MultiParamMethodAccessSqlValidationDao;
 import org.seasar.doma.internal.apt.dao.NClobFactoryDao;
 import org.seasar.doma.internal.apt.dao.NameUnsafeDao_;
 import org.seasar.doma.internal.apt.dao.NotInterfaceDao;
@@ -45,7 +45,8 @@ import org.seasar.doma.internal.apt.dao.SqlFileBatchUpdateDao;
 import org.seasar.doma.internal.apt.dao.SqlFileInsertDao;
 import org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDao;
 import org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao;
-import org.seasar.doma.internal.apt.dao.SqlValidationDao;
+import org.seasar.doma.internal.apt.dao.UnknownBindVariableSqlValidationDao;
+import org.seasar.doma.internal.apt.dao.UnknownVariableSqlValidationDao;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -324,16 +325,59 @@ public class DaoProcessorTest extends AptTestCase {
         assertMessageCode(DomaMessageCode.DOMA4086);
     }
 
-    public void testSqlValidationDao() throws Exception {
-        Class<?> target = SqlValidationDao.class;
+    public void testUnknownBindVariableSqlValidationDao() throws Exception {
+        Class<?> target = UnknownBindVariableSqlValidationDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        for (Diagnostic<? extends JavaFileObject> diagnostic : getDiagnostics()) {
-            assertEquals(DomaMessageCode.DOMA4092,
-                    extractMessageCode(diagnostic));
-        }
+        assertMessageCode(DomaMessageCode.DOMA4092);
+    }
+
+    public void testUnknownVariableSqlValidationDao() throws Exception {
+        Class<?> target = UnknownVariableSqlValidationDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessageCode(DomaMessageCode.DOMA4092);
+    }
+
+    public void testMethodAccessSqlValidationDao() throws Exception {
+        Class<?> target = MethodAccessSqlValidationDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertTrue(getCompiledResult());
+    }
+
+    public void testCustomDomainSqlValidationDao() throws Exception {
+        Class<?> target = CustomDomainSqlValidationDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertTrue(getCompiledResult());
+    }
+
+    public void testMultiParamMethodAccessSqlValidationDao() throws Exception {
+        Class<?> target = MultiParamMethodAccessSqlValidationDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertTrue(getCompiledResult());
+    }
+
+    public void testNoResultMethodAccessSqlValidationDao() throws Exception {
+        Class<?> target = MultiParamMethodAccessSqlValidationDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertTrue(getCompiledResult());
     }
 }

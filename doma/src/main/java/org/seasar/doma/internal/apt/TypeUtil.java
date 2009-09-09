@@ -17,6 +17,7 @@ package org.seasar.doma.internal.apt;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -74,8 +75,8 @@ public final class TypeUtil {
     public static boolean isAssignable(TypeMirror typeMirror, Class<?> clazz,
             ProcessingEnvironment env) {
         assertNotNull(typeMirror, clazz, env);
-        TypeElement typeElement = env.getElementUtils().getTypeElement(clazz
-                .getName());
+        TypeElement typeElement = env.getElementUtils().getTypeElement(
+                clazz.getName());
         if (typeElement == null) {
             return false;
         }
@@ -151,8 +152,8 @@ public final class TypeUtil {
             public Void visitTypeVariable(TypeVariable t, StringBuilder p) {
                 p.append(resolveTypeVariable(t));
                 TypeMirror upperBound = t.getUpperBound();
-                String upperBoundName = TypeUtil
-                        .getTypeName(upperBound, typeParameterMap, env);
+                String upperBoundName = TypeUtil.getTypeName(upperBound,
+                        typeParameterMap, env);
                 if (!Object.class.getName().equals(upperBoundName)) {
                     p.append(" extends ");
                     upperBound.accept(this, p);
@@ -214,7 +215,7 @@ public final class TypeUtil {
             TypeMirror value = actualParams.next();
             typeParameterMap.put(key, value);
         }
-        return typeParameterMap;
+        return Collections.unmodifiableMap(typeParameterMap);
     }
 
     public static TypeMirror resolveTypeParameter(
@@ -238,8 +239,8 @@ public final class TypeUtil {
 
             @Override
             public TypeMirror visitNoTypeAsVoid(NoType t, Void p) {
-                return env.getElementUtils().getTypeElement(Void.class
-                        .getName()).asType();
+                return env.getElementUtils().getTypeElement(
+                        Void.class.getName()).asType();
             }
 
             @Override

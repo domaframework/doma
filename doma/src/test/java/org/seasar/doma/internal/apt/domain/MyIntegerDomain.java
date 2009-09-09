@@ -17,8 +17,7 @@ public class MyIntegerDomain extends IntegerDomain<MyIntegerDomain> {
     public void foo() {
     }
 
-    public <T> T bar() {
+    public String bar(String s) {
         return null;
     }
-
 }

@@ -75,21 +75,27 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
     @Override
     public Void visitIfNode(IfNode node, Void p) {
         validateExpressionVariable(node.getLocation(), node.getExpression());
+        visitNode(node, p);
         return null;
     }
 
     @Override
     public Void visitElseifNode(ElseifNode node, Void p) {
         validateExpressionVariable(node.getLocation(), node.getExpression());
+        visitNode(node, p);
         return null;
     }
 
     @Override
     public Void visitUnknownNode(SqlNode node, Void p) {
-        for (SqlNode child : node.getChildren()) {
-            child.accept(this, null);
-        }
+        visitNode(node, p);
         return null;
+    }
+
+    protected void visitNode(SqlNode node, Void p) {
+        for (SqlNode child : node.getChildren()) {
+            child.accept(this, p);
+        }
     }
 
     protected void validateExpressionVariable(SqlLocation location,

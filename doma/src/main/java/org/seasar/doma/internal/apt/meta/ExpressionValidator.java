@@ -3,11 +3,16 @@ package org.seasar.doma.internal.apt.meta;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 
@@ -48,7 +53,7 @@ public class ExpressionValidator implements ExpressionNodeVisitor<Void, Void> {
 
     protected final String path;
 
-    protected final Map<ExpressionNode, TypeMirrorContext> typeMirrorContextMap = new HashMap<ExpressionNode, TypeMirrorContext>();
+    protected final Map<ExpressionNode, TypeContext> typeContextMap = new HashMap<ExpressionNode, TypeContext>();
 
     public ExpressionValidator(ProcessingEnvironment env, QueryMeta queryMeta,
             ExecutableElement method, String path) {
@@ -171,51 +176,28 @@ public class ExpressionValidator implements ExpressionNodeVisitor<Void, Void> {
     }
 
     @Override
+    public Void visitCommaOperatorNode(CommaOperatorNode node, Void p) {
+        return null;
+    }
+
+    @Override
+    public Void visitEmptyNode(EmptyNode node, Void p) {
+        return null;
+    }
+
+    @Override
     public Void visitMethodOperatorNode(MethodOperatorNode node, Void p) {
         node.getTargetObjectNode().accept(this, p);
         node.getParametersNode().accept(this, p);
 
-        TypeMirrorContext typeMirrorContext = typeMirrorContextMap.get(node
+        TypeContext typeContext = typeContextMap.get(node
                 .getTargetObjectNode());
-        if (typeMirrorContext == null) {
+        if (typeContext == null) {
             return null;
         }
-        String methodName = node.getName();
-        TypeMirror methodReturnType = getMethodReturnType(node,
-                typeMirrorContext, methodName);
-        if (methodReturnType == null) {
-            ExpressionLocation location = node.getLocation();
-            throw new AptException(DomaMessageCode.DOMA4071, env, method,
-                    location.getExpression(), location.getPosition(),
-                    typeMirrorContext.name, typeMirrorContext.typeMirror
-                            .toString(), methodName);
-        }
-        if (!new ParameterInquirer().exists(node.getParametersNode())) {
-            typeMirrorContextMap.put(node, createTypeMirrorContext(methodName,
-                    methodReturnType));
-        }
-        return null;
-    }
-
-    public TypeMirror getMethodReturnType(MethodOperatorNode node,
-            TypeMirrorContext typeMirrorContext, String methodName) {
-        for (Map.Entry<TypeMirror, Map<TypeMirror, TypeMirror>> entry : typeMirrorContext.mapOfTypeParamMap
-                .entrySet()) {
-            TypeMirror typeMirror = entry.getKey();
-            TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
-            if (typeElement == null) {
-                ExpressionLocation location = node.getLocation();
-                throw new AptException(DomaMessageCode.DOMA4072, env, method,
-                        location.getExpression(), location.getPosition(),
-                        typeMirrorContext.name, typeMirror.toString());
-            }
-            for (ExecutableElement method : ElementFilter.methodsIn(typeElement
-                    .getEnclosedElements())) {
-                if (method.getSimpleName().contentEquals(methodName)) {
-                    return TypeUtil.resolveTypeParameter(entry.getValue(),
-                            method.getReturnType());
-                }
-            }
+        TypeContext resultContext = typeContext.createResultContext(node);
+        if (resultContext != null) {
+            typeContextMap.put(node, resultContext);
         }
         return null;
     }
@@ -231,172 +213,265 @@ public class ExpressionValidator implements ExpressionNodeVisitor<Void, Void> {
                     location.getExpression(), location.getPosition(),
                     variableName);
         }
-        typeMirrorContextMap.put(node, createTypeMirrorContext(variableName,
-                typeMirror));
+        typeContextMap.put(node, new TypeContext(env, method,
+                variableName, typeMirror));
         return null;
     }
 
-    protected TypeMirrorContext createTypeMirrorContext(String name,
-            TypeMirror typeMirror) {
-        Map<TypeMirror, Map<TypeMirror, TypeMirror>> mapOfTypeParamMap = new HashMap<TypeMirror, Map<TypeMirror, TypeMirror>>();
-        fillMapOfTypeParamMap(typeMirror, mapOfTypeParamMap);
-        return new TypeMirrorContext(name, typeMirror, mapOfTypeParamMap);
-    }
+    protected static class TypeContext {
 
-    protected void fillMapOfTypeParamMap(TypeMirror typeMirror,
-            Map<TypeMirror, Map<TypeMirror, TypeMirror>> mapOfTypeParamMap) {
-        TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
-        if (typeElement == null) {
-            return;
-        }
-        mapOfTypeParamMap.put(typeMirror, TypeUtil.createTypeParameterMap(
-                typeElement, typeMirror, env));
-        for (TypeMirror superType : env.getTypeUtils().directSupertypes(
-                typeMirror)) {
-            TypeElement superElement = TypeUtil.toTypeElement(superType, env);
-            if (superElement == null) {
-                continue;
-            }
-            mapOfTypeParamMap.put(superType, TypeUtil.createTypeParameterMap(
-                    superElement, superType, env));
-            fillMapOfTypeParamMap(superType, mapOfTypeParamMap);
-        }
-    }
+        protected final ProcessingEnvironment env;
 
-    @Override
-    public Void visitCommaOperatorNode(CommaOperatorNode node, Void p) {
-        return null;
-    }
-
-    @Override
-    public Void visitEmptyNode(EmptyNode node, Void p) {
-        return null;
-    }
-
-    protected static class TypeMirrorContext {
+        protected final ExecutableElement executableElement;
 
         protected final String name;
 
         protected final TypeMirror typeMirror;
 
-        protected final Map<TypeMirror, Map<TypeMirror, TypeMirror>> mapOfTypeParamMap;
+        protected final Map<String, Map<TypeMirror, TypeMirror>> mapOfTypeParamMap = new HashMap<String, Map<TypeMirror, TypeMirror>>();
 
-        public TypeMirrorContext(String name, TypeMirror typeMirror,
-                Map<TypeMirror, Map<TypeMirror, TypeMirror>> mapOfTypeParamMap) {
-            assertNotNull(name, typeMirror);
+        public TypeContext(ProcessingEnvironment env,
+                ExecutableElement executableElement, String name,
+                TypeMirror typeMirror) {
+            assertNotNull(env, executableElement, name, typeMirror);
+            this.env = env;
+            this.executableElement = executableElement;
             this.name = name;
             this.typeMirror = typeMirror;
-            this.mapOfTypeParamMap = mapOfTypeParamMap;
+            fillMapOfTypeParamMap(typeMirror, mapOfTypeParamMap);
+        }
+
+        protected void fillMapOfTypeParamMap(TypeMirror typeMirror,
+                Map<String, Map<TypeMirror, TypeMirror>> mapOfTypeParamMap) {
+            TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
+            if (typeElement == null) {
+                return;
+            }
+            mapOfTypeParamMap.put(typeElement.getQualifiedName().toString(),
+                    TypeUtil.createTypeParameterMap(typeElement, typeMirror,
+                            env));
+            for (TypeMirror superType : env.getTypeUtils().directSupertypes(
+                    typeMirror)) {
+                TypeElement superElement = TypeUtil.toTypeElement(superType,
+                        env);
+                if (superElement == null) {
+                    continue;
+                }
+                if (mapOfTypeParamMap.containsKey(superElement
+                        .getQualifiedName().toString())) {
+                    continue;
+                }
+                mapOfTypeParamMap.put(superElement.getQualifiedName()
+                        .toString(), TypeUtil.createTypeParameterMap(
+                        superElement, superType, env));
+                fillMapOfTypeParamMap(superType, mapOfTypeParamMap);
+            }
+        }
+
+        public TypeContext createResultContext(MethodOperatorNode node) {
+            int parameterSize = node.getParametersNode().accept(
+                    new ParameterCounter(), null);
+            List<MethodContext> methodContexts = getMethodContexts(node,
+                    parameterSize);
+            if (methodContexts.size() == 0) {
+                ExpressionLocation location = node.getLocation();
+                throw new AptException(DomaMessageCode.DOMA4071, env,
+                        executableElement, location.getExpression(), location
+                                .getPosition(), name, typeMirror.toString(),
+                        parameterSize, node.getName());
+            }
+            if (methodContexts.size() == 1) {
+                MethodContext methodContext = methodContexts.get(0);
+                return new TypeContext(env, executableElement, node.getName(),
+                        methodContext.getReturnType());
+            }
+            return null;
+        }
+
+        protected List<MethodContext> getMethodContexts(
+                MethodOperatorNode node, int parameterSize) {
+            List<MethodContext> candidate = new LinkedList<MethodContext>();
+            for (Map.Entry<String, Map<TypeMirror, TypeMirror>> e : mapOfTypeParamMap
+                    .entrySet()) {
+                TypeElement typeElement = env.getElementUtils().getTypeElement(
+                        e.getKey());
+                if (typeElement == null) {
+                    ExpressionLocation location = node.getLocation();
+                    throw new AptException(DomaMessageCode.DOMA4072, env,
+                            executableElement, location.getExpression(),
+                            location.getPosition(), name, e.getKey());
+                }
+                for (ExecutableElement method : ElementFilter
+                        .methodsIn(typeElement.getEnclosedElements())) {
+                    if (!method.getModifiers().contains(Modifier.PUBLIC)) {
+                        continue;
+                    }
+                    if (!method.getSimpleName().contentEquals(node.getName())) {
+                        continue;
+                    }
+                    if (method.getReturnType().getKind() == TypeKind.VOID) {
+                        continue;
+                    }
+                    if (method.getParameters().size() != parameterSize) {
+                        continue;
+                    }
+                    candidate.add(new MethodContext(env, typeElement, method, e
+                            .getValue()));
+                }
+            }
+
+            List<MethodContext> copy = new LinkedList<MethodContext>(candidate);
+            for (Iterator<MethodContext> it = candidate.iterator(); it
+                    .hasNext();) {
+                MethodContext overridden = it.next();
+                for (MethodContext overrider : copy) {
+                    if (env.getElementUtils().overrides(overrider.method,
+                            overridden.method, overrider.type)) {
+                        it.remove();
+                    }
+                }
+            }
+            return candidate;
         }
     }
 
-    protected static class ParameterInquirer implements
-            ExpressionNodeVisitor<Boolean, Void> {
+    protected static class MethodContext {
 
-        public boolean exists(ExpressionNode node) {
-            return node.accept(this, null);
+        protected final ProcessingEnvironment env;
+
+        protected final TypeElement type;
+
+        protected final ExecutableElement method;
+
+        protected final Map<TypeMirror, TypeMirror> typeParameterMap;
+
+        protected MethodContext(ProcessingEnvironment env, TypeElement type,
+                ExecutableElement method,
+                Map<TypeMirror, TypeMirror> typeParameterMap) {
+            assertNotNull(env, type, method, typeParameterMap);
+            this.env = env;
+            this.type = type;
+            this.method = method;
+            this.typeParameterMap = typeParameterMap;
+        }
+
+        public TypeMirror getReturnType() {
+            return TypeUtil.resolveTypeParameter(typeParameterMap, method
+                    .getReturnType());
+        }
+    }
+
+    protected static class ParameterCounter implements
+            ExpressionNodeVisitor<Integer, Void> {
+
+        int count;
+
+        @Override
+        public Integer visitAddOperatorNode(AddOperatorNode node, Void p) {
+            return count;
         }
 
         @Override
-        public Boolean visitAddOperatorNode(AddOperatorNode node, Void p) {
-            return true;
+        public Integer visitAndOperatorNode(AndOperatorNode node, Void p) {
+            return count;
         }
 
         @Override
-        public Boolean visitAndOperatorNode(AndOperatorNode node, Void p) {
-            return true;
+        public Integer visitCommaOperatorNode(CommaOperatorNode node, Void p) {
+            count++;
+            for (ExpressionNode child : node.getNodes()) {
+                child.accept(this, p);
+            }
+            return count;
         }
 
         @Override
-        public Boolean visitCommaOperatorNode(CommaOperatorNode node, Void p) {
-            return true;
+        public Integer visitDivideOperatorNode(DivideOperatorNode node, Void p) {
+            return count;
         }
 
         @Override
-        public Boolean visitDivideOperatorNode(DivideOperatorNode node, Void p) {
-            return true;
+        public Integer visitEmptyNode(EmptyNode node, Void p) {
+            count = 0;
+            return count;
         }
 
         @Override
-        public Boolean visitEmptyNode(EmptyNode node, Void p) {
-            return false;
+        public Integer visitEqOperatorNode(EqOperatorNode node, Void p) {
+            return count;
         }
 
         @Override
-        public Boolean visitEqOperatorNode(EqOperatorNode node, Void p) {
-            return true;
+        public Integer visitGeOperatorNode(GeOperatorNode node, Void p) {
+            return count;
         }
 
         @Override
-        public Boolean visitGeOperatorNode(GeOperatorNode node, Void p) {
-            return true;
+        public Integer visitGtOperatorNode(GtOperatorNode node, Void p) {
+            return count;
         }
 
         @Override
-        public Boolean visitGtOperatorNode(GtOperatorNode node, Void p) {
-            return true;
+        public Integer visitLeOperatorNode(LeOperatorNode node, Void p) {
+            return count;
         }
 
         @Override
-        public Boolean visitLeOperatorNode(LeOperatorNode node, Void p) {
-            return true;
+        public Integer visitLiteralNode(LiteralNode node, Void p) {
+            return count;
         }
 
         @Override
-        public Boolean visitLiteralNode(LiteralNode node, Void p) {
-            return true;
+        public Integer visitLtOperatorNode(LtOperatorNode node, Void p) {
+            return count;
         }
 
         @Override
-        public Boolean visitLtOperatorNode(LtOperatorNode node, Void p) {
-            return true;
+        public Integer visitMethodOperatorNode(MethodOperatorNode node, Void p) {
+            return count;
         }
 
         @Override
-        public Boolean visitMethodOperatorNode(MethodOperatorNode node, Void p) {
-            return true;
-        }
-
-        @Override
-        public Boolean visitMultiplyOperatorNode(MultiplyOperatorNode node,
+        public Integer visitMultiplyOperatorNode(MultiplyOperatorNode node,
                 Void p) {
-            return true;
+            return count;
         }
 
         @Override
-        public Boolean visitNeOperatorNode(NeOperatorNode node, Void p) {
-            return true;
+        public Integer visitNeOperatorNode(NeOperatorNode node, Void p) {
+            return count;
         }
 
         @Override
-        public Boolean visitNewOperatorNode(NewOperatorNode node, Void p) {
-            return true;
+        public Integer visitNewOperatorNode(NewOperatorNode node, Void p) {
+            return count;
         }
 
         @Override
-        public Boolean visitNotOperatorNode(NotOperatorNode node, Void p) {
-            return true;
+        public Integer visitNotOperatorNode(NotOperatorNode node, Void p) {
+            return count;
         }
 
         @Override
-        public Boolean visitOrOperatorNode(OrOperatorNode node, Void p) {
-            return true;
+        public Integer visitOrOperatorNode(OrOperatorNode node, Void p) {
+            return count;
         }
 
         @Override
-        public Boolean visitParensNode(ParensNode node, Void p) {
-            return node.accept(this, p);
+        public Integer visitParensNode(ParensNode node, Void p) {
+            count++;
+            return node.getNode().accept(this, p);
         }
 
         @Override
-        public Boolean visitSubtractOperatorNode(SubtractOperatorNode node,
+        public Integer visitSubtractOperatorNode(SubtractOperatorNode node,
                 Void p) {
-            return true;
+            return count;
         }
 
         @Override
-        public Boolean visitVariableNode(VariableNode node, Void p) {
-            return true;
+        public Integer visitVariableNode(VariableNode node, Void p) {
+            return count;
         }
 
     }
