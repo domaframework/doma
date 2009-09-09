@@ -25,6 +25,7 @@ import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
+import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.EndNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.FromClauseNode;
@@ -122,8 +123,12 @@ public class SqlParser {
                 parseClosedParens();
                 break;
             }
-            case BIND_BLOCK_COMMENT: {
-                parseBindBlockComment();
+            case BIND_VARIABLE_BLOCK_COMMENT: {
+                parseBindVariableBlockComment();
+                break;
+            }
+            case EMBEDDED_VARIABLE_BLOCK_COMMENT: {
+                parseEmbeddedVariableBlockComment();
                 break;
             }
             case IF_BLOCK_COMMENT: {
@@ -264,9 +269,17 @@ public class SqlParser {
         parensNode.close();
     }
 
-    protected void parseBindBlockComment() {
+    protected void parseBindVariableBlockComment() {
         String varialbeName = tokenType.extractExpression(token);
         BindVariableNode node = new BindVariableNode(getLocation(),
+                varialbeName, token);
+        addNode(node);
+        push(node);
+    }
+
+    protected void parseEmbeddedVariableBlockComment() {
+        String varialbeName = tokenType.extractExpression(token);
+        EmbeddedVariableNode node = new EmbeddedVariableNode(getLocation(),
                 varialbeName, token);
         addNode(node);
         push(node);

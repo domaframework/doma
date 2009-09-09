@@ -36,6 +36,8 @@ import org.seasar.doma.internal.jdbc.sql.node.ElseNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseifNodeVisitor;
+import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
+import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.EndNode;
 import org.seasar.doma.internal.jdbc.sql.node.EndNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;
@@ -87,6 +89,7 @@ public class NodePreparedSqlBuilder implements
         BindVariableNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         ElseifNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         ElseNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
+        EmbeddedVariableNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         EndNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         ForUpdateClauseNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         FragmentNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
@@ -171,6 +174,25 @@ public class NodePreparedSqlBuilder implements
         } else {
             assertUnreachable();
         }
+        return null;
+    }
+
+    @Override
+    public Void visitEmbeddedVariableNode(EmbeddedVariableNode node, Context p) {
+        SqlLocation location = node.getLocation();
+        String name = node.getVariableName();
+        EvaluationResult result = evaluate(location, name);
+        Object value = result.getValue();
+        String fragment = value.toString();
+        if (fragment == null) {
+            return null;
+        }
+        if (fragment.indexOf('\'') > -1) {
+            // TODO throw new ...Exception
+        }
+        p.setAvailable(true);
+        p.appendRawSql(fragment);
+        p.appendFormattedSql(fragment);
         return null;
     }
 

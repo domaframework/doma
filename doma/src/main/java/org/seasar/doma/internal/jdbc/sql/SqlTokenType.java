@@ -46,13 +46,23 @@ public enum SqlTokenType {
 
     BLOCK_COMMENT,
 
-    BIND_BLOCK_COMMENT {
+    BIND_VARIABLE_BLOCK_COMMENT {
 
         @Override
         public String extractExpression(String token) {
             assertNotNull(token);
             assertTrue(token.length() >= 5);
             return token.substring(2, token.length() - 2);
+        }
+    },
+
+    EMBEDDED_VARIABLE_BLOCK_COMMENT {
+
+        @Override
+        public String extractExpression(String token) {
+            assertNotNull(token);
+            assertTrue(token.length() >= 6);
+            return token.substring(3, token.length() - 2);
         }
     },
 

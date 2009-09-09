@@ -30,6 +30,7 @@ import org.seasar.doma.internal.apt.dao.CustomDomainSqlValidationDao;
 import org.seasar.doma.internal.apt.dao.DelegateDao;
 import org.seasar.doma.internal.apt.dao.ElementOfParamListNotDomainDao;
 import org.seasar.doma.internal.apt.dao.ElementOfParamListUnspecifiedDao;
+import org.seasar.doma.internal.apt.dao.EmbeddedVariableDao;
 import org.seasar.doma.internal.apt.dao.ExtendsDao;
 import org.seasar.doma.internal.apt.dao.IllegalConstructorDelegateDao;
 import org.seasar.doma.internal.apt.dao.IllegalMethodDelegateDao;
@@ -374,6 +375,15 @@ public class DaoProcessorTest extends AptTestCase {
 
     public void testNoResultMethodAccessSqlValidationDao() throws Exception {
         Class<?> target = MultiParamMethodAccessSqlValidationDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertTrue(getCompiledResult());
+    }
+
+    public void testEmbeddedVariableDao() throws Exception {
+        Class<?> target = EmbeddedVariableDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
         addCompilationUnit(target);

@@ -229,7 +229,7 @@ public class SqlTokenizerTest extends TestCase {
         assertEquals("where", tokenizer.getToken());
         assertEquals(OTHER, tokenizer.next());
         assertEquals(" ", tokenizer.getToken());
-        assertEquals(BIND_BLOCK_COMMENT, tokenizer.next());
+        assertEquals(BIND_VARIABLE_BLOCK_COMMENT, tokenizer.next());
         assertEquals("/*aaa*/", tokenizer.getToken());
         assertEquals(WORD, tokenizer.next());
         assertEquals("bbb", tokenizer.getToken());

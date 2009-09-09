@@ -28,6 +28,8 @@ import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseifNodeVisitor;
+import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
+import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
@@ -39,7 +41,8 @@ import org.seasar.doma.message.DomaMessageCode;
  * 
  */
 public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
-        IfNodeVisitor<Void, Void>, ElseifNodeVisitor<Void, Void> {
+        EmbeddedVariableNodeVisitor<Void, Void>, IfNodeVisitor<Void, Void>,
+        ElseifNodeVisitor<Void, Void> {
 
     protected final ProcessingEnvironment env;
 
@@ -69,6 +72,14 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
     @Override
     public Void visitBindVariableNode(BindVariableNode node, Void p) {
         validateExpressionVariable(node.getLocation(), node.getVariableName());
+        visitNode(node, p);
+        return null;
+    }
+
+    @Override
+    public Void visitEmbeddedVariableNode(EmbeddedVariableNode node, Void p) {
+        validateExpressionVariable(node.getLocation(), node.getVariableName());
+        visitNode(node, p);
         return null;
     }
 

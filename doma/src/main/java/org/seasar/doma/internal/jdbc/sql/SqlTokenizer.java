@@ -299,7 +299,9 @@ public class SqlTokenizer {
             if (buf.hasRemaining()) {
                 char c3 = buf.get();
                 if (Character.isJavaIdentifierStart(c3)) {
-                    type = BIND_BLOCK_COMMENT;
+                    type = BIND_VARIABLE_BLOCK_COMMENT;
+                } else if (c3 == '#') {
+                    type = EMBEDDED_VARIABLE_BLOCK_COMMENT;
                 } else if (buf.hasRemaining()) {
                     char c4 = buf.get();
                     if (buf.hasRemaining()) {

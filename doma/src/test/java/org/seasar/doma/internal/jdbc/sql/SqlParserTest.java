@@ -77,6 +77,32 @@ public class SqlParserTest extends TestCase {
                 .getDomain());
     }
 
+    public void testEmbeddedVariable() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        evaluator.add("name", new BuiltinStringDomain("hoge"));
+        evaluator.add("salary", new BuiltinBigDecimalDomain(new BigDecimal(
+                10000)));
+        evaluator.add("orderBy", new BuiltinStringDomain(
+                "order by name asc, salary"));
+        String testSql = "select * from aaa where ename = /*name*/'aaa' and sal = /*salary*/-2000 /*#orderBy*/";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, evaluator)
+                .build(sqlNode);
+        assertEquals(
+                "select * from aaa where ename = ? and sal = ? order by name asc, salary",
+                sql.getRawSql());
+        assertEquals(
+                "select * from aaa where ename = 'hoge' and sal = 10000 order by name asc, salary",
+                sql.getFormattedSql());
+        assertEquals(testSql, sqlNode.toString());
+        assertEquals(2, sql.getParameters().size());
+        assertEquals(new BuiltinStringDomain("hoge"), sql.getParameters()
+                .get(0).getDomain());
+        assertEquals(new BuiltinBigDecimalDomain(new BigDecimal(10000)), sql
+                .getParameters().get(1).getDomain());
+    }
+
     public void testIf() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("name", new BuiltinStringDomain("hoge"));
