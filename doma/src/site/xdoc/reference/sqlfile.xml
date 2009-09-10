@@ -86,7 +86,7 @@
 			<subsection name="バインド変数コメント">
 				<h4><code>1つのバインド変数</code></h4>
 				<p>
-					バインド変数はブロックコメントで囲んで示します。バインド変数はメソッドのパラメータ名になります。/* の後ろや */ の直前に空白を入れてはいけません。
+					バインド変数はブロックコメントで囲んで示します。バインド変数の名前はメソッドのパラメータ名にマッピングされます。/* の後ろや */ の直前に空白を入れてはいけません。
 					ブロックコメント直後のテスト用データは必須です。テスト用データは、実行時には使用されません。
 					<code>Data Access Object</code> のメソッドと、対応するSQLの例は次のとおりです。
 				</p>
@@ -107,6 +107,29 @@
 <source>List&lt;Employee&gt; selectById(Employee employee);</source>
 <source>select * from employee where employee_id = /*employee.employeeId*/99</source>
 			</subsection>
+			<subsection name="埋め込み変数コメント">
+				<p>
+					埋め込み変数は/*#～*/というブロックコメントで示します。埋め込み変数の名前はメソッドのパラメータ名にマッピングされます。/*# の後ろや */ の直前に空白を入れてはいけません。
+					埋め込み変数はORDER BY句など、SQLの一部をプログラムで組み立てたい場合に使用できます。
+					安全のため、埋め込み変数の一部にシングルクォテーションを含めることは認められていません。
+					シングルクォテーション以外のSQLインジェクション対策はアプリケーションの責任になります。
+					<code>Data Access Object</code> のメソッドと、対応するSQLの例は次のとおりです。
+				</p>
+<source>List&lt;Employee&gt; selectAll(Salary salary, OrderBy orderyBy);</source>
+<source>select * from employee where salary > /*salary*/100 /*#orderBy*/</source>
+				<p>
+					<code>Salary</code>と<code>OrderBy</code>はカスタムドメインクラスです。
+					<code>Data Access Object</code>の呼び出し例は次の通りです。
+				</p>
+<source>EmployeeDao dao = new EmployeeDao_();
+Salary salary = new Salary(new BigDecimal(1000));
+OrderBy orderBy = new OrderBy("order by salary asc, employee_name");
+List&lt;Employee&gt; list = dao.selectAll(salary, orderBy);</source>
+				<p>
+					発行されるSQLは次のようになります。
+				</p>
+<source>select * from employee where salary > ? order by salary asc, employee_name</source>
+			</subsection>
 			<subsection name="条件コメント">
 				<h4><code>if</code> と <code>end</code></h4>
 				<p>
@@ -121,7 +144,17 @@
 					このSQL文は、 <code>employeeId</code> が <code>null</code> の場合に次のような準備された文に変換されます。
 				</p>
 <source>select * from employee</source>
-				<h4><code>ANDの自動除去</code></h4>
+				<h4><code>WHERE</code> や <code>HAVING</code> の自動除去</h4>
+				<p>
+					条件コメントを使用した場合、条件の前にある WHERE や HAVING について、自動で出力の要/不要を判定します。
+					たとえば、次のようなSQLで<code>employeeId</code> が <code>null</code> の場合、
+				</p>
+<source>select * from employee where /*%if employeeId != null*/employee_id = /*employeeId*/99/*%end*/</source>
+				<p>
+					<code>/*%if*/</code> の前の <code>where</code> は自動で除去されます。
+				</p>
+<source>select * from employee</source>
+				<h4><code>AND</code> や <code>OR</code> の自動除去</h4>
 				<p>
 					条件コメントを使用した場合、条件の後ろにつづく AND や OR について、自動で出力の要/不要を判定します。
 					たとえば、次のようなSQLで<code>employeeId</code> が <code>null</code> の場合、
@@ -140,6 +173,17 @@
 /*%if employeeId != null*/   employee_id = /*employeeId*/99
 --elseif employeeId == 999-- department_id is null
 --else                       employee_id is null
+/*%end*/</source>
+				<h4>ネストした条件コメント</h4>
+				<p>
+					条件コメントはネストさせることができます。
+				</p>
+<source>select * from employee where 
+/*%if employeeId != null*/
+  employee_id = /*employeeId*/99
+  /*%if employeeName != null*/ 
+    and employee_name = /*employeeName*/'hoge'
+  /*%end*/
 /*%end*/</source>
 			</subsection>
 			<subsection name="通常のコメント">
@@ -174,7 +218,7 @@
 			</subsection>
 			<subsection name="比較演算子">
 				<p>
-					<code>==</code> と <code>!=</code> 以外の比較演算子を利用するには、 被演算子が <code>java.lang.Comparable</code> を実装している必要があります。
+					以下の比較演算子を使用できます。
 				</p>
 				<table>
 					<tr><td>比較演算子</td></tr>
@@ -185,6 +229,29 @@
 					<tr><td><code>&gt;</code></td></tr>
 					<tr><td><code>&gt;=</code></td></tr>
 				</table>
+				<p>
+					<code>==</code> と <code>!=</code> 以外の比較演算子を利用するには、 被演算子が <code>java.lang.Comparable</code> を実装している必要があります。
+				</p>
+				<p>
+					 被演算子のオブジェクトが <code>org.seasar.doma.domain.Domain</code> を実装している場合、
+					 演算は <code>Domain</code> を実装したオブジェクトではなく、
+					<code>Domain#get()</code> で取得できるオブジェクトに対して適用されます。
+				</p>
+			</subsection>
+			<subsection name="論理演算子">
+				<p>
+					以下の論理演算子を使用できます。
+				</p>
+				<table>
+					<tr><td>論理演算子</td></tr>
+					<tr><td><code>!</code></td></tr>
+					<tr><td><code>&amp;&amp;</code></td></tr>
+					<tr><td><code>||</code></td></tr>
+				</table>
+				<p>
+					 括弧を使って、演算子が適用される対象を制御できます。
+				</p>
+<source>select * from employee where /*%if (departmentId == null || managerId == null) and employee_name != null*/ employee_name = /*employeeName*/'smith'/*%end*/</source>
 			</subsection>
 			<subsection name="メソッド呼び出し">
 				<p>

@@ -112,7 +112,7 @@
 				<img src="../images/eclipse_apt_options.png" width="454" height="152" alt="Eclipseでのオプション指定" />
 				<p>
 					上記の図では、わかりやすさのためにValueを持たないものまで登録していますが、
-					実際には必要なものだけ問題ありません。
+					実際には必要なものだけで問題ありません。
 				</p>
 			</subsection>
 			<subsection name="javacでのオプション指定">

@@ -11,18 +11,11 @@
 			<fileset dir="../doma-tool" includes="**/pom.xml" />
 			<fileset dir="../doma-tool-it" includes="**/pom.xml" />
 		</replaceregexp>
-		<replaceregexp
-			match="(&lt;artifactId&gt;doma[^&lt;]*?&lt;/artifactId&gt;\s+&lt;version&gt;)(?:[^&lt;]+)(&lt;/version&gt;)"
-			replace="\1${newVersion}\2" encoding="UTF-8" flags="g">
-			<fileset dir="." includes="**/pom.xml" />
-			<fileset dir="../doma-tutorial" includes=".classpath" />
-			<fileset dir="../doma-tutorial" includes=".factorypath" />
-		</replaceregexp>
 	</target>
 
 	<target name="update-classpath-version">
 		<replaceregexp
-			match="(/doma-)(?:\d\.\d\.\d.*?)((-source)?\.jar)"
+			match="(/doma-)(?:\d\.\d\.\d.*?)(-sources)?(\.jar)"
 			replace="\1${newVersion}\2" encoding="UTF-8" flags="g">
 			<fileset dir="." includes="**/pom.xml" />
 			<fileset dir="../doma-tutorial" includes=".classpath" />
