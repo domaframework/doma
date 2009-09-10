@@ -23,6 +23,8 @@ import org.seasar.doma.Delete;
 import org.seasar.doma.Select;
 import org.seasar.doma.it.ItConfig;
 import org.seasar.doma.it.domain.IdDomain;
+import org.seasar.doma.it.domain.NameDomain;
+import org.seasar.doma.it.domain.OrderBy;
 import org.seasar.doma.it.domain.SalaryDomain;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.jdbc.IterationCallback;
@@ -30,6 +32,10 @@ import org.seasar.doma.jdbc.SelectOptions;
 
 @Dao(config = ItConfig.class)
 public interface EmployeeDao {
+
+    @Select
+    List<Employee> selectWithOptionalOrderBy(NameDomain employee_name,
+            OrderBy orderBy);
 
     @Select
     Employee selectById(IdDomain employee_id);
