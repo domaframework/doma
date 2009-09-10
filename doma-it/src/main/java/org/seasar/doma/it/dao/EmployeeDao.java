@@ -34,6 +34,9 @@ import org.seasar.doma.jdbc.SelectOptions;
 public interface EmployeeDao {
 
     @Select
+    List<Employee> selectByExample(Employee e);
+
+    @Select
     List<Employee> selectWithOptionalOrderBy(NameDomain employee_name,
             OrderBy orderBy);
 
