@@ -118,9 +118,9 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
         } catch (AptIllegalStateException e) {
             throw e;
         } catch (AptException e) {
-            throw new AptException(DomaMessageCode.DOMA4092, env, method, e,
+            throw new AptException(DomaMessageCode.DOMA4092, env, method,
                     location.getSql(), location.getLineNumber(), location
-                            .getPosition(), e);
+                            .getPosition(), e.getMessage());
         }
     }
 
