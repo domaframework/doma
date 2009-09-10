@@ -79,4 +79,5 @@ public class StandardPagingTransformerTest extends TestCase {
             assertEquals(DomaMessageCode.DOMA2201, expected.getMessageCode());
         }
     }
+
 }

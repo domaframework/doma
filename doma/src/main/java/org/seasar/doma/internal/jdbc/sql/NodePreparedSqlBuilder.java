@@ -188,7 +188,9 @@ public class NodePreparedSqlBuilder implements
             return null;
         }
         if (fragment.indexOf('\'') > -1) {
-            // TODO throw new ...Exception
+            throw new JdbcException(DomaMessageCode.DOMA2116,
+                    location.getSql(), location.getLineNumber(), location
+                            .getPosition(), node.getText());
         }
         p.setAvailable(true);
         p.appendRawSql(fragment);

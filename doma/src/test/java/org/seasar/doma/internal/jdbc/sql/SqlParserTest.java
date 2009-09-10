@@ -25,7 +25,9 @@ import org.seasar.doma.domain.BuiltinIntegerDomain;
 import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
+import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -101,6 +103,24 @@ public class SqlParserTest extends TestCase {
                 .get(0).getDomain());
         assertEquals(new BuiltinBigDecimalDomain(new BigDecimal(10000)), sql
                 .getParameters().get(1).getDomain());
+    }
+
+    public void testEmbeddedVariable_containsSingleQuote() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        evaluator.add("name", new BuiltinStringDomain("hoge"));
+        evaluator.add("salary", new BuiltinBigDecimalDomain(new BigDecimal(
+                10000)));
+        evaluator.add("orderBy", new BuiltinStringDomain("aaa'"));
+        String testSql = "select * from aaa where ename = /*name*/'aaa' and sal = /*salary*/-2000 /*#orderBy*/";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        try {
+            new NodePreparedSqlBuilder(config, evaluator).build(sqlNode);
+            fail();
+        } catch (JdbcException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(DomaMessageCode.DOMA2116, expected.getMessageCode());
+        }
     }
 
     public void testIf() throws Exception {
