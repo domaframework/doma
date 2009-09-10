@@ -79,7 +79,7 @@ import org.seasar.doma.jdbc.Config;
  * public interface Employee {
  * 
  *     &#064;Delegate(to = EmployeeDelegate.class)
- *     BigDecimalDomain calculate(BigDecimalDomain salary);
+ *     BuiltinBigDecimalDomain calculate(BuiltinBigDecimalDomain salary);
  * }
  * 
  * public class EmployeeDelegate {
@@ -90,7 +90,7 @@ import org.seasar.doma.jdbc.Config;
  *         this.employee = employee;
  *     }
  *     
- *     public BigDecimalDomain calculate(BigDecimalDomain salary) {
+ *     public BuiltinBigDecimalDomain calculate(BuiltinBigDecimalDomain salary) {
  *         ...
  *     }
  * }

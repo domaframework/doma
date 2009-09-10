@@ -41,7 +41,7 @@ import org.seasar.doma.jdbc.id.TableIdGenerator;
  *     &#064;Id
  *     &#064;GeneratedValue(strategy = GenerationType.TABLE)
  *     &#064;TableGenerator(pkColumnValue = &quot;EMPLOYEE_ID&quot;)
- *     IntegerDomain id();
+ *     BuiltinIntegerDomain id();
  * }
  * </pre>
  * 

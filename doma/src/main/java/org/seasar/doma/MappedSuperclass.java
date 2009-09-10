@@ -41,14 +41,14 @@ import org.seasar.doma.domain.Domain;
  * 
  *     &#064;Id
  *     &#064;Column(name = &quot;ID&quot;)
- *     IntegerDomain id();
+ *     BuiltinIntegerDomain id();
  * 
  *     &#064;Column(name = &quot;EMPLOYEE_NAME&quot;)
- *     StringDomain employeeName();
+ *     BuiltinStringDomain employeeName();
  * 
  *     &#064;Version
  *     &#064;Column(name = &quot;VERSION&quot;)
- *     IntegerDomain version();
+ *     BuiltinIntegerDomain version();
  * }
  * </pre>
  * 

@@ -34,7 +34,7 @@ import java.lang.annotation.Target;
  * 
  *     &#064;Id
  *     &#064;Column(name = &quot;ID&quot;)
- *     IntegerDomain id();
+ *     BuiltinIntegerDomain id();
  * }
  * </pre>
  * 

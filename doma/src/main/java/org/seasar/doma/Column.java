@@ -36,10 +36,10 @@ import org.seasar.doma.jdbc.NamingConvention;
  * public interface Employee {
  * 
  *     &#064;Column(name = &quot;EMPLOYEE_NAME&quot;)
- *     StringDomain employeeName();
+ *     BuiltinStringDomain employeeName();
  * 
  *     &#064;Column(name = &quot;SALARY&quot;)
- *     BigDecimalDomain salary();
+ *     BuiltinBigDecimalDomain salary();
  * }
  * </pre>
  * 

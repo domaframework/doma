@@ -2,12 +2,13 @@
 <document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
 	<properties>
-		<title>SQL</title>
+		<title>ドメイン</title>
 	</properties>
 	<body>
 		<section name="概要">
 			<p>
-				Domain（ドメイン）とは、値のとり得る範囲（定義域）のことです。
+				Domain（ドメイン）の定義方法を示します。
+				ドメインとは、値のとり得る範囲（定義域）のことです。
 				Domaでは、テーブルのカラムの値を、ドメインと呼ばれるJavaオブジェクトで扱います。
 			</p>
 			<p>
@@ -20,6 +21,9 @@
 			<p>
 				ドメインクラスは <code>org.seasar.doma.domain.Domain</code> インタフェースを実装している必要があります。
 				このインタフェースを直接実装してもかまいませんが、通常は、 <code>org.seasar.doma.domain</code> パッケージで提供される抽象クラスを継承することで簡単に作成できます。
+			</p>
+			<p>
+				また、制約として、メインクラスは、publicのデフォルトコンストラクタ（引数なしのコンストラクタ）を持たなければいけません。
 			</p>
 			<p>
 				以下の例では、 <code>org.seasar.doma.domain.BigDecimalDomain</code> を継承して、給料を表すドメインクラスを作成しています。

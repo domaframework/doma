@@ -43,7 +43,7 @@ import org.seasar.doma.jdbc.JdbcException;
  * public interface EmployeeDao {
  * 
  *     &#064;ClobFactory
- *     ClobDomain createClob();
+ *     BuiltinClobDomain createClob();
  * }
  * </pre>
  * 

@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>エンティティ</title>
+	</properties>
+	<body>
+		<section name="概要">
+			<p>
+				Entity（エンティティ）は、データベースのテーブルやクエリの結果セットに対応します。
+			</p>
+			<p>
+				このページで説明するアノテーションはすべて <code>org.seasar.doma</code> パッケージに属します。
+			</p>
+		</section>
+		<section name="エンティティ定義">
+			<p>
+				エンティティは <code>@Entity</code> が注釈されたpublicなインタフェースとして定義します。
+				インタフェースはトップレベルのインタフェースでなければいけません（他のクラスやインタフェースにネストされていてはいけません）。
+				インタフェースの実装クラスはaptによりコンパイル時に自動生成されます。
+			</p>
+<source>
+@Entity
+public interface Employee {
+    ...
+}</source>
+			<p>
+				エンティティがデータベースに対し挿入、更新、削除される直前に処理を実行したい場合、
+				<code>listener</code> 要素に <code>org.seasar.doma.jdbc.entity.EntityListener</code>
+				の実装クラスを指定できます。
+			</p>
+<source>@Entity(listener = EntityListener.class)
+public interface Employee {
+    ...
+}</source>
+<source>public class EmployeeEntityListener implements EntityListener&lt;EmployeeEntity&gt; {
+    @Override
+    public void preDelete(Employee entity) {
+        ...
+    }
+    @Override
+    public void preInsert(Employee entity) {
+        ...
+    }
+    @Override
+    public void preUpdate(Employee entity) {
+        ...
+    }
+}</source>
+				<p>
+					<code>EntityListener</code> の実装クラスはpublicなデフォルトコンストラクタ（引数なしのコンストラクタ）を
+					持たねばいけません。
+				</p>
+			<subsection name="テーブル">
+				<p>
+					エンティティに対応するテーブル情報を指定するには、 <code>@Table</code> を使用します。
+				</p>
+				<p>
+					<code>name</code> 要素でテーブル名を指定できます。
+				</p>
+<source>
+@Entity
+@Table(name = "EMP")
+public interface Employee {
+    ...
+}</source>
+				<p>
+					<code>catalog</code> 要素や <code>schema</code> 要素 でカタログやスキーマを指定できます。
+				</p>
+<source>
+@Entity
+@Table(catalog = "CATALOG", schema ="SCHEMA", name = "EMP")
+public interface Employee {
+    ...
+}</source>
+				<p>
+					<code>@Table</code> を使用しない、もしくは <code>@Table</code> の <code>name</code> 要素
+					を使用しない場合、テーブル名は、 <code>org.seasar.doma.jdbc.NamingConvention</code> の実装クラスに
+					より解決されます。 <code>NamingConvention</code> の実装クラスは <code>DAO</code> の設定で決まります。
+				</p>
+			</subsection>
+			<subsection name="継承">
+				<p>
+					エンティティは、 <code>@MappedSuperclass</code> が注釈されたインタフェースを複数継承できます。
+					<code>@MappedSuperclass</code> が注釈されていないインタフェースは継承できません。
+				</p>
+<source>
+@MappedSuperclass
+public interface EmployeeBase {
+    ...
+}</source>
+<source>
+@Entity
+public interface Employee extends EmployeeBase {
+    ...
+}</source>
+			</subsection>
+		</section>
+		<section name="プロパティ定義">
+			<subsection name="永続的なプロパティ">
+				<p>
+					永続的なプロパティは、テーブルや結果セットのカラムに対応します。
+					プロパティの型は、 <code>org.seasar.doma.domain.Domain</code> インタフェースの実装クラスでなければいけません。
+				</p>
+				<p>
+					永続的なプロパティは、メソッドとしてエンティティに定義します。
+					<code>Name</code> というドメインクラスがある場合、 <code>employeeName</code> プロパティは次のように定義できます。
+				</p>
+<source>
+@Entity
+public interface Employee {
+    ...
+    Name employeeName();
+}</source>
+				<p>
+					<code>Domain</code>の実装クラスがデータベースのどの型にマッピングされるかは、 
+					<code>org.seasar.doma.jdbc.JdbcMappingVisitor</code> の実装クラスにより決まります。
+				</p>
+			</subsection>
+			<subsection name="カラム">
+				<p>
+					プロパティに対応するカラム情報を指定するには、 <code>@Column</code> を使用します。
+				</p>
+				<p>
+					<code>name</code> 要素でカラム名を指定できます。
+				</p>
+<source>@Column(name = "ENAME")
+Name employeeName();</source>
+				<p>
+					<code>insertable</code> 要素や <code>updatable</code> 要素 で挿入や更新の対象とするかどうかを指定できます。
+				</p>
+<source>
+@Column(insertable = false, updatable = false)
+Name employeeName();</source>
+				<p>
+					<code>@Column</code> を使用しない、もしくは <code>@Column</code> の <code>name</code> 要素
+					を使用しない場合、カラム名は、 <code>org.seasar.doma.jdbc.NamingConvention</code> の実装クラスに
+					より解決されます。 <code>NamingConvention</code> の実装クラスは <code>DAO</code> の設定で決まります。
+				</p>
+			</subsection>
+			<subsection name="識別子">
+				<p>
+					識別子(主キー)であることを指定するには、 <code>@Id</code> を使います。 
+				</p>
+<source>@Id
+Identity id();</source>
+				<p>
+					複合主キーの場合は <code>@Id</code> を複数指定します。 
+				</p>
+<source>@Id
+Identity id();
+
+@Id
+Identity id2();</source>
+				<p>
+					識別子を自動生成する場合は、 <code>@GeneratedValue</code> を使用し、
+					生成方法を <code>strategy</code> 要素に指定します。 
+				</p>
+<source>@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+Identity id();</source>
+				<p>
+					<code>strategy</code> 要素に指定できる方法は、
+					 <code>GenerationType.IDENTITY</code> 、
+					 <code>GenerationType.SEQUENCE</code> 、
+					 <code>GenerationType.TABLE</code> の3つです。
+				</p>
+				<p>
+					<code>@GeneratedValue</code> を注釈する場合、そのプロパティの型は <code>org.seasar.doma.domain.NumberDomain</code> インタフェースを
+					実装したクラスでなければいけません。
+				</p>
+			</subsection>
+			<subsection name="バージョン">
+				<p>
+					楽観的排他制御用のバージョンは <code>@Version</code> を注釈して示します。
+				</p>
+				<p>
+					プロパティの型は <code>org.seasar.doma.domain.NumberDomain</code> インタフェースを
+					実装したクラスでなければいけません。
+				</p>
+<source>@Version
+VersionNo version();</source>
+			</subsection>
+			<subsection name="非永続的なプロパティ">
+				<p>
+					非永続的なプロパティは、テーブルや結果セットのカラムに対応しません。
+					<code>@Transient</code> を注釈して示します。
+				</p>
+				<p>
+					プロパティの型は、 <code>org.seasar.doma.domain.Domain</code> インタフェースの実装クラス、もしくは、
+					<code>Domain</code> インタフェースの実装クラスを要素とする <code>java.util.List</code> でなければいけません。
+				</p>
+<source>@Transient
+Salary tempSalary();</source>
+<source>@Transient
+List&lt;Salary&gt; tempSalaryList();</source>
+			</subsection>
+		</section>
+		<section name="デリゲート定義">
+			<p>
+				エンティティは、インタフェースであるためロジックをもつことができません。
+				しかし、 <code>@Delegate</code> を注釈することで別のクラスに処理を委譲（デリゲート）できます。
+				エンティティに閉じた複数プロパティを扱う処理を記述する場合に使うといいでしょう。
+			</p>
+<source>@Entity
+public interface Employee {
+
+    @Delegate(to = EmployeeDelegate.class)
+    Salary calculate(Salary salary);
+}</source>
+<source>public class EmployeeDelegate {
+
+    private Employee employee;
+    
+    public EmployeeDelegate(Employee employee) {
+        this.employee = employee;
+    }
+
+    public Salary calculate(Salary salary) {
+        ...
+    }
+}</source>
+			<p>
+				<code>@Delegate</code> の <code>to</code> 要素には、委譲先のクラスを指定します。
+				委譲先のクラスは次の制約を満たす必要があります。
+			</p>
+			<ul>
+				<li>委譲元のエンティティクラスを受け取るpublicなコンストラクタを持つ</li>
+				<li>委譲元のメソッドと同じシグニチャのメソッドを持つ</li>
+			</ul>
+		</section>
+		<section name="エンティティの利用方法">
+			<p>
+				コンパイルすると、aptにより実装クラスが生成されます。
+				実装クラスをインスタンス化して使用してください。
+			</p>
+<source>Employee employee = new Employee_();
+employee.employeeName.set("SMITH");
+employee.salary.set(new BigDecimal(1000));</source>
+			<p>
+				デフォルトでは、実装クラスの名前はインタフェースの名前にアンダースコア（_）をサフィックスしたものになります。
+				パッケージやサフィックスを変更するには、<a href="apt.html">注釈処理</a>を参照してください。
+			</p>
+		</section>
+	</body>
+</document>

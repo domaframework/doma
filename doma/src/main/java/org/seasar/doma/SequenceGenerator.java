@@ -40,7 +40,7 @@ import org.seasar.doma.jdbc.id.SequenceIdGenerator;
  *     &#064;Id
  *     &#064;GeneratedValue(strategy = GenerationType.SEQUENCE)
  *     &#064;SequenceGenerator(sequence = &quot;EMPLOYEE_SEQ&quot;)
- *     IntegerDomain id();
+ *     BuiltinIntegerDomain id();
  * }
  * </pre>
  * 

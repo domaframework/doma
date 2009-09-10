@@ -46,7 +46,8 @@ import org.seasar.doma.jdbc.JdbcException;
  * public interface EmployeeDao {
  * 
  *     &#064;Procedure
- *     void updateSalary(@In IntegerDomain id, @InOut BigDecimalDomain salary);
+ *     void updateSalary(@In BuiltinIntegerDomain id,
+ *             &#064;InOut BuiltinBigDecimalDomain salary);
  * }
  * </pre>
  * 

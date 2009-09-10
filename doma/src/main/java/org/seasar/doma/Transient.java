@@ -37,10 +37,10 @@ import java.util.List;
  * public interface Employee {
  *     ...
  *     &#064;Transient
- *     IntegerDomain tempNumber();
+ *     BuiltinIntegerDomain tempNumber();
  *     
  *     &#064;Transient
- *     List&lt;StringDomain&gt; names();
+ *     List&lt;BuiltinStringDomain&gt; names();
  * }
  * </pre>
  * 

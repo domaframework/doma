@@ -2,7 +2,7 @@
 <document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
 	<properties>
-		<title>SQL</title>
+		<title>SQLファイル</title>
 	</properties>
 	<body>
 		<section name="概要">
@@ -189,7 +189,8 @@ List&lt;Employee&gt; list = dao.selectAll(salary, orderBy);</source>
 			<subsection name="通常のコメント">
 				<p>
 					<code>/*</code> の直後に、Javaの変数で使用できない値が続く場合、それは通常のSQLコメントだとみなされます。
-					ただし、条件コメントである <code>%if</code> や <code>%end</code> がつづく場合は例外です。
+					ただし、条件コメントである <code>%if</code> や <code>%end</code> がつづく場合、
+					また、埋め込みコメントを示す<code>#</code>がつづく場合は通常のコメントとみなされません。
 				</p>
 <source>select * from employee /* 通常のコメント */</source>
 			</subsection>

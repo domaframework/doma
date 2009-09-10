@@ -48,7 +48,7 @@ import org.seasar.doma.domain.Domain;
  * public interface EmployeeDao {
  * 
  *     &#064;Procedure
- *     void fetchEmployees(@In IntegerDomain departmentId,
+ *     void fetchEmployees(@In BuiltinIntegerDomain departmentId,
  *             &#064;ResultSet List&lt;Employee&gt; employees);
  * }
  * </pre>

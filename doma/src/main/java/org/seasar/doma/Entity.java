@@ -26,7 +26,7 @@ import org.seasar.doma.jdbc.entity.BuiltinEntityListener;
 import org.seasar.doma.jdbc.entity.EntityListener;
 
 /**
- * テーブル、結果セット、もしくはパラメータの集合を示します。
+ * テーブルもしくは結果セットを示します。
  * <p>
  * このアノテーションは、トップレベルのインタフェースに指定できます。 注釈されたインタフェースは {@link MappedSuperclass} および
  * {@link Entity} が注釈されたインタフェースのみを拡張できます。

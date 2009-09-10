@@ -49,7 +49,8 @@ import org.seasar.doma.jdbc.JdbcException;
  * public interface EmployeeDao {
  * 
  *     &#064;Function
- *     BigDecimalDomain getSalary(@In IntegerDomain id, @Out StringDomain name);
+ *     BigDecimalDomain getSalary(@In BuiltinIntegerDomain id,
+ *             &#064;Out BuiltinStringDomain name);
  * }
  * </pre>
  * 

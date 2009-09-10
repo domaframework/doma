@@ -112,19 +112,19 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * public interface EmployeeDao {
  * 
  *     &#064;Select
- *     StringDomain selectNameById(IntegerDomain id);
+ *     BuiltinStringDomain selectNameById(BuiltinIntegerDomain id);
  *     
  *     &#064;Select
- *     List&lt;StringDomain&gt; selectNamesByAgeAndSalary(IntegerDomain age, BigDecimalDomain salary);
+ *     List&lt;BuiltinStringDomain&gt; selectNamesByAgeAndSalary(BuiltinIntegerDomain age, BuiltinBigDecimalDomain salary);
  * 
  *     &#064;Select
- *     Employee selectById(IntegerDomain id);
+ *     Employee selectById(BuiltinIntegerDomain id);
  *     
  *     &#064;Select
  *     List&lt;Employee&gt; selectByExample(Employee example);
  *     
  *     &#064;Select(iterate = true)
- *     &lt;R&gt; R selectSalary(IntegerDomain departmentId, IterationCallback&lt;R, SalaryDomain&gt; callback);
+ *     &lt;R&gt; R selectSalary(BuiltinIntegerDomain departmentId, IterationCallback&lt;R, BuiltinSalaryDomain&gt; callback);
  * }
  * </pre>
  * 

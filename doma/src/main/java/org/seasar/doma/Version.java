@@ -39,7 +39,7 @@ import org.seasar.doma.domain.NumberDomain;
  * 
  *     &#064;Version
  *     &#064;Column(name = &quot;VERSION_NO&quot;)
- *     IntegerDomain versionNo();
+ *     BuiltinIntegerDomain versionNo();
  * }
  * </pre>
  * 
