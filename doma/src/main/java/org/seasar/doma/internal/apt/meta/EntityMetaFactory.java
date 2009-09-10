@@ -39,7 +39,6 @@ import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Notifier;
 import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.TypeUtil;
-import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.entity.EntityListener;
 import org.seasar.doma.message.DomaMessageCode;
 
@@ -98,18 +97,20 @@ public class EntityMetaFactory {
         MappedSuperclass mappedSuperclassAnnotation = entityElement
                 .getAnnotation(MappedSuperclass.class);
         if (entityAnnotation != null && mappedSuperclassAnnotation != null) {
-            throw new JdbcException(DomaMessageCode.DOMA4049, entityElement);
+            throw new AptException(DomaMessageCode.DOMA4049, env, entityElement);
         }
         if (entityAnnotation != null) {
             if (!entityElement.getTypeParameters().isEmpty()) {
-                throw new JdbcException(DomaMessageCode.DOMA4051, entityElement);
+                throw new AptException(DomaMessageCode.DOMA4051, env,
+                        entityElement);
             }
             doListener(entityAnnotation, entityElement, entityMeta);
             doTableMeta(entityElement, entityMeta);
             doSerialVersionUID(entityAnnotation, entityElement, entityMeta);
         } else if (mappedSuperclassAnnotation != null) {
             if (!entityElement.getTypeParameters().isEmpty()) {
-                throw new JdbcException(DomaMessageCode.DOMA4050, entityElement);
+                throw new AptException(DomaMessageCode.DOMA4050, env,
+                        entityElement);
             }
             entityMeta.setMappedSuperclass(true);
         }
