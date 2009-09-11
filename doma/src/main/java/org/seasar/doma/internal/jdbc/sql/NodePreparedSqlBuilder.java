@@ -192,6 +192,11 @@ public class NodePreparedSqlBuilder implements
                     location.getSql(), location.getLineNumber(), location
                             .getPosition(), node.getText());
         }
+        if (fragment.indexOf(';') > -1) {
+            throw new JdbcException(DomaMessageCode.DOMA2117,
+                    location.getSql(), location.getLineNumber(), location
+                            .getPosition(), node.getText());
+        }
         p.setAvailable(true);
         p.appendRawSql(fragment);
         p.appendFormattedSql(fragment);

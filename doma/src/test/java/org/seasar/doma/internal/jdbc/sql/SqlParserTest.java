@@ -123,6 +123,24 @@ public class SqlParserTest extends TestCase {
         }
     }
 
+    public void testEmbeddedVariable_containsSemicolon() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        evaluator.add("name", new BuiltinStringDomain("hoge"));
+        evaluator.add("salary", new BuiltinBigDecimalDomain(new BigDecimal(
+                10000)));
+        evaluator.add("orderBy", new BuiltinStringDomain("aaa;bbb"));
+        String testSql = "select * from aaa where ename = /*name*/'aaa' and sal = /*salary*/-2000 /*#orderBy*/";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        try {
+            new NodePreparedSqlBuilder(config, evaluator).build(sqlNode);
+            fail();
+        } catch (JdbcException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(DomaMessageCode.DOMA2117, expected.getMessageCode());
+        }
+    }
+
     public void testIf() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("name", new BuiltinStringDomain("hoge"));
