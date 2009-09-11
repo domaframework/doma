@@ -43,8 +43,8 @@ public class BigDecimalConverter implements Converter<BigDecimal> {
             return new BigDecimal(value.toString());
         }
         if (String.class.isInstance(value)) {
-            Number number = parse(String.class.cast(value), pattern);
-            return new BigDecimal(number.toString());
+            BigDecimal decimal = parse(String.class.cast(value), pattern);
+            return decimal;
         }
         throw new UnsupportedConversionException(value.getClass().getName(),
                 BigDecimal.class.getName(), value);
@@ -61,8 +61,8 @@ public class BigDecimalConverter implements Converter<BigDecimal> {
      * @throws ConversionException
      *             変換に失敗した場合
      */
-    protected Number parse(String value, String pattern) {
+    protected BigDecimal parse(String value, String pattern) {
         String p = pattern != null ? pattern : DEFAULT_PATTERN;
-        return conversionSupport.parseToNumber(value, p);
+        return conversionSupport.parseToBigDecimal(value, p);
     }
 }

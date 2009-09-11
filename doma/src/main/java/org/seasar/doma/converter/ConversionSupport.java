@@ -1,5 +1,6 @@
 package org.seasar.doma.converter;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,7 +33,7 @@ import org.seasar.doma.DomaNullPointerException;
 public class ConversionSupport {
 
     /**
-     * 文字列をパースし数値に変換します。
+     * 文字列をパースし {@code BigDecimal} に変換します。
      * 
      * @param value
      *            文字列
@@ -42,7 +43,7 @@ public class ConversionSupport {
      * @throws ConversionException
      *             パースに失敗した場合
      */
-    public Number parseToNumber(String value, String pattern) {
+    public BigDecimal parseToBigDecimal(String value, String pattern) {
         if (value == null) {
             throw new DomaNullPointerException("value");
         }
@@ -50,8 +51,10 @@ public class ConversionSupport {
             throw new DomaNullPointerException("pattern");
         }
         DecimalFormat decimalFormat = new DecimalFormat(pattern);
+        decimalFormat.setParseBigDecimal(true);
         try {
-            return decimalFormat.parse(value);
+            Number number = decimalFormat.parse(value);
+            return BigDecimal.class.cast(number);
         } catch (ParseException e) {
             throw new org.seasar.doma.converter.ParseConversionException(value,
                     pattern, e);

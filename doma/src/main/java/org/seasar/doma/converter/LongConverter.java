@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.converter;
 
+import java.math.BigDecimal;
+
 /**
  * {@link Long} へのコンバーターです。
  * 
@@ -42,8 +44,8 @@ public class LongConverter implements Converter<Long> {
             return number.longValue();
         }
         if (String.class.isInstance(value)) {
-            Number number = parse(String.class.cast(value), pattern);
-            return number.longValue();
+            BigDecimal decimal = parse(String.class.cast(value), pattern);
+            return decimal.longValue();
         }
         throw new UnsupportedConversionException(value.getClass().getName(),
                 Long.class.getName(), value);
@@ -58,9 +60,9 @@ public class LongConverter implements Converter<Long> {
      *            パターン
      * @return パースされた値 @ 変換に失敗した場合
      */
-    protected Number parse(String value, String pattern) {
+    protected BigDecimal parse(String value, String pattern) {
         String p = pattern != null ? pattern : DEFAULT_PATTERN;
-        return conversionSupport.parseToNumber(value, p);
+        return conversionSupport.parseToBigDecimal(value, p);
     }
 
 }

@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.converter;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
@@ -44,8 +45,8 @@ public class BigIntegerConverter implements Converter<BigInteger> {
             return BigInteger.valueOf(number.longValue());
         }
         if (String.class.isInstance(value)) {
-            Number number = parse(String.class.cast(value), pattern);
-            return BigInteger.valueOf(number.longValue());
+            BigDecimal decimal = parse(String.class.cast(value), pattern);
+            return decimal.toBigInteger();
         }
         throw new UnsupportedConversionException(value.getClass().getName(),
                 BigInteger.class.getName(), value);
@@ -62,8 +63,8 @@ public class BigIntegerConverter implements Converter<BigInteger> {
      * @throws ConversionException
      *             変換に失敗した場合
      */
-    protected Number parse(String value, String pattern) {
+    protected BigDecimal parse(String value, String pattern) {
         String p = pattern != null ? pattern : DEFAULT_PATTERN;
-        return conversionSupport.parseToNumber(value, p);
+        return conversionSupport.parseToBigDecimal(value, p);
     }
 }

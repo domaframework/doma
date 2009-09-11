@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.converter;
 
+import java.math.BigDecimal;
+
 /**
  * {@link Float} へのコンバーターです。
  * 
@@ -42,8 +44,8 @@ public class FloatConverter implements Converter<Float> {
             return number.floatValue();
         }
         if (String.class.isInstance(value)) {
-            Number number = parse(String.class.cast(value), pattern);
-            return number.floatValue();
+            BigDecimal decimal = parse(String.class.cast(value), pattern);
+            return decimal.floatValue();
         }
         throw new UnsupportedConversionException(value.getClass().getName(),
                 Float.class.getName(), value);
@@ -58,9 +60,9 @@ public class FloatConverter implements Converter<Float> {
      *            パターン
      * @return パースされた値 @ 変換に失敗した場合
      */
-    protected Number parse(String value, String pattern) {
+    protected BigDecimal parse(String value, String pattern) {
         String p = pattern != null ? pattern : DEFAULT_PATTERN;
-        return conversionSupport.parseToNumber(value, p);
+        return conversionSupport.parseToBigDecimal(value, p);
     }
 
 }
