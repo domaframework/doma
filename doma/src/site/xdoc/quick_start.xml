@@ -122,13 +122,13 @@ public class AppConfig extends DomaAbstractConfig {
 import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
 import org.seasar.doma.Update;
-import org.seasar.doma.domain.IntegerDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
 
 @Dao(config = AppConfig.class)
 public interface EmployeeDao {
 
     @Select
-    Employee selectById(IntegerDomain employeeId);
+    Employee selectById(BuiltinIntegerDomain employeeId);
 
     @Update
     int update(Employee employee);
@@ -155,13 +155,13 @@ public interface EmployeeDao {
 				</p>
 <source>package example;
 
-import org.seasar.doma.domain.IntegerDomain;
+import org.seasar.doma.domain.BuiltinIntegerDomain;
 
 public class Main {
 
     public static void main(String[] args) {
         EmployeeDao dao = new EmployeeDao_();
-        Employee employee = dao.selectById(new IntegerDomain(3));
+        Employee employee = dao.selectById(new BuiltinIntegerDomain(3));
         employee.employeeName().set("KING");
         dao.update(employee);
     }
