@@ -29,5 +29,9 @@ public interface CallableSqlParameterMeta {
 
     void setTypeName(String typeName);
 
+    boolean isNullable();
+
+    void setNullable(boolean nullable);
+
     <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p);
 }

@@ -29,7 +29,7 @@ public class BytesWrapper extends AbstractWrapper<byte[]> {
     }
 
     public BytesWrapper(byte[] value) {
-        set(value);
+        super(value);
     }
 
     @Override

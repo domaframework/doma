@@ -29,7 +29,7 @@ public class BooleanWrapper extends AbstractWrapper<Boolean> {
     }
 
     public BooleanWrapper(Boolean value) {
-        set(value);
+        super(value);
     }
 
     @Override

@@ -20,48 +20,38 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seasar.doma.internal.WrapException;
-import org.seasar.doma.internal.util.ClassUtil;
-import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.entity.EntityMeta;
-import org.seasar.doma.message.DomaMessageCode;
-
+import org.seasar.doma.jdbc.entity.EntityMetaFactory;
 
 /**
  * @author taedium
  * 
  */
-public class EntityListResultParameter<I, E extends EntityMeta<I>> implements
-        ResultParameter<List<I>>, ListParameter<E> {
+public class EntityListResultParameter<E> implements ResultParameter<List<E>>,
+        ListParameter<EntityMeta<E>> {
 
-    protected final Class<E> entityClass;
+    protected final EntityMetaFactory<E> entityMetaFactory;
 
-    protected final List<I> entities = new ArrayList<I>();
+    protected final List<E> results = new ArrayList<E>();
 
-    public EntityListResultParameter(Class<E> entityClass) {
-        assertNotNull(entityClass);
-        this.entityClass = entityClass;
-    }
-
-    public E add() {
-        E entity = createEntity();
-        entities.add(entity.getEntity());
-        return entity;
-    }
-
-    protected E createEntity() {
-        try {
-            return ClassUtil.newInstance(entityClass);
-        } catch (WrapException e) {
-            Throwable cause = e.getCause();
-            throw new JdbcException(DomaMessageCode.DOMA2005, cause, entityClass
-                    .getName(), cause);
-        }
+    public EntityListResultParameter(EntityMetaFactory<E> entityMetaFactory) {
+        assertNotNull(entityMetaFactory);
+        this.entityMetaFactory = entityMetaFactory;
     }
 
     @Override
-    public List<I> getResult() {
-        return entities;
+    public EntityMeta<E> getElementHolder() {
+        return entityMetaFactory.createEntityMeta();
+    }
+
+    @Override
+    public void putElementHolder(EntityMeta<E> entityMeta) {
+        results.add(entityMeta.getEntity());
+    }
+
+    @Override
+    public List<E> getResult() {
+        return results;
     }
 
     @Override

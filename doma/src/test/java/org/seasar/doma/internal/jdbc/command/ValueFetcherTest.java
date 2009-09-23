@@ -48,12 +48,11 @@ public class ValueFetcherTest extends TestCase {
         resultSet.rows.add(new RowData("hoge", "foo", new BigDecimal(10), 100));
         resultSet.next();
 
-        StringWrapper aaa = new StringWrapper();
-        ValueFetcher<String> fetcher = new ValueFetcher<String>(
-                new MySelectQuery());
-        fetcher.fetch(resultSet, aaa);
+        StringWrapper wrapper = new StringWrapper();
+        ValueFetcher fetcher = new ValueFetcher(new MySelectQuery());
+        fetcher.fetch(resultSet, wrapper);
 
-        assertEquals("hoge", aaa.get());
+        assertEquals("hoge", wrapper.get());
     }
 
     protected class MySelectQuery implements SelectQuery {

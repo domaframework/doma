@@ -143,19 +143,19 @@ public class SqlFileSelectQueryMetaFactory extends
     protected void doParameters(SqlFileSelectQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         for (VariableElement param : method.getParameters()) {
-            QueryParameterMeta parameterMeta = new QueryParameterMeta();
+            QueryParameterMeta queryParameterMeta = new QueryParameterMeta();
             TypeMirror parameterType = TypeUtil.resolveTypeParameter(daoMeta
                     .getTypeParameterMap(), param.asType());
             String parameterName = ElementUtil.getParameterName(param);
             String parameterTypeName = TypeUtil.getTypeName(parameterType,
                     daoMeta.getTypeParameterMap(), env);
-            parameterMeta.setName(parameterName);
-            parameterMeta.setTypeName(parameterTypeName);
-            parameterMeta.setTypeMirror(parameterType);
+            queryParameterMeta.setName(parameterName);
+            queryParameterMeta.setTypeName(parameterTypeName);
+            queryParameterMeta.setTypeMirror(parameterType);
             TypeElement typeElement = TypeUtil
                     .toTypeElement(parameterType, env);
             if (typeElement != null) {
-                parameterMeta.setQualifiedName(typeElement.getQualifiedName()
+                queryParameterMeta.setQualifiedName(typeElement.getQualifiedName()
                         .toString());
             }
             if (isOptions(parameterType, queryMeta.getOptionsClass())) {
@@ -171,7 +171,7 @@ public class SqlFileSelectQueryMetaFactory extends
                             method);
                 }
                 IterationCallbackMeta callbackMeta = new IterationCallbackMeta();
-                callbackMeta.setQueryParameterMeta(parameterMeta);
+                callbackMeta.setQueryParameterMeta(queryParameterMeta);
                 doIterationCallbackParameter(parameterType, callbackMeta,
                         method, daoMeta);
                 queryMeta.setIterationCallbackMeta(callbackMeta);
@@ -190,9 +190,9 @@ public class SqlFileSelectQueryMetaFactory extends
                             method);
                 }
             } else if (!isEntity(parameterType, daoMeta)) {
-                parameterMeta.setNullable(true);
+                queryParameterMeta.setNullable(true);
             }
-            queryMeta.addQueryParameterMetas(parameterMeta);
+            queryMeta.addQueryParameterMetas(queryParameterMeta);
             queryMeta.addExpressionParameterType(parameterName, parameterType);
         }
         if (queryMeta.isIterated()

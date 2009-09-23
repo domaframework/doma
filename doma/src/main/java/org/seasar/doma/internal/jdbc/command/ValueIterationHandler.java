@@ -44,7 +44,7 @@ public class ValueIterationHandler<R, V> implements ResultSetHandler<R> {
 
     @Override
     public R handle(ResultSet resultSet, Query query) throws SQLException {
-        ValueFetcher<V> fetcher = new ValueFetcher<V>(query);
+        ValueFetcher fetcher = new ValueFetcher(query);
         IterationContext iterationContext = new IterationContext();
         R result = null;
         while (resultSet.next()) {

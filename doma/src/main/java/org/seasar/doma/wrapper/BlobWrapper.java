@@ -31,7 +31,7 @@ public class BlobWrapper extends AbstractWrapper<Blob> {
     }
 
     public BlobWrapper(Blob value) {
-        set(value);
+        super(value);
     }
 
     @Override

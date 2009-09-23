@@ -30,7 +30,7 @@ public class IntegerWrapper extends AbstractWrapper<Integer> implements
     }
 
     public IntegerWrapper(Integer value) {
-        set(value);
+        super(value);
     }
 
     @Override

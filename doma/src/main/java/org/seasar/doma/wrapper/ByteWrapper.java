@@ -30,7 +30,7 @@ public class ByteWrapper extends AbstractWrapper<Byte> implements
     }
 
     public ByteWrapper(byte value) {
-        set(value);
+        super(value);
     }
 
     @Override

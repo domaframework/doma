@@ -84,16 +84,18 @@ public class AutoFunctionQueryMetaFactory extends
     protected void doReturnType(AutoFunctionQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         TypeMirror returnType = method.getReturnType();
-        QueryResultMeta resultMeta = new QueryResultMeta();
-        resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
-        queryMeta.setQueryResultMeta(resultMeta);
+        String returnTypeName = TypeUtil.getTypeName(returnType, env);
+        QueryResultMeta queryResultMeta = new QueryResultMeta();
+        queryResultMeta.setTypeName(returnTypeName);
+        queryMeta.setQueryResultMeta(queryResultMeta);
 
-        ResultParameterMeta resultParameterMeta = createResultParameterMeta(
+        ResultParameterMeta resultParameterMeta = createCallableSqlResultParameterMeta(
                 queryMeta, returnType, method, daoMeta);
+        resultParameterMeta.setTypeName(returnTypeName);
         queryMeta.setResultParameterMeta(resultParameterMeta);
     }
 
-    protected ResultParameterMeta createResultParameterMeta(
+    protected ResultParameterMeta createCallableSqlResultParameterMeta(
             AutoFunctionQueryMeta queryMeta, TypeMirror returnType,
             ExecutableElement method, DaoMeta daoMeta) {
         if (isCollection(returnType)) {
@@ -109,15 +111,20 @@ public class AutoFunctionQueryMetaFactory extends
             if (isEntity(elementType, daoMeta)) {
                 return new EntityListResultParameterMeta(elementTypeName);
             }
-            if (isDomain(elementType)) {
-                return new DomainListResultParameterMeta(elementTypeName);
+            TypeMirror wrapperType = DomaTypes.getWrapperType(elementType, env);
+            if (wrapperType == null) {
+                throw new AptException(DomaMessageCode.DOMA4065, env, method,
+                        elementType);
             }
-            throw new AptException(DomaMessageCode.DOMA4065, env, method);
+            return new ValueListResultParameterMeta(elementTypeName, TypeUtil
+                    .getTypeName(wrapperType, env));
         }
-        if (isDomain(returnType)) {
-            return new DomainResultParameterMeta(queryMeta.getQueryResultMeta()
-                    .getTypeName());
+        TypeMirror wrapperType = DomaTypes.getWrapperType(returnType, env);
+        if (wrapperType == null) {
+            throw new AptException(DomaMessageCode.DOMA4063, env, method,
+                    returnType);
         }
-        throw new AptException(DomaMessageCode.DOMA4063, env, method);
+        return new ValueResultParameterMeta(TypeUtil.getTypeName(wrapperType,
+                env));
     }
 }

@@ -31,7 +31,7 @@ public class TimeWrapper extends AbstractWrapper<Time> {
     }
 
     public TimeWrapper(Time value) {
-        set(value);
+        super(value);
     }
 
     @Override

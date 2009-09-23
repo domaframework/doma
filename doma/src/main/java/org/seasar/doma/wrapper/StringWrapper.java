@@ -29,7 +29,7 @@ public class StringWrapper extends AbstractWrapper<String> {
     }
 
     public StringWrapper(String value) {
-        set(value);
+        super(value);
     }
 
     @Override

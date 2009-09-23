@@ -19,44 +19,34 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.List;
 
-import org.seasar.doma.internal.WrapException;
-import org.seasar.doma.internal.util.ClassUtil;
-import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.entity.EntityMeta;
-import org.seasar.doma.message.DomaMessageCode;
-
+import org.seasar.doma.jdbc.entity.EntityMetaFactory;
 
 /**
  * @author taedium
  * 
  */
-public class EntityListParameter<I, E extends EntityMeta<I>> implements
-        ListParameter<E> {
+public class EntityListParameter<E> implements ListParameter<EntityMeta<E>> {
 
-    protected final Class<E> entityClass;
+    protected final EntityMetaFactory<E> entityMetaFactory;
 
-    protected final List<I> entities;
+    protected final List<E> entities;
 
-    public EntityListParameter(Class<E> entityClass, List<I> entities) {
-        assertNotNull(entityClass, entities);
-        this.entityClass = entityClass;
+    public EntityListParameter(EntityMetaFactory<E> entityMetaFactory,
+            List<E> entities) {
+        assertNotNull(entityMetaFactory, entities);
+        this.entityMetaFactory = entityMetaFactory;
         this.entities = entities;
     }
 
-    public E add() {
-        E entity = createEntity();
-        entities.add(entity.getEntity());
-        return entity;
+    @Override
+    public EntityMeta<E> getElementHolder() {
+        return entityMetaFactory.createEntityMeta();
     }
 
-    protected E createEntity() {
-        try {
-            return ClassUtil.newInstance(entityClass);
-        } catch (WrapException e) {
-            Throwable cause = e.getCause();
-            throw new JdbcException(DomaMessageCode.DOMA2005, cause, entityClass
-                    .getName(), cause);
-        }
+    @Override
+    public void putElementHolder(EntityMeta<E> entityMeta) {
+        entities.add(entityMeta.getEntity());
     }
 
     @Override

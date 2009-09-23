@@ -93,17 +93,17 @@ public class DelegateQueryMetaFactory extends
             String parameterTypeName = TypeUtil.getTypeName(parameterType,
                     daoMeta.getTypeParameterMap(), env);
 
-            QueryParameterMeta parameterMeta = new QueryParameterMeta();
-            parameterMeta.setName(parameterName);
-            parameterMeta.setTypeName(parameterTypeName);
-            parameterMeta.setTypeMirror(parameterType);
+            QueryParameterMeta queryParameterMeta = new QueryParameterMeta();
+            queryParameterMeta.setName(parameterName);
+            queryParameterMeta.setTypeName(parameterTypeName);
+            queryParameterMeta.setTypeMirror(parameterType);
             TypeElement typeElement = TypeUtil
                     .toTypeElement(parameterType, env);
             if (typeElement != null) {
-                parameterMeta.setQualifiedName(typeElement.getQualifiedName()
+                queryParameterMeta.setQualifiedName(typeElement.getQualifiedName()
                         .toString());
             }
-            queryMeta.addQueryParameterMetas(parameterMeta);
+            queryMeta.addQueryParameterMetas(queryParameterMeta);
 
             queryMeta.addExpressionParameterType(parameterName, parameterType);
         }

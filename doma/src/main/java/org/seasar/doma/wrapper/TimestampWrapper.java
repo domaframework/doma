@@ -31,7 +31,7 @@ public class TimestampWrapper extends AbstractWrapper<Timestamp> {
     }
 
     public TimestampWrapper(Timestamp value) {
-        set(value);
+        super(value);
     }
 
     @Override

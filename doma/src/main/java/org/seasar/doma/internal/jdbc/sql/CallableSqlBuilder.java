@@ -86,7 +86,7 @@ public class CallableSqlBuilder
     }
 
     @Override
-    public Void visitDomainResultParameter(DomainResultParameter<?> parameter,
+    public Void visitDomainResultParameter(ValueResultParameter<?> parameter,
             Context p) throws RuntimeException {
         handelResultParameter(parameter, p);
         return null;
@@ -94,7 +94,7 @@ public class CallableSqlBuilder
 
     @Override
     public Void visitDomainListResultParameter(
-            DomainListResultParameter<?> parameter, Context p)
+            ValueListResultParameter<?> parameter, Context p)
             throws RuntimeException {
         handelResultParameter(parameter, p);
         return null;
@@ -102,7 +102,7 @@ public class CallableSqlBuilder
 
     @Override
     public Void visitEntityListResultParameter(
-            EntityListResultParameter<?, ?> parameter, Context p)
+            EntityListResultParameter<?> parameter, Context p)
             throws RuntimeException {
         handelResultParameter(parameter, p);
         return null;
@@ -114,14 +114,14 @@ public class CallableSqlBuilder
     }
 
     @Override
-    public Void visitDomainListParameter(DomainListParameter parameter,
+    public Void visitDomainListParameter(ValueListParameter<?> parameter,
             Context p) throws RuntimeException {
         handelListParameter(parameter, p);
         return null;
     }
 
     @Override
-    public Void visitEntityListParameter(EntityListParameter<?, ?> parameter,
+    public Void visitEntityListParameter(EntityListParameter<?> parameter,
             Context p) throws RuntimeException {
         handelListParameter(parameter, p);
         return null;
@@ -148,9 +148,9 @@ public class CallableSqlBuilder
     }
 
     @Override
-    public Void visitInOutParameter(InOutParameter parameter, Context p)
+    public Void visitInOutParameter(InOutParameter<?> parameter, Context p)
             throws RuntimeException {
-        Wrapper<?> domain = parameter.getDomain();
+        Wrapper<?> domain = parameter.getWrapper();
         p.appendRawSql("?, ");
         p.appendFormattedSql(domain.accept(config.dialect()
                 .getSqlLogFormattingVisitor(), formattingFunction));
@@ -160,7 +160,7 @@ public class CallableSqlBuilder
     }
 
     @Override
-    public Void visitOutParameter(OutParameter parameter, Context p)
+    public Void visitOutParameter(OutParameter<?> parameter, Context p)
             throws RuntimeException {
         p.appendRawSql("?, ");
         p.appendFormattedSql("?, ");

@@ -40,7 +40,7 @@ public class EntitySingleResultHandler<E> implements ResultSetHandler<E> {
 
     @Override
     public E handle(ResultSet resultSet, Query query) throws SQLException {
-        EntityFetcher<E> fetcher = new EntityFetcher<E>(query);
+        EntityFetcher fetcher = new EntityFetcher(query);
         EntityMeta<E> entityMeta = entityMetaFactory.createEntityMeta();
         if (resultSet.next()) {
             fetcher.fetch(resultSet, entityMeta);

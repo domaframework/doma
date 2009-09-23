@@ -39,7 +39,7 @@ public class ValueSingleResultHandler<V> implements ResultSetHandler<V> {
 
     @Override
     public V handle(ResultSet resultSet, Query query) throws SQLException {
-        ValueFetcher<V> fetcher = new ValueFetcher<V>(query);
+        ValueFetcher fetcher = new ValueFetcher(query);
         if (resultSet.next()) {
             fetcher.fetch(resultSet, wrapper);
             if (resultSet.next()) {

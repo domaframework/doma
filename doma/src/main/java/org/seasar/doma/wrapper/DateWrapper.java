@@ -31,7 +31,7 @@ public class DateWrapper extends AbstractWrapper<Date> {
     }
 
     public DateWrapper(Date value) {
-        set(value);
+        super(value);
     }
 
     @Override

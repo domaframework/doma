@@ -17,23 +17,31 @@ package org.seasar.doma.internal.jdbc.sql;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class InOutParameter implements CallableSqlParameter {
+public class InOutParameter<T> implements CallableSqlParameter {
 
-    protected final Wrapper<?> domain;
+    protected final Wrapper<T> wrapper;
 
-    public InOutParameter(Wrapper<?> domain) {
-        assertNotNull(domain);
-        this.domain = domain;
+    protected final Reference<T> reference;
+
+    public InOutParameter(Wrapper<T> wrapper, Reference<T> reference) {
+        assertNotNull(wrapper, reference);
+        this.wrapper = wrapper;
+        this.reference = reference;
     }
 
-    public Wrapper<?> getDomain() {
-        return domain;
+    public Wrapper<T> getWrapper() {
+        return wrapper;
+    }
+
+    public void updateReference() {
+        reference.set(wrapper.get());
     }
 
     @Override

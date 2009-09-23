@@ -27,11 +27,12 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.RegisterOutParameter;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlParameter;
-import org.seasar.doma.internal.jdbc.sql.DomainResultParameter;
 import org.seasar.doma.internal.jdbc.sql.InOutParameter;
 import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.OutParameter;
+import org.seasar.doma.internal.jdbc.sql.ValueResultParameter;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
 import org.seasar.doma.wrapper.IntegerWrapper;
@@ -49,12 +50,12 @@ public class CallableSqlParameterBinderTest extends TestCase {
         MockCallableStatement callableStatement = new MockCallableStatement();
 
         List<CallableSqlParameter> parameters = new ArrayList<CallableSqlParameter>();
-        parameters.add(new DomainResultParameter<IntegerWrapper>(
-                IntegerWrapper.class));
+        parameters.add(new ValueResultParameter<Integer>(new IntegerWrapper()));
         parameters.add(new InParameter(new StringWrapper("aaa")));
-        parameters.add(new InOutParameter(new BigDecimalWrapper(new BigDecimal(
-                10))));
-        parameters.add(new OutParameter(new StringWrapper("bbb")));
+        parameters.add(new InOutParameter<BigDecimal>(new BigDecimalWrapper(
+                new BigDecimal(10)), new Reference<BigDecimal>()));
+        parameters.add(new OutParameter<String>(new StringWrapper("bbb"),
+                new Reference<String>()));
         CallableSqlParameterBinder binder = new CallableSqlParameterBinder(
                 new MyQuery());
         binder.bind(callableStatement, parameters);

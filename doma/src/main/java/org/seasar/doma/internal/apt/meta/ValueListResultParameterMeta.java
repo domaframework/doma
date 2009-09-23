@@ -21,22 +21,31 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
  * @author taedium
  * 
  */
-public class DomainListParameterMeta extends AbstractCallableSqlParameterMeta {
+public class ValueListResultParameterMeta extends
+        AbstractCallableSqlParameterMeta implements ResultParameterMeta {
 
-    protected final String domainTypeName;
+    protected final String elementTypeName;
 
-    public DomainListParameterMeta(String domainTypeName) {
-        assertNotNull(domainTypeName);
-        this.domainTypeName = domainTypeName;
+    protected final String wrapperTypeName;
+
+    public ValueListResultParameterMeta(String elementTypeName,
+            String wrapperTypeName) {
+        assertNotNull(elementTypeName, wrapperTypeName);
+        this.elementTypeName = elementTypeName;
+        this.wrapperTypeName = wrapperTypeName;
     }
 
-    public String getDomainTypeName() {
-        return domainTypeName;
+    public String getElementTypeName() {
+        return elementTypeName;
+    }
+
+    public String getWrapperTypeName() {
+        return wrapperTypeName;
     }
 
     @Override
     public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visistDomainListParameterMeta(this, p);
+        return visitor.visistDomainListResultParameterMeta(this, p);
     }
 
 }

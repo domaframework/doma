@@ -15,11 +15,25 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
+import static org.seasar.doma.internal.util.AssertionUtil.*;
+
 /**
  * @author taedium
  * 
  */
 public class InParameterMeta extends AbstractCallableSqlParameterMeta {
+
+    protected final String wrapperTypeName;
+
+    public InParameterMeta(String wrapperTypeName) {
+        assertNotNull(wrapperTypeName);
+        this.wrapperTypeName = wrapperTypeName;
+        this.nullable = true;
+    }
+
+    public String getWrapperTypeName() {
+        return wrapperTypeName;
+    }
 
     @Override
     public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {

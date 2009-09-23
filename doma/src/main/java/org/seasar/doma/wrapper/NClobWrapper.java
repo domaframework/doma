@@ -31,7 +31,7 @@ public class NClobWrapper extends AbstractWrapper<NClob> {
     }
 
     public NClobWrapper(NClob value) {
-        set(value);
+        super(value);
     }
 
     @Override

@@ -32,7 +32,7 @@ public class BigDecimalWrapper extends AbstractWrapper<BigDecimal> implements
     }
 
     public BigDecimalWrapper(BigDecimal value) {
-        set(value);
+        super(value);
     }
 
     @Override

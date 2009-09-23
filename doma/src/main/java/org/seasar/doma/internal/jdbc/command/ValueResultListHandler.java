@@ -41,7 +41,7 @@ public class ValueResultListHandler<V> implements ResultSetHandler<List<V>> {
     @Override
     public List<V> handle(ResultSet resultSet, Query query) throws SQLException {
         List<V> results = new ArrayList<V>();
-        ValueFetcher<V> fetcher = new ValueFetcher<V>(query);
+        ValueFetcher fetcher = new ValueFetcher(query);
         while (resultSet.next()) {
             fetcher.fetch(resultSet, wrapper);
             results.add(wrapper.get());

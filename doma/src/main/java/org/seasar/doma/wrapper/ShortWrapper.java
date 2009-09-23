@@ -30,7 +30,7 @@ public class ShortWrapper extends AbstractWrapper<Short> implements
     }
 
     public ShortWrapper(Short value) {
-        set(value);
+        super(value);
     }
 
     @Override

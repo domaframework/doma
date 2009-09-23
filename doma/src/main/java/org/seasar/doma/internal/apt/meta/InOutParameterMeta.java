@@ -15,11 +15,31 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
+import static org.seasar.doma.internal.util.AssertionUtil.*;
+
 /**
  * @author taedium
  * 
  */
 public class InOutParameterMeta extends AbstractCallableSqlParameterMeta {
+
+    private final String argumentTypeName;
+
+    protected final String wrapperTypeName;
+
+    public InOutParameterMeta(String argumentTypeName, String wrapperTypeName) {
+        assertNotNull(argumentTypeName, wrapperTypeName);
+        this.argumentTypeName = argumentTypeName;
+        this.wrapperTypeName = wrapperTypeName;
+    }
+
+    public String getArgumentTypeName() {
+        return argumentTypeName;
+    }
+
+    public String getWrapperTypeName() {
+        return wrapperTypeName;
+    }
 
     @Override
     public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {

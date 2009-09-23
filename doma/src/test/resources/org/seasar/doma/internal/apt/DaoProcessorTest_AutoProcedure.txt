@@ -16,23 +16,20 @@ public class AutoProcedureDao_ extends org.seasar.doma.jdbc.DomaAbstractDao impl
     }
 
     @Override
-    public void executeProcedure(org.seasar.doma.domain.BuiltinIntegerDomain arg1, org.seasar.doma.domain.BuiltinIntegerDomain arg2) {
+    public void executeProcedure(java.lang.Integer arg1, org.seasar.doma.jdbc.Reference<java.lang.Integer> arg2) {
         entering("org.seasar.doma.internal.apt.dao.AutoProcedureDao_", "executeProcedure", arg1, arg2);
-        if (arg1 == null) {
-            throw new org.seasar.doma.DomaNullPointerException("arg1");
-        }
         if (arg2 == null) {
             throw new org.seasar.doma.DomaNullPointerException("arg2");
         }
         org.seasar.doma.internal.jdbc.query.AutoProcedureQuery query = new org.seasar.doma.internal.jdbc.query.AutoProcedureQuery();
         query.setConfig(config);
         query.setProcedureName("executeProcedure");
-        query.addParameter(new org.seasar.doma.internal.jdbc.sql.InParameter(arg1));
-        query.addParameter(new org.seasar.doma.internal.jdbc.sql.OutParameter(arg2));
+        query.addParameter(new org.seasar.doma.internal.jdbc.sql.InParameter(new org.seasar.doma.wrapper.IntegerWrapper(arg1)));
+        query.addParameter(new org.seasar.doma.internal.jdbc.sql.OutParameter<java.lang.Integer>(new org.seasar.doma.wrapper.IntegerWrapper(), arg2));
         query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoProcedureDao_");
         query.setCallerMethodName("executeProcedure");
         query.setQueryTimeout(-1);
-        query.compile();
+        query.prepare();
         org.seasar.doma.internal.jdbc.command.ProcedureCommand command = new org.seasar.doma.internal.jdbc.command.ProcedureCommand(query);
         command.execute();
         exiting("org.seasar.doma.internal.apt.dao.AutoProcedureDao_", "executeProcedure", null);

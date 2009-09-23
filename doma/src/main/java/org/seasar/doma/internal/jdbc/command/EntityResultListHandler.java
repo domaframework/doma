@@ -41,7 +41,7 @@ public class EntityResultListHandler<E> implements ResultSetHandler<List<E>> {
 
     @Override
     public List<E> handle(ResultSet resultSet, Query query) throws SQLException {
-        EntityFetcher<E> fetcher = new EntityFetcher<E>(query);
+        EntityFetcher fetcher = new EntityFetcher(query);
         List<E> entities = new ArrayList<E>();
         while (resultSet.next()) {
             EntityMeta<E> entityMeta = entityMetaFactory.createEntityMeta();

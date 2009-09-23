@@ -16,6 +16,10 @@
 package org.seasar.doma.internal.apt.dao;
 
 import org.seasar.doma.Dao;
+import org.seasar.doma.Function;
+import org.seasar.doma.In;
+import org.seasar.doma.Out;
+import org.seasar.doma.jdbc.Reference;
 
 /**
  * @author taedium
@@ -24,8 +28,7 @@ import org.seasar.doma.Dao;
 @Dao(config = MyConfig.class)
 public interface AutoFunctionDao {
 
-    // @Function
-    // BuiltinStringDomain executeFunction(@In BuiltinIntegerDomain arg1, @Out
-    // BuiltinIntegerDomain arg2);
+    @Function
+    String executeFunction(@In Integer arg1, @Out Reference<Integer> arg2);
 
 }

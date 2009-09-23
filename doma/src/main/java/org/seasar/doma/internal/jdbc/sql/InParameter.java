@@ -27,9 +27,9 @@ public class InParameter implements PreparedSqlParameter, CallableSqlParameter {
 
     protected final Wrapper<?> wrapper;
 
-    public InParameter(Wrapper<?> domain) {
-        assertNotNull(domain);
-        this.wrapper = domain;
+    public InParameter(Wrapper<?> wrapper) {
+        assertNotNull(wrapper);
+        this.wrapper = wrapper;
     }
 
     public Wrapper<?> getWrapper() {

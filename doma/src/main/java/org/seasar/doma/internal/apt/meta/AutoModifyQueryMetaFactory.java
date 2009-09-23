@@ -130,16 +130,16 @@ public class AutoModifyQueryMetaFactory extends
         queryMeta.setEntityName(entityName);
         queryMeta.setEntityTypeName(entityTypeName);
 
-        QueryParameterMeta parameterMeta = new QueryParameterMeta();
-        parameterMeta.setName(entityName);
-        parameterMeta.setTypeName(entityTypeName);
-        parameterMeta.setTypeMirror(entityType);
+        QueryParameterMeta queryParameterMeta = new QueryParameterMeta();
+        queryParameterMeta.setName(entityName);
+        queryParameterMeta.setTypeName(entityTypeName);
+        queryParameterMeta.setTypeMirror(entityType);
         TypeElement typeElement = TypeUtil.toTypeElement(entityType, env);
         if (typeElement != null) {
-            parameterMeta.setQualifiedName(typeElement.getQualifiedName()
+            queryParameterMeta.setQualifiedName(typeElement.getQualifiedName()
                     .toString());
         }
-        queryMeta.addQueryParameterMetas(parameterMeta);
+        queryMeta.addQueryParameterMetas(queryParameterMeta);
 
         queryMeta.addExpressionParameterType(entityName, entityType);
 

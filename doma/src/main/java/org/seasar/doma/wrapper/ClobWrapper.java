@@ -31,7 +31,7 @@ public class ClobWrapper extends AbstractWrapper<Clob> {
     }
 
     public ClobWrapper(Clob value) {
-        set(value);
+        super(value);
     }
 
     @Override

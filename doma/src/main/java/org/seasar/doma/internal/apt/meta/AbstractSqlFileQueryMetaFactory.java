@@ -60,14 +60,14 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
             String parameterName = ElementUtil.getParameterName(param);
             String parameterTypeName = TypeUtil.getTypeName(parameterType,
                     daoMeta.getTypeParameterMap(), env);
-            QueryParameterMeta parameterMeta = new QueryParameterMeta();
-            parameterMeta.setName(parameterName);
-            parameterMeta.setTypeName(parameterTypeName);
-            parameterMeta.setTypeMirror(parameterType);
+            QueryParameterMeta queryParameterMeta = new QueryParameterMeta();
+            queryParameterMeta.setName(parameterName);
+            queryParameterMeta.setTypeName(parameterTypeName);
+            queryParameterMeta.setTypeMirror(parameterType);
             TypeElement typeElement = TypeUtil
                     .toTypeElement(parameterType, env);
             if (typeElement != null) {
-                parameterMeta.setQualifiedName(typeElement.getQualifiedName()
+                queryParameterMeta.setQualifiedName(typeElement.getQualifiedName()
                         .toString());
             }
             if (isCollection(parameterType)) {
@@ -89,9 +89,9 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
                     throw new AptException(DomaMessageCode.DOMA4008, env,
                             method, parameterType);
                 }
-                parameterMeta.setNullable(true);
+                queryParameterMeta.setNullable(true);
             }
-            queryMeta.addQueryParameterMetas(parameterMeta);
+            queryMeta.addQueryParameterMetas(queryParameterMeta);
             queryMeta.addExpressionParameterType(parameterName, parameterType);
         }
     }

@@ -32,7 +32,7 @@ public class BigIntegerWrapper extends AbstractWrapper<BigInteger> implements
     }
 
     public BigIntegerWrapper(BigInteger value) {
-        set(value);
+        super(value);
     }
 
     @Override

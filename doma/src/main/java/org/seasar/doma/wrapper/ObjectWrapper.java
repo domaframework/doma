@@ -8,7 +8,7 @@ public class ObjectWrapper extends AbstractWrapper<Object> {
     }
 
     public ObjectWrapper(Object value) {
-        set(value);
+        super(value);
     }
 
     @Override

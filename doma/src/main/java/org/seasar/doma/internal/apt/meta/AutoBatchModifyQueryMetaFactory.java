@@ -139,16 +139,16 @@ public class AutoBatchModifyQueryMetaFactory extends
         queryMeta.setEntityListTypeName(entityListTypeName);
         queryMeta.setElementTypeName(TypeUtil.getTypeName(elementType, daoMeta
                 .getTypeParameterMap(), env));
-        QueryParameterMeta parameterMeta = new QueryParameterMeta();
-        parameterMeta.setName(entityListName);
-        parameterMeta.setTypeName(entityListTypeName);
-        parameterMeta.setTypeMirror(elementType);
+        QueryParameterMeta queryParameterMeta = new QueryParameterMeta();
+        queryParameterMeta.setName(entityListName);
+        queryParameterMeta.setTypeName(entityListTypeName);
+        queryParameterMeta.setTypeMirror(elementType);
         TypeElement typeElement = TypeUtil.toTypeElement(elementType, env);
         if (typeElement != null) {
-            parameterMeta.setQualifiedName(typeElement.getQualifiedName()
+            queryParameterMeta.setQualifiedName(typeElement.getQualifiedName()
                     .toString());
         }
-        queryMeta.addQueryParameterMetas(parameterMeta);
+        queryMeta.addQueryParameterMetas(queryParameterMeta);
         queryMeta.addExpressionParameterType(entityListName, elementType);
 
         validateEntityPropertyNames(elementType, method, queryMeta);

@@ -82,16 +82,16 @@ public class ArrayCreateQueryMetaFactory extends
                 .getTypeParameterMap(), env);
         queryMeta.setArrayName(arrayName);
         queryMeta.setArrayTypeName(arrayTypeName);
-        QueryParameterMeta parameterMeta = new QueryParameterMeta();
-        parameterMeta.setName(arrayName);
-        parameterMeta.setTypeName(arrayTypeName);
-        parameterMeta.setTypeMirror(arrayType);
+        QueryParameterMeta queryParameterMeta = new QueryParameterMeta();
+        queryParameterMeta.setName(arrayName);
+        queryParameterMeta.setTypeName(arrayTypeName);
+        queryParameterMeta.setTypeMirror(arrayType);
         TypeElement typeElement = TypeUtil.toTypeElement(arrayType, env);
         if (typeElement != null) {
-            parameterMeta.setQualifiedName(typeElement.getQualifiedName()
+            queryParameterMeta.setQualifiedName(typeElement.getQualifiedName()
                     .toString());
         }
-        queryMeta.addQueryParameterMetas(parameterMeta);
+        queryMeta.addQueryParameterMetas(queryParameterMeta);
         queryMeta.addExpressionParameterType(arrayName, arrayType);
     }
 }

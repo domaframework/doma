@@ -26,6 +26,13 @@ public abstract class AbstractWrapper<V> implements Wrapper<V> {
     /** 値 */
     protected V value;
 
+    public AbstractWrapper() {
+    }
+
+    public AbstractWrapper(V value) {
+        this.value = value;
+    }
+
     @Override
     public void set(V v) {
         value = v;

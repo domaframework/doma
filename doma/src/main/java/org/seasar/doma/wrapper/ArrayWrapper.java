@@ -31,7 +31,7 @@ public class ArrayWrapper extends AbstractWrapper<Array> {
     }
 
     public ArrayWrapper(Array value) {
-        set(value);
+        super(value);
     }
 
     @Override

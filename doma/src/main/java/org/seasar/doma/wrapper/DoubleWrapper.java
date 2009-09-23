@@ -30,7 +30,7 @@ public class DoubleWrapper extends AbstractWrapper<Double> implements
     }
 
     public DoubleWrapper(Double value) {
-        set(value);
+        super(value);
     }
 
     @Override

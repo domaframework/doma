@@ -30,7 +30,7 @@ public class FloatWrapper extends AbstractWrapper<Float> implements
     }
 
     public FloatWrapper(Float value) {
-        set(value);
+        super(value);
     }
 
     @Override

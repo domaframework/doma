@@ -90,6 +90,20 @@ public final class TypeUtil {
         return isAssignable(typeMirror, typeElement.asType(), env);
     }
 
+    public static boolean isSameType(TypeMirror typeMirror, Class<?> clazz,
+            ProcessingEnvironment env) {
+        assertNotNull(typeMirror, clazz, env);
+        TypeElement typeElement = env.getElementUtils().getTypeElement(
+                clazz.getName());
+        if (typeElement == null) {
+            return false;
+        }
+        DeclaredType declaredType = env.getTypeUtils().getDeclaredType(
+                typeElement);
+        return env.getTypeUtils().isSameType(
+                env.getTypeUtils().erasure(typeMirror), declaredType);
+    }
+
     public static boolean isAssignable(TypeMirror typeMirror1,
             TypeMirror typeMirror2, ProcessingEnvironment env) {
         assertNotNull(typeMirror1, typeMirror2, env);

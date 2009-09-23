@@ -20,47 +20,37 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seasar.doma.internal.WrapException;
-import org.seasar.doma.internal.util.ClassUtil;
-import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.message.DomaMessageCode;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class DomainListResultParameter<D extends Wrapper<?>> implements
-        ResultParameter<List<D>>, ListParameter<D> {
+public class ValueListResultParameter<V> implements ResultParameter<List<V>>,
+        ListParameter<Wrapper<V>> {
 
-    protected final Class<D> domainClass;
+    protected final Wrapper<V> wrapper;
 
-    protected final List<D> domains = new ArrayList<D>();
+    protected final List<V> results = new ArrayList<V>();
 
-    public DomainListResultParameter(Class<D> domainClass) {
-        assertNotNull(domainClass);
-        this.domainClass = domainClass;
-    }
-
-    public D add() {
-        D domain = createDomain();
-        domains.add(domain);
-        return domain;
-    }
-
-    protected D createDomain() {
-        try {
-            return ClassUtil.newInstance(domainClass);
-        } catch (WrapException e) {
-            Throwable cause = e.getCause();
-            throw new JdbcException(DomaMessageCode.DOMA2006, cause,
-                    domainClass.getName(), cause);
-        }
+    public ValueListResultParameter(Wrapper<V> wrapper) {
+        assertNotNull(wrapper);
+        this.wrapper = wrapper;
     }
 
     @Override
-    public List<D> getResult() {
-        return domains;
+    public Wrapper<V> getElementHolder() {
+        return wrapper;
+    }
+
+    @Override
+    public void putElementHolder(Wrapper<V> wrapper) {
+        results.add(wrapper.get());
+    }
+
+    @Override
+    public List<V> getResult() {
+        return results;
     }
 
     @Override

@@ -30,7 +30,7 @@ public class LongWrapper extends AbstractWrapper<Long> implements
     }
 
     public LongWrapper(Long value) {
-        set(value);
+        super(value);
     }
 
     @Override

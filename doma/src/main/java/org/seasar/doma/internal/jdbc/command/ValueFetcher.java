@@ -29,7 +29,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class ValueFetcher<V> {
+public class ValueFetcher {
 
     protected final Query query;
 
@@ -38,7 +38,7 @@ public class ValueFetcher<V> {
         this.query = query;
     }
 
-    public void fetch(ResultSet resultSet, Wrapper<V> wrapper)
+    public void fetch(ResultSet resultSet, Wrapper<?> wrapper)
             throws SQLException {
         ResultSetMetaData resultSetMeta = resultSet.getMetaData();
         JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().dialect()

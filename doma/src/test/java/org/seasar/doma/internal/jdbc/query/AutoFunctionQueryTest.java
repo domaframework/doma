@@ -18,7 +18,8 @@ package org.seasar.doma.internal.jdbc.query;
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
-import org.seasar.doma.internal.jdbc.sql.DomainResultParameter;
+import org.seasar.doma.internal.jdbc.sql.ValueResultParameter;
+import org.seasar.doma.wrapper.IntegerWrapper;
 
 /**
  * @author taedium
@@ -29,15 +30,14 @@ public class AutoFunctionQueryTest extends TestCase {
     private final MockConfig runtimeConfig = new MockConfig();
 
     public void testPrepare() throws Exception {
-        fail();
         AutoFunctionQuery<Integer> query = new AutoFunctionQuery<Integer>();
         query.setConfig(runtimeConfig);
         query.setFunctionName("aaa");
-        query.setResultParameter(new DomainResultParameter<Integer>(
-                Integer.class));
+        query.setResultParameter(new ValueResultParameter<Integer>(
+                new IntegerWrapper()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.parepare();
+        query.prepare();
 
         FunctionQuery<Integer> functionQuery = query;
         assertNotNull(functionQuery.getSql());

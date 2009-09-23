@@ -13,43 +13,32 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.meta;
+package org.seasar.doma.jdbc;
 
 /**
+ * 
  * @author taedium
  * 
+ * @param <T>
+ *            値の型
  */
-public abstract class AbstractCallableSqlParameterMeta implements
-        CallableSqlParameterMeta {
+public class Reference<T> {
 
-    protected String name;
+    private T value;
 
-    protected String typeName;
-
-    protected boolean nullable;
-
-    public String getName() {
-        return name;
+    public Reference() {
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Reference(T value) {
+        this.value = value;
     }
 
-    public String getTypeName() {
-        return typeName;
+    public T get() {
+        return value;
     }
 
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
-    }
-
-    public boolean isNullable() {
-        return nullable;
-    }
-
-    public void setNullable(boolean nullable) {
-        this.nullable = nullable;
+    public void set(T value) {
+        this.value = value;
     }
 
 }
