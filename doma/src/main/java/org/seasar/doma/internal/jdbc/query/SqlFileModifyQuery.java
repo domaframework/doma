@@ -55,11 +55,15 @@ public abstract class SqlFileModifyQuery implements ModifyQuery {
         ExpressionEvaluator evaluator = new ExpressionEvaluator(parameters);
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
                 evaluator);
-        SqlFile sqlFile = config.sqlFileRepository()
-                .getSqlFile(sqlFilePath, config.dialect());
-        config.jdbcLogger()
-                .logSqlFile(callerClassName, callerMethodName, sqlFile);
+        SqlFile sqlFile = config.sqlFileRepository().getSqlFile(sqlFilePath,
+                config.dialect());
+        config.jdbcLogger().logSqlFile(callerClassName, callerMethodName,
+                sqlFile);
         sql = sqlBuilder.build(sqlFile.getSqlNode());
+    }
+
+    @Override
+    public void complete() {
     }
 
     public void setConfig(Config config) {

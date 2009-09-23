@@ -24,12 +24,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.internal.jdbc.util.ColumnUtil;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
-import org.seasar.doma.jdbc.entity.Entity;
-import org.seasar.doma.jdbc.entity.EntityProperty;
+import org.seasar.doma.jdbc.entity.EntityMeta;
+import org.seasar.doma.jdbc.entity.EntityPropertyMeta;
 
 /**
  * @author taedium
@@ -46,10 +46,11 @@ public class EntityFetcher {
         this.query = query;
     }
 
-    public void fetch(ResultSet resultSet, Entity<?> entity)
+    public void fetch(ResultSet resultSet, EntityMeta<?> entityMeta)
             throws SQLException {
+        assertNotNull(resultSet, entityMeta);
         if (nameMap == null) {
-            createNameMap(entity);
+            createNameMap(entityMeta);
         }
         ResultSetMetaData resultSetMeta = resultSet.getMetaData();
         int count = resultSetMeta.getColumnCount();
@@ -58,20 +59,19 @@ public class EntityFetcher {
         for (int i = 1; i < count + 1; i++) {
             String columnName = resultSetMeta.getColumnLabel(i);
             String propertyName = nameMap.get(columnName.toLowerCase());
-            EntityProperty<?> property = entity
-                    .__getEntityProperty(propertyName);
+            EntityPropertyMeta<?> property = entityMeta.getPropertyMeta(propertyName);
             if (property != null) {
-                Domain<?, ?> domain = property.getDomain();
+                Wrapper<?, ?> wrapper = property.getWrapper();
                 GetValueFunction function = new GetValueFunction(resultSet, i);
-                domain.accept(jdbcMappingVisitor, function);
+                wrapper.accept(jdbcMappingVisitor, function);
             }
         }
     }
 
-    protected void createNameMap(Entity<?> entity) {
-        List<EntityProperty<?>> properties = entity.__getEntityProperties();
+    protected void createNameMap(EntityMeta<?> entity) {
+        List<EntityPropertyMeta<?>> properties = entity.getPropertyMetas();
         nameMap = new HashMap<String, String>(properties.size());
-        for (EntityProperty<?> property : properties) {
+        for (EntityPropertyMeta<?> property : properties) {
             String columnName = ColumnUtil.getColumnName(query.getConfig(),
                     property);
             nameMap.put(columnName.toLowerCase(), property.getName());

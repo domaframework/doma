@@ -17,7 +17,7 @@ package org.seasar.doma.internal.jdbc.sql;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 
 /**
  * @author taedium
@@ -25,15 +25,15 @@ import org.seasar.doma.domain.Domain;
  */
 public class InParameter implements PreparedSqlParameter, CallableSqlParameter {
 
-    protected final Domain<?, ?> domain;
+    protected final Wrapper<?, ?> wrapper;
 
-    public InParameter(Domain<?, ?> domain) {
+    public InParameter(Wrapper<?, ?> domain) {
         assertNotNull(domain);
-        this.domain = domain;
+        this.wrapper = domain;
     }
 
-    public Domain<?, ?> getDomain() {
-        return domain;
+    public Wrapper<?, ?> getWrapper() {
+        return wrapper;
     }
 
     @Override

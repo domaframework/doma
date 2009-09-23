@@ -21,9 +21,6 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.domain.BuiltinBigDecimalDomain;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
@@ -37,22 +34,22 @@ import example.entity.Emp_;
  */
 public class AutoBatchInsertQueryTest extends TestCase {
 
-    private MockConfig runtimeConfig = new MockConfig();
+    private final MockConfig runtimeConfig = new MockConfig();
 
-    public void testCompile() throws Exception {
-        Emp emp1 = new Emp_();
-        emp1.id().set(10);
-        emp1.name().set("aaa");
+    public void testPrepare() throws Exception {
+        Emp emp1 = new Emp();
+        emp1.setId(10);
+        emp1.setName("aaa");
 
-        Emp emp2 = new Emp_();
-        emp2.id().set(20);
-        emp2.name().set("bbb");
+        Emp emp2 = new Emp();
+        emp2.setId(20);
+        emp2.setName("bbb");
 
-        AutoBatchInsertQuery<Emp, Emp_> query = new AutoBatchInsertQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoBatchInsertQuery<Emp> query = new AutoBatchInsertQuery<Emp>(
+                new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp1, emp2));
-        query.compile();
+        query.prepare();
 
         BatchInsertQuery batchInsertQuery = query;
         assertTrue(batchInsertQuery.isBatchSupported());
@@ -60,40 +57,41 @@ public class AutoBatchInsertQueryTest extends TestCase {
     }
 
     public void testOption_default() throws Exception {
-        Emp emp1 = new Emp_();
-        emp1.id().set(10);
-        emp1.name().set("aaa");
+        Emp emp1 = new Emp();
+        emp1.setId(10);
+        emp1.setName("aaa");
 
-        Emp emp2 = new Emp_();
-        emp2.id().set(20);
-        emp2.salary().set(new BigDecimal(2000));
-        emp2.version().set(new Integer(10));
+        Emp emp2 = new Emp();
+        emp2.setId(20);
+        emp2.setSalary(new BigDecimal(2000));
+        emp2.setVersion(new Integer(10));
 
-        AutoBatchInsertQuery<Emp, Emp_> query = new AutoBatchInsertQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoBatchInsertQuery<Emp> query = new AutoBatchInsertQuery<Emp>(
+                new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp1, emp2));
-        query.compile();
+        query.prepare();
 
         PreparedSql sql = query.getSqls().get(0);
-        assertEquals("insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)", sql
-                .getRawSql());
+        assertEquals(
+                "insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)",
+                sql.getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
-        assertEquals(new BuiltinIntegerDomain(10), parameters.get(0).getDomain());
-        assertEquals(new BuiltinStringDomain("aaa"), parameters.get(1).getDomain());
-        assertTrue(parameters.get(2).getDomain().isNull());
-        assertEquals(new BuiltinIntegerDomain(1), parameters.get(3).getDomain());
+        assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
+        assertEquals("aaa", parameters.get(1).getWrapper().get());
+        assertNull(parameters.get(2).getWrapper().get());
+        assertEquals(new Integer(1), parameters.get(3).getWrapper().get());
 
         sql = query.getSqls().get(1);
-        assertEquals("insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)", sql
-                .getRawSql());
+        assertEquals(
+                "insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)",
+                sql.getRawSql());
         parameters = sql.getParameters();
         assertEquals(4, parameters.size());
-        assertEquals(new BuiltinIntegerDomain(20), parameters.get(0).getDomain());
-        assertTrue(parameters.get(1).getDomain().isNull());
-        assertEquals(new BuiltinBigDecimalDomain(new BigDecimal(2000)), parameters
-                .get(2).getDomain());
-        assertEquals(new BuiltinIntegerDomain(10), parameters.get(3).getDomain());
+        assertEquals(new Integer(20), parameters.get(0).getWrapper().get());
+        assertNull(parameters.get(1).getWrapper().get());
+        assertEquals(new BigDecimal(2000), parameters.get(2).getWrapper().get());
+        assertEquals(new Integer(10), parameters.get(3).getWrapper().get());
     }
 }

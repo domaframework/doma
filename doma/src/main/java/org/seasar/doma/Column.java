@@ -46,7 +46,7 @@ import org.seasar.doma.jdbc.NamingConvention;
  * @author taedium
  * 
  */
-@Target(ElementType.METHOD)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Column {
 

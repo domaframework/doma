@@ -17,16 +17,18 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.util.Set;
+
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
-import org.seasar.doma.jdbc.entity.Entity;
-import org.seasar.doma.jdbc.entity.EntityProperty;
+import org.seasar.doma.jdbc.entity.EntityMetaFactory;
+import org.seasar.doma.jdbc.entity.EntityPropertyMeta;
 
 /**
  * @author taedium
  * 
  */
-public class AutoUpdateQuery<I, E extends Entity<I>> extends
-        AutoModifyQuery<I, E> implements UpdateQuery {
+public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
+        UpdateQuery {
 
     protected boolean nullExcluded;
 
@@ -36,13 +38,13 @@ public class AutoUpdateQuery<I, E extends Entity<I>> extends
 
     protected boolean unchangedPropertyIncluded;
 
-    public AutoUpdateQuery(Class<E> entityClass) {
-        super(entityClass);
+    public AutoUpdateQuery(EntityMetaFactory<E> entityMetaFactory) {
+        super(entityMetaFactory);
     }
 
-    public void compile() {
-        assertNotNull(config, entity, callerClassName, callerMethodName);
-        entity.__preUpdate();
+    public void prepare() {
+        assertNotNull(config, entityMeta, callerClassName, callerMethodName);
+        entityMeta.preUpdate();
         prepareTableAndColumnNames();
         prepareIdAndVersionProperties();
         validateIdExistent();
@@ -62,7 +64,8 @@ public class AutoUpdateQuery<I, E extends Entity<I>> extends
     }
 
     protected void prepareTargetProperties() {
-        for (EntityProperty<?> p : entity.__getEntityProperties()) {
+        Set<String> dirtyStates = entityMeta.getModifiedProperties();
+        for (EntityPropertyMeta<?> p : entityMeta.getPropertyMetas()) {
             if (p.isTransient()) {
                 continue;
             }
@@ -76,10 +79,11 @@ public class AutoUpdateQuery<I, E extends Entity<I>> extends
                 targetProperties.add(p);
                 continue;
             }
-            if (nullExcluded && p.getDomain().isNull()) {
+            if (nullExcluded && p.getWrapper().get() == null) {
                 continue;
             }
-            if (unchangedPropertyIncluded || p.getDomain().isChanged()) {
+            if (unchangedPropertyIncluded || dirtyStates == null
+                    || dirtyStates.contains(p.getName())) {
                 if (!isTargetPropertyName(p.getName())) {
                     continue;
                 }
@@ -95,10 +99,10 @@ public class AutoUpdateQuery<I, E extends Entity<I>> extends
         builder.appendSql("update ");
         builder.appendSql(tableName);
         builder.appendSql(" set ");
-        for (EntityProperty<?> p : targetProperties) {
+        for (EntityPropertyMeta<?> p : targetProperties) {
             builder.appendSql(columnNameMap.get(p.getName()));
             builder.appendSql(" = ");
-            builder.appendDomain(p.getDomain());
+            builder.appendDomain(p.getWrapper());
             if (p.isVersion() && !versionIncluded) {
                 builder.appendSql(" + 1");
             }
@@ -107,10 +111,10 @@ public class AutoUpdateQuery<I, E extends Entity<I>> extends
         builder.cutBackSql(2);
         if (idProperties.size() > 0) {
             builder.appendSql(" where ");
-            for (EntityProperty<?> p : idProperties) {
+            for (EntityPropertyMeta<?> p : idProperties) {
                 builder.appendSql(columnNameMap.get(p.getName()));
                 builder.appendSql(" = ");
-                builder.appendDomain(p.getDomain());
+                builder.appendDomain(p.getWrapper());
                 builder.appendSql(" and ");
             }
             builder.cutBackSql(5);
@@ -123,7 +127,7 @@ public class AutoUpdateQuery<I, E extends Entity<I>> extends
             }
             builder.appendSql(columnNameMap.get(versionProperty.getName()));
             builder.appendSql(" = ");
-            builder.appendDomain(versionProperty.getDomain());
+            builder.appendDomain(versionProperty.getWrapper());
         }
         sql = builder.build();
     }

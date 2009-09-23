@@ -15,21 +15,21 @@
  */
 package org.seasar.doma.internal.jdbc.query;
 
-import org.seasar.doma.jdbc.entity.Entity;
+import org.seasar.doma.jdbc.entity.EntityMetaFactory;
 
 /**
  * @author taedium
  * 
  */
-public class SqlFileBatchDeleteQuery<I, E extends Entity<I>> extends
-        SqlFileBatchModifyQuery<I, E> implements BatchDeleteQuery {
+public class SqlFileBatchDeleteQuery<E> extends SqlFileBatchModifyQuery<E>
+        implements BatchDeleteQuery {
 
     protected boolean versionIgnored;
 
     protected boolean optimisticLockExceptionSuppressed;
 
-    public SqlFileBatchDeleteQuery(Class<E> entityClass) {
-        super(entityClass);
+    public SqlFileBatchDeleteQuery(EntityMetaFactory<E> entityMetaFactory) {
+        super(entityMetaFactory);
     }
 
 }

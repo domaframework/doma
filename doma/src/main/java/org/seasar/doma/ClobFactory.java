@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
 import java.sql.Clob;
 import java.sql.Connection;
 
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.jdbc.JdbcException;
 
 /**
@@ -33,7 +33,7 @@ import org.seasar.doma.jdbc.JdbcException;
  * 注釈されるメソッドは、次の制約を満たす必要があります。
  * <ul>
  * <li>パラメータを受け取らない。
- * <li>戻り値の型は {@code Clob} を値とする {@link Domain} の実装クラスである。
+ * <li>戻り値の型は {@code Clob} を値とする {@link Wrapper} の実装クラスである。
  * </ul>
  * 
  * <h5>例:</h5>

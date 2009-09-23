@@ -21,7 +21,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
@@ -49,7 +49,7 @@ public class PreparedSqlParameterBinder {
         for (PreparedSqlParameter p : paramters) {
             SetValueFunction function = new SetValueFunction(preparedStatement,
                     index);
-            Domain<?, ?> domain = p.getDomain();
+            Wrapper<?, ?> domain = p.getWrapper();
             domain.accept(jdbcMappingVisitor, function);
             index++;
         }

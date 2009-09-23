@@ -19,7 +19,6 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.domain.BuiltinIntegerDomain;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
@@ -197,7 +196,7 @@ public class JdbcExceptionTest extends TestCase {
                 "select * from aaa where bbb in /*bbb*/(1,2,3)");
         SqlNode sqlNode = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("bbb", new BuiltinIntegerDomain(1));
+        evaluator.add("bbb", 1);
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
                 evaluator);
         try {
@@ -249,7 +248,7 @@ public class JdbcExceptionTest extends TestCase {
                 "select * from aaa where bbb in /*bbb*/(1,2,3)");
         SqlNode sqlNode = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("bbb", Arrays.asList(new BuiltinIntegerDomain(1), null));
+        evaluator.add("bbb", Arrays.asList(1, null));
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
                 evaluator);
         try {

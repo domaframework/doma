@@ -18,17 +18,7 @@ package org.seasar.doma.internal.apt.meta;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
-
-import org.seasar.doma.internal.util.CompositeIterator;
 
 /**
  * @author taedium
@@ -36,13 +26,7 @@ import org.seasar.doma.internal.util.CompositeIterator;
  */
 public class EntityMeta {
 
-    protected final Deque<Map<TypeMirror, TypeMirror>> typeParamMapStack = new LinkedList<Map<TypeMirror, TypeMirror>>();
-
-    protected final List<TypeMirror> supertypes = new ArrayList<TypeMirror>();
-
     protected final List<EntityPropertyMeta> allPropertyMetas = new ArrayList<EntityPropertyMeta>();
-
-    protected final List<EntityDelegateMeta> allDelegateMetas = new ArrayList<EntityDelegateMeta>();
 
     protected EntityPropertyMeta versionPropertyMeta;
 
@@ -50,38 +34,20 @@ public class EntityMeta {
 
     protected TableMeta tableMeta;
 
-    protected TypeMirror entityType;
+    protected String entityName;
 
-    protected TypeElement entityElement;
+    protected String entityTypeName;
 
-    protected TypeMirror listenerType;
+    protected String listenerTypeName;
 
-    protected String name;
+    protected String modifiedPropertiesFieldName;
 
-    protected boolean mappedSuperclass;
-
-    protected long serialVersionUID;
-
-    protected boolean parametalizedDomain;
-
-    public EntityMeta() {
-        typeParamMapStack.push(Collections.<TypeMirror, TypeMirror> emptyMap());
+    public String getEntityName() {
+        return entityName;
     }
 
-    public TypeMirror getEntityType() {
-        return entityType;
-    }
-
-    public void setEntityType(TypeMirror entityType) {
-        this.entityType = entityType;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setEntityName(String entityName) {
+        this.entityName = entityName;
     }
 
     public TableMeta getTableMeta() {
@@ -92,31 +58,9 @@ public class EntityMeta {
         this.tableMeta = tableMeta;
     }
 
-    public TypeElement getEntityElement() {
-        return entityElement;
-    }
-
-    public void setEntityElement(TypeElement entityElement) {
-        this.entityElement = entityElement;
-    }
-
-    public TypeMirror getListenerType() {
-        return listenerType;
-    }
-
-    public void setListenerType(TypeMirror listenerType) {
-        this.listenerType = listenerType;
-    }
-
     public void addPropertyMeta(EntityPropertyMeta propertyMeta) {
         assertNotNull(propertyMeta);
         allPropertyMetas.add(propertyMeta);
-        if (propertyMeta.isParameterizedReturnType()) {
-            parametalizedDomain = true;
-        }
-        if (propertyMeta.isTrnsient()) {
-            return;
-        }
         if (propertyMeta.isId()) {
             if (propertyMeta.getIdGeneratorMeta() != null) {
                 generatedIdPropertyMeta = propertyMeta;
@@ -147,56 +91,29 @@ public class EntityMeta {
         return generatedIdPropertyMeta;
     }
 
-    public void addDelegateMeta(EntityDelegateMeta delegateMeta) {
-        assertNotNull(delegateMeta);
-        allDelegateMetas.add(delegateMeta);
+    public String getEntityTypeName() {
+        return entityTypeName;
     }
 
-    public List<EntityDelegateMeta> getAllDelegateMetas() {
-        return allDelegateMetas;
+    public void setEntityTypeName(String entityTypeName) {
+        this.entityTypeName = entityTypeName;
     }
 
-    public Iterator<? extends EntityMethodMeta> getAllMethodMetaIterator() {
-        List<Iterator<? extends EntityMethodMeta>> iterators = new ArrayList<Iterator<? extends EntityMethodMeta>>();
-        iterators.add(allPropertyMetas.iterator());
-        iterators.add(allDelegateMetas.iterator());
-        return new CompositeIterator<EntityMethodMeta>(iterators);
+    public String getListenerTypeName() {
+        return listenerTypeName;
     }
 
-    public void addTypeParameterMap(Map<TypeMirror, TypeMirror> typeParameterMap) {
-        typeParamMapStack.push(typeParameterMap);
+    public void setListenerTypeName(String listenerTypeName) {
+        this.listenerTypeName = listenerTypeName;
     }
 
-    public Map<TypeMirror, TypeMirror> getTypeParameterMap() {
-        return typeParamMapStack.peek();
+    public String getModifiedPropertiesFieldName() {
+        return modifiedPropertiesFieldName;
     }
 
-    public void addSupertype(TypeMirror supertype) {
-        supertypes.add(supertype);
-    }
-
-    public List<TypeMirror> getSupertypes() {
-        return supertypes;
-    }
-
-    public boolean isMappedSuperclass() {
-        return mappedSuperclass;
-    }
-
-    public void setMappedSuperclass(boolean mappedSuperclass) {
-        this.mappedSuperclass = mappedSuperclass;
-    }
-
-    public long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
-    public void setSerialVersionUID(long serialVersionUID) {
-        this.serialVersionUID = serialVersionUID;
-    }
-
-    public boolean hasParametalizedDomain() {
-        return parametalizedDomain;
+    public void setModifiedPropertiesFieldName(
+            String modifiedPropertiesFieldName) {
+        this.modifiedPropertiesFieldName = modifiedPropertiesFieldName;
     }
 
 }

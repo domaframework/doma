@@ -22,26 +22,26 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.domain.ArrayDomain;
-import org.seasar.doma.domain.BigDecimalDomain;
-import org.seasar.doma.domain.BigIntegerDomain;
-import org.seasar.doma.domain.BlobDomain;
-import org.seasar.doma.domain.BooleanDomain;
-import org.seasar.doma.domain.ByteDomain;
-import org.seasar.doma.domain.BytesDomain;
-import org.seasar.doma.domain.ClobDomain;
-import org.seasar.doma.domain.DateDomain;
-import org.seasar.doma.domain.DoubleDomain;
-import org.seasar.doma.domain.FloatDomain;
-import org.seasar.doma.domain.IntegerDomain;
-import org.seasar.doma.domain.LongDomain;
-import org.seasar.doma.domain.NClobDomain;
-import org.seasar.doma.domain.ShortDomain;
-import org.seasar.doma.domain.StringDomain;
-import org.seasar.doma.domain.TimeDomain;
-import org.seasar.doma.domain.TimestampDomain;
-import org.seasar.doma.domain.BuiltinDomainVisitor;
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.ArrayWrapper;
+import org.seasar.doma.domain.BigDecimalWrapper;
+import org.seasar.doma.domain.BigIntegerWrapper;
+import org.seasar.doma.domain.BlobWrapper;
+import org.seasar.doma.domain.BooleanWrapper;
+import org.seasar.doma.domain.BuiltinWrapperVisitor;
+import org.seasar.doma.domain.ByteWrapper;
+import org.seasar.doma.domain.BytesWrapper;
+import org.seasar.doma.domain.ClobWrapper;
+import org.seasar.doma.domain.DateWrapper;
+import org.seasar.doma.domain.DoubleWrapper;
+import org.seasar.doma.domain.FloatWrapper;
+import org.seasar.doma.domain.IntegerWrapper;
+import org.seasar.doma.domain.LongWrapper;
+import org.seasar.doma.domain.NClobWrapper;
+import org.seasar.doma.domain.ShortWrapper;
+import org.seasar.doma.domain.StringWrapper;
+import org.seasar.doma.domain.TimeWrapper;
+import org.seasar.doma.domain.TimestampWrapper;
+import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.internal.jdbc.dialect.StandardForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.StandardPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
@@ -76,10 +76,10 @@ public class StandardDialect implements Dialect {
     protected static final Set<String> UNIQUE_CONSTRAINT_VIOLATION_STATE_CODES = new HashSet<String>(
             Arrays.asList("23", "27", "44"));
 
-    /** {@link Domain} をJDBCの型とマッピングするビジター */
+    /** {@link Wrapper} をJDBCの型とマッピングするビジター */
     protected final JdbcMappingVisitor jdbcMappingVisitor;
 
-    /** SQLのバインド変数にマッピングされる {@link Domain} をログ用のフォーマットされた文字列へと変換するビジター */
+    /** SQLのバインド変数にマッピングされる {@link Wrapper} をログ用のフォーマットされた文字列へと変換するビジター */
     protected final SqlLogFormattingVisitor sqlLogFormattingVisitor;
 
     /**
@@ -95,9 +95,10 @@ public class StandardDialect implements Dialect {
      * を指定してインスタンスを構築します。
      * 
      * @param jdbcMappingVisitor
-     *            {@link Domain} をJDBCの型とマッピングするビジター
+     *            {@link Wrapper} をJDBCの型とマッピングするビジター
      * @param sqlLogFormattingVisitor
-     *            SQLのバインド変数にマッピングされる {@link Domain} をログ用のフォーマットされた文字列へと変換するビジター
+     *            SQLのバインド変数にマッピングされる {@link Wrapper}
+     *            をログ用のフォーマットされた文字列へと変換するビジター
      */
     public StandardDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
@@ -340,124 +341,121 @@ public class StandardDialect implements Dialect {
      */
     public static class StandardJdbcMappingVisitor implements
             JdbcMappingVisitor,
-            BuiltinDomainVisitor<Void, JdbcMappingFunction, SQLException> {
+            BuiltinWrapperVisitor<Void, JdbcMappingFunction, SQLException> {
 
         @Override
-        public Void visitAbstractArrayDomain(ArrayDomain<?, ?> domain,
+        public Void visitArrayWrapper(ArrayWrapper wrapper,
                 JdbcMappingFunction p) throws SQLException {
-            return p.apply(domain, JdbcTypes.ARRAY);
+            return p.apply(wrapper, JdbcTypes.ARRAY);
         }
 
         @Override
-        public Void visitAbstractBigDecimalDomain(
-                BigDecimalDomain<?> domain, JdbcMappingFunction p)
+        public Void visitBigDecimalWrapper(BigDecimalWrapper wrapper,
+                JdbcMappingFunction p) throws SQLException {
+            return p.apply(wrapper, JdbcTypes.BIG_DECIMAL);
+        }
+
+        @Override
+        public Void visitBigIntegerWrapper(BigIntegerWrapper wrapper,
+                JdbcMappingFunction p) throws SQLException {
+            return p.apply(wrapper, JdbcTypes.BIG_INTEGER);
+        }
+
+        @Override
+        public Void visitBlobWrapper(BlobWrapper wrapper, JdbcMappingFunction p)
                 throws SQLException {
-            return p.apply(domain, JdbcTypes.BIG_DECIMAL);
+            return p.apply(wrapper, JdbcTypes.BLOB);
         }
 
         @Override
-        public Void visitAbstractBigIntegerDomain(
-                BigIntegerDomain<?> domain, JdbcMappingFunction p)
+        public Void visitBooleanWrapper(BooleanWrapper wrapper,
+                JdbcMappingFunction p) throws SQLException {
+            return p.apply(wrapper, JdbcTypes.BOOLEAN);
+        }
+
+        @Override
+        public Void visitByteWrapper(ByteWrapper wrapper, JdbcMappingFunction p)
                 throws SQLException {
-            return p.apply(domain, JdbcTypes.BIG_INTEGER);
+            return p.apply(wrapper, JdbcTypes.BYTE);
         }
 
         @Override
-        public Void visitAbstractBlobDomain(BlobDomain<?> domain,
+        public Void visitBytesWrapper(BytesWrapper wrapper,
                 JdbcMappingFunction p) throws SQLException {
-            return p.apply(domain, JdbcTypes.BLOB);
+            return p.apply(wrapper, JdbcTypes.BYTES);
         }
 
         @Override
-        public Void visitAbstractBooleanDomain(BooleanDomain<?> domain,
-                JdbcMappingFunction p) throws SQLException {
-            return p.apply(domain, JdbcTypes.BOOLEAN);
-        }
-
-        @Override
-        public Void visitAbstractByteDomain(ByteDomain<?> domain,
-                JdbcMappingFunction p) throws SQLException {
-            return p.apply(domain, JdbcTypes.BYTE);
-        }
-
-        @Override
-        public Void visitAbstractBytesDomain(BytesDomain<?> domain,
-                JdbcMappingFunction p) throws SQLException {
-            return p.apply(domain, JdbcTypes.BYTES);
-        }
-
-        @Override
-        public Void visitAbstractClobDomain(ClobDomain<?> domain,
-                JdbcMappingFunction p) throws SQLException {
-            return p.apply(domain, JdbcTypes.CLOB);
-        }
-
-        @Override
-        public Void visitAbstractDateDomain(DateDomain<?> domain,
-                JdbcMappingFunction p) throws SQLException {
-            return p.apply(domain, JdbcTypes.DATE);
-        }
-
-        @Override
-        public Void visitAbstractDoubleDomain(DoubleDomain<?> domain,
-                JdbcMappingFunction p) throws SQLException {
-            return p.apply(domain, JdbcTypes.DOUBLE);
-        }
-
-        @Override
-        public Void visitAbstractFloatDomain(FloatDomain<?> domain,
-                JdbcMappingFunction p) throws SQLException {
-            return p.apply(domain, JdbcTypes.FLOAT);
-        }
-
-        @Override
-        public Void visitAbstractIntegerDomain(IntegerDomain<?> domain,
-                JdbcMappingFunction p) throws SQLException {
-            return p.apply(domain, JdbcTypes.INTEGER);
-        }
-
-        @Override
-        public Void visitAbstractLongDomain(LongDomain<?> domain,
-                JdbcMappingFunction p) throws SQLException {
-            return p.apply(domain, JdbcTypes.LONG);
-        }
-
-        @Override
-        public Void visitAbstractNClobDomain(NClobDomain<?> domain,
-                JdbcMappingFunction p) throws SQLException {
-            return p.apply(domain, JdbcTypes.NCLOB);
-        }
-
-        @Override
-        public Void visitAbstractShortDomain(ShortDomain<?> domain,
-                JdbcMappingFunction p) throws SQLException {
-            return p.apply(domain, JdbcTypes.SHORT);
-        }
-
-        @Override
-        public Void visitAbstractStringDomain(StringDomain<?> domain,
-                JdbcMappingFunction p) throws SQLException {
-            return p.apply(domain, JdbcTypes.STRING);
-        }
-
-        @Override
-        public Void visitAbstractTimeDomain(TimeDomain<?> domain,
-                JdbcMappingFunction p) throws SQLException {
-            return p.apply(domain, JdbcTypes.TIME);
-        }
-
-        @Override
-        public Void visitAbstractTimestampDomain(
-                TimestampDomain<?> domain, JdbcMappingFunction p)
+        public Void visitClobWrapper(ClobWrapper wrapper, JdbcMappingFunction p)
                 throws SQLException {
-            return p.apply(domain, JdbcTypes.TIMESTAMP);
+            return p.apply(wrapper, JdbcTypes.CLOB);
         }
 
         @Override
-        public Void visitUnknownDomain(Domain<?, ?> domain,
+        public Void visitDateWrapper(DateWrapper wrapper, JdbcMappingFunction p)
+                throws SQLException {
+            return p.apply(wrapper, JdbcTypes.DATE);
+        }
+
+        @Override
+        public Void visitDoubleWrapper(DoubleWrapper wrapper,
                 JdbcMappingFunction p) throws SQLException {
-            throw new JdbcException(DomaMessageCode.DOMA2019, domain.getClass()
-                    .getName());
+            return p.apply(wrapper, JdbcTypes.DOUBLE);
+        }
+
+        @Override
+        public Void visitFloatWrapper(FloatWrapper wrapper,
+                JdbcMappingFunction p) throws SQLException {
+            return p.apply(wrapper, JdbcTypes.FLOAT);
+        }
+
+        @Override
+        public Void visitIntegerWrapper(IntegerWrapper wrapper,
+                JdbcMappingFunction p) throws SQLException {
+            return p.apply(wrapper, JdbcTypes.INTEGER);
+        }
+
+        @Override
+        public Void visitLongWrapper(LongWrapper wrapper, JdbcMappingFunction p)
+                throws SQLException {
+            return p.apply(wrapper, JdbcTypes.LONG);
+        }
+
+        @Override
+        public Void visitNClobWrapper(NClobWrapper wrapper,
+                JdbcMappingFunction p) throws SQLException {
+            return p.apply(wrapper, JdbcTypes.NCLOB);
+        }
+
+        @Override
+        public Void visitShortWrapper(ShortWrapper wrapper,
+                JdbcMappingFunction p) throws SQLException {
+            return p.apply(wrapper, JdbcTypes.SHORT);
+        }
+
+        @Override
+        public Void visitStringWrapper(StringWrapper wrapper,
+                JdbcMappingFunction p) throws SQLException {
+            return p.apply(wrapper, JdbcTypes.STRING);
+        }
+
+        @Override
+        public Void visitTimeWrapper(TimeWrapper wrapper, JdbcMappingFunction p)
+                throws SQLException {
+            return p.apply(wrapper, JdbcTypes.TIME);
+        }
+
+        @Override
+        public Void visitTimestampWrapper(TimestampWrapper wrapper,
+                JdbcMappingFunction p) throws SQLException {
+            return p.apply(wrapper, JdbcTypes.TIMESTAMP);
+        }
+
+        @Override
+        public Void visitUnknownDomain(Wrapper<?, ?> wrapper,
+                JdbcMappingFunction p) throws SQLException {
+            throw new JdbcException(DomaMessageCode.DOMA2019, wrapper
+                    .getClass().getName());
         }
     }
 
@@ -470,124 +468,121 @@ public class StandardDialect implements Dialect {
     public static class StandardSqlLogFormattingVisitor
             implements
             SqlLogFormattingVisitor,
-            BuiltinDomainVisitor<String, SqlLogFormattingFunction, RuntimeException> {
+            BuiltinWrapperVisitor<String, SqlLogFormattingFunction, RuntimeException> {
 
         @Override
-        public String visitAbstractArrayDomain(
-                ArrayDomain<?, ?> domain, SqlLogFormattingFunction p)
-                throws RuntimeException {
-            return p.apply(domain, JdbcTypes.ARRAY);
-        }
-
-        @Override
-        public String visitAbstractBigDecimalDomain(
-                BigDecimalDomain<?> domain, SqlLogFormattingFunction p) {
-            return p.apply(domain, JdbcTypes.BIG_DECIMAL);
-        }
-
-        @Override
-        public String visitAbstractBigIntegerDomain(
-                BigIntegerDomain<?> domain, SqlLogFormattingFunction p)
-                throws RuntimeException {
-            return p.apply(domain, JdbcTypes.BIG_INTEGER);
-        }
-
-        @Override
-        public String visitAbstractBlobDomain(BlobDomain<?> domain,
+        public String visitArrayWrapper(ArrayWrapper wrapper,
                 SqlLogFormattingFunction p) throws RuntimeException {
-            return p.apply(domain, JdbcTypes.BLOB);
+            return p.apply(wrapper, JdbcTypes.ARRAY);
         }
 
         @Override
-        public String visitAbstractBooleanDomain(
-                BooleanDomain<?> domain, SqlLogFormattingFunction p)
-                throws RuntimeException {
-            return p.apply(domain, JdbcTypes.BOOLEAN);
-        }
-
-        @Override
-        public String visitAbstractByteDomain(ByteDomain<?> domain,
-                SqlLogFormattingFunction p) throws RuntimeException {
-            return p.apply(domain, JdbcTypes.BYTE);
-        }
-
-        @Override
-        public String visitAbstractBytesDomain(BytesDomain<?> domain,
-                SqlLogFormattingFunction p) throws RuntimeException {
-            return p.apply(domain, JdbcTypes.BYTES);
-        }
-
-        @Override
-        public String visitAbstractClobDomain(ClobDomain<?> domain,
-                SqlLogFormattingFunction p) throws RuntimeException {
-            return p.apply(domain, JdbcTypes.CLOB);
-        }
-
-        @Override
-        public String visitAbstractDateDomain(DateDomain<?> domain,
+        public String visitBigDecimalWrapper(BigDecimalWrapper wrapper,
                 SqlLogFormattingFunction p) {
-            return p.apply(domain, JdbcTypes.DATE);
+            return p.apply(wrapper, JdbcTypes.BIG_DECIMAL);
         }
 
         @Override
-        public String visitAbstractDoubleDomain(DoubleDomain<?> domain,
+        public String visitBigIntegerWrapper(BigIntegerWrapper wrapper,
                 SqlLogFormattingFunction p) throws RuntimeException {
-            return p.apply(domain, JdbcTypes.DOUBLE);
+            return p.apply(wrapper, JdbcTypes.BIG_INTEGER);
         }
 
         @Override
-        public String visitAbstractFloatDomain(FloatDomain<?> domain,
+        public String visitBlobWrapper(BlobWrapper wrapper,
                 SqlLogFormattingFunction p) throws RuntimeException {
-            return p.apply(domain, JdbcTypes.FLOAT);
+            return p.apply(wrapper, JdbcTypes.BLOB);
         }
 
         @Override
-        public String visitAbstractIntegerDomain(
-                IntegerDomain<?> domain, SqlLogFormattingFunction p) {
-            return p.apply(domain, JdbcTypes.INTEGER);
-        }
-
-        @Override
-        public String visitAbstractLongDomain(LongDomain<?> domain,
-                SqlLogFormattingFunction p) {
-            return p.apply(domain, JdbcTypes.LONG);
-        }
-
-        @Override
-        public String visitAbstractNClobDomain(NClobDomain<?> domain,
+        public String visitBooleanWrapper(BooleanWrapper wrapper,
                 SqlLogFormattingFunction p) throws RuntimeException {
-            return p.apply(domain, JdbcTypes.NCLOB);
+            return p.apply(wrapper, JdbcTypes.BOOLEAN);
         }
 
         @Override
-        public String visitAbstractShortDomain(ShortDomain<?> domain,
+        public String visitByteWrapper(ByteWrapper wrapper,
                 SqlLogFormattingFunction p) throws RuntimeException {
-            return p.apply(domain, JdbcTypes.SHORT);
+            return p.apply(wrapper, JdbcTypes.BYTE);
         }
 
         @Override
-        public String visitAbstractStringDomain(StringDomain<?> domain,
+        public String visitBytesWrapper(BytesWrapper wrapper,
+                SqlLogFormattingFunction p) throws RuntimeException {
+            return p.apply(wrapper, JdbcTypes.BYTES);
+        }
+
+        @Override
+        public String visitClobWrapper(ClobWrapper wrapper,
+                SqlLogFormattingFunction p) throws RuntimeException {
+            return p.apply(wrapper, JdbcTypes.CLOB);
+        }
+
+        @Override
+        public String visitDateWrapper(DateWrapper wrapper,
                 SqlLogFormattingFunction p) {
-            return p.apply(domain, JdbcTypes.STRING);
+            return p.apply(wrapper, JdbcTypes.DATE);
         }
 
         @Override
-        public String visitAbstractTimeDomain(TimeDomain<?> domain,
+        public String visitDoubleWrapper(DoubleWrapper wrapper,
+                SqlLogFormattingFunction p) throws RuntimeException {
+            return p.apply(wrapper, JdbcTypes.DOUBLE);
+        }
+
+        @Override
+        public String visitFloatWrapper(FloatWrapper wrapper,
+                SqlLogFormattingFunction p) throws RuntimeException {
+            return p.apply(wrapper, JdbcTypes.FLOAT);
+        }
+
+        @Override
+        public String visitIntegerWrapper(IntegerWrapper wrapper,
                 SqlLogFormattingFunction p) {
-            return p.apply(domain, JdbcTypes.TIME);
+            return p.apply(wrapper, JdbcTypes.INTEGER);
         }
 
         @Override
-        public String visitAbstractTimestampDomain(
-                TimestampDomain<?> domain, SqlLogFormattingFunction p) {
-            return p.apply(domain, JdbcTypes.TIMESTAMP);
-        }
-
-        @Override
-        public String visitUnknownDomain(Domain<?, ?> domain,
+        public String visitLongWrapper(LongWrapper wrapper,
                 SqlLogFormattingFunction p) {
-            throw new JdbcException(DomaMessageCode.DOMA2019, domain.getClass()
-                    .getName());
+            return p.apply(wrapper, JdbcTypes.LONG);
+        }
+
+        @Override
+        public String visitNClobWrapper(NClobWrapper wrapper,
+                SqlLogFormattingFunction p) throws RuntimeException {
+            return p.apply(wrapper, JdbcTypes.NCLOB);
+        }
+
+        @Override
+        public String visitShortWrapper(ShortWrapper wrapper,
+                SqlLogFormattingFunction p) throws RuntimeException {
+            return p.apply(wrapper, JdbcTypes.SHORT);
+        }
+
+        @Override
+        public String visitStringWrapper(StringWrapper wrapper,
+                SqlLogFormattingFunction p) {
+            return p.apply(wrapper, JdbcTypes.STRING);
+        }
+
+        @Override
+        public String visitTimeWrapper(TimeWrapper wrapper,
+                SqlLogFormattingFunction p) {
+            return p.apply(wrapper, JdbcTypes.TIME);
+        }
+
+        @Override
+        public String visitTimestampWrapper(TimestampWrapper wrapper,
+                SqlLogFormattingFunction p) {
+            return p.apply(wrapper, JdbcTypes.TIMESTAMP);
+        }
+
+        @Override
+        public String visitUnknownDomain(Wrapper<?, ?> wrapper,
+                SqlLogFormattingFunction p) {
+            throw new JdbcException(DomaMessageCode.DOMA2019, wrapper
+                    .getClass().getName());
         }
 
     }

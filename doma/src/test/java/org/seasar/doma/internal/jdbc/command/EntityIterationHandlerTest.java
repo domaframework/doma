@@ -15,7 +15,8 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import org.seasar.doma.internal.jdbc.command.EntityIterationHandler;
+import junit.framework.TestCase;
+
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
@@ -26,7 +27,6 @@ import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
 
-import junit.framework.TestCase;
 import example.entity.Emp;
 import example.entity.Emp_;
 
@@ -36,7 +36,7 @@ import example.entity.Emp_;
  */
 public class EntityIterationHandlerTest extends TestCase {
 
-    private MockConfig runtimeConfig = new MockConfig();
+    private final MockConfig runtimeConfig = new MockConfig();
 
     public void testHandle() throws Exception {
         MockResultSetMetaData metaData = new MockResultSetMetaData();
@@ -48,14 +48,14 @@ public class EntityIterationHandlerTest extends TestCase {
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil
-                .buildPath(getClass().getName(), getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
-        EntityIterationHandler<Integer, Emp, Emp_> handler = new EntityIterationHandler<Integer, Emp, Emp_>(
-                Emp_.class, new IterationCallback<Integer, Emp>() {
+        EntityIterationHandler<Integer, Emp> handler = new EntityIterationHandler<Integer, Emp>(
+                new Emp_(), new IterationCallback<Integer, Emp>() {
 
                     private int count;
 
@@ -81,14 +81,14 @@ public class EntityIterationHandlerTest extends TestCase {
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil
-                .buildPath(getClass().getName(), getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
-        EntityIterationHandler<Integer, Emp, Emp_> handler = new EntityIterationHandler<Integer, Emp, Emp_>(
-                Emp_.class, new IterationCallback<Integer, Emp>() {
+        EntityIterationHandler<Integer, Emp> handler = new EntityIterationHandler<Integer, Emp>(
+                new Emp_(), new IterationCallback<Integer, Emp>() {
 
                     private int count;
 

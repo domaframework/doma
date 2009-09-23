@@ -21,32 +21,33 @@ import java.util.Iterator;
 
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
-import org.seasar.doma.jdbc.entity.Entity;
-import org.seasar.doma.jdbc.entity.EntityProperty;
+import org.seasar.doma.jdbc.entity.EntityMeta;
+import org.seasar.doma.jdbc.entity.EntityMetaFactory;
+import org.seasar.doma.jdbc.entity.EntityPropertyMeta;
 
 /**
  * @author taedium
  * 
  */
-public class AutoBatchDeleteQuery<I, E extends Entity<I>> extends
-        AutoBatchModifyQuery<I, E> implements BatchDeleteQuery {
+public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
+        BatchDeleteQuery {
 
     protected boolean versionIgnored;
 
     protected boolean optimisticLockExceptionSuppressed;
 
-    public AutoBatchDeleteQuery(Class<E> entityClass) {
-        super(entityClass);
+    public AutoBatchDeleteQuery(EntityMetaFactory<E> entityMetaFactory) {
+        super(entityMetaFactory);
     }
 
-    public void compile() {
-        assertNotNull(config, entities, callerClassName, callerMethodName);
-        Iterator<? extends E> it = entities.iterator();
+    public void prepare() {
+        assertNotNull(config, callerClassName, callerMethodName);
+        Iterator<EntityMeta<E>> it = entityMetas.iterator();
         if (it.hasNext()) {
             executable = true;
             executionSkipCause = null;
-            entity = it.next();
-            entity.__preDelete();
+            entityMeta = it.next();
+            entityMeta.preDelete();
             prepareTableAndColumnNames();
             prepareIdAndVersionProperties();
             validateIdExistent();
@@ -60,12 +61,12 @@ public class AutoBatchDeleteQuery<I, E extends Entity<I>> extends
             idProperties.clear();
             versionProperty = null;
             targetProperties.clear();
-            this.entity = it.next();
-            entity.__preDelete();
+            this.entityMeta = it.next();
+            entityMeta.preDelete();
             prepareIdAndVersionProperties();
             prepareSql();
         }
-        assertEquals(entities.size(), sqls.size());
+        assertEquals(entityMetas.size(), sqls.size());
     }
 
     protected void prepareOptimisticLock() {
@@ -82,10 +83,10 @@ public class AutoBatchDeleteQuery<I, E extends Entity<I>> extends
         builder.appendSql(tableName);
         if (idProperties.size() > 0) {
             builder.appendSql(" where ");
-            for (EntityProperty<?> p : idProperties) {
+            for (EntityPropertyMeta<?> p : idProperties) {
                 builder.appendSql(columnNameMap.get(p.getName()));
                 builder.appendSql(" = ");
-                builder.appendDomain(p.getDomain());
+                builder.appendDomain(p.getWrapper());
                 builder.appendSql(" and ");
             }
             builder.cutBackSql(5);
@@ -98,7 +99,7 @@ public class AutoBatchDeleteQuery<I, E extends Entity<I>> extends
             }
             builder.appendSql(columnNameMap.get(versionProperty.getName()));
             builder.appendSql(" = ");
-            builder.appendDomain(versionProperty.getDomain());
+            builder.appendDomain(versionProperty.getWrapper());
         }
         PreparedSql sql = builder.build();
         sqls.add(sql);

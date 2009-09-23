@@ -20,31 +20,26 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.jdbc.query.Query;
-import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
-import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.jdbc.entity.Entity;
-import org.seasar.doma.message.DomaMessageCode;
-
+import org.seasar.doma.jdbc.entity.EntityMeta;
+import org.seasar.doma.jdbc.entity.EntityMetaFactory;
 
 /**
  * @author taedium
  * 
  */
-public class EntityIterationHandler<R, I, E extends Entity<I>> implements
-        ResultSetHandler<R> {
+public class EntityIterationHandler<R, E> implements ResultSetHandler<R> {
 
-    protected final Class<E> entityClass;
+    protected final EntityMetaFactory<E> entityMetaFactory;
 
-    protected final IterationCallback<R, I> iterationCallback;
+    protected final IterationCallback<R, E> iterationCallback;
 
-    public EntityIterationHandler(Class<E> entityClass,
-            IterationCallback<R, I> iterationCallback) {
-        assertNotNull(entityClass, iterationCallback);
-        this.entityClass = entityClass;
+    public EntityIterationHandler(EntityMetaFactory<E> entityMetaFactory,
+            IterationCallback<R, E> iterationCallback) {
+        assertNotNull(entityMetaFactory, iterationCallback);
+        this.entityMetaFactory = entityMetaFactory;
         this.iterationCallback = iterationCallback;
     }
 
@@ -54,17 +49,10 @@ public class EntityIterationHandler<R, I, E extends Entity<I>> implements
         IterationContext iterationContext = new IterationContext();
         R result = null;
         while (resultSet.next()) {
-            E entity = null;
-            try {
-                entity = ClassUtil.newInstance(entityClass);
-            } catch (WrapException e) {
-                Throwable cause = e.getCause();
-                throw new JdbcException(DomaMessageCode.DOMA2005, cause,
-                        entityClass.getName(), cause);
-            }
-            fetcher.fetch(resultSet, entity);
-            result = iterationCallback
-                    .iterate(entity.__asInterface(), iterationContext);
+            EntityMeta<E> entityMeta = entityMetaFactory.createEntityMeta();
+            fetcher.fetch(resultSet, entityMeta);
+            result = iterationCallback.iterate(entityMeta.getEntity(),
+                    iterationContext);
             if (iterationContext.isExited()) {
                 return result;
             }

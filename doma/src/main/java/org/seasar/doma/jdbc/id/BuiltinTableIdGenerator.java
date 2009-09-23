@@ -22,8 +22,8 @@ import java.sql.SQLException;
 import java.util.Arrays;
 
 import org.seasar.doma.GenerationType;
-import org.seasar.doma.domain.BuiltinLongDomain;
-import org.seasar.doma.domain.BuiltinStringDomain;
+import org.seasar.doma.domain.LongWrapper;
+import org.seasar.doma.domain.StringWrapper;
 import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
@@ -94,15 +94,17 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
         if (valueColumnName == null) {
             throw new JdbcException(DomaMessageCode.DOMA2033, "valueColumnName");
         }
-        BuiltinLongDomain allocationSizeDomain = new BuiltinLongDomain(allocationSize);
-        BuiltinStringDomain pkColumnValueDomain = new BuiltinStringDomain(pkColumnValue);
+        LongWrapper allocationSizeWrapper = new LongWrapper();
+        allocationSizeWrapper.set(allocationSize);
+        StringWrapper pkColumnValueWrapper = new StringWrapper();
+        pkColumnValueWrapper.set(pkColumnValue);
         updateSql = new PreparedSql(createUpdateRawSql(),
                 createUpdateFormattedSql(), Arrays.asList(new InParameter(
-                        allocationSizeDomain), new InParameter(
-                        pkColumnValueDomain)));
+                        allocationSizeWrapper), new InParameter(
+                        pkColumnValueWrapper)));
         selectSql = new PreparedSql(createSelectRawSql(),
                 createSelectFormattedSql(), Arrays.asList(new InParameter(
-                        pkColumnValueDomain)));
+                        pkColumnValueWrapper)));
     }
 
     /**
@@ -199,7 +201,7 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
             return value - allocationSize;
         } catch (Throwable t) {
             throw new JdbcException(DomaMessageCode.DOMA2018, t, config
-                    .getEntity().__getName(), t);
+                    .getEntityMeta().getName(), t);
         }
     }
 
@@ -227,11 +229,11 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
                 int rows = preparedStatement.executeUpdate();
                 if (rows != 1) {
                     throw new JdbcException(DomaMessageCode.DOMA2017, config
-                            .getEntity().__getName());
+                            .getEntityMeta().getName());
                 }
             } catch (SQLException e) {
                 throw new JdbcException(DomaMessageCode.DOMA2018, e, config
-                        .getEntity().__getName(), e);
+                        .getEntityMeta().getName(), e);
             } finally {
                 JdbcUtil.close(preparedStatement, logger);
             }
@@ -269,10 +271,10 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
                     }
                 }
                 throw new JdbcException(DomaMessageCode.DOMA2017, config
-                        .getEntity().__getName());
+                        .getEntityMeta().getName());
             } catch (SQLException e) {
                 throw new JdbcException(DomaMessageCode.DOMA2018, e, config
-                        .getEntity().__getName(), e);
+                        .getEntityMeta().getName(), e);
             } finally {
                 JdbcUtil.close(preparedStatement, logger);
             }

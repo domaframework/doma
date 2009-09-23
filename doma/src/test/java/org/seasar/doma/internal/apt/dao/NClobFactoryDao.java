@@ -15,9 +15,10 @@
  */
 package org.seasar.doma.internal.apt.dao;
 
+import java.sql.NClob;
+
 import org.seasar.doma.Dao;
 import org.seasar.doma.NClobFactory;
-import org.seasar.doma.domain.BuiltinNClobDomain;
 
 /**
  * @author taedium
@@ -27,5 +28,5 @@ import org.seasar.doma.domain.BuiltinNClobDomain;
 public interface NClobFactoryDao {
 
     @NClobFactory
-    BuiltinNClobDomain create();
+    NClob create();
 }

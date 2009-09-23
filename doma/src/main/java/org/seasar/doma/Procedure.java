@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.sql.Statement;
 
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 
@@ -33,7 +33,7 @@ import org.seasar.doma.jdbc.JdbcException;
  * 注釈されるメソッドは、次の制約を満たす必要があります。
  * <ul>
  * <li>パラメータは0個以上である。
- * <li>パラメータは {@link Domain}の実装クラスである。
+ * <li>パラメータは {@link Wrapper}の実装クラスである。
  * <li>パラメータには、パラメータの種別を示す {@link In} 、 {@link InOut} 、 {@link Out} 、
  * {@link ResultSet} のいずれかのアノテーションが必須である。これらは、ストアドプロシージャーの定義に合わせて注釈しなければいけない。
  * <li>戻り値の型は {@code void} である。

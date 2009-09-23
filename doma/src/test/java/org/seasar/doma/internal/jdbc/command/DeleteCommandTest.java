@@ -36,22 +36,21 @@ import example.entity.Emp_;
  */
 public class DeleteCommandTest extends TestCase {
 
-    private MockConfig runtimeConfig = new MockConfig();
+    private final MockConfig runtimeConfig = new MockConfig();
 
     public void testExecute() throws Exception {
-        Emp emp = new Emp_();
-        emp.id().set(1);
-        emp.name().set("hoge");
-        emp.salary().set(new BigDecimal(1000));
-        emp.version().set(10);
+        Emp emp = new Emp();
+        emp.setId(1);
+        emp.setName("hoge");
+        emp.setSalary(new BigDecimal(1000));
+        emp.setVersion(10);
 
-        AutoDeleteQuery<Emp, Emp_> query = new AutoDeleteQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(new Emp_());
         query.setConfig(runtimeConfig);
-        query.setEntity(Emp_.class.cast(emp));
+        query.setEntity(emp);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
         int rows = new DeleteCommand(query).execute();
 
         assertEquals(1, rows);
@@ -65,21 +64,20 @@ public class DeleteCommandTest extends TestCase {
     }
 
     public void testExecute_throwsOptimisticLockException() throws Exception {
-        Emp emp = new Emp_();
-        emp.id().set(10);
-        emp.name().set("aaa");
-        emp.version().set(100);
+        Emp emp = new Emp();
+        emp.setId(10);
+        emp.setName("aaa");
+        emp.setVersion(100);
 
         MockPreparedStatement ps = new MockPreparedStatement();
         ps.updatedRows = 0;
         runtimeConfig.dataSource.connection = new MockConnection(ps);
-        AutoDeleteQuery<Emp, Emp_> query = new AutoDeleteQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
         DeleteCommand command = new DeleteCommand(query);
         try {
             command.execute();
@@ -90,19 +88,18 @@ public class DeleteCommandTest extends TestCase {
 
     public void testExecute_suppressesOptimisticLockException()
             throws Exception {
-        Emp emp = new Emp_();
-        emp.id().set(10);
-        emp.name().set("aaa");
-        emp.version().set(100);
+        Emp emp = new Emp();
+        emp.setId(10);
+        emp.setName("aaa");
+        emp.setVersion(100);
 
-        AutoDeleteQuery<Emp, Emp_> query = new AutoDeleteQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.setOptimisticLockExceptionSuppressed(true);
-        query.compile();
+        query.prepare();
         new DeleteCommand(query).execute();
     }
 }

@@ -17,7 +17,8 @@ package org.seasar.doma.internal.jdbc.command;
 
 import java.math.BigDecimal;
 
-import org.seasar.doma.internal.jdbc.command.EntityFetcher;
+import junit.framework.TestCase;
+
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
@@ -27,8 +28,9 @@ import org.seasar.doma.internal.jdbc.query.SelectQuery;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SelectOptions;
+import org.seasar.doma.jdbc.entity.EntityMeta;
 
-import junit.framework.TestCase;
+import example.entity.Emp;
 import example.entity.Emp_;
 
 /**
@@ -37,7 +39,7 @@ import example.entity.Emp_;
  */
 public class EntityFetcherTest extends TestCase {
 
-    private MockConfig runtimeConfig = new MockConfig();
+    private final MockConfig runtimeConfig = new MockConfig();
 
     public void testFetch() throws Exception {
         MockResultSetMetaData metaData = new MockResultSetMetaData();
@@ -49,14 +51,16 @@ public class EntityFetcherTest extends TestCase {
         resultSet.rows.add(new RowData(1, "aaa", new BigDecimal(10), 100));
         resultSet.next();
 
-        Emp_ emp = new Emp_();
+        Emp_ empMetaFactory = new Emp_();
+        EntityMeta<Emp> entityMeta = empMetaFactory.createEntityMeta();
         EntityFetcher fetcher = new EntityFetcher(new MySelectQuery());
-        fetcher.fetch(resultSet, emp);
+        fetcher.fetch(resultSet, entityMeta);
 
-        assertEquals(new Integer(1), emp.id().get());
-        assertEquals("aaa", emp.name().get());
-        assertEquals(new BigDecimal(10), emp.salary().get());
-        assertEquals(new Integer(100), emp.version().get());
+        Emp emp = entityMeta.getEntity();
+        assertEquals(new Integer(1), emp.getId());
+        assertEquals("aaa", emp.getName());
+        assertEquals(new BigDecimal(10), emp.getSalary());
+        assertEquals(new Integer(100), emp.getVersion());
     }
 
     protected class MySelectQuery implements SelectQuery {
@@ -99,6 +103,15 @@ public class EntityFetcherTest extends TestCase {
         @Override
         public int getQueryTimeout() {
             return 0;
+        }
+
+        @Override
+        public void prepare() {
+
+        }
+
+        @Override
+        public void complete() {
         }
 
     }

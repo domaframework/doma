@@ -15,94 +15,81 @@
  */
 package org.seasar.doma.internal.apt.entity;
 
-import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
-import org.seasar.doma.domain.BuiltinBigDecimalDomain;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-import org.seasar.doma.domain.BuiltinStringDomain;
-import org.seasar.doma.jdbc.entity.DomaAbstractEntity;
-import org.seasar.doma.jdbc.entity.EntityProperty;
-import org.seasar.doma.jdbc.entity.GeneratedIdProperty;
-import org.seasar.doma.jdbc.entity.VersionProperty;
+import org.seasar.doma.jdbc.entity.AbstractEntityMeta;
+import org.seasar.doma.jdbc.entity.GeneratedIdPropertyMeta;
+import org.seasar.doma.jdbc.entity.EntityPropertyMeta;
+import org.seasar.doma.jdbc.entity.VersionPropertyMeta;
 
 /**
  * @author taedium
  * 
  */
-public class Emp_ extends DomaAbstractEntity<Emp> implements Emp, Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class Emp_ extends AbstractEntityMeta<Emp> {
 
     public Emp_() {
         super(null, null, null);
     }
 
     @Override
-    public BuiltinIntegerDomain id() {
+    public Emp getEntity() {
         return null;
     }
 
     @Override
-    public BuiltinStringDomain name() {
+    public Object getPropertyWrappers() {
         return null;
     }
 
     @Override
-    public BuiltinBigDecimalDomain salary() {
+    public String getName() {
         return null;
     }
 
     @Override
-    public BuiltinStringDomain temp() {
+    public EntityPropertyMeta<?> getPropertyMeta(String propertyName) {
         return null;
     }
 
     @Override
-    public BuiltinIntegerDomain version() {
+    public List<EntityPropertyMeta<?>> getPropertyMetas() {
         return null;
     }
 
     @Override
-    public Emp __asInterface() {
+    public GeneratedIdPropertyMeta<?> getGeneratedIdProperty() {
         return null;
     }
 
     @Override
-    public String __getName() {
+    public VersionPropertyMeta<?> getVersionProperty() {
         return null;
     }
 
     @Override
-    public EntityProperty<?> __getEntityProperty(String propertyName) {
+    public void preDelete() {
+    }
+
+    @Override
+    public void preInsert() {
+    }
+
+    @Override
+    public void preUpdate() {
+    }
+
+    @Override
+    public Set<String> getModifiedProperties() {
+        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<EntityProperty<?>> __getEntityProperties() {
-        return null;
-    }
+    public void refreshEntity() {
+        // TODO Auto-generated method stub
 
-    @Override
-    public GeneratedIdProperty<?> __getGeneratedIdProperty() {
-        return null;
-    }
-
-    @Override
-    public VersionProperty<?> __getVersionProperty() {
-        return null;
-    }
-
-    @Override
-    public void __preDelete() {
-    }
-
-    @Override
-    public void __preInsert() {
-    }
-
-    @Override
-    public void __preUpdate() {
     }
 
 }

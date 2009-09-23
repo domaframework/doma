@@ -20,8 +20,8 @@ import java.sql.SQLException;
 import java.util.Collections;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.domain.BooleanDomain;
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.BooleanWrapper;
+import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.internal.jdbc.dialect.OracleForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.OraclePagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
@@ -63,9 +63,10 @@ public class OracleDialect extends StandardDialect {
      * を指定してインスタンスを構築します。
      * 
      * @param jdbcMappingVisitor
-     *            {@link Domain} をJDBCの型とマッピングするビジター
+     *            {@link Wrapper} をJDBCの型とマッピングするビジター
      * @param sqlLogFormattingVisitor
-     *            SQLのバインド変数にマッピングされる {@link Domain} をログ用のフォーマットされた文字列へと変換するビジター
+     *            SQLのバインド変数にマッピングされる {@link Wrapper}
+     *            をログ用のフォーマットされた文字列へと変換するビジター
      */
     public OracleDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
@@ -170,9 +171,9 @@ public class OracleDialect extends StandardDialect {
             StandardJdbcMappingVisitor {
 
         @Override
-        public Void visitAbstractBooleanDomain(BooleanDomain<?> domain,
+        public Void visitBooleanWrapper(BooleanWrapper wrapper,
                 JdbcMappingFunction p) throws SQLException {
-            return p.apply(domain, JdbcTypes.INTEGER_ADAPTIVE_BOOLEAN);
+            return p.apply(wrapper, JdbcTypes.INTEGER_ADAPTIVE_BOOLEAN);
         }
     }
 
@@ -186,10 +187,9 @@ public class OracleDialect extends StandardDialect {
             StandardSqlLogFormattingVisitor {
 
         @Override
-        public String visitAbstractBooleanDomain(
-                BooleanDomain<?> domain, SqlLogFormattingFunction p)
-                throws RuntimeException {
-            return p.apply(domain, JdbcTypes.INTEGER_ADAPTIVE_BOOLEAN);
+        public String visitBooleanWrapper(BooleanWrapper wrapper,
+                SqlLogFormattingFunction p) throws RuntimeException {
+            return p.apply(wrapper, JdbcTypes.INTEGER_ADAPTIVE_BOOLEAN);
         }
     }
 

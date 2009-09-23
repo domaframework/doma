@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.apt.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.seasar.doma.Dao;
@@ -22,9 +23,6 @@ import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
 import org.seasar.doma.Select;
 import org.seasar.doma.Update;
-import org.seasar.doma.domain.BuiltinBigDecimalDomain;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.jdbc.SelectOptions;
 
 import example.entity.Emp;
@@ -38,10 +36,10 @@ import example.entity.Emp;
 public interface EmpDao {
 
     @Select
-    Emp selectById(BuiltinIntegerDomain id, SelectOptions options);
+    Emp selectById(Integer id, SelectOptions options);
 
     @Select
-    List<Emp> selectByNameAndSalary(BuiltinStringDomain name, BuiltinBigDecimalDomain salary,
+    List<Emp> selectByNameAndSalary(String name, BigDecimal salary,
             SelectOptions options);
 
     @Insert

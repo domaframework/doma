@@ -18,22 +18,45 @@ package org.seasar.doma.internal.apt.entity;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
 import org.seasar.doma.Version;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
 
 /**
  * @author taedium
  * 
  */
 @Entity
-public interface VersionDuplicatedEntity {
+public class VersionDuplicatedEntity {
 
     @Id
-    BuiltinIntegerDomain id();
+    Integer id;
 
     @Version
-    BuiltinIntegerDomain version();
+    Integer version;
 
     @Version
-    BuiltinIntegerDomain version2();
+    Integer version2;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public Integer getVersion2() {
+        return version2;
+    }
+
+    public void setVersion2(Integer version2) {
+        this.version2 = version2;
+    }
 
 }

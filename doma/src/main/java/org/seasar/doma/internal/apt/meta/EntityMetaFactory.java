@@ -18,22 +18,28 @@ package org.seasar.doma.internal.apt.meta;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.MirroredTypeException;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.Entity;
-import org.seasar.doma.EntityMethod;
-import org.seasar.doma.MappedSuperclass;
+import org.seasar.doma.EntityField;
+import org.seasar.doma.ModifiedProperties;
 import org.seasar.doma.Table;
+import org.seasar.doma.Transient;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Notifier;
@@ -51,83 +57,67 @@ public class EntityMetaFactory {
 
     protected final ProcessingEnvironment env;
 
-    protected final EntityDelegateMetaFactory delegateMetaFactory;
-
     protected final EntityPropertyMetaFactory propertyMetaFactory;
 
     public EntityMetaFactory(ProcessingEnvironment env,
-            EntityDelegateMetaFactory delegateMetaFactory,
             EntityPropertyMetaFactory propertyMetaFactory) {
-        assertNotNull(env, delegateMetaFactory, propertyMetaFactory);
+        assertNotNull(env, propertyMetaFactory);
         this.env = env;
-        this.delegateMetaFactory = delegateMetaFactory;
         this.propertyMetaFactory = propertyMetaFactory;
     }
 
-    public EntityMeta createEntityMeta(TypeElement entityElement) {
-        assertNotNull(entityElement);
+    public EntityMeta createEntityMeta(TypeElement classElement) {
+        assertNotNull(classElement);
         EntityMeta entityMeta = new EntityMeta();
-        doEntityElement(entityElement, entityMeta);
-        doSuperInterfaceMethodElements(entityElement, entityMeta, entityMeta
-                .isMappedSuperclass());
-        doMethodElements(entityElement, entityMeta);
+        doClassElement(classElement, entityMeta);
+        doFieldElements(classElement, entityMeta);
         return entityMeta;
     }
 
-    protected void doEntityElement(TypeElement entityElement,
+    protected void doClassElement(TypeElement entityClassElement,
             EntityMeta entityMeta) {
-        if (entityElement.getNestingKind().isNested()) {
+        if (entityClassElement.getNestingKind().isNested()) {
             throw new AptException(DomaMessageCode.DOMA4018, env,
-                    entityElement, entityElement.getQualifiedName());
+                    entityClassElement, entityClassElement.getQualifiedName());
         }
-        if (!entityElement.getKind().isInterface()) {
+        if (entityClassElement.getKind() != ElementKind.CLASS) {
             throw new AptException(DomaMessageCode.DOMA4015, env,
-                    entityElement, entityElement.getQualifiedName());
+                    entityClassElement, entityClassElement.getQualifiedName());
         }
-        String name = entityElement.getSimpleName().toString();
+        String entityName = entityClassElement.getSimpleName().toString();
         String suffix = Options.getEntitySuffix(env);
-        if (name.endsWith(suffix)) {
+        if (entityName.endsWith(suffix)) {
             Notifier.notify(env, Kind.WARNING, DomaMessageCode.DOMA4026,
-                    entityElement, suffix);
+                    entityClassElement, suffix);
         }
-        entityMeta.setName(name);
-        entityMeta.setEntityElement(entityElement);
-        entityMeta.setEntityType(entityElement.asType());
-        Entity entityAnnotation = entityElement.getAnnotation(Entity.class);
-        MappedSuperclass mappedSuperclassAnnotation = entityElement
-                .getAnnotation(MappedSuperclass.class);
-        if (entityAnnotation != null && mappedSuperclassAnnotation != null) {
-            throw new AptException(DomaMessageCode.DOMA4049, env, entityElement);
+        entityMeta.setEntityName(entityName);
+        entityMeta.setEntityTypeName(TypeUtil.getTypeName(entityClassElement
+                .asType(), env));
+        Entity entityAnnotation = entityClassElement
+                .getAnnotation(Entity.class);
+        if (entityAnnotation == null) {
+            throw new AptIllegalStateException();
         }
-        if (entityAnnotation != null) {
-            if (!entityElement.getTypeParameters().isEmpty()) {
-                throw new AptException(DomaMessageCode.DOMA4051, env,
-                        entityElement);
-            }
-            doListener(entityAnnotation, entityElement, entityMeta);
-            doTableMeta(entityElement, entityMeta);
-            doSerialVersionUID(entityAnnotation, entityElement, entityMeta);
-        } else if (mappedSuperclassAnnotation != null) {
-            if (!entityElement.getTypeParameters().isEmpty()) {
-                throw new AptException(DomaMessageCode.DOMA4050, env,
-                        entityElement);
-            }
-            entityMeta.setMappedSuperclass(true);
+        if (!entityClassElement.getTypeParameters().isEmpty()) {
+            throw new AptException(DomaMessageCode.DOMA4051, env,
+                    entityClassElement);
         }
+        doListener(entityAnnotation, entityClassElement, entityMeta);
+        doTableMeta(entityClassElement, entityMeta);
     }
 
     protected void doListener(Entity entityAnnotation,
-            TypeElement entityElement, EntityMeta entityMeta) {
-        TypeMirror entityListenerType = getListenerType(entityAnnotation);
-        TypeMirror argumentType = getListenerArgumentType(entityListenerType);
+            TypeElement entityClassElement, EntityMeta entityMeta) {
+        TypeMirror listenerType = getListenerType(entityAnnotation);
+        TypeMirror argumentType = getListenerArgumentType(listenerType);
         assertNotNull(argumentType);
-        if (!TypeUtil.isAssignable(entityMeta.getEntityType(), argumentType,
+        if (!TypeUtil.isAssignable(entityClassElement.asType(), argumentType,
                 env)) {
             throw new AptException(DomaMessageCode.DOMA4038, env,
-                    entityElement, entityListenerType, argumentType,
-                    entityElement.getQualifiedName());
+                    entityClassElement, listenerType, argumentType,
+                    entityClassElement.getQualifiedName());
         }
-        entityMeta.setListenerType(entityListenerType);
+        entityMeta.setListenerTypeName(TypeUtil.getTypeName(listenerType, env));
     }
 
     protected TypeMirror getListenerType(Entity entityAnnotation) {
@@ -164,9 +154,10 @@ public class EntityMetaFactory {
         return null;
     }
 
-    protected void doTableMeta(TypeElement entityElement, EntityMeta entityMeta) {
+    protected void doTableMeta(TypeElement entityClassElement,
+            EntityMeta entityMeta) {
         TableMeta tableMeta = new TableMeta();
-        Table table = entityElement.getAnnotation(Table.class);
+        Table table = entityClassElement.getAnnotation(Table.class);
         if (table != null) {
             if (!table.catalog().isEmpty()) {
                 tableMeta.setCatalog(table.catalog());
@@ -181,80 +172,81 @@ public class EntityMetaFactory {
         entityMeta.setTableMeta(tableMeta);
     }
 
-    protected void doSerialVersionUID(Entity entityAnnotation,
-            TypeElement entityElement, EntityMeta entityMeta) {
-        entityMeta.setSerialVersionUID(entityAnnotation.serialVersionUID());
-    }
-
-    protected void doSuperInterfaceMethodElements(TypeElement typeElement,
-            EntityMeta entityMeta, boolean mappedSuperclassAnnotated) {
-        boolean mappedSuperclass = mappedSuperclassAnnotated;
-        for (TypeMirror interfaceTypeMirror : env.getTypeUtils()
-                .directSupertypes(typeElement.asType())) {
-            TypeElement interfaceTypeElement = TypeUtil.toTypeElement(
-                    interfaceTypeMirror, env);
-            if (interfaceTypeElement == null
-                    || !interfaceTypeElement.getKind().isInterface()) {
-                continue;
-            }
-            if (mappedSuperclass) {
-                if (interfaceTypeElement.getAnnotation(MappedSuperclass.class) == null) {
-                    throw new AptException(DomaMessageCode.DOMA4048, env,
-                            typeElement);
-                }
-            } else {
-                if (interfaceTypeElement.getAnnotation(MappedSuperclass.class) != null) {
-                    mappedSuperclass = true;
-                } else if (interfaceTypeElement.getAnnotation(Entity.class) == null) {
-                    throw new AptException(DomaMessageCode.DOMA4052, env,
-                            typeElement);
-                }
-            }
-            doSuperInterfaceMethodElements(interfaceTypeElement, entityMeta,
-                    mappedSuperclass);
-            doMethodElements(interfaceTypeElement, entityMeta);
-            entityMeta.addSupertype(interfaceTypeMirror);
-        }
-    }
-
-    protected void doMethodElements(TypeElement typeElement,
+    protected void doFieldElements(TypeElement entityClassElement,
             EntityMeta entityMeta) {
-        for (ExecutableElement methodElement : ElementFilter
-                .methodsIn(typeElement.getEnclosedElements())) {
+        for (VariableElement fieldElement : getFieldElements(entityClassElement)) {
             try {
-                doMethodElement(methodElement, entityMeta);
+                if (fieldElement.getAnnotation(ModifiedProperties.class) != null) {
+                    doModifiedPropertiesField(fieldElement, entityMeta);
+                } else {
+                    doEntityPropertyMeta(fieldElement, entityMeta);
+                }
             } catch (AptException e) {
                 Notifier.notify(env, e);
             }
         }
     }
 
-    protected void doMethodElement(ExecutableElement methodElement,
-            EntityMeta entityMeta) {
-        validateMethod(methodElement, entityMeta);
-        EntityDelegateMeta delegateMeta = createEntityDelegateMeta(
-                methodElement, entityMeta);
-        if (delegateMeta != null) {
-            removeOverridenMethod(delegateMeta, entityMeta);
-            entityMeta.addDelegateMeta(delegateMeta);
-        } else {
-            EntityPropertyMeta propertyMeta = createEntityPropertyMeta(
-                    methodElement, entityMeta);
-            removeOverridenMethod(propertyMeta, entityMeta);
-            entityMeta.addPropertyMeta(propertyMeta);
+    protected List<VariableElement> getFieldElements(
+            TypeElement entityClassElement) {
+        List<VariableElement> results = new LinkedList<VariableElement>();
+        for (TypeElement t = entityClassElement; t != null
+                && t.asType().getKind() != TypeKind.NONE; t = TypeUtil
+                .toTypeElement(t.getSuperclass(), env)) {
+            for (VariableElement field : ElementFilter.fieldsIn(t
+                    .getEnclosedElements())) {
+                if (field.getAnnotation(Transient.class) != null) {
+                    continue;
+                }
+                if (field.getModifiers().contains(Modifier.STATIC)) {
+                    continue;
+                }
+                if (field.getModifiers().contains(Modifier.PRIVATE)) {
+                    throw new AptException(DomaMessageCode.DOMA4094, env, field);
+                }
+                results.add(field);
+            }
         }
+        List<VariableElement> hiderFields = new LinkedList<VariableElement>(
+                results);
+        for (Iterator<VariableElement> it = results.iterator(); it.hasNext();) {
+            VariableElement hidden = it.next();
+            for (VariableElement hider : hiderFields) {
+                if (env.getElementUtils().hides(hider, hidden)) {
+                    it.remove();
+                }
+            }
+        }
+        return results;
     }
 
-    protected void validateMethod(ExecutableElement methodElement,
+    protected void doModifiedPropertiesField(VariableElement fieldElement,
+            EntityMeta entityMeta) {
+        if (!TypeUtil.isAssignable(fieldElement.asType(), Set.class, env)) {
+            throw new AptException(DomaMessageCode.DOMA4095, env, fieldElement);
+        }
+        entityMeta.setModifiedPropertiesFieldName(fieldElement.getSimpleName()
+                .toString());
+    }
+
+    protected void doEntityPropertyMeta(VariableElement fieldElement,
+            EntityMeta entityMeta) {
+        validateFieldAnnotation(fieldElement, entityMeta);
+        EntityPropertyMeta propertyMeta = createEntityPropertyMeta(
+                fieldElement, entityMeta);
+        entityMeta.addPropertyMeta(propertyMeta);
+    }
+
+    protected void validateFieldAnnotation(VariableElement fieldElement,
             EntityMeta entityMeta) {
         TypeElement foundAnnotationTypeElement = null;
-        for (AnnotationMirror annotation : methodElement.getAnnotationMirrors()) {
+        for (AnnotationMirror annotation : fieldElement.getAnnotationMirrors()) {
             DeclaredType declaredType = annotation.getAnnotationType();
             TypeElement typeElement = TypeUtil.toTypeElement(declaredType, env);
-            if (typeElement.getAnnotation(EntityMethod.class) != null) {
+            if (typeElement.getAnnotation(EntityField.class) != null) {
                 if (foundAnnotationTypeElement != null) {
                     throw new AptException(DomaMessageCode.DOMA4086, env,
-                            methodElement, foundAnnotationTypeElement
+                            fieldElement, foundAnnotationTypeElement
                                     .getQualifiedName(), typeElement
                                     .getQualifiedName());
                 }
@@ -263,34 +255,10 @@ public class EntityMetaFactory {
         }
     }
 
-    protected EntityDelegateMeta createEntityDelegateMeta(
-            ExecutableElement methodElement, EntityMeta entityMeta) {
-        return delegateMetaFactory.createEntityDelegateMeta(methodElement,
-                entityMeta);
-    }
-
     protected EntityPropertyMeta createEntityPropertyMeta(
-            ExecutableElement methodElement, EntityMeta entityMeta) {
-        return propertyMetaFactory.createEntityPropertyMeta(methodElement,
+            VariableElement fieldElement, EntityMeta entityMeta) {
+        return propertyMetaFactory.createEntityPropertyMeta(fieldElement,
                 entityMeta);
-    }
-
-    protected void removeOverridenMethod(EntityMethodMeta methodMeta,
-            EntityMeta entityMeta) {
-        if (entityMeta.getSupertypes().size() > 0) {
-            for (Iterator<? extends EntityMethodMeta> it = entityMeta
-                    .getAllMethodMetaIterator(); it.hasNext();) {
-                EntityMethodMeta overridenMeta = it.next();
-                ExecutableElement overriden = overridenMeta
-                        .getExecutableElement();
-                ExecutableElement overrider = methodMeta.getExecutableElement();
-                if (env.getElementUtils().overrides(overrider, overriden,
-                        entityMeta.getEntityElement())) {
-                    it.remove();
-                    break;
-                }
-            }
-        }
     }
 
 }

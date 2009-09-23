@@ -16,10 +16,6 @@
 package org.seasar.doma.internal.apt.dao;
 
 import org.seasar.doma.Dao;
-import org.seasar.doma.In;
-import org.seasar.doma.Out;
-import org.seasar.doma.Procedure;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
 
 /**
  * @author taedium
@@ -28,7 +24,8 @@ import org.seasar.doma.domain.BuiltinIntegerDomain;
 @Dao(config = MyConfig.class)
 public interface AutoProcedureDao {
 
-    @Procedure
-    void executeProcedure(@In BuiltinIntegerDomain arg1, @Out BuiltinIntegerDomain arg2);
+    // @Procedure
+    // void executeProcedure(@In BuiltinIntegerDomain arg1, @Out
+    // BuiltinIntegerDomain arg2);
 
 }

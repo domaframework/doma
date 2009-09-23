@@ -21,33 +21,34 @@ import java.util.Iterator;
 
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
-import org.seasar.doma.jdbc.entity.Entity;
-import org.seasar.doma.jdbc.entity.EntityProperty;
-import org.seasar.doma.jdbc.entity.VersionProperty;
+import org.seasar.doma.jdbc.entity.EntityMeta;
+import org.seasar.doma.jdbc.entity.EntityMetaFactory;
+import org.seasar.doma.jdbc.entity.EntityPropertyMeta;
+import org.seasar.doma.jdbc.entity.VersionPropertyMeta;
 
 /**
  * @author taedium
  * 
  */
-public class AutoBatchUpdateQuery<I, E extends Entity<I>> extends
-        AutoBatchModifyQuery<I, E> implements BatchUpdateQuery {
+public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
+        BatchUpdateQuery {
 
     protected boolean versionIncluded;
 
     protected boolean optimisticLockExceptionSuppressed;
 
-    public AutoBatchUpdateQuery(Class<E> entityClass) {
-        super(entityClass);
+    public AutoBatchUpdateQuery(EntityMetaFactory<E> entityMetaFactory) {
+        super(entityMetaFactory);
     }
 
-    public void compile() {
-        assertNotNull(config, entities, callerClassName, callerMethodName);
-        Iterator<? extends E> it = entities.iterator();
+    public void prepare() {
+        assertNotNull(config, callerClassName, callerMethodName);
+        Iterator<EntityMeta<E>> it = entityMetas.iterator();
         if (it.hasNext()) {
             executable = true;
             executionSkipCause = null;
-            entity = it.next();
-            entity.__preUpdate();
+            entityMeta = it.next();
+            entityMeta.preUpdate();
             prepareTableAndColumnNames();
             prepareIdAndVersionProperties();
             validateIdExistent();
@@ -62,13 +63,13 @@ public class AutoBatchUpdateQuery<I, E extends Entity<I>> extends
             idProperties.clear();
             versionProperty = null;
             targetProperties.clear();
-            this.entity = it.next();
-            entity.__preUpdate();
+            this.entityMeta = it.next();
+            entityMeta.preUpdate();
             prepareIdAndVersionProperties();
             prepareTargetProperties();
             prepareSql();
         }
-        assertEquals(entities.size(), sqls.size());
+        assertEquals(entityMetas.size(), sqls.size());
     }
 
     protected void prepareOptimisticLock() {
@@ -80,7 +81,7 @@ public class AutoBatchUpdateQuery<I, E extends Entity<I>> extends
     }
 
     protected void prepareTargetProperties() {
-        for (EntityProperty<?> p : entity.__getEntityProperties()) {
+        for (EntityPropertyMeta<?> p : entityMeta.getPropertyMetas()) {
             if (p.isTransient()) {
                 continue;
             }
@@ -106,10 +107,10 @@ public class AutoBatchUpdateQuery<I, E extends Entity<I>> extends
         builder.appendSql("update ");
         builder.appendSql(tableName);
         builder.appendSql(" set ");
-        for (EntityProperty<?> p : targetProperties) {
+        for (EntityPropertyMeta<?> p : targetProperties) {
             builder.appendSql(columnNameMap.get(p.getName()));
             builder.appendSql(" = ");
-            builder.appendDomain(p.getDomain());
+            builder.appendDomain(p.getWrapper());
             if (p.isVersion() && !versionIncluded) {
                 builder.appendSql(" + 1");
             }
@@ -118,10 +119,10 @@ public class AutoBatchUpdateQuery<I, E extends Entity<I>> extends
         builder.cutBackSql(2);
         if (idProperties.size() > 0) {
             builder.appendSql(" where ");
-            for (EntityProperty<?> p : idProperties) {
+            for (EntityPropertyMeta<?> p : idProperties) {
                 builder.appendSql(columnNameMap.get(p.getName()));
                 builder.appendSql(" = ");
-                builder.appendDomain(p.getDomain());
+                builder.appendDomain(p.getWrapper());
                 builder.appendSql(" and ");
             }
             builder.cutBackSql(5);
@@ -134,7 +135,7 @@ public class AutoBatchUpdateQuery<I, E extends Entity<I>> extends
             }
             builder.appendSql(columnNameMap.get(versionProperty.getName()));
             builder.appendSql(" = ");
-            builder.appendDomain(versionProperty.getDomain());
+            builder.appendDomain(versionProperty.getWrapper());
         }
         PreparedSql sql = builder.build();
         sqls.add(sql);
@@ -145,8 +146,9 @@ public class AutoBatchUpdateQuery<I, E extends Entity<I>> extends
         if (versionIncluded) {
             return;
         }
-        for (E entity : entities) {
-            VersionProperty<?> versionProperty = entity.__getVersionProperty();
+        for (EntityMeta<E> entityMeta : entityMetas) {
+            VersionPropertyMeta<?> versionProperty = entityMeta
+                    .getVersionProperty();
             if (versionProperty != null) {
                 versionProperty.increment();
             }

@@ -23,7 +23,7 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.entity.Entity;
+import org.seasar.doma.jdbc.entity.EntityMeta;
 
 /**
  * 識別子の生成に関する設定です。
@@ -37,7 +37,7 @@ public class IdGenerationConfig {
     protected final Config config;
 
     /** 識別子が属するエンティティ */
-    protected final Entity<?> entity;
+    protected final EntityMeta<?> entityMeta;
 
     /** 識別子が属するエンティティに対応するテーブルの完全修飾名 */
     protected final String qualifiedTableName;
@@ -50,18 +50,18 @@ public class IdGenerationConfig {
      * 
      * @param config
      *            JDBCの設定
-     * @param entity
+     * @param entityMeta
      *            識別子が属するエンティティ
      * @param qualifiedTableName
      *            識別子が属するエンティティに対応するテーブルの完全修飾名
      * @param idColumnName
      *            識別子にマッピングされたカラムの名前
      */
-    public IdGenerationConfig(Config config, Entity<?> entity,
+    public IdGenerationConfig(Config config, EntityMeta<?> entityMeta,
             String qualifiedTableName, String idColumnName) {
-        assertNotNull(config, entity, qualifiedTableName, idColumnName);
+        assertNotNull(config, entityMeta, qualifiedTableName, idColumnName);
         this.config = config;
-        this.entity = entity;
+        this.entityMeta = entityMeta;
         this.qualifiedTableName = qualifiedTableName;
         this.idColumnName = idColumnName;
     }
@@ -98,8 +98,8 @@ public class IdGenerationConfig {
         return config.queryTimeout();
     }
 
-    public Entity<?> getEntity() {
-        return entity;
+    public EntityMeta<?> getEntityMeta() {
+        return entityMeta;
     }
 
     public String getQualifiedTableName() {

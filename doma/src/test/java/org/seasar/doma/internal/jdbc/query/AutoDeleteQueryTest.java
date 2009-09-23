@@ -19,7 +19,6 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.domain.BuiltinIntegerDomain;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
@@ -33,65 +32,62 @@ import example.entity.Emp_;
  */
 public class AutoDeleteQueryTest extends TestCase {
 
-    private MockConfig runtimeConfig = new MockConfig();
+    private final MockConfig runtimeConfig = new MockConfig();
 
-    public void testCompile() throws Exception {
-        Emp emp = new Emp_();
+    public void testPrepare() throws Exception {
+        Emp emp = new Emp();
 
-        AutoDeleteQuery<Emp, Emp_> query = new AutoDeleteQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
         DeleteQuery deleteQuery = query;
         assertNotNull(deleteQuery.getSql());
     }
 
     public void testOption_default() throws Exception {
-        Emp emp = new Emp_();
-        emp.id().set(10);
-        emp.name().set("aaa");
-        emp.version().set(100);
+        Emp emp = new Emp();
+        emp.setId(10);
+        emp.setName("aaa");
+        emp.setVersion(100);
 
-        AutoDeleteQuery<Emp, Emp_> query = new AutoDeleteQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
         PreparedSql sql = query.getSql();
         assertEquals("delete from EMP where ID = ? and VERSION = ?", sql
                 .getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(2, parameters.size());
-        assertEquals(new BuiltinIntegerDomain(10), parameters.get(0).getDomain());
-        assertEquals(new BuiltinIntegerDomain(100), parameters.get(1).getDomain());
+        assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
+        assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
     }
 
     public void testOption_ignoreVersion() throws Exception {
-        Emp emp = new Emp_();
-        emp.id().set(10);
-        emp.name().set("aaa");
-        emp.version().set(100);
+        Emp emp = new Emp();
+        emp.setId(10);
+        emp.setName("aaa");
+        emp.setVersion(100);
 
-        AutoDeleteQuery<Emp, Emp_> query = new AutoDeleteQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setVersionIgnored(true);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
         PreparedSql sql = query.getSql();
         assertEquals("delete from EMP where ID = ?", sql.getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(1, parameters.size());
-        assertEquals(new BuiltinIntegerDomain(10), parameters.get(0).getDomain());
+        assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
     }
 }

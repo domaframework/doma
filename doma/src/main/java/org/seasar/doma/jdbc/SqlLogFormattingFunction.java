@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.jdbc.type.JdbcType;
 
 /**
@@ -39,5 +39,5 @@ public interface SqlLogFormattingFunction {
      *            JDBC型
      * @return フォーマットされた文字列
      */
-    <V> String apply(Domain<V, ?> domain, JdbcType<V> jdbcType);
+    <V> String apply(Wrapper<V, ?> domain, JdbcType<V> jdbcType);
 }

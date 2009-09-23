@@ -19,10 +19,11 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seasar.doma.domain.BuiltinBigDecimalDomain;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-import org.seasar.doma.domain.BuiltinStringDomain;
-import org.seasar.doma.internal.jdbc.command.CallableSqlParameterBinder;
+import junit.framework.TestCase;
+
+import org.seasar.doma.domain.BigDecimalWrapper;
+import org.seasar.doma.domain.IntegerWrapper;
+import org.seasar.doma.domain.StringWrapper;
 import org.seasar.doma.internal.jdbc.mock.BindValue;
 import org.seasar.doma.internal.jdbc.mock.MockCallableStatement;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
@@ -36,26 +37,24 @@ import org.seasar.doma.internal.jdbc.sql.OutParameter;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
 
-import junit.framework.TestCase;
-
 /**
  * @author taedium
  * 
  */
 public class CallableSqlParameterBinderTest extends TestCase {
 
-    private MockConfig runtimeConfig = new MockConfig();
+    private final MockConfig runtimeConfig = new MockConfig();
 
     public void testBind() throws Exception {
         MockCallableStatement callableStatement = new MockCallableStatement();
 
         List<CallableSqlParameter> parameters = new ArrayList<CallableSqlParameter>();
-        parameters.add(new DomainResultParameter<BuiltinIntegerDomain>(
-                BuiltinIntegerDomain.class));
-        parameters.add(new InParameter(new BuiltinStringDomain("aaa")));
-        parameters.add(new InOutParameter(new BuiltinBigDecimalDomain(new BigDecimal(
+        parameters.add(new DomainResultParameter<IntegerWrapper>(
+                IntegerWrapper.class));
+        parameters.add(new InParameter(new StringWrapper("aaa")));
+        parameters.add(new InOutParameter(new BigDecimalWrapper(new BigDecimal(
                 10))));
-        parameters.add(new OutParameter(new BuiltinStringDomain("bbb")));
+        parameters.add(new OutParameter(new StringWrapper("bbb")));
         CallableSqlParameterBinder binder = new CallableSqlParameterBinder(
                 new MyQuery());
         binder.bind(callableStatement, parameters);
@@ -97,6 +96,14 @@ public class CallableSqlParameterBinderTest extends TestCase {
         @Override
         public int getQueryTimeout() {
             return 0;
+        }
+
+        @Override
+        public void prepare() {
+        }
+
+        @Override
+        public void complete() {
         }
 
     }

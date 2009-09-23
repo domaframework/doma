@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
 import java.sql.Statement;
 import java.util.List;
 
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 
 /**
  * ストアドファンクションやストアドプロシージャーから返される結果セットにマッピングされることを示します。
@@ -37,7 +37,7 @@ import org.seasar.doma.domain.Domain;
  * 
  * 注釈されるパラメータは、次の制約を満たす必要があります。
  * <ul>
- * <li>型は {@link Domain} の実装クラスを要素にもつ {@link List}、もしくは {@link Entity}
+ * <li>型は {@link Wrapper} の実装クラスを要素にもつ {@link List}、もしくは {@link Entity}
  * が注釈されたインタフェースを要素にもつ {@link List} である。
  * </ul>
  * 

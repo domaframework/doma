@@ -50,18 +50,21 @@ public abstract class ModuleCommand<R, Q extends ModuleQuery> implements
         Connection connection = JdbcUtil.getConnection(query.getConfig()
                 .dataSource());
         try {
-            CallableStatement callableStatement = JdbcUtil
-                    .prepareCall(connection, sql.getRawSql());
+            CallableStatement callableStatement = JdbcUtil.prepareCall(
+                    connection, sql.getRawSql());
             try {
                 log();
                 setupOptions(callableStatement);
                 bindParameters(callableStatement);
-                return executeInternal(callableStatement);
+                R result = executeInternal(callableStatement);
+                query.complete();
+                return result;
             } catch (SQLException e) {
                 Dialect dialect = query.getConfig().dialect();
                 throw new SqlExecutionException(sql, e, dialect.getRootCause(e));
             } finally {
-                JdbcUtil.close(callableStatement, query.getConfig().jdbcLogger());
+                JdbcUtil.close(callableStatement, query.getConfig()
+                        .jdbcLogger());
             }
         } finally {
             JdbcUtil.close(connection, query.getConfig().jdbcLogger());

@@ -43,8 +43,8 @@ import java.lang.annotation.Target;
  * @author taedium
  * @see GeneratedValue
  */
-@Target(ElementType.METHOD)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@EntityMethod
+@EntityField
 public @interface Id {
 }

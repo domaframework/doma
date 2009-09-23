@@ -19,18 +19,33 @@ import java.util.List;
 
 import org.seasar.doma.Entity;
 import org.seasar.doma.Transient;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-
 
 /**
  * @author taedium
  * 
  */
 @Entity
-public interface ReturnListTransientEntity {
+public class ReturnListTransientEntity {
 
-    BuiltinIntegerDomain id();
+    Integer id;
 
     @Transient
-    List<BuiltinIntegerDomain> list();
+    List<Integer> list;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public List<Integer> getList() {
+        return list;
+    }
+
+    public void setList(List<Integer> list) {
+        this.list = list;
+    }
+
 }

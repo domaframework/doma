@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
@@ -200,16 +200,16 @@ public interface Dialect {
     Throwable getRootCause(SQLException sqlException);
 
     /**
-     * {@link Domain} をJDBCの型とマッピングするビジターを返します。
+     * {@link Wrapper} をJDBCの型とマッピングするビジターを返します。
      * 
-     * @return {@link Domain} をJDBCの型とマッピングするビジター
+     * @return {@link Wrapper} をJDBCの型とマッピングするビジター
      */
     JdbcMappingVisitor getJdbcMappingVisitor();
 
     /**
-     * SQLのバインド変数にマッピングされる {@link Domain} をログ用のフォーマットされた文字列へと変換するビジターを返します。
+     * SQLのバインド変数にマッピングされる {@link Wrapper} をログ用のフォーマットされた文字列へと変換するビジターを返します。
      * 
-     * @return SQLのバインド変数にマッピングされる {@link Domain} をログ用のフォーマットされた文字列へと変換するビジター
+     * @return SQLのバインド変数にマッピングされる {@link Wrapper} をログ用のフォーマットされた文字列へと変換するビジター
      */
     SqlLogFormattingVisitor getSqlLogFormattingVisitor();
 

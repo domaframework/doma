@@ -15,10 +15,10 @@
  */
 package org.seasar.doma.internal.apt.dao;
 
+import java.math.BigDecimal;
+
 import org.seasar.doma.Dao;
 import org.seasar.doma.Insert;
-import org.seasar.doma.domain.BuiltinBigDecimalDomain;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
 
 /**
  * @author taedium
@@ -28,5 +28,5 @@ import org.seasar.doma.domain.BuiltinIntegerDomain;
 public interface SqlFileInsertDao {
 
     @Insert(sqlFile = true)
-    int insert(BuiltinIntegerDomain id, BuiltinBigDecimalDomain salary);
+    int insert(Integer id, BigDecimal salary);
 }

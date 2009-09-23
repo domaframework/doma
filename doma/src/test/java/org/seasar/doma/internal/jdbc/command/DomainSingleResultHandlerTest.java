@@ -15,8 +15,9 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import org.seasar.doma.domain.BuiltinStringDomain;
-import org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler;
+import junit.framework.TestCase;
+
+import org.seasar.doma.domain.StringWrapper;
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
@@ -26,15 +27,13 @@ import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 
-import junit.framework.TestCase;
-
 /**
  * @author taedium
  * 
  */
 public class DomainSingleResultHandlerTest extends TestCase {
 
-    private MockConfig runtimeConfig = new MockConfig();
+    private final MockConfig runtimeConfig = new MockConfig();
 
     public void testHandle() throws Exception {
         MockResultSetMetaData metaData = new MockResultSetMetaData();
@@ -44,16 +43,16 @@ public class DomainSingleResultHandlerTest extends TestCase {
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil
-                .buildPath(getClass().getName(), getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
-        DomainSingleResultHandler<BuiltinStringDomain> handler = new DomainSingleResultHandler<BuiltinStringDomain>(
-                BuiltinStringDomain.class);
-        BuiltinStringDomain domain = handler.handle(resultSet, query);
-        assertEquals(domain, new BuiltinStringDomain("aaa"));
+        DomainSingleResultHandler<StringWrapper> handler = new DomainSingleResultHandler<StringWrapper>(
+                StringWrapper.class);
+        StringWrapper domain = handler.handle(resultSet, query);
+        assertEquals("aaa", domain.get());
     }
 
     public void testHandle_NonUniqueResultException() throws Exception {
@@ -63,14 +62,14 @@ public class DomainSingleResultHandlerTest extends TestCase {
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil
-                .buildPath(getClass().getName(), getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
-        DomainSingleResultHandler<BuiltinStringDomain> handler = new DomainSingleResultHandler<BuiltinStringDomain>(
-                BuiltinStringDomain.class);
+        DomainSingleResultHandler<StringWrapper> handler = new DomainSingleResultHandler<StringWrapper>(
+                StringWrapper.class);
         try {
             handler.handle(resultSet, query);
             fail();

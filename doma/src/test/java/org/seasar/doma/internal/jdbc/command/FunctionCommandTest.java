@@ -15,18 +15,9 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import java.util.List;
-
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-import org.seasar.doma.internal.jdbc.command.FunctionCommand;
-import org.seasar.doma.internal.jdbc.mock.MockConfig;
-import org.seasar.doma.internal.jdbc.query.AutoFunctionQuery;
-import org.seasar.doma.internal.jdbc.sql.DomainResultParameter;
-import org.seasar.doma.internal.jdbc.sql.InOutParameter;
-import org.seasar.doma.internal.jdbc.sql.InParameter;
-import org.seasar.doma.internal.jdbc.sql.OutParameter;
-
 import junit.framework.TestCase;
+
+import org.seasar.doma.internal.jdbc.mock.MockConfig;
 
 /**
  * @author taedium
@@ -34,39 +25,45 @@ import junit.framework.TestCase;
  */
 public class FunctionCommandTest extends TestCase {
 
-    private MockConfig runtimeConfig = new MockConfig();
+    private final MockConfig runtimeConfig = new MockConfig();
 
     public void testExecute() throws Exception {
-        List<Object> outParameters = runtimeConfig.dataSource.connection.callableStatement.outParameters;
-        outParameters.add(10);
-        outParameters.add(null);
-        outParameters.add(20);
-        outParameters.add(30);
-
-        BuiltinIntegerDomain aaa = new BuiltinIntegerDomain(40);
-        BuiltinIntegerDomain bbb = new BuiltinIntegerDomain(50);
-        BuiltinIntegerDomain ccc = new BuiltinIntegerDomain(60);
-
-        AutoFunctionQuery<BuiltinIntegerDomain> query = new AutoFunctionQuery<BuiltinIntegerDomain>();
-        query.setConfig(runtimeConfig);
-        query.setFunctionName("aaa");
-        query.setResultParameter(new DomainResultParameter<BuiltinIntegerDomain>(
-                BuiltinIntegerDomain.class));
-        query.addParameter(new InParameter(aaa));
-        query.addParameter(new OutParameter(bbb));
-        query.addParameter(new InOutParameter(ccc));
-        query.setCallerClassName("aaa");
-        query.setCallerMethodName("bbb");
-        query.compile();
-        BuiltinIntegerDomain result = new FunctionCommand<BuiltinIntegerDomain>(query)
-                .execute();
-        assertNotNull(result);
-        assertEquals(new Integer(10), result.get());
-        assertEquals(new Integer(40), aaa.get());
-        assertEquals(new Integer(20), bbb.get());
-        assertEquals(new Integer(30), ccc.get());
-
-        String sql = runtimeConfig.dataSource.connection.callableStatement.sql;
-        assertEquals("{? = call aaa(?, ?, ?)}", sql);
+        fail();
+        // List<Object> outParameters =
+        // runtimeConfig.dataSource.connection.callableStatement.outParameters;
+        // outParameters.add(10);
+        // outParameters.add(null);
+        // outParameters.add(20);
+        // outParameters.add(30);
+        //
+        // BuiltinIntegerDomain aaa = new BuiltinIntegerDomain(40);
+        // BuiltinIntegerDomain bbb = new BuiltinIntegerDomain(50);
+        // BuiltinIntegerDomain ccc = new BuiltinIntegerDomain(60);
+        //
+        // AutoFunctionQuery<BuiltinIntegerDomain> query = new
+        // AutoFunctionQuery<BuiltinIntegerDomain>();
+        // query.setConfig(runtimeConfig);
+        // query.setFunctionName("aaa");
+        // query.setResultParameter(new
+        // DomainResultParameter<BuiltinIntegerDomain>(
+        // BuiltinIntegerDomain.class));
+        // query.addParameter(new InParameter(aaa));
+        // query.addParameter(new OutParameter(bbb));
+        // query.addParameter(new InOutParameter(ccc));
+        // query.setCallerClassName("aaa");
+        // query.setCallerMethodName("bbb");
+        // query.compile();
+        // BuiltinIntegerDomain result = new
+        // FunctionCommand<BuiltinIntegerDomain>(query)
+        // .execute();
+        // assertNotNull(result);
+        // assertEquals(new Integer(10), result.get());
+        // assertEquals(new Integer(40), aaa.get());
+        // assertEquals(new Integer(20), bbb.get());
+        // assertEquals(new Integer(30), ccc.get());
+        //
+        // String sql =
+        // runtimeConfig.dataSource.connection.callableStatement.sql;
+        // assertEquals("{? = call aaa(?, ?, ?)}", sql);
     }
 }

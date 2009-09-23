@@ -22,7 +22,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlParameter;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlParameterVisitor;
@@ -123,7 +123,7 @@ public class CallableSqlParameterBinder {
         @Override
         public Void visitInOutParameter(InOutParameter parameter, Void p)
                 throws SQLException {
-            Domain<?, ?> domain = parameter.getDomain();
+            Wrapper<?, ?> domain = parameter.getDomain();
             domain.accept(jdbcMappingVisitor, new SetValueFunction(
                     callableStatement, index));
             domain.accept(jdbcMappingVisitor, new RegisterOutParameterFunction(
@@ -135,7 +135,7 @@ public class CallableSqlParameterBinder {
         @Override
         public Void visitInParameter(InParameter parameter, Void p)
                 throws SQLException {
-            Domain<?, ?> domain = parameter.getDomain();
+            Wrapper<?, ?> domain = parameter.getWrapper();
             domain.accept(jdbcMappingVisitor, new SetValueFunction(
                     callableStatement, index));
             index++;
@@ -145,7 +145,7 @@ public class CallableSqlParameterBinder {
         @Override
         public Void visitOutParameter(OutParameter parameter, Void p)
                 throws SQLException {
-            Domain<?, ?> domain = parameter.getDomain();
+            Wrapper<?, ?> domain = parameter.getDomain();
             domain.accept(jdbcMappingVisitor, new RegisterOutParameterFunction(
                     callableStatement, index));
             index++;
@@ -155,7 +155,7 @@ public class CallableSqlParameterBinder {
         @Override
         public Void visitDomainResultParameter(
                 DomainResultParameter<?> parameter, Void p) throws SQLException {
-            Domain<?, ?> domain = parameter.getDomain();
+            Wrapper<?, ?> domain = parameter.getDomain();
             domain.accept(jdbcMappingVisitor, new RegisterOutParameterFunction(
                     callableStatement, index));
             index++;

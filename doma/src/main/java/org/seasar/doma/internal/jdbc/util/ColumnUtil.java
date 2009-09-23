@@ -5,7 +5,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.NamingConvention;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.entity.EntityProperty;
+import org.seasar.doma.jdbc.entity.EntityPropertyMeta;
 
 /**
  * 
@@ -14,7 +14,7 @@ import org.seasar.doma.jdbc.entity.EntityProperty;
  */
 public final class ColumnUtil {
 
-    public static String getColumnName(Config config, EntityProperty<?> property) {
+    public static String getColumnName(Config config, EntityPropertyMeta<?> property) {
         assertNotNull(config, property);
         if (property.getColumnName() != null) {
             return property.getColumnName();

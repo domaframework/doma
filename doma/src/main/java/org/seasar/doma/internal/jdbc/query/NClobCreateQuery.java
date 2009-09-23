@@ -21,17 +21,21 @@ import java.sql.Connection;
 import java.sql.NClob;
 import java.sql.SQLException;
 
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class NClobCreateQuery<R extends Domain<NClob, ?>> extends
+public class NClobCreateQuery<R extends Wrapper<NClob, ?>> extends
         AbstractCreateQuery<NClob, R> {
 
-    public void compile() {
+    public void prepare() {
         assertNotNull(config, callerClassName, callerMethodName, result);
+    }
+
+    @Override
+    public void complete() {
     }
 
     @Override

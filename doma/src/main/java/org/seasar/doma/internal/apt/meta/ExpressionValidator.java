@@ -190,8 +190,8 @@ public class ExpressionValidator implements ExpressionNodeVisitor<Void, Void> {
         node.getTargetObjectNode().accept(this, p);
         node.getParametersNode().accept(this, p);
 
-        TypeContext typeContext = typeContextMap.get(node
-                .getTargetObjectNode());
+        TypeContext typeContext = typeContextMap
+                .get(node.getTargetObjectNode());
         if (typeContext == null) {
             return null;
         }
@@ -213,8 +213,8 @@ public class ExpressionValidator implements ExpressionNodeVisitor<Void, Void> {
                     location.getExpression(), location.getPosition(),
                     variableName);
         }
-        typeContextMap.put(node, new TypeContext(env, method,
-                variableName, typeMirror));
+        typeContextMap.put(node, new TypeContext(env, method, variableName,
+                typeMirror));
         return null;
     }
 

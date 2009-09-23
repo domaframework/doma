@@ -63,12 +63,14 @@ public class BuiltinTableIdGeneratorTest extends TestCase {
         idGenerator.setAllocationSize(1);
         idGenerator.initialize();
         IdGenerationConfig idGenerationConfig = new IdGenerationConfig(config,
-                new Emp_(), "EMP", "ID");
+                new Emp_().createEntityMeta(), "EMP", "ID");
         Long value = idGenerator.generatePreInsert(idGenerationConfig);
         assertEquals(new Long(10), value);
-        assertEquals("update aaa set VALUE = VALUE + ? where PK = ?", connection.preparedStatement.sql);
+        assertEquals("update aaa set VALUE = VALUE + ? where PK = ?",
+                connection.preparedStatement.sql);
         assertEquals(2, connection.preparedStatement.bindValues.size());
-        assertEquals("select VALUE from aaa where PK = ?", connection2.preparedStatement.sql);
+        assertEquals("select VALUE from aaa where PK = ?",
+                connection2.preparedStatement.sql);
         assertEquals(1, connection2.preparedStatement.bindValues.size());
     }
 }

@@ -19,7 +19,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -29,17 +28,17 @@ import org.seasar.doma.internal.jdbc.util.TableUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
-import org.seasar.doma.jdbc.entity.Entity;
-import org.seasar.doma.jdbc.entity.EntityProperty;
-import org.seasar.doma.jdbc.entity.VersionProperty;
+import org.seasar.doma.jdbc.entity.EntityMeta;
+import org.seasar.doma.jdbc.entity.EntityMetaFactory;
+import org.seasar.doma.jdbc.entity.EntityPropertyMeta;
+import org.seasar.doma.jdbc.entity.VersionPropertyMeta;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
  * 
  */
-public abstract class AutoBatchModifyQuery<I, E extends Entity<I>> implements
-        BatchModifyQuery {
+public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
 
     protected static final String[] EMPTY_STRINGS = new String[] {};
 
@@ -47,27 +46,27 @@ public abstract class AutoBatchModifyQuery<I, E extends Entity<I>> implements
 
     protected String[] excludedPropertyNames = EMPTY_STRINGS;
 
-    protected final Class<E> entityClass;
+    protected final EntityMetaFactory<E> entityMetaFactory;
 
     protected Config config;
 
-    protected List<E> entities;
+    protected List<EntityMeta<E>> entityMetas;
 
     protected String callerClassName;
 
     protected String callerMethodName;
 
-    protected final List<EntityProperty<?>> targetProperties = new ArrayList<EntityProperty<?>>();
+    protected final List<EntityPropertyMeta<?>> targetProperties = new ArrayList<EntityPropertyMeta<?>>();
 
-    protected final List<EntityProperty<?>> idProperties = new ArrayList<EntityProperty<?>>();
+    protected final List<EntityPropertyMeta<?>> idProperties = new ArrayList<EntityPropertyMeta<?>>();
 
-    protected VersionProperty<?> versionProperty;
+    protected VersionPropertyMeta<?> versionProperty;
 
     protected String tableName;
 
     protected final Map<String, String> columnNameMap = new HashMap<String, String>();
 
-    protected final List<PreparedSql> sqls = new ArrayList<PreparedSql>();
+    protected final List<PreparedSql> sqls = new ArrayList<PreparedSql>(100);
 
     protected boolean optimisticLockCheckRequired;
 
@@ -77,20 +76,20 @@ public abstract class AutoBatchModifyQuery<I, E extends Entity<I>> implements
 
     protected SqlExecutionSkipCause executionSkipCause = SqlExecutionSkipCause.BATCH_TARGET_NONEXISTENT;
 
-    protected E entity;
+    protected EntityMeta<E> entityMeta;
 
     protected int queryTimeout;
 
     protected int batchSize;
 
-    public AutoBatchModifyQuery(Class<E> entityClass) {
-        assertNotNull(entityClass);
-        this.entityClass = entityClass;
+    public AutoBatchModifyQuery(EntityMetaFactory<E> entityMetaFactory) {
+        assertNotNull(entityMetaFactory);
+        this.entityMetaFactory = entityMetaFactory;
     }
 
     protected void prepareTableAndColumnNames() {
-        tableName = TableUtil.getQualifiedTableName(config, entity);
-        for (EntityProperty<?> p : entity.__getEntityProperties()) {
+        tableName = TableUtil.getQualifiedTableName(config, entityMeta);
+        for (EntityPropertyMeta<?> p : entityMeta.getPropertyMetas()) {
             if (p.isTransient()) {
                 continue;
             }
@@ -103,7 +102,7 @@ public abstract class AutoBatchModifyQuery<I, E extends Entity<I>> implements
     }
 
     protected void prepareIdAndVersionProperties() {
-        for (EntityProperty<?> p : entity.__getEntityProperties()) {
+        for (EntityPropertyMeta<?> p : entityMeta.getPropertyMetas()) {
             if (p.isTransient()) {
                 continue;
             }
@@ -111,13 +110,13 @@ public abstract class AutoBatchModifyQuery<I, E extends Entity<I>> implements
                 idProperties.add(p);
             }
         }
-        versionProperty = entity.__getVersionProperty();
+        versionProperty = entityMeta.getVersionProperty();
     }
 
     protected void validateIdExistent() {
         if (idProperties.isEmpty()) {
-            throw new JdbcException(DomaMessageCode.DOMA2022, entity
-                    .__getName());
+            throw new JdbcException(DomaMessageCode.DOMA2022, entityMeta
+                    .getName());
         }
     }
 
@@ -155,25 +154,22 @@ public abstract class AutoBatchModifyQuery<I, E extends Entity<I>> implements
         return true;
     }
 
+    @Override
+    public void complete() {
+        for (EntityMeta<E> entityMeta : entityMetas) {
+            entityMeta.refreshEntity();
+        }
+    }
+
     public void setConfig(Config config) {
         this.config = config;
     }
 
-    public void setEntities(List<I> entities) {
+    public void setEntities(List<E> entities) {
         assertNotNull(entities);
-        this.entities = new ArrayList<E>(entities.size());
-        Iterator<I> it = entities.iterator();
-        if (it.hasNext()) {
-            I entity = it.next();
-            if (!entityClass.isInstance(entity)) {
-                throw new JdbcException(DomaMessageCode.DOMA2026, entity,
-                        entityClass.getName());
-            }
-            this.entities.add(entityClass.cast(entity));
-        }
-        while (it.hasNext()) {
-            I entity = it.next();
-            this.entities.add(entityClass.cast(entity));
+        entityMetas = new ArrayList<EntityMeta<E>>(entities.size());
+        for (E entity : entities) {
+            entityMetas.add(entityMetaFactory.createEntityMeta(entity));
         }
     }
 

@@ -15,15 +15,12 @@
  */
 package org.seasar.doma.internal.apt.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
-import org.seasar.doma.domain.BuiltinBigDecimalDomain;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.jdbc.SelectOptions;
-
 
 /**
  * 
@@ -34,9 +31,9 @@ import org.seasar.doma.jdbc.SelectOptions;
 public interface SqlFileSelectDomainDao {
 
     @Select
-    BuiltinStringDomain selectById(BuiltinIntegerDomain id);
+    String selectById(Integer id);
 
     @Select
-    List<BuiltinStringDomain> selectByNameAndSalary(BuiltinStringDomain name,
-            BuiltinBigDecimalDomain salary, SelectOptions options);
+    List<String> selectByNameAndSalary(String name, BigDecimal salary,
+            SelectOptions options);
 }

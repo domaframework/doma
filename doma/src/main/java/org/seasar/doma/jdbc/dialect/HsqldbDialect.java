@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.internal.jdbc.dialect.HsqldbPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
@@ -52,9 +52,9 @@ public class HsqldbDialect extends StandardDialect {
      * を指定してインスタンスを構築します。
      * 
      * @param jdbcMappingVisitor
-     *            {@link Domain} をJDBCの型とマッピングするビジター
+     *            {@link Wrapper} をJDBCの型とマッピングするビジター
      * @param sqlLogFormattingVisitor
-     *            SQLのバインド変数にマッピングされる {@link Domain} をログ用のフォーマットされた文字列へと変換するビジター
+     *            SQLのバインド変数にマッピングされる {@link Wrapper} をログ用のフォーマットされた文字列へと変換するビジター
      */
     public HsqldbDialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {

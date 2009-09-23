@@ -20,7 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.internal.util.ClassUtil;
@@ -34,7 +34,7 @@ import org.seasar.doma.message.DomaMessageCode;
  * @author taedium
  * 
  */
-public class DomainIterationHandler<R, D extends Domain<?, ?>> implements
+public class DomainIterationHandler<R, D extends Wrapper<?, ?>> implements
         ResultSetHandler<R> {
 
     protected final Class<D> domainClass;

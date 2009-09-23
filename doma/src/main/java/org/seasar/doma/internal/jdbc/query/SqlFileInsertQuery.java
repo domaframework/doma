@@ -26,7 +26,7 @@ import java.sql.Statement;
 public class SqlFileInsertQuery extends SqlFileModifyQuery implements
         InsertQuery {
 
-    public void compile() {
+    public void prepare() {
         assertNotNull(config, sqlFilePath, callerClassName, callerMethodName);
         prepareOptions();
         prepareSql();

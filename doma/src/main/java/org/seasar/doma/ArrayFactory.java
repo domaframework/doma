@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
 import java.sql.Array;
 import java.sql.Connection;
 
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.jdbc.JdbcException;
 
 /**
@@ -35,7 +35,7 @@ import org.seasar.doma.jdbc.JdbcException;
  * <li>パラメータを1つだけ受け取る。
  * <li>パラメータの型は配列である。この配列は {@link Connection#createArrayOf(String, Object[])}
  * の2番目のパラメータに渡される。
- * <li>戻り値の型は {@code Array} を値とする {@link Domain} の実装クラスである。
+ * <li>戻り値の型は {@code Array} を値とする {@link Wrapper} の実装クラスである。
  * <li>戻り値の型は、 配列の要素の型を型パラメータとして受け取る。
  * </ul>
  * 

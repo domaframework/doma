@@ -20,7 +20,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.seasar.doma.domain.NumberDomain;
+import org.seasar.doma.domain.NumberWrapper;
 
 /**
  * 識別子を自動生成する方法を示します。
@@ -28,7 +28,7 @@ import org.seasar.doma.domain.NumberDomain;
  * このアノテーションが注釈されるメソッドは、{@link Entity} もしくは {@link MappedSuperclass}
  * が注釈されたインタフェースのメンバでなければいけません。 このアノテーションは{@link Id}と併わせて使用しなければいけません。
  * <p>
- * 注釈されるメソッドの戻り値の型は、{@link NumberDomain} のサブタイプでなければいけません。
+ * 注釈されるメソッドの戻り値の型は、{@link NumberWrapper} のサブタイプでなければいけません。
  * <p>
  * {@code strategy} 要素に指定する値によっては追加のアノテーションが必要です。
  * <ul>
@@ -55,7 +55,7 @@ import org.seasar.doma.domain.NumberDomain;
  * @see SequenceGenerator
  * @see TableGenerator
  */
-@Target(ElementType.METHOD)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface GeneratedValue {
 

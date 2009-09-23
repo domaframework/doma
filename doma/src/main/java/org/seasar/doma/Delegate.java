@@ -102,7 +102,6 @@ import org.seasar.doma.jdbc.Config;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @DaoMethod
-@EntityMethod
 public @interface Delegate {
 
     /**

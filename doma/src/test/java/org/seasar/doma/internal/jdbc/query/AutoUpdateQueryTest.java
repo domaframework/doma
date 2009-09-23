@@ -20,14 +20,9 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.domain.BuiltinBigDecimalDomain;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
-import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.message.DomaMessageCode;
 
 import example.entity.Emp;
 import example.entity.Emp_;
@@ -38,201 +33,164 @@ import example.entity.Emp_;
  */
 public class AutoUpdateQueryTest extends TestCase {
 
-    private MockConfig runtimeConfig = new MockConfig();
+    private final MockConfig runtimeConfig = new MockConfig();
 
-    public void testCompile() throws Exception {
-        Emp emp = new Emp_();
-        emp.id().set(10);
-        emp.name().set("aaa");
-        emp.version().set(100);
+    public void testPrepare() throws Exception {
+        Emp emp = new Emp();
+        emp.setId(10);
+        emp.setName("aaa");
+        emp.setVersion(100);
 
-        AutoUpdateQuery<Emp, Emp_> query = new AutoUpdateQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
         UpdateQuery updateQuery = query;
         assertNotNull(updateQuery.getSql());
     }
 
     public void testOption_default() throws Exception {
-        Emp emp = new Emp_();
-        emp.id().set(10);
-        emp.name().set("aaa");
-        emp.version().set(100);
+        Emp emp = new Emp();
+        emp.setId(10);
+        emp.setName("aaa");
+        emp.setVersion(100);
 
-        AutoUpdateQuery<Emp, Emp_> query = new AutoUpdateQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
         PreparedSql sql = query.getSql();
-        assertEquals("update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql
-                .getRawSql());
+        assertEquals(
+                "update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
+                sql.getRawSql());
 
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
-        assertEquals(new BuiltinStringDomain("aaa"), parameters.get(0).getDomain());
-        assertEquals(new BuiltinIntegerDomain(100), parameters.get(1).getDomain());
-        assertEquals(new BuiltinIntegerDomain(10), parameters.get(2).getDomain());
-        assertEquals(new BuiltinIntegerDomain(100), parameters.get(3).getDomain());
+        assertEquals("aaa", parameters.get(0).getWrapper().get());
+        assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
+        assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
+        assertEquals(new Integer(100), parameters.get(3).getWrapper().get());
     }
 
     public void testOption_excludeNull() throws Exception {
-        Emp emp = new Emp_();
-        emp.id().set(10);
-        emp.version().set(100);
+        Emp emp = new Emp();
+        emp.setId(10);
+        emp.setVersion(100);
 
-        AutoUpdateQuery<Emp, Emp_> query = new AutoUpdateQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setNullExcluded(true);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
         PreparedSql sql = query.getSql();
-        assertEquals("update EMP set VERSION = ? + 1 where ID = ? and VERSION = ?", sql
-                .getRawSql());
+        assertEquals(
+                "update EMP set VERSION = ? + 1 where ID = ? and VERSION = ?",
+                sql.getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
-        assertEquals(new BuiltinIntegerDomain(100), parameters.get(0).getDomain());
-        assertEquals(new BuiltinIntegerDomain(10), parameters.get(1).getDomain());
-        assertEquals(new BuiltinIntegerDomain(100), parameters.get(2).getDomain());
+        assertEquals(new Integer(100), parameters.get(0).getWrapper().get());
+        assertEquals(new Integer(10), parameters.get(1).getWrapper().get());
+        assertEquals(new Integer(100), parameters.get(2).getWrapper().get());
     }
 
     public void testOption_includeVersion() throws Exception {
-        Emp emp = new Emp_();
-        emp.id().set(10);
-        emp.name().set("aaa");
-        emp.version().set(100);
+        Emp emp = new Emp();
+        emp.setId(10);
+        emp.setName("aaa");
+        emp.setVersion(100);
 
-        AutoUpdateQuery<Emp, Emp_> query = new AutoUpdateQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setVersionIncluded(true);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
         PreparedSql sql = query.getSql();
         assertEquals("update EMP set NAME = ?, VERSION = ? where ID = ?", sql
                 .getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
-        assertEquals(new BuiltinStringDomain("aaa"), parameters.get(0).getDomain());
-        assertEquals(new BuiltinIntegerDomain(100), parameters.get(1).getDomain());
-        assertEquals(new BuiltinIntegerDomain(10), parameters.get(2).getDomain());
+        assertEquals("aaa", parameters.get(0).getWrapper().get());
+        assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
+        assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
     }
 
     public void testOption_include() throws Exception {
-        Emp emp = new Emp_();
-        emp.id().set(10);
-        emp.name().set("aaa");
-        emp.salary().set(new BigDecimal(200));
-        emp.version().set(100);
+        Emp emp = new Emp();
+        emp.setId(10);
+        emp.setName("aaa");
+        emp.setSalary(new BigDecimal(200));
+        emp.setVersion(100);
 
-        AutoUpdateQuery<Emp, Emp_> query = new AutoUpdateQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setIncludedPropertyNames("name");
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
         PreparedSql sql = query.getSql();
-        assertEquals("update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql
-                .getRawSql());
+        assertEquals(
+                "update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
+                sql.getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
-        assertEquals(new BuiltinStringDomain("aaa"), parameters.get(0).getDomain());
-        assertEquals(new BuiltinIntegerDomain(100), parameters.get(1).getDomain());
-        assertEquals(new BuiltinIntegerDomain(10), parameters.get(2).getDomain());
-        assertEquals(new BuiltinIntegerDomain(100), parameters.get(3).getDomain());
+        assertEquals("aaa", parameters.get(0).getWrapper().get());
+        assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
+        assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
+        assertEquals(new Integer(100), parameters.get(3).getWrapper().get());
     }
 
     public void testOption_exclude() throws Exception {
-        Emp emp = new Emp_();
-        emp.id().set(10);
-        emp.name().set("aaa");
-        emp.salary().set(new BigDecimal(200));
-        emp.version().set(100);
+        Emp emp = new Emp();
+        emp.setId(10);
+        emp.setName("aaa");
+        emp.setSalary(new BigDecimal(200));
+        emp.setVersion(100);
 
-        AutoUpdateQuery<Emp, Emp_> query = new AutoUpdateQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setExcludedPropertyNames("name");
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
         PreparedSql sql = query.getSql();
-        assertEquals("update EMP set SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql
-                .getRawSql());
+        assertEquals(
+                "update EMP set SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
+                sql.getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
-        assertEquals(new BuiltinBigDecimalDomain(new BigDecimal(200)), parameters
-                .get(0).getDomain());
-        assertEquals(new BuiltinIntegerDomain(100), parameters.get(1).getDomain());
-        assertEquals(new BuiltinIntegerDomain(10), parameters.get(2).getDomain());
-        assertEquals(new BuiltinIntegerDomain(100), parameters.get(1).getDomain());
+        assertEquals(new BigDecimal(200), parameters.get(0).getWrapper().get());
+        assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
+        assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
+        assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
     }
 
     public void testIsExecutable() throws Exception {
-        Emp emp = new Emp_();
+        Emp emp = new Emp();
 
-        AutoUpdateQuery<Emp, Emp_> query = new AutoUpdateQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
         assertFalse(query.isExecutable());
     }
 
-    public void testIllegalEntityInstance() throws Exception {
-        AutoUpdateQuery<Emp, Emp_> query = new AutoUpdateQuery<Emp, Emp_>(
-                Emp_.class);
-        try {
-            query.setEntity(new MyEmp());
-            fail();
-        } catch (JdbcException expected) {
-            assertEquals(DomaMessageCode.DOMA2026, expected.getMessageCode());
-        }
-    }
-
-    private static class MyEmp implements Emp {
-
-        @Override
-        public BuiltinIntegerDomain version() {
-            return null;
-        }
-
-        @Override
-        public BuiltinBigDecimalDomain salary() {
-            return null;
-        }
-
-        @Override
-        public BuiltinStringDomain name() {
-            return null;
-        }
-
-        @Override
-        public BuiltinIntegerDomain id() {
-            return null;
-        }
-    }
 }

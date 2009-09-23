@@ -33,4 +33,8 @@ public interface Query {
     Config getConfig();
 
     int getQueryTimeout();
+
+    void prepare();
+
+    void complete();
 }

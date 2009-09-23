@@ -47,8 +47,8 @@ import java.util.List;
  * @author taedium
  * 
  */
-@Target(ElementType.METHOD)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@EntityMethod
+@EntityField
 public @interface Transient {
 }

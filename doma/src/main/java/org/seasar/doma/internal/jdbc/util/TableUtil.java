@@ -20,7 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.NamingConvention;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.entity.Entity;
+import org.seasar.doma.jdbc.entity.EntityMeta;
 
 /**
  * @author taedium
@@ -28,10 +28,10 @@ import org.seasar.doma.jdbc.entity.Entity;
  */
 public final class TableUtil {
 
-    public static String getQualifiedTableName(Config config, Entity<?> entity) {
+    public static String getQualifiedTableName(Config config, EntityMeta<?> entity) {
         assertNotNull(config, entity);
-        String catalogName = entity.__getCatalogName();
-        String schemaName = entity.__getSchemaName();
+        String catalogName = entity.getCatalogName();
+        String schemaName = entity.getSchemaName();
         String tableName = getTableName(config, entity);
         return getQualifiedTableName(catalogName, schemaName, tableName);
     }
@@ -49,12 +49,12 @@ public final class TableUtil {
         return buf.append(tableName).toString();
     }
 
-    protected static String getTableName(Config config, Entity<?> entity) {
-        if (entity.__getTableName() != null) {
-            return entity.__getTableName();
+    protected static String getTableName(Config config, EntityMeta<?> entity) {
+        if (entity.getTableName() != null) {
+            return entity.getTableName();
         }
         Dialect dialect = config.dialect();
         NamingConvention namingConvention = config.namingConvention();
-        return namingConvention.fromEntityToTable(entity.__getName(), dialect);
+        return namingConvention.fromEntityToTable(entity.getName(), dialect);
     }
 }

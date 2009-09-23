@@ -15,23 +15,14 @@
  */
 package example.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 
-import org.seasar.doma.ArrayFactory;
-import org.seasar.doma.BlobFactory;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Delete;
-import org.seasar.doma.Function;
-import org.seasar.doma.In;
 import org.seasar.doma.Insert;
-import org.seasar.doma.Procedure;
 import org.seasar.doma.Select;
 import org.seasar.doma.Update;
-import org.seasar.doma.domain.BuiltinArrayDomain;
-import org.seasar.doma.domain.BuiltinBigDecimalDomain;
-import org.seasar.doma.domain.BuiltinBlobDomain;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.SelectOptions;
 
@@ -46,11 +37,14 @@ import example.entity.Emp;
 public interface EmpDao {
 
     @Select
-    Emp selectById(BuiltinIntegerDomain id, SelectOptions option);
+    Emp selectById(Integer id, SelectOptions option);
 
     @Select
-    List<Emp> selectByNameAndSalary(BuiltinStringDomain name, BuiltinBigDecimalDomain salary,
+    List<Emp> selectByNameAndSalary(String name, BigDecimal salary,
             SelectOptions option);
+
+    @Select
+    List<Emp> selectByExample(Emp emp);
 
     @Select(iterate = true)
     Integer iterate(IterationCallback<Integer, Emp> callback);
@@ -64,18 +58,18 @@ public interface EmpDao {
     @Delete
     int delete(Emp entity);
 
-    @Function
-    BuiltinIntegerDomain add(@In BuiltinIntegerDomain arg1, @In BuiltinIntegerDomain arg2);
-
-    @Function
-    List<Emp> getEmps(@In BuiltinIntegerDomain arg1, @In BuiltinIntegerDomain arg2);
-
-    @Procedure
-    void exec(@In BuiltinIntegerDomain arg1, @In BuiltinIntegerDomain arg2);
-
-    @ArrayFactory(typeName = "varchar")
-    BuiltinArrayDomain<String> createStringArrayDomain(String[] element);
-
-    @BlobFactory
-    BuiltinBlobDomain createBlobDomain();
+    // @Function
+    // Integer add(@In Integer arg1, @In Integer arg2);
+    //
+    // @Function
+    // List<Emp> getEmps(@In Integer arg1, @In Integer arg2);
+    //
+    // @Procedure
+    // void exec(@In Integer arg1, @In Integer arg2);
+    //
+    // @ArrayFactory(typeName = "varchar")
+    // Array createStringArrayDomain(String[] element);
+    //
+    // @BlobFactory
+    // Blob createBlobDomain();
 }

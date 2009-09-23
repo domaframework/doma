@@ -17,12 +17,11 @@ package org.seasar.doma.internal.apt.dao;
 
 import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
-import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.internal.apt.entity.Emp;
 
 @Dao(config = MyConfig.class)
 public interface EmbeddedVariableDao {
 
     @Select
-    Emp select(BuiltinStringDomain orderBy);
+    Emp select(String orderBy);
 }

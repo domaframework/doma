@@ -33,26 +33,27 @@ import example.entity.Emp_;
  */
 public class UpdateCommandTest extends TestCase {
 
-    private MockConfig runtimeConfig = new MockConfig();
+    private final MockConfig runtimeConfig = new MockConfig();
 
     public void testExecute() throws Exception {
-        Emp emp = new Emp_();
-        emp.id().set(1);
-        emp.name().set("hoge");
-        emp.version().set(10);
+        Emp emp = new Emp();
+        emp.setId(1);
+        emp.setName("hoge");
+        emp.setVersion(10);
 
-        AutoUpdateQuery<Emp, Emp_> query = new AutoUpdateQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
         int rows = new UpdateCommand(query).execute();
 
         assertEquals(1, rows);
         String sql = runtimeConfig.dataSource.connection.preparedStatement.sql;
-        assertEquals("update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql);
+        assertEquals(
+                "update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
+                sql);
 
         List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
         assertEquals(4, bindValues.size());
@@ -63,20 +64,19 @@ public class UpdateCommandTest extends TestCase {
     }
 
     public void testExecute_throwsOptimisticLockException() throws Exception {
-        Emp emp = new Emp_();
-        emp.id().set(10);
-        emp.name().set("aaa");
-        emp.version().set(100);
+        Emp emp = new Emp();
+        emp.setId(10);
+        emp.setName("aaa");
+        emp.setVersion(100);
 
         runtimeConfig.dataSource.connection.preparedStatement.updatedRows = 0;
 
-        AutoUpdateQuery<Emp, Emp_> query = new AutoUpdateQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
         UpdateCommand command = new UpdateCommand(query);
         try {
             command.execute();
@@ -87,21 +87,20 @@ public class UpdateCommandTest extends TestCase {
 
     public void testExecute_suppressesOptimisticLockException()
             throws Exception {
-        Emp emp = new Emp_();
-        emp.id().set(10);
-        emp.name().set("aaa");
-        emp.version().set(100);
+        Emp emp = new Emp();
+        emp.setId(10);
+        emp.setName("aaa");
+        emp.setVersion(100);
 
         runtimeConfig.dataSource.connection.preparedStatement.updatedRows = 0;
 
-        AutoUpdateQuery<Emp, Emp_> query = new AutoUpdateQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setOptimisticLockExceptionSuppressed(true);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
         new UpdateCommand(query).execute();
     }
 }

@@ -54,7 +54,7 @@ public class SqlFileSelectQuery implements SelectQuery {
 
     protected int queryTimeout;
 
-    public void compile() {
+    public void prepare() {
         assertNotNull(config, sqlFilePath, callerClassName, callerMethodName);
         prepareOptions();
         prepareSql();
@@ -77,13 +77,17 @@ public class SqlFileSelectQuery implements SelectQuery {
         ExpressionEvaluator evaluator = new ExpressionEvaluator(parameters);
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
                 evaluator);
-        SqlFile sqlFile = config.sqlFileRepository()
-                .getSqlFile(sqlFilePath, config.dialect());
-        config.jdbcLogger()
-                .logSqlFile(callerClassName, callerMethodName, sqlFile);
-        SqlNode sqlNode = config.dialect().transformSelectSqlNode(sqlFile
-                .getSqlNode(), options);
+        SqlFile sqlFile = config.sqlFileRepository().getSqlFile(sqlFilePath,
+                config.dialect());
+        config.jdbcLogger().logSqlFile(callerClassName, callerMethodName,
+                sqlFile);
+        SqlNode sqlNode = config.dialect().transformSelectSqlNode(
+                sqlFile.getSqlNode(), options);
         sql = sqlBuilder.build(sqlNode);
+    }
+
+    @Override
+    public void complete() {
     }
 
     @Override
@@ -104,6 +108,7 @@ public class SqlFileSelectQuery implements SelectQuery {
     }
 
     public void addParameter(String name, Object value) {
+        assertNotNull(name, value);
         parameters.put(name, value);
     }
 

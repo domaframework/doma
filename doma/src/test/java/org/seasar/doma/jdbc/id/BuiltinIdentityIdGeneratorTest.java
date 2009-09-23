@@ -15,14 +15,13 @@
  */
 package org.seasar.doma.jdbc.id;
 
+import junit.framework.TestCase;
+
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.jdbc.dialect.PostgresDialect;
-import org.seasar.doma.jdbc.id.IdGenerationConfig;
-import org.seasar.doma.jdbc.id.BuiltinIdentityIdGenerator;
 
-import junit.framework.TestCase;
 import example.entity.Emp_;
 
 /**
@@ -39,10 +38,11 @@ public class BuiltinIdentityIdGeneratorTest extends TestCase {
 
         BuiltinIdentityIdGenerator identityIdGenerator = new BuiltinIdentityIdGenerator();
         IdGenerationConfig idGenerationConfig = new IdGenerationConfig(config,
-                new Emp_(), "EMP", "ID");
-        Long value = identityIdGenerator
-                .generatePostInsert(idGenerationConfig, config.dataSource.connection.preparedStatement);
+                new Emp_().createEntityMeta(), "EMP", "ID");
+        Long value = identityIdGenerator.generatePostInsert(idGenerationConfig,
+                config.dataSource.connection.preparedStatement);
         assertEquals(new Long(11), value);
-        assertEquals("select currval('EMP_ID_seq')", config.dataSource.connection.preparedStatement.sql);
+        assertEquals("select currval('EMP_ID_seq')",
+                config.dataSource.connection.preparedStatement.sql);
     }
 }

@@ -23,7 +23,7 @@ import java.util.List;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.jdbc.entity.Entity;
+import org.seasar.doma.jdbc.entity.EntityMeta;
 import org.seasar.doma.message.DomaMessageCode;
 
 
@@ -31,7 +31,7 @@ import org.seasar.doma.message.DomaMessageCode;
  * @author taedium
  * 
  */
-public class EntityListResultParameter<I, E extends Entity<I>> implements
+public class EntityListResultParameter<I, E extends EntityMeta<I>> implements
         ResultParameter<List<I>>, ListParameter<E> {
 
     protected final Class<E> entityClass;
@@ -45,7 +45,7 @@ public class EntityListResultParameter<I, E extends Entity<I>> implements
 
     public E add() {
         E entity = createEntity();
-        entities.add(entity.__asInterface());
+        entities.add(entity.getEntity());
         return entity;
     }
 

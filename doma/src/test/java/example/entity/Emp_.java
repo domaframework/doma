@@ -15,134 +15,190 @@
  */
 package example.entity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Generated;
 
-import org.seasar.doma.domain.BuiltinBigDecimalDomain;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-import org.seasar.doma.domain.BuiltinStringDomain;
-import org.seasar.doma.jdbc.entity.AssignedIdProperty;
-import org.seasar.doma.jdbc.entity.BasicProperty;
+import org.seasar.doma.domain.BigDecimalWrapper;
+import org.seasar.doma.domain.IntegerWrapper;
+import org.seasar.doma.domain.StringWrapper;
+import org.seasar.doma.jdbc.entity.AbstractEntityMeta;
+import org.seasar.doma.jdbc.entity.AssignedIdPropertyMeta;
+import org.seasar.doma.jdbc.entity.BasicPropertyMeta;
 import org.seasar.doma.jdbc.entity.BuiltinEntityListener;
-import org.seasar.doma.jdbc.entity.DomaAbstractEntity;
-import org.seasar.doma.jdbc.entity.EntityProperty;
-import org.seasar.doma.jdbc.entity.GeneratedIdProperty;
-import org.seasar.doma.jdbc.entity.VersionProperty;
+import org.seasar.doma.jdbc.entity.EntityMeta;
+import org.seasar.doma.jdbc.entity.EntityMetaFactory;
+import org.seasar.doma.jdbc.entity.EntityPropertyMeta;
+import org.seasar.doma.jdbc.entity.GeneratedIdPropertyMeta;
+import org.seasar.doma.jdbc.entity.VersionPropertyMeta;
 
 @Generated("")
-public class Emp_ extends DomaAbstractEntity<Emp> implements Emp, Serializable {
+public class Emp_ implements EntityMetaFactory<Emp> {
 
-    private static final long serialVersionUID = 1L;
-
-    private static final BuiltinEntityListener __listener = new BuiltinEntityListener();
-
-    private transient final AssignedIdProperty<BuiltinIntegerDomain> id = new AssignedIdProperty<BuiltinIntegerDomain>(
-            "id", null, new BuiltinIntegerDomain());
-
-    private transient final BasicProperty<BuiltinStringDomain> name = new BasicProperty<BuiltinStringDomain>(
-            "name", null, new BuiltinStringDomain(), true, true);
-
-    private transient final BasicProperty<BuiltinBigDecimalDomain> salary = new BasicProperty<BuiltinBigDecimalDomain>(
-            "salary", null, new BuiltinBigDecimalDomain(), true, true);
-
-    private transient final VersionProperty<BuiltinIntegerDomain> version = new VersionProperty<BuiltinIntegerDomain>(
-            "version", null, new BuiltinIntegerDomain());
-
-    private final String __name = "emp";
-
-    private transient List<EntityProperty<?>> __properties;
-
-    private transient Map<String, EntityProperty<?>> __propertyMap;
-
-    public Emp_() {
-        super(null, null, null);
+    @Override
+    public EntityMeta<Emp> createEntityMeta() {
+        return new Meta();
     }
 
     @Override
-    public BuiltinIntegerDomain id() {
-        return id.getDomain();
+    public EntityMeta<Emp> createEntityMeta(Emp entity) {
+        return new Meta(entity);
     }
 
-    @Override
-    public BuiltinStringDomain name() {
-        return name.getDomain();
-    }
+    public static class Meta extends AbstractEntityMeta<Emp> {
 
-    @Override
-    public BuiltinBigDecimalDomain salary() {
-        return salary.getDomain();
-    }
+        private static final BuiltinEntityListener __listener = new BuiltinEntityListener();
 
-    @Override
-    public BuiltinIntegerDomain version() {
-        return version.getDomain();
-    }
+        private final AssignedIdPropertyMeta<IntegerWrapper> id = new AssignedIdPropertyMeta<IntegerWrapper>(
+                "id", null, new IntegerWrapper());
 
-    @Override
-    public Emp __asInterface() {
-        return this;
-    }
+        private final BasicPropertyMeta<StringWrapper> name = new BasicPropertyMeta<StringWrapper>(
+                "name", null, new StringWrapper(), true, true);
 
-    @Override
-    public String __getName() {
-        return __name;
-    }
+        private final BasicPropertyMeta<BigDecimalWrapper> salary = new BasicPropertyMeta<BigDecimalWrapper>(
+                "salary", null, new BigDecimalWrapper(), true, true);
 
-    @Override
-    public List<EntityProperty<?>> __getEntityProperties() {
-        if (__properties == null) {
-            List<EntityProperty<?>> list = new ArrayList<EntityProperty<?>>();
-            list.add(id);
-            list.add(name);
-            list.add(salary);
-            list.add(version);
-            __properties = Collections.unmodifiableList(list);
+        private final VersionPropertyMeta<IntegerWrapper> version = new VersionPropertyMeta<IntegerWrapper>(
+                "version", null, new IntegerWrapper());
+
+        private final Set<String> dirtyStates;
+
+        private final String __name = "emp";
+
+        private List<EntityPropertyMeta<?>> __properties;
+
+        private Map<String, EntityPropertyMeta<?>> __propertyMap;
+
+        private final Emp __entity;
+
+        private Meta() {
+            this(new Emp());
         }
-        return __properties;
-    }
 
-    @Override
-    public EntityProperty<?> __getEntityProperty(String propertyName) {
-        if (__propertyMap == null) {
-            Map<String, EntityProperty<?>> map = new HashMap<String, EntityProperty<?>>();
-            map.put("id", id);
-            map.put("name", name);
-            map.put("salary", salary);
-            map.put("version", version);
-            __propertyMap = Collections.unmodifiableMap(map);
+        private Meta(Emp entity) {
+            super(null, null, null);
+            this.__entity = entity;
+            id.getWrapper().set(entity.id);
+            name.getWrapper().set(entity.name);
+            salary.getWrapper().set(entity.salary);
+            version.getWrapper().set(entity.version);
+            dirtyStates = entity.dirtyStates;
         }
-        return __propertyMap.get(propertyName);
+
+        @Override
+        public Emp getEntity() {
+            refreshEntityInternal();
+            return __entity;
+        }
+
+        @Override
+        public void refreshEntity() {
+            refreshEntityInternal();
+        }
+
+        protected void refreshEntityInternal() {
+            __entity.id = id.getWrapper().get();
+            __entity.name = name.getWrapper().get();
+            __entity.salary = salary.getWrapper().get();
+            __entity.version = version.getWrapper().get();
+        }
+
+        @Override
+        public Object getPropertyWrappers() {
+            return new PropertyWrappers(this);
+        }
+
+        @Override
+        public String getName() {
+            return __name;
+        }
+
+        @Override
+        public List<EntityPropertyMeta<?>> getPropertyMetas() {
+            if (__properties == null) {
+                List<EntityPropertyMeta<?>> list = new ArrayList<EntityPropertyMeta<?>>();
+                list.add(id);
+                list.add(name);
+                list.add(salary);
+                list.add(version);
+                __properties = Collections.unmodifiableList(list);
+            }
+            return __properties;
+        }
+
+        @Override
+        public EntityPropertyMeta<?> getPropertyMeta(String propertyName) {
+            if (__propertyMap == null) {
+                Map<String, EntityPropertyMeta<?>> map = new HashMap<String, EntityPropertyMeta<?>>();
+                map.put("id", id);
+                map.put("name", name);
+                map.put("salary", salary);
+                map.put("version", version);
+                __propertyMap = Collections.unmodifiableMap(map);
+            }
+            return __propertyMap.get(propertyName);
+        }
+
+        @Override
+        public GeneratedIdPropertyMeta<?> getGeneratedIdProperty() {
+            return null;
+        }
+
+        @Override
+        public VersionPropertyMeta<?> getVersionProperty() {
+            return version;
+        }
+
+        @Override
+        public void preInsert() {
+            __listener.preInsert(__entity);
+        }
+
+        @Override
+        public void preUpdate() {
+            __listener.preUpdate(__entity);
+        }
+
+        @Override
+        public void preDelete() {
+            __listener.preDelete(__entity);
+        }
+
+        @Override
+        public Set<String> getModifiedProperties() {
+            return dirtyStates;
+        }
+
     }
 
-    @Override
-    public GeneratedIdProperty<?> __getGeneratedIdProperty() {
-        return null;
-    }
+    public static class PropertyWrappers {
 
-    @Override
-    public VersionProperty<?> __getVersionProperty() {
-        return version;
-    }
+        protected final Meta meta;
 
-    @Override
-    public void __preInsert() {
-        __listener.preInsert(this);
-    }
+        public PropertyWrappers(Meta meta) {
+            this.meta = meta;
+        }
 
-    @Override
-    public void __preUpdate() {
-        __listener.preUpdate(this);
-    }
+        public IntegerWrapper id() {
+            return meta.id.getWrapper();
+        }
 
-    @Override
-    public void __preDelete() {
-        __listener.preDelete(this);
+        public StringWrapper name() {
+            return meta.name.getWrapper();
+        }
+
+        public BigDecimalWrapper salary() {
+            return meta.salary.getWrapper();
+        }
+
+        public IntegerWrapper version() {
+            return meta.version.getWrapper();
+        }
     }
 
 }

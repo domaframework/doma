@@ -31,7 +31,7 @@ public class AutoFunctionQuery<R> extends AutoModuleQuery implements
 
     protected ResultParameter<R> resultParameter;
 
-    public void compile() {
+    public void prepare() {
         assertNotNull(config, functionName, resultParameter, callerClassName, callerMethodName);
         prepareOptions();
         prepareSql();

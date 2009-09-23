@@ -18,11 +18,10 @@ package org.seasar.doma.internal.jdbc.command;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.seasar.doma.domain.BuiltinBigDecimalDomain;
-import org.seasar.doma.domain.BuiltinStringDomain;
-import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
-import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
-import org.seasar.doma.internal.jdbc.command.SelectCommand;
+import junit.framework.TestCase;
+
+import org.seasar.doma.domain.BigDecimalWrapper;
+import org.seasar.doma.domain.StringWrapper;
 import org.seasar.doma.internal.jdbc.mock.BindValue;
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
@@ -34,7 +33,6 @@ import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 
-import junit.framework.TestCase;
 import example.entity.Emp;
 import example.entity.Emp_;
 
@@ -44,7 +42,7 @@ import example.entity.Emp_;
  */
 public class SelectCommandTest extends TestCase {
 
-    private MockConfig runtimeConfig = new MockConfig();
+    private final MockConfig runtimeConfig = new MockConfig();
 
     public void testExecute_singleResult() throws Exception {
         MockResultSetMetaData metaData = new MockResultSetMetaData();
@@ -59,25 +57,24 @@ public class SelectCommandTest extends TestCase {
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil
-                .buildPath(getClass().getName(), getName()));
-        query.addParameter("name", new BuiltinStringDomain("hoge"));
-        query
-                .addParameter("salary", new BuiltinBigDecimalDomain(new BigDecimal(
-                        10000)));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                getName()));
+        query.addParameter("name", new StringWrapper("hoge"));
+        query.addParameter("salary", new BigDecimalWrapper(
+                new BigDecimal(10000)));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
         SelectCommand<Emp> command = new SelectCommand<Emp>(query,
-                new EntitySingleResultHandler<Emp, Emp_>(Emp_.class));
+                new EntitySingleResultHandler<Emp>(new Emp_()));
         Emp entity = command.execute();
 
         assertNotNull(entity);
-        assertEquals(new Integer(1), entity.id().get());
-        assertEquals("hoge", entity.name().get());
-        assertEquals(new BigDecimal(10000), entity.salary().get());
-        assertEquals(new Integer(100), entity.version().get());
+        assertEquals(new Integer(1), entity.getId());
+        assertEquals("hoge", entity.getName());
+        assertEquals(new BigDecimal(10000), entity.getSalary());
+        assertEquals(new Integer(100), entity.getVersion());
 
         List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
         BindValue bindValue = bindValues.get(0);
@@ -103,36 +100,35 @@ public class SelectCommandTest extends TestCase {
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil
-                .buildPath(getClass().getName(), getName()));
-        query
-                .addParameter("salary", new BuiltinBigDecimalDomain(new BigDecimal(
-                        5000)));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                getName()));
+        query.addParameter("salary",
+                new BigDecimalWrapper(new BigDecimal(5000)));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
         SelectCommand<List<Emp>> command = new SelectCommand<List<Emp>>(query,
-                new EntityResultListHandler<Emp, Emp_>(Emp_.class));
+                new EntityResultListHandler<Emp>(new Emp_()));
         List<Emp> entities = command.execute();
 
         assertNotNull(entities);
         assertEquals(3, entities.size());
         Emp entity = entities.get(0);
-        assertEquals(new Integer(1), entity.id().get());
-        assertEquals("hoge", entity.name().get());
-        assertEquals(new BigDecimal(10000), entity.salary().get());
-        assertEquals(new Integer(100), entity.version().get());
+        assertEquals(new Integer(1), entity.getId());
+        assertEquals("hoge", entity.getName());
+        assertEquals(new BigDecimal(10000), entity.getSalary());
+        assertEquals(new Integer(100), entity.getVersion());
         entity = entities.get(1);
-        assertEquals(new Integer(2), entity.id().get());
-        assertEquals("foo", entity.name().get());
-        assertEquals(new BigDecimal(20000), entity.salary().get());
-        assertEquals(new Integer(200), entity.version().get());
+        assertEquals(new Integer(2), entity.getId());
+        assertEquals("foo", entity.getName());
+        assertEquals(new BigDecimal(20000), entity.getSalary());
+        assertEquals(new Integer(200), entity.getVersion());
         entity = entities.get(2);
-        assertEquals(new Integer(3), entity.id().get());
-        assertEquals("bar", entity.name().get());
-        assertEquals(new BigDecimal(30000), entity.salary().get());
-        assertEquals(new Integer(300), entity.version().get());
+        assertEquals(new Integer(3), entity.getId());
+        assertEquals("bar", entity.getName());
+        assertEquals(new BigDecimal(30000), entity.getSalary());
+        assertEquals(new Integer(300), entity.getVersion());
 
         List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
         BindValue bindValue = bindValues.get(0);

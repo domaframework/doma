@@ -80,7 +80,7 @@ public class BuiltinIdentityIdGenerator extends AbstractIdGenerator implements
             return getGeneratedValue(config, resultSet);
         } catch (final SQLException e) {
             throw new JdbcException(DomaMessageCode.DOMA2018, e, config
-                    .getEntity().__getName(), e);
+                    .getEntityMeta().getName(), e);
         }
     }
 

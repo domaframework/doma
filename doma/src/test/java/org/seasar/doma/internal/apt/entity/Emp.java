@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.internal.apt.entity;
 
+import java.math.BigDecimal;
+
 import org.seasar.doma.Column;
 import org.seasar.doma.Entity;
 import org.seasar.doma.GeneratedValue;
@@ -24,28 +26,65 @@ import org.seasar.doma.SequenceGenerator;
 import org.seasar.doma.Table;
 import org.seasar.doma.Transient;
 import org.seasar.doma.Version;
-import org.seasar.doma.domain.BuiltinBigDecimalDomain;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-import org.seasar.doma.domain.BuiltinStringDomain;
 
 @Entity(listener = EmpListener.class)
 @Table(schema = "AAA")
-public interface Emp {
+public class Emp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(sequence = "EMP_ID")
-    BuiltinIntegerDomain id();
+    Integer id;
 
-    BuiltinStringDomain name();
+    String name;
 
     @Column(name = "SALARY", insertable = false, updatable = false)
-    BuiltinBigDecimalDomain salary();
+    BigDecimal salary;
 
     @Version
-    BuiltinIntegerDomain version();
+    Integer version;
 
     @Transient
-    BuiltinStringDomain temp();
+    String temp;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public BigDecimal getSalary() {
+        return salary;
+    }
+
+    public void setSalary(BigDecimal salary) {
+        this.salary = salary;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public String getTemp() {
+        return temp;
+    }
+
+    public void setTemp(String temp) {
+        this.temp = temp;
+    }
 
 }

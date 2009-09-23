@@ -20,9 +20,9 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.domain.BuiltinBigDecimalDomain;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-import org.seasar.doma.domain.BuiltinStringDomain;
+import org.seasar.doma.domain.BigDecimalWrapper;
+import org.seasar.doma.domain.IntegerWrapper;
+import org.seasar.doma.domain.StringWrapper;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.JdbcException;
@@ -39,9 +39,8 @@ public class SqlParserTest extends TestCase {
 
     public void testBindVariable() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("name", new BuiltinStringDomain("hoge"));
-        evaluator.add("salary", new BuiltinBigDecimalDomain(new BigDecimal(
-                10000)));
+        evaluator.add("name", new StringWrapper("hoge"));
+        evaluator.add("salary", new BigDecimalWrapper(new BigDecimal(10000)));
         String testSql = "select * from aaa where ename = /*name*/'aaa' and sal = /*salary*/-2000";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
@@ -53,16 +52,15 @@ public class SqlParserTest extends TestCase {
                 sql.getFormattedSql());
         assertEquals(testSql, sqlNode.toString());
         assertEquals(2, sql.getParameters().size());
-        assertEquals(new BuiltinStringDomain("hoge"), sql.getParameters()
-                .get(0).getDomain());
-        assertEquals(new BuiltinBigDecimalDomain(new BigDecimal(10000)), sql
-                .getParameters().get(1).getDomain());
+        assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
+        assertEquals(new BigDecimal(10000), sql.getParameters().get(1)
+                .getWrapper().get());
     }
 
     public void testBindVariable_in() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("name", Arrays.asList(new BuiltinStringDomain("hoge"),
-                new BuiltinStringDomain("foo")));
+        evaluator.add("name", Arrays.asList(new StringWrapper("hoge"),
+                new StringWrapper("foo")));
         String testSql = "select * from aaa where ename in /*name*/('aaa', 'bbb')";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
@@ -73,19 +71,16 @@ public class SqlParserTest extends TestCase {
                 .getFormattedSql());
         assertEquals(testSql, sqlNode.toString());
         assertEquals(2, sql.getParameters().size());
-        assertEquals(new BuiltinStringDomain("hoge"), sql.getParameters()
-                .get(0).getDomain());
-        assertEquals(new BuiltinStringDomain("foo"), sql.getParameters().get(1)
-                .getDomain());
+        assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
+        assertEquals("foo", sql.getParameters().get(1).getWrapper().get());
     }
 
     public void testEmbeddedVariable() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("name", new BuiltinStringDomain("hoge"));
-        evaluator.add("salary", new BuiltinBigDecimalDomain(new BigDecimal(
-                10000)));
-        evaluator.add("orderBy", new BuiltinStringDomain(
-                "order by name asc, salary"));
+        evaluator.add("name", new StringWrapper("hoge"));
+        evaluator.add("salary", new BigDecimalWrapper(new BigDecimal(10000)));
+        evaluator
+                .add("orderBy", new StringWrapper("order by name asc, salary"));
         String testSql = "select * from aaa where ename = /*name*/'aaa' and sal = /*salary*/-2000 /*#orderBy*/";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
@@ -99,18 +94,16 @@ public class SqlParserTest extends TestCase {
                 sql.getFormattedSql());
         assertEquals(testSql, sqlNode.toString());
         assertEquals(2, sql.getParameters().size());
-        assertEquals(new BuiltinStringDomain("hoge"), sql.getParameters()
-                .get(0).getDomain());
-        assertEquals(new BuiltinBigDecimalDomain(new BigDecimal(10000)), sql
-                .getParameters().get(1).getDomain());
+        assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
+        assertEquals(new BigDecimal(10000), sql.getParameters().get(1)
+                .getWrapper().get());
     }
 
     public void testEmbeddedVariable_containsSingleQuote() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("name", new BuiltinStringDomain("hoge"));
-        evaluator.add("salary", new BuiltinBigDecimalDomain(new BigDecimal(
-                10000)));
-        evaluator.add("orderBy", new BuiltinStringDomain("aaa'"));
+        evaluator.add("name", new StringWrapper("hoge"));
+        evaluator.add("salary", new BigDecimalWrapper(new BigDecimal(10000)));
+        evaluator.add("orderBy", new StringWrapper("aaa'"));
         String testSql = "select * from aaa where ename = /*name*/'aaa' and sal = /*salary*/-2000 /*#orderBy*/";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
@@ -125,10 +118,9 @@ public class SqlParserTest extends TestCase {
 
     public void testEmbeddedVariable_containsSemicolon() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("name", new BuiltinStringDomain("hoge"));
-        evaluator.add("salary", new BuiltinBigDecimalDomain(new BigDecimal(
-                10000)));
-        evaluator.add("orderBy", new BuiltinStringDomain("aaa;bbb"));
+        evaluator.add("name", new StringWrapper("hoge"));
+        evaluator.add("salary", new BigDecimalWrapper(new BigDecimal(10000)));
+        evaluator.add("orderBy", new StringWrapper("aaa;bbb"));
         String testSql = "select * from aaa where ename = /*name*/'aaa' and sal = /*salary*/-2000 /*#orderBy*/";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
@@ -143,7 +135,7 @@ public class SqlParserTest extends TestCase {
 
     public void testIf() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("name", new BuiltinStringDomain("hoge"));
+        evaluator.add("name", new StringWrapper("hoge"));
         String testSql = "select * from aaa where /*%if name != null*/bbb = /*name*/'ccc' /*%end*/";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
@@ -154,13 +146,12 @@ public class SqlParserTest extends TestCase {
                 .getFormattedSql());
         assertEquals(testSql, sqlNode.toString());
         assertEquals(1, sql.getParameters().size());
-        assertEquals(new BuiltinStringDomain("hoge"), sql.getParameters()
-                .get(0).getDomain());
+        assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
     }
 
     public void testIf_removeWhere() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("name", new BuiltinStringDomain());
+        evaluator.add("name", new StringWrapper());
         String testSql = "select * from aaa where /*%if name != null*/bbb = /*name*/'ccc' /*%end*/";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
@@ -174,7 +165,7 @@ public class SqlParserTest extends TestCase {
 
     public void testIf_nest() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("name", new BuiltinStringDomain("hoge"));
+        evaluator.add("name", new StringWrapper("hoge"));
         String testSql = "select * from aaa where /*%if name != null*/bbb = /*name*/'ccc' /*%if name == \"hoge\"*/and ddd = eee/*%end*//*%end*/";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
@@ -190,8 +181,8 @@ public class SqlParserTest extends TestCase {
 
     public void testIf_nestContinuously() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("name", new BuiltinStringDomain("hoge"));
-        evaluator.add("name2", new BuiltinStringDomain());
+        evaluator.add("name", new StringWrapper("hoge"));
+        evaluator.add("name2", new StringWrapper());
         String testSql = "select * from aaa where /*%if name != null*/ /*%if name2 == \"hoge\"*/ ddd = eee/*%end*//*%end*/";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
@@ -205,7 +196,7 @@ public class SqlParserTest extends TestCase {
 
     public void testElseif() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("name", new BuiltinStringDomain(""));
+        evaluator.add("name", new StringWrapper(""));
         String testSql = "select * from aaa where /*%if name == null*/bbb is null--elseif name ==\"\"--bbb = /*name*/'ccc'/*%end*/";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
@@ -215,13 +206,12 @@ public class SqlParserTest extends TestCase {
         assertEquals("select * from aaa where bbb = ''", sql.getFormattedSql());
         assertEquals(testSql, sqlNode.toString());
         assertEquals(1, sql.getParameters().size());
-        assertEquals(new BuiltinStringDomain(""), sql.getParameters().get(0)
-                .getDomain());
+        assertEquals("", sql.getParameters().get(0).getWrapper().get());
     }
 
     public void testElse() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("name", new BuiltinStringDomain("hoge"));
+        evaluator.add("name", new StringWrapper("hoge"));
         String testSql = "select * from aaa where /*%if name == null*/bbb is null--elseif name == \"\"----else bbb = /*name*/'ccc'/*%end*/";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
@@ -232,14 +222,13 @@ public class SqlParserTest extends TestCase {
                 .getFormattedSql());
         assertEquals(testSql, sqlNode.toString());
         assertEquals(1, sql.getParameters().size());
-        assertEquals(new BuiltinStringDomain("hoge"), sql.getParameters()
-                .get(0).getDomain());
+        assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
     }
 
     public void testSelect() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("name", new BuiltinStringDomain("hoge"));
-        evaluator.add("count", new BuiltinIntegerDomain(5));
+        evaluator.add("name", new StringWrapper("hoge"));
+        evaluator.add("count", new IntegerWrapper(5));
         String testSql = "select aaa.deptname, count(*) from aaa join bbb on aaa.id = bbb.id where aaa.name = /*name*/'ccc' group by aaa.deptname having count(*) > /*count*/10 order by aaa.name for update bbb";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
@@ -253,17 +242,16 @@ public class SqlParserTest extends TestCase {
                 sql.getFormattedSql());
         assertEquals(testSql, sqlNode.toString());
         assertEquals(2, sql.getParameters().size());
-        assertEquals(new BuiltinStringDomain("hoge"), sql.getParameters()
-                .get(0).getDomain());
-        assertEquals(new BuiltinIntegerDomain(5), sql.getParameters().get(1)
-                .getDomain());
+        assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
+        assertEquals(new Integer(5), sql.getParameters().get(1).getWrapper()
+                .get());
     }
 
     public void testUpdate() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("no", new BuiltinIntegerDomain(10));
-        evaluator.add("name", new BuiltinStringDomain("hoge"));
-        evaluator.add("id", new BuiltinIntegerDomain(100));
+        evaluator.add("no", new IntegerWrapper(10));
+        evaluator.add("name", new StringWrapper("hoge"));
+        evaluator.add("id", new IntegerWrapper(100));
         String testSql = "update aaa set no = /*no*/1, set name = /*name*/'name' where id = /*id*/1";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
@@ -276,11 +264,10 @@ public class SqlParserTest extends TestCase {
                         .getFormattedSql());
         assertEquals(testSql, sqlNode.toString());
         assertEquals(3, sql.getParameters().size());
-        assertEquals(new BuiltinIntegerDomain(10), sql.getParameters().get(0)
-                .getDomain());
-        assertEquals(new BuiltinStringDomain("hoge"), sql.getParameters()
-                .get(1).getDomain());
-        assertEquals(new BuiltinIntegerDomain(100), sql.getParameters().get(2)
-                .getDomain());
+        assertEquals(new Integer(10), sql.getParameters().get(0).getWrapper()
+                .get());
+        assertEquals("hoge", sql.getParameters().get(1).getWrapper().get());
+        assertEquals(new Integer(100), sql.getParameters().get(2).getWrapper()
+                .get());
     }
 }

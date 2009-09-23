@@ -16,17 +16,35 @@
 package org.seasar.doma.internal.apt.entity;
 
 import org.seasar.doma.Entity;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-import org.seasar.doma.domain.BuiltinStringDomain;
 
 /**
  * @author taedium
  * 
  */
 @Entity
-public interface ChildEntity extends ParentEntity {
+public class ChildEntity extends ParentEntity {
 
-    BuiltinIntegerDomain bbb();
+    @SuppressWarnings("hiding")
+    Integer bbb;
 
-    BuiltinStringDomain ccc();
+    String ccc;
+
+    @Override
+    public Integer getBbb() {
+        return bbb;
+    }
+
+    @Override
+    public void setBbb(Integer bbb) {
+        this.bbb = bbb;
+    }
+
+    public String getCcc() {
+        return ccc;
+    }
+
+    public void setCcc(String ccc) {
+        this.ccc = ccc;
+    }
+
 }

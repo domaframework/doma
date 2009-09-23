@@ -35,19 +35,7 @@ public final class Options {
 
     public static final String DAO_SUFFIX = "dao.suffix";
 
-    public static final String ENTITY_PACKAGE = "entity.package";
-
-    public static final String ENTITY_SUBPACKAGE = "entity.subpackage";
-
     public static final String ENTITY_SUFFIX = "entity.suffix";
-
-    public static final String DTO_GENERATION = "dto.generation";
-
-    public static final String DTO_PACKAGE = "dto.package";
-
-    public static final String DTO_SUBPACKAGE = "dto.subpackage";
-
-    public static final String DTO_SUFFIX = "dto.suffix";
 
     public static boolean isTestEnabled(ProcessingEnvironment env) {
         String test = env.getOptions().get(Options.TEST);
@@ -81,39 +69,9 @@ public final class Options {
         return suffix != null ? suffix : Constants.DEFAULT_DAO_SUFFIX;
     }
 
-    public static String getEntityPackage(ProcessingEnvironment env) {
-        String pkg = env.getOptions().get(Options.ENTITY_PACKAGE);
-        return pkg != null ? pkg : null;
-    }
-
-    public static String getEntitySubpackage(ProcessingEnvironment env) {
-        String subpackage = env.getOptions().get(Options.ENTITY_SUBPACKAGE);
-        return subpackage != null ? subpackage : null;
-    }
-
     public static String getEntitySuffix(ProcessingEnvironment env) {
         String suffix = env.getOptions().get(Options.ENTITY_SUFFIX);
         return suffix != null ? suffix : Constants.DEFAULT_ENTITY_SUFFIX;
-    }
-
-    public static boolean isDtoGenerationEnabled(ProcessingEnvironment env) {
-        String generation = env.getOptions().get(Options.DTO_GENERATION);
-        return Boolean.valueOf(generation).booleanValue();
-    }
-
-    public static String getDtoPackage(ProcessingEnvironment env) {
-        String pkg = env.getOptions().get(Options.DTO_PACKAGE);
-        return pkg != null ? pkg : null;
-    }
-
-    public static String getDtoSubpackage(ProcessingEnvironment env) {
-        String subpackage = env.getOptions().get(Options.DTO_SUBPACKAGE);
-        return subpackage != null ? subpackage : null;
-    }
-
-    public static String getDtoSuffix(ProcessingEnvironment env) {
-        String suffix = env.getOptions().get(Options.DTO_SUFFIX);
-        return suffix != null ? suffix : Constants.DEFAULT_DTO_SUFFIX;
     }
 
     private static class Constants {
@@ -122,6 +80,5 @@ public final class Options {
 
         private static final String DEFAULT_ENTITY_SUFFIX = "_";
 
-        private static final String DEFAULT_DTO_SUFFIX = "Dto";
     }
 }

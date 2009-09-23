@@ -20,46 +20,34 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.jdbc.query.Query;
-import org.seasar.doma.internal.util.ClassUtil;
-import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
-import org.seasar.doma.jdbc.entity.Entity;
-import org.seasar.doma.message.DomaMessageCode;
-
+import org.seasar.doma.jdbc.entity.EntityMeta;
+import org.seasar.doma.jdbc.entity.EntityMetaFactory;
 
 /**
  * @author taedium
  * 
  */
-public class EntitySingleResultHandler<I, E extends Entity<I>> implements
-        ResultSetHandler<I> {
+public class EntitySingleResultHandler<E> implements ResultSetHandler<E> {
 
-    protected final Class<E> entityClass;
+    protected final EntityMetaFactory<E> entityMetaFactory;
 
-    public EntitySingleResultHandler(Class<E> entityClass) {
-        assertNotNull(entityClass);
-        this.entityClass = entityClass;
+    public EntitySingleResultHandler(EntityMetaFactory<E> entityMetaFactory) {
+        assertNotNull(entityMetaFactory);
+        this.entityMetaFactory = entityMetaFactory;
     }
 
     @Override
-    public I handle(ResultSet resultSet, Query query) throws SQLException {
+    public E handle(ResultSet resultSet, Query query) throws SQLException {
         EntityFetcher fetcher = new EntityFetcher(query);
-        E entity = null;
+        EntityMeta<E> entityMeta = entityMetaFactory.createEntityMeta();
         if (resultSet.next()) {
-            try {
-                entity = ClassUtil.newInstance(entityClass);
-            } catch (WrapException e) {
-                Throwable cause = e.getCause();
-                throw new JdbcException(DomaMessageCode.DOMA2005, cause,
-                        entityClass.getName(), cause);
-            }
-            fetcher.fetch(resultSet, entity);
+            fetcher.fetch(resultSet, entityMeta);
             if (resultSet.next()) {
                 throw new NonUniqueResultException(query.getSql());
             }
-            return entity.__asInterface();
+            return entityMeta.getEntity();
         }
         return null;
     }

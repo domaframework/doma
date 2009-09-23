@@ -15,12 +15,12 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.domain.Domain;
-import org.seasar.doma.domain.DomainVisitor;
+import org.seasar.doma.domain.Wrapper;
+import org.seasar.doma.domain.WrapperVisitor;
 
 /**
- * SQLのバインド変数にマッピングされる {@link Domain} をログ用のフォーマットされた文字列へと変換する
- * {@link DomainVisitor} の拡張です。
+ * SQLのバインド変数にマッピングされる {@link Wrapper} をログ用のフォーマットされた文字列へと変換する
+ * {@link WrapperVisitor} の拡張です。
  * <p>
  * このインタフェースの実装はスレッドセーフでなければいけません。
  * 
@@ -28,5 +28,5 @@ import org.seasar.doma.domain.DomainVisitor;
  * 
  */
 public interface SqlLogFormattingVisitor extends
-        DomainVisitor<String, SqlLogFormattingFunction, RuntimeException> {
+        WrapperVisitor<String, SqlLogFormattingFunction, RuntimeException> {
 }

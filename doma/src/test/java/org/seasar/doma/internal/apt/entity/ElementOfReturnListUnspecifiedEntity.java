@@ -18,18 +18,33 @@ package org.seasar.doma.internal.apt.entity;
 import java.util.List;
 
 import org.seasar.doma.Entity;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-
 
 /**
  * @author taedium
  * 
  */
 @Entity
-public interface ElementOfReturnListUnspecifiedEntity {
+public class ElementOfReturnListUnspecifiedEntity {
 
-    BuiltinIntegerDomain id();
+    Integer id;
 
     @SuppressWarnings("unchecked")
-    List list();
+    List list;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public List getList() {
+        return list;
+    }
+
+    public void setList(List list) {
+        this.list = list;
+    }
+
 }

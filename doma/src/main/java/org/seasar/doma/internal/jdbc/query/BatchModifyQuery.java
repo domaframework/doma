@@ -39,4 +39,5 @@ public interface BatchModifyQuery extends Query {
     SqlExecutionSkipCause getSqlExecutionSkipCause();
 
     int getBatchSize();
+
 }

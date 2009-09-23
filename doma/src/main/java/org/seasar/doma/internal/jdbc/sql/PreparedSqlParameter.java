@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 
 /**
  * @author taedium
@@ -23,5 +23,5 @@ import org.seasar.doma.domain.Domain;
  */
 public interface PreparedSqlParameter extends SqlParameter {
 
-    Domain<?, ?> getDomain();
+    Wrapper<?, ?> getWrapper();
 }

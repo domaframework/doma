@@ -20,7 +20,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.seasar.doma.domain.NumberDomain;
+import org.seasar.doma.domain.NumberWrapper;
 
 /**
  * バージョンを示します。
@@ -28,7 +28,7 @@ import org.seasar.doma.domain.NumberDomain;
  * このアノテーションが注釈されるメソッドは、{@link Entity} もしくは {@link MappedSuperclass}
  * が注釈されたインタフェースのメンバでなければいけません。
  * <p>
- * 注釈されるメソッドの戻り値の型は、{@link NumberDomain} のサブタイプでなければいけません。
+ * 注釈されるメソッドの戻り値の型は、{@link NumberWrapper} のサブタイプでなければいけません。
  * 
  * <h5>例:</h5>
  * 
@@ -46,8 +46,8 @@ import org.seasar.doma.domain.NumberDomain;
  * @author taedium
  * 
  */
-@Target(ElementType.METHOD)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@EntityMethod
+@EntityField
 public @interface Version {
 }

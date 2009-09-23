@@ -17,8 +17,9 @@ package org.seasar.doma.internal.jdbc.command;
 
 import java.util.List;
 
-import org.seasar.doma.domain.BuiltinStringDomain;
-import org.seasar.doma.internal.jdbc.command.DomainResultListHandler;
+import junit.framework.TestCase;
+
+import org.seasar.doma.domain.StringWrapper;
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
@@ -27,15 +28,13 @@ import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 
-import junit.framework.TestCase;
-
 /**
  * @author taedium
  * 
  */
 public class DomainResultListHandlerTest extends TestCase {
 
-    private MockConfig runtimeConfig = new MockConfig();
+    private final MockConfig runtimeConfig = new MockConfig();
 
     public void testHandle() throws Exception {
         MockResultSetMetaData metaData = new MockResultSetMetaData();
@@ -46,17 +45,17 @@ public class DomainResultListHandlerTest extends TestCase {
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil
-                .buildPath(getClass().getName(), getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
-        DomainResultListHandler<BuiltinStringDomain> handler = new DomainResultListHandler<BuiltinStringDomain>(
-                BuiltinStringDomain.class);
-        List<BuiltinStringDomain> domains = handler.handle(resultSet, query);
+        DomainResultListHandler<StringWrapper> handler = new DomainResultListHandler<StringWrapper>(
+                StringWrapper.class);
+        List<StringWrapper> domains = handler.handle(resultSet, query);
         assertEquals(2, domains.size());
-        assertEquals(new BuiltinStringDomain("aaa"), domains.get(0));
-        assertEquals(new BuiltinStringDomain("bbb"), domains.get(1));
+        assertEquals("aaa", domains.get(0).get());
+        assertEquals("bbb", domains.get(1).get());
     }
 }

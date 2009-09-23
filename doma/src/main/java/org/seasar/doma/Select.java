@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
 import java.sql.Statement;
 import java.util.List;
 
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.JdbcException;
@@ -40,7 +40,7 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * <li>{@code iterate} 要素が {@code false} の場合
  * <ul>
  * <li>パラメータは0個以上である。
- * <li>パラメータは {@link Domain}の実装クラス、 {@link Entity}が注釈されたインタフェース、もしくは
+ * <li>パラメータは {@link Wrapper}の実装クラス、 {@link Entity}が注釈されたインタフェース、もしくは
  * {@link SelectOptions}である。ただし、 {@code SelectOptions}は最大でも1つしか渡せない。
  * <li>戻り値の型は次のいずれかである。なお、 型が {@link List}でなくデータが存在しない場合、値は{@code null}となる。
  * <table border=1>

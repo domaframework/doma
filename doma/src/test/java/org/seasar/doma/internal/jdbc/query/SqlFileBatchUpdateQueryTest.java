@@ -20,17 +20,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.seasar.doma.domain.BuiltinBigDecimalDomain;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-import org.seasar.doma.domain.BuiltinStringDomain;
+import junit.framework.TestCase;
+
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
-import org.seasar.doma.internal.jdbc.query.BatchUpdateQuery;
-import org.seasar.doma.internal.jdbc.query.SqlFileBatchUpdateQuery;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 
-import junit.framework.TestCase;
 import example.entity.Emp;
 import example.entity.Emp_;
 
@@ -40,87 +36,86 @@ import example.entity.Emp_;
  */
 public class SqlFileBatchUpdateQueryTest extends TestCase {
 
-    private MockConfig runtimeConfig = new MockConfig();
+    private final MockConfig runtimeConfig = new MockConfig();
 
-    public void testCompile() throws Exception {
-        Emp emp1 = new Emp_();
-        emp1.id().set(10);
-        emp1.name().set("aaa");
-        emp1.version().set(100);
+    public void testPrepare() throws Exception {
+        Emp emp1 = new Emp();
+        emp1.setId(10);
+        emp1.setName("aaa");
+        emp1.setVersion(100);
 
-        Emp emp2 = new Emp_();
-        emp2.id().set(20);
-        emp2.name().set("bbb");
-        emp2.version().set(200);
+        Emp emp2 = new Emp();
+        emp2.setId(20);
+        emp2.setName("bbb");
+        emp2.setVersion(200);
 
-        SqlFileBatchUpdateQuery<Emp, Emp_> query = new SqlFileBatchUpdateQuery<Emp, Emp_>(
-                Emp_.class);
+        SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(
+                new Emp_());
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil
-                .buildPath(getClass().getName(), getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                getName()));
         query.setParameterName("e");
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
         BatchUpdateQuery batchUpdateQuery = query;
         assertEquals(2, batchUpdateQuery.getSqls().size());
     }
 
     public void testOption_default() throws Exception {
-        Emp emp1 = new Emp_();
-        emp1.id().set(10);
-        emp1.name().set("aaa");
-        emp1.version().set(100);
+        Emp emp1 = new Emp();
+        emp1.setId(10);
+        emp1.setName("aaa");
+        emp1.setVersion(100);
 
-        Emp emp2 = new Emp_();
-        emp2.id().set(20);
-        emp2.salary().set(new BigDecimal(2000));
-        emp2.version().set(200);
+        Emp emp2 = new Emp();
+        emp2.setId(20);
+        emp2.setSalary(new BigDecimal(2000));
+        emp2.setVersion(200);
 
-        SqlFileBatchUpdateQuery<Emp, Emp_> query = new SqlFileBatchUpdateQuery<Emp, Emp_>(
-                Emp_.class);
+        SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(
+                new Emp_());
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil
-                .buildPath(getClass().getName(), getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                getName()));
         query.setParameterName("e");
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
         PreparedSql sql = query.getSqls().get(0);
         assertEquals("update emp set name = ?, salary = ? where id = ?", sql
                 .getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
-        assertEquals(new BuiltinStringDomain("aaa"), parameters.get(0).getDomain());
-        assertTrue(parameters.get(1).getDomain().isNull());
-        assertEquals(new BuiltinIntegerDomain(10), parameters.get(2).getDomain());
+        assertEquals("aaa", parameters.get(0).getWrapper().get());
+        assertNull(parameters.get(1).getWrapper().get());
+        assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
 
         sql = query.getSqls().get(1);
         assertEquals("update emp set name = ?, salary = ? where id = ?", sql
                 .getRawSql());
         parameters = sql.getParameters();
         assertEquals(3, parameters.size());
-        assertTrue(parameters.get(0).getDomain().isNull());
-        assertEquals(new BuiltinBigDecimalDomain(new BigDecimal(2000)), parameters
-                .get(1).getDomain());
-        assertEquals(new BuiltinIntegerDomain(20), parameters.get(2).getDomain());
+        assertNull(parameters.get(0).getWrapper().get());
+        assertEquals(new BigDecimal(2000), parameters.get(1).getWrapper().get());
+        assertEquals(new Integer(20), parameters.get(2).getWrapper().get());
     }
 
     public void testIsExecutable() throws Exception {
-        SqlFileBatchUpdateQuery<Emp, Emp_> query = new SqlFileBatchUpdateQuery<Emp, Emp_>(
-                Emp_.class);
+        SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(
+                new Emp_());
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil
-                .buildPath(getClass().getName(), getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                getName()));
         query.setParameterName("e");
-        query.setEntities(Collections.<Emp> emptyList());
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.setEntities(Collections.<Emp> emptyList());
+        query.prepare();
         assertFalse(query.isExecutable());
     }
 }

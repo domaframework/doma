@@ -17,8 +17,9 @@ package org.seasar.doma.internal.jdbc.command;
 
 import java.math.BigDecimal;
 
-import org.seasar.doma.domain.BuiltinStringDomain;
-import org.seasar.doma.internal.jdbc.command.DomainFetcher;
+import junit.framework.TestCase;
+
+import org.seasar.doma.domain.StringWrapper;
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
@@ -29,15 +30,13 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SelectOptions;
 
-import junit.framework.TestCase;
-
 /**
  * @author taedium
  * 
  */
 public class DomainFetcherTest extends TestCase {
 
-    private MockConfig runtimeConfig = new MockConfig();
+    private final MockConfig runtimeConfig = new MockConfig();
 
     public void testFetchDomain() throws Exception {
         MockResultSetMetaData metaData = new MockResultSetMetaData();
@@ -49,7 +48,7 @@ public class DomainFetcherTest extends TestCase {
         resultSet.rows.add(new RowData("hoge", "foo", new BigDecimal(10), 100));
         resultSet.next();
 
-        BuiltinStringDomain aaa = new BuiltinStringDomain();
+        StringWrapper aaa = new StringWrapper();
         DomainFetcher fetcher = new DomainFetcher(new MySelectQuery());
         fetcher.fetch(resultSet, aaa);
 
@@ -96,6 +95,14 @@ public class DomainFetcherTest extends TestCase {
         @Override
         public int getQueryTimeout() {
             return 0;
+        }
+
+        @Override
+        public void prepare() {
+        }
+
+        @Override
+        public void complete() {
         }
 
     }

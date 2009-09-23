@@ -17,19 +17,34 @@ package org.seasar.doma.internal.apt.entity;
 
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
-import org.seasar.doma.domain.Domain;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
+import org.seasar.doma.domain.Wrapper;
 
 /**
  * @author taedium
  * 
  */
 @Entity
-public interface ReturnTypeNotConcreteDomainEntity {
+public class ReturnTypeNotConcreteDomainEntity {
 
     @Id
-    BuiltinIntegerDomain id();
+    Integer id;
 
-    Domain<?, ?> name();
+    Wrapper<?, ?> name;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Wrapper<?, ?> getName() {
+        return name;
+    }
+
+    public void setName(Wrapper<?, ?> name) {
+        this.name = name;
+    }
 
 }

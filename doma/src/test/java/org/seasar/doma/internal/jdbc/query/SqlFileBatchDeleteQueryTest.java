@@ -18,15 +18,13 @@ package org.seasar.doma.internal.jdbc.query;
 import java.util.Arrays;
 import java.util.List;
 
-import org.seasar.doma.domain.BuiltinStringDomain;
+import junit.framework.TestCase;
+
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
-import org.seasar.doma.internal.jdbc.query.BatchDeleteQuery;
-import org.seasar.doma.internal.jdbc.query.SqlFileBatchDeleteQuery;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 
-import junit.framework.TestCase;
 import example.entity.Emp;
 import example.entity.Emp_;
 
@@ -36,63 +34,63 @@ import example.entity.Emp_;
  */
 public class SqlFileBatchDeleteQueryTest extends TestCase {
 
-    private MockConfig runtimeConfig = new MockConfig();
+    private final MockConfig runtimeConfig = new MockConfig();
 
-    public void testCompile() throws Exception {
-        Emp emp1 = new Emp_();
-        emp1.id().set(10);
-        emp1.name().set("aaa");
-        emp1.version().set(100);
+    public void testPrepare() throws Exception {
+        Emp emp1 = new Emp();
+        emp1.setId(10);
+        emp1.setName("aaa");
+        emp1.setVersion(100);
 
-        Emp emp2 = new Emp_();
-        emp2.id().set(20);
-        emp2.name().set("bbb");
-        emp2.version().set(200);
+        Emp emp2 = new Emp();
+        emp2.setId(20);
+        emp2.setName("bbb");
+        emp2.setVersion(200);
 
-        SqlFileBatchDeleteQuery<Emp, Emp_> query = new SqlFileBatchDeleteQuery<Emp, Emp_>(
-                Emp_.class);
+        SqlFileBatchDeleteQuery<Emp> query = new SqlFileBatchDeleteQuery<Emp>(
+                new Emp_());
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil
-                .buildPath(getClass().getName(), getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                getName()));
         query.setParameterName("e");
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
         BatchDeleteQuery batchDeleteQuery = query;
         assertEquals(2, batchDeleteQuery.getSqls().size());
     }
 
     public void testOption_default() throws Exception {
-        Emp emp1 = new Emp_();
-        emp1.name().set("aaa");
+        Emp emp1 = new Emp();
+        emp1.setName("aaa");
 
-        Emp emp2 = new Emp_();
-        emp2.name().set("bbb");
+        Emp emp2 = new Emp();
+        emp2.setName("bbb");
 
-        SqlFileBatchDeleteQuery<Emp, Emp_> query = new SqlFileBatchDeleteQuery<Emp, Emp_>(
-                Emp_.class);
+        SqlFileBatchDeleteQuery<Emp> query = new SqlFileBatchDeleteQuery<Emp>(
+                new Emp_());
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil
-                .buildPath(getClass().getName(), getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                getName()));
         query.setParameterName("e");
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
         PreparedSql sql = query.getSqls().get(0);
         assertEquals("delete from emp where name = ?", sql.getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(1, parameters.size());
-        assertEquals(new BuiltinStringDomain("aaa"), parameters.get(0).getDomain());
+        assertEquals("aaa", parameters.get(0).getWrapper().get());
 
         sql = query.getSqls().get(1);
         assertEquals("delete from emp where name = ?", sql.getRawSql());
         parameters = sql.getParameters();
         assertEquals(1, parameters.size());
-        assertEquals(new BuiltinStringDomain("bbb"), parameters.get(0).getDomain());
+        assertEquals("bbb", parameters.get(0).getWrapper().get());
     }
 
 }

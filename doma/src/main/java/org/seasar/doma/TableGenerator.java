@@ -47,7 +47,7 @@ import org.seasar.doma.jdbc.id.TableIdGenerator;
  * 
  * @author taedium
  */
-@Target(ElementType.METHOD)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TableGenerator {
 

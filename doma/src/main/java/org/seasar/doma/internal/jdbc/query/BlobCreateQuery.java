@@ -21,17 +21,21 @@ import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class BlobCreateQuery<R extends Domain<Blob, ?>> extends
+public class BlobCreateQuery<R extends Wrapper<Blob, ?>> extends
         AbstractCreateQuery<Blob, R> {
 
-    public void compile() {
+    public void prepare() {
         assertNotNull(config, callerClassName, callerMethodName, result);
+    }
+
+    @Override
+    public void complete() {
     }
 
     @Override

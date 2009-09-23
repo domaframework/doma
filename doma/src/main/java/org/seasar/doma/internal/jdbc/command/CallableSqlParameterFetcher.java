@@ -23,7 +23,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlParameter;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlParameterVisitor;
@@ -39,7 +39,7 @@ import org.seasar.doma.internal.jdbc.sql.OutParameter;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.entity.Entity;
+import org.seasar.doma.jdbc.entity.EntityMeta;
 import org.seasar.doma.jdbc.type.JdbcType;
 
 /**
@@ -95,7 +95,7 @@ public class CallableSqlParameterFetcher {
         @Override
         public Void visitInOutParameter(InOutParameter parameter, Void p)
                 throws SQLException {
-            Domain<?, ?> domain = parameter.getDomain();
+            Wrapper<?, ?> domain = parameter.getDomain();
             domain.accept(jdbcMappingVisitor, new GetOutParameterFunction(
                     callableStatement, index));
             index++;
@@ -112,7 +112,7 @@ public class CallableSqlParameterFetcher {
         @Override
         public Void visitOutParameter(OutParameter parameter, Void p)
                 throws SQLException {
-            Domain<?, ?> domain = parameter.getDomain();
+            Wrapper<?, ?> domain = parameter.getDomain();
             domain.accept(jdbcMappingVisitor, new GetOutParameterFunction(
                     callableStatement, index));
             index++;
@@ -122,7 +122,7 @@ public class CallableSqlParameterFetcher {
         @Override
         public Void visitDomainResultParameter(
                 DomainResultParameter<?> parameter, Void p) throws SQLException {
-            Domain<?, ?> domain = parameter.getDomain();
+            Wrapper<?, ?> domain = parameter.getDomain();
             domain.accept(jdbcMappingVisitor, new GetOutParameterFunction(
                     callableStatement, index));
             index++;
@@ -161,7 +161,7 @@ public class CallableSqlParameterFetcher {
         }
 
         protected void handleEntityListParameter(
-                ListParameter<? extends Entity<?>> parameter)
+                ListParameter<? extends EntityMeta<?>> parameter)
                 throws SQLException {
             EntityFetcher fetcher = new EntityFetcher(query);
             if (dialect.supportsResultSetReturningAsOutParameter()) {
@@ -192,7 +192,7 @@ public class CallableSqlParameterFetcher {
         }
 
         protected void handleDomainListParameter(
-                ListParameter<? extends Domain<?, ?>> parameter)
+                ListParameter<? extends Wrapper<?, ?>> parameter)
                 throws SQLException {
             DomainFetcher fetcher = new DomainFetcher(query);
             if (dialect.supportsResultSetReturningAsOutParameter()) {

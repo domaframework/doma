@@ -40,7 +40,9 @@ public class CreateCommand<R> implements Command<R, CreateQuery<R>> {
         Connection connection = JdbcUtil.getConnection(query.getConfig()
                 .dataSource());
         try {
-            return query.create(connection);
+            R result = query.create(connection);
+            query.complete();
+            return result;
         } catch (SQLException e) {
             throw new JdbcException(DomaMessageCode.DOMA2008, e, e);
         } finally {

@@ -17,11 +17,11 @@ package org.seasar.doma.jdbc;
 
 import java.sql.SQLException;
 
-import org.seasar.doma.domain.Domain;
-import org.seasar.doma.domain.DomainVisitor;
+import org.seasar.doma.domain.Wrapper;
+import org.seasar.doma.domain.WrapperVisitor;
 
 /**
- * {@link Domain} をJDBCの型とマッピングする {@link DomainVisitor} の拡張です。
+ * {@link Wrapper} をJDBCの型とマッピングする {@link WrapperVisitor} の拡張です。
  * <p>
  * このインタフェースの実装はスレッドセーフでなければいけません。
  * 
@@ -29,5 +29,5 @@ import org.seasar.doma.domain.DomainVisitor;
  * 
  */
 public interface JdbcMappingVisitor extends
-        DomainVisitor<Void, JdbcMappingFunction, SQLException> {
+        WrapperVisitor<Void, JdbcMappingFunction, SQLException> {
 }

@@ -15,20 +15,17 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
+
 /**
  * 
  * @author taedium
  * 
  */
-public class EntityPropertyMeta extends AbstractEntityMethodMeta {
+public class EntityPropertyMeta {
 
-    protected boolean listReturnType;
+    protected String name;
 
-    protected boolean parameterizedReturnType;
-
-    protected String returnElementTypeName;
-
-    protected String domainValueTypeName;
+    protected String wrapperTypeName;
 
     protected boolean id;
 
@@ -39,6 +36,14 @@ public class EntityPropertyMeta extends AbstractEntityMethodMeta {
     protected ColumnMeta columnMeta;
 
     protected IdGeneratorMeta idGeneratorMeta;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public boolean isId() {
         return id;
@@ -80,36 +85,12 @@ public class EntityPropertyMeta extends AbstractEntityMethodMeta {
         this.idGeneratorMeta = idGeneratorMeta;
     }
 
-    public boolean isListReturnType() {
-        return listReturnType;
+    public void setWrapperTypeName(String wrapperTypeName) {
+        this.wrapperTypeName = wrapperTypeName;
     }
 
-    public void setListReturnType(boolean listReturnType) {
-        this.listReturnType = listReturnType;
-    }
-
-    public String getReturnElementTypeName() {
-        return returnElementTypeName;
-    }
-
-    public void setReturnElementTypeName(String elementTypeName) {
-        this.returnElementTypeName = elementTypeName;
-    }
-
-    public boolean isParameterizedReturnType() {
-        return parameterizedReturnType;
-    }
-
-    public void setParameterizedReturnType(boolean parameterizedReturnType) {
-        this.parameterizedReturnType = parameterizedReturnType;
-    }
-
-    public String getDomainValueTypeName() {
-        return domainValueTypeName;
-    }
-
-    public void setDomainValueTypeName(String domainValueTypeName) {
-        this.domainValueTypeName = domainValueTypeName;
+    public String getWrapperTypeName() {
+        return wrapperTypeName;
     }
 
 }

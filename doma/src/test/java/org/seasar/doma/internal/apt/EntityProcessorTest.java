@@ -17,21 +17,18 @@ package org.seasar.doma.internal.apt;
 
 import org.seasar.doma.internal.apt.entity.AnnotationConflictedEntity;
 import org.seasar.doma.internal.apt.entity.ChildEntity;
-import org.seasar.doma.internal.apt.entity.DelegateEntity;
 import org.seasar.doma.internal.apt.entity.ElementOfReturnListNotDomainEntity;
 import org.seasar.doma.internal.apt.entity.ElementOfReturnListUnspecifiedEntity;
 import org.seasar.doma.internal.apt.entity.Emp;
-import org.seasar.doma.internal.apt.entity.IllegalConstructorDelegateEntity;
-import org.seasar.doma.internal.apt.entity.IllegalMethodDelegateEntity;
 import org.seasar.doma.internal.apt.entity.ListenerArgumentTypeIllegalEntity;
 import org.seasar.doma.internal.apt.entity.NameUnsafeEntity_;
 import org.seasar.doma.internal.apt.entity.NotTopLevelEntity;
-import org.seasar.doma.internal.apt.entity.ParamSizeNotZeroEntity;
+import org.seasar.doma.internal.apt.entity.PrivatePropertyEntity;
 import org.seasar.doma.internal.apt.entity.PropertyNameReservedEntity;
 import org.seasar.doma.internal.apt.entity.ReturnListNotTransientEntity;
 import org.seasar.doma.internal.apt.entity.ReturnListTransientEntity;
 import org.seasar.doma.internal.apt.entity.ReturnTypeNotConcreteDomainEntity;
-import org.seasar.doma.internal.apt.entity.ReturnTypeNotDomainEntity;
+import org.seasar.doma.internal.apt.entity.UnsupportedPropertyEntity;
 import org.seasar.doma.internal.apt.entity.VersionDuplicatedEntity;
 import org.seasar.doma.internal.apt.entity.VersionNotNumberEntity;
 import org.seasar.doma.message.DomaMessageCode;
@@ -57,14 +54,24 @@ public class EntityProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
-    public void testParamSizeNotZero() throws Exception {
-        Class<?> target = ParamSizeNotZeroEntity.class;
+    public void testPrivateEntity() throws Exception {
+        Class<?> target = PrivatePropertyEntity.class;
         EntityProcessor processor = new EntityProcessor();
         addProcessor(processor);
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4023);
+        assertMessageCode(DomaMessageCode.DOMA4094);
+    }
+
+    public void testPrivatePropertyEntity() throws Exception {
+        Class<?> target = PrivatePropertyEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessageCode(DomaMessageCode.DOMA4094);
     }
 
     public void testVersionDuplicated() throws Exception {
@@ -87,8 +94,8 @@ public class EntityProcessorTest extends AptTestCase {
         assertMessageCode(DomaMessageCode.DOMA4018);
     }
 
-    public void testReturnTypeNotDomain() throws Exception {
-        Class<?> target = ReturnTypeNotDomainEntity.class;
+    public void testUnsupportedProperty() throws Exception {
+        Class<?> target = UnsupportedPropertyEntity.class;
         EntityProcessor processor = new EntityProcessor();
         addProcessor(processor);
         addCompilationUnit(target);
@@ -183,7 +190,7 @@ public class EntityProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4032);
+        assertMessageCode(DomaMessageCode.DOMA4093);
     }
 
     public void testListenerArgumentTypeIllegal() throws Exception {
@@ -194,36 +201,6 @@ public class EntityProcessorTest extends AptTestCase {
         compile();
         assertFalse(getCompiledResult());
         assertMessageCode(DomaMessageCode.DOMA4038);
-    }
-
-    public void testDelegate() throws Exception {
-        Class<?> target = DelegateEntity.class;
-        EntityProcessor processor = new EntityProcessor();
-        addProcessor(processor);
-        addCompilationUnit(target);
-        compile();
-        assertGeneratedSource(DelegateEntity.class);
-        assertTrue(getCompiledResult());
-    }
-
-    public void testIllegalConstructorDelegate() throws Exception {
-        Class<?> target = IllegalConstructorDelegateEntity.class;
-        EntityProcessor processor = new EntityProcessor();
-        addProcessor(processor);
-        addCompilationUnit(target);
-        compile();
-        assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4082);
-    }
-
-    public void testIllegalMethodDelegate() throws Exception {
-        Class<?> target = IllegalMethodDelegateEntity.class;
-        EntityProcessor processor = new EntityProcessor();
-        addProcessor(processor);
-        addCompilationUnit(target);
-        compile();
-        assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4083);
     }
 
     public void testAnnotationConflicted() throws Exception {

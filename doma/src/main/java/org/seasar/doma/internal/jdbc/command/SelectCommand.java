@@ -53,18 +53,21 @@ public class SelectCommand<R> implements Command<R, SelectQuery> {
         Connection connection = JdbcUtil.getConnection(query.getConfig()
                 .dataSource());
         try {
-            PreparedStatement preparedStatement = JdbcUtil
-                    .prepareStatement(connection, sql.getRawSql());
+            PreparedStatement preparedStatement = JdbcUtil.prepareStatement(
+                    connection, sql.getRawSql());
             try {
                 log();
                 setupOptions(preparedStatement);
                 bindParameters(preparedStatement);
-                return executeQuery(preparedStatement);
+                R result = executeQuery(preparedStatement);
+                query.complete();
+                return result;
             } catch (SQLException e) {
                 Dialect dialect = query.getConfig().dialect();
                 throw new SqlExecutionException(sql, e, dialect.getRootCause(e));
             } finally {
-                JdbcUtil.close(preparedStatement, query.getConfig().jdbcLogger());
+                JdbcUtil.close(preparedStatement, query.getConfig()
+                        .jdbcLogger());
             }
         } finally {
             JdbcUtil.close(connection, query.getConfig().jdbcLogger());

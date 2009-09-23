@@ -21,21 +21,26 @@ import java.sql.Array;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class ArrayCreateQuery<R extends Domain<Array, ?>> extends
+public class ArrayCreateQuery<R extends Wrapper<Array, ?>> extends
         AbstractCreateQuery<Array, R> {
 
     protected String typeName;
 
     protected Object[] elements;
 
-    public void compile() {
-        assertNotNull(config, callerClassName, callerMethodName, result, typeName, elements);
+    public void prepare() {
+        assertNotNull(config, callerClassName, callerMethodName, result,
+                typeName, elements);
+    }
+
+    @Override
+    public void complete() {
     }
 
     public String getTypeName() {

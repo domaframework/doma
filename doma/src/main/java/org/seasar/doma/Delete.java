@@ -69,7 +69,7 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @DaoMethod
-@EntityMethod
+@EntityField
 public @interface Delete {
 
     /**

@@ -15,8 +15,9 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import org.seasar.doma.domain.BuiltinStringDomain;
-import org.seasar.doma.internal.jdbc.command.DomainIterationHandler;
+import junit.framework.TestCase;
+
+import org.seasar.doma.domain.StringWrapper;
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
@@ -27,15 +28,13 @@ import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
 
-import junit.framework.TestCase;
-
 /**
  * @author taedium
  * 
  */
 public class DomainIterationHandlerTest extends TestCase {
 
-    private MockConfig runtimeConfig = new MockConfig();
+    private final MockConfig runtimeConfig = new MockConfig();
 
     public void testHandle() throws Exception {
         MockResultSetMetaData metaData = new MockResultSetMetaData();
@@ -46,20 +45,20 @@ public class DomainIterationHandlerTest extends TestCase {
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil
-                .buildPath(getClass().getName(), getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
-        DomainIterationHandler<String, BuiltinStringDomain> handler = new DomainIterationHandler<String, BuiltinStringDomain>(
-                BuiltinStringDomain.class,
-                new IterationCallback<String, BuiltinStringDomain>() {
+        DomainIterationHandler<String, StringWrapper> handler = new DomainIterationHandler<String, StringWrapper>(
+                StringWrapper.class,
+                new IterationCallback<String, StringWrapper>() {
 
                     private String result = "";
 
                     @Override
-                    public String iterate(BuiltinStringDomain target,
+                    public String iterate(StringWrapper target,
                             IterationContext iterationContext) {
                         result += target.get();
                         return result;
@@ -78,20 +77,20 @@ public class DomainIterationHandlerTest extends TestCase {
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil
-                .buildPath(getClass().getName(), getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
-        DomainIterationHandler<String, BuiltinStringDomain> handler = new DomainIterationHandler<String, BuiltinStringDomain>(
-                BuiltinStringDomain.class,
-                new IterationCallback<String, BuiltinStringDomain>() {
+        DomainIterationHandler<String, StringWrapper> handler = new DomainIterationHandler<String, StringWrapper>(
+                StringWrapper.class,
+                new IterationCallback<String, StringWrapper>() {
 
                     private String result = "";
 
                     @Override
-                    public String iterate(BuiltinStringDomain target,
+                    public String iterate(StringWrapper target,
                             IterationContext iterationContext) {
                         result += target.get();
                         iterationContext.exit();

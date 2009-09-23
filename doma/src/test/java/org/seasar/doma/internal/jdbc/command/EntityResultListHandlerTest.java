@@ -17,9 +17,8 @@ package org.seasar.doma.internal.jdbc.command;
 
 import java.util.List;
 
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-import org.seasar.doma.domain.BuiltinStringDomain;
-import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
+import junit.framework.TestCase;
+
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
@@ -28,7 +27,6 @@ import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 
-import junit.framework.TestCase;
 import example.entity.Emp;
 import example.entity.Emp_;
 
@@ -38,7 +36,7 @@ import example.entity.Emp_;
  */
 public class EntityResultListHandlerTest extends TestCase {
 
-    private MockConfig runtimeConfig = new MockConfig();
+    private final MockConfig runtimeConfig = new MockConfig();
 
     public void testHandle() throws Exception {
         MockResultSetMetaData metaData = new MockResultSetMetaData();
@@ -50,22 +48,22 @@ public class EntityResultListHandlerTest extends TestCase {
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil
-                .buildPath(getClass().getName(), getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
-        EntityResultListHandler<Emp, Emp_> handler = new EntityResultListHandler<Emp, Emp_>(
-                Emp_.class);
+        EntityResultListHandler<Emp> handler = new EntityResultListHandler<Emp>(
+                new Emp_());
         List<Emp> entities = handler.handle(resultSet, query);
 
         assertEquals(2, entities.size());
         Emp emp = entities.get(0);
-        assertEquals(new BuiltinIntegerDomain(1), emp.id());
-        assertEquals(new BuiltinStringDomain("aaa"), emp.name());
+        assertEquals(new Integer(1), emp.getId());
+        assertEquals("aaa", emp.getName());
         emp = entities.get(1);
-        assertEquals(new BuiltinIntegerDomain(2), emp.id());
-        assertEquals(new BuiltinStringDomain("bbb"), emp.name());
+        assertEquals(new Integer(2), emp.getId());
+        assertEquals("bbb", emp.getName());
     }
 }

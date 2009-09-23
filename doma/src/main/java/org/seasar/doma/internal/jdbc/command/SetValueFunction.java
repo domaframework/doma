@@ -21,7 +21,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.type.JdbcType;
 
@@ -44,7 +44,7 @@ public class SetValueFunction implements JdbcMappingFunction {
     }
 
     @Override
-    public <R, V> R apply(Domain<V, ?> domain, JdbcType<V> jdbcType)
+    public <R, V> R apply(Wrapper<V, ?> domain, JdbcType<V> jdbcType)
             throws SQLException {
         if (domain == null) {
             throw new DomaNullPointerException("domain");

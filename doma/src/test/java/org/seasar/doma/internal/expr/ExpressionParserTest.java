@@ -138,7 +138,7 @@ public class ExpressionParserTest extends TestCase {
     }
 
     public void testNoParamMethod() throws Exception {
-        ExpressionParser parser = new ExpressionParser("hoge.length");
+        ExpressionParser parser = new ExpressionParser("hoge.length()");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("hoge", "aaa");
@@ -218,24 +218,6 @@ public class ExpressionParserTest extends TestCase {
         assertFalse(evaluationResult.getBooleanValue());
     }
 
-    public void testEq_domain() throws Exception {
-        ExpressionParser parser = new ExpressionParser(
-                "new org.seasar.doma.domain.BuiltinIntegerDomain(new java.lang.Integer(10)) == 10");
-        ExpressionNode expression = parser.parse();
-        ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        EvaluationResult evaluationResult = evaluator.evaluate(expression);
-        assertTrue(evaluationResult.getBooleanValue());
-    }
-
-    public void testNotEq_domain() throws Exception {
-        ExpressionParser parser = new ExpressionParser(
-                "new org.seasar.doma.domain.BuiltinIntegerDomain(new java.lang.Integer(11)) == 10");
-        ExpressionNode expression = parser.parse();
-        ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        EvaluationResult evaluationResult = evaluator.evaluate(expression);
-        assertFalse(evaluationResult.getBooleanValue());
-    }
-
     public void testEq_null() throws Exception {
         ExpressionParser parser = new ExpressionParser("null == null");
         ExpressionNode expression = parser.parse();
@@ -266,24 +248,6 @@ public class ExpressionParserTest extends TestCase {
 
     public void testNotNe() throws Exception {
         ExpressionParser parser = new ExpressionParser("11 != 11");
-        ExpressionNode expression = parser.parse();
-        ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        EvaluationResult evaluationResult = evaluator.evaluate(expression);
-        assertFalse(evaluationResult.getBooleanValue());
-    }
-
-    public void testNe_domain() throws Exception {
-        ExpressionParser parser = new ExpressionParser(
-                "new org.seasar.doma.domain.BuiltinIntegerDomain(new java.lang.Integer(10)) != 11");
-        ExpressionNode expression = parser.parse();
-        ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        EvaluationResult evaluationResult = evaluator.evaluate(expression);
-        assertTrue(evaluationResult.getBooleanValue());
-    }
-
-    public void testNotNe_domain() throws Exception {
-        ExpressionParser parser = new ExpressionParser(
-                "new org.seasar.doma.domain.BuiltinIntegerDomain(new java.lang.Integer(10)) != 10");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         EvaluationResult evaluationResult = evaluator.evaluate(expression);

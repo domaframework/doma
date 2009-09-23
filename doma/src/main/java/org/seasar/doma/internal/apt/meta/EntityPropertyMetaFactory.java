@@ -17,14 +17,7 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.MirroredTypeException;
@@ -37,8 +30,6 @@ import org.seasar.doma.SequenceGenerator;
 import org.seasar.doma.TableGenerator;
 import org.seasar.doma.Transient;
 import org.seasar.doma.Version;
-import org.seasar.doma.domain.Domain;
-import org.seasar.doma.domain.NumberDomain;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.TypeUtil;
@@ -59,49 +50,45 @@ public class EntityPropertyMetaFactory {
     }
 
     public EntityPropertyMeta createEntityPropertyMeta(
-            ExecutableElement method, EntityMeta entityMeta) {
-        assertNotNull(method, entityMeta);
+            VariableElement fieldElement, EntityMeta entityMeta) {
+        assertNotNull(fieldElement, entityMeta);
         EntityPropertyMeta propertyMeta = new EntityPropertyMeta();
-        propertyMeta.setExecutableElement(method);
-        doName(propertyMeta, method, entityMeta);
-        doId(propertyMeta, method, entityMeta);
-        doTransient(propertyMeta, method, entityMeta);
-        doVersion(propertyMeta, method, entityMeta);
-        doColumnMeta(propertyMeta, method, entityMeta);
-        doTypeParameters(propertyMeta, method, entityMeta);
-        doReturnType(propertyMeta, method, entityMeta);
-        doParameters(propertyMeta, method, entityMeta);
-        doThrowTypes(propertyMeta, method, entityMeta);
+        doName(propertyMeta, fieldElement, entityMeta);
+        doId(propertyMeta, fieldElement, entityMeta);
+        doTransient(propertyMeta, fieldElement, entityMeta);
+        doVersion(propertyMeta, fieldElement, entityMeta);
+        doColumnMeta(propertyMeta, fieldElement, entityMeta);
+        doWrapperTypeName(propertyMeta, fieldElement, entityMeta);
         return propertyMeta;
     }
 
     protected void doId(EntityPropertyMeta propertyMeta,
-            ExecutableElement method, EntityMeta entityMeta) {
-        Id id = method.getAnnotation(Id.class);
+            VariableElement fieldElement, EntityMeta entityMeta) {
+        Id id = fieldElement.getAnnotation(Id.class);
         if (id == null) {
             return;
         }
         if (entityMeta.hasGeneratedIdPropertyMeta()) {
-            throw new AptException(DomaMessageCode.DOMA4036, env, method);
+            throw new AptException(DomaMessageCode.DOMA4036, env, fieldElement);
         }
         propertyMeta.setId(true);
-        GeneratedValue generatedValue = method
+        GeneratedValue generatedValue = fieldElement
                 .getAnnotation(GeneratedValue.class);
         if (generatedValue == null) {
             return;
         }
         if (entityMeta.hasGeneratedIdPropertyMeta()) {
-            throw new AptException(DomaMessageCode.DOMA4037, env, method);
+            throw new AptException(DomaMessageCode.DOMA4037, env, fieldElement);
         }
         switch (generatedValue.strategy()) {
         case IDENTITY:
-            doIdentityIdGeneratorMeta(propertyMeta, method, entityMeta);
+            doIdentityIdGeneratorMeta(propertyMeta, fieldElement, entityMeta);
             break;
         case SEQUENCE:
-            doSequenceIdGeneratorMeta(propertyMeta, method, entityMeta);
+            doSequenceIdGeneratorMeta(propertyMeta, fieldElement, entityMeta);
             break;
         case TABLE:
-            doTableIdGeneratorMeta(propertyMeta, method, entityMeta);
+            doTableIdGeneratorMeta(propertyMeta, fieldElement, entityMeta);
             break;
         default:
             assertUnreachable();
@@ -110,16 +97,16 @@ public class EntityPropertyMetaFactory {
     }
 
     protected void doIdentityIdGeneratorMeta(EntityPropertyMeta propertyMeta,
-            ExecutableElement method, EntityMeta entityMeta) {
+            VariableElement fieldElement, EntityMeta entityMeta) {
         propertyMeta.setIdGeneratorMeta(new IdentityIdGeneratorMeta());
     }
 
     protected void doSequenceIdGeneratorMeta(EntityPropertyMeta propertyMeta,
-            ExecutableElement method, EntityMeta entityMeta) {
-        SequenceGenerator generator = method
+            VariableElement fieldElement, EntityMeta entityMeta) {
+        SequenceGenerator generator = fieldElement
                 .getAnnotation(SequenceGenerator.class);
         if (generator == null) {
-            throw new AptException(DomaMessageCode.DOMA4034, env, method);
+            throw new AptException(DomaMessageCode.DOMA4034, env, fieldElement);
         }
         StringBuilder buf = new StringBuilder();
         if (!generator.catalog().isEmpty()) {
@@ -135,8 +122,7 @@ public class EntityPropertyMetaFactory {
         SequenceIdGeneratorMeta idGeneratorMeta = new SequenceIdGeneratorMeta(
                 buf.toString(), generator.initialValue(), generator
                         .allocationSize(), TypeUtil.getTypeName(
-                        idGeneratorImplementerType, entityMeta
-                                .getTypeParameterMap(), env));
+                        idGeneratorImplementerType, env));
         propertyMeta.setIdGeneratorMeta(idGeneratorMeta);
     }
 
@@ -151,10 +137,11 @@ public class EntityPropertyMetaFactory {
     }
 
     protected void doTableIdGeneratorMeta(EntityPropertyMeta propertyMeta,
-            ExecutableElement method, EntityMeta entityMeta) {
-        TableGenerator generator = method.getAnnotation(TableGenerator.class);
+            VariableElement fieldElement, EntityMeta entityMeta) {
+        TableGenerator generator = fieldElement
+                .getAnnotation(TableGenerator.class);
         if (generator == null) {
-            throw new AptException(DomaMessageCode.DOMA4035, env, method);
+            throw new AptException(DomaMessageCode.DOMA4035, env, fieldElement);
         }
         StringBuilder buf = new StringBuilder();
         if (!generator.catalog().isEmpty()) {
@@ -171,8 +158,7 @@ public class EntityPropertyMetaFactory {
                 .toString(), generator.pkColumnName(), generator
                 .valueColumnName(), generator.pkColumnValue(), generator
                 .initialValue(), generator.allocationSize(), TypeUtil
-                .getTypeName(idGeneratorImplementerType, entityMeta
-                        .getTypeParameterMap(), env));
+                .getTypeName(idGeneratorImplementerType, env));
         propertyMeta.setIdGeneratorMeta(idGeneratorMeta);
     }
 
@@ -186,47 +172,56 @@ public class EntityPropertyMetaFactory {
     }
 
     protected void doName(EntityPropertyMeta propertyMeta,
-            ExecutableElement method, EntityMeta entityMeta) {
-        String name = method.getSimpleName().toString();
+            VariableElement fieldElement, EntityMeta entityMeta) {
+        String name = fieldElement.getSimpleName().toString();
         if (name.startsWith("__")) {
-            throw new AptException(DomaMessageCode.DOMA4025, env, method, "__");
+            throw new AptException(DomaMessageCode.DOMA4025, env, fieldElement,
+                    "__");
         }
         propertyMeta.setName(name);
     }
 
     protected void doTransient(EntityPropertyMeta propertyMeta,
-            ExecutableElement method, EntityMeta entityMeta) {
-        Transient trnsient = method.getAnnotation(Transient.class);
+            VariableElement fieldElement, EntityMeta entityMeta) {
+        Transient trnsient = fieldElement.getAnnotation(Transient.class);
         propertyMeta.setTrnsient(trnsient != null);
     }
 
     protected void doVersion(EntityPropertyMeta propertyMeta,
-            ExecutableElement method, EntityMeta entityMeta) {
-        Version version = method.getAnnotation(Version.class);
+            VariableElement fieldElement, EntityMeta entityMeta) {
+        Version version = fieldElement.getAnnotation(Version.class);
         if (version != null) {
             if (entityMeta.hasVersionPropertyMeta()) {
-                throw new AptException(DomaMessageCode.DOMA4024, env, method);
+                throw new AptException(DomaMessageCode.DOMA4024, env,
+                        fieldElement);
+            }
+            TypeMirror wrapperType = TypeUtil.toWrapperTypeIfPrimitive(
+                    fieldElement.asType(), env);
+            if (!TypeUtil.isAssignable(wrapperType, Number.class, env)) {
+                throw new AptException(DomaMessageCode.DOMA4093, env,
+                        fieldElement);
             }
             propertyMeta.setVersion(true);
         }
     }
 
     protected void doColumnMeta(EntityPropertyMeta propertyMeta,
-            ExecutableElement method, EntityMeta entityMeta) {
+            VariableElement fieldElement, EntityMeta entityMeta) {
         ColumnMeta columnMeta = new ColumnMeta();
-        Column column = method.getAnnotation(Column.class);
+        Column column = fieldElement.getAnnotation(Column.class);
         if (column != null) {
             if (propertyMeta.isTrnsient()) {
-                throw new AptException(DomaMessageCode.DOMA4087, env, method);
+                throw new AptException(DomaMessageCode.DOMA4087, env,
+                        fieldElement);
             }
             if (propertyMeta.isId() || propertyMeta.isVersion()) {
                 if (!column.insertable()) {
                     throw new AptException(DomaMessageCode.DOMA4088, env,
-                            method);
+                            fieldElement);
                 }
                 if (!column.updatable()) {
                     throw new AptException(DomaMessageCode.DOMA4089, env,
-                            method);
+                            fieldElement);
                 }
             }
             if (!column.name().isEmpty()) {
@@ -238,137 +233,21 @@ public class EntityPropertyMetaFactory {
         propertyMeta.setColumnMeta(columnMeta);
     }
 
-    protected void doTypeParameters(EntityPropertyMeta propertyMeta,
-            ExecutableElement method, EntityMeta entityMeta) {
-        for (TypeParameterElement element : method.getTypeParameters()) {
-            String name = TypeUtil.getTypeName(element.asType(), entityMeta
-                    .getTypeParameterMap(), env);
-            propertyMeta.addTypeParameterName(name);
+    protected void doWrapperTypeName(EntityPropertyMeta propertyMeta,
+            VariableElement fieldElement, EntityMeta entityMeta) {
+        DeclaredType wrappedType = TypeUtil.toDeclaredType(fieldElement
+                .asType(), env);
+        DeclaredType wrapperType = WrapperResolver.getWrapperType(wrappedType,
+                env);
+        if (wrapperType == null) {
+            throw new AptException(DomaMessageCode.DOMA4096, env, fieldElement,
+                    wrappedType);
         }
+        propertyMeta.setWrapperTypeName(TypeUtil.getTypeName(wrapperType, env));
     }
 
-    protected void doReturnType(EntityPropertyMeta propertyMeta,
-            ExecutableElement method, EntityMeta entityMeta) {
-        TypeMirror returnType = TypeUtil.resolveTypeParameter(entityMeta
-                .getTypeParameterMap(), method.getReturnType());
-        if (isList(returnType)) {
-            DeclaredType listTyep = TypeUtil.toDeclaredType(returnType, env);
-            List<? extends TypeMirror> args = listTyep.getTypeArguments();
-            if (args.isEmpty()) {
-                throw new AptException(DomaMessageCode.DOMA4029, env, method);
-            }
-            TypeMirror elementType = TypeUtil.resolveTypeParameter(entityMeta
-                    .getTypeParameterMap(), args.get(0));
-            if (!isDomain(elementType)) {
-                throw new AptException(DomaMessageCode.DOMA4030, env, method);
-            }
-            if (!propertyMeta.isTrnsient()) {
-                throw new AptException(DomaMessageCode.DOMA4031, env, method);
-            }
-            propertyMeta.setListReturnType(true);
-            propertyMeta.setDomainValueTypeName(getDomainValueTypeName(
-                    elementType, entityMeta, env));
-            String elementTypeName = TypeUtil.getTypeName(elementType,
-                    entityMeta.getTypeParameterMap(), env);
-            propertyMeta.setReturnElementTypeName(elementTypeName);
-            propertyMeta.setReturnTypeName(ArrayList.class.getName() + "<"
-                    + elementTypeName + ">");
-            propertyMeta.setParameterizedReturnType(true);
-            return;
-        } else if (!isDomain(returnType) || isAbstract(returnType)) {
-            throw new AptException(DomaMessageCode.DOMA4022, env, method);
-        }
-        if (propertyMeta.isVersion()
-                && (!isNumberDomain(returnType) || isAbstract(returnType))) {
-            throw new AptException(DomaMessageCode.DOMA4032, env, method);
-        }
-        if (propertyMeta.getIdGeneratorMeta() != null
-                && (!isNumberDomain(returnType) || isAbstract(returnType))) {
-            throw new AptException(DomaMessageCode.DOMA4033, env, method);
-        }
-        propertyMeta.setDomainValueTypeName(getDomainValueTypeName(returnType,
-                entityMeta, env));
-        propertyMeta.setReturnTypeName(TypeUtil.getTypeName(returnType,
-                entityMeta.getTypeParameterMap(), env));
-        TypeElement returnElement = TypeUtil.toTypeElement(returnType, env);
-        if (returnElement != null
-                && !returnElement.getTypeParameters().isEmpty()) {
-            propertyMeta.setParameterizedReturnType(true);
-        }
-    }
-
-    protected String getDomainValueTypeName(TypeMirror domainType,
-            EntityMeta entityMeta, ProcessingEnvironment env) {
-        TypeMirror valueType = getDomainValueType(domainType, entityMeta, env);
-        if (valueType != null) {
-            return TypeUtil.getTypeName(valueType, entityMeta
-                    .getTypeParameterMap(), env);
-        }
-        throw new AptIllegalStateException();
-    }
-
-    protected TypeMirror getDomainValueType(TypeMirror domainType,
-            EntityMeta entityMeta, ProcessingEnvironment env) {
-        for (TypeMirror supertype : env.getTypeUtils().directSupertypes(
-                domainType)) {
-            TypeMirror valueType = getDomainValueType(supertype, entityMeta,
-                    env);
-            if (valueType != null) {
-                return valueType;
-            }
-        }
-        TypeElement domainElement = TypeUtil.toTypeElement(domainType, env);
-        if (domainElement != null
-                && domainElement.getQualifiedName().contentEquals(
-                        Domain.class.getName())) {
-            DeclaredType declaredType = TypeUtil
-                    .toDeclaredType(domainType, env);
-            if (declaredType.getTypeArguments().isEmpty()) {
-                throw new AptIllegalStateException();
-            }
-            return declaredType.getTypeArguments().get(0);
-        }
-        return null;
-    }
-
-    protected void doParameters(EntityPropertyMeta propertyMeta,
-            ExecutableElement method, EntityMeta entityMeta) {
-        List<? extends VariableElement> params = method.getParameters();
-        if (!params.isEmpty()) {
-            throw new AptException(DomaMessageCode.DOMA4023, env, method);
-        }
-    }
-
-    protected void doThrowTypes(EntityPropertyMeta propertyMeta,
-            ExecutableElement method, EntityMeta entityMeta) {
-        for (TypeMirror thrownType : method.getThrownTypes()) {
-            String typeName = TypeUtil.getTypeName(thrownType, entityMeta
-                    .getTypeParameterMap(), env);
-            propertyMeta.addThrownTypeName(typeName);
-        }
-    }
-
-    protected boolean isDomain(TypeMirror typeMirror) {
-        return TypeUtil.isAssignable(typeMirror, Domain.class, env);
-    }
-
-    protected boolean isNumberDomain(TypeMirror typeMirror) {
-        return TypeUtil.isAssignable(typeMirror, NumberDomain.class, env);
-    }
-
-    protected boolean isAbstract(TypeMirror typeMirror) {
-        TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
-        return typeElement != null
-                && typeElement.getModifiers().contains(Modifier.ABSTRACT);
-    }
-
-    protected boolean isList(TypeMirror typeMirror) {
-        TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
-        if (typeElement != null) {
-            return typeElement.getQualifiedName().contentEquals(
-                    List.class.getName());
-        }
-        return false;
+    protected boolean isNumber(TypeMirror typeMirror) {
+        return TypeUtil.isAssignable(typeMirror, Number.class, env);
     }
 
 }

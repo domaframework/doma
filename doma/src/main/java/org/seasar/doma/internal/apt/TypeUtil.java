@@ -57,6 +57,7 @@ public final class TypeUtil {
             public TypeElement visitType(TypeElement e, Void p) {
                 return e;
             }
+
         }, null);
     }
 
@@ -69,6 +70,12 @@ public final class TypeUtil {
             public DeclaredType visitDeclared(DeclaredType t, Void p) {
                 return t;
             }
+
+            @Override
+            protected DeclaredType defaultAction(TypeMirror e, Void p) {
+                throw new AptIllegalStateException();
+            }
+
         }, null);
     }
 
@@ -97,6 +104,13 @@ public final class TypeUtil {
             }
         }
         return false;
+    }
+
+    public static String getTypeName(TypeMirror typeMirror,
+            ProcessingEnvironment env) {
+        assertNotNull(typeMirror, env);
+        return getTypeName(typeMirror, Collections
+                .<TypeMirror, TypeMirror> emptyMap(), env);
     }
 
     public static String getTypeName(TypeMirror typeMirror,

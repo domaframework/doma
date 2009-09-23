@@ -19,7 +19,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.List;
 
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.JdbcException;
@@ -30,26 +30,26 @@ import org.seasar.doma.message.DomaMessageCode;
  * @author taedium
  * 
  */
-public class DomainListParameter implements ListParameter<Domain<?, ?>> {
+public class DomainListParameter implements ListParameter<Wrapper<?, ?>> {
 
-    protected final Class<Domain<?, ?>> domainClass;
+    protected final Class<Wrapper<?, ?>> domainClass;
 
-    protected final List<Domain<?, ?>> domains;
+    protected final List<Wrapper<?, ?>> domains;
 
-    public DomainListParameter(Class<Domain<?, ?>> domainClass,
-            List<Domain<?, ?>> domains) {
+    public DomainListParameter(Class<Wrapper<?, ?>> domainClass,
+            List<Wrapper<?, ?>> domains) {
         assertNotNull(domainClass, domains);
         this.domainClass = domainClass;
         this.domains = domains;
     }
 
-    public Domain<?, ?> add() {
-        Domain<?, ?> domain = createDomain();
+    public Wrapper<?, ?> add() {
+        Wrapper<?, ?> domain = createDomain();
         domains.add(domain);
         return domain;
     }
 
-    protected Domain<?, ?> createDomain() {
+    protected Wrapper<?, ?> createDomain() {
         try {
             return ClassUtil.newInstance(domainClass);
         } catch (WrapException e) {

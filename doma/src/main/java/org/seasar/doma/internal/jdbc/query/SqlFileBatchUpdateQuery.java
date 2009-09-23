@@ -15,17 +15,17 @@
  */
 package org.seasar.doma.internal.jdbc.query;
 
-import org.seasar.doma.jdbc.entity.Entity;
+import org.seasar.doma.jdbc.entity.EntityMetaFactory;
 
 /**
  * @author taedium
  * 
  */
-public class SqlFileBatchUpdateQuery<I, E extends Entity<I>> extends
-        SqlFileBatchModifyQuery<I, E> implements BatchUpdateQuery {
+public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
+        implements BatchUpdateQuery {
 
-    public SqlFileBatchUpdateQuery(Class<E> entityClass) {
-        super(entityClass);
+    public SqlFileBatchUpdateQuery(EntityMetaFactory<E> entityMetaFactory) {
+        super(entityMetaFactory);
     }
 
     @Override

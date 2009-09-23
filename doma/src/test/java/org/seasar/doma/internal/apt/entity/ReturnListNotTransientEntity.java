@@ -18,17 +18,32 @@ package org.seasar.doma.internal.apt.entity;
 import java.util.List;
 
 import org.seasar.doma.Entity;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-
 
 /**
  * @author taedium
  * 
  */
 @Entity
-public interface ReturnListNotTransientEntity {
+public class ReturnListNotTransientEntity {
 
-    BuiltinIntegerDomain id();
+    Integer id;
 
-    List<BuiltinIntegerDomain> list();
+    List<Integer> list;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public List<Integer> getList() {
+        return list;
+    }
+
+    public void setList(List<Integer> list) {
+        this.list = list;
+    }
+
 }

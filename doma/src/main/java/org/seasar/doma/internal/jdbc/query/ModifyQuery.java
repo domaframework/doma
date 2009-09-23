@@ -34,4 +34,6 @@ public interface ModifyQuery extends Query {
 
     SqlExecutionSkipCause getSqlExecutionSkipCause();
 
+    void complete();
+
 }

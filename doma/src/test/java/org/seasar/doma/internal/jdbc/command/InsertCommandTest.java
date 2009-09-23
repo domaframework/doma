@@ -33,27 +33,28 @@ import example.entity.Emp_;
  */
 public class InsertCommandTest extends TestCase {
 
-    private MockConfig runtimeConfig = new MockConfig();
+    private final MockConfig runtimeConfig = new MockConfig();
 
     public void testExecute() throws Exception {
-        Emp emp = new Emp_();
-        emp.id().set(1);
-        emp.name().set("hoge");
-        emp.salary().set(new BigDecimal(1000));
-        emp.version().set(10);
+        Emp emp = new Emp();
+        emp.setId(1);
+        emp.setName("hoge");
+        emp.setSalary(new BigDecimal(1000));
+        emp.setVersion(10);
 
-        AutoInsertQuery<Emp, Emp_> query = new AutoInsertQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
         int rows = new InsertCommand(query).execute();
 
         assertEquals(1, rows);
         String sql = runtimeConfig.dataSource.connection.preparedStatement.sql;
-        assertEquals("insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)", sql);
+        assertEquals(
+                "insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)",
+                sql);
 
         List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
         assertEquals(new Integer(1), bindValues.get(0).getValue());
@@ -63,24 +64,25 @@ public class InsertCommandTest extends TestCase {
     }
 
     public void testExecute_defaultVersion() throws Exception {
-        Emp emp = new Emp_();
-        emp.id().set(1);
-        emp.name().set("hoge");
-        emp.salary().set(new BigDecimal(1000));
-        emp.version().setNull();
+        Emp emp = new Emp();
+        emp.setId(1);
+        emp.setName("hoge");
+        emp.setSalary(new BigDecimal(1000));
+        emp.setVersion(null);
 
-        AutoInsertQuery<Emp, Emp_> query = new AutoInsertQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
         int rows = new InsertCommand(query).execute();
 
         assertEquals(1, rows);
         String sql = runtimeConfig.dataSource.connection.preparedStatement.sql;
-        assertEquals("insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)", sql);
+        assertEquals(
+                "insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)",
+                sql);
 
         List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
         assertEquals(4, bindValues.size());

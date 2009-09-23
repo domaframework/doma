@@ -27,7 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.expr.node.AddOperatorNode;
 import org.seasar.doma.internal.expr.node.AndOperatorNode;
@@ -57,7 +57,6 @@ import org.seasar.doma.internal.expr.node.VariableNode;
 import org.seasar.doma.internal.util.ConstructorUtil;
 import org.seasar.doma.internal.util.MethodUtil;
 import org.seasar.doma.message.DomaMessageCode;
-
 
 /**
  * @author taedium
@@ -174,8 +173,8 @@ public class ExpressionEvaluator implements
     }
 
     protected Object getEnclosedValueIfDomain(Object maybeDomain) {
-        if (Domain.class.isInstance(maybeDomain)) {
-            Domain<?, ?> domain = Domain.class.cast(maybeDomain);
+        if (Wrapper.class.isInstance(maybeDomain)) {
+            Wrapper<?, ?> domain = Wrapper.class.cast(maybeDomain);
             return domain.get();
         }
         return maybeDomain;
@@ -299,7 +298,8 @@ public class ExpressionEvaluator implements
         ExpressionLocation location = node.getLocation();
         String className = node.getClassName();
         Class<?> clazz = forClassName(location, className);
-        Constructor<?> constructor = findConstructor(location, clazz, paramTypes);
+        Constructor<?> constructor = findConstructor(location, clazz,
+                paramTypes);
         return invokeConstructor(location, clazz, constructor, params);
     }
 
@@ -338,9 +338,9 @@ public class ExpressionEvaluator implements
             value = ConstructorUtil.newInstance(constructor, params);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
-            throw new ExpressionException(DomaMessageCode.DOMA3007, cause, location
-                    .getExpression(), location.getPosition(), ConstructorUtil
-                    .toSignature(constructor), cause);
+            throw new ExpressionException(DomaMessageCode.DOMA3007, cause,
+                    location.getExpression(), location.getPosition(),
+                    ConstructorUtil.toSignature(constructor), cause);
         }
         return new EvaluationResult(value, clazz);
     }
@@ -348,8 +348,8 @@ public class ExpressionEvaluator implements
     @Override
     public EvaluationResult visitMethodOperatorNode(MethodOperatorNode node,
             Void p) {
-        EvaluationResult targetResult = node.getTargetObjectNode()
-                .accept(this, p);
+        EvaluationResult targetResult = node.getTargetObjectNode().accept(this,
+                p);
         Object target = targetResult.getValue();
         ParameterCollector collector = new ParameterCollector(this);
         List<EvaluationResult> paramResults = collector.collect(node
@@ -377,9 +377,9 @@ public class ExpressionEvaluator implements
             value = MethodUtil.invoke(method, target, params);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
-            throw new ExpressionException(DomaMessageCode.DOMA3001, cause, location
-                    .getExpression(), location.getPosition(), target.getClass()
-                    .getName(), method.getName(), cause);
+            throw new ExpressionException(DomaMessageCode.DOMA3001, cause,
+                    location.getExpression(), location.getPosition(), target
+                            .getClass().getName(), method.getName(), cause);
         }
         Class<?> returnType = method.getReturnType();
         return new EvaluationResult(value, returnType);
@@ -471,20 +471,21 @@ public class ExpressionEvaluator implements
             Class<?> valueClass = evaluationResult.getValueClass();
             if (value == null) {
                 ExpressionLocation location = operandNode.getLocation();
-                throw new ExpressionException(DomaMessageCode.DOMA3015, location
-                        .getExpression(), location.getPosition(), operatorNode
-                        .getOperator());
+                throw new ExpressionException(DomaMessageCode.DOMA3015,
+                        location.getExpression(), location.getPosition(),
+                        operatorNode.getOperator());
             }
             priority = priorityMap.get(evaluationResult.getValueClass());
             if (priority == null) {
                 ExpressionLocation location = operandNode.getLocation();
-                throw new ExpressionException(DomaMessageCode.DOMA3013, location
-                        .getExpression(), location.getPosition(), operatorNode
-                        .getOperator(), value, valueClass.getName());
+                throw new ExpressionException(DomaMessageCode.DOMA3013,
+                        location.getExpression(), location.getPosition(),
+                        operatorNode.getOperator(), value, valueClass.getName());
             }
             this.operandNode = operandNode;
             this.operatorNode = operatorNode;
-            this.decimalValue = widenValue(operatorNode, operandNode, value, valueClass);
+            this.decimalValue = widenValue(operatorNode, operandNode, value,
+                    valueClass);
             this.realClass = valueClass;
         }
 

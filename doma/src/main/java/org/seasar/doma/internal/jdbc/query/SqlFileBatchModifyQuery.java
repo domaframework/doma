@@ -28,16 +28,16 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlFile;
-import org.seasar.doma.jdbc.entity.Entity;
+import org.seasar.doma.jdbc.entity.EntityMeta;
+import org.seasar.doma.jdbc.entity.EntityMetaFactory;
 
 /**
  * @author taedium
  * 
  */
-public abstract class SqlFileBatchModifyQuery<I, E extends Entity<I>>
-        implements BatchModifyQuery {
+public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
 
-    protected final Class<E> entityClass;
+    protected final EntityMetaFactory<E> entityMetaFactory;
 
     protected Config config;
 
@@ -45,7 +45,7 @@ public abstract class SqlFileBatchModifyQuery<I, E extends Entity<I>>
 
     protected String parameterName;
 
-    protected List<E> entities;
+    protected List<EntityMeta<E>> entityMetas;
 
     protected String callerClassName;
 
@@ -53,7 +53,7 @@ public abstract class SqlFileBatchModifyQuery<I, E extends Entity<I>>
 
     protected SqlFile sqlFile;
 
-    protected final List<PreparedSql> sqls = new ArrayList<PreparedSql>();
+    protected final List<PreparedSql> sqls = new ArrayList<PreparedSql>(100);
 
     protected boolean optimisticLockCheckRequired;
 
@@ -65,21 +65,21 @@ public abstract class SqlFileBatchModifyQuery<I, E extends Entity<I>>
 
     protected int batchSize;
 
-    protected E entity;
+    protected Object propertyWrappers;
 
-    public SqlFileBatchModifyQuery(Class<E> entityClass) {
-        assertNotNull(entityClass);
-        this.entityClass = entityClass;
+    public SqlFileBatchModifyQuery(EntityMetaFactory<E> entityMetaFactory) {
+        assertNotNull(entityMetaFactory);
+        this.entityMetaFactory = entityMetaFactory;
     }
 
-    public void compile() {
+    public void prepare() {
         assertNotNull(config, sqlFilePath, parameterName, callerClassName,
                 callerMethodName);
-        Iterator<? extends E> it = entities.iterator();
+        Iterator<EntityMeta<E>> it = entityMetas.iterator();
         if (it.hasNext()) {
             executable = true;
             sqlExecutionSkipCause = null;
-            entity = it.next();
+            propertyWrappers = it.next().getPropertyWrappers();
             prepareSqlFile();
             prepareOptions();
             prepareSql();
@@ -87,10 +87,10 @@ public abstract class SqlFileBatchModifyQuery<I, E extends Entity<I>>
             return;
         }
         while (it.hasNext()) {
-            entity = it.next();
+            propertyWrappers = it.next().getPropertyWrappers();
             prepareSql();
         }
-        assertEquals(entities.size(), sqls.size());
+        assertEquals(entityMetas.size(), sqls.size());
     }
 
     protected void prepareSqlFile() {
@@ -111,11 +111,15 @@ public abstract class SqlFileBatchModifyQuery<I, E extends Entity<I>>
 
     protected void prepareSql() {
         ExpressionEvaluator evaluator = new ExpressionEvaluator(Collections
-                .singletonMap(parameterName, entity));
+                .singletonMap(parameterName, propertyWrappers));
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
                 evaluator);
         PreparedSql sql = sqlBuilder.build(sqlFile.getSqlNode());
         sqls.add(sql);
+    }
+
+    @Override
+    public void complete() {
     }
 
     public void setConfig(Config config) {
@@ -130,12 +134,11 @@ public abstract class SqlFileBatchModifyQuery<I, E extends Entity<I>>
         this.parameterName = parameterName;
     }
 
-    public void setEntities(List<I> entities) {
+    public void setEntities(List<E> entities) {
         assertNotNull(entities);
-        this.entities = new ArrayList<E>(entities.size());
-        for (I i : entities) {
-            E entity = entityClass.cast(i);
-            this.entities.add(entity);
+        entityMetas = new ArrayList<EntityMeta<E>>(entities.size());
+        for (E entity : entities) {
+            entityMetas.add(entityMetaFactory.createEntityMeta(entity));
         }
     }
 

@@ -15,9 +15,8 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-import org.seasar.doma.domain.BuiltinStringDomain;
-import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
+import junit.framework.TestCase;
+
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
@@ -27,7 +26,6 @@ import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 
-import junit.framework.TestCase;
 import example.entity.Emp;
 import example.entity.Emp_;
 
@@ -37,7 +35,7 @@ import example.entity.Emp_;
  */
 public class EntitySingleResultHandlerTest extends TestCase {
 
-    private MockConfig runtimeConfig = new MockConfig();
+    private final MockConfig runtimeConfig = new MockConfig();
 
     public void testHandle() throws Exception {
         MockResultSetMetaData metaData = new MockResultSetMetaData();
@@ -48,17 +46,17 @@ public class EntitySingleResultHandlerTest extends TestCase {
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil
-                .buildPath(getClass().getName(), getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
-        EntitySingleResultHandler<Emp, Emp_> handler = new EntitySingleResultHandler<Emp, Emp_>(
-                Emp_.class);
+        EntitySingleResultHandler<Emp> handler = new EntitySingleResultHandler<Emp>(
+                new Emp_());
         Emp emp = handler.handle(resultSet, query);
-        assertEquals(new BuiltinIntegerDomain(1), emp.id());
-        assertEquals(new BuiltinStringDomain("aaa"), emp.name());
+        assertEquals(new Integer(1), emp.getId());
+        assertEquals("aaa", emp.getName());
     }
 
     public void testHandle_NonUniqueResultException() throws Exception {
@@ -71,14 +69,14 @@ public class EntitySingleResultHandlerTest extends TestCase {
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil
-                .buildPath(getClass().getName(), getName()));
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                getName()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
-        EntitySingleResultHandler<Emp, Emp_> handler = new EntitySingleResultHandler<Emp, Emp_>(
-                Emp_.class);
+        EntitySingleResultHandler<Emp> handler = new EntitySingleResultHandler<Emp>(
+                new Emp_());
         try {
             handler.handle(resultSet, query);
             fail();

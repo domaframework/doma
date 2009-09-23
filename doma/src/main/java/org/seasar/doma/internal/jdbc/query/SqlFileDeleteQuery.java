@@ -24,7 +24,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
         DeleteQuery {
 
-    public void compile() {
+    public void prepare() {
         assertNotNull(config, sqlFilePath, callerClassName, callerMethodName);
         prepareOptions();
         prepareSql();

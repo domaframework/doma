@@ -18,7 +18,7 @@ package org.seasar.doma.jdbc;
 import java.sql.ResultSet;
 
 import org.seasar.doma.Entity;
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 
 /**
  * {@link ResultSet} にマッピングされるオブジェクト群を1件ずつ処理するコールバックです。
@@ -33,7 +33,7 @@ import org.seasar.doma.domain.Domain;
  * @param <R>
  *            戻り値の型
  * @param <T>
- *            処理対象の型。すなわち、{@link Domain} のサブタイプの型、もしくは {@link Entity}
+ *            処理対象の型。すなわち、{@link Wrapper} のサブタイプの型、もしくは {@link Entity}
  *            が注釈されたインタフェースの型
  */
 public interface IterationCallback<R, T> {

@@ -21,8 +21,8 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.domain.BuiltinBigDecimalDomain;
-import org.seasar.doma.domain.BuiltinStringDomain;
+import org.seasar.doma.domain.BigDecimalWrapper;
+import org.seasar.doma.domain.StringWrapper;
 import org.seasar.doma.internal.jdbc.mock.BindValue;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockPreparedStatement;
@@ -33,14 +33,14 @@ import org.seasar.doma.jdbc.Sql;
 
 public class PreparedSqlParameterBinderTest extends TestCase {
 
-    private MockConfig runtimeConfig = new MockConfig();
+    private final MockConfig runtimeConfig = new MockConfig();
 
     public void testBind() throws Exception {
         MockPreparedStatement preparedStatement = new MockPreparedStatement();
         List<InParameter> parameters = new ArrayList<InParameter>();
-        parameters.add(new InParameter(new BuiltinStringDomain("aaa")));
-        parameters
-                .add(new InParameter(new BuiltinBigDecimalDomain(new BigDecimal(10))));
+        parameters.add(new InParameter(new StringWrapper("aaa")));
+        parameters.add(new InParameter(
+                new BigDecimalWrapper(new BigDecimal(10))));
         PreparedSqlParameterBinder binder = new PreparedSqlParameterBinder(
                 new MyQuery());
         binder.bind(preparedStatement, parameters);
@@ -80,6 +80,14 @@ public class PreparedSqlParameterBinderTest extends TestCase {
         @Override
         public int getQueryTimeout() {
             return 0;
+        }
+
+        @Override
+        public void prepare() {
+        }
+
+        @Override
+        public void complete() {
         }
 
     }

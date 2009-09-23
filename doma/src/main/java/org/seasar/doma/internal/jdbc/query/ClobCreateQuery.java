@@ -21,17 +21,21 @@ import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class ClobCreateQuery<R extends Domain<Clob, ?>> extends
+public class ClobCreateQuery<R extends Wrapper<Clob, ?>> extends
         AbstractCreateQuery<Clob, R> {
 
-    public void compile() {
+    public void prepare() {
         assertNotNull(config, callerClassName, callerMethodName, result);
+    }
+
+    @Override
+    public void complete() {
     }
 
     @Override

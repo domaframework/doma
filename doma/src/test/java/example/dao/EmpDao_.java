@@ -15,42 +15,32 @@
  */
 package example.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.annotation.Generated;
 import javax.sql.DataSource;
 
-import org.seasar.doma.domain.BuiltinArrayDomain;
-import org.seasar.doma.domain.BuiltinBigDecimalDomain;
-import org.seasar.doma.domain.BuiltinBlobDomain;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-import org.seasar.doma.domain.BuiltinStringDomain;
-import org.seasar.doma.internal.jdbc.command.CreateCommand;
+import org.seasar.doma.domain.BigDecimalWrapper;
+import org.seasar.doma.domain.IntegerWrapper;
+import org.seasar.doma.domain.StringWrapper;
 import org.seasar.doma.internal.jdbc.command.DeleteCommand;
 import org.seasar.doma.internal.jdbc.command.EntityIterationHandler;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
-import org.seasar.doma.internal.jdbc.command.FunctionCommand;
 import org.seasar.doma.internal.jdbc.command.InsertCommand;
-import org.seasar.doma.internal.jdbc.command.ProcedureCommand;
 import org.seasar.doma.internal.jdbc.command.SelectCommand;
 import org.seasar.doma.internal.jdbc.command.UpdateCommand;
-import org.seasar.doma.internal.jdbc.query.ArrayCreateQuery;
 import org.seasar.doma.internal.jdbc.query.AutoDeleteQuery;
-import org.seasar.doma.internal.jdbc.query.AutoFunctionQuery;
 import org.seasar.doma.internal.jdbc.query.AutoInsertQuery;
-import org.seasar.doma.internal.jdbc.query.AutoProcedureQuery;
 import org.seasar.doma.internal.jdbc.query.AutoUpdateQuery;
-import org.seasar.doma.internal.jdbc.query.BlobCreateQuery;
 import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
-import org.seasar.doma.internal.jdbc.sql.DomainResultParameter;
-import org.seasar.doma.internal.jdbc.sql.EntityListResultParameter;
-import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.DomaAbstractDao;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.SelectOptions;
+import org.seasar.doma.jdbc.entity.EntityMeta;
 
 import example.entity.Emp;
 import example.entity.Emp_;
@@ -75,74 +65,88 @@ public class EmpDao_ extends DomaAbstractDao implements EmpDao {
     }
 
     @Override
-    public Emp selectById(BuiltinIntegerDomain id, SelectOptions option) {
+    public Emp selectById(Integer id, SelectOptions option) {
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(config);
-        query.setSqlFilePath(SqlFileUtil
-                .buildPath("example.dao.EmpDao", "selectById"));
-        query.addParameter("id", id);
+        query.setSqlFilePath(SqlFileUtil.buildPath("example.dao.EmpDao",
+                "selectById"));
+        query.addParameter("id", new IntegerWrapper(id));
         query.setOptions(option);
         query.setCallerClassName("example.dao.EmpDao");
         query.setCallerMethodName("selectById");
-        query.compile();
+        query.prepare();
         SelectCommand<Emp> command = new SelectCommand<Emp>(query,
-                new EntitySingleResultHandler<Emp, Emp_>(Emp_.class));
+                new EntitySingleResultHandler<Emp>(new Emp_()));
         return command.execute();
     }
 
     @Override
-    public List<Emp> selectByNameAndSalary(BuiltinStringDomain name,
-            BuiltinBigDecimalDomain salary, SelectOptions option) {
+    public List<Emp> selectByNameAndSalary(String name, BigDecimal salary,
+            SelectOptions option) {
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(config);
-        query.setSqlFilePath(SqlFileUtil
-                .buildPath("example.dao.EmpDao", "selectByNameAndSalary"));
-        query.addParameter("name", name);
-        query.addParameter("salary", salary);
+        query.setSqlFilePath(SqlFileUtil.buildPath("example.dao.EmpDao",
+                "selectByNameAndSalary"));
+        query.addParameter("name", new StringWrapper(name));
+        query.addParameter("salary", new BigDecimalWrapper(salary));
         query.setOptions(option);
         query.setCallerClassName("example.dao.EmpDao");
         query.setCallerMethodName("selectByNameAndSalary");
-        query.compile();
+        query.prepare();
         SelectCommand<List<Emp>> command = new SelectCommand<List<Emp>>(query,
-                new EntityResultListHandler<Emp, Emp_>(Emp_.class));
+                new EntityResultListHandler<Emp>(new Emp_()));
+        return command.execute();
+    }
+
+    @Override
+    public List<Emp> selectByExample(Emp emp) {
+        EntityMeta<Emp> empMeta = new Emp_().createEntityMeta(emp);
+
+        SqlFileSelectQuery query = new SqlFileSelectQuery();
+        query.setConfig(config);
+        query.setSqlFilePath(SqlFileUtil.buildPath("example.dao.EmpDao",
+                "selectByNameAndSalary"));
+        query.addParameter("emp", empMeta.getPropertyWrappers());
+        query.setCallerClassName("example.dao.EmpDao");
+        query.setCallerMethodName("selectByNameAndSalary");
+        query.prepare();
+        SelectCommand<List<Emp>> command = new SelectCommand<List<Emp>>(query,
+                new EntityResultListHandler<Emp>(new Emp_()));
         return command.execute();
     }
 
     @Override
     public int insert(Emp entity) {
-        AutoInsertQuery<Emp, Emp_> query = new AutoInsertQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(new Emp_());
         query.setConfig(config);
         query.setEntity(entity);
         query.setCallerClassName("example.dao.EmpDao");
         query.setCallerMethodName("insert");
-        query.compile();
+        query.prepare();
         InsertCommand command = new InsertCommand(query);
         return command.execute();
     }
 
     @Override
     public int update(Emp entity) {
-        AutoUpdateQuery<Emp, Emp_> query = new AutoUpdateQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new Emp_());
         query.setConfig(config);
         query.setEntity(entity);
         query.setCallerClassName("example.dao.EmpDao");
         query.setCallerMethodName("update");
-        query.compile();
+        query.prepare();
         UpdateCommand command = new UpdateCommand(query);
         return command.execute();
     }
 
     @Override
     public int delete(Emp entity) {
-        AutoDeleteQuery<Emp, Emp_> query = new AutoDeleteQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(new Emp_());
         query.setConfig(config);
         query.setEntity(entity);
         query.setCallerClassName("example.dao.EmpDao");
         query.setCallerMethodName("update");
-        query.compile();
+        query.prepare();
         DeleteCommand command = new DeleteCommand(query);
         return command.execute();
     }
@@ -151,87 +155,95 @@ public class EmpDao_ extends DomaAbstractDao implements EmpDao {
     public Integer iterate(IterationCallback<Integer, Emp> callback) {
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(config);
-        query.setSqlFilePath(SqlFileUtil
-                .buildPath("example.dao.EmpDao", "selectById"));
+        query.setSqlFilePath(SqlFileUtil.buildPath("example.dao.EmpDao",
+                "selectById"));
         query.setCallerClassName("example.dao.EmpDao");
         query.setCallerMethodName("selectById");
-        query.compile();
+        query.prepare();
         SelectCommand<Integer> command = new SelectCommand<Integer>(query,
-                new EntityIterationHandler<Integer, Emp, Emp_>(Emp_.class,
-                        callback));
+                new EntityIterationHandler<Integer, Emp>(new Emp_(), callback));
         return command.execute();
     }
 
-    @Override
-    public BuiltinIntegerDomain add(BuiltinIntegerDomain arg1, BuiltinIntegerDomain arg2) {
-        AutoFunctionQuery<BuiltinIntegerDomain> query = new AutoFunctionQuery<BuiltinIntegerDomain>();
-        query.setConfig(config);
-        query.setFunctionName("add");
-        query.setResultParameter((new DomainResultParameter<BuiltinIntegerDomain>(
-                BuiltinIntegerDomain.class)));
-        query.addParameter(new InParameter(arg1));
-        query.addParameter(new InParameter(arg2));
-        query.setCallerClassName("example.dao.EmpDao");
-        query.setCallerMethodName("add");
-        query.compile();
-        FunctionCommand<BuiltinIntegerDomain> command = new FunctionCommand<BuiltinIntegerDomain>(
-                query);
-        return command.execute();
-    }
-
-    @Override
-    public List<Emp> getEmps(BuiltinIntegerDomain arg1, BuiltinIntegerDomain arg2) {
-        AutoFunctionQuery<List<Emp>> query = new AutoFunctionQuery<List<Emp>>();
-        query.setConfig(config);
-        query.setFunctionName("add");
-        query.setResultParameter((new EntityListResultParameter<Emp, Emp_>(
-                Emp_.class)));
-        query.addParameter(new InParameter(arg1));
-        query.addParameter(new InParameter(arg2));
-        query.setCallerClassName("example.dao.EmpDao");
-        query.setCallerMethodName("add");
-        query.compile();
-        FunctionCommand<List<Emp>> command = new FunctionCommand<List<Emp>>(
-                query);
-        return command.execute();
-    }
-
-    @Override
-    public void exec(BuiltinIntegerDomain arg1, BuiltinIntegerDomain arg2) {
-        AutoProcedureQuery query = new AutoProcedureQuery();
-        query.setConfig(config);
-        query.setProcedureName("exec");
-        query.addParameter(new InParameter(arg1));
-        query.addParameter(new InParameter(arg2));
-        query.setCallerClassName("example.dao.EmpDao");
-        query.setCallerMethodName("add");
-        query.compile();
-        ProcedureCommand command = new ProcedureCommand(query);
-        command.execute();
-    }
-
-    @Override
-    public BuiltinArrayDomain<String> createStringArrayDomain(String[] element) {
-        ArrayCreateQuery<BuiltinArrayDomain<String>> query = new ArrayCreateQuery<BuiltinArrayDomain<String>>();
-        query.setConfig(config);
-        query.setCallerClassName("example.dao.EmpDao");
-        query.setCallerMethodName("createStringArray");
-        query.setResult(new BuiltinArrayDomain<String>());
-        query.compile();
-        CreateCommand<BuiltinArrayDomain<String>> command = new CreateCommand<BuiltinArrayDomain<String>>(
-                query);
-        return command.execute();
-    }
-
-    @Override
-    public BuiltinBlobDomain createBlobDomain() {
-        BlobCreateQuery<BuiltinBlobDomain> query = new BlobCreateQuery<BuiltinBlobDomain>();
-        query.setConfig(config);
-        query.setCallerClassName("example.dao.EmpDao");
-        query.setCallerMethodName("createStringArray");
-        query.setResult(new BuiltinBlobDomain());
-        query.compile();
-        CreateCommand<BuiltinBlobDomain> command = new CreateCommand<BuiltinBlobDomain>(query);
-        return command.execute();
-    }
+    // @Override
+    // public Integer add(Integer arg1, Integer arg2) {
+    // AutoFunctionQuery<Integer> query = new AutoFunctionQuery<Integer>();
+    // query.setConfig(config);
+    // query.setFunctionName("add");
+    // query
+    // .setResultParameter((new DomainResultParameter<BuiltinIntegerDomain>(
+    // BuiltinIntegerDomain.class)));
+    // query.addParameter(new InParameter(arg1));
+    // query.addParameter(new InParameter(arg2));
+    // query.setCallerClassName("example.dao.EmpDao");
+    // query.setCallerMethodName("add");
+    // query.compile();
+    // FunctionCommand<BuiltinIntegerDomain> command = new
+    // FunctionCommand<BuiltinIntegerDomain>(
+    // query);
+    // return command.execute();
+    // }
+    //
+    // @Override
+    // public List<Emp> getEmps(BuiltinIntegerDomain arg1,
+    // BuiltinIntegerDomain arg2) {
+    // AutoFunctionQuery<List<Emp>> query = new AutoFunctionQuery<List<Emp>>();
+    // query.setConfig(config);
+    // query.setFunctionName("add");
+    // query.setResultParameter((new EntityListResultParameter<Emp, Emp_>(
+    // Emp_.class)));
+    // query.addParameter(new InParameter(arg1));
+    // query.addParameter(new InParameter(arg2));
+    // query.setCallerClassName("example.dao.EmpDao");
+    // query.setCallerMethodName("add");
+    // query.compile();
+    // FunctionCommand<List<Emp>> command = new FunctionCommand<List<Emp>>(
+    // query);
+    // return command.execute();
+    // }
+    //
+    // @Override
+    // public void exec(BuiltinIntegerDomain arg1, BuiltinIntegerDomain arg2) {
+    // AutoProcedureQuery query = new AutoProcedureQuery();
+    // query.setConfig(config);
+    // query.setProcedureName("exec");
+    // query.addParameter(new InParameter(arg1));
+    // query.addParameter(new InParameter(arg2));
+    // query.setCallerClassName("example.dao.EmpDao");
+    // query.setCallerMethodName("add");
+    // query.compile();
+    // ProcedureCommand command = new ProcedureCommand(query);
+    // command.execute();
+    // }
+    //
+    // @Override
+    // public BuiltinArrayDomain<String> createStringArrayDomain(String[]
+    // element) {
+    // ArrayCreateQuery<BuiltinArrayDomain<String>> query = new
+    // ArrayCreateQuery<BuiltinArrayDomain<String>>();
+    // query.setConfig(config);
+    // query.setCallerClassName("example.dao.EmpDao");
+    // query.setCallerMethodName("createStringArray");
+    // query.setResult(new BuiltinArrayDomain<String>());
+    // query.compile();
+    // CreateCommand<BuiltinArrayDomain<String>> command = new
+    // CreateCommand<BuiltinArrayDomain<String>>(
+    // query);
+    // return command.execute();
+    // }
+    //
+    // @Override
+    // public BuiltinBlobDomain createBlobDomain() {
+    // BlobCreateQuery<BuiltinBlobDomain> query = new
+    // BlobCreateQuery<BuiltinBlobDomain>();
+    // query.setConfig(config);
+    // query.setCallerClassName("example.dao.EmpDao");
+    // query.setCallerMethodName("createStringArray");
+    // query.setResult(new BuiltinBlobDomain());
+    // query.compile();
+    // CreateCommand<BuiltinBlobDomain> command = new
+    // CreateCommand<BuiltinBlobDomain>(
+    // query);
+    // return command.execute();
+    // }
 }

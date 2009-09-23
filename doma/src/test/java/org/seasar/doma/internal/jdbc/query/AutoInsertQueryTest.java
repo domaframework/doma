@@ -20,9 +20,6 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.domain.BuiltinBigDecimalDomain;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
@@ -36,121 +33,116 @@ import example.entity.Emp_;
  */
 public class AutoInsertQueryTest extends TestCase {
 
-    private MockConfig runtimeConfig = new MockConfig();
+    private final MockConfig runtimeConfig = new MockConfig();
 
-    public void testCompile() throws Exception {
-        Emp emp = new Emp_();
-        emp.id().set(10);
-        emp.name().set("aaa");
+    public void testPrepare() throws Exception {
+        Emp emp = new Emp();
+        emp.setId(10);
+        emp.setName("aaa");
 
-        AutoInsertQuery<Emp, Emp_> query = new AutoInsertQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
         InsertQuery insertQuery = query;
         assertNotNull(insertQuery.getSql());
     }
 
     public void testOption_default() throws Exception {
-        Emp emp = new Emp_();
-        emp.id().set(10);
-        emp.name().set("aaa");
+        Emp emp = new Emp();
+        emp.setId(10);
+        emp.setName("aaa");
 
-        AutoInsertQuery<Emp, Emp_> query = new AutoInsertQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
         PreparedSql sql = query.getSql();
-        assertEquals("insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)", sql
-                .getRawSql());
+        assertEquals(
+                "insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)",
+                sql.getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
-        assertEquals(new BuiltinIntegerDomain(10), parameters.get(0).getDomain());
-        assertEquals(new BuiltinStringDomain("aaa"), parameters.get(1).getDomain());
-        assertTrue(parameters.get(2).getDomain().isNull());
-        assertEquals(new BuiltinIntegerDomain(1), parameters.get(3).getDomain());
+        assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
+        assertEquals("aaa", parameters.get(1).getWrapper().get());
+        assertNull(parameters.get(2).getWrapper().get());
+        assertEquals(new Integer(1), parameters.get(3).getWrapper().get());
     }
 
     public void testOption_excludeNull() throws Exception {
-        Emp emp = new Emp_();
-        emp.id().set(10);
-        emp.name().set("aaa");
+        Emp emp = new Emp();
+        emp.setId(10);
+        emp.setName("aaa");
 
-        AutoInsertQuery<Emp, Emp_> query = new AutoInsertQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setNullExcluded(true);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
         PreparedSql sql = query.getSql();
-        assertEquals("insert into EMP (ID, NAME, VERSION) values (?, ?, ?)", sql
-                .getRawSql());
+        assertEquals("insert into EMP (ID, NAME, VERSION) values (?, ?, ?)",
+                sql.getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
-        assertEquals(new BuiltinIntegerDomain(10), parameters.get(0).getDomain());
-        assertEquals(new BuiltinStringDomain("aaa"), parameters.get(1).getDomain());
-        assertEquals(new BuiltinIntegerDomain(1), parameters.get(2).getDomain());
+        assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
+        assertEquals("aaa", parameters.get(1).getWrapper().get());
+        assertEquals(new Integer(1), parameters.get(2).getWrapper().get());
     }
 
     public void testOption_include() throws Exception {
-        Emp emp = new Emp_();
-        emp.id().set(10);
-        emp.name().set("aaa");
-        emp.salary().set(new BigDecimal(200));
+        Emp emp = new Emp();
+        emp.setId(10);
+        emp.setName("aaa");
+        emp.setSalary(new BigDecimal(200));
 
-        AutoInsertQuery<Emp, Emp_> query = new AutoInsertQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setIncludedPropertyNames("name");
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
         PreparedSql sql = query.getSql();
-        assertEquals("insert into EMP (ID, NAME, VERSION) values (?, ?, ?)", sql
-                .getRawSql());
+        assertEquals("insert into EMP (ID, NAME, VERSION) values (?, ?, ?)",
+                sql.getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
-        assertEquals(new BuiltinIntegerDomain(10), parameters.get(0).getDomain());
-        assertEquals(new BuiltinStringDomain("aaa"), parameters.get(1).getDomain());
-        assertEquals(new BuiltinIntegerDomain(1), parameters.get(2).getDomain());
+        assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
+        assertEquals("aaa", parameters.get(1).getWrapper().get());
+        assertEquals(new Integer(1), parameters.get(2).getWrapper().get());
     }
 
     public void testOption_exclude() throws Exception {
-        Emp emp = new Emp_();
-        emp.id().set(10);
-        emp.name().set("aaa");
-        emp.salary().set(new BigDecimal(200));
+        Emp emp = new Emp();
+        emp.setId(10);
+        emp.setName("aaa");
+        emp.setSalary(new BigDecimal(200));
 
-        AutoInsertQuery<Emp, Emp_> query = new AutoInsertQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setExcludedPropertyNames("name");
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
         PreparedSql sql = query.getSql();
-        assertEquals("insert into EMP (ID, SALARY, VERSION) values (?, ?, ?)", sql
-                .getRawSql());
+        assertEquals("insert into EMP (ID, SALARY, VERSION) values (?, ?, ?)",
+                sql.getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
-        assertEquals(new BuiltinIntegerDomain(10), parameters.get(0).getDomain());
-        assertEquals(new BuiltinBigDecimalDomain(new BigDecimal(200)), parameters
-                .get(1).getDomain());
-        assertEquals(new BuiltinIntegerDomain(1), parameters.get(2).getDomain());
+        assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
+        assertEquals(new BigDecimal(200), parameters.get(1).getWrapper().get());
+        assertEquals(new Integer(1), parameters.get(2).getWrapper().get());
     }
 }

@@ -18,28 +18,28 @@ package org.seasar.doma.internal.jdbc.query;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
-import org.seasar.doma.jdbc.entity.Entity;
-import org.seasar.doma.jdbc.entity.EntityProperty;
+import org.seasar.doma.jdbc.entity.EntityMetaFactory;
+import org.seasar.doma.jdbc.entity.EntityPropertyMeta;
 
 /**
  * @author taedium
  * 
  */
-public class AutoDeleteQuery<I, E extends Entity<I>> extends
-        AutoModifyQuery<I, E> implements DeleteQuery {
+public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
+        DeleteQuery {
 
     protected boolean versionIgnored;
 
     protected boolean optimisticLockExceptionSuppressed;
 
-    public AutoDeleteQuery(Class<E> entityClass) {
-        super(entityClass);
+    public AutoDeleteQuery(EntityMetaFactory<E> entityMetaFactory) {
+        super(entityMetaFactory);
     }
 
-    public void compile() {
-        assertNotNull(config, entity, callerClassName, callerMethodName);
+    public void prepare() {
+        assertNotNull(config, entityMeta, callerClassName, callerMethodName);
         executable = true;
-        entity.__preDelete();
+        entityMeta.preDelete();
         prepareTableAndColumnNames();
         prepareIdAndVersionProperties();
         validateIdExistent();
@@ -63,10 +63,10 @@ public class AutoDeleteQuery<I, E extends Entity<I>> extends
         builder.appendSql(tableName);
         if (idProperties.size() > 0) {
             builder.appendSql(" where ");
-            for (EntityProperty<?> p : idProperties) {
+            for (EntityPropertyMeta<?> p : idProperties) {
                 builder.appendSql(columnNameMap.get(p.getName()));
                 builder.appendSql(" = ");
-                builder.appendDomain(p.getDomain());
+                builder.appendDomain(p.getWrapper());
                 builder.appendSql(" and ");
             }
             builder.cutBackSql(5);
@@ -79,7 +79,7 @@ public class AutoDeleteQuery<I, E extends Entity<I>> extends
             }
             builder.appendSql(columnNameMap.get(versionProperty.getName()));
             builder.appendSql(" = ");
-            builder.appendDomain(versionProperty.getDomain());
+            builder.appendDomain(versionProperty.getWrapper());
         }
         sql = builder.build();
     }

@@ -21,7 +21,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 
@@ -38,7 +38,7 @@ public class DomainFetcher {
         this.query = query;
     }
 
-    public void fetch(ResultSet resultSet, Domain<?, ?> domain)
+    public void fetch(ResultSet resultSet, Wrapper<?, ?> domain)
             throws SQLException {
         ResultSetMetaData resultSetMeta = resultSet.getMetaData();
         JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().dialect()

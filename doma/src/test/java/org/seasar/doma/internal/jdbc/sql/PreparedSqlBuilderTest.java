@@ -19,8 +19,8 @@ import java.math.BigDecimal;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.domain.BuiltinBigDecimalDomain;
-import org.seasar.doma.domain.BuiltinStringDomain;
+import org.seasar.doma.domain.BigDecimalWrapper;
+import org.seasar.doma.domain.StringWrapper;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 
 /**
@@ -29,14 +29,14 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
  */
 public class PreparedSqlBuilderTest extends TestCase {
 
-    private MockConfig config = new MockConfig();
+    private final MockConfig config = new MockConfig();
 
     public void testAppend() throws Exception {
         PreparedSqlBuilder builder = new PreparedSqlBuilder(config);
         builder.appendSql("select * from aaa where name = ");
-        builder.appendDomain(new BuiltinStringDomain("hoge"));
+        builder.appendDomain(new StringWrapper("hoge"));
         builder.appendSql(" and salary = ");
-        builder.appendDomain(new BuiltinBigDecimalDomain(new BigDecimal(100)));
+        builder.appendDomain(new BigDecimalWrapper(new BigDecimal(100)));
         PreparedSql sql = builder.build();
         assertEquals("select * from aaa where name = ? and salary = ?", sql
                 .toString());

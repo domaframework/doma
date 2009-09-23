@@ -17,18 +17,17 @@ package org.seasar.doma.internal.jdbc.query;
 
 import java.sql.Statement;
 
-import org.seasar.doma.jdbc.entity.Entity;
-
+import org.seasar.doma.jdbc.entity.EntityMetaFactory;
 
 /**
  * @author taedium
  * 
  */
-public class SqlFileBatchInsertQuery<I, E extends Entity<I>> extends
-        SqlFileBatchModifyQuery<I, E> implements BatchInsertQuery {
+public class SqlFileBatchInsertQuery<E> extends SqlFileBatchModifyQuery<E>
+        implements BatchInsertQuery {
 
-    public SqlFileBatchInsertQuery(Class<E> entityClass) {
-        super(entityClass);
+    public SqlFileBatchInsertQuery(EntityMetaFactory<E> entityMetaFactory) {
+        super(entityMetaFactory);
     }
 
     @Override

@@ -15,23 +15,65 @@
  */
 package example.entity;
 
+import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.seasar.doma.ModifiedProperties;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
 import org.seasar.doma.Version;
-import org.seasar.doma.domain.BuiltinBigDecimalDomain;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-import org.seasar.doma.domain.BuiltinStringDomain;
 
 @Entity
-public interface Emp {
+public class Emp {
 
     @Id
-    BuiltinIntegerDomain id();
+    Integer id;
 
-    BuiltinStringDomain name();
+    String name;
 
-    BuiltinBigDecimalDomain salary();
+    BigDecimal salary;
 
     @Version
-    BuiltinIntegerDomain version();
+    Integer version;
+
+    @ModifiedProperties
+    Set<String> dirtyStates = new HashSet<String>();
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        dirtyStates.add("id");
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        dirtyStates.add("name");
+        this.name = name;
+    }
+
+    public BigDecimal getSalary() {
+        return salary;
+    }
+
+    public void setSalary(BigDecimal salary) {
+        dirtyStates.add("salary");
+        this.salary = salary;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        dirtyStates.add("version");
+        this.version = version;
+    }
+
 }

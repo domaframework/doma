@@ -19,8 +19,8 @@ import java.math.BigDecimal;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.domain.BuiltinBigDecimalDomain;
-import org.seasar.doma.domain.BuiltinStringDomain;
+import org.seasar.doma.domain.BigDecimalWrapper;
+import org.seasar.doma.domain.StringWrapper;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
@@ -44,9 +44,9 @@ import org.seasar.doma.internal.jdbc.sql.node.WordNode;
  */
 public class NodePreparedSqlBuilderTest extends TestCase {
 
-    private SqlLocation location = new SqlLocation("dummy sql", 0, 0);
+    private final SqlLocation location = new SqlLocation("dummy sql", 0, 0);
 
-    private MockConfig config = new MockConfig();
+    private final MockConfig config = new MockConfig();
 
     public void testBindVariableNode() throws Exception {
         SelectClauseNode select = new SelectClauseNode("select");
@@ -81,20 +81,20 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         root.addNode(statement);
 
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("name", new BuiltinStringDomain("hoge"));
-        evaluator.add("salary", new BuiltinBigDecimalDomain(new BigDecimal(100)));
+        evaluator.add("name", new StringWrapper("hoge"));
+        evaluator.add("salary", new BigDecimalWrapper(new BigDecimal(100)));
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
                 evaluator);
         PreparedSql sql = builder.build(root);
         assertEquals("select * from aaa where bbb = ? and ccc = ?", sql
                 .getRawSql());
-        assertEquals("select * from aaa where bbb = /*#name*/'hoge' and ccc = /*#salary*/100", root
-                .toString());
+        assertEquals(
+                "select * from aaa where bbb = /*#name*/'hoge' and ccc = /*#salary*/100",
+                root.toString());
         assertEquals(2, sql.getParameters().size());
-        assertEquals(new BuiltinStringDomain("hoge"), sql.getParameters().get(0)
-                .getDomain());
-        assertEquals(new BuiltinBigDecimalDomain(new BigDecimal(100)), sql
-                .getParameters().get(1).getDomain());
+        assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
+        assertEquals(new BigDecimal(100), sql.getParameters().get(1)
+                .getWrapper().get());
     }
 
     public void testIfNode_true() throws Exception {
@@ -127,8 +127,8 @@ public class NodePreparedSqlBuilderTest extends TestCase {
                 evaluator);
         PreparedSql sql = builder.build(statement);
         assertEquals("select * from aaa where bbb = ccc", sql.getRawSql());
-        assertEquals("select * from aaa where /*if true*/bbb = ccc/*end*/", root
-                .toString());
+        assertEquals("select * from aaa where /*if true*/bbb = ccc/*end*/",
+                root.toString());
     }
 
     public void testIfNode_false() throws Exception {
@@ -161,8 +161,8 @@ public class NodePreparedSqlBuilderTest extends TestCase {
                 evaluator);
         PreparedSql sql = builder.build(statement);
         assertEquals("select * from aaa", sql.getRawSql());
-        assertEquals("select * from aaa where /*if false*/bbb = ccc/*end*/", root
-                .toString());
+        assertEquals("select * from aaa where /*if false*/bbb = ccc/*end*/",
+                root.toString());
     }
 
     public void testElseNode() throws Exception {
@@ -201,8 +201,9 @@ public class NodePreparedSqlBuilderTest extends TestCase {
                 evaluator);
         PreparedSql sql = builder.build(statement);
         assertEquals("select * from aaa where ddd = eee", sql.getRawSql());
-        assertEquals("select * from aaa where /*if false*/bbb = ccc/*else*/ddd = eee/*end*/", root
-                .toString());
+        assertEquals(
+                "select * from aaa where /*if false*/bbb = ccc/*else*/ddd = eee/*end*/",
+                root.toString());
     }
 
     public void testAndNode() throws Exception {
@@ -250,8 +251,9 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         PreparedSql sql = builder.build(statement);
         assertEquals("select * from aaa where bbb = ccc and ddd = eee", sql
                 .getRawSql());
-        assertEquals("select * from aaa where/*if true*/ bbb = ccc/*end*//*if true*/ and ddd = eee/*end*/", root
-                .toString());
+        assertEquals(
+                "select * from aaa where/*if true*/ bbb = ccc/*end*//*if true*/ and ddd = eee/*end*/",
+                root.toString());
     }
 
     public void testAndNode_remove() throws Exception {
@@ -298,8 +300,9 @@ public class NodePreparedSqlBuilderTest extends TestCase {
                 evaluator);
         PreparedSql sql = builder.build(statement);
         assertEquals("select * from aaa where  ddd = eee", sql.getRawSql());
-        assertEquals("select * from aaa where/*if false*/ bbb = ccc/*end*//*if true*/ and ddd = eee/*end*/", root
-                .toString());
+        assertEquals(
+                "select * from aaa where/*if false*/ bbb = ccc/*end*//*if true*/ and ddd = eee/*end*/",
+                root.toString());
     }
 
 }

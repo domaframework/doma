@@ -25,9 +25,10 @@ import java.util.List;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.jdbc.entity.Entity;
-import org.seasar.doma.jdbc.entity.EntityProperty;
-import org.seasar.doma.jdbc.entity.GeneratedIdProperty;
+import org.seasar.doma.jdbc.entity.EntityMeta;
+import org.seasar.doma.jdbc.entity.EntityMetaFactory;
+import org.seasar.doma.jdbc.entity.GeneratedIdPropertyMeta;
+import org.seasar.doma.jdbc.entity.EntityPropertyMeta;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.message.DomaMessageCode;
 
@@ -35,29 +36,29 @@ import org.seasar.doma.message.DomaMessageCode;
  * @author taedium
  * 
  */
-public class AutoBatchInsertQuery<I, E extends Entity<I>> extends
-        AutoBatchModifyQuery<I, E> implements BatchInsertQuery {
+public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
+        BatchInsertQuery {
 
-    protected GeneratedIdProperty<?> generatedIdProperty;
+    protected GeneratedIdPropertyMeta<?> generatedIdProperty;
 
-    protected final List<GeneratedIdProperty<?>> generatedIdProperties = new ArrayList<GeneratedIdProperty<?>>();
+    protected final List<GeneratedIdPropertyMeta<?>> generatedIdProperties = new ArrayList<GeneratedIdPropertyMeta<?>>();
 
     protected IdGenerationConfig idGenerationConfig;
 
     protected boolean batchSupported = true;
 
-    public AutoBatchInsertQuery(Class<E> entityClass) {
-        super(entityClass);
+    public AutoBatchInsertQuery(EntityMetaFactory<E> entityMetaFactory) {
+        super(entityMetaFactory);
     }
 
-    public void compile() {
-        assertNotNull(config, entities);
-        Iterator<? extends E> it = entities.iterator();
+    public void prepare() {
+        assertNotNull(config);
+        Iterator<EntityMeta<E>> it = entityMetas.iterator();
         if (it.hasNext()) {
             executable = true;
             executionSkipCause = null;
-            entity = it.next();
-            entity.__preInsert();
+            entityMeta = it.next();
+            entityMeta.preInsert();
             prepareTableAndColumnNames();
             prepareIdAndVersionProperties();
             prepareOptions();
@@ -72,26 +73,26 @@ public class AutoBatchInsertQuery<I, E extends Entity<I>> extends
             generatedIdProperty = null;
             versionProperty = null;
             targetProperties.clear();
-            this.entity = it.next();
-            entity.__preInsert();
+            this.entityMeta = it.next();
+            entityMeta.preInsert();
             prepareIdAndVersionProperties();
             prepareTargetProperties();
             prepareVersionValue();
             prepareSql();
         }
-        assertEquals(entities.size(), sqls.size());
+        assertEquals(entityMetas.size(), sqls.size());
     }
 
     @Override
     protected void prepareIdAndVersionProperties() {
         super.prepareIdAndVersionProperties();
-        generatedIdProperty = entity.__getGeneratedIdProperty();
+        generatedIdProperty = entityMeta.getGeneratedIdProperty();
         generatedIdProperties.add(generatedIdProperty);
         if (generatedIdProperty != null) {
             if (idGenerationConfig == null) {
                 String idColumnName = columnNameMap.get(generatedIdProperty
                         .getName());
-                idGenerationConfig = new IdGenerationConfig(config, entity,
+                idGenerationConfig = new IdGenerationConfig(config, entityMeta,
                         tableName, idColumnName);
                 generatedIdProperty
                         .validateGenerationStrategy(idGenerationConfig);
@@ -105,7 +106,7 @@ public class AutoBatchInsertQuery<I, E extends Entity<I>> extends
     }
 
     protected void prepareTargetProperties() {
-        for (EntityProperty<?> p : entity.__getEntityProperties()) {
+        for (EntityPropertyMeta<?> p : entityMeta.getPropertyMetas()) {
             if (p.isTransient()) {
                 continue;
             }
@@ -117,9 +118,9 @@ public class AutoBatchInsertQuery<I, E extends Entity<I>> extends
                         || generatedIdProperty.isIncluded(idGenerationConfig)) {
                     targetProperties.add(p);
                 }
-                if (generatedIdProperty == null && p.getDomain().isNull()) {
-                    throw new JdbcException(DomaMessageCode.DOMA2020, entity
-                            .__getName(), p.getName());
+                if (generatedIdProperty == null && p.getWrapper().get() == null) {
+                    throw new JdbcException(DomaMessageCode.DOMA2020,
+                            entityMeta.getName(), p.getName());
                 }
                 continue;
             }
@@ -141,14 +142,14 @@ public class AutoBatchInsertQuery<I, E extends Entity<I>> extends
         builder.appendSql("insert into ");
         builder.appendSql(tableName);
         builder.appendSql(" (");
-        for (EntityProperty<?> p : targetProperties) {
+        for (EntityPropertyMeta<?> p : targetProperties) {
             builder.appendSql(columnNameMap.get(p.getName()));
             builder.appendSql(", ");
         }
         builder.cutBackSql(2);
         builder.appendSql(") values (");
-        for (EntityProperty<?> p : targetProperties) {
-            builder.appendDomain(p.getDomain());
+        for (EntityPropertyMeta<?> p : targetProperties) {
+            builder.appendDomain(p.getWrapper());
             builder.appendSql(", ");
         }
         builder.cutBackSql(2);
@@ -164,7 +165,7 @@ public class AutoBatchInsertQuery<I, E extends Entity<I>> extends
 
     @Override
     public void generateId(Statement statement, int index) {
-        GeneratedIdProperty<?> generatedIdProperty = generatedIdProperties
+        GeneratedIdPropertyMeta<?> generatedIdProperty = generatedIdProperties
                 .get(index);
         generatedIdProperty.postInsert(idGenerationConfig, statement);
     }

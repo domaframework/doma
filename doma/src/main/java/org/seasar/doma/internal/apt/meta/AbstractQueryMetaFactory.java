@@ -32,7 +32,7 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.TypeKindVisitor6;
 
 import org.seasar.doma.Entity;
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.jdbc.Config;
@@ -120,7 +120,7 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
     }
 
     protected boolean isDomain(TypeMirror typeMirror) {
-        return TypeUtil.isAssignable(typeMirror, Domain.class, env);
+        return TypeUtil.isAssignable(typeMirror, Wrapper.class, env);
     }
 
     protected boolean isConfig(TypeMirror typeMirror) {

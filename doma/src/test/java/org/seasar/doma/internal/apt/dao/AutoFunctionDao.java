@@ -16,11 +16,6 @@
 package org.seasar.doma.internal.apt.dao;
 
 import org.seasar.doma.Dao;
-import org.seasar.doma.Function;
-import org.seasar.doma.In;
-import org.seasar.doma.Out;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-import org.seasar.doma.domain.BuiltinStringDomain;
 
 /**
  * @author taedium
@@ -29,7 +24,8 @@ import org.seasar.doma.domain.BuiltinStringDomain;
 @Dao(config = MyConfig.class)
 public interface AutoFunctionDao {
 
-    @Function
-    BuiltinStringDomain executeFunction(@In BuiltinIntegerDomain arg1, @Out BuiltinIntegerDomain arg2);
+    // @Function
+    // BuiltinStringDomain executeFunction(@In BuiltinIntegerDomain arg1, @Out
+    // BuiltinIntegerDomain arg2);
 
 }

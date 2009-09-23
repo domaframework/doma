@@ -15,7 +15,7 @@
  */
 package example.client;
 
-import org.seasar.doma.domain.BuiltinIntegerDomain;
+import org.seasar.doma.jdbc.SelectOptions;
 
 import example.dao.EmpDao;
 import example.dao.EmpDao_;
@@ -28,6 +28,6 @@ public class Client {
 
     public static void main(String[] args) {
         EmpDao dao = new EmpDao_();
-        dao.selectById(new BuiltinIntegerDomain(1), null);
+        dao.selectById(1, SelectOptions.get());
     }
 }

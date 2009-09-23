@@ -22,7 +22,6 @@ import org.seasar.doma.internal.jdbc.sql.CallableSql;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlParameter;
 import org.seasar.doma.jdbc.Config;
 
-
 /**
  * @author taedium
  * 
@@ -45,6 +44,10 @@ public abstract class AutoModuleQuery implements ModuleQuery {
         if (queryTimeout <= 0) {
             queryTimeout = config.queryTimeout();
         }
+    }
+
+    @Override
+    public void complete() {
     }
 
     public void setConfig(Config config) {

@@ -20,7 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.JdbcException;
@@ -31,7 +31,7 @@ import org.seasar.doma.message.DomaMessageCode;
  * @author taedium
  * 
  */
-public class DomainListResultParameter<D extends Domain<?, ?>> implements
+public class DomainListResultParameter<D extends Wrapper<?, ?>> implements
         ResultParameter<List<D>>, ListParameter<D> {
 
     protected final Class<D> domainClass;

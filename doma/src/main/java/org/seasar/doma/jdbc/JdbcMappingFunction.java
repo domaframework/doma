@@ -18,11 +18,11 @@ package org.seasar.doma.jdbc;
 import java.sql.SQLException;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.jdbc.type.JdbcType;
 
 /**
- * {@link Domain} と {@link JdbcType} をマッピングする処理を表します。
+ * {@link Wrapper} と {@link JdbcType} をマッピングする処理を表します。
  * <p>
  * このインタフェースの実装はスレッドセーフであることを要求されません。
  * 
@@ -47,6 +47,6 @@ public interface JdbcMappingFunction {
      * @throws SQLException
      *             SQLに関する例外が発生した場合
      */
-    <R, V> R apply(Domain<V, ?> domain, JdbcType<V> jdbcType)
+    <R, V> R apply(Wrapper<V, ?> domain, JdbcType<V> jdbcType)
             throws SQLException;
 }

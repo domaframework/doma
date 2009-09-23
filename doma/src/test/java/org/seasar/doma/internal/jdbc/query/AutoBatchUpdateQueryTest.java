@@ -22,14 +22,9 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.domain.BuiltinBigDecimalDomain;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-import org.seasar.doma.domain.BuiltinStringDomain;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
-import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.message.DomaMessageCode;
 
 import example.entity.Emp;
 import example.entity.Emp_;
@@ -40,241 +35,213 @@ import example.entity.Emp_;
  */
 public class AutoBatchUpdateQueryTest extends TestCase {
 
-    private MockConfig runtimeConfig = new MockConfig();
+    private final MockConfig runtimeConfig = new MockConfig();
 
-    public void testCompile() throws Exception {
-        Emp emp1 = new Emp_();
-        emp1.id().set(10);
-        emp1.name().set("aaa");
-        emp1.version().set(100);
+    public void testPrepare() throws Exception {
+        Emp emp1 = new Emp();
+        emp1.setId(10);
+        emp1.setName("aaa");
+        emp1.setVersion(100);
 
-        Emp emp2 = new Emp_();
-        emp2.id().set(20);
-        emp2.name().set("bbb");
-        emp2.version().set(200);
+        Emp emp2 = new Emp();
+        emp2.setId(20);
+        emp2.setName("bbb");
+        emp2.setVersion(200);
 
-        AutoBatchUpdateQuery<Emp, Emp_> query = new AutoBatchUpdateQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(
+                new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
         BatchUpdateQuery batchUpdateQuery = query;
         assertEquals(2, batchUpdateQuery.getSqls().size());
     }
 
     public void testOption_default() throws Exception {
-        Emp emp1 = new Emp_();
-        emp1.id().set(10);
-        emp1.name().set("aaa");
-        emp1.version().set(100);
+        Emp emp1 = new Emp();
+        emp1.setId(10);
+        emp1.setName("aaa");
+        emp1.setVersion(100);
 
-        Emp emp2 = new Emp_();
-        emp2.id().set(20);
-        emp2.salary().set(new BigDecimal(2000));
-        emp2.version().set(200);
+        Emp emp2 = new Emp();
+        emp2.setId(20);
+        emp2.setSalary(new BigDecimal(2000));
+        emp2.setVersion(200);
 
-        AutoBatchUpdateQuery<Emp, Emp_> query = new AutoBatchUpdateQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(
+                new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
         PreparedSql sql = query.getSqls().get(0);
-        assertEquals("update EMP set NAME = ?, SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql
-                .getRawSql());
+        assertEquals(
+                "update EMP set NAME = ?, SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
+                sql.getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(5, parameters.size());
-        assertEquals(new BuiltinStringDomain("aaa"), parameters.get(0).getDomain());
-        assertTrue(parameters.get(1).getDomain().isNull());
-        assertEquals(new BuiltinIntegerDomain(100), parameters.get(2).getDomain());
-        assertEquals(new BuiltinIntegerDomain(10), parameters.get(3).getDomain());
-        assertEquals(new BuiltinIntegerDomain(100), parameters.get(4).getDomain());
+        assertEquals("aaa", parameters.get(0).getWrapper().get());
+        assertTrue(parameters.get(1).getWrapper().get() == null);
+        assertEquals(new Integer(100), parameters.get(2).getWrapper().get());
+        assertEquals(new Integer(10), parameters.get(3).getWrapper().get());
+        assertEquals(new Integer(100), parameters.get(4).getWrapper().get());
 
         sql = query.getSqls().get(1);
-        assertEquals("update EMP set NAME = ?, SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql
-                .getRawSql());
+        assertEquals(
+                "update EMP set NAME = ?, SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
+                sql.getRawSql());
         parameters = sql.getParameters();
         assertEquals(5, parameters.size());
-        assertTrue(parameters.get(0).getDomain().isNull());
-        assertEquals(new BuiltinBigDecimalDomain(new BigDecimal(2000)), parameters
-                .get(1).getDomain());
-        assertEquals(new BuiltinIntegerDomain(200), parameters.get(2).getDomain());
-        assertEquals(new BuiltinIntegerDomain(20), parameters.get(3).getDomain());
-        assertEquals(new BuiltinIntegerDomain(200), parameters.get(4).getDomain());
+        assertTrue(parameters.get(0).getWrapper().get() == null);
+        assertEquals(new BigDecimal(2000), parameters.get(1).getWrapper().get());
+        assertEquals(new Integer(200), parameters.get(2).getWrapper().get());
+        assertEquals(new Integer(20), parameters.get(3).getWrapper().get());
+        assertEquals(new Integer(200), parameters.get(4).getWrapper().get());
     }
 
     public void testOption_includeVersion() throws Exception {
-        Emp emp1 = new Emp_();
-        emp1.id().set(10);
-        emp1.name().set("aaa");
-        emp1.version().set(100);
+        Emp emp1 = new Emp();
+        emp1.setId(10);
+        emp1.setName("aaa");
+        emp1.setVersion(100);
 
-        Emp emp2 = new Emp_();
-        emp2.id().set(20);
-        emp2.salary().set(new BigDecimal(2000));
-        emp2.version().set(200);
+        Emp emp2 = new Emp();
+        emp2.setId(20);
+        emp2.setSalary(new BigDecimal(2000));
+        emp2.setVersion(200);
 
-        AutoBatchUpdateQuery<Emp, Emp_> query = new AutoBatchUpdateQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(
+                new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setVersionIncluded(true);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
         PreparedSql sql = query.getSqls().get(0);
-        assertEquals("update EMP set NAME = ?, SALARY = ?, VERSION = ? where ID = ?", sql
-                .getRawSql());
+        assertEquals(
+                "update EMP set NAME = ?, SALARY = ?, VERSION = ? where ID = ?",
+                sql.getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
-        assertEquals(new BuiltinStringDomain("aaa"), parameters.get(0).getDomain());
-        assertTrue(parameters.get(1).getDomain().isNull());
-        assertEquals(new BuiltinIntegerDomain(100), parameters.get(2).getDomain());
-        assertEquals(new BuiltinIntegerDomain(10), parameters.get(3).getDomain());
+        assertEquals("aaa", parameters.get(0).getWrapper().get());
+        assertNull(parameters.get(1).getWrapper().get());
+        assertEquals(new Integer(100), parameters.get(2).getWrapper().get());
+        assertEquals(new Integer(10), parameters.get(3).getWrapper().get());
 
         sql = query.getSqls().get(1);
-        assertEquals("update EMP set NAME = ?, SALARY = ?, VERSION = ? where ID = ?", sql
-                .getRawSql());
+        assertEquals(
+                "update EMP set NAME = ?, SALARY = ?, VERSION = ? where ID = ?",
+                sql.getRawSql());
         parameters = sql.getParameters();
         assertEquals(4, parameters.size());
-        assertTrue(parameters.get(0).getDomain().isNull());
-        assertEquals(new BuiltinBigDecimalDomain(new BigDecimal(2000)), parameters
-                .get(1).getDomain());
-        assertEquals(new BuiltinIntegerDomain(200), parameters.get(2).getDomain());
-        assertEquals(new BuiltinIntegerDomain(20), parameters.get(3).getDomain());
+        assertNull(parameters.get(0).getWrapper().get());
+        assertEquals(new BigDecimal(2000), parameters.get(1).getWrapper().get());
+        assertEquals(new Integer(200), parameters.get(2).getWrapper().get());
+        assertEquals(new Integer(20), parameters.get(3).getWrapper().get());
     }
 
     public void testOption_include() throws Exception {
-        Emp emp1 = new Emp_();
-        emp1.id().set(10);
-        emp1.name().set("aaa");
-        emp1.salary().set(new BigDecimal(200));
-        emp1.version().set(100);
+        Emp emp1 = new Emp();
+        emp1.setId(10);
+        emp1.setName("aaa");
+        emp1.setSalary(new BigDecimal(200));
+        emp1.setVersion(100);
 
-        Emp emp2 = new Emp_();
-        emp2.id().set(20);
-        emp2.version().set(200);
+        Emp emp2 = new Emp();
+        emp2.setId(20);
+        emp2.setVersion(200);
 
-        AutoBatchUpdateQuery<Emp, Emp_> query = new AutoBatchUpdateQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(
+                new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setIncludedPropertyNames("name");
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
         PreparedSql sql = query.getSqls().get(0);
-        assertEquals("update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql
-                .getRawSql());
+        assertEquals(
+                "update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
+                sql.getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
-        assertEquals(new BuiltinStringDomain("aaa"), parameters.get(0).getDomain());
-        assertEquals(new BuiltinIntegerDomain(100), parameters.get(1).getDomain());
-        assertEquals(new BuiltinIntegerDomain(10), parameters.get(2).getDomain());
-        assertEquals(new BuiltinIntegerDomain(100), parameters.get(3).getDomain());
+        assertEquals("aaa", parameters.get(0).getWrapper().get());
+        assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
+        assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
+        assertEquals(new Integer(100), parameters.get(3).getWrapper().get());
 
         sql = query.getSqls().get(1);
-        assertEquals("update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql
-                .getRawSql());
+        assertEquals(
+                "update EMP set NAME = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
+                sql.getRawSql());
         parameters = sql.getParameters();
         assertEquals(4, parameters.size());
-        assertTrue(parameters.get(0).getDomain().isNull());
-        assertEquals(new BuiltinIntegerDomain(200), parameters.get(1).getDomain());
-        assertEquals(new BuiltinIntegerDomain(20), parameters.get(2).getDomain());
-        assertEquals(new BuiltinIntegerDomain(200), parameters.get(3).getDomain());
+        assertNull(parameters.get(0).getWrapper().get());
+        assertEquals(new Integer(200), parameters.get(1).getWrapper().get());
+        assertEquals(new Integer(20), parameters.get(2).getWrapper().get());
+        assertEquals(new Integer(200), parameters.get(3).getWrapper().get());
     }
 
     public void testOption_exclude() throws Exception {
-        Emp emp1 = new Emp_();
-        emp1.id().set(10);
-        emp1.name().set("aaa");
-        emp1.salary().set(new BigDecimal(200));
-        emp1.version().set(100);
+        Emp emp1 = new Emp();
+        emp1.setId(10);
+        emp1.setName("aaa");
+        emp1.setSalary(new BigDecimal(200));
+        emp1.setVersion(100);
 
-        Emp emp2 = new Emp_();
-        emp2.id().set(20);
-        emp2.version().set(200);
+        Emp emp2 = new Emp();
+        emp2.setId(20);
+        emp2.setVersion(200);
 
-        AutoBatchUpdateQuery<Emp, Emp_> query = new AutoBatchUpdateQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(
+                new Emp_());
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setExcludedPropertyNames("name");
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.prepare();
 
         PreparedSql sql = query.getSqls().get(0);
-        assertEquals("update EMP set SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql
-                .getRawSql());
+        assertEquals(
+                "update EMP set SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
+                sql.getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(4, parameters.size());
-        assertEquals(new BuiltinBigDecimalDomain(new BigDecimal(200)), parameters
-                .get(0).getDomain());
-        assertEquals(new BuiltinIntegerDomain(100), parameters.get(1).getDomain());
-        assertEquals(new BuiltinIntegerDomain(10), parameters.get(2).getDomain());
-        assertEquals(new BuiltinIntegerDomain(100), parameters.get(3).getDomain());
+        assertEquals(new BigDecimal(200), parameters.get(0).getWrapper().get());
+        assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
+        assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
+        assertEquals(new Integer(100), parameters.get(3).getWrapper().get());
 
         sql = query.getSqls().get(1);
-        assertEquals("update EMP set SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql
-                .getRawSql());
+        assertEquals(
+                "update EMP set SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?",
+                sql.getRawSql());
         parameters = sql.getParameters();
         assertEquals(4, parameters.size());
-        assertTrue(parameters.get(0).getDomain().isNull());
-        assertEquals(new BuiltinIntegerDomain(200), parameters.get(1).getDomain());
-        assertEquals(new BuiltinIntegerDomain(20), parameters.get(2).getDomain());
-        assertEquals(new BuiltinIntegerDomain(200), parameters.get(3).getDomain());
+        assertNull(parameters.get(0).getWrapper().get());
+        assertEquals(new Integer(200), parameters.get(1).getWrapper().get());
+        assertEquals(new Integer(20), parameters.get(2).getWrapper().get());
+        assertEquals(new Integer(200), parameters.get(3).getWrapper().get());
     }
 
     public void testIsExecutable() throws Exception {
-        AutoBatchUpdateQuery<Emp, Emp_> query = new AutoBatchUpdateQuery<Emp, Emp_>(
-                Emp_.class);
+        AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(
+                new Emp_());
         query.setConfig(runtimeConfig);
-        query.setEntities(Collections.<Emp> emptyList());
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.compile();
+        query.setEntities(Collections.<Emp> emptyList());
+        query.prepare();
         assertFalse(query.isExecutable());
     }
 
-    public void testIllegalEntityInstance() throws Exception {
-        AutoBatchUpdateQuery<Emp, Emp_> query = new AutoBatchUpdateQuery<Emp, Emp_>(
-                Emp_.class);
-        try {
-            query.setEntities(Arrays.<Emp> asList(new MyEmp()));
-            fail();
-        } catch (JdbcException expected) {
-            assertEquals(DomaMessageCode.DOMA2026, expected.getMessageCode());
-        }
-    }
-
-    private static class MyEmp implements Emp {
-
-        @Override
-        public BuiltinIntegerDomain version() {
-            return null;
-        }
-
-        @Override
-        public BuiltinBigDecimalDomain salary() {
-            return null;
-        }
-
-        @Override
-        public BuiltinStringDomain name() {
-            return null;
-        }
-
-        @Override
-        public BuiltinIntegerDomain id() {
-            return null;
-        }
-    }
 }

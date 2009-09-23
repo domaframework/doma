@@ -17,15 +17,23 @@ package org.seasar.doma.internal.apt.entity;
 
 import org.seasar.doma.Entity;
 import org.seasar.doma.Version;
-import org.seasar.doma.domain.BuiltinStringDomain;
 
 /**
  * @author taedium
  * 
  */
 @Entity
-public interface VersionNotNumberEntity {
+public class VersionNotNumberEntity {
 
     @Version
-    BuiltinStringDomain version();
+    String version;
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
 }

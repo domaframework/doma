@@ -22,6 +22,6 @@ import org.seasar.doma.Entity;
  * 
  */
 @Entity
-public interface NameUnsafeEntity_ {
+public class NameUnsafeEntity_ {
 
 }

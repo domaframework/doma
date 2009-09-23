@@ -22,43 +22,31 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.jdbc.query.Query;
-import org.seasar.doma.internal.util.ClassUtil;
-import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.jdbc.entity.Entity;
-import org.seasar.doma.message.DomaMessageCode;
-
+import org.seasar.doma.jdbc.entity.EntityMeta;
+import org.seasar.doma.jdbc.entity.EntityMetaFactory;
 
 /**
  * @author taedium
  * 
  */
-public class EntityResultListHandler<I, E extends Entity<I>> implements
-        ResultSetHandler<List<I>> {
+public class EntityResultListHandler<E> implements ResultSetHandler<List<E>> {
 
-    protected final Class<E> entityClass;
+    protected final EntityMetaFactory<E> entityMetaFactory;
 
-    public EntityResultListHandler(Class<E> entityClass) {
-        assertNotNull(entityClass);
-        this.entityClass = entityClass;
+    public EntityResultListHandler(EntityMetaFactory<E> entityMetaFactory) {
+        assertNotNull(entityMetaFactory);
+        this.entityMetaFactory = entityMetaFactory;
     }
 
     @Override
-    public List<I> handle(ResultSet resultSet, Query query) throws SQLException {
+    public List<E> handle(ResultSet resultSet, Query query) throws SQLException {
         EntityFetcher fetcher = new EntityFetcher(query);
-        List<I> entities = new ArrayList<I>();
+        List<E> entities = new ArrayList<E>();
         while (resultSet.next()) {
-            E entity = null;
-            try {
-                entity = ClassUtil.newInstance(entityClass);
-            } catch (WrapException e) {
-                Throwable cause = e.getCause();
-                throw new JdbcException(DomaMessageCode.DOMA2005, cause,
-                        entityClass.getName(), cause);
-            }
-            fetcher.fetch(resultSet, entity);
-            entities.add(entity.__asInterface());
+            EntityMeta<E> entityMeta = entityMetaFactory.createEntityMeta();
+            fetcher.fetch(resultSet, entityMeta);
+            entities.add(entityMeta.getEntity());
         }
         return entities;
     }

@@ -20,7 +20,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 
 /**
  * ストアドファンクションやストアドプロシージャーへのOUTパラメータを示します。
@@ -30,7 +30,7 @@ import org.seasar.doma.domain.Domain;
  * 
  * 注釈されるパラメータは、次の制約を満たす必要があります。
  * <ul>
- * <li>型は {@link Domain} の実装クラスである。
+ * <li>型は {@link Wrapper} の実装クラスである。
  * </ul>
  * 
  * <h5>例:</h5>

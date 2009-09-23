@@ -28,7 +28,6 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 
-import org.seasar.doma.internal.apt.meta.EntityDelegateMetaFactory;
 import org.seasar.doma.internal.apt.meta.EntityMeta;
 import org.seasar.doma.internal.apt.meta.EntityMetaFactory;
 import org.seasar.doma.internal.apt.meta.EntityPropertyMetaFactory;
@@ -40,12 +39,8 @@ import org.seasar.doma.message.DomaMessageCode;
  * 
  */
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
-@SupportedAnnotationTypes( { "org.seasar.doma.Entity",
-        "org.seasar.doma.MappedSuperclass" })
-@SupportedOptions( { Options.TEST, Options.DEBUG, Options.ENTITY_PACKAGE,
-        Options.ENTITY_SUBPACKAGE, Options.ENTITY_SUFFIX,
-        Options.DTO_GENERATION, Options.DTO_PACKAGE, Options.DTO_SUBPACKAGE,
-        Options.DTO_SUFFIX })
+@SupportedAnnotationTypes( { "org.seasar.doma.Entity" })
+@SupportedOptions( { Options.TEST, Options.DEBUG, Options.ENTITY_SUFFIX })
 public class EntityProcessor extends AbstractProcessor {
 
     @Override
@@ -66,13 +61,7 @@ public class EntityProcessor extends AbstractProcessor {
                 try {
                     EntityMeta entityMeta = entityMetaFactory
                             .createEntityMeta(entityElement);
-                    if (entityMeta.isMappedSuperclass()) {
-                        continue;
-                    }
                     generateEntity(entityElement, entityMeta);
-                    if (Options.isDtoGenerationEnabled(processingEnv)) {
-                        generateDto(entityElement, entityMeta);
-                    }
                 } catch (AptException e) {
                     Notifier.notify(processingEnv, e);
                 } catch (AptIllegalStateException e) {
@@ -95,48 +84,31 @@ public class EntityProcessor extends AbstractProcessor {
     }
 
     protected EntityMetaFactory createEntityMetaFactory() {
-        EntityDelegateMetaFactory delegateMetaFactory = new EntityDelegateMetaFactory(
-                processingEnv);
         EntityPropertyMetaFactory propertyMetaFactory = new EntityPropertyMetaFactory(
                 processingEnv);
-        return new EntityMetaFactory(processingEnv, delegateMetaFactory,
-                propertyMetaFactory);
+        return new EntityMetaFactory(processingEnv, propertyMetaFactory);
     }
 
     protected void generateEntity(TypeElement entityElement,
             EntityMeta entityMeta) {
-        EntityGenerator entityGenerator = null;
+        EntityMetaFactoryGenerator generator = null;
         try {
-            entityGenerator = createEntityGenerator(entityElement, entityMeta);
-            entityGenerator.generate();
+            generator = createEntityMetaFactoryGenerator(entityElement,
+                    entityMeta);
+            generator.generate();
         } catch (IOException e) {
             throw new AptException(DomaMessageCode.DOMA4011, processingEnv,
                     entityElement, e, entityElement.getQualifiedName(), e);
         } finally {
-            IOUtil.close(entityGenerator);
+            IOUtil.close(generator);
         }
     }
 
-    protected EntityGenerator createEntityGenerator(TypeElement entityElement,
-            EntityMeta entityMeta) throws IOException {
-        return new EntityGenerator(processingEnv, entityElement, entityMeta);
+    protected EntityMetaFactoryGenerator createEntityMetaFactoryGenerator(
+            TypeElement entityElement, EntityMeta entityMeta)
+            throws IOException {
+        return new EntityMetaFactoryGenerator(processingEnv, entityElement,
+                entityMeta);
     }
 
-    protected void generateDto(TypeElement entityElement, EntityMeta entityMeta) {
-        DtoGenerator dtoGenerator = null;
-        try {
-            dtoGenerator = createDtoGenerator(entityElement, entityMeta);
-            dtoGenerator.generate();
-        } catch (IOException e) {
-            throw new AptException(DomaMessageCode.DOMA4011, processingEnv,
-                    entityElement, e, entityElement.getQualifiedName(), e);
-        } finally {
-            IOUtil.close(dtoGenerator);
-        }
-    }
-
-    protected DtoGenerator createDtoGenerator(TypeElement entityElement,
-            EntityMeta entityMeta) throws IOException {
-        return new DtoGenerator(processingEnv, entityElement, entityMeta);
-    }
 }

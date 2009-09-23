@@ -26,7 +26,7 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.domain.Domain;
+import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.TypeUtil;
@@ -80,7 +80,7 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
             if (typeElement == null) {
                 continue;
             }
-            if (typeElement.getQualifiedName().contentEquals(Domain.class
+            if (typeElement.getQualifiedName().contentEquals(Wrapper.class
                     .getName())) {
                 DeclaredType declaredType = TypeUtil
                         .toDeclaredType(supertype, env);

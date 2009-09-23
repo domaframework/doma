@@ -20,8 +20,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.seasar.doma.domain.Domain;
-import org.seasar.doma.domain.SerializableDomain;
+import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.jdbc.entity.BuiltinEntityListener;
 import org.seasar.doma.jdbc.entity.EntityListener;
 
@@ -34,7 +33,7 @@ import org.seasar.doma.jdbc.entity.EntityListener;
  * インタフェースのメンバメソッドは、 {@link Delegate} で注釈されていない限り、次の制約を満たす必要があります。
  * <ul>
  * <li>パラメータは受け取らない。
- * <li>戻り値の型は {@link Domain} の実装クラスである。
+ * <li>戻り値の型は {@link Wrapper} の実装クラスである。
  * </ul>
  * 
  * <h5>例:</h5>
@@ -57,7 +56,7 @@ import org.seasar.doma.jdbc.entity.EntityListener;
  * </pre>
  * 
  * <p>
- * {@link Delegate} が注釈されていないメソッドの 戻り値の型がすべて {@link SerializableDomain}
+ * {@link Delegate} が注釈されていないメソッドの 戻り値の型がすべて {@link SerializableWrapper}
  * のサブタイプであれば、注釈されたインタフェースの実装は直列化可能です。
  * <p>
  * 注釈されたインタフェースの実装はスレッドセーフであることを要求されません。
@@ -83,8 +82,4 @@ public @interface Entity {
      */
     Class<? extends EntityListener<?>> listener() default BuiltinEntityListener.class;
 
-    /**
-     * 注釈されたインタフェースの実装で使用されるserialVersionUIDです。
-     */
-    long serialVersionUID() default 1L;
 }
