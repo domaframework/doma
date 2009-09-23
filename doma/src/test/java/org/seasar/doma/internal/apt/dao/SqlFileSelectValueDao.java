@@ -28,7 +28,7 @@ import org.seasar.doma.jdbc.SelectOptions;
  * 
  */
 @Dao(config = MyConfig.class)
-public interface SqlFileSelectDomainDao {
+public interface SqlFileSelectValueDao {
 
     @Select
     String selectById(Integer id);

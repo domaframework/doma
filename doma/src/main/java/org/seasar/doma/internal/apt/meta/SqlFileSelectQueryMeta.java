@@ -38,12 +38,6 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
     protected TypeMirror iterationCallbackTargetType;
 
-    protected boolean singleResult;
-
-    protected String entityTypeName;
-
-    protected String domainTypeName;
-
     protected boolean iterated;
 
     protected Integer maxRows;
@@ -98,30 +92,6 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
     public void setOptionsName(String optionsName) {
         this.optionsName = optionsName;
-    }
-
-    public boolean isSingleResult() {
-        return singleResult;
-    }
-
-    public void setSingleResult(boolean singleResult) {
-        this.singleResult = singleResult;
-    }
-
-    public String getEntityTypeName() {
-        return entityTypeName;
-    }
-
-    public void setEntityTypeName(String entityTypeName) {
-        this.entityTypeName = entityTypeName;
-    }
-
-    public String getDomainTypeName() {
-        return domainTypeName;
-    }
-
-    public void setDomainTypeName(String domainTypeName) {
-        this.domainTypeName = domainTypeName;
     }
 
     public Class<? extends Options> getOptionsClass() {

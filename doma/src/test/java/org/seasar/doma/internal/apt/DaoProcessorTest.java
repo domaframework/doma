@@ -44,7 +44,7 @@ import org.seasar.doma.internal.apt.dao.NotInterfaceDao;
 import org.seasar.doma.internal.apt.dao.NotTopLevelDao;
 import org.seasar.doma.internal.apt.dao.SqlFileBatchUpdateDao;
 import org.seasar.doma.internal.apt.dao.SqlFileInsertDao;
-import org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDao;
+import org.seasar.doma.internal.apt.dao.SqlFileSelectValueDao;
 import org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao;
 import org.seasar.doma.internal.apt.dao.UnknownBindVariableSqlValidationDao;
 import org.seasar.doma.internal.apt.dao.UnknownVariableSqlValidationDao;
@@ -66,8 +66,8 @@ public class DaoProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
-    public void testSqlFileSelectDomain() throws Exception {
-        Class<?> target = SqlFileSelectDomainDao.class;
+    public void testSqlFileSelectValue() throws Exception {
+        Class<?> target = SqlFileSelectValueDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
         addCompilationUnit(target);

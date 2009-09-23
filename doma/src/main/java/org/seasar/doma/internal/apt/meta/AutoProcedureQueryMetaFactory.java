@@ -84,8 +84,8 @@ public class AutoProcedureQueryMetaFactory extends
         if (!isPrimitiveVoid(returnType)) {
             throw new AptException(DomaMessageCode.DOMA4064, env, method);
         }
-        String typeName = TypeUtil.getTypeName(returnType, daoMeta
-                .getTypeParameterMap(), env);
-        queryMeta.setReturnTypeName(typeName);
+        QueryResultMeta resultMeta = new QueryResultMeta();
+        resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
+        queryMeta.setQueryResultMeta(resultMeta);
     }
 }

@@ -31,7 +31,7 @@ public interface QueryMeta {
 
     List<String> getTypeParameterNames();
 
-    String getReturnTypeName();
+    QueryResultMeta getQueryResultMeta();
 
     Map<String, String> getMethodParameterNames();
 

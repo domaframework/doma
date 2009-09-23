@@ -104,8 +104,9 @@ public class AutoModifyQueryMetaFactory extends
         if (!isPrimitiveInt(returnType)) {
             throw new AptException(DomaMessageCode.DOMA4001, env, method);
         }
-        queryMeta.setReturnTypeName(TypeUtil.getTypeName(returnType, daoMeta
-                .getTypeParameterMap(), env));
+        QueryResultMeta resultMeta = new QueryResultMeta();
+        resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
+        queryMeta.setQueryResultMeta(resultMeta);
     }
 
     @Override

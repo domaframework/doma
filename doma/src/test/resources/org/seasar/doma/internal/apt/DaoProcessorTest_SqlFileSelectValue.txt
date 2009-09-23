@@ -1,0 +1,71 @@
+package org.seasar.doma.internal.apt.dao;
+
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
+public class SqlFileSelectValueDao_ extends org.seasar.doma.jdbc.DomaAbstractDao implements org.seasar.doma.internal.apt.dao.SqlFileSelectValueDao {
+
+    public SqlFileSelectValueDao_() {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig(), null);
+    }
+
+    public SqlFileSelectValueDao_(javax.sql.DataSource dataSource) {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
+    }
+
+    protected SqlFileSelectValueDao_(org.seasar.doma.jdbc.Config config) {
+        super(config, config.dataSource());
+    }
+
+    @Override
+    public java.lang.String selectById(java.lang.Integer id) {
+        entering("org.seasar.doma.internal.apt.dao.SqlFileSelectValueDao_", "selectById", id);
+        if (id == null) {
+            throw new org.seasar.doma.DomaNullPointerException("id");
+        }
+        org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
+        query.setConfig(config);
+        query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFileUtil.buildPath("org.seasar.doma.internal.apt.dao.SqlFileSelectValueDao", "selectById"));
+        query.addParameter("id", java.lang.Integer.class, id);
+        query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileSelectValueDao_");
+        query.setCallerMethodName("selectById");
+        query.setQueryTimeout(-1);
+        query.setMaxRows(-1);
+        query.setFetchSize(-1);
+        query.prepare();
+        org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.String> command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.String>(query, new org.seasar.doma.internal.jdbc.command.ValueSingleResultHandler<java.lang.String>(new org.seasar.doma.wrapper.StringWrapper()));
+        java.lang.String result = command.execute();
+        exiting("org.seasar.doma.internal.apt.dao.SqlFileSelectValueDao_", "selectById", result);
+        return result;
+    }
+
+    @Override
+    public java.util.List<java.lang.String> selectByNameAndSalary(java.lang.String name, java.math.BigDecimal salary, org.seasar.doma.jdbc.SelectOptions options) {
+        entering("org.seasar.doma.internal.apt.dao.SqlFileSelectValueDao_", "selectByNameAndSalary", name, salary, options);
+        if (name == null) {
+            throw new org.seasar.doma.DomaNullPointerException("name");
+        }
+        if (salary == null) {
+            throw new org.seasar.doma.DomaNullPointerException("salary");
+        }
+        if (options == null) {
+            throw new org.seasar.doma.DomaNullPointerException("options");
+        }
+        org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
+        query.setConfig(config);
+        query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFileUtil.buildPath("org.seasar.doma.internal.apt.dao.SqlFileSelectValueDao", "selectByNameAndSalary"));
+        query.setOptions(options);
+        query.addParameter("name", java.lang.String.class, name);
+        query.addParameter("salary", java.math.BigDecimal.class, salary);
+        query.addParameter("options", org.seasar.doma.jdbc.SelectOptions.class, options);
+        query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileSelectValueDao_");
+        query.setCallerMethodName("selectByNameAndSalary");
+        query.setQueryTimeout(-1);
+        query.setMaxRows(-1);
+        query.setFetchSize(-1);
+        query.prepare();
+        org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<java.lang.String>> command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<java.lang.String>>(query, new org.seasar.doma.internal.jdbc.command.ValueResultListHandler<java.lang.String>(new org.seasar.doma.wrapper.StringWrapper()));
+        java.util.List<java.lang.String> result = command.execute();
+        exiting("org.seasar.doma.internal.apt.dao.SqlFileSelectValueDao_", "selectByNameAndSalary", result);
+        return result;
+    }
+
+}

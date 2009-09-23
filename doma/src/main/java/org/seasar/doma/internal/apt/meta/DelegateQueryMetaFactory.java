@@ -90,8 +90,8 @@ public class DelegateQueryMetaFactory extends
             TypeMirror parameterType = TypeUtil.resolveTypeParameter(daoMeta
                     .getTypeParameterMap(), param.asType());
             String parameterName = ElementUtil.getParameterName(param);
-            String parameterTypeName = TypeUtil.getTypeName(parameterType, daoMeta
-                    .getTypeParameterMap(), env);
+            String parameterTypeName = TypeUtil.getTypeName(parameterType,
+                    daoMeta.getTypeParameterMap(), env);
             queryMeta.addMethodParameterName(parameterName, parameterTypeName);
             queryMeta.addExpressionParameterType(parameterName, parameterType);
         }
@@ -102,8 +102,9 @@ public class DelegateQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         TypeMirror returnType = TypeUtil.resolveTypeParameter(daoMeta
                 .getTypeParameterMap(), method.getReturnType());
-        queryMeta.setReturnTypeName(TypeUtil.getTypeName(returnType, daoMeta
-                .getTypeParameterMap(), env));
+        QueryResultMeta resultMeta = new QueryResultMeta();
+        resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
+        queryMeta.setQueryResultMeta(resultMeta);
     }
 
     protected void doDelegate(DelegateQueryMeta queryMeta,

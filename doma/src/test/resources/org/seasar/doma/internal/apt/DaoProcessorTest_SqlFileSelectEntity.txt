@@ -16,7 +16,7 @@ public class SqlFileSelectEntityDao_ extends org.seasar.doma.jdbc.DomaAbstractDa
     }
 
     @Override
-    public org.seasar.doma.internal.apt.entity.Emp selectById(org.seasar.doma.domain.BuiltinIntegerDomain id, org.seasar.doma.jdbc.SelectOptions options) {
+    public org.seasar.doma.internal.apt.entity.Emp selectById(java.lang.Integer id, org.seasar.doma.jdbc.SelectOptions options) {
         entering("org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao_", "selectById", id, options);
         if (id == null) {
             throw new org.seasar.doma.DomaNullPointerException("id");
@@ -28,22 +28,22 @@ public class SqlFileSelectEntityDao_ extends org.seasar.doma.jdbc.DomaAbstractDa
         query.setConfig(config);
         query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFileUtil.buildPath("org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao", "selectById"));
         query.setOptions(options);
-        query.addParameter("id", id);
-        query.addParameter("options", options);
+        query.addParameter("id", java.lang.Integer.class, id);
+        query.addParameter("options", org.seasar.doma.jdbc.SelectOptions.class, options);
         query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao_");
         query.setCallerMethodName("selectById");
         query.setQueryTimeout(-1);
         query.setMaxRows(-1);
         query.setFetchSize(-1);
-        query.compile();
-        org.seasar.doma.internal.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.entity.Emp> command = new org.seasar.doma.internal.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.entity.Emp>(query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<org.seasar.doma.internal.apt.entity.Emp, org.seasar.doma.internal.apt.entity.Emp_>(org.seasar.doma.internal.apt.entity.Emp_.class));
+        query.prepare();
+        org.seasar.doma.internal.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.entity.Emp> command = new org.seasar.doma.internal.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.entity.Emp>(query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<org.seasar.doma.internal.apt.entity.Emp>(new org.seasar.doma.internal.apt.entity.Emp_()));
         org.seasar.doma.internal.apt.entity.Emp result = command.execute();
         exiting("org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao_", "selectById", result);
         return result;
     }
 
     @Override
-    public java.util.List<org.seasar.doma.internal.apt.entity.Emp> selectByNameAndSalary(org.seasar.doma.domain.BuiltinStringDomain name, org.seasar.doma.domain.BuiltinBigDecimalDomain salary, org.seasar.doma.jdbc.SelectOptions options) {
+    public java.util.List<org.seasar.doma.internal.apt.entity.Emp> selectByNameAndSalary(java.lang.String name, java.math.BigDecimal salary, org.seasar.doma.jdbc.SelectOptions options) {
         entering("org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao_", "selectByNameAndSalary", name, salary, options);
         if (name == null) {
             throw new org.seasar.doma.DomaNullPointerException("name");
@@ -58,16 +58,16 @@ public class SqlFileSelectEntityDao_ extends org.seasar.doma.jdbc.DomaAbstractDa
         query.setConfig(config);
         query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFileUtil.buildPath("org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao", "selectByNameAndSalary"));
         query.setOptions(options);
-        query.addParameter("name", name);
-        query.addParameter("salary", salary);
-        query.addParameter("options", options);
+        query.addParameter("name", java.lang.String.class, name);
+        query.addParameter("salary", java.math.BigDecimal.class, salary);
+        query.addParameter("options", org.seasar.doma.jdbc.SelectOptions.class, options);
         query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao_");
         query.setCallerMethodName("selectByNameAndSalary");
         query.setQueryTimeout(-1);
         query.setMaxRows(-1);
         query.setFetchSize(-1);
-        query.compile();
-        org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<org.seasar.doma.internal.apt.entity.Emp>> command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<org.seasar.doma.internal.apt.entity.Emp>>(query, new org.seasar.doma.internal.jdbc.command.EntityResultListHandler<org.seasar.doma.internal.apt.entity.Emp, org.seasar.doma.internal.apt.entity.Emp_>(org.seasar.doma.internal.apt.entity.Emp_.class));
+        query.prepare();
+        org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<org.seasar.doma.internal.apt.entity.Emp>> command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<org.seasar.doma.internal.apt.entity.Emp>>(query, new org.seasar.doma.internal.jdbc.command.EntityResultListHandler<org.seasar.doma.internal.apt.entity.Emp>(new org.seasar.doma.internal.apt.entity.Emp_()));
         java.util.List<org.seasar.doma.internal.apt.entity.Emp> result = command.execute();
         exiting("org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao_", "selectByNameAndSalary", result);
         return result;

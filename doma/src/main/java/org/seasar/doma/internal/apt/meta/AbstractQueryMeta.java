@@ -38,8 +38,6 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
     protected List<String> typeParameterNames = new ArrayList<String>();
 
-    protected String returnTypeName;
-
     protected List<String> thrownTypeNames = new ArrayList<String>();
 
     protected QueryKind queryKind;
@@ -64,6 +62,10 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
     protected Map<String, TypeMirror> expressionParameterTypes = new LinkedHashMap<String, TypeMirror>();
 
+    protected QueryResultMeta queryResultMeta;
+
+    protected List<QueryParameterMeta> queryParameterMetas = new ArrayList<QueryParameterMeta>();
+
     public String getName() {
         return name;
     }
@@ -86,14 +88,6 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
     public List<String> getTypeParameterNames() {
         return typeParameterNames;
-    }
-
-    public String getReturnTypeName() {
-        return returnTypeName;
-    }
-
-    public void setReturnTypeName(String returnTypeName) {
-        this.returnTypeName = returnTypeName;
     }
 
     public void addThrownTypeName(String thrownTypeName) {
@@ -208,6 +202,22 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
     public void setExcludedPropertyNames(String[] excludedPropertyNames) {
         this.excludedPropertyNames = excludedPropertyNames;
+    }
+
+    public QueryResultMeta getQueryResultMeta() {
+        return queryResultMeta;
+    }
+
+    public void setQueryResultMeta(QueryResultMeta queryResultMeta) {
+        this.queryResultMeta = queryResultMeta;
+    }
+
+    public List<QueryParameterMeta> getQueryParameterMetas() {
+        return queryParameterMetas;
+    }
+
+    public void addQueryParameterMetas(QueryParameterMeta queryParameterMeta) {
+        this.queryParameterMetas.add(queryParameterMeta);
     }
 
 }

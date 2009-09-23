@@ -16,7 +16,7 @@ public class SqlFileInsertDao_ extends org.seasar.doma.jdbc.DomaAbstractDao impl
     }
 
     @Override
-    public int insert(org.seasar.doma.domain.BuiltinIntegerDomain id, org.seasar.doma.domain.BuiltinBigDecimalDomain salary) {
+    public int insert(java.lang.Integer id, java.math.BigDecimal salary) {
         entering("org.seasar.doma.internal.apt.dao.SqlFileInsertDao_", "insert", id, salary);
         if (id == null) {
             throw new org.seasar.doma.DomaNullPointerException("id");
@@ -27,12 +27,12 @@ public class SqlFileInsertDao_ extends org.seasar.doma.jdbc.DomaAbstractDao impl
         org.seasar.doma.internal.jdbc.query.SqlFileInsertQuery query = new org.seasar.doma.internal.jdbc.query.SqlFileInsertQuery();
         query.setConfig(config);
         query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFileUtil.buildPath("org.seasar.doma.internal.apt.dao.SqlFileInsertDao", "insert"));
-        query.addParameter("id", id);
-        query.addParameter("salary", salary);
+        query.addParameter("id", java.lang.Integer.class, id);
+        query.addParameter("salary", java.math.BigDecimal.class, salary);
         query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileInsertDao_");
         query.setCallerMethodName("insert");
         query.setQueryTimeout(-1);
-        query.compile();
+        query.prepare();
         org.seasar.doma.internal.jdbc.command.InsertCommand command = new org.seasar.doma.internal.jdbc.command.InsertCommand(query);
         int result = command.execute();
         exiting("org.seasar.doma.internal.apt.dao.SqlFileInsertDao_", "insert", result);

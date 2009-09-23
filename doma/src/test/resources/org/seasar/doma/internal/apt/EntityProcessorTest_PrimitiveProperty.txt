@@ -108,7 +108,7 @@ public class PrimitivePropertyEntity_ implements org.seasar.doma.jdbc.entity.Ent
         public void refreshEntityInternal() {
             __entity.id = toPrimitive(id.getWrapper().get());
             __entity.bool = toPrimitive(bool.getWrapper().get());
-            __entity.version = toPrimitive(version.getWrapper().get())
+            __entity.version = toPrimitive(version.getWrapper().get());
         }
 
         @Override

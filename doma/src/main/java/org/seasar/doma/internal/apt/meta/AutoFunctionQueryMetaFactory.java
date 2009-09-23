@@ -84,17 +84,19 @@ public class AutoFunctionQueryMetaFactory extends
     protected void doReturnType(AutoFunctionQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         TypeMirror returnType = method.getReturnType();
-        String typeName = TypeUtil.getTypeName(returnType, daoMeta
-                .getTypeParameterMap(), env);
-        queryMeta.setReturnTypeName(typeName);
-        ResultParameterMeta resultParameterMeta = createResultParameterMeta(queryMeta, returnType, method, daoMeta);
+        QueryResultMeta resultMeta = new QueryResultMeta();
+        resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
+        queryMeta.setQueryResultMeta(resultMeta);
+
+        ResultParameterMeta resultParameterMeta = createResultParameterMeta(
+                queryMeta, returnType, method, daoMeta);
         queryMeta.setResultParameterMeta(resultParameterMeta);
     }
 
     protected ResultParameterMeta createResultParameterMeta(
             AutoFunctionQueryMeta queryMeta, TypeMirror returnType,
             ExecutableElement method, DaoMeta daoMeta) {
-        if (isList(returnType)) {
+        if (isCollection(returnType)) {
             DeclaredType listTyep = TypeUtil.toDeclaredType(returnType, env);
             List<? extends TypeMirror> args = listTyep.getTypeArguments();
             if (args.isEmpty()) {
@@ -113,7 +115,8 @@ public class AutoFunctionQueryMetaFactory extends
             throw new AptException(DomaMessageCode.DOMA4065, env, method);
         }
         if (isDomain(returnType)) {
-            return new DomainResultParameterMeta(queryMeta.getReturnTypeName());
+            return new DomainResultParameterMeta(queryMeta.getQueryResultMeta()
+                    .getTypeName());
         }
         throw new AptException(DomaMessageCode.DOMA4063, env, method);
     }

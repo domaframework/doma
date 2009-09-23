@@ -21,7 +21,7 @@ public class AutoUpdateDao_ extends org.seasar.doma.jdbc.DomaAbstractDao impleme
         if (entity == null) {
             throw new org.seasar.doma.DomaNullPointerException("entity");
         }
-        org.seasar.doma.internal.jdbc.query.AutoUpdateQuery<org.seasar.doma.internal.apt.entity.Emp, org.seasar.doma.internal.apt.entity.Emp_> query = new org.seasar.doma.internal.jdbc.query.AutoUpdateQuery<org.seasar.doma.internal.apt.entity.Emp, org.seasar.doma.internal.apt.entity.Emp_>(org.seasar.doma.internal.apt.entity.Emp_.class);
+        org.seasar.doma.internal.jdbc.query.AutoUpdateQuery<org.seasar.doma.internal.apt.entity.Emp> query = new org.seasar.doma.internal.jdbc.query.AutoUpdateQuery<org.seasar.doma.internal.apt.entity.Emp>(new org.seasar.doma.internal.apt.entity.Emp_());
         query.setConfig(config);
         query.setEntity(entity);
         query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoUpdateDao_");
@@ -33,7 +33,7 @@ public class AutoUpdateDao_ extends org.seasar.doma.jdbc.DomaAbstractDao impleme
         query.setExcludedPropertyNames();
         query.setUnchangedPropertyIncluded(false);
         query.setOptimisticLockExceptionSuppressed(false);
-        query.compile();
+        query.prepare();
         org.seasar.doma.internal.jdbc.command.UpdateCommand command = new org.seasar.doma.internal.jdbc.command.UpdateCommand(query);
         int result = command.execute();
         exiting("org.seasar.doma.internal.apt.dao.AutoUpdateDao_", "update", result);

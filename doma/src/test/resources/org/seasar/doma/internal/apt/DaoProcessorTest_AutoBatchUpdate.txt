@@ -21,7 +21,7 @@ public class AutoBatchUpdateDao_ extends org.seasar.doma.jdbc.DomaAbstractDao im
         if (entities == null) {
             throw new org.seasar.doma.DomaNullPointerException("entities");
         }
-        org.seasar.doma.internal.jdbc.query.AutoBatchUpdateQuery<org.seasar.doma.internal.apt.entity.Emp, org.seasar.doma.internal.apt.entity.Emp_> query = new org.seasar.doma.internal.jdbc.query.AutoBatchUpdateQuery<org.seasar.doma.internal.apt.entity.Emp, org.seasar.doma.internal.apt.entity.Emp_>(org.seasar.doma.internal.apt.entity.Emp_.class);
+        org.seasar.doma.internal.jdbc.query.AutoBatchUpdateQuery<org.seasar.doma.internal.apt.entity.Emp> query = new org.seasar.doma.internal.jdbc.query.AutoBatchUpdateQuery<org.seasar.doma.internal.apt.entity.Emp>(new org.seasar.doma.internal.apt.entity.Emp_());
         query.setConfig(config);
         query.setEntities(entities);
         query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoBatchUpdateDao_");
@@ -31,7 +31,7 @@ public class AutoBatchUpdateDao_ extends org.seasar.doma.jdbc.DomaAbstractDao im
         query.setIncludedPropertyNames();
         query.setExcludedPropertyNames();
         query.setOptimisticLockExceptionSuppressed(false);
-        query.compile();
+        query.prepare();
         org.seasar.doma.internal.jdbc.command.BatchUpdateCommand command = new org.seasar.doma.internal.jdbc.command.BatchUpdateCommand(query);
         int[] result = command.execute();
         exiting("org.seasar.doma.internal.apt.dao.AutoBatchUpdateDao_", "update", result);

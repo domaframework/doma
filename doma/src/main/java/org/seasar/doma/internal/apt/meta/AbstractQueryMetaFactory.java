@@ -17,7 +17,7 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Set;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -72,9 +72,8 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
     protected void doThrowTypes(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
         for (TypeMirror thrownType : method.getThrownTypes()) {
-            queryMeta
-                    .addThrownTypeName(TypeUtil.getTypeName(thrownType, daoMeta
-                            .getTypeParameterMap(), env));
+            queryMeta.addThrownTypeName(TypeUtil.getTypeName(thrownType,
+                    daoMeta.getTypeParameterMap(), env));
         }
     }
 
@@ -133,13 +132,8 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
                 && typeElement.getModifiers().contains(Modifier.ABSTRACT);
     }
 
-    protected boolean isList(TypeMirror typeMirror) {
-        TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
-        if (typeElement != null) {
-            return typeElement.getQualifiedName().contentEquals(List.class
-                    .getName());
-        }
-        return false;
+    protected boolean isCollection(TypeMirror typeMirror) {
+        return TypeUtil.isAssignable(typeMirror, Collection.class, env);
     }
 
     protected boolean isOptions(TypeMirror typeMirror,

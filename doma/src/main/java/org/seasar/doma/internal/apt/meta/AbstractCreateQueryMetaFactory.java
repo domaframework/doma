@@ -59,31 +59,32 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
         if (domainValueType == null) {
             throw new AptIllegalStateException();
         }
-        TypeElement domainValueElement = TypeUtil
-                .toTypeElement(domainValueType, env);
+        TypeElement domainValueElement = TypeUtil.toTypeElement(
+                domainValueType, env);
         if (domainValueElement == null) {
             throw new AptIllegalStateException();
         }
-        if (!domainValueElement.getQualifiedName()
-                .contentEquals(domainValueClass.getName())) {
+        if (!domainValueElement.getQualifiedName().contentEquals(
+                domainValueClass.getName())) {
             throw new AptException(DomaMessageCode.DOMA4075, env, method,
                     domainValueClass.getName());
         }
-        queryMeta.setReturnTypeName(TypeUtil.getTypeName(returnType, daoMeta
-                .getTypeParameterMap(), env));
+        QueryResultMeta resultMeta = new QueryResultMeta();
+        resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
+        queryMeta.setQueryResultMeta(resultMeta);
     }
 
     protected TypeMirror getDomainValueType(TypeMirror domainType) {
-        for (TypeMirror supertype : env.getTypeUtils()
-                .directSupertypes(domainType)) {
+        for (TypeMirror supertype : env.getTypeUtils().directSupertypes(
+                domainType)) {
             TypeElement typeElement = TypeUtil.toTypeElement(supertype, env);
             if (typeElement == null) {
                 continue;
             }
-            if (typeElement.getQualifiedName().contentEquals(Wrapper.class
-                    .getName())) {
-                DeclaredType declaredType = TypeUtil
-                        .toDeclaredType(supertype, env);
+            if (typeElement.getQualifiedName().contentEquals(
+                    Wrapper.class.getName())) {
+                DeclaredType declaredType = TypeUtil.toDeclaredType(supertype,
+                        env);
                 if (declaredType == null) {
                     continue;
                 }

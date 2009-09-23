@@ -80,22 +80,23 @@ public class SqlFileSelectQueryMetaFactory extends
     @Override
     protected void doReturnType(SqlFileSelectQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
+        QueryResultMeta resultMeta = new QueryResultMeta();
+        queryMeta.setQueryResultMeta(resultMeta);
         TypeMirror returnType = TypeUtil.resolveTypeParameter(daoMeta
                 .getTypeParameterMap(), method.getReturnType());
         if (queryMeta.isIterated()) {
-            TypeMirror wrapperType = TypeUtil.toWrapperTypeIfPrimitive(
-                    returnType, env);
+            resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
+            TypeMirror primitiveWrapperType = TypeUtil
+                    .toWrapperTypeIfPrimitive(returnType, env);
             if (returnType == null
-                    || !env.getTypeUtils().isSameType(wrapperType,
+                    || !env.getTypeUtils().isSameType(primitiveWrapperType,
                             queryMeta.getIterationCallbackResultType())) {
                 throw new AptException(DomaMessageCode.DOMA4055, env, method,
                         returnType, queryMeta.getIterationCallbackResultType());
             }
-            queryMeta.setReturnTypeName(TypeUtil.getTypeName(returnType,
-                    daoMeta.getTypeParameterMap(), env));
-            return;
-        }
-        if (isList(returnType)) {
+        } else if (isCollection(returnType)) {
+            resultMeta.setList(true);
+            resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
             DeclaredType listTyep = TypeUtil.toDeclaredType(returnType, env);
             List<? extends TypeMirror> args = listTyep.getTypeArguments();
             if (args.isEmpty()) {
@@ -103,35 +104,35 @@ public class SqlFileSelectQueryMetaFactory extends
             }
             TypeMirror elementType = TypeUtil.resolveTypeParameter(daoMeta
                     .getTypeParameterMap(), args.get(0));
+            resultMeta.setElementTypeName(TypeUtil
+                    .getTypeName(elementType, env));
             if (isEntity(elementType, daoMeta)) {
-                queryMeta.setEntityTypeName(TypeUtil.getTypeName(elementType,
-                        daoMeta.getTypeParameterMap(), env));
+                resultMeta.setEntity(true);
             } else {
-                if (isDomain(elementType) && !isAbstract(elementType)) {
-                    queryMeta.setDomainTypeName(TypeUtil.getTypeName(
-                            elementType, daoMeta.getTypeParameterMap(), env));
-                } else {
+                TypeMirror wrapperType = DomaTypes.getWrapperType(elementType,
+                        env);
+                if (wrapperType == null) {
                     throw new AptException(DomaMessageCode.DOMA4007, env,
-                            method);
+                            method, elementType);
                 }
+                resultMeta.setWrapperTypeName(TypeUtil.getTypeName(wrapperType,
+                        env));
             }
         } else {
-            queryMeta.setSingleResult(true);
+            resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
             if (isEntity(returnType, daoMeta)) {
-                queryMeta.setEntityTypeName(TypeUtil.getTypeName(returnType,
-                        daoMeta.getTypeParameterMap(), env));
+                resultMeta.setEntity(true);
             } else {
-                if (isDomain(returnType) && !isAbstract(returnType)) {
-                    queryMeta.setDomainTypeName(TypeUtil.getTypeName(
-                            returnType, daoMeta.getTypeParameterMap(), env));
-                } else {
+                TypeMirror wrapperType = DomaTypes.getWrapperType(returnType,
+                        env);
+                if (wrapperType == null) {
                     throw new AptException(DomaMessageCode.DOMA4008, env,
-                            method);
+                            method, returnType);
                 }
+                resultMeta.setWrapperTypeName(TypeUtil.getTypeName(wrapperType,
+                        env));
             }
         }
-        queryMeta.setReturnTypeName(TypeUtil.getTypeName(returnType, daoMeta
-                .getTypeParameterMap(), env));
     }
 
     @Override
@@ -159,7 +160,7 @@ public class SqlFileSelectQueryMetaFactory extends
                 queryMeta.setIterationCallbackTypeName(parameterTypeName);
                 doIterationCallbackParameter(parameterType, queryMeta, method,
                         daoMeta);
-            } else if (isList(parameterType)) {
+            } else if (isCollection(parameterType)) {
                 DeclaredType listTyep = TypeUtil.toDeclaredType(parameterType,
                         env);
                 List<? extends TypeMirror> args = listTyep.getTypeArguments();
@@ -213,9 +214,9 @@ public class SqlFileSelectQueryMetaFactory extends
             String targetTypeName = TypeUtil.getTypeName(targetType, daoMeta
                     .getTypeParameterMap(), env);
             if (isDomain(targetType)) {
-                queryMeta.setDomainTypeName(targetTypeName);
+                // queryMeta.setDomainTypeName(targetTypeName);
             } else if (isEntity(targetType, daoMeta)) {
-                queryMeta.setEntityTypeName(targetTypeName);
+                // queryMeta.setEntityTypeName(targetTypeName);
             } else {
                 throw new AptException(DomaMessageCode.DOMA4058, env, method);
             }

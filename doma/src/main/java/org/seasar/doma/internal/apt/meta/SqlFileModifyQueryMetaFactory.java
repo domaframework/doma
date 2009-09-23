@@ -28,7 +28,6 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.message.DomaMessageCode;
 
-
 /**
  * @author taedium
  * 
@@ -43,7 +42,8 @@ public class SqlFileModifyQueryMetaFactory extends
     @Override
     public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
         assertNotNull(method, daoMeta);
-        SqlFileModifyQueryMeta queryMeta = createSqlFileModifyQueryMeta(method, daoMeta);
+        SqlFileModifyQueryMeta queryMeta = createSqlFileModifyQueryMeta(method,
+                daoMeta);
         if (queryMeta == null) {
             return null;
         }
@@ -89,7 +89,8 @@ public class SqlFileModifyQueryMetaFactory extends
         if (!isPrimitiveInt(returnType)) {
             throw new AptException(DomaMessageCode.DOMA4001, env, method);
         }
-        queryMeta.setReturnTypeName(TypeUtil.getTypeName(returnType, daoMeta
-                .getTypeParameterMap(), env));
+        QueryResultMeta resultMeta = new QueryResultMeta();
+        resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
+        queryMeta.setQueryResultMeta(resultMeta);
     }
 }

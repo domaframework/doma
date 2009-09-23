@@ -102,8 +102,9 @@ public class AutoBatchModifyQueryMetaFactory extends
         if (!isPrimitiveIntArray(returnType)) {
             throw new AptException(DomaMessageCode.DOMA4040, env, method);
         }
-        queryMeta.setReturnTypeName(TypeUtil.getTypeName(returnType, daoMeta
-                .getTypeParameterMap(), env));
+        QueryResultMeta resultMeta = new QueryResultMeta();
+        resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
+        queryMeta.setQueryResultMeta(resultMeta);
     }
 
     @Override
@@ -117,7 +118,7 @@ public class AutoBatchModifyQueryMetaFactory extends
         VariableElement entityList = params.get(0);
         TypeMirror entityListType = TypeUtil.resolveTypeParameter(daoMeta
                 .getTypeParameterMap(), entityList.asType());
-        if (!isList(entityListType)) {
+        if (!isCollection(entityListType)) {
             throw new AptException(DomaMessageCode.DOMA4042, env, method);
         }
         DeclaredType listTyep = TypeUtil.toDeclaredType(entityListType, env);

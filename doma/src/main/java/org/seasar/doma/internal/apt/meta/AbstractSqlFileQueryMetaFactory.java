@@ -56,8 +56,9 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
         for (VariableElement param : params) {
             TypeMirror parameterType = TypeUtil.resolveTypeParameter(daoMeta
                     .getTypeParameterMap(), param.asType());
-            if (isList(parameterType)) {
-                DeclaredType listTyep = TypeUtil.toDeclaredType(parameterType, env);
+            if (isCollection(parameterType)) {
+                DeclaredType listTyep = TypeUtil.toDeclaredType(parameterType,
+                        env);
                 List<? extends TypeMirror> args = listTyep.getTypeArguments();
                 if (args.isEmpty()) {
                     throw new AptException(DomaMessageCode.DOMA4027, env,
@@ -69,12 +70,15 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
                     throw new AptException(DomaMessageCode.DOMA4028, env,
                             method);
                 }
-            } else if (!isDomain(parameterType) && !isEntity(parameterType, daoMeta)) {
-                throw new AptException(DomaMessageCode.DOMA4010, env, method);
+            } else if (!isEntity(parameterType, daoMeta)) {
+                if (!DomaTypes.isSupportedType(parameterType, env)) {
+                    throw new AptException(DomaMessageCode.DOMA4008, env,
+                            method, parameterType);
+                }
             }
             String parameterName = ElementUtil.getParameterName(param);
-            String parameterTypeName = TypeUtil.getTypeName(parameterType, daoMeta
-                    .getTypeParameterMap(), env);
+            String parameterTypeName = TypeUtil.getTypeName(parameterType,
+                    daoMeta.getTypeParameterMap(), env);
             queryMeta.addMethodParameterName(parameterName, parameterTypeName);
             queryMeta.addExpressionParameterType(parameterName, parameterType);
         }

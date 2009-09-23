@@ -68,7 +68,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         TypeMirror paramType = TypeUtil.resolveTypeParameter(daoMeta
                 .getTypeParameterMap(), param.asType());
         if (param.getAnnotation(ResultSet.class) != null) {
-            if (isList(paramType)) {
+            if (isCollection(paramType)) {
                 DeclaredType listTyep = TypeUtil.toDeclaredType(paramType, env);
                 List<? extends TypeMirror> args = listTyep.getTypeArguments();
                 if (args.isEmpty()) {
