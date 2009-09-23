@@ -1,47 +1,47 @@
 package org.seasar.doma.internal.apt.entity;
 
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
-public class ChildEntity_ implements org.seasar.doma.jdbc.entity.EntityMetaFactory<org.seasar.doma.internal.apt.entity.ChildEntity> {
+public class PrimitivePropertyEntity_ implements org.seasar.doma.jdbc.entity.EntityMetaFactory<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity> {
 
     @Override
-    public org.seasar.doma.jdbc.entity.EntityMeta<org.seasar.doma.internal.apt.entity.ChildEntity> createEntityMeta() {
+    public org.seasar.doma.jdbc.entity.EntityMeta<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity> createEntityMeta() {
         return new Meta();
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.EntityMeta<org.seasar.doma.internal.apt.entity.ChildEntity> createEntityMeta(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
+    public org.seasar.doma.jdbc.entity.EntityMeta<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity> createEntityMeta(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity) {
         return new Meta(entity);
     }
 
-    public static class Meta extends org.seasar.doma.jdbc.entity.AbstractEntityMeta<org.seasar.doma.internal.apt.entity.ChildEntity> {
+    public static class Meta extends org.seasar.doma.jdbc.entity.AbstractEntityMeta<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity> {
 
         private static final org.seasar.doma.jdbc.entity.BuiltinEntityListener __listener = new org.seasar.doma.jdbc.entity.BuiltinEntityListener();
 
-        private final org.seasar.doma.jdbc.entity.BasicPropertyMeta<org.seasar.doma.wrapper.BigDecimalWrapper> bbb = new org.seasar.doma.jdbc.entity.BasicPropertyMeta<org.seasar.doma.wrapper.BigDecimalWrapper>("bbb", null, new org.seasar.doma.wrapper.BigDecimalWrapper(), true, true);
+        private final org.seasar.doma.jdbc.entity.AssignedIdPropertyMeta<org.seasar.doma.wrapper.IntegerWrapper> id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyMeta<org.seasar.doma.wrapper.IntegerWrapper>("id", null, new org.seasar.doma.wrapper.IntegerWrapper());
 
-        private final org.seasar.doma.jdbc.entity.BasicPropertyMeta<org.seasar.doma.wrapper.StringWrapper> ccc = new org.seasar.doma.jdbc.entity.BasicPropertyMeta<org.seasar.doma.wrapper.StringWrapper>("ccc", null, new org.seasar.doma.wrapper.StringWrapper(), true, true);
+        private final org.seasar.doma.jdbc.entity.BasicPropertyMeta<org.seasar.doma.wrapper.BooleanWrapper> bool = new org.seasar.doma.jdbc.entity.BasicPropertyMeta<org.seasar.doma.wrapper.BooleanWrapper>("bool", null, new org.seasar.doma.wrapper.BooleanWrapper(), true, true);
 
-        private final org.seasar.doma.jdbc.entity.BasicPropertyMeta<org.seasar.doma.wrapper.IntegerWrapper> aaa = new org.seasar.doma.jdbc.entity.BasicPropertyMeta<org.seasar.doma.wrapper.IntegerWrapper>("aaa", null, new org.seasar.doma.wrapper.IntegerWrapper(), true, true);
+        private final org.seasar.doma.jdbc.entity.VersionPropertyMeta<org.seasar.doma.wrapper.LongWrapper> version = new org.seasar.doma.jdbc.entity.VersionPropertyMeta<org.seasar.doma.wrapper.LongWrapper>("version", null, new org.seasar.doma.wrapper.LongWrapper());
 
-        private final org.seasar.doma.internal.apt.entity.ChildEntity __entity;
+        private final org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity __entity;
 
         private final java.util.Set<java.lang.String> __modifiedProperties;
 
-        private final String __name = "ChildEntity";
+        private final String __name = "PrimitivePropertyEntity";
 
         private java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyMeta<?>> __entityProperties;
 
         private java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyMeta<?>> __entityPropertyMap;
 
         private Meta() {
-            this(new org.seasar.doma.internal.apt.entity.ChildEntity());
+            this(new org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity());
         }
 
-        private Meta(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
+        private Meta(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity) {
             super(null, null, null);
-            bbb.getWrapper().set(entity.bbb);
-            ccc.getWrapper().set(entity.ccc);
-            aaa.getWrapper().set(entity.aaa);
+            id.getWrapper().set(entity.id);
+            bool.getWrapper().set(entity.bool);
+            version.getWrapper().set(entity.version);
             __entity = entity;
             __modifiedProperties = null;
         }
@@ -70,9 +70,9 @@ public class ChildEntity_ implements org.seasar.doma.jdbc.entity.EntityMetaFacto
         public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyMeta<?>> getPropertyMetas() {
             if (__entityProperties == null) {
                 java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyMeta<?>> __list = new java.util.ArrayList<org.seasar.doma.jdbc.entity.EntityPropertyMeta<?>>();
-                __list.add(bbb);
-                __list.add(ccc);
-                __list.add(aaa);
+                __list.add(id);
+                __list.add(bool);
+                __list.add(version);
                 __entityProperties = java.util.Collections.unmodifiableList(__list);
             }
             return __entityProperties;
@@ -82,9 +82,9 @@ public class ChildEntity_ implements org.seasar.doma.jdbc.entity.EntityMetaFacto
         public org.seasar.doma.jdbc.entity.EntityPropertyMeta<?> getPropertyMeta(String __name) {
             if (__entityPropertyMap == null) {
                 java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyMeta<?>> __map = new java.util.HashMap<String, org.seasar.doma.jdbc.entity.EntityPropertyMeta<?>>();
-                __map.put("bbb", bbb);
-                __map.put("ccc", ccc);
-                __map.put("aaa", aaa);
+                __map.put("id", id);
+                __map.put("bool", bool);
+                __map.put("version", version);
                 __entityPropertyMap = java.util.Collections.unmodifiableMap(__map);
             }
             return __entityPropertyMap.get(__name);
@@ -97,7 +97,7 @@ public class ChildEntity_ implements org.seasar.doma.jdbc.entity.EntityMetaFacto
 
         @Override
         public org.seasar.doma.jdbc.entity.VersionPropertyMeta<?> getVersionProperty() {
-            return null;
+            return version;
         }
 
         @Override
@@ -106,17 +106,19 @@ public class ChildEntity_ implements org.seasar.doma.jdbc.entity.EntityMetaFacto
         }
 
         public void refreshEntityInternal() {
+            __entity.id = id.getWrapper().get();
+            __entity.version = version.getWrapper().get();
         }
 
         @Override
-        public org.seasar.doma.internal.apt.entity.ChildEntity getEntity() {
+        public org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity getEntity() {
             refreshEntityInternal();
             return __entity;
         }
 
         @Override
-        public Class<org.seasar.doma.internal.apt.entity.ChildEntity> getEntityClass() {
-            return org.seasar.doma.internal.apt.entity.ChildEntity.class;
+        public Class<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity> getEntityClass() {
+            return org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity.class;
         }
 
         @Override

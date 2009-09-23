@@ -36,12 +36,4 @@ public class ParentEntity {
         this.aaa = aaa;
     }
 
-    public Integer getBbb() {
-        return bbb;
-    }
-
-    public void setBbb(Integer bbb) {
-        this.bbb = bbb;
-    }
-
 }

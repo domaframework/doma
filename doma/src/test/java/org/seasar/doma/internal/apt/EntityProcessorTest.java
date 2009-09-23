@@ -17,18 +17,14 @@ package org.seasar.doma.internal.apt;
 
 import org.seasar.doma.internal.apt.entity.AnnotationConflictedEntity;
 import org.seasar.doma.internal.apt.entity.ChildEntity;
-import org.seasar.doma.internal.apt.entity.ElementOfReturnListNotDomainEntity;
-import org.seasar.doma.internal.apt.entity.ElementOfReturnListUnspecifiedEntity;
 import org.seasar.doma.internal.apt.entity.Emp;
-import org.seasar.doma.internal.apt.entity.ListPropertyEntity;
 import org.seasar.doma.internal.apt.entity.ListenerArgumentTypeIllegalEntity;
 import org.seasar.doma.internal.apt.entity.NameUnsafeEntity_;
 import org.seasar.doma.internal.apt.entity.NotTopLevelEntity;
+import org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity;
 import org.seasar.doma.internal.apt.entity.PrivatePropertyEntity;
 import org.seasar.doma.internal.apt.entity.PropertyNameReservedEntity;
-import org.seasar.doma.internal.apt.entity.ReturnListNotTransientEntity;
-import org.seasar.doma.internal.apt.entity.ReturnListTransientEntity;
-import org.seasar.doma.internal.apt.entity.ReturnTypeNotConcreteDomainEntity;
+import org.seasar.doma.internal.apt.entity.TransientPropertyEntity;
 import org.seasar.doma.internal.apt.entity.UnsupportedPropertyEntity;
 import org.seasar.doma.internal.apt.entity.VersionDuplicatedEntity;
 import org.seasar.doma.internal.apt.entity.VersionNotNumberEntity;
@@ -102,26 +98,16 @@ public class EntityProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4022);
+        assertMessageCode(DomaMessageCode.DOMA4096);
     }
 
-    public void testListProperty() throws Exception {
-        Class<?> target = ListPropertyEntity.class;
+    public void testPrimitiveProperty() throws Exception {
+        Class<?> target = PrimitivePropertyEntity.class;
         EntityProcessor processor = new EntityProcessor();
         addProcessor(processor);
         addCompilationUnit(target);
         compile();
-        assertTrue(getCompiledResult());
-    }
-
-    public void testReturnTypeNotConcreteDomain() throws Exception {
-        Class<?> target = ReturnTypeNotConcreteDomainEntity.class;
-        EntityProcessor processor = new EntityProcessor();
-        addProcessor(processor);
-        addCompilationUnit(target);
-        compile();
-        assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4022);
+        assertGeneratedSource(PrimitivePropertyEntity.class);
     }
 
     public void testExtends() throws Exception {
@@ -153,43 +139,13 @@ public class EntityProcessorTest extends AptTestCase {
         assertMessageCode(DomaMessageCode.DOMA4026);
     }
 
-    public void testElementOfReturnListUnspecified() throws Exception {
-        Class<?> target = ElementOfReturnListUnspecifiedEntity.class;
-        EntityProcessor processor = new EntityProcessor();
-        addProcessor(processor);
-        addCompilationUnit(target);
-        compile();
-        assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4029);
-    }
-
-    public void testElementOfReturnListNotDomain() throws Exception {
-        Class<?> target = ElementOfReturnListNotDomainEntity.class;
-        EntityProcessor processor = new EntityProcessor();
-        addProcessor(processor);
-        addCompilationUnit(target);
-        compile();
-        assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4030);
-    }
-
-    public void testReturnListNotTransient() throws Exception {
-        Class<?> target = ReturnListNotTransientEntity.class;
-        EntityProcessor processor = new EntityProcessor();
-        addProcessor(processor);
-        addCompilationUnit(target);
-        compile();
-        assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4031);
-    }
-
     public void testReturnListTransient() throws Exception {
-        Class<?> target = ReturnListTransientEntity.class;
+        Class<?> target = TransientPropertyEntity.class;
         EntityProcessor processor = new EntityProcessor();
         addProcessor(processor);
         addCompilationUnit(target);
         compile();
-        assertGeneratedSource(ReturnListTransientEntity.class);
+        assertGeneratedSource(TransientPropertyEntity.class);
         assertTrue(getCompiledResult());
     }
 

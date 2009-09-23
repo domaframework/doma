@@ -238,8 +238,8 @@ public class EntityPropertyMetaFactory {
         if (propertyMeta.isTrnsient()) {
             return;
         }
-        DeclaredType wrappedType = TypeUtil.toDeclaredType(fieldElement
-                .asType(), env);
+        DeclaredType wrappedType = TypeUtil.toDeclaredType(TypeUtil
+                .toWrapperTypeIfPrimitive(fieldElement.asType(), env), env);
         DeclaredType wrapperType = WrapperResolver.getWrapperType(wrappedType,
                 env);
         if (wrapperType == null) {

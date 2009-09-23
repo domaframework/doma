@@ -18,17 +18,21 @@ package org.seasar.doma.internal.apt.entity;
 import java.util.List;
 
 import org.seasar.doma.Entity;
+import org.seasar.doma.Transient;
+import org.seasar.doma.Version;
 
 /**
  * @author taedium
  * 
  */
 @Entity
-public class ElementOfReturnListNotDomainEntity {
+public class TransientPropertyEntity {
 
+    @Version
     Integer id;
 
-    List<String> list;
+    @Transient
+    List<Integer> list;
 
     public Integer getId() {
         return id;
@@ -38,11 +42,11 @@ public class ElementOfReturnListNotDomainEntity {
         this.id = id;
     }
 
-    public List<String> getList() {
+    public List<Integer> getList() {
         return list;
     }
 
-    public void setList(List<String> list) {
+    public void setList(List<Integer> list) {
         this.list = list;
     }
 

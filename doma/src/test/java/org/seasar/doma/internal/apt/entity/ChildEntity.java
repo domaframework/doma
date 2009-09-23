@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.internal.apt.entity;
 
+import java.math.BigDecimal;
+
 import org.seasar.doma.Entity;
 
 /**
@@ -25,17 +27,15 @@ import org.seasar.doma.Entity;
 public class ChildEntity extends ParentEntity {
 
     @SuppressWarnings("hiding")
-    Integer bbb;
+    BigDecimal bbb;
 
     String ccc;
 
-    @Override
-    public Integer getBbb() {
+    public BigDecimal getBbb() {
         return bbb;
     }
 
-    @Override
-    public void setBbb(Integer bbb) {
+    public void setBbb(BigDecimal bbb) {
         this.bbb = bbb;
     }
 
@@ -46,5 +46,4 @@ public class ChildEntity extends ParentEntity {
     public void setCcc(String ccc) {
         this.ccc = ccc;
     }
-
 }
