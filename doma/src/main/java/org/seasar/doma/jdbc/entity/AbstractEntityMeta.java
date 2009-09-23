@@ -63,4 +63,35 @@ public abstract class AbstractEntityMeta<E> implements EntityMeta<E> {
         return __tableName;
     }
 
+    protected char toPrimitive(Character value) {
+        return value != null ? value.charValue() : 0;
+    }
+
+    protected boolean toPrimitive(Boolean value) {
+        return value != null ? value.booleanValue() : false;
+    }
+
+    protected byte toPrimitive(Byte value) {
+        return value != null ? value.byteValue() : 0;
+    }
+
+    protected short toPrimitive(Short value) {
+        return value != null ? value.shortValue() : 0;
+    }
+
+    protected int toPrimitive(Integer value) {
+        return value != null ? value.intValue() : 0;
+    }
+
+    protected long toPrimitive(Long value) {
+        return value != null ? value.longValue() : 0L;
+    }
+
+    protected float toPrimitive(Float value) {
+        return value != null ? value.floatValue() : 0f;
+    }
+
+    protected double toPrimitive(Double value) {
+        return value != null ? value.doubleValue() : 0d;
+    }
 }

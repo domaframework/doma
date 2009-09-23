@@ -194,7 +194,7 @@ public class CallableSqlParameterFetcher {
         protected void handleDomainListParameter(
                 ListParameter<? extends Wrapper<?>> parameter)
                 throws SQLException {
-            DomainFetcher fetcher = new DomainFetcher(query);
+            ValueFetcher fetcher = new ValueFetcher(query);
             if (dialect.supportsResultSetReturningAsOutParameter()) {
                 JdbcType<ResultSet> resultSetType = dialect.getResultSetType();
                 ResultSet resultSet = resultSetType.getValue(callableStatement,

@@ -120,6 +120,8 @@ public class Emp_ implements org.seasar.doma.jdbc.entity.EntityMetaFactory<org.s
 
         public void refreshEntityInternal() {
             __entity.id = id.getWrapper().get();
+            __entity.name = name.getWrapper().get();
+            __entity.salary = salary.getWrapper().get();
             __entity.version = version.getWrapper().get();
         }
 

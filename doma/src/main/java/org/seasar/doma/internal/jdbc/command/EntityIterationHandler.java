@@ -45,7 +45,7 @@ public class EntityIterationHandler<R, E> implements ResultSetHandler<R> {
 
     @Override
     public R handle(ResultSet resultSet, Query query) throws SQLException {
-        EntityFetcher fetcher = new EntityFetcher(query);
+        EntityFetcher<E> fetcher = new EntityFetcher<E>(query);
         IterationContext iterationContext = new IterationContext();
         R result = null;
         while (resultSet.next()) {

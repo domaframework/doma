@@ -393,7 +393,14 @@ public class EntityMetaFactoryGenerator extends AbstractGenerator {
     protected void printMetaClassRefreshEntityInternalMethod() {
         iprint("public void refreshEntityInternal() {%n");
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
-            if (pm.isId() || pm.isVersion()) {
+            if (pm.isTrnsient()) {
+                continue;
+            }
+            if (pm.isPrimitive()) {
+                iprint(
+                        "    __entity.%1$s = toPrimitive(%1$s.getWrapper().get());%n",
+                        pm.getName());
+            } else {
                 iprint("    __entity.%1$s = %1$s.getWrapper().get();%n", pm
                         .getName());
             }

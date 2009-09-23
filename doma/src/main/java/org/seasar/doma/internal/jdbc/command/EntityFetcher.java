@@ -35,7 +35,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class EntityFetcher {
+public class EntityFetcher<E> {
 
     protected final Query query;
 
@@ -46,7 +46,7 @@ public class EntityFetcher {
         this.query = query;
     }
 
-    public void fetch(ResultSet resultSet, EntityMeta<?> entityMeta)
+    public void fetch(ResultSet resultSet, EntityMeta<E> entityMeta)
             throws SQLException {
         assertNotNull(resultSet, entityMeta);
         if (nameMap == null) {

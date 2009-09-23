@@ -59,7 +59,6 @@ import org.seasar.doma.internal.util.ConstructorUtil;
 import org.seasar.doma.internal.util.FieldUtil;
 import org.seasar.doma.internal.util.MethodUtil;
 import org.seasar.doma.message.DomaMessageCode;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
@@ -91,9 +90,7 @@ public class ExpressionEvaluator implements
     @Override
     public EvaluationResult visitEqOperatorNode(EqOperatorNode node, Void p) {
         Object left = node.getLeftNode().accept(this, p).getValue();
-        left = getEnclosedValueIfWrapped(left);
         Object right = node.getRightNode().accept(this, p).getValue();
-        right = getEnclosedValueIfWrapped(right);
         if (left == null && right == null) {
             return new EvaluationResult(true, boolean.class);
         }
@@ -116,9 +113,7 @@ public class ExpressionEvaluator implements
     @Override
     public EvaluationResult visitNeOperatorNode(NeOperatorNode node, Void p) {
         Object left = node.getLeftNode().accept(this, p).getValue();
-        left = getEnclosedValueIfWrapped(left);
         Object right = node.getRightNode().accept(this, p).getValue();
-        right = getEnclosedValueIfWrapped(right);
         if (left == null && right == null) {
             return new EvaluationResult(false, boolean.class);
         }
@@ -141,9 +136,7 @@ public class ExpressionEvaluator implements
     @Override
     public EvaluationResult visitGeOperatorNode(GeOperatorNode node, Void p) {
         Object left = node.getLeftNode().accept(this, p).getValue();
-        left = getEnclosedValueIfWrapped(left);
         Object right = node.getRightNode().accept(this, p).getValue();
-        right = getEnclosedValueIfWrapped(right);
         return new EvaluationResult(compare(node, left, right) >= 0,
                 boolean.class);
     }
@@ -151,9 +144,7 @@ public class ExpressionEvaluator implements
     @Override
     public EvaluationResult visitGtOperatorNode(GtOperatorNode node, Void p) {
         Object left = node.getLeftNode().accept(this, p).getValue();
-        left = getEnclosedValueIfWrapped(left);
         Object right = node.getRightNode().accept(this, p).getValue();
-        right = getEnclosedValueIfWrapped(right);
         return new EvaluationResult(compare(node, left, right) > 0,
                 boolean.class);
     }
@@ -161,9 +152,7 @@ public class ExpressionEvaluator implements
     @Override
     public EvaluationResult visitLeOperatorNode(LeOperatorNode node, Void p) {
         Object left = node.getLeftNode().accept(this, p).getValue();
-        left = getEnclosedValueIfWrapped(left);
         Object right = node.getRightNode().accept(this, p).getValue();
-        right = getEnclosedValueIfWrapped(right);
         return new EvaluationResult(compare(node, left, right) <= 0,
                 boolean.class);
     }
@@ -171,19 +160,9 @@ public class ExpressionEvaluator implements
     @Override
     public EvaluationResult visitLtOperatorNode(LtOperatorNode node, Void p) {
         Object left = node.getLeftNode().accept(this, p).getValue();
-        left = getEnclosedValueIfWrapped(left);
         Object right = node.getRightNode().accept(this, p).getValue();
-        right = getEnclosedValueIfWrapped(right);
         return new EvaluationResult(compare(node, left, right) < 0,
                 boolean.class);
-    }
-
-    protected Object getEnclosedValueIfWrapped(Object maybeDomain) {
-        if (Wrapper.class.isInstance(maybeDomain)) {
-            Wrapper<?> wrapper = Wrapper.class.cast(maybeDomain);
-            return wrapper.get();
-        }
-        return maybeDomain;
     }
 
     protected int compare(ComparisonOperatorNode node, Object left, Object right)

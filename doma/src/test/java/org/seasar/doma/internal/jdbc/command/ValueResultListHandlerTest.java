@@ -32,7 +32,7 @@ import org.seasar.doma.wrapper.StringWrapper;
  * @author taedium
  * 
  */
-public class DomainResultListHandlerTest extends TestCase {
+public class ValueResultListHandlerTest extends TestCase {
 
     private final MockConfig runtimeConfig = new MockConfig();
 
@@ -51,11 +51,11 @@ public class DomainResultListHandlerTest extends TestCase {
         query.setCallerMethodName("bbb");
         query.prepare();
 
-        DomainResultListHandler<StringWrapper> handler = new DomainResultListHandler<StringWrapper>(
-                StringWrapper.class);
-        List<StringWrapper> domains = handler.handle(resultSet, query);
-        assertEquals(2, domains.size());
-        assertEquals("aaa", domains.get(0).get());
-        assertEquals("bbb", domains.get(1).get());
+        ValueResultListHandler<String> handler = new ValueResultListHandler<String>(
+                new StringWrapper());
+        List<String> results = handler.handle(resultSet, query);
+        assertEquals(2, results.size());
+        assertEquals("aaa", results.get(0));
+        assertEquals("bbb", results.get(1));
     }
 }

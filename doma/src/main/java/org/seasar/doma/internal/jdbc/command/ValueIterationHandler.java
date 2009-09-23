@@ -20,49 +20,36 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.jdbc.query.Query;
-import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
-import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.message.DomaMessageCode;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class DomainIterationHandler<R, D extends Wrapper<?>> implements
-        ResultSetHandler<R> {
+public class ValueIterationHandler<R, V> implements ResultSetHandler<R> {
 
-    protected final Class<D> domainClass;
+    protected final Wrapper<V> wrapper;
 
-    protected final IterationCallback<R, D> iterationCallback;
+    protected final IterationCallback<R, V> iterationCallback;
 
-    public DomainIterationHandler(Class<D> domainClass,
-            IterationCallback<R, D> iterationCallback) {
-        assertNotNull(domainClass);
-        this.domainClass = domainClass;
+    public ValueIterationHandler(Wrapper<V> wrapper,
+            IterationCallback<R, V> iterationCallback) {
+        assertNotNull(wrapper);
+        this.wrapper = wrapper;
         this.iterationCallback = iterationCallback;
     }
 
     @Override
     public R handle(ResultSet resultSet, Query query) throws SQLException {
-        DomainFetcher fetcher = new DomainFetcher(query);
+        ValueFetcher<V> fetcher = new ValueFetcher<V>(query);
         IterationContext iterationContext = new IterationContext();
         R result = null;
         while (resultSet.next()) {
-            D domain = null;
-            try {
-                domain = ClassUtil.newInstance(domainClass);
-            } catch (WrapException e) {
-                Throwable cause = e.getCause();
-                throw new JdbcException(DomaMessageCode.DOMA2006, cause,
-                        domainClass.getName(), cause);
-            }
-            fetcher.fetch(resultSet, domain);
-            result = iterationCallback.iterate(domain, iterationContext);
+            fetcher.fetch(resultSet, wrapper);
+            result = iterationCallback.iterate(wrapper.get(), iterationContext);
             if (iterationContext.isExited()) {
                 return result;
             }

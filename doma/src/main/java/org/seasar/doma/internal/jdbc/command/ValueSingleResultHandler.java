@@ -20,46 +20,33 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.jdbc.query.Query;
-import org.seasar.doma.internal.util.ClassUtil;
-import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
-import org.seasar.doma.message.DomaMessageCode;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class DomainSingleResultHandler<D extends Wrapper<?>> implements
-        ResultSetHandler<D> {
+public class ValueSingleResultHandler<V> implements ResultSetHandler<V> {
 
-    protected final Class<D> domainClass;
+    protected final Wrapper<V> wrapper;
 
-    public DomainSingleResultHandler(Class<D> domainClass) {
-        assertNotNull(domainClass);
-        this.domainClass = domainClass;
+    public ValueSingleResultHandler(Wrapper<V> wrapper) {
+        assertNotNull(wrapper);
+        this.wrapper = wrapper;
     }
 
     @Override
-    public D handle(ResultSet resultSet, Query query) throws SQLException {
-        DomainFetcher fetcher = new DomainFetcher(query);
-        D domain = null;
+    public V handle(ResultSet resultSet, Query query) throws SQLException {
+        ValueFetcher<V> fetcher = new ValueFetcher<V>(query);
         if (resultSet.next()) {
-            try {
-                domain = ClassUtil.newInstance(domainClass);
-            } catch (WrapException e) {
-                Throwable cause = e.getCause();
-                throw new JdbcException(DomaMessageCode.DOMA2006, cause,
-                        domainClass.getName(), cause);
-            }
-            fetcher.fetch(resultSet, domain);
+            fetcher.fetch(resultSet, wrapper);
             if (resultSet.next()) {
                 throw new NonUniqueResultException(query.getSql());
             }
         }
-        return domain;
+        return wrapper.get();
     }
 
 }

@@ -29,23 +29,23 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class DomainFetcher {
+public class ValueFetcher<V> {
 
     protected final Query query;
 
-    public DomainFetcher(Query query) throws SQLException {
+    public ValueFetcher(Query query) throws SQLException {
         assertNotNull(query);
         this.query = query;
     }
 
-    public void fetch(ResultSet resultSet, Wrapper<?> domain)
+    public void fetch(ResultSet resultSet, Wrapper<V> wrapper)
             throws SQLException {
         ResultSetMetaData resultSetMeta = resultSet.getMetaData();
         JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().dialect()
                 .getJdbcMappingVisitor();
         if (resultSetMeta.getColumnCount() > 0) {
             GetValueFunction function = new GetValueFunction(resultSet, 1);
-            domain.accept(jdbcMappingVisitor, function);
+            wrapper.accept(jdbcMappingVisitor, function);
         }
     }
 }

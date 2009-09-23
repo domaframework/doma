@@ -58,6 +58,7 @@ public class EntityPropertyMetaFactory {
         doTransient(propertyMeta, fieldElement, entityMeta);
         doVersion(propertyMeta, fieldElement, entityMeta);
         doColumnMeta(propertyMeta, fieldElement, entityMeta);
+        doPrimitive(propertyMeta, fieldElement, entityMeta);
         doWrapperTypeName(propertyMeta, fieldElement, entityMeta);
         return propertyMeta;
     }
@@ -233,13 +234,20 @@ public class EntityPropertyMetaFactory {
         propertyMeta.setColumnMeta(columnMeta);
     }
 
+    protected void doPrimitive(EntityPropertyMeta propertyMeta,
+            VariableElement fieldElement, EntityMeta entityMeta) {
+        TypeMirror fieldType = fieldElement.asType();
+        propertyMeta.setPrimitive(fieldType.getKind().isPrimitive());
+    }
+
     protected void doWrapperTypeName(EntityPropertyMeta propertyMeta,
             VariableElement fieldElement, EntityMeta entityMeta) {
         if (propertyMeta.isTrnsient()) {
             return;
         }
+        TypeMirror fieldType = fieldElement.asType();
         DeclaredType wrappedType = TypeUtil.toDeclaredType(TypeUtil
-                .toWrapperTypeIfPrimitive(fieldElement.asType(), env), env);
+                .toWrapperTypeIfPrimitive(fieldType, env), env);
         DeclaredType wrapperType = WrapperResolver.getWrapperType(wrappedType,
                 env);
         if (wrapperType == null) {

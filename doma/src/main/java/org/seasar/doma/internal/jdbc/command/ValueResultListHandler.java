@@ -23,32 +23,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.seasar.doma.internal.jdbc.query.Query;
-import org.seasar.doma.jdbc.entity.EntityMeta;
-import org.seasar.doma.jdbc.entity.EntityMetaFactory;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class EntityResultListHandler<E> implements ResultSetHandler<List<E>> {
+public class ValueResultListHandler<V> implements ResultSetHandler<List<V>> {
 
-    protected final EntityMetaFactory<E> entityMetaFactory;
+    protected final Wrapper<V> wrapper;
 
-    public EntityResultListHandler(EntityMetaFactory<E> entityMetaFactory) {
-        assertNotNull(entityMetaFactory);
-        this.entityMetaFactory = entityMetaFactory;
+    public ValueResultListHandler(Wrapper<V> wrapper) {
+        assertNotNull(wrapper);
+        this.wrapper = wrapper;
     }
 
     @Override
-    public List<E> handle(ResultSet resultSet, Query query) throws SQLException {
-        EntityFetcher<E> fetcher = new EntityFetcher<E>(query);
-        List<E> entities = new ArrayList<E>();
+    public List<V> handle(ResultSet resultSet, Query query) throws SQLException {
+        List<V> results = new ArrayList<V>();
+        ValueFetcher<V> fetcher = new ValueFetcher<V>(query);
         while (resultSet.next()) {
-            EntityMeta<E> entityMeta = entityMetaFactory.createEntityMeta();
-            fetcher.fetch(resultSet, entityMeta);
-            entities.add(entityMeta.getEntity());
+            fetcher.fetch(resultSet, wrapper);
+            results.add(wrapper.get());
         }
-        return entities;
+        return results;
     }
 
 }

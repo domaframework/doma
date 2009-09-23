@@ -139,7 +139,7 @@ public class EntityProcessorTest extends AptTestCase {
         assertMessageCode(DomaMessageCode.DOMA4026);
     }
 
-    public void testReturnListTransient() throws Exception {
+    public void testTransientProperty() throws Exception {
         Class<?> target = TransientPropertyEntity.class;
         EntityProcessor processor = new EntityProcessor();
         addProcessor(processor);

@@ -1,109 +1,120 @@
 package org.seasar.doma.internal.apt.entity;
 
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
-public class ReturnListTransientEntity_ extends org.seasar.doma.jdbc.entity.DomaAbstractEntity<org.seasar.doma.internal.apt.entity.ReturnListTransientEntity> implements org.seasar.doma.internal.apt.entity.ReturnListTransientEntity, java.io.Serializable {
+public class TransientPropertyEntity_ implements org.seasar.doma.jdbc.entity.EntityMetaFactory<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> {
 
-    private static final long serialVersionUID = 1L;
-
-    private static final org.seasar.doma.jdbc.entity.BuiltinEntityListener __listener = new org.seasar.doma.jdbc.entity.BuiltinEntityListener();
-
-    private transient org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.BuiltinIntegerDomain> id = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.BuiltinIntegerDomain>("id", null, new org.seasar.doma.domain.BuiltinIntegerDomain(), true, true);
-
-    private transient org.seasar.doma.jdbc.entity.TransientProperty<org.seasar.doma.domain.BuiltinArrayListDomain<org.seasar.doma.domain.BuiltinIntegerDomain>> list = new org.seasar.doma.jdbc.entity.TransientProperty<org.seasar.doma.domain.BuiltinArrayListDomain<org.seasar.doma.domain.BuiltinIntegerDomain>>("list", new org.seasar.doma.domain.BuiltinArrayListDomain<org.seasar.doma.domain.BuiltinIntegerDomain>(new java.util.ArrayList<org.seasar.doma.domain.BuiltinIntegerDomain>()));
-
-    private final String __name = "ReturnListTransientEntity";
-
-    private transient java.util.List<org.seasar.doma.jdbc.entity.EntityProperty<?>> __entityProperties;
-
-    private transient java.util.Map<String, org.seasar.doma.jdbc.entity.EntityProperty<?>> __entityPropertyMap;
-
-    public ReturnListTransientEntity_() {
-        super(null, null, null);
+    @Override
+    public org.seasar.doma.jdbc.entity.EntityMeta<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> createEntityMeta() {
+        return new Meta();
     }
 
     @Override
-    public org.seasar.doma.domain.BuiltinIntegerDomain id() {
-        return id.getDomain();
+    public org.seasar.doma.jdbc.entity.EntityMeta<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> createEntityMeta(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity) {
+        return new Meta(entity);
     }
 
-    @Override
-    public java.util.ArrayList<org.seasar.doma.domain.BuiltinIntegerDomain> list() {
-        return list.getDomain().get();
-    }
+    public static class Meta extends org.seasar.doma.jdbc.entity.AbstractEntityMeta<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> {
 
-    @Override
-    public String __getName() {
-        return __name;
-    }
+        private static final org.seasar.doma.jdbc.entity.BuiltinEntityListener __listener = new org.seasar.doma.jdbc.entity.BuiltinEntityListener();
 
-    @Override
-    public org.seasar.doma.internal.apt.entity.ReturnListTransientEntity __asInterface() {
-        return this;
-    }
+        private final org.seasar.doma.jdbc.entity.VersionPropertyMeta<org.seasar.doma.wrapper.IntegerWrapper> id = new org.seasar.doma.jdbc.entity.VersionPropertyMeta<org.seasar.doma.wrapper.IntegerWrapper>("id", null, new org.seasar.doma.wrapper.IntegerWrapper());
 
-    @Override
-    public void __preInsert() {
-        __listener.preInsert(this);
-    }
+        private final org.seasar.doma.internal.apt.entity.TransientPropertyEntity __entity;
 
-    @Override
-    public void __preUpdate() {
-        __listener.preUpdate(this);
-    }
+        private final java.util.Set<java.lang.String> __modifiedProperties;
 
-    @Override
-    public void __preDelete() {
-        __listener.preDelete(this);
-    }
+        private final String __name = "TransientPropertyEntity";
 
-    @Override
-    public java.util.List<org.seasar.doma.jdbc.entity.EntityProperty<?>> __getEntityProperties() {
-        if (__entityProperties == null) {
-            java.util.List<org.seasar.doma.jdbc.entity.EntityProperty<?>> __list = new java.util.ArrayList<org.seasar.doma.jdbc.entity.EntityProperty<?>>();
-            __list.add(id);
-            __list.add(list);
-            __entityProperties = java.util.Collections.unmodifiableList(__list);
+        private java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyMeta<?>> __entityProperties;
+
+        private java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyMeta<?>> __entityPropertyMap;
+
+        private Meta() {
+            this(new org.seasar.doma.internal.apt.entity.TransientPropertyEntity());
         }
-        return __entityProperties;
-    }
 
-    @Override
-    public org.seasar.doma.jdbc.entity.EntityProperty<?> __getEntityProperty(String __name) {
-        if (__entityPropertyMap == null) {
-            java.util.Map<String, org.seasar.doma.jdbc.entity.EntityProperty<?>> __map = new java.util.HashMap<String, org.seasar.doma.jdbc.entity.EntityProperty<?>>();
-            __map.put("id", id);
-            __map.put("list", list);
-            __entityPropertyMap = java.util.Collections.unmodifiableMap(__map);
+        private Meta(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity) {
+            super(null, null, null);
+            id.getWrapper().set(entity.id);
+            __entity = entity;
+            __modifiedProperties = null;
         }
-        return __entityPropertyMap.get(__name);
-    }
 
-    @Override
-    public org.seasar.doma.jdbc.entity.GeneratedIdProperty<?> __getGeneratedIdProperty() {
-        return null;
-    }
+        @Override
+        public String getName() {
+            return __name;
+        }
 
-    @Override
-    public org.seasar.doma.jdbc.entity.VersionProperty<?> __getVersionProperty() {
-        return null;
-    }
+        @Override
+        public void preInsert() {
+            __listener.preInsert(__entity);
+        }
 
-    @Override
-    public String toString() {
-        return "ReturnListTransientEntity_ [id=" + id + ", list=" + list + "]";
-    }
+        @Override
+        public void preUpdate() {
+            __listener.preUpdate(__entity);
+        }
 
-    @SuppressWarnings("unchecked")
-    private void readObject(java.io.ObjectInputStream inputStream) throws java.io.IOException, java.lang.ClassNotFoundException {
-        inputStream.defaultReadObject();
-        id = new org.seasar.doma.jdbc.entity.BasicProperty<org.seasar.doma.domain.BuiltinIntegerDomain>("id", null, (org.seasar.doma.domain.BuiltinIntegerDomain)inputStream.readObject(), true, true);
-        list = new org.seasar.doma.jdbc.entity.TransientProperty<org.seasar.doma.domain.BuiltinArrayListDomain<org.seasar.doma.domain.BuiltinIntegerDomain>>("list", (org.seasar.doma.domain.BuiltinArrayListDomain<org.seasar.doma.domain.BuiltinIntegerDomain>)inputStream.readObject());
-    }
+        @Override
+        public void preDelete() {
+            __listener.preDelete(__entity);
+        }
 
-    private void writeObject(java.io.ObjectOutputStream outputStream) throws java.io.IOException {
-        outputStream.defaultWriteObject();
-        outputStream.writeObject(id.getDomain());
-        outputStream.writeObject(list.getDomain());
+        @Override
+        public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyMeta<?>> getPropertyMetas() {
+            if (__entityProperties == null) {
+                java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyMeta<?>> __list = new java.util.ArrayList<org.seasar.doma.jdbc.entity.EntityPropertyMeta<?>>();
+                __list.add(id);
+                __entityProperties = java.util.Collections.unmodifiableList(__list);
+            }
+            return __entityProperties;
+        }
+
+        @Override
+        public org.seasar.doma.jdbc.entity.EntityPropertyMeta<?> getPropertyMeta(String __name) {
+            if (__entityPropertyMap == null) {
+                java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyMeta<?>> __map = new java.util.HashMap<String, org.seasar.doma.jdbc.entity.EntityPropertyMeta<?>>();
+                __map.put("id", id);
+                __entityPropertyMap = java.util.Collections.unmodifiableMap(__map);
+            }
+            return __entityPropertyMap.get(__name);
+        }
+
+        @Override
+        public org.seasar.doma.jdbc.entity.GeneratedIdPropertyMeta<?> getGeneratedIdProperty() {
+            return null;
+        }
+
+        @Override
+        public org.seasar.doma.jdbc.entity.VersionPropertyMeta<?> getVersionProperty() {
+            return id;
+        }
+
+        @Override
+        public void refreshEntity() {
+            refreshEntityInternal();
+        }
+
+        public void refreshEntityInternal() {
+            __entity.id = id.getWrapper().get();
+        }
+
+        @Override
+        public org.seasar.doma.internal.apt.entity.TransientPropertyEntity getEntity() {
+            refreshEntityInternal();
+            return __entity;
+        }
+
+        @Override
+        public Class<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> getEntityClass() {
+            return org.seasar.doma.internal.apt.entity.TransientPropertyEntity.class;
+        }
+
+        @Override
+        public java.util.Set<String> getModifiedProperties() {
+            return __modifiedProperties;
+        }
+
     }
 
 }

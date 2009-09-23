@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.seasar.doma.jdbc.entity.AbstractEntityMeta;
+import org.seasar.doma.jdbc.entity.EntityMeta;
+import org.seasar.doma.jdbc.entity.EntityMetaFactory;
 import org.seasar.doma.jdbc.entity.EntityPropertyMeta;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyMeta;
 import org.seasar.doma.jdbc.entity.VersionPropertyMeta;
@@ -27,66 +29,83 @@ import org.seasar.doma.jdbc.entity.VersionPropertyMeta;
  * @author taedium
  * 
  */
-public class Emp_ extends AbstractEntityMeta<Emp> {
+public class Emp_ implements EntityMetaFactory<Emp> {
 
-    public Emp_() {
-        super(null, null, null);
+    @Override
+    public EntityMeta<Emp> createEntityMeta() {
+        return new Meta();
     }
 
     @Override
-    public Emp getEntity() {
-        return null;
+    public EntityMeta<Emp> createEntityMeta(Emp entity) {
+        return new Meta(entity);
     }
 
-    @Override
-    public Class<Emp> getEntityClass() {
-        return null;
-    }
+    public static class Meta extends AbstractEntityMeta<Emp> {
 
-    @Override
-    public String getName() {
-        return null;
-    }
+        private Meta() {
+            this(new Emp());
+        }
 
-    @Override
-    public EntityPropertyMeta<?> getPropertyMeta(String propertyName) {
-        return null;
-    }
+        private Meta(Emp entity) {
+            super(null, null, null);
+        }
 
-    @Override
-    public List<EntityPropertyMeta<?>> getPropertyMetas() {
-        return null;
-    }
+        @Override
+        public Emp getEntity() {
+            return null;
+        }
 
-    @Override
-    public GeneratedIdPropertyMeta<?> getGeneratedIdProperty() {
-        return null;
-    }
+        @Override
+        public Class<Emp> getEntityClass() {
+            return null;
+        }
 
-    @Override
-    public VersionPropertyMeta<?> getVersionProperty() {
-        return null;
-    }
+        @Override
+        public String getName() {
+            return null;
+        }
 
-    @Override
-    public void preDelete() {
-    }
+        @Override
+        public EntityPropertyMeta<?> getPropertyMeta(String propertyName) {
+            return null;
+        }
 
-    @Override
-    public void preInsert() {
-    }
+        @Override
+        public List<EntityPropertyMeta<?>> getPropertyMetas() {
+            return null;
+        }
 
-    @Override
-    public void preUpdate() {
-    }
+        @Override
+        public GeneratedIdPropertyMeta<?> getGeneratedIdProperty() {
+            return null;
+        }
 
-    @Override
-    public Set<String> getModifiedProperties() {
-        return null;
-    }
+        @Override
+        public VersionPropertyMeta<?> getVersionProperty() {
+            return null;
+        }
 
-    @Override
-    public void refreshEntity() {
+        @Override
+        public void preDelete() {
+        }
+
+        @Override
+        public void preInsert() {
+        }
+
+        @Override
+        public void preUpdate() {
+        }
+
+        @Override
+        public Set<String> getModifiedProperties() {
+            return null;
+        }
+
+        @Override
+        public void refreshEntity() {
+        }
     }
 
 }

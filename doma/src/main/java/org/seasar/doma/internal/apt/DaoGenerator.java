@@ -49,9 +49,9 @@ import org.seasar.doma.internal.apt.meta.QueryMetaVisitor;
 import org.seasar.doma.internal.apt.meta.SqlFileBatchModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileSelectQueryMeta;
-import org.seasar.doma.internal.jdbc.command.DomainIterationHandler;
-import org.seasar.doma.internal.jdbc.command.DomainResultListHandler;
-import org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.ValueIterationHandler;
+import org.seasar.doma.internal.jdbc.command.ValueResultListHandler;
+import org.seasar.doma.internal.jdbc.command.ValueSingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.EntityIterationHandler;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
@@ -163,8 +163,8 @@ public class DaoGenerator extends AbstractGenerator {
             print("> ");
         }
         print("%1$s %2$s(", m.getReturnTypeName(), m.getName());
-        for (Iterator<Map.Entry<String, String>> it = m.getMethodParameterNames()
-                .entrySet().iterator(); it.hasNext();) {
+        for (Iterator<Map.Entry<String, String>> it = m
+                .getMethodParameterNames().entrySet().iterator(); it.hasNext();) {
             Map.Entry<String, String> entry = it.next();
             print("%1$s %2$s", entry.getValue(), entry.getKey());
             if (it.hasNext()) {
@@ -198,13 +198,15 @@ public class DaoGenerator extends AbstractGenerator {
                 Void p) {
             iprint("entering(\"%1$s\", \"%2$s\"", qualifiedName, m.getName());
             for (Iterator<Map.Entry<String, String>> it = m
-                    .getMethodParameterNames().entrySet().iterator(); it.hasNext();) {
+                    .getMethodParameterNames().entrySet().iterator(); it
+                    .hasNext();) {
                 Map.Entry<String, String> entry = it.next();
                 print(", %1$s", entry.getKey());
             }
             print(");%n");
             for (Iterator<Map.Entry<String, String>> it = m
-                    .getMethodParameterNames().entrySet().iterator(); it.hasNext();) {
+                    .getMethodParameterNames().entrySet().iterator(); it
+                    .hasNext();) {
                 Map.Entry<String, String> entry = it.next();
                 String paramName = entry.getKey();
                 iprint("if (%1$s == null) {%n", paramName);
@@ -222,10 +224,11 @@ public class DaoGenerator extends AbstractGenerator {
                 iprint("query.setOptions(%1$s);%n", m.getOptionsName());
             }
             for (Iterator<Map.Entry<String, String>> it = m
-                    .getMethodParameterNames().entrySet().iterator(); it.hasNext();) {
+                    .getMethodParameterNames().entrySet().iterator(); it
+                    .hasNext();) {
                 Map.Entry<String, String> entry = it.next();
-                String paramName = entry.getKey();
-                iprint("query.addParameter(\"%1$s\", %1$s);%n", paramName);
+                iprint("query.addParameter(\"%1$s\", %2$s.class, %1$s);%n",
+                        entry.getKey(), entry.getValue());
             }
             iprint("query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("query.setCallerMethodName(\"%1$s\");%n", m.getName());
@@ -238,7 +241,7 @@ public class DaoGenerator extends AbstractGenerator {
             if (m.getFetchSize() != null) {
                 iprint("query.setFetchSize(%1$s);%n", m.getFetchSize());
             }
-            iprint("query.compile();%n");
+            iprint("query.prepare();%n");
             if (m.isIterated()) {
                 if (m.getEntityTypeName() != null) {
                     iprint(
@@ -253,7 +256,7 @@ public class DaoGenerator extends AbstractGenerator {
                             "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s, %4$s>(%4$s.class, %5$s));%n",
                             m.getCommandClass().getName(), m
                                     .getReturnTypeName(),
-                            DomainIterationHandler.class.getName(), m
+                            ValueIterationHandler.class.getName(), m
                                     .getDomainTypeName(), m
                                     .getIterationCallbackName());
                 }
@@ -274,14 +277,14 @@ public class DaoGenerator extends AbstractGenerator {
                     Class<?> handlerClass = m.isSingleResult() ? EntitySingleResultHandler.class
                             : EntityResultListHandler.class;
                     iprint(
-                            "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s, %4$s%5$s>(%4$s%5$s.class));%n",
+                            "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s>(new %4$s%5$s()));%n",
                             m.getCommandClass().getName(), m
                                     .getReturnTypeName(), handlerClass
                                     .getName(), m.getEntityTypeName(),
                             entitySuffix);
                 } else {
-                    Class<?> handlerClass = m.isSingleResult() ? DomainSingleResultHandler.class
-                            : DomainResultListHandler.class;
+                    Class<?> handlerClass = m.isSingleResult() ? ValueSingleResultHandler.class
+                            : ValueResultListHandler.class;
                     iprint(
                             "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s>(%4$s.class));%n",
                             m.getCommandClass().getName(), m
@@ -342,7 +345,7 @@ public class DaoGenerator extends AbstractGenerator {
                 iprint("query.setOptimisticLockExceptionSuppressed(%1$s);%n", m
                         .isOptimisticLockExceptionSuppressed());
             }
-            iprint("query.compile();%n");
+            iprint("query.prepare();%n");
             iprint("%1$s command = new %1$s(query);%n", m.getCommandClass()
                     .getName());
             iprint("%1$s result = command.execute();%n", m.getReturnTypeName());
@@ -357,14 +360,16 @@ public class DaoGenerator extends AbstractGenerator {
                 Void p) {
             iprint("entering(\"%1$s\", \"%2$s\"", qualifiedName, m.getName());
             for (Iterator<Map.Entry<String, String>> it = m
-                    .getMethodParameterNames().entrySet().iterator(); it.hasNext();) {
+                    .getMethodParameterNames().entrySet().iterator(); it
+                    .hasNext();) {
                 Map.Entry<String, String> entry = it.next();
                 print(", %1$s", entry.getKey());
             }
             print(");%n");
 
             for (Iterator<Map.Entry<String, String>> it = m
-                    .getMethodParameterNames().entrySet().iterator(); it.hasNext();) {
+                    .getMethodParameterNames().entrySet().iterator(); it
+                    .hasNext();) {
                 Map.Entry<String, String> entry = it.next();
                 String parameter = entry.getKey();
                 iprint("if (%1$s == null) {%n", parameter);
@@ -380,16 +385,18 @@ public class DaoGenerator extends AbstractGenerator {
                     SqlFileUtil.class.getName(), daoMeta.getDaoElement()
                             .getQualifiedName(), m.getName());
             for (Iterator<Map.Entry<String, String>> it = m
-                    .getMethodParameterNames().entrySet().iterator(); it.hasNext();) {
+                    .getMethodParameterNames().entrySet().iterator(); it
+                    .hasNext();) {
                 Map.Entry<String, String> entry = it.next();
-                iprint("query.addParameter(\"%1$s\", %1$s);%n", entry.getKey());
+                iprint("query.addParameter(\"%1$s\", %2$s.class, %1$s);%n",
+                        entry.getKey(), entry.getValue());
             }
             iprint("query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("query.setCallerMethodName(\"%1$s\");%n", m.getName());
             if (m.getQueryTimeout() != null) {
                 iprint("query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             }
-            iprint("query.compile();%n");
+            iprint("query.prepare();%n");
             iprint("%1$s command = new %1$s(query);%n", m.getCommandClass()
                     .getName());
             iprint("%1$s result = command.execute();%n", m.getReturnTypeName());
@@ -439,7 +446,7 @@ public class DaoGenerator extends AbstractGenerator {
                 iprint("query.setOptimisticLockExceptionSuppressed(%1$s);%n", m
                         .isOptimisticLockExceptionSuppressed());
             }
-            iprint("query.compile();%n");
+            iprint("query.prepare();%n");
             iprint("%1$s command = new %1$s(query);%n", m.getCommandClass()
                     .getName());
             iprint("%1$s result = command.execute();%n", m.getReturnTypeName());
@@ -475,7 +482,7 @@ public class DaoGenerator extends AbstractGenerator {
             if (m.getQueryTimeout() != null) {
                 iprint("query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             }
-            iprint("query.compile();%n");
+            iprint("query.prepare();%n");
             iprint("%1$s command = new %1$s(query);%n", m.getCommandClass()
                     .getName());
             iprint("%1$s result = command.execute();%n", m.getReturnTypeName());
@@ -518,7 +525,7 @@ public class DaoGenerator extends AbstractGenerator {
             if (m.getQueryTimeout() != null) {
                 iprint("query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             }
-            iprint("query.compile();%n");
+            iprint("query.prepare();%n");
             iprint("%1$s<%2$s> command = new %1$s<%2$s>(query);%n", m
                     .getCommandClass().getName(), m.getReturnTypeName());
             iprint("%1$s result = command.execute();%n", m.getReturnTypeName());
@@ -559,7 +566,7 @@ public class DaoGenerator extends AbstractGenerator {
             if (m.getQueryTimeout() != null) {
                 iprint("query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             }
-            iprint("query.compile();%n");
+            iprint("query.prepare();%n");
             iprint("%1$s command = new %1$s(query);%n", m.getCommandClass()
                     .getName());
             iprint("command.execute();%n");
@@ -579,7 +586,7 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("query.setResult(new %1$s());%n", m.getReturnTypeName());
-            iprint("query.compile();%n");
+            iprint("query.prepare();%n");
             iprint("%1$s<%2$s> command = new %1$s<%2$s>(query);%n", m
                     .getCommandClass().getName(), m.getReturnTypeName());
             iprint("%1$s result = command.execute();%n", m.getReturnTypeName());
@@ -605,7 +612,7 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("query.setTypeName(\"%1$s\");%n", m.getJdbcTypeName());
             iprint("query.setElements(%1$s);%n", m.getArrayName());
             iprint("query.setResult(new %1$s());%n", m.getReturnTypeName());
-            iprint("query.compile();%n");
+            iprint("query.prepare();%n");
             iprint("%1$s<%2$s> command = new %1$s<%2$s>(query);%n", m
                     .getCommandClass().getName(), m.getReturnTypeName());
             iprint("%1$s result = command.execute();%n", m.getReturnTypeName());
@@ -628,7 +635,8 @@ public class DaoGenerator extends AbstractGenerator {
             }
             print("delegate.%1$s(", m.getName());
             for (Iterator<Map.Entry<String, String>> it = m
-                    .getMethodParameterNames().entrySet().iterator(); it.hasNext();) {
+                    .getMethodParameterNames().entrySet().iterator(); it
+                    .hasNext();) {
                 Map.Entry<String, String> entry = it.next();
                 String parameter = entry.getKey();
                 print("%1$s", parameter);

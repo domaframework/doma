@@ -24,39 +24,22 @@ import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
 import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
-import org.seasar.doma.jdbc.NonUniqueResultException;
+import org.seasar.doma.jdbc.IterationCallback;
+import org.seasar.doma.jdbc.IterationContext;
 import org.seasar.doma.wrapper.StringWrapper;
 
 /**
  * @author taedium
  * 
  */
-public class DomainSingleResultHandlerTest extends TestCase {
+public class ValueIterationHandlerTest extends TestCase {
 
     private final MockConfig runtimeConfig = new MockConfig();
 
     public void testHandle() throws Exception {
         MockResultSetMetaData metaData = new MockResultSetMetaData();
-        metaData.columns.add(new ColumnMetaData("x"));
+        metaData.columns.add(new ColumnMetaData("name"));
         MockResultSet resultSet = new MockResultSet(metaData);
-        resultSet.rows.add(new RowData("aaa"));
-
-        SqlFileSelectQuery query = new SqlFileSelectQuery();
-        query.setConfig(runtimeConfig);
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
-                getName()));
-        query.setCallerClassName("aaa");
-        query.setCallerMethodName("bbb");
-        query.prepare();
-
-        DomainSingleResultHandler<StringWrapper> handler = new DomainSingleResultHandler<StringWrapper>(
-                StringWrapper.class);
-        StringWrapper domain = handler.handle(resultSet, query);
-        assertEquals("aaa", domain.get());
-    }
-
-    public void testHandle_NonUniqueResultException() throws Exception {
-        MockResultSet resultSet = new MockResultSet();
         resultSet.rows.add(new RowData("aaa"));
         resultSet.rows.add(new RowData("bbb"));
 
@@ -68,13 +51,51 @@ public class DomainSingleResultHandlerTest extends TestCase {
         query.setCallerMethodName("bbb");
         query.prepare();
 
-        DomainSingleResultHandler<StringWrapper> handler = new DomainSingleResultHandler<StringWrapper>(
-                StringWrapper.class);
-        try {
-            handler.handle(resultSet, query);
-            fail();
-        } catch (NonUniqueResultException ignore) {
-        }
+        ValueIterationHandler<String, String> handler = new ValueIterationHandler<String, String>(
+                new StringWrapper(), new IterationCallback<String, String>() {
+
+                    private String result = "";
+
+                    @Override
+                    public String iterate(String target,
+                            IterationContext iterationContext) {
+                        result += target;
+                        return result;
+                    }
+                });
+        String result = handler.handle(resultSet, query);
+        assertEquals("aaabbb", result);
     }
 
+    public void testHandle_exits() throws Exception {
+        MockResultSetMetaData metaData = new MockResultSetMetaData();
+        metaData.columns.add(new ColumnMetaData("name"));
+        MockResultSet resultSet = new MockResultSet(metaData);
+        resultSet.rows.add(new RowData("aaa"));
+        resultSet.rows.add(new RowData("bbb"));
+
+        SqlFileSelectQuery query = new SqlFileSelectQuery();
+        query.setConfig(runtimeConfig);
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                getName()));
+        query.setCallerClassName("aaa");
+        query.setCallerMethodName("bbb");
+        query.prepare();
+
+        ValueIterationHandler<String, String> handler = new ValueIterationHandler<String, String>(
+                new StringWrapper(), new IterationCallback<String, String>() {
+
+                    private String result = "";
+
+                    @Override
+                    public String iterate(String target,
+                            IterationContext iterationContext) {
+                        result += target;
+                        iterationContext.exit();
+                        return result;
+                    }
+                });
+        String result = handler.handle(resultSet, query);
+        assertEquals("aaa", result);
+    }
 }

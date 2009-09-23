@@ -173,9 +173,6 @@ public class SqlFileSelectQueryMetaFactory extends
                     throw new AptException(DomaMessageCode.DOMA4028, env,
                             method);
                 }
-            } else if (!isDomain(parameterType)
-                    && !isEntity(parameterType, daoMeta)) {
-                throw new AptException(DomaMessageCode.DOMA4010, env, method);
             }
             queryMeta.addMethodParameterName(parameterName, parameterTypeName);
             queryMeta.addExpressionParameterType(parameterName, parameterType);

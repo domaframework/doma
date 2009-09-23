@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-
 /**
  * 
  * @author taedium
@@ -32,6 +31,8 @@ public class EntityPropertyMeta {
     protected boolean trnsient;
 
     protected boolean version;
+
+    protected boolean primitive;
 
     protected ColumnMeta columnMeta;
 
@@ -91,6 +92,14 @@ public class EntityPropertyMeta {
 
     public String getWrapperTypeName() {
         return wrapperTypeName;
+    }
+
+    public boolean isPrimitive() {
+        return primitive;
+    }
+
+    public void setPrimitive(boolean primitive) {
+        this.primitive = primitive;
     }
 
 }
