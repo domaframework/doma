@@ -16,10 +16,12 @@
 package org.seasar.doma.internal.jdbc;
 
 import java.util.Arrays;
+import java.util.List;
 
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
+import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
@@ -196,7 +198,7 @@ public class JdbcExceptionTest extends TestCase {
                 "select * from aaa where bbb in /*bbb*/(1,2,3)");
         SqlNode sqlNode = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("bbb", 1);
+        evaluator.add("bbb", new Value(int.class, 1));
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
                 evaluator);
         try {
@@ -208,47 +210,12 @@ public class JdbcExceptionTest extends TestCase {
         }
     }
 
-    public void testCollectionElementOfBindValueTypeNotDomain()
-            throws Exception {
-        SqlParser parser = new SqlParser(
-                "select * from aaa where bbb in /*bbb*/(1,2,3)");
-        SqlNode sqlNode = parser.parse();
-        ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("bbb", Arrays.asList(1));
-        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
-                evaluator);
-        try {
-            builder.build(sqlNode);
-            fail();
-        } catch (JdbcException e) {
-            System.out.println(e.getMessage());
-            assertEquals(DomaMessageCode.DOMA2113, e.getMessageCode());
-        }
-    }
-
-    public void testBindValueTypeNotDomain() throws Exception {
-        SqlParser parser = new SqlParser(
-                "select * from aaa where bbb = /*bbb*/1");
-        SqlNode sqlNode = parser.parse();
-        ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("bbb", 1);
-        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
-                evaluator);
-        try {
-            builder.build(sqlNode);
-            fail();
-        } catch (JdbcException e) {
-            System.out.println(e.getMessage());
-            assertEquals(DomaMessageCode.DOMA2114, e.getMessageCode());
-        }
-    }
-
     public void testCollectionOfBindValueContainsNull() throws Exception {
         SqlParser parser = new SqlParser(
                 "select * from aaa where bbb in /*bbb*/(1,2,3)");
         SqlNode sqlNode = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("bbb", Arrays.asList(1, null));
+        evaluator.add("bbb", new Value(List.class, Arrays.asList(1, null)));
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
                 evaluator);
         try {

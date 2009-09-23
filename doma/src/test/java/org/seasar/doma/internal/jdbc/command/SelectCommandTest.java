@@ -20,8 +20,6 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.domain.BigDecimalWrapper;
-import org.seasar.doma.domain.StringWrapper;
 import org.seasar.doma.internal.jdbc.mock.BindValue;
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
@@ -59,9 +57,8 @@ public class SelectCommandTest extends TestCase {
         query.setConfig(runtimeConfig);
         query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
                 getName()));
-        query.addParameter("name", new StringWrapper("hoge"));
-        query.addParameter("salary", new BigDecimalWrapper(
-                new BigDecimal(10000)));
+        query.addParameter("name", String.class, "hoge");
+        query.addParameter("salary", BigDecimal.class, new BigDecimal(10000));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.prepare();
@@ -102,8 +99,7 @@ public class SelectCommandTest extends TestCase {
         query.setConfig(runtimeConfig);
         query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
                 getName()));
-        query.addParameter("salary",
-                new BigDecimalWrapper(new BigDecimal(5000)));
+        query.addParameter("salary", BigDecimal.class, new BigDecimal(5000));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.prepare();

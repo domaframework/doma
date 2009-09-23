@@ -22,8 +22,6 @@ import java.sql.SQLException;
 import java.util.Arrays;
 
 import org.seasar.doma.GenerationType;
-import org.seasar.doma.domain.LongWrapper;
-import org.seasar.doma.domain.StringWrapper;
 import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
@@ -31,6 +29,8 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.message.DomaMessageCode;
+import org.seasar.doma.wrapper.LongWrapper;
+import org.seasar.doma.wrapper.StringWrapper;
 
 /**
  * {@link TableIdGenerator} のデフォルトの実装です。

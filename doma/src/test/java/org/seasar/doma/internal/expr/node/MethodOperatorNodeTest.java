@@ -19,6 +19,7 @@ import junit.framework.TestCase;
 
 import org.seasar.doma.internal.expr.EvaluationResult;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
+import org.seasar.doma.internal.expr.Value;
 
 /**
  * @author taedium
@@ -38,7 +39,7 @@ public class MethodOperatorNodeTest extends TestCase {
                 String.class));
         node.setParametersNode(commaOperatorNode);
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("hoge", "aaa");
+        evaluator.add("hoge", new Value(String.class, "aaa"));
         EvaluationResult evaluationResult = evaluator.evaluate(node);
         assertTrue(evaluationResult.getBooleanValue());
     }

@@ -21,13 +21,13 @@ import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.seasar.doma.domain.Wrapper;
+import org.seasar.doma.wrapper.ClobWrapper;
 
 /**
  * @author taedium
  * 
  */
-public class ClobCreateQuery<R extends Wrapper<Clob, ?>> extends
+public class ClobCreateQuery<R extends ClobWrapper> extends
         AbstractCreateQuery<Clob, R> {
 
     public void prepare() {

@@ -15,8 +15,8 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.jdbc.type.JdbcType;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * SQLのバインド変数の値をSQLのログ出力用フォーマットに変換する処理を表します。
@@ -39,5 +39,5 @@ public interface SqlLogFormattingFunction {
      *            JDBC型
      * @return フォーマットされた文字列
      */
-    <V> String apply(Wrapper<V, ?> domain, JdbcType<V> jdbcType);
+    <V> String apply(Wrapper<V> domain, JdbcType<V> jdbcType);
 }

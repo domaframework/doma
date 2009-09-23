@@ -24,12 +24,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.internal.jdbc.util.ColumnUtil;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.entity.EntityMeta;
 import org.seasar.doma.jdbc.entity.EntityPropertyMeta;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
@@ -59,9 +59,10 @@ public class EntityFetcher {
         for (int i = 1; i < count + 1; i++) {
             String columnName = resultSetMeta.getColumnLabel(i);
             String propertyName = nameMap.get(columnName.toLowerCase());
-            EntityPropertyMeta<?> property = entityMeta.getPropertyMeta(propertyName);
+            EntityPropertyMeta<?> property = entityMeta
+                    .getPropertyMeta(propertyName);
             if (property != null) {
-                Wrapper<?, ?> wrapper = property.getWrapper();
+                Wrapper<?> wrapper = property.getWrapper();
                 GetValueFunction function = new GetValueFunction(resultSet, i);
                 wrapper.accept(jdbcMappingVisitor, function);
             }

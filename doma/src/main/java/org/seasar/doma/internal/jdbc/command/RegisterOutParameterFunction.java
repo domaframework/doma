@@ -21,9 +21,9 @@ import java.sql.CallableStatement;
 import java.sql.SQLException;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.type.JdbcType;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * 
@@ -45,7 +45,7 @@ public class RegisterOutParameterFunction implements JdbcMappingFunction {
     }
 
     @Override
-    public <R, V> R apply(Wrapper<V, ?> domain, JdbcType<V> jdbcType)
+    public <R, V> R apply(Wrapper<V> domain, JdbcType<V> jdbcType)
             throws SQLException {
         if (jdbcType == null) {
             throw new DomaNullPointerException("jdbcType");

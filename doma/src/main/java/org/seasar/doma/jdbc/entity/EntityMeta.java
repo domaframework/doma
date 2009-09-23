@@ -97,7 +97,7 @@ public interface EntityMeta<E> {
      */
     E getEntity();
 
-    Object getPropertyWrappers();
+    Class<E> getEntityClass();
 
     Set<String> getModifiedProperties();
 

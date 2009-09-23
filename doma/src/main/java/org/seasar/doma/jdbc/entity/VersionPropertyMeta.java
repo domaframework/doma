@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.entity;
 
-import org.seasar.doma.domain.NumberWrapper;
+import org.seasar.doma.wrapper.NumberWrapper;
 
 /**
  * バージョンプロパティです。
@@ -23,7 +23,7 @@ import org.seasar.doma.domain.NumberWrapper;
  * @author taedium
  * 
  */
-public class VersionPropertyMeta<W extends NumberWrapper<?, ?>> extends
+public class VersionPropertyMeta<W extends NumberWrapper<?>> extends
         BasicPropertyMeta<W> {
 
     /**

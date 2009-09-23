@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
+import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.Config;
@@ -65,7 +66,7 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
 
     protected int batchSize;
 
-    protected Object propertyWrappers;
+    protected EntityMeta<E> entityMeta;
 
     public SqlFileBatchModifyQuery(EntityMetaFactory<E> entityMetaFactory) {
         assertNotNull(entityMetaFactory);
@@ -79,7 +80,7 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
         if (it.hasNext()) {
             executable = true;
             sqlExecutionSkipCause = null;
-            propertyWrappers = it.next().getPropertyWrappers();
+            entityMeta = it.next();
             prepareSqlFile();
             prepareOptions();
             prepareSql();
@@ -87,7 +88,7 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
             return;
         }
         while (it.hasNext()) {
-            propertyWrappers = it.next().getPropertyWrappers();
+            entityMeta = it.next();
             prepareSql();
         }
         assertEquals(entityMetas.size(), sqls.size());
@@ -110,8 +111,10 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
     }
 
     protected void prepareSql() {
+        Value value = new Value(entityMeta.getEntityClass(), entityMeta
+                .getEntity());
         ExpressionEvaluator evaluator = new ExpressionEvaluator(Collections
-                .singletonMap(parameterName, propertyWrappers));
+                .singletonMap(parameterName, value));
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
                 evaluator);
         PreparedSql sql = sqlBuilder.build(sqlFile.getSqlNode());

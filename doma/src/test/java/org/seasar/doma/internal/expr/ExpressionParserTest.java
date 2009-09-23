@@ -141,7 +141,7 @@ public class ExpressionParserTest extends TestCase {
         ExpressionParser parser = new ExpressionParser("hoge.length()");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("hoge", "aaa");
+        evaluator.add("hoge", new Value(String.class, "aaa"));
         EvaluationResult evaluationResult = evaluator.evaluate(expression);
         assertEquals(new Integer(3), evaluationResult.getValue());
     }
@@ -150,7 +150,7 @@ public class ExpressionParserTest extends TestCase {
         ExpressionParser parser = new ExpressionParser("hoge.length()");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("hoge", "aaa");
+        evaluator.add("hoge", new Value(String.class, "aaa"));
         EvaluationResult evaluationResult = evaluator.evaluate(expression);
         assertEquals(new Integer(3), evaluationResult.getValue());
     }
@@ -159,7 +159,7 @@ public class ExpressionParserTest extends TestCase {
         ExpressionParser parser = new ExpressionParser("hoge.substring(2, 4)");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("hoge", "abcdef");
+        evaluator.add("hoge", new Value(String.class, "abcdef"));
         EvaluationResult evaluationResult = evaluator.evaluate(expression);
         assertEquals("cd", evaluationResult.getValue());
     }
@@ -169,26 +169,27 @@ public class ExpressionParserTest extends TestCase {
                 "hoge.foo.substring(2, 4)");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("hoge", new Hoge());
+        evaluator.add("hoge", new Value(Hoge.class, new Hoge()));
         EvaluationResult evaluationResult = evaluator.evaluate(expression);
         assertEquals("cd", evaluationResult.getValue());
     }
 
     public void testMethod4() throws Exception {
-        ExpressionParser parser = new ExpressionParser("hoge.bar(2, 4).length");
+        ExpressionParser parser = new ExpressionParser(
+                "hoge.bar(2, 4).length()");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("hoge", new Hoge());
+        evaluator.add("hoge", new Value(Hoge.class, new Hoge()));
         EvaluationResult evaluationResult = evaluator.evaluate(expression);
         assertEquals(new Integer(2), evaluationResult.getValue());
     }
 
     public void testMethod5() throws Exception {
         ExpressionParser parser = new ExpressionParser(
-                "hoge.bar(hoge.bar(2, 4).length, 4).length");
+                "hoge.bar(hoge.bar(2, 4).length(), 4).length()");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("hoge", new Hoge());
+        evaluator.add("hoge", new Value(Hoge.class, new Hoge()));
         EvaluationResult evaluationResult = evaluator.evaluate(expression);
         assertEquals(new Integer(2), evaluationResult.getValue());
     }

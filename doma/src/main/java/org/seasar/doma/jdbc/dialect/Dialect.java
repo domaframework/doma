@@ -20,7 +20,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
@@ -29,6 +28,7 @@ import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.type.JdbcType;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * {@literal RDBMS} の方言です。{@literal RDBMS} の差異を吸収します。

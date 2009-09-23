@@ -22,8 +22,8 @@ import java.lang.annotation.Target;
 import java.sql.Connection;
 import java.sql.NClob;
 
-import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * {@link NClob} のインスタンスを生成することを示します。

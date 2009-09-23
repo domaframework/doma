@@ -235,6 +235,9 @@ public class EntityPropertyMetaFactory {
 
     protected void doWrapperTypeName(EntityPropertyMeta propertyMeta,
             VariableElement fieldElement, EntityMeta entityMeta) {
+        if (propertyMeta.isTrnsient()) {
+            return;
+        }
         DeclaredType wrappedType = TypeUtil.toDeclaredType(fieldElement
                 .asType(), env);
         DeclaredType wrapperType = WrapperResolver.getWrapperType(wrappedType,

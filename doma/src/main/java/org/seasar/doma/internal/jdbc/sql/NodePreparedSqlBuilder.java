@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.internal.expr.EvaluationResult;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.ExpressionException;
@@ -78,6 +77,8 @@ import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 import org.seasar.doma.message.DomaMessageCode;
+import org.seasar.doma.wrapper.Wrapper;
+import org.seasar.doma.wrapper.Wrappers;
 
 /**
  * @author taedium
@@ -205,15 +206,8 @@ public class NodePreparedSqlBuilder implements
 
     protected Void handleSingleBindVarialbeNode(BindVariableNode node,
             Context p, Object value, Class<?> valueClass) {
-        if (!Wrapper.class.isAssignableFrom(valueClass)) {
-            SqlLocation location = node.getLocation();
-            throw new JdbcException(DomaMessageCode.DOMA2114,
-                    location.getSql(), location.getLineNumber(), location
-                            .getPosition(), node.getText(), valueClass
-                            .getName());
-        }
-        Wrapper<?, ?> domain = Wrapper.class.cast(value);
-        p.addBindValue(domain);
+        Wrapper<?> wrapper = Wrappers.wrap(value, valueClass);
+        p.addBindValue(wrapper);
         return null;
     }
 
@@ -228,14 +222,8 @@ public class NodePreparedSqlBuilder implements
                         .getSql(), location.getLineNumber(), location
                         .getPosition(), node.getText(), index);
             }
-            if (!Wrapper.class.isInstance(v)) {
-                SqlLocation location = node.getLocation();
-                throw new JdbcException(DomaMessageCode.DOMA2113, location
-                        .getSql(), location.getLineNumber(), location
-                        .getPosition(), node.getText(), v.getClass().getName());
-            }
-            Wrapper<?, ?> domain = Wrapper.class.cast(v);
-            p.addBindValue(domain);
+            Wrapper<?> wrapper = Wrappers.wrap(v, v.getClass());
+            p.addBindValue(wrapper);
             p.appendRawSql(", ");
             p.appendFormattedSql(", ");
             index++;
@@ -525,7 +513,7 @@ public class NodePreparedSqlBuilder implements
             return formattedSqlBuf;
         }
 
-        protected void addBindValue(Wrapper<?, ?> value) {
+        protected void addBindValue(Wrapper<?> value) {
             parameters.add(new InParameter(value));
             rawSqlBuf.append("?");
             formattedSqlBuf.append(value.accept(config.dialect()

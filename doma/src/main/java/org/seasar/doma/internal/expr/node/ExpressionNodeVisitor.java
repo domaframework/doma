@@ -31,6 +31,8 @@ public interface ExpressionNodeVisitor<R, P> {
 
     R visitMethodOperatorNode(MethodOperatorNode node, P p);
 
+    R visitFieldOperatorNode(FieldOperatorNode node, P p);
+
     R visitCommaOperatorNode(CommaOperatorNode node, P p);
 
     R visitEqOperatorNode(EqOperatorNode node, P p);

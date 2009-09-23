@@ -15,15 +15,15 @@
  */
 package org.seasar.doma.internal.jdbc.query;
 
-import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public abstract class AbstractCreateQuery<T, R extends Wrapper<T, ?>> implements
+public abstract class AbstractCreateQuery<T, R extends Wrapper<T>> implements
         CreateQuery<R> {
 
     protected Config config;

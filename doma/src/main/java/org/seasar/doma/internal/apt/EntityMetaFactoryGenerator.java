@@ -36,7 +36,6 @@ import org.seasar.doma.jdbc.entity.AssignedIdPropertyMeta;
 import org.seasar.doma.jdbc.entity.BasicPropertyMeta;
 import org.seasar.doma.jdbc.entity.EntityMetaFactory;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyMeta;
-import org.seasar.doma.jdbc.entity.TransientPropertyMeta;
 import org.seasar.doma.jdbc.entity.VersionPropertyMeta;
 
 /**
@@ -77,7 +76,6 @@ public class EntityMetaFactoryGenerator extends AbstractGenerator {
         indent();
         printMethods();
         printMetaClass();
-        printPropertyWrappersClass();
         unindent();
         iprint("}%n");
     }
@@ -153,46 +151,42 @@ public class EntityMetaFactoryGenerator extends AbstractGenerator {
     protected void printMetaClassPropertyField() {
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             if (pm.isTrnsient()) {
-                iprint(
-                        "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", new %2$s());%n", /* 1 */
-                        TransientPropertyMeta.class.getName(), /* 2 */pm
-                                .getWrapperTypeName(), /* 3 */pm.getName());
-            } else {
-                ColumnMeta cm = pm.getColumnMeta();
-                String columnName = cm.getName();
-                String quote = "\"";
-                if (columnName == null) {
-                    columnName = "null";
-                    quote = "";
-                }
-                if (pm.isId()) {
-                    if (pm.getIdGeneratorMeta() != null) {
-                        iprint(
-                                "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", %5$s%4$s%5$s, new %2$s(), __idGenerator);%n", /* 1 */
-                                GeneratedIdPropertyMeta.class.getName(), /* 2 */
-                                pm.getWrapperTypeName(), /* 3 */pm.getName(), /* 4 */
-                                columnName, /* 5 */quote);
-                    } else {
-                        iprint(
-                                "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", %5$s%4$s%5$s, new %2$s());%n", /* 1 */
-                                AssignedIdPropertyMeta.class.getName(), /* 2 */
-                                pm.getWrapperTypeName(), /* 3 */pm.getName(), /* 4 */
-                                columnName, /* 5 */quote);
-                    }
-                } else if (pm.isVersion()) {
+                continue;
+            }
+            ColumnMeta cm = pm.getColumnMeta();
+            String columnName = cm.getName();
+            String quote = "\"";
+            if (columnName == null) {
+                columnName = "null";
+                quote = "";
+            }
+            if (pm.isId()) {
+                if (pm.getIdGeneratorMeta() != null) {
                     iprint(
-                            "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", %5$s%4$s%5$s, new %2$s());%n", /* 1 */
-                            VersionPropertyMeta.class.getName(), /* 2 */pm
-                                    .getWrapperTypeName(), /* 3 */pm.getName(), /* 4 */
+                            "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", %5$s%4$s%5$s, new %2$s(), __idGenerator);%n", /* 1 */
+                            GeneratedIdPropertyMeta.class.getName(), /* 2 */
+                            pm.getWrapperTypeName(), /* 3 */pm.getName(), /* 4 */
                             columnName, /* 5 */quote);
                 } else {
                     iprint(
-                            "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", %7$s%4$s%7$s, new %2$s(), %5$s, %6$s);%n", /* 1 */
-                            BasicPropertyMeta.class.getName(), /* 2 */pm
-                                    .getWrapperTypeName(), /* 3 */pm.getName(), /* 4 */
-                            columnName, /* 5 */cm.isInsertable(), /* 6 */cm
-                                    .isUpdatable(), /* 7 */quote);
+                            "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", %5$s%4$s%5$s, new %2$s());%n", /* 1 */
+                            AssignedIdPropertyMeta.class.getName(), /* 2 */
+                            pm.getWrapperTypeName(), /* 3 */pm.getName(), /* 4 */
+                            columnName, /* 5 */quote);
                 }
+            } else if (pm.isVersion()) {
+                iprint(
+                        "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", %5$s%4$s%5$s, new %2$s());%n", /* 1 */
+                        VersionPropertyMeta.class.getName(), /* 2 */pm
+                                .getWrapperTypeName(), /* 3 */pm.getName(), /* 4 */
+                        columnName, /* 5 */quote);
+            } else {
+                iprint(
+                        "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", %7$s%4$s%7$s, new %2$s(), %5$s, %6$s);%n", /* 1 */
+                        BasicPropertyMeta.class.getName(), /* 2 */pm
+                                .getWrapperTypeName(), /* 3 */pm.getName(), /* 4 */
+                        columnName, /* 5 */cm.isInsertable(), /* 6 */cm
+                                .isUpdatable(), /* 7 */quote);
             }
             print("%n");
         }
@@ -244,7 +238,10 @@ public class EntityMetaFactoryGenerator extends AbstractGenerator {
         iprint("    super(%2$s%1$s%2$s, %4$s%3$s%4$s, %6$s%5$s%6$s);%n",
                 catalog, catalogQuote, schema, schemaQuote, table, tableQuote);
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
-            iprint("    %1$s.getWrapper().set(entity.%1$s);%n", pm.getName());
+            if (!pm.isTrnsient()) {
+                iprint("    %1$s.getWrapper().set(entity.%1$s);%n", pm
+                        .getName());
+            }
         }
         iprint("    __entity = entity;%n");
         String modifiedPropertyFieldName = entityMeta
@@ -271,8 +268,8 @@ public class EntityMetaFactoryGenerator extends AbstractGenerator {
         printMetaClassRefreshEntityMethod();
         printMetaClassRefreshEntityInternalMethod();
         printMetaClassGetEntityMethod();
-        printMetaClassGetPropertyWrappersMethod();
-        printMetaClassGetDirtyStatesMethod();
+        printMetaClassGetEntityClassMethod();
+        printMetaClassGetModifiedPropertiesMethod();
     }
 
     protected void printMetaClassGetNameMethod() {
@@ -318,6 +315,9 @@ public class EntityMetaFactoryGenerator extends AbstractGenerator {
                 "java.util.List<%1$s<?>> __list = new java.util.ArrayList<%1$s<?>>();%n",
                 org.seasar.doma.jdbc.entity.EntityPropertyMeta.class.getName());
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
+            if (pm.isTrnsient()) {
+                continue;
+            }
             iprint("__list.add(%1$s);%n", pm.getName());
         }
         iprint("__entityProperties = java.util.Collections.unmodifiableList(__list);%n");
@@ -340,6 +340,9 @@ public class EntityMetaFactoryGenerator extends AbstractGenerator {
                 "java.util.Map<String, %1$s<?>> __map = new java.util.HashMap<String, %1$s<?>>();%n",
                 org.seasar.doma.jdbc.entity.EntityPropertyMeta.class.getName());
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
+            if (pm.isTrnsient()) {
+                continue;
+            }
             iprint("__map.put(\"%1$s\", %1$s);%n", pm.getName());
         }
         iprint("__entityPropertyMap = java.util.Collections.unmodifiableMap(__map);%n");
@@ -390,8 +393,10 @@ public class EntityMetaFactoryGenerator extends AbstractGenerator {
     protected void printMetaClassRefreshEntityInternalMethod() {
         iprint("public void refreshEntityInternal() {%n");
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
-            iprint("    __entity.%1$s = %1$s.getWrapper().get();%n", pm
-                    .getName());
+            if (pm.isId() || pm.isVersion()) {
+                iprint("    __entity.%1$s = %1$s.getWrapper().get();%n", pm
+                        .getName());
+            }
         }
         iprint("}%n");
         print("%n");
@@ -406,54 +411,21 @@ public class EntityMetaFactoryGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printMetaClassGetPropertyWrappersMethod() {
+    protected void printMetaClassGetEntityClassMethod() {
         iprint("@Override%n");
-        iprint("public Object getPropertyWrappers() {%n");
-        iprint("    return new PropertyWrappers(this);%n");
+        iprint("public Class<%1$s> getEntityClass() {%n", entityMeta
+                .getEntityTypeName());
+        iprint("    return %1$s.class;%n", entityMeta.getEntityTypeName());
         iprint("}%n");
         print("%n");
     }
 
-    protected void printMetaClassGetDirtyStatesMethod() {
+    protected void printMetaClassGetModifiedPropertiesMethod() {
         iprint("@Override%n");
         iprint("public java.util.Set<String> getModifiedProperties() {%n");
         iprint("    return __modifiedProperties;%n");
         iprint("}%n");
         print("%n");
-    }
-
-    protected void printPropertyWrappersClass() {
-        iprint("public static class PropertyWrappers {%n");
-        print("%n");
-        indent();
-        printPropertyWrappersClassFields();
-        printPropertyWrappersClassConstructor();
-        printPropertyWrappersClassMethods();
-        unindent();
-        iprint("}");
-        print("%n");
-    }
-
-    protected void printPropertyWrappersClassFields() {
-        iprint("private final Meta meta;%n");
-        print("%n");
-    }
-
-    protected void printPropertyWrappersClassConstructor() {
-        iprint("private PropertyWrappers(Meta meta) {%n");
-        iprint("    this.meta = meta;%n");
-        iprint("}%n");
-        print("%n");
-    }
-
-    protected void printPropertyWrappersClassMethods() {
-        for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
-            iprint("public %1$s %2$s() {%n", pm.getWrapperTypeName(), pm
-                    .getName());
-            iprint("    return meta.%1$s.getWrapper();%n", pm.getName());
-            iprint("}%n");
-            print("%n");
-        }
     }
 
     protected class IdGeneratorGenerator implements

@@ -20,7 +20,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.seasar.doma.domain.NumberWrapper;
+import org.seasar.doma.wrapper.NumberWrapper;
 
 /**
  * バージョンを示します。

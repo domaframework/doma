@@ -21,13 +21,13 @@ import java.sql.Connection;
 import java.sql.NClob;
 import java.sql.SQLException;
 
-import org.seasar.doma.domain.Wrapper;
+import org.seasar.doma.wrapper.NClobWrapper;
 
 /**
  * @author taedium
  * 
  */
-public class NClobCreateQuery<R extends Wrapper<NClob, ?>> extends
+public class NClobCreateQuery<R extends NClobWrapper> extends
         AbstractCreateQuery<NClob, R> {
 
     public void prepare() {

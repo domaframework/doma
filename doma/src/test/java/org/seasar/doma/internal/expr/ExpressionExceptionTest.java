@@ -15,13 +15,10 @@
  */
 package org.seasar.doma.internal.expr;
 
-import org.seasar.doma.internal.expr.ExpressionEvaluator;
-import org.seasar.doma.internal.expr.ExpressionException;
-import org.seasar.doma.internal.expr.ExpressionParser;
+import junit.framework.TestCase;
+
 import org.seasar.doma.internal.expr.node.ExpressionNode;
 import org.seasar.doma.message.DomaMessageCode;
-
-import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -44,7 +41,7 @@ public class ExpressionExceptionTest extends TestCase {
     }
 
     public void testMethodNotFound() throws Exception {
-        ExpressionParser parser = new ExpressionParser("\"aaa\".bbb");
+        ExpressionParser parser = new ExpressionParser("\"aaa\".bbb()");
         ExpressionNode node = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         try {
@@ -229,4 +226,18 @@ public class ExpressionExceptionTest extends TestCase {
             assertEquals(DomaMessageCode.DOMA3016, e.getMessageCode());
         }
     }
+
+    public void testFieldNotFound() throws Exception {
+        ExpressionParser parser = new ExpressionParser("\"aaa\".bbb");
+        ExpressionNode node = parser.parse();
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        try {
+            evaluator.evaluate(node);
+            fail();
+        } catch (ExpressionException e) {
+            System.out.println(e.getMessage());
+            assertEquals(DomaMessageCode.DOMA3018, e.getMessageCode());
+        }
+    }
+
 }

@@ -25,13 +25,13 @@ public class Emp_ implements org.seasar.doma.jdbc.entity.EntityMetaFactory<org.s
 
         private static final org.seasar.doma.internal.apt.entity.EmpListener __listener = new org.seasar.doma.internal.apt.entity.EmpListener();
 
-        private final org.seasar.doma.jdbc.entity.GeneratedIdPropertyMeta<org.seasar.doma.domain.IntegerWrapper> id = new org.seasar.doma.jdbc.entity.GeneratedIdPropertyMeta<org.seasar.doma.domain.IntegerWrapper>("id", null, new org.seasar.doma.domain.IntegerWrapper(), __idGenerator);
+        private final org.seasar.doma.jdbc.entity.GeneratedIdPropertyMeta<org.seasar.doma.wrapper.IntegerWrapper> id = new org.seasar.doma.jdbc.entity.GeneratedIdPropertyMeta<org.seasar.doma.wrapper.IntegerWrapper>("id", null, new org.seasar.doma.wrapper.IntegerWrapper(), __idGenerator);
 
-        private final org.seasar.doma.jdbc.entity.BasicPropertyMeta<org.seasar.doma.domain.StringWrapper> name = new org.seasar.doma.jdbc.entity.BasicPropertyMeta<org.seasar.doma.domain.StringWrapper>("name", null, new org.seasar.doma.domain.StringWrapper(), true, true);
+        private final org.seasar.doma.jdbc.entity.BasicPropertyMeta<org.seasar.doma.wrapper.StringWrapper> name = new org.seasar.doma.jdbc.entity.BasicPropertyMeta<org.seasar.doma.wrapper.StringWrapper>("name", null, new org.seasar.doma.wrapper.StringWrapper(), true, true);
 
-        private final org.seasar.doma.jdbc.entity.BasicPropertyMeta<org.seasar.doma.domain.BigDecimalWrapper> salary = new org.seasar.doma.jdbc.entity.BasicPropertyMeta<org.seasar.doma.domain.BigDecimalWrapper>("salary", "SALARY", new org.seasar.doma.domain.BigDecimalWrapper(), false, false);
+        private final org.seasar.doma.jdbc.entity.BasicPropertyMeta<org.seasar.doma.wrapper.BigDecimalWrapper> salary = new org.seasar.doma.jdbc.entity.BasicPropertyMeta<org.seasar.doma.wrapper.BigDecimalWrapper>("salary", "SALARY", new org.seasar.doma.wrapper.BigDecimalWrapper(), false, false);
 
-        private final org.seasar.doma.jdbc.entity.VersionPropertyMeta<org.seasar.doma.domain.IntegerWrapper> version = new org.seasar.doma.jdbc.entity.VersionPropertyMeta<org.seasar.doma.domain.IntegerWrapper>("version", null, new org.seasar.doma.domain.IntegerWrapper());
+        private final org.seasar.doma.jdbc.entity.VersionPropertyMeta<org.seasar.doma.wrapper.IntegerWrapper> version = new org.seasar.doma.jdbc.entity.VersionPropertyMeta<org.seasar.doma.wrapper.IntegerWrapper>("version", null, new org.seasar.doma.wrapper.IntegerWrapper());
 
         private final org.seasar.doma.internal.apt.entity.Emp __entity;
 
@@ -120,8 +120,6 @@ public class Emp_ implements org.seasar.doma.jdbc.entity.EntityMetaFactory<org.s
 
         public void refreshEntityInternal() {
             __entity.id = id.getWrapper().get();
-            __entity.name = name.getWrapper().get();
-            __entity.salary = salary.getWrapper().get();
             __entity.version = version.getWrapper().get();
         }
 
@@ -132,8 +130,8 @@ public class Emp_ implements org.seasar.doma.jdbc.entity.EntityMetaFactory<org.s
         }
 
         @Override
-        public Object getPropertyWrappers() {
-            return new PropertyWrappers(this);
+        public Class<org.seasar.doma.internal.apt.entity.Emp> getEntityClass() {
+            return org.seasar.doma.internal.apt.entity.Emp.class;
         }
 
         @Override
@@ -143,29 +141,4 @@ public class Emp_ implements org.seasar.doma.jdbc.entity.EntityMetaFactory<org.s
 
     }
 
-    public static class PropertyWrappers {
-
-        private final Meta meta;
-
-        private PropertyWrappers(Meta meta) {
-            this.meta = meta;
-        }
-
-        public org.seasar.doma.domain.IntegerWrapper id() {
-            return meta.id.getWrapper();
-        }
-
-        public org.seasar.doma.domain.StringWrapper name() {
-            return meta.name.getWrapper();
-        }
-
-        public org.seasar.doma.domain.BigDecimalWrapper salary() {
-            return meta.salary.getWrapper();
-        }
-
-        public org.seasar.doma.domain.IntegerWrapper version() {
-            return meta.version.getWrapper();
-        }
-
-    }
 }

@@ -17,7 +17,6 @@ package org.seasar.doma.internal.jdbc.command;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.domain.StringWrapper;
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
@@ -27,6 +26,7 @@ import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
+import org.seasar.doma.wrapper.StringWrapper;
 
 /**
  * @author taedium

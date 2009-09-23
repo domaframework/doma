@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.entity;
 
-import org.seasar.doma.domain.Wrapper;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * アプリケーションにより割り当てられる識別子のプロパティです。
@@ -23,7 +23,7 @@ import org.seasar.doma.domain.Wrapper;
  * @author taedium
  * 
  */
-public class AssignedIdPropertyMeta<W extends Wrapper<?, ?>> extends
+public class AssignedIdPropertyMeta<W extends Wrapper<?>> extends
         BasicPropertyMeta<W> {
 
     /**

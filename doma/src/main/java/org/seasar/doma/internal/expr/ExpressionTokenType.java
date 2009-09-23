@@ -67,7 +67,7 @@ public enum ExpressionTokenType {
 
     METHOD_OPERATOR,
 
-    NO_PARAM_METHOD_OPERATOR,
+    FIELD_OPERATOR,
 
     COMMA_OPERATOR,
 

@@ -21,9 +21,6 @@ import java.util.List;
 import javax.annotation.Generated;
 import javax.sql.DataSource;
 
-import org.seasar.doma.domain.BigDecimalWrapper;
-import org.seasar.doma.domain.IntegerWrapper;
-import org.seasar.doma.domain.StringWrapper;
 import org.seasar.doma.internal.jdbc.command.DeleteCommand;
 import org.seasar.doma.internal.jdbc.command.EntityIterationHandler;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
@@ -40,7 +37,6 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.DomaAbstractDao;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.SelectOptions;
-import org.seasar.doma.jdbc.entity.EntityMeta;
 
 import example.entity.Emp;
 import example.entity.Emp_;
@@ -70,7 +66,7 @@ public class EmpDao_ extends DomaAbstractDao implements EmpDao {
         query.setConfig(config);
         query.setSqlFilePath(SqlFileUtil.buildPath("example.dao.EmpDao",
                 "selectById"));
-        query.addParameter("id", new IntegerWrapper(id));
+        query.addParameter("id", Integer.class, id);
         query.setOptions(option);
         query.setCallerClassName("example.dao.EmpDao");
         query.setCallerMethodName("selectById");
@@ -87,8 +83,8 @@ public class EmpDao_ extends DomaAbstractDao implements EmpDao {
         query.setConfig(config);
         query.setSqlFilePath(SqlFileUtil.buildPath("example.dao.EmpDao",
                 "selectByNameAndSalary"));
-        query.addParameter("name", new StringWrapper(name));
-        query.addParameter("salary", new BigDecimalWrapper(salary));
+        query.addParameter("name", String.class, name);
+        query.addParameter("salary", BigDecimal.class, salary);
         query.setOptions(option);
         query.setCallerClassName("example.dao.EmpDao");
         query.setCallerMethodName("selectByNameAndSalary");
@@ -100,13 +96,11 @@ public class EmpDao_ extends DomaAbstractDao implements EmpDao {
 
     @Override
     public List<Emp> selectByExample(Emp emp) {
-        EntityMeta<Emp> empMeta = new Emp_().createEntityMeta(emp);
-
         SqlFileSelectQuery query = new SqlFileSelectQuery();
         query.setConfig(config);
         query.setSqlFilePath(SqlFileUtil.buildPath("example.dao.EmpDao",
                 "selectByNameAndSalary"));
-        query.addParameter("emp", empMeta.getPropertyWrappers());
+        query.addParameter("emp", Emp.class, emp);
         query.setCallerClassName("example.dao.EmpDao");
         query.setCallerMethodName("selectByNameAndSalary");
         query.prepare();

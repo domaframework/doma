@@ -21,7 +21,6 @@ import java.sql.Types;
 import java.util.Collections;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.internal.jdbc.dialect.PostgresForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.PostgresPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
@@ -32,6 +31,7 @@ import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.type.AbstractResultSetType;
 import org.seasar.doma.jdbc.type.JdbcType;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * PostgreSQL用の方言です。

@@ -21,13 +21,13 @@ import java.sql.Array;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.seasar.doma.domain.Wrapper;
+import org.seasar.doma.wrapper.ArrayWrapper;
 
 /**
  * @author taedium
  * 
  */
-public class ArrayCreateQuery<R extends Wrapper<Array, ?>> extends
+public class ArrayCreateQuery<R extends ArrayWrapper> extends
         AbstractCreateQuery<Array, R> {
 
     protected String typeName;

@@ -21,12 +21,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.internal.jdbc.dialect.MysqlPagingTransformer;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * MySQL用の方言です。

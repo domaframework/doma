@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
@@ -138,7 +138,7 @@ public class CallableSqlBuilder
     @Override
     public Void visitInParameter(InParameter parameter, Context p)
             throws RuntimeException {
-        Wrapper<?, ?> domain = parameter.getWrapper();
+        Wrapper<?> domain = parameter.getWrapper();
         p.appendRawSql("?, ");
         p.appendFormattedSql(domain.accept(config.dialect()
                 .getSqlLogFormattingVisitor(), formattingFunction));
@@ -150,7 +150,7 @@ public class CallableSqlBuilder
     @Override
     public Void visitInOutParameter(InOutParameter parameter, Context p)
             throws RuntimeException {
-        Wrapper<?, ?> domain = parameter.getDomain();
+        Wrapper<?> domain = parameter.getDomain();
         p.appendRawSql("?, ");
         p.appendFormattedSql(domain.accept(config.dialect()
                 .getSqlLogFormattingVisitor(), formattingFunction));

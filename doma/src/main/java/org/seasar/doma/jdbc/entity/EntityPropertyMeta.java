@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.entity;
 
-import org.seasar.doma.domain.Wrapper;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * エンティティのプロパティを表します。
@@ -29,7 +29,7 @@ import org.seasar.doma.domain.Wrapper;
  * @param <W>
  *            ドメインの型
  */
-public interface EntityPropertyMeta<W extends Wrapper<?, ?>> {
+public interface EntityPropertyMeta<W extends Wrapper<?>> {
 
     /**
      * ドメインを返します。

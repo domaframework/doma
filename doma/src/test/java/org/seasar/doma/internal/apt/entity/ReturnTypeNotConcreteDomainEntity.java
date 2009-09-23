@@ -17,7 +17,7 @@ package org.seasar.doma.internal.apt.entity;
 
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
-import org.seasar.doma.domain.Wrapper;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
@@ -29,7 +29,7 @@ public class ReturnTypeNotConcreteDomainEntity {
     @Id
     Integer id;
 
-    Wrapper<?, ?> name;
+    Wrapper<?> name;
 
     public Integer getId() {
         return id;
@@ -39,11 +39,11 @@ public class ReturnTypeNotConcreteDomainEntity {
         this.id = id;
     }
 
-    public Wrapper<?, ?> getName() {
+    public Wrapper<?> getName() {
         return name;
     }
 
-    public void setName(Wrapper<?, ?> name) {
+    public void setName(Wrapper<?> name) {
         this.name = name;
     }
 

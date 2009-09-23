@@ -22,9 +22,9 @@ import java.lang.annotation.Target;
 import java.sql.Statement;
 import java.util.List;
 
-import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * ストアドファンクションの呼び出しを示します。

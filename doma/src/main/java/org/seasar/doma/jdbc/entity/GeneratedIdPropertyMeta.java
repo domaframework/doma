@@ -19,12 +19,12 @@ import java.sql.Statement;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.GenerationType;
-import org.seasar.doma.domain.NumberWrapper;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.jdbc.id.IdGenerator;
 import org.seasar.doma.message.DomaMessageCode;
+import org.seasar.doma.wrapper.NumberWrapper;
 
 /**
  * 生成される識別子のプロパティです。
@@ -32,7 +32,7 @@ import org.seasar.doma.message.DomaMessageCode;
  * @author taedium
  * 
  */
-public class GeneratedIdPropertyMeta<W extends NumberWrapper<?, ?>> extends
+public class GeneratedIdPropertyMeta<W extends NumberWrapper<?>> extends
         BasicPropertyMeta<W> {
 
     /** 識別子のジェネレータ */
@@ -79,9 +79,8 @@ public class GeneratedIdPropertyMeta<W extends NumberWrapper<?, ?>> extends
         GenerationType generationType = idGenerator.getGenerationType();
         if (!isGenerationTypeSupported(generationType, dialect)) {
             EntityMeta<?> entity = config.getEntityMeta();
-            throw new JdbcException(DomaMessageCode.DOMA2021, entity
-                    .getName(), name, generationType.name(), dialect
-                    .getName());
+            throw new JdbcException(DomaMessageCode.DOMA2021, entity.getName(),
+                    name, generationType.name(), dialect.getName());
         }
     }
 

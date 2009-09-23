@@ -19,9 +19,8 @@ import java.math.BigDecimal;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.domain.BigDecimalWrapper;
-import org.seasar.doma.domain.StringWrapper;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
+import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
@@ -81,8 +80,9 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         root.addNode(statement);
 
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("name", new StringWrapper("hoge"));
-        evaluator.add("salary", new BigDecimalWrapper(new BigDecimal(100)));
+        evaluator.add("name", new Value(String.class, "hoge"));
+        evaluator.add("salary",
+                new Value(BigDecimal.class, new BigDecimal(100)));
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
                 evaluator);
         PreparedSql sql = builder.build(root);

@@ -19,9 +19,9 @@ import java.math.BigDecimal;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.domain.BigDecimalWrapper;
-import org.seasar.doma.domain.StringWrapper;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
+import org.seasar.doma.wrapper.BigDecimalWrapper;
+import org.seasar.doma.wrapper.StringWrapper;
 
 /**
  * @author taedium

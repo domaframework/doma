@@ -22,26 +22,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.domain.ArrayWrapper;
-import org.seasar.doma.domain.BigDecimalWrapper;
-import org.seasar.doma.domain.BigIntegerWrapper;
-import org.seasar.doma.domain.BlobWrapper;
-import org.seasar.doma.domain.BooleanWrapper;
-import org.seasar.doma.domain.BuiltinWrapperVisitor;
-import org.seasar.doma.domain.ByteWrapper;
-import org.seasar.doma.domain.BytesWrapper;
-import org.seasar.doma.domain.ClobWrapper;
-import org.seasar.doma.domain.DateWrapper;
-import org.seasar.doma.domain.DoubleWrapper;
-import org.seasar.doma.domain.FloatWrapper;
-import org.seasar.doma.domain.IntegerWrapper;
-import org.seasar.doma.domain.LongWrapper;
-import org.seasar.doma.domain.NClobWrapper;
-import org.seasar.doma.domain.ShortWrapper;
-import org.seasar.doma.domain.StringWrapper;
-import org.seasar.doma.domain.TimeWrapper;
-import org.seasar.doma.domain.TimestampWrapper;
-import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.internal.jdbc.dialect.StandardForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.StandardPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
@@ -49,6 +29,7 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
+import org.seasar.doma.jdbc.PersistentWrapperVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
@@ -57,6 +38,25 @@ import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.jdbc.type.JdbcTypes;
 import org.seasar.doma.message.DomaMessageCode;
+import org.seasar.doma.wrapper.ArrayWrapper;
+import org.seasar.doma.wrapper.BigDecimalWrapper;
+import org.seasar.doma.wrapper.BigIntegerWrapper;
+import org.seasar.doma.wrapper.BlobWrapper;
+import org.seasar.doma.wrapper.BooleanWrapper;
+import org.seasar.doma.wrapper.ByteWrapper;
+import org.seasar.doma.wrapper.BytesWrapper;
+import org.seasar.doma.wrapper.ClobWrapper;
+import org.seasar.doma.wrapper.DateWrapper;
+import org.seasar.doma.wrapper.DoubleWrapper;
+import org.seasar.doma.wrapper.FloatWrapper;
+import org.seasar.doma.wrapper.IntegerWrapper;
+import org.seasar.doma.wrapper.LongWrapper;
+import org.seasar.doma.wrapper.NClobWrapper;
+import org.seasar.doma.wrapper.ShortWrapper;
+import org.seasar.doma.wrapper.StringWrapper;
+import org.seasar.doma.wrapper.TimeWrapper;
+import org.seasar.doma.wrapper.TimestampWrapper;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * 標準の方言です。
@@ -341,7 +341,7 @@ public class StandardDialect implements Dialect {
      */
     public static class StandardJdbcMappingVisitor implements
             JdbcMappingVisitor,
-            BuiltinWrapperVisitor<Void, JdbcMappingFunction, SQLException> {
+            PersistentWrapperVisitor<Void, JdbcMappingFunction, SQLException> {
 
         @Override
         public Void visitArrayWrapper(ArrayWrapper wrapper,
@@ -452,8 +452,8 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public Void visitUnknownDomain(Wrapper<?, ?> wrapper,
-                JdbcMappingFunction p) throws SQLException {
+        public Void visitUnknownDomain(Wrapper<?> wrapper, JdbcMappingFunction p)
+                throws SQLException {
             throw new JdbcException(DomaMessageCode.DOMA2019, wrapper
                     .getClass().getName());
         }
@@ -468,7 +468,7 @@ public class StandardDialect implements Dialect {
     public static class StandardSqlLogFormattingVisitor
             implements
             SqlLogFormattingVisitor,
-            BuiltinWrapperVisitor<String, SqlLogFormattingFunction, RuntimeException> {
+            PersistentWrapperVisitor<String, SqlLogFormattingFunction, RuntimeException> {
 
         @Override
         public String visitArrayWrapper(ArrayWrapper wrapper,
@@ -579,7 +579,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String visitUnknownDomain(Wrapper<?, ?> wrapper,
+        public String visitUnknownDomain(Wrapper<?> wrapper,
                 SqlLogFormattingFunction p) {
             throw new JdbcException(DomaMessageCode.DOMA2019, wrapper
                     .getClass().getName());

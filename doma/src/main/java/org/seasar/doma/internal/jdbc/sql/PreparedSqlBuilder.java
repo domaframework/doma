@@ -20,9 +20,9 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
@@ -56,7 +56,7 @@ public class PreparedSqlBuilder {
         formattedSql.setLength(formattedSql.length() - length);
     }
 
-    public void appendDomain(Wrapper<?, ?> domain) {
+    public void appendDomain(Wrapper<?> domain) {
         rawSql.append("?");
         formattedSql.append(domain.accept(config.dialect()
                 .getSqlLogFormattingVisitor(), formattingFunction));

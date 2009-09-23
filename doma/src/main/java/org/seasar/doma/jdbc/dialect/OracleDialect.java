@@ -20,8 +20,6 @@ import java.sql.SQLException;
 import java.util.Collections;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.domain.BooleanWrapper;
-import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.internal.jdbc.dialect.OracleForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.OraclePagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
@@ -35,6 +33,8 @@ import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.type.AbstractResultSetType;
 import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.jdbc.type.JdbcTypes;
+import org.seasar.doma.wrapper.BooleanWrapper;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * Oracle用の方言です。

@@ -19,7 +19,6 @@ import java.math.BigDecimal;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.domain.StringWrapper;
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
@@ -29,6 +28,7 @@ import org.seasar.doma.internal.jdbc.query.SelectQuery;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SelectOptions;
+import org.seasar.doma.wrapper.StringWrapper;
 
 /**
  * @author taedium

@@ -21,13 +21,13 @@ import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.seasar.doma.domain.Wrapper;
+import org.seasar.doma.wrapper.BlobWrapper;
 
 /**
  * @author taedium
  * 
  */
-public class BlobCreateQuery<R extends Wrapper<Blob, ?>> extends
+public class BlobCreateQuery<R extends BlobWrapper> extends
         AbstractCreateQuery<Blob, R> {
 
     public void prepare() {

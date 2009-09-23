@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.seasar.doma.jdbc.entity.AbstractEntityMeta;
-import org.seasar.doma.jdbc.entity.GeneratedIdPropertyMeta;
 import org.seasar.doma.jdbc.entity.EntityPropertyMeta;
+import org.seasar.doma.jdbc.entity.GeneratedIdPropertyMeta;
 import org.seasar.doma.jdbc.entity.VersionPropertyMeta;
 
 /**
@@ -39,7 +39,7 @@ public class Emp_ extends AbstractEntityMeta<Emp> {
     }
 
     @Override
-    public Object getPropertyWrappers() {
+    public Class<Emp> getEntityClass() {
         return null;
     }
 
@@ -82,14 +82,11 @@ public class Emp_ extends AbstractEntityMeta<Emp> {
 
     @Override
     public Set<String> getModifiedProperties() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public void refreshEntity() {
-        // TODO Auto-generated method stub
-
     }
 
 }

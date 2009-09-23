@@ -21,8 +21,6 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.seasar.doma.domain.BigDecimalWrapper;
-import org.seasar.doma.domain.StringWrapper;
 import org.seasar.doma.internal.jdbc.mock.BindValue;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockPreparedStatement;
@@ -30,6 +28,8 @@ import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.wrapper.BigDecimalWrapper;
+import org.seasar.doma.wrapper.StringWrapper;
 
 public class PreparedSqlParameterBinderTest extends TestCase {
 

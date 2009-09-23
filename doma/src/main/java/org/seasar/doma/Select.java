@@ -22,13 +22,13 @@ import java.lang.annotation.Target;
 import java.sql.Statement;
 import java.util.List;
 
-import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SqlFileNotFoundException;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * 検索処理を示します。

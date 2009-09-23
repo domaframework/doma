@@ -39,7 +39,6 @@ import org.seasar.doma.Entity;
 import org.seasar.doma.EntityField;
 import org.seasar.doma.ModifiedProperties;
 import org.seasar.doma.Table;
-import org.seasar.doma.Transient;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Notifier;
@@ -195,9 +194,6 @@ public class EntityMetaFactory {
                 .toTypeElement(t.getSuperclass(), env)) {
             for (VariableElement field : ElementFilter.fieldsIn(t
                     .getEnclosedElements())) {
-                if (field.getAnnotation(Transient.class) != null) {
-                    continue;
-                }
                 if (field.getModifiers().contains(Modifier.STATIC)) {
                     continue;
                 }

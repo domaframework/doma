@@ -164,7 +164,7 @@ public class ExpressionTokenizerTest extends TestCase {
         ExpressionTokenizer tokenizer = new ExpressionTokenizer("aaa.bbb");
         assertEquals(VARIABLE, tokenizer.next());
         assertEquals("aaa", tokenizer.getToken());
-        assertEquals(NO_PARAM_METHOD_OPERATOR, tokenizer.next());
+        assertEquals(FIELD_OPERATOR, tokenizer.next());
         assertEquals(".bbb", tokenizer.getToken());
         assertEquals(EOE, tokenizer.next());
         assertNull(tokenizer.getToken());

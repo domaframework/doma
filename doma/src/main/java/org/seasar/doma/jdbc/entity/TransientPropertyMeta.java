@@ -16,7 +16,7 @@
 package org.seasar.doma.jdbc.entity;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.domain.Wrapper;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * 非永続性プロパティです。
@@ -24,14 +24,14 @@ import org.seasar.doma.domain.Wrapper;
  * @author taedium
  * 
  */
-public class TransientPropertyMeta<D extends Wrapper<?, ?>> implements
-        EntityPropertyMeta<D> {
+public class TransientPropertyMeta<W extends Wrapper<?>> implements
+        EntityPropertyMeta<W> {
 
     /** 名前 */
     protected final String name;
 
     /** ドメイン */
-    protected final D domain;
+    protected final W domain;
 
     /**
      * インスタンスを構築します。
@@ -41,7 +41,7 @@ public class TransientPropertyMeta<D extends Wrapper<?, ?>> implements
      * @param domain
      *            ドメイン
      */
-    public TransientPropertyMeta(String name, D domain) {
+    public TransientPropertyMeta(String name, W domain) {
         if (name == null) {
             throw new DomaNullPointerException("name");
         }
@@ -58,7 +58,7 @@ public class TransientPropertyMeta<D extends Wrapper<?, ?>> implements
     }
 
     @Override
-    public D getWrapper() {
+    public W getWrapper() {
         return domain;
     }
 

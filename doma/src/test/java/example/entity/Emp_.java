@@ -24,9 +24,6 @@ import java.util.Set;
 
 import javax.annotation.Generated;
 
-import org.seasar.doma.domain.BigDecimalWrapper;
-import org.seasar.doma.domain.IntegerWrapper;
-import org.seasar.doma.domain.StringWrapper;
 import org.seasar.doma.jdbc.entity.AbstractEntityMeta;
 import org.seasar.doma.jdbc.entity.AssignedIdPropertyMeta;
 import org.seasar.doma.jdbc.entity.BasicPropertyMeta;
@@ -36,6 +33,9 @@ import org.seasar.doma.jdbc.entity.EntityMetaFactory;
 import org.seasar.doma.jdbc.entity.EntityPropertyMeta;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyMeta;
 import org.seasar.doma.jdbc.entity.VersionPropertyMeta;
+import org.seasar.doma.wrapper.BigDecimalWrapper;
+import org.seasar.doma.wrapper.IntegerWrapper;
+import org.seasar.doma.wrapper.StringWrapper;
 
 @Generated("")
 public class Emp_ implements EntityMetaFactory<Emp> {
@@ -97,6 +97,11 @@ public class Emp_ implements EntityMetaFactory<Emp> {
         }
 
         @Override
+        public Class<Emp> getEntityClass() {
+            return Emp.class;
+        }
+
+        @Override
         public void refreshEntity() {
             refreshEntityInternal();
         }
@@ -106,11 +111,6 @@ public class Emp_ implements EntityMetaFactory<Emp> {
             __entity.name = name.getWrapper().get();
             __entity.salary = salary.getWrapper().get();
             __entity.version = version.getWrapper().get();
-        }
-
-        @Override
-        public Object getPropertyWrappers() {
-            return new PropertyWrappers(this);
         }
 
         @Override
@@ -174,31 +174,6 @@ public class Emp_ implements EntityMetaFactory<Emp> {
             return dirtyStates;
         }
 
-    }
-
-    public static class PropertyWrappers {
-
-        protected final Meta meta;
-
-        public PropertyWrappers(Meta meta) {
-            this.meta = meta;
-        }
-
-        public IntegerWrapper id() {
-            return meta.id.getWrapper();
-        }
-
-        public StringWrapper name() {
-            return meta.name.getWrapper();
-        }
-
-        public BigDecimalWrapper salary() {
-            return meta.salary.getWrapper();
-        }
-
-        public IntegerWrapper version() {
-            return meta.version.getWrapper();
-        }
     }
 
 }

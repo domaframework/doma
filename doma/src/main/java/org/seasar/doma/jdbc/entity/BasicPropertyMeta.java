@@ -16,7 +16,7 @@
 package org.seasar.doma.jdbc.entity;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.domain.Wrapper;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * 基本のプロパティです。
@@ -24,7 +24,7 @@ import org.seasar.doma.domain.Wrapper;
  * @author taedium
  * 
  */
-public class BasicPropertyMeta<W extends Wrapper<?, ?>> implements
+public class BasicPropertyMeta<W extends Wrapper<?>> implements
         EntityPropertyMeta<W> {
 
     /** 名前 */

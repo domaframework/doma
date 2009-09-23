@@ -22,8 +22,8 @@ import java.lang.annotation.Target;
 import java.sql.Array;
 import java.sql.Connection;
 
-import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * {@link Array} のインスタンスを生成することを示します。

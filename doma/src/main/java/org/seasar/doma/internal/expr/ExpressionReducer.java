@@ -29,6 +29,7 @@ import org.seasar.doma.internal.expr.node.EqOperatorNode;
 import org.seasar.doma.internal.expr.node.ExpressionLocation;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
 import org.seasar.doma.internal.expr.node.ExpressionNodeVisitor;
+import org.seasar.doma.internal.expr.node.FieldOperatorNode;
 import org.seasar.doma.internal.expr.node.GeOperatorNode;
 import org.seasar.doma.internal.expr.node.GtOperatorNode;
 import org.seasar.doma.internal.expr.node.LeOperatorNode;
@@ -45,7 +46,6 @@ import org.seasar.doma.internal.expr.node.ParensNode;
 import org.seasar.doma.internal.expr.node.SubtractOperatorNode;
 import org.seasar.doma.internal.expr.node.VariableNode;
 import org.seasar.doma.message.DomaMessageCode;
-
 
 /**
  * @author taedium
@@ -165,6 +165,13 @@ public class ExpressionReducer implements
     public Void visitMethodOperatorNode(MethodOperatorNode node,
             Deque<ExpressionNode> p) {
         node.setParametersNode(pop(node, p));
+        node.setTargetObjectNode(pop(node, p));
+        return null;
+    }
+
+    @Override
+    public Void visitFieldOperatorNode(FieldOperatorNode node,
+            Deque<ExpressionNode> p) {
         node.setTargetObjectNode(pop(node, p));
         return null;
     }

@@ -31,6 +31,7 @@ import org.seasar.doma.internal.expr.node.EmptyNode;
 import org.seasar.doma.internal.expr.node.EqOperatorNode;
 import org.seasar.doma.internal.expr.node.ExpressionLocation;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
+import org.seasar.doma.internal.expr.node.FieldOperatorNode;
 import org.seasar.doma.internal.expr.node.GeOperatorNode;
 import org.seasar.doma.internal.expr.node.GtOperatorNode;
 import org.seasar.doma.internal.expr.node.LeOperatorNode;
@@ -209,8 +210,8 @@ public class ExpressionParser {
                 parseMethodOperand();
                 break;
             }
-            case NO_PARAM_METHOD_OPERATOR: {
-                parseNoParamMethodOperand();
+            case FIELD_OPERATOR: {
+                parseFieldOperand();
                 break;
             }
             case OTHER: {
@@ -341,11 +342,10 @@ public class ExpressionParser {
         reduce(node);
     }
 
-    protected void parseNoParamMethodOperand() {
+    protected void parseFieldOperand() {
         String name = token.substring(1);
-        MethodOperatorNode node = new MethodOperatorNode(getLocation(), token,
+        FieldOperatorNode node = new FieldOperatorNode(getLocation(), token,
                 name);
-        expressionNodes.push(new EmptyNode(getLocation()));
         reduce(node);
     }
 

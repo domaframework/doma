@@ -297,7 +297,7 @@ public class ExpressionTokenizer {
                 }
             }
         } else if (c == '.') {
-            type = NO_PARAM_METHOD_OPERATOR;
+            type = FIELD_OPERATOR;
             binOperationAvailable = true;
             while (buf.hasRemaining()) {
                 buf.mark();

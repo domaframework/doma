@@ -20,9 +20,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.jdbc.entity.BuiltinEntityListener;
 import org.seasar.doma.jdbc.entity.EntityListener;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * テーブルもしくは結果セットを示します。

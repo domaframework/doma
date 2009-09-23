@@ -19,43 +19,42 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.List;
 
-import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.DomaMessageCode;
-
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class DomainListParameter implements ListParameter<Wrapper<?, ?>> {
+public class DomainListParameter implements ListParameter<Wrapper<?>> {
 
-    protected final Class<Wrapper<?, ?>> domainClass;
+    protected final Class<Wrapper<?>> domainClass;
 
-    protected final List<Wrapper<?, ?>> domains;
+    protected final List<Wrapper<?>> domains;
 
-    public DomainListParameter(Class<Wrapper<?, ?>> domainClass,
-            List<Wrapper<?, ?>> domains) {
+    public DomainListParameter(Class<Wrapper<?>> domainClass,
+            List<Wrapper<?>> domains) {
         assertNotNull(domainClass, domains);
         this.domainClass = domainClass;
         this.domains = domains;
     }
 
-    public Wrapper<?, ?> add() {
-        Wrapper<?, ?> domain = createDomain();
+    public Wrapper<?> add() {
+        Wrapper<?> domain = createDomain();
         domains.add(domain);
         return domain;
     }
 
-    protected Wrapper<?, ?> createDomain() {
+    protected Wrapper<?> createDomain() {
         try {
             return ClassUtil.newInstance(domainClass);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
-            throw new JdbcException(DomaMessageCode.DOMA2006, cause, domainClass
-                    .getName(), cause);
+            throw new JdbcException(DomaMessageCode.DOMA2006, cause,
+                    domainClass.getName(), cause);
         }
     }
 

@@ -18,7 +18,7 @@ package org.seasar.doma.jdbc;
 import java.sql.ResultSet;
 
 import org.seasar.doma.Entity;
-import org.seasar.doma.domain.Wrapper;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * {@link ResultSet} にマッピングされるオブジェクト群を1件ずつ処理するコールバックです。

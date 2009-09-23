@@ -18,6 +18,7 @@ package org.seasar.doma.internal.expr;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -27,7 +28,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.seasar.doma.domain.Wrapper;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.expr.node.AddOperatorNode;
 import org.seasar.doma.internal.expr.node.AndOperatorNode;
@@ -40,6 +40,7 @@ import org.seasar.doma.internal.expr.node.EqOperatorNode;
 import org.seasar.doma.internal.expr.node.ExpressionLocation;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
 import org.seasar.doma.internal.expr.node.ExpressionNodeVisitor;
+import org.seasar.doma.internal.expr.node.FieldOperatorNode;
 import org.seasar.doma.internal.expr.node.GeOperatorNode;
 import org.seasar.doma.internal.expr.node.GtOperatorNode;
 import org.seasar.doma.internal.expr.node.LeOperatorNode;
@@ -55,8 +56,10 @@ import org.seasar.doma.internal.expr.node.ParensNode;
 import org.seasar.doma.internal.expr.node.SubtractOperatorNode;
 import org.seasar.doma.internal.expr.node.VariableNode;
 import org.seasar.doma.internal.util.ConstructorUtil;
+import org.seasar.doma.internal.util.FieldUtil;
 import org.seasar.doma.internal.util.MethodUtil;
 import org.seasar.doma.message.DomaMessageCode;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
@@ -65,29 +68,32 @@ import org.seasar.doma.message.DomaMessageCode;
 public class ExpressionEvaluator implements
         ExpressionNodeVisitor<EvaluationResult, Void> {
 
-    protected final Map<String, Object> variableValues = new HashMap<String, Object>();
+    protected final Map<String, Value> variableValues = new HashMap<String, Value>();
 
     public ExpressionEvaluator() {
     }
 
-    public ExpressionEvaluator(Map<String, ? extends Object> variableValues) {
+    public ExpressionEvaluator(Map<String, Value> variableValues) {
+        assertNotNull(variableValues);
         this.variableValues.putAll(variableValues);
     }
 
-    public void add(String varialbeName, Object value) {
+    public void add(String varialbeName, Value value) {
+        assertNotNull(varialbeName, value);
         variableValues.put(varialbeName, value);
     }
 
     public EvaluationResult evaluate(ExpressionNode node) {
+        assertNotNull(node);
         return node.accept(this, null);
     }
 
     @Override
     public EvaluationResult visitEqOperatorNode(EqOperatorNode node, Void p) {
         Object left = node.getLeftNode().accept(this, p).getValue();
-        left = getEnclosedValueIfDomain(left);
+        left = getEnclosedValueIfWrapped(left);
         Object right = node.getRightNode().accept(this, p).getValue();
-        right = getEnclosedValueIfDomain(right);
+        right = getEnclosedValueIfWrapped(right);
         if (left == null && right == null) {
             return new EvaluationResult(true, boolean.class);
         }
@@ -110,9 +116,9 @@ public class ExpressionEvaluator implements
     @Override
     public EvaluationResult visitNeOperatorNode(NeOperatorNode node, Void p) {
         Object left = node.getLeftNode().accept(this, p).getValue();
-        left = getEnclosedValueIfDomain(left);
+        left = getEnclosedValueIfWrapped(left);
         Object right = node.getRightNode().accept(this, p).getValue();
-        right = getEnclosedValueIfDomain(right);
+        right = getEnclosedValueIfWrapped(right);
         if (left == null && right == null) {
             return new EvaluationResult(false, boolean.class);
         }
@@ -135,9 +141,9 @@ public class ExpressionEvaluator implements
     @Override
     public EvaluationResult visitGeOperatorNode(GeOperatorNode node, Void p) {
         Object left = node.getLeftNode().accept(this, p).getValue();
-        left = getEnclosedValueIfDomain(left);
+        left = getEnclosedValueIfWrapped(left);
         Object right = node.getRightNode().accept(this, p).getValue();
-        right = getEnclosedValueIfDomain(right);
+        right = getEnclosedValueIfWrapped(right);
         return new EvaluationResult(compare(node, left, right) >= 0,
                 boolean.class);
     }
@@ -145,9 +151,9 @@ public class ExpressionEvaluator implements
     @Override
     public EvaluationResult visitGtOperatorNode(GtOperatorNode node, Void p) {
         Object left = node.getLeftNode().accept(this, p).getValue();
-        left = getEnclosedValueIfDomain(left);
+        left = getEnclosedValueIfWrapped(left);
         Object right = node.getRightNode().accept(this, p).getValue();
-        right = getEnclosedValueIfDomain(right);
+        right = getEnclosedValueIfWrapped(right);
         return new EvaluationResult(compare(node, left, right) > 0,
                 boolean.class);
     }
@@ -155,9 +161,9 @@ public class ExpressionEvaluator implements
     @Override
     public EvaluationResult visitLeOperatorNode(LeOperatorNode node, Void p) {
         Object left = node.getLeftNode().accept(this, p).getValue();
-        left = getEnclosedValueIfDomain(left);
+        left = getEnclosedValueIfWrapped(left);
         Object right = node.getRightNode().accept(this, p).getValue();
-        right = getEnclosedValueIfDomain(right);
+        right = getEnclosedValueIfWrapped(right);
         return new EvaluationResult(compare(node, left, right) <= 0,
                 boolean.class);
     }
@@ -165,17 +171,17 @@ public class ExpressionEvaluator implements
     @Override
     public EvaluationResult visitLtOperatorNode(LtOperatorNode node, Void p) {
         Object left = node.getLeftNode().accept(this, p).getValue();
-        left = getEnclosedValueIfDomain(left);
+        left = getEnclosedValueIfWrapped(left);
         Object right = node.getRightNode().accept(this, p).getValue();
-        right = getEnclosedValueIfDomain(right);
+        right = getEnclosedValueIfWrapped(right);
         return new EvaluationResult(compare(node, left, right) < 0,
                 boolean.class);
     }
 
-    protected Object getEnclosedValueIfDomain(Object maybeDomain) {
+    protected Object getEnclosedValueIfWrapped(Object maybeDomain) {
         if (Wrapper.class.isInstance(maybeDomain)) {
-            Wrapper<?, ?> domain = Wrapper.class.cast(maybeDomain);
-            return domain.get();
+            Wrapper<?> wrapper = Wrapper.class.cast(maybeDomain);
+            return wrapper.get();
         }
         return maybeDomain;
     }
@@ -370,21 +376,6 @@ public class ExpressionEvaluator implements
         return invokeMethod(location, method, target, paramTypes, params);
     }
 
-    protected EvaluationResult invokeMethod(ExpressionLocation location,
-            Method method, Object target, Class<?>[] paramTypes, Object[] params) {
-        Object value;
-        try {
-            value = MethodUtil.invoke(method, target, params);
-        } catch (WrapException e) {
-            Throwable cause = e.getCause();
-            throw new ExpressionException(DomaMessageCode.DOMA3001, cause,
-                    location.getExpression(), location.getPosition(), target
-                            .getClass().getName(), method.getName(), cause);
-        }
-        Class<?> returnType = method.getReturnType();
-        return new EvaluationResult(value, returnType);
-    }
-
     protected Method findMethod(ExpressionLocation location, String methodName,
             Object target, Class<?>[] paramTypes) {
         List<Method> methods = new ArrayList<Method>();
@@ -412,16 +403,71 @@ public class ExpressionEvaluator implements
                 .getName(), methodName);
     }
 
+    protected EvaluationResult invokeMethod(ExpressionLocation location,
+            Method method, Object target, Class<?>[] paramTypes, Object[] params) {
+        Object value;
+        try {
+            value = MethodUtil.invoke(method, target, params);
+        } catch (WrapException e) {
+            Throwable cause = e.getCause();
+            throw new ExpressionException(DomaMessageCode.DOMA3001, cause,
+                    location.getExpression(), location.getPosition(), target
+                            .getClass().getName(), method.getName(), cause);
+        }
+        return new EvaluationResult(value, method.getReturnType());
+    }
+
+    @Override
+    public EvaluationResult visitFieldOperatorNode(FieldOperatorNode node,
+            Void p) {
+        EvaluationResult targetResult = node.getTargetObjectNode().accept(this,
+                p);
+        Object target = targetResult.getValue();
+        ExpressionLocation location = node.getLocation();
+        Field field = findField(location, node.getName(), target);
+        return getFieldValue(location, field, target);
+    }
+
+    protected Field findField(ExpressionLocation location, String fieldName,
+            Object target) {
+        for (Class<?> clazz = target.getClass(); clazz != Object.class; clazz = clazz
+                .getSuperclass()) {
+            try {
+                Field field = clazz.getDeclaredField(fieldName);
+                field.setAccessible(true);
+                return field;
+            } catch (NoSuchFieldException ignored) {
+            }
+        }
+        throw new ExpressionException(DomaMessageCode.DOMA3018, location
+                .getExpression(), location.getPosition(), target.getClass()
+                .getName(), fieldName);
+    }
+
+    protected EvaluationResult getFieldValue(ExpressionLocation location,
+            Field field, Object target) {
+        Object value;
+        try {
+            value = FieldUtil.get(field, target);
+        } catch (WrapException e) {
+            Throwable cause = e.getCause();
+            throw new ExpressionException(DomaMessageCode.DOMA3019, cause,
+                    location.getExpression(), location.getPosition(), target
+                            .getClass().getName(), field.getName(), cause);
+        }
+        return new EvaluationResult(value, field.getType());
+    }
+
     @Override
     public EvaluationResult visitVariableNode(VariableNode node, Void p) {
         String variableName = node.getName();
-        Object value = variableValues.get(node.getName());
+        Value value = variableValues.get(node.getName());
         if (value == null) {
             ExpressionLocation location = node.getLocation();
             throw new ExpressionException(DomaMessageCode.DOMA3003, location
                     .getExpression(), location.getPosition(), variableName);
         }
-        return new EvaluationResult(value, value.getClass());
+        return new EvaluationResult(value.getValue(), value.getType());
     }
 
     @Override

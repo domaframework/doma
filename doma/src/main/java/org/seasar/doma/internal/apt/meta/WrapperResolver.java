@@ -20,25 +20,25 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.domain.ArrayWrapper;
-import org.seasar.doma.domain.BigDecimalWrapper;
-import org.seasar.doma.domain.BigIntegerWrapper;
-import org.seasar.doma.domain.BlobWrapper;
-import org.seasar.doma.domain.BooleanWrapper;
-import org.seasar.doma.domain.ByteWrapper;
-import org.seasar.doma.domain.BytesWrapper;
-import org.seasar.doma.domain.ClobWrapper;
-import org.seasar.doma.domain.DateWrapper;
-import org.seasar.doma.domain.DoubleWrapper;
-import org.seasar.doma.domain.FloatWrapper;
-import org.seasar.doma.domain.IntegerWrapper;
-import org.seasar.doma.domain.LongWrapper;
-import org.seasar.doma.domain.NClobWrapper;
-import org.seasar.doma.domain.ShortWrapper;
-import org.seasar.doma.domain.StringWrapper;
-import org.seasar.doma.domain.TimeWrapper;
-import org.seasar.doma.domain.TimestampWrapper;
 import org.seasar.doma.internal.apt.TypeUtil;
+import org.seasar.doma.wrapper.ArrayWrapper;
+import org.seasar.doma.wrapper.BigDecimalWrapper;
+import org.seasar.doma.wrapper.BigIntegerWrapper;
+import org.seasar.doma.wrapper.BlobWrapper;
+import org.seasar.doma.wrapper.BooleanWrapper;
+import org.seasar.doma.wrapper.ByteWrapper;
+import org.seasar.doma.wrapper.BytesWrapper;
+import org.seasar.doma.wrapper.ClobWrapper;
+import org.seasar.doma.wrapper.DateWrapper;
+import org.seasar.doma.wrapper.DoubleWrapper;
+import org.seasar.doma.wrapper.FloatWrapper;
+import org.seasar.doma.wrapper.IntegerWrapper;
+import org.seasar.doma.wrapper.LongWrapper;
+import org.seasar.doma.wrapper.NClobWrapper;
+import org.seasar.doma.wrapper.ShortWrapper;
+import org.seasar.doma.wrapper.StringWrapper;
+import org.seasar.doma.wrapper.TimeWrapper;
+import org.seasar.doma.wrapper.TimestampWrapper;
 
 public final class WrapperResolver {
 

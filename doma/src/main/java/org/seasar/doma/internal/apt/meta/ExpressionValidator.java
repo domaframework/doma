@@ -27,6 +27,7 @@ import org.seasar.doma.internal.expr.node.EqOperatorNode;
 import org.seasar.doma.internal.expr.node.ExpressionLocation;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
 import org.seasar.doma.internal.expr.node.ExpressionNodeVisitor;
+import org.seasar.doma.internal.expr.node.FieldOperatorNode;
 import org.seasar.doma.internal.expr.node.GeOperatorNode;
 import org.seasar.doma.internal.expr.node.GtOperatorNode;
 import org.seasar.doma.internal.expr.node.LeOperatorNode;
@@ -199,6 +200,12 @@ public class ExpressionValidator implements ExpressionNodeVisitor<Void, Void> {
         if (resultContext != null) {
             typeContextMap.put(node, resultContext);
         }
+        return null;
+    }
+
+    @Override
+    public Void visitFieldOperatorNode(FieldOperatorNode node, Void p) {
+        // TODO
         return null;
     }
 
@@ -428,6 +435,11 @@ public class ExpressionValidator implements ExpressionNodeVisitor<Void, Void> {
 
         @Override
         public Integer visitMethodOperatorNode(MethodOperatorNode node, Void p) {
+            return count;
+        }
+
+        @Override
+        public Integer visitFieldOperatorNode(FieldOperatorNode node, Void p) {
             return count;
         }
 

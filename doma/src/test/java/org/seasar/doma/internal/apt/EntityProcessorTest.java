@@ -20,6 +20,7 @@ import org.seasar.doma.internal.apt.entity.ChildEntity;
 import org.seasar.doma.internal.apt.entity.ElementOfReturnListNotDomainEntity;
 import org.seasar.doma.internal.apt.entity.ElementOfReturnListUnspecifiedEntity;
 import org.seasar.doma.internal.apt.entity.Emp;
+import org.seasar.doma.internal.apt.entity.ListPropertyEntity;
 import org.seasar.doma.internal.apt.entity.ListenerArgumentTypeIllegalEntity;
 import org.seasar.doma.internal.apt.entity.NameUnsafeEntity_;
 import org.seasar.doma.internal.apt.entity.NotTopLevelEntity;
@@ -102,6 +103,15 @@ public class EntityProcessorTest extends AptTestCase {
         compile();
         assertFalse(getCompiledResult());
         assertMessageCode(DomaMessageCode.DOMA4022);
+    }
+
+    public void testListProperty() throws Exception {
+        Class<?> target = ListPropertyEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertTrue(getCompiledResult());
     }
 
     public void testReturnTypeNotConcreteDomain() throws Exception {
