@@ -21,22 +21,19 @@ import java.sql.Array;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.seasar.doma.wrapper.ArrayWrapper;
-
 /**
  * @author taedium
  * 
  */
-public class ArrayCreateQuery<R extends ArrayWrapper> extends
-        AbstractCreateQuery<Array, R> {
+public class ArrayCreateQuery extends AbstractCreateQuery<Array> {
 
     protected String typeName;
 
     protected Object[] elements;
 
     public void prepare() {
-        assertNotNull(config, callerClassName, callerMethodName, result,
-                typeName, elements);
+        assertNotNull(config, callerClassName, callerMethodName, typeName,
+                elements);
     }
 
     @Override
@@ -60,9 +57,7 @@ public class ArrayCreateQuery<R extends ArrayWrapper> extends
     }
 
     @Override
-    public R create(Connection connection) throws SQLException {
-        Array array = connection.createArrayOf(typeName, elements);
-        result.set(array);
-        return result;
+    public Array create(Connection connection) throws SQLException {
+        return connection.createArrayOf(typeName, elements);
     }
 }

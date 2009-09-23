@@ -162,7 +162,7 @@ public enum DomaMessageCode implements MessageCode {
     DOMA4055("戻り値の型[{0}]とIterationCallbackの1番目の型パラメータの型[{1}]が一致していません。"),
     DOMA4056("@Selectのiterate要素にtrueを設定した場合、IterationCallback型のパラメータが必要です。"),
     DOMA4057("IterationCallback型のパラメータを利用するには、@Selectのiteration要素にtrueを設定しなければいけません。"),
-    DOMA4058("IterationCallbackの2番目の型パラメータは、@Entityが指定されたインタフェースもしくはDomainインタフェースのサブタイプのいずれかでなければいけません。"),
+    DOMA4058("IterationCallbackの2番目の型パラメータ[{0}]はサポートされていません。"),
     DOMA4059("@Daoが注釈されたインタフェースは型パラメータを受け取ってはいけません。"),
     DOMA4060("@ResultSetが注釈されていないパラメータの型はDomainインタフェースを実装した具象クラスでなければいけません。"),
     DOMA4061("@ResultSetが注釈されたListの型パラメータは、@Entityが指定されたインタフェースもしくはDomainインタフェースを実装した具象クラスでなければいけません。"),
@@ -199,6 +199,7 @@ public enum DomaMessageCode implements MessageCode {
     DOMA4094("永続対象のフィールドはパッケージプライベート以上の可視性を持たねばなりません。"),
     DOMA4095("@DirtyStatesはSet<String>のサブタイプ以外のフィールドに注釈できません。"),
     DOMA4096("クラス[{0}]は、永続対象の型としてサポートされていません。"),
+    DOMA4097("型は、[{0}]でなければいけません。"),
 
     // other
     DOMA9001("java.io.Closeableのclose()に失敗しました。原因は次のものです。{0}");

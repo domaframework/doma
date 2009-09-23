@@ -17,16 +17,17 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.lang.reflect.Modifier;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 
-import org.seasar.doma.Delete;
 import org.seasar.doma.Transient;
 import org.seasar.doma.internal.apt.TypeUtil;
 
@@ -50,20 +51,20 @@ public class EntityPropertyNameCollector {
     }
 
     protected void collectNames(TypeMirror type, Set<String> names) {
-        TypeElement typeElement = TypeUtil.toTypeElement(type, env);
-        for (ExecutableElement method : ElementFilter.methodsIn(typeElement
-                .getEnclosedElements())) {
-            if (isPersistent(method)) {
-                names.add(method.getSimpleName().toString());
+        for (TypeElement t = TypeUtil.toTypeElement(type, env); t != null
+                && t.asType().getKind() != TypeKind.NONE; t = TypeUtil
+                .toTypeElement(t.getSuperclass(), env)) {
+            for (VariableElement field : ElementFilter.fieldsIn(t
+                    .getEnclosedElements())) {
+                if (isPersistent(field)) {
+                    names.add(field.getSimpleName().toString());
+                }
             }
-        }
-        for (TypeMirror supertype : env.getTypeUtils().directSupertypes(type)) {
-            collectNames(supertype, names);
         }
     }
 
-    protected boolean isPersistent(ExecutableElement method) {
-        return method.getAnnotation(Delete.class) == null
-                && method.getAnnotation(Transient.class) == null;
+    protected boolean isPersistent(VariableElement field) {
+        return field.getAnnotation(Transient.class) == null
+                && !field.getModifiers().contains(Modifier.STATIC);
     }
 }

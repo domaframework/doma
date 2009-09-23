@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
@@ -129,7 +130,18 @@ public class SqlFileBatchModifyQueryMetaFactory extends
         queryMeta.setEntityListTypeName(entityListTypeName);
         queryMeta.setElementTypeName(TypeUtil.getTypeName(elementType, daoMeta
                 .getTypeParameterMap(), env));
-        queryMeta.addMethodParameterName(entityListName, entityListTypeName);
+
+        QueryParameterMeta parameterMeta = new QueryParameterMeta();
+        parameterMeta.setName(entityListName);
+        parameterMeta.setTypeName(entityListTypeName);
+        parameterMeta.setTypeMirror(entityListType);
+        TypeElement typeElement = TypeUtil.toTypeElement(entityListType, env);
+        if (typeElement != null) {
+            parameterMeta.setQualifiedName(typeElement.getQualifiedName()
+                    .toString());
+        }
+        queryMeta.addQueryParameterMetas(parameterMeta);
+
         queryMeta.addExpressionParameterType(entityListName, elementType);
     }
 

@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
@@ -128,7 +129,18 @@ public class AutoModifyQueryMetaFactory extends
                 .getTypeParameterMap(), env);
         queryMeta.setEntityName(entityName);
         queryMeta.setEntityTypeName(entityTypeName);
-        queryMeta.addMethodParameterName(entityName, entityTypeName);
+
+        QueryParameterMeta parameterMeta = new QueryParameterMeta();
+        parameterMeta.setName(entityName);
+        parameterMeta.setTypeName(entityTypeName);
+        parameterMeta.setTypeMirror(entityType);
+        TypeElement typeElement = TypeUtil.toTypeElement(entityType, env);
+        if (typeElement != null) {
+            parameterMeta.setQualifiedName(typeElement.getQualifiedName()
+                    .toString());
+        }
+        queryMeta.addQueryParameterMetas(parameterMeta);
+
         queryMeta.addExpressionParameterType(entityName, entityType);
 
         validateEntityPropertyNames(entityType, method, queryMeta);

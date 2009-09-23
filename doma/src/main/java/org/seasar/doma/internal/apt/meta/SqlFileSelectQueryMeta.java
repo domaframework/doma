@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import javax.lang.model.type.TypeMirror;
-
 import org.seasar.doma.jdbc.Options;
 import org.seasar.doma.jdbc.SelectOptions;
 
@@ -30,53 +28,13 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
     protected String optionsName;
 
-    protected String iterationCallbackTypeName;
-
-    protected String iterationCallbackName;
-
-    protected TypeMirror iterationCallbackResultType;
-
-    protected TypeMirror iterationCallbackTargetType;
-
     protected boolean iterated;
 
     protected Integer maxRows;
 
     protected Integer fetchSize;
 
-    public String getIterationCallbackTypeName() {
-        return iterationCallbackTypeName;
-    }
-
-    public void setIterationCallbackTypeName(String iterationCallbackTypeName) {
-        this.iterationCallbackTypeName = iterationCallbackTypeName;
-    }
-
-    public String getIterationCallbackName() {
-        return iterationCallbackName;
-    }
-
-    public void setIterationCallbackName(String iterationCallbackName) {
-        this.iterationCallbackName = iterationCallbackName;
-    }
-
-    public TypeMirror getIterationCallbackResultType() {
-        return iterationCallbackResultType;
-    }
-
-    public void setIterationCallbackResultType(
-            TypeMirror iterationCallbackResultType) {
-        this.iterationCallbackResultType = iterationCallbackResultType;
-    }
-
-    public TypeMirror getIterationCallbackTargetType() {
-        return iterationCallbackTargetType;
-    }
-
-    public void setIterationCallbackTargetType(
-            TypeMirror iterationCallbackTargetType) {
-        this.iterationCallbackTargetType = iterationCallbackTargetType;
-    }
+    protected IterationCallbackMeta iterationCallbackMeta;
 
     public String getOptionsTypeName() {
         return optionsTypeName;
@@ -120,6 +78,15 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
     public void setFetchSize(Integer fetchSize) {
         this.fetchSize = fetchSize;
+    }
+
+    public IterationCallbackMeta getIterationCallbackMeta() {
+        return iterationCallbackMeta;
+    }
+
+    public void setIterationCallbackMeta(
+            IterationCallbackMeta iterationCallbackMeta) {
+        this.iterationCallbackMeta = iterationCallbackMeta;
     }
 
     @Override

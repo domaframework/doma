@@ -32,5 +32,8 @@ public interface IterationCallbackDao {
             IterationCallback<Integer, Emp> callback);
 
     @Select(iterate = true)
+    Integer iterate(IterationCallback<Integer, String> callback);
+
+    @Select(iterate = true)
     String iterate(HogeIterationCallback callback);
 }

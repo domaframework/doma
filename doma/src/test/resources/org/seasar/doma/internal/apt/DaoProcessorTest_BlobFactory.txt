@@ -16,16 +16,15 @@ public class BlobFactoryDao_ extends org.seasar.doma.jdbc.DomaAbstractDao implem
     }
 
     @Override
-    public org.seasar.doma.domain.BuiltinBlobDomain create() {
+    public java.sql.Blob create() {
         entering("org.seasar.doma.internal.apt.dao.BlobFactoryDao_", "create");
-        org.seasar.doma.internal.jdbc.query.BlobCreateQuery<org.seasar.doma.domain.BuiltinBlobDomain> query = new org.seasar.doma.internal.jdbc.query.BlobCreateQuery<org.seasar.doma.domain.BuiltinBlobDomain>();
+        org.seasar.doma.internal.jdbc.query.BlobCreateQuery query = new org.seasar.doma.internal.jdbc.query.BlobCreateQuery();
         query.setConfig(config);
         query.setCallerClassName("org.seasar.doma.internal.apt.dao.BlobFactoryDao_");
         query.setCallerMethodName("create");
-        query.setResult(new org.seasar.doma.domain.BuiltinBlobDomain());
-        query.compile();
-        org.seasar.doma.internal.jdbc.command.CreateCommand<org.seasar.doma.domain.BuiltinBlobDomain> command = new org.seasar.doma.internal.jdbc.command.CreateCommand<org.seasar.doma.domain.BuiltinBlobDomain>(query);
-        org.seasar.doma.domain.BuiltinBlobDomain result = command.execute();
+        query.prepare();
+        org.seasar.doma.internal.jdbc.command.CreateCommand<java.sql.Blob> command = new org.seasar.doma.internal.jdbc.command.CreateCommand<java.sql.Blob>(query);
+        java.sql.Blob result = command.execute();
         exiting("org.seasar.doma.internal.apt.dao.BlobFactoryDao_", "create", result);
         return result;
     }

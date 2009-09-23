@@ -19,7 +19,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.Map;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
@@ -43,9 +42,11 @@ import org.seasar.doma.internal.apt.meta.EntityListParameterMeta;
 import org.seasar.doma.internal.apt.meta.EntityListResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.InOutParameterMeta;
 import org.seasar.doma.internal.apt.meta.InParameterMeta;
+import org.seasar.doma.internal.apt.meta.IterationCallbackMeta;
 import org.seasar.doma.internal.apt.meta.OutParameterMeta;
 import org.seasar.doma.internal.apt.meta.QueryMeta;
 import org.seasar.doma.internal.apt.meta.QueryMetaVisitor;
+import org.seasar.doma.internal.apt.meta.QueryParameterMeta;
 import org.seasar.doma.internal.apt.meta.QueryResultMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileBatchModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileModifyQueryMeta;
@@ -164,10 +165,11 @@ public class DaoGenerator extends AbstractGenerator {
             print("> ");
         }
         print("%1$s %2$s(", m.getQueryResultMeta().getTypeName(), m.getName());
-        for (Iterator<Map.Entry<String, String>> it = m
-                .getMethodParameterNames().entrySet().iterator(); it.hasNext();) {
-            Map.Entry<String, String> entry = it.next();
-            print("%1$s %2$s", entry.getValue(), entry.getKey());
+        for (Iterator<QueryParameterMeta> it = m.getQueryParameterMetas()
+                .iterator(); it.hasNext();) {
+            QueryParameterMeta parameterMeta = it.next();
+            print("%1$s %2$s", parameterMeta.getTypeName(), parameterMeta
+                    .getName());
             if (it.hasNext()) {
                 print(", ");
             }
@@ -198,18 +200,19 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visistSqlFileSelectQueryMeta(SqlFileSelectQueryMeta m,
                 Void p) {
             iprint("entering(\"%1$s\", \"%2$s\"", qualifiedName, m.getName());
-            for (Iterator<Map.Entry<String, String>> it = m
-                    .getMethodParameterNames().entrySet().iterator(); it
-                    .hasNext();) {
-                Map.Entry<String, String> entry = it.next();
-                print(", %1$s", entry.getKey());
+            for (Iterator<QueryParameterMeta> it = m.getQueryParameterMetas()
+                    .iterator(); it.hasNext();) {
+                QueryParameterMeta parameterMeta = it.next();
+                print(", %1$s", parameterMeta.getName());
             }
             print(");%n");
-            for (Iterator<Map.Entry<String, String>> it = m
-                    .getMethodParameterNames().entrySet().iterator(); it
-                    .hasNext();) {
-                Map.Entry<String, String> entry = it.next();
-                String paramName = entry.getKey();
+            for (Iterator<QueryParameterMeta> it = m.getQueryParameterMetas()
+                    .iterator(); it.hasNext();) {
+                QueryParameterMeta parameterMeta = it.next();
+                if (parameterMeta.isNullable()) {
+                    continue;
+                }
+                String paramName = parameterMeta.getName();
                 iprint("if (%1$s == null) {%n", paramName);
                 iprint("    throw new %1$s(\"%2$s\");%n",
                         DomaNullPointerException.class.getName(), paramName);
@@ -224,12 +227,12 @@ public class DaoGenerator extends AbstractGenerator {
             if (m.getOptionsName() != null) {
                 iprint("query.setOptions(%1$s);%n", m.getOptionsName());
             }
-            for (Iterator<Map.Entry<String, String>> it = m
-                    .getMethodParameterNames().entrySet().iterator(); it
-                    .hasNext();) {
-                Map.Entry<String, String> entry = it.next();
+            for (Iterator<QueryParameterMeta> it = m.getQueryParameterMetas()
+                    .iterator(); it.hasNext();) {
+                QueryParameterMeta parameterMeta = it.next();
                 iprint("query.addParameter(\"%1$s\", %2$s.class, %1$s);%n",
-                        entry.getKey(), entry.getValue());
+                        parameterMeta.getName(), parameterMeta
+                                .getQualifiedName());
             }
             iprint("query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("query.setCallerMethodName(\"%1$s\");%n", m.getName());
@@ -244,66 +247,64 @@ public class DaoGenerator extends AbstractGenerator {
             }
             iprint("query.prepare();%n");
             QueryResultMeta resultMeta = m.getQueryResultMeta();
+            String commandClassName = m.getCommandClass().getName();
             if (m.isIterated()) {
-                if (m.getQueryResultMeta().isEntity()) {
+                IterationCallbackMeta callbackMeta = m
+                        .getIterationCallbackMeta();
+                if (callbackMeta.isEntityTarget()) {
                     iprint(
-                            "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s, %4$s, %4$s%5$s>(%4$s%5$s.class, %6$s));%n",
-                            m.getCommandClass().getName(), m
-                                    .getIterationCallbackResultType(),
-                            EntityIterationHandler.class.getName(), resultMeta
-                                    .getTypeName(), entitySuffix, m
-                                    .getIterationCallbackName());
+                            "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s, %4$s>(new %4$s%5$s(), %6$s));%n",
+                            commandClassName, resultMeta.getTypeName(),
+                            EntityIterationHandler.class.getName(),
+                            callbackMeta.getTargetTypeName(), entitySuffix,
+                            callbackMeta.getQueryParameterMeta().getName());
                 } else {
                     iprint(
-                            "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s, %4$s>(%4$s.class, %5$s));%n",
-                            m.getCommandClass().getName(), resultMeta
-                                    .getTypeName(), ValueIterationHandler.class
-                                    .getName(), m
-                                    .getIterationCallbackTargetType(), m
-                                    .getIterationCallbackName());
+                            "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s, %4$s>(new %5$s(), %6$s));%n",
+                            commandClassName, resultMeta.getTypeName(),
+                            ValueIterationHandler.class.getName(), callbackMeta
+                                    .getTargetTypeName(), callbackMeta
+                                    .getTargetWrapperType(), callbackMeta
+                                    .getQueryParameterMeta().getName());
                 }
                 if ("void".equals(resultMeta.getTypeName())) {
                     iprint("command.execute();%n");
                     iprint("exiting(\"%1$s\", \"%2$s\", null);%n",
                             qualifiedName, m.getName());
                 } else {
-                    iprint("%1$s result = command.execute();%n", m
-                            .getQueryResultMeta().getTypeName());
+                    iprint("%1$s result = command.execute();%n", resultMeta
+                            .getTypeName());
                     iprint("exiting(\"%1$s\", \"%2$s\", result);%n",
                             qualifiedName, m.getName());
                     iprint("return result;%n");
                 }
             } else {
                 if (m.getQueryResultMeta().isEntity()) {
-                    if (m.getQueryResultMeta().isList()) {
+                    if (m.getQueryResultMeta().isCollection()) {
                         iprint(
                                 "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s>(new %4$s%5$s()));%n",
-                                m.getCommandClass().getName(), resultMeta
-                                        .getTypeName(),
+                                commandClassName, resultMeta.getTypeName(),
                                 EntityResultListHandler.class.getName(),
                                 resultMeta.getElementTypeName(), entitySuffix);
                     } else {
                         iprint(
                                 "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s>(new %4$s%5$s()));%n",
-                                m.getCommandClass().getName(), resultMeta
-                                        .getTypeName(),
+                                commandClassName, resultMeta.getTypeName(),
                                 EntitySingleResultHandler.class.getName(),
                                 resultMeta.getTypeName(), entitySuffix);
                     }
                 } else {
-                    if (m.getQueryResultMeta().isList()) {
+                    if (m.getQueryResultMeta().isCollection()) {
                         iprint(
                                 "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s>(new %5$s()));%n",
-                                m.getCommandClass().getName(), m
-                                        .getQueryResultMeta().getTypeName(),
+                                commandClassName, resultMeta.getTypeName(),
                                 ValueResultListHandler.class.getName(),
                                 resultMeta.getElementTypeName(), resultMeta
                                         .getWrapperTypeName());
                     } else {
                         iprint(
                                 "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s>(new %4$s()));%n",
-                                m.getCommandClass().getName(), resultMeta
-                                        .getTypeName(),
+                                commandClassName, resultMeta.getTypeName(),
                                 ValueSingleResultHandler.class.getName(),
                                 resultMeta.getWrapperTypeName());
                     }
@@ -376,22 +377,23 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visistSqlFileModifyQueryMeta(SqlFileModifyQueryMeta m,
                 Void p) {
             iprint("entering(\"%1$s\", \"%2$s\"", qualifiedName, m.getName());
-            for (Iterator<Map.Entry<String, String>> it = m
-                    .getMethodParameterNames().entrySet().iterator(); it
-                    .hasNext();) {
-                Map.Entry<String, String> entry = it.next();
-                print(", %1$s", entry.getKey());
+            for (Iterator<QueryParameterMeta> it = m.getQueryParameterMetas()
+                    .iterator(); it.hasNext();) {
+                QueryParameterMeta parameterMeta = it.next();
+                print(", %1$s", parameterMeta.getName());
             }
             print(");%n");
 
-            for (Iterator<Map.Entry<String, String>> it = m
-                    .getMethodParameterNames().entrySet().iterator(); it
-                    .hasNext();) {
-                Map.Entry<String, String> entry = it.next();
-                String parameter = entry.getKey();
-                iprint("if (%1$s == null) {%n", parameter);
+            for (Iterator<QueryParameterMeta> it = m.getQueryParameterMetas()
+                    .iterator(); it.hasNext();) {
+                QueryParameterMeta parameterMeta = it.next();
+                if (parameterMeta.isNullable()) {
+                    continue;
+                }
+                String parameterName = parameterMeta.getName();
+                iprint("if (%1$s == null) {%n", parameterName);
                 iprint("    throw new %1$s(\"%2$s\");%n",
-                        DomaNullPointerException.class.getName(), parameter);
+                        DomaNullPointerException.class.getName(), parameterName);
                 iprint("}%n");
             }
 
@@ -401,12 +403,12 @@ public class DaoGenerator extends AbstractGenerator {
                     "query.setSqlFilePath(%1$s.buildPath(\"%2$s\", \"%3$s\"));%n",
                     SqlFileUtil.class.getName(), daoMeta.getDaoElement()
                             .getQualifiedName(), m.getName());
-            for (Iterator<Map.Entry<String, String>> it = m
-                    .getMethodParameterNames().entrySet().iterator(); it
-                    .hasNext();) {
-                Map.Entry<String, String> entry = it.next();
+            for (Iterator<QueryParameterMeta> it = m.getQueryParameterMetas()
+                    .iterator(); it.hasNext();) {
+                QueryParameterMeta parameterMeta = it.next();
                 iprint("query.addParameter(\"%1$s\", %2$s.class, %1$s);%n",
-                        entry.getKey(), entry.getValue());
+                        parameterMeta.getName(), parameterMeta
+                                .getQualifiedName());
             }
             iprint("query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("query.setCallerMethodName(\"%1$s\");%n", m.getName());
@@ -601,12 +603,11 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("entering(\"%1$s\", \"%2$s\");%n", qualifiedName, m
                     .getName());
             QueryResultMeta resultMeta = m.getQueryResultMeta();
-            iprint("%1$s<%2$s> query = new %1$s<%2$s>();%n", m.getQueryClass()
-                    .getName(), resultMeta.getTypeName());
+            iprint("%1$s query = new %1$s();%n", m.getQueryClass().getName(),
+                    resultMeta.getTypeName());
             iprint("query.setConfig(config);%n");
             iprint("query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("query.setCallerMethodName(\"%1$s\");%n", m.getName());
-            iprint("query.setResult(new %1$s());%n", resultMeta.getTypeName());
             iprint("query.prepare();%n");
             iprint("%1$s<%2$s> command = new %1$s<%2$s>(query);%n", m
                     .getCommandClass().getName(), resultMeta.getTypeName());
@@ -627,14 +628,12 @@ public class DaoGenerator extends AbstractGenerator {
                     DomaNullPointerException.class.getName(), m.getArrayName());
             iprint("}%n");
             QueryResultMeta resultMeta = m.getQueryResultMeta();
-            iprint("%1$s<%2$s> query = new %1$s<%2$s>();%n", m.getQueryClass()
-                    .getName(), resultMeta.getTypeName());
+            iprint("%1$s query = new %1$s();%n", m.getQueryClass().getName());
             iprint("query.setConfig(config);%n");
             iprint("query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("query.setTypeName(\"%1$s\");%n", m.getJdbcTypeName());
             iprint("query.setElements(%1$s);%n", m.getArrayName());
-            iprint("query.setResult(new %1$s());%n", resultMeta.getTypeName());
             iprint("query.prepare();%n");
             iprint("%1$s<%2$s> command = new %1$s<%2$s>(query);%n", m
                     .getCommandClass().getName(), resultMeta.getTypeName());
@@ -659,12 +658,10 @@ public class DaoGenerator extends AbstractGenerator {
                 iprint("%1$s result = ", resultMeta.getTypeName());
             }
             print("delegate.%1$s(", m.getName());
-            for (Iterator<Map.Entry<String, String>> it = m
-                    .getMethodParameterNames().entrySet().iterator(); it
-                    .hasNext();) {
-                Map.Entry<String, String> entry = it.next();
-                String parameter = entry.getKey();
-                print("%1$s", parameter);
+            for (Iterator<QueryParameterMeta> it = m.getQueryParameterMetas()
+                    .iterator(); it.hasNext();) {
+                QueryParameterMeta parameterMeta = it.next();
+                print("%1$s", parameterMeta.getName());
                 if (it.hasNext()) {
                     print(", ");
                 }

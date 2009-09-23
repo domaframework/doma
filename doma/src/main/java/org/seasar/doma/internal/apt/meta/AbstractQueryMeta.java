@@ -58,8 +58,6 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
     protected String[] excludedPropertyNames;
 
-    protected Map<String, String> methodParameterNames = new LinkedHashMap<String, String>();
-
     protected Map<String, TypeMirror> expressionParameterTypes = new LinkedHashMap<String, TypeMirror>();
 
     protected QueryResultMeta queryResultMeta;
@@ -160,15 +158,6 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
     public void setNullExcluded(Boolean nullExcluded) {
         this.nullExcluded = nullExcluded;
-    }
-
-    public Map<String, String> getMethodParameterNames() {
-        return methodParameterNames;
-    }
-
-    public void addMethodParameterName(String parameterName,
-            String parameterTypeName) {
-        this.methodParameterNames.put(parameterName, parameterTypeName);
     }
 
     public Map<String, TypeMirror> getExpressionParameterTypes() {

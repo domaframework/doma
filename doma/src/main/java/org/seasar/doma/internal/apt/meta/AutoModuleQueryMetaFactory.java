@@ -19,6 +19,7 @@ import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
@@ -52,12 +53,24 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
             String typeName = TypeUtil.getTypeName(parameterType, daoMeta
                     .getTypeParameterMap(), env);
             String name = ElementUtil.getParameterName(param);
-            CallableSqlParameterMeta parameterMeta = createParameterMeta(
+            CallableSqlParameterMeta sqlParameterMeta = createParameterMeta(
                     queryMeta, param, method, daoMeta);
+            sqlParameterMeta.setName(name);
+            sqlParameterMeta.setTypeName(typeName);
+            queryMeta.addCallableSqlParameterMeta(sqlParameterMeta);
+
+            QueryParameterMeta parameterMeta = new QueryParameterMeta();
             parameterMeta.setName(name);
             parameterMeta.setTypeName(typeName);
-            queryMeta.addCallableSqlParameterMeta(parameterMeta);
-            queryMeta.addMethodParameterName(name, typeName);
+            parameterMeta.setTypeMirror(parameterType);
+            TypeElement typeElement = TypeUtil
+                    .toTypeElement(parameterType, env);
+            if (typeElement != null) {
+                parameterMeta.setQualifiedName(typeElement.getQualifiedName()
+                        .toString());
+            }
+            queryMeta.addQueryParameterMetas(parameterMeta);
+
             queryMeta.addExpressionParameterType(name, parameterType);
         }
     }

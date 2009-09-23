@@ -21,17 +21,14 @@ import java.sql.Connection;
 import java.sql.NClob;
 import java.sql.SQLException;
 
-import org.seasar.doma.wrapper.NClobWrapper;
-
 /**
  * @author taedium
  * 
  */
-public class NClobCreateQuery<R extends NClobWrapper> extends
-        AbstractCreateQuery<NClob, R> {
+public class NClobCreateQuery extends AbstractCreateQuery<NClob> {
 
     public void prepare() {
-        assertNotNull(config, callerClassName, callerMethodName, result);
+        assertNotNull(config, callerClassName, callerMethodName);
     }
 
     @Override
@@ -39,10 +36,8 @@ public class NClobCreateQuery<R extends NClobWrapper> extends
     }
 
     @Override
-    public R create(Connection connection) throws SQLException {
-        NClob nclob = connection.createNClob();
-        result.set(nclob);
-        return result;
+    public NClob create(Connection connection) throws SQLException {
+        return connection.createNClob();
     }
 
 }

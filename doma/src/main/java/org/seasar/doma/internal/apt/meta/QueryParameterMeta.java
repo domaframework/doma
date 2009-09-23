@@ -1,5 +1,7 @@
 package org.seasar.doma.internal.apt.meta;
 
+import javax.lang.model.type.TypeMirror;
+
 public class QueryParameterMeta {
 
     private String name;
@@ -7,6 +9,10 @@ public class QueryParameterMeta {
     private String typeName;
 
     private String qualifiedName;
+
+    private TypeMirror typeMirror;
+
+    private boolean nullable;
 
     public String getName() {
         return name;
@@ -30,6 +36,22 @@ public class QueryParameterMeta {
 
     public void setQualifiedName(String qualifiedName) {
         this.qualifiedName = qualifiedName;
+    }
+
+    public TypeMirror getTypeMirror() {
+        return typeMirror;
+    }
+
+    public void setTypeMirror(TypeMirror typeMirror) {
+        this.typeMirror = typeMirror;
+    }
+
+    public boolean isNullable() {
+        return nullable;
+    }
+
+    public void setNullable(boolean nullable) {
+        this.nullable = nullable;
     }
 
 }

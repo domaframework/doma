@@ -18,9 +18,6 @@ public class SqlFileSelectEntityDao_ extends org.seasar.doma.jdbc.DomaAbstractDa
     @Override
     public org.seasar.doma.internal.apt.entity.Emp selectById(java.lang.Integer id, org.seasar.doma.jdbc.SelectOptions options) {
         entering("org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao_", "selectById", id, options);
-        if (id == null) {
-            throw new org.seasar.doma.DomaNullPointerException("id");
-        }
         if (options == null) {
             throw new org.seasar.doma.DomaNullPointerException("options");
         }
@@ -45,12 +42,6 @@ public class SqlFileSelectEntityDao_ extends org.seasar.doma.jdbc.DomaAbstractDa
     @Override
     public java.util.List<org.seasar.doma.internal.apt.entity.Emp> selectByNameAndSalary(java.lang.String name, java.math.BigDecimal salary, org.seasar.doma.jdbc.SelectOptions options) {
         entering("org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao_", "selectByNameAndSalary", name, salary, options);
-        if (name == null) {
-            throw new org.seasar.doma.DomaNullPointerException("name");
-        }
-        if (salary == null) {
-            throw new org.seasar.doma.DomaNullPointerException("salary");
-        }
         if (options == null) {
             throw new org.seasar.doma.DomaNullPointerException("options");
         }

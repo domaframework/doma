@@ -27,7 +27,6 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.message.DomaMessageCode;
 import org.seasar.doma.wrapper.Wrapper;
@@ -39,39 +38,27 @@ import org.seasar.doma.wrapper.Wrapper;
 public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQueryMeta>
         extends AbstractQueryMetaFactory<M> {
 
-    protected final Class<?> domainValueClass;
+    protected final Class<?> returnClass;
 
     public AbstractCreateQueryMetaFactory(ProcessingEnvironment env,
             Class<?> domainValueClass) {
         super(env);
         assertNotNull(domainValueClass);
-        this.domainValueClass = domainValueClass;
+        this.returnClass = domainValueClass;
     }
 
     @Override
     protected void doReturnType(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
         TypeMirror returnType = method.getReturnType();
-        if (!isDomain(returnType)) {
-            throw new AptException(DomaMessageCode.DOMA4022, env, method);
-        }
-        TypeMirror domainValueType = getDomainValueType(returnType);
-        if (domainValueType == null) {
-            throw new AptIllegalStateException();
-        }
-        TypeElement domainValueElement = TypeUtil.toTypeElement(
-                domainValueType, env);
-        if (domainValueElement == null) {
-            throw new AptIllegalStateException();
-        }
-        if (!domainValueElement.getQualifiedName().contentEquals(
-                domainValueClass.getName())) {
-            throw new AptException(DomaMessageCode.DOMA4075, env, method,
-                    domainValueClass.getName());
-        }
         QueryResultMeta resultMeta = new QueryResultMeta();
         resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
         queryMeta.setQueryResultMeta(resultMeta);
+        if (!resultMeta.getTypeName().equals(returnClass.getName())) {
+            throw new AptException(DomaMessageCode.DOMA4097, env, method,
+                    returnClass.getName());
+        }
+
     }
 
     protected TypeMirror getDomainValueType(TypeMirror domainType) {

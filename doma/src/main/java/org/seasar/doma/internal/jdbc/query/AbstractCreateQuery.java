@@ -17,22 +17,18 @@ package org.seasar.doma.internal.jdbc.query;
 
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public abstract class AbstractCreateQuery<T, R extends Wrapper<T>> implements
-        CreateQuery<R> {
+public abstract class AbstractCreateQuery<R> implements CreateQuery<R> {
 
     protected Config config;
 
     protected String callerClassName;
 
     protected String callerMethodName;
-
-    protected R result;
 
     public void setConfig(Config config) {
         this.config = config;
@@ -44,10 +40,6 @@ public abstract class AbstractCreateQuery<T, R extends Wrapper<T>> implements
 
     public void setCallerMethodName(String callerMethodName) {
         this.callerMethodName = callerMethodName;
-    }
-
-    public void setResult(R result) {
-        this.result = result;
     }
 
     @Override

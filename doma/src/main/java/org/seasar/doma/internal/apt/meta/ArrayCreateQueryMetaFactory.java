@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
@@ -81,7 +82,16 @@ public class ArrayCreateQueryMetaFactory extends
                 .getTypeParameterMap(), env);
         queryMeta.setArrayName(arrayName);
         queryMeta.setArrayTypeName(arrayTypeName);
-        queryMeta.addMethodParameterName(arrayName, arrayTypeName);
+        QueryParameterMeta parameterMeta = new QueryParameterMeta();
+        parameterMeta.setName(arrayName);
+        parameterMeta.setTypeName(arrayTypeName);
+        parameterMeta.setTypeMirror(arrayType);
+        TypeElement typeElement = TypeUtil.toTypeElement(arrayType, env);
+        if (typeElement != null) {
+            parameterMeta.setQualifiedName(typeElement.getQualifiedName()
+                    .toString());
+        }
+        queryMeta.addQueryParameterMetas(parameterMeta);
         queryMeta.addExpressionParameterType(arrayName, arrayType);
     }
 }

@@ -21,17 +21,14 @@ import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.seasar.doma.wrapper.ClobWrapper;
-
 /**
  * @author taedium
  * 
  */
-public class ClobCreateQuery<R extends ClobWrapper> extends
-        AbstractCreateQuery<Clob, R> {
+public class ClobCreateQuery extends AbstractCreateQuery<Clob> {
 
     public void prepare() {
-        assertNotNull(config, callerClassName, callerMethodName, result);
+        assertNotNull(config, callerClassName, callerMethodName);
     }
 
     @Override
@@ -39,9 +36,7 @@ public class ClobCreateQuery<R extends ClobWrapper> extends
     }
 
     @Override
-    public R create(Connection connection) throws SQLException {
-        Clob clob = connection.createClob();
-        result.set(clob);
-        return result;
+    public Clob create(Connection connection) throws SQLException {
+        return connection.createClob();
     }
 }

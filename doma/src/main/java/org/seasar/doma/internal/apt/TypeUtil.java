@@ -244,6 +244,7 @@ public final class TypeUtil {
 
     public static TypeMirror toWrapperTypeIfPrimitive(TypeMirror typeMirror,
             final ProcessingEnvironment env) {
+        assertNotNull(typeMirror);
         return typeMirror.accept(new TypeKindVisitor6<TypeMirror, Void>() {
 
             @Override

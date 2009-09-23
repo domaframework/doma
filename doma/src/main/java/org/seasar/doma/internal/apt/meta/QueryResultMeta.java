@@ -10,7 +10,7 @@ public class QueryResultMeta {
 
     private String elementWrapperTypeName;
 
-    private boolean list;
+    private boolean collection;
 
     private boolean entity;
 
@@ -46,12 +46,12 @@ public class QueryResultMeta {
         this.elementWrapperTypeName = elementWrapperTypeName;
     }
 
-    public boolean isList() {
-        return list;
+    public boolean isCollection() {
+        return collection;
     }
 
-    public void setList(boolean list) {
-        this.list = list;
+    public void setCollection(boolean collection) {
+        this.collection = collection;
     }
 
     public boolean isEntity() {

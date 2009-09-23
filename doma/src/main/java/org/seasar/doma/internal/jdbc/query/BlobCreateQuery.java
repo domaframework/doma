@@ -21,17 +21,14 @@ import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.seasar.doma.wrapper.BlobWrapper;
-
 /**
  * @author taedium
  * 
  */
-public class BlobCreateQuery<R extends BlobWrapper> extends
-        AbstractCreateQuery<Blob, R> {
+public class BlobCreateQuery extends AbstractCreateQuery<Blob> {
 
     public void prepare() {
-        assertNotNull(config, callerClassName, callerMethodName, result);
+        assertNotNull(config, callerClassName, callerMethodName);
     }
 
     @Override
@@ -39,10 +36,8 @@ public class BlobCreateQuery<R extends BlobWrapper> extends
     }
 
     @Override
-    public R create(Connection connection) throws SQLException {
-        Blob blob = connection.createBlob();
-        result.set(blob);
-        return result;
+    public Blob create(Connection connection) throws SQLException {
+        return connection.createBlob();
     }
 
 }

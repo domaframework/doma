@@ -16,21 +16,20 @@ public class ArrayFactoryDao_ extends org.seasar.doma.jdbc.DomaAbstractDao imple
     }
 
     @Override
-    public org.seasar.doma.domain.BuiltinArrayDomain<java.lang.String> create(java.lang.String[] elements) {
+    public java.sql.Array create(java.lang.String[] elements) {
         entering("org.seasar.doma.internal.apt.dao.ArrayFactoryDao_", "create", (Object)elements);
         if (elements == null) {
             throw new org.seasar.doma.DomaNullPointerException("elements");
         }
-        org.seasar.doma.internal.jdbc.query.ArrayCreateQuery<org.seasar.doma.domain.BuiltinArrayDomain<java.lang.String>> query = new org.seasar.doma.internal.jdbc.query.ArrayCreateQuery<org.seasar.doma.domain.BuiltinArrayDomain<java.lang.String>>();
+        org.seasar.doma.internal.jdbc.query.ArrayCreateQuery query = new org.seasar.doma.internal.jdbc.query.ArrayCreateQuery();
         query.setConfig(config);
         query.setCallerClassName("org.seasar.doma.internal.apt.dao.ArrayFactoryDao_");
         query.setCallerMethodName("create");
         query.setTypeName("varchar");
         query.setElements(elements);
-        query.setResult(new org.seasar.doma.domain.BuiltinArrayDomain<java.lang.String>());
-        query.compile();
-        org.seasar.doma.internal.jdbc.command.CreateCommand<org.seasar.doma.domain.BuiltinArrayDomain<java.lang.String>> command = new org.seasar.doma.internal.jdbc.command.CreateCommand<org.seasar.doma.domain.BuiltinArrayDomain<java.lang.String>>(query);
-        org.seasar.doma.domain.BuiltinArrayDomain<java.lang.String> result = command.execute();
+        query.prepare();
+        org.seasar.doma.internal.jdbc.command.CreateCommand<java.sql.Array> command = new org.seasar.doma.internal.jdbc.command.CreateCommand<java.sql.Array>(query);
+        java.sql.Array result = command.execute();
         exiting("org.seasar.doma.internal.apt.dao.ArrayFactoryDao_", "create", result);
         return result;
     }

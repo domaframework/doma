@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
@@ -56,6 +57,19 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
         for (VariableElement param : params) {
             TypeMirror parameterType = TypeUtil.resolveTypeParameter(daoMeta
                     .getTypeParameterMap(), param.asType());
+            String parameterName = ElementUtil.getParameterName(param);
+            String parameterTypeName = TypeUtil.getTypeName(parameterType,
+                    daoMeta.getTypeParameterMap(), env);
+            QueryParameterMeta parameterMeta = new QueryParameterMeta();
+            parameterMeta.setName(parameterName);
+            parameterMeta.setTypeName(parameterTypeName);
+            parameterMeta.setTypeMirror(parameterType);
+            TypeElement typeElement = TypeUtil
+                    .toTypeElement(parameterType, env);
+            if (typeElement != null) {
+                parameterMeta.setQualifiedName(typeElement.getQualifiedName()
+                        .toString());
+            }
             if (isCollection(parameterType)) {
                 DeclaredType listTyep = TypeUtil.toDeclaredType(parameterType,
                         env);
@@ -75,11 +89,9 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
                     throw new AptException(DomaMessageCode.DOMA4008, env,
                             method, parameterType);
                 }
+                parameterMeta.setNullable(true);
             }
-            String parameterName = ElementUtil.getParameterName(param);
-            String parameterTypeName = TypeUtil.getTypeName(parameterType,
-                    daoMeta.getTypeParameterMap(), env);
-            queryMeta.addMethodParameterName(parameterName, parameterTypeName);
+            queryMeta.addQueryParameterMetas(parameterMeta);
             queryMeta.addExpressionParameterType(parameterName, parameterType);
         }
     }

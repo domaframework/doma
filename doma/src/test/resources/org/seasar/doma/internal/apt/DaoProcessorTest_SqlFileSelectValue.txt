@@ -18,9 +18,6 @@ public class SqlFileSelectValueDao_ extends org.seasar.doma.jdbc.DomaAbstractDao
     @Override
     public java.lang.String selectById(java.lang.Integer id) {
         entering("org.seasar.doma.internal.apt.dao.SqlFileSelectValueDao_", "selectById", id);
-        if (id == null) {
-            throw new org.seasar.doma.DomaNullPointerException("id");
-        }
         org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
         query.setConfig(config);
         query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFileUtil.buildPath("org.seasar.doma.internal.apt.dao.SqlFileSelectValueDao", "selectById"));
@@ -40,12 +37,6 @@ public class SqlFileSelectValueDao_ extends org.seasar.doma.jdbc.DomaAbstractDao
     @Override
     public java.util.List<java.lang.String> selectByNameAndSalary(java.lang.String name, java.math.BigDecimal salary, org.seasar.doma.jdbc.SelectOptions options) {
         entering("org.seasar.doma.internal.apt.dao.SqlFileSelectValueDao_", "selectByNameAndSalary", name, salary, options);
-        if (name == null) {
-            throw new org.seasar.doma.DomaNullPointerException("name");
-        }
-        if (salary == null) {
-            throw new org.seasar.doma.DomaNullPointerException("salary");
-        }
         if (options == null) {
             throw new org.seasar.doma.DomaNullPointerException("options");
         }
