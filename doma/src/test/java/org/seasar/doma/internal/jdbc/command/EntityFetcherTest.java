@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 
 import junit.framework.TestCase;
 
+import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
@@ -28,7 +29,6 @@ import org.seasar.doma.internal.jdbc.query.SelectQuery;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SelectOptions;
-import org.seasar.doma.jdbc.entity.EntityMeta;
 
 import example.entity.Emp;
 import example.entity.Emp_;
@@ -52,11 +52,11 @@ public class EntityFetcherTest extends TestCase {
         resultSet.next();
 
         Emp_ empMetaFactory = new Emp_();
-        EntityMeta<Emp> entityMeta = empMetaFactory.createEntityMeta();
+        EntityType<Emp> entityType = empMetaFactory.createEntityType();
         EntityFetcher fetcher = new EntityFetcher(new MySelectQuery());
-        fetcher.fetch(resultSet, entityMeta);
+        fetcher.fetch(resultSet, entityType);
 
-        Emp emp = entityMeta.getEntity();
+        Emp emp = entityType.getEntity();
         assertEquals(new Integer(1), emp.getId());
         assertEquals("aaa", emp.getName());
         assertEquals(new BigDecimal(10), emp.getSalary());

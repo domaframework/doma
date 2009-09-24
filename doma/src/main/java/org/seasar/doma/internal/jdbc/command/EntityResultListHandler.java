@@ -22,9 +22,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.seasar.doma.internal.jdbc.entity.EntityType;
+import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.query.Query;
-import org.seasar.doma.jdbc.entity.EntityMeta;
-import org.seasar.doma.jdbc.entity.EntityMetaFactory;
 
 /**
  * @author taedium
@@ -32,11 +32,11 @@ import org.seasar.doma.jdbc.entity.EntityMetaFactory;
  */
 public class EntityResultListHandler<E> implements ResultSetHandler<List<E>> {
 
-    protected final EntityMetaFactory<E> entityMetaFactory;
+    protected final EntityTypeFactory<E> entityTypeFactory;
 
-    public EntityResultListHandler(EntityMetaFactory<E> entityMetaFactory) {
-        assertNotNull(entityMetaFactory);
-        this.entityMetaFactory = entityMetaFactory;
+    public EntityResultListHandler(EntityTypeFactory<E> entityTypeFactory) {
+        assertNotNull(entityTypeFactory);
+        this.entityTypeFactory = entityTypeFactory;
     }
 
     @Override
@@ -44,9 +44,9 @@ public class EntityResultListHandler<E> implements ResultSetHandler<List<E>> {
         EntityFetcher fetcher = new EntityFetcher(query);
         List<E> entities = new ArrayList<E>();
         while (resultSet.next()) {
-            EntityMeta<E> entityMeta = entityMetaFactory.createEntityMeta();
-            fetcher.fetch(resultSet, entityMeta);
-            entities.add(entityMeta.getEntity());
+            EntityType<E> entityType = entityTypeFactory.createEntityType();
+            fetcher.fetch(resultSet, entityType);
+            entities.add(entityType.getEntity());
         }
         return entities;
     }

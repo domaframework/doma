@@ -24,13 +24,13 @@ import java.util.List;
 
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.Value;
+import org.seasar.doma.internal.jdbc.entity.EntityType;
+import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlFile;
-import org.seasar.doma.jdbc.entity.EntityMeta;
-import org.seasar.doma.jdbc.entity.EntityMetaFactory;
 
 /**
  * @author taedium
@@ -38,7 +38,7 @@ import org.seasar.doma.jdbc.entity.EntityMetaFactory;
  */
 public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
 
-    protected final EntityMetaFactory<E> entityMetaFactory;
+    protected final EntityTypeFactory<E> entityTypeFactory;
 
     protected Config config;
 
@@ -46,7 +46,7 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
 
     protected String parameterName;
 
-    protected List<EntityMeta<E>> entityMetas;
+    protected List<EntityType<E>> entityTypes;
 
     protected String callerClassName;
 
@@ -66,21 +66,21 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
 
     protected int batchSize;
 
-    protected EntityMeta<E> entityMeta;
+    protected EntityType<E> entityType;
 
-    public SqlFileBatchModifyQuery(EntityMetaFactory<E> entityMetaFactory) {
-        assertNotNull(entityMetaFactory);
-        this.entityMetaFactory = entityMetaFactory;
+    public SqlFileBatchModifyQuery(EntityTypeFactory<E> entityTypeFactory) {
+        assertNotNull(entityTypeFactory);
+        this.entityTypeFactory = entityTypeFactory;
     }
 
     public void prepare() {
         assertNotNull(config, sqlFilePath, parameterName, callerClassName,
                 callerMethodName);
-        Iterator<EntityMeta<E>> it = entityMetas.iterator();
+        Iterator<EntityType<E>> it = entityTypes.iterator();
         if (it.hasNext()) {
             executable = true;
             sqlExecutionSkipCause = null;
-            entityMeta = it.next();
+            entityType = it.next();
             prepareSqlFile();
             prepareOptions();
             prepareSql();
@@ -88,10 +88,10 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
             return;
         }
         while (it.hasNext()) {
-            entityMeta = it.next();
+            entityType = it.next();
             prepareSql();
         }
-        assertEquals(entityMetas.size(), sqls.size());
+        assertEquals(entityTypes.size(), sqls.size());
     }
 
     protected void prepareSqlFile() {
@@ -111,7 +111,7 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
     }
 
     protected void prepareSql() {
-        Value value = new Value(entityMeta.getEntityClass(), entityMeta
+        Value value = new Value(entityType.getEntityClass(), entityType
                 .getEntity());
         ExpressionEvaluator evaluator = new ExpressionEvaluator(Collections
                 .singletonMap(parameterName, value));
@@ -139,9 +139,9 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
 
     public void setEntities(List<E> entities) {
         assertNotNull(entities);
-        entityMetas = new ArrayList<EntityMeta<E>>(entities.size());
+        entityTypes = new ArrayList<EntityType<E>>(entities.size());
         for (E entity : entities) {
-            entityMetas.add(entityMetaFactory.createEntityMeta(entity));
+            entityTypes.add(entityTypeFactory.createEntityType(entity));
         }
     }
 

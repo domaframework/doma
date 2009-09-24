@@ -1,19 +1,19 @@
 package org.seasar.doma.internal.apt.entity;
 
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
-public class Emp_ implements org.seasar.doma.jdbc.entity.EntityMetaFactory<org.seasar.doma.internal.apt.entity.Emp> {
+public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFactory<org.seasar.doma.internal.apt.entity.Emp> {
 
     @Override
-    public org.seasar.doma.jdbc.entity.EntityMeta<org.seasar.doma.internal.apt.entity.Emp> createEntityMeta() {
-        return new Meta();
+    public org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.Emp> createEntityType() {
+        return new EntityType();
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.EntityMeta<org.seasar.doma.internal.apt.entity.Emp> createEntityMeta(org.seasar.doma.internal.apt.entity.Emp entity) {
-        return new Meta(entity);
+    public org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.Emp> createEntityType(org.seasar.doma.internal.apt.entity.Emp entity) {
+        return new EntityType(entity);
     }
 
-    public static class Meta extends org.seasar.doma.jdbc.entity.AbstractEntityMeta<org.seasar.doma.internal.apt.entity.Emp> {
+    public static class EntityType extends org.seasar.doma.internal.jdbc.entity.AbstractEntityType<org.seasar.doma.internal.apt.entity.Emp> {
 
         private static final org.seasar.doma.jdbc.id.BuiltinSequenceIdGenerator __idGenerator = new org.seasar.doma.jdbc.id.BuiltinSequenceIdGenerator();
         static {
@@ -25,13 +25,13 @@ public class Emp_ implements org.seasar.doma.jdbc.entity.EntityMetaFactory<org.s
 
         private static final org.seasar.doma.internal.apt.entity.EmpListener __listener = new org.seasar.doma.internal.apt.entity.EmpListener();
 
-        private final org.seasar.doma.jdbc.entity.GeneratedIdPropertyMeta<org.seasar.doma.wrapper.IntegerWrapper> id = new org.seasar.doma.jdbc.entity.GeneratedIdPropertyMeta<org.seasar.doma.wrapper.IntegerWrapper>("id", null, new org.seasar.doma.wrapper.IntegerWrapper(), __idGenerator);
+        private final org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper> id = new org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("id", null, new org.seasar.doma.wrapper.IntegerWrapper(), __idGenerator);
 
-        private final org.seasar.doma.jdbc.entity.BasicPropertyMeta<org.seasar.doma.wrapper.StringWrapper> name = new org.seasar.doma.jdbc.entity.BasicPropertyMeta<org.seasar.doma.wrapper.StringWrapper>("name", null, new org.seasar.doma.wrapper.StringWrapper(), true, true);
+        private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.StringWrapper> name = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.StringWrapper>("name", null, new org.seasar.doma.wrapper.StringWrapper(), true, true);
 
-        private final org.seasar.doma.jdbc.entity.BasicPropertyMeta<org.seasar.doma.wrapper.BigDecimalWrapper> salary = new org.seasar.doma.jdbc.entity.BasicPropertyMeta<org.seasar.doma.wrapper.BigDecimalWrapper>("salary", "SALARY", new org.seasar.doma.wrapper.BigDecimalWrapper(), false, false);
+        private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.BigDecimalWrapper> salary = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.BigDecimalWrapper>("salary", "SALARY", new org.seasar.doma.wrapper.BigDecimalWrapper(), false, false);
 
-        private final org.seasar.doma.jdbc.entity.VersionPropertyMeta<org.seasar.doma.wrapper.IntegerWrapper> version = new org.seasar.doma.jdbc.entity.VersionPropertyMeta<org.seasar.doma.wrapper.IntegerWrapper>("version", null, new org.seasar.doma.wrapper.IntegerWrapper());
+        private final org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.wrapper.IntegerWrapper> version = new org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("version", null, new org.seasar.doma.wrapper.IntegerWrapper());
 
         private final org.seasar.doma.internal.apt.entity.Emp __entity;
 
@@ -39,15 +39,15 @@ public class Emp_ implements org.seasar.doma.jdbc.entity.EntityMetaFactory<org.s
 
         private final String __name = "Emp";
 
-        private java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyMeta<?>> __entityProperties;
+        private java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __entityProperties;
 
-        private java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyMeta<?>> __entityPropertyMap;
+        private java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __entityPropertyMap;
 
-        private Meta() {
+        private EntityType() {
             this(new org.seasar.doma.internal.apt.entity.Emp());
         }
 
-        private Meta(org.seasar.doma.internal.apt.entity.Emp entity) {
+        private EntityType(org.seasar.doma.internal.apt.entity.Emp entity) {
             super(null, "AAA", null);
             id.getWrapper().set(entity.id);
             name.getWrapper().set(entity.name);
@@ -78,9 +78,9 @@ public class Emp_ implements org.seasar.doma.jdbc.entity.EntityMetaFactory<org.s
         }
 
         @Override
-        public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyMeta<?>> getPropertyMetas() {
+        public java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> getEntityPropertyTypes() {
             if (__entityProperties == null) {
-                java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyMeta<?>> __list = new java.util.ArrayList<org.seasar.doma.jdbc.entity.EntityPropertyMeta<?>>();
+                java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __list = new java.util.ArrayList<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>>();
                 __list.add(id);
                 __list.add(name);
                 __list.add(salary);
@@ -91,9 +91,9 @@ public class Emp_ implements org.seasar.doma.jdbc.entity.EntityMetaFactory<org.s
         }
 
         @Override
-        public org.seasar.doma.jdbc.entity.EntityPropertyMeta<?> getPropertyMeta(String __name) {
+        public org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?> getEntityPropertyType(String __name) {
             if (__entityPropertyMap == null) {
-                java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyMeta<?>> __map = new java.util.HashMap<String, org.seasar.doma.jdbc.entity.EntityPropertyMeta<?>>();
+                java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __map = new java.util.HashMap<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>>();
                 __map.put("id", id);
                 __map.put("name", name);
                 __map.put("salary", salary);
@@ -104,12 +104,12 @@ public class Emp_ implements org.seasar.doma.jdbc.entity.EntityMetaFactory<org.s
         }
 
         @Override
-        public org.seasar.doma.jdbc.entity.GeneratedIdPropertyMeta<?> getGeneratedIdProperty() {
+        public org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType<?> getGeneratedIdPropertyType() {
             return id;
         }
 
         @Override
-        public org.seasar.doma.jdbc.entity.VersionPropertyMeta<?> getVersionProperty() {
+        public org.seasar.doma.internal.jdbc.entity.VersionPropertyType<?> getVersionPropertyType() {
             return version;
         }
 

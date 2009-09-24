@@ -13,15 +13,15 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.entity;
+package org.seasar.doma.internal.jdbc.entity;
 
 /**
- * {@link EntityMeta} の骨格実装です。
+ * {@link EntityType} の骨格実装です。
  * 
  * @author taedium
  * 
  */
-public abstract class AbstractEntityMeta<E> implements EntityMeta<E> {
+public abstract class AbstractEntityType<E> implements EntityType<E> {
 
     private static final long serialVersionUID = 1L;
 
@@ -41,7 +41,7 @@ public abstract class AbstractEntityMeta<E> implements EntityMeta<E> {
      * @param tableName
      *            テーブル名
      */
-    public AbstractEntityMeta(String catalogName, String schemaName,
+    public AbstractEntityType(String catalogName, String schemaName,
             String tableName) {
         this.__catalogName = catalogName;
         this.__schemaName = schemaName;

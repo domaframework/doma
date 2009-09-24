@@ -50,7 +50,7 @@ public class ValueResultParameter<V> implements ResultParameter<V> {
     @Override
     public <R, P, TH extends Throwable> R accept(
             CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitDomainResultParameter(this, p);
+        return visitor.visitValueResultParameter(this, p);
     }
 
 }

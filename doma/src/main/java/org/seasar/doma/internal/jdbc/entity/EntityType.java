@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.entity;
+package org.seasar.doma.internal.jdbc.entity;
 
 import java.util.List;
 import java.util.Set;
@@ -30,7 +30,7 @@ import java.util.Set;
  * @param <E>
  *            エンティティの型
  */
-public interface EntityMeta<E> {
+public interface EntityType<E> {
 
     /**
      * エンティティの名前を返します。
@@ -65,14 +65,14 @@ public interface EntityMeta<E> {
      * 
      * @return 生成される識別子プロパティ、存在しない場合は {@code null}
      */
-    GeneratedIdPropertyMeta<?> getGeneratedIdProperty();
+    GeneratedIdPropertyType<?> getGeneratedIdPropertyType();
 
     /**
      * バージョンプロパティを返します。
      * 
      * @return バージョンプロパティ、存在しない場合は {@code null}
      */
-    VersionPropertyMeta<?> getVersionProperty();
+    VersionPropertyType<?> getVersionPropertyType();
 
     /**
      * プロパティ名に対応するプロパティメタデータを返します。
@@ -81,14 +81,14 @@ public interface EntityMeta<E> {
      *            プロパティ名
      * @return エンティティプロパティ
      */
-    EntityPropertyMeta<?> getPropertyMeta(String __name);
+    EntityPropertyType<?> getEntityPropertyType(String __name);
 
     /**
      * エンティティプロパティのリストを返します。
      * 
      * @return エンティティプロパティのリスト
      */
-    List<EntityPropertyMeta<?>> getPropertyMetas();
+    List<EntityPropertyType<?>> getEntityPropertyTypes();
 
     /**
      * エンティティを返します。

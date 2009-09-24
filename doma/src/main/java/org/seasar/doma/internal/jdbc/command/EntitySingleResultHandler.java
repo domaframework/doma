@@ -20,10 +20,10 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.seasar.doma.internal.jdbc.entity.EntityType;
+import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.jdbc.NonUniqueResultException;
-import org.seasar.doma.jdbc.entity.EntityMeta;
-import org.seasar.doma.jdbc.entity.EntityMetaFactory;
 
 /**
  * @author taedium
@@ -31,23 +31,23 @@ import org.seasar.doma.jdbc.entity.EntityMetaFactory;
  */
 public class EntitySingleResultHandler<E> implements ResultSetHandler<E> {
 
-    protected final EntityMetaFactory<E> entityMetaFactory;
+    protected final EntityTypeFactory<E> entityTypeFactory;
 
-    public EntitySingleResultHandler(EntityMetaFactory<E> entityMetaFactory) {
-        assertNotNull(entityMetaFactory);
-        this.entityMetaFactory = entityMetaFactory;
+    public EntitySingleResultHandler(EntityTypeFactory<E> entityTypeFactory) {
+        assertNotNull(entityTypeFactory);
+        this.entityTypeFactory = entityTypeFactory;
     }
 
     @Override
     public E handle(ResultSet resultSet, Query query) throws SQLException {
         EntityFetcher fetcher = new EntityFetcher(query);
-        EntityMeta<E> entityMeta = entityMetaFactory.createEntityMeta();
+        EntityType<E> entityType = entityTypeFactory.createEntityType();
         if (resultSet.next()) {
-            fetcher.fetch(resultSet, entityMeta);
+            fetcher.fetch(resultSet, entityType);
             if (resultSet.next()) {
                 throw new NonUniqueResultException(query.getSql());
             }
-            return entityMeta.getEntity();
+            return entityType.getEntity();
         }
         return null;
     }

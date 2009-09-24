@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.entity;
+package org.seasar.doma.internal.jdbc.entity;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.wrapper.Wrapper;
@@ -24,8 +24,8 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class BasicPropertyMeta<W extends Wrapper<?>> implements
-        EntityPropertyMeta<W> {
+public class BasicPropertyType<W extends Wrapper<?>> implements
+        EntityPropertyType<W> {
 
     /** 名前 */
     protected final String name;
@@ -58,7 +58,7 @@ public class BasicPropertyMeta<W extends Wrapper<?>> implements
      * @throws DomaNullPointerException
      *             {@code name} もしくは {@code domain} が {@code null} の場合
      */
-    public BasicPropertyMeta(String name, String columnName, W wrapper,
+    public BasicPropertyType(String name, String columnName, W wrapper,
             boolean insertable, boolean updatable) {
         if (name == null) {
             throw new DomaNullPointerException("name");

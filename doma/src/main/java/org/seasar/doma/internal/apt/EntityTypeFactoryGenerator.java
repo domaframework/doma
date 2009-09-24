@@ -31,23 +31,23 @@ import org.seasar.doma.internal.apt.meta.IdentityIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.SequenceIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.TableIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.TableMeta;
-import org.seasar.doma.jdbc.entity.AbstractEntityMeta;
-import org.seasar.doma.jdbc.entity.AssignedIdPropertyMeta;
-import org.seasar.doma.jdbc.entity.BasicPropertyMeta;
-import org.seasar.doma.jdbc.entity.EntityMetaFactory;
-import org.seasar.doma.jdbc.entity.GeneratedIdPropertyMeta;
-import org.seasar.doma.jdbc.entity.VersionPropertyMeta;
+import org.seasar.doma.internal.jdbc.entity.AbstractEntityType;
+import org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType;
+import org.seasar.doma.internal.jdbc.entity.BasicPropertyType;
+import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
+import org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType;
+import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
 
 /**
  * 
  * @author taedium
  * 
  */
-public class EntityMetaFactoryGenerator extends AbstractGenerator {
+public class EntityTypeFactoryGenerator extends AbstractGenerator {
 
     protected final EntityMeta entityMeta;
 
-    public EntityMetaFactoryGenerator(ProcessingEnvironment env,
+    public EntityTypeFactoryGenerator(ProcessingEnvironment env,
             TypeElement entityElement, EntityMeta entityMeta)
             throws IOException {
         super(env, entityElement, null, null, Options.getEntitySuffix(env));
@@ -70,36 +70,38 @@ public class EntityMetaFactoryGenerator extends AbstractGenerator {
     protected void printClass() {
         printGenerated();
         iprint("public class %1$s implements %2$s<%3$s> {%n", simpleName,
-                EntityMetaFactory.class.getName(), entityMeta
+                EntityTypeFactory.class.getName(), entityMeta
                         .getEntityTypeName());
         print("%n");
         indent();
         printMethods();
-        printMetaClass();
+        printEntityTypeClass();
         unindent();
         iprint("}%n");
     }
 
     protected void printMethods() {
         iprint("@Override%n");
-        iprint("public %1$s<%2$s> createEntityMeta() {%n",
-                org.seasar.doma.jdbc.entity.EntityMeta.class.getName(),
+        iprint(
+                "public %1$s<%2$s> createEntityType() {%n",
+                org.seasar.doma.internal.jdbc.entity.EntityType.class.getName(),
                 entityMeta.getEntityTypeName());
-        iprint("    return new Meta();%n");
+        iprint("    return new EntityType();%n");
         iprint("}%n");
         print("%n");
         iprint("@Override%n");
-        iprint("public %1$s<%2$s> createEntityMeta(%2$s entity) {%n",
-                org.seasar.doma.jdbc.entity.EntityMeta.class.getName(),
+        iprint(
+                "public %1$s<%2$s> createEntityType(%2$s entity) {%n",
+                org.seasar.doma.internal.jdbc.entity.EntityType.class.getName(),
                 entityMeta.getEntityTypeName());
-        iprint("    return new Meta(entity);%n");
+        iprint("    return new EntityType(entity);%n");
         iprint("}%n");
         print("%n");
     }
 
-    protected void printMetaClass() {
-        iprint("public static class Meta extends %1$s<%2$s> {%n",
-                AbstractEntityMeta.class.getName(), entityMeta
+    protected void printEntityTypeClass() {
+        iprint("public static class EntityType extends %1$s<%2$s> {%n",
+                AbstractEntityType.class.getName(), entityMeta
                         .getEntityTypeName());
         print("%n");
         indent();
@@ -164,26 +166,26 @@ public class EntityMetaFactoryGenerator extends AbstractGenerator {
                 if (pm.getIdGeneratorMeta() != null) {
                     iprint(
                             "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", %5$s%4$s%5$s, new %2$s(), __idGenerator);%n", /* 1 */
-                            GeneratedIdPropertyMeta.class.getName(), /* 2 */
+                            GeneratedIdPropertyType.class.getName(), /* 2 */
                             pm.getWrapperTypeName(), /* 3 */pm.getName(), /* 4 */
                             columnName, /* 5 */quote);
                 } else {
                     iprint(
                             "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", %5$s%4$s%5$s, new %2$s());%n", /* 1 */
-                            AssignedIdPropertyMeta.class.getName(), /* 2 */
+                            AssignedIdPropertyType.class.getName(), /* 2 */
                             pm.getWrapperTypeName(), /* 3 */pm.getName(), /* 4 */
                             columnName, /* 5 */quote);
                 }
             } else if (pm.isVersion()) {
                 iprint(
                         "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", %5$s%4$s%5$s, new %2$s());%n", /* 1 */
-                        VersionPropertyMeta.class.getName(), /* 2 */pm
+                        VersionPropertyType.class.getName(), /* 2 */pm
                                 .getWrapperTypeName(), /* 3 */pm.getName(), /* 4 */
                         columnName, /* 5 */quote);
             } else {
                 iprint(
                         "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", %7$s%4$s%7$s, new %2$s(), %5$s, %6$s);%n", /* 1 */
-                        BasicPropertyMeta.class.getName(), /* 2 */pm
+                        BasicPropertyType.class.getName(), /* 2 */pm
                                 .getWrapperTypeName(), /* 3 */pm.getName(), /* 4 */
                         columnName, /* 5 */cm.isInsertable(), /* 6 */cm
                                 .isUpdatable(), /* 7 */quote);
@@ -200,22 +202,25 @@ public class EntityMetaFactoryGenerator extends AbstractGenerator {
 
     protected void printMetaClassPropertiesField() {
         iprint("private java.util.List<%1$s<?>> __entityProperties;%n",
-                org.seasar.doma.jdbc.entity.EntityPropertyMeta.class.getName());
+                org.seasar.doma.internal.jdbc.entity.EntityPropertyType.class
+                        .getName());
         print("%n");
     }
 
     protected void printMetaClassPropertyMapField() {
         iprint("private java.util.Map<String, %1$s<?>> __entityPropertyMap;%n",
-                org.seasar.doma.jdbc.entity.EntityPropertyMeta.class.getName());
+                org.seasar.doma.internal.jdbc.entity.EntityPropertyType.class
+                        .getName());
         print("%n");
     }
 
     protected void printMetaClassConstructors() {
-        iprint("private Meta() {%n");
+        iprint("private EntityType() {%n");
         iprint("    this(new %1$s());%n", entityMeta.getEntityTypeName());
         iprint("}%n");
         print("%n");
-        iprint("private Meta(%1$s entity) {%n", entityMeta.getEntityTypeName());
+        iprint("private EntityType(%1$s entity) {%n", entityMeta
+                .getEntityTypeName());
         TableMeta tm = entityMeta.getTableMeta();
         String catalog = null;
         String catalogQuote = "";
@@ -306,14 +311,16 @@ public class EntityMetaFactoryGenerator extends AbstractGenerator {
 
     protected void printMetaClassGetPropertyMetasMethod() {
         iprint("@Override%n");
-        iprint("public java.util.List<%1$s<?>> getPropertyMetas() {%n",
-                org.seasar.doma.jdbc.entity.EntityPropertyMeta.class.getName());
+        iprint("public java.util.List<%1$s<?>> getEntityPropertyTypes() {%n",
+                org.seasar.doma.internal.jdbc.entity.EntityPropertyType.class
+                        .getName());
         indent();
         iprint("if (__entityProperties == null) {%n");
         indent();
         iprint(
                 "java.util.List<%1$s<?>> __list = new java.util.ArrayList<%1$s<?>>();%n",
-                org.seasar.doma.jdbc.entity.EntityPropertyMeta.class.getName());
+                org.seasar.doma.internal.jdbc.entity.EntityPropertyType.class
+                        .getName());
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             if (pm.isTrnsient()) {
                 continue;
@@ -331,14 +338,16 @@ public class EntityMetaFactoryGenerator extends AbstractGenerator {
 
     protected void printMetaClassGetPropertyMetaMethod() {
         iprint("@Override%n");
-        iprint("public %1$s<?> getPropertyMeta(String __name) {%n",
-                org.seasar.doma.jdbc.entity.EntityPropertyMeta.class.getName());
+        iprint("public %1$s<?> getEntityPropertyType(String __name) {%n",
+                org.seasar.doma.internal.jdbc.entity.EntityPropertyType.class
+                        .getName());
         indent();
         iprint("if (__entityPropertyMap == null) {%n");
         indent();
         iprint(
                 "java.util.Map<String, %1$s<?>> __map = new java.util.HashMap<String, %1$s<?>>();%n",
-                org.seasar.doma.jdbc.entity.EntityPropertyMeta.class.getName());
+                org.seasar.doma.internal.jdbc.entity.EntityPropertyType.class
+                        .getName());
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             if (pm.isTrnsient()) {
                 continue;
@@ -356,8 +365,8 @@ public class EntityMetaFactoryGenerator extends AbstractGenerator {
 
     protected void printMetaClassGetGeneratedIdPropertyMethod() {
         iprint("@Override%n");
-        iprint("public %1$s<?> getGeneratedIdProperty() {%n",
-                GeneratedIdPropertyMeta.class.getName());
+        iprint("public %1$s<?> getGeneratedIdPropertyType() {%n",
+                GeneratedIdPropertyType.class.getName());
         String idName = "null";
         if (entityMeta.hasGeneratedIdPropertyMeta()) {
             EntityPropertyMeta pm = entityMeta.getGeneratedIdPropertyMeta();
@@ -370,8 +379,8 @@ public class EntityMetaFactoryGenerator extends AbstractGenerator {
 
     protected void printMetaClassGetVersionPropertyMethod() {
         iprint("@Override%n");
-        iprint("public %1$s<?> getVersionProperty() {%n",
-                VersionPropertyMeta.class.getName());
+        iprint("public %1$s<?> getVersionPropertyType() {%n",
+                VersionPropertyType.class.getName());
         String versionName = "null";
         if (entityMeta.hasVersionPropertyMeta()) {
             EntityPropertyMeta pm = entityMeta.getVersionPropertyMeta();

@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.entity;
+package org.seasar.doma.internal.jdbc.entity;
 
 import org.seasar.doma.wrapper.Wrapper;
 
@@ -23,8 +23,8 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class AssignedIdPropertyMeta<W extends Wrapper<?>> extends
-        BasicPropertyMeta<W> {
+public class AssignedIdPropertyType<W extends Wrapper<?>> extends
+        BasicPropertyType<W> {
 
     /**
      * インスタンスを構築します。
@@ -36,7 +36,7 @@ public class AssignedIdPropertyMeta<W extends Wrapper<?>> extends
      * @param wrapper
      *            ドメイン
      */
-    public AssignedIdPropertyMeta(String name, String columnName, W wrapper) {
+    public AssignedIdPropertyType(String name, String columnName, W wrapper) {
         super(name, columnName, wrapper, true, true);
     }
 

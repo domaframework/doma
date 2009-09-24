@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.entity;
+package org.seasar.doma.internal.jdbc.entity;
 
 import java.sql.Statement;
 
@@ -32,8 +32,8 @@ import org.seasar.doma.wrapper.NumberWrapper;
  * @author taedium
  * 
  */
-public class GeneratedIdPropertyMeta<W extends NumberWrapper<?>> extends
-        BasicPropertyMeta<W> {
+public class GeneratedIdPropertyType<W extends NumberWrapper<?>> extends
+        BasicPropertyType<W> {
 
     /** 識別子のジェネレータ */
     protected final IdGenerator idGenerator;
@@ -52,7 +52,7 @@ public class GeneratedIdPropertyMeta<W extends NumberWrapper<?>> extends
      * @throws DomaNullPointerException
      *             {@code idGenerator} が {@code null} の場合
      */
-    public GeneratedIdPropertyMeta(String name, String columnName, W wrapper,
+    public GeneratedIdPropertyType(String name, String columnName, W wrapper,
             IdGenerator idGenerator) {
         super(name, columnName, wrapper, true, true);
         if (idGenerator == null) {
@@ -78,8 +78,8 @@ public class GeneratedIdPropertyMeta<W extends NumberWrapper<?>> extends
         Dialect dialect = config.getDialect();
         GenerationType generationType = idGenerator.getGenerationType();
         if (!isGenerationTypeSupported(generationType, dialect)) {
-            EntityMeta<?> entity = config.getEntityMeta();
-            throw new JdbcException(DomaMessageCode.DOMA2021, entity.getName(),
+            EntityType<?> entityType = config.getEntityType();
+            throw new JdbcException(DomaMessageCode.DOMA2021, entityType.getName(),
                     name, generationType.name(), dialect.getName());
         }
     }

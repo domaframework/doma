@@ -20,6 +20,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
+import org.seasar.doma.internal.jdbc.entity.EntityType;
+import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
+import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.util.ColumnUtil;
 import org.seasar.doma.internal.jdbc.util.TableUtil;
@@ -27,10 +31,6 @@ import org.seasar.doma.internal.util.AssertionUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
-import org.seasar.doma.jdbc.entity.EntityMeta;
-import org.seasar.doma.jdbc.entity.EntityMetaFactory;
-import org.seasar.doma.jdbc.entity.EntityPropertyMeta;
-import org.seasar.doma.jdbc.entity.VersionPropertyMeta;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -45,11 +45,11 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
 
     protected String[] excludedPropertyNames = EMPTY_STRINGS;
 
-    protected final EntityMetaFactory<E> entityMetaFactory;
+    protected final EntityTypeFactory<E> entityTypeFactory;
 
     protected Config config;
 
-    protected EntityMeta<E> entityMeta;
+    protected EntityType<E> entityType;
 
     protected String callerClassName;
 
@@ -57,11 +57,11 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
 
     protected PreparedSql sql;
 
-    protected final List<EntityPropertyMeta<?>> targetProperties = new ArrayList<EntityPropertyMeta<?>>();
+    protected final List<EntityPropertyType<?>> targetProperties = new ArrayList<EntityPropertyType<?>>();
 
-    protected final List<EntityPropertyMeta<?>> idProperties = new ArrayList<EntityPropertyMeta<?>>();
+    protected final List<EntityPropertyType<?>> idProperties = new ArrayList<EntityPropertyType<?>>();
 
-    protected VersionPropertyMeta<?> versionProperty;
+    protected VersionPropertyType<?> versionPropertyType;
 
     protected String tableName;
 
@@ -77,14 +77,14 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
 
     protected int queryTimeout;
 
-    public AutoModifyQuery(EntityMetaFactory<E> entityMetaFactory) {
-        AssertionUtil.assertNotNull(entityMetaFactory);
-        this.entityMetaFactory = entityMetaFactory;
+    public AutoModifyQuery(EntityTypeFactory<E> entityTypeFactory) {
+        AssertionUtil.assertNotNull(entityTypeFactory);
+        this.entityTypeFactory = entityTypeFactory;
     }
 
     protected void prepareTableAndColumnNames() {
-        tableName = TableUtil.getQualifiedTableName(config, entityMeta);
-        for (EntityPropertyMeta<?> p : entityMeta.getPropertyMetas()) {
+        tableName = TableUtil.getQualifiedTableName(config, entityType);
+        for (EntityPropertyType<?> p : entityType.getEntityPropertyTypes()) {
             if (p.isTransient()) {
                 continue;
             }
@@ -94,7 +94,7 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
     }
 
     protected void prepareIdAndVersionProperties() {
-        for (EntityPropertyMeta<?> p : entityMeta.getPropertyMetas()) {
+        for (EntityPropertyType<?> p : entityType.getEntityPropertyTypes()) {
             if (p.isTransient()) {
                 continue;
             }
@@ -102,12 +102,12 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
                 idProperties.add(p);
             }
         }
-        versionProperty = entityMeta.getVersionProperty();
+        versionPropertyType = entityType.getVersionPropertyType();
     }
 
     protected void validateIdExistent() {
         if (idProperties.isEmpty()) {
-            throw new JdbcException(DomaMessageCode.DOMA2022, entityMeta
+            throw new JdbcException(DomaMessageCode.DOMA2022, entityType
                     .getName());
         }
     }
@@ -145,7 +145,7 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
 
     @Override
     public void complete() {
-        entityMeta.refreshEntity();
+        entityType.refreshEntity();
     }
 
     public void setConfig(Config config) {
@@ -153,7 +153,7 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
     }
 
     public void setEntity(E entity) {
-        this.entityMeta = entityMetaFactory.createEntityMeta(entity);
+        this.entityType = entityTypeFactory.createEntityType(entity);
     }
 
     public void setCallerClassName(String callerClassName) {

@@ -18,30 +18,30 @@ package org.seasar.doma.internal.apt.entity;
 import java.util.List;
 import java.util.Set;
 
-import org.seasar.doma.jdbc.entity.AbstractEntityMeta;
-import org.seasar.doma.jdbc.entity.EntityMeta;
-import org.seasar.doma.jdbc.entity.EntityMetaFactory;
-import org.seasar.doma.jdbc.entity.EntityPropertyMeta;
-import org.seasar.doma.jdbc.entity.GeneratedIdPropertyMeta;
-import org.seasar.doma.jdbc.entity.VersionPropertyMeta;
+import org.seasar.doma.internal.jdbc.entity.AbstractEntityType;
+import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
+import org.seasar.doma.internal.jdbc.entity.EntityType;
+import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
+import org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType;
+import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
 
 /**
  * @author taedium
  * 
  */
-public class Emp_ implements EntityMetaFactory<Emp> {
+public class Emp_ implements EntityTypeFactory<Emp> {
 
     @Override
-    public EntityMeta<Emp> createEntityMeta() {
+    public EntityType<Emp> createEntityType() {
         return new Meta();
     }
 
     @Override
-    public EntityMeta<Emp> createEntityMeta(Emp entity) {
+    public EntityType<Emp> createEntityType(Emp entity) {
         return new Meta(entity);
     }
 
-    public static class Meta extends AbstractEntityMeta<Emp> {
+    public static class Meta extends AbstractEntityType<Emp> {
 
         private Meta() {
             this(new Emp());
@@ -67,22 +67,22 @@ public class Emp_ implements EntityMetaFactory<Emp> {
         }
 
         @Override
-        public EntityPropertyMeta<?> getPropertyMeta(String propertyName) {
+        public EntityPropertyType<?> getEntityPropertyType(String propertyName) {
             return null;
         }
 
         @Override
-        public List<EntityPropertyMeta<?>> getPropertyMetas() {
+        public List<EntityPropertyType<?>> getEntityPropertyTypes() {
             return null;
         }
 
         @Override
-        public GeneratedIdPropertyMeta<?> getGeneratedIdProperty() {
+        public GeneratedIdPropertyType<?> getGeneratedIdPropertyType() {
             return null;
         }
 
         @Override
-        public VersionPropertyMeta<?> getVersionProperty() {
+        public VersionPropertyType<?> getVersionPropertyType() {
             return null;
         }
 

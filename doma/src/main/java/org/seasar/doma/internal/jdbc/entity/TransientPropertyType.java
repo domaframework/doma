@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.entity;
+package org.seasar.doma.internal.jdbc.entity;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.wrapper.Wrapper;
@@ -24,8 +24,8 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class TransientPropertyMeta<W extends Wrapper<?>> implements
-        EntityPropertyMeta<W> {
+public class TransientPropertyType<W extends Wrapper<?>> implements
+        EntityPropertyType<W> {
 
     /** 名前 */
     protected final String name;
@@ -41,7 +41,7 @@ public class TransientPropertyMeta<W extends Wrapper<?>> implements
      * @param domain
      *            ドメイン
      */
-    public TransientPropertyMeta(String name, W domain) {
+    public TransientPropertyType(String name, W domain) {
         if (name == null) {
             throw new DomaNullPointerException("name");
         }

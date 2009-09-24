@@ -19,9 +19,9 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.Set;
 
+import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
+import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
-import org.seasar.doma.jdbc.entity.EntityMetaFactory;
-import org.seasar.doma.jdbc.entity.EntityPropertyMeta;
 
 /**
  * @author taedium
@@ -38,13 +38,13 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
 
     protected boolean unchangedPropertyIncluded;
 
-    public AutoUpdateQuery(EntityMetaFactory<E> entityMetaFactory) {
-        super(entityMetaFactory);
+    public AutoUpdateQuery(EntityTypeFactory<E> entityTypeFactory) {
+        super(entityTypeFactory);
     }
 
     public void prepare() {
-        assertNotNull(config, entityMeta, callerClassName, callerMethodName);
-        entityMeta.preUpdate();
+        assertNotNull(config, entityType, callerClassName, callerMethodName);
+        entityType.preUpdate();
         prepareTableAndColumnNames();
         prepareIdAndVersionProperties();
         validateIdExistent();
@@ -56,7 +56,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void prepareOptimisticLock() {
-        if (versionProperty != null && !versionIncluded) {
+        if (versionPropertyType != null && !versionIncluded) {
             if (!optimisticLockExceptionSuppressed) {
                 optimisticLockCheckRequired = true;
             }
@@ -64,8 +64,8 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void prepareTargetProperties() {
-        Set<String> dirtyStates = entityMeta.getModifiedProperties();
-        for (EntityPropertyMeta<?> p : entityMeta.getPropertyMetas()) {
+        Set<String> dirtyStates = entityType.getModifiedProperties();
+        for (EntityPropertyType<?> p : entityType.getEntityPropertyTypes()) {
             if (p.isTransient()) {
                 continue;
             }
@@ -99,7 +99,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
         builder.appendSql("update ");
         builder.appendSql(tableName);
         builder.appendSql(" set ");
-        for (EntityPropertyMeta<?> p : targetProperties) {
+        for (EntityPropertyType<?> p : targetProperties) {
             builder.appendSql(columnNameMap.get(p.getName()));
             builder.appendSql(" = ");
             builder.appendDomain(p.getWrapper());
@@ -111,7 +111,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
         builder.cutBackSql(2);
         if (idProperties.size() > 0) {
             builder.appendSql(" where ");
-            for (EntityPropertyMeta<?> p : idProperties) {
+            for (EntityPropertyType<?> p : idProperties) {
                 builder.appendSql(columnNameMap.get(p.getName()));
                 builder.appendSql(" = ");
                 builder.appendDomain(p.getWrapper());
@@ -119,25 +119,25 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
             }
             builder.cutBackSql(5);
         }
-        if (versionProperty != null && !versionIncluded) {
+        if (versionPropertyType != null && !versionIncluded) {
             if (idProperties.size() == 0) {
                 builder.appendSql(" where ");
             } else {
                 builder.appendSql(" and ");
             }
-            builder.appendSql(columnNameMap.get(versionProperty.getName()));
+            builder.appendSql(columnNameMap.get(versionPropertyType.getName()));
             builder.appendSql(" = ");
-            builder.appendDomain(versionProperty.getWrapper());
+            builder.appendDomain(versionPropertyType.getWrapper());
         }
         sql = builder.build();
     }
 
     @Override
     public void incrementVersion() {
-        if (versionIncluded || versionProperty == null) {
+        if (versionIncluded || versionPropertyType == null) {
             return;
         }
-        versionProperty.increment();
+        versionPropertyType.increment();
     }
 
     public void setNullExcluded(boolean nullExcluded) {

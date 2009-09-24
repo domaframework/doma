@@ -19,34 +19,34 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.List;
 
-import org.seasar.doma.jdbc.entity.EntityMeta;
-import org.seasar.doma.jdbc.entity.EntityMetaFactory;
+import org.seasar.doma.internal.jdbc.entity.EntityType;
+import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 
 /**
  * @author taedium
  * 
  */
-public class EntityListParameter<E> implements ListParameter<EntityMeta<E>> {
+public class EntityListParameter<E> implements ListParameter<EntityType<E>> {
 
-    protected final EntityMetaFactory<E> entityMetaFactory;
+    protected final EntityTypeFactory<E> entityTypeFactory;
 
     protected final List<E> entities;
 
-    public EntityListParameter(EntityMetaFactory<E> entityMetaFactory,
+    public EntityListParameter(EntityTypeFactory<E> entityTypeFactory,
             List<E> entities) {
-        assertNotNull(entityMetaFactory, entities);
-        this.entityMetaFactory = entityMetaFactory;
+        assertNotNull(entityTypeFactory, entities);
+        this.entityTypeFactory = entityTypeFactory;
         this.entities = entities;
     }
 
     @Override
-    public EntityMeta<E> getElementHolder() {
-        return entityMetaFactory.createEntityMeta();
+    public EntityType<E> getElementHolder() {
+        return entityTypeFactory.createEntityType();
     }
 
     @Override
-    public void putElementHolder(EntityMeta<E> entityMeta) {
-        entities.add(entityMeta.getEntity());
+    public void putElementHolder(EntityType<E> entityType) {
+        entities.add(entityType.getEntity());
     }
 
     @Override

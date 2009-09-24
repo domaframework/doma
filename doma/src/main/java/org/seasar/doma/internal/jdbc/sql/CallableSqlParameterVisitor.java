@@ -27,14 +27,14 @@ public interface CallableSqlParameterVisitor<R, P, TH extends Throwable> {
 
     R visitInOutParameter(InOutParameter<?> parameter, P p) throws TH;
 
-    R visitDomainListParameter(ValueListParameter<?> parameter, P p) throws TH;
+    R visitValueListParameter(ValueListParameter<?> parameter, P p) throws TH;
 
     R visitEntityListParameter(EntityListParameter<?> parameter, P p) throws TH;
 
-    R visitDomainResultParameter(ValueResultParameter<?> parameter, P p)
+    R visitValueResultParameter(ValueResultParameter<?> parameter, P p)
             throws TH;
 
-    R visitDomainListResultParameter(ValueListResultParameter<?> parameter, P p)
+    R visitValueListResultParameter(ValueListResultParameter<?> parameter, P p)
             throws TH;
 
     R visitEntityListResultParameter(EntityListResultParameter<?> parameter, P p)

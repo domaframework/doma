@@ -56,6 +56,6 @@ public class ValueListResultParameter<V> implements ResultParameter<List<V>>,
     @Override
     public <R, P, TH extends Throwable> R accept(
             CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitDomainListResultParameter(this, p);
+        return visitor.visitValueListResultParameter(this, p);
     }
 }

@@ -41,7 +41,7 @@ public class BuiltinSequenceIdGeneratorTest extends TestCase {
         idGenerator.setInitialValue(1);
         idGenerator.setAllocationSize(1);
         IdGenerationConfig idGenerationConfig = new IdGenerationConfig(config,
-                new Emp_().createEntityMeta(), "EMP", "ID");
+                new Emp_().createEntityType(), "EMP", "ID");
         Long value = idGenerator.generatePreInsert(idGenerationConfig);
         assertEquals(new Long(11), value);
         assertEquals("select nextval('aaa')",

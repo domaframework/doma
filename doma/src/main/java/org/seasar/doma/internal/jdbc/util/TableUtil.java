@@ -17,10 +17,10 @@ package org.seasar.doma.internal.jdbc.util;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.NamingConvention;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.entity.EntityMeta;
 
 /**
  * @author taedium
@@ -28,7 +28,7 @@ import org.seasar.doma.jdbc.entity.EntityMeta;
  */
 public final class TableUtil {
 
-    public static String getQualifiedTableName(Config config, EntityMeta<?> entity) {
+    public static String getQualifiedTableName(Config config, EntityType<?> entity) {
         assertNotNull(config, entity);
         String catalogName = entity.getCatalogName();
         String schemaName = entity.getSchemaName();
@@ -49,7 +49,7 @@ public final class TableUtil {
         return buf.append(tableName).toString();
     }
 
-    protected static String getTableName(Config config, EntityMeta<?> entity) {
+    protected static String getTableName(Config config, EntityType<?> entity) {
         if (entity.getTableName() != null) {
             return entity.getTableName();
         }

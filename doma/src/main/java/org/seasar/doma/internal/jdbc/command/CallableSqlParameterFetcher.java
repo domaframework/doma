@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlParameter;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlParameterVisitor;
@@ -38,7 +39,6 @@ import org.seasar.doma.internal.jdbc.sql.ValueResultParameter;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.entity.EntityMeta;
 import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.wrapper.Wrapper;
 
@@ -122,7 +122,7 @@ public class CallableSqlParameterFetcher {
         }
 
         @Override
-        public Void visitDomainResultParameter(
+        public Void visitValueResultParameter(
                 ValueResultParameter<?> parameter, Void p) throws SQLException {
             Wrapper<?> domain = parameter.getWrapper();
             domain.accept(jdbcMappingVisitor, new GetOutParameterFunction(
@@ -132,7 +132,7 @@ public class CallableSqlParameterFetcher {
         }
 
         @Override
-        public Void visitDomainListParameter(ValueListParameter<?> parameter,
+        public Void visitValueListParameter(ValueListParameter<?> parameter,
                 Void p) throws SQLException {
             handleValueListParameter(parameter);
             return null;
@@ -146,7 +146,7 @@ public class CallableSqlParameterFetcher {
         }
 
         @Override
-        public Void visitDomainListResultParameter(
+        public Void visitValueListResultParameter(
                 ValueListResultParameter<?> parameter, Void p)
                 throws SQLException {
             handleValueListParameter(parameter);
@@ -161,7 +161,7 @@ public class CallableSqlParameterFetcher {
             return null;
         }
 
-        protected <H extends EntityMeta<?>> void handleEntityListParameter(
+        protected <H extends EntityType<?>> void handleEntityListParameter(
                 ListParameter<H> parameter) throws SQLException {
             EntityFetcher fetcher = new EntityFetcher(query);
             if (dialect.supportsResultSetReturningAsOutParameter()) {
@@ -191,7 +191,7 @@ public class CallableSqlParameterFetcher {
             }
         }
 
-        protected <H extends EntityMeta<?>> void fetchEntities(
+        protected <H extends EntityType<?>> void fetchEntities(
                 EntityFetcher fetcher, ResultSet resultSet,
                 ListParameter<H> parameter) throws SQLException {
             while (resultSet.next()) {

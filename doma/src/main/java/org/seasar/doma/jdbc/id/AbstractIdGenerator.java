@@ -58,7 +58,7 @@ public abstract class AbstractIdGenerator implements IdGenerator {
                 return getGeneratedValue(config, resultSet);
             } catch (SQLException e) {
                 throw new JdbcException(DomaMessageCode.DOMA2018, e, config
-                        .getEntityMeta().getName(), e);
+                        .getEntityType().getName(), e);
             } finally {
                 JdbcUtil.close(preparedStatement, logger);
             }
@@ -109,10 +109,10 @@ public abstract class AbstractIdGenerator implements IdGenerator {
                 return resultSet.getLong(1);
             }
             throw new JdbcException(DomaMessageCode.DOMA2017, config
-                    .getEntityMeta().getName());
+                    .getEntityType().getName());
         } catch (final SQLException e) {
             throw new JdbcException(DomaMessageCode.DOMA2018, e, config
-                    .getEntityMeta().getName(), e);
+                    .getEntityType().getName(), e);
         } finally {
             JdbcUtil.close(resultSet, logger);
         }

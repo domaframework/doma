@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.entity;
+package org.seasar.doma.internal.jdbc.entity;
 
 import org.seasar.doma.wrapper.Wrapper;
 
@@ -29,7 +29,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * @param <W>
  *            ドメインの型
  */
-public interface EntityPropertyMeta<W extends Wrapper<?>> {
+public interface EntityPropertyType<W extends Wrapper<?>> {
 
     /**
      * ドメインを返します。

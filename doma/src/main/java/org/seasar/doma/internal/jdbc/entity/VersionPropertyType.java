@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.entity;
+package org.seasar.doma.internal.jdbc.entity;
 
 import org.seasar.doma.wrapper.NumberWrapper;
 
@@ -23,8 +23,8 @@ import org.seasar.doma.wrapper.NumberWrapper;
  * @author taedium
  * 
  */
-public class VersionPropertyMeta<W extends NumberWrapper<?>> extends
-        BasicPropertyMeta<W> {
+public class VersionPropertyType<W extends NumberWrapper<?>> extends
+        BasicPropertyType<W> {
 
     /**
      * インスタンスを構築します。
@@ -36,7 +36,7 @@ public class VersionPropertyMeta<W extends NumberWrapper<?>> extends
      * @param wrapper
      *            ドメイン
      */
-    public VersionPropertyMeta(String name, String columnName, W wrapper) {
+    public VersionPropertyType(String name, String columnName, W wrapper) {
         super(name, columnName, wrapper, true, true);
     }
 

@@ -81,7 +81,7 @@ public class CallableSqlParameterBinder {
         }
 
         @Override
-        public Void visitDomainListParameter(ValueListParameter<?> parameter,
+        public Void visitValueListParameter(ValueListParameter<?> parameter,
                 Void p) throws SQLException {
             handleListParameter(parameter);
             return null;
@@ -95,7 +95,7 @@ public class CallableSqlParameterBinder {
         }
 
         @Override
-        public Void visitDomainListResultParameter(
+        public Void visitValueListResultParameter(
                 ValueListResultParameter<?> parameter, Void p)
                 throws SQLException {
             handleListParameter(parameter);
@@ -125,8 +125,8 @@ public class CallableSqlParameterBinder {
             Wrapper<?> wrapper = parameter.getWrapper();
             wrapper.accept(jdbcMappingVisitor, new SetValueFunction(
                     callableStatement, index));
-            wrapper.accept(jdbcMappingVisitor, new RegisterOutParameterFunction(
-                    callableStatement, index));
+            wrapper.accept(jdbcMappingVisitor,
+                    new RegisterOutParameterFunction(callableStatement, index));
             index++;
             return null;
         }
@@ -152,7 +152,7 @@ public class CallableSqlParameterBinder {
         }
 
         @Override
-        public Void visitDomainResultParameter(
+        public Void visitValueResultParameter(
                 ValueResultParameter<?> parameter, Void p) throws SQLException {
             Wrapper<?> domain = parameter.getWrapper();
             domain.accept(jdbcMappingVisitor, new RegisterOutParameterFunction(

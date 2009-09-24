@@ -24,55 +24,55 @@ import java.util.Set;
 
 import javax.annotation.Generated;
 
-import org.seasar.doma.jdbc.entity.AbstractEntityMeta;
-import org.seasar.doma.jdbc.entity.AssignedIdPropertyMeta;
-import org.seasar.doma.jdbc.entity.BasicPropertyMeta;
+import org.seasar.doma.internal.jdbc.entity.AbstractEntityType;
+import org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType;
+import org.seasar.doma.internal.jdbc.entity.BasicPropertyType;
+import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
+import org.seasar.doma.internal.jdbc.entity.EntityType;
+import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
+import org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType;
+import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.jdbc.entity.BuiltinEntityListener;
-import org.seasar.doma.jdbc.entity.EntityMeta;
-import org.seasar.doma.jdbc.entity.EntityMetaFactory;
-import org.seasar.doma.jdbc.entity.EntityPropertyMeta;
-import org.seasar.doma.jdbc.entity.GeneratedIdPropertyMeta;
-import org.seasar.doma.jdbc.entity.VersionPropertyMeta;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
 import org.seasar.doma.wrapper.IntegerWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 
 @Generated("")
-public class Emp_ implements EntityMetaFactory<Emp> {
+public class Emp_ implements EntityTypeFactory<Emp> {
 
     @Override
-    public EntityMeta<Emp> createEntityMeta() {
+    public EntityType<Emp> createEntityType() {
         return new Meta();
     }
 
     @Override
-    public EntityMeta<Emp> createEntityMeta(Emp entity) {
+    public EntityType<Emp> createEntityType(Emp entity) {
         return new Meta(entity);
     }
 
-    public static class Meta extends AbstractEntityMeta<Emp> {
+    public static class Meta extends AbstractEntityType<Emp> {
 
         private static final BuiltinEntityListener __listener = new BuiltinEntityListener();
 
-        private final AssignedIdPropertyMeta<IntegerWrapper> id = new AssignedIdPropertyMeta<IntegerWrapper>(
+        private final AssignedIdPropertyType<IntegerWrapper> id = new AssignedIdPropertyType<IntegerWrapper>(
                 "id", null, new IntegerWrapper());
 
-        private final BasicPropertyMeta<StringWrapper> name = new BasicPropertyMeta<StringWrapper>(
+        private final BasicPropertyType<StringWrapper> name = new BasicPropertyType<StringWrapper>(
                 "name", null, new StringWrapper(), true, true);
 
-        private final BasicPropertyMeta<BigDecimalWrapper> salary = new BasicPropertyMeta<BigDecimalWrapper>(
+        private final BasicPropertyType<BigDecimalWrapper> salary = new BasicPropertyType<BigDecimalWrapper>(
                 "salary", null, new BigDecimalWrapper(), true, true);
 
-        private final VersionPropertyMeta<IntegerWrapper> version = new VersionPropertyMeta<IntegerWrapper>(
+        private final VersionPropertyType<IntegerWrapper> version = new VersionPropertyType<IntegerWrapper>(
                 "version", null, new IntegerWrapper());
 
         private final Set<String> dirtyStates;
 
         private final String __name = "emp";
 
-        private List<EntityPropertyMeta<?>> __properties;
+        private List<EntityPropertyType<?>> __properties;
 
-        private Map<String, EntityPropertyMeta<?>> __propertyMap;
+        private Map<String, EntityPropertyType<?>> __propertyMap;
 
         private final Emp __entity;
 
@@ -119,9 +119,9 @@ public class Emp_ implements EntityMetaFactory<Emp> {
         }
 
         @Override
-        public List<EntityPropertyMeta<?>> getPropertyMetas() {
+        public List<EntityPropertyType<?>> getEntityPropertyTypes() {
             if (__properties == null) {
-                List<EntityPropertyMeta<?>> list = new ArrayList<EntityPropertyMeta<?>>();
+                List<EntityPropertyType<?>> list = new ArrayList<EntityPropertyType<?>>();
                 list.add(id);
                 list.add(name);
                 list.add(salary);
@@ -132,9 +132,9 @@ public class Emp_ implements EntityMetaFactory<Emp> {
         }
 
         @Override
-        public EntityPropertyMeta<?> getPropertyMeta(String propertyName) {
+        public EntityPropertyType<?> getEntityPropertyType(String propertyName) {
             if (__propertyMap == null) {
-                Map<String, EntityPropertyMeta<?>> map = new HashMap<String, EntityPropertyMeta<?>>();
+                Map<String, EntityPropertyType<?>> map = new HashMap<String, EntityPropertyType<?>>();
                 map.put("id", id);
                 map.put("name", name);
                 map.put("salary", salary);
@@ -145,12 +145,12 @@ public class Emp_ implements EntityMetaFactory<Emp> {
         }
 
         @Override
-        public GeneratedIdPropertyMeta<?> getGeneratedIdProperty() {
+        public GeneratedIdPropertyType<?> getGeneratedIdPropertyType() {
             return null;
         }
 
         @Override
-        public VersionPropertyMeta<?> getVersionProperty() {
+        public VersionPropertyType<?> getVersionPropertyType() {
             return version;
         }
 

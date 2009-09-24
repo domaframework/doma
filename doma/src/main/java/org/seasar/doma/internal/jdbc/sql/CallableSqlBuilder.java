@@ -86,14 +86,14 @@ public class CallableSqlBuilder
     }
 
     @Override
-    public Void visitDomainResultParameter(ValueResultParameter<?> parameter,
+    public Void visitValueResultParameter(ValueResultParameter<?> parameter,
             Context p) throws RuntimeException {
         handelResultParameter(parameter, p);
         return null;
     }
 
     @Override
-    public Void visitDomainListResultParameter(
+    public Void visitValueListResultParameter(
             ValueListResultParameter<?> parameter, Context p)
             throws RuntimeException {
         handelResultParameter(parameter, p);
@@ -114,7 +114,7 @@ public class CallableSqlBuilder
     }
 
     @Override
-    public Void visitDomainListParameter(ValueListParameter<?> parameter,
+    public Void visitValueListParameter(ValueListParameter<?> parameter,
             Context p) throws RuntimeException {
         handelListParameter(parameter, p);
         return null;
