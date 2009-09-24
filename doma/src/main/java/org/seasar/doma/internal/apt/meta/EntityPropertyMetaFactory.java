@@ -18,8 +18,8 @@ package org.seasar.doma.internal.apt.meta;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 
@@ -44,21 +44,25 @@ public class EntityPropertyMetaFactory {
 
     protected final ProcessingEnvironment env;
 
-    public EntityPropertyMetaFactory(ProcessingEnvironment env) {
-        assertNotNull(env);
+    protected final DomainMetaFactory domainMetaFactory;
+
+    public EntityPropertyMetaFactory(ProcessingEnvironment env,
+            DomainMetaFactory domainMetaFactory) {
+        assertNotNull(env, domainMetaFactory);
         this.env = env;
+        this.domainMetaFactory = domainMetaFactory;
     }
 
     public EntityPropertyMeta createEntityPropertyMeta(
             VariableElement fieldElement, EntityMeta entityMeta) {
         assertNotNull(fieldElement, entityMeta);
-        EntityPropertyMeta propertyMeta = new EntityPropertyMeta();
+        EntityPropertyMeta propertyMeta = new EntityPropertyMeta(fieldElement
+                .asType(), env);
         doName(propertyMeta, fieldElement, entityMeta);
         doId(propertyMeta, fieldElement, entityMeta);
         doTransient(propertyMeta, fieldElement, entityMeta);
         doVersion(propertyMeta, fieldElement, entityMeta);
         doColumnMeta(propertyMeta, fieldElement, entityMeta);
-        doPrimitive(propertyMeta, fieldElement, entityMeta);
         doWrapperTypeName(propertyMeta, fieldElement, entityMeta);
         return propertyMeta;
     }
@@ -234,27 +238,30 @@ public class EntityPropertyMetaFactory {
         propertyMeta.setColumnMeta(columnMeta);
     }
 
-    protected void doPrimitive(EntityPropertyMeta propertyMeta,
-            VariableElement fieldElement, EntityMeta entityMeta) {
-        TypeMirror fieldType = fieldElement.asType();
-        propertyMeta.setPrimitive(fieldType.getKind().isPrimitive());
-    }
-
     protected void doWrapperTypeName(EntityPropertyMeta propertyMeta,
             VariableElement fieldElement, EntityMeta entityMeta) {
         if (propertyMeta.isTrnsient()) {
             return;
         }
-        TypeMirror fieldType = fieldElement.asType();
-        DeclaredType wrappedType = TypeUtil.toDeclaredType(TypeUtil
-                .toWrapperTypeIfPrimitive(fieldType, env), env);
-        DeclaredType wrapperType = WrapperResolver.getWrapperType(wrappedType,
+        TypeElement typeElement = TypeUtil.toTypeElement(fieldElement.asType(),
                 env);
-        if (wrapperType == null) {
-            throw new AptException(DomaMessageCode.DOMA4096, env, fieldElement,
-                    wrappedType);
+        if (typeElement == null) {
+            return;
         }
-        propertyMeta.setWrapperTypeName(TypeUtil.getTypeName(wrapperType, env));
+        DomainMeta domainMeta = domainMetaFactory.createDomainMeta(typeElement);
+        if (domainMeta != null) {
+            propertyMeta.setDomainMeta(domainMeta);
+            propertyMeta.setWrapperTypeName(domainMeta.getWrapperTypeName());
+        } else {
+            TypeMirror fieldType = fieldElement.asType();
+            TypeMirror wrapperType = DomaTypes.getWrapperType(fieldType, env);
+            if (wrapperType == null) {
+                throw new AptException(DomaMessageCode.DOMA4096, env,
+                        fieldElement, fieldType);
+            }
+            propertyMeta.setWrapperTypeName(TypeUtil.getTypeName(wrapperType,
+                    env));
+        }
     }
 
     protected boolean isNumber(TypeMirror typeMirror) {

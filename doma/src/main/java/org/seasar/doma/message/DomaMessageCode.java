@@ -144,7 +144,7 @@ public enum DomaMessageCode implements MessageCode {
     DOMA4036("@GeneratedValueを使用する場合、@Idは１つでなければいけません。"),
     DOMA4037("複数の@GeneratedValueが見つかりました。@GeneratedValueは1つでなければいけません。"),
     DOMA4038("EntityListerクラス[{0}]の型パラメータ[{1}]はEntityクラス[{2}]のスーパータイプでなければいけません。"),
-    DOMA4039("コンパイルが失敗しているためAPTの処理を中止します。コンパイルが失敗している原因については実行環境（Eclipseやjavac）のエラーメッセージを確認してください。このメッセージが生成された箇所を知りたい場合は、ログ(EclipseならばError Logビュー、javacならばコンソールなど)を確認してください。"),
+    DOMA4039("コンパイルが失敗している可能性があるためAPTの処理を中止します。コンパイルが失敗している原因については実行環境（Eclipseやjavac）のエラーメッセージを確認してください。このメッセージが生成された箇所を知りたい場合は、ログ(EclipseならばError Logビュー、javacならばコンソールなど)を確認してください。"),
     DOMA4040("戻り値のクラスは更新件数を示すintの配列でなければいけません。"),
     DOMA4041("Collection型には型パラメータが必須です。"),
     DOMA4042("パラメータがListインタフェースではありません。"),
@@ -204,6 +204,11 @@ public enum DomaMessageCode implements MessageCode {
     DOMA4099("org.seasar.doma.jdbc.Referenceには型パラメータが必須です。"),
     DOMA4100("型パラメータ[{0}]はサポートされていません。"),
     DOMA4101("@InOutが注釈されたパラメータに型[{0}]はサポートされていません。"),
+    DOMA4102("@DomainのvalueType要素に指定された型[{0}]は永続対象の型としてサポートされていません。"),
+    DOMA4103("型[{0}]をパラメータにもつpublicなコンストラクタが見つかりません。"),
+    DOMA4104("型[{0}]を戻り値にもったpublicなパラメータなしのメソッド[{1}]が見つかりません。"),
+    DOMA4105("@Domainはpublicなクラス以外に注釈できません。"),
+    DOMA4106("ネストしたクラスに@Domainを注釈する場合、そのクラスにはstatic修飾子が必須です。"),
 
     // other
     DOMA9001("java.io.Closeableのclose()に失敗しました。原因は次のものです。{0}");

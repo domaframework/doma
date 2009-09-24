@@ -15,12 +15,23 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
+import static org.seasar.doma.internal.util.AssertionUtil.*;
+
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.type.TypeMirror;
+
+import org.seasar.doma.internal.apt.TypeUtil;
+
 /**
  * 
  * @author taedium
  * 
  */
 public class EntityPropertyMeta {
+
+    protected final TypeMirror type;
+
+    protected final String typeName;
 
     protected String name;
 
@@ -32,11 +43,17 @@ public class EntityPropertyMeta {
 
     protected boolean version;
 
-    protected boolean primitive;
-
     protected ColumnMeta columnMeta;
 
     protected IdGeneratorMeta idGeneratorMeta;
+
+    protected DomainMeta domainMeta;
+
+    public EntityPropertyMeta(TypeMirror type, ProcessingEnvironment env) {
+        assertNotNull(type, env);
+        this.type = type;
+        this.typeName = TypeUtil.getTypeName(type, env);
+    }
 
     public String getName() {
         return name;
@@ -94,12 +111,24 @@ public class EntityPropertyMeta {
         return wrapperTypeName;
     }
 
-    public boolean isPrimitive() {
-        return primitive;
+    public DomainMeta getDomainMeta() {
+        return domainMeta;
     }
 
-    public void setPrimitive(boolean primitive) {
-        this.primitive = primitive;
+    public void setDomainMeta(DomainMeta domainMeta) {
+        this.domainMeta = domainMeta;
+    }
+
+    public TypeMirror getType() {
+        return type;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public boolean isDomain() {
+        return domainMeta != null;
     }
 
 }

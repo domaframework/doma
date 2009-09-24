@@ -5,15 +5,15 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
 
     @Override
     public org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.Emp> createEntityType() {
-        return new EntityType();
+        return new EmpType();
     }
 
     @Override
     public org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.Emp> createEntityType(org.seasar.doma.internal.apt.entity.Emp entity) {
-        return new EntityType(entity);
+        return new EmpType(entity);
     }
 
-    public static class EntityType extends org.seasar.doma.internal.jdbc.entity.AbstractEntityType<org.seasar.doma.internal.apt.entity.Emp> {
+    public static class EmpType extends org.seasar.doma.internal.jdbc.entity.AbstractEntityType<org.seasar.doma.internal.apt.entity.Emp> {
 
         private static final org.seasar.doma.jdbc.id.BuiltinSequenceIdGenerator __idGenerator = new org.seasar.doma.jdbc.id.BuiltinSequenceIdGenerator();
         static {
@@ -43,11 +43,11 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
 
         private java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __entityPropertyMap;
 
-        private EntityType() {
+        private EmpType() {
             this(new org.seasar.doma.internal.apt.entity.Emp());
         }
 
-        private EntityType(org.seasar.doma.internal.apt.entity.Emp entity) {
+        private EmpType(org.seasar.doma.internal.apt.entity.Emp entity) {
             super(null, "AAA", null);
             id.getWrapper().set(entity.id);
             name.getWrapper().set(entity.name);

@@ -5,15 +5,15 @@ public class ChildEntity_ implements org.seasar.doma.internal.jdbc.entity.Entity
 
     @Override
     public org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.ChildEntity> createEntityType() {
-        return new EntityType();
+        return new ChildEntityType();
     }
 
     @Override
     public org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.ChildEntity> createEntityType(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
-        return new EntityType(entity);
+        return new ChildEntityType(entity);
     }
 
-    public static class EntityType extends org.seasar.doma.internal.jdbc.entity.AbstractEntityType<org.seasar.doma.internal.apt.entity.ChildEntity> {
+    public static class ChildEntityType extends org.seasar.doma.internal.jdbc.entity.AbstractEntityType<org.seasar.doma.internal.apt.entity.ChildEntity> {
 
         private static final org.seasar.doma.jdbc.entity.BuiltinEntityListener __listener = new org.seasar.doma.jdbc.entity.BuiltinEntityListener();
 
@@ -33,11 +33,11 @@ public class ChildEntity_ implements org.seasar.doma.internal.jdbc.entity.Entity
 
         private java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __entityPropertyMap;
 
-        private EntityType() {
+        private ChildEntityType() {
             this(new org.seasar.doma.internal.apt.entity.ChildEntity());
         }
 
-        private EntityType(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
+        private ChildEntityType(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
             super(null, null, null);
             bbb.getWrapper().set(entity.bbb);
             ccc.getWrapper().set(entity.ccc);

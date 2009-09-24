@@ -5,15 +5,15 @@ public class PrimitivePropertyEntity_ implements org.seasar.doma.internal.jdbc.e
 
     @Override
     public org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity> createEntityType() {
-        return new EntityType();
+        return new PrimitivePropertyEntityType();
     }
 
     @Override
     public org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity> createEntityType(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity) {
-        return new EntityType(entity);
+        return new PrimitivePropertyEntityType(entity);
     }
 
-    public static class EntityType extends org.seasar.doma.internal.jdbc.entity.AbstractEntityType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity> {
+    public static class PrimitivePropertyEntityType extends org.seasar.doma.internal.jdbc.entity.AbstractEntityType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity> {
 
         private static final org.seasar.doma.jdbc.entity.BuiltinEntityListener __listener = new org.seasar.doma.jdbc.entity.BuiltinEntityListener();
 
@@ -33,11 +33,11 @@ public class PrimitivePropertyEntity_ implements org.seasar.doma.internal.jdbc.e
 
         private java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __entityPropertyMap;
 
-        private EntityType() {
+        private PrimitivePropertyEntityType() {
             this(new org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity());
         }
 
-        private EntityType(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity) {
+        private PrimitivePropertyEntityType(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity) {
             super(null, null, null);
             id.getWrapper().set(entity.id);
             bool.getWrapper().set(entity.bool);

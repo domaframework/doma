@@ -11,4 +11,6 @@ public @interface Domain {
 
     Class<?> valueType();
 
+    String accessorMethod() default "getValue";
+
 }

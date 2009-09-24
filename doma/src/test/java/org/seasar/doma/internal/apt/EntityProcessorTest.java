@@ -17,6 +17,7 @@ package org.seasar.doma.internal.apt;
 
 import org.seasar.doma.internal.apt.entity.AnnotationConflictedEntity;
 import org.seasar.doma.internal.apt.entity.ChildEntity;
+import org.seasar.doma.internal.apt.entity.DomainPropertyEntity;
 import org.seasar.doma.internal.apt.entity.Emp;
 import org.seasar.doma.internal.apt.entity.ListenerArgumentTypeIllegalEntity;
 import org.seasar.doma.internal.apt.entity.NameUnsafeEntity_;
@@ -45,7 +46,7 @@ public class EntityProcessorTest extends AptTestCase {
     public void testEmp() throws Exception {
         EntityProcessor processor = new EntityProcessor();
         addProcessor(processor);
-        addCompilationUnit(Emp.class.getName());
+        addCompilationUnit(Emp.class);
         compile();
         assertGeneratedSource(Emp.class);
         assertTrue(getCompiledResult());
@@ -107,7 +108,7 @@ public class EntityProcessorTest extends AptTestCase {
         addProcessor(processor);
         addCompilationUnit(target);
         compile();
-        assertGeneratedSource(PrimitivePropertyEntity.class);
+        assertGeneratedSource(target);
     }
 
     public void testExtends() throws Exception {
@@ -116,7 +117,7 @@ public class EntityProcessorTest extends AptTestCase {
         addProcessor(processor);
         addCompilationUnit(target);
         compile();
-        assertGeneratedSource(ChildEntity.class);
+        assertGeneratedSource(target);
     }
 
     public void testPropertyNameReserved() throws Exception {
@@ -145,7 +146,7 @@ public class EntityProcessorTest extends AptTestCase {
         addProcessor(processor);
         addCompilationUnit(target);
         compile();
-        assertGeneratedSource(TransientPropertyEntity.class);
+        assertGeneratedSource(target);
         assertTrue(getCompiledResult());
     }
 
@@ -177,5 +178,15 @@ public class EntityProcessorTest extends AptTestCase {
         compile();
         assertFalse(getCompiledResult());
         assertMessageCode(DomaMessageCode.DOMA4086);
+    }
+
+    public void testDomainProperty() throws Exception {
+        Class<?> target = DomainPropertyEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
     }
 }

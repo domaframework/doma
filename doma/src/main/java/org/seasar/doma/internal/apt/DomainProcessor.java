@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.internal.apt;
 
-import java.io.IOException;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -29,10 +28,6 @@ import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.internal.apt.meta.DomainMetaFactory;
-import org.seasar.doma.internal.apt.meta.EntityMeta;
-import org.seasar.doma.internal.apt.meta.EntityMetaFactory;
-import org.seasar.doma.internal.apt.meta.EntityPropertyMetaFactory;
-import org.seasar.doma.internal.util.IOUtil;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -40,9 +35,9 @@ import org.seasar.doma.message.DomaMessageCode;
  * 
  */
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
-@SupportedAnnotationTypes( { "org.seasar.doma.Entity" })
-@SupportedOptions( { Options.TEST, Options.DEBUG, Options.ENTITY_SUFFIX })
-public class EntityProcessor extends AbstractProcessor {
+@SupportedAnnotationTypes( { "org.seasar.doma.Domain" })
+@SupportedOptions( { Options.TEST, Options.DEBUG })
+public class DomainProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations,
@@ -51,32 +46,30 @@ public class EntityProcessor extends AbstractProcessor {
             return true;
         }
         for (TypeElement a : annotations) {
-            EntityMetaFactory entityMetaFactory = createEntityMetaFactory();
-            for (TypeElement entityElement : ElementFilter.typesIn(roundEnv
+            DomainMetaFactory domainMetaFactory = createDomainMetaFactory();
+            for (TypeElement domainElement : ElementFilter.typesIn(roundEnv
                     .getElementsAnnotatedWith(a))) {
                 if (Options.isDebugEnabled(processingEnv)) {
                     Notifier.debug(processingEnv, DomaMessageCode.DOMA4090,
-                            getClass().getName(), entityElement
+                            getClass().getName(), domainElement
                                     .getQualifiedName());
                 }
                 try {
-                    EntityMeta entityMeta = entityMetaFactory
-                            .createEntityMeta(entityElement);
-                    generateEntity(entityElement, entityMeta);
+                    domainMetaFactory.createDomainMeta(domainElement);
                 } catch (AptException e) {
                     Notifier.notify(processingEnv, e);
                 } catch (AptIllegalStateException e) {
                     Notifier.notify(processingEnv, Kind.ERROR,
-                            DomaMessageCode.DOMA4039, entityElement);
+                            DomaMessageCode.DOMA4039, domainElement);
                     throw e;
                 } catch (RuntimeException e) {
                     Notifier.notify(processingEnv, Kind.ERROR,
-                            DomaMessageCode.DOMA4016, entityElement);
+                            DomaMessageCode.DOMA4016, domainElement);
                     throw e;
                 }
                 if (Options.isDebugEnabled(processingEnv)) {
                     Notifier.debug(processingEnv, DomaMessageCode.DOMA4091,
-                            getClass().getName(), entityElement
+                            getClass().getName(), domainElement
                                     .getQualifiedName());
                 }
             }
@@ -84,40 +77,8 @@ public class EntityProcessor extends AbstractProcessor {
         return true;
     }
 
-    protected EntityMetaFactory createEntityMetaFactory() {
-        EntityPropertyMetaFactory propertyMetaFactory = createEntityPropertyMetaFactory();
-        return new EntityMetaFactory(processingEnv, propertyMetaFactory);
-    }
-
-    protected EntityPropertyMetaFactory createEntityPropertyMetaFactory() {
-        DomainMetaFactory domainMetaFactory = createDomainMetaFactory();
-        return new EntityPropertyMetaFactory(processingEnv, domainMetaFactory);
-    }
-
     protected DomainMetaFactory createDomainMetaFactory() {
         return new DomainMetaFactory(processingEnv);
-    }
-
-    protected void generateEntity(TypeElement entityElement,
-            EntityMeta entityMeta) {
-        EntityTypeFactoryGenerator generator = null;
-        try {
-            generator = createEntityMetaFactoryGenerator(entityElement,
-                    entityMeta);
-            generator.generate();
-        } catch (IOException e) {
-            throw new AptException(DomaMessageCode.DOMA4011, processingEnv,
-                    entityElement, e, entityElement.getQualifiedName(), e);
-        } finally {
-            IOUtil.close(generator);
-        }
-    }
-
-    protected EntityTypeFactoryGenerator createEntityMetaFactoryGenerator(
-            TypeElement entityElement, EntityMeta entityMeta)
-            throws IOException {
-        return new EntityTypeFactoryGenerator(processingEnv, entityElement,
-                entityMeta);
     }
 
 }

@@ -1,41 +1,44 @@
 package org.seasar.doma.internal.apt.entity;
 
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
-public class TransientPropertyEntity_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFactory<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> {
+public class DomainPropertyEntity_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFactory<org.seasar.doma.internal.apt.entity.DomainPropertyEntity> {
 
     @Override
-    public org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> createEntityType() {
-        return new TransientPropertyEntityType();
+    public org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity> createEntityType() {
+        return new DomainPropertyEntityType();
     }
 
     @Override
-    public org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> createEntityType(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity) {
-        return new TransientPropertyEntityType(entity);
+    public org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity> createEntityType(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity) {
+        return new DomainPropertyEntityType(entity);
     }
 
-    public static class TransientPropertyEntityType extends org.seasar.doma.internal.jdbc.entity.AbstractEntityType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> {
+    public static class DomainPropertyEntityType extends org.seasar.doma.internal.jdbc.entity.AbstractEntityType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity> {
 
         private static final org.seasar.doma.jdbc.entity.BuiltinEntityListener __listener = new org.seasar.doma.jdbc.entity.BuiltinEntityListener();
 
-        private final org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.wrapper.IntegerWrapper> id = new org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("id", null, new org.seasar.doma.wrapper.IntegerWrapper());
+        private final org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper> id = new org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("id", null, new org.seasar.doma.wrapper.IntegerWrapper());
 
-        private final org.seasar.doma.internal.apt.entity.TransientPropertyEntity __entity;
+        private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.StringWrapper> name = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.StringWrapper>("name", null, new org.seasar.doma.wrapper.StringWrapper(), true, true);
+
+        private final org.seasar.doma.internal.apt.entity.DomainPropertyEntity __entity;
 
         private final java.util.Set<java.lang.String> __modifiedProperties;
 
-        private final String __name = "TransientPropertyEntity";
+        private final String __name = "DomainPropertyEntity";
 
         private java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __entityProperties;
 
         private java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __entityPropertyMap;
 
-        private TransientPropertyEntityType() {
-            this(new org.seasar.doma.internal.apt.entity.TransientPropertyEntity());
+        private DomainPropertyEntityType() {
+            this(new org.seasar.doma.internal.apt.entity.DomainPropertyEntity());
         }
 
-        private TransientPropertyEntityType(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity) {
+        private DomainPropertyEntityType(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity) {
             super(null, null, null);
             id.getWrapper().set(entity.id);
+            name.getWrapper().set(entity.name.getValue());
             __entity = entity;
             __modifiedProperties = null;
         }
@@ -65,6 +68,7 @@ public class TransientPropertyEntity_ implements org.seasar.doma.internal.jdbc.e
             if (__entityProperties == null) {
                 java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __list = new java.util.ArrayList<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>>();
                 __list.add(id);
+                __list.add(name);
                 __entityProperties = java.util.Collections.unmodifiableList(__list);
             }
             return __entityProperties;
@@ -75,6 +79,7 @@ public class TransientPropertyEntity_ implements org.seasar.doma.internal.jdbc.e
             if (__entityPropertyMap == null) {
                 java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __map = new java.util.HashMap<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>>();
                 __map.put("id", id);
+                __map.put("name", name);
                 __entityPropertyMap = java.util.Collections.unmodifiableMap(__map);
             }
             return __entityPropertyMap.get(__name);
@@ -87,7 +92,7 @@ public class TransientPropertyEntity_ implements org.seasar.doma.internal.jdbc.e
 
         @Override
         public org.seasar.doma.internal.jdbc.entity.VersionPropertyType<?> getVersionPropertyType() {
-            return id;
+            return null;
         }
 
         @Override
@@ -97,17 +102,18 @@ public class TransientPropertyEntity_ implements org.seasar.doma.internal.jdbc.e
 
         public void refreshEntityInternal() {
             __entity.id = id.getWrapper().get();
+            __entity.name = new org.seasar.doma.internal.apt.entity.DomainPropertyEntity.Name(name.getWrapper().get());
         }
 
         @Override
-        public org.seasar.doma.internal.apt.entity.TransientPropertyEntity getEntity() {
+        public org.seasar.doma.internal.apt.entity.DomainPropertyEntity getEntity() {
             refreshEntityInternal();
             return __entity;
         }
 
         @Override
-        public Class<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> getEntityClass() {
-            return org.seasar.doma.internal.apt.entity.TransientPropertyEntity.class;
+        public Class<org.seasar.doma.internal.apt.entity.DomainPropertyEntity> getEntityClass() {
+            return org.seasar.doma.internal.apt.entity.DomainPropertyEntity.class;
         }
 
         @Override

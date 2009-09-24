@@ -23,6 +23,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.internal.apt.meta.ColumnMeta;
+import org.seasar.doma.internal.apt.meta.DomainMeta;
 import org.seasar.doma.internal.apt.meta.EntityMeta;
 import org.seasar.doma.internal.apt.meta.EntityPropertyMeta;
 import org.seasar.doma.internal.apt.meta.IdGeneratorMeta;
@@ -86,7 +87,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
                 "public %1$s<%2$s> createEntityType() {%n",
                 org.seasar.doma.internal.jdbc.entity.EntityType.class.getName(),
                 entityMeta.getEntityTypeName());
-        iprint("    return new EntityType();%n");
+        iprint("    return new %1$sType();%n", entityMeta.getEntityName());
         iprint("}%n");
         print("%n");
         iprint("@Override%n");
@@ -94,15 +95,15 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
                 "public %1$s<%2$s> createEntityType(%2$s entity) {%n",
                 org.seasar.doma.internal.jdbc.entity.EntityType.class.getName(),
                 entityMeta.getEntityTypeName());
-        iprint("    return new EntityType(entity);%n");
+        iprint("    return new %1$sType(entity);%n", entityMeta.getEntityName());
         iprint("}%n");
         print("%n");
     }
 
     protected void printEntityTypeClass() {
-        iprint("public static class EntityType extends %1$s<%2$s> {%n",
-                AbstractEntityType.class.getName(), entityMeta
-                        .getEntityTypeName());
+        iprint("public static class %1$sType extends %2$s<%3$s> {%n",
+                entityMeta.getEntityName(), AbstractEntityType.class.getName(),
+                entityMeta.getEntityTypeName());
         print("%n");
         indent();
         printMetaClassFields();
@@ -215,12 +216,12 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
     }
 
     protected void printMetaClassConstructors() {
-        iprint("private EntityType() {%n");
+        iprint("private %1$sType() {%n", entityMeta.getEntityName());
         iprint("    this(new %1$s());%n", entityMeta.getEntityTypeName());
         iprint("}%n");
         print("%n");
-        iprint("private EntityType(%1$s entity) {%n", entityMeta
-                .getEntityTypeName());
+        iprint("private %1$sType(%2$s entity) {%n", entityMeta.getEntityName(),
+                entityMeta.getEntityTypeName());
         TableMeta tm = entityMeta.getTableMeta();
         String catalog = null;
         String catalogQuote = "";
@@ -243,7 +244,14 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         iprint("    super(%2$s%1$s%2$s, %4$s%3$s%4$s, %6$s%5$s%6$s);%n",
                 catalog, catalogQuote, schema, schemaQuote, table, tableQuote);
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
-            if (!pm.isTrnsient()) {
+            if (pm.isTrnsient()) {
+                continue;
+            }
+            if (pm.isDomain()) {
+                DomainMeta domainMeta = pm.getDomainMeta();
+                iprint("    %1$s.getWrapper().set(entity.%1$s.%2$s());%n", pm
+                        .getName(), domainMeta.getAccessorMethod());
+            } else {
                 iprint("    %1$s.getWrapper().set(entity.%1$s);%n", pm
                         .getName());
             }
@@ -405,13 +413,26 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
             if (pm.isTrnsient()) {
                 continue;
             }
-            if (pm.isPrimitive()) {
-                iprint(
-                        "    __entity.%1$s = toPrimitive(%1$s.getWrapper().get());%n",
-                        pm.getName());
+            if (pm.isDomain()) {
+                DomainMeta domainMeta = pm.getDomainMeta();
+                if (domainMeta.getType().getKind().isPrimitive()) {
+                    iprint(
+                            "    __entity.%1$s = new %2$s(toPrimitive(%1$s.getWrapper().get()));%n",
+                            pm.getName(), pm.getTypeName());
+                } else {
+                    iprint(
+                            "    __entity.%1$s = new %2$s(%1$s.getWrapper().get());%n",
+                            pm.getName(), pm.getTypeName());
+                }
             } else {
-                iprint("    __entity.%1$s = %1$s.getWrapper().get();%n", pm
-                        .getName());
+                if (pm.getType().getKind().isPrimitive()) {
+                    iprint(
+                            "    __entity.%1$s = toPrimitive(%1$s.getWrapper().get());%n",
+                            pm.getName());
+                } else {
+                    iprint("    __entity.%1$s = %1$s.getWrapper().get();%n", pm
+                            .getName());
+                }
             }
         }
         iprint("}%n");

@@ -45,13 +45,25 @@ import javax.lang.model.util.TypeKindVisitor6;
 public final class TypeUtil {
 
     public static TypeElement toTypeElement(TypeMirror typeMirror,
-            ProcessingEnvironment env) {
+            final ProcessingEnvironment env) {
         assertNotNull(typeMirror, env);
-        Element e = env.getTypeUtils().asElement(typeMirror);
-        if (e == null) {
+        if (typeMirror.getKind().isPrimitive()) {
+            return typeMirror.accept(
+                    new SimpleTypeVisitor6<TypeElement, Void>() {
+
+                        @Override
+                        public TypeElement visitPrimitive(PrimitiveType t,
+                                Void p) {
+                            return env.getTypeUtils().boxedClass(t);
+                        }
+
+                    }, null);
+        }
+        Element element = env.getTypeUtils().asElement(typeMirror);
+        if (element == null) {
             return null;
         }
-        return e.accept(new SimpleElementVisitor6<TypeElement, Void>() {
+        return element.accept(new SimpleElementVisitor6<TypeElement, Void>() {
 
             @Override
             public TypeElement visitType(TypeElement e, Void p) {
