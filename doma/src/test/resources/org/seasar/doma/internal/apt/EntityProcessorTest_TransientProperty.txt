@@ -13,13 +13,19 @@ public class TransientPropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         return new TransientPropertyEntityType(entity);
     }
 
-    public static class TransientPropertyEntityType extends org.seasar.doma.internal.jdbc.entity.AbstractEntityType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> {
+    public static class TransientPropertyEntityType implements org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> {
 
         private static final org.seasar.doma.jdbc.entity.BuiltinEntityListener __listener = new org.seasar.doma.jdbc.entity.BuiltinEntityListener();
 
         private final org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.wrapper.IntegerWrapper> id = new org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("id", null, new org.seasar.doma.wrapper.IntegerWrapper());
 
         private final org.seasar.doma.internal.apt.entity.TransientPropertyEntity __entity;
+
+        private final String __catalogName = null;
+
+        private final String __schemaName = null;
+
+        private final String __tableName = null;
 
         private final java.util.Set<java.lang.String> __modifiedProperties;
 
@@ -34,8 +40,6 @@ public class TransientPropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         }
 
         private TransientPropertyEntityType(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity) {
-            super(null, null, null);
-            id.getWrapper().set(entity.id);
             __entity = entity;
             __modifiedProperties = null;
         }
@@ -43,6 +47,21 @@ public class TransientPropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         @Override
         public String getName() {
             return __name;
+        }
+
+        @Override
+        public String getCatalogName() {
+            return __catalogName;
+        }
+
+        @Override
+        public String getSchemaName() {
+            return __schemaName;
+        }
+
+        @Override
+        public String getTableName() {
+            return __tableName;
         }
 
         @Override

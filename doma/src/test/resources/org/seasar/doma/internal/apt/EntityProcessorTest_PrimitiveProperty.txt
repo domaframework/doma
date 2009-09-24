@@ -13,7 +13,7 @@ public class PrimitivePropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         return new PrimitivePropertyEntityType(entity);
     }
 
-    public static class PrimitivePropertyEntityType extends org.seasar.doma.internal.jdbc.entity.AbstractEntityType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity> {
+    public static class PrimitivePropertyEntityType implements org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity> {
 
         private static final org.seasar.doma.jdbc.entity.BuiltinEntityListener __listener = new org.seasar.doma.jdbc.entity.BuiltinEntityListener();
 
@@ -24,6 +24,12 @@ public class PrimitivePropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         private final org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.wrapper.LongWrapper> version = new org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.wrapper.LongWrapper>("version", null, new org.seasar.doma.wrapper.LongWrapper());
 
         private final org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity __entity;
+
+        private final String __catalogName = null;
+
+        private final String __schemaName = null;
+
+        private final String __tableName = null;
 
         private final java.util.Set<java.lang.String> __modifiedProperties;
 
@@ -38,10 +44,6 @@ public class PrimitivePropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         }
 
         private PrimitivePropertyEntityType(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity) {
-            super(null, null, null);
-            id.getWrapper().set(entity.id);
-            bool.getWrapper().set(entity.bool);
-            version.getWrapper().set(entity.version);
             __entity = entity;
             __modifiedProperties = null;
         }
@@ -49,6 +51,21 @@ public class PrimitivePropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         @Override
         public String getName() {
             return __name;
+        }
+
+        @Override
+        public String getCatalogName() {
+            return __catalogName;
+        }
+
+        @Override
+        public String getSchemaName() {
+            return __schemaName;
+        }
+
+        @Override
+        public String getTableName() {
+            return __tableName;
         }
 
         @Override
@@ -106,9 +123,9 @@ public class PrimitivePropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         }
 
         public void refreshEntityInternal() {
-            __entity.id = toPrimitive(id.getWrapper().get());
-            __entity.bool = toPrimitive(bool.getWrapper().get());
-            __entity.version = toPrimitive(version.getWrapper().get());
+            __entity.id = org.seasar.doma.internal.util.PrimitiveWrapperUtil.toPrimitive(id.getWrapper().get());
+            __entity.bool = org.seasar.doma.internal.util.PrimitiveWrapperUtil.toPrimitive(bool.getWrapper().get());
+            __entity.version = org.seasar.doma.internal.util.PrimitiveWrapperUtil.toPrimitive(version.getWrapper().get());
         }
 
         @Override

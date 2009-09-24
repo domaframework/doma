@@ -13,7 +13,7 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
         return new EmpType(entity);
     }
 
-    public static class EmpType extends org.seasar.doma.internal.jdbc.entity.AbstractEntityType<org.seasar.doma.internal.apt.entity.Emp> {
+    public static class EmpType implements org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.Emp> {
 
         private static final org.seasar.doma.jdbc.id.BuiltinSequenceIdGenerator __idGenerator = new org.seasar.doma.jdbc.id.BuiltinSequenceIdGenerator();
         static {
@@ -35,6 +35,12 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
 
         private final org.seasar.doma.internal.apt.entity.Emp __entity;
 
+        private final String __catalogName = null;
+
+        private final String __schemaName = "AAA";
+
+        private final String __tableName = null;
+
         private final java.util.Set<java.lang.String> __modifiedProperties;
 
         private final String __name = "Emp";
@@ -48,11 +54,6 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
         }
 
         private EmpType(org.seasar.doma.internal.apt.entity.Emp entity) {
-            super(null, "AAA", null);
-            id.getWrapper().set(entity.id);
-            name.getWrapper().set(entity.name);
-            salary.getWrapper().set(entity.salary);
-            version.getWrapper().set(entity.version);
             __entity = entity;
             __modifiedProperties = null;
         }
@@ -60,6 +61,21 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
         @Override
         public String getName() {
             return __name;
+        }
+
+        @Override
+        public String getCatalogName() {
+            return __catalogName;
+        }
+
+        @Override
+        public String getSchemaName() {
+            return __schemaName;
+        }
+
+        @Override
+        public String getTableName() {
+            return __tableName;
         }
 
         @Override

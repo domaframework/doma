@@ -31,13 +31,13 @@ import org.seasar.doma.internal.apt.meta.IdGeneratorMetaVisitor;
 import org.seasar.doma.internal.apt.meta.IdentityIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.SequenceIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.TableIdGeneratorMeta;
-import org.seasar.doma.internal.apt.meta.TableMeta;
-import org.seasar.doma.internal.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType;
 import org.seasar.doma.internal.jdbc.entity.BasicPropertyType;
+import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
+import org.seasar.doma.internal.util.PrimitiveWrapperUtil;
 
 /**
  * 
@@ -101,8 +101,8 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
     }
 
     protected void printEntityTypeClass() {
-        iprint("public static class %1$sType extends %2$s<%3$s> {%n",
-                entityMeta.getEntityName(), AbstractEntityType.class.getName(),
+        iprint("public static class %1$sType implements %2$s<%3$s> {%n",
+                entityMeta.getEntityName(), EntityType.class.getName(),
                 entityMeta.getEntityTypeName());
         print("%n");
         indent();
@@ -117,8 +117,11 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
     protected void printTypeClassFields() {
         printTypeClassGeneratedIdPropertyField();
         printTypeClassListenerField();
-        printTypeClassPropertyField();
+        printTypeClassPropertyFields();
         printTypeClassEntityField();
+        printTypeClassCatalogNameField();
+        printTypeClassSchemaNameField();
+        printTypeClassTableNameField();
         printTypeClassDirtyStatesField();
         printTypeClassNameField();
         printTypeClassPropertiesField();
@@ -146,12 +149,45 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         print("%n");
     }
 
+    protected void printTypeClassCatalogNameField() {
+        iprint("private final String __catalogName = ");
+        String catalogName = entityMeta.getTableMeta().getCatalog();
+        if (catalogName != null) {
+            print("\"%1$s\";%n", catalogName);
+        } else {
+            print("null;%n");
+        }
+        print("%n");
+    }
+
+    protected void printTypeClassSchemaNameField() {
+        iprint("private final String __schemaName = ");
+        String schemaName = entityMeta.getTableMeta().getSchema();
+        if (schemaName != null) {
+            print("\"%1$s\";%n", schemaName);
+        } else {
+            print("null;%n");
+        }
+        print("%n");
+    }
+
+    protected void printTypeClassTableNameField() {
+        iprint("private final String __tableName = ");
+        String tableName = entityMeta.getTableMeta().getName();
+        if (tableName != null) {
+            print("\"%1$s\";%n", tableName);
+        } else {
+            print("null;%n");
+        }
+        print("%n");
+    }
+
     protected void printTypeClassDirtyStatesField() {
         iprint("private final java.util.Set<java.lang.String> __modifiedProperties;%n");
         print("%n");
     }
 
-    protected void printTypeClassPropertyField() {
+    protected void printTypeClassPropertyFields() {
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             if (pm.isTrnsient()) {
                 continue;
@@ -222,40 +258,6 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         print("%n");
         iprint("private %1$sType(%2$s entity) {%n", entityMeta.getEntityName(),
                 entityMeta.getEntityTypeName());
-        TableMeta tm = entityMeta.getTableMeta();
-        String catalog = null;
-        String catalogQuote = "";
-        if (tm.getCatalog() != null) {
-            catalog = tm.getCatalog();
-            catalogQuote = "\"";
-        }
-        String schema = null;
-        String schemaQuote = "";
-        if (tm.getSchema() != null) {
-            schema = tm.getSchema();
-            schemaQuote = "\"";
-        }
-        String table = null;
-        String tableQuote = "";
-        if (tm.getName() != null) {
-            table = tm.getName();
-            tableQuote = "\"";
-        }
-        iprint("    super(%2$s%1$s%2$s, %4$s%3$s%4$s, %6$s%5$s%6$s);%n",
-                catalog, catalogQuote, schema, schemaQuote, table, tableQuote);
-        for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
-            if (pm.isTrnsient()) {
-                continue;
-            }
-            if (pm.isDomain()) {
-                DomainMeta domainMeta = pm.getDomainMeta();
-                iprint("    %1$s.getWrapper().set(entity.%1$s.%2$s());%n", pm
-                        .getName(), domainMeta.getAccessorMethod());
-            } else {
-                iprint("    %1$s.getWrapper().set(entity.%1$s);%n", pm
-                        .getName());
-            }
-        }
         iprint("    __entity = entity;%n");
         String modifiedPropertyFieldName = entityMeta
                 .getModifiedPropertiesFieldName();
@@ -271,6 +273,9 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
 
     protected void printTypeClassMethods() {
         printTypeClassGetNameMethod();
+        printTypeClassGetCatalogNameMethod();
+        printTypeClassGetSchemaNameMethod();
+        printTypeClassGetTableNameMethod();
         printTypeClassPreInsertMethod();
         printTypeClassPreUpdateMethod();
         printTypeClassPreDeleteMethod();
@@ -289,6 +294,30 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         iprint("@Override%n");
         iprint("public String getName() {%n");
         iprint("    return __name;%n");
+        iprint("}%n");
+        print("%n");
+    }
+
+    protected void printTypeClassGetCatalogNameMethod() {
+        iprint("@Override%n");
+        iprint("public String getCatalogName() {%n");
+        iprint("    return __catalogName;%n");
+        iprint("}%n");
+        print("%n");
+    }
+
+    protected void printTypeClassGetSchemaNameMethod() {
+        iprint("@Override%n");
+        iprint("public String getSchemaName() {%n");
+        iprint("    return __schemaName;%n");
+        iprint("}%n");
+        print("%n");
+    }
+
+    protected void printTypeClassGetTableNameMethod() {
+        iprint("@Override%n");
+        iprint("public String getTableName() {%n");
+        iprint("    return __tableName;%n");
         iprint("}%n");
         print("%n");
     }
@@ -417,8 +446,9 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
                 DomainMeta domainMeta = pm.getDomainMeta();
                 if (domainMeta.getType().getKind().isPrimitive()) {
                     iprint(
-                            "    __entity.%1$s = new %2$s(toPrimitive(%1$s.getWrapper().get()));%n",
-                            pm.getName(), pm.getTypeName());
+                            "    __entity.%1$s = new %2$s(%3$s.toPrimitive(%1$s.getWrapper().get()));%n",
+                            pm.getName(), pm.getTypeName(),
+                            PrimitiveWrapperUtil.class.getName());
                 } else {
                     iprint(
                             "    __entity.%1$s = new %2$s(%1$s.getWrapper().get());%n",
@@ -427,8 +457,8 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
             } else {
                 if (pm.getType().getKind().isPrimitive()) {
                     iprint(
-                            "    __entity.%1$s = toPrimitive(%1$s.getWrapper().get());%n",
-                            pm.getName());
+                            "    __entity.%1$s = %2$s.toPrimitive(%1$s.getWrapper().get());%n",
+                            pm.getName(), PrimitiveWrapperUtil.class.getName());
                 } else {
                     iprint("    __entity.%1$s = %1$s.getWrapper().get();%n", pm
                             .getName());

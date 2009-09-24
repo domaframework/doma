@@ -24,7 +24,6 @@ import java.util.Set;
 
 import javax.annotation.Generated;
 
-import org.seasar.doma.internal.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType;
 import org.seasar.doma.internal.jdbc.entity.BasicPropertyType;
 import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
@@ -42,15 +41,15 @@ public class Emp_ implements EntityTypeFactory<Emp> {
 
     @Override
     public EntityType<Emp> createEntityType() {
-        return new Meta();
+        return new EmpType();
     }
 
     @Override
     public EntityType<Emp> createEntityType(Emp entity) {
-        return new Meta(entity);
+        return new EmpType(entity);
     }
 
-    public static class Meta extends AbstractEntityType<Emp> {
+    public static class EmpType implements EntityType<Emp> {
 
         private static final BuiltinEntityListener __listener = new BuiltinEntityListener();
 
@@ -66,9 +65,15 @@ public class Emp_ implements EntityTypeFactory<Emp> {
         private final VersionPropertyType<IntegerWrapper> version = new VersionPropertyType<IntegerWrapper>(
                 "version", null, new IntegerWrapper());
 
-        private final Set<String> dirtyStates;
+        private final Set<String> modifiedProperties;
 
-        private final String __name = "emp";
+        private final String __name = "Emp";
+
+        private final String __catalogName;
+
+        private final String __schemaName;
+
+        private final String __tableName;
 
         private List<EntityPropertyType<?>> __properties;
 
@@ -76,18 +81,20 @@ public class Emp_ implements EntityTypeFactory<Emp> {
 
         private final Emp __entity;
 
-        private Meta() {
+        private EmpType() {
             this(new Emp());
         }
 
-        private Meta(Emp entity) {
-            super(null, null, null);
+        private EmpType(Emp entity) {
             this.__entity = entity;
+            this.__catalogName = null;
+            this.__schemaName = null;
+            this.__tableName = null;
             id.getWrapper().set(entity.id);
             name.getWrapper().set(entity.name);
             salary.getWrapper().set(entity.salary);
             version.getWrapper().set(entity.version);
-            dirtyStates = entity.dirtyStates;
+            modifiedProperties = entity.dirtyStates;
         }
 
         @Override
@@ -171,7 +178,22 @@ public class Emp_ implements EntityTypeFactory<Emp> {
 
         @Override
         public Set<String> getModifiedProperties() {
-            return dirtyStates;
+            return modifiedProperties;
+        }
+
+        @Override
+        public String getCatalogName() {
+            return __catalogName;
+        }
+
+        @Override
+        public String getSchemaName() {
+            return __schemaName;
+        }
+
+        @Override
+        public String getTableName() {
+            return __tableName;
         }
 
     }
