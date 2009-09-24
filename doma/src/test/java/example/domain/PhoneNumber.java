@@ -2,7 +2,7 @@ package example.domain;
 
 import org.seasar.doma.Domain;
 
-@Domain(valueType = String.class, accessorMethod = "getValue")
+@Domain(valueType = String.class)
 public class PhoneNumber {
 
     private final String value;

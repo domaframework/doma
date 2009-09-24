@@ -78,6 +78,7 @@ import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 import org.seasar.doma.message.DomaMessageCode;
 import org.seasar.doma.wrapper.Wrapper;
+import org.seasar.doma.wrapper.WrapperException;
 import org.seasar.doma.wrapper.Wrappers;
 
 /**
@@ -206,7 +207,8 @@ public class NodePreparedSqlBuilder implements
 
     protected Void handleSingleBindVarialbeNode(BindVariableNode node,
             Context p, Object value, Class<?> valueClass) {
-        Wrapper<?> wrapper = Wrappers.wrap(value, valueClass);
+        Wrapper<?> wrapper = wrap(node.getLocation(), node.getText(), value,
+                valueClass);
         p.addBindValue(wrapper);
         return null;
     }
@@ -222,7 +224,8 @@ public class NodePreparedSqlBuilder implements
                         .getSql(), location.getLineNumber(), location
                         .getPosition(), node.getText(), index);
             }
-            Wrapper<?> wrapper = Wrappers.wrap(v, v.getClass());
+            Wrapper<?> wrapper = wrap(node.getLocation(), node.getText(), v, v
+                    .getClass());
             p.addBindValue(wrapper);
             p.appendRawSql(", ");
             p.appendFormattedSql(", ");
@@ -476,6 +479,17 @@ public class NodePreparedSqlBuilder implements
             throw new JdbcException(DomaMessageCode.DOMA2111, e, location
                     .getSql(), location.getLineNumber(),
                     location.getPosition(), e);
+        }
+    }
+
+    protected Wrapper<?> wrap(SqlLocation location, String bindVariableText,
+            Object value, Class<?> valueClass) {
+        try {
+            return Wrappers.wrap(value, valueClass);
+        } catch (WrapperException e) {
+            throw new JdbcException(DomaMessageCode.DOMA2118, e, location
+                    .getSql(), location.getLineNumber(),
+                    location.getPosition(), bindVariableText, e);
         }
     }
 

@@ -2,6 +2,7 @@ package org.seasar.doma.wrapper;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Array;
@@ -12,7 +13,11 @@ import java.sql.NClob;
 import java.sql.Time;
 import java.sql.Timestamp;
 
+import org.seasar.doma.Domain;
+import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.ClassUtil;
+import org.seasar.doma.internal.util.MethodUtil;
+import org.seasar.doma.message.DomaMessageCode;
 
 public final class Wrappers {
 
@@ -20,6 +25,18 @@ public final class Wrappers {
         assertNotNull(valueClass);
         assertTrue(value == null || valueClass.isInstance(value));
 
+        Wrapper<?> result = wrapBasicObject(value, valueClass);
+        if (result == null) {
+            result = wrapDomainObject(value, valueClass);
+            if (result == null) {
+                result = new ObjectWrapper(value);
+            }
+        }
+        return result;
+    }
+
+    protected static Wrapper<?> wrapBasicObject(Object value,
+            Class<?> valueClass) {
         Class<?> wrapperClass = ClassUtil
                 .getWrapperClassIfPrimitive(valueClass);
         if (wrapperClass == Array.class) {
@@ -73,6 +90,30 @@ public final class Wrappers {
         if (wrapperClass == Time.class) {
             return new TimeWrapper(Time.class.cast(value));
         }
-        return new ObjectWrapper(value);
+        return null;
+    }
+
+    protected static Wrapper<?> wrapDomainObject(Object value,
+            Class<?> valueClass) {
+        Domain domain = valueClass.getAnnotation(Domain.class);
+        if (domain == null) {
+            return null;
+        }
+        Object domainValue = getDomainValue(value, valueClass, domain
+                .accessorMethod());
+        Class<?> domainValueClass = domain.valueType();
+        return wrapBasicObject(domainValue, domainValueClass);
+    }
+
+    protected static Object getDomainValue(Object domainObject,
+            Class<?> domainClass, String accessorMethodName) {
+        try {
+            Method method = MethodUtil.getMethod(domainClass,
+                    accessorMethodName);
+            return MethodUtil.invoke(method, domainObject);
+        } catch (WrapException e) {
+            Throwable cause = e.getCause();
+            throw new WrapperException(DomaMessageCode.DOMA1006, cause, cause);
+        }
     }
 }

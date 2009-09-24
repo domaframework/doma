@@ -28,6 +28,8 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.DomaMessageCode;
 
+import example.domain.PhoneNumber;
+
 /**
  * @author taedium
  * 
@@ -55,6 +57,24 @@ public class SqlParserTest extends TestCase {
         assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
         assertEquals(new BigDecimal(10000), sql.getParameters().get(1)
                 .getWrapper().get());
+    }
+
+    public void testBindVariable_domain() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        evaluator.add("phone", new Value(PhoneNumber.class, new PhoneNumber(
+                "01-2345-6789")));
+        String testSql = "select * from aaa where phone = /*phone*/'111'";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, evaluator)
+                .build(sqlNode);
+        assertEquals("select * from aaa where phone = ?", sql.getRawSql());
+        assertEquals("select * from aaa where phone = '01-2345-6789'", sql
+                .getFormattedSql());
+        assertEquals(testSql, sqlNode.toString());
+        assertEquals(1, sql.getParameters().size());
+        assertEquals("01-2345-6789", sql.getParameters().get(0).getWrapper()
+                .get());
     }
 
     public void testBindVariable_in() throws Exception {
