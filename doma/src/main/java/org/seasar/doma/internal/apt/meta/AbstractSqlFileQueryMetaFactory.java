@@ -16,21 +16,13 @@
 package org.seasar.doma.internal.apt.meta;
 
 import java.io.InputStream;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.ElementUtil;
 import org.seasar.doma.internal.apt.FileObjectUtil;
-import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.internal.util.IOUtil;
@@ -45,55 +37,9 @@ import org.seasar.doma.message.DomaMessageCode;
 public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQueryMeta>
         extends AbstractQueryMetaFactory<M> {
 
-    public AbstractSqlFileQueryMetaFactory(ProcessingEnvironment env) {
-        super(env);
-    }
-
-    @Override
-    protected void doParameters(M queryMeta, ExecutableElement method,
-            DaoMeta daoMeta) {
-        LinkedList<VariableElement> params = new LinkedList<VariableElement>(
-                method.getParameters());
-        for (VariableElement param : params) {
-            TypeMirror parameterType = TypeUtil.resolveTypeParameter(daoMeta
-                    .getTypeParameterMap(), param.asType());
-            String parameterName = ElementUtil.getParameterName(param);
-            String parameterTypeName = TypeUtil.getTypeName(parameterType,
-                    daoMeta.getTypeParameterMap(), env);
-            QueryParameterMeta queryParameterMeta = new QueryParameterMeta();
-            queryParameterMeta.setName(parameterName);
-            queryParameterMeta.setTypeName(parameterTypeName);
-            queryParameterMeta.setTypeMirror(parameterType);
-            TypeElement typeElement = TypeUtil
-                    .toTypeElement(parameterType, env);
-            if (typeElement != null) {
-                queryParameterMeta.setQualifiedName(typeElement.getQualifiedName()
-                        .toString());
-            }
-            if (isCollection(parameterType)) {
-                DeclaredType listTyep = TypeUtil.toDeclaredType(parameterType,
-                        env);
-                List<? extends TypeMirror> args = listTyep.getTypeArguments();
-                if (args.isEmpty()) {
-                    throw new AptException(DomaMessageCode.DOMA4027, env,
-                            method);
-                }
-                TypeMirror elementType = TypeUtil.resolveTypeParameter(daoMeta
-                        .getTypeParameterMap(), args.get(0));
-                if (!isDomain(elementType)) {
-                    throw new AptException(DomaMessageCode.DOMA4028, env,
-                            method);
-                }
-            } else if (!isEntity(parameterType, daoMeta)) {
-                if (!DomaTypes.isSupportedType(parameterType, env)) {
-                    throw new AptException(DomaMessageCode.DOMA4008, env,
-                            method, parameterType);
-                }
-                queryParameterMeta.setNullable(true);
-            }
-            queryMeta.addQueryParameterMetas(queryParameterMeta);
-            queryMeta.addExpressionParameterType(parameterName, parameterType);
-        }
+    public AbstractSqlFileQueryMetaFactory(ProcessingEnvironment env,
+            DomainMetaFactory domainMetaFactory) {
+        super(env, domainMetaFactory);
     }
 
     protected void doSqlFile(M queryMeta, ExecutableElement method,

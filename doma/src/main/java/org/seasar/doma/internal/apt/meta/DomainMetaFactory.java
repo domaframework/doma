@@ -35,7 +35,8 @@ public class DomainMetaFactory {
         if (domainAnnotation == null) {
             return null;
         }
-        DomainMeta domainMeta = new DomainMeta(classElement.asType());
+        DomainMeta domainMeta = new DomainMeta(classElement, classElement
+                .asType());
         doDomain(classElement, domainMeta, domainAnnotation);
         validateClass(classElement, domainMeta);
         validateConstructor(classElement, domainMeta);
@@ -47,7 +48,12 @@ public class DomainMetaFactory {
             Domain domainAnnotation) {
         domainMeta.setAccessorMethod(domainAnnotation.accessorMethod());
         TypeMirror valueType = getValueType(domainAnnotation);
+        TypeElement valueTypeElement = TypeUtil.toTypeElement(valueType, env);
+        if (valueTypeElement == null) {
+            throw new AptIllegalStateException();
+        }
         domainMeta.setValueType(valueType);
+        domainMeta.setValueTypeElement(valueTypeElement);
         TypeMirror wrapperType = DomaTypes.getWrapperType(valueType, env);
         if (wrapperType == null) {
             throw new AptException(DomaMessageCode.DOMA4102, env, classElement,
@@ -75,6 +81,9 @@ public class DomainMetaFactory {
                 throw new AptException(DomaMessageCode.DOMA4106, env,
                         classElement);
             }
+        }
+        if (!classElement.getTypeParameters().isEmpty()) {
+            throw new AptException(DomaMessageCode.DOMA4107, env, classElement);
         }
     }
 

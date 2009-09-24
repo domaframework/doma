@@ -41,8 +41,9 @@ import org.seasar.doma.message.DomaMessageCode;
 public class SqlFileBatchModifyQueryMetaFactory extends
         AbstractSqlFileQueryMetaFactory<SqlFileBatchModifyQueryMeta> {
 
-    public SqlFileBatchModifyQueryMetaFactory(ProcessingEnvironment env) {
-        super(env);
+    public SqlFileBatchModifyQueryMetaFactory(ProcessingEnvironment env,
+            DomainMetaFactory domainMetaFactory) {
+        super(env, domainMetaFactory);
     }
 
     @Override

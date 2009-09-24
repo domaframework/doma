@@ -17,14 +17,21 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
 import org.seasar.doma.Update;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.ElementUtil;
 import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.message.DomaMessageCode;
 
@@ -35,8 +42,9 @@ import org.seasar.doma.message.DomaMessageCode;
 public class SqlFileModifyQueryMetaFactory extends
         AbstractSqlFileQueryMetaFactory<SqlFileModifyQueryMeta> {
 
-    public SqlFileModifyQueryMetaFactory(ProcessingEnvironment env) {
-        super(env);
+    public SqlFileModifyQueryMetaFactory(ProcessingEnvironment env,
+            DomainMetaFactory domainMetaFactory) {
+        super(env, domainMetaFactory);
     }
 
     @Override
@@ -93,4 +101,52 @@ public class SqlFileModifyQueryMetaFactory extends
         resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
         queryMeta.setQueryResultMeta(resultMeta);
     }
+
+    @Override
+    protected void doParameters(SqlFileModifyQueryMeta queryMeta,
+            ExecutableElement method, DaoMeta daoMeta) {
+        LinkedList<VariableElement> params = new LinkedList<VariableElement>(
+                method.getParameters());
+        for (VariableElement param : params) {
+            TypeMirror parameterType = TypeUtil.resolveTypeParameter(daoMeta
+                    .getTypeParameterMap(), param.asType());
+            String parameterName = ElementUtil.getParameterName(param);
+            String parameterTypeName = TypeUtil.getTypeName(parameterType,
+                    daoMeta.getTypeParameterMap(), env);
+            QueryParameterMeta queryParameterMeta = new QueryParameterMeta();
+            queryParameterMeta.setName(parameterName);
+            queryParameterMeta.setTypeName(parameterTypeName);
+            queryParameterMeta.setTypeMirror(parameterType);
+            TypeElement typeElement = TypeUtil
+                    .toTypeElement(parameterType, env);
+            if (typeElement != null) {
+                queryParameterMeta.setQualifiedName(typeElement
+                        .getQualifiedName().toString());
+            }
+            if (isCollection(parameterType)) {
+                DeclaredType listTyep = TypeUtil.toDeclaredType(parameterType,
+                        env);
+                List<? extends TypeMirror> args = listTyep.getTypeArguments();
+                if (args.isEmpty()) {
+                    throw new AptException(DomaMessageCode.DOMA4027, env,
+                            method);
+                }
+                TypeMirror elementType = TypeUtil.resolveTypeParameter(daoMeta
+                        .getTypeParameterMap(), args.get(0));
+                if (!isDomain(elementType)) {
+                    throw new AptException(DomaMessageCode.DOMA4028, env,
+                            method);
+                }
+            } else if (!isEntity(parameterType, daoMeta)) {
+                if (!DomaTypes.isSupportedType(parameterType, env)) {
+                    throw new AptException(DomaMessageCode.DOMA4008, env,
+                            method, parameterType);
+                }
+                queryParameterMeta.setNullable(true);
+            }
+            queryMeta.addQueryParameterMetas(queryParameterMeta);
+            queryMeta.addExpressionParameterType(parameterName, parameterType);
+        }
+    }
+
 }

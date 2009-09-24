@@ -41,8 +41,9 @@ import org.seasar.doma.message.DomaMessageCode;
 public class SqlFileSelectQueryMetaFactory extends
         AbstractSqlFileQueryMetaFactory<SqlFileSelectQueryMeta> {
 
-    public SqlFileSelectQueryMetaFactory(ProcessingEnvironment env) {
-        super(env);
+    public SqlFileSelectQueryMetaFactory(ProcessingEnvironment env,
+            DomainMetaFactory domainMetaFactory) {
+        super(env, domainMetaFactory);
     }
 
     @Override
@@ -155,8 +156,8 @@ public class SqlFileSelectQueryMetaFactory extends
             TypeElement typeElement = TypeUtil
                     .toTypeElement(parameterType, env);
             if (typeElement != null) {
-                queryParameterMeta.setQualifiedName(typeElement.getQualifiedName()
-                        .toString());
+                queryParameterMeta.setQualifiedName(typeElement
+                        .getQualifiedName().toString());
             }
             if (isOptions(parameterType, queryMeta.getOptionsClass())) {
                 if (queryMeta.getOptionsName() != null) {

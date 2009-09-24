@@ -209,6 +209,7 @@ public enum DomaMessageCode implements MessageCode {
     DOMA4104("型[{0}]を戻り値にもったpublicなパラメータなしのメソッド[{1}]が見つかりません。"),
     DOMA4105("@Domainはpublicなクラス以外に注釈できません。"),
     DOMA4106("ネストしたクラスに@Domainを注釈する場合、そのクラスにはstatic修飾子が必須です。"),
+    DOMA4107("@Domainを注釈したクラスには型パラメータを定義できません。"),
 
     // other
     DOMA9001("java.io.Closeableのclose()に失敗しました。原因は次のものです。{0}");

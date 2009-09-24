@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.apt;
 
+import java.io.IOException;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -27,7 +28,9 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 
+import org.seasar.doma.internal.apt.meta.DomainMeta;
 import org.seasar.doma.internal.apt.meta.DomainMetaFactory;
+import org.seasar.doma.internal.util.IOUtil;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -55,7 +58,9 @@ public class DomainProcessor extends AbstractProcessor {
                                     .getQualifiedName());
                 }
                 try {
-                    domainMetaFactory.createDomainMeta(domainElement);
+                    DomainMeta domainMeta = domainMetaFactory
+                            .createDomainMeta(domainElement);
+                    generateDomain(domainElement, domainMeta);
                 } catch (AptException e) {
                     Notifier.notify(processingEnv, e);
                 } catch (AptIllegalStateException e) {
@@ -79,6 +84,28 @@ public class DomainProcessor extends AbstractProcessor {
 
     protected DomainMetaFactory createDomainMetaFactory() {
         return new DomainMetaFactory(processingEnv);
+    }
+
+    protected void generateDomain(TypeElement domainElement,
+            DomainMeta domainMeta) {
+        DomainTypeFactoryGenerator generator = null;
+        try {
+            generator = createDomainMetaFactoryGenerator(domainElement,
+                    domainMeta);
+            generator.generate();
+        } catch (IOException e) {
+            throw new AptException(DomaMessageCode.DOMA4011, processingEnv,
+                    domainElement, e, domainElement.getQualifiedName(), e);
+        } finally {
+            IOUtil.close(generator);
+        }
+    }
+
+    protected DomainTypeFactoryGenerator createDomainMetaFactoryGenerator(
+            TypeElement domainElement, DomainMeta domainMeta)
+            throws IOException {
+        return new DomainTypeFactoryGenerator(processingEnv, domainElement,
+                domainMeta);
     }
 
 }

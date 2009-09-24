@@ -4,28 +4,33 @@ import org.seasar.doma.internal.domain.DomainType;
 import org.seasar.doma.internal.domain.DomainTypeFactory;
 import org.seasar.doma.wrapper.StringWrapper;
 
-public class PhoneNumber_ implements DomainTypeFactory<PhoneNumber> {
+public class PhoneNumber_ implements DomainTypeFactory<String, PhoneNumber> {
 
     @Override
-    public DomainType<PhoneNumber> createDomainType() {
+    public DomainType<String, PhoneNumber> createDomainType() {
         return new PhoneNumberType();
     }
 
-    @Override
-    public DomainType<PhoneNumber> createDomainType(PhoneNumber domain) {
-        return new PhoneNumberType(domain);
-    }
+    private static class PhoneNumberType implements
+            DomainType<String, PhoneNumber> {
 
-    private static class PhoneNumberType implements DomainType<PhoneNumber> {
+        private final StringWrapper wrapper = new StringWrapper();
 
-        public PhoneNumberType() {
+        @Override
+        public PhoneNumber getDomain() {
+            return new PhoneNumber(wrapper.get());
         }
 
-        public PhoneNumberType(PhoneNumber domain) {
-            super();
+        @Override
+        public Class<PhoneNumber> getDomainClass() {
+            return PhoneNumber.class;
         }
 
-        private StringWrapper wrapper;
+        @Override
+        public StringWrapper getWrapper() {
+            return wrapper;
+        }
+
     }
 
 }

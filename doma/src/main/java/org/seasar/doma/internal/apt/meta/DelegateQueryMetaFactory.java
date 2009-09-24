@@ -41,8 +41,9 @@ import org.seasar.doma.message.DomaMessageCode;
 public class DelegateQueryMetaFactory extends
         AbstractQueryMetaFactory<DelegateQueryMeta> {
 
-    public DelegateQueryMetaFactory(ProcessingEnvironment env) {
-        super(env);
+    public DelegateQueryMetaFactory(ProcessingEnvironment env,
+            DomainMetaFactory domainMetaFactory) {
+        super(env, domainMetaFactory);
     }
 
     @Override
@@ -100,8 +101,8 @@ public class DelegateQueryMetaFactory extends
             TypeElement typeElement = TypeUtil
                     .toTypeElement(parameterType, env);
             if (typeElement != null) {
-                queryParameterMeta.setQualifiedName(typeElement.getQualifiedName()
-                        .toString());
+                queryParameterMeta.setQualifiedName(typeElement
+                        .getQualifiedName().toString());
             }
             queryMeta.addQueryParameterMetas(queryParameterMeta);
 

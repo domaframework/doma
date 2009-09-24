@@ -1,8 +1,7 @@
 package org.seasar.doma.internal.domain;
 
-public interface DomainTypeFactory<D> {
+public interface DomainTypeFactory<V, D> {
 
-    DomainType<D> createDomainType();
+    DomainType<V, D> createDomainType();
 
-    DomainType<D> createDomainType(D domain);
 }

@@ -49,9 +49,13 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
 
     protected final ProcessingEnvironment env;
 
-    public AbstractQueryMetaFactory(ProcessingEnvironment env) {
-        assertNotNull(env);
+    protected final DomainMetaFactory domainMetaFactory;
+
+    public AbstractQueryMetaFactory(ProcessingEnvironment env,
+            DomainMetaFactory domainMetaFactory) {
+        assertNotNull(env, domainMetaFactory);
         this.env = env;
+        this.domainMetaFactory = domainMetaFactory;
     }
 
     protected void doTypeParameters(M queryMeta, ExecutableElement method,

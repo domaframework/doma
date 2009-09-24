@@ -31,8 +31,9 @@ import org.seasar.doma.ClobFactory;
 public class ClobCreateQueryMetaFactory extends
         AbstractCreateQueryMetaFactory<ClobCreateQueryMeta> {
 
-    public ClobCreateQueryMetaFactory(ProcessingEnvironment env) {
-        super(env, Clob.class);
+    public ClobCreateQueryMetaFactory(ProcessingEnvironment env,
+            DomainMetaFactory domainMetaFactory) {
+        super(env, domainMetaFactory, Clob.class);
     }
 
     @Override

@@ -40,6 +40,7 @@ import org.seasar.doma.internal.apt.meta.ClobCreateQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.DaoMeta;
 import org.seasar.doma.internal.apt.meta.DaoMetaFactory;
 import org.seasar.doma.internal.apt.meta.DelegateQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.DomainMetaFactory;
 import org.seasar.doma.internal.apt.meta.NClobCreateQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.QueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileBatchModifyQueryMetaFactory;
@@ -101,25 +102,42 @@ public class DaoProcessor extends AbstractProcessor {
     }
 
     protected List<QueryMetaFactory> createQueryMetaFactory() {
+        DomainMetaFactory domainMetaFactory = createDomainMetaFactory();
         List<QueryMetaFactory> factories = new ArrayList<QueryMetaFactory>();
-        factories.add(new DelegateQueryMetaFactory(processingEnv));
-        factories.add(new AutoModifyQueryMetaFactory(processingEnv));
-        factories.add(new AutoBatchModifyQueryMetaFactory(processingEnv));
-        factories.add(new AutoFunctionQueryMetaFactory(processingEnv));
-        factories.add(new AutoProcedureQueryMetaFactory(processingEnv));
-        factories.add(new ArrayCreateQueryMetaFactory(processingEnv));
-        factories.add(new BlobCreateQueryMetaFactory(processingEnv));
-        factories.add(new ClobCreateQueryMetaFactory(processingEnv));
-        factories.add(new NClobCreateQueryMetaFactory(processingEnv));
-        factories.add(new SqlFileSelectQueryMetaFactory(processingEnv));
-        factories.add(new SqlFileModifyQueryMetaFactory(processingEnv));
-        factories.add(new SqlFileBatchModifyQueryMetaFactory(processingEnv));
+        factories.add(new DelegateQueryMetaFactory(processingEnv,
+                domainMetaFactory));
+        factories.add(new AutoModifyQueryMetaFactory(processingEnv,
+                domainMetaFactory));
+        factories.add(new AutoBatchModifyQueryMetaFactory(processingEnv,
+                domainMetaFactory));
+        factories.add(new AutoFunctionQueryMetaFactory(processingEnv,
+                domainMetaFactory));
+        factories.add(new AutoProcedureQueryMetaFactory(processingEnv,
+                domainMetaFactory));
+        factories.add(new ArrayCreateQueryMetaFactory(processingEnv,
+                domainMetaFactory));
+        factories.add(new BlobCreateQueryMetaFactory(processingEnv,
+                domainMetaFactory));
+        factories.add(new ClobCreateQueryMetaFactory(processingEnv,
+                domainMetaFactory));
+        factories.add(new NClobCreateQueryMetaFactory(processingEnv,
+                domainMetaFactory));
+        factories.add(new SqlFileSelectQueryMetaFactory(processingEnv,
+                domainMetaFactory));
+        factories.add(new SqlFileModifyQueryMetaFactory(processingEnv,
+                domainMetaFactory));
+        factories.add(new SqlFileBatchModifyQueryMetaFactory(processingEnv,
+                domainMetaFactory));
         return factories;
     }
 
     protected DaoMetaFactory createDaoMetaFactory(
             List<QueryMetaFactory> queryMetaFactories) {
         return new DaoMetaFactory(processingEnv, queryMetaFactories);
+    }
+
+    protected DomainMetaFactory createDomainMetaFactory() {
+        return new DomainMetaFactory(processingEnv);
     }
 
     protected void generateDao(TypeElement daoElement, DaoMeta daoMeta) {

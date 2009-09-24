@@ -41,8 +41,9 @@ import org.seasar.doma.message.DomaMessageCode;
 public class AutoBatchModifyQueryMetaFactory extends
         AbstractQueryMetaFactory<AutoBatchModifyQueryMeta> {
 
-    public AutoBatchModifyQueryMetaFactory(ProcessingEnvironment env) {
-        super(env);
+    public AutoBatchModifyQueryMetaFactory(ProcessingEnvironment env,
+            DomainMetaFactory domainMetaFactory) {
+        super(env, domainMetaFactory);
     }
 
     @Override

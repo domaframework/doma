@@ -1,0 +1,31 @@
+package org.seasar.doma.internal.apt.domain;
+
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
+public class PrimitiveValueDomain_ implements org.seasar.doma.internal.domain.DomainTypeFactory<java.lang.Integer, org.seasar.doma.internal.apt.domain.PrimitiveValueDomain> {
+
+    @Override
+    public org.seasar.doma.internal.domain.DomainType<java.lang.Integer, org.seasar.doma.internal.apt.domain.PrimitiveValueDomain> createDomainType() {
+        return new PrimitiveValueDomainType();
+    }
+    public static class PrimitiveValueDomainType implements org.seasar.doma.internal.domain.DomainType<java.lang.Integer, org.seasar.doma.internal.apt.domain.PrimitiveValueDomain> {
+
+        private final org.seasar.doma.wrapper.IntegerWrapper wrapper = new org.seasar.doma.wrapper.IntegerWrapper();
+
+        @Override
+        public org.seasar.doma.internal.apt.domain.PrimitiveValueDomain getDomain() {
+            return new org.seasar.doma.internal.apt.domain.PrimitiveValueDomain(org.seasar.doma.internal.util.PrimitiveWrapperUtil.toPrimitive(wrapper.get()));
+        }
+
+        @Override
+        public Class<org.seasar.doma.internal.apt.domain.PrimitiveValueDomain> getDomainClass() {
+            return org.seasar.doma.internal.apt.domain.PrimitiveValueDomain.class;
+        }
+
+        @Override
+        public org.seasar.doma.wrapper.IntegerWrapper getWrapper() {
+            return wrapper;
+        }
+
+    }
+
+}

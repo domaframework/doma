@@ -40,8 +40,9 @@ import org.seasar.doma.message.DomaMessageCode;
 public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         extends AbstractQueryMetaFactory<M> {
 
-    public AutoModuleQueryMetaFactory(ProcessingEnvironment env) {
-        super(env);
+    public AutoModuleQueryMetaFactory(ProcessingEnvironment env,
+            DomainMetaFactory domainMetaFactory) {
+        super(env, domainMetaFactory);
     }
 
     @Override
@@ -61,14 +62,16 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
 
             QueryParameterMeta queryParameterMeta = new QueryParameterMeta();
             queryParameterMeta.setName(callableSqlParameterMeta.getName());
-            queryParameterMeta.setTypeName(callableSqlParameterMeta.getTypeName());
-            queryParameterMeta.setNullable(callableSqlParameterMeta.isNullable());
+            queryParameterMeta.setTypeName(callableSqlParameterMeta
+                    .getTypeName());
+            queryParameterMeta.setNullable(callableSqlParameterMeta
+                    .isNullable());
             queryParameterMeta.setTypeMirror(parameterType);
             TypeElement typeElement = TypeUtil
                     .toTypeElement(parameterType, env);
             if (typeElement != null) {
-                queryParameterMeta.setQualifiedName(typeElement.getQualifiedName()
-                        .toString());
+                queryParameterMeta.setQualifiedName(typeElement
+                        .getQualifiedName().toString());
             }
             queryMeta.addQueryParameterMetas(queryParameterMeta);
 

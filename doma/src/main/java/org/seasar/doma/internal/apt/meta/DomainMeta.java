@@ -2,20 +2,26 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
 public class DomainMeta {
+
+    protected final TypeElement typeElement;
 
     protected final TypeMirror type;
 
     protected String wrapperTypeName;
 
+    protected TypeElement valueTypeElement;
+
     protected TypeMirror valueType;
 
     protected String accessorMethod;
 
-    public DomainMeta(TypeMirror type) {
-        assertNotNull(type);
+    public DomainMeta(TypeElement typeElement, TypeMirror type) {
+        assertNotNull(typeElement, type);
+        this.typeElement = typeElement;
         this.type = type;
     }
 
@@ -45,6 +51,18 @@ public class DomainMeta {
 
     public void setValueType(TypeMirror valueType) {
         this.valueType = valueType;
+    }
+
+    public TypeElement getValueTypeElement() {
+        return valueTypeElement;
+    }
+
+    public void setValueTypeElement(TypeElement valueTypeElement) {
+        this.valueTypeElement = valueTypeElement;
+    }
+
+    public TypeElement getTypeElement() {
+        return typeElement;
     }
 
 }

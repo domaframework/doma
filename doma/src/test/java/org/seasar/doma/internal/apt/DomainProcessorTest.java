@@ -18,6 +18,7 @@ package org.seasar.doma.internal.apt;
 import org.seasar.doma.internal.apt.domain.AccessorNotFoundDomain;
 import org.seasar.doma.internal.apt.domain.ConstrutorNotFoundDomain;
 import org.seasar.doma.internal.apt.domain.Outer;
+import org.seasar.doma.internal.apt.domain.PrimitiveValueDomain;
 import org.seasar.doma.internal.apt.domain.Salary;
 import org.seasar.doma.internal.apt.domain.UnsupportedValueTypeDomain;
 import org.seasar.doma.message.DomaMessageCode;
@@ -35,10 +36,22 @@ public class DomainProcessorTest extends AptTestCase {
     }
 
     public void testSalary() throws Exception {
+        Class<?> target = Salary.class;
         DomainProcessor processor = new DomainProcessor();
         addProcessor(processor);
-        addCompilationUnit(Salary.class.getName());
+        addCompilationUnit(target);
         compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testPrimitiveValue() throws Exception {
+        Class<?> target = PrimitiveValueDomain.class;
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
         assertTrue(getCompiledResult());
     }
 

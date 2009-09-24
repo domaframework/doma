@@ -37,6 +37,8 @@ public final class Options {
 
     public static final String ENTITY_SUFFIX = "entity.suffix";
 
+    public static final String DOMAIN_SUFFIX = "domain.suffix";
+
     public static boolean isTestEnabled(ProcessingEnvironment env) {
         String test = env.getOptions().get(Options.TEST);
         return Boolean.valueOf(test).booleanValue();
@@ -74,11 +76,18 @@ public final class Options {
         return suffix != null ? suffix : Constants.DEFAULT_ENTITY_SUFFIX;
     }
 
+    public static String getDomainSuffix(ProcessingEnvironment env) {
+        String suffix = env.getOptions().get(Options.DOMAIN_SUFFIX);
+        return suffix != null ? suffix : Constants.DEFAULT_DOMAIN_SUFFIX;
+    }
+
     private static class Constants {
 
         private static final String DEFAULT_DAO_SUFFIX = "_";
 
         private static final String DEFAULT_ENTITY_SUFFIX = "_";
+
+        private static final String DEFAULT_DOMAIN_SUFFIX = "_";
 
     }
 }

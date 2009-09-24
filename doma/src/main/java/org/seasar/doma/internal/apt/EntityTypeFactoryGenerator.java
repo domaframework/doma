@@ -106,26 +106,26 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
                 entityMeta.getEntityTypeName());
         print("%n");
         indent();
-        printMetaClassFields();
-        printMetaClassConstructors();
-        printMetaClassMethods();
+        printTypeClassFields();
+        printTypeClassConstructors();
+        printTypeClassMethods();
         unindent();
         iprint("}%n");
         print("%n");
     }
 
-    protected void printMetaClassFields() {
-        printMetaClassGeneratedIdPropertyField();
-        printMetaClassListenerField();
-        printMetaClassPropertyField();
-        printMetaClassEntityField();
-        printMetaClassDirtyStatesField();
-        printMetaClassNameField();
-        printMetaClassPropertiesField();
-        printMetaClassPropertyMapField();
+    protected void printTypeClassFields() {
+        printTypeClassGeneratedIdPropertyField();
+        printTypeClassListenerField();
+        printTypeClassPropertyField();
+        printTypeClassEntityField();
+        printTypeClassDirtyStatesField();
+        printTypeClassNameField();
+        printTypeClassPropertiesField();
+        printTypeClassPropertyMapField();
     }
 
-    protected void printMetaClassGeneratedIdPropertyField() {
+    protected void printTypeClassGeneratedIdPropertyField() {
         if (entityMeta.hasGeneratedIdPropertyMeta()) {
             EntityPropertyMeta propertyMeta = entityMeta
                     .getGeneratedIdPropertyMeta();
@@ -135,23 +135,23 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         }
     }
 
-    protected void printMetaClassListenerField() {
+    protected void printTypeClassListenerField() {
         iprint("private static final %1$s __listener = new %1$s();%n",
                 entityMeta.getListenerTypeName());
         print("%n");
     }
 
-    protected void printMetaClassEntityField() {
+    protected void printTypeClassEntityField() {
         iprint("private final %1$s __entity;%n", entityMeta.getEntityTypeName());
         print("%n");
     }
 
-    protected void printMetaClassDirtyStatesField() {
+    protected void printTypeClassDirtyStatesField() {
         iprint("private final java.util.Set<java.lang.String> __modifiedProperties;%n");
         print("%n");
     }
 
-    protected void printMetaClassPropertyField() {
+    protected void printTypeClassPropertyField() {
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             if (pm.isTrnsient()) {
                 continue;
@@ -195,27 +195,27 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         }
     }
 
-    protected void printMetaClassNameField() {
+    protected void printTypeClassNameField() {
         iprint("private final String __name = \"%1$s\";%n", entityMeta
                 .getEntityName());
         print("%n");
     }
 
-    protected void printMetaClassPropertiesField() {
+    protected void printTypeClassPropertiesField() {
         iprint("private java.util.List<%1$s<?>> __entityProperties;%n",
                 org.seasar.doma.internal.jdbc.entity.EntityPropertyType.class
                         .getName());
         print("%n");
     }
 
-    protected void printMetaClassPropertyMapField() {
+    protected void printTypeClassPropertyMapField() {
         iprint("private java.util.Map<String, %1$s<?>> __entityPropertyMap;%n",
                 org.seasar.doma.internal.jdbc.entity.EntityPropertyType.class
                         .getName());
         print("%n");
     }
 
-    protected void printMetaClassConstructors() {
+    protected void printTypeClassConstructors() {
         iprint("private %1$sType() {%n", entityMeta.getEntityName());
         iprint("    this(new %1$s());%n", entityMeta.getEntityTypeName());
         iprint("}%n");
@@ -269,23 +269,23 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printMetaClassMethods() {
-        printMetaClassGetNameMethod();
-        printMetaClassPreInsertMethod();
-        printMetaClassPreUpdateMethod();
-        printMetaClassPreDeleteMethod();
-        printMetaClassGetPropertyMetasMethod();
-        printMetaClassGetPropertyMetaMethod();
-        printMetaClassGetGeneratedIdPropertyMethod();
-        printMetaClassGetVersionPropertyMethod();
-        printMetaClassRefreshEntityMethod();
-        printMetaClassRefreshEntityInternalMethod();
-        printMetaClassGetEntityMethod();
-        printMetaClassGetEntityClassMethod();
-        printMetaClassGetModifiedPropertiesMethod();
+    protected void printTypeClassMethods() {
+        printTypeClassGetNameMethod();
+        printTypeClassPreInsertMethod();
+        printTypeClassPreUpdateMethod();
+        printTypeClassPreDeleteMethod();
+        printTypeClassGetPropertyMetasMethod();
+        printTypeClassGetPropertyMetaMethod();
+        printTypeClassGetGeneratedIdPropertyMethod();
+        printTypeClassGetVersionPropertyMethod();
+        printTypeClassRefreshEntityMethod();
+        printTypeClassRefreshEntityInternalMethod();
+        printTypeClassGetEntityMethod();
+        printTypeClassGetEntityClassMethod();
+        printTypeClassGetModifiedPropertiesMethod();
     }
 
-    protected void printMetaClassGetNameMethod() {
+    protected void printTypeClassGetNameMethod() {
         iprint("@Override%n");
         iprint("public String getName() {%n");
         iprint("    return __name;%n");
@@ -293,7 +293,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printMetaClassPreInsertMethod() {
+    protected void printTypeClassPreInsertMethod() {
         iprint("@Override%n");
         iprint("public void preInsert() {%n");
         iprint("    __listener.preInsert(__entity);%n");
@@ -301,7 +301,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printMetaClassPreUpdateMethod() {
+    protected void printTypeClassPreUpdateMethod() {
         iprint("@Override%n");
         iprint("public void preUpdate() {%n");
         iprint("    __listener.preUpdate(__entity);%n");
@@ -309,7 +309,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printMetaClassPreDeleteMethod() {
+    protected void printTypeClassPreDeleteMethod() {
         iprint("@Override%n");
         iprint("public void preDelete() {%n");
         iprint("    __listener.preDelete(__entity);%n");
@@ -317,7 +317,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printMetaClassGetPropertyMetasMethod() {
+    protected void printTypeClassGetPropertyMetasMethod() {
         iprint("@Override%n");
         iprint("public java.util.List<%1$s<?>> getEntityPropertyTypes() {%n",
                 org.seasar.doma.internal.jdbc.entity.EntityPropertyType.class
@@ -344,7 +344,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printMetaClassGetPropertyMetaMethod() {
+    protected void printTypeClassGetPropertyMetaMethod() {
         iprint("@Override%n");
         iprint("public %1$s<?> getEntityPropertyType(String __name) {%n",
                 org.seasar.doma.internal.jdbc.entity.EntityPropertyType.class
@@ -371,7 +371,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printMetaClassGetGeneratedIdPropertyMethod() {
+    protected void printTypeClassGetGeneratedIdPropertyMethod() {
         iprint("@Override%n");
         iprint("public %1$s<?> getGeneratedIdPropertyType() {%n",
                 GeneratedIdPropertyType.class.getName());
@@ -385,7 +385,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printMetaClassGetVersionPropertyMethod() {
+    protected void printTypeClassGetVersionPropertyMethod() {
         iprint("@Override%n");
         iprint("public %1$s<?> getVersionPropertyType() {%n",
                 VersionPropertyType.class.getName());
@@ -399,7 +399,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printMetaClassRefreshEntityMethod() {
+    protected void printTypeClassRefreshEntityMethod() {
         iprint("@Override%n");
         iprint("public void refreshEntity() {%n");
         iprint("    refreshEntityInternal();%n");
@@ -407,7 +407,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printMetaClassRefreshEntityInternalMethod() {
+    protected void printTypeClassRefreshEntityInternalMethod() {
         iprint("public void refreshEntityInternal() {%n");
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             if (pm.isTrnsient()) {
@@ -439,7 +439,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printMetaClassGetEntityMethod() {
+    protected void printTypeClassGetEntityMethod() {
         iprint("@Override%n");
         iprint("public %1$s getEntity() {%n", entityMeta.getEntityTypeName());
         iprint("    refreshEntityInternal();%n");
@@ -448,7 +448,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printMetaClassGetEntityClassMethod() {
+    protected void printTypeClassGetEntityClassMethod() {
         iprint("@Override%n");
         iprint("public Class<%1$s> getEntityClass() {%n", entityMeta
                 .getEntityTypeName());
@@ -457,7 +457,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printMetaClassGetModifiedPropertiesMethod() {
+    protected void printTypeClassGetModifiedPropertiesMethod() {
         iprint("@Override%n");
         iprint("public java.util.Set<String> getModifiedProperties() {%n");
         iprint("    return __modifiedProperties;%n");

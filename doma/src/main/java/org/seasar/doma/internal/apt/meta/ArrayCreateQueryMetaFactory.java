@@ -40,8 +40,9 @@ import org.seasar.doma.message.DomaMessageCode;
 public class ArrayCreateQueryMetaFactory extends
         AbstractCreateQueryMetaFactory<ArrayCreateQueryMeta> {
 
-    public ArrayCreateQueryMetaFactory(ProcessingEnvironment env) {
-        super(env, Array.class);
+    public ArrayCreateQueryMetaFactory(ProcessingEnvironment env,
+            DomainMetaFactory domainMetaFactory) {
+        super(env, domainMetaFactory, Array.class);
     }
 
     @Override

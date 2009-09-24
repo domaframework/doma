@@ -1,5 +1,12 @@
 package org.seasar.doma.internal.domain;
 
-public interface DomainType<D> {
+import org.seasar.doma.wrapper.Wrapper;
 
+public interface DomainType<V, D> {
+
+    D getDomain();
+
+    Class<D> getDomainClass();
+
+    Wrapper<V> getWrapper();
 }

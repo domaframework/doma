@@ -36,8 +36,9 @@ import org.seasar.doma.message.DomaMessageCode;
 public class AutoFunctionQueryMetaFactory extends
         AutoModuleQueryMetaFactory<AutoFunctionQueryMeta> {
 
-    public AutoFunctionQueryMetaFactory(ProcessingEnvironment env) {
-        super(env);
+    public AutoFunctionQueryMetaFactory(ProcessingEnvironment env,
+            DomainMetaFactory domainMetaFactory) {
+        super(env, domainMetaFactory);
     }
 
     @Override
