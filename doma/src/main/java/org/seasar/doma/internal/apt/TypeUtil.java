@@ -17,6 +17,7 @@ package org.seasar.doma.internal.apt;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -37,6 +38,12 @@ import javax.lang.model.type.WildcardType;
 import javax.lang.model.util.SimpleElementVisitor6;
 import javax.lang.model.util.SimpleTypeVisitor6;
 import javax.lang.model.util.TypeKindVisitor6;
+
+import org.seasar.doma.Domain;
+import org.seasar.doma.Entity;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.IterationCallback;
+import org.seasar.doma.jdbc.SelectOptions;
 
 /**
  * @author taedium
@@ -290,6 +297,52 @@ public final class TypeUtil {
             }
 
         }, null);
+    }
+
+    protected boolean isPrimitiveInt(TypeMirror typeMirror) {
+        return typeMirror.getKind() == TypeKind.INT;
+    }
+
+    protected boolean isPrimitiveIntArray(TypeMirror typeMirror) {
+        return typeMirror.accept(new TypeKindVisitor6<Boolean, Void>(false) {
+
+            @Override
+            public Boolean visitArray(ArrayType t, Void p) {
+                return t.getComponentType().getKind() == TypeKind.INT;
+            }
+        }, null);
+    }
+
+    public static boolean isPrimitiveVoid(TypeMirror typeMirror) {
+        return typeMirror.getKind() == TypeKind.VOID;
+    }
+
+    public static boolean isEntity(TypeMirror typeMirror, ProcessingEnvironment env) {
+        TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
+        return typeElement != null
+                && typeElement.getAnnotation(Entity.class) != null;
+    }
+
+    public static boolean isDomain(TypeMirror typeMirror, ProcessingEnvironment env) {
+        TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
+        return typeElement != null
+                && typeElement.getAnnotation(Domain.class) != null;
+    }
+
+    public static boolean isConfig(TypeMirror typeMirror, ProcessingEnvironment env) {
+        return TypeUtil.isAssignable(typeMirror, Config.class, env);
+    }
+
+    public static boolean isCollection(TypeMirror typeMirror, ProcessingEnvironment env) {
+        return TypeUtil.isAssignable(typeMirror, Collection.class, env);
+    }
+
+    public static boolean isSelectOptions(TypeMirror typeMirror, ProcessingEnvironment env) {
+        return TypeUtil.isAssignable(typeMirror, SelectOptions.class, env);
+    }
+
+    public static boolean isIterationCallback(TypeMirror typeMirror, ProcessingEnvironment env) {
+        return TypeUtil.isAssignable(typeMirror, IterationCallback.class, env);
     }
 
 }

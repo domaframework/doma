@@ -88,7 +88,7 @@ public class AutoFunctionQueryMetaFactory extends
         String returnTypeName = TypeUtil.getTypeName(returnType, env);
         QueryResultMeta queryResultMeta = new QueryResultMeta();
         queryResultMeta.setTypeName(returnTypeName);
-        queryMeta.setQueryResultMeta(queryResultMeta);
+        queryMeta.setResultMeta(queryResultMeta);
 
         ResultParameterMeta resultParameterMeta = createCallableSqlResultParameterMeta(
                 queryMeta, returnType, method, daoMeta);
@@ -109,7 +109,7 @@ public class AutoFunctionQueryMetaFactory extends
                     .getTypeParameterMap(), args.get(0));
             String elementTypeName = TypeUtil.getTypeName(elementType, daoMeta
                     .getTypeParameterMap(), env);
-            if (isEntity(elementType, daoMeta)) {
+            if (isEntity(elementType)) {
                 return new EntityListResultParameterMeta(elementTypeName);
             }
             TypeMirror wrapperType = DomaTypes.getWrapperType(elementType, env);

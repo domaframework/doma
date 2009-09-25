@@ -22,23 +22,22 @@ import java.util.Set;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.TypeParameterElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.ArrayType;
-import javax.lang.model.type.NoType;
-import javax.lang.model.type.PrimitiveType;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.TypeKindVisitor6;
 
+import org.seasar.doma.Domain;
 import org.seasar.doma.Entity;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.IterationCallback;
-import org.seasar.doma.jdbc.Options;
+import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.message.DomaMessageCode;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
@@ -82,13 +81,7 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
     }
 
     protected boolean isPrimitiveInt(TypeMirror typeMirror) {
-        return typeMirror.accept(new TypeKindVisitor6<Boolean, Void>(false) {
-
-            @Override
-            public Boolean visitPrimitiveAsInt(PrimitiveType t, Void p) {
-                return true;
-            }
-        }, null);
+        return typeMirror.getKind() == TypeKind.INT;
     }
 
     protected boolean isPrimitiveIntArray(TypeMirror typeMirror) {
@@ -96,61 +89,37 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
 
             @Override
             public Boolean visitArray(ArrayType t, Void p) {
-                return isPrimitiveInt(t.getComponentType());
+                return t.getComponentType().getKind() == TypeKind.INT;
             }
-
         }, null);
     }
 
     protected boolean isPrimitiveVoid(TypeMirror typeMirror) {
-        return typeMirror.accept(new TypeKindVisitor6<Boolean, Void>(false) {
-
-            @Override
-            public Boolean visitNoTypeAsVoid(NoType t, Void p) {
-                return true;
-            }
-        }, null);
+        return typeMirror.getKind() == TypeKind.VOID;
     }
 
-    protected boolean isVoid(TypeMirror typeMirror) {
-        return TypeUtil.isAssignable(typeMirror, Void.class, env);
-    }
-
-    protected boolean isEntity(TypeMirror typeMirror, DaoMeta daoMeta) {
+    protected boolean isEntity(TypeMirror typeMirror) {
         TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
         return typeElement != null
                 && typeElement.getAnnotation(Entity.class) != null;
     }
 
     protected boolean isDomain(TypeMirror typeMirror) {
-        return TypeUtil.isAssignable(typeMirror, Wrapper.class, env);
+        TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
+        return typeElement != null
+                && typeElement.getAnnotation(Domain.class) != null;
     }
 
     protected boolean isConfig(TypeMirror typeMirror) {
         return TypeUtil.isAssignable(typeMirror, Config.class, env);
     }
 
-    protected boolean isAbstract(TypeMirror typeMirror) {
-        TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
-        return typeElement != null
-                && typeElement.getModifiers().contains(Modifier.ABSTRACT);
-    }
-
     protected boolean isCollection(TypeMirror typeMirror) {
         return TypeUtil.isAssignable(typeMirror, Collection.class, env);
     }
 
-    protected boolean isOptions(TypeMirror typeMirror,
-            Class<? extends Options> optionsClass) {
-        TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
-        if (typeElement != null) {
-            TypeElement optionTypeElement = env.getElementUtils()
-                    .getTypeElement(optionsClass.getName());
-            if (typeElement.equals(optionTypeElement)) {
-                return true;
-            }
-        }
-        return false;
+    protected boolean isSelectOptions(TypeMirror typeMirror) {
+        return TypeUtil.isAssignable(typeMirror, SelectOptions.class, env);
     }
 
     protected boolean isIterationCallback(TypeMirror typeMirror) {
@@ -180,5 +149,12 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
                 }
             }
         }
+    }
+
+    protected QueryParameterMeta createQueryParameterMeta(
+            VariableElement parameter) {
+        QueryParameterMeta queryParameterMeta = new QueryParameterMeta(
+                parameter, env);
+        return queryParameterMeta;
     }
 }

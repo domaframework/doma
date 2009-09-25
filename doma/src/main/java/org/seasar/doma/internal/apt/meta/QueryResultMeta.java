@@ -14,6 +14,8 @@ public class QueryResultMeta {
 
     private boolean entity;
 
+    private boolean domain;
+
     public String getTypeName() {
         return typeName;
     }

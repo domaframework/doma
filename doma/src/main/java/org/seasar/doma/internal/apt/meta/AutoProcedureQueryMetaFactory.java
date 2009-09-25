@@ -87,6 +87,6 @@ public class AutoProcedureQueryMetaFactory extends
         }
         QueryResultMeta resultMeta = new QueryResultMeta();
         resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
-        queryMeta.setQueryResultMeta(resultMeta);
+        queryMeta.setResultMeta(resultMeta);
     }
 }

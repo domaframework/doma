@@ -17,7 +17,6 @@ package org.seasar.doma.internal.apt.meta;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
@@ -28,7 +27,6 @@ import org.seasar.doma.Out;
 import org.seasar.doma.ResultSet;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.ElementUtil;
 import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.message.DomaMessageCode;
@@ -48,34 +46,19 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     @Override
     protected void doParameters(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
-        for (VariableElement param : method.getParameters()) {
-            TypeMirror parameterType = TypeUtil.resolveTypeParameter(daoMeta
-                    .getTypeParameterMap(), param.asType());
-            String typeName = TypeUtil.getTypeName(parameterType, daoMeta
-                    .getTypeParameterMap(), env);
-            String name = ElementUtil.getParameterName(param);
+        for (VariableElement parameter : method.getParameters()) {
+            QueryParameterMeta parameterMeta = createQueryParameterMeta(parameter);
+            queryMeta.addParameterMetas(parameterMeta);
+
             CallableSqlParameterMeta callableSqlParameterMeta = createParameterMeta(
-                    queryMeta, param, daoMeta);
-            callableSqlParameterMeta.setName(name);
-            callableSqlParameterMeta.setTypeName(typeName);
+                    queryMeta, parameter, daoMeta);
+            callableSqlParameterMeta.setName(parameterMeta.getName());
+            callableSqlParameterMeta.setTypeName(parameterMeta
+                    .getTypeName());
             queryMeta.addCallableSqlParameterMeta(callableSqlParameterMeta);
 
-            QueryParameterMeta queryParameterMeta = new QueryParameterMeta();
-            queryParameterMeta.setName(callableSqlParameterMeta.getName());
-            queryParameterMeta.setTypeName(callableSqlParameterMeta
-                    .getTypeName());
-            queryParameterMeta.setNullable(callableSqlParameterMeta
-                    .isNullable());
-            queryParameterMeta.setTypeMirror(parameterType);
-            TypeElement typeElement = TypeUtil
-                    .toTypeElement(parameterType, env);
-            if (typeElement != null) {
-                queryParameterMeta.setQualifiedName(typeElement
-                        .getQualifiedName().toString());
-            }
-            queryMeta.addQueryParameterMetas(queryParameterMeta);
-
-            queryMeta.addExpressionParameterType(name, parameterType);
+            queryMeta.addExpressionParameterType(parameterMeta.getName(),
+                    parameterMeta.getType());
         }
     }
 
@@ -95,7 +78,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                         .get(0));
                 String elementTypeName = TypeUtil.getTypeName(elementType,
                         daoMeta.getTypeParameterMap(), env);
-                if (isEntity(elementType, daoMeta)) {
+                if (isEntity(elementType)) {
                     return new EntityListParameterMeta(elementTypeName);
                 }
                 TypeMirror wrapperType = DomaTypes.getWrapperType(elementType,

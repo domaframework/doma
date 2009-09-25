@@ -21,7 +21,6 @@ import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
@@ -29,7 +28,6 @@ import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
 import org.seasar.doma.Update;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.ElementUtil;
 import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.message.DomaMessageCode;
 
@@ -108,43 +106,29 @@ public class AutoModifyQueryMetaFactory extends
         }
         QueryResultMeta resultMeta = new QueryResultMeta();
         resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
-        queryMeta.setQueryResultMeta(resultMeta);
+        queryMeta.setResultMeta(resultMeta);
     }
 
     @Override
     protected void doParameters(AutoModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        List<? extends VariableElement> params = method.getParameters();
-        int size = params.size();
+        List<? extends VariableElement> parameters = method.getParameters();
+        int size = parameters.size();
         if (size != 1) {
             throw new AptException(DomaMessageCode.DOMA4002, env, method);
         }
-        VariableElement entity = params.get(0);
-        TypeMirror entityType = TypeUtil.resolveTypeParameter(daoMeta
-                .getTypeParameterMap(), entity.asType());
-        if (!isEntity(entityType, daoMeta)) {
-            throw new AptException(DomaMessageCode.DOMA4003, env, entity);
+        QueryParameterMeta parameterMeta = createQueryParameterMeta(parameters
+                .get(0));
+        if (!parameterMeta.isEntity()) {
+            throw new AptException(DomaMessageCode.DOMA4003, env,
+                    parameterMeta.getParameterElement());
         }
-        String entityName = ElementUtil.getParameterName(entity);
-        String entityTypeName = TypeUtil.getTypeName(entityType, daoMeta
-                .getTypeParameterMap(), env);
-        queryMeta.setEntityName(entityName);
-        queryMeta.setEntityTypeName(entityTypeName);
-
-        QueryParameterMeta queryParameterMeta = new QueryParameterMeta();
-        queryParameterMeta.setName(entityName);
-        queryParameterMeta.setTypeName(entityTypeName);
-        queryParameterMeta.setTypeMirror(entityType);
-        TypeElement typeElement = TypeUtil.toTypeElement(entityType, env);
-        if (typeElement != null) {
-            queryParameterMeta.setQualifiedName(typeElement.getQualifiedName()
-                    .toString());
-        }
-        queryMeta.addQueryParameterMetas(queryParameterMeta);
-
-        queryMeta.addExpressionParameterType(entityName, entityType);
-
-        validateEntityPropertyNames(entityType, method, queryMeta);
+        queryMeta.setEntity(parameterMeta);
+        queryMeta.addParameterMetas(parameterMeta);
+        queryMeta.addExpressionParameterType(parameterMeta.getName(),
+                parameterMeta.getType());
+        validateEntityPropertyNames(parameterMeta.getType(), method,
+                queryMeta);
     }
 
 }

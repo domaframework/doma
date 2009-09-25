@@ -53,7 +53,7 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
         TypeMirror returnType = method.getReturnType();
         QueryResultMeta resultMeta = new QueryResultMeta();
         resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
-        queryMeta.setQueryResultMeta(resultMeta);
+        queryMeta.setResultMeta(resultMeta);
         if (!resultMeta.getTypeName().equals(returnClass.getName())) {
             throw new AptException(DomaMessageCode.DOMA4097, env, method,
                     returnClass.getName());

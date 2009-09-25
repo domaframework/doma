@@ -24,10 +24,6 @@ import org.seasar.doma.jdbc.SelectOptions;
  */
 public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
-    protected String optionsTypeName;
-
-    protected String optionsName;
-
     protected boolean iterated;
 
     protected Integer maxRows;
@@ -36,21 +32,7 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
     protected IterationCallbackMeta iterationCallbackMeta;
 
-    public String getOptionsTypeName() {
-        return optionsTypeName;
-    }
-
-    public void setOptionsTypeName(String optionsTypeName) {
-        this.optionsTypeName = optionsTypeName;
-    }
-
-    public String getOptionsName() {
-        return optionsName;
-    }
-
-    public void setOptionsName(String optionsName) {
-        this.optionsName = optionsName;
-    }
+    protected QueryParameterMeta selectOptions;
 
     public Class<? extends Options> getOptionsClass() {
         return SelectOptions.class;
@@ -87,6 +69,18 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
     public void setIterationCallbackMeta(
             IterationCallbackMeta iterationCallbackMeta) {
         this.iterationCallbackMeta = iterationCallbackMeta;
+    }
+
+    public boolean hasSelectOptions() {
+        return selectOptions != null;
+    }
+
+    public QueryParameterMeta getSelectOptions() {
+        return selectOptions;
+    }
+
+    public void setSelectOptions(QueryParameterMeta selectOptions) {
+        this.selectOptions = selectOptions;
     }
 
     @Override

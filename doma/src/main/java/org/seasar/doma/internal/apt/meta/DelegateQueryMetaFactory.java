@@ -87,26 +87,11 @@ public class DelegateQueryMetaFactory extends
     @Override
     protected void doParameters(DelegateQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        for (VariableElement param : method.getParameters()) {
-            TypeMirror parameterType = TypeUtil.resolveTypeParameter(daoMeta
-                    .getTypeParameterMap(), param.asType());
-            String parameterName = ElementUtil.getParameterName(param);
-            String parameterTypeName = TypeUtil.getTypeName(parameterType,
-                    daoMeta.getTypeParameterMap(), env);
-
-            QueryParameterMeta queryParameterMeta = new QueryParameterMeta();
-            queryParameterMeta.setName(parameterName);
-            queryParameterMeta.setTypeName(parameterTypeName);
-            queryParameterMeta.setTypeMirror(parameterType);
-            TypeElement typeElement = TypeUtil
-                    .toTypeElement(parameterType, env);
-            if (typeElement != null) {
-                queryParameterMeta.setQualifiedName(typeElement
-                        .getQualifiedName().toString());
-            }
-            queryMeta.addQueryParameterMetas(queryParameterMeta);
-
-            queryMeta.addExpressionParameterType(parameterName, parameterType);
+        for (VariableElement parameter : method.getParameters()) {
+            QueryParameterMeta parameterMeta = createQueryParameterMeta(parameter);
+            queryMeta.addParameterMetas(parameterMeta);
+            queryMeta.addExpressionParameterType(parameterMeta.getName(),
+                    parameterMeta.getType());
         }
     }
 
@@ -117,7 +102,7 @@ public class DelegateQueryMetaFactory extends
                 .getTypeParameterMap(), method.getReturnType());
         QueryResultMeta resultMeta = new QueryResultMeta();
         resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
-        queryMeta.setQueryResultMeta(resultMeta);
+        queryMeta.setResultMeta(resultMeta);
     }
 
     protected void doDelegate(DelegateQueryMeta queryMeta,

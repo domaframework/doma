@@ -31,9 +31,9 @@ public interface QueryMeta {
 
     List<String> getTypeParameterNames();
 
-    List<QueryParameterMeta> getQueryParameterMetas();
+    List<QueryParameterMeta> getParameterMetas();
 
-    QueryResultMeta getQueryResultMeta();
+    QueryResultMeta getResultMeta();
 
     Map<String, TypeMirror> getExpressionParameterTypes();
 

@@ -23,9 +23,7 @@ public class ArrayCreateQueryMeta extends AbstractCreateQueryMeta {
 
     protected String jdbcTypeName;
 
-    protected String arrayTypeName;
-
-    protected String arrayName;
+    protected QueryParameterMeta array;
 
     public String getJdbcTypeName() {
         return jdbcTypeName;
@@ -35,20 +33,12 @@ public class ArrayCreateQueryMeta extends AbstractCreateQueryMeta {
         this.jdbcTypeName = jdbcTypeName;
     }
 
-    public String getArrayTypeName() {
-        return arrayTypeName;
+    public QueryParameterMeta getArray() {
+        return array;
     }
 
-    public void setArrayTypeName(String arrayTypeName) {
-        this.arrayTypeName = arrayTypeName;
-    }
-
-    public String getArrayName() {
-        return arrayName;
-    }
-
-    public void setArrayName(String arrayName) {
-        this.arrayName = arrayName;
+    public void setArray(QueryParameterMeta array) {
+        this.array = array;
     }
 
     @Override

@@ -15,31 +15,20 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-
 /**
  * @author taedium
  * 
  */
 public class AutoModifyQueryMeta extends AbstractQueryMeta {
 
-    protected String entityTypeName;
+    protected QueryParameterMeta entity;
 
-    protected String entityName;
-
-    public String getEntityTypeName() {
-        return entityTypeName;
+    public QueryParameterMeta getEntity() {
+        return entity;
     }
 
-    public void setEntityTypeName(String entityTypeName) {
-        this.entityTypeName = entityTypeName;
-    }
-
-    public String getEntityName() {
-        return entityName;
-    }
-
-    public void setEntityName(String entityName) {
-        this.entityName = entityName;
+    public void setEntity(QueryParameterMeta entity) {
+        this.entity = entity;
     }
 
     @Override

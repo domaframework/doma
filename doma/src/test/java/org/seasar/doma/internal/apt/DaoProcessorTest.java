@@ -44,8 +44,8 @@ import org.seasar.doma.internal.apt.dao.NotInterfaceDao;
 import org.seasar.doma.internal.apt.dao.NotTopLevelDao;
 import org.seasar.doma.internal.apt.dao.SqlFileBatchUpdateDao;
 import org.seasar.doma.internal.apt.dao.SqlFileInsertDao;
-import org.seasar.doma.internal.apt.dao.SqlFileSelectValueDao;
 import org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao;
+import org.seasar.doma.internal.apt.dao.SqlFileSelectValueDao;
 import org.seasar.doma.internal.apt.dao.UnknownBindVariableSqlValidationDao;
 import org.seasar.doma.internal.apt.dao.UnknownVariableSqlValidationDao;
 import org.seasar.doma.message.DomaMessageCode;
@@ -163,7 +163,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4027);
+        assertMessageCode(DomaMessageCode.DOMA4108);
     }
 
     public void testElementOfParamListNotDomain() throws Exception {

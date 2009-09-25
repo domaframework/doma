@@ -62,7 +62,7 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
     protected QueryResultMeta queryResultMeta;
 
-    protected List<QueryParameterMeta> queryParameterMetas = new ArrayList<QueryParameterMeta>();
+    protected List<QueryParameterMeta> parameterMetas = new ArrayList<QueryParameterMeta>();
 
     public String getName() {
         return name;
@@ -193,20 +193,20 @@ public abstract class AbstractQueryMeta implements QueryMeta {
         this.excludedPropertyNames = excludedPropertyNames;
     }
 
-    public QueryResultMeta getQueryResultMeta() {
+    public QueryResultMeta getResultMeta() {
         return queryResultMeta;
     }
 
-    public void setQueryResultMeta(QueryResultMeta queryResultMeta) {
+    public void setResultMeta(QueryResultMeta queryResultMeta) {
         this.queryResultMeta = queryResultMeta;
     }
 
-    public List<QueryParameterMeta> getQueryParameterMetas() {
-        return queryParameterMetas;
+    public List<QueryParameterMeta> getParameterMetas() {
+        return parameterMetas;
     }
 
-    public void addQueryParameterMetas(QueryParameterMeta queryParameterMeta) {
-        this.queryParameterMetas.add(queryParameterMeta);
+    public void addParameterMetas(QueryParameterMeta queryParameterMeta) {
+        this.parameterMetas.add(queryParameterMeta);
     }
 
 }

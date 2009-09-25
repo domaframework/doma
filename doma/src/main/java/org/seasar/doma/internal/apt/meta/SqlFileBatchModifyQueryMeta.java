@@ -15,41 +15,20 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-
 /**
  * @author taedium
  * 
  */
 public class SqlFileBatchModifyQueryMeta extends AbstractSqlFileQueryMeta {
 
-    protected String elementTypeName;
+    protected QueryParameterMeta entityCollection;
 
-    protected String entityListTypeName;
-
-    protected String entityListName;
-
-    public String getElementTypeName() {
-        return elementTypeName;
+    public QueryParameterMeta getEntityCollection() {
+        return entityCollection;
     }
 
-    public void setElementTypeName(String elementTypeName) {
-        this.elementTypeName = elementTypeName;
-    }
-
-    public String getEntityListTypeName() {
-        return entityListTypeName;
-    }
-
-    public void setEntityListTypeName(String entityListTypeName) {
-        this.entityListTypeName = entityListTypeName;
-    }
-
-    public String getEntityListName() {
-        return entityListName;
-    }
-
-    public void setEntityListName(String entityListName) {
-        this.entityListName = entityListName;
+    public void setEntityCollection(QueryParameterMeta entityCollection) {
+        this.entityCollection = entityCollection;
     }
 
     @Override
