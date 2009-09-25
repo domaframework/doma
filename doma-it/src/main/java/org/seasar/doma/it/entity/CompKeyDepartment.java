@@ -29,14 +29,14 @@ import org.seasar.doma.Version;
 public class CompKeyDepartment {
 
     @Id
-    Integer department_id1;
+    Integer departmentId1;
 
     @Id
-    Integer department_id2;
+    Integer departmentId2;
 
-    Integer department_no;
+    Integer departmentNo;
 
-    String department_name;
+    String departmentName;
 
     String location;
 
@@ -46,40 +46,40 @@ public class CompKeyDepartment {
     @ModifiedProperties
     Set<String> modifiedProperties = new HashSet<String>();
 
-    public Integer getDepartment_id1() {
-        return department_id1;
+    public Integer getDepartmentId1() {
+        return departmentId1;
     }
 
-    public void setDepartment_id1(Integer departmentId1) {
+    public void setDepartmentId1(Integer departmentId1) {
         modifiedProperties.add("departmentId1");
-        department_id1 = departmentId1;
+        this.departmentId1 = departmentId1;
     }
 
-    public Integer getDepartment_id2() {
-        return department_id2;
+    public Integer getDepartmentId2() {
+        return departmentId2;
     }
 
-    public void setDepartment_id2(Integer departmentId2) {
+    public void setDepartmentId2(Integer departmentId2) {
         modifiedProperties.add("departmentId2");
-        department_id2 = departmentId2;
+        this.departmentId2 = departmentId2;
     }
 
-    public Integer getDepartment_no() {
-        return department_no;
+    public Integer getDepartmentNo() {
+        return departmentNo;
     }
 
-    public void setDepartment_no(Integer departmentNo) {
+    public void setDepartmentNo(Integer departmentNo) {
         modifiedProperties.add("departmentNo");
-        department_no = departmentNo;
+        this.departmentNo = departmentNo;
     }
 
-    public String getDepartment_name() {
-        return department_name;
+    public String getDepartmentName() {
+        return departmentName;
     }
 
-    public void setDepartment_name(String departmentName) {
+    public void setDepartmentName(String departmentName) {
         modifiedProperties.add("departmentName");
-        department_name = departmentName;
+        this.departmentName = departmentName;
     }
 
     public String getLocation() {

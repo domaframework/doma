@@ -5,7 +5,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.internal.apt.meta.type.WrapperType;
+import org.seasar.doma.internal.apt.type.WrapperType;
 
 public class DomainMeta {
 

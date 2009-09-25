@@ -17,7 +17,7 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import org.seasar.doma.internal.apt.meta.type.ValueType;
+import org.seasar.doma.internal.apt.type.ValueType;
 
 /**
  * @author taedium

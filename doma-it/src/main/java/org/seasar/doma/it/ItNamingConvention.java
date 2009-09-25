@@ -1,13 +1,13 @@
 package org.seasar.doma.it;
 
-import org.seasar.doma.jdbc.NamingConvention;
+import org.seasar.doma.jdbc.CamelNamingConvention;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
-public class ItNamingConvention implements NamingConvention {
+public class ItNamingConvention extends CamelNamingConvention {
 
     @Override
     public String fromEntityToTable(String entityName, Dialect dialect) {
-        return entityName.toUpperCase();
+        return super.fromEntityToTable(entityName, dialect).toUpperCase();
     }
 
     @Override
@@ -17,7 +17,7 @@ public class ItNamingConvention implements NamingConvention {
 
     @Override
     public String fromPropertyToColumn(String propertyName, Dialect dialect) {
-        return propertyName.toUpperCase();
+        return super.fromPropertyToColumn(propertyName, dialect).toUpperCase();
     }
 
     @Override

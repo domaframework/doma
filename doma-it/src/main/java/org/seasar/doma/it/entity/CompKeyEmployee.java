@@ -31,30 +31,30 @@ import org.seasar.doma.Version;
 public class CompKeyEmployee {
 
     @Id
-    Integer employee_id1;
+    Integer employeeId1;
 
     @Id
-    Integer employee_id2;
+    Integer employeeId2;
 
-    Integer employee_no;
+    Integer employeeNo;
 
-    String employee_name;
+    String employeeName;
 
-    Integer manager_id1;
+    Integer managerId1;
 
-    Integer manager_id2;
+    Integer managerId2;
 
     Date hiredate;
 
     BigDecimal salary;
 
-    Integer department_id1;
+    Integer departmentId1;
 
-    Integer department_id2;
+    Integer departmentId2;
 
-    Integer address_id1;
+    Integer addressId1;
 
-    Integer address_id2;
+    Integer addressId2;
 
     @Version
     Integer version;
@@ -62,58 +62,58 @@ public class CompKeyEmployee {
     @ModifiedProperties
     Set<String> modifiedProperties = new HashSet<String>();
 
-    public Integer getEmployee_id1() {
-        return employee_id1;
+    public Integer getEmployeeId1() {
+        return employeeId1;
     }
 
-    public void setEmployee_id1(Integer employeeId1) {
+    public void setEmployeeId1(Integer employeeId1) {
         modifiedProperties.add("employeeId1");
-        employee_id1 = employeeId1;
+        this.employeeId1 = employeeId1;
     }
 
-    public Integer getEmployee_id2() {
-        return employee_id2;
+    public Integer getEmployeeId2() {
+        return employeeId2;
     }
 
-    public void setEmployee_id2(Integer employeeId2) {
+    public void setEmployeeId2(Integer employeeId2) {
         modifiedProperties.add("employeeId2");
-        employee_id2 = employeeId2;
+        this.employeeId2 = employeeId2;
     }
 
-    public Integer getEmployee_no() {
-        return employee_no;
+    public Integer getEmployeeNo() {
+        return employeeNo;
     }
 
-    public void setEmployee_no(Integer employeeNo) {
+    public void setEmployeeNo(Integer employeeNo) {
         modifiedProperties.add("employeeNo");
-        employee_no = employeeNo;
+        this.employeeNo = employeeNo;
     }
 
-    public String getEmployee_name() {
-        return employee_name;
+    public String getEmployeeName() {
+        return employeeName;
     }
 
-    public void setEmployee_name(String employeeName) {
+    public void setEmployeeName(String employeeName) {
         modifiedProperties.add("employeeName");
-        employee_name = employeeName;
+        this.employeeName = employeeName;
     }
 
-    public Integer getManager_id1() {
-        return manager_id1;
+    public Integer getManagerId1() {
+        return managerId1;
     }
 
-    public void setManager_id1(Integer managerId1) {
+    public void setManagerId1(Integer managerId1) {
         modifiedProperties.add("managerId1");
-        manager_id1 = managerId1;
+        this.managerId1 = managerId1;
     }
 
-    public Integer getManager_id2() {
-        return manager_id2;
+    public Integer getManagerId2() {
+        return managerId2;
     }
 
-    public void setManager_id2(Integer managerId2) {
+    public void setManagerId2(Integer managerId2) {
         modifiedProperties.add("managerId2");
-        manager_id2 = managerId2;
+        this.managerId2 = managerId2;
     }
 
     public Date getHiredate() {
@@ -134,40 +134,40 @@ public class CompKeyEmployee {
         this.salary = salary;
     }
 
-    public Integer getDepartment_id1() {
-        return department_id1;
+    public Integer getDepartmentId1() {
+        return departmentId1;
     }
 
-    public void setDepartment_id1(Integer departmentId1) {
+    public void setDepartmentId1(Integer departmentId1) {
         modifiedProperties.add("departmentId1");
-        department_id1 = departmentId1;
+        this.departmentId1 = departmentId1;
     }
 
-    public Integer getDepartment_id2() {
-        return department_id2;
+    public Integer getDepartmentId2() {
+        return departmentId2;
     }
 
-    public void setDepartment_id2(Integer departmentId2) {
+    public void setDepartmentId2(Integer departmentId2) {
         modifiedProperties.add("departmentId2");
-        department_id2 = departmentId2;
+        this.departmentId2 = departmentId2;
     }
 
-    public Integer getAddress_id1() {
-        return address_id1;
+    public Integer getAddressId1() {
+        return addressId1;
     }
 
-    public void setAddress_id1(Integer addressId1) {
+    public void setAddressId1(Integer addressId1) {
         modifiedProperties.add("addressId1");
-        address_id1 = addressId1;
+        this.addressId1 = addressId1;
     }
 
-    public Integer getAddress_id2() {
-        return address_id2;
+    public Integer getAddressId2() {
+        return addressId2;
     }
 
-    public void setAddress_id2(Integer addressId2) {
+    public void setAddressId2(Integer addressId2) {
         modifiedProperties.add("addressId2");
-        address_id2 = addressId2;
+        this.addressId2 = addressId2;
     }
 
     public Integer getVersion() {

@@ -16,10 +16,10 @@ public class SqlFileBatchDeleteTest {
     public void test() throws Exception {
         EmployeeDao dao = new EmployeeDao_();
         Employee employee = new Employee();
-        employee.setEmployee_id(1);
+        employee.setEmployeeId(1);
         employee.setVersion(1);
         Employee employee2 = new Employee();
-        employee2.setEmployee_id(2);
+        employee2.setEmployeeId(2);
         employee2.setVersion(1);
         int[] result = dao.deleteBySqlFile(Arrays.asList(employee, employee2));
         assertEquals(2, result.length);

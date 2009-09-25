@@ -40,11 +40,11 @@ public class AutoBatchDeleteTest {
     public void test() throws Exception {
         EmployeeDao dao = new EmployeeDao_();
         Employee employee = new Employee();
-        employee.setEmployee_id(1);
+        employee.setEmployeeId(1);
         employee.setVersion(1);
         Employee employee2 = new Employee();
-        employee2.setEmployee_id(2);
-        employee2.setVersion(2);
+        employee2.setEmployeeId(2);
+        employee2.setVersion(1);
         int[] result = dao.delete(Arrays.asList(employee, employee2));
         assertEquals(2, result.length);
         assertEquals(1, result[0]);
@@ -59,10 +59,10 @@ public class AutoBatchDeleteTest {
     public void testIgnoresVersion() throws Exception {
         EmployeeDao dao = new EmployeeDao_();
         Employee employee = new Employee();
-        employee.setEmployee_id(1);
+        employee.setEmployeeId(1);
         employee.setVersion(99);
         Employee employee2 = new Employee();
-        employee2.setEmployee_id(2);
+        employee2.setEmployeeId(2);
         employee2.setVersion(99);
         ;
         int[] result = dao.delete_ignoresVersion(Arrays.asList(employee,
@@ -80,12 +80,12 @@ public class AutoBatchDeleteTest {
     public void testCompositeKey() throws Exception {
         CompKeyEmployeeDao dao = new CompKeyEmployeeDao_();
         CompKeyEmployee employee = new CompKeyEmployee();
-        employee.setEmployee_id1(1);
-        employee.setEmployee_id2(1);
+        employee.setEmployeeId1(1);
+        employee.setEmployeeId2(1);
         employee.setVersion(1);
         CompKeyEmployee employee2 = new CompKeyEmployee();
-        employee2.setEmployee_id1(2);
-        employee2.setEmployee_id2(2);
+        employee2.setEmployeeId1(2);
+        employee2.setEmployeeId2(2);
         employee2.setVersion(1);
 
         int[] result = dao.delete(Arrays.asList(employee, employee2));
@@ -102,11 +102,11 @@ public class AutoBatchDeleteTest {
     public void testOptimisticLockException() throws Exception {
         EmployeeDao dao = new EmployeeDao_();
         Employee employee1 = dao.selectById(1);
-        employee1.setEmployee_name("hoge");
+        employee1.setEmployeeName("hoge");
         Employee employee2 = dao.selectById(2);
-        employee2.setEmployee_name("foo");
+        employee2.setEmployeeName("foo");
         Employee employee3 = dao.selectById(1);
-        employee2.setEmployee_name("bar");
+        employee2.setEmployeeName("bar");
         dao.delete(employee1);
         try {
             dao.delete(Arrays.asList(employee2, employee3));
@@ -118,11 +118,11 @@ public class AutoBatchDeleteTest {
     public void testSuppressesOptimisticLockException() throws Exception {
         EmployeeDao dao = new EmployeeDao_();
         Employee employee1 = dao.selectById(1);
-        employee1.setEmployee_name("hoge");
+        employee1.setEmployeeName("hoge");
         Employee employee2 = dao.selectById(2);
-        employee2.setEmployee_name("foo");
+        employee2.setEmployeeName("foo");
         Employee employee3 = dao.selectById(1);
-        employee2.setEmployee_name("bar");
+        employee2.setEmployeeName("bar");
         dao.delete(employee1);
         dao.delete_suppressesOptimisticLockException(Arrays.asList(employee2,
                 employee3));

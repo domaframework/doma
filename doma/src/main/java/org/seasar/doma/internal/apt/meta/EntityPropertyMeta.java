@@ -21,8 +21,8 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.TypeUtil;
-import org.seasar.doma.internal.apt.meta.type.DomainType;
-import org.seasar.doma.internal.apt.meta.type.ValueType;
+import org.seasar.doma.internal.apt.type.DomainType;
+import org.seasar.doma.internal.apt.type.ValueType;
 
 /**
  * 

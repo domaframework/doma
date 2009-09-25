@@ -33,8 +33,8 @@ import org.seasar.doma.Version;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.TypeUtil;
-import org.seasar.doma.internal.apt.meta.type.DomainType;
-import org.seasar.doma.internal.apt.meta.type.ValueType;
+import org.seasar.doma.internal.apt.type.DomainType;
+import org.seasar.doma.internal.apt.type.ValueType;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**

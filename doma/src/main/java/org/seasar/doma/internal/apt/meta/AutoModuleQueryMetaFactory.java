@@ -25,11 +25,11 @@ import org.seasar.doma.Out;
 import org.seasar.doma.ResultSet;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.meta.type.CollectionType;
-import org.seasar.doma.internal.apt.meta.type.DomainType;
-import org.seasar.doma.internal.apt.meta.type.EntityType;
-import org.seasar.doma.internal.apt.meta.type.ReferenceType;
-import org.seasar.doma.internal.apt.meta.type.ValueType;
+import org.seasar.doma.internal.apt.type.CollectionType;
+import org.seasar.doma.internal.apt.type.DomainType;
+import org.seasar.doma.internal.apt.type.EntityType;
+import org.seasar.doma.internal.apt.type.ReferenceType;
+import org.seasar.doma.internal.apt.type.ValueType;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**

@@ -1,1 +1,1 @@
-select * from EMPLOYEE where EMPLOYEE_ID = /*employee_id*/0
+select * from EMPLOYEE where EMPLOYEE_ID = /*employeeId*/0

@@ -1,6 +1,6 @@
 select * from EMPLOYEE where 
-/*%if e.employee_no > 7800*/
-  /*%if e.manager_id != null*/
+/*%if e.employeeNo > 7800*/
+  /*%if e.managerId != null*/
     salary >= /*e.salary*/9999
   /*%end*/
 /*%end*/

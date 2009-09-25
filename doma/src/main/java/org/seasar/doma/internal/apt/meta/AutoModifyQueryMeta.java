@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import org.seasar.doma.internal.apt.meta.type.EntityType;
+import org.seasar.doma.internal.apt.type.EntityType;
 
 /**
  * @author taedium

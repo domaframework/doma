@@ -28,7 +28,7 @@ import org.seasar.doma.it.entity.CompKeyEmployee;
 public interface CompKeyEmployeeDao {
 
     @Select
-    CompKeyEmployee selectById(Integer employee_id1, Integer employee_id2);
+    CompKeyEmployee selectById(Integer employeeId1, Integer employeeId2);
 
     @Delete
     int delete(CompKeyEmployee entity);

@@ -29,15 +29,15 @@ public class SqlFileInsertTest {
     public void test() throws Exception {
         DepartmentDao dao = new DepartmentDao_();
         Department department = new Department();
-        department.setDepartment_id(99);
-        department.setDepartment_no(99);
-        department.setDepartment_name("hoge");
+        department.setDepartmentId(99);
+        department.setDepartmentNo(99);
+        department.setDepartmentName("hoge");
         int result = dao.insertBySqlFile(department);
         assertEquals(1, result);
 
         department = dao.selectById(new Integer(99));
-        assertEquals(new Integer(99), department.getDepartment_id());
-        assertEquals(new Integer(99), department.getDepartment_no());
+        assertEquals(new Integer(99), department.getDepartmentId());
+        assertEquals(new Integer(99), department.getDepartmentNo());
     }
 
 }

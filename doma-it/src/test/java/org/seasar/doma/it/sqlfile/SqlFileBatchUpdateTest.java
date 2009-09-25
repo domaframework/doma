@@ -31,14 +31,14 @@ public class SqlFileBatchUpdateTest {
     public void test() throws Exception {
         DepartmentDao dao = new DepartmentDao_();
         Department department = new Department();
-        department.setDepartment_id(1);
-        department.setDepartment_no(1);
-        department.setDepartment_name("hoge");
+        department.setDepartmentId(1);
+        department.setDepartmentNo(1);
+        department.setDepartmentName("hoge");
         department.setVersion(1);
         Department department2 = new Department();
-        department2.setDepartment_id(2);
-        department2.setDepartment_no(2);
-        department2.setDepartment_name("foo");
+        department2.setDepartmentId(2);
+        department2.setDepartmentNo(2);
+        department2.setDepartmentName("foo");
         department2.setVersion(1);
         int[] result = dao.updateBySqlFile(Arrays.asList(department,
                 department2));
@@ -47,11 +47,11 @@ public class SqlFileBatchUpdateTest {
         assertEquals(1, result[1]);
 
         department = dao.selectById(1);
-        assertEquals(new Integer(1), department.getDepartment_id());
-        assertEquals("hoge", department.getDepartment_name());
+        assertEquals(new Integer(1), department.getDepartmentId());
+        assertEquals("hoge", department.getDepartmentName());
         department = dao.selectById(2);
-        assertEquals(new Integer(2), department.getDepartment_id());
-        assertEquals("foo", department.getDepartment_name());
+        assertEquals(new Integer(2), department.getDepartmentId());
+        assertEquals("foo", department.getDepartmentName());
     }
 
 }

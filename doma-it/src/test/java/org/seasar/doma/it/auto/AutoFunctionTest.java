@@ -79,7 +79,7 @@ public class AutoFunctionTest {
         assertEquals(13, result.size());
         DepartmentDao departmentDao = new DepartmentDao_();
         Department department = departmentDao.selectById(new Integer(1));
-        assertEquals("HOGE", department.getDepartment_name());
+        assertEquals("HOGE", department.getDepartmentName());
     }
 
     @Prerequisite("#ENV not in {'mysql'}")
@@ -89,7 +89,7 @@ public class AutoFunctionTest {
         assertEquals(13, result.size());
         DepartmentDao departmentDao = new DepartmentDao_();
         Department department = departmentDao.selectById(new Integer(1));
-        assertEquals("HOGE", department.getDepartment_name());
+        assertEquals("HOGE", department.getDepartmentName());
     }
 
 }

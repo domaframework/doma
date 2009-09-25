@@ -30,7 +30,7 @@ import org.seasar.doma.it.entity.Department;
 public interface DepartmentDao {
 
     @Select
-    Department selectById(Integer department_id);
+    Department selectById(Integer departmentId);
 
     @Insert
     int insert(Department entity);

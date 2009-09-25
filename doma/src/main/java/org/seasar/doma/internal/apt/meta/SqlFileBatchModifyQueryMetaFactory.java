@@ -27,8 +27,8 @@ import org.seasar.doma.BatchDelete;
 import org.seasar.doma.BatchInsert;
 import org.seasar.doma.BatchUpdate;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.meta.type.CollectionType;
-import org.seasar.doma.internal.apt.meta.type.EntityType;
+import org.seasar.doma.internal.apt.type.CollectionType;
+import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**

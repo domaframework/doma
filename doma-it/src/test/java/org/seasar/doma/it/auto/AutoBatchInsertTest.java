@@ -49,13 +49,13 @@ public class AutoBatchInsertTest {
     public void test() throws Exception {
         DepartmentDao dao = new DepartmentDao_();
         Department department = new Department();
-        department.setDepartment_id(99);
-        department.setDepartment_no(99);
-        department.setDepartment_name("hoge");
+        department.setDepartmentId(99);
+        department.setDepartmentNo(99);
+        department.setDepartmentName("hoge");
         Department department2 = new Department();
-        department2.setDepartment_id(98);
-        department2.setDepartment_no(98);
-        department2.setDepartment_name("foo");
+        department2.setDepartmentId(98);
+        department2.setDepartmentNo(98);
+        department2.setDepartmentName("foo");
         int[] result = dao.insert(Arrays.asList(department, department2));
         assertEquals(2, result.length);
         assertEquals(1, result[0]);
@@ -64,15 +64,15 @@ public class AutoBatchInsertTest {
         assertEquals(new Integer(1), department2.getVersion());
 
         department = dao.selectById(99);
-        assertEquals(new Integer(99), department.getDepartment_id());
-        assertEquals(new Integer(99), department.getDepartment_no());
-        assertEquals("hoge", department.getDepartment_name());
+        assertEquals(new Integer(99), department.getDepartmentId());
+        assertEquals(new Integer(99), department.getDepartmentNo());
+        assertEquals("hoge", department.getDepartmentName());
         assertNull(department.getLocation());
         assertEquals(new Integer(1), department.getVersion());
         department = dao.selectById(new Integer(98));
-        assertEquals(new Integer(98), department.getDepartment_id());
-        assertEquals(new Integer(98), department.getDepartment_no());
-        assertEquals("foo", department.getDepartment_name());
+        assertEquals(new Integer(98), department.getDepartmentId());
+        assertEquals(new Integer(98), department.getDepartmentNo());
+        assertEquals("foo", department.getDepartmentName());
         assertNull(department.getLocation());
         assertEquals(new Integer(1), department.getVersion());
     }
@@ -80,15 +80,15 @@ public class AutoBatchInsertTest {
     public void testCompositeKey() throws Exception {
         CompKeyDepartmentDao dao = new CompKeyDepartmentDao_();
         CompKeyDepartment department = new CompKeyDepartment();
-        department.setDepartment_id1(99);
-        department.setDepartment_id2(99);
-        department.setDepartment_no(99);
-        department.setDepartment_name("hoge");
+        department.setDepartmentId1(99);
+        department.setDepartmentId2(99);
+        department.setDepartmentNo(99);
+        department.setDepartmentName("hoge");
         CompKeyDepartment department2 = new CompKeyDepartment();
-        department2.setDepartment_id1(98);
-        department2.setDepartment_id2(98);
-        department2.setDepartment_no(98);
-        department2.setDepartment_name("hoge");
+        department2.setDepartmentId1(98);
+        department2.setDepartmentId2(98);
+        department2.setDepartmentNo(98);
+        department2.setDepartmentName("hoge");
         int[] result = dao.insert(Arrays.asList(department, department2));
         assertEquals(2, result.length);
         assertEquals(1, result[0]);
@@ -97,17 +97,17 @@ public class AutoBatchInsertTest {
         assertEquals(new Integer(1), department2.getVersion());
 
         department = dao.selectById(new Integer(99), new Integer(99));
-        assertEquals(new Integer(99), department.getDepartment_id1());
-        assertEquals(new Integer(99), department.getDepartment_id2());
-        assertEquals(new Integer(99), department.getDepartment_no());
-        assertEquals("hoge", department.getDepartment_name());
+        assertEquals(new Integer(99), department.getDepartmentId1());
+        assertEquals(new Integer(99), department.getDepartmentId2());
+        assertEquals(new Integer(99), department.getDepartmentNo());
+        assertEquals("hoge", department.getDepartmentName());
         assertNull(department.getLocation());
         assertEquals(new Integer(1), department.getVersion());
         department = dao.selectById(98, 98);
-        assertEquals(new Integer(98), department.getDepartment_id1());
-        assertEquals(new Integer(98), department.getDepartment_id2());
-        assertEquals(new Integer(98), department.getDepartment_no());
-        assertEquals("hoge", department.getDepartment_name());
+        assertEquals(new Integer(98), department.getDepartmentId1());
+        assertEquals(new Integer(98), department.getDepartmentId2());
+        assertEquals(new Integer(98), department.getDepartmentNo());
+        assertEquals("hoge", department.getDepartmentName());
         assertNull(department.getLocation());
         assertEquals(new Integer(1), department.getVersion());
     }
@@ -115,11 +115,11 @@ public class AutoBatchInsertTest {
     public void testIdNotAssigned() throws Exception {
         DepartmentDao dao = new DepartmentDao_();
         Department department = new Department();
-        department.setDepartment_no(99);
-        department.setDepartment_name("hoge");
+        department.setDepartmentNo(99);
+        department.setDepartmentName("hoge");
         Department department2 = new Department();
-        department2.setDepartment_no(98);
-        department2.setDepartment_name("hoge");
+        department2.setDepartmentNo(98);
+        department2.setDepartmentName("hoge");
         try {
             dao.insert(Arrays.asList(department, department2));
             fail();

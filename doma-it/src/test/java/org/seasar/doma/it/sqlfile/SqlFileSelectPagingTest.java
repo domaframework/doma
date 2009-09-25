@@ -40,11 +40,11 @@ public class SqlFileSelectPagingTest {
         List<Employee> employees = dao.selectAll(SelectOptions.get().limit(5)
                 .offset(3));
         assertEquals(5, employees.size());
-        assertEquals(new Integer(4), employees.get(0).getEmployee_id());
-        assertEquals(new Integer(5), employees.get(1).getEmployee_id());
-        assertEquals(new Integer(6), employees.get(2).getEmployee_id());
-        assertEquals(new Integer(7), employees.get(3).getEmployee_id());
-        assertEquals(new Integer(8), employees.get(4).getEmployee_id());
+        assertEquals(new Integer(4), employees.get(0).getEmployeeId());
+        assertEquals(new Integer(5), employees.get(1).getEmployeeId());
+        assertEquals(new Integer(6), employees.get(2).getEmployeeId());
+        assertEquals(new Integer(7), employees.get(3).getEmployeeId());
+        assertEquals(new Integer(8), employees.get(4).getEmployeeId());
     }
 
     public void testLimitOffset_offsetIsZero() throws Exception {
@@ -52,11 +52,11 @@ public class SqlFileSelectPagingTest {
         List<Employee> employees = dao.selectAll(SelectOptions.get().limit(5)
                 .offset(0));
         assertEquals(5, employees.size());
-        assertEquals(new Integer(1), employees.get(0).getEmployee_id());
-        assertEquals(new Integer(2), employees.get(1).getEmployee_id());
-        assertEquals(new Integer(3), employees.get(2).getEmployee_id());
-        assertEquals(new Integer(4), employees.get(3).getEmployee_id());
-        assertEquals(new Integer(5), employees.get(4).getEmployee_id());
+        assertEquals(new Integer(1), employees.get(0).getEmployeeId());
+        assertEquals(new Integer(2), employees.get(1).getEmployeeId());
+        assertEquals(new Integer(3), employees.get(2).getEmployeeId());
+        assertEquals(new Integer(4), employees.get(3).getEmployeeId());
+        assertEquals(new Integer(5), employees.get(4).getEmployeeId());
     }
 
     public void testLimitOffset_limitIsZero() throws Exception {
@@ -64,21 +64,21 @@ public class SqlFileSelectPagingTest {
         List<Employee> employees = dao.selectAll(SelectOptions.get().limit(0)
                 .offset(10));
         assertEquals(4, employees.size());
-        assertEquals(new Integer(11), employees.get(0).getEmployee_id());
-        assertEquals(new Integer(12), employees.get(1).getEmployee_id());
-        assertEquals(new Integer(13), employees.get(2).getEmployee_id());
-        assertEquals(new Integer(14), employees.get(3).getEmployee_id());
+        assertEquals(new Integer(11), employees.get(0).getEmployeeId());
+        assertEquals(new Integer(12), employees.get(1).getEmployeeId());
+        assertEquals(new Integer(13), employees.get(2).getEmployeeId());
+        assertEquals(new Integer(14), employees.get(3).getEmployeeId());
     }
 
     public void testLimitOnly() throws Exception {
         EmployeeDao dao = new EmployeeDao_();
         List<Employee> employees = dao.selectAll(SelectOptions.get().limit(5));
         assertEquals(5, employees.size());
-        assertEquals(new Integer(1), employees.get(0).getEmployee_id());
-        assertEquals(new Integer(2), employees.get(1).getEmployee_id());
-        assertEquals(new Integer(3), employees.get(2).getEmployee_id());
-        assertEquals(new Integer(4), employees.get(3).getEmployee_id());
-        assertEquals(new Integer(5), employees.get(4).getEmployee_id());
+        assertEquals(new Integer(1), employees.get(0).getEmployeeId());
+        assertEquals(new Integer(2), employees.get(1).getEmployeeId());
+        assertEquals(new Integer(3), employees.get(2).getEmployeeId());
+        assertEquals(new Integer(4), employees.get(3).getEmployeeId());
+        assertEquals(new Integer(5), employees.get(4).getEmployeeId());
     }
 
     public void testOffsetOnly() throws Exception {
@@ -86,10 +86,10 @@ public class SqlFileSelectPagingTest {
         List<Employee> employees = dao
                 .selectAll(SelectOptions.get().offset(10));
         assertEquals(4, employees.size());
-        assertEquals(new Integer(11), employees.get(0).getEmployee_id());
-        assertEquals(new Integer(12), employees.get(1).getEmployee_id());
-        assertEquals(new Integer(13), employees.get(2).getEmployee_id());
-        assertEquals(new Integer(14), employees.get(3).getEmployee_id());
+        assertEquals(new Integer(11), employees.get(0).getEmployeeId());
+        assertEquals(new Integer(12), employees.get(1).getEmployeeId());
+        assertEquals(new Integer(13), employees.get(2).getEmployeeId());
+        assertEquals(new Integer(14), employees.get(3).getEmployeeId());
     }
 
 }

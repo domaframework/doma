@@ -29,16 +29,16 @@ public class SqlFileUpdateTest {
     public void test() throws Exception {
         DepartmentDao dao = new DepartmentDao_();
         Department department = new Department();
-        department.setDepartment_id(1);
-        department.setDepartment_no(1);
-        department.setDepartment_name("hoge");
+        department.setDepartmentId(1);
+        department.setDepartmentNo(1);
+        department.setDepartmentName("hoge");
         department.setVersion(1);
         int result = dao.updateBySqlFile(department);
         assertEquals(1, result);
 
         department = dao.selectById(1);
-        assertEquals(new Integer(1), department.getDepartment_id());
-        assertEquals("hoge", department.getDepartment_name());
+        assertEquals(new Integer(1), department.getDepartmentId());
+        assertEquals("hoge", department.getDepartmentName());
     }
 
 }

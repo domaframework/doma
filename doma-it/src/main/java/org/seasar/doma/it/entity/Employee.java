@@ -28,21 +28,21 @@ import org.seasar.doma.Version;
 public class Employee {
 
     @Id
-    Integer employee_id;
+    Integer employeeId;
 
-    Integer employee_no;
+    Integer employeeNo;
 
-    String employee_name;
+    String employeeName;
 
-    Integer manager_id;
+    Integer managerId;
 
     java.sql.Date hiredate;
 
     BigDecimal salary;
 
-    Integer department_id;
+    Integer departmentId;
 
-    Integer address_id;
+    Integer addressId;
 
     @Version
     Integer version;
@@ -50,40 +50,40 @@ public class Employee {
     @ModifiedProperties
     Set<String> modifiedProperties = new HashSet<String>();
 
-    public Integer getEmployee_id() {
-        return employee_id;
+    public Integer getEmployeeId() {
+        return employeeId;
     }
 
-    public void setEmployee_id(Integer employee_id) {
+    public void setEmployeeId(Integer employee_id) {
         modifiedProperties.add("employee_id");
-        this.employee_id = employee_id;
+        this.employeeId = employee_id;
     }
 
-    public Integer getEmployee_no() {
-        return employee_no;
+    public Integer getEmployeeNo() {
+        return employeeNo;
     }
 
-    public void setEmployee_no(Integer employeeNo) {
+    public void setEmployeeNo(Integer employeeNo) {
         modifiedProperties.add("employee_no");
-        employee_no = employeeNo;
+        this.employeeNo = employeeNo;
     }
 
-    public String getEmployee_name() {
-        return employee_name;
+    public String getEmployeeName() {
+        return employeeName;
     }
 
-    public void setEmployee_name(String employeeName) {
+    public void setEmployeeName(String employeeName) {
         modifiedProperties.add("employee_name");
-        employee_name = employeeName;
+        this.employeeName = employeeName;
     }
 
-    public Integer getManager_id() {
-        return manager_id;
+    public Integer getManagerId() {
+        return managerId;
     }
 
-    public void setManager_id(Integer managerId) {
+    public void setManagerId(Integer managerId) {
         modifiedProperties.add("manager_id");
-        manager_id = managerId;
+        this.managerId = managerId;
     }
 
     public java.sql.Date getHiredate() {
@@ -104,22 +104,22 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Integer getDepartment_id() {
-        return department_id;
+    public Integer getDepartmentId() {
+        return departmentId;
     }
 
-    public void setDepartment_id(Integer departmentId) {
+    public void setDepartmentId(Integer departmentId) {
         modifiedProperties.add("department_id");
-        department_id = departmentId;
+        this.departmentId = departmentId;
     }
 
-    public Integer getAddress_id() {
-        return address_id;
+    public Integer getAddressId() {
+        return addressId;
     }
 
-    public void setAddress_id(Integer addressId) {
+    public void setAddressId(Integer addressId) {
         modifiedProperties.add("address_id");
-        address_id = addressId;
+        this.addressId = addressId;
     }
 
     public Integer getVersion() {

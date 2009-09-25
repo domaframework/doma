@@ -1,1 +1,1 @@
-select * from DEPARTMENT where DEPARTMENT_ID = /*department_id*/0
+select * from DEPARTMENT where DEPARTMENT_ID = /*departmentId*/0

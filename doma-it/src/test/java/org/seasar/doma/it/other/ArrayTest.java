@@ -21,11 +21,11 @@ public class ArrayTest {
         List<SalEmp> entities = dao.selectAll();
         assertEquals(2, entities.size());
         SalEmp entity = entities.get(0);
-        Integer[] array = (Integer[]) entity.getPay_by_quarter().getArray();
+        Integer[] array = (Integer[]) entity.getPayByQuarter().getArray();
         assertTrue(Arrays.equals(new Integer[] { 10000, 10000, 10000, 10000 },
                 array));
         entity = entities.get(1);
-        array = (Integer[]) entity.getPay_by_quarter().getArray();
+        array = (Integer[]) entity.getPayByQuarter().getArray();
         assertTrue(Arrays.equals(new Integer[] { 20000, 25000, 25000, 25000 },
                 array));
     }
@@ -59,12 +59,12 @@ public class ArrayTest {
         Integer[] array = new Integer[] { 10, 20, 30, 40 };
         SalEmp entity = new SalEmp();
         entity.setName("hoge");
-        entity.setPay_by_quarter(dao.createIntegerArray(array));
+        entity.setPayByQuarter(dao.createIntegerArray(array));
         dao.insert(entity);
         List<SalEmp> entities = dao.selectAll();
         assertEquals(3, entities.size());
         entity = entities.get(2);
-        assertTrue(Arrays.equals(array, (Integer[]) entity.getPay_by_quarter()
+        assertTrue(Arrays.equals(array, (Integer[]) entity.getPayByQuarter()
                 .getArray()));
     }
 
@@ -93,15 +93,15 @@ public class ArrayTest {
         List<SalEmp> entities = dao.selectAll();
         assertEquals(2, entities.size());
         SalEmp entity = entities.get(0);
-        Integer[] array = (Integer[]) entity.getPay_by_quarter().getArray();
+        Integer[] array = (Integer[]) entity.getPayByQuarter().getArray();
         assertEquals(4, array.length);
         array[0] = 10;
-        entity.setPay_by_quarter(dao.createIntegerArray(array));
+        entity.setPayByQuarter(dao.createIntegerArray(array));
         dao.update(entity);
 
         entities = dao.selectAll();
         entity = entities.get(0);
-        assertEquals(new Integer(10), ((Integer[]) entity.getPay_by_quarter()
+        assertEquals(new Integer(10), ((Integer[]) entity.getPayByQuarter()
                 .getArray())[0]);
     }
 

@@ -38,7 +38,7 @@ public class AutoDeleteTest {
     public void test() throws Exception {
         EmployeeDao dao = new EmployeeDao_();
         Employee employee = new Employee();
-        employee.setEmployee_id(1);
+        employee.setEmployeeId(1);
         employee.setVersion(1);
         int result = dao.delete(employee);
         assertEquals(1, result);
@@ -50,7 +50,7 @@ public class AutoDeleteTest {
     public void testIgnoresVersion() throws Exception {
         EmployeeDao dao = new EmployeeDao_();
         Employee employee = new Employee();
-        employee.setEmployee_id(1);
+        employee.setEmployeeId(1);
         employee.setVersion(99);
         int result = dao.delete_ignoresVersion(employee);
         assertEquals(1, result);
@@ -62,8 +62,8 @@ public class AutoDeleteTest {
     public void testCompositeKey() throws Exception {
         CompKeyEmployeeDao dao = new CompKeyEmployeeDao_();
         CompKeyEmployee employee = new CompKeyEmployee();
-        employee.setEmployee_id1(1);
-        employee.setEmployee_id2(1);
+        employee.setEmployeeId1(1);
+        employee.setEmployeeId2(1);
         employee.setVersion(1);
         int result = dao.delete(employee);
         assertEquals(1, result);
@@ -75,9 +75,9 @@ public class AutoDeleteTest {
     public void testOptimisticLockException() throws Exception {
         EmployeeDao dao = new EmployeeDao_();
         Employee employee1 = dao.selectById(new Integer(1));
-        employee1.setEmployee_name("hoge");
+        employee1.setEmployeeName("hoge");
         Employee employee2 = dao.selectById(new Integer(1));
-        employee2.setEmployee_name("foo");
+        employee2.setEmployeeName("foo");
         dao.delete(employee1);
         try {
             dao.delete(employee2);
@@ -89,9 +89,9 @@ public class AutoDeleteTest {
     public void testSuppressesOptimisticLockException() throws Exception {
         EmployeeDao dao = new EmployeeDao_();
         Employee employee1 = dao.selectById(1);
-        employee1.setEmployee_name("hoge");
+        employee1.setEmployeeName("hoge");
         Employee employee2 = dao.selectById(1);
-        employee2.setEmployee_name("foo");
+        employee2.setEmployeeName("foo");
         dao.delete(employee1);
         dao.delete_suppressesOptimisticLockException(employee2);
     }

@@ -1,1 +1,1 @@
-select * from EMPLOYEE where EMPLOYEE_NAME like concat(/*employee_name*/'', '%') /*#orderBy*/
+select * from EMPLOYEE where EMPLOYEE_NAME like concat(/*employeeName*/'', '%') /*#orderBy*/

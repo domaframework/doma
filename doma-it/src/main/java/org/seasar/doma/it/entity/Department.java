@@ -27,11 +27,11 @@ import org.seasar.doma.Version;
 public class Department {
 
     @Id
-    Integer department_id;
+    Integer departmentId;
 
-    Integer department_no;
+    Integer departmentNo;
 
-    String department_name;
+    String departmentName;
 
     String location;
 
@@ -41,31 +41,31 @@ public class Department {
     @ModifiedProperties
     Set<String> modifiedProperties = new HashSet<String>();
 
-    public Integer getDepartment_id() {
-        return department_id;
+    public Integer getDepartmentId() {
+        return departmentId;
     }
 
-    public void setDepartment_id(Integer departmentId) {
+    public void setDepartmentId(Integer departmentId) {
         modifiedProperties.add("departmentId");
-        department_id = departmentId;
+        this.departmentId = departmentId;
     }
 
-    public Integer getDepartment_no() {
-        return department_no;
+    public Integer getDepartmentNo() {
+        return departmentNo;
     }
 
-    public void setDepartment_no(Integer departmentNo) {
+    public void setDepartmentNo(Integer departmentNo) {
         modifiedProperties.add("departmentNo");
-        department_no = departmentNo;
+        this.departmentNo = departmentNo;
     }
 
-    public String getDepartment_name() {
-        return department_name;
+    public String getDepartmentName() {
+        return departmentName;
     }
 
-    public void setDepartment_name(String departmentName) {
+    public void setDepartmentName(String departmentName) {
         modifiedProperties.add("departmentName");
-        department_name = departmentName;
+        this.departmentName = departmentName;
     }
 
     public String getLocation() {

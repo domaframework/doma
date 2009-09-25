@@ -19,25 +19,25 @@ public class SqlFileSelectTest {
         List<Employee> list = dao.selectWithOptionalOrderBy("S",
                 "order by EMPLOYEE_ID");
         assertEquals(2, list.size());
-        assertEquals(new Integer(1), list.get(0).getEmployee_id());
-        assertEquals(new Integer(8), list.get(1).getEmployee_id());
+        assertEquals(new Integer(1), list.get(0).getEmployeeId());
+        assertEquals(new Integer(8), list.get(1).getEmployeeId());
 
         list = dao.selectWithOptionalOrderBy("S", "order by EMPLOYEE_ID desc");
         assertEquals(2, list.size());
-        assertEquals(new Integer(8), list.get(0).getEmployee_id());
-        assertEquals(new Integer(1), list.get(1).getEmployee_id());
+        assertEquals(new Integer(8), list.get(0).getEmployeeId());
+        assertEquals(new Integer(1), list.get(1).getEmployeeId());
     }
 
     public void testNesteadIf() throws Exception {
         Employee example = new Employee();
-        example.setEmployee_no(7801);
-        example.setManager_id(1);
+        example.setEmployeeNo(7801);
+        example.setManagerId(1);
         example.setSalary(new BigDecimal("5000"));
         EmployeeDao dao = new EmployeeDao_();
         List<Employee> list = dao.selectByExample(example);
         assertEquals(1, list.size());
 
-        example.setEmployee_no(7777);
+        example.setEmployeeNo(7777);
         list = dao.selectByExample(example);
         assertEquals(14, list.size());
     }

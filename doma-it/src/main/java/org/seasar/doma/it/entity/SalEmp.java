@@ -16,7 +16,7 @@ public class SalEmp {
     @Id
     String name;
 
-    Array pay_by_quarter;
+    Array payByQuarter;
 
     Array schedule;
 
@@ -32,13 +32,13 @@ public class SalEmp {
         this.name = name;
     }
 
-    public Array getPay_by_quarter() {
-        return pay_by_quarter;
+    public Array getPayByQuarter() {
+        return payByQuarter;
     }
 
-    public void setPay_by_quarter(Array payByQuarter) {
+    public void setPayByQuarter(Array payByQuarter) {
         modifiedProperties.add("payByQuarter");
-        pay_by_quarter = payByQuarter;
+        this.payByQuarter = payByQuarter;
     }
 
     public Array getSchedule() {

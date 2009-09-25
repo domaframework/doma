@@ -15,8 +15,8 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import org.seasar.doma.internal.apt.meta.type.IterationCallbackType;
-import org.seasar.doma.internal.apt.meta.type.SelectOptionsType;
+import org.seasar.doma.internal.apt.type.IterationCallbackType;
+import org.seasar.doma.internal.apt.type.SelectOptionsType;
 import org.seasar.doma.jdbc.Options;
 import org.seasar.doma.jdbc.SelectOptions;
 

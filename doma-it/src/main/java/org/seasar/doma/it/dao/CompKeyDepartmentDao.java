@@ -30,7 +30,7 @@ import org.seasar.doma.it.entity.CompKeyDepartment;
 public interface CompKeyDepartmentDao {
 
     @Select
-    CompKeyDepartment selectById(Integer department_id1, Integer department_id2);
+    CompKeyDepartment selectById(Integer departmentId1, Integer departmentId2);
 
     @Insert
     int insert(CompKeyDepartment entity);

@@ -1,1 +1,1 @@
-select * from EMPLOYEE where EMPLOYEE_NAME like /*employee_name*/'' || '%' /*#orderBy*/
+select * from EMPLOYEE where EMPLOYEE_NAME like /*employeeName*/'' || '%' /*#orderBy*/

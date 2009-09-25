@@ -96,7 +96,7 @@ public class AutoProcedureTest {
         assertEquals(13, employees.size());
         DepartmentDao departmentDao = new DepartmentDao_();
         Department department = departmentDao.selectById(1);
-        assertEquals("HOGE", department.getDepartment_name());
+        assertEquals("HOGE", department.getDepartmentName());
     }
 
     public void testResultSetAndUpdate2() throws Exception {
@@ -106,7 +106,7 @@ public class AutoProcedureTest {
         assertEquals(13, employees.size());
         DepartmentDao departmentDao = new DepartmentDao_();
         Department department = departmentDao.selectById(1);
-        assertEquals("HOGE", department.getDepartment_name());
+        assertEquals("HOGE", department.getDepartmentName());
     }
 
     public void testResultSets() throws Exception {

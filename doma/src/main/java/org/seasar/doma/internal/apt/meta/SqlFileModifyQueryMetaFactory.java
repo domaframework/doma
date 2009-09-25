@@ -25,8 +25,8 @@ import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
 import org.seasar.doma.Update;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.meta.type.CollectionType;
-import org.seasar.doma.internal.apt.meta.type.DomainType;
+import org.seasar.doma.internal.apt.type.CollectionType;
+import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**

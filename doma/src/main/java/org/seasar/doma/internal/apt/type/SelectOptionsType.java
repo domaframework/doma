@@ -1,4 +1,4 @@
-package org.seasar.doma.internal.apt.meta.type;
+package org.seasar.doma.internal.apt.type;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 

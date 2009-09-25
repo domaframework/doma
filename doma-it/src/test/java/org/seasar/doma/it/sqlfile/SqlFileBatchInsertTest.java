@@ -31,13 +31,13 @@ public class SqlFileBatchInsertTest {
     public void test() throws Exception {
         DepartmentDao dao = new DepartmentDao_();
         Department department = new Department();
-        department.setDepartment_id(99);
-        department.setDepartment_no(99);
-        department.setDepartment_name("hoge");
+        department.setDepartmentId(99);
+        department.setDepartmentNo(99);
+        department.setDepartmentName("hoge");
         Department department2 = new Department();
-        department2.setDepartment_id(98);
-        department2.setDepartment_no(98);
-        department2.setDepartment_name("foo");
+        department2.setDepartmentId(98);
+        department2.setDepartmentNo(98);
+        department2.setDepartmentName("foo");
         int[] result = dao.insertBySqlFile(Arrays.asList(department,
                 department2));
         assertEquals(2, result.length);
@@ -45,11 +45,11 @@ public class SqlFileBatchInsertTest {
         assertEquals(1, result[1]);
 
         department = dao.selectById(99);
-        assertEquals(new Integer(99), department.getDepartment_id());
-        assertEquals(new Integer(99), department.getDepartment_no());
+        assertEquals(new Integer(99), department.getDepartmentId());
+        assertEquals(new Integer(99), department.getDepartmentNo());
         department = dao.selectById(98);
-        assertEquals(new Integer(98), department.getDepartment_id());
-        assertEquals(new Integer(98), department.getDepartment_no());
+        assertEquals(new Integer(98), department.getDepartmentId());
+        assertEquals(new Integer(98), department.getDepartmentNo());
     }
 
 }

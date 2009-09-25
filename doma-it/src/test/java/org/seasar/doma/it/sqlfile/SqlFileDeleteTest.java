@@ -14,7 +14,7 @@ public class SqlFileDeleteTest {
     public void test() throws Exception {
         EmployeeDao dao = new EmployeeDao_();
         Employee employee = new Employee();
-        employee.setEmployee_id(1);
+        employee.setEmployeeId(1);
         employee.setVersion(1);
         int result = dao.deleteBySqlFile(employee);
         assertEquals(1, result);

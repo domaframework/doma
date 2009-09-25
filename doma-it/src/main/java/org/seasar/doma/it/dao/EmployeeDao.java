@@ -34,14 +34,13 @@ public interface EmployeeDao {
     List<Employee> selectByExample(Employee e);
 
     @Select
-    List<Employee> selectWithOptionalOrderBy(String employee_name,
-            String orderBy);
+    List<Employee> selectWithOptionalOrderBy(String employeeName, String orderBy);
 
     @Select
-    Employee selectById(Integer employee_id);
+    Employee selectById(Integer employeeId);
 
     @Select
-    Employee selectById(Integer employee_id, SelectOptions options);
+    Employee selectById(Integer employeeId, SelectOptions options);
 
     @Select
     List<Employee> selectAll();

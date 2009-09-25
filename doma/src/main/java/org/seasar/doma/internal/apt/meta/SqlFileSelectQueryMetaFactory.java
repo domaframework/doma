@@ -23,10 +23,10 @@ import javax.lang.model.element.VariableElement;
 
 import org.seasar.doma.Select;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.meta.type.AnyType;
-import org.seasar.doma.internal.apt.meta.type.CollectionType;
-import org.seasar.doma.internal.apt.meta.type.IterationCallbackType;
-import org.seasar.doma.internal.apt.meta.type.ValueType;
+import org.seasar.doma.internal.apt.type.AnyType;
+import org.seasar.doma.internal.apt.type.CollectionType;
+import org.seasar.doma.internal.apt.type.IterationCallbackType;
+import org.seasar.doma.internal.apt.type.ValueType;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
