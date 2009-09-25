@@ -17,22 +17,30 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import org.seasar.doma.internal.apt.meta.type.ValueType;
+
 /**
  * @author taedium
  * 
  */
-public class InParameterMeta extends AbstractCallableSqlParameterMeta {
+public class InParameterMeta implements CallableSqlParameterMeta {
 
-    protected final String wrapperTypeName;
+    private final String name;
 
-    public InParameterMeta(String wrapperTypeName) {
-        assertNotNull(wrapperTypeName);
-        this.wrapperTypeName = wrapperTypeName;
-        this.nullable = true;
+    protected final ValueType valueType;
+
+    public InParameterMeta(String name, ValueType valueType) {
+        assertNotNull(name, valueType);
+        this.name = name;
+        this.valueType = valueType;
     }
 
-    public String getWrapperTypeName() {
-        return wrapperTypeName;
+    public String getName() {
+        return name;
+    }
+
+    public ValueType getValueType() {
+        return valueType;
     }
 
     @Override

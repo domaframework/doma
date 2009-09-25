@@ -17,21 +17,30 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import org.seasar.doma.internal.apt.meta.type.EntityType;
+
 /**
  * @author taedium
  * 
  */
-public class EntityListParameterMeta extends AbstractCallableSqlParameterMeta {
+public class EntityListParameterMeta implements CallableSqlParameterMeta {
 
-    protected final String entityTypeName;
+    protected final String name;
 
-    public EntityListParameterMeta(String entityTypeName) {
-        assertNotNull(entityTypeName);
-        this.entityTypeName = entityTypeName;
+    protected final EntityType entityType;
+
+    public EntityListParameterMeta(String name, EntityType entityType) {
+        assertNotNull(name, entityType);
+        this.name = name;
+        this.entityType = entityType;
     }
 
-    public String getEntityTypeName() {
-        return entityTypeName;
+    public String getName() {
+        return name;
+    }
+
+    public EntityType getEntityType() {
+        return entityType;
     }
 
     @Override

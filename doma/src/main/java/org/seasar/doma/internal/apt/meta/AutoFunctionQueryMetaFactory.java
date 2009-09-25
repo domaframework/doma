@@ -17,17 +17,14 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import java.util.List;
-
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.Function;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.TypeUtil;
-import org.seasar.doma.internal.apt.meta.type.WrapperType;
+import org.seasar.doma.internal.apt.meta.type.CollectionType;
+import org.seasar.doma.internal.apt.meta.type.EntityType;
+import org.seasar.doma.internal.apt.meta.type.ValueType;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -87,42 +84,30 @@ public class AutoFunctionQueryMetaFactory extends
         QueryReturnMeta returnMeta = createReturnMeta(method);
         queryMeta.setReturnMeta(returnMeta);
 
-        ResultParameterMeta resultParameterMeta = createCallableSqlResultParameterMeta(
-                queryMeta, returnMeta.getType(), method, daoMeta);
-        resultParameterMeta.setTypeName(returnMeta.getTypeName());
+        ResultParameterMeta resultParameterMeta = createCallableSqlResultParameterMeta(returnMeta);
         queryMeta.setResultParameterMeta(resultParameterMeta);
     }
 
-    // TODO
     protected ResultParameterMeta createCallableSqlResultParameterMeta(
-            AutoFunctionQueryMeta queryMeta, TypeMirror returnType,
-            ExecutableElement method, DaoMeta daoMeta) {
-        if (isCollection(returnType)) {
-            DeclaredType listTyep = TypeUtil.toDeclaredType(returnType, env);
-            List<? extends TypeMirror> args = listTyep.getTypeArguments();
-            if (args.isEmpty()) {
-                throw new AptException(DomaMessageCode.DOMA4029, env, method);
+            QueryReturnMeta returnMeta) {
+        CollectionType collectionType = returnMeta.getCollectionType();
+        if (collectionType != null) {
+            EntityType entityType = collectionType.getEntityType();
+            if (entityType != null) {
+                return new EntityListResultParameterMeta(entityType);
             }
-            TypeMirror elementType = TypeUtil.resolveTypeParameter(daoMeta
-                    .getTypeParameterMap(), args.get(0));
-            String elementTypeName = TypeUtil.getTypeName(elementType, daoMeta
-                    .getTypeParameterMap(), env);
-            if (isEntity(elementType)) {
-                return new EntityListResultParameterMeta(elementTypeName);
+            ValueType valueType = collectionType.getValueType();
+            if (valueType != null) {
+                return new ValueListResultParameterMeta(valueType);
             }
-            WrapperType wrapperType = WrapperType.newInstance(elementType, env);
-            if (wrapperType == null) {
-                throw new AptException(DomaMessageCode.DOMA4065, env, method,
-                        elementType);
-            }
-            return new ValueListResultParameterMeta(elementTypeName,
-                    wrapperType.getTypeName());
+            throw new AptException(DomaMessageCode.DOMA4065, env, returnMeta
+                    .getElement(), collectionType.getEntityType());
         }
-        WrapperType wrapperType = WrapperType.newInstance(returnType, env);
-        if (wrapperType == null) {
-            throw new AptException(DomaMessageCode.DOMA4063, env, method,
-                    returnType);
+        ValueType valueType = returnMeta.getValueType();
+        if (valueType != null) {
+            return new ValueResultParameterMeta(valueType);
         }
-        return new ValueResultParameterMeta(wrapperType.getTypeName());
+        throw new AptException(DomaMessageCode.DOMA4063, env, returnMeta
+                .getElement(), returnMeta.getType());
     }
 }

@@ -47,7 +47,7 @@ import org.seasar.doma.internal.apt.meta.QueryReturnMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileBatchModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileSelectQueryMeta;
-import org.seasar.doma.internal.apt.meta.ValueListParameterMeta;
+import org.seasar.doma.internal.apt.meta.ValueCollectionParameterMeta;
 import org.seasar.doma.internal.apt.meta.ValueListResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.ValueResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.type.CollectionType;
@@ -644,74 +644,85 @@ public class DaoGenerator extends AbstractGenerator {
             CallableSqlParameterMetaVisitor<Void, Void> {
 
         @Override
-        public Void visistDomainListParameterMeta(ValueListParameterMeta m,
-                Void p) {
+        public Void visistValueListParameterMeta(
+                ValueCollectionParameterMeta m, Void p) {
+            ValueType valueType = m.getValueType();
             iprint("query.addParameter(new %1$s<%2$s>(%2$s.class, %3$s));%n",
-                    ValueListParameter.class.getName(), m.getElementTypeName(),
-                    m.getWrapperTypeName(), m.getName());
+                    ValueListParameter.class.getName(),
+                    valueType.getTypeName(), valueType.getWrapperType()
+                            .getTypeName(), m.getName());
             return null;
         }
 
         @Override
         public Void visistEntityListParameterMeta(EntityListParameterMeta m,
                 Void p) {
+            EntityType entityType = m.getEntityType();
             iprint(
                     "query.addParameter(new %1$s<%2$s>(new %2$s%3$s(), %4$s));%n",
-                    EntityListParameter.class.getName(), m.getEntityTypeName(),
-                    entitySuffix, m.getName());
+                    EntityListParameter.class.getName(), entityType
+                            .getTypeName(), entitySuffix, m.getName());
             return null;
         }
 
         @Override
         public Void visistInOutParameterMeta(InOutParameterMeta m, Void p) {
+            ValueType valueType = m.getValueType();
             iprint(
                     "query.addParameter(new %1$s<%2$s>(new %3$s(%4$s.get()), %4$s));%n",
-                    InOutParameter.class.getName(), m.getArgumentTypeName(), m
-                            .getWrapperTypeName(), m.getName());
+                    InOutParameter.class.getName(), valueType.getTypeName(),
+                    valueType.getWrapperType().getTypeName(), m.getName());
             return null;
         }
 
         @Override
         public Void visistOutParameterMeta(OutParameterMeta m, Void p) {
+            ValueType valueType = m.getValueType();
             iprint("query.addParameter(new %1$s<%2$s>(new %3$s(), %4$s));%n",
-                    OutParameter.class.getName(), m.getArgumentTypeName(), m
-                            .getWrapperTypeName(), m.getName());
+                    OutParameter.class.getName(), valueType.getTypeName(),
+                    valueType.getWrapperType().getTypeName(), m.getName());
             return null;
         }
 
         @Override
         public Void visitInParameterMeta(InParameterMeta m, Void p) {
+            ValueType valueType = m.getValueType();
             iprint("query.addParameter(new %1$s(new %2$s(%3$s)));%n",
-                    InParameter.class.getName(), m.getWrapperTypeName(), m
-                            .getName());
+                    InParameter.class.getName(), valueType.getWrapperType()
+                            .getTypeName(), m.getName());
             return null;
         }
 
         @Override
-        public Void visistDomainResultParameterMeta(ValueResultParameterMeta m,
+        public Void visistValueResultParameterMeta(ValueResultParameterMeta m,
                 Void p) {
+            ValueType valueType = m.getValueType();
             iprint("query.setResultParameter(new %1$s<%2$s>(new %3$s()));%n",
-                    ValueResultParameter.class.getName(), m.getTypeName(), m
-                            .getWrapperTypeName());
+                    ValueResultParameter.class.getName(), valueType
+                            .getTypeName(), valueType.getWrapperType()
+                            .getTypeName());
             return null;
         }
 
         @Override
-        public Void visistDomainListResultParameterMeta(
+        public Void visistValueListResultParameterMeta(
                 ValueListResultParameterMeta m, Void p) {
+            ValueType valueType = m.getValueType();
             iprint("query.setResultParameter(new %1$s<%2$s>(new %3$s()));%n",
-                    ValueListResultParameter.class.getName(), m
-                            .getElementTypeName(), m.getWrapperTypeName());
+                    ValueListResultParameter.class.getName(), valueType
+                            .getTypeName(), valueType.getWrapperType()
+                            .getTypeName());
             return null;
         }
 
         @Override
         public Void visistEntityListResultParameterMeta(
                 EntityListResultParameterMeta m, Void p) {
+            EntityType entityType = m.getEntityType();
             iprint(
                     "query.setResultParameter(new %1$s<%2$s>(new %2$s%3$s()));%n",
-                    EntityListResultParameter.class.getName(), m
-                            .getEntityTypeName(), entitySuffix);
+                    EntityListResultParameter.class.getName(), entityType
+                            .getTypeName(), entitySuffix);
             return null;
         }
     }

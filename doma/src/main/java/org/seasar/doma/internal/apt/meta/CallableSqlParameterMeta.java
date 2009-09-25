@@ -21,17 +21,5 @@ package org.seasar.doma.internal.apt.meta;
  */
 public interface CallableSqlParameterMeta {
 
-    String getName();
-
-    void setName(String name);
-
-    String getTypeName();
-
-    void setTypeName(String typeName);
-
-    boolean isNullable();
-
-    void setNullable(boolean nullable);
-
     <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p);
 }

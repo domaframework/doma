@@ -88,7 +88,7 @@ public class SqlFileModifyQueryMetaFactory extends
         QueryReturnMeta returnMeta = createReturnMeta(method);
         if (!returnMeta.isPrimitiveInt()) {
             throw new AptException(DomaMessageCode.DOMA4001, env, returnMeta
-                    .getMethodElement());
+                    .getElement());
         }
         queryMeta.setReturnMeta(returnMeta);
     }
@@ -110,7 +110,7 @@ public class SqlFileModifyQueryMetaFactory extends
             } else if (parameterMeta.getValueType() != null) {
             } else {
                 throw new AptException(DomaMessageCode.DOMA4008, env,
-                        parameterMeta.getParameterElement(), parameterMeta
+                        parameterMeta.getElement(), parameterMeta
                                 .getType());
             }
             queryMeta.addParameterMetas(parameterMeta);

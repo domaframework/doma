@@ -81,7 +81,7 @@ public class AutoProcedureQueryMetaFactory extends
         QueryReturnMeta resultMeta = createReturnMeta(method);
         if (!resultMeta.isPrimitiveVoid()) {
             throw new AptException(DomaMessageCode.DOMA4064, env, resultMeta
-                    .getMethodElement());
+                    .getElement());
         }
         queryMeta.setReturnMeta(resultMeta);
     }

@@ -99,7 +99,7 @@ public class AutoBatchModifyQueryMetaFactory extends
         QueryReturnMeta returnMeta = createReturnMeta(method);
         if (!returnMeta.isPrimitiveIntArray()) {
             throw new AptException(DomaMessageCode.DOMA4040, env, returnMeta
-                    .getMethodElement());
+                    .getElement());
         }
         queryMeta.setReturnMeta(returnMeta);
     }

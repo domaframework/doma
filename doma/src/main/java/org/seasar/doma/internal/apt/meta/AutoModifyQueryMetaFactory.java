@@ -101,7 +101,7 @@ public class AutoModifyQueryMetaFactory extends
         QueryReturnMeta returnMeta = createReturnMeta(method);
         if (!returnMeta.isPrimitiveInt()) {
             throw new AptException(DomaMessageCode.DOMA4001, env, returnMeta
-                    .getMethodElement());
+                    .getElement());
         }
         queryMeta.setReturnMeta(returnMeta);
     }
@@ -119,7 +119,7 @@ public class AutoModifyQueryMetaFactory extends
         EntityType entityType = parameterMeta.getEntityType();
         if (entityType == null) {
             throw new AptException(DomaMessageCode.DOMA4003, env, parameterMeta
-                    .getParameterElement());
+                    .getElement());
         }
         queryMeta.setEntityType(entityType);
         queryMeta.setEntityParameterName(parameterMeta.getName());

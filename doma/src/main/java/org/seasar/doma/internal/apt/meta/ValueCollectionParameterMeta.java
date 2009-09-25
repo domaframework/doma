@@ -15,41 +15,37 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
+import static org.seasar.doma.internal.util.AssertionUtil.*;
+
+import org.seasar.doma.internal.apt.meta.type.ValueType;
+
 /**
  * @author taedium
  * 
  */
-public abstract class AbstractCallableSqlParameterMeta implements
-        CallableSqlParameterMeta {
+public class ValueCollectionParameterMeta implements CallableSqlParameterMeta {
 
-    protected String name;
+    protected final String name;
 
-    protected String typeName;
+    protected final ValueType valueType;
 
-    protected boolean nullable;
+    public ValueCollectionParameterMeta(String name, ValueType valueType) {
+        assertNotNull(name, valueType);
+        this.name = name;
+        this.valueType = valueType;
+    }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public ValueType getValueType() {
+        return valueType;
     }
 
-    public String getTypeName() {
-        return typeName;
-    }
-
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
-    }
-
-    public boolean isNullable() {
-        return nullable;
-    }
-
-    public void setNullable(boolean nullable) {
-        this.nullable = nullable;
+    @Override
+    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
+        return visitor.visistValueListParameterMeta(this, p);
     }
 
 }

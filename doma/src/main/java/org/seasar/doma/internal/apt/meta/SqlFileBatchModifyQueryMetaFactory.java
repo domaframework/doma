@@ -90,7 +90,7 @@ public class SqlFileBatchModifyQueryMetaFactory extends
         QueryReturnMeta resultMeta = createReturnMeta(method);
         if (!resultMeta.isPrimitiveIntArray()) {
             throw new AptException(DomaMessageCode.DOMA4040, env, resultMeta
-                    .getMethodElement());
+                    .getElement());
         }
         queryMeta.setReturnMeta(resultMeta);
     }

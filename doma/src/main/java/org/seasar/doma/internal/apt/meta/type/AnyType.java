@@ -15,6 +15,9 @@ public class AnyType {
 
     protected WrapperType wrapperType;
 
+    protected AnyType() {
+    }
+
     public TypeMirror getType() {
         return type;
     }

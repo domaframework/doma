@@ -27,6 +27,9 @@ public class IterationCallbackType {
 
     protected boolean parametarized;
 
+    protected IterationCallbackType() {
+    }
+
     public TypeMirror getType() {
         return type;
     }

@@ -71,7 +71,7 @@ public class ArrayCreateQueryMetaFactory extends
                 .get(0));
         if (parameterMeta.getType().getKind() != TypeKind.ARRAY) {
             throw new AptException(DomaMessageCode.DOMA4076, env, parameterMeta
-                    .getParameterElement());
+                    .getElement());
         }
         queryMeta.setElementsParameterName(parameterMeta.getName());
         queryMeta.addParameterMetas(parameterMeta);

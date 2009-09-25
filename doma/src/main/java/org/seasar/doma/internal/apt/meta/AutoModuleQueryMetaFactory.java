@@ -18,8 +18,6 @@ package org.seasar.doma.internal.apt.meta;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.In;
 import org.seasar.doma.InOut;
@@ -27,9 +25,10 @@ import org.seasar.doma.Out;
 import org.seasar.doma.ResultSet;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.TypeUtil;
-import org.seasar.doma.internal.apt.meta.type.WrapperType;
-import org.seasar.doma.jdbc.Reference;
+import org.seasar.doma.internal.apt.meta.type.CollectionType;
+import org.seasar.doma.internal.apt.meta.type.EntityType;
+import org.seasar.doma.internal.apt.meta.type.ReferenceType;
+import org.seasar.doma.internal.apt.meta.type.ValueType;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -50,10 +49,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
             QueryParameterMeta parameterMeta = createParameterMeta(parameter);
             queryMeta.addParameterMetas(parameterMeta);
 
-            CallableSqlParameterMeta callableSqlParameterMeta = createParameterMeta(
-                    queryMeta, parameter, daoMeta);
-            callableSqlParameterMeta.setName(parameterMeta.getName());
-            callableSqlParameterMeta.setTypeName(parameterMeta.getTypeName());
+            CallableSqlParameterMeta callableSqlParameterMeta = createParameterMeta(parameterMeta);
             queryMeta.addCallableSqlParameterMeta(callableSqlParameterMeta);
 
             queryMeta.addExpressionParameterType(parameterMeta.getName(),
@@ -62,69 +58,62 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     }
 
     protected CallableSqlParameterMeta createParameterMeta(
-            AutoModuleQueryMeta queryMeta, VariableElement param,
-            DaoMeta daoMeta) {
-        TypeMirror paramType = TypeUtil.resolveTypeParameter(daoMeta
-                .getTypeParameterMap(), param.asType());
-        if (param.getAnnotation(ResultSet.class) != null) {
-            if (isCollection(paramType)) {
-                DeclaredType listTyep = TypeUtil.toDeclaredType(paramType, env);
-                if (listTyep.getTypeArguments().isEmpty()) {
-                    throw new AptException(DomaMessageCode.DOMA4041, env, param);
-                }
-                TypeMirror elementType = TypeUtil.resolveTypeParameter(daoMeta
-                        .getTypeParameterMap(), listTyep.getTypeArguments()
-                        .get(0));
-                String elementTypeName = TypeUtil.getTypeName(elementType,
-                        daoMeta.getTypeParameterMap(), env);
-                if (isEntity(elementType)) {
-                    return new EntityListParameterMeta(elementTypeName);
-                }
-                WrapperType wrapperType = WrapperType.newInstance(elementType,
-                        env);
-                if (wrapperType == null) {
-                    throw new AptException(DomaMessageCode.DOMA4061, env,
-                            param, elementType);
-                }
-                return new ValueListParameterMeta(elementTypeName, wrapperType
-                        .getTypeName());
+            QueryParameterMeta parameterMeta) {
+        if (parameterMeta.isAnnotated(ResultSet.class)) {
+            CollectionType collectionType = parameterMeta.getCollectionType();
+            if (collectionType == null) {
+                throw new AptException(DomaMessageCode.DOMA4062, env,
+                        parameterMeta.getElement());
             }
-            throw new AptException(DomaMessageCode.DOMA4062, env, param);
+            EntityType entityType = collectionType.getEntityType();
+            if (entityType != null) {
+                return new EntityListParameterMeta(parameterMeta.getName(),
+                        entityType);
+            }
+            ValueType valueType = collectionType.getValueType();
+            if (valueType != null) {
+                return new ValueCollectionParameterMeta(
+                        parameterMeta.getName(), valueType);
+            }
+            throw new AptIllegalStateException();
         }
-        if (param.getAnnotation(Out.class) != null
-                || param.getAnnotation(InOut.class) != null) {
-            if (!TypeUtil.isSameType(paramType, Reference.class, env)) {
-                throw new AptException(DomaMessageCode.DOMA4098, env, param);
+        if (parameterMeta.isAnnotated(Out.class)) {
+            ReferenceType referenceType = parameterMeta.getReferenceType();
+            if (referenceType == null) {
+                throw new AptException(DomaMessageCode.DOMA4098, env,
+                        parameterMeta.getElement());
             }
-            DeclaredType declaredType = TypeUtil.toDeclaredType(paramType, env);
-            if (declaredType == null) {
-                throw new AptIllegalStateException();
+            ValueType valueType = referenceType.getReferentValueType();
+            if (valueType == null) {
+                throw new AptException(DomaMessageCode.DOMA4100, env,
+                        parameterMeta.getElement(), referenceType
+                                .getReferentType());
             }
-            if (declaredType.getTypeArguments().isEmpty()) {
-                throw new AptException(DomaMessageCode.DOMA4099, env, param);
-            }
-            TypeMirror argumentType = declaredType.getTypeArguments().get(0);
-            WrapperType wrapperType = WrapperType
-                    .newInstance(argumentType, env);
-            if (wrapperType == null) {
-                throw new AptException(DomaMessageCode.DOMA4100, env, param,
-                        argumentType);
-            }
-            if (param.getAnnotation(Out.class) != null) {
-                return new OutParameterMeta(TypeUtil.getTypeName(argumentType,
-                        env), wrapperType.getTypeName());
-            }
-            return new InOutParameterMeta(TypeUtil.getTypeName(argumentType,
-                    env), wrapperType.getTypeName());
+            return new OutParameterMeta(parameterMeta.getName(), valueType);
         }
-        if (param.getAnnotation(In.class) != null) {
-            WrapperType wrapperType = WrapperType.newInstance(paramType, env);
-            if (wrapperType == null) {
-                throw new AptException(DomaMessageCode.DOMA4101, env, param,
-                        paramType);
+        if (parameterMeta.isAnnotated(InOut.class)) {
+            ReferenceType referenceType = parameterMeta.getReferenceType();
+            if (referenceType == null) {
+                throw new AptException(DomaMessageCode.DOMA4111, env,
+                        parameterMeta.getElement());
             }
-            return new InParameterMeta(wrapperType.getTypeName());
+            ValueType valueType = referenceType.getReferentValueType();
+            if (valueType == null) {
+                throw new AptException(DomaMessageCode.DOMA4100, env,
+                        parameterMeta.getElement(), referenceType
+                                .getReferentType());
+            }
+            return new InOutParameterMeta(parameterMeta.getName(), valueType);
         }
-        throw new AptException(DomaMessageCode.DOMA4066, env, param);
+        if (parameterMeta.isAnnotated(In.class)) {
+            ValueType valueType = parameterMeta.getValueType();
+            if (valueType == null) {
+                throw new AptException(DomaMessageCode.DOMA4101, env,
+                        parameterMeta.getElement(), parameterMeta.getType());
+            }
+            return new InParameterMeta(parameterMeta.getName(), valueType);
+        }
+        throw new AptException(DomaMessageCode.DOMA4066, env, parameterMeta
+                .getElement());
     }
 }

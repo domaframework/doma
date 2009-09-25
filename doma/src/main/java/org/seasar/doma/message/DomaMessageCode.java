@@ -202,10 +202,10 @@ public enum DomaMessageCode implements MessageCode {
     DOMA4095("@DirtyStatesはSet<String>のサブタイプ以外のフィールドに注釈できません。"),
     DOMA4096("クラス[{0}]は、永続対象の型としてサポートされていません。"),
     DOMA4097("型は、[{0}]でなければいけません。"),
-    DOMA4098("@Outもしくは@InOutが注釈されたパラメータの型は、org.seasar.doma.jdbc.Referenceでなければいけません。"),
-    DOMA4099("org.seasar.doma.jdbc.Referenceには型パラメータが必須です。"),
+    DOMA4098("@Outが注釈されたパラメータの型は、org.seasar.doma.jdbc.Referenceでなければいけません。"),
+    DOMA4099("Referenceには型パラメータが必須です。"),
     DOMA4100("型パラメータ[{0}]はサポートされていません。"),
-    DOMA4101("@InOutが注釈されたパラメータに型[{0}]はサポートされていません。"),
+    DOMA4101("@Inが注釈されたパラメータに型[{0}]はサポートされていません。"),
     DOMA4102("@DomainのvalueType要素に指定された型[{0}]は永続対象の型としてサポートされていません。"),
     DOMA4103("型[{0}]をパラメータにもつpublicなコンストラクタが見つかりません。"),
     DOMA4104("型[{0}]を戻り値にもったpublicなパラメータなしのメソッド[{1}]が見つかりません。"),
@@ -215,6 +215,7 @@ public enum DomaMessageCode implements MessageCode {
     DOMA4108("パラメータの型[{0}]には型パラメータが必須です。"),
     DOMA4109("戻り値の型[{0}]には型パラメータが必須です。"),
     DOMA4110("IterationCallback型のパラメータ[{0}]には型パラメータが必須です。"),
+    DOMA4111("@InOutが注釈されたパラメータの型は、org.seasar.doma.jdbc.Referenceでなければいけません。"),
 
     // other
     DOMA9001("java.io.Closeableのclose()に失敗しました。原因は次のものです。{0}");

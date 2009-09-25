@@ -17,35 +17,28 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import org.seasar.doma.internal.apt.meta.type.ValueType;
+
 /**
  * @author taedium
  * 
  */
-public class ValueListResultParameterMeta extends
-        AbstractCallableSqlParameterMeta implements ResultParameterMeta {
+public class ValueListResultParameterMeta implements ResultParameterMeta {
 
-    protected final String elementTypeName;
+    protected final ValueType valueType;
 
-    protected final String wrapperTypeName;
-
-    public ValueListResultParameterMeta(String elementTypeName,
-            String wrapperTypeName) {
-        assertNotNull(elementTypeName, wrapperTypeName);
-        this.elementTypeName = elementTypeName;
-        this.wrapperTypeName = wrapperTypeName;
+    public ValueListResultParameterMeta(ValueType valueType) {
+        assertNotNull(valueType);
+        this.valueType = valueType;
     }
 
-    public String getElementTypeName() {
-        return elementTypeName;
-    }
-
-    public String getWrapperTypeName() {
-        return wrapperTypeName;
+    public ValueType getValueType() {
+        return valueType;
     }
 
     @Override
     public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visistDomainListResultParameterMeta(this, p);
+        return visitor.visistValueListResultParameterMeta(this, p);
     }
 
 }

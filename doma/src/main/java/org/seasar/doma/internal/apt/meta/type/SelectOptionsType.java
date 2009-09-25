@@ -13,6 +13,9 @@ public class SelectOptionsType {
 
     protected String typeName;
 
+    protected SelectOptionsType() {
+    }
+
     public TypeMirror getType() {
         return type;
     }

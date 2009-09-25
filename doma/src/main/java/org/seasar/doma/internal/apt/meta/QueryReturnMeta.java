@@ -21,7 +21,7 @@ public class QueryReturnMeta {
 
     protected final ProcessingEnvironment env;
 
-    protected final ExecutableElement methodElement;
+    protected final ExecutableElement element;
 
     protected final TypeMirror type;
 
@@ -40,7 +40,7 @@ public class QueryReturnMeta {
     public QueryReturnMeta(ExecutableElement methodElement,
             ProcessingEnvironment env) {
         assertNotNull(methodElement, env);
-        this.methodElement = methodElement;
+        this.element = methodElement;
         this.env = env;
         type = methodElement.getReturnType();
         typeName = TypeUtil.getTypeName(type, env);
@@ -86,8 +86,8 @@ public class QueryReturnMeta {
         return type.getKind() == TypeKind.VOID;
     }
 
-    public ExecutableElement getMethodElement() {
-        return methodElement;
+    public ExecutableElement getElement() {
+        return element;
     }
 
     public TypeMirror getType() {

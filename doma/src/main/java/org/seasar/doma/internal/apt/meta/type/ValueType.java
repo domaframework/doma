@@ -15,6 +15,9 @@ public class ValueType {
 
     protected WrapperType wrapperType;
 
+    protected ValueType() {
+    }
+
     public TypeMirror getType() {
         return type;
     }

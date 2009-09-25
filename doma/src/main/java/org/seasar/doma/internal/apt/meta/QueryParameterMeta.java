@@ -2,6 +2,8 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.lang.annotation.Annotation;
+
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
@@ -13,13 +15,14 @@ import org.seasar.doma.internal.apt.meta.type.CollectionType;
 import org.seasar.doma.internal.apt.meta.type.DomainType;
 import org.seasar.doma.internal.apt.meta.type.EntityType;
 import org.seasar.doma.internal.apt.meta.type.IterationCallbackType;
+import org.seasar.doma.internal.apt.meta.type.ReferenceType;
 import org.seasar.doma.internal.apt.meta.type.SelectOptionsType;
 import org.seasar.doma.internal.apt.meta.type.ValueType;
 import org.seasar.doma.message.DomaMessageCode;
 
 public class QueryParameterMeta {
 
-    protected final VariableElement parameterElement;
+    protected final VariableElement element;
 
     protected final ProcessingEnvironment env;
 
@@ -43,10 +46,12 @@ public class QueryParameterMeta {
 
     protected IterationCallbackType iterationCallbackType;
 
+    protected ReferenceType referenceType;
+
     public QueryParameterMeta(VariableElement parameterElement,
             ProcessingEnvironment env) {
         assertNotNull(parameterElement, env);
-        this.parameterElement = parameterElement;
+        this.element = parameterElement;
         this.env = env;
         name = ElementUtil.getParameterName(parameterElement);
         type = parameterElement.asType();
@@ -67,6 +72,10 @@ public class QueryParameterMeta {
                         if (selectOptionsType == null) {
                             iterationCallbackType = IterationCallbackType
                                     .newInstance(type, env);
+                            if (iterationCallbackType == null) {
+                                referenceType = ReferenceType.newInstance(type,
+                                        env);
+                            }
                         }
                     }
                 }
@@ -82,11 +91,14 @@ public class QueryParameterMeta {
             throw new AptException(DomaMessageCode.DOMA4110, env,
                     parameterElement, qualifiedName);
         }
-
+        if (referenceType != null && !referenceType.isParametarized()) {
+            throw new AptException(DomaMessageCode.DOMA4099, env,
+                    parameterElement, qualifiedName);
+        }
     }
 
-    public VariableElement getParameterElement() {
-        return parameterElement;
+    public VariableElement getElement() {
+        return element;
     }
 
     public String getName() {
@@ -129,14 +141,16 @@ public class QueryParameterMeta {
         return iterationCallbackType;
     }
 
+    public ReferenceType getReferenceType() {
+        return referenceType;
+    }
+
     public boolean isNullable() {
         return valueType != null;
     }
 
-    public boolean isSupportedType() {
-        return collectionType != null || entityType != null
-                || domainType != null || valueType != null
-                || iterationCallbackType != null || selectOptionsType != null;
+    public boolean isAnnotated(Class<? extends Annotation> annotationType) {
+        return element.getAnnotation(annotationType) != null;
     }
 
 }

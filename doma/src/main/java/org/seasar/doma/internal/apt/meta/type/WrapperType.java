@@ -56,7 +56,7 @@ import org.seasar.doma.wrapper.TimestampWrapper;
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-public final class WrapperType {
+public class WrapperType {
 
     protected TypeMirror type;
 
@@ -65,6 +65,9 @@ public final class WrapperType {
     protected TypeMirror wrappedType;
 
     protected String wrappedTypeName;
+
+    protected WrapperType() {
+    }
 
     public TypeMirror getType() {
         return type;

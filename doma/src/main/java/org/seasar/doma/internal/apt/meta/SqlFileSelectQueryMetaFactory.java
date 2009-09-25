@@ -91,13 +91,13 @@ public class SqlFileSelectQueryMetaFactory extends
         } else {
             if (!returnMeta.isSupportedType()) {
                 throw new AptException(DomaMessageCode.DOMA4008, env,
-                        returnMeta.getMethodElement(), returnMeta.getType());
+                        returnMeta.getElement(), returnMeta.getType());
             }
             CollectionType collectionType = returnMeta.getCollectionType();
             if (collectionType != null) {
                 if (!collectionType.hasSupportedElementType()) {
                     throw new AptException(DomaMessageCode.DOMA4007, env,
-                            returnMeta.getMethodElement(), collectionType
+                            returnMeta.getElement(), collectionType
                                     .getEntityType());
                 }
             }
@@ -109,25 +109,20 @@ public class SqlFileSelectQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         for (VariableElement parameter : method.getParameters()) {
             QueryParameterMeta parameterMeta = createParameterMeta(parameter);
-            if (!parameterMeta.isSupportedType()) {
-                throw new AptException(DomaMessageCode.DOMA4008, env,
-                        parameterMeta.getParameterElement(), parameterMeta
-                                .getType());
-            }
             if (parameterMeta.getCollectionType() != null) {
                 CollectionType collectionType = parameterMeta
                         .getCollectionType();
                 ValueType valueType = collectionType.getValueType();
                 if (valueType == null) {
                     throw new AptException(DomaMessageCode.DOMA4028, env,
-                            parameterMeta.getParameterElement());
+                            parameterMeta.getElement());
                 }
             } else if (parameterMeta.getEntityType() != null) {
             } else if (parameterMeta.getValueType() != null) {
             } else if (parameterMeta.getSelectOptionsType() != null) {
                 if (queryMeta.getSelectOptionsType() != null) {
                     throw new AptException(DomaMessageCode.DOMA4053, env,
-                            parameterMeta.getParameterElement());
+                            parameterMeta.getElement());
                 }
                 queryMeta.setSelectOptionsType(parameterMeta
                         .getSelectOptionsType());
@@ -136,14 +131,15 @@ public class SqlFileSelectQueryMetaFactory extends
             } else if (parameterMeta.getIterationCallbackType() != null) {
                 if (queryMeta.getIterationCallbackType() != null) {
                     throw new AptException(DomaMessageCode.DOMA4054, env,
-                            parameterMeta.getParameterElement());
+                            parameterMeta.getElement());
                 }
                 queryMeta.setIterationCallbackType(parameterMeta
                         .getIterationCallbackType());
                 queryMeta.setIterationCallbackPrameterName(parameterMeta
                         .getName());
             } else {
-                assertUnreachable();
+                throw new AptException(DomaMessageCode.DOMA4008, env,
+                        parameterMeta.getElement(), parameterMeta.getType());
             }
             queryMeta.addParameterMetas(parameterMeta);
             queryMeta.addExpressionParameterType(parameterMeta.getName(),

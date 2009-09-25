@@ -19,6 +19,9 @@ public class DomainType {
 
     protected WrapperType wrapperType;
 
+    protected DomainType() {
+    }
+
     public TypeMirror getType() {
         return type;
     }

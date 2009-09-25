@@ -32,6 +32,9 @@ public class EntityType {
 
     protected String typeName;
 
+    protected EntityType() {
+    }
+
     public TypeMirror getType() {
         return type;
     }
