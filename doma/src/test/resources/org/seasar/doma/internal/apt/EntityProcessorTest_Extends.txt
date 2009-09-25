@@ -46,6 +46,9 @@ public class ChildEntity_ implements org.seasar.doma.internal.jdbc.entity.Entity
         private ChildEntityType(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
             __entity = entity;
             __modifiedProperties = null;
+            bbb.getWrapper().set(entity.bbb);
+            ccc.getWrapper().set(entity.ccc);
+            aaa.getWrapper().set(entity.aaa);
         }
 
         @Override

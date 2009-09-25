@@ -46,6 +46,9 @@ public class PrimitivePropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         private PrimitivePropertyEntityType(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity) {
             __entity = entity;
             __modifiedProperties = null;
+            id.getWrapper().set(entity.id);
+            bool.getWrapper().set(entity.bool);
+            version.getWrapper().set(entity.version);
         }
 
         @Override

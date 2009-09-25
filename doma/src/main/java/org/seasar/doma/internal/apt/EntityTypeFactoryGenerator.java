@@ -275,6 +275,19 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         } else {
             iprint("    __modifiedProperties = null;%n");
         }
+        for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
+            if (pm.isTrnsient()) {
+                continue;
+            }
+            DomainType domainType = pm.getDomainType();
+            if (domainType != null) {
+                iprint("    %1$s.getWrapper().set(entity.%1$s.%2$s());%n", pm
+                        .getName(), domainType.getAccessorMetod());
+            } else {
+                iprint("    %1$s.getWrapper().set(entity.%1$s);%n", pm
+                        .getName());
+            }
+        }
         iprint("}%n");
         print("%n");
     }

@@ -42,6 +42,7 @@ public class TransientPropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         private TransientPropertyEntityType(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity) {
             __entity = entity;
             __modifiedProperties = null;
+            id.getWrapper().set(entity.id);
         }
 
         @Override

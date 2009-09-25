@@ -56,6 +56,10 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
         private EmpType(org.seasar.doma.internal.apt.entity.Emp entity) {
             __entity = entity;
             __modifiedProperties = null;
+            id.getWrapper().set(entity.id);
+            name.getWrapper().set(entity.name);
+            salary.getWrapper().set(entity.salary);
+            version.getWrapper().set(entity.version);
         }
 
         @Override

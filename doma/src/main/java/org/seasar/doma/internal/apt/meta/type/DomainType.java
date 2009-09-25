@@ -19,6 +19,8 @@ public class DomainType {
 
     protected ValueType valueType;
 
+    protected String accessorMetod;
+
     protected DomainType() {
     }
 
@@ -32,6 +34,10 @@ public class DomainType {
 
     public ValueType getValueType() {
         return valueType;
+    }
+
+    public String getAccessorMetod() {
+        return accessorMetod;
     }
 
     public static DomainType newInstance(TypeMirror type,
@@ -54,6 +60,7 @@ public class DomainType {
         domainType.type = type;
         domainType.typeName = TypeUtil.getTypeName(type, env);
         domainType.valueType = valueType;
+        domainType.accessorMetod = domain.accessorMethod();
         return domainType;
     }
 

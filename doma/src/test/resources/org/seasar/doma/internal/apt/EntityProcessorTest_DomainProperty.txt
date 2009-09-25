@@ -44,6 +44,8 @@ public class DomainPropertyEntity_ implements org.seasar.doma.internal.jdbc.enti
         private DomainPropertyEntityType(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity) {
             __entity = entity;
             __modifiedProperties = null;
+            id.getWrapper().set(entity.id);
+            name.getWrapper().set(entity.name.getValue());
         }
 
         @Override
