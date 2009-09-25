@@ -3,11 +3,12 @@ package org.seasar.doma.internal.apt.dao;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
 import org.seasar.doma.internal.apt.entity.Emp;
-import org.seasar.doma.wrapper.IntegerWrapper;
+
+import example.domain.PhoneNumber;
 
 @Dao(config = MyConfig.class)
-public interface CustomDomainSqlValidationDao {
+public interface DomainParameterDao {
 
     @Select
-    Emp select(IntegerWrapper id);
+    Emp select(PhoneNumber phoneNumber);
 }

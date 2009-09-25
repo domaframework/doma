@@ -17,34 +17,43 @@ package org.seasar.doma.internal.jdbc.sql;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import org.seasar.doma.wrapper.Wrapper;
+import java.util.List;
+
+import org.seasar.doma.internal.domain.DomainType;
+import org.seasar.doma.internal.domain.DomainTypeFactory;
 
 /**
  * @author taedium
  * 
  */
-public class ValueResultParameter<V> implements ResultParameter<V> {
+public class DomainListParameter<V, D> implements
+        ListParameter<DomainType<V, D>> {
 
-    protected final Wrapper<V> wrapper;
+    protected final DomainTypeFactory<V, D> domainTypeFactory;
 
-    public ValueResultParameter(Wrapper<V> wrapper) {
-        assertNotNull(wrapper);
-        this.wrapper = wrapper;
-    }
+    protected final List<D> domains;
 
-    public Wrapper<V> getWrapper() {
-        return wrapper;
+    public DomainListParameter(DomainTypeFactory<V, D> domainTypeFactory,
+            List<D> domains) {
+        assertNotNull(domainTypeFactory, domains);
+        this.domainTypeFactory = domainTypeFactory;
+        this.domains = domains;
     }
 
     @Override
-    public V getResult() {
-        return wrapper.get();
+    public DomainType<V, D> getElementHolder() {
+        return domainTypeFactory.createDomainType();
+    }
+
+    @Override
+    public void putElementHolder(DomainType<V, D> domainType) {
+        domains.add(domainType.getDomain());
     }
 
     @Override
     public <R, P, TH extends Throwable> R accept(
             CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitValueResultParameter(this, p);
+        return visitor.visitDomainListParameter(this, p);
     }
 
 }

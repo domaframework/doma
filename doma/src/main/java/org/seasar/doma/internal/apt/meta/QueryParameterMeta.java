@@ -146,7 +146,7 @@ public class QueryParameterMeta {
     }
 
     public boolean isNullable() {
-        return valueType != null;
+        return domainType != null || valueType != null;
     }
 
     public boolean isAnnotated(Class<? extends Annotation> annotationType) {

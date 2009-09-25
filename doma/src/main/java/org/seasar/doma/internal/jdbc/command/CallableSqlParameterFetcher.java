@@ -23,10 +23,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+import org.seasar.doma.internal.domain.DomainType;
 import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlParameter;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlParameterVisitor;
+import org.seasar.doma.internal.jdbc.sql.DomainListParameter;
+import org.seasar.doma.internal.jdbc.sql.DomainListResultParameter;
+import org.seasar.doma.internal.jdbc.sql.DomainResultParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListResultParameter;
 import org.seasar.doma.internal.jdbc.sql.InOutParameter;
@@ -124,7 +128,18 @@ public class CallableSqlParameterFetcher {
         @Override
         public Void visitValueResultParameter(
                 ValueResultParameter<?> parameter, Void p) throws SQLException {
-            Wrapper<?> domain = parameter.getWrapper();
+            Wrapper<?> wrapper = parameter.getWrapper();
+            wrapper.accept(jdbcMappingVisitor, new GetOutParameterFunction(
+                    callableStatement, index));
+            index++;
+            return null;
+        }
+
+        @Override
+        public Void visitDomainResultParameter(
+                DomainResultParameter<?, ?> parameter, Void p)
+                throws SQLException {
+            Wrapper<?> domain = parameter.getDomainType().getWrapper();
             domain.accept(jdbcMappingVisitor, new GetOutParameterFunction(
                     callableStatement, index));
             index++;
@@ -135,6 +150,14 @@ public class CallableSqlParameterFetcher {
         public Void visitValueListParameter(ValueListParameter<?> parameter,
                 Void p) throws SQLException {
             handleValueListParameter(parameter);
+            return null;
+        }
+
+        @Override
+        public Void visitDomainListParameter(
+                DomainListParameter<?, ?> parameter, Void p)
+                throws SQLException {
+            handleDomainListParameter(parameter);
             return null;
         }
 
@@ -150,6 +173,14 @@ public class CallableSqlParameterFetcher {
                 ValueListResultParameter<?> parameter, Void p)
                 throws SQLException {
             handleValueListParameter(parameter);
+            return null;
+        }
+
+        @Override
+        public Void visitDomainListResultParameter(
+                DomainListResultParameter<?, ?> parameter, Void p)
+                throws SQLException {
+            handleDomainListParameter(parameter);
             return null;
         }
 
@@ -197,6 +228,46 @@ public class CallableSqlParameterFetcher {
             while (resultSet.next()) {
                 H holder = parameter.getElementHolder();
                 fetcher.fetch(resultSet, holder);
+                parameter.putElementHolder(holder);
+            }
+        }
+
+        protected <H extends DomainType<?, ?>> void handleDomainListParameter(
+                ListParameter<H> parameter) throws SQLException {
+            ValueFetcher fetcher = new ValueFetcher(query);
+            if (dialect.supportsResultSetReturningAsOutParameter()) {
+                JdbcType<ResultSet> resultSetType = dialect.getResultSetType();
+                ResultSet resultSet = resultSetType.getValue(callableStatement,
+                        index);
+                try {
+                    while (resultSet.next()) {
+                        fetchDomains(fetcher, resultSet, parameter);
+                    }
+                } finally {
+                    JdbcUtil.close(resultSet, query.getConfig().jdbcLogger());
+                }
+                index++;
+            } else {
+                ResultSet resultSet = callableStatement.getResultSet();
+                if (resultSet != null) {
+                    try {
+                        while (resultSet.next()) {
+                            fetchDomains(fetcher, resultSet, parameter);
+                        }
+                    } finally {
+                        callableStatement
+                                .getMoreResults(Statement.CLOSE_CURRENT_RESULT);
+                    }
+                }
+            }
+        }
+
+        protected <H extends DomainType<?, ?>> void fetchDomains(
+                ValueFetcher fetcher, ResultSet resultSet,
+                ListParameter<H> parameter) throws SQLException {
+            while (resultSet.next()) {
+                H holder = parameter.getElementHolder();
+                fetcher.fetch(resultSet, holder.getWrapper());
                 parameter.putElementHolder(holder);
             }
         }

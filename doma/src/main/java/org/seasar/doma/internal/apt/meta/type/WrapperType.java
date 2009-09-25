@@ -85,10 +85,6 @@ public class WrapperType {
         return wrappedTypeName;
     }
 
-    public boolean isWrappedTypePrimitive() {
-        return wrappedType.getKind().isPrimitive();
-    }
-
     public static boolean isSupportedType(TypeMirror typeMirror,
             ProcessingEnvironment env) {
         assertNotNull(typeMirror, env);

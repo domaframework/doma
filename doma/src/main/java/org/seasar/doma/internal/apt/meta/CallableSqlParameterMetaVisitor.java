@@ -27,14 +27,20 @@ public interface CallableSqlParameterMetaVisitor<R, P> {
 
     R visistInOutParameterMeta(InOutParameterMeta m, P p);
 
-    R visistValueListParameterMeta(ValueCollectionParameterMeta m, P p);
+    R visistValueListParameterMeta(ValueListParameterMeta m, P p);
+
+    R visistDomainListParameterMeta(DomainListParameterMeta m, P p);
 
     R visistEntityListParameterMeta(EntityListParameterMeta m, P p);
 
-    R visistValueResultParameterMeta(ValueResultParameterMeta m, P p);
-
     R visistValueListResultParameterMeta(ValueListResultParameterMeta m, P p);
 
+    R visistDomainListResultParameterMeta(DomainListResultParameterMeta m, P p);
+
     R visistEntityListResultParameterMeta(EntityListResultParameterMeta m, P p);
+
+    R visistValueResultParameterMeta(ValueResultParameterMeta m, P p);
+
+    R visistDomainResultParameterMeta(DomainResultParameterMeta m, P p);
 
 }

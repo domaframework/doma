@@ -202,7 +202,8 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
             }
             WrapperType wrapperType = null;
             if (pm.getDomainType() != null) {
-                wrapperType = pm.getDomainType().getWrapperType();
+                wrapperType = pm.getDomainType().getValueType()
+                        .getWrapperType();
             } else {
                 wrapperType = pm.getValueType().getWrapperType();
             }
@@ -451,7 +452,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
             }
             DomainType domainType = pm.getDomainType();
             if (domainType != null) {
-                if (domainType.getWrapperType().isWrappedTypePrimitive()) {
+                if (domainType.getValueType().getType().getKind().isPrimitive()) {
                     iprint(
                             "    __entity.%1$s = new %2$s(%3$s.toPrimitive(%1$s.getWrapper().get()));%n",
                             pm.getName(), pm.getTypeName(),

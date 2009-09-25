@@ -13,38 +13,32 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.sql;
+package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import org.seasar.doma.wrapper.Wrapper;
+import org.seasar.doma.internal.apt.meta.type.DomainType;
 
 /**
  * @author taedium
  * 
  */
-public class ValueResultParameter<V> implements ResultParameter<V> {
+public class DomainResultParameterMeta implements ResultParameterMeta {
 
-    protected final Wrapper<V> wrapper;
+    protected final DomainType domainType;
 
-    public ValueResultParameter(Wrapper<V> wrapper) {
-        assertNotNull(wrapper);
-        this.wrapper = wrapper;
+    public DomainResultParameterMeta(DomainType domainType) {
+        assertNotNull(domainType);
+        this.domainType = domainType;
     }
 
-    public Wrapper<V> getWrapper() {
-        return wrapper;
-    }
-
-    @Override
-    public V getResult() {
-        return wrapper.get();
+    public DomainType getDomainType() {
+        return domainType;
     }
 
     @Override
-    public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitValueResultParameter(this, p);
+    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
+        return visitor.visistDomainResultParameterMeta(this, p);
     }
 
 }

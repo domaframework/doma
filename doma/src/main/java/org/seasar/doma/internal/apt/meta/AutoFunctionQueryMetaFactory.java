@@ -23,6 +23,7 @@ import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.Function;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.meta.type.CollectionType;
+import org.seasar.doma.internal.apt.meta.type.DomainType;
 import org.seasar.doma.internal.apt.meta.type.EntityType;
 import org.seasar.doma.internal.apt.meta.type.ValueType;
 import org.seasar.doma.message.DomaMessageCode;
@@ -83,7 +84,6 @@ public class AutoFunctionQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         QueryReturnMeta returnMeta = createReturnMeta(method);
         queryMeta.setReturnMeta(returnMeta);
-
         ResultParameterMeta resultParameterMeta = createCallableSqlResultParameterMeta(returnMeta);
         queryMeta.setResultParameterMeta(resultParameterMeta);
     }
@@ -96,12 +96,20 @@ public class AutoFunctionQueryMetaFactory extends
             if (entityType != null) {
                 return new EntityListResultParameterMeta(entityType);
             }
+            DomainType domainType = collectionType.getDomainType();
+            if (domainType != null) {
+                return new DomainListResultParameterMeta(domainType);
+            }
             ValueType valueType = collectionType.getValueType();
             if (valueType != null) {
                 return new ValueListResultParameterMeta(valueType);
             }
             throw new AptException(DomaMessageCode.DOMA4065, env, returnMeta
                     .getElement(), collectionType.getEntityType());
+        }
+        DomainType domainType = returnMeta.getDomainType();
+        if (domainType != null) {
+            return new DomainResultParameterMeta(domainType);
         }
         ValueType valueType = returnMeta.getValueType();
         if (valueType != null) {

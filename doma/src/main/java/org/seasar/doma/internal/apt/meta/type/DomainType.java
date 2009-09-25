@@ -17,7 +17,7 @@ public class DomainType {
 
     protected String typeName;
 
-    protected WrapperType wrapperType;
+    protected ValueType valueType;
 
     protected DomainType() {
     }
@@ -30,8 +30,8 @@ public class DomainType {
         return typeName;
     }
 
-    public WrapperType getWrapperType() {
-        return wrapperType;
+    public ValueType getValueType() {
+        return valueType;
     }
 
     public static DomainType newInstance(TypeMirror type,
@@ -45,15 +45,15 @@ public class DomainType {
         if (domain == null) {
             return null;
         }
-        TypeMirror valueType = getValueType(domain);
-        WrapperType wrapperType = WrapperType.newInstance(valueType, env);
-        if (wrapperType == null) {
+        TypeMirror valueTypeMirror = getValueType(domain);
+        ValueType valueType = ValueType.newInstance(valueTypeMirror, env);
+        if (valueType == null) {
             return null;
         }
         DomainType domainType = new DomainType();
         domainType.type = type;
         domainType.typeName = TypeUtil.getTypeName(type, env);
-        domainType.wrapperType = wrapperType;
+        domainType.valueType = valueType;
         return domainType;
     }
 

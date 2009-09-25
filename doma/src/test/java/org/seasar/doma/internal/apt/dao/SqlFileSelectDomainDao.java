@@ -15,30 +15,27 @@
  */
 package org.seasar.doma.internal.apt.dao;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
-import org.seasar.doma.internal.apt.entity.Emp;
-import org.seasar.doma.jdbc.IterationCallback;
+import org.seasar.doma.jdbc.SelectOptions;
 
 import example.domain.PhoneNumber;
 
 /**
+ * 
  * @author taedium
  * 
  */
 @Dao(config = MyConfig.class)
-public interface IterationCallbackDao {
+public interface SqlFileSelectDomainDao {
 
-    @Select(iterate = true)
-    Integer iterate(Integer id, String name,
-            IterationCallback<Integer, Emp> callback);
+    @Select
+    PhoneNumber selectById(Integer id);
 
-    @Select(iterate = true)
-    Integer iterate(Integer id, IterationCallback<Integer, PhoneNumber> callback);
-
-    @Select(iterate = true)
-    Integer iterate(IterationCallback<Integer, String> callback);
-
-    @Select(iterate = true)
-    String iterate(HogeIterationCallback callback);
+    @Select
+    List<PhoneNumber> selectByNameAndSalary(String name, BigDecimal salary,
+            SelectOptions options);
 }

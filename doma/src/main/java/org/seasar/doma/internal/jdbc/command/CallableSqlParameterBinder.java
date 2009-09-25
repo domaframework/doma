@@ -25,6 +25,9 @@ import java.util.List;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlParameter;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlParameterVisitor;
+import org.seasar.doma.internal.jdbc.sql.DomainListParameter;
+import org.seasar.doma.internal.jdbc.sql.DomainListResultParameter;
+import org.seasar.doma.internal.jdbc.sql.DomainResultParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListResultParameter;
 import org.seasar.doma.internal.jdbc.sql.InOutParameter;
@@ -88,6 +91,14 @@ public class CallableSqlParameterBinder {
         }
 
         @Override
+        public Void visitDomainListParameter(
+                DomainListParameter<?, ?> parameter, Void p)
+                throws SQLException {
+            handleListParameter(parameter);
+            return null;
+        }
+
+        @Override
         public Void visitEntityListParameter(EntityListParameter<?> parameter,
                 Void p) throws SQLException {
             handleListParameter(parameter);
@@ -97,6 +108,14 @@ public class CallableSqlParameterBinder {
         @Override
         public Void visitValueListResultParameter(
                 ValueListResultParameter<?> parameter, Void p)
+                throws SQLException {
+            handleListParameter(parameter);
+            return null;
+        }
+
+        @Override
+        public Void visitDomainListResultParameter(
+                DomainListResultParameter<?, ?> parameter, Void p)
                 throws SQLException {
             handleListParameter(parameter);
             return null;
@@ -154,9 +173,20 @@ public class CallableSqlParameterBinder {
         @Override
         public Void visitValueResultParameter(
                 ValueResultParameter<?> parameter, Void p) throws SQLException {
-            Wrapper<?> domain = parameter.getWrapper();
-            domain.accept(jdbcMappingVisitor, new RegisterOutParameterFunction(
-                    callableStatement, index));
+            Wrapper<?> wrapper = parameter.getWrapper();
+            wrapper.accept(jdbcMappingVisitor,
+                    new RegisterOutParameterFunction(callableStatement, index));
+            index++;
+            return null;
+        }
+
+        @Override
+        public Void visitDomainResultParameter(
+                DomainResultParameter<?, ?> parameter, Void p)
+                throws SQLException {
+            Wrapper<?> wrapper = parameter.getDomainType().getWrapper();
+            wrapper.accept(jdbcMappingVisitor,
+                    new RegisterOutParameterFunction(callableStatement, index));
             index++;
             return null;
         }

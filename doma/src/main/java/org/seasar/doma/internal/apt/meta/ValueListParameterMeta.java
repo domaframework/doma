@@ -13,38 +13,39 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.sql;
+package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import org.seasar.doma.wrapper.Wrapper;
+import org.seasar.doma.internal.apt.meta.type.ValueType;
 
 /**
  * @author taedium
  * 
  */
-public class ValueResultParameter<V> implements ResultParameter<V> {
+public class ValueListParameterMeta implements CallableSqlParameterMeta {
 
-    protected final Wrapper<V> wrapper;
+    protected final String name;
 
-    public ValueResultParameter(Wrapper<V> wrapper) {
-        assertNotNull(wrapper);
-        this.wrapper = wrapper;
+    protected final ValueType valueType;
+
+    public ValueListParameterMeta(String name, ValueType valueType) {
+        assertNotNull(name, valueType);
+        this.name = name;
+        this.valueType = valueType;
     }
 
-    public Wrapper<V> getWrapper() {
-        return wrapper;
+    public String getName() {
+        return name;
+    }
+
+    public ValueType getValueType() {
+        return valueType;
     }
 
     @Override
-    public V getResult() {
-        return wrapper.get();
-    }
-
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitValueResultParameter(this, p);
+    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
+        return visitor.visistValueListParameterMeta(this, p);
     }
 
 }

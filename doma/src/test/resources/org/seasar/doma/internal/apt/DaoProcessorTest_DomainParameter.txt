@@ -1,0 +1,37 @@
+package org.seasar.doma.internal.apt.dao;
+
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
+public class DomainParameterDao_ extends org.seasar.doma.jdbc.DomaAbstractDao implements org.seasar.doma.internal.apt.dao.DomainParameterDao {
+
+    public DomainParameterDao_() {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig(), null);
+    }
+
+    public DomainParameterDao_(javax.sql.DataSource dataSource) {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
+    }
+
+    protected DomainParameterDao_(org.seasar.doma.jdbc.Config config) {
+        super(config, config.dataSource());
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.entity.Emp select(example.domain.PhoneNumber phoneNumber) {
+        entering("org.seasar.doma.internal.apt.dao.DomainParameterDao_", "select", phoneNumber);
+        org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
+        query.setConfig(config);
+        query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFileUtil.buildPath("org.seasar.doma.internal.apt.dao.DomainParameterDao", "select"));
+        query.addParameter("phoneNumber", example.domain.PhoneNumber.class, phoneNumber);
+        query.setCallerClassName("org.seasar.doma.internal.apt.dao.DomainParameterDao_");
+        query.setCallerMethodName("select");
+        query.setQueryTimeout(-1);
+        query.setMaxRows(-1);
+        query.setFetchSize(-1);
+        query.prepare();
+        org.seasar.doma.internal.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.entity.Emp> command = new org.seasar.doma.internal.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.entity.Emp>(query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<org.seasar.doma.internal.apt.entity.Emp>(new org.seasar.doma.internal.apt.entity.Emp_()));
+        org.seasar.doma.internal.apt.entity.Emp result = command.execute();
+        exiting("org.seasar.doma.internal.apt.dao.DomainParameterDao_", "select", result);
+        return result;
+    }
+
+}

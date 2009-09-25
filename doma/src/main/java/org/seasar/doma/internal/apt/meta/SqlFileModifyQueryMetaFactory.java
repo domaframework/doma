@@ -107,11 +107,11 @@ public class SqlFileModifyQueryMetaFactory extends
                             method);
                 }
             } else if (parameterMeta.getEntityType() != null) {
+            } else if (parameterMeta.getDomainType() != null) {
             } else if (parameterMeta.getValueType() != null) {
             } else {
                 throw new AptException(DomaMessageCode.DOMA4008, env,
-                        parameterMeta.getElement(), parameterMeta
-                                .getType());
+                        parameterMeta.getElement(), parameterMeta.getType());
             }
             queryMeta.addParameterMetas(parameterMeta);
             queryMeta.addExpressionParameterType(parameterMeta.getName(),

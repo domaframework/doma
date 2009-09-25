@@ -118,6 +118,7 @@ public class SqlFileSelectQueryMetaFactory extends
                             parameterMeta.getElement());
                 }
             } else if (parameterMeta.getEntityType() != null) {
+            } else if (parameterMeta.getDomainType() != null) {
             } else if (parameterMeta.getValueType() != null) {
             } else if (parameterMeta.getSelectOptionsType() != null) {
                 if (queryMeta.getSelectOptionsType() != null) {

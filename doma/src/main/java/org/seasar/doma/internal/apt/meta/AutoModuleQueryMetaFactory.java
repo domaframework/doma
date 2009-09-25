@@ -26,6 +26,7 @@ import org.seasar.doma.ResultSet;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.meta.type.CollectionType;
+import org.seasar.doma.internal.apt.meta.type.DomainType;
 import org.seasar.doma.internal.apt.meta.type.EntityType;
 import org.seasar.doma.internal.apt.meta.type.ReferenceType;
 import org.seasar.doma.internal.apt.meta.type.ValueType;
@@ -70,10 +71,15 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                 return new EntityListParameterMeta(parameterMeta.getName(),
                         entityType);
             }
+            DomainType domainType = collectionType.getDomainType();
+            if (domainType != null) {
+                return new DomainListParameterMeta(parameterMeta.getName(),
+                        domainType);
+            }
             ValueType valueType = collectionType.getValueType();
             if (valueType != null) {
-                return new ValueCollectionParameterMeta(
-                        parameterMeta.getName(), valueType);
+                return new ValueListParameterMeta(parameterMeta.getName(),
+                        valueType);
             }
             throw new AptIllegalStateException();
         }
@@ -107,11 +113,11 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         }
         if (parameterMeta.isAnnotated(In.class)) {
             ValueType valueType = parameterMeta.getValueType();
-            if (valueType == null) {
-                throw new AptException(DomaMessageCode.DOMA4101, env,
-                        parameterMeta.getElement(), parameterMeta.getType());
+            if (valueType != null) {
+                return new InParameterMeta(parameterMeta.getName(), valueType);
             }
-            return new InParameterMeta(parameterMeta.getName(), valueType);
+            throw new AptException(DomaMessageCode.DOMA4101, env, parameterMeta
+                    .getElement(), parameterMeta.getType());
         }
         throw new AptException(DomaMessageCode.DOMA4066, env, parameterMeta
                 .getElement());

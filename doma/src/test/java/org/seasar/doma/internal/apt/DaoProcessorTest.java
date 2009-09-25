@@ -26,8 +26,8 @@ import org.seasar.doma.internal.apt.dao.AutoProcedureDao;
 import org.seasar.doma.internal.apt.dao.AutoUpdateDao;
 import org.seasar.doma.internal.apt.dao.BlobFactoryDao;
 import org.seasar.doma.internal.apt.dao.ClobFactoryDao;
-import org.seasar.doma.internal.apt.dao.CustomDomainSqlValidationDao;
 import org.seasar.doma.internal.apt.dao.DelegateDao;
+import org.seasar.doma.internal.apt.dao.DomainParameterDao;
 import org.seasar.doma.internal.apt.dao.ElementOfParamListNotDomainDao;
 import org.seasar.doma.internal.apt.dao.ElementOfParamListUnspecifiedDao;
 import org.seasar.doma.internal.apt.dao.EmbeddedVariableDao;
@@ -44,6 +44,7 @@ import org.seasar.doma.internal.apt.dao.NotInterfaceDao;
 import org.seasar.doma.internal.apt.dao.NotTopLevelDao;
 import org.seasar.doma.internal.apt.dao.SqlFileBatchUpdateDao;
 import org.seasar.doma.internal.apt.dao.SqlFileInsertDao;
+import org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDao;
 import org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao;
 import org.seasar.doma.internal.apt.dao.SqlFileSelectValueDao;
 import org.seasar.doma.internal.apt.dao.UnknownBindVariableSqlValidationDao;
@@ -58,6 +59,16 @@ public class DaoProcessorTest extends AptTestCase {
 
     public void testSqlFileSelectEntity() throws Exception {
         Class<?> target = SqlFileSelectEntityDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testSqlFileSelectDomain() throws Exception {
+        Class<?> target = SqlFileSelectDomainDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
         addCompilationUnit(target);
@@ -355,12 +366,13 @@ public class DaoProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
-    public void testCustomDomainSqlValidationDao() throws Exception {
-        Class<?> target = CustomDomainSqlValidationDao.class;
+    public void testDomainParameter() throws Exception {
+        Class<?> target = DomainParameterDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
         addCompilationUnit(target);
         compile();
+        assertGeneratedSource(target);
         assertTrue(getCompiledResult());
     }
 
