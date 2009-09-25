@@ -5,6 +5,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.lang.annotation.Annotation;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
@@ -30,9 +31,9 @@ public class QueryParameterMeta {
 
     protected final String typeName;
 
-    protected final String qualifiedName;
-
     protected final TypeMirror type;
+
+    protected String qualifiedName;
 
     protected CollectionType collectionType;
 
@@ -56,8 +57,10 @@ public class QueryParameterMeta {
         name = ElementUtil.getParameterName(parameterElement);
         type = parameterElement.asType();
         typeName = TypeUtil.getTypeName(type, env);
-        qualifiedName = TypeUtil.getTypeName(env.getTypeUtils().erasure(type),
-                env);
+        TypeElement typeElement = TypeUtil.toTypeElement(type, env);
+        if (typeElement != null) {
+            qualifiedName = typeElement.getQualifiedName().toString();
+        }
 
         collectionType = CollectionType.newInstance(type, env);
         if (collectionType == null) {

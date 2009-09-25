@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.it.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.seasar.doma.BatchDelete;
@@ -22,10 +23,6 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Delete;
 import org.seasar.doma.Select;
 import org.seasar.doma.it.ItConfig;
-import org.seasar.doma.it.domain.IdDomain;
-import org.seasar.doma.it.domain.NameDomain;
-import org.seasar.doma.it.domain.OrderBy;
-import org.seasar.doma.it.domain.SalaryDomain;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.SelectOptions;
@@ -37,14 +34,14 @@ public interface EmployeeDao {
     List<Employee> selectByExample(Employee e);
 
     @Select
-    List<Employee> selectWithOptionalOrderBy(NameDomain employee_name,
-            OrderBy orderBy);
+    List<Employee> selectWithOptionalOrderBy(String employee_name,
+            String orderBy);
 
     @Select
-    Employee selectById(IdDomain employee_id);
+    Employee selectById(Integer employee_id);
 
     @Select
-    Employee selectById(IdDomain employee_id, SelectOptions options);
+    Employee selectById(Integer employee_id, SelectOptions options);
 
     @Select
     List<Employee> selectAll();
@@ -60,10 +57,10 @@ public interface EmployeeDao {
             SelectOptions options);
 
     @Select(iterate = true)
-    <R> R selectAllSalary(IterationCallback<R, SalaryDomain> callback);
+    <R> R selectAllSalary(IterationCallback<R, BigDecimal> callback);
 
     @Select(iterate = true)
-    <R> R selectAllSalary(IterationCallback<R, SalaryDomain> callback,
+    <R> R selectAllSalary(IterationCallback<R, BigDecimal> callback,
             SelectOptions options);
 
     @Delete

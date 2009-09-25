@@ -24,13 +24,9 @@ import org.seasar.doma.it.dao.EmployeeDao;
 import org.seasar.doma.it.dao.EmployeeDao_;
 import org.seasar.doma.it.dao.NoIdDao;
 import org.seasar.doma.it.dao.NoIdDao_;
-import org.seasar.doma.it.domain.IdDomain;
 import org.seasar.doma.it.entity.CompKeyEmployee;
-import org.seasar.doma.it.entity.CompKeyEmployee_;
 import org.seasar.doma.it.entity.Employee;
-import org.seasar.doma.it.entity.Employee_;
 import org.seasar.doma.it.entity.NoId;
-import org.seasar.doma.it.entity.NoId_;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.doma.message.DomaMessageCode;
@@ -41,47 +37,47 @@ public class AutoDeleteTest {
 
     public void test() throws Exception {
         EmployeeDao dao = new EmployeeDao_();
-        Employee employee = new Employee_();
-        employee.employee_id().set(1);
-        employee.version().set(1);
+        Employee employee = new Employee();
+        employee.setEmployee_id(1);
+        employee.setVersion(1);
         int result = dao.delete(employee);
         assertEquals(1, result);
 
-        employee = dao.selectById(new IdDomain(1));
+        employee = dao.selectById(new Integer(1));
         assertNull(employee);
     }
 
     public void testIgnoresVersion() throws Exception {
         EmployeeDao dao = new EmployeeDao_();
-        Employee employee = new Employee_();
-        employee.employee_id().set(1);
-        employee.version().set(99);
+        Employee employee = new Employee();
+        employee.setEmployee_id(1);
+        employee.setVersion(99);
         int result = dao.delete_ignoresVersion(employee);
         assertEquals(1, result);
 
-        employee = dao.selectById(new IdDomain(1));
+        employee = dao.selectById(new Integer(1));
         assertNull(employee);
     }
 
     public void testCompositeKey() throws Exception {
         CompKeyEmployeeDao dao = new CompKeyEmployeeDao_();
-        CompKeyEmployee employee = new CompKeyEmployee_();
-        employee.employee_id1().set(1);
-        employee.employee_id2().set(1);
-        employee.version().set(1);
+        CompKeyEmployee employee = new CompKeyEmployee();
+        employee.setEmployee_id1(1);
+        employee.setEmployee_id2(1);
+        employee.setVersion(1);
         int result = dao.delete(employee);
         assertEquals(1, result);
 
-        employee = dao.selectById(new IdDomain(1), new IdDomain(1));
+        employee = dao.selectById(new Integer(1), new Integer(1));
         assertNull(employee);
     }
 
     public void testOptimisticLockException() throws Exception {
         EmployeeDao dao = new EmployeeDao_();
-        Employee employee1 = dao.selectById(new IdDomain(1));
-        employee1.employee_name().set("hoge");
-        Employee employee2 = dao.selectById(new IdDomain(1));
-        employee2.employee_name().set("foo");
+        Employee employee1 = dao.selectById(new Integer(1));
+        employee1.setEmployee_name("hoge");
+        Employee employee2 = dao.selectById(new Integer(1));
+        employee2.setEmployee_name("foo");
         dao.delete(employee1);
         try {
             dao.delete(employee2);
@@ -92,19 +88,19 @@ public class AutoDeleteTest {
 
     public void testSuppressesOptimisticLockException() throws Exception {
         EmployeeDao dao = new EmployeeDao_();
-        Employee employee1 = dao.selectById(new IdDomain(1));
-        employee1.employee_name().set("hoge");
-        Employee employee2 = dao.selectById(new IdDomain(1));
-        employee2.employee_name().set("foo");
+        Employee employee1 = dao.selectById(1);
+        employee1.setEmployee_name("hoge");
+        Employee employee2 = dao.selectById(1);
+        employee2.setEmployee_name("foo");
         dao.delete(employee1);
         dao.delete_suppressesOptimisticLockException(employee2);
     }
 
     public void testNoId() throws Exception {
         NoIdDao dao = new NoIdDao_();
-        NoId entity = new NoId_();
-        entity.value1().set(1);
-        entity.value2().set(2);
+        NoId entity = new NoId();
+        entity.setValue1(1);
+        entity.setValue2(2);
         try {
             dao.delete(entity);
             fail();

@@ -1,19 +1,53 @@
 package org.seasar.doma.it.entity;
 
+import java.sql.Array;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
+import org.seasar.doma.ModifiedProperties;
 import org.seasar.doma.Table;
-import org.seasar.doma.domain.BuiltinArrayDomain;
-import org.seasar.doma.it.domain.NameDomain;
 
 @Entity
 @Table(name = "SAL_EMP")
-public interface SalEmp {
+public class SalEmp {
 
     @Id
-    NameDomain name();
+    String name;
 
-    BuiltinArrayDomain<Integer> pay_by_quarter();
+    Array pay_by_quarter;
 
-    BuiltinArrayDomain<String[]> schedule();
+    Array schedule;
+
+    @ModifiedProperties
+    Set<String> modifiedProperties = new HashSet<String>();
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        modifiedProperties.add("name");
+        this.name = name;
+    }
+
+    public Array getPay_by_quarter() {
+        return pay_by_quarter;
+    }
+
+    public void setPay_by_quarter(Array payByQuarter) {
+        modifiedProperties.add("payByQuarter");
+        pay_by_quarter = payByQuarter;
+    }
+
+    public Array getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Array schedule) {
+        modifiedProperties.add("schedule");
+        this.schedule = schedule;
+    }
+
 }

@@ -15,32 +15,89 @@
  */
 package org.seasar.doma.it.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
+import org.seasar.doma.ModifiedProperties;
 import org.seasar.doma.Table;
 import org.seasar.doma.Version;
-import org.seasar.doma.it.domain.IdDomain;
-import org.seasar.doma.it.domain.LocationDomain;
-import org.seasar.doma.it.domain.NameDomain;
-import org.seasar.doma.it.domain.NoDomain;
-import org.seasar.doma.it.domain.VersionDomain;
 
 @Entity
 @Table(name = "COMP_KEY_DEPARTMENT")
-public interface CompKeyDepartment {
+public class CompKeyDepartment {
 
     @Id
-    IdDomain department_id1();
+    Integer department_id1;
 
     @Id
-    IdDomain department_id2();
+    Integer department_id2;
 
-    NoDomain department_no();
+    Integer department_no;
 
-    NameDomain department_name();
+    String department_name;
 
-    LocationDomain location();
+    String location;
 
     @Version
-    VersionDomain version();
+    Integer version;
+
+    @ModifiedProperties
+    Set<String> modifiedProperties = new HashSet<String>();
+
+    public Integer getDepartment_id1() {
+        return department_id1;
+    }
+
+    public void setDepartment_id1(Integer departmentId1) {
+        modifiedProperties.add("departmentId1");
+        department_id1 = departmentId1;
+    }
+
+    public Integer getDepartment_id2() {
+        return department_id2;
+    }
+
+    public void setDepartment_id2(Integer departmentId2) {
+        modifiedProperties.add("departmentId2");
+        department_id2 = departmentId2;
+    }
+
+    public Integer getDepartment_no() {
+        return department_no;
+    }
+
+    public void setDepartment_no(Integer departmentNo) {
+        modifiedProperties.add("departmentNo");
+        department_no = departmentNo;
+    }
+
+    public String getDepartment_name() {
+        return department_name;
+    }
+
+    public void setDepartment_name(String departmentName) {
+        modifiedProperties.add("departmentName");
+        department_name = departmentName;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        modifiedProperties.add("location");
+        this.location = location;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        modifiedProperties.add("version");
+        this.version = version;
+    }
+
 }

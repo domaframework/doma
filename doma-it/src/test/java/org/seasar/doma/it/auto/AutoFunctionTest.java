@@ -21,14 +21,10 @@ import java.sql.Time;
 import java.util.List;
 
 import org.junit.runner.RunWith;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-import org.seasar.doma.domain.BuiltinTimeDomain;
 import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDao_;
 import org.seasar.doma.it.dao.FunctionDao;
 import org.seasar.doma.it.dao.FunctionDao_;
-import org.seasar.doma.it.domain.IdDomain;
-import org.seasar.doma.it.domain.NameDomain;
 import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.framework.unit.Seasar2;
@@ -40,65 +36,60 @@ public class AutoFunctionTest {
 
     public void testNoParam() throws Exception {
         FunctionDao dao = new FunctionDao_();
-        BuiltinIntegerDomain result = dao.func_none_param();
-        assertEquals(new BuiltinIntegerDomain(10), result);
+        Integer result = dao.func_none_param();
+        assertEquals(new Integer(10), result);
     }
 
     public void testOneParam() throws Exception {
         FunctionDao dao = new FunctionDao_();
-        BuiltinIntegerDomain result = dao
-                .func_simpletype_param(new BuiltinIntegerDomain(10));
-        assertEquals(new BuiltinIntegerDomain(20), result);
+        Integer result = dao.func_simpletype_param(new Integer(10));
+        assertEquals(new Integer(20), result);
     }
 
     public void testOneParam_time() throws Exception {
         FunctionDao dao = new FunctionDao_();
-        BuiltinTimeDomain result = dao
-                .func_simpletype_time_param(new BuiltinTimeDomain(Time
-                        .valueOf("12:34:56")));
-        assertEquals(new BuiltinTimeDomain(Time.valueOf("12:34:56")), result);
+        Time result = dao.func_simpletype_time_param(Time.valueOf("12:34:56"));
+        assertEquals(Time.valueOf("12:34:56"), result);
     }
 
     public void testTwoParams() throws Exception {
         FunctionDao dao = new FunctionDao_();
-        BuiltinIntegerDomain result = dao.func_dto_param(
-                new BuiltinIntegerDomain(10), new BuiltinIntegerDomain(20));
-        assertEquals(new BuiltinIntegerDomain(30), result);
+        Integer result = dao.func_dto_param(new Integer(10), new Integer(20));
+        assertEquals(new Integer(30), result);
     }
 
     public void testTwoParams_time() throws Exception {
         FunctionDao dao = new FunctionDao_();
-        BuiltinTimeDomain result = dao.func_dto_time_param(
-                new BuiltinTimeDomain(Time.valueOf("12:34:56")),
-                new BuiltinIntegerDomain(20));
-        assertEquals(new BuiltinTimeDomain(Time.valueOf("12:34:56")), result);
+        Time result = dao.func_dto_time_param(Time.valueOf("12:34:56"),
+                new Integer(20));
+        assertEquals(Time.valueOf("12:34:56"), result);
     }
 
     @Prerequisite("#ENV not in {'mysql'}")
     public void testResultSet() throws Exception {
         FunctionDao dao = new FunctionDao_();
-        List<Employee> result = dao.func_resultset(new IdDomain(1));
+        List<Employee> result = dao.func_resultset(new Integer(1));
         assertEquals(13, result.size());
     }
 
     @Prerequisite("#ENV not in {'mysql'}")
     public void testResultSetAndUpdate() throws Exception {
         FunctionDao dao = new FunctionDao_();
-        List<Employee> result = dao.func_resultset_update(new IdDomain(1));
+        List<Employee> result = dao.func_resultset_update(new Integer(1));
         assertEquals(13, result.size());
         DepartmentDao departmentDao = new DepartmentDao_();
-        Department department = departmentDao.selectById(new IdDomain(1));
-        assertEquals(new NameDomain("HOGE"), department.department_name());
+        Department department = departmentDao.selectById(new Integer(1));
+        assertEquals("HOGE", department.getDepartment_name());
     }
 
     @Prerequisite("#ENV not in {'mysql'}")
     public void testResultSetAndUpdate2() throws Exception {
         FunctionDao dao = new FunctionDao_();
-        List<Employee> result = dao.func_resultset_update2(new IdDomain(1));
+        List<Employee> result = dao.func_resultset_update2(new Integer(1));
         assertEquals(13, result.size());
         DepartmentDao departmentDao = new DepartmentDao_();
-        Department department = departmentDao.selectById(new IdDomain(1));
-        assertEquals(new NameDomain("HOGE"), department.department_name());
+        Department department = departmentDao.selectById(new Integer(1));
+        assertEquals("HOGE", department.getDepartment_name());
     }
 
 }

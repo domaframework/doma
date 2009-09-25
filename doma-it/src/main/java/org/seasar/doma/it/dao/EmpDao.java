@@ -23,7 +23,6 @@ import org.seasar.doma.Insert;
 import org.seasar.doma.Select;
 import org.seasar.doma.Update;
 import org.seasar.doma.it.ItConfig;
-import org.seasar.doma.it.domain.IdDomain;
 import org.seasar.doma.it.entity.Emp;
 
 /**
@@ -37,7 +36,7 @@ public interface EmpDao {
     List<Emp> selectAll();
 
     @Select
-    Emp selectById(IdDomain id);
+    Emp selectById(Integer id);
 
     @Update(sqlFile = true)
     int createTable();

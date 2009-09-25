@@ -23,7 +23,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.EmployeeDao;
 import org.seasar.doma.it.dao.EmployeeDao_;
-import org.seasar.doma.it.domain.SalaryDomain;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
@@ -72,40 +71,40 @@ public class SqlFileSelectIterationCallbackTest {
     @Test
     public void testDomain() throws Exception {
         EmployeeDao dao = new EmployeeDao_();
-        SalaryDomain total = dao
-                .selectAllSalary(new IterationCallback<SalaryDomain, SalaryDomain>() {
+        BigDecimal total = dao
+                .selectAllSalary(new IterationCallback<BigDecimal, BigDecimal>() {
 
                     BigDecimal total = BigDecimal.ZERO;
 
                     @Override
-                    public SalaryDomain iterate(SalaryDomain target,
+                    public BigDecimal iterate(BigDecimal target,
                             IterationContext context) {
-                        if (!target.isNull()) {
-                            total = total.add(target.get());
+                        if (target != null) {
+                            total = total.add(target);
                         }
-                        return new SalaryDomain(total);
+                        return total;
                     }
                 });
-        assertTrue(new SalaryDomain(new BigDecimal("29025")).eq(total));
+        assertTrue(new BigDecimal("29025").compareTo(total) == 0);
     }
 
     @Test
     public void testDomain_limitOffset() throws Exception {
         EmployeeDao dao = new EmployeeDao_();
-        SalaryDomain total = dao.selectAllSalary(
-                new IterationCallback<SalaryDomain, SalaryDomain>() {
+        BigDecimal total = dao.selectAllSalary(
+                new IterationCallback<BigDecimal, BigDecimal>() {
 
                     BigDecimal total = BigDecimal.ZERO;
 
                     @Override
-                    public SalaryDomain iterate(SalaryDomain target,
+                    public BigDecimal iterate(BigDecimal target,
                             IterationContext context) {
-                        if (!target.isNull()) {
-                            total = total.add(target.get());
+                        if (target != null) {
+                            total = total.add(target);
                         }
-                        return new SalaryDomain(total);
+                        return total;
                     }
                 }, SelectOptions.get().limit(5).offset(3));
-        assertTrue(new SalaryDomain(new BigDecimal("12525")).eq(total));
+        assertTrue(new BigDecimal("12525").compareTo(total) == 0);
     }
 }

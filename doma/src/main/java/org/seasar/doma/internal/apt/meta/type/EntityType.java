@@ -18,8 +18,10 @@ package org.seasar.doma.internal.apt.meta.type;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
+import org.seasar.doma.Entity;
 import org.seasar.doma.internal.apt.TypeUtil;
 
 /**
@@ -54,7 +56,9 @@ public class EntityType {
     public static EntityType newInstance(TypeMirror type,
             ProcessingEnvironment env) {
         assertNotNull(type, env);
-        if (!TypeUtil.isEntity(type, env)) {
+        TypeElement typeElement = TypeUtil.toTypeElement(type, env);
+        if (typeElement == null
+                || typeElement.getAnnotation(Entity.class) == null) {
             return null;
         }
         EntityType entityType = new EntityType();

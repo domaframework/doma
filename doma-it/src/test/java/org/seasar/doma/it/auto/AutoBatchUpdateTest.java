@@ -27,16 +27,9 @@ import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDao_;
 import org.seasar.doma.it.dao.NoIdDao;
 import org.seasar.doma.it.dao.NoIdDao_;
-import org.seasar.doma.it.domain.IdDomain;
-import org.seasar.doma.it.domain.NameDomain;
-import org.seasar.doma.it.domain.NoDomain;
-import org.seasar.doma.it.domain.VersionDomain;
 import org.seasar.doma.it.entity.CompKeyDepartment;
-import org.seasar.doma.it.entity.CompKeyDepartment_;
 import org.seasar.doma.it.entity.Department;
-import org.seasar.doma.it.entity.Department_;
 import org.seasar.doma.it.entity.NoId;
-import org.seasar.doma.it.entity.NoId_;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.doma.message.DomaMessageCode;
@@ -47,115 +40,115 @@ public class AutoBatchUpdateTest {
 
     public void test() throws Exception {
         DepartmentDao dao = new DepartmentDao_();
-        Department department = new Department_();
-        department.department_id().set(1);
-        department.department_no().set(1);
-        department.department_name().set("hoge");
-        department.version().set(1);
-        Department department2 = new Department_();
-        department2.department_id().set(2);
-        department2.department_no().set(2);
-        department2.department_name().set("foo");
-        department2.version().set(1);
+        Department department = new Department();
+        department.setDepartment_id(1);
+        department.setDepartment_no(1);
+        department.setDepartment_name("hoge");
+        department.setVersion(1);
+        Department department2 = new Department();
+        department2.setDepartment_id(2);
+        department2.setDepartment_no(2);
+        department2.setDepartment_name("foo");
+        department2.setVersion(1);
         int[] result = dao.update(Arrays.asList(department, department2));
         assertEquals(2, result.length);
         assertEquals(1, result[0]);
         assertEquals(1, result[1]);
-        assertEquals(new VersionDomain(2), department.version());
-        assertEquals(new VersionDomain(2), department2.version());
+        assertEquals(new Integer(2), department.getVersion());
+        assertEquals(new Integer(2), department2.getVersion());
 
-        department = dao.selectById(new IdDomain(1));
-        assertEquals(new IdDomain(1), department.department_id());
-        assertEquals(new NoDomain(1), department.department_no());
-        assertEquals(new NameDomain("hoge"), department.department_name());
-        assertTrue(department.location().isNull());
-        assertEquals(new VersionDomain(2), department.version());
-        department = dao.selectById(new IdDomain(2));
-        assertEquals(new IdDomain(2), department.department_id());
-        assertEquals(new NoDomain(2), department.department_no());
-        assertEquals(new NameDomain("foo"), department.department_name());
-        assertTrue(department.location().isNull());
-        assertEquals(new VersionDomain(2), department.version());
+        department = dao.selectById(1);
+        assertEquals(new Integer(1), department.getDepartment_id());
+        assertEquals(new Integer(1), department.getDepartment_no());
+        assertEquals("hoge", department.getDepartment_name());
+        assertNull(department.getLocation());
+        assertEquals(new Integer(2), department.getVersion());
+        department = dao.selectById(2);
+        assertEquals(new Integer(2), department.getDepartment_id());
+        assertEquals(new Integer(2), department.getDepartment_no());
+        assertEquals("foo", department.getDepartment_name());
+        assertNull(department.getLocation());
+        assertEquals(new Integer(2), department.getVersion());
     }
 
     public void testIncludesVersion() throws Exception {
         DepartmentDao dao = new DepartmentDao_();
-        Department department = new Department_();
-        department.department_id().set(1);
-        department.department_no().set(1);
-        department.department_name().set("hoge");
-        department.version().set(100);
-        Department department2 = new Department_();
-        department2.department_id().set(2);
-        department2.department_no().set(2);
-        department2.department_name().set("foo");
-        department2.version().set(200);
+        Department department = new Department();
+        department.setDepartment_id(1);
+        department.setDepartment_no(1);
+        department.setDepartment_name("hoge");
+        department.setVersion(100);
+        Department department2 = new Department();
+        department2.setDepartment_id(2);
+        department2.setDepartment_no(2);
+        department2.setDepartment_name("foo");
+        department2.setVersion(200);
         int[] result = dao.update_includesVersion(Arrays.asList(department,
                 department2));
         assertEquals(2, result.length);
         assertEquals(1, result[0]);
         assertEquals(1, result[1]);
-        assertEquals(new VersionDomain(100), department.version());
-        assertEquals(new VersionDomain(200), department2.version());
+        assertEquals(new Integer(100), department.getVersion());
+        assertEquals(new Integer(200), department2.getVersion());
 
-        department = dao.selectById(new IdDomain(1));
-        assertEquals(new IdDomain(1), department.department_id());
-        assertEquals(new NoDomain(1), department.department_no());
-        assertEquals(new NameDomain("hoge"), department.department_name());
-        assertTrue(department.location().isNull());
-        assertEquals(new VersionDomain(100), department.version());
-        department = dao.selectById(new IdDomain(2));
-        assertEquals(new IdDomain(2), department.department_id());
-        assertEquals(new NoDomain(2), department.department_no());
-        assertEquals(new NameDomain("foo"), department.department_name());
-        assertTrue(department.location().isNull());
-        assertEquals(new VersionDomain(200), department.version());
+        department = dao.selectById(new Integer(1));
+        assertEquals(new Integer(1), department.getDepartment_id());
+        assertEquals(new Integer(1), department.getDepartment_no());
+        assertEquals("hoge", department.getDepartment_name());
+        assertNull(department.getLocation());
+        assertEquals(new Integer(100), department.getVersion());
+        department = dao.selectById(new Integer(2));
+        assertEquals(new Integer(2), department.getDepartment_id());
+        assertEquals(new Integer(2), department.getDepartment_no());
+        assertEquals("foo", department.getDepartment_name());
+        assertNull(department.getLocation());
+        assertEquals(new Integer(200), department.getVersion());
     }
 
     public void testCompositeKey() throws Exception {
         CompKeyDepartmentDao dao = new CompKeyDepartmentDao_();
-        CompKeyDepartment department = new CompKeyDepartment_();
-        department.department_id1().set(1);
-        department.department_id2().set(1);
-        department.department_no().set(1);
-        department.department_name().set("hoge");
-        department.version().set(1);
-        CompKeyDepartment department2 = new CompKeyDepartment_();
-        department2.department_id1().set(2);
-        department2.department_id2().set(2);
-        department2.department_no().set(2);
-        department2.department_name().set("foo");
-        department2.version().set(1);
+        CompKeyDepartment department = new CompKeyDepartment();
+        department.setDepartment_id1(1);
+        department.setDepartment_id2(1);
+        department.setDepartment_no(1);
+        department.setDepartment_name("hoge");
+        department.setVersion(1);
+        CompKeyDepartment department2 = new CompKeyDepartment();
+        department2.setDepartment_id1(2);
+        department2.setDepartment_id2(2);
+        department2.setDepartment_no(2);
+        department2.setDepartment_name("foo");
+        department2.setVersion(1);
         int[] result = dao.update(Arrays.asList(department, department2));
         assertEquals(2, result.length);
         assertEquals(1, result[0]);
         assertEquals(1, result[1]);
-        assertEquals(new VersionDomain(2), department.version());
+        assertEquals(new Integer(2), department.getVersion());
 
-        department = dao.selectById(new IdDomain(1), new IdDomain(1));
-        assertEquals(new IdDomain(1), department.department_id1());
-        assertEquals(new IdDomain(1), department.department_id2());
-        assertEquals(new NoDomain(1), department.department_no());
-        assertEquals(new NameDomain("hoge"), department.department_name());
-        assertTrue(department.location().isNull());
-        assertEquals(new VersionDomain(2), department.version());
-        department = dao.selectById(new IdDomain(2), new IdDomain(2));
-        assertEquals(new IdDomain(2), department.department_id1());
-        assertEquals(new IdDomain(2), department.department_id2());
-        assertEquals(new NoDomain(2), department.department_no());
-        assertEquals(new NameDomain("foo"), department.department_name());
-        assertTrue(department.location().isNull());
-        assertEquals(new VersionDomain(2), department.version());
+        department = dao.selectById(1, 1);
+        assertEquals(new Integer(1), department.getDepartment_id1());
+        assertEquals(new Integer(1), department.getDepartment_id2());
+        assertEquals(new Integer(1), department.getDepartment_no());
+        assertEquals("hoge", department.getDepartment_name());
+        assertNull(department.getLocation());
+        assertEquals(new Integer(2), department.getVersion());
+        department = dao.selectById(2, 2);
+        assertEquals(new Integer(2), department.getDepartment_id1());
+        assertEquals(new Integer(2), department.getDepartment_id2());
+        assertEquals(new Integer(2), department.getDepartment_no());
+        assertEquals("foo", department.getDepartment_name());
+        assertNull(department.getLocation());
+        assertEquals(new Integer(2), department.getVersion());
     }
 
     public void testOptimisticLockException() throws Exception {
         DepartmentDao dao = new DepartmentDao_();
-        Department department1 = dao.selectById(new IdDomain(1));
-        department1.department_name().set("hoge");
-        Department department2 = dao.selectById(new IdDomain(2));
-        department2.department_name().set("foo");
-        Department department3 = dao.selectById(new IdDomain(1));
-        department3.department_name().set("bar");
+        Department department1 = dao.selectById(1);
+        department1.setDepartment_name("hoge");
+        Department department2 = dao.selectById(2);
+        department2.setDepartment_name("foo");
+        Department department3 = dao.selectById(1);
+        department3.setDepartment_name("bar");
         dao.update(department1);
         try {
             dao.update(Arrays.asList(department2, department3));
@@ -166,12 +159,12 @@ public class AutoBatchUpdateTest {
 
     public void testSuppressesOptimisticLockException() throws Exception {
         DepartmentDao dao = new DepartmentDao_();
-        Department department1 = dao.selectById(new IdDomain(1));
-        department1.department_name().set("hoge");
-        Department department2 = dao.selectById(new IdDomain(2));
-        department2.department_name().set("foo");
-        Department department3 = dao.selectById(new IdDomain(1));
-        department3.department_name().set("bar");
+        Department department1 = dao.selectById(1);
+        department1.setDepartment_name("hoge");
+        Department department2 = dao.selectById(2);
+        department2.setDepartment_name("foo");
+        Department department3 = dao.selectById(1);
+        department3.setDepartment_name("bar");
         dao.update(department1);
         dao.update_suppressesOptimisticLockException(Arrays.asList(department2,
                 department3));
@@ -179,12 +172,12 @@ public class AutoBatchUpdateTest {
 
     public void testNoId() throws Exception {
         NoIdDao dao = new NoIdDao_();
-        NoId entity = new NoId_();
-        entity.value1().set(1);
-        entity.value2().set(2);
-        NoId entity2 = new NoId_();
-        entity2.value1().set(1);
-        entity2.value2().set(2);
+        NoId entity = new NoId();
+        entity.setValue1(1);
+        entity.setValue2(2);
+        NoId entity2 = new NoId();
+        entity2.setValue1(1);
+        entity2.setValue2(2);
         try {
             dao.update(Arrays.asList(entity, entity2));
             fail();

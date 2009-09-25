@@ -27,8 +27,6 @@ public class QueryReturnMeta {
 
     protected final String typeName;
 
-    protected final String qualifiedName;
-
     protected CollectionType collectionType;
 
     protected EntityType entityType;
@@ -44,8 +42,6 @@ public class QueryReturnMeta {
         this.env = env;
         type = methodElement.getReturnType();
         typeName = TypeUtil.getTypeName(type, env);
-        qualifiedName = TypeUtil.getTypeName(env.getTypeUtils().erasure(type),
-                env);
 
         collectionType = CollectionType.newInstance(type, env);
         if (collectionType == null) {
@@ -59,7 +55,7 @@ public class QueryReturnMeta {
         } else {
             if (!collectionType.isParametarized()) {
                 throw new AptException(DomaMessageCode.DOMA4109, env,
-                        methodElement, qualifiedName);
+                        methodElement, typeName);
             }
         }
     }
@@ -92,10 +88,6 @@ public class QueryReturnMeta {
 
     public TypeMirror getType() {
         return type;
-    }
-
-    public String getQualifiedName() {
-        return qualifiedName;
     }
 
     public CollectionType getCollectionType() {

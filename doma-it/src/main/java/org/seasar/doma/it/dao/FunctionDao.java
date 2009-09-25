@@ -15,44 +15,40 @@
  */
 package org.seasar.doma.it.dao;
 
+import java.sql.Time;
 import java.util.List;
 
 import org.seasar.doma.Dao;
 import org.seasar.doma.Function;
 import org.seasar.doma.In;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-import org.seasar.doma.domain.BuiltinTimeDomain;
 import org.seasar.doma.it.ItConfig;
-import org.seasar.doma.it.domain.IdDomain;
 import org.seasar.doma.it.entity.Employee;
 
 @Dao(config = ItConfig.class)
 public interface FunctionDao {
 
     @Function
-    BuiltinIntegerDomain func_none_param();
+    Integer func_none_param();
 
     @Function
-    BuiltinIntegerDomain func_simpletype_param(@In BuiltinIntegerDomain param1);
+    Integer func_simpletype_param(@In Integer param1);
 
     @Function
-    BuiltinTimeDomain func_simpletype_time_param(@In BuiltinTimeDomain param1);
+    Time func_simpletype_time_param(@In Time param1);
 
     @Function
-    BuiltinIntegerDomain func_dto_param(@In BuiltinIntegerDomain param1,
-            @In BuiltinIntegerDomain param2);
+    Integer func_dto_param(@In Integer param1, @In Integer param2);
 
     @Function
-    BuiltinTimeDomain func_dto_time_param(@In BuiltinTimeDomain param1,
-            @In BuiltinIntegerDomain param2);
+    Time func_dto_time_param(@In Time param1, @In Integer param2);
 
     @Function
-    List<Employee> func_resultset(@In IdDomain employee_id);
+    List<Employee> func_resultset(@In Integer employee_id);
 
     @Function
-    List<Employee> func_resultset_update(@In IdDomain employee_id);
+    List<Employee> func_resultset_update(@In Integer employee_id);
 
     @Function
-    List<Employee> func_resultset_update2(@In IdDomain employee_id);
+    List<Employee> func_resultset_update2(@In Integer employee_id);
 
 }

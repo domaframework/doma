@@ -15,36 +15,120 @@
  */
 package org.seasar.doma.it.entity;
 
+import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
+import org.seasar.doma.ModifiedProperties;
 import org.seasar.doma.Version;
-import org.seasar.doma.it.domain.HiredateDomain;
-import org.seasar.doma.it.domain.IdDomain;
-import org.seasar.doma.it.domain.NameDomain;
-import org.seasar.doma.it.domain.NoDomain;
-import org.seasar.doma.it.domain.SalaryDomain;
-import org.seasar.doma.it.domain.VersionDomain;
 
 @Entity
-public interface Employee {
+public class Employee {
 
     @Id
-    IdDomain employee_id();
+    Integer employee_id;
 
-    NoDomain employee_no();
+    Integer employee_no;
 
-    NameDomain employee_name();
+    String employee_name;
 
-    IdDomain manager_id();
+    Integer manager_id;
 
-    HiredateDomain hiredate();
+    java.sql.Date hiredate;
 
-    SalaryDomain salary();
+    BigDecimal salary;
 
-    IdDomain department_id();
+    Integer department_id;
 
-    IdDomain address_id();
+    Integer address_id;
 
     @Version
-    VersionDomain version();
+    Integer version;
+
+    @ModifiedProperties
+    Set<String> modifiedProperties = new HashSet<String>();
+
+    public Integer getEmployee_id() {
+        return employee_id;
+    }
+
+    public void setEmployee_id(Integer employee_id) {
+        modifiedProperties.add("employee_id");
+        this.employee_id = employee_id;
+    }
+
+    public Integer getEmployee_no() {
+        return employee_no;
+    }
+
+    public void setEmployee_no(Integer employeeNo) {
+        modifiedProperties.add("employee_no");
+        employee_no = employeeNo;
+    }
+
+    public String getEmployee_name() {
+        return employee_name;
+    }
+
+    public void setEmployee_name(String employeeName) {
+        modifiedProperties.add("employee_name");
+        employee_name = employeeName;
+    }
+
+    public Integer getManager_id() {
+        return manager_id;
+    }
+
+    public void setManager_id(Integer managerId) {
+        modifiedProperties.add("manager_id");
+        manager_id = managerId;
+    }
+
+    public java.sql.Date getHiredate() {
+        return hiredate;
+    }
+
+    public void setHiredate(java.sql.Date hiredate) {
+        modifiedProperties.add("hiredate");
+        this.hiredate = hiredate;
+    }
+
+    public BigDecimal getSalary() {
+        return salary;
+    }
+
+    public void setSalary(BigDecimal salary) {
+        modifiedProperties.add("salary");
+        this.salary = salary;
+    }
+
+    public Integer getDepartment_id() {
+        return department_id;
+    }
+
+    public void setDepartment_id(Integer departmentId) {
+        modifiedProperties.add("department_id");
+        department_id = departmentId;
+    }
+
+    public Integer getAddress_id() {
+        return address_id;
+    }
+
+    public void setAddress_id(Integer addressId) {
+        modifiedProperties.add("address_id");
+        address_id = addressId;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        modifiedProperties.add("version");
+        this.version = version;
+    }
+
 }

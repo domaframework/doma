@@ -15,23 +15,47 @@
  */
 package org.seasar.doma.it.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.seasar.doma.Entity;
 import org.seasar.doma.GeneratedValue;
 import org.seasar.doma.GenerationType;
 import org.seasar.doma.Id;
+import org.seasar.doma.ModifiedProperties;
 import org.seasar.doma.SequenceGenerator;
 import org.seasar.doma.Table;
-import org.seasar.doma.it.domain.IdDomain;
-import org.seasar.doma.it.domain.ValueDomain;
 
 @Entity
 @Table(name = "SEQUENCE_STRATEGY")
-public interface SequenceStrategy {
+public class SequenceStrategy {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(sequence = "SEQUENCE_STRATEGY_ID", allocationSize = 50)
-    IdDomain id();
+    Integer id;
 
-    ValueDomain value();
+    String value;
+
+    @ModifiedProperties
+    Set<String> modifiedProperties = new HashSet<String>();
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        modifiedProperties.add("id");
+        this.id = id;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        modifiedProperties.add("value");
+        this.value = value;
+    }
+
 }

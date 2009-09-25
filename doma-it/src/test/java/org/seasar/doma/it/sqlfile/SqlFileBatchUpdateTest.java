@@ -22,10 +22,7 @@ import java.util.Arrays;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDao_;
-import org.seasar.doma.it.domain.IdDomain;
-import org.seasar.doma.it.domain.NameDomain;
 import org.seasar.doma.it.entity.Department;
-import org.seasar.doma.it.entity.Department_;
 import org.seasar.framework.unit.Seasar2;
 
 @RunWith(Seasar2.class)
@@ -33,28 +30,28 @@ public class SqlFileBatchUpdateTest {
 
     public void test() throws Exception {
         DepartmentDao dao = new DepartmentDao_();
-        Department department = new Department_();
-        department.department_id().set(1);
-        department.department_no().set(1);
-        department.department_name().set("hoge");
-        department.version().set(1);
-        Department department2 = new Department_();
-        department2.department_id().set(2);
-        department2.department_no().set(2);
-        department2.department_name().set("foo");
-        department2.version().set(1);
+        Department department = new Department();
+        department.setDepartment_id(1);
+        department.setDepartment_no(1);
+        department.setDepartment_name("hoge");
+        department.setVersion(1);
+        Department department2 = new Department();
+        department2.setDepartment_id(2);
+        department2.setDepartment_no(2);
+        department2.setDepartment_name("foo");
+        department2.setVersion(1);
         int[] result = dao.updateBySqlFile(Arrays.asList(department,
                 department2));
         assertEquals(2, result.length);
         assertEquals(1, result[0]);
         assertEquals(1, result[1]);
 
-        department = dao.selectById(new IdDomain(1));
-        assertEquals(new IdDomain(1), department.department_id());
-        assertEquals(new NameDomain("hoge"), department.department_name());
-        department = dao.selectById(new IdDomain(2));
-        assertEquals(new IdDomain(2), department.department_id());
-        assertEquals(new NameDomain("foo"), department.department_name());
+        department = dao.selectById(1);
+        assertEquals(new Integer(1), department.getDepartment_id());
+        assertEquals("hoge", department.getDepartment_name());
+        department = dao.selectById(2);
+        assertEquals(new Integer(2), department.getDepartment_id());
+        assertEquals("foo", department.getDepartment_name());
     }
 
 }

@@ -24,17 +24,9 @@ import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDao_;
 import org.seasar.doma.it.dao.NoIdDao;
 import org.seasar.doma.it.dao.NoIdDao_;
-import org.seasar.doma.it.domain.IdDomain;
-import org.seasar.doma.it.domain.LocationDomain;
-import org.seasar.doma.it.domain.NameDomain;
-import org.seasar.doma.it.domain.NoDomain;
-import org.seasar.doma.it.domain.VersionDomain;
 import org.seasar.doma.it.entity.CompKeyDepartment;
-import org.seasar.doma.it.entity.CompKeyDepartment_;
 import org.seasar.doma.it.entity.Department;
-import org.seasar.doma.it.entity.Department_;
 import org.seasar.doma.it.entity.NoId;
-import org.seasar.doma.it.entity.NoId_;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.doma.message.DomaMessageCode;
@@ -45,87 +37,87 @@ public class AutoUpdateTest {
 
     public void test() throws Exception {
         DepartmentDao dao = new DepartmentDao_();
-        Department department = new Department_();
-        department.department_id().set(1);
-        department.department_no().set(1);
-        department.department_name().set("hoge");
-        department.version().set(1);
+        Department department = new Department();
+        department.setDepartment_id(1);
+        department.setDepartment_no(1);
+        department.setDepartment_name("hoge");
+        department.setVersion(1);
         int result = dao.update(department);
         assertEquals(1, result);
-        assertEquals(new VersionDomain(2), department.version());
+        assertEquals(new Integer(2), department.getVersion());
 
-        department = dao.selectById(new IdDomain(1));
-        assertEquals(new IdDomain(1), department.department_id());
-        assertEquals(new NoDomain(1), department.department_no());
-        assertEquals(new NameDomain("hoge"), department.department_name());
-        assertEquals(new LocationDomain("NEW YORK"), department.location());
-        assertEquals(new VersionDomain(2), department.version());
+        department = dao.selectById(new Integer(1));
+        assertEquals(new Integer(1), department.getDepartment_id());
+        assertEquals(new Integer(1), department.getDepartment_no());
+        assertEquals("hoge", department.getDepartment_name());
+        assertEquals("NEW YORK", department.getLocation());
+        assertEquals(new Integer(2), department.getVersion());
     }
 
     public void testIncludesVersion() throws Exception {
         DepartmentDao dao = new DepartmentDao_();
-        Department department = new Department_();
-        department.department_id().set(1);
-        department.department_no().set(1);
-        department.department_name().set("hoge");
-        department.version().set(100);
+        Department department = new Department();
+        department.setDepartment_id(1);
+        department.setDepartment_no(1);
+        department.setDepartment_name("hoge");
+        department.setVersion(100);
         int result = dao.update_includesVersion(department);
         assertEquals(1, result);
-        assertEquals(new VersionDomain(100), department.version());
+        assertEquals(new Integer(100), department.getVersion());
 
-        department = dao.selectById(new IdDomain(1));
-        assertEquals(new IdDomain(1), department.department_id());
-        assertEquals(new NoDomain(1), department.department_no());
-        assertEquals(new NameDomain("hoge"), department.department_name());
-        assertEquals(new LocationDomain("NEW YORK"), department.location());
-        assertEquals(new VersionDomain(100), department.version());
+        department = dao.selectById(1);
+        assertEquals(new Integer(1), department.getDepartment_id());
+        assertEquals(new Integer(1), department.getDepartment_no());
+        assertEquals("hoge", department.getDepartment_name());
+        assertEquals("NEW YORK", department.getLocation());
+        assertEquals(new Integer(100), department.getVersion());
     }
 
     public void testExcludesNull() throws Exception {
         DepartmentDao dao = new DepartmentDao_();
-        Department department = new Department_();
-        department.department_id().set(1);
-        department.department_no().set(1);
-        department.department_name().setNull();
-        department.version().set(1);
+        Department department = new Department();
+        department.setDepartment_id(1);
+        department.setDepartment_no(1);
+        department.setDepartment_name(null);
+        department.setVersion(1);
         int result = dao.update_excludesNull(department);
         assertEquals(1, result);
 
-        department = dao.selectById(new IdDomain(1));
-        assertEquals(new IdDomain(1), department.department_id());
-        assertEquals(new NoDomain(1), department.department_no());
-        assertEquals(new NameDomain("ACCOUNTING"), department.department_name());
-        assertEquals(new LocationDomain("NEW YORK"), department.location());
-        assertEquals(new VersionDomain(2), department.version());
+        department = dao.selectById(new Integer(1));
+        assertEquals(new Integer(1), department.getDepartment_id());
+        assertEquals(new Integer(1), department.getDepartment_no());
+        assertEquals("ACCOUNTING", department.getDepartment_name());
+        assertEquals("NEW YORK", department.getLocation());
+        assertEquals(new Integer(2), department.getVersion());
     }
 
     public void testCompositeKey() throws Exception {
         CompKeyDepartmentDao dao = new CompKeyDepartmentDao_();
-        CompKeyDepartment department = new CompKeyDepartment_();
-        department.department_id1().set(1);
-        department.department_id2().set(1);
-        department.department_no().set(1);
-        department.department_name().set("hoge");
-        department.version().set(1);
+        CompKeyDepartment department = new CompKeyDepartment();
+        department.setDepartment_id1(1);
+        department.setDepartment_id2(1);
+        department.setDepartment_no(1);
+        department.setDepartment_name("hoge");
+        department.setVersion(1);
         int result = dao.update(department);
         assertEquals(1, result);
-        assertEquals(new VersionDomain(2), department.version());
+        assertEquals(new Integer(2), department.getVersion());
 
-        department = dao.selectById(new IdDomain(1), new IdDomain(1));
-        assertEquals(new IdDomain(1), department.department_id1());
-        assertEquals(new IdDomain(1), department.department_id2());
-        assertEquals(new NoDomain(1), department.department_no());
-        assertEquals(new NameDomain("hoge"), department.department_name());
-        assertEquals(new LocationDomain("NEW YORK"), department.location());
-        assertEquals(new VersionDomain(2), department.version());
+        department = dao.selectById(new Integer(1), new Integer(1));
+        assertEquals(new Integer(1), department.getDepartment_id1());
+        assertEquals(new Integer(1), department.getDepartment_id2());
+        assertEquals(new Integer(1), department.getDepartment_no());
+        assertEquals("hoge", department.getDepartment_name());
+        assertEquals("NEW YORK", department.getLocation());
+        assertEquals(new Integer(2), department.getVersion());
     }
 
     public void testOptimisticLockException() throws Exception {
         DepartmentDao dao = new DepartmentDao_();
-        Department department1 = dao.selectById(new IdDomain(1));
-        department1.department_name().set("hoge");
-        Department department2 = dao.selectById(new IdDomain(1));
-        department2.department_name().set("foo");
+        Department department1 = dao.selectById(new Integer(1));
+        department1.setDepartment_name("hoge");
+        Department department2 = dao.selectById(new Integer(1));
+        department2.setDepartment_name("foo");
         dao.update(department1);
         try {
             dao.update(department2);
@@ -136,19 +128,19 @@ public class AutoUpdateTest {
 
     public void testSuppressesOptimisticLockException() throws Exception {
         DepartmentDao dao = new DepartmentDao_();
-        Department department1 = dao.selectById(new IdDomain(1));
-        department1.department_name().set("hoge");
-        Department department2 = dao.selectById(new IdDomain(1));
-        department2.department_name().set("foo");
+        Department department1 = dao.selectById(new Integer(1));
+        department1.setDepartment_name("hoge");
+        Department department2 = dao.selectById(new Integer(1));
+        department2.setDepartment_name("foo");
         dao.update(department1);
         dao.update_suppressesOptimisticLockException(department2);
     }
 
     public void testNoId() throws Exception {
         NoIdDao dao = new NoIdDao_();
-        NoId entity = new NoId_();
-        entity.value1().set(1);
-        entity.value2().set(2);
+        NoId entity = new NoId();
+        entity.setValue1(1);
+        entity.setValue2(2);
         try {
             dao.update(entity);
             fail();
@@ -159,7 +151,7 @@ public class AutoUpdateTest {
 
     public void testSqlExecutionSkip() throws Exception {
         DepartmentDao dao = new DepartmentDao_();
-        Department department = dao.selectById(new IdDomain(1));
+        Department department = dao.selectById(new Integer(1));
         int result = dao.update(department);
         assertEquals(0, result);
     }

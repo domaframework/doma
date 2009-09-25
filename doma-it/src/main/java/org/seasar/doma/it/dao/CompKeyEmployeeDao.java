@@ -22,14 +22,13 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Delete;
 import org.seasar.doma.Select;
 import org.seasar.doma.it.ItConfig;
-import org.seasar.doma.it.domain.IdDomain;
 import org.seasar.doma.it.entity.CompKeyEmployee;
 
 @Dao(config = ItConfig.class)
 public interface CompKeyEmployeeDao {
 
     @Select
-    CompKeyEmployee selectById(IdDomain employee_id1, IdDomain employee_id2);
+    CompKeyEmployee selectById(Integer employee_id1, Integer employee_id2);
 
     @Delete
     int delete(CompKeyEmployee entity);

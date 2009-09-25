@@ -15,26 +15,75 @@
  */
 package org.seasar.doma.it.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.seasar.doma.Entity;
+import org.seasar.doma.Id;
+import org.seasar.doma.ModifiedProperties;
 import org.seasar.doma.Version;
-import org.seasar.doma.it.domain.IdDomain;
-import org.seasar.doma.it.domain.LocationDomain;
-import org.seasar.doma.it.domain.NameDomain;
-import org.seasar.doma.it.domain.NoDomain;
-import org.seasar.doma.it.domain.VersionDomain;
 
 @Entity
-public interface Department {
+public class Department {
 
-    @org.seasar.doma.Id
-    IdDomain department_id();
+    @Id
+    Integer department_id;
 
-    NoDomain department_no();
+    Integer department_no;
 
-    NameDomain department_name();
+    String department_name;
 
-    LocationDomain location();
+    String location;
 
     @Version
-    VersionDomain version();
+    Integer version;
+
+    @ModifiedProperties
+    Set<String> modifiedProperties = new HashSet<String>();
+
+    public Integer getDepartment_id() {
+        return department_id;
+    }
+
+    public void setDepartment_id(Integer departmentId) {
+        modifiedProperties.add("departmentId");
+        department_id = departmentId;
+    }
+
+    public Integer getDepartment_no() {
+        return department_no;
+    }
+
+    public void setDepartment_no(Integer departmentNo) {
+        modifiedProperties.add("departmentNo");
+        department_no = departmentNo;
+    }
+
+    public String getDepartment_name() {
+        return department_name;
+    }
+
+    public void setDepartment_name(String departmentName) {
+        modifiedProperties.add("departmentName");
+        department_name = departmentName;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        modifiedProperties.add("location");
+        this.location = location;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        modifiedProperties.add("version");
+        this.version = version;
+    }
+
 }

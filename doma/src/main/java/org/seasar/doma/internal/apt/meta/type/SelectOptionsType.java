@@ -6,6 +6,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.TypeUtil;
+import org.seasar.doma.jdbc.SelectOptions;
 
 public class SelectOptionsType {
 
@@ -27,7 +28,7 @@ public class SelectOptionsType {
     public static SelectOptionsType newInstance(TypeMirror type,
             ProcessingEnvironment env) {
         assertNotNull(type, env);
-        if (!TypeUtil.isSelectOptions(type, env)) {
+        if (!TypeUtil.isAssignable(type, SelectOptions.class, env)) {
             return null;
         }
         SelectOptionsType selectOptionsType = new SelectOptionsType();

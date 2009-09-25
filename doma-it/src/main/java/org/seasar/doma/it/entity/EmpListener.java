@@ -28,14 +28,12 @@ public class EmpListener implements EntityListener<Emp> {
 
     @Override
     public void preInsert(Emp entity) {
-        Timestamp timestamp = new Timestamp(new Date().getTime());
-        entity.insertTimestamp().set(timestamp);
+        entity.setInsertTimestamp(new Timestamp(new Date().getTime()));
     }
 
     @Override
     public void preUpdate(Emp entity) {
-        Timestamp timestamp = new Timestamp(new Date().getTime());
-        entity.updateTimestamp().set(timestamp);
+        entity.setUpdateTimestamp(new Timestamp(new Date().getTime()));
     }
 
 }

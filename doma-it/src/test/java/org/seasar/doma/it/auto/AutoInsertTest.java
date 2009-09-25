@@ -30,23 +30,12 @@ import org.seasar.doma.it.dao.SequenceStrategyDao;
 import org.seasar.doma.it.dao.SequenceStrategyDao_;
 import org.seasar.doma.it.dao.TableStrategyDao;
 import org.seasar.doma.it.dao.TableStrategyDao_;
-import org.seasar.doma.it.domain.IdDomain;
-import org.seasar.doma.it.domain.LocationDomain;
-import org.seasar.doma.it.domain.NameDomain;
-import org.seasar.doma.it.domain.NoDomain;
-import org.seasar.doma.it.domain.VersionDomain;
 import org.seasar.doma.it.entity.CompKeyDepartment;
-import org.seasar.doma.it.entity.CompKeyDepartment_;
 import org.seasar.doma.it.entity.Department;
-import org.seasar.doma.it.entity.Department_;
 import org.seasar.doma.it.entity.IdentityStrategy;
-import org.seasar.doma.it.entity.IdentityStrategy_;
 import org.seasar.doma.it.entity.NoId;
-import org.seasar.doma.it.entity.NoId_;
 import org.seasar.doma.it.entity.SequenceStrategy;
-import org.seasar.doma.it.entity.SequenceStrategy_;
 import org.seasar.doma.it.entity.TableStrategy;
-import org.seasar.doma.it.entity.TableStrategy_;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.DomaMessageCode;
 import org.seasar.framework.unit.Seasar2;
@@ -57,65 +46,65 @@ public class AutoInsertTest {
 
     public void test() throws Exception {
         DepartmentDao dao = new DepartmentDao_();
-        Department department = new Department_();
-        department.department_id().set(99);
-        department.department_no().set(99);
-        department.department_name().set("hoge");
+        Department department = new Department();
+        department.setDepartment_id(99);
+        department.setDepartment_no(99);
+        department.setDepartment_name("hoge");
         int result = dao.insert(department);
         assertEquals(1, result);
-        assertEquals(new VersionDomain(1), department.version());
+        assertEquals(new Integer(1), department.getVersion());
 
-        department = dao.selectById(new IdDomain(99));
-        assertEquals(new IdDomain(99), department.department_id());
-        assertEquals(new NoDomain(99), department.department_no());
-        assertEquals(new NameDomain("hoge"), department.department_name());
-        assertTrue(department.location().isNull());
-        assertEquals(new VersionDomain(1), department.version());
+        department = dao.selectById(new Integer(99));
+        assertEquals(new Integer(99), department.getDepartment_id());
+        assertEquals(new Integer(99), department.getDepartment_no());
+        assertEquals("hoge", department.getDepartment_name());
+        assertNull(department.getLocation());
+        assertEquals(new Integer(1), department.getVersion());
     }
 
     public void testExcludesNull() throws Exception {
         DepartmentDao dao = new DepartmentDao_();
-        Department department = new Department_();
-        department.department_id().set(99);
-        department.department_no().set(99);
-        department.department_name().set("hoge");
+        Department department = new Department();
+        department.setDepartment_id(99);
+        department.setDepartment_no(99);
+        department.setDepartment_name("hoge");
         int result = dao.insert_excludesNull(department);
         assertEquals(1, result);
-        assertEquals(new VersionDomain(1), department.version());
+        assertEquals(new Integer(1), department.getVersion());
 
-        department = dao.selectById(new IdDomain(99));
-        assertEquals(new IdDomain(99), department.department_id());
-        assertEquals(new NoDomain(99), department.department_no());
-        assertEquals(new NameDomain("hoge"), department.department_name());
-        assertEquals(new LocationDomain("TOKYO"), department.location());
-        assertEquals(new VersionDomain(1), department.version());
+        department = dao.selectById(new Integer(99));
+        assertEquals(new Integer(99), department.getDepartment_id());
+        assertEquals(new Integer(99), department.getDepartment_no());
+        assertEquals("hoge", department.getDepartment_name());
+        assertEquals("TOKYO", department.getLocation());
+        assertEquals(new Integer(1), department.getVersion());
     }
 
     public void testCompositeKey() throws Exception {
         CompKeyDepartmentDao dao = new CompKeyDepartmentDao_();
-        CompKeyDepartment department = new CompKeyDepartment_();
-        department.department_id1().set(99);
-        department.department_id2().set(99);
-        department.department_no().set(99);
-        department.department_name().set("hoge");
+        CompKeyDepartment department = new CompKeyDepartment();
+        department.setDepartment_id1(99);
+        department.setDepartment_id2(99);
+        department.setDepartment_no(99);
+        department.setDepartment_name("hoge");
         int result = dao.insert(department);
         assertEquals(1, result);
-        assertEquals(new VersionDomain(1), department.version());
+        assertEquals(new Integer(1), department.getVersion());
 
-        department = dao.selectById(new IdDomain(99), new IdDomain(99));
-        assertEquals(new IdDomain(99), department.department_id1());
-        assertEquals(new IdDomain(99), department.department_id2());
-        assertEquals(new NoDomain(99), department.department_no());
-        assertEquals(new NameDomain("hoge"), department.department_name());
-        assertTrue(department.location().isNull());
-        assertEquals(new VersionDomain(1), department.version());
+        department = dao.selectById(99, 99);
+        assertEquals(new Integer(99), department.getDepartment_id1());
+        assertEquals(new Integer(99), department.getDepartment_id2());
+        assertEquals(new Integer(99), department.getDepartment_no());
+        assertEquals("hoge", department.getDepartment_name());
+        assertNull(department.getLocation());
+        assertEquals(new Integer(1), department.getVersion());
     }
 
     public void testIdNotAssigned() throws Exception {
         DepartmentDao dao = new DepartmentDao_();
-        Department department = new Department_();
-        department.department_no().set(99);
-        department.department_name().set("hoge");
+        Department department = new Department();
+        department.setDepartment_no(99);
+        department.setDepartment_name("hoge");
         try {
             dao.insert(department);
             fail();
@@ -128,9 +117,9 @@ public class AutoInsertTest {
     public void testId_Identity() throws Exception {
         IdentityStrategyDao dao = new IdentityStrategyDao_();
         for (int i = 0; i < 110; i++) {
-            IdentityStrategy entity = new IdentityStrategy_();
+            IdentityStrategy entity = new IdentityStrategy();
             dao.insert(entity);
-            assertFalse(entity.id().isNull());
+            assertNotNull(entity.getId());
         }
     }
 
@@ -138,26 +127,26 @@ public class AutoInsertTest {
     public void testId_sequence() throws Exception {
         SequenceStrategyDao dao = new SequenceStrategyDao_();
         for (int i = 0; i < 110; i++) {
-            SequenceStrategy entity = new SequenceStrategy_();
+            SequenceStrategy entity = new SequenceStrategy();
             dao.insert(entity);
-            assertFalse(entity.id().isNull());
+            assertNotNull(entity.getId());
         }
     }
 
     public void testId_table() throws Exception {
         TableStrategyDao dao = new TableStrategyDao_();
         for (int i = 0; i < 110; i++) {
-            TableStrategy entity = new TableStrategy_();
+            TableStrategy entity = new TableStrategy();
             dao.insert(entity);
-            assertFalse(entity.id().isNull());
+            assertNull(entity.getId());
         }
     }
 
     public void testNoId() throws Exception {
         NoIdDao dao = new NoIdDao_();
-        NoId entity = new NoId_();
-        entity.value1().set(1);
-        entity.value2().set(2);
+        NoId entity = new NoId();
+        entity.setValue1(1);
+        entity.setValue2(2);
         int result = dao.insert(entity);
         assertEquals(1, result);
     }

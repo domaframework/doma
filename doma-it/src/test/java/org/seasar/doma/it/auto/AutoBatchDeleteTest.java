@@ -26,13 +26,9 @@ import org.seasar.doma.it.dao.EmployeeDao;
 import org.seasar.doma.it.dao.EmployeeDao_;
 import org.seasar.doma.it.dao.NoIdDao;
 import org.seasar.doma.it.dao.NoIdDao_;
-import org.seasar.doma.it.domain.IdDomain;
 import org.seasar.doma.it.entity.CompKeyEmployee;
-import org.seasar.doma.it.entity.CompKeyEmployee_;
 import org.seasar.doma.it.entity.Employee;
-import org.seasar.doma.it.entity.Employee_;
 import org.seasar.doma.it.entity.NoId;
-import org.seasar.doma.it.entity.NoId_;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.doma.message.DomaMessageCode;
@@ -43,73 +39,74 @@ public class AutoBatchDeleteTest {
 
     public void test() throws Exception {
         EmployeeDao dao = new EmployeeDao_();
-        Employee employee = new Employee_();
-        employee.employee_id().set(1);
-        employee.version().set(1);
-        Employee employee2 = new Employee_();
-        employee2.employee_id().set(2);
-        employee2.version().set(1);
+        Employee employee = new Employee();
+        employee.setEmployee_id(1);
+        employee.setVersion(1);
+        Employee employee2 = new Employee();
+        employee2.setEmployee_id(2);
+        employee2.setVersion(2);
         int[] result = dao.delete(Arrays.asList(employee, employee2));
         assertEquals(2, result.length);
         assertEquals(1, result[0]);
         assertEquals(1, result[1]);
 
-        employee = dao.selectById(new IdDomain(1));
+        employee = dao.selectById(1);
         assertNull(employee);
-        employee = dao.selectById(new IdDomain(2));
+        employee = dao.selectById(2);
         assertNull(employee);
     }
 
     public void testIgnoresVersion() throws Exception {
         EmployeeDao dao = new EmployeeDao_();
-        Employee employee = new Employee_();
-        employee.employee_id().set(1);
-        employee.version().set(99);
-        Employee employee2 = new Employee_();
-        employee2.employee_id().set(2);
-        employee2.version().set(99);
+        Employee employee = new Employee();
+        employee.setEmployee_id(1);
+        employee.setVersion(99);
+        Employee employee2 = new Employee();
+        employee2.setEmployee_id(2);
+        employee2.setVersion(99);
+        ;
         int[] result = dao.delete_ignoresVersion(Arrays.asList(employee,
                 employee2));
         assertEquals(2, result.length);
         assertEquals(1, result[0]);
         assertEquals(1, result[1]);
 
-        employee = dao.selectById(new IdDomain(1));
+        employee = dao.selectById(1);
         assertNull(employee);
-        employee = dao.selectById(new IdDomain(2));
+        employee = dao.selectById(2);
         assertNull(employee);
     }
 
     public void testCompositeKey() throws Exception {
         CompKeyEmployeeDao dao = new CompKeyEmployeeDao_();
-        CompKeyEmployee employee = new CompKeyEmployee_();
-        employee.employee_id1().set(1);
-        employee.employee_id2().set(1);
-        employee.version().set(1);
-        CompKeyEmployee employee2 = new CompKeyEmployee_();
-        employee2.employee_id1().set(2);
-        employee2.employee_id2().set(2);
-        employee2.version().set(1);
+        CompKeyEmployee employee = new CompKeyEmployee();
+        employee.setEmployee_id1(1);
+        employee.setEmployee_id2(1);
+        employee.setVersion(1);
+        CompKeyEmployee employee2 = new CompKeyEmployee();
+        employee2.setEmployee_id1(2);
+        employee2.setEmployee_id2(2);
+        employee2.setVersion(1);
 
         int[] result = dao.delete(Arrays.asList(employee, employee2));
         assertEquals(2, result.length);
         assertEquals(1, result[0]);
         assertEquals(1, result[1]);
 
-        employee = dao.selectById(new IdDomain(1), new IdDomain(1));
+        employee = dao.selectById(1, 1);
         assertNull(employee);
-        employee = dao.selectById(new IdDomain(2), new IdDomain(2));
+        employee = dao.selectById(2, 2);
         assertNull(employee);
     }
 
     public void testOptimisticLockException() throws Exception {
         EmployeeDao dao = new EmployeeDao_();
-        Employee employee1 = dao.selectById(new IdDomain(1));
-        employee1.employee_name().set("hoge");
-        Employee employee2 = dao.selectById(new IdDomain(2));
-        employee2.employee_name().set("foo");
-        Employee employee3 = dao.selectById(new IdDomain(1));
-        employee2.employee_name().set("bar");
+        Employee employee1 = dao.selectById(1);
+        employee1.setEmployee_name("hoge");
+        Employee employee2 = dao.selectById(2);
+        employee2.setEmployee_name("foo");
+        Employee employee3 = dao.selectById(1);
+        employee2.setEmployee_name("bar");
         dao.delete(employee1);
         try {
             dao.delete(Arrays.asList(employee2, employee3));
@@ -120,12 +117,12 @@ public class AutoBatchDeleteTest {
 
     public void testSuppressesOptimisticLockException() throws Exception {
         EmployeeDao dao = new EmployeeDao_();
-        Employee employee1 = dao.selectById(new IdDomain(1));
-        employee1.employee_name().set("hoge");
-        Employee employee2 = dao.selectById(new IdDomain(2));
-        employee2.employee_name().set("foo");
-        Employee employee3 = dao.selectById(new IdDomain(1));
-        employee2.employee_name().set("bar");
+        Employee employee1 = dao.selectById(1);
+        employee1.setEmployee_name("hoge");
+        Employee employee2 = dao.selectById(2);
+        employee2.setEmployee_name("foo");
+        Employee employee3 = dao.selectById(1);
+        employee2.setEmployee_name("bar");
         dao.delete(employee1);
         dao.delete_suppressesOptimisticLockException(Arrays.asList(employee2,
                 employee3));
@@ -133,12 +130,12 @@ public class AutoBatchDeleteTest {
 
     public void testNoId() throws Exception {
         NoIdDao dao = new NoIdDao_();
-        NoId entity = new NoId_();
-        entity.value1().set(1);
-        entity.value2().set(2);
-        NoId entity2 = new NoId_();
-        entity2.value1().set(1);
-        entity2.value2().set(2);
+        NoId entity = new NoId();
+        entity.setValue1(1);
+        entity.setValue2(2);
+        NoId entity2 = new NoId();
+        entity2.setValue1(1);
+        entity2.setValue2(2);
         try {
             dao.delete(Arrays.asList(entity, entity2));
             fail();

@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.it.dao;
 
+import java.sql.Time;
 import java.util.List;
 
 import org.seasar.doma.Dao;
@@ -23,11 +24,10 @@ import org.seasar.doma.InOut;
 import org.seasar.doma.Out;
 import org.seasar.doma.Procedure;
 import org.seasar.doma.ResultSet;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-import org.seasar.doma.domain.BuiltinTimeDomain;
 import org.seasar.doma.it.ItConfig;
 import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.Employee;
+import org.seasar.doma.jdbc.Reference;
 
 @Dao(config = ItConfig.class)
 public interface ProcedureDao {
@@ -36,46 +36,42 @@ public interface ProcedureDao {
     void proc_none_param();
 
     @Procedure
-    void proc_simpletype_param(@In BuiltinIntegerDomain param1);
+    void proc_simpletype_param(@In Integer param1);
 
     @Procedure
-    void proc_simpletype_time_param(@In BuiltinTimeDomain param1);
+    void proc_simpletype_time_param(@In Time param1);
 
     @Procedure
-    void proc_dto_param(@In BuiltinIntegerDomain param1,
-            @InOut BuiltinIntegerDomain param2, @Out BuiltinIntegerDomain param3);
+    void proc_dto_param(@In Integer param1, @InOut Reference<Integer> param2,
+            @Out Reference<Integer> param3);
 
     @Procedure
-    void proc_dto_time_param(@In BuiltinTimeDomain param1,
-            @InOut BuiltinTimeDomain param2, @Out BuiltinTimeDomain param3);
+    void proc_dto_time_param(@In Time param1, @InOut Reference<Time> param2,
+            @Out Reference<Time> param3);
 
     @Procedure
     void proc_resultset(@ResultSet List<Employee> employees,
-            @In BuiltinIntegerDomain employee_id);
+            @In Integer employee_id);
 
     @Procedure
     void proc_resultset_out(@ResultSet List<Employee> employees,
-            @In BuiltinIntegerDomain employee_id,
-            @Out BuiltinIntegerDomain count);
+            @In Integer employee_id, @Out Reference<Integer> count);
 
     @Procedure
     void proc_resultset_update(@ResultSet List<Employee> employees,
-            @In BuiltinIntegerDomain employee_id);
+            @In Integer employee_id);
 
     @Procedure
     void proc_resultset_update2(@ResultSet List<Employee> employees,
-            @In BuiltinIntegerDomain employee_id);
+            @In Integer employee_id);
 
     @Procedure
     void proc_resultsets(@ResultSet List<Employee> employees,
-            @ResultSet List<Department> departments,
-            @In BuiltinIntegerDomain employee_id,
-            @In BuiltinIntegerDomain department_id);
+            @ResultSet List<Department> departments, @In Integer employee_id,
+            @In Integer department_id);
 
     @Procedure
     void proc_resultsets_updates_out(@ResultSet List<Employee> employees,
-            @ResultSet List<Department> departments,
-            @In BuiltinIntegerDomain employee_id,
-            @In BuiltinIntegerDomain department_id,
-            @Out BuiltinIntegerDomain count);
+            @ResultSet List<Department> departments, @In Integer employee_id,
+            @In Integer department_id, @Out Reference<Integer> count);
 }

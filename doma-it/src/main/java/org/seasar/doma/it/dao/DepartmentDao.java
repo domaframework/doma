@@ -24,14 +24,13 @@ import org.seasar.doma.Insert;
 import org.seasar.doma.Select;
 import org.seasar.doma.Update;
 import org.seasar.doma.it.ItConfig;
-import org.seasar.doma.it.domain.IdDomain;
 import org.seasar.doma.it.entity.Department;
 
 @Dao(config = ItConfig.class)
 public interface DepartmentDao {
 
     @Select
-    Department selectById(IdDomain department_id);
+    Department selectById(Integer department_id);
 
     @Insert
     int insert(Department entity);

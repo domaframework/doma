@@ -17,6 +17,7 @@ package org.seasar.doma.internal.apt.meta.type;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -73,7 +74,7 @@ public class CollectionType {
     public static CollectionType newInstance(TypeMirror type,
             ProcessingEnvironment env) {
         assertNotNull(type, env);
-        if (!TypeUtil.isCollection(type, env)) {
+        if (!TypeUtil.isAssignable(type, Collection.class, env)) {
             return null;
         }
         CollectionType collectionType = new CollectionType();

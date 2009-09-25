@@ -15,18 +15,17 @@
  */
 package org.seasar.doma.it.entity;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
+import org.seasar.doma.ModifiedProperties;
 import org.seasar.doma.Transient;
 import org.seasar.doma.Version;
-import org.seasar.doma.domain.BuiltinStringDomain;
-import org.seasar.doma.domain.BuiltinTimestampDomain;
-import org.seasar.doma.it.domain.IdDomain;
-import org.seasar.doma.it.domain.NameDomain;
-import org.seasar.doma.it.domain.SalaryDomain;
-import org.seasar.doma.it.domain.VersionDomain;
 
 /**
  * 
@@ -34,26 +33,101 @@ import org.seasar.doma.it.domain.VersionDomain;
  * 
  */
 @Entity(listener = EmpListener.class)
-public interface Emp {
+public class Emp {
 
     @Id
-    IdDomain id();
+    Integer id;
 
-    NameDomain name();
+    String name;
 
-    SalaryDomain salary();
+    BigDecimal salary;
 
     @Version
-    VersionDomain version();
+    Integer version;
 
-    BuiltinTimestampDomain insertTimestamp();
+    Timestamp insertTimestamp;
 
-    BuiltinTimestampDomain updateTimestamp();
-
-    @Transient
-    BuiltinStringDomain temp();
+    Timestamp updateTimestamp;
 
     @Transient
-    List<BuiltinStringDomain> tempList();
+    String temp;
+
+    @Transient
+    List<String> tempList;
+
+    @ModifiedProperties
+    Set<String> modifiedProperties = new HashSet<String>();
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        modifiedProperties.add("id");
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        modifiedProperties.add("name");
+        this.name = name;
+    }
+
+    public BigDecimal getSalary() {
+        return salary;
+    }
+
+    public void setSalary(BigDecimal salary) {
+        modifiedProperties.add("salary");
+        this.salary = salary;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        modifiedProperties.add("version");
+        this.version = version;
+    }
+
+    public Timestamp getInsertTimestamp() {
+        return insertTimestamp;
+    }
+
+    public void setInsertTimestamp(Timestamp insertTimestamp) {
+        modifiedProperties.add("insertTimestamp");
+        this.insertTimestamp = insertTimestamp;
+    }
+
+    public Timestamp getUpdateTimestamp() {
+        return updateTimestamp;
+    }
+
+    public void setUpdateTimestamp(Timestamp updateTimestamp) {
+        modifiedProperties.add("updateTimestamp");
+        this.updateTimestamp = updateTimestamp;
+    }
+
+    public String getTemp() {
+        return temp;
+    }
+
+    public void setTemp(String temp) {
+        modifiedProperties.add("temp");
+        this.temp = temp;
+    }
+
+    public List<String> getTempList() {
+        return tempList;
+    }
+
+    public void setTempList(List<String> tempList) {
+        modifiedProperties.add("tempList");
+        this.tempList = tempList;
+    }
 
 }
