@@ -5,19 +5,21 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
+import org.seasar.doma.internal.apt.meta.type.WrapperType;
+
 public class DomainMeta {
 
     protected final TypeElement typeElement;
 
     protected final TypeMirror type;
 
-    protected String wrapperTypeName;
-
     protected TypeElement valueTypeElement;
 
     protected TypeMirror valueType;
 
     protected String accessorMethod;
+
+    protected WrapperType wrapperType;
 
     public DomainMeta(TypeElement typeElement, TypeMirror type) {
         assertNotNull(typeElement, type);
@@ -27,14 +29,6 @@ public class DomainMeta {
 
     public TypeMirror getType() {
         return type;
-    }
-
-    public String getWrapperTypeName() {
-        return wrapperTypeName;
-    }
-
-    public void setWrapperTypeName(String wrapperTypeName) {
-        this.wrapperTypeName = wrapperTypeName;
     }
 
     public String getAccessorMethod() {
@@ -63,6 +57,14 @@ public class DomainMeta {
 
     public TypeElement getTypeElement() {
         return typeElement;
+    }
+
+    public WrapperType getWrapperType() {
+        return wrapperType;
+    }
+
+    public void setWrapperType(WrapperType wrapperType) {
+        this.wrapperType = wrapperType;
     }
 
 }

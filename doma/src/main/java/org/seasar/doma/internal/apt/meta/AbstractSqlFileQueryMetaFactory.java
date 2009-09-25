@@ -37,9 +37,8 @@ import org.seasar.doma.message.DomaMessageCode;
 public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQueryMeta>
         extends AbstractQueryMetaFactory<M> {
 
-    public AbstractSqlFileQueryMetaFactory(ProcessingEnvironment env,
-            DomainMetaFactory domainMetaFactory) {
-        super(env, domainMetaFactory);
+    public AbstractSqlFileQueryMetaFactory(ProcessingEnvironment env) {
+        super(env);
     }
 
     protected void doSqlFile(M queryMeta, ExecutableElement method,

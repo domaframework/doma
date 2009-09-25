@@ -39,7 +39,6 @@ import org.seasar.doma.internal.apt.meta.EntityListParameterMeta;
 import org.seasar.doma.internal.apt.meta.EntityListResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.InOutParameterMeta;
 import org.seasar.doma.internal.apt.meta.InParameterMeta;
-import org.seasar.doma.internal.apt.meta.IterationCallbackMeta;
 import org.seasar.doma.internal.apt.meta.OutParameterMeta;
 import org.seasar.doma.internal.apt.meta.QueryMeta;
 import org.seasar.doma.internal.apt.meta.QueryMetaVisitor;
@@ -51,6 +50,10 @@ import org.seasar.doma.internal.apt.meta.SqlFileSelectQueryMeta;
 import org.seasar.doma.internal.apt.meta.ValueListParameterMeta;
 import org.seasar.doma.internal.apt.meta.ValueListResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.ValueResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.type.CollectionType;
+import org.seasar.doma.internal.apt.meta.type.EntityType;
+import org.seasar.doma.internal.apt.meta.type.IterationCallbackType;
+import org.seasar.doma.internal.apt.meta.type.ValueType;
 import org.seasar.doma.internal.jdbc.command.EntityIterationHandler;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
@@ -208,15 +211,15 @@ public class DaoGenerator extends AbstractGenerator {
                     "query.setSqlFilePath(%1$s.buildPath(\"%2$s\", \"%3$s\"));%n",
                     SqlFileUtil.class.getName(), daoMeta.getDaoElement()
                             .getQualifiedName(), m.getName());
-            if (m.hasSelectOptions()) {
-                iprint("query.setOptions(%1$s);%n", m.getSelectOptions()
-                        .getName());
+            if (m.getSelectOptionsType() != null) {
+                iprint("query.setOptions(%1$s);%n", m
+                        .getSelectOptionsParameterName());
             }
             for (Iterator<QueryParameterMeta> it = m.getParameterMetas()
                     .iterator(); it.hasNext();) {
                 QueryParameterMeta parameterMeta = it.next();
                 iprint("query.addParameter(\"%1$s\", %2$s.class, %1$s);%n",
-                        parameterMeta.getName(), parameterMeta.getTypeElement()
+                        parameterMeta.getName(), parameterMeta
                                 .getQualifiedName());
             }
             iprint("query.setCallerClassName(\"%1$s\");%n", qualifiedName);
@@ -234,23 +237,25 @@ public class DaoGenerator extends AbstractGenerator {
             QueryReturnMeta resultMeta = m.getReturnMeta();
             String commandClassName = m.getCommandClass().getName();
             if (m.isIterated()) {
-                IterationCallbackMeta callbackMeta = m
-                        .getIterationCallbackMeta();
-                if (callbackMeta.isEntityTarget()) {
+                IterationCallbackType callbackType = m
+                        .getIterationCallbackType();
+                if (callbackType.getEntityType() != null) {
+                    EntityType entityType = callbackType.getEntityType();
                     iprint(
                             "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s, %4$s>(new %4$s%5$s(), %6$s));%n",
                             commandClassName, resultMeta.getTypeName(),
-                            EntityIterationHandler.class.getName(),
-                            callbackMeta.getTargetTypeName(), entitySuffix,
-                            callbackMeta.getQueryParameterMeta().getName());
+                            EntityIterationHandler.class.getName(), entityType
+                                    .getTypeName(), entitySuffix, m
+                                    .getIterationCallbackPrameterName());
                 } else {
+                    ValueType valueType = callbackType.getValueType();
                     iprint(
                             "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s, %4$s>(new %5$s(), %6$s));%n",
                             commandClassName, resultMeta.getTypeName(),
-                            ValueIterationHandler.class.getName(), callbackMeta
-                                    .getTargetTypeName(), callbackMeta
-                                    .getTargetWrapperType(), callbackMeta
-                                    .getQueryParameterMeta().getName());
+                            ValueIterationHandler.class.getName(), valueType
+                                    .getTypeName(), valueType.getWrapperType()
+                                    .getTypeName(), m
+                                    .getIterationCallbackPrameterName());
                 }
                 if ("void".equals(resultMeta.getTypeName())) {
                     iprint("command.execute();%n");
@@ -264,35 +269,41 @@ public class DaoGenerator extends AbstractGenerator {
                     iprint("return result;%n");
                 }
             } else {
-                if (m.getReturnMeta().isCollection()) {
-                    if (m.getReturnMeta().isCollectionElementEntity()) {
+                CollectionType collectionType = m.getReturnMeta()
+                        .getCollectionType();
+                if (collectionType != null) {
+                    EntityType entityType = collectionType.getEntityType();
+                    if (entityType != null) {
                         iprint(
                                 "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s>(new %4$s%5$s()));%n",
-                                commandClassName, resultMeta.getTypeName(),
+                                commandClassName, collectionType.getTypeName(),
                                 EntityResultListHandler.class.getName(),
-                                resultMeta.getCollectionElementTypeName(),
-                                entitySuffix);
+                                entityType.getTypeName(), entitySuffix);
                     } else {
+                        ValueType valueType = collectionType.getValueType();
                         iprint(
                                 "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s>(new %5$s()));%n",
-                                commandClassName, resultMeta.getTypeName(),
+                                commandClassName, collectionType.getTypeName(),
                                 ValueResultListHandler.class.getName(),
-                                resultMeta.getCollectionElementTypeName(),
-                                resultMeta
-                                        .getCollectionElementWrapperTypeName());
+                                valueType.getTypeName(), valueType
+                                        .getWrapperType().getTypeName());
                     }
-                } else if (m.getReturnMeta().isEntity()) {
-                    iprint(
-                            "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s>(new %4$s%5$s()));%n",
-                            commandClassName, resultMeta.getTypeName(),
-                            EntitySingleResultHandler.class.getName(),
-                            resultMeta.getTypeName(), entitySuffix);
                 } else {
-                    iprint(
-                            "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s>(new %4$s()));%n",
-                            commandClassName, resultMeta.getTypeName(),
-                            ValueSingleResultHandler.class.getName(),
-                            resultMeta.getWrapperTypeName());
+                    EntityType entityType = m.getReturnMeta().getEntityType();
+                    if (entityType != null) {
+                        iprint(
+                                "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s>(new %4$s%5$s()));%n",
+                                commandClassName, entityType.getTypeName(),
+                                EntitySingleResultHandler.class.getName(),
+                                entityType.getTypeName(), entitySuffix);
+                    } else {
+                        ValueType valueType = m.getReturnMeta().getValueType();
+                        iprint(
+                                "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s>(new %4$s()));%n",
+                                commandClassName, valueType.getTypeName(),
+                                ValueSingleResultHandler.class.getName(),
+                                valueType.getWrapperType().getTypeName());
+                    }
                 }
                 iprint("%1$s result = command.execute();%n", resultMeta
                         .getTypeName());
@@ -309,10 +320,10 @@ public class DaoGenerator extends AbstractGenerator {
             printPrerequisiteStatements(m);
 
             iprint("%1$s<%2$s> query = new %1$s<%2$s>(new %2$s%3$s());%n", m
-                    .getQueryClass().getName(), m.getEntity().getTypeName(),
-                    entitySuffix);
+                    .getQueryClass().getName(),
+                    m.getEntityType().getTypeName(), entitySuffix);
             iprint("query.setConfig(config);%n");
-            iprint("query.setEntity(%1$s);%n", m.getEntity().getName());
+            iprint("query.setEntity(%1$s);%n", m.getEntityParameterName());
             iprint("query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("query.setCallerMethodName(\"%1$s\");%n", m.getName());
             if (m.getQueryTimeout() != null) {
@@ -371,7 +382,7 @@ public class DaoGenerator extends AbstractGenerator {
                     .iterator(); it.hasNext();) {
                 QueryParameterMeta parameterMeta = it.next();
                 iprint("query.addParameter(\"%1$s\", %2$s.class, %1$s);%n",
-                        parameterMeta.getName(), parameterMeta.getTypeElement()
+                        parameterMeta.getName(), parameterMeta
                                 .getQualifiedName());
             }
             iprint("query.setCallerClassName(\"%1$s\");%n", qualifiedName);
@@ -397,11 +408,10 @@ public class DaoGenerator extends AbstractGenerator {
             printPrerequisiteStatements(m);
 
             iprint("%1$s<%2$s> query = new %1$s<%2$s>(new %2$s%3$s());%n", m
-                    .getQueryClass().getName(), m.getEntityCollection()
-                    .getCollectionElementTypeName(), entitySuffix);
+                    .getQueryClass().getName(),
+                    m.getEntityType().getTypeName(), entitySuffix);
             iprint("query.setConfig(config);%n");
-            iprint("query.setEntities(%1$s);%n", m.getEntityCollection()
-                    .getName());
+            iprint("query.setEntities(%1$s);%n", m.getEntitiesParameterName());
             iprint("query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("query.setCallerMethodName(\"%1$s\");%n", m.getName());
             if (m.getQueryTimeout() != null) {
@@ -444,17 +454,16 @@ public class DaoGenerator extends AbstractGenerator {
             printPrerequisiteStatements(m);
 
             iprint("%1$s<%2$s> query = new %1$s<%2$s>(new %2$s%3$s());%n", m
-                    .getQueryClass().getName(), m.getEntityCollection()
-                    .getCollectionElementTypeName(), entitySuffix);
+                    .getQueryClass().getName(),
+                    m.getEntityType().getTypeName(), entitySuffix);
             iprint("query.setConfig(config);%n");
-            iprint("query.setEntities(%1$s);%n", m.getEntityCollection()
-                    .getName());
+            iprint("query.setEntities(%1$s);%n", m.getEntitiesParameterName());
             iprint(
                     "query.setSqlFilePath(%1$s.buildPath(\"%2$s\", \"%3$s\"));%n",
                     SqlFileUtil.class.getName(), daoMeta.getDaoElement()
                             .getQualifiedName(), m.getName());
             iprint("query.setParameterName(\"%1$s\");%n", m
-                    .getEntityCollection().getName());
+                    .getEntitiesParameterName());
             iprint("query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("query.setCallerMethodName(\"%1$s\");%n", m.getName());
             if (m.getQueryTimeout() != null) {
@@ -556,7 +565,7 @@ public class DaoGenerator extends AbstractGenerator {
         @Override
         public Void visitArrayCreateQueryMeta(ArrayCreateQueryMeta m, Void p) {
             iprint("entering(\"%1$s\", \"%2$s\", (Object)%3$s);%n",
-                    qualifiedName, m.getName(), m.getArray().getName());
+                    qualifiedName, m.getName(), m.getParameterName());
             printPrerequisiteStatements(m);
 
             QueryReturnMeta resultMeta = m.getReturnMeta();
@@ -565,7 +574,7 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("query.setTypeName(\"%1$s\");%n", m.getJdbcTypeName());
-            iprint("query.setElements(%1$s);%n", m.getArray().getName());
+            iprint("query.setElements(%1$s);%n", m.getParameterName());
             iprint("query.prepare();%n");
             iprint("%1$s<%2$s> command = new %1$s<%2$s>(query);%n", m
                     .getCommandClass().getName(), resultMeta.getTypeName());

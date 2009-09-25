@@ -20,13 +20,13 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
 import org.seasar.doma.Update;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.TypeUtil;
+import org.seasar.doma.internal.apt.meta.type.CollectionType;
+import org.seasar.doma.internal.apt.meta.type.DomainType;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -36,9 +36,8 @@ import org.seasar.doma.message.DomaMessageCode;
 public class SqlFileModifyQueryMetaFactory extends
         AbstractSqlFileQueryMetaFactory<SqlFileModifyQueryMeta> {
 
-    public SqlFileModifyQueryMetaFactory(ProcessingEnvironment env,
-            DomainMetaFactory domainMetaFactory) {
-        super(env, domainMetaFactory);
+    public SqlFileModifyQueryMetaFactory(ProcessingEnvironment env) {
+        super(env);
     }
 
     @Override
@@ -98,24 +97,25 @@ public class SqlFileModifyQueryMetaFactory extends
     protected void doParameters(SqlFileModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         for (VariableElement parameter : method.getParameters()) {
-            QueryParameterMeta queryParameterMeta = createParameterMeta(parameter);
-            if (queryParameterMeta.isCollection()) {
-                TypeMirror elementType = queryParameterMeta
-                        .getCollectionElementType();
-                if (!TypeUtil.isDomain(elementType, env)) {
+            QueryParameterMeta parameterMeta = createParameterMeta(parameter);
+            if (parameterMeta.getCollectionType() != null) {
+                CollectionType collectionType = parameterMeta
+                        .getCollectionType();
+                DomainType domainType = collectionType.getDomainType();
+                if (domainType == null) {
                     throw new AptException(DomaMessageCode.DOMA4028, env,
                             method);
                 }
-            } else if (!queryParameterMeta.isEntity()) {
-                if (!queryParameterMeta.isBasic()) {
-                    throw new AptException(DomaMessageCode.DOMA4008, env,
-                            method, queryParameterMeta.getParameterElement());
-                }
+            } else if (parameterMeta.getEntityType() != null) {
+            } else if (parameterMeta.getValueType() != null) {
+            } else {
+                throw new AptException(DomaMessageCode.DOMA4008, env,
+                        parameterMeta.getParameterElement(), parameterMeta
+                                .getType());
             }
-            queryMeta.addParameterMetas(queryParameterMeta);
-            queryMeta.addExpressionParameterType(queryParameterMeta.getName(),
-                    queryParameterMeta.getType());
+            queryMeta.addParameterMetas(parameterMeta);
+            queryMeta.addExpressionParameterType(parameterMeta.getName(),
+                    parameterMeta.getType());
         }
     }
-
 }

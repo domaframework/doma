@@ -28,6 +28,7 @@ import org.seasar.doma.ResultSet;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.TypeUtil;
+import org.seasar.doma.internal.apt.meta.type.WrapperType;
 import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.message.DomaMessageCode;
 
@@ -38,9 +39,8 @@ import org.seasar.doma.message.DomaMessageCode;
 public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         extends AbstractQueryMetaFactory<M> {
 
-    public AutoModuleQueryMetaFactory(ProcessingEnvironment env,
-            DomainMetaFactory domainMetaFactory) {
-        super(env, domainMetaFactory);
+    public AutoModuleQueryMetaFactory(ProcessingEnvironment env) {
+        super(env);
     }
 
     @Override
@@ -53,8 +53,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
             CallableSqlParameterMeta callableSqlParameterMeta = createParameterMeta(
                     queryMeta, parameter, daoMeta);
             callableSqlParameterMeta.setName(parameterMeta.getName());
-            callableSqlParameterMeta.setTypeName(parameterMeta
-                    .getTypeName());
+            callableSqlParameterMeta.setTypeName(parameterMeta.getTypeName());
             queryMeta.addCallableSqlParameterMeta(callableSqlParameterMeta);
 
             queryMeta.addExpressionParameterType(parameterMeta.getName(),
@@ -81,14 +80,14 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                 if (isEntity(elementType)) {
                     return new EntityListParameterMeta(elementTypeName);
                 }
-                TypeMirror wrapperType = DomaTypes.getWrapperType(elementType,
+                WrapperType wrapperType = WrapperType.newInstance(elementType,
                         env);
                 if (wrapperType == null) {
                     throw new AptException(DomaMessageCode.DOMA4061, env,
                             param, elementType);
                 }
-                return new ValueListParameterMeta(elementTypeName, TypeUtil
-                        .getTypeName(wrapperType, env));
+                return new ValueListParameterMeta(elementTypeName, wrapperType
+                        .getTypeName());
             }
             throw new AptException(DomaMessageCode.DOMA4062, env, param);
         }
@@ -105,26 +104,26 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                 throw new AptException(DomaMessageCode.DOMA4099, env, param);
             }
             TypeMirror argumentType = declaredType.getTypeArguments().get(0);
-            TypeMirror wrapperType = DomaTypes
-                    .getWrapperType(argumentType, env);
+            WrapperType wrapperType = WrapperType
+                    .newInstance(argumentType, env);
             if (wrapperType == null) {
                 throw new AptException(DomaMessageCode.DOMA4100, env, param,
                         argumentType);
             }
             if (param.getAnnotation(Out.class) != null) {
                 return new OutParameterMeta(TypeUtil.getTypeName(argumentType,
-                        env), TypeUtil.getTypeName(wrapperType, env));
+                        env), wrapperType.getTypeName());
             }
             return new InOutParameterMeta(TypeUtil.getTypeName(argumentType,
-                    env), TypeUtil.getTypeName(wrapperType, env));
+                    env), wrapperType.getTypeName());
         }
         if (param.getAnnotation(In.class) != null) {
-            TypeMirror wrapperType = DomaTypes.getWrapperType(paramType, env);
+            WrapperType wrapperType = WrapperType.newInstance(paramType, env);
             if (wrapperType == null) {
                 throw new AptException(DomaMessageCode.DOMA4101, env, param,
                         paramType);
             }
-            return new InParameterMeta(TypeUtil.getTypeName(wrapperType, env));
+            return new InParameterMeta(wrapperType.getTypeName());
         }
         throw new AptException(DomaMessageCode.DOMA4066, env, param);
     }

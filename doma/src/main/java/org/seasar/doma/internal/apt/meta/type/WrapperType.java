@@ -1,4 +1,4 @@
-package org.seasar.doma.internal.apt.meta;
+package org.seasar.doma.internal.apt.meta.type;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
@@ -41,29 +41,62 @@ import org.seasar.doma.wrapper.StringWrapper;
 import org.seasar.doma.wrapper.TimeWrapper;
 import org.seasar.doma.wrapper.TimestampWrapper;
 
-public final class DomaTypes {
+/*
+ * Copyright 2004-2009 the Seasar Foundation and the Others.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+public final class WrapperType {
+
+    protected TypeMirror type;
+
+    protected String typeName;
+
+    protected TypeMirror wrappedType;
+
+    protected String wrappedTypeName;
+
+    public TypeMirror getType() {
+        return type;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public TypeMirror getWrappedType() {
+        return wrappedType;
+    }
+
+    public String getWrappedTypeName() {
+        return wrappedTypeName;
+    }
+
+    public boolean isWrappedTypePrimitive() {
+        return wrappedType.getKind().isPrimitive();
+    }
 
     public static boolean isSupportedType(TypeMirror typeMirror,
             ProcessingEnvironment env) {
         assertNotNull(typeMirror, env);
-        // if (TypeUtil.isAssignable(typeMirror, Collection.class, env)) {
-        // DeclaredType declaredType = TypeUtil
-        // .toDeclaredType(typeMirror, env);
-        // if (declaredType.getTypeArguments().isEmpty()) {
-        // return false;
-        // }
-        // TypeMirror elementType = declaredType.getTypeArguments().get(0);
-        // TypeMirror wrapperType = getWrapperType(elementType, env);
-        // return wrapperType != null;
-        // }
-        TypeMirror wrapperType = getWrapperType(typeMirror, env);
+        WrapperType wrapperType = newInstance(typeMirror, env);
         return wrapperType != null;
     }
 
-    public static TypeMirror getWrapperType(TypeMirror typeMirror,
+    public static WrapperType newInstance(TypeMirror wrappedType,
             ProcessingEnvironment env) {
-        assertNotNull(typeMirror, env);
-        Class<?> wrapperClass = typeMirror.accept(
+        assertNotNull(wrappedType, env);
+        Class<?> wrapperClass = wrappedType.accept(
                 new WrapperTypeMappingVisitor(env), null);
         if (wrapperClass == null) {
             return null;
@@ -73,7 +106,13 @@ public final class DomaTypes {
         if (wrapperTypeElement == null) {
             return null;
         }
-        return wrapperTypeElement.asType();
+        TypeMirror type = wrapperTypeElement.asType();
+        WrapperType wrapperType = new WrapperType();
+        wrapperType.type = type;
+        wrapperType.typeName = TypeUtil.getTypeName(type, env);
+        wrapperType.wrappedType = wrappedType;
+        wrapperType.wrappedTypeName = TypeUtil.getTypeName(wrappedType, env);
+        return wrapperType;
     }
 
     protected static class WrapperTypeMappingVisitor extends

@@ -2,19 +2,19 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import java.util.Collections;
-import java.util.List;
-
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.ElementUtil;
 import org.seasar.doma.internal.apt.TypeUtil;
+import org.seasar.doma.internal.apt.meta.type.CollectionType;
+import org.seasar.doma.internal.apt.meta.type.DomainType;
+import org.seasar.doma.internal.apt.meta.type.EntityType;
+import org.seasar.doma.internal.apt.meta.type.IterationCallbackType;
+import org.seasar.doma.internal.apt.meta.type.SelectOptionsType;
+import org.seasar.doma.internal.apt.meta.type.ValueType;
 import org.seasar.doma.message.DomaMessageCode;
 
 public class QueryParameterMeta {
@@ -25,57 +25,68 @@ public class QueryParameterMeta {
 
     protected final String name;
 
-    protected final TypeMirror type;
-
     protected final String typeName;
 
-    protected final TypeElement typeElement;
+    protected final String qualifiedName;
 
-    protected boolean collection;
+    protected final TypeMirror type;
 
-    protected final boolean basic;
+    protected CollectionType collectionType;
 
-    protected TypeMirror collectionElementType;
+    protected EntityType entityType;
 
-    protected String collectionElementTypeName;
+    protected DomainType domainType;
+
+    protected ValueType valueType;
+
+    protected SelectOptionsType selectOptionsType;
+
+    protected IterationCallbackType iterationCallbackType;
 
     public QueryParameterMeta(VariableElement parameterElement,
             ProcessingEnvironment env) {
         assertNotNull(parameterElement, env);
         this.parameterElement = parameterElement;
         this.env = env;
-        this.name = ElementUtil.getParameterName(parameterElement);
-        this.type = parameterElement.asType();
-        this.typeName = TypeUtil.getTypeName(type, env);
-        this.typeElement = TypeUtil.toTypeElement(type, env);
-        DeclaredType declaredType = TypeUtil.toDeclaredType(type, env);
+        name = ElementUtil.getParameterName(parameterElement);
+        type = parameterElement.asType();
+        typeName = TypeUtil.getTypeName(type, env);
+        qualifiedName = TypeUtil.getTypeName(env.getTypeUtils().erasure(type),
+                env);
 
-        if (typeElement != null && declaredType != null) {
-            List<? extends TypeParameterElement> typeParams = typeElement
-                    .getTypeParameters();
-            List<? extends TypeMirror> typeArgs = declaredType
-                    .getTypeArguments();
-            if (typeParams.size() > 0 && typeParams.size() != typeArgs.size()) {
-                throw new AptException(DomaMessageCode.DOMA4108, env,
-                        parameterElement, typeElement.getQualifiedName());
-            }
-
-            collection = TypeUtil.isCollection(declaredType, env);
-            if (collection) {
-                collectionElementType = typeArgs.get(0);
-                collectionElementTypeName = TypeUtil.getTypeName(
-                        collectionElementType, env);
+        collectionType = CollectionType.newInstance(type, env);
+        if (collectionType == null) {
+            entityType = EntityType.newInstance(type, env);
+            if (entityType == null) {
+                domainType = DomainType.newInstance(type, env);
+                if (domainType == null) {
+                    valueType = ValueType.newInstance(type, env);
+                    if (valueType == null) {
+                        selectOptionsType = SelectOptionsType.newInstance(type,
+                                env);
+                        if (selectOptionsType == null) {
+                            iterationCallbackType = IterationCallbackType
+                                    .newInstance(type, env);
+                        }
+                    }
+                }
             }
         }
-        this.basic = DomaTypes.isSupportedType(type, env);
+
+        if (collectionType != null && !collectionType.isParametarized()) {
+            throw new AptException(DomaMessageCode.DOMA4108, env,
+                    parameterElement, qualifiedName);
+        }
+        if (iterationCallbackType != null
+                && !iterationCallbackType.isParametarized()) {
+            throw new AptException(DomaMessageCode.DOMA4110, env,
+                    parameterElement, qualifiedName);
+        }
+
     }
 
     public VariableElement getParameterElement() {
         return parameterElement;
-    }
-
-    public String getTypeName() {
-        return typeName;
     }
 
     public String getName() {
@@ -86,55 +97,46 @@ public class QueryParameterMeta {
         return type;
     }
 
-    public TypeElement getTypeElement() {
-        return typeElement;
+    public String getTypeName() {
+        return typeName;
     }
 
-    public boolean isCollection() {
-        return collection;
+    public String getQualifiedName() {
+        return qualifiedName;
     }
 
-    public TypeMirror getCollectionElementType() {
-        return collectionElementType;
+    public CollectionType getCollectionType() {
+        return collectionType;
     }
 
-    public String getCollectionElementTypeName() {
-        return collectionElementTypeName;
+    public EntityType getEntityType() {
+        return entityType;
     }
 
-    public void setCollectionElementTypeName(String collectionElementTypeName) {
-        this.collectionElementTypeName = collectionElementTypeName;
+    public DomainType getDomainType() {
+        return domainType;
     }
 
-    public boolean isEntity() {
-        return TypeUtil.isEntity(type, env);
+    public ValueType getValueType() {
+        return valueType;
     }
 
-    public boolean isDomain() {
-        return TypeUtil.isDomain(type, env);
+    public SelectOptionsType getSelectOptionsType() {
+        return selectOptionsType;
     }
 
-    public boolean isSelectOptions() {
-        return TypeUtil.isSelectOptions(type, env);
-    }
-
-    public boolean isIterationCallback() {
-        return TypeUtil.isIterationCallback(type, env);
-    }
-
-    public boolean isBasic() {
-        return basic;
+    public IterationCallbackType getIterationCallbackType() {
+        return iterationCallbackType;
     }
 
     public boolean isNullable() {
-        return basic;
+        return valueType != null;
     }
 
-    public List<? extends TypeMirror> getTypeArguments() {
-        DeclaredType declaredType = TypeUtil.toDeclaredType(type, env);
-        if (declaredType != null) {
-            return declaredType.getTypeArguments();
-        }
-        return Collections.emptyList();
+    public boolean isSupportedType() {
+        return collectionType != null || entityType != null
+                || domainType != null || valueType != null
+                || iterationCallbackType != null || selectOptionsType != null;
     }
+
 }

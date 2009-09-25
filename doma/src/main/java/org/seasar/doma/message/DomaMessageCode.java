@@ -214,6 +214,7 @@ public enum DomaMessageCode implements MessageCode {
     DOMA4107("@Domainを注釈したクラスには型パラメータを定義できません。"),
     DOMA4108("パラメータの型[{0}]には型パラメータが必須です。"),
     DOMA4109("戻り値の型[{0}]には型パラメータが必須です。"),
+    DOMA4110("IterationCallback型のパラメータ[{0}]には型パラメータが必須です。"),
 
     // other
     DOMA9001("java.io.Closeableのclose()に失敗しました。原因は次のものです。{0}");

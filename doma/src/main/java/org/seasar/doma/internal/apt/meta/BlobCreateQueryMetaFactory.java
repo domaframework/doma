@@ -31,9 +31,8 @@ import org.seasar.doma.BlobFactory;
 public class BlobCreateQueryMetaFactory extends
         AbstractCreateQueryMetaFactory<BlobCreateQueryMeta> {
 
-    public BlobCreateQueryMetaFactory(ProcessingEnvironment env,
-            DomainMetaFactory domainMetaFactory) {
-        super(env, domainMetaFactory, Blob.class);
+    public BlobCreateQueryMetaFactory(ProcessingEnvironment env) {
+        super(env, Blob.class);
     }
 
     @Override

@@ -28,7 +28,6 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 
-import org.seasar.doma.internal.apt.meta.DomainMetaFactory;
 import org.seasar.doma.internal.apt.meta.EntityMeta;
 import org.seasar.doma.internal.apt.meta.EntityMetaFactory;
 import org.seasar.doma.internal.apt.meta.EntityPropertyMetaFactory;
@@ -90,12 +89,7 @@ public class EntityProcessor extends AbstractProcessor {
     }
 
     protected EntityPropertyMetaFactory createEntityPropertyMetaFactory() {
-        DomainMetaFactory domainMetaFactory = createDomainMetaFactory();
-        return new EntityPropertyMetaFactory(processingEnv, domainMetaFactory);
-    }
-
-    protected DomainMetaFactory createDomainMetaFactory() {
-        return new DomainMetaFactory(processingEnv);
+        return new EntityPropertyMetaFactory(processingEnv);
     }
 
     protected void generateEntity(TypeElement entityElement,

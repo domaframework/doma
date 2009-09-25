@@ -17,20 +17,16 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import java.util.List;
-
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.Select;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.TypeUtil;
-import org.seasar.doma.jdbc.IterationCallback;
+import org.seasar.doma.internal.apt.meta.type.AnyType;
+import org.seasar.doma.internal.apt.meta.type.CollectionType;
+import org.seasar.doma.internal.apt.meta.type.IterationCallbackType;
+import org.seasar.doma.internal.apt.meta.type.ValueType;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -40,9 +36,8 @@ import org.seasar.doma.message.DomaMessageCode;
 public class SqlFileSelectQueryMetaFactory extends
         AbstractSqlFileQueryMetaFactory<SqlFileSelectQueryMeta> {
 
-    public SqlFileSelectQueryMetaFactory(ProcessingEnvironment env,
-            DomainMetaFactory domainMetaFactory) {
-        super(env, domainMetaFactory);
+    public SqlFileSelectQueryMetaFactory(ProcessingEnvironment env) {
+        super(env);
     }
 
     @Override
@@ -84,32 +79,26 @@ public class SqlFileSelectQueryMetaFactory extends
         QueryReturnMeta returnMeta = createReturnMeta(method);
         queryMeta.setReturnMeta(returnMeta);
         if (queryMeta.isIterated()) {
-            IterationCallbackMeta callbackMeta = queryMeta
-                    .getIterationCallbackMeta();
-            if (callbackMeta == null
-                    || callbackMeta.getResultType() == null
-                    || !env.getTypeUtils().isSameType(
-                            TypeUtil.toWrapperTypeIfPrimitive(returnMeta
-                                    .getType(), env),
-                            callbackMeta.getResultType())) {
+            IterationCallbackType iterationCallbackType = queryMeta
+                    .getIterationCallbackType();
+            AnyType callbackReturnType = iterationCallbackType.getReturnType();
+            if (callbackReturnType == null
+                    || !env.getTypeUtils().isSameType(returnMeta.getType(),
+                            callbackReturnType.getType())) {
                 throw new AptException(DomaMessageCode.DOMA4055, env, method,
-                        returnMeta.getType(), callbackMeta.getResultType());
-            }
-        } else if (returnMeta.isCollection()) {
-            if (returnMeta.isCollectionElementEntity()) {
-            } else {
-                if (returnMeta.getCollectionElementWrapperType() == null) {
-                    throw new AptException(DomaMessageCode.DOMA4007, env,
-                            returnMeta.getMethodElement(), returnMeta
-                                    .getCollectionElementType());
-                }
+                        returnMeta.getType(), callbackReturnType);
             }
         } else {
-            if (returnMeta.isEntity()) {
-            } else {
-                if (returnMeta.getWrapperType() == null) {
-                    throw new AptException(DomaMessageCode.DOMA4008, env,
-                            returnMeta.getMethodElement(), returnMeta.getType());
+            if (!returnMeta.isSupportedType()) {
+                throw new AptException(DomaMessageCode.DOMA4008, env,
+                        returnMeta.getMethodElement(), returnMeta.getType());
+            }
+            CollectionType collectionType = returnMeta.getCollectionType();
+            if (collectionType != null) {
+                if (!collectionType.hasSupportedElementType()) {
+                    throw new AptException(DomaMessageCode.DOMA4007, env,
+                            returnMeta.getMethodElement(), collectionType
+                                    .getEntityType());
                 }
             }
         }
@@ -120,95 +109,54 @@ public class SqlFileSelectQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         for (VariableElement parameter : method.getParameters()) {
             QueryParameterMeta parameterMeta = createParameterMeta(parameter);
-            if (parameterMeta.isSelectOptions()) {
-                if (queryMeta.hasSelectOptions()) {
-                    throw new AptException(DomaMessageCode.DOMA4053, env,
-                            method);
-                }
-                queryMeta.setSelectOptions(parameterMeta);
-            } else if (parameterMeta.isIterationCallback()) {
-                if (queryMeta.getIterationCallbackMeta() != null) {
-                    throw new AptException(DomaMessageCode.DOMA4054, env,
-                            method);
-                }
-                IterationCallbackMeta IterationcallbackMeta = new IterationCallbackMeta();
-                IterationcallbackMeta.setQueryParameterMeta(parameterMeta);
-                doIterationCallbackParameter(parameterMeta.getType(),
-                        IterationcallbackMeta, method, daoMeta);
-                queryMeta.setIterationCallbackMeta(IterationcallbackMeta);
-            } else if (parameterMeta.isCollection()) {
-                TypeMirror elementType = parameterMeta
-                        .getCollectionElementType();
-                if (!DomaTypes.isSupportedType(elementType, env)) {
+            if (!parameterMeta.isSupportedType()) {
+                throw new AptException(DomaMessageCode.DOMA4008, env,
+                        parameterMeta.getParameterElement(), parameterMeta
+                                .getType());
+            }
+            if (parameterMeta.getCollectionType() != null) {
+                CollectionType collectionType = parameterMeta
+                        .getCollectionType();
+                ValueType valueType = collectionType.getValueType();
+                if (valueType == null) {
                     throw new AptException(DomaMessageCode.DOMA4028, env,
                             parameterMeta.getParameterElement());
                 }
-            } else if (!parameterMeta.isEntity()) {
-                if (!parameterMeta.isBasic()) {
-                    throw new AptException(DomaMessageCode.DOMA4008, env,
-                            method, parameterMeta.getParameterElement());
+            } else if (parameterMeta.getEntityType() != null) {
+            } else if (parameterMeta.getValueType() != null) {
+            } else if (parameterMeta.getSelectOptionsType() != null) {
+                if (queryMeta.getSelectOptionsType() != null) {
+                    throw new AptException(DomaMessageCode.DOMA4053, env,
+                            parameterMeta.getParameterElement());
                 }
+                queryMeta.setSelectOptionsType(parameterMeta
+                        .getSelectOptionsType());
+                queryMeta
+                        .setSelectOptionsParameterName(parameterMeta.getName());
+            } else if (parameterMeta.getIterationCallbackType() != null) {
+                if (queryMeta.getIterationCallbackType() != null) {
+                    throw new AptException(DomaMessageCode.DOMA4054, env,
+                            parameterMeta.getParameterElement());
+                }
+                queryMeta.setIterationCallbackType(parameterMeta
+                        .getIterationCallbackType());
+                queryMeta.setIterationCallbackPrameterName(parameterMeta
+                        .getName());
+            } else {
+                assertUnreachable();
             }
             queryMeta.addParameterMetas(parameterMeta);
             queryMeta.addExpressionParameterType(parameterMeta.getName(),
                     parameterMeta.getType());
         }
         if (queryMeta.isIterated()
-                && queryMeta.getIterationCallbackMeta() == null) {
+                && queryMeta.getIterationCallbackType() == null) {
             throw new AptException(DomaMessageCode.DOMA4056, env, method);
         }
         if (!queryMeta.isIterated()
-                && queryMeta.getIterationCallbackMeta() != null) {
+                && queryMeta.getIterationCallbackType() != null) {
             throw new AptException(DomaMessageCode.DOMA4057, env, method);
         }
     }
 
-    protected void doIterationCallbackParameter(TypeMirror parameterType,
-            IterationCallbackMeta callbackMeta, ExecutableElement method,
-            DaoMeta daoMeta) {
-        if (callbackMeta.getResultTypeName() != null) {
-            return;
-        }
-        TypeElement typeElement = TypeUtil.toTypeElement(parameterType, env);
-        if (typeElement == null) {
-            return;
-        }
-        if (typeElement.getQualifiedName().contentEquals(
-                IterationCallback.class.getName())) {
-            DeclaredType declaredType = TypeUtil.toDeclaredType(parameterType,
-                    env);
-            if (declaredType == null) {
-                throw new AptIllegalStateException();
-            }
-            List<? extends TypeMirror> actualArgs = declaredType
-                    .getTypeArguments();
-            assertEquals(2, actualArgs.size());
-            TypeMirror resultType = actualArgs.get(0);
-            callbackMeta.setResultType(resultType);
-            callbackMeta.setResultTypeName(TypeUtil
-                    .getTypeName(resultType, env));
-            TypeMirror targetType = actualArgs.get(1);
-            callbackMeta.setTargetType(targetType);
-            callbackMeta.setTargetTypeName(TypeUtil
-                    .getTypeName(targetType, env));
-            if (isEntity(targetType)) {
-                callbackMeta.setEntityTarget(true);
-            } else if (DomaTypes.isSupportedType(targetType, env)) {
-                TypeMirror targetWrapperType = DomaTypes.getWrapperType(
-                        targetType, env);
-                callbackMeta.setTargetWrapperType(targetWrapperType);
-                callbackMeta.setTargetWrapperTypeName(TypeUtil.getTypeName(
-                        targetWrapperType, env));
-            } else {
-                throw new AptException(DomaMessageCode.DOMA4058, env, method,
-                        targetType);
-            }
-            return;
-        }
-        for (TypeMirror supertype : env.getTypeUtils().directSupertypes(
-                parameterType)) {
-            doIterationCallbackParameter(supertype, callbackMeta, method,
-                    daoMeta);
-        }
-    }
 }

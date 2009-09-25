@@ -18,12 +18,12 @@ package org.seasar.doma.internal.apt.meta;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.Column;
+import org.seasar.doma.Domain;
 import org.seasar.doma.GeneratedValue;
 import org.seasar.doma.Id;
 import org.seasar.doma.SequenceGenerator;
@@ -33,6 +33,8 @@ import org.seasar.doma.Version;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.TypeUtil;
+import org.seasar.doma.internal.apt.meta.type.DomainType;
+import org.seasar.doma.internal.apt.meta.type.ValueType;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -44,13 +46,9 @@ public class EntityPropertyMetaFactory {
 
     protected final ProcessingEnvironment env;
 
-    protected final DomainMetaFactory domainMetaFactory;
-
-    public EntityPropertyMetaFactory(ProcessingEnvironment env,
-            DomainMetaFactory domainMetaFactory) {
-        assertNotNull(env, domainMetaFactory);
+    public EntityPropertyMetaFactory(ProcessingEnvironment env) {
+        assertNotNull(env);
         this.env = env;
-        this.domainMetaFactory = domainMetaFactory;
     }
 
     public EntityPropertyMeta createEntityPropertyMeta(
@@ -243,25 +241,27 @@ public class EntityPropertyMetaFactory {
         if (propertyMeta.isTrnsient()) {
             return;
         }
-        TypeElement typeElement = TypeUtil.toTypeElement(fieldElement.asType(),
-                env);
-        if (typeElement == null) {
-            return;
-        }
-        DomainMeta domainMeta = domainMetaFactory.createDomainMeta(typeElement);
-        if (domainMeta != null) {
-            propertyMeta.setDomainMeta(domainMeta);
-            propertyMeta.setWrapperTypeName(domainMeta.getWrapperTypeName());
+        TypeMirror type = fieldElement.asType();
+        DomainType domainType = DomainType.newInstance(type, env);
+        if (domainType != null) {
+            propertyMeta.setDomainType(domainType);
         } else {
-            TypeMirror fieldType = fieldElement.asType();
-            TypeMirror wrapperType = DomaTypes.getWrapperType(fieldType, env);
-            if (wrapperType == null) {
+            ValueType valueType = ValueType.newInstance(type, env);
+            if (valueType == null) {
                 throw new AptException(DomaMessageCode.DOMA4096, env,
-                        fieldElement, fieldType);
+                        fieldElement, type);
             }
-            propertyMeta.setWrapperTypeName(TypeUtil.getTypeName(wrapperType,
-                    env));
+            propertyMeta.setValueType(valueType);
         }
+    }
+
+    protected TypeMirror getValueType(Domain domainAnnotation) {
+        try {
+            domainAnnotation.valueType();
+        } catch (MirroredTypeException ignored) {
+            return ignored.getTypeMirror();
+        }
+        throw new AptIllegalStateException();
     }
 
     protected boolean isNumber(TypeMirror typeMirror) {

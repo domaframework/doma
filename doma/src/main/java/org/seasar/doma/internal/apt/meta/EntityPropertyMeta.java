@@ -21,6 +21,8 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.TypeUtil;
+import org.seasar.doma.internal.apt.meta.type.DomainType;
+import org.seasar.doma.internal.apt.meta.type.ValueType;
 
 /**
  * 
@@ -35,8 +37,6 @@ public class EntityPropertyMeta {
 
     protected String name;
 
-    protected String wrapperTypeName;
-
     protected boolean id;
 
     protected boolean trnsient;
@@ -47,7 +47,9 @@ public class EntityPropertyMeta {
 
     protected IdGeneratorMeta idGeneratorMeta;
 
-    protected DomainMeta domainMeta;
+    protected DomainType domainType;
+
+    protected ValueType valueType;
 
     public EntityPropertyMeta(TypeMirror type, ProcessingEnvironment env) {
         assertNotNull(type, env);
@@ -103,22 +105,6 @@ public class EntityPropertyMeta {
         this.idGeneratorMeta = idGeneratorMeta;
     }
 
-    public void setWrapperTypeName(String wrapperTypeName) {
-        this.wrapperTypeName = wrapperTypeName;
-    }
-
-    public String getWrapperTypeName() {
-        return wrapperTypeName;
-    }
-
-    public DomainMeta getDomainMeta() {
-        return domainMeta;
-    }
-
-    public void setDomainMeta(DomainMeta domainMeta) {
-        this.domainMeta = domainMeta;
-    }
-
     public TypeMirror getType() {
         return type;
     }
@@ -127,8 +113,20 @@ public class EntityPropertyMeta {
         return typeName;
     }
 
-    public boolean isDomain() {
-        return domainMeta != null;
+    public DomainType getDomainType() {
+        return domainType;
+    }
+
+    public void setDomainType(DomainType domainType) {
+        this.domainType = domainType;
+    }
+
+    public ValueType getValueType() {
+        return valueType;
+    }
+
+    public void setValueType(ValueType valueType) {
+        this.valueType = valueType;
     }
 
 }

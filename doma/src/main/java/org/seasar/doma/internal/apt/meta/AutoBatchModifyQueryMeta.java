@@ -15,20 +15,32 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
+import org.seasar.doma.internal.apt.meta.type.EntityType;
+
 /**
  * @author taedium
  * 
  */
 public class AutoBatchModifyQueryMeta extends AbstractQueryMeta {
 
-    protected QueryParameterMeta entityCollection;
+    protected EntityType entityType;
 
-    public QueryParameterMeta getEntityCollection() {
-        return entityCollection;
+    protected String entitiesParameterName;
+
+    public EntityType getEntityType() {
+        return entityType;
     }
 
-    public void setEntityCollection(QueryParameterMeta entityCollection) {
-        this.entityCollection = entityCollection;
+    public void setEntityType(EntityType entityType) {
+        this.entityType = entityType;
+    }
+
+    public String getEntitiesParameterName() {
+        return entitiesParameterName;
+    }
+
+    public void setEntitiesParameterName(String entitiesParameterName) {
+        this.entitiesParameterName = entitiesParameterName;
     }
 
     @Override

@@ -27,6 +27,7 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.Function;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.TypeUtil;
+import org.seasar.doma.internal.apt.meta.type.WrapperType;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -36,9 +37,8 @@ import org.seasar.doma.message.DomaMessageCode;
 public class AutoFunctionQueryMetaFactory extends
         AutoModuleQueryMetaFactory<AutoFunctionQueryMeta> {
 
-    public AutoFunctionQueryMetaFactory(ProcessingEnvironment env,
-            DomainMetaFactory domainMetaFactory) {
-        super(env, domainMetaFactory);
+    public AutoFunctionQueryMetaFactory(ProcessingEnvironment env) {
+        super(env);
     }
 
     @Override
@@ -110,20 +110,19 @@ public class AutoFunctionQueryMetaFactory extends
             if (isEntity(elementType)) {
                 return new EntityListResultParameterMeta(elementTypeName);
             }
-            TypeMirror wrapperType = DomaTypes.getWrapperType(elementType, env);
+            WrapperType wrapperType = WrapperType.newInstance(elementType, env);
             if (wrapperType == null) {
                 throw new AptException(DomaMessageCode.DOMA4065, env, method,
                         elementType);
             }
-            return new ValueListResultParameterMeta(elementTypeName, TypeUtil
-                    .getTypeName(wrapperType, env));
+            return new ValueListResultParameterMeta(elementTypeName,
+                    wrapperType.getTypeName());
         }
-        TypeMirror wrapperType = DomaTypes.getWrapperType(returnType, env);
+        WrapperType wrapperType = WrapperType.newInstance(returnType, env);
         if (wrapperType == null) {
             throw new AptException(DomaMessageCode.DOMA4063, env, method,
                     returnType);
         }
-        return new ValueResultParameterMeta(TypeUtil.getTypeName(wrapperType,
-                env));
+        return new ValueResultParameterMeta(wrapperType.getTypeName());
     }
 }

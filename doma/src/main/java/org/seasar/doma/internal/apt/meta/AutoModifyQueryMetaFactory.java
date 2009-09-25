@@ -27,6 +27,7 @@ import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
 import org.seasar.doma.Update;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.meta.type.EntityType;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -36,9 +37,8 @@ import org.seasar.doma.message.DomaMessageCode;
 public class AutoModifyQueryMetaFactory extends
         AbstractQueryMetaFactory<AutoModifyQueryMeta> {
 
-    public AutoModifyQueryMetaFactory(ProcessingEnvironment env,
-            DomainMetaFactory domainMetaFactory) {
-        super(env, domainMetaFactory);
+    public AutoModifyQueryMetaFactory(ProcessingEnvironment env) {
+        super(env);
     }
 
     @Override
@@ -116,15 +116,17 @@ public class AutoModifyQueryMetaFactory extends
         }
         QueryParameterMeta parameterMeta = createParameterMeta(parameters
                 .get(0));
-        if (!parameterMeta.isEntity()) {
+        EntityType entityType = parameterMeta.getEntityType();
+        if (entityType == null) {
             throw new AptException(DomaMessageCode.DOMA4003, env, parameterMeta
                     .getParameterElement());
         }
-        queryMeta.setEntity(parameterMeta);
+        queryMeta.setEntityType(entityType);
+        queryMeta.setEntityParameterName(parameterMeta.getName());
         queryMeta.addParameterMetas(parameterMeta);
         queryMeta.addExpressionParameterType(parameterMeta.getName(),
-                parameterMeta.getType());
-        validateEntityPropertyNames(parameterMeta.getType(), method, queryMeta);
+                entityType.getType());
+        validateEntityPropertyNames(entityType.getType(), method, queryMeta);
     }
 
 }

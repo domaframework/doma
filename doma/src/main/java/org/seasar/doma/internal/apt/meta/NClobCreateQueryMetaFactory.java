@@ -31,9 +31,8 @@ import org.seasar.doma.NClobFactory;
 public class NClobCreateQueryMetaFactory extends
         AbstractCreateQueryMetaFactory<NClobCreateQueryMeta> {
 
-    public NClobCreateQueryMetaFactory(ProcessingEnvironment env,
-            DomainMetaFactory domainMetaFactory) {
-        super(env, domainMetaFactory, NClob.class);
+    public NClobCreateQueryMetaFactory(ProcessingEnvironment env) {
+        super(env, NClob.class);
     }
 
     @Override

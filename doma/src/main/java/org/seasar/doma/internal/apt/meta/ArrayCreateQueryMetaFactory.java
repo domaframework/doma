@@ -36,9 +36,8 @@ import org.seasar.doma.message.DomaMessageCode;
 public class ArrayCreateQueryMetaFactory extends
         AbstractCreateQueryMetaFactory<ArrayCreateQueryMeta> {
 
-    public ArrayCreateQueryMetaFactory(ProcessingEnvironment env,
-            DomainMetaFactory domainMetaFactory) {
-        super(env, domainMetaFactory, Array.class);
+    public ArrayCreateQueryMetaFactory(ProcessingEnvironment env) {
+        super(env, Array.class);
     }
 
     @Override
@@ -71,10 +70,10 @@ public class ArrayCreateQueryMetaFactory extends
         QueryParameterMeta parameterMeta = createParameterMeta(parameters
                 .get(0));
         if (parameterMeta.getType().getKind() != TypeKind.ARRAY) {
-            throw new AptException(DomaMessageCode.DOMA4076, env,
-                    parameterMeta.getParameterElement());
+            throw new AptException(DomaMessageCode.DOMA4076, env, parameterMeta
+                    .getParameterElement());
         }
-        queryMeta.setArray(parameterMeta);
+        queryMeta.setElementsParameterName(parameterMeta.getName());
         queryMeta.addParameterMetas(parameterMeta);
         queryMeta.addExpressionParameterType(parameterMeta.getName(),
                 parameterMeta.getType());

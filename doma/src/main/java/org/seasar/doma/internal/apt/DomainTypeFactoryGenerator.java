@@ -98,7 +98,7 @@ public class DomainTypeFactoryGenerator extends AbstractGenerator {
 
     protected void printTypeClassFields() {
         iprint("private final %1$s wrapper = new %1$s();%n", domainMeta
-                .getWrapperTypeName());
+                .getWrapperType().getTypeName());
         print("%n");
     }
 
@@ -136,7 +136,8 @@ public class DomainTypeFactoryGenerator extends AbstractGenerator {
 
     protected void printTypeClassGetWrapperMethod() {
         iprint("@Override%n");
-        iprint("public %1$s getWrapper() {%n", domainMeta.getWrapperTypeName());
+        iprint("public %1$s getWrapper() {%n", domainMeta.getWrapperType()
+                .getTypeName());
         iprint("    return wrapper;%n");
         iprint("}%n");
         print("%n");

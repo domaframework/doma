@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
+import org.seasar.doma.internal.apt.meta.type.IterationCallbackType;
+import org.seasar.doma.internal.apt.meta.type.SelectOptionsType;
 import org.seasar.doma.jdbc.Options;
 import org.seasar.doma.jdbc.SelectOptions;
 
@@ -30,9 +32,13 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
     protected Integer fetchSize;
 
-    protected IterationCallbackMeta iterationCallbackMeta;
+    protected String iterationCallbackPrameterName;
 
-    protected QueryParameterMeta selectOptions;
+    protected IterationCallbackType iterationCallbackType;
+
+    protected String selectOptionsParameterName;
+
+    protected SelectOptionsType selectOptionsType;
 
     public Class<? extends Options> getOptionsClass() {
         return SelectOptions.class;
@@ -62,25 +68,38 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
         this.fetchSize = fetchSize;
     }
 
-    public IterationCallbackMeta getIterationCallbackMeta() {
-        return iterationCallbackMeta;
+    public String getIterationCallbackPrameterName() {
+        return iterationCallbackPrameterName;
     }
 
-    public void setIterationCallbackMeta(
-            IterationCallbackMeta iterationCallbackMeta) {
-        this.iterationCallbackMeta = iterationCallbackMeta;
+    public void setIterationCallbackPrameterName(
+            String iterationCallbackPrameterName) {
+        this.iterationCallbackPrameterName = iterationCallbackPrameterName;
     }
 
-    public boolean hasSelectOptions() {
-        return selectOptions != null;
+    public IterationCallbackType getIterationCallbackType() {
+        return iterationCallbackType;
     }
 
-    public QueryParameterMeta getSelectOptions() {
-        return selectOptions;
+    public void setIterationCallbackType(
+            IterationCallbackType iterationCallbackType) {
+        this.iterationCallbackType = iterationCallbackType;
     }
 
-    public void setSelectOptions(QueryParameterMeta selectOptions) {
-        this.selectOptions = selectOptions;
+    public String getSelectOptionsParameterName() {
+        return selectOptionsParameterName;
+    }
+
+    public void setSelectOptionsParameterName(String selectOptionsParameterName) {
+        this.selectOptionsParameterName = selectOptionsParameterName;
+    }
+
+    public SelectOptionsType getSelectOptionsType() {
+        return selectOptionsType;
+    }
+
+    public void setSelectOptionsType(SelectOptionsType selectOptionsType) {
+        this.selectOptionsType = selectOptionsType;
     }
 
     @Override

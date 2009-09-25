@@ -23,7 +23,6 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.internal.apt.meta.ColumnMeta;
-import org.seasar.doma.internal.apt.meta.DomainMeta;
 import org.seasar.doma.internal.apt.meta.EntityMeta;
 import org.seasar.doma.internal.apt.meta.EntityPropertyMeta;
 import org.seasar.doma.internal.apt.meta.IdGeneratorMeta;
@@ -31,6 +30,8 @@ import org.seasar.doma.internal.apt.meta.IdGeneratorMetaVisitor;
 import org.seasar.doma.internal.apt.meta.IdentityIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.SequenceIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.TableIdGeneratorMeta;
+import org.seasar.doma.internal.apt.meta.type.DomainType;
+import org.seasar.doma.internal.apt.meta.type.WrapperType;
 import org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType;
 import org.seasar.doma.internal.jdbc.entity.BasicPropertyType;
 import org.seasar.doma.internal.jdbc.entity.EntityType;
@@ -199,31 +200,37 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
                 columnName = "null";
                 quote = "";
             }
+            WrapperType wrapperType = null;
+            if (pm.getDomainType() != null) {
+                wrapperType = pm.getDomainType().getWrapperType();
+            } else {
+                wrapperType = pm.getValueType().getWrapperType();
+            }
             if (pm.isId()) {
                 if (pm.getIdGeneratorMeta() != null) {
                     iprint(
                             "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", %5$s%4$s%5$s, new %2$s(), __idGenerator);%n", /* 1 */
                             GeneratedIdPropertyType.class.getName(), /* 2 */
-                            pm.getWrapperTypeName(), /* 3 */pm.getName(), /* 4 */
+                            wrapperType.getTypeName(), /* 3 */pm.getName(), /* 4 */
                             columnName, /* 5 */quote);
                 } else {
                     iprint(
                             "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", %5$s%4$s%5$s, new %2$s());%n", /* 1 */
                             AssignedIdPropertyType.class.getName(), /* 2 */
-                            pm.getWrapperTypeName(), /* 3 */pm.getName(), /* 4 */
+                            wrapperType.getTypeName(), /* 3 */pm.getName(), /* 4 */
                             columnName, /* 5 */quote);
                 }
             } else if (pm.isVersion()) {
                 iprint(
                         "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", %5$s%4$s%5$s, new %2$s());%n", /* 1 */
-                        VersionPropertyType.class.getName(), /* 2 */pm
-                                .getWrapperTypeName(), /* 3 */pm.getName(), /* 4 */
+                        VersionPropertyType.class.getName(), /* 2 */wrapperType
+                                .getTypeName(), /* 3 */pm.getName(), /* 4 */
                         columnName, /* 5 */quote);
             } else {
                 iprint(
                         "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", %7$s%4$s%7$s, new %2$s(), %5$s, %6$s);%n", /* 1 */
-                        BasicPropertyType.class.getName(), /* 2 */pm
-                                .getWrapperTypeName(), /* 3 */pm.getName(), /* 4 */
+                        BasicPropertyType.class.getName(), /* 2 */wrapperType
+                                .getTypeName(), /* 3 */pm.getName(), /* 4 */
                         columnName, /* 5 */cm.isInsertable(), /* 6 */cm
                                 .isUpdatable(), /* 7 */quote);
             }
@@ -442,9 +449,9 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
             if (pm.isTrnsient()) {
                 continue;
             }
-            if (pm.isDomain()) {
-                DomainMeta domainMeta = pm.getDomainMeta();
-                if (domainMeta.getType().getKind().isPrimitive()) {
+            DomainType domainType = pm.getDomainType();
+            if (domainType != null) {
+                if (domainType.getWrapperType().isWrappedTypePrimitive()) {
                     iprint(
                             "    __entity.%1$s = new %2$s(%3$s.toPrimitive(%1$s.getWrapper().get()));%n",
                             pm.getName(), pm.getTypeName(),
@@ -455,7 +462,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
                             pm.getName(), pm.getTypeName());
                 }
             } else {
-                if (pm.getType().getKind().isPrimitive()) {
+                if (pm.getValueType().getType().getKind().isPrimitive()) {
                     iprint(
                             "    __entity.%1$s = %2$s.toPrimitive(%1$s.getWrapper().get());%n",
                             pm.getName(), PrimitiveWrapperUtil.class.getName());

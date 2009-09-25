@@ -41,9 +41,8 @@ import org.seasar.doma.message.DomaMessageCode;
 public class DelegateQueryMetaFactory extends
         AbstractQueryMetaFactory<DelegateQueryMeta> {
 
-    public DelegateQueryMetaFactory(ProcessingEnvironment env,
-            DomainMetaFactory domainMetaFactory) {
-        super(env, domainMetaFactory);
+    public DelegateQueryMetaFactory(ProcessingEnvironment env) {
+        super(env);
     }
 
     @Override

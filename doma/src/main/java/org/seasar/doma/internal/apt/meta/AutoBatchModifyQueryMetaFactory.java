@@ -22,13 +22,13 @@ import java.util.List;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.BatchDelete;
 import org.seasar.doma.BatchInsert;
 import org.seasar.doma.BatchUpdate;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.TypeUtil;
+import org.seasar.doma.internal.apt.meta.type.CollectionType;
+import org.seasar.doma.internal.apt.meta.type.EntityType;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -38,9 +38,8 @@ import org.seasar.doma.message.DomaMessageCode;
 public class AutoBatchModifyQueryMetaFactory extends
         AbstractQueryMetaFactory<AutoBatchModifyQueryMeta> {
 
-    public AutoBatchModifyQueryMetaFactory(ProcessingEnvironment env,
-            DomainMetaFactory domainMetaFactory) {
-        super(env, domainMetaFactory);
+    public AutoBatchModifyQueryMetaFactory(ProcessingEnvironment env) {
+        super(env);
     }
 
     @Override
@@ -115,22 +114,20 @@ public class AutoBatchModifyQueryMetaFactory extends
         }
         QueryParameterMeta parameterMeta = createParameterMeta(parameters
                 .get(0));
-        if (!parameterMeta.isCollection()) {
+        CollectionType collectionType = parameterMeta.getCollectionType();
+        if (collectionType == null) {
             throw new AptException(DomaMessageCode.DOMA4042, env, method);
         }
-        List<? extends TypeMirror> typeArgs = parameterMeta.getTypeArguments();
-        if (typeArgs.isEmpty()) {
-            throw new AptException(DomaMessageCode.DOMA4041, env, method);
-        }
-        TypeMirror elementType = parameterMeta.getCollectionElementType();
-        if (!TypeUtil.isEntity(elementType, env)) {
+        EntityType entityType = collectionType.getEntityType();
+        if (entityType == null) {
             throw new AptException(DomaMessageCode.DOMA4043, env, method);
         }
-        queryMeta.setEntityCollection(parameterMeta);
+        queryMeta.setEntityType(entityType);
+        queryMeta.setEntitiesParameterName(parameterMeta.getName());
         queryMeta.addParameterMetas(parameterMeta);
         queryMeta.addExpressionParameterType(parameterMeta.getName(),
-                elementType);
-        validateEntityPropertyNames(elementType, method, queryMeta);
+                entityType.getType());
+        validateEntityPropertyNames(entityType.getType(), method, queryMeta);
     }
 
 }

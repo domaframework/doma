@@ -41,8 +41,8 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
     protected final Class<?> returnClass;
 
     public AbstractCreateQueryMetaFactory(ProcessingEnvironment env,
-            DomainMetaFactory domainMetaFactory, Class<?> domainValueClass) {
-        super(env, domainMetaFactory);
+            Class<?> domainValueClass) {
+        super(env);
         assertNotNull(domainValueClass);
         this.returnClass = domainValueClass;
     }

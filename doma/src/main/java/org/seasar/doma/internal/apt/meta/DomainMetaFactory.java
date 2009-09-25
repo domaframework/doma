@@ -18,6 +18,7 @@ import org.seasar.doma.Domain;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.TypeUtil;
+import org.seasar.doma.internal.apt.meta.type.WrapperType;
 import org.seasar.doma.message.DomaMessageCode;
 
 public class DomainMetaFactory {
@@ -54,12 +55,12 @@ public class DomainMetaFactory {
         }
         domainMeta.setValueType(valueType);
         domainMeta.setValueTypeElement(valueTypeElement);
-        TypeMirror wrapperType = DomaTypes.getWrapperType(valueType, env);
+        WrapperType wrapperType = WrapperType.newInstance(valueType, env);
         if (wrapperType == null) {
             throw new AptException(DomaMessageCode.DOMA4102, env, classElement,
                     valueType);
         }
-        domainMeta.setWrapperTypeName(TypeUtil.getTypeName(wrapperType, env));
+        domainMeta.setWrapperType(wrapperType);
     }
 
     protected TypeMirror getValueType(Domain domainAnnotation) {
