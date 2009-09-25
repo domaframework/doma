@@ -60,7 +60,7 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
     protected Map<String, TypeMirror> expressionParameterTypes = new LinkedHashMap<String, TypeMirror>();
 
-    protected QueryResultMeta queryResultMeta;
+    protected QueryReturnMeta returnMeta;
 
     protected List<QueryParameterMeta> parameterMetas = new ArrayList<QueryParameterMeta>();
 
@@ -193,12 +193,12 @@ public abstract class AbstractQueryMeta implements QueryMeta {
         this.excludedPropertyNames = excludedPropertyNames;
     }
 
-    public QueryResultMeta getResultMeta() {
-        return queryResultMeta;
+    public QueryReturnMeta getReturnMeta() {
+        return returnMeta;
     }
 
-    public void setResultMeta(QueryResultMeta queryResultMeta) {
-        this.queryResultMeta = queryResultMeta;
+    public void setReturnMeta(QueryReturnMeta returnMeta) {
+        this.returnMeta = returnMeta;
     }
 
     public List<QueryParameterMeta> getParameterMetas() {

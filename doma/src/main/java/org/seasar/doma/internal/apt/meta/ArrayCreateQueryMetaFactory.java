@@ -68,7 +68,7 @@ public class ArrayCreateQueryMetaFactory extends
         if (size != 1) {
             throw new AptException(DomaMessageCode.DOMA4002, env, method);
         }
-        QueryParameterMeta parameterMeta = createQueryParameterMeta(parameters
+        QueryParameterMeta parameterMeta = createParameterMeta(parameters
                 .get(0));
         if (parameterMeta.getType().getKind() != TypeKind.ARRAY) {
             throw new AptException(DomaMessageCode.DOMA4076, env,

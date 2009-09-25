@@ -88,13 +88,12 @@ public class SqlFileBatchModifyQueryMetaFactory extends
     @Override
     protected void doReturnType(SqlFileBatchModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        TypeMirror returnType = method.getReturnType();
-        if (!isPrimitiveIntArray(returnType)) {
-            throw new AptException(DomaMessageCode.DOMA4040, env, method);
+        QueryReturnMeta resultMeta = createReturnMeta(method);
+        if (!resultMeta.isPrimitiveIntArray()) {
+            throw new AptException(DomaMessageCode.DOMA4040, env, resultMeta
+                    .getMethodElement());
         }
-        QueryResultMeta resultMeta = new QueryResultMeta();
-        resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
-        queryMeta.setResultMeta(resultMeta);
+        queryMeta.setReturnMeta(resultMeta);
     }
 
     @Override
@@ -105,7 +104,7 @@ public class SqlFileBatchModifyQueryMetaFactory extends
         if (size != 1) {
             throw new AptException(DomaMessageCode.DOMA4002, env, method);
         }
-        QueryParameterMeta parameterMeta = createQueryParameterMeta(parameters
+        QueryParameterMeta parameterMeta = createParameterMeta(parameters
                 .get(0));
         if (!parameterMeta.isCollection()) {
             throw new AptException(DomaMessageCode.DOMA4042, env, method);

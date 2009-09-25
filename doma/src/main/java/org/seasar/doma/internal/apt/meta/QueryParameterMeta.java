@@ -19,25 +19,25 @@ import org.seasar.doma.message.DomaMessageCode;
 
 public class QueryParameterMeta {
 
-    private final VariableElement parameterElement;
+    protected final VariableElement parameterElement;
 
-    private final ProcessingEnvironment env;
+    protected final ProcessingEnvironment env;
 
-    private final String name;
+    protected final String name;
 
-    private final TypeMirror type;
+    protected final TypeMirror type;
 
-    private final String typeName;
+    protected final String typeName;
 
-    private final TypeElement typeElement;
+    protected final TypeElement typeElement;
 
-    private boolean collection;
+    protected boolean collection;
 
-    private final boolean basic;
+    protected final boolean basic;
 
-    private TypeMirror collectionElementType;
+    protected TypeMirror collectionElementType;
 
-    private String collectionElementTypeName;
+    protected String collectionElementTypeName;
 
     public QueryParameterMeta(VariableElement parameterElement,
             ProcessingEnvironment env) {
@@ -48,9 +48,9 @@ public class QueryParameterMeta {
         this.type = parameterElement.asType();
         this.typeName = TypeUtil.getTypeName(type, env);
         this.typeElement = TypeUtil.toTypeElement(type, env);
+        DeclaredType declaredType = TypeUtil.toDeclaredType(type, env);
 
-        if (typeElement != null) {
-            DeclaredType declaredType = TypeUtil.toDeclaredType(type, env);
+        if (typeElement != null && declaredType != null) {
             List<? extends TypeParameterElement> typeParams = typeElement
                     .getTypeParameters();
             List<? extends TypeMirror> typeArgs = declaredType
@@ -67,7 +67,6 @@ public class QueryParameterMeta {
                         collectionElementType, env);
             }
         }
-
         this.basic = DomaTypes.isSupportedType(type, env);
     }
 

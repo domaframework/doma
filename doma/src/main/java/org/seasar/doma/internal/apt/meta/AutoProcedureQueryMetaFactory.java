@@ -19,11 +19,9 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.Procedure;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -81,12 +79,11 @@ public class AutoProcedureQueryMetaFactory extends
     @Override
     protected void doReturnType(AutoProcedureQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        TypeMirror returnType = method.getReturnType();
-        if (!isPrimitiveVoid(returnType)) {
-            throw new AptException(DomaMessageCode.DOMA4064, env, method);
+        QueryReturnMeta resultMeta = createReturnMeta(method);
+        if (!resultMeta.isPrimitiveVoid()) {
+            throw new AptException(DomaMessageCode.DOMA4064, env, resultMeta
+                    .getMethodElement());
         }
-        QueryResultMeta resultMeta = new QueryResultMeta();
-        resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
-        queryMeta.setResultMeta(resultMeta);
+        queryMeta.setReturnMeta(resultMeta);
     }
 }

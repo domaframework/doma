@@ -84,18 +84,16 @@ public class AutoFunctionQueryMetaFactory extends
     @Override
     protected void doReturnType(AutoFunctionQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        TypeMirror returnType = method.getReturnType();
-        String returnTypeName = TypeUtil.getTypeName(returnType, env);
-        QueryResultMeta queryResultMeta = new QueryResultMeta();
-        queryResultMeta.setTypeName(returnTypeName);
-        queryMeta.setResultMeta(queryResultMeta);
+        QueryReturnMeta returnMeta = createReturnMeta(method);
+        queryMeta.setReturnMeta(returnMeta);
 
         ResultParameterMeta resultParameterMeta = createCallableSqlResultParameterMeta(
-                queryMeta, returnType, method, daoMeta);
-        resultParameterMeta.setTypeName(returnTypeName);
+                queryMeta, returnMeta.getType(), method, daoMeta);
+        resultParameterMeta.setTypeName(returnMeta.getTypeName());
         queryMeta.setResultParameterMeta(resultParameterMeta);
     }
 
+    // TODO
     protected ResultParameterMeta createCallableSqlResultParameterMeta(
             AutoFunctionQueryMeta queryMeta, TypeMirror returnType,
             ExecutableElement method, DaoMeta daoMeta) {

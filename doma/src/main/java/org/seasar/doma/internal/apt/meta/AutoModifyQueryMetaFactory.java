@@ -22,13 +22,11 @@ import java.util.List;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
 import org.seasar.doma.Update;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -100,13 +98,12 @@ public class AutoModifyQueryMetaFactory extends
     @Override
     protected void doReturnType(AutoModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        TypeMirror returnType = method.getReturnType();
-        if (!isPrimitiveInt(returnType)) {
-            throw new AptException(DomaMessageCode.DOMA4001, env, method);
+        QueryReturnMeta returnMeta = createReturnMeta(method);
+        if (!returnMeta.isPrimitiveInt()) {
+            throw new AptException(DomaMessageCode.DOMA4001, env, returnMeta
+                    .getMethodElement());
         }
-        QueryResultMeta resultMeta = new QueryResultMeta();
-        resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
-        queryMeta.setResultMeta(resultMeta);
+        queryMeta.setReturnMeta(returnMeta);
     }
 
     @Override
@@ -117,18 +114,17 @@ public class AutoModifyQueryMetaFactory extends
         if (size != 1) {
             throw new AptException(DomaMessageCode.DOMA4002, env, method);
         }
-        QueryParameterMeta parameterMeta = createQueryParameterMeta(parameters
+        QueryParameterMeta parameterMeta = createParameterMeta(parameters
                 .get(0));
         if (!parameterMeta.isEntity()) {
-            throw new AptException(DomaMessageCode.DOMA4003, env,
-                    parameterMeta.getParameterElement());
+            throw new AptException(DomaMessageCode.DOMA4003, env, parameterMeta
+                    .getParameterElement());
         }
         queryMeta.setEntity(parameterMeta);
         queryMeta.addParameterMetas(parameterMeta);
         queryMeta.addExpressionParameterType(parameterMeta.getName(),
                 parameterMeta.getType());
-        validateEntityPropertyNames(parameterMeta.getType(), method,
-                queryMeta);
+        validateEntityPropertyNames(parameterMeta.getType(), method, queryMeta);
     }
 
 }

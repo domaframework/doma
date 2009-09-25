@@ -81,60 +81,36 @@ public class SqlFileSelectQueryMetaFactory extends
     @Override
     protected void doReturnType(SqlFileSelectQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        QueryResultMeta resultMeta = new QueryResultMeta();
-        queryMeta.setResultMeta(resultMeta);
-        TypeMirror returnType = TypeUtil.resolveTypeParameter(daoMeta
-                .getTypeParameterMap(), method.getReturnType());
+        QueryReturnMeta returnMeta = createReturnMeta(method);
+        queryMeta.setReturnMeta(returnMeta);
         if (queryMeta.isIterated()) {
-            resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
             IterationCallbackMeta callbackMeta = queryMeta
                     .getIterationCallbackMeta();
-            if (returnType == null
-                    || callbackMeta == null
+            if (callbackMeta == null
                     || callbackMeta.getResultType() == null
                     || !env.getTypeUtils().isSameType(
-                            TypeUtil.toWrapperTypeIfPrimitive(returnType, env),
+                            TypeUtil.toWrapperTypeIfPrimitive(returnMeta
+                                    .getType(), env),
                             callbackMeta.getResultType())) {
                 throw new AptException(DomaMessageCode.DOMA4055, env, method,
-                        returnType, callbackMeta.getResultType());
+                        returnMeta.getType(), callbackMeta.getResultType());
             }
-        } else if (isCollection(returnType)) {
-            resultMeta.setCollection(true);
-            resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
-            DeclaredType listTyep = TypeUtil.toDeclaredType(returnType, env);
-            List<? extends TypeMirror> args = listTyep.getTypeArguments();
-            if (args.isEmpty()) {
-                throw new AptException(DomaMessageCode.DOMA4006, env, method);
-            }
-            TypeMirror elementType = TypeUtil.resolveTypeParameter(daoMeta
-                    .getTypeParameterMap(), args.get(0));
-            resultMeta.setElementTypeName(TypeUtil
-                    .getTypeName(elementType, env));
-            if (isEntity(elementType)) {
-                resultMeta.setEntity(true);
+        } else if (returnMeta.isCollection()) {
+            if (returnMeta.isCollectionElementEntity()) {
             } else {
-                TypeMirror wrapperType = DomaTypes.getWrapperType(elementType,
-                        env);
-                if (wrapperType == null) {
+                if (returnMeta.getCollectionElementWrapperType() == null) {
                     throw new AptException(DomaMessageCode.DOMA4007, env,
-                            method, elementType);
+                            returnMeta.getMethodElement(), returnMeta
+                                    .getCollectionElementType());
                 }
-                resultMeta.setWrapperTypeName(TypeUtil.getTypeName(wrapperType,
-                        env));
             }
         } else {
-            resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
-            if (isEntity(returnType)) {
-                resultMeta.setEntity(true);
+            if (returnMeta.isEntity()) {
             } else {
-                TypeMirror wrapperType = DomaTypes.getWrapperType(returnType,
-                        env);
-                if (wrapperType == null) {
+                if (returnMeta.getWrapperType() == null) {
                     throw new AptException(DomaMessageCode.DOMA4008, env,
-                            method, returnType);
+                            returnMeta.getMethodElement(), returnMeta.getType());
                 }
-                resultMeta.setWrapperTypeName(TypeUtil.getTypeName(wrapperType,
-                        env));
             }
         }
     }
@@ -143,7 +119,7 @@ public class SqlFileSelectQueryMetaFactory extends
     protected void doParameters(SqlFileSelectQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         for (VariableElement parameter : method.getParameters()) {
-            QueryParameterMeta parameterMeta = createQueryParameterMeta(parameter);
+            QueryParameterMeta parameterMeta = createParameterMeta(parameter);
             if (parameterMeta.isSelectOptions()) {
                 if (queryMeta.hasSelectOptions()) {
                     throw new AptException(DomaMessageCode.DOMA4053, env,

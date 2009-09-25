@@ -50,10 +50,8 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
     @Override
     protected void doReturnType(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
-        TypeMirror returnType = method.getReturnType();
-        QueryResultMeta resultMeta = new QueryResultMeta();
-        resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
-        queryMeta.setResultMeta(resultMeta);
+        QueryReturnMeta resultMeta = createReturnMeta(method);
+        queryMeta.setReturnMeta(resultMeta);
         if (!resultMeta.getTypeName().equals(returnClass.getName())) {
             throw new AptException(DomaMessageCode.DOMA4097, env, method,
                     returnClass.getName());

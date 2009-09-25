@@ -88,7 +88,7 @@ public class DelegateQueryMetaFactory extends
     protected void doParameters(DelegateQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         for (VariableElement parameter : method.getParameters()) {
-            QueryParameterMeta parameterMeta = createQueryParameterMeta(parameter);
+            QueryParameterMeta parameterMeta = createParameterMeta(parameter);
             queryMeta.addParameterMetas(parameterMeta);
             queryMeta.addExpressionParameterType(parameterMeta.getName(),
                     parameterMeta.getType());
@@ -98,11 +98,8 @@ public class DelegateQueryMetaFactory extends
     @Override
     protected void doReturnType(DelegateQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        TypeMirror returnType = TypeUtil.resolveTypeParameter(daoMeta
-                .getTypeParameterMap(), method.getReturnType());
-        QueryResultMeta resultMeta = new QueryResultMeta();
-        resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
-        queryMeta.setResultMeta(resultMeta);
+        QueryReturnMeta resultMeta = createReturnMeta(method);
+        queryMeta.setReturnMeta(resultMeta);
     }
 
     protected void doDelegate(DelegateQueryMeta queryMeta,

@@ -86,21 +86,19 @@ public class SqlFileModifyQueryMetaFactory extends
     @Override
     protected void doReturnType(SqlFileModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        TypeMirror returnType = TypeUtil.resolveTypeParameter(daoMeta
-                .getTypeParameterMap(), method.getReturnType());
-        if (!isPrimitiveInt(returnType)) {
-            throw new AptException(DomaMessageCode.DOMA4001, env, method);
+        QueryReturnMeta returnMeta = createReturnMeta(method);
+        if (!returnMeta.isPrimitiveInt()) {
+            throw new AptException(DomaMessageCode.DOMA4001, env, returnMeta
+                    .getMethodElement());
         }
-        QueryResultMeta resultMeta = new QueryResultMeta();
-        resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
-        queryMeta.setResultMeta(resultMeta);
+        queryMeta.setReturnMeta(returnMeta);
     }
 
     @Override
     protected void doParameters(SqlFileModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         for (VariableElement parameter : method.getParameters()) {
-            QueryParameterMeta queryParameterMeta = createQueryParameterMeta(parameter);
+            QueryParameterMeta queryParameterMeta = createParameterMeta(parameter);
             if (queryParameterMeta.isCollection()) {
                 TypeMirror elementType = queryParameterMeta
                         .getCollectionElementType();

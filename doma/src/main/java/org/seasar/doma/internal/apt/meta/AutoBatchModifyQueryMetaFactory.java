@@ -97,13 +97,12 @@ public class AutoBatchModifyQueryMetaFactory extends
     @Override
     protected void doReturnType(AutoBatchModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        TypeMirror returnType = method.getReturnType();
-        if (!isPrimitiveIntArray(returnType)) {
-            throw new AptException(DomaMessageCode.DOMA4040, env, method);
+        QueryReturnMeta returnMeta = createReturnMeta(method);
+        if (!returnMeta.isPrimitiveIntArray()) {
+            throw new AptException(DomaMessageCode.DOMA4040, env, returnMeta
+                    .getMethodElement());
         }
-        QueryResultMeta resultMeta = new QueryResultMeta();
-        resultMeta.setTypeName(TypeUtil.getTypeName(returnType, env));
-        queryMeta.setResultMeta(resultMeta);
+        queryMeta.setReturnMeta(returnMeta);
     }
 
     @Override
@@ -114,13 +113,12 @@ public class AutoBatchModifyQueryMetaFactory extends
         if (size != 1) {
             throw new AptException(DomaMessageCode.DOMA4002, env, method);
         }
-        QueryParameterMeta parameterMeta = createQueryParameterMeta(parameters
+        QueryParameterMeta parameterMeta = createParameterMeta(parameters
                 .get(0));
         if (!parameterMeta.isCollection()) {
             throw new AptException(DomaMessageCode.DOMA4042, env, method);
         }
-        List<? extends TypeMirror> typeArgs = parameterMeta
-                .getTypeArguments();
+        List<? extends TypeMirror> typeArgs = parameterMeta.getTypeArguments();
         if (typeArgs.isEmpty()) {
             throw new AptException(DomaMessageCode.DOMA4041, env, method);
         }

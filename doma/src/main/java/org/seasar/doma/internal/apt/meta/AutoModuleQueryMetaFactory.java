@@ -47,7 +47,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     protected void doParameters(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
         for (VariableElement parameter : method.getParameters()) {
-            QueryParameterMeta parameterMeta = createQueryParameterMeta(parameter);
+            QueryParameterMeta parameterMeta = createParameterMeta(parameter);
             queryMeta.addParameterMetas(parameterMeta);
 
             CallableSqlParameterMeta callableSqlParameterMeta = createParameterMeta(

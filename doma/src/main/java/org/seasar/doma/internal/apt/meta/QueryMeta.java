@@ -33,7 +33,7 @@ public interface QueryMeta {
 
     List<QueryParameterMeta> getParameterMetas();
 
-    QueryResultMeta getResultMeta();
+    QueryReturnMeta getReturnMeta();
 
     Map<String, TypeMirror> getExpressionParameterTypes();
 

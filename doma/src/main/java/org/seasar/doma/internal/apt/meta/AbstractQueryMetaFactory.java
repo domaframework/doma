@@ -151,10 +151,14 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
         }
     }
 
-    protected QueryParameterMeta createQueryParameterMeta(
-            VariableElement parameter) {
+    protected QueryReturnMeta createReturnMeta(ExecutableElement method) {
+        return new QueryReturnMeta(method, env);
+    }
+
+    protected QueryParameterMeta createParameterMeta(VariableElement parameter) {
         QueryParameterMeta queryParameterMeta = new QueryParameterMeta(
                 parameter, env);
         return queryParameterMeta;
     }
+
 }
