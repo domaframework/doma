@@ -43,7 +43,7 @@ public class ValueListParameter<V> implements ListParameter<Wrapper<V>> {
     }
 
     @Override
-    public void putElementHolder(Wrapper<V> wrapper) {
+    public void add() {
         values.add(wrapper.get());
     }
 

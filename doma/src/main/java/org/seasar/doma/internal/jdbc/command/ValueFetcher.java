@@ -29,7 +29,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class ValueFetcher {
+public class ValueFetcher implements Fetcher<Wrapper<?>> {
 
     protected final Query query;
 
@@ -38,6 +38,7 @@ public class ValueFetcher {
         this.query = query;
     }
 
+    @Override
     public void fetch(ResultSet resultSet, Wrapper<?> wrapper)
             throws SQLException {
         ResultSetMetaData resultSetMeta = resultSet.getMetaData();

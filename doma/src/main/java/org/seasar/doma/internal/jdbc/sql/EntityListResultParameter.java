@@ -15,43 +15,25 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 
 /**
  * @author taedium
  * 
  */
-public class EntityListResultParameter<E> implements ResultParameter<List<E>>,
-        ListParameter<EntityType<E>> {
-
-    protected final EntityTypeFactory<E> entityTypeFactory;
-
-    protected final List<E> results = new ArrayList<E>();
+public class EntityListResultParameter<E> extends EntityListParameter<E>
+        implements ResultParameter<List<E>> {
 
     public EntityListResultParameter(EntityTypeFactory<E> entityTypeFactory) {
-        assertNotNull(entityTypeFactory);
-        this.entityTypeFactory = entityTypeFactory;
-    }
-
-    @Override
-    public EntityType<E> getElementHolder() {
-        return entityTypeFactory.createEntityType();
-    }
-
-    @Override
-    public void putElementHolder(EntityType<E> entityType) {
-        results.add(entityType.getEntity());
+        super(entityTypeFactory, new ArrayList<E>());
     }
 
     @Override
     public List<E> getResult() {
-        return results;
+        return entities;
     }
 
     @Override

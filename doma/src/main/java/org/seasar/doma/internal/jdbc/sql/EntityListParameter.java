@@ -32,6 +32,8 @@ public class EntityListParameter<E> implements ListParameter<EntityType<E>> {
 
     protected final List<E> entities;
 
+    protected EntityType<E> entityType;
+
     public EntityListParameter(EntityTypeFactory<E> entityTypeFactory,
             List<E> entities) {
         assertNotNull(entityTypeFactory, entities);
@@ -41,11 +43,12 @@ public class EntityListParameter<E> implements ListParameter<EntityType<E>> {
 
     @Override
     public EntityType<E> getElementHolder() {
-        return entityTypeFactory.createEntityType();
+        entityType = entityTypeFactory.createEntityType();
+        return entityType;
     }
 
     @Override
-    public void putElementHolder(EntityType<E> entityType) {
+    public void add() {
         entities.add(entityType.getEntity());
     }
 

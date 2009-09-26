@@ -33,6 +33,8 @@ public class DomainListParameter<V, D> implements
 
     protected final List<D> domains;
 
+    protected DomainType<V, D> domainType;
+
     public DomainListParameter(DomainTypeFactory<V, D> domainTypeFactory,
             List<D> domains) {
         assertNotNull(domainTypeFactory, domains);
@@ -42,11 +44,12 @@ public class DomainListParameter<V, D> implements
 
     @Override
     public DomainType<V, D> getElementHolder() {
-        return domainTypeFactory.createDomainType();
+        domainType = domainTypeFactory.createDomainType();
+        return domainType;
     }
 
     @Override
-    public void putElementHolder(DomainType<V, D> domainType) {
+    public void add() {
         domains.add(domainType.getDomain());
     }
 

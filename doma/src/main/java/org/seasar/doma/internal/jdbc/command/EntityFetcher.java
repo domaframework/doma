@@ -35,7 +35,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class EntityFetcher {
+public class EntityFetcher implements Fetcher<EntityType<?>> {
 
     protected final Query query;
 
@@ -46,6 +46,7 @@ public class EntityFetcher {
         this.query = query;
     }
 
+    @Override
     public void fetch(ResultSet resultSet, EntityType<?> entityType)
             throws SQLException {
         assertNotNull(resultSet, entityType);
@@ -70,7 +71,8 @@ public class EntityFetcher {
     }
 
     protected void createNameMap(EntityType<?> entity) {
-        List<EntityPropertyType<?>> properties = entity.getEntityPropertyTypes();
+        List<EntityPropertyType<?>> properties = entity
+                .getEntityPropertyTypes();
         nameMap = new HashMap<String, String>(properties.size());
         for (EntityPropertyType<?> property : properties) {
             String columnName = ColumnUtil.getColumnName(query.getConfig(),

@@ -23,5 +23,5 @@ public interface ListParameter<H> extends CallableSqlParameter {
 
     H getElementHolder();
 
-    void putElementHolder(H holder);
+    void add();
 }

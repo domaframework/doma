@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,31 +24,16 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class ValueListResultParameter<V> implements ResultParameter<List<V>>,
-        ListParameter<Wrapper<V>> {
-
-    protected final Wrapper<V> wrapper;
-
-    protected final List<V> results = new ArrayList<V>();
+public class ValueListResultParameter<V> extends ValueListParameter<V>
+        implements ResultParameter<List<V>> {
 
     public ValueListResultParameter(Wrapper<V> wrapper) {
-        assertNotNull(wrapper);
-        this.wrapper = wrapper;
-    }
-
-    @Override
-    public Wrapper<V> getElementHolder() {
-        return wrapper;
-    }
-
-    @Override
-    public void putElementHolder(Wrapper<V> wrapper) {
-        results.add(wrapper.get());
+        super(wrapper, new ArrayList<V>());
     }
 
     @Override
     public List<V> getResult() {
-        return results;
+        return values;
     }
 
     @Override

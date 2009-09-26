@@ -15,43 +15,25 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seasar.doma.internal.domain.DomainType;
 import org.seasar.doma.internal.domain.DomainTypeFactory;
 
 /**
  * @author taedium
  * 
  */
-public class DomainListResultParameter<V, D> implements
-        ResultParameter<List<D>>, ListParameter<DomainType<V, D>> {
-
-    protected final DomainTypeFactory<V, D> domainTypeFactory;
-
-    protected final List<D> results = new ArrayList<D>();
+public class DomainListResultParameter<V, D> extends DomainListParameter<V, D>
+        implements ResultParameter<List<D>> {
 
     public DomainListResultParameter(DomainTypeFactory<V, D> domainTypeFactory) {
-        assertNotNull(domainTypeFactory);
-        this.domainTypeFactory = domainTypeFactory;
-    }
-
-    @Override
-    public DomainType<V, D> getElementHolder() {
-        return domainTypeFactory.createDomainType();
-    }
-
-    @Override
-    public void putElementHolder(DomainType<V, D> domainType) {
-        results.add(domainType.getDomain());
+        super(domainTypeFactory, new ArrayList<D>());
     }
 
     @Override
     public List<D> getResult() {
-        return results;
+        return domains;
     }
 
     @Override
