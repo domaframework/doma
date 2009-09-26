@@ -33,10 +33,10 @@ public class DomainResultParameter<V, D> implements ResultParameter<D> {
     public DomainResultParameter(DomainTypeFactory<V, D> domainTypeFactory) {
         assertNotNull(domainTypeFactory);
         this.domainTypeFactory = domainTypeFactory;
+        this.domainType = domainTypeFactory.createDomainType();
     }
 
     public DomainType<V, D> getDomainType() {
-        domainType = domainTypeFactory.createDomainType();
         return domainType;
     }
 
