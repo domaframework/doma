@@ -56,7 +56,7 @@ import org.seasar.doma.internal.apt.meta.ValueListParameterMeta;
 import org.seasar.doma.internal.apt.meta.ValueListResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.ValueOutParameterMeta;
 import org.seasar.doma.internal.apt.meta.ValueResultParameterMeta;
-import org.seasar.doma.internal.apt.type.CollectionType;
+import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.IterationCallbackType;
@@ -298,29 +298,29 @@ public class DaoGenerator extends AbstractGenerator {
                 }
             } else {
                 if (m.getReturnMeta().getCollectionType() != null) {
-                    CollectionType collectionType = m.getReturnMeta()
+                    ListType listType = m.getReturnMeta()
                             .getCollectionType();
-                    if (collectionType.getEntityType() != null) {
-                        EntityType entityType = collectionType.getEntityType();
+                    if (listType.getEntityType() != null) {
+                        EntityType entityType = listType.getEntityType();
                         iprint(
                                 "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s>(new %4$s%5$s()));%n",
-                                commandClassName, collectionType.getTypeName(),
+                                commandClassName, listType.getTypeName(),
                                 EntityResultListHandler.class.getName(),
                                 entityType.getTypeName(), entitySuffix);
-                    } else if (collectionType.getDomainType() != null) {
-                        DomainType domainType = collectionType.getDomainType();
+                    } else if (listType.getDomainType() != null) {
+                        DomainType domainType = listType.getDomainType();
                         ValueType valueType = domainType.getValueType();
                         iprint(
                                 "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s, %5$s>(new %5$s%6$s()));%n",
-                                commandClassName, collectionType.getTypeName(),
+                                commandClassName, listType.getTypeName(),
                                 DomainResultListHandler.class.getName(),
                                 valueType.getTypeName(), domainType
                                         .getTypeName(), domainSuffix);
                     } else {
-                        ValueType valueType = collectionType.getValueType();
+                        ValueType valueType = listType.getValueType();
                         iprint(
                                 "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s>(new %5$s()));%n",
-                                commandClassName, collectionType.getTypeName(),
+                                commandClassName, listType.getTypeName(),
                                 ValueResultListHandler.class.getName(),
                                 valueType.getTypeName(), valueType
                                         .getWrapperType().getTypeName());

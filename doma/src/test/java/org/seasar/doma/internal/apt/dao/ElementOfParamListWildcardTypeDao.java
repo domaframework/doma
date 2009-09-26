@@ -27,7 +27,7 @@ import org.seasar.doma.internal.apt.entity.Emp;
  * 
  */
 @Dao(config = MyConfig.class)
-public interface ElementOfParamListNotDomainDao {
+public interface ElementOfParamListWildcardTypeDao {
 
     @Select
     List<Emp> select(List<?> param);

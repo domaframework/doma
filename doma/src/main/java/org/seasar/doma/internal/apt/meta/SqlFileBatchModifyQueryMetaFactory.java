@@ -27,7 +27,7 @@ import org.seasar.doma.BatchDelete;
 import org.seasar.doma.BatchInsert;
 import org.seasar.doma.BatchUpdate;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.type.CollectionType;
+import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.message.DomaMessageCode;
 
@@ -105,11 +105,11 @@ public class SqlFileBatchModifyQueryMetaFactory extends
         }
         QueryParameterMeta parameterMeta = createParameterMeta(parameters
                 .get(0));
-        CollectionType collectionType = parameterMeta.getCollectionType();
-        if (collectionType == null) {
+        ListType listType = parameterMeta.getCollectionType();
+        if (listType == null) {
             throw new AptException(DomaMessageCode.DOMA4042, env, method);
         }
-        EntityType entityType = collectionType.getEntityType();
+        EntityType entityType = listType.getEntityType();
         if (entityType == null) {
             throw new AptException(DomaMessageCode.DOMA4043, env, method);
         }

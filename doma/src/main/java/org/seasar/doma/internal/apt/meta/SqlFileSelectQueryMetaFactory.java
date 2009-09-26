@@ -24,7 +24,7 @@ import javax.lang.model.element.VariableElement;
 import org.seasar.doma.Select;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.type.AnyType;
-import org.seasar.doma.internal.apt.type.CollectionType;
+import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.IterationCallbackType;
 import org.seasar.doma.internal.apt.type.ValueType;
 import org.seasar.doma.message.DomaMessageCode;
@@ -93,11 +93,11 @@ public class SqlFileSelectQueryMetaFactory extends
                 throw new AptException(DomaMessageCode.DOMA4008, env,
                         returnMeta.getElement(), returnMeta.getType());
             }
-            CollectionType collectionType = returnMeta.getCollectionType();
-            if (collectionType != null) {
-                if (!collectionType.hasSupportedElementType()) {
+            ListType listType = returnMeta.getCollectionType();
+            if (listType != null) {
+                if (!listType.hasSupportedElementType()) {
                     throw new AptException(DomaMessageCode.DOMA4007, env,
-                            returnMeta.getElement(), collectionType
+                            returnMeta.getElement(), listType
                                     .getEntityType());
                 }
             }
@@ -110,9 +110,9 @@ public class SqlFileSelectQueryMetaFactory extends
         for (VariableElement parameter : method.getParameters()) {
             QueryParameterMeta parameterMeta = createParameterMeta(parameter);
             if (parameterMeta.getCollectionType() != null) {
-                CollectionType collectionType = parameterMeta
+                ListType listType = parameterMeta
                         .getCollectionType();
-                ValueType valueType = collectionType.getValueType();
+                ValueType valueType = listType.getValueType();
                 if (valueType == null) {
                     throw new AptException(DomaMessageCode.DOMA4028, env,
                             parameterMeta.getElement());

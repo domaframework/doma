@@ -12,10 +12,10 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.ElementUtil;
 import org.seasar.doma.internal.apt.TypeUtil;
-import org.seasar.doma.internal.apt.type.CollectionType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.IterationCallbackType;
+import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.ReferenceType;
 import org.seasar.doma.internal.apt.type.SelectOptionsType;
 import org.seasar.doma.internal.apt.type.ValueType;
@@ -35,7 +35,7 @@ public class QueryParameterMeta {
 
     protected String qualifiedName;
 
-    protected CollectionType collectionType;
+    protected ListType listType;
 
     protected EntityType entityType;
 
@@ -62,8 +62,8 @@ public class QueryParameterMeta {
             qualifiedName = typeElement.getQualifiedName().toString();
         }
 
-        collectionType = CollectionType.newInstance(type, env);
-        if (collectionType == null) {
+        listType = ListType.newInstance(type, env);
+        if (listType == null) {
             entityType = EntityType.newInstance(type, env);
             if (entityType == null) {
                 domainType = DomainType.newInstance(type, env);
@@ -85,18 +85,35 @@ public class QueryParameterMeta {
             }
         }
 
-        if (collectionType != null && !collectionType.isParametarized()) {
-            throw new AptException(DomaMessageCode.DOMA4108, env,
-                    parameterElement, qualifiedName);
+        if (listType != null) {
+            if (listType.isRawType()) {
+                throw new AptException(DomaMessageCode.DOMA4108, env,
+                        parameterElement, qualifiedName);
+            }
+            if (listType.isWildcardType()) {
+                throw new AptException(DomaMessageCode.DOMA4112, env,
+                        parameterElement, qualifiedName);
+            }
         }
-        if (iterationCallbackType != null
-                && !iterationCallbackType.isParametarized()) {
-            throw new AptException(DomaMessageCode.DOMA4110, env,
-                    parameterElement, qualifiedName);
+        if (iterationCallbackType != null) {
+            if (iterationCallbackType.isRawType()) {
+                throw new AptException(DomaMessageCode.DOMA4110, env,
+                        parameterElement, qualifiedName);
+            }
+            if (iterationCallbackType.isWildcardType()) {
+                throw new AptException(DomaMessageCode.DOMA4112, env,
+                        parameterElement, qualifiedName);
+            }
         }
-        if (referenceType != null && !referenceType.isParametarized()) {
-            throw new AptException(DomaMessageCode.DOMA4099, env,
-                    parameterElement, qualifiedName);
+        if (referenceType != null) {
+            if (referenceType.isRaw()) {
+                throw new AptException(DomaMessageCode.DOMA4108, env,
+                        parameterElement, qualifiedName);
+            }
+            if (referenceType.isWildcardType()) {
+                throw new AptException(DomaMessageCode.DOMA4112, env,
+                        parameterElement, qualifiedName);
+            }
         }
     }
 
@@ -120,8 +137,8 @@ public class QueryParameterMeta {
         return qualifiedName;
     }
 
-    public CollectionType getCollectionType() {
-        return collectionType;
+    public ListType getCollectionType() {
+        return listType;
     }
 
     public EntityType getEntityType() {

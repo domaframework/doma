@@ -22,7 +22,7 @@ import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.Function;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.type.CollectionType;
+import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.ValueType;
@@ -90,22 +90,22 @@ public class AutoFunctionQueryMetaFactory extends
 
     protected ResultParameterMeta createCallableSqlResultParameterMeta(
             QueryReturnMeta returnMeta) {
-        CollectionType collectionType = returnMeta.getCollectionType();
-        if (collectionType != null) {
-            EntityType entityType = collectionType.getEntityType();
+        ListType listType = returnMeta.getCollectionType();
+        if (listType != null) {
+            EntityType entityType = listType.getEntityType();
             if (entityType != null) {
                 return new EntityListResultParameterMeta(entityType);
             }
-            DomainType domainType = collectionType.getDomainType();
+            DomainType domainType = listType.getDomainType();
             if (domainType != null) {
                 return new DomainListResultParameterMeta(domainType);
             }
-            ValueType valueType = collectionType.getValueType();
+            ValueType valueType = listType.getValueType();
             if (valueType != null) {
                 return new ValueListResultParameterMeta(valueType);
             }
             throw new AptException(DomaMessageCode.DOMA4065, env, returnMeta
-                    .getElement(), collectionType.getEntityType());
+                    .getElement(), listType.getEntityType());
         }
         DomainType domainType = returnMeta.getDomainType();
         if (domainType != null) {

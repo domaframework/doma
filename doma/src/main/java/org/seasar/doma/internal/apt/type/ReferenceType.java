@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.TypeUtil;
@@ -61,8 +62,13 @@ public class ReferenceType {
         return referentType;
     }
 
-    public boolean isParametarized() {
-        return referentType != null;
+    public boolean isRaw() {
+        return referentType == null;
+    }
+
+    public boolean isWildcardType() {
+        return referentType != null
+                && referentType.getKind() == TypeKind.WILDCARD;
     }
 
     public static ReferenceType newInstance(TypeMirror type,

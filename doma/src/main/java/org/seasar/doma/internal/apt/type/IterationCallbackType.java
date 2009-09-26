@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.TypeUtil;
@@ -32,6 +33,10 @@ public class IterationCallbackType {
 
     protected String typeName;
 
+    protected TypeMirror resultType;
+
+    protected TypeMirror targetType;
+
     protected AnyType returnType;
 
     protected EntityType entityType;
@@ -40,7 +45,7 @@ public class IterationCallbackType {
 
     protected ValueType valueType;
 
-    protected boolean parametarized;
+    protected boolean rawType;
 
     protected IterationCallbackType() {
     }
@@ -69,8 +74,14 @@ public class IterationCallbackType {
         return valueType;
     }
 
-    public boolean isParametarized() {
-        return parametarized;
+    public boolean isRawType() {
+        return resultType == null || targetType == null;
+    }
+
+    public boolean isWildcardType() {
+        return resultType != null && resultType.getKind() == TypeKind.WILDCARD
+                || targetType != null
+                && targetType.getKind() == TypeKind.WILDCARD;
     }
 
     public static IterationCallbackType newInstance(TypeMirror type,
@@ -82,31 +93,30 @@ public class IterationCallbackType {
             return null;
         }
 
-        IterationCallbackType iterationCallbackType = new IterationCallbackType();
-        iterationCallbackType.type = type;
-        iterationCallbackType.typeName = TypeUtil.getTypeName(type, env);
+        IterationCallbackType callbackType = new IterationCallbackType();
+        callbackType.type = type;
+        callbackType.typeName = TypeUtil.getTypeName(type, env);
         List<? extends TypeMirror> typeArguments = iterationCallbackDeclaredType
                 .getTypeArguments();
         if (typeArguments.size() == 2) {
-            TypeMirror callbackResultType = typeArguments.get(0);
-            TypeMirror callbackTargetType = typeArguments.get(1);
-            iterationCallbackType.parametarized = true;
+            callbackType.resultType = typeArguments.get(0);
+            callbackType.targetType = typeArguments.get(1);
 
-            iterationCallbackType.returnType = AnyType.newInstance(
-                    callbackResultType, env);
-            iterationCallbackType.entityType = EntityType.newInstance(
-                    callbackTargetType, env);
-            if (iterationCallbackType.entityType == null) {
-                iterationCallbackType.domainType = DomainType.newInstance(
-                        callbackTargetType, env);
-                if (iterationCallbackType.domainType == null) {
-                    iterationCallbackType.valueType = ValueType.newInstance(
-                            callbackTargetType, env);
+            callbackType.returnType = AnyType.newInstance(
+                    callbackType.resultType, env);
+            callbackType.entityType = EntityType.newInstance(
+                    callbackType.targetType, env);
+            if (callbackType.entityType == null) {
+                callbackType.domainType = DomainType.newInstance(
+                        callbackType.targetType, env);
+                if (callbackType.domainType == null) {
+                    callbackType.valueType = ValueType.newInstance(
+                            callbackType.targetType, env);
                 }
             }
         }
 
-        return iterationCallbackType;
+        return callbackType;
     }
 
     protected static DeclaredType getIterationCallbackDeclaredType(

@@ -11,9 +11,9 @@ import javax.lang.model.util.TypeKindVisitor6;
 
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.TypeUtil;
-import org.seasar.doma.internal.apt.type.CollectionType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
+import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.ValueType;
 import org.seasar.doma.message.DomaMessageCode;
 
@@ -27,7 +27,7 @@ public class QueryReturnMeta {
 
     protected final String typeName;
 
-    protected CollectionType collectionType;
+    protected ListType listType;
 
     protected EntityType entityType;
 
@@ -43,8 +43,8 @@ public class QueryReturnMeta {
         type = methodElement.getReturnType();
         typeName = TypeUtil.getTypeName(type, env);
 
-        collectionType = CollectionType.newInstance(type, env);
-        if (collectionType == null) {
+        listType = ListType.newInstance(type, env);
+        if (listType == null) {
             entityType = EntityType.newInstance(type, env);
             if (entityType == null) {
                 domainType = DomainType.newInstance(type, env);
@@ -53,8 +53,12 @@ public class QueryReturnMeta {
                 }
             }
         } else {
-            if (!collectionType.isParametarized()) {
+            if (listType.isRawType()) {
                 throw new AptException(DomaMessageCode.DOMA4109, env,
+                        methodElement, typeName);
+            }
+            if (listType.isWildcardType()) {
+                throw new AptException(DomaMessageCode.DOMA4113, env,
                         methodElement, typeName);
             }
         }
@@ -90,8 +94,8 @@ public class QueryReturnMeta {
         return type;
     }
 
-    public CollectionType getCollectionType() {
-        return collectionType;
+    public ListType getCollectionType() {
+        return listType;
     }
 
     public EntityType getEntityType() {
@@ -107,8 +111,8 @@ public class QueryReturnMeta {
     }
 
     public boolean isSupportedType() {
-        return collectionType != null || entityType != null
-                || domainType != null || valueType != null;
+        return listType != null || entityType != null || domainType != null
+                || valueType != null;
     }
 
 }

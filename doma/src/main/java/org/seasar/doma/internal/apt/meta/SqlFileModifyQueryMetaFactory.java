@@ -25,7 +25,7 @@ import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
 import org.seasar.doma.Update;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.type.CollectionType;
+import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.message.DomaMessageCode;
 
@@ -99,9 +99,9 @@ public class SqlFileModifyQueryMetaFactory extends
         for (VariableElement parameter : method.getParameters()) {
             QueryParameterMeta parameterMeta = createParameterMeta(parameter);
             if (parameterMeta.getCollectionType() != null) {
-                CollectionType collectionType = parameterMeta
+                ListType listType = parameterMeta
                         .getCollectionType();
-                DomainType domainType = collectionType.getDomainType();
+                DomainType domainType = listType.getDomainType();
                 if (domainType == null) {
                     throw new AptException(DomaMessageCode.DOMA4028, env,
                             method);

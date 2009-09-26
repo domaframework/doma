@@ -25,7 +25,7 @@ import org.seasar.doma.Out;
 import org.seasar.doma.ResultSet;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.type.CollectionType;
+import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.ReferenceType;
@@ -61,22 +61,22 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     protected CallableSqlParameterMeta createParameterMeta(
             QueryParameterMeta parameterMeta) {
         if (parameterMeta.isAnnotated(ResultSet.class)) {
-            CollectionType collectionType = parameterMeta.getCollectionType();
-            if (collectionType == null) {
+            ListType listType = parameterMeta.getCollectionType();
+            if (listType == null) {
                 throw new AptException(DomaMessageCode.DOMA4062, env,
                         parameterMeta.getElement());
             }
-            EntityType entityType = collectionType.getEntityType();
+            EntityType entityType = listType.getEntityType();
             if (entityType != null) {
                 return new EntityListParameterMeta(parameterMeta.getName(),
                         entityType);
             }
-            DomainType domainType = collectionType.getDomainType();
+            DomainType domainType = listType.getDomainType();
             if (domainType != null) {
                 return new DomainListParameterMeta(parameterMeta.getName(),
                         domainType);
             }
-            ValueType valueType = collectionType.getValueType();
+            ValueType valueType = listType.getValueType();
             if (valueType != null) {
                 return new ValueListParameterMeta(parameterMeta.getName(),
                         valueType);

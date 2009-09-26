@@ -28,8 +28,8 @@ import org.seasar.doma.internal.apt.dao.BlobFactoryDao;
 import org.seasar.doma.internal.apt.dao.ClobFactoryDao;
 import org.seasar.doma.internal.apt.dao.DelegateDao;
 import org.seasar.doma.internal.apt.dao.DomainParameterDao;
-import org.seasar.doma.internal.apt.dao.ElementOfParamListNotDomainDao;
 import org.seasar.doma.internal.apt.dao.ElementOfParamListUnspecifiedDao;
+import org.seasar.doma.internal.apt.dao.ElementOfParamListWildcardTypeDao;
 import org.seasar.doma.internal.apt.dao.EmbeddedVariableDao;
 import org.seasar.doma.internal.apt.dao.ExtendsDao;
 import org.seasar.doma.internal.apt.dao.IllegalConstructorDelegateDao;
@@ -178,13 +178,13 @@ public class DaoProcessorTest extends AptTestCase {
     }
 
     public void testElementOfParamListNotDomain() throws Exception {
-        Class<?> target = ElementOfParamListNotDomainDao.class;
+        Class<?> target = ElementOfParamListWildcardTypeDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4028);
+        assertMessageCode(DomaMessageCode.DOMA4112);
     }
 
     public void testAutoBatchUpdate() throws Exception {

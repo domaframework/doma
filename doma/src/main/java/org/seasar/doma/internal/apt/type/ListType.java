@@ -17,16 +17,16 @@ package org.seasar.doma.internal.apt.type;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.TypeUtil;
 
-public class CollectionType {
+public class ListType {
 
     protected TypeMirror type;
 
@@ -40,7 +40,7 @@ public class CollectionType {
 
     protected ValueType valueType;
 
-    protected CollectionType() {
+    protected ListType() {
     }
 
     public TypeMirror getType() {
@@ -63,23 +63,28 @@ public class CollectionType {
         return valueType;
     }
 
-    public boolean isParametarized() {
-        return elementType != null;
+    public boolean isRawType() {
+        return elementType == null;
+    }
+
+    public boolean isWildcardType() {
+        return elementType != null
+                && elementType.getKind() == TypeKind.WILDCARD;
     }
 
     public boolean hasSupportedElementType() {
         return entityType != null || domainType != null || valueType != null;
     }
 
-    public static CollectionType newInstance(TypeMirror type,
+    public static ListType newInstance(TypeMirror type,
             ProcessingEnvironment env) {
         assertNotNull(type, env);
-        if (!TypeUtil.isAssignable(type, Collection.class, env)) {
+        if (!TypeUtil.isSameType(type, List.class, env)) {
             return null;
         }
-        CollectionType collectionType = new CollectionType();
-        collectionType.type = type;
-        collectionType.typeName = TypeUtil.getTypeName(type, env);
+        ListType listType = new ListType();
+        listType.type = type;
+        listType.typeName = TypeUtil.getTypeName(type, env);
 
         DeclaredType declaredType = TypeUtil.toDeclaredType(type, env);
         if (declaredType == null) {
@@ -87,18 +92,18 @@ public class CollectionType {
         }
         List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
         if (typeArgs.size() > 0) {
-            collectionType.elementType = typeArgs.get(0);
-            collectionType.entityType = EntityType.newInstance(
-                    collectionType.elementType, env);
-            if (collectionType.entityType == null) {
-                collectionType.domainType = DomainType.newInstance(
-                        collectionType.elementType, env);
-                if (collectionType.domainType == null) {
-                    collectionType.valueType = ValueType.newInstance(
-                            collectionType.elementType, env);
+            listType.elementType = typeArgs.get(0);
+            listType.entityType = EntityType.newInstance(listType.elementType,
+                    env);
+            if (listType.entityType == null) {
+                listType.domainType = DomainType.newInstance(
+                        listType.elementType, env);
+                if (listType.domainType == null) {
+                    listType.valueType = ValueType.newInstance(
+                            listType.elementType, env);
                 }
             }
         }
-        return collectionType;
+        return listType;
     }
 }
