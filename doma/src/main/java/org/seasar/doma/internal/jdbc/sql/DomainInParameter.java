@@ -13,39 +13,36 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.meta;
+package org.seasar.doma.internal.jdbc.sql;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import org.seasar.doma.internal.apt.type.ValueType;
+import org.seasar.doma.internal.domain.DomainType;
+import org.seasar.doma.internal.domain.DomainTypeFactory;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class InOutParameterMeta implements CallableSqlParameterMeta {
+public class DomainInParameter<V, D> implements InParameter {
 
-    private final String name;
+    protected final DomainType<V, D> domainType;
 
-    protected final ValueType valueType;
-
-    public InOutParameterMeta(String name, ValueType valueType) {
-        assertNotNull(name, valueType);
-        this.name = name;
-        this.valueType = valueType;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public ValueType getValueType() {
-        return valueType;
+    public DomainInParameter(DomainTypeFactory<V, D> domainTypeFactory, D domain) {
+        assertNotNull(domainTypeFactory, domain);
+        domainType = domainTypeFactory.createDomainType(domain);
     }
 
     @Override
-    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visistInOutParameterMeta(this, p);
+    public Wrapper<?> getWrapper() {
+        return domainType.getWrapper();
+    }
+
+    @Override
+    public <R, P, TH extends Throwable> R accept(
+            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
+        return visitor.visitDomainInParameter(this, p);
     }
 
 }

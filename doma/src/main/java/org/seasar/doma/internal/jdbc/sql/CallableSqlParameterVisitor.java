@@ -21,11 +21,19 @@ package org.seasar.doma.internal.jdbc.sql;
  */
 public interface CallableSqlParameterVisitor<R, P, TH extends Throwable> {
 
-    R visitInParameter(InParameter parameter, P p) throws TH;
+    R visitValueInParameter(ValueInParameter parameter, P p) throws TH;
 
-    R visitOutParameter(OutParameter<?> parameter, P p) throws TH;
+    R visitDomainInParameter(DomainInParameter<?, ?> parameter, P p) throws TH;
 
-    R visitInOutParameter(InOutParameter<?> parameter, P p) throws TH;
+    R visitValueOutParameter(ValueOutParameter<?> parameter, P p) throws TH;
+
+    R visitDomainOutParameter(DomainOutParameter<?, ?> parameter, P p)
+            throws TH;
+
+    R visitValueInOutParameter(ValueInOutParameter<?> parameter, P p) throws TH;
+
+    R visitDomainInOutParameter(DomainInOutParameter<?, ?> parameter, P p)
+            throws TH;
 
     R visitValueListParameter(ValueListParameter<?> parameter, P p) throws TH;
 

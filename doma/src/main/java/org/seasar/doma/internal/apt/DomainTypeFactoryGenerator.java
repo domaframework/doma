@@ -79,10 +79,20 @@ public class DomainTypeFactoryGenerator extends AbstractGenerator {
         iprint("    return new %1$sType();%n", domainMeta.getTypeElement()
                 .getSimpleName());
         iprint("}%n");
+        print("%n");
+        iprint("@Override%n");
+        iprint("public %1$s<%2$s, %3$s> createDomainType(%3$s domain) {%n",
+                DomainType.class.getName(), domainMeta.getValueTypeElement()
+                        .getQualifiedName(), domainMeta.getTypeElement()
+                        .getQualifiedName());
+        iprint("    return new %1$sType(domain);%n", domainMeta
+                .getTypeElement().getSimpleName());
+        iprint("}%n");
+        print("%n");
     }
 
     protected void printDomainTypeClass() {
-        iprint("public static class %1$sType implements %2$s<%3$s, %4$s> {%n",
+        iprint("private static class %1$sType implements %2$s<%3$s, %4$s> {%n",
                 domainMeta.getTypeElement().getSimpleName(), DomainType.class
                         .getName(), domainMeta.getValueTypeElement()
                         .getQualifiedName(), domainMeta.getTypeElement()
@@ -90,6 +100,7 @@ public class DomainTypeFactoryGenerator extends AbstractGenerator {
         print("%n");
         indent();
         printTypeClassFields();
+        printTypeClassConstructors();
         printTypeClassMethods();
         unindent();
         iprint("}%n");
@@ -99,6 +110,20 @@ public class DomainTypeFactoryGenerator extends AbstractGenerator {
     protected void printTypeClassFields() {
         iprint("private final %1$s wrapper = new %1$s();%n", domainMeta
                 .getWrapperType().getTypeName());
+        print("%n");
+    }
+
+    protected void printTypeClassConstructors() {
+        iprint("private %1$sType() {%n", domainMeta.getTypeElement()
+                .getSimpleName());
+        iprint("}%n");
+        print("%n");
+        iprint("private %1$sType(%1$s domain) {%n", domainMeta.getTypeElement()
+                .getSimpleName());
+        iprint(
+                "    this.wrapper.set(domain != null ? domain.%1$s() : null);%n",
+                domainMeta.getAccessorMethod());
+        iprint("}%n");
         print("%n");
     }
 

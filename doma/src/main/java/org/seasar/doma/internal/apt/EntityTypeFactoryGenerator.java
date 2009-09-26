@@ -102,7 +102,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
     }
 
     protected void printEntityTypeClass() {
-        iprint("public static class %1$sType implements %2$s<%3$s> {%n",
+        iprint("private static class %1$sType implements %2$s<%3$s> {%n",
                 entityMeta.getEntityName(), EntityType.class.getName(),
                 entityMeta.getEntityTypeName());
         print("%n");

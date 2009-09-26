@@ -89,13 +89,18 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                 throw new AptException(DomaMessageCode.DOMA4098, env,
                         parameterMeta.getElement());
             }
-            ValueType valueType = referenceType.getReferentValueType();
-            if (valueType == null) {
-                throw new AptException(DomaMessageCode.DOMA4100, env,
-                        parameterMeta.getElement(), referenceType
-                                .getReferentType());
+            DomainType domainType = referenceType.getReferentDomainType();
+            if (domainType != null) {
+                return new DomainOutParameterMeta(parameterMeta.getName(),
+                        domainType);
             }
-            return new OutParameterMeta(parameterMeta.getName(), valueType);
+            ValueType valueType = referenceType.getReferentValueType();
+            if (valueType != null) {
+                return new ValueOutParameterMeta(parameterMeta.getName(),
+                        valueType);
+            }
+            throw new AptException(DomaMessageCode.DOMA4100, env, parameterMeta
+                    .getElement(), referenceType.getReferentType());
         }
         if (parameterMeta.isAnnotated(InOut.class)) {
             ReferenceType referenceType = parameterMeta.getReferenceType();
@@ -103,18 +108,30 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                 throw new AptException(DomaMessageCode.DOMA4111, env,
                         parameterMeta.getElement());
             }
-            ValueType valueType = referenceType.getReferentValueType();
-            if (valueType == null) {
-                throw new AptException(DomaMessageCode.DOMA4100, env,
-                        parameterMeta.getElement(), referenceType
-                                .getReferentType());
+            DomainType domainType = referenceType.getReferentDomainType();
+            if (domainType != null) {
+                return new DomainInOutParameterMeta(parameterMeta.getName(),
+                        domainType);
             }
-            return new InOutParameterMeta(parameterMeta.getName(), valueType);
+            ValueType valueType = referenceType.getReferentValueType();
+            if (valueType != null) {
+                return new ValueInOutParameterMeta(parameterMeta.getName(),
+                        valueType);
+            }
+            throw new AptException(DomaMessageCode.DOMA4100, env, parameterMeta
+                    .getElement(), referenceType.getReferentType());
+
         }
         if (parameterMeta.isAnnotated(In.class)) {
+            DomainType domainType = parameterMeta.getDomainType();
+            if (domainType != null) {
+                return new DomainInParameterMeta(parameterMeta.getName(),
+                        domainType);
+            }
             ValueType valueType = parameterMeta.getValueType();
             if (valueType != null) {
-                return new InParameterMeta(parameterMeta.getName(), valueType);
+                return new ValueInParameterMeta(parameterMeta.getName(),
+                        valueType);
             }
             throw new AptException(DomaMessageCode.DOMA4101, env, parameterMeta
                     .getElement(), parameterMeta.getType());

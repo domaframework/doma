@@ -13,39 +13,39 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.type;
+package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.type.TypeMirror;
+import org.seasar.doma.internal.apt.type.ValueType;
 
-import org.seasar.doma.internal.apt.TypeUtil;
+/**
+ * @author taedium
+ * 
+ */
+public class ValueOutParameterMeta implements CallableSqlParameterMeta {
 
-public class AnyType {
+    private final String name;
 
-    protected TypeMirror type;
+    protected final ValueType valueType;
 
-    protected String typeName;
-
-    protected WrapperType wrapperType;
-
-    protected AnyType() {
+    public ValueOutParameterMeta(String name, ValueType valueType) {
+        assertNotNull(name, valueType);
+        this.name = name;
+        this.valueType = valueType;
     }
 
-    public TypeMirror getType() {
-        return type;
+    public String getName() {
+        return name;
     }
 
-    public String getTypeName() {
-        return typeName;
+    public ValueType getValueType() {
+        return valueType;
     }
 
-    public static AnyType newInstance(TypeMirror type, ProcessingEnvironment env) {
-        assertNotNull(type, env);
-        AnyType anyType = new AnyType();
-        anyType.type = type;
-        anyType.typeName = TypeUtil.getTypeName(type, env);
-        return anyType;
+    @Override
+    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
+        return visitor.visistValueOutParameterMeta(this, p);
     }
+
 }

@@ -17,6 +17,8 @@ package org.seasar.doma.internal.jdbc.sql;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import org.seasar.doma.internal.domain.DomainType;
+import org.seasar.doma.internal.domain.DomainTypeFactory;
 import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.wrapper.Wrapper;
 
@@ -24,30 +26,32 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class InOutParameter<T> implements CallableSqlParameter {
+public class DomainOutParameter<V, D> implements OutParameter {
 
-    protected final Wrapper<T> wrapper;
+    protected final DomainType<V, D> domainType;
 
-    protected final Reference<T> reference;
+    protected final Reference<D> reference;
 
-    public InOutParameter(Wrapper<T> wrapper, Reference<T> reference) {
-        assertNotNull(wrapper, reference);
-        this.wrapper = wrapper;
+    public DomainOutParameter(DomainTypeFactory<V, D> domainTypeFactory,
+            Reference<D> reference) {
+        assertNotNull(domainTypeFactory, reference);
+        this.domainType = domainTypeFactory.createDomainType();
         this.reference = reference;
     }
 
-    public Wrapper<T> getWrapper() {
-        return wrapper;
+    @Override
+    public Wrapper<?> getWrapper() {
+        return domainType.getWrapper();
     }
 
     public void updateReference() {
-        reference.set(wrapper.get());
+        reference.set(domainType.getDomain());
     }
 
     @Override
     public <R, P, TH extends Throwable> R accept(
             CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitInOutParameter(this, p);
+        return visitor.visitDomainOutParameter(this, p);
     }
 
 }

@@ -22,7 +22,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 
 import org.seasar.doma.GenerationType;
-import org.seasar.doma.internal.jdbc.sql.InParameter;
+import org.seasar.doma.internal.jdbc.sql.ValueInParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
 import org.seasar.doma.jdbc.JdbcException;
@@ -99,11 +99,11 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
         StringWrapper pkColumnValueWrapper = new StringWrapper();
         pkColumnValueWrapper.set(pkColumnValue);
         updateSql = new PreparedSql(createUpdateRawSql(),
-                createUpdateFormattedSql(), Arrays.asList(new InParameter(
-                        allocationSizeWrapper), new InParameter(
+                createUpdateFormattedSql(), Arrays.asList(new ValueInParameter(
+                        allocationSizeWrapper), new ValueInParameter(
                         pkColumnValueWrapper)));
         selectSql = new PreparedSql(createSelectRawSql(),
-                createSelectFormattedSql(), Arrays.asList(new InParameter(
+                createSelectFormattedSql(), Arrays.asList(new ValueInParameter(
                         pkColumnValueWrapper)));
     }
 

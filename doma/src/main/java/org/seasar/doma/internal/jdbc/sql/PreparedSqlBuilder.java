@@ -30,7 +30,7 @@ import org.seasar.doma.wrapper.Wrapper;
  */
 public class PreparedSqlBuilder {
 
-    protected final List<InParameter> parameters = new ArrayList<InParameter>();
+    protected final List<ValueInParameter> parameters = new ArrayList<ValueInParameter>();
 
     protected final StringBuilder rawSql = new StringBuilder(200);
 
@@ -60,7 +60,7 @@ public class PreparedSqlBuilder {
         rawSql.append("?");
         formattedSql.append(domain.accept(config.dialect()
                 .getSqlLogFormattingVisitor(), formattingFunction));
-        parameters.add(new InParameter(domain));
+        parameters.add(new ValueInParameter(domain));
     }
 
     public PreparedSql build() {

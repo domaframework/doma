@@ -154,41 +154,65 @@ public class CallableSqlBuilder
         if (config.dialect().supportsResultSetReturningAsOutParameter()) {
             p.appendRawSql("?, ");
             p.appendFormattedSql("?, ");
-            p.addParentheticParameter(parameter);
+            p.addParameter(parameter);
         }
     }
 
     @Override
-    public Void visitInParameter(InParameter parameter, Context p)
+    public Void visitValueInParameter(ValueInParameter parameter, Context p)
             throws RuntimeException {
-        Wrapper<?> domain = parameter.getWrapper();
-        p.appendRawSql("?, ");
-        p.appendFormattedSql(domain.accept(config.dialect()
-                .getSqlLogFormattingVisitor(), formattingFunction));
-        p.appendFormattedSql(", ");
-        p.addParentheticParameter(parameter);
+        handleInParameter(parameter, parameter.getWrapper(), p);
         return null;
     }
 
     @Override
-    public Void visitInOutParameter(InOutParameter<?> parameter, Context p)
-            throws RuntimeException {
-        Wrapper<?> domain = parameter.getWrapper();
-        p.appendRawSql("?, ");
-        p.appendFormattedSql(domain.accept(config.dialect()
-                .getSqlLogFormattingVisitor(), formattingFunction));
-        p.appendFormattedSql(", ");
-        p.addParentheticParameter(parameter);
+    public Void visitDomainInParameter(DomainInParameter<?, ?> parameter,
+            Context p) throws RuntimeException {
+        handleInParameter(parameter, parameter.getWrapper(), p);
         return null;
     }
 
     @Override
-    public Void visitOutParameter(OutParameter<?> parameter, Context p)
+    public Void visitValueInOutParameter(ValueInOutParameter<?> parameter,
+            Context p) throws RuntimeException {
+        handleInParameter(parameter, parameter.getWrapper(), p);
+        return null;
+    }
+
+    @Override
+    public Void visitDomainInOutParameter(DomainInOutParameter<?, ?> parameter,
+            Context p) throws RuntimeException {
+        handleInParameter(parameter, parameter.getWrapper(), p);
+        return null;
+    }
+
+    protected void handleInParameter(InParameter parameter, Wrapper<?> wrapper,
+            Context p) {
+        p.appendRawSql("?, ");
+        p.appendFormattedSql(wrapper.accept(config.dialect()
+                .getSqlLogFormattingVisitor(), formattingFunction));
+        p.appendFormattedSql(", ");
+        p.addParameter(parameter);
+    }
+
+    @Override
+    public Void visitValueOutParameter(ValueOutParameter<?> parameter, Context p)
             throws RuntimeException {
+        handleOutParameter(parameter, p);
+        return null;
+    }
+
+    @Override
+    public Void visitDomainOutParameter(DomainOutParameter<?, ?> parameter,
+            Context p) throws RuntimeException {
+        handleOutParameter(parameter, p);
+        return null;
+    }
+
+    protected void handleOutParameter(OutParameter parameter, Context p) {
         p.appendRawSql("?, ");
         p.appendFormattedSql("?, ");
-        p.addParentheticParameter(parameter);
-        return null;
+        p.addParameter(parameter);
     }
 
     protected class Context {
@@ -197,7 +221,7 @@ public class CallableSqlBuilder
 
         private final StringBuilder formattedSqlBuf = new StringBuilder(200);
 
-        private final List<CallableSqlParameter> parentheticParameters = new ArrayList<CallableSqlParameter>();
+        private final List<CallableSqlParameter> contextParameters = new ArrayList<CallableSqlParameter>();
 
         protected void append(CharSequence sql) {
             appendRawSql(sql);
@@ -205,7 +229,7 @@ public class CallableSqlBuilder
         }
 
         protected void cutBackIfNecessary() {
-            if (!parentheticParameters.isEmpty()) {
+            if (!contextParameters.isEmpty()) {
                 rawSqlBuf.setLength(rawSqlBuf.length() - 2);
                 formattedSqlBuf.setLength(formattedSqlBuf.length() - 2);
             }
@@ -227,8 +251,8 @@ public class CallableSqlBuilder
             return formattedSqlBuf;
         }
 
-        protected void addParentheticParameter(CallableSqlParameter parameter) {
-            parentheticParameters.add(parameter);
+        protected void addParameter(CallableSqlParameter parameter) {
+            contextParameters.add(parameter);
         }
 
         @Override

@@ -528,7 +528,7 @@ public class NodePreparedSqlBuilder implements
         }
 
         protected void addBindValue(Wrapper<?> value) {
-            parameters.add(new InParameter(value));
+            parameters.add(new ValueInParameter(value));
             rawSqlBuf.append("?");
             formattedSqlBuf.append(value.accept(config.dialect()
                     .getSqlLogFormattingVisitor(), formattingFunction));

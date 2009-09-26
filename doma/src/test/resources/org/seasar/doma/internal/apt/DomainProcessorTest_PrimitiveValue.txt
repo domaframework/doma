@@ -7,9 +7,22 @@ public class PrimitiveValueDomain_ implements org.seasar.doma.internal.domain.Do
     public org.seasar.doma.internal.domain.DomainType<java.lang.Integer, org.seasar.doma.internal.apt.domain.PrimitiveValueDomain> createDomainType() {
         return new PrimitiveValueDomainType();
     }
-    public static class PrimitiveValueDomainType implements org.seasar.doma.internal.domain.DomainType<java.lang.Integer, org.seasar.doma.internal.apt.domain.PrimitiveValueDomain> {
+
+    @Override
+    public org.seasar.doma.internal.domain.DomainType<java.lang.Integer, org.seasar.doma.internal.apt.domain.PrimitiveValueDomain> createDomainType(org.seasar.doma.internal.apt.domain.PrimitiveValueDomain domain) {
+        return new PrimitiveValueDomainType(domain);
+    }
+
+    private static class PrimitiveValueDomainType implements org.seasar.doma.internal.domain.DomainType<java.lang.Integer, org.seasar.doma.internal.apt.domain.PrimitiveValueDomain> {
 
         private final org.seasar.doma.wrapper.IntegerWrapper wrapper = new org.seasar.doma.wrapper.IntegerWrapper();
+
+        private PrimitiveValueDomainType() {
+        }
+
+        private PrimitiveValueDomainType(PrimitiveValueDomain domain) {
+            this.wrapper.set(domain != null ? domain.getValue() : null);
+        }
 
         @Override
         public org.seasar.doma.internal.apt.domain.PrimitiveValueDomain getDomain() {

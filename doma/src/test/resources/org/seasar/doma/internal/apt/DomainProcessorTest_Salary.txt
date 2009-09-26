@@ -7,9 +7,22 @@ public class Salary_ implements org.seasar.doma.internal.domain.DomainTypeFactor
     public org.seasar.doma.internal.domain.DomainType<java.math.BigDecimal, org.seasar.doma.internal.apt.domain.Salary> createDomainType() {
         return new SalaryType();
     }
-    public static class SalaryType implements org.seasar.doma.internal.domain.DomainType<java.math.BigDecimal, org.seasar.doma.internal.apt.domain.Salary> {
+
+    @Override
+    public org.seasar.doma.internal.domain.DomainType<java.math.BigDecimal, org.seasar.doma.internal.apt.domain.Salary> createDomainType(org.seasar.doma.internal.apt.domain.Salary domain) {
+        return new SalaryType(domain);
+    }
+
+    private static class SalaryType implements org.seasar.doma.internal.domain.DomainType<java.math.BigDecimal, org.seasar.doma.internal.apt.domain.Salary> {
 
         private final org.seasar.doma.wrapper.BigDecimalWrapper wrapper = new org.seasar.doma.wrapper.BigDecimalWrapper();
+
+        private SalaryType() {
+        }
+
+        private SalaryType(Salary domain) {
+            this.wrapper.set(domain != null ? domain.getValue() : null);
+        }
 
         @Override
         public org.seasar.doma.internal.apt.domain.Salary getDomain() {

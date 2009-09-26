@@ -11,10 +11,22 @@ public class PhoneNumber_ implements DomainTypeFactory<String, PhoneNumber> {
         return new PhoneNumberType();
     }
 
+    @Override
+    public DomainType<String, PhoneNumber> createDomainType(PhoneNumber domain) {
+        return new PhoneNumberType(domain);
+    }
+
     private static class PhoneNumberType implements
             DomainType<String, PhoneNumber> {
 
         private final StringWrapper wrapper = new StringWrapper();
+
+        private PhoneNumberType() {
+        }
+
+        private PhoneNumberType(PhoneNumber domain) {
+            this.wrapper.set(domain != null ? domain.getValue() : null);
+        }
 
         @Override
         public PhoneNumber getDomain() {

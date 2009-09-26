@@ -13,7 +13,7 @@ public class DomainPropertyEntity_ implements org.seasar.doma.internal.jdbc.enti
         return new DomainPropertyEntityType(entity);
     }
 
-    public static class DomainPropertyEntityType implements org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity> {
+    private static class DomainPropertyEntityType implements org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity> {
 
         private static final org.seasar.doma.jdbc.entity.BuiltinEntityListener __listener = new org.seasar.doma.jdbc.entity.BuiltinEntityListener();
 

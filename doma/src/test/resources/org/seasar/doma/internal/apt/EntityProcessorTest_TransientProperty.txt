@@ -13,7 +13,7 @@ public class TransientPropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         return new TransientPropertyEntityType(entity);
     }
 
-    public static class TransientPropertyEntityType implements org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> {
+    private static class TransientPropertyEntityType implements org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> {
 
         private static final org.seasar.doma.jdbc.entity.BuiltinEntityListener __listener = new org.seasar.doma.jdbc.entity.BuiltinEntityListener();
 

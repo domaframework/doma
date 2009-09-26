@@ -28,17 +28,21 @@ import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlParameter;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlParameterVisitor;
+import org.seasar.doma.internal.jdbc.sql.DomainInOutParameter;
+import org.seasar.doma.internal.jdbc.sql.DomainInParameter;
 import org.seasar.doma.internal.jdbc.sql.DomainListParameter;
 import org.seasar.doma.internal.jdbc.sql.DomainListResultParameter;
+import org.seasar.doma.internal.jdbc.sql.DomainOutParameter;
 import org.seasar.doma.internal.jdbc.sql.DomainResultParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListResultParameter;
-import org.seasar.doma.internal.jdbc.sql.InOutParameter;
-import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.ListParameter;
 import org.seasar.doma.internal.jdbc.sql.OutParameter;
+import org.seasar.doma.internal.jdbc.sql.ValueInOutParameter;
+import org.seasar.doma.internal.jdbc.sql.ValueInParameter;
 import org.seasar.doma.internal.jdbc.sql.ValueListParameter;
 import org.seasar.doma.internal.jdbc.sql.ValueListResultParameter;
+import org.seasar.doma.internal.jdbc.sql.ValueOutParameter;
 import org.seasar.doma.internal.jdbc.sql.ValueResultParameter;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
@@ -97,32 +101,57 @@ public class CallableSqlParameterFetcher {
         }
 
         @Override
-        public Void visitInOutParameter(InOutParameter<?> parameter, Void p)
-                throws SQLException {
-            Wrapper<?> wrapper = parameter.getWrapper();
-            wrapper.accept(jdbcMappingVisitor, new GetOutParameterFunction(
-                    callableStatement, index));
-            parameter.updateReference();
+        public Void visitValueInOutParameter(ValueInOutParameter<?> parameter,
+                Void p) throws SQLException {
+            handleOutParameter(parameter);
             index++;
             return null;
         }
 
         @Override
-        public Void visitInParameter(InParameter parameter, Void p)
+        public Void visitDomainInOutParameter(
+                DomainInOutParameter<?, ?> parameter, Void p)
+                throws SQLException {
+            handleOutParameter(parameter);
+            index++;
+            return null;
+        }
+
+        @Override
+        public Void visitValueInParameter(ValueInParameter parameter, Void p)
                 throws SQLException {
             index++;
             return null;
         }
 
         @Override
-        public Void visitOutParameter(OutParameter<?> parameter, Void p)
-                throws SQLException {
-            Wrapper<?> wrapper = parameter.getWrapper();
-            wrapper.accept(jdbcMappingVisitor, new GetOutParameterFunction(
-                    callableStatement, index));
-            parameter.updateReference();
+        public Void visitDomainInParameter(DomainInParameter<?, ?> parameter,
+                Void p) throws SQLException {
             index++;
             return null;
+        }
+
+        @Override
+        public Void visitValueOutParameter(ValueOutParameter<?> parameter,
+                Void p) throws SQLException {
+            handleOutParameter(parameter);
+            index++;
+            return null;
+        }
+
+        @Override
+        public Void visitDomainOutParameter(DomainOutParameter<?, ?> parameter,
+                Void p) throws SQLException {
+            handleOutParameter(parameter);
+            index++;
+            return null;
+        }
+
+        protected void handleOutParameter(OutParameter parameter)
+                throws SQLException {
+            parameter.getWrapper().accept(jdbcMappingVisitor,
+                    new GetOutParameterFunction(callableStatement, index));
+            parameter.updateReference();
         }
 
         @Override

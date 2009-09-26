@@ -25,7 +25,7 @@ import org.seasar.doma.internal.jdbc.mock.BindValue;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockPreparedStatement;
 import org.seasar.doma.internal.jdbc.query.Query;
-import org.seasar.doma.internal.jdbc.sql.InParameter;
+import org.seasar.doma.internal.jdbc.sql.ValueInParameter;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
@@ -37,9 +37,9 @@ public class PreparedSqlParameterBinderTest extends TestCase {
 
     public void testBind() throws Exception {
         MockPreparedStatement preparedStatement = new MockPreparedStatement();
-        List<InParameter> parameters = new ArrayList<InParameter>();
-        parameters.add(new InParameter(new StringWrapper("aaa")));
-        parameters.add(new InParameter(
+        List<ValueInParameter> parameters = new ArrayList<ValueInParameter>();
+        parameters.add(new ValueInParameter(new StringWrapper("aaa")));
+        parameters.add(new ValueInParameter(
                 new BigDecimalWrapper(new BigDecimal(10))));
         PreparedSqlParameterBinder binder = new PreparedSqlParameterBinder(
                 new MyQuery());

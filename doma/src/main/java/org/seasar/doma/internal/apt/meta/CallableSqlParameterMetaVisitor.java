@@ -21,11 +21,17 @@ package org.seasar.doma.internal.apt.meta;
  */
 public interface CallableSqlParameterMetaVisitor<R, P> {
 
-    R visitInParameterMeta(InParameterMeta m, P p);
+    R visitValueInParameterMeta(ValueInParameterMeta m, P p);
 
-    R visistOutParameterMeta(OutParameterMeta m, P p);
+    R visitDomainInParameterMeta(DomainInParameterMeta m, P p);
 
-    R visistInOutParameterMeta(InOutParameterMeta m, P p);
+    R visistValueOutParameterMeta(ValueOutParameterMeta m, P p);
+
+    R visistDomainOutParameterMeta(DomainOutParameterMeta m, P p);
+
+    R visistValueInOutParameterMeta(ValueInOutParameterMeta m, P p);
+
+    R visistDomainInOutParameterMeta(DomainInOutParameterMeta m, P p);
 
     R visistValueListParameterMeta(ValueListParameterMeta m, P p);
 

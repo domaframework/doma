@@ -13,7 +13,7 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
         return new EmpType(entity);
     }
 
-    public static class EmpType implements org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.Emp> {
+    private static class EmpType implements org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.Emp> {
 
         private static final org.seasar.doma.jdbc.id.BuiltinSequenceIdGenerator __idGenerator = new org.seasar.doma.jdbc.id.BuiltinSequenceIdGenerator();
         static {

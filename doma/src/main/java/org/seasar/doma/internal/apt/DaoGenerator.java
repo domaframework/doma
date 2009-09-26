@@ -35,14 +35,14 @@ import org.seasar.doma.internal.apt.meta.CallableSqlParameterMeta;
 import org.seasar.doma.internal.apt.meta.CallableSqlParameterMetaVisitor;
 import org.seasar.doma.internal.apt.meta.DaoMeta;
 import org.seasar.doma.internal.apt.meta.DelegateQueryMeta;
+import org.seasar.doma.internal.apt.meta.DomainInOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.DomainInParameterMeta;
 import org.seasar.doma.internal.apt.meta.DomainListParameterMeta;
 import org.seasar.doma.internal.apt.meta.DomainListResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.DomainOutParameterMeta;
 import org.seasar.doma.internal.apt.meta.DomainResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.EntityListParameterMeta;
 import org.seasar.doma.internal.apt.meta.EntityListResultParameterMeta;
-import org.seasar.doma.internal.apt.meta.InOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.InParameterMeta;
-import org.seasar.doma.internal.apt.meta.OutParameterMeta;
 import org.seasar.doma.internal.apt.meta.QueryMeta;
 import org.seasar.doma.internal.apt.meta.QueryMetaVisitor;
 import org.seasar.doma.internal.apt.meta.QueryParameterMeta;
@@ -50,8 +50,11 @@ import org.seasar.doma.internal.apt.meta.QueryReturnMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileBatchModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileSelectQueryMeta;
+import org.seasar.doma.internal.apt.meta.ValueInOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.ValueInParameterMeta;
 import org.seasar.doma.internal.apt.meta.ValueListParameterMeta;
 import org.seasar.doma.internal.apt.meta.ValueListResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.ValueOutParameterMeta;
 import org.seasar.doma.internal.apt.meta.ValueResultParameterMeta;
 import org.seasar.doma.internal.apt.type.CollectionType;
 import org.seasar.doma.internal.apt.type.DomainType;
@@ -67,17 +70,20 @@ import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.ValueIterationHandler;
 import org.seasar.doma.internal.jdbc.command.ValueResultListHandler;
 import org.seasar.doma.internal.jdbc.command.ValueSingleResultHandler;
+import org.seasar.doma.internal.jdbc.sql.DomainInOutParameter;
+import org.seasar.doma.internal.jdbc.sql.DomainInParameter;
 import org.seasar.doma.internal.jdbc.sql.DomainListParameter;
 import org.seasar.doma.internal.jdbc.sql.DomainListResultParameter;
+import org.seasar.doma.internal.jdbc.sql.DomainOutParameter;
 import org.seasar.doma.internal.jdbc.sql.DomainResultParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListResultParameter;
-import org.seasar.doma.internal.jdbc.sql.InOutParameter;
-import org.seasar.doma.internal.jdbc.sql.InParameter;
-import org.seasar.doma.internal.jdbc.sql.OutParameter;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
+import org.seasar.doma.internal.jdbc.sql.ValueInOutParameter;
+import org.seasar.doma.internal.jdbc.sql.ValueInParameter;
 import org.seasar.doma.internal.jdbc.sql.ValueListParameter;
 import org.seasar.doma.internal.jdbc.sql.ValueListResultParameter;
+import org.seasar.doma.internal.jdbc.sql.ValueOutParameter;
 import org.seasar.doma.internal.jdbc.sql.ValueResultParameter;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.DomaAbstractDao;
@@ -531,7 +537,7 @@ public class DaoGenerator extends AbstractGenerator {
                     .getName(), resultMeta.getTypeName());
             iprint("query.setConfig(config);%n");
             iprint("query.setFunctionName(\"%1$s\");%n", m.getFunctionName());
-            AddCallableSqlParameterGenerator parameterGenerator = new AddCallableSqlParameterGenerator();
+            CallableSqlParameterStatementGenerator parameterGenerator = new CallableSqlParameterStatementGenerator();
             m.getResultParameterMeta().accept(parameterGenerator, p);
             for (CallableSqlParameterMeta parameterMeta : m
                     .getCallableSqlParameterMetas()) {
@@ -561,7 +567,7 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("%1$s query = new %1$s();%n", m.getQueryClass().getName());
             iprint("query.setConfig(config);%n");
             iprint("query.setProcedureName(\"%1$s\");%n", m.getProcedureName());
-            AddCallableSqlParameterGenerator parameterGenerator = new AddCallableSqlParameterGenerator();
+            CallableSqlParameterStatementGenerator parameterGenerator = new CallableSqlParameterStatementGenerator();
             for (CallableSqlParameterMeta parameterMeta : m
                     .getCallableSqlParameterMetas()) {
                 parameterMeta.accept(parameterGenerator, p);
@@ -681,7 +687,7 @@ public class DaoGenerator extends AbstractGenerator {
         }
     }
 
-    protected class AddCallableSqlParameterGenerator implements
+    protected class CallableSqlParameterStatementGenerator implements
             CallableSqlParameterMetaVisitor<Void, Void> {
 
         @Override
@@ -720,30 +726,68 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visistInOutParameterMeta(InOutParameterMeta m, Void p) {
-            ValueType valueType = m.getValueType();
-            iprint(
-                    "query.addParameter(new %1$s<%2$s>(new %3$s(%4$s.get()), %4$s));%n",
-                    InOutParameter.class.getName(), valueType.getTypeName(),
-                    valueType.getWrapperType().getTypeName(), m.getName());
-            return null;
-        }
-
-        @Override
-        public Void visistOutParameterMeta(OutParameterMeta m, Void p) {
+        public Void visistValueInOutParameterMeta(ValueInOutParameterMeta m,
+                Void p) {
             ValueType valueType = m.getValueType();
             iprint("query.addParameter(new %1$s<%2$s>(new %3$s(), %4$s));%n",
-                    OutParameter.class.getName(), valueType.getTypeName(),
+                    ValueInOutParameter.class.getName(), valueType
+                            .getTypeName(), valueType.getWrapperType()
+                            .getTypeName(), m.getName());
+            return null;
+        }
+
+        @Override
+        public Void visistDomainInOutParameterMeta(DomainInOutParameterMeta m,
+                Void p) {
+            DomainType domainType = m.getDomainType();
+            ValueType valueType = domainType.getValueType();
+            iprint(
+                    "query.addParameter(new %1$s<%2$s, %3$s>(new %3$s%4$s(), %5$s));%n",
+                    DomainInOutParameter.class.getName(), valueType
+                            .getTypeName(), domainType.getTypeName(),
+                    domainSuffix, m.getName());
+            return null;
+        }
+
+        @Override
+        public Void visistValueOutParameterMeta(ValueOutParameterMeta m, Void p) {
+            ValueType valueType = m.getValueType();
+            iprint("query.addParameter(new %1$s<%2$s>(new %3$s(), %4$s));%n",
+                    ValueOutParameter.class.getName(), valueType.getTypeName(),
                     valueType.getWrapperType().getTypeName(), m.getName());
             return null;
         }
 
         @Override
-        public Void visitInParameterMeta(InParameterMeta m, Void p) {
+        public Void visistDomainOutParameterMeta(DomainOutParameterMeta m,
+                Void p) {
+            DomainType domainType = m.getDomainType();
+            ValueType valueType = domainType.getValueType();
+            iprint(
+                    "query.addParameter(new %1$s<%2$s, %3$s>(new %3$s%4$s(), %5$s));%n",
+                    DomainOutParameter.class.getName(),
+                    valueType.getTypeName(), domainType.getTypeName(),
+                    domainSuffix, m.getName());
+            return null;
+        }
+
+        @Override
+        public Void visitValueInParameterMeta(ValueInParameterMeta m, Void p) {
             ValueType valueType = m.getValueType();
             iprint("query.addParameter(new %1$s(new %2$s(%3$s)));%n",
-                    InParameter.class.getName(), valueType.getWrapperType()
-                            .getTypeName(), m.getName());
+                    ValueInParameter.class.getName(), valueType
+                            .getWrapperType().getTypeName(), m.getName());
+            return null;
+        }
+
+        @Override
+        public Void visitDomainInParameterMeta(DomainInParameterMeta m, Void p) {
+            DomainType domainType = m.getDomainType();
+            ValueType valueType = domainType.getValueType();
+            iprint(
+                    "query.addParameter(new %1$s<%2$s, %3$s>(new %3$s%4$s(), %5$s));%n",
+                    DomainInParameter.class.getName(), valueType.getTypeName(),
+                    domainType.getTypeName(), domainSuffix, m.getName());
             return null;
         }
 
@@ -765,8 +809,8 @@ public class DaoGenerator extends AbstractGenerator {
             ValueType valueType = domainType.getValueType();
             iprint(
                     "query.setResultParameter(new %1$s<%2$s, %3$s>(new %3$s%4$s()));%n",
-                    DomainListResultParameter.class.getName(), domainType
-                            .getTypeName(), valueType.getTypeName(),
+                    DomainListResultParameter.class.getName(), valueType
+                            .getTypeName(), domainType.getTypeName(),
                     domainSuffix);
             return null;
         }
