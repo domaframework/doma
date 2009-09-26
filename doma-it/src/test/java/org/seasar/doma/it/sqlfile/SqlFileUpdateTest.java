@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.DepartmentDao;
-import org.seasar.doma.it.dao.DepartmentDao_;
+import org.seasar.doma.it.dao.DepartmentDaoImpl;
 import org.seasar.doma.it.entity.Department;
 import org.seasar.framework.unit.Seasar2;
 
@@ -27,7 +27,7 @@ import org.seasar.framework.unit.Seasar2;
 public class SqlFileUpdateTest {
 
     public void test() throws Exception {
-        DepartmentDao dao = new DepartmentDao_();
+        DepartmentDao dao = new DepartmentDaoImpl();
         Department department = new Department();
         department.setDepartmentId(1);
         department.setDepartmentNo(1);

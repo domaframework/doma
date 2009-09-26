@@ -24,6 +24,9 @@ import javax.tools.JavaFileObject;
 import junit.framework.AssertionFailedError;
 
 import org.seasar.aptina.unit.AptinaTestCase;
+import org.seasar.doma.Dao;
+import org.seasar.doma.Domain;
+import org.seasar.doma.Entity;
 import org.seasar.doma.internal.util.ResourceUtil;
 import org.seasar.doma.message.DomaMessageCode;
 
@@ -53,7 +56,8 @@ public abstract class AptTestCase extends AptinaTestCase {
 
     protected void assertGeneratedSource(Class<?> originalClass)
             throws Exception {
-        String generatedClassName = originalClass.getName() + "_";
+        String generatedClassName = originalClass.getName()
+                + getGeneratedClassSuffix(originalClass);
         try {
             assertEqualsGeneratedSource(getExpectedContent(),
                     generatedClassName);
@@ -61,6 +65,19 @@ public abstract class AptTestCase extends AptinaTestCase {
             System.out.println(getGeneratedSource(generatedClassName));
             throw error;
         }
+    }
+
+    protected String getGeneratedClassSuffix(Class<?> originalClass) {
+        if (originalClass.isAnnotationPresent(Dao.class)) {
+            return Options.Constants.DEFAULT_DAO_SUFFIX;
+        }
+        if (originalClass.isAnnotationPresent(Entity.class)) {
+            return Options.Constants.DEFAULT_ENTITY_SUFFIX;
+        }
+        if (originalClass.isAnnotationPresent(Domain.class)) {
+            return Options.Constants.DEFAULT_DOMAIN_SUFFIX;
+        }
+        throw new AssertionFailedError("annotation not found.");
     }
 
     protected void assertMessageCode(DomaMessageCode messageCode) {

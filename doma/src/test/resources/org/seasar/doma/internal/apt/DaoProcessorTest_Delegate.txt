@@ -1,26 +1,26 @@
 package org.seasar.doma.internal.apt.dao;
 
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
-public class DelegateDao_ extends org.seasar.doma.jdbc.DomaAbstractDao implements org.seasar.doma.internal.apt.dao.DelegateDao {
+public class DelegateDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao implements org.seasar.doma.internal.apt.dao.DelegateDao {
 
-    public DelegateDao_() {
+    public DelegateDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig(), null);
     }
 
-    public DelegateDao_(javax.sql.DataSource dataSource) {
+    public DelegateDaoImpl(javax.sql.DataSource dataSource) {
         super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
     }
 
-    protected DelegateDao_(org.seasar.doma.jdbc.Config config) {
+    protected DelegateDaoImpl(org.seasar.doma.jdbc.Config config) {
         super(config, config.dataSource());
     }
 
     @Override
     public java.math.BigDecimal execute(java.lang.String aaa, java.lang.Integer bbb) {
-        entering("org.seasar.doma.internal.apt.dao.DelegateDao_", "execute", aaa, bbb);
+        entering("org.seasar.doma.internal.apt.dao.DelegateDaoImpl", "execute", aaa, bbb);
         org.seasar.doma.internal.apt.dao.DelegateDaoDelegate delegate = new org.seasar.doma.internal.apt.dao.DelegateDaoDelegate(config);
         java.math.BigDecimal result = delegate.execute(aaa, bbb);
-        exiting("org.seasar.doma.internal.apt.dao.DelegateDao_", "execute", result);
+        exiting("org.seasar.doma.internal.apt.dao.DelegateDaoImpl", "execute", result);
         return result;
     }
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.EmployeeDao;
-import org.seasar.doma.it.dao.EmployeeDao_;
+import org.seasar.doma.it.dao.EmployeeDaoImpl;
 import org.seasar.doma.it.domain.Salary;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.framework.unit.Seasar2;
@@ -15,7 +15,7 @@ import org.seasar.framework.unit.Seasar2;
 public class SqlFileSelectTest {
 
     public void testEmbeddedVariable() throws Exception {
-        EmployeeDao dao = new EmployeeDao_();
+        EmployeeDao dao = new EmployeeDaoImpl();
         List<Employee> list = dao.selectWithOptionalOrderBy("S",
                 "order by EMPLOYEE_ID");
         assertEquals(2, list.size());
@@ -33,7 +33,7 @@ public class SqlFileSelectTest {
         example.setEmployeeNo(7801);
         example.setManagerId(1);
         example.setSalary(new Salary("5000"));
-        EmployeeDao dao = new EmployeeDao_();
+        EmployeeDao dao = new EmployeeDaoImpl();
         List<Employee> list = dao.selectByExample(example);
         assertEquals(1, list.size());
 

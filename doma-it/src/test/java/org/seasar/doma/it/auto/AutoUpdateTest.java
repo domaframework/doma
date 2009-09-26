@@ -19,11 +19,11 @@ import static org.junit.Assert.*;
 
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.CompKeyDepartmentDao;
-import org.seasar.doma.it.dao.CompKeyDepartmentDao_;
+import org.seasar.doma.it.dao.CompKeyDepartmentDaoImpl;
 import org.seasar.doma.it.dao.DepartmentDao;
-import org.seasar.doma.it.dao.DepartmentDao_;
+import org.seasar.doma.it.dao.DepartmentDaoImpl;
 import org.seasar.doma.it.dao.NoIdDao;
-import org.seasar.doma.it.dao.NoIdDao_;
+import org.seasar.doma.it.dao.NoIdDaoImpl;
 import org.seasar.doma.it.entity.CompKeyDepartment;
 import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.NoId;
@@ -36,7 +36,7 @@ import org.seasar.framework.unit.Seasar2;
 public class AutoUpdateTest {
 
     public void test() throws Exception {
-        DepartmentDao dao = new DepartmentDao_();
+        DepartmentDao dao = new DepartmentDaoImpl();
         Department department = new Department();
         department.setDepartmentId(1);
         department.setDepartmentNo(1);
@@ -55,7 +55,7 @@ public class AutoUpdateTest {
     }
 
     public void testIncludesVersion() throws Exception {
-        DepartmentDao dao = new DepartmentDao_();
+        DepartmentDao dao = new DepartmentDaoImpl();
         Department department = new Department();
         department.setDepartmentId(1);
         department.setDepartmentNo(1);
@@ -74,7 +74,7 @@ public class AutoUpdateTest {
     }
 
     public void testExcludesNull() throws Exception {
-        DepartmentDao dao = new DepartmentDao_();
+        DepartmentDao dao = new DepartmentDaoImpl();
         Department department = new Department();
         department.setDepartmentId(1);
         department.setDepartmentNo(1);
@@ -92,7 +92,7 @@ public class AutoUpdateTest {
     }
 
     public void testCompositeKey() throws Exception {
-        CompKeyDepartmentDao dao = new CompKeyDepartmentDao_();
+        CompKeyDepartmentDao dao = new CompKeyDepartmentDaoImpl();
         CompKeyDepartment department = new CompKeyDepartment();
         department.setDepartmentId1(1);
         department.setDepartmentId2(1);
@@ -113,7 +113,7 @@ public class AutoUpdateTest {
     }
 
     public void testOptimisticLockException() throws Exception {
-        DepartmentDao dao = new DepartmentDao_();
+        DepartmentDao dao = new DepartmentDaoImpl();
         Department department1 = dao.selectById(new Integer(1));
         department1.setDepartmentName("hoge");
         Department department2 = dao.selectById(new Integer(1));
@@ -127,7 +127,7 @@ public class AutoUpdateTest {
     }
 
     public void testSuppressesOptimisticLockException() throws Exception {
-        DepartmentDao dao = new DepartmentDao_();
+        DepartmentDao dao = new DepartmentDaoImpl();
         Department department1 = dao.selectById(new Integer(1));
         department1.setDepartmentName("hoge");
         Department department2 = dao.selectById(new Integer(1));
@@ -137,7 +137,7 @@ public class AutoUpdateTest {
     }
 
     public void testNoId() throws Exception {
-        NoIdDao dao = new NoIdDao_();
+        NoIdDao dao = new NoIdDaoImpl();
         NoId entity = new NoId();
         entity.setValue1(1);
         entity.setValue2(2);
@@ -150,7 +150,7 @@ public class AutoUpdateTest {
     }
 
     public void testSqlExecutionSkip() throws Exception {
-        DepartmentDao dao = new DepartmentDao_();
+        DepartmentDao dao = new DepartmentDaoImpl();
         Department department = dao.selectById(new Integer(1));
         int result = dao.update(department);
         assertEquals(0, result);

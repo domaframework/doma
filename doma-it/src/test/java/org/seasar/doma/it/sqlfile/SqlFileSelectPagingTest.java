@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.EmployeeDao;
-import org.seasar.doma.it.dao.EmployeeDao_;
+import org.seasar.doma.it.dao.EmployeeDaoImpl;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.framework.unit.Seasar2;
@@ -30,13 +30,13 @@ import org.seasar.framework.unit.Seasar2;
 public class SqlFileSelectPagingTest {
 
     public void testNoPaging() throws Exception {
-        EmployeeDao dao = new EmployeeDao_();
+        EmployeeDao dao = new EmployeeDaoImpl();
         List<Employee> employees = dao.selectAll();
         assertEquals(14, employees.size());
     }
 
     public void testLimitOffset() throws Exception {
-        EmployeeDao dao = new EmployeeDao_();
+        EmployeeDao dao = new EmployeeDaoImpl();
         List<Employee> employees = dao.selectAll(SelectOptions.get().limit(5)
                 .offset(3));
         assertEquals(5, employees.size());
@@ -48,7 +48,7 @@ public class SqlFileSelectPagingTest {
     }
 
     public void testLimitOffset_offsetIsZero() throws Exception {
-        EmployeeDao dao = new EmployeeDao_();
+        EmployeeDao dao = new EmployeeDaoImpl();
         List<Employee> employees = dao.selectAll(SelectOptions.get().limit(5)
                 .offset(0));
         assertEquals(5, employees.size());
@@ -60,7 +60,7 @@ public class SqlFileSelectPagingTest {
     }
 
     public void testLimitOffset_limitIsZero() throws Exception {
-        EmployeeDao dao = new EmployeeDao_();
+        EmployeeDao dao = new EmployeeDaoImpl();
         List<Employee> employees = dao.selectAll(SelectOptions.get().limit(0)
                 .offset(10));
         assertEquals(4, employees.size());
@@ -71,7 +71,7 @@ public class SqlFileSelectPagingTest {
     }
 
     public void testLimitOnly() throws Exception {
-        EmployeeDao dao = new EmployeeDao_();
+        EmployeeDao dao = new EmployeeDaoImpl();
         List<Employee> employees = dao.selectAll(SelectOptions.get().limit(5));
         assertEquals(5, employees.size());
         assertEquals(new Integer(1), employees.get(0).getEmployeeId());
@@ -82,7 +82,7 @@ public class SqlFileSelectPagingTest {
     }
 
     public void testOffsetOnly() throws Exception {
-        EmployeeDao dao = new EmployeeDao_();
+        EmployeeDao dao = new EmployeeDaoImpl();
         List<Employee> employees = dao
                 .selectAll(SelectOptions.get().offset(10));
         assertEquals(4, employees.size());

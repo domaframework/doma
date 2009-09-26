@@ -19,17 +19,17 @@ import static org.junit.Assert.*;
 
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.CompKeyDepartmentDao;
-import org.seasar.doma.it.dao.CompKeyDepartmentDao_;
+import org.seasar.doma.it.dao.CompKeyDepartmentDaoImpl;
 import org.seasar.doma.it.dao.DepartmentDao;
-import org.seasar.doma.it.dao.DepartmentDao_;
+import org.seasar.doma.it.dao.DepartmentDaoImpl;
 import org.seasar.doma.it.dao.IdentityStrategyDao;
-import org.seasar.doma.it.dao.IdentityStrategyDao_;
+import org.seasar.doma.it.dao.IdentityStrategyDaoImpl;
 import org.seasar.doma.it.dao.NoIdDao;
-import org.seasar.doma.it.dao.NoIdDao_;
+import org.seasar.doma.it.dao.NoIdDaoImpl;
 import org.seasar.doma.it.dao.SequenceStrategyDao;
-import org.seasar.doma.it.dao.SequenceStrategyDao_;
+import org.seasar.doma.it.dao.SequenceStrategyDaoImpl;
 import org.seasar.doma.it.dao.TableStrategyDao;
-import org.seasar.doma.it.dao.TableStrategyDao_;
+import org.seasar.doma.it.dao.TableStrategyDaoImpl;
 import org.seasar.doma.it.entity.CompKeyDepartment;
 import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.IdentityStrategy;
@@ -45,7 +45,7 @@ import org.seasar.framework.unit.annotation.Prerequisite;
 public class AutoInsertTest {
 
     public void test() throws Exception {
-        DepartmentDao dao = new DepartmentDao_();
+        DepartmentDao dao = new DepartmentDaoImpl();
         Department department = new Department();
         department.setDepartmentId(99);
         department.setDepartmentNo(99);
@@ -63,7 +63,7 @@ public class AutoInsertTest {
     }
 
     public void testExcludesNull() throws Exception {
-        DepartmentDao dao = new DepartmentDao_();
+        DepartmentDao dao = new DepartmentDaoImpl();
         Department department = new Department();
         department.setDepartmentId(99);
         department.setDepartmentNo(99);
@@ -81,7 +81,7 @@ public class AutoInsertTest {
     }
 
     public void testCompositeKey() throws Exception {
-        CompKeyDepartmentDao dao = new CompKeyDepartmentDao_();
+        CompKeyDepartmentDao dao = new CompKeyDepartmentDaoImpl();
         CompKeyDepartment department = new CompKeyDepartment();
         department.setDepartmentId1(99);
         department.setDepartmentId2(99);
@@ -101,7 +101,7 @@ public class AutoInsertTest {
     }
 
     public void testIdNotAssigned() throws Exception {
-        DepartmentDao dao = new DepartmentDao_();
+        DepartmentDao dao = new DepartmentDaoImpl();
         Department department = new Department();
         department.setDepartmentNo(99);
         department.setDepartmentName("hoge");
@@ -115,7 +115,7 @@ public class AutoInsertTest {
 
     @Prerequisite("#ENV not in {'oracle'}")
     public void testId_Identity() throws Exception {
-        IdentityStrategyDao dao = new IdentityStrategyDao_();
+        IdentityStrategyDao dao = new IdentityStrategyDaoImpl();
         for (int i = 0; i < 110; i++) {
             IdentityStrategy entity = new IdentityStrategy();
             dao.insert(entity);
@@ -125,7 +125,7 @@ public class AutoInsertTest {
 
     @Prerequisite("#ENV not in {'mysql'}")
     public void testId_sequence() throws Exception {
-        SequenceStrategyDao dao = new SequenceStrategyDao_();
+        SequenceStrategyDao dao = new SequenceStrategyDaoImpl();
         for (int i = 0; i < 110; i++) {
             SequenceStrategy entity = new SequenceStrategy();
             dao.insert(entity);
@@ -134,7 +134,7 @@ public class AutoInsertTest {
     }
 
     public void testId_table() throws Exception {
-        TableStrategyDao dao = new TableStrategyDao_();
+        TableStrategyDao dao = new TableStrategyDaoImpl();
         for (int i = 0; i < 110; i++) {
             TableStrategy entity = new TableStrategy();
             dao.insert(entity);
@@ -143,7 +143,7 @@ public class AutoInsertTest {
     }
 
     public void testNoId() throws Exception {
-        NoIdDao dao = new NoIdDao_();
+        NoIdDao dao = new NoIdDaoImpl();
         NoId entity = new NoId();
         entity.setValue1(1);
         entity.setValue2(2);

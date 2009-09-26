@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.EmployeeDao;
-import org.seasar.doma.it.dao.EmployeeDao_;
+import org.seasar.doma.it.dao.EmployeeDaoImpl;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.framework.unit.Seasar2;
 
@@ -12,7 +12,7 @@ import org.seasar.framework.unit.Seasar2;
 public class SqlFileDeleteTest {
 
     public void test() throws Exception {
-        EmployeeDao dao = new EmployeeDao_();
+        EmployeeDao dao = new EmployeeDaoImpl();
         Employee employee = new Employee();
         employee.setEmployeeId(1);
         employee.setVersion(1);

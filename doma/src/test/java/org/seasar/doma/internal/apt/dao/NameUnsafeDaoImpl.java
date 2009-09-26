@@ -22,6 +22,6 @@ import org.seasar.doma.Dao;
  * 
  */
 @Dao(config = MyConfig.class)
-public interface NameUnsafeDao_ {
+public interface NameUnsafeDaoImpl {
 
 }

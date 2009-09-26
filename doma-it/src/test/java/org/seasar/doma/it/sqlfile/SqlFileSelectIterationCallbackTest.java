@@ -22,7 +22,7 @@ import java.math.BigDecimal;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.EmployeeDao;
-import org.seasar.doma.it.dao.EmployeeDao_;
+import org.seasar.doma.it.dao.EmployeeDaoImpl;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
@@ -34,7 +34,7 @@ public class SqlFileSelectIterationCallbackTest {
 
     @Test
     public void testEntity() throws Exception {
-        EmployeeDao dao = new EmployeeDao_();
+        EmployeeDao dao = new EmployeeDaoImpl();
         Integer count = dao
                 .selectAll(new IterationCallback<Integer, Employee>() {
 
@@ -52,7 +52,7 @@ public class SqlFileSelectIterationCallbackTest {
 
     @Test
     public void testEntity_limitOffset() throws Exception {
-        EmployeeDao dao = new EmployeeDao_();
+        EmployeeDao dao = new EmployeeDaoImpl();
         Integer count = dao.selectAll(
                 new IterationCallback<Integer, Employee>() {
 
@@ -70,7 +70,7 @@ public class SqlFileSelectIterationCallbackTest {
 
     @Test
     public void testDomain() throws Exception {
-        EmployeeDao dao = new EmployeeDao_();
+        EmployeeDao dao = new EmployeeDaoImpl();
         BigDecimal total = dao
                 .selectAllSalary(new IterationCallback<BigDecimal, BigDecimal>() {
 
@@ -90,7 +90,7 @@ public class SqlFileSelectIterationCallbackTest {
 
     @Test
     public void testDomain_limitOffset() throws Exception {
-        EmployeeDao dao = new EmployeeDao_();
+        EmployeeDao dao = new EmployeeDaoImpl();
         BigDecimal total = dao.selectAllSalary(
                 new IterationCallback<BigDecimal, BigDecimal>() {
 

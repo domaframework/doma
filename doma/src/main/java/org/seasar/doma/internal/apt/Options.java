@@ -81,13 +81,13 @@ public final class Options {
         return suffix != null ? suffix : Constants.DEFAULT_DOMAIN_SUFFIX;
     }
 
-    private static class Constants {
+    public static class Constants {
 
-        private static final String DEFAULT_DAO_SUFFIX = "_";
+        public static final String DEFAULT_DAO_SUFFIX = "Impl";
 
-        private static final String DEFAULT_ENTITY_SUFFIX = "_";
+        public static final String DEFAULT_ENTITY_SUFFIX = "_";
 
-        private static final String DEFAULT_DOMAIN_SUFFIX = "_";
+        public static final String DEFAULT_DOMAIN_SUFFIX = "_";
 
     }
 }

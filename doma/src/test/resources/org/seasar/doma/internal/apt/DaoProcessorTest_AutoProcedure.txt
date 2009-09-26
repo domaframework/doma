@@ -1,23 +1,23 @@
 package org.seasar.doma.internal.apt.dao;
 
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
-public class AutoProcedureDao_ extends org.seasar.doma.jdbc.DomaAbstractDao implements org.seasar.doma.internal.apt.dao.AutoProcedureDao {
+public class AutoProcedureDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao implements org.seasar.doma.internal.apt.dao.AutoProcedureDao {
 
-    public AutoProcedureDao_() {
+    public AutoProcedureDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig(), null);
     }
 
-    public AutoProcedureDao_(javax.sql.DataSource dataSource) {
+    public AutoProcedureDaoImpl(javax.sql.DataSource dataSource) {
         super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
     }
 
-    protected AutoProcedureDao_(org.seasar.doma.jdbc.Config config) {
+    protected AutoProcedureDaoImpl(org.seasar.doma.jdbc.Config config) {
         super(config, config.dataSource());
     }
 
     @Override
     public void executeProcedure(java.lang.Integer arg1, org.seasar.doma.jdbc.Reference<java.lang.Integer> arg2) {
-        entering("org.seasar.doma.internal.apt.dao.AutoProcedureDao_", "executeProcedure", arg1, arg2);
+        entering("org.seasar.doma.internal.apt.dao.AutoProcedureDaoImpl", "executeProcedure", arg1, arg2);
         if (arg2 == null) {
             throw new org.seasar.doma.DomaNullPointerException("arg2");
         }
@@ -26,13 +26,13 @@ public class AutoProcedureDao_ extends org.seasar.doma.jdbc.DomaAbstractDao impl
         query.setProcedureName("executeProcedure");
         query.addParameter(new org.seasar.doma.internal.jdbc.sql.ValueInParameter(new org.seasar.doma.wrapper.IntegerWrapper(arg1)));
         query.addParameter(new org.seasar.doma.internal.jdbc.sql.ValueOutParameter<java.lang.Integer>(new org.seasar.doma.wrapper.IntegerWrapper(), arg2));
-        query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoProcedureDao_");
+        query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoProcedureDaoImpl");
         query.setCallerMethodName("executeProcedure");
         query.setQueryTimeout(-1);
         query.prepare();
         org.seasar.doma.internal.jdbc.command.ProcedureCommand command = new org.seasar.doma.internal.jdbc.command.ProcedureCommand(query);
         command.execute();
-        exiting("org.seasar.doma.internal.apt.dao.AutoProcedureDao_", "executeProcedure", null);
+        exiting("org.seasar.doma.internal.apt.dao.AutoProcedureDaoImpl", "executeProcedure", null);
     }
 
 }

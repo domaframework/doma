@@ -19,11 +19,11 @@ import static org.junit.Assert.*;
 
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.CompKeyEmployeeDao;
-import org.seasar.doma.it.dao.CompKeyEmployeeDao_;
+import org.seasar.doma.it.dao.CompKeyEmployeeDaoImpl;
 import org.seasar.doma.it.dao.EmployeeDao;
-import org.seasar.doma.it.dao.EmployeeDao_;
+import org.seasar.doma.it.dao.EmployeeDaoImpl;
 import org.seasar.doma.it.dao.NoIdDao;
-import org.seasar.doma.it.dao.NoIdDao_;
+import org.seasar.doma.it.dao.NoIdDaoImpl;
 import org.seasar.doma.it.entity.CompKeyEmployee;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.it.entity.NoId;
@@ -36,7 +36,7 @@ import org.seasar.framework.unit.Seasar2;
 public class AutoDeleteTest {
 
     public void test() throws Exception {
-        EmployeeDao dao = new EmployeeDao_();
+        EmployeeDao dao = new EmployeeDaoImpl();
         Employee employee = new Employee();
         employee.setEmployeeId(1);
         employee.setVersion(1);
@@ -48,7 +48,7 @@ public class AutoDeleteTest {
     }
 
     public void testIgnoresVersion() throws Exception {
-        EmployeeDao dao = new EmployeeDao_();
+        EmployeeDao dao = new EmployeeDaoImpl();
         Employee employee = new Employee();
         employee.setEmployeeId(1);
         employee.setVersion(99);
@@ -60,7 +60,7 @@ public class AutoDeleteTest {
     }
 
     public void testCompositeKey() throws Exception {
-        CompKeyEmployeeDao dao = new CompKeyEmployeeDao_();
+        CompKeyEmployeeDao dao = new CompKeyEmployeeDaoImpl();
         CompKeyEmployee employee = new CompKeyEmployee();
         employee.setEmployeeId1(1);
         employee.setEmployeeId2(1);
@@ -73,7 +73,7 @@ public class AutoDeleteTest {
     }
 
     public void testOptimisticLockException() throws Exception {
-        EmployeeDao dao = new EmployeeDao_();
+        EmployeeDao dao = new EmployeeDaoImpl();
         Employee employee1 = dao.selectById(new Integer(1));
         employee1.setEmployeeName("hoge");
         Employee employee2 = dao.selectById(new Integer(1));
@@ -87,7 +87,7 @@ public class AutoDeleteTest {
     }
 
     public void testSuppressesOptimisticLockException() throws Exception {
-        EmployeeDao dao = new EmployeeDao_();
+        EmployeeDao dao = new EmployeeDaoImpl();
         Employee employee1 = dao.selectById(1);
         employee1.setEmployeeName("hoge");
         Employee employee2 = dao.selectById(1);
@@ -97,7 +97,7 @@ public class AutoDeleteTest {
     }
 
     public void testNoId() throws Exception {
-        NoIdDao dao = new NoIdDao_();
+        NoIdDao dao = new NoIdDaoImpl();
         NoId entity = new NoId();
         entity.setValue1(1);
         entity.setValue2(2);

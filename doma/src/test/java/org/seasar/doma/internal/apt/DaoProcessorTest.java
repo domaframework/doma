@@ -39,7 +39,7 @@ import org.seasar.doma.internal.apt.dao.IterationCallbackDao;
 import org.seasar.doma.internal.apt.dao.MethodAccessSqlValidationDao;
 import org.seasar.doma.internal.apt.dao.MultiParamMethodAccessSqlValidationDao;
 import org.seasar.doma.internal.apt.dao.NClobFactoryDao;
-import org.seasar.doma.internal.apt.dao.NameUnsafeDao_;
+import org.seasar.doma.internal.apt.dao.NameUnsafeDaoImpl;
 import org.seasar.doma.internal.apt.dao.NotInterfaceDao;
 import org.seasar.doma.internal.apt.dao.NotTopLevelDao;
 import org.seasar.doma.internal.apt.dao.SqlFileBatchUpdateDao;
@@ -158,7 +158,7 @@ public class DaoProcessorTest extends AptTestCase {
     }
 
     public void testNameUnsafe() throws Exception {
-        Class<?> target = NameUnsafeDao_.class;
+        Class<?> target = NameUnsafeDaoImpl.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
         addCompilationUnit(target);

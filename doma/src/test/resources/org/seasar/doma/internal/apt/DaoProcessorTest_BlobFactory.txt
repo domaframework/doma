@@ -1,31 +1,31 @@
 package org.seasar.doma.internal.apt.dao;
 
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
-public class BlobFactoryDao_ extends org.seasar.doma.jdbc.DomaAbstractDao implements org.seasar.doma.internal.apt.dao.BlobFactoryDao {
+public class BlobFactoryDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao implements org.seasar.doma.internal.apt.dao.BlobFactoryDao {
 
-    public BlobFactoryDao_() {
+    public BlobFactoryDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig(), null);
     }
 
-    public BlobFactoryDao_(javax.sql.DataSource dataSource) {
+    public BlobFactoryDaoImpl(javax.sql.DataSource dataSource) {
         super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
     }
 
-    protected BlobFactoryDao_(org.seasar.doma.jdbc.Config config) {
+    protected BlobFactoryDaoImpl(org.seasar.doma.jdbc.Config config) {
         super(config, config.dataSource());
     }
 
     @Override
     public java.sql.Blob create() {
-        entering("org.seasar.doma.internal.apt.dao.BlobFactoryDao_", "create");
+        entering("org.seasar.doma.internal.apt.dao.BlobFactoryDaoImpl", "create");
         org.seasar.doma.internal.jdbc.query.BlobCreateQuery query = new org.seasar.doma.internal.jdbc.query.BlobCreateQuery();
         query.setConfig(config);
-        query.setCallerClassName("org.seasar.doma.internal.apt.dao.BlobFactoryDao_");
+        query.setCallerClassName("org.seasar.doma.internal.apt.dao.BlobFactoryDaoImpl");
         query.setCallerMethodName("create");
         query.prepare();
         org.seasar.doma.internal.jdbc.command.CreateCommand<java.sql.Blob> command = new org.seasar.doma.internal.jdbc.command.CreateCommand<java.sql.Blob>(query);
         java.sql.Blob result = command.execute();
-        exiting("org.seasar.doma.internal.apt.dao.BlobFactoryDao_", "create", result);
+        exiting("org.seasar.doma.internal.apt.dao.BlobFactoryDaoImpl", "create", result);
         return result;
     }
 
