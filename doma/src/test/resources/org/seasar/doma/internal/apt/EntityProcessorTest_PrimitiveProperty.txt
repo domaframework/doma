@@ -31,7 +31,7 @@ public class PrimitivePropertyEntity_ implements org.seasar.doma.internal.jdbc.e
 
         private final String __tableName = null;
 
-        private final java.util.Set<java.lang.String> __modifiedProperties;
+        private final java.util.Set<java.lang.String> __changedProperties;
 
         private final String __name = "PrimitivePropertyEntity";
 
@@ -45,7 +45,7 @@ public class PrimitivePropertyEntity_ implements org.seasar.doma.internal.jdbc.e
 
         private PrimitivePropertyEntityType(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity) {
             __entity = entity;
-            __modifiedProperties = null;
+            __changedProperties = null;
             id.getWrapper().set(entity.id);
             bool.getWrapper().set(entity.bool);
             version.getWrapper().set(entity.version);
@@ -143,8 +143,8 @@ public class PrimitivePropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         }
 
         @Override
-        public java.util.Set<String> getModifiedProperties() {
-            return __modifiedProperties;
+        public java.util.Set<String> getChangedProperties() {
+            return __changedProperties;
         }
 
     }

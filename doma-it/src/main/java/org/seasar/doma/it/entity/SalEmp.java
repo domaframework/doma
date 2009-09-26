@@ -4,9 +4,9 @@ import java.sql.Array;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.seasar.doma.ChangedProperties;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
-import org.seasar.doma.ModifiedProperties;
 import org.seasar.doma.Table;
 
 @Entity
@@ -20,15 +20,15 @@ public class SalEmp {
 
     Array schedule;
 
-    @ModifiedProperties
-    Set<String> modifiedProperties = new HashSet<String>();
+    @ChangedProperties
+    Set<String> changedProperties = new HashSet<String>();
 
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
-        modifiedProperties.add("name");
+        changedProperties.add("name");
         this.name = name;
     }
 
@@ -37,7 +37,7 @@ public class SalEmp {
     }
 
     public void setPayByQuarter(Array payByQuarter) {
-        modifiedProperties.add("payByQuarter");
+        changedProperties.add("payByQuarter");
         this.payByQuarter = payByQuarter;
     }
 
@@ -46,7 +46,7 @@ public class SalEmp {
     }
 
     public void setSchedule(Array schedule) {
-        modifiedProperties.add("schedule");
+        changedProperties.add("schedule");
         this.schedule = schedule;
     }
 

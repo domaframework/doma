@@ -27,7 +27,7 @@ public class TransientPropertyEntity_ implements org.seasar.doma.internal.jdbc.e
 
         private final String __tableName = null;
 
-        private final java.util.Set<java.lang.String> __modifiedProperties;
+        private final java.util.Set<java.lang.String> __changedProperties;
 
         private final String __name = "TransientPropertyEntity";
 
@@ -41,7 +41,7 @@ public class TransientPropertyEntity_ implements org.seasar.doma.internal.jdbc.e
 
         private TransientPropertyEntityType(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity) {
             __entity = entity;
-            __modifiedProperties = null;
+            __changedProperties = null;
             id.getWrapper().set(entity.id);
         }
 
@@ -131,8 +131,8 @@ public class TransientPropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         }
 
         @Override
-        public java.util.Set<String> getModifiedProperties() {
-            return __modifiedProperties;
+        public java.util.Set<String> getChangedProperties() {
+            return __changedProperties;
         }
 
     }

@@ -18,9 +18,9 @@ package org.seasar.doma.it.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.seasar.doma.ChangedProperties;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
-import org.seasar.doma.ModifiedProperties;
 import org.seasar.doma.Table;
 import org.seasar.doma.Version;
 
@@ -43,15 +43,15 @@ public class CompKeyDepartment {
     @Version
     Integer version;
 
-    @ModifiedProperties
-    Set<String> modifiedProperties = new HashSet<String>();
+    @ChangedProperties
+    Set<String> changedProperties = new HashSet<String>();
 
     public Integer getDepartmentId1() {
         return departmentId1;
     }
 
     public void setDepartmentId1(Integer departmentId1) {
-        modifiedProperties.add("departmentId1");
+        changedProperties.add("departmentId1");
         this.departmentId1 = departmentId1;
     }
 
@@ -60,7 +60,7 @@ public class CompKeyDepartment {
     }
 
     public void setDepartmentId2(Integer departmentId2) {
-        modifiedProperties.add("departmentId2");
+        changedProperties.add("departmentId2");
         this.departmentId2 = departmentId2;
     }
 
@@ -69,7 +69,7 @@ public class CompKeyDepartment {
     }
 
     public void setDepartmentNo(Integer departmentNo) {
-        modifiedProperties.add("departmentNo");
+        changedProperties.add("departmentNo");
         this.departmentNo = departmentNo;
     }
 
@@ -78,7 +78,7 @@ public class CompKeyDepartment {
     }
 
     public void setDepartmentName(String departmentName) {
-        modifiedProperties.add("departmentName");
+        changedProperties.add("departmentName");
         this.departmentName = departmentName;
     }
 
@@ -87,7 +87,7 @@ public class CompKeyDepartment {
     }
 
     public void setLocation(String location) {
-        modifiedProperties.add("location");
+        changedProperties.add("location");
         this.location = location;
     }
 
@@ -96,7 +96,7 @@ public class CompKeyDepartment {
     }
 
     public void setVersion(Integer version) {
-        modifiedProperties.add("version");
+        changedProperties.add("version");
         this.version = version;
     }
 

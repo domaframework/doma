@@ -177,7 +177,7 @@ public class Emp_ implements EntityTypeFactory<Emp> {
         }
 
         @Override
-        public Set<String> getModifiedProperties() {
+        public Set<String> getChangedProperties() {
             return modifiedProperties;
         }
 

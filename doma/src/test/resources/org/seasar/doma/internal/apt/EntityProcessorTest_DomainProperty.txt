@@ -29,7 +29,7 @@ public class DomainPropertyEntity_ implements org.seasar.doma.internal.jdbc.enti
 
         private final String __tableName = null;
 
-        private final java.util.Set<java.lang.String> __modifiedProperties;
+        private final java.util.Set<java.lang.String> __changedProperties;
 
         private final String __name = "DomainPropertyEntity";
 
@@ -43,9 +43,9 @@ public class DomainPropertyEntity_ implements org.seasar.doma.internal.jdbc.enti
 
         private DomainPropertyEntityType(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity) {
             __entity = entity;
-            __modifiedProperties = null;
+            __changedProperties = null;
             id.getWrapper().set(entity.id);
-            name.getWrapper().set(entity.name.getValue());
+            name.getWrapper().set(entity.name != null ? entity.name.getValue() : null);
         }
 
         @Override
@@ -137,8 +137,8 @@ public class DomainPropertyEntity_ implements org.seasar.doma.internal.jdbc.enti
         }
 
         @Override
-        public java.util.Set<String> getModifiedProperties() {
-            return __modifiedProperties;
+        public java.util.Set<String> getChangedProperties() {
+            return __changedProperties;
         }
 
     }

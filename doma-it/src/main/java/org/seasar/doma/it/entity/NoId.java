@@ -18,8 +18,8 @@ package org.seasar.doma.it.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.seasar.doma.ChangedProperties;
 import org.seasar.doma.Entity;
-import org.seasar.doma.ModifiedProperties;
 import org.seasar.doma.Table;
 
 @Entity
@@ -30,15 +30,15 @@ public class NoId {
 
     Integer value2;
 
-    @ModifiedProperties
-    Set<String> modifiedProperties = new HashSet<String>();
+    @ChangedProperties
+    Set<String> changedProperties = new HashSet<String>();
 
     public Integer getValue1() {
         return value1;
     }
 
     public void setValue1(Integer value1) {
-        modifiedProperties.add("value1");
+        changedProperties.add("value1");
         this.value1 = value1;
     }
 
@@ -47,7 +47,7 @@ public class NoId {
     }
 
     public void setValue2(Integer value2) {
-        modifiedProperties.add("value2");
+        changedProperties.add("value2");
         this.value2 = value2;
     }
 

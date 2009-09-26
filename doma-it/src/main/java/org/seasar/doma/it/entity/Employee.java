@@ -15,14 +15,14 @@
  */
 package org.seasar.doma.it.entity;
 
-import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.seasar.doma.ChangedProperties;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
-import org.seasar.doma.ModifiedProperties;
 import org.seasar.doma.Version;
+import org.seasar.doma.it.domain.Salary;
 
 @Entity
 public class Employee {
@@ -38,7 +38,7 @@ public class Employee {
 
     java.sql.Date hiredate;
 
-    BigDecimal salary;
+    Salary salary;
 
     Integer departmentId;
 
@@ -47,15 +47,15 @@ public class Employee {
     @Version
     Integer version;
 
-    @ModifiedProperties
-    Set<String> modifiedProperties = new HashSet<String>();
+    @ChangedProperties
+    Set<String> changedProperties = new HashSet<String>();
 
     public Integer getEmployeeId() {
         return employeeId;
     }
 
     public void setEmployeeId(Integer employee_id) {
-        modifiedProperties.add("employee_id");
+        changedProperties.add("employee_id");
         this.employeeId = employee_id;
     }
 
@@ -64,7 +64,7 @@ public class Employee {
     }
 
     public void setEmployeeNo(Integer employeeNo) {
-        modifiedProperties.add("employee_no");
+        changedProperties.add("employee_no");
         this.employeeNo = employeeNo;
     }
 
@@ -73,7 +73,7 @@ public class Employee {
     }
 
     public void setEmployeeName(String employeeName) {
-        modifiedProperties.add("employee_name");
+        changedProperties.add("employee_name");
         this.employeeName = employeeName;
     }
 
@@ -82,7 +82,7 @@ public class Employee {
     }
 
     public void setManagerId(Integer managerId) {
-        modifiedProperties.add("manager_id");
+        changedProperties.add("manager_id");
         this.managerId = managerId;
     }
 
@@ -91,16 +91,16 @@ public class Employee {
     }
 
     public void setHiredate(java.sql.Date hiredate) {
-        modifiedProperties.add("hiredate");
+        changedProperties.add("hiredate");
         this.hiredate = hiredate;
     }
 
-    public BigDecimal getSalary() {
+    public Salary getSalary() {
         return salary;
     }
 
-    public void setSalary(BigDecimal salary) {
-        modifiedProperties.add("salary");
+    public void setSalary(Salary salary) {
+        changedProperties.add("salary");
         this.salary = salary;
     }
 
@@ -109,7 +109,7 @@ public class Employee {
     }
 
     public void setDepartmentId(Integer departmentId) {
-        modifiedProperties.add("department_id");
+        changedProperties.add("department_id");
         this.departmentId = departmentId;
     }
 
@@ -118,7 +118,7 @@ public class Employee {
     }
 
     public void setAddressId(Integer addressId) {
-        modifiedProperties.add("address_id");
+        changedProperties.add("address_id");
         this.addressId = addressId;
     }
 
@@ -127,7 +127,7 @@ public class Employee {
     }
 
     public void setVersion(Integer version) {
-        modifiedProperties.add("version");
+        changedProperties.add("version");
         this.version = version;
     }
 

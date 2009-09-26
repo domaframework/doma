@@ -18,11 +18,11 @@ package org.seasar.doma.it.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.seasar.doma.ChangedProperties;
 import org.seasar.doma.Entity;
 import org.seasar.doma.GeneratedValue;
 import org.seasar.doma.GenerationType;
 import org.seasar.doma.Id;
-import org.seasar.doma.ModifiedProperties;
 import org.seasar.doma.Table;
 import org.seasar.doma.TableGenerator;
 
@@ -37,15 +37,15 @@ public class TableStrategy {
 
     String value;
 
-    @ModifiedProperties
-    Set<String> modifiedProperties = new HashSet<String>();
+    @ChangedProperties
+    Set<String> changedProperties = new HashSet<String>();
 
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
-        modifiedProperties.add("id");
+        changedProperties.add("id");
         this.id = id;
     }
 
@@ -54,7 +54,7 @@ public class TableStrategy {
     }
 
     public void setValue(String value) {
-        modifiedProperties.add("value");
+        changedProperties.add("value");
         this.value = value;
     }
 

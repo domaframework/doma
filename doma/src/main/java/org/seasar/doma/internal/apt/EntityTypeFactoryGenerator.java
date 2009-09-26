@@ -184,7 +184,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
     }
 
     protected void printTypeClassDirtyStatesField() {
-        iprint("private final java.util.Set<java.lang.String> __modifiedProperties;%n");
+        iprint("private final java.util.Set<java.lang.String> __changedProperties;%n");
         print("%n");
     }
 
@@ -267,13 +267,13 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         iprint("private %1$sType(%2$s entity) {%n", entityMeta.getEntityName(),
                 entityMeta.getEntityTypeName());
         iprint("    __entity = entity;%n");
-        String modifiedPropertyFieldName = entityMeta
-                .getModifiedPropertiesFieldName();
-        if (modifiedPropertyFieldName != null) {
-            iprint("    __modifiedProperties = entity.%1$s;%n",
-                    modifiedPropertyFieldName);
+        String changedPropertyFieldName = entityMeta
+                .getChangedPropertiesFieldName();
+        if (changedPropertyFieldName != null) {
+            iprint("    __changedProperties = entity.%1$s;%n",
+                    changedPropertyFieldName);
         } else {
-            iprint("    __modifiedProperties = null;%n");
+            iprint("    __changedProperties = null;%n");
         }
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             if (pm.isTrnsient()) {
@@ -281,8 +281,9 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
             }
             DomainType domainType = pm.getDomainType();
             if (domainType != null) {
-                iprint("    %1$s.getWrapper().set(entity.%1$s.%2$s());%n", pm
-                        .getName(), domainType.getAccessorMetod());
+                iprint(
+                        "    %1$s.getWrapper().set(entity.%1$s != null ? entity.%1$s.%2$s() : null);%n",
+                        pm.getName(), domainType.getAccessorMetod());
             } else {
                 iprint("    %1$s.getWrapper().set(entity.%1$s);%n", pm
                         .getName());
@@ -308,7 +309,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         printTypeClassRefreshEntityInternalMethod();
         printTypeClassGetEntityMethod();
         printTypeClassGetEntityClassMethod();
-        printTypeClassGetModifiedPropertiesMethod();
+        printTypeClassGetChangedPropertiesMethod();
     }
 
     protected void printTypeClassGetNameMethod() {
@@ -508,10 +509,10 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printTypeClassGetModifiedPropertiesMethod() {
+    protected void printTypeClassGetChangedPropertiesMethod() {
         iprint("@Override%n");
-        iprint("public java.util.Set<String> getModifiedProperties() {%n");
-        iprint("    return __modifiedProperties;%n");
+        iprint("public java.util.Set<String> getChangedProperties() {%n");
+        iprint("    return __changedProperties;%n");
         iprint("}%n");
         print("%n");
     }

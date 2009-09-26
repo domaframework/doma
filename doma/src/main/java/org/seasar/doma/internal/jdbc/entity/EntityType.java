@@ -99,7 +99,7 @@ public interface EntityType<E> {
 
     Class<E> getEntityClass();
 
-    Set<String> getModifiedProperties();
+    Set<String> getChangedProperties();
 
     void refreshEntity();
 

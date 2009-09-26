@@ -64,7 +64,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void prepareTargetProperties() {
-        Set<String> dirtyStates = entityType.getModifiedProperties();
+        Set<String> changedProperties = entityType.getChangedProperties();
         for (EntityPropertyType<?> p : entityType.getEntityPropertyTypes()) {
             if (p.isTransient()) {
                 continue;
@@ -82,8 +82,8 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
             if (nullExcluded && p.getWrapper().get() == null) {
                 continue;
             }
-            if (unchangedPropertyIncluded || dirtyStates == null
-                    || dirtyStates.contains(p.getName())) {
+            if (unchangedPropertyIncluded || changedProperties == null
+                    || changedProperties.contains(p.getName())) {
                 if (!isTargetPropertyName(p.getName())) {
                     continue;
                 }

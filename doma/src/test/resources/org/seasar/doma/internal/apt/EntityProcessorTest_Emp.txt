@@ -41,7 +41,7 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
 
         private final String __tableName = null;
 
-        private final java.util.Set<java.lang.String> __modifiedProperties;
+        private final java.util.Set<java.lang.String> __changedProperties;
 
         private final String __name = "Emp";
 
@@ -55,7 +55,7 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
 
         private EmpType(org.seasar.doma.internal.apt.entity.Emp entity) {
             __entity = entity;
-            __modifiedProperties = null;
+            __changedProperties = null;
             id.getWrapper().set(entity.id);
             name.getWrapper().set(entity.name);
             salary.getWrapper().set(entity.salary);
@@ -157,8 +157,8 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
         }
 
         @Override
-        public java.util.Set<String> getModifiedProperties() {
-            return __modifiedProperties;
+        public java.util.Set<String> getChangedProperties() {
+            return __changedProperties;
         }
 
     }

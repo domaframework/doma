@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.seasar.doma.ModifiedProperties;
+import org.seasar.doma.ChangedProperties;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
 import org.seasar.doma.Version;
@@ -37,7 +37,7 @@ public class Emp {
     @Version
     Integer version;
 
-    @ModifiedProperties
+    @ChangedProperties
     Set<String> dirtyStates = new HashSet<String>();
 
     public Integer getId() {

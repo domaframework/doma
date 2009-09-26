@@ -37,7 +37,7 @@ import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.Entity;
 import org.seasar.doma.EntityField;
-import org.seasar.doma.ModifiedProperties;
+import org.seasar.doma.ChangedProperties;
 import org.seasar.doma.Table;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
@@ -175,8 +175,8 @@ public class EntityMetaFactory {
             EntityMeta entityMeta) {
         for (VariableElement fieldElement : getFieldElements(entityClassElement)) {
             try {
-                if (fieldElement.getAnnotation(ModifiedProperties.class) != null) {
-                    doModifiedPropertiesField(fieldElement, entityMeta);
+                if (fieldElement.getAnnotation(ChangedProperties.class) != null) {
+                    doChangedPropertiesField(fieldElement, entityMeta);
                 } else {
                     doEntityPropertyMeta(fieldElement, entityMeta);
                 }
@@ -216,12 +216,12 @@ public class EntityMetaFactory {
         return results;
     }
 
-    protected void doModifiedPropertiesField(VariableElement fieldElement,
+    protected void doChangedPropertiesField(VariableElement fieldElement,
             EntityMeta entityMeta) {
         if (!TypeUtil.isAssignable(fieldElement.asType(), Set.class, env)) {
             throw new AptException(DomaMessageCode.DOMA4095, env, fieldElement);
         }
-        entityMeta.setModifiedPropertiesFieldName(fieldElement.getSimpleName()
+        entityMeta.setChangedPropertiesFieldName(fieldElement.getSimpleName()
                 .toString());
     }
 

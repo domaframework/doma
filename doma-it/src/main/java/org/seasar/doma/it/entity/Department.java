@@ -18,9 +18,9 @@ package org.seasar.doma.it.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.seasar.doma.ChangedProperties;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
-import org.seasar.doma.ModifiedProperties;
 import org.seasar.doma.Version;
 
 @Entity
@@ -38,15 +38,15 @@ public class Department {
     @Version
     Integer version;
 
-    @ModifiedProperties
-    Set<String> modifiedProperties = new HashSet<String>();
+    @ChangedProperties
+    Set<String> changedProperties = new HashSet<String>();
 
     public Integer getDepartmentId() {
         return departmentId;
     }
 
     public void setDepartmentId(Integer departmentId) {
-        modifiedProperties.add("departmentId");
+        changedProperties.add("departmentId");
         this.departmentId = departmentId;
     }
 
@@ -55,7 +55,7 @@ public class Department {
     }
 
     public void setDepartmentNo(Integer departmentNo) {
-        modifiedProperties.add("departmentNo");
+        changedProperties.add("departmentNo");
         this.departmentNo = departmentNo;
     }
 
@@ -64,7 +64,7 @@ public class Department {
     }
 
     public void setDepartmentName(String departmentName) {
-        modifiedProperties.add("departmentName");
+        changedProperties.add("departmentName");
         this.departmentName = departmentName;
     }
 
@@ -73,7 +73,7 @@ public class Department {
     }
 
     public void setLocation(String location) {
-        modifiedProperties.add("location");
+        changedProperties.add("location");
         this.location = location;
     }
 
@@ -82,7 +82,7 @@ public class Department {
     }
 
     public void setVersion(Integer version) {
-        modifiedProperties.add("version");
+        changedProperties.add("version");
         this.version = version;
     }
 

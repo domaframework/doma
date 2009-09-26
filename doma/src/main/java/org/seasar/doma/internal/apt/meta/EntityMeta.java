@@ -40,7 +40,7 @@ public class EntityMeta {
 
     protected String listenerTypeName;
 
-    protected String modifiedPropertiesFieldName;
+    protected String changedPropertiesFieldName;
 
     public String getEntityName() {
         return entityName;
@@ -107,13 +107,12 @@ public class EntityMeta {
         this.listenerTypeName = listenerTypeName;
     }
 
-    public String getModifiedPropertiesFieldName() {
-        return modifiedPropertiesFieldName;
+    public String getChangedPropertiesFieldName() {
+        return changedPropertiesFieldName;
     }
 
-    public void setModifiedPropertiesFieldName(
-            String modifiedPropertiesFieldName) {
-        this.modifiedPropertiesFieldName = modifiedPropertiesFieldName;
+    public void setChangedPropertiesFieldName(String changedPropertiesFieldName) {
+        this.changedPropertiesFieldName = changedPropertiesFieldName;
     }
 
 }
