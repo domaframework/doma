@@ -90,8 +90,7 @@ public final class TypeUtil {
     public static boolean isAssignable(TypeMirror typeMirror, Class<?> clazz,
             ProcessingEnvironment env) {
         assertNotNull(typeMirror, clazz, env);
-        TypeElement typeElement = env.getElementUtils().getTypeElement(
-                clazz.getName());
+        TypeElement typeElement = ElementUtil.getTypeElement(clazz, env);
         if (typeElement == null) {
             return false;
         }
@@ -124,14 +123,25 @@ public final class TypeUtil {
         if (typeMirror.getKind() == TypeKind.VOID) {
             return clazz == void.class;
         }
-        TypeElement typeElement = env.getElementUtils().getTypeElement(
-                clazz.getName());
+        TypeElement typeElement = ElementUtil.getTypeElement(clazz, env);
         if (typeElement == null) {
             return false;
         }
-        TypeMirror t1 = env.getTypeUtils().erasure(typeMirror);
-        TypeMirror t2 = env.getTypeUtils().erasure(typeElement.asType());
-        return t1.equals(t2);
+        return isSameType(typeMirror, typeElement.asType(), env);
+    }
+
+    public static boolean isSameType(TypeMirror t1, TypeMirror t2,
+            ProcessingEnvironment env) {
+        assertNotNull(t1, t2, env);
+        if (t1.getKind() == TypeKind.VOID) {
+            return t2.getKind() == TypeKind.VOID;
+        }
+        if (t2.getKind() == TypeKind.VOID) {
+            return t1.getKind() == TypeKind.VOID;
+        }
+        TypeMirror eraasuredType1 = env.getTypeUtils().erasure(t1);
+        TypeMirror eraasuredType12 = env.getTypeUtils().erasure(t2);
+        return eraasuredType1.equals(eraasuredType12);
     }
 
     public static String getTypeName(TypeMirror typeMirror,
@@ -282,8 +292,7 @@ public final class TypeUtil {
 
             @Override
             public TypeMirror visitNoTypeAsVoid(NoType t, Void p) {
-                return env.getElementUtils().getTypeElement(
-                        Void.class.getName()).asType();
+                return ElementUtil.getTypeElement(Void.class, env).asType();
             }
 
             @Override

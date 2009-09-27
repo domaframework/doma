@@ -21,7 +21,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
  * @author taedium
  * 
  */
-public class AndOperatorNode implements LogicalOperatorNode {
+public class AndOperatorNode implements LogicalBinaryOperatorNode {
 
     protected static final int PRIORITY = 20;
 

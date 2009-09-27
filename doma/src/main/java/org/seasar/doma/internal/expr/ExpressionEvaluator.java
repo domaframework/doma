@@ -84,6 +84,10 @@ public class ExpressionEvaluator implements
 
     public EvaluationResult evaluate(ExpressionNode node) {
         assertNotNull(node);
+        return evaluateInternal(node);
+    }
+
+    protected EvaluationResult evaluateInternal(ExpressionNode node) {
         return node.accept(this, null);
     }
 
@@ -266,7 +270,7 @@ public class ExpressionEvaluator implements
 
     @Override
     public EvaluationResult visitNewOperatorNode(NewOperatorNode node, Void p) {
-        ParameterCollector collector = new ParameterCollector(this);
+        ParameterCollector collector = new ParameterCollector();
         List<EvaluationResult> paramResults = collector.collect(node
                 .getParametersNode());
         int size = paramResults.size();
@@ -336,7 +340,7 @@ public class ExpressionEvaluator implements
         EvaluationResult targetResult = node.getTargetObjectNode().accept(this,
                 p);
         Object target = targetResult.getValue();
-        ParameterCollector collector = new ParameterCollector(this);
+        ParameterCollector collector = new ParameterCollector();
         List<EvaluationResult> paramResults = collector.collect(node
                 .getParametersNode());
         int size = paramResults.size();
@@ -506,7 +510,8 @@ public class ExpressionEvaluator implements
                 ExpressionLocation location = operandNode.getLocation();
                 throw new ExpressionException(DomaMessageCode.DOMA3013,
                         location.getExpression(), location.getPosition(),
-                        operatorNode.getExpression(), value, valueClass.getName());
+                        operatorNode.getExpression(), value, valueClass
+                                .getName());
             }
             this.operandNode = operandNode;
             this.operatorNode = operatorNode;
@@ -621,4 +626,167 @@ public class ExpressionEvaluator implements
         }
 
     }
+
+    protected class ParameterCollector implements
+            ExpressionNodeVisitor<Void, List<EvaluationResult>> {
+
+        public List<EvaluationResult> collect(ExpressionNode node) {
+            List<EvaluationResult> evaluationResults = new ArrayList<EvaluationResult>();
+            node.accept(this, evaluationResults);
+            return evaluationResults;
+        }
+
+        @Override
+        public Void visitEqOperatorNode(EqOperatorNode node,
+                List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitNeOperatorNode(NeOperatorNode node,
+                List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitGeOperatorNode(GeOperatorNode node,
+                List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitGtOperatorNode(GtOperatorNode node,
+                List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitLeOperatorNode(LeOperatorNode node,
+                List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitLtOperatorNode(LtOperatorNode node,
+                List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitCommaOperatorNode(CommaOperatorNode node,
+                List<EvaluationResult> p) {
+            for (ExpressionNode expressionNode : node.getNodes()) {
+                expressionNode.accept(this, p);
+            }
+            return null;
+        }
+
+        @Override
+        public Void visitLiteralNode(LiteralNode node, List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitVariableNode(VariableNode node,
+                List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitOrOperatorNode(OrOperatorNode node,
+                List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitAndOperatorNode(AndOperatorNode node,
+                List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitNotOperatorNode(NotOperatorNode node,
+                List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitAddOperatorNode(AddOperatorNode node,
+                List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitSubtractOperatorNode(SubtractOperatorNode node,
+                List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitMultiplyOperatorNode(MultiplyOperatorNode node,
+                List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitDivideOperatorNode(DivideOperatorNode node,
+                List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitNewOperatorNode(NewOperatorNode node,
+                List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitMethodOperatorNode(MethodOperatorNode node,
+                List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitFieldOperatorNode(FieldOperatorNode node,
+                List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitParensNode(ParensNode node, List<EvaluationResult> p) {
+            node.getNode().accept(this, p);
+            return null;
+        }
+
+        @Override
+        public Void visitEmptyNode(EmptyNode node, List<EvaluationResult> p) {
+            return null;
+        }
+
+        protected void evaluate(ExpressionNode node, List<EvaluationResult> p) {
+            EvaluationResult evaluationResult = ExpressionEvaluator.this
+                    .evaluateInternal(node);
+            p.add(evaluationResult);
+        }
+
+    }
+
 }

@@ -1,1 +1,1 @@
-select * from Emp where id = /*%if !name.length */ name = /*name*/'aaa' /*%end*/
+select * from Emp where id = /*%if !(name.length() == 0) */ name = /*name*/'aaa' /*%end*/

@@ -1,1 +1,0 @@
-select * from Emp where id = /*%if id.foo == 0*/ id = /*id*/1 /*%end*/

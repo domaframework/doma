@@ -391,15 +391,6 @@ public class DaoProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
-    public void testNoResultMethodAccessSqlValidationDao() throws Exception {
-        Class<?> target = MultiParamMethodAccessSqlValidationDao.class;
-        DaoProcessor processor = new DaoProcessor();
-        addProcessor(processor);
-        addCompilationUnit(target);
-        compile();
-        assertTrue(getCompiledResult());
-    }
-
     public void testEmbeddedVariableDao() throws Exception {
         Class<?> target = EmbeddedVariableDao.class;
         DaoProcessor processor = new DaoProcessor();

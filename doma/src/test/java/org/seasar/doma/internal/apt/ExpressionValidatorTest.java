@@ -42,6 +42,9 @@ public class ExpressionValidatorTest extends AptTestCase {
         addSourcePath("src/test/java");
     }
 
+    public void test() throws Exception {
+    }
+
     public void testVariableNotFound() throws Exception {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
@@ -84,7 +87,7 @@ public class ExpressionValidatorTest extends AptTestCase {
         }
     }
 
-    public void testFieldAccess() throws Exception {
+    public void testConstructorNotFound() throws Exception {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         compile();
@@ -95,30 +98,108 @@ public class ExpressionValidatorTest extends AptTestCase {
         ExpressionValidator validator = new ExpressionValidator(
                 getProcessingEnvironment(), methodElement, parameterTypeMap);
 
-        ExpressionNode node = new ExpressionParser("emp.id").parse();
-        assertTrue(validator.validate(node));
+        ExpressionNode node = new ExpressionParser("new java.lang.String(1, 2)")
+                .parse();
+        try {
+            validator.validate(node);
+            fail();
+        } catch (AptException expected) {
+            System.out.println(expected);
+            assertEquals(DomaMessageCode.DOMA4115, expected.getMessageCode());
+        }
     }
 
-    public void testMethodAccess() throws Exception {
-        Class<?> target = ExpressionValidationDao.class;
-        addCompilationUnit(target);
-        compile();
-
-        ExecutableElement methodElement = createMethodElement(target,
-                "testEmp", Emp.class);
-        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
-        ExpressionValidator validator = new ExpressionValidator(
-                getProcessingEnvironment(), methodElement, parameterTypeMap);
-
-        ExpressionNode node = new ExpressionParser("emp.getId()").parse();
-        assertTrue(validator.validate(node));
-    }
-
+    // public void testFieldAccess() throws Exception {
+    // Class<?> target = ExpressionValidationDao.class;
+    // addCompilationUnit(target);
+    // compile();
+    //
+    // ExecutableElement methodElement = createMethodElement(target,
+    // "testEmp", Emp.class);
+    // Map<String, TypeMirror> parameterTypeMap =
+    // createParameterTypeMap(methodElement);
+    // ExpressionValidator validator = new ExpressionValidator(
+    // getProcessingEnvironment(), methodElement, parameterTypeMap);
+    //
+    // ExpressionNode node = new ExpressionParser("emp.id").parse();
+    // TypeDeclaration result = validator.validate(node);
+    // assertFalse(result.isUnknownType());
+    // }
+    //
+    // public void testMethodAccess() throws Exception {
+    // Class<?> target = ExpressionValidationDao.class;
+    // addCompilationUnit(target);
+    // compile();
+    //
+    // ExecutableElement methodElement = createMethodElement(target,
+    // "testEmp", Emp.class);
+    // Map<String, TypeMirror> parameterTypeMap =
+    // createParameterTypeMap(methodElement);
+    // ExpressionValidator validator = new ExpressionValidator(
+    // getProcessingEnvironment(), methodElement, parameterTypeMap);
+    //
+    // ExpressionNode node = new ExpressionParser("emp.getId()").parse();
+    // TypeDeclaration result = validator.validate(node);
+    // assertFalse(result.isUnknownType());
+    // }
+    //
+    // public void testConstructorAccess() throws Exception {
+    // Class<?> target = ExpressionValidationDao.class;
+    // addCompilationUnit(target);
+    // compile();
+    //
+    // ExecutableElement methodElement = createMethodElement(target,
+    // "testEmp", Emp.class);
+    // Map<String, TypeMirror> parameterTypeMap =
+    // createParameterTypeMap(methodElement);
+    // ExpressionValidator validator = new ExpressionValidator(
+    // getProcessingEnvironment(), methodElement, parameterTypeMap);
+    //
+    // ExpressionNode node = new ExpressionParser("new java.lang.Integer(1)")
+    // .parse();
+    // TypeDeclaration result = validator.validate(node);
+    // assertFalse(result.isUnknownType());
+    // }
+    //
+    // public void testMethodAccess_withArguments() throws Exception {
+    // Class<?> target = ExpressionValidationDao.class;
+    // addCompilationUnit(target);
+    // compile();
+    //
+    // ExecutableElement methodElement = createMethodElement(target,
+    // "testEmp", Emp.class);
+    // Map<String, TypeMirror> parameterTypeMap =
+    // createParameterTypeMap(methodElement);
+    // ExpressionValidator validator = new ExpressionValidator(
+    // getProcessingEnvironment(), methodElement, parameterTypeMap);
+    //
+    // ExpressionNode node = new ExpressionParser("emp.add(2, 3)").parse();
+    // TypeDeclaration result = validator.validate(node);
+    // assertFalse(result.isUnknownType());
+    // }
+    //
+    // public void testEqOperator() throws Exception {
+    // Class<?> target = ExpressionValidationDao.class;
+    // addCompilationUnit(target);
+    // compile();
+    //
+    // ExecutableElement methodElement = createMethodElement(target,
+    // "testEmp", Emp.class);
+    // Map<String, TypeMirror> parameterTypeMap =
+    // createParameterTypeMap(methodElement);
+    // ExpressionValidator validator = new ExpressionValidator(
+    // getProcessingEnvironment(), methodElement, parameterTypeMap);
+    //
+    // ExpressionNode node = new ExpressionParser("emp.add(2, 3) == 5")
+    // .parse();
+    // TypeDeclaration result = validator.validate(node);
+    // assertFalse(result.isUnknownType());
+    // }
+    //
     protected ExecutableElement createMethodElement(Class<?> clazz,
             String methodName, Class<?>... parameterClasses) {
         ProcessingEnvironment env = getProcessingEnvironment();
-        TypeElement typeElement = env.getElementUtils().getTypeElement(
-                clazz.getName());
+        TypeElement typeElement = ElementUtil.getTypeElement(clazz, env);
         for (TypeElement t = typeElement; t != null
                 && t.asType().getKind() != TypeKind.NONE; t = TypeUtil
                 .toTypeElement(t.getSuperclass(), env)) {

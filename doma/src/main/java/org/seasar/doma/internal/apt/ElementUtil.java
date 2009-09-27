@@ -20,6 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.ExecutableType;
 import javax.lang.model.util.SimpleTypeVisitor6;
@@ -60,8 +61,8 @@ public class ElementUtil {
     public static ExecutableType toExecutableType(ExecutableElement element,
             ProcessingEnvironment env) {
         assertNotNull(element, env);
-        return element.asType()
-                .accept(new SimpleTypeVisitor6<ExecutableType, Void>() {
+        return element.asType().accept(
+                new SimpleTypeVisitor6<ExecutableType, Void>() {
 
                     @Override
                     public ExecutableType visitExecutable(ExecutableType t,
@@ -69,5 +70,23 @@ public class ElementUtil {
                         return t;
                     }
                 }, null);
+    }
+
+    public static TypeElement getTypeElement(String className,
+            ProcessingEnvironment env) {
+        assertNotNull(className, env);
+        Class<?> clazz = null;
+        try {
+            clazz = Class.forName(className);
+            return getTypeElement(clazz, env);
+        } catch (ClassNotFoundException ignored) {
+        }
+        return env.getElementUtils().getTypeElement(className);
+    }
+
+    public static TypeElement getTypeElement(Class<?> clazz,
+            ProcessingEnvironment env) {
+        assertNotNull(clazz, env);
+        return env.getElementUtils().getTypeElement(clazz.getCanonicalName());
     }
 }

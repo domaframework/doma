@@ -87,4 +87,8 @@ public class Emp {
         this.temp = temp;
     }
 
+    public int add(int a, int b) {
+        return a + b;
+    }
+
 }

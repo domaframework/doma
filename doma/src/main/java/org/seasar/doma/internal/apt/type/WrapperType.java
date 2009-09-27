@@ -21,6 +21,7 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.SimpleTypeVisitor6;
 
+import org.seasar.doma.internal.apt.ElementUtil;
 import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.wrapper.ArrayWrapper;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
@@ -100,8 +101,8 @@ public class WrapperType {
         if (wrapperClass == null) {
             return null;
         }
-        TypeElement wrapperTypeElement = env.getElementUtils().getTypeElement(
-                wrapperClass.getName());
+        TypeElement wrapperTypeElement = ElementUtil.getTypeElement(
+                wrapperClass, env);
         if (wrapperTypeElement == null) {
             return null;
         }
