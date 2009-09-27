@@ -61,7 +61,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     protected CallableSqlParameterMeta createParameterMeta(
             QueryParameterMeta parameterMeta) {
         if (parameterMeta.isAnnotated(ResultSet.class)) {
-            ListType listType = parameterMeta.getCollectionType();
+            ListType listType = parameterMeta.getListType();
             if (listType == null) {
                 throw new AptException(DomaMessageCode.DOMA4062, env,
                         parameterMeta.getElement());

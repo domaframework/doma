@@ -109,9 +109,9 @@ public class SqlFileSelectQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         for (VariableElement parameter : method.getParameters()) {
             QueryParameterMeta parameterMeta = createParameterMeta(parameter);
-            if (parameterMeta.getCollectionType() != null) {
+            if (parameterMeta.getListType() != null) {
                 ListType listType = parameterMeta
-                        .getCollectionType();
+                        .getListType();
                 ValueType valueType = listType.getValueType();
                 if (valueType == null) {
                     throw new AptException(DomaMessageCode.DOMA4028, env,

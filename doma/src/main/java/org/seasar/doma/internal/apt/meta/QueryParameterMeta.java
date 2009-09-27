@@ -137,7 +137,7 @@ public class QueryParameterMeta {
         return qualifiedName;
     }
 
-    public ListType getCollectionType() {
+    public ListType getListType() {
         return listType;
     }
 

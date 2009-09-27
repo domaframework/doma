@@ -105,7 +105,7 @@ public class SqlFileBatchModifyQueryMetaFactory extends
         }
         QueryParameterMeta parameterMeta = createParameterMeta(parameters
                 .get(0));
-        ListType listType = parameterMeta.getCollectionType();
+        ListType listType = parameterMeta.getListType();
         if (listType == null) {
             throw new AptException(DomaMessageCode.DOMA4042, env, method);
         }

@@ -98,9 +98,9 @@ public class SqlFileModifyQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         for (VariableElement parameter : method.getParameters()) {
             QueryParameterMeta parameterMeta = createParameterMeta(parameter);
-            if (parameterMeta.getCollectionType() != null) {
+            if (parameterMeta.getListType() != null) {
                 ListType listType = parameterMeta
-                        .getCollectionType();
+                        .getListType();
                 DomainType domainType = listType.getDomainType();
                 if (domainType == null) {
                     throw new AptException(DomaMessageCode.DOMA4028, env,
