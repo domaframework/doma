@@ -74,8 +74,8 @@ public class ArrayCreateQueryMetaFactory extends
                     .getElement());
         }
         queryMeta.setElementsParameterName(parameterMeta.getName());
-        queryMeta.addParameterMetas(parameterMeta);
-        queryMeta.addExpressionParameterType(parameterMeta.getName(),
+        queryMeta.addParameterMeta(parameterMeta);
+        queryMeta.addParameterType(parameterMeta.getName(),
                 parameterMeta.getType());
     }
 }

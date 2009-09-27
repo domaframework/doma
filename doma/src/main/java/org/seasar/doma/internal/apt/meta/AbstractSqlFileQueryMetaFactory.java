@@ -23,6 +23,7 @@ import javax.lang.model.element.ExecutableElement;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.FileObjectUtil;
+import org.seasar.doma.internal.apt.SqlValidator;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.internal.util.IOUtil;
@@ -50,7 +51,8 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
             throw new AptException(DomaMessageCode.DOMA4019, env, method, path);
         }
         SqlNode sqlNode = createSqlNode(queryMeta, method, daoMeta, path, sql);
-        SqlValidator validator = new SqlValidator(env, queryMeta, method, path);
+        SqlValidator validator = new SqlValidator(env, method, queryMeta
+                .getParameterTypeMap(), path);
         validator.validate(sqlNode);
     }
 

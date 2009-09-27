@@ -43,7 +43,6 @@ public abstract class AptTestCase extends AptinaTestCase {
         super.setUp();
         addSourcePath("src/test/java");
         addClassOutputPath("src/test/resources");
-        addOption("-Atest=true");
         setCharset("UTF-8");
         setLocale(locale);
     }

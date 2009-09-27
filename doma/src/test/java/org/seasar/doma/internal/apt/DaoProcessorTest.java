@@ -57,6 +57,12 @@ import org.seasar.doma.message.DomaMessageCode;
  */
 public class DaoProcessorTest extends AptTestCase {
 
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        addOption("-Atest=true");
+    }
+
     public void testSqlFileSelectEntity() throws Exception {
         Class<?> target = SqlFileSelectEntityDao.class;
         DaoProcessor processor = new DaoProcessor();

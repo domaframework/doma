@@ -32,7 +32,7 @@ public class DomainProcessorTest extends AptTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        addSourcePath("src/test/java");
+        addOption("-Atest=true");
     }
 
     public void testSalary() throws Exception {

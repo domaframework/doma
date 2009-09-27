@@ -13,15 +13,16 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.meta;
+package org.seasar.doma.internal.apt;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.util.Map;
+
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.expr.ExpressionParser;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
@@ -46,23 +47,23 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
 
     protected final ProcessingEnvironment env;
 
-    protected final QueryMeta queryMeta;
+    protected final ExecutableElement methodElement;
 
-    protected final ExecutableElement method;
+    protected final Map<String, TypeMirror> parameterTypeMap;
 
     protected final String path;
 
     protected final ExpressionValidator expressionValidator;
 
-    public SqlValidator(ProcessingEnvironment env, QueryMeta queryMeta,
-            ExecutableElement method, String path) {
-        assertNotNull(env, queryMeta, method, path);
+    public SqlValidator(ProcessingEnvironment env, ExecutableElement methodElement,
+            Map<String, TypeMirror> parameterTypeMap, String path) {
+        assertNotNull(env, methodElement, parameterTypeMap, path);
         this.env = env;
-        this.queryMeta = queryMeta;
-        this.method = method;
+        this.methodElement = methodElement;
+        this.parameterTypeMap = parameterTypeMap;
         this.path = path;
-        expressionValidator = new ExpressionValidator(env, queryMeta, method,
-                path);
+        expressionValidator = new ExpressionValidator(env, methodElement,
+                parameterTypeMap);
     }
 
     public void validate(SqlNode sqlNode) {
@@ -118,7 +119,7 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
         } catch (AptIllegalStateException e) {
             throw e;
         } catch (AptException e) {
-            throw new AptException(DomaMessageCode.DOMA4092, env, method,
+            throw new AptException(DomaMessageCode.DOMA4092, env, methodElement,
                     location.getSql(), location.getLineNumber(), location
                             .getPosition(), e.getMessage());
         }

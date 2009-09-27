@@ -142,8 +142,8 @@ public class SqlFileSelectQueryMetaFactory extends
                 throw new AptException(DomaMessageCode.DOMA4008, env,
                         parameterMeta.getElement(), parameterMeta.getType());
             }
-            queryMeta.addParameterMetas(parameterMeta);
-            queryMeta.addExpressionParameterType(parameterMeta.getName(),
+            queryMeta.addParameterMeta(parameterMeta);
+            queryMeta.addParameterType(parameterMeta.getName(),
                     parameterMeta.getType());
         }
         if (queryMeta.isIterated()

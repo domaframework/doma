@@ -124,8 +124,8 @@ public class AutoBatchModifyQueryMetaFactory extends
         }
         queryMeta.setEntityType(entityType);
         queryMeta.setEntitiesParameterName(parameterMeta.getName());
-        queryMeta.addParameterMetas(parameterMeta);
-        queryMeta.addExpressionParameterType(parameterMeta.getName(),
+        queryMeta.addParameterMeta(parameterMeta);
+        queryMeta.addParameterType(parameterMeta.getName(),
                 entityType.getType());
         validateEntityPropertyNames(entityType.getType(), method, queryMeta);
     }

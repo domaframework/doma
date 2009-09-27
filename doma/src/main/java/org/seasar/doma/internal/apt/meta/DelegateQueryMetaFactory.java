@@ -88,8 +88,8 @@ public class DelegateQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         for (VariableElement parameter : method.getParameters()) {
             QueryParameterMeta parameterMeta = createParameterMeta(parameter);
-            queryMeta.addParameterMetas(parameterMeta);
-            queryMeta.addExpressionParameterType(parameterMeta.getName(),
+            queryMeta.addParameterMeta(parameterMeta);
+            queryMeta.addParameterType(parameterMeta.getName(),
                     parameterMeta.getType());
         }
     }

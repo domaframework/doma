@@ -35,7 +35,7 @@ public interface QueryMeta {
 
     QueryReturnMeta getReturnMeta();
 
-    Map<String, TypeMirror> getExpressionParameterTypes();
+    Map<String, TypeMirror> getParameterTypeMap();
 
     List<String> getThrownTypeNames();
 

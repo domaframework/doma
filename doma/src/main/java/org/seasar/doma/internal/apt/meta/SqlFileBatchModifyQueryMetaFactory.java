@@ -115,9 +115,9 @@ public class SqlFileBatchModifyQueryMetaFactory extends
         }
         queryMeta.setEntityType(entityType);
         queryMeta.setEntitiesParameterName(parameterMeta.getName());
-        queryMeta.addParameterMetas(parameterMeta);
+        queryMeta.addParameterMeta(parameterMeta);
 
-        queryMeta.addExpressionParameterType(parameterMeta.getName(),
+        queryMeta.addParameterType(parameterMeta.getName(),
                 entityType.getType());
     }
 

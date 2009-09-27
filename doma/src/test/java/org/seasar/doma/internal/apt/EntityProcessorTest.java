@@ -41,6 +41,7 @@ public class EntityProcessorTest extends AptTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         addSourcePath("src/test/java");
+        addOption("-Atest=true");
     }
 
     public void testEmp() throws Exception {

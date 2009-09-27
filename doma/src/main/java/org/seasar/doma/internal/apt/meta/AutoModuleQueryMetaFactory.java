@@ -48,12 +48,12 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
             DaoMeta daoMeta) {
         for (VariableElement parameter : method.getParameters()) {
             QueryParameterMeta parameterMeta = createParameterMeta(parameter);
-            queryMeta.addParameterMetas(parameterMeta);
+            queryMeta.addParameterMeta(parameterMeta);
 
             CallableSqlParameterMeta callableSqlParameterMeta = createParameterMeta(parameterMeta);
             queryMeta.addCallableSqlParameterMeta(callableSqlParameterMeta);
 
-            queryMeta.addExpressionParameterType(parameterMeta.getName(),
+            queryMeta.addParameterType(parameterMeta.getName(),
                     parameterMeta.getType());
         }
     }

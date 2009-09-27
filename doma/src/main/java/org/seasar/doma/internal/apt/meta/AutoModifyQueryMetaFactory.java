@@ -123,8 +123,8 @@ public class AutoModifyQueryMetaFactory extends
         }
         queryMeta.setEntityType(entityType);
         queryMeta.setEntityParameterName(parameterMeta.getName());
-        queryMeta.addParameterMetas(parameterMeta);
-        queryMeta.addExpressionParameterType(parameterMeta.getName(),
+        queryMeta.addParameterMeta(parameterMeta);
+        queryMeta.addParameterType(parameterMeta.getName(),
                 entityType.getType());
         validateEntityPropertyNames(entityType.getType(), method, queryMeta);
     }

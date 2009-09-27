@@ -44,6 +44,7 @@ import javax.lang.model.util.TypeKindVisitor6;
  */
 public final class TypeUtil {
 
+    // TODO
     public static TypeElement toTypeElement(TypeMirror typeMirror,
             final ProcessingEnvironment env) {
         assertNotNull(typeMirror, env);
