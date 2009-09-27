@@ -27,9 +27,9 @@ public class MethodOperatorNode implements OperatorNode {
 
     protected final ExpressionLocation location;
 
-    protected final String operator;
+    protected final String expression;
 
-    protected final String name;
+    protected final String methodName;
 
     protected ExpressionNode targetObjectNode;
 
@@ -40,16 +40,16 @@ public class MethodOperatorNode implements OperatorNode {
         return PRIORITY;
     }
 
-    public MethodOperatorNode(ExpressionLocation location, String operator,
-            String name) {
-        assertNotNull(location, name);
+    public MethodOperatorNode(ExpressionLocation location, String expression,
+            String methodName) {
+        assertNotNull(location, methodName);
         this.location = location;
-        this.operator = operator;
-        this.name = name;
+        this.expression = expression;
+        this.methodName = methodName;
     }
 
-    public String getName() {
-        return name;
+    public String getMethodName() {
+        return methodName;
     }
 
     public ExpressionNode getTargetObjectNode() {
@@ -73,17 +73,19 @@ public class MethodOperatorNode implements OperatorNode {
         return visitor.visitMethodOperatorNode(this, p);
     }
 
+    @Override
     public ExpressionLocation getLocation() {
         return location;
     }
 
-    public String getOperator() {
-        return operator;
+    @Override
+    public String getExpression() {
+        return expression;
     }
 
     @Override
     public String toString() {
-        return targetObjectNode + operator + parametersNode;
+        return targetObjectNode + expression + parametersNode;
     }
 
 }

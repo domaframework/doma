@@ -23,6 +23,4 @@ public interface OperatorNode extends ExpressionNode {
 
     int getPriority();
 
-    String getOperator();
-
 }

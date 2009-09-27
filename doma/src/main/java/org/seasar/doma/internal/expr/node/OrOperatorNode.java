@@ -27,16 +27,16 @@ public class OrOperatorNode implements LogicalOperatorNode {
 
     protected final ExpressionLocation location;
 
-    protected final String operator;
+    protected final String expression;
 
     protected ExpressionNode leftNode;
 
     protected ExpressionNode rightNode;
 
-    public OrOperatorNode(ExpressionLocation location, String text) {
-        assertNotNull(location, text);
+    public OrOperatorNode(ExpressionLocation location, String expression) {
+        assertNotNull(location, expression);
         this.location = location;
-        this.operator = text;
+        this.expression = expression;
     }
 
     public ExpressionNode getLeftNode() {
@@ -69,13 +69,13 @@ public class OrOperatorNode implements LogicalOperatorNode {
         return location;
     }
 
-    public String getOperator() {
-        return operator;
+    public String getExpression() {
+        return expression;
     }
 
     @Override
     public String toString() {
-        return String.format("%s %s %s", leftNode, operator, rightNode);
+        return String.format("%s %s %s", leftNode, expression, rightNode);
     }
 
 }

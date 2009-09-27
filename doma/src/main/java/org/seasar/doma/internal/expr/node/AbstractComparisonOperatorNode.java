@@ -28,17 +28,17 @@ public abstract class AbstractComparisonOperatorNode implements
 
     protected final ExpressionLocation location;
 
-    protected final String operator;
+    protected final String expression;
 
     protected ExpressionNode leftNode;
 
     protected ExpressionNode rightNode;
 
     public AbstractComparisonOperatorNode(ExpressionLocation location,
-            String operator) {
-        assertNotNull(location, operator);
+            String expression) {
+        assertNotNull(location, expression);
         this.location = location;
-        this.operator = operator;
+        this.expression = expression;
     }
 
     public ExpressionNode getLeftNode() {
@@ -63,8 +63,8 @@ public abstract class AbstractComparisonOperatorNode implements
     }
 
     @Override
-    public String getOperator() {
-        return operator;
+    public String getExpression() {
+        return expression;
     }
 
     @Override
@@ -74,7 +74,7 @@ public abstract class AbstractComparisonOperatorNode implements
 
     @Override
     public String toString() {
-        return leftNode + " " + operator + " " + rightNode;
+        return leftNode + " " + expression + " " + rightNode;
     }
 
 }

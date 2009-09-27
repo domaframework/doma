@@ -28,6 +28,11 @@ public class EmptyNode implements ExpressionNode {
     }
 
     @Override
+    public String getExpression() {
+        return "";
+    }
+
+    @Override
     public <R, P> R accept(ExpressionNodeVisitor<R, P> visitor, P p) {
         return visitor.visitEmptyNode(this, p);
     }

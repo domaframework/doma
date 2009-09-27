@@ -52,7 +52,8 @@ public class ExpressionValidator implements
     protected final Map<ExpressionNode, TypeDeclaration> typeDeclarationMap = new HashMap<ExpressionNode, TypeDeclaration>();
 
     public ExpressionValidator(ProcessingEnvironment env,
-            ExecutableElement methodElement, Map<String, TypeMirror> parameterTypeMap) {
+            ExecutableElement methodElement,
+            Map<String, TypeMirror> parameterTypeMap) {
         assertNotNull(env, methodElement, parameterTypeMap);
         this.env = env;
         this.methodElement = methodElement;
@@ -170,24 +171,28 @@ public class ExpressionValidator implements
 
     @Override
     public Boolean visitMethodOperatorNode(MethodOperatorNode node, Void p) {
-        node.getTargetObjectNode().accept(this, p);
-        node.getParametersNode().accept(this, p);
+        boolean result = node.getTargetObjectNode().accept(this, p)
+                && node.getParametersNode().accept(this, p);
+        if (!result) {
+            return false;
+        }
 
         TypeDeclaration typeDeclaration = typeDeclarationMap.get(node
                 .getTargetObjectNode());
         if (typeDeclaration == null) {
             return false;
         }
-        String methodName = node.getName();
+        String methodName = node.getMethodName();
         int parameterSize = node.getParametersNode().accept(
                 new ParameterCounter(), null);
         List<MethodDeclaration> methodDeclarations = typeDeclaration
                 .getMethodDeclarations(methodName, parameterSize);
         if (methodDeclarations.size() == 0) {
             ExpressionLocation location = node.getLocation();
-            throw new AptException(DomaMessageCode.DOMA4071, env, methodElement,
-                    location.getExpression(), location.getPosition(),
-                    methodName, typeDeclaration.getTypeElement()
+            throw new AptException(DomaMessageCode.DOMA4071, env,
+                    methodElement, location.getExpression(), location
+                            .getPosition(), node.getTargetObjectNode()
+                            .getExpression(), typeDeclaration.getTypeElement()
                             .getQualifiedName(), parameterSize, methodName);
         }
         if (methodDeclarations.size() == 1) {
@@ -204,14 +209,17 @@ public class ExpressionValidator implements
 
     @Override
     public Boolean visitFieldOperatorNode(FieldOperatorNode node, Void p) {
-        node.getTargetObjectNode().accept(this, p);
+        boolean result = node.getTargetObjectNode().accept(this, p);
+        if (!result) {
+            return false;
+        }
 
         TypeDeclaration typeDeclaration = typeDeclarationMap.get(node
                 .getTargetObjectNode());
         if (typeDeclaration == null) {
             return false;
         }
-        String fieldName = node.getName();
+        String fieldName = node.getFieldName();
         FieldDeclaration fieldDeclarations = typeDeclaration
                 .getFieldDeclaration(fieldName);
         if (fieldDeclarations != null) {
@@ -227,13 +235,13 @@ public class ExpressionValidator implements
 
     @Override
     public Boolean visitVariableNode(VariableNode node, Void p) {
-        String variableName = node.getName();
+        String variableName = node.getExpression();
         TypeMirror typeMirror = parameterTypeMap.get(variableName);
         if (typeMirror == null) {
             ExpressionLocation location = node.getLocation();
-            throw new AptException(DomaMessageCode.DOMA4067, env, methodElement,
-                    location.getExpression(), location.getPosition(),
-                    variableName);
+            throw new AptException(DomaMessageCode.DOMA4067, env,
+                    methodElement, location.getExpression(), location
+                            .getPosition(), variableName);
         }
         TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
         if (typeElement == null) {

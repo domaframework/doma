@@ -106,7 +106,7 @@ public class ExpressionEvaluator implements
         } catch (ClassCastException e) {
             ExpressionLocation location = node.getLocation();
             throw new ExpressionException(DomaMessageCode.DOMA3008, e, location
-                    .getExpression(), node.getOperator(), e);
+                    .getExpression(), node.getExpression(), e);
         }
     }
 
@@ -129,7 +129,7 @@ public class ExpressionEvaluator implements
         } catch (ClassCastException e) {
             ExpressionLocation location = node.getLocation();
             throw new ExpressionException(DomaMessageCode.DOMA3008, e, location
-                    .getExpression(), node.getOperator(), e);
+                    .getExpression(), node.getExpression(), e);
         }
     }
 
@@ -171,7 +171,7 @@ public class ExpressionEvaluator implements
             ExpressionLocation location = node.getLocation();
             throw new ExpressionException(DomaMessageCode.DOMA3009, location
                     .getExpression(), location.getPosition(), node
-                    .getOperator());
+                    .getExpression());
         }
         try {
             @SuppressWarnings("unchecked")
@@ -183,7 +183,7 @@ public class ExpressionEvaluator implements
             ExpressionLocation location = node.getLocation();
             throw new ExpressionException(DomaMessageCode.DOMA3008, e, location
                     .getExpression(), location.getPosition(), node
-                    .getOperator(), e);
+                    .getExpression(), e);
         }
     }
 
@@ -351,7 +351,8 @@ public class ExpressionEvaluator implements
             i++;
         }
         ExpressionLocation location = node.getLocation();
-        Method method = findMethod(location, node.getName(), target, paramTypes);
+        Method method = findMethod(location, node.getMethodName(), target,
+                paramTypes);
         return invokeMethod(location, method, target, paramTypes, params);
     }
 
@@ -403,7 +404,7 @@ public class ExpressionEvaluator implements
                 p);
         Object target = targetResult.getValue();
         ExpressionLocation location = node.getLocation();
-        Field field = findField(location, node.getName(), target);
+        Field field = findField(location, node.getFieldName(), target);
         return getFieldValue(location, field, target);
     }
 
@@ -439,8 +440,8 @@ public class ExpressionEvaluator implements
 
     @Override
     public EvaluationResult visitVariableNode(VariableNode node, Void p) {
-        String variableName = node.getName();
-        Value value = variableValues.get(node.getName());
+        String variableName = node.getExpression();
+        Value value = variableValues.get(node.getExpression());
         if (value == null) {
             ExpressionLocation location = node.getLocation();
             throw new ExpressionException(DomaMessageCode.DOMA3003, location
@@ -498,14 +499,14 @@ public class ExpressionEvaluator implements
                 ExpressionLocation location = operandNode.getLocation();
                 throw new ExpressionException(DomaMessageCode.DOMA3015,
                         location.getExpression(), location.getPosition(),
-                        operatorNode.getOperator());
+                        operatorNode.getExpression());
             }
             priority = priorityMap.get(evaluationResult.getValueClass());
             if (priority == null) {
                 ExpressionLocation location = operandNode.getLocation();
                 throw new ExpressionException(DomaMessageCode.DOMA3013,
                         location.getExpression(), location.getPosition(),
-                        operatorNode.getOperator(), value, valueClass.getName());
+                        operatorNode.getExpression(), value, valueClass.getName());
             }
             this.operandNode = operandNode;
             this.operatorNode = operatorNode;
@@ -607,7 +608,7 @@ public class ExpressionEvaluator implements
         protected void handleArithmeticException(ArithmeticException e) {
             ExpressionLocation location = operatorNode.getLocation();
             throw new ExpressionException(DomaMessageCode.DOMA3014, e, location
-                    .getExpression(), operatorNode.getOperator(), location
+                    .getExpression(), operatorNode.getExpression(), location
                     .getPosition(), e);
         }
 

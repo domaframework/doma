@@ -27,17 +27,17 @@ public class NewOperatorNode implements OperatorNode {
 
     protected final ExpressionLocation location;
 
-    protected final String operator;
+    protected final String expression;
 
     protected final String className;
 
     protected ExpressionNode parametersNode;
 
-    public NewOperatorNode(ExpressionLocation location, String operator,
+    public NewOperatorNode(ExpressionLocation location, String expression,
             String className) {
-        assertNotNull(location, operator, className);
+        assertNotNull(location, expression, className);
         this.location = location;
-        this.operator = operator;
+        this.expression = expression;
         this.className = className;
     }
 
@@ -67,13 +67,13 @@ public class NewOperatorNode implements OperatorNode {
         return location;
     }
 
-    public String getOperator() {
-        return operator;
+    public String getExpression() {
+        return expression;
     }
 
     @Override
     public String toString() {
-        return operator + " " + className + parametersNode;
+        return expression + " " + className + parametersNode;
     }
 
 }

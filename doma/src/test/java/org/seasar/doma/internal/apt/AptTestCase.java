@@ -110,4 +110,6 @@ public abstract class AptTestCase extends AptinaTestCase {
         return null;
     }
 
+    protected static class AptClassLoader extends ClassLoader {
+    }
 }

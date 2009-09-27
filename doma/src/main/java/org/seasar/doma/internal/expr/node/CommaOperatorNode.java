@@ -32,12 +32,12 @@ public class CommaOperatorNode implements OperatorNode {
 
     protected final ExpressionLocation location;
 
-    protected final String operator;
+    protected final String expression;
 
-    public CommaOperatorNode(ExpressionLocation location, String operator) {
-        assertNotNull(location, operator);
+    public CommaOperatorNode(ExpressionLocation location, String expression) {
+        assertNotNull(location, expression);
         this.location = location;
-        this.operator = operator;
+        this.expression = expression;
     }
 
     public void addNode(ExpressionNode expressionNode) {
@@ -62,8 +62,8 @@ public class CommaOperatorNode implements OperatorNode {
         return location;
     }
 
-    public String getOperator() {
-        return operator;
+    public String getExpression() {
+        return expression;
     }
 
     @Override
@@ -71,11 +71,11 @@ public class CommaOperatorNode implements OperatorNode {
         StringBuilder buf = new StringBuilder();
         for (ExpressionNode node : expressionNodes) {
             buf.append(node.toString());
-            buf.append(operator);
+            buf.append(expression);
             buf.append(" ");
         }
         if (buf.length() > 2) {
-            buf.setLength(buf.length() - (operator.length() + 1));
+            buf.setLength(buf.length() - (expression.length() + 1));
         }
         return buf.toString();
     }

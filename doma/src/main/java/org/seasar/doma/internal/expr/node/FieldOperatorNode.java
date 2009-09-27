@@ -27,9 +27,9 @@ public class FieldOperatorNode implements OperatorNode {
 
     protected final ExpressionLocation location;
 
-    protected final String operator;
+    protected final String expression;
 
-    protected final String name;
+    protected final String fieldName;
 
     protected ExpressionNode targetObjectNode;
 
@@ -38,16 +38,16 @@ public class FieldOperatorNode implements OperatorNode {
         return PRIORITY;
     }
 
-    public FieldOperatorNode(ExpressionLocation location, String operator,
-            String name) {
-        assertNotNull(location, name);
+    public FieldOperatorNode(ExpressionLocation location, String expression,
+            String fieldName) {
+        assertNotNull(location, fieldName);
         this.location = location;
-        this.operator = operator;
-        this.name = name;
+        this.expression = expression;
+        this.fieldName = fieldName;
     }
 
-    public String getName() {
-        return name;
+    public String getFieldName() {
+        return fieldName;
     }
 
     public ExpressionNode getTargetObjectNode() {
@@ -67,13 +67,13 @@ public class FieldOperatorNode implements OperatorNode {
         return location;
     }
 
-    public String getOperator() {
-        return operator;
+    public String getExpression() {
+        return expression;
     }
 
     @Override
     public String toString() {
-        return targetObjectNode + operator;
+        return targetObjectNode + expression;
     }
 
 }

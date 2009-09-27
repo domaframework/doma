@@ -23,15 +23,15 @@ public class VariableNode implements ExpressionNode {
 
     protected final ExpressionLocation location;
 
-    protected final String name;
+    protected final String expression;
 
-    public VariableNode(ExpressionLocation location, String name) {
+    public VariableNode(ExpressionLocation location, String expression) {
         this.location = location;
-        this.name = name;
+        this.expression = expression;
     }
 
-    public String getName() {
-        return name;
+    public String getExpression() {
+        return expression;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class VariableNode implements ExpressionNode {
 
     @Override
     public String toString() {
-        return name;
+        return expression;
     }
 
 }

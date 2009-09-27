@@ -27,14 +27,14 @@ public class NotOperatorNode implements LogicalOperatorNode {
 
     protected final ExpressionLocation location;
 
-    protected final String operator;
+    protected final String expression;
 
     protected ExpressionNode node;
 
-    public NotOperatorNode(ExpressionLocation location, String operator) {
-        assertNotNull(location, operator);
+    public NotOperatorNode(ExpressionLocation location, String expression) {
+        assertNotNull(location, expression);
         this.location = location;
-        this.operator = operator;
+        this.expression = expression;
     }
 
     public ExpressionNode getNode() {
@@ -59,12 +59,12 @@ public class NotOperatorNode implements LogicalOperatorNode {
         return location;
     }
 
-    public String getOperator() {
-        return operator;
+    public String getExpression() {
+        return expression;
     }
 
     @Override
     public String toString() {
-        return operator + node;
+        return expression + node;
     }
 }

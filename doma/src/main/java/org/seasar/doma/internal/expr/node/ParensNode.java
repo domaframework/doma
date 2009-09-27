@@ -47,6 +47,11 @@ public class ParensNode implements ExpressionNode {
     }
 
     @Override
+    public String getExpression() {
+        return "(";
+    }
+
+    @Override
     public String toString() {
         return "(" + node + ")";
     }

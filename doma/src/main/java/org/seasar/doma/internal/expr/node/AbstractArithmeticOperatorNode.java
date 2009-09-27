@@ -26,7 +26,7 @@ public abstract class AbstractArithmeticOperatorNode implements
 
     protected final ExpressionLocation location;
 
-    protected final String operator;
+    protected final String expression;
 
     protected final int priority;
 
@@ -35,10 +35,10 @@ public abstract class AbstractArithmeticOperatorNode implements
     protected ExpressionNode rightNode;
 
     public AbstractArithmeticOperatorNode(ExpressionLocation location,
-            String operator, int priority) {
-        assertNotNull(location, operator);
+            String expreexpression, int priority) {
+        assertNotNull(location, expreexpression);
         this.location = location;
-        this.operator = operator;
+        this.expression = expreexpression;
         this.priority = priority;
     }
 
@@ -64,8 +64,8 @@ public abstract class AbstractArithmeticOperatorNode implements
     }
 
     @Override
-    public String getOperator() {
-        return operator;
+    public String getExpression() {
+        return expression;
     }
 
     @Override
@@ -75,7 +75,7 @@ public abstract class AbstractArithmeticOperatorNode implements
 
     @Override
     public String toString() {
-        return leftNode + " " + operator + " " + rightNode;
+        return leftNode + " " + expression + " " + rightNode;
     }
 
 }

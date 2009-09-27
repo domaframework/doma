@@ -25,17 +25,17 @@ public class LiteralNode implements ExpressionNode {
 
     protected final ExpressionLocation location;
 
-    protected final String text;
+    protected final String expression;
 
     protected final Object value;
 
     protected final Class<?> valueClass;
 
-    public <T> LiteralNode(ExpressionLocation location, String text, T value,
+    public <T> LiteralNode(ExpressionLocation location, String expression, T value,
             Class<T> valueClass) {
-        assertNotNull(location, text, valueClass);
+        assertNotNull(location, expression, valueClass);
         this.location = location;
-        this.text = text;
+        this.expression = expression;
         this.value = value;
         this.valueClass = valueClass;
     }
@@ -58,7 +58,12 @@ public class LiteralNode implements ExpressionNode {
     }
 
     @Override
+    public String getExpression() {
+        return expression;
+    }
+
+    @Override
     public String toString() {
-        return text;
+        return expression;
     }
 }

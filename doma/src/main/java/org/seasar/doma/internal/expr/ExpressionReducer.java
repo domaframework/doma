@@ -215,7 +215,7 @@ public class ExpressionReducer implements
             ExpressionLocation location = node.getLocation();
             throw new ExpressionException(DomaMessageCode.DOMA3010, location
                     .getExpression(), location.getPosition(), node
-                    .getOperator());
+                    .getExpression());
         }
         return p.pop();
     }
