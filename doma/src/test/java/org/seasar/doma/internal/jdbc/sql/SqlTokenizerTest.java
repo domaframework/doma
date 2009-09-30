@@ -19,6 +19,7 @@ import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.*;
 import junit.framework.TestCase;
 
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -367,5 +368,18 @@ public class SqlTokenizerTest extends TestCase {
         assertEquals(0, tokenizer.getPosition());
         assertEquals(EOF, tokenizer.next());
         assertNull(tokenizer.getToken());
+    }
+
+    public void testIllegalDirective() throws Exception {
+        SqlTokenizer tokenizer = new SqlTokenizer("where /*%*/bbb");
+        assertEquals(WHERE_WORD, tokenizer.next());
+        assertEquals("where", tokenizer.getToken());
+        try {
+            tokenizer.next();
+            fail();
+        } catch (JdbcException expected) {
+            System.out.println(expected);
+            assertEquals(DomaMessageCode.DOMA2119, expected.getMessageCode());
+        }
     }
 }

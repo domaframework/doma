@@ -329,7 +329,9 @@ public class SqlTokenizer {
                         }
                     }
                     if (type != IF_BLOCK_COMMENT && type != END_BLOCK_COMMENT) {
-                        throw new RuntimeException("illegal directive");
+                        int pos = buf.position() - lineStartPosition;
+                        throw new JdbcException(DomaMessageCode.DOMA2119, sql,
+                                lineNumber, pos);
                     }
                 }
                 buf.position(buf.position() - 1);
