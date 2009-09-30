@@ -142,4 +142,19 @@ public final class StringUtil {
     public static boolean isNullOrEmpty(String text) {
         return text == null || text.isEmpty();
     }
+
+    public static String trimWhitespace(String text) {
+        char[] chars = text.toCharArray();
+        int start = 0;
+        int end = chars.length;
+
+        while ((start < end) && (Character.isWhitespace(chars[start]))) {
+            start++;
+        }
+        while ((start < end) && (Character.isWhitespace(chars[end - 1]))) {
+            end--;
+        }
+        return ((start > 0) || (end < chars.length)) ? new String(chars, start,
+                end - 1) : text;
+    }
 }

@@ -16,11 +16,9 @@
 package org.seasar.doma.internal.jdbc.sql;
 
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.*;
-
-import org.seasar.doma.internal.jdbc.sql.SqlTokenizer;
-import org.seasar.doma.jdbc.JdbcException;
-
 import junit.framework.TestCase;
+
+import org.seasar.doma.jdbc.JdbcException;
 
 /**
  * @author taedium
@@ -231,6 +229,20 @@ public class SqlTokenizerTest extends TestCase {
         assertEquals(" ", tokenizer.getToken());
         assertEquals(BIND_VARIABLE_BLOCK_COMMENT, tokenizer.next());
         assertEquals("/*aaa*/", tokenizer.getToken());
+        assertEquals(WORD, tokenizer.next());
+        assertEquals("bbb", tokenizer.getToken());
+        assertEquals(EOF, tokenizer.next());
+        assertNull(tokenizer.getToken());
+    }
+
+    public void testBindBlockComment_spaceIncluded() throws Exception {
+        SqlTokenizer tokenizer = new SqlTokenizer("where /* aaa */bbb");
+        assertEquals(WHERE_WORD, tokenizer.next());
+        assertEquals("where", tokenizer.getToken());
+        assertEquals(OTHER, tokenizer.next());
+        assertEquals(" ", tokenizer.getToken());
+        assertEquals(BIND_VARIABLE_BLOCK_COMMENT, tokenizer.next());
+        assertEquals("/* aaa */", tokenizer.getToken());
         assertEquals(WORD, tokenizer.next());
         assertEquals("bbb", tokenizer.getToken());
         assertEquals(EOF, tokenizer.next());

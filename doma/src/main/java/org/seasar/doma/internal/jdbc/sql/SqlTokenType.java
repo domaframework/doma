@@ -17,6 +17,8 @@ package org.seasar.doma.internal.jdbc.sql;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import org.seasar.doma.internal.util.StringUtil;
+
 /**
  * @author taedium
  * 
@@ -52,7 +54,8 @@ public enum SqlTokenType {
         public String extractExpression(String token) {
             assertNotNull(token);
             assertTrue(token.length() >= 5);
-            return token.substring(2, token.length() - 2);
+            String s = token.substring(2, token.length() - 2);
+            return StringUtil.trimWhitespace(s);
         }
     },
 

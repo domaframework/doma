@@ -298,37 +298,41 @@ public class SqlTokenizer {
             type = BLOCK_COMMENT;
             if (buf.hasRemaining()) {
                 char c3 = buf.get();
-                if (Character.isJavaIdentifierStart(c3)) {
+                if (Character.isJavaIdentifierStart(c3)
+                        || Character.isWhitespace(c3)) {
                     type = BIND_VARIABLE_BLOCK_COMMENT;
                 } else if (c3 == '#') {
                     type = EMBEDDED_VARIABLE_BLOCK_COMMENT;
-                } else if (buf.hasRemaining()) {
-                    char c4 = buf.get();
+                } else if (c3 == '%') {
                     if (buf.hasRemaining()) {
-                        char c5 = buf.get();
-                        if (c3 == '%' && c4 == 'i' && c5 == 'f') {
-                            if (isBlockCommentDirectiveTerminated()) {
-                                type = IF_BLOCK_COMMENT;
-                            }
-                        } else if (buf.hasRemaining()) {
-                            char c6 = buf.get();
-                            if (c3 == '%' && c4 == 'e' && c5 == 'n'
-                                    && c6 == 'd') {
+                        char c4 = buf.get();
+                        if (buf.hasRemaining()) {
+                            char c5 = buf.get();
+                            if (c4 == 'i' && c5 == 'f') {
                                 if (isBlockCommentDirectiveTerminated()) {
-                                    type = END_BLOCK_COMMENT;
+                                    type = IF_BLOCK_COMMENT;
+                                }
+                            } else if (buf.hasRemaining()) {
+                                char c6 = buf.get();
+                                if (c4 == 'e' && c5 == 'n' && c6 == 'd') {
+                                    if (isBlockCommentDirectiveTerminated()) {
+                                        type = END_BLOCK_COMMENT;
+                                    }
+                                } else {
+                                    buf.position(buf.position() - 3);
                                 }
                             } else {
-                                buf.position(buf.position() - 4);
+                                buf.position(buf.position() - 2);
                             }
                         } else {
-                            buf.position(buf.position() - 3);
+                            buf.position(buf.position() - 1);
                         }
-                    } else {
-                        buf.position(buf.position() - 2);
                     }
-                } else {
-                    buf.position(buf.position() - 1);
+                    if (type != IF_BLOCK_COMMENT && type != END_BLOCK_COMMENT) {
+                        throw new RuntimeException("illegal directive");
+                    }
                 }
+                buf.position(buf.position() - 1);
             }
             while (buf.hasRemaining()) {
                 char c3 = buf.get();

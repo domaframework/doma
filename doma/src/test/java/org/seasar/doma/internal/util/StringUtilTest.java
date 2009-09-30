@@ -49,4 +49,10 @@ public class StringUtilTest extends TestCase {
         assertTrue(StringUtil.isWhitespace("  "));
         assertTrue(StringUtil.isWhitespace(" \t"));
     }
+
+    public void testTrimWhitespace() throws Exception {
+        assertEquals("aaa", StringUtil.trimWhitespace(" aaa "));
+        assertEquals("aaa", StringUtil.trimWhitespace("\raaa\n\t"));
+        assertEquals("aaa", StringUtil.trimWhitespace("aaa"));
+    }
 }

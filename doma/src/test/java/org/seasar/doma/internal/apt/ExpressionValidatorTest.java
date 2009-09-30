@@ -29,6 +29,7 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 
 import org.seasar.doma.internal.apt.dao.ExpressionValidationDao;
+import org.seasar.doma.internal.apt.declaration.TypeDeclaration;
 import org.seasar.doma.internal.apt.entity.Emp;
 import org.seasar.doma.internal.expr.ExpressionParser;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
@@ -109,93 +110,88 @@ public class ExpressionValidatorTest extends AptTestCase {
         }
     }
 
-    // public void testFieldAccess() throws Exception {
-    // Class<?> target = ExpressionValidationDao.class;
-    // addCompilationUnit(target);
-    // compile();
-    //
-    // ExecutableElement methodElement = createMethodElement(target,
-    // "testEmp", Emp.class);
-    // Map<String, TypeMirror> parameterTypeMap =
-    // createParameterTypeMap(methodElement);
-    // ExpressionValidator validator = new ExpressionValidator(
-    // getProcessingEnvironment(), methodElement, parameterTypeMap);
-    //
-    // ExpressionNode node = new ExpressionParser("emp.id").parse();
-    // TypeDeclaration result = validator.validate(node);
-    // assertFalse(result.isUnknownType());
-    // }
-    //
-    // public void testMethodAccess() throws Exception {
-    // Class<?> target = ExpressionValidationDao.class;
-    // addCompilationUnit(target);
-    // compile();
-    //
-    // ExecutableElement methodElement = createMethodElement(target,
-    // "testEmp", Emp.class);
-    // Map<String, TypeMirror> parameterTypeMap =
-    // createParameterTypeMap(methodElement);
-    // ExpressionValidator validator = new ExpressionValidator(
-    // getProcessingEnvironment(), methodElement, parameterTypeMap);
-    //
-    // ExpressionNode node = new ExpressionParser("emp.getId()").parse();
-    // TypeDeclaration result = validator.validate(node);
-    // assertFalse(result.isUnknownType());
-    // }
-    //
-    // public void testConstructorAccess() throws Exception {
-    // Class<?> target = ExpressionValidationDao.class;
-    // addCompilationUnit(target);
-    // compile();
-    //
-    // ExecutableElement methodElement = createMethodElement(target,
-    // "testEmp", Emp.class);
-    // Map<String, TypeMirror> parameterTypeMap =
-    // createParameterTypeMap(methodElement);
-    // ExpressionValidator validator = new ExpressionValidator(
-    // getProcessingEnvironment(), methodElement, parameterTypeMap);
-    //
-    // ExpressionNode node = new ExpressionParser("new java.lang.Integer(1)")
-    // .parse();
-    // TypeDeclaration result = validator.validate(node);
-    // assertFalse(result.isUnknownType());
-    // }
-    //
-    // public void testMethodAccess_withArguments() throws Exception {
-    // Class<?> target = ExpressionValidationDao.class;
-    // addCompilationUnit(target);
-    // compile();
-    //
-    // ExecutableElement methodElement = createMethodElement(target,
-    // "testEmp", Emp.class);
-    // Map<String, TypeMirror> parameterTypeMap =
-    // createParameterTypeMap(methodElement);
-    // ExpressionValidator validator = new ExpressionValidator(
-    // getProcessingEnvironment(), methodElement, parameterTypeMap);
-    //
-    // ExpressionNode node = new ExpressionParser("emp.add(2, 3)").parse();
-    // TypeDeclaration result = validator.validate(node);
-    // assertFalse(result.isUnknownType());
-    // }
-    //
-    // public void testEqOperator() throws Exception {
-    // Class<?> target = ExpressionValidationDao.class;
-    // addCompilationUnit(target);
-    // compile();
-    //
-    // ExecutableElement methodElement = createMethodElement(target,
-    // "testEmp", Emp.class);
-    // Map<String, TypeMirror> parameterTypeMap =
-    // createParameterTypeMap(methodElement);
-    // ExpressionValidator validator = new ExpressionValidator(
-    // getProcessingEnvironment(), methodElement, parameterTypeMap);
-    //
-    // ExpressionNode node = new ExpressionParser("emp.add(2, 3) == 5")
-    // .parse();
-    // TypeDeclaration result = validator.validate(node);
-    // assertFalse(result.isUnknownType());
-    // }
-    //
+    public void testFieldAccess() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testEmp", Emp.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap);
+
+        ExpressionNode node = new ExpressionParser("emp.id").parse();
+        TypeDeclaration result = validator.validate(node);
+        assertFalse(result.isUnknownType());
+    }
+
+    public void testMethodAccess() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testEmp", Emp.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap);
+
+        ExpressionNode node = new ExpressionParser("emp.getId()").parse();
+        TypeDeclaration result = validator.validate(node);
+        assertFalse(result.isUnknownType());
+    }
+
+    public void testConstructorAccess() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testEmp", Emp.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap);
+
+        ExpressionNode node = new ExpressionParser("new java.lang.Integer(1)")
+                .parse();
+        TypeDeclaration result = validator.validate(node);
+        assertFalse(result.isUnknownType());
+    }
+
+    public void testMethodAccess_withArguments() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testEmp", Emp.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap);
+
+        ExpressionNode node = new ExpressionParser("emp.add(2, 3)").parse();
+        TypeDeclaration result = validator.validate(node);
+        assertFalse(result.isUnknownType());
+    }
+
+    public void testEqOperator() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testEmp", Emp.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap);
+
+        ExpressionNode node = new ExpressionParser("emp.add(2, 3) == 5")
+                .parse();
+        TypeDeclaration result = validator.validate(node);
+        assertFalse(result.isUnknownType());
+    }
+
     protected ExecutableElement createMethodElement(Class<?> clazz,
             String methodName, Class<?>... parameterClasses) {
         ProcessingEnvironment env = getProcessingEnvironment();
