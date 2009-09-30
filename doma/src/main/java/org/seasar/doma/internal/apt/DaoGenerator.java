@@ -56,10 +56,10 @@ import org.seasar.doma.internal.apt.meta.ValueListParameterMeta;
 import org.seasar.doma.internal.apt.meta.ValueListResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.ValueOutParameterMeta;
 import org.seasar.doma.internal.apt.meta.ValueResultParameterMeta;
-import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.IterationCallbackType;
+import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.ValueType;
 import org.seasar.doma.internal.jdbc.command.DomainIterationHandler;
 import org.seasar.doma.internal.jdbc.command.DomainResultListHandler;
@@ -237,9 +237,11 @@ public class DaoGenerator extends AbstractGenerator {
             for (Iterator<QueryParameterMeta> it = m.getParameterMetas()
                     .iterator(); it.hasNext();) {
                 QueryParameterMeta parameterMeta = it.next();
-                iprint("query.addParameter(\"%1$s\", %2$s.class, %1$s);%n",
-                        parameterMeta.getName(), parameterMeta
-                                .getQualifiedName());
+                if (parameterMeta.isBindable()) {
+                    iprint("query.addParameter(\"%1$s\", %2$s.class, %1$s);%n",
+                            parameterMeta.getName(), parameterMeta
+                                    .getQualifiedName());
+                }
             }
             iprint("query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("query.setCallerMethodName(\"%1$s\");%n", m.getName());
@@ -298,8 +300,7 @@ public class DaoGenerator extends AbstractGenerator {
                 }
             } else {
                 if (m.getReturnMeta().getCollectionType() != null) {
-                    ListType listType = m.getReturnMeta()
-                            .getCollectionType();
+                    ListType listType = m.getReturnMeta().getCollectionType();
                     if (listType.getEntityType() != null) {
                         EntityType entityType = listType.getEntityType();
                         iprint(
@@ -428,9 +429,11 @@ public class DaoGenerator extends AbstractGenerator {
             for (Iterator<QueryParameterMeta> it = m.getParameterMetas()
                     .iterator(); it.hasNext();) {
                 QueryParameterMeta parameterMeta = it.next();
-                iprint("query.addParameter(\"%1$s\", %2$s.class, %1$s);%n",
-                        parameterMeta.getName(), parameterMeta
-                                .getQualifiedName());
+                if (parameterMeta.isBindable()) {
+                    iprint("query.addParameter(\"%1$s\", %2$s.class, %1$s);%n",
+                            parameterMeta.getName(), parameterMeta
+                                    .getQualifiedName());
+                }
             }
             iprint("query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("query.setCallerMethodName(\"%1$s\");%n", m.getName());

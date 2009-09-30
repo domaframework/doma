@@ -26,7 +26,6 @@ public class SqlFileSelectEntityDaoImpl extends org.seasar.doma.jdbc.DomaAbstrac
         query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFileUtil.buildPath("org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao", "selectById"));
         query.setOptions(options);
         query.addParameter("id", java.lang.Integer.class, id);
-        query.addParameter("options", org.seasar.doma.jdbc.SelectOptions.class, options);
         query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDaoImpl");
         query.setCallerMethodName("selectById");
         query.setQueryTimeout(-1);
@@ -51,7 +50,6 @@ public class SqlFileSelectEntityDaoImpl extends org.seasar.doma.jdbc.DomaAbstrac
         query.setOptions(options);
         query.addParameter("name", java.lang.String.class, name);
         query.addParameter("salary", java.math.BigDecimal.class, salary);
-        query.addParameter("options", org.seasar.doma.jdbc.SelectOptions.class, options);
         query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDaoImpl");
         query.setCallerMethodName("selectByNameAndSalary");
         query.setQueryTimeout(-1);

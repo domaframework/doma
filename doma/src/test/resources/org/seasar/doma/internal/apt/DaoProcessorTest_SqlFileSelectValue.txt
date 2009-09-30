@@ -46,7 +46,6 @@ public class SqlFileSelectValueDaoImpl extends org.seasar.doma.jdbc.DomaAbstract
         query.setOptions(options);
         query.addParameter("name", java.lang.String.class, name);
         query.addParameter("salary", java.math.BigDecimal.class, salary);
-        query.addParameter("options", org.seasar.doma.jdbc.SelectOptions.class, options);
         query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileSelectValueDaoImpl");
         query.setCallerMethodName("selectByNameAndSalary");
         query.setQueryTimeout(-1);

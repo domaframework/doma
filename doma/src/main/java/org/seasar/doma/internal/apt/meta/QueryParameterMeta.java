@@ -169,6 +169,11 @@ public class QueryParameterMeta {
         return domainType != null || valueType != null;
     }
 
+    public boolean isBindable() {
+        return listType != null || entityType != null || domainType != null
+                || valueType != null || referenceType != null;
+    }
+
     public boolean isAnnotated(Class<? extends Annotation> annotationType) {
         return element.getAnnotation(annotationType) != null;
     }

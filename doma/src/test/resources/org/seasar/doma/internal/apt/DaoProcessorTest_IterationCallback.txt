@@ -26,7 +26,6 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.jdbc.DomaAbstractD
         query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFileUtil.buildPath("org.seasar.doma.internal.apt.dao.IterationCallbackDao", "iterate"));
         query.addParameter("id", java.lang.Integer.class, id);
         query.addParameter("name", java.lang.String.class, name);
-        query.addParameter("callback", org.seasar.doma.jdbc.IterationCallback.class, callback);
         query.setCallerClassName("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl");
         query.setCallerMethodName("iterate");
         query.setQueryTimeout(-1);
@@ -49,7 +48,6 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.jdbc.DomaAbstractD
         query.setConfig(config);
         query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFileUtil.buildPath("org.seasar.doma.internal.apt.dao.IterationCallbackDao", "iterate"));
         query.addParameter("id", java.lang.Integer.class, id);
-        query.addParameter("callback", org.seasar.doma.jdbc.IterationCallback.class, callback);
         query.setCallerClassName("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl");
         query.setCallerMethodName("iterate");
         query.setQueryTimeout(-1);
@@ -71,7 +69,6 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.jdbc.DomaAbstractD
         org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
         query.setConfig(config);
         query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFileUtil.buildPath("org.seasar.doma.internal.apt.dao.IterationCallbackDao", "iterate"));
-        query.addParameter("callback", org.seasar.doma.jdbc.IterationCallback.class, callback);
         query.setCallerClassName("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl");
         query.setCallerMethodName("iterate");
         query.setQueryTimeout(-1);
@@ -93,7 +90,6 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.jdbc.DomaAbstractD
         org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
         query.setConfig(config);
         query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFileUtil.buildPath("org.seasar.doma.internal.apt.dao.IterationCallbackDao", "iterate"));
-        query.addParameter("callback", org.seasar.doma.internal.apt.dao.HogeIterationCallback.class, callback);
         query.setCallerClassName("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl");
         query.setCallerMethodName("iterate");
         query.setQueryTimeout(-1);
