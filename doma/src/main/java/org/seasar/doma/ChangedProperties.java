@@ -4,7 +4,45 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.Set;
 
+/**
+ * 変更されたプロパティの名前を管理するフィールドを示します。
+ * <p>
+ * UPDATE文のSET句に変更があったプロパティだけを含めたい場合に使用します。
+ * <p>
+ * このアノテーションが注釈されるフィールドは、 {@link Entity} が注釈されたクラスのメンバでなければいけません。 フィールドの型は
+ * {@link String} を要素とする {@link Set} のサブタイプでなければいけません。
+ * <p>
+ * プロパティの名前は、各プロパティのセッターメソッドで設定します。
+ * 
+ * <h5>例:</h5>
+ * 
+ * <pre>
+ * &#064;Entity
+ * public class Employee {
+ * 
+ *     String name;
+ * 
+ *     &#064;ChangedProperties
+ *     Set&lt;String&gt; changedProperties;
+ *     
+ *     public String getName() {
+ *         return name;
+ *     }
+ *     
+ *     public void setName(String name) {
+ *         changedProperties.add(&quot;name&quot;);
+ *         this.name = name;
+ *     }
+ *     
+ *     ...
+ * }
+ * </pre>
+ * 
+ * @author taedium
+ * 
+ */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @EntityField

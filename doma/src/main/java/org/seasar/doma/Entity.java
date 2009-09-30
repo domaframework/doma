@@ -22,54 +22,52 @@ import java.lang.annotation.Target;
 
 import org.seasar.doma.jdbc.entity.BuiltinEntityListener;
 import org.seasar.doma.jdbc.entity.EntityListener;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * テーブルもしくは結果セットを示します。
  * <p>
- * このアノテーションは、トップレベルのインタフェースに指定できます。 注釈されたインタフェースは {@link MappedSuperclass} および
- * {@link Entity} が注釈されたインタフェースのみを拡張できます。
- * <p>
- * インタフェースのメンバメソッドは、 {@link Delegate} で注釈されていない限り、次の制約を満たす必要があります。
+ * 注釈されたクラスは、 次の制約を満たす必要があります。
  * <ul>
- * <li>パラメータは受け取らない。
- * <li>戻り値の型は {@link Wrapper} の実装クラスである。
+ * <li>トップレベルのクラスである。
+ * <li>非privateの可視性を持つ。
+ * <li>引数なしの非privateなコンストラクタを持つ。
+ * </ul>
+ * <p>
+ * 注釈されたクラスのメンバフィールドは、 次の制約を満たす必要があります。
+ * <ul>
+ * <li>非privateの可視性を持つ。
  * </ul>
  * 
  * <h5>例:</h5>
  * 
  * <pre>
  * &#064;Entity
- * public interface Employee {
+ * public class Employee {
  * 
  *     &#064;Id
  *     &#064;Column(name = &quot;ID&quot;)
- *     IntegerDomain id();
+ *     Integer id;
  * 
  *     &#064;Column(name = &quot;EMPLOYEE_NAME&quot;)
- *     StringDomain employeeName();
+ *     String employeeName;
  * 
  *     &#064;Version
  *     &#064;Column(name = &quot;VERSION&quot;)
- *     IntegerDomain version();
+ *     int version;
  * }
  * </pre>
  * 
- * <p>
- * {@link Delegate} が注釈されていないメソッドの 戻り値の型がすべて {@link SerializableWrapper}
- * のサブタイプであれば、注釈されたインタフェースの実装は直列化可能です。
  * <p>
  * 注釈されたインタフェースの実装はスレッドセーフであることを要求されません。
  * <p>
  * 
  * @author taedium
- * @see MappedSuperclass
  * @see Table
  * @see Column
- * @see Delegate
  * @see Id
  * @see Transient
  * @see Version
+ * @see ChangedProperties
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

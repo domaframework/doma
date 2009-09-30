@@ -20,15 +20,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.seasar.doma.wrapper.NumberWrapper;
-
 /**
  * バージョンを示します。
  * <p>
- * このアノテーションが注釈されるメソッドは、{@link Entity} もしくは {@link MappedSuperclass}
- * が注釈されたインタフェースのメンバでなければいけません。
+ * このアノテーションが注釈されるフィールドは、{@link Entity} が注釈されたインタフェースのメンバでなければいけません。
  * <p>
- * 注釈されるメソッドの戻り値の型は、{@link NumberWrapper} のサブタイプでなければいけません。
+ * フィールドの型は、数値のプリミティブ型もしくは {@link Number} のサブタイプでなければいけません。
  * 
  * <h5>例:</h5>
  * 

@@ -28,59 +28,72 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SqlFileNotFoundException;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * 検索処理を示します。
  * <p>
  * このアノテーションが注釈されるメソッドは、{@link Dao} が注釈されたインタフェースのメンバでなければいけません。
  * <p>
+ * {@code iterate} 要素に {@code false} を指定することで、エンティティを1件ずつ処理することができます。
+ * <p>
  * 注釈されるメソッドは、次の制約を満たす必要があります。
  * <ul>
  * <li>{@code iterate} 要素が {@code false} の場合
  * <ul>
  * <li>パラメータは0個以上である。
- * <li>パラメータは {@link Wrapper}の実装クラス、 {@link Entity}が注釈されたインタフェース、もしくは
- * {@link SelectOptions}である。ただし、 {@code SelectOptions}は最大でも1つしか渡せない。
+ * <li>パラメータは基本型、 {@link Domain} が注釈されたクラス、{@link Entity} が注釈されたクラス、もしくは
+ * {@link SelectOptions}である。ただし、 {@code SelectOptions} は最大でも1つしか使用できない。
  * <li>戻り値の型は次のいずれかである。なお、 型が {@link List}でなくデータが存在しない場合、値は{@code null}となる。
  * <table border=1>
  * <tr>
  * <th>戻り値の型</th>
  * <th>データが存在しない場合の値</th>
  * <tr>
- * <td>{@code Domain}の実装クラス</td>
+ * <td>基本型の実装クラス</td>
  * <td>null</td>
  * </tr>
  * <tr>
- * <td>{@code Domain}の実装クラスを要素とする {@code List}</td>
+ * <td>基本型を要素とする {@code List}</td>
  * <td>空の {@code List}</td>
  * </tr>
  * <tr>
- * <td>{@code Entity}が注釈されたインタフェース</td>
+ * <td>{@code Domain} が注釈されたクラス</td>
  * <td>null</td>
  * </tr>
  * <tr>
- * <td>{@code Entity}が注釈されたインタフェースを要素とする {@code List}</td>
+ * <td>{@code Domain} が注釈されたクラスを要素とする {@code List}</td>
+ * <td>空の {@code List}</td>
+ * </tr>
+ * <tr>
+ * <td>{@code Entity} が注釈されたクラス</td>
+ * <td>null</td>
+ * </tr>
+ * <tr>
+ * <td>{@code Entity} が注釈されたクラスを要素とする {@code List}</td>
  * <td>空の {@code List}</td>
  * </tr>
  * </table>
  * </ul>
  * <li>{@code iterate} 要素が {@code true} の場合
  * <ul>
- * <li>パラメータは {@link IterationCallback} 型のものが必須である。そのほか、{@code Domain} の実装クラス、
- * {@code Entity} が注釈されたインタフェース、もしくは {@code SelectOptions}を渡せる。ただし、 {@code
- * SelectOptions}は最大でも1つしか渡せない。
- * <li>戻り値の型は パラメータで利用する {@link IterationCallback} の型パラメータと同じ型になる。
+ * <li>パラメータは {@link IterationCallback} 型のものが必須である。そのほか、基本型、{@code Domain}
+ * が注釈されたクラス、 {@code Entity} が注釈されたクラス、もしくは {@code SelectOptions} を指定できる。ただし、
+ * {@code SelectOptions} は最大でも1つしか指定できない。
+ * <li>戻り値の型は パラメータで利用する {@link IterationCallback} の型パラメータと同じ型でなければいけない。
  * </ul>
  * </ul>
  * <p>
  * 
- * 注釈されるメソッドのパラメータの役割は次のとおりです。
+ * パラメータの役割は次のとおりです。
  * <ul>
  * <table border=1>
  * <tr>
  * <th>パラメータの型</th>
  * <th>役割</th>
+ * <tr>
+ * <td>基本型</td>
+ * <td>SQLにバインドする単一の値です。</td>
+ * </tr>
  * <tr>
  * <td>{@code Domain}の実装クラス</td>
  * <td>SQLにバインドする単一の値です。</td>
@@ -112,19 +125,19 @@ import org.seasar.doma.wrapper.Wrapper;
  * public interface EmployeeDao {
  * 
  *     &#064;Select
- *     BuiltinStringDomain selectNameById(BuiltinIntegerDomain id);
+ *     String selectNameById(Integer id);
  *     
  *     &#064;Select
- *     List&lt;BuiltinStringDomain&gt; selectNamesByAgeAndSalary(BuiltinIntegerDomain age, BuiltinBigDecimalDomain salary);
+ *     List&lt;String&gt; selectNamesByAgeAndSalary(Integer age, BigDecimal salary);
  * 
  *     &#064;Select
- *     Employee selectById(BuiltinIntegerDomain id);
+ *     Employee selectById(Integer id);
  *     
  *     &#064;Select
  *     List&lt;Employee&gt; selectByExample(Employee example);
  *     
  *     &#064;Select(iterate = true)
- *     &lt;R&gt; R selectSalary(BuiltinIntegerDomain departmentId, IterationCallback&lt;R, BuiltinSalaryDomain&gt; callback);
+ *     &lt;R&gt; R selectSalary(Integer departmentId, IterationCallback&lt;R, BigDecimal&gt; callback);
  * }
  * </pre>
  * 

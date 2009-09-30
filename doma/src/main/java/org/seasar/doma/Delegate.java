@@ -25,13 +25,11 @@ import org.seasar.doma.jdbc.Config;
 /**
  * 委譲を示します。
  * <p>
- * このアノテーションが注釈されるメソッドは、 {@link Dao} 、 {@link Entity} もしくは
- * {@link MappedSuperclass} が注釈されたインタフェースのメンバでなければいけません。
+ * このアノテーションが注釈されるメソッドは、 {@link Dao} が注釈されたインタフェースのメンバでなければいけません。
  * <p>
  * {@code to} 要素に指定されたクラスのインスタンスは、注釈されたメソッドが実行されるたびにインスタンス化されます。
  * インスタンス化後、注釈されたメソッドと同じシグニチャのメソッドが実行されます。
  * 
- * <h4>インタフェースに {@code Dao} が注釈されている場合</h4>
  * <p>
  * {@code to} 要素に指定されるクラスは次の制約を満たさなければいけません。
  * <ul>
@@ -59,38 +57,6 @@ import org.seasar.doma.jdbc.Config;
  *     }
  *     
  *     public int execute(Employee employee) {
- *         ...
- *     }
- * }
- * </pre>
- * 
- * <h4>インタフェースに{@code Entity}が注釈されている場合</h4>
- * <p>
- * {@code to}要素に指定されるクラスは次の制約を満たさなければいけません。
- * <ul>
- * <li> {@code Entity} が注釈されたインタフェース型のパラメータを受け取る {@code public} なコンストラクタをもつ。
- * <li>注釈されたメソッドと同じシグニチャのメソッドをもつ。
- * </ul>
- * 
- * <h5>例:</h5>
- * 
- * <pre>
- * &#064;Entity
- * public interface Employee {
- * 
- *     &#064;Delegate(to = EmployeeDelegate.class)
- *     BuiltinBigDecimalDomain calculate(BuiltinBigDecimalDomain salary);
- * }
- * 
- * public class EmployeeDelegate {
- * 
- *     private Employee employee;
- *     
- *     public EmployeeDelegate(Employee employee) {
- *         this.employee = employee;
- *     }
- *     
- *     public BuiltinBigDecimalDomain calculate(BuiltinBigDecimalDomain salary) {
  *         ...
  *     }
  * }

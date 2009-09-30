@@ -20,15 +20,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.seasar.doma.wrapper.NumberWrapper;
-
 /**
  * 識別子を自動生成する方法を示します。
  * <p>
- * このアノテーションが注釈されるメソッドは、{@link Entity} もしくは {@link MappedSuperclass}
- * が注釈されたインタフェースのメンバでなければいけません。 このアノテーションは{@link Id}と併わせて使用しなければいけません。
+ * このアノテーションが注釈されるフィールドは、{@link Entity} が注釈されたクラスのメンバでなければいけません。 このアノテーションは
+ * {@link Id}と併わせて使用しなければいけません。
  * <p>
- * 注釈されるメソッドの戻り値の型は、{@link NumberWrapper} のサブタイプでなければいけません。
+ * 注釈されるフィールドの型は、数値のプリミティブ型もしくは {@link Number} のサブタイプでなければいけません。
  * <p>
  * {@code strategy} 要素に指定する値によっては追加のアノテーションが必要です。
  * <ul>
@@ -41,12 +39,12 @@ import org.seasar.doma.wrapper.NumberWrapper;
  * 
  * <pre>
  * &#064;Entity
- * public interface Employee {
+ * public class Employee {
  * 
  *     &#064;Id
  *     &#064;GeneratedValue(strategy = GenerationType.SEQUENCE)
  *     &#064;SequenceGenerator(sequence = &quot;EMPLOYEE_SEQ&quot;)
- *     BuiltinIntegerDomain id();
+ *     Integer id;
  * }
  * </pre>
  * 

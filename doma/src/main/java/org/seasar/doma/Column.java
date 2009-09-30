@@ -25,21 +25,22 @@ import org.seasar.doma.jdbc.NamingConvention;
 /**
  * データベースのテーブルのカラムを示します。
  * <p>
- * このアノテーションが注釈されるメソッドは、 {@link Entity} もしくは {@link MappedSuperclass}
- * が注釈されたインタフェースのメンバでなければいけません。
+ * このアノテーションが注釈されるフィールドは、 {@link Entity} が注釈されたクラスのメンバでなければいけません。
  * <p>
  * 
  * <h5>例:</h5>
  * 
  * <pre>
  * &#064;Entity
- * public interface Employee {
+ * public class Employee {
  * 
  *     &#064;Column(name = &quot;EMPLOYEE_NAME&quot;)
- *     BuiltinStringDomain employeeName();
+ *     String employeeName;
  * 
  *     &#064;Column(name = &quot;SALARY&quot;)
- *     BuiltinBigDecimalDomain salary();
+ *     BigDecimal salary;
+ *     
+ *     ...
  * }
  * </pre>
  * 

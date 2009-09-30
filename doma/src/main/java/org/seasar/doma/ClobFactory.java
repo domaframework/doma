@@ -23,7 +23,6 @@ import java.sql.Clob;
 import java.sql.Connection;
 
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * {@link Clob} のインスタンスを生成することを示します。
@@ -33,7 +32,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * 注釈されるメソッドは、次の制約を満たす必要があります。
  * <ul>
  * <li>パラメータを受け取らない。
- * <li>戻り値の型は {@code Clob} を値とする {@link Wrapper} の実装クラスである。
+ * <li>戻り値の型は {@code Clob} である。
  * </ul>
  * 
  * <h5>例:</h5>
@@ -43,7 +42,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * public interface EmployeeDao {
  * 
  *     &#064;ClobFactory
- *     BuiltinClobDomain createClob();
+ *     Clob createClob();
  * }
  * </pre>
  * 

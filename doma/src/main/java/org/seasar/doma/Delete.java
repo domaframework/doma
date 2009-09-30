@@ -42,7 +42,7 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * 
  * <pre>
  * &#064;Entity
- * public interface Employee {
+ * public class Employee {
  *     ...
  * }
  * 

@@ -26,21 +26,22 @@ import org.seasar.doma.jdbc.id.SequenceIdGenerator;
 /**
  * シーケンスを利用する識別子ジェネレータを示します。
  * <p>
- * このアノテーションが注釈されるメソッドは、{@link Entity} もしくは {@link MappedSuperclass}
- * が注釈されたインタフェースのメンバでなければいけません。 このアノテーションは{@link Id} 、 {@link GeneratedValue}
- * と併わせて使用しなければいけません。
+ * このアノテーションが注釈されるフィールドは、{@link Entity} が注釈されたクラスのメンバでなければいけません。 このアノテーションは
+ * {@link Id} 、 {@link GeneratedValue} と併わせて使用しなければいけません。
  * <p>
  * 
  * <h5>例:</h5>
  * 
  * <pre>
  * &#064;Entity
- * public interface Employee {
+ * public class Employee {
  * 
  *     &#064;Id
  *     &#064;GeneratedValue(strategy = GenerationType.SEQUENCE)
  *     &#064;SequenceGenerator(sequence = &quot;EMPLOYEE_SEQ&quot;)
- *     BuiltinIntegerDomain id();
+ *     Integer id;
+ *     
+ *     ...
  * }
  * </pre>
  * 

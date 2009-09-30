@@ -23,7 +23,6 @@ import java.sql.Array;
 import java.sql.Connection;
 
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * {@link Array} のインスタンスを生成することを示します。
@@ -35,8 +34,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * <li>パラメータを1つだけ受け取る。
  * <li>パラメータの型は配列である。この配列は {@link Connection#createArrayOf(String, Object[])}
  * の2番目のパラメータに渡される。
- * <li>戻り値の型は {@code Array} を値とする {@link Wrapper} の実装クラスである。
- * <li>戻り値の型は、 配列の要素の型を型パラメータとして受け取る。
+ * <li>戻り値の型は {@code Array} である。
  * </ul>
  * 
  * <h5>例:</h5>
@@ -46,7 +44,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * public interface EmployeeDao {
  * 
  *     &#064;ArrayFactory(typeName = &quot;integer&quot;)
- *     ArrayDomain&lt;Integer&gt; createIntegerArray(Integer[] elements);
+ *     Array createIntegerArray(Integer[] elements);
  * }
  * </pre>
  * 

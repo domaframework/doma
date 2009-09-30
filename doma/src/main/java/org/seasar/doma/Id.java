@@ -23,18 +23,18 @@ import java.lang.annotation.Target;
 /**
  * 識別子を示します。
  * <p>
- * このアノテーションが注釈されるメソッドは、{@link Entity} もしくは {@link MappedSuperclass}
- * が注釈されたインタフェースのメンバでなければいけません。
+ * このアノテーションが注釈されるフィールドは、{@link Entity} が注釈されたクラスのメンバでなければいけません。
  * 
  * <h5>例:</h5>
  * 
  * <pre>
  * &#064;Entity
- * public interface Employee {
+ * public class Employee {
  * 
  *     &#064;Id
  *     &#064;Column(name = &quot;ID&quot;)
- *     BuiltinIntegerDomain id();
+ *     Integer id;
+ *     ...
  * }
  * </pre>
  * 

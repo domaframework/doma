@@ -22,8 +22,6 @@ import java.lang.annotation.Target;
 import java.sql.Statement;
 import java.util.List;
 
-import org.seasar.doma.wrapper.Wrapper;
-
 /**
  * ストアドファンクションやストアドプロシージャーから返される結果セットにマッピングされることを示します。
  * <p>
@@ -37,8 +35,8 @@ import org.seasar.doma.wrapper.Wrapper;
  * 
  * 注釈されるパラメータは、次の制約を満たす必要があります。
  * <ul>
- * <li>型は {@link Wrapper} の実装クラスを要素にもつ {@link List}、もしくは {@link Entity}
- * が注釈されたインタフェースを要素にもつ {@link List} である。
+ * <li>型は {@link List} である。 {@code List} の型パラメータは、基本型もしくは {@link Domain}
+ * が注釈されたクラス 、 {@link Entity} が注釈されたクラス のいずれかである。。
  * </ul>
  * 
  * <h5>例:</h5>

@@ -20,11 +20,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.sql.Statement;
-import java.util.List;
 
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.wrapper.Wrapper;
+import org.seasar.doma.jdbc.Reference;
 
 /**
  * ストアドファンクションの呼び出しを示します。
@@ -34,12 +33,27 @@ import org.seasar.doma.wrapper.Wrapper;
  * 注釈されるメソッドは、次の制約を満たす必要があります。
  * <ul>
  * <li>パラメータは0個以上である。
- * <li>パラメータは {@link Wrapper}の実装クラスである。
  * <li>パラメータには、パラメータの種別を示す {@link In} 、 {@link InOut} 、 {@link Out} 、
  * {@link ResultSet} のいずれかのアノテーションが必須である。これらは、ストアドファンクションの定義に合わせて注釈しなければいけない。
- * <li>戻り値の型は、{@code void} 、{@code Domain} の実装クラス、{@code Domain} の実装クラスを要素とする。
- * {@link List} 、 {@link Entity} が注釈されたインタフェースを要素とする {@code List} のいずれかである。戻り値を
- * {@code List} にできるのは、ストアドファンクションがカーソルをOUTパラメータとして返す場合のみである。
+ * <ul>
+ * <li>{@code In}は、基本型もしくは {@link Domain}が注釈されたクラスに注釈できる。
+ * <li> {@code InOut}は、 {@link Reference} 型に注釈できる。 {@code Reference}
+ * の型パラメータは基本型もしくは{@link Domain} が注釈されたクラスでなければいけない。
+ * <li> {@code Out}は、 {@code Reference} 型に注釈できる。 {@code Reference}
+ * の型パラメータは基本型もしくは {@code Domain} が注釈されたクラスでなければいけない。
+ * <li> {@code ResultSet} は {@code List} 型に注釈できる。ただし、 {@code List} の型パラメータは、基本型、
+ * {@link Domain} が注釈されたクラス、もしくは {@link Entity} が注釈されたクラスでなければいけない。
+ * </ul>
+ * <li>戻り値の型には次のいずれかを指定できる。
+ * <ul>
+ * <li>{@code void}
+ * <li>基本型。
+ * <li>{@code Domain} が注釈されたクラス。
+ * <li>{@code Entity} が注釈されたクラス。
+ * <li>{@code List}。 型パラメータは、基本型、{@code Domain} が注釈されたクラス、もしくは{@code Entity}
+ * が注釈されたクラスである。ただし、戻り値を{@code List}
+ * にできるのは、ストアドファンクションがカーソルをOUTパラメータとして返す場合のみである。
+ * </ul>
  * </ul>
  * 
  * <h5>例:</h5>
@@ -49,8 +63,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * public interface EmployeeDao {
  * 
  *     &#064;Function
- *     BigDecimalDomain getSalary(@In BuiltinIntegerDomain id,
- *             &#064;Out BuiltinStringDomain name);
+ *     BigDecimal getSalary(@In Integer id, @Out Reference&lt;String&gt; name);
  * }
  * </pre>
  * 

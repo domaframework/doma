@@ -25,14 +25,14 @@ import org.seasar.doma.jdbc.NamingConvention;
 /**
  * データベースのテーブルを示します。
  * <p>
- * このアノテーションは、{@link Entity} が注釈されたインタフェースに対してのみ指定できます。
+ * このアノテーションは、{@link Entity} が注釈されたクラスに対して有効です。
  * 
  * <h5>例:</h5>
  * 
  * <pre>
  * &#064;Entity
  * &#064;Table(name = &quot;EMP&quot;)
- * public interface Employee {
+ * public class Employee {
  *     ...
  * }
  * </pre>

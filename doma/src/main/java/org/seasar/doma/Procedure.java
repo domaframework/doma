@@ -23,7 +23,7 @@ import java.sql.Statement;
 
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.wrapper.Wrapper;
+import org.seasar.doma.jdbc.Reference;
 
 /**
  * ストアドプロシージャーの呼び出しを示します。
@@ -33,9 +33,14 @@ import org.seasar.doma.wrapper.Wrapper;
  * 注釈されるメソッドは、次の制約を満たす必要があります。
  * <ul>
  * <li>パラメータは0個以上である。
- * <li>パラメータは {@link Wrapper}の実装クラスである。
  * <li>パラメータには、パラメータの種別を示す {@link In} 、 {@link InOut} 、 {@link Out} 、
- * {@link ResultSet} のいずれかのアノテーションが必須である。これらは、ストアドプロシージャーの定義に合わせて注釈しなければいけない。
+ * {@link ResultSet} のいずれかのアノテーションが必須である。これらは、ストアドプロシージャ-の定義に合わせて注釈しなければいけない。
+ * <ul>
+ * <li>{@code In}は、基本型もしくは {@link Domain} が注釈されたクラスに注釈できる。
+ * <li> {@code InOut}は、 {@link Reference} 型に注釈できる。 {@code Reference}
+ * の型パラメータは基本型もしくは {@link Domain} が注釈されたクラスでなければいけない。
+ * <li> {@code Out}は、 {@code Reference} 型に注釈できる。 {@code Reference}
+ * の型パラメータは基本型もしくは {@code Domain} が注釈されたクラスでなければいけない。 *
  * <li>戻り値の型は {@code void} である。
  * </ul>
  * 
@@ -46,8 +51,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * public interface EmployeeDao {
  * 
  *     &#064;Procedure
- *     void updateSalary(@In BuiltinIntegerDomain id,
- *             &#064;InOut BuiltinBigDecimalDomain salary);
+ *     void updateSalary(@In Integer id, @InOut Reference&lt;BigDecimal&gt; salary);
  * }
  * </pre>
  * 

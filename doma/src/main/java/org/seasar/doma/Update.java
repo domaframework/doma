@@ -43,7 +43,7 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
  * 
  * <pre>
  * &#064;Entity
- * public interface Employee {
+ * public class Employee {
  *     ...
  * }
  * 
