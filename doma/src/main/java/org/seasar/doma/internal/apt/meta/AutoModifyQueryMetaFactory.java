@@ -124,8 +124,10 @@ public class AutoModifyQueryMetaFactory extends
         queryMeta.setEntityType(entityType);
         queryMeta.setEntityParameterName(parameterMeta.getName());
         queryMeta.addParameterMeta(parameterMeta);
-        queryMeta.addParameterType(parameterMeta.getName(),
-                entityType.getType());
+        if (parameterMeta.isBindable()) {
+            queryMeta.addBindableParameterType(parameterMeta.getName(),
+                    entityType.getType());
+        }
         validateEntityPropertyNames(entityType.getType(), method, queryMeta);
     }
 

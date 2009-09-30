@@ -30,15 +30,16 @@ import example.domain.PhoneNumber;
 public interface IterationCallbackDao {
 
     @Select(iterate = true)
-    Integer iterate(Integer id, String name,
+    Integer iterateByIdAndName(Integer id, String name,
             IterationCallback<Integer, Emp> callback);
 
     @Select(iterate = true)
-    Integer iterate(Integer id, IterationCallback<Integer, PhoneNumber> callback);
+    Integer iterateById(Integer id,
+            IterationCallback<Integer, PhoneNumber> callback);
 
     @Select(iterate = true)
     Integer iterate(IterationCallback<Integer, String> callback);
 
     @Select(iterate = true)
-    String iterate(HogeIterationCallback callback);
+    String iterateWithHogeIterationCallback(HogeIterationCallback callback);
 }

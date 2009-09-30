@@ -27,8 +27,8 @@ import org.seasar.doma.BatchDelete;
 import org.seasar.doma.BatchInsert;
 import org.seasar.doma.BatchUpdate;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.EntityType;
+import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -117,8 +117,10 @@ public class SqlFileBatchModifyQueryMetaFactory extends
         queryMeta.setEntitiesParameterName(parameterMeta.getName());
         queryMeta.addParameterMeta(parameterMeta);
 
-        queryMeta.addParameterType(parameterMeta.getName(),
-                entityType.getType());
+        if (parameterMeta.isBindable()) {
+            queryMeta.addBindableParameterType(parameterMeta.getName(),
+                    entityType.getType());
+        }
     }
 
 }

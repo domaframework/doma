@@ -24,8 +24,8 @@ import javax.lang.model.element.VariableElement;
 import org.seasar.doma.Select;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.type.AnyType;
-import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.IterationCallbackType;
+import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.ValueType;
 import org.seasar.doma.message.DomaMessageCode;
 
@@ -97,8 +97,7 @@ public class SqlFileSelectQueryMetaFactory extends
             if (listType != null) {
                 if (!listType.hasSupportedElementType()) {
                     throw new AptException(DomaMessageCode.DOMA4007, env,
-                            returnMeta.getElement(), listType
-                                    .getEntityType());
+                            returnMeta.getElement(), listType.getEntityType());
                 }
             }
         }
@@ -110,8 +109,7 @@ public class SqlFileSelectQueryMetaFactory extends
         for (VariableElement parameter : method.getParameters()) {
             QueryParameterMeta parameterMeta = createParameterMeta(parameter);
             if (parameterMeta.getListType() != null) {
-                ListType listType = parameterMeta
-                        .getListType();
+                ListType listType = parameterMeta.getListType();
                 ValueType valueType = listType.getValueType();
                 if (valueType == null) {
                     throw new AptException(DomaMessageCode.DOMA4028, env,
@@ -143,16 +141,19 @@ public class SqlFileSelectQueryMetaFactory extends
                         parameterMeta.getElement(), parameterMeta.getType());
             }
             queryMeta.addParameterMeta(parameterMeta);
-            queryMeta.addParameterType(parameterMeta.getName(),
-                    parameterMeta.getType());
+            if (parameterMeta.isBindable()) {
+                queryMeta.addBindableParameterType(parameterMeta.getName(),
+                        parameterMeta.getType());
+            }
         }
-        if (queryMeta.isIterated()
-                && queryMeta.getIterationCallbackType() == null) {
-            throw new AptException(DomaMessageCode.DOMA4056, env, method);
-        }
-        if (!queryMeta.isIterated()
-                && queryMeta.getIterationCallbackType() != null) {
-            throw new AptException(DomaMessageCode.DOMA4057, env, method);
+        if (queryMeta.isIterated()) {
+            if (queryMeta.getIterationCallbackType() == null) {
+                throw new AptException(DomaMessageCode.DOMA4056, env, method);
+            }
+        } else {
+            if (queryMeta.getIterationCallbackType() != null) {
+                throw new AptException(DomaMessageCode.DOMA4057, env, method);
+            }
         }
     }
 

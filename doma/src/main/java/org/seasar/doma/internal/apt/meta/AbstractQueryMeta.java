@@ -58,7 +58,7 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
     protected String[] excludedPropertyNames;
 
-    protected Map<String, TypeMirror> parameterTypeMap = new LinkedHashMap<String, TypeMirror>();
+    protected Map<String, TypeMirror> bindableParameterTypeMap = new LinkedHashMap<String, TypeMirror>();
 
     protected QueryReturnMeta returnMeta;
 
@@ -161,12 +161,12 @@ public abstract class AbstractQueryMeta implements QueryMeta {
     }
 
     public Map<String, TypeMirror> getParameterTypeMap() {
-        return parameterTypeMap;
+        return bindableParameterTypeMap;
     }
 
-    public void addParameterType(String parameterName,
-            TypeMirror parameterType) {
-        this.parameterTypeMap.put(parameterName, parameterType);
+    public void addBindableParameterType(String parameterName,
+            TypeMirror bindableParameterTypeMap) {
+        this.bindableParameterTypeMap.put(parameterName, bindableParameterTypeMap);
     }
 
     public Boolean isUnchangedPropertyIncluded() {

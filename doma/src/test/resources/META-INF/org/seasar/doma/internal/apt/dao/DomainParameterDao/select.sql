@@ -1,0 +1,1 @@
+select * from hoge where phoneNumber = /*phoneNumber*/'a'

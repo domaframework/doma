@@ -25,9 +25,9 @@ import org.seasar.doma.Out;
 import org.seasar.doma.ResultSet;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
+import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.ReferenceType;
 import org.seasar.doma.internal.apt.type.ValueType;
 import org.seasar.doma.message.DomaMessageCode;
@@ -53,8 +53,10 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
             CallableSqlParameterMeta callableSqlParameterMeta = createParameterMeta(parameterMeta);
             queryMeta.addCallableSqlParameterMeta(callableSqlParameterMeta);
 
-            queryMeta.addParameterType(parameterMeta.getName(),
-                    parameterMeta.getType());
+            if (parameterMeta.isBindable()) {
+                queryMeta.addBindableParameterType(parameterMeta.getName(),
+                        parameterMeta.getType());
+            }
         }
     }
 

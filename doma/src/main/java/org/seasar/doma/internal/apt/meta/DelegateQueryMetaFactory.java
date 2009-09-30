@@ -89,8 +89,10 @@ public class DelegateQueryMetaFactory extends
         for (VariableElement parameter : method.getParameters()) {
             QueryParameterMeta parameterMeta = createParameterMeta(parameter);
             queryMeta.addParameterMeta(parameterMeta);
-            queryMeta.addParameterType(parameterMeta.getName(),
-                    parameterMeta.getType());
+            if (parameterMeta.isBindable()) {
+                queryMeta.addBindableParameterType(parameterMeta.getName(),
+                        parameterMeta.getType());
+            }
         }
     }
 

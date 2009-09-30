@@ -25,8 +25,8 @@ import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
 import org.seasar.doma.Update;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.DomainType;
+import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -99,8 +99,7 @@ public class SqlFileModifyQueryMetaFactory extends
         for (VariableElement parameter : method.getParameters()) {
             QueryParameterMeta parameterMeta = createParameterMeta(parameter);
             if (parameterMeta.getListType() != null) {
-                ListType listType = parameterMeta
-                        .getListType();
+                ListType listType = parameterMeta.getListType();
                 DomainType domainType = listType.getDomainType();
                 if (domainType == null) {
                     throw new AptException(DomaMessageCode.DOMA4028, env,
@@ -114,8 +113,10 @@ public class SqlFileModifyQueryMetaFactory extends
                         parameterMeta.getElement(), parameterMeta.getType());
             }
             queryMeta.addParameterMeta(parameterMeta);
-            queryMeta.addParameterType(parameterMeta.getName(),
-                    parameterMeta.getType());
+            if (parameterMeta.isBindable()) {
+                queryMeta.addBindableParameterType(parameterMeta.getName(),
+                        parameterMeta.getType());
+            }
         }
     }
 }

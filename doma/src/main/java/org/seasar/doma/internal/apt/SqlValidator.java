@@ -18,10 +18,13 @@ package org.seasar.doma.internal.apt;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
+import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.internal.expr.ExpressionParser;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
@@ -55,7 +58,8 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
 
     protected final ExpressionValidator expressionValidator;
 
-    public SqlValidator(ProcessingEnvironment env, ExecutableElement methodElement,
+    public SqlValidator(ProcessingEnvironment env,
+            ExecutableElement methodElement,
             Map<String, TypeMirror> parameterTypeMap, String path) {
         assertNotNull(env, methodElement, parameterTypeMap, path);
         this.env = env;
@@ -67,7 +71,28 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
     }
 
     public void validate(SqlNode sqlNode) {
-        sqlNode.accept(this, null);
+        try {
+            sqlNode.accept(this, null);
+            Set<String> validatedParameterNames = expressionValidator
+                    .getValidatedParameterNames();
+            for (String parameterName : parameterTypeMap.keySet()) {
+                if (!validatedParameterNames.contains(parameterName)) {
+                    for (VariableElement parameterElement : methodElement
+                            .getParameters()) {
+                        if (parameterElement.getSimpleName().contentEquals(
+                                parameterName)) {
+                            Notifier.notify(env, Kind.ERROR,
+                                    DomaMessageCode.DOMA4122, parameterElement,
+                                    path, parameterName);
+                        }
+                    }
+                }
+            }
+        } catch (AptIllegalStateException e) {
+            throw e;
+        } catch (AptException e) {
+            Notifier.notify(env, e);
+        }
     }
 
     @Override
@@ -119,9 +144,10 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
         } catch (AptIllegalStateException e) {
             throw e;
         } catch (AptException e) {
-            throw new AptException(DomaMessageCode.DOMA4092, env, methodElement,
-                    location.getSql(), location.getLineNumber(), location
-                            .getPosition(), e.getMessage());
+            throw new AptException(DomaMessageCode.DOMA4092, env,
+                    methodElement, path, location.getSql(), location
+                            .getLineNumber(), location.getPosition(), e
+                            .getMessage());
         }
     }
 

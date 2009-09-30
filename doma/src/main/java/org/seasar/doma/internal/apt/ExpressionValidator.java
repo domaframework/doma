@@ -5,7 +5,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -58,7 +57,7 @@ public class ExpressionValidator implements
 
     protected final Map<String, TypeMirror> parameterTypeMap;
 
-    protected final Set<String> validatedParameterNameSet;
+    protected final Set<String> validatedParameterNames;
 
     protected final TypeDeclaration unknownTypeDeclaration;
 
@@ -70,23 +69,16 @@ public class ExpressionValidator implements
         this.methodElement = methodElement;
         this.parameterTypeMap = new HashMap<String, TypeMirror>(
                 parameterTypeMap);
-        this.validatedParameterNameSet = new HashSet<String>();
+        this.validatedParameterNames = new HashSet<String>();
         this.unknownTypeDeclaration = TypeDeclaration.newUnknownInstance(env);
+    }
+
+    public Set<String> getValidatedParameterNames() {
+        return validatedParameterNames;
     }
 
     public TypeDeclaration validate(ExpressionNode node) {
         TypeDeclaration result = validateInternal(node);
-        if (!validatedParameterNameSet.containsAll(parameterTypeMap.keySet())) {
-
-        }
-        for (Iterator<String> it = parameterTypeMap.keySet().iterator(); it
-                .hasNext();) {
-            String parameterName = it.next();
-            if (!validatedParameterNameSet.contains(parameterName)) {
-                throw new AptException(DomaMessageCode.DOMA4122, env,
-                        methodElement, parameterName);
-            }
-        }
         return result;
     }
 
@@ -331,14 +323,13 @@ public class ExpressionValidator implements
         if (typeMirror == null) {
             ExpressionLocation location = node.getLocation();
             throw new AptException(DomaMessageCode.DOMA4067, env,
-                    methodElement, location.getExpression(), location
-                            .getPosition(), variableName);
+                    methodElement, variableName, location.getPosition());
         }
         TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
         if (typeElement == null) {
             return unknownTypeDeclaration;
         }
-        validatedParameterNameSet.add(variableName);
+        validatedParameterNames.add(variableName);
         return TypeDeclaration.newInstance(typeElement, env);
     }
 

@@ -8,5 +8,5 @@ import org.seasar.doma.internal.apt.entity.Emp;
 public interface UnknownBindVariableSqlValidationDao {
 
     @Select
-    Emp select(Integer id);
+    Emp select();
 }

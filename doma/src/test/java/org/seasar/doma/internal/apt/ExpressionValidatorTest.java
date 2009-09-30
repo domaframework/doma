@@ -204,13 +204,9 @@ public class ExpressionValidatorTest extends AptTestCase {
                 getProcessingEnvironment(), methodElement, parameterTypeMap);
 
         ExpressionNode node = new ExpressionParser("true").parse();
-        try {
-            validator.validate(node);
-            fail();
-        } catch (AptException expected) {
-            System.out.println(expected);
-            assertEquals(DomaMessageCode.DOMA4122, expected.getMessageCode());
-        }
+        validator.validate(node);
+        assertFalse(validator.getValidatedParameterNames().contains("emp"));
+
     }
 
     protected ExecutableElement createMethodElement(Class<?> clazz,

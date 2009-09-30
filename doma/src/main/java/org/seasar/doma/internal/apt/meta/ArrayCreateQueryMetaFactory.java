@@ -75,7 +75,9 @@ public class ArrayCreateQueryMetaFactory extends
         }
         queryMeta.setElementsParameterName(parameterMeta.getName());
         queryMeta.addParameterMeta(parameterMeta);
-        queryMeta.addParameterType(parameterMeta.getName(),
-                parameterMeta.getType());
+        if (parameterMeta.isBindable()) {
+            queryMeta.addBindableParameterType(parameterMeta.getName(), parameterMeta
+                    .getType());
+        }
     }
 }
