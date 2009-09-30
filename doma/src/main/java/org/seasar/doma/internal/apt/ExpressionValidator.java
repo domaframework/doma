@@ -4,8 +4,11 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
@@ -55,6 +58,8 @@ public class ExpressionValidator implements
 
     protected final Map<String, TypeMirror> parameterTypeMap;
 
+    protected final Set<String> validatedParameterNameSet;
+
     protected final TypeDeclaration unknownTypeDeclaration;
 
     public ExpressionValidator(ProcessingEnvironment env,
@@ -65,11 +70,23 @@ public class ExpressionValidator implements
         this.methodElement = methodElement;
         this.parameterTypeMap = new HashMap<String, TypeMirror>(
                 parameterTypeMap);
+        this.validatedParameterNameSet = new HashSet<String>();
         this.unknownTypeDeclaration = TypeDeclaration.newUnknownInstance(env);
     }
 
     public TypeDeclaration validate(ExpressionNode node) {
         TypeDeclaration result = validateInternal(node);
+        if (!validatedParameterNameSet.containsAll(parameterTypeMap.keySet())) {
+
+        }
+        for (Iterator<String> it = parameterTypeMap.keySet().iterator(); it
+                .hasNext();) {
+            String parameterName = it.next();
+            if (!validatedParameterNameSet.contains(parameterName)) {
+                throw new AptException(DomaMessageCode.DOMA4122, env,
+                        methodElement, parameterName);
+            }
+        }
         return result;
     }
 
@@ -321,6 +338,7 @@ public class ExpressionValidator implements
         if (typeElement == null) {
             return unknownTypeDeclaration;
         }
+        validatedParameterNameSet.add(variableName);
         return TypeDeclaration.newInstance(typeElement, env);
     }
 

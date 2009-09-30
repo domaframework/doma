@@ -153,8 +153,8 @@ public class ExpressionValidatorTest extends AptTestCase {
         ExpressionValidator validator = new ExpressionValidator(
                 getProcessingEnvironment(), methodElement, parameterTypeMap);
 
-        ExpressionNode node = new ExpressionParser("new java.lang.Integer(1)")
-                .parse();
+        ExpressionNode node = new ExpressionParser(
+                "emp.id == new java.lang.Integer(1)").parse();
         TypeDeclaration result = validator.validate(node);
         assertFalse(result.isUnknownType());
     }
@@ -190,6 +190,27 @@ public class ExpressionValidatorTest extends AptTestCase {
                 .parse();
         TypeDeclaration result = validator.validate(node);
         assertFalse(result.isUnknownType());
+    }
+
+    public void testUnreferencedParameter() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testEmp", Emp.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap);
+
+        ExpressionNode node = new ExpressionParser("true").parse();
+        try {
+            validator.validate(node);
+            fail();
+        } catch (AptException expected) {
+            System.out.println(expected);
+            assertEquals(DomaMessageCode.DOMA4122, expected.getMessageCode());
+        }
     }
 
     protected ExecutableElement createMethodElement(Class<?> clazz,

@@ -186,7 +186,8 @@ public enum DomaMessageCode implements MessageCode {
     DOMA4118("式[{0}]（[{1}]番目の文字付近）に含まれる論理演算子[{2}]の右被演算子[{3}]がboolean/Boolean型ではありません。"),
     DOMA4119("式[{0}]（[{1}]番目の文字付近）に含まれる論理演算子[{2}]の被演算子[{3}]がboolean/Boolean型ではありません。"),
     DOMA4120("式[{0}]（[{1}]番目の文字付近）に含まれる論理演算子[{2}]の左被演算子[{3}]が数値型ではありません。"),
-    DOMA4121("式[{0}]（[{1}]番目の文字付近）に含まれる論理演算子[{2}]の右被演算子[{3}]が数値型ではありません。"), ;
+    DOMA4121("式[{0}]（[{1}]番目の文字付近）に含まれる論理演算子[{2}]の右被演算子[{3}]が数値型ではありません。"),
+    DOMA4122("パラメータ[{0}]が参照されていません。"), ;
 
     private static ResourceBundle bundle = ResourceBundle
             .getBundle(DomaMessageResource.class.getName());
