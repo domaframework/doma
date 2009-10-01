@@ -36,7 +36,7 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
  * 注釈されるメソッドは、次の制約を満たす必要があります。
  * <ul>
  * <li>パラメータを1つだけ受け取る。
- * <li>パラメータは {@link Entity}が注釈された型を要素とする {@link List} である。
+ * <li>パラメータは {@link Entity} が注釈された型を要素とする {@link List} である。
  * <li>戻り値の型は {@code int[]} である。
  * </ul>
  * 
@@ -59,11 +59,11 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
  * 注釈されるメソッドは、次の例外をスローすることがあります。
  * <ul>
  * <li> {@link DomaNullPointerException} パラメータに {@code null} を渡した場合
- * <li> {@link OptimisticLockException} {@link #sqlFile()} が {@code false} で
- * バッチのそれぞれの処理において更新件数が1件でなかった場合において更新件数が1件でなかった場合
+ * <li> {@link OptimisticLockException} {@code sqlFile} 要素の値が {@code false} で
+ * バッチのそれぞれの処理において更新件数が1件でなかった場合
  * <li> {@link UniqueConstraintException} 一意制約違反が発生した場合
- * <li> {@link SqlFileNotFoundException}
- * SQLファイルにマッピングしている場合で、かつSQLファイルが見つからなかった場合
+ * <li> {@link SqlFileNotFoundException} {@code sqlFile} 要素の値が {@code true}
+ * で、SQLファイルが見つからなかった場合
  * <li> {@link JdbcException} 上記以外でJDBCに関する例外が発生した場合
  * </ul>
  * 

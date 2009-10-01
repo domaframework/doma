@@ -32,7 +32,7 @@ import org.seasar.doma.jdbc.JdbcException;
  * 注釈されるメソッドは、次の制約を満たす必要があります。
  * <ul>
  * <li>パラメータを受け取らない。
- * <li>戻り値の型は {@code Blob} をである。
+ * <li>戻り値の型は {@code Blob} である。
  * </ul>
  * 
  * <h5>例:</h5>

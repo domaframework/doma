@@ -31,12 +31,12 @@ import java.lang.annotation.Target;
  * 
  * <pre>
  * &#064;Entity
- * public interface Employee {
+ * public class Employee {
  *     ...
  * 
  *     &#064;Version
  *     &#064;Column(name = &quot;VERSION_NO&quot;)
- *     BuiltinIntegerDomain versionNo();
+ *     int versionNo;
  * }
  * </pre>
  * 

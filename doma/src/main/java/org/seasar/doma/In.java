@@ -20,8 +20,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.seasar.doma.wrapper.Wrapper;
-
 /**
  * ストアドファンクションやストアドプロシージャーへのINパラメータを示します。
  * <p>
@@ -30,7 +28,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * 
  * 注釈されるパラメータは、次の制約を満たす必要があります。
  * <ul>
- * <li>型は {@link Wrapper} の実装クラスである。
+ * <li>型は基本型もしくは {@link Domain} が注釈されたクラスである。
  * </ul>
  * 
  * <h5>例:</h5>
@@ -40,8 +38,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * public interface EmployeeDao {
  * 
  *     &#064;Procedure
- *     void updateSalary(@In BuiltinIntegerDomain id,
- *             &#064;InOut BuiltinBigDecimalDomain salary);
+ *     void updateSalary(@In Integer id, @In BigDecimal salary);
  * }
  * </pre>
  * 

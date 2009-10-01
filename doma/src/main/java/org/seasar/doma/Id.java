@@ -33,12 +33,12 @@ import java.lang.annotation.Target;
  * 
  *     &#064;Id
  *     &#064;Column(name = &quot;ID&quot;)
- *     Integer id;
+ *     String id;
  *     ...
  * }
  * </pre>
  * 
- * 識別子を自動生成する場合は、 {@link GeneratedValue}を合わせて注釈します。
+ * 識別子を自動生成する場合は、 {@link GeneratedValue} を合わせて注釈します。
  * 
  * @author taedium
  * @see GeneratedValue

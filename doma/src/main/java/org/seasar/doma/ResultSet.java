@@ -35,8 +35,8 @@ import java.util.List;
  * 
  * 注釈されるパラメータは、次の制約を満たす必要があります。
  * <ul>
- * <li>型は {@link List} である。 {@code List} の型パラメータは、基本型もしくは {@link Domain}
- * が注釈されたクラス 、 {@link Entity} が注釈されたクラス のいずれかである。。
+ * <li>型は {@link List} である。 {@code List} の実型引数は、基本型もしくは {@link Domain} が注釈されたクラス
+ * 、 {@link Entity} が注釈されたクラス のいずれかでなければならない。。
  * </ul>
  * 
  * <h5>例:</h5>
@@ -46,8 +46,17 @@ import java.util.List;
  * public interface EmployeeDao {
  * 
  *     &#064;Procedure
- *     void fetchEmployees(@In BuiltinIntegerDomain departmentId,
+ *     void fetchEmployees(@In Integer departmentId,
  *             &#064;ResultSet List&lt;Employee&gt; employees);
+ * }
+ * </pre>
+ * 
+ * <pre>
+ * EmployeeDao dao = new EmployeeDaoImpl();
+ * List&lt;Employee&gt; employees = new ArrayList&lt;Employee&gt;();
+ * dao.fetchEmployees(10, employees);
+ * for (Employee e : employees) {
+ *     ...
  * }
  * </pre>
  * 

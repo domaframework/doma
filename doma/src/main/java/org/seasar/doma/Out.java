@@ -20,7 +20,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.seasar.doma.wrapper.Wrapper;
+import org.seasar.doma.jdbc.Reference;
 
 /**
  * ストアドファンクションやストアドプロシージャーへのOUTパラメータを示します。
@@ -30,7 +30,8 @@ import org.seasar.doma.wrapper.Wrapper;
  * 
  * 注釈されるパラメータは、次の制約を満たす必要があります。
  * <ul>
- * <li>型は {@link Wrapper} の実装クラスである。
+ * <li>型は {@link Reference} である。 {@code Reference} の実型引数は、基本型もしくは {@link Domain}
+ * が注釈されたクラスでなければいけない。
  * </ul>
  * 
  * <h5>例:</h5>
@@ -40,9 +41,15 @@ import org.seasar.doma.wrapper.Wrapper;
  * public interface EmployeeDao {
  * 
  *     &#064;Procedure
- *     void updateSalary(@In BuiltinIntegerDomain id,
- *             &#064;Out BuiltinBigDecimalDomain salary);
+ *     void updateSalary(@In Integer id, @Out Reference&lt;BigDecimal&gt; salary);
  * }
+ * </pre>
+ * 
+ * <pre>
+ * EmployeeDao dao = new EmployeeDaoImpl();
+ * Reference&lt;BigDecimal&gt; salaryRef = new Reference&lt;BigDecimal&gt;();
+ * dao.updateSalary(1, salaryRef);
+ * BigDecimal salary = salaryRef.get();
  * </pre>
  * 
  * @author taedium

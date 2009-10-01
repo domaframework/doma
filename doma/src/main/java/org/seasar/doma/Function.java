@@ -20,10 +20,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.sql.Statement;
+import java.util.List;
 
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.jdbc.Reference;
 
 /**
  * ストアドファンクションの呼び出しを示します。
@@ -36,23 +36,20 @@ import org.seasar.doma.jdbc.Reference;
  * <li>パラメータには、パラメータの種別を示す {@link In} 、 {@link InOut} 、 {@link Out} 、
  * {@link ResultSet} のいずれかのアノテーションが必須である。これらは、ストアドファンクションの定義に合わせて注釈しなければいけない。
  * <ul>
- * <li>{@code In}は、基本型もしくは {@link Domain}が注釈されたクラスに注釈できる。
- * <li> {@code InOut}は、 {@link Reference} 型に注釈できる。 {@code Reference}
- * の型パラメータは基本型もしくは{@link Domain} が注釈されたクラスでなければいけない。
- * <li> {@code Out}は、 {@code Reference} 型に注釈できる。 {@code Reference}
- * の型パラメータは基本型もしくは {@code Domain} が注釈されたクラスでなければいけない。
- * <li> {@code ResultSet} は {@code List} 型に注釈できる。ただし、 {@code List} の型パラメータは、基本型、
- * {@link Domain} が注釈されたクラス、もしくは {@link Entity} が注釈されたクラスでなければいけない。
+ * <li>{@code In}は、INパラメータを表す。
+ * <li> {@code InOut}は、INOUTパラメータを表す。
+ * <li> {@code Out}は、 OUTパラメータを表す。
+ * <li> {@code ResultSet} は、カーソルのOUTパラメータ、もしくはストアドファンクションが返す結果セットを表す。
  * </ul>
  * <li>戻り値の型には次のいずれかを指定できる。
  * <ul>
  * <li>{@code void}
  * <li>基本型。
- * <li>{@code Domain} が注釈されたクラス。
- * <li>{@code Entity} が注釈されたクラス。
- * <li>{@code List}。 型パラメータは、基本型、{@code Domain} が注釈されたクラス、もしくは{@code Entity}
- * が注釈されたクラスである。ただし、戻り値を{@code List}
- * にできるのは、ストアドファンクションがカーソルをOUTパラメータとして返す場合のみである。
+ * <li>{@link Domain} が注釈されたクラス。
+ * <li>{@link Entity} が注釈されたクラス。
+ * <li>{@link List}。実型引数は、基本型、{@code Domain} が注釈されたクラス、もしくは{@code Entity}
+ * が注釈されたクラスなければならない。ただし、戻り値を{@code List}
+ * にできるのは、ストアドファンクションがカーソルをファンクションの実行結果として返す場合のみである。
  * </ul>
  * </ul>
  * 

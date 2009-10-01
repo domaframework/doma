@@ -29,13 +29,13 @@ import org.seasar.doma.jdbc.entity.EntityListener;
  * 注釈されたクラスは、 次の制約を満たす必要があります。
  * <ul>
  * <li>トップレベルのクラスである。
- * <li>非privateの可視性を持つ。
- * <li>引数なしの非privateなコンストラクタを持つ。
+ * <li>非 {@code private} のクラスである。
+ * <li>引数なしの 非 {@code private} なコンストラクタを持つ。
  * </ul>
  * <p>
  * 注釈されたクラスのメンバフィールドは、 次の制約を満たす必要があります。
  * <ul>
- * <li>非privateの可視性を持つ。
+ * <li>非 {@code private} である。
  * </ul>
  * 
  * <h5>例:</h5>
@@ -54,6 +54,8 @@ import org.seasar.doma.jdbc.entity.EntityListener;
  *     &#064;Version
  *     &#064;Column(name = &quot;VERSION&quot;)
  *     int version;
+ *     
+ *     ...
  * }
  * </pre>
  * 

@@ -26,9 +26,9 @@ import java.lang.annotation.Target;
  * 注釈されたクラスは、 次の制約を満たす必要があります。
  * <ul>
  * <li>トップレベルのクラス、もしくはネスとした {@code static} なクラスである。
- * <li>{@code valueType}要素に指定した型と同じ型を引数とする非privateなコンストラクタを持つ。
- * <li>{@code accessorMethod}要素に指定した名前をもち、{@code valueType}
- * 要素に指定した型を返すpublicな引数なしのメソッドを持つ。
+ * <li>{@code valueType} 要素に指定した型と同じ型を引数とする非 {@code private} なコンストラクタを持つ。
+ * <li>{@code accessorMethod} 要素に指定した名前の非 {@code private} なメソッドを持つ。{@code
+ * valueType} 要素に指定した型を戻り値とし、パラメータは受け取らない。
  * </ul>
  * <p>
  * 
@@ -57,8 +57,14 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Domain {
 
+    /**
+     * ドメインクラスが扱う値型(基本型)
+     */
     Class<?> valueType();
 
+    /**
+     * ドメインクラスが扱う値に対するアクセッサーメソッドの名前。
+     */
     String accessorMethod() default "getValue";
 
 }

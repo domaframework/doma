@@ -24,15 +24,15 @@ import java.lang.annotation.Target;
  * 識別子を自動生成する方法を示します。
  * <p>
  * このアノテーションが注釈されるフィールドは、{@link Entity} が注釈されたクラスのメンバでなければいけません。 このアノテーションは
- * {@link Id}と併わせて使用しなければいけません。
+ * {@link Id} と併わせて使用しなければいけません。
  * <p>
  * 注釈されるフィールドの型は、数値のプリミティブ型もしくは {@link Number} のサブタイプでなければいけません。
  * <p>
  * {@code strategy} 要素に指定する値によっては追加のアノテーションが必要です。
  * <ul>
- * <li> {@link GenerationType#SEQUENCE} を指定した場合、{@link SequenceGenerator}が必要です。
+ * <li> {@link GenerationType#SEQUENCE} を指定した場合、{@link SequenceGenerator} が必要です。
  * <li>
- * {@link GenerationType#TABLE} を指定した場合、 {@link TableGenerator}が必要です。
+ * {@link GenerationType#TABLE} を指定した場合、 {@link TableGenerator} が必要です。
  * </ul>
  * 
  * <h5>例:</h5>
@@ -45,6 +45,8 @@ import java.lang.annotation.Target;
  *     &#064;GeneratedValue(strategy = GenerationType.SEQUENCE)
  *     &#064;SequenceGenerator(sequence = &quot;EMPLOYEE_SEQ&quot;)
  *     Integer id;
+ *     
+ *     ...
  * }
  * </pre>
  * 

@@ -23,7 +23,6 @@ import java.sql.Statement;
 
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.jdbc.Reference;
 
 /**
  * ストアドプロシージャーの呼び出しを示します。
@@ -34,16 +33,15 @@ import org.seasar.doma.jdbc.Reference;
  * <ul>
  * <li>パラメータは0個以上である。
  * <li>パラメータには、パラメータの種別を示す {@link In} 、 {@link InOut} 、 {@link Out} 、
- * {@link ResultSet} のいずれかのアノテーションが必須である。これらは、ストアドプロシージャ-の定義に合わせて注釈しなければいけない。
+ * {@link ResultSet} のいずれかのアノテーションが必須である。これらは、ストアドファンクションの定義に合わせて注釈しなければいけない。
  * <ul>
- * <li>{@code In}は、基本型もしくは {@link Domain} が注釈されたクラスに注釈できる。
- * <li> {@code InOut}は、 {@link Reference} 型に注釈できる。 {@code Reference}
- * の型パラメータは基本型もしくは {@link Domain} が注釈されたクラスでなければいけない。
- * <li> {@code Out}は、 {@code Reference} 型に注釈できる。 {@code Reference}
- * の型パラメータは基本型もしくは {@code Domain} が注釈されたクラスでなければいけない。 *
- * <li>戻り値の型は {@code void} である。
+ * <li> {@code In}は、INパラメータを表す。
+ * <li> {@code InOut}は、INOUTパラメータを表す。
+ * <li> {@code Out}は、 OUTパラメータを表す。
+ * <li> {@code ResultSet} は、カーソルのOUTパラメータ、もしくはストアドファンクションが返す結果セットを表す。
  * </ul>
- * 
+ * <li>戻り値は {@code void} である。
+ * </ul>
  * <h5>例:</h5>
  * 
  * <pre>

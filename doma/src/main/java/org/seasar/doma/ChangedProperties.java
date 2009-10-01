@@ -12,9 +12,10 @@ import java.util.Set;
  * UPDATE文のSET句に変更があったプロパティだけを含めたい場合に使用します。
  * <p>
  * このアノテーションが注釈されるフィールドは、 {@link Entity} が注釈されたクラスのメンバでなければいけません。 フィールドの型は
- * {@link String} を要素とする {@link Set} のサブタイプでなければいけません。
+ * {@link String} を要素とする {@link Set} のサブタイプでなければいけません。フィールドに {@code Set}
+ * のサブタイプのインスタンスを設定するのはアプリケーション開発者の責任です。
  * <p>
- * プロパティの名前は、各プロパティのセッターメソッドで設定します。
+ * プロパティの名前は、各プロパティのセッターメソッドで設定しなければいけません。
  * 
  * <h5>例:</h5>
  * 
@@ -25,7 +26,7 @@ import java.util.Set;
  *     String name;
  * 
  *     &#064;ChangedProperties
- *     Set&lt;String&gt; changedProperties;
+ *     Set&lt;String&gt; changedProperties = new HashSet&lt;String&gt;();
  *     
  *     public String getName() {
  *         return name;

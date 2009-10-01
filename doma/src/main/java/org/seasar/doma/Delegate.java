@@ -50,7 +50,7 @@ import org.seasar.doma.jdbc.Config;
  * 
  * public class EmployeeDaoDelegate {
  * 
- *     private Config config;
+ *     private final Config config;
  *     
  *     public EmployeeDaoDelegate(Config config) {
  *         this.config = config;

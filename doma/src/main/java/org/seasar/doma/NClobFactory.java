@@ -23,7 +23,6 @@ import java.sql.Connection;
 import java.sql.NClob;
 
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * {@link NClob} のインスタンスを生成することを示します。
@@ -33,7 +32,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * 注釈されるメソッドは、次の制約を満たす必要があります。
  * <ul>
  * <li>パラメータを受け取らない。
- * <li>戻り値の型は {@code NClob}を値とする {@link Wrapper}の実装クラスである。
+ * <li>戻り値の型は {@code NClob} である。
  * </ul>
  * 
  * <h5>例:</h5>
@@ -43,7 +42,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * public interface EmployeeDao {
  * 
  *     &#064;NClobFactory
- *     BuiltinNClobDomain createNClob();
+ *     NClob createNClob();
  * }
  * </pre>
  * 
