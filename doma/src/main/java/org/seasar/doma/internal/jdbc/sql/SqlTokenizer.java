@@ -338,13 +338,17 @@ public class SqlTokenizer {
             }
             while (buf.hasRemaining()) {
                 char c3 = buf.get();
-                if (c3 == '*') {
-                    if (buf.hasRemaining()) {
-                        char c4 = buf.get();
-                        if (c4 == '/') {
-                            return;
-                        }
+                if (buf.hasRemaining()) {
+                    buf.mark();
+                    char c4 = buf.get();
+                    if (c3 == '*' && c4 == '/') {
+                        return;
                     }
+                    if ((c3 == '\r' && c4 == '\n')
+                            || (c3 == '\r' || c3 == '\n')) {
+                        currentLineNumber++;
+                    }
+                    buf.reset();
                 }
             }
             int pos = buf.position() - lineStartPosition;

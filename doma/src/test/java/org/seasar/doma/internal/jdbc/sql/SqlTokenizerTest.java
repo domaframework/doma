@@ -309,7 +309,8 @@ public class SqlTokenizerTest extends TestCase {
     }
 
     public void testLineNumber() throws Exception {
-        SqlTokenizer tokenizer = new SqlTokenizer("aaa\nbbb\nccc\n");
+        SqlTokenizer tokenizer = new SqlTokenizer(
+                "aaa\nbbb\nccc\n/* \nddd\n */");
         assertEquals(1, tokenizer.getLineNumber());
         assertEquals(WORD, tokenizer.next());
         assertEquals("aaa", tokenizer.getToken());
@@ -329,6 +330,9 @@ public class SqlTokenizerTest extends TestCase {
         assertEquals(EOL, tokenizer.next());
         assertEquals("\n", tokenizer.getToken());
         assertEquals(4, tokenizer.getLineNumber());
+        assertEquals(BIND_VARIABLE_BLOCK_COMMENT, tokenizer.next());
+        assertEquals("/* \nddd\n */", tokenizer.getToken());
+        assertEquals(6, tokenizer.getLineNumber());
         assertEquals(EOF, tokenizer.next());
         assertNull(tokenizer.getToken());
     }
