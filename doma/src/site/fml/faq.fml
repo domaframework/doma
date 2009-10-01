@@ -2,6 +2,18 @@
 	<part id="general">
 		<title>一般的な質問</title>
 		<faq id="general-1">
+			<question>Domaの特長は何ですか？</question>
+			<answer>
+				<p>
+					主要な特長は2つあります。
+					<ol>
+					<li>apt(アプト)を使用して、コンパイル時にコードの生成やコードの検証が行えます。これにより、プログラミングミスを早期に発見できるようになります。</li>
+					<li>データベース上のカラムの値をDomain（ドメイン）と呼ばれるJavaオブジェクトにマッピングできます。これにより、型を活かしたプログラミングが容易になります。</li>
+					</ol>
+				</p>
+			</answer>
+		</faq>
+		<faq id="general-2">
 			<question>Domaとはどのような意味ですか？</question>
 			<answer>
 				<p>
@@ -9,12 +21,12 @@
 				</p>
 			</answer>
 		</faq>
-		<faq id="general-2">
+		<faq id="general-3">
 			<question>Domain（ドメイン）とは何ですか？</question>
 			<answer>
 				<p>
 					値のとり得る範囲（定義域）のことです。
-					Domaでは、テーブルのカラムの値を、ドメインと呼ばれるJavaオブジェクトで扱います。
+					Domaでは、テーブルのカラムの値を、ドメインと呼ばれるJavaオブジェクトで扱えます。
 				</p>
 				<p>
 					たとえば、一般的なO/Rマッパーでは、データベースのVARCHAR型をJavaのStringにマッピングしますが、
@@ -25,20 +37,20 @@
 				</p>
 			</answer>
 		</faq>
-		<faq id="general-3">
+		<faq id="general-4">
 			<question>Domain（ドメイン）を利用する利点は何ですか？</question>
 			<answer>
 				<p>
 					主要な利点は次のものです。
 					<ol>
-					<li>異なる型で表すことで意味を明確にできる。</li>
-					<li>異なる型で表すことでまちがって代入してしまうなどのプログラミングミスを事前に防ぐことができる。</li>
-					<li>アプリケーション独自の型であるために、アプリケーションに適した振る舞いをもたせられる。</li>
+					<li>異なる型で表すことで意味を明確にできます。</li>
+					<li>異なる型で表すことでまちがって代入してしまうなどのプログラミングミスを事前に防ぐことができます。</li>
+					<li>アプリケーション独自の型であるために、アプリケーションに適した振る舞いをもたせられます。</li>
 					</ol>
 				</p>
 			</answer>
 		</faq>
-		<faq id="general-4">
+		<faq id="general-5">
 			<question>apt（アプト）とは何ですか？</question>
 			<answer>
 				<p>
@@ -54,7 +66,7 @@
 				</p>
 				<p>
 					Domaでは、Pluggable Annotation Processing APIを使用して、
-					エンティティやData Access Objectのインタフェースから実装クラスを生成しています。
+					Daoのインタフェースから実装クラスを生成しています。
 					また、SQLファイルの存在チェックや、メソッド定義が規約に合致しているかどうかの検証も行っています。
 				</p>
 			</answer>
@@ -101,7 +113,7 @@
 			<question>お奨めのIDE（統合開発環境）はありますか？</question>
 			<answer>
 				<p>
-					Eclipseをお奨めします。Eclipseのバージョンは3.5以上でなければいけません。
+					Eclipseをお奨めします。Eclipseのバージョンは 3.5 以上でなければいけません。
 				</p>
 				<p>
 					Eclipse 3.5 は JDK 6 で動作させる必要があります。
