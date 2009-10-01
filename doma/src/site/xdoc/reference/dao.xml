@@ -2,20 +2,20 @@
 <document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
 	<properties>
-		<title>DAO</title>
+		<title>Dao</title>
 	</properties>
 	<body>
 		<section name="概要">
 			<p>
-				Data Access Object （DAO） はデータベースアクセスのためのインタフェースです。
+				Data Access Object （Dao） はデータベースアクセスのためのインタフェースです。
 			</p>
 			<p>
 				このページで説明するアノテーションはすべて <code>org.seasar.doma</code> パッケージに属します。
 			</p>
 		</section>
-		<section name="DAO定義">
+		<section name="Dao定義">
 			<p>
-				DAOは <code>@Dao</code> が注釈されたpublicなインタフェースとして定義します。
+				Daoは <code>@Dao</code>が注釈されたインタフェースとして定義します。
 				インタフェースはトップレベルのインタフェースでなければいけません（他のクラスやインタフェースにネストされていてはいけません）。
 				インタフェースの実装クラスはaptによりコンパイル時に自動生成されます。
 			</p>
@@ -24,9 +24,9 @@ public interface EmployeeDao {
     ...
 }</source>
 			<p>
-				<code>@Dao</code> の <code>config</code> 要素には、
-				<code>org.seasar.doma.jdbc.Config</code> の実装クラスを指定しなければいけません。
-				<code>Config</code> の実装クラスは、データソース、データベースの方言、ネーミング規約等を決定します。
+				<code>@Dao</code>の <code>config</code>要素には、
+				<code>org.seasar.doma.jdbc.Config</code>の実装クラスを指定しなければいけません。
+				<code>Config</code>の実装クラスは、データソース、データベースの方言、ネーミング規約等を決定します。
 			</p>
 		</section>
 		<section name="クエリメソッド定義">
@@ -38,8 +38,8 @@ public interface EmployeeDao {
 					検索を行うには、 <a href="../apidocs/org/seasar/doma/Select.html"><code>@Select</code></a> を注釈します。
 				</p>
 				<p>
-					検索条件のパラメータとして、 <code>org.seasar.doma.domain.Domain</code> の実装クラスや エンティティインタフェース
-					の型を任意の数だけ宣言できます。また、IN句で複数のバインド変数に使用できるように、<code>Domain</code> の実装クラスを要素とする
+					検索条件のパラメータとして、基本型、<a href="domain.html">ドメインクラス</a>、<a href="entity.html">エンティティクラス</a>
+					を任意の数だけ宣言できます。また、IN句で複数のバインド変数に使用できるように、基本型やドメインクラスを要素とする
 					<code>java.util.List</code>型のパラメータも宣言できます。
 				</p>
 				<p>
@@ -47,7 +47,7 @@ public interface EmployeeDao {
 					<code>org.seasar.doma.jdbc.SelectOptions</code>型のパラメータを宣言してください。
 				</p>
 				<p>
-					大量件数を1件ずつ処理するには、 <code>@Select</code> の <code>iterate</code> 要素に <code>true</code>
+					大量件数を1件ずつ処理するには、 <code>@Select</code>の <code>iterate</code>要素に <code>true</code>
 					を設定し、<code>org.seasar.doma.jdbc.IterationCallback</code>型のパラメータを宣言してください。
 				</p>
 				<p>
@@ -57,23 +57,25 @@ public interface EmployeeDao {
 			</subsection>
 			<subsection name="挿入">
 				<p>
-					挿入を行うには、 <a href="../apidocs/org/seasar/doma/Insert.html"><code>@Insert</code></a> を注釈します。
+					挿入を行うには、 <a href="../apidocs/org/seasar/doma/Insert.html"><code>@Insert</code></a>を注釈します。
 				</p>
 				<p>
-					SQLの自動生成を使用するか<a href="sqlfile.html">SQLファイル</a>を使用するか選択できます。
+					<code>sqlFile</code>要素により、SQLの自動生成を使用するか<a href="sqlfile.html">SQLファイル</a>を使用するか選択できます。
+					デフォルトではSQLの自動生成が実行されます。
 				</p>
 			</subsection>
 			<subsection name="更新">
 				<p>
-					更新を行うには、<a href="../apidocs/org/seasar/doma/Update.html"><code>@Update</code></a> を注釈します。
+					更新を行うには、<a href="../apidocs/org/seasar/doma/Update.html"><code>@Update</code></a>を注釈します。
 				</p>
 				<p>
-					SQLの自動生成を使用するか<a href="sqlfile.html">SQLファイル</a>を使用するか選択できます。
+					<code>sqlFile</code>要素により、SQLの自動生成を使用するか<a href="sqlfile.html">SQLファイル</a>を使用するか選択できます。
+					デフォルトではSQLの自動生成が実行されます。
 				</p>
 			</subsection>
 			<subsection name="削除">
 				<p>
-					削除を行うには、 <a href="../apidocs/org/seasar/doma/Delete.html"><code>@Delete</code></a> を注釈します。
+					削除を行うには、 <a href="../apidocs/org/seasar/doma/Delete.html"><code>@Delete</code></a>を注釈します。
 				</p>
 				<p>
 					SQLの自動生成を使用するか<a href="sqlfile.html">SQLファイル</a>を使用するか選択できます。
@@ -81,7 +83,7 @@ public interface EmployeeDao {
 			</subsection>
 			<subsection name="バッチ挿入">
 				<p>
-					バッチ挿入を行うには、 <a href="../apidocs/org/seasar/doma/BatchInsert.html"><code>@BatchInsert</code></a> を注釈します。
+					バッチ挿入を行うには、 <a href="../apidocs/org/seasar/doma/BatchInsert.html"><code>@BatchInsert</code></a>を注釈します。
 				</p>
 				<p>
 					SQLの自動生成を使用するか<a href="sqlfile.html">SQLファイル</a>を使用するか選択できます。
@@ -89,23 +91,27 @@ public interface EmployeeDao {
 			</subsection>
 			<subsection name="バッチ更新">
 				<p>
-					バッチ更新を行うには、 <a href="../apidocs/org/seasar/doma/BatchUpdate.html"><code>@BatchUpdate</code></a> を注釈します。
+					バッチ更新を行うには、 <a href="../apidocs/org/seasar/doma/BatchUpdate.html"><code>@BatchUpdate</code></a>を注釈します。
 				</p>
 				<p>
-					SQLの自動生成を使用するか<a href="sqlfile.html">SQLファイル</a>を使用するか選択できます。
+					<code>sqlFile</code>要素により、SQLの自動生成を使用するか<a href="sqlfile.html">SQLファイル</a>を使用するか選択できます。
+					デフォルトではSQLの自動生成が実行されます。
+
 				</p>
 			</subsection>
 			<subsection name="バッチ削除">
 				<p>
-					バッチ削除を行うには、 <a href="../apidocs/org/seasar/doma/BatchDelete.html"><code>@BatchDelete</code></a> を注釈します。
+					バッチ削除を行うには、 <a href="../apidocs/org/seasar/doma/BatchDelete.html"><code>@BatchDelete</code></a>を注釈します。
 				</p>
 				<p>
-					SQLの自動生成を使用するか<a href="sqlfile.html">SQLファイル</a>を使用するか選択できます。
+					<code>sqlFile</code>要素により、SQLの自動生成を使用するか<a href="sqlfile.html">SQLファイル</a>を使用するか選択できます。
+					デフォルトではSQLの自動生成が実行されます。
+
 				</p>
 			</subsection>
 			<subsection name="ストアドファンクション">
 				<p>
-					ストアドファンクションを呼び出すには、 <a href="../apidocs/org/seasar/doma/Function.html"><code>@Function</code></a> を注釈します。
+					ストアドファンクションを呼び出すには、 <a href="../apidocs/org/seasar/doma/Function.html"><code>@Function</code></a>を注釈します。
 				</p>
 				<p>
 					SQLの自動生成機能のみがサポートされています。
@@ -114,7 +120,7 @@ public interface EmployeeDao {
 			</subsection>
 			<subsection name="ストアドプロシージャー">
 				<p>
-					ストアドプロシージャーを呼び出すには、 <a href="../apidocs/org/seasar/doma/Procedure.html"><code>@Procedure</code></a> を注釈します。
+					ストアドプロシージャーを呼び出すには、 <a href="../apidocs/org/seasar/doma/Procedure.html"><code>@Procedure</code></a>を注釈します。
 				</p>
 				<p>
 					SQLの自動生成機能のみがサポートされています。
@@ -123,7 +129,7 @@ public interface EmployeeDao {
 			</subsection>
 			<subsection name="ファクトリ">
 				<p>
-					JDBC4.0の <code>java.sql.Connection</code> が提供するファクトリメソッドを呼び出すには
+					JDBC4.0の <code>java.sql.Connection</code>が提供するファクトリメソッドを呼び出すには
 					<a href="../apidocs/org/seasar/doma/ArrayFactory.html"><code>@ArrayFactory</code></a> 、
 					<a href="../apidocs/org/seasar/doma/BlobFactory.html"><code>@BlobFactory</code></a> 、
 					<a href="../apidocs/org/seasar/doma/ClobFactory.html"><code>@ClobFactory</code></a> 、
@@ -135,7 +141,7 @@ public interface EmployeeDao {
 		<section name="デリゲート定義">
 			<p>
 				DAOは、インタフェースであるためロジックをもつことができません。
-				しかし、 <code>@Delegate</code> を注釈することで別のクラスに処理を委譲（デリゲート）できます。
+				しかし、 <code>@Delegate</code>を注釈することで別のクラスに処理を委譲（デリゲート）できます。
 				JDBCを直接使った処理を行いたい場合に使用するといいでしょう。
 			</p>
 <source>@Dao(config = AppConfig.class)
@@ -158,33 +164,33 @@ public interface EmployeeDao {
     }
 }</source>
 			<p>
-				<code>@Delegate</code> の <code>to</code> 要素には、委譲先のクラスを指定します。
+				<code>@Delegate</code> の <code>to</code>要素には、委譲先のクラスを指定します。
 				委譲先のクラスは次の制約を満たす必要があります。
 			</p>
 			<ul>
-				<li><code>org.seasar.doma.jdbc.Config</code> を受け取るpublicなコンストラクタを持つ</li>
+				<li><code>org.seasar.doma.jdbc.Config</code>を受け取るpublicなコンストラクタを持つ</li>
 				<li>委譲元のメソッドと同じシグニチャのメソッドを持つ</li>
 			</ul>
 		</section>
-		<section name="DAOの利用方法">
+		<section name="Daoの利用方法">
 			<p>
 				コンパイルすると、aptにより実装クラスが生成されます。
 				実装クラスをインスタンス化して使用してください。
 			</p>
-<source>EmployeeDao employeeDao = new EmployeeDao_();
-Employee employee = employeeDao.selectById(new Identity(1));</source>
+<source>EmployeeDao employeeDao = new EmployeeDaoImpl();
+Employee employee = employeeDao.selectById(1);</source>
 			<p>
-				デフォルトでは、実装クラスの名前はインタフェースの名前にアンダースコア（_）をサフィックスしたものになります。
+				デフォルトでは、実装クラスの名前はインタフェースの名前に<code>Impl</code>をサフィックスしたものになります。
 				パッケージやサフィックスを変更するには、<a href="apt.html">注釈処理</a>を参照してください。
 			</p>
 			<p>
-				デフォルトコンストラクタを使用した場合は、<code>@Dao</code> の <code>config</code> 要素に
-				指定したクラスにより <code>DataSource</code> が提供されますが、
-				特定の <code>DataSource</code> を指定してインスタンス化することもできます。
+				デフォルトコンストラクタを使用した場合は、<code>@Dao</code>の <code>config</code>要素に
+				指定したクラスにより <code>DataSource</code>が提供されますが、
+				特定の <code>DataSource</code>を指定してインスタンス化することもできます。
 			</p>
 <source>DataSource dataSource = ...;
-EmployeeDao employeeDao = new EmployeeDao_(dataSource);
-Employee employee = employeeDao.selectById(new Identity(1));</source>
+EmployeeDao employeeDao = new EmployeeDaoImpl(dataSource);
+Employee employee = employeeDao.selectById(1);</source>
 		</section>
 	</body>
 </document>

@@ -14,6 +14,6 @@
  * governing permissions and limitations under the License.
  */
 /**
- * エンティティやそのプロパティを表すクラスやインタフェースを提供します。
+ * エンティティに関するクラスやインタフェースを提供します。
  */
 package org.seasar.doma.jdbc.entity;

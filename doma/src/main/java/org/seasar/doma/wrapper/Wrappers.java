@@ -35,7 +35,7 @@ import org.seasar.doma.internal.util.MethodUtil;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
- * 値を適切なラッパーでラップするユーティリティクラスです。
+ * 値を適切なラッパーでラップするためのクラスです。
  * 
  * @author taedium
  * 

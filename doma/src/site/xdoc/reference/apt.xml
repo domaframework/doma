@@ -11,8 +11,8 @@
 				を利用すると、ソースコードの自動生成や検証をコンパイル時に行うことができます。
 			</p>
 			<p>
-				DomaではこのAPIを利用し、@Entityや@Daoと言ったアノテーションが注釈されたインタフェースの実装クラスを自動で作成します。
-				また、注釈されたインタフェースの検証を行い、Domaの規約に従っていないソースコードがある場合は
+				DomaではこのAPIを利用し、@Entityや@Daoと言ったアノテーションが注釈されたクラスやインタフェースを処理し、必要なクラスを自動生成します。
+				また、注釈されたクラスやインタフェースの検証を行い、Domaの規約に従っていないソースコードがある場合は
 				エラーメッセージをIDE（Eclipseなど）のエディタやjavacを実行したコンソール上に表示します。
 			</p>
 		</section>
@@ -45,9 +45,9 @@
 				<tr>
 					<td>dao.suffix</td>
 					<td>@Daoが注釈されたインタフェースの実装クラスの名前のサフィックス。
-					@Daoが注釈されたインタフェースの単純名が「EmployeeDao」で、ここに指定した値が「Impl」の場合、
-					生成されるクラスの単純名は「EmployeeDaoImpl」となる。</td>
-					<td>_ （アンダースコア）</td>
+					@Daoが注釈されたインタフェースの単純名が「EmployeeDao」で、ここに指定した値が「Bean」の場合、
+					生成されるクラスの単純名は「EmployeeDaoBean」となる。</td>
+					<td>Impl</td>
 				</tr>
 				<tr>
 					<td>debug</td>
@@ -55,53 +55,19 @@
 					<td>false</td>
 				</tr>
 				<tr>
-					<td>dto.generation</td>
-					<td>@Entityが注釈されたインタフェースに対応するDTOクラスを生成するかどうか。
-					出力されるDTOはDomaに依存しないいわゆるPOJOなクラス。「true」の場合生成する。</td>
-					<td>false</td>
-				</tr>
-				<tr>
-					<td>dto.package</td>
-					<td>@Entityが注釈されたインタフェースに対応するDTOクラスが生成されるパッケージ。
-					何らかの値を指定した場合、dto.subpackageの指定よりも優先される。
-					dto.generation=trueの場合にのみ有効。</td>
-					<td>@Entityが注釈されたインタフェースと同じパッケージ</td>
-				</tr>
-				<tr>
-					<td>dto.subpackage</td>
-					<td>@Entityが注釈されたインタフェースに対応するDTOクラスが生成されるサブパッケージ。
-					dto.packageに値を指定していない場合かつdto.generation=trueの場合にのみ有効。
-					@Entityが注釈されたインタフェースのパッケージが「example.entity」で、ここに指定した値が「dto」の場合、
-					生成されるクラスのパッケージは「example.entity.dto」となる。</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>dto.suffix</td>
-					<td>@Entityが注釈されたインタフェースに対応するDTOクラスの名前のサフィックス。
-					dto.generation=trueの場合にのみ有効。
-					@Entityが注釈されたインタフェースの単純名が「Employee」で、ここに指定した値が「TransferObject」の場合、
-					生成されるクラスの単純名は「EmployeeTransferObject」となる。</td>
-					<td>Dto</td>
-				</tr>
-				<tr>
-					<td>entity.package</td>
-					<td>@Entityが注釈されたインタフェースの実装クラスが生成されるパッケージ。
-					何らかの値を指定した場合、entity.subpackageの指定よりも優先される。</td>
-					<td>@Entityが注釈されたインタフェースと同じパッケージ</td>
-				</tr>
-				<tr>
-					<td>entity.subpackage</td>
-					<td>@Entityが注釈されたインタフェースの実装クラスが生成されるサブパッケージ。
-					entity.packageに値を指定していない場合にのみ有効。
-					@Entityが注釈されたインタフェースのパッケージが「example.entity」で、ここに指定した値が「impl」の場合、
-					生成されるクラスのパッケージは「example.entity.impl」となる。</td>
-					<td></td>
-				</tr>
-				<tr>
 					<td>entity.suffix</td>
-					<td>@Entityが注釈されたインタフェースの実装クラスの名前のサフィックス。
-					@Entityが注釈されたインタフェースの単純名が「Employee」で、ここに指定した値が「Impl」の場合、
-					生成されるクラスの単純名は「EmployeeImpl」となる。</td>
+					<td>@Entityが注釈されたクラスから生成される内部的なクラス名のサフィックス。
+					@Entityが注釈されたインタフェースの単純名が「Employee」で、ここに指定した値が「Meta」の場合、
+					生成されるクラスの単純名は「EmployeeMeta」となる。
+					アプリケーションから直接使用するクラスではないため、通常は使用する必要性がない。</td>
+					<td>_ （アンダースコア）</td>
+				</tr>
+				<tr>
+					<td>domain.suffix</td>
+				<td>@Domainが注釈されたクラスから生成される内部的なクラス名のサフィックス。
+					@Domainが注釈されたインタフェースの単純名が「Salary」で、ここに指定した値が「Meta」の場合、
+					生成されるクラスの単純名は「SalaryMeta」となる。
+					アプリケーションから直接使用するクラスではないため、通常は使用する必要性がない。</td>
 					<td>_ （アンダースコア）</td>
 				</tr>
 			</table>

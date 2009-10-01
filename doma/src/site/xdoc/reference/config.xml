@@ -7,7 +7,7 @@
 	<body>
 		<section name="概要">
 			<p>
-				DAOに対する設定は、<a href ="../apidocs/org/seasar/doma/jdbc/Config.html"><code>org.seasar.doma.jdbc.Config</code></a> の実装クラスで表し、
+				Daoに対する設定は、<a href ="../apidocs/org/seasar/doma/jdbc/Config.html"><code>org.seasar.doma.jdbc.Config</code></a> の実装クラスで表し、
 				<code>@Dao</code> の <code>config</code> 要素に指定します。
 			</p>
 			<p>

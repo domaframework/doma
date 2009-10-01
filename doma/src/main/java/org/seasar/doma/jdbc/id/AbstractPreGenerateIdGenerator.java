@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentMap;
 import org.seasar.doma.jdbc.JdbcException;
 
 /**
- * INSERT文の実行前に識別子を生成するジェネレータの抽象クラスです。
+ * INSERT文の実行前に識別子を生成するジェネレータの骨格実装です。
  * 
  * @author taedium
  * 

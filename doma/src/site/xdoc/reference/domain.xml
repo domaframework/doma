@@ -7,86 +7,96 @@
 	<body>
 		<section name="概要">
 			<p>
-				Domain（ドメイン）の定義方法を示します。
+				Domain（ドメイン）クラスの定義方法を示します。
 				ドメインとは、値のとり得る範囲（定義域）のことです。
 				Domaでは、テーブルのカラムの値を、ドメインと呼ばれるJavaオブジェクトで扱います。
 			</p>
 			<p>
-				一般的なドメインについては、あらかじめ、Domaに組み込まれていますが、
-				アプリケーションごとに適切なドメインを独自に作成することを推奨します。
-				あらかじめ組み込まれているドメインクラスは、<code>org.seasar.doma.domain</code>パッケージに具象クラスとして用意されています（クラスの単純名に「Builtin」というプレフィックスを持ちます）。
+				ドメインクラスを利用することで、データベース上のカラムの型が同じあってもアプリケーション上意味が異なるものを別のJavaの型で表現できます。
+				これにより、意味を明確にしプログラミングミスを事前に防ぐことが可能です。
+				また、ドメインクラスに振る舞いを持たせることで、よりわかりやすいプログラミングが可能です。
+			</p>
+			<p>
+				ドメインクラスの作成と利用は任意です。
+				ドメインクラスを利用しなくても<code>Integer</code>や<code>String</code>など基本型のみでデータアクセスは可能です。
 			</p>
 		</section>
-		<section name="カスタムドメインクラスの作成">
+		<section name="ドメインクラスの作成">
 			<p>
-				ドメインクラスは <code>org.seasar.doma.domain.Domain</code> インタフェースを実装している必要があります。
-				このインタフェースを直接実装してもかまいませんが、通常は、 <code>org.seasar.doma.domain</code> パッケージで提供される抽象クラスを継承することで簡単に作成できます。
+				ドメインクラスは <code>@Domain</code>を注釈して示します。
 			</p>
 			<p>
-				また、制約として、メインクラスは、publicのデフォルトコンストラクタ（引数なしのコンストラクタ）を持たなければいけません。
+				<code>@Domain</code>の<code>valueType</code>要素には、ドメインクラスで扱う基本型を指定します。この基本型が、データベースのカラムの型とのマッピングに使用されます。
 			</p>
 			<p>
-				以下の例では、 <code>org.seasar.doma.domain.BigDecimalDomain</code> を継承して、給料を表すドメインクラスを作成しています。
+				<code>accessorMethod</code>要素には、<code>valueType</code>要素に指定した型を返すアクセッサーメソッドの名前を指定します。デフォルト値は<code>getValue</code>です。
 			</p>
-<source>package example;
+			<p>
+				以下の例では、 電話番号を表すドメインクラスを作成しています。
+			</p>
+<source>package example.domain;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
+import org.seasar.doma.Domain;
 
-import org.seasar.doma.domain.BigDecimalDomain;
+@Domain(valueType = String.class)
+public class PhoneNumber {
 
-public class Salary extends BigDecimalDomain&lt;Salary&gt; {
+    private final String value;
 
-    private static final long serialVersionUID = 1L;
-
-    public Salary() {
-        super();
+    public PhoneNumber(String value) {
+        this.value = value;
     }
 
-    public Salary(BigDecimal value) {
-        super(value);
+    public String getValue() {
+        return value;
+    }
+
+    public String getAreaCode() {
+       // ドメインに固有の振る舞いを記述できる。
+       ...
     }
 }</source>
 			<p>
-				抽象クラスの型パラメータに対し、ここで定義するクラスを指定することがポイントです。
+				クラスには、<code>valueType</code>要素に指定した型と同じ型をもつ非<code>private</code>なコンストラクタが必要です。
+				また、<code>accessorMethod</code>要素にしてした値を名前とする非<code>private</code>なメソッドが必要です。
 			</p>
 			<p>
-				必要であれば、コンストラクタや<code>setInternal</code>メソッドで、より厳密に値のとりうる範囲を限定してください。
-				また、アプリケーションに固有の任意のメソッドも実装できます。
+				任意ですが、ドメインクラスは不変オブジェクトとして作成することを推奨します。
+				上記の例では、<code>value</code>フィールドは一度設定されると二度と変更されません。
 			</p>
 			<p>
-				<code>org.seasar.doma.domain.Domain</code> インタフェースやその実装クラスの詳細についてはJavadocを参照してください。
+				クラスには、任意のメソッドを持たせることができます。
 			</p>
 		</section>
 		<section name="エンティティでの利用">
 			<p>
-				ドメインクラスは、エンティティのプロパティの型を定義するために使用されます。
+				ドメインクラスは、エンティティのプロパティの型で利用できます。
 			</p>
 <source>@Entity
-public interface Employee {
+public class Employee {
 
     @Id
-    Identity employeeId();
+    Integer employeeId;
 
-    EmployeeNo employeeNo();
+    String employeeName;
 
-    EmployeeName employeeName();
-
-    Salary salary();
+    PhoneNumber phoneNumber;
 
     @Version
     VersionNo versionNo();
+    
+    ...
 }</source>
 		</section>
-		<section name="DAOでの利用">
+		<section name="Daoでの利用">
 			<p>
-				ドメインクラスは、Data Access Objectのクラスのメソッドのパラメータの型に使用されます。
+				ドメインクラスは、Daoのメソッドのパラメータの型にも使用できます。
 			</p>
 <source>@Dao(config = AppConfig.class)
 public interface EmployeeDao {
 
     @Select
-    Employee selectBySalary(Salary salary);
+    Employee selectByPhoneNumber(PhoneNumber phoneNumber);
 }</source>
 		</section>
 	</body>

@@ -64,8 +64,9 @@ public enum SqlTokenType {
         @Override
         public String extractExpression(String token) {
             assertNotNull(token);
-            assertTrue(token.length() >= 6);
-            return token.substring(3, token.length() - 2);
+            assertTrue(token.length() >= 5);
+            String s = token.substring(3, token.length() - 2);
+            return StringUtil.trimWhitespace(s);
         }
     },
 

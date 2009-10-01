@@ -10,18 +10,18 @@
 				Entity（エンティティ）は、データベースのテーブルやクエリの結果セットに対応します。
 			</p>
 			<p>
-				このページで説明するアノテーションはすべて <code>org.seasar.doma</code> パッケージに属します。
+				このページで説明するアノテーションはすべて<code>org.seasar.doma</code>パッケージに属します。
 			</p>
 		</section>
 		<section name="エンティティ定義">
 			<p>
-				エンティティは <code>@Entity</code> が注釈されたpublicなインタフェースとして定義します。
-				インタフェースはトップレベルのインタフェースでなければいけません（他のクラスやインタフェースにネストされていてはいけません）。
-				インタフェースの実装クラスはaptによりコンパイル時に自動生成されます。
+				エンティティは <code>@Entity</code>が注釈された非<code>private</code>なクラスとして定義します。
+				クラスはトップレベルのクラスでなければいけません（他のクラスやインタフェースにネストされていてはいけません）。
+				エンティティクラスからは、フレームワークの内部で使用されるクラスがaptによりコンパイル時に自動生成されます。
 			</p>
 <source>
 @Entity
-public interface Employee {
+public class Employee {
     ...
 }</source>
 			<p>
@@ -30,7 +30,7 @@ public interface Employee {
 				の実装クラスを指定できます。
 			</p>
 <source>@Entity(listener = EntityListener.class)
-public interface Employee {
+public class Employee {
     ...
 }</source>
 <source>public class EmployeeEntityListener implements EntityListener&lt;EmployeeEntity&gt; {
@@ -48,7 +48,7 @@ public interface Employee {
     }
 }</source>
 				<p>
-					<code>EntityListener</code> の実装クラスはpublicなデフォルトコンストラクタ（引数なしのコンストラクタ）を
+					<code>EntityListener</code>の実装クラスはpublicなデフォルトコンストラクタ（引数なしのコンストラクタ）を
 					持たねばいけません。
 				</p>
 			<subsection name="テーブル">
@@ -61,7 +61,7 @@ public interface Employee {
 <source>
 @Entity
 @Table(name = "EMP")
-public interface Employee {
+public class Employee {
     ...
 }</source>
 				<p>
@@ -70,30 +70,16 @@ public interface Employee {
 <source>
 @Entity
 @Table(catalog = "CATALOG", schema ="SCHEMA", name = "EMP")
-public interface Employee {
+public class Employee {
     ...
 }</source>
 				<p>
-					<code>@Table</code> を使用しない、もしくは <code>@Table</code> の <code>name</code> 要素
-					を使用しない場合、テーブル名は、 <code>org.seasar.doma.jdbc.NamingConvention</code> の実装クラスに
-					より解決されます。 <code>NamingConvention</code> の実装クラスは <code>DAO</code> の設定で決まります。
+					<code>@Table</code>を使用しない、もしくは <code>@Table</code>の <code>name</code>要素
+					を使用しない場合、テーブル名は、 <code>org.seasar.doma.jdbc.NamingConvention</code>の実装クラスに
+					より解決されます。 <code>NamingConvention</code>の実装クラスは <code>Dao</code>の設定で決まります。
 				</p>
 			</subsection>
 			<subsection name="継承">
-				<p>
-					エンティティは、 <code>@MappedSuperclass</code> が注釈されたインタフェースを複数継承できます。
-					<code>@MappedSuperclass</code> が注釈されていないインタフェースは継承できません。
-				</p>
-<source>
-@MappedSuperclass
-public interface EmployeeBase {
-    ...
-}</source>
-<source>
-@Entity
-public interface Employee extends EmployeeBase {
-    ...
-}</source>
 			</subsection>
 		</section>
 		<section name="プロパティ定義">
@@ -196,51 +182,13 @@ Salary tempSalary();</source>
 List&lt;Salary&gt; tempSalaryList();</source>
 			</subsection>
 		</section>
-		<section name="デリゲート定義">
-			<p>
-				エンティティは、インタフェースであるためロジックをもつことができません。
-				しかし、 <code>@Delegate</code> を注釈することで別のクラスに処理を委譲（デリゲート）できます。
-				エンティティに閉じた複数プロパティを扱う処理を記述する場合に使うといいでしょう。
-			</p>
-<source>@Entity
-public interface Employee {
-
-    @Delegate(to = EmployeeDelegate.class)
-    Salary calculate(Salary salary);
-}</source>
-<source>public class EmployeeDelegate {
-
-    private Employee employee;
-    
-    public EmployeeDelegate(Employee employee) {
-        this.employee = employee;
-    }
-
-    public Salary calculate(Salary salary) {
-        ...
-    }
-}</source>
-			<p>
-				<code>@Delegate</code> の <code>to</code> 要素には、委譲先のクラスを指定します。
-				委譲先のクラスは次の制約を満たす必要があります。
-			</p>
-			<ul>
-				<li>委譲元のエンティティクラスを受け取るpublicなコンストラクタを持つ</li>
-				<li>委譲元のメソッドと同じシグニチャのメソッドを持つ</li>
-			</ul>
-		</section>
 		<section name="エンティティの利用方法">
 			<p>
-				コンパイルすると、aptにより実装クラスが生成されます。
-				実装クラスをインスタンス化して使用してください。
+				インスタンス化して使用してください。
 			</p>
-<source>Employee employee = new Employee_();
-employee.employeeName.set("SMITH");
-employee.salary.set(new BigDecimal(1000));</source>
-			<p>
-				デフォルトでは、実装クラスの名前はインタフェースの名前にアンダースコア（_）をサフィックスしたものになります。
-				パッケージやサフィックスを変更するには、<a href="apt.html">注釈処理</a>を参照してください。
-			</p>
+<source>Employee employee = new Employee();
+employee.setEmployeeName("SMITH");
+employee.setSalary(new BigDecimal(1000);</source>
 		</section>
 	</body>
 </document>

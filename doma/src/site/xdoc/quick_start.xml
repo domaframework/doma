@@ -7,7 +7,7 @@
 	<body>
 		<section name="クイックスタート">
 			<p>
-				あらかじめセットアップを完了させてください。
+				あらかじめ<a href="setup.html">セットアップ</a>を完了させてください。
 			</p>
 			<p>
 				このクイックスタートでは、PostgresSQLにサンプルテーブルとデータを用意し、取得と更新を行います。
@@ -32,43 +32,105 @@ insert into EMPLOYEE values(1, 'SMITH', '1980-12-17', 800, 1);
 insert into EMPLOYEE values(2, 'ALLEN', '1981-02-20', 1600, 1);
 insert into EMPLOYEE values(3, 'WARD', '1981-02-22', 1250, 1);</source>
 			</subsection>
-			<subsection name="エンティティインタフェースの作成">
+			<subsection name="JDBCドライバのダウンロード">
 				<p>
-					テーブルにマッピングするエンティティを作成します。
+					Postgre SQLのJDBCドライバは次のサイトからダウンロードできます。
+					Domaは、JDBC 4 をサポートしているため、JDBC 4 に対応するドライバを使用できます。
+				</p>
+				<ul>
+					<li><a href="http://jdbc.postgresql.org/download.html">http://jdbc.postgresql.org/download.html</a></li>
+				</ul>
+				<p>
+					ダウンロードしたら開発環境のクラスパスに追加して使用してください。
+				</p>
+			</subsection>
+			<subsection name="エンティティクラスの作成">
+				<p>
+					テーブルにマッピングするエンティティクラスを作成します。
 					エンティティであることを示すために@Entityを注釈します。
 				</p>
 				<p>
 					主キーには@Id、楽観的排他制御で使用するバージョン番号には@Versionを注釈します。
 				</p>
+				<p>
+					プロパティのフィールドは、非<code>private</code>にします。
+				</p>
 <source>package example;
+
+import java.math.BigDecimal;
+import java.sql.Date;
 
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
 import org.seasar.doma.Version;
-import org.seasar.doma.domain.BuiltinBigDecimalDomain;
-import org.seasar.doma.domain.BuiltinDateDomain;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
-import org.seasar.doma.domain.BuiltinStringDomain;
 
 @Entity
-public interface Employee {
+public class Employee {
 
     @Id
-    BuiltinIntegerDomain employeeId();
+    Integer employeeId;
 
-    BuiltinStringDomain employeeName();
+    String employeeName;
 
-    BuiltinDateDomain hiredate();
+    Date hiredate;
 
-    BuiltinBigDecimalDomain salary();
+    BigDecimal salary;
 
     @Version
-    BuiltinIntegerDomain versionNo();
+    Integer versionNo;
+
+    public Integer getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Integer employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
+    }
+
+    public Date getHiredate() {
+        return hiredate;
+    }
+
+    public void setHiredate(Date hiredate) {
+        this.hiredate = hiredate;
+    }
+
+    public BigDecimal getSalary() {
+        return salary;
+    }
+
+    public void setSalary(BigDecimal salary) {
+        this.salary = salary;
+    }
+
+    public Integer getVersionNo() {
+        return versionNo;
+    }
+
+    public void setVersionNo(Integer versionNo) {
+        this.versionNo = versionNo;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee [employeeId=" + employeeId + ", employeeName="
+                + employeeName + ", hiredate=" + hiredate + ", salary="
+                + salary + ", versionNo=" + versionNo + "]";
+    }
+
 }</source>
 			</subsection>
 			<subsection name="設定クラスの作成">
 				<p>
-					設定情報を提供するクラスを作成します。
+					データベースアクセスに関する設定情報を提供するクラスを作成します。
 					ここでは、PostgreSQLのデータソースと方言を利用することを示します。
 				</p>
 				<p>
@@ -110,8 +172,8 @@ public class AppConfig extends DomaAbstractConfig {
 			</subsection>
 			<subsection name="DAOインタフェースの作成">
 				<p>
-					データアクセスを行うためのDAOを作成します。
-					DAOであることを示すために@Daoを注釈します。
+					データアクセスを行うためのData Access Object（Dao）インタフェースを作成します。
+					Daoであることを示すために@Daoを注釈します。
 					@Daoのconfig要素には、先ほど作成したAppConfigクラスを指定してください。
 				</p>
 				<p>
@@ -122,13 +184,12 @@ public class AppConfig extends DomaAbstractConfig {
 import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
 import org.seasar.doma.Update;
-import org.seasar.doma.domain.BuiltinIntegerDomain;
 
 @Dao(config = AppConfig.class)
 public interface EmployeeDao {
 
     @Select
-    Employee selectById(BuiltinIntegerDomain employeeId);
+    Employee selectById(Integer employeeId);
 
     @Update
     int update(Employee employee);
@@ -145,47 +206,52 @@ public interface EmployeeDao {
 				</p>
 <source>select * from employee where employee_id = /*employeeId*/99</source>
 				<p>
-					ファイルを作成したら、EmployeeDaoを再度ビルドしてください。
+					ファイルを作成したら、<code>EmployeeDao</code>を再度ビルドしてください。
 					ビルドをするとSQLファイルの存在チェックが再度行われエラーが消えます。
+				</p>
+				<p>
+					また、ビルドが成功すると、インタフェースと同じパッケージに<code>EmployeeDaoImpl</code>という実装クラスが自動生成されます。
+					データベースアクセスは、この実装クラスをインスタンス化しておこないます。
 				</p>
 			</subsection>
 			<subsection name="起動クラスの作成">
 				<p>
-					エンティティやDAOを利用してデータベースアクセスを行うクラスを作成します。従業員テーブルから1件を主キーで検索し、従業員名を更新しています。
+					エンティティやDaoを利用してデータベースアクセスを行います。
 				</p>
 <source>package example;
-
-import org.seasar.doma.domain.BuiltinIntegerDomain;
 
 public class Main {
 
     public static void main(String[] args) {
-        EmployeeDao dao = new EmployeeDao_();
-        Employee employee = dao.selectById(new BuiltinIntegerDomain(3));
-        employee.employeeName().set("KING");
+        EmployeeDao dao = new EmployeeDaoImpl();
+        Employee employee = dao.selectById(3);
+        employee.setEmployeeName("KING");
         dao.update(employee);
     }
 }</source>
+				<p>
+					ここでは、従業員テーブルから1件を主キーで検索し、従業員名を更新しています。
+				</p>
 			</subsection>
 			<subsection name="実行結果（実行時のログ出力）">
 				<p>
-					実行すると、java.util.loggingを使用したログがコンソールに出力されます。
+					実行すると、<code>java.util.logging.Logger</code>を使用したログがコンソールに出力されます。
 					わかりやすいように、検索処理のログと更新処理のログの間に空行を入れています。
 				</p>
-<source>2009/08/07 1:18:57 example.EmployeeDao_ selectById
+<source>2009/10/01 21:39:46 example.EmployeeDaoImpl selectById
 情報: ENTRY
-2009/08/07 1:18:57 example.EmployeeDao_ selectById
+2009/10/01 21:39:46 example.EmployeeDaoImpl selectById
 情報: META-INF/example/EmployeeDao/selectById.sql
-2009/08/07 1:18:58 example.EmployeeDao_ selectById
+2009/10/01 21:39:47 example.EmployeeDaoImpl selectById
 情報: select * from employee where employee_id = 3
-2009/08/07 1:18:58 example.EmployeeDao_ selectById
-情報: RETURN Employee_ [employeeId=3, employeeName=WARD, hiredate=1981-02-22, salary=1250.00, versionNo=1]
+2009/10/01 21:39:47 example.EmployeeDaoImpl selectById
+情報: RETURN Employee [employeeId=3, employeeName=WARD, hiredate=1981-02-22, salary=1250.00, versionNo=1]
 
-2009/08/07 1:18:58 example.EmployeeDao_ update
+2009/10/01 21:39:47 example.EmployeeDaoImpl update
 情報: ENTRY
-2009/08/07 1:18:58 example.EmployeeDao_ update
-情報: update EMPLOYEE set EMPLOYEE_NAME = 'KING', VERSION_NO = 1 + 1 where EMPLOYEE_ID = 3 and VERSION_NO = 1
-2009/08/07 1:18:58 example.EmployeeDao_ update
+2009/10/01 21:39:47 example.EmployeeDaoImpl update
+情報: update EMPLOYEE set EMPLOYEE_NAME = 'KING', HIREDATE = '1981-02-22', SALARY = 1250.00, VERSION_NO = 1 + 1 where EMPLOYEE_ID = 3 and VERSION_NO = 1
+2009/10/01 21:39:47 example.EmployeeDaoImpl update
 情報: RETURN 1</source>
 			</subsection>
 		</section>
