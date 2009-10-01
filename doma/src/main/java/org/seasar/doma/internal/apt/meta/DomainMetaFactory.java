@@ -92,7 +92,7 @@ public class DomainMetaFactory {
             DomainMeta domainMeta) {
         for (ExecutableElement constructor : ElementFilter
                 .constructorsIn(classElement.getEnclosedElements())) {
-            if (!constructor.getModifiers().contains(Modifier.PUBLIC)) {
+            if (constructor.getModifiers().contains(Modifier.PRIVATE)) {
                 continue;
             }
             List<? extends VariableElement> parameters = constructor
