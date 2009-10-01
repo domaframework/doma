@@ -17,8 +17,6 @@ package org.seasar.doma.internal.apt.meta;
 
 import org.seasar.doma.internal.apt.type.IterationCallbackType;
 import org.seasar.doma.internal.apt.type.SelectOptionsType;
-import org.seasar.doma.jdbc.Options;
-import org.seasar.doma.jdbc.SelectOptions;
 
 /**
  * @author taedium
@@ -39,10 +37,6 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
     protected String selectOptionsParameterName;
 
     protected SelectOptionsType selectOptionsType;
-
-    public Class<? extends Options> getOptionsClass() {
-        return SelectOptions.class;
-    }
 
     public boolean isIterated() {
         return iterated;

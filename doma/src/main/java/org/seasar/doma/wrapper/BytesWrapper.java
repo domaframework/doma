@@ -18,16 +18,25 @@ package org.seasar.doma.wrapper;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@code byte[]} を値の型とするドメインの骨格実装です。
+ * {@code byte[]} のラッパーです。
  * 
  * @author taedium
  * 
  */
 public class BytesWrapper extends AbstractWrapper<byte[]> {
 
+    /**
+     * インスタンスを構築します。
+     */
     public BytesWrapper() {
     }
 
+    /**
+     * 値を指定してインスタンスを構築します。
+     * 
+     * @param value
+     *            値
+     */
     public BytesWrapper(byte[] value) {
         super(value);
     }
@@ -44,7 +53,7 @@ public class BytesWrapper extends AbstractWrapper<byte[]> {
                     .cast(visitor);
             return v.visitBytesWrapper(this, p);
         }
-        return visitor.visitUnknownDomain(this, p);
+        return visitor.visitUnknownWrapper(this, p);
     }
 
 }

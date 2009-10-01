@@ -30,6 +30,17 @@ package org.seasar.doma.wrapper;
 public interface LongWrapperVisitor<R, P, TH extends Throwable> extends
         WrapperVisitor<R, P, TH> {
 
+    /**
+     * ラッパーを訪問します。
+     * 
+     * @param wrapper
+     *            ラッパー
+     * @param p
+     *            パラメータ
+     * @return 処理結果
+     * @throws TH
+     *             例外
+     */
     R visitLongWrapper(LongWrapper wrapper, P p) throws TH;
 
 }

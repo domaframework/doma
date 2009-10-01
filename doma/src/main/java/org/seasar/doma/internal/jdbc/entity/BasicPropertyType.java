@@ -27,37 +27,16 @@ import org.seasar.doma.wrapper.Wrapper;
 public class BasicPropertyType<W extends Wrapper<?>> implements
         EntityPropertyType<W> {
 
-    /** 名前 */
     protected final String name;
 
-    /** カラム名 */
     protected final String columnName;
 
-    /** ドメイン */
     protected final W wrapper;
 
-    /** INSERT文に含める対象かどうか */
     protected final boolean insertable;
 
-    /** UPDATE文のSET句に含める対象かどうか */
     protected final boolean updatable;
 
-    /**
-     * インスタンスを構築します。
-     * 
-     * @param name
-     *            名前
-     * @param columnName
-     *            カラム名
-     * @param wrapper
-     *            ドメイン
-     * @param insertable
-     *            INSERT文に含める対象かどうか
-     * @param updatable
-     *            UPDATE文のSET句に含める対象かどうか
-     * @throws DomaNullPointerException
-     *             {@code name} もしくは {@code domain} が {@code null} の場合
-     */
     public BasicPropertyType(String name, String columnName, W wrapper,
             boolean insertable, boolean updatable) {
         if (name == null) {

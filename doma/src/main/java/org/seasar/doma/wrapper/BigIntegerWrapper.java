@@ -20,7 +20,7 @@ import java.math.BigInteger;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@link BigInteger} を値の型とするドメインの骨格実装です。
+ * {@link BigInteger} のラッパーです。
  * 
  * @author taedium
  * 
@@ -28,9 +28,18 @@ import org.seasar.doma.DomaNullPointerException;
 public class BigIntegerWrapper extends AbstractWrapper<BigInteger> implements
         NumberWrapper<BigInteger> {
 
+    /**
+     * インスタンスを構築します。
+     */
     public BigIntegerWrapper() {
     }
 
+    /**
+     * 値を指定してインスタンスを構築します。
+     * 
+     * @param value
+     *            値
+     */
     public BigIntegerWrapper(BigInteger value) {
         super(value);
     }
@@ -52,7 +61,7 @@ public class BigIntegerWrapper extends AbstractWrapper<BigInteger> implements
                     .cast(visitor);
             return v.visitBigIntegerWrapper(this, p);
         }
-        return visitor.visitUnknownDomain(this, p);
+        return visitor.visitUnknownWrapper(this, p);
     }
 
 }

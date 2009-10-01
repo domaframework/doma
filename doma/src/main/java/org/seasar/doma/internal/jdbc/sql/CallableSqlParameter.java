@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
+import org.seasar.doma.jdbc.SqlParameter;
+
 /**
  * @author taedium
  * 

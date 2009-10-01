@@ -32,7 +32,7 @@ import org.seasar.doma.DomaNullPointerException;
  * @author taedium
  * 
  */
-public class SelectOptions implements Options {
+public class SelectOptions {
 
     /** ページングのオフセット */
     protected int offset = -1;

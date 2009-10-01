@@ -20,16 +20,25 @@ import java.sql.Timestamp;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@link Timestamp} を値の型とするドメインの骨格実装です。
+ * {@link Timestamp} のラッパーです。
  * 
  * @author taedium
  * 
  */
 public class TimestampWrapper extends AbstractWrapper<Timestamp> {
 
+    /**
+     * インスタンスを構築します。
+     */
     public TimestampWrapper() {
     }
 
+    /**
+     * 値を指定してインスタンスを構築します。
+     * 
+     * @param value
+     *            値
+     */
     public TimestampWrapper(Timestamp value) {
         super(value);
     }
@@ -46,7 +55,7 @@ public class TimestampWrapper extends AbstractWrapper<Timestamp> {
                     .cast(visitor);
             return v.visitTimestampWrapper(this, p);
         }
-        return visitor.visitUnknownDomain(this, p);
+        return visitor.visitUnknownWrapper(this, p);
     }
 
 }

@@ -20,16 +20,25 @@ import java.sql.Date;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@link Date} を値の型とするドメインの骨格実装です。
+ * {@link Date} のラッパーです。
  * 
  * @author taedium
  * 
  */
 public class DateWrapper extends AbstractWrapper<Date> {
 
+    /**
+     * インスタンスを構築します。
+     */
     public DateWrapper() {
     }
 
+    /**
+     * 値を指定してインスタンスを構築します。
+     * 
+     * @param value
+     *            値
+     */
     public DateWrapper(Date value) {
         super(value);
     }
@@ -46,7 +55,7 @@ public class DateWrapper extends AbstractWrapper<Date> {
                     .cast(visitor);
             return v.visitDateWrapper(this, p);
         }
-        return visitor.visitUnknownDomain(this, p);
+        return visitor.visitUnknownWrapper(this, p);
     }
 
 }

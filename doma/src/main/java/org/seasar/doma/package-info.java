@@ -14,6 +14,6 @@
  * governing permissions and limitations under the License.
  */
 /**
- * アノテーション、および {@literal Doma} の汎用的な例外を提供します。
+ * アノテーション、および汎用的な例外を提供します。
  */
 package org.seasar.doma;

@@ -16,7 +16,7 @@
 package org.seasar.doma.wrapper;
 
 /**
- * 値の型が {@link Number} である {@link Wrapper} です。
+ * {@link Number} のラッパーです。
  * 
  * @author taedium
  * 

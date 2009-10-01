@@ -20,16 +20,25 @@ import java.sql.Time;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@link Time} を値の型とするドメインの骨格実装です。
+ * {@link Time} のラッパーです。
  * 
  * @author taedium
  * 
  */
 public class TimeWrapper extends AbstractWrapper<Time> {
 
+    /**
+     * インスタンスを構築します。
+     */
     public TimeWrapper() {
     }
 
+    /**
+     * 値を指定してインスタンスを構築します。
+     * 
+     * @param value
+     *            値
+     */
     public TimeWrapper(Time value) {
         super(value);
     }
@@ -46,7 +55,7 @@ public class TimeWrapper extends AbstractWrapper<Time> {
                     .cast(visitor);
             return v.visitTimeWrapper(this, p);
         }
-        return visitor.visitUnknownDomain(this, p);
+        return visitor.visitUnknownWrapper(this, p);
     }
 
 }

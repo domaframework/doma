@@ -18,7 +18,7 @@ package org.seasar.doma.wrapper;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * ドメイン（値の定義域）を表現します。
+ * 値のラッパーです。
  * <p>
  * このインタフェースの実装はスレッドセーフであることを要求されません。
  * 

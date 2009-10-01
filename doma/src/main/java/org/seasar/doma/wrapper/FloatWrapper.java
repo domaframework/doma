@@ -18,7 +18,7 @@ package org.seasar.doma.wrapper;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@link Float} を値の型とするドメインの骨格実装です。
+ * {@link Float} のラッパーです。
  * 
  * @author taedium
  * 
@@ -26,9 +26,18 @@ import org.seasar.doma.DomaNullPointerException;
 public class FloatWrapper extends AbstractWrapper<Float> implements
         NumberWrapper<Float> {
 
+    /**
+     * インスタンスを構築します。
+     */
     public FloatWrapper() {
     }
 
+    /**
+     * 値を指定してインスタンスを構築します。
+     * 
+     * @param value
+     *            値
+     */
     public FloatWrapper(Float value) {
         super(value);
     }
@@ -50,7 +59,7 @@ public class FloatWrapper extends AbstractWrapper<Float> implements
                     .cast(visitor);
             return v.visitFloatWrapper(this, p);
         }
-        return visitor.visitUnknownDomain(this, p);
+        return visitor.visitUnknownWrapper(this, p);
     }
 
 }

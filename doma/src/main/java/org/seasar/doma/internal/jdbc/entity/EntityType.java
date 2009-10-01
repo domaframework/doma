@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * エンティティのメタデータを表します。
+ * エンティティのインスタンスを管理するクラスを表します。
  * 
  * <p>
  * このインタフェースの実装はスレッドセーフであることは要求されません。
@@ -32,69 +32,22 @@ import java.util.Set;
  */
 public interface EntityType<E> {
 
-    /**
-     * エンティティの名前を返します。
-     * 
-     * @return エンティティの名前
-     */
     String getName();
 
-    /**
-     * カタログ名を返します。
-     * 
-     * @return カタログ名、存在しない場合 {@code null}
-     */
     String getCatalogName();
 
-    /**
-     * スキーマ名を返します。
-     * 
-     * @return スキーマ名、存在しない場合 {@code null}
-     */
     String getSchemaName();
 
-    /**
-     * テーブル名を返します。
-     * 
-     * @return テーブル名、存在しない場合 {@code null}
-     */
     String getTableName();
 
-    /**
-     * 生成される識別子プロパティを返します。
-     * 
-     * @return 生成される識別子プロパティ、存在しない場合は {@code null}
-     */
     GeneratedIdPropertyType<?> getGeneratedIdPropertyType();
 
-    /**
-     * バージョンプロパティを返します。
-     * 
-     * @return バージョンプロパティ、存在しない場合は {@code null}
-     */
     VersionPropertyType<?> getVersionPropertyType();
 
-    /**
-     * プロパティ名に対応するプロパティメタデータを返します。
-     * 
-     * @param __name
-     *            プロパティ名
-     * @return エンティティプロパティ
-     */
     EntityPropertyType<?> getEntityPropertyType(String __name);
 
-    /**
-     * エンティティプロパティのリストを返します。
-     * 
-     * @return エンティティプロパティのリスト
-     */
     List<EntityPropertyType<?>> getEntityPropertyTypes();
 
-    /**
-     * エンティティを返します。
-     * 
-     * @return エンティティ
-     */
     E getEntity();
 
     Class<E> getEntityClass();
@@ -103,18 +56,9 @@ public interface EntityType<E> {
 
     void refreshEntity();
 
-    /**
-     * 挿入処理の前処理を行います。
-     */
     void preInsert();
 
-    /**
-     * 更新処理の前処理を行います。
-     */
     void preUpdate();
 
-    /**
-     * 削除処理の前処理を行います。
-     */
     void preDelete();
 }

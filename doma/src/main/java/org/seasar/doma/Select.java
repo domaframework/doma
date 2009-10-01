@@ -86,8 +86,6 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * &nbsp;
  * <p>
  * 注釈されるメソッドに定義できるパラメータは型ごとに意味が異なります。
- * 
- * <h4>パラメータの意味:</h4>
  * <ul>
  * <table border=1>
  * <tr>

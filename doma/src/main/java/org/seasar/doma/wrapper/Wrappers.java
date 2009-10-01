@@ -1,3 +1,18 @@
+/*
+ * Copyright 2004-2009 the Seasar Foundation and the Others.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
 package org.seasar.doma.wrapper;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
@@ -19,13 +34,30 @@ import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.MethodUtil;
 import org.seasar.doma.message.DomaMessageCode;
 
+/**
+ * 値を適切なラッパーでラップするユーティリティクラスです。
+ * 
+ * @author taedium
+ * 
+ */
 public final class Wrappers {
 
+    /**
+     * 値をラップします。
+     * 
+     * @param value
+     *            値
+     * @param valueClass
+     *            値クラス
+     * @return ラッパー
+     * @throws WrapperException
+     *             ラップに失敗した場合
+     */
     public static Wrapper<?> wrap(Object value, Class<?> valueClass) {
         assertNotNull(valueClass);
         assertTrue(value == null || valueClass.isInstance(value));
 
-        Wrapper<?> result = wrapBasicObject(value, valueClass);
+        Wrapper<?> result = wrapValueObject(value, valueClass);
         if (result == null) {
             result = wrapDomainObject(value, valueClass);
             if (result == null) {
@@ -35,7 +67,16 @@ public final class Wrappers {
         return result;
     }
 
-    protected static Wrapper<?> wrapBasicObject(Object value,
+    /**
+     * 基本型の値をラップします。
+     * 
+     * @param value
+     *            値
+     * @param valueClass
+     *            値クラス
+     * @return ラッパー、値が基本型でない場合 {@code null}
+     */
+    protected static Wrapper<?> wrapValueObject(Object value,
             Class<?> valueClass) {
         Class<?> wrapperClass = ClassUtil
                 .getWrapperClassIfPrimitive(valueClass);
@@ -93,6 +134,17 @@ public final class Wrappers {
         return null;
     }
 
+    /**
+     * ドメインクラスのオブジェクトをラップします。
+     * 
+     * @param value
+     *            値
+     * @param valueClass
+     *            値クラス
+     * @return ラッパー、値がドメインクラスのオブジェクトでない場合 {@code null}
+     * @throws WrapperException
+     *             ラップに失敗した場合
+     */
     protected static Wrapper<?> wrapDomainObject(Object value,
             Class<?> valueClass) {
         Domain domain = valueClass.getAnnotation(Domain.class);
@@ -102,9 +154,22 @@ public final class Wrappers {
         Object domainValue = getDomainValue(value, valueClass, domain
                 .accessorMethod());
         Class<?> domainValueClass = domain.valueType();
-        return wrapBasicObject(domainValue, domainValueClass);
+        return wrapValueObject(domainValue, domainValueClass);
     }
 
+    /**
+     * ドメインクラスに管理された値を返します。
+     * 
+     * @param domainObject
+     *            ドメインクラスのオブジェクト
+     * @param domainClass
+     *            ドメインクラス
+     * @param accessorMethodName
+     *            ドメインクラスのアクセッサーメソッドの名前
+     * @return ドメインクラスに管理された値
+     * @throws WrapperException
+     *             ラップに失敗した場合
+     */
     protected static Object getDomainValue(Object domainObject,
             Class<?> domainClass, String accessorMethodName) {
         try {

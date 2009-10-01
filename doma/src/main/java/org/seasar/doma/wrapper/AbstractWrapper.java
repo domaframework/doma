@@ -26,9 +26,18 @@ public abstract class AbstractWrapper<V> implements Wrapper<V> {
     /** 値 */
     protected V value;
 
+    /**
+     * インスタンスを構築します。
+     */
     public AbstractWrapper() {
     }
 
+    /**
+     * 値を指定してインスタンスを構築します。
+     * 
+     * @param value
+     *            値
+     */
     public AbstractWrapper(V value) {
         this.value = value;
     }

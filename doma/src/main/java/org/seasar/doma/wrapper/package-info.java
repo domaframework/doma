@@ -14,6 +14,6 @@
  * governing permissions and limitations under the License.
  */
 /**
- * ドメイン（値の定義域）を表すインタフェースやクラスを提供します。
+ * 値のラッパークラスとそのビジターを提供します。
  */
 package org.seasar.doma.wrapper;

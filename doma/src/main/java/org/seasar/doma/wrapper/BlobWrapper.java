@@ -20,16 +20,25 @@ import java.sql.Blob;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@link Blob} を値の型とするドメインの骨格実装です。
+ * {@link Blob} のラッパーです。
  * 
  * @author taedium
  * 
  */
 public class BlobWrapper extends AbstractWrapper<Blob> {
 
+    /**
+     * インスタンスを構築します。
+     */
     public BlobWrapper() {
     }
 
+    /**
+     * 値を指定してインスタンスを構築します。
+     * 
+     * @param value
+     *            値
+     */
     public BlobWrapper(Blob value) {
         super(value);
     }
@@ -46,7 +55,7 @@ public class BlobWrapper extends AbstractWrapper<Blob> {
                     .cast(visitor);
             return v.visitBlobWrapper(this, p);
         }
-        return visitor.visitUnknownDomain(this, p);
+        return visitor.visitUnknownWrapper(this, p);
     }
 
 }

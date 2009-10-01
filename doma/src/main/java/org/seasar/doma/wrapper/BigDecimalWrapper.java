@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@link BigDecimal} を値の型とするドメインの骨格実装です。
+ * {@link BigDecimal} のラッパーです。
  * 
  * @author taedium
  * 
@@ -28,9 +28,18 @@ import org.seasar.doma.DomaNullPointerException;
 public class BigDecimalWrapper extends AbstractWrapper<BigDecimal> implements
         NumberWrapper<BigDecimal> {
 
+    /**
+     * インスタンスを構築します。
+     */
     public BigDecimalWrapper() {
     }
 
+    /**
+     * 値を指定してインスタンスを構築します。
+     * 
+     * @param value
+     *            値
+     */
     public BigDecimalWrapper(BigDecimal value) {
         super(value);
     }
@@ -52,7 +61,7 @@ public class BigDecimalWrapper extends AbstractWrapper<BigDecimal> implements
                     .cast(visitor);
             return v.visitBigDecimalWrapper(this, p);
         }
-        return visitor.visitUnknownDomain(this, p);
+        return visitor.visitUnknownWrapper(this, p);
     }
 
 }

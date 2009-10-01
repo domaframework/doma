@@ -18,16 +18,25 @@ package org.seasar.doma.wrapper;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@link String} を値の型とするドメインの骨格実装です。
+ * {@link String} のラッパーです。
  * 
  * @author taedium
  * 
  */
 public class StringWrapper extends AbstractWrapper<String> {
 
+    /**
+     * インスタンスを構築します。
+     */
     public StringWrapper() {
     }
 
+    /**
+     * 値を指定してインスタンスを構築します。
+     * 
+     * @param value
+     *            値
+     */
     public StringWrapper(String value) {
         super(value);
     }
@@ -44,7 +53,7 @@ public class StringWrapper extends AbstractWrapper<String> {
                     .cast(visitor);
             return v.visitStringWrapper(this, p);
         }
-        return visitor.visitUnknownDomain(this, p);
+        return visitor.visitUnknownWrapper(this, p);
     }
 
 }

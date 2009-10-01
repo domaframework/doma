@@ -18,16 +18,25 @@ package org.seasar.doma.wrapper;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@link Boolean} を値の型とするドメインの骨格実装です。
+ * {@link Boolean} のラッパーです。
  * 
  * @author taedium
  * 
  */
 public class BooleanWrapper extends AbstractWrapper<Boolean> {
 
+    /**
+     * インスタンスを構築します。
+     */
     public BooleanWrapper() {
     }
 
+    /**
+     * 値を指定してインスタンスを構築します。
+     * 
+     * @param value
+     *            値
+     */
     public BooleanWrapper(Boolean value) {
         super(value);
     }
@@ -44,7 +53,7 @@ public class BooleanWrapper extends AbstractWrapper<Boolean> {
                     .cast(visitor);
             return v.visitBooleanWrapper(this, p);
         }
-        return visitor.visitUnknownDomain(this, p);
+        return visitor.visitUnknownWrapper(this, p);
     }
 
 }

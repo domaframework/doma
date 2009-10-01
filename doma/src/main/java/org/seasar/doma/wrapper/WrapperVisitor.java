@@ -30,15 +30,15 @@ package org.seasar.doma.wrapper;
 public interface WrapperVisitor<R, P, TH extends Throwable> {
 
     /**
-     * 未知のドメインを扱います。
+     * 未知の {@link Wrapper} を扱います。
      * 
-     * @param domain
-     *            ドメイン
+     * @param wrapper
+     *            ラッパー
      * @param p
      *            パラメータ
      * @return 処理結果
      * @throws TH
      *             例外
      */
-    R visitUnknownDomain(Wrapper<?> domain, P p) throws TH;
+    R visitUnknownWrapper(Wrapper<?> wrapper, P p) throws TH;
 }

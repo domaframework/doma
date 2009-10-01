@@ -20,16 +20,25 @@ import java.sql.Clob;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@link Clob} を値の型とするドメインの骨格実装です。
+ * {@link Clob} のラッパーです。
  * 
  * @author taedium
  * 
  */
 public class ClobWrapper extends AbstractWrapper<Clob> {
 
+    /**
+     * インスタンスを構築します。
+     */
     public ClobWrapper() {
     }
 
+    /**
+     * 値を指定してインスタンスを構築します。
+     * 
+     * @param value
+     *            値
+     */
     public ClobWrapper(Clob value) {
         super(value);
     }
@@ -46,7 +55,7 @@ public class ClobWrapper extends AbstractWrapper<Clob> {
                     .cast(visitor);
             return v.visitClobWrapper(this, p);
         }
-        return visitor.visitUnknownDomain(this, p);
+        return visitor.visitUnknownWrapper(this, p);
     }
 
 }

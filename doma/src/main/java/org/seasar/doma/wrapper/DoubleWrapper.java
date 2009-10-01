@@ -18,7 +18,7 @@ package org.seasar.doma.wrapper;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@link Double} を値の型とするドメインの骨格実装です。
+ * {@link Double} のラッパーです。
  * 
  * @author taedium
  * 
@@ -26,9 +26,18 @@ import org.seasar.doma.DomaNullPointerException;
 public class DoubleWrapper extends AbstractWrapper<Double> implements
         NumberWrapper<Double> {
 
+    /**
+     * インスタンスを構築します。
+     */
     public DoubleWrapper() {
     }
 
+    /**
+     * 値を指定してインスタンスを構築します。
+     * 
+     * @param value
+     *            値
+     */
     public DoubleWrapper(Double value) {
         super(value);
     }
@@ -50,7 +59,7 @@ public class DoubleWrapper extends AbstractWrapper<Double> implements
                     .cast(visitor);
             return v.visitDoubleWrapper(this, p);
         }
-        return visitor.visitUnknownDomain(this, p);
+        return visitor.visitUnknownWrapper(this, p);
     }
 
 }

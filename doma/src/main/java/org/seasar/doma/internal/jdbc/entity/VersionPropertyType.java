@@ -26,16 +26,6 @@ import org.seasar.doma.wrapper.NumberWrapper;
 public class VersionPropertyType<W extends NumberWrapper<?>> extends
         BasicPropertyType<W> {
 
-    /**
-     * インスタンスを構築します。
-     * 
-     * @param name
-     *            名前
-     * @param columnName
-     *            カラム名
-     * @param wrapper
-     *            ドメイン
-     */
     public VersionPropertyType(String name, String columnName, W wrapper) {
         super(name, columnName, wrapper, true, true);
     }
@@ -45,21 +35,12 @@ public class VersionPropertyType<W extends NumberWrapper<?>> extends
         return true;
     }
 
-    /**
-     * 必要ならばバージョン番号を設定します。
-     * 
-     * @param value
-     *            バージョン番号
-     */
     public void setIfNecessary(Number value) {
         if (wrapper.get() == null || wrapper.get().intValue() < 0) {
             wrapper.set(value);
         }
     }
 
-    /**
-     * バージョン番号を増分します。
-     */
     public void increment() {
         if (wrapper.get() != null) {
             int i = wrapper.get().intValue();

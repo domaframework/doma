@@ -17,7 +17,6 @@ package org.seasar.doma.jdbc;
 
 import java.util.List;
 
-import org.seasar.doma.internal.jdbc.sql.SqlParameter;
 
 /**
  * SQLを表します。

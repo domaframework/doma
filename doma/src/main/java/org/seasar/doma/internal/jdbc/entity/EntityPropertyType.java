@@ -27,64 +27,24 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  * @param <W>
- *            ドメインの型
+ *            ラッパーの型
  */
 public interface EntityPropertyType<W extends Wrapper<?>> {
 
-    /**
-     * ドメインを返します。
-     * 
-     * @return ドメイン
-     */
     W getWrapper();
 
-    /**
-     * 名前を返します。
-     * 
-     * @return 名前
-     */
     String getName();
 
-    /**
-     * カラム名を返します。
-     * 
-     * @return カラム名、存在しない場合 {@code null}
-     */
     String getColumnName();
 
-    /**
-     * 識別子かどうかを返します。
-     * 
-     * @return 識別子の場合 {@code true}
-     */
     boolean isId();
 
-    /**
-     * バージョンかどうかを返します。
-     * 
-     * @return バージョンの場合 {@code true}
-     */
     boolean isVersion();
 
-    /**
-     * INSERT文に含める対象かどうかを返します。
-     * 
-     * @return INSERT文に含める対象の場合 {@code true}
-     */
     boolean isInsertable();
 
-    /**
-     * UPDATE文のSET句に含める対象かどうかを返します。
-     * 
-     * @return UPDATE文のSET句に含める対象の場合 {@code true}
-     */
     boolean isUpdatable();
 
-    /**
-     * 非永続性かどうかを返します。
-     * 
-     * @return 非永続性の場合 {@code true}
-     */
     boolean isTransient();
 
 }

@@ -18,7 +18,7 @@ package org.seasar.doma.wrapper;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@link Byte} を値の型とするドメインの骨格実装です。
+ * {@link Byte} のラッパーです。
  * 
  * @author taedium
  * 
@@ -26,9 +26,18 @@ import org.seasar.doma.DomaNullPointerException;
 public class ByteWrapper extends AbstractWrapper<Byte> implements
         NumberWrapper<Byte> {
 
+    /**
+     * インスタンスを構築します。
+     */
     public ByteWrapper() {
     }
 
+    /**
+     * 値を指定してインスタンスを構築します。
+     * 
+     * @param value
+     *            値
+     */
     public ByteWrapper(byte value) {
         super(value);
     }
@@ -50,7 +59,7 @@ public class ByteWrapper extends AbstractWrapper<Byte> implements
                     .cast(visitor);
             return v.visitByteWrapper(this, p);
         }
-        return visitor.visitUnknownDomain(this, p);
+        return visitor.visitUnknownWrapper(this, p);
     }
 
 }

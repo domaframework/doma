@@ -20,16 +20,25 @@ import java.sql.Array;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@link Array} を値の型とするドメインのための骨格実装です。
+ * {@link Array} のラッパーです。
  * 
  * @author taedium
  * 
  */
 public class ArrayWrapper extends AbstractWrapper<Array> {
 
+    /**
+     * インスタンスを構築します。
+     */
     public ArrayWrapper() {
     }
 
+    /**
+     * 値を指定してインスタンスを構築します。
+     * 
+     * @param value
+     *            値
+     */
     public ArrayWrapper(Array value) {
         super(value);
     }
@@ -46,7 +55,7 @@ public class ArrayWrapper extends AbstractWrapper<Array> {
                     .cast(visitor);
             return v.visitArrayWrapper(this, p);
         }
-        return visitor.visitUnknownDomain(this, p);
+        return visitor.visitUnknownWrapper(this, p);
     }
 
 }

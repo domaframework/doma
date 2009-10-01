@@ -20,16 +20,25 @@ import java.sql.NClob;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * {@link NClob} を値の型とするドメインの骨格実装です。
+ * {@link NClob} のラッパーです。
  * 
  * @author taedium
  * 
  */
 public class NClobWrapper extends AbstractWrapper<NClob> {
 
+    /**
+     * インスタンスを構築します。
+     */
     public NClobWrapper() {
     }
 
+    /**
+     * 値を指定してインスタンスを構築します。
+     * 
+     * @param value
+     *            値
+     */
     public NClobWrapper(NClob value) {
         super(value);
     }
@@ -46,7 +55,7 @@ public class NClobWrapper extends AbstractWrapper<NClob> {
                     .cast(visitor);
             return v.visitNClobWrapper(this, p);
         }
-        return visitor.visitUnknownDomain(this, p);
+        return visitor.visitUnknownWrapper(this, p);
     }
 
 }

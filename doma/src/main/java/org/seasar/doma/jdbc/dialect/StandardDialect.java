@@ -452,8 +452,8 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public Void visitUnknownDomain(Wrapper<?> wrapper, JdbcMappingFunction p)
-                throws SQLException {
+        public Void visitUnknownWrapper(Wrapper<?> wrapper,
+                JdbcMappingFunction p) throws SQLException {
             throw new JdbcException(DomaMessageCode.DOMA2019, wrapper
                     .getClass().getName());
         }
@@ -579,7 +579,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String visitUnknownDomain(Wrapper<?> wrapper,
+        public String visitUnknownWrapper(Wrapper<?> wrapper,
                 SqlLogFormattingFunction p) {
             throw new JdbcException(DomaMessageCode.DOMA2019, wrapper
                     .getClass().getName());
