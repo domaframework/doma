@@ -28,7 +28,6 @@ import org.seasar.doma.GeneratedValue;
 import org.seasar.doma.Id;
 import org.seasar.doma.SequenceGenerator;
 import org.seasar.doma.TableGenerator;
-import org.seasar.doma.Transient;
 import org.seasar.doma.Version;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
@@ -58,7 +57,6 @@ public class EntityPropertyMetaFactory {
                 .asType(), env);
         doName(propertyMeta, fieldElement, entityMeta);
         doId(propertyMeta, fieldElement, entityMeta);
-        doTransient(propertyMeta, fieldElement, entityMeta);
         doVersion(propertyMeta, fieldElement, entityMeta);
         doColumnMeta(propertyMeta, fieldElement, entityMeta);
         doWrapperTypeName(propertyMeta, fieldElement, entityMeta);
@@ -184,12 +182,6 @@ public class EntityPropertyMetaFactory {
         propertyMeta.setName(name);
     }
 
-    protected void doTransient(EntityPropertyMeta propertyMeta,
-            VariableElement fieldElement, EntityMeta entityMeta) {
-        Transient trnsient = fieldElement.getAnnotation(Transient.class);
-        propertyMeta.setTrnsient(trnsient != null);
-    }
-
     protected void doVersion(EntityPropertyMeta propertyMeta,
             VariableElement fieldElement, EntityMeta entityMeta) {
         Version version = fieldElement.getAnnotation(Version.class);
@@ -213,10 +205,6 @@ public class EntityPropertyMetaFactory {
         ColumnMeta columnMeta = new ColumnMeta();
         Column column = fieldElement.getAnnotation(Column.class);
         if (column != null) {
-            if (propertyMeta.isTrnsient()) {
-                throw new AptException(DomaMessageCode.DOMA4087, env,
-                        fieldElement);
-            }
             if (propertyMeta.isId() || propertyMeta.isVersion()) {
                 if (!column.insertable()) {
                     throw new AptException(DomaMessageCode.DOMA4088, env,
@@ -238,9 +226,6 @@ public class EntityPropertyMetaFactory {
 
     protected void doWrapperTypeName(EntityPropertyMeta propertyMeta,
             VariableElement fieldElement, EntityMeta entityMeta) {
-        if (propertyMeta.isTrnsient()) {
-            return;
-        }
         TypeMirror type = fieldElement.asType();
         DomainType domainType = DomainType.newInstance(type, env);
         if (domainType != null) {

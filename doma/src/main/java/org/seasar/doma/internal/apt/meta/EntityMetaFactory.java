@@ -17,6 +17,7 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,7 +26,9 @@ import java.util.Set;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
@@ -39,6 +42,7 @@ import org.seasar.doma.ChangedProperties;
 import org.seasar.doma.Entity;
 import org.seasar.doma.EntityField;
 import org.seasar.doma.Table;
+import org.seasar.doma.Transient;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Notifier;
@@ -73,48 +77,71 @@ public class EntityMetaFactory {
         return entityMeta;
     }
 
-    protected void doClassElement(TypeElement entityClassElement,
+    protected void doClassElement(TypeElement classElement,
             EntityMeta entityMeta) {
-        if (entityClassElement.getNestingKind().isNested()) {
-            throw new AptException(DomaMessageCode.DOMA4018, env,
-                    entityClassElement, entityClassElement.getQualifiedName());
-        }
-        if (entityClassElement.getKind() != ElementKind.CLASS) {
-            throw new AptException(DomaMessageCode.DOMA4015, env,
-                    entityClassElement, entityClassElement.getQualifiedName());
-        }
-        String entityName = entityClassElement.getSimpleName().toString();
+        validateClass(classElement);
+        validateConstructor(classElement);
+
+        String entityName = classElement.getSimpleName().toString();
         String suffix = Options.getEntitySuffix(env);
         if (entityName.endsWith(suffix)) {
             Notifier.notify(env, Kind.WARNING, DomaMessageCode.DOMA4026,
-                    entityClassElement, suffix);
+                    classElement, suffix);
         }
         entityMeta.setEntityName(entityName);
-        entityMeta.setEntityTypeName(TypeUtil.getTypeName(entityClassElement
-                .asType(), env));
-        Entity entityAnnotation = entityClassElement
-                .getAnnotation(Entity.class);
+        entityMeta.setEntityTypeName(TypeUtil.getTypeName(
+                classElement.asType(), env));
+        Entity entityAnnotation = classElement.getAnnotation(Entity.class);
         if (entityAnnotation == null) {
             throw new AptIllegalStateException();
         }
-        if (!entityClassElement.getTypeParameters().isEmpty()) {
-            throw new AptException(DomaMessageCode.DOMA4051, env,
-                    entityClassElement);
+        doListener(entityAnnotation, classElement, entityMeta);
+        doTableMeta(classElement, entityMeta);
+    }
+
+    protected void validateClass(TypeElement classElement) {
+        if (classElement.getKind() != ElementKind.CLASS) {
+            throw new AptException(DomaMessageCode.DOMA4015, env, classElement,
+                    classElement.getQualifiedName());
         }
-        doListener(entityAnnotation, entityClassElement, entityMeta);
-        doTableMeta(entityClassElement, entityMeta);
+        if (classElement.getNestingKind().isNested()) {
+            throw new AptException(DomaMessageCode.DOMA4018, env, classElement,
+                    classElement.getQualifiedName());
+        }
+        if (classElement.getModifiers().contains(Modifier.PRIVATE)) {
+            throw new AptException(DomaMessageCode.DOMA4123, env, classElement);
+        }
+        if (classElement.getModifiers().contains(Modifier.ABSTRACT)) {
+            throw new AptException(DomaMessageCode.DOMA4134, env, classElement);
+        }
+        if (!classElement.getTypeParameters().isEmpty()) {
+            throw new AptException(DomaMessageCode.DOMA4051, env, classElement);
+        }
+    }
+
+    protected void validateConstructor(TypeElement classElement) {
+        if (classElement.getModifiers().contains(Modifier.ABSTRACT)) {
+            return;
+        }
+        for (ExecutableElement constructor : ElementFilter
+                .constructorsIn(classElement.getEnclosedElements())) {
+            if (!constructor.getModifiers().contains(Modifier.PRIVATE)) {
+                if (constructor.getParameters().isEmpty()) {
+                    return;
+                }
+            }
+        }
+        throw new AptException(DomaMessageCode.DOMA4124, env, classElement);
     }
 
     protected void doListener(Entity entityAnnotation,
-            TypeElement entityClassElement, EntityMeta entityMeta) {
+            TypeElement classElement, EntityMeta entityMeta) {
         TypeMirror listenerType = getListenerType(entityAnnotation);
         TypeMirror argumentType = getListenerArgumentType(listenerType);
         assertNotNull(argumentType);
-        if (!TypeUtil.isAssignable(entityClassElement.asType(), argumentType,
-                env)) {
-            throw new AptException(DomaMessageCode.DOMA4038, env,
-                    entityClassElement, listenerType, argumentType,
-                    entityClassElement.getQualifiedName());
+        if (!TypeUtil.isAssignable(classElement.asType(), argumentType, env)) {
+            throw new AptException(DomaMessageCode.DOMA4038, env, classElement,
+                    listenerType, argumentType, classElement.getQualifiedName());
         }
         entityMeta.setListenerTypeName(TypeUtil.getTypeName(listenerType, env));
     }
@@ -153,10 +180,9 @@ public class EntityMetaFactory {
         return null;
     }
 
-    protected void doTableMeta(TypeElement entityClassElement,
-            EntityMeta entityMeta) {
+    protected void doTableMeta(TypeElement classElement, EntityMeta entityMeta) {
         TableMeta tableMeta = new TableMeta();
-        Table table = entityClassElement.getAnnotation(Table.class);
+        Table table = classElement.getAnnotation(Table.class);
         if (table != null) {
             if (!table.catalog().isEmpty()) {
                 tableMeta.setCatalog(table.catalog());
@@ -171,9 +197,9 @@ public class EntityMetaFactory {
         entityMeta.setTableMeta(tableMeta);
     }
 
-    protected void doFieldElements(TypeElement entityClassElement,
+    protected void doFieldElements(TypeElement classElement,
             EntityMeta entityMeta) {
-        for (VariableElement fieldElement : getFieldElements(entityClassElement)) {
+        for (VariableElement fieldElement : getFieldElements(classElement)) {
             try {
                 if (fieldElement.getAnnotation(ChangedProperties.class) != null) {
                     doChangedPropertiesField(fieldElement, entityMeta);
@@ -186,14 +212,26 @@ public class EntityMetaFactory {
         }
     }
 
-    protected List<VariableElement> getFieldElements(
-            TypeElement entityClassElement) {
+    protected List<VariableElement> getFieldElements(TypeElement classElement) {
         List<VariableElement> results = new LinkedList<VariableElement>();
-        for (TypeElement t = entityClassElement; t != null
+        Name packageName = env.getElementUtils().getPackageOf(classElement)
+                .getQualifiedName();
+        for (TypeElement t = classElement; t != null
                 && t.asType().getKind() != TypeKind.NONE; t = TypeUtil
                 .toTypeElement(t.getSuperclass(), env)) {
+            if (t.getAnnotation(Entity.class) == null) {
+                continue;
+            }
+            if (!env.getElementUtils().getPackageOf(t).getQualifiedName()
+                    .contentEquals(packageName)) {
+                throw new AptException(DomaMessageCode.DOMA4126, env,
+                        classElement, t.getQualifiedName());
+            }
             for (VariableElement field : ElementFilter.fieldsIn(t
                     .getEnclosedElements())) {
+                if (field.getAnnotation(Transient.class) != null) {
+                    continue;
+                }
                 if (field.getModifiers().contains(Modifier.STATIC)) {
                     continue;
                 }
@@ -202,7 +240,10 @@ public class EntityMetaFactory {
                 }
                 results.add(field);
             }
+            Collections.reverse(results);
         }
+        Collections.reverse(results);
+
         List<VariableElement> hiderFields = new LinkedList<VariableElement>(
                 results);
         for (Iterator<VariableElement> it = results.iterator(); it.hasNext();) {
@@ -221,6 +262,9 @@ public class EntityMetaFactory {
         if (!TypeUtil.isAssignable(fieldElement.asType(), Set.class, env)) {
             throw new AptException(DomaMessageCode.DOMA4095, env, fieldElement);
         }
+        if (entityMeta.hasChangedPropertiesFieldName()) {
+            throw new AptException(DomaMessageCode.DOMA4125, env, fieldElement);
+        }
         entityMeta.setChangedPropertiesFieldName(fieldElement.getSimpleName()
                 .toString());
     }
@@ -228,8 +272,8 @@ public class EntityMetaFactory {
     protected void doEntityPropertyMeta(VariableElement fieldElement,
             EntityMeta entityMeta) {
         validateFieldAnnotation(fieldElement, entityMeta);
-        EntityPropertyMeta propertyMeta = createEntityPropertyMeta(
-                fieldElement, entityMeta);
+        EntityPropertyMeta propertyMeta = propertyMetaFactory
+                .createEntityPropertyMeta(fieldElement, entityMeta);
         entityMeta.addPropertyMeta(propertyMeta);
     }
 
@@ -249,12 +293,6 @@ public class EntityMetaFactory {
                 foundAnnotationTypeElement = typeElement;
             }
         }
-    }
-
-    protected EntityPropertyMeta createEntityPropertyMeta(
-            VariableElement fieldElement, EntityMeta entityMeta) {
-        return propertyMetaFactory.createEntityPropertyMeta(fieldElement,
-                entityMeta);
     }
 
 }

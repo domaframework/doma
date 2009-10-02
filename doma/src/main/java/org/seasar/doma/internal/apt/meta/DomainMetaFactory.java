@@ -73,15 +73,17 @@ public class DomainMetaFactory {
     }
 
     protected void validateClass(TypeElement classElement, DomainMeta domainMeta) {
-        if (!classElement.getKind().isClass()
-                || !classElement.getModifiers().contains(Modifier.PUBLIC)) {
+        if (!classElement.getKind().isClass()) {
             throw new AptException(DomaMessageCode.DOMA4105, env, classElement);
         }
+        if (classElement.getModifiers().contains(Modifier.PRIVATE)) {
+            throw new AptException(DomaMessageCode.DOMA4133, env, classElement);
+        }
+        if (classElement.getModifiers().contains(Modifier.ABSTRACT)) {
+            throw new AptException(DomaMessageCode.DOMA4132, env, classElement);
+        }
         if (classElement.getNestingKind().isNested()) {
-            if (!classElement.getModifiers().contains(Modifier.STATIC)) {
-                throw new AptException(DomaMessageCode.DOMA4106, env,
-                        classElement);
-            }
+            throw new AptException(DomaMessageCode.DOMA4106, env, classElement);
         }
         if (!classElement.getTypeParameters().isEmpty()) {
             throw new AptException(DomaMessageCode.DOMA4107, env, classElement);

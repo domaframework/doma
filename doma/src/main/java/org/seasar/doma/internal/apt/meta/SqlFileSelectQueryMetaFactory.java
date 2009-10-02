@@ -132,8 +132,9 @@ public class SqlFileSelectQueryMetaFactory extends
                     throw new AptException(DomaMessageCode.DOMA4054, env,
                             parameterMeta.getElement());
                 }
-                queryMeta.setIterationCallbackType(parameterMeta
-                        .getIterationCallbackType());
+                IterationCallbackType iterationCallbackType = parameterMeta
+                        .getIterationCallbackType();
+                queryMeta.setIterationCallbackType(iterationCallbackType);
                 queryMeta.setIterationCallbackPrameterName(parameterMeta
                         .getName());
             } else {
@@ -156,5 +157,4 @@ public class SqlFileSelectQueryMetaFactory extends
             }
         }
     }
-
 }

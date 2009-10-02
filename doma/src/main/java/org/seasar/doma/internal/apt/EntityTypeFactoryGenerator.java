@@ -190,9 +190,6 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
 
     protected void printTypeClassPropertyFields() {
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
-            if (pm.isTrnsient()) {
-                continue;
-            }
             ColumnMeta cm = pm.getColumnMeta();
             String columnName = cm.getName();
             String quote = "\"";
@@ -276,9 +273,6 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
             iprint("    __changedProperties = null;%n");
         }
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
-            if (pm.isTrnsient()) {
-                continue;
-            }
             DomainType domainType = pm.getDomainType();
             if (domainType != null) {
                 iprint(
@@ -381,9 +375,6 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
                 org.seasar.doma.internal.jdbc.entity.EntityPropertyType.class
                         .getName());
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
-            if (pm.isTrnsient()) {
-                continue;
-            }
             iprint("__list.add(%1$s);%n", pm.getName());
         }
         iprint("__entityProperties = java.util.Collections.unmodifiableList(__list);%n");
@@ -408,9 +399,6 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
                 org.seasar.doma.internal.jdbc.entity.EntityPropertyType.class
                         .getName());
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
-            if (pm.isTrnsient()) {
-                continue;
-            }
             iprint("__map.put(\"%1$s\", %1$s);%n", pm.getName());
         }
         iprint("__entityPropertyMap = java.util.Collections.unmodifiableMap(__map);%n");
@@ -461,9 +449,6 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
     protected void printTypeClassRefreshEntityInternalMethod() {
         iprint("public void refreshEntityInternal() {%n");
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
-            if (pm.isTrnsient()) {
-                continue;
-            }
             DomainType domainType = pm.getDomainType();
             if (domainType != null) {
                 if (domainType.getValueType().getType().getKind().isPrimitive()) {

@@ -39,8 +39,6 @@ public class EntityPropertyMeta {
 
     protected boolean id;
 
-    protected boolean trnsient;
-
     protected boolean version;
 
     protected ColumnMeta columnMeta;
@@ -71,14 +69,6 @@ public class EntityPropertyMeta {
 
     public void setId(boolean id) {
         this.id = id;
-    }
-
-    public boolean isTrnsient() {
-        return trnsient;
-    }
-
-    public void setTrnsient(boolean trnsient) {
-        this.trnsient = trnsient;
     }
 
     public boolean isVersion() {

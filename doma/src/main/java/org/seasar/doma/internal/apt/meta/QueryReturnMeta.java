@@ -52,7 +52,9 @@ public class QueryReturnMeta {
                     valueType = ValueType.newInstance(type, env);
                 }
             }
-        } else {
+        }
+
+        if (listType != null) {
             if (listType.isRawType()) {
                 throw new AptException(DomaMessageCode.DOMA4109, env,
                         methodElement, typeName);

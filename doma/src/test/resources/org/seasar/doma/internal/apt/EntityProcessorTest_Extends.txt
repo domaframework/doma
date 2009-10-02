@@ -17,9 +17,9 @@ public class ChildEntity_ implements org.seasar.doma.internal.jdbc.entity.Entity
 
         private static final org.seasar.doma.jdbc.entity.BuiltinEntityListener __listener = new org.seasar.doma.jdbc.entity.BuiltinEntityListener();
 
-        private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.BigDecimalWrapper> bbb = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.BigDecimalWrapper>("bbb", null, new org.seasar.doma.wrapper.BigDecimalWrapper(), true, true);
-
         private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.StringWrapper> ccc = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.StringWrapper>("ccc", null, new org.seasar.doma.wrapper.StringWrapper(), true, true);
+
+        private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.BigDecimalWrapper> bbb = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.BigDecimalWrapper>("bbb", null, new org.seasar.doma.wrapper.BigDecimalWrapper(), true, true);
 
         private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.IntegerWrapper> aaa = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("aaa", null, new org.seasar.doma.wrapper.IntegerWrapper(), true, true);
 
@@ -46,8 +46,8 @@ public class ChildEntity_ implements org.seasar.doma.internal.jdbc.entity.Entity
         private ChildEntityType(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
             __entity = entity;
             __changedProperties = null;
-            bbb.getWrapper().set(entity.bbb);
             ccc.getWrapper().set(entity.ccc);
+            bbb.getWrapper().set(entity.bbb);
             aaa.getWrapper().set(entity.aaa);
         }
 
@@ -90,8 +90,8 @@ public class ChildEntity_ implements org.seasar.doma.internal.jdbc.entity.Entity
         public java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> getEntityPropertyTypes() {
             if (__entityProperties == null) {
                 java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __list = new java.util.ArrayList<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>>();
-                __list.add(bbb);
                 __list.add(ccc);
+                __list.add(bbb);
                 __list.add(aaa);
                 __entityProperties = java.util.Collections.unmodifiableList(__list);
             }
@@ -102,8 +102,8 @@ public class ChildEntity_ implements org.seasar.doma.internal.jdbc.entity.Entity
         public org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?> getEntityPropertyType(String __name) {
             if (__entityPropertyMap == null) {
                 java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __map = new java.util.HashMap<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>>();
-                __map.put("bbb", bbb);
                 __map.put("ccc", ccc);
+                __map.put("bbb", bbb);
                 __map.put("aaa", aaa);
                 __entityPropertyMap = java.util.Collections.unmodifiableMap(__map);
             }
@@ -126,8 +126,8 @@ public class ChildEntity_ implements org.seasar.doma.internal.jdbc.entity.Entity
         }
 
         public void refreshEntityInternal() {
-            __entity.bbb = bbb.getWrapper().get();
             __entity.ccc = ccc.getWrapper().get();
+            __entity.bbb = bbb.getWrapper().get();
             __entity.aaa = aaa.getWrapper().get();
         }
 

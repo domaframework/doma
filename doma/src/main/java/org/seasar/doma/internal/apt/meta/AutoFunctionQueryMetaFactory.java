@@ -22,9 +22,9 @@ import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.Function;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
+import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.ValueType;
 import org.seasar.doma.message.DomaMessageCode;
 
@@ -105,7 +105,7 @@ public class AutoFunctionQueryMetaFactory extends
                 return new ValueListResultParameterMeta(valueType);
             }
             throw new AptException(DomaMessageCode.DOMA4065, env, returnMeta
-                    .getElement(), listType.getEntityType());
+                    .getElement(), listType.getType());
         }
         DomainType domainType = returnMeta.getDomainType();
         if (domainType != null) {

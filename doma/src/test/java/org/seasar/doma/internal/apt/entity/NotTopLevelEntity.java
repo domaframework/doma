@@ -21,9 +21,9 @@ import org.seasar.doma.Entity;
  * @author taedium
  * 
  */
-public interface NotTopLevelEntity {
+public class NotTopLevelEntity {
 
     @Entity
-    interface Hoge {
+    class Hoge {
     }
 }

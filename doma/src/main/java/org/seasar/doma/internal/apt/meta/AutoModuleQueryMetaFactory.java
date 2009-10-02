@@ -85,6 +85,20 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
             }
             throw new AptIllegalStateException();
         }
+        if (parameterMeta.isAnnotated(In.class)) {
+            DomainType domainType = parameterMeta.getDomainType();
+            if (domainType != null) {
+                return new DomainInParameterMeta(parameterMeta.getName(),
+                        domainType);
+            }
+            ValueType valueType = parameterMeta.getValueType();
+            if (valueType != null) {
+                return new ValueInParameterMeta(parameterMeta.getName(),
+                        valueType);
+            }
+            throw new AptException(DomaMessageCode.DOMA4101, env, parameterMeta
+                    .getElement(), parameterMeta.getType());
+        }
         if (parameterMeta.isAnnotated(Out.class)) {
             ReferenceType referenceType = parameterMeta.getReferenceType();
             if (referenceType == null) {
@@ -123,20 +137,6 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
             throw new AptException(DomaMessageCode.DOMA4100, env, parameterMeta
                     .getElement(), referenceType.getReferentType());
 
-        }
-        if (parameterMeta.isAnnotated(In.class)) {
-            DomainType domainType = parameterMeta.getDomainType();
-            if (domainType != null) {
-                return new DomainInParameterMeta(parameterMeta.getName(),
-                        domainType);
-            }
-            ValueType valueType = parameterMeta.getValueType();
-            if (valueType != null) {
-                return new ValueInParameterMeta(parameterMeta.getName(),
-                        valueType);
-            }
-            throw new AptException(DomaMessageCode.DOMA4101, env, parameterMeta
-                    .getElement(), parameterMeta.getType());
         }
         throw new AptException(DomaMessageCode.DOMA4066, env, parameterMeta
                 .getElement());

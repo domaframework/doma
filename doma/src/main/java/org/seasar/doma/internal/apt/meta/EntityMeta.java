@@ -107,6 +107,10 @@ public class EntityMeta {
         this.listenerTypeName = listenerTypeName;
     }
 
+    public boolean hasChangedPropertiesFieldName() {
+        return changedPropertiesFieldName != null;
+    }
+
     public String getChangedPropertiesFieldName() {
         return changedPropertiesFieldName;
     }
