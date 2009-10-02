@@ -59,37 +59,4 @@ public class CamelNamingConvention implements NamingConvention {
         return StringUtil.decamelize(propertyName);
     }
 
-    /**
-     * アンダースコア区切りのテーブル名をキャメルケースのエンティティ名に変換します。
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    public String fromTableToEntity(String tableName, Dialect dialect) {
-        if (tableName == null) {
-            throw new DomaNullPointerException("tableName");
-        }
-        if (dialect == null) {
-            throw new DomaNullPointerException("dialect");
-        }
-        String name = StringUtil.camelize(tableName);
-        return StringUtil.capitalize(name);
-    }
-
-    /**
-     * アンダースコア区切りのカラム名をキャメルケースのプロパティ名に変換します。
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    public String fromColumnToProperty(String columnName, Dialect dialect) {
-        if (columnName == null) {
-            throw new DomaNullPointerException("columnName");
-        }
-        if (dialect == null) {
-            throw new DomaNullPointerException("dialect");
-        }
-        return StringUtil.camelize(columnName);
-    }
-
 }

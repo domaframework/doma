@@ -27,6 +27,7 @@ import org.seasar.doma.Update;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.ListType;
+import org.seasar.doma.internal.apt.type.ValueType;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -102,8 +103,11 @@ public class SqlFileModifyQueryMetaFactory extends
                 ListType listType = parameterMeta.getListType();
                 DomainType domainType = listType.getDomainType();
                 if (domainType == null) {
-                    throw new AptException(DomaMessageCode.DOMA4028, env,
-                            method);
+                    ValueType valueType = listType.getValueType();
+                    if (valueType == null) {
+                        throw new AptException(DomaMessageCode.DOMA4028, env,
+                                parameterMeta.getElement());
+                    }
                 }
             } else if (parameterMeta.getEntityType() != null) {
             } else if (parameterMeta.getDomainType() != null) {

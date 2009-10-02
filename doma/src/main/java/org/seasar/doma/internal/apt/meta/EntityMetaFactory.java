@@ -101,12 +101,10 @@ public class EntityMetaFactory {
 
     protected void validateClass(TypeElement classElement) {
         if (classElement.getKind() != ElementKind.CLASS) {
-            throw new AptException(DomaMessageCode.DOMA4015, env, classElement,
-                    classElement.getQualifiedName());
+            throw new AptException(DomaMessageCode.DOMA4015, env, classElement);
         }
         if (classElement.getNestingKind().isNested()) {
-            throw new AptException(DomaMessageCode.DOMA4018, env, classElement,
-                    classElement.getQualifiedName());
+            throw new AptException(DomaMessageCode.DOMA4018, env, classElement);
         }
         if (classElement.getModifiers().contains(Modifier.PRIVATE)) {
             throw new AptException(DomaMessageCode.DOMA4123, env, classElement);
@@ -259,11 +257,23 @@ public class EntityMetaFactory {
 
     protected void doChangedPropertiesField(VariableElement fieldElement,
             EntityMeta entityMeta) {
-        if (!TypeUtil.isAssignable(fieldElement.asType(), Set.class, env)) {
-            throw new AptException(DomaMessageCode.DOMA4095, env, fieldElement);
-        }
         if (entityMeta.hasChangedPropertiesFieldName()) {
             throw new AptException(DomaMessageCode.DOMA4125, env, fieldElement);
+        }
+        if (!TypeUtil.isAssignable(fieldElement.asType(), Set.class, env)) {
+            throw new AptException(DomaMessageCode.DOMA4135, env, fieldElement);
+        }
+        DeclaredType declaredType = TypeUtil.toDeclaredType(fieldElement
+                .asType(), env);
+        if (declaredType == null) {
+            throw new AptIllegalStateException();
+        }
+        List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
+        if (typeArgs.isEmpty()) {
+            throw new AptException(DomaMessageCode.DOMA4136, env, fieldElement);
+        }
+        if (!TypeUtil.isSameType(typeArgs.get(0), String.class, env)) {
+            throw new AptException(DomaMessageCode.DOMA4137, env, fieldElement);
         }
         entityMeta.setChangedPropertiesFieldName(fieldElement.getSimpleName()
                 .toString());

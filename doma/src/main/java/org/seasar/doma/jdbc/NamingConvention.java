@@ -54,21 +54,6 @@ public interface NamingConvention {
     String fromEntityToTable(String entityName, Dialect dialect);
 
     /**
-     * テーブル名からエンティティ名へ変換します。
-     * <p>
-     * データベースから {@link Entity} が注釈されたインタフェースのソースコードを生成する場合に、コード生成ツールにより呼び出されます。
-     * 
-     * @param tableName
-     *            テーブル名
-     * @param dialect
-     *            方言
-     * @return エンティティ名
-     * @throws DomaNullPointerException
-     *             いずれかの引数が {@code null} の場合
-     */
-    String fromTableToEntity(String tableName, Dialect dialect);
-
-    /**
      * プロパティ名からカラム名へ変換します。
      * <p>
      * 更新系SQLの自動生成時、カラム名が明示されていない場合に呼び出されます。また、
@@ -83,20 +68,5 @@ public interface NamingConvention {
      *             いずれかの引数が {@code null} の場合
      */
     String fromPropertyToColumn(String propertyName, Dialect dialect);
-
-    /**
-     * カラム名からプロパティ名へ変換します。
-     * <p>
-     * データベースから {@link Entity} が注釈されたインタフェースのソースコードを生成する場合に、コード生成ツールにより呼び出されます。
-     * 
-     * @param columnName
-     *            カラム名
-     * @param dialect
-     *            方言
-     * @return プロパティ名
-     * @throws DomaNullPointerException
-     *             いずれかの引数が {@code null} の場合
-     */
-    String fromColumnToProperty(String columnName, Dialect dialect);
 
 }

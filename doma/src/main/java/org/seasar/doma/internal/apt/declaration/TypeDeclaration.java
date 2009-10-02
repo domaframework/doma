@@ -20,7 +20,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -35,9 +34,11 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
+import javax.lang.model.util.SimpleTypeVisitor6;
 
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.ElementUtil;
@@ -45,19 +46,35 @@ import org.seasar.doma.internal.apt.TypeUtil;
 
 public class TypeDeclaration {
 
+    protected static final Map<String, Integer> NUMBER_PRIORITY_MAP = new HashMap<String, Integer>();
+    static {
+        NUMBER_PRIORITY_MAP.put(BigDecimal.class.getName(), 80);
+        NUMBER_PRIORITY_MAP.put(BigInteger.class.getName(), 70);
+        NUMBER_PRIORITY_MAP.put(double.class.getName(), 60);
+        NUMBER_PRIORITY_MAP.put(Double.class.getName(), 60);
+        NUMBER_PRIORITY_MAP.put(float.class.getName(), 50);
+        NUMBER_PRIORITY_MAP.put(Float.class.getName(), 50);
+        NUMBER_PRIORITY_MAP.put(long.class.getName(), 40);
+        NUMBER_PRIORITY_MAP.put(Long.class.getName(), 40);
+        NUMBER_PRIORITY_MAP.put(int.class.getName(), 30);
+        NUMBER_PRIORITY_MAP.put(Integer.class.getName(), 30);
+        NUMBER_PRIORITY_MAP.put(short.class.getName(), 20);
+        NUMBER_PRIORITY_MAP.put(Short.class.getName(), 20);
+        NUMBER_PRIORITY_MAP.put(byte.class.getName(), 10);
+        NUMBER_PRIORITY_MAP.put(Byte.class.getName(), 10);
+    }
+
     protected TypeElement typeElement;
 
     protected TypeMirror type;
 
-    protected Map<String, List<TypeParameterDeclaration>> typeParameterDeclarationsMap;
+    protected Map<String, List<TypeParameterDeclaration>> typeParameterDeclarationsMap = new HashMap<String, List<TypeParameterDeclaration>>();
 
     protected ProcessingEnvironment env;
 
-    protected TypeDeclaration() {
-    }
+    protected int numberPriority;
 
-    public TypeElement getTypeElement() {
-        return typeElement;
+    protected TypeDeclaration() {
     }
 
     public TypeMirror getType() {
@@ -69,6 +86,9 @@ public class TypeDeclaration {
     }
 
     public String getQualifiedName() {
+        if (typeElement == null) {
+            return type.toString();
+        }
         return typeElement.getQualifiedName().toString();
     }
 
@@ -81,18 +101,33 @@ public class TypeDeclaration {
     }
 
     public boolean isBooleanType() {
-        return TypeUtil.isSameType(type, Boolean.class, env);
+        return type.getKind() == TypeKind.BOOLEAN
+                || TypeUtil.isSameType(type, Boolean.class, env);
     }
 
     public boolean isNumberType() {
-        return TypeUtil.isSameType(type, BigDecimal.class, env)
-                || TypeUtil.isSameType(type, BigInteger.class, env)
-                || TypeUtil.isSameType(type, Double.class, env)
-                || TypeUtil.isSameType(type, Float.class, env)
-                || TypeUtil.isSameType(type, Long.class, env)
-                || TypeUtil.isSameType(type, Integer.class, env)
-                || TypeUtil.isSameType(type, Short.class, env)
-                || TypeUtil.isSameType(type, Byte.class, env);
+        return type.accept(new SimpleTypeVisitor6<Boolean, Void>(false) {
+
+            @Override
+            public Boolean visitPrimitive(PrimitiveType t, Void p) {
+                return true;
+            }
+
+            @Override
+            protected Boolean defaultAction(TypeMirror e, Void p) {
+                TypeElement typeElement = TypeUtil.toTypeElement(e, env);
+                if (typeElement == null) {
+                    return false;
+                }
+                return NUMBER_PRIORITY_MAP.containsKey(typeElement
+                        .getQualifiedName().toString());
+            }
+
+        }, null);
+    }
+
+    public int getNumberPriority() {
+        return numberPriority;
     }
 
     public ConstructorDeclaration getConstructorDeclarations(
@@ -124,7 +159,8 @@ public class TypeDeclaration {
                         && typeDeclIterator.hasNext();) {
                     TypeMirror t1 = TypeUtil.toWrapperTypeIfPrimitive(
                             valueElementIterator.next().asType(), env);
-                    TypeMirror t2 = typeDeclIterator.next().getType();
+                    TypeMirror t2 = TypeUtil.toWrapperTypeIfPrimitive(
+                            typeDeclIterator.next().getType(), env);
                     if (!TypeUtil.isSameType(t1, t2, env)) {
                         continue outer;
                     }
@@ -147,8 +183,7 @@ public class TypeDeclaration {
                     typeQualifiedName, env);
             for (VariableElement field : ElementFilter.fieldsIn(typeElement
                     .getEnclosedElements())) {
-                if (field.getModifiers().contains(Modifier.PRIVATE)
-                        || field.getModifiers().contains(Modifier.STATIC)) {
+                if (field.getModifiers().contains(Modifier.STATIC)) {
                     continue;
                 }
                 if (!field.getSimpleName().contentEquals(name)) {
@@ -216,7 +251,8 @@ public class TypeDeclaration {
                         && typeDeclIterator.hasNext();) {
                     TypeMirror t1 = TypeUtil.toWrapperTypeIfPrimitive(
                             valueElementIterator.next().asType(), env);
-                    TypeMirror t2 = typeDeclIterator.next().getType();
+                    TypeMirror t2 = TypeUtil.toWrapperTypeIfPrimitive(
+                            typeDeclIterator.next().getType(), env);
                     if (!TypeUtil.isSameType(t1, t2, env)) {
                         continue outer;
                     }
@@ -240,6 +276,15 @@ public class TypeDeclaration {
             }
         }
         return candidate;
+    }
+
+    public TypeDeclaration calculate(TypeDeclaration other) {
+        assertNotNull(other);
+        assertTrue(isNumberType());
+        assertTrue(other.isNumberType());
+        TypeMirror type = this.numberPriority >= other.numberPriority ? this.type
+                : other.type;
+        return newInstance(type, env);
     }
 
     @Override
@@ -272,17 +317,37 @@ public class TypeDeclaration {
         return true;
     }
 
-    public static TypeDeclaration newInstance(TypeElement typeElement,
+    public static TypeDeclaration newInstance(TypeMirror type,
             ProcessingEnvironment env) {
-        assertNotNull(typeElement, env);
+        assertNotNull(type, env);
+        TypeElement typeElement = TypeUtil.toTypeElement(type, env);
         Map<String, List<TypeParameterDeclaration>> map = new HashMap<String, List<TypeParameterDeclaration>>();
-        gatherTypeParameterDeclarations(typeElement.asType(), map, env);
+        gatherTypeParameterDeclarations(type, map, env);
         TypeDeclaration typeDeclaration = new TypeDeclaration();
+        typeDeclaration.type = type;
         typeDeclaration.typeElement = typeElement;
-        typeDeclaration.type = typeElement.asType();
         typeDeclaration.typeParameterDeclarationsMap = map;
         typeDeclaration.env = env;
+        typeDeclaration.numberPriority = determineNumberPriority(typeElement,
+                type);
         return typeDeclaration;
+    }
+
+    protected static int determineNumberPriority(TypeElement typeElement,
+            TypeMirror type) {
+        if (typeElement != null) {
+            Integer result = NUMBER_PRIORITY_MAP.get(typeElement
+                    .getQualifiedName().toString());
+            if (result != null) {
+                return result.intValue();
+            }
+        }
+        Integer result = NUMBER_PRIORITY_MAP.get(type.getKind().name()
+                .toLowerCase());
+        if (result != null) {
+            return result.intValue();
+        }
+        return 0;
     }
 
     public static TypeDeclaration newUnknownInstance(ProcessingEnvironment env) {
@@ -295,30 +360,8 @@ public class TypeDeclaration {
 
     public static TypeDeclaration newBooleanInstance(ProcessingEnvironment env) {
         assertNotNull(env);
-        TypeElement typeElement = ElementUtil
-                .getTypeElement(Boolean.class, env);
-        return newInstance(typeElement, env);
-    }
-
-    public static TypeDeclaration newNumberInstance(
-            TypeDeclaration leftOperand, TypeDeclaration rightOperand,
-            ProcessingEnvironment env) {
-        assertNotNull(leftOperand, rightOperand, env);
-        TypeMirror t1 = leftOperand.getType();
-        TypeMirror t2 = rightOperand.getType();
-        for (Class<?> clazz : Arrays.<Class<?>> asList(Integer.class,
-                Long.class, BigDecimal.class, BigInteger.class, Double.class,
-                Float.class, Short.class, Byte.class)) {
-            if (TypeUtil.isSameType(t1, clazz, env)
-                    || TypeUtil.isSameType(t2, clazz, env)) {
-                TypeDeclaration typeDeclaration = newInstance(ElementUtil
-                        .getTypeElement(clazz, env), env);
-                if (typeDeclaration != null) {
-                    return typeDeclaration;
-                }
-            }
-        }
-        throw new AptIllegalStateException();
+        TypeMirror type = TypeUtil.getTypeMirror(boolean.class, env);
+        return newInstance(type, env);
     }
 
     protected static void gatherTypeParameterDeclarations(

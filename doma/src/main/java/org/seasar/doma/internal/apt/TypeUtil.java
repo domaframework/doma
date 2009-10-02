@@ -48,18 +48,6 @@ public final class TypeUtil {
     public static TypeElement toTypeElement(TypeMirror typeMirror,
             final ProcessingEnvironment env) {
         assertNotNull(typeMirror, env);
-        if (typeMirror.getKind().isPrimitive()) {
-            return typeMirror.accept(
-                    new SimpleTypeVisitor6<TypeElement, Void>() {
-
-                        @Override
-                        public TypeElement visitPrimitive(PrimitiveType t,
-                                Void p) {
-                            return env.getTypeUtils().boxedClass(t);
-                        }
-
-                    }, null);
-        }
         Element element = env.getTypeUtils().asElement(typeMirror);
         if (element == null) {
             return null;
@@ -303,4 +291,36 @@ public final class TypeUtil {
         }, null);
     }
 
+    public static TypeMirror getTypeMirror(Class<?> clazz,
+            ProcessingEnvironment env) {
+        if (clazz == boolean.class) {
+            return env.getTypeUtils().getPrimitiveType(TypeKind.BOOLEAN);
+        }
+        if (clazz == char.class) {
+            return env.getTypeUtils().getPrimitiveType(TypeKind.CHAR);
+        }
+        if (clazz == byte.class) {
+            return env.getTypeUtils().getPrimitiveType(TypeKind.BYTE);
+        }
+        if (clazz == short.class) {
+            return env.getTypeUtils().getPrimitiveType(TypeKind.SHORT);
+        }
+        if (clazz == int.class) {
+            return env.getTypeUtils().getPrimitiveType(TypeKind.INT);
+        }
+        if (clazz == long.class) {
+            return env.getTypeUtils().getPrimitiveType(TypeKind.LONG);
+        }
+        if (clazz == float.class) {
+            return env.getTypeUtils().getPrimitiveType(TypeKind.FLOAT);
+        }
+        if (clazz == double.class) {
+            return env.getTypeUtils().getPrimitiveType(TypeKind.DOUBLE);
+        }
+        TypeElement typeElement = ElementUtil.getTypeElement(clazz, env);
+        if (typeElement == null) {
+            throw new AptIllegalStateException();
+        }
+        return typeElement.asType();
+    }
 }

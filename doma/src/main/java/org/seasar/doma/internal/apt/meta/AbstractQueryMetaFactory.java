@@ -122,7 +122,6 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
         return TypeUtil.isAssignable(typeMirror, IterationCallback.class, env);
     }
 
-    // TODO
     protected void validateEntityPropertyNames(TypeMirror entityType,
             ExecutableElement method, M queryMeta) {
         String[] includedPropertyNames = queryMeta.getIncludedPropertyNames();

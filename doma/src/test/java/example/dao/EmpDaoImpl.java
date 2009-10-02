@@ -46,17 +46,17 @@ import example.entity.Emp_;
  * 
  */
 @Generated("")
-public class EmpDao_ extends DomaAbstractDao implements EmpDao {
+public class EmpDaoImpl extends DomaAbstractDao implements EmpDao {
 
-    public EmpDao_() {
+    public EmpDaoImpl() {
         super(new ExampleConfig(), null);
     }
 
-    public EmpDao_(DataSource dataSource) {
+    public EmpDaoImpl(DataSource dataSource) {
         super(new ExampleConfig(), dataSource);
     }
 
-    protected EmpDao_(Config config) {
+    protected EmpDaoImpl(Config config) {
         super(config, config.dataSource());
     }
 

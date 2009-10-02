@@ -45,7 +45,6 @@ import org.seasar.doma.internal.expr.node.OrOperatorNode;
 import org.seasar.doma.internal.expr.node.ParensNode;
 import org.seasar.doma.internal.expr.node.SubtractOperatorNode;
 import org.seasar.doma.internal.expr.node.VariableNode;
-import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.message.DomaMessageCode;
 
 public class ExpressionValidator implements
@@ -214,18 +213,13 @@ public class ExpressionValidator implements
                             .getPosition(), node.getExpression(), node
                             .getRightNode().toString());
         }
-        return TypeDeclaration.newNumberInstance(left, right, env);
+        return left.calculate(right);
     }
 
     @Override
     public TypeDeclaration visitLiteralNode(LiteralNode node, Void p) {
-        Class<?> clazz = ClassUtil.getWrapperClassIfPrimitive(node
-                .getValueClass());
-        TypeElement typeElement = ElementUtil.getTypeElement(clazz, env);
-        if (typeElement == null) {
-            throw new AptIllegalStateException();
-        }
-        return TypeDeclaration.newInstance(typeElement, env);
+        TypeMirror type = TypeUtil.getTypeMirror(node.getValueClass(), env);
+        return TypeDeclaration.newInstance(type, env);
     }
 
     @Override
@@ -242,9 +236,14 @@ public class ExpressionValidator implements
 
         String className = node.getClassName();
         TypeElement typeElement = ElementUtil.getTypeElement(className, env);
+        if (typeElement == null) {
+            ExpressionLocation location = node.getLocation();
+            throw new AptException(DomaMessageCode.DOMA4138, env,
+                    methodElement, location.getExpression(), location
+                            .getPosition(), className);
+        }
         TypeDeclaration typeDeclaration = TypeDeclaration.newInstance(
-                typeElement, env);
-
+                typeElement.asType(), env);
         ConstructorDeclaration constructorDeclaration = typeDeclaration
                 .getConstructorDeclarations(parameterTypeDeclarations);
         if (constructorDeclaration != null) {
@@ -277,12 +276,13 @@ public class ExpressionValidator implements
                 .getMethodDeclarations(methodName, parameterTypeDeclarations);
         if (methodDeclarations.size() == 0) {
             ExpressionLocation location = node.getLocation();
+            String methodSignature = createMethodSignature(methodName,
+                    parameterTypeDeclarations);
             throw new AptException(DomaMessageCode.DOMA4071, env,
                     methodElement, location.getExpression(), location
                             .getPosition(), node.getTargetObjectNode()
                             .getExpression(), typeDeclaration
-                            .getQualifiedName(), parameterTypeDeclarations
-                            .size(), methodName);
+                            .getQualifiedName(), methodSignature);
         }
         if (methodDeclarations.size() == 1) {
             MethodDeclaration methodDeclaration = methodDeclarations.get(0);
@@ -293,6 +293,22 @@ public class ExpressionValidator implements
             }
         }
         throw new AptIllegalStateException();
+    }
+
+    protected String createMethodSignature(String methodName,
+            List<TypeDeclaration> parameterTypeDeclarations) {
+        StringBuilder buf = new StringBuilder();
+        buf.append(methodName);
+        buf.append("(");
+        if (parameterTypeDeclarations.size() > 0) {
+            for (TypeDeclaration declaration : parameterTypeDeclarations) {
+                buf.append(declaration.getType());
+                buf.append(", ");
+            }
+            buf.setLength(buf.length() - 2);
+        }
+        buf.append(")");
+        return buf.toString();
     }
 
     @Override
@@ -313,24 +329,20 @@ public class ExpressionValidator implements
         throw new AptException(DomaMessageCode.DOMA4114, env, methodElement,
                 location.getExpression(), location.getPosition(), node
                         .getTargetObjectNode().getExpression(), typeDeclaration
-                        .getTypeElement().getQualifiedName(), fieldName);
+                        .getQualifiedName(), fieldName);
     }
 
     @Override
     public TypeDeclaration visitVariableNode(VariableNode node, Void p) {
         String variableName = node.getExpression();
-        TypeMirror typeMirror = parameterTypeMap.get(variableName);
-        if (typeMirror == null) {
+        TypeMirror type = parameterTypeMap.get(variableName);
+        if (type == null) {
             ExpressionLocation location = node.getLocation();
             throw new AptException(DomaMessageCode.DOMA4067, env,
                     methodElement, variableName, location.getPosition());
         }
-        TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
-        if (typeElement == null) {
-            return unknownTypeDeclaration;
-        }
         validatedParameterNames.add(variableName);
-        return TypeDeclaration.newInstance(typeElement, env);
+        return TypeDeclaration.newInstance(type, env);
     }
 
     protected class ParameterCollector implements

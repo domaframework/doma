@@ -56,40 +56,47 @@ public class DaoMetaFactory {
         this.queryMetaFactories.addAll(commandMetaFactories);
     }
 
-    public DaoMeta createDaoMeta(TypeElement daoElement) {
-        assertNotNull(daoElement);
+    public DaoMeta createDaoMeta(TypeElement interfaceElement) {
+        assertNotNull(interfaceElement);
         DaoMeta daoMeta = new DaoMeta();
-        doDaoElement(daoElement, daoMeta);
-        doMethodElements(daoElement, daoMeta);
+        doDaoElement(interfaceElement, daoMeta);
+        doMethodElements(interfaceElement, daoMeta);
         return daoMeta;
     }
 
-    protected void doDaoElement(TypeElement daoElement, DaoMeta daoMeta) {
-        if (daoElement.getNestingKind().isNested()) {
-            throw new AptException(DomaMessageCode.DOMA4017, env, daoElement,
-                    daoElement.getQualifiedName());
-        }
-        if (!daoElement.getKind().isInterface()) {
-            throw new AptException(DomaMessageCode.DOMA4014, env, daoElement,
-                    daoElement.getQualifiedName());
-        }
-        if (!daoElement.getInterfaces().isEmpty()) {
-            throw new AptException(DomaMessageCode.DOMA4045, env, daoElement);
-        }
-        String name = daoElement.getSimpleName().toString();
+    protected void doDaoElement(TypeElement interfaceElement, DaoMeta daoMeta) {
+        validateInterface(interfaceElement);
+
+        String name = interfaceElement.getSimpleName().toString();
         String suffix = Options.getDaoSuffix(env);
         if (name.endsWith(suffix)) {
-            Notifier
-                    .notify(env, Kind.WARNING, DomaMessageCode.DOMA4026, daoElement, suffix);
+            Notifier.notify(env, Kind.WARNING, DomaMessageCode.DOMA4026,
+                    interfaceElement, suffix);
         }
         daoMeta.setName(name);
-        daoMeta.setDaoElement(daoElement);
-        daoMeta.setDaoType(daoElement.asType());
-        Dao daoAnnotation = daoElement.getAnnotation(Dao.class);
-        if (!daoElement.getTypeParameters().isEmpty()) {
-            throw new AptException(DomaMessageCode.DOMA4059, env, daoElement);
-        }
+        daoMeta.setDaoElement(interfaceElement);
+        daoMeta.setDaoType(interfaceElement.asType());
+        Dao daoAnnotation = interfaceElement.getAnnotation(Dao.class);
         doConfig(daoAnnotation, daoMeta);
+    }
+
+    protected void validateInterface(TypeElement interfaceElement) {
+        if (!interfaceElement.getKind().isInterface()) {
+            throw new AptException(DomaMessageCode.DOMA4014, env,
+                    interfaceElement);
+        }
+        if (interfaceElement.getNestingKind().isNested()) {
+            throw new AptException(DomaMessageCode.DOMA4017, env,
+                    interfaceElement);
+        }
+        if (!interfaceElement.getInterfaces().isEmpty()) {
+            throw new AptException(DomaMessageCode.DOMA4045, env,
+                    interfaceElement);
+        }
+        if (!interfaceElement.getTypeParameters().isEmpty()) {
+            throw new AptException(DomaMessageCode.DOMA4059, env,
+                    interfaceElement);
+        }
     }
 
     protected void doConfig(Dao daoAnnotation, DaoMeta daoMeta) {
@@ -106,9 +113,10 @@ public class DaoMetaFactory {
         throw new AptIllegalStateException();
     }
 
-    protected void doMethodElements(TypeElement typeElement, DaoMeta daoMeta) {
+    protected void doMethodElements(TypeElement interfaceElement,
+            DaoMeta daoMeta) {
         for (ExecutableElement methodElement : ElementFilter
-                .methodsIn(typeElement.getEnclosedElements())) {
+                .methodsIn(interfaceElement.getEnclosedElements())) {
             try {
                 doMethodElement(methodElement, daoMeta);
             } catch (AptException e) {

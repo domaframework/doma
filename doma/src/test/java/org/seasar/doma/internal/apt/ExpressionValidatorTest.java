@@ -78,7 +78,8 @@ public class ExpressionValidatorTest extends AptTestCase {
         ExpressionValidator validator = new ExpressionValidator(
                 getProcessingEnvironment(), methodElement, parameterTypeMap);
 
-        ExpressionNode node = new ExpressionParser("emp.notFound()").parse();
+        ExpressionNode node = new ExpressionParser(
+                "emp.notFound(1, \"aaa\".length())").parse();
         try {
             validator.validate(node);
             fail();

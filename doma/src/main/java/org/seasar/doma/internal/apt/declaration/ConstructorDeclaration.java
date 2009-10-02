@@ -22,10 +22,7 @@ import java.util.List;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
-
-import org.seasar.doma.internal.apt.TypeUtil;
 
 public class ConstructorDeclaration {
 
@@ -44,11 +41,7 @@ public class ConstructorDeclaration {
 
     public TypeDeclaration getTypeDeclaration() {
         TypeMirror returnType = resolveTypeParameter(element.asType());
-        TypeElement typeElement = TypeUtil.toTypeElement(returnType, env);
-        if (typeElement == null) {
-            return null;
-        }
-        return TypeDeclaration.newInstance(typeElement, env);
+        return TypeDeclaration.newInstance(returnType, env);
     }
 
     public TypeMirror resolveTypeParameter(TypeMirror formalType) {

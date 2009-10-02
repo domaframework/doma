@@ -24,6 +24,7 @@ import javax.lang.model.element.VariableElement;
 import org.seasar.doma.Select;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.type.AnyType;
+import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.IterationCallbackType;
 import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.ValueType;
@@ -110,10 +111,13 @@ public class SqlFileSelectQueryMetaFactory extends
             QueryParameterMeta parameterMeta = createParameterMeta(parameter);
             if (parameterMeta.getListType() != null) {
                 ListType listType = parameterMeta.getListType();
-                ValueType valueType = listType.getValueType();
-                if (valueType == null) {
-                    throw new AptException(DomaMessageCode.DOMA4028, env,
-                            parameterMeta.getElement());
+                DomainType domainType = listType.getDomainType();
+                if (domainType == null) {
+                    ValueType valueType = listType.getValueType();
+                    if (valueType == null) {
+                        throw new AptException(DomaMessageCode.DOMA4028, env,
+                                parameterMeta.getElement());
+                    }
                 }
             } else if (parameterMeta.getEntityType() != null) {
             } else if (parameterMeta.getDomainType() != null) {
