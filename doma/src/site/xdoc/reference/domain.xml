@@ -2,7 +2,7 @@
 <document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
 	<properties>
-		<title>ドメイン</title>
+		<title>ドメインクラス</title>
 	</properties>
 	<body>
 		<section name="概要">
@@ -13,7 +13,7 @@
 			</p>
 			<p>
 				ドメインクラスを利用することで、データベース上のカラムの型が同じあってもアプリケーション上意味が異なるものを別のJavaの型で表現できます。
-				これにより、意味を明確にしプログラミングミスを事前に防ぐことが可能です。
+				これにより、意味を明確にしプログラミングミスを事前に防ぎやすくなります。
 				また、ドメインクラスに振る舞いを持たせることで、よりわかりやすいプログラミングが可能です。
 			</p>
 			<p>
@@ -21,12 +21,12 @@
 				ドメインクラスを利用しなくても<code>Integer</code>や<code>String</code>など基本型のみでデータアクセスは可能です。
 			</p>
 		</section>
-		<section name="ドメインクラスの作成">
+		<section name="ドメイン定義">
 			<p>
 				ドメインクラスは <code>@Domain</code>を注釈して示します。
 			</p>
 			<p>
-				<code>@Domain</code>の<code>valueType</code>要素には、ドメインクラスで扱う基本型を指定します。この基本型が、データベースのカラムの型とのマッピングに使用されます。
+				<code>@Domain</code>の<code>valueType</code>要素には、ドメインクラスで扱う<a href="basic.html">基本型</a>を指定します。この基本型が、データベースのカラムの型とのマッピングに使用されます。
 			</p>
 			<p>
 				<code>accessorMethod</code>要素には、<code>valueType</code>要素に指定した型を返すアクセッサーメソッドの名前を指定します。デフォルト値は<code>getValue</code>です。
@@ -34,7 +34,7 @@
 			<p>
 				以下の例では、 電話番号を表すドメインクラスを作成しています。
 			</p>
-<source>package example.domain;
+<source><![CDATA[package example.domain;
 
 import org.seasar.doma.Domain;
 
@@ -55,7 +55,7 @@ public class PhoneNumber {
        // ドメインに固有の振る舞いを記述できる。
        ...
     }
-}</source>
+}]]></source>
 			<p>
 				クラスには、<code>valueType</code>要素に指定した型と同じ型をもつ非<code>private</code>なコンストラクタが必要です。
 				また、<code>accessorMethod</code>要素にしてした値を名前とする非<code>private</code>なメソッドが必要です。
@@ -68,11 +68,12 @@ public class PhoneNumber {
 				クラスには、任意のメソッドを持たせることができます。
 			</p>
 		</section>
-		<section name="エンティティでの利用">
-			<p>
-				ドメインクラスは、エンティティのプロパティの型で利用できます。
-			</p>
-<source>@Entity
+		<section name="利用例">
+			<subsection name="エンティティクラス">
+				<p>
+					エンティティクラスのフィールドの型での利用例です。
+				</p>
+<source><![CDATA[@Entity
 public class Employee {
 
     @Id
@@ -83,21 +84,25 @@ public class Employee {
     PhoneNumber phoneNumber;
 
     @Version
-    VersionNo versionNo();
+    Integer versionNo();
     
     ...
-}</source>
-		</section>
-		<section name="Daoでの利用">
-			<p>
-				ドメインクラスは、Daoのメソッドのパラメータの型にも使用できます。
-			</p>
-<source>@Dao(config = AppConfig.class)
+}]]></source>
+			</subsection>
+			<subsection name="Daoインタフェース">
+				<p>
+					Daoインタフェースのメソッドのパラメータや戻り値での利用例です。
+				</p>
+<source><![CDATA[@Dao(config = AppConfig.class)
 public interface EmployeeDao {
 
     @Select
     Employee selectByPhoneNumber(PhoneNumber phoneNumber);
-}</source>
+    
+    @Select
+    List<PhoneNumber> selectAllPhoneNumber();
+}]]></source>
+			</subsection>
 		</section>
 	</body>
 </document>

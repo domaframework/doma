@@ -2,7 +2,7 @@
 <document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
 	<properties>
-		<title>Dao</title>
+		<title>Daoインタフェース</title>
 	</properties>
 	<body>
 		<section name="概要">
@@ -26,7 +26,7 @@ public interface EmployeeDao {
 			<p>
 				<code>@Dao</code>の <code>config</code>要素には、
 				<code>org.seasar.doma.jdbc.Config</code>の実装クラスを指定しなければいけません。
-				<code>Config</code>の実装クラスは、データソース、データベースの方言、ネーミング規約等を決定します。
+				<code>Config</code>の実装クラスは、データソース、データベースの方言、ネーミング規約等の<a href="config.html">設定</a>を行います。
 			</p>
 		</section>
 		<section name="クエリメソッド定義">
@@ -38,7 +38,7 @@ public interface EmployeeDao {
 					検索を行うには、 <a href="../apidocs/org/seasar/doma/Select.html"><code>@Select</code></a> を注釈します。
 				</p>
 				<p>
-					検索条件のパラメータとして、基本型、<a href="domain.html">ドメインクラス</a>、<a href="entity.html">エンティティクラス</a>
+					検索条件のパラメータとして、<a href="basic.html">基本型</a>、<a href="domain.html">ドメインクラス</a>、<a href="entity.html">エンティティクラス</a>
 					を任意の数だけ宣言できます。また、IN句で複数のバインド変数に使用できるように、基本型やドメインクラスを要素とする
 					<code>java.util.List</code>型のパラメータも宣言できます。
 				</p>
@@ -79,6 +79,7 @@ public interface EmployeeDao {
 				</p>
 				<p>
 					SQLの自動生成を使用するか<a href="sqlfile.html">SQLファイル</a>を使用するか選択できます。
+					デフォルトではSQLの自動生成が実行されます。 
 				</p>
 			</subsection>
 			<subsection name="バッチ挿入">
@@ -87,6 +88,7 @@ public interface EmployeeDao {
 				</p>
 				<p>
 					SQLの自動生成を使用するか<a href="sqlfile.html">SQLファイル</a>を使用するか選択できます。
+					デフォルトではSQLの自動生成が実行されます。 
 				</p>
 			</subsection>
 			<subsection name="バッチ更新">
@@ -96,7 +98,6 @@ public interface EmployeeDao {
 				<p>
 					<code>sqlFile</code>要素により、SQLの自動生成を使用するか<a href="sqlfile.html">SQLファイル</a>を使用するか選択できます。
 					デフォルトではSQLの自動生成が実行されます。
-
 				</p>
 			</subsection>
 			<subsection name="バッチ削除">
@@ -185,8 +186,8 @@ Employee employee = employeeDao.selectById(1);</source>
 			</p>
 			<p>
 				デフォルトコンストラクタを使用した場合は、<code>@Dao</code>の <code>config</code>要素に
-				指定したクラスにより <code>DataSource</code>が提供されますが、
-				特定の <code>DataSource</code>を指定してインスタンス化することもできます。
+				指定した設定により<code>DataSource</code>が決定しますが、
+				特定の <code>DataSource</code>を指定してインスタンス化することも可能です。
 			</p>
 <source>DataSource dataSource = ...;
 EmployeeDao employeeDao = new EmployeeDaoImpl(dataSource);

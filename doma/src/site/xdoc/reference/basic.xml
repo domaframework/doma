@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>基本型</title>
+	</properties>
+	<body>
+		<section name="概要">
+			<p>
+				Domaでは、データベースのカラムにマッピング可能なJavaの型を基本型と呼びます。
+			</p>
+			<p>
+				基本型は、<a href="domain.html">ドメインクラス</a>の値型や<a href="entity.html">エンティティクラス</a>の永続フィールドの型として使用されます。
+				また、<a href="dao.html">Dao</a>のメソッドのパラメータや戻り値にも使用されます。
+			</p>
+		</section>
+		<section name="基本型の種類">
+			<p>
+				基本型には以下の種類があります。
+			</p>
+			<ul>
+				<li>プリミティブ型とそのラッパー型</li>
+				<li>byte[]</li>
+				<li>java.lang.String</li>
+				<li>java.math.BigDecimal</li>
+				<li>java.math.BigInteger</li>
+				<li>java.sql.Date</li>
+				<li>java.sql.Time</li>
+				<li>java.sql.Timestamp</li>
+				<li>java.sql.Array</li>
+				<li>java.sql.Blob</li>
+				<li>java.sql.Clob</li>
+				<li>java.sql.NClob</li>
+			</ul>
+		</section>
+		<section name="利用例">
+			<subsection name="エンティティクラス">
+			<p>
+				エンティティクラスのフィールドの型での利用例です。
+			</p>
+<source><![CDATA[@Entity
+public class Employee {
+
+    @Id
+    Integer employeeId;
+
+    String employeeName;
+
+    @Version
+    Long versionNo();
+    
+    ...
+}]]></source>
+			</subsection>
+			<subsection name="ドメインクラス">
+				<p>
+					ドメインクラスでの利用例です。
+				</p>
+<source><![CDATA[@Domain(valueType = String.class)
+public class PhoneNumber {
+
+    private final String value;
+
+    public PhoneNumber(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+}]]></source>
+			</subsection>
+			<subsection name="Daoインタフェース">
+				<p>
+					Daoインタフェースのメソッドのパラメータや戻り値での利用例です。
+				</p>
+<source><![CDATA[@Dao(config = AppConfig.class)
+public interface EmployeeDao {
+
+    @Select
+    Employee selectById(Integer employeeId);
+    
+    @Select
+    List<String> selectAllName();
+}]]></source>
+			</subsection>
+		</section>
+	</body>
+</document>

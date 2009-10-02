@@ -42,9 +42,10 @@
 			<item name="セットアップ" href="setup.html" />
 			<item name="クイックスタート" href="quick_start.html" />
 			<item name="リファレンス" href="reference/index.html" collapse="true" >
-				<item name="ドメイン" href="reference/domain.html" />
-				<item name="エンティティ" href="reference/entity.html" />
-				<item name="DAO" href="reference/dao.html" />
+				<item name="基本型" href="reference/basic.html" />
+				<item name="ドメインクラス" href="reference/domain.html" />
+				<item name="エンティティクラス" href="reference/entity.html" />
+				<item name="Daoインタフェース" href="reference/dao.html" />
 				<item name="設定" href="reference/config.html" />
 				<item name="SQLファイル" href="reference/sqlfile.html" />
 				<item name="注釈処理" href="reference/apt.html" />

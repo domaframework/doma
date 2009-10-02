@@ -9,14 +9,16 @@
 			<p>
 				SQLファイルは、SQL文を格納したテキストファイルで、Daoのメソッドにマッピングされます。
 				SQLのブロックコメント(/* */)や行コメント(--)を使用することで、バインド変数や動的なSQLのための条件分岐を表現できます。
-				SQLのツールですぐにそのSQLを実行できるように、バインド変数にはテスト用のデータを指定できます。テスト用のデータは、実行時には使用されません。
+				SQLのツールでそのままそのSQLを実行できるように、バインド変数にはテスト用のデータを指定します。テスト用のデータは、実行時には使用されません。
 				たとえば、SQLファイルには次のようなSQL文が格納されます。
 			</p>
 <source>select * from employee where employee_id = /*employeeId*/99</source>
 			<p>
-				ここでは、ブロックコメントで囲まれた <code>employeeId</code>がDaoのメソッドのパラメータに対応します。
+				ここでは、ブロックコメントで囲まれた <code>employeeId</code>がDaoインタフェースのメソッドのパラメータに対応し、
 				直後の <code>99</code>はテスト用の条件になります。
+				対応するDaoインタフェースのメソッドは次のとおりです。
 			</p>
+<source>Employee selectById(employeeId);</source>
 		</section>
 		<section name="SQLファイルにマッピングするためのアノテーション">
 			<p>
@@ -84,31 +86,49 @@
 		</section>
 		<section name="SQLコメント">
 			<subsection name="バインド変数コメント">
-				<h4><code>1つのバインド変数</code></h4>
 				<p>
-					バインド変数はブロックコメントで囲んで示します。バインド変数の名前はメソッドのパラメータ名にマッピングされます。
-					ブロックコメント直後のテスト用データは必須です。テスト用データは、実行時には使用されません。
-					Daoのメソッドと、対応するSQLの例は次のとおりです。
+					バインド変数は/*～*/というブロックコメントで囲んで示します。バインド変数の名前はDaoインタフェースのメソッドのパラメータ名にマッピングされます。
+					ブロックコメント直後にはテスト用データを指定する必要があります。テスト用データは、実行時には使用されません。
+				</p>
+				<h4><code>単一のパラメータ</code></h4>
+				<p>
+					Daoインタフェースのメソッドのパラメータが<a href="basic.html">基本型</a>もしくは<a href="domain.html">ドメインクラス</a>の場合について説明します。
+					単一のパラメータは、1つのバインド変数コメントに対応します。
+					Daoインタフェースのメソッドと、対応するSQLの例は次のとおりです。
 				</p>
 <source>List&lt;Employee&gt; selectById(Integer employeeId);</source>
 <source>select * from employee where employee_id = /*employeeId*/99</source>
 				<p>
 					<code>/*employeeId*/</code>は、<code>/* employeeId */</code>のように空白を含めて記述することも可能です。
 				</p>
-				<h4><code>リストのバインド変数（IN句にバインドする場合）</code></h4>
+				<h4><code>Listのパラメータ</code></h4>
 				<p>
-					IN句にバインドする場合は、INの直後にブロックコメントをおき、ブロックコメントの直後には括弧つきでテスト用データを指定します。テスト用データは、実行時には使用されません。
-					Daoのメソッドと、対応するSQLの例は次のとおりです。
+					Daoインタフェースのメソッドのパラメータが<a href="basic.html">基本型</a>もしくは<a href="domain.html">ドメインクラス</a>を要素とするjava.util.Listの場合について説明します。
+					Listのパラメータは、IN句の1つのバインド変数コメントに対応しますが、複数の値をバインドできます。
+					ブロックコメントはINキーワードの直後に置き、ブロックコメントの直後には括弧つきでテスト用データを指定します。テスト用データは、実行時には使用されません。
+					Daoインタフェースのメソッドと、対応するSQLの例は次のとおりです。
 				</p>
 <source>List&lt;Employee&gt; selectByIdList(List&lt;Integer&gt; employeeIdList);</source>
 <source>select * from employee where employee_id in /*employeeIdList*/(1,2,3)</source>
-				<h4><code>エンティティ型パラメータをバインド変数に利用する場合</code></h4>
 				<p>
-					メソッドでエンティティを渡す場合、バインド変数コメント内でドット（.）を使用することでエンティティのプロパティにアクセスできます。
-					Daoのメソッドと、対応するSQLの例は次のとおりです。
+					<code>/*employeeIdList*/</code>は、<code>/* employeeIdList */</code>のように空白を含めて記述することも可能です。
 				</p>
-<source>List&lt;Employee&gt; selectById(Employee employee);</source>
-<source>select * from employee where employee_id = /*employee.employeeId*/99</source>
+				<h4><code>エンティティクラスのパラメータ</code></h4>
+				<p>
+					Daoインタフェースのメソッドのパラメータが<a href="entity.html">エンティティクラス</a>の場合について説明します。
+					エンティティクラスのパラメータは、複数のバインド変数コメントに対応します。
+					ブロックコメントの中では、ドット（.）を使用しエンティティのフィールドにアクセスできます。
+					Daoインタフェースのメソッドと、対応するSQLの例は次のとおりです。
+				</p>
+<source>List&lt;Employee&gt; selectByNameAndSalary(Employee employee);</source>
+<source>select * from employee where employee_name = /*employee.employeeName*/'abc' and salary = /*employee.salary*/1234</source>
+				<p>
+					フィールドにアクセスする代わりに、publicなメソッドを呼び出すことも可能です。
+				</p>
+<source>select * from employee where salary = /*employee.getTaxedSalary()*/1234</source>
+				<p>
+					<code>/*employee.employeeName*/</code>は、<code>/* employee.employeeName */</code>のように空白を含めて記述することも可能です。
+				</p>
 			</subsection>
 			<subsection name="埋め込み変数コメント">
 				<p>
@@ -199,7 +219,7 @@ List&lt;Employee&gt; list = dao.selectAll(salary, orderBy);</source>
 					埋め込みコメントを示す<code>#</code>がつづく場合は通常のコメントとみなされません。
 				</p>
 				<p>
-					たとえば、次の例は通常のブロックコメントの使い方です。
+					たとえば、次の例は通常のブロックコメントとみなされます。
 				</p>
 <source>/** aaa */</source>
 <source>/*+aaa */</source>
@@ -222,7 +242,7 @@ List&lt;Employee&gt; list = dao.selectAll(salary, orderBy);</source>
 					<code>--</code>の直後に、<code>elseif</code>や<code>else</code>がつづかない場合、それは通常のSQLコメントだとみなされます。
 				</p>
 				<p>
-					たとえば、次の例は通常の行コメントの使い方です。
+					たとえば、次の例は通常の行コメントだとみなされます。
 				</p>
 <source>-- aaa</source>
 			</subsection>
@@ -243,7 +263,7 @@ List&lt;Employee&gt; list = dao.selectAll(salary, orderBy);</source>
 					<tr><td><code>10</code></td><td>int</td></tr>
 					<tr><td><code>10L</code></td><td>long</td></tr>
 					<tr><td><code>0.123F</code></td><td>float</td></tr>
-					<tr><td><code>0.123D</code></td><td>doubl</td></tr>
+					<tr><td><code>0.123D</code></td><td>double</td></tr>
 					<tr><td><code>0.123B</code></td><td>java.math.BigDecimal</td></tr>
 					<tr><td><code>'a'</code></td><td>char</td></tr>
 					<tr><td><code>"a"</code></td><td>String</td></tr>
@@ -308,8 +328,8 @@ List&lt;Employee&gt; list = dao.selectAll(salary, orderBy);</source>
 			</subsection>
 			<subsection name="フィールドアクセス">
 				<p>
-					ドット（.）で区切ってフィールド名を指定することでフィールドにアクセスできます。アクセス可能なフィールドは可視性が非<code>private</code>なものです。
-					<code>private</code>なフィールドにはアクセスできません。
+					ドット（.）で区切ってフィールド名を指定することでフィールドにアクセスできます。アクセス可能なフィールドはインスタンスフィールドです。
+					可視性はprivateであってもアクセス可能です。
 				</p>
 <source>select * from employee where /*%if employee.employeeName.startsWith("s") */ employee_name = /*employee.employeeName*/'smith'/*%end*/</source>
 			</subsection>
