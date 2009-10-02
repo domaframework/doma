@@ -271,6 +271,10 @@ public class SqlParser {
 
     protected void parseBindVariableBlockComment() {
         String varialbeName = tokenType.extractExpression(token);
+        if (varialbeName.isEmpty()) {
+            throw new JdbcException(DomaMessageCode.DOMA2120, sql, tokenizer
+                    .getLineNumber(), tokenizer.getPosition(), token);
+        }
         BindVariableNode node = new BindVariableNode(getLocation(),
                 varialbeName, token);
         addNode(node);
@@ -279,6 +283,10 @@ public class SqlParser {
 
     protected void parseEmbeddedVariableBlockComment() {
         String varialbeName = tokenType.extractExpression(token);
+        if (varialbeName.isEmpty()) {
+            throw new JdbcException(DomaMessageCode.DOMA2121, sql, tokenizer
+                    .getLineNumber(), tokenizer.getPosition(), token);
+        }
         EmbeddedVariableNode node = new EmbeddedVariableNode(getLocation(),
                 varialbeName, token);
         addNode(node);

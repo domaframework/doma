@@ -95,6 +95,18 @@ public class SqlParserTest extends TestCase {
         assertEquals("foo", sql.getParameters().get(1).getWrapper().get());
     }
 
+    public void testBindVariable_emptyName() throws Exception {
+        String testSql = "select * from aaa where ename = /*   */'aaa'";
+        SqlParser parser = new SqlParser(testSql);
+        try {
+            parser.parse();
+            fail();
+        } catch (JdbcException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(DomaMessageCode.DOMA2120, expected.getMessageCode());
+        }
+    }
+
     public void testEmbeddedVariable() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("name", new Value(String.class, "hoge"));
@@ -153,6 +165,18 @@ public class SqlParserTest extends TestCase {
         } catch (JdbcException expected) {
             System.out.println(expected.getMessage());
             assertEquals(DomaMessageCode.DOMA2117, expected.getMessageCode());
+        }
+    }
+
+    public void testEmbeddedVariable_emptyName() throws Exception {
+        String testSql = "select * from aaa where ename = /*#   */'aaa'";
+        SqlParser parser = new SqlParser(testSql);
+        try {
+            parser.parse();
+            fail();
+        } catch (JdbcException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(DomaMessageCode.DOMA2121, expected.getMessageCode());
         }
     }
 

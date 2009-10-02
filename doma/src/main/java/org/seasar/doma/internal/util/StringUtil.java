@@ -144,6 +144,9 @@ public final class StringUtil {
     }
 
     public static String trimWhitespace(String text) {
+        if (isNullOrEmpty(text)) {
+            return text;
+        }
         char[] chars = text.toCharArray();
         int start = 0;
         int end = chars.length;
@@ -154,7 +157,10 @@ public final class StringUtil {
         while ((start < end) && (Character.isWhitespace(chars[end - 1]))) {
             end--;
         }
-        return ((start > 0) || (end < chars.length)) ? new String(chars, start,
-                end - 1) : text;
+        if (start < end) {
+            return ((start > 0) || (end < chars.length)) ? new String(chars,
+                    start, end - 1) : text;
+        }
+        return "";
     }
 }
