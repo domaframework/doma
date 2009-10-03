@@ -92,7 +92,6 @@ public class CallableSqlParameterBinder {
         public Void visitBasicListParameter(BasicListParameter<?> parameter,
                 Void p) throws SQLException {
             handleListParameter(parameter);
-            index++;
             return null;
         }
 
@@ -101,7 +100,6 @@ public class CallableSqlParameterBinder {
                 DomainListParameter<?, ?> parameter, Void p)
                 throws SQLException {
             handleListParameter(parameter);
-            index++;
             return null;
         }
 
@@ -109,7 +107,6 @@ public class CallableSqlParameterBinder {
         public Void visitEntityListParameter(EntityListParameter<?> parameter,
                 Void p) throws SQLException {
             handleListParameter(parameter);
-            index++;
             return null;
         }
 
@@ -118,7 +115,6 @@ public class CallableSqlParameterBinder {
                 BasicListResultParameter<?> parameter, Void p)
                 throws SQLException {
             handleListParameter(parameter);
-            index++;
             return null;
         }
 
@@ -127,7 +123,6 @@ public class CallableSqlParameterBinder {
                 DomainListResultParameter<?, ?> parameter, Void p)
                 throws SQLException {
             handleListParameter(parameter);
-            index++;
             return null;
         }
 
@@ -136,7 +131,6 @@ public class CallableSqlParameterBinder {
                 EntityListResultParameter<?> parameter, Void p)
                 throws SQLException {
             handleListParameter(parameter);
-            index++;
             return null;
         }
 
@@ -145,6 +139,7 @@ public class CallableSqlParameterBinder {
             if (dialect.supportsResultSetReturningAsOutParameter()) {
                 JdbcType<ResultSet> resultSetType = dialect.getResultSetType();
                 resultSetType.registerOutParameter(callableStatement, index);
+                index++;
             }
         }
 
