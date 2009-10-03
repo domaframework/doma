@@ -16,7 +16,9 @@
 package org.seasar.doma.internal.apt.entity;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
+import org.seasar.doma.ChangedProperties;
 import org.seasar.doma.Column;
 import org.seasar.doma.Entity;
 import org.seasar.doma.GeneratedValue;
@@ -46,6 +48,9 @@ public class Emp {
 
     @Transient
     String temp;
+
+    @ChangedProperties
+    Set<String> changedProperties;
 
     public Integer getId() {
         return id;

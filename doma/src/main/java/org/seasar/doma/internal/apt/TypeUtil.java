@@ -279,11 +279,6 @@ public final class TypeUtil {
             }
 
             @Override
-            public TypeMirror visitNoTypeAsVoid(NoType t, Void p) {
-                return ElementUtil.getTypeElement(Void.class, env).asType();
-            }
-
-            @Override
             protected TypeMirror defaultAction(TypeMirror e, Void p) {
                 return e;
             }
@@ -293,6 +288,10 @@ public final class TypeUtil {
 
     public static TypeMirror getTypeMirror(Class<?> clazz,
             ProcessingEnvironment env) {
+        assertNotNull(clazz);
+        if (clazz == void.class) {
+            return env.getTypeUtils().getNoType(TypeKind.VOID);
+        }
         if (clazz == boolean.class) {
             return env.getTypeUtils().getPrimitiveType(TypeKind.BOOLEAN);
         }
@@ -319,7 +318,7 @@ public final class TypeUtil {
         }
         TypeElement typeElement = ElementUtil.getTypeElement(clazz, env);
         if (typeElement == null) {
-            throw new AptIllegalStateException();
+            throw new AptIllegalStateException(clazz.getName());
         }
         return typeElement.asType();
     }

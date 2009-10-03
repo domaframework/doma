@@ -97,7 +97,7 @@ public class TypeDeclaration {
     }
 
     public boolean isNullType() {
-        return TypeUtil.isSameType(type, Void.class, env);
+        return type.getKind() == TypeKind.VOID;
     }
 
     public boolean isBooleanType() {
@@ -212,7 +212,7 @@ public class TypeDeclaration {
         if (candidate.size() == 1) {
             return candidate.get(0);
         }
-        throw new AptIllegalStateException();
+        throw new AptIllegalStateException(name);
     }
 
     public List<MethodDeclaration> getMethodDeclarations(String name,
@@ -287,34 +287,16 @@ public class TypeDeclaration {
         return newInstance(type, env);
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
+    public boolean isSameType(TypeDeclaration other) {
+        if (TypeUtil.isSameType(this.type, other.type, env)) {
             return true;
         }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        TypeDeclaration other = (TypeDeclaration) obj;
-        if (type == null) {
-            if (other.type != null) {
-                return false;
+        if (this.isNumberType()) {
+            if (other.isNumberType()) {
+                return this.numberPriority == other.numberPriority;
             }
-        } else if (!TypeUtil.isSameType(type, other.type, env)) {
-            return false;
         }
-        return true;
+        return false;
     }
 
     public static TypeDeclaration newInstance(TypeMirror type,

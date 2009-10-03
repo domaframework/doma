@@ -55,11 +55,11 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
 
         private EmpType(org.seasar.doma.internal.apt.entity.Emp entity) {
             __entity = entity;
-            __changedProperties = null;
-            id.getWrapper().set(entity.id);
-            name.getWrapper().set(entity.name);
-            salary.getWrapper().set(entity.salary);
-            version.getWrapper().set(entity.version);
+            __changedProperties = org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.getChangedProperties(entity);
+            id.getWrapper().set(org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.getId(entity));
+            name.getWrapper().set(org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.getName(entity));
+            salary.getWrapper().set(org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.getSalary(entity));
+            version.getWrapper().set(org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.getVersion(entity));
         }
 
         @Override
@@ -139,10 +139,11 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
         }
 
         public void refreshEntityInternal() {
-            __entity.id = id.getWrapper().get();
-            __entity.name = name.getWrapper().get();
-            __entity.salary = salary.getWrapper().get();
-            __entity.version = version.getWrapper().get();
+            org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.setId(__entity, id.getWrapper().get());
+            org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.setName(__entity, name.getWrapper().get());
+            org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.setSalary(__entity, salary.getWrapper().get());
+            org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.setVersion(__entity, version.getWrapper().get());
+            __changedProperties.clear();
         }
 
         @Override
@@ -159,6 +160,50 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
         @Override
         public java.util.Set<String> getChangedProperties() {
             return __changedProperties;
+        }
+
+    }
+
+    public static class EmpAccessor {
+
+        public static void setId(org.seasar.doma.internal.apt.entity.Emp entity, java.lang.Integer id) {
+            entity.id = id;
+        }
+
+        public static java.lang.Integer getId(org.seasar.doma.internal.apt.entity.Emp entity) {
+            return entity.id;
+        }
+
+        public static void setName(org.seasar.doma.internal.apt.entity.Emp entity, java.lang.String name) {
+            entity.name = name;
+        }
+
+        public static java.lang.String getName(org.seasar.doma.internal.apt.entity.Emp entity) {
+            return entity.name;
+        }
+
+        public static void setSalary(org.seasar.doma.internal.apt.entity.Emp entity, java.math.BigDecimal salary) {
+            entity.salary = salary;
+        }
+
+        public static java.math.BigDecimal getSalary(org.seasar.doma.internal.apt.entity.Emp entity) {
+            return entity.salary;
+        }
+
+        public static void setVersion(org.seasar.doma.internal.apt.entity.Emp entity, java.lang.Integer version) {
+            entity.version = version;
+        }
+
+        public static java.lang.Integer getVersion(org.seasar.doma.internal.apt.entity.Emp entity) {
+            return entity.version;
+        }
+
+        public static void setChangedProperties(org.seasar.doma.internal.apt.entity.Emp entity, java.util.Set<String> changedProperties) {
+            entity.changedProperties = changedProperties;
+        }
+
+        public static java.util.Set<String> getChangedProperties(org.seasar.doma.internal.apt.entity.Emp entity) {
+            return entity.changedProperties;
         }
 
     }

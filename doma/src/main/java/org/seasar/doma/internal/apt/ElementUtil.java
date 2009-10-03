@@ -23,6 +23,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.ExecutableType;
+import javax.lang.model.util.SimpleElementVisitor6;
 import javax.lang.model.util.SimpleTypeVisitor6;
 
 import org.seasar.doma.ParameterName;
@@ -70,6 +71,19 @@ public class ElementUtil {
                         return t;
                     }
                 }, null);
+    }
+
+    public static TypeElement toTypeElement(Element element,
+            ProcessingEnvironment env) {
+        assertNotNull(element, env);
+        return element.accept(new SimpleElementVisitor6<TypeElement, Void>() {
+
+            @Override
+            public TypeElement visitType(TypeElement e, Void p) {
+                return e;
+            }
+
+        }, null);
     }
 
     public static TypeElement getTypeElement(String className,

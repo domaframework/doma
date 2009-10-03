@@ -18,6 +18,8 @@ package org.seasar.doma.internal.apt.meta;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.TypeUtil;
@@ -30,6 +32,10 @@ import org.seasar.doma.internal.apt.type.ValueType;
  * 
  */
 public class EntityPropertyMeta {
+
+    protected final String entityName;
+
+    protected final String entityTypeName;
 
     protected final TypeMirror type;
 
@@ -49,10 +55,21 @@ public class EntityPropertyMeta {
 
     protected ValueType valueType;
 
-    public EntityPropertyMeta(TypeMirror type, ProcessingEnvironment env) {
-        assertNotNull(type, env);
-        this.type = type;
+    public EntityPropertyMeta(TypeElement entityElement,
+            VariableElement propertyElement, ProcessingEnvironment env) {
+        assertNotNull(entityElement, propertyElement, env);
+        this.entityName = entityElement.getSimpleName().toString();
+        this.entityTypeName = entityElement.getQualifiedName().toString();
+        this.type = propertyElement.asType();
         this.typeName = TypeUtil.getTypeName(type, env);
+    }
+
+    public String getEntityName() {
+        return entityName;
+    }
+
+    public String getEntityTypeName() {
+        return entityTypeName;
     }
 
     public String getName() {

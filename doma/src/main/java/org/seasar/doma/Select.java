@@ -129,7 +129,7 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  *     String selectNameById(Integer id);
  *     
  *     &#064;Select
- *     List&lt;String&gt; selectNamesByAgeAndSalary(Integer age, BigDecimal salary);
+ *     List&lt;Employee&gt; selectNamesByAgeAndSalary(Integer age, BigDecimal salary);
  * 
  *     &#064;Select
  *     Employee selectById(Integer id);

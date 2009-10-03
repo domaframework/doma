@@ -71,9 +71,9 @@ public class Employee {
     ...
 }]]></source>
 				<p>
-					<code>@Table</code>を使用しない、もしくは <code>@Table</code>の <code>name</code>要素
-					を使用しない場合、テーブル名は、 <code>org.seasar.doma.jdbc.NamingConvention</code>の実装クラスに
-					より解決されます。 <code>NamingConvention</code>の実装クラスは <code>Dao</code>の設定で決まります。
+					<code>@Table</code>を使用しない、もしくは <code>@Table</code>の<code>name</code>要素を使用しない場合、
+					テーブル名は、<code>org.seasar.doma.jdbc.NamingConvention</code>の実装クラスにより解決されます。
+					<code>NamingConvention</code>の実装クラスは<a href="config.html">設定</a>で決まります。
 				</p>
 			</subsection>
 			<subsection name="継承">
@@ -82,7 +82,6 @@ public class Employee {
 				</p>
 				<p>
 					ただし、親クラスのフィールドが永続フィールドとみなされたりDomaのアノテーションが解釈されたりするのは、親クラスが@Entityで注釈されている場合だけです。
-					@Entityで注釈されているクラスを継承する場合、親クラスは子クラスと同じパッケージに存在する必要があります。
 				</p>
 			</subsection>
 		</section>
@@ -120,9 +119,9 @@ String employeeName;]]></source>
 <source><![CDATA[@Column(insertable = false, updatable = false)
 String employeeName;]]></source>
 				<p>
-					<code>@Column</code>を使用しない、もしくは<code>@Column</code>の <code>name</code>要素
-					を使用しない場合、カラム名は、<code>org.seasar.doma.jdbc.NamingConvention</code>の実装クラスに
-					より解決されます。 <code>NamingConvention</code>の実装クラスは<a href="config.html"><code>Dao</code>の設定</a>で決まります。
+					<code>@Column</code>を使用しない、もしくは<code>@Column</code>の <code>name</code>要素を使用しない場合、
+					カラム名は、<code>org.seasar.doma.jdbc.NamingConvention</code>の実装クラスにより解決されます。
+					<code>NamingConvention</code>の実装クラスは<a href="config.html">設定</a>で決まります。
 				</p>
 				<h4>識別子</h4>
 				<p>
@@ -226,7 +225,7 @@ List&lt;String&gt; nameList;</source>
 				</p>
 				<p>
 					<code>@ChangedProperties</code>を注釈して示します。
-					フィールドの型は<code><![CDATA[java.util.Set<String>]]></code>のサブタイプでなければいけません。
+					フィールドの型は<code><![CDATA[java.util.Set<String>]]></code>でなければいけません。
 					フィールドの可視性は非<code>private</code>でなければいけません。
 				</p>
 <source><![CDATA[@ChangedProperties
@@ -236,7 +235,7 @@ Set<String> chagendProperties = new HashSet<String>();]]></source>
 					フィールド名の追加は、永続的なフィールドに対応するsetterメソッドで行うのが適切です。
 				</p>
 <source><![CDATA[public void setEmployeeId(Integer employeeId) {
-    chagendProperties.add("employeeId");
+    chagendProperties.add("employeeId"); // フィールド名を@ChangedPropertiesが注釈されたSetに追加
     this.employeeId = employeeId;
 }]]></source>
 			</subsection>
@@ -257,6 +256,21 @@ Set<String> chagendProperties = new HashSet<String>();]]></source>
 employee.setEmployeeId(1);
 employee.setEmployeeName("SMITH");
 employee.setSalary(new BigDecimal(1000);]]></source>
+			<p>
+				エンティティはテーブルに1対1で対応させなければいけないわけではありません。
+				たとえば、<code>EMPLOYEE</code>テーブルと<code>DEPARTMENT</code>テーブルを結合した結果もエンティティにマッピングできます。
+				そのエンティティクラスを<code>EmpDeptDto</code>した場合のエンティティクラスの定義とDaoインタフェースの定義は次のとおりです。
+			</p>
+<source><![CDATA[@Entity
+public class EmpDeptDto {
+    String employeeName;
+    String departmentName;
+}]]></source>
+<source><![CDATA[@Dao
+public interface EmployeeDao {
+    @Select
+    EmpDeptDto selectByDepartmentId(Integer departmentId);
+}]]></source>
 		</section>
 	</body>
 </document>

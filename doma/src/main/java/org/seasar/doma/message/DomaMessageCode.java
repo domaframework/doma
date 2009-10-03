@@ -192,13 +192,12 @@ public enum DomaMessageCode implements MessageCode {
     DOMA4123("@Entityが注釈されたクラスはprivateであってはいけません。"),
     DOMA4124("@Entityが注釈されたクラスは非privateな引数なしのコンストラクタを持たねばなりません。"),
     DOMA4125("@ChangedPropertiesが重複しています。@ChangedPropertiesが注釈されたフィールドはクラス階層中に1つでなければいけません。"),
-    DOMA4126("@Entityが注釈された親クラス[{0}]は同じパッケージに存在していなければいけません。"),
     DOMA4132("@Domainが注釈されたクラスはabstractであってはいけません。"),
     DOMA4133("@Domainが注釈されたクラスはprivateであってはいけません。"),
     DOMA4134("@Entityが注釈されたクラスはabstractであってはいけません。"),
-    DOMA4135("@ChangedPropertiesが注釈されたフィールドの型はSet<String>のサブタイプでなければいけません。"),
+    DOMA4135("@ChangedPropertiesが注釈されたフィールドの型はSet<String>でなければいけません。"),
     DOMA4136("Setには実型引数が必須です。"),
-    DOMA4137("@ChangedPropertiesが注釈されたフィールドの型はSet<String>のサブタイプでなければいけません。"),
+    DOMA4137("@ChangedPropertiesが注釈されたフィールドの型はSet<String>でなければいけません。"),
     DOMA4138("式[{0}]（[{1}]番目の文字付近）に含まれるクラス[{2}]が見つかりません。"), ;
 
     private static ResourceBundle bundle = ResourceBundle

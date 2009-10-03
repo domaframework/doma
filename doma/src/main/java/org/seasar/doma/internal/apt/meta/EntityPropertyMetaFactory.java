@@ -18,6 +18,7 @@ package org.seasar.doma.internal.apt.meta;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
@@ -31,6 +32,7 @@ import org.seasar.doma.TableGenerator;
 import org.seasar.doma.Version;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
+import org.seasar.doma.internal.apt.ElementUtil;
 import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.ValueType;
@@ -53,8 +55,13 @@ public class EntityPropertyMetaFactory {
     public EntityPropertyMeta createEntityPropertyMeta(
             VariableElement fieldElement, EntityMeta entityMeta) {
         assertNotNull(fieldElement, entityMeta);
-        EntityPropertyMeta propertyMeta = new EntityPropertyMeta(fieldElement
-                .asType(), env);
+        TypeElement entityElement = ElementUtil.toTypeElement(fieldElement
+                .getEnclosingElement(), env);
+        if (entityElement == null) {
+            throw new AptIllegalStateException(fieldElement.toString());
+        }
+        EntityPropertyMeta propertyMeta = new EntityPropertyMeta(entityElement,
+                fieldElement, env);
         doName(propertyMeta, fieldElement, entityMeta);
         doId(propertyMeta, fieldElement, entityMeta);
         doVersion(propertyMeta, fieldElement, entityMeta);
@@ -134,7 +141,7 @@ public class EntityPropertyMetaFactory {
         } catch (MirroredTypeException e) {
             return e.getTypeMirror();
         }
-        throw new AptIllegalStateException();
+        throw new AptIllegalStateException("unreachable.");
     }
 
     protected void doTableIdGeneratorMeta(EntityPropertyMeta propertyMeta,
@@ -169,7 +176,7 @@ public class EntityPropertyMetaFactory {
         } catch (MirroredTypeException e) {
             return e.getTypeMirror();
         }
-        throw new AptIllegalStateException();
+        throw new AptIllegalStateException("unreachable.");
     }
 
     protected void doName(EntityPropertyMeta propertyMeta,
@@ -246,7 +253,7 @@ public class EntityPropertyMetaFactory {
         } catch (MirroredTypeException ignored) {
             return ignored.getTypeMirror();
         }
-        throw new AptIllegalStateException();
+        throw new AptIllegalStateException("unreachable.");
     }
 
     protected boolean isNumber(TypeMirror typeMirror) {

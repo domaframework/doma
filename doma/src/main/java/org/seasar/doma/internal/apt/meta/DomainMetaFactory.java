@@ -52,7 +52,7 @@ public class DomainMetaFactory {
         TypeElement valueTypeElement = TypeUtil.toTypeElement(TypeUtil
                 .toWrapperTypeIfPrimitive(valueType, env), env);
         if (valueTypeElement == null) {
-            throw new AptIllegalStateException();
+            throw new AptIllegalStateException(valueType.toString());
         }
         domainMeta.setValueType(valueType);
         domainMeta.setValueTypeElement(valueTypeElement);
@@ -70,7 +70,7 @@ public class DomainMetaFactory {
         } catch (MirroredTypeException e) {
             return e.getTypeMirror();
         }
-        throw new AptIllegalStateException();
+        throw new AptIllegalStateException("unreachable.");
     }
 
     protected void validateClass(TypeElement classElement, DomainMeta domainMeta) {

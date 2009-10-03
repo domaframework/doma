@@ -110,7 +110,7 @@ public class DaoMetaFactory {
         } catch (MirroredTypeException e) {
             return e.getTypeMirror();
         }
-        throw new AptIllegalStateException();
+        throw new AptIllegalStateException("unreachable.");
     }
 
     protected void doMethodElements(TypeElement interfaceElement,

@@ -48,7 +48,7 @@
 				<item name="Daoインタフェース" href="reference/dao.html" />
 				<item name="設定" href="reference/config.html" />
 				<item name="SQLファイル" href="reference/sqlfile.html" />
-				<item name="注釈処理" href="reference/apt.html" />
+				<item name="アノテーション処理" href="reference/apt.html" />
 			</item>
 			<item name="FAQ" href="faq.html" />
 			<item name="Javadoc" href="apidocs/index.html" />

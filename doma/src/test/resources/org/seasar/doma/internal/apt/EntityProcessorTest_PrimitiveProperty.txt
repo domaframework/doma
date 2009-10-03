@@ -46,9 +46,9 @@ public class PrimitivePropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         private PrimitivePropertyEntityType(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity) {
             __entity = entity;
             __changedProperties = null;
-            id.getWrapper().set(entity.id);
-            bool.getWrapper().set(entity.bool);
-            version.getWrapper().set(entity.version);
+            id.getWrapper().set(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity_.PrimitivePropertyEntityAccessor.getId(entity));
+            bool.getWrapper().set(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity_.PrimitivePropertyEntityAccessor.getBool(entity));
+            version.getWrapper().set(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity_.PrimitivePropertyEntityAccessor.getVersion(entity));
         }
 
         @Override
@@ -126,9 +126,9 @@ public class PrimitivePropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         }
 
         public void refreshEntityInternal() {
-            __entity.id = org.seasar.doma.internal.util.PrimitiveWrapperUtil.toPrimitive(id.getWrapper().get());
-            __entity.bool = org.seasar.doma.internal.util.PrimitiveWrapperUtil.toPrimitive(bool.getWrapper().get());
-            __entity.version = org.seasar.doma.internal.util.PrimitiveWrapperUtil.toPrimitive(version.getWrapper().get());
+            org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity_.PrimitivePropertyEntityAccessor.setId(__entity, org.seasar.doma.internal.util.PrimitiveWrapperUtil.toPrimitive(id.getWrapper().get()));
+            org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity_.PrimitivePropertyEntityAccessor.setBool(__entity, org.seasar.doma.internal.util.PrimitiveWrapperUtil.toPrimitive(bool.getWrapper().get()));
+            org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity_.PrimitivePropertyEntityAccessor.setVersion(__entity, org.seasar.doma.internal.util.PrimitiveWrapperUtil.toPrimitive(version.getWrapper().get()));
         }
 
         @Override
@@ -145,6 +145,34 @@ public class PrimitivePropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         @Override
         public java.util.Set<String> getChangedProperties() {
             return __changedProperties;
+        }
+
+    }
+
+    public static class PrimitivePropertyEntityAccessor {
+
+        public static void setId(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity, int id) {
+            entity.id = id;
+        }
+
+        public static int getId(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity) {
+            return entity.id;
+        }
+
+        public static void setBool(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity, boolean bool) {
+            entity.bool = bool;
+        }
+
+        public static boolean getBool(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity) {
+            return entity.bool;
+        }
+
+        public static void setVersion(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity, long version) {
+            entity.version = version;
+        }
+
+        public static long getVersion(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity) {
+            return entity.version;
         }
 
     }

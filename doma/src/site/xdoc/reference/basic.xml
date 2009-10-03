@@ -11,7 +11,7 @@
 			</p>
 			<p>
 				基本型は、<a href="domain.html">ドメインクラス</a>の値型や<a href="entity.html">エンティティクラス</a>の永続フィールドの型として使用されます。
-				また、<a href="dao.html">Dao</a>のメソッドのパラメータや戻り値にも使用されます。
+				また、<a href="dao.html">Daoインタフェース</a>のメソッドのパラメータや戻り値にも使用されます。
 			</p>
 		</section>
 		<section name="基本型の種類">
@@ -47,7 +47,7 @@ public class Employee {
     String employeeName;
 
     @Version
-    Long versionNo();
+    Long versionNo;
     
     ...
 }]]></source>

@@ -121,11 +121,17 @@
 					Daoインタフェースのメソッドと、対応するSQLの例は次のとおりです。
 				</p>
 <source>List&lt;Employee&gt; selectByNameAndSalary(Employee employee);</source>
-<source>select * from employee where employee_name = /*employee.employeeName*/'abc' and salary = /*employee.salary*/1234</source>
+<source>select * from employee
+where
+employee_name = /*employee.employeeName*/'abc' 
+and
+salary = /*employee.salary*/1234</source>
 				<p>
 					フィールドにアクセスする代わりに、publicなメソッドを呼び出すことも可能です。
 				</p>
-<source>select * from employee where salary = /*employee.getTaxedSalary()*/1234</source>
+<source>select * from employee
+where
+salary = /*employee.getTaxedSalary()*/1234</source>
 				<p>
 					<code>/*employee.employeeName*/</code>は、<code>/* employee.employeeName */</code>のように空白を含めて記述することも可能です。
 				</p>
@@ -175,7 +181,10 @@ List&lt;Employee&gt; list = dao.selectAll(salary, orderBy);</source>
 					条件コメントを使用した場合、条件の前にあるWHEREやHAVINGについて、自動で出力の要/不要を判定します。
 					たとえば、次のようなSQLで<code>employeeId</code>が <code>null</code>の場合、
 				</p>
-<source>select * from employee where /*%if employeeId != null*/employee_id = /*employeeId*/99/*%end*/</source>
+<source>select * from employee where 
+/*%if employeeId != null*/
+    employee_id = /*employeeId*/99
+/*%end*/</source>
 				<p>
 					<code>/*%if*/</code>の前の <code>where</code>は自動で除去されます。
 				</p>
@@ -185,7 +194,11 @@ List&lt;Employee&gt; list = dao.selectAll(salary, orderBy);</source>
 					条件コメントを使用した場合、条件の後ろにつづくANDやORについて、自動で出力の要/不要を判定します。
 					たとえば、次のようなSQLで<code>employeeId</code>が <code>null</code>の場合、
 				</p>
-<source>select * from employee where /*%if employeeId != null*/employee_id = /*employeeId*/99/*%end*/ and employeeName like 's%'</source>
+<source>select * from employee where 
+/*%if employeeId != null*/
+    employee_id = /*employeeId*/99
+/*%end*/
+and employeeName like 's%'</source>
 				<p>
 					<code>/*%end*/</code>の後ろの <code>and</code> は自動で除去されます。
 				</p>
@@ -299,7 +312,10 @@ List&lt;Employee&gt; list = dao.selectAll(salary, orderBy);</source>
 				<p>
 					 括弧を使って、演算子が適用される対象を制御できます。
 				</p>
-<source>select * from employee where /*%if (departmentId == null || managerId == null) and employee_name != null*/ employee_name = /*employeeName*/'smith'/*%end*/</source>
+<source>select * from employee where 
+/*%if (departmentId == null || managerId == null) and employee_name != null*/
+    employee_name = /*employeeName*/'smith'
+/*%end*/</source>
 			</subsection>
 			<subsection name="算術演算子">
 				<p>
@@ -320,18 +336,27 @@ List&lt;Employee&gt; list = dao.selectAll(salary, orderBy);</source>
 				<p>
 					ドット（.）で区切ってメソッド名を指定することでメソッドを実行可能です。実行可能なメソッドは、可視性が<code>public</code>なものだけに限られます。
 				</p>
-<source>select * from employee where /*%if employeeName.startsWith("s") */ employee_name = /*employeeName*/'smith'/*%end*/</source>
+<source>select * from employee where 
+/*%if employeeName.startsWith("s") */
+    employee_name = /*employeeName*/'smith'
+/*%end*/</source>
 				<p>
 					引数がない場合は、メソッド名の後ろに()を指定します。
 				</p>
-<source>select * from employee where /*%if employeeName.length() > 10 */ employee_name = /*employeeName*/'smith'/*%end*/</source>
+<source>select * from employee where 
+/*%if employeeName.length() > 10 */ 
+    employee_name = /*employeeName*/'smith'
+/*%end*/</source>
 			</subsection>
 			<subsection name="フィールドアクセス">
 				<p>
 					ドット（.）で区切ってフィールド名を指定することでフィールドにアクセスできます。アクセス可能なフィールドはインスタンスフィールドです。
 					可視性はprivateであってもアクセス可能です。
 				</p>
-<source>select * from employee where /*%if employee.employeeName.startsWith("s") */ employee_name = /*employee.employeeName*/'smith'/*%end*/</source>
+<source>select * from employee where 
+/*%if employee.employeeName.startsWith("s") */
+    employee_name = /*employee.employeeName*/'smith'
+/*%end*/</source>
 			</subsection>
 		</section>
 	</body>

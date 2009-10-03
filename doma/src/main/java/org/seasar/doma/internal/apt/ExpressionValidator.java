@@ -119,7 +119,7 @@ public class ExpressionValidator implements
             ComparisonOperatorNode node, Void p) {
         TypeDeclaration left = node.getLeftNode().accept(this, p);
         TypeDeclaration right = node.getRightNode().accept(this, p);
-        if (left.isNullType() || right.isNullType() || left.equals(right)) {
+        if (left.isNullType() || right.isNullType() || left.isSameType(right)) {
             return TypeDeclaration.newBooleanInstance(env);
         }
         ExpressionLocation location = node.getLocation();
@@ -292,7 +292,7 @@ public class ExpressionValidator implements
                 return returnTypeDeclaration;
             }
         }
-        throw new AptIllegalStateException();
+        throw new AptIllegalStateException(methodName);
     }
 
     protected String createMethodSignature(String methodName,

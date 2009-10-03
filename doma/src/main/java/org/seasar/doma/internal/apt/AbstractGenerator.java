@@ -50,6 +50,8 @@ public abstract class AbstractGenerator implements Generator {
 
     protected final String simpleName;
 
+    protected final String suffix;
+
     protected final Formatter formatter;
 
     protected final StringBuilder indentBuffer = new StringBuilder();
@@ -64,6 +66,7 @@ public abstract class AbstractGenerator implements Generator {
                 subpackage, suffix);
         this.packageName = ClassUtil.getPackageName(qualifiedName);
         this.simpleName = ClassUtil.getSimpleName(qualifiedName);
+        this.suffix = suffix;
         Filer filer = env.getFiler();
         JavaFileObject file = filer
                 .createSourceFile(qualifiedName, typeElement);

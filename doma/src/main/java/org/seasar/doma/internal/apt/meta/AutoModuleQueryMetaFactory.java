@@ -83,7 +83,8 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                 return new ValueListParameterMeta(parameterMeta.getName(),
                         valueType);
             }
-            throw new AptIllegalStateException();
+            throw new AptIllegalStateException(parameterMeta.getElement()
+                    .toString());
         }
         if (parameterMeta.isAnnotated(In.class)) {
             DomainType domainType = parameterMeta.getDomainType();

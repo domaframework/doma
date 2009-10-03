@@ -15,6 +15,7 @@
  */
 package example.entity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -65,7 +66,7 @@ public class Emp_ implements EntityTypeFactory<Emp> {
         private final VersionPropertyType<IntegerWrapper> version = new VersionPropertyType<IntegerWrapper>(
                 "version", null, new IntegerWrapper());
 
-        private final Set<String> modifiedProperties;
+        private final Set<String> dirtyStates;
 
         private final String __name = "Emp";
 
@@ -94,7 +95,7 @@ public class Emp_ implements EntityTypeFactory<Emp> {
             name.getWrapper().set(entity.name);
             salary.getWrapper().set(entity.salary);
             version.getWrapper().set(entity.version);
-            modifiedProperties = entity.dirtyStates;
+            dirtyStates = entity.dirtyStates;
         }
 
         @Override
@@ -178,7 +179,7 @@ public class Emp_ implements EntityTypeFactory<Emp> {
 
         @Override
         public Set<String> getChangedProperties() {
-            return modifiedProperties;
+            return dirtyStates;
         }
 
         @Override
@@ -196,6 +197,49 @@ public class Emp_ implements EntityTypeFactory<Emp> {
             return __tableName;
         }
 
+    }
+
+    public static class EmpAccessor {
+
+        public void setId(Emp entity, Integer id) {
+            entity.id = id;
+        }
+
+        public Integer getId(Emp entity) {
+            return entity.id;
+        }
+
+        public void setName(Emp entity, String name) {
+            entity.name = name;
+        }
+
+        public String getName(Emp entity) {
+            return entity.name;
+        }
+
+        public void setSalary(Emp entity, BigDecimal salary) {
+            entity.salary = salary;
+        }
+
+        public BigDecimal getSalary(Emp entity) {
+            return entity.salary;
+        }
+
+        public void setVersion(Emp entity, Integer version) {
+            entity.version = version;
+        }
+
+        public Integer getVerion(Emp entity) {
+            return entity.version;
+        }
+
+        public void setDirtyStates(Emp entity, Set<String> dirtyStates) {
+            entity.dirtyStates = dirtyStates;
+        }
+
+        public Set<String> getDirtyStates(Emp entity) {
+            return entity.dirtyStates;
+        }
     }
 
 }

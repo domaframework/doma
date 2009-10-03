@@ -42,7 +42,7 @@ public class TransientPropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         private TransientPropertyEntityType(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity) {
             __entity = entity;
             __changedProperties = null;
-            id.getWrapper().set(entity.id);
+            id.getWrapper().set(org.seasar.doma.internal.apt.entity.TransientPropertyEntity_.TransientPropertyEntityAccessor.getId(entity));
         }
 
         @Override
@@ -116,7 +116,7 @@ public class TransientPropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         }
 
         public void refreshEntityInternal() {
-            __entity.id = id.getWrapper().get();
+            org.seasar.doma.internal.apt.entity.TransientPropertyEntity_.TransientPropertyEntityAccessor.setId(__entity, id.getWrapper().get());
         }
 
         @Override
@@ -133,6 +133,18 @@ public class TransientPropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         @Override
         public java.util.Set<String> getChangedProperties() {
             return __changedProperties;
+        }
+
+    }
+
+    public static class TransientPropertyEntityAccessor {
+
+        public static void setId(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity, java.lang.Integer id) {
+            entity.id = id;
+        }
+
+        public static java.lang.Integer getId(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity) {
+            return entity.id;
         }
 
     }

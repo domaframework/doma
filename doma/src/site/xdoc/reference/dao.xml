@@ -35,20 +35,19 @@ public interface EmployeeDao {
 			</p>
 			<subsection name="検索">
 				<p>
-					検索を行うには、 <a href="../apidocs/org/seasar/doma/Select.html"><code>@Select</code></a> を注釈します。
+					検索を行うには、 <a href="../apidocs/org/seasar/doma/Select.html"><code>@Select</code></a>を注釈します。
 				</p>
 				<p>
-					検索条件のパラメータとして、<a href="basic.html">基本型</a>、<a href="domain.html">ドメインクラス</a>、<a href="entity.html">エンティティクラス</a>
-					を任意の数だけ宣言できます。また、IN句で複数のバインド変数に使用できるように、基本型やドメインクラスを要素とする
-					<code>java.util.List</code>型のパラメータも宣言できます。
+					検索条件のパラメータとして、<a href="basic.html">基本型</a>、<a href="domain.html">ドメインクラス</a>、<a href="entity.html">エンティティクラス</a>を任意の数だけ宣言できます。
+					また、IN句で複数のバインド変数に使用できるように、基本型やドメインクラスを要素とする<code>java.util.List</code>型のパラメータも宣言できます。
 				</p>
 				<p>
 					ページングや悲観的排他制御を可能とするには、
 					<code>org.seasar.doma.jdbc.SelectOptions</code>型のパラメータを宣言してください。
 				</p>
 				<p>
-					大量件数を1件ずつ処理するには、 <code>@Select</code>の <code>iterate</code>要素に <code>true</code>
-					を設定し、<code>org.seasar.doma.jdbc.IterationCallback</code>型のパラメータを宣言してください。
+					大量件数を1件ずつ処理するには、<code>@Select</code>の <code>iterate</code>要素に <code>true</code>を設定し、
+					<code>org.seasar.doma.jdbc.IterationCallback</code>型のパラメータを宣言してください。
 				</p>
 				<p>
 					検索についてはSQLの自動生成機能はありません。
@@ -107,7 +106,6 @@ public interface EmployeeDao {
 				<p>
 					<code>sqlFile</code>要素により、SQLの自動生成を使用するか<a href="sqlfile.html">SQLファイル</a>を使用するか選択できます。
 					デフォルトではSQLの自動生成が実行されます。
-
 				</p>
 			</subsection>
 			<subsection name="ストアドファンクション">
@@ -182,7 +180,7 @@ public interface EmployeeDao {
 Employee employee = employeeDao.selectById(1);</source>
 			<p>
 				デフォルトでは、実装クラスの名前はインタフェースの名前に<code>Impl</code>をサフィックスしたものになります。
-				パッケージやサフィックスを変更するには、<a href="apt.html">注釈処理</a>を参照してください。
+				パッケージやサフィックスを変更するには、<a href="apt.html">アノテーション処理</a>を参照してください。
 			</p>
 			<p>
 				デフォルトコンストラクタを使用した場合は、<code>@Dao</code>の <code>config</code>要素に
@@ -192,6 +190,19 @@ Employee employee = employeeDao.selectById(1);</source>
 <source>DataSource dataSource = ...;
 EmployeeDao employeeDao = new EmployeeDaoImpl(dataSource);
 Employee employee = employeeDao.selectById(1);</source>
+			<p>
+				Daoインタフェースはエンティティクラスと1対1で結びついているわけではありません。
+				ひとつのDaoインタフェースで複数のエンティティクラスを扱えます。
+			</p>
+<source><![CDATA[@Dao
+public interface MyDao {
+    @Select
+    Employee selectEmployee();
+    @Select
+    Departmen selectDepartment();
+    @Update
+    Departmen updateAddress(Address address);
+}]]></source>
 		</section>
 	</body>
 </document>

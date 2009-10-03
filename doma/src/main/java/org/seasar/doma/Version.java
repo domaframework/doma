@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * バージョンを示します。
+ * 楽観的排他制御で使用されるバージョンを示します。
  * <p>
  * このアノテーションが注釈されるフィールドは、{@link Entity} が注釈されたインタフェースのメンバでなければいけません。
  * <p>

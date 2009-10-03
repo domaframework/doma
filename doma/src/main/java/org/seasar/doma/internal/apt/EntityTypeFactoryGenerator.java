@@ -22,6 +22,7 @@ import java.io.IOException;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 
+import org.seasar.doma.internal.apt.meta.ChangedPropertiesMeta;
 import org.seasar.doma.internal.apt.meta.ColumnMeta;
 import org.seasar.doma.internal.apt.meta.EntityMeta;
 import org.seasar.doma.internal.apt.meta.EntityPropertyMeta;
@@ -39,6 +40,7 @@ import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.internal.util.PrimitiveWrapperUtil;
+import org.seasar.doma.internal.util.StringUtil;
 
 /**
  * 
@@ -78,6 +80,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         indent();
         printMethods();
         printEntityTypeClass();
+        printEntityAccessorClass();
         unindent();
         iprint("}%n");
     }
@@ -264,11 +267,12 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         iprint("private %1$sType(%2$s entity) {%n", entityMeta.getEntityName(),
                 entityMeta.getEntityTypeName());
         iprint("    __entity = entity;%n");
-        String changedPropertyFieldName = entityMeta
-                .getChangedPropertiesFieldName();
-        if (changedPropertyFieldName != null) {
-            iprint("    __changedProperties = entity.%1$s;%n",
-                    changedPropertyFieldName);
+        if (entityMeta.hasChangedPropertiesMeta()) {
+            ChangedPropertiesMeta cm = entityMeta.getChangedPropertiesMeta();
+            iprint(
+                    "    __changedProperties = %1$s%2$s.%3$sAccessor.get%4$s(entity);%n",
+                    cm.getEntityTypeName(), suffix, cm.getEntityName(),
+                    StringUtil.capitalize(cm.getName()));
         } else {
             iprint("    __changedProperties = null;%n");
         }
@@ -276,11 +280,16 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
             DomainType domainType = pm.getDomainType();
             if (domainType != null) {
                 iprint(
-                        "    %1$s.getWrapper().set(entity.%1$s != null ? entity.%1$s.%2$s() : null);%n",
-                        pm.getName(), domainType.getAccessorMetod());
+                        "    %1$s.getWrapper().set(%2$s%3$s.%4$sAccessor.get%5$s(entity) != null ? %2$s%3$s.%4$sAccessor.get%5$s(entity).%6$s() : null);%n",
+                        pm.getName(), pm.getEntityTypeName(), suffix, pm
+                                .getEntityName(), StringUtil.capitalize(pm
+                                .getName()), domainType.getAccessorMetod());
             } else {
-                iprint("    %1$s.getWrapper().set(entity.%1$s);%n", pm
-                        .getName());
+                iprint(
+                        "    %1$s.getWrapper().set(%2$s%3$s.%4$sAccessor.get%5$s(entity));%n",
+                        pm.getName(), pm.getEntityTypeName(), suffix, pm
+                                .getEntityName(), StringUtil.capitalize(pm
+                                .getName()));
             }
         }
         iprint("}%n");
@@ -453,24 +462,35 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
             if (domainType != null) {
                 if (domainType.getValueType().getType().getKind().isPrimitive()) {
                     iprint(
-                            "    __entity.%1$s = new %2$s(%3$s.toPrimitive(%1$s.getWrapper().get()));%n",
-                            pm.getName(), pm.getTypeName(),
-                            PrimitiveWrapperUtil.class.getName());
+                            "    %1$s%2$s.%3$sAccessor.set%4$s(__entity, new %5$s(%6$s.toPrimitive(%7$s.getWrapper().get())));%n",
+                            pm.getEntityTypeName(), suffix, pm.getEntityName(),
+                            StringUtil.capitalize(pm.getName()), pm
+                                    .getTypeName(), PrimitiveWrapperUtil.class
+                                    .getName(), pm.getName());
                 } else {
                     iprint(
-                            "    __entity.%1$s = new %2$s(%1$s.getWrapper().get());%n",
-                            pm.getName(), pm.getTypeName());
+                            "    %1$s%2$s.%3$sAccessor.set%4$s(__entity, new %5$s(%6$s.getWrapper().get()));%n",
+                            pm.getEntityTypeName(), suffix, pm.getEntityName(),
+                            StringUtil.capitalize(pm.getName()), pm
+                                    .getTypeName(), pm.getName());
                 }
             } else {
                 if (pm.getValueType().getType().getKind().isPrimitive()) {
                     iprint(
-                            "    __entity.%1$s = %2$s.toPrimitive(%1$s.getWrapper().get());%n",
-                            pm.getName(), PrimitiveWrapperUtil.class.getName());
+                            "    %1$s%2$s.%3$sAccessor.set%4$s(__entity, %5$s.toPrimitive(%6$s.getWrapper().get()));%n",
+                            pm.getEntityTypeName(), suffix, pm.getEntityName(),
+                            StringUtil.capitalize(pm.getName()),
+                            PrimitiveWrapperUtil.class.getName(), pm.getName());
                 } else {
-                    iprint("    __entity.%1$s = %1$s.getWrapper().get();%n", pm
-                            .getName());
+                    iprint(
+                            "    %1$s%2$s.%3$sAccessor.set%4$s(__entity, %5$s.getWrapper().get());%n",
+                            pm.getEntityTypeName(), suffix, pm.getEntityName(),
+                            StringUtil.capitalize(pm.getName()), pm.getName());
                 }
             }
+        }
+        if (entityMeta.hasChangedPropertiesMeta()) {
+            iprint("    __changedProperties.clear();%n");
         }
         iprint("}%n");
         print("%n");
@@ -500,6 +520,55 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         iprint("    return __changedProperties;%n");
         iprint("}%n");
         print("%n");
+    }
+
+    protected void printEntityAccessorClass() {
+        iprint("public static class %1$sAccessor {%n", entityMeta
+                .getEntityName());
+        print("%n");
+        indent();
+        printTypeAccessorMethods();
+        unindent();
+        iprint("}%n");
+        print("%n");
+    }
+
+    protected void printTypeAccessorMethods() {
+        for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
+            if (!entityMeta.getEntityTypeName().equals(pm.getEntityTypeName())) {
+                continue;
+            }
+            iprint("public static void set%1$s(%2$s entity, %3$s %4$s) {%n",
+                    StringUtil.capitalize(pm.getName()),
+                    pm.getEntityTypeName(), pm.getTypeName(), pm.getName());
+            iprint("    entity.%1$s = %1$s;%n", pm.getName());
+            iprint("}%n");
+            print("%n");
+            iprint("public static %1$s get%2$s(%3$s entity) {%n", pm
+                    .getTypeName(), StringUtil.capitalize(pm.getName()), pm
+                    .getEntityTypeName());
+            iprint("    return entity.%1$s;%n", pm.getName());
+            iprint("}%n");
+            print("%n");
+        }
+        ChangedPropertiesMeta cm = entityMeta.getChangedPropertiesMeta();
+        if (cm != null
+                && entityMeta.getEntityTypeName()
+                        .equals(cm.getEntityTypeName())) {
+            iprint(
+                    "public static void set%1$s(%2$s entity, java.util.Set<String> %3$s) {%n",
+                    StringUtil.capitalize(cm.getName()),
+                    cm.getEntityTypeName(), cm.getName());
+            iprint("    entity.%1$s = %1$s;%n", cm.getName());
+            iprint("}%n");
+            print("%n");
+            iprint(
+                    "public static java.util.Set<String> get%1$s(%2$s entity) {%n",
+                    StringUtil.capitalize(cm.getName()), cm.getEntityTypeName());
+            iprint("    return entity.%1$s;%n", cm.getName());
+            iprint("}%n");
+            print("%n");
+        }
     }
 
     protected class IdGeneratorGenerator implements

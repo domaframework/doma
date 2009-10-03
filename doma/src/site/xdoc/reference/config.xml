@@ -7,8 +7,8 @@
 	<body>
 		<section name="概要">
 			<p>
-				Daoに対する設定は、<a href ="../apidocs/org/seasar/doma/jdbc/Config.html"><code>org.seasar.doma.jdbc.Config</code></a> の実装クラスで表し、
-				<code>@Dao</code> の <code>config</code> 要素に指定します。
+				Domaに対する設定は、<a href ="../apidocs/org/seasar/doma/jdbc/Config.html"><code>Config</code></a>インタフェースの実装クラスで表現します。
+				<code>Config</code>の実装クラスは<code>@Dao</code>の<code>config</code>要素に指定します。
 			</p>
 			<p>
 				次の事柄を設定で変更できます。
@@ -25,51 +25,216 @@
 			</ul>
 		</section>
 		<section name="設定クラスの作成">
-			<p>
-				<code>org.seasar.doma.jdbc.Config</code>を直接実装してもかまいませんが、
-				いくつかのデフォルトの設定をもつ <code>org.seasar.doma.jdbc.DomaAbstractConfig</code>
-				を継承することもできます。
-			</p>
+			<subsection name="Configインタフェースを直接実装する場合">
+				<p>
+					<code>Config</code>インタフェースの実装クラスは、publicなデフォルトコンストラクタ（引数なしのコンストラクタ）を持たねばいけません。
+					また、どのメソッドも <code>null</code>を返してはいけません。
+				</p>
+				<p>
+					ここでは、代表的な設定項目について説明します。
+				</p>
+				<h4>データソースの設定</h4>
+				<p>
+					<code>javax.sql.DataSource</code>を、<code>dataSource</code>メソッドで返します。
+					このメソッドでは、通常、DIコンテナやアプリケーションサーバーから<code>DataSource</code>をルックアップするコードを記述するのがいいでしょう。
+					学習等でごく簡易的なデータアクセスを行うだけであれば、
+					<a href ="../apidocs/org/seasar/doma/jdbc/SimpleDataSource.html"><code>SimpleDataSource</code></a>
+					を使用できます。
+				</p>
+				<h4>データソース名の設定</h4>
+				<p>
+					データソース名をあらわす<code>String</code>を、<code>dataSourceName</code>メソッドで返します。
+					データソース名は、複数のデータソースを利用する環境で重要です。
+					データソース名はデータソースごとに自動生成される識別子を認識するために使用されます。
+					複数データソースを利用する場合は、それぞれ異なる名前を返すようにしてください。
+				</p>
+				<h4>RDBMS方言の設定</h4>
+				<p>
+					<a href ="../apidocs/org/seasar/doma/jdbc/Dialect.html"><code>org.seasar.doma.jdbc.dialect.Dialect</code></a>を、<code>dialect</code>メソッドで返します。
+					<code>Dialect</code>はRDBMSの方言をあらわすインタフェースです。
+					実装クラスには次のものがあります。
+				</p>
+				<table>
+					<tr>
+						<th>データベース</th>
+						<th>方言クラスの名前</th>
+					</tr>
+					<tr>
+						<td>HSQLDB</td>
+						<td><code>org.seasar.doma.jdbc.dialect.HsqldbDialect</code></td>
+					</tr>
+					<tr>
+						<td>MySql</td>
+						<td><code>org.seasar.doma.jdbc.dialect.MySqlDialect</code></td>
+					</tr>
+					<tr>
+						<td>PostgreSQL</td>
+						<td><code>org.seasar.doma.jdbc.dialect.PostgresDialect</code></td>
+					</tr>
+					<tr>
+						<td>Oracle Database</td>
+						<td><code>org.seasar.doma.jdbc.dialect.OracleDialect</code></td>
+					</tr>
+				</table>
+				<p>
+					接続先のRDBMSにあわせて、実装クラスを選んでください。
+				</p>
+				<h4>ロガーの設定</h4>
+				<p>
+					<a href ="../apidocs/org/seasar/doma/jdbc/JdbcLogger.html"><code>org.seasar.doma.jdbc.JdbcLogger</code></a>を、<code>jdbcLogger</code>メソッドで返します。
+					<code>JdbcLogger</code>はデータベースアクセスに関するログを扱うインタフェースです。
+					実装クラスには次のものがあります。
+				</p>
+				<ul>
+					<li><a href ="../apidocs/org/seasar/doma/jdbc/UtilLoggingJdbcLogger.html"><code>org.seasar.doma.jdbc.UtilLoggingJdbcLogger</code></a></li>
+				</ul>
+				<p>
+					<code>UtilLoggingJdbcLogger</code>は、<code>java.util.logging</code>のロガーを使用してログ出力する実装です。
+					多くの場合、アプリケーションで使用するcommons-loggingなどのロガーに出力する実装クラスを別途作ったほうがよいでしょう。
+				</p>
+				<h4>ネーミング規約の設定</h4>
+				<p>
+					<a href ="../apidocs/org/seasar/doma/jdbc/NamingConvention.html"><code>org.seasar.doma.jdbc.NamingConvention</code></a>を、<code>namingConvention</code>メソッドで返します。
+					<code>NamingConvention</code>はネーミング規約を扱うインタフェースです。
+					実装クラスには次のものがあります。
+				</p>
+				<ul>
+					<li><a href ="../apidocs/org/seasar/doma/jdbc/CamelNamingConvention.html"><code>org.seasar.doma.jdbc.CamelNamingConvention</code></a></li>
+				</ul>
+				<p>
+					<code>CamelNamingConvention</code>は、キャメルケースの文字列をアンダースコア（_）区切りに変換するネーミング規約です。
+					<code>@Table</code>が注釈されていないエンティティクラスの単純名をアンダースコア区切りテーブル名に変換したり、
+					エンティティクラスの<code>@Calumn</code>が注釈されていない永続的なフィールドの名前をアンダースコア区切りのカラムに変換したりします。
+				</p>
+				<p>
+					テーブル名やカラム名のネーミング規約とあった実装クラスを作成し使用してください。
+				</p>
+				<h4>SQLファイルのリポジトリの設定</h4>
+				<p>
+					<a href ="../apidocs/org/seasar/doma/jdbc/SqlFileRepository.html"><code>org.seasar.doma.jdbc.SqlFileRepository</code></a>を、<code>sqlFileRepository</code>メソッドで返します。
+					<code>SqlFileRepository</code>はSQLファイルのリポジトリを扱うインタフェースです。
+					実装クラスには次のものがあります。
+				</p>
+				<ul>
+					<li><a href ="../apidocs/org/seasar/doma/jdbc/CachedSqlFileRepository.html"><code>org.seasar.doma.jdbc.CachedSqlFileRepository</code></a></li>
+				</ul>
+				<p>
+					<code>CachedSqlFileRepository</code>は、読み込んだSQLファイルの内容をパースし、その結果を無制限にキャッシュします。
+				</p>
+				<p>
+					メモリの利用に厳しい制限がある環境や、扱うSQLファイルが膨大にある環境では、適切なキャッシュアルゴリズムをもった実装クラスを作成し使用してください。
+				</p>
+				<h4>REQUIRES_NEWの属性をもつトランザクションを制御するための設定</h4>
+				<p>
+					<a href ="../apidocs/org/seasar/doma/jdbc/RequiresNewController.html"><code>org.seasar.doma.jdbc.RequiresNewController</code></a>を、<code>requiresNewController</code>メソッドで返します。
+					<code>RequiresNewController</code>はREQUIRES_NEW の属性をもつトランザクションを制御するインタフェースです。
+					実装クラスには次のものがあります。
+				</p>
+				<ul>
+					<li><a href ="../apidocs/org/seasar/doma/jdbc/NullRequiresNewController.html"><code>org.seasar.doma.jdbc.NullRequiresNewController</code></a></li>
+				</ul>
+				<p>
+					<code>NullRequiresNewController</code>は、実質的になにも行いません。
+				</p>
+				<p>
+					REQUIRES_NEWの属性をもつトランザクションの最適な制御方法は、環境ごとに異なるため、適切な実装クラスを作成し使用してください。
+					ただし、このインタフェースは、<code>@TableGenerator</code>で、識別子を自動生成する際にしか使われません。
+					<code>@TableGenerator</code>を利用しない場合は、<code>NullRequiresNewController</code>を使用してもかまいません。
+					また、<code>@TableGenerator</code>を利用する場合であっても、識別子を採番するための更新ロックが問題にならない程度のトランザクション数であれば、<code>NullRequiresNewController</code>を使用してもかまいません。
+				</p>
+				<h4>クエリタイムアウト（秒）の設定</h4>
+				<p>
+					クエリタイムアウト（秒）をあらわす、<code>int</code>を<code>queryTimeout</code>メソッドで返します。
+					この値は、Daoインタフェースの<code>@Delegate</code>以外の問い合わせで使用されます。
+					クエリタイムアウト（秒）は<code>java.sql.Statement.setQueryTimeout(int)</code>に渡されます。
+				</p>
+				<h4>SELECT時のフェッチサイズの設定</h4>
+				<p>
+					SELECT時のフェッチサイズをあらわす、<code>int</code>を<code>fetchSize</code>メソッドで返します。
+					この値は、Daoインタフェースの<code>@Select</code>が注釈されたメソッドの実行で使用されます。
+					フェッチサイズは<code>java.sql.Statement.setFetchSize(int)</code>に渡されます。
+				</p>
+				<h4>SELECT時の最大行数の設定</h4>
+				<p>
+					SELECT時の最大行数をあらわす、<code>int</code>を<code>maxRows</code>メソッドで返します。
+					この値は、Daoインタフェースの<code>@Select</code>が注釈されたメソッドの実行で使用されます。
+					最大行数は<code>java.sql.Statement.setMaxRows(int)</code>に渡されます。
+				</p>
+				<h4>バッチ更新のバッチサイズの設定</h4>
+				<p>
+					バッチサイズをあらわす、<code>int</code>を<code>batchSize</code>メソッドで返します。
+					この値は、Daoインタフェースの<code>@BatchUpdate</code>などが注釈されたバッチ系のメソッドの実行に使用されます。
+				</p>
+			</subsection>
+			<subsection name="DomaAbstractConfigを継承する場合">
+				<p>
+					<code>Config</code>インタフェースを直接実装してもかまいませんが、
+					いくつかのデフォルトの設定をもつ <a href ="../apidocs/org/seasar/doma/jdbc/DomaAbstractConfig.html"><code>DomaAbstractConfig</code></a>を継承するのが簡単です。
+					最初は、このクラスを使い、慣れてきたら<code>Config</code>インタフェースを直接実装するのがよいでしょう。
+				</p>
 <source>public class AppConfig extends DomaAbstractConfig {
     ...
 }</source>
+				<p>
+					<code>DomaAbstractConfig</code>を利用する場合、必要な設定は次の3つです。
+				</p>
+				<ul>
+					<li>データソースの設定</li>
+					<li>データソース名の設定</li>
+					<li>RDBMS方言の設定</li>
+				</ul>
+				<p>
+					上記以外の設定については、デフォルトの実装やデフォルトの値が使用されます。
+				</p>
+				<table>
+					<tr>
+						<th>設定項目</th>
+						<th>デフォルトの実装クラス/値</th>
+					</tr>
+					<tr>
+						<td>ロガーの設定</td>
+						<td><code>org.seasar.doma.jdbc.UtilLoggingJdbcLogger</code></td>
+					</tr>
+					<tr>
+						<td>ネーミング規約の設定</td>
+						<td><code>org.seasar.doma.jdbc.CamelNamingConvention</code></td>
+					</tr>
+					<tr>
+						<td>SQLファイルのリポジトリの設定</td>
+						<td><code>org.seasar.doma.jdbc.CachedSqlFileRepository</code></td>
+					</tr>
+					<tr>
+						<td>REQUIRES_NEWの属性をもつトランザクションを制御するための設定</td>
+						<td><code>org.seasar.doma.jdbc.NullRequiresNewController</code></td>
+					</tr>
+					<tr>
+						<td>クエリタイムアウト（秒）の設定</td>
+						<td><code>0 （0以下の値は明示的に設定しないことをあらわします）</code></td>
+					</tr>
+					<tr>
+						<td>SELECT時のフェッチサイズの設定</td>
+						<td><code>0 （0以下の値は明示的に設定しないことをあらわします）</code></td>
+					</tr>
+					<tr>
+						<td>SELECT時の最大行数の設定</td>
+						<td><code>0 （0以下の値は明示的に設定しないことをあらわします）</code></td>
+					</tr>
+					<tr>
+						<td>バッチ更新のバッチサイズの設定</td>
+						<td><code>10</code></td>
+					</tr>
+				</table>
+			</subsection>
+		</section>
+		<section name="設定クラスの利用">
 			<p>
-				<code>Config</code> の実装クラスは、publicなデフォルトコンストラクタ（引数なしのコンストラクタ）を持たねばいけません。
-				また、どのメソッドも <code>null</code> を返してはいけません。
+				設定クラスは<code>@Dao</code>の<code>config</code>要素で指定します。
+				設定クラスを<code>AppConfig</code>という名前で作成した場合、次のようになります。
 			</p>
-			<p>
-				<code>dataSource</code> メソッドでは、DAOがアクセスするデータソースを返してください。
-			</p>
-			<p>
-				<code>dialect</code> メソッドでは、使用するデータベースにあわせた方言を返すようにしてください。
-				現在サポートされているデータベースとその方言を表すクラスは次のとおりです。
-			</p>
-			<table>
-				<tr>
-					<th>データベース</th>
-					<th>方言クラスの名前</th>
-				</tr>
-				<tr>
-					<td>HSQLDB</td>
-					<td><code>org.seasar.doma.jdbc.dialect.HsqldbDialect</code></td>
-				</tr>
-				<tr>
-					<td>MySql</td>
-					<td><code>org.seasar.doma.jdbc.dialect.MySqlDialect</code></td>
-				</tr>
-				<tr>
-					<td>PostgreSQL</td>
-					<td><code>org.seasar.doma.jdbc.dialect.PostgresDialect</code></td>
-				</tr>
-				<tr>
-					<td>Oracle Database</td>
-					<td><code>org.seasar.doma.jdbc.dialect.OracleDialect</code></td>
-				</tr>
-			</table>
-			<p>
-				その他、<code>Config</code> のほとんどのメソッドがインタフェースを返すようになっています。
-				必要に応じて適切な実装クラスを用意し、そのインスタンスを返すようにしてください。
-			</p>
+<source><![CDATA[@Dao(config = AppConfig.class)
+public interface MyDao {
+    ...
+}]]></source>
 		</section>
 		<section name="Seasar2を利用する場合の設定例">
 			<p>

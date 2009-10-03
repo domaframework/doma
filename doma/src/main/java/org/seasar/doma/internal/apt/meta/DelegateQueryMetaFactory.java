@@ -80,7 +80,7 @@ public class DelegateQueryMetaFactory extends
         } catch (MirroredTypeException e) {
             return e.getTypeMirror();
         }
-        throw new AptIllegalStateException();
+        throw new AptIllegalStateException("unreachable.");
     }
 
     @Override
@@ -108,7 +108,7 @@ public class DelegateQueryMetaFactory extends
         TypeElement delegateTypeElement = TypeUtil.toTypeElement(queryMeta
                 .getTargetType(), env);
         if (delegateTypeElement == null) {
-            throw new AptIllegalStateException();
+            throw new AptIllegalStateException(method.toString());
         }
         if (!hasSuitableConstructor(delegateTypeElement)) {
             throw new AptException(DomaMessageCode.DOMA4080, env, method,
