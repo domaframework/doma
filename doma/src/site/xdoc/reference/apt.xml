@@ -2,13 +2,13 @@
 <document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
 	<properties>
-		<title>注釈処理</title>
+		<title>アノテーション処理</title>
 	</properties>
 	<body>
 		<section name="概要">
 			<p>
 				Java6から導入された <a href="http://jcp.org/en/jsr/detail?id=269">Pluggable Annotation Processing API (JSR 269)</a> 
-				を利用すると、ソースコードの自動生成や検証をコンパイル時に行うことができます。
+				を利用すると、ソースコードの自動生成や検証を<b>コンパイル時</b>に行うことができます。
 			</p>
 			<p>
 				DomaではこのAPIを利用し、@Entityや@Daoと言ったアノテーションが注釈されたクラスやインタフェースを処理し、必要なクラスを自動生成します。
