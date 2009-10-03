@@ -86,7 +86,7 @@ public class AutoProcedureTest {
         Reference<Integer> count = new Reference<Integer>();
         dao.proc_resultset_out(employees, 1, count);
         assertEquals(13, employees.size());
-        assertEquals(new Integer(14), count);
+        assertEquals(new Integer(14), count.get());
     }
 
     public void testResultSetAndUpdate() throws Exception {
@@ -126,6 +126,6 @@ public class AutoProcedureTest {
         dao.proc_resultsets_updates_out(employees, departments, 1, 1, count);
         assertEquals(13, employees.size());
         assertEquals(3, departments.size());
-        assertEquals(new Integer(14), count);
+        assertEquals(new Integer(14), count.get());
     }
 }
