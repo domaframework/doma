@@ -26,6 +26,7 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
 
+import org.seasar.doma.internal.expr.ExpressionException;
 import org.seasar.doma.internal.expr.ExpressionParser;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
@@ -137,9 +138,8 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
 
     protected void validateExpressionVariable(SqlLocation location,
             String expression) {
+        ExpressionNode expressionNode = parseExpression(location, expression);
         try {
-            ExpressionParser parser = new ExpressionParser(expression);
-            ExpressionNode expressionNode = parser.parse();
             expressionValidator.validate(expressionNode);
         } catch (AptIllegalStateException e) {
             throw e;
@@ -151,4 +151,16 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
         }
     }
 
+    protected ExpressionNode parseExpression(SqlLocation location,
+            String expression) {
+        try {
+            ExpressionParser parser = new ExpressionParser(expression);
+            return parser.parse();
+        } catch (ExpressionException e) {
+            throw new AptException(DomaMessageCode.DOMA4092, env,
+                    methodElement, path, location.getSql(), location
+                            .getLineNumber(), location.getPosition(), e
+                            .getMessage());
+        }
+    }
 }
