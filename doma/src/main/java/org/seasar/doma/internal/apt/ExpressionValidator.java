@@ -87,35 +87,35 @@ public class ExpressionValidator implements
 
     @Override
     public TypeDeclaration visitEqOperatorNode(EqOperatorNode node, Void p) {
-        return handleComparisonOperation(node, p);
+        return handleNullAvailableComparisonOperation(node, p);
     }
 
     @Override
     public TypeDeclaration visitNeOperatorNode(NeOperatorNode node, Void p) {
-        return handleComparisonOperation(node, p);
+        return handleNullAvailableComparisonOperation(node, p);
     }
 
     @Override
     public TypeDeclaration visitGeOperatorNode(GeOperatorNode node, Void p) {
-        return handleComparisonOperation(node, p);
+        return handleNullUnavailableComparisonOperation(node, p);
     }
 
     @Override
     public TypeDeclaration visitGtOperatorNode(GtOperatorNode node, Void p) {
-        return handleComparisonOperation(node, p);
+        return handleNullUnavailableComparisonOperation(node, p);
     }
 
     @Override
     public TypeDeclaration visitLeOperatorNode(LeOperatorNode node, Void p) {
-        return handleComparisonOperation(node, p);
+        return handleNullUnavailableComparisonOperation(node, p);
     }
 
     @Override
     public TypeDeclaration visitLtOperatorNode(LtOperatorNode node, Void p) {
-        return handleComparisonOperation(node, p);
+        return handleNullUnavailableComparisonOperation(node, p);
     }
 
-    protected TypeDeclaration handleComparisonOperation(
+    protected TypeDeclaration handleNullAvailableComparisonOperation(
             ComparisonOperatorNode node, Void p) {
         TypeDeclaration left = node.getLeftNode().accept(this, p);
         TypeDeclaration right = node.getRightNode().accept(this, p);
@@ -125,8 +125,30 @@ public class ExpressionValidator implements
         ExpressionLocation location = node.getLocation();
         throw new AptException(DomaMessageCode.DOMA4116, env, methodElement,
                 location.getExpression(), location.getPosition(), node
-                        .getExpression(), node.getLeftNode().toString(), node
-                        .getRightNode().toString());
+                        .getExpression(), node.getLeftNode().toString(), left
+                        .getQualifiedName(), node.getRightNode().toString(),
+                right.getQualifiedName());
+    }
+
+    protected TypeDeclaration handleNullUnavailableComparisonOperation(
+            ComparisonOperatorNode node, Void p) {
+        TypeDeclaration left = node.getLeftNode().accept(this, p);
+        TypeDeclaration right = node.getRightNode().accept(this, p);
+        if (left.isNullType() || right.isNullType()) {
+            ExpressionLocation location = node.getLocation();
+            throw new AptException(DomaMessageCode.DOMA4139, env,
+                    methodElement, location.getExpression(), location
+                            .getPosition(), node.getExpression());
+        }
+        if (left.isSameType(right)) {
+            return TypeDeclaration.newBooleanInstance(env);
+        }
+        ExpressionLocation location = node.getLocation();
+        throw new AptException(DomaMessageCode.DOMA4116, env, methodElement,
+                location.getExpression(), location.getPosition(), node
+                        .getExpression(), node.getLeftNode().toString(), left
+                        .getQualifiedName(), node.getRightNode().toString(),
+                right.getQualifiedName());
     }
 
     @Override
@@ -148,14 +170,15 @@ public class ExpressionValidator implements
             throw new AptException(DomaMessageCode.DOMA4117, env,
                     methodElement, location.getExpression(), location
                             .getPosition(), node.getExpression(), node
-                            .getLeftNode().toString());
+                            .getLeftNode().toString(), left.getQualifiedName());
         }
         if (!right.isBooleanType()) {
             ExpressionLocation location = node.getLocation();
             throw new AptException(DomaMessageCode.DOMA4118, env,
                     methodElement, location.getExpression(), location
                             .getPosition(), node.getExpression(), node
-                            .getRightNode().toString());
+                            .getRightNode().toString(), right
+                            .getQualifiedName());
         }
         return TypeDeclaration.newBooleanInstance(env);
     }
@@ -169,7 +192,8 @@ public class ExpressionValidator implements
         ExpressionLocation location = node.getLocation();
         throw new AptException(DomaMessageCode.DOMA4119, env, methodElement,
                 location.getExpression(), location.getPosition(), node
-                        .getExpression(), node.getNode().toString());
+                        .getExpression(), node.getNode().toString(), result
+                        .getQualifiedName());
     }
 
     @Override
@@ -204,21 +228,24 @@ public class ExpressionValidator implements
             throw new AptException(DomaMessageCode.DOMA4120, env,
                     methodElement, location.getExpression(), location
                             .getPosition(), node.getExpression(), node
-                            .getLeftNode().toString());
+                            .getLeftNode().toString(), left.getQualifiedName());
         }
         if (!right.isNumberType()) {
             ExpressionLocation location = node.getLocation();
             throw new AptException(DomaMessageCode.DOMA4121, env,
                     methodElement, location.getExpression(), location
                             .getPosition(), node.getExpression(), node
-                            .getRightNode().toString());
+                            .getRightNode().toString(), right
+                            .getQualifiedName());
         }
         return left.calculate(right);
     }
 
     @Override
     public TypeDeclaration visitLiteralNode(LiteralNode node, Void p) {
-        TypeMirror type = TypeUtil.getTypeMirror(node.getValueClass(), env);
+        TypeMirror type = node.getValueClass() == void.class ? env
+                .getTypeUtils().getNullType() : TypeUtil.getTypeMirror(node
+                .getValueClass(), env);
         return TypeDeclaration.newInstance(type, env);
     }
 

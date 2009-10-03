@@ -97,7 +97,7 @@ public class TypeDeclaration {
     }
 
     public boolean isNullType() {
-        return type.getKind() == TypeKind.VOID;
+        return type.getKind() == TypeKind.NULL;
     }
 
     public boolean isBooleanType() {
