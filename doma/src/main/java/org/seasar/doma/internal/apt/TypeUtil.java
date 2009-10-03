@@ -133,16 +133,8 @@ public final class TypeUtil {
     }
 
     public static String getTypeName(TypeMirror typeMirror,
-            ProcessingEnvironment env) {
-        assertNotNull(typeMirror, env);
-        return getTypeName(typeMirror, Collections
-                .<TypeMirror, TypeMirror> emptyMap(), env);
-    }
-
-    public static String getTypeName(TypeMirror typeMirror,
-            final Map<TypeMirror, TypeMirror> typeParameterMap,
             final ProcessingEnvironment env) {
-        assertNotNull(typeMirror, typeParameterMap, env);
+        assertNotNull(typeMirror, env);
         StringBuilder p = new StringBuilder();
         typeMirror.accept(new TypeKindVisitor6<Void, StringBuilder>() {
 
@@ -190,10 +182,89 @@ public final class TypeUtil {
 
             @Override
             public Void visitTypeVariable(TypeVariable t, StringBuilder p) {
-                p.append(resolveTypeVariable(t));
+                p.append(t);
+                return null;
+            }
+
+            @Override
+            public Void visitWildcard(WildcardType t, StringBuilder p) {
+                TypeMirror extendsBound = t.getExtendsBound();
+                if (extendsBound != null) {
+                    p.append("? extends ");
+                    extendsBound.accept(this, p);
+                }
+                TypeMirror superBound = t.getSuperBound();
+                if (superBound != null) {
+                    p.append("? super ");
+                    superBound.accept(this, p);
+                }
+                return null;
+            }
+
+            @Override
+            protected Void defaultAction(TypeMirror e, StringBuilder p) {
+                p.append(e);
+                throw new IllegalArgumentException(p.toString());
+            }
+
+        }, p);
+
+        return p.toString();
+    }
+
+    public static String getTypeParameterName(TypeMirror typeMirror,
+            final ProcessingEnvironment env) {
+        assertNotNull(typeMirror, env);
+        StringBuilder p = new StringBuilder();
+        typeMirror.accept(new TypeKindVisitor6<Void, StringBuilder>() {
+
+            @Override
+            public Void visitNoTypeAsVoid(NoType t, StringBuilder p) {
+                p.append("void");
+                return null;
+            }
+
+            @Override
+            public Void visitPrimitive(PrimitiveType t, StringBuilder p) {
+                if (p.length() == 0) {
+                    p.append(t);
+                } else {
+                    TypeElement e = env.getTypeUtils().boxedClass(t);
+                    p.append(e.getSimpleName());
+                }
+                return null;
+            }
+
+            @Override
+            public Void visitArray(ArrayType t, StringBuilder p) {
+                t.getComponentType().accept(this, p);
+                p.append("[]");
+                return null;
+            }
+
+            @Override
+            public Void visitDeclared(DeclaredType t, StringBuilder p) {
+                TypeElement e = toTypeElement(t, env);
+                if (e != null) {
+                    p.append(e.getQualifiedName());
+                }
+                if (!t.getTypeArguments().isEmpty()) {
+                    p.append("<");
+                    for (TypeMirror arg : t.getTypeArguments()) {
+                        arg.accept(this, p);
+                        p.append(", ");
+                    }
+                    p.setLength(p.length() - 2);
+                    p.append(">");
+                }
+                return null;
+            }
+
+            @Override
+            public Void visitTypeVariable(TypeVariable t, StringBuilder p) {
+                p.append(t);
                 TypeMirror upperBound = t.getUpperBound();
-                String upperBoundName = TypeUtil.getTypeName(upperBound,
-                        typeParameterMap, env);
+                String upperBoundName = TypeUtil.getTypeName(upperBound, env);
                 if (!Object.class.getName().equals(upperBoundName)) {
                     p.append(" extends ");
                     upperBound.accept(this, p);
@@ -205,13 +276,6 @@ public final class TypeUtil {
                     }
                 }
                 return null;
-            }
-
-            protected TypeMirror resolveTypeVariable(TypeVariable t) {
-                if (typeParameterMap.containsKey(t)) {
-                    return typeParameterMap.get(t);
-                }
-                return t;
             }
 
             @Override

@@ -56,8 +56,7 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
     protected void doTypeParameters(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
         for (TypeParameterElement element : method.getTypeParameters()) {
-            String name = TypeUtil.getTypeName(element.asType(), daoMeta
-                    .getTypeParameterMap(), env);
+            String name = TypeUtil.getTypeParameterName(element.asType(), env);
             queryMeta.addTypeParameterName(name);
         }
     }
@@ -71,8 +70,7 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
     protected void doThrowTypes(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
         for (TypeMirror thrownType : method.getThrownTypes()) {
-            queryMeta.addThrownTypeName(TypeUtil.getTypeName(thrownType,
-                    daoMeta.getTypeParameterMap(), env));
+            queryMeta.addThrownTypeName(TypeUtil.getTypeName(thrownType, env));
         }
     }
 

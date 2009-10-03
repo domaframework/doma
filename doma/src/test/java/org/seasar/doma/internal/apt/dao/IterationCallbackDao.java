@@ -34,11 +34,10 @@ public interface IterationCallbackDao {
             IterationCallback<Integer, Emp> callback);
 
     @Select(iterate = true)
-    Integer iterateById(Integer id,
-            IterationCallback<Integer, PhoneNumber> callback);
+    <R> R iterateById(Integer id, IterationCallback<R, PhoneNumber> callback);
 
     @Select(iterate = true)
-    Integer iterate(IterationCallback<Integer, String> callback);
+    <R extends Number> R iterate(IterationCallback<R, String> callback);
 
     @Select(iterate = true)
     String iterateWithHogeIterationCallback(HogeIterationCallback callback);
