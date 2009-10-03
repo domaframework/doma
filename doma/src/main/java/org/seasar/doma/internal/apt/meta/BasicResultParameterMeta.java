@@ -13,32 +13,32 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.sql;
+package org.seasar.doma.internal.apt.meta;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import org.seasar.doma.wrapper.Wrapper;
+import org.seasar.doma.internal.apt.type.BasicType;
 
 /**
  * @author taedium
  * 
  */
-public class ValueListResultParameter<V> extends ValueListParameter<V>
-        implements ResultParameter<List<V>> {
+public class BasicResultParameterMeta implements ResultParameterMeta {
 
-    public ValueListResultParameter(Wrapper<V> wrapper) {
-        super(wrapper, new ArrayList<V>());
+    protected final BasicType basicType;
+
+    public BasicResultParameterMeta(BasicType basicType) {
+        assertNotNull(basicType);
+        this.basicType = basicType;
+    }
+
+    public BasicType getValueType() {
+        return basicType;
     }
 
     @Override
-    public List<V> getResult() {
-        return values;
+    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
+        return visitor.visistValueResultParameterMeta(this, p);
     }
 
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitValueListResultParameter(this, p);
-    }
 }

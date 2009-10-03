@@ -26,6 +26,12 @@ import java.util.List;
 import org.seasar.doma.internal.domain.DomainType;
 import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.query.Query;
+import org.seasar.doma.internal.jdbc.sql.BasicInOutParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicListParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicListResultParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicOutParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicResultParameter;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlParameter;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlParameterVisitor;
 import org.seasar.doma.internal.jdbc.sql.DomainInOutParameter;
@@ -37,12 +43,6 @@ import org.seasar.doma.internal.jdbc.sql.DomainResultParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListResultParameter;
 import org.seasar.doma.internal.jdbc.sql.OutParameter;
-import org.seasar.doma.internal.jdbc.sql.ValueInOutParameter;
-import org.seasar.doma.internal.jdbc.sql.ValueInParameter;
-import org.seasar.doma.internal.jdbc.sql.ValueListParameter;
-import org.seasar.doma.internal.jdbc.sql.ValueListResultParameter;
-import org.seasar.doma.internal.jdbc.sql.ValueOutParameter;
-import org.seasar.doma.internal.jdbc.sql.ValueResultParameter;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.dialect.Dialect;
@@ -100,7 +100,7 @@ public class CallableSqlParameterFetcher {
         }
 
         @Override
-        public Void visitValueInOutParameter(ValueInOutParameter<?> parameter,
+        public Void visitBasicInOutParameter(BasicInOutParameter<?> parameter,
                 Void p) throws SQLException {
             handleOutParameter(parameter);
             index++;
@@ -117,7 +117,7 @@ public class CallableSqlParameterFetcher {
         }
 
         @Override
-        public Void visitValueInParameter(ValueInParameter parameter, Void p)
+        public Void visitBasicInParameter(BasicInParameter parameter, Void p)
                 throws SQLException {
             index++;
             return null;
@@ -131,7 +131,7 @@ public class CallableSqlParameterFetcher {
         }
 
         @Override
-        public Void visitValueOutParameter(ValueOutParameter<?> parameter,
+        public Void visitBasicOutParameter(BasicOutParameter<?> parameter,
                 Void p) throws SQLException {
             handleOutParameter(parameter);
             index++;
@@ -154,8 +154,8 @@ public class CallableSqlParameterFetcher {
         }
 
         @Override
-        public Void visitValueResultParameter(
-                ValueResultParameter<?> parameter, Void p) throws SQLException {
+        public Void visitBasicResultParameter(
+                BasicResultParameter<?> parameter, Void p) throws SQLException {
             parameter.getWrapper().accept(jdbcMappingVisitor,
                     new GetOutParameterFunction(callableStatement, index));
             index++;
@@ -174,9 +174,9 @@ public class CallableSqlParameterFetcher {
         }
 
         @Override
-        public Void visitValueListParameter(ValueListParameter<?> parameter,
+        public Void visitBasicListParameter(BasicListParameter<?> parameter,
                 Void p) throws SQLException {
-            handleListParameter(new ValueFetcherCallbck(parameter));
+            handleListParameter(new BasicFetcherCallbck(parameter));
             return null;
         }
 
@@ -196,10 +196,10 @@ public class CallableSqlParameterFetcher {
         }
 
         @Override
-        public Void visitValueListResultParameter(
-                ValueListResultParameter<?> parameter, Void p)
+        public Void visitBasicListResultParameter(
+                BasicListResultParameter<?> parameter, Void p)
                 throws SQLException {
-            handleListParameter(new ValueFetcherCallbck(parameter));
+            handleListParameter(new BasicFetcherCallbck(parameter));
             return null;
         }
 
@@ -277,13 +277,13 @@ public class CallableSqlParameterFetcher {
 
         protected class DomainFetcherCallbck implements FetcherCallback {
 
-            protected ValueFetcher fetcher;
+            protected BasicFetcher fetcher;
 
             protected DomainListParameter<?, ?> parameter;
 
             public DomainFetcherCallbck(DomainListParameter<?, ?> parameter)
                     throws SQLException {
-                this.fetcher = new ValueFetcher(query);
+                this.fetcher = new BasicFetcher(query);
                 this.parameter = parameter;
             }
 
@@ -297,15 +297,15 @@ public class CallableSqlParameterFetcher {
             }
         }
 
-        protected class ValueFetcherCallbck implements FetcherCallback {
+        protected class BasicFetcherCallbck implements FetcherCallback {
 
-            protected ValueFetcher fetcher;
+            protected BasicFetcher fetcher;
 
-            protected ValueListParameter<?> parameter;
+            protected BasicListParameter<?> parameter;
 
-            public ValueFetcherCallbck(ValueListParameter<?> parameter)
+            public BasicFetcherCallbck(BasicListParameter<?> parameter)
                     throws SQLException {
-                this.fetcher = new ValueFetcher(query);
+                this.fetcher = new BasicFetcher(query);
                 this.parameter = parameter;
             }
 

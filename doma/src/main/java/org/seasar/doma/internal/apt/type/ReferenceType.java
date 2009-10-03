@@ -37,7 +37,7 @@ public class ReferenceType {
 
     protected DomainType referentDomainType;
 
-    protected ValueType referentValueType;
+    protected BasicType referentBasicType;
 
     protected ReferenceType() {
     }
@@ -54,8 +54,8 @@ public class ReferenceType {
         return referentDomainType;
     }
 
-    public ValueType getReferentValueType() {
-        return referentValueType;
+    public BasicType getReferentBasicType() {
+        return referentBasicType;
     }
 
     public TypeMirror getReferentType() {
@@ -88,7 +88,7 @@ public class ReferenceType {
             referenceType.referentDomainType = DomainType.newInstance(
                     referenceType.referentType, env);
             if (referenceType.referentDomainType == null) {
-                referenceType.referentValueType = ValueType.newInstance(
+                referenceType.referentBasicType = BasicType.newInstance(
                         referenceType.referentType, env);
             }
         }

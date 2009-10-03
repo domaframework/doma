@@ -21,10 +21,10 @@ import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.query.AutoFunctionQuery;
-import org.seasar.doma.internal.jdbc.sql.ValueInOutParameter;
-import org.seasar.doma.internal.jdbc.sql.ValueInParameter;
-import org.seasar.doma.internal.jdbc.sql.ValueOutParameter;
-import org.seasar.doma.internal.jdbc.sql.ValueResultParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicInOutParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicOutParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicResultParameter;
 import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.wrapper.IntegerWrapper;
 
@@ -50,12 +50,12 @@ public class FunctionCommandTest extends TestCase {
         AutoFunctionQuery<Integer> query = new AutoFunctionQuery<Integer>();
         query.setConfig(runtimeConfig);
         query.setFunctionName("aaa");
-        query.setResultParameter(new ValueResultParameter<Integer>(
+        query.setResultParameter(new BasicResultParameter<Integer>(
                 new IntegerWrapper()));
-        query.addParameter(new ValueInParameter(aaa));
-        query.addParameter(new ValueOutParameter<Integer>(bbb,
+        query.addParameter(new BasicInParameter(aaa));
+        query.addParameter(new BasicOutParameter<Integer>(bbb,
                 new Reference<Integer>()));
-        query.addParameter(new ValueInOutParameter<Integer>(ccc,
+        query.addParameter(new BasicInOutParameter<Integer>(ccc,
                 new Reference<Integer>()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");

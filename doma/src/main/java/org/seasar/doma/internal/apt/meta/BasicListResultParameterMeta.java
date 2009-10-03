@@ -17,28 +17,28 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import org.seasar.doma.internal.apt.type.ValueType;
+import org.seasar.doma.internal.apt.type.BasicType;
 
 /**
  * @author taedium
  * 
  */
-public class ValueResultParameterMeta implements ResultParameterMeta {
+public class BasicListResultParameterMeta implements ResultParameterMeta {
 
-    protected final ValueType valueType;
+    protected final BasicType basicType;
 
-    public ValueResultParameterMeta(ValueType valueType) {
-        assertNotNull(valueType);
-        this.valueType = valueType;
+    public BasicListResultParameterMeta(BasicType basicType) {
+        assertNotNull(basicType);
+        this.basicType = basicType;
     }
 
-    public ValueType getValueType() {
-        return valueType;
+    public BasicType getValueType() {
+        return basicType;
     }
 
     @Override
     public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visistValueResultParameterMeta(this, p);
+        return visitor.visistValueListResultParameterMeta(this, p);
     }
 
 }

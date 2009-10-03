@@ -1,0 +1,61 @@
+package org.seasar.doma.internal.apt.dao;
+
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
+public class SqlFileSelectBasicDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao implements org.seasar.doma.internal.apt.dao.SqlFileSelectBasicDao {
+
+    public SqlFileSelectBasicDaoImpl() {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig(), null);
+    }
+
+    public SqlFileSelectBasicDaoImpl(javax.sql.DataSource dataSource) {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
+    }
+
+    protected SqlFileSelectBasicDaoImpl(org.seasar.doma.jdbc.Config config) {
+        super(config, config.dataSource());
+    }
+
+    @Override
+    public java.lang.String selectById(java.lang.Integer id) {
+        entering("org.seasar.doma.internal.apt.dao.SqlFileSelectBasicDaoImpl", "selectById", id);
+        org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
+        query.setConfig(config);
+        query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFileUtil.buildPath("org.seasar.doma.internal.apt.dao.SqlFileSelectBasicDao", "selectById"));
+        query.addParameter("id", java.lang.Integer.class, id);
+        query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileSelectBasicDaoImpl");
+        query.setCallerMethodName("selectById");
+        query.setQueryTimeout(-1);
+        query.setMaxRows(-1);
+        query.setFetchSize(-1);
+        query.prepare();
+        org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.String> command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.String>(query, new org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler<java.lang.String>(new org.seasar.doma.wrapper.StringWrapper()));
+        java.lang.String result = command.execute();
+        exiting("org.seasar.doma.internal.apt.dao.SqlFileSelectBasicDaoImpl", "selectById", result);
+        return result;
+    }
+
+    @Override
+    public java.util.List<java.lang.String> selectByNameAndSalary(java.lang.String name, java.math.BigDecimal salary, org.seasar.doma.jdbc.SelectOptions options) {
+        entering("org.seasar.doma.internal.apt.dao.SqlFileSelectBasicDaoImpl", "selectByNameAndSalary", name, salary, options);
+        if (options == null) {
+            throw new org.seasar.doma.DomaNullPointerException("options");
+        }
+        org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
+        query.setConfig(config);
+        query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFileUtil.buildPath("org.seasar.doma.internal.apt.dao.SqlFileSelectBasicDao", "selectByNameAndSalary"));
+        query.setOptions(options);
+        query.addParameter("name", java.lang.String.class, name);
+        query.addParameter("salary", java.math.BigDecimal.class, salary);
+        query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileSelectBasicDaoImpl");
+        query.setCallerMethodName("selectByNameAndSalary");
+        query.setQueryTimeout(-1);
+        query.setMaxRows(-1);
+        query.setFetchSize(-1);
+        query.prepare();
+        org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<java.lang.String>> command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<java.lang.String>>(query, new org.seasar.doma.internal.jdbc.command.BasicResultListHandler<java.lang.String>(new org.seasar.doma.wrapper.StringWrapper()));
+        java.util.List<java.lang.String> result = command.execute();
+        exiting("org.seasar.doma.internal.apt.dao.SqlFileSelectBasicDaoImpl", "selectByNameAndSalary", result);
+        return result;
+    }
+
+}

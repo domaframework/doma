@@ -13,32 +13,27 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.meta;
+package org.seasar.doma.internal.apt.dao;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import java.math.BigDecimal;
+import java.util.List;
 
-import org.seasar.doma.internal.apt.type.ValueType;
+import org.seasar.doma.Dao;
+import org.seasar.doma.Select;
+import org.seasar.doma.jdbc.SelectOptions;
 
 /**
+ * 
  * @author taedium
  * 
  */
-public class ValueListResultParameterMeta implements ResultParameterMeta {
+@Dao(config = MyConfig.class)
+public interface SqlFileSelectBasicDao {
 
-    protected final ValueType valueType;
+    @Select
+    String selectById(Integer id);
 
-    public ValueListResultParameterMeta(ValueType valueType) {
-        assertNotNull(valueType);
-        this.valueType = valueType;
-    }
-
-    public ValueType getValueType() {
-        return valueType;
-    }
-
-    @Override
-    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visistValueListResultParameterMeta(this, p);
-    }
-
+    @Select
+    List<String> selectByNameAndSalary(String name, BigDecimal salary,
+            SelectOptions options);
 }

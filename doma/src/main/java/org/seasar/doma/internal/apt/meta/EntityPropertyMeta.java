@@ -24,7 +24,7 @@ import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.internal.apt.type.DomainType;
-import org.seasar.doma.internal.apt.type.ValueType;
+import org.seasar.doma.internal.apt.type.BasicType;
 
 /**
  * 
@@ -53,7 +53,7 @@ public class EntityPropertyMeta {
 
     protected DomainType domainType;
 
-    protected ValueType valueType;
+    protected BasicType basicType;
 
     public EntityPropertyMeta(TypeElement entityElement,
             VariableElement propertyElement, ProcessingEnvironment env) {
@@ -128,12 +128,12 @@ public class EntityPropertyMeta {
         this.domainType = domainType;
     }
 
-    public ValueType getValueType() {
-        return valueType;
+    public BasicType getValueType() {
+        return basicType;
     }
 
-    public void setValueType(ValueType valueType) {
-        this.valueType = valueType;
+    public void setValueType(BasicType basicType) {
+        this.basicType = basicType;
     }
 
 }

@@ -18,7 +18,7 @@ import org.seasar.doma.internal.apt.type.IterationCallbackType;
 import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.ReferenceType;
 import org.seasar.doma.internal.apt.type.SelectOptionsType;
-import org.seasar.doma.internal.apt.type.ValueType;
+import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.message.DomaMessageCode;
 
 public class QueryParameterMeta {
@@ -41,7 +41,7 @@ public class QueryParameterMeta {
 
     protected DomainType domainType;
 
-    protected ValueType valueType;
+    protected BasicType basicType;
 
     protected SelectOptionsType selectOptionsType;
 
@@ -68,8 +68,8 @@ public class QueryParameterMeta {
             if (entityType == null) {
                 domainType = DomainType.newInstance(type, env);
                 if (domainType == null) {
-                    valueType = ValueType.newInstance(type, env);
-                    if (valueType == null) {
+                    basicType = BasicType.newInstance(type, env);
+                    if (basicType == null) {
                         selectOptionsType = SelectOptionsType.newInstance(type,
                                 env);
                         if (selectOptionsType == null) {
@@ -149,8 +149,8 @@ public class QueryParameterMeta {
         return domainType;
     }
 
-    public ValueType getValueType() {
-        return valueType;
+    public BasicType getValueType() {
+        return basicType;
     }
 
     public SelectOptionsType getSelectOptionsType() {
@@ -166,12 +166,12 @@ public class QueryParameterMeta {
     }
 
     public boolean isNullable() {
-        return domainType != null || valueType != null;
+        return domainType != null || basicType != null;
     }
 
     public boolean isBindable() {
         return listType != null || entityType != null || domainType != null
-                || valueType != null || referenceType != null;
+                || basicType != null || referenceType != null;
     }
 
     public boolean isAnnotated(Class<? extends Annotation> annotationType) {

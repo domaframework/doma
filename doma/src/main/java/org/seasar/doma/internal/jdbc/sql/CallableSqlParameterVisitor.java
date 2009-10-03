@@ -21,28 +21,28 @@ package org.seasar.doma.internal.jdbc.sql;
  */
 public interface CallableSqlParameterVisitor<R, P, TH extends Throwable> {
 
-    R visitValueInParameter(ValueInParameter parameter, P p) throws TH;
+    R visitBasicInParameter(BasicInParameter parameter, P p) throws TH;
 
     R visitDomainInParameter(DomainInParameter<?, ?> parameter, P p) throws TH;
 
-    R visitValueOutParameter(ValueOutParameter<?> parameter, P p) throws TH;
+    R visitBasicOutParameter(BasicOutParameter<?> parameter, P p) throws TH;
 
     R visitDomainOutParameter(DomainOutParameter<?, ?> parameter, P p)
             throws TH;
 
-    R visitValueInOutParameter(ValueInOutParameter<?> parameter, P p) throws TH;
+    R visitBasicInOutParameter(BasicInOutParameter<?> parameter, P p) throws TH;
 
     R visitDomainInOutParameter(DomainInOutParameter<?, ?> parameter, P p)
             throws TH;
 
-    R visitValueListParameter(ValueListParameter<?> parameter, P p) throws TH;
+    R visitBasicListParameter(BasicListParameter<?> parameter, P p) throws TH;
 
     R visitDomainListParameter(DomainListParameter<?, ?> parameter, P p)
             throws TH;
 
     R visitEntityListParameter(EntityListParameter<?> parameter, P p) throws TH;
 
-    R visitValueListResultParameter(ValueListResultParameter<?> parameter, P p)
+    R visitBasicListResultParameter(BasicListResultParameter<?> parameter, P p)
             throws TH;
 
     R visitDomainListResultParameter(DomainListResultParameter<?, ?> parameter,
@@ -51,7 +51,7 @@ public interface CallableSqlParameterVisitor<R, P, TH extends Throwable> {
     R visitEntityListResultParameter(EntityListResultParameter<?> parameter, P p)
             throws TH;
 
-    R visitValueResultParameter(ValueResultParameter<?> parameter, P p)
+    R visitBasicResultParameter(BasicResultParameter<?> parameter, P p)
             throws TH;
 
     R visitDomainResultParameter(DomainResultParameter<?, ?> parameter, P p)

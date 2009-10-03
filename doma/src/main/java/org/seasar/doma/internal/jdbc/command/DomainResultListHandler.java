@@ -41,7 +41,7 @@ public class DomainResultListHandler<V, D> implements ResultSetHandler<List<D>> 
 
     @Override
     public List<D> handle(ResultSet resultSet, Query query) throws SQLException {
-        ValueFetcher fetcher = new ValueFetcher(query);
+        BasicFetcher fetcher = new BasicFetcher(query);
         List<D> domains = new ArrayList<D>();
         while (resultSet.next()) {
             DomainType<V, D> entityType = domainTypeFactory.createDomainType();

@@ -50,26 +50,26 @@ import org.seasar.doma.internal.apt.meta.QueryReturnMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileBatchModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileSelectQueryMeta;
-import org.seasar.doma.internal.apt.meta.ValueInOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.ValueInParameterMeta;
-import org.seasar.doma.internal.apt.meta.ValueListParameterMeta;
-import org.seasar.doma.internal.apt.meta.ValueListResultParameterMeta;
-import org.seasar.doma.internal.apt.meta.ValueOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.ValueResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.BasicInOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.BasicInParameterMeta;
+import org.seasar.doma.internal.apt.meta.BasicListParameterMeta;
+import org.seasar.doma.internal.apt.meta.BasicListResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.BasicOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.BasicResultParameterMeta;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.IterationCallbackType;
 import org.seasar.doma.internal.apt.type.ListType;
-import org.seasar.doma.internal.apt.type.ValueType;
+import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.jdbc.command.DomainIterationHandler;
 import org.seasar.doma.internal.jdbc.command.DomainResultListHandler;
 import org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.EntityIterationHandler;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
-import org.seasar.doma.internal.jdbc.command.ValueIterationHandler;
-import org.seasar.doma.internal.jdbc.command.ValueResultListHandler;
-import org.seasar.doma.internal.jdbc.command.ValueSingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.BasicIterationHandler;
+import org.seasar.doma.internal.jdbc.command.BasicResultListHandler;
+import org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler;
 import org.seasar.doma.internal.jdbc.sql.DomainInOutParameter;
 import org.seasar.doma.internal.jdbc.sql.DomainInParameter;
 import org.seasar.doma.internal.jdbc.sql.DomainListParameter;
@@ -79,12 +79,12 @@ import org.seasar.doma.internal.jdbc.sql.DomainResultParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListResultParameter;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
-import org.seasar.doma.internal.jdbc.sql.ValueInOutParameter;
-import org.seasar.doma.internal.jdbc.sql.ValueInParameter;
-import org.seasar.doma.internal.jdbc.sql.ValueListParameter;
-import org.seasar.doma.internal.jdbc.sql.ValueListResultParameter;
-import org.seasar.doma.internal.jdbc.sql.ValueOutParameter;
-import org.seasar.doma.internal.jdbc.sql.ValueResultParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicInOutParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicListParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicListResultParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicOutParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicResultParameter;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.DomaAbstractDao;
 
@@ -270,20 +270,20 @@ public class DaoGenerator extends AbstractGenerator {
                                     .getIterationCallbackPrameterName());
                 } else if (callbackType.getDomainType() != null) {
                     DomainType domainType = callbackType.getDomainType();
-                    ValueType valueType = domainType.getValueType();
+                    BasicType basicType = domainType.getValueType();
                     iprint(
                             "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s, %4$s, %5$s>(new %5$s%6$s(), %7$s));%n",
                             commandClassName, resultMeta.getTypeName(),
-                            DomainIterationHandler.class.getName(), valueType
+                            DomainIterationHandler.class.getName(), basicType
                                     .getTypeName(), domainType.getTypeName(),
                             domainSuffix, m.getIterationCallbackPrameterName());
                 } else {
-                    ValueType valueType = callbackType.getValueType();
+                    BasicType basicType = callbackType.getValueType();
                     iprint(
                             "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s, %4$s>(new %5$s(), %6$s));%n",
                             commandClassName, resultMeta.getTypeName(),
-                            ValueIterationHandler.class.getName(), valueType
-                                    .getTypeName(), valueType.getWrapperType()
+                            BasicIterationHandler.class.getName(), basicType
+                                    .getTypeName(), basicType.getWrapperType()
                                     .getTypeName(), m
                                     .getIterationCallbackPrameterName());
                 }
@@ -310,20 +310,20 @@ public class DaoGenerator extends AbstractGenerator {
                                 entityType.getTypeName(), entitySuffix);
                     } else if (listType.getDomainType() != null) {
                         DomainType domainType = listType.getDomainType();
-                        ValueType valueType = domainType.getValueType();
+                        BasicType basicType = domainType.getValueType();
                         iprint(
                                 "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s, %5$s>(new %5$s%6$s()));%n",
                                 commandClassName, listType.getTypeName(),
                                 DomainResultListHandler.class.getName(),
-                                valueType.getTypeName(), domainType
+                                basicType.getTypeName(), domainType
                                         .getTypeName(), domainSuffix);
                     } else {
-                        ValueType valueType = listType.getValueType();
+                        BasicType basicType = listType.getValueType();
                         iprint(
                                 "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s>(new %5$s()));%n",
                                 commandClassName, listType.getTypeName(),
-                                ValueResultListHandler.class.getName(),
-                                valueType.getTypeName(), valueType
+                                BasicResultListHandler.class.getName(),
+                                basicType.getTypeName(), basicType
                                         .getWrapperType().getTypeName());
                     }
                 } else {
@@ -338,19 +338,19 @@ public class DaoGenerator extends AbstractGenerator {
                     } else if (m.getReturnMeta().getDomainType() != null) {
                         DomainType domainType = m.getReturnMeta()
                                 .getDomainType();
-                        ValueType valueType = domainType.getValueType();
+                        BasicType basicType = domainType.getValueType();
                         iprint(
                                 "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s, %2$s>(new %2$s%5$s()));%n",
                                 commandClassName, domainType.getTypeName(),
                                 DomainSingleResultHandler.class.getName(),
-                                valueType.getTypeName(), domainSuffix);
+                                basicType.getTypeName(), domainSuffix);
                     } else {
-                        ValueType valueType = m.getReturnMeta().getValueType();
+                        BasicType basicType = m.getReturnMeta().getValueType();
                         iprint(
                                 "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s>(new %4$s()));%n",
-                                commandClassName, valueType.getTypeName(),
-                                ValueSingleResultHandler.class.getName(),
-                                valueType.getWrapperType().getTypeName());
+                                commandClassName, basicType.getTypeName(),
+                                BasicSingleResultHandler.class.getName(),
+                                basicType.getWrapperType().getTypeName());
                     }
                 }
                 iprint("%1$s result = command.execute();%n", resultMeta
@@ -694,12 +694,12 @@ public class DaoGenerator extends AbstractGenerator {
             CallableSqlParameterMetaVisitor<Void, Void> {
 
         @Override
-        public Void visistValueListParameterMeta(ValueListParameterMeta m,
+        public Void visistValueListParameterMeta(BasicListParameterMeta m,
                 Void p) {
-            ValueType valueType = m.getValueType();
+            BasicType basicType = m.getValueType();
             iprint("query.addParameter(new %1$s<%2$s>(new %3$s(), %4$s));%n",
-                    ValueListParameter.class.getName(),
-                    valueType.getTypeName(), valueType.getWrapperType()
+                    BasicListParameter.class.getName(),
+                    basicType.getTypeName(), basicType.getWrapperType()
                             .getTypeName(), m.getName());
             return null;
         }
@@ -708,10 +708,10 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visistDomainListParameterMeta(DomainListParameterMeta m,
                 Void p) {
             DomainType domainType = m.getDomainType();
-            ValueType valueType = domainType.getValueType();
+            BasicType basicType = domainType.getValueType();
             iprint(
                     "query.addParameter(new %1$s<%2$s, %3$s>(new %3$s%4$s(), %5$s));%n",
-                    DomainListParameter.class.getName(), valueType
+                    DomainListParameter.class.getName(), basicType
                             .getTypeName(), domainType.getTypeName(),
                     domainSuffix, m.getName());
             return null;
@@ -729,12 +729,12 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visistValueInOutParameterMeta(ValueInOutParameterMeta m,
+        public Void visistValueInOutParameterMeta(BasicInOutParameterMeta m,
                 Void p) {
-            ValueType valueType = m.getValueType();
+            BasicType basicType = m.getValueType();
             iprint("query.addParameter(new %1$s<%2$s>(new %3$s(), %4$s));%n",
-                    ValueInOutParameter.class.getName(), valueType
-                            .getTypeName(), valueType.getWrapperType()
+                    BasicInOutParameter.class.getName(), basicType
+                            .getTypeName(), basicType.getWrapperType()
                             .getTypeName(), m.getName());
             return null;
         }
@@ -743,21 +743,21 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visistDomainInOutParameterMeta(DomainInOutParameterMeta m,
                 Void p) {
             DomainType domainType = m.getDomainType();
-            ValueType valueType = domainType.getValueType();
+            BasicType basicType = domainType.getValueType();
             iprint(
                     "query.addParameter(new %1$s<%2$s, %3$s>(new %3$s%4$s(), %5$s));%n",
-                    DomainInOutParameter.class.getName(), valueType
+                    DomainInOutParameter.class.getName(), basicType
                             .getTypeName(), domainType.getTypeName(),
                     domainSuffix, m.getName());
             return null;
         }
 
         @Override
-        public Void visistValueOutParameterMeta(ValueOutParameterMeta m, Void p) {
-            ValueType valueType = m.getValueType();
+        public Void visistValueOutParameterMeta(BasicOutParameterMeta m, Void p) {
+            BasicType basicType = m.getValueType();
             iprint("query.addParameter(new %1$s<%2$s>(new %3$s(), %4$s));%n",
-                    ValueOutParameter.class.getName(), valueType.getTypeName(),
-                    valueType.getWrapperType().getTypeName(), m.getName());
+                    BasicOutParameter.class.getName(), basicType.getTypeName(),
+                    basicType.getWrapperType().getTypeName(), m.getName());
             return null;
         }
 
@@ -765,20 +765,20 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visistDomainOutParameterMeta(DomainOutParameterMeta m,
                 Void p) {
             DomainType domainType = m.getDomainType();
-            ValueType valueType = domainType.getValueType();
+            BasicType basicType = domainType.getValueType();
             iprint(
                     "query.addParameter(new %1$s<%2$s, %3$s>(new %3$s%4$s(), %5$s));%n",
                     DomainOutParameter.class.getName(),
-                    valueType.getTypeName(), domainType.getTypeName(),
+                    basicType.getTypeName(), domainType.getTypeName(),
                     domainSuffix, m.getName());
             return null;
         }
 
         @Override
-        public Void visitValueInParameterMeta(ValueInParameterMeta m, Void p) {
-            ValueType valueType = m.getValueType();
+        public Void visitValueInParameterMeta(BasicInParameterMeta m, Void p) {
+            BasicType basicType = m.getValueType();
             iprint("query.addParameter(new %1$s(new %2$s(%3$s)));%n",
-                    ValueInParameter.class.getName(), valueType
+                    BasicInParameter.class.getName(), basicType
                             .getWrapperType().getTypeName(), m.getName());
             return null;
         }
@@ -786,21 +786,21 @@ public class DaoGenerator extends AbstractGenerator {
         @Override
         public Void visitDomainInParameterMeta(DomainInParameterMeta m, Void p) {
             DomainType domainType = m.getDomainType();
-            ValueType valueType = domainType.getValueType();
+            BasicType basicType = domainType.getValueType();
             iprint(
                     "query.addParameter(new %1$s<%2$s, %3$s>(new %3$s%4$s(), %5$s));%n",
-                    DomainInParameter.class.getName(), valueType.getTypeName(),
+                    DomainInParameter.class.getName(), basicType.getTypeName(),
                     domainType.getTypeName(), domainSuffix, m.getName());
             return null;
         }
 
         @Override
         public Void visistValueListResultParameterMeta(
-                ValueListResultParameterMeta m, Void p) {
-            ValueType valueType = m.getValueType();
+                BasicListResultParameterMeta m, Void p) {
+            BasicType basicType = m.getValueType();
             iprint("query.setResultParameter(new %1$s<%2$s>(new %3$s()));%n",
-                    ValueListResultParameter.class.getName(), valueType
-                            .getTypeName(), valueType.getWrapperType()
+                    BasicListResultParameter.class.getName(), basicType
+                            .getTypeName(), basicType.getWrapperType()
                             .getTypeName());
             return null;
         }
@@ -809,10 +809,10 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visistDomainListResultParameterMeta(
                 DomainListResultParameterMeta m, Void p) {
             DomainType domainType = m.getDomainType();
-            ValueType valueType = domainType.getValueType();
+            BasicType basicType = domainType.getValueType();
             iprint(
                     "query.setResultParameter(new %1$s<%2$s, %3$s>(new %3$s%4$s()));%n",
-                    DomainListResultParameter.class.getName(), valueType
+                    DomainListResultParameter.class.getName(), basicType
                             .getTypeName(), domainType.getTypeName(),
                     domainSuffix);
             return null;
@@ -830,12 +830,12 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visistValueResultParameterMeta(ValueResultParameterMeta m,
+        public Void visistValueResultParameterMeta(BasicResultParameterMeta m,
                 Void p) {
-            ValueType valueType = m.getValueType();
+            BasicType basicType = m.getValueType();
             iprint("query.setResultParameter(new %1$s<%2$s>(new %3$s()));%n",
-                    ValueResultParameter.class.getName(), valueType
-                            .getTypeName(), valueType.getWrapperType()
+                    BasicResultParameter.class.getName(), basicType
+                            .getTypeName(), basicType.getWrapperType()
                             .getTypeName());
             return null;
         }
@@ -844,10 +844,10 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visistDomainResultParameterMeta(
                 DomainResultParameterMeta m, Void p) {
             DomainType domainType = m.getDomainType();
-            ValueType valueType = domainType.getValueType();
+            BasicType basicType = domainType.getValueType();
             iprint(
                     "query.setResultParameter(new %1$s<%2$s, %3$s>(new %3$s%4$s()));%n",
-                    DomainResultParameter.class.getName(), valueType
+                    DomainResultParameter.class.getName(), basicType
                             .getTypeName(), domainType.getTypeName(),
                     domainSuffix);
             return null;

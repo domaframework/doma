@@ -43,7 +43,7 @@ public class IterationCallbackType {
 
     protected DomainType domainType;
 
-    protected ValueType valueType;
+    protected BasicType basicType;
 
     protected boolean rawType;
 
@@ -70,8 +70,8 @@ public class IterationCallbackType {
         return domainType;
     }
 
-    public ValueType getValueType() {
-        return valueType;
+    public BasicType getValueType() {
+        return basicType;
     }
 
     public boolean isRawType() {
@@ -110,7 +110,7 @@ public class IterationCallbackType {
                 callbackType.domainType = DomainType.newInstance(
                         callbackType.targetType, env);
                 if (callbackType.domainType == null) {
-                    callbackType.valueType = ValueType.newInstance(
+                    callbackType.basicType = BasicType.newInstance(
                             callbackType.targetType, env);
                 }
             }

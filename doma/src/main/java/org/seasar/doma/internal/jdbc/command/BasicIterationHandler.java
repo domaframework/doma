@@ -19,34 +19,42 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.seasar.doma.internal.jdbc.query.Query;
+import org.seasar.doma.jdbc.IterationCallback;
+import org.seasar.doma.jdbc.IterationContext;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class ValueResultListHandler<V> implements ResultSetHandler<List<V>> {
+public class BasicIterationHandler<R, V> implements ResultSetHandler<R> {
 
     protected final Wrapper<V> wrapper;
 
-    public ValueResultListHandler(Wrapper<V> wrapper) {
+    protected final IterationCallback<R, V> iterationCallback;
+
+    public BasicIterationHandler(Wrapper<V> wrapper,
+            IterationCallback<R, V> iterationCallback) {
         assertNotNull(wrapper);
         this.wrapper = wrapper;
+        this.iterationCallback = iterationCallback;
     }
 
     @Override
-    public List<V> handle(ResultSet resultSet, Query query) throws SQLException {
-        List<V> results = new ArrayList<V>();
-        ValueFetcher fetcher = new ValueFetcher(query);
+    public R handle(ResultSet resultSet, Query query) throws SQLException {
+        BasicFetcher fetcher = new BasicFetcher(query);
+        IterationContext iterationContext = new IterationContext();
+        R result = null;
         while (resultSet.next()) {
             fetcher.fetch(resultSet, wrapper);
-            results.add(wrapper.get());
+            result = iterationCallback.iterate(wrapper.get(), iterationContext);
+            if (iterationContext.isExited()) {
+                return result;
+            }
         }
-        return results;
+        return result;
     }
 
 }

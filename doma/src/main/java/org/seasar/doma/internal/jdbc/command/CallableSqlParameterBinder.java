@@ -23,6 +23,12 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.seasar.doma.internal.jdbc.query.Query;
+import org.seasar.doma.internal.jdbc.sql.BasicInOutParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicListParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicListResultParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicOutParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicResultParameter;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlParameter;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlParameterVisitor;
 import org.seasar.doma.internal.jdbc.sql.DomainInOutParameter;
@@ -36,12 +42,6 @@ import org.seasar.doma.internal.jdbc.sql.EntityListResultParameter;
 import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.ListParameter;
 import org.seasar.doma.internal.jdbc.sql.OutParameter;
-import org.seasar.doma.internal.jdbc.sql.ValueInOutParameter;
-import org.seasar.doma.internal.jdbc.sql.ValueInParameter;
-import org.seasar.doma.internal.jdbc.sql.ValueListParameter;
-import org.seasar.doma.internal.jdbc.sql.ValueListResultParameter;
-import org.seasar.doma.internal.jdbc.sql.ValueOutParameter;
-import org.seasar.doma.internal.jdbc.sql.ValueResultParameter;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.type.JdbcType;
@@ -89,7 +89,7 @@ public class CallableSqlParameterBinder {
         }
 
         @Override
-        public Void visitValueListParameter(ValueListParameter<?> parameter,
+        public Void visitBasicListParameter(BasicListParameter<?> parameter,
                 Void p) throws SQLException {
             handleListParameter(parameter);
             index++;
@@ -114,8 +114,8 @@ public class CallableSqlParameterBinder {
         }
 
         @Override
-        public Void visitValueListResultParameter(
-                ValueListResultParameter<?> parameter, Void p)
+        public Void visitBasicListResultParameter(
+                BasicListResultParameter<?> parameter, Void p)
                 throws SQLException {
             handleListParameter(parameter);
             index++;
@@ -149,7 +149,7 @@ public class CallableSqlParameterBinder {
         }
 
         @Override
-        public Void visitValueInOutParameter(ValueInOutParameter<?> parameter,
+        public Void visitBasicInOutParameter(BasicInOutParameter<?> parameter,
                 Void p) throws SQLException {
             handleInParameter(parameter);
             handleOutParameter(parameter);
@@ -168,7 +168,7 @@ public class CallableSqlParameterBinder {
         }
 
         @Override
-        public Void visitValueInParameter(ValueInParameter parameter, Void p)
+        public Void visitBasicInParameter(BasicInParameter parameter, Void p)
                 throws SQLException {
             handleInParameter(parameter);
             index++;
@@ -190,7 +190,7 @@ public class CallableSqlParameterBinder {
         }
 
         @Override
-        public Void visitValueOutParameter(ValueOutParameter<?> parameter,
+        public Void visitBasicOutParameter(BasicOutParameter<?> parameter,
                 Void p) throws SQLException {
             handleOutParameter(parameter);
             index++;
@@ -212,8 +212,8 @@ public class CallableSqlParameterBinder {
         }
 
         @Override
-        public Void visitValueResultParameter(
-                ValueResultParameter<?> parameter, Void p) throws SQLException {
+        public Void visitBasicResultParameter(
+                BasicResultParameter<?> parameter, Void p) throws SQLException {
             Wrapper<?> wrapper = parameter.getWrapper();
             wrapper.accept(jdbcMappingVisitor,
                     new RegisterOutParameterFunction(callableStatement, index));

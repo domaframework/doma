@@ -17,35 +17,35 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import org.seasar.doma.internal.apt.type.ValueType;
+import org.seasar.doma.internal.apt.type.BasicType;
 
 /**
  * @author taedium
  * 
  */
-public class ValueInOutParameterMeta implements CallableSqlParameterMeta {
+public class BasicOutParameterMeta implements CallableSqlParameterMeta {
 
     private final String name;
 
-    protected final ValueType valueType;
+    protected final BasicType basicType;
 
-    public ValueInOutParameterMeta(String name, ValueType valueType) {
-        assertNotNull(name, valueType);
+    public BasicOutParameterMeta(String name, BasicType basicType) {
+        assertNotNull(name, basicType);
         this.name = name;
-        this.valueType = valueType;
+        this.basicType = basicType;
     }
 
     public String getName() {
         return name;
     }
 
-    public ValueType getValueType() {
-        return valueType;
+    public BasicType getValueType() {
+        return basicType;
     }
 
     @Override
     public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visistValueInOutParameterMeta(this, p);
+        return visitor.visistValueOutParameterMeta(this, p);
     }
 
 }

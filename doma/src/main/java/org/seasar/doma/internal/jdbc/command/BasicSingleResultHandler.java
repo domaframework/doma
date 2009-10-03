@@ -28,18 +28,18 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class ValueSingleResultHandler<V> implements ResultSetHandler<V> {
+public class BasicSingleResultHandler<V> implements ResultSetHandler<V> {
 
     protected final Wrapper<V> wrapper;
 
-    public ValueSingleResultHandler(Wrapper<V> wrapper) {
+    public BasicSingleResultHandler(Wrapper<V> wrapper) {
         assertNotNull(wrapper);
         this.wrapper = wrapper;
     }
 
     @Override
     public V handle(ResultSet resultSet, Query query) throws SQLException {
-        ValueFetcher fetcher = new ValueFetcher(query);
+        BasicFetcher fetcher = new BasicFetcher(query);
         if (resultSet.next()) {
             fetcher.fetch(resultSet, wrapper);
             if (resultSet.next()) {

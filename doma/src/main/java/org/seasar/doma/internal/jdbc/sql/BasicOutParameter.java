@@ -24,23 +24,24 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class ValueInOutParameter<T> implements InParameter, OutParameter {
+public class BasicOutParameter<T> implements OutParameter {
 
     protected final Wrapper<T> wrapper;
 
     protected final Reference<T> reference;
 
-    public ValueInOutParameter(Wrapper<T> wrapper, Reference<T> reference) {
+    public BasicOutParameter(Wrapper<T> wrapper, Reference<T> reference) {
         assertNotNull(wrapper, reference);
-        wrapper.set(reference.get());
         this.wrapper = wrapper;
         this.reference = reference;
     }
 
+    @Override
     public Wrapper<T> getWrapper() {
         return wrapper;
     }
 
+    @Override
     public void updateReference() {
         reference.set(wrapper.get());
     }
@@ -48,7 +49,7 @@ public class ValueInOutParameter<T> implements InParameter, OutParameter {
     @Override
     public <R, P, TH extends Throwable> R accept(
             CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitValueInOutParameter(this, p);
+        return visitor.visitBasicOutParameter(this, p);
     }
 
 }

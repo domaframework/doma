@@ -23,28 +23,23 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class ValueResultParameter<V> implements ResultParameter<V> {
+public class BasicInParameter implements InParameter {
 
-    protected final Wrapper<V> wrapper;
+    protected final Wrapper<?> wrapper;
 
-    public ValueResultParameter(Wrapper<V> wrapper) {
+    public BasicInParameter(Wrapper<?> wrapper) {
         assertNotNull(wrapper);
         this.wrapper = wrapper;
     }
 
-    public Wrapper<V> getWrapper() {
+    public Wrapper<?> getWrapper() {
         return wrapper;
-    }
-
-    @Override
-    public V getResult() {
-        return wrapper.get();
     }
 
     @Override
     public <R, P, TH extends Throwable> R accept(
             CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitValueResultParameter(this, p);
+        return visitor.visitBasicInParameter(this, p);
     }
 
 }

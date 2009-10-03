@@ -34,7 +34,7 @@ import org.seasar.doma.wrapper.StringWrapper;
  * @author taedium
  * 
  */
-public class ValueFetcherTest extends TestCase {
+public class BasicFetcherTest extends TestCase {
 
     private final MockConfig runtimeConfig = new MockConfig();
 
@@ -49,7 +49,7 @@ public class ValueFetcherTest extends TestCase {
         resultSet.next();
 
         StringWrapper wrapper = new StringWrapper();
-        ValueFetcher fetcher = new ValueFetcher(new MySelectQuery());
+        BasicFetcher fetcher = new BasicFetcher(new MySelectQuery());
         fetcher.fetch(resultSet, wrapper);
 
         assertEquals("hoge", wrapper.get());

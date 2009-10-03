@@ -35,7 +35,7 @@ import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.ElementUtil;
 import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.internal.apt.type.DomainType;
-import org.seasar.doma.internal.apt.type.ValueType;
+import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -238,12 +238,12 @@ public class EntityPropertyMetaFactory {
         if (domainType != null) {
             propertyMeta.setDomainType(domainType);
         } else {
-            ValueType valueType = ValueType.newInstance(type, env);
-            if (valueType == null) {
+            BasicType basicType = BasicType.newInstance(type, env);
+            if (basicType == null) {
                 throw new AptException(DomaMessageCode.DOMA4096, env,
                         fieldElement, type);
             }
-            propertyMeta.setValueType(valueType);
+            propertyMeta.setValueType(basicType);
         }
     }
 

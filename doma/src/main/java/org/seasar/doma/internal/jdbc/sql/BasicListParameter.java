@@ -13,39 +13,44 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.meta;
+package org.seasar.doma.internal.jdbc.sql;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import org.seasar.doma.internal.apt.type.ValueType;
+import java.util.List;
+
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class ValueInParameterMeta implements CallableSqlParameterMeta {
+public class BasicListParameter<V> implements ListParameter<Wrapper<V>> {
 
-    private final String name;
+    protected final Wrapper<V> wrapper;
 
-    protected final ValueType valueType;
+    protected final List<V> values;
 
-    public ValueInParameterMeta(String name, ValueType valueType) {
-        assertNotNull(name, valueType);
-        this.name = name;
-        this.valueType = valueType;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public ValueType getValueType() {
-        return valueType;
+    public BasicListParameter(Wrapper<V> wrapper, List<V> values) {
+        assertNotNull(wrapper, values);
+        this.wrapper = wrapper;
+        this.values = values;
     }
 
     @Override
-    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitValueInParameterMeta(this, p);
+    public Wrapper<V> getElementHolder() {
+        return wrapper;
+    }
+
+    @Override
+    public void add() {
+        values.add(wrapper.get());
+    }
+
+    @Override
+    public <R, P, TH extends Throwable> R accept(
+            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
+        return visitor.visitBasicListParameter(this, p);
     }
 
 }

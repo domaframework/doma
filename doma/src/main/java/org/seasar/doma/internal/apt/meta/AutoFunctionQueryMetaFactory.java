@@ -25,7 +25,7 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.ListType;
-import org.seasar.doma.internal.apt.type.ValueType;
+import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -100,9 +100,9 @@ public class AutoFunctionQueryMetaFactory extends
             if (domainType != null) {
                 return new DomainListResultParameterMeta(domainType);
             }
-            ValueType valueType = listType.getValueType();
-            if (valueType != null) {
-                return new ValueListResultParameterMeta(valueType);
+            BasicType basicType = listType.getValueType();
+            if (basicType != null) {
+                return new BasicListResultParameterMeta(basicType);
             }
             throw new AptException(DomaMessageCode.DOMA4065, env, returnMeta
                     .getElement(), listType.getType());
@@ -111,9 +111,9 @@ public class AutoFunctionQueryMetaFactory extends
         if (domainType != null) {
             return new DomainResultParameterMeta(domainType);
         }
-        ValueType valueType = returnMeta.getValueType();
-        if (valueType != null) {
-            return new ValueResultParameterMeta(valueType);
+        BasicType basicType = returnMeta.getValueType();
+        if (basicType != null) {
+            return new BasicResultParameterMeta(basicType);
         }
         throw new AptException(DomaMessageCode.DOMA4063, env, returnMeta
                 .getElement(), returnMeta.getType());

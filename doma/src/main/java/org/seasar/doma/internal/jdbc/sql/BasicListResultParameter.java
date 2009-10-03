@@ -13,27 +13,32 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.dao;
+package org.seasar.doma.internal.jdbc.sql;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.seasar.doma.Dao;
-import org.seasar.doma.Select;
-import org.seasar.doma.jdbc.SelectOptions;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
- * 
  * @author taedium
  * 
  */
-@Dao(config = MyConfig.class)
-public interface SqlFileSelectValueDao {
+public class BasicListResultParameter<V> extends BasicListParameter<V>
+        implements ResultParameter<List<V>> {
 
-    @Select
-    String selectById(Integer id);
+    public BasicListResultParameter(Wrapper<V> wrapper) {
+        super(wrapper, new ArrayList<V>());
+    }
 
-    @Select
-    List<String> selectByNameAndSalary(String name, BigDecimal salary,
-            SelectOptions options);
+    @Override
+    public List<V> getResult() {
+        return values;
+    }
+
+    @Override
+    public <R, P, TH extends Throwable> R accept(
+            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
+        return visitor.visitBasicListResultParameter(this, p);
+    }
 }

@@ -38,7 +38,7 @@ public class ListType {
 
     protected DomainType domainType;
 
-    protected ValueType valueType;
+    protected BasicType basicType;
 
     protected ListType() {
     }
@@ -59,8 +59,8 @@ public class ListType {
         return domainType;
     }
 
-    public ValueType getValueType() {
-        return valueType;
+    public BasicType getValueType() {
+        return basicType;
     }
 
     public boolean isRawType() {
@@ -73,7 +73,7 @@ public class ListType {
     }
 
     public boolean hasSupportedElementType() {
-        return entityType != null || domainType != null || valueType != null;
+        return entityType != null || domainType != null || basicType != null;
     }
 
     public static ListType newInstance(TypeMirror type,
@@ -99,7 +99,7 @@ public class ListType {
                 listType.domainType = DomainType.newInstance(
                         listType.elementType, env);
                 if (listType.domainType == null) {
-                    listType.valueType = ValueType.newInstance(
+                    listType.basicType = BasicType.newInstance(
                             listType.elementType, env);
                 }
             }

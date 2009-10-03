@@ -40,7 +40,7 @@ public class DomainSingleResultHandler<V, D> implements ResultSetHandler<D> {
 
     @Override
     public D handle(ResultSet resultSet, Query query) throws SQLException {
-        ValueFetcher fetcher = new ValueFetcher(query);
+        BasicFetcher fetcher = new BasicFetcher(query);
         DomainType<V, D> domainType = domainTypeFactory.createDomainType();
         if (resultSet.next()) {
             fetcher.fetch(resultSet, domainType.getWrapper());

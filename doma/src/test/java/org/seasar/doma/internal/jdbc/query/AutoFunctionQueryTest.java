@@ -18,7 +18,7 @@ package org.seasar.doma.internal.jdbc.query;
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
-import org.seasar.doma.internal.jdbc.sql.ValueResultParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicResultParameter;
 import org.seasar.doma.wrapper.IntegerWrapper;
 
 /**
@@ -33,7 +33,7 @@ public class AutoFunctionQueryTest extends TestCase {
         AutoFunctionQuery<Integer> query = new AutoFunctionQuery<Integer>();
         query.setConfig(runtimeConfig);
         query.setFunctionName("aaa");
-        query.setResultParameter(new ValueResultParameter<Integer>(
+        query.setResultParameter(new BasicResultParameter<Integer>(
                 new IntegerWrapper()));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");

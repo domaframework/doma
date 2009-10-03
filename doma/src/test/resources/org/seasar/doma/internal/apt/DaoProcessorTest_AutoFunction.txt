@@ -27,10 +27,10 @@ public class AutoFunctionDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao im
         org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.lang.String> query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.lang.String>();
         query.setConfig(config);
         query.setFunctionName("executeFunction");
-        query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.ValueResultParameter<java.lang.String>(new org.seasar.doma.wrapper.StringWrapper()));
-        query.addParameter(new org.seasar.doma.internal.jdbc.sql.ValueInParameter(new org.seasar.doma.wrapper.IntegerWrapper(arg1)));
-        query.addParameter(new org.seasar.doma.internal.jdbc.sql.ValueInOutParameter<java.lang.Integer>(new org.seasar.doma.wrapper.IntegerWrapper(), arg2));
-        query.addParameter(new org.seasar.doma.internal.jdbc.sql.ValueOutParameter<java.lang.Integer>(new org.seasar.doma.wrapper.IntegerWrapper(), arg3));
+        query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.BasicResultParameter<java.lang.String>(new org.seasar.doma.wrapper.StringWrapper()));
+        query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicInParameter(new org.seasar.doma.wrapper.IntegerWrapper(arg1)));
+        query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicInOutParameter<java.lang.Integer>(new org.seasar.doma.wrapper.IntegerWrapper(), arg2));
+        query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicOutParameter<java.lang.Integer>(new org.seasar.doma.wrapper.IntegerWrapper(), arg3));
         query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl");
         query.setCallerMethodName("executeFunction");
         query.setQueryTimeout(-1);
@@ -76,8 +76,8 @@ public class AutoFunctionDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao im
         org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.util.List<java.lang.String>> query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.util.List<java.lang.String>>();
         query.setConfig(config);
         query.setFunctionName("executeFunction3");
-        query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.ValueListResultParameter<java.lang.String>(new org.seasar.doma.wrapper.StringWrapper()));
-        query.addParameter(new org.seasar.doma.internal.jdbc.sql.ValueListParameter<java.lang.String>(new org.seasar.doma.wrapper.StringWrapper(), arg1));
+        query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.BasicListResultParameter<java.lang.String>(new org.seasar.doma.wrapper.StringWrapper()));
+        query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicListParameter<java.lang.String>(new org.seasar.doma.wrapper.StringWrapper(), arg1));
         query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl");
         query.setCallerMethodName("executeFunction3");
         query.setQueryTimeout(-1);

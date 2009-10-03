@@ -29,7 +29,7 @@ import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.ReferenceType;
-import org.seasar.doma.internal.apt.type.ValueType;
+import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -78,10 +78,10 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                 return new DomainListParameterMeta(parameterMeta.getName(),
                         domainType);
             }
-            ValueType valueType = listType.getValueType();
-            if (valueType != null) {
-                return new ValueListParameterMeta(parameterMeta.getName(),
-                        valueType);
+            BasicType basicType = listType.getValueType();
+            if (basicType != null) {
+                return new BasicListParameterMeta(parameterMeta.getName(),
+                        basicType);
             }
             throw new AptIllegalStateException(parameterMeta.getElement()
                     .toString());
@@ -92,10 +92,10 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                 return new DomainInParameterMeta(parameterMeta.getName(),
                         domainType);
             }
-            ValueType valueType = parameterMeta.getValueType();
-            if (valueType != null) {
-                return new ValueInParameterMeta(parameterMeta.getName(),
-                        valueType);
+            BasicType basicType = parameterMeta.getValueType();
+            if (basicType != null) {
+                return new BasicInParameterMeta(parameterMeta.getName(),
+                        basicType);
             }
             throw new AptException(DomaMessageCode.DOMA4101, env, parameterMeta
                     .getElement(), parameterMeta.getType());
@@ -111,10 +111,10 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                 return new DomainOutParameterMeta(parameterMeta.getName(),
                         domainType);
             }
-            ValueType valueType = referenceType.getReferentValueType();
-            if (valueType != null) {
-                return new ValueOutParameterMeta(parameterMeta.getName(),
-                        valueType);
+            BasicType basicType = referenceType.getReferentBasicType();
+            if (basicType != null) {
+                return new BasicOutParameterMeta(parameterMeta.getName(),
+                        basicType);
             }
             throw new AptException(DomaMessageCode.DOMA4100, env, parameterMeta
                     .getElement(), referenceType.getReferentType());
@@ -130,10 +130,10 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                 return new DomainInOutParameterMeta(parameterMeta.getName(),
                         domainType);
             }
-            ValueType valueType = referenceType.getReferentValueType();
-            if (valueType != null) {
-                return new ValueInOutParameterMeta(parameterMeta.getName(),
-                        valueType);
+            BasicType basicType = referenceType.getReferentBasicType();
+            if (basicType != null) {
+                return new BasicInOutParameterMeta(parameterMeta.getName(),
+                        basicType);
             }
             throw new AptException(DomaMessageCode.DOMA4100, env, parameterMeta
                     .getElement(), referenceType.getReferentType());

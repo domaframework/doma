@@ -14,7 +14,7 @@ import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.ListType;
-import org.seasar.doma.internal.apt.type.ValueType;
+import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.message.DomaMessageCode;
 
 public class QueryReturnMeta {
@@ -33,7 +33,7 @@ public class QueryReturnMeta {
 
     protected DomainType domainType;
 
-    protected ValueType valueType;
+    protected BasicType basicType;
 
     public QueryReturnMeta(ExecutableElement methodElement,
             ProcessingEnvironment env) {
@@ -49,7 +49,7 @@ public class QueryReturnMeta {
             if (entityType == null) {
                 domainType = DomainType.newInstance(type, env);
                 if (domainType == null) {
-                    valueType = ValueType.newInstance(type, env);
+                    basicType = BasicType.newInstance(type, env);
                 }
             }
         }
@@ -108,13 +108,13 @@ public class QueryReturnMeta {
         return domainType;
     }
 
-    public ValueType getValueType() {
-        return valueType;
+    public BasicType getValueType() {
+        return basicType;
     }
 
     public boolean isSupportedType() {
         return listType != null || entityType != null || domainType != null
-                || valueType != null;
+                || basicType != null;
     }
 
 }

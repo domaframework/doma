@@ -22,7 +22,7 @@ import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.TypeUtil;
 
-public class ValueType {
+public class BasicType {
 
     protected TypeMirror type;
 
@@ -30,7 +30,7 @@ public class ValueType {
 
     protected WrapperType wrapperType;
 
-    protected ValueType() {
+    protected BasicType() {
     }
 
     public TypeMirror getType() {
@@ -45,17 +45,17 @@ public class ValueType {
         return wrapperType;
     }
 
-    public static ValueType newInstance(TypeMirror type,
+    public static BasicType newInstance(TypeMirror type,
             ProcessingEnvironment env) {
         assertNotNull(type, env);
         WrapperType wrapperType = WrapperType.newInstance(type, env);
         if (wrapperType == null) {
             return null;
         }
-        ValueType valueType = new ValueType();
-        valueType.type = type;
-        valueType.typeName = TypeUtil.getTypeName(type, env);
-        valueType.wrapperType = wrapperType;
-        return valueType;
+        BasicType basicType = new BasicType();
+        basicType.type = type;
+        basicType.typeName = TypeUtil.getTypeName(type, env);
+        basicType.wrapperType = wrapperType;
+        return basicType;
     }
 }

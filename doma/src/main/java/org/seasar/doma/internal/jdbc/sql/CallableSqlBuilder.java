@@ -86,7 +86,7 @@ public class CallableSqlBuilder
     }
 
     @Override
-    public Void visitValueResultParameter(ValueResultParameter<?> parameter,
+    public Void visitBasicResultParameter(BasicResultParameter<?> parameter,
             Context p) throws RuntimeException {
         handelResultParameter(parameter, p);
         return null;
@@ -101,8 +101,8 @@ public class CallableSqlBuilder
     }
 
     @Override
-    public Void visitValueListResultParameter(
-            ValueListResultParameter<?> parameter, Context p)
+    public Void visitBasicListResultParameter(
+            BasicListResultParameter<?> parameter, Context p)
             throws RuntimeException {
         handelResultParameter(parameter, p);
         return null;
@@ -130,7 +130,7 @@ public class CallableSqlBuilder
     }
 
     @Override
-    public Void visitValueListParameter(ValueListParameter<?> parameter,
+    public Void visitBasicListParameter(BasicListParameter<?> parameter,
             Context p) throws RuntimeException {
         handelListParameter(parameter, p);
         return null;
@@ -159,7 +159,7 @@ public class CallableSqlBuilder
     }
 
     @Override
-    public Void visitValueInParameter(ValueInParameter parameter, Context p)
+    public Void visitBasicInParameter(BasicInParameter parameter, Context p)
             throws RuntimeException {
         handleInParameter(parameter, parameter.getWrapper(), p);
         return null;
@@ -173,7 +173,7 @@ public class CallableSqlBuilder
     }
 
     @Override
-    public Void visitValueInOutParameter(ValueInOutParameter<?> parameter,
+    public Void visitBasicInOutParameter(BasicInOutParameter<?> parameter,
             Context p) throws RuntimeException {
         handleInParameter(parameter, parameter.getWrapper(), p);
         return null;
@@ -196,7 +196,7 @@ public class CallableSqlBuilder
     }
 
     @Override
-    public Void visitValueOutParameter(ValueOutParameter<?> parameter, Context p)
+    public Void visitBasicOutParameter(BasicOutParameter<?> parameter, Context p)
             throws RuntimeException {
         handleOutParameter(parameter, p);
         return null;

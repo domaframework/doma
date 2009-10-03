@@ -45,7 +45,7 @@ public class DomainIterationHandler<R, V, D> implements ResultSetHandler<R> {
 
     @Override
     public R handle(ResultSet resultSet, Query query) throws SQLException {
-        ValueFetcher fetcher = new ValueFetcher(query);
+        BasicFetcher fetcher = new BasicFetcher(query);
         IterationContext iterationContext = new IterationContext();
         R result = null;
         while (resultSet.next()) {

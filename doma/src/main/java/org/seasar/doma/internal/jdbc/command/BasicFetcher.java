@@ -29,11 +29,11 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class ValueFetcher implements Fetcher<Wrapper<?>> {
+public class BasicFetcher implements Fetcher<Wrapper<?>> {
 
     protected final Query query;
 
-    public ValueFetcher(Query query) throws SQLException {
+    public BasicFetcher(Query query) throws SQLException {
         assertNotNull(query);
         this.query = query;
     }

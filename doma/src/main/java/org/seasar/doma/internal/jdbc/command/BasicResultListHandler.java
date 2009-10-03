@@ -13,44 +13,40 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.sql;
+package org.seasar.doma.internal.jdbc.command;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class ValueListParameter<V> implements ListParameter<Wrapper<V>> {
+public class BasicResultListHandler<V> implements ResultSetHandler<List<V>> {
 
     protected final Wrapper<V> wrapper;
 
-    protected final List<V> values;
-
-    public ValueListParameter(Wrapper<V> wrapper, List<V> values) {
-        assertNotNull(wrapper, values);
+    public BasicResultListHandler(Wrapper<V> wrapper) {
+        assertNotNull(wrapper);
         this.wrapper = wrapper;
-        this.values = values;
     }
 
     @Override
-    public Wrapper<V> getElementHolder() {
-        return wrapper;
-    }
-
-    @Override
-    public void add() {
-        values.add(wrapper.get());
-    }
-
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitValueListParameter(this, p);
+    public List<V> handle(ResultSet resultSet, Query query) throws SQLException {
+        List<V> results = new ArrayList<V>();
+        BasicFetcher fetcher = new BasicFetcher(query);
+        while (resultSet.next()) {
+            fetcher.fetch(resultSet, wrapper);
+            results.add(wrapper.get());
+        }
+        return results;
     }
 
 }

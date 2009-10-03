@@ -75,7 +75,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.jdbc.DomaAbstractD
         query.setMaxRows(-1);
         query.setFetchSize(-1);
         query.prepare();
-        org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.Integer> command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.Integer>(query, new org.seasar.doma.internal.jdbc.command.ValueIterationHandler<java.lang.Integer, java.lang.String>(new org.seasar.doma.wrapper.StringWrapper(), callback));
+        org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.Integer> command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.Integer>(query, new org.seasar.doma.internal.jdbc.command.BasicIterationHandler<java.lang.Integer, java.lang.String>(new org.seasar.doma.wrapper.StringWrapper(), callback));
         java.lang.Integer result = command.execute();
         exiting("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl", "iterate", result);
         return result;

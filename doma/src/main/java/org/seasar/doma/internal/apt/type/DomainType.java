@@ -32,7 +32,7 @@ public class DomainType {
 
     protected String typeName;
 
-    protected ValueType valueType;
+    protected BasicType basicType;
 
     protected String accessorMetod;
 
@@ -47,8 +47,8 @@ public class DomainType {
         return typeName;
     }
 
-    public ValueType getValueType() {
-        return valueType;
+    public BasicType getValueType() {
+        return basicType;
     }
 
     public String getAccessorMetod() {
@@ -67,14 +67,14 @@ public class DomainType {
             return null;
         }
         TypeMirror valueTypeMirror = getValueType(domain);
-        ValueType valueType = ValueType.newInstance(valueTypeMirror, env);
-        if (valueType == null) {
+        BasicType basicType = BasicType.newInstance(valueTypeMirror, env);
+        if (basicType == null) {
             return null;
         }
         DomainType domainType = new DomainType();
         domainType.type = type;
         domainType.typeName = TypeUtil.getTypeName(type, env);
-        domainType.valueType = valueType;
+        domainType.basicType = basicType;
         domainType.accessorMetod = domain.accessorMethod();
         return domainType;
     }

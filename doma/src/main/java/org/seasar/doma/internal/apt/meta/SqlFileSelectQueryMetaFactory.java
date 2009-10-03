@@ -27,7 +27,7 @@ import org.seasar.doma.internal.apt.type.AnyType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.IterationCallbackType;
 import org.seasar.doma.internal.apt.type.ListType;
-import org.seasar.doma.internal.apt.type.ValueType;
+import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -113,8 +113,8 @@ public class SqlFileSelectQueryMetaFactory extends
                 ListType listType = parameterMeta.getListType();
                 DomainType domainType = listType.getDomainType();
                 if (domainType == null) {
-                    ValueType valueType = listType.getValueType();
-                    if (valueType == null) {
+                    BasicType basicType = listType.getValueType();
+                    if (basicType == null) {
                         throw new AptException(DomaMessageCode.DOMA4028, env,
                                 parameterMeta.getElement());
                     }
