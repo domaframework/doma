@@ -11,18 +11,8 @@ public class ItNamingConvention extends CamelNamingConvention {
     }
 
     @Override
-    public String fromTableToEntity(String tableName, Dialect dialect) {
-        return tableName;
-    }
-
-    @Override
     public String fromPropertyToColumn(String propertyName, Dialect dialect) {
         return super.fromPropertyToColumn(propertyName, dialect).toUpperCase();
-    }
-
-    @Override
-    public String fromColumnToProperty(String columnName, Dialect dialect) {
-        return columnName;
     }
 
 }
