@@ -127,14 +127,14 @@ employee_name = /*employee.employeeName*/'abc'
 and
 salary = /*employee.salary*/1234</source>
 				<p>
+					<code>/*employee.employeeName*/</code>は、<code>/* employee.employeeName */</code>のように空白を含めて記述することも可能です。
+				</p>
+				<p>
 					フィールドにアクセスする代わりに、publicなメソッドを呼び出すことも可能です。
 				</p>
 <source>select * from employee
 where
 salary = /*employee.getTaxedSalary()*/1234</source>
-				<p>
-					<code>/*employee.employeeName*/</code>は、<code>/* employee.employeeName */</code>のように空白を含めて記述することも可能です。
-				</p>
 			</subsection>
 			<subsection name="埋め込み変数コメント">
 				<p>
@@ -296,7 +296,11 @@ and employeeName like 's%'</source>
 					<tr><td><code>&gt;=</code></td></tr>
 				</table>
 				<p>
-					<code>==</code> と <code>!=</code> 以外の比較演算子を利用するには、 被演算子が <code>java.lang.Comparable</code>を実装している必要があります。
+					比較演算子を利用するには、 被演算子が <code>java.lang.Comparable</code>を実装している必要があります。
+				</p>
+				<p>
+					<code>&lt;</code>、<code>&lt;=</code>、<code>&gt;</code>、<code>&gt;=</code>では、
+					非演算子に<code>null</code>リテラルを使用できません。
 				</p>
 			</subsection>
 			<subsection name="論理演算子">
@@ -310,7 +314,7 @@ and employeeName like 's%'</source>
 					<tr><td><code>||</code></td></tr>
 				</table>
 				<p>
-					 括弧を使って、演算子が適用される対象を制御できます。
+					 括弧を使って、演算子が適用される優先度を制御できます。
 				</p>
 <source>select * from employee where 
 /*%if (departmentId == null || managerId == null) and employee_name != null*/
