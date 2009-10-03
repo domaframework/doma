@@ -26,6 +26,7 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
 
+import org.seasar.doma.internal.apt.declaration.TypeDeclaration;
 import org.seasar.doma.internal.expr.ExpressionException;
 import org.seasar.doma.internal.expr.ExpressionParser;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
@@ -112,14 +113,32 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
 
     @Override
     public Void visitIfNode(IfNode node, Void p) {
-        validateExpressionVariable(node.getLocation(), node.getExpression());
+        SqlLocation location = node.getLocation();
+        String expression = node.getExpression();
+        TypeDeclaration typeDeclaration = validateExpressionVariable(location,
+                expression);
+        if (!typeDeclaration.isBooleanType()) {
+            throw new AptException(DomaMessageCode.DOMA4140, env,
+                    methodElement, path, location.getSql(), location
+                            .getLineNumber(), location.getPosition(),
+                    expression, typeDeclaration.getQualifiedName());
+        }
         visitNode(node, p);
         return null;
     }
 
     @Override
     public Void visitElseifNode(ElseifNode node, Void p) {
-        validateExpressionVariable(node.getLocation(), node.getExpression());
+        SqlLocation location = node.getLocation();
+        String expression = node.getExpression();
+        TypeDeclaration typeDeclaration = validateExpressionVariable(location,
+                expression);
+        if (!typeDeclaration.isBooleanType()) {
+            throw new AptException(DomaMessageCode.DOMA4141, env,
+                    methodElement, path, location.getSql(), location
+                            .getLineNumber(), location.getPosition(),
+                    expression, typeDeclaration.getQualifiedName());
+        }
         visitNode(node, p);
         return null;
     }
@@ -130,17 +149,18 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
         return null;
     }
 
-    protected void visitNode(SqlNode node, Void p) {
+    protected Void visitNode(SqlNode node, Void p) {
         for (SqlNode child : node.getChildren()) {
             child.accept(this, p);
         }
+        return null;
     }
 
-    protected void validateExpressionVariable(SqlLocation location,
+    protected TypeDeclaration validateExpressionVariable(SqlLocation location,
             String expression) {
         ExpressionNode expressionNode = parseExpression(location, expression);
         try {
-            expressionValidator.validate(expressionNode);
+            return expressionValidator.validate(expressionNode);
         } catch (AptIllegalStateException e) {
             throw e;
         } catch (AptException e) {

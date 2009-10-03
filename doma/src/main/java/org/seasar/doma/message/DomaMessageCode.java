@@ -201,7 +201,9 @@ public enum DomaMessageCode implements MessageCode {
     DOMA4136("Setには実型引数が必須です。"),
     DOMA4137("@ChangedPropertiesが注釈されたフィールドの型はSet<String>でなければいけません。"),
     DOMA4138("式[{0}]（[{1}]番目の文字付近）に含まれるクラス[{2}]が見つかりません。"),
-    DOMA4139("式[{0}]（[{1}]番目の文字付近）に含まれる比較演算子[{2}]の被演算子にnullリテラルは使用できません。"), ;
+    DOMA4139("式[{0}]（[{1}]番目の文字付近）に含まれる比較演算子[{2}]の被演算子にnullリテラルは使用できません。"),
+    DOMA4140("SQLファイル[{0}]の妥当検査に失敗しました。SQL[{1}]（[{2}]行目[{3}]番目の文字付近）。/*%if ...*/の式[{4}]が型[{5}]として評価されましたが、boolean/Boolean型でなければいけません。"),
+    DOMA4141("SQLファイル[{0}]の妥当検査に失敗しました。SQL[{1}]（[{2}]行目[{3}]番目の文字付近）。--elseif ...--の式[{4}]が型[{5}]として評価されましたが、boolean/Boolean型でなければいけません。"), ;
 
     private static ResourceBundle bundle = ResourceBundle
             .getBundle(DomaMessageResource.class.getName());
