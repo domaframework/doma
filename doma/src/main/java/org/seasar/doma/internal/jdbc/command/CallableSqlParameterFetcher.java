@@ -267,11 +267,9 @@ public class CallableSqlParameterFetcher {
 
             @Override
             public void fetch(ResultSet resultSet) throws SQLException {
-                while (resultSet.next()) {
-                    EntityType<?> entityType = parameter.getElementHolder();
-                    fetcher.fetch(resultSet, entityType);
-                    parameter.add();
-                }
+                EntityType<?> entityType = parameter.getElementHolder();
+                fetcher.fetch(resultSet, entityType);
+                parameter.add();
             }
         }
 
@@ -289,11 +287,9 @@ public class CallableSqlParameterFetcher {
 
             @Override
             public void fetch(ResultSet resultSet) throws SQLException {
-                while (resultSet.next()) {
-                    DomainType<?, ?> domainType = parameter.getElementHolder();
-                    fetcher.fetch(resultSet, domainType.getWrapper());
-                    parameter.add();
-                }
+                DomainType<?, ?> domainType = parameter.getElementHolder();
+                fetcher.fetch(resultSet, domainType.getWrapper());
+                parameter.add();
             }
         }
 
@@ -311,11 +307,9 @@ public class CallableSqlParameterFetcher {
 
             @Override
             public void fetch(ResultSet resultSet) throws SQLException {
-                while (resultSet.next()) {
-                    Wrapper<?> wrapper = parameter.getElementHolder();
-                    fetcher.fetch(resultSet, wrapper);
-                    parameter.add();
-                }
+                Wrapper<?> wrapper = parameter.getElementHolder();
+                fetcher.fetch(resultSet, wrapper);
+                parameter.add();
             }
         }
 

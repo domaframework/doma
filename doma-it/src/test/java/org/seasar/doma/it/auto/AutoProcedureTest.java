@@ -69,8 +69,8 @@ public class AutoProcedureTest {
         Reference<Time> param3 = new Reference<Time>();
         dao.proc_dto_time_param(param1, param2, param3);
         assertEquals(param1, param1);
-        assertEquals(param1, param2);
-        assertEquals(param1, param3);
+        assertEquals(param1, param2.get());
+        assertEquals(param1, param3.get());
     }
 
     public void testResultSet() throws Exception {
