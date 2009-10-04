@@ -107,18 +107,17 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
 
     protected void prepareTargetProperties() {
         for (EntityPropertyType<?> p : entityType.getEntityPropertyTypes()) {
-            if (p.isTransient()) {
-                continue;
-            }
             if (!p.isInsertable()) {
                 continue;
             }
             if (p.isId()) {
                 if (p != generatedIdPropertyType
-                        || generatedIdPropertyType.isIncluded(idGenerationConfig)) {
+                        || generatedIdPropertyType
+                                .isIncluded(idGenerationConfig)) {
                     targetProperties.add(p);
                 }
-                if (generatedIdPropertyType == null && p.getWrapper().get() == null) {
+                if (generatedIdPropertyType == null
+                        && p.getWrapper().get() == null) {
                     throw new JdbcException(DomaMessageCode.DOMA2020,
                             entityType.getName(), p.getName());
                 }

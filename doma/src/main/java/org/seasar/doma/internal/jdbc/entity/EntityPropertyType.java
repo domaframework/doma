@@ -45,6 +45,4 @@ public interface EntityPropertyType<W extends Wrapper<?>> {
 
     boolean isUpdatable();
 
-    boolean isTransient();
-
 }

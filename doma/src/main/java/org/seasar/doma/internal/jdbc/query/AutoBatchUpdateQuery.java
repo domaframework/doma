@@ -82,9 +82,6 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
 
     protected void prepareTargetProperties() {
         for (EntityPropertyType<?> p : entityType.getEntityPropertyTypes()) {
-            if (p.isTransient()) {
-                continue;
-            }
             if (!p.isUpdatable()) {
                 continue;
             }

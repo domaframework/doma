@@ -88,11 +88,6 @@ public class BasicPropertyType<W extends Wrapper<?>> implements
     }
 
     @Override
-    public boolean isTransient() {
-        return false;
-    }
-
-    @Override
     public String toString() {
         return wrapper != null ? wrapper.toString() : null;
     }

@@ -66,9 +66,6 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
     protected void prepareTargetProperties() {
         Set<String> changedProperties = entityType.getChangedProperties();
         for (EntityPropertyType<?> p : entityType.getEntityPropertyTypes()) {
-            if (p.isTransient()) {
-                continue;
-            }
             if (!p.isUpdatable()) {
                 continue;
             }

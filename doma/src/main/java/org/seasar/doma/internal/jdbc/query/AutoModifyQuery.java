@@ -85,9 +85,6 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
     protected void prepareTableAndColumnNames() {
         tableName = TableUtil.getQualifiedTableName(config, entityType);
         for (EntityPropertyType<?> p : entityType.getEntityPropertyTypes()) {
-            if (p.isTransient()) {
-                continue;
-            }
             String columnName = ColumnUtil.getColumnName(config, p);
             columnNameMap.put(p.getName(), columnName);
         }
@@ -95,9 +92,6 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
 
     protected void prepareIdAndVersionProperties() {
         for (EntityPropertyType<?> p : entityType.getEntityPropertyTypes()) {
-            if (p.isTransient()) {
-                continue;
-            }
             if (p.isId()) {
                 idProperties.add(p);
             }

@@ -90,9 +90,6 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
     protected void prepareTableAndColumnNames() {
         tableName = TableUtil.getQualifiedTableName(config, entityType);
         for (EntityPropertyType<?> p : entityType.getEntityPropertyTypes()) {
-            if (p.isTransient()) {
-                continue;
-            }
             if (!p.isUpdatable()) {
                 continue;
             }
@@ -103,9 +100,6 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
 
     protected void prepareIdAndVersionProperties() {
         for (EntityPropertyType<?> p : entityType.getEntityPropertyTypes()) {
-            if (p.isTransient()) {
-                continue;
-            }
             if (p.isId()) {
                 idProperties.add(p);
             }
