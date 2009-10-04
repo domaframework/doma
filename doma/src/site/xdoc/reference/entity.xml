@@ -255,11 +255,11 @@ Set<String> chagendProperties = new HashSet<String>();]]></source>
 <source><![CDATA[Employee employee = new Employee();
 employee.setEmployeeId(1);
 employee.setEmployeeName("SMITH");
-employee.setSalary(new BigDecimal(1000);]]></source>
+employee.setSalary(new BigDecimal(1000));]]></source>
 			<p>
 				エンティティはテーブルに1対1で対応させなければいけないわけではありません。
 				たとえば、<code>EMPLOYEE</code>テーブルと<code>DEPARTMENT</code>テーブルを結合した結果もエンティティにマッピングできます。
-				そのエンティティクラスを<code>EmpDeptDto</code>した場合のエンティティクラスの定義とDaoインタフェースの定義は次のとおりです。
+				そのエンティティクラスを<code>EmpDeptDto</code>とした場合のエンティティクラスの定義とDaoインタフェースの定義は次のとおりです。
 			</p>
 <source><![CDATA[@Entity
 public class EmpDeptDto {
