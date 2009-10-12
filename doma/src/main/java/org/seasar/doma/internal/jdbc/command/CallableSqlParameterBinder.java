@@ -52,7 +52,8 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class CallableSqlParameterBinder {
+public class CallableSqlParameterBinder implements
+        ParameterBinder<CallableStatement, CallableSqlParameter> {
 
     protected final Query query;
 
@@ -61,13 +62,14 @@ public class CallableSqlParameterBinder {
         this.query = query;
     }
 
+    @Override
     public void bind(CallableStatement callableStatement,
             List<? extends CallableSqlParameter> parameters)
             throws SQLException {
         assertNotNull(callableStatement, parameters);
         BindingVisitor visitor = new BindingVisitor(query, callableStatement);
-        for (CallableSqlParameter p : parameters) {
-            p.accept(visitor, null);
+        for (CallableSqlParameter parameter : parameters) {
+            parameter.accept(visitor, null);
         }
     }
 

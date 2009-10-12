@@ -29,7 +29,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class BasicFetcher implements Fetcher<Wrapper<?>> {
+public class BasicFetcher implements ResultFetcher<ResultSet, Wrapper<?>> {
 
     protected final Query query;
 

@@ -35,7 +35,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class EntityFetcher implements Fetcher<EntityType<?>> {
+public class EntityFetcher implements ResultFetcher<ResultSet, EntityType<?>> {
 
     protected final Query query;
 
@@ -60,10 +60,10 @@ public class EntityFetcher implements Fetcher<EntityType<?>> {
         for (int i = 1; i < count + 1; i++) {
             String columnName = resultSetMeta.getColumnLabel(i);
             String propertyName = nameMap.get(columnName.toLowerCase());
-            EntityPropertyType<?> property = entityType
+            EntityPropertyType<?> propertyType = entityType
                     .getEntityPropertyType(propertyName);
-            if (property != null) {
-                Wrapper<?> wrapper = property.getWrapper();
+            if (propertyType != null) {
+                Wrapper<?> wrapper = propertyType.getWrapper();
                 GetValueFunction function = new GetValueFunction(resultSet, i);
                 wrapper.accept(jdbcMappingVisitor, function);
             }

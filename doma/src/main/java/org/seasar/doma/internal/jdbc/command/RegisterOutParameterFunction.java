@@ -45,7 +45,7 @@ public class RegisterOutParameterFunction implements JdbcMappingFunction {
     }
 
     @Override
-    public <R, V> R apply(Wrapper<V> domain, JdbcType<V> jdbcType)
+    public <R, V> R apply(Wrapper<V> wrapper, JdbcType<V> jdbcType)
             throws SQLException {
         if (jdbcType == null) {
             throw new DomaNullPointerException("jdbcType");

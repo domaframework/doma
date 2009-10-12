@@ -13,21 +13,18 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.sql;
+package org.seasar.doma.internal.jdbc.command;
 
-import org.seasar.doma.jdbc.SqlLogFormattingFunction;
-import org.seasar.doma.jdbc.type.JdbcType;
-import org.seasar.doma.wrapper.Wrapper;
+import java.sql.SQLException;
 
 /**
+ * 
  * @author taedium
  * 
+ * @param <R>
+ * @param <A>
  */
-public class ConvertToLogFormatFunction implements SqlLogFormattingFunction {
+public interface ResultFetcher<R, A> {
 
-    @Override
-    public <V> String apply(Wrapper<V> wrapper, JdbcType<V> jdbcType) {
-        return jdbcType.convertToLogFormat(wrapper.get());
-    }
-
+    void fetch(R result, A acceptor) throws SQLException;
 }

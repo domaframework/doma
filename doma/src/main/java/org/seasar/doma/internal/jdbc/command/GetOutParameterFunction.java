@@ -45,16 +45,16 @@ public class GetOutParameterFunction implements JdbcMappingFunction {
     }
 
     @Override
-    public <R, V> R apply(Wrapper<V> domain, JdbcType<V> jdbcType)
+    public <R, V> R apply(Wrapper<V> wrapper, JdbcType<V> jdbcType)
             throws SQLException {
-        if (domain == null) {
-            throw new DomaNullPointerException("domain");
+        if (wrapper == null) {
+            throw new DomaNullPointerException("wrapper");
         }
         if (jdbcType == null) {
             throw new DomaNullPointerException("jdbcType");
         }
         V value = jdbcType.getValue(callableStatement, index);
-        domain.set(value);
+        wrapper.set(value);
         return null;
     }
 }

@@ -34,9 +34,9 @@ public class PreparedSqlBuilderTest extends TestCase {
     public void testAppend() throws Exception {
         PreparedSqlBuilder builder = new PreparedSqlBuilder(config);
         builder.appendSql("select * from aaa where name = ");
-        builder.appendDomain(new StringWrapper("hoge"));
+        builder.appendWrapper(new StringWrapper("hoge"));
         builder.appendSql(" and salary = ");
-        builder.appendDomain(new BigDecimalWrapper(new BigDecimal(100)));
+        builder.appendWrapper(new BigDecimalWrapper(new BigDecimal(100)));
         PreparedSql sql = builder.build();
         assertEquals("select * from aaa where name = ? and salary = ?", sql
                 .toString());

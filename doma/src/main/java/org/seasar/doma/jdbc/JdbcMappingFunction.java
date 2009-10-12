@@ -32,13 +32,14 @@ import org.seasar.doma.wrapper.Wrapper;
 public interface JdbcMappingFunction {
 
     /**
+     * この処理を適用します。
      * 
      * @param <R>
      *            戻り値の型
      * @param <V>
      *            マッピング対象の値の型
-     * @param domain
-     *            ドメイン
+     * @param wrapper
+     *            ラッパー
      * @param jdbcType
      *            JDBC型
      * @return マッピング処理の結果
@@ -47,5 +48,6 @@ public interface JdbcMappingFunction {
      * @throws SQLException
      *             SQLに関する例外が発生した場合
      */
-    <R, V> R apply(Wrapper<V> domain, JdbcType<V> jdbcType) throws SQLException;
+    <R, V> R apply(Wrapper<V> wrapper, JdbcType<V> jdbcType)
+            throws SQLException;
 }

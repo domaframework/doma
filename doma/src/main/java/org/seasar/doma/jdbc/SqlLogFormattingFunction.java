@@ -29,15 +29,15 @@ import org.seasar.doma.wrapper.Wrapper;
 public interface SqlLogFormattingFunction {
 
     /**
-     * 処理を実行します。
+     * この処理を適用します。
      * 
      * @param <V>
      *            値の型
-     * @param domain
-     *            SQLのバインド変数にマッピングされるドメイン
+     * @param wrapper
+     *            SQLのバインド変数にマッピングされるラッパー
      * @param jdbcType
      *            JDBC型
      * @return フォーマットされた文字列
      */
-    <V> String apply(Wrapper<V> domain, JdbcType<V> jdbcType);
+    <V> String apply(Wrapper<V> wrapper, JdbcType<V> jdbcType);
 }

@@ -53,29 +53,24 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class CallableSqlParameterFetcher {
+public class CallableSqlParameterFetcher implements
+        ResultFetcher<CallableStatement, List<? extends CallableSqlParameter>> {
 
     protected final Query query;
 
-    protected final CallableStatement callableStatement;
-
-    protected final List<? extends CallableSqlParameter> parameters;
-
-    public CallableSqlParameterFetcher(Query query,
-            CallableStatement callableStatement,
-            List<? extends CallableSqlParameter> parameters)
-            throws SQLException {
-        assertNotNull(query, callableStatement, parameters);
+    public CallableSqlParameterFetcher(Query query) throws SQLException {
+        assertNotNull(query);
         this.query = query;
-        this.callableStatement = callableStatement;
-        this.parameters = parameters;
     }
 
-    public void fetch() throws SQLException {
+    public void fetch(CallableStatement callableStatement,
+            List<? extends CallableSqlParameter> parameters)
+            throws SQLException {
+        assertNotNull(callableStatement, parameters);
         FetchingVisitor fetchngVisitor = new FetchingVisitor(query,
                 callableStatement);
-        for (CallableSqlParameter p : parameters) {
-            p.accept(fetchngVisitor, null);
+        for (CallableSqlParameter parameter : parameters) {
+            parameter.accept(fetchngVisitor, null);
         }
     }
 

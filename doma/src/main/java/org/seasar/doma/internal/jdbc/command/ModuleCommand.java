@@ -91,8 +91,8 @@ public abstract class ModuleCommand<R, Q extends ModuleQuery> implements
     protected void fetchParameters(CallableStatement callableStatement)
             throws SQLException {
         CallableSqlParameterFetcher fetcher = new CallableSqlParameterFetcher(
-                query, callableStatement, sql.getParameters());
-        fetcher.fetch();
+                query);
+        fetcher.fetch(callableStatement, sql.getParameters());
     }
 
     protected void log() {

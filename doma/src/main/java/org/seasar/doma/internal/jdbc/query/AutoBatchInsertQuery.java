@@ -148,7 +148,7 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
         builder.cutBackSql(2);
         builder.appendSql(") values (");
         for (EntityPropertyType<?> p : targetProperties) {
-            builder.appendDomain(p.getWrapper());
+            builder.appendWrapper(p.getWrapper());
             builder.appendSql(", ");
         }
         builder.cutBackSql(2);

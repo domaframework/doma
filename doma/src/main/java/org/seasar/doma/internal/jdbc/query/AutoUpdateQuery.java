@@ -99,7 +99,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
         for (EntityPropertyType<?> p : targetProperties) {
             builder.appendSql(columnNameMap.get(p.getName()));
             builder.appendSql(" = ");
-            builder.appendDomain(p.getWrapper());
+            builder.appendWrapper(p.getWrapper());
             if (p.isVersion() && !versionIncluded) {
                 builder.appendSql(" + 1");
             }
@@ -111,7 +111,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
             for (EntityPropertyType<?> p : idProperties) {
                 builder.appendSql(columnNameMap.get(p.getName()));
                 builder.appendSql(" = ");
-                builder.appendDomain(p.getWrapper());
+                builder.appendWrapper(p.getWrapper());
                 builder.appendSql(" and ");
             }
             builder.cutBackSql(5);
@@ -124,7 +124,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
             }
             builder.appendSql(columnNameMap.get(versionPropertyType.getName()));
             builder.appendSql(" = ");
-            builder.appendDomain(versionPropertyType.getWrapper());
+            builder.appendWrapper(versionPropertyType.getWrapper());
         }
         sql = builder.build();
     }

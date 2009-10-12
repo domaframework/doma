@@ -44,15 +44,15 @@ public class SetValueFunction implements JdbcMappingFunction {
     }
 
     @Override
-    public <R, V> R apply(Wrapper<V> domain, JdbcType<V> jdbcType)
+    public <R, V> R apply(Wrapper<V> wrapper, JdbcType<V> jdbcType)
             throws SQLException {
-        if (domain == null) {
-            throw new DomaNullPointerException("domain");
+        if (wrapper == null) {
+            throw new DomaNullPointerException("wrapper");
         }
         if (jdbcType == null) {
             throw new DomaNullPointerException("jdbcType");
         }
-        jdbcType.setValue(preparedStatement, index, domain.get());
+        jdbcType.setValue(preparedStatement, index, wrapper.get());
         return null;
     }
 }

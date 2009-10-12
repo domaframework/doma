@@ -34,7 +34,7 @@ public class AssignedIdPropertyType<W extends Wrapper<?>> extends
      * @param columnName
      *            カラム名
      * @param wrapper
-     *            ドメイン
+     *            ラッパー
      */
     public AssignedIdPropertyType(String name, String columnName, W wrapper) {
         super(name, columnName, wrapper, true, true);

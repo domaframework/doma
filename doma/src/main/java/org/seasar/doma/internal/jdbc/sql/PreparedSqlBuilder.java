@@ -56,11 +56,11 @@ public class PreparedSqlBuilder {
         formattedSql.setLength(formattedSql.length() - length);
     }
 
-    public void appendDomain(Wrapper<?> domain) {
+    public void appendWrapper(Wrapper<?> wrapper) {
         rawSql.append("?");
-        formattedSql.append(domain.accept(config.dialect()
+        formattedSql.append(wrapper.accept(config.dialect()
                 .getSqlLogFormattingVisitor(), formattingFunction));
-        parameters.add(new BasicInParameter(domain));
+        parameters.add(new BasicInParameter(wrapper));
     }
 
     public PreparedSql build() {
