@@ -47,6 +47,12 @@ public abstract class AptTestCase extends AptinaTestCase {
         setLocale(locale);
     }
 
+    @Override
+    protected void tearDown() throws Exception {
+        reset();
+        super.tearDown();
+    }
+
     protected String getExpectedContent() throws Exception {
         String path = getClass().getName().replace(".", "/");
         String suffix = "_" + getName().substring("test".length()) + ".txt";

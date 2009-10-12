@@ -43,9 +43,6 @@ public class ExpressionValidatorTest extends AptTestCase {
         addSourcePath("src/test/java");
     }
 
-    public void test() throws Exception {
-    }
-
     public void testVariableNotFound() throws Exception {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);

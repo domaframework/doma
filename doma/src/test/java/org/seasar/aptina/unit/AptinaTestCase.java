@@ -1129,7 +1129,13 @@ public abstract class AptinaTestCase extends TestCase {
         compilationUnits.clear();
         javaCompiler = null;
         diagnostics = null;
-        standardJavaFileManager = null;
+        if (standardJavaFileManager != null) {
+            try {
+                standardJavaFileManager.close();
+            } catch (IOException ignored) {
+            }
+            standardJavaFileManager = null;
+        }
         testingJavaFileManager = null;
         processingEnvironment = null;
         compiledResult = null;
