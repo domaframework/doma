@@ -31,6 +31,7 @@ import org.seasar.doma.internal.apt.dao.DomainParameterDao;
 import org.seasar.doma.internal.apt.dao.ElementOfParamListUnspecifiedDao;
 import org.seasar.doma.internal.apt.dao.ElementOfParamListWildcardTypeDao;
 import org.seasar.doma.internal.apt.dao.EmbeddedVariableDao;
+import org.seasar.doma.internal.apt.dao.EmptySqlFileDao;
 import org.seasar.doma.internal.apt.dao.ExtendsDao;
 import org.seasar.doma.internal.apt.dao.IllegalConstructorDelegateDao;
 import org.seasar.doma.internal.apt.dao.IllegalMethodDelegateDao;
@@ -40,6 +41,7 @@ import org.seasar.doma.internal.apt.dao.MethodAccessSqlValidationDao;
 import org.seasar.doma.internal.apt.dao.MultiParamMethodAccessSqlValidationDao;
 import org.seasar.doma.internal.apt.dao.NClobFactoryDao;
 import org.seasar.doma.internal.apt.dao.NameUnsafeDaoImpl;
+import org.seasar.doma.internal.apt.dao.NoTestLiteralDao;
 import org.seasar.doma.internal.apt.dao.NotInterfaceDao;
 import org.seasar.doma.internal.apt.dao.NotTopLevelDao;
 import org.seasar.doma.internal.apt.dao.SqlFileBatchUpdateDao;
@@ -343,7 +345,7 @@ public class DaoProcessorTest extends AptTestCase {
         assertMessageCode(DomaMessageCode.DOMA4086);
     }
 
-    public void testUnknownBindVariableSqlValidationDao() throws Exception {
+    public void testUnknownBindVariableSqlValidation() throws Exception {
         Class<?> target = UnknownBindVariableSqlValidationDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
@@ -353,7 +355,7 @@ public class DaoProcessorTest extends AptTestCase {
         assertMessageCode(DomaMessageCode.DOMA4092);
     }
 
-    public void testUnknownVariableSqlValidationDao() throws Exception {
+    public void testUnknownVariableSqlValidation() throws Exception {
         Class<?> target = UnknownVariableSqlValidationDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
@@ -363,7 +365,7 @@ public class DaoProcessorTest extends AptTestCase {
         assertMessageCode(DomaMessageCode.DOMA4092);
     }
 
-    public void testMethodAccessSqlValidationDao() throws Exception {
+    public void testMethodAccessSqlValidation() throws Exception {
         Class<?> target = MethodAccessSqlValidationDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
@@ -382,7 +384,7 @@ public class DaoProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
-    public void testMultiParamMethodAccessSqlValidationDao() throws Exception {
+    public void testMultiParamMethodAccessSqlValidation() throws Exception {
         Class<?> target = MultiParamMethodAccessSqlValidationDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
@@ -391,12 +393,32 @@ public class DaoProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
-    public void testEmbeddedVariableDao() throws Exception {
+    public void testEmbeddedVariable() throws Exception {
         Class<?> target = EmbeddedVariableDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
         addCompilationUnit(target);
         compile();
         assertTrue(getCompiledResult());
+    }
+
+    public void testEmptySqlFile() throws Exception {
+        Class<?> target = EmptySqlFileDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessageCode(DomaMessageCode.DOMA4020);
+    }
+
+    public void testNoTestLiteral() throws Exception {
+        Class<?> target = NoTestLiteralDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessageCode(DomaMessageCode.DOMA4069);
     }
 }
