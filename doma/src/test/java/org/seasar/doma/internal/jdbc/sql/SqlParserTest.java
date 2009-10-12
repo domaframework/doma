@@ -121,6 +121,27 @@ public class SqlParserTest extends TestCase {
         }
     }
 
+    public void testBindVariable_enum() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        evaluator.add("name", new Value(MyEnum.class, MyEnum.BBB));
+        evaluator.add("salary", new Value(BigDecimal.class, new BigDecimal(
+                10000)));
+        String testSql = "select * from aaa where ename = /*name*/'aaa' and sal = /*salary*/-2000";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, evaluator)
+                .build(sqlNode);
+        assertEquals("select * from aaa where ename = ? and sal = ?", sql
+                .getRawSql());
+        assertEquals("select * from aaa where ename = 'BBB' and sal = 10000",
+                sql.getFormattedSql());
+        assertEquals(testSql, sqlNode.toString());
+        assertEquals(2, sql.getParameters().size());
+        assertEquals(MyEnum.BBB, sql.getParameters().get(0).getWrapper().get());
+        assertEquals(new BigDecimal(10000), sql.getParameters().get(1)
+                .getWrapper().get());
+    }
+
     public void testEmbeddedVariable() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("name", new Value(String.class, "hoge"));
@@ -330,5 +351,9 @@ public class SqlParserTest extends TestCase {
         assertEquals("hoge", sql.getParameters().get(1).getWrapper().get());
         assertEquals(new Integer(100), sql.getParameters().get(2).getWrapper()
                 .get());
+    }
+
+    public enum MyEnum {
+        AAA, BBB, CCC
     }
 }

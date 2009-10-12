@@ -27,6 +27,7 @@ import org.seasar.doma.wrapper.BytesWrapperVisitor;
 import org.seasar.doma.wrapper.ClobWrapperVisitor;
 import org.seasar.doma.wrapper.DateWrapperVisitor;
 import org.seasar.doma.wrapper.DoubleWrapperVisitor;
+import org.seasar.doma.wrapper.EnumWrapperVisitor;
 import org.seasar.doma.wrapper.FloatWrapperVisitor;
 import org.seasar.doma.wrapper.IntegerWrapperVisitor;
 import org.seasar.doma.wrapper.LongWrapperVisitor;
@@ -52,5 +53,6 @@ public interface PersistentWrapperVisitor<R, P, TH extends Throwable> extends
         FloatWrapperVisitor<R, P, TH>, IntegerWrapperVisitor<R, P, TH>,
         LongWrapperVisitor<R, P, TH>, NClobWrapperVisitor<R, P, TH>,
         ShortWrapperVisitor<R, P, TH>, StringWrapperVisitor<R, P, TH>,
-        TimeWrapperVisitor<R, P, TH>, TimestampWrapperVisitor<R, P, TH> {
+        TimeWrapperVisitor<R, P, TH>, TimestampWrapperVisitor<R, P, TH>,
+        EnumWrapperVisitor<R, P, TH> {
 }

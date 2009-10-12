@@ -51,4 +51,11 @@ public interface AutoFunctionDao {
 
     @Function
     List<Emp> executeFunction5(@ResultSet List<Emp> arg1);
+
+    @Function
+    MyEnum executeFunction6(@In MyEnum arg1, @InOut Reference<MyEnum> arg2,
+            @Out Reference<MyEnum> arg3);
+
+    public enum MyEnum {
+    }
 }

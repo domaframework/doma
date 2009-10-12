@@ -19,6 +19,7 @@ import org.seasar.doma.internal.apt.entity.AnnotationConflictedEntity;
 import org.seasar.doma.internal.apt.entity.ChildEntity;
 import org.seasar.doma.internal.apt.entity.DomainPropertyEntity;
 import org.seasar.doma.internal.apt.entity.Emp;
+import org.seasar.doma.internal.apt.entity.EnumPropertyEntity;
 import org.seasar.doma.internal.apt.entity.ListenerArgumentTypeIllegalEntity;
 import org.seasar.doma.internal.apt.entity.NameUnsafeEntity_;
 import org.seasar.doma.internal.apt.entity.NotTopLevelEntity;
@@ -183,6 +184,16 @@ public class EntityProcessorTest extends AptTestCase {
 
     public void testDomainProperty() throws Exception {
         Class<?> target = DomainPropertyEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testEnumProperty() throws Exception {
+        Class<?> target = EnumPropertyEntity.class;
         EntityProcessor processor = new EntityProcessor();
         addProcessor(processor);
         addCompilationUnit(target);

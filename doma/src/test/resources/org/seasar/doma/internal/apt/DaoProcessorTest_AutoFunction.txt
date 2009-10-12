@@ -130,4 +130,30 @@ public class AutoFunctionDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao im
         return result;
     }
 
+    @Override
+    public org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum executeFunction6(org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum arg1, org.seasar.doma.jdbc.Reference<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum> arg2, org.seasar.doma.jdbc.Reference<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum> arg3) {
+        entering("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl", "executeFunction6", arg1, arg2, arg3);
+        if (arg2 == null) {
+            throw new org.seasar.doma.DomaNullPointerException("arg2");
+        }
+        if (arg3 == null) {
+            throw new org.seasar.doma.DomaNullPointerException("arg3");
+        }
+        org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum> query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>();
+        query.setConfig(config);
+        query.setFunctionName("executeFunction6");
+        query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.BasicResultParameter<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>(new org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>(org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum.class)));
+        query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicInParameter(new org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>(org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum.class, arg1)));
+        query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicInOutParameter<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>(new org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>(org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum.class), arg2));
+        query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicOutParameter<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>(new org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>(org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum.class), arg3));
+        query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl");
+        query.setCallerMethodName("executeFunction6");
+        query.setQueryTimeout(-1);
+        query.prepare();
+        org.seasar.doma.internal.jdbc.command.FunctionCommand<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum> command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>(query);
+        org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum result = command.execute();
+        exiting("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl", "executeFunction6", result);
+        return result;
+    }
+
 }

@@ -76,6 +76,7 @@ public final class Wrappers {
      *            値クラス
      * @return ラッパー、値が基本型でない場合 {@code null}
      */
+    @SuppressWarnings("unchecked")
     protected static Wrapper<?> wrapValueObject(Object value,
             Class<?> valueClass) {
         Class<?> wrapperClass = ClassUtil
@@ -130,6 +131,9 @@ public final class Wrappers {
         }
         if (wrapperClass == Time.class) {
             return new TimeWrapper(Time.class.cast(value));
+        }
+        if (wrapperClass.isEnum() || Enum.class.isAssignableFrom(wrapperClass)) {
+            return new EnumWrapper(wrapperClass, Enum.class.cast(value));
         }
         return null;
     }

@@ -32,6 +32,7 @@ import org.seasar.doma.internal.apt.dao.ElementOfParamListUnspecifiedDao;
 import org.seasar.doma.internal.apt.dao.ElementOfParamListWildcardTypeDao;
 import org.seasar.doma.internal.apt.dao.EmbeddedVariableDao;
 import org.seasar.doma.internal.apt.dao.EmptySqlFileDao;
+import org.seasar.doma.internal.apt.dao.EnumDao;
 import org.seasar.doma.internal.apt.dao.ExtendsDao;
 import org.seasar.doma.internal.apt.dao.IllegalConstructorDelegateDao;
 import org.seasar.doma.internal.apt.dao.IllegalMethodDelegateDao;
@@ -420,5 +421,15 @@ public class DaoProcessorTest extends AptTestCase {
         compile();
         assertFalse(getCompiledResult());
         assertMessageCode(DomaMessageCode.DOMA4069);
+    }
+
+    public void testEnum() throws Exception {
+        Class<?> target = EnumDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
     }
 }

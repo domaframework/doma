@@ -35,6 +35,7 @@ import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.jdbc.type.EnumType;
 import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.jdbc.type.JdbcTypes;
 import org.seasar.doma.message.DomaMessageCode;
@@ -48,6 +49,7 @@ import org.seasar.doma.wrapper.BytesWrapper;
 import org.seasar.doma.wrapper.ClobWrapper;
 import org.seasar.doma.wrapper.DateWrapper;
 import org.seasar.doma.wrapper.DoubleWrapper;
+import org.seasar.doma.wrapper.EnumWrapper;
 import org.seasar.doma.wrapper.FloatWrapper;
 import org.seasar.doma.wrapper.IntegerWrapper;
 import org.seasar.doma.wrapper.LongWrapper;
@@ -452,6 +454,13 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
+        public <E extends Enum<E>> Void visitEnumWrapper(
+                EnumWrapper<E> wrapper, JdbcMappingFunction p)
+                throws SQLException {
+            return p.apply(wrapper, new EnumType<E>(wrapper.getEnumClass()));
+        }
+
+        @Override
         public Void visitUnknownWrapper(Wrapper<?> wrapper,
                 JdbcMappingFunction p) throws SQLException {
             throw new JdbcException(DomaMessageCode.DOMA2019, wrapper
@@ -576,6 +585,13 @@ public class StandardDialect implements Dialect {
         public String visitTimestampWrapper(TimestampWrapper wrapper,
                 SqlLogFormattingFunction p) {
             return p.apply(wrapper, JdbcTypes.TIMESTAMP);
+        }
+
+        @Override
+        public <E extends Enum<E>> String visitEnumWrapper(
+                EnumWrapper<E> wrapper, SqlLogFormattingFunction p)
+                throws RuntimeException {
+            return p.apply(wrapper, new EnumType<E>(wrapper.getEnumClass()));
         }
 
         @Override
