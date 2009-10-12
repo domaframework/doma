@@ -149,6 +149,7 @@ public class SqlParser {
             }
             case DELIMITER:
             case EOF: {
+                validateTermination();
                 break outer;
             }
             default: {
@@ -412,6 +413,15 @@ public class SqlParser {
             }
         } else {
             peek().addNode(node);
+        }
+    }
+
+    protected void validateTermination() {
+        if (isAfterBindVariable()) {
+            BindVariableNode bindVariableNode = pop();
+            throw new JdbcException(DomaMessageCode.DOMA2110, sql, tokenizer
+                    .getLineNumber(), tokenizer.getPosition(), bindVariableNode
+                    .getText());
         }
     }
 
