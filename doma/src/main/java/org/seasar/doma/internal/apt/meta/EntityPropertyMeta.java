@@ -128,11 +128,11 @@ public class EntityPropertyMeta {
         this.domainType = domainType;
     }
 
-    public BasicType getValueType() {
+    public BasicType getBasicType() {
         return basicType;
     }
 
-    public void setValueType(BasicType basicType) {
+    public void setBasicType(BasicType basicType) {
         this.basicType = basicType;
     }
 

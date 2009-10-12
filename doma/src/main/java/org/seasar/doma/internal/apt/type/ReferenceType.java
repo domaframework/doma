@@ -27,48 +27,31 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.jdbc.Reference;
 
-public class ReferenceType {
+public class ReferenceType extends AbstractDataType {
 
-    protected TypeMirror type;
+    protected TypeMirror referentTypeMirror;
 
-    protected String typeName;
+    protected DataType referentType;
 
-    protected TypeMirror referentType;
-
-    protected DomainType referentDomainType;
-
-    protected BasicType referentBasicType;
-
-    protected ReferenceType() {
+    public ReferenceType(TypeMirror type, String typeName) {
+        super(type, typeName);
     }
 
-    public TypeMirror getType() {
-        return type;
-    }
-
-    public String getTypeName() {
-        return typeName;
-    }
-
-    public DomainType getReferentDomainType() {
-        return referentDomainType;
-    }
-
-    public BasicType getReferentBasicType() {
-        return referentBasicType;
-    }
-
-    public TypeMirror getReferentType() {
+    public DataType getReferentType() {
         return referentType;
     }
 
+    public TypeMirror getReferentTypeMirror() {
+        return referentTypeMirror;
+    }
+
     public boolean isRaw() {
-        return referentType == null;
+        return referentTypeMirror == null;
     }
 
     public boolean isWildcardType() {
-        return referentType != null
-                && referentType.getKind() == TypeKind.WILDCARD;
+        return referentTypeMirror != null
+                && referentTypeMirror.getKind() == TypeKind.WILDCARD;
     }
 
     public static ReferenceType newInstance(TypeMirror type,
@@ -78,18 +61,21 @@ public class ReferenceType {
         if (referenceDeclaredType == null) {
             return null;
         }
-        ReferenceType referenceType = new ReferenceType();
-        referenceType.type = type;
-        referenceType.typeName = TypeUtil.getTypeName(type, env);
+        ReferenceType referenceType = new ReferenceType(type, TypeUtil
+                .getTypeName(type, env));
         List<? extends TypeMirror> typeArguments = referenceDeclaredType
                 .getTypeArguments();
         if (typeArguments.size() == 1) {
-            referenceType.referentType = typeArguments.get(0);
-            referenceType.referentDomainType = DomainType.newInstance(
-                    referenceType.referentType, env);
-            if (referenceType.referentDomainType == null) {
-                referenceType.referentBasicType = BasicType.newInstance(
-                        referenceType.referentType, env);
+            referenceType.referentTypeMirror = typeArguments.get(0);
+            referenceType.referentType = DomainType.newInstance(
+                    referenceType.referentTypeMirror, env);
+            if (referenceType.referentType == null) {
+                referenceType.referentType = BasicType.newInstance(
+                        referenceType.referentTypeMirror, env);
+                if (referenceType.referentType == null) {
+                    referenceType.referentType = AnyType.newInstance(
+                            referenceType.referentTypeMirror, env);
+                }
             }
         }
         return referenceType;
@@ -107,5 +93,11 @@ public class ReferenceType {
             getReferenceDeclaredType(supertype, env);
         }
         return null;
+    }
+
+    @Override
+    public <R, P, TH extends Throwable> R accept(
+            DataTypeVisitor<R, P, TH> visitor, P p) throws TH {
+        return visitor.visitReferenceType(this, p);
     }
 }

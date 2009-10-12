@@ -22,23 +22,12 @@ import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.TypeUtil;
 
-public class BasicType {
-
-    protected TypeMirror type;
-
-    protected String typeName;
+public class BasicType extends AbstractDataType {
 
     protected WrapperType wrapperType;
 
-    protected BasicType() {
-    }
-
-    public TypeMirror getType() {
-        return type;
-    }
-
-    public String getTypeName() {
-        return typeName;
+    public BasicType(TypeMirror type, String typeName) {
+        super(type, typeName);
     }
 
     public WrapperType getWrapperType() {
@@ -52,10 +41,16 @@ public class BasicType {
         if (wrapperType == null) {
             return null;
         }
-        BasicType basicType = new BasicType();
-        basicType.type = type;
-        basicType.typeName = TypeUtil.getTypeName(type, env);
+        BasicType basicType = new BasicType(type, TypeUtil.getTypeName(type,
+                env));
         basicType.wrapperType = wrapperType;
         return basicType;
     }
+
+    @Override
+    public <R, P, TH extends Throwable> R accept(
+            DataTypeVisitor<R, P, TH> visitor, P p) throws TH {
+        return visitor.visitBasicType(this, p);
+    }
+
 }

@@ -66,7 +66,7 @@ public class EntityPropertyMetaFactory {
         doId(propertyMeta, fieldElement, entityMeta);
         doVersion(propertyMeta, fieldElement, entityMeta);
         doColumnMeta(propertyMeta, fieldElement, entityMeta);
-        doWrapperTypeName(propertyMeta, fieldElement, entityMeta);
+        doDataType(propertyMeta, fieldElement, entityMeta);
         return propertyMeta;
     }
 
@@ -231,7 +231,7 @@ public class EntityPropertyMetaFactory {
         propertyMeta.setColumnMeta(columnMeta);
     }
 
-    protected void doWrapperTypeName(EntityPropertyMeta propertyMeta,
+    protected void doDataType(EntityPropertyMeta propertyMeta,
             VariableElement fieldElement, EntityMeta entityMeta) {
         TypeMirror type = fieldElement.asType();
         DomainType domainType = DomainType.newInstance(type, env);
@@ -243,7 +243,7 @@ public class EntityPropertyMetaFactory {
                 throw new AptException(DomaMessageCode.DOMA4096, env,
                         fieldElement, type);
             }
-            propertyMeta.setValueType(basicType);
+            propertyMeta.setBasicType(basicType);
         }
     }
 

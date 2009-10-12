@@ -24,10 +24,14 @@ import javax.lang.model.element.VariableElement;
 import org.seasar.doma.Select;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.type.AnyType;
+import org.seasar.doma.internal.apt.type.BasicType;
+import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.DomainType;
+import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.IterationCallbackType;
 import org.seasar.doma.internal.apt.type.ListType;
-import org.seasar.doma.internal.apt.type.BasicType;
+import org.seasar.doma.internal.apt.type.SelectOptionsType;
+import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -77,7 +81,7 @@ public class SqlFileSelectQueryMetaFactory extends
     @Override
     protected void doReturnType(SqlFileSelectQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        QueryReturnMeta returnMeta = createReturnMeta(method);
+        final QueryReturnMeta returnMeta = createReturnMeta(method);
         queryMeta.setReturnMeta(returnMeta);
         if (queryMeta.isIterated()) {
             IterationCallbackType iterationCallbackType = queryMeta
@@ -85,66 +89,198 @@ public class SqlFileSelectQueryMetaFactory extends
             AnyType callbackReturnType = iterationCallbackType.getReturnType();
             if (callbackReturnType == null
                     || !env.getTypeUtils().isSameType(returnMeta.getType(),
-                            callbackReturnType.getType())) {
+                            callbackReturnType.getTypeMirror())) {
                 throw new AptException(DomaMessageCode.DOMA4055, env, method,
                         returnMeta.getType(), callbackReturnType);
             }
         } else {
-            if (!returnMeta.isSupportedType()) {
-                throw new AptException(DomaMessageCode.DOMA4008, env,
-                        returnMeta.getElement(), returnMeta.getType());
-            }
-            ListType listType = returnMeta.getCollectionType();
-            if (listType != null) {
-                if (!listType.hasSupportedElementType()) {
-                    throw new AptException(DomaMessageCode.DOMA4007, env,
-                            returnMeta.getElement(), listType.getEntityType());
-                }
-            }
+            returnMeta.getDataType().accept(
+                    new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+
+                        @Override
+                        protected Void defaultAction(DataType type, Void p)
+                                throws RuntimeException {
+                            throw new AptException(DomaMessageCode.DOMA4008,
+                                    env, returnMeta.getElement(), returnMeta
+                                            .getType());
+                        }
+
+                        @Override
+                        public Void visitBasicType(BasicType dataType, Void p)
+                                throws RuntimeException {
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitDomainType(DomainType dataType, Void p)
+                                throws RuntimeException {
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitEntityType(EntityType dataType, Void p)
+                                throws RuntimeException {
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitListType(ListType dataType, Void p)
+                                throws RuntimeException {
+                            dataType
+                                    .getElementType()
+                                    .accept(
+                                            new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+
+                                                @Override
+                                                protected Void defaultAction(
+                                                        DataType type, Void p)
+                                                        throws RuntimeException {
+                                                    throw new AptException(
+                                                            DomaMessageCode.DOMA4007,
+                                                            env,
+                                                            returnMeta
+                                                                    .getElement(),
+                                                            type.getTypeName());
+                                                }
+
+                                                @Override
+                                                public Void visitBasicType(
+                                                        BasicType dataType,
+                                                        Void p)
+                                                        throws RuntimeException {
+                                                    return null;
+                                                }
+
+                                                @Override
+                                                public Void visitDomainType(
+                                                        DomainType dataType,
+                                                        Void p)
+                                                        throws RuntimeException {
+                                                    return null;
+                                                }
+
+                                                @Override
+                                                public Void visitEntityType(
+                                                        EntityType dataType,
+                                                        Void p)
+                                                        throws RuntimeException {
+                                                    return null;
+                                                }
+
+                                            }, p);
+
+                            return null;
+                        }
+
+                    }, null);
         }
     }
 
     @Override
-    protected void doParameters(SqlFileSelectQueryMeta queryMeta,
+    protected void doParameters(final SqlFileSelectQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         for (VariableElement parameter : method.getParameters()) {
-            QueryParameterMeta parameterMeta = createParameterMeta(parameter);
-            if (parameterMeta.getListType() != null) {
-                ListType listType = parameterMeta.getListType();
-                DomainType domainType = listType.getDomainType();
-                if (domainType == null) {
-                    BasicType basicType = listType.getValueType();
-                    if (basicType == null) {
-                        throw new AptException(DomaMessageCode.DOMA4028, env,
-                                parameterMeta.getElement());
-                    }
-                }
-            } else if (parameterMeta.getEntityType() != null) {
-            } else if (parameterMeta.getDomainType() != null) {
-            } else if (parameterMeta.getValueType() != null) {
-            } else if (parameterMeta.getSelectOptionsType() != null) {
-                if (queryMeta.getSelectOptionsType() != null) {
-                    throw new AptException(DomaMessageCode.DOMA4053, env,
-                            parameterMeta.getElement());
-                }
-                queryMeta.setSelectOptionsType(parameterMeta
-                        .getSelectOptionsType());
-                queryMeta
-                        .setSelectOptionsParameterName(parameterMeta.getName());
-            } else if (parameterMeta.getIterationCallbackType() != null) {
-                if (queryMeta.getIterationCallbackType() != null) {
-                    throw new AptException(DomaMessageCode.DOMA4054, env,
-                            parameterMeta.getElement());
-                }
-                IterationCallbackType iterationCallbackType = parameterMeta
-                        .getIterationCallbackType();
-                queryMeta.setIterationCallbackType(iterationCallbackType);
-                queryMeta.setIterationCallbackPrameterName(parameterMeta
-                        .getName());
-            } else {
-                throw new AptException(DomaMessageCode.DOMA4008, env,
-                        parameterMeta.getElement(), parameterMeta.getType());
-            }
+            final QueryParameterMeta parameterMeta = createParameterMeta(parameter);
+            parameterMeta.getDataType().accept(
+                    new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+
+                        @Override
+                        protected Void defaultAction(DataType type, Void p)
+                                throws RuntimeException {
+                            throw new AptException(DomaMessageCode.DOMA4008,
+                                    env, parameterMeta.getElement(),
+                                    parameterMeta.getType());
+                        }
+
+                        @Override
+                        public Void visitBasicType(BasicType dataType, Void p)
+                                throws RuntimeException {
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitDomainType(DomainType dataType, Void p)
+                                throws RuntimeException {
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitEntityType(EntityType dataType, Void p)
+                                throws RuntimeException {
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitIterationCallbackType(
+                                IterationCallbackType dataType, Void p)
+                                throws RuntimeException {
+                            if (queryMeta.getIterationCallbackType() != null) {
+                                throw new AptException(
+                                        DomaMessageCode.DOMA4054, env,
+                                        parameterMeta.getElement());
+                            }
+                            queryMeta.setIterationCallbackType(dataType);
+                            queryMeta
+                                    .setIterationCallbackPrameterName(parameterMeta
+                                            .getName());
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitSelectOptionsType(
+                                SelectOptionsType dataType, Void p)
+                                throws RuntimeException {
+                            if (queryMeta.getSelectOptionsType() != null) {
+                                throw new AptException(
+                                        DomaMessageCode.DOMA4053, env,
+                                        parameterMeta.getElement());
+                            }
+                            queryMeta.setSelectOptionsType(dataType);
+                            queryMeta
+                                    .setSelectOptionsParameterName(parameterMeta
+                                            .getName());
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitListType(ListType dataType, Void p)
+                                throws RuntimeException {
+                            dataType
+                                    .accept(
+                                            new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+
+                                                @Override
+                                                protected Void defaultAction(
+                                                        DataType type, Void p)
+                                                        throws RuntimeException {
+                                                    throw new AptException(
+                                                            DomaMessageCode.DOMA4028,
+                                                            env,
+                                                            parameterMeta
+                                                                    .getElement());
+                                                }
+
+                                                @Override
+                                                public Void visitBasicType(
+                                                        BasicType dataType,
+                                                        Void p)
+                                                        throws RuntimeException {
+                                                    return null;
+                                                }
+
+                                                @Override
+                                                public Void visitDomainType(
+                                                        DomainType dataType,
+                                                        Void p)
+                                                        throws RuntimeException {
+                                                    return null;
+                                                }
+
+                                            }, null);
+                            return null;
+                        }
+
+                    }, null);
             queryMeta.addParameterMeta(parameterMeta);
             if (parameterMeta.isBindable()) {
                 queryMeta.addBindableParameterType(parameterMeta.getName(),

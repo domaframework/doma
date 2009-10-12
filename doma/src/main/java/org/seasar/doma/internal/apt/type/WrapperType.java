@@ -57,25 +57,14 @@ import org.seasar.doma.wrapper.TimestampWrapper;
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-public class WrapperType {
-
-    protected TypeMirror type;
-
-    protected String typeName;
+public class WrapperType extends AbstractDataType {
 
     protected TypeMirror wrappedType;
 
     protected String wrappedTypeName;
 
-    protected WrapperType() {
-    }
-
-    public TypeMirror getType() {
-        return type;
-    }
-
-    public String getTypeName() {
-        return typeName;
+    public WrapperType(TypeMirror type, String typeName) {
+        super(type, typeName);
     }
 
     public TypeMirror getWrappedType() {
@@ -84,13 +73,6 @@ public class WrapperType {
 
     public String getWrappedTypeName() {
         return wrappedTypeName;
-    }
-
-    public static boolean isSupportedType(TypeMirror typeMirror,
-            ProcessingEnvironment env) {
-        assertNotNull(typeMirror, env);
-        WrapperType wrapperType = newInstance(typeMirror, env);
-        return wrapperType != null;
     }
 
     public static WrapperType newInstance(TypeMirror wrappedType,
@@ -107,12 +89,17 @@ public class WrapperType {
             return null;
         }
         TypeMirror type = wrapperTypeElement.asType();
-        WrapperType wrapperType = new WrapperType();
-        wrapperType.type = type;
-        wrapperType.typeName = TypeUtil.getTypeName(type, env);
+        WrapperType wrapperType = new WrapperType(type, TypeUtil.getTypeName(
+                type, env));
         wrapperType.wrappedType = wrappedType;
         wrapperType.wrappedTypeName = TypeUtil.getTypeName(wrappedType, env);
         return wrapperType;
+    }
+
+    @Override
+    public <R, P, TH extends Throwable> R accept(
+            DataTypeVisitor<R, P, TH> visitor, P p) throws TH {
+        return visitor.visitWrapperType(this, p);
     }
 
     protected static class WrapperTypeMappingVisitor extends

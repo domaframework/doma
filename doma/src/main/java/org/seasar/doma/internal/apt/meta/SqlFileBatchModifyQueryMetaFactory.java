@@ -27,8 +27,10 @@ import org.seasar.doma.BatchDelete;
 import org.seasar.doma.BatchInsert;
 import org.seasar.doma.BatchUpdate;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.ListType;
+import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -97,7 +99,7 @@ public class SqlFileBatchModifyQueryMetaFactory extends
 
     @Override
     protected void doParameters(SqlFileBatchModifyQueryMeta queryMeta,
-            ExecutableElement method, DaoMeta daoMeta) {
+            final ExecutableElement method, DaoMeta daoMeta) {
         List<? extends VariableElement> parameters = method.getParameters();
         int size = parameters.size();
         if (size != 1) {
@@ -105,21 +107,49 @@ public class SqlFileBatchModifyQueryMetaFactory extends
         }
         QueryParameterMeta parameterMeta = createParameterMeta(parameters
                 .get(0));
-        ListType listType = parameterMeta.getListType();
-        if (listType == null) {
-            throw new AptException(DomaMessageCode.DOMA4042, env, method);
-        }
-        EntityType entityType = listType.getEntityType();
-        if (entityType == null) {
-            throw new AptException(DomaMessageCode.DOMA4043, env, method);
-        }
+        ListType listType = parameterMeta.getDataType().accept(
+                new SimpleDataTypeVisitor<ListType, Void, RuntimeException>() {
+
+                    @Override
+                    protected ListType defaultAction(DataType type, Void p)
+                            throws RuntimeException {
+                        throw new AptException(DomaMessageCode.DOMA4042, env,
+                                method);
+                    }
+
+                    @Override
+                    public ListType visitListType(ListType dataType, Void p)
+                            throws RuntimeException {
+                        return dataType;
+                    }
+
+                }, null);
+        EntityType entityType = listType
+                .getElementType()
+                .accept(
+                        new SimpleDataTypeVisitor<EntityType, Void, RuntimeException>() {
+
+                            @Override
+                            protected EntityType defaultAction(DataType type,
+                                    Void p) throws RuntimeException {
+                                throw new AptException(
+                                        DomaMessageCode.DOMA4043, env, method);
+                            }
+
+                            @Override
+                            public EntityType visitEntityType(
+                                    EntityType dataType, Void p)
+                                    throws RuntimeException {
+                                return dataType;
+                            }
+
+                        }, null);
         queryMeta.setEntityType(entityType);
         queryMeta.setEntitiesParameterName(parameterMeta.getName());
         queryMeta.addParameterMeta(parameterMeta);
-
         if (parameterMeta.isBindable()) {
             queryMeta.addBindableParameterType(parameterMeta.getName(),
-                    entityType.getType());
+                    entityType.getTypeMirror());
         }
     }
 

@@ -25,9 +25,12 @@ import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
 import org.seasar.doma.Update;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.type.DomainType;
-import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.BasicType;
+import org.seasar.doma.internal.apt.type.DataType;
+import org.seasar.doma.internal.apt.type.DomainType;
+import org.seasar.doma.internal.apt.type.EntityType;
+import org.seasar.doma.internal.apt.type.ListType;
+import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -98,24 +101,73 @@ public class SqlFileModifyQueryMetaFactory extends
     protected void doParameters(SqlFileModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         for (VariableElement parameter : method.getParameters()) {
-            QueryParameterMeta parameterMeta = createParameterMeta(parameter);
-            if (parameterMeta.getListType() != null) {
-                ListType listType = parameterMeta.getListType();
-                DomainType domainType = listType.getDomainType();
-                if (domainType == null) {
-                    BasicType basicType = listType.getValueType();
-                    if (basicType == null) {
-                        throw new AptException(DomaMessageCode.DOMA4028, env,
-                                parameterMeta.getElement());
-                    }
-                }
-            } else if (parameterMeta.getEntityType() != null) {
-            } else if (parameterMeta.getDomainType() != null) {
-            } else if (parameterMeta.getValueType() != null) {
-            } else {
-                throw new AptException(DomaMessageCode.DOMA4008, env,
-                        parameterMeta.getElement(), parameterMeta.getType());
-            }
+            final QueryParameterMeta parameterMeta = createParameterMeta(parameter);
+            parameterMeta.getDataType().accept(
+                    new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+
+                        @Override
+                        protected Void defaultAction(DataType type, Void p)
+                                throws RuntimeException {
+                            throw new AptException(DomaMessageCode.DOMA4008,
+                                    env, parameterMeta.getElement(),
+                                    parameterMeta.getType());
+                        }
+
+                        @Override
+                        public Void visitBasicType(BasicType dataType, Void p)
+                                throws RuntimeException {
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitDomainType(DomainType dataType, Void p)
+                                throws RuntimeException {
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitEntityType(EntityType dataType, Void p)
+                                throws RuntimeException {
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitListType(ListType dataType, Void p)
+                                throws RuntimeException {
+                            dataType
+                                    .accept(
+                                            new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+
+                                                @Override
+                                                protected Void defaultAction(
+                                                        DataType type, Void p)
+                                                        throws RuntimeException {
+                                                    throw new AptException(
+                                                            DomaMessageCode.DOMA4028,
+                                                            env,
+                                                            parameterMeta
+                                                                    .getElement());
+                                                }
+
+                                                @Override
+                                                public Void visitBasicType(
+                                                        BasicType dataType,
+                                                        Void p)
+                                                        throws RuntimeException {
+                                                    return null;
+                                                }
+
+                                                @Override
+                                                public Void visitDomainType(
+                                                        DomainType dataType,
+                                                        Void p)
+                                                        throws RuntimeException {
+                                                    return null;
+                                                }
+                                            }, null);
+                            return null;
+                        }
+                    }, null);
             queryMeta.addParameterMeta(parameterMeta);
             if (parameterMeta.isBindable()) {
                 queryMeta.addBindableParameterType(parameterMeta.getName(),

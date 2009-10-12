@@ -27,61 +27,39 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.jdbc.IterationCallback;
 
-public class IterationCallbackType {
+public class IterationCallbackType extends AbstractDataType {
 
-    protected TypeMirror type;
+    protected TypeMirror returnTypeMirror;
 
-    protected String typeName;
-
-    protected TypeMirror resultType;
-
-    protected TypeMirror targetType;
+    protected TypeMirror targetTypeMirror;
 
     protected AnyType returnType;
 
-    protected EntityType entityType;
-
-    protected DomainType domainType;
-
-    protected BasicType basicType;
+    protected DataType targetType;
 
     protected boolean rawType;
 
-    protected IterationCallbackType() {
-    }
-
-    public TypeMirror getType() {
-        return type;
-    }
-
-    public String getTypeName() {
-        return typeName;
+    public IterationCallbackType(TypeMirror type, String typeName) {
+        super(type, typeName);
     }
 
     public AnyType getReturnType() {
         return returnType;
     }
 
-    public EntityType getEntityType() {
-        return entityType;
-    }
-
-    public DomainType getDomainType() {
-        return domainType;
-    }
-
-    public BasicType getValueType() {
-        return basicType;
+    public DataType getTargetType() {
+        return targetType;
     }
 
     public boolean isRawType() {
-        return resultType == null || targetType == null;
+        return returnTypeMirror == null || targetTypeMirror == null;
     }
 
     public boolean isWildcardType() {
-        return resultType != null && resultType.getKind() == TypeKind.WILDCARD
-                || targetType != null
-                && targetType.getKind() == TypeKind.WILDCARD;
+        return returnTypeMirror != null
+                && returnTypeMirror.getKind() == TypeKind.WILDCARD
+                || targetTypeMirror != null
+                && targetTypeMirror.getKind() == TypeKind.WILDCARD;
     }
 
     public static IterationCallbackType newInstance(TypeMirror type,
@@ -93,25 +71,28 @@ public class IterationCallbackType {
             return null;
         }
 
-        IterationCallbackType callbackType = new IterationCallbackType();
-        callbackType.type = type;
-        callbackType.typeName = TypeUtil.getTypeName(type, env);
+        IterationCallbackType callbackType = new IterationCallbackType(type,
+                TypeUtil.getTypeName(type, env));
         List<? extends TypeMirror> typeArguments = iterationCallbackDeclaredType
                 .getTypeArguments();
         if (typeArguments.size() == 2) {
-            callbackType.resultType = typeArguments.get(0);
-            callbackType.targetType = typeArguments.get(1);
+            callbackType.returnTypeMirror = typeArguments.get(0);
+            callbackType.targetTypeMirror = typeArguments.get(1);
 
             callbackType.returnType = AnyType.newInstance(
-                    callbackType.resultType, env);
-            callbackType.entityType = EntityType.newInstance(
-                    callbackType.targetType, env);
-            if (callbackType.entityType == null) {
-                callbackType.domainType = DomainType.newInstance(
-                        callbackType.targetType, env);
-                if (callbackType.domainType == null) {
-                    callbackType.basicType = BasicType.newInstance(
-                            callbackType.targetType, env);
+                    callbackType.returnTypeMirror, env);
+            callbackType.targetType = EntityType.newInstance(
+                    callbackType.targetTypeMirror, env);
+            if (callbackType.targetType == null) {
+                callbackType.targetType = DomainType.newInstance(
+                        callbackType.targetTypeMirror, env);
+                if (callbackType.targetType == null) {
+                    callbackType.targetType = BasicType.newInstance(
+                            callbackType.targetTypeMirror, env);
+                    if (callbackType.targetType == null) {
+                        callbackType.targetType = AnyType.newInstance(
+                                callbackType.targetTypeMirror, env);
+                    }
                 }
             }
         }
@@ -131,5 +112,11 @@ public class IterationCallbackType {
             getIterationCallbackDeclaredType(supertype, env);
         }
         return null;
+    }
+
+    @Override
+    public <R, P, TH extends Throwable> R accept(
+            DataTypeVisitor<R, P, TH> visitor, P p) throws TH {
+        return visitor.visitIterationCallbackType(this, p);
     }
 }

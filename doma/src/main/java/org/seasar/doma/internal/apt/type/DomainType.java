@@ -26,28 +26,17 @@ import org.seasar.doma.Domain;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.TypeUtil;
 
-public class DomainType {
-
-    protected TypeMirror type;
-
-    protected String typeName;
+public class DomainType extends AbstractDataType {
 
     protected BasicType basicType;
 
     protected String accessorMetod;
 
-    protected DomainType() {
+    public DomainType(TypeMirror type, String typeName) {
+        super(type, typeName);
     }
 
-    public TypeMirror getType() {
-        return type;
-    }
-
-    public String getTypeName() {
-        return typeName;
-    }
-
-    public BasicType getValueType() {
+    public BasicType getBasicType() {
         return basicType;
     }
 
@@ -71,9 +60,8 @@ public class DomainType {
         if (basicType == null) {
             return null;
         }
-        DomainType domainType = new DomainType();
-        domainType.type = type;
-        domainType.typeName = TypeUtil.getTypeName(type, env);
+        DomainType domainType = new DomainType(type, TypeUtil.getTypeName(type,
+                env));
         domainType.basicType = basicType;
         domainType.accessorMetod = domain.accessorMethod();
         return domainType;
@@ -86,5 +74,11 @@ public class DomainType {
             return e.getTypeMirror();
         }
         throw new AptIllegalStateException("unreachable.");
+    }
+
+    @Override
+    public <R, P, TH extends Throwable> R accept(
+            DataTypeVisitor<R, P, TH> visitor, P p) throws TH {
+        return visitor.visitDomainType(this, p);
     }
 }

@@ -202,10 +202,10 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
             }
             WrapperType wrapperType = null;
             if (pm.getDomainType() != null) {
-                wrapperType = pm.getDomainType().getValueType()
+                wrapperType = pm.getDomainType().getBasicType()
                         .getWrapperType();
             } else {
-                wrapperType = pm.getValueType().getWrapperType();
+                wrapperType = pm.getBasicType().getWrapperType();
             }
             if (pm.isId()) {
                 if (pm.getIdGeneratorMeta() != null) {
@@ -460,7 +460,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             DomainType domainType = pm.getDomainType();
             if (domainType != null) {
-                if (domainType.getValueType().getType().getKind().isPrimitive()) {
+                if (domainType.getBasicType().getTypeMirror().getKind().isPrimitive()) {
                     iprint(
                             "    %1$s%2$s.%3$sAccessor.set%4$s(__entity, new %5$s(%6$s.toPrimitive(%7$s.getWrapper().get())));%n",
                             pm.getEntityTypeName(), suffix, pm.getEntityName(),
@@ -475,7 +475,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
                                     .getTypeName(), pm.getName());
                 }
             } else {
-                if (pm.getValueType().getType().getKind().isPrimitive()) {
+                if (pm.getBasicType().getTypeMirror().getKind().isPrimitive()) {
                     iprint(
                             "    %1$s%2$s.%3$sAccessor.set%4$s(__entity, %5$s.toPrimitive(%6$s.getWrapper().get()));%n",
                             pm.getEntityTypeName(), suffix, pm.getEntityName(),

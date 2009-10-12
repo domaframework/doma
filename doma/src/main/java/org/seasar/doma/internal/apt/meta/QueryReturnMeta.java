@@ -11,10 +11,12 @@ import javax.lang.model.util.TypeKindVisitor6;
 
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.TypeUtil;
+import org.seasar.doma.internal.apt.type.AnyType;
+import org.seasar.doma.internal.apt.type.BasicType;
+import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.ListType;
-import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.message.DomaMessageCode;
 
 public class QueryReturnMeta {
@@ -27,13 +29,7 @@ public class QueryReturnMeta {
 
     protected final String typeName;
 
-    protected ListType listType;
-
-    protected EntityType entityType;
-
-    protected DomainType domainType;
-
-    protected BasicType basicType;
+    protected final DataType dataType;
 
     public QueryReturnMeta(ExecutableElement methodElement,
             ProcessingEnvironment env) {
@@ -42,18 +38,12 @@ public class QueryReturnMeta {
         this.env = env;
         type = methodElement.getReturnType();
         typeName = TypeUtil.getTypeName(type, env);
+        dataType = createDataType(methodElement, type, env);
+    }
 
-        listType = ListType.newInstance(type, env);
-        if (listType == null) {
-            entityType = EntityType.newInstance(type, env);
-            if (entityType == null) {
-                domainType = DomainType.newInstance(type, env);
-                if (domainType == null) {
-                    basicType = BasicType.newInstance(type, env);
-                }
-            }
-        }
-
+    protected DataType createDataType(ExecutableElement methodElement,
+            TypeMirror type, ProcessingEnvironment env) {
+        ListType listType = ListType.newInstance(type, env);
         if (listType != null) {
             if (listType.isRawType()) {
                 throw new AptException(DomaMessageCode.DOMA4109, env,
@@ -63,7 +53,25 @@ public class QueryReturnMeta {
                 throw new AptException(DomaMessageCode.DOMA4113, env,
                         methodElement, typeName);
             }
+            return listType;
         }
+
+        EntityType entityType = EntityType.newInstance(type, env);
+        if (entityType != null) {
+            return entityType;
+        }
+
+        DomainType domainType = DomainType.newInstance(type, env);
+        if (domainType != null) {
+            return domainType;
+        }
+
+        BasicType basicType = BasicType.newInstance(type, env);
+        if (basicType != null) {
+            return basicType;
+        }
+
+        return AnyType.newInstance(type, env);
     }
 
     public String getTypeName() {
@@ -96,25 +104,8 @@ public class QueryReturnMeta {
         return type;
     }
 
-    public ListType getCollectionType() {
-        return listType;
-    }
-
-    public EntityType getEntityType() {
-        return entityType;
-    }
-
-    public DomainType getDomainType() {
-        return domainType;
-    }
-
-    public BasicType getValueType() {
-        return basicType;
-    }
-
-    public boolean isSupportedType() {
-        return listType != null || entityType != null || domainType != null
-                || basicType != null;
+    public DataType getDataType() {
+        return dataType;
     }
 
 }

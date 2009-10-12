@@ -27,7 +27,9 @@ import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
 import org.seasar.doma.Update;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.EntityType;
+import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -108,27 +110,42 @@ public class AutoModifyQueryMetaFactory extends
 
     @Override
     protected void doParameters(AutoModifyQueryMeta queryMeta,
-            ExecutableElement method, DaoMeta daoMeta) {
+            final ExecutableElement method, DaoMeta daoMeta) {
         List<? extends VariableElement> parameters = method.getParameters();
         int size = parameters.size();
         if (size != 1) {
             throw new AptException(DomaMessageCode.DOMA4002, env, method);
         }
-        QueryParameterMeta parameterMeta = createParameterMeta(parameters
+        final QueryParameterMeta parameterMeta = createParameterMeta(parameters
                 .get(0));
-        EntityType entityType = parameterMeta.getEntityType();
-        if (entityType == null) {
-            throw new AptException(DomaMessageCode.DOMA4003, env, parameterMeta
-                    .getElement());
-        }
+        EntityType entityType = parameterMeta
+                .getDataType()
+                .accept(
+                        new SimpleDataTypeVisitor<EntityType, Void, RuntimeException>() {
+
+                            @Override
+                            protected EntityType defaultAction(DataType type,
+                                    Void p) throws RuntimeException {
+                                throw new AptException(
+                                        DomaMessageCode.DOMA4003, env,
+                                        parameterMeta.getElement());
+                            }
+
+                            @Override
+                            public EntityType visitEntityType(
+                                    EntityType dataType, Void p)
+                                    throws RuntimeException {
+                                return dataType;
+                            }
+
+                        }, null);
         queryMeta.setEntityType(entityType);
         queryMeta.setEntityParameterName(parameterMeta.getName());
         queryMeta.addParameterMeta(parameterMeta);
         if (parameterMeta.isBindable()) {
             queryMeta.addBindableParameterType(parameterMeta.getName(),
-                    entityType.getType());
+                    entityType.getTypeMirror());
         }
-        validateEntityPropertyNames(entityType.getType(), method, queryMeta);
+        validateEntityPropertyNames(entityType.getTypeMirror(), method, queryMeta);
     }
-
 }

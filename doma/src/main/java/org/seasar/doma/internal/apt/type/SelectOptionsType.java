@@ -23,21 +23,10 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.jdbc.SelectOptions;
 
-public class SelectOptionsType {
+public class SelectOptionsType extends AbstractDataType {
 
-    protected TypeMirror type;
-
-    protected String typeName;
-
-    protected SelectOptionsType() {
-    }
-
-    public TypeMirror getType() {
-        return type;
-    }
-
-    public String getTypeName() {
-        return typeName;
+    public SelectOptionsType(TypeMirror type, String typeName) {
+        super(type, typeName);
     }
 
     public static SelectOptionsType newInstance(TypeMirror type,
@@ -46,9 +35,12 @@ public class SelectOptionsType {
         if (!TypeUtil.isAssignable(type, SelectOptions.class, env)) {
             return null;
         }
-        SelectOptionsType selectOptionsType = new SelectOptionsType();
-        selectOptionsType.type = type;
-        selectOptionsType.typeName = TypeUtil.getTypeName(type, env);
-        return selectOptionsType;
+        return new SelectOptionsType(type, TypeUtil.getTypeName(type, env));
+    }
+
+    @Override
+    public <R, P, TH extends Throwable> R accept(
+            DataTypeVisitor<R, P, TH> visitor, P p) throws TH {
+        return visitor.visitSelectOptionsType(this, p);
     }
 }

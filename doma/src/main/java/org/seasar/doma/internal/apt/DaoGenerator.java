@@ -31,6 +31,12 @@ import org.seasar.doma.internal.apt.meta.AutoBatchModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoFunctionQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoProcedureQueryMeta;
+import org.seasar.doma.internal.apt.meta.BasicInOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.BasicInParameterMeta;
+import org.seasar.doma.internal.apt.meta.BasicListParameterMeta;
+import org.seasar.doma.internal.apt.meta.BasicListResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.BasicOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.BasicResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.CallableSqlParameterMeta;
 import org.seasar.doma.internal.apt.meta.CallableSqlParameterMetaVisitor;
 import org.seasar.doma.internal.apt.meta.DaoMeta;
@@ -50,26 +56,27 @@ import org.seasar.doma.internal.apt.meta.QueryReturnMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileBatchModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileSelectQueryMeta;
-import org.seasar.doma.internal.apt.meta.BasicInOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.BasicInParameterMeta;
-import org.seasar.doma.internal.apt.meta.BasicListParameterMeta;
-import org.seasar.doma.internal.apt.meta.BasicListResultParameterMeta;
-import org.seasar.doma.internal.apt.meta.BasicOutParameterMeta;
-import org.seasar.doma.internal.apt.meta.BasicResultParameterMeta;
+import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.IterationCallbackType;
 import org.seasar.doma.internal.apt.type.ListType;
-import org.seasar.doma.internal.apt.type.BasicType;
+import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
+import org.seasar.doma.internal.jdbc.command.BasicIterationHandler;
+import org.seasar.doma.internal.jdbc.command.BasicResultListHandler;
+import org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.DomainIterationHandler;
 import org.seasar.doma.internal.jdbc.command.DomainResultListHandler;
 import org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.EntityIterationHandler;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
-import org.seasar.doma.internal.jdbc.command.BasicIterationHandler;
-import org.seasar.doma.internal.jdbc.command.BasicResultListHandler;
-import org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler;
+import org.seasar.doma.internal.jdbc.sql.BasicInOutParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicListParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicListResultParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicOutParameter;
+import org.seasar.doma.internal.jdbc.sql.BasicResultParameter;
 import org.seasar.doma.internal.jdbc.sql.DomainInOutParameter;
 import org.seasar.doma.internal.jdbc.sql.DomainInParameter;
 import org.seasar.doma.internal.jdbc.sql.DomainListParameter;
@@ -79,12 +86,6 @@ import org.seasar.doma.internal.jdbc.sql.DomainResultParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListResultParameter;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
-import org.seasar.doma.internal.jdbc.sql.BasicInOutParameter;
-import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
-import org.seasar.doma.internal.jdbc.sql.BasicListParameter;
-import org.seasar.doma.internal.jdbc.sql.BasicListResultParameter;
-import org.seasar.doma.internal.jdbc.sql.BasicOutParameter;
-import org.seasar.doma.internal.jdbc.sql.BasicResultParameter;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.DomaAbstractDao;
 
@@ -255,38 +256,68 @@ public class DaoGenerator extends AbstractGenerator {
                 iprint("query.setFetchSize(%1$s);%n", m.getFetchSize());
             }
             iprint("query.prepare();%n");
-            QueryReturnMeta resultMeta = m.getReturnMeta();
-            String commandClassName = m.getCommandClass().getName();
+            final QueryReturnMeta resultMeta = m.getReturnMeta();
+            final String commandClassName = m.getCommandClass().getName();
             if (m.isIterated()) {
                 IterationCallbackType callbackType = m
                         .getIterationCallbackType();
-                if (callbackType.getEntityType() != null) {
-                    EntityType entityType = callbackType.getEntityType();
-                    iprint(
-                            "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s, %4$s>(new %4$s%5$s(), %6$s));%n",
-                            commandClassName, resultMeta.getTypeName(),
-                            EntityIterationHandler.class.getName(), entityType
-                                    .getTypeName(), entitySuffix, m
-                                    .getIterationCallbackPrameterName());
-                } else if (callbackType.getDomainType() != null) {
-                    DomainType domainType = callbackType.getDomainType();
-                    BasicType basicType = domainType.getValueType();
-                    iprint(
-                            "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s, %4$s, %5$s>(new %5$s%6$s(), %7$s));%n",
-                            commandClassName, resultMeta.getTypeName(),
-                            DomainIterationHandler.class.getName(), basicType
-                                    .getTypeName(), domainType.getTypeName(),
-                            domainSuffix, m.getIterationCallbackPrameterName());
-                } else {
-                    BasicType basicType = callbackType.getValueType();
-                    iprint(
-                            "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s, %4$s>(new %5$s(), %6$s));%n",
-                            commandClassName, resultMeta.getTypeName(),
-                            BasicIterationHandler.class.getName(), basicType
-                                    .getTypeName(), basicType.getWrapperType()
-                                    .getTypeName(), m
-                                    .getIterationCallbackPrameterName());
-                }
+                final String callbackParamName = m.getIterationCallbackPrameterName();
+                callbackType
+                        .getTargetType()
+                        .accept(
+                                new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+
+                                    @Override
+                                    public Void visitBasicType(
+                                            BasicType dataType, Void p)
+                                            throws RuntimeException {
+                                        iprint(
+                                                "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s, %4$s>(new %5$s(), %6$s));%n",
+                                                commandClassName, resultMeta
+                                                        .getTypeName(),
+                                                BasicIterationHandler.class
+                                                        .getName(), dataType
+                                                        .getTypeName(),
+                                                dataType.getWrapperType()
+                                                        .getTypeName(),
+                                                callbackParamName);
+                                        return null;
+                                    }
+
+                                    @Override
+                                    public Void visitDomainType(
+                                            DomainType dataType, Void p)
+                                            throws RuntimeException {
+                                        BasicType basicType = dataType
+                                                .getBasicType();
+                                        iprint(
+                                                "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s, %4$s, %5$s>(new %5$s%6$s(), %7$s));%n",
+                                                commandClassName, resultMeta
+                                                        .getTypeName(),
+                                                DomainIterationHandler.class
+                                                        .getName(), basicType
+                                                        .getTypeName(),
+                                                dataType.getTypeName(),
+                                                domainSuffix, callbackParamName);
+                                        return null;
+                                    }
+
+                                    @Override
+                                    public Void visitEntityType(
+                                            EntityType dataType, Void p)
+                                            throws RuntimeException {
+                                        iprint(
+                                                "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s, %4$s>(new %4$s%5$s(), %6$s));%n",
+                                                commandClassName, resultMeta
+                                                        .getTypeName(),
+                                                EntityIterationHandler.class
+                                                        .getName(), dataType
+                                                        .getTypeName(),
+                                                entitySuffix, callbackParamName);
+                                        return null;
+                                    }
+
+                                }, null);
                 if ("void".equals(resultMeta.getTypeName())) {
                     iprint("command.execute();%n");
                     iprint("exiting(\"%1$s\", \"%2$s\", null);%n",
@@ -299,60 +330,133 @@ public class DaoGenerator extends AbstractGenerator {
                     iprint("return result;%n");
                 }
             } else {
-                if (m.getReturnMeta().getCollectionType() != null) {
-                    ListType listType = m.getReturnMeta().getCollectionType();
-                    if (listType.getEntityType() != null) {
-                        EntityType entityType = listType.getEntityType();
-                        iprint(
-                                "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s>(new %4$s%5$s()));%n",
-                                commandClassName, listType.getTypeName(),
-                                EntityResultListHandler.class.getName(),
-                                entityType.getTypeName(), entitySuffix);
-                    } else if (listType.getDomainType() != null) {
-                        DomainType domainType = listType.getDomainType();
-                        BasicType basicType = domainType.getValueType();
-                        iprint(
-                                "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s, %5$s>(new %5$s%6$s()));%n",
-                                commandClassName, listType.getTypeName(),
-                                DomainResultListHandler.class.getName(),
-                                basicType.getTypeName(), domainType
-                                        .getTypeName(), domainSuffix);
-                    } else {
-                        BasicType basicType = listType.getValueType();
-                        iprint(
-                                "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s>(new %5$s()));%n",
-                                commandClassName, listType.getTypeName(),
-                                BasicResultListHandler.class.getName(),
-                                basicType.getTypeName(), basicType
-                                        .getWrapperType().getTypeName());
-                    }
-                } else {
-                    if (m.getReturnMeta().getEntityType() != null) {
-                        EntityType entityType = m.getReturnMeta()
-                                .getEntityType();
-                        iprint(
-                                "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s>(new %4$s%5$s()));%n",
-                                commandClassName, entityType.getTypeName(),
-                                EntitySingleResultHandler.class.getName(),
-                                entityType.getTypeName(), entitySuffix);
-                    } else if (m.getReturnMeta().getDomainType() != null) {
-                        DomainType domainType = m.getReturnMeta()
-                                .getDomainType();
-                        BasicType basicType = domainType.getValueType();
-                        iprint(
-                                "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s, %2$s>(new %2$s%5$s()));%n",
-                                commandClassName, domainType.getTypeName(),
-                                DomainSingleResultHandler.class.getName(),
-                                basicType.getTypeName(), domainSuffix);
-                    } else {
-                        BasicType basicType = m.getReturnMeta().getValueType();
-                        iprint(
-                                "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s>(new %4$s()));%n",
-                                commandClassName, basicType.getTypeName(),
-                                BasicSingleResultHandler.class.getName(),
-                                basicType.getWrapperType().getTypeName());
-                    }
-                }
+                m
+                        .getReturnMeta()
+                        .getDataType()
+                        .accept(
+                                new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+
+                                    @Override
+                                    public Void visitBasicType(
+                                            BasicType dataType, Void p)
+                                            throws RuntimeException {
+                                        iprint(
+                                                "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s>(new %4$s()));%n",
+                                                commandClassName, dataType
+                                                        .getTypeName(),
+                                                BasicSingleResultHandler.class
+                                                        .getName(), dataType
+                                                        .getWrapperType()
+                                                        .getTypeName());
+                                        return null;
+                                    }
+
+                                    @Override
+                                    public Void visitDomainType(
+                                            DomainType dataType, Void p)
+                                            throws RuntimeException {
+                                        BasicType basicType = dataType
+                                                .getBasicType();
+                                        iprint(
+                                                "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s, %2$s>(new %2$s%5$s()));%n",
+                                                commandClassName, dataType
+                                                        .getTypeName(),
+                                                DomainSingleResultHandler.class
+                                                        .getName(), basicType
+                                                        .getTypeName(),
+                                                domainSuffix);
+                                        return null;
+                                    }
+
+                                    @Override
+                                    public Void visitEntityType(
+                                            EntityType dataType, Void p)
+                                            throws RuntimeException {
+                                        iprint(
+                                                "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%2$s>(new %4$s%5$s()));%n",
+                                                commandClassName, dataType
+                                                        .getTypeName(),
+                                                EntitySingleResultHandler.class
+                                                        .getName(), dataType
+                                                        .getTypeName(),
+                                                entitySuffix);
+                                        return null;
+                                    }
+
+                                    @Override
+                                    public Void visitListType(
+                                            final ListType listType, Void p)
+                                            throws RuntimeException {
+                                        listType
+                                                .getElementType()
+                                                .accept(
+                                                        new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+
+                                                            @Override
+                                                            public Void visitBasicType(
+                                                                    BasicType dataType,
+                                                                    Void p)
+                                                                    throws RuntimeException {
+                                                                iprint(
+                                                                        "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s>(new %5$s()));%n",
+                                                                        commandClassName,
+                                                                        listType
+                                                                                .getTypeName(),
+                                                                        BasicResultListHandler.class
+                                                                                .getName(),
+                                                                        dataType
+                                                                                .getTypeName(),
+                                                                        dataType
+                                                                                .getWrapperType()
+                                                                                .getTypeName());
+                                                                return null;
+                                                            }
+
+                                                            @Override
+                                                            public Void visitDomainType(
+                                                                    DomainType dataType,
+                                                                    Void p)
+                                                                    throws RuntimeException {
+                                                                BasicType basicType = dataType
+                                                                        .getBasicType();
+                                                                iprint(
+                                                                        "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s, %5$s>(new %5$s%6$s()));%n",
+                                                                        commandClassName,
+                                                                        listType
+                                                                                .getTypeName(),
+                                                                        DomainResultListHandler.class
+                                                                                .getName(),
+                                                                        basicType
+                                                                                .getTypeName(),
+                                                                        dataType
+                                                                                .getTypeName(),
+                                                                        domainSuffix);
+                                                                return null;
+                                                            }
+
+                                                            @Override
+                                                            public Void visitEntityType(
+                                                                    EntityType dataType,
+                                                                    Void p)
+                                                                    throws RuntimeException {
+                                                                iprint(
+                                                                        "%1$s<%2$s> command = new %1$s<%2$s>(query, new %3$s<%4$s>(new %4$s%5$s()));%n",
+                                                                        commandClassName,
+                                                                        listType
+                                                                                .getTypeName(),
+                                                                        EntityResultListHandler.class
+                                                                                .getName(),
+                                                                        dataType
+                                                                                .getTypeName(),
+                                                                        entitySuffix);
+                                                                return null;
+                                                            }
+
+                                                        }, null);
+                                        return null;
+                                    }
+
+                                }, null);
                 iprint("%1$s result = command.execute();%n", resultMeta
                         .getTypeName());
                 iprint("exiting(\"%1$s\", \"%2$s\", result);%n", qualifiedName,
@@ -708,7 +812,7 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visistDomainListParameterMeta(DomainListParameterMeta m,
                 Void p) {
             DomainType domainType = m.getDomainType();
-            BasicType basicType = domainType.getValueType();
+            BasicType basicType = domainType.getBasicType();
             iprint(
                     "query.addParameter(new %1$s<%2$s, %3$s>(new %3$s%4$s(), %5$s));%n",
                     DomainListParameter.class.getName(), basicType
@@ -743,7 +847,7 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visistDomainInOutParameterMeta(DomainInOutParameterMeta m,
                 Void p) {
             DomainType domainType = m.getDomainType();
-            BasicType basicType = domainType.getValueType();
+            BasicType basicType = domainType.getBasicType();
             iprint(
                     "query.addParameter(new %1$s<%2$s, %3$s>(new %3$s%4$s(), %5$s));%n",
                     DomainInOutParameter.class.getName(), basicType
@@ -765,7 +869,7 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visistDomainOutParameterMeta(DomainOutParameterMeta m,
                 Void p) {
             DomainType domainType = m.getDomainType();
-            BasicType basicType = domainType.getValueType();
+            BasicType basicType = domainType.getBasicType();
             iprint(
                     "query.addParameter(new %1$s<%2$s, %3$s>(new %3$s%4$s(), %5$s));%n",
                     DomainOutParameter.class.getName(),
@@ -786,7 +890,7 @@ public class DaoGenerator extends AbstractGenerator {
         @Override
         public Void visitDomainInParameterMeta(DomainInParameterMeta m, Void p) {
             DomainType domainType = m.getDomainType();
-            BasicType basicType = domainType.getValueType();
+            BasicType basicType = domainType.getBasicType();
             iprint(
                     "query.addParameter(new %1$s<%2$s, %3$s>(new %3$s%4$s(), %5$s));%n",
                     DomainInParameter.class.getName(), basicType.getTypeName(),
@@ -809,7 +913,7 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visistDomainListResultParameterMeta(
                 DomainListResultParameterMeta m, Void p) {
             DomainType domainType = m.getDomainType();
-            BasicType basicType = domainType.getValueType();
+            BasicType basicType = domainType.getBasicType();
             iprint(
                     "query.setResultParameter(new %1$s<%2$s, %3$s>(new %3$s%4$s()));%n",
                     DomainListResultParameter.class.getName(), basicType
@@ -844,7 +948,7 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visistDomainResultParameterMeta(
                 DomainResultParameterMeta m, Void p) {
             DomainType domainType = m.getDomainType();
-            BasicType basicType = domainType.getValueType();
+            BasicType basicType = domainType.getBasicType();
             iprint(
                     "query.setResultParameter(new %1$s<%2$s, %3$s>(new %3$s%4$s()));%n",
                     DomainResultParameter.class.getName(), basicType

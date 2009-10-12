@@ -17,26 +17,30 @@ package org.seasar.doma.internal.apt.type;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.internal.apt.TypeUtil;
+/**
+ * @author taedium
+ * 
+ */
+public abstract class AbstractDataType implements DataType {
 
-public class AnyType extends AbstractDataType {
+    protected final TypeMirror typeMirror;
 
-    public AnyType(TypeMirror type, String typeName) {
-        super(type, typeName);
+    protected final String typeName;
+
+    protected AbstractDataType(TypeMirror typeMirror, String typeName) {
+        assertNotNull(typeMirror, typeName);
+        this.typeMirror = typeMirror;
+        this.typeName = typeName;
     }
 
-    public static AnyType newInstance(TypeMirror type, ProcessingEnvironment env) {
-        assertNotNull(type, env);
-        return new AnyType(type, TypeUtil.getTypeName(type, env));
+    public TypeMirror getTypeMirror() {
+        return typeMirror;
     }
 
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            DataTypeVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitAnyType(this, p);
+    public String getTypeName() {
+        return typeName;
     }
 
 }
