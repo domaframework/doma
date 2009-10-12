@@ -30,11 +30,22 @@ import org.seasar.doma.message.DomaMessageCode;
  * 
  * @author taedium
  * 
+ * @param <V>
+ *            {@link Enum} の型
  */
 public class EnumType<E extends Enum<E>> extends AbstractJdbcType<E> {
 
-    private final Class<E> enumClass;
+    /** {@link Enum} のクラス */
+    protected final Class<E> enumClass;
 
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param enumClass
+     *            {@link Enum} のクラス
+     * @throws DomaNullPointerException
+     *             {@link Enum} のクラスが {@code null} の場合
+     */
     public EnumType(Class<E> enumClass) {
         super(Types.VARCHAR);
         if (enumClass == null) {
