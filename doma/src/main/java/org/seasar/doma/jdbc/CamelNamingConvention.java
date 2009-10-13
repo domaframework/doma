@@ -20,7 +20,7 @@ import org.seasar.doma.internal.util.StringUtil;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
- * キャメルケースを大文字のアンダースコア区切りに、また逆に、アンダースコア区切りをキャメルケースに変換するネーミング規約です。
+ * キャメルケースを大文字のアンダースコア区切りに変換するネーミング規約です。
  * 
  * @author taedium
  * 
@@ -28,7 +28,10 @@ import org.seasar.doma.jdbc.dialect.Dialect;
 public class CamelNamingConvention implements NamingConvention {
 
     /**
-     * キャメルケースのエンティティ名を大文字のアンダースコア区切りテーブル名に変換します。
+     * キャメルケースのエンティティ名を大文字のアンダースコア区切りのテーブル名に変換します。
+     * <p>
+     * たとえば、{@code EmployeeInfo} というエンティティ名を {@code EMPLOYEE_INFO}
+     * というテーブル名に変換します。
      * <p>
      * {@inheritDoc}
      */
@@ -44,7 +47,9 @@ public class CamelNamingConvention implements NamingConvention {
     }
 
     /**
-     * キャメルケースのプロパティ名を大文字のアンダースコア区切りカラム名に変換します。
+     * キャメルケースのプロパティ名を大文字のアンダースコア区切りのカラム名に変換します。
+     * <p>
+     * たとえば、{@code employeeName} というプロパティ名を {@code EMPLOYEE_NAME} というカラム名に変換します。
      * <p>
      * {@inheritDoc}
      */
