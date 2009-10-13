@@ -21,31 +21,31 @@ package org.seasar.doma.internal.apt.meta;
  */
 public interface CallableSqlParameterMetaVisitor<R, P> {
 
-    R visitValueInParameterMeta(BasicInParameterMeta m, P p);
+    R visitBasicInParameterMeta(BasicInParameterMeta m, P p);
 
     R visitDomainInParameterMeta(DomainInParameterMeta m, P p);
 
-    R visistValueOutParameterMeta(BasicOutParameterMeta m, P p);
+    R visistBasicOutParameterMeta(BasicOutParameterMeta m, P p);
 
     R visistDomainOutParameterMeta(DomainOutParameterMeta m, P p);
 
-    R visistValueInOutParameterMeta(BasicInOutParameterMeta m, P p);
+    R visistBasicInOutParameterMeta(BasicInOutParameterMeta m, P p);
 
     R visistDomainInOutParameterMeta(DomainInOutParameterMeta m, P p);
 
-    R visistValueListParameterMeta(BasicListParameterMeta m, P p);
+    R visistBasicListParameterMeta(BasicListParameterMeta m, P p);
 
     R visistDomainListParameterMeta(DomainListParameterMeta m, P p);
 
     R visistEntityListParameterMeta(EntityListParameterMeta m, P p);
 
-    R visistValueListResultParameterMeta(BasicListResultParameterMeta m, P p);
+    R visistBasicListResultParameterMeta(BasicListResultParameterMeta m, P p);
 
     R visistDomainListResultParameterMeta(DomainListResultParameterMeta m, P p);
 
     R visistEntityListResultParameterMeta(EntityListResultParameterMeta m, P p);
 
-    R visistValueResultParameterMeta(BasicResultParameterMeta m, P p);
+    R visistBasicResultParameterMeta(BasicResultParameterMeta m, P p);
 
     R visistDomainResultParameterMeta(DomainResultParameterMeta m, P p);
 

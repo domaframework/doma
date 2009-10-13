@@ -45,7 +45,7 @@ public class BasicInParameterMeta implements CallableSqlParameterMeta {
 
     @Override
     public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitValueInParameterMeta(this, p);
+        return visitor.visitBasicInParameterMeta(this, p);
     }
 
 }

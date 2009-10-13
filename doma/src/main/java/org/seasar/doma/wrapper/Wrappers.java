@@ -57,7 +57,7 @@ public final class Wrappers {
         assertNotNull(valueClass);
         assertTrue(value == null || valueClass.isInstance(value));
 
-        Wrapper<?> result = wrapValueObject(value, valueClass);
+        Wrapper<?> result = wrapBasicObject(value, valueClass);
         if (result == null) {
             result = wrapDomainObject(value, valueClass);
             if (result == null) {
@@ -77,7 +77,7 @@ public final class Wrappers {
      * @return ラッパー、値が基本型でない場合 {@code null}
      */
     @SuppressWarnings("unchecked")
-    protected static Wrapper<?> wrapValueObject(Object value,
+    protected static Wrapper<?> wrapBasicObject(Object value,
             Class<?> valueClass) {
         Class<?> wrapperClass = ClassUtil
                 .getWrapperClassIfPrimitive(valueClass);
@@ -158,7 +158,7 @@ public final class Wrappers {
         Object domainValue = getDomainValue(value, valueClass, domain
                 .accessorMethod());
         Class<?> domainValueClass = domain.valueType();
-        return wrapValueObject(domainValue, domainValueClass);
+        return wrapBasicObject(domainValue, domainValueClass);
     }
 
     /**

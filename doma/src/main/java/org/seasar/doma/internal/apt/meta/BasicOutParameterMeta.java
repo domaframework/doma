@@ -45,7 +45,7 @@ public class BasicOutParameterMeta implements CallableSqlParameterMeta {
 
     @Override
     public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visistValueOutParameterMeta(this, p);
+        return visitor.visistBasicOutParameterMeta(this, p);
     }
 
 }

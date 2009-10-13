@@ -818,7 +818,7 @@ public class DaoGenerator extends AbstractGenerator {
             CallableSqlParameterMetaVisitor<Void, Void> {
 
         @Override
-        public Void visistValueListParameterMeta(BasicListParameterMeta m,
+        public Void visistBasicListParameterMeta(BasicListParameterMeta m,
                 Void p) {
             BasicType basicType = m.getValueType();
             WrapperType wrapperType = basicType.getWrapperType();
@@ -858,7 +858,7 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visistValueInOutParameterMeta(BasicInOutParameterMeta m,
+        public Void visistBasicInOutParameterMeta(BasicInOutParameterMeta m,
                 Void p) {
             BasicType basicType = m.getValueType();
             WrapperType wrapperType = basicType.getWrapperType();
@@ -887,7 +887,7 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visistValueOutParameterMeta(BasicOutParameterMeta m, Void p) {
+        public Void visistBasicOutParameterMeta(BasicOutParameterMeta m, Void p) {
             BasicType basicType = m.getValueType();
             WrapperType wrapperType = basicType.getWrapperType();
             String wrapperParam = wrapperType.isEnum() ? wrapperType
@@ -914,7 +914,7 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visitValueInParameterMeta(BasicInParameterMeta m, Void p) {
+        public Void visitBasicInParameterMeta(BasicInParameterMeta m, Void p) {
             BasicType basicType = m.getValueType();
             WrapperType wrapperType = basicType.getWrapperType();
             if (wrapperType.isEnum()) {
@@ -943,7 +943,7 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visistValueListResultParameterMeta(
+        public Void visistBasicListResultParameterMeta(
                 BasicListResultParameterMeta m, Void p) {
             BasicType basicType = m.getValueType();
             WrapperType wrapperType = basicType.getWrapperType();
@@ -983,7 +983,7 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visistValueResultParameterMeta(BasicResultParameterMeta m,
+        public Void visistBasicResultParameterMeta(BasicResultParameterMeta m,
                 Void p) {
             BasicType basicType = m.getValueType();
             WrapperType wrapperType = basicType.getWrapperType();

@@ -38,7 +38,7 @@ public class BasicResultParameterMeta implements ResultParameterMeta {
 
     @Override
     public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visistValueResultParameterMeta(this, p);
+        return visitor.visistBasicResultParameterMeta(this, p);
     }
 
 }
