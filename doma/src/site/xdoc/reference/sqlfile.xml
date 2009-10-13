@@ -66,13 +66,13 @@
 <source>META-INF/aaa/bbb/EmployeeDao/selectById.sql</source>
 				<p>
 					複数のRDBMSに対応する必要があり特定のRDBMSでは別のSQLファイルを使いたい場合、
-					<code>.sql</code> の前にRDBMS名を入れることで、優先的に使用するファイルを指示できます。
+					<code>.sql</code> の前にハイフン区切りでRDBMS名を入れることで、優先的に使用するファイルを指示できます。
 					たとえば、PostgreSQL専用のSQLファイルは次の名前にします。
 				</p>
-<source>META-INF/aaa/bbb/EmployeeDao/selectById_postgres.sql</source>
+<source>META-INF/aaa/bbb/EmployeeDao/selectById-postgres.sql</source>
 				<p>
 					この場合、PostgreSQLを使用している場合に限り、<code>META-INF/aaa/bbb/EmployeeDao/selectById.sql</code> よりも
-					<code>META-INF/aaa/bbb/EmployeeDao/selectById_postgres.sql</code> が優先的に使用されます。
+					<code>META-INF/aaa/bbb/EmployeeDao/selectById-postgres.sql</code> が優先的に使用されます。
 				</p>
 				<p>
 					RDBMS名は、 <code>org.seasar.doma.jdbc.dialect.Dialect</code>の <code>getName</code>メソッドの値が使用されます。

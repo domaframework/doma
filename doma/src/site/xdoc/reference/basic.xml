@@ -20,6 +20,7 @@
 			</p>
 			<ul>
 				<li>プリミティブ型とそのラッパー型</li>
+				<li>列挙型</li>
 				<li>byte[]</li>
 				<li>java.lang.String</li>
 				<li>java.math.BigDecimal</li>
