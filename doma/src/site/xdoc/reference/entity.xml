@@ -86,10 +86,6 @@ public class Employee {
 			</subsection>
 		</section>
 		<section name="フィールド定義">
-			<p>
-				フィールドの可視性を
-				フィールドの可視性を<code>public</code>にして直接アクセスすることもできます。
-			</p>
 			<subsection name="永続的なフィールド">
 				<p>
 					永続的なフィールドは、テーブルや結果セットのカラムに対応します。
