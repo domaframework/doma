@@ -104,7 +104,7 @@ public class CachedSqlFileRepository implements SqlFileRepository {
     protected String getPrimaryPath(String path, Dialect dialect) {
         String name = dialect.getName();
         return path.substring(0, path.length() - SQL_PATH_SUFFIX.length())
-                + "_" + name + SQL_PATH_SUFFIX;
+                + "-" + name + SQL_PATH_SUFFIX;
     }
 
     /**

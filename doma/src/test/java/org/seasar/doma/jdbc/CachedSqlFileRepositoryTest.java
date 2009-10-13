@@ -46,7 +46,7 @@ public class CachedSqlFileRepositoryTest extends TestCase {
         CachedSqlFileRepository repository = new CachedSqlFileRepository();
         SqlFile sqlFile = repository.getSqlFile(path, dialect);
         assertEquals("META-INF/" + getClass().getName().replace(".", "/")
-                + "_oracle.sql", sqlFile.getPath());
+                + "-oracle.sql", sqlFile.getPath());
     }
 
     public void testGetSqlFile_postgres() throws Exception {
