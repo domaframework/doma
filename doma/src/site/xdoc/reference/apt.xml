@@ -92,7 +92,7 @@
 				</p>
 				<source><![CDATA[<javac fork="yes" srcdir="src" compiler="javac1.6"
 	classpathref="classpath" destdir="target" debug="on" encoding="UTF-8" >
-	<compilerarg line="-Adto.generation=true -Adto.package=hoge.dto"/>
+	<compilerarg line="-Adto.generation=true -Adao.subpackage=impl"/>
 </javac>]]></source>
 			</subsection>
 			<subsection name="Mavenでのオプション指定">
