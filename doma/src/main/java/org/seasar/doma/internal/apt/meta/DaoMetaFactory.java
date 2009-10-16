@@ -37,6 +37,7 @@ import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Notifier;
 import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.TypeUtil;
+import org.seasar.doma.jdbc.ConfigAdapter;
 import org.seasar.doma.message.DomaMessageCode;
 
 /**
@@ -102,6 +103,9 @@ public class DaoMetaFactory {
     protected void doConfig(Dao daoAnnotation, DaoMeta daoMeta) {
         TypeMirror configType = getConfigType(daoAnnotation, daoMeta);
         daoMeta.setConfigType(configType);
+        if (TypeUtil.isSameType(configType, ConfigAdapter.class, env)) {
+            daoMeta.setConfigAdapter(true);
+        }
     }
 
     protected TypeMirror getConfigType(Dao daoAnnotation, DaoMeta daoMeta) {

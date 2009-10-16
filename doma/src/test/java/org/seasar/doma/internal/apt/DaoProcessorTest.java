@@ -26,6 +26,7 @@ import org.seasar.doma.internal.apt.dao.AutoProcedureDao;
 import org.seasar.doma.internal.apt.dao.AutoUpdateDao;
 import org.seasar.doma.internal.apt.dao.BlobFactoryDao;
 import org.seasar.doma.internal.apt.dao.ClobFactoryDao;
+import org.seasar.doma.internal.apt.dao.ConfigAdapterDao;
 import org.seasar.doma.internal.apt.dao.DelegateDao;
 import org.seasar.doma.internal.apt.dao.DomainParameterDao;
 import org.seasar.doma.internal.apt.dao.ElementOfParamListUnspecifiedDao;
@@ -425,6 +426,16 @@ public class DaoProcessorTest extends AptTestCase {
 
     public void testEnum() throws Exception {
         Class<?> target = EnumDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testConfigAdapter() throws Exception {
+        Class<?> target = ConfigAdapterDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
         addCompilationUnit(target);

@@ -4,15 +4,11 @@ package org.seasar.doma.internal.apt.dao;
 public class ClobFactoryDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao implements org.seasar.doma.internal.apt.dao.ClobFactoryDao {
 
     public ClobFactoryDaoImpl() {
-        super(new org.seasar.doma.internal.apt.dao.MyConfig(), null);
+        super(new org.seasar.doma.internal.apt.dao.MyConfig());
     }
 
     public ClobFactoryDaoImpl(javax.sql.DataSource dataSource) {
         super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
-    }
-
-    protected ClobFactoryDaoImpl(org.seasar.doma.jdbc.Config config) {
-        super(config, config.dataSource());
     }
 
     @Override

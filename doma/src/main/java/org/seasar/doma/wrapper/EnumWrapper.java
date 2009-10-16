@@ -22,7 +22,7 @@ import org.seasar.doma.DomaNullPointerException;
  * 
  * @author taedium
  * 
- * @param <V>
+ * @param <E>
  *            {@link Enum} の型
  */
 public class EnumWrapper<E extends Enum<E>> extends AbstractWrapper<E> {

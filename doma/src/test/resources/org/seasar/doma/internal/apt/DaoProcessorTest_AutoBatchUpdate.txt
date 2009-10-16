@@ -4,15 +4,11 @@ package org.seasar.doma.internal.apt.dao;
 public class AutoBatchUpdateDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao implements org.seasar.doma.internal.apt.dao.AutoBatchUpdateDao {
 
     public AutoBatchUpdateDaoImpl() {
-        super(new org.seasar.doma.internal.apt.dao.MyConfig(), null);
+        super(new org.seasar.doma.internal.apt.dao.MyConfig());
     }
 
     public AutoBatchUpdateDaoImpl(javax.sql.DataSource dataSource) {
         super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
-    }
-
-    protected AutoBatchUpdateDaoImpl(org.seasar.doma.jdbc.Config config) {
-        super(config, config.dataSource());
     }
 
     @Override

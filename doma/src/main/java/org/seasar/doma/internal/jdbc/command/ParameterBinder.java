@@ -25,8 +25,6 @@ import org.seasar.doma.jdbc.SqlParameter;
  * 
  * @author taedium
  * 
- * @param <S>
- * @param <P>
  */
 public interface ParameterBinder<S extends Statement, P extends SqlParameter> {
 

@@ -13,16 +13,20 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.command;
+package org.seasar.doma.internal.apt.dao;
 
-import java.sql.SQLException;
+import org.seasar.doma.Dao;
+import org.seasar.doma.Insert;
+import org.seasar.doma.internal.apt.entity.Emp;
+import org.seasar.doma.jdbc.ConfigAdapter;
 
 /**
- * 
  * @author taedium
  * 
  */
-public interface ResultFetcher<R, A> {
+@Dao(config = ConfigAdapter.class)
+public interface ConfigAdapterDao {
 
-    void fetch(R result, A acceptor) throws SQLException;
+    @Insert
+    int insert(Emp emp);
 }

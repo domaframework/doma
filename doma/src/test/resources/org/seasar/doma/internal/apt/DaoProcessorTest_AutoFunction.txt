@@ -4,15 +4,11 @@ package org.seasar.doma.internal.apt.dao;
 public class AutoFunctionDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao implements org.seasar.doma.internal.apt.dao.AutoFunctionDao {
 
     public AutoFunctionDaoImpl() {
-        super(new org.seasar.doma.internal.apt.dao.MyConfig(), null);
+        super(new org.seasar.doma.internal.apt.dao.MyConfig());
     }
 
     public AutoFunctionDaoImpl(javax.sql.DataSource dataSource) {
         super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
-    }
-
-    protected AutoFunctionDaoImpl(org.seasar.doma.jdbc.Config config) {
-        super(config, config.dataSource());
     }
 
     @Override

@@ -4,15 +4,11 @@ package org.seasar.doma.internal.apt.dao;
 public class SqlFileSelectEntityDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao implements org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao {
 
     public SqlFileSelectEntityDaoImpl() {
-        super(new org.seasar.doma.internal.apt.dao.MyConfig(), null);
+        super(new org.seasar.doma.internal.apt.dao.MyConfig());
     }
 
     public SqlFileSelectEntityDaoImpl(javax.sql.DataSource dataSource) {
         super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
-    }
-
-    protected SqlFileSelectEntityDaoImpl(org.seasar.doma.jdbc.Config config) {
-        super(config, config.dataSource());
     }
 
     @Override

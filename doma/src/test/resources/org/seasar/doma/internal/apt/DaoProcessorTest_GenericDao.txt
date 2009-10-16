@@ -4,15 +4,11 @@ package org.seasar.doma.internal.apt.dao;
 public class GenericDaoEx_ extends org.seasar.doma.jdbc.DomaAbstractDao implements org.seasar.doma.internal.apt.dao.GenericDaoEx {
 
     public GenericDaoEx_() {
-        super(new org.seasar.doma.internal.apt.dao.MyConfig(), null);
+        super(new org.seasar.doma.internal.apt.dao.MyConfig());
     }
 
     public GenericDaoEx_(javax.sql.DataSource dataSource) {
         super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
-    }
-
-    protected GenericDaoEx_(org.seasar.doma.jdbc.Config config) {
-        super(config, config.dataSource());
     }
 
     @Override

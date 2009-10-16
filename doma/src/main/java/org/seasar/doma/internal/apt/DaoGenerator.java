@@ -143,28 +143,29 @@ public class DaoGenerator extends AbstractGenerator {
     }
 
     protected void printConstructors() {
-        iprint("public %1$s() {%n", simpleName);
-        indent();
-        iprint("super(new %1$s(), null);%n", daoMeta.getConfigType());
-        unindent();
-        iprint("}%n");
-        print("%n");
-
-        iprint("public %1$s(%2$s dataSource) {%n", simpleName, DataSource.class
-                .getName());
-        indent();
-        iprint("super(new %1$s(), dataSource);%n", daoMeta.getConfigType());
-        unindent();
-        iprint("}%n");
-        print("%n");
-
-        iprint("protected %1$s(%2$s config) {%n", simpleName, Config.class
-                .getName());
-        indent();
-        iprint("super(config, config.dataSource());%n");
-        unindent();
-        iprint("}%n");
-        print("%n");
+        if (daoMeta.isConfigAdapter()) {
+            iprint("public %1$s(%2$s config) {%n", simpleName, Config.class
+                    .getName());
+            indent();
+            iprint("super(new %1$s(config));%n", daoMeta.getConfigType());
+            unindent();
+            iprint("}%n");
+            print("%n");
+        } else {
+            iprint("public %1$s() {%n", simpleName);
+            indent();
+            iprint("super(new %1$s());%n", daoMeta.getConfigType());
+            unindent();
+            iprint("}%n");
+            print("%n");
+            iprint("public %1$s(%2$s dataSource) {%n", simpleName,
+                    DataSource.class.getName());
+            indent();
+            iprint("super(new %1$s(), dataSource);%n", daoMeta.getConfigType());
+            unindent();
+            iprint("}%n");
+            print("%n");
+        }
     }
 
     protected void printMethods() {

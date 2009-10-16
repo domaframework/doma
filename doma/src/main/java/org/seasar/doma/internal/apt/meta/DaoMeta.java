@@ -16,16 +16,10 @@
 package org.seasar.doma.internal.apt.meta;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
-
-import org.seasar.doma.jdbc.Config;
 
 /**
  * 
@@ -34,23 +28,17 @@ import org.seasar.doma.jdbc.Config;
  */
 public class DaoMeta {
 
-    protected final Deque<Map<TypeMirror, TypeMirror>> typeParamMapStack = new LinkedList<Map<TypeMirror, TypeMirror>>();
-
     protected final List<QueryMeta> queryMetas = new ArrayList<QueryMeta>();
 
     protected TypeMirror configType;
+
+    protected boolean configAdapter;
 
     protected TypeMirror daoType;
 
     protected TypeElement daoElement;
 
     protected String name;
-
-    protected Config config;
-
-    public DaoMeta() {
-        typeParamMapStack.push(Collections.<TypeMirror, TypeMirror> emptyMap());
-    }
 
     public String getName() {
         return name;
@@ -92,12 +80,12 @@ public class DaoMeta {
         return queryMetas;
     }
 
-    public void addTypeParameterMap(Map<TypeMirror, TypeMirror> typeParameterMap) {
-        typeParamMapStack.push(typeParameterMap);
+    public boolean isConfigAdapter() {
+        return configAdapter;
     }
 
-    public Map<TypeMirror, TypeMirror> getTypeParameterMap() {
-        return typeParamMapStack.peek();
+    public void setConfigAdapter(boolean configAdapter) {
+        this.configAdapter = configAdapter;
     }
 
 }

@@ -30,7 +30,7 @@ import org.seasar.doma.message.DomaMessageCode;
  * 
  * @author taedium
  * 
- * @param <V>
+ * @param <E>
  *            {@link Enum} の型
  */
 public class EnumType<E extends Enum<E>> extends AbstractJdbcType<E> {

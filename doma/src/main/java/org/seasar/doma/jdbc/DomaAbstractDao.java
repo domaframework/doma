@@ -40,8 +40,26 @@ public abstract class DomaAbstractDao {
      * 
      * @param config
      *            JDBCの設定
+     * @throws DomaNullPointerException
+     *             {@code config} が {@code null} の場合
+     * @throws ConfigException
+     *             {@code config} の メソッドのどれかが {@code null} を返す場合
+     */
+    public DomaAbstractDao(Config config) {
+        this(config, null);
+    }
+
+    /**
+     * 実行時用の設定を作成します。
+     * 
+     * @param config
+     *            JDBCの設定
      * @param dataSource
      *            データソース
+     * @throws DomaNullPointerException
+     *             {@code config} が {@code null} の場合
+     * @throws ConfigException
+     *             {@code config} の メソッドのどれかが {@code null} を返す場合
      */
     public DomaAbstractDao(Config config, DataSource dataSource) {
         if (config == null) {
