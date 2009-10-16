@@ -16,28 +16,31 @@
 package org.seasar.doma.jdbc;
 
 /**
+ * 値への参照を表します。
+ * <p>
+ * ストアドプロシージャーやストアドファンクションのOUTパラメーターとIN_OUTパラメーターとして使用されます。
  * 
  * @author taedium
  * 
- * @param <T>
+ * @param <V>
  *            値の型
  */
-public class Reference<T> {
+public class Reference<V> {
 
-    private T value;
+    private V value;
 
     public Reference() {
     }
 
-    public Reference(T value) {
+    public Reference(V value) {
         this.value = value;
     }
 
-    public T get() {
+    public V get() {
         return value;
     }
 
-    public void set(T value) {
+    public void set(V value) {
         this.value = value;
     }
 
