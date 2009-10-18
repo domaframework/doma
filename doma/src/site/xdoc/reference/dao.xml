@@ -194,7 +194,7 @@ Employee employee = employeeDao.selectById(1);</source>
 				Daoインタフェースはエンティティクラスと1対1で結びついているわけではありません。
 				ひとつのDaoインタフェースで複数のエンティティクラスを扱えます。
 			</p>
-<source><![CDATA[@Dao
+<source><![CDATA[@Dao(config = AppConfig.class)
 public interface MyDao {
     @Select
     Employee selectEmployee();

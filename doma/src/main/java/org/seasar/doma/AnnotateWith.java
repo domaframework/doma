@@ -23,18 +23,18 @@ import java.lang.annotation.Target;
 import org.seasar.doma.jdbc.ConfigAdapter;
 
 /**
- * {@link Dao} が注釈されたインタフェースの実装クラスのソースコードにアノテーションを注釈することを示します。
+ * {@link Dao} が注釈されたインタフェースの実装クラスのソースコードにアノテーションを付与することを示します。
  * <p>
  * このアノテーションは次の場合にのみ有効です。
  * <ul>
  * <li>{@code Dao} と併用されている。
- * <li>{@code Dao} の {@code config} 要素に {@link ConfigAdapter} が注釈されている。
+ * <li>{@code Dao} の {@code config} 要素に {@link ConfigAdapter} が指定されている。
  * </ul>
  * <p>
  * 
  * <h5>例:</h5>
  * <a href="http://code.google.com/p/google-guice/">google-guice</a>
- * のアノテーションを注釈するには次のように記述します。
+ * のアノテーションを付与するには次のように記述します。
  * 
  * <pre>
  * &#064;Dao(config = ConfigAdapter.class)
@@ -52,7 +52,7 @@ import org.seasar.doma.jdbc.ConfigAdapter;
  * public class EmployeeDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao implements example.EmployeeDao {
  * 
  *     &#064;com.google.inject.Inject()
- *     public GuiceDaoImpl(@com.google.inject.name.Named(&quot;sales&quot;) org.seasar.doma.jdbc.Config config) {
+ *     public EmployeeDaoImpl(@com.google.inject.name.Named(&quot;sales&quot;) org.seasar.doma.jdbc.Config config) {
  *         super(new org.seasar.doma.jdbc.ConfigAdapter(config));
  *     }
  *     ...

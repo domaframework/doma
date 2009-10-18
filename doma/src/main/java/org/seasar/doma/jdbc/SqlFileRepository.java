@@ -27,27 +27,26 @@ import org.seasar.doma.jdbc.dialect.Dialect;
  * <ul>
  * <li>'META-INF/'で始まる。
  * <li>その後ろに、 {@link Dao} が注釈されたインタフェースの完全修飾名の {@code .} を {@code /} に置換したものが続く。
- * <li>その後ろに、{@code _} が続く。
+ * <li>その後ろに、{@code /} が続く。
  * <li>その後ろに、{@link Dao} が注釈されたインタフェースのメンバメソッド名が続く。
- * <li>'.sql'で終わる。
+ * <li>'.sql'で終わる。ただし、'.sql'の前にハイフン区切りでRDBMSの名前を指定可能。
  * </ul>
  * 
  * <h5>SQLファイルのパスの例</h5>
- * 
- * <pre>
- * /META-INF/org/example/ExampleDao_selectAll.sql
- * </pre>
- * 
+ * <p>
+ * {@code META-INF/org/example/ExampleDao/selectAll.sql}
+ * <p>
  * このインタフェースの実装クラスは、まず、RDBMS固有のSQLファイルがあるかどうか調べ、あればそちらを使用しなければいけません。
- * RDBMS固有のSQLファイルのパスは、 {@link Dao} が注釈されたインタフェースのメンバメソッド名 と
- * '.sql'の間に次の文字列を挿入することで求められます。
- * <li>{@code _} 。
+ * RDBMS固有のSQLファイルのパスは、 '.sql'の直前に次の2種類の文字列を挿入することで求められます。
+ * <p>
+ * <ul>
+ * <li>{@code -}
  * <li>{@link Dialect#getName()} で返される値。
- * 
+ * </ul>
  * <h5>RDBMS固有のSQLファイルのパスの例</h5>
  * 
  * <pre>
- * /META-INF/org/example/ExampleDao_selectAll_oracle.sql
+ * /META-INF/org/example/ExampleDao/selectAll-oracle.sql
  * </pre>
  * 
  * <p>

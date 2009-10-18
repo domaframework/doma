@@ -232,20 +232,63 @@
 				設定クラスを<code>AppConfig</code>という名前で作成した場合、次のようになります。
 			</p>
 <source><![CDATA[@Dao(config = AppConfig.class)
-public interface MyDao {
+public interface EmployeeDao {
     ...
 }]]></source>
 		</section>
-		<section name="Seasar2を利用する場合の設定例">
+		<section name="DIコンテナを利用する場合の設定例">
 			<p>
-				Seasar2を利用する場合、
-				<code>Config</code> の実装クラスでは、
-				Seasar2が管理するデータソースやトランザクションマネジャーと連携するとよいでしょう。
-				また、ロギングフレームワークも統一したほうが管理しやすいでしょう。
+				DIコンテナを利用する場合、<code>Dao</code>の実装クラスや設定クラスのインスタンスをDIコンテナに管理させるとよいでしょう。
 			</p>
-			<p>
-				例については、<a href="../downloads.html">ダウンロードページ</a>で提供している「SAStrutsを利用したデモアプリ」を参照してください。
-			</p>
+			<subsection name="設定クラスのインスタンスのインジェクション">
+				<p>
+					<code>Dao</code>の実装クラスのインスタンスに設定クラスのインスタンスをインジェクションするには、
+					<code>@Dao</code>の<code>config</code>要素に<a href ="../apidocs/org/seasar/doma/jdbc/ConfigAdapter.html"><code>org.seasar.doma.jdbc.ConfigAdapter</code></a>を指定してください。
+					<code>ConfigAdapter</code>を使用すると、<code>Config</code>型のインスタンスを受け取るコンストラクタが<code>Dao</code>の実装クラスに生成されます。
+					コンストラクタインジェクションをサポートするDIコンテナであれば、設定ファイルなどによりインジェクションが可能です。
+				</p>
+<source><![CDATA[@Dao(config = ConfigAdapter.class)
+public interface EmployeeDao {
+    ...
+}]]></source>
+				<p>
+					上のインタフェースに対する実装クラスのソースコードは、aptにより次のように生成されます。
+				</p>
+<source><![CDATA[public class EmployeeDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao implements example.EmployeeDao {
+    public GuiceDaoImpl(org.seasar.doma.jdbc.Config config) {
+        super(new org.seasar.doma.jdbc.ConfigAdapter(config));
+    }
+    ...
+}]]></source>
+			</subsection>
+				<subsection name="aptにより生成されるソースコードに対するアノテーションの付与">
+					<p>
+						<code>@AnnotateWith</code>を使用することで、インジェクションのためのアノテーションを<code>Dao</code>の実装クラスのソースコードに付与できます。
+						これにより、DIコンテナがサポートしていれば、アノテーションによるインジェクションも可能になります。
+					</p>
+					<p>
+						たとえば、  <a href="http://code.google.com/p/google-guice/">google-guice</a>のアノテーションを付与するには次のように記述します。
+					</p>
+<source><![CDATA[@Dao(config = ConfigAdapter.class)
+@AnnotateWith(annotations = {
+        @Annotation(target = AnnotationTarget.CONSTRUCOTR, type = Inject.class),
+        @Annotation(target = AnnotationTarget.CONSTRUCOTR_PARAMETER, type = Named.class, elements = "\"sales\"") })
+public interface EmployeeDao {
+    ...
+}]]></source>
+					<p>
+						上のインタフェースに対する実装クラスのソースコードは、aptにより次のように生成されます。
+						コンストラクタとコンストラクタのパラメータにアノテーションが付与されていることに注目してください。
+					</p>
+<source><![CDATA[@Dao(config = ConfigAdapter.class)
+public class EmployeeDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao implements example.EmployeeDao {
+    @com.google.inject.Inject()
+    public EmployeeDaoImpl(@com.google.inject.name.Named("sales") org.seasar.doma.jdbc.Config config) {
+        super(new org.seasar.doma.jdbc.ConfigAdapter(config));
+    }
+    ...
+}]]></source>
+			</subsection>
 		</section>
 	</body>
 </document>
