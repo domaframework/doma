@@ -30,6 +30,8 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 
+import org.seasar.doma.AnnotateWith;
+import org.seasar.doma.Annotation;
 import org.seasar.doma.Dao;
 import org.seasar.doma.DaoMethod;
 import org.seasar.doma.internal.apt.AptException;
@@ -77,8 +79,18 @@ public class DaoMetaFactory {
         daoMeta.setName(name);
         daoMeta.setDaoElement(interfaceElement);
         daoMeta.setDaoType(interfaceElement.asType());
-        Dao daoAnnotation = interfaceElement.getAnnotation(Dao.class);
-        doConfig(daoAnnotation, daoMeta);
+        Dao dao = interfaceElement.getAnnotation(Dao.class);
+        doConfig(dao, daoMeta);
+        AnnotateWith annotateWith = interfaceElement
+                .getAnnotation(AnnotateWith.class);
+        if (annotateWith != null) {
+            if (daoMeta.isConfigAdapter()) {
+                doAnnotateWith(annotateWith, daoMeta);
+            } else {
+                throw new AptException(DomaMessageCode.DOMA4142, env,
+                        interfaceElement);
+            }
+        }
     }
 
     protected void validateInterface(TypeElement interfaceElement) {
@@ -100,17 +112,39 @@ public class DaoMetaFactory {
         }
     }
 
-    protected void doConfig(Dao daoAnnotation, DaoMeta daoMeta) {
-        TypeMirror configType = getConfigType(daoAnnotation, daoMeta);
+    protected void doConfig(Dao dao, DaoMeta daoMeta) {
+        TypeMirror configType = getConfigType(dao);
         daoMeta.setConfigType(configType);
         if (TypeUtil.isSameType(configType, ConfigAdapter.class, env)) {
             daoMeta.setConfigAdapter(true);
         }
     }
 
-    protected TypeMirror getConfigType(Dao daoAnnotation, DaoMeta daoMeta) {
+    protected TypeMirror getConfigType(Dao dao) {
         try {
-            daoAnnotation.config();
+            dao.config();
+        } catch (MirroredTypeException e) {
+            return e.getTypeMirror();
+        }
+        throw new AptIllegalStateException("unreachable.");
+    }
+
+    protected void doAnnotateWith(AnnotateWith annotateWith, DaoMeta daoMeta) {
+        AnnotateWithMeta annotateWithMeta = new AnnotateWithMeta();
+        for (Annotation annotation : annotateWith.annotations()) {
+            AnnotationMeta annotationMeta = new AnnotationMeta();
+            annotationMeta.setTarget(annotation.target());
+            annotationMeta.setTypeName(TypeUtil.getTypeName(
+                    getAnnotationType(annotation), env));
+            annotationMeta.setElements(annotation.elements());
+            annotateWithMeta.addAnnotationMeta(annotationMeta);
+        }
+        daoMeta.setAnnotateWithMeta(annotateWithMeta);
+    }
+
+    protected TypeMirror getAnnotationType(Annotation annotation) {
+        try {
+            annotation.type();
         } catch (MirroredTypeException e) {
             return e.getTypeMirror();
         }

@@ -34,6 +34,8 @@ public class DaoMeta {
 
     protected boolean configAdapter;
 
+    protected AnnotateWithMeta annotateWithMeta;
+
     protected TypeMirror daoType;
 
     protected TypeElement daoElement;
@@ -86,6 +88,14 @@ public class DaoMeta {
 
     public void setConfigAdapter(boolean configAdapter) {
         this.configAdapter = configAdapter;
+    }
+
+    public AnnotateWithMeta getAnnotateWithMeta() {
+        return annotateWithMeta;
+    }
+
+    public void setAnnotateWithMeta(AnnotateWithMeta annotateWithMeta) {
+        this.annotateWithMeta = annotateWithMeta;
     }
 
 }

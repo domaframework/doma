@@ -24,8 +24,11 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.sql.DataSource;
 
+import org.seasar.doma.AnnotationTarget;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.apt.meta.AbstractCreateQueryMeta;
+import org.seasar.doma.internal.apt.meta.AnnotateWithMeta;
+import org.seasar.doma.internal.apt.meta.AnnotationMeta;
 import org.seasar.doma.internal.apt.meta.ArrayCreateQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoBatchModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoFunctionQueryMeta;
@@ -126,6 +129,16 @@ public class DaoGenerator extends AbstractGenerator {
     }
 
     protected void printClass() {
+        AnnotateWithMeta annotateWithMeta = daoMeta.getAnnotateWithMeta();
+        if (annotateWithMeta != null) {
+            for (AnnotationMeta annotationMeta : annotateWithMeta
+                    .getAnnotationMetas()) {
+                if (annotationMeta.getTarget() == AnnotationTarget.CLASS) {
+                    iprint("@%1$s(%2$s)%n", annotationMeta.getTypeName(),
+                            annotationMeta.getElements());
+                }
+            }
+        }
         printGenerated();
         iprint("public class %1$s extends %2$s implements %3$s {%n",
                 simpleName, DomaAbstractDao.class.getName(), daoMeta
@@ -144,8 +157,27 @@ public class DaoGenerator extends AbstractGenerator {
 
     protected void printConstructors() {
         if (daoMeta.isConfigAdapter()) {
-            iprint("public %1$s(%2$s config) {%n", simpleName, Config.class
-                    .getName());
+            AnnotateWithMeta annotateWithMeta = daoMeta.getAnnotateWithMeta();
+            if (annotateWithMeta != null) {
+                for (AnnotationMeta annotationMeta : annotateWithMeta
+                        .getAnnotationMetas()) {
+                    if (annotationMeta.getTarget() == AnnotationTarget.CONSTRUCOTR) {
+                        iprint("@%1$s(%2$s)%n", annotationMeta.getTypeName(),
+                                annotationMeta.getElements());
+                    }
+                }
+            }
+            iprint("public %1$s(", simpleName);
+            if (annotateWithMeta != null) {
+                for (AnnotationMeta annotationMeta : annotateWithMeta
+                        .getAnnotationMetas()) {
+                    if (annotationMeta.getTarget() == AnnotationTarget.CONSTRUCOTR_PARAMETER) {
+                        print("@%1$s(%2$s) ", annotationMeta.getTypeName(),
+                                annotationMeta.getElements());
+                    }
+                }
+            }
+            print("%1$s config) {%n", Config.class.getName());
             indent();
             iprint("super(new %1$s(config));%n", daoMeta.getConfigType());
             unindent();

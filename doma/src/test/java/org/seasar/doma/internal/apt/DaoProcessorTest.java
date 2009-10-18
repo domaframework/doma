@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.apt;
 
+import org.seasar.doma.internal.apt.dao.AnnotateWithDao;
 import org.seasar.doma.internal.apt.dao.AnnotationConflictedDao;
 import org.seasar.doma.internal.apt.dao.AnnotationNotFoundDao;
 import org.seasar.doma.internal.apt.dao.ArrayFactoryDao;
@@ -35,6 +36,7 @@ import org.seasar.doma.internal.apt.dao.EmbeddedVariableDao;
 import org.seasar.doma.internal.apt.dao.EmptySqlFileDao;
 import org.seasar.doma.internal.apt.dao.EnumDao;
 import org.seasar.doma.internal.apt.dao.ExtendsDao;
+import org.seasar.doma.internal.apt.dao.IllegalAnnotateWithDao;
 import org.seasar.doma.internal.apt.dao.IllegalConstructorDelegateDao;
 import org.seasar.doma.internal.apt.dao.IllegalMethodDelegateDao;
 import org.seasar.doma.internal.apt.dao.IncludeAndExcludeDao;
@@ -442,5 +444,25 @@ public class DaoProcessorTest extends AptTestCase {
         compile();
         assertGeneratedSource(target);
         assertTrue(getCompiledResult());
+    }
+
+    public void testAnnotateWith() throws Exception {
+        Class<?> target = AnnotateWithDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testIllegalAnnotateWith() throws Exception {
+        Class<?> target = IllegalAnnotateWithDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessageCode(DomaMessageCode.DOMA4142);
     }
 }
