@@ -133,6 +133,9 @@
 					Annotation ProcessingとFactory Pathの画面では、
 					「Enable project specific settings」のチェックボックスをチェックしてください。
 				</p>
+				<p>
+					詳しくは<a href="setup.html">セットアップ</a>を参照してください。
+				</p>
 			</answer>
 		</faq>
 	</part>
@@ -164,6 +167,9 @@
 				<p>
 					SQLファイルに、SQLコメントを使って条件を指定できます。
 					SQLコメントは実行時に解析され、条件によって異なるSQLが生成されます。
+				</p>
+				<p>
+					SQLコメントについては<a href="reference/sqlfile.html">SQLファイル</a>を参照してください。
 				</p>
 			</answer>
 		</faq>
