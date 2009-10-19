@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.runner.RunWith;
+import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.it.dao.CompKeyDepartmentDao;
 import org.seasar.doma.it.dao.CompKeyDepartmentDaoImpl;
 import org.seasar.doma.it.dao.DepartmentDao;
@@ -32,7 +33,6 @@ import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.NoId;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.OptimisticLockException;
-import org.seasar.doma.message.DomaMessageCode;
 import org.seasar.framework.unit.Seasar2;
 
 @RunWith(Seasar2.class)
