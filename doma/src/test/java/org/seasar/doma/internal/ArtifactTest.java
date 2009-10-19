@@ -25,8 +25,6 @@ public class ArtifactTest extends TestCase {
 
     public void test() throws Exception {
         assertEquals("Doma", Artifact.getName());
-        assertEquals("@VERSION@", Artifact.getVersion());
-        assertEquals("test-org.seasar.doma", Artifact.getGroupId());
-        assertEquals("test-doma", Artifact.getArtifactId());
+        assertNotNull(Artifact.getVersion());
     }
 }

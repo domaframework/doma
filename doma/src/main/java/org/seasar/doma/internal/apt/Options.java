@@ -19,6 +19,8 @@ import java.util.Date;
 
 import javax.annotation.processing.ProcessingEnvironment;
 
+import org.seasar.doma.internal.Artifact;
+
 /**
  * @author taedium
  * 
@@ -42,6 +44,13 @@ public final class Options {
     public static boolean isTestEnabled(ProcessingEnvironment env) {
         String test = env.getOptions().get(Options.TEST);
         return Boolean.valueOf(test).booleanValue();
+    }
+
+    public static String getVersion(ProcessingEnvironment env) {
+        if (isTestEnabled(env)) {
+            return "@VERSION@";
+        }
+        return Artifact.getVersion();
     }
 
     public static Date getDate(ProcessingEnvironment env) {

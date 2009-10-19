@@ -15,9 +15,6 @@
  */
 package org.seasar.doma.internal;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 
 /**
  * @author taedium
@@ -25,65 +22,16 @@ import java.util.Properties;
  */
 public final class Artifact {
 
-    private static final String PATH = "/META-INF/maven/org.seasar.doma/doma/pom.properties";
+    private static final String NAME = "Doma";
 
-    private static final String name = "Doma";
-
-    private static String version;
-
-    private static String groupId;
-
-    private static String artifactId;
-
-    static {
-        Properties props = loadProperties();
-        version = props.getProperty("version");
-        if (version == null) {
-            version = "unknown";
-        }
-        groupId = props.getProperty("groupId");
-        if (groupId == null) {
-            groupId = "unknown";
-        }
-        artifactId = props.getProperty("artifactId");
-        if (artifactId == null) {
-            artifactId = "unknown";
-        }
-    }
-
-    private static Properties loadProperties() {
-        InputStream is = Artifact.class.getResourceAsStream(PATH);
-        Properties props = new Properties();
-        if (is != null) {
-            try {
-                props.load(is);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return props;
-    }
+    private static final String VERSION = "0.9.7-SNAPSHOT";
 
     public static String getName() {
-        return name;
+        return NAME;
     }
 
     public static String getVersion() {
-        return version;
-    }
-
-    public static String getGroupId() {
-        return groupId;
-    }
-
-    public static String getArtifactId() {
-        return artifactId;
+        return VERSION;
     }
 
 }
