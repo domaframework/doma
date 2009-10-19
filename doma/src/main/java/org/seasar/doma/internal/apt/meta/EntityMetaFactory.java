@@ -96,6 +96,7 @@ public class EntityMetaFactory {
             throw new AptIllegalStateException("unreachable.");
         }
         doListener(entityAnnotation, classElement, entityMeta);
+        doNamingConvention(entityAnnotation, classElement, entityMeta);
         doTableMeta(classElement, entityMeta);
     }
 
@@ -176,6 +177,22 @@ public class EntityMetaFactory {
             }
         }
         return null;
+    }
+
+    protected void doNamingConvention(Entity entityAnnotation,
+            TypeElement classElement, EntityMeta entityMeta) {
+        TypeMirror mamingConventionType = getNamingConventionType(entityAnnotation);
+        entityMeta.setNamingConventionTypeName(TypeUtil.getTypeName(
+                mamingConventionType, env));
+    }
+
+    protected TypeMirror getNamingConventionType(Entity entityAnnotation) {
+        try {
+            entityAnnotation.namingConvention();
+        } catch (MirroredTypeException e) {
+            return e.getTypeMirror();
+        }
+        throw new AptIllegalStateException("unreachable");
     }
 
     protected void doTableMeta(TypeElement classElement, EntityMeta entityMeta) {

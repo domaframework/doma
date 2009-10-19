@@ -21,8 +21,9 @@ import java.util.Set;
 import org.seasar.doma.ChangedProperties;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Table;
+import org.seasar.doma.it.ItNamingConvention;
 
-@Entity
+@Entity(namingConvention = ItNamingConvention.class)
 @Table(name = "NO_ID")
 public class NoId {
 

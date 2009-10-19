@@ -32,7 +32,9 @@ import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
-import org.seasar.doma.jdbc.entity.BuiltinEntityListener;
+import org.seasar.doma.jdbc.entity.NullEntityListener;
+import org.seasar.doma.jdbc.entity.CamelNamingConvention;
+import org.seasar.doma.jdbc.entity.NamingConvention;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
 import org.seasar.doma.wrapper.IntegerWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
@@ -52,7 +54,9 @@ public class Emp_ implements EntityTypeFactory<Emp> {
 
     public static class EmpType implements EntityType<Emp> {
 
-        private static final BuiltinEntityListener __listener = new BuiltinEntityListener();
+        private static final NullEntityListener __listener = new NullEntityListener();
+
+        private static final NamingConvention __namingConvention = new CamelNamingConvention();
 
         private final AssignedIdPropertyType<IntegerWrapper> id = new AssignedIdPropertyType<IntegerWrapper>(
                 "id", null, new IntegerWrapper());
@@ -195,6 +199,11 @@ public class Emp_ implements EntityTypeFactory<Emp> {
         @Override
         public String getTableName() {
             return __tableName;
+        }
+
+        @Override
+        public NamingConvention getNamingConvention() {
+            return __namingConvention;
         }
 
     }

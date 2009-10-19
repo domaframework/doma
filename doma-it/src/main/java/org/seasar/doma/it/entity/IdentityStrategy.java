@@ -24,8 +24,9 @@ import org.seasar.doma.GeneratedValue;
 import org.seasar.doma.GenerationType;
 import org.seasar.doma.Id;
 import org.seasar.doma.Table;
+import org.seasar.doma.it.ItNamingConvention;
 
-@Entity
+@Entity(namingConvention = ItNamingConvention.class)
 @Table(name = "IDENTITY_STRATEGY")
 public class IdentityStrategy {
 

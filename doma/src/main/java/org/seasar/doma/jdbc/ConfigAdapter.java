@@ -74,10 +74,6 @@ public final class ConfigAdapter implements Config {
         return config.maxRows();
     }
 
-    public NamingConvention namingConvention() {
-        return config.namingConvention();
-    }
-
     public int queryTimeout() {
         return config.queryTimeout();
     }

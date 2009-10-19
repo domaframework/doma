@@ -25,8 +25,9 @@ import org.seasar.doma.GenerationType;
 import org.seasar.doma.Id;
 import org.seasar.doma.SequenceGenerator;
 import org.seasar.doma.Table;
+import org.seasar.doma.it.ItNamingConvention;
 
-@Entity
+@Entity(namingConvention = ItNamingConvention.class)
 @Table(name = "SEQUENCE_STRATEGY")
 public class SequenceStrategy {
 

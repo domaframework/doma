@@ -41,6 +41,7 @@ import org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.internal.util.PrimitiveWrapperUtil;
 import org.seasar.doma.internal.util.StringUtil;
+import org.seasar.doma.jdbc.entity.NamingConvention;
 
 /**
  * 
@@ -121,6 +122,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
     protected void printTypeClassFields() {
         printTypeClassGeneratedIdPropertyField();
         printTypeClassListenerField();
+        printTypeClassNamingConventionField();
         printTypeClassPropertyFields();
         printTypeClassEntityField();
         printTypeClassCatalogNameField();
@@ -145,6 +147,12 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
     protected void printTypeClassListenerField() {
         iprint("private static final %1$s __listener = new %1$s();%n",
                 entityMeta.getListenerTypeName());
+        print("%n");
+    }
+
+    protected void printTypeClassNamingConventionField() {
+        iprint("private static final %1$s __namingConvention = new %1$s();%n",
+                entityMeta.getNamingConventionTypeName());
         print("%n");
     }
 
@@ -317,6 +325,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         printTypeClassGetEntityMethod();
         printTypeClassGetEntityClassMethod();
         printTypeClassGetChangedPropertiesMethod();
+        printTypeClassGetNamingConventionMethod();
     }
 
     protected void printTypeClassGetNameMethod() {
@@ -523,6 +532,15 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         iprint("@Override%n");
         iprint("public java.util.Set<String> getChangedProperties() {%n");
         iprint("    return __changedProperties;%n");
+        iprint("}%n");
+        print("%n");
+    }
+
+    protected void printTypeClassGetNamingConventionMethod() {
+        iprint("@Override%n");
+        iprint("public %1$s getNamingConvention() {%n", NamingConvention.class
+                .getName());
+        iprint("    return __namingConvention;%n");
         iprint("}%n");
         print("%n");
     }

@@ -1,5 +1,8 @@
 package org.seasar.doma.internal.apt.entity;
 
+import org.seasar.doma.jdbc.entity.CamelNamingConvention;
+import org.seasar.doma.jdbc.entity.NamingConvention;
+
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
 public class ParentEntity_
         implements
@@ -20,7 +23,9 @@ public class ParentEntity_
             implements
             org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.ParentEntity> {
 
-        private static final org.seasar.doma.jdbc.entity.BuiltinEntityListener __listener = new org.seasar.doma.jdbc.entity.BuiltinEntityListener();
+        private static final org.seasar.doma.jdbc.entity.NullEntityListener __listener = new org.seasar.doma.jdbc.entity.NullEntityListener();
+
+        private static final NamingConvention __naimingConvention = new CamelNamingConvention();
 
         private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.IntegerWrapper> aaa = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.IntegerWrapper>(
                 "aaa", null, new org.seasar.doma.wrapper.IntegerWrapper(),
@@ -162,6 +167,11 @@ public class ParentEntity_
         @Override
         public java.util.Set<String> getChangedProperties() {
             return __changedProperties;
+        }
+
+        @Override
+        public NamingConvention getNamingConvention() {
+            return __naimingConvention;
         }
 
     }

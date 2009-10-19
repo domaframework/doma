@@ -19,7 +19,6 @@ import javax.sql.DataSource;
 
 import org.seasar.doma.jdbc.DomaAbstractConfig;
 import org.seasar.doma.jdbc.JdbcLogger;
-import org.seasar.doma.jdbc.NamingConvention;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.framework.container.SingletonS2Container;
@@ -27,8 +26,6 @@ import org.seasar.framework.container.SingletonS2Container;
 public class ItConfig extends DomaAbstractConfig {
 
     protected static final JdbcLogger jdbcLogger = new ItLogger();
-
-    protected static final NamingConvention namingConvention = new ItNamingConvention();
 
     protected static final RequiresNewController requiresNewController = new S2RequiresNewController();
 
@@ -45,11 +42,6 @@ public class ItConfig extends DomaAbstractConfig {
     @Override
     public JdbcLogger jdbcLogger() {
         return jdbcLogger;
-    }
-
-    @Override
-    public NamingConvention namingConvention() {
-        return namingConvention;
     }
 
     @Override

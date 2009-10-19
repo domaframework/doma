@@ -13,11 +13,10 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc;
+package org.seasar.doma.jdbc.entity;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.util.StringUtil;
-import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
  * キャメルケースを大文字のアンダースコア区切りに変換するネーミング規約です。
@@ -36,12 +35,9 @@ public class CamelNamingConvention implements NamingConvention {
      * {@inheritDoc}
      */
     @Override
-    public String fromEntityToTable(String entityName, Dialect dialect) {
+    public String fromEntityToTable(String entityName) {
         if (entityName == null) {
             throw new DomaNullPointerException("entityName");
-        }
-        if (dialect == null) {
-            throw new DomaNullPointerException("dialect");
         }
         return StringUtil.decamelize(entityName);
     }
@@ -54,12 +50,9 @@ public class CamelNamingConvention implements NamingConvention {
      * {@inheritDoc}
      */
     @Override
-    public String fromPropertyToColumn(String propertyName, Dialect dialect) {
+    public String fromPropertyToColumn(String propertyName) {
         if (propertyName == null) {
             throw new DomaNullPointerException("propertyName");
-        }
-        if (dialect == null) {
-            throw new DomaNullPointerException("dialect");
         }
         return StringUtil.decamelize(propertyName);
     }

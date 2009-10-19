@@ -22,9 +22,10 @@ import org.seasar.doma.ChangedProperties;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
 import org.seasar.doma.Version;
+import org.seasar.doma.it.ItNamingConvention;
 import org.seasar.doma.it.domain.Salary;
 
-@Entity
+@Entity(namingConvention = ItNamingConvention.class)
 public class Employee {
 
     @Id

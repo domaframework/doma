@@ -25,8 +25,6 @@ package org.seasar.doma.jdbc;
  */
 public abstract class DomaAbstractConfig implements Config {
 
-    private static NamingConvention namingConvention = new CamelNamingConvention();
-
     private static SqlFileRepository sqlFileRepository = new CachedSqlFileRepository();
 
     private static JdbcLogger jdbcLogger = new UtilLoggingJdbcLogger();
@@ -36,11 +34,6 @@ public abstract class DomaAbstractConfig implements Config {
     @Override
     public String dataSourceName() {
         return getClass().getName();
-    }
-
-    @Override
-    public NamingConvention namingConvention() {
-        return namingConvention;
     }
 
     @Override

@@ -20,8 +20,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.seasar.doma.jdbc.entity.BuiltinEntityListener;
+import org.seasar.doma.jdbc.entity.CamelNamingConvention;
 import org.seasar.doma.jdbc.entity.EntityListener;
+import org.seasar.doma.jdbc.entity.NamingConvention;
+import org.seasar.doma.jdbc.entity.NullEntityListener;
 
 /**
  * テーブルもしくは結果セットを示します。
@@ -78,8 +80,14 @@ public @interface Entity {
     /**
      * リスナーです。
      * <p>
-     * 指定しない場合、デフォルトのリスナーが設定されます。 リスナーは、クラスごとに1つだけインスタンス化されます。
+     * 指定しない場合、デフォルトのリスナーが設定されます。 ここに指定したクラスは、エンティティクラスごとに1つだけインスタンス化されます。
      */
-    Class<? extends EntityListener<?>> listener() default BuiltinEntityListener.class;
+    Class<? extends EntityListener<?>> listener() default NullEntityListener.class;
 
+    /**
+     * 命名規約です。
+     * <p>
+     * 指定しない場合、デフォルトのネーミング規約が設定されます。 ここに指定したクラスは、エンティティクラスごとに1つだけインスタンス化されます。
+     */
+    Class<? extends NamingConvention> namingConvention() default CamelNamingConvention.class;
 }

@@ -18,10 +18,8 @@ package org.seasar.doma.internal.jdbc.mock;
 import javax.sql.DataSource;
 
 import org.seasar.doma.jdbc.CachedSqlFileRepository;
-import org.seasar.doma.jdbc.CamelNamingConvention;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcLogger;
-import org.seasar.doma.jdbc.NamingConvention;
 import org.seasar.doma.jdbc.NullRequiresNewController;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.SqlFileRepository;
@@ -38,8 +36,6 @@ public class MockConfig implements Config {
     public MockDataSource dataSource = new MockDataSource();
 
     protected Dialect dialect = new StandardDialect();
-
-    protected NamingConvention namingConvention = new CamelNamingConvention();
 
     protected SqlFileRepository sqlFileRepository = new CachedSqlFileRepository();
 
@@ -60,11 +56,6 @@ public class MockConfig implements Config {
     @Override
     public Dialect dialect() {
         return dialect;
-    }
-
-    @Override
-    public NamingConvention namingConvention() {
-        return namingConvention;
     }
 
     @Override
@@ -112,14 +103,6 @@ public class MockConfig implements Config {
 
     public void setDialect(Dialect dialect) {
         this.dialect = dialect;
-    }
-
-    public NamingConvention getNamingConvention() {
-        return namingConvention;
-    }
-
-    public void setNamingConvention(NamingConvention namingConvention) {
-        this.namingConvention = namingConvention;
     }
 
     public SqlFileRepository getSqlFileRepository() {

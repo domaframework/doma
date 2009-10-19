@@ -16,15 +16,12 @@
 package org.seasar.doma.jdbc.entity;
 
 /**
- * {@link EntityListener} のデフォルトの実装です。
- * <p>
- * 何も行いません。
- * <p>
+ * 何も行わない {@link EntityListener} の実装です。
  * 
  * @author taedium
  * 
  */
-public class BuiltinEntityListener implements EntityListener<Object> {
+public class NullEntityListener implements EntityListener<Object> {
 
     @Override
     public void preInsert(Object entity) {

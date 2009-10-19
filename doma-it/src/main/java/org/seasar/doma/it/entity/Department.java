@@ -22,8 +22,9 @@ import org.seasar.doma.ChangedProperties;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
 import org.seasar.doma.Version;
+import org.seasar.doma.it.ItNamingConvention;
 
-@Entity
+@Entity(namingConvention = ItNamingConvention.class)
 public class Department {
 
     @Id

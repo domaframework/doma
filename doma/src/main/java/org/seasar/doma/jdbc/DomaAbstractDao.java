@@ -78,10 +78,6 @@ public abstract class DomaAbstractDao {
         if (config.dialect() == null) {
             throw new ConfigException(config.getClass().getName(), "dialect");
         }
-        if (config.namingConvention() == null) {
-            throw new ConfigException(config.getClass().getName(),
-                    "nameConvention");
-        }
         if (config.sqlFileRepository() == null) {
             throw new ConfigException(config.getClass().getName(),
                     "sqlFileRepository");

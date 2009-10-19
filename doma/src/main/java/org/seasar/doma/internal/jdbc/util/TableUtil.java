@@ -18,9 +18,7 @@ package org.seasar.doma.internal.jdbc.util;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.internal.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.NamingConvention;
-import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.jdbc.entity.NamingConvention;
 
 /**
  * @author taedium
@@ -28,12 +26,20 @@ import org.seasar.doma.jdbc.dialect.Dialect;
  */
 public final class TableUtil {
 
-    public static String getQualifiedTableName(Config config, EntityType<?> entity) {
-        assertNotNull(config, entity);
-        String catalogName = entity.getCatalogName();
-        String schemaName = entity.getSchemaName();
-        String tableName = getTableName(config, entity);
+    public static String getQualifiedTableName(EntityType<?> entityType) {
+        assertNotNull(entityType);
+        String catalogName = entityType.getCatalogName();
+        String schemaName = entityType.getSchemaName();
+        String tableName = getTableName(entityType);
         return getQualifiedTableName(catalogName, schemaName, tableName);
+    }
+
+    protected static String getTableName(EntityType<?> entityType) {
+        if (entityType.getTableName() != null) {
+            return entityType.getTableName();
+        }
+        NamingConvention namingConvention = entityType.getNamingConvention();
+        return namingConvention.fromEntityToTable(entityType.getName());
     }
 
     public static String getQualifiedTableName(String catalogName,
@@ -49,12 +55,4 @@ public final class TableUtil {
         return buf.append(tableName).toString();
     }
 
-    protected static String getTableName(Config config, EntityType<?> entity) {
-        if (entity.getTableName() != null) {
-            return entity.getTableName();
-        }
-        Dialect dialect = config.dialect();
-        NamingConvention namingConvention = config.namingConvention();
-        return namingConvention.fromEntityToTable(entity.getName(), dialect);
-    }
 }

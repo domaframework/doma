@@ -40,6 +40,8 @@ public class EntityMeta {
 
     protected String listenerTypeName;
 
+    protected String namingConventionTypeName;
+
     protected ChangedPropertiesMeta changedPropertiesMeta;
 
     public String getEntityName() {
@@ -105,6 +107,14 @@ public class EntityMeta {
 
     public void setListenerTypeName(String listenerTypeName) {
         this.listenerTypeName = listenerTypeName;
+    }
+
+    public String getNamingConventionTypeName() {
+        return namingConventionTypeName;
+    }
+
+    public void setNamingConventionTypeName(String namingConventionTypeName) {
+        this.namingConventionTypeName = namingConventionTypeName;
     }
 
     public boolean hasChangedPropertiesMeta() {

@@ -13,12 +13,11 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc;
+package org.seasar.doma.jdbc.entity;
 
 import org.seasar.doma.Delegate;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Entity;
-import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
  * ネーミング規約です。
@@ -45,13 +44,11 @@ public interface NamingConvention {
      * 
      * @param entityName
      *            エンティティ名
-     * @param dialect
-     *            方言
      * @return テーブル名
      * @throws DomaNullPointerException
-     *             いずれかの引数が {@code null} の場合
+     *             引数が {@code null} の場合
      */
-    String fromEntityToTable(String entityName, Dialect dialect);
+    String fromEntityToTable(String entityName);
 
     /**
      * プロパティ名からカラム名へ変換します。
@@ -61,12 +58,10 @@ public interface NamingConvention {
      * 
      * @param propertyName
      *            プロパティ名
-     * @param dialect
-     *            方言
      * @return カラム名
      * @throws DomaNullPointerException
-     *             いずれかの引数が {@code null} の場合
+     *             引数が {@code null} の場合
      */
-    String fromPropertyToColumn(String propertyName, Dialect dialect);
+    String fromPropertyToColumn(String propertyName);
 
 }

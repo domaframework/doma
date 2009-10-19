@@ -15,7 +15,9 @@ public class EnumPropertyEntity_ implements org.seasar.doma.internal.jdbc.entity
 
     private static class EnumPropertyEntityType implements org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.EnumPropertyEntity> {
 
-        private static final org.seasar.doma.jdbc.entity.BuiltinEntityListener __listener = new org.seasar.doma.jdbc.entity.BuiltinEntityListener();
+        private static final org.seasar.doma.jdbc.entity.NullEntityListener __listener = new org.seasar.doma.jdbc.entity.NullEntityListener();
+
+        private static final org.seasar.doma.jdbc.entity.CamelNamingConvention __namingConvention = new org.seasar.doma.jdbc.entity.CamelNamingConvention();
 
         private final org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper> id = new org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("id", null, new org.seasar.doma.wrapper.IntegerWrapper());
 
@@ -139,6 +141,11 @@ public class EnumPropertyEntity_ implements org.seasar.doma.internal.jdbc.entity
         @Override
         public java.util.Set<String> getChangedProperties() {
             return __changedProperties;
+        }
+
+        @Override
+        public org.seasar.doma.jdbc.entity.NamingConvention getNamingConvention() {
+            return __namingConvention;
         }
 
     }

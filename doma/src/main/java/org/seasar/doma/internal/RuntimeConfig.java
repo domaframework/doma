@@ -21,7 +21,6 @@ import javax.sql.DataSource;
 
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcLogger;
-import org.seasar.doma.jdbc.NamingConvention;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.SqlFileRepository;
 import org.seasar.doma.jdbc.dialect.Dialect;
@@ -37,8 +36,6 @@ public class RuntimeConfig implements Config {
     protected final String dataSourceName;
 
     protected final Dialect dialect;
-
-    protected final NamingConvention namingConvention;
 
     protected final SqlFileRepository sqlFileRepository;
 
@@ -63,14 +60,12 @@ public class RuntimeConfig implements Config {
         assertNotNull(dataSource);
         assertNotNull(config.dataSourceName());
         assertNotNull(config.dialect());
-        assertNotNull(config.namingConvention());
         assertNotNull(config.sqlFileRepository());
         assertNotNull(config.jdbcLogger());
         assertNotNull(config.requiresNewController());
         this.dataSource = dataSource;
         this.dataSourceName = config.dataSourceName();
         this.dialect = config.dialect();
-        this.namingConvention = config.namingConvention();
         this.sqlFileRepository = config.sqlFileRepository();
         this.jdbcLogger = config.jdbcLogger();
         this.requiresNewController = config.requiresNewController();
@@ -92,10 +87,6 @@ public class RuntimeConfig implements Config {
 
     public Dialect dialect() {
         return dialect;
-    }
-
-    public NamingConvention namingConvention() {
-        return namingConvention;
     }
 
     public SqlFileRepository sqlFileRepository() {

@@ -25,6 +25,8 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
 
         private static final org.seasar.doma.internal.apt.entity.EmpListener __listener = new org.seasar.doma.internal.apt.entity.EmpListener();
 
+        private static final org.seasar.doma.jdbc.entity.CamelNamingConvention __namingConvention = new org.seasar.doma.jdbc.entity.CamelNamingConvention();
+
         private final org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper> id = new org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("id", null, new org.seasar.doma.wrapper.IntegerWrapper(), __idGenerator);
 
         private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.StringWrapper> name = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.StringWrapper>("name", null, new org.seasar.doma.wrapper.StringWrapper(), true, true);
@@ -160,6 +162,11 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
         @Override
         public java.util.Set<String> getChangedProperties() {
             return __changedProperties;
+        }
+
+        @Override
+        public org.seasar.doma.jdbc.entity.NamingConvention getNamingConvention() {
+            return __namingConvention;
         }
 
     }

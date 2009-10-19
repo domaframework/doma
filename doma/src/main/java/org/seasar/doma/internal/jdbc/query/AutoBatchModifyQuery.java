@@ -88,12 +88,12 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
     }
 
     protected void prepareTableAndColumnNames() {
-        tableName = TableUtil.getQualifiedTableName(config, entityType);
+        tableName = TableUtil.getQualifiedTableName(entityType);
         for (EntityPropertyType<?> p : entityType.getEntityPropertyTypes()) {
             if (!p.isUpdatable()) {
                 continue;
             }
-            String columnName = ColumnUtil.getColumnName(config, p);
+            String columnName = ColumnUtil.getColumnName(entityType, p);
             columnNameMap.put(p.getName(), columnName);
         }
     }

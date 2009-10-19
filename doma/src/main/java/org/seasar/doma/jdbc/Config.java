@@ -59,13 +59,6 @@ public interface Config {
     Dialect dialect();
 
     /**
-     * ネーミング規約です。
-     * 
-     * @return ネーミング規約
-     */
-    NamingConvention namingConvention();
-
-    /**
      * SQLファイルのリポジトリです。
      * 
      * @return SQLファイルのリポジトリ

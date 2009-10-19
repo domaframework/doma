@@ -8,8 +8,9 @@ import org.seasar.doma.ChangedProperties;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
 import org.seasar.doma.Table;
+import org.seasar.doma.it.ItNamingConvention;
 
-@Entity
+@Entity(namingConvention = ItNamingConvention.class)
 @Table(name = "SAL_EMP")
 public class SalEmp {
 

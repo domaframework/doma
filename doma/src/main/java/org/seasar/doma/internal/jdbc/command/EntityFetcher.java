@@ -70,14 +70,13 @@ public class EntityFetcher implements ResultFetcher<ResultSet, EntityType<?>> {
         }
     }
 
-    protected void createNameMap(EntityType<?> entity) {
-        List<EntityPropertyType<?>> properties = entity
+    protected void createNameMap(EntityType<?> entityType) {
+        List<EntityPropertyType<?>> propertyTypes = entityType
                 .getEntityPropertyTypes();
-        nameMap = new HashMap<String, String>(properties.size());
-        for (EntityPropertyType<?> property : properties) {
-            String columnName = ColumnUtil.getColumnName(query.getConfig(),
-                    property);
-            nameMap.put(columnName.toLowerCase(), property.getName());
+        nameMap = new HashMap<String, String>(propertyTypes.size());
+        for (EntityPropertyType<?> p : propertyTypes) {
+            String columnName = ColumnUtil.getColumnName(entityType, p);
+            nameMap.put(columnName.toLowerCase(), p.getName());
         }
     }
 }

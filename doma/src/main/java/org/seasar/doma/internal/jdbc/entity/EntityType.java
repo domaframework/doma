@@ -18,6 +18,8 @@ package org.seasar.doma.internal.jdbc.entity;
 import java.util.List;
 import java.util.Set;
 
+import org.seasar.doma.jdbc.entity.NamingConvention;
+
 /**
  * エンティティのインスタンスを管理するクラスを表します。
  * 
@@ -53,6 +55,8 @@ public interface EntityType<E> {
     Class<E> getEntityClass();
 
     Set<String> getChangedProperties();
+
+    NamingConvention getNamingConvention();
 
     void refreshEntity();
 

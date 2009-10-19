@@ -26,13 +26,14 @@ import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
 import org.seasar.doma.Transient;
 import org.seasar.doma.Version;
+import org.seasar.doma.it.ItNamingConvention;
 
 /**
  * 
  * @author taedium
  * 
  */
-@Entity(listener = EmpListener.class)
+@Entity(listener = EmpListener.class, namingConvention = ItNamingConvention.class)
 public class Emp {
 
     @Id
