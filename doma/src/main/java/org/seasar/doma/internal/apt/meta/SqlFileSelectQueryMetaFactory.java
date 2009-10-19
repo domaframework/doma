@@ -246,6 +246,7 @@ public class SqlFileSelectQueryMetaFactory extends
                         public Void visitListType(ListType dataType, Void p)
                                 throws RuntimeException {
                             dataType
+                                    .getElementType()
                                     .accept(
                                             new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
 
