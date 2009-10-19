@@ -50,6 +50,9 @@
 				<item name="SQLファイル" href="reference/sqlfile.html" />
 				<item name="アノテーション処理" href="reference/apt.html" />
 			</item>
+			<item name="開発支援ツール" href="extension/index.html" collapse="true" >
+				<item name="Eclipseプラグイン - Doma Tools" href="extension/doma_tools.html" />
+			</item>
 			<item name="FAQ" href="faq.html" />
 			<item name="Javadoc" href="apidocs/index.html" />
 		</menu>

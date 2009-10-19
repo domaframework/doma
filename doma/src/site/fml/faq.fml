@@ -138,6 +138,17 @@
 				</p>
 			</answer>
 		</faq>
+		<faq id="development-environment-4">
+			<question>開発を支援するツールはありますか？</question>
+			<answer>
+				<p>
+					はい。Eclipseプラグインを用意しています。
+				</p>
+				<p>
+					詳しくは<a href="extension/doma_tools.html">Doma Tools</a>を参照してください。
+				</p>
+			</answer>
+		</faq>
 	</part>
 	<part id="feature">
 		<title>O/Rマッパーの機能に関する質問</title>

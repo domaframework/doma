@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>Doma Tools</title>
+	</properties>
+	<body>
+		<section name="概要">
+			<p>
+				Doma Toolsは、Domaを使った開発をサーポートするEclipseプラグインです。
+			</p>
+			<p>
+				Doma Toolsを利用すると、次のことが可能です。
+			</p>
+			<ul>
+				<li>Daoのメソッドから対応するSQLファイルへのジャンプ</li>
+				<li>SQLファイルから対応するDaoのメソッドへのジャンプ</li>
+				<li>SQLファイルの変更をトリガーとしたDaoクラスの自動ビルド</li>
+				<li>ウィザードによるSQLファイルの作成</li>
+			</ul>
+		</section>
+		<section name="インストール">
+			<p>
+				Doma Toolsは、以下の更新サイトからインストールできます。
+			</p>
+			<ul>
+				<li><a href="http://doma.sandbox.seasar.org/eclipse/updatesite/3.5">http://doma.sandbox.seasar.org/eclipse/updatesite/3.5</a></li>
+			</ul>
+		</section>
+		<section name="使用方法">
+			<subsection name="前提">
+				<p>
+					いずれかのソースフォルダの直下にMETA-INFファルダが必要です。
+					SQLファイルはMETA-INFフォルダ以下に配置されます。
+				</p>
+			</subsection>
+			<subsection name="DaoクラスをJavaエディタで開いている場合">
+				<p>
+					メソッドを選択して右クリックし、「Doma」  - 「Jump to SQL File」 と選択するとSQLファイルへジャンプします。
+					SQLファイルが存在しない場合は、SQLファイル作成のダイアログが開きます。
+				</p>
+			</subsection>
+			<subsection name="SQLファイルをテキストエディタで開いている場合">
+				<p>
+					メソッドを選択して右クリックし、「Doma」  - 「Jump to Dao」 と選択するとDaoクラスへジャンプします。
+					対応するDaoクラスがない場合、何もおきません。
+				</p>
+				<p>
+					SQLファイルを変更すると、対応するDaoクラスがビルドされます。
+					Daoクラスのビルドにより、aptのコード検証が行われます。
+				</p>
+			</subsection>
+			<subsection name="パッケージエクスプローラー等でSQLファイルを選択している場合">
+				<p>
+					メソッドを選択して右クリックし、「Doma」  - 「Jump to Dao」 と選択するとDaoクラスへジャンプします。
+					対応するDaoクラスがない場合、何もおきません。
+				</p>
+			</subsection>
+		</section>
+	</body>
+</document>

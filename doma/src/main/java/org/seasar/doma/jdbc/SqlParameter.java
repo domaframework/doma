@@ -15,11 +15,11 @@
  */
 package org.seasar.doma.jdbc;
 
-
 /**
+ * SQLのパラメータを表します。
+ * 
  * @author taedium
- *
+ * 
  */
 public interface SqlParameter {
-
 }
