@@ -48,8 +48,8 @@ import org.seasar.doma.internal.apt.ElementUtil;
 import org.seasar.doma.internal.apt.Notifier;
 import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.TypeUtil;
+import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.jdbc.entity.EntityListener;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * 

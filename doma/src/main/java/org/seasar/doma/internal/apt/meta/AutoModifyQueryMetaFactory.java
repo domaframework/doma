@@ -30,7 +30,7 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
-import org.seasar.doma.message.DomaMessageCode;
+import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
  * @author taedium

@@ -45,8 +45,8 @@ import org.seasar.doma.internal.apt.meta.QueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileBatchModifyQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileModifyQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileSelectQueryMetaFactory;
+import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.internal.util.IOUtil;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

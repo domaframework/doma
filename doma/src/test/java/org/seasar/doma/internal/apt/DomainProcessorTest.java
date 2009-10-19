@@ -21,7 +21,7 @@ import org.seasar.doma.internal.apt.domain.Outer;
 import org.seasar.doma.internal.apt.domain.PrimitiveValueDomain;
 import org.seasar.doma.internal.apt.domain.Salary;
 import org.seasar.doma.internal.apt.domain.UnsupportedValueTypeDomain;
-import org.seasar.doma.message.DomaMessageCode;
+import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
  * @author taedium

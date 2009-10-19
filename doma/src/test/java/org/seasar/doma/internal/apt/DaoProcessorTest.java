@@ -55,7 +55,7 @@ import org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDao;
 import org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao;
 import org.seasar.doma.internal.apt.dao.UnknownBindVariableSqlValidationDao;
 import org.seasar.doma.internal.apt.dao.UnknownVariableSqlValidationDao;
-import org.seasar.doma.message.DomaMessageCode;
+import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
  * @author taedium

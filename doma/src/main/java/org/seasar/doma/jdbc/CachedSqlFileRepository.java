@@ -22,9 +22,9 @@ import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
+import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.internal.util.ResourceUtil;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * SQLの解析結果を無制限にキャッシュする {@link SqlFileRepository} の実装です。

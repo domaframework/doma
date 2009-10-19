@@ -16,7 +16,7 @@
 package org.seasar.doma.jdbc;
 
 import org.seasar.doma.MessageCode;
-import org.seasar.doma.message.DomaMessageCode;
+import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
  * SQLの実行に失敗した場合にスローされる例外です。

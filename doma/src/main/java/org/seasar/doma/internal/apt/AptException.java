@@ -21,7 +21,7 @@ import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.DomaException;
 import org.seasar.doma.MessageCode;
-import org.seasar.doma.message.DomaMessageCode;
+import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
  * @author taedium

@@ -16,7 +16,7 @@
 package org.seasar.doma.internal.expr;
 
 import org.seasar.doma.DomaException;
-import org.seasar.doma.message.DomaMessageCode;
+import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
  * @author taedium

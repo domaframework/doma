@@ -1,6 +1,6 @@
 package org.seasar.doma;
 
-import org.seasar.doma.message.DomaMessageCode;
+import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
  * 事前条件をもつパラメータへの引数が不正な場合にスローされる例外です。

@@ -22,8 +22,8 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * {@link Enum} 用の {@link JdbcType} の実装です。

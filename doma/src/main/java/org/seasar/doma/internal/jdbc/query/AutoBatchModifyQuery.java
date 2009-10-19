@@ -29,10 +29,10 @@ import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.util.ColumnUtil;
 import org.seasar.doma.internal.jdbc.util.TableUtil;
+import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

@@ -30,7 +30,7 @@ import org.seasar.doma.internal.apt.entity.TransientPropertyEntity;
 import org.seasar.doma.internal.apt.entity.UnsupportedPropertyEntity;
 import org.seasar.doma.internal.apt.entity.VersionDuplicatedEntity;
 import org.seasar.doma.internal.apt.entity.VersionNotNumberEntity;
-import org.seasar.doma.message.DomaMessageCode;
+import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
  * @author taedium

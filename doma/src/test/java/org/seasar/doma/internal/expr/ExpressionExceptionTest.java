@@ -18,7 +18,7 @@ package org.seasar.doma.internal.expr;
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.expr.node.ExpressionNode;
-import org.seasar.doma.message.DomaMessageCode;
+import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
  * @author taedium

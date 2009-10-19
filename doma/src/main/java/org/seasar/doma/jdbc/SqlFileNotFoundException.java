@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.message.DomaMessageCode;
+import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
  * SQLファイルが見つからない場合にスローされる例外です。

@@ -27,8 +27,8 @@ import org.seasar.aptina.unit.AptinaTestCase;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Domain;
 import org.seasar.doma.Entity;
+import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.internal.util.ResourceUtil;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

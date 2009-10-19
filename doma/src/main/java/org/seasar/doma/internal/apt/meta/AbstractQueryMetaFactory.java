@@ -34,10 +34,10 @@ import org.seasar.doma.Domain;
 import org.seasar.doma.Entity;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.TypeUtil;
+import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.SelectOptions;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

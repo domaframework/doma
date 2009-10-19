@@ -13,21 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.message;
-
-import org.seasar.doma.message.DomaMessageCode;
-
-import junit.framework.TestCase;
-
 /**
- * @author taedium
- * 
+ * アプリケーションに通知されるメッセージを扱うクラスを提供します。
  */
-public class DomaMessageCodeTest extends TestCase {
-
-    public void test() throws Exception {
-        String message = DomaMessageCode.DOMA0001.getMessage("aaa", "bbb");
-        assertNotNull(message);
-        System.out.println(message);
-    }
-}
+package org.seasar.doma.internal.message;

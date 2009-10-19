@@ -31,8 +31,8 @@ import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.internal.apt.meta.EntityMeta;
 import org.seasar.doma.internal.apt.meta.EntityMetaFactory;
 import org.seasar.doma.internal.apt.meta.EntityPropertyMetaFactory;
+import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.internal.util.IOUtil;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

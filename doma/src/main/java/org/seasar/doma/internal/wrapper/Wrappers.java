@@ -30,9 +30,9 @@ import java.sql.Timestamp;
 
 import org.seasar.doma.Domain;
 import org.seasar.doma.internal.WrapException;
+import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.MethodUtil;
-import org.seasar.doma.message.DomaMessageCode;
 import org.seasar.doma.wrapper.ArrayWrapper;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
 import org.seasar.doma.wrapper.BigIntegerWrapper;

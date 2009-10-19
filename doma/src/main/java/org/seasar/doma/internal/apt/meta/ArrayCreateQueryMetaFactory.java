@@ -27,7 +27,7 @@ import javax.lang.model.type.TypeKind;
 
 import org.seasar.doma.ArrayFactory;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.message.DomaMessageCode;
+import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
  * @author taedium

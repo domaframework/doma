@@ -28,9 +28,9 @@ import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
+import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

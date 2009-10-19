@@ -16,7 +16,7 @@
 package org.seasar.doma.internal.wrapper;
 
 import org.seasar.doma.DomaException;
-import org.seasar.doma.message.DomaMessageCode;
+import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**

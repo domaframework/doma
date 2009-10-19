@@ -28,7 +28,7 @@ import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.TypeUtil;
-import org.seasar.doma.message.DomaMessageCode;
+import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**

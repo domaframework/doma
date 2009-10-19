@@ -20,9 +20,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.seasar.doma.GenerationType;
+import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.Sql;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * {@link IdentityIdGenerator} のデフォルトの実装です。

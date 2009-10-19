@@ -22,7 +22,7 @@ import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.Procedure;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.message.DomaMessageCode;
+import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
  * @author taedium

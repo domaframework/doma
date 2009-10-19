@@ -24,9 +24,9 @@ import junit.framework.TestCase;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
+import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlNode;
-import org.seasar.doma.message.DomaMessageCode;
 
 import example.domain.PhoneNumber;
 

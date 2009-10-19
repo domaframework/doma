@@ -26,11 +26,11 @@ import org.seasar.doma.internal.apt.FileObjectUtil;
 import org.seasar.doma.internal.apt.SqlValidator;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
+import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.internal.util.IOUtil;
 import org.seasar.doma.internal.util.StringUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlNode;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

@@ -39,8 +39,8 @@ import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
+import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.jdbc.SqlNode;
-import org.seasar.doma.message.DomaMessageCode;
 
 /**
  * @author taedium

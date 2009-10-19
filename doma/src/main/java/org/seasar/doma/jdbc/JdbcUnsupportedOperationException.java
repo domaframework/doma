@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.message.DomaMessageCode;
+import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
  * JDBCに関するサポートされていないメソッドが呼び出された場合にスローされる例外です。
