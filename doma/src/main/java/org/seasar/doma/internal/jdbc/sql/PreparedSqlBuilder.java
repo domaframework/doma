@@ -58,7 +58,7 @@ public class PreparedSqlBuilder {
 
     public void appendWrapper(Wrapper<?> wrapper) {
         rawSql.append("?");
-        formattedSql.append(wrapper.accept(config.dialect()
+        formattedSql.append(wrapper.accept(config.getDialect()
                 .getSqlLogFormattingVisitor(), formattingFunction));
         parameters.add(new BasicInParameter(wrapper));
     }

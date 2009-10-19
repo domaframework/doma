@@ -57,7 +57,7 @@ public class BatchInsertCommand extends BatchModifyCommand<BatchInsertQuery> {
         try {
             return preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            Dialect dialect = query.getConfig().dialect();
+            Dialect dialect = query.getConfig().getDialect();
             if (dialect.isUniqueConstraintViolated(e)) {
                 throw new BatchUniqueConstraintException(sql, e);
             }

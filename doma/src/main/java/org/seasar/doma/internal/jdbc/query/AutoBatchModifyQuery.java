@@ -116,10 +116,10 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
 
     protected void prepareOptions() {
         if (queryTimeout <= 0) {
-            queryTimeout = config.queryTimeout();
+            queryTimeout = config.getQueryTimeout();
         }
         if (batchSize <= 0) {
-            batchSize = config.batchSize();
+            batchSize = config.getBatchSize();
         }
     }
 

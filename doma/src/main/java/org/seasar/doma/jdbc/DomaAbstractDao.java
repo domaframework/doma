@@ -66,27 +66,27 @@ public abstract class DomaAbstractDao {
             new DomaNullPointerException("config");
         }
         if (dataSource == null) {
-            if (config.dataSource() == null) {
+            if (config.getDataSource() == null) {
                 throw new ConfigException(config.getClass().getName(),
                         "dataSource");
             }
         }
-        if (config.dataSourceName() == null) {
+        if (config.getDataSourceName() == null) {
             throw new ConfigException(config.getClass().getName(),
                     "dataSourceName");
         }
-        if (config.dialect() == null) {
+        if (config.getDialect() == null) {
             throw new ConfigException(config.getClass().getName(), "dialect");
         }
-        if (config.sqlFileRepository() == null) {
+        if (config.getSqlFileRepository() == null) {
             throw new ConfigException(config.getClass().getName(),
                     "sqlFileRepository");
         }
-        if (config.jdbcLogger() == null) {
+        if (config.getJdbcLogger() == null) {
             throw new ConfigException(config.getClass().getName(), "jdbcLogger");
         }
         this.config = new RuntimeConfig(config, dataSource != null ? dataSource
-                : config.dataSource());
+                : config.getDataSource());
     }
 
     /**
@@ -95,7 +95,7 @@ public abstract class DomaAbstractDao {
      * @return データソース
      */
     protected DataSource getDataSource() {
-        return config.dataSource();
+        return config.getDataSource();
     }
 
     /**
@@ -110,7 +110,7 @@ public abstract class DomaAbstractDao {
      */
     protected void entering(String callerClassName, String callerMethodName,
             Object... args) {
-        config.jdbcLogger().logDaoMethodEntering(callerClassName,
+        config.getJdbcLogger().logDaoMethodEntering(callerClassName,
                 callerMethodName, args);
     }
 
@@ -126,7 +126,7 @@ public abstract class DomaAbstractDao {
      */
     protected void exiting(String callerClassName, String callerMethodName,
             Object result) {
-        config.jdbcLogger().logDaoMethodExiting(callerClassName,
+        config.getJdbcLogger().logDaoMethodExiting(callerClassName,
                 callerMethodName, result);
     }
 

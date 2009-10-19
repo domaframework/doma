@@ -20,12 +20,14 @@ import java.sql.Statement;
 
 import javax.sql.DataSource;
 
+import org.seasar.doma.Dao;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
  * JDBCに関する設定です。
  * <p>
- * このインタフェースの実装は {@code public} なデフォルトコンストラクタを持たなければいけません。
+ * このインタフェースの実装は、{@link Dao} の {@code config} 要素に指定する場合、 {@code public}
+ * なデフォルトコンストラクタを持たなければいけません。
  * <p>
  * このインタフェースの実装はスレッドセーフでなければいけません。
  * 
@@ -35,11 +37,11 @@ import org.seasar.doma.jdbc.dialect.Dialect;
 public interface Config {
 
     /**
-     * データソースです。
+     * データソースを返します。
      * 
      * @return データソース
      */
-    DataSource dataSource();
+    DataSource getDataSource();
 
     /**
      * データソース名です。
@@ -49,58 +51,58 @@ public interface Config {
      * 
      * @return データソース名
      */
-    String dataSourceName();
+    String getDataSourceName();
 
     /**
-     * RDBMSの方言です。
+     * RDBMSの方言を返します。
      * 
      * @return RDBMSの方言
      */
-    Dialect dialect();
+    Dialect getDialect();
 
     /**
-     * SQLファイルのリポジトリです。
+     * SQLファイルのリポジトリを返します。
      * 
      * @return SQLファイルのリポジトリ
      */
-    SqlFileRepository sqlFileRepository();
+    SqlFileRepository getSqlFileRepository();
 
     /**
-     * JDBCロガーです。
+     * JDBCロガーを返します。
      * 
      * @return JDBCロガー
      */
-    JdbcLogger jdbcLogger();
+    JdbcLogger getJdbcLogger();
 
     /**
-     * {@code REQUIRES_NEW}のトランザクション属性を制御するコントローラーです。
+     * {@code REQUIRES_NEW}のトランザクション属性を制御するコントローラーを返します。
      * <p>
      * {@code REQUIRES_NEW}のトランザクション属性を制御するコントローラーは、テーブルを使用した識別子の自動生成機能において、
      * テーブルの更新処理を新しいトランザクション内で実行するために使われます。
      * 
      * @return {@code REQUIRES_NEW}のトランザクション属性を制御するコントローラー
      */
-    RequiresNewController requiresNewController();
+    RequiresNewController getRequiresNewController();
 
     /**
-     * 最大行数の制限値です。
+     * 最大行数の制限値を返します。
      * <p>
      * 0以下の値は、 {@link Statement#setMaxRows(int)}へは渡されません。
      * 
      * @return 最大行数の制限値
      * @see Statement#setMaxRows(int)
      */
-    int maxRows();
+    int getMaxRows();
 
     /**
-     * フェッチサイズです。
+     * フェッチサイズを返します。
      * <p>
      * 0以下の値は、 {@link Statement#setFetchSize(int)}へは渡されません。
      * 
      * @return フェッチサイズ
      * @see Statement#setFetchSize(int)
      */
-    int fetchSize();
+    int getFetchSize();
 
     /**
      * クエリタイムアウト（秒）を返します。
@@ -110,7 +112,7 @@ public interface Config {
      * @return クエリタイムアウト（秒）
      * @see Statement#setQueryTimeout(int)
      */
-    int queryTimeout();
+    int getQueryTimeout();
 
     /**
      * バッチサイズを返します。
@@ -125,6 +127,6 @@ public interface Config {
      * @return バッチサイズを返します。
      * @see PreparedStatement#addBatch()
      */
-    int batchSize();
+    int getBatchSize();
 
 }

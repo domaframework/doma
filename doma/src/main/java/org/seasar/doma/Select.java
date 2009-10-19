@@ -161,7 +161,7 @@ public @interface Select {
     /**
      * クエリタイムアウト（秒）です。
      * <p>
-     * 指定しない場合、 {@link Config#queryTimeout()} が使用されます。
+     * 指定しない場合、 {@link Config#getQueryTimeout()} が使用されます。
      * 
      * @see Statement#setQueryTimeout(int)
      */
@@ -170,7 +170,7 @@ public @interface Select {
     /**
      * フェッチサイズです。
      * <p>
-     * 指定しない場合、 {@link Config#fetchSize()} が使用されます。
+     * 指定しない場合、 {@link Config#getFetchSize()} が使用されます。
      * 
      * @see Statement#setFetchSize(int)
      */
@@ -179,7 +179,7 @@ public @interface Select {
     /**
      * 最大行数の制限値です。
      * <p>
-     * 指定しない場合、 {@link Config#maxRows()} が使用されます。
+     * 指定しない場合、 {@link Config#getMaxRows()} が使用されます。
      * 
      * @see Statement#setMaxRows(int)
      */

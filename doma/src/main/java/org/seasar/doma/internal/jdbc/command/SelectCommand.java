@@ -51,7 +51,7 @@ public class SelectCommand<R> implements Command<R, SelectQuery> {
     public R execute() {
         PreparedSql sql = query.getSql();
         Connection connection = JdbcUtil.getConnection(query.getConfig()
-                .dataSource());
+                .getDataSource());
         try {
             PreparedStatement preparedStatement = JdbcUtil.prepareStatement(
                     connection, sql.getRawSql());
@@ -63,19 +63,19 @@ public class SelectCommand<R> implements Command<R, SelectQuery> {
                 query.complete();
                 return result;
             } catch (SQLException e) {
-                Dialect dialect = query.getConfig().dialect();
+                Dialect dialect = query.getConfig().getDialect();
                 throw new SqlExecutionException(sql, e, dialect.getRootCause(e));
             } finally {
                 JdbcUtil.close(preparedStatement, query.getConfig()
-                        .jdbcLogger());
+                        .getJdbcLogger());
             }
         } finally {
-            JdbcUtil.close(connection, query.getConfig().jdbcLogger());
+            JdbcUtil.close(connection, query.getConfig().getJdbcLogger());
         }
     }
 
     protected void log() {
-        JdbcLogger logger = query.getConfig().jdbcLogger();
+        JdbcLogger logger = query.getConfig().getJdbcLogger();
         logger.logSql(query.getClassName(), query.getMethodName(), sql);
     }
 
@@ -105,7 +105,7 @@ public class SelectCommand<R> implements Command<R, SelectQuery> {
         try {
             return resultSetHandler.handle(resultSet, query);
         } finally {
-            JdbcUtil.close(resultSet, query.getConfig().jdbcLogger());
+            JdbcUtil.close(resultSet, query.getConfig().getJdbcLogger());
         }
     }
 

@@ -46,44 +46,44 @@ public final class ConfigAdapter implements Config {
         this.config = config;
     }
 
-    public int batchSize() {
-        return config.batchSize();
+    public int getBatchSize() {
+        return config.getBatchSize();
     }
 
-    public DataSource dataSource() {
-        return config.dataSource();
+    public DataSource getDataSource() {
+        return config.getDataSource();
     }
 
-    public String dataSourceName() {
-        return config.dataSourceName();
+    public String getDataSourceName() {
+        return config.getDataSourceName();
     }
 
-    public Dialect dialect() {
-        return config.dialect();
+    public Dialect getDialect() {
+        return config.getDialect();
     }
 
-    public int fetchSize() {
-        return config.fetchSize();
+    public int getFetchSize() {
+        return config.getFetchSize();
     }
 
-    public JdbcLogger jdbcLogger() {
-        return config.jdbcLogger();
+    public JdbcLogger getJdbcLogger() {
+        return config.getJdbcLogger();
     }
 
-    public int maxRows() {
-        return config.maxRows();
+    public int getMaxRows() {
+        return config.getMaxRows();
     }
 
-    public int queryTimeout() {
-        return config.queryTimeout();
+    public int getQueryTimeout() {
+        return config.getQueryTimeout();
     }
 
-    public RequiresNewController requiresNewController() {
-        return config.requiresNewController();
+    public RequiresNewController getRequiresNewController() {
+        return config.getRequiresNewController();
     }
 
-    public SqlFileRepository sqlFileRepository() {
-        return config.sqlFileRepository();
+    public SqlFileRepository getSqlFileRepository() {
+        return config.getSqlFileRepository();
     }
 
 }

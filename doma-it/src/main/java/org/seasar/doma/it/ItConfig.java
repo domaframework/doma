@@ -30,22 +30,22 @@ public class ItConfig extends DomaAbstractConfig {
     protected static final RequiresNewController requiresNewController = new S2RequiresNewController();
 
     @Override
-    public DataSource dataSource() {
+    public DataSource getDataSource() {
         return SingletonS2Container.getComponent(DataSource.class);
     }
 
     @Override
-    public Dialect dialect() {
+    public Dialect getDialect() {
         return SingletonS2Container.getComponent(Dialect.class);
     }
 
     @Override
-    public JdbcLogger jdbcLogger() {
+    public JdbcLogger getJdbcLogger() {
         return jdbcLogger;
     }
 
     @Override
-    public RequiresNewController requiresNewController() {
+    public RequiresNewController getRequiresNewController() {
         return requiresNewController;
     }
 

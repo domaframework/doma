@@ -85,7 +85,7 @@ public class CallableSqlParameterBinder implements
         protected int index = 1;
 
         public BindingVisitor(Query query, CallableStatement callableStatement) {
-            this.dialect = query.getConfig().dialect();
+            this.dialect = query.getConfig().getDialect();
             this.jdbcMappingVisitor = dialect.getJdbcMappingVisitor();
             this.callableStatement = callableStatement;
         }

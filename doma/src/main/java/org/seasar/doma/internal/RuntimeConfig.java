@@ -52,73 +52,73 @@ public class RuntimeConfig implements Config {
     protected final int batchSize;
 
     public RuntimeConfig(Config originalConfig) {
-        this(originalConfig, originalConfig.dataSource());
+        this(originalConfig, originalConfig.getDataSource());
     }
 
     public RuntimeConfig(Config config, DataSource dataSource) {
         assertNotNull(config);
         assertNotNull(dataSource);
-        assertNotNull(config.dataSourceName());
-        assertNotNull(config.dialect());
-        assertNotNull(config.sqlFileRepository());
-        assertNotNull(config.jdbcLogger());
-        assertNotNull(config.requiresNewController());
+        assertNotNull(config.getDataSourceName());
+        assertNotNull(config.getDialect());
+        assertNotNull(config.getSqlFileRepository());
+        assertNotNull(config.getJdbcLogger());
+        assertNotNull(config.getRequiresNewController());
         this.dataSource = dataSource;
-        this.dataSourceName = config.dataSourceName();
-        this.dialect = config.dialect();
-        this.sqlFileRepository = config.sqlFileRepository();
-        this.jdbcLogger = config.jdbcLogger();
-        this.requiresNewController = config.requiresNewController();
-        this.fetchSize = config.fetchSize();
-        this.maxRows = config.maxRows();
-        this.queryTimeout = config.queryTimeout();
-        this.batchSize = config.batchSize();
+        this.dataSourceName = config.getDataSourceName();
+        this.dialect = config.getDialect();
+        this.sqlFileRepository = config.getSqlFileRepository();
+        this.jdbcLogger = config.getJdbcLogger();
+        this.requiresNewController = config.getRequiresNewController();
+        this.fetchSize = config.getFetchSize();
+        this.maxRows = config.getMaxRows();
+        this.queryTimeout = config.getQueryTimeout();
+        this.batchSize = config.getBatchSize();
     }
 
     @Override
-    public DataSource dataSource() {
+    public DataSource getDataSource() {
         return dataSource;
     }
 
     @Override
-    public String dataSourceName() {
+    public String getDataSourceName() {
         return dataSourceName;
     }
 
-    public Dialect dialect() {
+    public Dialect getDialect() {
         return dialect;
     }
 
-    public SqlFileRepository sqlFileRepository() {
+    public SqlFileRepository getSqlFileRepository() {
         return sqlFileRepository;
     }
 
-    public JdbcLogger jdbcLogger() {
+    public JdbcLogger getJdbcLogger() {
         return jdbcLogger;
     }
 
     @Override
-    public RequiresNewController requiresNewController() {
+    public RequiresNewController getRequiresNewController() {
         return requiresNewController;
     }
 
     @Override
-    public int fetchSize() {
+    public int getFetchSize() {
         return fetchSize;
     }
 
     @Override
-    public int maxRows() {
+    public int getMaxRows() {
         return maxRows;
     }
 
     @Override
-    public int queryTimeout() {
+    public int getQueryTimeout() {
         return queryTimeout;
     }
 
     @Override
-    public int batchSize() {
+    public int getBatchSize() {
         return batchSize;
     }
 

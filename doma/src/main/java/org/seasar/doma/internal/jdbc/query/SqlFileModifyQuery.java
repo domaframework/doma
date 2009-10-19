@@ -50,7 +50,7 @@ public abstract class SqlFileModifyQuery implements ModifyQuery {
 
     protected void prepareOptions() {
         if (queryTimeout <= 0) {
-            queryTimeout = config.queryTimeout();
+            queryTimeout = config.getQueryTimeout();
         }
     }
 
@@ -58,9 +58,9 @@ public abstract class SqlFileModifyQuery implements ModifyQuery {
         ExpressionEvaluator evaluator = new ExpressionEvaluator(parameters);
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
                 evaluator);
-        SqlFile sqlFile = config.sqlFileRepository().getSqlFile(sqlFilePath,
-                config.dialect());
-        config.jdbcLogger().logSqlFile(callerClassName, callerMethodName,
+        SqlFile sqlFile = config.getSqlFileRepository().getSqlFile(sqlFilePath,
+                config.getDialect());
+        config.getJdbcLogger().logSqlFile(callerClassName, callerMethodName,
                 sqlFile);
         sql = sqlBuilder.build(sqlFile.getSqlNode());
     }

@@ -80,7 +80,7 @@ public @interface BatchDelete {
     /**
      * クエリタイムアウト（秒）です。
      * <p>
-     * 指定しない場合、{@link Config#queryTimeout()}が使用されます。
+     * 指定しない場合、{@link Config#getQueryTimeout()}が使用されます。
      * 
      * @see Statement#setQueryTimeout(int)
      */

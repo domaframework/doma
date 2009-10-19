@@ -44,90 +44,65 @@ public class MockConfig implements Config {
     protected RequiresNewController requiresNewController = new NullRequiresNewController();
 
     @Override
-    public DataSource dataSource() {
+    public DataSource getDataSource() {
         return dataSource;
     }
 
     @Override
-    public String dataSourceName() {
+    public String getDataSourceName() {
         return "";
     }
 
     @Override
-    public Dialect dialect() {
+    public Dialect getDialect() {
         return dialect;
     }
 
     @Override
-    public SqlFileRepository sqlFileRepository() {
+    public SqlFileRepository getSqlFileRepository() {
         return sqlFileRepository;
     }
 
     @Override
-    public JdbcLogger jdbcLogger() {
+    public JdbcLogger getJdbcLogger() {
         return sqlLogger;
     }
 
     @Override
-    public RequiresNewController requiresNewController() {
+    public RequiresNewController getRequiresNewController() {
         return requiresNewController;
     }
 
     @Override
-    public int fetchSize() {
+    public int getFetchSize() {
         return 0;
     }
 
     @Override
-    public int maxRows() {
+    public int getMaxRows() {
         return 0;
     }
 
     @Override
-    public int queryTimeout() {
+    public int getQueryTimeout() {
         return 0;
     }
 
     @Override
-    public int batchSize() {
+    public int getBatchSize() {
         return 10;
     }
 
-    public MockDataSource getDataSource() {
+    public MockDataSource getMockDataSource() {
         return dataSource;
     }
 
-    public void setDataSource(MockDataSource dataSource) {
+    public void setMockDataSource(MockDataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     public void setDialect(Dialect dialect) {
         this.dialect = dialect;
-    }
-
-    public SqlFileRepository getSqlFileRepository() {
-        return sqlFileRepository;
-    }
-
-    public void setSqlFileRepository(SqlFileRepository sqlFileRepository) {
-        this.sqlFileRepository = sqlFileRepository;
-    }
-
-    public JdbcLogger getSqlLogger() {
-        return sqlLogger;
-    }
-
-    public void setSqlLogger(JdbcLogger sqlLogger) {
-        this.sqlLogger = sqlLogger;
-    }
-
-    public RequiresNewController getRequiresNewController() {
-        return requiresNewController;
-    }
-
-    public void setRequiresNewController(
-            RequiresNewController requiresNewController) {
-        this.requiresNewController = requiresNewController;
     }
 
 }

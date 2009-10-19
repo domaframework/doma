@@ -57,7 +57,7 @@ public class EmpDaoImpl extends DomaAbstractDao implements EmpDao {
     }
 
     protected EmpDaoImpl(Config config) {
-        super(config, config.dataSource());
+        super(config, config.getDataSource());
     }
 
     @Override

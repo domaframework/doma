@@ -151,7 +151,7 @@ public class CallableSqlBuilder
     }
 
     protected void handelListParameter(ListParameter<?> parameter, Context p) {
-        if (config.dialect().supportsResultSetReturningAsOutParameter()) {
+        if (config.getDialect().supportsResultSetReturningAsOutParameter()) {
             p.appendRawSql("?, ");
             p.appendFormattedSql("?, ");
             p.addParameter(parameter);
@@ -189,7 +189,7 @@ public class CallableSqlBuilder
     protected void handleInParameter(InParameter parameter, Wrapper<?> wrapper,
             Context p) {
         p.appendRawSql("?, ");
-        p.appendFormattedSql(wrapper.accept(config.dialect()
+        p.appendFormattedSql(wrapper.accept(config.getDialect()
                 .getSqlLogFormattingVisitor(), formattingFunction));
         p.appendFormattedSql(", ");
         p.addParameter(parameter);

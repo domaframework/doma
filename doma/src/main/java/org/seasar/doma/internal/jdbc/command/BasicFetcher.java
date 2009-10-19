@@ -42,7 +42,7 @@ public class BasicFetcher implements ResultFetcher<ResultSet, Wrapper<?>> {
     public void fetch(ResultSet resultSet, Wrapper<?> wrapper)
             throws SQLException {
         ResultSetMetaData resultSetMeta = resultSet.getMetaData();
-        JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().dialect()
+        JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().getDialect()
                 .getJdbcMappingVisitor();
         if (resultSetMeta.getColumnCount() > 0) {
             GetValueFunction function = new GetValueFunction(resultSet, 1);

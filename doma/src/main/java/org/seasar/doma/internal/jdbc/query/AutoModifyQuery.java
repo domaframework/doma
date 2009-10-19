@@ -108,7 +108,7 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
 
     protected void prepareOptions() {
         if (queryTimeout <= 0) {
-            queryTimeout = config.queryTimeout();
+            queryTimeout = config.getQueryTimeout();
         }
     }
 

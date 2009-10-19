@@ -42,7 +42,7 @@ public abstract class AutoModuleQuery implements ModuleQuery {
 
     protected void prepareOptions() {
         if (queryTimeout <= 0) {
-            queryTimeout = config.queryTimeout();
+            queryTimeout = config.getQueryTimeout();
         }
     }
 

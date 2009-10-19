@@ -48,7 +48,7 @@ public abstract class ModuleCommand<R, Q extends ModuleQuery> implements
     @Override
     public R execute() {
         Connection connection = JdbcUtil.getConnection(query.getConfig()
-                .dataSource());
+                .getDataSource());
         try {
             CallableStatement callableStatement = JdbcUtil.prepareCall(
                     connection, sql.getRawSql());
@@ -60,14 +60,14 @@ public abstract class ModuleCommand<R, Q extends ModuleQuery> implements
                 query.complete();
                 return result;
             } catch (SQLException e) {
-                Dialect dialect = query.getConfig().dialect();
+                Dialect dialect = query.getConfig().getDialect();
                 throw new SqlExecutionException(sql, e, dialect.getRootCause(e));
             } finally {
                 JdbcUtil.close(callableStatement, query.getConfig()
-                        .jdbcLogger());
+                        .getJdbcLogger());
             }
         } finally {
-            JdbcUtil.close(connection, query.getConfig().jdbcLogger());
+            JdbcUtil.close(connection, query.getConfig().getJdbcLogger());
         }
     }
 
@@ -96,7 +96,7 @@ public abstract class ModuleCommand<R, Q extends ModuleQuery> implements
     }
 
     protected void log() {
-        JdbcLogger logger = query.getConfig().jdbcLogger();
+        JdbcLogger logger = query.getConfig().getJdbcLogger();
         logger.logSql(query.getClassName(), query.getMethodName(), sql);
     }
 

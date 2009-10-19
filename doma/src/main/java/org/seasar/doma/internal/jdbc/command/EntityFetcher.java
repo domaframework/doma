@@ -55,7 +55,7 @@ public class EntityFetcher implements ResultFetcher<ResultSet, EntityType<?>> {
         }
         ResultSetMetaData resultSetMeta = resultSet.getMetaData();
         int count = resultSetMeta.getColumnCount();
-        JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().dialect()
+        JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().getDialect()
                 .getJdbcMappingVisitor();
         for (int i = 1; i < count + 1; i++) {
             String columnName = resultSetMeta.getColumnLabel(i);

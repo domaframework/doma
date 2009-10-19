@@ -95,18 +95,18 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
     }
 
     protected void prepareSqlFile() {
-        sqlFile = config.sqlFileRepository().getSqlFile(sqlFilePath,
-                config.dialect());
-        config.jdbcLogger().logSqlFile(callerClassName, callerMethodName,
+        sqlFile = config.getSqlFileRepository().getSqlFile(sqlFilePath,
+                config.getDialect());
+        config.getJdbcLogger().logSqlFile(callerClassName, callerMethodName,
                 sqlFile);
     }
 
     protected void prepareOptions() {
         if (queryTimeout <= 0) {
-            queryTimeout = config.queryTimeout();
+            queryTimeout = config.getQueryTimeout();
         }
         if (batchSize <= 0) {
-            batchSize = config.batchSize();
+            batchSize = config.getBatchSize();
         }
     }
 

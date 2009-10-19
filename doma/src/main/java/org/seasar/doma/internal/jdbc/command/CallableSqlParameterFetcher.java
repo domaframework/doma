@@ -89,7 +89,7 @@ public class CallableSqlParameterFetcher implements
 
         public FetchingVisitor(Query query, CallableStatement callableStatement) {
             this.query = query;
-            this.dialect = query.getConfig().dialect();
+            this.dialect = query.getConfig().getDialect();
             this.jdbcMappingVisitor = dialect.getJdbcMappingVisitor();
             this.callableStatement = callableStatement;
         }
@@ -225,7 +225,7 @@ public class CallableSqlParameterFetcher implements
                         callback.fetch(resultSet);
                     }
                 } finally {
-                    JdbcUtil.close(resultSet, query.getConfig().jdbcLogger());
+                    JdbcUtil.close(resultSet, query.getConfig().getJdbcLogger());
                 }
                 index++;
             } else {

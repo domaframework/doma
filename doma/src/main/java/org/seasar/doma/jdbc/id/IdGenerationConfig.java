@@ -67,35 +67,35 @@ public class IdGenerationConfig {
     }
 
     public DataSource getDataSource() {
-        return config.dataSource();
+        return config.getDataSource();
     }
 
     public String getDataSourceName() {
-        return config.dataSourceName();
+        return config.getDataSourceName();
     }
 
     public Dialect getDialect() {
-        return config.dialect();
+        return config.getDialect();
     }
 
     public JdbcLogger getJdbcLogger() {
-        return config.jdbcLogger();
+        return config.getJdbcLogger();
     }
 
     public RequiresNewController getRequiresNewController() {
-        return config.requiresNewController();
+        return config.getRequiresNewController();
     }
 
     public int getFetchSize() {
-        return config.fetchSize();
+        return config.getFetchSize();
     }
 
     public int getMaxRows() {
-        return config.maxRows();
+        return config.getMaxRows();
     }
 
     public int getQueryTimeout() {
-        return config.queryTimeout();
+        return config.getQueryTimeout();
     }
 
     public EntityType<?> getEntityType() {

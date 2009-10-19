@@ -46,7 +46,7 @@ public class PreparedSqlParameterBinder implements
             List<? extends PreparedSqlParameter> paramters) throws SQLException {
         assertNotNull(preparedStatement, paramters);
         int index = 1;
-        JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().dialect()
+        JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().getDialect()
                 .getJdbcMappingVisitor();
         for (PreparedSqlParameter parameter : paramters) {
             SetValueFunction function = new SetValueFunction(preparedStatement,

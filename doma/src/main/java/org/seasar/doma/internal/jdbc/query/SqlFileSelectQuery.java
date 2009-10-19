@@ -64,13 +64,13 @@ public class SqlFileSelectQuery implements SelectQuery {
 
     protected void prepareOptions() {
         if (fetchSize <= 0) {
-            fetchSize = config.fetchSize();
+            fetchSize = config.getFetchSize();
         }
         if (maxRows <= 0) {
-            maxRows = config.maxRows();
+            maxRows = config.getMaxRows();
         }
         if (queryTimeout <= 0) {
-            queryTimeout = config.queryTimeout();
+            queryTimeout = config.getQueryTimeout();
         }
     }
 
@@ -78,11 +78,11 @@ public class SqlFileSelectQuery implements SelectQuery {
         ExpressionEvaluator evaluator = new ExpressionEvaluator(parameters);
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
                 evaluator);
-        SqlFile sqlFile = config.sqlFileRepository().getSqlFile(sqlFilePath,
-                config.dialect());
-        config.jdbcLogger().logSqlFile(callerClassName, callerMethodName,
+        SqlFile sqlFile = config.getSqlFileRepository().getSqlFile(sqlFilePath,
+                config.getDialect());
+        config.getJdbcLogger().logSqlFile(callerClassName, callerMethodName,
                 sqlFile);
-        SqlNode sqlNode = config.dialect().transformSelectSqlNode(
+        SqlNode sqlNode = config.getDialect().transformSelectSqlNode(
                 sqlFile.getSqlNode(), options);
         sql = sqlBuilder.build(sqlNode);
     }

@@ -32,41 +32,41 @@ public abstract class DomaAbstractConfig implements Config {
     private static RequiresNewController requiresNewController = new NullRequiresNewController();
 
     @Override
-    public String dataSourceName() {
+    public String getDataSourceName() {
         return getClass().getName();
     }
 
     @Override
-    public SqlFileRepository sqlFileRepository() {
+    public SqlFileRepository getSqlFileRepository() {
         return sqlFileRepository;
     }
 
     @Override
-    public JdbcLogger jdbcLogger() {
+    public JdbcLogger getJdbcLogger() {
         return jdbcLogger;
     }
 
     @Override
-    public RequiresNewController requiresNewController() {
+    public RequiresNewController getRequiresNewController() {
         return requiresNewController;
     }
 
     @Override
-    public int fetchSize() {
+    public int getFetchSize() {
         return 0;
     }
 
     @Override
-    public int maxRows() {
+    public int getMaxRows() {
         return 0;
     }
 
     @Override
-    public int queryTimeout() {
+    public int getQueryTimeout() {
         return 0;
     }
 
-    public int batchSize() {
+    public int getBatchSize() {
         return 10;
     }
 }

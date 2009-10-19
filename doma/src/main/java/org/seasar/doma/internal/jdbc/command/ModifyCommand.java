@@ -49,13 +49,13 @@ public abstract class ModifyCommand<Q extends ModifyQuery> implements
 
     public Integer execute() {
         if (!query.isExecutable()) {
-            JdbcLogger logger = query.getConfig().jdbcLogger();
+            JdbcLogger logger = query.getConfig().getJdbcLogger();
             logger.logSqlExecutionSkipping(query.getClassName(), query
                     .getMethodName(), query.getSqlExecutionSkipCause());
             return 0;
         }
         Connection connection = JdbcUtil.getConnection(query.getConfig()
-                .dataSource());
+                .getDataSource());
         try {
             PreparedStatement preparedStatement = JdbcUtil.prepareStatement(
                     connection, sql.getRawSql(), query
@@ -68,14 +68,14 @@ public abstract class ModifyCommand<Q extends ModifyQuery> implements
                 query.complete();
                 return result;
             } catch (SQLException e) {
-                Dialect dialect = query.getConfig().dialect();
+                Dialect dialect = query.getConfig().getDialect();
                 throw new SqlExecutionException(sql, e, dialect.getRootCause(e));
             } finally {
                 JdbcUtil.close(preparedStatement, query.getConfig()
-                        .jdbcLogger());
+                        .getJdbcLogger());
             }
         } finally {
-            JdbcUtil.close(connection, query.getConfig().jdbcLogger());
+            JdbcUtil.close(connection, query.getConfig().getJdbcLogger());
         }
     }
 
@@ -83,7 +83,7 @@ public abstract class ModifyCommand<Q extends ModifyQuery> implements
             throws SQLException;
 
     protected void log() {
-        JdbcLogger logger = query.getConfig().jdbcLogger();
+        JdbcLogger logger = query.getConfig().getJdbcLogger();
         logger.logSql(query.getClassName(), query.getMethodName(), sql);
     }
 
@@ -108,7 +108,7 @@ public abstract class ModifyCommand<Q extends ModifyQuery> implements
             validateRows(updatedRows);
             return updatedRows;
         } catch (SQLException e) {
-            Dialect dialect = query.getConfig().dialect();
+            Dialect dialect = query.getConfig().getDialect();
             if (dialect.isUniqueConstraintViolated(e)) {
                 throw new UniqueConstraintException(sql, e);
             }

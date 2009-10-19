@@ -34,12 +34,12 @@ public class ExampleConfig extends DomaAbstractConfig {
     protected StandardDialect dialect = new StandardDialect();
 
     @Override
-    public DataSource dataSource() {
+    public DataSource getDataSource() {
         return dataSource;
     }
 
     @Override
-    public Dialect dialect() {
+    public Dialect getDialect() {
         return dialect;
     }
 
