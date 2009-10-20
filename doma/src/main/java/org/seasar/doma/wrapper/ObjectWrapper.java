@@ -42,6 +42,11 @@ public class ObjectWrapper extends AbstractWrapper<Object> {
     }
 
     @Override
+    public ObjectWrapper copy() {
+        return new ObjectWrapper(value);
+    }
+
+    @Override
     public <R, P, TH extends Throwable> R accept(
             WrapperVisitor<R, P, TH> visitor, P p) throws TH {
         if (visitor == null) {

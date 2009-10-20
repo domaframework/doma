@@ -43,6 +43,11 @@ public class ShortWrapper extends AbstractWrapper<Short> implements
     }
 
     @Override
+    public ShortWrapper copy() {
+        return new ShortWrapper(value);
+    }
+
+    @Override
     public void set(Number v) {
         super.set(v.shortValue());
     }

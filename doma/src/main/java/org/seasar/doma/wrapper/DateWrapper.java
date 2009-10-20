@@ -44,6 +44,14 @@ public class DateWrapper extends AbstractWrapper<Date> {
     }
 
     @Override
+    public DateWrapper copy() {
+        if (value == null) {
+            return new DateWrapper();
+        }
+        return new DateWrapper(new Date(value.getTime()));
+    }
+
+    @Override
     public <R, P, TH extends Throwable> R accept(
             WrapperVisitor<R, P, TH> visitor, P p) throws TH {
         if (visitor == null) {

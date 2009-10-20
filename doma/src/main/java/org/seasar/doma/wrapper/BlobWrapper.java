@@ -44,6 +44,11 @@ public class BlobWrapper extends AbstractWrapper<Blob> {
     }
 
     @Override
+    public BlobWrapper copy() {
+        return new BlobWrapper(value);
+    }
+
+    @Override
     public boolean isEqual(Wrapper<?> other) {
         return false;
     }

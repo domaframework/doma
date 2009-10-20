@@ -43,6 +43,11 @@ public class IntegerWrapper extends AbstractWrapper<Integer> implements
     }
 
     @Override
+    public IntegerWrapper copy() {
+        return new IntegerWrapper(value);
+    }
+
+    @Override
     public void set(Number v) {
         super.set(v.intValue());
     }

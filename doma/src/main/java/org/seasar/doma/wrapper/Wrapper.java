@@ -45,6 +45,13 @@ public interface Wrapper<V> {
     void set(V value);
 
     /**
+     * このインスタンスをコピーします。
+     * 
+     * @return このインスタンスのコピー
+     */
+    Wrapper<V> copy();
+
+    /**
      * 等しい場合 {@code true} を返します。
      * 
      * @param other

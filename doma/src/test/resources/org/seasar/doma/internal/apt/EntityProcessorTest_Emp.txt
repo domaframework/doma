@@ -158,10 +158,10 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
             } else {
                 originalStates = new java.util.HashMap<String, org.seasar.doma.wrapper.Wrapper<?>>();
             }
-            originalStates.put("id", id.getWrapper());
-            originalStates.put("name", name.getWrapper());
-            originalStates.put("salary", salary.getWrapper());
-            originalStates.put("version", version.getWrapper());
+            originalStates.put("id", id.getWrapper().copy());
+            originalStates.put("name", name.getWrapper().copy());
+            originalStates.put("salary", salary.getWrapper().copy());
+            originalStates.put("version", version.getWrapper().copy());
             org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.setOriginalStates(__entity, originalStates);
         }
 

@@ -44,6 +44,14 @@ public class BytesWrapper extends AbstractWrapper<byte[]> {
     }
 
     @Override
+    public BytesWrapper copy() {
+        if (value == null) {
+            return new BytesWrapper();
+        }
+        return new BytesWrapper(Arrays.copyOf(value, value.length));
+    }
+
+    @Override
     public boolean isEqual(Wrapper<?> other) {
         if (other == null) {
             throw new DomaNullPointerException("other");

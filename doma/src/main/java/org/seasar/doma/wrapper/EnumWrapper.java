@@ -60,6 +60,11 @@ public class EnumWrapper<E extends Enum<E>> extends AbstractWrapper<E> {
         this.enumClass = enumClass;
     }
 
+    @Override
+    public EnumWrapper<E> copy() {
+        return new EnumWrapper<E>(enumClass, value);
+    }
+
     /**
      * {@link Enum} のクラスを返します。
      * 

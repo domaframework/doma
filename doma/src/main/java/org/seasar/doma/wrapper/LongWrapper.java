@@ -43,6 +43,11 @@ public class LongWrapper extends AbstractWrapper<Long> implements
     }
 
     @Override
+    public LongWrapper copy() {
+        return new LongWrapper(value);
+    }
+
+    @Override
     public void set(Number v) {
         super.set(v.longValue());
     }

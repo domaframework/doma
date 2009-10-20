@@ -45,6 +45,11 @@ public class BigDecimalWrapper extends AbstractWrapper<BigDecimal> implements
     }
 
     @Override
+    public BigDecimalWrapper copy() {
+        return new BigDecimalWrapper(value);
+    }
+
+    @Override
     public void set(Number v) {
         super.set(new BigDecimal(v.doubleValue()));
     }

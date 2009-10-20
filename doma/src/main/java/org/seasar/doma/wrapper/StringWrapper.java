@@ -42,6 +42,11 @@ public class StringWrapper extends AbstractWrapper<String> {
     }
 
     @Override
+    public StringWrapper copy() {
+        return new StringWrapper(value);
+    }
+
+    @Override
     public <R, P, TH extends Throwable> R accept(
             WrapperVisitor<R, P, TH> visitor, P p) throws TH {
         if (visitor == null) {

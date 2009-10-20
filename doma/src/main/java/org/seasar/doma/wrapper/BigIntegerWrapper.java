@@ -45,6 +45,11 @@ public class BigIntegerWrapper extends AbstractWrapper<BigInteger> implements
     }
 
     @Override
+    public BigIntegerWrapper copy() {
+        return new BigIntegerWrapper(value);
+    }
+
+    @Override
     public void set(Number v) {
         super.set(BigInteger.valueOf(v.longValue()));
     }

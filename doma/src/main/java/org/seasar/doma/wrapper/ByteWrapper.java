@@ -38,8 +38,13 @@ public class ByteWrapper extends AbstractWrapper<Byte> implements
      * @param value
      *            値
      */
-    public ByteWrapper(byte value) {
+    public ByteWrapper(Byte value) {
         super(value);
+    }
+
+    @Override
+    public ByteWrapper copy() {
+        return new ByteWrapper(value);
     }
 
     @Override

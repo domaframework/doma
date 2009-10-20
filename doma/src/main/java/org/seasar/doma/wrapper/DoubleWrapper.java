@@ -43,6 +43,11 @@ public class DoubleWrapper extends AbstractWrapper<Double> implements
     }
 
     @Override
+    public DoubleWrapper copy() {
+        return new DoubleWrapper(value);
+    }
+
+    @Override
     public void set(Number v) {
         super.set(v.doubleValue());
     }

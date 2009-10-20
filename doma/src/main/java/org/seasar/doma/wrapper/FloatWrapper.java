@@ -43,6 +43,11 @@ public class FloatWrapper extends AbstractWrapper<Float> implements
     }
 
     @Override
+    public FloatWrapper copy() {
+        return new FloatWrapper(value);
+    }
+
+    @Override
     public void set(Number v) {
         super.set(v.floatValue());
     }

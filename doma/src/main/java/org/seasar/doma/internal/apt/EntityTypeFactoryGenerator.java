@@ -528,7 +528,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
             iprint("    }%n");
             for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
                 iprint(
-                        "    originalStates.put(\"%1$s\", %1$s.getWrapper());%n",
+                        "    originalStates.put(\"%1$s\", %1$s.getWrapper().copy());%n",
                         pm.getName());
             }
             iprint(

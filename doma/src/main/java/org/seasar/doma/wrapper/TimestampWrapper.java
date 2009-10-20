@@ -44,6 +44,14 @@ public class TimestampWrapper extends AbstractWrapper<Timestamp> {
     }
 
     @Override
+    public TimestampWrapper copy() {
+        if (value == null) {
+            return new TimestampWrapper();
+        }
+        return new TimestampWrapper(new Timestamp(value.getTime()));
+    }
+
+    @Override
     public <R, P, TH extends Throwable> R accept(
             WrapperVisitor<R, P, TH> visitor, P p) throws TH {
         if (visitor == null) {
