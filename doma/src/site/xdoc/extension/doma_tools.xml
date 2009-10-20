@@ -8,6 +8,7 @@
 		<section name="概要">
 			<p>
 				Doma Toolsは、Domaを使った開発をサーポートするEclipseプラグインです。
+				Eclipse 3.5 以上、JDK 6 以上の環境で動作します。
 			</p>
 			<p>
 				Doma Toolsを利用すると、次のことが可能です。
@@ -28,12 +29,6 @@
 			</ul>
 		</section>
 		<section name="使用方法">
-			<subsection name="前提">
-				<p>
-					いずれかのソースフォルダの直下にMETA-INFファルダが必要です。
-					SQLファイルはMETA-INFフォルダ以下に配置されます。
-				</p>
-			</subsection>
 			<subsection name="DaoクラスをJavaエディタで開いている場合">
 				<p>
 					メソッドを選択して右クリックし、「Doma」  - 「Jump to SQL File」 と選択するとSQLファイルへジャンプします。
@@ -42,7 +37,7 @@
 			</subsection>
 			<subsection name="SQLファイルをテキストエディタで開いている場合">
 				<p>
-					メソッドを選択して右クリックし、「Doma」  - 「Jump to Dao」 と選択するとDaoクラスへジャンプします。
+					エディタ上で右クリックし、「Doma」  - 「Jump to Dao」 と選択するとDaoクラスへジャンプします。
 					対応するDaoクラスがない場合、何もおきません。
 				</p>
 				<p>
@@ -52,7 +47,7 @@
 			</subsection>
 			<subsection name="パッケージエクスプローラー等でSQLファイルを選択している場合">
 				<p>
-					メソッドを選択して右クリックし、「Doma」  - 「Jump to Dao」 と選択するとDaoクラスへジャンプします。
+					SQLファイルを右クリックし、「Doma」  - 「Jump to Dao」 と選択するとDaoクラスへジャンプします。
 					対応するDaoクラスがない場合、何もおきません。
 				</p>
 			</subsection>

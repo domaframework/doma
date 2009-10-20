@@ -7,7 +7,8 @@
 	<body>
 		<section name="ダウンロード">
 			<p>
-				いずれもEclipseのプロジェクト形式です。JDK 6 と Eclipse 3.5 の組み合わせで動作確認をしています。
+				以下の配布ファイルは、いずれもEclipseのプロジェクト形式です。JDK 6 と Eclipse 3.5 の組み合わせで動作確認をしています。
+				Eclipseプラグインの更新サイトについては<a href="extension/doma_tools.html">Doma Tools</a>を参照ください。
 			</p>
 			<table>
 				<tr>
@@ -15,6 +16,12 @@
 					<th>JUnitを利用したチュートリアル</th>
 					<th>SAStrutsを利用したデモアプリ</th>
 					<th>GWTを利用したデモアプリ</th>
+				</tr>
+				<tr>
+					<td><a href="download/2009-10-21/doma-0.9.7.zip">doma-0.9.7</a></td>
+					<td><a href="download/2009-10-21/doma-tutorial-0.9.7.zip">doma-tutorial-0.9.7</a></td>
+					<td><a href="download/2009-10-21/doma-sastruts-demo-0.9.7.zip">doma-sastruts-demo-0.9.7</a></td>
+					<td><a href="download/2009-10-21/doma-gwt-demo-0.9.7.zip">doma-gwt-demo-0.9.7</a></td>
 				</tr>
 				<tr>
 					<td><a href="download/2009-10-04/doma-0.9.6.zip">doma-0.9.6</a></td>

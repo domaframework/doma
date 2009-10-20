@@ -17,7 +17,6 @@
 				<li>データソース</li>
 				<li>データソースの名前</li>
 				<li>データベースの方言</li>
-				<li>エンティティやプロパティのネーミング規約</li>
 				<li>JDBC関連のログ出力に使用するロギングフレームワークへのアダプタ</li>
 				<li>SQLファイルのキャッシュ戦略</li>
 				<li>トランザクション属性がREQUIRES_NEWであるトランザクションとの連動方法</li>
@@ -35,22 +34,21 @@
 				</p>
 				<h4>データソースの設定</h4>
 				<p>
-					<code>javax.sql.DataSource</code>を、<code>dataSource</code>メソッドで返します。
-					このメソッドでは、通常、DIコンテナやアプリケーションサーバーから<code>DataSource</code>をルックアップするコードを記述するのがいいでしょう。
+					<code>javax.sql.DataSource</code>を、<code>getDataSource</code>メソッドで返します。
 					学習等でごく簡易的なデータアクセスを行うだけであれば、
 					<a href ="../apidocs/org/seasar/doma/jdbc/SimpleDataSource.html"><code>SimpleDataSource</code></a>
 					を使用できます。
 				</p>
 				<h4>データソース名の設定</h4>
 				<p>
-					データソース名をあらわす<code>String</code>を、<code>dataSourceName</code>メソッドで返します。
+					データソース名をあらわす<code>String</code>を、<code>getDataSourceName</code>メソッドで返します。
 					データソース名は、複数のデータソースを利用する環境で重要です。
 					データソース名はデータソースごとに自動生成される識別子を認識するために使用されます。
 					複数データソースを利用する場合は、それぞれ異なる名前を返すようにしてください。
 				</p>
 				<h4>RDBMS方言の設定</h4>
 				<p>
-					<a href ="../apidocs/org/seasar/doma/jdbc/Dialect.html"><code>org.seasar.doma.jdbc.dialect.Dialect</code></a>を、<code>dialect</code>メソッドで返します。
+					<a href ="../apidocs/org/seasar/doma/jdbc/Dialect.html"><code>org.seasar.doma.jdbc.dialect.Dialect</code></a>を、<code>getDialect</code>メソッドで返します。
 					<code>Dialect</code>はRDBMSの方言をあらわすインタフェースです。
 					実装クラスには次のものがあります。
 				</p>
@@ -81,7 +79,7 @@
 				</p>
 				<h4>ロガーの設定</h4>
 				<p>
-					<a href ="../apidocs/org/seasar/doma/jdbc/JdbcLogger.html"><code>org.seasar.doma.jdbc.JdbcLogger</code></a>を、<code>jdbcLogger</code>メソッドで返します。
+					<a href ="../apidocs/org/seasar/doma/jdbc/JdbcLogger.html"><code>org.seasar.doma.jdbc.JdbcLogger</code></a>を、<code>getJdbcLogger</code>メソッドで返します。
 					<code>JdbcLogger</code>はデータベースアクセスに関するログを扱うインタフェースです。
 					実装クラスには次のものがあります。
 				</p>
@@ -92,26 +90,9 @@
 					<code>UtilLoggingJdbcLogger</code>は、<code>java.util.logging</code>のロガーを使用してログ出力する実装です。
 					多くの場合、アプリケーションで使用するcommons-loggingなどのロガーに出力する実装クラスを別途作ったほうがよいでしょう。
 				</p>
-				<h4>ネーミング規約の設定</h4>
-				<p>
-					<a href ="../apidocs/org/seasar/doma/jdbc/NamingConvention.html"><code>org.seasar.doma.jdbc.NamingConvention</code></a>を、<code>namingConvention</code>メソッドで返します。
-					<code>NamingConvention</code>はネーミング規約を扱うインタフェースです。
-					実装クラスには次のものがあります。
-				</p>
-				<ul>
-					<li><a href ="../apidocs/org/seasar/doma/jdbc/CamelNamingConvention.html"><code>org.seasar.doma.jdbc.CamelNamingConvention</code></a></li>
-				</ul>
-				<p>
-					<code>CamelNamingConvention</code>は、キャメルケースの文字列をアンダースコア（_）区切りに変換するネーミング規約です。
-					<code>@Table</code>が注釈されていないエンティティクラスの単純名をアンダースコア区切りテーブル名に変換したり、
-					エンティティクラスの<code>@Calumn</code>が注釈されていない永続的なフィールドの名前をアンダースコア区切りのカラムに変換したりします。
-				</p>
-				<p>
-					テーブル名やカラム名のネーミング規約とあった実装クラスを作成し使用してください。
-				</p>
 				<h4>SQLファイルのリポジトリの設定</h4>
 				<p>
-					<a href ="../apidocs/org/seasar/doma/jdbc/SqlFileRepository.html"><code>org.seasar.doma.jdbc.SqlFileRepository</code></a>を、<code>sqlFileRepository</code>メソッドで返します。
+					<a href ="../apidocs/org/seasar/doma/jdbc/SqlFileRepository.html"><code>org.seasar.doma.jdbc.SqlFileRepository</code></a>を、<code>getSqlFileRepository</code>メソッドで返します。
 					<code>SqlFileRepository</code>はSQLファイルのリポジトリを扱うインタフェースです。
 					実装クラスには次のものがあります。
 				</p>
@@ -126,7 +107,7 @@
 				</p>
 				<h4>REQUIRES_NEWの属性をもつトランザクションを制御するための設定</h4>
 				<p>
-					<a href ="../apidocs/org/seasar/doma/jdbc/RequiresNewController.html"><code>org.seasar.doma.jdbc.RequiresNewController</code></a>を、<code>requiresNewController</code>メソッドで返します。
+					<a href ="../apidocs/org/seasar/doma/jdbc/RequiresNewController.html"><code>org.seasar.doma.jdbc.RequiresNewController</code></a>を、<code>getRequiresNewController</code>メソッドで返します。
 					<code>RequiresNewController</code>はREQUIRES_NEW の属性をもつトランザクションを制御するインタフェースです。
 					実装クラスには次のものがあります。
 				</p>
@@ -144,25 +125,25 @@
 				</p>
 				<h4>クエリタイムアウト（秒）の設定</h4>
 				<p>
-					クエリタイムアウト（秒）をあらわす、<code>int</code>を<code>queryTimeout</code>メソッドで返します。
+					クエリタイムアウト（秒）をあらわす、<code>int</code>を<code>getQueryTimeout</code>メソッドで返します。
 					この値は、Daoインタフェースの<code>@Delegate</code>以外の問い合わせで使用されます。
 					クエリタイムアウト（秒）は<code>java.sql.Statement.setQueryTimeout(int)</code>に渡されます。
 				</p>
 				<h4>SELECT時のフェッチサイズの設定</h4>
 				<p>
-					SELECT時のフェッチサイズをあらわす、<code>int</code>を<code>fetchSize</code>メソッドで返します。
+					SELECT時のフェッチサイズをあらわす、<code>int</code>を<code>getFetchSize</code>メソッドで返します。
 					この値は、Daoインタフェースの<code>@Select</code>が注釈されたメソッドの実行で使用されます。
 					フェッチサイズは<code>java.sql.Statement.setFetchSize(int)</code>に渡されます。
 				</p>
 				<h4>SELECT時の最大行数の設定</h4>
 				<p>
-					SELECT時の最大行数をあらわす、<code>int</code>を<code>maxRows</code>メソッドで返します。
+					SELECT時の最大行数をあらわす、<code>int</code>を<code>getMaxRows</code>メソッドで返します。
 					この値は、Daoインタフェースの<code>@Select</code>が注釈されたメソッドの実行で使用されます。
 					最大行数は<code>java.sql.Statement.setMaxRows(int)</code>に渡されます。
 				</p>
 				<h4>バッチ更新のバッチサイズの設定</h4>
 				<p>
-					バッチサイズをあらわす、<code>int</code>を<code>batchSize</code>メソッドで返します。
+					バッチサイズをあらわす、<code>int</code>を<code>getBatchSize</code>メソッドで返します。
 					この値は、Daoインタフェースの<code>@BatchUpdate</code>などが注釈されたバッチ系のメソッドの実行に使用されます。
 				</p>
 			</subsection>
@@ -194,10 +175,6 @@
 					<tr>
 						<td>ロガーの設定</td>
 						<td><code>org.seasar.doma.jdbc.UtilLoggingJdbcLogger</code></td>
-					</tr>
-					<tr>
-						<td>ネーミング規約の設定</td>
-						<td><code>org.seasar.doma.jdbc.CamelNamingConvention</code></td>
 					</tr>
 					<tr>
 						<td>SQLファイルのリポジトリの設定</td>
@@ -255,7 +232,7 @@ public interface EmployeeDao {
 					上のインタフェースに対する実装クラスのソースコードは、aptにより次のように生成されます。
 				</p>
 <source><![CDATA[public class EmployeeDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao implements example.EmployeeDao {
-    public GuiceDaoImpl(org.seasar.doma.jdbc.Config config) {
+    public EmployeeDaoImpl(org.seasar.doma.jdbc.Config config) {
         super(new org.seasar.doma.jdbc.ConfigAdapter(config));
     }
     ...

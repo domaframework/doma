@@ -358,9 +358,7 @@ and employeeName like 's%'</source>
 					可視性はprivateであってもアクセス可能です。
 				</p>
 <source>select * from employee where 
-/*%if employee.employeeName.startsWith("s") */
-    employee_name = /*employee.employeeName*/'smith'
-/*%end*/</source>
+    employee_name = /*employee.employeeName*/'smith'</source>
 			</subsection>
 		</section>
 	</body>

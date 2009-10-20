@@ -15,6 +15,10 @@
  */
 package org.seasar.doma.wrapper;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.math.BigInteger;
 
 import org.seasar.doma.DomaNullPointerException;
@@ -26,7 +30,9 @@ import org.seasar.doma.DomaNullPointerException;
  * 
  */
 public class BigIntegerWrapper extends AbstractWrapper<BigInteger> implements
-        NumberWrapper<BigInteger> {
+        NumberWrapper<BigInteger>, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * インスタンスを構築します。
@@ -69,4 +75,15 @@ public class BigIntegerWrapper extends AbstractWrapper<BigInteger> implements
         return visitor.visitUnknownWrapper(this, p);
     }
 
+    private void readObject(ObjectInputStream inputStream) throws IOException,
+            ClassNotFoundException {
+        inputStream.defaultReadObject();
+        value = BigInteger.class.cast(inputStream.readObject());
+    }
+
+    private void writeObject(ObjectOutputStream outputStream)
+            throws IOException {
+        outputStream.defaultWriteObject();
+        outputStream.writeObject(value);
+    }
 }

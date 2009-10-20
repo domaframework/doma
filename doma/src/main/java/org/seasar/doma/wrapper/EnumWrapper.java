@@ -15,6 +15,11 @@
  */
 package org.seasar.doma.wrapper;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
 import org.seasar.doma.DomaNullPointerException;
 
 /**
@@ -25,7 +30,10 @@ import org.seasar.doma.DomaNullPointerException;
  * @param <E>
  *            {@link Enum} の型
  */
-public class EnumWrapper<E extends Enum<E>> extends AbstractWrapper<E> {
+public class EnumWrapper<E extends Enum<E>> extends AbstractWrapper<E>
+        implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /** {@link Enum} のクラス */
     protected final Class<E> enumClass;
@@ -89,4 +97,15 @@ public class EnumWrapper<E extends Enum<E>> extends AbstractWrapper<E> {
         return visitor.visitUnknownWrapper(this, p);
     }
 
+    private void readObject(ObjectInputStream inputStream) throws IOException,
+            ClassNotFoundException {
+        inputStream.defaultReadObject();
+        value = enumClass.cast(inputStream.readObject());
+    }
+
+    private void writeObject(ObjectOutputStream outputStream)
+            throws IOException {
+        outputStream.defaultWriteObject();
+        outputStream.writeObject(value);
+    }
 }

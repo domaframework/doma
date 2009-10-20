@@ -15,6 +15,11 @@
  */
 package org.seasar.doma.wrapper;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
 import org.seasar.doma.DomaNullPointerException;
 
 /**
@@ -24,7 +29,9 @@ import org.seasar.doma.DomaNullPointerException;
  * 
  */
 public class DoubleWrapper extends AbstractWrapper<Double> implements
-        NumberWrapper<Double> {
+        NumberWrapper<Double>, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * インスタンスを構築します。
@@ -67,4 +74,15 @@ public class DoubleWrapper extends AbstractWrapper<Double> implements
         return visitor.visitUnknownWrapper(this, p);
     }
 
+    private void readObject(ObjectInputStream inputStream) throws IOException,
+            ClassNotFoundException {
+        inputStream.defaultReadObject();
+        value = Double.class.cast(inputStream.readObject());
+    }
+
+    private void writeObject(ObjectOutputStream outputStream)
+            throws IOException {
+        outputStream.defaultWriteObject();
+        outputStream.writeObject(value);
+    }
 }

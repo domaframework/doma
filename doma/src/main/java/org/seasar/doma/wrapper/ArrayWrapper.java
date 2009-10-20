@@ -27,6 +27,8 @@ import org.seasar.doma.DomaNullPointerException;
  */
 public class ArrayWrapper extends AbstractWrapper<Array> {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * インスタンスを構築します。
      */
