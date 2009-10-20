@@ -15,15 +15,15 @@
  */
 package org.seasar.doma.internal.apt.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Set;
 
-import org.seasar.doma.ChangedProperties;
 import org.seasar.doma.Column;
 import org.seasar.doma.Entity;
 import org.seasar.doma.GeneratedValue;
 import org.seasar.doma.GenerationType;
 import org.seasar.doma.Id;
+import org.seasar.doma.OriginalStates;
 import org.seasar.doma.SequenceGenerator;
 import org.seasar.doma.Table;
 import org.seasar.doma.Transient;
@@ -49,8 +49,8 @@ public class Emp {
     @Transient
     String temp;
 
-    @ChangedProperties
-    Set<String> changedProperties;
+    @OriginalStates
+    Serializable originalStates;
 
     public Integer getId() {
         return id;

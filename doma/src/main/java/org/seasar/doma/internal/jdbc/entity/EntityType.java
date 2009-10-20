@@ -16,9 +16,10 @@
 package org.seasar.doma.internal.jdbc.entity;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import org.seasar.doma.jdbc.entity.NamingConvention;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * エンティティのインスタンスを管理するクラスを表します。
@@ -54,7 +55,7 @@ public interface EntityType<E> {
 
     Class<E> getEntityClass();
 
-    Set<String> getChangedProperties();
+    Map<String, Wrapper<?>> getOriginalStates();
 
     NamingConvention getNamingConvention();
 

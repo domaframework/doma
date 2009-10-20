@@ -15,15 +15,14 @@
  */
 package org.seasar.doma.it.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import org.seasar.doma.ChangedProperties;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
+import org.seasar.doma.OriginalStates;
 import org.seasar.doma.Transient;
 import org.seasar.doma.Version;
 import org.seasar.doma.it.ItNamingConvention;
@@ -56,15 +55,14 @@ public class Emp {
     @Transient
     List<String> tempList;
 
-    @ChangedProperties
-    Set<String> changedProperties = new HashSet<String>();
+    @OriginalStates
+    Serializable originalStates;
 
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
-        changedProperties.add("id");
         this.id = id;
     }
 
@@ -73,7 +71,6 @@ public class Emp {
     }
 
     public void setName(String name) {
-        changedProperties.add("name");
         this.name = name;
     }
 
@@ -82,7 +79,6 @@ public class Emp {
     }
 
     public void setSalary(BigDecimal salary) {
-        changedProperties.add("salary");
         this.salary = salary;
     }
 
@@ -91,7 +87,6 @@ public class Emp {
     }
 
     public void setVersion(Integer version) {
-        changedProperties.add("version");
         this.version = version;
     }
 
@@ -100,7 +95,6 @@ public class Emp {
     }
 
     public void setInsertTimestamp(Timestamp insertTimestamp) {
-        changedProperties.add("insertTimestamp");
         this.insertTimestamp = insertTimestamp;
     }
 
@@ -109,7 +103,6 @@ public class Emp {
     }
 
     public void setUpdateTimestamp(Timestamp updateTimestamp) {
-        changedProperties.add("updateTimestamp");
         this.updateTimestamp = updateTimestamp;
     }
 
@@ -118,7 +111,6 @@ public class Emp {
     }
 
     public void setTemp(String temp) {
-        changedProperties.add("temp");
         this.temp = temp;
     }
 
@@ -127,7 +119,6 @@ public class Emp {
     }
 
     public void setTempList(List<String> tempList) {
-        changedProperties.add("tempList");
         this.tempList = tempList;
     }
 

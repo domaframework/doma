@@ -1,12 +1,11 @@
 package org.seasar.doma.it.entity;
 
+import java.io.Serializable;
 import java.sql.Array;
-import java.util.HashSet;
-import java.util.Set;
 
-import org.seasar.doma.ChangedProperties;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
+import org.seasar.doma.OriginalStates;
 import org.seasar.doma.Table;
 import org.seasar.doma.it.ItNamingConvention;
 
@@ -21,15 +20,14 @@ public class SalEmp {
 
     Array schedule;
 
-    @ChangedProperties
-    Set<String> changedProperties = new HashSet<String>();
+    @OriginalStates
+    Serializable originalStates;
 
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
-        changedProperties.add("name");
         this.name = name;
     }
 
@@ -38,7 +36,6 @@ public class SalEmp {
     }
 
     public void setPayByQuarter(Array payByQuarter) {
-        changedProperties.add("payByQuarter");
         this.payByQuarter = payByQuarter;
     }
 
@@ -47,7 +44,6 @@ public class SalEmp {
     }
 
     public void setSchedule(Array schedule) {
-        changedProperties.add("schedule");
         this.schedule = schedule;
     }
 

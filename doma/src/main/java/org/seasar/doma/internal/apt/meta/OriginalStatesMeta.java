@@ -26,7 +26,7 @@ import javax.lang.model.element.VariableElement;
  * @author taedium
  * 
  */
-public class ChangedPropertiesMeta {
+public class OriginalStatesMeta {
 
     protected final String entityName;
 
@@ -34,7 +34,7 @@ public class ChangedPropertiesMeta {
 
     protected final String name;
 
-    public ChangedPropertiesMeta(TypeElement entityElement,
+    public OriginalStatesMeta(TypeElement entityElement,
             VariableElement changedPropertiesElement, ProcessingEnvironment env) {
         assertNotNull(entityElement, changedPropertiesElement, env);
         this.entityName = entityElement.getSimpleName().toString();

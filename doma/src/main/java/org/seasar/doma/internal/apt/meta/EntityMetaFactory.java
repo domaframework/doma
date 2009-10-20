@@ -17,11 +17,11 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
@@ -37,9 +37,9 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 
-import org.seasar.doma.ChangedProperties;
 import org.seasar.doma.Entity;
 import org.seasar.doma.EntityField;
+import org.seasar.doma.OriginalStates;
 import org.seasar.doma.Table;
 import org.seasar.doma.Transient;
 import org.seasar.doma.internal.apt.AptException;
@@ -216,8 +216,8 @@ public class EntityMetaFactory {
             EntityMeta entityMeta) {
         for (VariableElement fieldElement : getFieldElements(classElement)) {
             try {
-                if (fieldElement.getAnnotation(ChangedProperties.class) != null) {
-                    doChangedPropertiesField(fieldElement, entityMeta);
+                if (fieldElement.getAnnotation(OriginalStates.class) != null) {
+                    doOriginalStatesField(fieldElement, entityMeta);
                 } else {
                     doEntityPropertyMeta(fieldElement, entityMeta);
                 }
@@ -267,34 +267,23 @@ public class EntityMetaFactory {
         return results;
     }
 
-    protected void doChangedPropertiesField(VariableElement fieldElement,
+    protected void doOriginalStatesField(VariableElement fieldElement,
             EntityMeta entityMeta) {
-        if (entityMeta.hasChangedPropertiesMeta()) {
+        if (entityMeta.hasOriginalStatesMeta()) {
             throw new AptException(DomaMessageCode.DOMA4125, env, fieldElement);
         }
-        if (!TypeUtil.isSameType(fieldElement.asType(), Set.class, env)) {
+        if (!TypeUtil
+                .isSameType(fieldElement.asType(), Serializable.class, env)) {
             throw new AptException(DomaMessageCode.DOMA4135, env, fieldElement);
-        }
-        DeclaredType declaredType = TypeUtil.toDeclaredType(fieldElement
-                .asType(), env);
-        if (declaredType == null) {
-            throw new AptIllegalStateException(fieldElement.toString());
-        }
-        List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
-        if (typeArgs.isEmpty()) {
-            throw new AptException(DomaMessageCode.DOMA4136, env, fieldElement);
-        }
-        if (!TypeUtil.isSameType(typeArgs.get(0), String.class, env)) {
-            throw new AptException(DomaMessageCode.DOMA4137, env, fieldElement);
         }
         TypeElement entityElement = ElementUtil.toTypeElement(fieldElement
                 .getEnclosingElement(), env);
         if (entityElement == null) {
             throw new AptIllegalStateException(fieldElement.toString());
         }
-        ChangedPropertiesMeta changedPropertiesMeta = new ChangedPropertiesMeta(
+        OriginalStatesMeta changedPropertiesMeta = new OriginalStatesMeta(
                 entityElement, fieldElement, env);
-        entityMeta.setChangedPropertiesMeta(changedPropertiesMeta);
+        entityMeta.setOriginalStatesMeta(changedPropertiesMeta);
     }
 
     protected void doEntityPropertyMeta(VariableElement fieldElement,

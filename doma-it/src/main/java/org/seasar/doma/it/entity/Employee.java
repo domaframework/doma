@@ -15,12 +15,11 @@
  */
 package org.seasar.doma.it.entity;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.io.Serializable;
 
-import org.seasar.doma.ChangedProperties;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
+import org.seasar.doma.OriginalStates;
 import org.seasar.doma.Version;
 import org.seasar.doma.it.ItNamingConvention;
 import org.seasar.doma.it.domain.Salary;
@@ -48,15 +47,14 @@ public class Employee {
     @Version
     Integer version;
 
-    @ChangedProperties
-    Set<String> changedProperties = new HashSet<String>();
+    @OriginalStates
+    Serializable originalStates;
 
     public Integer getEmployeeId() {
         return employeeId;
     }
 
     public void setEmployeeId(Integer employee_id) {
-        changedProperties.add("employee_id");
         this.employeeId = employee_id;
     }
 
@@ -65,7 +63,6 @@ public class Employee {
     }
 
     public void setEmployeeNo(Integer employeeNo) {
-        changedProperties.add("employee_no");
         this.employeeNo = employeeNo;
     }
 
@@ -74,7 +71,6 @@ public class Employee {
     }
 
     public void setEmployeeName(String employeeName) {
-        changedProperties.add("employee_name");
         this.employeeName = employeeName;
     }
 
@@ -83,7 +79,6 @@ public class Employee {
     }
 
     public void setManagerId(Integer managerId) {
-        changedProperties.add("manager_id");
         this.managerId = managerId;
     }
 
@@ -92,7 +87,6 @@ public class Employee {
     }
 
     public void setHiredate(java.sql.Date hiredate) {
-        changedProperties.add("hiredate");
         this.hiredate = hiredate;
     }
 
@@ -101,7 +95,6 @@ public class Employee {
     }
 
     public void setSalary(Salary salary) {
-        changedProperties.add("salary");
         this.salary = salary;
     }
 
@@ -110,7 +103,6 @@ public class Employee {
     }
 
     public void setDepartmentId(Integer departmentId) {
-        changedProperties.add("department_id");
         this.departmentId = departmentId;
     }
 
@@ -119,7 +111,6 @@ public class Employee {
     }
 
     public void setAddressId(Integer addressId) {
-        changedProperties.add("address_id");
         this.addressId = addressId;
     }
 
@@ -128,7 +119,6 @@ public class Employee {
     }
 
     public void setVersion(Integer version) {
-        changedProperties.add("version");
         this.version = version;
     }
 

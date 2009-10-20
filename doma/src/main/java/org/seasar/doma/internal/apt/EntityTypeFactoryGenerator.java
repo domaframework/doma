@@ -18,17 +18,18 @@ package org.seasar.doma.internal.apt;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 
-import org.seasar.doma.internal.apt.meta.ChangedPropertiesMeta;
 import org.seasar.doma.internal.apt.meta.ColumnMeta;
 import org.seasar.doma.internal.apt.meta.EntityMeta;
 import org.seasar.doma.internal.apt.meta.EntityPropertyMeta;
 import org.seasar.doma.internal.apt.meta.IdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.IdGeneratorMetaVisitor;
 import org.seasar.doma.internal.apt.meta.IdentityIdGeneratorMeta;
+import org.seasar.doma.internal.apt.meta.OriginalStatesMeta;
 import org.seasar.doma.internal.apt.meta.SequenceIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.TableIdGeneratorMeta;
 import org.seasar.doma.internal.apt.type.DomainType;
@@ -42,6 +43,7 @@ import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.internal.util.PrimitiveWrapperUtil;
 import org.seasar.doma.internal.util.StringUtil;
 import org.seasar.doma.jdbc.entity.NamingConvention;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * 
@@ -128,7 +130,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         printTypeClassCatalogNameField();
         printTypeClassSchemaNameField();
         printTypeClassTableNameField();
-        printTypeClassDirtyStatesField();
+        printTypeClassOriginalStatesField();
         printTypeClassNameField();
         printTypeClassPropertiesField();
         printTypeClassPropertyMapField();
@@ -194,8 +196,10 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printTypeClassDirtyStatesField() {
-        iprint("private final java.util.Set<java.lang.String> __changedProperties;%n");
+    protected void printTypeClassOriginalStatesField() {
+        iprint(
+                "private final java.util.HashMap<String, %1$s<?>> __originalStates;%n",
+                Wrapper.class.getName());
         print("%n");
     }
 
@@ -279,14 +283,20 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         iprint("private %1$sType(%2$s entity) {%n", entityMeta.getEntityName(),
                 entityMeta.getEntityTypeName());
         iprint("    __entity = entity;%n");
-        if (entityMeta.hasChangedPropertiesMeta()) {
-            ChangedPropertiesMeta cm = entityMeta.getChangedPropertiesMeta();
+        if (entityMeta.hasOriginalStatesMeta()) {
+            OriginalStatesMeta osm = entityMeta.getOriginalStatesMeta();
+            iprint("    if (java.util.HashMap.class.isInstance(entity.originalStates)) {%n");
+            iprint("        @SuppressWarnings(\"unchecked\")%n");
             iprint(
-                    "    __changedProperties = %1$s%2$s.%3$sAccessor.get%4$s(entity);%n",
-                    cm.getEntityTypeName(), suffix, cm.getEntityName(),
-                    StringUtil.capitalize(cm.getName()));
+                    "        java.util.HashMap<String, %1$s<?>> originalStates = (java.util.HashMap<String, %1$s<?>>) %2$s%3$s.%4$sAccessor.get%5$s(entity);%n",
+                    Wrapper.class.getName(), osm.getEntityTypeName(), suffix,
+                    osm.getEntityName(), StringUtil.capitalize(osm.getName()));
+            iprint("        __originalStates = originalStates;%n");
+            iprint("    } else {%n");
+            iprint("        __originalStates = null;%n");
+            iprint("    }%n");
         } else {
-            iprint("    __changedProperties = null;%n");
+            iprint("    __originalStates = null;%n");
         }
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             DomainType domainType = pm.getDomainType();
@@ -324,7 +334,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         printTypeClassRefreshEntityInternalMethod();
         printTypeClassGetEntityMethod();
         printTypeClassGetEntityClassMethod();
-        printTypeClassGetChangedPropertiesMethod();
+        printTypeClassGetOriginalStatesMethod();
         printTypeClassGetNamingConventionMethod();
     }
 
@@ -503,8 +513,28 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
                 }
             }
         }
-        if (entityMeta.hasChangedPropertiesMeta()) {
-            iprint("    __changedProperties.clear();%n");
+        if (entityMeta.hasOriginalStatesMeta()) {
+            OriginalStatesMeta osm = entityMeta.getOriginalStatesMeta();
+            iprint(
+                    "    java.util.HashMap<String, %1$s<?>> originalStates = null;%n",
+                    Wrapper.class.getName());
+            iprint("    if (__originalStates != null) {%n");
+            iprint("        __originalStates.clear();%n");
+            iprint("        originalStates = __originalStates;%n");
+            iprint("    } else {%n");
+            iprint(
+                    "        originalStates = new java.util.HashMap<String, %1$s<?>>();%n",
+                    Wrapper.class.getName());
+            iprint("    }%n");
+            for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
+                iprint(
+                        "    originalStates.put(\"%1$s\", %1$s.getWrapper());%n",
+                        pm.getName());
+            }
+            iprint(
+                    "    %1$s%2$s.%3$sAccessor.set%4$s(__entity, originalStates);%n",
+                    osm.getEntityTypeName(), suffix, osm.getEntityName(),
+                    StringUtil.capitalize(osm.getName()));
         }
         iprint("}%n");
         print("%n");
@@ -528,10 +558,11 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printTypeClassGetChangedPropertiesMethod() {
+    protected void printTypeClassGetOriginalStatesMethod() {
         iprint("@Override%n");
-        iprint("public java.util.Set<String> getChangedProperties() {%n");
-        iprint("    return __changedProperties;%n");
+        iprint("public java.util.Map<String, %1$s<?>> getOriginalStates() {%n",
+                Wrapper.class.getName());
+        iprint("    return __originalStates;%n");
         iprint("}%n");
         print("%n");
     }
@@ -574,21 +605,21 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
             iprint("}%n");
             print("%n");
         }
-        ChangedPropertiesMeta cm = entityMeta.getChangedPropertiesMeta();
-        if (cm != null
-                && entityMeta.getEntityTypeName()
-                        .equals(cm.getEntityTypeName())) {
-            iprint(
-                    "public static void set%1$s(%2$s entity, java.util.Set<String> %3$s) {%n",
-                    StringUtil.capitalize(cm.getName()),
-                    cm.getEntityTypeName(), cm.getName());
-            iprint("    entity.%1$s = %1$s;%n", cm.getName());
+        OriginalStatesMeta osm = entityMeta.getOriginalStatesMeta();
+        if (osm != null
+                && entityMeta.getEntityTypeName().equals(
+                        osm.getEntityTypeName())) {
+            iprint("public static void set%1$s(%2$s entity, %3$s %4$s) {%n",
+                    StringUtil.capitalize(osm.getName()), osm
+                            .getEntityTypeName(), Serializable.class.getName(),
+                    osm.getName());
+            iprint("    entity.%1$s = %1$s;%n", osm.getName());
             iprint("}%n");
             print("%n");
-            iprint(
-                    "public static java.util.Set<String> get%1$s(%2$s entity) {%n",
-                    StringUtil.capitalize(cm.getName()), cm.getEntityTypeName());
-            iprint("    return entity.%1$s;%n", cm.getName());
+            iprint("public static %1$s get%2$s(%3$s entity) {%n",
+                    Serializable.class.getName(), StringUtil.capitalize(osm
+                            .getName()), osm.getEntityTypeName());
+            iprint("    return entity.%1$s;%n", osm.getName());
             iprint("}%n");
             print("%n");
         }

@@ -71,7 +71,7 @@ import org.seasar.doma.jdbc.entity.NullEntityListener;
  * @see Id
  * @see Transient
  * @see Version
- * @see ChangedProperties
+ * @see OriginalStates
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

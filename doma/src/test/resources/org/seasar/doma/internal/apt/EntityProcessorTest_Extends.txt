@@ -33,7 +33,7 @@ public class ChildEntity_ implements org.seasar.doma.internal.jdbc.entity.Entity
 
         private final String __tableName = null;
 
-        private final java.util.Set<java.lang.String> __changedProperties;
+        private final java.util.HashMap<String, org.seasar.doma.wrapper.Wrapper<?>> __originalStates;
 
         private final String __name = "ChildEntity";
 
@@ -47,7 +47,7 @@ public class ChildEntity_ implements org.seasar.doma.internal.jdbc.entity.Entity
 
         private ChildEntityType(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
             __entity = entity;
-            __changedProperties = null;
+            __originalStates = null;
             aaa.getWrapper().set(org.seasar.doma.internal.apt.entity.ParentEntity_.ParentEntityAccessor.getAaa(entity));
             bbb.getWrapper().set(org.seasar.doma.internal.apt.entity.ChildEntity_.ChildEntityAccessor.getBbb(entity));
             ccc.getWrapper().set(org.seasar.doma.internal.apt.entity.ChildEntity_.ChildEntityAccessor.getCcc(entity));
@@ -145,8 +145,8 @@ public class ChildEntity_ implements org.seasar.doma.internal.jdbc.entity.Entity
         }
 
         @Override
-        public java.util.Set<String> getChangedProperties() {
-            return __changedProperties;
+        public java.util.Map<String, org.seasar.doma.wrapper.Wrapper<?>> getOriginalStates() {
+            return __originalStates;
         }
 
         @Override

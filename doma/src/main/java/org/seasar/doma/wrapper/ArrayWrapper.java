@@ -44,6 +44,11 @@ public class ArrayWrapper extends AbstractWrapper<Array> {
     }
 
     @Override
+    public boolean isEqual(Wrapper<?> other) {
+        return false;
+    }
+
+    @Override
     public <R, P, TH extends Throwable> R accept(
             WrapperVisitor<R, P, TH> visitor, P p) throws TH {
         if (visitor == null) {

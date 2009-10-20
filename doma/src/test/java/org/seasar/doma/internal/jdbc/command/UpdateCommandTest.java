@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
+import java.util.HashMap;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -23,6 +24,10 @@ import org.seasar.doma.internal.jdbc.mock.BindValue;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.query.AutoUpdateQuery;
 import org.seasar.doma.jdbc.OptimisticLockException;
+import org.seasar.doma.wrapper.BigDecimalWrapper;
+import org.seasar.doma.wrapper.IntegerWrapper;
+import org.seasar.doma.wrapper.StringWrapper;
+import org.seasar.doma.wrapper.Wrapper;
 
 import example.entity.Emp;
 import example.entity.Emp_;
@@ -40,6 +45,12 @@ public class UpdateCommandTest extends TestCase {
         emp.setId(1);
         emp.setName("hoge");
         emp.setVersion(10);
+        HashMap<String, Wrapper<?>> states = new HashMap<String, Wrapper<?>>();
+        states.put("id", new IntegerWrapper());
+        states.put("name", new StringWrapper());
+        states.put("salary", new BigDecimalWrapper());
+        states.put("version", new IntegerWrapper());
+        emp.originalStates = states;
 
         AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new Emp_());
         query.setConfig(runtimeConfig);

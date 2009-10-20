@@ -15,12 +15,11 @@
  */
 package org.seasar.doma.it.entity;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.io.Serializable;
 
-import org.seasar.doma.ChangedProperties;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
+import org.seasar.doma.OriginalStates;
 import org.seasar.doma.Table;
 import org.seasar.doma.Version;
 import org.seasar.doma.it.ItNamingConvention;
@@ -44,15 +43,14 @@ public class CompKeyDepartment {
     @Version
     Integer version;
 
-    @ChangedProperties
-    Set<String> changedProperties = new HashSet<String>();
+    @OriginalStates
+    Serializable originalStates;
 
     public Integer getDepartmentId1() {
         return departmentId1;
     }
 
     public void setDepartmentId1(Integer departmentId1) {
-        changedProperties.add("departmentId1");
         this.departmentId1 = departmentId1;
     }
 
@@ -61,7 +59,6 @@ public class CompKeyDepartment {
     }
 
     public void setDepartmentId2(Integer departmentId2) {
-        changedProperties.add("departmentId2");
         this.departmentId2 = departmentId2;
     }
 
@@ -70,7 +67,6 @@ public class CompKeyDepartment {
     }
 
     public void setDepartmentNo(Integer departmentNo) {
-        changedProperties.add("departmentNo");
         this.departmentNo = departmentNo;
     }
 
@@ -79,7 +75,6 @@ public class CompKeyDepartment {
     }
 
     public void setDepartmentName(String departmentName) {
-        changedProperties.add("departmentName");
         this.departmentName = departmentName;
     }
 
@@ -88,7 +83,6 @@ public class CompKeyDepartment {
     }
 
     public void setLocation(String location) {
-        changedProperties.add("location");
         this.location = location;
     }
 
@@ -97,7 +91,6 @@ public class CompKeyDepartment {
     }
 
     public void setVersion(Integer version) {
-        changedProperties.add("version");
         this.version = version;
     }
 

@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.wrapper;
 
+import java.util.Arrays;
+
 import org.seasar.doma.DomaNullPointerException;
 
 /**
@@ -39,6 +41,18 @@ public class BytesWrapper extends AbstractWrapper<byte[]> {
      */
     public BytesWrapper(byte[] value) {
         super(value);
+    }
+
+    @Override
+    public boolean isEqual(Wrapper<?> other) {
+        if (other == null) {
+            throw new DomaNullPointerException("other");
+        }
+        if (other.get() instanceof byte[]) {
+            byte[] otherValue = (byte[]) other.get();
+            return Arrays.equals(value, otherValue);
+        }
+        return false;
     }
 
     @Override

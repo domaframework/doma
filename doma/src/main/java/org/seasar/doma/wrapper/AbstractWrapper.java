@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.wrapper;
 
+import org.seasar.doma.DomaNullPointerException;
+
 /**
  * {@link Wrapper} の骨格実装です。
  * 
@@ -50,6 +52,17 @@ public abstract class AbstractWrapper<V> implements Wrapper<V> {
     @Override
     public V get() {
         return value;
+    }
+
+    @Override
+    public boolean isEqual(Wrapper<?> other) {
+        if (other == null) {
+            throw new DomaNullPointerException("other");
+        }
+        if (value == null) {
+            return other.get() == null;
+        }
+        return value.equals(other.get());
     }
 
     @Override

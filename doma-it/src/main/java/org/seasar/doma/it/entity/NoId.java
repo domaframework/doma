@@ -15,11 +15,10 @@
  */
 package org.seasar.doma.it.entity;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.io.Serializable;
 
-import org.seasar.doma.ChangedProperties;
 import org.seasar.doma.Entity;
+import org.seasar.doma.OriginalStates;
 import org.seasar.doma.Table;
 import org.seasar.doma.it.ItNamingConvention;
 
@@ -31,15 +30,14 @@ public class NoId {
 
     Integer value2;
 
-    @ChangedProperties
-    Set<String> changedProperties = new HashSet<String>();
+    @OriginalStates
+    Serializable originalStates;
 
     public Integer getValue1() {
         return value1;
     }
 
     public void setValue1(Integer value1) {
-        changedProperties.add("value1");
         this.value1 = value1;
     }
 
@@ -48,7 +46,6 @@ public class NoId {
     }
 
     public void setValue2(Integer value2) {
-        changedProperties.add("value2");
         this.value2 = value2;
     }
 

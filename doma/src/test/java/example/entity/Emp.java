@@ -15,13 +15,12 @@
  */
 package example.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
 
-import org.seasar.doma.ChangedProperties;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
+import org.seasar.doma.OriginalStates;
 import org.seasar.doma.Version;
 
 @Entity
@@ -37,15 +36,14 @@ public class Emp {
     @Version
     Integer version;
 
-    @ChangedProperties
-    Set<String> dirtyStates = new HashSet<String>();
+    @OriginalStates
+    public Serializable originalStates;
 
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
-        dirtyStates.add("id");
         this.id = id;
     }
 
@@ -54,7 +52,6 @@ public class Emp {
     }
 
     public void setName(String name) {
-        dirtyStates.add("name");
         this.name = name;
     }
 
@@ -63,7 +60,6 @@ public class Emp {
     }
 
     public void setSalary(BigDecimal salary) {
-        dirtyStates.add("salary");
         this.salary = salary;
     }
 
@@ -72,7 +68,6 @@ public class Emp {
     }
 
     public void setVersion(Integer version) {
-        dirtyStates.add("version");
         this.version = version;
     }
 

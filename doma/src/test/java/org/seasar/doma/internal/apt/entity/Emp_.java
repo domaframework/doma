@@ -16,7 +16,7 @@
 package org.seasar.doma.internal.apt.entity;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.internal.jdbc.entity.EntityType;
@@ -24,6 +24,7 @@ import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.jdbc.entity.NamingConvention;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
@@ -98,7 +99,7 @@ public class Emp_ implements EntityTypeFactory<Emp> {
         }
 
         @Override
-        public Set<String> getChangedProperties() {
+        public Map<String, Wrapper<?>> getOriginalStates() {
             return null;
         }
 

@@ -1,7 +1,10 @@
 package org.seasar.doma.internal.apt.entity;
 
+import java.util.Map;
+
 import org.seasar.doma.jdbc.entity.CamelNamingConvention;
 import org.seasar.doma.jdbc.entity.NamingConvention;
+import org.seasar.doma.wrapper.Wrapper;
 
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
 public class ParentEntity_
@@ -43,7 +46,7 @@ public class ParentEntity_
 
         private final String __tableName = null;
 
-        private final java.util.Set<java.lang.String> __changedProperties;
+        private final Map<String, Wrapper<?>> __originalStates;
 
         private final String __name = "ParentEntity";
 
@@ -58,7 +61,7 @@ public class ParentEntity_
         private ParentEntityType(
                 org.seasar.doma.internal.apt.entity.ParentEntity entity) {
             __entity = entity;
-            __changedProperties = null;
+            __originalStates = null;
             aaa
                     .getWrapper()
                     .set(
@@ -165,8 +168,8 @@ public class ParentEntity_
         }
 
         @Override
-        public java.util.Set<String> getChangedProperties() {
-            return __changedProperties;
+        public Map<String, Wrapper<?>> getOriginalStates() {
+            return __originalStates;
         }
 
         @Override

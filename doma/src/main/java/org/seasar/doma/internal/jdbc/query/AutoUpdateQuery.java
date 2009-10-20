@@ -17,11 +17,12 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import java.util.Set;
+import java.util.Map;
 
 import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
@@ -64,7 +65,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void prepareTargetProperties() {
-        Set<String> changedProperties = entityType.getChangedProperties();
+        Map<String, Wrapper<?>> originalStates = entityType.getOriginalStates();
         for (EntityPropertyType<?> p : entityType.getEntityPropertyTypes()) {
             if (!p.isUpdatable()) {
                 continue;
@@ -79,8 +80,8 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
             if (nullExcluded && p.getWrapper().get() == null) {
                 continue;
             }
-            if (unchangedPropertyIncluded || changedProperties == null
-                    || changedProperties.contains(p.getName())) {
+            if (unchangedPropertyIncluded || originalStates == null
+                    || isChanged(originalStates, p)) {
                 if (!isTargetPropertyName(p.getName())) {
                     continue;
                 }
@@ -89,6 +90,15 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
                 sqlExecutionSkipCause = null;
             }
         }
+    }
+
+    protected boolean isChanged(Map<String, Wrapper<?>> originalStates,
+            EntityPropertyType<?> propertyType) {
+        Wrapper<?> otherWrapper = originalStates.get(propertyType.getName());
+        if (otherWrapper == null) {
+            return true;
+        }
+        return !propertyType.getWrapper().isEqual(otherWrapper);
     }
 
     protected void prepareSql() {

@@ -15,13 +15,13 @@
  */
 package example.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.Generated;
 
@@ -32,12 +32,13 @@ import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
-import org.seasar.doma.jdbc.entity.NullEntityListener;
 import org.seasar.doma.jdbc.entity.CamelNamingConvention;
 import org.seasar.doma.jdbc.entity.NamingConvention;
+import org.seasar.doma.jdbc.entity.NullEntityListener;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
 import org.seasar.doma.wrapper.IntegerWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
+import org.seasar.doma.wrapper.Wrapper;
 
 @Generated("")
 public class Emp_ implements EntityTypeFactory<Emp> {
@@ -70,7 +71,7 @@ public class Emp_ implements EntityTypeFactory<Emp> {
         private final VersionPropertyType<IntegerWrapper> version = new VersionPropertyType<IntegerWrapper>(
                 "version", null, new IntegerWrapper());
 
-        private final Set<String> dirtyStates;
+        private final HashMap<String, Wrapper<?>> __originalStates;
 
         private final String __name = "Emp";
 
@@ -99,7 +100,13 @@ public class Emp_ implements EntityTypeFactory<Emp> {
             name.getWrapper().set(entity.name);
             salary.getWrapper().set(entity.salary);
             version.getWrapper().set(entity.version);
-            dirtyStates = entity.dirtyStates;
+            if (HashMap.class.isInstance(entity.originalStates)) {
+                @SuppressWarnings("unchecked")
+                HashMap<String, Wrapper<?>> originalStates = (HashMap<String, Wrapper<?>>) entity.originalStates;
+                __originalStates = originalStates;
+            } else {
+                __originalStates = null;
+            }
         }
 
         @Override
@@ -123,6 +130,14 @@ public class Emp_ implements EntityTypeFactory<Emp> {
             __entity.name = name.getWrapper().get();
             __entity.salary = salary.getWrapper().get();
             __entity.version = version.getWrapper().get();
+
+            if (__originalStates != null) {
+                __originalStates.clear();
+                __originalStates.put("id", id.getWrapper());
+                __originalStates.put("name", name.getWrapper());
+                __originalStates.put("salary", salary.getWrapper());
+                __originalStates.put("version", version.getWrapper());
+            }
         }
 
         @Override
@@ -157,6 +172,11 @@ public class Emp_ implements EntityTypeFactory<Emp> {
         }
 
         @Override
+        public Map<String, Wrapper<?>> getOriginalStates() {
+            return __originalStates;
+        }
+
+        @Override
         public GeneratedIdPropertyType<?> getGeneratedIdPropertyType() {
             return null;
         }
@@ -179,11 +199,6 @@ public class Emp_ implements EntityTypeFactory<Emp> {
         @Override
         public void preDelete() {
             __listener.preDelete(__entity);
-        }
-
-        @Override
-        public Set<String> getChangedProperties() {
-            return dirtyStates;
         }
 
         @Override
@@ -242,12 +257,12 @@ public class Emp_ implements EntityTypeFactory<Emp> {
             return entity.version;
         }
 
-        public void setDirtyStates(Emp entity, Set<String> dirtyStates) {
-            entity.dirtyStates = dirtyStates;
+        public void setOriginalStates(Emp entity, Serializable originalStates) {
+            entity.originalStates = originalStates;
         }
 
-        public Set<String> getDirtyStates(Emp entity) {
-            return entity.dirtyStates;
+        public Serializable getOriginalStates(Emp entity) {
+            return entity.originalStates;
         }
     }
 

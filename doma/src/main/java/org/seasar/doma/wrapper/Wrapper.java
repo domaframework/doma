@@ -45,6 +45,15 @@ public interface Wrapper<V> {
     void set(V value);
 
     /**
+     * 等しい場合 {@code true} を返します。
+     * 
+     * @param other
+     *            他のラッパー
+     * @return 等しい場合 {@code true}
+     */
+    boolean isEqual(Wrapper<?> other);
+
+    /**
      * ビジターを受け入れます。
      * 
      * @param <R>

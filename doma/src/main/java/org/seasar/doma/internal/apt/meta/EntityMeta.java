@@ -42,7 +42,7 @@ public class EntityMeta {
 
     protected String namingConventionTypeName;
 
-    protected ChangedPropertiesMeta changedPropertiesMeta;
+    protected OriginalStatesMeta originalStatesMeta;
 
     public String getEntityName() {
         return entityName;
@@ -117,17 +117,16 @@ public class EntityMeta {
         this.namingConventionTypeName = namingConventionTypeName;
     }
 
-    public boolean hasChangedPropertiesMeta() {
-        return changedPropertiesMeta != null;
+    public boolean hasOriginalStatesMeta() {
+        return originalStatesMeta != null;
     }
 
-    public ChangedPropertiesMeta getChangedPropertiesMeta() {
-        return changedPropertiesMeta;
+    public OriginalStatesMeta getOriginalStatesMeta() {
+        return originalStatesMeta;
     }
 
-    public void setChangedPropertiesMeta(
-            ChangedPropertiesMeta changedPropertiesMeta) {
-        this.changedPropertiesMeta = changedPropertiesMeta;
+    public void setOriginalStatesMeta(OriginalStatesMeta originalStatesMeta) {
+        this.originalStatesMeta = originalStatesMeta;
     }
 
 }

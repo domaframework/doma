@@ -1,21 +1,21 @@
 package org.seasar.doma;
 
+import java.io.Serializable;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.Set;
 
 /**
- * 変更されたプロパティの名前を管理するフィールドを示します。
+ * エンティティがデータベースから取得された元の状態を管理するフィールドを示します。
  * <p>
- * UPDATE文のSET句に変更があったプロパティだけを含めたい場合に使用します。
+ * 元の状態とは、エンティティを {@link Select} が注釈されたDaoのメソッドから取得した時点におけるエンティティの状態です。
+ * 変更があったプロパティのみをUPDATE文のSET句に含めたい場合に使用します。
  * <p>
  * このアノテーションが注釈されるフィールドは、 {@link Entity} が注釈されたクラスのメンバでなければいけません。 フィールドの型は
- * {@link String} を要素とする {@link Set} のサブタイプでなければいけません。フィールドに {@code Set}
- * のサブタイプのインスタンスを設定するのはアプリケーション開発者の責任です。
+ * {@link Serializable} でなければいけません。
  * <p>
- * プロパティの名前は、各プロパティのセッターメソッドで設定しなければいけません。
+ * このアノテーションが注釈されるフィールドに対し、アプリケーションはアクセスしてはいけません。
  * 
  * <h5>例:</h5>
  * 
@@ -25,15 +25,14 @@ import java.util.Set;
  * 
  *     String name;
  * 
- *     &#064;ChangedProperties
- *     Set&lt;String&gt; changedProperties = new HashSet&lt;String&gt;();
+ *     &#064;OriginalStates
+ *     Serializable; originalStates;
  *     
  *     public String getName() {
  *         return name;
  *     }
  *     
  *     public void setName(String name) {
- *         changedProperties.add(&quot;name&quot;);
  *         this.name = name;
  *     }
  *     
@@ -47,5 +46,5 @@ import java.util.Set;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @EntityField
-public @interface ChangedProperties {
+public @interface OriginalStates {
 }

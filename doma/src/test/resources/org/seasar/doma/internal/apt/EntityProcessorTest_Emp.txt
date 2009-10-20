@@ -43,7 +43,7 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
 
         private final String __tableName = null;
 
-        private final java.util.Set<java.lang.String> __changedProperties;
+        private final java.util.HashMap<String, org.seasar.doma.wrapper.Wrapper<?>> __originalStates;
 
         private final String __name = "Emp";
 
@@ -57,7 +57,13 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
 
         private EmpType(org.seasar.doma.internal.apt.entity.Emp entity) {
             __entity = entity;
-            __changedProperties = org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.getChangedProperties(entity);
+            if (java.util.HashMap.class.isInstance(entity.originalStates)) {
+                @SuppressWarnings("unchecked")
+                java.util.HashMap<String, org.seasar.doma.wrapper.Wrapper<?>> originalStates = (java.util.HashMap<String, org.seasar.doma.wrapper.Wrapper<?>>) org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.getOriginalStates(entity);
+                __originalStates = originalStates;
+            } else {
+                __originalStates = null;
+            }
             id.getWrapper().set(org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.getId(entity));
             name.getWrapper().set(org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.getName(entity));
             salary.getWrapper().set(org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.getSalary(entity));
@@ -145,7 +151,18 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
             org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.setName(__entity, name.getWrapper().get());
             org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.setSalary(__entity, salary.getWrapper().get());
             org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.setVersion(__entity, version.getWrapper().get());
-            __changedProperties.clear();
+            java.util.HashMap<String, org.seasar.doma.wrapper.Wrapper<?>> originalStates = null;
+            if (__originalStates != null) {
+                __originalStates.clear();
+                originalStates = __originalStates;
+            } else {
+                originalStates = new java.util.HashMap<String, org.seasar.doma.wrapper.Wrapper<?>>();
+            }
+            originalStates.put("id", id.getWrapper());
+            originalStates.put("name", name.getWrapper());
+            originalStates.put("salary", salary.getWrapper());
+            originalStates.put("version", version.getWrapper());
+            org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.setOriginalStates(__entity, originalStates);
         }
 
         @Override
@@ -160,8 +177,8 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
         }
 
         @Override
-        public java.util.Set<String> getChangedProperties() {
-            return __changedProperties;
+        public java.util.Map<String, org.seasar.doma.wrapper.Wrapper<?>> getOriginalStates() {
+            return __originalStates;
         }
 
         @Override
@@ -205,12 +222,12 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
             return entity.version;
         }
 
-        public static void setChangedProperties(org.seasar.doma.internal.apt.entity.Emp entity, java.util.Set<String> changedProperties) {
-            entity.changedProperties = changedProperties;
+        public static void setOriginalStates(org.seasar.doma.internal.apt.entity.Emp entity, java.io.Serializable originalStates) {
+            entity.originalStates = originalStates;
         }
 
-        public static java.util.Set<String> getChangedProperties(org.seasar.doma.internal.apt.entity.Emp entity) {
-            return entity.changedProperties;
+        public static java.io.Serializable getOriginalStates(org.seasar.doma.internal.apt.entity.Emp entity) {
+            return entity.originalStates;
         }
 
     }

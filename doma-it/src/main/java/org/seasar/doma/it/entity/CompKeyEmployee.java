@@ -15,14 +15,13 @@
  */
 package org.seasar.doma.it.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.util.HashSet;
-import java.util.Set;
 
-import org.seasar.doma.ChangedProperties;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
+import org.seasar.doma.OriginalStates;
 import org.seasar.doma.Table;
 import org.seasar.doma.Version;
 import org.seasar.doma.it.ItNamingConvention;
@@ -60,15 +59,14 @@ public class CompKeyEmployee {
     @Version
     Integer version;
 
-    @ChangedProperties
-    Set<String> changedProperties = new HashSet<String>();
+    @OriginalStates
+    Serializable originalStates;
 
     public Integer getEmployeeId1() {
         return employeeId1;
     }
 
     public void setEmployeeId1(Integer employeeId1) {
-        changedProperties.add("employeeId1");
         this.employeeId1 = employeeId1;
     }
 
@@ -77,7 +75,6 @@ public class CompKeyEmployee {
     }
 
     public void setEmployeeId2(Integer employeeId2) {
-        changedProperties.add("employeeId2");
         this.employeeId2 = employeeId2;
     }
 
@@ -86,7 +83,6 @@ public class CompKeyEmployee {
     }
 
     public void setEmployeeNo(Integer employeeNo) {
-        changedProperties.add("employeeNo");
         this.employeeNo = employeeNo;
     }
 
@@ -95,7 +91,6 @@ public class CompKeyEmployee {
     }
 
     public void setEmployeeName(String employeeName) {
-        changedProperties.add("employeeName");
         this.employeeName = employeeName;
     }
 
@@ -104,7 +99,6 @@ public class CompKeyEmployee {
     }
 
     public void setManagerId1(Integer managerId1) {
-        changedProperties.add("managerId1");
         this.managerId1 = managerId1;
     }
 
@@ -113,7 +107,6 @@ public class CompKeyEmployee {
     }
 
     public void setManagerId2(Integer managerId2) {
-        changedProperties.add("managerId2");
         this.managerId2 = managerId2;
     }
 
@@ -122,7 +115,6 @@ public class CompKeyEmployee {
     }
 
     public void setHiredate(Date hiredate) {
-        changedProperties.add("hiredate");
         this.hiredate = hiredate;
     }
 
@@ -131,7 +123,6 @@ public class CompKeyEmployee {
     }
 
     public void setSalary(BigDecimal salary) {
-        changedProperties.add("salary");
         this.salary = salary;
     }
 
@@ -140,7 +131,6 @@ public class CompKeyEmployee {
     }
 
     public void setDepartmentId1(Integer departmentId1) {
-        changedProperties.add("departmentId1");
         this.departmentId1 = departmentId1;
     }
 
@@ -149,7 +139,6 @@ public class CompKeyEmployee {
     }
 
     public void setDepartmentId2(Integer departmentId2) {
-        changedProperties.add("departmentId2");
         this.departmentId2 = departmentId2;
     }
 
@@ -158,7 +147,6 @@ public class CompKeyEmployee {
     }
 
     public void setAddressId1(Integer addressId1) {
-        changedProperties.add("addressId1");
         this.addressId1 = addressId1;
     }
 
@@ -167,7 +155,6 @@ public class CompKeyEmployee {
     }
 
     public void setAddressId2(Integer addressId2) {
-        changedProperties.add("addressId2");
         this.addressId2 = addressId2;
     }
 
@@ -176,7 +163,6 @@ public class CompKeyEmployee {
     }
 
     public void setVersion(Integer version) {
-        changedProperties.add("version");
         this.version = version;
     }
 
