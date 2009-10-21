@@ -161,7 +161,7 @@ public class DaoGenerator extends AbstractGenerator {
             if (annotateWithMeta != null) {
                 for (AnnotationMeta annotationMeta : annotateWithMeta
                         .getAnnotationMetas()) {
-                    if (annotationMeta.getTarget() == AnnotationTarget.CONSTRUCOTR) {
+                    if (annotationMeta.getTarget() == AnnotationTarget.CONSTRUCTOR) {
                         iprint("@%1$s(%2$s)%n", annotationMeta.getTypeName(),
                                 annotationMeta.getElements());
                     }
@@ -171,7 +171,7 @@ public class DaoGenerator extends AbstractGenerator {
             if (annotateWithMeta != null) {
                 for (AnnotationMeta annotationMeta : annotateWithMeta
                         .getAnnotationMetas()) {
-                    if (annotationMeta.getTarget() == AnnotationTarget.CONSTRUCOTR_PARAMETER) {
+                    if (annotationMeta.getTarget() == AnnotationTarget.CONSTRUCTOR_PARAMETER) {
                         print("@%1$s(%2$s) ", annotationMeta.getTypeName(),
                                 annotationMeta.getElements());
                     }

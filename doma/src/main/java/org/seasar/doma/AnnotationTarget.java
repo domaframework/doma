@@ -27,8 +27,8 @@ public enum AnnotationTarget {
     CLASS,
 
     /** コンストラクタ */
-    CONSTRUCOTR,
+    CONSTRUCTOR,
 
     /** コンストラクターのパラメータ */
-    CONSTRUCOTR_PARAMETER,
+    CONSTRUCTOR_PARAMETER,
 }
