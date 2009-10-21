@@ -14,15 +14,15 @@ public class ClobFactoryDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao imp
     @Override
     public java.sql.Clob create() {
         entering("org.seasar.doma.internal.apt.dao.ClobFactoryDaoImpl", "create");
-        org.seasar.doma.internal.jdbc.query.ClobCreateQuery query = new org.seasar.doma.internal.jdbc.query.ClobCreateQuery();
-        query.setConfig(config);
-        query.setCallerClassName("org.seasar.doma.internal.apt.dao.ClobFactoryDaoImpl");
-        query.setCallerMethodName("create");
-        query.prepare();
-        org.seasar.doma.internal.jdbc.command.CreateCommand<java.sql.Clob> command = new org.seasar.doma.internal.jdbc.command.CreateCommand<java.sql.Clob>(query);
-        java.sql.Clob result = command.execute();
-        exiting("org.seasar.doma.internal.apt.dao.ClobFactoryDaoImpl", "create", result);
-        return result;
+        org.seasar.doma.internal.jdbc.query.ClobCreateQuery __query = new org.seasar.doma.internal.jdbc.query.ClobCreateQuery();
+        __query.setConfig(config);
+        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.ClobFactoryDaoImpl");
+        __query.setCallerMethodName("create");
+        __query.prepare();
+        org.seasar.doma.internal.jdbc.command.CreateCommand<java.sql.Clob> __command = new org.seasar.doma.internal.jdbc.command.CreateCommand<java.sql.Clob>(__query);
+        java.sql.Clob __result = __command.execute();
+        exiting("org.seasar.doma.internal.apt.dao.ClobFactoryDaoImpl", "create", __result);
+        return __result;
     }
 
 }

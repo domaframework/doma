@@ -46,6 +46,10 @@ public class QueryParameterMeta {
         this.element = parameterElement;
         this.env = env;
         name = ElementUtil.getParameterName(parameterElement);
+        if (name.startsWith(MetaConstants.RESERVED_NAME_PREFIX)) {
+            throw new AptException(DomaMessageCode.DOMA4025, env,
+                    parameterElement, MetaConstants.RESERVED_NAME_PREFIX);
+        }
         type = parameterElement.asType();
         typeName = TypeUtil.getTypeName(type, env);
         TypeElement typeElement = TypeUtil.toTypeElement(type, env);

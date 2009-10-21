@@ -20,21 +20,21 @@ public class AutoFunctionDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao im
         if (arg3 == null) {
             throw new org.seasar.doma.DomaNullPointerException("arg3");
         }
-        org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.lang.String> query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.lang.String>();
-        query.setConfig(config);
-        query.setFunctionName("executeFunction");
-        query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.BasicResultParameter<java.lang.String>(new org.seasar.doma.wrapper.StringWrapper()));
-        query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicInParameter(new org.seasar.doma.wrapper.IntegerWrapper(arg1)));
-        query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicInOutParameter<java.lang.Integer>(new org.seasar.doma.wrapper.IntegerWrapper(), arg2));
-        query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicOutParameter<java.lang.Integer>(new org.seasar.doma.wrapper.IntegerWrapper(), arg3));
-        query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl");
-        query.setCallerMethodName("executeFunction");
-        query.setQueryTimeout(-1);
-        query.prepare();
-        org.seasar.doma.internal.jdbc.command.FunctionCommand<java.lang.String> command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<java.lang.String>(query);
-        java.lang.String result = command.execute();
-        exiting("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl", "executeFunction", result);
-        return result;
+        org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.lang.String> __query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.lang.String>();
+        __query.setConfig(config);
+        __query.setFunctionName("executeFunction");
+        __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.BasicResultParameter<java.lang.String>(new org.seasar.doma.wrapper.StringWrapper()));
+        __query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicInParameter(new org.seasar.doma.wrapper.IntegerWrapper(arg1)));
+        __query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicInOutParameter<java.lang.Integer>(new org.seasar.doma.wrapper.IntegerWrapper(), arg2));
+        __query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicOutParameter<java.lang.Integer>(new org.seasar.doma.wrapper.IntegerWrapper(), arg3));
+        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl");
+        __query.setCallerMethodName("executeFunction");
+        __query.setQueryTimeout(-1);
+        __query.prepare();
+        org.seasar.doma.internal.jdbc.command.FunctionCommand<java.lang.String> __command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<java.lang.String>(__query);
+        java.lang.String __result = __command.execute();
+        exiting("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl", "executeFunction", __result);
+        return __result;
     }
 
     @Override
@@ -46,21 +46,21 @@ public class AutoFunctionDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao im
         if (arg3 == null) {
             throw new org.seasar.doma.DomaNullPointerException("arg3");
         }
-        org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<example.domain.PhoneNumber> query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<example.domain.PhoneNumber>();
-        query.setConfig(config);
-        query.setFunctionName("executeFunction2");
-        query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.DomainResultParameter<java.lang.String, example.domain.PhoneNumber>(new example.domain.PhoneNumber_()));
-        query.addParameter(new org.seasar.doma.internal.jdbc.sql.DomainInParameter<java.lang.String, example.domain.PhoneNumber>(new example.domain.PhoneNumber_(), arg1));
-        query.addParameter(new org.seasar.doma.internal.jdbc.sql.DomainInOutParameter<java.lang.String, example.domain.PhoneNumber>(new example.domain.PhoneNumber_(), arg2));
-        query.addParameter(new org.seasar.doma.internal.jdbc.sql.DomainOutParameter<java.lang.String, example.domain.PhoneNumber>(new example.domain.PhoneNumber_(), arg3));
-        query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl");
-        query.setCallerMethodName("executeFunction2");
-        query.setQueryTimeout(-1);
-        query.prepare();
-        org.seasar.doma.internal.jdbc.command.FunctionCommand<example.domain.PhoneNumber> command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<example.domain.PhoneNumber>(query);
-        example.domain.PhoneNumber result = command.execute();
-        exiting("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl", "executeFunction2", result);
-        return result;
+        org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<example.domain.PhoneNumber> __query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<example.domain.PhoneNumber>();
+        __query.setConfig(config);
+        __query.setFunctionName("executeFunction2");
+        __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.DomainResultParameter<java.lang.String, example.domain.PhoneNumber>(new example.domain.PhoneNumber_()));
+        __query.addParameter(new org.seasar.doma.internal.jdbc.sql.DomainInParameter<java.lang.String, example.domain.PhoneNumber>(new example.domain.PhoneNumber_(), arg1));
+        __query.addParameter(new org.seasar.doma.internal.jdbc.sql.DomainInOutParameter<java.lang.String, example.domain.PhoneNumber>(new example.domain.PhoneNumber_(), arg2));
+        __query.addParameter(new org.seasar.doma.internal.jdbc.sql.DomainOutParameter<java.lang.String, example.domain.PhoneNumber>(new example.domain.PhoneNumber_(), arg3));
+        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl");
+        __query.setCallerMethodName("executeFunction2");
+        __query.setQueryTimeout(-1);
+        __query.prepare();
+        org.seasar.doma.internal.jdbc.command.FunctionCommand<example.domain.PhoneNumber> __command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<example.domain.PhoneNumber>(__query);
+        example.domain.PhoneNumber __result = __command.execute();
+        exiting("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl", "executeFunction2", __result);
+        return __result;
     }
 
     @Override
@@ -69,19 +69,19 @@ public class AutoFunctionDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao im
         if (arg1 == null) {
             throw new org.seasar.doma.DomaNullPointerException("arg1");
         }
-        org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.util.List<java.lang.String>> query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.util.List<java.lang.String>>();
-        query.setConfig(config);
-        query.setFunctionName("executeFunction3");
-        query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.BasicListResultParameter<java.lang.String>(new org.seasar.doma.wrapper.StringWrapper()));
-        query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicListParameter<java.lang.String>(new org.seasar.doma.wrapper.StringWrapper(), arg1));
-        query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl");
-        query.setCallerMethodName("executeFunction3");
-        query.setQueryTimeout(-1);
-        query.prepare();
-        org.seasar.doma.internal.jdbc.command.FunctionCommand<java.util.List<java.lang.String>> command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<java.util.List<java.lang.String>>(query);
-        java.util.List<java.lang.String> result = command.execute();
-        exiting("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl", "executeFunction3", result);
-        return result;
+        org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.util.List<java.lang.String>> __query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.util.List<java.lang.String>>();
+        __query.setConfig(config);
+        __query.setFunctionName("executeFunction3");
+        __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.BasicListResultParameter<java.lang.String>(new org.seasar.doma.wrapper.StringWrapper()));
+        __query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicListParameter<java.lang.String>(new org.seasar.doma.wrapper.StringWrapper(), arg1));
+        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl");
+        __query.setCallerMethodName("executeFunction3");
+        __query.setQueryTimeout(-1);
+        __query.prepare();
+        org.seasar.doma.internal.jdbc.command.FunctionCommand<java.util.List<java.lang.String>> __command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<java.util.List<java.lang.String>>(__query);
+        java.util.List<java.lang.String> __result = __command.execute();
+        exiting("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl", "executeFunction3", __result);
+        return __result;
     }
 
     @Override
@@ -90,19 +90,19 @@ public class AutoFunctionDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao im
         if (arg1 == null) {
             throw new org.seasar.doma.DomaNullPointerException("arg1");
         }
-        org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.util.List<example.domain.PhoneNumber>> query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.util.List<example.domain.PhoneNumber>>();
-        query.setConfig(config);
-        query.setFunctionName("executeFunction4");
-        query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.DomainListResultParameter<java.lang.String, example.domain.PhoneNumber>(new example.domain.PhoneNumber_()));
-        query.addParameter(new org.seasar.doma.internal.jdbc.sql.DomainListParameter<java.lang.String, example.domain.PhoneNumber>(new example.domain.PhoneNumber_(), arg1));
-        query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl");
-        query.setCallerMethodName("executeFunction4");
-        query.setQueryTimeout(-1);
-        query.prepare();
-        org.seasar.doma.internal.jdbc.command.FunctionCommand<java.util.List<example.domain.PhoneNumber>> command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<java.util.List<example.domain.PhoneNumber>>(query);
-        java.util.List<example.domain.PhoneNumber> result = command.execute();
-        exiting("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl", "executeFunction4", result);
-        return result;
+        org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.util.List<example.domain.PhoneNumber>> __query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.util.List<example.domain.PhoneNumber>>();
+        __query.setConfig(config);
+        __query.setFunctionName("executeFunction4");
+        __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.DomainListResultParameter<java.lang.String, example.domain.PhoneNumber>(new example.domain.PhoneNumber_()));
+        __query.addParameter(new org.seasar.doma.internal.jdbc.sql.DomainListParameter<java.lang.String, example.domain.PhoneNumber>(new example.domain.PhoneNumber_(), arg1));
+        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl");
+        __query.setCallerMethodName("executeFunction4");
+        __query.setQueryTimeout(-1);
+        __query.prepare();
+        org.seasar.doma.internal.jdbc.command.FunctionCommand<java.util.List<example.domain.PhoneNumber>> __command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<java.util.List<example.domain.PhoneNumber>>(__query);
+        java.util.List<example.domain.PhoneNumber> __result = __command.execute();
+        exiting("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl", "executeFunction4", __result);
+        return __result;
     }
 
     @Override
@@ -111,19 +111,19 @@ public class AutoFunctionDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao im
         if (arg1 == null) {
             throw new org.seasar.doma.DomaNullPointerException("arg1");
         }
-        org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.util.List<org.seasar.doma.internal.apt.entity.Emp>> query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.util.List<org.seasar.doma.internal.apt.entity.Emp>>();
-        query.setConfig(config);
-        query.setFunctionName("executeFunction5");
-        query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.EntityListResultParameter<org.seasar.doma.internal.apt.entity.Emp>(new org.seasar.doma.internal.apt.entity.Emp_()));
-        query.addParameter(new org.seasar.doma.internal.jdbc.sql.EntityListParameter<org.seasar.doma.internal.apt.entity.Emp>(new org.seasar.doma.internal.apt.entity.Emp_(), arg1));
-        query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl");
-        query.setCallerMethodName("executeFunction5");
-        query.setQueryTimeout(-1);
-        query.prepare();
-        org.seasar.doma.internal.jdbc.command.FunctionCommand<java.util.List<org.seasar.doma.internal.apt.entity.Emp>> command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<java.util.List<org.seasar.doma.internal.apt.entity.Emp>>(query);
-        java.util.List<org.seasar.doma.internal.apt.entity.Emp> result = command.execute();
-        exiting("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl", "executeFunction5", result);
-        return result;
+        org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.util.List<org.seasar.doma.internal.apt.entity.Emp>> __query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.util.List<org.seasar.doma.internal.apt.entity.Emp>>();
+        __query.setConfig(config);
+        __query.setFunctionName("executeFunction5");
+        __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.EntityListResultParameter<org.seasar.doma.internal.apt.entity.Emp>(new org.seasar.doma.internal.apt.entity.Emp_()));
+        __query.addParameter(new org.seasar.doma.internal.jdbc.sql.EntityListParameter<org.seasar.doma.internal.apt.entity.Emp>(new org.seasar.doma.internal.apt.entity.Emp_(), arg1));
+        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl");
+        __query.setCallerMethodName("executeFunction5");
+        __query.setQueryTimeout(-1);
+        __query.prepare();
+        org.seasar.doma.internal.jdbc.command.FunctionCommand<java.util.List<org.seasar.doma.internal.apt.entity.Emp>> __command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<java.util.List<org.seasar.doma.internal.apt.entity.Emp>>(__query);
+        java.util.List<org.seasar.doma.internal.apt.entity.Emp> __result = __command.execute();
+        exiting("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl", "executeFunction5", __result);
+        return __result;
     }
 
     @Override
@@ -135,21 +135,21 @@ public class AutoFunctionDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao im
         if (arg3 == null) {
             throw new org.seasar.doma.DomaNullPointerException("arg3");
         }
-        org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum> query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>();
-        query.setConfig(config);
-        query.setFunctionName("executeFunction6");
-        query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.BasicResultParameter<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>(new org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>(org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum.class)));
-        query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicInParameter(new org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>(org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum.class, arg1)));
-        query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicInOutParameter<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>(new org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>(org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum.class), arg2));
-        query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicOutParameter<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>(new org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>(org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum.class), arg3));
-        query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl");
-        query.setCallerMethodName("executeFunction6");
-        query.setQueryTimeout(-1);
-        query.prepare();
-        org.seasar.doma.internal.jdbc.command.FunctionCommand<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum> command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>(query);
-        org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum result = command.execute();
-        exiting("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl", "executeFunction6", result);
-        return result;
+        org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum> __query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>();
+        __query.setConfig(config);
+        __query.setFunctionName("executeFunction6");
+        __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.BasicResultParameter<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>(new org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>(org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum.class)));
+        __query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicInParameter(new org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>(org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum.class, arg1)));
+        __query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicInOutParameter<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>(new org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>(org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum.class), arg2));
+        __query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicOutParameter<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>(new org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>(org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum.class), arg3));
+        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl");
+        __query.setCallerMethodName("executeFunction6");
+        __query.setQueryTimeout(-1);
+        __query.prepare();
+        org.seasar.doma.internal.jdbc.command.FunctionCommand<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum> __command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>(__query);
+        org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum __result = __command.execute();
+        exiting("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl", "executeFunction6", __result);
+        return __result;
     }
 
 }

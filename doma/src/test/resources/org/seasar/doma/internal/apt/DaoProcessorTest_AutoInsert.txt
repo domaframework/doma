@@ -17,20 +17,20 @@ public class AutoInsertDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao impl
         if (entity == null) {
             throw new org.seasar.doma.DomaNullPointerException("entity");
         }
-        org.seasar.doma.internal.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.entity.Emp> query = new org.seasar.doma.internal.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.entity.Emp>(new org.seasar.doma.internal.apt.entity.Emp_());
-        query.setConfig(config);
-        query.setEntity(entity);
-        query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoInsertDaoImpl");
-        query.setCallerMethodName("insert");
-        query.setQueryTimeout(-1);
-        query.setNullExcluded(false);
-        query.setIncludedPropertyNames();
-        query.setExcludedPropertyNames();
-        query.prepare();
-        org.seasar.doma.internal.jdbc.command.InsertCommand command = new org.seasar.doma.internal.jdbc.command.InsertCommand(query);
-        int result = command.execute();
-        exiting("org.seasar.doma.internal.apt.dao.AutoInsertDaoImpl", "insert", result);
-        return result;
+        org.seasar.doma.internal.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.entity.Emp> __query = new org.seasar.doma.internal.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.entity.Emp>(new org.seasar.doma.internal.apt.entity.Emp_());
+        __query.setConfig(config);
+        __query.setEntity(entity);
+        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoInsertDaoImpl");
+        __query.setCallerMethodName("insert");
+        __query.setQueryTimeout(-1);
+        __query.setNullExcluded(false);
+        __query.setIncludedPropertyNames();
+        __query.setExcludedPropertyNames();
+        __query.prepare();
+        org.seasar.doma.internal.jdbc.command.InsertCommand __command = new org.seasar.doma.internal.jdbc.command.InsertCommand(__query);
+        int __result = __command.execute();
+        exiting("org.seasar.doma.internal.apt.dao.AutoInsertDaoImpl", "insert", __result);
+        return __result;
     }
 
 }

@@ -15,9 +15,9 @@ public class DelegateDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao implem
     public java.math.BigDecimal execute(java.lang.String aaa, java.lang.Integer bbb) {
         entering("org.seasar.doma.internal.apt.dao.DelegateDaoImpl", "execute", aaa, bbb);
         org.seasar.doma.internal.apt.dao.DelegateDaoDelegate delegate = new org.seasar.doma.internal.apt.dao.DelegateDaoDelegate(config);
-        java.math.BigDecimal result = delegate.execute(aaa, bbb);
-        exiting("org.seasar.doma.internal.apt.dao.DelegateDaoImpl", "execute", result);
-        return result;
+        java.math.BigDecimal __result = delegate.execute(aaa, bbb);
+        exiting("org.seasar.doma.internal.apt.dao.DelegateDaoImpl", "execute", __result);
+        return __result;
     }
 
 }

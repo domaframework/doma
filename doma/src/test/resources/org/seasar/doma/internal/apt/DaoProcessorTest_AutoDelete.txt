@@ -17,19 +17,19 @@ public class AutoDeleteDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao impl
         if (entity == null) {
             throw new org.seasar.doma.DomaNullPointerException("entity");
         }
-        org.seasar.doma.internal.jdbc.query.AutoDeleteQuery<org.seasar.doma.internal.apt.entity.Emp> query = new org.seasar.doma.internal.jdbc.query.AutoDeleteQuery<org.seasar.doma.internal.apt.entity.Emp>(new org.seasar.doma.internal.apt.entity.Emp_());
-        query.setConfig(config);
-        query.setEntity(entity);
-        query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoDeleteDaoImpl");
-        query.setCallerMethodName("delete");
-        query.setQueryTimeout(-1);
-        query.setVersionIgnored(false);
-        query.setOptimisticLockExceptionSuppressed(false);
-        query.prepare();
-        org.seasar.doma.internal.jdbc.command.DeleteCommand command = new org.seasar.doma.internal.jdbc.command.DeleteCommand(query);
-        int result = command.execute();
-        exiting("org.seasar.doma.internal.apt.dao.AutoDeleteDaoImpl", "delete", result);
-        return result;
+        org.seasar.doma.internal.jdbc.query.AutoDeleteQuery<org.seasar.doma.internal.apt.entity.Emp> __query = new org.seasar.doma.internal.jdbc.query.AutoDeleteQuery<org.seasar.doma.internal.apt.entity.Emp>(new org.seasar.doma.internal.apt.entity.Emp_());
+        __query.setConfig(config);
+        __query.setEntity(entity);
+        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoDeleteDaoImpl");
+        __query.setCallerMethodName("delete");
+        __query.setQueryTimeout(-1);
+        __query.setVersionIgnored(false);
+        __query.setOptimisticLockExceptionSuppressed(false);
+        __query.prepare();
+        org.seasar.doma.internal.jdbc.command.DeleteCommand __command = new org.seasar.doma.internal.jdbc.command.DeleteCommand(__query);
+        int __result = __command.execute();
+        exiting("org.seasar.doma.internal.apt.dao.AutoDeleteDaoImpl", "delete", __result);
+        return __result;
     }
 
 }

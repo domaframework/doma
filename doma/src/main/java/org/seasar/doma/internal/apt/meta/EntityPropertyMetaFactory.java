@@ -34,8 +34,8 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.ElementUtil;
 import org.seasar.doma.internal.apt.TypeUtil;
-import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.BasicType;
+import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
@@ -182,9 +182,9 @@ public class EntityPropertyMetaFactory {
     protected void doName(EntityPropertyMeta propertyMeta,
             VariableElement fieldElement, EntityMeta entityMeta) {
         String name = fieldElement.getSimpleName().toString();
-        if (name.startsWith("__")) {
+        if (name.startsWith(MetaConstants.RESERVED_NAME_PREFIX)) {
             throw new AptException(DomaMessageCode.DOMA4025, env, fieldElement,
-                    "__");
+                    MetaConstants.RESERVED_NAME_PREFIX);
         }
         propertyMeta.setName(name);
     }

@@ -39,6 +39,7 @@ import org.seasar.doma.internal.apt.dao.ExtendsDao;
 import org.seasar.doma.internal.apt.dao.IllegalAnnotateWithDao;
 import org.seasar.doma.internal.apt.dao.IllegalConstructorDelegateDao;
 import org.seasar.doma.internal.apt.dao.IllegalMethodDelegateDao;
+import org.seasar.doma.internal.apt.dao.IllegalParameterNameDao;
 import org.seasar.doma.internal.apt.dao.IncludeAndExcludeDao;
 import org.seasar.doma.internal.apt.dao.IterationCallbackDao;
 import org.seasar.doma.internal.apt.dao.MethodAccessSqlValidationDao;
@@ -464,5 +465,15 @@ public class DaoProcessorTest extends AptTestCase {
         compile();
         assertFalse(getCompiledResult());
         assertMessageCode(DomaMessageCode.DOMA4142);
+    }
+
+    public void testIllegalParameterName() throws Exception {
+        Class<?> target = IllegalParameterNameDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessageCode(DomaMessageCode.DOMA4025);
     }
 }

@@ -17,17 +17,17 @@ public class ArrayFactoryDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao im
         if (elements == null) {
             throw new org.seasar.doma.DomaNullPointerException("elements");
         }
-        org.seasar.doma.internal.jdbc.query.ArrayCreateQuery query = new org.seasar.doma.internal.jdbc.query.ArrayCreateQuery();
-        query.setConfig(config);
-        query.setCallerClassName("org.seasar.doma.internal.apt.dao.ArrayFactoryDaoImpl");
-        query.setCallerMethodName("create");
-        query.setTypeName("varchar");
-        query.setElements(elements);
-        query.prepare();
-        org.seasar.doma.internal.jdbc.command.CreateCommand<java.sql.Array> command = new org.seasar.doma.internal.jdbc.command.CreateCommand<java.sql.Array>(query);
-        java.sql.Array result = command.execute();
-        exiting("org.seasar.doma.internal.apt.dao.ArrayFactoryDaoImpl", "create", result);
-        return result;
+        org.seasar.doma.internal.jdbc.query.ArrayCreateQuery __query = new org.seasar.doma.internal.jdbc.query.ArrayCreateQuery();
+        __query.setConfig(config);
+        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.ArrayFactoryDaoImpl");
+        __query.setCallerMethodName("create");
+        __query.setTypeName("varchar");
+        __query.setElements(elements);
+        __query.prepare();
+        org.seasar.doma.internal.jdbc.command.CreateCommand<java.sql.Array> __command = new org.seasar.doma.internal.jdbc.command.CreateCommand<java.sql.Array>(__query);
+        java.sql.Array __result = __command.execute();
+        exiting("org.seasar.doma.internal.apt.dao.ArrayFactoryDaoImpl", "create", __result);
+        return __result;
     }
 
 }
