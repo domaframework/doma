@@ -20,7 +20,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.seasar.doma.jdbc.ConfigAdapter;
+import org.seasar.doma.jdbc.ConfigProxy;
 
 /**
  * {@link Dao} が注釈されたインタフェースの実装クラスのソースコードにアノテーションを付与することを示します。
@@ -28,7 +28,7 @@ import org.seasar.doma.jdbc.ConfigAdapter;
  * このアノテーションは次の場合にのみ有効です。
  * <ul>
  * <li>{@code Dao} と併用されている。
- * <li>{@code Dao} の {@code config} 要素に {@link ConfigAdapter} が指定されている。
+ * <li>{@code Dao} の {@code config} 要素に {@link ConfigProxy} が指定されている。
  * </ul>
  * <p>
  * 

@@ -22,7 +22,7 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.RuntimeConfig;
 
 /**
- * {@link Dao}が注釈されたインタフェースの実装クラスのための骨格実装です。
+ * {@link Dao} が注釈されたインタフェースの実装クラスのための骨格実装です。
  * <p>
  * 
  * @author taedium
@@ -31,7 +31,7 @@ import org.seasar.doma.internal.RuntimeConfig;
 public abstract class DomaAbstractDao {
 
     /**
-     * この {@literal Data Access Object} の実行時用の設定です。
+     * 実行時用の設定です。
      */
     protected final Config config;
 
@@ -68,22 +68,23 @@ public abstract class DomaAbstractDao {
         if (dataSource == null) {
             if (config.getDataSource() == null) {
                 throw new ConfigException(config.getClass().getName(),
-                        "dataSource");
+                        "getDataSource");
             }
         }
         if (config.getDataSourceName() == null) {
             throw new ConfigException(config.getClass().getName(),
-                    "dataSourceName");
+                    "getDataSourceName");
         }
         if (config.getDialect() == null) {
-            throw new ConfigException(config.getClass().getName(), "dialect");
+            throw new ConfigException(config.getClass().getName(), "getDialect");
         }
         if (config.getSqlFileRepository() == null) {
             throw new ConfigException(config.getClass().getName(),
-                    "sqlFileRepository");
+                    "getSqlFileRepository");
         }
         if (config.getJdbcLogger() == null) {
-            throw new ConfigException(config.getClass().getName(), "jdbcLogger");
+            throw new ConfigException(config.getClass().getName(),
+                    "getJdbcLogger");
         }
         this.config = new RuntimeConfig(config, dataSource != null ? dataSource
                 : config.getDataSource());

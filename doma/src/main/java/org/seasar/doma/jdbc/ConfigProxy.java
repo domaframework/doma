@@ -21,12 +21,14 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
- * DIコンテナから注入されるなど外部の {@link Config} をアダプタするクラスです。
+ * {@link Config} のプロキシです。
+ * <p>
+ * 主に、DIコンテナからインジェクションされる {@link Config} をプロキシします。
  * 
  * @author taedium
  * 
  */
-public final class ConfigAdapter implements Config {
+public final class ConfigProxy implements Config {
 
     /** DIコンテナから注入されるなど外部の {@link Config} */
     private final Config config;
@@ -35,11 +37,11 @@ public final class ConfigAdapter implements Config {
      * インスタンスを構築します。
      * 
      * @param config
-     *            DIコンテナから注入されるなど外部の {@link Config}
+     *            プロキシの対象である {@link Config}
      * @throws DomaNullPointerException
      *             {@code config} が {@code null} の場合
      */
-    public ConfigAdapter(Config config) {
+    public ConfigProxy(Config config) {
         if (config == null) {
             throw new DomaNullPointerException("config");
         }

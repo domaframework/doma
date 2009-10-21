@@ -40,7 +40,7 @@ import org.seasar.doma.internal.apt.Notifier;
 import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
-import org.seasar.doma.jdbc.ConfigAdapter;
+import org.seasar.doma.jdbc.ConfigProxy;
 
 /**
  * @author taedium
@@ -115,7 +115,7 @@ public class DaoMetaFactory {
     protected void doConfig(Dao dao, DaoMeta daoMeta) {
         TypeMirror configType = getConfigType(dao);
         daoMeta.setConfigType(configType);
-        if (TypeUtil.isSameType(configType, ConfigAdapter.class, env)) {
+        if (TypeUtil.isSameType(configType, ConfigProxy.class, env)) {
             daoMeta.setConfigAdapter(true);
         }
     }

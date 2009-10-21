@@ -1,22 +1,22 @@
 package org.seasar.doma.internal.apt.dao;
 
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
-public class ConfigAdapterDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao implements org.seasar.doma.internal.apt.dao.ConfigAdapterDao {
+public class ConfigProxyDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao implements org.seasar.doma.internal.apt.dao.ConfigProxyDao {
 
-    public ConfigAdapterDaoImpl(org.seasar.doma.jdbc.Config config) {
-        super(new org.seasar.doma.jdbc.ConfigAdapter(config));
+    public ConfigProxyDaoImpl(org.seasar.doma.jdbc.Config config) {
+        super(new org.seasar.doma.jdbc.ConfigProxy(config));
     }
 
     @Override
     public int insert(org.seasar.doma.internal.apt.entity.Emp emp) {
-        entering("org.seasar.doma.internal.apt.dao.ConfigAdapterDaoImpl", "insert", emp);
+        entering("org.seasar.doma.internal.apt.dao.ConfigProxyDaoImpl", "insert", emp);
         if (emp == null) {
             throw new org.seasar.doma.DomaNullPointerException("emp");
         }
         org.seasar.doma.internal.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.entity.Emp> query = new org.seasar.doma.internal.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.entity.Emp>(new org.seasar.doma.internal.apt.entity.Emp_());
         query.setConfig(config);
         query.setEntity(emp);
-        query.setCallerClassName("org.seasar.doma.internal.apt.dao.ConfigAdapterDaoImpl");
+        query.setCallerClassName("org.seasar.doma.internal.apt.dao.ConfigProxyDaoImpl");
         query.setCallerMethodName("insert");
         query.setQueryTimeout(-1);
         query.setNullExcluded(false);
@@ -25,7 +25,7 @@ public class ConfigAdapterDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao i
         query.prepare();
         org.seasar.doma.internal.jdbc.command.InsertCommand command = new org.seasar.doma.internal.jdbc.command.InsertCommand(query);
         int result = command.execute();
-        exiting("org.seasar.doma.internal.apt.dao.ConfigAdapterDaoImpl", "insert", result);
+        exiting("org.seasar.doma.internal.apt.dao.ConfigProxyDaoImpl", "insert", result);
         return result;
     }
 
