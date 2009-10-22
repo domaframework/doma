@@ -147,8 +147,7 @@ public class TypeDeclaration {
                 }
                 List<? extends VariableElement> parameters = constructor
                         .getParameters();
-                if (constructor.getParameters().size() != parameterTypeDeclarations
-                        .size()) {
+                if (parameters.size() != parameterTypeDeclarations.size()) {
                     continue;
                 }
                 Iterator<? extends VariableElement> valueElementIterator = parameters
