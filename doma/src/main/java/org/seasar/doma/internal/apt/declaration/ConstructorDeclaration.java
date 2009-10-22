@@ -44,7 +44,7 @@ public class ConstructorDeclaration {
         return TypeDeclaration.newInstance(returnType, env);
     }
 
-    public TypeMirror resolveTypeParameter(TypeMirror formalType) {
+    protected TypeMirror resolveTypeParameter(TypeMirror formalType) {
         for (TypeParameterDeclaration typeParameterDecl : typeParameterDeclarations) {
             if (formalType.equals(typeParameterDecl.getFormalType())) {
                 return typeParameterDecl.getActualType();

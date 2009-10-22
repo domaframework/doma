@@ -32,14 +32,6 @@ public class FieldDeclaration {
 
     protected ProcessingEnvironment env;
 
-    protected FieldDeclaration() {
-    }
-
-    public static FieldDeclaration newInstance(TypeMirror type,
-            ProcessingEnvironment env) {
-        return null;
-    }
-
     public VariableElement getElement() {
         return element;
     }
@@ -49,7 +41,7 @@ public class FieldDeclaration {
         return TypeDeclaration.newInstance(fieldType, env);
     }
 
-    public TypeMirror resolveTypeParameter(TypeMirror formalType) {
+    protected TypeMirror resolveTypeParameter(TypeMirror formalType) {
         for (TypeParameterDeclaration typeParameterDecl : typeParameterDeclarations) {
             if (formalType.equals(typeParameterDecl.getFormalType())) {
                 return typeParameterDecl.getActualType();
