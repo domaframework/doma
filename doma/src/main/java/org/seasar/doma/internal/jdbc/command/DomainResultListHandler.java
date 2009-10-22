@@ -44,9 +44,9 @@ public class DomainResultListHandler<V, D> implements ResultSetHandler<List<D>> 
         BasicFetcher fetcher = new BasicFetcher(query);
         List<D> domains = new ArrayList<D>();
         while (resultSet.next()) {
-            DomainType<V, D> entityType = domainTypeFactory.createDomainType();
-            fetcher.fetch(resultSet, entityType.getWrapper());
-            domains.add(entityType.getDomain());
+            DomainType<V, D> domainType = domainTypeFactory.createDomainType();
+            fetcher.fetch(resultSet, domainType.getWrapper());
+            domains.add(domainType.getDomain());
         }
         return domains;
     }
