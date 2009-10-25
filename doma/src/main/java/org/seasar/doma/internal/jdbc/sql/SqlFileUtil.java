@@ -17,6 +17,8 @@ package org.seasar.doma.internal.jdbc.sql;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.io.File;
+
 /**
  * @author taedium
  * 
@@ -25,6 +27,13 @@ public final class SqlFileUtil {
 
     public static String buildPath(String className, String methodName) {
         assertNotNull(className, methodName);
+        String path = buildPath(className);
+        path += "/" + methodName + ".sql";
+        return path;
+    }
+
+    public static String buildPath(String className) {
+        assertNotNull(className);
         int pos = className.lastIndexOf(".");
         String packageName = pos > 0 ? className.substring(0, pos) : null;
         String simpleName = pos > 0 ? className.substring(pos + 1) : className;
@@ -32,8 +41,18 @@ public final class SqlFileUtil {
         if (pos > 0) {
             path += "/" + packageName.replace(".", "/");
         }
-        path += "/" + simpleName + "/" + methodName + ".sql";
+        path += "/" + simpleName;
         return path;
+    }
+
+    public static boolean isSqlFile(File file, String methodName) {
+        if (!file.isFile()) {
+            return false;
+        }
+        String fileName = file.getName();
+        return fileName.equals(methodName + ".sql")
+                || fileName.startsWith(methodName + "-")
+                && fileName.endsWith(".sql");
     }
 
 }

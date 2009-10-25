@@ -19,6 +19,9 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -26,7 +29,6 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 
 import org.seasar.doma.internal.WrapException;
-
 
 /**
  * @author taedium
@@ -55,6 +57,19 @@ public final class IOUtil {
             IOUtil.close(reader);
         }
         return buf.toString();
+    }
+
+    public static String readAsString(File file) throws WrapException {
+        assertNotNull(file);
+        InputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(file);
+            return readAsString(inputStream);
+        } catch (FileNotFoundException e) {
+            throw new WrapException(e);
+        } finally {
+            IOUtil.close(inputStream);
+        }
     }
 
     public static void close(Closeable closeable) {

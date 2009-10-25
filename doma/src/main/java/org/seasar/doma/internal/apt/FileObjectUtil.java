@@ -15,8 +15,8 @@
  */
 package org.seasar.doma.internal.apt;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -29,13 +29,12 @@ import javax.tools.StandardLocation;
  */
 public final class FileObjectUtil {
 
-    public static InputStream getResourceAsStream(String path,
-            ProcessingEnvironment env) {
+    public static File getFile(String path, ProcessingEnvironment env) {
         Filer filer = env.getFiler();
         try {
             FileObject fileObject = filer.getResource(
                     StandardLocation.CLASS_OUTPUT, "", path);
-            return fileObject.openInputStream();
+            return new File(fileObject.toUri());
         } catch (IOException ignored) {
         }
         return null;

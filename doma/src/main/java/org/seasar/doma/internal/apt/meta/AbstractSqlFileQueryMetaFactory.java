@@ -15,7 +15,9 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import java.io.InputStream;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
+
+import java.io.File;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
@@ -45,35 +47,50 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
 
     protected void doSqlFile(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
-        String path = SqlFileUtil.buildPath(daoMeta.getDaoElement()
-                .getQualifiedName().toString(), queryMeta.getName());
-        String sql = getSql(queryMeta, method, daoMeta, path);
-        if (sql == null) {
-            throw new AptException(DomaMessageCode.DOMA4019, env, method, path);
+        String methodName = queryMeta.getName();
+        File sqlFile = getSqlFile(methodName, method, daoMeta);
+        File sqlFileDir = sqlFile.getParentFile();
+        if (sqlFileDir == null) {
+            assertUnreachable();
+            return;
         }
-        if (sql.isEmpty() || StringUtil.isWhitespace(sql)) {
-            throw new AptException(DomaMessageCode.DOMA4020, env, method, path);
+        String dirPath = SqlFileUtil.buildPath(daoMeta.getDaoElement()
+                .getQualifiedName().toString());
+        for (File file : sqlFileDir.listFiles()) {
+            if (SqlFileUtil.isSqlFile(file, methodName)) {
+                String filePath = dirPath + "/" + file.getName();
+                String sql = getSql(method, file, filePath);
+                if (sql.isEmpty() || StringUtil.isWhitespace(sql)) {
+                    throw new AptException(DomaMessageCode.DOMA4020, env,
+                            method, filePath);
+                }
+                SqlNode sqlNode = createSqlNode(queryMeta, method, daoMeta,
+                        filePath, sql);
+                SqlValidator validator = new SqlValidator(env, method,
+                        queryMeta.getParameterTypeMap(), filePath);
+                validator.validate(sqlNode);
+            }
         }
-        SqlNode sqlNode = createSqlNode(queryMeta, method, daoMeta, path, sql);
-        SqlValidator validator = new SqlValidator(env, method, queryMeta
-                .getParameterTypeMap(), path);
-        validator.validate(sqlNode);
     }
 
-    protected String getSql(M queryMeta, ExecutableElement method,
-            DaoMeta daoMeta, String path) {
-        InputStream inputStream = FileObjectUtil.getResourceAsStream(path, env);
+    protected File getSqlFile(String methodName, ExecutableElement method,
+            DaoMeta daoMeta) {
+        String path = SqlFileUtil.buildPath(daoMeta.getDaoElement()
+                .getQualifiedName().toString(), methodName);
+        File sqlFile = FileObjectUtil.getFile(path, env);
+        if (sqlFile == null) {
+            throw new AptException(DomaMessageCode.DOMA4019, env, method, path);
+        }
+        return sqlFile;
+    }
+
+    protected String getSql(ExecutableElement method, File file, String filePath) {
         try {
-            if (inputStream == null) {
-                return null;
-            }
-            return IOUtil.readAsString(inputStream);
+            return IOUtil.readAsString(file);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
             throw new AptException(DomaMessageCode.DOMA4068, env, method,
-                    cause, path, cause);
-        } finally {
-            IOUtil.close(inputStream);
+                    cause, filePath, cause);
         }
     }
 
