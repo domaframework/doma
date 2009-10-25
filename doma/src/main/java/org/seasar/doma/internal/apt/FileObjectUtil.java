@@ -18,7 +18,6 @@ package org.seasar.doma.internal.apt;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -41,13 +40,12 @@ public final class FileObjectUtil {
             env.getMessager().printMessage(Kind.NOTE,
                     "debug 1: " + uri.toString());
             if (!uri.isAbsolute()) {
-                try {
-                    URI newUri = new URI("file", uri.getHost(), uri.getPath(),
-                            uri.getFragment());
-                    return new File(newUri);
-                } catch (URISyntaxException e) {
-                    throw new RuntimeException(e);
-                }
+                File baseDir = new File(".");
+                URI baseUri = baseDir.toURI();
+                URI resolvedUri = baseUri.resolve(uri);
+                env.getMessager().printMessage(Kind.NOTE,
+                        "debug 2: " + resolvedUri.toString());
+                return new File(resolvedUri);
             }
             return new File(uri);
         } catch (IOException ignored) {
