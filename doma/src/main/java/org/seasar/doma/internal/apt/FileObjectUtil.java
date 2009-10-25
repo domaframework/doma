@@ -17,11 +17,14 @@ package org.seasar.doma.internal.apt;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
+import javax.tools.Diagnostic.Kind;
 
 /**
  * @author taedium
@@ -34,7 +37,19 @@ public final class FileObjectUtil {
         try {
             FileObject fileObject = filer.getResource(
                     StandardLocation.CLASS_OUTPUT, "", path);
-            return new File(fileObject.toUri());
+            URI uri = fileObject.toUri();
+            env.getMessager().printMessage(Kind.NOTE,
+                    "debug 1: " + uri.toString());
+            if (!uri.isAbsolute()) {
+                try {
+                    URI newUri = new URI("file", uri.getHost(), uri.getPath(),
+                            uri.getFragment());
+                    return new File(newUri);
+                } catch (URISyntaxException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            return new File(uri);
         } catch (IOException ignored) {
         }
         return null;

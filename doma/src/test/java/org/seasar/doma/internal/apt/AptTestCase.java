@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.apt;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -93,6 +94,22 @@ public abstract class AptTestCase extends AptinaTestCase {
             }
         }
         fail();
+    }
+
+    @Override
+    protected List<Diagnostic<? extends JavaFileObject>> getDiagnostics() {
+        List<Diagnostic<? extends JavaFileObject>> results = new ArrayList<Diagnostic<? extends JavaFileObject>>();
+        for (Diagnostic<? extends JavaFileObject> diagnostic : super
+                .getDiagnostics()) {
+            switch (diagnostic.getKind()) {
+            case ERROR:
+            case WARNING:
+            case MANDATORY_WARNING:
+                results.add(diagnostic);
+                break;
+            }
+        }
+        return results;
     }
 
     protected DomaMessageCode getMessageCode() {
