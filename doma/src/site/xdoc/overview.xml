@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>概要</title>
+	</properties>
+	<body>
+		<section name="概要">
+			<p>
+				Domaは、より扱いやすい<a href="http://s2dao.seasar.org/ja/index.html">S2Dao</a>を目指しています。
+				S2Daoの良いアイデアや機能は受け継ぎつつも、扱いにくかったりプログラミングミスにつながりやすかったりする点については改善を試みています。
+				さらに、S2Daoにはない新しい機能も提供します。
+			</p>
+			<p>
+				Domaは、S2Daoの次のアイデアや機能を受け継いでいます。
+			</p>
+			<ul>
+				<li><a href="#DAOパターン">DAOパターン</a></li>
+				<li><a href="#a2_Way_SQL">2 Way SQL</a></li>
+			</ul>
+			<p>
+				一方、Domaは、S2Daoの次の点を改善しています。
+			</p>
+			<ul>
+				<li><a href="#Seasar2への依存">Seasar2への依存</a></li>
+				<li><a href="#AOPの利用">AOPの利用</a></li>
+				<li><a href="#命名規約">命名規約</a></li>
+				<li><a href="#JavaとSQLの不十分な分離">JavaとSQLの不十分な分離</a></li>
+				<li><a href="#SQLコメントの間違いやすい文法">SQLコメントの間違いやすい文法</a></li>
+				<li><a href="#JDBCを直接利用する方法">JDBCを直接利用する方法</a></li>
+				<li><a href="#DaoのメソッドとSQLファイルのマッピング">DaoのメソッドとSQLファイルのマッピング</a></li>
+				<li><a href="#DaoのメソッドのパラメータとSQLファイル上のバインド変数コメントのマッピング">DaoのメソッドのパラメータとSQLファイル上のバインド変数コメントのマッピング</a></li>
+				<li><a href="#Daoの初期化コスト">Daoの初期化コスト</a></li>
+			</ul>
+			<p>
+				さらに、Domaは、新しく次のような機能を提供します。
+			</p>
+			<ul>
+				<li>コンパイル時のソースコード生成</li>
+				<li>コンパイル時の規約チェック</li>
+				<li>コンパイル時のSQL存在チェック</li>
+				<li>コンパイル時のSQLコメント文法チェック</li>
+				<li>ページング用SQLの自動生成</li>
+				<li>悲観的排他制御用SQLの自動生成</li>
+				<li>アプリ固有の値型への対応</li>
+				<li>JDBC 4.0サポート</li>
+			</ul>
+			<p>
+				開発にあたっては、S2Daoのほかに、
+				<a href="http://s2container.seasar.org/2.4/ja/s2jdbc.html">S2JDBC</a>や<a href="http://www.hibernate.org/">Hibernate</a>も参考にしています。
+			</p>
+		</section>
+		<section name="S2Daoから受け継いだアイデアや機能">
+			<subsection name="DAOパターン">
+				<p>
+					DomaではS2Daoと同様にDAOパターンを採用しています。
+				</p>
+				<p>
+					DAOパターンを採用するのは、次のような利点があるからです。
+				</p>
+				<ul>
+					<li>データアクセスの箇所を特定しやすい</li>
+					<li>データアクセス処理をカプセル化できる（SQLの自動生成処理をJDBCを直接利用した処理に変更しても利用側プログラムに影響を与えない）</li>
+					<li>テストをしやすい（モックを作成しやすい）</li>
+				</ul>
+			</subsection>
+			<subsection name="2 Way SQL">
+				<p>
+					S2Daoでは、外部ファイルに記述したSQLを、Javaとマッピングした形でフレームワークの一部として取り込むことも、単独でSQLツール上で実行することも可能としています（2 Way SQL）。
+				</p>
+				<p>
+					Domaでは、このアイデアをそのまま採用しています。ただし、マッピングルールやSQLコメントの用い方については変更を加えています。
+					2 Way SQLは、フレームワークで扱うSQLを単独でテストしたり、Java開発者とSQL作成者の作業を分離したりするのに非常に有効な方法です。
+				</p>
+			</subsection>
+		</section>
+		<section name="S2Daoからの改善点">
+			<subsection name="Seasar2への依存">
+				<p>
+					S2Daoを利用するには、Seasar2のライブラリが必須です
+				</p>
+				<p>
+					一方、Domaでは、Seasar2への依存が一切ありません。このため、<a href="http://www.springsource.org/">Spring Framework</a>や<a href="http://code.google.com/p/google-guice/">Guice</a>といったSeasar2以外のDIコンテナと組み合わせたり、単独で利用したりしやすくなっています。
+					Domaはdoma-x.x.x.jarという単独のjarファイルのみで動作します。
+				</p>
+			</subsection>
+			<subsection name="AOPの利用">
+				<p>
+					S2Daoでは、実行時にDaoのインタフェースにAOPを適用することで動作します。
+				</p>
+				<p>
+					一方、Domaでは、コンパイル時にaptでインタフェースから実装クラスをソースコードとして生成し、実行時には生成されたソースコードに対応する実装クラスを使用します。
+				</p>
+				<p>
+					AOPは便利な機能ですが、挙動が把握しにくかったりデバッグがしにくかったりといった問題点があります。
+					Domaではこれらの問題点を避けるため、AOPではなくaptによるコード生成を利用しています。
+				</p>
+				<p>
+					ただし、S2DaoであれDomaであれ、アプリケーション開発者が作成するのはインタフェースのみという点は同じです。
+				</p>
+			</subsection>
+			<subsection name="命名規約">
+				<p>
+					S2Daoでは、たとえば、Daoのメソッド名が「update」で始まる場合そのメソッドはUPDATE文を発行するメソッドである、といった命名規約を持っています。
+				</p>
+				<p>
+					一方、Domaでは、暗黙的な命名規約ではなく、アノテーションを採用しています。たとえば、UPDATE文を発行するメソッドには@Updateといったアノテーションを使用します。
+					Domaでは、暗黙的な命名規約を排しアノテーションを利用することで意図をより明確にプログラムコード上に表し、挙動をわかりやすくしています。
+				</p>
+			</subsection>
+			<subsection name="JavaとSQLの不十分な分離">
+				<p>
+					S2Daoでは、SQLを外部ファイルに記述することを認める一方、DaoのメソッドにアノテーションでSQL全体やSQLの一部を記述することも認めています。
+					しかし、アノテーションでSQLを記述するのは、JavaとSQLの分離が不十分です。
+				</p>
+				<p>
+					Domaでは、DaoのメソッドにアノテーションでSQLの全体や一部を記述することを認めません。
+					JavaのコードにSQLを記述することは、アプリケーションの保守性を損ねるからです。
+					SQLを記述する場合は、外部ファイルを使用する必要があります。
+				</p>
+			</subsection>
+			<subsection name="SQLコメントの間違いやすい文法">
+				<p>
+					S2Daoでは、SQLに含まれたSQLコメントの前後にスペースがあるかどうかなど非常に細かく間違いやすい違いがフレームワークの挙動を左右します。また、間違いが含まれていた場合のエラーメッセージもわかりにくいものです。
+				</p>
+				<p>
+					Domaでは、文法を見直し、間違いにくいようにしています。またコンパイル時にaptで検証することで、間違いがあっても早期にエラーを検出しています。
+				</p>
+			</subsection>
+			<subsection name="JDBCを直接利用する方法">
+				<p>
+					S2Daoでは、Daoの特定のメソッドでJDBCを直接利用するには、インタフェースの実装クラスを作成しメソッドをオーバーライドします。
+					この方法では、AOPを適用するクラスを変更する必要があります。
+				</p>
+				<p>
+					Domaでは、@Delegateというアノテーションを使って、JDBCを直接利用する処理を別クラスに委譲できます。
+					この方法は、クラス階層に変更を加えないためより柔軟です。
+				</p>
+				<p>
+					詳細は、<a href="reference/dao.html#デリゲート定義">デリゲート定義</a>を参照してください。
+				</p>
+			</subsection>
+			<subsection name="DaoのメソッドとSQLファイルのマッピング">
+				<p>
+					S2Daoでは、SQLファイルをDaoと同じパッケージに配置しなければいけません。
+					この仕様では、異なるDaoが同じパッケージにあると同じ階層に異なるDaoのSQLファイルが混在することになり、管理が難しくなります。
+				</p>
+				<p>
+					Domaでは、Daoごとに異なるディレクトリでSQLファイルを管理する仕様になっています。
+				</p>
+				<p>
+					詳細は、<a href="reference/sqlfile.html#SQLファイル">SQLファイル</a>を参照してください。
+				</p>
+			</subsection>
+			<subsection name="DaoのメソッドのパラメータとSQLファイル上のバインド変数コメントのマッピング">
+				<p>
+					S2Daoでは、メソッドのパラメータがSQLファイル内のバインド変数コメントで参照できるようにArgumentsアノテーションを使用してパラメータごとに名前をつける必要があります。
+				</p>
+				<p>
+					Domaでは、Argumentsアノテーションに相当するものは不要です。aptによりメソッドのパラメータ名をそのまま使用できるからです。
+				</p>
+			</subsection>
+			<subsection name="Daoの初期化コスト">
+				<p>
+					S2Daoでは、Daoの最初のアクセス時に、Daoのメタ情報を作成するための初期化コストがかかっています。
+					ここでのメタ情報とは、どのメソッドがどのCRUDに相当するのか、そのメソッドではSQLを自動生成するのかSQLファイルにマッピングするのかといった情報です。
+				</p>
+				<p>
+					Domaでは、コンパイル時にメタ情報をソースコードで表現し、実行時にはそのソースコードに対応するバイトコードを実行するため、そのようなコストがありません。
+				</p>
+			</subsection>
+		</section>
+	</body>
+</document>

@@ -18,6 +18,12 @@
 					<th>GWTを利用したデモアプリ</th>
 				</tr>
 				<tr>
+					<td><a href="download/2009-10-26/doma-0.9.8.zip">doma-0.9.8</a></td>
+					<td><a href="download/2009-10-26/doma-tutorial-0.9.8.zip">doma-tutorial-0.9.8</a></td>
+					<td><a href="download/2009-10-26/doma-sastruts-demo-0.9.8.zip">doma-sastruts-demo-0.9.8</a></td>
+					<td><a href="download/2009-10-26/doma-gwt-demo-0.9.8.zip">doma-gwt-demo-0.9.8</a></td>
+				</tr>
+				<tr>
 					<td><a href="download/2009-10-21/doma-0.9.7.zip">doma-0.9.7</a></td>
 					<td><a href="download/2009-10-21/doma-tutorial-0.9.7.zip">doma-tutorial-0.9.7</a></td>
 					<td><a href="download/2009-10-21/doma-sastruts-demo-0.9.7.zip">doma-sastruts-demo-0.9.7</a></td>
@@ -41,25 +47,10 @@
 					<td><a href="download/2009-09-11/doma-sastruts-demo-0.9.4.zip">doma-sastruts-demo-0.9.4</a></td>
 					<td><a href="download/2009-09-11/doma-gwt-demo-0.9.4.zip">doma-gwt-demo-0.9.4</a></td>
 				</tr>
-				<tr>
-					<td><a href="download/2009-09-07/doma-0.9.3.zip">doma-0.9.3</a></td>
-					<td><a href="download/2009-09-07/doma-tutorial-0.9.3.zip">doma-tutorial-0.9.3</a></td>
-					<td><a href="download/2009-09-07/doma-sastruts-demo-0.9.3.zip">doma-sastruts-demo-0.9.3</a></td>
-					<td><a href="download/2009-09-07/doma-gwt-demo-0.9.3.zip">doma-gwt-demo-0.9.3</a></td>
-				</tr>
-				<tr>
-					<td><a href="download/2009-08-13/doma-0.9.1.zip">doma-0.9.1</a></td>
-					<td><a href="download/2009-08-13/doma-tutorial-0.9.1.zip">doma-tutorial-0.9.1</a></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td><a href="download/2009-08-12/doma-0.9.0.zip">doma-0.9.0</a></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
 			</table>
+			<p>
+				<a href="downloads_old.html">さらに古いバージョンのダウンロード</a>
+			</p>
 			<subsection name="Doma本体">
 				<p>
 					Domaのjarファイル、ソースコード、ドキュメントを含んでいます。
