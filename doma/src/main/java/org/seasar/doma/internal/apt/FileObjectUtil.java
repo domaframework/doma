@@ -23,7 +23,6 @@ import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
-import javax.tools.Diagnostic.Kind;
 
 /**
  * @author taedium
@@ -37,14 +36,8 @@ public final class FileObjectUtil {
             FileObject fileObject = filer.getResource(
                     StandardLocation.CLASS_OUTPUT, "", path);
             URI uri = fileObject.toUri();
-            env.getMessager().printMessage(Kind.NOTE,
-                    "debug 1: " + uri.toString());
             if (!uri.isAbsolute()) {
-                File baseDir = new File(".");
-                URI baseUri = baseDir.toURI();
-                URI resolvedUri = baseUri.resolve(uri);
-                env.getMessager().printMessage(Kind.NOTE,
-                        "debug 2: " + resolvedUri.toString());
+                URI resolvedUri = new File(".").toURI().resolve(uri);
                 return new File(resolvedUri);
             }
             return new File(uri);
