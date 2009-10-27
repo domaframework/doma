@@ -208,7 +208,8 @@ public enum DomaMessageCode implements MessageCode {
     DOMA4142("@AnnotateWithを使用する場合、@Daoのconfig要素はorg.seasar.doma.jdbc.ConfigProxyクラスでなければいけません。"),
 
     // other
-    DOMA5001("接続URLが設定されていないか、JDBCドライバがロードされていない可能性があります。JDBCドライバをロードするには、クラスパスが通されたMETA-INF/services/java.sql.DriverファイルにJDBCドライバのクラスの完全修飾名を記述してください。 ex) oracle.jdbc.driver.OracleDriver"), ;
+    DOMA5001("JDBCドライバがロードされていない可能性があります。JDBCドライバをロードするには、クラスパスが通されたMETA-INF/services/java.sql.DriverファイルにJDBCドライバのクラスの完全修飾名を記述してください。 ex) oracle.jdbc.driver.OracleDriver"),
+    DOMA5002("urlプロパティが設定されていません。"), ;
 
     private static ResourceBundle bundle = ResourceBundle
             .getBundle(DomaMessageResource.class.getName());

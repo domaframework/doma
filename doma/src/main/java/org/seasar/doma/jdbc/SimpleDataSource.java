@@ -179,6 +179,9 @@ public class SimpleDataSource implements DataSource {
      */
     protected Connection getConnectionInternal(Properties info)
             throws SQLException {
+        if (url == null) {
+            throw new SQLException(DomaMessageCode.DOMA5002.getMessage());
+        }
         try {
             return DriverManager.getConnection(url, info);
         } catch (SQLException e) {

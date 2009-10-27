@@ -25,6 +25,18 @@ import junit.framework.TestCase;
  */
 public class SimpleDataSourceTest extends TestCase {
 
+    public void testUrlIsNull() throws Exception {
+        SimpleDataSource dataSource = new SimpleDataSource();
+        dataSource.setUser("user");
+        dataSource.setPassword("password");
+        try {
+            dataSource.getConnection();
+            fail();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void testNoSuitableDriverFound() throws Exception {
         SimpleDataSource dataSource = new SimpleDataSource();
         dataSource.setUser("user");
