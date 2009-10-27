@@ -33,14 +33,14 @@ import org.seasar.doma.jdbc.ConfigProxy;
  * <p>
  * 
  * <h5>例:</h5>
- * <a href="http://code.google.com/p/google-guice/">google-guice</a>
+ * <a href="http://code.google.com/p/google-guice/">Guice</a>
  * のアノテーションを付与するには次のように記述します。
  * 
  * <pre>
- * &#064;Dao(config = ConfigAdapter.class)
+ * &#064;Dao(config = ConfigProxy.class)
  * &#064;AnnotateWith(annotations = {
- *         &#064;Annotation(target = AnnotationTarget.CONSTRUCOTR, type = Inject.class),
- *         &#064;Annotation(target = AnnotationTarget.CONSTRUCOTR_PARAMETER, type = Named.class, elements = &quot;\&quot;sales\&quot;&quot;) })
+ *         &#064;Annotation(target = AnnotationTarget.CONSTRUCTOR, type = Inject.class),
+ *         &#064;Annotation(target = AnnotationTarget.CONSTRUCTOR_PARAMETER, type = Named.class, elements = &quot;\&quot;sales\&quot;&quot;) })
  * public interface EmployeeDao {
  *     ...
  * }
@@ -53,7 +53,7 @@ import org.seasar.doma.jdbc.ConfigProxy;
  * 
  *     &#064;com.google.inject.Inject()
  *     public EmployeeDaoImpl(@com.google.inject.name.Named(&quot;sales&quot;) org.seasar.doma.jdbc.Config config) {
- *         super(new org.seasar.doma.jdbc.ConfigAdapter(config));
+ *         super(new org.seasar.doma.jdbc.ConfigProxy(config));
  *     }
  *     ...
  * }
