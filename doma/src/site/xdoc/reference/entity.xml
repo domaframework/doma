@@ -97,8 +97,7 @@ public class Employee {
 }]]></source>
 				<p>
 					<code>@Table</code>を使用しない、もしくは <code>@Table</code>の<code>name</code>要素を使用しない場合、
-					テーブル名は、<code>org.seasar.doma.jdbc.NamingConvention</code>の実装クラスにより解決されます。
-					<code>NamingConvention</code>の実装クラスは<a href="config.html">設定</a>で決まります。
+					テーブル名は、<code>@Entity</code>の<code>namingConvention</code>要素に指定されたクラスにより解決されます。
 				</p>
 			</subsection>
 			<subsection name="継承">
@@ -141,8 +140,7 @@ String employeeName;]]></source>
 String employeeName;]]></source>
 				<p>
 					<code>@Column</code>を使用しない、もしくは<code>@Column</code>の <code>name</code>要素を使用しない場合、
-					カラム名は、<code>org.seasar.doma.jdbc.NamingConvention</code>の実装クラスにより解決されます。
-					<code>NamingConvention</code>の実装クラスは<a href="config.html">設定</a>で決まります。
+					カラム名は、<code>@Entity</code>の<code>namingConvention</code>要素に指定されたクラスにより解決されます。
 				</p>
 				<h4>識別子</h4>
 				<p>
@@ -238,27 +236,47 @@ BigDecimal tempSalary;]]></source>
 <source>@Transient
 List&lt;String&gt; nameList;</source>
 			</subsection>
-			<subsection name="変更されたフィールドを管理するフィールド">
+			<subsection name="取得時の状態を管理するフィールド">
 				<p>
-					変更されたフィールドを管理するフィールドは、テーブルや結果セットのカラムに対応しません。
-					変更されたフィールドを管理することで、Daoインタフェースの@Updateが注釈されたメソッドを介して更新処理を実行する際、
+					取得時の状態とは、エンティティがDaoから取得されときの全プロパティの値です。
+					取得時の状態を保持しておくことで、Daoインタフェースの@Updateが注釈されたメソッドを介して更新処理を実行する際、
 					UPDATE文のSET句に変更したフィールドのみを含めるようにすることが可能です。
+					取得時の状態を管理するフィールドは、テーブルや結果セットのカラムに対応しません。
 				</p>
 				<p>
-					<code>@ChangedProperties</code>を注釈して示します。
-					フィールドの型は<code><![CDATA[java.util.Set<String>]]></code>でなければいけません。
+					<code>@OriginalStates</code>を注釈して示します。
+					フィールドの型は<code><![CDATA[java.io.Serializable]]></code>でなければいけません。
 					フィールドの可視性は非<code>private</code>でなければいけません。
+					<code>@OriginalStates</code>が注釈されたフィールドはアプリケーションで初期化したりアクセスしたりしてはいけません。
 				</p>
-<source><![CDATA[@ChangedProperties
-Set<String> chagendProperties = new HashSet<String>();]]></source>
+<source><![CDATA[@OriginalStates
+Serializable originalStates;]]></source>
 				<p>
-					変更されたフィールドの名前を<code>@ChangedProperties</code>が注釈されたSetに追加するのはアプリケーション開発者の責任です。
-					フィールド名の追加は、永続的なフィールドに対応するsetterメソッドで行うのが適切です。
+					<code>@OriginalStates</code>が注釈されたフィールドを持つエンティティの利用法は次のとおりです。
 				</p>
-<source><![CDATA[public void setEmployeeId(Integer employeeId) {
-    chagendProperties.add("employeeId"); // フィールド名を@ChangedPropertiesが注釈されたSetに追加
-    this.employeeId = employeeId;
+<source><![CDATA[@Entity
+public class Employee {
+
+   @Id
+   Integer id;
+
+   String name;
+
+   Integer age;
+
+   @OriginalStates
+   Serializable originalStates;
+
+   ...
 }]]></source>
+<source><![CDATA[EmployeeDao dao = new EmployeeDaoImpl();
+Employee employee =dao.selectById(1);
+emoloyee.setAge(employee.getAge() + 1);
+dao.update(employee);
+]]></source>
+				<p>
+					この例では、UPDATE文のSET句にAGEカラムだけが含まれます。
+				</p>
 			</subsection>
 		</section>
 		<section name="メソッド定義">
@@ -266,7 +284,6 @@ Set<String> chagendProperties = new HashSet<String>();]]></source>
 				メソッドの定義に制限はありません。
 				フィールドの可視性を<code>protected</code>やパッケージプライベートにしてメソッド経由でアクセスすることも、
 				<code>public</code>にして直接アクセスすることもどちらもサポートされています。
-				ただし、<code>@ChangedProperties</code>を利用する場合は、メソッド経由のアクセスをすべきです。
 			</p>
 		</section>
 		<section name="エンティティの利用方法">
