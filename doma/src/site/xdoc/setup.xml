@@ -89,5 +89,14 @@ public class Employee {
 				</p>
 			</subsection>
 		</section>
+		<section name="Eclipseプラグインのインストール">
+			<p>
+				開発をスムーズに進めるためには、Eclipseプラグイン<a href="extension/doma_tools.html">Doma Tools</a>の利用をお奨めします。
+				このプラグインは以下の更新サイトからインストールできます。
+			</p>
+			<ul>
+				<li><a href="http://doma.sandbox.seasar.org/eclipse/updatesite/3.5">http://doma.sandbox.seasar.org/eclipse/updatesite/3.5</a></li>
+			</ul>
+		</section>
 	</body>
 </document>

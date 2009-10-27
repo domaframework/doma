@@ -32,7 +32,7 @@ insert into EMPLOYEE values(1, 'SMITH', '1980-12-17', 800, 1);
 insert into EMPLOYEE values(2, 'ALLEN', '1981-02-20', 1600, 1);
 insert into EMPLOYEE values(3, 'WARD', '1981-02-22', 1250, 1);</source>
 			</subsection>
-			<subsection name="JDBCドライバのダウンロード">
+			<subsection name="JDBCドライバのダウンロードと設定">
 				<p>
 					Postgre SQLのJDBCドライバは次のサイトからダウンロードできます。
 					Domaは、JDBC 4 をサポートしているため、JDBC 4 に対応するドライバを使用できます。
@@ -43,6 +43,16 @@ insert into EMPLOYEE values(3, 'WARD', '1981-02-22', 1250, 1);</source>
 				<p>
 					ダウンロードしたら開発環境のクラスパスに追加して使用してください。
 				</p>
+				<p>
+					また、実行時にドライバがロードされるように、次の設定を行ってください。
+				</p>
+				<ul>
+					<li>クラスパスが通ったところに「META-INF/services」ディレクトリを作成します。</li>
+					<li>「META-INF/services」ディレクトリに「java.sql.Driver」ファイルを作成します。</li>
+					<li>「java.sql.Driver」ファイルにJDBCドライバのクラス名を記述します。
+						<pre>org.postgresql.Driver</pre>
+					</li>
+				</ul>
 			</subsection>
 			<subsection name="エンティティクラスの作成">
 				<p>
@@ -201,7 +211,7 @@ public interface EmployeeDao {
 			<subsection name="SQLファイルの作成">
 				<p>
 					selectByIdメソッドに対応するSQLファイルを作成します。
-					SQLファイルのパスは「META-INF/example/EmployeeDao/selectById.sq」にします。
+					SQLファイルのパスは「META-INF/example/EmployeeDao/selectById.sql」にします。
 					このパスはクラスパスに通っていなければいけません。
 				</p>
 <source>select * from employee where employee_id = /*employeeId*/99</source>

@@ -23,6 +23,8 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.seasar.doma.internal.message.DomaMessageCode;
+
 /**
  * {@link DriverManager#getConnection(String, Properties)}を使用して
  * {@link Connection} を返す単純なデータソースです。
@@ -34,6 +36,11 @@ import javax.sql.DataSource;
  * 
  */
 public class SimpleDataSource implements DataSource {
+
+    /**
+     * コネクションが確立できない場合の {@code SQLState} コードです。
+     */
+    protected static final String UNABLE_TO_ESTABLISH_CONNECTION = "08001";
 
     /**
      * {@code jdbc:subprotocol:subname}という形式のデータベースへの接続URLです。
@@ -144,11 +151,11 @@ public class SimpleDataSource implements DataSource {
         if (password != null) {
             info.setProperty("password", password);
         }
-        return DriverManager.getConnection(url, info);
+        return getConnectionInternal(info);
     }
 
     @Override
-    public Connection getConnection(String username, String password)
+    public Connection getConnection(String user, String password)
             throws SQLException {
         Properties info = new Properties();
         info.putAll(properties);
@@ -158,7 +165,29 @@ public class SimpleDataSource implements DataSource {
         if (password != null) {
             info.setProperty("password", password);
         }
-        return DriverManager.getConnection(url, info);
+        return getConnectionInternal(info);
+    }
+
+    /**
+     * 内部的にコネクションを返します。
+     * 
+     * @param info
+     *            JDBCドライバへのプロパティ
+     * @return コネクション
+     * @throws SQLException
+     *             SQLに関する例外が発生した場合
+     */
+    protected Connection getConnectionInternal(Properties info)
+            throws SQLException {
+        try {
+            return DriverManager.getConnection(url, info);
+        } catch (SQLException e) {
+            if (UNABLE_TO_ESTABLISH_CONNECTION.equals(e.getSQLState())) {
+                throw new SQLException(DomaMessageCode.DOMA5001.getMessage(),
+                        UNABLE_TO_ESTABLISH_CONNECTION, e);
+            }
+            throw e;
+        }
     }
 
     @Override
