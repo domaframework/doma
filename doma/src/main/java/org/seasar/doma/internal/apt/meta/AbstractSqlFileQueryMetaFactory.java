@@ -18,13 +18,17 @@ package org.seasar.doma.internal.apt.meta;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 
+import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
+import javax.tools.FileObject;
+import javax.tools.StandardLocation;
 
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.FileObjectUtil;
 import org.seasar.doma.internal.apt.SqlValidator;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
@@ -45,18 +49,24 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
         super(env);
     }
 
-    protected void doSqlFile(M queryMeta, ExecutableElement method,
+    protected void doSqlFiles(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
-        String methodName = queryMeta.getName();
-        File sqlFile = getSqlFile(methodName, method, daoMeta);
-        File sqlFileDir = sqlFile.getParentFile();
-        if (sqlFileDir == null) {
-            assertUnreachable();
-            return;
+        String path = SqlFileUtil.buildPath(daoMeta.getDaoElement()
+                .getQualifiedName().toString(), queryMeta.getName());
+        File sqlFile = getSqlFile(path, method, daoMeta);
+        if (!sqlFile.exists()) {
+            throw new AptException(DomaMessageCode.DOMA4019, env, method, path);
+        }
+        File sqlFileDir = getSqlFileDir(sqlFile);
+        File[] sqlFiles = sqlFileDir.listFiles();
+        if (sqlFiles == null) {
+            throw new AptException(DomaMessageCode.DOMA4144, env, method,
+                    sqlFileDir.getAbsolutePath());
         }
         String dirPath = SqlFileUtil.buildPath(daoMeta.getDaoElement()
                 .getQualifiedName().toString());
-        for (File file : sqlFileDir.listFiles()) {
+        String methodName = queryMeta.getName();
+        for (File file : sqlFiles) {
             if (SqlFileUtil.isSqlFile(file, methodName)) {
                 String filePath = dirPath + "/" + file.getName();
                 String sql = getSql(method, file, filePath);
@@ -73,15 +83,33 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
         }
     }
 
-    protected File getSqlFile(String methodName, ExecutableElement method,
-            DaoMeta daoMeta) {
-        String path = SqlFileUtil.buildPath(daoMeta.getDaoElement()
-                .getQualifiedName().toString(), methodName);
-        File sqlFile = FileObjectUtil.getFile(path, env);
-        if (sqlFile == null) {
-            throw new AptException(DomaMessageCode.DOMA4019, env, method, path);
+    protected File getSqlFileDir(File sqlFile) {
+        File dir = sqlFile.getParentFile();
+        if (dir == null) {
+            assertUnreachable();
         }
-        return sqlFile;
+        return dir;
+    }
+
+    protected File getSqlFile(String path, ExecutableElement method,
+            DaoMeta daoMeta) {
+        FileObject fileObject = getFileObject(path, method);
+        URI uri = fileObject.toUri();
+        if (!uri.isAbsolute()) {
+            URI resolvedUri = new File(".").toURI().resolve(uri);
+            return new File(resolvedUri);
+        }
+        return new File(uri);
+    }
+
+    protected FileObject getFileObject(String path, ExecutableElement method) {
+        Filer filer = env.getFiler();
+        try {
+            return filer.getResource(StandardLocation.CLASS_OUTPUT, "", path);
+        } catch (IOException e) {
+            throw new AptException(DomaMessageCode.DOMA4143, env, method, e,
+                    path);
+        }
     }
 
     protected String getSql(ExecutableElement method, File file, String filePath) {

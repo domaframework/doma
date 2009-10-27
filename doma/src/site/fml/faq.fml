@@ -122,6 +122,17 @@
 			</answer>
 		</faq>
 		<faq id="development-environment-3">
+			<question>開発を支援するツールはありますか？</question>
+			<answer>
+				<p>
+					はい。Eclipseプラグインを用意しています。
+				</p>
+				<p>
+					詳しくは<a href="extension/doma_tools.html">Doma Tools</a>を参照してください。
+				</p>
+			</answer>
+		</faq>
+		<faq id="development-environment-4">
 			<question>DomaのjarファイルをEclipseのビルドパスに指定しましたが、アノテーション処理が行われません。何が足りないのでしょうか？</question>
 			<answer>
 				<p>
@@ -138,14 +149,17 @@
 				</p>
 			</answer>
 		</faq>
-		<faq id="development-environment-4">
-			<question>開発を支援するツールはありますか？</question>
+		<faq id="development-environment-5">
+			<question>SQLファイルが存在するにもかかわらず、「[DOMA4019] SQLファイル[META-INF/../select.sql]がクラスパスから見つかりませんでした」というエラーメッセージが表示されます。何がいけないのでしょうか？</question>
 			<answer>
 				<p>
-					はい。Eclipseプラグインを用意しています。
-				</p>
+					SQLファイルは、aptにより生成されるクラスの出力ディレクトリから検索されます。
+					SQLファイルの出力ディレクトリとaptにより生成されるクラスの出力ディレクトリが同じであることを確認してください。
 				<p>
-					詳しくは<a href="extension/doma_tools.html">Doma Tools</a>を参照してください。
+				</p>
+					Eclipseの場合、プロジェクトのプロパティの「Java Build Path」の設定画面で、
+					ソースフォルダごとに出力先ディレクトリを変更可能になっています。
+					この設定を無効にするか、SQLファイルの出力ディレクトリとaptにより生成されるクラスの出力ディレクトリを合わせてください。
 				</p>
 			</answer>
 		</faq>

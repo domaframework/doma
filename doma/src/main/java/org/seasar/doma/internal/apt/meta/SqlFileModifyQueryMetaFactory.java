@@ -56,7 +56,7 @@ public class SqlFileModifyQueryMetaFactory extends
         doReturnType(queryMeta, method, daoMeta);
         doParameters(queryMeta, method, daoMeta);
         doThrowTypes(queryMeta, method, daoMeta);
-        doSqlFile(queryMeta, method, daoMeta);
+        doSqlFiles(queryMeta, method, daoMeta);
         return queryMeta;
     }
 

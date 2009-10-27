@@ -206,6 +206,8 @@ public enum DomaMessageCode implements MessageCode {
     DOMA4140("SQLファイル[{0}]の妥当検査に失敗しました。SQL[{1}]（[{2}]行目[{3}]番目の文字付近）。/*%if ...*/の式[{4}]が型[{5}]として評価されましたが、boolean/Boolean型でなければいけません。"),
     DOMA4141("SQLファイル[{0}]の妥当検査に失敗しました。SQL[{1}]（[{2}]行目[{3}]番目の文字付近）。--elseif ...--の式[{4}]が型[{5}]として評価されましたが、boolean/Boolean型でなければいけません。"),
     DOMA4142("@AnnotateWithを使用する場合、@Daoのconfig要素はorg.seasar.doma.jdbc.ConfigProxyクラスでなければいけません。"),
+    DOMA4143("SQLファイル[{0}]の取得ができません。原因は次のものです。{1}"),
+    DOMA4144("ディレクトリ[{0}]の子ファイルを認識できませんでした。"),
 
     // other
     DOMA5001("JDBCドライバがロードされていない可能性があります。JDBCドライバをロードするには、クラスパスが通されたMETA-INF/services/java.sql.DriverファイルにJDBCドライバのクラスの完全修飾名を記述してください。 ex) oracle.jdbc.driver.OracleDriver"),
