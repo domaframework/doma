@@ -26,7 +26,7 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
 
-import org.seasar.doma.internal.apt.declaration.TypeDeclaration;
+import org.seasar.doma.internal.apt.decl.TypeDeclaration;
 import org.seasar.doma.internal.expr.ExpressionException;
 import org.seasar.doma.internal.expr.ExpressionParser;
 import org.seasar.doma.internal.expr.node.ExpressionNode;

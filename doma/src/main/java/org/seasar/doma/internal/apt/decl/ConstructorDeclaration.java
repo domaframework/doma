@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.declaration;
+package org.seasar.doma.internal.apt.decl;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
@@ -24,7 +24,7 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
 
-public class MethodDeclaration {
+public class ConstructorDeclaration {
 
     protected ExecutableElement element;
 
@@ -32,15 +32,15 @@ public class MethodDeclaration {
 
     protected ProcessingEnvironment env;
 
-    protected MethodDeclaration() {
+    protected ConstructorDeclaration() {
     }
 
     public ExecutableElement getElement() {
         return element;
     }
 
-    public TypeDeclaration getReturnTypeDeclaration() {
-        TypeMirror returnType = resolveTypeParameter(element.getReturnType());
+    public TypeDeclaration getTypeDeclaration() {
+        TypeMirror returnType = resolveTypeParameter(element.asType());
         return TypeDeclaration.newInstance(returnType, env);
     }
 
@@ -53,17 +53,16 @@ public class MethodDeclaration {
         return formalType;
     }
 
-    public static MethodDeclaration newInstance(
-            ExecutableElement methodElement,
+    public static ConstructorDeclaration newInstance(
+            ExecutableElement constructorElement,
             List<TypeParameterDeclaration> typeParameterDeclarations,
             ProcessingEnvironment env) {
-        assertNotNull(methodElement, typeParameterDeclarations, env);
-        assertTrue(methodElement.getKind() == ElementKind.METHOD);
-        MethodDeclaration methodDeclaration = new MethodDeclaration();
-        methodDeclaration.element = methodElement;
-        methodDeclaration.typeParameterDeclarations = typeParameterDeclarations;
-        methodDeclaration.env = env;
-        return methodDeclaration;
+        assertNotNull(constructorElement, typeParameterDeclarations, env);
+        assertTrue(constructorElement.getKind() == ElementKind.CONSTRUCTOR);
+        ConstructorDeclaration constructorDeclaration = new ConstructorDeclaration();
+        constructorDeclaration.element = constructorElement;
+        constructorDeclaration.typeParameterDeclarations = typeParameterDeclarations;
+        constructorDeclaration.env = env;
+        return constructorDeclaration;
     }
-
 }

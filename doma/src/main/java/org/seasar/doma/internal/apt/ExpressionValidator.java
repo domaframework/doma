@@ -14,10 +14,10 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.internal.apt.declaration.ConstructorDeclaration;
-import org.seasar.doma.internal.apt.declaration.FieldDeclaration;
-import org.seasar.doma.internal.apt.declaration.MethodDeclaration;
-import org.seasar.doma.internal.apt.declaration.TypeDeclaration;
+import org.seasar.doma.internal.apt.decl.ConstructorDeclaration;
+import org.seasar.doma.internal.apt.decl.FieldDeclaration;
+import org.seasar.doma.internal.apt.decl.MethodDeclaration;
+import org.seasar.doma.internal.apt.decl.TypeDeclaration;
 import org.seasar.doma.internal.expr.node.AddOperatorNode;
 import org.seasar.doma.internal.expr.node.AndOperatorNode;
 import org.seasar.doma.internal.expr.node.ArithmeticOperatorNode;
