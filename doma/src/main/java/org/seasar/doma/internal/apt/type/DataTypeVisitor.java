@@ -25,6 +25,8 @@ public interface DataTypeVisitor<R, P, TH extends Throwable> {
 
     R visitBasicType(BasicType dataType, P p) throws TH;
 
+    R visitEnumType(EnumType dataType, P p) throws TH;
+
     R visitDomainType(DomainType dataType, P p) throws TH;
 
     R visitEntityType(EntityType dataType, P p) throws TH;

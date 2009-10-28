@@ -38,7 +38,7 @@ public class EntityListResultParameterMeta implements ResultParameterMeta {
 
     @Override
     public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visistEntityListResultParameterMeta(this, p);
+        return visitor.visitEntityListResultParameterMeta(this, p);
     }
 
 }

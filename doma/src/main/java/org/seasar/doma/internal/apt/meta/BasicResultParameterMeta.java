@@ -32,13 +32,13 @@ public class BasicResultParameterMeta implements ResultParameterMeta {
         this.basicType = basicType;
     }
 
-    public BasicType getValueType() {
+    public BasicType getBasicType() {
         return basicType;
     }
 
     @Override
     public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visistBasicResultParameterMeta(this, p);
+        return visitor.visitBasicResultParameterMeta(this, p);
     }
 
 }

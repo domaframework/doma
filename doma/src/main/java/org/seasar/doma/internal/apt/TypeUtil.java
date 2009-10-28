@@ -44,7 +44,6 @@ import javax.lang.model.util.TypeKindVisitor6;
  */
 public final class TypeUtil {
 
-    // TODO
     public static TypeElement toTypeElement(TypeMirror typeMirror,
             final ProcessingEnvironment env) {
         assertNotNull(typeMirror, env);
@@ -146,12 +145,7 @@ public final class TypeUtil {
 
             @Override
             public Void visitPrimitive(PrimitiveType t, StringBuilder p) {
-                if (p.length() == 0) {
-                    p.append(t);
-                } else {
-                    TypeElement e = env.getTypeUtils().boxedClass(t);
-                    p.append(e.getSimpleName());
-                }
+                p.append(t.getKind().name().toLowerCase());
                 return null;
             }
 
@@ -332,7 +326,7 @@ public final class TypeUtil {
         return formalTypeParam;
     }
 
-    public static TypeMirror toWrapperTypeIfPrimitive(TypeMirror typeMirror,
+    public static TypeMirror boxIfPrimitive(TypeMirror typeMirror,
             final ProcessingEnvironment env) {
         assertNotNull(typeMirror);
         return typeMirror.accept(new TypeKindVisitor6<TypeMirror, Void>() {

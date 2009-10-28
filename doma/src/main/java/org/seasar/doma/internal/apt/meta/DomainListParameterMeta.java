@@ -45,7 +45,7 @@ public class DomainListParameterMeta implements CallableSqlParameterMeta {
 
     @Override
     public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visistDomainListParameterMeta(this, p);
+        return visitor.visitDomainListParameterMeta(this, p);
     }
 
 }

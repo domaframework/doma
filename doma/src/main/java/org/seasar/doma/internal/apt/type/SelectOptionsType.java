@@ -25,8 +25,8 @@ import org.seasar.doma.jdbc.SelectOptions;
 
 public class SelectOptionsType extends AbstractDataType {
 
-    public SelectOptionsType(TypeMirror type, String typeName) {
-        super(type, typeName);
+    public SelectOptionsType(TypeMirror type, ProcessingEnvironment env) {
+        super(type, env);
     }
 
     public static SelectOptionsType newInstance(TypeMirror type,
@@ -35,7 +35,7 @@ public class SelectOptionsType extends AbstractDataType {
         if (!TypeUtil.isAssignable(type, SelectOptions.class, env)) {
             return null;
         }
-        return new SelectOptionsType(type, TypeUtil.getTypeName(type, env));
+        return new SelectOptionsType(type, env);
     }
 
     @Override

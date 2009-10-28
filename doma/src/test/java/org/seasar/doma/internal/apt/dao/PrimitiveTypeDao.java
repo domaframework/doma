@@ -13,32 +13,28 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.meta;
+package org.seasar.doma.internal.apt.dao;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
-
-import org.seasar.doma.internal.apt.type.DomainType;
+import org.seasar.doma.Dao;
+import org.seasar.doma.Function;
+import org.seasar.doma.In;
+import org.seasar.doma.Select;
+import org.seasar.doma.Update;
 
 /**
+ * 
  * @author taedium
  * 
  */
-public class DomainListResultParameterMeta implements ResultParameterMeta {
+@Dao(config = MyConfig.class)
+public interface PrimitiveTypeDao {
 
-    protected final DomainType domainType;
+    @Select
+    int selectById(int id);
 
-    public DomainListResultParameterMeta(DomainType domainType) {
-        assertNotNull(domainType);
-        this.domainType = domainType;
-    }
+    @Update(sqlFile = true)
+    int update(int id);
 
-    public DomainType getDomainType() {
-        return domainType;
-    }
-
-    @Override
-    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitDomainListResultParameterMeta(this, p);
-    }
-
+    @Function
+    int execute(@In int id);
 }

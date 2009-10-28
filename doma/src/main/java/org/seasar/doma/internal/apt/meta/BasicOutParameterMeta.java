@@ -39,13 +39,13 @@ public class BasicOutParameterMeta implements CallableSqlParameterMeta {
         return name;
     }
 
-    public BasicType getValueType() {
+    public BasicType getBasicType() {
         return basicType;
     }
 
     @Override
     public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visistBasicOutParameterMeta(this, p);
+        return visitor.visitBasicOutParameterMeta(this, p);
     }
 
 }

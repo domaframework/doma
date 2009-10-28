@@ -23,30 +23,42 @@ public interface CallableSqlParameterMetaVisitor<R, P> {
 
     R visitBasicInParameterMeta(BasicInParameterMeta m, P p);
 
+    R visitEnumInParameterMeta(EnumInParameterMeta m, P p);
+
     R visitDomainInParameterMeta(DomainInParameterMeta m, P p);
 
-    R visistBasicOutParameterMeta(BasicOutParameterMeta m, P p);
+    R visitBasicOutParameterMeta(BasicOutParameterMeta m, P p);
 
-    R visistDomainOutParameterMeta(DomainOutParameterMeta m, P p);
+    R visitEnumOutParameterMeta(EnumOutParameterMeta m, P p);
 
-    R visistBasicInOutParameterMeta(BasicInOutParameterMeta m, P p);
+    R visitDomainOutParameterMeta(DomainOutParameterMeta m, P p);
 
-    R visistDomainInOutParameterMeta(DomainInOutParameterMeta m, P p);
+    R visitBasicInOutParameterMeta(BasicInOutParameterMeta m, P p);
 
-    R visistBasicListParameterMeta(BasicListParameterMeta m, P p);
+    R visitEnumInOutParameterMeta(EnumInOutParameterMeta m, P p);
 
-    R visistDomainListParameterMeta(DomainListParameterMeta m, P p);
+    R visitDomainInOutParameterMeta(DomainInOutParameterMeta m, P p);
 
-    R visistEntityListParameterMeta(EntityListParameterMeta m, P p);
+    R visitBasicListParameterMeta(BasicListParameterMeta m, P p);
 
-    R visistBasicListResultParameterMeta(BasicListResultParameterMeta m, P p);
+    R visitEnumListParameterMeta(EnumListParameterMeta m, P p);
 
-    R visistDomainListResultParameterMeta(DomainListResultParameterMeta m, P p);
+    R visitDomainListParameterMeta(DomainListParameterMeta m, P p);
 
-    R visistEntityListResultParameterMeta(EntityListResultParameterMeta m, P p);
+    R visitEntityListParameterMeta(EntityListParameterMeta m, P p);
 
-    R visistBasicResultParameterMeta(BasicResultParameterMeta m, P p);
+    R visitBasicListResultParameterMeta(BasicListResultParameterMeta m, P p);
 
-    R visistDomainResultParameterMeta(DomainResultParameterMeta m, P p);
+    R visitEnumListResultParameterMeta(EnumListResultParameterMeta m, P p);
+
+    R visitDomainListResultParameterMeta(DomainListResultParameterMeta m, P p);
+
+    R visitEntityListResultParameterMeta(EntityListResultParameterMeta m, P p);
+
+    R visitBasicResultParameterMeta(BasicResultParameterMeta m, P p);
+
+    R visitEnumResultParameterMeta(EnumResultParameterMeta m, P p);
+
+    R visitDomainResultParameterMeta(DomainResultParameterMeta m, P p);
 
 }

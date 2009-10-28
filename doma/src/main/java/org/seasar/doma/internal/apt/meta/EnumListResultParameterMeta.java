@@ -13,28 +13,23 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.type;
+package org.seasar.doma.internal.apt.meta;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import org.seasar.doma.internal.apt.type.EnumType;
 
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.type.TypeMirror;
+/**
+ * @author taedium
+ * 
+ */
+public class EnumListResultParameterMeta extends BasicListResultParameterMeta {
 
-public class AnyType extends AbstractDataType {
-
-    public AnyType(TypeMirror type, ProcessingEnvironment env) {
-        super(type, env);
-    }
-
-    public static AnyType newInstance(TypeMirror type, ProcessingEnvironment env) {
-        assertNotNull(type, env);
-        return new AnyType(type, env);
+    public EnumListResultParameterMeta(EnumType enumType) {
+        super(enumType);
     }
 
     @Override
-    public <R, P, TH extends Throwable> R accept(
-            DataTypeVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitAnyType(this, p);
+    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
+        return visitor.visitEnumListResultParameterMeta(this, p);
     }
 
 }

@@ -225,7 +225,8 @@ public class CallableSqlParameterFetcher implements
                         callback.fetch(resultSet);
                     }
                 } finally {
-                    JdbcUtil.close(resultSet, query.getConfig().getJdbcLogger());
+                    JdbcUtil
+                            .close(resultSet, query.getConfig().getJdbcLogger());
                 }
                 index++;
             } else {

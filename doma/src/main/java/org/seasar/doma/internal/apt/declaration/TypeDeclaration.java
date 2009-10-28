@@ -156,9 +156,9 @@ public class TypeDeclaration {
                         .iterator();
                 for (; valueElementIterator.hasNext()
                         && typeDeclIterator.hasNext();) {
-                    TypeMirror t1 = TypeUtil.toWrapperTypeIfPrimitive(
+                    TypeMirror t1 = TypeUtil.boxIfPrimitive(
                             valueElementIterator.next().asType(), env);
-                    TypeMirror t2 = TypeUtil.toWrapperTypeIfPrimitive(
+                    TypeMirror t2 = TypeUtil.boxIfPrimitive(
                             typeDeclIterator.next().getType(), env);
                     if (!TypeUtil.isSameType(t1, t2, env)) {
                         continue outer;
@@ -248,9 +248,9 @@ public class TypeDeclaration {
                         .iterator();
                 for (; valueElementIterator.hasNext()
                         && typeDeclIterator.hasNext();) {
-                    TypeMirror t1 = TypeUtil.toWrapperTypeIfPrimitive(
+                    TypeMirror t1 = TypeUtil.boxIfPrimitive(
                             valueElementIterator.next().asType(), env);
-                    TypeMirror t2 = TypeUtil.toWrapperTypeIfPrimitive(
+                    TypeMirror t2 = TypeUtil.boxIfPrimitive(
                             typeDeclIterator.next().getType(), env);
                     if (!TypeUtil.isSameType(t1, t2, env)) {
                         continue outer;

@@ -36,6 +36,7 @@ import org.seasar.doma.internal.apt.ElementUtil;
 import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.type.DomainType;
+import org.seasar.doma.internal.apt.type.EnumType;
 import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
@@ -197,9 +198,9 @@ public class EntityPropertyMetaFactory {
                 throw new AptException(DomaMessageCode.DOMA4024, env,
                         fieldElement);
             }
-            TypeMirror wrapperType = TypeUtil.toWrapperTypeIfPrimitive(
-                    fieldElement.asType(), env);
-            if (!TypeUtil.isAssignable(wrapperType, Number.class, env)) {
+            TypeMirror referenceType = TypeUtil.boxIfPrimitive(fieldElement
+                    .asType(), env);
+            if (!TypeUtil.isAssignable(referenceType, Number.class, env)) {
                 throw new AptException(DomaMessageCode.DOMA4093, env,
                         fieldElement);
             }
@@ -238,12 +239,18 @@ public class EntityPropertyMetaFactory {
         if (domainType != null) {
             propertyMeta.setDomainType(domainType);
         } else {
-            BasicType basicType = BasicType.newInstance(type, env);
-            if (basicType == null) {
-                throw new AptException(DomaMessageCode.DOMA4096, env,
-                        fieldElement, type);
+            EnumType enumType = EnumType.newInstance(type, env);
+            if (enumType != null) {
+                propertyMeta.setBasicType(enumType);
+            } else {
+                BasicType basicType = BasicType.newInstance(type, env);
+                if (basicType != null) {
+                    propertyMeta.setBasicType(basicType);
+                } else {
+                    throw new AptException(DomaMessageCode.DOMA4096, env,
+                            fieldElement, type);
+                }
             }
-            propertyMeta.setBasicType(basicType);
         }
     }
 

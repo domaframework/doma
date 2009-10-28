@@ -29,6 +29,7 @@ import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
+import org.seasar.doma.internal.apt.type.EnumType;
 import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.ReferenceType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
@@ -129,6 +130,14 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                             }
 
                             @Override
+                            public CallableSqlParameterMeta visitEnumType(
+                                    EnumType dataType, Void p)
+                                    throws RuntimeException {
+                                return new EnumListParameterMeta(parameterMeta
+                                        .getName(), dataType);
+                            }
+
+                            @Override
                             public CallableSqlParameterMeta visitDomainType(
                                     DomainType dataType, Void p)
                                     throws RuntimeException {
@@ -161,6 +170,14 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                                     BasicType dataType, Void p)
                                     throws RuntimeException {
                                 return new BasicInParameterMeta(parameterMeta
+                                        .getName(), dataType);
+                            }
+
+                            @Override
+                            public CallableSqlParameterMeta visitEnumType(
+                                    EnumType dataType, Void p)
+                                    throws RuntimeException {
+                                return new EnumInParameterMeta(parameterMeta
                                         .getName(), dataType);
                             }
 
@@ -223,6 +240,14 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                             }
 
                             @Override
+                            public CallableSqlParameterMeta visitEnumType(
+                                    EnumType dataType, Void p)
+                                    throws RuntimeException {
+                                return new EnumOutParameterMeta(parameterMeta
+                                        .getName(), dataType);
+                            }
+
+                            @Override
                             public CallableSqlParameterMeta visitDomainType(
                                     DomainType dataType, Void p)
                                     throws RuntimeException {
@@ -278,6 +303,14 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                                     throws RuntimeException {
                                 return new BasicInOutParameterMeta(
                                         parameterMeta.getName(), dataType);
+                            }
+
+                            @Override
+                            public CallableSqlParameterMeta visitEnumType(
+                                    EnumType dataType, Void p)
+                                    throws RuntimeException {
+                                return new EnumInOutParameterMeta(parameterMeta
+                                        .getName(), dataType);
                             }
 
                             @Override

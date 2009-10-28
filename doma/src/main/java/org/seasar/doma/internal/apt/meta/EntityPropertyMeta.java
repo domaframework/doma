@@ -23,8 +23,9 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.TypeUtil;
-import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.BasicType;
+import org.seasar.doma.internal.apt.type.DomainType;
+import org.seasar.doma.internal.apt.type.EnumType;
 
 /**
  * 
@@ -54,6 +55,8 @@ public class EntityPropertyMeta {
     protected DomainType domainType;
 
     protected BasicType basicType;
+
+    protected EnumType enumType;
 
     public EntityPropertyMeta(TypeElement entityElement,
             VariableElement propertyElement, ProcessingEnvironment env) {

@@ -1,0 +1,68 @@
+package org.seasar.doma.internal.apt.dao;
+
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
+public class PrimitiveTypeDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao implements org.seasar.doma.internal.apt.dao.PrimitiveTypeDao {
+
+    public PrimitiveTypeDaoImpl() {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig());
+    }
+
+    public PrimitiveTypeDaoImpl(javax.sql.DataSource dataSource) {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
+    }
+
+    @Override
+    public int selectById(int id) {
+        entering("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl", "selectById", id);
+        org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
+        __query.setConfig(config);
+        __query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFileUtil.buildPath("org.seasar.doma.internal.apt.dao.PrimitiveTypeDao", "selectById"));
+        __query.addParameter("id", int.class, id);
+        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl");
+        __query.setCallerMethodName("selectById");
+        __query.setQueryTimeout(-1);
+        __query.setMaxRows(-1);
+        __query.setFetchSize(-1);
+        __query.prepare();
+        org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.Integer> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.Integer>(__query, new org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler<java.lang.Integer>(new org.seasar.doma.wrapper.IntegerWrapper()));
+        int __result = __command.execute();
+        exiting("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl", "selectById", __result);
+        return __result;
+    }
+
+    @Override
+    public int update(int id) {
+        entering("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl", "update", id);
+        org.seasar.doma.internal.jdbc.query.SqlFileUpdateQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileUpdateQuery();
+        __query.setConfig(config);
+        __query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFileUtil.buildPath("org.seasar.doma.internal.apt.dao.PrimitiveTypeDao", "update"));
+        __query.addParameter("id", int.class, id);
+        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl");
+        __query.setCallerMethodName("update");
+        __query.setQueryTimeout(-1);
+        __query.prepare();
+        org.seasar.doma.internal.jdbc.command.UpdateCommand __command = new org.seasar.doma.internal.jdbc.command.UpdateCommand(__query);
+        int __result = __command.execute();
+        exiting("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl", "update", __result);
+        return __result;
+    }
+
+    @Override
+    public int execute(int id) {
+        entering("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl", "execute", id);
+        org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.lang.Integer> __query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.lang.Integer>();
+        __query.setConfig(config);
+        __query.setFunctionName("execute");
+        __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.BasicResultParameter<java.lang.Integer>(new org.seasar.doma.wrapper.IntegerWrapper()));
+        __query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicInParameter(new org.seasar.doma.wrapper.IntegerWrapper(id)));
+        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl");
+        __query.setCallerMethodName("execute");
+        __query.setQueryTimeout(-1);
+        __query.prepare();
+        org.seasar.doma.internal.jdbc.command.FunctionCommand<java.lang.Integer> __command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<java.lang.Integer>(__query);
+        int __result = __command.execute();
+        exiting("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl", "execute", __result);
+        return __result;
+    }
+
+}

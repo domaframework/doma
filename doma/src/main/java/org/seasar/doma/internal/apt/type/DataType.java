@@ -27,6 +27,14 @@ public interface DataType {
 
     String getTypeName();
 
+    String getTypeNameAsTypeParameter();
+
+    String getQualifiedName();
+
+    boolean isPrimitive();
+
+    boolean isEnum();
+
     <R, P, TH extends Throwable> R accept(DataTypeVisitor<R, P, TH> visitor, P p)
             throws TH;
 }

@@ -32,8 +32,8 @@ public class DomainType extends AbstractDataType {
 
     protected String accessorMetod;
 
-    public DomainType(TypeMirror type, String typeName) {
-        super(type, typeName);
+    public DomainType(TypeMirror type, ProcessingEnvironment env) {
+        super(type, env);
     }
 
     public BasicType getBasicType() {
@@ -56,12 +56,14 @@ public class DomainType extends AbstractDataType {
             return null;
         }
         TypeMirror valueTypeMirror = getValueType(domain);
-        BasicType basicType = BasicType.newInstance(valueTypeMirror, env);
+        BasicType basicType = EnumType.newInstance(valueTypeMirror, env);
         if (basicType == null) {
-            return null;
+            basicType = BasicType.newInstance(valueTypeMirror, env);
+            if (basicType == null) {
+                return null;
+            }
         }
-        DomainType domainType = new DomainType(type, TypeUtil.getTypeName(type,
-                env));
+        DomainType domainType = new DomainType(type, env);
         domainType.basicType = basicType;
         domainType.accessorMetod = domain.accessorMethod();
         return domainType;

@@ -33,8 +33,8 @@ public class ReferenceType extends AbstractDataType {
 
     protected DataType referentType;
 
-    public ReferenceType(TypeMirror type, String typeName) {
-        super(type, typeName);
+    public ReferenceType(TypeMirror type, ProcessingEnvironment env) {
+        super(type, env);
     }
 
     public DataType getReferentType() {
@@ -61,8 +61,7 @@ public class ReferenceType extends AbstractDataType {
         if (referenceDeclaredType == null) {
             return null;
         }
-        ReferenceType referenceType = new ReferenceType(type, TypeUtil
-                .getTypeName(type, env));
+        ReferenceType referenceType = new ReferenceType(type, env);
         List<? extends TypeMirror> typeArguments = referenceDeclaredType
                 .getTypeArguments();
         if (typeArguments.size() == 1) {
@@ -70,11 +69,15 @@ public class ReferenceType extends AbstractDataType {
             referenceType.referentType = DomainType.newInstance(
                     referenceType.referentTypeMirror, env);
             if (referenceType.referentType == null) {
-                referenceType.referentType = BasicType.newInstance(
+                referenceType.referentType = EnumType.newInstance(
                         referenceType.referentTypeMirror, env);
                 if (referenceType.referentType == null) {
-                    referenceType.referentType = AnyType.newInstance(
+                    referenceType.referentType = BasicType.newInstance(
                             referenceType.referentTypeMirror, env);
+                    if (referenceType.referentType == null) {
+                        referenceType.referentType = AnyType.newInstance(
+                                referenceType.referentTypeMirror, env);
+                    }
                 }
             }
         }

@@ -46,6 +46,11 @@ public class SimpleDataTypeVisitor<R, P, TH extends Throwable> implements
     }
 
     @Override
+    public R visitEnumType(EnumType dataType, P p) throws TH {
+        return defaultAction(dataType, p);
+    }
+
+    @Override
     public R visitDomainType(DomainType dataType, P p) throws TH {
         return defaultAction(dataType, p);
     }

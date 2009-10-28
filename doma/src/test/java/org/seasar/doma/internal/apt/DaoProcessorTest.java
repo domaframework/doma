@@ -49,6 +49,7 @@ import org.seasar.doma.internal.apt.dao.NameUnsafeDaoImpl;
 import org.seasar.doma.internal.apt.dao.NoTestLiteralDao;
 import org.seasar.doma.internal.apt.dao.NotInterfaceDao;
 import org.seasar.doma.internal.apt.dao.NotTopLevelDao;
+import org.seasar.doma.internal.apt.dao.PrimitiveTypeDao;
 import org.seasar.doma.internal.apt.dao.SqlFileBatchUpdateDao;
 import org.seasar.doma.internal.apt.dao.SqlFileInsertDao;
 import org.seasar.doma.internal.apt.dao.SqlFileSelectBasicDao;
@@ -475,5 +476,15 @@ public class DaoProcessorTest extends AptTestCase {
         compile();
         assertFalse(getCompiledResult());
         assertMessageCode(DomaMessageCode.DOMA4025);
+    }
+
+    public void testPrimitiveType() throws Exception {
+        Class<?> target = PrimitiveTypeDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
     }
 }

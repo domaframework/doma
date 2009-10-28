@@ -21,15 +21,10 @@ import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
@@ -41,10 +36,10 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
     protected final Class<?> returnClass;
 
     public AbstractCreateQueryMetaFactory(ProcessingEnvironment env,
-            Class<?> domainValueClass) {
+            Class<?> returnClass) {
         super(env);
-        assertNotNull(domainValueClass);
-        this.returnClass = domainValueClass;
+        assertNotNull(returnClass);
+        this.returnClass = returnClass;
     }
 
     @Override
@@ -52,37 +47,11 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
             DaoMeta daoMeta) {
         QueryReturnMeta resultMeta = createReturnMeta(method);
         queryMeta.setReturnMeta(resultMeta);
-        if (!resultMeta.getTypeName().equals(returnClass.getName())) {
+        if (!returnClass.getName().equals(
+                resultMeta.getDataType().getQualifiedName())) {
             throw new AptException(DomaMessageCode.DOMA4097, env, method,
                     returnClass.getName());
         }
-
-    }
-
-    protected TypeMirror getDomainValueType(TypeMirror domainType) {
-        for (TypeMirror supertype : env.getTypeUtils().directSupertypes(
-                domainType)) {
-            TypeElement typeElement = TypeUtil.toTypeElement(supertype, env);
-            if (typeElement == null) {
-                continue;
-            }
-            if (typeElement.getQualifiedName().contentEquals(
-                    Wrapper.class.getName())) {
-                DeclaredType declaredType = TypeUtil.toDeclaredType(supertype,
-                        env);
-                if (declaredType == null) {
-                    continue;
-                }
-                List<? extends TypeMirror> args = declaredType
-                        .getTypeArguments();
-                return args.get(0);
-            }
-            TypeMirror domainValueType = getDomainValueType(supertype);
-            if (domainValueType != null) {
-                return domainValueType;
-            }
-        }
-        return null;
     }
 
     @Override

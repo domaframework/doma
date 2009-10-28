@@ -52,6 +52,12 @@ import org.seasar.doma.internal.apt.meta.DomainOutParameterMeta;
 import org.seasar.doma.internal.apt.meta.DomainResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.EntityListParameterMeta;
 import org.seasar.doma.internal.apt.meta.EntityListResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.EnumInOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.EnumInParameterMeta;
+import org.seasar.doma.internal.apt.meta.EnumListParameterMeta;
+import org.seasar.doma.internal.apt.meta.EnumListResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.EnumOutParameterMeta;
+import org.seasar.doma.internal.apt.meta.EnumResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.QueryMeta;
 import org.seasar.doma.internal.apt.meta.QueryMetaVisitor;
 import org.seasar.doma.internal.apt.meta.QueryParameterMeta;
@@ -62,6 +68,7 @@ import org.seasar.doma.internal.apt.meta.SqlFileSelectQueryMeta;
 import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
+import org.seasar.doma.internal.apt.type.EnumType;
 import org.seasar.doma.internal.apt.type.IterationCallbackType;
 import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
@@ -309,19 +316,36 @@ public class DaoGenerator extends AbstractGenerator {
                                             throws RuntimeException {
                                         WrapperType wrapperType = dataType
                                                 .getWrapperType();
-                                        String wrapperParam = wrapperType
-                                                .isEnum() ? wrapperType
-                                                .getWrappedTypeName()
-                                                + ".class" : "";
                                         iprint(
-                                                "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(new %5$s(%6$s), %7$s));%n",
-                                                commandClassName, resultMeta
-                                                        .getTypeName(),
+                                                "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(new %5$s(), %6$s));%n",
+                                                commandClassName,
+                                                resultMeta
+                                                        .getTypeNameAsTypeParameter(),
+                                                BasicIterationHandler.class
+                                                        .getName(),
+                                                dataType
+                                                        .getTypeNameAsTypeParameter(),
+                                                wrapperType.getTypeName(),
+                                                callbackParamName);
+                                        return null;
+                                    }
+
+                                    @Override
+                                    public Void visitEnumType(
+                                            EnumType dataType, Void p)
+                                            throws RuntimeException {
+                                        WrapperType wrapperType = dataType
+                                                .getWrapperType();
+                                        iprint(
+                                                "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(new %5$s(%4$s.class), %6$s));%n",
+                                                commandClassName,
+                                                resultMeta
+                                                        .getTypeNameAsTypeParameter(),
                                                 BasicIterationHandler.class
                                                         .getName(), dataType
                                                         .getTypeName(),
                                                 wrapperType.getTypeName(),
-                                                wrapperParam, callbackParamName);
+                                                callbackParamName);
                                         return null;
                                     }
 
@@ -333,8 +357,9 @@ public class DaoGenerator extends AbstractGenerator {
                                                 .getBasicType();
                                         iprint(
                                                 "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s, %5$s>(new %5$s%6$s(), %7$s));%n",
-                                                commandClassName, resultMeta
-                                                        .getTypeName(),
+                                                commandClassName,
+                                                resultMeta
+                                                        .getTypeNameAsTypeParameter(),
                                                 DomainIterationHandler.class
                                                         .getName(), basicType
                                                         .getTypeName(),
@@ -349,8 +374,9 @@ public class DaoGenerator extends AbstractGenerator {
                                             throws RuntimeException {
                                         iprint(
                                                 "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(new %4$s%5$s(), %6$s));%n",
-                                                commandClassName, resultMeta
-                                                        .getTypeName(),
+                                                commandClassName,
+                                                resultMeta
+                                                        .getTypeNameAsTypeParameter(),
                                                 EntityIterationHandler.class
                                                         .getName(), dataType
                                                         .getTypeName(),
@@ -383,18 +409,30 @@ public class DaoGenerator extends AbstractGenerator {
                                             throws RuntimeException {
                                         WrapperType wrapperType = dataType
                                                 .getWrapperType();
-                                        String wrapperParam = wrapperType
-                                                .isEnum() ? wrapperType
-                                                .getWrappedTypeName()
-                                                + ".class" : "";
                                         iprint(
-                                                "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(new %4$s(%5$s)));%n",
+                                                "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(new %4$s()));%n",
+                                                commandClassName,
+                                                dataType
+                                                        .getTypeNameAsTypeParameter(),
+                                                BasicSingleResultHandler.class
+                                                        .getName(), wrapperType
+                                                        .getTypeName());
+                                        return null;
+                                    }
+
+                                    @Override
+                                    public Void visitEnumType(
+                                            EnumType dataType, Void p)
+                                            throws RuntimeException {
+                                        WrapperType wrapperType = dataType
+                                                .getWrapperType();
+                                        iprint(
+                                                "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(new %4$s(%2$s.class)));%n",
                                                 commandClassName, dataType
                                                         .getTypeName(),
                                                 BasicSingleResultHandler.class
                                                         .getName(), wrapperType
-                                                        .getTypeName(),
-                                                wrapperParam);
+                                                        .getTypeName());
                                         return null;
                                     }
 
@@ -446,13 +484,29 @@ public class DaoGenerator extends AbstractGenerator {
                                                                     throws RuntimeException {
                                                                 WrapperType wrapperType = dataType
                                                                         .getWrapperType();
-                                                                String wrapperParam = wrapperType
-                                                                        .isEnum() ? wrapperType
-                                                                        .getWrappedTypeName()
-                                                                        + ".class"
-                                                                        : "";
                                                                 iprint(
-                                                                        "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(new %5$s(%6$s)));%n",
+                                                                        "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(new %5$s()));%n",
+                                                                        commandClassName,
+                                                                        listType
+                                                                                .getTypeNameAsTypeParameter(),
+                                                                        BasicResultListHandler.class
+                                                                                .getName(),
+                                                                        dataType
+                                                                                .getTypeNameAsTypeParameter(),
+                                                                        wrapperType
+                                                                                .getTypeName());
+                                                                return null;
+                                                            }
+
+                                                            @Override
+                                                            public Void visitEnumType(
+                                                                    EnumType dataType,
+                                                                    Void p)
+                                                                    throws RuntimeException {
+                                                                WrapperType wrapperType = dataType
+                                                                        .getWrapperType();
+                                                                iprint(
+                                                                        "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(new %5$s(%4$s.class)));%n",
                                                                         commandClassName,
                                                                         listType
                                                                                 .getTypeName(),
@@ -461,8 +515,7 @@ public class DaoGenerator extends AbstractGenerator {
                                                                         dataType
                                                                                 .getTypeName(),
                                                                         wrapperType
-                                                                                .getTypeName(),
-                                                                        wrapperParam);
+                                                                                .getTypeName());
                                                                 return null;
                                                             }
 
@@ -526,8 +579,8 @@ public class DaoGenerator extends AbstractGenerator {
             printPrerequisiteStatements(m);
 
             iprint("%1$s<%2$s> __query = new %1$s<%2$s>(new %2$s%3$s());%n", m
-                    .getQueryClass().getName(),
-                    m.getEntityType().getTypeName(), entitySuffix);
+                    .getQueryClass().getName(), m.getEntityType()
+                    .getTypeNameAsTypeParameter(), entitySuffix);
             iprint("__query.setConfig(config);%n");
             iprint("__query.setEntity(%1$s);%n", m.getEntityParameterName());
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
@@ -618,8 +671,8 @@ public class DaoGenerator extends AbstractGenerator {
             printPrerequisiteStatements(m);
 
             iprint("%1$s<%2$s> __query = new %1$s<%2$s>(new %2$s%3$s());%n", m
-                    .getQueryClass().getName(),
-                    m.getEntityType().getTypeName(), entitySuffix);
+                    .getQueryClass().getName(), m.getEntityType()
+                    .getTypeNameAsTypeParameter(), entitySuffix);
             iprint("__query.setConfig(config);%n");
             iprint("__query.setEntities(%1$s);%n", m.getEntitiesParameterName());
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
@@ -698,7 +751,8 @@ public class DaoGenerator extends AbstractGenerator {
 
             QueryReturnMeta resultMeta = m.getReturnMeta();
             iprint("%1$s<%2$s> __query = new %1$s<%2$s>();%n", m
-                    .getQueryClass().getName(), resultMeta.getTypeName());
+                    .getQueryClass().getName(), resultMeta
+                    .getTypeNameAsTypeParameter());
             iprint("__query.setConfig(config);%n");
             iprint("__query.setFunctionName(\"%1$s\");%n", m.getFunctionName());
             CallableSqlParameterStatementGenerator parameterGenerator = new CallableSqlParameterStatementGenerator();
@@ -714,7 +768,8 @@ public class DaoGenerator extends AbstractGenerator {
             }
             iprint("__query.prepare();%n");
             iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query);%n", m
-                    .getCommandClass().getName(), resultMeta.getTypeName());
+                    .getCommandClass().getName(), resultMeta
+                    .getTypeNameAsTypeParameter());
             iprint("%1$s __result = __command.execute();%n", resultMeta
                     .getTypeName());
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName, m
@@ -789,7 +844,8 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setElements(%1$s);%n", m.getParameterName());
             iprint("__query.prepare();%n");
             iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query);%n", m
-                    .getCommandClass().getName(), resultMeta.getTypeName());
+                    .getCommandClass().getName(), resultMeta
+                    .getTypeNameAsTypeParameter());
             iprint("%1$s __result = __command.execute();%n", resultMeta
                     .getTypeName());
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName, m
@@ -856,23 +912,30 @@ public class DaoGenerator extends AbstractGenerator {
             CallableSqlParameterMetaVisitor<Void, Void> {
 
         @Override
-        public Void visistBasicListParameterMeta(BasicListParameterMeta m,
-                Void p) {
-            BasicType basicType = m.getValueType();
+        public Void visitBasicListParameterMeta(BasicListParameterMeta m, Void p) {
+            BasicType basicType = m.getBasicType();
             WrapperType wrapperType = basicType.getWrapperType();
-            String wrapperParam = wrapperType.isEnum() ? wrapperType
-                    .getWrappedTypeName()
-                    + ".class" : "";
-            iprint(
-                    "__query.addParameter(new %1$s<%2$s>(new %3$s(%4$s), %5$s));%n",
-                    BasicListParameter.class.getName(),
-                    basicType.getTypeName(), wrapperType.getTypeName(),
-                    wrapperParam, m.getName());
+            iprint("__query.addParameter(new %1$s<%2$s>(new %3$s(), %4$s));%n",
+                    BasicListParameter.class.getName(), basicType
+                            .getTypeNameAsTypeParameter(), wrapperType
+                            .getTypeName(), m.getName());
             return null;
         }
 
         @Override
-        public Void visistDomainListParameterMeta(DomainListParameterMeta m,
+        public Void visitEnumListParameterMeta(EnumListParameterMeta m, Void p) {
+            BasicType basicType = m.getBasicType();
+            WrapperType wrapperType = basicType.getWrapperType();
+            iprint(
+                    "__query.addParameter(new %1$s<%2$s>(new %3$s(%2$s.class), %4$s));%n",
+                    BasicListParameter.class.getName(),
+                    basicType.getTypeName(), wrapperType.getTypeName(), m
+                            .getName());
+            return null;
+        }
+
+        @Override
+        public Void visitDomainListParameterMeta(DomainListParameterMeta m,
                 Void p) {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
@@ -885,7 +948,7 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visistEntityListParameterMeta(EntityListParameterMeta m,
+        public Void visitEntityListParameterMeta(EntityListParameterMeta m,
                 Void p) {
             EntityType entityType = m.getEntityType();
             iprint(
@@ -896,51 +959,67 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visistBasicInOutParameterMeta(BasicInOutParameterMeta m,
+        public Void visitBasicInOutParameterMeta(BasicInOutParameterMeta m,
                 Void p) {
-            BasicType basicType = m.getValueType();
+            BasicType basicType = m.getBasicType();
             WrapperType wrapperType = basicType.getWrapperType();
-            String wrapperParam = wrapperType.isEnum() ? wrapperType
-                    .getWrappedTypeName()
-                    + ".class" : "";
-            iprint(
-                    "__query.addParameter(new %1$s<%2$s>(new %3$s(%4$s), %5$s));%n",
+            iprint("__query.addParameter(new %1$s<%2$s>(new %3$s(), %4$s));%n",
                     BasicInOutParameter.class.getName(), basicType
-                            .getTypeName(), wrapperType.getTypeName(),
-                    wrapperParam, m.getName());
+                            .getTypeNameAsTypeParameter(), wrapperType
+                            .getTypeName(), m.getName());
             return null;
         }
 
         @Override
-        public Void visistDomainInOutParameterMeta(DomainInOutParameterMeta m,
+        public Void visitEnumInOutParameterMeta(EnumInOutParameterMeta m, Void p) {
+            BasicType basicType = m.getBasicType();
+            WrapperType wrapperType = basicType.getWrapperType();
+            iprint(
+                    "__query.addParameter(new %1$s<%2$s>(new %3$s(%2$s.class), %4$s));%n",
+                    BasicInOutParameter.class.getName(), basicType
+                            .getTypeName(), wrapperType.getTypeName(), m
+                            .getName());
+            return null;
+        }
+
+        @Override
+        public Void visitDomainInOutParameterMeta(DomainInOutParameterMeta m,
                 Void p) {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
             iprint(
                     "__query.addParameter(new %1$s<%2$s, %3$s>(new %3$s%4$s(), %5$s));%n",
                     DomainInOutParameter.class.getName(), basicType
-                            .getTypeName(), domainType.getTypeName(),
-                    domainSuffix, m.getName());
+                            .getTypeNameAsTypeParameter(), domainType
+                            .getTypeName(), domainSuffix, m.getName());
             return null;
         }
 
         @Override
-        public Void visistBasicOutParameterMeta(BasicOutParameterMeta m, Void p) {
-            BasicType basicType = m.getValueType();
+        public Void visitBasicOutParameterMeta(BasicOutParameterMeta m, Void p) {
+            BasicType basicType = m.getBasicType();
             WrapperType wrapperType = basicType.getWrapperType();
-            String wrapperParam = wrapperType.isEnum() ? wrapperType
-                    .getWrappedTypeName()
-                    + ".class" : "";
-            iprint(
-                    "__query.addParameter(new %1$s<%2$s>(new %3$s(%4$s), %5$s));%n",
-                    BasicOutParameter.class.getName(), basicType.getTypeName(),
-                    wrapperType.getTypeName(), wrapperParam, m.getName());
+            iprint("__query.addParameter(new %1$s<%2$s>(new %3$s(), %4$s));%n",
+                    BasicOutParameter.class.getName(), basicType
+                            .getTypeNameAsTypeParameter(), wrapperType
+                            .getTypeName(), m.getName());
             return null;
         }
 
         @Override
-        public Void visistDomainOutParameterMeta(DomainOutParameterMeta m,
-                Void p) {
+        public Void visitEnumOutParameterMeta(EnumOutParameterMeta m, Void p) {
+            BasicType basicType = m.getBasicType();
+            WrapperType wrapperType = basicType.getWrapperType();
+            iprint(
+                    "__query.addParameter(new %1$s<%2$s>(new %3$s(%2$s.class), %4$s));%n",
+                    BasicOutParameter.class.getName(), basicType.getTypeName(),
+                    wrapperType.getTypeName(), m.getName());
+
+            return null;
+        }
+
+        @Override
+        public Void visitDomainOutParameterMeta(DomainOutParameterMeta m, Void p) {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
             iprint(
@@ -953,20 +1032,23 @@ public class DaoGenerator extends AbstractGenerator {
 
         @Override
         public Void visitBasicInParameterMeta(BasicInParameterMeta m, Void p) {
-            BasicType basicType = m.getValueType();
+            BasicType basicType = m.getBasicType();
             WrapperType wrapperType = basicType.getWrapperType();
-            if (wrapperType.isEnum()) {
-                iprint(
-                        "__query.addParameter(new %1$s(new %2$s(%3$s, %4$s)));%n",
-                        BasicInParameter.class.getName(), wrapperType
-                                .getTypeName(), wrapperType
-                                .getWrappedTypeName()
-                                + ".class", m.getName());
-            } else {
-                iprint("__query.addParameter(new %1$s(new %2$s(%3$s)));%n",
-                        BasicInParameter.class.getName(), wrapperType
-                                .getTypeName(), m.getName());
-            }
+            iprint("__query.addParameter(new %1$s(new %2$s(%3$s)));%n",
+                    BasicInParameter.class.getName(),
+                    wrapperType.getTypeName(), m.getName());
+            return null;
+        }
+
+        @Override
+        public Void visitEnumInParameterMeta(EnumInParameterMeta m, Void p) {
+            BasicType basicType = m.getBasicType();
+            WrapperType wrapperType = basicType.getWrapperType();
+            iprint(
+                    "__query.addParameter(new %1$s(new %2$s(%3$s.class, %4$s)));%n",
+                    BasicInParameter.class.getName(),
+                    wrapperType.getTypeName(), basicType.getTypeName(), m
+                            .getName());
             return null;
         }
 
@@ -982,23 +1064,31 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visistBasicListResultParameterMeta(
+        public Void visitBasicListResultParameterMeta(
                 BasicListResultParameterMeta m, Void p) {
-            BasicType basicType = m.getValueType();
+            BasicType basicType = m.getBasicType();
             WrapperType wrapperType = basicType.getWrapperType();
-            String wrapperParam = wrapperType.isEnum() ? wrapperType
-                    .getWrappedTypeName()
-                    + ".class" : "";
-            iprint(
-                    "__query.setResultParameter(new %1$s<%2$s>(new %3$s(%4$s)));%n",
+            iprint("__query.setResultParameter(new %1$s<%2$s>(new %3$s()));%n",
                     BasicListResultParameter.class.getName(), basicType
-                            .getTypeName(), wrapperType.getTypeName(),
-                    wrapperParam);
+                            .getTypeNameAsTypeParameter(), wrapperType
+                            .getTypeName());
             return null;
         }
 
         @Override
-        public Void visistDomainListResultParameterMeta(
+        public Void visitEnumListResultParameterMeta(
+                EnumListResultParameterMeta m, Void p) {
+            BasicType basicType = m.getBasicType();
+            WrapperType wrapperType = basicType.getWrapperType();
+            iprint(
+                    "__query.setResultParameter(new %1$s<%2$s>(new %3$s(%2$s.class)));%n",
+                    BasicListResultParameter.class.getName(), basicType
+                            .getTypeName(), wrapperType.getTypeName());
+            return null;
+        }
+
+        @Override
+        public Void visitDomainListResultParameterMeta(
                 DomainListResultParameterMeta m, Void p) {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
@@ -1011,7 +1101,7 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visistEntityListResultParameterMeta(
+        public Void visitEntityListResultParameterMeta(
                 EntityListResultParameterMeta m, Void p) {
             EntityType entityType = m.getEntityType();
             iprint(
@@ -1022,24 +1112,32 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visistBasicResultParameterMeta(BasicResultParameterMeta m,
+        public Void visitBasicResultParameterMeta(BasicResultParameterMeta m,
                 Void p) {
-            BasicType basicType = m.getValueType();
+            BasicType basicType = m.getBasicType();
             WrapperType wrapperType = basicType.getWrapperType();
-            String wrapperParam = wrapperType.isEnum() ? wrapperType
-                    .getWrappedTypeName()
-                    + ".class" : "";
-            iprint(
-                    "__query.setResultParameter(new %1$s<%2$s>(new %3$s(%4$s)));%n",
+            iprint("__query.setResultParameter(new %1$s<%2$s>(new %3$s()));%n",
                     BasicResultParameter.class.getName(), basicType
-                            .getTypeName(), wrapperType.getTypeName(),
-                    wrapperParam);
+                            .getTypeNameAsTypeParameter(), wrapperType
+                            .getTypeName());
             return null;
         }
 
         @Override
-        public Void visistDomainResultParameterMeta(
-                DomainResultParameterMeta m, Void p) {
+        public Void visitEnumResultParameterMeta(EnumResultParameterMeta m,
+                Void p) {
+            BasicType basicType = m.getBasicType();
+            WrapperType wrapperType = basicType.getWrapperType();
+            iprint(
+                    "__query.setResultParameter(new %1$s<%2$s>(new %3$s(%2$s.class)));%n",
+                    BasicResultParameter.class.getName(), basicType
+                            .getTypeName(), wrapperType.getTypeName());
+            return null;
+        }
+
+        @Override
+        public Void visitDomainResultParameterMeta(DomainResultParameterMeta m,
+                Void p) {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
             iprint(

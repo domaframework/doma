@@ -29,6 +29,7 @@ import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
+import org.seasar.doma.internal.apt.type.EnumType;
 import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.message.DomaMessageCode;
@@ -120,6 +121,12 @@ public class SqlFileModifyQueryMetaFactory extends
                         }
 
                         @Override
+                        public Void visitEnumType(EnumType dataType, Void p)
+                                throws RuntimeException {
+                            return null;
+                        }
+
+                        @Override
                         public Void visitDomainType(DomainType dataType, Void p)
                                 throws RuntimeException {
                             return null;
@@ -152,6 +159,14 @@ public class SqlFileModifyQueryMetaFactory extends
                                                 @Override
                                                 public Void visitBasicType(
                                                         BasicType dataType,
+                                                        Void p)
+                                                        throws RuntimeException {
+                                                    return null;
+                                                }
+
+                                                @Override
+                                                public Void visitEnumType(
+                                                        EnumType dataType,
                                                         Void p)
                                                         throws RuntimeException {
                                                     return null;

@@ -39,8 +39,8 @@ public class IterationCallbackType extends AbstractDataType {
 
     protected boolean rawType;
 
-    public IterationCallbackType(TypeMirror type, String typeName) {
-        super(type, typeName);
+    public IterationCallbackType(TypeMirror type, ProcessingEnvironment env) {
+        super(type, env);
     }
 
     public AnyType getReturnType() {
@@ -72,7 +72,7 @@ public class IterationCallbackType extends AbstractDataType {
         }
 
         IterationCallbackType callbackType = new IterationCallbackType(type,
-                TypeUtil.getTypeName(type, env));
+                env);
         List<? extends TypeMirror> typeArguments = iterationCallbackDeclaredType
                 .getTypeArguments();
         if (typeArguments.size() == 2) {
@@ -87,11 +87,15 @@ public class IterationCallbackType extends AbstractDataType {
                 callbackType.targetType = DomainType.newInstance(
                         callbackType.targetTypeMirror, env);
                 if (callbackType.targetType == null) {
-                    callbackType.targetType = BasicType.newInstance(
+                    callbackType.targetType = EnumType.newInstance(
                             callbackType.targetTypeMirror, env);
                     if (callbackType.targetType == null) {
-                        callbackType.targetType = AnyType.newInstance(
+                        callbackType.targetType = BasicType.newInstance(
                                 callbackType.targetTypeMirror, env);
+                        if (callbackType.targetType == null) {
+                            callbackType.targetType = AnyType.newInstance(
+                                    callbackType.targetTypeMirror, env);
+                        }
                     }
                 }
             }

@@ -13,7 +13,6 @@ import java.sql.Time;
 import java.sql.Timestamp;
 
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
@@ -34,7 +33,6 @@ import org.seasar.doma.wrapper.BytesWrapper;
 import org.seasar.doma.wrapper.ClobWrapper;
 import org.seasar.doma.wrapper.DateWrapper;
 import org.seasar.doma.wrapper.DoubleWrapper;
-import org.seasar.doma.wrapper.EnumWrapper;
 import org.seasar.doma.wrapper.FloatWrapper;
 import org.seasar.doma.wrapper.IntegerWrapper;
 import org.seasar.doma.wrapper.LongWrapper;
@@ -61,26 +59,8 @@ import org.seasar.doma.wrapper.TimestampWrapper;
  */
 public class WrapperType extends AbstractDataType {
 
-    protected TypeMirror wrappedType;
-
-    protected String wrappedTypeName;
-
-    protected boolean enumuration;
-
-    public WrapperType(TypeMirror type, String typeName) {
-        super(type, typeName);
-    }
-
-    public TypeMirror getWrappedType() {
-        return wrappedType;
-    }
-
-    public String getWrappedTypeName() {
-        return wrappedTypeName;
-    }
-
-    public boolean isEnum() {
-        return enumuration;
+    public WrapperType(TypeMirror type, ProcessingEnvironment env) {
+        super(type, env);
     }
 
     public static WrapperType newInstance(TypeMirror wrappedType,
@@ -96,17 +76,8 @@ public class WrapperType extends AbstractDataType {
         if (wrapperTypeElement == null) {
             return null;
         }
-        boolean enumuration = wrapperClass == EnumWrapper.class;
-        String wrappedTypeName = TypeUtil.getTypeName(wrappedType, env);
-        TypeMirror type = wrapperTypeElement.asType();
-        String typeName = wrapperTypeElement.getQualifiedName().toString();
-        if (enumuration) {
-            typeName += "<" + wrappedTypeName + ">";
-        }
-        WrapperType wrapperType = new WrapperType(type, typeName);
-        wrapperType.wrappedType = wrappedType;
-        wrapperType.wrappedTypeName = wrappedTypeName;
-        wrapperType.enumuration = enumuration;
+        WrapperType wrapperType = new WrapperType(wrapperTypeElement.asType(),
+                env);
         return wrapperType;
     }
 
@@ -138,9 +109,6 @@ public class WrapperType extends AbstractDataType {
             TypeElement typeElement = TypeUtil.toTypeElement(t, env);
             if (typeElement == null) {
                 return null;
-            }
-            if (typeElement.getKind() == ElementKind.ENUM) {
-                return EnumWrapper.class;
             }
             String name = typeElement.getQualifiedName().toString();
             if (String.class.getName().equals(name)) {
@@ -217,8 +185,7 @@ public class WrapperType extends AbstractDataType {
             case CHAR:
                 return null;
             }
-            assertUnreachable();
-            return null;
+            return assertUnreachable();
         }
 
     }

@@ -45,7 +45,7 @@ public class DomainOutParameterMeta implements CallableSqlParameterMeta {
 
     @Override
     public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visistDomainOutParameterMeta(this, p);
+        return visitor.visitDomainOutParameterMeta(this, p);
     }
 
 }

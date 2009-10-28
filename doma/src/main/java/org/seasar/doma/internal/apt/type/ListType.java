@@ -32,8 +32,8 @@ public class ListType extends AbstractDataType {
 
     protected DataType elementType;
 
-    public ListType(TypeMirror type, String typeName) {
-        super(type, typeName);
+    public ListType(TypeMirror type, ProcessingEnvironment env) {
+        super(type, env);
     }
 
     public DataType getElementType() {
@@ -55,7 +55,7 @@ public class ListType extends AbstractDataType {
         if (!TypeUtil.isSameType(type, List.class, env)) {
             return null;
         }
-        ListType listType = new ListType(type, TypeUtil.getTypeName(type, env));
+        ListType listType = new ListType(type, env);
         DeclaredType declaredType = TypeUtil.toDeclaredType(type, env);
         if (declaredType == null) {
             return null;
@@ -69,11 +69,15 @@ public class ListType extends AbstractDataType {
                 listType.elementType = DomainType.newInstance(
                         listType.elementTypeMirror, env);
                 if (listType.elementType == null) {
-                    listType.elementType = BasicType.newInstance(
+                    listType.elementType = EnumType.newInstance(
                             listType.elementTypeMirror, env);
                     if (listType.elementType == null) {
-                        listType.elementType = AnyType.newInstance(
-                                declaredType, env);
+                        listType.elementType = BasicType.newInstance(
+                                listType.elementTypeMirror, env);
+                        if (listType.elementType == null) {
+                            listType.elementType = AnyType.newInstance(
+                                    declaredType, env);
+                        }
                     }
                 }
             }

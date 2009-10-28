@@ -20,14 +20,12 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.internal.apt.TypeUtil;
-
 public class BasicType extends AbstractDataType {
 
     protected WrapperType wrapperType;
 
-    public BasicType(TypeMirror type, String typeName) {
-        super(type, typeName);
+    public BasicType(TypeMirror type, ProcessingEnvironment env) {
+        super(type, env);
     }
 
     public WrapperType getWrapperType() {
@@ -41,8 +39,7 @@ public class BasicType extends AbstractDataType {
         if (wrapperType == null) {
             return null;
         }
-        BasicType basicType = new BasicType(type, TypeUtil.getTypeName(type,
-                env));
+        BasicType basicType = new BasicType(type, env);
         basicType.wrapperType = wrapperType;
         return basicType;
     }

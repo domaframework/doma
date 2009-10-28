@@ -17,7 +17,12 @@ package org.seasar.doma.internal.apt.type;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
+
+import org.seasar.doma.internal.apt.TypeUtil;
 
 /**
  * @author taedium
@@ -29,10 +34,28 @@ public abstract class AbstractDataType implements DataType {
 
     protected final String typeName;
 
-    protected AbstractDataType(TypeMirror typeMirror, String typeName) {
-        assertNotNull(typeMirror, typeName);
+    protected final String typeNameAsTypeParameter;
+
+    protected final TypeElement typeElement;
+
+    protected String qualifiedName;
+
+    protected AbstractDataType(TypeMirror typeMirror, ProcessingEnvironment env) {
+        assertNotNull(typeMirror, env);
         this.typeMirror = typeMirror;
-        this.typeName = typeName;
+        this.typeName = TypeUtil.getTypeName(typeMirror, env);
+        this.typeElement = TypeUtil.toTypeElement(typeMirror, env);
+        if (typeElement != null) {
+            qualifiedName = typeElement.getQualifiedName().toString();
+        } else {
+            qualifiedName = typeName;
+        }
+        if (typeMirror.getKind().isPrimitive()) {
+            Class<?> boxedClass = getBoxedClass(typeMirror);
+            typeNameAsTypeParameter = boxedClass.getName();
+        } else {
+            typeNameAsTypeParameter = typeName;
+        }
     }
 
     public TypeMirror getTypeMirror() {
@@ -41,6 +64,48 @@ public abstract class AbstractDataType implements DataType {
 
     public String getTypeName() {
         return typeName;
+    }
+
+    @Override
+    public String getTypeNameAsTypeParameter() {
+        return typeNameAsTypeParameter;
+    }
+
+    @Override
+    public String getQualifiedName() {
+        return qualifiedName;
+    }
+
+    @Override
+    public boolean isEnum() {
+        return typeElement != null && typeElement.getKind() == ElementKind.ENUM;
+    }
+
+    @Override
+    public boolean isPrimitive() {
+        return typeMirror.getKind().isPrimitive();
+    }
+
+    protected Class<?> getBoxedClass(TypeMirror typeMirror) {
+        switch (typeMirror.getKind()) {
+        case BOOLEAN:
+            return Boolean.class;
+        case BYTE:
+            return Byte.class;
+        case SHORT:
+            return Short.class;
+        case INT:
+            return Integer.class;
+        case LONG:
+            return Long.class;
+        case FLOAT:
+            return Float.class;
+        case DOUBLE:
+            return Double.class;
+        case CHAR:
+            return Character.class;
+        }
+        return assertUnreachable();
     }
 
 }

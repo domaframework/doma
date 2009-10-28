@@ -39,7 +39,7 @@ public class BasicInParameterMeta implements CallableSqlParameterMeta {
         return name;
     }
 
-    public BasicType getValueType() {
+    public BasicType getBasicType() {
         return basicType;
     }
 

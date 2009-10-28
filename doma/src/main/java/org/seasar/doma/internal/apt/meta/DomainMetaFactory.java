@@ -50,7 +50,7 @@ public class DomainMetaFactory {
         domainMeta.setAccessorMethod(domainAnnotation.accessorMethod());
         TypeMirror valueType = getValueType(domainAnnotation);
         TypeElement valueTypeElement = TypeUtil.toTypeElement(TypeUtil
-                .toWrapperTypeIfPrimitive(valueType, env), env);
+                .boxIfPrimitive(valueType, env), env);
         if (valueTypeElement == null) {
             throw new AptIllegalStateException(valueType.toString());
         }

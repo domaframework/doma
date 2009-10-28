@@ -20,21 +20,31 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.TypeMirror;
 
-public class AnyType extends AbstractDataType {
+/**
+ * @author taedium
+ * 
+ */
+public class EnumType extends BasicType {
 
-    public AnyType(TypeMirror type, ProcessingEnvironment env) {
+    public EnumType(TypeMirror type, ProcessingEnvironment env) {
         super(type, env);
     }
 
-    public static AnyType newInstance(TypeMirror type, ProcessingEnvironment env) {
+    public static EnumType newInstance(TypeMirror type,
+            ProcessingEnvironment env) {
         assertNotNull(type, env);
-        return new AnyType(type, env);
+        EnumWrapperType wrapperType = EnumWrapperType.newInstance(type, env);
+        if (wrapperType == null) {
+            return null;
+        }
+        EnumType enumType = new EnumType(type, env);
+        enumType.wrapperType = wrapperType;
+        return enumType;
     }
 
     @Override
     public <R, P, TH extends Throwable> R accept(
             DataTypeVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitAnyType(this, p);
+        return visitor.visitEnumType(this, p);
     }
-
 }
