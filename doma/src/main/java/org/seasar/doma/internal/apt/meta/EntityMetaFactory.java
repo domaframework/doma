@@ -216,7 +216,16 @@ public class EntityMetaFactory {
             EntityMeta entityMeta) {
         for (VariableElement fieldElement : getFieldElements(classElement)) {
             try {
-                if (fieldElement.getAnnotation(OriginalStates.class) != null) {
+                if (fieldElement.getAnnotation(Transient.class) != null) {
+                    continue;
+                } else if (fieldElement.getModifiers()
+                        .contains(Modifier.STATIC)) {
+                    continue;
+                } else if (fieldElement.getModifiers().contains(
+                        Modifier.PRIVATE)) {
+                    throw new AptException(DomaMessageCode.DOMA4094, env,
+                            fieldElement);
+                } else if (fieldElement.getAnnotation(OriginalStates.class) != null) {
                     doOriginalStatesField(fieldElement, entityMeta);
                 } else {
                     doEntityPropertyMeta(fieldElement, entityMeta);
@@ -238,15 +247,6 @@ public class EntityMetaFactory {
             List<VariableElement> fields = new LinkedList<VariableElement>();
             for (VariableElement field : ElementFilter.fieldsIn(t
                     .getEnclosedElements())) {
-                if (field.getAnnotation(Transient.class) != null) {
-                    continue;
-                }
-                if (field.getModifiers().contains(Modifier.STATIC)) {
-                    continue;
-                }
-                if (field.getModifiers().contains(Modifier.PRIVATE)) {
-                    throw new AptException(DomaMessageCode.DOMA4094, env, field);
-                }
                 fields.add(field);
             }
             Collections.reverse(fields);
