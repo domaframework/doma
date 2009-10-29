@@ -36,7 +36,6 @@ import org.seasar.doma.internal.apt.ElementUtil;
 import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.type.DomainType;
-import org.seasar.doma.internal.apt.type.EnumType;
 import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
@@ -239,17 +238,12 @@ public class EntityPropertyMetaFactory {
         if (domainType != null) {
             propertyMeta.setDomainType(domainType);
         } else {
-            EnumType enumType = EnumType.newInstance(type, env);
-            if (enumType != null) {
-                propertyMeta.setBasicType(enumType);
+            BasicType basicType = BasicType.newInstance(type, env);
+            if (basicType != null) {
+                propertyMeta.setBasicType(basicType);
             } else {
-                BasicType basicType = BasicType.newInstance(type, env);
-                if (basicType != null) {
-                    propertyMeta.setBasicType(basicType);
-                } else {
-                    throw new AptException(DomaMessageCode.DOMA4096, env,
-                            fieldElement, type);
-                }
+                throw new AptException(DomaMessageCode.DOMA4096, env,
+                        fieldElement, type);
             }
         }
     }

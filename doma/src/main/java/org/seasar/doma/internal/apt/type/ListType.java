@@ -69,15 +69,11 @@ public class ListType extends AbstractDataType {
                 listType.elementType = DomainType.newInstance(
                         listType.elementTypeMirror, env);
                 if (listType.elementType == null) {
-                    listType.elementType = EnumType.newInstance(
+                    listType.elementType = BasicType.newInstance(
                             listType.elementTypeMirror, env);
                     if (listType.elementType == null) {
-                        listType.elementType = BasicType.newInstance(
-                                listType.elementTypeMirror, env);
-                        if (listType.elementType == null) {
-                            listType.elementType = AnyType.newInstance(
-                                    declaredType, env);
-                        }
+                        listType.elementType = AnyType.newInstance(
+                                declaredType, env);
                     }
                 }
             }

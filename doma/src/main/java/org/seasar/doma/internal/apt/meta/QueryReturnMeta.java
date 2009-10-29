@@ -16,7 +16,6 @@ import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
-import org.seasar.doma.internal.apt.type.EnumType;
 import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.message.DomaMessageCode;
 
@@ -65,11 +64,6 @@ public class QueryReturnMeta {
         DomainType domainType = DomainType.newInstance(type, env);
         if (domainType != null) {
             return domainType;
-        }
-
-        EnumType enumType = EnumType.newInstance(type, env);
-        if (enumType != null) {
-            return enumType;
         }
 
         BasicType basicType = BasicType.newInstance(type, env);

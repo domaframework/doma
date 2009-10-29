@@ -15,17 +15,8 @@
  */
 package org.seasar.doma.internal.apt.type;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
-
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
-
-import org.seasar.doma.internal.apt.ElementUtil;
-import org.seasar.doma.internal.apt.TypeUtil;
-import org.seasar.doma.wrapper.EnumWrapper;
 
 /**
  * @author taedium
@@ -37,20 +28,10 @@ public class EnumWrapperType extends WrapperType {
         super(type, env);
     }
 
-    public static EnumWrapperType newInstance(TypeMirror wrappedType,
-            ProcessingEnvironment env) {
-        assertNotNull(wrappedType, env);
-        TypeElement wrappedTypeElement = TypeUtil.toTypeElement(wrappedType,
-                env);
-        if (wrappedTypeElement == null
-                || wrappedTypeElement.getKind() != ElementKind.ENUM) {
-            return null;
-        }
-        TypeElement typeElement = ElementUtil.getTypeElement(EnumWrapper.class,
-                env);
-        DeclaredType declaredType = env.getTypeUtils().getDeclaredType(
-                typeElement, wrappedType);
-        EnumWrapperType wrapperType = new EnumWrapperType(declaredType, env);
-        return wrapperType;
+    @Override
+    public <R, P, TH extends Throwable> R accept(
+            DataTypeVisitor<R, P, TH> visitor, P p) throws TH {
+        return visitor.visitEnumWrapperType(this, p);
     }
+
 }

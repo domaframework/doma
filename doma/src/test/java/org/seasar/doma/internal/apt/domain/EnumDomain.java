@@ -13,23 +13,28 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.meta;
+package org.seasar.doma.internal.apt.domain;
 
-import org.seasar.doma.internal.apt.type.EnumType;
+import org.seasar.doma.Domain;
 
 /**
  * @author taedium
  * 
  */
-public class EnumOutParameterMeta extends BasicOutParameterMeta {
+@Domain(valueType = EnumDomain.JobType.class)
+public class EnumDomain {
 
-    public EnumOutParameterMeta(String name, EnumType enumType) {
-        super(name, enumType);
+    private final JobType jobType;
+
+    public EnumDomain(JobType jobType) {
+        this.jobType = jobType;
     }
 
-    @Override
-    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitEnumOutParameterMeta(this, p);
+    public JobType getValue() {
+        return jobType;
     }
 
+    public static enum JobType {
+        SALESMAN
+    }
 }

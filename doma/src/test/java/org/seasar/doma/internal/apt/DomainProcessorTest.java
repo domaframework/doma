@@ -17,6 +17,7 @@ package org.seasar.doma.internal.apt;
 
 import org.seasar.doma.internal.apt.domain.AccessorNotFoundDomain;
 import org.seasar.doma.internal.apt.domain.ConstrutorNotFoundDomain;
+import org.seasar.doma.internal.apt.domain.EnumDomain;
 import org.seasar.doma.internal.apt.domain.Outer;
 import org.seasar.doma.internal.apt.domain.PrimitiveValueDomain;
 import org.seasar.doma.internal.apt.domain.Salary;
@@ -47,6 +48,16 @@ public class DomainProcessorTest extends AptTestCase {
 
     public void testPrimitiveValue() throws Exception {
         Class<?> target = PrimitiveValueDomain.class;
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testEnum() throws Exception {
+        Class<?> target = EnumDomain.class;
         DomainProcessor processor = new DomainProcessor();
         addProcessor(processor);
         addCompilationUnit(target);

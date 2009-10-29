@@ -23,25 +23,17 @@ public interface CallableSqlParameterMetaVisitor<R, P> {
 
     R visitBasicInParameterMeta(BasicInParameterMeta m, P p);
 
-    R visitEnumInParameterMeta(EnumInParameterMeta m, P p);
-
     R visitDomainInParameterMeta(DomainInParameterMeta m, P p);
 
     R visitBasicOutParameterMeta(BasicOutParameterMeta m, P p);
-
-    R visitEnumOutParameterMeta(EnumOutParameterMeta m, P p);
 
     R visitDomainOutParameterMeta(DomainOutParameterMeta m, P p);
 
     R visitBasicInOutParameterMeta(BasicInOutParameterMeta m, P p);
 
-    R visitEnumInOutParameterMeta(EnumInOutParameterMeta m, P p);
-
     R visitDomainInOutParameterMeta(DomainInOutParameterMeta m, P p);
 
     R visitBasicListParameterMeta(BasicListParameterMeta m, P p);
-
-    R visitEnumListParameterMeta(EnumListParameterMeta m, P p);
 
     R visitDomainListParameterMeta(DomainListParameterMeta m, P p);
 
@@ -49,15 +41,11 @@ public interface CallableSqlParameterMetaVisitor<R, P> {
 
     R visitBasicListResultParameterMeta(BasicListResultParameterMeta m, P p);
 
-    R visitEnumListResultParameterMeta(EnumListResultParameterMeta m, P p);
-
     R visitDomainListResultParameterMeta(DomainListResultParameterMeta m, P p);
 
     R visitEntityListResultParameterMeta(EntityListResultParameterMeta m, P p);
 
     R visitBasicResultParameterMeta(BasicResultParameterMeta m, P p);
-
-    R visitEnumResultParameterMeta(EnumResultParameterMeta m, P p);
 
     R visitDomainResultParameterMeta(DomainResultParameterMeta m, P p);
 

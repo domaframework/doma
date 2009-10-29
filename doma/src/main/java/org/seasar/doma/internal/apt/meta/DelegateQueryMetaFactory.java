@@ -118,7 +118,7 @@ public class DelegateQueryMetaFactory extends
             throw new AptException(DomaMessageCode.DOMA4080, env, method,
                     delegateTypeElement.getQualifiedName());
         }
-        if (constructor.getParameters().size() != 1) {
+        if (constructor.getParameters().size() == 2) {
             queryMeta.setDaoAware(true);
         }
         if (!hasDelegatableMethod(method, delegateTypeElement)) {

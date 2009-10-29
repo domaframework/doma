@@ -56,12 +56,9 @@ public class DomainType extends AbstractDataType {
             return null;
         }
         TypeMirror valueTypeMirror = getValueType(domain);
-        BasicType basicType = EnumType.newInstance(valueTypeMirror, env);
+        BasicType basicType = BasicType.newInstance(valueTypeMirror, env);
         if (basicType == null) {
-            basicType = BasicType.newInstance(valueTypeMirror, env);
-            if (basicType == null) {
-                return null;
-            }
+            return null;
         }
         DomainType domainType = new DomainType(type, env);
         domainType.basicType = basicType;

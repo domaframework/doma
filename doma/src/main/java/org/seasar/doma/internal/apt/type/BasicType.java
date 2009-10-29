@@ -35,11 +35,11 @@ public class BasicType extends AbstractDataType {
     public static BasicType newInstance(TypeMirror type,
             ProcessingEnvironment env) {
         assertNotNull(type, env);
-        WrapperType wrapperType = WrapperType.newInstance(type, env);
+        BasicType basicType = new BasicType(type, env);
+        WrapperType wrapperType = WrapperType.newInstance(basicType, env);
         if (wrapperType == null) {
             return null;
         }
-        BasicType basicType = new BasicType(type, env);
         basicType.wrapperType = wrapperType;
         return basicType;
     }

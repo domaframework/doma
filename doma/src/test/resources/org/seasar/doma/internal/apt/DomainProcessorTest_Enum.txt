@@ -1,0 +1,44 @@
+package org.seasar.doma.internal.apt.domain;
+
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
+public class EnumDomain_ implements org.seasar.doma.internal.domain.DomainTypeFactory<org.seasar.doma.internal.apt.domain.EnumDomain.JobType, org.seasar.doma.internal.apt.domain.EnumDomain> {
+
+    @Override
+    public org.seasar.doma.internal.domain.DomainType<org.seasar.doma.internal.apt.domain.EnumDomain.JobType, org.seasar.doma.internal.apt.domain.EnumDomain> createDomainType() {
+        return new EnumDomainType();
+    }
+
+    @Override
+    public org.seasar.doma.internal.domain.DomainType<org.seasar.doma.internal.apt.domain.EnumDomain.JobType, org.seasar.doma.internal.apt.domain.EnumDomain> createDomainType(org.seasar.doma.internal.apt.domain.EnumDomain domain) {
+        return new EnumDomainType(domain);
+    }
+
+    private static class EnumDomainType implements org.seasar.doma.internal.domain.DomainType<org.seasar.doma.internal.apt.domain.EnumDomain.JobType, org.seasar.doma.internal.apt.domain.EnumDomain> {
+
+        private final org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.domain.EnumDomain.JobType> wrapper = new org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.domain.EnumDomain.JobType>(org.seasar.doma.internal.apt.domain.EnumDomain.JobType.class);
+
+        private EnumDomainType() {
+        }
+
+        private EnumDomainType(EnumDomain domain) {
+            this.wrapper.set(domain != null ? domain.getValue() : null);
+        }
+
+        @Override
+        public org.seasar.doma.internal.apt.domain.EnumDomain getDomain() {
+            return new org.seasar.doma.internal.apt.domain.EnumDomain(wrapper.get());
+        }
+
+        @Override
+        public Class<org.seasar.doma.internal.apt.domain.EnumDomain> getDomainClass() {
+            return org.seasar.doma.internal.apt.domain.EnumDomain.class;
+        }
+
+        @Override
+        public org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.domain.EnumDomain.JobType> getWrapper() {
+            return wrapper;
+        }
+
+    }
+
+}

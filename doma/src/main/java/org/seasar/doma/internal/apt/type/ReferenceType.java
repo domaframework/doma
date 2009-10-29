@@ -69,15 +69,11 @@ public class ReferenceType extends AbstractDataType {
             referenceType.referentType = DomainType.newInstance(
                     referenceType.referentTypeMirror, env);
             if (referenceType.referentType == null) {
-                referenceType.referentType = EnumType.newInstance(
+                referenceType.referentType = BasicType.newInstance(
                         referenceType.referentTypeMirror, env);
                 if (referenceType.referentType == null) {
-                    referenceType.referentType = BasicType.newInstance(
+                    referenceType.referentType = AnyType.newInstance(
                             referenceType.referentTypeMirror, env);
-                    if (referenceType.referentType == null) {
-                        referenceType.referentType = AnyType.newInstance(
-                                referenceType.referentTypeMirror, env);
-                    }
                 }
             }
         }

@@ -23,6 +23,9 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.internal.apt.meta.DomainMeta;
+import org.seasar.doma.internal.apt.type.EnumWrapperType;
+import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
+import org.seasar.doma.internal.apt.type.WrapperType;
 import org.seasar.doma.internal.domain.DomainType;
 import org.seasar.doma.internal.domain.DomainTypeFactory;
 import org.seasar.doma.internal.util.PrimitiveWrapperUtil;
@@ -108,8 +111,28 @@ public class DomainTypeFactoryGenerator extends AbstractGenerator {
     }
 
     protected void printTypeClassFields() {
-        iprint("private final %1$s wrapper = new %1$s();%n", domainMeta
-                .getWrapperType().getTypeName());
+        domainMeta.getWrapperType().accept(
+                new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+
+                    @Override
+                    public Void visitWrapperType(WrapperType dataType, Void p)
+                            throws RuntimeException {
+                        iprint("private final %1$s wrapper = new %1$s();%n",
+                                dataType.getTypeName());
+                        return null;
+                    }
+
+                    @Override
+                    public Void visitEnumWrapperType(EnumWrapperType dataType,
+                            Void p) throws RuntimeException {
+                        iprint(
+                                "private final %1$s wrapper = new %1$s(%2$s.class);%n",
+                                dataType.getTypeName(), dataType
+                                        .getWrappedType().getQualifiedName());
+                        return null;
+                    }
+
+                }, null);
         print("%n");
     }
 

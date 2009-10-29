@@ -87,15 +87,11 @@ public class IterationCallbackType extends AbstractDataType {
                 callbackType.targetType = DomainType.newInstance(
                         callbackType.targetTypeMirror, env);
                 if (callbackType.targetType == null) {
-                    callbackType.targetType = EnumType.newInstance(
+                    callbackType.targetType = BasicType.newInstance(
                             callbackType.targetTypeMirror, env);
                     if (callbackType.targetType == null) {
-                        callbackType.targetType = BasicType.newInstance(
+                        callbackType.targetType = AnyType.newInstance(
                                 callbackType.targetTypeMirror, env);
-                        if (callbackType.targetType == null) {
-                            callbackType.targetType = AnyType.newInstance(
-                                    callbackType.targetTypeMirror, env);
-                        }
                     }
                 }
             }
