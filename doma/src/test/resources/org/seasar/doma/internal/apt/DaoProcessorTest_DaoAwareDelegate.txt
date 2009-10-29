@@ -1,0 +1,23 @@
+package org.seasar.doma.internal.apt.dao;
+
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
+public class DaoAwareDelegateDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao implements org.seasar.doma.internal.apt.dao.DaoAwareDelegateDao {
+
+    public DaoAwareDelegateDaoImpl() {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig());
+    }
+
+    public DaoAwareDelegateDaoImpl(javax.sql.DataSource dataSource) {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
+    }
+
+    @Override
+    public java.math.BigDecimal execute(java.lang.String aaa, java.lang.Integer bbb) {
+        entering("org.seasar.doma.internal.apt.dao.DaoAwareDelegateDaoImpl", "execute", aaa, bbb);
+        org.seasar.doma.internal.apt.dao.DaoAwareDelegateDaoDelegate delegate = new org.seasar.doma.internal.apt.dao.DaoAwareDelegateDaoDelegate(config, this);
+        java.math.BigDecimal __result = delegate.execute(aaa, bbb);
+        exiting("org.seasar.doma.internal.apt.dao.DaoAwareDelegateDaoImpl", "execute", __result);
+        return __result;
+    }
+
+}

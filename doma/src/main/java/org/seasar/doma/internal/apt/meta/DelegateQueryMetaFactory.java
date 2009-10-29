@@ -112,9 +112,14 @@ public class DelegateQueryMetaFactory extends
         if (delegateTypeElement == null) {
             throw new AptIllegalStateException(method.toString());
         }
-        if (!hasSuitableConstructor(delegateTypeElement)) {
+        ExecutableElement constructor = getSuitableConstructor(
+                delegateTypeElement, daoMeta);
+        if (constructor == null) {
             throw new AptException(DomaMessageCode.DOMA4080, env, method,
                     delegateTypeElement.getQualifiedName());
+        }
+        if (constructor.getParameters().size() != 1) {
+            queryMeta.setDaoAware(true);
         }
         if (!hasDelegatableMethod(method, delegateTypeElement)) {
             throw new AptException(DomaMessageCode.DOMA4081, env, method,
@@ -122,19 +127,31 @@ public class DelegateQueryMetaFactory extends
         }
     }
 
-    protected boolean hasSuitableConstructor(TypeElement targetElement) {
-        for (ExecutableElement e : ElementFilter.constructorsIn(targetElement
-                .getEnclosedElements())) {
-            if (e.getModifiers().contains(Modifier.PUBLIC)) {
-                if (e.getParameters().size() == 1) {
-                    VariableElement variableElement = e.getParameters().get(0);
-                    if (isConfig(variableElement.asType())) {
-                        return true;
+    protected ExecutableElement getSuitableConstructor(
+            TypeElement targetElement, DaoMeta daoMeta) {
+        ExecutableElement candidate = null;
+        for (ExecutableElement constructor : ElementFilter
+                .constructorsIn(targetElement.getEnclosedElements())) {
+            if (constructor.getModifiers().contains(Modifier.PUBLIC)) {
+                List<? extends VariableElement> parameters = constructor
+                        .getParameters();
+                if (parameters.size() == 2) {
+                    VariableElement first = parameters.get(0);
+                    VariableElement second = parameters.get(1);
+                    if (isConfig(first.asType())
+                            && TypeUtil.isAssignable(second.asType(), daoMeta
+                                    .getDaoType(), env)) {
+                        candidate = constructor;
+                        break;
+                    }
+                } else if (parameters.size() == 1) {
+                    if (isConfig(parameters.get(0).asType())) {
+                        candidate = constructor;
                     }
                 }
             }
         }
-        return false;
+        return candidate;
     }
 
     protected boolean hasDelegatableMethod(ExecutableElement srcMethod,

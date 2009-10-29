@@ -156,7 +156,7 @@ public enum DomaMessageCode implements MessageCode {
     DOMA4076("パラメータの型は配列型でなければいけません。"),
     DOMA4078("パラメータの数は0でなければいけません。"),
     DOMA4079("クラス[{0}]のソースファイルの生成に失敗しました。原因は次のものです。{1}"),
-    DOMA4080("@Delegateのtarget要素で指定したクラス[{0}]に、org.seasar.doma.jdbc.Config型を受けつけるpublicなコンストラクタがみつかりません。"),
+    DOMA4080("@Delegateのtarget要素で指定したクラス[{0}]に適切なパラメータを持つpublicなコンストラクタがみつかりません。コンストラクタはorg.seasar.doma.jdbc.Config型の1つのパラメータを持つか、もしくはorg.seasar.doma.jdbc.Config型と委譲元のDaoの型の2つのパラメータを持たねばいけません。"),
     DOMA4081("@Delegateのtarget要素で指定したクラス[{0}]に、このメソッドと同じシグニチャをもつpublicなメソッドがみつかりません。"),
     DOMA4084("include要素で指定したプロパティ[{0}]が、@Entityが注釈されたクラス[{1}]に見つかりません。"),
     DOMA4085("exclude要素で指定したプロパティ[{0}]が、@Entityが注釈されたクラス[{1}]に見つかりません。"),

@@ -13,39 +13,33 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.meta;
+package org.seasar.doma.internal.apt.dao;
 
-import javax.lang.model.type.TypeMirror;
+import java.math.BigDecimal;
+
+import org.seasar.doma.jdbc.Config;
 
 /**
  * @author taedium
  * 
  */
-public class DelegateQueryMeta extends AbstractQueryMeta {
+public class DaoAwareDelegateDaoDelegate {
 
-    protected TypeMirror targetType;
+    protected Config config;
 
-    protected boolean daoAware;
+    protected DaoAwareDelegateDao dao;
 
-    public TypeMirror getTargetType() {
-        return targetType;
+    public DaoAwareDelegateDaoDelegate(Config config) {
+        this.config = config;
     }
 
-    public void setTargetType(TypeMirror targetType) {
-        this.targetType = targetType;
+    public DaoAwareDelegateDaoDelegate(Config config, DaoAwareDelegateDao dao) {
+        this.config = config;
+        this.dao = dao;
     }
 
-    public boolean isDaoAware() {
-        return daoAware;
-    }
-
-    public void setDaoAware(boolean daoAware) {
-        this.daoAware = daoAware;
-    }
-
-    @Override
-    public <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p) {
-        return visitor.visitDelegateQueryMeta(this, p);
+    public BigDecimal execute(String aaa, Integer bbb) {
+        return null;
     }
 
 }

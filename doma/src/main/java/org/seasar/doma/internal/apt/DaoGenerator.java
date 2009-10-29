@@ -858,7 +858,12 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitDelegateQueryMeta(DelegateQueryMeta m, Void p) {
             printEnteringStatement(m);
 
-            iprint("%1$s delegate = new %1$s(config);%n", m.getTargetType());
+            iprint("%1$s delegate = new %1$s(config", m.getTargetType());
+            if (m.isDaoAware()) {
+                print(", this);%n");
+            } else {
+                print(");%n");
+            }
             QueryReturnMeta resultMeta = m.getReturnMeta();
             if ("void".equals(resultMeta.getTypeName())) {
                 iprint("Object __result = null;%n");
