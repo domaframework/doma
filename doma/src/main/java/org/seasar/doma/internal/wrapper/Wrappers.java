@@ -100,6 +100,7 @@ public final class Wrappers {
     @SuppressWarnings("unchecked")
     protected static Wrapper<?> wrapBasicObject(Object value,
             Class<?> valueClass) {
+        assertNotNull(valueClass);
         Class<?> boxedClass = ClassUtil.boxIfPrimitive(valueClass);
         if (boxedClass == Array.class) {
             return new ArrayWrapper(Array.class.cast(value));
@@ -171,13 +172,20 @@ public final class Wrappers {
      */
     protected static Wrapper<?> wrapDomainObject(Object value,
             Class<?> valueClass) {
+        assertNotNull(valueClass);
         Domain domain = valueClass.getAnnotation(Domain.class);
         if (domain == null) {
             return null;
         }
-        Object domainValue = getDomainValue(value, valueClass, domain
-                .accessorMethod());
         Class<?> domainValueClass = domain.valueType();
+        if (domainValueClass == null) {
+            return null;
+        }
+        Object domainValue = null;
+        if (value != null) {
+            domainValue = getDomainValue(value, valueClass, domain
+                    .accessorMethod());
+        }
         return wrapBasicObject(domainValue, domainValueClass);
     }
 
@@ -196,6 +204,7 @@ public final class Wrappers {
      */
     protected static Object getDomainValue(Object domainObject,
             Class<?> domainClass, String accessorMethodName) {
+        assertNotNull(domainObject, domainClass, accessorMethodName);
         try {
             Method method = MethodUtil.getMethod(domainClass,
                     accessorMethodName);

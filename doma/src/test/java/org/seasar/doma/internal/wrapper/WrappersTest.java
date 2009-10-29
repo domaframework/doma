@@ -17,8 +17,12 @@ package org.seasar.doma.internal.wrapper;
 
 import junit.framework.TestCase;
 
+import org.seasar.doma.wrapper.EnumWrapper;
 import org.seasar.doma.wrapper.IntegerWrapper;
+import org.seasar.doma.wrapper.StringWrapper;
 import org.seasar.doma.wrapper.Wrapper;
+
+import example.domain.PhoneNumber;
 
 /**
  * @author taedium
@@ -26,9 +30,50 @@ import org.seasar.doma.wrapper.Wrapper;
  */
 public class WrappersTest extends TestCase {
 
-    public void testWrap() throws Exception {
+    public void testWrapBasic_boxedValue_primitiveType() throws Exception {
         Wrapper<?> wrapper = Wrappers.wrap(new Integer(10), int.class);
         assertNotNull(wrapper);
         assertEquals(IntegerWrapper.class, wrapper.getClass());
+        assertEquals(new Integer(10), wrapper.get());
+    }
+
+    public void testWrapBasic_null() throws Exception {
+        Wrapper<?> wrapper = Wrappers.wrap(null, Integer.class);
+        assertNotNull(wrapper);
+        assertEquals(IntegerWrapper.class, wrapper.getClass());
+        assertNull(null, wrapper.get());
+    }
+
+    public void testWrapEnum() throws Exception {
+        Wrapper<?> wrapper = Wrappers.wrap(MyEnum.AAA, MyEnum.class);
+        assertNotNull(wrapper);
+        assertEquals(EnumWrapper.class, wrapper.getClass());
+        assertEquals(MyEnum.AAA, wrapper.get());
+    }
+
+    public void testWrapEnum_null() throws Exception {
+        Wrapper<?> wrapper = Wrappers.wrap(null, MyEnum.class);
+        assertNotNull(wrapper);
+        assertEquals(EnumWrapper.class, wrapper.getClass());
+        assertNull(wrapper.get());
+    }
+
+    public void testWrapDomain() throws Exception {
+        PhoneNumber phoneNumber = new PhoneNumber("123-456-789");
+        Wrapper<?> wrapper = Wrappers.wrap(phoneNumber, PhoneNumber.class);
+        assertNotNull(wrapper);
+        assertEquals(StringWrapper.class, wrapper.getClass());
+        assertEquals("123-456-789", wrapper.get());
+    }
+
+    public void testWrapDomain_null() throws Exception {
+        Wrapper<?> wrapper = Wrappers.wrap(null, PhoneNumber.class);
+        assertNotNull(wrapper);
+        assertEquals(StringWrapper.class, wrapper.getClass());
+        assertNull(wrapper.get());
+    }
+
+    public enum MyEnum {
+        AAA, BBB, CCC
     }
 }
