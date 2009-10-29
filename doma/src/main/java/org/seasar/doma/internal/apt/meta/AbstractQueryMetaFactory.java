@@ -105,7 +105,7 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
     }
 
     protected boolean isConfig(TypeMirror typeMirror) {
-        return TypeUtil.isAssignable(typeMirror, Config.class, env);
+        return TypeUtil.isSameType(typeMirror, Config.class, env);
     }
 
     protected boolean isCollection(TypeMirror typeMirror) {
