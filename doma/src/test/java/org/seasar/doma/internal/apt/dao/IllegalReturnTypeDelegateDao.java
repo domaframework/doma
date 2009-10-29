@@ -23,8 +23,8 @@ import org.seasar.doma.Delegate;
  * 
  */
 @Dao(config = MyConfig.class)
-public interface IllegalMethodDelegateDao {
+public interface IllegalReturnTypeDelegateDao {
 
-    @Delegate(to = IllegalMethodDelegateDaoDelegate.class)
-    void hoge();
+    @Delegate(to = IllegalDelegateDaoDelegate.class)
+    int illegalReturnType();
 }

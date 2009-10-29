@@ -38,14 +38,16 @@ import org.seasar.doma.internal.apt.dao.EnumDao;
 import org.seasar.doma.internal.apt.dao.ExtendsDao;
 import org.seasar.doma.internal.apt.dao.IllegalAnnotateWithDao;
 import org.seasar.doma.internal.apt.dao.IllegalConstructorDelegateDao;
-import org.seasar.doma.internal.apt.dao.IllegalMethodDelegateDao;
 import org.seasar.doma.internal.apt.dao.IllegalParameterNameDao;
+import org.seasar.doma.internal.apt.dao.IllegalParameterTypeDelegateDao;
+import org.seasar.doma.internal.apt.dao.IllegalReturnTypeDelegateDao;
 import org.seasar.doma.internal.apt.dao.IncludeAndExcludeDao;
 import org.seasar.doma.internal.apt.dao.IterationCallbackDao;
 import org.seasar.doma.internal.apt.dao.MethodAccessSqlValidationDao;
 import org.seasar.doma.internal.apt.dao.MultiParamMethodAccessSqlValidationDao;
 import org.seasar.doma.internal.apt.dao.NClobFactoryDao;
 import org.seasar.doma.internal.apt.dao.NameUnsafeDaoImpl;
+import org.seasar.doma.internal.apt.dao.NoMethodDelegateDao;
 import org.seasar.doma.internal.apt.dao.NoTestLiteralDao;
 import org.seasar.doma.internal.apt.dao.NotInterfaceDao;
 import org.seasar.doma.internal.apt.dao.NotTopLevelDao;
@@ -321,8 +323,28 @@ public class DaoProcessorTest extends AptTestCase {
         assertMessageCode(DomaMessageCode.DOMA4080);
     }
 
-    public void testIllegalMethodDelegate() throws Exception {
-        Class<?> target = IllegalMethodDelegateDao.class;
+    public void testNoMethodDelegate() throws Exception {
+        Class<?> target = NoMethodDelegateDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessageCode(DomaMessageCode.DOMA4081);
+    }
+
+    public void testIllegalReturnTypeDelegate() throws Exception {
+        Class<?> target = IllegalReturnTypeDelegateDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessageCode(DomaMessageCode.DOMA4081);
+    }
+
+    public void testIllegalParameterTypeDelegate() throws Exception {
+        Class<?> target = IllegalParameterTypeDelegateDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
         addCompilationUnit(target);

@@ -21,8 +21,16 @@ import org.seasar.doma.jdbc.Config;
  * @author taedium
  * 
  */
-public class IllegalMethodDelegateDaoDelegate {
+public class IllegalDelegateDaoDelegate {
 
-    public IllegalMethodDelegateDaoDelegate(Config config) {
+    public IllegalDelegateDaoDelegate(Config config) {
+    }
+
+    public long illegalReturnType() {
+        return 0;
+    }
+
+    public int illegalParameterType(String aaa, Integer bbb) {
+        return 0;
     }
 }

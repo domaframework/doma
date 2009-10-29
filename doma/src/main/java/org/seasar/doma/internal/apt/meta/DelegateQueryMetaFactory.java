@@ -17,12 +17,15 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.util.Iterator;
+import java.util.List;
+
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.ExecutableType;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
@@ -30,7 +33,6 @@ import javax.lang.model.util.ElementFilter;
 import org.seasar.doma.Delegate;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.ElementUtil;
 import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
 
@@ -135,19 +137,72 @@ public class DelegateQueryMetaFactory extends
         return false;
     }
 
-    protected boolean hasDelegatableMethod(ExecutableElement method,
+    protected boolean hasDelegatableMethod(ExecutableElement srcMethod,
             TypeElement targetElement) {
-        ExecutableType srcMethod = ElementUtil.toExecutableType(method, env);
-        for (ExecutableElement e : ElementFilter.methodsIn(targetElement
-                .getEnclosedElements())) {
-            if (e.getModifiers().contains(Modifier.PUBLIC)) {
-                ExecutableType destMethod = ElementUtil
-                        .toExecutableType(e, env);
-                if (env.getTypeUtils().isSubsignature(destMethod, srcMethod)) {
+        for (ExecutableElement destMethod : ElementFilter
+                .methodsIn(targetElement.getEnclosedElements())) {
+            if (destMethod.getModifiers().contains(Modifier.PUBLIC)) {
+                if (isSameSignature(srcMethod, destMethod)) {
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    protected boolean isSameSignature(ExecutableElement srcMethod,
+            ExecutableElement destMethod) {
+        if (!srcMethod.getSimpleName().equals(destMethod.getSimpleName())) {
+            return false;
+        }
+
+        if (!TypeUtil.isSameType(srcMethod.getReturnType(), destMethod
+                .getReturnType(), env)) {
+            return false;
+        }
+
+        List<? extends TypeParameterElement> srcTypeParams = srcMethod
+                .getTypeParameters();
+        List<? extends TypeParameterElement> destTypeParams = destMethod
+                .getTypeParameters();
+        if (srcTypeParams.size() != destTypeParams.size()) {
+            return false;
+        }
+        for (Iterator<? extends TypeParameterElement> srcIt = srcTypeParams
+                .iterator(), destIt = destTypeParams.iterator(); srcIt
+                .hasNext()
+                && destIt.hasNext();) {
+            if (!TypeUtil.isSameType(srcIt.next().asType(), destIt.next()
+                    .asType(), env)) {
+                return false;
+            }
+        }
+
+        List<? extends VariableElement> srcParams = srcMethod.getParameters();
+        List<? extends VariableElement> destParams = destMethod.getParameters();
+        if (srcParams.size() != destParams.size()) {
+            return false;
+        }
+        for (Iterator<? extends VariableElement> srcIt = srcParams.iterator(), destIt = destParams
+                .iterator(); srcIt.hasNext() && destIt.hasNext();) {
+            if (!TypeUtil.isSameType(srcIt.next().asType(), destIt.next()
+                    .asType(), env)) {
+                return false;
+            }
+        }
+
+        List<? extends TypeMirror> srcThrownTypes = srcMethod.getThrownTypes();
+        List<? extends TypeMirror> destThrownTypes = destMethod
+                .getThrownTypes();
+        if (srcThrownTypes.size() != destThrownTypes.size()) {
+            return false;
+        }
+        for (Iterator<? extends TypeMirror> srcIt = srcThrownTypes.iterator(), destIt = destThrownTypes
+                .iterator(); srcIt.hasNext() && destIt.hasNext();) {
+            if (!TypeUtil.isSameType(srcIt.next(), destIt.next(), env)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
