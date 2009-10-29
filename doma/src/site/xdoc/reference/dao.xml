@@ -139,7 +139,7 @@ public interface EmployeeDao {
 		</section>
 		<section name="デリゲート定義">
 			<p>
-				DAOは、インタフェースであるためロジックをもつことができません。
+				Daoは、インタフェースであるためロジックをもつことができません。
 				しかし、 <code>@Delegate</code>を注釈することで別のクラスに処理を委譲（デリゲート）できます。
 				JDBCを直接使った処理を行いたい場合に使用するといいでしょう。
 			</p>
@@ -149,6 +149,10 @@ public interface EmployeeDao {
     @Delegate(to = EmployeeDaoDelegate.class)
     int execute(Employee employee);
 }</source>
+			<p>
+				<code>@Delegate</code> の <code>to</code>要素には、委譲先のクラスを指定します。
+				委譲先のクラスの<code>public</code>なコンストラクタでは、<code>org.seasar.doma.jdbc.Config</code>を受け取るようにします。
+			</p>
 <source>public class EmployeeDaoDelegate {
 
     private Config config;
@@ -163,11 +167,28 @@ public interface EmployeeDao {
     }
 }</source>
 			<p>
-				<code>@Delegate</code> の <code>to</code>要素には、委譲先のクラスを指定します。
+				委譲先で委譲元のDaoインスタンスにアクセスしたい場合は、<code>public</code>なコンストラクタの2番目のパラメータで委譲元のDaoの型を受け取るようにします。
+			</p>
+<source>public class EmployeeDaoDelegate {
+
+    private Config config;
+    
+    private EmployeeDao employeeDao;
+    
+    public EmployeeDaoDelegate(Config config, EmployeeDao employeeDao) {
+        this.config = config;
+        this.employeeDao = employeeDao;
+    }
+
+    public int execute(Employee employee) {
+        ...
+    }
+}</source>
+			<p>
 				委譲先のクラスは次の制約を満たす必要があります。
 			</p>
 			<ul>
-				<li><code>org.seasar.doma.jdbc.Config</code>を受け取るpublicなコンストラクタを持つ</li>
+				<li><code>org.seasar.doma.jdbc.Config</code>を受け取るpublicなコンストラクタを持つ、もしくは、<code>org.seasar.doma.jdbc.Config</code>と委譲元のDaoを受け取るpublicなコンストラクタを持つ</li>
 				<li>委譲元のメソッドと同じシグニチャのメソッドを持つ</li>
 			</ul>
 		</section>
@@ -197,11 +218,11 @@ Employee employee = employeeDao.selectById(1);</source>
 <source><![CDATA[@Dao(config = AppConfig.class)
 public interface MyDao {
     @Select
-    Employee selectEmployee();
+    Employee selectEmployeeById(int id);
     @Select
-    Departmen selectDepartment();
+    Department selectDepartmentByName(String name);
     @Update
-    Departmen updateAddress(Address address);
+    int updateAddress(Address address);
 }]]></source>
 		</section>
 	</body>
