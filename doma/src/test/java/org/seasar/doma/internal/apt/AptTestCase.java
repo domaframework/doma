@@ -43,14 +43,13 @@ public abstract class AptTestCase extends AptinaTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         addSourcePath("src/test/java");
-        addClassOutputPath("src/test/resources");
+        addSourcePath("src/test/resources");
         setCharset("UTF-8");
         setLocale(locale);
     }
 
     @Override
     protected void tearDown() throws Exception {
-        reset();
         super.tearDown();
     }
 
