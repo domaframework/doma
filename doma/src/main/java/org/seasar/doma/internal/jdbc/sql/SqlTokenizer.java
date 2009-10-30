@@ -29,6 +29,10 @@ import org.seasar.doma.jdbc.JdbcException;
  */
 public class SqlTokenizer {
 
+    protected static final char STRING_LITERAL_EXPR_QUOTE = '"';
+
+    protected static final char CHAR_LITERAL_EXPR_QUOTE = '\'';
+
     protected final String sql;
 
     protected final CharBuffer buf;
@@ -299,7 +303,9 @@ public class SqlTokenizer {
             if (buf.hasRemaining()) {
                 char c3 = buf.get();
                 if (Character.isJavaIdentifierStart(c3)
-                        || Character.isWhitespace(c3)) {
+                        || Character.isWhitespace(c3)
+                        || c3 == STRING_LITERAL_EXPR_QUOTE
+                        || c3 == CHAR_LITERAL_EXPR_QUOTE) {
                     type = BIND_VARIABLE_BLOCK_COMMENT;
                 } else if (c3 == '#') {
                     type = EMBEDDED_VARIABLE_BLOCK_COMMENT;

@@ -250,6 +250,34 @@ public class SqlTokenizerTest extends TestCase {
         assertNull(tokenizer.getToken());
     }
 
+    public void testBindBlockComment_startWithStringLiteral() throws Exception {
+        SqlTokenizer tokenizer = new SqlTokenizer("where /*\"aaa\"*/bbb");
+        assertEquals(WHERE_WORD, tokenizer.next());
+        assertEquals("where", tokenizer.getToken());
+        assertEquals(OTHER, tokenizer.next());
+        assertEquals(" ", tokenizer.getToken());
+        assertEquals(BIND_VARIABLE_BLOCK_COMMENT, tokenizer.next());
+        assertEquals("/*\"aaa\"*/", tokenizer.getToken());
+        assertEquals(WORD, tokenizer.next());
+        assertEquals("bbb", tokenizer.getToken());
+        assertEquals(EOF, tokenizer.next());
+        assertNull(tokenizer.getToken());
+    }
+
+    public void testBindBlockComment_startWithCharLiteral() throws Exception {
+        SqlTokenizer tokenizer = new SqlTokenizer("where /*'a'*/bbb");
+        assertEquals(WHERE_WORD, tokenizer.next());
+        assertEquals("where", tokenizer.getToken());
+        assertEquals(OTHER, tokenizer.next());
+        assertEquals(" ", tokenizer.getToken());
+        assertEquals(BIND_VARIABLE_BLOCK_COMMENT, tokenizer.next());
+        assertEquals("/*'a'*/", tokenizer.getToken());
+        assertEquals(WORD, tokenizer.next());
+        assertEquals("bbb", tokenizer.getToken());
+        assertEquals(EOF, tokenizer.next());
+        assertNull(tokenizer.getToken());
+    }
+
     public void testIfBlockComment() throws Exception {
         SqlTokenizer tokenizer = new SqlTokenizer("where /*%if true*/bbb");
         assertEquals(WHERE_WORD, tokenizer.next());
