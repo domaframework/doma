@@ -41,7 +41,7 @@ public class MethodDeclaration {
 
     public TypeDeclaration getReturnTypeDeclaration() {
         TypeMirror returnType = resolveTypeParameter(element.getReturnType());
-        return TypeDeclaration.newInstance(returnType, env);
+        return TypeDeclaration.newTypeDeclaration(returnType, env);
     }
 
     protected TypeMirror resolveTypeParameter(TypeMirror formalType) {

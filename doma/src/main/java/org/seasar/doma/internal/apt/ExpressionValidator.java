@@ -69,7 +69,8 @@ public class ExpressionValidator implements
         this.parameterTypeMap = new HashMap<String, TypeMirror>(
                 parameterTypeMap);
         this.validatedParameterNames = new HashSet<String>();
-        this.unknownTypeDeclaration = TypeDeclaration.newUnknownInstance(env);
+        this.unknownTypeDeclaration = TypeDeclaration
+                .newUnknownTypeDeclaration(env);
     }
 
     public Set<String> getValidatedParameterNames() {
@@ -120,7 +121,7 @@ public class ExpressionValidator implements
         TypeDeclaration left = node.getLeftNode().accept(this, p);
         TypeDeclaration right = node.getRightNode().accept(this, p);
         if (left.isNullType() || right.isNullType() || left.isSameType(right)) {
-            return TypeDeclaration.newBooleanInstance(env);
+            return TypeDeclaration.newBooleanTypeDeclaration(env);
         }
         ExpressionLocation location = node.getLocation();
         throw new AptException(DomaMessageCode.DOMA4116, env, methodElement,
@@ -141,7 +142,7 @@ public class ExpressionValidator implements
                             .getPosition(), node.getExpression());
         }
         if (left.isSameType(right)) {
-            return TypeDeclaration.newBooleanInstance(env);
+            return TypeDeclaration.newBooleanTypeDeclaration(env);
         }
         ExpressionLocation location = node.getLocation();
         throw new AptException(DomaMessageCode.DOMA4116, env, methodElement,
@@ -180,14 +181,14 @@ public class ExpressionValidator implements
                             .getRightNode().toString(), right
                             .getQualifiedName());
         }
-        return TypeDeclaration.newBooleanInstance(env);
+        return TypeDeclaration.newBooleanTypeDeclaration(env);
     }
 
     @Override
     public TypeDeclaration visitNotOperatorNode(NotOperatorNode node, Void p) {
         TypeDeclaration result = node.getNode().accept(this, p);
         if (result.isBooleanType()) {
-            return TypeDeclaration.newBooleanInstance(env);
+            return TypeDeclaration.newBooleanTypeDeclaration(env);
         }
         ExpressionLocation location = node.getLocation();
         throw new AptException(DomaMessageCode.DOMA4119, env, methodElement,
@@ -198,31 +199,48 @@ public class ExpressionValidator implements
 
     @Override
     public TypeDeclaration visitAddOperatorNode(AddOperatorNode node, Void p) {
-        return handleArithmeticOperatorNode(node, p);
+        TypeDeclaration left = node.getLeftNode().accept(this, p);
+        TypeDeclaration right = node.getRightNode().accept(this, p);
+        if (left.isTextType()) {
+            if (right.isTextType()) {
+                return left.emulateConcatOperation(right);
+            }
+            ExpressionLocation location = node.getLocation();
+            throw new AptException(DomaMessageCode.DOMA4126, env,
+                    methodElement, location.getExpression(), location
+                            .getPosition(), node.getExpression(), node
+                            .getLeftNode().toString(), left.getQualifiedName());
+        }
+        return handleArithmeticOperatorNode(node, left, right, p);
     }
 
     @Override
     public TypeDeclaration visitSubtractOperatorNode(SubtractOperatorNode node,
             Void p) {
-        return handleArithmeticOperatorNode(node, p);
+        TypeDeclaration left = node.getLeftNode().accept(this, p);
+        TypeDeclaration right = node.getRightNode().accept(this, p);
+        return handleArithmeticOperatorNode(node, left, right, p);
     }
 
     @Override
     public TypeDeclaration visitMultiplyOperatorNode(MultiplyOperatorNode node,
             Void p) {
-        return handleArithmeticOperatorNode(node, p);
+        TypeDeclaration left = node.getLeftNode().accept(this, p);
+        TypeDeclaration right = node.getRightNode().accept(this, p);
+        return handleArithmeticOperatorNode(node, left, right, p);
     }
 
     @Override
     public TypeDeclaration visitDivideOperatorNode(DivideOperatorNode node,
             Void p) {
-        return handleArithmeticOperatorNode(node, p);
+        TypeDeclaration left = node.getLeftNode().accept(this, p);
+        TypeDeclaration right = node.getRightNode().accept(this, p);
+        return handleArithmeticOperatorNode(node, left, right, p);
     }
 
     protected TypeDeclaration handleArithmeticOperatorNode(
-            ArithmeticOperatorNode node, Void p) {
-        TypeDeclaration left = node.getLeftNode().accept(this, p);
-        TypeDeclaration right = node.getRightNode().accept(this, p);
+            ArithmeticOperatorNode node, TypeDeclaration left,
+            TypeDeclaration right, Void p) {
         if (!left.isNumberType()) {
             ExpressionLocation location = node.getLocation();
             throw new AptException(DomaMessageCode.DOMA4120, env,
@@ -238,7 +256,7 @@ public class ExpressionValidator implements
                             .getRightNode().toString(), right
                             .getQualifiedName());
         }
-        return left.calculate(right);
+        return left.emulateArithmeticOperation(right);
     }
 
     @Override
@@ -246,7 +264,7 @@ public class ExpressionValidator implements
         TypeMirror type = node.getValueClass() == void.class ? env
                 .getTypeUtils().getNullType() : TypeUtil.getTypeMirror(node
                 .getValueClass(), env);
-        return TypeDeclaration.newInstance(type, env);
+        return TypeDeclaration.newTypeDeclaration(type, env);
     }
 
     @Override
@@ -269,7 +287,7 @@ public class ExpressionValidator implements
                     methodElement, location.getExpression(), location
                             .getPosition(), className);
         }
-        TypeDeclaration typeDeclaration = TypeDeclaration.newInstance(
+        TypeDeclaration typeDeclaration = TypeDeclaration.newTypeDeclaration(
                 typeElement.asType(), env);
         ConstructorDeclaration constructorDeclaration = typeDeclaration
                 .getConstructorDeclarations(parameterTypeDeclarations);
@@ -369,7 +387,7 @@ public class ExpressionValidator implements
                     methodElement, variableName, location.getPosition());
         }
         validatedParameterNames.add(variableName);
-        return TypeDeclaration.newInstance(type, env);
+        return TypeDeclaration.newTypeDeclaration(type, env);
     }
 
     protected class ParameterCollector implements

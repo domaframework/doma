@@ -311,6 +311,7 @@ public class ExpressionParserTest extends TestCase {
         evaluator = new ExpressionEvaluator();
         try {
             evaluator.evaluate(expression);
+            fail();
         } catch (ExpressionException expected) {
             assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
         }
@@ -320,6 +321,7 @@ public class ExpressionParserTest extends TestCase {
         evaluator = new ExpressionEvaluator();
         try {
             evaluator.evaluate(expression);
+            fail();
         } catch (ExpressionException expected) {
             assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
         }
@@ -353,7 +355,6 @@ public class ExpressionParserTest extends TestCase {
         try {
             evaluator.evaluate(expression);
             fail();
-
         } catch (ExpressionException expected) {
             assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
         }
@@ -364,7 +365,6 @@ public class ExpressionParserTest extends TestCase {
         try {
             evaluator.evaluate(expression);
             fail();
-
         } catch (ExpressionException expected) {
             assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
         }
@@ -375,7 +375,6 @@ public class ExpressionParserTest extends TestCase {
         try {
             evaluator.evaluate(expression);
             fail();
-
         } catch (ExpressionException expected) {
             assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
         }
@@ -420,7 +419,6 @@ public class ExpressionParserTest extends TestCase {
         try {
             evaluator.evaluate(expression);
             fail();
-
         } catch (ExpressionException expected) {
             assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
         }
@@ -431,7 +429,6 @@ public class ExpressionParserTest extends TestCase {
         try {
             evaluator.evaluate(expression);
             fail();
-
         } catch (ExpressionException expected) {
             assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
         }
@@ -674,6 +671,14 @@ public class ExpressionParserTest extends TestCase {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         EvaluationResult result = evaluator.evaluate(node);
         assertEquals(new Integer(-3), result.getValue());
+    }
+
+    public void testConcat() throws Exception {
+        ExpressionParser parser = new ExpressionParser("\"ab\" + \"cd\" + 'e'");
+        ExpressionNode node = parser.parse();
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        EvaluationResult result = evaluator.evaluate(node);
+        assertEquals("abcde", result.getValue());
     }
 
     public class Hoge {

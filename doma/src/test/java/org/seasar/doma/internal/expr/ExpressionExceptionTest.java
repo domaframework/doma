@@ -166,7 +166,7 @@ public class ExpressionExceptionTest extends TestCase {
         }
     }
 
-    public void testDOMA3012() throws Exception {
+    public void testUnsupportedNumberLiteralFound() throws Exception {
         ExpressionParser parser = new ExpressionParser("5aaa");
         try {
             parser.parse();
@@ -187,6 +187,19 @@ public class ExpressionExceptionTest extends TestCase {
         } catch (ExpressionException e) {
             System.out.println(e.getMessage());
             assertEquals(DomaMessageCode.DOMA3013, e.getMessageCode());
+        }
+    }
+
+    public void testOperandNotText() throws Exception {
+        ExpressionParser parser = new ExpressionParser("\"10\" + 5");
+        ExpressionNode node = parser.parse();
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        try {
+            evaluator.evaluate(node);
+            fail();
+        } catch (ExpressionException e) {
+            System.out.println(e.getMessage());
+            assertEquals(DomaMessageCode.DOMA3020, e.getMessageCode());
         }
     }
 

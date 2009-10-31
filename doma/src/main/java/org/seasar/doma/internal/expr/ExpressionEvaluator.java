@@ -51,6 +51,7 @@ import org.seasar.doma.internal.expr.node.MultiplyOperatorNode;
 import org.seasar.doma.internal.expr.node.NeOperatorNode;
 import org.seasar.doma.internal.expr.node.NewOperatorNode;
 import org.seasar.doma.internal.expr.node.NotOperatorNode;
+import org.seasar.doma.internal.expr.node.OperatorNode;
 import org.seasar.doma.internal.expr.node.OrOperatorNode;
 import org.seasar.doma.internal.expr.node.ParensNode;
 import org.seasar.doma.internal.expr.node.SubtractOperatorNode;
@@ -214,48 +215,138 @@ public class ExpressionEvaluator implements
     @Override
     public EvaluationResult visitAddOperatorNode(AddOperatorNode node, Void p) {
         ExpressionNode leftNode = node.getLeftNode();
-        EvaluationResult leftResult = leftNode.accept(this, p);
-        Decimal leftDecimal = new Decimal(node, leftNode, leftResult);
+        EvaluationResult leftResult = evaluateNotNullableOperandNode(node,
+                leftNode, p);
         ExpressionNode rightNode = node.getRightNode();
-        EvaluationResult rightResult = rightNode.accept(this, p);
-        Decimal rightDecimal = new Decimal(node, rightNode, rightResult);
-        return leftDecimal.add(rightDecimal);
+        EvaluationResult rightResult = evaluateNotNullableOperandNode(node,
+                rightNode, p);
+
+        Text leftText = createText(node, leftNode, leftResult);
+        if (leftText != null) {
+            Text rightText = createText(node, rightNode, rightResult);
+            if (rightText != null) {
+                return leftText.concat(rightText);
+            }
+            throwNotTextException(node, rightNode, rightResult);
+        }
+
+        Number leftNumber = createNumber(node, leftNode, leftResult);
+        if (leftNumber == null) {
+            throwNotNumberException(node, leftNode, leftResult);
+        }
+        Number rightNumber = createNumber(node, rightNode, rightResult);
+        if (rightNumber == null) {
+            throwNotNumberException(node, rightNode, rightResult);
+        }
+        return leftNumber.add(rightNumber);
+    }
+
+    protected Text createText(OperatorNode operatoNode,
+            ExpressionNode operandNode, EvaluationResult evaluationResult) {
+        if (!Text.isAcceptable(evaluationResult.getValueClass())) {
+            return null;
+        }
+        return new Text(operatoNode, evaluationResult.getValue(),
+                evaluationResult.getValueClass());
+    }
+
+    protected void throwNotTextException(OperatorNode operatorNode,
+            ExpressionNode operandNode, EvaluationResult evaluationResult) {
+        ExpressionLocation location = operandNode.getLocation();
+        throw new ExpressionException(DomaMessageCode.DOMA3020, location
+                .getExpression(), location.getPosition(), operatorNode
+                .getExpression(), evaluationResult.getValue(), evaluationResult
+                .getValueClass().getName());
     }
 
     @Override
     public EvaluationResult visitSubtractOperatorNode(
             SubtractOperatorNode node, Void p) {
         ExpressionNode leftNode = node.getLeftNode();
-        EvaluationResult leftResult = leftNode.accept(this, p);
-        Decimal leftDecimal = new Decimal(node, leftNode, leftResult);
+        EvaluationResult leftResult = evaluateNotNullableOperandNode(node,
+                leftNode, p);
         ExpressionNode rightNode = node.getRightNode();
-        EvaluationResult rightResult = rightNode.accept(this, p);
-        Decimal rightDecimal = new Decimal(node, rightNode, rightResult);
-        return leftDecimal.subtract(rightDecimal);
+        EvaluationResult rightResult = evaluateNotNullableOperandNode(node,
+                rightNode, p);
+        Number leftNumber = createNumber(node, leftNode, leftResult);
+        if (leftNumber == null) {
+            throwNotNumberException(node, leftNode, leftResult);
+        }
+        Number rightNumber = createNumber(node, rightNode, rightResult);
+        if (rightNumber == null) {
+            throwNotNumberException(node, rightNode, rightResult);
+        }
+        return leftNumber.subtract(rightNumber);
     }
 
     @Override
     public EvaluationResult visitMultiplyOperatorNode(
             MultiplyOperatorNode node, Void p) {
         ExpressionNode leftNode = node.getLeftNode();
-        EvaluationResult leftResult = leftNode.accept(this, p);
-        Decimal leftDecimal = new Decimal(node, leftNode, leftResult);
+        EvaluationResult leftResult = evaluateNotNullableOperandNode(node,
+                leftNode, p);
         ExpressionNode rightNode = node.getRightNode();
-        EvaluationResult rightResult = rightNode.accept(this, p);
-        Decimal rightDecimal = new Decimal(node, rightNode, rightResult);
-        return leftDecimal.multiply(rightDecimal);
+        EvaluationResult rightResult = evaluateNotNullableOperandNode(node,
+                rightNode, p);
+        Number leftNumber = createNumber(node, leftNode, leftResult);
+        if (leftNumber == null) {
+            throwNotNumberException(node, leftNode, leftResult);
+        }
+        Number rightNumber = createNumber(node, rightNode, rightResult);
+        if (rightNumber == null) {
+            throwNotNumberException(node, rightNode, rightResult);
+        }
+        return leftNumber.multiply(rightNumber);
     }
 
     @Override
     public EvaluationResult visitDivideOperatorNode(DivideOperatorNode node,
             Void p) {
         ExpressionNode leftNode = node.getLeftNode();
-        EvaluationResult leftResult = leftNode.accept(this, p);
-        Decimal leftDecimal = new Decimal(node, leftNode, leftResult);
+        EvaluationResult leftResult = evaluateNotNullableOperandNode(node,
+                leftNode, p);
         ExpressionNode rightNode = node.getRightNode();
-        EvaluationResult rightResult = rightNode.accept(this, p);
-        Decimal rightDecimal = new Decimal(node, rightNode, rightResult);
-        return leftDecimal.divide(rightDecimal);
+        EvaluationResult rightResult = evaluateNotNullableOperandNode(node,
+                rightNode, p);
+        Number leftNumber = createNumber(node, leftNode, leftResult);
+        if (leftNumber == null) {
+            throwNotNumberException(node, leftNode, leftResult);
+        }
+        Number rightNumber = createNumber(node, rightNode, rightResult);
+        if (rightNumber == null) {
+            throwNotNumberException(node, rightNode, rightResult);
+        }
+        return leftNumber.divide(rightNumber);
+    }
+
+    protected Number createNumber(ArithmeticOperatorNode operatoNode,
+            ExpressionNode operandNode, EvaluationResult evaluationResult) {
+        if (!Number.isAcceptable(evaluationResult.getValueClass())) {
+            return null;
+        }
+        return new Number(operatoNode, evaluationResult.getValue(),
+                evaluationResult.getValueClass());
+    }
+
+    protected void throwNotNumberException(ArithmeticOperatorNode operatorNode,
+            ExpressionNode operandNode, EvaluationResult evaluationResult) {
+        ExpressionLocation location = operandNode.getLocation();
+        throw new ExpressionException(DomaMessageCode.DOMA3013, location
+                .getExpression(), location.getPosition(), operatorNode
+                .getExpression(), evaluationResult.getValue(), evaluationResult
+                .getValueClass().getName());
+    }
+
+    protected EvaluationResult evaluateNotNullableOperandNode(
+            ExpressionNode operatorNode, ExpressionNode operandNode, Void p) {
+        EvaluationResult evaluationResult = operandNode.accept(this, p);
+        if (evaluationResult.getValue() == null) {
+            ExpressionLocation location = operandNode.getLocation();
+            throw new ExpressionException(DomaMessageCode.DOMA3015, location
+                    .getExpression(), location.getPosition(), operatorNode
+                    .getExpression());
+        }
+        return evaluationResult;
     }
 
     @Override
@@ -465,7 +556,33 @@ public class ExpressionEvaluator implements
         return new EvaluationResult(null, Void.class);
     }
 
-    protected static class Decimal {
+    protected static class Text {
+
+        protected final OperatorNode operatorNode;
+
+        protected final String stringValue;
+
+        protected Text(OperatorNode operatorNode, Object value,
+                Class<?> valueClass) {
+            assertNotNull(operatorNode);
+            assertNotNull(value);
+            assertNotNull(isAcceptable(valueClass));
+            this.operatorNode = operatorNode;
+            this.stringValue = value.toString();
+        }
+
+        protected static boolean isAcceptable(Class<?> valueClass) {
+            return valueClass == String.class || valueClass == Character.class
+                    || valueClass == char.class;
+        }
+
+        protected EvaluationResult concat(Text other) {
+            String newValue = stringValue.concat(other.stringValue);
+            return new EvaluationResult(newValue, String.class);
+        }
+    }
+
+    protected static class Number {
 
         protected static final Map<Class<?>, Integer> priorityMap = new HashMap<Class<?>, Integer>();
         static {
@@ -487,41 +604,28 @@ public class ExpressionEvaluator implements
 
         protected final ArithmeticOperatorNode operatorNode;
 
-        protected final ExpressionNode operandNode;
-
-        protected final BigDecimal decimalValue;
+        protected final BigDecimal numberValue;
 
         protected final Class<?> realClass;
 
         protected final Integer priority;
 
-        protected Decimal(ArithmeticOperatorNode operatorNode,
-                ExpressionNode operandNode, EvaluationResult evaluationResult) {
-            Object value = evaluationResult.getValue();
-            Class<?> valueClass = evaluationResult.getValueClass();
-            if (value == null) {
-                ExpressionLocation location = operandNode.getLocation();
-                throw new ExpressionException(DomaMessageCode.DOMA3015,
-                        location.getExpression(), location.getPosition(),
-                        operatorNode.getExpression());
-            }
-            priority = priorityMap.get(evaluationResult.getValueClass());
-            if (priority == null) {
-                ExpressionLocation location = operandNode.getLocation();
-                throw new ExpressionException(DomaMessageCode.DOMA3013,
-                        location.getExpression(), location.getPosition(),
-                        operatorNode.getExpression(), value, valueClass
-                                .getName());
-            }
-            this.operandNode = operandNode;
+        protected Number(ArithmeticOperatorNode operatorNode, Object value,
+                Class<?> valueClass) {
+            assertNotNull(operatorNode);
+            assertNotNull(value);
+            assertTrue(isAcceptable(valueClass));
+            this.priority = priorityMap.get(valueClass);
             this.operatorNode = operatorNode;
-            this.decimalValue = widenValue(operatorNode, operandNode, value,
-                    valueClass);
+            this.numberValue = widenValue(value, valueClass);
             this.realClass = valueClass;
         }
 
-        protected BigDecimal widenValue(ArithmeticOperatorNode operatorNode,
-                ExpressionNode operandNode, Object value, Class<?> clazz) {
+        protected static boolean isAcceptable(Class<?> valueClass) {
+            return priorityMap.containsKey(valueClass);
+        }
+
+        protected BigDecimal widenValue(Object value, Class<?> clazz) {
             if (clazz == BigDecimal.class) {
                 return BigDecimal.class.cast(value);
             } else if (clazz == BigInteger.class) {
@@ -570,40 +674,40 @@ public class ExpressionEvaluator implements
             return assertUnreachable();
         }
 
-        protected EvaluationResult add(Decimal other) {
+        protected EvaluationResult add(Number other) {
             BigDecimal newValue = null;
             try {
-                newValue = decimalValue.add(other.decimalValue);
+                newValue = numberValue.add(other.numberValue);
             } catch (ArithmeticException e) {
                 handleArithmeticException(e);
             }
             return createEvaluationResult(other, newValue);
         }
 
-        protected EvaluationResult subtract(Decimal other) {
+        protected EvaluationResult subtract(Number other) {
             BigDecimal newValue = null;
             try {
-                newValue = decimalValue.subtract(other.decimalValue);
+                newValue = numberValue.subtract(other.numberValue);
             } catch (ArithmeticException e) {
                 handleArithmeticException(e);
             }
             return createEvaluationResult(other, newValue);
         }
 
-        protected EvaluationResult multiply(Decimal other) {
+        protected EvaluationResult multiply(Number other) {
             BigDecimal newValue = null;
             try {
-                newValue = decimalValue.multiply(other.decimalValue);
+                newValue = numberValue.multiply(other.numberValue);
             } catch (ArithmeticException e) {
                 handleArithmeticException(e);
             }
             return createEvaluationResult(other, newValue);
         }
 
-        protected EvaluationResult divide(Decimal other) {
+        protected EvaluationResult divide(Number other) {
             BigDecimal newValue = null;
             try {
-                newValue = decimalValue.divide(other.decimalValue);
+                newValue = numberValue.divide(other.numberValue);
             } catch (ArithmeticException e) {
                 handleArithmeticException(e);
             }
@@ -617,7 +721,7 @@ public class ExpressionEvaluator implements
                     .getPosition(), e);
         }
 
-        protected EvaluationResult createEvaluationResult(Decimal other,
+        protected EvaluationResult createEvaluationResult(Number other,
                 BigDecimal newValue) {
             Class<?> realClass = this.priority >= other.priority ? this.realClass
                     : other.realClass;

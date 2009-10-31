@@ -38,7 +38,7 @@ public class FieldDeclaration {
 
     public TypeDeclaration getTypeDeclaration() {
         TypeMirror fieldType = resolveTypeParameter(element.asType());
-        return TypeDeclaration.newInstance(fieldType, env);
+        return TypeDeclaration.newTypeDeclaration(fieldType, env);
     }
 
     protected TypeMirror resolveTypeParameter(TypeMirror formalType) {

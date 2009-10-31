@@ -34,11 +34,9 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
-import javax.lang.model.util.SimpleTypeVisitor6;
 
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.ElementUtil;
@@ -105,25 +103,29 @@ public class TypeDeclaration {
                 || TypeUtil.isSameType(type, Boolean.class, env);
     }
 
+    public boolean isTextType() {
+        return type.getKind() == TypeKind.CHAR
+                || TypeUtil.isSameType(type, String.class, env)
+                || TypeUtil.isSameType(type, Character.class, env);
+    }
+
     public boolean isNumberType() {
-        return type.accept(new SimpleTypeVisitor6<Boolean, Void>(false) {
+        switch (type.getKind()) {
+        case BYTE:
+        case SHORT:
+        case INT:
+        case LONG:
+        case FLOAT:
+        case DOUBLE:
+            return true;
+        }
 
-            @Override
-            public Boolean visitPrimitive(PrimitiveType t, Void p) {
-                return true;
-            }
-
-            @Override
-            protected Boolean defaultAction(TypeMirror e, Void p) {
-                TypeElement typeElement = TypeUtil.toTypeElement(e, env);
-                if (typeElement == null) {
-                    return false;
-                }
-                return NUMBER_PRIORITY_MAP.containsKey(typeElement
-                        .getQualifiedName().toString());
-            }
-
-        }, null);
+        TypeElement typeElement = TypeUtil.toTypeElement(type, env);
+        if (typeElement == null) {
+            return false;
+        }
+        return NUMBER_PRIORITY_MAP.containsKey(typeElement.getQualifiedName()
+                .toString());
     }
 
     public int getNumberPriority() {
@@ -158,8 +160,8 @@ public class TypeDeclaration {
                         && typeDeclIterator.hasNext();) {
                     TypeMirror t1 = TypeUtil.boxIfPrimitive(
                             valueElementIterator.next().asType(), env);
-                    TypeMirror t2 = TypeUtil.boxIfPrimitive(
-                            typeDeclIterator.next().getType(), env);
+                    TypeMirror t2 = TypeUtil.boxIfPrimitive(typeDeclIterator
+                            .next().getType(), env);
                     if (!TypeUtil.isSameType(t1, t2, env)) {
                         continue outer;
                     }
@@ -250,8 +252,8 @@ public class TypeDeclaration {
                         && typeDeclIterator.hasNext();) {
                     TypeMirror t1 = TypeUtil.boxIfPrimitive(
                             valueElementIterator.next().asType(), env);
-                    TypeMirror t2 = TypeUtil.boxIfPrimitive(
-                            typeDeclIterator.next().getType(), env);
+                    TypeMirror t2 = TypeUtil.boxIfPrimitive(typeDeclIterator
+                            .next().getType(), env);
                     if (!TypeUtil.isSameType(t1, t2, env)) {
                         continue outer;
                     }
@@ -277,13 +279,21 @@ public class TypeDeclaration {
         return candidate;
     }
 
-    public TypeDeclaration calculate(TypeDeclaration other) {
+    public TypeDeclaration emulateConcatOperation(TypeDeclaration other) {
+        assertNotNull(other);
+        assertTrue(isTextType());
+        assertTrue(other.isTextType());
+        TypeMirror type = TypeUtil.getTypeMirror(String.class, env);
+        return newTypeDeclaration(type, env);
+    }
+
+    public TypeDeclaration emulateArithmeticOperation(TypeDeclaration other) {
         assertNotNull(other);
         assertTrue(isNumberType());
         assertTrue(other.isNumberType());
         TypeMirror type = this.numberPriority >= other.numberPriority ? this.type
                 : other.type;
-        return newInstance(type, env);
+        return newTypeDeclaration(type, env);
     }
 
     public boolean isSameType(TypeDeclaration other) {
@@ -298,7 +308,7 @@ public class TypeDeclaration {
         return false;
     }
 
-    public static TypeDeclaration newInstance(TypeMirror type,
+    public static TypeDeclaration newTypeDeclaration(TypeMirror type,
             ProcessingEnvironment env) {
         assertNotNull(type, env);
         TypeElement typeElement = TypeUtil.toTypeElement(type, env);
@@ -331,7 +341,7 @@ public class TypeDeclaration {
         return 0;
     }
 
-    public static TypeDeclaration newUnknownInstance(ProcessingEnvironment env) {
+    public static TypeDeclaration newUnknownTypeDeclaration(ProcessingEnvironment env) {
         TypeDeclaration typeDeclaration = new TypeDeclaration();
         typeDeclaration.type = env.getTypeUtils().getNoType(TypeKind.NONE);
         typeDeclaration.typeParameterDeclarationsMap = Collections.emptyMap();
@@ -339,10 +349,10 @@ public class TypeDeclaration {
         return typeDeclaration;
     }
 
-    public static TypeDeclaration newBooleanInstance(ProcessingEnvironment env) {
+    public static TypeDeclaration newBooleanTypeDeclaration(ProcessingEnvironment env) {
         assertNotNull(env);
         TypeMirror type = TypeUtil.getTypeMirror(boolean.class, env);
-        return newInstance(type, env);
+        return newTypeDeclaration(type, env);
     }
 
     protected static void gatherTypeParameterDeclarations(

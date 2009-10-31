@@ -41,7 +41,7 @@ public class ConstructorDeclaration {
 
     public TypeDeclaration getTypeDeclaration() {
         TypeMirror returnType = resolveTypeParameter(element.asType());
-        return TypeDeclaration.newInstance(returnType, env);
+        return TypeDeclaration.newTypeDeclaration(returnType, env);
     }
 
     protected TypeMirror resolveTypeParameter(TypeMirror formalType) {
