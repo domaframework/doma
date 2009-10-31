@@ -24,7 +24,7 @@ import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.Domain;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.TypeUtil;
+import org.seasar.doma.internal.apt.util.TypeUtil;
 
 public class DomainType extends AbstractDataType {
 

@@ -31,6 +31,8 @@ import javax.lang.model.util.ElementFilter;
 import org.seasar.doma.internal.apt.dao.ExpressionValidationDao;
 import org.seasar.doma.internal.apt.decl.TypeDeclaration;
 import org.seasar.doma.internal.apt.entity.Emp;
+import org.seasar.doma.internal.apt.util.ElementUtil;
+import org.seasar.doma.internal.apt.util.TypeUtil;
 import org.seasar.doma.internal.expr.ExpressionParser;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
 import org.seasar.doma.internal.message.DomaMessageCode;
@@ -62,6 +64,22 @@ public class ExpressionValidatorTest extends AptTestCase {
             System.out.println(expected);
             assertEquals(DomaMessageCode.DOMA4067, expected.getMessageCode());
         }
+    }
+
+    public void testMethodFound() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testEmp", Emp.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap);
+
+        ExpressionNode node = new ExpressionParser("emp.equals(emp)").parse();
+        TypeDeclaration result = validator.validate(node);
+        assertTrue(result.isBooleanType());
     }
 
     public void testMethodNotFound() throws Exception {

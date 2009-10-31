@@ -39,8 +39,8 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.ElementUtil;
-import org.seasar.doma.internal.apt.TypeUtil;
+import org.seasar.doma.internal.apt.util.ElementUtil;
+import org.seasar.doma.internal.apt.util.TypeUtil;
 
 public class TypeDeclaration {
 
@@ -244,17 +244,17 @@ public class TypeDeclaration {
                         .size()) {
                     continue;
                 }
-                Iterator<? extends VariableElement> valueElementIterator = parameters
-                        .iterator();
                 Iterator<TypeDeclaration> typeDeclIterator = parameterTypeDeclarations
                         .iterator();
-                for (; valueElementIterator.hasNext()
-                        && typeDeclIterator.hasNext();) {
-                    TypeMirror t1 = TypeUtil.boxIfPrimitive(
-                            valueElementIterator.next().asType(), env);
-                    TypeMirror t2 = TypeUtil.boxIfPrimitive(typeDeclIterator
+                Iterator<? extends VariableElement> valueElementIterator = parameters
+                        .iterator();
+                while (typeDeclIterator.hasNext()
+                        && valueElementIterator.hasNext()) {
+                    TypeMirror t1 = TypeUtil.boxIfPrimitive(typeDeclIterator
                             .next().getType(), env);
-                    if (!TypeUtil.isSameType(t1, t2, env)) {
+                    TypeMirror t2 = TypeUtil.boxIfPrimitive(
+                            valueElementIterator.next().asType(), env);
+                    if (!TypeUtil.isAssignable(t1, t2, env)) {
                         continue outer;
                     }
                 }
@@ -341,7 +341,8 @@ public class TypeDeclaration {
         return 0;
     }
 
-    public static TypeDeclaration newUnknownTypeDeclaration(ProcessingEnvironment env) {
+    public static TypeDeclaration newUnknownTypeDeclaration(
+            ProcessingEnvironment env) {
         TypeDeclaration typeDeclaration = new TypeDeclaration();
         typeDeclaration.type = env.getTypeUtils().getNoType(TypeKind.NONE);
         typeDeclaration.typeParameterDeclarationsMap = Collections.emptyMap();
@@ -349,7 +350,8 @@ public class TypeDeclaration {
         return typeDeclaration;
     }
 
-    public static TypeDeclaration newBooleanTypeDeclaration(ProcessingEnvironment env) {
+    public static TypeDeclaration newBooleanTypeDeclaration(
+            ProcessingEnvironment env) {
         assertNotNull(env);
         TypeMirror type = TypeUtil.getTypeMirror(boolean.class, env);
         return newTypeDeclaration(type, env);

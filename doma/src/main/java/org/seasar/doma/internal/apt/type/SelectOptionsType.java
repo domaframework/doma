@@ -20,7 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.internal.apt.TypeUtil;
+import org.seasar.doma.internal.apt.util.TypeUtil;
 import org.seasar.doma.jdbc.SelectOptions;
 
 public class SelectOptionsType extends AbstractDataType {

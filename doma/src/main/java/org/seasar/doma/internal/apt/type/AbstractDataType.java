@@ -22,7 +22,7 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.internal.apt.TypeUtil;
+import org.seasar.doma.internal.apt.util.TypeUtil;
 
 /**
  * @author taedium

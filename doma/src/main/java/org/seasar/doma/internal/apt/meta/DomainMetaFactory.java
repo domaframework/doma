@@ -17,8 +17,8 @@ import javax.lang.model.util.ElementFilter;
 import org.seasar.doma.Domain;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.TypeUtil;
 import org.seasar.doma.internal.apt.type.BasicType;
+import org.seasar.doma.internal.apt.util.TypeUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
 
 public class DomainMetaFactory {

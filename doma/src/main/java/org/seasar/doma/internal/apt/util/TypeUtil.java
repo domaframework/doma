@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt;
+package org.seasar.doma.internal.apt.util;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
@@ -37,6 +37,8 @@ import javax.lang.model.type.WildcardType;
 import javax.lang.model.util.SimpleElementVisitor6;
 import javax.lang.model.util.SimpleTypeVisitor6;
 import javax.lang.model.util.TypeKindVisitor6;
+
+import org.seasar.doma.internal.apt.AptIllegalStateException;
 
 /**
  * @author taedium
