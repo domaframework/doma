@@ -27,62 +27,62 @@ import java.sql.Timestamp;
 public interface ExpressionFunctions {
 
     /**
-     * 前方一致検索を示す文字列を返します。
+     * 前方一致検索を行うことを示します。
      * 
      * @param text
      *            文字列
-     * @return 前方一致検索を示す文字列
+     * @return 前方一致検索のための文字列
      */
     String startWith(String text);
 
     /**
-     * 前方一致検索を示す文字列を返します。
+     * エスケープ文字を指定して前方一致検索を行うことを示します。
      * 
      * @param text
      *            文字列
      * @param escape
      *            エスケープ文字
-     * @return 前方一致検索を示す文字列
+     * @return 前方一致検索のための文字列
      */
     String startWith(String text, char escape);
 
     /**
-     * 後方一致検索を示す文字列を返します。
+     * 後方一致検索を行うことを示します。
      * 
      * @param text
      *            文字列
-     * @return 後方一致検索を示す文字列
+     * @return 後方一致検索のための文字列
      */
     String endWith(String text);
 
     /**
-     * 後方一致検索を示す文字列を返します。
+     * エスケープ文字を指定して後方一致検索を行うことを示します。
      * 
      * @param text
      *            文字列
      * @param escape
      *            エスケープ文字
-     * @return 後方一致検索を示す文字列
+     * @return 後方一致検索のための文字列
      */
     String endWith(String text, char escape);
 
     /**
-     * 前方後方一致検索を示す文字列を返します。
+     * 前方後方一致検索を行うことを示します。
      * 
      * @param text
      *            文字列
-     * @return 前方後方一致検索を示す文字列
+     * @return 前方後方一致検索のための文字列
      */
     String contain(String text);
 
     /**
-     * 前方後方一致検索を示す文字列を返します。
+     * エスケープ文字を指定して前方後方一致検索を行うことを示します。
      * 
      * @param text
      *            文字列
      * @param escape
      *            エスケープ文字
-     * @return 前方後方一致検索を示す文字列
+     * @return 前方後方一致検索のための文字列
      */
     String contain(String text, char escape);
 
