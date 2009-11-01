@@ -118,7 +118,8 @@ public class ExpressionValidatorTest extends AptTestCase {
         ExpressionValidator validator = new ExpressionValidator(
                 getProcessingEnvironment(), methodElement, parameterTypeMap);
 
-        ExpressionNode node = new ExpressionParser("@starts(emp.name)").parse();
+        ExpressionNode node = new ExpressionParser("@startWith(emp.name)")
+                .parse();
         TypeDeclaration result = validator.validate(node);
         assertTrue(result.isTextType());
     }

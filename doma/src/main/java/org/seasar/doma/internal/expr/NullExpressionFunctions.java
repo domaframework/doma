@@ -27,32 +27,32 @@ import org.seasar.doma.expr.ExpressionFunctions;
 public class NullExpressionFunctions implements ExpressionFunctions {
 
     @Override
-    public String starts(String text) {
+    public String startWith(String text) {
         return text;
     }
 
     @Override
-    public String starts(String text, char escape) {
+    public String startWith(String text, char escape) {
         return text;
     }
 
     @Override
-    public String ends(String text) {
+    public String endWith(String text) {
         return text;
     }
 
     @Override
-    public String ends(String text, char escape) {
+    public String endWith(String text, char escape) {
         return text;
     }
 
     @Override
-    public String contains(String text) {
+    public String contain(String text) {
         return text;
     }
 
     @Override
-    public String contains(String text, char escape) {
+    public String contain(String text, char escape) {
         return text;
     }
 

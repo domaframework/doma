@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>クエリ定義</title>
+	</properties>
+	<body>
+		<section name="クエリ定義">
+			<ul>
+				<li>
+					<a href="select.html">検索</a>
+				</li>
+				<li>
+					<a href="insert.html">挿入</a>
+				</li>
+				<li>
+					<a href="update.html">更新</a>
+				</li>
+				<li>
+					<a href="batch_insert.html">バッチ挿入</a>
+				</li>
+				<li>
+					<a href="batch_update.html">バッチ更新</a>
+				</li>
+				<li>
+					<a href="batch_delete.html">バッチ削除</a>
+				</li>
+				<li>
+					<a href="function.html">ストアドファンクション</a>
+				</li>
+				<li>
+					<a href="procedure.html">ストアドプロシージャー</a>
+				</li>
+				<li>
+					<a href="factory.html">ファクトリ</a>
+				</li>
+			</ul>
+		</section>
+	</body>
+</document>

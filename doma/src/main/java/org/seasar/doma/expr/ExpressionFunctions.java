@@ -33,7 +33,7 @@ public interface ExpressionFunctions {
      *            文字列
      * @return 前方一致検索を示す文字列
      */
-    String starts(String text);
+    String startWith(String text);
 
     /**
      * 前方一致検索を示す文字列を返します。
@@ -44,7 +44,7 @@ public interface ExpressionFunctions {
      *            エスケープ文字
      * @return 前方一致検索を示す文字列
      */
-    String starts(String text, char escape);
+    String startWith(String text, char escape);
 
     /**
      * 後方一致検索を示す文字列を返します。
@@ -53,7 +53,7 @@ public interface ExpressionFunctions {
      *            文字列
      * @return 後方一致検索を示す文字列
      */
-    String ends(String text);
+    String endWith(String text);
 
     /**
      * 後方一致検索を示す文字列を返します。
@@ -64,7 +64,7 @@ public interface ExpressionFunctions {
      *            エスケープ文字
      * @return 後方一致検索を示す文字列
      */
-    String ends(String text, char escape);
+    String endWith(String text, char escape);
 
     /**
      * 前方後方一致検索を示す文字列を返します。
@@ -73,7 +73,7 @@ public interface ExpressionFunctions {
      *            文字列
      * @return 前方後方一致検索を示す文字列
      */
-    String contains(String text);
+    String contain(String text);
 
     /**
      * 前方後方一致検索を示す文字列を返します。
@@ -84,7 +84,7 @@ public interface ExpressionFunctions {
      *            エスケープ文字
      * @return 前方後方一致検索を示す文字列
      */
-    String contains(String text, char escape);
+    String contain(String text, char escape);
 
     /**
      * 日付の時刻部分をゼロにリセットします。

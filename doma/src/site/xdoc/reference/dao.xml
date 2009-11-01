@@ -9,7 +9,7 @@
 			<ul>
 				<li><a href="#概要">概要</a></li>
 				<li><a href="#Dao定義">Dao定義</a></li>
-				<li><a href="#クエリメソッド定義">クエリメソッド定義</a></li>
+				<li><a href="#クエリ定義">クエリ定義</a></li>
 				<li><a href="#デリゲート定義">デリゲート定義</a></li>
 				<li><a href="#Daoの利用方法">Daoの利用方法</a></li>
 			</ul>
@@ -38,101 +38,62 @@ public interface EmployeeDao {
 				<code>Config</code>の実装クラスは、データソース、データベースの方言、ネーミング規約等の<a href="config.html">設定</a>を行います。
 			</p>
 		</section>
-		<section name="クエリメソッド定義">
+		<section name="クエリ定義">
 			<p>
 				SQLを問い合わせるクエリメソッドには、アノテーションが必須です。
 			</p>
 			<subsection name="検索">
 				<p>
 					検索を行うには、 <a href="../apidocs/org/seasar/doma/Select.html"><code>@Select</code></a>を注釈します。
-				</p>
-				<p>
-					検索条件のパラメータとして、<a href="basic.html">基本型</a>、<a href="domain.html">ドメインクラス</a>、<a href="entity.html">エンティティクラス</a>を任意の数だけ宣言できます。
-					また、IN句で複数のバインド変数に使用できるように、基本型やドメインクラスを要素とする<code>java.util.List</code>型のパラメータも宣言できます。
-				</p>
-				<p>
-					ページングや悲観的排他制御を可能とするには、
-					<code>org.seasar.doma.jdbc.SelectOptions</code>型のパラメータを宣言してください。
-				</p>
-				<p>
-					大量件数を1件ずつ処理するには、<code>@Select</code>の <code>iterate</code>要素に <code>true</code>を設定し、
-					<code>org.seasar.doma.jdbc.IterationCallback</code>型のパラメータを宣言してください。
-				</p>
-				<p>
-					検索についてはSQLの自動生成機能はありません。
-					メソッドに対応する<a href="sqlfile.html">SQLファイル</a>が必須です。
+					詳細は、<a href="query/select.html"><code>検索</code></a>を参照してください。
 				</p>
 			</subsection>
 			<subsection name="挿入">
 				<p>
 					挿入を行うには、 <a href="../apidocs/org/seasar/doma/Insert.html"><code>@Insert</code></a>を注釈します。
-				</p>
-				<p>
-					<code>sqlFile</code>要素により、SQLの自動生成を使用するか<a href="sqlfile.html">SQLファイル</a>を使用するか選択できます。
-					デフォルトではSQLの自動生成が実行されます。
+					詳細は、<a href="query/insert.html"><code>挿入</code></a>を参照してください。
 				</p>
 			</subsection>
 			<subsection name="更新">
 				<p>
 					更新を行うには、<a href="../apidocs/org/seasar/doma/Update.html"><code>@Update</code></a>を注釈します。
-				</p>
-				<p>
-					<code>sqlFile</code>要素により、SQLの自動生成を使用するか<a href="sqlfile.html">SQLファイル</a>を使用するか選択できます。
-					デフォルトではSQLの自動生成が実行されます。
+					詳細は、<a href="query/update.html"><code>更新</code></a>を参照してください。
 				</p>
 			</subsection>
 			<subsection name="削除">
 				<p>
 					削除を行うには、 <a href="../apidocs/org/seasar/doma/Delete.html"><code>@Delete</code></a>を注釈します。
-				</p>
-				<p>
-					SQLの自動生成を使用するか<a href="sqlfile.html">SQLファイル</a>を使用するか選択できます。
-					デフォルトではSQLの自動生成が実行されます。 
+					詳細は、<a href="query/delete.html"><code>削除</code></a>を参照してください。
 				</p>
 			</subsection>
 			<subsection name="バッチ挿入">
 				<p>
 					バッチ挿入を行うには、 <a href="../apidocs/org/seasar/doma/BatchInsert.html"><code>@BatchInsert</code></a>を注釈します。
-				</p>
-				<p>
-					SQLの自動生成を使用するか<a href="sqlfile.html">SQLファイル</a>を使用するか選択できます。
-					デフォルトではSQLの自動生成が実行されます。 
+					詳細は、<a href="query/batch_insert.html"><code>バッチ挿入</code></a>を参照してください。
 				</p>
 			</subsection>
 			<subsection name="バッチ更新">
 				<p>
 					バッチ更新を行うには、 <a href="../apidocs/org/seasar/doma/BatchUpdate.html"><code>@BatchUpdate</code></a>を注釈します。
-				</p>
-				<p>
-					<code>sqlFile</code>要素により、SQLの自動生成を使用するか<a href="sqlfile.html">SQLファイル</a>を使用するか選択できます。
-					デフォルトではSQLの自動生成が実行されます。
+					詳細は、<a href="query/batch_update.html"><code>バッチ更新</code></a>を参照してください。
 				</p>
 			</subsection>
 			<subsection name="バッチ削除">
 				<p>
 					バッチ削除を行うには、 <a href="../apidocs/org/seasar/doma/BatchDelete.html"><code>@BatchDelete</code></a>を注釈します。
-				</p>
-				<p>
-					<code>sqlFile</code>要素により、SQLの自動生成を使用するか<a href="sqlfile.html">SQLファイル</a>を使用するか選択できます。
-					デフォルトではSQLの自動生成が実行されます。
+					詳細は、<a href="query/batch_update.html"><code>バッチ削除</code></a>を参照してください。
 				</p>
 			</subsection>
 			<subsection name="ストアドファンクション">
 				<p>
 					ストアドファンクションを呼び出すには、 <a href="../apidocs/org/seasar/doma/Function.html"><code>@Function</code></a>を注釈します。
-				</p>
-				<p>
-					SQLの自動生成機能のみがサポートされています。
-					SQLファイルにマッピングはできません。
+					詳細は、<a href="query/function.html"><code>ストアドファンクション</code></a>を参照してください。
 				</p>
 			</subsection>
 			<subsection name="ストアドプロシージャー">
 				<p>
 					ストアドプロシージャーを呼び出すには、 <a href="../apidocs/org/seasar/doma/Procedure.html"><code>@Procedure</code></a>を注釈します。
-				</p>
-				<p>
-					SQLの自動生成機能のみがサポートされています。
-					SQLファイルにマッピングはできません。
+					詳細は、<a href="query/procedure.html"><code>ストアドプロシージャー</code></a>を参照してください。
 				</p>
 			</subsection>
 			<subsection name="ファクトリ">
@@ -143,6 +104,7 @@ public interface EmployeeDao {
 					<a href="../apidocs/org/seasar/doma/ClobFactory.html"><code>@ClobFactory</code></a> 、
 					<a href="../apidocs/org/seasar/doma/NClobFactory.html"><code>@NClobFactory</code></a> 、
 					を注釈します。
+					詳細は、<a href="query/factory.html"><code>ファクトリ</code></a>を参照してください。
 				</p>
 			</subsection>
 		</section>

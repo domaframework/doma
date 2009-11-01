@@ -697,7 +697,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String starts(String text) {
+        public String startWith(String text) {
             if (text == null) {
                 return null;
             }
@@ -707,7 +707,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String starts(String text, char escape) {
+        public String startWith(String text, char escape) {
             if (text == null) {
                 return null;
             }
@@ -715,7 +715,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String ends(String text) {
+        public String endWith(String text) {
             if (text == null) {
                 return null;
             }
@@ -725,7 +725,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String ends(String text, char escape) {
+        public String endWith(String text, char escape) {
             if (text == null) {
                 return null;
             }
@@ -733,7 +733,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String contains(String text) {
+        public String contain(String text) {
             if (text == null) {
                 return null;
             }
@@ -746,7 +746,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String contains(String text, char escape) {
+        public String contain(String text, char escape) {
             if (text == null) {
                 return null;
             }

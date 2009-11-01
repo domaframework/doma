@@ -433,10 +433,10 @@ and employeeName like 's%']]></source>
 					たとえば、likeで前方一致検索を行う場合に、次のように記述できます。
 				</p>
 <source><![CDATA[select * from employee where 
-    employee_name like /*@starts(employee.employeeName)*/'smith']]></source>
+    employee_name like /*@startWith(employee.employeeName)*/'smith']]></source>
 				<p>
 					ここでは、<code>@starts(employee.employeeName)</code> というように、
-					<code>employee.employeeName</code> を <code>@starts</code>関数に渡しています。
+					<code>employee.employeeName</code> を <code>@startWith</code>関数に渡しています。
 					組み込み関数の名前はすべて<code>@</code>で始まります。
 					<code>employee.employeeName</code> の値が「ABC」である場合、
 					SQLにバインディングされる値は「ABC%」となります。
@@ -448,12 +448,12 @@ and employeeName like 's%']]></source>
 				</p>
 				<table>
 					<tr><th>戻り値の型</th><th>関数名とパラメータ</th><th>概要</th></tr>
-					<tr><td><code>String</code></td><td><code>@starts(String text)</code></td><td>前方一致検索のための文字列を返します。エスケープはデフォルトのエスケープシーケンスを用いて行われます。</td></tr>
-					<tr><td><code>String</code></td><td><code>@starts(String text, char escape)</code></td><td>前方一致検索のための文字列を返します。エスケープは第2引数で指定したエスケープシーケンスを用いて行われます。</td></tr>
-					<tr><td><code>String</code></td><td><code>@ends(String text)</code></td><td>後方一致検索のための文字列を返します。エスケープはデフォルトのエスケープシーケンスを用いて行われます。</td></tr>
-					<tr><td><code>String</code></td><td><code>@ends(String text, char escape)</code></td><td>後方一致検索のための文字列を返します。エスケープは第2引数で指定したエスケープシーケンスを用いて行われます。</td></tr>
-					<tr><td><code>String</code></td><td><code>@contains(String text)</code></td><td>前後方一致検索のための文字列を返します。エスケープはデフォルトのエスケープシーケンスを用いて行われます。</td></tr>
-					<tr><td><code>String</code></td><td><code>@contains(String text, char escape)</code></td><td>前後方一致検索のための文字列を返します。エスケープは第2引数で指定したエスケープシーケンスを用いて行われます。</td></tr>
+					<tr><td><code>String</code></td><td><code>@startWith(String text)</code></td><td>前方一致検索のための文字列を返します。エスケープはデフォルトのエスケープシーケンスを用いて行われます。</td></tr>
+					<tr><td><code>String</code></td><td><code>@startWith(String text, char escape)</code></td><td>前方一致検索のための文字列を返します。エスケープは第2引数で指定したエスケープシーケンスを用いて行われます。</td></tr>
+					<tr><td><code>String</code></td><td><code>@endWith(String text)</code></td><td>後方一致検索のための文字列を返します。エスケープはデフォルトのエスケープシーケンスを用いて行われます。</td></tr>
+					<tr><td><code>String</code></td><td><code>@endWith(String text, char escape)</code></td><td>後方一致検索のための文字列を返します。エスケープは第2引数で指定したエスケープシーケンスを用いて行われます。</td></tr>
+					<tr><td><code>String</code></td><td><code>@contain(String text)</code></td><td>前方後方一致検索のための文字列を返します。エスケープはデフォルトのエスケープシーケンスを用いて行われます。</td></tr>
+					<tr><td><code>String</code></td><td><code>@contain(String text, char escape)</code></td><td>前方後方一致検索のための文字列を返します。エスケープは第2引数で指定したエスケープシーケンスを用いて行われます。</td></tr>
 					<tr><td><code>java.sql.Date</code></td><td><code>@resetTimePart(java.sql.Date date)</code></td><td>時刻部分をゼロにリセットした新しい日付を返します。</td></tr>
 					<tr><td><code>java.sql.Timestamp</code></td><td><code>@resetTimePart(java.sql.Timestamp timestamp)</code></td><td>時刻部分をゼロにリセットした新しいタイムスタンプを返します。</td></tr>
 				</table>

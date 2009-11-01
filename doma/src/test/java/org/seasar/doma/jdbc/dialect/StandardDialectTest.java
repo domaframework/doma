@@ -43,20 +43,20 @@ public class StandardDialectTest extends TestCase {
     public void testExpressionFunctions_starts() throws Exception {
         StandardDialect dialect = new StandardDialect();
         ExpressionFunctions functions = dialect.getExpressionFunctions();
-        assertEquals("a\\\\a\\%a\\_%", functions.starts("a\\a%a_"));
+        assertEquals("a\\\\a\\%a\\_%", functions.startWith("a\\a%a_"));
     }
 
     public void testExpressionFunctions_starts_escape() throws Exception {
         StandardDialect dialect = new StandardDialect();
         ExpressionFunctions functions = dialect.getExpressionFunctions();
-        assertEquals("a$$a$%a$_%", functions.starts("a$a%a_", '$'));
+        assertEquals("a$$a$%a$_%", functions.startWith("a$a%a_", '$'));
     }
 
     public void testExpressionFunctions_starts_escapeWithDefault()
             throws Exception {
         StandardDialect dialect = new StandardDialect();
         ExpressionFunctions functions = dialect.getExpressionFunctions();
-        assertEquals("a\\\\a\\%a\\_%", functions.starts("a\\a%a_", '\\'));
+        assertEquals("a\\\\a\\%a\\_%", functions.startWith("a\\a%a_", '\\'));
     }
 
     public void testExpressionFunctions_resetTimePart_forDate()

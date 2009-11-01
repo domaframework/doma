@@ -46,7 +46,18 @@
 				<item name="基本型" href="reference/basic.html" />
 				<item name="ドメインクラス" href="reference/domain.html" />
 				<item name="エンティティクラス" href="reference/entity.html" />
-				<item name="Daoインタフェース" href="reference/dao.html" />
+				<item name="Daoインタフェース" href="reference/dao.html" collapse="true" >
+					<item name="検索" href="reference/query/select.html" />
+					<item name="挿入" href="reference/query/insert.html" />
+					<item name="更新" href="reference/query/update.html" />
+					<item name="削除" href="reference/query/delete.html" />
+					<item name="バッチ挿入" href="reference/query/batch_insert.html" />
+					<item name="バッチ更新" href="reference/query/batch_update.html" />
+					<item name="バッチ削除" href="reference/query/batch_delete.html" />
+					<item name="ストアドファンクション" href="reference/query/function.html" />
+					<item name="ストアドプロシージャー" href="reference/query/procedure.html" />
+					<item name="ファクトリ" href="reference/query/factory.html" />
+				</item>
 				<item name="設定" href="reference/config.html" />
 				<item name="SQLファイル" href="reference/sqlfile.html" />
 				<item name="アノテーション処理" href="reference/apt.html" />

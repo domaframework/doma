@@ -28,20 +28,20 @@ public class OracleDialectTest extends TestCase {
     public void testExpressionFunctions_starts() throws Exception {
         StandardDialect dialect = new OracleDialect();
         ExpressionFunctions functions = dialect.getExpressionFunctions();
-        assertEquals("a\\\\a\\%a\\_a\\％a\\＿%", functions.starts("a\\a%a_a％a＿"));
+        assertEquals("a\\\\a\\%a\\_a\\％a\\＿%", functions.startWith("a\\a%a_a％a＿"));
     }
 
     public void testExpressionFunctions_starts_escape() throws Exception {
         StandardDialect dialect = new OracleDialect();
         ExpressionFunctions functions = dialect.getExpressionFunctions();
-        assertEquals("a$$a$%a$_a$％a$＿%", functions.starts("a$a%a_a％a＿", '$'));
+        assertEquals("a$$a$%a$_a$％a$＿%", functions.startWith("a$a%a_a％a＿", '$'));
     }
 
     public void testExpressionFunctions_starts_escapeWithDefault()
             throws Exception {
         StandardDialect dialect = new OracleDialect();
         ExpressionFunctions functions = dialect.getExpressionFunctions();
-        assertEquals("a\\\\a\\%a\\_a\\％a\\＿%", functions.starts("a\\a%a_a％a＿",
+        assertEquals("a\\\\a\\%a\\_a\\％a\\＿%", functions.startWith("a\\a%a_a％a＿",
                 '\\'));
     }
 }

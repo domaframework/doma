@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>検索</title>
+	</properties>
+	<body>
+		<section name="目次">
+			<ul>
+				<li><a href="#概要">概要</a></li>
+				<li><a href="#問い合わせ条件">問い合わせ条件</a></li>
+				<li><a href="#複数件検索">複数件検索</a></li>
+				<li><a href="#1件検索">1件検索</a></li>
+				<li><a href="#イテレーションによる検索">イテレーションによる検索</a></li>
+				<li><a href="#検索オプションを利用した検索">検索オプションを利用した検索</a>
+					<ul>
+						<li><a href="#ページング">ページング</a></li>
+						<li><a href="#悲観的排他制御">悲観的排他制御</a></li>
+					</ul>
+				</li>
+			</ul>
+		</section>
+		<section name="概要">
+			<p>
+				検索を行うには、 <a href="../../apidocs/org/seasar/doma/Select.html"><code>@Select</code></a>をDaoのメソッドに注釈します。
+			</p>
+<source><![CDATA[@Config(config = AppConfig.class)
+public interface EmployeeDao {
+    @Select
+    List<Employee> selectByDepartmentName(String departmentName);
+    ...
+}]]></source>
+			<p>
+				検索では、<a href="../sqlfile.html">SQLファイル</a>が必須です。
+				検索系のSQLを自動生成する機能はありません。
+			</p>
+		</section>
+		<section name="問い合わせ条件">
+			<p>
+				問い合わせ条件にはメソッドのパラメータを使用します。
+				パラメータの型には、<a href="../basic.htm.">基本型</a>、<a href="../domain.htm.">ドメインクラス</a>、<a href="../entity.htm.">エンティティティクラス</a>
+				および<a href="../basic.htm.">基本型</a>や<a href="../domain.htm.">ドメインクラス</a>を要素とする<code>java.util.List</code>が使用できます。
+				パラメータの型は混在させることもできます。
+				パラメータの数に制限はありません。
+			</p>
+<source><![CDATA[@Select
+List<Employee> selectByNameAndSalary(String name, BigDecimal salary);]]></source>
+			<p>
+				<a href="../sqlfile.html">SQLファイル</a>ではSQLコメントを使いメソッドのパラメータをSQLにマッピングさせます。
+				SQLコメントではメソッドのパラメータ名を参照します。
+			</p>
+<source><![CDATA[select * from employee where employee_name = /*name*/'hoge' and salary > /*salary*/100]]></source>
+			<p>
+				メソッドのパラメータに基本型ではなくエンティティクラスを使用する場合は、ドット（.）でエンティティのプロパティにアクセスしSQLにマッピングさせます。
+			</p>
+<source><![CDATA[@Select
+List<Employee> selectByExample(Employee employee);]]></source>
+<source><![CDATA[select * from employee where employee_name = /*employee.name*/'hoge' and salary > /*employee.salary*/100]]></source>
+			<p>
+				<a href="../basic.htm.">基本型</a>や<a href="../domain.htm.">ドメインクラス</a>を要素とする<code>java.util.List</code>は、
+				IN句を利用した検索を行う場合に使用します。
+			</p>
+<source><![CDATA[@Select
+List<Employee> selectByNames(List<String> names);]]></source>
+<source><![CDATA[select * from employee where employee_name in /*names*/('aaa','bbb','ccc')]]></source>
+		</section>
+		<section name="複数件検索">
+			<p>
+				複数件を検索するには、メソッドの戻り値の型を<code>java.util.List</code>にします。
+				<code>List</code>の要素の型には、<a href="../basic.htm.">基本型</a>、<a href="../domain.htm.">ドメインクラス</a>、<a href="../entity.htm.">エンティティティクラス</a>が使用できます。
+			</p>
+<source><![CDATA[@Select
+List<Employee> selectByNameAndSalary(String name, BigDecimal salary);]]></source>
+			<p>
+				結果が0件のときは、空の<code>List</code>が返されます。<code>null</code>は返されません。
+			</p>
+		</section>
+		<section name="1件検索">
+			<p>
+				複数件を検索するには、メソッドの戻り値の型を<a href="../basic.htm.">基本型</a>、<a href="../domain.htm.">ドメインクラス</a>、<a href="../entity.htm.">エンティティティクラス</a>のいずれかにします。
+			</p>
+<source><![CDATA[@Select
+Employee selectByNameAndSalary(String name, BigDecimal salary);]]></source>
+			<p>
+				結果が0件のときは、<code>null</code>が返されます。
+			</p>
+			<p>
+				結果が2件以上存在するときは、<code>org.seasar.doma.jdbc.NonUniqueResultException</code>がスローされます。
+			</p>
+		</section>
+		<section name="イテレーションによる検索">
+			<p>
+				全件を一度に<code>List</code>で受け取るのではなく1件ずつ処理を行いたい場合は、
+				イテレーションによる検索ができます。
+				イテレーションによる検索を行うには、<code>@Select</code>の<code>iterate</code>要素を<code>true</code>に設定し、
+				メソッドのパラメータに<code><![CDATA[org.seasar.doma.IterationCallback<R, T>]]></code>もしくは、
+				<code><![CDATA[org.seasar.doma.IterationCallback<R, T>]]></code>のサブタイプを定義します。
+			</p>
+<source><![CDATA[@Select(iterate = true)
+Void selectByNameAndSalary(String name, BigDecimal salary, IterationCallback<Void, Employee> callback);]]></source>
+			<p>
+				<code><![CDATA[IterationCallback]]></code>の<code>iterate</code>メソッドに検索対象がインスタンス化され1件ずつ渡されます。
+			</p>
+<source><![CDATA[EmployeeDao dao = new EmployeeDao();
+dao.selectAll(new IterationCallback<Void, Employee>() {
+        @Override
+        public Void iterate(Employee target, IterationContext context) {
+            ...
+            return null;
+        }
+    });]]></source>
+			<p>
+				<code><![CDATA[org.seasar.doma.IterationCallback<R, T>]]></code>の最初の型パラメータは、
+				Daoのメソッドの戻り値にあわせなければいけません。2番目の型パラメータは、<a href="../basic.htm.">基本型</a>、<a href="../domain.htm.">ドメインクラス</a>、
+				<a href="../entity.htm.">エンティティティクラス</a>のいずれかでなければいけません。
+			</p>
+		</section>
+		<section name="検索オプションを利用した検索">
+			<p>
+				検索オプションのクラス<code>SelectOptions</code>を使用することで、SELECT文が記述されたSQLファイルをベースにし、
+				ページング処理や悲観的排他制御用のSQLを自動で生成できます。
+			</p>
+			<p>
+				<code>SelectOptions</code>は、<a href="#複数件検索">複数件検索</a>、
+				<a href="#1件検索">1件検索</a>、<a href="#イテレーションによる検索">イテレーションによる検索</a>と組み合わせて使用します。
+			</p>
+			<p>
+				<code>SelectOptions</code>は、Daoのメソッドのパラメータとして定義します。
+			</p>
+<source><![CDATA[@Config(config = AppConfig.class)
+public interface EmployeeDao {
+    @Select
+    List<Employee> selectByDepartmentName(String departmentName, SelectOptions options);
+    ...
+}]]></source>
+			<p>
+				<code>SelectOptions</code>は、<code>SelectOptions</code>のstaticな<code>get</code>メソッドにより取得できます。
+			</p>
+<source><![CDATA[SelectOptions options = SelectOptions.get();}]]></source>
+			<subsection name="ページング">
+				<p>
+					<code>SelectOptions</code>の<code>offset</code>メソッドで開始位置、<code>limit</code>メソッドで取得件数を指定し、
+					<code>SelectOptions</code>のインスタンスをDaoのメソッドに渡します。
+				</p>
+<source><![CDATA[SelectOptions options = SelectOptions.get().offset(5).limit(10);
+EmployeeDao dao = new EmployeeDao();
+List<Employee> list = dao.selectByDepartmentName("ACCOUNT", options);]]></source>
+			</subsection>
+			<subsection name="悲観的排他制御">
+				<p>
+					<code>SelectOptions</code>の<code>forUpdate</code>メソッドで悲観的排他制御を行うことを指示し、
+					<code>SelectOptions</code>のインスタンスをDaoのメソッドに渡します。
+				</p>
+<source><![CDATA[SelectOptions options = SelectOptions.get().forUpdate();
+EmployeeDao dao = new EmployeeDao();
+List<Employee> list = dao.selectByDepartmentName("ACCOUNT", options);]]></source>
+				<p>
+					<code>SelectOptions</code>には、ロック対象のテーブルやカラムのエイリアスを指定できる<code>forUpdate</code>メソッドや、
+					ロックの取得を待機しない<code>forUpdateNowait</code>が用意されています。
+					詳しくは<a href="../../apidocs/org/seasar/doma/jdbc/SelectOptions.html">Javadocコメント</a>を参照ください。
+				</p>
+			</subsection>
+		</section>
+	</body>
+</document>
