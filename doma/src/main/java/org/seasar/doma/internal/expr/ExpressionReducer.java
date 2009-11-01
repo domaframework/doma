@@ -30,6 +30,7 @@ import org.seasar.doma.internal.expr.node.ExpressionLocation;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
 import org.seasar.doma.internal.expr.node.ExpressionNodeVisitor;
 import org.seasar.doma.internal.expr.node.FieldOperatorNode;
+import org.seasar.doma.internal.expr.node.FunctionOperatorNode;
 import org.seasar.doma.internal.expr.node.GeOperatorNode;
 import org.seasar.doma.internal.expr.node.GtOperatorNode;
 import org.seasar.doma.internal.expr.node.LeOperatorNode;
@@ -166,6 +167,13 @@ public class ExpressionReducer implements
             Deque<ExpressionNode> p) {
         node.setParametersNode(pop(node, p));
         node.setTargetObjectNode(pop(node, p));
+        return null;
+    }
+
+    @Override
+    public Void visitFunctionOperatorNode(FunctionOperatorNode node,
+            Deque<ExpressionNode> p) {
+        node.setParametersNode(pop(node, p));
         return null;
     }
 

@@ -36,7 +36,7 @@ public class ExpressionEvaluatorTest extends TestCase {
         Method method = String.class.getMethod("substring", paramTypes);
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         EvaluationResult result = evaluator.invokeMethod(location, method,
-                "abcde", paramTypes, new Object[] { 2, 4 });
+                "abcde", String.class, paramTypes, new Object[] { 2, 4 });
         assertEquals("cd", result.getValue());
         assertEquals(String.class, result.getValueClass());
     }
@@ -44,19 +44,15 @@ public class ExpressionEvaluatorTest extends TestCase {
     public void testFindMethod() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         Method method = evaluator.findMethod(location, "concat", "aaa",
-                new Class[] { String.class });
+                String.class, new Class[] { String.class });
         assertNotNull(method);
     }
 
     public void testFindMethod_notFound() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        try {
-            evaluator.findMethod(location, "inexistentMethod", "aaa",
-                    new Class[] { String.class });
-            fail();
-        } catch (ExpressionException ignored) {
-            System.out.println(ignored.getMessage());
-        }
+        Method method = evaluator.findMethod(location, "inexistentMethod",
+                "aaa", String.class, new Class[] { String.class });
+        assertNull(method);
     }
 
     public void testForClassName() throws Exception {
@@ -83,12 +79,9 @@ public class ExpressionEvaluatorTest extends TestCase {
 
     public void testFindConstructor_notFound() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        try {
-            evaluator.findConstructor(location, String.class, int.class,
-                    int.class);
-        } catch (ExpressionException ignored) {
-            System.out.println(ignored.getMessage());
-        }
+        Constructor<?> constructor = evaluator.findConstructor(location,
+                String.class, int.class, int.class);
+        assertNull(constructor);
     }
 
     public void testInvokeConstructor() throws Exception {

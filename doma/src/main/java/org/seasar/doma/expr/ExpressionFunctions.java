@@ -13,24 +13,16 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.util;
-
-import java.lang.reflect.Constructor;
-
-import org.seasar.doma.internal.util.ConstructorUtil;
-
-import junit.framework.TestCase;
+package org.seasar.doma.expr;
 
 /**
  * @author taedium
  * 
  */
-public class ConstructorUtilTest extends TestCase {
+public class ExpressionFunctions {
 
-    public void testToSignature() throws Exception {
-        Constructor<String> constructor = String.class
-                .getConstructor(char[].class, int.class, int.class);
-        assertEquals("java.lang.String(char[], int, int)", ConstructorUtil
-                .createSignature(constructor));
+    public static String starts(String text) {
+        return text + "%";
     }
+
 }

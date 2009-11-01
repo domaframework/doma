@@ -14,6 +14,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
+import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.apt.decl.ConstructorDeclaration;
 import org.seasar.doma.internal.apt.decl.FieldDeclaration;
 import org.seasar.doma.internal.apt.decl.MethodDeclaration;
@@ -32,6 +33,7 @@ import org.seasar.doma.internal.expr.node.ExpressionLocation;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
 import org.seasar.doma.internal.expr.node.ExpressionNodeVisitor;
 import org.seasar.doma.internal.expr.node.FieldOperatorNode;
+import org.seasar.doma.internal.expr.node.FunctionOperatorNode;
 import org.seasar.doma.internal.expr.node.GeOperatorNode;
 import org.seasar.doma.internal.expr.node.GtOperatorNode;
 import org.seasar.doma.internal.expr.node.LeOperatorNode;
@@ -342,6 +344,36 @@ public class ExpressionValidator implements
         throw new AptIllegalStateException(methodName);
     }
 
+    @Override
+    public TypeDeclaration visitFunctionOperatorNode(FunctionOperatorNode node,
+            Void p) {
+        TypeDeclaration typeDeclaration = TypeDeclaration.newTypeDeclaration(
+                ExpressionFunctions.class, env);
+        List<TypeDeclaration> parameterTypeDeclarations = new ParameterCollector()
+                .collect(node.getParametersNode());
+        String methodName = node.getMethodName();
+        List<MethodDeclaration> methodDeclarations = typeDeclaration
+                .getStaticMethodDeclarations(methodName,
+                        parameterTypeDeclarations);
+        if (methodDeclarations.size() == 0) {
+            ExpressionLocation location = node.getLocation();
+            String methodSignature = createMethodSignature(methodName,
+                    parameterTypeDeclarations);
+            throw new AptException(DomaMessageCode.DOMA4072, env,
+                    methodElement, location.getExpression(), location
+                            .getPosition(), methodSignature);
+        }
+        if (methodDeclarations.size() == 1) {
+            MethodDeclaration methodDeclaration = methodDeclarations.get(0);
+            TypeDeclaration returnTypeDeclaration = methodDeclaration
+                    .getReturnTypeDeclaration();
+            if (returnTypeDeclaration != null) {
+                return returnTypeDeclaration;
+            }
+        }
+        throw new AptIllegalStateException(methodName);
+    }
+
     protected String createMethodSignature(String methodName,
             List<TypeDeclaration> parameterTypeDeclarations) {
         StringBuilder buf = new StringBuilder();
@@ -522,6 +554,13 @@ public class ExpressionValidator implements
 
         @Override
         public Void visitMethodOperatorNode(MethodOperatorNode node,
+                List<TypeDeclaration> p) {
+            validate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitFunctionOperatorNode(FunctionOperatorNode node,
                 List<TypeDeclaration> p) {
             validate(node, p);
             return null;

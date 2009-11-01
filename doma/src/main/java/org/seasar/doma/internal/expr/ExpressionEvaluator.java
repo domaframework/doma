@@ -20,14 +20,15 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.expr.node.AddOperatorNode;
 import org.seasar.doma.internal.expr.node.AndOperatorNode;
@@ -41,6 +42,7 @@ import org.seasar.doma.internal.expr.node.ExpressionLocation;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
 import org.seasar.doma.internal.expr.node.ExpressionNodeVisitor;
 import org.seasar.doma.internal.expr.node.FieldOperatorNode;
+import org.seasar.doma.internal.expr.node.FunctionOperatorNode;
 import org.seasar.doma.internal.expr.node.GeOperatorNode;
 import org.seasar.doma.internal.expr.node.GtOperatorNode;
 import org.seasar.doma.internal.expr.node.LeOperatorNode;
@@ -362,25 +364,21 @@ public class ExpressionEvaluator implements
     @Override
     public EvaluationResult visitNewOperatorNode(NewOperatorNode node, Void p) {
         ParameterCollector collector = new ParameterCollector();
-        List<EvaluationResult> paramResults = collector.collect(node
+        ParameterCollection collection = collector.collect(node
                 .getParametersNode());
-        int size = paramResults.size();
-        Object[] params = new Object[size];
-        Class<?>[] paramTypes = new Class<?>[size];
-        int i = 0;
-        for (Iterator<EvaluationResult> it = paramResults.iterator(); it
-                .hasNext();) {
-            EvaluationResult evaluationResult = it.next();
-            params[i] = evaluationResult.getValue();
-            paramTypes[i] = evaluationResult.getValueClass();
-            i++;
-        }
         ExpressionLocation location = node.getLocation();
         String className = node.getClassName();
         Class<?> clazz = forClassName(location, className);
         Constructor<?> constructor = findConstructor(location, clazz,
-                paramTypes);
-        return invokeConstructor(location, clazz, constructor, params);
+                collection.getParamTypes());
+        if (constructor == null) {
+            String signature = ConstructorUtil.createSignature(clazz,
+                    collection.getParamTypes());
+            throw new ExpressionException(DomaMessageCode.DOMA3006, location
+                    .getExpression(), location.getPosition(), signature);
+        }
+        return invokeConstructor(location, clazz, constructor, collection
+                .getParams());
     }
 
     protected Class<?> forClassName(ExpressionLocation location,
@@ -406,9 +404,7 @@ public class ExpressionEvaluator implements
                 return constructor;
             }
         }
-        throw new ExpressionException(DomaMessageCode.DOMA3006, location
-                .getExpression(), location.getPosition(), ConstructorUtil
-                .toSignature(clazz, paramTypes));
+        return null;
     }
 
     protected EvaluationResult invokeConstructor(ExpressionLocation location,
@@ -420,7 +416,7 @@ public class ExpressionEvaluator implements
             Throwable cause = e.getCause();
             throw new ExpressionException(DomaMessageCode.DOMA3007, cause,
                     location.getExpression(), location.getPosition(),
-                    ConstructorUtil.toSignature(constructor), cause);
+                    ConstructorUtil.createSignature(constructor), cause);
         }
         return new EvaluationResult(value, clazz);
     }
@@ -428,33 +424,57 @@ public class ExpressionEvaluator implements
     @Override
     public EvaluationResult visitMethodOperatorNode(MethodOperatorNode node,
             Void p) {
-        EvaluationResult targetResult = node.getTargetObjectNode().accept(this,
-                p);
+        ExpressionNode targetObjectNode = node.getTargetObjectNode();
+        EvaluationResult targetResult = targetObjectNode.accept(this, p);
         Object target = targetResult.getValue();
-        ParameterCollector collector = new ParameterCollector();
-        List<EvaluationResult> paramResults = collector.collect(node
-                .getParametersNode());
-        int size = paramResults.size();
-        Object[] params = new Object[size];
-        Class<?>[] paramTypes = new Class<?>[size];
-        int i = 0;
-        for (Iterator<EvaluationResult> it = paramResults.iterator(); it
-                .hasNext();) {
-            EvaluationResult evaluationResult = it.next();
-            params[i] = evaluationResult.getValue();
-            paramTypes[i] = evaluationResult.getValueClass();
-            i++;
+        if (target == null) {
+            ExpressionLocation location = node.getLocation();
+            throw new ExpressionException(DomaMessageCode.DOMA3027, location
+                    .getExpression(), location.getPosition(), targetObjectNode
+                    .getExpression(), node.getMethodName());
         }
+        Class<?> targetClass = target.getClass();
+        ParameterCollector collector = new ParameterCollector();
+        ParameterCollection collection = collector.collect(node
+                .getParametersNode());
         ExpressionLocation location = node.getLocation();
         Method method = findMethod(location, node.getMethodName(), target,
-                paramTypes);
-        return invokeMethod(location, method, target, paramTypes, params);
+                targetClass, collection.getParamTypes());
+        if (method == null) {
+            String signature = MethodUtil.createSignature(node.getMethodName(),
+                    collection.getParamTypes());
+            throw new ExpressionException(DomaMessageCode.DOMA3002, location
+                    .getExpression(), location.getPosition(), targetClass
+                    .getName(), signature);
+        }
+        return invokeMethod(location, method, target, targetClass, collection
+                .getParamTypes(), collection.getParams());
+    }
+
+    @Override
+    public EvaluationResult visitFunctionOperatorNode(
+            FunctionOperatorNode node, Void p) {
+        Class<?> targetClass = ExpressionFunctions.class;
+        ParameterCollector collector = new ParameterCollector();
+        ParameterCollection collection = collector.collect(node
+                .getParametersNode());
+        ExpressionLocation location = node.getLocation();
+        Method method = findStaticMethod(location, node.getMethodName(), null,
+                targetClass, collection.getParamTypes());
+        if (method == null) {
+            String signature = MethodUtil.createSignature(node.getMethodName(),
+                    collection.getParamTypes());
+            throw new ExpressionException(DomaMessageCode.DOMA3028, location
+                    .getExpression(), location.getPosition(), signature);
+        }
+        return invokeMethod(node.getLocation(), method, null, targetClass,
+                collection.getParamTypes(), collection.getParams());
     }
 
     protected Method findMethod(ExpressionLocation location, String methodName,
-            Object target, Class<?>[] paramTypes) {
+            Object target, Class<?> targetClass, Class<?>[] paramTypes) {
         List<Method> methods = new ArrayList<Method>();
-        for (Class<?> clazz = target.getClass(); clazz != Object.class; clazz = clazz
+        for (Class<?> clazz = targetClass; clazz != Object.class; clazz = clazz
                 .getSuperclass()) {
             for (Method method : clazz.getDeclaredMethods()) {
                 if (method.getName().equals(methodName)) {
@@ -473,21 +493,34 @@ public class ExpressionEvaluator implements
                 return method;
             }
         }
-        throw new ExpressionException(DomaMessageCode.DOMA3002, location
-                .getExpression(), location.getPosition(), target.getClass()
-                .getName(), methodName);
+        return null;
+    }
+
+    protected Method findStaticMethod(ExpressionLocation location,
+            String methodName, Object target, Class<?> targetClass,
+            Class<?>[] paramTypes) {
+        Method method = findMethod(location, methodName, target, targetClass,
+                paramTypes);
+        if (method == null) {
+            return null;
+        }
+        if ((method.getModifiers() & Modifier.STATIC) != 0) {
+            return method;
+        }
+        return null;
     }
 
     protected EvaluationResult invokeMethod(ExpressionLocation location,
-            Method method, Object target, Class<?>[] paramTypes, Object[] params) {
+            Method method, Object target, Class<?> targetClass,
+            Class<?>[] paramTypes, Object[] params) {
         Object value;
         try {
             value = MethodUtil.invoke(method, target, params);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
             throw new ExpressionException(DomaMessageCode.DOMA3001, cause,
-                    location.getExpression(), location.getPosition(), target
-                            .getClass().getName(), method.getName(), cause);
+                    location.getExpression(), location.getPosition(),
+                    targetClass.getName(), method.getName(), cause);
         }
         return new EvaluationResult(value, method.getReturnType());
     }
@@ -500,6 +533,11 @@ public class ExpressionEvaluator implements
         Object target = targetResult.getValue();
         ExpressionLocation location = node.getLocation();
         Field field = findField(location, node.getFieldName(), target);
+        if (field == null) {
+            throw new ExpressionException(DomaMessageCode.DOMA3018, location
+                    .getExpression(), location.getPosition(), target.getClass()
+                    .getName(), node.getFieldName());
+        }
         return getFieldValue(location, field, target);
     }
 
@@ -514,9 +552,7 @@ public class ExpressionEvaluator implements
             } catch (NoSuchFieldException ignored) {
             }
         }
-        throw new ExpressionException(DomaMessageCode.DOMA3018, location
-                .getExpression(), location.getPosition(), target.getClass()
-                .getName(), fieldName);
+        return null;
     }
 
     protected EvaluationResult getFieldValue(ExpressionLocation location,
@@ -734,10 +770,10 @@ public class ExpressionEvaluator implements
     protected class ParameterCollector implements
             ExpressionNodeVisitor<Void, List<EvaluationResult>> {
 
-        public List<EvaluationResult> collect(ExpressionNode node) {
+        public ParameterCollection collect(ExpressionNode node) {
             List<EvaluationResult> evaluationResults = new ArrayList<EvaluationResult>();
             node.accept(this, evaluationResults);
-            return evaluationResults;
+            return new ParameterCollection(evaluationResults);
         }
 
         @Override
@@ -868,6 +904,13 @@ public class ExpressionEvaluator implements
         }
 
         @Override
+        public Void visitFunctionOperatorNode(FunctionOperatorNode node,
+                List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
         public Void visitFieldOperatorNode(FieldOperatorNode node,
                 List<EvaluationResult> p) {
             evaluate(node, p);
@@ -889,6 +932,35 @@ public class ExpressionEvaluator implements
             EvaluationResult evaluationResult = ExpressionEvaluator.this
                     .evaluateInternal(node);
             p.add(evaluationResult);
+        }
+
+    }
+
+    protected static class ParameterCollection {
+
+        protected final Object[] params;
+
+        protected final Class<?>[] paramTypes;
+
+        public ParameterCollection(List<EvaluationResult> evaluationResults) {
+            assertNotNull(evaluationResults);
+            int size = evaluationResults.size();
+            params = new Object[size];
+            paramTypes = new Class<?>[size];
+            int i = 0;
+            for (EvaluationResult result : evaluationResults) {
+                params[i] = result.getValue();
+                paramTypes[i] = result.getValueClass();
+                i++;
+            }
+        }
+
+        public Object[] getParams() {
+            return params;
+        }
+
+        public Class<?>[] getParamTypes() {
+            return paramTypes;
         }
 
     }

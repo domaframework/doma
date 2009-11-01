@@ -194,6 +194,50 @@ public class ExpressionParserTest extends TestCase {
         assertEquals(new Integer(2), evaluationResult.getValue());
     }
 
+    public void testMethod_targetObjectIsNull() throws Exception {
+        ExpressionParser parser = new ExpressionParser("null.length()");
+        try {
+            ExpressionNode expression = parser.parse();
+            ExpressionEvaluator evaluator = new ExpressionEvaluator();
+            evaluator.evaluate(expression);
+            fail();
+        } catch (ExpressionException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(DomaMessageCode.DOMA3027, expected.getMessageCode());
+        }
+    }
+
+    public void testFunction() throws Exception {
+        ExpressionParser parser = new ExpressionParser("@starts(\"aaa\")");
+        ExpressionNode expression = parser.parse();
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        EvaluationResult evaluationResult = evaluator.evaluate(expression);
+        assertEquals("aaa%", evaluationResult.getValue());
+    }
+
+    public void testFunction_notFound() throws Exception {
+        ExpressionParser parser = new ExpressionParser("@hoge(\"aaa\")");
+        ExpressionNode expression = parser.parse();
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        try {
+            evaluator.evaluate(expression);
+        } catch (ExpressionException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(DomaMessageCode.DOMA3028, expected.getMessageCode());
+        }
+    }
+
+    public void testParens_notClosed() throws Exception {
+        ExpressionParser parser = new ExpressionParser("hoge.bar(2, 4");
+        try {
+            parser.parse();
+            fail();
+        } catch (ExpressionException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(DomaMessageCode.DOMA3026, expected.getMessageCode());
+        }
+    }
+
     public void testNew() throws Exception {
         ExpressionParser parser = new ExpressionParser(
                 "new java.lang.Integer(10)");
@@ -490,7 +534,7 @@ public class ExpressionParserTest extends TestCase {
     }
 
     public void testUnsupportedToken() throws Exception {
-        ExpressionParser parser = new ExpressionParser("5 @ 5");
+        ExpressionParser parser = new ExpressionParser("5 ? 5");
         try {
             parser.parse();
             fail();

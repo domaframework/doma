@@ -41,18 +41,18 @@ public final class ConstructorUtil {
         }
     }
 
-    public static String toSignature(Constructor<?> constructor) {
-        return toSignature(constructor.getDeclaringClass(), constructor
+    public static String createSignature(Constructor<?> constructor) {
+        return createSignature(constructor.getDeclaringClass(), constructor
                 .getParameterTypes());
     }
 
-    public static String toSignature(Class<?> clazz, Class<?>[] paramTypes) {
+    public static String createSignature(Class<?> clazz, Class<?>[] paramTypes) {
         StringBuilder buf = new StringBuilder();
         buf.append(clazz.getName());
         buf.append("(");
         for (Class<?> paramType : paramTypes) {
             if (paramType.isArray()) {
-                buf.append(paramType.getComponentType());
+                buf.append(paramType.getComponentType().getName());
                 buf.append("[]");
             } else {
                 buf.append(paramType.getName());

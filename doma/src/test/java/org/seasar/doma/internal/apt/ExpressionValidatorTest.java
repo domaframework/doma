@@ -28,6 +28,7 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 
+import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.apt.dao.ExpressionValidationDao;
 import org.seasar.doma.internal.apt.decl.TypeDeclaration;
 import org.seasar.doma.internal.apt.entity.Emp;
@@ -42,10 +43,11 @@ public class ExpressionValidatorTest extends AptTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        addSourcePath("src/main/java");
         addSourcePath("src/test/java");
     }
 
-    public void testVariableNotFound() throws Exception {
+    public void testVariable_nootFound() throws Exception {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         compile();
@@ -66,7 +68,7 @@ public class ExpressionValidatorTest extends AptTestCase {
         }
     }
 
-    public void testMethodFound() throws Exception {
+    public void testMethod_found() throws Exception {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         compile();
@@ -82,7 +84,7 @@ public class ExpressionValidatorTest extends AptTestCase {
         assertTrue(result.isBooleanType());
     }
 
-    public void testMethodNotFound() throws Exception {
+    public void testMethod_notFound() throws Exception {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         compile();
@@ -104,7 +106,46 @@ public class ExpressionValidatorTest extends AptTestCase {
         }
     }
 
-    public void testConstructorNotFound() throws Exception {
+    public void testFunction_found() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(ExpressionFunctions.class);
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testEmp", Emp.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap);
+
+        ExpressionNode node = new ExpressionParser("@starts(emp.name)").parse();
+        TypeDeclaration result = validator.validate(node);
+        assertTrue(result.isTextType());
+    }
+
+    public void testFunction_notFound() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(ExpressionFunctions.class);
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testEmp", Emp.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap);
+
+        ExpressionNode node = new ExpressionParser("@hoge(emp.name)").parse();
+        try {
+            validator.validate(node);
+            fail();
+        } catch (AptException expected) {
+            System.out.println(expected);
+            assertEquals(DomaMessageCode.DOMA4072, expected.getMessageCode());
+        }
+    }
+
+    public void testConstructor_notFound() throws Exception {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         compile();

@@ -218,6 +218,23 @@ public class TypeDeclaration {
 
     public List<MethodDeclaration> getMethodDeclarations(String name,
             List<TypeDeclaration> parameterTypeDeclarations) {
+        return getMethodDeclarationsInternal(name, parameterTypeDeclarations);
+    }
+
+    public List<MethodDeclaration> getStaticMethodDeclarations(String name,
+            List<TypeDeclaration> parameterTypeDeclarations) {
+        List<MethodDeclaration> results = new ArrayList<MethodDeclaration>();
+        for (MethodDeclaration methodDeclaration : getMethodDeclarationsInternal(
+                name, parameterTypeDeclarations)) {
+            if (methodDeclaration.isStatic()) {
+                results.add(methodDeclaration);
+            }
+        }
+        return results;
+    }
+
+    protected List<MethodDeclaration> getMethodDeclarationsInternal(
+            String name, List<TypeDeclaration> parameterTypeDeclarations) {
         List<MethodDeclaration> candidate = new LinkedList<MethodDeclaration>();
         for (Map.Entry<String, List<TypeParameterDeclaration>> e : typeParameterDeclarationsMap
                 .entrySet()) {
@@ -273,6 +290,9 @@ public class TypeDeclaration {
                 if (env.getElementUtils().overrides(overrider.getElement(),
                         overridden.getElement(), typeElement)) {
                     it.remove();
+                } else if (env.getElementUtils().hides(overrider.getElement(),
+                        overridden.getElement())) {
+                    it.remove();
                 }
             }
         }
@@ -306,6 +326,12 @@ public class TypeDeclaration {
             }
         }
         return false;
+    }
+
+    public static TypeDeclaration newTypeDeclaration(Class<?> clazz,
+            ProcessingEnvironment env) {
+        assertNotNull(clazz);
+        return newTypeDeclaration(TypeUtil.getTypeMirror(clazz, env), env);
     }
 
     public static TypeDeclaration newTypeDeclaration(TypeMirror type,

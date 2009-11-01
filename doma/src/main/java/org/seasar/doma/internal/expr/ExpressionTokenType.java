@@ -85,6 +85,8 @@ public enum ExpressionTokenType {
 
     LE_OPERATOR,
 
+    FUNCTION_OPERATOR,
+
     OTHER,
 
     EOE;

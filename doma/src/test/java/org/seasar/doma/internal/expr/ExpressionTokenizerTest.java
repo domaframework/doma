@@ -16,10 +16,9 @@
 package org.seasar.doma.internal.expr;
 
 import static org.seasar.doma.internal.expr.ExpressionTokenType.*;
-
-import org.seasar.doma.internal.expr.ExpressionTokenizer;
-
 import junit.framework.TestCase;
+
+import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
  * @author taedium
@@ -160,7 +159,7 @@ public class ExpressionTokenizerTest extends TestCase {
         assertEquals(11, tokenizer.getPosition());
     }
 
-    public void testNoParamMethodOperator() throws Exception {
+    public void testFieldOperator() throws Exception {
         ExpressionTokenizer tokenizer = new ExpressionTokenizer("aaa.bbb");
         assertEquals(VARIABLE, tokenizer.next());
         assertEquals("aaa", tokenizer.getToken());
@@ -168,6 +167,28 @@ public class ExpressionTokenizerTest extends TestCase {
         assertEquals(".bbb", tokenizer.getToken());
         assertEquals(EOE, tokenizer.next());
         assertNull(tokenizer.getToken());
+    }
+
+    public void testFieldOperator_identifierNotFound() throws Exception {
+        ExpressionTokenizer tokenizer = new ExpressionTokenizer("aaa.");
+        try {
+            tokenizer.next();
+            fail();
+        } catch (ExpressionException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(DomaMessageCode.DOMA3021, expected.getMessageCode());
+        }
+    }
+
+    public void testFieldOperator_illegalJavaIdentifierStart() throws Exception {
+        ExpressionTokenizer tokenizer = new ExpressionTokenizer("aaa.!");
+        try {
+            tokenizer.next();
+            fail();
+        } catch (ExpressionException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(DomaMessageCode.DOMA3022, expected.getMessageCode());
+        }
     }
 
     public void testMethodOperator() throws Exception {
@@ -205,5 +226,38 @@ public class ExpressionTokenizerTest extends TestCase {
         assertEquals("3", tokenizer.getToken());
         assertEquals(CLOSED_PARENS, tokenizer.next());
         assertEquals(")", tokenizer.getToken());
+    }
+
+    public void testBuiltinFunctionOperator() throws Exception {
+        ExpressionTokenizer tokenizer = new ExpressionTokenizer("@starts(aaa)");
+        assertEquals(FUNCTION_OPERATOR, tokenizer.next());
+        assertEquals("@starts", tokenizer.getToken());
+        assertEquals(OPENED_PARENS, tokenizer.next());
+        assertEquals("(", tokenizer.getToken());
+        assertEquals(VARIABLE, tokenizer.next());
+        assertEquals("aaa", tokenizer.getToken());
+        assertEquals(CLOSED_PARENS, tokenizer.next());
+        assertEquals(")", tokenizer.getToken());
+    }
+
+    public void testBuiltinFunctionOperator_nameNotFound() throws Exception {
+        try {
+            new ExpressionTokenizer("@");
+            fail();
+        } catch (ExpressionException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(DomaMessageCode.DOMA3023, expected.getMessageCode());
+        }
+    }
+
+    public void testBuiltinFunctionOperator_illegalJavaIdentifierStart()
+            throws Exception {
+        try {
+            new ExpressionTokenizer("@!");
+            fail();
+        } catch (ExpressionException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(DomaMessageCode.DOMA3024, expected.getMessageCode());
+        }
     }
 }

@@ -22,6 +22,7 @@ import java.util.List;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeMirror;
 
 public class MethodDeclaration {
@@ -42,6 +43,10 @@ public class MethodDeclaration {
     public TypeDeclaration getReturnTypeDeclaration() {
         TypeMirror returnType = resolveTypeParameter(element.getReturnType());
         return TypeDeclaration.newTypeDeclaration(returnType, env);
+    }
+
+    public boolean isStatic() {
+        return element.getModifiers().contains(Modifier.STATIC);
     }
 
     protected TypeMirror resolveTypeParameter(TypeMirror formalType) {

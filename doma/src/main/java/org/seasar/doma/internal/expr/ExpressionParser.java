@@ -32,6 +32,7 @@ import org.seasar.doma.internal.expr.node.EqOperatorNode;
 import org.seasar.doma.internal.expr.node.ExpressionLocation;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
 import org.seasar.doma.internal.expr.node.FieldOperatorNode;
+import org.seasar.doma.internal.expr.node.FunctionOperatorNode;
 import org.seasar.doma.internal.expr.node.GeOperatorNode;
 import org.seasar.doma.internal.expr.node.GtOperatorNode;
 import org.seasar.doma.internal.expr.node.LeOperatorNode;
@@ -210,6 +211,10 @@ public class ExpressionParser {
                 parseMethodOperand();
                 break;
             }
+            case FUNCTION_OPERATOR: {
+                parseFunctionOperand();
+                break;
+            }
             case FIELD_OPERATOR: {
                 parseFieldOperand();
                 break;
@@ -244,10 +249,15 @@ public class ExpressionParser {
         String subExpression = expression.substring(start);
         ExpressionParser parser = new ExpressionParser(subExpression,
                 originalExpression, start);
-        ExpressionNode subExpressionNode = parser.parse();
+        ExpressionNode childExpressionNode = parser.parse();
+        if (parser.tokenType != CLOSED_PARENS) {
+            ExpressionLocation location = getLocation();
+            throw new ExpressionException(DomaMessageCode.DOMA3026, location
+                    .getExpression(), location.getPosition());
+        }
         int end = start + parser.tokenizer.getPosition();
         tokenizer.setPosition(end, true);
-        ParensNode node = new ParensNode(getLocation(), subExpressionNode);
+        ParensNode node = new ParensNode(getLocation(), childExpressionNode);
         expressionNodes.push(node);
     }
 
@@ -336,6 +346,16 @@ public class ExpressionParser {
         String name = token.substring(1);
         MethodOperatorNode node = new MethodOperatorNode(getLocation(), token,
                 name);
+        tokenType = tokenizer.next();
+        assertEquals(OPENED_PARENS, tokenType);
+        parseOpenedParens();
+        reduce(node);
+    }
+
+    protected void parseFunctionOperand() {
+        String name = token.substring(1);
+        FunctionOperatorNode node = new FunctionOperatorNode(getLocation(),
+                token, name);
         tokenType = tokenizer.next();
         assertEquals(OPENED_PARENS, tokenType);
         parseOpenedParens();

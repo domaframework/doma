@@ -22,7 +22,6 @@ import java.nio.CharBuffer;
 
 import org.seasar.doma.internal.message.DomaMessageCode;
 
-
 /**
  * @author taedium
  * 
@@ -41,7 +40,7 @@ public class ExpressionTokenizer {
 
     protected int position;
 
-    protected boolean binOperationAvailable;
+    protected boolean binaryOpAvailable;
 
     public ExpressionTokenizer(String expression) {
         assertNotNull(expression);
@@ -80,9 +79,9 @@ public class ExpressionTokenizer {
         return position;
     }
 
-    public void setPosition(int position, boolean binOperationAvailable) {
+    public void setPosition(int position, boolean binaryOpAvailable) {
         this.position = position;
-        this.binOperationAvailable = binOperationAvailable;
+        this.binaryOpAvailable = binaryOpAvailable;
         duplicatedBuf.position(position);
         buf = duplicatedBuf.duplicate();
         peek();
@@ -121,7 +120,7 @@ public class ExpressionTokenizer {
         if (c == 'f' && c2 == 'a' && c3 == 'l' && c4 == 's' && c5 == 'e') {
             if (isWordTerminated()) {
                 type = FALSE_LITERAL;
-                binOperationAvailable = true;
+                binaryOpAvailable = true;
                 return;
             }
         }
@@ -133,13 +132,13 @@ public class ExpressionTokenizer {
         if (c == 'n' && c2 == 'u' && c3 == 'l' && c4 == 'l') {
             if (isWordTerminated()) {
                 type = NULL_LITERAL;
-                binOperationAvailable = true;
+                binaryOpAvailable = true;
                 return;
             }
         } else if (c == 't' && c2 == 'r' && c3 == 'u' && c4 == 'e') {
             if (isWordTerminated()) {
                 type = TRUE_LITERAL;
-                binOperationAvailable = true;
+                binaryOpAvailable = true;
                 return;
             }
         }
@@ -159,30 +158,30 @@ public class ExpressionTokenizer {
     }
 
     protected void peekTwoChars(char c, char c2) {
-        if (binOperationAvailable) {
+        if (binaryOpAvailable) {
             if (c == '&' && c2 == '&') {
                 type = AND_OPERATOR;
-                binOperationAvailable = false;
+                binaryOpAvailable = false;
                 return;
             } else if (c == '|' && c2 == '|') {
                 type = OR_OPERATOR;
-                binOperationAvailable = false;
+                binaryOpAvailable = false;
                 return;
             } else if (c == '=' && c2 == '=') {
                 type = EQ_OPERATOR;
-                binOperationAvailable = false;
+                binaryOpAvailable = false;
                 return;
             } else if (c == '!' && c2 == '=') {
                 type = NE_OPERATOR;
-                binOperationAvailable = false;
+                binaryOpAvailable = false;
                 return;
             } else if (c == '>' && c2 == '=') {
                 type = GE_OPERATOR;
-                binOperationAvailable = false;
+                binaryOpAvailable = false;
                 return;
             } else if (c == '<' && c2 == '=') {
                 type = LE_OPERATOR;
-                binOperationAvailable = false;
+                binaryOpAvailable = false;
                 return;
             }
         }
@@ -191,30 +190,30 @@ public class ExpressionTokenizer {
     }
 
     protected void peekOneChar(char c) {
-        if (binOperationAvailable) {
+        if (binaryOpAvailable) {
             if (c == '>') {
                 type = GT_OPERATOR;
-                binOperationAvailable = false;
+                binaryOpAvailable = false;
                 return;
             } else if (c == '<') {
                 type = LT_OPERATOR;
-                binOperationAvailable = false;
+                binaryOpAvailable = false;
                 return;
             } else if (c == '+') {
                 type = ADD_OPERATOR;
-                binOperationAvailable = false;
+                binaryOpAvailable = false;
                 return;
             } else if (c == '-') {
                 type = SUBTRACT_OPERATOR;
-                binOperationAvailable = false;
+                binaryOpAvailable = false;
                 return;
             } else if (c == '*') {
                 type = MULTIPLY_OPERATOR;
-                binOperationAvailable = false;
+                binaryOpAvailable = false;
                 return;
             } else if (c == '/') {
                 type = DIVIDE_OPERATOR;
-                binOperationAvailable = false;
+                binaryOpAvailable = false;
                 return;
             }
         }
@@ -229,7 +228,7 @@ public class ExpressionTokenizer {
             return;
         } else if (c == ')') {
             type = CLOSED_PARENS;
-            binOperationAvailable = true;
+            binaryOpAvailable = true;
             return;
         } else if (c == '!') {
             type = NOT_OPERATOR;
@@ -241,13 +240,13 @@ public class ExpressionTokenizer {
                 if (buf.hasRemaining()) {
                     char c3 = buf.get();
                     if (c3 == '\'') {
-                        binOperationAvailable = true;
+                        binaryOpAvailable = true;
                         return;
                     }
                 }
             }
-            throw new ExpressionException(DomaMessageCode.DOMA3016, expression, buf
-                    .position());
+            throw new ExpressionException(DomaMessageCode.DOMA3016, expression,
+                    buf.position());
         } else if (c == '"') {
             type = STRING_LITERAL;
             boolean closed = false;
@@ -268,10 +267,10 @@ public class ExpressionTokenizer {
                 }
             }
             if (!closed) {
-                throw new ExpressionException(DomaMessageCode.DOMA3004, expression,
-                        buf.position());
+                throw new ExpressionException(DomaMessageCode.DOMA3004,
+                        expression, buf.position());
             }
-            binOperationAvailable = true;
+            binaryOpAvailable = true;
         } else if ((c == '+' || c == '-')) {
             buf.mark();
             if (buf.hasRemaining()) {
@@ -287,7 +286,7 @@ public class ExpressionTokenizer {
             peekNumber();
         } else if (Character.isJavaIdentifierStart(c)) {
             type = VARIABLE;
-            binOperationAvailable = true;
+            binaryOpAvailable = true;
             while (buf.hasRemaining()) {
                 buf.mark();
                 char c2 = buf.get();
@@ -298,26 +297,59 @@ public class ExpressionTokenizer {
             }
         } else if (c == '.') {
             type = FIELD_OPERATOR;
-            binOperationAvailable = true;
+            binaryOpAvailable = true;
+            if (!buf.hasRemaining()) {
+                throw new ExpressionException(DomaMessageCode.DOMA3021,
+                        expression, buf.position());
+            }
             while (buf.hasRemaining()) {
                 buf.mark();
                 char c2 = buf.get();
-                if (Character.isJavaIdentifierPart(c2)) {
+                if (Character.isJavaIdentifierStart(c2)) {
                     while (buf.hasRemaining()) {
                         buf.mark();
                         char c3 = buf.get();
                         if (!Character.isJavaIdentifierPart(c3)) {
                             if (c3 == '(') {
                                 type = METHOD_OPERATOR;
-                                binOperationAvailable = false;
+                                binaryOpAvailable = false;
                             }
                             buf.reset();
-                            break;
+                            return;
                         }
                     }
                 } else {
-                    buf.reset();
-                    break;
+                    throw new ExpressionException(DomaMessageCode.DOMA3022,
+                            expression, buf.position(), c2);
+                }
+            }
+        } else if (c == '@') {
+            type = FUNCTION_OPERATOR;
+            binaryOpAvailable = false;
+            if (!buf.hasRemaining()) {
+                throw new ExpressionException(DomaMessageCode.DOMA3023,
+                        expression, buf.position());
+            }
+            while (buf.hasRemaining()) {
+                buf.mark();
+                char c2 = buf.get();
+                if (Character.isJavaIdentifierStart(c2)) {
+                    while (buf.hasRemaining()) {
+                        buf.mark();
+                        char c3 = buf.get();
+                        if (!Character.isJavaIdentifierPart(c3)) {
+                            if (c3 != '(') {
+                                throw new ExpressionException(
+                                        DomaMessageCode.DOMA3025, expression,
+                                        buf.position());
+                            }
+                            buf.reset();
+                            return;
+                        }
+                    }
+                } else {
+                    throw new ExpressionException(DomaMessageCode.DOMA3024,
+                            expression, buf.position(), c2);
                 }
             }
         } else {
@@ -369,7 +401,7 @@ public class ExpressionTokenizer {
         if (!isWordTerminated()) {
             type = ILLEGAL_NUMBER_LITERAL;
         }
-        binOperationAvailable = true;
+        binaryOpAvailable = true;
     }
 
     protected boolean isWordTerminated() {
