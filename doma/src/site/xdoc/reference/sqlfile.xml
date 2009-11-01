@@ -5,6 +5,40 @@
 		<title>SQLファイル</title>
 	</properties>
 	<body>
+		<section name="目次">
+			<ul>
+				<li><a href="#概要">概要</a></li>
+				<li><a href="#SQLファイルにマッピングするためのアノテーション">SQLファイルにマッピングするためのアノテーション</a></li>
+				<li><a href="#SQLファイル">SQLファイル</a>
+					<ul>
+						<li><a href="#配置場所">配置場所</a></li>
+						<li><a href="#ファイル名の形式">ファイル名の形式</a></li>
+						<li><a href="#エンコーディング">エンコーディング</a></li>
+					</ul>
+				</li>
+				<li><a href="#SQLコメント">SQLコメント</a>
+					<ul>
+						<li><a href="#バインド変数コメント">バインド変数コメント</a></li>
+						<li><a href="#埋め込み変数コメント">埋め込み変数コメント</a></li>
+						<li><a href="#条件コメント">条件コメント</a></li>
+						<li><a href="#通常のブロックコメント">通常のブロックコメント</a></li>
+						<li><a href="#通常の行コメント">通常の行コメント</a></li>
+					</ul>
+				</li>
+				<li><a href="#式言語">式言語</a>
+					<ul>
+						<li><a href="#定数">定数</a></li>
+						<li><a href="#比較演算子">比較演算子</a></li>
+						<li><a href="#論理演算子">論理演算子</a></li>
+						<li><a href="#算術演算子">算術演算子</a></li>
+						<li><a href="#その他の演算子">その他の演算子</a></li>
+						<li><a href="#メソッド呼び出し">メソッド呼び出し</a></li>
+						<li><a href="#フィールドアクセス">フィールドアクセス</a></li>
+						<li><a href="#組み込み関数の使用">組み込み関数の使用</a></li>
+					</ul>
+				</li>
+			</ul>
+		</section>
 		<section name="概要">
 			<p>
 				SQLファイルは、SQL文を格納したテキストファイルで、Daoのメソッドにマッピングされます。
@@ -12,13 +46,13 @@
 				SQLのツールでそのままそのSQLを実行できるように、バインド変数にはテスト用のデータを指定します。テスト用のデータは、実行時には使用されません。
 				たとえば、SQLファイルには次のようなSQL文が格納されます。
 			</p>
-<source>select * from employee where employee_id = /*employeeId*/99</source>
+<source><![CDATA[select * from employee where employee_id = /*employeeId*/99]]></source>
 			<p>
 				ここでは、ブロックコメントで囲まれた <code>employeeId</code>がDaoインタフェースのメソッドのパラメータに対応し、
 				直後の <code>99</code>はテスト用の条件になります。
 				対応するDaoインタフェースのメソッドは次のとおりです。
 			</p>
-<source>Employee selectById(employeeId);</source>
+<source><![CDATA[Employee selectById(employeeId);]]></source>
 		</section>
 		<section name="SQLファイルにマッピングするためのアノテーション">
 			<p>
@@ -96,8 +130,8 @@
 					単一のパラメータは、1つのバインド変数コメントに対応します。
 					Daoインタフェースのメソッドと、対応するSQLの例は次のとおりです。
 				</p>
-<source>List&lt;Employee&gt; selectById(Integer employeeId);</source>
-<source>select * from employee where employee_id = /*employeeId*/99</source>
+<source><![CDATA[List<Employee> selectById(Integer employeeId);]]></source>
+<source><![CDATA[select * from employee where employee_id = /*employeeId*/99]]></source>
 				<p>
 					<code>/*employeeId*/</code>は、<code>/* employeeId */</code>のように空白を含めて記述することも可能です。
 				</p>
@@ -108,8 +142,8 @@
 					ブロックコメントはINキーワードの直後に置き、ブロックコメントの直後には括弧つきでテスト用データを指定します。テスト用データは、実行時には使用されません。
 					Daoインタフェースのメソッドと、対応するSQLの例は次のとおりです。
 				</p>
-<source>List&lt;Employee&gt; selectByIdList(List&lt;Integer&gt; employeeIdList);</source>
-<source>select * from employee where employee_id in /*employeeIdList*/(1,2,3)</source>
+<source><![CDATA[List<Employee> selectByIdList(List<Integer> employeeIdList);]]></source>
+<source><![CDATA[select * from employee where employee_id in /*employeeIdList*/(1,2,3)]]></source>
 				<p>
 					<code>/*employeeIdList*/</code>は、<code>/* employeeIdList */</code>のように空白を含めて記述することも可能です。
 				</p>
@@ -120,21 +154,21 @@
 					ブロックコメントの中では、ドット（.）を使用しエンティティのフィールドにアクセスできます。
 					Daoインタフェースのメソッドと、対応するSQLの例は次のとおりです。
 				</p>
-<source>List&lt;Employee&gt; selectByNameAndSalary(Employee employee);</source>
-<source>select * from employee
+<source><![CDATA[List<Employee> selectByNameAndSalary(Employee employee);]]></source>
+<source><![CDATA[select * from employee
 where
 employee_name = /*employee.employeeName*/'abc' 
 and
-salary = /*employee.salary*/1234</source>
+salary = /*employee.salary*/1234]]></source>
 				<p>
 					<code>/*employee.employeeName*/</code>は、<code>/* employee.employeeName */</code>のように空白を含めて記述することも可能です。
 				</p>
 				<p>
 					フィールドにアクセスする代わりに、publicなメソッドを呼び出すことも可能です。
 				</p>
-<source>select * from employee
+<source><![CDATA[select * from employee
 where
-salary = /*employee.getTaxedSalary()*/1234</source>
+salary = /*employee.getTaxedSalary()*/1234]]></source>
 			</subsection>
 			<subsection name="埋め込み変数コメント">
 				<p>
@@ -144,19 +178,19 @@ salary = /*employee.getTaxedSalary()*/1234</source>
 					シングルクォテーション以外のSQLインジェクション対策はアプリケーションの責任になります。
 					Daoのメソッドと、対応するSQLの例は次のとおりです。
 				</p>
-<source>List&lt;Employee&gt; selectAll(BigDecimal salary, String orderyBy);</source>
-<source>select * from employee where salary > /*salary*/100 /*#orderBy*/</source>
+<source><![CDATA[List<Employee> selectAll(BigDecimal salary, String orderyBy);]]></source>
+<source><![CDATA[select * from employee where salary > /*salary*/100 /*#orderBy*/]]></source>
 				<p>
 					Daoの呼び出し例は次の通りです。
 				</p>
-<source>EmployeeDao dao = new EmployeeDaoImpl();
+<source><![CDATA[EmployeeDao dao = new EmployeeDaoImpl();
 BigDecimal salary = new BigDecimal(1000);
 String orderBy = "order by salary asc, employee_name";
-List&lt;Employee&gt; list = dao.selectAll(salary, orderBy);</source>
+List&lt;Employee&gt; list = dao.selectAll(salary, orderBy);]]></source>
 				<p>
 					発行されるSQLは次のようになります。
 				</p>
-<source>select * from employee where salary > ? order by salary asc, employee_name</source>
+<source><![CDATA[select * from employee where salary > ? order by salary asc, employee_name]]></source>
 				<p>
 					<code>/*#orderBy*/</code>は、<code>/*# orderBy */</code>のように空白を含めて記述することも可能です。
 				</p>
@@ -167,38 +201,38 @@ List&lt;Employee&gt; list = dao.selectAll(salary, orderBy);</source>
 				<p>
 					条件によってSQLを組み立てる場合は、<code>/*%if 条件*/ ～ /*%end*/</code>という構文を使用できます。
 				</p>
-<source>select * from employee where /*%if employeeId != null*/employee_id = /*employeeId*/99/*%end*/</source>
+<source><![CDATA[select * from employee where /*%if employeeId != null*/employee_id = /*employeeId*/99/*%end*/]]></source>
 				<p>
 					このSQL文は、 <code>employeeId</code>が <code>null</code>でない場合 次のような準備された文に変換されます。
 				</p>
-<source>select * from employee where employee_id = ?</source>
+<source><![CDATA[select * from employee where employee_id = ?]]></source>
 				<p>
 					このSQL文は、 <code>employeeId</code>  <code>null</code>の場合に次のような準備された文に変換されます。
 				</p>
-<source>select * from employee</source>
+<source><![CDATA[select * from employee]]></source>
 				<h4><code>WHERE</code>や <code>HAVING</code>の自動除去</h4>
 				<p>
 					条件コメントを使用した場合、条件の前にあるWHEREやHAVINGについて、自動で出力の要/不要を判定します。
 					たとえば、次のようなSQLで<code>employeeId</code>が <code>null</code>の場合、
 				</p>
-<source>select * from employee where 
+<source><![CDATA[select * from employee where 
 /*%if employeeId != null*/
     employee_id = /*employeeId*/99
-/*%end*/</source>
+/*%end*/]]></source>
 				<p>
 					<code>/*%if*/</code>の前の <code>where</code>は自動で除去されます。
 				</p>
-<source>select * from employee</source>
+<source><![CDATA[select * from employee]]></source>
 				<h4><code>AND</code>や <code>OR</code>の自動除去</h4>
 				<p>
 					条件コメントを使用した場合、条件の後ろにつづくANDやORについて、自動で出力の要/不要を判定します。
 					たとえば、次のようなSQLで<code>employeeId</code>が <code>null</code>の場合、
 				</p>
-<source>select * from employee where 
+<source><![CDATA[select * from employee where 
 /*%if employeeId != null*/
     employee_id = /*employeeId*/99
 /*%end*/
-and employeeName like 's%'</source>
+and employeeName like 's%']]></source>
 				<p>
 					<code>/*%end*/</code>の後ろの <code>and</code> は自動で除去されます。
 				</p>
@@ -208,47 +242,53 @@ and employeeName like 's%'</source>
 					<code>/*%if 条件*/</code> と <code>/*%end*/</code> の間では、
 					行コメントを使用した <code>--elseif 条件--</code> や <code>--else</code> という構文も使用できます。
 				</p>
-<source>select * from employee where 
+<source><![CDATA[select * from employee where 
 /*%if employeeId != null*/   employee_id = /*employeeId*/99
 --elseif employeeId == 999-- department_id is null
 --else                       employee_id is null
-/*%end*/</source>
+/*%end*/]]></source>
 				<h4>ネストした条件コメント</h4>
 				<p>
 					条件コメントはネストさせることができます。
 				</p>
-<source>select * from employee where 
+<source><![CDATA[select * from employee where 
 /*%if employeeId != null*/
   employee_id = /*employeeId*/99
   /*%if employeeName != null*/ 
     and employee_name = /*employeeName*/'hoge'
   /*%end*/
-/*%end*/</source>
+/*%end*/]]></source>
 			</subsection>
 			<subsection name="通常のブロックコメント">
 				<p>
-					<code>/*</code>の直後に、空白以外のJavaの変数で使用できない値が続く場合、それは通常のSQLコメントだとみなされます。
-					ただし、条件コメントを示す <code>%</code>や
-					埋め込みコメントを示す<code>#</code>がつづく場合は通常のコメントとみなされません。
+					<code>/*</code>の直後に続く3文字目が次のような値の場合、それは通常のSQLコメントだとみなされます。
+				</p>
+				<ul>
+					<li>Javaの識別子の先頭で使用できない文字（ただし、空白、<code>%</code>、<code>#</code>、<code>@</code>、<code>"</code>、<code>'</code>は除く）</li>
+				</ul>
+				<p>
+					たとえば、次の例はすべて通常のブロックコメントとみなされます。
+				</p>
+<source><![CDATA[/**～*/
+/*+～*/
+/*=～*/
+/*:～*/
+/*;～*/
+/*(～*/
+/*)～*/
+/*&;～*/]]></source>
+				<p>
+					上で述べたように、/*に続く3文字目の文字がJavaの識別子の先頭で使用できない文字（ただし、空白、<code>%</code>、<code>#</code>、<code>@</code>、<code>"</code>、<code>'</code>は除く）になっていることに注目してください。
 				</p>
 				<p>
-					たとえば、次の例は通常のブロックコメントとみなされます。
+					一方、次の例はすべてDomaにより解釈される式を含んだブロックコメントだとみなされます。
 				</p>
-<source>/** aaa */</source>
-<source>/*+aaa */</source>
-				<p>
-					次の例は通常のブロックコメントとみなされません。
-				</p>
-<source>/* id */</source>
-<source>/*$aaa*/</source>
-<source>/*%aaa*/</source>
-<source>/*#aaa*/</source>
-				<p>
-					<code>/* id */</code>は空白が除去され<code>id</code>というバインド変数とみなされます。
-					<code>/*$aaa*/</code>は<code>$aaa</code>というバインド変数とみなされます。
-					<code>/*%aaa*/</code>は<code>%</code>で始まっているため条件コメントとして解釈されます（しかし、<code>if</code>でも<code>end</code>でもないためエラーとなります）。
-					<code>/*#aaa*/</code>は<code>aaa</code>という埋め込み変数コメントとみなされます。
-				</p>
+<source>/* ～*/ ...3文字目が空白であるためです。空白が除去された部分が式だとみなされます。
+/*a～*/ ...3文字目がJavaの識別子の先頭で使用可能な文字であるためです。
+/*$～*/ ...3文字目がJavaの識別子の先頭で使用可能な文字であるためです。
+/*%～*/ ...3文字目が条件コメントを表す「<code>%</code>」であるためです。
+/*#～*/ ...3文字目が埋め込み変数コメントを表す「<code>#</code>」であるためです。
+/*@～*/ ...3文字目が埋め込み関数を表す「<code>@</code>」であるためです。</source>
 			</subsection>
 			<subsection name="通常の行コメント">
 				<p>
@@ -262,14 +302,14 @@ and employeeName like 's%'</source>
 		</section>
 		<section name="式言語">
 			<p>
-				条件コメントの <code>/*%if 条件*/</code> や、 <code>--elseif 条件--</code> の条件部には、式を記述できます。
+				埋め込み変数コメントやバインド変数コメントや条件コメントの条件部には、式を記述できます。
 			</p>
 			<subsection name="定数">
 				<p>
 					次の定数が用意されています。
 				</p>
 				<table>
-					<tr><td>定数</td><td>型</td></tr>
+					<tr><th>定数</th><th>型</th></tr>
 					<tr><td><code>null</code></td><td>void</td></tr>
 					<tr><td><code>true</code></td><td>boolean</td></tr>
 					<tr><td><code>false</code></td><td>boolean</td></tr>
@@ -281,13 +321,17 @@ and employeeName like 's%'</source>
 					<tr><td><code>'a'</code></td><td>char</td></tr>
 					<tr><td><code>"a"</code></td><td>String</td></tr>
 				</table>
+<source><![CDATA[select * from employee where 
+/*%if employeeName != null && employeeName.length() > 10 */
+    employee_name = /*employeeName*/'smith'
+/*%end*/]]></source>
 			</subsection>
 			<subsection name="比較演算子">
 				<p>
 					以下の比較演算子を使用できます。
 				</p>
 				<table>
-					<tr><td>比較演算子</td></tr>
+					<tr><th>比較演算子</th></tr>
 					<tr><td><code>==</code></td></tr>
 					<tr><td><code>!=</code></td></tr>
 					<tr><td><code>&lt;</code></td></tr>
@@ -302,13 +346,17 @@ and employeeName like 's%'</source>
 					<code>&lt;</code>、<code>&lt;=</code>、<code>&gt;</code>、<code>&gt;=</code>では、
 					非演算子に<code>null</code>リテラルを使用できません。
 				</p>
+<source><![CDATA[select * from employee where 
+/*%if employeeName.indexOf("s") > -1 */
+    employee_name = /*employeeName*/'smith'
+/*%end*/]]></source>
 			</subsection>
 			<subsection name="論理演算子">
 				<p>
 					以下の論理演算子を使用できます。
 				</p>
 				<table>
-					<tr><td>論理演算子</td></tr>
+					<tr><th>論理演算子</th></tr>
 					<tr><td><code>!</code></td></tr>
 					<tr><td><code>&amp;&amp;</code></td></tr>
 					<tr><td><code>||</code></td></tr>
@@ -316,17 +364,17 @@ and employeeName like 's%'</source>
 				<p>
 					 括弧を使って、演算子が適用される優先度を制御できます。
 				</p>
-<source>select * from employee where 
+<source><![CDATA[select * from employee where 
 /*%if (departmentId == null || managerId == null) and employee_name != null*/
     employee_name = /*employeeName*/'smith'
-/*%end*/</source>
+/*%end*/]]></source>
 			</subsection>
 			<subsection name="算術演算子">
 				<p>
 					以下の算術演算子を使用できます。
 				</p>
 				<table>
-					<tr><td>算術演算子</td></tr>
+					<tr><th>算術演算子</th></tr>
 					<tr><td><code>+</code></td></tr>
 					<tr><td><code>-</code></td></tr>
 					<tr><td><code>*</code></td></tr>
@@ -335,30 +383,80 @@ and employeeName like 's%'</source>
 				<p>
 					 被演算子は数値型でなければいけません。
 				</p>
+<source><![CDATA[select * from employee where 
+    salary = /*salary + 1000*/0]]></source>
+			</subsection>
+			<subsection name="その他の演算子">
+				<p>
+					<code>+</code>演算子を使って文字を連結できます。
+				</p>
+				<p>
+					 被演算子は次のいずれかの型でなければいけません。
+				</p>
+				<ul>
+					<li>java.lang.String</li>
+					<li>java.lang.Character</li>
+					<li>char</li>
+				</ul>
+<source><![CDATA[select * from employee where 
+   employee_name like /*employeeName + "_"*/'smith']]></source>
 			</subsection>
 			<subsection name="メソッド呼び出し">
 				<p>
 					ドット（.）で区切ってメソッド名を指定することでメソッドを実行可能です。実行可能なメソッドは、可視性が<code>public</code>なものだけに限られます。
 				</p>
-<source>select * from employee where 
+<source><![CDATA[select * from employee where 
 /*%if employeeName.startsWith("s") */
     employee_name = /*employeeName*/'smith'
-/*%end*/</source>
+/*%end*/]]></source>
 				<p>
 					引数がない場合は、メソッド名の後ろに()を指定します。
 				</p>
-<source>select * from employee where 
+<source><![CDATA[select * from employee where 
 /*%if employeeName.length() > 10 */ 
     employee_name = /*employeeName*/'smith'
-/*%end*/</source>
+/*%end*/]]></source>
 			</subsection>
 			<subsection name="フィールドアクセス">
 				<p>
 					ドット（.）で区切ってフィールド名を指定することでフィールドにアクセスできます。アクセス可能なフィールドはインスタンスフィールドです。
 					可視性はprivateであってもアクセス可能です。
 				</p>
-<source>select * from employee where 
-    employee_name = /*employee.employeeName*/'smith'</source>
+<source><![CDATA[select * from employee where 
+    employee_name = /*employee.employeeName*/'smith']]></source>
+			</subsection>
+			<subsection name="組み込み関数の使用">
+				<p>
+					組み込み関数は、主に、SQLにバインドする前にバインド変数の値を変更するためのユーティリティです。
+				</p>
+				<p>
+					たとえば、likeで前方一致検索を行う場合に、次のように記述できます。
+				</p>
+<source><![CDATA[select * from employee where 
+    employee_name like /*@starts(employee.employeeName)*/'smith']]></source>
+				<p>
+					ここでは、<code>@starts(employee.employeeName)</code> というように、
+					<code>employee.employeeName</code> を <code>@starts</code>関数に渡しています。
+					組み込み関数の名前はすべて<code>@</code>で始まります。
+					<code>employee.employeeName</code> の値が「ABC」である場合、
+					SQLにバインディングされる値は「ABC%」となります。
+					もし、<code>employee.employeeName</code> の値が「AB%C」というように「%」を含んでいる場合、
+					「%」はデフォルトのエスケープシーケンスでエスケープされ、SQLにバインディングされる値は「AB\%C%」となります。
+				</p>
+				<p>
+					使用可能な関数は以下のとおりです。デフォルトでは、いずれの関数も最初の引数に<code>null</code>を渡した場合、<code>null</code>を返します。
+				</p>
+				<table>
+					<tr><th>戻り値の型</th><th>関数名とパラメータ</th><th>概要</th></tr>
+					<tr><td><code>String</code></td><td><code>@starts(String text)</code></td><td>前方一致検索のための文字列を返します。エスケープはデフォルトのエスケープシーケンスを用いて行われます。</td></tr>
+					<tr><td><code>String</code></td><td><code>@starts(String text, char escape)</code></td><td>前方一致検索のための文字列を返します。エスケープは第2引数で指定したエスケープシーケンスを用いて行われます。</td></tr>
+					<tr><td><code>String</code></td><td><code>@ends(String text)</code></td><td>後方一致検索のための文字列を返します。エスケープはデフォルトのエスケープシーケンスを用いて行われます。</td></tr>
+					<tr><td><code>String</code></td><td><code>@ends(String text, char escape)</code></td><td>後方一致検索のための文字列を返します。エスケープは第2引数で指定したエスケープシーケンスを用いて行われます。</td></tr>
+					<tr><td><code>String</code></td><td><code>@contains(String text)</code></td><td>前後方一致検索のための文字列を返します。エスケープはデフォルトのエスケープシーケンスを用いて行われます。</td></tr>
+					<tr><td><code>String</code></td><td><code>@contains(String text, char escape)</code></td><td>前後方一致検索のための文字列を返します。エスケープは第2引数で指定したエスケープシーケンスを用いて行われます。</td></tr>
+					<tr><td><code>java.sql.Date</code></td><td><code>@resetTimePart(java.sql.Date date)</code></td><td>時刻部分をゼロにリセットした新しい日付を返します。</td></tr>
+					<tr><td><code>java.sql.Timestamp</code></td><td><code>@resetTimePart(java.sql.Timestamp timestamp)</code></td><td>時刻部分をゼロにリセットした新しいタイムスタンプを返します。</td></tr>
+				</table>
 			</subsection>
 		</section>
 	</body>

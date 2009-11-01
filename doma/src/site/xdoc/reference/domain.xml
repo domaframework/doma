@@ -5,6 +5,18 @@
 		<title>ドメインクラス</title>
 	</properties>
 	<body>
+		<section name="目次">
+			<ul>
+				<li><a href="#概要">概要</a></li>
+				<li><a href="#ドメイン定義">ドメイン定義</a></li>
+				<li><a href="#利用例">利用例</a>
+					<ul>
+						<li><a href="#エンティティクラス">エンティテクラス</a></li>
+						<li><a href="#Daoインタフェース">Daoインタフェース</a></li>
+					</ul>
+				</li>
+			</ul>
+		</section>
 		<section name="概要">
 			<p>
 				Domain（ドメイン）クラスの定義方法を示します。

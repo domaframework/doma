@@ -5,6 +5,19 @@
 		<title>セットアップ</title>
 	</properties>
 	<body>
+		<section name="目次">
+			<ul>
+				<li><a href="#セットアップ">セットアップ</a>
+					<ul>
+						<li><a href="#JDKのインストール">JDKのインストール</a></li>
+						<li><a href="#Eclipseのインストール">Eclipseのインストール</a></li>
+						<li><a href="#プロジェクトの設定">プロジェクトの設定</a></li>
+					</ul>
+				</li>
+				<li><a href="#セットアップの確認">セットアップの確認</a></li>
+				<li><a href="#Eclipseプラグインのインストール">Eclipseプラグインのインストール</a></li>
+			</ul>
+		</section>
 		<section name="セットアップ">
 			<subsection name="JDKのインストール">
 				<p>

@@ -5,6 +5,26 @@
 		<title>エンティティクラス</title>
 	</properties>
 	<body>
+		<section name="目次">
+			<ul>
+				<li><a href="#概要">概要</a></li>
+				<li><a href="#エンティティ定義">エンティティ定義</a>
+					<ul>
+						<li><a href="#テーブル定義">テーブル定義</a></li>
+						<li><a href="#継承">継承</a></li>
+					</ul>
+				</li>
+				<li><a href="#フィールド定義">フィールド定義</a>
+					<ul>
+						<li><a href="#永続的なフィールド">永続的なフィールド</a></li>
+						<li><a href="#非永続的なフィールド">非永続的なフィールド</a></li>
+						<li><a href="#取得時の状態を管理するフィールド">取得時の状態を管理するフィールド</a></li>
+					</ul>
+				</li>
+				<li><a href="#メソッド定義">メソッド定義</a></li>
+				<li><a href="#エンティティの利用方法">エンティティの利用方法</a></li>
+			</ul>
+		</section>
 		<section name="概要">
 			<p>
 				Entity（エンティティ）は、データベースのテーブルやクエリの結果セットに対応します。
@@ -304,7 +324,7 @@ public class EmpDeptDto {
     String employeeName;
     String departmentName;
 }]]></source>
-<source><![CDATA[@Dao
+<source><![CDATA[@Dao(config = AppConfig.class)
 public interface EmployeeDao {
     @Select
     EmpDeptDto selectByDepartmentId(Integer departmentId);

@@ -5,6 +5,19 @@
 		<title>基本型</title>
 	</properties>
 	<body>
+		<section name="目次">
+			<ul>
+				<li><a href="#概要">概要</a></li>
+				<li><a href="#基本型の種類">基本型の種類</a></li>
+				<li><a href="#利用例">利用例</a>
+					<ul>
+						<li><a href="#エンティティクラス">エンティティクラス</a></li>
+						<li><a href="#ドメインクラス">ドメインクラス</a></li>
+						<li><a href="#Daoインタフェース">Daoインタフェース</a></li>
+					</ul>
+				</li>
+			</ul>
+		</section>
 		<section name="概要">
 			<p>
 				Domaでは、データベースのカラムにマッピング可能なJavaの型を基本型と呼びます。
@@ -19,7 +32,7 @@
 				基本型には以下の種類があります。
 			</p>
 			<ul>
-				<li>プリミティブ型とそのラッパー型</li>
+				<li>プリミティブ型とそのラッパー型（ただし、<code>char</code>と<code>java.lang.Character</code>は除く）</li>
 				<li>列挙型</li>
 				<li>byte[]</li>
 				<li>java.lang.String</li>

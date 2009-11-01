@@ -5,6 +5,24 @@
 		<title>設定</title>
 	</properties>
 	<body>
+		<section name="目次">
+			<ul>
+				<li><a href="#概要">概要</a></li>
+				<li><a href="#設定クラスの作成">設定クラスの作成</a>
+					<ul>
+						<li><a href="#Configインタフェースを直接実装する場合">Configインタフェースを直接実装する場合</a></li>
+						<li><a href="#DomaAbstractConfigを継承する場合">DomaAbstractConfigを継承する場合</a></li>
+					</ul>
+				</li>
+				<li><a href="#設定クラスの利用">設定クラスの利用</a></li>
+				<li><a href="#DIコンテナを利用する場合の設定例">DIコンテナを利用する場合の設定例</a>
+					<ul>
+						<li><a href="#設定クラスのインスタンスのインジェクション">設定クラスのインスタンスのインジェクション</a></li>
+						<li><a href="#aptにより生成されるソースコードに対するアノテーションの付与">aptにより生成されるソースコードに対するアノテーションの付与</a></li>
+					</ul>
+				</li>
+			</ul>
+		</section>
 		<section name="概要">
 			<p>
 				Domaに対する設定は、<a href ="../apidocs/org/seasar/doma/jdbc/Config.html"><code>Config</code></a>インタフェースの実装クラスで表現します。

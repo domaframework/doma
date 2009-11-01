@@ -5,6 +5,13 @@
 		<title>Doma Tools</title>
 	</properties>
 	<body>
+		<section name="目次">
+			<ul>
+				<li><a href="#概要">概要</a></li>
+				<li><a href="#インストール">インストール</a></li>
+				<li><a href="#使用方法">使用方法</a></li>
+			</ul>
+		</section>
 		<section name="概要">
 			<p>
 				Doma Toolsは、Domaを使った開発をサーポートするEclipseプラグインです。

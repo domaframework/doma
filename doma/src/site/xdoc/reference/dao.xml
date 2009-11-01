@@ -5,6 +5,15 @@
 		<title>Daoインタフェース</title>
 	</properties>
 	<body>
+		<section name="目次">
+			<ul>
+				<li><a href="#概要">概要</a></li>
+				<li><a href="#Dao定義">Dao定義</a></li>
+				<li><a href="#クエリメソッド定義">クエリメソッド定義</a></li>
+				<li><a href="#デリゲート定義">デリゲート定義</a></li>
+				<li><a href="#Daoの利用方法">Daoの利用方法</a></li>
+			</ul>
+		</section>
 		<section name="概要">
 			<p>
 				Data Access Object （Dao） はデータベースアクセスのためのインタフェースです。
