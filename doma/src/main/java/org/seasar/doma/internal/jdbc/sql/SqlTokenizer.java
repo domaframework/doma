@@ -20,6 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.nio.CharBuffer;
 
+import org.seasar.doma.internal.expr.util.ExpressionUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.jdbc.JdbcException;
 
@@ -28,10 +29,6 @@ import org.seasar.doma.jdbc.JdbcException;
  * 
  */
 public class SqlTokenizer {
-
-    protected static final char STRING_LITERAL_EXPR_QUOTE = '"';
-
-    protected static final char CHAR_LITERAL_EXPR_QUOTE = '\'';
 
     protected final String sql;
 
@@ -302,10 +299,7 @@ public class SqlTokenizer {
             type = BLOCK_COMMENT;
             if (buf.hasRemaining()) {
                 char c3 = buf.get();
-                if (Character.isJavaIdentifierStart(c3)
-                        || Character.isWhitespace(c3)
-                        || c3 == STRING_LITERAL_EXPR_QUOTE
-                        || c3 == CHAR_LITERAL_EXPR_QUOTE) {
+                if (ExpressionUtil.isExpressionIdentifierStart(c3)) {
                     type = BIND_VARIABLE_BLOCK_COMMENT;
                 } else if (c3 == '#') {
                     type = EMBEDDED_VARIABLE_BLOCK_COMMENT;

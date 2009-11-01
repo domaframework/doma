@@ -212,7 +212,7 @@ public class ExpressionParserTest extends TestCase {
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         EvaluationResult evaluationResult = evaluator.evaluate(expression);
-        assertEquals("aaa%", evaluationResult.getValue());
+        assertEquals("aaa", evaluationResult.getValue());
     }
 
     public void testFunction_notFound() throws Exception {

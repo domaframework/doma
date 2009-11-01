@@ -15,9 +15,13 @@
  */
 package org.seasar.doma.jdbc.dialect;
 
-import org.seasar.doma.jdbc.dialect.StandardDialect;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.Calendar;
 
 import junit.framework.TestCase;
+
+import org.seasar.doma.expr.ExpressionFunctions;
 
 /**
  * @author taedium
@@ -34,5 +38,44 @@ public class StandardDialectTest extends TestCase {
         StandardDialect dialect = new StandardDialect();
         assertEquals("aaa", dialect.removeQuote("\"aaa\""));
         assertEquals("bbb", dialect.removeQuote("bbb"));
+    }
+
+    public void testExpressionFunctions_starts() throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        assertEquals("a\\\\a\\%a\\_%", functions.starts("a\\a%a_"));
+    }
+
+    public void testExpressionFunctions_starts_escape() throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        assertEquals("a$$a$%a$_%", functions.starts("a$a%a_", '$'));
+    }
+
+    public void testExpressionFunctions_starts_escapeWithDefault()
+            throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        assertEquals("a\\\\a\\%a\\_%", functions.starts("a\\a%a_", '\\'));
+    }
+
+    public void testExpressionFunctions_resetTimePart_forDate()
+            throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2009, Calendar.JANUARY, 23, 12, 34, 56);
+        Date date = new Date(calendar.getTimeInMillis());
+        assertEquals(Date.valueOf("2009-01-23"), functions.resetTimePart(date));
+    }
+
+    public void testExpressionFunctions_resetTimePart_forTimestamp()
+            throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        Timestamp timestamp = Timestamp
+                .valueOf("2009-01-23 12:34:56.123456789");
+        assertEquals(Timestamp.valueOf("2009-01-23 00:00:00.000000000"),
+                functions.resetTimePart(timestamp));
     }
 }

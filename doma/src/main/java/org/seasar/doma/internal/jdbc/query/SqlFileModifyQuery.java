@@ -55,7 +55,8 @@ public abstract class SqlFileModifyQuery implements ModifyQuery {
     }
 
     protected void prepareSql() {
-        ExpressionEvaluator evaluator = new ExpressionEvaluator(parameters);
+        ExpressionEvaluator evaluator = new ExpressionEvaluator(parameters,
+                config.getDialect().getExpressionFunctions());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
                 evaluator);
         SqlFile sqlFile = config.getSqlFileRepository().getSqlFile(sqlFilePath,

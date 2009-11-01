@@ -15,13 +15,19 @@
  */
 package org.seasar.doma.jdbc.dialect;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.dialect.StandardForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.StandardPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
@@ -84,34 +90,79 @@ public class StandardDialect implements Dialect {
     /** SQLのバインド変数にマッピングされる {@link Wrapper} をログ用のフォーマットされた文字列へと変換するビジター */
     protected final SqlLogFormattingVisitor sqlLogFormattingVisitor;
 
+    /** SQLのコメント式で利用可能な関数群 */
+    protected final ExpressionFunctions expressionFunctions;
+
     /**
      * インスタンスを構築します。
      */
     public StandardDialect() {
         this(new StandardJdbcMappingVisitor(),
-                new StandardSqlLogFormattingVisitor());
+                new StandardSqlLogFormattingVisitor(),
+                new StandardExpressionFunctions());
     }
 
     /**
-     * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor}
-     * を指定してインスタンスを構築します。
+     * {@link JdbcMappingVisitor} を指定してインスタンスを構築します。
+     * 
+     * @param jdbcMappingVisitor
+     *            {@link Wrapper} をJDBCの型とマッピングするビジター
+     */
+    public StandardDialect(JdbcMappingVisitor jdbcMappingVisitor) {
+        this(jdbcMappingVisitor, new StandardSqlLogFormattingVisitor(),
+                new StandardExpressionFunctions());
+    }
+
+    /**
+     * {@link SqlLogFormattingVisitor} を指定してインスタンスを構築します。
+     * 
+     * @param sqlLogFormattingVisitor
+     *            SQLのバインド変数にマッピングされる {@link Wrapper}
+     *            をログ用のフォーマットされた文字列へと変換するビジター
+     */
+    public StandardDialect(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
+        this(new StandardJdbcMappingVisitor(), sqlLogFormattingVisitor,
+                new StandardExpressionFunctions());
+    }
+
+    /**
+     * {@link ExpressionFunctions} を指定してインスタンスを構築します。
+     * 
+     * @param expressionFunctions
+     *            SQLのコメント式で利用可能な関数群
+     */
+    public StandardDialect(ExpressionFunctions expressionFunctions) {
+        this(new StandardJdbcMappingVisitor(),
+                new StandardSqlLogFormattingVisitor(), expressionFunctions);
+    }
+
+    /**
+     * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor} と
+     * {@link ExpressionFunctions} を指定してインスタンスを構築します。
      * 
      * @param jdbcMappingVisitor
      *            {@link Wrapper} をJDBCの型とマッピングするビジター
      * @param sqlLogFormattingVisitor
      *            SQLのバインド変数にマッピングされる {@link Wrapper}
      *            をログ用のフォーマットされた文字列へと変換するビジター
+     * @param expressionFunctions
+     *            SQLのコメント式で利用可能な関数群
      */
     public StandardDialect(JdbcMappingVisitor jdbcMappingVisitor,
-            SqlLogFormattingVisitor sqlLogFormattingVisitor) {
+            SqlLogFormattingVisitor sqlLogFormattingVisitor,
+            ExpressionFunctions expressionFunctions) {
         if (jdbcMappingVisitor == null) {
             throw new DomaNullPointerException("jdbcMappingVisitor");
         }
         if (sqlLogFormattingVisitor == null) {
             throw new DomaNullPointerException("sqlLogFormattingVisitor");
         }
+        if (expressionFunctions == null) {
+            throw new DomaNullPointerException("expressionFunctions");
+        }
         this.jdbcMappingVisitor = jdbcMappingVisitor;
         this.sqlLogFormattingVisitor = sqlLogFormattingVisitor;
+        this.expressionFunctions = expressionFunctions;
     }
 
     @Override
@@ -333,6 +384,11 @@ public class StandardDialect implements Dialect {
     @Override
     public SqlLogFormattingVisitor getSqlLogFormattingVisitor() {
         return sqlLogFormattingVisitor;
+    }
+
+    @Override
+    public ExpressionFunctions getExpressionFunctions() {
+        return expressionFunctions;
     }
 
     /**
@@ -601,5 +657,160 @@ public class StandardDialect implements Dialect {
                     .getClass().getName());
         }
 
+    }
+
+    /**
+     * 標準の {@link ExpressionFunctions} の実装です。
+     * 
+     * @author taedium
+     * 
+     */
+    public static class StandardExpressionFunctions implements
+            ExpressionFunctions {
+
+        private static char DEFAULT_ESCAPE = '\\';
+
+        private final static char[] DEFAULT_WILDCARDS = { '%', '_' };
+
+        protected final char escape;
+
+        protected final char[] wildcards;
+
+        protected final Pattern defaultWildcardReplacementPattern;
+
+        protected final String defaultReplacement;
+
+        protected StandardExpressionFunctions() {
+            this(DEFAULT_WILDCARDS);
+        }
+
+        protected StandardExpressionFunctions(char[] wildcards) {
+            this(DEFAULT_ESCAPE, wildcards);
+        }
+
+        protected StandardExpressionFunctions(char escape, char[] wildcards) {
+            this.escape = escape;
+            this.wildcards = wildcards != null ? wildcards : DEFAULT_WILDCARDS;
+            this.defaultWildcardReplacementPattern = createWildcardReplacementPattern(
+                    escape, this.wildcards);
+            this.defaultReplacement = createWildcardReplacement(escape);
+        }
+
+        @Override
+        public String starts(String text) {
+            if (text == null) {
+                return null;
+            }
+            String escaped = escapeWildcard(defaultWildcardReplacementPattern,
+                    text, defaultReplacement);
+            return escaped + "%";
+        }
+
+        @Override
+        public String starts(String text, char escape) {
+            if (text == null) {
+                return null;
+            }
+            return escapeWildcard(text, escape) + "%";
+        }
+
+        @Override
+        public String ends(String text) {
+            if (text == null) {
+                return null;
+            }
+            String escaped = escapeWildcard(defaultWildcardReplacementPattern,
+                    text, defaultReplacement);
+            return "%" + escaped;
+        }
+
+        @Override
+        public String ends(String text, char escape) {
+            if (text == null) {
+                return null;
+            }
+            return "%" + escapeWildcard(text, escape);
+        }
+
+        @Override
+        public String contains(String text) {
+            if (text == null) {
+                return null;
+            }
+            if (text.isEmpty()) {
+                return "%";
+            }
+            String escaped = escapeWildcard(defaultWildcardReplacementPattern,
+                    text, defaultReplacement);
+            return "%" + escaped + "%";
+        }
+
+        @Override
+        public String contains(String text, char escape) {
+            if (text == null) {
+                return null;
+            }
+            if (text.isEmpty()) {
+                return "%";
+            }
+            return "%" + escapeWildcard(text, escape) + "%";
+        }
+
+        protected String escapeWildcard(String input, char escape) {
+            Pattern pattern = createWildcardReplacementPattern(escape,
+                    wildcards);
+            String replacement = createWildcardReplacement(escape);
+            return escapeWildcard(pattern, input, replacement);
+        }
+
+        protected String escapeWildcard(Pattern pattern, String input,
+                String replacement) {
+            Matcher matcher = pattern.matcher(input);
+            return matcher.replaceAll(replacement);
+        }
+
+        @Override
+        public Date resetTimePart(Date date) {
+            if (date == null) {
+                return null;
+            }
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            return new Date(calendar.getTimeInMillis());
+        }
+
+        @Override
+        public Timestamp resetTimePart(Timestamp timestamp) {
+            if (timestamp == null) {
+                return null;
+            }
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(timestamp);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            return new Timestamp(calendar.getTimeInMillis());
+        }
+
+        protected static Pattern createWildcardReplacementPattern(char escape,
+                char[] wildcards) {
+            StringBuilder buf = new StringBuilder();
+            buf.append("[");
+            buf.append(Matcher.quoteReplacement(String.valueOf(escape)));
+            for (char wildcard : wildcards) {
+                buf.append(wildcard);
+            }
+            buf.append("]");
+            return Pattern.compile(buf.toString());
+        }
+
+        protected static String createWildcardReplacement(char escape) {
+            return Matcher.quoteReplacement(String.valueOf(escape)) + "$0";
+        }
     }
 }

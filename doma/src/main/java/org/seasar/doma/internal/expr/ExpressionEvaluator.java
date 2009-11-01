@@ -24,6 +24,7 @@ import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,14 +71,23 @@ import org.seasar.doma.internal.util.MethodUtil;
 public class ExpressionEvaluator implements
         ExpressionNodeVisitor<EvaluationResult, Void> {
 
-    protected final Map<String, Value> variableValues = new HashMap<String, Value>();
+    protected final Map<String, Value> variableValues;
+
+    protected final ExpressionFunctions expressionFunctions;
 
     public ExpressionEvaluator() {
+        this(new NullExpressionFunctions());
     }
 
-    public ExpressionEvaluator(Map<String, Value> variableValues) {
+    public ExpressionEvaluator(ExpressionFunctions expressionFunctions) {
+        this(Collections.<String, Value> emptyMap(), expressionFunctions);
+    }
+
+    public ExpressionEvaluator(Map<String, Value> variableValues,
+            ExpressionFunctions expressionFunctions) {
         assertNotNull(variableValues);
-        this.variableValues.putAll(variableValues);
+        this.variableValues = new HashMap<String, Value>(variableValues);
+        this.expressionFunctions = expressionFunctions;
     }
 
     public void add(String varialbeName, Value value) {
@@ -459,23 +469,23 @@ public class ExpressionEvaluator implements
         ParameterCollection collection = collector.collect(node
                 .getParametersNode());
         ExpressionLocation location = node.getLocation();
-        Method method = findStaticMethod(location, node.getMethodName(), null,
-                targetClass, collection.getParamTypes());
+        Method method = findMethod(location, node.getMethodName(),
+                expressionFunctions, targetClass, collection.getParamTypes());
         if (method == null) {
             String signature = MethodUtil.createSignature(node.getMethodName(),
                     collection.getParamTypes());
             throw new ExpressionException(DomaMessageCode.DOMA3028, location
                     .getExpression(), location.getPosition(), signature);
         }
-        return invokeMethod(node.getLocation(), method, null, targetClass,
-                collection.getParamTypes(), collection.getParams());
+        return invokeMethod(node.getLocation(), method, expressionFunctions,
+                targetClass, collection.getParamTypes(), collection.getParams());
     }
 
     protected Method findMethod(ExpressionLocation location, String methodName,
             Object target, Class<?> targetClass, Class<?>[] paramTypes) {
         List<Method> methods = new ArrayList<Method>();
-        for (Class<?> clazz = targetClass; clazz != Object.class; clazz = clazz
-                .getSuperclass()) {
+        for (Class<?> clazz = targetClass; clazz != null
+                && clazz != Object.class; clazz = clazz.getSuperclass()) {
             for (Method method : clazz.getDeclaredMethods()) {
                 if (method.getName().equals(methodName)) {
                     methods.add(method);
@@ -497,9 +507,8 @@ public class ExpressionEvaluator implements
     }
 
     protected Method findStaticMethod(ExpressionLocation location,
-            String methodName, Object target, Class<?> targetClass,
-            Class<?>[] paramTypes) {
-        Method method = findMethod(location, methodName, target, targetClass,
+            String methodName, Class<?> targetClass, Class<?>[] paramTypes) {
+        Method method = findMethod(location, methodName, null, targetClass,
                 paramTypes);
         if (method == null) {
             return null;

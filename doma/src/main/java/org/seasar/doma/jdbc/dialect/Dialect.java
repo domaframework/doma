@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
@@ -212,5 +213,12 @@ public interface Dialect {
      * @return SQLのバインド変数にマッピングされる {@link Wrapper} をログ用のフォーマットされた文字列へと変換するビジター
      */
     SqlLogFormattingVisitor getSqlLogFormattingVisitor();
+
+    /**
+     * SQLのコメント式で使用可能な関数群を返します。
+     * 
+     * @return SQLのコメント式で使用可能な関数群
+     */
+    ExpressionFunctions getExpressionFunctions();
 
 }

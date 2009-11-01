@@ -21,6 +21,7 @@ import java.sql.Types;
 import java.util.Collections;
 
 import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.dialect.PostgresForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.PostgresPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
@@ -52,21 +53,60 @@ public class PostgresDialect extends StandardDialect {
      */
     public PostgresDialect() {
         this(new PostgresJdbcMappingVisitor(),
-                new PostgresSqlLogFormattingVisitor());
+                new PostgresSqlLogFormattingVisitor(),
+                new PostgresExpressionFunctions());
     }
 
     /**
-     * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor}
-     * を指定してインスタンスを構築します。
+     * {@link JdbcMappingVisitor} を指定してインスタンスを構築します。
+     * 
+     * @param jdbcMappingVisitor
+     *            {@link Wrapper} をJDBCの型とマッピングするビジター
+     */
+    public PostgresDialect(JdbcMappingVisitor jdbcMappingVisitor) {
+        this(jdbcMappingVisitor, new PostgresSqlLogFormattingVisitor(),
+                new PostgresExpressionFunctions());
+    }
+
+    /**
+     * {@link SqlLogFormattingVisitor} を指定してインスタンスを構築します。
+     * 
+     * @param sqlLogFormattingVisitor
+     *            SQLのバインド変数にマッピングされる {@link Wrapper}
+     *            をログ用のフォーマットされた文字列へと変換するビジター
+     */
+    public PostgresDialect(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
+        this(new PostgresJdbcMappingVisitor(), sqlLogFormattingVisitor,
+                new PostgresExpressionFunctions());
+    }
+
+    /**
+     * {@link ExpressionFunctions} を指定してインスタンスを構築します。
+     * 
+     * @param expressionFunctions
+     *            SQLのコメント式で利用可能な関数群
+     */
+    public PostgresDialect(ExpressionFunctions expressionFunctions) {
+        this(new PostgresJdbcMappingVisitor(),
+                new PostgresSqlLogFormattingVisitor(), expressionFunctions);
+    }
+
+    /**
+     * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor} と
+     * {@link ExpressionFunctions} を指定してインスタンスを構築します。
      * 
      * @param jdbcMappingVisitor
      *            {@link Wrapper} をJDBCの型とマッピングするビジター
      * @param sqlLogFormattingVisitor
-     *            SQLのバインド変数にマッピングされる {@link Wrapper} をログ用のフォーマットされた文字列へと変換するビジター
+     *            SQLのバインド変数にマッピングされる {@link Wrapper}
+     *            をログ用のフォーマットされた文字列へと変換するビジター
+     * @param expressionFunctions
+     *            SQLのコメント式で利用可能な関数群
      */
     public PostgresDialect(JdbcMappingVisitor jdbcMappingVisitor,
-            SqlLogFormattingVisitor sqlLogFormattingVisitor) {
-        super(jdbcMappingVisitor, sqlLogFormattingVisitor);
+            SqlLogFormattingVisitor sqlLogFormattingVisitor,
+            ExpressionFunctions expressionFunctions) {
+        super(jdbcMappingVisitor, sqlLogFormattingVisitor, expressionFunctions);
     }
 
     @Override
@@ -186,6 +226,16 @@ public class PostgresDialect extends StandardDialect {
      */
     public static class PostgresSqlLogFormattingVisitor extends
             StandardSqlLogFormattingVisitor {
+    }
+
+    /**
+     * PostgreSQL用の {@link ExpressionFunctions} です。
+     * 
+     * @author taedium
+     * 
+     */
+    public static class PostgresExpressionFunctions extends
+            StandardExpressionFunctions {
     }
 
 }

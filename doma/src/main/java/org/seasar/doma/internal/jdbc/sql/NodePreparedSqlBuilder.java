@@ -116,7 +116,8 @@ public class NodePreparedSqlBuilder implements
     protected final SqlLogFormattingFunction formattingFunction;
 
     public NodePreparedSqlBuilder(Config config) {
-        this(config, new ExpressionEvaluator());
+        this(config, new ExpressionEvaluator(config.getDialect()
+                .getExpressionFunctions()));
     }
 
     public NodePreparedSqlBuilder(Config config, ExpressionEvaluator evaluator) {

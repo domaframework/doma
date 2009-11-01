@@ -353,8 +353,7 @@ public class ExpressionValidator implements
                 .collect(node.getParametersNode());
         String methodName = node.getMethodName();
         List<MethodDeclaration> methodDeclarations = typeDeclaration
-                .getStaticMethodDeclarations(methodName,
-                        parameterTypeDeclarations);
+                .getMethodDeclarations(methodName, parameterTypeDeclarations);
         if (methodDeclarations.size() == 0) {
             ExpressionLocation location = node.getLocation();
             String methodSignature = createMethodSignature(methodName,
