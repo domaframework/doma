@@ -30,46 +30,58 @@ public interface EmployeeDao {
     ...
 }]]></source>
 			<p>
-				戻り値の型は<code>int</code>、パラメータは型は<a href="../entity.htm.">エンティティティクラス</a>でなければいけません。
-				指定できるパラメータの数は1つです。
-			</p>
-			<p>
 				デフォルトでは、INSERT文が自動生成されます。
 				<code>@Insert</code>の<code>sqlFile</code>に<code>true</code>を設定することで、任意の<a href="../sqlfile.html">SQLファイル</a>にマッピングできます。
 			</p>
 		</section>
 		<section name="SQLの自動生成による挿入">
+			<p>
+				戻り値の型は<code>int</code>でなければいけません。
+				戻り値は更新件数を返します。
+				パラメータは型は<a href="../entity.html">エンティティティクラス</a>でなければいけません。
+				指定できるパラメータの数は1つです。
+			</p>
+<source><![CDATA[@Insert
+int insert(Employee employee);]]></source>
 			<subsection name="識別子">
-				<a href="../entity.htm.">エンティティティクラス</a>の識別子に、<code>@GeneratedValue</code>が注釈されている場合、
+				<a href="../entity.html">エンティティティクラス</a>の識別子に、<code>@GeneratedValue</code>が注釈されている場合、
 				識別子が自動的に生成し設定します。
 			</subsection>
 			<subsection name="バージョン番号">
-				<a href="../entity.htm.">エンティティティクラス</a>に<code>@Version</code>が注釈されたプロパティがある場合、
+				<a href="../entity.html">エンティティティクラス</a>に<code>@Version</code>が注釈されたプロパティがある場合、
 				そのプロパティに明示的に1以上の値が設定されていればその値を使用します。
 				もし設定されていないか、0以下の値が設定されていれば<code>1</code>を自動で設定します。
 			</subsection>
 			<subsection name="挿入対象プロパティ">
+				<h4><code>@Column</code>の<code>insertable</code>要素</h4>
 				<p>
-					<a href="../entity.htm.">エンティティティクラス</a>に<code>@Column</code>が注釈されたプロパティがある場合、
+					<a href="../entity.html">エンティティティクラス</a>に<code>@Column</code>が注釈されたプロパティがある場合、
 					<code>@Column</code>の<code>insertable</code>要素が<code>false</code>のものは挿入対象外です。
 				</p>
+				<h4><code>@Insert</code>の<code>exclude</code>要素</h4>
 				<p>
 					<code>@Insert</code>の<code>exclude</code>要素に指定されたプロパティを挿入対象外とします。
 					プロパティがこの要素に指定されていれば、<code>@Column</code>の<code>insertable</code>要素が<code>true</code>であっても挿入対象外です。
 				</p>
+<source><![CDATA[@Insert(exclude = {"name", "salary"})
+int insert(Employee employee);]]></source>
+				<h4><code>@Insert</code>の<code>include</code>要素</h4>
 				<p>
 					<code>@Insert</code>の<code>include</code>要素に指定されたプロパティのみを挿入対象とします。
 					<code>@Insert</code>の<code>include</code>要素と<code>exclude</code>要素の両方に
 					同じプロパティが指定された場合、そのプロパティは挿入対象外になります。
 					プロパティがこの要素に指定されていても、<code>@Column</code>の<code>insertable</code>要素が<code>false</code>であれば挿入対象外です。
 				</p>
+<source><![CDATA[@Insert(include = {"name", "salary"})
+int insert(Employee employee);]]></source>
+				<h4><code>@Insert</code>の<code>excludeNull</code>要素</h4>
 				<p>
 					<code>@Insert</code>の<code>excludeNull</code>要素が<code>true</code>の場合、
 					値が<code>null</code>のプロパティを挿入対象外とします。
 					この要素が<code>true</code>の場合、<code>@Column</code>の<code>insertable</code>要素が<code>true</code>であったり、
 					<code>@Insert</code>の<code>include</code>要素にプロパティが指定されていても、値が<code>null</code>であれば挿入対象外です。
 				</p>
-<source><![CDATA[@Insert(excludeNull = true, include = {"name", "salary"})
+<source><![CDATA[@Insert(excludeNull = true)
 int insert(Employee employee);]]></source>
 			</subsection>
 		</section>
@@ -78,14 +90,24 @@ int insert(Employee employee);]]></source>
 				SQLファイルによる挿入を行うには、<code>@Insert</code>の<code>sqlFile</code>要素に<code>true</code>を設定し、
 				メソッドに対応する<a href="../sqlfile.html">SQLファイル</a>を用意します。
 			</p>
+			<p>
+				戻り値の型は<code>int</code>でなければいけません。
+				戻り値は更新件数を返します。
+				パラメータの型には、<a href="../basic.html">基本型</a>、<a href="../domain.html">ドメインクラス</a>、<a href="../entity.html">エンティティティクラス</a>
+				および<a href="../basic.html">基本型</a>や<a href="../domain.html">ドメインクラス</a>を要素とする<code>java.util.List</code>が使用できます。
+				指定できるパラメータの数に制限はありません。			
+			</p>
 <source><![CDATA[@Insert(sqlFile = true)
 int insert(Employee employee);]]></source>
+			<p>
+				たとえば、上記のメソッドに対応するSQLは次のように記述します。
+			</p>
 <source><![CDATA[insert into employee (id, name, salary, version) 
 values (/*employee.id*/0, /*employee.name*/'hoge', /*employee.salary*/100, /*employee.version*/0)]]></source>
 			<p>
 				SQLファイルによる挿入では、識別子の自動設定やバージョン番号の自動設定は行われません。
 				また、<code>@Insert</code>の<code>exclude</code>要素、<code>include</code>要素、
-				<code>excludeNull</code>要素の指定は参照されません。
+				<code>excludeNull</code>要素は参照されません。
 			</p>
 		</section>
 		<section name="クエリタイムアウト">

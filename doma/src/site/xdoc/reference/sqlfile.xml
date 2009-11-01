@@ -27,7 +27,7 @@
 				</li>
 				<li><a href="#式言語">式言語</a>
 					<ul>
-						<li><a href="#定数">定数</a></li>
+						<li><a href="#リテラル">リテラル</a></li>
 						<li><a href="#比較演算子">比較演算子</a></li>
 						<li><a href="#論理演算子">論理演算子</a></li>
 						<li><a href="#算術演算子">算術演算子</a></li>
@@ -284,11 +284,11 @@ and employeeName like 's%']]></source>
 					一方、次の例はすべてDomaにより解釈される式を含んだブロックコメントだとみなされます。
 				</p>
 <source>/* ～*/ ...3文字目が空白であるためです。空白が除去された部分が式だとみなされます。
-/*a～*/ ...3文字目がJavaの識別子の先頭で使用可能な文字であるためです。
-/*$～*/ ...3文字目がJavaの識別子の先頭で使用可能な文字であるためです。
-/*%～*/ ...3文字目が条件コメントを表す「<code>%</code>」であるためです。
-/*#～*/ ...3文字目が埋め込み変数コメントを表す「<code>#</code>」であるためです。
-/*@～*/ ...3文字目が埋め込み関数を表す「<code>@</code>」であるためです。</source>
+/*a～*/ ...--3文字目がJavaの識別子の先頭で使用可能な文字であるためです。
+/*$～*/ ...--3文字目がJavaの識別子の先頭で使用可能な文字であるためです。
+/*%～*/ ...--3文字目が条件コメントを表す「<code>%</code>」であるためです。
+/*#～*/ ...--3文字目が埋め込み変数コメントを表す「<code>#</code>」であるためです。
+/*@～*/ ...--3文字目が埋め込み関数を表す「<code>@</code>」であるためです。</source>
 			</subsection>
 			<subsection name="通常の行コメント">
 				<p>
@@ -304,12 +304,12 @@ and employeeName like 's%']]></source>
 			<p>
 				埋め込み変数コメントやバインド変数コメントや条件コメントの条件部には、式を記述できます。
 			</p>
-			<subsection name="定数">
+			<subsection name="リテラル">
 				<p>
-					次の定数が用意されています。
+					以下のリテラルが用意されています。
 				</p>
 				<table>
-					<tr><th>定数</th><th>型</th></tr>
+					<tr><th>リテラル</th><th>型</th></tr>
 					<tr><td><code>null</code></td><td>void</td></tr>
 					<tr><td><code>true</code></td><td>boolean</td></tr>
 					<tr><td><code>false</code></td><td>boolean</td></tr>
@@ -321,6 +321,10 @@ and employeeName like 's%']]></source>
 					<tr><td><code>'a'</code></td><td>char</td></tr>
 					<tr><td><code>"a"</code></td><td>String</td></tr>
 				</table>
+				<p>
+					数値の型は、リテラルの最後に「L」や「F」などを付与して区別します。
+					「L」や「F」などは大文字でなければいけません。
+				</p>
 <source><![CDATA[select * from employee where 
 /*%if employeeName != null && employeeName.length() > 10 */
     employee_name = /*employeeName*/'smith'
@@ -435,7 +439,7 @@ and employeeName like 's%']]></source>
 <source><![CDATA[select * from employee where 
     employee_name like /*@startWith(employee.employeeName)*/'smith']]></source>
 				<p>
-					ここでは、<code>@starts(employee.employeeName)</code> というように、
+					ここでは、<code>@startWith(employee.employeeName)</code> というように、
 					<code>employee.employeeName</code> を <code>@startWith</code>関数に渡しています。
 					組み込み関数の名前はすべて<code>@</code>で始まります。
 					<code>employee.employeeName</code> の値が「ABC」である場合、
@@ -448,15 +452,18 @@ and employeeName like 's%']]></source>
 				</p>
 				<table>
 					<tr><th>戻り値の型</th><th>関数名とパラメータ</th><th>概要</th></tr>
-					<tr><td><code>String</code></td><td><code>@startWith(String text)</code></td><td>前方一致検索のための文字列を返します。エスケープはデフォルトのエスケープシーケンスを用いて行われます。</td></tr>
-					<tr><td><code>String</code></td><td><code>@startWith(String text, char escape)</code></td><td>前方一致検索のための文字列を返します。エスケープは第2引数で指定したエスケープシーケンスを用いて行われます。</td></tr>
-					<tr><td><code>String</code></td><td><code>@endWith(String text)</code></td><td>後方一致検索のための文字列を返します。エスケープはデフォルトのエスケープシーケンスを用いて行われます。</td></tr>
-					<tr><td><code>String</code></td><td><code>@endWith(String text, char escape)</code></td><td>後方一致検索のための文字列を返します。エスケープは第2引数で指定したエスケープシーケンスを用いて行われます。</td></tr>
-					<tr><td><code>String</code></td><td><code>@contain(String text)</code></td><td>前方後方一致検索のための文字列を返します。エスケープはデフォルトのエスケープシーケンスを用いて行われます。</td></tr>
-					<tr><td><code>String</code></td><td><code>@contain(String text, char escape)</code></td><td>前方後方一致検索のための文字列を返します。エスケープは第2引数で指定したエスケープシーケンスを用いて行われます。</td></tr>
-					<tr><td><code>java.sql.Date</code></td><td><code>@resetTimePart(java.sql.Date date)</code></td><td>時刻部分をゼロにリセットした新しい日付を返します。</td></tr>
-					<tr><td><code>java.sql.Timestamp</code></td><td><code>@resetTimePart(java.sql.Timestamp timestamp)</code></td><td>時刻部分をゼロにリセットした新しいタイムスタンプを返します。</td></tr>
+					<tr><td><code>String</code></td><td><code>@startWith(String text)</code></td><td>前方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを後ろに付与した文字列です。エスケープにはデフォルトのエスケープ文字を用いて行われます。</td></tr>
+					<tr><td><code>String</code></td><td><code>@startWith(String text, char escape)</code></td><td>前方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを後ろに付与した文字列です。エスケープは第2引数で指定したエスケープ文字を用いて行われます。</td></tr>
+					<tr><td><code>String</code></td><td><code>@endWith(String text)</code></td><td>後方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを前に付与した文字列です。エスケープはデフォルトのエスケープ文字を用いて行われます。</td></tr>
+					<tr><td><code>String</code></td><td><code>@endWith(String text, char escape)</code></td><td>後方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを前に付与した文字列です。エスケープは第2引数で指定したエスケープ文字を用いて行われます。</td></tr>
+					<tr><td><code>String</code></td><td><code>@contain(String text)</code></td><td>前方後方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを前と後ろに付与した文字列です。エスケープはデフォルトのエスケープ文字を用いて行われます。</td></tr>
+					<tr><td><code>String</code></td><td><code>@contain(String text, char escape)</code></td><td>前方後方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを前と後ろに付与した文字列です。エスケープは第2引数で指定したエスケープ文字を用いて行われます。</td></tr>
+					<tr><td><code>java.sql.Date</code></td><td><code>@resetTimePart(java.sql.Date date)</code></td><td>時刻部分をゼロにリセットすることを示します。戻り値は時刻部分がリセットされた新しい日付です。</td></tr>
+					<tr><td><code>java.sql.Timestamp</code></td><td><code>@resetTimePart(java.sql.Timestamp timestamp)</code></td><td>時刻部分をゼロにリセットすることを示します。戻り値は時刻部分がリセットされた新しいタイムスタンプです。</td></tr>
 				</table>
+				<p>
+					これらの関数は、<a href ="../apidocs/org/seasar/doma/expr/ExpressionFunctions.html"><code>org.seasar.doma.expr.ExpressionFunctions</code></a>のメソッドに対応しています。
+				</p>
 			</subsection>
 		</section>
 	</body>

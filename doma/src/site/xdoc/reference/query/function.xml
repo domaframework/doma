@@ -2,13 +2,19 @@
 <document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
 	<properties>
-		<title></title>
+		<title>ストアドファンクション</title>
 	</properties>
 	<body>
-		<section name="">
+		<section name="概要">
 			<p>
-				TODO
+				ストアドファンクションを呼び出すには、<a href="../../apidocs/org/seasar/doma/Function.html"><code>@Function</code></a>をDaoのメソッドに注釈します。
 			</p>
+<source><![CDATA[@Config(config = AppConfig.class)
+public interface EmployeeDao {
+    @Function
+    Integer execute(@Id Integer id, @InOut Reference<BigDecimal> salary);
+    ...
+}]]></source>
 		</section>
 	</body>
 </document>

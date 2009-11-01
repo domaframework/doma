@@ -668,26 +668,49 @@ public class StandardDialect implements Dialect {
     public static class StandardExpressionFunctions implements
             ExpressionFunctions {
 
+        /** デフォルトのエスケープ文字 */
         private static char DEFAULT_ESCAPE = '\\';
 
+        /** デフォルトのワイルドカード */
         private final static char[] DEFAULT_WILDCARDS = { '%', '_' };
 
+        /** エスケープ文字 */
         protected final char escape;
 
+        /** ワイルドカード */
         protected final char[] wildcards;
 
+        /** デフォルトのワイルドカード置換パターン */
         protected final Pattern defaultWildcardReplacementPattern;
 
+        /** デフォルトの置換文字列正規表現 */
         protected final String defaultReplacement;
 
+        /**
+         * コンストラクタを構築します。
+         */
         protected StandardExpressionFunctions() {
             this(DEFAULT_WILDCARDS);
         }
 
+        /**
+         * ワイルドカードを指定してコンストラクタを構築します。
+         * 
+         * @param wildcards
+         *            ワイルドカード
+         */
         protected StandardExpressionFunctions(char[] wildcards) {
             this(DEFAULT_ESCAPE, wildcards);
         }
 
+        /**
+         * エスケープ文字とワイルドカードを指定してコンストラクタを構築します。
+         * 
+         * @param escape
+         *            エスケープ文字
+         * @param wildcards
+         *            ワイルドカード
+         */
         protected StandardExpressionFunctions(char escape, char[] wildcards) {
             this.escape = escape;
             this.wildcards = wildcards != null ? wildcards : DEFAULT_WILDCARDS;
@@ -756,6 +779,15 @@ public class StandardDialect implements Dialect {
             return "%" + escapeWildcard(text, escape) + "%";
         }
 
+        /**
+         * 入力に含まれるワイルドカードをエスケープします。
+         * 
+         * @param input
+         *            入力
+         * @param escape
+         *            エスケープ文字
+         * @return エスケープされた文字列
+         */
         protected String escapeWildcard(String input, char escape) {
             Pattern pattern = createWildcardReplacementPattern(escape,
                     wildcards);
@@ -763,6 +795,17 @@ public class StandardDialect implements Dialect {
             return escapeWildcard(pattern, input, replacement);
         }
 
+        /**
+         * ワイルドカードを正規表現でエスケープします。
+         * 
+         * @param pattern
+         *            パターン
+         * @param input
+         *            入力
+         * @param replacement
+         *            置換文字列正規表現
+         * @return エスケープされた文字列
+         */
         protected String escapeWildcard(Pattern pattern, String input,
                 String replacement) {
             Matcher matcher = pattern.matcher(input);
@@ -797,6 +840,15 @@ public class StandardDialect implements Dialect {
             return new Timestamp(calendar.getTimeInMillis());
         }
 
+        /**
+         * ワイルドカード置換パターンを作成します。
+         * 
+         * @param escape
+         *            エスケープ文字
+         * @param wildcards
+         *            ワイルドカード
+         * @return パターン
+         */
         protected static Pattern createWildcardReplacementPattern(char escape,
                 char[] wildcards) {
             StringBuilder buf = new StringBuilder();
@@ -809,6 +861,13 @@ public class StandardDialect implements Dialect {
             return Pattern.compile(buf.toString());
         }
 
+        /**
+         * ワイルドカード置換文字列正規表現を作成します。
+         * 
+         * @param escape
+         *            エスケープ
+         * @return ワイルドカード置換文字列正規表現
+         */
         protected static String createWildcardReplacement(char escape) {
             return Matcher.quoteReplacement(String.valueOf(escape)) + "$0";
         }

@@ -38,9 +38,8 @@ public interface EmployeeDao {
 		<section name="問い合わせ条件">
 			<p>
 				問い合わせ条件にはメソッドのパラメータを使用します。
-				パラメータの型には、<a href="../basic.htm.">基本型</a>、<a href="../domain.htm.">ドメインクラス</a>、<a href="../entity.htm.">エンティティティクラス</a>
-				および<a href="../basic.htm.">基本型</a>や<a href="../domain.htm.">ドメインクラス</a>を要素とする<code>java.util.List</code>が使用できます。
-				パラメータの型は混在させることもできます。
+				パラメータの型には、<a href="../basic.html">基本型</a>、<a href="../domain.html">ドメインクラス</a>、<a href="../entity.html">エンティティティクラス</a>
+				および<a href="../basic.html">基本型</a>や<a href="../domain.html">ドメインクラス</a>を要素とする<code>java.util.List</code>が使用できます。
 				パラメータの数に制限はありません。
 			</p>
 <source><![CDATA[@Select
@@ -57,7 +56,7 @@ List<Employee> selectByNameAndSalary(String name, BigDecimal salary);]]></source
 List<Employee> selectByExample(Employee employee);]]></source>
 <source><![CDATA[select * from employee where employee_name = /*employee.name*/'hoge' and salary > /*employee.salary*/100]]></source>
 			<p>
-				<a href="../basic.htm.">基本型</a>や<a href="../domain.htm.">ドメインクラス</a>を要素とする<code>java.util.List</code>は、
+				<a href="../basic.html">基本型</a>や<a href="../domain.html">ドメインクラス</a>を要素とする<code>java.util.List</code>は、
 				IN句を利用した検索を行う場合に使用します。
 			</p>
 <source><![CDATA[@Select
@@ -67,7 +66,7 @@ List<Employee> selectByNames(List<String> names);]]></source>
 		<section name="複数件検索">
 			<p>
 				複数件を検索するには、メソッドの戻り値の型を<code>java.util.List</code>にします。
-				<code>List</code>の要素の型には、<a href="../basic.htm.">基本型</a>、<a href="../domain.htm.">ドメインクラス</a>、<a href="../entity.htm.">エンティティティクラス</a>が使用できます。
+				<code>List</code>の要素の型には、<a href="../basic.html">基本型</a>、<a href="../domain.html">ドメインクラス</a>、<a href="../entity.html">エンティティティクラス</a>が使用できます。
 			</p>
 <source><![CDATA[@Select
 List<Employee> selectByNameAndSalary(String name, BigDecimal salary);]]></source>
@@ -77,7 +76,7 @@ List<Employee> selectByNameAndSalary(String name, BigDecimal salary);]]></source
 		</section>
 		<section name="1件検索">
 			<p>
-				複数件を検索するには、メソッドの戻り値の型を<a href="../basic.htm.">基本型</a>、<a href="../domain.htm.">ドメインクラス</a>、<a href="../entity.htm.">エンティティティクラス</a>のいずれかにします。
+				複数件を検索するには、メソッドの戻り値の型を<a href="../basic.html">基本型</a>、<a href="../domain.html">ドメインクラス</a>、<a href="../entity.html">エンティティティクラス</a>のいずれかにします。
 			</p>
 <source><![CDATA[@Select
 Employee selectByNameAndSalary(String name, BigDecimal salary);]]></source>
@@ -111,8 +110,8 @@ dao.selectAll(new IterationCallback<Void, Employee>() {
     });]]></source>
 			<p>
 				<code><![CDATA[org.seasar.doma.IterationCallback<R, T>]]></code>の最初の型パラメータは、
-				Daoのメソッドの戻り値にあわせなければいけません。2番目の型パラメータは、<a href="../basic.htm.">基本型</a>、<a href="../domain.htm.">ドメインクラス</a>、
-				<a href="../entity.htm.">エンティティティクラス</a>のいずれかでなければいけません。
+				Daoのメソッドの戻り値にあわせなければいけません。2番目の型パラメータは、<a href="../basic.html">基本型</a>、<a href="../domain.html">ドメインクラス</a>、
+				<a href="../entity.html">エンティティティクラス</a>のいずれかでなければいけません。
 			</p>
 		</section>
 		<section name="検索オプションを利用した検索">

@@ -2,13 +2,35 @@
 <document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
 	<properties>
-		<title></title>
+		<title>ファクトリ</title>
 	</properties>
 	<body>
-		<section name="">
+		<section name="概要">
 			<p>
-				TODO
+				コネクションに関連づいたインスタンスを生成するには、Daoのメソッドに次のアノテーションを注釈します。
+				<ul>
+					<code>java.sql.Array</code>を生成するには、<li><a href="../../apidocs/org/seasar/doma/ArrayFactory.html"><code>@ArrayFactory</code></a></li>
+					<code>java.sql.Blob</code>を生成するには、<li><a href="../../apidocs/org/seasar/doma/BlobFactory.html"><code>@BlobFactory</code></a></li>
+					<code>java.sql.Clob</code>を生成するには、<li><a href="../../apidocs/org/seasar/doma/ClobFactory.html"><code>@ClobFactory</code></a></li>
+					<code>java.sql.NClob</code>を生成するには、<li><a href="../../apidocs/org/seasar/doma/NClobFactory.html"><code>@NClobFactory</code></a></li>
+				</ul>
 			</p>
+<source><![CDATA[@Config(config = AppConfig.class)
+public interface EmployeeDao {
+
+    @ArrayFactory(typeName = "integer")
+    Array createIntegerArray(Integer[] elements);
+
+    @BlobFactory
+    Blob createBlob();
+
+    @ClobFactory
+    Clob createClob();
+
+    @NClobFactory
+    NClob createClob();
+    ...
+}]]></source>
 		</section>
 	</body>
 </document>
