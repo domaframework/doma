@@ -152,17 +152,17 @@ public class TypeDeclaration {
                 if (parameters.size() != parameterTypeDeclarations.size()) {
                     continue;
                 }
-                Iterator<? extends VariableElement> valueElementIterator = parameters
-                        .iterator();
                 Iterator<TypeDeclaration> typeDeclIterator = parameterTypeDeclarations
                         .iterator();
-                for (; valueElementIterator.hasNext()
-                        && typeDeclIterator.hasNext();) {
-                    TypeMirror t1 = TypeUtil.boxIfPrimitive(
-                            valueElementIterator.next().asType(), env);
-                    TypeMirror t2 = TypeUtil.boxIfPrimitive(typeDeclIterator
+                Iterator<? extends VariableElement> valueElementIterator = parameters
+                        .iterator();
+                while (typeDeclIterator.hasNext()
+                        && valueElementIterator.hasNext()) {
+                    TypeMirror t1 = TypeUtil.boxIfPrimitive(typeDeclIterator
                             .next().getType(), env);
-                    if (!TypeUtil.isSameType(t1, t2, env)) {
+                    TypeMirror t2 = TypeUtil.boxIfPrimitive(
+                            valueElementIterator.next().asType(), env);
+                    if (!TypeUtil.isAssignable(t1, t2, env)) {
                         continue outer;
                     }
                 }
