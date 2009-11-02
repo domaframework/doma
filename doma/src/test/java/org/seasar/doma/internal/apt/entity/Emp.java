@@ -96,4 +96,16 @@ public class Emp {
         return a + b;
     }
 
+    public int hoge(String arg) {
+        return 0;
+    }
+
+    public int hoge(Serializable arg) {
+        return 0;
+    }
+
+    public int hoge(Object arg) {
+        return 0;
+    }
+
 }

@@ -266,8 +266,8 @@ public class ExpressionValidator implements
     @Override
     public TypeDeclaration visitLiteralNode(LiteralNode node, Void p) {
         TypeMirror type = node.getValueClass() == void.class ? env
-                .getTypeUtils().getNullType() : TypeMirrorUtil.getTypeMirror(node
-                .getValueClass(), env);
+                .getTypeUtils().getNullType() : TypeMirrorUtil.getTypeMirror(
+                node.getValueClass(), env);
         return TypeDeclaration.newTypeDeclaration(type, env);
     }
 
@@ -293,14 +293,40 @@ public class ExpressionValidator implements
         }
         TypeDeclaration typeDeclaration = TypeDeclaration.newTypeDeclaration(
                 typeElement.asType(), env);
-        ConstructorDeclaration constructorDeclaration = typeDeclaration
+        List<ConstructorDeclaration> constructorDeclarations = typeDeclaration
                 .getConstructorDeclarations(parameterTypeDeclarations);
-        if (constructorDeclaration != null) {
+        if (constructorDeclarations.size() == 0) {
+            ExpressionLocation location = node.getLocation();
+            String signature = createConstructorSignature(className,
+                    parameterTypeDeclarations);
+            throw new AptException(DomaMessageCode.DOMA4115, env,
+                    methodElement, location.getExpression(), location
+                            .getPosition(), signature);
+        }
+        if (constructorDeclarations.size() == 1) {
             return typeDeclaration;
         }
         ExpressionLocation location = node.getLocation();
-        throw new AptException(DomaMessageCode.DOMA4115, env, methodElement,
-                location.getExpression(), location.getPosition(), className);
+        String signature = createConstructorSignature(className,
+                parameterTypeDeclarations);
+        throw new AptException(DomaMessageCode.DOMA4127, env, methodElement,
+                location.getExpression(), location.getPosition(), signature);
+    }
+
+    protected String createConstructorSignature(String className,
+            List<TypeDeclaration> parameterTypeDeclarations) {
+        StringBuilder buf = new StringBuilder();
+        buf.append(className);
+        buf.append("(");
+        if (parameterTypeDeclarations.size() > 0) {
+            for (TypeDeclaration declaration : parameterTypeDeclarations) {
+                buf.append(declaration.getType());
+                buf.append(", ");
+            }
+            buf.setLength(buf.length() - 2);
+        }
+        buf.append(")");
+        return buf.toString();
     }
 
     @Override
@@ -341,7 +367,13 @@ public class ExpressionValidator implements
                 return returnTypeDeclaration;
             }
         }
-        throw new AptIllegalStateException(methodName);
+        ExpressionLocation location = node.getLocation();
+        String methodSignature = createMethodSignature(methodName,
+                parameterTypeDeclarations);
+        throw new AptException(DomaMessageCode.DOMA4073, env, methodElement,
+                location.getExpression(), location.getPosition(), node
+                        .getTargetObjectNode().getExpression(), typeDeclaration
+                        .getQualifiedName(), methodSignature);
     }
 
     @Override

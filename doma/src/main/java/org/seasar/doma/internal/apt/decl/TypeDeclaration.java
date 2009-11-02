@@ -132,8 +132,23 @@ public class TypeDeclaration {
         return numberPriority;
     }
 
-    public ConstructorDeclaration getConstructorDeclarations(
+    public List<ConstructorDeclaration> getConstructorDeclarations(
             List<TypeDeclaration> parameterTypeDeclarations) {
+        List<ConstructorDeclaration> candidates = getCandidateConstructorDeclarations(parameterTypeDeclarations);
+        if (candidates.size() == 1) {
+            return candidates;
+        }
+        ConstructorDeclaration constructorDeclaration = findSuitableConstructorDeclaration(
+                parameterTypeDeclarations, candidates);
+        if (constructorDeclaration != null) {
+            return Collections.singletonList(constructorDeclaration);
+        }
+        return candidates;
+    }
+
+    protected List<ConstructorDeclaration> getCandidateConstructorDeclarations(
+            List<TypeDeclaration> parameterTypeDeclarations) {
+        List<ConstructorDeclaration> results = new LinkedList<ConstructorDeclaration>();
         for (Map.Entry<String, List<TypeParameterDeclaration>> e : typeParameterDeclarationsMap
                 .entrySet()) {
             String typeQualifiedName = e.getKey();
@@ -158,23 +173,47 @@ public class TypeDeclaration {
                         .iterator();
                 while (typeDeclIterator.hasNext()
                         && valueElementIterator.hasNext()) {
-                    TypeMirror t1 = TypeMirrorUtil.boxIfPrimitive(typeDeclIterator
-                            .next().getType(), env);
+                    TypeMirror t1 = TypeMirrorUtil.boxIfPrimitive(
+                            typeDeclIterator.next().getType(), env);
                     TypeMirror t2 = TypeMirrorUtil.boxIfPrimitive(
                             valueElementIterator.next().asType(), env);
                     if (!TypeMirrorUtil.isAssignable(t1, t2, env)) {
                         continue outer;
                     }
                 }
-                return ConstructorDeclaration.newInstance(constructor,
-                        typeParameterDeclarations, env);
+                ConstructorDeclaration constructorDeclaration = ConstructorDeclaration
+                        .newInstance(constructor, typeParameterDeclarations,
+                                env);
+                results.add(constructorDeclaration);
             }
+        }
+        return results;
+    }
+
+    protected ConstructorDeclaration findSuitableConstructorDeclaration(
+            List<TypeDeclaration> parameterTypeDeclarations,
+            List<ConstructorDeclaration> candidates) {
+        outer: for (ConstructorDeclaration constructorDeclaration : candidates) {
+            Iterator<TypeDeclaration> typeDeclIterator = parameterTypeDeclarations
+                    .iterator();
+            Iterator<? extends VariableElement> valueElementIterator = constructorDeclaration
+                    .getElement().getParameters().iterator();
+            while (typeDeclIterator.hasNext() && valueElementIterator.hasNext()) {
+                TypeMirror t1 = TypeMirrorUtil.boxIfPrimitive(typeDeclIterator
+                        .next().getType(), env);
+                TypeMirror t2 = TypeMirrorUtil.boxIfPrimitive(
+                        valueElementIterator.next().asType(), env);
+                if (!TypeMirrorUtil.isSameType(t1, t2, env)) {
+                    continue outer;
+                }
+            }
+            return constructorDeclaration;
         }
         return null;
     }
 
     public FieldDeclaration getFieldDeclaration(String name) {
-        List<FieldDeclaration> candidate = new LinkedList<FieldDeclaration>();
+        List<FieldDeclaration> candidates = new LinkedList<FieldDeclaration>();
         for (Map.Entry<String, List<TypeParameterDeclaration>> e : typeParameterDeclarationsMap
                 .entrySet()) {
             String typeQualifiedName = e.getKey();
@@ -192,13 +231,14 @@ public class TypeDeclaration {
                 }
                 FieldDeclaration fieldDeclaration = FieldDeclaration
                         .newInstance(field, typeParameterDeclarations, env);
-                candidate.add(fieldDeclaration);
+                candidates.add(fieldDeclaration);
             }
         }
 
         List<FieldDeclaration> hiders = new LinkedList<FieldDeclaration>(
-                candidate);
-        for (Iterator<FieldDeclaration> it = candidate.iterator(); it.hasNext();) {
+                candidates);
+        for (Iterator<FieldDeclaration> it = candidates.iterator(); it
+                .hasNext();) {
             FieldDeclaration hidden = it.next();
             for (FieldDeclaration hider : hiders) {
                 if (env.getElementUtils().hides(hider.getElement(),
@@ -207,35 +247,49 @@ public class TypeDeclaration {
                 }
             }
         }
-        if (candidate.size() == 0) {
+        if (candidates.size() == 0) {
             return null;
         }
-        if (candidate.size() == 1) {
-            return candidate.get(0);
+        if (candidates.size() == 1) {
+            return candidates.get(0);
         }
         throw new AptIllegalStateException(name);
     }
 
     public List<MethodDeclaration> getMethodDeclarations(String name,
             List<TypeDeclaration> parameterTypeDeclarations) {
-        return getMethodDeclarationsInternal(name, parameterTypeDeclarations);
+        return getMethodDeclarationsInternal(name, parameterTypeDeclarations,
+                false);
     }
 
     public List<MethodDeclaration> getStaticMethodDeclarations(String name,
             List<TypeDeclaration> parameterTypeDeclarations) {
-        List<MethodDeclaration> results = new ArrayList<MethodDeclaration>();
-        for (MethodDeclaration methodDeclaration : getMethodDeclarationsInternal(
-                name, parameterTypeDeclarations)) {
-            if (methodDeclaration.isStatic()) {
-                results.add(methodDeclaration);
-            }
-        }
-        return results;
+        return getMethodDeclarationsInternal(name, parameterTypeDeclarations,
+                true);
     }
 
     protected List<MethodDeclaration> getMethodDeclarationsInternal(
-            String name, List<TypeDeclaration> parameterTypeDeclarations) {
-        List<MethodDeclaration> candidate = new LinkedList<MethodDeclaration>();
+            String name, List<TypeDeclaration> parameterTypeDeclarations,
+            boolean staticMethod) {
+        List<MethodDeclaration> candidates = getCandidateMethodDeclarations(
+                name, parameterTypeDeclarations, staticMethod);
+        removeOverriddenMethodDeclarations(candidates);
+        removeHiddenMethodDeclarations(candidates);
+        if (candidates.size() == 1) {
+            return candidates;
+        }
+        MethodDeclaration suitableMethodDeclaration = findSuitableMethodDeclaration(
+                parameterTypeDeclarations, candidates);
+        if (suitableMethodDeclaration != null) {
+            return Collections.singletonList(suitableMethodDeclaration);
+        }
+        return candidates;
+    }
+
+    protected List<MethodDeclaration> getCandidateMethodDeclarations(
+            String name, List<TypeDeclaration> parameterTypeDeclarations,
+            boolean staticMethod) {
+        List<MethodDeclaration> results = new LinkedList<MethodDeclaration>();
         for (Map.Entry<String, List<TypeParameterDeclaration>> e : typeParameterDeclarationsMap
                 .entrySet()) {
             String typeQualifiedName = e.getKey();
@@ -246,6 +300,10 @@ public class TypeDeclaration {
 
             outer: for (ExecutableElement method : ElementFilter
                     .methodsIn(typeElement.getEnclosedElements())) {
+                if (staticMethod
+                        && !method.getModifiers().contains(Modifier.STATIC)) {
+                    continue;
+                }
                 if (!method.getModifiers().contains(Modifier.PUBLIC)) {
                     continue;
                 }
@@ -267,8 +325,8 @@ public class TypeDeclaration {
                         .iterator();
                 while (typeDeclIterator.hasNext()
                         && valueElementIterator.hasNext()) {
-                    TypeMirror t1 = TypeMirrorUtil.boxIfPrimitive(typeDeclIterator
-                            .next().getType(), env);
+                    TypeMirror t1 = TypeMirrorUtil.boxIfPrimitive(
+                            typeDeclIterator.next().getType(), env);
                     TypeMirror t2 = TypeMirrorUtil.boxIfPrimitive(
                             valueElementIterator.next().asType(), env);
                     if (!TypeMirrorUtil.isAssignable(t1, t2, env)) {
@@ -277,26 +335,64 @@ public class TypeDeclaration {
                 }
                 MethodDeclaration methodDeclaration = MethodDeclaration
                         .newInstance(method, typeParameterDeclarations, env);
-                candidate.add(methodDeclaration);
+                results.add(methodDeclaration);
             }
         }
+        return results;
+    }
 
+    protected void removeOverriddenMethodDeclarations(
+            List<MethodDeclaration> candidates) {
         List<MethodDeclaration> overriders = new LinkedList<MethodDeclaration>(
-                candidate);
-        for (Iterator<MethodDeclaration> it = candidate.iterator(); it
+                candidates);
+        for (Iterator<MethodDeclaration> it = candidates.iterator(); it
                 .hasNext();) {
             MethodDeclaration overridden = it.next();
             for (MethodDeclaration overrider : overriders) {
                 if (env.getElementUtils().overrides(overrider.getElement(),
                         overridden.getElement(), typeElement)) {
                     it.remove();
-                } else if (env.getElementUtils().hides(overrider.getElement(),
-                        overridden.getElement())) {
+                }
+            }
+        }
+    }
+
+    protected void removeHiddenMethodDeclarations(
+            List<MethodDeclaration> candidates) {
+        List<MethodDeclaration> hiders = new LinkedList<MethodDeclaration>(
+                candidates);
+        for (Iterator<MethodDeclaration> it = candidates.iterator(); it
+                .hasNext();) {
+            MethodDeclaration hidden = it.next();
+            for (MethodDeclaration hider : hiders) {
+                if (env.getElementUtils().hides(hider.getElement(),
+                        hidden.getElement())) {
                     it.remove();
                 }
             }
         }
-        return candidate;
+    }
+
+    protected MethodDeclaration findSuitableMethodDeclaration(
+            List<TypeDeclaration> parameterTypeDeclarations,
+            List<MethodDeclaration> candidates) {
+        outer: for (MethodDeclaration methodDeclaration : candidates) {
+            Iterator<TypeDeclaration> typeDeclIterator = parameterTypeDeclarations
+                    .iterator();
+            Iterator<? extends VariableElement> valueElementIterator = methodDeclaration
+                    .getElement().getParameters().iterator();
+            while (typeDeclIterator.hasNext() && valueElementIterator.hasNext()) {
+                TypeMirror t1 = TypeMirrorUtil.boxIfPrimitive(typeDeclIterator
+                        .next().getType(), env);
+                TypeMirror t2 = TypeMirrorUtil.boxIfPrimitive(
+                        valueElementIterator.next().asType(), env);
+                if (!TypeMirrorUtil.isSameType(t1, t2, env)) {
+                    continue outer;
+                }
+            }
+            return methodDeclaration;
+        }
+        return null;
     }
 
     public TypeDeclaration emulateConcatOperation(TypeDeclaration other) {
@@ -395,7 +491,8 @@ public class TypeDeclaration {
                 .toString(), createTypeParameterDeclarations(typeElement, type,
                 env));
         for (TypeMirror superType : env.getTypeUtils().directSupertypes(type)) {
-            TypeElement superElement = TypeMirrorUtil.toTypeElement(superType, env);
+            TypeElement superElement = TypeMirrorUtil.toTypeElement(superType,
+                    env);
             if (superElement == null) {
                 continue;
             }

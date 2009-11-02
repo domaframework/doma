@@ -84,6 +84,44 @@ public class ExpressionValidatorTest extends AptTestCase {
         assertTrue(result.isBooleanType());
     }
 
+    public void testMethod_foundFromCandidates() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testEmp", Emp.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap);
+
+        ExpressionNode node = new ExpressionParser("emp.hoge(\"aaa\")").parse();
+        TypeDeclaration result = validator.validate(node);
+        assertTrue(result.isNumberType());
+    }
+
+    public void testMethod_notFoundFromCandidates() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testEmp", Emp.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap);
+
+        ExpressionNode node = new ExpressionParser(
+                "emp.hoge(new java.lang.Integer(1))").parse();
+        try {
+            validator.validate(node);
+            fail();
+        } catch (AptException expected) {
+            System.out.println(expected);
+            assertEquals(DomaMessageCode.DOMA4073, expected.getMessageCode());
+        }
+    }
+
     public void testMethod_notFound() throws Exception {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
@@ -361,8 +399,8 @@ public class ExpressionValidatorTest extends AptTestCase {
                     TypeMirror parameterType = parameterElements.get(i)
                             .asType();
                     Class<?> parameterClass = parameterClasses[i];
-                    if (!TypeMirrorUtil
-                            .isSameType(parameterType, parameterClass, env)) {
+                    if (!TypeMirrorUtil.isSameType(parameterType,
+                            parameterClass, env)) {
                         return null;
                     }
                 }
@@ -380,7 +418,8 @@ public class ExpressionValidatorTest extends AptTestCase {
             String name = parameter.getSimpleName().toString();
             TypeMirror type = parameter.asType();
             if (TypeMirrorUtil.isSameType(type, List.class, env)) {
-                DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(type, env);
+                DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(type,
+                        env);
                 TypeMirror elementType = declaredType.getTypeArguments().get(0);
                 result.put(name, elementType);
             } else {
