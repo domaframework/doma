@@ -5,6 +5,11 @@
 		<title>ストアドファンクション</title>
 	</properties>
 	<body>
+		<section name="目次">
+			<ul>
+				<li><a href="#概要">概要</a></li>
+			</ul>
+		</section>
 		<section name="概要">
 			<p>
 				ストアドファンクションを呼び出すには、<a href="../../apidocs/org/seasar/doma/Function.html"><code>@Function</code></a>をDaoのメソッドに注釈します。

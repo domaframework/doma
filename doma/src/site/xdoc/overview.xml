@@ -5,11 +5,19 @@
 		<title>概要</title>
 	</properties>
 	<body>
+		<section name="目次">
+			<ul>
+				<li><a href="#概要">概要</a></li>
+				<li><a href="#S2Daoから受け継いだアイデアや機能">S2Daoから受け継いだアイデアや機能</a></li>
+				<li><a href="#S2Daoからの改善点">S2Daoからの改善点</a></li>
+				<li><a href="#アプリケーション固有の値型への対応">アプリケーション固有の値型への対応</a></li>
+			</ul>
+		</section>
 		<section name="概要">
 			<p>
-				Domaは、<a href="http://s2dao.seasar.org/ja/index.html">S2Dao</a>のスタイル（DAOパターンや2 Way SQL）を踏襲した次世代のDaoフレームワーク（O/Rマッパー）です。
+				Domaは、<a href="http://s2dao.seasar.org/ja/index.html">S2Dao</a>のスタイル（DAOパターンや2 Way SQL）を踏襲したJava6（JDBC4.0）対応のO/Rマッパーです。
 				S2Daoの良いアイデアや機能は受け継ぎつつも、扱いにくかったりプログラミングミスにつながりやすかったりする点については積極的に改善を試みています。
-				また、Java6から導入されたPluggable Annotation Processing API（apt）を利用することで、S2Daoでは実現できなかった新しい機能も提供しています。
+				また、aptを利用することで、S2Daoでは実現できなかった新しい機能も提供しています。
 			</p>
 			<p>
 				Domaは、S2Daoの次のアイデアや機能を受け継いでいます。
@@ -17,6 +25,7 @@
 			<ul>
 				<li><a href="#DAOパターン">DAOパターン</a></li>
 				<li><a href="#a2_Way_SQL">2 Way SQL</a></li>
+				<li><a href="#複数RDBMS対応">複数RDBMS対応</a></li>
 			</ul>
 			<p>
 				一方、Domaは、S2Daoの次の点を改善しています。
@@ -33,21 +42,17 @@
 				<li><a href="#Daoの初期化コスト">Daoの初期化コスト</a></li>
 			</ul>
 			<p>
-				さらに、Domaは、新しく次のような機能を提供します。
+				さらに、Domaは、新しく次のような機能を提供します。ここに挙げるのは代表的な機能です。
 			</p>
 			<ul>
-				<li>コンパイル時のソースコード生成</li>
-				<li>コンパイル時の規約チェック</li>
-				<li>コンパイル時のSQL存在チェック</li>
-				<li>コンパイル時のSQLコメント文法チェック</li>
-				<li>ページング用SQLの自動生成</li>
-				<li>悲観的排他制御用SQLの自動生成</li>
-				<li>アプリ固有の値型への対応</li>
-				<li>JDBC 4.0サポート</li>
+				<li><a href="#コンパイル時のコード生成">コンパイル時のコード生成</a></li>
+				<li><a href="#コンパイル時の規約チェック">コンパイル時の規約チェック</a></li>
+				<li><a href="#コンパイル時のSQLファイル存在チェックとSQLコメントの文法チェック">コンパイル時のSQLファイル存在チェックとSQLコメントの文法チェック</a></li>
+				<li><a href="#アプリケーション固有の値型への対応">アプリケーション固有の値型への対応</a></li>
 			</ul>
 			<p>
 				開発にあたっては、S2Daoのほかに、
-				<a href="http://s2container.seasar.org/2.4/ja/s2jdbc.html">S2JDBC</a>や<a href="http://www.hibernate.org/">Hibernate</a>も参考にしています。
+				<a href="http://s2container.seasar.org/2.4/ja/s2jdbc.html">S2JDBC</a>や<a href="http://www.hibernate.org/">Hibernate</a>や<a href="http://dbflute.sandbox.seasar.org/">DBFlute</a>を参考にしています。
 			</p>
 		</section>
 		<section name="S2Daoから受け継いだアイデアや機能">
@@ -70,7 +75,25 @@
 				</p>
 				<p>
 					Domaでは、このアイデアをそのまま採用しています。ただし、マッピングルールやSQLコメントの用い方については変更を加えています。
+				</p>
+				<p>
 					2 Way SQLは、フレームワークで扱うSQLを単独でテストしたり、Java開発者とSQL作成者の作業を分離したりするのに非常に有効な方法です。
+				</p>
+			</subsection>
+			<subsection name="複数RDBMS対応">
+				<p>
+					S2Daoでは、SQLファイル名にRDBMS名を含めることで特定のRDBMS専用のSQLを用意できました。
+					例えば、「EmployeeDao_selectByName.sql」という名前のSQLファイルと「EmployeeDao_selectByName_oracle.sql」という名前のSQLファイルが存在する場合、
+					拡張子の直前にアンダースコア区切りで「oracle」という名前が記述されている後者のファイルがOracle Database専用のSQLファイルになります。
+					このファイルはOracle Databaseに接続している場合にのみ使用され、それ以外のRDBMSでは「EmployeeDao_selectByName.sql」が使用されます。
+				</p>
+				<p>
+					Domaでも、このアイデアをほぼそのまま採用しています。
+					ただし、SQLファイルにRDBMS名を含めるルールがアンダースコアではなくハイフンに変更しています。
+					例えば、Oracle Database専用のSQLファイルは「selectByName-oracle.sql」という名前になります。
+				</p>
+				<p>
+					RDBMSごとにSQLを切り替える手法は、フレームワークで吸収するのが困難なRDBMS独自のSQLを活用したい場合に役立ちます。
 				</p>
 			</subsection>
 		</section>
@@ -90,7 +113,7 @@
 					S2Daoでは、実行時にDaoのインタフェースにAOPを適用することで動作していました。
 				</p>
 				<p>
-					一方、Domaでは、コンパイル時にapt（注釈処理機能）でインタフェースから実装クラスをソースコードとして生成し、実行時には生成されたソースコードに対応する実装クラスを使用します。
+					一方、Domaでは、コンパイル時にaptでインタフェースから実装クラスをソースコードとして生成し、実行時には生成されたソースコードに対応する実装クラスを使用します。
 				</p>
 				<p>
 					AOPは便利な機能ですが、挙動が把握しにくかったりデバッグがしにくかったりといった問題点がありました。
@@ -104,10 +127,15 @@
 				<p>
 					S2Daoでは、たとえば、Daoのメソッド名が「update」で始まる場合そのメソッドはUPDATE文を発行するメソッドである、といった命名規約を持っていました。
 				</p>
+<source><![CDATA[int updateEmployee(Employee employee);]]></source>
 				<p>
-					一方、Domaでは、暗黙的な命名規約ではなく、アノテーションを採用しています。たとえば、UPDATE文を発行するメソッドには@Updateといったアノテーションを使用します。
+					一方、Domaでは、暗黙的な命名規約ではなく、アノテーションを採用しています。
+					たとえば、UPDATE文を発行するメソッドには@Updateを注釈します。
+					メソッド名に制約はありません。
 					Domaでは、アノテーションを利用することで意図をより明確にプログラムコード上に表現し、挙動をわかりやすくしています。
 				</p>
+<source><![CDATA[@Update
+int save(Employee employee);]]></source>
 			</subsection>
 			<subsection name="JavaとSQLの分離">
 				<p>
@@ -121,7 +149,8 @@
 			</subsection>
 			<subsection name="SQLコメントの文法">
 				<p>
-					S2Daoでは、SQLに含まれたSQLコメントの前後にスペースがあるかどうかなど非常に細かく間違いやすい文法を持っていました。また、間違いが含まれていた場合のエラーメッセージもわかりにくいものでした。
+					S2Daoでは、SQLに含まれたSQLコメントの前後にスペースがあるかどうかの違いでエラーが発生するなど非常に細かな間違いやすい文法を持っていました。
+					また、間違いが含まれていた場合のエラーメッセージもわかりにくいものでした。
 				</p>
 				<p>
 					Domaでは、文法を見直し厳密にしました。また、aptで検証することで、間違いがあっても「コンパイル」時にエラーを検出し、わかりやすいメッセージを表示するようにしています。
@@ -131,11 +160,35 @@
 			<subsection name="JDBCを直接利用する方法">
 				<p>
 					S2Daoでは、Daoの特定のメソッドでJDBCを直接利用するには、インタフェースの実装クラスを作成しメソッドをオーバーライドしなければいけませんでした。
-					この方法では、AOPを適用するクラスを変更する必要があります。
+					クラス名を設定ファイル等に記述している場合、この方法では、設定を変更する必要がありました。
 				</p>
+<source><![CDATA[@S2Dao(bean = Employee.class)
+public interface EmployeeDao {
+    Employee selectByName(String name);
+}]]></source>
+<source><![CDATA[public abstract class AbstractEmployeeDao implements EmployeeDao {
+    @Override
+    public List<Employee> selectByName(String name) {
+        ...
+    }
+}]]></source>
 				<p>
 					Domaでは、@Delegateというアノテーションを使って、JDBCを直接利用する処理を別クラスに委譲できます。
+				</p>
+<source><![CDATA[@Dao(config = AppConfig.class)
+public interface EmployeeDao {
+    @Delegate(to = EmployeeDaoDelegate)
+    List<Employee> selectByName(String name);
+}]]></source>
+<source><![CDATA[public classs EmployeeDaoDelegate {
+    ...
+    public List<Employee> selectByName(String name) {
+        ....
+    }
+}]]></source>
+				<p>
 					この方法は、クラス階層に変更を加えないためより柔軟です。
+					たとえ、クラス名が設定ファイルに記述されていても変更を加える必要がありません。
 				</p>
 				<p>
 					詳細は、<a href="reference/dao.html#デリゲート定義">デリゲート定義</a>を参照してください。
@@ -149,7 +202,7 @@
 				<p>
 					Domaでは、Daoごとに異なるディレクトリでSQLファイルを管理する仕様になっています。
 					このため、SQLファイルをDaoごとに管理しやすくなっています。
-					また、DaoメソッドとSQLファイルを相互に遷移するEclipseプラグインを用意しているので、これを使うとさらに開発/管理がしやすくなります。
+					また、DaoメソッドとSQLファイルを相互に遷移する<a href="extension/doma_tools.html">Eclipseプラグイン</a>を用意しているので、これを使うとさらに開発/管理がしやすくなります。
 				</p>
 				<p>
 					詳細は、<a href="reference/sqlfile.html#SQLファイル">SQLファイル</a>を参照してください。
@@ -159,9 +212,13 @@
 				<p>
 					S2Daoでは、メソッドのパラメータがSQLファイル内のバインド変数コメントで参照できるようにArgumentsアノテーションを使用してパラメータごとに名前をつける必要がありました。
 				</p>
+<source><![CDATA[@Arguments( { "job", "salary" })
+List<Employee> selectEmployeeByJobDeptno(String name, BigDecimal salary);]]></source>
 				<p>
 					Domaでは、Argumentsアノテーションに相当するものは不要です。aptによりメソッドのパラメータ名をそのまま使用できるからです。
 				</p>
+<source><![CDATA[@Select
+List<Employee> selectEmployeeByJobDeptno(String name, BigDecimal salary);]]></source>
 			</subsection>
 			<subsection name="Daoの初期化コスト">
 				<p>
@@ -171,6 +228,99 @@
 				<p>
 					Domaでは、コンパイル時にメタ情報をソースコードで表現し、実行時にはそのソースコードに対応するバイトコードを実行するため、そのようなコストがありません。
 				</p>
+			</subsection>
+		</section>
+		<section name="Domaの新しい機能">
+			<subsection name="コンパイル時のコード生成">
+				<p>
+					aptを使い、コンパイル時にコードを生成できます。
+					たとえば、次のインタフェースをコンパイルすると、インタフェースの実装クラスが自動生成されます。
+				</p>
+<source><![CDATA[@Dao(config = AppConfig.class)
+public interface EmployeeDao {
+    @Select
+    List<Employee> selectByName(String name);
+}]]></source>
+				<p>
+					コンパイル時のコード生成には次のような利点があります。
+				</p>
+				<ul>
+					<li>実行時に必要なメタ情報をソースコードで記述できるので、リフレクションを使ってメタ情報を構築するフレームワークに比べてパフォーマンスがよい</li>
+					<li>ソースコードに記述された通りに動作するので、コンパイル時や実行時にバイトコードエンハンスが行われるコードよりも見通しがよい</li>
+					<li>ブレークポイントを設定したりステップ実行をしたりとデバッグがしやすい</li>
+				</ul>
+			</subsection>
+			<subsection name="コンパイル時の規約チェック">
+				<p>
+					aptを使い、コンパイル時にコードがフレームワークの規約を満たしているかチェックできます。
+					たとえば、次のコードをコンパイルすると、<code>update</code>メソッドの部分にエラー表示がされます。
+					なぜならば、<code>@Update</code>を注釈したメソッドは更新件数を表す<code>int</code>型の値を返さなければいけないというルールがあるからです。
+					エラーは、Eclipseを使っている場合にはエディタに表示され、Antなどでjavacを実行した場合にはAntを実行したコンソールに表示されます。
+				</p>
+<source><![CDATA[@Dao(config = AppConfig.class)
+public interface EmployeeDao {
+    @Update
+    void update(Employee employee);
+}]]></source>
+				<p>
+					コンパイル時に規約をチェックすることで、わざわざアプリケーションを実行しなくてもエラーに気づくことができます。
+				</p>
+			</subsection>
+			<subsection name="コンパイル時のSQLファイル存在チェックとSQLコメントの文法チェック">
+				<p>
+					aptを使い、コンパイル時にDaoメソッドに対応するSQLファイルが実際に存在しているかチェックできます。
+					たとえば、次のコードをコンパイルすると、<code>selectById</code>メソッドに対応するSQLファイルが存在するかどうかクラスパスの検索が行われます。
+				</p>
+<source><![CDATA[@Dao(config = AppConfig.class)
+public interface EmployeeDao {
+    @Select
+    Employee selectById(Integer id);
+}]]></source>
+				<p>
+					SQLファイルが存在しない場合は、その時点で<code>selectById</code>メソッドの部分にエラーが表示されます。
+					SQLファイルが存在する場合は、続いてSQLコメントの文法チェックが行われます。
+				</p>
+				<p>
+					たとえば、<code>selectById</code>メソッドに対応するSQLファイルが次のようなSQLの場合、エラーが発生します。
+					なぜならば、メソッドではパラメータ名が「id」であるのに、SQLコメントでは「employeeId」と記述されているからです。
+				</p>
+<source><![CDATA[select * from employee where id = /*employeeId*/0]]></source>
+				<p>
+					コンパイル時にSQLファイルの存在チェックやSQLコメントの文法チェックを行うことで、必ず発生する実行時エラーをコンパイル時に検出できます。
+				</p>
+			</subsection>
+			<subsection name="アプリケーション固有の値型への対応">
+				<p>
+					アプリケーション固有の値型を作成し、そのクラスをデータベースのテーブルのカラムに対応づけることができます。
+					Domaではそのようなクラスを<a href="reference/basic.html">基本型</a>と区別して<a href="reference/domain.html">ドメインクラス</a>と呼んでいます。
+					たとえば、電話番号を扱うアプリケーションであれば、<code>PhoneNumber</code>というドメインクラスが作成できるでしょう。
+				</p>
+<source><![CDATA[@Domain(valueType = String.class)
+public class PhoneNumber {
+
+    private final String value;
+
+    public PhoneNumber(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public String getAreaCode() {
+       //アプリケーションに固有の振る舞い
+       ...
+    }
+}]]></source>
+				<p>
+					ドメインクラスには次のような利点があります。
+				</p>
+				<ul>
+					<li>データベース上のカラムの型が同じあってもアプリケーション上意味が異なるものを別のJavaの型で表現できる</li>
+					<li>概念をクラスとして明確に表現することでプログラミンをわかりやすくできる</li>
+					<li>値と振る舞いを同じクラスで表現できる</li>
+				</ul>
 			</subsection>
 		</section>
 	</body>

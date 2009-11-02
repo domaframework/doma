@@ -5,6 +5,11 @@
 		<title>バッチ挿入</title>
 	</properties>
 	<body>
+		<section name="目次">
+			<ul>
+				<li><a href="#概要">概要</a></li>
+			</ul>
+		</section>
 		<section name="概要">
 			<p>
 				バッチ挿入を行うには、<a href="../../apidocs/org/seasar/doma/BatchInsert.html"><code>@BatchInsert</code></a>をDaoのメソッドに注釈します。

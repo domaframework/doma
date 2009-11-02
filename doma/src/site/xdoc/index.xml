@@ -7,12 +7,11 @@
 	<body>
 		<section name="Doma Project">
 			<p>
-				<strong>Doma</strong>
-				プロジェクトは，
-				<a href="http://jcp.org/en/jsr/detail?id=269">
-					Pluggable Annotation Processing API (JSR 269)
+				<strong>Doma</strong>プロジェクトは，
+				<a href="http://java.sun.com/javase/6/docs/technotes/guides/apt/index.html">
+					Annotation Processing Tool （apt）
 				</a>
-				を利用した O/R Mapping フレームワークを提供します。
+				を利用したO/Rマッパーとその開発ツールを提供します。
 			</p>
 			<p>
 				Domaをもっと知りたい場合は、<a href="overview.html">概要</a>のページを参照してください。

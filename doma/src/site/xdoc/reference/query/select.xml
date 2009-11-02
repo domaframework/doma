@@ -18,6 +18,9 @@
 						<li><a href="#悲観的排他制御">悲観的排他制御</a></li>
 					</ul>
 				</li>
+				<li><a href="#クエリタイムアウト">クエリタイムアウト</a></li>
+				<li><a href="#フェッチサイズ">フェッチサイズ</a></li>
+				<li><a href="#最大行数">最大行数</a></li>
 			</ul>
 		</section>
 		<section name="概要">
@@ -135,7 +138,7 @@ public interface EmployeeDao {
 			<p>
 				<code>SelectOptions</code>は、<code>SelectOptions</code>のstaticな<code>get</code>メソッドにより取得できます。
 			</p>
-<source><![CDATA[SelectOptions options = SelectOptions.get();}]]></source>
+<source><![CDATA[SelectOptions options = SelectOptions.get();]]></source>
 			<subsection name="ページング">
 				<p>
 					<code>SelectOptions</code>の<code>offset</code>メソッドで開始位置、<code>limit</code>メソッドで取得件数を指定し、
@@ -159,6 +162,39 @@ List<Employee> list = dao.selectByDepartmentName("ACCOUNT", options);]]></source
 					詳しくは<a href="../../apidocs/org/seasar/doma/jdbc/SelectOptions.html">Javadocコメント</a>を参照ください。
 				</p>
 			</subsection>
+		</section>
+		<section name="クエリタイムアウト">
+			<p>
+				<code>@Select</code>の<code>queryTimeout</code>要素にクエリタイムアウトの秒数を指定できます。
+			</p>
+<source><![CDATA[@Select(queryTimeout = 10)
+List<Employee> selectAll();]]></source>
+			<p>
+				<code>queryTimeout</code>要素に値を指定しない場合、
+				<a href="../config.html">設定クラス</a>に指定されたクエリタイムアウトが使用されます。
+			</p>
+		</section>
+		<section name="フェッチサイズ">
+			<p>
+				<code>@Select</code>の<code>fetchSize</code>要素にフェッチサイズを指定できます。
+			</p>
+<source><![CDATA[@Select(fetchSize = 20)
+List<Employee> selectAll();]]></source>
+			<p>
+				<code>fetchSize</code>要素に値を指定しない場合、
+				<a href="../config.html">設定クラス</a>に指定されたフェッチサイズが使用されます。
+			</p>
+		</section>
+		<section name="最大行数">
+			<p>
+				<code>@Select</code>の<code>maxRows</code>要素に最大行数を指定できます。
+			</p>
+<source><![CDATA[@Select(maxRows = 100)
+List<Employee> selectAll();]]></source>
+			<p>
+				<code>maxRows</code>要素に値を指定しない場合、
+				<a href="../config.html">設定クラス</a>に指定された最大行数が使用されます。
+			</p>
 		</section>
 	</body>
 </document>

@@ -96,7 +96,7 @@ int delete(Employee employee);]]></source>
 			<p>
 				この設定は、SQLファイルの使用の有無に関係なく適用されます。
 				<code>queryTimeout</code>要素に値を指定しない場合、
-				<a href="../config.html">設定</a>に指定されたクエリタイムアウトが使用されます。
+				<a href="../config.html">設定クラス</a>に指定されたクエリタイムアウトが使用されます。
 			</p>
 		</section>
 	</body>

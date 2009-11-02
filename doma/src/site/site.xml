@@ -58,7 +58,7 @@
 					<item name="ストアドプロシージャー" href="reference/query/procedure.html" />
 					<item name="ファクトリ" href="reference/query/factory.html" />
 				</item>
-				<item name="設定" href="reference/config.html" />
+				<item name="設定クラス" href="reference/config.html" />
 				<item name="SQLファイル" href="reference/sqlfile.html" />
 				<item name="アノテーション処理" href="reference/apt.html" />
 			</item>

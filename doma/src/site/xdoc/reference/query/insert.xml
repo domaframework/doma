@@ -44,13 +44,17 @@ public interface EmployeeDao {
 <source><![CDATA[@Insert
 int insert(Employee employee);]]></source>
 			<subsection name="識別子">
-				<a href="../entity.html">エンティティティクラス</a>の識別子に、<code>@GeneratedValue</code>が注釈されている場合、
-				識別子が自動的に生成し設定します。
+				<p>
+					<a href="../entity.html">エンティティティクラス</a>の識別子に、<code>@GeneratedValue</code>が注釈されている場合、
+					識別子が自動的に生成し設定します。
+				</p>
 			</subsection>
 			<subsection name="バージョン番号">
-				<a href="../entity.html">エンティティティクラス</a>に<code>@Version</code>が注釈されたプロパティがある場合、
-				そのプロパティに明示的に1以上の値が設定されていればその値を使用します。
-				もし設定されていないか、0以下の値が設定されていれば<code>1</code>を自動で設定します。
+				<p>
+					<a href="../entity.html">エンティティティクラス</a>に<code>@Version</code>が注釈されたプロパティがある場合、
+					そのプロパティに明示的に1以上の値が設定されていればその値を使用します。
+					もし設定されていないか、0以下の値が設定されていれば<code>1</code>を自動で設定します。
+				</p>
 			</subsection>
 			<subsection name="挿入対象プロパティ">
 				<h4><code>@Column</code>の<code>insertable</code>要素</h4>
@@ -119,7 +123,7 @@ int insert(Employee employee);]]></source>
 			<p>
 				この設定は、SQLファイルの使用の有無に関係なく適用されます。
 				<code>queryTimeout</code>要素に値を指定しない場合、
-				<a href="../config.html">設定</a>に指定されたクエリタイムアウトが使用されます。
+				<a href="../config.html">設定クラス</a>に指定されたクエリタイムアウトが使用されます。
 			</p>
 		</section>
 	</body>

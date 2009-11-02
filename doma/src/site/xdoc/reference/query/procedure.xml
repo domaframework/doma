@@ -5,6 +5,11 @@
 		<title>ストアドプロシージャー</title>
 	</properties>
 	<body>
+		<section name="目次">
+			<ul>
+				<li><a href="#概要">概要</a></li>
+			</ul>
+		</section>
 		<section name="概要">
 			<p>
 				ストアドプロシージャーを呼び出すには、<a href="../../apidocs/org/seasar/doma/Procedure.html"><code>@Procedure</code></a>をDaoのメソッドに注釈します。
