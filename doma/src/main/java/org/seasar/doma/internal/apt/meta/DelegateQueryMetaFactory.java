@@ -33,7 +33,7 @@ import javax.lang.model.util.ElementFilter;
 import org.seasar.doma.Delegate;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.util.TypeUtil;
+import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
@@ -107,7 +107,7 @@ public class DelegateQueryMetaFactory extends
 
     protected void doDelegate(DelegateQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        TypeElement delegateTypeElement = TypeUtil.toTypeElement(queryMeta
+        TypeElement delegateTypeElement = TypeMirrorUtil.toTypeElement(queryMeta
                 .getTargetType(), env);
         if (delegateTypeElement == null) {
             throw new AptIllegalStateException(method.toString());
@@ -139,7 +139,7 @@ public class DelegateQueryMetaFactory extends
                     VariableElement first = parameters.get(0);
                     VariableElement second = parameters.get(1);
                     if (isConfig(first.asType())
-                            && TypeUtil.isAssignable(second.asType(), daoMeta
+                            && TypeMirrorUtil.isAssignable(second.asType(), daoMeta
                                     .getDaoType(), env)) {
                         candidate = constructor;
                         break;
@@ -173,7 +173,7 @@ public class DelegateQueryMetaFactory extends
             return false;
         }
 
-        if (!TypeUtil.isSameType(srcMethod.getReturnType(), destMethod
+        if (!TypeMirrorUtil.isSameType(srcMethod.getReturnType(), destMethod
                 .getReturnType(), env)) {
             return false;
         }
@@ -189,7 +189,7 @@ public class DelegateQueryMetaFactory extends
                 .iterator(), destIt = destTypeParams.iterator(); srcIt
                 .hasNext()
                 && destIt.hasNext();) {
-            if (!TypeUtil.isSameType(srcIt.next().asType(), destIt.next()
+            if (!TypeMirrorUtil.isSameType(srcIt.next().asType(), destIt.next()
                     .asType(), env)) {
                 return false;
             }
@@ -202,7 +202,7 @@ public class DelegateQueryMetaFactory extends
         }
         for (Iterator<? extends VariableElement> srcIt = srcParams.iterator(), destIt = destParams
                 .iterator(); srcIt.hasNext() && destIt.hasNext();) {
-            if (!TypeUtil.isSameType(srcIt.next().asType(), destIt.next()
+            if (!TypeMirrorUtil.isSameType(srcIt.next().asType(), destIt.next()
                     .asType(), env)) {
                 return false;
             }
@@ -216,7 +216,7 @@ public class DelegateQueryMetaFactory extends
         }
         for (Iterator<? extends TypeMirror> srcIt = srcThrownTypes.iterator(), destIt = destThrownTypes
                 .iterator(); srcIt.hasNext() && destIt.hasNext();) {
-            if (!TypeUtil.isSameType(srcIt.next(), destIt.next(), env)) {
+            if (!TypeMirrorUtil.isSameType(srcIt.next(), destIt.next(), env)) {
                 return false;
             }
         }

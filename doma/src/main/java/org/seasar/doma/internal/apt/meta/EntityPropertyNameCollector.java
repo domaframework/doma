@@ -29,7 +29,7 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 
 import org.seasar.doma.Transient;
-import org.seasar.doma.internal.apt.util.TypeUtil;
+import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 
 /**
  * @author taedium
@@ -51,8 +51,8 @@ public class EntityPropertyNameCollector {
     }
 
     protected void collectNames(TypeMirror type, Set<String> names) {
-        for (TypeElement t = TypeUtil.toTypeElement(type, env); t != null
-                && t.asType().getKind() != TypeKind.NONE; t = TypeUtil
+        for (TypeElement t = TypeMirrorUtil.toTypeElement(type, env); t != null
+                && t.asType().getKind() != TypeKind.NONE; t = TypeMirrorUtil
                 .toTypeElement(t.getSuperclass(), env)) {
             for (VariableElement field : ElementFilter.fieldsIn(t
                     .getEnclosedElements())) {

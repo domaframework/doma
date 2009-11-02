@@ -16,7 +16,7 @@ import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.ListType;
-import org.seasar.doma.internal.apt.util.TypeUtil;
+import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
 
 public class QueryReturnMeta {
@@ -37,7 +37,7 @@ public class QueryReturnMeta {
         this.element = methodElement;
         this.env = env;
         type = methodElement.getReturnType();
-        typeName = TypeUtil.getTypeName(type, env);
+        typeName = TypeMirrorUtil.getTypeName(type, env);
         dataType = createDataType(methodElement, type, env);
     }
 

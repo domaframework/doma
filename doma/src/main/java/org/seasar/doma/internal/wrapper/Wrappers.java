@@ -76,8 +76,12 @@ public final class Wrappers {
     public static Wrapper<?> wrap(Object value, Class<?> valueClass) {
         assertNotNull(valueClass);
         assertTrue(value == null
-                || ClassUtil.boxIfPrimitive(valueClass).isInstance(value));
+                || ClassUtil.toBoxedPrimitiveTypeIfPossible(valueClass)
+                        .isInstance(value));
 
+        if (Wrapper.class.isAssignableFrom(valueClass)) {
+            return Wrapper.class.cast(value);
+        }
         Wrapper<?> result = wrapBasicObject(value, valueClass);
         if (result == null) {
             result = wrapDomainObject(value, valueClass);
@@ -101,7 +105,8 @@ public final class Wrappers {
     protected static Wrapper<?> wrapBasicObject(Object value,
             Class<?> valueClass) {
         assertNotNull(valueClass);
-        Class<?> boxedClass = ClassUtil.boxIfPrimitive(valueClass);
+        Class<?> boxedClass = ClassUtil
+                .toBoxedPrimitiveTypeIfPossible(valueClass);
         if (boxedClass == Array.class) {
             return new ArrayWrapper(Array.class.cast(value));
         }

@@ -44,7 +44,7 @@ import org.seasar.doma.internal.apt.AptIllegalStateException;
  * @author taedium
  * 
  */
-public final class TypeUtil {
+public final class TypeMirrorUtil {
 
     public static TypeElement toTypeElement(TypeMirror typeMirror,
             final ProcessingEnvironment env) {
@@ -260,7 +260,7 @@ public final class TypeUtil {
             public Void visitTypeVariable(TypeVariable t, StringBuilder p) {
                 p.append(t);
                 TypeMirror upperBound = t.getUpperBound();
-                String upperBoundName = TypeUtil.getTypeName(upperBound, env);
+                String upperBoundName = TypeMirrorUtil.getTypeName(upperBound, env);
                 if (!Object.class.getName().equals(upperBoundName)) {
                     p.append(" extends ");
                     upperBound.accept(this, p);
@@ -307,7 +307,7 @@ public final class TypeUtil {
         Map<TypeMirror, TypeMirror> typeParameterMap = new HashMap<TypeMirror, TypeMirror>();
         Iterator<? extends TypeParameterElement> formalParams = typeElement
                 .getTypeParameters().iterator();
-        DeclaredType declaredType = TypeUtil.toDeclaredType(typeMirror, env);
+        DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(typeMirror, env);
         Iterator<? extends TypeMirror> actualParams = declaredType
                 .getTypeArguments().iterator();
         for (; formalParams.hasNext() && actualParams.hasNext();) {

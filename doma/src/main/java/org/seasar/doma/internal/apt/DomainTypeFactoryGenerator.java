@@ -28,7 +28,7 @@ import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.apt.type.WrapperType;
 import org.seasar.doma.internal.domain.DomainType;
 import org.seasar.doma.internal.domain.DomainTypeFactory;
-import org.seasar.doma.internal.util.PrimitiveWrapperUtil;
+import org.seasar.doma.internal.util.BoxedPrimitiveUtil;
 
 /**
  * 
@@ -161,9 +161,9 @@ public class DomainTypeFactoryGenerator extends AbstractGenerator {
         iprint("public %1$s getDomain() {%n", domainMeta.getTypeElement()
                 .getQualifiedName());
         if (domainMeta.getValueType().getKind().isPrimitive()) {
-            iprint("    return new %1$s(%2$s.toPrimitive(wrapper.get()));%n",
+            iprint("    return new %1$s(%2$s.unbox(wrapper.get()));%n",
                     domainMeta.getTypeElement().getQualifiedName(),
-                    PrimitiveWrapperUtil.class.getName());
+                    BoxedPrimitiveUtil.class.getName());
         } else {
             iprint("    return new %1$s(wrapper.get());%n", domainMeta
                     .getTypeElement().getQualifiedName());

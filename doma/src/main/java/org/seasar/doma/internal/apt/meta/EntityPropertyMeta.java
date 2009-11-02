@@ -24,7 +24,7 @@ import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.type.DomainType;
-import org.seasar.doma.internal.apt.util.TypeUtil;
+import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 
 /**
  * 
@@ -61,7 +61,7 @@ public class EntityPropertyMeta {
         this.entityName = entityElement.getSimpleName().toString();
         this.entityTypeName = entityElement.getQualifiedName().toString();
         this.type = propertyElement.asType();
-        this.typeName = TypeUtil.getTypeName(type, env);
+        this.typeName = TypeMirrorUtil.getTypeName(type, env);
     }
 
     public String getEntityName() {

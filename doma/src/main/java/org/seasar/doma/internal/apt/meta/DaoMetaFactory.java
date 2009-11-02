@@ -38,7 +38,7 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Notifier;
 import org.seasar.doma.internal.apt.Options;
-import org.seasar.doma.internal.apt.util.TypeUtil;
+import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.jdbc.ConfigProxy;
 
@@ -115,7 +115,7 @@ public class DaoMetaFactory {
     protected void doConfig(Dao dao, DaoMeta daoMeta) {
         TypeMirror configType = getConfigType(dao);
         daoMeta.setConfigType(configType);
-        if (TypeUtil.isSameType(configType, ConfigProxy.class, env)) {
+        if (TypeMirrorUtil.isSameType(configType, ConfigProxy.class, env)) {
             daoMeta.setConfigAdapter(true);
         }
     }
@@ -134,7 +134,7 @@ public class DaoMetaFactory {
         for (Annotation annotation : annotateWith.annotations()) {
             AnnotationMeta annotationMeta = new AnnotationMeta();
             annotationMeta.setTarget(annotation.target());
-            annotationMeta.setTypeName(TypeUtil.getTypeName(
+            annotationMeta.setTypeName(TypeMirrorUtil.getTypeName(
                     getAnnotationType(annotation), env));
             annotationMeta.setElements(annotation.elements());
             annotateWithMeta.addAnnotationMeta(annotationMeta);
@@ -175,7 +175,7 @@ public class DaoMetaFactory {
         TypeElement foundAnnotationTypeElement = null;
         for (AnnotationMirror annotation : methodElement.getAnnotationMirrors()) {
             DeclaredType declaredType = annotation.getAnnotationType();
-            TypeElement typeElement = TypeUtil.toTypeElement(declaredType, env);
+            TypeElement typeElement = TypeMirrorUtil.toTypeElement(declaredType, env);
             if (typeElement.getAnnotation(DaoMethod.class) != null) {
                 if (foundAnnotationTypeElement != null) {
                     throw new AptException(DomaMessageCode.DOMA4086, env,

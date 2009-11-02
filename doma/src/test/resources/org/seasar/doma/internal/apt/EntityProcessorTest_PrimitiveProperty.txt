@@ -128,9 +128,9 @@ public class PrimitivePropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         }
 
         public void refreshEntityInternal() {
-            org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity_.PrimitivePropertyEntityAccessor.setId(__entity, org.seasar.doma.internal.util.PrimitiveWrapperUtil.toPrimitive(id.getWrapper().get()));
-            org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity_.PrimitivePropertyEntityAccessor.setBool(__entity, org.seasar.doma.internal.util.PrimitiveWrapperUtil.toPrimitive(bool.getWrapper().get()));
-            org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity_.PrimitivePropertyEntityAccessor.setVersion(__entity, org.seasar.doma.internal.util.PrimitiveWrapperUtil.toPrimitive(version.getWrapper().get()));
+            org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity_.PrimitivePropertyEntityAccessor.setId(__entity, org.seasar.doma.internal.util.BoxedPrimitiveUtil.unbox(id.getWrapper().get()));
+            org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity_.PrimitivePropertyEntityAccessor.setBool(__entity, org.seasar.doma.internal.util.BoxedPrimitiveUtil.unbox(bool.getWrapper().get()));
+            org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity_.PrimitivePropertyEntityAccessor.setVersion(__entity, org.seasar.doma.internal.util.BoxedPrimitiveUtil.unbox(version.getWrapper().get()));
         }
 
         @Override

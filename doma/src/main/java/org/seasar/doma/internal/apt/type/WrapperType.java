@@ -23,7 +23,7 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.SimpleTypeVisitor6;
 
 import org.seasar.doma.internal.apt.util.ElementUtil;
-import org.seasar.doma.internal.apt.util.TypeUtil;
+import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.wrapper.ArrayWrapper;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
 import org.seasar.doma.wrapper.BigIntegerWrapper;
@@ -121,7 +121,7 @@ public class WrapperType extends AbstractDataType {
 
         @Override
         public Class<?> visitDeclared(DeclaredType t, Void p) {
-            TypeElement typeElement = TypeUtil.toTypeElement(t, env);
+            TypeElement typeElement = TypeMirrorUtil.toTypeElement(t, env);
             if (typeElement == null) {
                 return null;
             }
@@ -153,31 +153,31 @@ public class WrapperType extends AbstractDataType {
             if (Double.class.getName().equals(name)) {
                 return DoubleWrapper.class;
             }
-            if (TypeUtil.isAssignable(t, BigDecimal.class, env)) {
+            if (TypeMirrorUtil.isAssignable(t, BigDecimal.class, env)) {
                 return BigDecimalWrapper.class;
             }
-            if (TypeUtil.isAssignable(t, BigInteger.class, env)) {
+            if (TypeMirrorUtil.isAssignable(t, BigInteger.class, env)) {
                 return BigIntegerWrapper.class;
             }
-            if (TypeUtil.isAssignable(t, Time.class, env)) {
+            if (TypeMirrorUtil.isAssignable(t, Time.class, env)) {
                 return TimeWrapper.class;
             }
-            if (TypeUtil.isAssignable(t, Timestamp.class, env)) {
+            if (TypeMirrorUtil.isAssignable(t, Timestamp.class, env)) {
                 return TimestampWrapper.class;
             }
-            if (TypeUtil.isAssignable(t, Date.class, env)) {
+            if (TypeMirrorUtil.isAssignable(t, Date.class, env)) {
                 return DateWrapper.class;
             }
-            if (TypeUtil.isAssignable(t, Array.class, env)) {
+            if (TypeMirrorUtil.isAssignable(t, Array.class, env)) {
                 return ArrayWrapper.class;
             }
-            if (TypeUtil.isAssignable(t, Blob.class, env)) {
+            if (TypeMirrorUtil.isAssignable(t, Blob.class, env)) {
                 return BlobWrapper.class;
             }
-            if (TypeUtil.isAssignable(t, NClob.class, env)) {
+            if (TypeMirrorUtil.isAssignable(t, NClob.class, env)) {
                 return NClobWrapper.class;
             }
-            if (TypeUtil.isAssignable(t, Clob.class, env)) {
+            if (TypeMirrorUtil.isAssignable(t, Clob.class, env)) {
                 return ClobWrapper.class;
             }
             return null;

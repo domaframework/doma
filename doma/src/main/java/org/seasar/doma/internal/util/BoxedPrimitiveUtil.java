@@ -1,36 +1,36 @@
 package org.seasar.doma.internal.util;
 
-public final class PrimitiveWrapperUtil {
+public final class BoxedPrimitiveUtil {
 
-    public static char toPrimitive(Character value) {
+    public static char unbox(Character value) {
         return value != null ? value.charValue() : 0;
     }
 
-    public static boolean toPrimitive(Boolean value) {
+    public static boolean unbox(Boolean value) {
         return value != null ? value.booleanValue() : false;
     }
 
-    public static byte toPrimitive(Byte value) {
+    public static byte unbox(Byte value) {
         return value != null ? value.byteValue() : 0;
     }
 
-    public static short toPrimitive(Short value) {
+    public static short unbox(Short value) {
         return value != null ? value.shortValue() : 0;
     }
 
-    public static int toPrimitive(Integer value) {
+    public static int unbox(Integer value) {
         return value != null ? value.intValue() : 0;
     }
 
-    public static long toPrimitive(Long value) {
+    public static long unbox(Long value) {
         return value != null ? value.longValue() : 0L;
     }
 
-    public static float toPrimitive(Float value) {
+    public static float unbox(Float value) {
         return value != null ? value.floatValue() : 0f;
     }
 
-    public static double toPrimitive(Double value) {
+    public static double unbox(Double value) {
         return value != null ? value.doubleValue() : 0d;
     }
 }

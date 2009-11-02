@@ -22,7 +22,7 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.internal.apt.util.TypeUtil;
+import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 
 /**
  * @author taedium
@@ -43,8 +43,8 @@ public abstract class AbstractDataType implements DataType {
     protected AbstractDataType(TypeMirror typeMirror, ProcessingEnvironment env) {
         assertNotNull(typeMirror, env);
         this.typeMirror = typeMirror;
-        this.typeName = TypeUtil.getTypeName(typeMirror, env);
-        this.typeElement = TypeUtil.toTypeElement(typeMirror, env);
+        this.typeName = TypeMirrorUtil.getTypeName(typeMirror, env);
+        this.typeElement = TypeMirrorUtil.toTypeElement(typeMirror, env);
         if (typeElement != null) {
             qualifiedName = typeElement.getQualifiedName().toString();
         } else {

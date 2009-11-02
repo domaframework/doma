@@ -26,7 +26,7 @@ public class PrimitiveValueDomain_ implements org.seasar.doma.internal.domain.Do
 
         @Override
         public org.seasar.doma.internal.apt.domain.PrimitiveValueDomain getDomain() {
-            return new org.seasar.doma.internal.apt.domain.PrimitiveValueDomain(org.seasar.doma.internal.util.PrimitiveWrapperUtil.toPrimitive(wrapper.get()));
+            return new org.seasar.doma.internal.apt.domain.PrimitiveValueDomain(org.seasar.doma.internal.util.BoxedPrimitiveUtil.unbox(wrapper.get()));
         }
 
         @Override

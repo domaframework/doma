@@ -47,7 +47,7 @@ import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Notifier;
 import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.util.ElementUtil;
-import org.seasar.doma.internal.apt.util.TypeUtil;
+import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.jdbc.entity.EntityListener;
 
@@ -89,7 +89,7 @@ public class EntityMetaFactory {
                     classElement, suffix);
         }
         entityMeta.setEntityName(entityName);
-        entityMeta.setEntityTypeName(TypeUtil.getTypeName(
+        entityMeta.setEntityTypeName(TypeMirrorUtil.getTypeName(
                 classElement.asType(), env));
         Entity entityAnnotation = classElement.getAnnotation(Entity.class);
         if (entityAnnotation == null) {
@@ -138,11 +138,11 @@ public class EntityMetaFactory {
         TypeMirror listenerType = getListenerType(entityAnnotation);
         TypeMirror argumentType = getListenerArgumentType(listenerType);
         assertNotNull(argumentType);
-        if (!TypeUtil.isAssignable(classElement.asType(), argumentType, env)) {
+        if (!TypeMirrorUtil.isAssignable(classElement.asType(), argumentType, env)) {
             throw new AptException(DomaMessageCode.DOMA4038, env, classElement,
                     listenerType, argumentType, classElement.getQualifiedName());
         }
-        entityMeta.setListenerTypeName(TypeUtil.getTypeName(listenerType, env));
+        entityMeta.setListenerTypeName(TypeMirrorUtil.getTypeName(listenerType, env));
     }
 
     protected TypeMirror getListenerType(Entity entityAnnotation) {
@@ -157,13 +157,13 @@ public class EntityMetaFactory {
     protected TypeMirror getListenerArgumentType(TypeMirror typeMirror) {
         for (TypeMirror supertype : env.getTypeUtils().directSupertypes(
                 typeMirror)) {
-            TypeElement superElement = TypeUtil.toTypeElement(supertype, env);
+            TypeElement superElement = TypeMirrorUtil.toTypeElement(supertype, env);
             if (superElement == null || !superElement.getKind().isInterface()) {
                 continue;
             }
             if (superElement.getQualifiedName().contentEquals(
                     EntityListener.class.getName())) {
-                DeclaredType declaredType = TypeUtil.toDeclaredType(supertype,
+                DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(supertype,
                         env);
                 assertNotNull(declaredType);
                 List<? extends TypeMirror> args = declaredType
@@ -182,7 +182,7 @@ public class EntityMetaFactory {
     protected void doNamingConvention(Entity entityAnnotation,
             TypeElement classElement, EntityMeta entityMeta) {
         TypeMirror mamingConventionType = getNamingConventionType(entityAnnotation);
-        entityMeta.setNamingConventionTypeName(TypeUtil.getTypeName(
+        entityMeta.setNamingConventionTypeName(TypeMirrorUtil.getTypeName(
                 mamingConventionType, env));
     }
 
@@ -239,7 +239,7 @@ public class EntityMetaFactory {
     protected List<VariableElement> getFieldElements(TypeElement classElement) {
         List<VariableElement> results = new LinkedList<VariableElement>();
         for (TypeElement t = classElement; t != null
-                && t.asType().getKind() != TypeKind.NONE; t = TypeUtil
+                && t.asType().getKind() != TypeKind.NONE; t = TypeMirrorUtil
                 .toTypeElement(t.getSuperclass(), env)) {
             if (t.getAnnotation(Entity.class) == null) {
                 continue;
@@ -272,7 +272,7 @@ public class EntityMetaFactory {
         if (entityMeta.hasOriginalStatesMeta()) {
             throw new AptException(DomaMessageCode.DOMA4125, env, fieldElement);
         }
-        if (!TypeUtil
+        if (!TypeMirrorUtil
                 .isSameType(fieldElement.asType(), Serializable.class, env)) {
             throw new AptException(DomaMessageCode.DOMA4135, env, fieldElement);
         }
@@ -299,7 +299,7 @@ public class EntityMetaFactory {
         TypeElement foundAnnotationTypeElement = null;
         for (AnnotationMirror annotation : fieldElement.getAnnotationMirrors()) {
             DeclaredType declaredType = annotation.getAnnotationType();
-            TypeElement typeElement = TypeUtil.toTypeElement(declaredType, env);
+            TypeElement typeElement = TypeMirrorUtil.toTypeElement(declaredType, env);
             if (typeElement.getAnnotation(EntityField.class) != null) {
                 if (foundAnnotationTypeElement != null) {
                     throw new AptException(DomaMessageCode.DOMA4086, env,

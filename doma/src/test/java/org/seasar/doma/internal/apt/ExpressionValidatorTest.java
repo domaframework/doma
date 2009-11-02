@@ -33,7 +33,7 @@ import org.seasar.doma.internal.apt.dao.ExpressionValidationDao;
 import org.seasar.doma.internal.apt.decl.TypeDeclaration;
 import org.seasar.doma.internal.apt.entity.Emp;
 import org.seasar.doma.internal.apt.util.ElementUtil;
-import org.seasar.doma.internal.apt.util.TypeUtil;
+import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.expr.ExpressionParser;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
 import org.seasar.doma.internal.message.DomaMessageCode;
@@ -345,7 +345,7 @@ public class ExpressionValidatorTest extends AptTestCase {
         ProcessingEnvironment env = getProcessingEnvironment();
         TypeElement typeElement = ElementUtil.getTypeElement(clazz, env);
         for (TypeElement t = typeElement; t != null
-                && t.asType().getKind() != TypeKind.NONE; t = TypeUtil
+                && t.asType().getKind() != TypeKind.NONE; t = TypeMirrorUtil
                 .toTypeElement(t.getSuperclass(), env)) {
             for (ExecutableElement methodElement : ElementFilter.methodsIn(t
                     .getEnclosedElements())) {
@@ -361,7 +361,7 @@ public class ExpressionValidatorTest extends AptTestCase {
                     TypeMirror parameterType = parameterElements.get(i)
                             .asType();
                     Class<?> parameterClass = parameterClasses[i];
-                    if (!TypeUtil
+                    if (!TypeMirrorUtil
                             .isSameType(parameterType, parameterClass, env)) {
                         return null;
                     }
@@ -379,8 +379,8 @@ public class ExpressionValidatorTest extends AptTestCase {
         for (VariableElement parameter : methodElement.getParameters()) {
             String name = parameter.getSimpleName().toString();
             TypeMirror type = parameter.asType();
-            if (TypeUtil.isSameType(type, List.class, env)) {
-                DeclaredType declaredType = TypeUtil.toDeclaredType(type, env);
+            if (TypeMirrorUtil.isSameType(type, List.class, env)) {
+                DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(type, env);
                 TypeMirror elementType = declaredType.getTypeArguments().get(0);
                 result.put(name, elementType);
             } else {

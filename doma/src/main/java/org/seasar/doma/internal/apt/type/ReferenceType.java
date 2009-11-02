@@ -24,7 +24,7 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.internal.apt.util.TypeUtil;
+import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.Reference;
 
 public class ReferenceType extends AbstractDataType {
@@ -82,12 +82,12 @@ public class ReferenceType extends AbstractDataType {
 
     protected static DeclaredType getReferenceDeclaredType(TypeMirror type,
             ProcessingEnvironment env) {
-        if (TypeUtil.isSameType(type, Reference.class, env)) {
-            return TypeUtil.toDeclaredType(type, env);
+        if (TypeMirrorUtil.isSameType(type, Reference.class, env)) {
+            return TypeMirrorUtil.toDeclaredType(type, env);
         }
         for (TypeMirror supertype : env.getTypeUtils().directSupertypes(type)) {
-            if (TypeUtil.isSameType(supertype, Reference.class, env)) {
-                return TypeUtil.toDeclaredType(supertype, env);
+            if (TypeMirrorUtil.isSameType(supertype, Reference.class, env)) {
+                return TypeMirrorUtil.toDeclaredType(supertype, env);
             }
             getReferenceDeclaredType(supertype, env);
         }

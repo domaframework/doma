@@ -24,7 +24,7 @@ import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.Domain;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.util.TypeUtil;
+import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 
 public class DomainType extends AbstractDataType {
 
@@ -47,7 +47,7 @@ public class DomainType extends AbstractDataType {
     public static DomainType newInstance(TypeMirror type,
             ProcessingEnvironment env) {
         assertNotNull(type, env);
-        TypeElement typeElement = TypeUtil.toTypeElement(type, env);
+        TypeElement typeElement = TypeMirrorUtil.toTypeElement(type, env);
         if (typeElement == null) {
             return null;
         }

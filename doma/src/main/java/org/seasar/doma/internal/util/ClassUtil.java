@@ -93,7 +93,7 @@ public final class ClassUtil {
         return qualifiedName.substring(pos + 1);
     }
 
-    public static Class<?> boxIfPrimitive(Class<?> clazz) {
+    public static Class<?> toBoxedPrimitiveTypeIfPossible(Class<?> clazz) {
         assertNotNull(clazz);
         if (clazz == void.class) {
             return Void.class;

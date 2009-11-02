@@ -33,7 +33,7 @@ import javax.lang.model.util.TypeKindVisitor6;
 import org.seasar.doma.Domain;
 import org.seasar.doma.Entity;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.util.TypeUtil;
+import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.IterationCallback;
@@ -56,7 +56,7 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
     protected void doTypeParameters(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
         for (TypeParameterElement element : method.getTypeParameters()) {
-            String name = TypeUtil.getTypeParameterName(element.asType(), env);
+            String name = TypeMirrorUtil.getTypeParameterName(element.asType(), env);
             queryMeta.addTypeParameterName(name);
         }
     }
@@ -70,7 +70,7 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
     protected void doThrowTypes(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
         for (TypeMirror thrownType : method.getThrownTypes()) {
-            queryMeta.addThrownTypeName(TypeUtil.getTypeName(thrownType, env));
+            queryMeta.addThrownTypeName(TypeMirrorUtil.getTypeName(thrownType, env));
         }
     }
 
@@ -93,31 +93,31 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
     }
 
     protected boolean isEntity(TypeMirror typeMirror) {
-        TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
+        TypeElement typeElement = TypeMirrorUtil.toTypeElement(typeMirror, env);
         return typeElement != null
                 && typeElement.getAnnotation(Entity.class) != null;
     }
 
     protected boolean isDomain(TypeMirror typeMirror) {
-        TypeElement typeElement = TypeUtil.toTypeElement(typeMirror, env);
+        TypeElement typeElement = TypeMirrorUtil.toTypeElement(typeMirror, env);
         return typeElement != null
                 && typeElement.getAnnotation(Domain.class) != null;
     }
 
     protected boolean isConfig(TypeMirror typeMirror) {
-        return TypeUtil.isSameType(typeMirror, Config.class, env);
+        return TypeMirrorUtil.isSameType(typeMirror, Config.class, env);
     }
 
     protected boolean isCollection(TypeMirror typeMirror) {
-        return TypeUtil.isAssignable(typeMirror, Collection.class, env);
+        return TypeMirrorUtil.isAssignable(typeMirror, Collection.class, env);
     }
 
     protected boolean isSelectOptions(TypeMirror typeMirror) {
-        return TypeUtil.isAssignable(typeMirror, SelectOptions.class, env);
+        return TypeMirrorUtil.isAssignable(typeMirror, SelectOptions.class, env);
     }
 
     protected boolean isIterationCallback(TypeMirror typeMirror) {
-        return TypeUtil.isAssignable(typeMirror, IterationCallback.class, env);
+        return TypeMirrorUtil.isAssignable(typeMirror, IterationCallback.class, env);
     }
 
     protected void validateEntityPropertyNames(TypeMirror entityType,

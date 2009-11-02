@@ -35,7 +35,7 @@ import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.util.ElementUtil;
-import org.seasar.doma.internal.apt.util.TypeUtil;
+import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
@@ -129,7 +129,7 @@ public class EntityPropertyMetaFactory {
         buf.append(generator.sequence());
         SequenceIdGeneratorMeta idGeneratorMeta = new SequenceIdGeneratorMeta(
                 buf.toString(), generator.initialValue(), generator
-                        .allocationSize(), TypeUtil.getTypeName(
+                        .allocationSize(), TypeMirrorUtil.getTypeName(
                         idGeneratorImplementerType, env));
         propertyMeta.setIdGeneratorMeta(idGeneratorMeta);
     }
@@ -165,7 +165,7 @@ public class EntityPropertyMetaFactory {
         TableIdGeneratorMeta idGeneratorMeta = new TableIdGeneratorMeta(buf
                 .toString(), generator.pkColumnName(), generator
                 .valueColumnName(), generator.pkColumnValue(), generator
-                .initialValue(), generator.allocationSize(), TypeUtil
+                .initialValue(), generator.allocationSize(), TypeMirrorUtil
                 .getTypeName(idGeneratorImplementerType, env));
         propertyMeta.setIdGeneratorMeta(idGeneratorMeta);
     }
@@ -197,9 +197,9 @@ public class EntityPropertyMetaFactory {
                 throw new AptException(DomaMessageCode.DOMA4024, env,
                         fieldElement);
             }
-            TypeMirror referenceType = TypeUtil.boxIfPrimitive(fieldElement
+            TypeMirror referenceType = TypeMirrorUtil.boxIfPrimitive(fieldElement
                     .asType(), env);
-            if (!TypeUtil.isAssignable(referenceType, Number.class, env)) {
+            if (!TypeMirrorUtil.isAssignable(referenceType, Number.class, env)) {
                 throw new AptException(DomaMessageCode.DOMA4093, env,
                         fieldElement);
             }
@@ -258,7 +258,7 @@ public class EntityPropertyMetaFactory {
     }
 
     protected boolean isNumber(TypeMirror typeMirror) {
-        return TypeUtil.isAssignable(typeMirror, Number.class, env);
+        return TypeMirrorUtil.isAssignable(typeMirror, Number.class, env);
     }
 
 }

@@ -22,7 +22,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.Entity;
-import org.seasar.doma.internal.apt.util.TypeUtil;
+import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 
 /**
  * @author taedium
@@ -37,7 +37,7 @@ public class EntityType extends AbstractDataType {
     public static EntityType newInstance(TypeMirror type,
             ProcessingEnvironment env) {
         assertNotNull(type, env);
-        TypeElement typeElement = TypeUtil.toTypeElement(type, env);
+        TypeElement typeElement = TypeMirrorUtil.toTypeElement(type, env);
         if (typeElement == null
                 || typeElement.getAnnotation(Entity.class) == null) {
             return null;

@@ -18,7 +18,7 @@ import org.seasar.doma.Domain;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.type.BasicType;
-import org.seasar.doma.internal.apt.util.TypeUtil;
+import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
 
 public class DomainMetaFactory {
@@ -49,7 +49,7 @@ public class DomainMetaFactory {
             Domain domainAnnotation) {
         domainMeta.setAccessorMethod(domainAnnotation.accessorMethod());
         TypeMirror valueType = getValueType(domainAnnotation);
-        TypeElement valueTypeElement = TypeUtil.toTypeElement(TypeUtil
+        TypeElement valueTypeElement = TypeMirrorUtil.toTypeElement(TypeMirrorUtil
                 .boxIfPrimitive(valueType, env), env);
         if (valueTypeElement == null) {
             throw new AptIllegalStateException(valueType.toString());
@@ -117,7 +117,7 @@ public class DomainMetaFactory {
     protected void validateAccessorMethod(TypeElement classElement,
             DomainMeta domainMeta) {
         for (TypeElement t = classElement; t != null
-                && t.asType().getKind() != TypeKind.NONE; t = TypeUtil
+                && t.asType().getKind() != TypeKind.NONE; t = TypeMirrorUtil
                 .toTypeElement(t.getSuperclass(), env)) {
             for (ExecutableElement method : ElementFilter
                     .methodsIn(classElement.getEnclosedElements())) {

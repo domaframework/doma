@@ -20,7 +20,7 @@ import org.seasar.doma.internal.apt.decl.FieldDeclaration;
 import org.seasar.doma.internal.apt.decl.MethodDeclaration;
 import org.seasar.doma.internal.apt.decl.TypeDeclaration;
 import org.seasar.doma.internal.apt.util.ElementUtil;
-import org.seasar.doma.internal.apt.util.TypeUtil;
+import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.expr.node.AddOperatorNode;
 import org.seasar.doma.internal.expr.node.AndOperatorNode;
 import org.seasar.doma.internal.expr.node.ArithmeticOperatorNode;
@@ -266,7 +266,7 @@ public class ExpressionValidator implements
     @Override
     public TypeDeclaration visitLiteralNode(LiteralNode node, Void p) {
         TypeMirror type = node.getValueClass() == void.class ? env
-                .getTypeUtils().getNullType() : TypeUtil.getTypeMirror(node
+                .getTypeUtils().getNullType() : TypeMirrorUtil.getTypeMirror(node
                 .getValueClass(), env);
         return TypeDeclaration.newTypeDeclaration(type, env);
     }

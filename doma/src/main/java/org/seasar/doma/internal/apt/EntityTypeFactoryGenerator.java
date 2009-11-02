@@ -41,7 +41,7 @@ import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
-import org.seasar.doma.internal.util.PrimitiveWrapperUtil;
+import org.seasar.doma.internal.util.BoxedPrimitiveUtil;
 import org.seasar.doma.internal.util.StringUtil;
 import org.seasar.doma.jdbc.entity.NamingConvention;
 import org.seasar.doma.wrapper.Wrapper;
@@ -491,10 +491,10 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
                 if (domainType.getBasicType().getTypeMirror().getKind()
                         .isPrimitive()) {
                     iprint(
-                            "    %1$s%2$s.%3$sAccessor.set%4$s(__entity, new %5$s(%6$s.toPrimitive(%7$s.getWrapper().get())));%n",
+                            "    %1$s%2$s.%3$sAccessor.set%4$s(__entity, new %5$s(%6$s.unbox(%7$s.getWrapper().get())));%n",
                             pm.getEntityTypeName(), suffix, pm.getEntityName(),
                             StringUtil.capitalize(pm.getName()), pm
-                                    .getTypeName(), PrimitiveWrapperUtil.class
+                                    .getTypeName(), BoxedPrimitiveUtil.class
                                     .getName(), pm.getName());
                 } else {
                     iprint(
@@ -507,10 +507,10 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
                 BasicType basicType = pm.getBasicType();
                 if (basicType.isPrimitive()) {
                     iprint(
-                            "    %1$s%2$s.%3$sAccessor.set%4$s(__entity, %5$s.toPrimitive(%6$s.getWrapper().get()));%n",
+                            "    %1$s%2$s.%3$sAccessor.set%4$s(__entity, %5$s.unbox(%6$s.getWrapper().get()));%n",
                             pm.getEntityTypeName(), suffix, pm.getEntityName(),
                             StringUtil.capitalize(pm.getName()),
-                            PrimitiveWrapperUtil.class.getName(), pm.getName());
+                            BoxedPrimitiveUtil.class.getName(), pm.getName());
                 } else {
                     iprint(
                             "    %1$s%2$s.%3$sAccessor.set%4$s(__entity, %5$s.getWrapper().get());%n",

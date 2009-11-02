@@ -24,7 +24,7 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.internal.apt.util.TypeUtil;
+import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 
 public class ListType extends AbstractDataType {
 
@@ -52,11 +52,11 @@ public class ListType extends AbstractDataType {
     public static ListType newInstance(TypeMirror type,
             ProcessingEnvironment env) {
         assertNotNull(type, env);
-        if (!TypeUtil.isSameType(type, List.class, env)) {
+        if (!TypeMirrorUtil.isSameType(type, List.class, env)) {
             return null;
         }
         ListType listType = new ListType(type, env);
-        DeclaredType declaredType = TypeUtil.toDeclaredType(type, env);
+        DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(type, env);
         if (declaredType == null) {
             return null;
         }

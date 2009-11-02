@@ -40,7 +40,7 @@ import javax.lang.model.util.ElementFilter;
 
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.ElementUtil;
-import org.seasar.doma.internal.apt.util.TypeUtil;
+import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 
 public class TypeDeclaration {
 
@@ -100,13 +100,13 @@ public class TypeDeclaration {
 
     public boolean isBooleanType() {
         return type.getKind() == TypeKind.BOOLEAN
-                || TypeUtil.isSameType(type, Boolean.class, env);
+                || TypeMirrorUtil.isSameType(type, Boolean.class, env);
     }
 
     public boolean isTextType() {
         return type.getKind() == TypeKind.CHAR
-                || TypeUtil.isSameType(type, String.class, env)
-                || TypeUtil.isSameType(type, Character.class, env);
+                || TypeMirrorUtil.isSameType(type, String.class, env)
+                || TypeMirrorUtil.isSameType(type, Character.class, env);
     }
 
     public boolean isNumberType() {
@@ -120,7 +120,7 @@ public class TypeDeclaration {
             return true;
         }
 
-        TypeElement typeElement = TypeUtil.toTypeElement(type, env);
+        TypeElement typeElement = TypeMirrorUtil.toTypeElement(type, env);
         if (typeElement == null) {
             return false;
         }
@@ -158,11 +158,11 @@ public class TypeDeclaration {
                         .iterator();
                 while (typeDeclIterator.hasNext()
                         && valueElementIterator.hasNext()) {
-                    TypeMirror t1 = TypeUtil.boxIfPrimitive(typeDeclIterator
+                    TypeMirror t1 = TypeMirrorUtil.boxIfPrimitive(typeDeclIterator
                             .next().getType(), env);
-                    TypeMirror t2 = TypeUtil.boxIfPrimitive(
+                    TypeMirror t2 = TypeMirrorUtil.boxIfPrimitive(
                             valueElementIterator.next().asType(), env);
-                    if (!TypeUtil.isAssignable(t1, t2, env)) {
+                    if (!TypeMirrorUtil.isAssignable(t1, t2, env)) {
                         continue outer;
                     }
                 }
@@ -267,11 +267,11 @@ public class TypeDeclaration {
                         .iterator();
                 while (typeDeclIterator.hasNext()
                         && valueElementIterator.hasNext()) {
-                    TypeMirror t1 = TypeUtil.boxIfPrimitive(typeDeclIterator
+                    TypeMirror t1 = TypeMirrorUtil.boxIfPrimitive(typeDeclIterator
                             .next().getType(), env);
-                    TypeMirror t2 = TypeUtil.boxIfPrimitive(
+                    TypeMirror t2 = TypeMirrorUtil.boxIfPrimitive(
                             valueElementIterator.next().asType(), env);
-                    if (!TypeUtil.isAssignable(t1, t2, env)) {
+                    if (!TypeMirrorUtil.isAssignable(t1, t2, env)) {
                         continue outer;
                     }
                 }
@@ -303,7 +303,7 @@ public class TypeDeclaration {
         assertNotNull(other);
         assertTrue(isTextType());
         assertTrue(other.isTextType());
-        TypeMirror type = TypeUtil.getTypeMirror(String.class, env);
+        TypeMirror type = TypeMirrorUtil.getTypeMirror(String.class, env);
         return newTypeDeclaration(type, env);
     }
 
@@ -317,7 +317,7 @@ public class TypeDeclaration {
     }
 
     public boolean isSameType(TypeDeclaration other) {
-        if (TypeUtil.isSameType(this.type, other.type, env)) {
+        if (TypeMirrorUtil.isSameType(this.type, other.type, env)) {
             return true;
         }
         if (this.isNumberType()) {
@@ -331,13 +331,13 @@ public class TypeDeclaration {
     public static TypeDeclaration newTypeDeclaration(Class<?> clazz,
             ProcessingEnvironment env) {
         assertNotNull(clazz);
-        return newTypeDeclaration(TypeUtil.getTypeMirror(clazz, env), env);
+        return newTypeDeclaration(TypeMirrorUtil.getTypeMirror(clazz, env), env);
     }
 
     public static TypeDeclaration newTypeDeclaration(TypeMirror type,
             ProcessingEnvironment env) {
         assertNotNull(type, env);
-        TypeElement typeElement = TypeUtil.toTypeElement(type, env);
+        TypeElement typeElement = TypeMirrorUtil.toTypeElement(type, env);
         Map<String, List<TypeParameterDeclaration>> map = new HashMap<String, List<TypeParameterDeclaration>>();
         gatherTypeParameterDeclarations(type, map, env);
         TypeDeclaration typeDeclaration = new TypeDeclaration();
@@ -379,7 +379,7 @@ public class TypeDeclaration {
     public static TypeDeclaration newBooleanTypeDeclaration(
             ProcessingEnvironment env) {
         assertNotNull(env);
-        TypeMirror type = TypeUtil.getTypeMirror(boolean.class, env);
+        TypeMirror type = TypeMirrorUtil.getTypeMirror(boolean.class, env);
         return newTypeDeclaration(type, env);
     }
 
@@ -387,7 +387,7 @@ public class TypeDeclaration {
             TypeMirror type,
             Map<String, List<TypeParameterDeclaration>> typeParameterDeclarationsMap,
             ProcessingEnvironment env) {
-        TypeElement typeElement = TypeUtil.toTypeElement(type, env);
+        TypeElement typeElement = TypeMirrorUtil.toTypeElement(type, env);
         if (typeElement == null) {
             return;
         }
@@ -395,7 +395,7 @@ public class TypeDeclaration {
                 .toString(), createTypeParameterDeclarations(typeElement, type,
                 env));
         for (TypeMirror superType : env.getTypeUtils().directSupertypes(type)) {
-            TypeElement superElement = TypeUtil.toTypeElement(superType, env);
+            TypeElement superElement = TypeMirrorUtil.toTypeElement(superType, env);
             if (superElement == null) {
                 continue;
             }
@@ -417,7 +417,7 @@ public class TypeDeclaration {
         List<TypeParameterDeclaration> list = new ArrayList<TypeParameterDeclaration>();
         Iterator<? extends TypeParameterElement> formalParams = typeElement
                 .getTypeParameters().iterator();
-        DeclaredType declaredType = TypeUtil.toDeclaredType(type, env);
+        DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(type, env);
         Iterator<? extends TypeMirror> actualParams = declaredType
                 .getTypeArguments().iterator();
         for (; formalParams.hasNext() && actualParams.hasNext();) {

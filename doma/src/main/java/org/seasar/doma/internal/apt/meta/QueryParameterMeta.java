@@ -21,7 +21,7 @@ import org.seasar.doma.internal.apt.type.ReferenceType;
 import org.seasar.doma.internal.apt.type.SelectOptionsType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.apt.util.ElementUtil;
-import org.seasar.doma.internal.apt.util.TypeUtil;
+import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
 
 public class QueryParameterMeta {
@@ -51,8 +51,8 @@ public class QueryParameterMeta {
                     parameterElement, MetaConstants.RESERVED_NAME_PREFIX);
         }
         type = parameterElement.asType();
-        typeName = TypeUtil.getTypeName(type, env);
-        TypeElement typeElement = TypeUtil.toTypeElement(type, env);
+        typeName = TypeMirrorUtil.getTypeName(type, env);
+        TypeElement typeElement = TypeMirrorUtil.toTypeElement(type, env);
         if (typeElement != null) {
             qualifiedName = typeElement.getQualifiedName().toString();
         } else {
