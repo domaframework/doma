@@ -31,9 +31,13 @@ public interface ExpressionNodeVisitor<R, P> {
 
     R visitMethodOperatorNode(MethodOperatorNode node, P p);
 
+    R visitStaticMethodOperatorNode(StaticMethodOperatorNode node, P p);
+
     R visitFunctionOperatorNode(FunctionOperatorNode node, P p);
 
     R visitFieldOperatorNode(FieldOperatorNode node, P p);
+
+    R visitStaticFieldOperatorNode(StaticFieldOperatorNode node, P p);
 
     R visitCommaOperatorNode(CommaOperatorNode node, P p);
 

@@ -23,6 +23,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.ExecutableType;
+import javax.lang.model.util.Elements;
 import javax.lang.model.util.SimpleElementVisitor6;
 import javax.lang.model.util.SimpleTypeVisitor6;
 
@@ -95,7 +96,12 @@ public class ElementUtil {
             return getTypeElement(clazz, env);
         } catch (ClassNotFoundException ignored) {
         }
-        return env.getElementUtils().getTypeElement(className);
+        Elements elements = env.getElementUtils();
+        try {
+            return elements.getTypeElement(className);
+        } catch (NullPointerException ignored) {
+            return null;
+        }
     }
 
     public static TypeElement getTypeElement(Class<?> clazz,

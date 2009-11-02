@@ -57,6 +57,8 @@ import org.seasar.doma.internal.expr.node.NotOperatorNode;
 import org.seasar.doma.internal.expr.node.OperatorNode;
 import org.seasar.doma.internal.expr.node.OrOperatorNode;
 import org.seasar.doma.internal.expr.node.ParensNode;
+import org.seasar.doma.internal.expr.node.StaticFieldOperatorNode;
+import org.seasar.doma.internal.expr.node.StaticMethodOperatorNode;
 import org.seasar.doma.internal.expr.node.SubtractOperatorNode;
 import org.seasar.doma.internal.expr.node.VariableNode;
 import org.seasar.doma.internal.message.DomaMessageCode;
@@ -462,23 +464,25 @@ public class ExpressionEvaluator implements
     }
 
     @Override
-    public EvaluationResult visitFunctionOperatorNode(
-            FunctionOperatorNode node, Void p) {
-        Class<?> targetClass = ExpressionFunctions.class;
+    public EvaluationResult visitStaticMethodOperatorNode(
+            StaticMethodOperatorNode node, Void p) {
+        Class<?> targetClass = forClassName(node.getLocation(), node
+                .getClassName());
         ParameterCollector collector = new ParameterCollector();
         ParameterCollection collection = collector.collect(node
                 .getParametersNode());
         ExpressionLocation location = node.getLocation();
-        Method method = findMethod(location, node.getMethodName(),
-                expressionFunctions, targetClass, collection.getParamTypes());
+        Method method = findMethod(location, node.getMethodName(), null,
+                targetClass, collection.getParamTypes());
         if (method == null) {
             String signature = MethodUtil.createSignature(node.getMethodName(),
                     collection.getParamTypes());
-            throw new ExpressionException(DomaMessageCode.DOMA3028, location
-                    .getExpression(), location.getPosition(), signature);
+            throw new ExpressionException(DomaMessageCode.DOMA3002, location
+                    .getExpression(), location.getPosition(), targetClass
+                    .getName(), signature);
         }
-        return invokeMethod(node.getLocation(), method, expressionFunctions,
-                targetClass, collection.getParamTypes(), collection.getParams());
+        return invokeMethod(location, method, null, targetClass, collection
+                .getParamTypes(), collection.getParams());
     }
 
     protected Method findMethod(ExpressionLocation location, String methodName,
@@ -535,13 +539,34 @@ public class ExpressionEvaluator implements
     }
 
     @Override
+    public EvaluationResult visitFunctionOperatorNode(
+            FunctionOperatorNode node, Void p) {
+        Class<?> targetClass = ExpressionFunctions.class;
+        ParameterCollector collector = new ParameterCollector();
+        ParameterCollection collection = collector.collect(node
+                .getParametersNode());
+        ExpressionLocation location = node.getLocation();
+        Method method = findMethod(location, node.getMethodName(),
+                expressionFunctions, targetClass, collection.getParamTypes());
+        if (method == null) {
+            String signature = MethodUtil.createSignature(node.getMethodName(),
+                    collection.getParamTypes());
+            throw new ExpressionException(DomaMessageCode.DOMA3028, location
+                    .getExpression(), location.getPosition(), signature);
+        }
+        return invokeMethod(node.getLocation(), method, expressionFunctions,
+                targetClass, collection.getParamTypes(), collection.getParams());
+    }
+
+    @Override
     public EvaluationResult visitFieldOperatorNode(FieldOperatorNode node,
             Void p) {
         EvaluationResult targetResult = node.getTargetObjectNode().accept(this,
                 p);
         Object target = targetResult.getValue();
         ExpressionLocation location = node.getLocation();
-        Field field = findField(location, node.getFieldName(), target);
+        Field field = findField(location, node.getFieldName(), target
+                .getClass());
         if (field == null) {
             throw new ExpressionException(DomaMessageCode.DOMA3018, location
                     .getExpression(), location.getPosition(), target.getClass()
@@ -550,9 +575,24 @@ public class ExpressionEvaluator implements
         return getFieldValue(location, field, target);
     }
 
+    @Override
+    public EvaluationResult visitStaticFieldOperatorNode(
+            StaticFieldOperatorNode node, Void p) {
+        Class<?> targetClass = forClassName(node.getLocation(), node
+                .getClassName());
+        ExpressionLocation location = node.getLocation();
+        Field field = findField(location, node.getFieldName(), targetClass);
+        if (field == null) {
+            throw new ExpressionException(DomaMessageCode.DOMA3033, location
+                    .getExpression(), location.getPosition(), targetClass
+                    .getName(), node.getFieldName());
+        }
+        return getFieldValue(location, field, null);
+    }
+
     protected Field findField(ExpressionLocation location, String fieldName,
-            Object target) {
-        for (Class<?> clazz = target.getClass(); clazz != Object.class; clazz = clazz
+            Class<?> targetClass) {
+        for (Class<?> clazz = targetClass; clazz != Object.class; clazz = clazz
                 .getSuperclass()) {
             try {
                 Field field = clazz.getDeclaredField(fieldName);
@@ -560,6 +600,15 @@ public class ExpressionEvaluator implements
                 return field;
             } catch (NoSuchFieldException ignored) {
             }
+        }
+        return null;
+    }
+
+    protected Field findStaticField(ExpressionLocation location,
+            String fieldName, Class<?> targetClass) {
+        Field field = findField(location, fieldName, targetClass);
+        if ((field.getModifiers() & Modifier.STATIC) != 0) {
+            return field;
         }
         return null;
     }
@@ -913,6 +962,13 @@ public class ExpressionEvaluator implements
         }
 
         @Override
+        public Void visitStaticMethodOperatorNode(
+                StaticMethodOperatorNode node, List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
         public Void visitFunctionOperatorNode(FunctionOperatorNode node,
                 List<EvaluationResult> p) {
             evaluate(node, p);
@@ -921,6 +977,13 @@ public class ExpressionEvaluator implements
 
         @Override
         public Void visitFieldOperatorNode(FieldOperatorNode node,
+                List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitStaticFieldOperatorNode(StaticFieldOperatorNode node,
                 List<EvaluationResult> p) {
             evaluate(node, p);
             return null;

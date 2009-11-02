@@ -302,58 +302,103 @@ public class ExpressionTokenizer {
                 throw new ExpressionException(DomaMessageCode.DOMA3021,
                         expression, buf.position());
             }
-            while (buf.hasRemaining()) {
-                buf.mark();
-                char c2 = buf.get();
-                if (Character.isJavaIdentifierStart(c2)) {
-                    while (buf.hasRemaining()) {
-                        buf.mark();
-                        char c3 = buf.get();
-                        if (!Character.isJavaIdentifierPart(c3)) {
-                            if (c3 == '(') {
-                                type = METHOD_OPERATOR;
-                                binaryOpAvailable = false;
-                            }
-                            buf.reset();
-                            return;
+            buf.mark();
+            char c2 = buf.get();
+            if (Character.isJavaIdentifierStart(c2)) {
+                while (buf.hasRemaining()) {
+                    buf.mark();
+                    char c3 = buf.get();
+                    if (!Character.isJavaIdentifierPart(c3)) {
+                        if (c3 == '(') {
+                            type = METHOD_OPERATOR;
+                            binaryOpAvailable = false;
                         }
+                        buf.reset();
+                        return;
                     }
-                } else {
-                    throw new ExpressionException(DomaMessageCode.DOMA3022,
-                            expression, buf.position(), c2);
                 }
+            } else {
+                throw new ExpressionException(DomaMessageCode.DOMA3022,
+                        expression, buf.position(), c2);
             }
         } else if (c == '@') {
-            type = FUNCTION_OPERATOR;
-            binaryOpAvailable = false;
             if (!buf.hasRemaining()) {
                 throw new ExpressionException(DomaMessageCode.DOMA3023,
                         expression, buf.position());
             }
-            while (buf.hasRemaining()) {
-                buf.mark();
-                char c2 = buf.get();
-                if (Character.isJavaIdentifierStart(c2)) {
-                    while (buf.hasRemaining()) {
-                        buf.mark();
-                        char c3 = buf.get();
-                        if (!Character.isJavaIdentifierPart(c3)) {
-                            if (c3 != '(') {
-                                throw new ExpressionException(
-                                        DomaMessageCode.DOMA3025, expression,
-                                        buf.position());
-                            }
+            buf.mark();
+            char c2 = buf.get();
+            if (Character.isJavaIdentifierStart(c2)) {
+                while (buf.hasRemaining()) {
+                    buf.mark();
+                    char c3 = buf.get();
+                    if (!Character.isJavaIdentifierPart(c3)) {
+                        if (c3 == '(') {
+                            type = FUNCTION_OPERATOR;
+                            binaryOpAvailable = false;
                             buf.reset();
                             return;
+                        } else if (c3 == '@') {
+                            peekStaticMember();
+                            return;
+                        } else if (c3 == '.') {
+                            while (buf.hasRemaining()) {
+                                buf.mark();
+                                char c4 = buf.get();
+                                if (!Character.isJavaIdentifierPart(c4)) {
+                                    if (c4 == '.') {
+                                        continue;
+                                    } else if (c4 == '@') {
+                                        peekStaticMember();
+                                        return;
+                                    }
+                                    throw new ExpressionException(
+                                            DomaMessageCode.DOMA3031,
+                                            expression, buf.position(), c4);
+                                }
+                            }
+                            throw new ExpressionException(
+                                    DomaMessageCode.DOMA3032, expression, buf
+                                            .position());
                         }
+                        throw new ExpressionException(DomaMessageCode.DOMA3025,
+                                expression, buf.position());
                     }
-                } else {
-                    throw new ExpressionException(DomaMessageCode.DOMA3024,
-                            expression, buf.position(), c2);
                 }
+            } else {
+                throw new ExpressionException(DomaMessageCode.DOMA3024,
+                        expression, buf.position(), c2);
             }
         } else {
             type = OTHER;
+        }
+    }
+
+    protected void peekStaticMember() {
+        type = STATIC_FIELD_OPERATOR;
+        binaryOpAvailable = true;
+        if (!buf.hasRemaining()) {
+            throw new ExpressionException(DomaMessageCode.DOMA3029, expression,
+                    buf.position());
+        }
+        buf.mark();
+        char c = buf.get();
+        if (Character.isJavaIdentifierStart(c)) {
+            while (buf.hasRemaining()) {
+                buf.mark();
+                char c2 = buf.get();
+                if (!Character.isJavaIdentifierPart(c2)) {
+                    if (c2 == '(') {
+                        type = STATIC_METHOD_OPERATOR;
+                        binaryOpAvailable = false;
+                    }
+                    buf.reset();
+                    return;
+                }
+            }
+        } else {
+            throw new ExpressionException(DomaMessageCode.DOMA3030, expression,
+                    buf.position(), c);
         }
     }
 

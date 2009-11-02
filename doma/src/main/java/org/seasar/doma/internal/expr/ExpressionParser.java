@@ -46,6 +46,8 @@ import org.seasar.doma.internal.expr.node.NotOperatorNode;
 import org.seasar.doma.internal.expr.node.OperatorNode;
 import org.seasar.doma.internal.expr.node.OrOperatorNode;
 import org.seasar.doma.internal.expr.node.ParensNode;
+import org.seasar.doma.internal.expr.node.StaticFieldOperatorNode;
+import org.seasar.doma.internal.expr.node.StaticMethodOperatorNode;
 import org.seasar.doma.internal.expr.node.SubtractOperatorNode;
 import org.seasar.doma.internal.expr.node.VariableNode;
 import org.seasar.doma.internal.message.DomaMessageCode;
@@ -211,12 +213,20 @@ public class ExpressionParser {
                 parseMethodOperand();
                 break;
             }
+            case STATIC_METHOD_OPERATOR: {
+                parseStaticMethodOperand();
+                break;
+            }
             case FUNCTION_OPERATOR: {
                 parseFunctionOperand();
                 break;
             }
             case FIELD_OPERATOR: {
                 parseFieldOperand();
+                break;
+            }
+            case STATIC_FIELD_OPERATOR: {
+                parseStaticFieldOperand();
                 break;
             }
             case OTHER: {
@@ -352,6 +362,19 @@ public class ExpressionParser {
         reduce(node);
     }
 
+    protected void parseStaticMethodOperand() {
+        int pos = token.lastIndexOf('@');
+        assertTrue(pos > -1);
+        String className = token.substring(1, pos);
+        String methodName = token.substring(pos + 1);
+        StaticMethodOperatorNode node = new StaticMethodOperatorNode(
+                getLocation(), token, className, methodName);
+        tokenType = tokenizer.next();
+        assertEquals(OPENED_PARENS, tokenType);
+        parseOpenedParens();
+        reduce(node);
+    }
+
     protected void parseFunctionOperand() {
         String name = token.substring(1);
         FunctionOperatorNode node = new FunctionOperatorNode(getLocation(),
@@ -366,6 +389,16 @@ public class ExpressionParser {
         String name = token.substring(1);
         FieldOperatorNode node = new FieldOperatorNode(getLocation(), token,
                 name);
+        reduce(node);
+    }
+
+    protected void parseStaticFieldOperand() {
+        int pos = token.lastIndexOf('@');
+        assertTrue(pos > -1);
+        String className = token.substring(1, pos);
+        String fieldName = token.substring(pos + 1);
+        StaticFieldOperatorNode node = new StaticFieldOperatorNode(
+                getLocation(), token, className, fieldName);
         reduce(node);
     }
 

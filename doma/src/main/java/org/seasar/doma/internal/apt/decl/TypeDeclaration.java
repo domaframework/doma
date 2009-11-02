@@ -213,7 +213,31 @@ public class TypeDeclaration {
     }
 
     public FieldDeclaration getFieldDeclaration(String name) {
-        List<FieldDeclaration> candidates = new LinkedList<FieldDeclaration>();
+        return getFieldDeclarationInternal(name, false);
+    }
+
+    public FieldDeclaration getStaticFieldDeclaration(String name) {
+        return getFieldDeclarationInternal(name, true);
+    }
+
+    public FieldDeclaration getFieldDeclarationInternal(String name,
+            boolean statik) {
+        List<FieldDeclaration> candidates = getCandidateFieldDeclaration(name,
+                statik);
+        removeHiddenFieldDeclarations(candidates);
+
+        if (candidates.size() == 0) {
+            return null;
+        }
+        if (candidates.size() == 1) {
+            return candidates.get(0);
+        }
+        throw new AptIllegalStateException(name);
+    }
+
+    public List<FieldDeclaration> getCandidateFieldDeclaration(String name,
+            boolean statik) {
+        List<FieldDeclaration> results = new LinkedList<FieldDeclaration>();
         for (Map.Entry<String, List<TypeParameterDeclaration>> e : typeParameterDeclarationsMap
                 .entrySet()) {
             String typeQualifiedName = e.getKey();
@@ -223,7 +247,7 @@ public class TypeDeclaration {
                     typeQualifiedName, env);
             for (VariableElement field : ElementFilter.fieldsIn(typeElement
                     .getEnclosedElements())) {
-                if (field.getModifiers().contains(Modifier.STATIC)) {
+                if (statik && !field.getModifiers().contains(Modifier.STATIC)) {
                     continue;
                 }
                 if (!field.getSimpleName().contentEquals(name)) {
@@ -231,10 +255,14 @@ public class TypeDeclaration {
                 }
                 FieldDeclaration fieldDeclaration = FieldDeclaration
                         .newInstance(field, typeParameterDeclarations, env);
-                candidates.add(fieldDeclaration);
+                results.add(fieldDeclaration);
             }
         }
+        return results;
+    }
 
+    protected void removeHiddenFieldDeclarations(
+            List<FieldDeclaration> candidates) {
         List<FieldDeclaration> hiders = new LinkedList<FieldDeclaration>(
                 candidates);
         for (Iterator<FieldDeclaration> it = candidates.iterator(); it
@@ -247,13 +275,6 @@ public class TypeDeclaration {
                 }
             }
         }
-        if (candidates.size() == 0) {
-            return null;
-        }
-        if (candidates.size() == 1) {
-            return candidates.get(0);
-        }
-        throw new AptIllegalStateException(name);
     }
 
     public List<MethodDeclaration> getMethodDeclarations(String name,
@@ -270,9 +291,9 @@ public class TypeDeclaration {
 
     protected List<MethodDeclaration> getMethodDeclarationsInternal(
             String name, List<TypeDeclaration> parameterTypeDeclarations,
-            boolean staticMethod) {
+            boolean statik) {
         List<MethodDeclaration> candidates = getCandidateMethodDeclarations(
-                name, parameterTypeDeclarations, staticMethod);
+                name, parameterTypeDeclarations, statik);
         removeOverriddenMethodDeclarations(candidates);
         removeHiddenMethodDeclarations(candidates);
         if (candidates.size() == 1) {
@@ -288,7 +309,7 @@ public class TypeDeclaration {
 
     protected List<MethodDeclaration> getCandidateMethodDeclarations(
             String name, List<TypeDeclaration> parameterTypeDeclarations,
-            boolean staticMethod) {
+            boolean statik) {
         List<MethodDeclaration> results = new LinkedList<MethodDeclaration>();
         for (Map.Entry<String, List<TypeParameterDeclaration>> e : typeParameterDeclarationsMap
                 .entrySet()) {
@@ -300,8 +321,7 @@ public class TypeDeclaration {
 
             outer: for (ExecutableElement method : ElementFilter
                     .methodsIn(typeElement.getEnclosedElements())) {
-                if (staticMethod
-                        && !method.getModifiers().contains(Modifier.STATIC)) {
+                if (statik && !method.getModifiers().contains(Modifier.STATIC)) {
                     continue;
                 }
                 if (!method.getModifiers().contains(Modifier.PUBLIC)) {

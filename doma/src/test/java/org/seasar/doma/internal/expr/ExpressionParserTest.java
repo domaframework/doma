@@ -207,6 +207,75 @@ public class ExpressionParserTest extends TestCase {
         }
     }
 
+    public void testStatictMethod() throws Exception {
+        ExpressionParser parser = new ExpressionParser(
+                "@java.lang.String@valueOf(1)");
+        ExpressionNode expression = parser.parse();
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        EvaluationResult evaluationResult = evaluator.evaluate(expression);
+        assertEquals("1", evaluationResult.getValue());
+    }
+
+    public void testStatictMethod_classNotFound() throws Exception {
+        ExpressionParser parser = new ExpressionParser(
+                "@java.lang.Xxx@valueOf(1)");
+        ExpressionNode expression = parser.parse();
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        try {
+            evaluator.evaluate(expression);
+        } catch (ExpressionException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(DomaMessageCode.DOMA3005, expected.getMessageCode());
+        }
+    }
+
+    public void testStatictMethod_methodNotFound() throws Exception {
+        ExpressionParser parser = new ExpressionParser(
+                "@java.lang.String@xxx(1)");
+        ExpressionNode expression = parser.parse();
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        try {
+            evaluator.evaluate(expression);
+        } catch (ExpressionException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(DomaMessageCode.DOMA3002, expected.getMessageCode());
+        }
+    }
+
+    public void testStatictField() throws Exception {
+        ExpressionParser parser = new ExpressionParser(
+                "@java.lang.String@CASE_INSENSITIVE_ORDER");
+        ExpressionNode expression = parser.parse();
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        EvaluationResult evaluationResult = evaluator.evaluate(expression);
+        assertEquals(String.CASE_INSENSITIVE_ORDER, evaluationResult.getValue());
+    }
+
+    public void testStatictField_classNotFound() throws Exception {
+        ExpressionParser parser = new ExpressionParser(
+                "@java.lang.Xxx@CASE_INSENSITIVE_ORDER");
+        ExpressionNode expression = parser.parse();
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        try {
+            evaluator.evaluate(expression);
+        } catch (ExpressionException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(DomaMessageCode.DOMA3005, expected.getMessageCode());
+        }
+    }
+
+    public void testStatictField_fieldNotFound() throws Exception {
+        ExpressionParser parser = new ExpressionParser("@java.lang.String@xxx");
+        ExpressionNode expression = parser.parse();
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        try {
+            evaluator.evaluate(expression);
+        } catch (ExpressionException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(DomaMessageCode.DOMA3033, expected.getMessageCode());
+        }
+    }
+
     public void testFunction() throws Exception {
         ExpressionParser parser = new ExpressionParser("@startWith(\"aaa\")");
         ExpressionNode expression = parser.parse();

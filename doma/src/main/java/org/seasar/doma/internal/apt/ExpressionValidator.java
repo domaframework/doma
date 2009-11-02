@@ -47,6 +47,8 @@ import org.seasar.doma.internal.expr.node.NewOperatorNode;
 import org.seasar.doma.internal.expr.node.NotOperatorNode;
 import org.seasar.doma.internal.expr.node.OrOperatorNode;
 import org.seasar.doma.internal.expr.node.ParensNode;
+import org.seasar.doma.internal.expr.node.StaticFieldOperatorNode;
+import org.seasar.doma.internal.expr.node.StaticMethodOperatorNode;
 import org.seasar.doma.internal.expr.node.SubtractOperatorNode;
 import org.seasar.doma.internal.expr.node.VariableNode;
 import org.seasar.doma.internal.message.DomaMessageCode;
@@ -376,6 +378,49 @@ public class ExpressionValidator implements
                         .getQualifiedName(), methodSignature);
     }
 
+    public TypeDeclaration visitStaticMethodOperatorNode(
+            StaticMethodOperatorNode node, Void p) {
+        String className = node.getClassName();
+        TypeElement typeElement = ElementUtil.getTypeElement(node
+                .getClassName(), env);
+        if (typeElement == null) {
+            ExpressionLocation location = node.getLocation();
+            throw new AptException(DomaMessageCode.DOMA4145, env,
+                    methodElement, location.getExpression(), location
+                            .getPosition(), className);
+        }
+        TypeDeclaration typeDeclaration = TypeDeclaration.newTypeDeclaration(
+                typeElement.asType(), env);
+        List<TypeDeclaration> parameterTypeDeclarations = new ParameterCollector()
+                .collect(node.getParametersNode());
+        String methodName = node.getMethodName();
+        List<MethodDeclaration> methodDeclarations = typeDeclaration
+                .getStaticMethodDeclarations(methodName,
+                        parameterTypeDeclarations);
+        if (methodDeclarations.size() == 0) {
+            ExpressionLocation location = node.getLocation();
+            String methodSignature = createMethodSignature(methodName,
+                    parameterTypeDeclarations);
+            throw new AptException(DomaMessageCode.DOMA4146, env,
+                    methodElement, location.getExpression(), location
+                            .getPosition(), className, methodSignature);
+        }
+        if (methodDeclarations.size() == 1) {
+            MethodDeclaration methodDeclaration = methodDeclarations.get(0);
+            TypeDeclaration returnTypeDeclaration = methodDeclaration
+                    .getReturnTypeDeclaration();
+            if (returnTypeDeclaration != null) {
+                return returnTypeDeclaration;
+            }
+        }
+        ExpressionLocation location = node.getLocation();
+        String methodSignature = createMethodSignature(methodName,
+                parameterTypeDeclarations);
+        throw new AptException(DomaMessageCode.DOMA4147, env, methodElement,
+                location.getExpression(), location.getPosition(), className,
+                methodSignature);
+    }
+
     @Override
     public TypeDeclaration visitFunctionOperatorNode(FunctionOperatorNode node,
             Void p) {
@@ -440,6 +485,36 @@ public class ExpressionValidator implements
                 location.getExpression(), location.getPosition(), node
                         .getTargetObjectNode().getExpression(), typeDeclaration
                         .getQualifiedName(), fieldName);
+    }
+
+    @Override
+    public TypeDeclaration visitStaticFieldOperatorNode(
+            StaticFieldOperatorNode node, Void p) {
+        String className = node.getClassName();
+        TypeElement typeElement = ElementUtil.getTypeElement(node
+                .getClassName(), env);
+        if (typeElement == null) {
+            ExpressionLocation location = node.getLocation();
+            throw new AptException(DomaMessageCode.DOMA4145, env,
+                    methodElement, location.getExpression(), location
+                            .getPosition(), className);
+        }
+        TypeDeclaration typeDeclaration = TypeDeclaration.newTypeDeclaration(
+                typeElement.asType(), env);
+        String fieldName = node.getFieldName();
+        FieldDeclaration fieldDeclarations = typeDeclaration
+                .getStaticFieldDeclaration(fieldName);
+        if (fieldDeclarations != null) {
+            TypeDeclaration fieldTypeDeclaration = fieldDeclarations
+                    .getTypeDeclaration();
+            if (fieldTypeDeclaration != null) {
+                return fieldTypeDeclaration;
+            }
+        }
+        ExpressionLocation location = node.getLocation();
+        throw new AptException(DomaMessageCode.DOMA4148, env, methodElement,
+                location.getExpression(), location.getPosition(), className,
+                fieldName);
     }
 
     @Override
@@ -591,6 +666,13 @@ public class ExpressionValidator implements
         }
 
         @Override
+        public Void visitStaticMethodOperatorNode(
+                StaticMethodOperatorNode node, List<TypeDeclaration> p) {
+            validate(node, p);
+            return null;
+        }
+
+        @Override
         public Void visitFunctionOperatorNode(FunctionOperatorNode node,
                 List<TypeDeclaration> p) {
             validate(node, p);
@@ -599,6 +681,13 @@ public class ExpressionValidator implements
 
         @Override
         public Void visitFieldOperatorNode(FieldOperatorNode node,
+                List<TypeDeclaration> p) {
+            validate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitStaticFieldOperatorNode(StaticFieldOperatorNode node,
                 List<TypeDeclaration> p) {
             validate(node, p);
             return null;

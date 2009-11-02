@@ -47,7 +47,7 @@ public class ExpressionValidatorTest extends AptTestCase {
         addSourcePath("src/test/java");
     }
 
-    public void testVariable_nootFound() throws Exception {
+    public void testVariable_notFound() throws Exception {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         compile();
@@ -82,6 +82,28 @@ public class ExpressionValidatorTest extends AptTestCase {
         ExpressionNode node = new ExpressionParser("emp.equals(emp)").parse();
         TypeDeclaration result = validator.validate(node);
         assertTrue(result.isBooleanType());
+    }
+
+    public void testMethod_notFound() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testEmp", Emp.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap);
+
+        ExpressionNode node = new ExpressionParser(
+                "emp.notFound(1, \"aaa\".length())").parse();
+        try {
+            validator.validate(node);
+            fail();
+        } catch (AptException expected) {
+            System.out.println(expected);
+            assertEquals(DomaMessageCode.DOMA4071, expected.getMessageCode());
+        }
     }
 
     public void testMethod_foundFromCandidates() throws Exception {
@@ -122,7 +144,7 @@ public class ExpressionValidatorTest extends AptTestCase {
         }
     }
 
-    public void testMethod_notFound() throws Exception {
+    public void testStaticMethod_found() throws Exception {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         compile();
@@ -133,14 +155,115 @@ public class ExpressionValidatorTest extends AptTestCase {
         ExpressionValidator validator = new ExpressionValidator(
                 getProcessingEnvironment(), methodElement, parameterTypeMap);
 
-        ExpressionNode node = new ExpressionParser(
-                "emp.notFound(1, \"aaa\".length())").parse();
+        String expression = String.format("@%s@staticMethod(\"aaa\")",
+                Emp.class.getName());
+        ExpressionNode node = new ExpressionParser(expression).parse();
+        TypeDeclaration result = validator.validate(node);
+        assertTrue(result.isNumberType());
+    }
+
+    public void testStaticMethod_classNotFound() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testEmp", Emp.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap);
+
+        ExpressionNode node = new ExpressionParser("@Xxx@staticMethod(\"aaa\")")
+                .parse();
         try {
             validator.validate(node);
             fail();
         } catch (AptException expected) {
             System.out.println(expected);
-            assertEquals(DomaMessageCode.DOMA4071, expected.getMessageCode());
+            assertEquals(DomaMessageCode.DOMA4145, expected.getMessageCode());
+        }
+    }
+
+    public void testStaticMethod_methodNotFound() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testEmp", Emp.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap);
+
+        String expression = String.format("@%s@getName()", Emp.class.getName());
+        ExpressionNode node = new ExpressionParser(expression).parse();
+        try {
+            validator.validate(node);
+            fail();
+        } catch (AptException expected) {
+            System.out.println(expected);
+            assertEquals(DomaMessageCode.DOMA4146, expected.getMessageCode());
+        }
+    }
+
+    public void testStaticField_found() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testEmp", Emp.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap);
+
+        String expression = String.format("@%s@staticField", Emp.class
+                .getName());
+        ExpressionNode node = new ExpressionParser(expression).parse();
+        TypeDeclaration result = validator.validate(node);
+        assertTrue(result.isTextType());
+    }
+
+    public void testStaticField_classNotFound() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testEmp", Emp.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap);
+
+        ExpressionNode node = new ExpressionParser("@Xxx@staticField").parse();
+        try {
+            validator.validate(node);
+            fail();
+        } catch (AptException expected) {
+            System.out.println(expected);
+            assertEquals(DomaMessageCode.DOMA4145, expected.getMessageCode());
+        }
+    }
+
+    public void testStaticField_fieldNotFound() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testEmp", Emp.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap);
+
+        String expression = String.format("@%s@name", Emp.class.getName());
+        ExpressionNode node = new ExpressionParser(expression).parse();
+        try {
+            validator.validate(node);
+            fail();
+        } catch (AptException expected) {
+            System.out.println(expected);
+            assertEquals(DomaMessageCode.DOMA4148, expected.getMessageCode());
         }
     }
 

@@ -228,10 +228,11 @@ public class ExpressionTokenizerTest extends TestCase {
         assertEquals(")", tokenizer.getToken());
     }
 
-    public void testBuiltinFunctionOperator() throws Exception {
-        ExpressionTokenizer tokenizer = new ExpressionTokenizer("@starts(aaa)");
+    public void testFunctionOperator() throws Exception {
+        ExpressionTokenizer tokenizer = new ExpressionTokenizer(
+                "@startWith(aaa)");
         assertEquals(FUNCTION_OPERATOR, tokenizer.next());
-        assertEquals("@starts", tokenizer.getToken());
+        assertEquals("@startWith", tokenizer.getToken());
         assertEquals(OPENED_PARENS, tokenizer.next());
         assertEquals("(", tokenizer.getToken());
         assertEquals(VARIABLE, tokenizer.next());
@@ -259,5 +260,39 @@ public class ExpressionTokenizerTest extends TestCase {
             System.out.println(expected.getMessage());
             assertEquals(DomaMessageCode.DOMA3024, expected.getMessageCode());
         }
+    }
+
+    public void testStaticMethodOperator() throws Exception {
+        ExpressionTokenizer tokenizer = new ExpressionTokenizer(
+                "@java.lang.String@valueOf(aaa)");
+        assertEquals(STATIC_METHOD_OPERATOR, tokenizer.next());
+        assertEquals("@java.lang.String@valueOf", tokenizer.getToken());
+        assertEquals(OPENED_PARENS, tokenizer.next());
+        assertEquals("(", tokenizer.getToken());
+        assertEquals(VARIABLE, tokenizer.next());
+        assertEquals("aaa", tokenizer.getToken());
+        assertEquals(CLOSED_PARENS, tokenizer.next());
+        assertEquals(")", tokenizer.getToken());
+    }
+
+    public void testStaticMethodOperator_simpleClassName() throws Exception {
+        ExpressionTokenizer tokenizer = new ExpressionTokenizer(
+                "@Aaa@valueOf(aaa)");
+        assertEquals(STATIC_METHOD_OPERATOR, tokenizer.next());
+        assertEquals("@Aaa@valueOf", tokenizer.getToken());
+        assertEquals(OPENED_PARENS, tokenizer.next());
+        assertEquals("(", tokenizer.getToken());
+        assertEquals(VARIABLE, tokenizer.next());
+        assertEquals("aaa", tokenizer.getToken());
+        assertEquals(CLOSED_PARENS, tokenizer.next());
+        assertEquals(")", tokenizer.getToken());
+    }
+
+    public void testStaticFieldOperator() throws Exception {
+        ExpressionTokenizer tokenizer = new ExpressionTokenizer(
+                "@java.lang.String@CASE_INSENSITIVE_ORDER ");
+        assertEquals(STATIC_FIELD_OPERATOR, tokenizer.next());
+        assertEquals("@java.lang.String@CASE_INSENSITIVE_ORDER", tokenizer
+                .getToken());
     }
 }

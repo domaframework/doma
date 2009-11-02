@@ -87,6 +87,10 @@ public enum ExpressionTokenType {
 
     FUNCTION_OPERATOR,
 
+    STATIC_METHOD_OPERATOR,
+
+    STATIC_FIELD_OPERATOR,
+
     OTHER,
 
     EOE;

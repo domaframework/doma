@@ -33,6 +33,8 @@ import org.seasar.doma.Version;
 @Table(schema = "AAA")
 public class Emp {
 
+    public static String staticField = "hoge";
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(sequence = "EMP_ID")
@@ -105,6 +107,10 @@ public class Emp {
     }
 
     public int hoge(Object arg) {
+        return 0;
+    }
+
+    public static int staticMethod(String arg) {
         return 0;
     }
 
