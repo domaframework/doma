@@ -57,12 +57,22 @@ public class NullExpressionFunctions implements ExpressionFunctions {
     }
 
     @Override
-    public Date resetTimePart(Date date) {
+    public Date minimizeTimePart(Date date) {
         return date;
     }
 
     @Override
-    public Timestamp resetTimePart(Timestamp timestamp) {
+    public Timestamp minimizeTimePart(Timestamp timestamp) {
+        return timestamp;
+    }
+
+    @Override
+    public Date maximizeTimePart(Date date) {
+        return date;
+    }
+
+    @Override
+    public Timestamp maximizeTimePart(Timestamp timestamp) {
         return timestamp;
     }
 

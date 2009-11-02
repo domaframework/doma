@@ -813,7 +813,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public Date resetTimePart(Date date) {
+        public Date minimizeTimePart(Date date) {
             if (date == null) {
                 return null;
             }
@@ -827,7 +827,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public Timestamp resetTimePart(Timestamp timestamp) {
+        public Timestamp minimizeTimePart(Timestamp timestamp) {
             if (timestamp == null) {
                 return null;
             }
@@ -838,6 +838,35 @@ public class StandardDialect implements Dialect {
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MILLISECOND, 0);
             return new Timestamp(calendar.getTimeInMillis());
+        }
+
+        @Override
+        public Date maximizeTimePart(Date date) {
+            if (date == null) {
+                return null;
+            }
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.set(Calendar.HOUR_OF_DAY, 23);
+            calendar.set(Calendar.MINUTE, 59);
+            calendar.set(Calendar.SECOND, 59);
+            calendar.set(Calendar.MILLISECOND, 999);
+            return new Date(calendar.getTimeInMillis());
+        }
+
+        @Override
+        public Timestamp maximizeTimePart(Timestamp timestamp) {
+            if (timestamp == null) {
+                return null;
+            }
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(timestamp);
+            calendar.set(Calendar.HOUR_OF_DAY, 23);
+            calendar.set(Calendar.MINUTE, 59);
+            calendar.set(Calendar.SECOND, 59);
+            Timestamp result = new Timestamp(calendar.getTimeInMillis());
+            result.setNanos(999999999);
+            return result;
         }
 
         /**
