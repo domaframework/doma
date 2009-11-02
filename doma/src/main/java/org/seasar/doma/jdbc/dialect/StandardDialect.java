@@ -813,7 +813,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public Date minimizeTimePart(Date date) {
+        public Date roundDownTimePart(Date date) {
             if (date == null) {
                 return null;
             }
@@ -827,7 +827,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public Timestamp minimizeTimePart(Timestamp timestamp) {
+        public Timestamp roundDownTimePart(Timestamp timestamp) {
             if (timestamp == null) {
                 return null;
             }
@@ -841,32 +841,33 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public Date maximizeTimePart(Date date) {
+        public Date roundUpTimePart(Date date) {
             if (date == null) {
                 return null;
             }
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
-            calendar.set(Calendar.HOUR_OF_DAY, 23);
-            calendar.set(Calendar.MINUTE, 59);
-            calendar.set(Calendar.SECOND, 59);
-            calendar.set(Calendar.MILLISECOND, 999);
+            calendar.roll(Calendar.DATE, 1);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
             return new Date(calendar.getTimeInMillis());
         }
 
         @Override
-        public Timestamp maximizeTimePart(Timestamp timestamp) {
+        public Timestamp roundUpTimePart(Timestamp timestamp) {
             if (timestamp == null) {
                 return null;
             }
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(timestamp);
-            calendar.set(Calendar.HOUR_OF_DAY, 23);
-            calendar.set(Calendar.MINUTE, 59);
-            calendar.set(Calendar.SECOND, 59);
-            Timestamp result = new Timestamp(calendar.getTimeInMillis());
-            result.setNanos(999999999);
-            return result;
+            calendar.roll(Calendar.DATE, 1);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            return new Timestamp(calendar.getTimeInMillis());
         }
 
         /**

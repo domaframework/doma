@@ -458,10 +458,10 @@ and employeeName like 's%']]></source>
 					<tr><td><code>String</code></td><td><code>@endWith(String text, char escape)</code></td><td>後方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを前に付与した文字列です。エスケープは第2引数で指定したエスケープ文字を用いて行われます。</td></tr>
 					<tr><td><code>String</code></td><td><code>@contain(String text)</code></td><td>前方後方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを前と後ろに付与した文字列です。エスケープはデフォルトのエスケープ文字を用いて行われます。</td></tr>
 					<tr><td><code>String</code></td><td><code>@contain(String text, char escape)</code></td><td>前方後方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを前と後ろに付与した文字列です。エスケープは第2引数で指定したエスケープ文字を用いて行われます。</td></tr>
-					<tr><td><code>java.sql.Date</code></td><td><code>@minimizeTimePart(java.sql.Date date)</code></td><td>時刻部分を最小化することを示します。戻り値は時刻部分が最小化された新しい日付です。</td></tr>
-					<tr><td><code>java.sql.Timestamp</code></td><td><code>@minimizeTimePart(java.sql.Timestamp timestamp)</code></td><td>時刻部分を最小化することを示します。戻り値は時刻部分が最小化された新しいタイムスタンプです。</td></tr>
-					<tr><td><code>java.sql.Date</code></td><td><code>@maximizeTimePart(java.sql.Date date)</code></td><td>時刻部分を最大化することを示します。戻り値は時刻部分が最大化された新しい日付です。</td></tr>
-					<tr><td><code>java.sql.Timestamp</code></td><td><code>@maximizeTimePart(java.sql.Timestamp timestamp)</code></td><td>時刻部分を最大化することを示します。戻り値は時刻部分が最大化された新しいタイムスタンプです。</td></tr>
+					<tr><td><code>java.sql.Date</code></td><td><code>@roundDownTimePart(java.sql.Date date)</code></td><td>時刻部分を切り捨てることを示します。戻り値は時刻部分が切り捨てられた新しい日付です。</td></tr>
+					<tr><td><code>java.sql.Timestamp</code></td><td><code>@roundDownTimePart(java.sql.Timestamp timestamp)</code></td><td>時刻部分を切り捨てることを示します。戻り値は時刻部分が切り捨てられた新しいタイムスタンプです。</td></tr>
+					<tr><td><code>java.sql.Date</code></td><td><code>@roundUpTimePart(java.sql.Date date)</code></td><td>時刻部分を切り上げることを示します。戻り値は時刻部分が切り上げられた新しい日付です。</td></tr>
+					<tr><td><code>java.sql.Timestamp</code></td><td><code>@roundUpTimePart(java.sql.Timestamp timestamp)</code></td><td>時刻部分を切り上げることを示します。戻り値は時刻部分が切り上げられた新しいタイムスタンプです。</td></tr>
 				</table>
 				<p>
 					これらの関数は、<a href ="../apidocs/org/seasar/doma/expr/ExpressionFunctions.html"><code>org.seasar.doma.expr.ExpressionFunctions</code></a>のメソッドに対応しています。

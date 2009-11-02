@@ -59,7 +59,7 @@ public class StandardDialectTest extends TestCase {
         assertEquals("a\\\\a\\%a\\_%", functions.startWith("a\\a%a_", '\\'));
     }
 
-    public void testExpressionFunctions_minimizeTimePart_forDate()
+    public void testExpressionFunctions_roundDonwTimePart_forDate()
             throws Exception {
         StandardDialect dialect = new StandardDialect();
         ExpressionFunctions functions = dialect.getExpressionFunctions();
@@ -67,37 +67,37 @@ public class StandardDialectTest extends TestCase {
         calendar.set(2009, Calendar.JANUARY, 23, 12, 34, 56);
         Date date = new Date(calendar.getTimeInMillis());
         assertEquals(Date.valueOf("2009-01-23"), functions
-                .minimizeTimePart(date));
+                .roundDownTimePart(date));
     }
 
-    public void testExpressionFunctions_minimizeTimePart_forTimestamp()
+    public void testExpressionFunctions_roundDonwTimePart_forTimestamp()
             throws Exception {
         StandardDialect dialect = new StandardDialect();
         ExpressionFunctions functions = dialect.getExpressionFunctions();
         Timestamp timestamp = Timestamp
                 .valueOf("2009-01-23 12:34:56.123456789");
         assertEquals(Timestamp.valueOf("2009-01-23 00:00:00.000000000"),
-                functions.minimizeTimePart(timestamp));
+                functions.roundDownTimePart(timestamp));
     }
 
-    public void testExpressionFunctions_maximizeTimePart_forDate()
+    public void testExpressionFunctions_roundUpTimePart_forDate()
             throws Exception {
         StandardDialect dialect = new StandardDialect();
         ExpressionFunctions functions = dialect.getExpressionFunctions();
         Calendar calendar = Calendar.getInstance();
         calendar.set(2009, Calendar.JANUARY, 23, 12, 34, 56);
         Date date = new Date(calendar.getTimeInMillis());
-        assertEquals(Timestamp.valueOf("2009-01-23 23:59:59.999").getTime(),
-                functions.maximizeTimePart(date).getTime());
+        assertEquals(Date.valueOf("2009-01-24").getTime(), functions
+                .roundUpTimePart(date).getTime());
     }
 
-    public void testExpressionFunctions_maximizeTimePart_forTimestamp()
+    public void testExpressionFunctions_roundUpTimePart_forTimestamp()
             throws Exception {
         StandardDialect dialect = new StandardDialect();
         ExpressionFunctions functions = dialect.getExpressionFunctions();
         Timestamp timestamp = Timestamp
                 .valueOf("2009-01-23 12:34:56.123456789");
-        assertEquals(Timestamp.valueOf("2009-01-23 23:59:59.999999999"),
-                functions.maximizeTimePart(timestamp));
+        assertEquals(Timestamp.valueOf("2009-01-24 00:00:00.000000000"),
+                functions.roundUpTimePart(timestamp));
     }
 }

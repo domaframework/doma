@@ -87,38 +87,38 @@ public interface ExpressionFunctions {
     String contain(String text, char escape);
 
     /**
-     * 日付の時刻部分を最小化します。
+     * 日付の時刻部分を切り捨てます。
      * 
      * @param date
      *            日付
-     * @return 時刻部分が最小化された日付
+     * @return 時刻部分が切り捨てられた日付
      */
-    Date minimizeTimePart(Date date);
+    Date roundDownTimePart(Date date);
 
     /**
-     * タイムスタンプの時刻部分を最小化します。
+     * タイムスタンプの時刻部分を切り捨てます。
      * 
      * @param timestamp
      *            タイムスタンプ
-     * @return 時刻部分が最小化されたタイムスタンプ
+     * @return 時刻部分が切り捨てられたタイムスタンプ
      */
-    Timestamp minimizeTimePart(Timestamp timestamp);
+    Timestamp roundDownTimePart(Timestamp timestamp);
 
     /**
-     * 日付の時刻部分を最大化します。
+     * 日付の時刻部分を切り上げます。
      * 
      * @param date
      *            日付
-     * @return 時刻部分が最大化された日付
+     * @return 時刻部分が切り上げられた日付
      */
-    Date maximizeTimePart(Date date);
+    Date roundUpTimePart(Date date);
 
     /**
-     * タイムスタンプの時刻部分を最大化します。
+     * タイムスタンプの時刻部分を切り上げます。
      * 
      * @param timestamp
      *            タイムスタンプ
-     * @return 時刻部分が最大化されたタイムスタンプ
+     * @return 時刻部分が切り上げられたタイムスタンプ
      */
-    Timestamp maximizeTimePart(Timestamp timestamp);
+    Timestamp roundUpTimePart(Timestamp timestamp);
 }
