@@ -8,6 +8,13 @@
 		<section name="目次">
 			<ul>
 				<li><a href="#概要">概要</a></li>
+				<li><a href="#SQLの自動生成によるバッチ削除">SQLの自動生成によるバッチ削除</a>
+					<ul>
+						<li><a href="#バージョン番号と楽観的排他制御">バージョン番号と楽観的排他制御</a></li>
+					</ul>
+				</li>
+				<li><a href="#SQLファイルによるバッチ削除">SQLファイルによるバッチ削除</a></li>
+				<li><a href="#クエリタイムアウト">クエリタイムアウト</a></li>
 			</ul>
 		</section>
 		<section name="概要">
@@ -17,9 +24,72 @@
 <source><![CDATA[@Config(config = AppConfig.class)
 public interface EmployeeDao {
     @BatchDelete
-    int[] batchDelete(List<Employee> employees);
+    int[] delete(List<Employee> employees);
     ...
 }]]></source>
+			<p>
+				戻り値の型は<code>int[]</code>でなければいけません。
+				パラメータは型は<a href="../entity.html">エンティティティクラス</a>を要素とする<code>java.util.List</code>でなければいけません。
+				指定できるパラメータの数は1つです。
+				戻り値の配列の要素の数はパラメータの<code>List</code>の要素の数と等しくなります。
+				配列のそれぞれの要素が更新された件数を返します。
+			</p>
+			<p>
+				デフォルトでは、DELETE文が自動生成されます。
+				<code>@BatchDelete</code>の<code>sqlFile</code>に<code>true</code>を設定することで、任意の<a href="../sqlfile.html">SQLファイル</a>にマッピングできます。
+			</p>
+		<section name="SQLの自動生成によるバッチ削除">
+			<subsection name="バージョン番号と楽観的排他制御">
+				<p>
+					<a href="../entity.html">エンティティティクラス</a>に<code>@Version</code>が注釈されたプロパティがある場合、
+					<code>@BatchDelete</code>の<code>ignoreVersion</code>要素が<code>false</code>であれば、
+					バージョン番号は識別子とともに削除条件に含まれます。
+					この場合、削除件数が0件であれば、楽観的排他制御の失敗を示す<a href="../../apidocs/org/seasar/doma/jdbc/OptimisticLockException.html"><code>org.seasar.doma.jdbc.OptimisticLockException</code></a>がスローされます。
+				</p>
+				<p>
+					しかし、<code>@BatchDelete</code>の<code>ignoreVersion</code>要素が<code>true</code>の場合、
+					バージョン番号は削除条件には含まれません。
+					この場合、削除件数が0件であっても、<code>OptimisticLockException</code>はスローされません。
+				</p>
+<source><![CDATA[@BatchDelete(includeVersion = true)
+int[] delete(List<Employee> employees);]]></source>
+				<p>
+					<code>@BatchDelete</code>の<code>suppressOptimisticLockException</code>要素が<code>true</code>の場合、
+					<code>@Version</code>が注釈されたプロパティがあればバージョン番号は削除条件に含まれますが、
+					削除件数が0件であっても<code>OptimisticLockException</code>のスローは抑制されます。
+				</p>
+<source><![CDATA[@BatchDelete(suppressOptimisticLockException = true)
+int[] delete(List<Employee> employees);]]></source>
+			</subsection>
+		</section>
+		<section name="SQLファイルによるバッチ削除">
+			<p>
+				SQLファイルによるバッチ削除を行うには、<code>@BatchDelete</code>の<code>sqlFile</code>要素に<code>true</code>を設定し、
+				メソッドに対応する<a href="../sqlfile.html">SQLファイル</a>を用意します。
+			</p>
+<source><![CDATA[@BatchDelete(sqlFile = true)
+int[] delete(List<Employee> employees);]]></source>
+			<p>
+				たとえば、上記のメソッドに対応するSQLは次のように記述します。
+			</p>
+<source><![CDATA[delete from employee where name = /*employees.name*/'hoge']]></source>
+			<p>
+				SQLファイルによるバッチ削除では、、<code>@BatchDelete</code>の<code>ignoreVersion</code>要素、
+				<code>suppressOptimisticLockException</code>要素は参照されません。
+			</p>
+		</section>
+		<section name="クエリタイムアウト">
+			<p>
+				<code>@BatchDelete</code>の<code>queryTimeout</code>要素にクエリタイムアウトの秒数を指定できます。
+			</p>
+<source><![CDATA[@BatchDelete(queryTimeout = 10)
+int[] delete(List<Employee> employees);]]></source>
+			<p>
+				この設定は、SQLファイルの使用の有無に関係なく適用されます。
+				<code>queryTimeout</code>要素に値を指定しない場合、
+				<a href="../config.html">設定クラス</a>に指定されたクエリタイムアウトが使用されます。
+			</p>
+		</section>
 		</section>
 	</body>
 </document>

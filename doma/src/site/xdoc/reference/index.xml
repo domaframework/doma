@@ -18,9 +18,38 @@
 				</li>
 				<li>
 					<a href="dao.html">Daoインタフェース</a>
+					<ul>
+						<li>
+							<a href="query/select.html">検索</a>
+						</li>
+						<li>
+							<a href="query/insert.html">挿入</a>
+						</li>
+						<li>
+							<a href="query/update.html">更新</a>
+						</li>
+						<li>
+							<a href="query/batch_insert.html">バッチ挿入</a>
+						</li>
+						<li>
+							<a href="query/batch_update.html">バッチ更新</a>
+						</li>
+						<li>
+							<a href="query/batch_delete.html">バッチ削除</a>
+						</li>
+						<li>
+							<a href="query/function.html">ストアドファンクション</a>
+						</li>
+						<li>
+							<a href="query/procedure.html">ストアドプロシージャー</a>
+						</li>
+						<li>
+							<a href="query/factory.html">ファクトリ</a>
+						</li>
+					</ul>
 				</li>
 				<li>
-					<a href="config.html">設定</a>
+					<a href="config.html">設定クラス</a>
 				</li>
 				<li>
 					<a href="sqlfile.html">SQLファイル</a>

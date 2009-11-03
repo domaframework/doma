@@ -46,7 +46,6 @@ import org.seasar.doma.jdbc.JdbcException;
  * <li>{@code void}
  * <li>基本型。
  * <li>{@link Domain} が注釈されたクラス。
- * <li>{@link Entity} が注釈されたクラス。
  * <li>{@link List}。実型引数は、基本型、{@code Domain} が注釈されたクラス、もしくは{@code Entity}
  * が注釈されたクラスなければならない。ただし、戻り値を{@code List}
  * にできるのは、ストアドファンクションがカーソルをファンクションの実行結果として返す場合のみである。

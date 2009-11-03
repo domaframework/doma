@@ -8,6 +8,15 @@
 		<section name="目次">
 			<ul>
 				<li><a href="#概要">概要</a></li>
+				<li><a href="#ファンクション名">ファンクション名</a></li>
+				<li><a href="#パラメータ">パラメータ</a>
+					<ul>
+						<li><a href="#INパラメータ">INパラメータ</a></li>
+						<li><a href="#INOUTパラメータ">INOUTパラメータ</a></li>
+						<li><a href="#OUTパラメータ">OUTパラメータ</a></li>
+						<li><a href="#カーソルのOUTパラメータもしくは結果セット">カーソルのOUTパラメータもしくは結果セット</a></li>
+					</ul>
+				</li>
 			</ul>
 		</section>
 		<section name="概要">
@@ -20,6 +29,110 @@ public interface EmployeeDao {
     Integer execute(@Id Integer id, @InOut Reference<BigDecimal> salary);
     ...
 }]]></source>
+			<p>
+				パラメータには、パラメータの種別を示す<a href="../../apidocs/org/seasar/doma/In.html"><code>@In</code></a>、
+				<a href="../../apidocs/org/seasar/doma/InOut.html"><code>@InOut</code></a>、
+				<a href="../../apidocs/org/seasar/doma/Out.html"><code>@Out</code></a>、
+				<a href="../../apidocs/org/seasar/doma/ResultSet.html"><code>@ResultSet</code></a>のいずれかのアノテーションが必須です。
+				パラメータは複数指定できます。
+				戻り値は次のいずれかでなければいけません。
+			</p>
+			<ul>
+				<li><code>void</code></li>
+				<li><a href="../basic.html">基本型</a></li>
+				<li><a href="../domain.html">ドメインクラス</a></li>
+				<li><a href="../basic.html">基本型</a>、<a href="../domain.html">ドメインクラス</a>、
+					<a href="../entity.html">エンティティクラス</a>のいずれかを要素とする<code>java.util.List</code>
+					（ただし、<code>List</code>にできるのはファンクションがカーソルをファンクションの実行結果として返す場合のみ）
+				</li>
+			</ul>
+		</section>
+		<section name="ファンクション名">
+			<p>
+				デフォルトではメソッド名がファンクション名になります。
+				<code>@Function</code>の<code>name</code>要素に値を指定した場合は、その値がファンクション名になります。
+			</p>
+<source><![CDATA[@Function(name = "calculateSalary")
+void execute(@Id Integer id, @InOut Reference<BigDecimal> salary);]]></source>
+			<p>
+				<code>@Function</code>の<code>catalog</code>要素や<code>schema</code>要素にカタログ名やスキーマ名を指定できます。
+				このときファンクションの名前は<code>catalog</code>要素、<code>schema</code>要素、<code>name</code>要素（指定されていなければメソッド名）をピリオドで連結したものになります。
+			</p>
+<source><![CDATA[@Function(catlog = "CATALOG", schema ="SCHEMA", name = "calculateSalary")
+void execute(@Id Integer id, @InOut Reference<BigDecimal> salary);]]></source>
+		</section>
+		<section name="パラメータ">
+			<p>
+				ストアドファンクションのパラメータとDaoメソッドのパラメータの並び順は合わせなければいけません。
+			</p>
+			<subsection name="INパラメータ">
+				<p>
+					INパラメータは、<code>@In</code>をメソッドのパラメータに注釈して示します。
+				</p>
+<source><![CDATA[@Function
+void execute(@Id Integer id);]]></source>
+				<p>
+					次のように使用します。
+				</p>
+<source><![CDATA[EmployeeDao dao = new EmployeeDaoImpl();
+dao.execute(1);]]></source>
+			</subsection>
+			<subsection name="INOUTパラメータ">
+				<p>
+					INOUTパラメータは、<code>@InOut</code>をメソッドのパラメータに注釈して示します。
+					注釈されるパラメータの型は<a href="../../apidocs/org/seasar/doma/jdbc/Reference.html"><code>org.seasar.doma.jdbc.Reference</code></a>
+					でなければいけません。
+					<code>Reference</code>の型パラメータは<a href="../basic.html">基本型</a>もしくは<a href="../domain.html">ドメインクラス</a>でなければいけません。
+				</p>
+<source><![CDATA[@Function
+void execute(@InOut Reference<BigDecimal> salary);]]></source>
+				<p>
+					次のように使用します。
+				</p>
+<source><![CDATA[EmployeeDao dao = new EmployeeDaoImpl();
+BigDecimal in = new BigDecimal(100);
+Reference<BigDecimal> ref = new Reference<BigDecimal>(in);
+dao.execute(ref);
+BigDecimal out = ref.get();]]></source>
+			</subsection>
+			<subsection name="OUTパラメータ">
+				<p>
+					OUTパラメータは、<code>@Out</code>をメソッドのパラメータに注釈して示します。
+					注釈されるパラメータの型は<a href="../../apidocs/org/seasar/doma/jdbc/Reference.html"><code>org.seasar.doma.jdbc.Reference</code></a>
+					でなければいけません。
+					<code>Reference</code>の型パラメータは<a href="../basic.html">基本型</a>もしくは<a href="../domain.html">ドメインクラス</a>でなければいけません。
+				</p>
+				<p>
+					メソッドの戻り値の型が<code>void</code>以外の場合、戻り値はOUTパラメータとなります。
+				</p>
+<source><![CDATA[@Function
+Integer execute(@Out Reference<BigDecimal> salary);]]></source>
+				<p>
+					次のように使用します。
+				</p>
+<source><![CDATA[EmployeeDao dao = new EmployeeDaoImpl();
+Reference<BigDecimal> ref = new Reference<BigDecimal>();
+Integer result = dao.execute(ref);
+BigDecimal out = ref.get();]]></source>
+			</subsection>
+			<subsection name="カーソルのOUTパラメータもしくは結果セット">
+				<p>
+					カーソルのOUTパラメータ、もしくはストアドファンクションが返す結果セットは、<code>@ResultSet</code>をメソッドのパラメータに注釈して示します。
+					注釈されるパラメータの型は、<a href="../basic.html">基本型</a>、<a href="../domain.html">ドメインクラス</a>、
+					<a href="../entity.html">エンティティクラス</a>のいずれかを要素とする<code>java.util.List</code>でなければいけません。
+				</p>
+<source><![CDATA[@Function
+void execute(@ResultSet List<Employee> employee);]]></source>
+				<p>
+					次のように使用します。
+				</p>
+<source><![CDATA[EmployeeDao dao = new EmployeeDaoImpl();
+List<Employee> employees = new ArrayList<Employee>();
+dao.execute(employees);
+for (Employee e : employees) {
+    ...
+}]]></source>
+			</subsection>
 		</section>
 	</body>
 </document>

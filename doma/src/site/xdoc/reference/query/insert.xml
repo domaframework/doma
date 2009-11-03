@@ -16,6 +16,7 @@
 					</ul>
 				</li>
 				<li><a href="#SQLファイルによる挿入">SQLファイルによる挿入</a></li>
+				<li><a href="#一意制約違反">一意制約違反</a></li>
 				<li><a href="#クエリタイムアウト">クエリタイムアウト</a></li>
 			</ul>
 		</section>
@@ -46,7 +47,7 @@ int insert(Employee employee);]]></source>
 			<subsection name="識別子">
 				<p>
 					<a href="../entity.html">エンティティティクラス</a>の識別子に、<code>@GeneratedValue</code>が注釈されている場合、
-					識別子が自動的に生成し設定します。
+					識別子が自動的に生成され設定されます。
 				</p>
 			</subsection>
 			<subsection name="バージョン番号">
@@ -112,6 +113,11 @@ values (/*employee.id*/0, /*employee.name*/'hoge', /*employee.salary*/100, /*emp
 				SQLファイルによる挿入では、識別子の自動設定やバージョン番号の自動設定は行われません。
 				また、<code>@Insert</code>の<code>exclude</code>要素、<code>include</code>要素、
 				<code>excludeNull</code>要素は参照されません。
+			</p>
+		</section>
+		<section name="一意制約違反">
+			<p>
+				一意制約違反が発生した場合は、SQLファイルの使用の有無に関係なく<a href="../../apidocs/org/seasar/doma/jdbc/UniqueConstraintException.html"><code>org.seasar.doma.jdbc.UniqueConstraintException</code></a>がスローされます。
 			</p>
 		</section>
 		<section name="クエリタイムアウト">

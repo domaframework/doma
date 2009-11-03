@@ -32,8 +32,10 @@
 						<li><a href="#論理演算子">論理演算子</a></li>
 						<li><a href="#算術演算子">算術演算子</a></li>
 						<li><a href="#その他の演算子">その他の演算子</a></li>
-						<li><a href="#メソッド呼び出し">メソッド呼び出し</a></li>
-						<li><a href="#フィールドアクセス">フィールドアクセス</a></li>
+						<li><a href="#インスタンスメソッドの呼び出し">インスタンスメソッドの呼び出し</a></li>
+						<li><a href="#インスタンスフィールドへのアクセス">インスタンスフィールドへのアクセス</a></li>
+						<li><a href="#staticメソッドの呼び出し">staticメソッドの呼び出し</a></li>
+						<li><a href="#staticフィールドへのアクセス">staticフィールドへのアクセス</a></li>
 						<li><a href="#組み込み関数の使用">組み込み関数の使用</a></li>
 					</ul>
 				</li>
@@ -60,25 +62,25 @@
 			</p>
 			<ul>
 				<li>
-					<code>@Select</code>
+					<a href="../apidocs/org/seasar/doma/Select.html"><code>@Select</code></a>
 				</li>
 				<li>
-					<code>@Insert(sqlFile = true)</code>
+					<a href="../apidocs/org/seasar/doma/Insert.html"><code>@Insert(sqlFile = true)</code></a>
 				</li>
 				<li>
-					<code>@Update(sqlFile = true)</code>
+					<a href="../apidocs/org/seasar/doma/Update.html"><code>@Update(sqlFile = true)</code></a>
 				</li>
 				<li>
-					<code>@Delete(sqlFile = true)</code>
+					<a href="../apidocs/org/seasar/doma/Delete.html"><code>@Delete(sqlFile = true)</code></a>
 				</li>
 				<li>
-					<code>@BatchInsert(sqlFile = true)</code>
+					<a href="../apidocs/org/seasar/doma/BatchInsert.html"><code>@BatchInsert(sqlFile = true)</code></a>
 				</li>
 				<li>
-					<code>@BatchUpdate(sqlFile = true)</code>
+					<a href="../apidocs/org/seasar/doma/BatchUpdate.html"><code>@BatchUpdate(sqlFile = true)</code></a>
 				</li>
 				<li>
-					<code>@BatchDelete(sqlFile = true)</code>
+					<a href="../apidocs/org/seasar/doma/BatchDelete.html"><code>@BatchDelete(sqlFile = true)</code></a>
 				</li>
 			</ul>
 		</section>
@@ -119,10 +121,20 @@
 			</subsection>
 		</section>
 		<section name="SQLコメント">
+			<p>
+				Domaでは、SQLコメント中に式を記述することで、値のバインディングや条件分岐を行います。
+				式を含みDomaに解釈されるSQLコメントを<strong>式コメント</strong>と呼びます。
+			</p>
 			<subsection name="バインド変数コメント">
 				<p>
-					バインド変数は/*～*/というブロックコメントで囲んで示します。バインド変数の名前はDaoインタフェースのメソッドのパラメータ名にマッピングされます。
-					ブロックコメント直後にはテスト用データを指定する必要があります。テスト用データは、実行時には使用されません。
+					バインド変数を示す式コメントをバインド変数コメントと呼びます。
+					バインド変数は、<code>java.sql.PreparedStatement</code>を介してSQLに設定されます。
+				</p>
+				<p>
+					バインド変数は/*～*/というブロックコメントで囲んで示します。
+					バインド変数の名前はDaoインタフェースのメソッドのパラメータ名にマッピングされます。
+					バインド変数コメントの直後にはテスト用データを指定する必要があります。
+					テスト用データは、実行時には使用されません。
 				</p>
 				<h4><code>単一のパラメータ</code></h4>
 				<p>
@@ -139,7 +151,8 @@
 				<p>
 					Daoインタフェースのメソッドのパラメータが<a href="basic.html">基本型</a>もしくは<a href="domain.html">ドメインクラス</a>を要素とするjava.util.Listの場合について説明します。
 					Listのパラメータは、IN句の1つのバインド変数コメントに対応しますが、複数の値をバインドできます。
-					ブロックコメントはINキーワードの直後に置き、ブロックコメントの直後には括弧つきでテスト用データを指定します。テスト用データは、実行時には使用されません。
+					バインド変数コメントはINキーワードの直後に置き、バインド変数コメントの直後には括弧つきでテスト用データを指定します。
+					テスト用データは、実行時には使用されません。
 					Daoインタフェースのメソッドと、対応するSQLの例は次のとおりです。
 				</p>
 <source><![CDATA[List<Employee> selectByIdList(List<Integer> employeeIdList);]]></source>
@@ -151,7 +164,7 @@
 				<p>
 					Daoインタフェースのメソッドのパラメータが<a href="entity.html">エンティティクラス</a>の場合について説明します。
 					エンティティクラスのパラメータは、複数のバインド変数コメントに対応します。
-					ブロックコメントの中では、ドット（.）を使用しエンティティのフィールドにアクセスできます。
+					バインド変数コメントの中では、ドット（.）を使用しエンティティのフィールドにアクセスできます。
 					Daoインタフェースのメソッドと、対応するSQLの例は次のとおりです。
 				</p>
 <source><![CDATA[List<Employee> selectByNameAndSalary(Employee employee);]]></source>
@@ -172,10 +185,14 @@ salary = /*employee.getTaxedSalary()*/1234]]></source>
 			</subsection>
 			<subsection name="埋め込み変数コメント">
 				<p>
+					埋め込み変数を示す式コメントを埋め込み変数コメントと呼びます。
+					埋め込み変数の値は、SQLを組み立てる際にSQLの一部として直接埋め込まれます。
+					すなわち、SQLインジェクション対策に必要な値のエスケープはアプリケーションの責任になります。
+					安全のため、埋め込み変数の一部にシングルクォテーション、セミコロン、行コメント、ブロックコメントを含めることは禁止しています。
+				</p>
+				<p>
 					埋め込み変数は/*#～*/というブロックコメントで示します。埋め込み変数の名前はメソッドのパラメータ名にマッピングされます。
 					埋め込み変数はORDER BY句など、SQLの一部をプログラムで組み立てたい場合に使用できます。
-					安全のため、埋め込み変数の一部にシングルクォテーション、セミコロン、ラインコメント、ブロックコメントを含めることは認められていません。
-					シングルクォテーション以外のSQLインジェクション対策はアプリケーションの責任になります。
 					Daoのメソッドと、対応するSQLの例は次のとおりです。
 				</p>
 <source><![CDATA[List<Employee> selectAll(BigDecimal salary, String orderyBy);]]></source>
@@ -194,12 +211,12 @@ List&lt;Employee&gt; list = dao.selectAll(salary, orderBy);]]></source>
 				<p>
 					<code>/*#orderBy*/</code>は、<code>/*# orderBy */</code>のように空白を含めて記述することも可能です。
 				</p>
-
 			</subsection>
 			<subsection name="条件コメント">
 				<h4><code>if</code> と <code>end</code></h4>
 				<p>
-					条件によってSQLを組み立てる場合は、<code>/*%if 条件*/ ～ /*%end*/</code>という構文を使用できます。
+					条件分岐を示す式コメントを条件コメントと呼びます。
+					構文は、<code>/*%if 条件*/ ～ /*%end*/</code> となります。
 				</p>
 <source><![CDATA[select * from employee where /*%if employeeId != null*/employee_id = /*employeeId*/99/*%end*/]]></source>
 				<p>
@@ -261,7 +278,7 @@ and employeeName like 's%']]></source>
 			</subsection>
 			<subsection name="通常のブロックコメント">
 				<p>
-					<code>/*</code>の直後に続く3文字目が次のような値の場合、それは通常のSQLコメントだとみなされます。
+					<code>/*</code>の直後に続く3文字目が次のような値の場合、それは通常のブロックコメントだとみなされます。
 				</p>
 				<ul>
 					<li>Javaの識別子の先頭で使用できない文字（ただし、空白、<code>%</code>、<code>#</code>、<code>@</code>、<code>"</code>、<code>'</code>は除く）</li>
@@ -278,31 +295,35 @@ and employeeName like 's%']]></source>
 /*)～*/
 /*&;～*/]]></source>
 				<p>
-					上で述べたように、/*に続く3文字目の文字がJavaの識別子の先頭で使用できない文字（ただし、空白、<code>%</code>、<code>#</code>、<code>@</code>、<code>"</code>、<code>'</code>は除く）になっていることに注目してください。
+					一方、次の例はすべて式コメントだとみなされます。
 				</p>
-				<p>
-					一方、次の例はすべてDomaにより解釈される式を含んだブロックコメントだとみなされます。
-				</p>
-<source>/* ～*/ ...3文字目が空白であるためです。空白が除去された部分が式だとみなされます。
-/*a～*/ ...--3文字目がJavaの識別子の先頭で使用可能な文字であるためです。
-/*$～*/ ...--3文字目がJavaの識別子の先頭で使用可能な文字であるためです。
-/*%～*/ ...--3文字目が条件コメントを表す「<code>%</code>」であるためです。
-/*#～*/ ...--3文字目が埋め込み変数コメントを表す「<code>#</code>」であるためです。
-/*@～*/ ...--3文字目が埋め込み関数を表す「<code>@</code>」であるためです。</source>
+<source>/* ～*/ ...--3文字目が空白であるため式コメントです。
+/*a～*/ ...--3文字目がJavaの識別子の先頭で使用可能な文字であるため式コメントです。
+/*$～*/ ...--3文字目がJavaの識別子の先頭で使用可能な文字であるため式コメントです。
+/*%～*/ ...--3文字目が条件コメントを表す「<code>%</code>」であるため式コメントです。
+/*#～*/ ...--3文字目が埋め込み変数コメントを表す「<code>#</code>」であるため式コメントです。
+/*@～*/ ...--3文字目が組み込み関数もしくはクラス名を表す「<code>@</code>」であるため式コメントです。</source>
 			</subsection>
 			<subsection name="通常の行コメント">
 				<p>
-					<code>--</code>の直後に、<code>elseif</code>や<code>else</code>がつづかない場合、それは通常のSQLコメントだとみなされます。
+					<code>--</code>の直後に、<code>elseif</code>や<code>else</code>がつづかない場合、それは通常の行コメントだとみなされます。
 				</p>
 				<p>
 					たとえば、次の例は通常の行コメントだとみなされます。
 				</p>
 <source>-- aaa</source>
+				<p>
+					一方、次の例はすべて式コメントだとみなされます。
+				</p>
+<source>--elseif ～ --
+--else</source>
 			</subsection>
 		</section>
 		<section name="式言語">
 			<p>
-				埋め込み変数コメントやバインド変数コメントや条件コメントの条件部には、式を記述できます。
+				式コメントには式を記述できます。
+				文法は、Javaとほとんど同じです。
+				ただし、Javaで可能なことすべてができるわけではありません。
 			</p>
 			<subsection name="リテラル">
 				<p>
@@ -405,9 +426,10 @@ and employeeName like 's%']]></source>
 <source><![CDATA[select * from employee where 
    employee_name like /*employeeName + "_"*/'smith']]></source>
 			</subsection>
-			<subsection name="メソッド呼び出し">
+			<subsection name="インスタンスメソッドの呼び出し">
 				<p>
-					ドット（.）で区切ってメソッド名を指定することでメソッドを実行可能です。実行可能なメソッドは、可視性が<code>public</code>なものだけに限られます。
+					ドット（.）で区切ってメソッド名を指定することでインスタンスメソッドを実行可能です。
+					実行可能なメソッドは、可視性が<code>public</code>なものだけに限られます。
 				</p>
 <source><![CDATA[select * from employee where 
 /*%if employeeName.startsWith("s") */
@@ -421,13 +443,33 @@ and employeeName like 's%']]></source>
     employee_name = /*employeeName*/'smith'
 /*%end*/]]></source>
 			</subsection>
-			<subsection name="フィールドアクセス">
+			<subsection name="インスタンスフィールドへのアクセス">
 				<p>
-					ドット（.）で区切ってフィールド名を指定することでフィールドにアクセスできます。アクセス可能なフィールドはインスタンスフィールドです。
+					ドット（.）で区切ってフィールド名を指定することでインスタンスフィールドにアクセスできます。
 					可視性はprivateであってもアクセス可能です。
 				</p>
 <source><![CDATA[select * from employee where 
     employee_name = /*employee.employeeName*/'smith']]></source>
+			</subsection>
+			<subsection name="staticメソッドの呼び出し">
+				<p>
+					<code>@</code>で囲まれたクラスの完全修飾名にメソッドを続けることでstaticメソッドを実行可能です。
+					実行可能なメソッドは、可視性が<code>public</code>なものだけに限られます。
+				</p>
+<source><![CDATA[select * from employee where 
+/*%if @java.util.regex.Pattern@matches("^[a-z]$*", employeeName) */
+    employee_name = /*employeeName*/'smith'
+/*%end*/]]></source>
+			</subsection>
+			<subsection name="staticフィールドへのアクセス">
+				<p>
+					<code>@</code>で囲まれたクラスの完全修飾名にフィールドを続けることでstaticフィールドにアクセスできます。
+					可視性はprivateであってもアクセス可能です。
+				</p>
+<source><![CDATA[select * from employee where 
+/*%if employeeName.lenght() < @java.lang.Byte@MAX_VALUE */
+    employee_name = /*employeeName*/'smith'
+/*%end*/]]></source>
 			</subsection>
 			<subsection name="組み込み関数の使用">
 				<p>

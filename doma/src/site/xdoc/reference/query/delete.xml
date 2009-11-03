@@ -46,7 +46,7 @@ int delete(Employee employee);]]></source>
 					<a href="../entity.html">エンティティティクラス</a>に<code>@Version</code>が注釈されたプロパティがある場合、
 					<code>@Delete</code>の<code>ignoreVersion</code>要素が<code>false</code>であれば、
 					バージョン番号は識別子とともに削除条件に含まれます。
-					この場合、削除件数が0件であれば、楽観的排他制御の失敗を示す<code>org.seasar.doma.jdbc.OptimisticLockException</code>がスローされます。
+					この場合、削除件数が0件であれば、楽観的排他制御の失敗を示す<a href="../../apidocs/org/seasar/doma/jdbc/OptimisticLockException.html"><code>org.seasar.doma.jdbc.OptimisticLockException</code></a>がスローされます。
 				</p>
 				<p>
 					しかし、<code>@Delete</code>の<code>ignoreVersion</code>要素が<code>true</code>の場合、

@@ -15,6 +15,7 @@
 					</ul>
 				</li>
 				<li><a href="#SQLファイルによる更新">SQLファイルによる更新</a></li>
+				<li><a href="#一意制約違反">一意制約違反</a></li>
 				<li><a href="#クエリタイムアウト">クエリタイムアウト</a></li>
 			</ul>
 		</section>
@@ -47,7 +48,7 @@ int update(Employee employee);]]></source>
 					<a href="../entity.html">エンティティティクラス</a>に<code>@Version</code>が注釈されたプロパティがある場合、
 					<code>@Update</code>の<code>includeVersion</code>要素が<code>false</code>であれば、
 					バージョン番号は識別子とともに更新条件に含まれ、1増分して更新されます。
-					この場合、更新件数が0件であれば、楽観的排他制御の失敗を示す<code>org.seasar.doma.jdbc.OptimisticLockException</code>がスローされます。
+					この場合、更新件数が0件であれば、楽観的排他制御の失敗を示す<a href="../../apidocs/org/seasar/doma/jdbc/OptimisticLockException.html"><code>org.seasar.doma.jdbc.OptimisticLockException</code></a>がスローされます。
 				</p>
 				<p>
 					しかし、<code>@Update</code>の<code>includeVersion</code>要素が<code>true</code>の場合、
@@ -111,7 +112,7 @@ int update(Employee employee);]]></source>
 		</section>
 		<section name="SQLファイルによる更新">
 			<p>
-				SQLファイルによる削除を行うには、<code>@Update</code>の<code>sqlFile</code>要素に<code>true</code>を設定し、
+				SQLファイルによる更新を行うには、<code>@Update</code>の<code>sqlFile</code>要素に<code>true</code>を設定し、
 				メソッドに対応する<a href="../sqlfile.html">SQLファイル</a>を用意します。
 			</p>
 			<p>
@@ -134,9 +135,14 @@ int update(Employee employee);]]></source>
 				<code>suppressOptimisticLockException</code>要素は参照されません。
 			</p>
 		</section>
+		<section name="一意制約違反">
+			<p>
+				一意制約違反が発生した場合は、SQLファイルの使用の有無に関係なく<a href="../../apidocs/org/seasar/doma/jdbc/UniqueConstraintException.html"><code>org.seasar.doma.jdbc.UniqueConstraintException</code></a>がスローされます。
+			</p>
+		</section>
 		<section name="クエリタイムアウト">
 			<p>
-				<code>@Insert</code>の<code>queryTimeout</code>要素にクエリタイムアウトの秒数を指定できます。
+				<code>@Update</code>の<code>queryTimeout</code>要素にクエリタイムアウトの秒数を指定できます。
 			</p>
 <source><![CDATA[@Update(queryTimeout = 10)
 int update(Employee employee);]]></source>
