@@ -34,6 +34,7 @@
 		<menu name="About" inherit="top">
 			<item name="ホーム" href="index.html" />
 			<item name="概要" href="overview.html" />
+			<item name="よくある質問" href="faq.html" />
 			<item name="ダウンロード" href="downloads.html" />
 			<!--
 			<item name="変更履歴" href="changelog.html" />
@@ -65,8 +66,7 @@
 			<item name="開発支援ツール" href="extension/index.html" collapse="true" >
 				<item name="Eclipseプラグイン - Doma Tools" href="extension/doma_tools.html" />
 			</item>
-			<item name="FAQ" href="faq.html" />
-			<item name="Javadoc" href="apidocs/index.html" />
+			<item name="Javadocs" href="apidocs/index.html" />
 		</menu>
 		${reports}
 	</body>
