@@ -224,7 +224,7 @@ List&lt;Employee&gt; list = dao.selectAll(salary, orderBy);]]></source>
 				</p>
 <source><![CDATA[select * from employee where employee_id = ?]]></source>
 				<p>
-					このSQL文は、 <code>employeeId</code>  <code>null</code>の場合に次のような準備された文に変換されます。
+					このSQL文は、 <code>employeeId</code>が<code>null</code>の場合に次のような準備された文に変換されます。
 				</p>
 <source><![CDATA[select * from employee]]></source>
 				<h4><code>WHERE</code>や <code>HAVING</code>の自動除去</h4>

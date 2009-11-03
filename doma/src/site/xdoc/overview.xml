@@ -180,7 +180,7 @@ public interface EmployeeDao {
     @Delegate(to = EmployeeDaoDelegate)
     List<Employee> selectByName(String name);
 }]]></source>
-<source><![CDATA[public classs EmployeeDaoDelegate {
+<source><![CDATA[public class EmployeeDaoDelegate {
     ...
     public List<Employee> selectByName(String name) {
         ....
