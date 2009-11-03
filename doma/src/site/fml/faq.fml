@@ -1,4 +1,4 @@
-<faqs title="FAQ" toplink="true">
+<faqs title="よくある質問" toplink="true">
 	<part id="general">
 		<title>一般的な質問</title>
 		<faq id="general-1">
