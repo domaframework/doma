@@ -457,7 +457,7 @@ and employeeName like 's%']]></source>
 					実行可能なメソッドは、可視性が<code>public</code>なものだけに限られます。
 				</p>
 <source><![CDATA[select * from employee where 
-/*%if @java.util.regex.Pattern@matches("^[a-z]$*", employeeName) */
+/*%if @java.util.regex.Pattern@matches("^[a-z]*$", employeeName) */
     employee_name = /*employeeName*/'smith'
 /*%end*/]]></source>
 			</subsection>
