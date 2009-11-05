@@ -89,9 +89,21 @@ public final class TypeMirrorUtil {
     public static boolean isAssignable(TypeMirror typeMirror1,
             TypeMirror typeMirror2, ProcessingEnvironment env) {
         assertNotNull(typeMirror1, typeMirror2, env);
-        if (typeMirror1.getKind() == TypeKind.VOID
-                || typeMirror2.getKind() == TypeKind.VOID) {
+        if (typeMirror1.getKind() == TypeKind.NONE
+                || typeMirror2.getKind() == TypeKind.NONE) {
             return false;
+        }
+        if (typeMirror1.getKind() == TypeKind.NULL) {
+            return typeMirror2.getKind() == TypeKind.NULL;
+        }
+        if (typeMirror2.getKind() == TypeKind.NULL) {
+            return typeMirror1.getKind() == TypeKind.NULL;
+        }
+        if (typeMirror1.getKind() == TypeKind.VOID) {
+            return typeMirror2.getKind() == TypeKind.VOID;
+        }
+        if (typeMirror2.getKind() == TypeKind.VOID) {
+            return typeMirror1.getKind() == TypeKind.VOID;
         }
         TypeMirror t1 = env.getTypeUtils().erasure(typeMirror1);
         TypeMirror t2 = env.getTypeUtils().erasure(typeMirror2);
@@ -122,6 +134,15 @@ public final class TypeMirrorUtil {
     public static boolean isSameType(TypeMirror t1, TypeMirror t2,
             ProcessingEnvironment env) {
         assertNotNull(t1, t2, env);
+        if (t1.getKind() == TypeKind.NONE || t2.getKind() == TypeKind.NONE) {
+            return false;
+        }
+        if (t1.getKind() == TypeKind.NULL) {
+            return t2.getKind() == TypeKind.NULL;
+        }
+        if (t2.getKind() == TypeKind.NULL) {
+            return t1.getKind() == TypeKind.NULL;
+        }
         if (t1.getKind() == TypeKind.VOID) {
             return t2.getKind() == TypeKind.VOID;
         }
@@ -129,8 +150,8 @@ public final class TypeMirrorUtil {
             return t1.getKind() == TypeKind.VOID;
         }
         TypeMirror eraasuredType1 = env.getTypeUtils().erasure(t1);
-        TypeMirror eraasuredType12 = env.getTypeUtils().erasure(t2);
-        return eraasuredType1.equals(eraasuredType12);
+        TypeMirror eraasuredType2 = env.getTypeUtils().erasure(t2);
+        return eraasuredType1.equals(eraasuredType2);
     }
 
     public static String getTypeName(TypeMirror typeMirror,
@@ -260,7 +281,8 @@ public final class TypeMirrorUtil {
             public Void visitTypeVariable(TypeVariable t, StringBuilder p) {
                 p.append(t);
                 TypeMirror upperBound = t.getUpperBound();
-                String upperBoundName = TypeMirrorUtil.getTypeName(upperBound, env);
+                String upperBoundName = TypeMirrorUtil.getTypeName(upperBound,
+                        env);
                 if (!Object.class.getName().equals(upperBoundName)) {
                     p.append(" extends ");
                     upperBound.accept(this, p);
@@ -307,7 +329,8 @@ public final class TypeMirrorUtil {
         Map<TypeMirror, TypeMirror> typeParameterMap = new HashMap<TypeMirror, TypeMirror>();
         Iterator<? extends TypeParameterElement> formalParams = typeElement
                 .getTypeParameters().iterator();
-        DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(typeMirror, env);
+        DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(typeMirror,
+                env);
         Iterator<? extends TypeMirror> actualParams = declaredType
                 .getTypeArguments().iterator();
         for (; formalParams.hasNext() && actualParams.hasNext();) {
