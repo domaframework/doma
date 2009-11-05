@@ -24,12 +24,6 @@ import org.seasar.doma.internal.apt.type.SelectOptionsType;
  */
 public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
-    protected boolean iterated;
-
-    protected Integer maxRows;
-
-    protected Integer fetchSize;
-
     protected String iterationCallbackPrameterName;
 
     protected IterationCallbackType iterationCallbackType;
@@ -37,30 +31,6 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
     protected String selectOptionsParameterName;
 
     protected SelectOptionsType selectOptionsType;
-
-    public boolean isIterated() {
-        return iterated;
-    }
-
-    public void setIterated(boolean iterated) {
-        this.iterated = iterated;
-    }
-
-    public Integer getMaxRows() {
-        return maxRows;
-    }
-
-    public void setMaxRows(Integer maxRows) {
-        this.maxRows = maxRows;
-    }
-
-    public Integer getFetchSize() {
-        return fetchSize;
-    }
-
-    public void setFetchSize(Integer fetchSize) {
-        this.fetchSize = fetchSize;
-    }
 
     public String getIterationCallbackPrameterName() {
         return iterationCallbackPrameterName;

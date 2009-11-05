@@ -20,6 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
@@ -31,6 +32,8 @@ import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
+import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
+import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
@@ -63,20 +66,32 @@ public class SqlFileBatchModifyQueryMetaFactory extends
     protected SqlFileBatchModifyQueryMeta createSqlFileBatchModifyQueryMeta(
             ExecutableElement method, DaoMeta daoMeta) {
         SqlFileBatchModifyQueryMeta queryMeta = new SqlFileBatchModifyQueryMeta();
-        BatchInsert insert = method.getAnnotation(BatchInsert.class);
-        if (insert != null && insert.sqlFile()) {
-            queryMeta.setQueryTimeout(insert.queryTimeout());
-            queryMeta.setQueryKind(QueryKind.SQLFILE_BATCH_INSERT);
+        AnnotationMirror annotationMirror = ElementUtil.getAnnotationMirror(
+                method, BatchInsert.class, env);
+        if (annotationMirror != null) {
+            queryMeta.setAnnotationMirror(annotationMirror, env);
+            if (AnnotationValueUtil.isEqual(Boolean.TRUE, queryMeta
+                    .getSqlFile())) {
+                queryMeta.setQueryKind(QueryKind.SQLFILE_BATCH_INSERT);
+            }
         }
-        BatchUpdate update = method.getAnnotation(BatchUpdate.class);
-        if (update != null && update.sqlFile()) {
-            queryMeta.setQueryTimeout(update.queryTimeout());
-            queryMeta.setQueryKind(QueryKind.SQLFILE_BATCH_UPDATE);
+        annotationMirror = ElementUtil.getAnnotationMirror(method,
+                BatchUpdate.class, env);
+        if (annotationMirror != null) {
+            queryMeta.setAnnotationMirror(annotationMirror, env);
+            if (AnnotationValueUtil.isEqual(Boolean.TRUE, queryMeta
+                    .getSqlFile())) {
+                queryMeta.setQueryKind(QueryKind.SQLFILE_BATCH_UPDATE);
+            }
         }
-        BatchDelete delete = method.getAnnotation(BatchDelete.class);
-        if (delete != null && delete.sqlFile()) {
-            queryMeta.setQueryTimeout(delete.queryTimeout());
-            queryMeta.setQueryKind(QueryKind.SQLFILE_BATCH_DELETE);
+        annotationMirror = ElementUtil.getAnnotationMirror(method,
+                BatchDelete.class, env);
+        if (annotationMirror != null) {
+            queryMeta.setAnnotationMirror(annotationMirror, env);
+            if (AnnotationValueUtil.isEqual(Boolean.TRUE, queryMeta
+                    .getSqlFile())) {
+                queryMeta.setQueryKind(QueryKind.SQLFILE_BATCH_DELETE);
+            }
         }
         if (queryMeta.getQueryKind() == null) {
             return null;

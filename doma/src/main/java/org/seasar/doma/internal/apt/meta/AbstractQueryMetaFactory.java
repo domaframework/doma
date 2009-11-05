@@ -18,6 +18,7 @@ package org.seasar.doma.internal.apt.meta;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -33,6 +34,7 @@ import javax.lang.model.util.TypeKindVisitor6;
 import org.seasar.doma.Domain;
 import org.seasar.doma.Entity;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.jdbc.Config;
@@ -56,7 +58,8 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
     protected void doTypeParameters(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
         for (TypeParameterElement element : method.getTypeParameters()) {
-            String name = TypeMirrorUtil.getTypeParameterName(element.asType(), env);
+            String name = TypeMirrorUtil.getTypeParameterName(element.asType(),
+                    env);
             queryMeta.addTypeParameterName(name);
         }
     }
@@ -70,7 +73,8 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
     protected void doThrowTypes(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
         for (TypeMirror thrownType : method.getThrownTypes()) {
-            queryMeta.addThrownTypeName(TypeMirrorUtil.getTypeName(thrownType, env));
+            queryMeta.addThrownTypeName(TypeMirrorUtil.getTypeName(thrownType,
+                    env));
         }
     }
 
@@ -113,33 +117,38 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
     }
 
     protected boolean isSelectOptions(TypeMirror typeMirror) {
-        return TypeMirrorUtil.isAssignable(typeMirror, SelectOptions.class, env);
+        return TypeMirrorUtil
+                .isAssignable(typeMirror, SelectOptions.class, env);
     }
 
     protected boolean isIterationCallback(TypeMirror typeMirror) {
-        return TypeMirrorUtil.isAssignable(typeMirror, IterationCallback.class, env);
+        return TypeMirrorUtil.isAssignable(typeMirror, IterationCallback.class,
+                env);
     }
 
     protected void validateEntityPropertyNames(TypeMirror entityType,
             ExecutableElement method, M queryMeta) {
-        String[] includedPropertyNames = queryMeta.getIncludedPropertyNames();
-        String[] excludedPropertyNames = queryMeta.getExcludedPropertyNames();
-        if (includedPropertyNames != null && includedPropertyNames.length > 0
-                || excludedPropertyNames != null
-                && excludedPropertyNames.length > 0) {
+        List<String> includedPropertyNames = AnnotationValueUtil
+                .toStringList(queryMeta.getInclude());
+        List<String> excludedPropertyNames = AnnotationValueUtil
+                .toStringList(queryMeta.getExclude());
+        if (!includedPropertyNames.isEmpty()
+                || !excludedPropertyNames.isEmpty()) {
             EntityPropertyNameCollector collector = new EntityPropertyNameCollector(
                     env);
             Set<String> names = collector.collect(entityType);
-            for (String included : queryMeta.getIncludedPropertyNames()) {
+            for (String included : includedPropertyNames) {
                 if (!names.contains(included)) {
                     throw new AptException(DomaMessageCode.DOMA4084, env,
-                            method, included, entityType);
+                            method, queryMeta.getAnnotationMirror(), queryMeta
+                                    .getInclude(), included, entityType);
                 }
             }
-            for (String excluded : queryMeta.getExcludedPropertyNames()) {
+            for (String excluded : excludedPropertyNames) {
                 if (!names.contains(excluded)) {
                     throw new AptException(DomaMessageCode.DOMA4085, env,
-                            method, excluded, entityType);
+                            method, queryMeta.getAnnotationMirror(), queryMeta
+                                    .getExclude(), excluded, entityType);
                 }
             }
         }

@@ -18,10 +18,12 @@ package org.seasar.doma.internal.apt.meta;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.Procedure;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
@@ -38,41 +40,22 @@ public class AutoProcedureQueryMetaFactory extends
     @Override
     public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
         assertNotNull(method, daoMeta);
-        AutoProcedureQueryMeta queryMeta = new AutoProcedureQueryMeta();
-        Procedure procedure = method.getAnnotation(Procedure.class);
-        if (procedure == null) {
+        AnnotationMirror annotationMirror = ElementUtil.getAnnotationMirror(
+                method, Procedure.class, env);
+        if (annotationMirror == null) {
             return null;
         }
-        queryMeta.setQueryTimeout(procedure.queryTimeout());
-        queryMeta.setQueryKind(QueryKind.AUTO_PROCEDURE);
+        AutoProcedureQueryMeta queryMeta = new AutoProcedureQueryMeta();
         queryMeta.setName(method.getSimpleName().toString());
         queryMeta.setExecutableElement(method);
-        doProcedureName(procedure, queryMeta, method, daoMeta);
+        queryMeta.setQueryKind(QueryKind.AUTO_PROCEDURE);
+        queryMeta.setAnnotationMirror(annotationMirror, env);
+        queryMeta.setProcedureName(annotationMirror, env);
         doTypeParameters(queryMeta, method, daoMeta);
         doReturnType(queryMeta, method, daoMeta);
         doParameters(queryMeta, method, daoMeta);
         doThrowTypes(queryMeta, method, daoMeta);
         return queryMeta;
-    }
-
-    protected void doProcedureName(Procedure procedure,
-            AutoProcedureQueryMeta queryMeta, ExecutableElement method,
-            DaoMeta daoMeta) {
-        StringBuilder buf = new StringBuilder();
-        if (!procedure.catalog().isEmpty()) {
-            buf.append(procedure.catalog());
-            buf.append(".");
-        }
-        if (!procedure.schema().isEmpty()) {
-            buf.append(procedure.schema());
-            buf.append(".");
-        }
-        if (!procedure.name().isEmpty()) {
-            buf.append(procedure.name());
-        } else {
-            buf.append(queryMeta.getName());
-        }
-        queryMeta.setProcedureName(buf.toString());
     }
 
     @Override

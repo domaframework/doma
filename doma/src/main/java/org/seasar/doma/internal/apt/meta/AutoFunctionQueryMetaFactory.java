@@ -18,6 +18,7 @@ package org.seasar.doma.internal.apt.meta;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.Function;
@@ -28,6 +29,7 @@ import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
+import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
@@ -44,41 +46,22 @@ public class AutoFunctionQueryMetaFactory extends
     @Override
     public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
         assertNotNull(method, daoMeta);
-        AutoFunctionQueryMeta queryMeta = new AutoFunctionQueryMeta();
-        Function function = method.getAnnotation(Function.class);
-        if (function == null) {
+        AnnotationMirror annotationMirror = ElementUtil.getAnnotationMirror(
+                method, Function.class, env);
+        if (annotationMirror == null) {
             return null;
         }
-        queryMeta.setQueryTimeout(function.queryTimeout());
-        queryMeta.setQueryKind(QueryKind.AUTO_FUNCTION);
+        AutoFunctionQueryMeta queryMeta = new AutoFunctionQueryMeta();
         queryMeta.setName(method.getSimpleName().toString());
         queryMeta.setExecutableElement(method);
-        doFunctionName(function, queryMeta, method, daoMeta);
+        queryMeta.setAnnotationMirror(annotationMirror, env);
+        queryMeta.setFunctionName(annotationMirror, env);
+        queryMeta.setQueryKind(QueryKind.AUTO_FUNCTION);
         doTypeParameters(queryMeta, method, daoMeta);
         doReturnType(queryMeta, method, daoMeta);
         doParameters(queryMeta, method, daoMeta);
         doThrowTypes(queryMeta, method, daoMeta);
         return queryMeta;
-    }
-
-    protected void doFunctionName(Function function,
-            AutoFunctionQueryMeta queryMeta, ExecutableElement method,
-            DaoMeta daoMeta) {
-        StringBuilder buf = new StringBuilder();
-        if (!function.catalog().isEmpty()) {
-            buf.append(function.catalog());
-            buf.append(".");
-        }
-        if (!function.schema().isEmpty()) {
-            buf.append(function.schema());
-            buf.append(".");
-        }
-        if (!function.name().isEmpty()) {
-            buf.append(function.name());
-        } else {
-            buf.append(queryMeta.getName());
-        }
-        queryMeta.setFunctionName(buf.toString());
     }
 
     @Override

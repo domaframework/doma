@@ -67,6 +67,7 @@ import org.seasar.doma.internal.apt.type.IterationCallbackType;
 import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.apt.type.WrapperType;
+import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.jdbc.command.BasicIterationHandler;
 import org.seasar.doma.internal.jdbc.command.BasicResultListHandler;
 import org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler;
@@ -294,7 +295,7 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.prepare();%n");
             final QueryReturnMeta resultMeta = m.getReturnMeta();
             final String commandClassName = m.getCommandClass().getName();
-            if (m.isIterated()) {
+            if (AnnotationValueUtil.isEqual(Boolean.TRUE, m.getIterate())) {
                 IterationCallbackType callbackType = m
                         .getIterationCallbackType();
                 final String callbackParamName = m
@@ -639,32 +640,32 @@ public class DaoGenerator extends AbstractGenerator {
             if (m.getQueryTimeout() != null) {
                 iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             }
-            if (m.isNullExcluded() != null) {
-                iprint("__query.setNullExcluded(%1$s);%n", m.isNullExcluded());
+            if (m.getExcludeNull() != null) {
+                iprint("__query.setNullExcluded(%1$s);%n", m.getExcludeNull());
             }
-            if (m.isVersionIncluded() != null) {
+            if (m.getIncludeVersion() != null) {
                 iprint("__query.setVersionIncluded(%1$s);%n", m
-                        .isVersionIncluded());
+                        .getIncludeVersion());
             }
-            if (m.isVersionIgnored() != null) {
+            if (m.getIgnoreVersion() != null) {
                 iprint("__query.setVersionIgnored(%1$s);%n", m
-                        .isVersionIgnored());
+                        .getIgnoreVersion());
             }
-            if (m.getIncludedPropertyNames() != null) {
-                String s = formatStringArray(m.getIncludedPropertyNames());
+            if (m.getInclude() != null) {
+                String s = AnnotationValueUtil.toCSVFormat(m.getInclude());
                 iprint("__query.setIncludedPropertyNames(%1$s);%n", s);
             }
-            if (m.getExcludedPropertyNames() != null) {
-                String s = formatStringArray(m.getExcludedPropertyNames());
+            if (m.getExclude() != null) {
+                String s = AnnotationValueUtil.toCSVFormat(m.getExclude());
                 iprint("__query.setExcludedPropertyNames(%1$s);%n", s);
             }
-            if (m.isUnchangedPropertyIncluded() != null) {
+            if (m.getIncludeUnchanged() != null) {
                 iprint("__query.setUnchangedPropertyIncluded(%1$s);%n", m
-                        .isUnchangedPropertyIncluded());
+                        .getIncludeUnchanged());
             }
-            if (m.isOptimisticLockExceptionSuppressed() != null) {
+            if (m.getSuppressOptimisticLockException() != null) {
                 iprint("__query.setOptimisticLockExceptionSuppressed(%1$s);%n",
-                        m.isOptimisticLockExceptionSuppressed());
+                        m.getSuppressOptimisticLockException());
             }
             iprint("__query.prepare();%n");
             iprint("%1$s __command = new %1$s(__query);%n", m.getCommandClass()
@@ -731,25 +732,25 @@ public class DaoGenerator extends AbstractGenerator {
             if (m.getQueryTimeout() != null) {
                 iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             }
-            if (m.isVersionIncluded() != null) {
+            if (m.getIncludeVersion() != null) {
                 iprint("__query.setVersionIncluded(%1$s);%n", m
-                        .isVersionIncluded());
+                        .getIncludeVersion());
             }
-            if (m.isVersionIgnored() != null) {
+            if (m.getIgnoreVersion() != null) {
                 iprint("__query.setVersionIgnored(%1$s);%n", m
-                        .isVersionIgnored());
+                        .getIgnoreVersion());
             }
-            if (m.getIncludedPropertyNames() != null) {
-                String s = formatStringArray(m.getIncludedPropertyNames());
+            if (m.getInclude() != null) {
+                String s = AnnotationValueUtil.toCSVFormat(m.getInclude());
                 iprint("__query.setIncludedPropertyNames(%1$s);%n", s);
             }
-            if (m.getExcludedPropertyNames() != null) {
-                String s = formatStringArray(m.getExcludedPropertyNames());
+            if (m.getExclude() != null) {
+                String s = AnnotationValueUtil.toCSVFormat(m.getExclude());
                 iprint("__query.setExcludedPropertyNames(%1$s);%n", s);
             }
-            if (m.isOptimisticLockExceptionSuppressed() != null) {
+            if (m.getSuppressOptimisticLockException() != null) {
                 iprint("__query.setOptimisticLockExceptionSuppressed(%1$s);%n",
-                        m.isOptimisticLockExceptionSuppressed());
+                        m.getSuppressOptimisticLockException());
             }
             iprint("__query.prepare();%n");
             iprint("%1$s __command = new %1$s(__query);%n", m.getCommandClass()

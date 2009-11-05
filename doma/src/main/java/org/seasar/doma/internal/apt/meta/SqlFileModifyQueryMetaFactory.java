@@ -18,6 +18,7 @@ package org.seasar.doma.internal.apt.meta;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
@@ -31,6 +32,8 @@ import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
+import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
+import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
@@ -63,20 +66,32 @@ public class SqlFileModifyQueryMetaFactory extends
     protected SqlFileModifyQueryMeta createSqlFileModifyQueryMeta(
             ExecutableElement method, DaoMeta daoMeta) {
         SqlFileModifyQueryMeta queryMeta = new SqlFileModifyQueryMeta();
-        Insert insert = method.getAnnotation(Insert.class);
-        if (insert != null && insert.sqlFile()) {
-            queryMeta.setQueryTimeout(insert.queryTimeout());
-            queryMeta.setQueryKind(QueryKind.SQLFILE_INSERT);
+        AnnotationMirror annotationMirror = ElementUtil.getAnnotationMirror(
+                method, Insert.class, env);
+        if (annotationMirror != null) {
+            queryMeta.setAnnotationMirror(annotationMirror, env);
+            if (AnnotationValueUtil.isEqual(Boolean.TRUE, queryMeta
+                    .getSqlFile())) {
+                queryMeta.setQueryKind(QueryKind.SQLFILE_INSERT);
+            }
         }
-        Update update = method.getAnnotation(Update.class);
-        if (update != null && update.sqlFile()) {
-            queryMeta.setQueryTimeout(update.queryTimeout());
-            queryMeta.setQueryKind(QueryKind.SQLFILE_UPDATE);
+        annotationMirror = ElementUtil.getAnnotationMirror(method,
+                Update.class, env);
+        if (annotationMirror != null) {
+            queryMeta.setAnnotationMirror(annotationMirror, env);
+            if (AnnotationValueUtil.isEqual(Boolean.TRUE, queryMeta
+                    .getSqlFile())) {
+                queryMeta.setQueryKind(QueryKind.SQLFILE_UPDATE);
+            }
         }
-        Delete delete = method.getAnnotation(Delete.class);
-        if (delete != null && delete.sqlFile()) {
-            queryMeta.setQueryTimeout(delete.queryTimeout());
-            queryMeta.setQueryKind(QueryKind.SQLFILE_DELETE);
+        annotationMirror = ElementUtil.getAnnotationMirror(method,
+                Delete.class, env);
+        if (annotationMirror != null) {
+            queryMeta.setAnnotationMirror(annotationMirror, env);
+            if (AnnotationValueUtil.isEqual(Boolean.TRUE, queryMeta
+                    .getSqlFile())) {
+                queryMeta.setQueryKind(QueryKind.SQLFILE_DELETE);
+            }
         }
         if (queryMeta.getQueryKind() == null) {
             return null;

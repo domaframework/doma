@@ -15,11 +15,16 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
+import static org.seasar.doma.internal.util.AssertionUtil.*;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
 
@@ -42,21 +47,31 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
     protected QueryKind queryKind;
 
-    protected Integer queryTimeout;
+    protected AnnotationMirror annotationMirror;
 
-    protected Boolean versionIgnored;
+    protected AnnotationValue sqlFile;
 
-    protected Boolean versionIncluded;
+    protected AnnotationValue iterate;
 
-    protected Boolean nullExcluded;
+    protected AnnotationValue queryTimeout;
 
-    protected Boolean optimisticLockExceptionSuppressed;
+    protected AnnotationValue maxRows;
 
-    protected Boolean unchangedPropertyIncluded;
+    protected AnnotationValue fetchSize;
 
-    protected String[] includedPropertyNames;
+    protected AnnotationValue ignoreVersion;
 
-    protected String[] excludedPropertyNames;
+    protected AnnotationValue includeVersion;
+
+    protected AnnotationValue excludeNull;
+
+    protected AnnotationValue suppressOptimisticLockException;
+
+    protected AnnotationValue includeUnchanged;
+
+    protected AnnotationValue include;
+
+    protected AnnotationValue exclude;
 
     protected Map<String, TypeMirror> bindableParameterTypeMap = new LinkedHashMap<String, TypeMirror>();
 
@@ -119,45 +134,28 @@ public abstract class AbstractQueryMeta implements QueryMeta {
         this.queryKind = queryKind;
     }
 
-    public Integer getQueryTimeout() {
+    public AnnotationValue getSqlFile() {
+        return sqlFile;
+    }
+
+    public AnnotationValue getQueryTimeout() {
         return queryTimeout;
     }
 
-    public void setQueryTimeout(Integer queryTimeout) {
-        this.queryTimeout = queryTimeout;
+    public AnnotationValue getIgnoreVersion() {
+        return ignoreVersion;
     }
 
-    public Boolean isVersionIgnored() {
-        return versionIgnored;
+    public AnnotationValue getIncludeVersion() {
+        return includeVersion;
     }
 
-    public void setVersionIgnored(Boolean versionIgnored) {
-        this.versionIgnored = versionIgnored;
+    public AnnotationValue getSuppressOptimisticLockException() {
+        return suppressOptimisticLockException;
     }
 
-    public Boolean isVersionIncluded() {
-        return versionIncluded;
-    }
-
-    public void setVersionIncluded(Boolean versionIncluded) {
-        this.versionIncluded = versionIncluded;
-    }
-
-    public Boolean isOptimisticLockExceptionSuppressed() {
-        return optimisticLockExceptionSuppressed;
-    }
-
-    public void setOptimisticLockExceptionSuppressed(
-            Boolean optimisticLockExceptionSuppressed) {
-        this.optimisticLockExceptionSuppressed = optimisticLockExceptionSuppressed;
-    }
-
-    public Boolean isNullExcluded() {
-        return nullExcluded;
-    }
-
-    public void setNullExcluded(Boolean nullExcluded) {
-        this.nullExcluded = nullExcluded;
+    public AnnotationValue getExcludeNull() {
+        return excludeNull;
     }
 
     public Map<String, TypeMirror> getParameterTypeMap() {
@@ -166,31 +164,20 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
     public void addBindableParameterType(String parameterName,
             TypeMirror bindableParameterTypeMap) {
-        this.bindableParameterTypeMap.put(parameterName, bindableParameterTypeMap);
+        this.bindableParameterTypeMap.put(parameterName,
+                bindableParameterTypeMap);
     }
 
-    public Boolean isUnchangedPropertyIncluded() {
-        return unchangedPropertyIncluded;
+    public AnnotationValue getIncludeUnchanged() {
+        return includeUnchanged;
     }
 
-    public void setUnchangedPropertyIncluded(Boolean unchangedPropertyIncluded) {
-        this.unchangedPropertyIncluded = unchangedPropertyIncluded;
+    public AnnotationValue getInclude() {
+        return include;
     }
 
-    public String[] getIncludedPropertyNames() {
-        return includedPropertyNames;
-    }
-
-    public void setIncludedPropertyNames(String[] includedPropertyNames) {
-        this.includedPropertyNames = includedPropertyNames;
-    }
-
-    public String[] getExcludedPropertyNames() {
-        return excludedPropertyNames;
-    }
-
-    public void setExcludedPropertyNames(String[] excludedPropertyNames) {
-        this.excludedPropertyNames = excludedPropertyNames;
+    public AnnotationValue getExclude() {
+        return exclude;
     }
 
     public QueryReturnMeta getReturnMeta() {
@@ -207,6 +194,58 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
     public void addParameterMeta(QueryParameterMeta queryParameterMeta) {
         this.parameterMetas.add(queryParameterMeta);
+    }
+
+    public AnnotationValue getIterate() {
+        return iterate;
+    }
+
+    public AnnotationValue getMaxRows() {
+        return maxRows;
+    }
+
+    public AnnotationValue getFetchSize() {
+        return fetchSize;
+    }
+
+    public void setAnnotationMirror(AnnotationMirror mirror,
+            ProcessingEnvironment env) {
+        assertNotNull(mirror, env);
+        this.annotationMirror = mirror;
+        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : env
+                .getElementUtils().getElementValuesWithDefaults(mirror)
+                .entrySet()) {
+            String name = entry.getKey().getSimpleName().toString();
+            if ("sqlFile".equals(name)) {
+                sqlFile = entry.getValue();
+            } else if ("iterate".equals(name)) {
+                iterate = entry.getValue();
+            } else if ("queryTimeout".equals(name)) {
+                queryTimeout = entry.getValue();
+            } else if ("fetchSize".equals(name)) {
+                fetchSize = entry.getValue();
+            } else if ("maxRows".equals(name)) {
+                maxRows = entry.getValue();
+            } else if ("ignoreVersion".equals(name)) {
+                ignoreVersion = entry.getValue();
+            } else if ("includeVersion".equals(name)) {
+                includeVersion = entry.getValue();
+            } else if ("excludeNull".equals(name)) {
+                excludeNull = entry.getValue();
+            } else if ("suppressOptimisticLockException".equals(name)) {
+                suppressOptimisticLockException = entry.getValue();
+            } else if ("includeUnchanged".equals(name)) {
+                includeUnchanged = entry.getValue();
+            } else if ("include".equals(name)) {
+                include = entry.getValue();
+            } else if ("exclude".equals(name)) {
+                exclude = entry.getValue();
+            }
+        }
+    }
+
+    public AnnotationMirror getAnnotationMirror() {
+        return annotationMirror;
     }
 
 }

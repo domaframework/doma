@@ -17,11 +17,15 @@ package org.seasar.doma.internal.apt.util;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.lang.annotation.Annotation;
+
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.ExecutableType;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.SimpleElementVisitor6;
@@ -108,5 +112,17 @@ public class ElementUtil {
             ProcessingEnvironment env) {
         assertNotNull(clazz, env);
         return env.getElementUtils().getTypeElement(clazz.getCanonicalName());
+    }
+
+    public static AnnotationMirror getAnnotationMirror(Element element,
+            Class<? extends Annotation> annotationClass,
+            ProcessingEnvironment env) {
+        for (AnnotationMirror annotationMirror : element.getAnnotationMirrors()) {
+            DeclaredType annotationType = annotationMirror.getAnnotationType();
+            if (TypeMirrorUtil.isSameType(annotationType, annotationClass, env)) {
+                return annotationMirror;
+            }
+        }
+        return null;
     }
 }
