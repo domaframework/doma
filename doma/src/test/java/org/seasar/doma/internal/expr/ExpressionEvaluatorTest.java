@@ -43,15 +43,15 @@ public class ExpressionEvaluatorTest extends TestCase {
 
     public void testFindMethod() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        Method method = evaluator.findMethod(location, "concat", "aaa",
-                String.class, new Class[] { String.class });
+        Method method = evaluator.findMethod("concat", "aaa", String.class,
+                new Class[] { String.class });
         assertNotNull(method);
     }
 
     public void testFindMethod_notFound() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        Method method = evaluator.findMethod(location, "inexistentMethod",
-                "aaa", String.class, new Class[] { String.class });
+        Method method = evaluator.findMethod("inexistentMethod", "aaa",
+                String.class, new Class[] { String.class });
         assertNull(method);
     }
 

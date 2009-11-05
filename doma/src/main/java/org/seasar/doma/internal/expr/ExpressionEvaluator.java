@@ -450,8 +450,8 @@ public class ExpressionEvaluator implements
         ParameterCollection collection = collector.collect(node
                 .getParametersNode());
         ExpressionLocation location = node.getLocation();
-        Method method = findMethod(location, node.getMethodName(), target,
-                targetClass, collection.getParamTypes());
+        Method method = findMethod(node.getMethodName(), target, targetClass,
+                collection.getParamTypes());
         if (method == null) {
             String signature = MethodUtil.createSignature(node.getMethodName(),
                     collection.getParamTypes());
@@ -472,8 +472,8 @@ public class ExpressionEvaluator implements
         ParameterCollection collection = collector.collect(node
                 .getParametersNode());
         ExpressionLocation location = node.getLocation();
-        Method method = findMethod(location, node.getMethodName(), null,
-                targetClass, collection.getParamTypes());
+        Method method = findMethod(node.getMethodName(), null, targetClass,
+                collection.getParamTypes());
         if (method == null) {
             String signature = MethodUtil.createSignature(node.getMethodName(),
                     collection.getParamTypes());
@@ -485,8 +485,8 @@ public class ExpressionEvaluator implements
                 .getParamTypes(), collection.getParams());
     }
 
-    protected Method findMethod(ExpressionLocation location, String methodName,
-            Object target, Class<?> targetClass, Class<?>[] paramTypes) {
+    protected Method findMethod(String methodName, Object target,
+            Class<?> targetClass, Class<?>[] paramTypes) {
         List<Method> methods = new ArrayList<Method>();
         for (Class<?> clazz = targetClass; clazz != null
                 && clazz != Object.class; clazz = clazz.getSuperclass()) {
@@ -510,10 +510,9 @@ public class ExpressionEvaluator implements
         return null;
     }
 
-    protected Method findStaticMethod(ExpressionLocation location,
-            String methodName, Class<?> targetClass, Class<?>[] paramTypes) {
-        Method method = findMethod(location, methodName, null, targetClass,
-                paramTypes);
+    protected Method findStaticMethod(String methodName, Class<?> targetClass,
+            Class<?>[] paramTypes) {
+        Method method = findMethod(methodName, null, targetClass, paramTypes);
         if (method == null) {
             return null;
         }
@@ -546,8 +545,8 @@ public class ExpressionEvaluator implements
         ParameterCollection collection = collector.collect(node
                 .getParametersNode());
         ExpressionLocation location = node.getLocation();
-        Method method = findMethod(location, node.getMethodName(),
-                expressionFunctions, targetClass, collection.getParamTypes());
+        Method method = findMethod(node.getMethodName(), expressionFunctions,
+                targetClass, collection.getParamTypes());
         if (method == null) {
             String signature = MethodUtil.createSignature(node.getMethodName(),
                     collection.getParamTypes());
@@ -565,8 +564,7 @@ public class ExpressionEvaluator implements
                 p);
         Object target = targetResult.getValue();
         ExpressionLocation location = node.getLocation();
-        Field field = findField(location, node.getFieldName(), target
-                .getClass());
+        Field field = findField(node.getFieldName(), target.getClass());
         if (field == null) {
             throw new ExpressionException(DomaMessageCode.DOMA3018, location
                     .getExpression(), location.getPosition(), target.getClass()
@@ -581,7 +579,7 @@ public class ExpressionEvaluator implements
         Class<?> targetClass = forClassName(node.getLocation(), node
                 .getClassName());
         ExpressionLocation location = node.getLocation();
-        Field field = findField(location, node.getFieldName(), targetClass);
+        Field field = findStaticField(node.getFieldName(), targetClass);
         if (field == null) {
             throw new ExpressionException(DomaMessageCode.DOMA3033, location
                     .getExpression(), location.getPosition(), targetClass
@@ -590,8 +588,7 @@ public class ExpressionEvaluator implements
         return getFieldValue(location, field, null);
     }
 
-    protected Field findField(ExpressionLocation location, String fieldName,
-            Class<?> targetClass) {
+    protected Field findField(String fieldName, Class<?> targetClass) {
         for (Class<?> clazz = targetClass; clazz != Object.class; clazz = clazz
                 .getSuperclass()) {
             try {
@@ -604,9 +601,8 @@ public class ExpressionEvaluator implements
         return null;
     }
 
-    protected Field findStaticField(ExpressionLocation location,
-            String fieldName, Class<?> targetClass) {
-        Field field = findField(location, fieldName, targetClass);
+    protected Field findStaticField(String fieldName, Class<?> targetClass) {
+        Field field = findField(fieldName, targetClass);
         if ((field.getModifiers() & Modifier.STATIC) != 0) {
             return field;
         }
