@@ -15,22 +15,22 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
+import javax.lang.model.element.ExecutableElement;
+
+import org.seasar.doma.internal.apt.mirror.ArrayFactoryMirror;
+
 /**
  * @author taedium
  * 
  */
 public class ArrayCreateQueryMeta extends AbstractCreateQueryMeta {
 
-    protected String jdbcTypeName;
-
     protected String elementsParameterName;
 
-    public String getJdbcTypeName() {
-        return jdbcTypeName;
-    }
+    protected ArrayFactoryMirror arrayFactoryMirror;
 
-    public void setJdbcTypeName(String jdbcTypeName) {
-        this.jdbcTypeName = jdbcTypeName;
+    public ArrayCreateQueryMeta(ExecutableElement method) {
+        super(method);
     }
 
     public String getParameterName() {
@@ -39,6 +39,14 @@ public class ArrayCreateQueryMeta extends AbstractCreateQueryMeta {
 
     public void setElementsParameterName(String elementsParameterName) {
         this.elementsParameterName = elementsParameterName;
+    }
+
+    public ArrayFactoryMirror getArrayFactoryMirror() {
+        return arrayFactoryMirror;
+    }
+
+    public void setArrayFactoryMirror(ArrayFactoryMirror arrayFactoryMirror) {
+        this.arrayFactoryMirror = arrayFactoryMirror;
     }
 
     @Override

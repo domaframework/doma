@@ -22,7 +22,7 @@ import java.sql.NClob;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 
-import org.seasar.doma.NClobFactory;
+import org.seasar.doma.internal.apt.mirror.NClobFactoryMirror;
 
 /**
  * @author taedium
@@ -38,14 +38,14 @@ public class NClobCreateQueryMetaFactory extends
     @Override
     public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
         assertNotNull(method, daoMeta);
-        NClobFactory nclobFactory = method.getAnnotation(NClobFactory.class);
-        if (nclobFactory == null) {
+        NClobFactoryMirror nClobFactoryMirror = NClobFactoryMirror.newInstance(
+                method, env);
+        if (nClobFactoryMirror == null) {
             return null;
         }
-        NClobCreateQueryMeta queryMeta = new NClobCreateQueryMeta();
+        NClobCreateQueryMeta queryMeta = new NClobCreateQueryMeta(method);
+        queryMeta.setNClobFactoryMirror(nClobFactoryMirror);
         queryMeta.setQueryKind(QueryKind.NCLOB_FACTORY);
-        queryMeta.setName(method.getSimpleName().toString());
-        queryMeta.setExecutableElement(method);
         doTypeParameters(queryMeta, method, daoMeta);
         doReturnType(queryMeta, method, daoMeta);
         doParameters(queryMeta, method, daoMeta);

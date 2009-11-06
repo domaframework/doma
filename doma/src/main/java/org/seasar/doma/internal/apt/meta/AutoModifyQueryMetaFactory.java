@@ -20,19 +20,17 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
-import org.seasar.doma.Delete;
-import org.seasar.doma.Insert;
-import org.seasar.doma.Update;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.mirror.DeleteMirror;
+import org.seasar.doma.internal.apt.mirror.InsertMirror;
+import org.seasar.doma.internal.apt.mirror.ModifyMirror;
+import org.seasar.doma.internal.apt.mirror.UpdateMirror;
 import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
-import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
-import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
@@ -63,40 +61,26 @@ public class AutoModifyQueryMetaFactory extends
 
     protected AutoModifyQueryMeta createAutoModifyQueryMeta(
             ExecutableElement method, DaoMeta daoMeta) {
-        AutoModifyQueryMeta queryMeta = new AutoModifyQueryMeta();
-        AnnotationMirror annotationMirror = ElementUtil.getAnnotationMirror(
-                method, Insert.class, env);
-        if (annotationMirror != null) {
-            queryMeta.setAnnotationMirror(annotationMirror, env);
-            if (AnnotationValueUtil.isEqual(Boolean.FALSE, queryMeta
-                    .getSqlFile())) {
-                queryMeta.setQueryKind(QueryKind.AUTO_INSERT);
-            }
+        AutoModifyQueryMeta queryMeta = new AutoModifyQueryMeta(method);
+        ModifyMirror modifyMirror = InsertMirror.newInstance(method, env);
+        if (modifyMirror != null && !modifyMirror.isSqlFile()) {
+            queryMeta.setModifyMirror(modifyMirror);
+            queryMeta.setQueryKind(QueryKind.AUTO_INSERT);
+            return queryMeta;
         }
-        annotationMirror = ElementUtil.getAnnotationMirror(method,
-                Update.class, env);
-        if (annotationMirror != null) {
-            queryMeta.setAnnotationMirror(annotationMirror, env);
-            if (AnnotationValueUtil.isEqual(Boolean.FALSE, queryMeta
-                    .getSqlFile())) {
-                queryMeta.setQueryKind(QueryKind.AUTO_UPDATE);
-            }
+        modifyMirror = UpdateMirror.newInstance(method, env);
+        if (modifyMirror != null && !modifyMirror.isSqlFile()) {
+            queryMeta.setModifyMirror(modifyMirror);
+            queryMeta.setQueryKind(QueryKind.AUTO_UPDATE);
+            return queryMeta;
         }
-        annotationMirror = ElementUtil.getAnnotationMirror(method,
-                Delete.class, env);
-        if (annotationMirror != null) {
-            queryMeta.setAnnotationMirror(annotationMirror, env);
-            if (AnnotationValueUtil.isEqual(Boolean.FALSE, queryMeta
-                    .getSqlFile())) {
-                queryMeta.setQueryKind(QueryKind.AUTO_DELETE);
-            }
+        modifyMirror = DeleteMirror.newInstance(method, env);
+        if (modifyMirror != null && !modifyMirror.isSqlFile()) {
+            queryMeta.setModifyMirror(modifyMirror);
+            queryMeta.setQueryKind(QueryKind.AUTO_DELETE);
+            return queryMeta;
         }
-        if (queryMeta.getQueryKind() == null) {
-            return null;
-        }
-        queryMeta.setName(method.getSimpleName().toString());
-        queryMeta.setExecutableElement(method);
-        return queryMeta;
+        return null;
     }
 
     @Override
@@ -148,7 +132,9 @@ public class AutoModifyQueryMetaFactory extends
             queryMeta.addBindableParameterType(parameterMeta.getName(),
                     entityType.getTypeMirror());
         }
+        ModifyMirror modifyMirror = queryMeta.getModifyMirror();
         validateEntityPropertyNames(entityType.getTypeMirror(), method,
-                queryMeta);
+                modifyMirror.getAnnotationMirror(), modifyMirror.getInclude(),
+                modifyMirror.getExclude());
     }
 }

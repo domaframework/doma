@@ -33,6 +33,7 @@ import javax.lang.model.util.ElementFilter;
 import org.seasar.doma.Delegate;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
+import org.seasar.doma.internal.apt.mirror.DelegateMirror;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
 
@@ -64,15 +65,13 @@ public class DelegateQueryMetaFactory extends
 
     protected DelegateQueryMeta createDelegateQueryMeta(
             ExecutableElement method, DaoMeta daoMeta) {
-        Delegate delegate = method.getAnnotation(Delegate.class);
-        if (delegate == null) {
+        DelegateMirror delegateMirror = DelegateMirror.newInstance(method, env);
+        if (delegateMirror == null) {
             return null;
         }
-        DelegateQueryMeta queryMeta = new DelegateQueryMeta();
+        DelegateQueryMeta queryMeta = new DelegateQueryMeta(method);
+        queryMeta.setDelegateMirror(delegateMirror);
         queryMeta.setQueryKind(QueryKind.DELEGATE);
-        queryMeta.setTargetType(getTargetType(delegate));
-        queryMeta.setName(method.getSimpleName().toString());
-        queryMeta.setExecutableElement(method);
         return queryMeta;
     }
 
@@ -107,8 +106,13 @@ public class DelegateQueryMetaFactory extends
 
     protected void doDelegate(DelegateQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        TypeElement delegateTypeElement = TypeMirrorUtil.toTypeElement(queryMeta
-                .getTargetType(), env);
+        TypeMirror delegateTypeMirror = queryMeta.getDelegateMirror()
+                .getToValue();
+        if (delegateTypeMirror == null) {
+            throw new AptIllegalStateException(method.toString());
+        }
+        TypeElement delegateTypeElement = TypeMirrorUtil.toTypeElement(
+                delegateTypeMirror, env);
         if (delegateTypeElement == null) {
             throw new AptIllegalStateException(method.toString());
         }
@@ -139,8 +143,8 @@ public class DelegateQueryMetaFactory extends
                     VariableElement first = parameters.get(0);
                     VariableElement second = parameters.get(1);
                     if (isConfig(first.asType())
-                            && TypeMirrorUtil.isAssignable(second.asType(), daoMeta
-                                    .getDaoType(), env)) {
+                            && TypeMirrorUtil.isAssignable(second.asType(),
+                                    daoMeta.getDaoType(), env)) {
                         candidate = constructor;
                         break;
                     }

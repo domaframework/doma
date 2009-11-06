@@ -15,6 +15,9 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
+import javax.lang.model.element.ExecutableElement;
+
+import org.seasar.doma.internal.apt.mirror.ModifyMirror;
 import org.seasar.doma.internal.apt.type.EntityType;
 
 /**
@@ -26,6 +29,12 @@ public class AutoModifyQueryMeta extends AbstractQueryMeta {
     protected EntityType entityType;
 
     protected String entityParameterName;
+
+    protected ModifyMirror modifyMirror;
+
+    public AutoModifyQueryMeta(ExecutableElement method) {
+        super(method);
+    }
 
     public EntityType getEntityType() {
         return entityType;
@@ -41,6 +50,14 @@ public class AutoModifyQueryMeta extends AbstractQueryMeta {
 
     public void setEntityParameterName(String entityParameterName) {
         this.entityParameterName = entityParameterName;
+    }
+
+    public ModifyMirror getModifyMirror() {
+        return modifyMirror;
+    }
+
+    public void setModifyMirror(ModifyMirror modifyMirror) {
+        this.modifyMirror = modifyMirror;
     }
 
     @Override

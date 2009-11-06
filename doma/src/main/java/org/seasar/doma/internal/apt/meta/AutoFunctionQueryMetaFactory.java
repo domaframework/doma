@@ -18,18 +18,16 @@ package org.seasar.doma.internal.apt.meta;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 
-import org.seasar.doma.Function;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.mirror.FunctionMirror;
 import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
-import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
@@ -46,16 +44,12 @@ public class AutoFunctionQueryMetaFactory extends
     @Override
     public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
         assertNotNull(method, daoMeta);
-        AnnotationMirror annotationMirror = ElementUtil.getAnnotationMirror(
-                method, Function.class, env);
-        if (annotationMirror == null) {
+        FunctionMirror functionMirror = FunctionMirror.newInstance(method, env);
+        if (functionMirror == null) {
             return null;
         }
-        AutoFunctionQueryMeta queryMeta = new AutoFunctionQueryMeta();
-        queryMeta.setName(method.getSimpleName().toString());
-        queryMeta.setExecutableElement(method);
-        queryMeta.setAnnotationMirror(annotationMirror, env);
-        queryMeta.setFunctionName(annotationMirror, env);
+        AutoFunctionQueryMeta queryMeta = new AutoFunctionQueryMeta(method);
+        queryMeta.setFunctionMirror(functionMirror);
         queryMeta.setQueryKind(QueryKind.AUTO_FUNCTION);
         doTypeParameters(queryMeta, method, daoMeta);
         doReturnType(queryMeta, method, daoMeta);

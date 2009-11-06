@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.lang.model.element.AnnotationValue;
+import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.SimpleAnnotationValueVisitor6;
 
 /**
@@ -82,6 +83,21 @@ public final class AnnotationValueUtil {
             }
 
         }, null);
+    }
+
+    public static TypeMirror toTypeMirror(AnnotationValue value) {
+        if (value == null) {
+            return null;
+        }
+        return value.accept(
+                new SimpleAnnotationValueVisitor6<TypeMirror, Void>() {
+
+                    @Override
+                    public TypeMirror visitType(TypeMirror t, Void p) {
+                        return t;
+                    }
+
+                }, null);
     }
 
     public static boolean isEqual(Object object, AnnotationValue value) {

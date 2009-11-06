@@ -15,6 +15,9 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
+import javax.lang.model.element.ExecutableElement;
+
+import org.seasar.doma.internal.apt.mirror.SelectMirror;
 import org.seasar.doma.internal.apt.type.IterationCallbackType;
 import org.seasar.doma.internal.apt.type.SelectOptionsType;
 
@@ -24,6 +27,8 @@ import org.seasar.doma.internal.apt.type.SelectOptionsType;
  */
 public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
+    protected SelectMirror selectMirror;
+
     protected String iterationCallbackPrameterName;
 
     protected IterationCallbackType iterationCallbackType;
@@ -31,6 +36,10 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
     protected String selectOptionsParameterName;
 
     protected SelectOptionsType selectOptionsType;
+
+    public SqlFileSelectQueryMeta(ExecutableElement method) {
+        super(method);
+    }
 
     public String getIterationCallbackPrameterName() {
         return iterationCallbackPrameterName;
@@ -64,6 +73,14 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
     public void setSelectOptionsType(SelectOptionsType selectOptionsType) {
         this.selectOptionsType = selectOptionsType;
+    }
+
+    public SelectMirror getSelectMirror() {
+        return selectMirror;
+    }
+
+    public void setSelectMirror(SelectMirror selectMirror) {
+        this.selectMirror = selectMirror;
     }
 
     @Override

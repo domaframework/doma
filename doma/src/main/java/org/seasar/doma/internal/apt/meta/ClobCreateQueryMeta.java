@@ -15,11 +15,28 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
+import javax.lang.model.element.ExecutableElement;
+
+import org.seasar.doma.internal.apt.mirror.ClobFactoryMirror;
 
 /**
  * @author taedium
- *
+ * 
  */
 public class ClobCreateQueryMeta extends AbstractCreateQueryMeta {
+
+    protected ClobFactoryMirror clobFactoryMirror;
+
+    public ClobCreateQueryMeta(ExecutableElement method) {
+        super(method);
+    }
+
+    public ClobFactoryMirror getClobFactoryMirror() {
+        return clobFactoryMirror;
+    }
+
+    public void setClobFactoryMirror(ClobFactoryMirror clobFactoryMirror) {
+        this.clobFactoryMirror = clobFactoryMirror;
+    }
 
 }

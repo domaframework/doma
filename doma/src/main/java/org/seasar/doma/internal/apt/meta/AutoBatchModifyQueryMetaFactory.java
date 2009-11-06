@@ -20,20 +20,18 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
-import org.seasar.doma.BatchDelete;
-import org.seasar.doma.BatchInsert;
-import org.seasar.doma.BatchUpdate;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.mirror.BatchDeleteMirror;
+import org.seasar.doma.internal.apt.mirror.BatchInsertMirror;
+import org.seasar.doma.internal.apt.mirror.BatchModifyMirror;
+import org.seasar.doma.internal.apt.mirror.BatchUpdateMirror;
 import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
-import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
-import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
@@ -64,40 +62,28 @@ public class AutoBatchModifyQueryMetaFactory extends
 
     protected AutoBatchModifyQueryMeta createAutoBatchModifyQueryMeta(
             ExecutableElement method, DaoMeta daoMeta) {
-        AutoBatchModifyQueryMeta queryMeta = new AutoBatchModifyQueryMeta();
-        AnnotationMirror annotationMirror = ElementUtil.getAnnotationMirror(
-                method, BatchInsert.class, env);
-        if (annotationMirror != null) {
-            queryMeta.setAnnotationMirror(annotationMirror, env);
-            if (AnnotationValueUtil.isEqual(Boolean.FALSE, queryMeta
-                    .getSqlFile())) {
-                queryMeta.setQueryKind(QueryKind.AUTO_BATCH_INSERT);
-            }
+        AutoBatchModifyQueryMeta queryMeta = new AutoBatchModifyQueryMeta(
+                method);
+        BatchModifyMirror batchModifyMirror = BatchInsertMirror.newInstance(
+                method, env);
+        if (batchModifyMirror != null && !batchModifyMirror.isSqlFile()) {
+            queryMeta.setBatchModifyMirror(batchModifyMirror);
+            queryMeta.setQueryKind(QueryKind.AUTO_BATCH_INSERT);
+            return queryMeta;
         }
-        annotationMirror = ElementUtil.getAnnotationMirror(method,
-                BatchUpdate.class, env);
-        if (annotationMirror != null) {
-            queryMeta.setAnnotationMirror(annotationMirror, env);
-            if (AnnotationValueUtil.isEqual(Boolean.FALSE, queryMeta
-                    .getSqlFile())) {
-                queryMeta.setQueryKind(QueryKind.AUTO_BATCH_UPDATE);
-            }
+        batchModifyMirror = BatchUpdateMirror.newInstance(method, env);
+        if (batchModifyMirror != null && !batchModifyMirror.isSqlFile()) {
+            queryMeta.setBatchModifyMirror(batchModifyMirror);
+            queryMeta.setQueryKind(QueryKind.AUTO_BATCH_UPDATE);
+            return queryMeta;
         }
-        annotationMirror = ElementUtil.getAnnotationMirror(method,
-                BatchDelete.class, env);
-        if (annotationMirror != null) {
-            queryMeta.setAnnotationMirror(annotationMirror, env);
-            if (AnnotationValueUtil.isEqual(Boolean.FALSE, queryMeta
-                    .getSqlFile())) {
-                queryMeta.setQueryKind(QueryKind.AUTO_BATCH_DELETE);
-            }
+        batchModifyMirror = BatchDeleteMirror.newInstance(method, env);
+        if (batchModifyMirror != null && !batchModifyMirror.isSqlFile()) {
+            queryMeta.setBatchModifyMirror(batchModifyMirror);
+            queryMeta.setQueryKind(QueryKind.AUTO_BATCH_DELETE);
+            return queryMeta;
         }
-        if (queryMeta.getQueryKind() == null) {
-            return null;
-        }
-        queryMeta.setName(method.getSimpleName().toString());
-        queryMeta.setExecutableElement(method);
-        return queryMeta;
+        return null;
     }
 
     @Override
@@ -166,8 +152,10 @@ public class AutoBatchModifyQueryMetaFactory extends
             queryMeta.addBindableParameterType(parameterMeta.getName(),
                     entityType.getTypeMirror());
         }
+        BatchModifyMirror batchModifyMirror = queryMeta.getBatchModifyMirror();
         validateEntityPropertyNames(entityType.getTypeMirror(), method,
-                queryMeta);
+                batchModifyMirror.getAnnotationMirror(), batchModifyMirror
+                        .getInclude(), batchModifyMirror.getExclude());
     }
 
 }

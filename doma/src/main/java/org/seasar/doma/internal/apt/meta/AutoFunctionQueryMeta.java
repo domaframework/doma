@@ -15,14 +15,9 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import java.util.Map;
-
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
 
-import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
+import org.seasar.doma.internal.apt.mirror.FunctionMirror;
 
 /**
  * @author taedium
@@ -30,12 +25,20 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
  */
 public class AutoFunctionQueryMeta extends AutoModuleQueryMeta {
 
-    protected String functionName;
-
     protected ResultParameterMeta resultParameterMeta;
 
+    protected FunctionMirror functionMirror;
+
+    public AutoFunctionQueryMeta(ExecutableElement method) {
+        super(method);
+    }
+
     public String getFunctionName() {
-        return functionName;
+        String name = functionMirror.getFunctionName();
+        if (name != null && !name.isEmpty()) {
+            return name;
+        }
+        return this.name;
     }
 
     public ResultParameterMeta getResultParameterMeta() {
@@ -46,47 +49,17 @@ public class AutoFunctionQueryMeta extends AutoModuleQueryMeta {
         this.resultParameterMeta = resultParameterMeta;
     }
 
+    public FunctionMirror getFunctionMirror() {
+        return functionMirror;
+    }
+
+    public void setFunctionMirror(FunctionMirror functionMirror) {
+        this.functionMirror = functionMirror;
+    }
+
     @Override
     public <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p) {
         return visitor.visitAutoFunctionQueryMeta(this, p);
-    }
-
-    public void setFunctionName(AnnotationMirror mirror,
-            ProcessingEnvironment env) {
-        super.setAnnotationMirror(mirror, env);
-
-        String catalog = null;
-        String schema = null;
-        String name = null;
-
-        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : mirror
-                .getElementValues().entrySet()) {
-            String elementName = entry.getKey().getSimpleName().toString();
-            if ("catalog".equals(elementName)) {
-                catalog = AnnotationValueUtil.toString(entry.getValue());
-            } else if ("schema".equals(elementName)) {
-                schema = AnnotationValueUtil.toString(entry.getValue());
-            } else if ("name".equals(elementName)) {
-                name = AnnotationValueUtil.toString(entry.getValue());
-            }
-        }
-
-        StringBuilder buf = new StringBuilder();
-        if (catalog != null && !catalog.isEmpty()) {
-            buf.append(catalog);
-            buf.append(".");
-        }
-        if (schema != null && !schema.isEmpty()) {
-            buf.append(schema);
-            buf.append(".");
-        }
-        if (name != null && !name.isEmpty()) {
-            buf.append(name);
-        } else {
-            buf.append(this.name);
-        }
-
-        functionName = buf.toString();
     }
 
 }

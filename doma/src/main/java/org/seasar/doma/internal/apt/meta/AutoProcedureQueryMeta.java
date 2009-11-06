@@ -15,14 +15,9 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import java.util.Map;
-
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
 
-import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
+import org.seasar.doma.internal.apt.mirror.ProcedureMirror;
 
 /**
  * @author taedium
@@ -30,53 +25,31 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
  */
 public class AutoProcedureQueryMeta extends AutoModuleQueryMeta {
 
-    protected String procedureName;
+    protected ProcedureMirror procedureMirror;
+
+    public AutoProcedureQueryMeta(ExecutableElement method) {
+        super(method);
+    }
+
+    public ProcedureMirror getProcedureMirror() {
+        return procedureMirror;
+    }
+
+    public void setProcedureMirror(ProcedureMirror procedureMirror) {
+        this.procedureMirror = procedureMirror;
+    }
 
     public String getProcedureName() {
-        return procedureName;
+        String name = procedureMirror.getProcedureName();
+        if (name != null && !name.isEmpty()) {
+            return name;
+        }
+        return this.name;
     }
 
     @Override
     public <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p) {
         return visitor.visitAutoProcedureQueryMeta(this, p);
-    }
-
-    public void setProcedureName(AnnotationMirror mirror,
-            ProcessingEnvironment env) {
-        super.setAnnotationMirror(mirror, env);
-
-        String catalog = null;
-        String schema = null;
-        String name = null;
-
-        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : mirror
-                .getElementValues().entrySet()) {
-            String elementName = entry.getKey().getSimpleName().toString();
-            if ("catalog".equals(elementName)) {
-                catalog = AnnotationValueUtil.toString(entry.getValue());
-            } else if ("schema".equals(elementName)) {
-                schema = AnnotationValueUtil.toString(entry.getValue());
-            } else if ("name".equals(elementName)) {
-                name = AnnotationValueUtil.toString(entry.getValue());
-            }
-        }
-
-        StringBuilder buf = new StringBuilder();
-        if (catalog != null && !catalog.isEmpty()) {
-            buf.append(catalog);
-            buf.append(".");
-        }
-        if (schema != null && !schema.isEmpty()) {
-            buf.append(schema);
-            buf.append(".");
-        }
-        if (name != null && !name.isEmpty()) {
-            buf.append(name);
-        } else {
-            buf.append(this.name);
-        }
-
-        procedureName = buf.toString();
     }
 
 }

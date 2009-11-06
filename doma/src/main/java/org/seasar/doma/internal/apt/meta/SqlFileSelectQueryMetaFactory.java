@@ -18,12 +18,11 @@ package org.seasar.doma.internal.apt.meta;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
-import org.seasar.doma.Select;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.mirror.SelectMirror;
 import org.seasar.doma.internal.apt.type.AnyType;
 import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.type.DataType;
@@ -33,8 +32,6 @@ import org.seasar.doma.internal.apt.type.IterationCallbackType;
 import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.SelectOptionsType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
-import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
-import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
@@ -66,16 +63,13 @@ public class SqlFileSelectQueryMetaFactory extends
 
     protected SqlFileSelectQueryMeta createSqlFileSelectQueryMeta(
             ExecutableElement method, DaoMeta daoMeta) {
-        AnnotationMirror annotationMirror = ElementUtil.getAnnotationMirror(
-                method, Select.class, env);
-        if (annotationMirror == null) {
+        SelectMirror selectMirror = SelectMirror.newInstance(method, env);
+        if (selectMirror == null) {
             return null;
         }
-        SqlFileSelectQueryMeta queryMeta = new SqlFileSelectQueryMeta();
-        queryMeta.setAnnotationMirror(annotationMirror, env);
+        SqlFileSelectQueryMeta queryMeta = new SqlFileSelectQueryMeta(method);
+        queryMeta.setSelectMirror(selectMirror);
         queryMeta.setQueryKind(QueryKind.SQLFILE_SELECT);
-        queryMeta.setName(method.getSimpleName().toString());
-        queryMeta.setExecutableElement(method);
         return queryMeta;
     }
 
@@ -84,7 +78,7 @@ public class SqlFileSelectQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         final QueryReturnMeta returnMeta = createReturnMeta(method);
         queryMeta.setReturnMeta(returnMeta);
-        if (AnnotationValueUtil.isEqual(Boolean.TRUE, queryMeta.getIterate())) {
+        if (queryMeta.getSelectMirror().isIterate()) {
             IterationCallbackType iterationCallbackType = queryMeta
                     .getIterationCallbackType();
             AnyType callbackReturnType = iterationCallbackType.getReturnType();
@@ -289,7 +283,7 @@ public class SqlFileSelectQueryMetaFactory extends
                         parameterMeta.getType());
             }
         }
-        if (AnnotationValueUtil.isEqual(Boolean.TRUE, queryMeta.getIterate())) {
+        if (queryMeta.getSelectMirror().isIterate()) {
             if (queryMeta.getIterationCallbackType() == null) {
                 throw new AptException(DomaMessageCode.DOMA4056, env, method);
             }

@@ -22,7 +22,7 @@ import java.sql.Blob;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 
-import org.seasar.doma.BlobFactory;
+import org.seasar.doma.internal.apt.mirror.BlobFactoryMirror;
 
 /**
  * @author taedium
@@ -38,14 +38,14 @@ public class BlobCreateQueryMetaFactory extends
     @Override
     public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
         assertNotNull(method, daoMeta);
-        BlobFactory blobFactory = method.getAnnotation(BlobFactory.class);
-        if (blobFactory == null) {
+        BlobFactoryMirror blobFactoryMirror = BlobFactoryMirror.newInstance(
+                method, env);
+        if (blobFactoryMirror == null) {
             return null;
         }
-        BlobCreateQueryMeta queryMeta = new BlobCreateQueryMeta();
+        BlobCreateQueryMeta queryMeta = new BlobCreateQueryMeta(method);
+        queryMeta.setBlobFactoryMirror(blobFactoryMirror);
         queryMeta.setQueryKind(QueryKind.BLOB_FACTORY);
-        queryMeta.setName(method.getSimpleName().toString());
-        queryMeta.setExecutableElement(method);
         doTypeParameters(queryMeta, method, daoMeta);
         doReturnType(queryMeta, method, daoMeta);
         doParameters(queryMeta, method, daoMeta);

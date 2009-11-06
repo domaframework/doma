@@ -15,10 +15,28 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
+import javax.lang.model.element.ExecutableElement;
+
+import org.seasar.doma.internal.apt.mirror.BlobFactoryMirror;
+
 /**
  * @author taedium
  * 
  */
 public class BlobCreateQueryMeta extends AbstractCreateQueryMeta {
+
+    protected BlobFactoryMirror blobFactoryMirror;
+
+    public BlobCreateQueryMeta(ExecutableElement method) {
+        super(method);
+    }
+
+    public BlobFactoryMirror getBlobFactoryMirror() {
+        return blobFactoryMirror;
+    }
+
+    public void setBlobFactoryMirror(BlobFactoryMirror blobFactoryMirror) {
+        this.blobFactoryMirror = blobFactoryMirror;
+    }
 
 }

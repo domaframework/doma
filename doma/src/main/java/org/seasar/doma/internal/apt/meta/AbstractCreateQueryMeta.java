@@ -15,11 +15,17 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
+import javax.lang.model.element.ExecutableElement;
+
 /**
  * @author taedium
  * 
  */
 public abstract class AbstractCreateQueryMeta extends AbstractQueryMeta {
+
+    public AbstractCreateQueryMeta(ExecutableElement method) {
+        super(method);
+    }
 
     @Override
     public <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p) {

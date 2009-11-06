@@ -18,6 +18,8 @@ package org.seasar.doma.internal.apt.meta;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.lang.model.element.ExecutableElement;
+
 /**
  * @author taedium
  * 
@@ -25,6 +27,10 @@ import java.util.List;
 public abstract class AutoModuleQueryMeta extends AbstractQueryMeta {
 
     protected final List<CallableSqlParameterMeta> sqlParameterMetas = new ArrayList<CallableSqlParameterMeta>();
+
+    public AutoModuleQueryMeta(ExecutableElement method) {
+        super(method);
+    }
 
     public void addCallableSqlParameterMeta(
             CallableSqlParameterMeta sqlParameterMeta) {

@@ -25,8 +25,8 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 
-import org.seasar.doma.ArrayFactory;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.mirror.ArrayFactoryMirror;
 import org.seasar.doma.internal.message.DomaMessageCode;
 
 /**
@@ -43,15 +43,14 @@ public class ArrayCreateQueryMetaFactory extends
     @Override
     public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
         assertNotNull(method, daoMeta);
-        ArrayFactory arrayFactory = method.getAnnotation(ArrayFactory.class);
-        if (arrayFactory == null) {
+        ArrayFactoryMirror arrayFactoryMirror = ArrayFactoryMirror.newInstance(
+                method, env);
+        if (arrayFactoryMirror == null) {
             return null;
         }
-        ArrayCreateQueryMeta queryMeta = new ArrayCreateQueryMeta();
+        ArrayCreateQueryMeta queryMeta = new ArrayCreateQueryMeta(method);
+        queryMeta.setArrayFactoryMirror(arrayFactoryMirror);
         queryMeta.setQueryKind(QueryKind.ARRAY_FACTORY);
-        queryMeta.setJdbcTypeName(arrayFactory.typeName());
-        queryMeta.setName(method.getSimpleName().toString());
-        queryMeta.setExecutableElement(method);
         doTypeParameters(queryMeta, method, daoMeta);
         doReturnType(queryMeta, method, daoMeta);
         doParameters(queryMeta, method, daoMeta);
@@ -76,8 +75,8 @@ public class ArrayCreateQueryMetaFactory extends
         queryMeta.setElementsParameterName(parameterMeta.getName());
         queryMeta.addParameterMeta(parameterMeta);
         if (parameterMeta.isBindable()) {
-            queryMeta.addBindableParameterType(parameterMeta.getName(), parameterMeta
-                    .getType());
+            queryMeta.addBindableParameterType(parameterMeta.getName(),
+                    parameterMeta.getType());
         }
     }
 }

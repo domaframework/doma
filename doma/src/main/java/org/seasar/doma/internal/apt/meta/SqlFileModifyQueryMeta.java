@@ -15,12 +15,29 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
+import javax.lang.model.element.ExecutableElement;
+
+import org.seasar.doma.internal.apt.mirror.ModifyMirror;
 
 /**
  * @author taedium
  * 
  */
 public class SqlFileModifyQueryMeta extends AbstractSqlFileQueryMeta {
+
+    protected ModifyMirror modifyMirror;
+
+    public SqlFileModifyQueryMeta(ExecutableElement method) {
+        super(method);
+    }
+
+    public ModifyMirror getModifyMirror() {
+        return modifyMirror;
+    }
+
+    public void setModifyMirror(ModifyMirror modifyMirror) {
+        this.modifyMirror = modifyMirror;
+    }
 
     @Override
     public <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p) {

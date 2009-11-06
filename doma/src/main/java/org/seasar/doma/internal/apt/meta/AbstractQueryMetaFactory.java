@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Set;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.TypeParameterElement;
@@ -127,11 +129,12 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
     }
 
     protected void validateEntityPropertyNames(TypeMirror entityType,
-            ExecutableElement method, M queryMeta) {
+            ExecutableElement method, AnnotationMirror annotationMirror,
+            AnnotationValue includeValue, AnnotationValue excludeValue) {
         List<String> includedPropertyNames = AnnotationValueUtil
-                .toStringList(queryMeta.getInclude());
+                .toStringList(includeValue);
         List<String> excludedPropertyNames = AnnotationValueUtil
-                .toStringList(queryMeta.getExclude());
+                .toStringList(excludeValue);
         if (!includedPropertyNames.isEmpty()
                 || !excludedPropertyNames.isEmpty()) {
             EntityPropertyNameCollector collector = new EntityPropertyNameCollector(
@@ -140,15 +143,15 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
             for (String included : includedPropertyNames) {
                 if (!names.contains(included)) {
                     throw new AptException(DomaMessageCode.DOMA4084, env,
-                            method, queryMeta.getAnnotationMirror(), queryMeta
-                                    .getInclude(), included, entityType);
+                            method, annotationMirror, includeValue, included,
+                            entityType);
                 }
             }
             for (String excluded : excludedPropertyNames) {
                 if (!names.contains(excluded)) {
                     throw new AptException(DomaMessageCode.DOMA4085, env,
-                            method, queryMeta.getAnnotationMirror(), queryMeta
-                                    .getExclude(), excluded, entityType);
+                            method, annotationMirror, excludeValue, excluded,
+                            entityType);
                 }
             }
         }
