@@ -135,8 +135,9 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
                 .toStringList(includeValue);
         List<String> excludedPropertyNames = AnnotationValueUtil
                 .toStringList(excludeValue);
-        if (!includedPropertyNames.isEmpty()
-                || !excludedPropertyNames.isEmpty()) {
+        if (includedPropertyNames != null && !includedPropertyNames.isEmpty()
+                || excludedPropertyNames != null
+                && !excludedPropertyNames.isEmpty()) {
             EntityPropertyNameCollector collector = new EntityPropertyNameCollector(
                     env);
             Set<String> names = collector.collect(entityType);

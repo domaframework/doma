@@ -25,6 +25,7 @@ import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.ArrayFactory;
+import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 
@@ -64,7 +65,11 @@ public class ArrayFactoryMirror {
     }
 
     public String getTypeNameValue() {
-        return AnnotationValueUtil.toString(typeName);
+        String result = AnnotationValueUtil.toString(typeName);
+        if (result == null) {
+            throw new AptIllegalStateException("typeName");
+        }
+        return result;
     }
 
 }

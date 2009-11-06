@@ -23,8 +23,9 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.VariableElement;
 
-import org.seasar.doma.Procedure;
+import org.seasar.doma.Column;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementUtil;
@@ -33,87 +34,67 @@ import org.seasar.doma.internal.apt.util.ElementUtil;
  * @author taedium
  * 
  */
-public class ProcedureMirror {
+public class ColumnMirror {
 
     protected final AnnotationMirror annotationMirror;
 
-    protected AnnotationValue catalog;
-
-    protected AnnotationValue schema;
-
     protected AnnotationValue name;
 
-    protected AnnotationValue queryTimeout;
+    protected AnnotationValue insertable;
 
-    protected String defaultName;
+    protected AnnotationValue updatable;
 
-    protected ProcedureMirror(AnnotationMirror annotationMirror,
-            String defaultName) {
-        assertNotNull(annotationMirror, defaultName);
+    protected ColumnMirror(AnnotationMirror annotationMirror) {
+        assertNotNull(annotationMirror);
         this.annotationMirror = annotationMirror;
-        this.defaultName = defaultName;
     }
 
-    public static ProcedureMirror newInstance(ExecutableElement method,
+    public static ColumnMirror newInstance(VariableElement field,
             ProcessingEnvironment env) {
         assertNotNull(env);
         AnnotationMirror annotationMirror = ElementUtil.getAnnotationMirror(
-                method, Procedure.class, env);
+                field, Column.class, env);
         if (annotationMirror == null) {
             return null;
         }
-        ProcedureMirror result = new ProcedureMirror(annotationMirror, method
-                .getSimpleName().toString());
+        ColumnMirror result = new ColumnMirror(annotationMirror);
         for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : env
                 .getElementUtils().getElementValuesWithDefaults(
                         annotationMirror).entrySet()) {
             String name = entry.getKey().getSimpleName().toString();
             AnnotationValue value = entry.getValue();
-            if ("catalog".equals(name)) {
-                result.catalog = value;
-            } else if ("schema".equals(name)) {
-                result.schema = value;
-            } else if ("name".equals(name)) {
+            if ("name".equals(name)) {
                 result.name = value;
-            } else if ("queryTimeout".equals(name)) {
-                result.queryTimeout = value;
+            } else if ("insertable".equals(name)) {
+                result.insertable = value;
+            } else if ("updatable".equals(name)) {
+                result.updatable = value;
             }
         }
         return result;
     }
 
-    public String getQualifiedName() {
-        String catalogValue = AnnotationValueUtil.toString(this.catalog);
-        String schemaValue = AnnotationValueUtil.toString(this.schema);
-        String nameValue = AnnotationValueUtil.toString(this.name);
-
-        StringBuilder buf = new StringBuilder();
-        if (catalogValue != null && !catalogValue.isEmpty()) {
-            buf.append(catalogValue);
-            buf.append(".");
-        }
-        if (schemaValue != null && !schemaValue.isEmpty()) {
-            buf.append(schemaValue);
-            buf.append(".");
-        }
-        if (nameValue != null && !nameValue.isEmpty()) {
-            buf.append(nameValue);
-        } else {
-            buf.append(defaultName);
-        }
-        return buf.toString();
-    }
-
-    public AnnotationValue getQueryTimeout() {
-        return queryTimeout;
-    }
-
-    public int getQueryTimeoutValue() {
-        Integer value = AnnotationValueUtil.toInteger(queryTimeout);
+    public String getNameValue() {
+        String value = AnnotationValueUtil.toString(name);
         if (value == null) {
-            throw new AptIllegalStateException("queryTimeout");
+            throw new AptIllegalStateException("name");
         }
         return value;
     }
 
+    public boolean getInsertableValue() {
+        Boolean value = AnnotationValueUtil.toBoolean(insertable);
+        if (value == null) {
+            throw new AptIllegalStateException("insertable");
+        }
+        return value.booleanValue();
+    }
+
+    public boolean getUpdatableValue() {
+        Boolean value = AnnotationValueUtil.toBoolean(updatable);
+        if (value == null) {
+            throw new AptIllegalStateException("updatable");
+        }
+        return value.booleanValue();
+    }
 }

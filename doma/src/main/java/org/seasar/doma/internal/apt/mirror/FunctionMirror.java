@@ -25,6 +25,7 @@ import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.Function;
+import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 
@@ -36,6 +37,8 @@ public class FunctionMirror {
 
     protected final AnnotationMirror annotationMirror;
 
+    protected final String defaultName;
+
     protected AnnotationValue catalog;
 
     protected AnnotationValue schema;
@@ -44,8 +47,11 @@ public class FunctionMirror {
 
     protected AnnotationValue queryTimeout;
 
-    protected FunctionMirror(AnnotationMirror annotationMirror) {
+    protected FunctionMirror(AnnotationMirror annotationMirror,
+            String defaltName) {
+        assertNotNull(annotationMirror, defaltName);
         this.annotationMirror = annotationMirror;
+        this.defaultName = defaltName;
     }
 
     public static FunctionMirror newInstance(ExecutableElement method,
@@ -56,7 +62,8 @@ public class FunctionMirror {
         if (annotationMirror == null) {
             return null;
         }
-        FunctionMirror result = new FunctionMirror(annotationMirror);
+        FunctionMirror result = new FunctionMirror(annotationMirror, method
+                .getSimpleName().toString());
         for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : env
                 .getElementUtils().getElementValuesWithDefaults(
                         annotationMirror).entrySet()) {
@@ -75,7 +82,7 @@ public class FunctionMirror {
         return result;
     }
 
-    public String getFunctionName() {
+    public String getQualifiedName() {
         String catalogValue = AnnotationValueUtil.toString(this.catalog);
         String schemaValue = AnnotationValueUtil.toString(this.schema);
         String nameValue = AnnotationValueUtil.toString(this.name);
@@ -91,12 +98,22 @@ public class FunctionMirror {
         }
         if (nameValue != null && !nameValue.isEmpty()) {
             buf.append(nameValue);
+        } else {
+            buf.append(defaultName);
         }
         return buf.toString();
     }
 
     public AnnotationValue getQueryTimeout() {
         return queryTimeout;
+    }
+
+    public int getQueryTimeoutValue() {
+        Integer value = AnnotationValueUtil.toInteger(queryTimeout);
+        if (value == null) {
+            throw new AptIllegalStateException("queryTimeout");
+        }
+        return value.intValue();
     }
 
 }

@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
+import java.util.List;
+
 import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.internal.apt.mirror.ModifyMirror;
@@ -52,12 +54,48 @@ public class AutoModifyQueryMeta extends AbstractQueryMeta {
         this.entityParameterName = entityParameterName;
     }
 
-    public ModifyMirror getModifyMirror() {
+    ModifyMirror getModifyMirror() {
         return modifyMirror;
     }
 
-    public void setModifyMirror(ModifyMirror modifyMirror) {
+    void setModifyMirror(ModifyMirror modifyMirror) {
         this.modifyMirror = modifyMirror;
+    }
+
+    public boolean getSqlFile() {
+        return modifyMirror.getSqlFileValue();
+    }
+
+    public int getQueryTimeout() {
+        return modifyMirror.getQueryTimeoutValue();
+    }
+
+    public Boolean getIgnoreVersion() {
+        return modifyMirror.getIgnoreVersionValue();
+    }
+
+    public Boolean getIncludeVersion() {
+        return modifyMirror.getIncludeVersionValue();
+    }
+
+    public Boolean getExcludeNull() {
+        return modifyMirror.getExcludeNullValue();
+    }
+
+    public Boolean getSuppressOptimisticLockException() {
+        return modifyMirror.getSuppressOptimisticLockExceptionValue();
+    }
+
+    public Boolean getIncludeUnchanged() {
+        return modifyMirror.getIncludeUnchangedValue();
+    }
+
+    public List<String> getInclude() {
+        return modifyMirror.getIncludeValue();
+    }
+
+    public List<String> getExclude() {
+        return modifyMirror.getExcludeValue();
     }
 
     @Override

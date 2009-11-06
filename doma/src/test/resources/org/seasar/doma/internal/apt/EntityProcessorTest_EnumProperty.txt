@@ -19,17 +19,17 @@ public class EnumPropertyEntity_ implements org.seasar.doma.internal.jdbc.entity
 
         private static final org.seasar.doma.jdbc.entity.CamelNamingConvention __namingConvention = new org.seasar.doma.jdbc.entity.CamelNamingConvention();
 
-        private final org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper> id = new org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("id", null, new org.seasar.doma.wrapper.IntegerWrapper());
+        private final org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper> id = new org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("id", "", new org.seasar.doma.wrapper.IntegerWrapper());
 
-        private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.entity.EnumPropertyEntity.Hoge>> hoge = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.entity.EnumPropertyEntity.Hoge>>("hoge", null, new org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.entity.EnumPropertyEntity.Hoge>(org.seasar.doma.internal.apt.entity.EnumPropertyEntity.Hoge.class), true, true);
+        private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.entity.EnumPropertyEntity.Hoge>> hoge = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.entity.EnumPropertyEntity.Hoge>>("hoge", "", new org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.entity.EnumPropertyEntity.Hoge>(org.seasar.doma.internal.apt.entity.EnumPropertyEntity.Hoge.class), true, true);
 
         private final org.seasar.doma.internal.apt.entity.EnumPropertyEntity __entity;
 
-        private final String __catalogName = null;
+        private final String __catalogName = "";
 
-        private final String __schemaName = null;
+        private final String __schemaName = "";
 
-        private final String __tableName = null;
+        private final String __tableName = "";
 
         private final java.util.HashMap<String, org.seasar.doma.wrapper.Wrapper<?>> __originalStates;
 

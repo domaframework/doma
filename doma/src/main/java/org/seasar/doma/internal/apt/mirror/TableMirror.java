@@ -23,8 +23,9 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
 
-import org.seasar.doma.Procedure;
+import org.seasar.doma.Table;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementUtil;
@@ -33,7 +34,7 @@ import org.seasar.doma.internal.apt.util.ElementUtil;
  * @author taedium
  * 
  */
-public class ProcedureMirror {
+public class TableMirror {
 
     protected final AnnotationMirror annotationMirror;
 
@@ -43,27 +44,20 @@ public class ProcedureMirror {
 
     protected AnnotationValue name;
 
-    protected AnnotationValue queryTimeout;
-
-    protected String defaultName;
-
-    protected ProcedureMirror(AnnotationMirror annotationMirror,
-            String defaultName) {
-        assertNotNull(annotationMirror, defaultName);
+    protected TableMirror(AnnotationMirror annotationMirror) {
+        assertNotNull(annotationMirror);
         this.annotationMirror = annotationMirror;
-        this.defaultName = defaultName;
     }
 
-    public static ProcedureMirror newInstance(ExecutableElement method,
+    public static TableMirror newInstance(TypeElement clazz,
             ProcessingEnvironment env) {
         assertNotNull(env);
         AnnotationMirror annotationMirror = ElementUtil.getAnnotationMirror(
-                method, Procedure.class, env);
+                clazz, Table.class, env);
         if (annotationMirror == null) {
             return null;
         }
-        ProcedureMirror result = new ProcedureMirror(annotationMirror, method
-                .getSimpleName().toString());
+        TableMirror result = new TableMirror(annotationMirror);
         for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : env
                 .getElementUtils().getElementValuesWithDefaults(
                         annotationMirror).entrySet()) {
@@ -75,45 +69,33 @@ public class ProcedureMirror {
                 result.schema = value;
             } else if ("name".equals(name)) {
                 result.name = value;
-            } else if ("queryTimeout".equals(name)) {
-                result.queryTimeout = value;
             }
         }
         return result;
     }
 
-    public String getQualifiedName() {
-        String catalogValue = AnnotationValueUtil.toString(this.catalog);
-        String schemaValue = AnnotationValueUtil.toString(this.schema);
-        String nameValue = AnnotationValueUtil.toString(this.name);
-
-        StringBuilder buf = new StringBuilder();
-        if (catalogValue != null && !catalogValue.isEmpty()) {
-            buf.append(catalogValue);
-            buf.append(".");
+    public String getCatalogValue() {
+        String result = AnnotationValueUtil.toString(catalog);
+        if (result == null) {
+            throw new AptIllegalStateException("catalog");
         }
-        if (schemaValue != null && !schemaValue.isEmpty()) {
-            buf.append(schemaValue);
-            buf.append(".");
-        }
-        if (nameValue != null && !nameValue.isEmpty()) {
-            buf.append(nameValue);
-        } else {
-            buf.append(defaultName);
-        }
-        return buf.toString();
+        return result;
     }
 
-    public AnnotationValue getQueryTimeout() {
-        return queryTimeout;
+    public String getSchemaValue() {
+        String result = AnnotationValueUtil.toString(schema);
+        if (result == null) {
+            throw new AptIllegalStateException("catalog");
+        }
+        return result;
     }
 
-    public int getQueryTimeoutValue() {
-        Integer value = AnnotationValueUtil.toInteger(queryTimeout);
-        if (value == null) {
-            throw new AptIllegalStateException("queryTimeout");
+    public String getNameValue() {
+        String result = AnnotationValueUtil.toString(name);
+        if (result == null) {
+            throw new AptIllegalStateException("name");
         }
-        return value;
+        return result;
     }
 
 }

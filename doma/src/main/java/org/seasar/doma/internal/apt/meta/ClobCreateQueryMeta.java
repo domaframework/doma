@@ -31,11 +31,11 @@ public class ClobCreateQueryMeta extends AbstractCreateQueryMeta {
         super(method);
     }
 
-    public ClobFactoryMirror getClobFactoryMirror() {
+    ClobFactoryMirror getClobFactoryMirror() {
         return clobFactoryMirror;
     }
 
-    public void setClobFactoryMirror(ClobFactoryMirror clobFactoryMirror) {
+    void setClobFactoryMirror(ClobFactoryMirror clobFactoryMirror) {
         this.clobFactoryMirror = clobFactoryMirror;
     }
 

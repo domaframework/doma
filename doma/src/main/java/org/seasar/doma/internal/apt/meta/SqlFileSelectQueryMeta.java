@@ -75,12 +75,24 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
         this.selectOptionsType = selectOptionsType;
     }
 
-    public SelectMirror getSelectMirror() {
-        return selectMirror;
-    }
-
     public void setSelectMirror(SelectMirror selectMirror) {
         this.selectMirror = selectMirror;
+    }
+
+    public int getFetchSize() {
+        return selectMirror.getFetchSizeValue();
+    }
+
+    public int getMaxRows() {
+        return selectMirror.getMaxRowsValue();
+    }
+
+    public int getQueryTimeout() {
+        return selectMirror.getQueryTimeoutValue();
+    }
+
+    public boolean getIterate() {
+        return selectMirror.getIterateValue();
     }
 
     @Override

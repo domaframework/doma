@@ -33,14 +33,6 @@ public class AutoFunctionQueryMeta extends AutoModuleQueryMeta {
         super(method);
     }
 
-    public String getFunctionName() {
-        String name = functionMirror.getFunctionName();
-        if (name != null && !name.isEmpty()) {
-            return name;
-        }
-        return this.name;
-    }
-
     public ResultParameterMeta getResultParameterMeta() {
         return resultParameterMeta;
     }
@@ -49,12 +41,20 @@ public class AutoFunctionQueryMeta extends AutoModuleQueryMeta {
         this.resultParameterMeta = resultParameterMeta;
     }
 
-    public FunctionMirror getFunctionMirror() {
+    FunctionMirror getFunctionMirror() {
         return functionMirror;
     }
 
-    public void setFunctionMirror(FunctionMirror functionMirror) {
+    void setFunctionMirror(FunctionMirror functionMirror) {
         this.functionMirror = functionMirror;
+    }
+
+    public String getFunctionName() {
+        return functionMirror.getQualifiedName();
+    }
+
+    public int getQueryTimeout() {
+        return functionMirror.getQueryTimeoutValue();
     }
 
     @Override

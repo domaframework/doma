@@ -23,9 +23,10 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.Delegate;
+import org.seasar.doma.Entity;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementUtil;
@@ -34,42 +35,65 @@ import org.seasar.doma.internal.apt.util.ElementUtil;
  * @author taedium
  * 
  */
-public class DelegateMirror {
+public class EntityMirror {
 
     protected final AnnotationMirror annotationMirror;
 
-    protected AnnotationValue to;
+    protected AnnotationValue listener;
 
-    protected DelegateMirror(AnnotationMirror annotationMirror) {
-        assertNotNull(annotationMirror);
+    protected AnnotationValue namingConvention;
+
+    public EntityMirror(AnnotationMirror annotationMirror) {
         this.annotationMirror = annotationMirror;
     }
 
-    public static DelegateMirror newInstance(ExecutableElement method,
+    public AnnotationMirror getAnnotationMirror() {
+        return annotationMirror;
+    }
+
+    public AnnotationValue getListener() {
+        return listener;
+    }
+
+    public AnnotationValue getNamingConvention() {
+        return namingConvention;
+    }
+
+    public TypeMirror getListenerValue() {
+        TypeMirror result = AnnotationValueUtil.toTypeMirror(listener);
+        if (result == null) {
+            throw new AptIllegalStateException("listener");
+        }
+        return result;
+    }
+
+    public TypeMirror getNamingConventionValue() {
+        TypeMirror result = AnnotationValueUtil.toTypeMirror(namingConvention);
+        if (result == null) {
+            throw new AptIllegalStateException("namingConvention");
+        }
+        return result;
+    }
+
+    public static EntityMirror newInstance(TypeElement clazz,
             ProcessingEnvironment env) {
         assertNotNull(env);
         AnnotationMirror annotationMirror = ElementUtil.getAnnotationMirror(
-                method, Delegate.class, env);
+                clazz, Entity.class, env);
         if (annotationMirror == null) {
             return null;
         }
-        DelegateMirror result = new DelegateMirror(annotationMirror);
+        EntityMirror result = new EntityMirror(annotationMirror);
         for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : env
                 .getElementUtils().getElementValuesWithDefaults(
                         annotationMirror).entrySet()) {
             String name = entry.getKey().getSimpleName().toString();
             AnnotationValue value = entry.getValue();
-            if ("to".equals(name)) {
-                result.to = value;
+            if ("listener".equals(name)) {
+                result.listener = value;
+            } else if ("namingConvention".equals(name)) {
+                result.namingConvention = value;
             }
-        }
-        return result;
-    }
-
-    public TypeMirror getToValue() {
-        TypeMirror result = AnnotationValueUtil.toTypeMirror(to);
-        if (result == null) {
-            throw new AptIllegalStateException("to");
         }
         return result;
     }

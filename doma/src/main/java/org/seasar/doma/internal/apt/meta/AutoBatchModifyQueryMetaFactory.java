@@ -66,19 +66,19 @@ public class AutoBatchModifyQueryMetaFactory extends
                 method);
         BatchModifyMirror batchModifyMirror = BatchInsertMirror.newInstance(
                 method, env);
-        if (batchModifyMirror != null && !batchModifyMirror.isSqlFile()) {
+        if (batchModifyMirror != null && !batchModifyMirror.getSqlFileValue()) {
             queryMeta.setBatchModifyMirror(batchModifyMirror);
             queryMeta.setQueryKind(QueryKind.AUTO_BATCH_INSERT);
             return queryMeta;
         }
         batchModifyMirror = BatchUpdateMirror.newInstance(method, env);
-        if (batchModifyMirror != null && !batchModifyMirror.isSqlFile()) {
+        if (batchModifyMirror != null && !batchModifyMirror.getSqlFileValue()) {
             queryMeta.setBatchModifyMirror(batchModifyMirror);
             queryMeta.setQueryKind(QueryKind.AUTO_BATCH_UPDATE);
             return queryMeta;
         }
         batchModifyMirror = BatchDeleteMirror.newInstance(method, env);
-        if (batchModifyMirror != null && !batchModifyMirror.isSqlFile()) {
+        if (batchModifyMirror != null && !batchModifyMirror.getSqlFileValue()) {
             queryMeta.setBatchModifyMirror(batchModifyMirror);
             queryMeta.setQueryKind(QueryKind.AUTO_BATCH_DELETE);
             return queryMeta;

@@ -31,11 +31,11 @@ public class NClobCreateQueryMeta extends AbstractCreateQueryMeta {
         super(method);
     }
 
-    public NClobFactoryMirror getNClobFactoryMirror() {
+    NClobFactoryMirror getNClobFactoryMirror() {
         return nClobFactoryMirror;
     }
 
-    public void setNClobFactoryMirror(NClobFactoryMirror nClobFactoryMirror) {
+    void setNClobFactoryMirror(NClobFactoryMirror nClobFactoryMirror) {
         this.nClobFactoryMirror = nClobFactoryMirror;
     }
 

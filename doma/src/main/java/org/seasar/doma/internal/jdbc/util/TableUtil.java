@@ -35,7 +35,8 @@ public final class TableUtil {
     }
 
     protected static String getTableName(EntityType<?> entityType) {
-        if (entityType.getTableName() != null) {
+        if (entityType.getTableName() != null
+                && !entityType.getTableName().isEmpty()) {
             return entityType.getTableName();
         }
         NamingConvention namingConvention = entityType.getNamingConvention();

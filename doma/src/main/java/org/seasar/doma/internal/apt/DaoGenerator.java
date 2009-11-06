@@ -19,6 +19,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
@@ -59,13 +60,8 @@ import org.seasar.doma.internal.apt.meta.QueryReturnMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileBatchModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileSelectQueryMeta;
-import org.seasar.doma.internal.apt.mirror.ArrayFactoryMirror;
 import org.seasar.doma.internal.apt.mirror.BatchModifyMirror;
-import org.seasar.doma.internal.apt.mirror.DelegateMirror;
-import org.seasar.doma.internal.apt.mirror.FunctionMirror;
 import org.seasar.doma.internal.apt.mirror.ModifyMirror;
-import org.seasar.doma.internal.apt.mirror.ProcedureMirror;
-import org.seasar.doma.internal.apt.mirror.SelectMirror;
 import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
@@ -74,7 +70,6 @@ import org.seasar.doma.internal.apt.type.IterationCallbackType;
 import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.apt.type.WrapperType;
-import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.jdbc.command.BasicIterationHandler;
 import org.seasar.doma.internal.jdbc.command.BasicResultListHandler;
 import org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler;
@@ -290,21 +285,13 @@ public class DaoGenerator extends AbstractGenerator {
             }
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
-            SelectMirror mirror = m.getSelectMirror();
-            if (mirror.getQueryTimeout() != null) {
-                iprint("__query.setQueryTimeout(%1$s);%n", mirror
-                        .getQueryTimeout());
-            }
-            if (mirror.getMaxRows() != null) {
-                iprint("__query.setMaxRows(%1$s);%n", mirror.getMaxRows());
-            }
-            if (mirror.getFetchSize() != null) {
-                iprint("__query.setFetchSize(%1$s);%n", mirror.getFetchSize());
-            }
+            iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
+            iprint("__query.setMaxRows(%1$s);%n", m.getMaxRows());
+            iprint("__query.setFetchSize(%1$s);%n", m.getFetchSize());
             iprint("__query.prepare();%n");
             final QueryReturnMeta resultMeta = m.getReturnMeta();
             final String commandClassName = m.getCommandClass().getName();
-            if (AnnotationValueUtil.isEqual(Boolean.TRUE, mirror.getIterate())) {
+            if (m.getIterate()) {
                 IterationCallbackType callbackType = m
                         .getIterationCallbackType();
                 final String callbackParamName = m
@@ -646,39 +633,48 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setEntity(%1$s);%n", m.getEntityParameterName());
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
-            ModifyMirror mirror = m.getModifyMirror();
-            if (mirror.getQueryTimeout() != null) {
-                iprint("__query.setQueryTimeout(%1$s);%n", mirror
-                        .getQueryTimeout());
+            iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
+
+            Boolean excludeNull = m.getExcludeNull();
+            if (excludeNull != null) {
+                iprint("__query.setNullExcluded(%1$s);%n", excludeNull);
             }
-            if (mirror.getExcludeNull() != null) {
-                iprint("__query.setNullExcluded(%1$s);%n", mirror
-                        .getExcludeNull());
+
+            Boolean includeVersion = m.getIncludeVersion();
+            if (includeVersion != null) {
+                iprint("__query.setVersionIncluded(%1$s);%n", includeVersion);
             }
-            if (mirror.getIncludeVersion() != null) {
-                iprint("__query.setVersionIncluded(%1$s);%n", mirror
-                        .getIncludeVersion());
+
+            Boolean ignoreVersion = m.getIgnoreVersion();
+            if (ignoreVersion != null) {
+                iprint("__query.setVersionIgnored(%1$s);%n", ignoreVersion);
             }
-            if (mirror.getIgnoreVersion() != null) {
-                iprint("__query.setVersionIgnored(%1$s);%n", mirror
-                        .getIgnoreVersion());
+
+            List<String> include = m.getInclude();
+            if (include != null) {
+                iprint("__query.setIncludedPropertyNames(%1$s);%n",
+                        toCSVFormat(include));
             }
-            if (mirror.getInclude() != null) {
-                String s = AnnotationValueUtil.toCSVFormat(mirror.getInclude());
-                iprint("__query.setIncludedPropertyNames(%1$s);%n", s);
+
+            List<String> exclude = m.getExclude();
+            if (exclude != null) {
+                iprint("__query.setExcludedPropertyNames(%1$s);%n",
+                        toCSVFormat(m.getExclude()));
             }
-            if (mirror.getExclude() != null) {
-                String s = AnnotationValueUtil.toCSVFormat(mirror.getExclude());
-                iprint("__query.setExcludedPropertyNames(%1$s);%n", s);
+
+            Boolean includeUnchanged = m.getIncludeUnchanged();
+            if (includeUnchanged != null) {
+                iprint("__query.setUnchangedPropertyIncluded(%1$s);%n",
+                        includeUnchanged);
             }
-            if (mirror.getIncludeUnchanged() != null) {
-                iprint("__query.setUnchangedPropertyIncluded(%1$s);%n", mirror
-                        .getIncludeUnchanged());
-            }
-            if (mirror.getSuppressOptimisticLockException() != null) {
+
+            Boolean suppressOptimisticLockException = m
+                    .getSuppressOptimisticLockException();
+            if (suppressOptimisticLockException != null) {
                 iprint("__query.setOptimisticLockExceptionSuppressed(%1$s);%n",
-                        mirror.getSuppressOptimisticLockException());
+                        suppressOptimisticLockException);
             }
+
             iprint("__query.prepare();%n");
             iprint("%1$s __command = new %1$s(__query);%n", m.getCommandClass()
                     .getName());
@@ -743,31 +739,37 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setEntities(%1$s);%n", m.getEntitiesParameterName());
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
-            BatchModifyMirror mirror = m.getBatchModifyMirror();
-            if (mirror.getQueryTimeout() != null) {
-                iprint("__query.setQueryTimeout(%1$s);%n", mirror
-                        .getQueryTimeout());
+            iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
+
+            Boolean includeVersion = m.getIncludeVersion();
+            if (includeVersion != null) {
+                iprint("__query.setVersionIncluded(%1$s);%n", includeVersion);
             }
-            if (mirror.getIncludeVersion() != null) {
-                iprint("__query.setVersionIncluded(%1$s);%n", mirror
-                        .getIncludeVersion());
+
+            Boolean ignoreVersion = m.getIgnoreVersion();
+            if (ignoreVersion != null) {
+                iprint("__query.setVersionIgnored(%1$s);%n", ignoreVersion);
             }
-            if (mirror.getIgnoreVersion() != null) {
-                iprint("__query.setVersionIgnored(%1$s);%n", mirror
-                        .getIgnoreVersion());
+
+            List<String> include = m.getInclude();
+            if (include != null) {
+                iprint("__query.setIncludedPropertyNames(%1$s);%n",
+                        toCSVFormat(include));
             }
-            if (mirror.getInclude() != null) {
-                String s = AnnotationValueUtil.toCSVFormat(mirror.getInclude());
-                iprint("__query.setIncludedPropertyNames(%1$s);%n", s);
+
+            List<String> exclude = m.getExclude();
+            if (exclude != null) {
+                iprint("__query.setExcludedPropertyNames(%1$s);%n",
+                        toCSVFormat(exclude));
             }
-            if (mirror.getExclude() != null) {
-                String s = AnnotationValueUtil.toCSVFormat(mirror.getExclude());
-                iprint("__query.setExcludedPropertyNames(%1$s);%n", s);
-            }
-            if (mirror.getSuppressOptimisticLockException() != null) {
+
+            Boolean suppressOptimisticLockException = m
+                    .getSuppressOptimisticLockException();
+            if (suppressOptimisticLockException != null) {
                 iprint("__query.setOptimisticLockExceptionSuppressed(%1$s);%n",
-                        mirror.getSuppressOptimisticLockException());
+                        suppressOptimisticLockException);
             }
+
             iprint("__query.prepare();%n");
             iprint("%1$s __command = new %1$s(__query);%n", m.getCommandClass()
                     .getName());
@@ -833,11 +835,7 @@ public class DaoGenerator extends AbstractGenerator {
             }
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
-            FunctionMirror mirror = m.getFunctionMirror();
-            if (mirror.getQueryTimeout() != null) {
-                iprint("__query.setQueryTimeout(%1$s);%n", mirror
-                        .getQueryTimeout());
-            }
+            iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             iprint("__query.prepare();%n");
             iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query);%n", m
                     .getCommandClass().getName(), resultMeta
@@ -866,11 +864,7 @@ public class DaoGenerator extends AbstractGenerator {
             }
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
-            ProcedureMirror mirror = m.getProcedureMirror();
-            if (mirror.getQueryTimeout() != null) {
-                iprint("__query.setQueryTimeout(%1$s);%n", mirror
-                        .getQueryTimeout());
-            }
+            iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             iprint("__query.prepare();%n");
             iprint("%1$s __command = new %1$s(__query);%n", m.getCommandClass()
                     .getName());
@@ -910,13 +904,11 @@ public class DaoGenerator extends AbstractGenerator {
             printPrerequisiteStatements(m);
 
             QueryReturnMeta resultMeta = m.getReturnMeta();
-            ArrayFactoryMirror mirror = m.getArrayFactoryMirror();
             iprint("%1$s __query = new %1$s();%n", m.getQueryClass().getName());
             iprint("__query.setConfig(config);%n");
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
-            iprint("__query.setTypeName(\"%1$s\");%n", mirror
-                    .getTypeNameValue());
+            iprint("__query.setTypeName(\"%1$s\");%n", m.getArrayTypeName());
             iprint("__query.setElements(%1$s);%n", m.getParameterName());
             iprint("__query.prepare();%n");
             iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query);%n", m
@@ -934,8 +926,7 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitDelegateQueryMeta(DelegateQueryMeta m, Void p) {
             printEnteringStatement(m);
 
-            DelegateMirror mirror = m.getDelegateMirror();
-            iprint("%1$s delegate = new %1$s(config", mirror.getToValue());
+            iprint("%1$s delegate = new %1$s(config", m.getTo());
             if (m.isDaoAware()) {
                 print(", this);%n");
             } else {
@@ -1315,5 +1306,18 @@ public class DaoGenerator extends AbstractGenerator {
                     domainSuffix);
             return null;
         }
+    }
+
+    public String toCSVFormat(List<String> values) {
+        final StringBuilder buf = new StringBuilder();
+        if (values.size() > 0) {
+            for (String value : values) {
+                buf.append("\"");
+                buf.append(value);
+                buf.append("\", ");
+            }
+            buf.setLength(buf.length() - 2);
+        }
+        return buf.toString();
     }
 }

@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
+import java.util.List;
+
 import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.internal.apt.mirror.BatchModifyMirror;
@@ -52,12 +54,36 @@ public class AutoBatchModifyQueryMeta extends AbstractQueryMeta {
         this.entitiesParameterName = entitiesParameterName;
     }
 
-    public BatchModifyMirror getBatchModifyMirror() {
+    BatchModifyMirror getBatchModifyMirror() {
         return batchModifyMirror;
     }
 
-    public void setBatchModifyMirror(BatchModifyMirror batchModifyMirror) {
+    void setBatchModifyMirror(BatchModifyMirror batchModifyMirror) {
         this.batchModifyMirror = batchModifyMirror;
+    }
+
+    public int getQueryTimeout() {
+        return batchModifyMirror.getQueryTimeoutValue();
+    }
+
+    public Boolean getIgnoreVersion() {
+        return batchModifyMirror.getIgnoreVersionValue();
+    }
+
+    public Boolean getIncludeVersion() {
+        return batchModifyMirror.getIncludeVersionValue();
+    }
+
+    public Boolean getSuppressOptimisticLockException() {
+        return batchModifyMirror.getSuppressOptimisticLockExceptionValue();
+    }
+
+    public List<String> getInclude() {
+        return batchModifyMirror.getIncludeValue();
+    }
+
+    public List<String> getExclude() {
+        return batchModifyMirror.getExcludeValue();
     }
 
     @Override

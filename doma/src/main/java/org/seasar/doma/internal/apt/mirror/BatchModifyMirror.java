@@ -17,16 +17,19 @@ package org.seasar.doma.internal.apt.mirror;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.util.List;
+
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 
+import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
 /**
  * @author taedium
  * 
  */
-public class BatchModifyMirror {
+public abstract class BatchModifyMirror {
 
     protected final AnnotationMirror annotationMirror;
 
@@ -81,8 +84,40 @@ public class BatchModifyMirror {
         return exclude;
     }
 
-    public boolean isSqlFile() {
-        return AnnotationValueUtil.isEqual(Boolean.TRUE, sqlFile);
+    public int getQueryTimeoutValue() {
+        Integer value = AnnotationValueUtil.toInteger(queryTimeout);
+        if (value == null) {
+            throw new AptIllegalStateException("queryTimeout");
+        }
+        return value;
+    }
+
+    public Boolean getIgnoreVersionValue() {
+        return AnnotationValueUtil.toBoolean(ignoreVersion);
+    }
+
+    public Boolean getIncludeVersionValue() {
+        return AnnotationValueUtil.toBoolean(includeVersion);
+    }
+
+    public Boolean getSuppressOptimisticLockExceptionValue() {
+        return AnnotationValueUtil.toBoolean(suppressOptimisticLockException);
+    }
+
+    public List<String> getIncludeValue() {
+        return AnnotationValueUtil.toStringList(include);
+    }
+
+    public List<String> getExcludeValue() {
+        return AnnotationValueUtil.toStringList(exclude);
+    }
+
+    public boolean getSqlFileValue() {
+        Boolean value = AnnotationValueUtil.toBoolean(sqlFile);
+        if (value == null) {
+            throw new AptIllegalStateException("sqlFile");
+        }
+        return value.booleanValue();
     }
 
 }

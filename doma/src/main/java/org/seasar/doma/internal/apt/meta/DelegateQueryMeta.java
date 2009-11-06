@@ -16,6 +16,7 @@
 package org.seasar.doma.internal.apt.meta;
 
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.mirror.DelegateMirror;
 
@@ -33,7 +34,7 @@ public class DelegateQueryMeta extends AbstractQueryMeta {
         super(method);
     }
 
-    public DelegateMirror getDelegateMirror() {
+    DelegateMirror getDelegateMirror() {
         return delegateMirror;
     }
 
@@ -47,6 +48,10 @@ public class DelegateQueryMeta extends AbstractQueryMeta {
 
     public void setDaoAware(boolean daoAware) {
         this.daoAware = daoAware;
+    }
+
+    public TypeMirror getTo() {
+        return delegateMirror.getToValue();
     }
 
     @Override

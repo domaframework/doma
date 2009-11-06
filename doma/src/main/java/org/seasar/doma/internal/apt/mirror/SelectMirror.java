@@ -25,6 +25,7 @@ import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.Select;
+import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 
@@ -64,8 +65,36 @@ public class SelectMirror {
         return maxRows;
     }
 
-    public boolean isIterate() {
-        return AnnotationValueUtil.isEqual(Boolean.TRUE, iterate);
+    public int getQueryTimeoutValue() {
+        Integer value = AnnotationValueUtil.toInteger(queryTimeout);
+        if (value == null) {
+            throw new AptIllegalStateException("queryTimeout");
+        }
+        return value.intValue();
+    }
+
+    public int getFetchSizeValue() {
+        Integer value = AnnotationValueUtil.toInteger(fetchSize);
+        if (value == null) {
+            throw new AptIllegalStateException("fetchSize");
+        }
+        return value.intValue();
+    }
+
+    public int getMaxRowsValue() {
+        Integer value = AnnotationValueUtil.toInteger(maxRows);
+        if (value == null) {
+            throw new AptIllegalStateException("maxRows");
+        }
+        return value.intValue();
+    }
+
+    public boolean getIterateValue() {
+        Boolean value = AnnotationValueUtil.toBoolean(iterate);
+        if (value == null) {
+            throw new AptIllegalStateException("iterate");
+        }
+        return value.booleanValue();
     }
 
     public static SelectMirror newInstance(ExecutableElement method,

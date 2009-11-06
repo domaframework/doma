@@ -23,7 +23,6 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.Column;
 import org.seasar.doma.Domain;
 import org.seasar.doma.GeneratedValue;
 import org.seasar.doma.Id;
@@ -32,6 +31,7 @@ import org.seasar.doma.TableGenerator;
 import org.seasar.doma.Version;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
+import org.seasar.doma.internal.apt.mirror.ColumnMirror;
 import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.util.ElementUtil;
@@ -65,7 +65,7 @@ public class EntityPropertyMetaFactory {
         doName(propertyMeta, fieldElement, entityMeta);
         doId(propertyMeta, fieldElement, entityMeta);
         doVersion(propertyMeta, fieldElement, entityMeta);
-        doColumnMeta(propertyMeta, fieldElement, entityMeta);
+        doColumn(propertyMeta, fieldElement, entityMeta);
         doDataType(propertyMeta, fieldElement, entityMeta);
         return propertyMeta;
     }
@@ -197,8 +197,8 @@ public class EntityPropertyMetaFactory {
                 throw new AptException(DomaMessageCode.DOMA4024, env,
                         fieldElement);
             }
-            TypeMirror referenceType = TypeMirrorUtil.boxIfPrimitive(fieldElement
-                    .asType(), env);
+            TypeMirror referenceType = TypeMirrorUtil.boxIfPrimitive(
+                    fieldElement.asType(), env);
             if (!TypeMirrorUtil.isAssignable(referenceType, Number.class, env)) {
                 throw new AptException(DomaMessageCode.DOMA4093, env,
                         fieldElement);
@@ -207,28 +207,23 @@ public class EntityPropertyMetaFactory {
         }
     }
 
-    protected void doColumnMeta(EntityPropertyMeta propertyMeta,
+    protected void doColumn(EntityPropertyMeta propertyMeta,
             VariableElement fieldElement, EntityMeta entityMeta) {
-        ColumnMeta columnMeta = new ColumnMeta();
-        Column column = fieldElement.getAnnotation(Column.class);
-        if (column != null) {
-            if (propertyMeta.isId() || propertyMeta.isVersion()) {
-                if (!column.insertable()) {
-                    throw new AptException(DomaMessageCode.DOMA4088, env,
-                            fieldElement);
-                }
-                if (!column.updatable()) {
-                    throw new AptException(DomaMessageCode.DOMA4089, env,
-                            fieldElement);
-                }
-            }
-            if (!column.name().isEmpty()) {
-                columnMeta.setName(column.name());
-            }
-            columnMeta.setInsertable(column.insertable());
-            columnMeta.setUpdatable(column.updatable());
+        ColumnMirror columnMirror = ColumnMirror.newInstance(fieldElement, env);
+        if (columnMirror == null) {
+            return;
         }
-        propertyMeta.setColumnMeta(columnMeta);
+        if (propertyMeta.isId() || propertyMeta.isVersion()) {
+            if (!columnMirror.getInsertableValue()) {
+                throw new AptException(DomaMessageCode.DOMA4088, env,
+                        fieldElement);
+            }
+            if (!columnMirror.getUpdatableValue()) {
+                throw new AptException(DomaMessageCode.DOMA4089, env,
+                        fieldElement);
+            }
+        }
+        propertyMeta.setColumnMirror(columnMirror);
     }
 
     protected void doDataType(EntityPropertyMeta propertyMeta,

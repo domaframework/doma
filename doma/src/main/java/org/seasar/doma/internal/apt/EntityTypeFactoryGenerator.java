@@ -23,7 +23,6 @@ import java.io.Serializable;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 
-import org.seasar.doma.internal.apt.meta.ColumnMeta;
 import org.seasar.doma.internal.apt.meta.EntityMeta;
 import org.seasar.doma.internal.apt.meta.EntityPropertyMeta;
 import org.seasar.doma.internal.apt.meta.IdGeneratorMeta;
@@ -149,13 +148,13 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
 
     protected void printTypeClassListenerField() {
         iprint("private static final %1$s __listener = new %1$s();%n",
-                entityMeta.getListenerTypeName());
+                entityMeta.getEntityListener());
         print("%n");
     }
 
     protected void printTypeClassNamingConventionField() {
         iprint("private static final %1$s __namingConvention = new %1$s();%n",
-                entityMeta.getNamingConventionTypeName());
+                entityMeta.getNamingConvention());
         print("%n");
     }
 
@@ -165,35 +164,20 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
     }
 
     protected void printTypeClassCatalogNameField() {
-        iprint("private final String __catalogName = ");
-        String catalogName = entityMeta.getTableMeta().getCatalog();
-        if (catalogName != null) {
-            print("\"%1$s\";%n", catalogName);
-        } else {
-            print("null;%n");
-        }
+        iprint("private final String __catalogName = \"%1$s\";%n", entityMeta
+                .getCatalogName());
         print("%n");
     }
 
     protected void printTypeClassSchemaNameField() {
-        iprint("private final String __schemaName = ");
-        String schemaName = entityMeta.getTableMeta().getSchema();
-        if (schemaName != null) {
-            print("\"%1$s\";%n", schemaName);
-        } else {
-            print("null;%n");
-        }
+        iprint("private final String __schemaName = \"%1$s\";%n", entityMeta
+                .getSchemaName());
         print("%n");
     }
 
     protected void printTypeClassTableNameField() {
-        iprint("private final String __tableName = ");
-        String tableName = entityMeta.getTableMeta().getName();
-        if (tableName != null) {
-            print("\"%1$s\";%n", tableName);
-        } else {
-            print("null;%n");
-        }
+        iprint("private final String __tableName = \"%1$s\";%n", entityMeta
+                .getTableName());
         print("%n");
     }
 
@@ -206,13 +190,6 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
 
     protected void printTypeClassPropertyFields() {
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
-            ColumnMeta cm = pm.getColumnMeta();
-            String columnName = cm.getName();
-            String quote = "\"";
-            if (columnName == null) {
-                columnName = "null";
-                quote = "";
-            }
             String typeToken = "";
             WrapperType wrapperType = null;
             if (pm.getDomainType() != null) {
@@ -230,30 +207,31 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
             if (pm.isId()) {
                 if (pm.getIdGeneratorMeta() != null) {
                     iprint(
-                            "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", %5$s%4$s%5$s, new %2$s(%6$s), __idGenerator);%n", /* 1 */
+                            "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", \"%4$s\", new %2$s(%5$s), __idGenerator);%n", /* 1 */
                             GeneratedIdPropertyType.class.getName(), /* 2 */
                             wrapperType.getTypeName(), /* 3 */pm.getName(), /* 4 */
-                            columnName, /* 5 */quote, /* 6 */typeToken);
+                            pm.getColumnName(), /* 5 */typeToken);
                 } else {
                     iprint(
-                            "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", %5$s%4$s%5$s, new %2$s(%6$s));%n", /* 1 */
+                            "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", \"%4$s\", new %2$s(%5$s));%n", /* 1 */
                             AssignedIdPropertyType.class.getName(), /* 2 */
                             wrapperType.getTypeName(), /* 3 */pm.getName(), /* 4 */
-                            columnName, /* 5 */quote, /* 6 */typeToken);
+                            pm.getColumnName(),/* 5 */
+                            typeToken);
                 }
             } else if (pm.isVersion()) {
                 iprint(
-                        "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", %5$s%4$s%5$s, new %2$s(%6$s));%n", /* 1 */
+                        "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", \"%4$s\", new %2$s(%5$s));%n", /* 1 */
                         VersionPropertyType.class.getName(), /* 2 */
                         wrapperType.getTypeName(), /* 3 */pm.getName(), /* 4 */
-                        columnName, /* 5 */quote, /* 6 */typeToken);
+                        pm.getColumnName(), /* 5 */typeToken);
             } else {
                 iprint(
-                        "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", %7$s%4$s%7$s, new %2$s(%8$s), %5$s, %6$s);%n", /* 1 */
+                        "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", \"%4$s\", new %2$s(%7$s), %5$s, %6$s);%n", /* 1 */
                         BasicPropertyType.class.getName(), /* 2 */
                         wrapperType.getTypeName(), /* 3 */pm.getName(), /* 4 */
-                        columnName, /* 5 */cm.isInsertable(), /* 6 */cm
-                                .isUpdatable(), /* 7 */quote, /* 8 */
+                        pm.getColumnName(), /* 5 */pm.isColumnInsertable(), /* 6 */
+                        pm.isColumnUpdatable(), /* 7 */
                         typeToken);
             }
             print("%n");

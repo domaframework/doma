@@ -63,19 +63,19 @@ public class AutoModifyQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         AutoModifyQueryMeta queryMeta = new AutoModifyQueryMeta(method);
         ModifyMirror modifyMirror = InsertMirror.newInstance(method, env);
-        if (modifyMirror != null && !modifyMirror.isSqlFile()) {
+        if (modifyMirror != null && !modifyMirror.getSqlFileValue()) {
             queryMeta.setModifyMirror(modifyMirror);
             queryMeta.setQueryKind(QueryKind.AUTO_INSERT);
             return queryMeta;
         }
         modifyMirror = UpdateMirror.newInstance(method, env);
-        if (modifyMirror != null && !modifyMirror.isSqlFile()) {
+        if (modifyMirror != null && !modifyMirror.getSqlFileValue()) {
             queryMeta.setModifyMirror(modifyMirror);
             queryMeta.setQueryKind(QueryKind.AUTO_UPDATE);
             return queryMeta;
         }
         modifyMirror = DeleteMirror.newInstance(method, env);
-        if (modifyMirror != null && !modifyMirror.isSqlFile()) {
+        if (modifyMirror != null && !modifyMirror.getSqlFileValue()) {
             queryMeta.setModifyMirror(modifyMirror);
             queryMeta.setQueryKind(QueryKind.AUTO_DELETE);
             return queryMeta;

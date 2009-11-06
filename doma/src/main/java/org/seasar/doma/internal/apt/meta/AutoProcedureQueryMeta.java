@@ -31,20 +31,20 @@ public class AutoProcedureQueryMeta extends AutoModuleQueryMeta {
         super(method);
     }
 
-    public ProcedureMirror getProcedureMirror() {
+    ProcedureMirror getProcedureMirror() {
         return procedureMirror;
     }
 
-    public void setProcedureMirror(ProcedureMirror procedureMirror) {
+    void setProcedureMirror(ProcedureMirror procedureMirror) {
         this.procedureMirror = procedureMirror;
     }
 
     public String getProcedureName() {
-        String name = procedureMirror.getProcedureName();
-        if (name != null && !name.isEmpty()) {
-            return name;
-        }
-        return this.name;
+        return procedureMirror.getQualifiedName();
+    }
+
+    public int getQueryTimeout() {
+        return procedureMirror.getQueryTimeoutValue();
     }
 
     @Override

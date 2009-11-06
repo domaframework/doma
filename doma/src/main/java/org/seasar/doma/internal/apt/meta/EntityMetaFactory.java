@@ -31,7 +31,6 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
@@ -40,12 +39,13 @@ import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.Entity;
 import org.seasar.doma.EntityField;
 import org.seasar.doma.OriginalStates;
-import org.seasar.doma.Table;
 import org.seasar.doma.Transient;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Notifier;
 import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.mirror.EntityMirror;
+import org.seasar.doma.internal.apt.mirror.TableMirror;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
@@ -89,15 +89,10 @@ public class EntityMetaFactory {
                     classElement, suffix);
         }
         entityMeta.setEntityName(entityName);
-        entityMeta.setEntityTypeName(TypeMirrorUtil.getTypeName(
-                classElement.asType(), env));
-        Entity entityAnnotation = classElement.getAnnotation(Entity.class);
-        if (entityAnnotation == null) {
-            throw new AptIllegalStateException("unreachable.");
-        }
-        doListener(entityAnnotation, classElement, entityMeta);
-        doNamingConvention(entityAnnotation, classElement, entityMeta);
-        doTableMeta(classElement, entityMeta);
+        entityMeta.setEntityTypeName(TypeMirrorUtil.getTypeName(classElement
+                .asType(), env));
+        doEntity(classElement, entityMeta);
+        doTable(classElement, entityMeta);
     }
 
     protected void validateClass(TypeElement classElement) {
@@ -133,38 +128,39 @@ public class EntityMetaFactory {
         throw new AptException(DomaMessageCode.DOMA4124, env, classElement);
     }
 
-    protected void doListener(Entity entityAnnotation,
-            TypeElement classElement, EntityMeta entityMeta) {
-        TypeMirror listenerType = getListenerType(entityAnnotation);
+    protected void doEntity(TypeElement classElement,
+            EntityMeta entityMeta) {
+        EntityMirror entityMirror = EntityMirror.newInstance(classElement, env);
+        if (entityMirror == null) {
+            throw new AptIllegalStateException("entityMirror.");
+        }
+        TypeMirror listenerType = entityMirror.getListenerValue();
         TypeMirror argumentType = getListenerArgumentType(listenerType);
-        assertNotNull(argumentType);
-        if (!TypeMirrorUtil.isAssignable(classElement.asType(), argumentType, env)) {
+        if (argumentType == null) {
+            throw new AptIllegalStateException("argumentType");
+        }
+        if (!TypeMirrorUtil.isAssignable(classElement.asType(), argumentType,
+                env)) {
             throw new AptException(DomaMessageCode.DOMA4038, env, classElement,
-                    listenerType, argumentType, classElement.getQualifiedName());
+                    entityMirror.getAnnotationMirror(), entityMirror
+                            .getListener(), listenerType, argumentType,
+                    classElement.getQualifiedName());
         }
-        entityMeta.setListenerTypeName(TypeMirrorUtil.getTypeName(listenerType, env));
-    }
-
-    protected TypeMirror getListenerType(Entity entityAnnotation) {
-        try {
-            entityAnnotation.listener();
-        } catch (MirroredTypeException e) {
-            return e.getTypeMirror();
-        }
-        throw new AptIllegalStateException("unreachable");
+        entityMeta.setEntityMirror(entityMirror);
     }
 
     protected TypeMirror getListenerArgumentType(TypeMirror typeMirror) {
         for (TypeMirror supertype : env.getTypeUtils().directSupertypes(
                 typeMirror)) {
-            TypeElement superElement = TypeMirrorUtil.toTypeElement(supertype, env);
+            TypeElement superElement = TypeMirrorUtil.toTypeElement(supertype,
+                    env);
             if (superElement == null || !superElement.getKind().isInterface()) {
                 continue;
             }
             if (superElement.getQualifiedName().contentEquals(
                     EntityListener.class.getName())) {
-                DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(supertype,
-                        env);
+                DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(
+                        supertype, env);
                 assertNotNull(declaredType);
                 List<? extends TypeMirror> args = declaredType
                         .getTypeArguments();
@@ -179,37 +175,12 @@ public class EntityMetaFactory {
         return null;
     }
 
-    protected void doNamingConvention(Entity entityAnnotation,
-            TypeElement classElement, EntityMeta entityMeta) {
-        TypeMirror mamingConventionType = getNamingConventionType(entityAnnotation);
-        entityMeta.setNamingConventionTypeName(TypeMirrorUtil.getTypeName(
-                mamingConventionType, env));
-    }
-
-    protected TypeMirror getNamingConventionType(Entity entityAnnotation) {
-        try {
-            entityAnnotation.namingConvention();
-        } catch (MirroredTypeException e) {
-            return e.getTypeMirror();
+    protected void doTable(TypeElement classElement, EntityMeta entityMeta) {
+        TableMirror tableMirror = TableMirror.newInstance(classElement, env);
+        if (tableMirror == null) {
+            return;
         }
-        throw new AptIllegalStateException("unreachable");
-    }
-
-    protected void doTableMeta(TypeElement classElement, EntityMeta entityMeta) {
-        TableMeta tableMeta = new TableMeta();
-        Table table = classElement.getAnnotation(Table.class);
-        if (table != null) {
-            if (!table.catalog().isEmpty()) {
-                tableMeta.setCatalog(table.catalog());
-            }
-            if (!table.schema().isEmpty()) {
-                tableMeta.setSchema(table.schema());
-            }
-            if (!table.name().isEmpty()) {
-                tableMeta.setName(table.name());
-            }
-        }
-        entityMeta.setTableMeta(tableMeta);
+        entityMeta.setTableMirror(tableMirror);
     }
 
     protected void doFieldElements(TypeElement classElement,
@@ -272,8 +243,8 @@ public class EntityMetaFactory {
         if (entityMeta.hasOriginalStatesMeta()) {
             throw new AptException(DomaMessageCode.DOMA4125, env, fieldElement);
         }
-        if (!TypeMirrorUtil
-                .isSameType(fieldElement.asType(), Serializable.class, env)) {
+        if (!TypeMirrorUtil.isSameType(fieldElement.asType(),
+                Serializable.class, env)) {
             throw new AptException(DomaMessageCode.DOMA4135, env, fieldElement);
         }
         TypeElement entityElement = ElementUtil.toTypeElement(fieldElement
@@ -299,7 +270,8 @@ public class EntityMetaFactory {
         TypeElement foundAnnotationTypeElement = null;
         for (AnnotationMirror annotation : fieldElement.getAnnotationMirrors()) {
             DeclaredType declaredType = annotation.getAnnotationType();
-            TypeElement typeElement = TypeMirrorUtil.toTypeElement(declaredType, env);
+            TypeElement typeElement = TypeMirrorUtil.toTypeElement(
+                    declaredType, env);
             if (typeElement.getAnnotation(EntityField.class) != null) {
                 if (foundAnnotationTypeElement != null) {
                     throw new AptException(DomaMessageCode.DOMA4086, env,

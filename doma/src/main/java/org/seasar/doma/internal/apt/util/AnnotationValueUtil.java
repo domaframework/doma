@@ -18,7 +18,6 @@ package org.seasar.doma.internal.apt.util;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.lang.model.element.AnnotationValue;
@@ -33,7 +32,7 @@ public final class AnnotationValueUtil {
 
     public static List<String> toStringList(AnnotationValue value) {
         if (value == null) {
-            return Collections.emptyList();
+            return null;
         }
         final List<String> results = new ArrayList<String>();
         value.accept(new SimpleAnnotationValueVisitor6<Void, Void>() {
@@ -66,6 +65,20 @@ public final class AnnotationValueUtil {
             @Override
             public Boolean visitBoolean(boolean b, Void p) {
                 return b;
+            }
+
+        }, null);
+    }
+
+    public static Integer toInteger(AnnotationValue value) {
+        if (value == null) {
+            return null;
+        }
+        return value.accept(new SimpleAnnotationValueVisitor6<Integer, Void>() {
+
+            @Override
+            public Integer visitInt(int i, Void p) {
+                return i;
             }
 
         }, null);
@@ -108,34 +121,4 @@ public final class AnnotationValueUtil {
         return object.equals(value.getValue());
     }
 
-    public static String toCSVFormat(AnnotationValue value) {
-        if (value == null) {
-            return "";
-        }
-        final StringBuilder buf = new StringBuilder();
-        value.accept(new SimpleAnnotationValueVisitor6<Void, Void>() {
-
-            @Override
-            public Void visitArray(List<? extends AnnotationValue> values,
-                    Void p) {
-                for (AnnotationValue value : values) {
-                    value.accept(this, p);
-                }
-                return null;
-            }
-
-            @Override
-            protected Void defaultAction(Object o, Void p) {
-                buf.append("\"");
-                buf.append(o);
-                buf.append("\", ");
-                return null;
-            }
-
-        }, null);
-        if (buf.length() > 2) {
-            buf.setLength(buf.length() - 2);
-        }
-        return buf.toString();
-    }
 }

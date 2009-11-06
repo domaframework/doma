@@ -65,19 +65,19 @@ public class SqlFileModifyQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         SqlFileModifyQueryMeta queryMeta = new SqlFileModifyQueryMeta(method);
         ModifyMirror modifyMirror = InsertMirror.newInstance(method, env);
-        if (modifyMirror != null && modifyMirror.isSqlFile()) {
+        if (modifyMirror != null && modifyMirror.getSqlFileValue()) {
             queryMeta.setModifyMirror(modifyMirror);
             queryMeta.setQueryKind(QueryKind.SQLFILE_INSERT);
             return queryMeta;
         }
         modifyMirror = UpdateMirror.newInstance(method, env);
-        if (modifyMirror != null && modifyMirror.isSqlFile()) {
+        if (modifyMirror != null && modifyMirror.getSqlFileValue()) {
             queryMeta.setModifyMirror(modifyMirror);
             queryMeta.setQueryKind(QueryKind.SQLFILE_UPDATE);
             return queryMeta;
         }
         modifyMirror = DeleteMirror.newInstance(method, env);
-        if (modifyMirror != null && modifyMirror.isSqlFile()) {
+        if (modifyMirror != null && modifyMirror.getSqlFileValue()) {
             queryMeta.setModifyMirror(modifyMirror);
             queryMeta.setQueryKind(QueryKind.SQLFILE_DELETE);
             return queryMeta;

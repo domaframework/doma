@@ -22,6 +22,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
+import org.seasar.doma.internal.apt.mirror.ColumnMirror;
 import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
@@ -47,7 +48,7 @@ public class EntityPropertyMeta {
 
     protected boolean version;
 
-    protected ColumnMeta columnMeta;
+    protected ColumnMirror columnMirror;
 
     protected IdGeneratorMeta idGeneratorMeta;
 
@@ -96,14 +97,6 @@ public class EntityPropertyMeta {
         this.version = version;
     }
 
-    public ColumnMeta getColumnMeta() {
-        return columnMeta;
-    }
-
-    public void setColumnMeta(ColumnMeta columnMeta) {
-        this.columnMeta = columnMeta;
-    }
-
     public IdGeneratorMeta getIdGeneratorMeta() {
         return idGeneratorMeta;
     }
@@ -136,4 +129,19 @@ public class EntityPropertyMeta {
         this.basicType = basicType;
     }
 
+    public void setColumnMirror(ColumnMirror columnMirror) {
+        this.columnMirror = columnMirror;
+    }
+
+    public String getColumnName() {
+        return columnMirror != null ? columnMirror.getNameValue() : "";
+    }
+
+    public boolean isColumnInsertable() {
+        return columnMirror != null ? columnMirror.getInsertableValue() : true;
+    }
+
+    public boolean isColumnUpdatable() {
+        return columnMirror != null ? columnMirror.getUpdatableValue() : true;
+    }
 }

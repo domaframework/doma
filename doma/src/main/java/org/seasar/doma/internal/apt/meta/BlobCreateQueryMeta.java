@@ -31,11 +31,11 @@ public class BlobCreateQueryMeta extends AbstractCreateQueryMeta {
         super(method);
     }
 
-    public BlobFactoryMirror getBlobFactoryMirror() {
+    BlobFactoryMirror getBlobFactoryMirror() {
         return blobFactoryMirror;
     }
 
-    public void setBlobFactoryMirror(BlobFactoryMirror blobFactoryMirror) {
+    void setBlobFactoryMirror(BlobFactoryMirror blobFactoryMirror) {
         this.blobFactoryMirror = blobFactoryMirror;
     }
 

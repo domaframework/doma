@@ -41,12 +41,12 @@ public class ArrayCreateQueryMeta extends AbstractCreateQueryMeta {
         this.elementsParameterName = elementsParameterName;
     }
 
-    public ArrayFactoryMirror getArrayFactoryMirror() {
-        return arrayFactoryMirror;
+    void setArrayFactoryMirror(ArrayFactoryMirror arrayFactoryMirror) {
+        this.arrayFactoryMirror = arrayFactoryMirror;
     }
 
-    public void setArrayFactoryMirror(ArrayFactoryMirror arrayFactoryMirror) {
-        this.arrayFactoryMirror = arrayFactoryMirror;
+    public String getArrayTypeName() {
+        return arrayFactoryMirror.getTypeNameValue();
     }
 
     @Override

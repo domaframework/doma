@@ -78,7 +78,7 @@ public class SqlFileSelectQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         final QueryReturnMeta returnMeta = createReturnMeta(method);
         queryMeta.setReturnMeta(returnMeta);
-        if (queryMeta.getSelectMirror().isIterate()) {
+        if (queryMeta.getIterate()) {
             IterationCallbackType iterationCallbackType = queryMeta
                     .getIterationCallbackType();
             AnyType callbackReturnType = iterationCallbackType.getReturnType();
@@ -283,7 +283,7 @@ public class SqlFileSelectQueryMetaFactory extends
                         parameterMeta.getType());
             }
         }
-        if (queryMeta.getSelectMirror().isIterate()) {
+        if (queryMeta.getIterate()) {
             if (queryMeta.getIterationCallbackType() == null) {
                 throw new AptException(DomaMessageCode.DOMA4056, env, method);
             }

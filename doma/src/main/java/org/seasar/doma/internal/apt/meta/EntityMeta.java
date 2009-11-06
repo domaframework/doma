@@ -20,6 +20,11 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.lang.model.type.TypeMirror;
+
+import org.seasar.doma.internal.apt.mirror.EntityMirror;
+import org.seasar.doma.internal.apt.mirror.TableMirror;
+
 /**
  * @author taedium
  * 
@@ -28,19 +33,17 @@ public class EntityMeta {
 
     protected final List<EntityPropertyMeta> allPropertyMetas = new ArrayList<EntityPropertyMeta>();
 
+    protected EntityMirror entityMirror;
+
+    protected TableMirror tableMirror;
+
     protected EntityPropertyMeta versionPropertyMeta;
 
     protected EntityPropertyMeta generatedIdPropertyMeta;
 
-    protected TableMeta tableMeta;
-
     protected String entityName;
 
     protected String entityTypeName;
-
-    protected String listenerTypeName;
-
-    protected String namingConventionTypeName;
 
     protected OriginalStatesMeta originalStatesMeta;
 
@@ -52,12 +55,12 @@ public class EntityMeta {
         this.entityName = entityName;
     }
 
-    public TableMeta getTableMeta() {
-        return tableMeta;
+    public void setEntityMirror(EntityMirror entityMirror) {
+        this.entityMirror = entityMirror;
     }
 
-    public void setTableMeta(TableMeta tableMeta) {
-        this.tableMeta = tableMeta;
+    public void setTableMirror(TableMirror tableMirror) {
+        this.tableMirror = tableMirror;
     }
 
     public void addPropertyMeta(EntityPropertyMeta propertyMeta) {
@@ -101,22 +104,6 @@ public class EntityMeta {
         this.entityTypeName = entityTypeName;
     }
 
-    public String getListenerTypeName() {
-        return listenerTypeName;
-    }
-
-    public void setListenerTypeName(String listenerTypeName) {
-        this.listenerTypeName = listenerTypeName;
-    }
-
-    public String getNamingConventionTypeName() {
-        return namingConventionTypeName;
-    }
-
-    public void setNamingConventionTypeName(String namingConventionTypeName) {
-        this.namingConventionTypeName = namingConventionTypeName;
-    }
-
     public boolean hasOriginalStatesMeta() {
         return originalStatesMeta != null;
     }
@@ -127,6 +114,26 @@ public class EntityMeta {
 
     public void setOriginalStatesMeta(OriginalStatesMeta originalStatesMeta) {
         this.originalStatesMeta = originalStatesMeta;
+    }
+
+    public TypeMirror getEntityListener() {
+        return entityMirror.getListenerValue();
+    }
+
+    public TypeMirror getNamingConvention() {
+        return entityMirror.getNamingConventionValue();
+    }
+
+    public String getCatalogName() {
+        return tableMirror != null ? tableMirror.getCatalogValue() : "";
+    }
+
+    public String getSchemaName() {
+        return tableMirror != null ? tableMirror.getSchemaValue() : "";
+    }
+
+    public String getTableName() {
+        return tableMirror != null ? tableMirror.getNameValue() : "";
     }
 
 }

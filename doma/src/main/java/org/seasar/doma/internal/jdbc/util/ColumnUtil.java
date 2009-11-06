@@ -16,7 +16,8 @@ public final class ColumnUtil {
     public static String getColumnName(EntityType<?> entityType,
             EntityPropertyType<?> propertyType) {
         assertNotNull(entityType, propertyType);
-        if (propertyType.getColumnName() != null) {
+        if (propertyType.getColumnName() != null
+                && !propertyType.getColumnName().isEmpty()) {
             return propertyType.getColumnName();
         }
         NamingConvention namingConvention = entityType.getNamingConvention();
