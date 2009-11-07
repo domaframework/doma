@@ -60,7 +60,7 @@ public class EntityMirror {
     }
 
     public TypeMirror getListenerValue() {
-        TypeMirror result = AnnotationValueUtil.toTypeMirror(listener);
+        TypeMirror result = AnnotationValueUtil.toType(listener);
         if (result == null) {
             throw new AptIllegalStateException("listener");
         }
@@ -68,7 +68,7 @@ public class EntityMirror {
     }
 
     public TypeMirror getNamingConventionValue() {
-        TypeMirror result = AnnotationValueUtil.toTypeMirror(namingConvention);
+        TypeMirror result = AnnotationValueUtil.toType(namingConvention);
         if (result == null) {
             throw new AptIllegalStateException("namingConvention");
         }

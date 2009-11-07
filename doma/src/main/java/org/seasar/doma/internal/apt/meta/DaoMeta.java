@@ -15,11 +15,19 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
+import static org.seasar.doma.internal.util.AssertionUtil.*;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
+
+import org.seasar.doma.AnnotationTarget;
+import org.seasar.doma.internal.apt.mirror.AnnotateWithMirror;
+import org.seasar.doma.internal.apt.mirror.AnnotationMirror;
+import org.seasar.doma.internal.apt.mirror.DaoMirror;
 
 /**
  * 
@@ -30,11 +38,11 @@ public class DaoMeta {
 
     protected final List<QueryMeta> queryMetas = new ArrayList<QueryMeta>();
 
-    protected TypeMirror configType;
+    protected DaoMirror daoMirror;
 
-    protected boolean configAdapter;
+    protected AnnotateWithMirror annotateWithMirror;
 
-    protected AnnotateWithMeta annotateWithMeta;
+    protected boolean configProxied;
 
     protected TypeMirror daoType;
 
@@ -48,14 +56,6 @@ public class DaoMeta {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public TypeMirror getConfigType() {
-        return configType;
-    }
-
-    public void setConfigType(TypeMirror configType) {
-        this.configType = configType;
     }
 
     public TypeMirror getDaoType() {
@@ -82,20 +82,48 @@ public class DaoMeta {
         return queryMetas;
     }
 
-    public boolean isConfigAdapter() {
-        return configAdapter;
+    public boolean isConfigProxied() {
+        return configProxied;
     }
 
-    public void setConfigAdapter(boolean configAdapter) {
-        this.configAdapter = configAdapter;
+    public void setConfigProxied(boolean configAdapter) {
+        this.configProxied = configAdapter;
     }
 
-    public AnnotateWithMeta getAnnotateWithMeta() {
-        return annotateWithMeta;
+    DaoMirror getDaoMirror() {
+        return daoMirror;
     }
 
-    public void setAnnotateWithMeta(AnnotateWithMeta annotateWithMeta) {
-        this.annotateWithMeta = annotateWithMeta;
+    void setDaoMirror(DaoMirror daoMirror) {
+        this.daoMirror = daoMirror;
     }
 
+    public TypeMirror getConfigType() {
+        return daoMirror.getConfigValue();
+    }
+
+    AnnotateWithMirror getAnnotateWithMirror() {
+        return annotateWithMirror;
+    }
+
+    void setAnnotateWithMirror(AnnotateWithMirror annotateWithMirror) {
+        this.annotateWithMirror = annotateWithMirror;
+    }
+
+    public List<AnnotationMirror> getAnnotationMirrors(AnnotationTarget target) {
+        assertNotNull(target);
+        if (annotateWithMirror == null
+                || annotateWithMirror.getAnnotationsValue() == null) {
+            return Collections.emptyList();
+        }
+        List<AnnotationMirror> results = new ArrayList<AnnotationMirror>();
+        for (AnnotationMirror annotationMirror : annotateWithMirror
+                .getAnnotationsValue()) {
+            if (target.name().contentEquals(
+                    annotationMirror.getTargetValue().getSimpleName())) {
+                results.add(annotationMirror);
+            }
+        }
+        return results;
+    }
 }

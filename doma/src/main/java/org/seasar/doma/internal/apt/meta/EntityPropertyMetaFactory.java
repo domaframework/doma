@@ -20,18 +20,16 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.Domain;
 import org.seasar.doma.GeneratedValue;
 import org.seasar.doma.Id;
-import org.seasar.doma.SequenceGenerator;
-import org.seasar.doma.TableGenerator;
 import org.seasar.doma.Version;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.mirror.ColumnMirror;
+import org.seasar.doma.internal.apt.mirror.SequenceGeneratorMirror;
+import org.seasar.doma.internal.apt.mirror.TableGeneratorMirror;
 import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.util.ElementUtil;
@@ -111,72 +109,26 @@ public class EntityPropertyMetaFactory {
 
     protected void doSequenceIdGeneratorMeta(EntityPropertyMeta propertyMeta,
             VariableElement fieldElement, EntityMeta entityMeta) {
-        SequenceGenerator generator = fieldElement
-                .getAnnotation(SequenceGenerator.class);
-        if (generator == null) {
+        SequenceGeneratorMirror sequenceGeneratorMirror = SequenceGeneratorMirror
+                .newInstance(fieldElement, env);
+        if (sequenceGeneratorMirror == null) {
             throw new AptException(DomaMessageCode.DOMA4034, env, fieldElement);
         }
-        StringBuilder buf = new StringBuilder();
-        if (!generator.catalog().isEmpty()) {
-            buf.append(generator.catalog());
-            buf.append(".");
-        }
-        if (!generator.schema().isEmpty()) {
-            buf.append(generator.schema());
-            buf.append(".");
-        }
-        TypeMirror idGeneratorImplementerType = getIdGeneratorImplementerType(generator);
-        buf.append(generator.sequence());
         SequenceIdGeneratorMeta idGeneratorMeta = new SequenceIdGeneratorMeta(
-                buf.toString(), generator.initialValue(), generator
-                        .allocationSize(), TypeMirrorUtil.getTypeName(
-                        idGeneratorImplementerType, env));
+                sequenceGeneratorMirror);
         propertyMeta.setIdGeneratorMeta(idGeneratorMeta);
-    }
-
-    protected TypeMirror getIdGeneratorImplementerType(
-            SequenceGenerator generator) {
-        try {
-            generator.implementer();
-        } catch (MirroredTypeException e) {
-            return e.getTypeMirror();
-        }
-        throw new AptIllegalStateException("unreachable.");
     }
 
     protected void doTableIdGeneratorMeta(EntityPropertyMeta propertyMeta,
             VariableElement fieldElement, EntityMeta entityMeta) {
-        TableGenerator generator = fieldElement
-                .getAnnotation(TableGenerator.class);
-        if (generator == null) {
+        TableGeneratorMirror tableGeneratorMirror = TableGeneratorMirror
+                .newInstance(fieldElement, env);
+        if (tableGeneratorMirror == null) {
             throw new AptException(DomaMessageCode.DOMA4035, env, fieldElement);
         }
-        StringBuilder buf = new StringBuilder();
-        if (!generator.catalog().isEmpty()) {
-            buf.append(generator.catalog());
-            buf.append(".");
-        }
-        if (!generator.schema().isEmpty()) {
-            buf.append(generator.schema());
-            buf.append(".");
-        }
-        TypeMirror idGeneratorImplementerType = getIdGeneratorImplementerType(generator);
-        buf.append(generator.table());
-        TableIdGeneratorMeta idGeneratorMeta = new TableIdGeneratorMeta(buf
-                .toString(), generator.pkColumnName(), generator
-                .valueColumnName(), generator.pkColumnValue(), generator
-                .initialValue(), generator.allocationSize(), TypeMirrorUtil
-                .getTypeName(idGeneratorImplementerType, env));
+        TableIdGeneratorMeta idGeneratorMeta = new TableIdGeneratorMeta(
+                tableGeneratorMirror);
         propertyMeta.setIdGeneratorMeta(idGeneratorMeta);
-    }
-
-    protected TypeMirror getIdGeneratorImplementerType(TableGenerator generator) {
-        try {
-            generator.implementer();
-        } catch (MirroredTypeException e) {
-            return e.getTypeMirror();
-        }
-        throw new AptIllegalStateException("unreachable.");
     }
 
     protected void doName(EntityPropertyMeta propertyMeta,
@@ -216,11 +168,13 @@ public class EntityPropertyMetaFactory {
         if (propertyMeta.isId() || propertyMeta.isVersion()) {
             if (!columnMirror.getInsertableValue()) {
                 throw new AptException(DomaMessageCode.DOMA4088, env,
-                        fieldElement);
+                        fieldElement, columnMirror.getAnnotationMirror(),
+                        columnMirror.getInsertable());
             }
             if (!columnMirror.getUpdatableValue()) {
                 throw new AptException(DomaMessageCode.DOMA4089, env,
-                        fieldElement);
+                        fieldElement, columnMirror.getAnnotationMirror(),
+                        columnMirror.getUpdatable());
             }
         }
         propertyMeta.setColumnMirror(columnMirror);
@@ -231,25 +185,16 @@ public class EntityPropertyMetaFactory {
         TypeMirror type = fieldElement.asType();
         DomainType domainType = DomainType.newInstance(type, env);
         if (domainType != null) {
-            propertyMeta.setDomainType(domainType);
+            propertyMeta.setDataType(domainType);
         } else {
             BasicType basicType = BasicType.newInstance(type, env);
             if (basicType != null) {
-                propertyMeta.setBasicType(basicType);
+                propertyMeta.setDataType(basicType);
             } else {
                 throw new AptException(DomaMessageCode.DOMA4096, env,
                         fieldElement, type);
             }
         }
-    }
-
-    protected TypeMirror getValueType(Domain domainAnnotation) {
-        try {
-            domainAnnotation.valueType();
-        } catch (MirroredTypeException ignored) {
-            return ignored.getTypeMirror();
-        }
-        throw new AptIllegalStateException("unreachable.");
     }
 
     protected boolean isNumber(TypeMirror typeMirror) {

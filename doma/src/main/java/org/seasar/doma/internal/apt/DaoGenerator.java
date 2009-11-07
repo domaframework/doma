@@ -28,8 +28,6 @@ import javax.sql.DataSource;
 import org.seasar.doma.AnnotationTarget;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.apt.meta.AbstractCreateQueryMeta;
-import org.seasar.doma.internal.apt.meta.AnnotateWithMeta;
-import org.seasar.doma.internal.apt.meta.AnnotationMeta;
 import org.seasar.doma.internal.apt.meta.ArrayCreateQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoBatchModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoFunctionQueryMeta;
@@ -60,6 +58,7 @@ import org.seasar.doma.internal.apt.meta.QueryReturnMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileBatchModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileSelectQueryMeta;
+import org.seasar.doma.internal.apt.mirror.AnnotationMirror;
 import org.seasar.doma.internal.apt.mirror.BatchModifyMirror;
 import org.seasar.doma.internal.apt.mirror.ModifyMirror;
 import org.seasar.doma.internal.apt.type.BasicType;
@@ -133,15 +132,10 @@ public class DaoGenerator extends AbstractGenerator {
     }
 
     protected void printClass() {
-        AnnotateWithMeta annotateWithMeta = daoMeta.getAnnotateWithMeta();
-        if (annotateWithMeta != null) {
-            for (AnnotationMeta annotationMeta : annotateWithMeta
-                    .getAnnotationMetas()) {
-                if (annotationMeta.getTarget() == AnnotationTarget.CLASS) {
-                    iprint("@%1$s(%2$s)%n", annotationMeta.getTypeName(),
-                            annotationMeta.getElements());
-                }
-            }
+        for (AnnotationMirror annotation : daoMeta
+                .getAnnotationMirrors(AnnotationTarget.CLASS)) {
+            iprint("@%1$s(%2$s)%n", annotation.getTypeValue(), annotation
+                    .getElementsValue());
         }
         printGenerated();
         iprint("public class %1$s extends %2$s implements %3$s {%n",
@@ -160,26 +154,17 @@ public class DaoGenerator extends AbstractGenerator {
     }
 
     protected void printConstructors() {
-        if (daoMeta.isConfigAdapter()) {
-            AnnotateWithMeta annotateWithMeta = daoMeta.getAnnotateWithMeta();
-            if (annotateWithMeta != null) {
-                for (AnnotationMeta annotationMeta : annotateWithMeta
-                        .getAnnotationMetas()) {
-                    if (annotationMeta.getTarget() == AnnotationTarget.CONSTRUCTOR) {
-                        iprint("@%1$s(%2$s)%n", annotationMeta.getTypeName(),
-                                annotationMeta.getElements());
-                    }
-                }
+        if (daoMeta.isConfigProxied()) {
+            for (AnnotationMirror annotation : daoMeta
+                    .getAnnotationMirrors(AnnotationTarget.CONSTRUCTOR)) {
+                iprint("@%1$s(%2$s)%n", annotation.getTypeValue(), annotation
+                        .getElementsValue());
             }
             iprint("public %1$s(", simpleName);
-            if (annotateWithMeta != null) {
-                for (AnnotationMeta annotationMeta : annotateWithMeta
-                        .getAnnotationMetas()) {
-                    if (annotationMeta.getTarget() == AnnotationTarget.CONSTRUCTOR_PARAMETER) {
-                        print("@%1$s(%2$s) ", annotationMeta.getTypeName(),
-                                annotationMeta.getElements());
-                    }
-                }
+            for (AnnotationMirror annotation : daoMeta
+                    .getAnnotationMirrors(AnnotationTarget.CONSTRUCTOR_PARAMETER)) {
+                print("@%1$s(%2$s) ", annotation.getTypeValue(), annotation
+                        .getElementsValue());
             }
             print("%1$s config) {%n", Config.class.getName());
             indent();

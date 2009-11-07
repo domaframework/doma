@@ -119,15 +119,19 @@ public class DelegateQueryMetaFactory extends
         ExecutableElement constructor = getSuitableConstructor(
                 delegateTypeElement, daoMeta);
         if (constructor == null) {
+            DelegateMirror delegateMirror = queryMeta.getDelegateMirror();
             throw new AptException(DomaMessageCode.DOMA4080, env, method,
-                    delegateTypeElement.getQualifiedName());
+                    delegateMirror.getAnnotationMirror(), delegateMirror
+                            .getTo(), delegateTypeElement.getQualifiedName());
         }
         if (constructor.getParameters().size() == 2) {
             queryMeta.setDaoAware(true);
         }
         if (!hasDelegatableMethod(method, delegateTypeElement)) {
+            DelegateMirror delegateMirror = queryMeta.getDelegateMirror();
             throw new AptException(DomaMessageCode.DOMA4081, env, method,
-                    delegateTypeElement.getQualifiedName());
+                    delegateMirror.getAnnotationMirror(), delegateMirror
+                            .getTo(), delegateTypeElement.getQualifiedName());
         }
     }
 

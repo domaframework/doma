@@ -55,7 +55,11 @@ public class EntityMeta {
         this.entityName = entityName;
     }
 
-    public void setEntityMirror(EntityMirror entityMirror) {
+    EntityMirror getEntityMirror() {
+        return entityMirror;
+    }
+
+    void setEntityMirror(EntityMirror entityMirror) {
         this.entityMirror = entityMirror;
     }
 

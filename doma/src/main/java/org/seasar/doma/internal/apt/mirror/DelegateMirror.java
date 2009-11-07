@@ -66,8 +66,16 @@ public class DelegateMirror {
         return result;
     }
 
+    public AnnotationMirror getAnnotationMirror() {
+        return annotationMirror;
+    }
+
+    public AnnotationValue getTo() {
+        return to;
+    }
+
     public TypeMirror getToValue() {
-        TypeMirror result = AnnotationValueUtil.toTypeMirror(to);
+        TypeMirror result = AnnotationValueUtil.toType(to);
         if (result == null) {
             throw new AptIllegalStateException("to");
         }

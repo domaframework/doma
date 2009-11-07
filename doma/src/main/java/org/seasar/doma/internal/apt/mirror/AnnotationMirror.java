@@ -20,82 +20,91 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.Map;
 
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.Table;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
-import org.seasar.doma.internal.apt.util.ElementUtil;
 
 /**
  * @author taedium
  * 
  */
-public class TableMirror {
+public class AnnotationMirror {
+    protected final javax.lang.model.element.AnnotationMirror annotationMirror;
 
-    protected final AnnotationMirror annotationMirror;
+    protected AnnotationValue target;
 
-    protected AnnotationValue catalog;
+    protected AnnotationValue type;
 
-    protected AnnotationValue schema;
+    protected AnnotationValue elements;
 
-    protected AnnotationValue name;
-
-    protected TableMirror(AnnotationMirror annotationMirror) {
+    protected AnnotationMirror(
+            javax.lang.model.element.AnnotationMirror annotationMirror) {
         assertNotNull(annotationMirror);
         this.annotationMirror = annotationMirror;
     }
 
-    public static TableMirror newInstance(TypeElement clazz,
+    public static AnnotationMirror newInstance(
+            javax.lang.model.element.AnnotationMirror annotationMirror,
             ProcessingEnvironment env) {
-        assertNotNull(env);
-        AnnotationMirror annotationMirror = ElementUtil.getAnnotationMirror(
-                clazz, Table.class, env);
-        if (annotationMirror == null) {
-            return null;
-        }
-        TableMirror result = new TableMirror(annotationMirror);
+        assertNotNull(annotationMirror);
+        AnnotationMirror result = new AnnotationMirror(annotationMirror);
         for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : env
                 .getElementUtils().getElementValuesWithDefaults(
                         annotationMirror).entrySet()) {
             String name = entry.getKey().getSimpleName().toString();
             AnnotationValue value = entry.getValue();
-            if ("catalog".equals(name)) {
-                result.catalog = value;
-            } else if ("schema".equals(name)) {
-                result.schema = value;
-            } else if ("name".equals(name)) {
-                result.name = value;
+            if ("target".equals(name)) {
+                result.target = value;
+            } else if ("type".equals(name)) {
+                result.type = value;
+            } else if ("elements".equals(name)) {
+                result.elements = value;
             }
         }
         return result;
     }
 
-    public String getCatalogValue() {
-        String value = AnnotationValueUtil.toString(catalog);
+    public javax.lang.model.element.AnnotationMirror getAnnotationMirror() {
+        return annotationMirror;
+    }
+
+    public AnnotationValue getTarget() {
+        return target;
+    }
+
+    public AnnotationValue getType() {
+        return type;
+    }
+
+    public AnnotationValue getElements() {
+        return elements;
+    }
+
+    public VariableElement getTargetValue() {
+        VariableElement value = AnnotationValueUtil.toEnumConstant(target);
         if (value == null) {
-            throw new AptIllegalStateException("catalog");
+            throw new AptIllegalStateException("target");
         }
         return value;
     }
 
-    public String getSchemaValue() {
-        String value = AnnotationValueUtil.toString(schema);
+    public TypeMirror getTypeValue() {
+        TypeMirror value = AnnotationValueUtil.toType(type);
         if (value == null) {
-            throw new AptIllegalStateException("catalog");
+            throw new AptIllegalStateException("type");
         }
         return value;
     }
 
-    public String getNameValue() {
-        String value = AnnotationValueUtil.toString(name);
+    public String getElementsValue() {
+        String value = AnnotationValueUtil.toString(elements);
         if (value == null) {
-            throw new AptIllegalStateException("name");
+            throw new AptIllegalStateException("elements");
         }
         return value;
     }
-
 }

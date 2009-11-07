@@ -25,19 +25,16 @@ import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.MirroredTypeException;
-import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 
-import org.seasar.doma.AnnotateWith;
-import org.seasar.doma.Annotation;
-import org.seasar.doma.Dao;
 import org.seasar.doma.DaoMethod;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Notifier;
 import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.mirror.AnnotateWithMirror;
+import org.seasar.doma.internal.apt.mirror.DaoMirror;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.jdbc.ConfigProxy;
@@ -62,13 +59,18 @@ public class DaoMetaFactory {
     public DaoMeta createDaoMeta(TypeElement interfaceElement) {
         assertNotNull(interfaceElement);
         DaoMeta daoMeta = new DaoMeta();
+        DaoMirror daoMirror = DaoMirror.newInstance(interfaceElement, env);
+        if (daoMirror == null) {
+            throw new AptIllegalStateException("daoMirror");
+        }
+        daoMeta.setDaoMirror(daoMirror);
         doDaoElement(interfaceElement, daoMeta);
         doMethodElements(interfaceElement, daoMeta);
         return daoMeta;
     }
 
     protected void doDaoElement(TypeElement interfaceElement, DaoMeta daoMeta) {
-        validateInterface(interfaceElement);
+        validateInterface(interfaceElement, daoMeta);
 
         String name = interfaceElement.getSimpleName().toString();
         String suffix = Options.getDaoSuffix(env);
@@ -79,24 +81,19 @@ public class DaoMetaFactory {
         daoMeta.setName(name);
         daoMeta.setDaoElement(interfaceElement);
         daoMeta.setDaoType(interfaceElement.asType());
-        Dao dao = interfaceElement.getAnnotation(Dao.class);
-        doConfig(dao, daoMeta);
-        AnnotateWith annotateWith = interfaceElement
-                .getAnnotation(AnnotateWith.class);
-        if (annotateWith != null) {
-            if (daoMeta.isConfigAdapter()) {
-                doAnnotateWith(annotateWith, daoMeta);
-            } else {
-                throw new AptException(DomaMessageCode.DOMA4142, env,
-                        interfaceElement);
-            }
+        if (TypeMirrorUtil.isSameType(daoMeta.getConfigType(),
+                ConfigProxy.class, env)) {
+            daoMeta.setConfigProxied(true);
         }
+        doAnnotateWith(daoMeta);
     }
 
-    protected void validateInterface(TypeElement interfaceElement) {
+    protected void validateInterface(TypeElement interfaceElement,
+            DaoMeta daoMeta) {
         if (!interfaceElement.getKind().isInterface()) {
+            DaoMirror daoMirror = daoMeta.getDaoMirror();
             throw new AptException(DomaMessageCode.DOMA4014, env,
-                    interfaceElement);
+                    interfaceElement, daoMirror.getAnnotationMirror());
         }
         if (interfaceElement.getNestingKind().isNested()) {
             throw new AptException(DomaMessageCode.DOMA4017, env,
@@ -112,43 +109,20 @@ public class DaoMetaFactory {
         }
     }
 
-    protected void doConfig(Dao dao, DaoMeta daoMeta) {
-        TypeMirror configType = getConfigType(dao);
-        daoMeta.setConfigType(configType);
-        if (TypeMirrorUtil.isSameType(configType, ConfigProxy.class, env)) {
-            daoMeta.setConfigAdapter(true);
+    protected void doAnnotateWith(DaoMeta daoMeta) {
+        AnnotateWithMirror annotateWithMirror = AnnotateWithMirror.newInstance(
+                daoMeta.getDaoElement(), env);
+        if (annotateWithMirror == null) {
+            return;
         }
-    }
-
-    protected TypeMirror getConfigType(Dao dao) {
-        try {
-            dao.config();
-        } catch (MirroredTypeException e) {
-            return e.getTypeMirror();
+        if (daoMeta.isConfigProxied()) {
+            daoMeta.setAnnotateWithMirror(annotateWithMirror);
+        } else {
+            DaoMirror daoMirror = daoMeta.getDaoMirror();
+            throw new AptException(DomaMessageCode.DOMA4142, env, daoMeta
+                    .getDaoElement(), daoMirror.getAnnotationMirror(),
+                    daoMirror.getConfig());
         }
-        throw new AptIllegalStateException("unreachable.");
-    }
-
-    protected void doAnnotateWith(AnnotateWith annotateWith, DaoMeta daoMeta) {
-        AnnotateWithMeta annotateWithMeta = new AnnotateWithMeta();
-        for (Annotation annotation : annotateWith.annotations()) {
-            AnnotationMeta annotationMeta = new AnnotationMeta();
-            annotationMeta.setTarget(annotation.target());
-            annotationMeta.setTypeName(TypeMirrorUtil.getTypeName(
-                    getAnnotationType(annotation), env));
-            annotationMeta.setElements(annotation.elements());
-            annotateWithMeta.addAnnotationMeta(annotationMeta);
-        }
-        daoMeta.setAnnotateWithMeta(annotateWithMeta);
-    }
-
-    protected TypeMirror getAnnotationType(Annotation annotation) {
-        try {
-            annotation.type();
-        } catch (MirroredTypeException e) {
-            return e.getTypeMirror();
-        }
-        throw new AptIllegalStateException("unreachable.");
     }
 
     protected void doMethodElements(TypeElement interfaceElement,
@@ -175,7 +149,8 @@ public class DaoMetaFactory {
         TypeElement foundAnnotationTypeElement = null;
         for (AnnotationMirror annotation : methodElement.getAnnotationMirrors()) {
             DeclaredType declaredType = annotation.getAnnotationType();
-            TypeElement typeElement = TypeMirrorUtil.toTypeElement(declaredType, env);
+            TypeElement typeElement = TypeMirrorUtil.toTypeElement(
+                    declaredType, env);
             if (typeElement.getAnnotation(DaoMethod.class) != null) {
                 if (foundAnnotationTypeElement != null) {
                     throw new AptException(DomaMessageCode.DOMA4086, env,

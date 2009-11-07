@@ -9,14 +9,13 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 
-import org.seasar.doma.Domain;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
+import org.seasar.doma.internal.apt.mirror.DomainMirror;
 import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
@@ -32,50 +31,37 @@ public class DomainMetaFactory {
 
     public DomainMeta createDomainMeta(TypeElement classElement) {
         assertNotNull(classElement);
-        Domain domainAnnotation = classElement.getAnnotation(Domain.class);
-        if (domainAnnotation == null) {
-            return null;
+        DomainMirror domainMirror = DomainMirror.newInstance(classElement, env);
+        if (domainMirror == null) {
+            throw new AptIllegalStateException("domainMirror");
         }
         DomainMeta domainMeta = new DomainMeta(classElement, classElement
                 .asType());
-        doDomain(classElement, domainMeta, domainAnnotation);
+        domainMeta.setDomainMirror(domainMirror);
+        doWrapperType(classElement, domainMeta);
         validateClass(classElement, domainMeta);
         validateConstructor(classElement, domainMeta);
         validateAccessorMethod(classElement, domainMeta);
         return domainMeta;
     }
 
-    protected void doDomain(TypeElement classElement, DomainMeta domainMeta,
-            Domain domainAnnotation) {
-        domainMeta.setAccessorMethod(domainAnnotation.accessorMethod());
-        TypeMirror valueType = getValueType(domainAnnotation);
-        TypeElement valueTypeElement = TypeMirrorUtil.toTypeElement(TypeMirrorUtil
-                .boxIfPrimitive(valueType, env), env);
-        if (valueTypeElement == null) {
-            throw new AptIllegalStateException(valueType.toString());
-        }
-        domainMeta.setValueType(valueType);
-        domainMeta.setValueTypeElement(valueTypeElement);
-        BasicType basicType = BasicType.newInstance(valueType, env);
+    protected void doWrapperType(TypeElement classElement, DomainMeta domainMeta) {
+        BasicType basicType = BasicType.newInstance(domainMeta.getValueType(),
+                env);
         if (basicType == null) {
+            DomainMirror domainMirror = domainMeta.getDomainMirror();
             throw new AptException(DomaMessageCode.DOMA4102, env, classElement,
-                    valueType);
+                    domainMirror.getAnnotationMirror(), domainMirror
+                            .getValueType(), domainMirror.getValueTypeValue());
         }
         domainMeta.setWrapperType(basicType.getWrapperType());
     }
 
-    protected TypeMirror getValueType(Domain domainAnnotation) {
-        try {
-            domainAnnotation.valueType();
-        } catch (MirroredTypeException e) {
-            return e.getTypeMirror();
-        }
-        throw new AptIllegalStateException("unreachable.");
-    }
-
     protected void validateClass(TypeElement classElement, DomainMeta domainMeta) {
         if (!classElement.getKind().isClass()) {
-            throw new AptException(DomaMessageCode.DOMA4105, env, classElement);
+            DomainMirror domainMirror = domainMeta.getDomainMirror();
+            throw new AptException(DomaMessageCode.DOMA4105, env, classElement,
+                    domainMirror.getAnnotationMirror());
         }
         if (classElement.getModifiers().contains(Modifier.PRIVATE)) {
             throw new AptException(DomaMessageCode.DOMA4133, env, classElement);

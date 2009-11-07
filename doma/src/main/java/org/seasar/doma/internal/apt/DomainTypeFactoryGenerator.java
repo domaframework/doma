@@ -26,6 +26,7 @@ import org.seasar.doma.internal.apt.meta.DomainMeta;
 import org.seasar.doma.internal.apt.type.EnumWrapperType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.apt.type.WrapperType;
+import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.domain.DomainType;
 import org.seasar.doma.internal.domain.DomainTypeFactory;
 import org.seasar.doma.internal.util.BoxedPrimitiveUtil;
@@ -62,9 +63,9 @@ public class DomainTypeFactoryGenerator extends AbstractGenerator {
     protected void printClass() {
         printGenerated();
         iprint("public class %1$s implements %2$s<%3$s, %4$s> {%n", simpleName,
-                DomainTypeFactory.class.getName(), domainMeta
-                        .getValueTypeElement().getQualifiedName(), domainMeta
-                        .getTypeElement().getQualifiedName());
+                DomainTypeFactory.class.getName(), TypeMirrorUtil
+                        .boxIfPrimitive(domainMeta.getValueType(), env),
+                domainMeta.getTypeElement().getQualifiedName());
         print("%n");
         indent();
         printMethods();
@@ -76,18 +77,18 @@ public class DomainTypeFactoryGenerator extends AbstractGenerator {
     protected void printMethods() {
         iprint("@Override%n");
         iprint("public %1$s<%2$s, %3$s> createDomainType() {%n",
-                DomainType.class.getName(), domainMeta.getValueTypeElement()
-                        .getQualifiedName(), domainMeta.getTypeElement()
-                        .getQualifiedName());
+                DomainType.class.getName(), TypeMirrorUtil.boxIfPrimitive(
+                        domainMeta.getValueType(), env), domainMeta
+                        .getTypeElement().getQualifiedName());
         iprint("    return new %1$sType();%n", domainMeta.getTypeElement()
                 .getSimpleName());
         iprint("}%n");
         print("%n");
         iprint("@Override%n");
         iprint("public %1$s<%2$s, %3$s> createDomainType(%3$s domain) {%n",
-                DomainType.class.getName(), domainMeta.getValueTypeElement()
-                        .getQualifiedName(), domainMeta.getTypeElement()
-                        .getQualifiedName());
+                DomainType.class.getName(), TypeMirrorUtil.boxIfPrimitive(
+                        domainMeta.getValueType(), env), domainMeta
+                        .getTypeElement().getQualifiedName());
         iprint("    return new %1$sType(domain);%n", domainMeta
                 .getTypeElement().getSimpleName());
         iprint("}%n");
@@ -97,8 +98,8 @@ public class DomainTypeFactoryGenerator extends AbstractGenerator {
     protected void printDomainTypeClass() {
         iprint("private static class %1$sType implements %2$s<%3$s, %4$s> {%n",
                 domainMeta.getTypeElement().getSimpleName(), DomainType.class
-                        .getName(), domainMeta.getValueTypeElement()
-                        .getQualifiedName(), domainMeta.getTypeElement()
+                        .getName(), TypeMirrorUtil.boxIfPrimitive(domainMeta
+                        .getValueType(), env), domainMeta.getTypeElement()
                         .getQualifiedName());
         print("%n");
         indent();

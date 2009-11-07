@@ -24,8 +24,9 @@ import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.Table;
+import org.seasar.doma.Dao;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementUtil;
@@ -34,66 +35,50 @@ import org.seasar.doma.internal.apt.util.ElementUtil;
  * @author taedium
  * 
  */
-public class TableMirror {
+public class DaoMirror {
 
     protected final AnnotationMirror annotationMirror;
 
-    protected AnnotationValue catalog;
+    protected AnnotationValue config;
 
-    protected AnnotationValue schema;
-
-    protected AnnotationValue name;
-
-    protected TableMirror(AnnotationMirror annotationMirror) {
+    protected DaoMirror(AnnotationMirror annotationMirror) {
         assertNotNull(annotationMirror);
         this.annotationMirror = annotationMirror;
     }
 
-    public static TableMirror newInstance(TypeElement clazz,
+    public static DaoMirror newInstance(TypeElement interfase,
             ProcessingEnvironment env) {
         assertNotNull(env);
         AnnotationMirror annotationMirror = ElementUtil.getAnnotationMirror(
-                clazz, Table.class, env);
+                interfase, Dao.class, env);
         if (annotationMirror == null) {
             return null;
         }
-        TableMirror result = new TableMirror(annotationMirror);
+        DaoMirror result = new DaoMirror(annotationMirror);
         for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : env
                 .getElementUtils().getElementValuesWithDefaults(
                         annotationMirror).entrySet()) {
             String name = entry.getKey().getSimpleName().toString();
             AnnotationValue value = entry.getValue();
-            if ("catalog".equals(name)) {
-                result.catalog = value;
-            } else if ("schema".equals(name)) {
-                result.schema = value;
-            } else if ("name".equals(name)) {
-                result.name = value;
+            if ("config".equals(name)) {
+                result.config = value;
             }
         }
         return result;
     }
 
-    public String getCatalogValue() {
-        String value = AnnotationValueUtil.toString(catalog);
-        if (value == null) {
-            throw new AptIllegalStateException("catalog");
-        }
-        return value;
+    public AnnotationMirror getAnnotationMirror() {
+        return annotationMirror;
     }
 
-    public String getSchemaValue() {
-        String value = AnnotationValueUtil.toString(schema);
-        if (value == null) {
-            throw new AptIllegalStateException("catalog");
-        }
-        return value;
+    public AnnotationValue getConfig() {
+        return config;
     }
 
-    public String getNameValue() {
-        String value = AnnotationValueUtil.toString(name);
+    public TypeMirror getConfigValue() {
+        TypeMirror value = AnnotationValueUtil.toType(config);
         if (value == null) {
-            throw new AptIllegalStateException("name");
+            throw new AptIllegalStateException("config");
         }
         return value;
     }

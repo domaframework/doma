@@ -74,6 +74,22 @@ public class ColumnMirror {
         return result;
     }
 
+    public AnnotationMirror getAnnotationMirror() {
+        return annotationMirror;
+    }
+
+    public AnnotationValue getName() {
+        return name;
+    }
+
+    public AnnotationValue getInsertable() {
+        return insertable;
+    }
+
+    public AnnotationValue getUpdatable() {
+        return updatable;
+    }
+
     public String getNameValue() {
         String value = AnnotationValueUtil.toString(name);
         if (value == null) {

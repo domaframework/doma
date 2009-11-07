@@ -24,8 +24,9 @@ import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
 
-import org.seasar.doma.Table;
+import org.seasar.doma.Domain;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementUtil;
@@ -34,66 +35,67 @@ import org.seasar.doma.internal.apt.util.ElementUtil;
  * @author taedium
  * 
  */
-public class TableMirror {
+public class DomainMirror {
 
     protected final AnnotationMirror annotationMirror;
 
-    protected AnnotationValue catalog;
+    protected AnnotationValue valueType;
 
-    protected AnnotationValue schema;
+    protected AnnotationValue accessorMethod;
 
-    protected AnnotationValue name;
-
-    protected TableMirror(AnnotationMirror annotationMirror) {
+    protected DomainMirror(AnnotationMirror annotationMirror) {
         assertNotNull(annotationMirror);
         this.annotationMirror = annotationMirror;
     }
 
-    public static TableMirror newInstance(TypeElement clazz,
+    public static DomainMirror newInstance(TypeElement clazz,
             ProcessingEnvironment env) {
         assertNotNull(env);
         AnnotationMirror annotationMirror = ElementUtil.getAnnotationMirror(
-                clazz, Table.class, env);
+                clazz, Domain.class, env);
         if (annotationMirror == null) {
             return null;
         }
-        TableMirror result = new TableMirror(annotationMirror);
+        DomainMirror result = new DomainMirror(annotationMirror);
         for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : env
                 .getElementUtils().getElementValuesWithDefaults(
                         annotationMirror).entrySet()) {
             String name = entry.getKey().getSimpleName().toString();
             AnnotationValue value = entry.getValue();
-            if ("catalog".equals(name)) {
-                result.catalog = value;
-            } else if ("schema".equals(name)) {
-                result.schema = value;
-            } else if ("name".equals(name)) {
-                result.name = value;
+            if ("valueType".equals(name)) {
+                result.valueType = value;
+            }
+            if ("accessorMethod".equals(name)) {
+                result.accessorMethod = value;
             }
         }
         return result;
     }
 
-    public String getCatalogValue() {
-        String value = AnnotationValueUtil.toString(catalog);
+    public AnnotationMirror getAnnotationMirror() {
+        return annotationMirror;
+    }
+
+    public AnnotationValue getValueType() {
+        return valueType;
+    }
+
+    public AnnotationValue getAccessorMethod() {
+        return accessorMethod;
+    }
+
+    public TypeMirror getValueTypeValue() {
+        TypeMirror value = AnnotationValueUtil.toType(valueType);
         if (value == null) {
-            throw new AptIllegalStateException("catalog");
+            throw new AptIllegalStateException("valueType");
         }
         return value;
     }
 
-    public String getSchemaValue() {
-        String value = AnnotationValueUtil.toString(schema);
+    public String getAccessorMethodValue() {
+        String value = AnnotationValueUtil.toString(accessorMethod);
         if (value == null) {
-            throw new AptIllegalStateException("catalog");
-        }
-        return value;
-    }
-
-    public String getNameValue() {
-        String value = AnnotationValueUtil.toString(name);
-        if (value == null) {
-            throw new AptIllegalStateException("name");
+            throw new AptIllegalStateException("accessorMethod");
         }
         return value;
     }

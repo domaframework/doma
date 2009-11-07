@@ -289,7 +289,10 @@ public class SqlFileSelectQueryMetaFactory extends
             }
         } else {
             if (queryMeta.getIterationCallbackType() != null) {
-                throw new AptException(DomaMessageCode.DOMA4057, env, method);
+                SelectMirror selectMirror = queryMeta.getSelectMirror();
+                throw new AptException(DomaMessageCode.DOMA4057, env, method,
+                        selectMirror.getAnnotationMirror(), selectMirror
+                                .getIterate());
             }
         }
     }

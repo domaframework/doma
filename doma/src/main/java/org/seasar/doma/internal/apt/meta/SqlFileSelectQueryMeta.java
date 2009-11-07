@@ -75,8 +75,12 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
         this.selectOptionsType = selectOptionsType;
     }
 
-    public void setSelectMirror(SelectMirror selectMirror) {
+    void setSelectMirror(SelectMirror selectMirror) {
         this.selectMirror = selectMirror;
+    }
+
+    SelectMirror getSelectMirror() {
+        return selectMirror;
     }
 
     public int getFetchSize() {

@@ -52,6 +52,12 @@ public class AptException extends DomaException {
     }
 
     public AptException(MessageCode messageCode, ProcessingEnvironment env,
+            Element element, AnnotationMirror annotationMirror, Object... args) {
+        this(messageCode, env, Kind.ERROR, element, annotationMirror, null,
+                null, args);
+    }
+
+    public AptException(MessageCode messageCode, ProcessingEnvironment env,
             Element element, AnnotationMirror annotationMirror,
             AnnotationValue annotationValue, Object... args) {
         this(messageCode, env, Kind.ERROR, element, annotationMirror,

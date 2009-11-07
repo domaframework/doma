@@ -17,44 +17,49 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import org.seasar.doma.internal.apt.mirror.SequenceGeneratorMirror;
+
 /**
  * @author taedium
  * 
  */
 public class SequenceIdGeneratorMeta implements IdGeneratorMeta {
 
-    protected final String qualifiedSequenceName;
+    protected final SequenceGeneratorMirror sequenceGeneratorMirror;
 
-    protected final long initialValue;
-
-    protected final long allocationSize;
-
-    protected final String idGeneratorClassName;
-
-    public SequenceIdGeneratorMeta(String qualifiedSequenceName,
-            long initialValue, long allocationSize, String idGeneratorClassName) {
-        assertNotNull(qualifiedSequenceName, idGeneratorClassName);
-        this.qualifiedSequenceName = qualifiedSequenceName;
-        this.initialValue = initialValue;
-        this.allocationSize = allocationSize;
-        this.idGeneratorClassName = idGeneratorClassName;
+    public SequenceIdGeneratorMeta(
+            SequenceGeneratorMirror sequenceGeneratorMirror) {
+        assertNotNull(sequenceGeneratorMirror);
+        this.sequenceGeneratorMirror = sequenceGeneratorMirror;
     }
 
     public String getQualifiedSequenceName() {
-        return qualifiedSequenceName;
+        StringBuilder buf = new StringBuilder();
+        String catalogName = sequenceGeneratorMirror.getCatalogValue();
+        if (!catalogName.isEmpty()) {
+            buf.append(catalogName);
+            buf.append(".");
+        }
+        String schemaName = sequenceGeneratorMirror.getCatalogValue();
+        if (!schemaName.isEmpty()) {
+            buf.append(schemaName);
+            buf.append(".");
+        }
+        buf.append(sequenceGeneratorMirror.getSequenceValue());
+        return buf.toString();
     }
 
     public long getInitialValue() {
-        return initialValue;
+        return sequenceGeneratorMirror.getInitialValueValue();
     }
 
     public long getAllocationSize() {
-        return allocationSize;
+        return sequenceGeneratorMirror.getAllocationSizeValue();
     }
 
     @Override
     public String getIdGeneratorClassName() {
-        return idGeneratorClassName;
+        return sequenceGeneratorMirror.getImplementerValue().toString();
     }
 
     @Override

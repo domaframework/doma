@@ -32,7 +32,9 @@ import org.seasar.doma.internal.apt.meta.OriginalStatesMeta;
 import org.seasar.doma.internal.apt.meta.SequenceIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.TableIdGeneratorMeta;
 import org.seasar.doma.internal.apt.type.BasicType;
+import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.DomainType;
+import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.apt.type.WrapperType;
 import org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType;
 import org.seasar.doma.internal.jdbc.entity.BasicPropertyType;
@@ -189,50 +191,71 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
     }
 
     protected void printTypeClassPropertyFields() {
-        for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
+        class Visitor extends
+                SimpleDataTypeVisitor<Void, Void, RuntimeException> {
+
             String typeToken = "";
-            WrapperType wrapperType = null;
-            if (pm.getDomainType() != null) {
-                wrapperType = pm.getDomainType().getBasicType()
-                        .getWrapperType();
-            } else if (pm.getBasicType() != null) {
-                BasicType basicType = pm.getBasicType();
-                wrapperType = basicType.getWrapperType();
+
+            WrapperType wrapperType;
+
+            @Override
+            protected Void defaultAction(DataType dataType, Void p)
+                    throws RuntimeException {
+                return assertUnreachable();
+            }
+
+            @Override
+            public Void visitBasicType(BasicType basicType, Void p)
+                    throws RuntimeException {
                 if (basicType.isEnum()) {
                     typeToken = basicType.getQualifiedName() + ".class";
                 }
-            } else {
-                assertUnreachable();
+                wrapperType = basicType.getWrapperType();
+                return null;
             }
+
+            @Override
+            public Void visitDomainType(DomainType domainType, Void p)
+                    throws RuntimeException {
+                wrapperType = domainType.getBasicType().getWrapperType();
+                return null;
+            }
+        }
+
+        for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
+            Visitor visitor = new Visitor();
+            pm.getDataType().accept(visitor, null);
             if (pm.isId()) {
                 if (pm.getIdGeneratorMeta() != null) {
                     iprint(
                             "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", \"%4$s\", new %2$s(%5$s), __idGenerator);%n", /* 1 */
                             GeneratedIdPropertyType.class.getName(), /* 2 */
-                            wrapperType.getTypeName(), /* 3 */pm.getName(), /* 4 */
-                            pm.getColumnName(), /* 5 */typeToken);
+                            visitor.wrapperType.getTypeName(), /* 3 */pm
+                                    .getName(), /* 4 */
+                            pm.getColumnName(), /* 5 */visitor.typeToken);
                 } else {
                     iprint(
                             "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", \"%4$s\", new %2$s(%5$s));%n", /* 1 */
                             AssignedIdPropertyType.class.getName(), /* 2 */
-                            wrapperType.getTypeName(), /* 3 */pm.getName(), /* 4 */
+                            visitor.wrapperType.getTypeName(), /* 3 */pm
+                                    .getName(), /* 4 */
                             pm.getColumnName(),/* 5 */
-                            typeToken);
+                            visitor.typeToken);
                 }
             } else if (pm.isVersion()) {
                 iprint(
                         "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", \"%4$s\", new %2$s(%5$s));%n", /* 1 */
                         VersionPropertyType.class.getName(), /* 2 */
-                        wrapperType.getTypeName(), /* 3 */pm.getName(), /* 4 */
-                        pm.getColumnName(), /* 5 */typeToken);
+                        visitor.wrapperType.getTypeName(), /* 3 */pm.getName(), /* 4 */
+                        pm.getColumnName(), /* 5 */visitor.typeToken);
             } else {
                 iprint(
                         "private final %1$s<%2$s> %3$s = new %1$s<%2$s>(\"%3$s\", \"%4$s\", new %2$s(%7$s), %5$s, %6$s);%n", /* 1 */
                         BasicPropertyType.class.getName(), /* 2 */
-                        wrapperType.getTypeName(), /* 3 */pm.getName(), /* 4 */
+                        visitor.wrapperType.getTypeName(), /* 3 */pm.getName(), /* 4 */
                         pm.getColumnName(), /* 5 */pm.isColumnInsertable(), /* 6 */
                         pm.isColumnUpdatable(), /* 7 */
-                        typeToken);
+                        visitor.typeToken);
             }
             print("%n");
         }
@@ -281,21 +304,40 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         } else {
             iprint("    __originalStates = null;%n");
         }
-        for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
-            DomainType domainType = pm.getDomainType();
-            if (domainType != null) {
-                iprint(
-                        "    %1$s.getWrapper().set(%2$s%3$s.%4$sAccessor.get%5$s(entity) != null ? %2$s%3$s.%4$sAccessor.get%5$s(entity).%6$s() : null);%n",
-                        pm.getName(), pm.getEntityTypeName(), suffix, pm
-                                .getEntityName(), StringUtil.capitalize(pm
-                                .getName()), domainType.getAccessorMetod());
-            } else {
-                iprint(
-                        "    %1$s.getWrapper().set(%2$s%3$s.%4$sAccessor.get%5$s(entity));%n",
-                        pm.getName(), pm.getEntityTypeName(), suffix, pm
-                                .getEntityName(), StringUtil.capitalize(pm
-                                .getName()));
-            }
+        for (final EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
+            pm.getDataType().accept(
+                    new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+
+                        @Override
+                        protected Void defaultAction(DataType dataType, Void p)
+                                throws RuntimeException {
+                            return assertUnreachable();
+                        }
+
+                        @Override
+                        public Void visitBasicType(BasicType basicType, Void p)
+                                throws RuntimeException {
+                            iprint(
+                                    "    %1$s.getWrapper().set(%2$s%3$s.%4$sAccessor.get%5$s(entity));%n",
+                                    pm.getName(), pm.getEntityTypeName(),
+                                    suffix, pm.getEntityName(), StringUtil
+                                            .capitalize(pm.getName()));
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitDomainType(DomainType domainType,
+                                Void p) throws RuntimeException {
+                            iprint(
+                                    "    %1$s.getWrapper().set(%2$s%3$s.%4$sAccessor.get%5$s(entity) != null ? %2$s%3$s.%4$sAccessor.get%5$s(entity).%6$s() : null);%n",
+                                    pm.getName(), pm.getEntityTypeName(),
+                                    suffix, pm.getEntityName(), StringUtil
+                                            .capitalize(pm.getName()),
+                                    domainType.getAccessorMetod());
+                            return null;
+                        }
+
+                    }, null);
         }
         iprint("}%n");
         print("%n");
@@ -463,41 +505,63 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
 
     protected void printTypeClassRefreshEntityInternalMethod() {
         iprint("public void refreshEntityInternal() {%n");
-        for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
-            if (pm.getDomainType() != null) {
-                DomainType domainType = pm.getDomainType();
-                if (domainType.getBasicType().getTypeMirror().getKind()
-                        .isPrimitive()) {
-                    iprint(
-                            "    %1$s%2$s.%3$sAccessor.set%4$s(__entity, new %5$s(%6$s.unbox(%7$s.getWrapper().get())));%n",
-                            pm.getEntityTypeName(), suffix, pm.getEntityName(),
-                            StringUtil.capitalize(pm.getName()), pm
-                                    .getTypeName(), BoxedPrimitiveUtil.class
-                                    .getName(), pm.getName());
-                } else {
-                    iprint(
-                            "    %1$s%2$s.%3$sAccessor.set%4$s(__entity, new %5$s(%6$s.getWrapper().get()));%n",
-                            pm.getEntityTypeName(), suffix, pm.getEntityName(),
-                            StringUtil.capitalize(pm.getName()), pm
-                                    .getTypeName(), pm.getName());
-                }
-            } else if (pm.getBasicType() != null) {
-                BasicType basicType = pm.getBasicType();
-                if (basicType.isPrimitive()) {
-                    iprint(
-                            "    %1$s%2$s.%3$sAccessor.set%4$s(__entity, %5$s.unbox(%6$s.getWrapper().get()));%n",
-                            pm.getEntityTypeName(), suffix, pm.getEntityName(),
-                            StringUtil.capitalize(pm.getName()),
-                            BoxedPrimitiveUtil.class.getName(), pm.getName());
-                } else {
-                    iprint(
-                            "    %1$s%2$s.%3$sAccessor.set%4$s(__entity, %5$s.getWrapper().get());%n",
-                            pm.getEntityTypeName(), suffix, pm.getEntityName(),
-                            StringUtil.capitalize(pm.getName()), pm.getName());
-                }
-            } else {
-                assertUnreachable();
-            }
+        for (final EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
+            pm.getDataType().accept(
+                    new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+
+                        @Override
+                        protected Void defaultAction(DataType dataType, Void p)
+                                throws RuntimeException {
+                            return assertUnreachable();
+                        }
+
+                        @Override
+                        public Void visitBasicType(BasicType basicType, Void p)
+                                throws RuntimeException {
+                            if (basicType.isPrimitive()) {
+                                iprint(
+                                        "    %1$s%2$s.%3$sAccessor.set%4$s(__entity, %5$s.unbox(%6$s.getWrapper().get()));%n",
+                                        pm.getEntityTypeName(), suffix, pm
+                                                .getEntityName(), StringUtil
+                                                .capitalize(pm.getName()),
+                                        BoxedPrimitiveUtil.class.getName(), pm
+                                                .getName());
+                            } else {
+                                iprint(
+                                        "    %1$s%2$s.%3$sAccessor.set%4$s(__entity, %5$s.getWrapper().get());%n",
+                                        pm.getEntityTypeName(), suffix, pm
+                                                .getEntityName(), StringUtil
+                                                .capitalize(pm.getName()), pm
+                                                .getName());
+                            }
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitDomainType(DomainType domainType,
+                                Void p) throws RuntimeException {
+                            if (domainType.getBasicType().getTypeMirror()
+                                    .getKind().isPrimitive()) {
+                                iprint(
+                                        "    %1$s%2$s.%3$sAccessor.set%4$s(__entity, new %5$s(%6$s.unbox(%7$s.getWrapper().get())));%n",
+                                        pm.getEntityTypeName(), suffix, pm
+                                                .getEntityName(), StringUtil
+                                                .capitalize(pm.getName()), pm
+                                                .getTypeName(),
+                                        BoxedPrimitiveUtil.class.getName(), pm
+                                                .getName());
+                            } else {
+                                iprint(
+                                        "    %1$s%2$s.%3$sAccessor.set%4$s(__entity, new %5$s(%6$s.getWrapper().get()));%n",
+                                        pm.getEntityTypeName(), suffix, pm
+                                                .getEntityName(), StringUtil
+                                                .capitalize(pm.getName()), pm
+                                                .getTypeName(), pm.getName());
+                            }
+                            return null;
+                        }
+
+                    }, null);
         }
         if (entityMeta.hasOriginalStatesMeta()) {
             OriginalStatesMeta osm = entityMeta.getOriginalStatesMeta();

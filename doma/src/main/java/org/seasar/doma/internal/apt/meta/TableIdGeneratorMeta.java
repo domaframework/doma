@@ -17,66 +17,60 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import org.seasar.doma.internal.apt.mirror.TableGeneratorMirror;
+
 /**
  * @author taedium
  * 
  */
 public class TableIdGeneratorMeta implements IdGeneratorMeta {
 
-    protected final String qualifiedTableName;
+    protected final TableGeneratorMirror tableGeneratorMirror;
 
-    protected final String pkColumnName;
-
-    protected final String valueColumnName;
-
-    protected final String pkColumnValue;
-
-    protected final long initialValue;
-
-    protected final long allocationSize;
-
-    protected final String idGeneratorClassName;
-
-    public TableIdGeneratorMeta(String qualifiedTableName, String pkColumnName,
-            String valueColumnName, String pkColumnValue, long initialValue,
-            long allocationSize, String idGeneratorClassName) {
-        assertNotNull(qualifiedTableName, pkColumnName, valueColumnName, pkColumnName, idGeneratorClassName);
-        this.qualifiedTableName = qualifiedTableName;
-        this.pkColumnName = pkColumnName;
-        this.valueColumnName = valueColumnName;
-        this.pkColumnValue = pkColumnValue;
-        this.initialValue = initialValue;
-        this.allocationSize = allocationSize;
-        this.idGeneratorClassName = idGeneratorClassName;
+    public TableIdGeneratorMeta(TableGeneratorMirror tableGeneratorMirror) {
+        assertNotNull(tableGeneratorMirror);
+        this.tableGeneratorMirror = tableGeneratorMirror;
     }
 
     public String getQualifiedTableName() {
-        return qualifiedTableName;
+        StringBuilder buf = new StringBuilder();
+        String catalogName = tableGeneratorMirror.getCatalogValue();
+        if (!catalogName.isEmpty()) {
+            buf.append(catalogName);
+            buf.append(".");
+        }
+        String schemaName = tableGeneratorMirror.getCatalogValue();
+        if (!schemaName.isEmpty()) {
+            buf.append(schemaName);
+            buf.append(".");
+        }
+        buf.append(tableGeneratorMirror.getTableValue());
+        return buf.toString();
     }
 
     public String getPkColumnName() {
-        return pkColumnName;
+        return tableGeneratorMirror.getPkColumnNameValue();
     }
 
     public String getValueColumnName() {
-        return valueColumnName;
+        return tableGeneratorMirror.getValueColumnNameValue();
     }
 
     public String getPkColumnValue() {
-        return pkColumnValue;
+        return tableGeneratorMirror.getPkColumnValueValue();
     }
 
     public long getInitialValue() {
-        return initialValue;
+        return tableGeneratorMirror.getInitialValueValue();
     }
 
     public long getAllocationSize() {
-        return allocationSize;
+        return tableGeneratorMirror.getAllocationSizeValue();
     }
 
     @Override
     public String getIdGeneratorClassName() {
-        return idGeneratorClassName;
+        return tableGeneratorMirror.getImplementerValue().toString();
     }
 
     @Override

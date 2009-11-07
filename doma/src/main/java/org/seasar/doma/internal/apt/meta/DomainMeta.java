@@ -5,6 +5,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
+import org.seasar.doma.internal.apt.mirror.DomainMirror;
 import org.seasar.doma.internal.apt.type.WrapperType;
 
 public class DomainMeta {
@@ -13,13 +14,9 @@ public class DomainMeta {
 
     protected final TypeMirror type;
 
-    protected TypeElement valueTypeElement;
-
-    protected TypeMirror valueType;
-
-    protected String accessorMethod;
-
     protected WrapperType wrapperType;
+
+    protected DomainMirror domainMirror;
 
     public DomainMeta(TypeElement typeElement, TypeMirror type) {
         assertNotNull(typeElement, type);
@@ -29,30 +26,6 @@ public class DomainMeta {
 
     public TypeMirror getType() {
         return type;
-    }
-
-    public String getAccessorMethod() {
-        return accessorMethod;
-    }
-
-    public void setAccessorMethod(String accessorMethod) {
-        this.accessorMethod = accessorMethod;
-    }
-
-    public TypeMirror getValueType() {
-        return valueType;
-    }
-
-    public void setValueType(TypeMirror valueType) {
-        this.valueType = valueType;
-    }
-
-    public TypeElement getValueTypeElement() {
-        return valueTypeElement;
-    }
-
-    public void setValueTypeElement(TypeElement valueTypeElement) {
-        this.valueTypeElement = valueTypeElement;
     }
 
     public TypeElement getTypeElement() {
@@ -65,6 +38,22 @@ public class DomainMeta {
 
     public void setWrapperType(WrapperType wrapperType) {
         this.wrapperType = wrapperType;
+    }
+
+    public TypeMirror getValueType() {
+        return domainMirror.getValueTypeValue();
+    }
+
+    public String getAccessorMethod() {
+        return domainMirror.getAccessorMethodValue();
+    }
+
+    DomainMirror getDomainMirror() {
+        return domainMirror;
+    }
+
+    void setDomainMirror(DomainMirror domainMirror) {
+        this.domainMirror = domainMirror;
     }
 
 }

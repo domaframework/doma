@@ -97,6 +97,10 @@ public class SelectMirror {
         return value.booleanValue();
     }
 
+    public AnnotationMirror getAnnotationMirror() {
+        return annotationMirror;
+    }
+
     public static SelectMirror newInstance(ExecutableElement method,
             ProcessingEnvironment env) {
         assertNotNull(env);

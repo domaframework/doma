@@ -72,6 +72,11 @@ public class EntityMetaFactory {
     public EntityMeta createEntityMeta(TypeElement classElement) {
         assertNotNull(classElement);
         EntityMeta entityMeta = new EntityMeta();
+        EntityMirror entityMirror = EntityMirror.newInstance(classElement, env);
+        if (entityMirror == null) {
+            throw new AptIllegalStateException("entityMirror.");
+        }
+        entityMeta.setEntityMirror(entityMirror);
         doClassElement(classElement, entityMeta);
         doFieldElements(classElement, entityMeta);
         return entityMeta;
@@ -79,8 +84,9 @@ public class EntityMetaFactory {
 
     protected void doClassElement(TypeElement classElement,
             EntityMeta entityMeta) {
-        validateClass(classElement);
-        validateConstructor(classElement);
+        validateClass(classElement, entityMeta);
+        validateConstructor(classElement, entityMeta);
+        validateEntityListener(classElement, entityMeta);
 
         String entityName = classElement.getSimpleName().toString();
         String suffix = Options.getEntitySuffix(env);
@@ -91,13 +97,14 @@ public class EntityMetaFactory {
         entityMeta.setEntityName(entityName);
         entityMeta.setEntityTypeName(TypeMirrorUtil.getTypeName(classElement
                 .asType(), env));
-        doEntity(classElement, entityMeta);
         doTable(classElement, entityMeta);
     }
 
-    protected void validateClass(TypeElement classElement) {
+    protected void validateClass(TypeElement classElement, EntityMeta entityMeta) {
         if (classElement.getKind() != ElementKind.CLASS) {
-            throw new AptException(DomaMessageCode.DOMA4015, env, classElement);
+            EntityMirror entityMirror = entityMeta.getEntityMirror();
+            throw new AptException(DomaMessageCode.DOMA4015, env, classElement,
+                    entityMirror.getAnnotationMirror());
         }
         if (classElement.getNestingKind().isNested()) {
             throw new AptException(DomaMessageCode.DOMA4018, env, classElement);
@@ -113,7 +120,8 @@ public class EntityMetaFactory {
         }
     }
 
-    protected void validateConstructor(TypeElement classElement) {
+    protected void validateConstructor(TypeElement classElement,
+            EntityMeta entityMeta) {
         if (classElement.getModifiers().contains(Modifier.ABSTRACT)) {
             return;
         }
@@ -128,12 +136,9 @@ public class EntityMetaFactory {
         throw new AptException(DomaMessageCode.DOMA4124, env, classElement);
     }
 
-    protected void doEntity(TypeElement classElement,
+    protected void validateEntityListener(TypeElement classElement,
             EntityMeta entityMeta) {
-        EntityMirror entityMirror = EntityMirror.newInstance(classElement, env);
-        if (entityMirror == null) {
-            throw new AptIllegalStateException("entityMirror.");
-        }
+        EntityMirror entityMirror = entityMeta.getEntityMirror();
         TypeMirror listenerType = entityMirror.getListenerValue();
         TypeMirror argumentType = getListenerArgumentType(listenerType);
         if (argumentType == null) {
@@ -146,7 +151,6 @@ public class EntityMetaFactory {
                             .getListener(), listenerType, argumentType,
                     classElement.getQualifiedName());
         }
-        entityMeta.setEntityMirror(entityMirror);
     }
 
     protected TypeMirror getListenerArgumentType(TypeMirror typeMirror) {
