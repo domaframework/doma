@@ -17,13 +17,11 @@ public class PrimitivePropertyEntity_ implements org.seasar.doma.internal.jdbc.e
 
         private static final org.seasar.doma.jdbc.entity.NullEntityListener __listener = new org.seasar.doma.jdbc.entity.NullEntityListener();
 
-        private static final org.seasar.doma.jdbc.entity.CamelNamingConvention __namingConvention = new org.seasar.doma.jdbc.entity.CamelNamingConvention();
+        private final org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper> id = new org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("id", "id", new org.seasar.doma.wrapper.IntegerWrapper());
 
-        private final org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper> id = new org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("id", "", new org.seasar.doma.wrapper.IntegerWrapper());
+        private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.BooleanWrapper> bool = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.BooleanWrapper>("bool", "bool", new org.seasar.doma.wrapper.BooleanWrapper(), true, true);
 
-        private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.BooleanWrapper> bool = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.BooleanWrapper>("bool", "", new org.seasar.doma.wrapper.BooleanWrapper(), true, true);
-
-        private final org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.wrapper.LongWrapper> version = new org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.wrapper.LongWrapper>("version", "", new org.seasar.doma.wrapper.LongWrapper());
+        private final org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.wrapper.LongWrapper> version = new org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.wrapper.LongWrapper>("version", "version", new org.seasar.doma.wrapper.LongWrapper());
 
         private final org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity __entity;
 
@@ -31,7 +29,7 @@ public class PrimitivePropertyEntity_ implements org.seasar.doma.internal.jdbc.e
 
         private final String __schemaName = "";
 
-        private final String __tableName = "";
+        private final String __tableName = "PrimitivePropertyEntity";
 
         private final java.util.HashMap<String, org.seasar.doma.wrapper.Wrapper<?>> __originalStates;
 
@@ -147,11 +145,6 @@ public class PrimitivePropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         @Override
         public java.util.Map<String, org.seasar.doma.wrapper.Wrapper<?>> getOriginalStates() {
             return __originalStates;
-        }
-
-        @Override
-        public org.seasar.doma.jdbc.entity.NamingConvention getNamingConvention() {
-            return __namingConvention;
         }
 
     }

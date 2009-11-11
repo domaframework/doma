@@ -32,8 +32,6 @@ import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
-import org.seasar.doma.jdbc.entity.CamelNamingConvention;
-import org.seasar.doma.jdbc.entity.NamingConvention;
 import org.seasar.doma.jdbc.entity.NullEntityListener;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
 import org.seasar.doma.wrapper.IntegerWrapper;
@@ -57,29 +55,27 @@ public class Emp_ implements EntityTypeFactory<Emp> {
 
         private static final NullEntityListener __listener = new NullEntityListener();
 
-        private static final NamingConvention __namingConvention = new CamelNamingConvention();
-
         private final AssignedIdPropertyType<IntegerWrapper> id = new AssignedIdPropertyType<IntegerWrapper>(
-                "id", null, new IntegerWrapper());
+                "id", "ID", new IntegerWrapper());
 
         private final BasicPropertyType<StringWrapper> name = new BasicPropertyType<StringWrapper>(
-                "name", null, new StringWrapper(), true, true);
+                "name", "NAME", new StringWrapper(), true, true);
 
         private final BasicPropertyType<BigDecimalWrapper> salary = new BasicPropertyType<BigDecimalWrapper>(
-                "salary", null, new BigDecimalWrapper(), true, true);
+                "salary", "SALARY", new BigDecimalWrapper(), true, true);
 
         private final VersionPropertyType<IntegerWrapper> version = new VersionPropertyType<IntegerWrapper>(
-                "version", null, new IntegerWrapper());
+                "version", "VERSION", new IntegerWrapper());
 
         private final HashMap<String, Wrapper<?>> __originalStates;
 
         private final String __name = "Emp";
 
-        private final String __catalogName;
+        private final String __catalogName = null;
 
-        private final String __schemaName;
+        private final String __schemaName = null;
 
-        private final String __tableName;
+        private final String __tableName = "EMP";
 
         private List<EntityPropertyType<?>> __properties;
 
@@ -93,9 +89,6 @@ public class Emp_ implements EntityTypeFactory<Emp> {
 
         private EmpType(Emp entity) {
             this.__entity = entity;
-            this.__catalogName = null;
-            this.__schemaName = null;
-            this.__tableName = null;
             id.getWrapper().set(entity.id);
             name.getWrapper().set(entity.name);
             salary.getWrapper().set(entity.salary);
@@ -214,11 +207,6 @@ public class Emp_ implements EntityTypeFactory<Emp> {
         @Override
         public String getTableName() {
             return __tableName;
-        }
-
-        @Override
-        public NamingConvention getNamingConvention() {
-            return __namingConvention;
         }
 
     }

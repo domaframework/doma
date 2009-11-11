@@ -27,7 +27,6 @@ import java.util.Map;
 import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.query.Query;
-import org.seasar.doma.internal.jdbc.util.ColumnUtil;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.wrapper.Wrapper;
 
@@ -75,7 +74,7 @@ public class EntityFetcher implements ResultFetcher<ResultSet, EntityType<?>> {
                 .getEntityPropertyTypes();
         nameMap = new HashMap<String, String>(propertyTypes.size());
         for (EntityPropertyType<?> p : propertyTypes) {
-            String columnName = ColumnUtil.getColumnName(entityType, p);
+            String columnName = p.getColumnName();
             nameMap.put(columnName.toLowerCase(), p.getName());
         }
     }

@@ -22,8 +22,9 @@ import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
 import org.seasar.doma.OriginalStates;
 import org.seasar.doma.Version;
+import org.seasar.doma.jdbc.entity.NamingConvention;
 
-@Entity
+@Entity(namingConvention = NamingConvention.SNAKE_UPPER_CASE)
 public class Emp {
 
     @Id

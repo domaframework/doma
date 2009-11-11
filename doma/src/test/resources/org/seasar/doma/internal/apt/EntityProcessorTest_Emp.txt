@@ -25,15 +25,13 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
 
         private static final org.seasar.doma.internal.apt.entity.EmpListener __listener = new org.seasar.doma.internal.apt.entity.EmpListener();
 
-        private static final org.seasar.doma.jdbc.entity.CamelNamingConvention __namingConvention = new org.seasar.doma.jdbc.entity.CamelNamingConvention();
+        private final org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper> id = new org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("id", "id", new org.seasar.doma.wrapper.IntegerWrapper(), __idGenerator);
 
-        private final org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper> id = new org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("id", "", new org.seasar.doma.wrapper.IntegerWrapper(), __idGenerator);
-
-        private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.StringWrapper> name = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.StringWrapper>("name", "", new org.seasar.doma.wrapper.StringWrapper(), true, true);
+        private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.StringWrapper> name = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.StringWrapper>("name", "name", new org.seasar.doma.wrapper.StringWrapper(), true, true);
 
         private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.BigDecimalWrapper> salary = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.BigDecimalWrapper>("salary", "SALARY", new org.seasar.doma.wrapper.BigDecimalWrapper(), false, false);
 
-        private final org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.wrapper.IntegerWrapper> version = new org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("version", "", new org.seasar.doma.wrapper.IntegerWrapper());
+        private final org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.wrapper.IntegerWrapper> version = new org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("version", "version", new org.seasar.doma.wrapper.IntegerWrapper());
 
         private final org.seasar.doma.internal.apt.entity.Emp __entity;
 
@@ -41,7 +39,7 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
 
         private final String __schemaName = "AAA";
 
-        private final String __tableName = "";
+        private final String __tableName = "Emp";
 
         private final java.util.HashMap<String, org.seasar.doma.wrapper.Wrapper<?>> __originalStates;
 
@@ -179,11 +177,6 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
         @Override
         public java.util.Map<String, org.seasar.doma.wrapper.Wrapper<?>> getOriginalStates() {
             return __originalStates;
-        }
-
-        @Override
-        public org.seasar.doma.jdbc.entity.NamingConvention getNamingConvention() {
-            return __namingConvention;
         }
 
     }

@@ -24,12 +24,14 @@ import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.Entity;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementUtil;
+import org.seasar.doma.jdbc.entity.NamingConvention;
 
 /**
  * @author taedium
@@ -67,12 +69,14 @@ public class EntityMirror {
         return result;
     }
 
-    public TypeMirror getNamingConventionValue() {
-        TypeMirror result = AnnotationValueUtil.toType(namingConvention);
-        if (result == null) {
+    public NamingConvention getNamingConventionValue() {
+        VariableElement enumConstant = AnnotationValueUtil
+                .toEnumConstant(namingConvention);
+        if (enumConstant == null) {
             throw new AptIllegalStateException("namingConvention");
         }
-        return result;
+        return NamingConvention
+                .valueOf(enumConstant.getSimpleName().toString());
     }
 
     public static EntityMirror newInstance(TypeElement clazz,

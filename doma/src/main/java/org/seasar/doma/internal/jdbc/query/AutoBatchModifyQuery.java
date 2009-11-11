@@ -27,7 +27,6 @@ import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
-import org.seasar.doma.internal.jdbc.util.ColumnUtil;
 import org.seasar.doma.internal.jdbc.util.TableUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.jdbc.Config;
@@ -93,8 +92,7 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
             if (!p.isUpdatable()) {
                 continue;
             }
-            String columnName = ColumnUtil.getColumnName(entityType, p);
-            columnNameMap.put(p.getName(), columnName);
+            columnNameMap.put(p.getName(), p.getColumnName());
         }
     }
 

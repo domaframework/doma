@@ -46,7 +46,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
     public void prepare() {
         assertNotNull(config, entityType, callerClassName, callerMethodName);
         entityType.preUpdate();
-        prepareTableAndColumnNames();
+        prepareTable();
         prepareIdAndVersionProperties();
         validateIdExistent();
         prepareOptions();
@@ -107,7 +107,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
         builder.appendSql(tableName);
         builder.appendSql(" set ");
         for (EntityPropertyType<?> p : targetProperties) {
-            builder.appendSql(columnNameMap.get(p.getName()));
+            builder.appendSql(p.getColumnName());
             builder.appendSql(" = ");
             builder.appendWrapper(p.getWrapper());
             if (p.isVersion() && !versionIncluded) {
@@ -119,7 +119,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
         if (idProperties.size() > 0) {
             builder.appendSql(" where ");
             for (EntityPropertyType<?> p : idProperties) {
-                builder.appendSql(columnNameMap.get(p.getName()));
+                builder.appendSql(p.getColumnName());
                 builder.appendSql(" = ");
                 builder.appendWrapper(p.getWrapper());
                 builder.appendSql(" and ");
@@ -132,7 +132,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
             } else {
                 builder.appendSql(" and ");
             }
-            builder.appendSql(columnNameMap.get(versionPropertyType.getName()));
+            builder.appendSql(versionPropertyType.getColumnName());
             builder.appendSql(" = ");
             builder.appendWrapper(versionPropertyType.getWrapper());
         }

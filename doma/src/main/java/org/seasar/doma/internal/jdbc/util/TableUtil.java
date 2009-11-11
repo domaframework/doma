@@ -18,7 +18,6 @@ package org.seasar.doma.internal.jdbc.util;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.internal.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.entity.NamingConvention;
 
 /**
  * @author taedium
@@ -30,17 +29,8 @@ public final class TableUtil {
         assertNotNull(entityType);
         String catalogName = entityType.getCatalogName();
         String schemaName = entityType.getSchemaName();
-        String tableName = getTableName(entityType);
+        String tableName = entityType.getTableName();
         return getQualifiedTableName(catalogName, schemaName, tableName);
-    }
-
-    protected static String getTableName(EntityType<?> entityType) {
-        if (entityType.getTableName() != null
-                && !entityType.getTableName().isEmpty()) {
-            return entityType.getTableName();
-        }
-        NamingConvention namingConvention = entityType.getNamingConvention();
-        return namingConvention.fromEntityToTable(entityType.getName());
     }
 
     public static String getQualifiedTableName(String catalogName,

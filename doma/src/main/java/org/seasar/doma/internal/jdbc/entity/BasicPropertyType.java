@@ -42,6 +42,9 @@ public class BasicPropertyType<W extends Wrapper<?>> implements
         if (name == null) {
             throw new DomaNullPointerException("name");
         }
+        if (columnName == null) {
+            throw new DomaNullPointerException("columnName");
+        }
         if (wrapper == null) {
             throw new DomaNullPointerException("wrapper");
         }

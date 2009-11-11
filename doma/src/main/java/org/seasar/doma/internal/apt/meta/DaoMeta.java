@@ -38,7 +38,7 @@ public class DaoMeta {
 
     protected final List<QueryMeta> queryMetas = new ArrayList<QueryMeta>();
 
-    protected DaoMirror daoMirror;
+    protected final DaoMirror daoMirror;
 
     protected AnnotateWithMirror annotateWithMirror;
 
@@ -49,6 +49,11 @@ public class DaoMeta {
     protected TypeElement daoElement;
 
     protected String name;
+
+    public DaoMeta(DaoMirror daoMirror) {
+        assertNotNull(daoMirror);
+        this.daoMirror = daoMirror;
+    }
 
     public String getName() {
         return name;
@@ -92,10 +97,6 @@ public class DaoMeta {
 
     DaoMirror getDaoMirror() {
         return daoMirror;
-    }
-
-    void setDaoMirror(DaoMirror daoMirror) {
-        this.daoMirror = daoMirror;
     }
 
     public TypeMirror getConfigType() {

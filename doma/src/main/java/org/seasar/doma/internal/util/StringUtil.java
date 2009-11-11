@@ -67,7 +67,7 @@ public final class StringUtil {
      * @return 変換された文字列。 ただし、{@code text} が {@code null} の場合は {@code null}、
      *         {@code text} が空文字の場合は空文字を返します。
      */
-    public static String camelize(String text) {
+    public static String fromSnakeCaseToCamelCase(String text) {
         if (isNullOrEmpty(text)) {
             return text;
         }
@@ -92,7 +92,7 @@ public final class StringUtil {
      * @return 変換された文字列。 ただし、{@code text} が {@code null} の場合は {@code null}、
      *         {@code text} が空文字の場合は空文字を返します。
      */
-    public static String decamelize(String text) {
+    public static String fromCamelCaseToSnakeCase(String text) {
         if (isNullOrEmpty(text)) {
             return text;
         }
@@ -100,7 +100,7 @@ public final class StringUtil {
         CharBuffer buf = CharBuffer.wrap(text);
         while (buf.hasRemaining()) {
             char c = buf.get();
-            result.append(Character.toUpperCase(c));
+            result.append(Character.toLowerCase(c));
             buf.mark();
             if (buf.hasRemaining()) {
                 char c2 = buf.get();

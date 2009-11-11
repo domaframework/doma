@@ -58,12 +58,11 @@ public class DaoMetaFactory {
 
     public DaoMeta createDaoMeta(TypeElement interfaceElement) {
         assertNotNull(interfaceElement);
-        DaoMeta daoMeta = new DaoMeta();
         DaoMirror daoMirror = DaoMirror.newInstance(interfaceElement, env);
         if (daoMirror == null) {
             throw new AptIllegalStateException("daoMirror");
         }
-        daoMeta.setDaoMirror(daoMirror);
+        DaoMeta daoMeta = new DaoMeta(daoMirror);
         doDaoElement(interfaceElement, daoMeta);
         doMethodElements(interfaceElement, daoMeta);
         return daoMeta;

@@ -20,7 +20,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.seasar.doma.jdbc.entity.CamelNamingConvention;
 import org.seasar.doma.jdbc.entity.EntityListener;
 import org.seasar.doma.jdbc.entity.NamingConvention;
 import org.seasar.doma.jdbc.entity.NullEntityListener;
@@ -85,9 +84,9 @@ public @interface Entity {
     Class<? extends EntityListener<?>> listener() default NullEntityListener.class;
 
     /**
-     * 命名規約です。
+     * ネーミング規約です。
      * <p>
-     * 指定しない場合、デフォルトのネーミング規約が設定されます。 ここに指定したクラスは、エンティティクラスごとに1つだけインスタンス化されます。
+     * 指定しない場合、デフォルトのネーミング規約が設定されます。
      */
-    Class<? extends NamingConvention> namingConvention() default CamelNamingConvention.class;
+    NamingConvention namingConvention() default NamingConvention.NONE;
 }

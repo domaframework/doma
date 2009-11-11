@@ -31,16 +31,19 @@ public class StringUtilTest extends TestCase {
         assertEquals("aAA", StringUtil.decapitalize("AAA"));
     }
 
-    public void testCamelize() throws Exception {
-        assertEquals("aaaBbbCcc", StringUtil.camelize("AAA_BBB_CCC"));
-        assertEquals("aaaBbbCcc", StringUtil.camelize("aaa_bbb_ccc"));
-        assertEquals("abc", StringUtil.camelize("ABC"));
-        assertEquals("abc", StringUtil.camelize("abc"));
+    public void testFromSnakeCaseToCamelCase() throws Exception {
+        assertEquals("aaaBbbCcc", StringUtil
+                .fromSnakeCaseToCamelCase("AAA_BBB_CCC"));
+        assertEquals("aaaBbbCcc", StringUtil
+                .fromSnakeCaseToCamelCase("aaa_bbb_ccc"));
+        assertEquals("abc", StringUtil.fromSnakeCaseToCamelCase("ABC"));
+        assertEquals("abc", StringUtil.fromSnakeCaseToCamelCase("abc"));
     }
 
-    public void testDecamelize() throws Exception {
-        assertEquals("AAA_BBB_CCC", StringUtil.decamelize("aaaBbbCcc"));
-        assertEquals("ABC", StringUtil.decamelize("abc"));
+    public void testFromCamelCaseToSnakeCase() throws Exception {
+        assertEquals("aaa_bbb_ccc", StringUtil
+                .fromCamelCaseToSnakeCase("aaaBbbCcc"));
+        assertEquals("abc", StringUtil.fromCamelCaseToSnakeCase("abc"));
     }
 
     public void testIsWhitespace() throws Exception {

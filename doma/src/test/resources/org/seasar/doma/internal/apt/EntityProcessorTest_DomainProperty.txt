@@ -17,11 +17,9 @@ public class DomainPropertyEntity_ implements org.seasar.doma.internal.jdbc.enti
 
         private static final org.seasar.doma.jdbc.entity.NullEntityListener __listener = new org.seasar.doma.jdbc.entity.NullEntityListener();
 
-        private static final org.seasar.doma.jdbc.entity.CamelNamingConvention __namingConvention = new org.seasar.doma.jdbc.entity.CamelNamingConvention();
+        private final org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper> id = new org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("id", "id", new org.seasar.doma.wrapper.IntegerWrapper());
 
-        private final org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper> id = new org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("id", "", new org.seasar.doma.wrapper.IntegerWrapper());
-
-        private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.StringWrapper> name = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.StringWrapper>("name", "", new org.seasar.doma.wrapper.StringWrapper(), true, true);
+        private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.StringWrapper> name = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.StringWrapper>("name", "name", new org.seasar.doma.wrapper.StringWrapper(), true, true);
 
         private final org.seasar.doma.internal.apt.entity.DomainPropertyEntity __entity;
 
@@ -29,7 +27,7 @@ public class DomainPropertyEntity_ implements org.seasar.doma.internal.jdbc.enti
 
         private final String __schemaName = "";
 
-        private final String __tableName = "";
+        private final String __tableName = "DomainPropertyEntity";
 
         private final java.util.HashMap<String, org.seasar.doma.wrapper.Wrapper<?>> __originalStates;
 
@@ -141,11 +139,6 @@ public class DomainPropertyEntity_ implements org.seasar.doma.internal.jdbc.enti
         @Override
         public java.util.Map<String, org.seasar.doma.wrapper.Wrapper<?>> getOriginalStates() {
             return __originalStates;
-        }
-
-        @Override
-        public org.seasar.doma.jdbc.entity.NamingConvention getNamingConvention() {
-            return __namingConvention;
         }
 
     }

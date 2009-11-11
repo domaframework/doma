@@ -84,6 +84,32 @@ public final class AnnotationValueUtil {
         return results;
     }
 
+    public static List<VariableElement> toEnumConstantList(AnnotationValue value) {
+        if (value == null) {
+            return null;
+        }
+        final List<VariableElement> results = new ArrayList<VariableElement>();
+        value.accept(new SimpleAnnotationValueVisitor6<Void, Void>() {
+
+            @Override
+            public Void visitArray(List<? extends AnnotationValue> values,
+                    Void p) {
+                for (AnnotationValue value : values) {
+                    value.accept(this, p);
+                }
+                return null;
+            }
+
+            @Override
+            public Void visitEnumConstant(VariableElement c, Void p) {
+                results.add(c);
+                return null;
+            }
+
+        }, null);
+        return results;
+    }
+
     public static Boolean toBoolean(AnnotationValue value) {
         if (value == null) {
             return null;

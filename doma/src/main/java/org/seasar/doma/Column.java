@@ -20,8 +20,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.seasar.doma.jdbc.entity.NamingConvention;
-
 /**
  * データベースのテーブルのカラムを示します。
  * <p>
@@ -54,8 +52,7 @@ public @interface Column {
     /**
      * カラム名です。
      * <p>
-     * 指定しない場合、カラム名は {@link NamingConvention#fromPropertyToColumn(String)}
-     * によって解決されます。
+     * 指定しない場合、カラム名は {@link Entity#namingConvention()} に指定した列挙型 によって解決されます。
      */
     String name() default "";
 

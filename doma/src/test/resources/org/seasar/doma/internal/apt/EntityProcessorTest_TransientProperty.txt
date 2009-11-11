@@ -17,9 +17,7 @@ public class TransientPropertyEntity_ implements org.seasar.doma.internal.jdbc.e
 
         private static final org.seasar.doma.jdbc.entity.NullEntityListener __listener = new org.seasar.doma.jdbc.entity.NullEntityListener();
 
-        private static final org.seasar.doma.jdbc.entity.CamelNamingConvention __namingConvention = new org.seasar.doma.jdbc.entity.CamelNamingConvention();
-
-        private final org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.wrapper.IntegerWrapper> id = new org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("id", "", new org.seasar.doma.wrapper.IntegerWrapper());
+        private final org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.wrapper.IntegerWrapper> id = new org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("id", "id", new org.seasar.doma.wrapper.IntegerWrapper());
 
         private final org.seasar.doma.internal.apt.entity.TransientPropertyEntity __entity;
 
@@ -27,7 +25,7 @@ public class TransientPropertyEntity_ implements org.seasar.doma.internal.jdbc.e
 
         private final String __schemaName = "";
 
-        private final String __tableName = "";
+        private final String __tableName = "TransientPropertyEntity";
 
         private final java.util.HashMap<String, org.seasar.doma.wrapper.Wrapper<?>> __originalStates;
 
@@ -135,11 +133,6 @@ public class TransientPropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         @Override
         public java.util.Map<String, org.seasar.doma.wrapper.Wrapper<?>> getOriginalStates() {
             return __originalStates;
-        }
-
-        @Override
-        public org.seasar.doma.jdbc.entity.NamingConvention getNamingConvention() {
-            return __namingConvention;
         }
 
     }

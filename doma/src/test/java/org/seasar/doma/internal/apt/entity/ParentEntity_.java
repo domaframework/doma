@@ -2,8 +2,6 @@ package org.seasar.doma.internal.apt.entity;
 
 import java.util.Map;
 
-import org.seasar.doma.jdbc.entity.CamelNamingConvention;
-import org.seasar.doma.jdbc.entity.NamingConvention;
 import org.seasar.doma.wrapper.Wrapper;
 
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
@@ -28,14 +26,12 @@ public class ParentEntity_
 
         private static final org.seasar.doma.jdbc.entity.NullEntityListener __listener = new org.seasar.doma.jdbc.entity.NullEntityListener();
 
-        private static final NamingConvention __naimingConvention = new CamelNamingConvention();
-
         private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.IntegerWrapper> aaa = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.IntegerWrapper>(
-                "aaa", null, new org.seasar.doma.wrapper.IntegerWrapper(),
+                "aaa", "aaa", new org.seasar.doma.wrapper.IntegerWrapper(),
                 true, true);
 
         private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.IntegerWrapper> bbb = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.IntegerWrapper>(
-                "bbb", null, new org.seasar.doma.wrapper.IntegerWrapper(),
+                "bbb", "bbb", new org.seasar.doma.wrapper.IntegerWrapper(),
                 true, true);
 
         private final org.seasar.doma.internal.apt.entity.ParentEntity __entity;
@@ -44,7 +40,7 @@ public class ParentEntity_
 
         private final String __schemaName = null;
 
-        private final String __tableName = null;
+        private final String __tableName = "ParentEntity";
 
         private final Map<String, Wrapper<?>> __originalStates;
 
@@ -170,11 +166,6 @@ public class ParentEntity_
         @Override
         public Map<String, Wrapper<?>> getOriginalStates() {
             return __originalStates;
-        }
-
-        @Override
-        public NamingConvention getNamingConvention() {
-            return __naimingConvention;
         }
 
     }

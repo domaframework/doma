@@ -71,12 +71,11 @@ public class EntityMetaFactory {
 
     public EntityMeta createEntityMeta(TypeElement classElement) {
         assertNotNull(classElement);
-        EntityMeta entityMeta = new EntityMeta();
         EntityMirror entityMirror = EntityMirror.newInstance(classElement, env);
         if (entityMirror == null) {
             throw new AptIllegalStateException("entityMirror.");
         }
-        entityMeta.setEntityMirror(entityMirror);
+        EntityMeta entityMeta = new EntityMeta(entityMirror);
         doClassElement(classElement, entityMeta);
         doFieldElements(classElement, entityMeta);
         return entityMeta;

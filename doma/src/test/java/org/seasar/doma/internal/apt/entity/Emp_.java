@@ -23,7 +23,6 @@ import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
-import org.seasar.doma.jdbc.entity.NamingConvention;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -122,10 +121,6 @@ public class Emp_ implements EntityTypeFactory<Emp> {
             return null;
         }
 
-        @Override
-        public NamingConvention getNamingConvention() {
-            return null;
-        }
     }
 
 }

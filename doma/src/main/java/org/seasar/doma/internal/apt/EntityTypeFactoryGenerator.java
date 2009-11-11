@@ -44,7 +44,6 @@ import org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.internal.util.BoxedPrimitiveUtil;
 import org.seasar.doma.internal.util.StringUtil;
-import org.seasar.doma.jdbc.entity.NamingConvention;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -126,7 +125,6 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
     protected void printTypeClassFields() {
         printTypeClassGeneratedIdPropertyField();
         printTypeClassListenerField();
-        printTypeClassNamingConventionField();
         printTypeClassPropertyFields();
         printTypeClassEntityField();
         printTypeClassCatalogNameField();
@@ -151,12 +149,6 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
     protected void printTypeClassListenerField() {
         iprint("private static final %1$s __listener = new %1$s();%n",
                 entityMeta.getEntityListener());
-        print("%n");
-    }
-
-    protected void printTypeClassNamingConventionField() {
-        iprint("private static final %1$s __namingConvention = new %1$s();%n",
-                entityMeta.getNamingConvention());
         print("%n");
     }
 
@@ -360,7 +352,6 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         printTypeClassGetEntityMethod();
         printTypeClassGetEntityClassMethod();
         printTypeClassGetOriginalStatesMethod();
-        printTypeClassGetNamingConventionMethod();
     }
 
     protected void printTypeClassGetNameMethod() {
@@ -613,15 +604,6 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         iprint("public java.util.Map<String, %1$s<?>> getOriginalStates() {%n",
                 Wrapper.class.getName());
         iprint("    return __originalStates;%n");
-        iprint("}%n");
-        print("%n");
-    }
-
-    protected void printTypeClassGetNamingConventionMethod() {
-        iprint("@Override%n");
-        iprint("public %1$s getNamingConvention() {%n", NamingConvention.class
-                .getName());
-        iprint("    return __namingConvention;%n");
         iprint("}%n");
         print("%n");
     }

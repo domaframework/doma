@@ -20,8 +20,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.seasar.doma.jdbc.entity.NamingConvention;
-
 /**
  * データベースのテーブルを示します。
  * <p>
@@ -57,8 +55,7 @@ public @interface Table {
     /**
      * テーブル名です。
      * <p>
-     * 指定しない場合、テーブル名は {@link NamingConvention#fromEntityToTable(String)}
-     * によって解決されます。
+     * 指定しない場合、テーブル名は {@link Entity#namingConvention()} に指定した列挙型 によって解決されます。
      */
     String name() default "";
 }

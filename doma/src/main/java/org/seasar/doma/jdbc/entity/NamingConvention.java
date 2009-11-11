@@ -15,55 +15,120 @@
  */
 package org.seasar.doma.jdbc.entity;
 
-import org.seasar.doma.Delegate;
+import org.seasar.doma.Column;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Entity;
+import org.seasar.doma.Table;
+import org.seasar.doma.Transient;
+import org.seasar.doma.internal.util.StringUtil;
 
 /**
- * ネーミング規約です。
+ * ネーミング規約を表します。
  * <p>
+ * エンティティ名とプロパティ名に規約を適用し、テーブル名とカラム名を求めます。
  * <ul>
  * <li>エンティティ名とは {@link Entity} が注釈されたインタフェースの単純名です。
- * <li>プロパティ名とは {@code Entity} が注釈されたインタフェースのフィールドメソッド（ただし、 {@link Delegate}
+ * <li>プロパティ名とは {@code Entity} が注釈されたインタフェースのフィールドメソッド（ただし、 {@link Transient}
  * が注釈されたものは除く ）の名前です。
- * <li>テーブル名とは、データベースのテーブルの名前です。カタログ名やスキーマ名は含みません。
- * <li>カラム名とは、データベースのテーブルのカラムの名前です。
  * </ul>
  * <p>
- * このインタフェースの実装は {@literal public} なデフォルトコンストラクタを持たねばいけません。
+ * エンティティのクラスに {@link Table#name()} が指定されていない場合や、プロパティのフィールドに
+ * {@link Column#name()} が指定されていない場合にこの規約が適用されます。
  * <p>
- * このインタフェースの実装はスレッドセーフでなければいけません。
  * 
  * @author taedium
  * 
  */
-public interface NamingConvention {
+public enum NamingConvention {
 
     /**
-     * エンティティ名からテーブル名へ変換します。
-     * <p>
-     * 更新系SQLの自動生成時、テーブル名が明示されていない場合に呼び出されます。
-     * 
-     * @param entityName
-     *            エンティティ名
-     * @return テーブル名
-     * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
+     * 何も行いません。
      */
-    String fromEntityToTable(String entityName);
+    NONE {
+
+        @Override
+        public String apply(String text) {
+            return text;
+        }
+
+    },
 
     /**
-     * プロパティ名からカラム名へ変換します。
+     * スネークケースの大文字に変換します。
      * <p>
-     * 更新系SQLの自動生成時、カラム名が明示されていない場合に呼び出されます。また、
-     * 検索系SQLの結果セットをプロパティにマッピングする際に呼び出されます。
-     * 
-     * @param propertyName
-     *            プロパティ名
-     * @return カラム名
-     * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
+     * たとえば、<code>aaaBbb</code> を <code>AAA_BBB</code> に変換します。
      */
-    String fromPropertyToColumn(String propertyName);
+    SNAKE_UPPER_CASE {
 
+        @Override
+        public String apply(String text) {
+            if (text == null) {
+                throw new DomaNullPointerException("text");
+            }
+            String s = StringUtil.fromCamelCaseToSnakeCase(text);
+            return s.toUpperCase();
+        }
+
+    },
+
+    /**
+     * スネークケースの小文字に変換します。
+     * <p>
+     * たとえば、<code>aaaBbb</code> を <code>aaa_bbb</code> に変換します。
+     */
+    SNAKE_LOWER_CASE {
+
+        @Override
+        public String apply(String text) {
+            if (text == null) {
+                throw new DomaNullPointerException("text");
+            }
+            String s = StringUtil.fromCamelCaseToSnakeCase(text);
+            return s.toLowerCase();
+        }
+
+    },
+
+    /**
+     * 大文字に変換します。
+     * <p>
+     * たとえば、<code>aaaBbb</code> を <code>AAABBB</code> に変換します。
+     */
+    UPPER_CASE {
+
+        @Override
+        public String apply(String text) {
+            if (text == null) {
+                throw new DomaNullPointerException("text");
+            }
+            return text.toUpperCase();
+        }
+
+    },
+
+    /**
+     * 小文字に変換します。
+     * <p>
+     * たとえば、<code>aaaBbb</code> を <code>aaabbb</code> に変換します。
+     */
+    LOWER_CASE {
+
+        @Override
+        public String apply(String text) {
+            if (text == null) {
+                throw new DomaNullPointerException("text");
+            }
+            return text.toLowerCase();
+        }
+
+    };
+
+    /**
+     * ネーミング規約を適用します。
+     * 
+     * @param text
+     *            規約が適用される文字列
+     * @return 規約が適用された文字列
+     */
+    public abstract String apply(String text);
 }

@@ -17,13 +17,11 @@ public class ChildEntity_ implements org.seasar.doma.internal.jdbc.entity.Entity
 
         private static final org.seasar.doma.jdbc.entity.NullEntityListener __listener = new org.seasar.doma.jdbc.entity.NullEntityListener();
 
-        private static final org.seasar.doma.jdbc.entity.CamelNamingConvention __namingConvention = new org.seasar.doma.jdbc.entity.CamelNamingConvention();
+        private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.IntegerWrapper> aaa = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("aaa", "aaa", new org.seasar.doma.wrapper.IntegerWrapper(), true, true);
 
-        private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.IntegerWrapper> aaa = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("aaa", "", new org.seasar.doma.wrapper.IntegerWrapper(), true, true);
+        private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.BigDecimalWrapper> bbb = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.BigDecimalWrapper>("bbb", "bbb", new org.seasar.doma.wrapper.BigDecimalWrapper(), true, true);
 
-        private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.BigDecimalWrapper> bbb = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.BigDecimalWrapper>("bbb", "", new org.seasar.doma.wrapper.BigDecimalWrapper(), true, true);
-
-        private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.StringWrapper> ccc = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.StringWrapper>("ccc", "", new org.seasar.doma.wrapper.StringWrapper(), true, true);
+        private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.StringWrapper> ccc = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.StringWrapper>("ccc", "ccc", new org.seasar.doma.wrapper.StringWrapper(), true, true);
 
         private final org.seasar.doma.internal.apt.entity.ChildEntity __entity;
 
@@ -31,7 +29,7 @@ public class ChildEntity_ implements org.seasar.doma.internal.jdbc.entity.Entity
 
         private final String __schemaName = "";
 
-        private final String __tableName = "";
+        private final String __tableName = "ChildEntity";
 
         private final java.util.HashMap<String, org.seasar.doma.wrapper.Wrapper<?>> __originalStates;
 
@@ -147,11 +145,6 @@ public class ChildEntity_ implements org.seasar.doma.internal.jdbc.entity.Entity
         @Override
         public java.util.Map<String, org.seasar.doma.wrapper.Wrapper<?>> getOriginalStates() {
             return __originalStates;
-        }
-
-        @Override
-        public org.seasar.doma.jdbc.entity.NamingConvention getNamingConvention() {
-            return __namingConvention;
         }
 
     }

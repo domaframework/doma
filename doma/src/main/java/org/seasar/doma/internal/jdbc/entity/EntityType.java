@@ -18,7 +18,6 @@ package org.seasar.doma.internal.jdbc.entity;
 import java.util.List;
 import java.util.Map;
 
-import org.seasar.doma.jdbc.entity.NamingConvention;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -56,8 +55,6 @@ public interface EntityType<E> {
     Class<E> getEntityClass();
 
     Map<String, Wrapper<?>> getOriginalStates();
-
-    NamingConvention getNamingConvention();
 
     void refreshEntity();
 
