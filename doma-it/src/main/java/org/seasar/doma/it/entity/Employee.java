@@ -21,10 +21,10 @@ import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
 import org.seasar.doma.OriginalStates;
 import org.seasar.doma.Version;
-import org.seasar.doma.it.ItNamingConvention;
 import org.seasar.doma.it.domain.Salary;
+import org.seasar.doma.jdbc.entity.NamingConvention;
 
-@Entity(namingConvention = ItNamingConvention.class)
+@Entity(namingConvention = NamingConvention.SNAKE_UPPER_CASE)
 public class Employee {
 
     @Id

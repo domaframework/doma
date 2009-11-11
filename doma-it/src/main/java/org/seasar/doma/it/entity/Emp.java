@@ -25,14 +25,14 @@ import org.seasar.doma.Id;
 import org.seasar.doma.OriginalStates;
 import org.seasar.doma.Transient;
 import org.seasar.doma.Version;
-import org.seasar.doma.it.ItNamingConvention;
+import org.seasar.doma.jdbc.entity.NamingConvention;
 
 /**
  * 
  * @author taedium
  * 
  */
-@Entity(listener = EmpListener.class, namingConvention = ItNamingConvention.class)
+@Entity(listener = EmpListener.class, namingConvention = NamingConvention.SNAKE_UPPER_CASE)
 public class Emp {
 
     @Id

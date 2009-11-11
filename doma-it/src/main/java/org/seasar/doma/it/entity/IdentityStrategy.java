@@ -23,9 +23,9 @@ import org.seasar.doma.GenerationType;
 import org.seasar.doma.Id;
 import org.seasar.doma.OriginalStates;
 import org.seasar.doma.Table;
-import org.seasar.doma.it.ItNamingConvention;
+import org.seasar.doma.jdbc.entity.NamingConvention;
 
-@Entity(namingConvention = ItNamingConvention.class)
+@Entity(namingConvention = NamingConvention.SNAKE_UPPER_CASE)
 @Table(name = "IDENTITY_STRATEGY")
 public class IdentityStrategy {
 

@@ -24,9 +24,9 @@ import org.seasar.doma.Id;
 import org.seasar.doma.OriginalStates;
 import org.seasar.doma.SequenceGenerator;
 import org.seasar.doma.Table;
-import org.seasar.doma.it.ItNamingConvention;
+import org.seasar.doma.jdbc.entity.NamingConvention;
 
-@Entity(namingConvention = ItNamingConvention.class)
+@Entity(namingConvention = NamingConvention.SNAKE_UPPER_CASE)
 @Table(name = "SEQUENCE_STRATEGY")
 public class SequenceStrategy {
 
