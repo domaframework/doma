@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.MappedPropertyNotFoundException;
 
 /**
  * ストアドファンクションの呼び出しを示します。
@@ -66,6 +67,8 @@ import org.seasar.doma.jdbc.JdbcException;
  * 注釈されるメソッドは、次の例外をスローすることがあります。
  * <ul>
  * <li> {@link DomaNullPointerException} パラメータに {@code null}を渡した場合
+ * <li> {@link MappedPropertyNotFoundException} {@code ResultSet}
+ * を使用していて結果セットに含まれるカラムにマッピングされたプロパティが見つからなかった場合
  * <li> {@link JdbcException} JDBCに関する例外が発生した場合
  * </ul>
  * 

@@ -28,6 +28,8 @@ import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.MappedPropertyNotFoundException;
+import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -38,7 +40,7 @@ public class EntityFetcher implements ResultFetcher<ResultSet, EntityType<?>> {
 
     protected final Query query;
 
-    protected Map<String, String> nameMap;
+    protected Map<Integer, String> indexMap;
 
     public EntityFetcher(Query query) throws SQLException {
         assertNotNull(query);
@@ -49,33 +51,53 @@ public class EntityFetcher implements ResultFetcher<ResultSet, EntityType<?>> {
     public void fetch(ResultSet resultSet, EntityType<?> entityType)
             throws SQLException {
         assertNotNull(resultSet, entityType);
-        if (nameMap == null) {
-            createNameMap(entityType);
+        if (indexMap == null) {
+            indexMap = createIndexMap(resultSet.getMetaData(), entityType);
         }
-        ResultSetMetaData resultSetMeta = resultSet.getMetaData();
-        int count = resultSetMeta.getColumnCount();
         JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().getDialect()
                 .getJdbcMappingVisitor();
-        for (int i = 1; i < count + 1; i++) {
-            String columnName = resultSetMeta.getColumnLabel(i);
-            String propertyName = nameMap.get(columnName.toLowerCase());
+        for (Map.Entry<Integer, String> entry : indexMap.entrySet()) {
+            Integer index = entry.getKey();
+            String propertyName = entry.getValue();
+            GetValueFunction function = new GetValueFunction(resultSet, index);
             EntityPropertyType<?> propertyType = entityType
                     .getEntityPropertyType(propertyName);
-            if (propertyType != null) {
-                Wrapper<?> wrapper = propertyType.getWrapper();
-                GetValueFunction function = new GetValueFunction(resultSet, i);
-                wrapper.accept(jdbcMappingVisitor, function);
-            }
+            Wrapper<?> wrapper = propertyType.getWrapper();
+            wrapper.accept(jdbcMappingVisitor, function);
         }
     }
 
-    protected void createNameMap(EntityType<?> entityType) {
+    protected HashMap<Integer, String> createIndexMap(
+            ResultSetMetaData resultSetMeta, EntityType<?> entityType)
+            throws SQLException {
+        HashMap<Integer, String> indexMap = new HashMap<Integer, String>();
+        HashMap<String, String> columnNameMap = createColumnNameMap(entityType);
+        int count = resultSetMeta.getColumnCount();
+        for (int i = 1; i < count + 1; i++) {
+            String columnName = resultSetMeta.getColumnLabel(i);
+            String propertyName = columnNameMap.get(columnName.toLowerCase());
+            if (propertyName == null) {
+                Sql<?> sql = query.getSql();
+                throw new MappedPropertyNotFoundException(columnName,
+                        entityType.getEntityClass().getName(), sql.getRawSql(),
+                        sql.getFormattedSql());
+            }
+            indexMap.put(i, propertyName);
+        }
+        return indexMap;
+    }
+
+    protected HashMap<String, String> createColumnNameMap(
+            EntityType<?> entityType) {
         List<EntityPropertyType<?>> propertyTypes = entityType
                 .getEntityPropertyTypes();
-        nameMap = new HashMap<String, String>(propertyTypes.size());
+        HashMap<String, String> result = new HashMap<String, String>(
+                propertyTypes.size());
         for (EntityPropertyType<?> p : propertyTypes) {
             String columnName = p.getColumnName();
-            nameMap.put(columnName.toLowerCase(), p.getName());
+            result.put(columnName.toLowerCase(), p.getName());
         }
+        return result;
     }
+
 }
