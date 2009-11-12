@@ -24,7 +24,7 @@ import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.mirror.EntityMirror;
 import org.seasar.doma.internal.apt.mirror.TableMirror;
-import org.seasar.doma.jdbc.entity.NamingConvention;
+import org.seasar.doma.jdbc.entity.NamingConventionType;
 
 /**
  * @author taedium
@@ -36,7 +36,7 @@ public class EntityMeta {
 
     protected final EntityMirror entityMirror;
 
-    protected final NamingConvention namingConvention;
+    protected final NamingConventionType namingConventionType;
 
     protected TableMirror tableMirror;
 
@@ -53,7 +53,7 @@ public class EntityMeta {
     public EntityMeta(EntityMirror entityMirror) {
         assertNotNull(entityMirror);
         this.entityMirror = entityMirror;
-        this.namingConvention = entityMirror.getNamingConventionValue();
+        this.namingConventionType = entityMirror.getNamingConventionValue();
     }
 
     public String getEntityName() {
@@ -68,8 +68,8 @@ public class EntityMeta {
         return entityMirror;
     }
 
-    public NamingConvention getNamingConvention() {
-        return namingConvention;
+    public NamingConventionType getNamingConventionType() {
+        return namingConventionType;
     }
 
     public void setTableMirror(TableMirror tableMirror) {
@@ -144,7 +144,7 @@ public class EntityMeta {
     public String getTableName() {
         String tableName = tableMirror != null ? tableMirror.getNameValue()
                 : "";
-        return !tableName.isEmpty() ? tableName : namingConvention
+        return !tableName.isEmpty() ? tableName : namingConventionType
                 .apply(entityName);
     }
 }

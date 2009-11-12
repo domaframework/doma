@@ -43,6 +43,7 @@
 public class Employee {
     ...
 }]]></source>
+			<h4>エンティティリスナー</h4>
 			<p>
 				エンティティがデータベースに対し挿入、更新、削除される直前に処理を実行したい場合、
 				<code>listener</code> 要素に <code>org.seasar.doma.jdbc.entity.EntityListener</code>
@@ -69,31 +70,25 @@ public class Employee {
 			<p>
 				<code>EntityListener</code>の実装クラスはpublicなデフォルトコンストラクタ（引数なしのコンストラクタ）を持たねばいけません。
 			</p>
+			<h4>ネーミング規約</h4>
 			<p>
-				エンティティに対応するテーブル名やプロパティに対応するカラム名を解決するための規約を変更したい場合、
-				<code>namingConvention</code> 要素に <code>org.seasar.doma.jdbc.entity.NamingConvention</code>
-				の実装クラスを指定できます。
+				エンティティに対応するテーブル名やプロパティに対応するカラム名を解決するためのネーミング規約を変更したい場合、
+				<code>namingConvention</code> 要素に <code>org.seasar.doma.jdbc.entity.NamingConventionType</code>
+				の列挙型を指定できます。
 			</p>
-<source>@Entity(namingConvention = UpperCaseNamingConvention.class)
-public class Employee {
+<source>@Entity(namingConvention = NamingConventionType.SNAKE_UPPER_CASE)
+public class EmployeeInfo {
     ...
 }</source>
-<source><![CDATA[public class UpperCaseNamingConvention.class implements NamingConvention {
-    @Override
-    public String fromEntityToTable(String entityName) {
-        return entityName.toUpperCase();
-    }
-    @Override
-    public String fromPropertyToColumn(String propertyName) {
-        return propertyName.toUpperCase();
-    }
-}]]></source>
 				<p>
-					<code>NamingConvention</code>の実装クラスはpublicなデフォルトコンストラクタ（引数なしのコンストラクタ）を持たねばいけません。
+					<code>NamingConventionType.SNAKE_UPPER_CASE</code>は、値をスネークケースの大文字に変換します。この例の場合、テーブル名は<code>EMPLOYEE_INFO</code>になります。
 				</p>
 				<p>
-					デフォルトでは、キャメルケースをアンダースコア区切りの大文字に変換するネーミング規約が使用されます。
-					たとえば、<code>employeeName</code>というプロパティ名は<code>EMPLOYEE_NAME</code>というカラム名に変換されます。
+					<code>namingConvention</code>要素に何も指定しない場合、デフォルトでは、テーブル名にはエンティティクラスの単純名、カラム名にはプロパティ名が使用されます。
+				</p>
+				<p>
+					ネーミング規約は、<code>@Table</code>や<code>@Colum</code>の<code>name</code>要素が指定されない場合のみ使用されます。
+					<code>@Table</code>や<code>@Colum</code>の<code>name</code>要素が指定された場合は、<code>name</code>要素に指定した値が使用され、ネーミング規約は適用されません。
 				</p>
 			<subsection name="テーブル">
 				<p>
@@ -117,7 +112,7 @@ public class Employee {
 }]]></source>
 				<p>
 					<code>@Table</code>を使用しない、もしくは <code>@Table</code>の<code>name</code>要素を使用しない場合、
-					テーブル名は、<code>@Entity</code>の<code>namingConvention</code>要素に指定されたクラスにより解決されます。
+					テーブル名は、<code>@Entity</code>の<code>namingConvention</code>要素に指定された列挙型により解決されます。
 				</p>
 			</subsection>
 			<subsection name="継承">
@@ -160,7 +155,7 @@ String employeeName;]]></source>
 String employeeName;]]></source>
 				<p>
 					<code>@Column</code>を使用しない、もしくは<code>@Column</code>の <code>name</code>要素を使用しない場合、
-					カラム名は、<code>@Entity</code>の<code>namingConvention</code>要素に指定されたクラスにより解決されます。
+					カラム名は、<code>@Entity</code>の<code>namingConvention</code>要素に指定された列挙型により解決されます。
 				</p>
 				<h4>識別子</h4>
 				<p>

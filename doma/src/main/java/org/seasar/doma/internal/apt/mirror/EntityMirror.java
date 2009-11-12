@@ -31,7 +31,7 @@ import org.seasar.doma.Entity;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementUtil;
-import org.seasar.doma.jdbc.entity.NamingConvention;
+import org.seasar.doma.jdbc.entity.NamingConventionType;
 
 /**
  * @author taedium
@@ -69,13 +69,13 @@ public class EntityMirror {
         return result;
     }
 
-    public NamingConvention getNamingConventionValue() {
+    public NamingConventionType getNamingConventionValue() {
         VariableElement enumConstant = AnnotationValueUtil
                 .toEnumConstant(namingConvention);
         if (enumConstant == null) {
             throw new AptIllegalStateException("namingConvention");
         }
-        return NamingConvention
+        return NamingConventionType
                 .valueOf(enumConstant.getSimpleName().toString());
     }
 

@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.seasar.doma.jdbc.entity.EntityListener;
-import org.seasar.doma.jdbc.entity.NamingConvention;
+import org.seasar.doma.jdbc.entity.NamingConventionType;
 import org.seasar.doma.jdbc.entity.NullEntityListener;
 
 /**
@@ -88,5 +88,5 @@ public @interface Entity {
      * <p>
      * 指定しない場合、デフォルトのネーミング規約が設定されます。
      */
-    NamingConvention namingConvention() default NamingConvention.NONE;
+    NamingConventionType namingConvention() default NamingConventionType.NONE;
 }

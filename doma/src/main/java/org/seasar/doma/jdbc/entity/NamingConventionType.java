@@ -39,7 +39,7 @@ import org.seasar.doma.internal.util.StringUtil;
  * @author taedium
  * 
  */
-public enum NamingConvention {
+public enum NamingConventionType {
 
     /**
      * 何も行いません。
