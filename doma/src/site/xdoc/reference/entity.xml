@@ -73,18 +73,18 @@ public class Employee {
 			<h4>ネーミング規約</h4>
 			<p>
 				エンティティに対応するテーブル名やプロパティに対応するカラム名を解決するためのネーミング規約を変更したい場合、
-				<code>namingConvention</code> 要素に <code>org.seasar.doma.jdbc.entity.NamingConventionType</code>
+				<code>naming</code> 要素に <code>org.seasar.doma.jdbc.entity.NamingType</code>
 				の列挙型を指定できます。
 			</p>
-<source>@Entity(namingConvention = NamingConventionType.SNAKE_UPPER_CASE)
+<source>@Entity(namingConvention = NamingType.SNAKE_UPPER_CASE)
 public class EmployeeInfo {
     ...
 }</source>
 				<p>
-					<code>NamingConventionType.SNAKE_UPPER_CASE</code>は、値をスネークケースの大文字に変換します。この例の場合、テーブル名は<code>EMPLOYEE_INFO</code>になります。
+					<code>NamingType.SNAKE_UPPER_CASE</code>は、値をスネークケースの大文字に変換します。この例の場合、テーブル名は<code>EMPLOYEE_INFO</code>になります。
 				</p>
 				<p>
-					<code>namingConvention</code>要素に何も指定しない場合、デフォルトでは、テーブル名にはエンティティクラスの単純名、カラム名にはプロパティ名が使用されます。
+					<code>naming</code>要素に何も指定しない場合、デフォルトでは、テーブル名にはエンティティクラスの単純名、カラム名にはプロパティ名が使用されます。
 				</p>
 				<p>
 					ネーミング規約は、<code>@Table</code>や<code>@Colum</code>の<code>name</code>要素が指定されない場合のみ使用されます。
@@ -112,7 +112,7 @@ public class Employee {
 }]]></source>
 				<p>
 					<code>@Table</code>を使用しない、もしくは <code>@Table</code>の<code>name</code>要素を使用しない場合、
-					テーブル名は、<code>@Entity</code>の<code>namingConvention</code>要素に指定された列挙型により解決されます。
+					テーブル名は、<code>@Entity</code>の<code>naming</code>要素に指定された列挙型により解決されます。
 				</p>
 			</subsection>
 			<subsection name="継承">
@@ -155,7 +155,7 @@ String employeeName;]]></source>
 String employeeName;]]></source>
 				<p>
 					<code>@Column</code>を使用しない、もしくは<code>@Column</code>の <code>name</code>要素を使用しない場合、
-					カラム名は、<code>@Entity</code>の<code>namingConvention</code>要素に指定された列挙型により解決されます。
+					カラム名は、<code>@Entity</code>の<code>naming</code>要素に指定された列挙型により解決されます。
 				</p>
 				<h4>識別子</h4>
 				<p>

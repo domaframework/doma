@@ -25,7 +25,7 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.mirror.ColumnMirror;
 import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
-import org.seasar.doma.jdbc.entity.NamingConventionType;
+import org.seasar.doma.jdbc.entity.NamingType;
 
 /**
  * 
@@ -38,7 +38,7 @@ public class EntityPropertyMeta {
 
     protected final String entityTypeName;
 
-    protected final NamingConventionType namingConventionType;
+    protected final NamingType namingType;
 
     protected final TypeMirror type;
 
@@ -58,11 +58,11 @@ public class EntityPropertyMeta {
 
     public EntityPropertyMeta(TypeElement entityElement,
             VariableElement propertyElement,
-            NamingConventionType namingConventionType, ProcessingEnvironment env) {
-        assertNotNull(entityElement, propertyElement, namingConventionType, env);
+            NamingType namingType, ProcessingEnvironment env) {
+        assertNotNull(entityElement, propertyElement, namingType, env);
         this.entityName = entityElement.getSimpleName().toString();
         this.entityTypeName = entityElement.getQualifiedName().toString();
-        this.namingConventionType = namingConventionType;
+        this.namingType = namingType;
         this.type = propertyElement.asType();
         this.typeName = TypeMirrorUtil.getTypeName(type, env);
     }
@@ -130,7 +130,7 @@ public class EntityPropertyMeta {
     public String getColumnName() {
         String columnName = columnMirror != null ? columnMirror.getNameValue()
                 : "";
-        return !columnName.isEmpty() ? columnName : namingConventionType
+        return !columnName.isEmpty() ? columnName : namingType
                 .apply(name);
     }
 

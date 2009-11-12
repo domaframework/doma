@@ -52,7 +52,7 @@ public @interface Column {
     /**
      * カラム名です。
      * <p>
-     * 指定しない場合、カラム名は {@link Entity#namingConvention()} に指定した列挙型 によって解決されます。
+     * 指定しない場合、カラム名は {@link Entity#naming()} に指定した列挙型 によって解決されます。
      */
     String name() default "";
 

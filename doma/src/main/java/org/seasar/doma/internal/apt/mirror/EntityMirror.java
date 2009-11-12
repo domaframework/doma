@@ -31,7 +31,7 @@ import org.seasar.doma.Entity;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementUtil;
-import org.seasar.doma.jdbc.entity.NamingConventionType;
+import org.seasar.doma.jdbc.entity.NamingType;
 
 /**
  * @author taedium
@@ -43,7 +43,7 @@ public class EntityMirror {
 
     protected AnnotationValue listener;
 
-    protected AnnotationValue namingConvention;
+    protected AnnotationValue naming;
 
     public EntityMirror(AnnotationMirror annotationMirror) {
         this.annotationMirror = annotationMirror;
@@ -57,8 +57,8 @@ public class EntityMirror {
         return listener;
     }
 
-    public AnnotationValue getNamingConvention() {
-        return namingConvention;
+    public AnnotationValue getNaming() {
+        return naming;
     }
 
     public TypeMirror getListenerValue() {
@@ -69,14 +69,13 @@ public class EntityMirror {
         return result;
     }
 
-    public NamingConventionType getNamingConventionValue() {
+    public NamingType getNamingValue() {
         VariableElement enumConstant = AnnotationValueUtil
-                .toEnumConstant(namingConvention);
+                .toEnumConstant(naming);
         if (enumConstant == null) {
-            throw new AptIllegalStateException("namingConvention");
+            throw new AptIllegalStateException("naming");
         }
-        return NamingConventionType
-                .valueOf(enumConstant.getSimpleName().toString());
+        return NamingType.valueOf(enumConstant.getSimpleName().toString());
     }
 
     public static EntityMirror newInstance(TypeElement clazz,
@@ -95,8 +94,8 @@ public class EntityMirror {
             AnnotationValue value = entry.getValue();
             if ("listener".equals(name)) {
                 result.listener = value;
-            } else if ("namingConvention".equals(name)) {
-                result.namingConvention = value;
+            } else if ("naming".equals(name)) {
+                result.naming = value;
             }
         }
         return result;

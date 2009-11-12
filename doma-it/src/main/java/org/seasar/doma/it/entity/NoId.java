@@ -20,9 +20,9 @@ import java.io.Serializable;
 import org.seasar.doma.Entity;
 import org.seasar.doma.OriginalStates;
 import org.seasar.doma.Table;
-import org.seasar.doma.jdbc.entity.NamingConventionType;
+import org.seasar.doma.jdbc.entity.NamingType;
 
-@Entity(namingConvention = NamingConventionType.SNAKE_UPPER_CASE)
+@Entity(naming = NamingType.SNAKE_UPPER_CASE)
 @Table(name = "NO_ID")
 public class NoId {
 
