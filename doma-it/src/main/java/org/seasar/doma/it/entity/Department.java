@@ -21,9 +21,9 @@ import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
 import org.seasar.doma.OriginalStates;
 import org.seasar.doma.Version;
-import org.seasar.doma.jdbc.entity.NamingConvention;
+import org.seasar.doma.jdbc.entity.NamingConventionType;
 
-@Entity(namingConvention = NamingConvention.SNAKE_UPPER_CASE)
+@Entity(namingConvention = NamingConventionType.SNAKE_UPPER_CASE)
 public class Department {
 
     @Id
