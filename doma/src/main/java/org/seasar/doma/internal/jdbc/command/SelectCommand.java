@@ -49,7 +49,6 @@ public class SelectCommand<R> implements Command<R, SelectQuery> {
     }
 
     public R execute() {
-        PreparedSql sql = query.getSql();
         Connection connection = JdbcUtil.getConnection(query.getConfig()
                 .getDataSource());
         try {

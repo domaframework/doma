@@ -27,7 +27,7 @@ import org.seasar.doma.jdbc.SqlNode;
  */
 public class HsqldbPagingTransformer extends StandardPagingTransformer {
 
-    public HsqldbPagingTransformer(Integer offset, Integer limit) {
+    public HsqldbPagingTransformer(long offset, long limit) {
         super(offset, limit);
     }
 

@@ -22,12 +22,16 @@ import java.util.Map;
 
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.Value;
+import org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.SelectCommand;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SelectOptions;
+import org.seasar.doma.jdbc.SelectOptionsAccessor;
 import org.seasar.doma.jdbc.SqlFile;
 import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.wrapper.LongWrapper;
 
 /**
  * @author taedium
@@ -44,6 +48,8 @@ public class SqlFileSelectQuery implements SelectQuery {
     protected String callerClassName;
 
     protected String callerMethodName;
+
+    protected SqlFile sqlFile;
 
     protected PreparedSql sql;
 
@@ -75,21 +81,41 @@ public class SqlFileSelectQuery implements SelectQuery {
     }
 
     protected void prepareSql() {
-        ExpressionEvaluator evaluator = new ExpressionEvaluator(parameters,
-                config.getDialect().getExpressionFunctions());
-        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
-                evaluator);
-        SqlFile sqlFile = config.getSqlFileRepository().getSqlFile(sqlFilePath,
+        sqlFile = config.getSqlFileRepository().getSqlFile(sqlFilePath,
                 config.getDialect());
         config.getJdbcLogger().logSqlFile(callerClassName, callerMethodName,
                 sqlFile);
         SqlNode sqlNode = config.getDialect().transformSelectSqlNode(
                 sqlFile.getSqlNode(), options);
+        ExpressionEvaluator evaluator = new ExpressionEvaluator(parameters,
+                config.getDialect().getExpressionFunctions());
+        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
+                evaluator);
         sql = sqlBuilder.build(sqlNode);
     }
 
     @Override
     public void complete() {
+        if (!SelectOptionsAccessor.getCount(options)) {
+            return;
+        }
+        CountQuery query = new CountQuery();
+        query.callerClassName = callerClassName;
+        query.callerMethodName = callerMethodName;
+        query.config = config;
+        query.fetchSize = fetchSize;
+        query.maxRows = maxRows;
+        query.options = options;
+        query.parameters = parameters;
+        query.queryTimeout = queryTimeout;
+        query.sqlFile = sqlFile;
+        query.prepare();
+        SelectCommand<Long> command = new SelectCommand<Long>(query,
+                new BasicSingleResultHandler<Long>(new LongWrapper()));
+        Long countSize = command.execute();
+        if (countSize != null) {
+            SelectOptionsAccessor.setCountSize(options, countSize.longValue());
+        }
     }
 
     @Override
@@ -171,4 +197,81 @@ public class SqlFileSelectQuery implements SelectQuery {
         return sql != null ? sql.toString() : null;
     }
 
+    protected static class CountQuery implements SelectQuery {
+
+        protected Config config;
+
+        protected Map<String, Value> parameters;
+
+        protected String callerClassName;
+
+        protected String callerMethodName;
+
+        protected SqlFile sqlFile;
+
+        protected PreparedSql sql;
+
+        protected SelectOptions options;
+
+        protected int fetchSize;
+
+        protected int maxRows;
+
+        protected int queryTimeout;
+
+        @Override
+        public int getFetchSize() {
+            return fetchSize;
+        }
+
+        @Override
+        public int getMaxRows() {
+            return maxRows;
+        }
+
+        @Override
+        public SelectOptions getOptions() {
+            return options;
+        }
+
+        @Override
+        public PreparedSql getSql() {
+            return sql;
+        }
+
+        @Override
+        public String getClassName() {
+            return callerClassName;
+        }
+
+        @Override
+        public Config getConfig() {
+            return config;
+        }
+
+        @Override
+        public String getMethodName() {
+            return callerMethodName;
+        }
+
+        @Override
+        public int getQueryTimeout() {
+            return queryTimeout;
+        }
+
+        @Override
+        public void prepare() {
+            SqlNode sqlNode = config.getDialect()
+                    .transformSelectSqlNodeForCount(sqlFile.getSqlNode());
+            ExpressionEvaluator evaluator = new ExpressionEvaluator(parameters,
+                    config.getDialect().getExpressionFunctions());
+            NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
+                    config, evaluator);
+            sql = sqlBuilder.build(sqlNode);
+        }
+
+        @Override
+        public void complete() {
+        }
+    }
 }

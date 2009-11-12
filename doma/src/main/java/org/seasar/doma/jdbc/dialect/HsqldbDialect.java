@@ -20,6 +20,7 @@ import java.util.Collections;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
+import org.seasar.doma.internal.jdbc.dialect.HsqldbCountTransformer;
 import org.seasar.doma.internal.jdbc.dialect.HsqldbPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
@@ -148,7 +149,7 @@ public class HsqldbDialect extends StandardDialect {
     }
 
     @Override
-    protected SqlNode toPagingSqlNode(SqlNode sqlNode, int offset, int limit) {
+    protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
         HsqldbPagingTransformer transformer = new HsqldbPagingTransformer(
                 offset, limit);
         return transformer.transform(sqlNode);
@@ -159,6 +160,12 @@ public class HsqldbDialect extends StandardDialect {
             SelectForUpdateType forUpdateType, int waitSeconds,
             String... aliases) {
         return sqlNode;
+    }
+
+    @Override
+    protected SqlNode toCountSqlNode(SqlNode sqlNode) {
+        HsqldbCountTransformer transformer = new HsqldbCountTransformer();
+        return transformer.transform(sqlNode);
     }
 
     @Override

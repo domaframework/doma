@@ -27,7 +27,7 @@ import org.seasar.doma.jdbc.SqlNode;
  */
 public class PostgresPagingTransformer extends StandardPagingTransformer {
 
-    public PostgresPagingTransformer(int offset, int limit) {
+    public PostgresPagingTransformer(long offset, long limit) {
         super(offset, limit);
     }
 

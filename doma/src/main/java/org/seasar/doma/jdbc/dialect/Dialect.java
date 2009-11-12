@@ -64,6 +64,8 @@ public interface Dialect {
      */
     SqlNode transformSelectSqlNode(SqlNode sqlNode, SelectOptions options);
 
+    SqlNode transformSelectSqlNodeForCount(SqlNode sqlNode);
+
     /**
      * 一意制約違反かどうかを返します。
      * 

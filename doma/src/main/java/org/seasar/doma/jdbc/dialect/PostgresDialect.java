@@ -22,6 +22,7 @@ import java.util.Collections;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
+import org.seasar.doma.internal.jdbc.dialect.PostgresCountTransformer;
 import org.seasar.doma.internal.jdbc.dialect.PostgresForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.PostgresPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
@@ -124,9 +125,15 @@ public class PostgresDialect extends StandardDialect {
     }
 
     @Override
-    protected SqlNode toPagingSqlNode(SqlNode sqlNode, int offset, int limit) {
+    protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
         PostgresPagingTransformer transformer = new PostgresPagingTransformer(
                 offset, limit);
+        return transformer.transform(sqlNode);
+    }
+
+    @Override
+    protected SqlNode toCountSqlNode(SqlNode sqlNode) {
+        PostgresCountTransformer transformer = new PostgresCountTransformer();
         return transformer.transform(sqlNode);
     }
 

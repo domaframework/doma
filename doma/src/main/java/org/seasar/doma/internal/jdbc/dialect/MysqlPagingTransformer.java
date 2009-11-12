@@ -29,7 +29,7 @@ public class MysqlPagingTransformer extends StandardPagingTransformer {
 
     protected static String MAXIMUM_LIMIT = "18446744073709551615";
 
-    public MysqlPagingTransformer(int offset, int limit) {
+    public MysqlPagingTransformer(long offset, long limit) {
         super(offset, limit);
     }
 

@@ -15,22 +15,29 @@
  */
 package org.seasar.doma.internal.jdbc.dialect;
 
-import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
 import org.seasar.doma.internal.jdbc.sql.node.FragmentNode;
 import org.seasar.doma.internal.jdbc.sql.node.FromClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
-import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNodeVisitor;
 import org.seasar.doma.jdbc.SqlNode;
 
 /**
  * @author taedium
  * 
  */
-public class OraclePagingTransformer extends StandardPagingTransformer {
+public class StandardCountTransformer implements
+        SelectStatementNodeVisitor<SqlNode, Void> {
 
-    public OraclePagingTransformer(long offset, long limit) {
-        super(offset, limit);
+    protected boolean processed;
+
+    public SqlNode transform(SqlNode sqlNode) {
+        AnonymousNode result = new AnonymousNode();
+        for (SqlNode child : sqlNode.getChildren()) {
+            result.addNode(child.accept(this, null));
+        }
+        return result;
     }
 
     @Override
@@ -46,39 +53,23 @@ public class OraclePagingTransformer extends StandardPagingTransformer {
         subStatement.setWhereClauseNode(node.getWhereClauseNode());
         subStatement.setGroupByClauseNode(node.getGroupByClauseNode());
         subStatement.setHavingClauseNode(node.getHavingClauseNode());
-        subStatement.setOrderByClauseNode(node.getOrderByClauseNode());
 
         SelectClauseNode select = new SelectClauseNode("select");
-        select.addNode(new FragmentNode(" * "));
+        select.addNode(new FragmentNode(" count(*) "));
         FromClauseNode from = new FromClauseNode("from");
-        from.addNode(new FragmentNode(
-                " ( select temp_.*, rownum rownumber_ from ( "));
+        from.addNode(new FragmentNode(" ( "));
         from.addNode(subStatement);
-        from.addNode(new FragmentNode(" ) temp_ ) "));
-        WhereClauseNode where = new WhereClauseNode("where");
-        where.addNode(new FragmentNode(" "));
-        if (offset >= 0) {
-            where.addNode(new FragmentNode("rownumber_ > "));
-            where.addNode(new FragmentNode(String.valueOf(offset)));
-        }
-        if (limit > 0) {
-            if (offset >= 0) {
-                where.addNode(new FragmentNode(" and "));
-            }
-            where.addNode(new FragmentNode("rownumber_ <= "));
-            long bias = offset < 0 ? 0 : offset;
-            where.addNode(new FragmentNode(String.valueOf(bias + limit)));
-        }
-        ForUpdateClauseNode originalForUpdate = node.getForUpdateClauseNode();
-        if (originalForUpdate != null) {
-            where.addNode(new FragmentNode(" "));
-        }
+        from.addNode(new FragmentNode(")"));
 
         SelectStatementNode result = new SelectStatementNode();
         result.setSelectClauseNode(select);
         result.setFromClauseNode(from);
-        result.setWhereClauseNode(where);
-        result.setForUpdateClauseNode(originalForUpdate);
         return result;
     }
+
+    @Override
+    public SqlNode visitUnknownNode(SqlNode node, Void p) {
+        return node;
+    }
+
 }

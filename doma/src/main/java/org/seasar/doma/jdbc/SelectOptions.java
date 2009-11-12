@@ -35,10 +35,16 @@ import org.seasar.doma.DomaNullPointerException;
 public class SelectOptions {
 
     /** ページングのオフセット */
-    protected int offset = -1;
+    protected long offset = -1;
 
     /** ページングのリミット */
-    protected int limit = -1;
+    protected long limit = -1;
+
+    /** 集計するかどうか */
+    protected boolean count;
+
+    /** 集計サイズ */
+    protected long countSize = -1;
 
     /** 悲観的排他制御の種別 */
     protected SelectForUpdateType forUpdateType;
@@ -185,48 +191,24 @@ public class SelectOptions {
     }
 
     /**
-     * 悲観的排他制御の種別を返します。
+     * 集計することを示します。
      * 
-     * @return 悲観的排他制御の種別
+     * @return このインスタンス
      */
-    public SelectForUpdateType getForUpdateType() {
-        return forUpdateType;
+    public SelectOptions count() {
+        this.count = true;
+        return this;
     }
 
     /**
-     * 悲観的排他制御のロック取得の待機時間を返します。
+     * 集計サイズを返します。
+     * <p>
+     * Daoのメソッドを実行する前に{@link #count()}を呼び出していない場合 {@code -1} を返します。
      * 
-     * @return 待機時間（秒）
+     * @return 集計サイズ
      */
-    public int getWaitSeconds() {
-        return waitSeconds;
-    }
-
-    /**
-     * ロック対象のテーブルもしくはカラムのエイリアスの配列を返します。
-     * 
-     * @return テーブルもしくはカラムのエイリアスの配列
-     */
-    public String[] getAliases() {
-        return aliases;
-    }
-
-    /**
-     * ページングのオフセットを返します。
-     * 
-     * @return オフセット
-     */
-    public int getOffset() {
-        return offset;
-    }
-
-    /**
-     * ページングのリミットを返します。
-     * 
-     * @return リミット
-     */
-    public int getLimit() {
-        return limit;
+    public long getCountSize() {
+        return countSize;
     }
 
 }

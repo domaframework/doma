@@ -22,6 +22,7 @@ import java.util.Set;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
+import org.seasar.doma.internal.jdbc.dialect.MysqlCountTransformer;
 import org.seasar.doma.internal.jdbc.dialect.MysqlPagingTransformer;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
@@ -132,9 +133,15 @@ public class MysqlDialect extends StandardDialect {
     }
 
     @Override
-    protected SqlNode toPagingSqlNode(SqlNode sqlNode, int offset, int limit) {
+    protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
         MysqlPagingTransformer transformer = new MysqlPagingTransformer(offset,
                 limit);
+        return transformer.transform(sqlNode);
+    }
+
+    @Override
+    protected SqlNode toCountSqlNode(SqlNode sqlNode) {
+        MysqlCountTransformer transformer = new MysqlCountTransformer();
         return transformer.transform(sqlNode);
     }
 

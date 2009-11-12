@@ -38,13 +38,13 @@ import org.seasar.doma.jdbc.SqlNode;
 public class StandardPagingTransformer implements
         SelectStatementNodeVisitor<SqlNode, Void> {
 
-    protected final int offset;
+    protected final long offset;
 
-    protected final int limit;
+    protected final long limit;
 
     protected boolean processed;
 
-    public StandardPagingTransformer(int offset, int limit) {
+    public StandardPagingTransformer(long offset, long limit) {
         assertTrue(offset >= 0 || limit >= 0);
         this.offset = offset;
         this.limit = limit;
@@ -113,7 +113,7 @@ public class StandardPagingTransformer implements
             if (offset >= 0) {
                 where.addNode(new FragmentNode(" and "));
             }
-            int bias = offset < 0 ? 0 : offset;
+            long bias = offset < 0 ? 0 : offset;
             where.addNode(new FragmentNode("rownumber_ <= "));
             where.addNode(new FragmentNode(String.valueOf(bias + limit)));
         }

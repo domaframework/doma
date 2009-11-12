@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
+import org.seasar.doma.internal.jdbc.dialect.StandardCountTransformer;
 import org.seasar.doma.internal.jdbc.dialect.StandardForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.StandardPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
@@ -39,6 +40,7 @@ import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
 import org.seasar.doma.jdbc.PersistentWrapperVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SelectOptions;
+import org.seasar.doma.jdbc.SelectOptionsAccessor;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
@@ -179,13 +181,15 @@ public class StandardDialect implements Dialect {
             throw new DomaNullPointerException("options");
         }
         SqlNode transformed = sqlNode;
-        if (options.getOffset() >= 0 || options.getLimit() >= 0) {
-            transformed = toPagingSqlNode(transformed, options.getOffset(),
-                    options.getLimit());
+        long offset = SelectOptionsAccessor.getOffset(options);
+        long limit = SelectOptionsAccessor.getLimit(options);
+        if (offset >= 0 || limit >= 0) {
+            transformed = toPagingSqlNode(transformed, offset, limit);
         }
-        if (options.getForUpdateType() != null) {
-            SelectForUpdateType forUpdateType = options.getForUpdateType();
-            String[] aliases = options.getAliases();
+        SelectForUpdateType forUpdateType = SelectOptionsAccessor
+                .getForUpdateType(options);
+        if (forUpdateType != null) {
+            String[] aliases = SelectOptionsAccessor.getAliases(options);
             if (!supportsSelectForUpdate(forUpdateType, false)) {
                 throw new JdbcException(DomaMessageCode.DOMA2023, getName());
             }
@@ -194,8 +198,9 @@ public class StandardDialect implements Dialect {
                     throw new JdbcException(DomaMessageCode.DOMA2024, getName());
                 }
             }
+            int waitSeconds = SelectOptionsAccessor.getWaitSeconds(options);
             transformed = toForUpdateSqlNode(transformed, forUpdateType,
-                    options.getWaitSeconds(), aliases);
+                    waitSeconds, aliases);
         }
         return transformed;
     }
@@ -211,7 +216,7 @@ public class StandardDialect implements Dialect {
      *            リミット
      * @return 変換されたSQLノード
      */
-    protected SqlNode toPagingSqlNode(SqlNode sqlNode, int offset, int limit) {
+    protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
         StandardPagingTransformer transformer = new StandardPagingTransformer(
                 offset, limit);
         return transformer.transform(sqlNode);
@@ -235,6 +240,23 @@ public class StandardDialect implements Dialect {
             String... aliases) {
         StandardForUpdateTransformer transformer = new StandardForUpdateTransformer(
                 forUpdateType, waitSeconds, aliases);
+        return transformer.transform(sqlNode);
+    }
+
+    @Override
+    public SqlNode transformSelectSqlNodeForCount(SqlNode sqlNode) {
+        return toCountSqlNode(sqlNode);
+    }
+
+    /**
+     * 集計用のSQLノードに変換します。
+     * 
+     * @param sqlNode
+     *            SQLノード
+     * @return 変換されたSQLノード
+     */
+    protected SqlNode toCountSqlNode(SqlNode sqlNode) {
+        StandardCountTransformer transformer = new StandardCountTransformer();
         return transformer.transform(sqlNode);
     }
 
