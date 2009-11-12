@@ -75,8 +75,12 @@ public class EntityFetcher implements ResultFetcher<ResultSet, EntityType<?>> {
         int count = resultSetMeta.getColumnCount();
         for (int i = 1; i < count + 1; i++) {
             String columnName = resultSetMeta.getColumnLabel(i);
-            String propertyName = columnNameMap.get(columnName.toLowerCase());
+            String lowerCaseColumnName = columnName.toLowerCase();
+            String propertyName = columnNameMap.get(lowerCaseColumnName);
             if (propertyName == null) {
+                if ("rownumber_".equals(lowerCaseColumnName)) {
+                    continue;
+                }
                 Sql<?> sql = query.getSql();
                 throw new MappedPropertyNotFoundException(columnName,
                         entityType.getEntityClass().getName(), sql.getRawSql(),
