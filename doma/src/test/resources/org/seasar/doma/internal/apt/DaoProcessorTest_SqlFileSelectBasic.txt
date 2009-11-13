@@ -26,6 +26,7 @@ public class SqlFileSelectBasicDaoImpl extends org.seasar.doma.jdbc.DomaAbstract
         __query.prepare();
         org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.String> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.String>(__query, new org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler<java.lang.String>(new org.seasar.doma.wrapper.StringWrapper()));
         java.lang.String __result = __command.execute();
+        __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.SqlFileSelectBasicDaoImpl", "selectById", __result);
         return __result;
     }
@@ -50,6 +51,7 @@ public class SqlFileSelectBasicDaoImpl extends org.seasar.doma.jdbc.DomaAbstract
         __query.prepare();
         org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<java.lang.String>> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<java.lang.String>>(__query, new org.seasar.doma.internal.jdbc.command.BasicResultListHandler<java.lang.String>(new org.seasar.doma.wrapper.StringWrapper()));
         java.util.List<java.lang.String> __result = __command.execute();
+        __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.SqlFileSelectBasicDaoImpl", "selectByNameAndSalary", __result);
         return __result;
     }

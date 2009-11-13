@@ -203,7 +203,7 @@ salary = /*employee.getTaxedSalary()*/1234]]></source>
 <source><![CDATA[EmployeeDao dao = new EmployeeDaoImpl();
 BigDecimal salary = new BigDecimal(1000);
 String orderBy = "order by salary asc, employee_name";
-List&lt;Employee&gt; list = dao.selectAll(salary, orderBy);]]></source>
+List<Employee> list = dao.selectAll(salary, orderBy);]]></source>
 				<p>
 					発行されるSQLは次のようになります。
 				</p>

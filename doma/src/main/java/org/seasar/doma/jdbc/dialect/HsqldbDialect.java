@@ -20,7 +20,7 @@ import java.util.Collections;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
-import org.seasar.doma.internal.jdbc.dialect.HsqldbCountTransformer;
+import org.seasar.doma.internal.jdbc.dialect.HsqldbCountGettingTransformer;
 import org.seasar.doma.internal.jdbc.dialect.HsqldbPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
@@ -163,8 +163,8 @@ public class HsqldbDialect extends StandardDialect {
     }
 
     @Override
-    protected SqlNode toCountSqlNode(SqlNode sqlNode) {
-        HsqldbCountTransformer transformer = new HsqldbCountTransformer();
+    protected SqlNode toCountGettingSqlNode(SqlNode sqlNode) {
+        HsqldbCountGettingTransformer transformer = new HsqldbCountGettingTransformer();
         return transformer.transform(sqlNode);
     }
 

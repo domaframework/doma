@@ -20,6 +20,6 @@ package org.seasar.doma.internal.jdbc.dialect;
  * @author taedium
  * 
  */
-public class OracleCountTransformer extends StandardCountTransformer {
+public class OracleCountGettingTransformer extends StandardCountGettingTransformer {
 
 }

@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
-import org.seasar.doma.internal.jdbc.dialect.StandardCountTransformer;
+import org.seasar.doma.internal.jdbc.dialect.StandardCountGettingTransformer;
 import org.seasar.doma.internal.jdbc.dialect.StandardForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.StandardPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
@@ -181,6 +181,9 @@ public class StandardDialect implements Dialect {
             throw new DomaNullPointerException("options");
         }
         SqlNode transformed = sqlNode;
+        if (SelectOptionsAccessor.isCount(options)) {
+            transformed = toCountCalculatingSqlNode(sqlNode);
+        }
         long offset = SelectOptionsAccessor.getOffset(options);
         long limit = SelectOptionsAccessor.getLimit(options);
         if (offset >= 0 || limit >= 0) {
@@ -203,6 +206,17 @@ public class StandardDialect implements Dialect {
                     waitSeconds, aliases);
         }
         return transformed;
+    }
+
+    /**
+     * 集計を計算するSQLノードに変換します。
+     * 
+     * @param sqlNode
+     *            SQLノード
+     * @return 変換されたSQLノード
+     */
+    protected SqlNode toCountCalculatingSqlNode(SqlNode sqlNode) {
+        return sqlNode;
     }
 
     /**
@@ -244,19 +258,19 @@ public class StandardDialect implements Dialect {
     }
 
     @Override
-    public SqlNode transformSelectSqlNodeForCount(SqlNode sqlNode) {
-        return toCountSqlNode(sqlNode);
+    public SqlNode transformSelectSqlNodeForGettingCount(SqlNode sqlNode) {
+        return toCountGettingSqlNode(sqlNode);
     }
 
     /**
-     * 集計用のSQLノードに変換します。
+     * 集計取得用のSQLノードに変換します。
      * 
      * @param sqlNode
      *            SQLノード
      * @return 変換されたSQLノード
      */
-    protected SqlNode toCountSqlNode(SqlNode sqlNode) {
-        StandardCountTransformer transformer = new StandardCountTransformer();
+    protected SqlNode toCountGettingSqlNode(SqlNode sqlNode) {
+        StandardCountGettingTransformer transformer = new StandardCountGettingTransformer();
         return transformer.transform(sqlNode);
     }
 

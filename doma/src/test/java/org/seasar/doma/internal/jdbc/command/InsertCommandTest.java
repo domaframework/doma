@@ -49,6 +49,7 @@ public class InsertCommandTest extends TestCase {
         query.setCallerMethodName("bbb");
         query.prepare();
         int rows = new InsertCommand(query).execute();
+        query.complete();
 
         assertEquals(1, rows);
         String sql = runtimeConfig.dataSource.connection.preparedStatement.sql;
@@ -77,6 +78,7 @@ public class InsertCommandTest extends TestCase {
         query.setCallerMethodName("bbb");
         query.prepare();
         int rows = new InsertCommand(query).execute();
+        query.complete();
 
         assertEquals(1, rows);
         String sql = runtimeConfig.dataSource.connection.preparedStatement.sql;

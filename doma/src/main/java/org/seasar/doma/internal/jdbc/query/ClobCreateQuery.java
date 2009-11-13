@@ -32,10 +32,6 @@ public class ClobCreateQuery extends AbstractCreateQuery<Clob> {
     }
 
     @Override
-    public void complete() {
-    }
-
-    @Override
     public Clob create(Connection connection) throws SQLException {
         return connection.createClob();
     }

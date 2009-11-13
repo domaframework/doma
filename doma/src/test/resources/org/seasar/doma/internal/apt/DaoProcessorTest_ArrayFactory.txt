@@ -26,6 +26,7 @@ public class ArrayFactoryDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao im
         __query.prepare();
         org.seasar.doma.internal.jdbc.command.CreateCommand<java.sql.Array> __command = new org.seasar.doma.internal.jdbc.command.CreateCommand<java.sql.Array>(__query);
         java.sql.Array __result = __command.execute();
+        __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.ArrayFactoryDaoImpl", "create", __result);
         return __result;
     }

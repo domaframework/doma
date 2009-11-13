@@ -64,9 +64,7 @@ public abstract class ModifyCommand<Q extends ModifyQuery> implements
                 log();
                 setupOptions(preparedStatement);
                 bindValues(preparedStatement);
-                int result = executeInternal(preparedStatement);
-                query.complete();
-                return result;
+                return executeInternal(preparedStatement);
             } catch (SQLException e) {
                 Dialect dialect = query.getConfig().getDialect();
                 throw new SqlExecutionException(sql, e, dialect.getRootCause(e));

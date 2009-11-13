@@ -27,23 +27,12 @@ import org.seasar.doma.jdbc.SqlNode;
  * @author taedium
  * 
  */
-public class StandardCountTransformerTest extends TestCase {
+public class MysqlCountCalculatingTransformerTest extends TestCase {
 
     public void test() throws Exception {
-        String expected = "select count(*) from ( select * from emp)";
-        StandardCountTransformer transformer = new StandardCountTransformer();
+        String expected = "select sql_calc_found_rows * from emp";
+        MysqlCountCalculatingTransformer transformer = new MysqlCountCalculatingTransformer();
         SqlParser parser = new SqlParser("select * from emp");
-        SqlNode sqlNode = transformer.transform(parser.parse());
-        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                new MockConfig());
-        PreparedSql sql = sqlBuilder.build(sqlNode);
-        assertEquals(expected, sql.getRawSql());
-    }
-
-    public void testOrderBy() throws Exception {
-        String expected = "select count(*) from ( select * from emp )";
-        StandardCountTransformer transformer = new StandardCountTransformer();
-        SqlParser parser = new SqlParser("select * from emp order by emp.id");
         SqlNode sqlNode = transformer.transform(parser.parse());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
                 new MockConfig());

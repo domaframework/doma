@@ -61,6 +61,8 @@ public class FunctionCommandTest extends TestCase {
         query.setCallerMethodName("bbb");
         query.prepare();
         Integer result = new FunctionCommand<Integer>(query).execute();
+        query.complete();
+
         assertNotNull(result);
         assertEquals(new Integer(10), result);
         assertEquals(new Integer(40), aaa.get());

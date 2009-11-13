@@ -21,6 +21,7 @@ public class NClobFactoryDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao im
         __query.prepare();
         org.seasar.doma.internal.jdbc.command.CreateCommand<java.sql.NClob> __command = new org.seasar.doma.internal.jdbc.command.CreateCommand<java.sql.NClob>(__query);
         java.sql.NClob __result = __command.execute();
+        __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.NClobFactoryDaoImpl", "create", __result);
         return __result;
     }

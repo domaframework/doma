@@ -32,10 +32,6 @@ public class BlobCreateQuery extends AbstractCreateQuery<Blob> {
     }
 
     @Override
-    public void complete() {
-    }
-
-    @Override
     public Blob create(Connection connection) throws SQLException {
         return connection.createBlob();
     }

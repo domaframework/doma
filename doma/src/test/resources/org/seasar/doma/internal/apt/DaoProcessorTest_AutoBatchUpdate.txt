@@ -30,6 +30,7 @@ public class AutoBatchUpdateDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao
         __query.prepare();
         org.seasar.doma.internal.jdbc.command.BatchUpdateCommand __command = new org.seasar.doma.internal.jdbc.command.BatchUpdateCommand(__query);
         int[] __result = __command.execute();
+        __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.AutoBatchUpdateDaoImpl", "update", __result);
         return __result;
     }

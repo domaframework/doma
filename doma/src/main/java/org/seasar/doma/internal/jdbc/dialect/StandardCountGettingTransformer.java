@@ -27,7 +27,7 @@ import org.seasar.doma.jdbc.SqlNode;
  * @author taedium
  * 
  */
-public class StandardCountTransformer implements
+public class StandardCountGettingTransformer implements
         SelectStatementNodeVisitor<SqlNode, Void> {
 
     protected boolean processed;

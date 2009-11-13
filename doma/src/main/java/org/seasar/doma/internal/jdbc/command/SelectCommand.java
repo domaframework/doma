@@ -58,9 +58,7 @@ public class SelectCommand<R> implements Command<R, SelectQuery> {
                 log();
                 setupOptions(preparedStatement);
                 bindParameters(preparedStatement);
-                R result = executeQuery(preparedStatement);
-                query.complete();
-                return result;
+                return executeQuery(preparedStatement);
             } catch (SQLException e) {
                 Dialect dialect = query.getConfig().getDialect();
                 throw new SqlExecutionException(sql, e, dialect.getRootCause(e));

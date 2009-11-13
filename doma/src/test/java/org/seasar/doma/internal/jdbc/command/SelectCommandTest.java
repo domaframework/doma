@@ -66,6 +66,7 @@ public class SelectCommandTest extends TestCase {
         SelectCommand<Emp> command = new SelectCommand<Emp>(query,
                 new EntitySingleResultHandler<Emp>(new Emp_()));
         Emp entity = command.execute();
+        query.complete();
 
         assertNotNull(entity);
         assertEquals(new Integer(1), entity.getId());
@@ -107,6 +108,7 @@ public class SelectCommandTest extends TestCase {
         SelectCommand<List<Emp>> command = new SelectCommand<List<Emp>>(query,
                 new EntityResultListHandler<Emp>(new Emp_()));
         List<Emp> entities = command.execute();
+        query.complete();
 
         assertNotNull(entities);
         assertEquals(3, entities.size());

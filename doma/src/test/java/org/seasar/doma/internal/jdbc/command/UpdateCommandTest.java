@@ -59,6 +59,7 @@ public class UpdateCommandTest extends TestCase {
         query.setCallerMethodName("bbb");
         query.prepare();
         int rows = new UpdateCommand(query).execute();
+        query.complete();
 
         assertEquals(1, rows);
         String sql = runtimeConfig.dataSource.connection.preparedStatement.sql;
@@ -113,5 +114,6 @@ public class UpdateCommandTest extends TestCase {
         query.setCallerMethodName("bbb");
         query.prepare();
         new UpdateCommand(query).execute();
+        query.complete();
     }
 }

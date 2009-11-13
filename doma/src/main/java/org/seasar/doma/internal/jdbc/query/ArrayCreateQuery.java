@@ -36,10 +36,6 @@ public class ArrayCreateQuery extends AbstractCreateQuery<Array> {
                 elements);
     }
 
-    @Override
-    public void complete() {
-    }
-
     public String getTypeName() {
         return typeName;
     }

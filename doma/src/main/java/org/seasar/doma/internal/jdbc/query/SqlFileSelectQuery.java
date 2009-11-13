@@ -96,7 +96,7 @@ public class SqlFileSelectQuery implements SelectQuery {
 
     @Override
     public void complete() {
-        if (!SelectOptionsAccessor.getCount(options)) {
+        if (!SelectOptionsAccessor.isCount(options)) {
             return;
         }
         CountQuery query = new CountQuery();
@@ -112,10 +112,10 @@ public class SqlFileSelectQuery implements SelectQuery {
         query.prepare();
         SelectCommand<Long> command = new SelectCommand<Long>(query,
                 new BasicSingleResultHandler<Long>(new LongWrapper()));
-        Long countSize = command.execute();
-        if (countSize != null) {
-            SelectOptionsAccessor.setCountSize(options, countSize.longValue());
-        }
+        Long count = command.execute();
+        assertNotNull(count);
+        query.complete();
+        SelectOptionsAccessor.setCountSize(options, count.longValue());
     }
 
     @Override
@@ -261,8 +261,9 @@ public class SqlFileSelectQuery implements SelectQuery {
 
         @Override
         public void prepare() {
-            SqlNode sqlNode = config.getDialect()
-                    .transformSelectSqlNodeForCount(sqlFile.getSqlNode());
+            SqlNode sqlNode = config
+                    .getDialect()
+                    .transformSelectSqlNodeForGettingCount(sqlFile.getSqlNode());
             ExpressionEvaluator evaluator = new ExpressionEvaluator(parameters,
                     config.getDialect().getExpressionFunctions());
             NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(

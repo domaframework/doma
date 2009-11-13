@@ -201,13 +201,13 @@ public class SelectOptions {
     }
 
     /**
-     * 集計サイズを返します。
+     * 集計を返します。
      * <p>
      * Daoのメソッドを実行する前に{@link #count()}を呼び出していない場合 {@code -1} を返します。
      * 
      * @return 集計サイズ
      */
-    public long getCountSize() {
+    public long getCount() {
         return countSize;
     }
 

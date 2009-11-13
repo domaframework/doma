@@ -29,6 +29,7 @@ public class AutoInsertDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao impl
         __query.prepare();
         org.seasar.doma.internal.jdbc.command.InsertCommand __command = new org.seasar.doma.internal.jdbc.command.InsertCommand(__query);
         int __result = __command.execute();
+        __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.AutoInsertDaoImpl", "insert", __result);
         return __result;
     }

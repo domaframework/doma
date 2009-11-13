@@ -30,6 +30,7 @@ public class SqlFileSelectEntityDaoImpl extends org.seasar.doma.jdbc.DomaAbstrac
         __query.prepare();
         org.seasar.doma.internal.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.entity.Emp> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.entity.Emp>(__query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<org.seasar.doma.internal.apt.entity.Emp>(new org.seasar.doma.internal.apt.entity.Emp_()));
         org.seasar.doma.internal.apt.entity.Emp __result = __command.execute();
+        __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDaoImpl", "selectById", __result);
         return __result;
     }
@@ -54,6 +55,7 @@ public class SqlFileSelectEntityDaoImpl extends org.seasar.doma.jdbc.DomaAbstrac
         __query.prepare();
         org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<org.seasar.doma.internal.apt.entity.Emp>> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<org.seasar.doma.internal.apt.entity.Emp>>(__query, new org.seasar.doma.internal.jdbc.command.EntityResultListHandler<org.seasar.doma.internal.apt.entity.Emp>(new org.seasar.doma.internal.apt.entity.Emp_()));
         java.util.List<org.seasar.doma.internal.apt.entity.Emp> __result = __command.execute();
+        __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDaoImpl", "selectByNameAndSalary", __result);
         return __result;
     }

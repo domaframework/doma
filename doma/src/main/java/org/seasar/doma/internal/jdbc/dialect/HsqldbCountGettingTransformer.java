@@ -20,6 +20,6 @@ package org.seasar.doma.internal.jdbc.dialect;
  * @author taedium
  * 
  */
-public class PostgresCountTransformer extends StandardCountTransformer {
+public class HsqldbCountGettingTransformer extends StandardCountGettingTransformer {
 
 }

@@ -21,6 +21,7 @@ public class ClobFactoryDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao imp
         __query.prepare();
         org.seasar.doma.internal.jdbc.command.CreateCommand<java.sql.Clob> __command = new org.seasar.doma.internal.jdbc.command.CreateCommand<java.sql.Clob>(__query);
         java.sql.Clob __result = __command.execute();
+        __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.ClobFactoryDaoImpl", "create", __result);
         return __result;
     }

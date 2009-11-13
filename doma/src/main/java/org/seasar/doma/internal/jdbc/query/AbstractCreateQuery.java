@@ -67,4 +67,8 @@ public abstract class AbstractCreateQuery<R> implements CreateQuery<R> {
         return null;
     }
 
+    @Override
+    public void complete() {
+    }
+
 }

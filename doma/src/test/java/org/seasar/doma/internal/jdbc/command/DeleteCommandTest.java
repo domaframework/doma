@@ -52,6 +52,7 @@ public class DeleteCommandTest extends TestCase {
         query.setCallerMethodName("bbb");
         query.prepare();
         int rows = new DeleteCommand(query).execute();
+        query.complete();
 
         assertEquals(1, rows);
         String sql = runtimeConfig.dataSource.connection.preparedStatement.sql;
@@ -101,5 +102,6 @@ public class DeleteCommandTest extends TestCase {
         query.setOptimisticLockExceptionSuppressed(true);
         query.prepare();
         new DeleteCommand(query).execute();
+        query.complete();
     }
 }

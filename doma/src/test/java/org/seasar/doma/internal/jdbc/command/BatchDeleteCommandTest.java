@@ -52,6 +52,7 @@ public class BatchDeleteCommandTest extends TestCase {
         query.setCallerMethodName("bbb");
         query.prepare();
         int[] rows = new BatchDeleteCommand(query).execute();
+        query.complete();
 
         assertEquals(2, rows.length);
         String sql = runtimeConfig.dataSource.connection.preparedStatement.sql;

@@ -30,6 +30,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.jdbc.DomaAbstractD
         __query.prepare();
         org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.Integer> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.Integer>(__query, new org.seasar.doma.internal.jdbc.command.EntityIterationHandler<java.lang.Integer, org.seasar.doma.internal.apt.entity.Emp>(new org.seasar.doma.internal.apt.entity.Emp_(), callback));
         java.lang.Integer __result = __command.execute();
+        __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl", "iterateByIdAndName", __result);
         return __result;
     }
@@ -52,6 +53,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.jdbc.DomaAbstractD
         __query.prepare();
         org.seasar.doma.internal.jdbc.command.SelectCommand<R> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<R>(__query, new org.seasar.doma.internal.jdbc.command.DomainIterationHandler<R, java.lang.String, example.domain.PhoneNumber>(new example.domain.PhoneNumber_(), callback));
         R __result = __command.execute();
+        __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl", "iterateById", __result);
         return __result;
     }
@@ -73,6 +75,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.jdbc.DomaAbstractD
         __query.prepare();
         org.seasar.doma.internal.jdbc.command.SelectCommand<R> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<R>(__query, new org.seasar.doma.internal.jdbc.command.BasicIterationHandler<R, java.lang.String>(new org.seasar.doma.wrapper.StringWrapper(), callback));
         R __result = __command.execute();
+        __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl", "iterate", __result);
         return __result;
     }
@@ -94,6 +97,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.jdbc.DomaAbstractD
         __query.prepare();
         org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.String> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.String>(__query, new org.seasar.doma.internal.jdbc.command.EntityIterationHandler<java.lang.String, org.seasar.doma.internal.apt.entity.Emp>(new org.seasar.doma.internal.apt.entity.Emp_(), callback));
         java.lang.String __result = __command.execute();
+        __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl", "iterateWithHogeIterationCallback", __result);
         return __result;
     }

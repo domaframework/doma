@@ -25,6 +25,7 @@ public class ConfigProxyDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao imp
         __query.prepare();
         org.seasar.doma.internal.jdbc.command.InsertCommand __command = new org.seasar.doma.internal.jdbc.command.InsertCommand(__query);
         int __result = __command.execute();
+        __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.ConfigProxyDaoImpl", "insert", __result);
         return __result;
     }

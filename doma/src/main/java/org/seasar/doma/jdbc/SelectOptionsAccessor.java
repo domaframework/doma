@@ -32,7 +32,7 @@ public class SelectOptionsAccessor {
      *            オプション
      * @return 集計するかどうか
      */
-    public static boolean getCount(SelectOptions options) {
+    public static boolean isCount(SelectOptions options) {
         return options.count;
     }
 

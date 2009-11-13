@@ -21,7 +21,7 @@ import java.util.Collections;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
-import org.seasar.doma.internal.jdbc.dialect.OracleCountTransformer;
+import org.seasar.doma.internal.jdbc.dialect.OracleCountGettingTransformer;
 import org.seasar.doma.internal.jdbc.dialect.OracleForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.OraclePagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
@@ -140,8 +140,8 @@ public class OracleDialect extends StandardDialect {
     }
 
     @Override
-    protected SqlNode toCountSqlNode(SqlNode sqlNode) {
-        OracleCountTransformer transformer = new OracleCountTransformer();
+    protected SqlNode toCountGettingSqlNode(SqlNode sqlNode) {
+        OracleCountGettingTransformer transformer = new OracleCountGettingTransformer();
         return transformer.transform(sqlNode);
     }
 

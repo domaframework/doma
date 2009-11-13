@@ -26,6 +26,7 @@ public class PrimitiveTypeDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao i
         __query.prepare();
         org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.Integer> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.Integer>(__query, new org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler<java.lang.Integer>(new org.seasar.doma.wrapper.IntegerWrapper()));
         int __result = __command.execute();
+        __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl", "selectById", __result);
         return __result;
     }
@@ -43,6 +44,7 @@ public class PrimitiveTypeDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao i
         __query.prepare();
         org.seasar.doma.internal.jdbc.command.UpdateCommand __command = new org.seasar.doma.internal.jdbc.command.UpdateCommand(__query);
         int __result = __command.execute();
+        __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl", "update", __result);
         return __result;
     }
@@ -61,6 +63,7 @@ public class PrimitiveTypeDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao i
         __query.prepare();
         org.seasar.doma.internal.jdbc.command.FunctionCommand<java.lang.Integer> __command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<java.lang.Integer>(__query);
         int __result = __command.execute();
+        __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl", "execute", __result);
         return __result;
     }

@@ -32,10 +32,6 @@ public class NClobCreateQuery extends AbstractCreateQuery<NClob> {
     }
 
     @Override
-    public void complete() {
-    }
-
-    @Override
     public NClob create(Connection connection) throws SQLException {
         return connection.createNClob();
     }

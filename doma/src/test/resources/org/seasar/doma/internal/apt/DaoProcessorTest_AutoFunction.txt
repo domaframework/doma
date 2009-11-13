@@ -33,6 +33,7 @@ public class AutoFunctionDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao im
         __query.prepare();
         org.seasar.doma.internal.jdbc.command.FunctionCommand<java.lang.String> __command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<java.lang.String>(__query);
         java.lang.String __result = __command.execute();
+        __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl", "executeFunction", __result);
         return __result;
     }
@@ -59,6 +60,7 @@ public class AutoFunctionDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao im
         __query.prepare();
         org.seasar.doma.internal.jdbc.command.FunctionCommand<example.domain.PhoneNumber> __command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<example.domain.PhoneNumber>(__query);
         example.domain.PhoneNumber __result = __command.execute();
+        __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl", "executeFunction2", __result);
         return __result;
     }
@@ -80,6 +82,7 @@ public class AutoFunctionDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao im
         __query.prepare();
         org.seasar.doma.internal.jdbc.command.FunctionCommand<java.util.List<java.lang.String>> __command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<java.util.List<java.lang.String>>(__query);
         java.util.List<java.lang.String> __result = __command.execute();
+        __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl", "executeFunction3", __result);
         return __result;
     }
@@ -101,6 +104,7 @@ public class AutoFunctionDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao im
         __query.prepare();
         org.seasar.doma.internal.jdbc.command.FunctionCommand<java.util.List<example.domain.PhoneNumber>> __command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<java.util.List<example.domain.PhoneNumber>>(__query);
         java.util.List<example.domain.PhoneNumber> __result = __command.execute();
+        __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl", "executeFunction4", __result);
         return __result;
     }
@@ -122,6 +126,7 @@ public class AutoFunctionDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao im
         __query.prepare();
         org.seasar.doma.internal.jdbc.command.FunctionCommand<java.util.List<org.seasar.doma.internal.apt.entity.Emp>> __command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<java.util.List<org.seasar.doma.internal.apt.entity.Emp>>(__query);
         java.util.List<org.seasar.doma.internal.apt.entity.Emp> __result = __command.execute();
+        __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl", "executeFunction5", __result);
         return __result;
     }
@@ -148,6 +153,7 @@ public class AutoFunctionDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao im
         __query.prepare();
         org.seasar.doma.internal.jdbc.command.FunctionCommand<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum> __command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum>(__query);
         org.seasar.doma.internal.apt.dao.AutoFunctionDao.MyEnum __result = __command.execute();
+        __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl", "executeFunction6", __result);
         return __result;
     }

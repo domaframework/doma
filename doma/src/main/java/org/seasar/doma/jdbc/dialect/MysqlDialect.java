@@ -22,7 +22,9 @@ import java.util.Set;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
-import org.seasar.doma.internal.jdbc.dialect.MysqlCountTransformer;
+import org.seasar.doma.internal.jdbc.dialect.MysqlCountCalculatingTransformer;
+import org.seasar.doma.internal.jdbc.dialect.MysqlCountGettingTransformer;
+import org.seasar.doma.internal.jdbc.dialect.MysqlForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.MysqlPagingTransformer;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
@@ -133,6 +135,12 @@ public class MysqlDialect extends StandardDialect {
     }
 
     @Override
+    protected SqlNode toCountCalculatingSqlNode(SqlNode sqlNode) {
+        MysqlCountCalculatingTransformer transformer = new MysqlCountCalculatingTransformer();
+        return transformer.transform(sqlNode);
+    }
+
+    @Override
     protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
         MysqlPagingTransformer transformer = new MysqlPagingTransformer(offset,
                 limit);
@@ -140,8 +148,17 @@ public class MysqlDialect extends StandardDialect {
     }
 
     @Override
-    protected SqlNode toCountSqlNode(SqlNode sqlNode) {
-        MysqlCountTransformer transformer = new MysqlCountTransformer();
+    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode,
+            SelectForUpdateType forUpdateType, int waitSeconds,
+            String... aliases) {
+        MysqlForUpdateTransformer transformer = new MysqlForUpdateTransformer(
+                forUpdateType, waitSeconds, aliases);
+        return transformer.transform(sqlNode);
+    }
+
+    @Override
+    protected SqlNode toCountGettingSqlNode(SqlNode sqlNode) {
+        MysqlCountGettingTransformer transformer = new MysqlCountGettingTransformer();
         return transformer.transform(sqlNode);
     }
 

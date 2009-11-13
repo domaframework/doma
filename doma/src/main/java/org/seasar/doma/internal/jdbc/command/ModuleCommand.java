@@ -56,9 +56,7 @@ public abstract class ModuleCommand<R, Q extends ModuleQuery> implements
                 log();
                 setupOptions(callableStatement);
                 bindParameters(callableStatement);
-                R result = executeInternal(callableStatement);
-                query.complete();
-                return result;
+                return executeInternal(callableStatement);
             } catch (SQLException e) {
                 Dialect dialect = query.getConfig().getDialect();
                 throw new SqlExecutionException(sql, e, dialect.getRootCause(e));

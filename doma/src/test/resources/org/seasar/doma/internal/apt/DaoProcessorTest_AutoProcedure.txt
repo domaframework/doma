@@ -28,6 +28,7 @@ public class AutoProcedureDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao i
         __query.prepare();
         org.seasar.doma.internal.jdbc.command.ProcedureCommand __command = new org.seasar.doma.internal.jdbc.command.ProcedureCommand(__query);
         __command.execute();
+        __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.AutoProcedureDaoImpl", "executeProcedure", null);
     }
 
