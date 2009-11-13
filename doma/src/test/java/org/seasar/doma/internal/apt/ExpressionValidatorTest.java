@@ -23,7 +23,6 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
@@ -536,18 +535,10 @@ public class ExpressionValidatorTest extends AptTestCase {
     protected Map<String, TypeMirror> createParameterTypeMap(
             ExecutableElement methodElement) {
         Map<String, TypeMirror> result = new HashMap<String, TypeMirror>();
-        ProcessingEnvironment env = getProcessingEnvironment();
         for (VariableElement parameter : methodElement.getParameters()) {
             String name = parameter.getSimpleName().toString();
             TypeMirror type = parameter.asType();
-            if (TypeMirrorUtil.isSameType(type, List.class, env)) {
-                DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(type,
-                        env);
-                TypeMirror elementType = declaredType.getTypeArguments().get(0);
-                result.put(name, elementType);
-            } else {
-                result.put(name, type);
-            }
+            result.put(name, type);
         }
         return result;
     }

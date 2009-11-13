@@ -15,15 +15,24 @@
  */
 package org.seasar.doma.internal.apt.dao;
 
-import org.seasar.doma.internal.apt.entity.Emp;
+import java.util.Iterator;
+import java.util.List;
+
+import org.seasar.doma.Dao;
 
 /**
  * 
  * @author taedium
  * 
  */
-public interface ExpressionValidationDao {
+@Dao(config = MyConfig.class)
+public interface SqlValidationDao {
 
-    void testEmp(Emp emp);
+    void testFor(List<String> names);
+
+    void testFor_notIterable(Iterator<String> names);
+
+    @SuppressWarnings("unchecked")
+    void testFor_noTypeArgument(List names);
 
 }

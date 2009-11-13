@@ -17,16 +17,19 @@ package org.seasar.doma.internal.apt;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.internal.apt.decl.TypeDeclaration;
+import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.expr.ExpressionException;
 import org.seasar.doma.internal.expr.ExpressionParser;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
@@ -36,6 +39,8 @@ import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseifNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNodeVisitor;
+import org.seasar.doma.internal.jdbc.sql.node.ForNode;
+import org.seasar.doma.internal.jdbc.sql.node.ForNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
@@ -48,7 +53,7 @@ import org.seasar.doma.jdbc.SqlNode;
  */
 public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
         EmbeddedVariableNodeVisitor<Void, Void>, IfNodeVisitor<Void, Void>,
-        ElseifNodeVisitor<Void, Void> {
+        ElseifNodeVisitor<Void, Void>, ForNodeVisitor<Void, Void> {
 
     protected final ProcessingEnvironment env;
 
@@ -140,6 +145,42 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
                     expression, typeDeclaration.getQualifiedName());
         }
         visitNode(node, p);
+        return null;
+    }
+
+    @Override
+    public Void visitForNode(ForNode node, Void p) {
+        SqlLocation location = node.getLocation();
+        String identifier = node.getIdentifier();
+        String expression = node.getExpression();
+        TypeDeclaration typeDeclaration = validateExpressionVariable(location,
+                expression);
+        TypeMirror typeMirror = typeDeclaration.getType();
+        if (!TypeMirrorUtil.isAssignable(typeMirror, Iterable.class, env)) {
+            throw new AptException(DomaMessageCode.DOMA4149, env,
+                    methodElement, path, location.getSql(), location
+                            .getLineNumber(), location.getPosition(),
+                    expression, typeDeclaration.getQualifiedName());
+        }
+        DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(typeMirror,
+                env);
+        List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
+        if (typeArgs.isEmpty()) {
+            throw new AptException(DomaMessageCode.DOMA4150, env,
+                    methodElement, path, location.getSql(), location
+                            .getLineNumber(), location.getPosition(),
+                    expression, typeDeclaration.getQualifiedName());
+        }
+        TypeMirror originalParameterType = expressionValidator
+                .removeParameterType(identifier);
+        expressionValidator.putParameterType(identifier, typeArgs.get(0));
+        visitNode(node, p);
+        if (originalParameterType == null) {
+            expressionValidator.removeParameterType(identifier);
+        } else {
+            expressionValidator.putParameterType(identifier,
+                    originalParameterType);
+        }
         return null;
     }
 

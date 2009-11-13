@@ -347,13 +347,13 @@ public class NodePreparedSqlBuilder implements
                     expressionValueClass);
         }
         Iterable<?> iterable = (Iterable<?>) expressionValue;
-        String variableName = forNode.getIdentifier();
-        Value originalValue = evaluator.removeValue(variableName);
+        String identifier = forNode.getIdentifier();
+        Value originalValue = evaluator.removeValue(identifier);
         for (Iterator<?> it = iterable.iterator(); it.hasNext();) {
             Object each = it.next();
             Value value = each == null ? new Value(void.class, null)
                     : new Value(each.getClass(), each);
-            evaluator.putValue(variableName, value);
+            evaluator.putValue(identifier, value);
             for (SqlNode child : forNode.getChildren()) {
                 child.accept(this, p);
             }
@@ -365,9 +365,9 @@ public class NodePreparedSqlBuilder implements
             }
         }
         if (originalValue == null) {
-            evaluator.removeValue(variableName);
+            evaluator.removeValue(identifier);
         } else {
-            evaluator.putValue(variableName, originalValue);
+            evaluator.putValue(identifier, originalValue);
         }
         EndNode endNode = node.getEndNode();
         endNode.accept(this, p);

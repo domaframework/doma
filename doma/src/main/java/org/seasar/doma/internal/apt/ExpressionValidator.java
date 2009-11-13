@@ -79,6 +79,14 @@ public class ExpressionValidator implements
                 .newUnknownTypeDeclaration(env);
     }
 
+    public TypeMirror removeParameterType(String parameterName) {
+        return parameterTypeMap.remove(parameterName);
+    }
+
+    public void putParameterType(String parameterName, TypeMirror parameterType) {
+        parameterTypeMap.put(parameterName, parameterType);
+    }
+
     public Set<String> getValidatedParameterNames() {
         return validatedParameterNames;
     }
