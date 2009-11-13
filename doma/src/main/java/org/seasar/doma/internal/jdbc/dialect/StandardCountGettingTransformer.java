@@ -59,7 +59,7 @@ public class StandardCountGettingTransformer implements
         FromClauseNode from = new FromClauseNode("from");
         from.addNode(new FragmentNode(" ( "));
         from.addNode(subStatement);
-        from.addNode(new FragmentNode(")"));
+        from.addNode(new FragmentNode(") t_"));
 
         SelectStatementNode result = new SelectStatementNode();
         result.setSelectClauseNode(select);
