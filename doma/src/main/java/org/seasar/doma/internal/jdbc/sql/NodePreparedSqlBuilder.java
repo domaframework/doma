@@ -19,12 +19,14 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.seasar.doma.internal.expr.EvaluationResult;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.ExpressionException;
 import org.seasar.doma.internal.expr.ExpressionParser;
+import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNodeVisitor;
@@ -39,6 +41,10 @@ import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.EndNode;
 import org.seasar.doma.internal.jdbc.sql.node.EndNodeVisitor;
+import org.seasar.doma.internal.jdbc.sql.node.ForBlockNode;
+import org.seasar.doma.internal.jdbc.sql.node.ForBlockNodeVisitor;
+import org.seasar.doma.internal.jdbc.sql.node.ForNode;
+import org.seasar.doma.internal.jdbc.sql.node.ForNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.FragmentNode;
@@ -47,6 +53,8 @@ import org.seasar.doma.internal.jdbc.sql.node.FromClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.FromClauseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.GroupByClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.GroupByClauseNodeVisitor;
+import org.seasar.doma.internal.jdbc.sql.node.HasNextNode;
+import org.seasar.doma.internal.jdbc.sql.node.HasNextNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.HavingClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.HavingClauseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.IfBlockNode;
@@ -93,10 +101,13 @@ public class NodePreparedSqlBuilder implements
         ElseNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         EmbeddedVariableNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         EndNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
+        ForBlockNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
+        ForNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         ForUpdateClauseNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         FragmentNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         FromClauseNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         GroupByClauseNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
+        HasNextNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         HavingClauseNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         IfBlockNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         IfNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
@@ -318,6 +329,64 @@ public class NodePreparedSqlBuilder implements
 
     @Override
     public Void visitEndNode(EndNode node, Context p) {
+        return null;
+    }
+
+    @Override
+    public Void visitForBlockNode(ForBlockNode node, Context p) {
+        ForNode forNode = node.getForNode();
+        SqlLocation location = forNode.getLocation();
+        EvaluationResult expressionResult = evaluate(location, forNode
+                .getExpression());
+        Object expressionValue = expressionResult.getValue();
+        Class<?> expressionValueClass = expressionResult.getValueClass();
+        if (!Iterable.class.isAssignableFrom(expressionValueClass)) {
+            throw new JdbcException(DomaMessageCode.DOMA2129,
+                    location.getSql(), location.getLineNumber(), location
+                            .getPosition(), forNode.getExpression(),
+                    expressionValueClass);
+        }
+        Iterable<?> iterable = (Iterable<?>) expressionValue;
+        String variableName = forNode.getIdentifier();
+        Value originalValue = evaluator.removeValue(variableName);
+        for (Iterator<?> it = iterable.iterator(); it.hasNext();) {
+            Object each = it.next();
+            Value value = each == null ? new Value(void.class, null)
+                    : new Value(each.getClass(), each);
+            evaluator.putValue(variableName, value);
+            for (SqlNode child : forNode.getChildren()) {
+                child.accept(this, p);
+            }
+            if (it.hasNext()) {
+                HasNextNode hasNextNode = node.getHasNextNode();
+                if (hasNextNode != null) {
+                    hasNextNode.accept(this, p);
+                }
+            }
+        }
+        if (originalValue == null) {
+            evaluator.removeValue(variableName);
+        } else {
+            evaluator.putValue(variableName, originalValue);
+        }
+        EndNode endNode = node.getEndNode();
+        endNode.accept(this, p);
+        return null;
+    }
+
+    @Override
+    public Void visitForNode(ForNode node, Context p) {
+        for (SqlNode child : node.getChildren()) {
+            child.accept(this, p);
+        }
+        return null;
+    }
+
+    @Override
+    public Void visitHasNextNode(HasNextNode node, Context p) {
+        String value = node.getText();
+        p.appendRawSql(value);
+        p.appendFormattedSql(value);
         return null;
     }
 

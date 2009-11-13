@@ -18,7 +18,6 @@ package org.seasar.doma.internal.jdbc.sql.node;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
@@ -26,28 +25,44 @@ import org.seasar.doma.jdbc.SqlNodeVisitor;
  * @author taedium
  * 
  */
-public class WordNode extends AbstractSqlNode {
+public class ForNode extends AbstractSqlNode {
 
-    protected final String word;
+    protected final SqlLocation location;
 
-    public WordNode(String word) {
-        assertNotNull(word);
-        this.word = word;
+    protected final String identifier;
+
+    protected final String expression;
+
+    protected final String text;
+
+    public ForNode(SqlLocation location, String identifier, String expression,
+            String text) {
+        assertNotNull(location, identifier, expression, text);
+        this.location = location;
+        this.identifier = identifier;
+        this.expression = expression;
+        this.text = text;
     }
 
-    public String getWord() {
-        return word;
+    public SqlLocation getLocation() {
+        return location;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public String getExpression() {
+        return expression;
     }
 
     @Override
-    public void addNode(SqlNode child) {
-        throw new JdbcUnsupportedOperationException(getClass().getName(),
-                "addNode");
-    }
-
-    @Override
-    public WordNode copy() {
-        return this;
+    public ForNode copy() {
+        ForNode clone = new ForNode(location, identifier, expression, text);
+        for (SqlNode child : children) {
+            clone.addNode(child.copy());
+        }
+        return clone;
     }
 
     @Override
@@ -55,17 +70,22 @@ public class WordNode extends AbstractSqlNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (WordNodeVisitor.class.isInstance(visitor)) {
+        if (ForNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            WordNodeVisitor<R, P> v = WordNodeVisitor.class.cast(visitor);
-            return v.visitWordNode(this, p);
+            ForNodeVisitor<R, P> v = ForNodeVisitor.class.cast(visitor);
+            return v.visitForNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);
     }
 
     @Override
     public String toString() {
-        return word;
+        StringBuilder buf = new StringBuilder();
+        buf.append(text);
+        for (SqlNode child : children) {
+            buf.append(child);
+        }
+        return buf.toString();
     }
 
 }

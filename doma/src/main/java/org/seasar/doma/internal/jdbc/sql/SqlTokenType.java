@@ -36,7 +36,7 @@ public enum SqlTokenType {
     ELSEIF_LINE_COMMENT {
 
         @Override
-        public String extractExpression(String token) {
+        public String extract(String token) {
             assertNotNull(token);
             assertTrue(token.length() >= 10);
             return token.substring(8, token.length() - 2);
@@ -46,12 +46,23 @@ public enum SqlTokenType {
 
     ELSE_LINE_COMMENT,
 
+    HAS_NEXT_LINE_COMMENT {
+
+        @Override
+        public String extract(String token) {
+            assertNotNull(token);
+            assertTrue(token.length() >= 11);
+            return token.substring(9, token.length() - 2);
+        }
+
+    },
+
     BLOCK_COMMENT,
 
     BIND_VARIABLE_BLOCK_COMMENT {
 
         @Override
-        public String extractExpression(String token) {
+        public String extract(String token) {
             assertNotNull(token);
             assertTrue(token.length() >= 5);
             String s = token.substring(2, token.length() - 2);
@@ -62,7 +73,7 @@ public enum SqlTokenType {
     EMBEDDED_VARIABLE_BLOCK_COMMENT {
 
         @Override
-        public String extractExpression(String token) {
+        public String extract(String token) {
             assertNotNull(token);
             assertTrue(token.length() >= 5);
             String s = token.substring(3, token.length() - 2);
@@ -73,10 +84,21 @@ public enum SqlTokenType {
     IF_BLOCK_COMMENT {
 
         @Override
-        public String extractExpression(String token) {
+        public String extract(String token) {
             assertNotNull(token);
             assertTrue(token.length() >= 7);
             return token.substring(5, token.length() - 2);
+        }
+
+    },
+
+    FOR_BLOCK_COMMENT {
+
+        @Override
+        public String extract(String token) {
+            assertNotNull(token);
+            assertTrue(token.length() >= 8);
+            return token.substring(6, token.length() - 2);
         }
 
     },
@@ -111,7 +133,7 @@ public enum SqlTokenType {
 
     EOF;
 
-    public String extractExpression(String token) {
+    public String extract(String token) {
         return token;
     }
 

@@ -171,6 +171,27 @@ public class SqlTokenizer {
 
     protected void peekNineChars(char c, char c2, char c3, char c4, char c5,
             char c6, char c7, char c8, char c9) {
+        if ((c == '-') && (c2 == '-') && (c3 == 'h') && (c4 == 'a')
+                && (c5 == 's') && (c6 == 'N') && (c7 == 'e') && (c8 == 'x')
+                && (c9 == 't')) {
+            type = HAS_NEXT_LINE_COMMENT;
+            if (isWordTerminated()) {
+                while (buf.hasRemaining()) {
+                    char c10 = buf.get();
+                    if (c10 == '-') {
+                        if (buf.hasRemaining()) {
+                            char c11 = buf.get();
+                            if (c11 == '-') {
+                                return;
+                            }
+                        }
+                    }
+                }
+                int pos = buf.position() - lineStartPosition;
+                throw new JdbcException(DomaMessageCode.DOMA2130, sql,
+                        lineNumber, pos);
+            }
+        }
         buf.position(buf.position() - 1);
         peekEightChars(c, c2, c3, c4, c5, c6, c7, c8);
     }
@@ -314,7 +335,11 @@ public class SqlTokenizer {
                                 }
                             } else if (buf.hasRemaining()) {
                                 char c6 = buf.get();
-                                if (c4 == 'e' && c5 == 'n' && c6 == 'd') {
+                                if (c4 == 'f' && c5 == 'o' && c6 == 'r') {
+                                    if (isBlockCommentDirectiveTerminated()) {
+                                        type = FOR_BLOCK_COMMENT;
+                                    }
+                                } else if (c4 == 'e' && c5 == 'n' && c6 == 'd') {
                                     if (isBlockCommentDirectiveTerminated()) {
                                         type = END_BLOCK_COMMENT;
                                     }
@@ -328,7 +353,8 @@ public class SqlTokenizer {
                             buf.position(buf.position() - 1);
                         }
                     }
-                    if (type != IF_BLOCK_COMMENT && type != END_BLOCK_COMMENT) {
+                    if (type != IF_BLOCK_COMMENT && type != FOR_BLOCK_COMMENT
+                            && type != END_BLOCK_COMMENT) {
                         int pos = buf.position() - lineStartPosition;
                         throw new JdbcException(DomaMessageCode.DOMA2119, sql,
                                 lineNumber, pos);

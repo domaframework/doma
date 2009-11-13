@@ -27,9 +27,13 @@ import org.seasar.doma.internal.jdbc.sql.node.ElseNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.EndNode;
+import org.seasar.doma.internal.jdbc.sql.node.EndNodeAware;
+import org.seasar.doma.internal.jdbc.sql.node.ForBlockNode;
+import org.seasar.doma.internal.jdbc.sql.node.ForNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.FromClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.GroupByClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.HasNextNode;
 import org.seasar.doma.internal.jdbc.sql.node.HavingClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfBlockNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;
@@ -147,6 +151,14 @@ public class SqlParser {
                 parseEndBlockComment();
                 break;
             }
+            case FOR_BLOCK_COMMENT: {
+                parseForBlockComment();
+                break;
+            }
+            case HAS_NEXT_LINE_COMMENT: {
+                parseHasNextLineComment();
+                break;
+            }
             case DELIMITER:
             case EOF: {
                 validateTermination();
@@ -243,7 +255,7 @@ public class SqlParser {
     }
 
     protected void parseLogicalWord() {
-        String word = tokenType.extractExpression(token);
+        String word = tokenType.extract(token);
         LogicalOperatorNode node = new LogicalOperatorNode(word);
         addNode(node);
         push(node);
@@ -271,7 +283,7 @@ public class SqlParser {
     }
 
     protected void parseBindVariableBlockComment() {
-        String varialbeName = tokenType.extractExpression(token);
+        String varialbeName = tokenType.extract(token);
         if (varialbeName.isEmpty()) {
             throw new JdbcException(DomaMessageCode.DOMA2120, sql, tokenizer
                     .getLineNumber(), tokenizer.getPosition(), token);
@@ -283,7 +295,7 @@ public class SqlParser {
     }
 
     protected void parseEmbeddedVariableBlockComment() {
-        String varialbeName = tokenType.extractExpression(token);
+        String varialbeName = tokenType.extract(token);
         if (varialbeName.isEmpty()) {
             throw new JdbcException(DomaMessageCode.DOMA2121, sql, tokenizer
                     .getLineNumber(), tokenizer.getPosition(), token);
@@ -298,7 +310,7 @@ public class SqlParser {
         IfBlockNode ifBlockNode = new IfBlockNode();
         addNode(ifBlockNode);
         push(ifBlockNode);
-        String expression = tokenType.extractExpression(token);
+        String expression = tokenType.extract(token);
         IfNode node = new IfNode(getLocation(), expression, token);
         ifBlockNode.setIfNode(node);
         push(node);
@@ -315,7 +327,7 @@ public class SqlParser {
             throw new JdbcException(DomaMessageCode.DOMA2108, sql, tokenizer
                     .getLineNumber(), tokenizer.getPosition());
         }
-        String expression = tokenType.extractExpression(token);
+        String expression = tokenType.extract(token);
         ElseifNode node = new ElseifNode(getLocation(), expression, token);
         ifBlockNode.addElseifNode(node);
         push(node);
@@ -338,14 +350,56 @@ public class SqlParser {
     }
 
     protected void parseEndBlockComment() {
-        if (!isInIfBlock()) {
+        if (!isInEndNodeAware()) {
             throw new JdbcException(DomaMessageCode.DOMA2104, sql, tokenizer
                     .getLineNumber(), tokenizer.getPosition());
         }
-        removeNodesTo(IfBlockNode.class);
-        IfBlockNode ifBlockNode = pop();
+        removeNodesTo(EndNodeAware.class);
+        EndNodeAware endNodeAware = pop();
         EndNode node = new EndNode(token);
-        ifBlockNode.setEndNode(node);
+        endNodeAware.setEndNode(node);
+    }
+
+    protected void parseForBlockComment() {
+        ForBlockNode forBlockNode = new ForBlockNode();
+        addNode(forBlockNode);
+        push(forBlockNode);
+        String expr = tokenType.extract(token);
+        int pos = expr.indexOf(":");
+        if (pos == -1) {
+            throw new JdbcException(DomaMessageCode.DOMA2124, sql, tokenizer
+                    .getLineNumber(), tokenizer.getPosition());
+        }
+        String identifier = expr.substring(0, pos).trim();
+        if (identifier.isEmpty()) {
+            throw new JdbcException(DomaMessageCode.DOMA2125, sql, tokenizer
+                    .getLineNumber(), tokenizer.getPosition());
+        }
+        String expression = expr.substring(pos + 1).trim();
+        if (expression.isEmpty()) {
+            throw new JdbcException(DomaMessageCode.DOMA2126, sql, tokenizer
+                    .getLineNumber(), tokenizer.getPosition());
+        }
+        ForNode node = new ForNode(getLocation(), identifier, expression, token);
+        forBlockNode.setForNode(node);
+        push(node);
+    }
+
+    protected void parseHasNextLineComment() {
+        if (!isInForBlock()) {
+            throw new JdbcException(DomaMessageCode.DOMA2127, sql, tokenizer
+                    .getLineNumber(), tokenizer.getPosition());
+        }
+        removeNodesTo(ForBlockNode.class);
+        ForBlockNode forBlockNode = peek();
+        if (forBlockNode.isHasNextNodeExistent()) {
+            throw new JdbcException(DomaMessageCode.DOMA2128, sql, tokenizer
+                    .getLineNumber(), tokenizer.getPosition());
+        }
+        String text = tokenType.extract(token);
+        HasNextNode node = new HasNextNode(text, token);
+        forBlockNode.setHasNextNode(node);
+        push(node);
     }
 
     protected void appendOther(String token) {
@@ -383,9 +437,27 @@ public class SqlParser {
         return false;
     }
 
+    protected boolean isInForBlock() {
+        for (SqlNode node : nodeStack) {
+            if (ForBlockNode.class.isInstance(node)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     protected boolean isInParens() {
         for (SqlNode node : nodeStack) {
             if (ParensNode.class.isInstance(node)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected boolean isInEndNodeAware() {
+        for (SqlNode node : nodeStack) {
+            if (EndNodeAware.class.isInstance(node)) {
                 return true;
             }
         }

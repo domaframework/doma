@@ -15,9 +15,6 @@
  */
 package org.seasar.doma.internal.jdbc.sql.node;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
 import org.seasar.doma.jdbc.SqlNode;
@@ -27,44 +24,33 @@ import org.seasar.doma.jdbc.SqlNodeVisitor;
  * @author taedium
  * 
  */
-public class IfBlockNode extends AbstractSqlNode implements EndNodeAware {
+public class ForBlockNode extends AbstractSqlNode implements EndNodeAware {
 
-    protected IfNode ifNode;
+    protected ForNode forNode;
 
-    protected List<ElseifNode> elseifNodes = new ArrayList<ElseifNode>();
-
-    protected ElseNode elseNode;
+    protected HasNextNode hasNextNode;
 
     protected EndNode endNode;
 
-    public IfBlockNode() {
+    public ForBlockNode() {
     }
 
-    public void setIfNode(IfNode ifNode) {
-        this.ifNode = ifNode;
-        addNodeInternal(ifNode);
+    public void setForNode(ForNode forNode) {
+        this.forNode = forNode;
+        addNodeInternal(forNode);
     }
 
-    public IfNode getIfNode() {
-        return ifNode;
+    public ForNode getForNode() {
+        return forNode;
     }
 
-    public void addElseifNode(ElseifNode elseIfNode) {
-        elseifNodes.add(elseIfNode);
-        addNodeInternal(elseIfNode);
+    public void setHasNextNode(HasNextNode hasNextNode) {
+        this.hasNextNode = hasNextNode;
+        addNodeInternal(hasNextNode);
     }
 
-    public List<ElseifNode> getElseifNodes() {
-        return elseifNodes;
-    }
-
-    public void setElseNode(ElseNode elseNode) {
-        this.elseNode = elseNode;
-        addNodeInternal(elseNode);
-    }
-
-    public ElseNode getElseNode() {
-        return elseNode;
+    public HasNextNode getHasNextNode() {
+        return hasNextNode;
     }
 
     public void setEndNode(EndNode endNode) {
@@ -76,8 +62,8 @@ public class IfBlockNode extends AbstractSqlNode implements EndNodeAware {
         return endNode;
     }
 
-    public boolean isElseNodeExistent() {
-        return elseNode != null;
+    public boolean isHasNextNodeExistent() {
+        return hasNextNode != null;
     }
 
     @Override
@@ -93,14 +79,11 @@ public class IfBlockNode extends AbstractSqlNode implements EndNodeAware {
     }
 
     @Override
-    public IfBlockNode copy() {
-        IfBlockNode clone = new IfBlockNode();
-        clone.ifNode = ifNode.copy();
-        for (ElseifNode elseifNode : elseifNodes) {
-            clone.elseifNodes.add(elseifNode.copy());
-        }
-        if (elseNode != null) {
-            clone.elseNode = elseNode.copy();
+    public ForBlockNode copy() {
+        ForBlockNode clone = new ForBlockNode();
+        clone.forNode = forNode.copy();
+        if (hasNextNode != null) {
+            clone.hasNextNode = hasNextNode.copy();
         }
         clone.endNode = endNode.copy();
         for (SqlNode child : children) {
@@ -114,10 +97,11 @@ public class IfBlockNode extends AbstractSqlNode implements EndNodeAware {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (IfBlockNodeVisitor.class.isInstance(visitor)) {
+        if (ForBlockNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            IfBlockNodeVisitor<R, P> v = IfBlockNodeVisitor.class.cast(visitor);
-            return v.visitIfBlockNode(this, p);
+            ForBlockNodeVisitor<R, P> v = ForBlockNodeVisitor.class
+                    .cast(visitor);
+            return v.visitForBlockNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);
     }
@@ -125,12 +109,9 @@ public class IfBlockNode extends AbstractSqlNode implements EndNodeAware {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
-        buf.append(ifNode);
-        for (ElseifNode elseIfNode : elseifNodes) {
-            buf.append(elseIfNode);
-        }
-        if (elseNode != null) {
-            buf.append(elseNode);
+        buf.append(forNode);
+        if (hasNextNode != null) {
+            buf.append(hasNextNode);
         }
         buf.append(endNode);
         return buf.toString();

@@ -16,6 +16,7 @@
 package org.seasar.doma.internal.jdbc.sql;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -351,6 +352,31 @@ public class SqlParserTest extends TestCase {
         assertEquals("hoge", sql.getParameters().get(1).getWrapper().get());
         assertEquals(new Integer(100), sql.getParameters().get(2).getWrapper()
                 .get());
+    }
+
+    public void testFor() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        ArrayList<String> list = new ArrayList<String>();
+        list.add("aaa");
+        list.add("bbb");
+        list.add("ccc");
+        evaluator.add("names", new Value(List.class, list));
+        String testSql = "select * from aaa where /*%for n : names*/name = /*n*/'a'--hasNext or -- /*%end*/";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, evaluator)
+                .build(sqlNode);
+        assertEquals(
+                "select * from aaa where name = ? or name = ? or name = ?", sql
+                        .getRawSql());
+        assertEquals(
+                "select * from aaa where name = 'aaa' or name = 'bbb' or name = 'ccc'",
+                sql.getFormattedSql());
+        assertEquals(testSql, sqlNode.toString());
+        assertEquals(3, sql.getParameters().size());
+        assertEquals("aaa", sql.getParameters().get(0).getWrapper().get());
+        assertEquals("bbb", sql.getParameters().get(1).getWrapper().get());
+        assertEquals("ccc", sql.getParameters().get(2).getWrapper().get());
     }
 
     public enum MyEnum {

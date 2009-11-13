@@ -18,7 +18,6 @@ package org.seasar.doma.internal.jdbc.sql.node;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
@@ -26,27 +25,28 @@ import org.seasar.doma.jdbc.SqlNodeVisitor;
  * @author taedium
  * 
  */
-public class WordNode extends AbstractSqlNode {
+public class HasNextNode extends AbstractSqlNode {
 
-    protected final String word;
+    protected final String text;
 
-    public WordNode(String word) {
-        assertNotNull(word);
-        this.word = word;
+    protected final String token;
+
+    public HasNextNode(String text, String token) {
+        assertNotNull(text, token);
+        this.text = text;
+        this.token = token;
     }
 
-    public String getWord() {
-        return word;
-    }
-
-    @Override
-    public void addNode(SqlNode child) {
-        throw new JdbcUnsupportedOperationException(getClass().getName(),
-                "addNode");
+    public String getText() {
+        return text;
     }
 
     @Override
-    public WordNode copy() {
+    public HasNextNode copy() {
+        HasNextNode clone = new HasNextNode(text, token);
+        for (SqlNode child : children) {
+            clone.addNode(child.copy());
+        }
         return this;
     }
 
@@ -55,17 +55,22 @@ public class WordNode extends AbstractSqlNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (WordNodeVisitor.class.isInstance(visitor)) {
+        if (HasNextNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            WordNodeVisitor<R, P> v = WordNodeVisitor.class.cast(visitor);
-            return v.visitWordNode(this, p);
+            HasNextNodeVisitor<R, P> v = HasNextNodeVisitor.class.cast(visitor);
+            return v.visitHasNextNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);
     }
 
     @Override
     public String toString() {
-        return word;
+        StringBuilder buf = new StringBuilder();
+        buf.append(token);
+        for (SqlNode child : children) {
+            buf.append(child);
+        }
+        return buf.toString();
     }
 
 }

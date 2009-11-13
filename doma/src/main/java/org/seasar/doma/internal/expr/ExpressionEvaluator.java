@@ -92,6 +92,16 @@ public class ExpressionEvaluator implements
         this.expressionFunctions = expressionFunctions;
     }
 
+    public void putValue(String variableName, Value value) {
+        assertNotNull(variableName, value);
+        variableValues.put(variableName, value);
+    }
+
+    public Value removeValue(String variableName) {
+        assertNotNull(variableName);
+        return variableValues.remove(variableName);
+    }
+
     public void add(String varialbeName, Value value) {
         assertNotNull(varialbeName, value);
         variableValues.put(varialbeName, value);
