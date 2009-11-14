@@ -37,6 +37,7 @@ import org.seasar.doma.wrapper.ArrayWrapper;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
 import org.seasar.doma.wrapper.BigIntegerWrapper;
 import org.seasar.doma.wrapper.BlobWrapper;
+import org.seasar.doma.wrapper.BooleanWrapper;
 import org.seasar.doma.wrapper.ByteWrapper;
 import org.seasar.doma.wrapper.BytesWrapper;
 import org.seasar.doma.wrapper.ClobWrapper;
@@ -47,7 +48,6 @@ import org.seasar.doma.wrapper.FloatWrapper;
 import org.seasar.doma.wrapper.IntegerWrapper;
 import org.seasar.doma.wrapper.LongWrapper;
 import org.seasar.doma.wrapper.NClobWrapper;
-import org.seasar.doma.wrapper.ObjectWrapper;
 import org.seasar.doma.wrapper.ShortWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 import org.seasar.doma.wrapper.TimeWrapper;
@@ -86,7 +86,8 @@ public final class Wrappers {
         if (result == null) {
             result = wrapDomainObject(value, valueClass);
             if (result == null) {
-                result = new ObjectWrapper(value);
+                throw new WrapperException(DomaMessageCode.DOMA1007, valueClass
+                        .getName(), value);
             }
         }
         return result;
@@ -118,6 +119,9 @@ public final class Wrappers {
         }
         if (boxedClass == Blob.class) {
             return new BlobWrapper(Blob.class.cast(value));
+        }
+        if (boxedClass == Boolean.class) {
+            return new BooleanWrapper(Boolean.class.cast(value));
         }
         if (boxedClass == byte[].class) {
             return new BytesWrapper(byte[].class.cast(value));

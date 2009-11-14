@@ -34,6 +34,7 @@ public enum DomaMessageCode implements MessageCode {
 
     // wrapper
     DOMA1006("ドメインの値をラップするのに失敗しました。原因は次のものです。{0}"),
+    DOMA1007("型[{0}]の値[{1}]に対応するラッパークラスが見つかりません。"),
 
     // jdbc
     DOMA2001("SQLの実行結果が1件ではありませんでした。フォーマットされたSQLは次のものです。[{0}]。実際のSQLは次のものです。[{1}]"),

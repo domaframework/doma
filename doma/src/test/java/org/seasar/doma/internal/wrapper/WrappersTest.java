@@ -15,6 +15,16 @@
  */
 package org.seasar.doma.internal.wrapper;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.sql.Array;
+import java.sql.Blob;
+import java.sql.Clob;
+import java.sql.Date;
+import java.sql.NClob;
+import java.sql.Time;
+import java.sql.Timestamp;
+
 import junit.framework.TestCase;
 
 import org.seasar.doma.wrapper.EnumWrapper;
@@ -29,6 +39,35 @@ import example.domain.PhoneNumber;
  * 
  */
 public class WrappersTest extends TestCase {
+
+    public void testWrap() throws Exception {
+        assertNotNull(Wrappers.wrap(true, boolean.class));
+        assertNotNull(Wrappers.wrap(true, Boolean.class));
+        assertNotNull(Wrappers.wrap((byte) 1, byte.class));
+        assertNotNull(Wrappers.wrap(new Byte((byte) 1), Byte.class));
+        assertNotNull(Wrappers.wrap((short) 1, short.class));
+        assertNotNull(Wrappers.wrap(new Short((short) 1), Short.class));
+        assertNotNull(Wrappers.wrap(1, int.class));
+        assertNotNull(Wrappers.wrap(new Integer(1), Integer.class));
+        assertNotNull(Wrappers.wrap(1L, long.class));
+        assertNotNull(Wrappers.wrap(new Long(1), Long.class));
+        assertNotNull(Wrappers.wrap(1f, float.class));
+        assertNotNull(Wrappers.wrap(new Float(1), Float.class));
+        assertNotNull(Wrappers.wrap(1d, double.class));
+        assertNotNull(Wrappers.wrap(new Double(1), Double.class));
+        assertNotNull(Wrappers.wrap(new byte[] { 1 }, byte[].class));
+        assertNotNull(Wrappers.wrap("", String.class));
+        assertNotNull(Wrappers.wrap(new BigDecimal("1"), BigDecimal.class));
+        assertNotNull(Wrappers.wrap(new BigInteger("1"), BigInteger.class));
+        assertNotNull(Wrappers.wrap(Date.valueOf("2009-01-23"), Date.class));
+        assertNotNull(Wrappers.wrap(Time.valueOf("12:34:56"), Time.class));
+        assertNotNull(Wrappers.wrap(Timestamp.valueOf("2009-01-23 12:34:56"),
+                Timestamp.class));
+        assertNotNull(Wrappers.wrap(null, Array.class));
+        assertNotNull(Wrappers.wrap(null, Blob.class));
+        assertNotNull(Wrappers.wrap(null, Clob.class));
+        assertNotNull(Wrappers.wrap(null, NClob.class));
+    }
 
     public void testWrapBasic_boxedValue_primitiveType() throws Exception {
         Wrapper<?> wrapper = Wrappers.wrap(new Integer(10), int.class);
