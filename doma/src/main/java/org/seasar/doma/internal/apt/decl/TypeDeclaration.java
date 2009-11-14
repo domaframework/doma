@@ -369,6 +369,10 @@ public class TypeDeclaration {
                 .hasNext();) {
             MethodDeclaration overridden = it.next();
             for (MethodDeclaration overrider : overriders) {
+                if (typeElement.equals(overrider.getElement()
+                        .getEnclosingElement())) {
+                    continue;
+                }
                 if (env.getElementUtils().overrides(overrider.getElement(),
                         overridden.getElement(), typeElement)) {
                     it.remove();
@@ -385,9 +389,15 @@ public class TypeDeclaration {
                 .hasNext();) {
             MethodDeclaration hidden = it.next();
             for (MethodDeclaration hider : hiders) {
-                if (env.getElementUtils().hides(hider.getElement(),
-                        hidden.getElement())) {
-                    it.remove();
+                TypeMirror subtype = hider.getElement().getEnclosingElement()
+                        .asType();
+                TypeMirror supertype = hidden.getElement()
+                        .getEnclosingElement().asType();
+                if (TypeMirrorUtil.isAssignable(subtype, supertype, env)) {
+                    if (env.getElementUtils().hides(hider.getElement(),
+                            hidden.getElement())) {
+                        it.remove();
+                    }
                 }
             }
         }

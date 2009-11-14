@@ -17,6 +17,8 @@ package org.seasar.doma.internal.expr;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import junit.framework.TestCase;
 
@@ -43,9 +45,10 @@ public class ExpressionEvaluatorTest extends TestCase {
 
     public void testFindMethod() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        Method method = evaluator.findMethod("concat", "aaa", String.class,
-                new Class[] { String.class });
+        Method method = evaluator.findMethod("add", new ArrayList<Object>(),
+                ArrayList.class, new Class[] { Object.class });
         assertNotNull(method);
+        assertEquals(Collection.class, method.getDeclaringClass());
     }
 
     public void testFindMethod_notFound() throws Exception {

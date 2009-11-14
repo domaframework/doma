@@ -17,6 +17,7 @@ package org.seasar.doma.internal.apt.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.seasar.doma.Column;
 import org.seasar.doma.Entity;
@@ -53,6 +54,9 @@ public class Emp {
 
     @OriginalStates
     Serializable originalStates;
+
+    @Transient
+    List<String> names;
 
     public Integer getId() {
         return id;

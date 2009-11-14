@@ -26,6 +26,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -497,15 +498,47 @@ public class ExpressionEvaluator implements
 
     protected Method findMethod(String methodName, Object target,
             Class<?> targetClass, Class<?>[] paramTypes) {
-        List<Method> methods = new ArrayList<Method>();
+        Method result = findMethodFromInterfaces(methodName, target,
+                targetClass, paramTypes);
+        if (result != null) {
+            return result;
+        }
+        return findMethodFromClasses(methodName, target, targetClass,
+                paramTypes);
+    }
+
+    protected Method findMethodFromInterfaces(String methodName, Object target,
+            Class<?> targetClass, Class<?>[] paramTypes) {
+        LinkedList<Method> methods = new LinkedList<Method>();
         for (Class<?> clazz = targetClass; clazz != null
                 && clazz != Object.class; clazz = clazz.getSuperclass()) {
-            for (Method method : clazz.getDeclaredMethods()) {
-                if (method.getName().equals(methodName)) {
-                    methods.add(method);
+            for (Class<?> interfaze : clazz.getInterfaces()) {
+                for (Method method : interfaze.getMethods()) {
+                    if (method.getName().equals(methodName)) {
+                        methods.addFirst(method);
+                    }
                 }
             }
         }
+        return findSuiteMethod(methods, target, targetClass, paramTypes);
+    }
+
+    protected Method findMethodFromClasses(String methodName, Object target,
+            Class<?> targetClass, Class<?>[] paramTypes) {
+        LinkedList<Method> methods = new LinkedList<Method>();
+        for (Class<?> clazz = targetClass; clazz != null
+                && clazz != Object.class; clazz = clazz.getSuperclass()) {
+            for (Method method : clazz.getMethods()) {
+                if (method.getName().equals(methodName)) {
+                    methods.addFirst(method);
+                }
+            }
+        }
+        return findSuiteMethod(methods, target, targetClass, paramTypes);
+    }
+
+    protected Method findSuiteMethod(List<Method> methods, Object target,
+            Class<?> targetClass, Class<?>[] paramTypes) {
         outer: for (Method method : methods) {
             Class<?> types[] = method.getParameterTypes();
             if (types.length == paramTypes.length) {
