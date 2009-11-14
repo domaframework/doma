@@ -216,9 +216,13 @@ List<Employee> list = dao.selectAll(salary, orderBy);]]></source>
 				<h4><code>if</code> と <code>end</code></h4>
 				<p>
 					条件分岐を示す式コメントを条件コメントと呼びます。
-					構文は、<code>/*%if 条件*/ ～ /*%end*/</code> となります。
+					構文は、<code>/*%if 条件式*/ ～ /*%end*/</code> となります。
+					条件式は、結果がbooleanもしくはjava.lang.Boolean型と評価される式でなければいけません。
 				</p>
-<source><![CDATA[select * from employee where /*%if employeeId != null*/employee_id = /*employeeId*/99/*%end*/]]></source>
+<source><![CDATA[select * from employee where 
+/*%if employeeId != null*/
+    employee_id = /*employeeId*/99
+/*%end*/]]></source>
 				<p>
 					このSQL文は、 <code>employeeId</code>が <code>null</code>でない場合 次のような準備された文に変換されます。
 				</p>
@@ -256,8 +260,8 @@ and employeeName like 's%']]></source>
 <source>select * from employee where employeeName like 's%'</source>
 				<h4><code>elseif</code> と <code>else</code></h4>
 				<p>
-					<code>/*%if 条件*/</code> と <code>/*%end*/</code> の間では、
-					行コメントを使用した <code>--elseif 条件--</code> や <code>--else</code> という構文も使用できます。
+					<code>/*%if 条件式*/</code> と <code>/*%end*/</code> の間では、
+					行コメントを使用した <code>--elseif 条件式--</code> や <code>--else</code> という構文も使用できます。
 				</p>
 <source><![CDATA[select * from employee where 
 /*%if employeeId != null*/   employee_id = /*employeeId*/99
@@ -275,6 +279,31 @@ and employeeName like 's%']]></source>
     and employee_name = /*employeeName*/'hoge'
   /*%end*/
 /*%end*/]]></source>
+			</subsection>
+			<subsection name="ループコメント">
+				<h4><code>for</code> と <code>end</code></h4>
+				<p>
+					繰り返しを示す式コメントをループコメントと呼びます。
+					構文は、<code>/*%for 識別子 : 式*/ ～ /*%end*/</code> となります。
+					識別子は、繰り返される要素を指す変数です。
+					式は、結果がjava.lang.Iterable型と評価される式でなければいけません。
+				</p>
+<source><![CDATA[select * from employee where
+/*%for name : names*/
+    employee_name like /*name*/'hoge'--hasNext " or " --
+/*%end*/
+]]></source>
+				<p>
+					このSQL文は、<code>names</code>が3つの要素からなるリストを表す場合、次のような準備された文に変換されます。
+				</p>
+<source><![CDATA[select * from employee where
+employee_name like ? or employee_name like ? or employee_name like ?]]></source>
+				<h4><code>hasNext</code></h4>
+				<p>
+					<code>/*%for 識別子 : 式*/ ～ /*%end*/</code> の内側の<code>--hasNext 式--</code>は、
+					次の繰り返しが続く場合にのみ、繰り返される文字列に式の結果を連結することを示します。
+					式は、結果がStringもしくはchar/Character型と評価される式でなければいけません。
+				</p>
 			</subsection>
 			<subsection name="通常のブロックコメント">
 				<p>
@@ -316,7 +345,8 @@ and employeeName like 's%']]></source>
 					一方、次の例はすべて式コメントだとみなされます。
 				</p>
 <source>--elseif ～ --
---else</source>
+--else
+--hasNext ～ --</source>
 			</subsection>
 		</section>
 		<section name="式言語">

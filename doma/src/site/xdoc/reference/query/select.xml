@@ -16,6 +16,7 @@
 					<ul>
 						<li><a href="#ページング">ページング</a></li>
 						<li><a href="#悲観的排他制御">悲観的排他制御</a></li>
+						<li><a href="#集計">集計</a></li>
 					</ul>
 				</li>
 				<li><a href="#クエリタイムアウト">クエリタイムアウト</a></li>
@@ -161,6 +162,20 @@ List<Employee> list = dao.selectByDepartmentName("ACCOUNT", options);]]></source
 					ロックの取得を待機しない<code>forUpdateNowait</code>が用意されています。
 					詳しくは<a href="../../apidocs/org/seasar/doma/jdbc/SelectOptions.html">Javadocコメント</a>を参照ください。
 				</p>
+			<subsection name="集計">
+				<p>
+					<code>SelectOptions</code>の<code>count</code>メソッドを呼び出すことで、集計件数を取得できるようになります。
+					通常、ページングのオプションと組み合わせて使用し、ページングで絞り込まない場合の全件数を取得する場合に使います。
+				</p>
+<source><![CDATA[SelectOptions options = SelectOptions.get().offset(5).limit(10).count();
+EmployeeDao dao = new EmployeeDao();
+List<Employee> list = dao.selectByDepartmentName("ACCOUNT", options);
+long count = options.getCount();]]></source>
+				<p>
+					集計件数は、Daoのメソッド呼出し後に、<code>SelectOptions</code>の<code>getCount</code>メソッドを使って取得します。
+					メソッド呼び出しの前に<code>count</code>メソッドを実行していない場合、<code>getCount</code>メソッドは<code>-1</code>を返します。
+				</p>
+			</subsection>
 			</subsection>
 		</section>
 		<section name="クエリタイムアウト">
