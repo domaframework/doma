@@ -34,6 +34,7 @@ import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.wrapper.StringWrapper;
 
 public class SqlValidatorTest extends AptTestCase {
 
@@ -44,9 +45,80 @@ public class SqlValidatorTest extends AptTestCase {
         addSourcePath("src/test/java");
     }
 
+    public void testBindVariable() throws Exception {
+        Class<?> target = SqlValidationDao.class;
+        addCompilationUnit(target);
+        addCompilationUnit(StringWrapper.class);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testBindVariable", String.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        SqlValidator validator = new SqlValidator(getProcessingEnvironment(),
+                methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql");
+        SqlParser parser = new SqlParser(
+                "select * from emp where name = /* name */'aaa'");
+        SqlNode sqlNode = parser.parse();
+        sqlNode.accept(validator, null);
+    }
+
+    public void testBindVariable_list() throws Exception {
+        Class<?> target = SqlValidationDao.class;
+        addCompilationUnit(target);
+        addCompilationUnit(StringWrapper.class);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testBindVariable_list", List.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        SqlValidator validator = new SqlValidator(getProcessingEnvironment(),
+                methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql");
+        SqlParser parser = new SqlParser(
+                "select * from emp where name in /* names */('aaa')");
+        SqlNode sqlNode = parser.parse();
+        sqlNode.accept(validator, null);
+    }
+
+    public void testEmbeddedVariable() throws Exception {
+        Class<?> target = SqlValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testEmbeddedVariable", String.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        SqlValidator validator = new SqlValidator(getProcessingEnvironment(),
+                methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql");
+        SqlParser parser = new SqlParser("select * from emp /*# orderBy */");
+        SqlNode sqlNode = parser.parse();
+        sqlNode.accept(validator, null);
+    }
+
+    public void testEmbeddedVariable_unsupportedType() throws Exception {
+        Class<?> target = SqlValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testEmbeddedVariable_unsupportedType", Integer.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        SqlValidator validator = new SqlValidator(getProcessingEnvironment(),
+                methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql");
+        SqlParser parser = new SqlParser("select * from emp /*# orderBy */");
+        SqlNode sqlNode = parser.parse();
+        try {
+            sqlNode.accept(validator, null);
+            fail();
+        } catch (AptException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(DomaMessageCode.DOMA4152, expected.getMessageCode());
+        }
+    }
+
     public void testFor() throws Exception {
         Class<?> target = SqlValidationDao.class;
         addCompilationUnit(target);
+        addCompilationUnit(StringWrapper.class);
         compile();
 
         ExecutableElement methodElement = createMethodElement(target,

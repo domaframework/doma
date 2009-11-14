@@ -176,8 +176,8 @@ public class NodePreparedSqlBuilder implements
             ParensNode parensNode = node.getParensNode();
             OtherNode openedFragmentNode = parensNode.getOpenedFragmentNode();
             openedFragmentNode.accept(this, p);
-            if (Collection.class.isAssignableFrom(valueClass)) {
-                handleCollectionBindVarialbeNode(node, p, value, valueClass);
+            if (List.class.isAssignableFrom(valueClass)) {
+                handleListBindVarialbeNode(node, p, value, valueClass);
             } else {
                 throw new JdbcException(DomaMessageCode.DOMA2112, location
                         .getSql(), location.getLineNumber(), location
@@ -196,11 +196,18 @@ public class NodePreparedSqlBuilder implements
         SqlLocation location = node.getLocation();
         String name = node.getVariableName();
         EvaluationResult result = p.evaluate(location, name);
+        Class<?> valueClass = result.getValueClass();
+        if (valueClass != String.class && valueClass != Character.class
+                && valueClass != char.class) {
+            throw new JdbcException(DomaMessageCode.DOMA2132,
+                    location.getSql(), location.getLineNumber(), location
+                            .getPosition(), node.getText(), valueClass);
+        }
         Object value = result.getValue();
-        String fragment = value.toString();
-        if (fragment == null) {
+        if (value == null) {
             return null;
         }
+        String fragment = value.toString();
         if (fragment.indexOf('\'') > -1) {
             throw new JdbcException(DomaMessageCode.DOMA2116,
                     location.getSql(), location.getLineNumber(), location
@@ -235,7 +242,7 @@ public class NodePreparedSqlBuilder implements
         return null;
     }
 
-    protected void handleCollectionBindVarialbeNode(BindVariableNode node,
+    protected void handleListBindVarialbeNode(BindVariableNode node,
             Context p, Object value, Class<?> valueClass) {
         Collection<?> values = Collection.class.cast(value);
         int index = 0;

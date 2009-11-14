@@ -29,6 +29,10 @@ import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.internal.apt.decl.TypeDeclaration;
+import org.seasar.doma.internal.apt.type.BasicType;
+import org.seasar.doma.internal.apt.type.DomainType;
+import org.seasar.doma.internal.apt.type.ListType;
+import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.expr.ExpressionException;
 import org.seasar.doma.internal.expr.ExpressionParser;
@@ -107,14 +111,61 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
 
     @Override
     public Void visitBindVariableNode(BindVariableNode node, Void p) {
-        validateExpressionVariable(node.getLocation(), node.getVariableName());
+        SqlLocation location = node.getLocation();
+        String variableName = node.getVariableName();
+        TypeDeclaration typeDeclaration = validateExpressionVariable(location,
+                variableName);
+        if (!isBindable(typeDeclaration)) {
+            throw new AptException(DomaMessageCode.DOMA4153, env,
+                    methodElement, path, location.getSql(), location
+                            .getLineNumber(), location.getPosition(),
+                    variableName, typeDeclaration.getQualifiedName());
+        }
         visitNode(node, p);
         return null;
     }
 
+    protected boolean isBindable(TypeDeclaration typeDeclaration) {
+        TypeMirror typeMirror = typeDeclaration.getType();
+        ListType listType = ListType.newInstance(typeMirror, env);
+        if (listType != null) {
+            Boolean bindable = listType.getElementType().accept(
+                    new SimpleDataTypeVisitor<Boolean, Void, RuntimeException>(
+                            false) {
+
+                        @Override
+                        public Boolean visitBasicType(BasicType dataType, Void p)
+                                throws RuntimeException {
+                            return true;
+                        }
+
+                        @Override
+                        public Boolean visitDomainType(DomainType dataType,
+                                Void p) throws RuntimeException {
+                            return true;
+                        }
+
+                    }, null);
+            if (Boolean.TRUE.equals(bindable)) {
+                return true;
+            }
+        }
+        return BasicType.newInstance(typeMirror, env) != null
+                || DomainType.newInstance(typeMirror, env) != null;
+    }
+
     @Override
     public Void visitEmbeddedVariableNode(EmbeddedVariableNode node, Void p) {
-        validateExpressionVariable(node.getLocation(), node.getVariableName());
+        SqlLocation location = node.getLocation();
+        String variableName = node.getVariableName();
+        TypeDeclaration typeDeclaration = validateExpressionVariable(location,
+                variableName);
+        if (!typeDeclaration.isTextType()) {
+            throw new AptException(DomaMessageCode.DOMA4152, env,
+                    methodElement, path, location.getSql(), location
+                            .getLineNumber(), location.getPosition(),
+                    variableName, typeDeclaration.getQualifiedName());
+        }
         visitNode(node, p);
         return null;
     }

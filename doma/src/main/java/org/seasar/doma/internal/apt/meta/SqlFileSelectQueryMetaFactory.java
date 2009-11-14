@@ -240,39 +240,6 @@ public class SqlFileSelectQueryMetaFactory extends
                         @Override
                         public Void visitListType(ListType dataType, Void p)
                                 throws RuntimeException {
-                            dataType
-                                    .getElementType()
-                                    .accept(
-                                            new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
-
-                                                @Override
-                                                protected Void defaultAction(
-                                                        DataType type, Void p)
-                                                        throws RuntimeException {
-                                                    throw new AptException(
-                                                            DomaMessageCode.DOMA4028,
-                                                            env,
-                                                            parameterMeta
-                                                                    .getElement());
-                                                }
-
-                                                @Override
-                                                public Void visitBasicType(
-                                                        BasicType dataType,
-                                                        Void p)
-                                                        throws RuntimeException {
-                                                    return null;
-                                                }
-
-                                                @Override
-                                                public Void visitDomainType(
-                                                        DomainType dataType,
-                                                        Void p)
-                                                        throws RuntimeException {
-                                                    return null;
-                                                }
-
-                                            }, null);
                             return null;
                         }
 

@@ -28,6 +28,14 @@ import org.seasar.doma.Dao;
 @Dao(config = MyConfig.class)
 public interface SqlValidationDao {
 
+    void testBindVariable(String name);
+
+    void testBindVariable_list(List<String> names);
+
+    void testEmbeddedVariable(String orderBy);
+
+    void testEmbeddedVariable_unsupportedType(Integer orderBy);
+
     void testFor(List<String> names);
 
     void testFor_notIterable(Iterator<String> names);

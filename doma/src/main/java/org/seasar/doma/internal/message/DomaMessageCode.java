@@ -93,6 +93,7 @@ public enum DomaMessageCode implements MessageCode {
     DOMA2129("SQL[{0}]の組み立てに失敗しました（[{1}]行目[{2}]番目の文字付近）。/*%for ...*/の中のトークン[:]の後に続く式[{3}]に対応するオブジェクトの型[{4}]がIterableインタフェースのサブタイプではありません。"),
     DOMA2130("SQL[{0}]の解析に失敗しました（[{1}]行目[{2}]番目の文字付近）。--hasNextの終了を示す文字列[--]が見つかりません。"),
     DOMA2131("SQL[{0}]の組み立てに失敗しました（[{1}]行目[{2}]番目の文字付近）。--hasNext ...--*/のく式[{3}]に対応するオブジェクトの型[{4}]がStringまたはchar/Characterではありません。"),
+    DOMA2132("SQL[{0}]の組み立てに失敗しました（[{1}]行目[{2}]番目の文字付近）。埋め込み変数コメント[{3}]に対応するオブジェクトの型[{4}]がStringまたはchar/Characterではありません。"),
     DOMA2201("ページング用SQLに変換するには元のSQLにorder by句が指定されている必要があります。"),
 
     // expression
@@ -147,7 +148,6 @@ public enum DomaMessageCode implements MessageCode {
     DOMA4024("@Versionが重複しています。@Versionが注釈されるフィールドはクラス階層の中で1つでなければいけません。"),
     DOMA4025("[{0}]で始まる名前はDomaにより予約されているため使用できません。"),
     DOMA4026("[{0}]で終わる名前は自動生成されるクラスの名前と重複する可能性があります。"),
-    DOMA4028("Listの実型引数の型は基本型もしくはドメインクラスでなければいけません。"),
     DOMA4034("@GeneratedValueのstrategy要素にGenerationType.SEQUECNEを指定する場合、@SequenceGeneratorの指定も必要です。"),
     DOMA4035("@GeneratedValueのstrategy要素にGenerationType.TABLEを指定する場合、@TableGeneratorの指定も必要です。"),
     DOMA4036("@GeneratedValueを使用する場合、@Idは１つでなければいけません。"),
@@ -241,6 +241,8 @@ public enum DomaMessageCode implements MessageCode {
     DOMA4149("SQLファイル[{0}]の妥当検査に失敗しました。SQL[{1}]（[{2}]行目[{3}]番目の文字付近）。/*%for ...*/の式[{4}]が型[{5}]として評価されましたが、java.lang.Iterable型でなければいけません。"),
     DOMA4150("SQLファイル[{0}]の妥当検査に失敗しました。SQL[{1}]（[{2}]行目[{3}]番目の文字付近）。/*%for ...*/の式[{4}]の型[{5}]の実型引数が不明です。"),
     DOMA4151("SQLファイル[{0}]の妥当検査に失敗しました。SQL[{1}]（[{2}]行目[{3}]番目の文字付近）。--hasNext ...--の式[{4}]が型[{5}]として評価されましたが、Stringもしくはchar/Character型でなければいけません。"),
+    DOMA4152("SQLファイル[{0}]の妥当検査に失敗しました。SQL[{1}]（[{2}]行目[{3}]番目の文字付近）。埋め込み変数[{4}]が型[{5}]として評価されましたが、Stringもしくはchar/Character型でなければいけません。"),
+    DOMA4153("SQLファイル[{0}]の妥当検査に失敗しました。SQL[{1}]（[{2}]行目[{3}]番目の文字付近）。バインド変数[{4}]の型[{5}]は、基本型もしくはドメインクラスでなければいけません。"),
 
     // other
     DOMA5001("JDBCドライバがロードされていない可能性があります。JDBCドライバをロードするには、クラスパスが通されたMETA-INF/services/java.sql.DriverファイルにJDBCドライバのクラスの完全修飾名を記述してください。 ex) oracle.jdbc.driver.OracleDriver"),
