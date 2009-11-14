@@ -21,7 +21,7 @@ import org.seasar.doma.jdbc.SqlNode;
  * @author taedium
  * 
  */
-public interface EndNodeAware extends SqlNode {
+public interface DirectiveNode extends SqlNode {
 
-    void setEndNode(EndNode endNode);
+    void clearChildren();
 }

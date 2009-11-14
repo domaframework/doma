@@ -27,7 +27,7 @@ import org.seasar.doma.jdbc.SqlNodeVisitor;
  * @author taedium
  * 
  */
-public class IfBlockNode extends AbstractSqlNode implements EndNodeAware {
+public class IfBlockNode extends AbstractSqlNode implements BlockNode {
 
     protected IfNode ifNode;
 

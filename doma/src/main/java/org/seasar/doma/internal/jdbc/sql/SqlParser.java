@@ -23,11 +23,13 @@ import java.util.LinkedList;
 
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
+import org.seasar.doma.internal.jdbc.sql.node.BlockNode;
+import org.seasar.doma.internal.jdbc.sql.node.DirectiveNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.EndNode;
-import org.seasar.doma.internal.jdbc.sql.node.EndNodeAware;
+import org.seasar.doma.internal.jdbc.sql.node.EolNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForBlockNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;
@@ -159,6 +161,10 @@ public class SqlParser {
                 parseHasNextLineComment();
                 break;
             }
+            case EOL: {
+                parseEOL();
+                break;
+            }
             case DELIMITER:
             case EOF: {
                 validateTermination();
@@ -184,7 +190,7 @@ public class SqlParser {
 
     protected void parseFromWord() {
         FromClauseNode node = new FromClauseNode(token);
-        if (isInSelectStatement()) {
+        if (isInSelectStatementNode()) {
             removeNodesTo(SelectStatementNode.class);
             SelectStatementNode selectStatementNode = peek();
             selectStatementNode.setFromClauseNode(node);
@@ -196,7 +202,7 @@ public class SqlParser {
 
     protected void parseWhereWord() {
         WhereClauseNode node = new WhereClauseNode(token);
-        if (isInSelectStatement()) {
+        if (isInSelectStatementNode()) {
             removeNodesTo(SelectStatementNode.class);
             SelectStatementNode selectStatementNode = peek();
             selectStatementNode.setWhereClauseNode(node);
@@ -208,7 +214,7 @@ public class SqlParser {
 
     protected void parseGroupByWord() {
         GroupByClauseNode node = new GroupByClauseNode(token);
-        if (isInSelectStatement()) {
+        if (isInSelectStatementNode()) {
             removeNodesTo(SelectStatementNode.class);
             SelectStatementNode selectStatementNode = peek();
             selectStatementNode.setGroupByClauseNode(node);
@@ -220,7 +226,7 @@ public class SqlParser {
 
     protected void parseHavingWord() {
         HavingClauseNode node = new HavingClauseNode(token);
-        if (isInSelectStatement()) {
+        if (isInSelectStatementNode()) {
             removeNodesTo(SelectStatementNode.class);
             SelectStatementNode selectStatementNode = peek();
             selectStatementNode.setHavingClauseNode(node);
@@ -232,7 +238,7 @@ public class SqlParser {
 
     protected void parseOrderByWord() {
         OrderByClauseNode node = new OrderByClauseNode(token);
-        if (isInSelectStatement()) {
+        if (isInSelectStatementNode()) {
             removeNodesTo(SelectStatementNode.class);
             SelectStatementNode selectStatementNode = peek();
             selectStatementNode.setOrderByClauseNode(node);
@@ -244,7 +250,7 @@ public class SqlParser {
 
     protected void parseForUpdateWord() {
         ForUpdateClauseNode node = new ForUpdateClauseNode(token);
-        if (isInSelectStatement()) {
+        if (isInSelectStatementNode()) {
             removeNodesTo(SelectStatementNode.class);
             SelectStatementNode selectStatementNode = peek();
             selectStatementNode.setForUpdateClauseNode(node);
@@ -273,7 +279,7 @@ public class SqlParser {
     }
 
     protected void parseClosedParens() {
-        if (!isInParens()) {
+        if (!isInParensNode()) {
             throw new JdbcException(DomaMessageCode.DOMA2109, sql, tokenizer
                     .getLineNumber(), tokenizer.getPosition());
         }
@@ -307,17 +313,18 @@ public class SqlParser {
     }
 
     protected void parseIfBlockComment() {
+        removePrecedentSpaces();
         IfBlockNode ifBlockNode = new IfBlockNode();
         addNode(ifBlockNode);
         push(ifBlockNode);
         String expression = tokenType.extract(token);
-        IfNode node = new IfNode(getLocation(), expression, token);
-        ifBlockNode.setIfNode(node);
-        push(node);
+        IfNode ifNode = new IfNode(getLocation(), expression, token);
+        ifBlockNode.setIfNode(ifNode);
+        push(ifNode);
     }
 
     protected void parseElseifLineComment() {
-        if (!isInIfBlock()) {
+        if (!isInIfBlockNode()) {
             throw new JdbcException(DomaMessageCode.DOMA2106, sql, tokenizer
                     .getLineNumber(), tokenizer.getPosition());
         }
@@ -334,7 +341,7 @@ public class SqlParser {
     }
 
     protected void parseElseLineComment() {
-        if (!isInIfBlock()) {
+        if (!isInIfBlockNode()) {
             throw new JdbcException(DomaMessageCode.DOMA2105, sql, tokenizer
                     .getLineNumber(), tokenizer.getPosition());
         }
@@ -350,17 +357,20 @@ public class SqlParser {
     }
 
     protected void parseEndBlockComment() {
-        if (!isInEndNodeAware()) {
+        if (!isInBlockNode()) {
             throw new JdbcException(DomaMessageCode.DOMA2104, sql, tokenizer
                     .getLineNumber(), tokenizer.getPosition());
         }
-        removeNodesTo(EndNodeAware.class);
-        EndNodeAware endNodeAware = pop();
+        removePrecedentSpaces();
+        removeNodesTo(BlockNode.class);
+        BlockNode blockNode = pop();
         EndNode node = new EndNode(token);
-        endNodeAware.setEndNode(node);
+        blockNode.setEndNode(node);
+        push(node);
     }
 
     protected void parseForBlockComment() {
+        removePrecedentSpaces();
         ForBlockNode forBlockNode = new ForBlockNode();
         addNode(forBlockNode);
         push(forBlockNode);
@@ -380,13 +390,14 @@ public class SqlParser {
             throw new JdbcException(DomaMessageCode.DOMA2126, sql, tokenizer
                     .getLineNumber(), tokenizer.getPosition());
         }
-        ForNode node = new ForNode(getLocation(), identifier, expression, token);
-        forBlockNode.setForNode(node);
-        push(node);
+        ForNode forNode = new ForNode(getLocation(), identifier, expression,
+                token);
+        forBlockNode.setForNode(forNode);
+        push(forNode);
     }
 
     protected void parseHasNextLineComment() {
-        if (!isInForBlock()) {
+        if (!isInForBlockNode()) {
             throw new JdbcException(DomaMessageCode.DOMA2127, sql, tokenizer
                     .getLineNumber(), tokenizer.getPosition());
         }
@@ -396,10 +407,32 @@ public class SqlParser {
             throw new JdbcException(DomaMessageCode.DOMA2128, sql, tokenizer
                     .getLineNumber(), tokenizer.getPosition());
         }
-        String text = tokenType.extract(token);
-        HasNextNode node = new HasNextNode(text, token);
+        String expression = tokenType.extract(token);
+        HasNextNode node = new HasNextNode(getLocation(), expression, token);
         forBlockNode.setHasNextNode(node);
         push(node);
+    }
+
+    protected void parseEOL() {
+        if (isAfterDirectiveNode()) {
+            DirectiveNode directiveNode = peek();
+            if (containsOnlySpaces(directiveNode)) {
+                directiveNode.clearChildren();
+                return;
+            }
+        }
+        EolNode node = new EolNode(token);
+        addNode(node);
+        push(node);
+    }
+
+    protected boolean containsOnlySpaces(SqlNode node) {
+        for (SqlNode child : node.getChildren()) {
+            if (child != OtherNode.SPACE && child != OtherNode.TAB) {
+                return false;
+            }
+        }
+        return true;
     }
 
     protected void appendOther(String token) {
@@ -416,7 +449,21 @@ public class SqlParser {
         }
     }
 
-    protected boolean isInSelectStatement() {
+    protected void removePrecedentSpaces() {
+        if (isAfterEolNode()) {
+            EolNode eolNode = peek();
+            if (containsOnlySpaces(eolNode)) {
+                eolNode.clearChildren();
+            }
+        } else if (isAfterDirectiveNode()) {
+            DirectiveNode directiveNode = peek();
+            if (containsOnlySpaces(directiveNode)) {
+                directiveNode.clearChildren();
+            }
+        }
+    }
+
+    protected boolean isInSelectStatementNode() {
         for (SqlNode node : nodeStack) {
             if (ParensNode.class.isInstance(node)) {
                 return false;
@@ -428,7 +475,7 @@ public class SqlParser {
         return false;
     }
 
-    protected boolean isInIfBlock() {
+    protected boolean isInIfBlockNode() {
         for (SqlNode node : nodeStack) {
             if (IfBlockNode.class.isInstance(node)) {
                 return true;
@@ -437,7 +484,7 @@ public class SqlParser {
         return false;
     }
 
-    protected boolean isInForBlock() {
+    protected boolean isInForBlockNode() {
         for (SqlNode node : nodeStack) {
             if (ForBlockNode.class.isInstance(node)) {
                 return true;
@@ -446,7 +493,7 @@ public class SqlParser {
         return false;
     }
 
-    protected boolean isInParens() {
+    protected boolean isInParensNode() {
         for (SqlNode node : nodeStack) {
             if (ParensNode.class.isInstance(node)) {
                 return true;
@@ -455,13 +502,21 @@ public class SqlParser {
         return false;
     }
 
-    protected boolean isInEndNodeAware() {
+    protected boolean isInBlockNode() {
         for (SqlNode node : nodeStack) {
-            if (EndNodeAware.class.isInstance(node)) {
+            if (BlockNode.class.isInstance(node)) {
                 return true;
             }
         }
         return false;
+    }
+
+    protected boolean isAfterEolNode() {
+        return EolNode.class.isInstance(peek());
+    }
+
+    protected boolean isAfterDirectiveNode() {
+        return DirectiveNode.class.isInstance(peek());
     }
 
     protected boolean isAfterBindVariable() {

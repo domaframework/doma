@@ -25,7 +25,7 @@ import org.seasar.doma.jdbc.SqlNodeVisitor;
  * @author taedium
  * 
  */
-public class ForNode extends AbstractSqlNode {
+public class ForNode extends AbstractSqlNode implements DirectiveNode {
 
     protected final SqlLocation location;
 
@@ -54,6 +54,11 @@ public class ForNode extends AbstractSqlNode {
 
     public String getExpression() {
         return expression;
+    }
+
+    @Override
+    public void clearChildren() {
+        children.clear();
     }
 
     @Override

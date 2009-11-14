@@ -27,27 +27,34 @@ import org.seasar.doma.jdbc.SqlNodeVisitor;
  */
 public class HasNextNode extends AbstractSqlNode {
 
+    protected final SqlLocation location;
+
+    protected final String expression;
+
     protected final String text;
 
-    protected final String token;
-
-    public HasNextNode(String text, String token) {
-        assertNotNull(text, token);
+    public HasNextNode(SqlLocation location, String expression, String text) {
+        assertNotNull(location, expression, text);
+        this.location = location;
+        this.expression = expression;
         this.text = text;
-        this.token = token;
     }
 
-    public String getText() {
-        return text;
+    public SqlLocation getLocation() {
+        return location;
+    }
+
+    public String getExpression() {
+        return expression;
     }
 
     @Override
     public HasNextNode copy() {
-        HasNextNode clone = new HasNextNode(text, token);
+        HasNextNode clone = new HasNextNode(location, expression, text);
         for (SqlNode child : children) {
             clone.addNode(child.copy());
         }
-        return this;
+        return clone;
     }
 
     @Override
@@ -66,7 +73,7 @@ public class HasNextNode extends AbstractSqlNode {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
-        buf.append(token);
+        buf.append(text);
         for (SqlNode child : children) {
             buf.append(child);
         }

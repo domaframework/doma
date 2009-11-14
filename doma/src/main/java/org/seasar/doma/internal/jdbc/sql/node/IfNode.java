@@ -25,7 +25,7 @@ import org.seasar.doma.jdbc.SqlNodeVisitor;
  * @author taedium
  * 
  */
-public class IfNode extends AbstractSqlNode {
+public class IfNode extends AbstractSqlNode implements DirectiveNode {
 
     protected final SqlLocation location;
 
@@ -46,6 +46,11 @@ public class IfNode extends AbstractSqlNode {
 
     public String getExpression() {
         return expression;
+    }
+
+    @Override
+    public void clearChildren() {
+        children.clear();
     }
 
     @Override

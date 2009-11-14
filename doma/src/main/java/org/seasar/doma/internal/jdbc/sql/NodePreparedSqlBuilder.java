@@ -41,6 +41,8 @@ import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.EndNode;
 import org.seasar.doma.internal.jdbc.sql.node.EndNodeVisitor;
+import org.seasar.doma.internal.jdbc.sql.node.EolNode;
+import org.seasar.doma.internal.jdbc.sql.node.EolNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.ForBlockNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForBlockNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.ForNode;
@@ -101,6 +103,7 @@ public class NodePreparedSqlBuilder implements
         ElseNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         EmbeddedVariableNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         EndNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
+        EolNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         ForBlockNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         ForNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         ForUpdateClauseNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
@@ -326,6 +329,9 @@ public class NodePreparedSqlBuilder implements
 
     @Override
     public Void visitEndNode(EndNode node, Context p) {
+        for (SqlNode child : node.getChildren()) {
+            child.accept(this, p);
+        }
         return null;
     }
 
@@ -381,7 +387,17 @@ public class NodePreparedSqlBuilder implements
 
     @Override
     public Void visitHasNextNode(HasNextNode node, Context p) {
-        String value = node.getText();
+        SqlLocation location = node.getLocation();
+        String expression = node.getExpression();
+        EvaluationResult hasNextResult = p.evaluate(location, expression);
+        Class<?> valueClass = hasNextResult.getValueClass();
+        if (valueClass != String.class && valueClass != Character.class
+                && valueClass != char.class) {
+            throw new JdbcException(DomaMessageCode.DOMA2131,
+                    location.getSql(), location.getLineNumber(), location
+                            .getPosition(), node.getExpression(), valueClass);
+        }
+        String value = hasNextResult.getValue().toString();
         p.appendRawSql(value);
         p.appendFormattedSql(value);
         return null;
@@ -538,6 +554,17 @@ public class NodePreparedSqlBuilder implements
         }
         OtherNode closedFragmentNode = node.getClosedFragmentNode();
         closedFragmentNode.accept(this, p);
+        return null;
+    }
+
+    @Override
+    public Void visitEolNode(EolNode node, Context p) {
+        String eol = node.getEol();
+        p.appendRawSql(eol);
+        p.appendFormattedSql(eol);
+        for (SqlNode child : node.getChildren()) {
+            child.accept(this, p);
+        }
         return null;
     }
 

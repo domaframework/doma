@@ -15,34 +15,35 @@
  */
 package org.seasar.doma.internal.jdbc.sql.node;
 
+import static org.seasar.doma.internal.util.AssertionUtil.*;
+
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
 /**
  * @author taedium
  * 
  */
-public class EndNode extends AbstractSqlNode implements DirectiveNode {
+public class EolNode extends AbstractSqlNode {
 
-    protected final String text;
+    protected final String eol;
 
-    public EndNode(String text) {
-        this.text = text;
+    public EolNode(String eol) {
+        assertNotNull(eol);
+        this.eol = eol;
     }
 
-    @Override
+    public String getEol() {
+        return eol;
+    }
+
     public void clearChildren() {
         children.clear();
     }
 
     @Override
-    public EndNode copy() {
-        EndNode clone = new EndNode(text);
-        for (SqlNode child : children) {
-            clone.addNode(child.copy());
-        }
-        return clone;
+    public EolNode copy() {
+        return this;
     }
 
     @Override
@@ -50,22 +51,16 @@ public class EndNode extends AbstractSqlNode implements DirectiveNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (EndNodeVisitor.class.isInstance(visitor)) {
+        if (EolNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            EndNodeVisitor<R, P> v = EndNodeVisitor.class.cast(visitor);
-            return v.visitEndNode(this, p);
+            EolNodeVisitor<R, P> v = EolNodeVisitor.class.cast(visitor);
+            return v.visitEolNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);
     }
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder();
-        buf.append(text);
-        for (SqlNode child : children) {
-            buf.append(child);
-        }
-        return text;
+        return eol;
     }
-
 }

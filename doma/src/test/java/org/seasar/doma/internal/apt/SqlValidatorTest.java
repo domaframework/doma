@@ -55,7 +55,7 @@ public class SqlValidatorTest extends AptTestCase {
         SqlValidator validator = new SqlValidator(getProcessingEnvironment(),
                 methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql");
         SqlParser parser = new SqlParser(
-                "select * from emp where name = /*%for e : names*/ /*e*/'aaa' --hasNext or--/*%end*/");
+                "select * from emp where name = /*%for e : names*/ /*e*/'aaa' --hasNext \"or\"--/*%end*/");
         SqlNode sqlNode = parser.parse();
         sqlNode.accept(validator, null);
     }

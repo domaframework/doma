@@ -25,12 +25,16 @@ import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
-
 public class OtherNode extends AbstractSqlNode {
+
+    public static final OtherNode SPACE = new OtherNode(" ");
+
+    public static final OtherNode TAB = new OtherNode("\t");
 
     protected static final Map<String, OtherNode> otherNodeMap = new HashMap<String, OtherNode>();
     static {
-        otherNodeMap.put(" ", new OtherNode(" "));
+        otherNodeMap.put(" ", SPACE);
+        otherNodeMap.put("\t", TAB);
         otherNodeMap.put(",", new OtherNode(","));
         otherNodeMap.put("=", new OtherNode("="));
         otherNodeMap.put(">", new OtherNode(">"));

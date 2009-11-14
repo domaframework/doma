@@ -266,7 +266,7 @@ public class SqlParserTest extends TestCase {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("name", new Value(String.class, "hoge"));
         evaluator.add("name2", new Value(String.class, null));
-        String testSql = "select * from aaa where /*%if name != null*/ /*%if name2 == \"hoge\"*/ ddd = eee/*%end*//*%end*/";
+        String testSql = "select * from aaa where /*%if name != null*//*%if name2 == \"hoge\"*/ ddd = eee/*%end*//*%end*/";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, evaluator)
@@ -361,7 +361,7 @@ public class SqlParserTest extends TestCase {
         list.add("bbb");
         list.add("ccc");
         evaluator.add("names", new Value(List.class, list));
-        String testSql = "select * from aaa where /*%for n : names*/name = /*n*/'a'--hasNext or -- /*%end*/";
+        String testSql = "select * from aaa where /*%for n : names*/name = /*n*/'a' --hasNext \"or \" -- /*%end*/";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, evaluator)

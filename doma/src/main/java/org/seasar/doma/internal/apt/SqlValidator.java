@@ -41,6 +41,8 @@ import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.ForNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForNodeVisitor;
+import org.seasar.doma.internal.jdbc.sql.node.HasNextNode;
+import org.seasar.doma.internal.jdbc.sql.node.HasNextNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
@@ -53,7 +55,8 @@ import org.seasar.doma.jdbc.SqlNode;
  */
 public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
         EmbeddedVariableNodeVisitor<Void, Void>, IfNodeVisitor<Void, Void>,
-        ElseifNodeVisitor<Void, Void>, ForNodeVisitor<Void, Void> {
+        ElseifNodeVisitor<Void, Void>, ForNodeVisitor<Void, Void>,
+        HasNextNodeVisitor<Void, Void> {
 
     protected final ProcessingEnvironment env;
 
@@ -181,6 +184,22 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
             expressionValidator.putParameterType(identifier,
                     originalParameterType);
         }
+        return null;
+    }
+
+    @Override
+    public Void visitHasNextNode(HasNextNode node, Void p) {
+        SqlLocation location = node.getLocation();
+        String expression = node.getExpression();
+        TypeDeclaration typeDeclaration = validateExpressionVariable(location,
+                expression);
+        if (!typeDeclaration.isTextType()) {
+            throw new AptException(DomaMessageCode.DOMA4151, env,
+                    methodElement, path, location.getSql(), location
+                            .getLineNumber(), location.getPosition(),
+                    expression, typeDeclaration.getQualifiedName());
+        }
+        visitNode(node, p);
         return null;
     }
 
