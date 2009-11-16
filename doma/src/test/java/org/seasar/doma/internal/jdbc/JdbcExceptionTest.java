@@ -26,7 +26,7 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.internal.message.DomaMessageCode;
-import org.seasar.doma.jdbc.CachedSqlFileRepository;
+import org.seasar.doma.jdbc.GreedyCacheSqlFileRepository;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlFileNotFoundException;
 import org.seasar.doma.jdbc.SqlNode;
@@ -41,7 +41,7 @@ public class JdbcExceptionTest extends TestCase {
     private final MockConfig config = new MockConfig();
 
     public void testSqlFileNotFound() throws Exception {
-        CachedSqlFileRepository repository = new CachedSqlFileRepository();
+        GreedyCacheSqlFileRepository repository = new GreedyCacheSqlFileRepository();
         try {
             repository
                     .getSqlFile("META-INF/aaa/bbb.sql", new StandardDialect());

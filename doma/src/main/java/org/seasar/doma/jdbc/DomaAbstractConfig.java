@@ -25,7 +25,7 @@ package org.seasar.doma.jdbc;
  */
 public abstract class DomaAbstractConfig implements Config {
 
-    private static SqlFileRepository sqlFileRepository = new CachedSqlFileRepository();
+    private static SqlFileRepository sqlFileRepository = new GreedyCacheSqlFileRepository();
 
     private static JdbcLogger jdbcLogger = new UtilLoggingJdbcLogger();
 

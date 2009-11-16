@@ -15,9 +15,6 @@
  */
 package org.seasar.doma.jdbc;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.WrapException;
@@ -27,12 +24,15 @@ import org.seasar.doma.internal.util.ResourceUtil;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
- * SQLの解析結果を無制限にキャッシュする {@link SqlFileRepository} の実装です。
+ * {@link SqlFileRepository} の骨格実装です。
+ * <p>
+ * SQLファイルの解析結果をキャッシュするには {@link #getSqlFileWithCacheControl(String, Dialect)}
+ * を実装してください。
  * 
  * @author taedium
  * 
  */
-public class CachedSqlFileRepository implements SqlFileRepository {
+public abstract class AbstractSqlFileRepository implements SqlFileRepository {
 
     /** SQLのパスのプレフィックスです。 */
     protected static final String SQL_PATH_PREFIX = "META-INF/";
@@ -40,11 +40,7 @@ public class CachedSqlFileRepository implements SqlFileRepository {
     /** SQLのパスのサフィックスです。 */
     protected static final String SQL_PATH_SUFFIX = ".sql";
 
-    /** SQLのパスをキー、SQLファイルを値とするマップです。 */
-    protected final ConcurrentMap<String, SqlFile> sqlFileMap = new ConcurrentHashMap<String, SqlFile>(
-            200);
-
-    public SqlFile getSqlFile(String path, Dialect dialect) {
+    public final SqlFile getSqlFile(String path, Dialect dialect) {
         if (path == null) {
             throw new DomaNullPointerException("path");
         }
@@ -59,14 +55,24 @@ public class CachedSqlFileRepository implements SqlFileRepository {
         if (dialect == null) {
             throw new DomaNullPointerException("dialect");
         }
-        SqlFile file = sqlFileMap.get(path);
-        if (file != null) {
-            return file;
-        }
-        file = createSqlFile(path, dialect);
-        SqlFile current = sqlFileMap.putIfAbsent(path, file);
-        return current != null ? current : file;
+        return getSqlFileWithCacheControl(path, dialect);
     }
+
+    /**
+     * キャッシュを制御してSQLファイルを返します。
+     * 
+     * @param path
+     *            SQLファイルのパス
+     * @param dialect
+     *            方言
+     * @return SQLファイル
+     * @throws SqlFileNotFoundException
+     *             SQLファイルが見つからない場合
+     * @throws JdbcException
+     *             上記以外で例外が発生した場合
+     */
+    protected abstract SqlFile getSqlFileWithCacheControl(String path,
+            Dialect dialect);
 
     /**
      * SQLファイルを作成します。
@@ -77,7 +83,7 @@ public class CachedSqlFileRepository implements SqlFileRepository {
      *            方言
      * @return SQLファイル
      */
-    protected SqlFile createSqlFile(String path, Dialect dialect) {
+    protected final SqlFile createSqlFile(String path, Dialect dialect) {
         String primaryPath = getPrimaryPath(path, dialect);
         String sql = getSql(primaryPath);
         if (sql != null) {
@@ -101,7 +107,7 @@ public class CachedSqlFileRepository implements SqlFileRepository {
      *            方言
      * @return RDBMS固有の名前を含んだSQLのパス
      */
-    protected String getPrimaryPath(String path, Dialect dialect) {
+    protected final String getPrimaryPath(String path, Dialect dialect) {
         String name = dialect.getName();
         return path.substring(0, path.length() - SQL_PATH_SUFFIX.length())
                 + "-" + name + SQL_PATH_SUFFIX;
@@ -114,7 +120,7 @@ public class CachedSqlFileRepository implements SqlFileRepository {
      *            SQLの文字列
      * @return SQLの解析結果
      */
-    protected SqlNode parse(String sql) {
+    protected final SqlNode parse(String sql) {
         SqlParser parser = new SqlParser(sql);
         return parser.parse();
     }
@@ -126,7 +132,7 @@ public class CachedSqlFileRepository implements SqlFileRepository {
      *            パス
      * @return SQLの文字列
      */
-    protected String getSql(String path) {
+    protected final String getSql(String path) {
         try {
             return ResourceUtil.getResourceAsString(path);
         } catch (WrapException e) {
