@@ -273,11 +273,11 @@ and employeeName like 's%']]></source>
 					繰り返しを示す式コメントをループコメントと呼びます。
 					構文は、<code>/*%for 識別子 : 式*/ ～ /*%end*/</code> となります。
 					識別子は、繰り返される要素を指す変数です。
-					式は、結果がjava.lang.Iterable型と評価される式でなければいけません。
+					式は、java.lang.Iterable型として評価される式でなければいけません。
 				</p>
 <source><![CDATA[select * from employee where
 /*%for name : names */
-    employee_name like /* name */'hoge'--hasNext " or " --
+    employee_name like /* name */'hoge'/*%hasNext " or " */
 /*%end*/
 ]]></source>
 				<p>
@@ -287,9 +287,9 @@ and employeeName like 's%']]></source>
 employee_name like ? or employee_name like ? or employee_name like ?]]></source>
 				<h4><code>hasNext</code></h4>
 				<p>
-					<code>/*%for 識別子 : 式*/ ～ /*%end*/</code> の内側の<code>--hasNext 式--</code>は、
-					次の繰り返しが続く場合にのみ、繰り返される文字列に式の結果を連結することを示します。
-					式は、結果がStringもしくはchar/Character型と評価される式でなければいけません。
+					<code>/*%for 識別子 : 式*/ ～ /*%end*/</code> の内側の<code>/*%forhasNext 式*/</code>は、
+					次の繰り返しが続く場合にのみ、式の評価結果を繰り返される文字列に連結することを示します。
+					式は、Stringもしくはchar/Character型として評価される式でなければいけません。
 				</p>
 			</subsection>
 			<subsection name="通常のブロックコメント">

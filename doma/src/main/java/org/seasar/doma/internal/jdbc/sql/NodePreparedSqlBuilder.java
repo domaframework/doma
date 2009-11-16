@@ -242,8 +242,8 @@ public class NodePreparedSqlBuilder implements
         return null;
     }
 
-    protected void handleListBindVarialbeNode(BindVariableNode node,
-            Context p, Object value, Class<?> valueClass) {
+    protected void handleListBindVarialbeNode(BindVariableNode node, Context p,
+            Object value, Class<?> valueClass) {
         Collection<?> values = Collection.class.cast(value);
         int index = 0;
         for (Object v : values) {
@@ -405,6 +405,26 @@ public class NodePreparedSqlBuilder implements
                             .getPosition(), node.getExpression(), valueClass);
         }
         String value = hasNextResult.getValue().toString();
+        if (value.indexOf('\'') > -1) {
+            throw new JdbcException(DomaMessageCode.DOMA2133,
+                    location.getSql(), location.getLineNumber(), location
+                            .getPosition(), node.getExpression());
+        }
+        if (value.indexOf(';') > -1) {
+            throw new JdbcException(DomaMessageCode.DOMA2134,
+                    location.getSql(), location.getLineNumber(), location
+                            .getPosition(), node.getExpression());
+        }
+        if (value.indexOf("--") > -1) {
+            throw new JdbcException(DomaMessageCode.DOMA2135,
+                    location.getSql(), location.getLineNumber(), location
+                            .getPosition(), node.getExpression());
+        }
+        if (value.indexOf("/*") > -1) {
+            throw new JdbcException(DomaMessageCode.DOMA2136,
+                    location.getSql(), location.getLineNumber(), location
+                            .getPosition(), node.getExpression());
+        }
         p.appendRawSql(value);
         p.appendFormattedSql(value);
         return null;

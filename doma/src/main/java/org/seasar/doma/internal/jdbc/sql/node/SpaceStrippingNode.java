@@ -21,7 +21,7 @@ import org.seasar.doma.jdbc.SqlNode;
  * @author taedium
  * 
  */
-public interface DirectiveNode extends SqlNode {
+public interface SpaceStrippingNode extends SqlNode {
 
     void clearChildren();
 }

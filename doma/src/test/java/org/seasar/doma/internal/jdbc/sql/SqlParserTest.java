@@ -168,42 +168,6 @@ public class SqlParserTest extends TestCase {
                 .getWrapper().get());
     }
 
-    public void testEmbeddedVariable_containsSingleQuote() throws Exception {
-        ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("name", new Value(String.class, "hoge"));
-        evaluator.add("salary", new Value(BigDecimal.class, new BigDecimal(
-                10000)));
-        evaluator.add("orderBy", new Value(String.class, "aaa'"));
-        String testSql = "select * from aaa where ename = /*name*/'aaa' and sal = /*salary*/-2000 /*#orderBy*/";
-        SqlParser parser = new SqlParser(testSql);
-        SqlNode sqlNode = parser.parse();
-        try {
-            new NodePreparedSqlBuilder(config, evaluator).build(sqlNode);
-            fail();
-        } catch (JdbcException expected) {
-            System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA2116, expected.getMessageCode());
-        }
-    }
-
-    public void testEmbeddedVariable_containsSemicolon() throws Exception {
-        ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        evaluator.add("name", new Value(String.class, "hoge"));
-        evaluator.add("salary", new Value(BigDecimal.class, new BigDecimal(
-                10000)));
-        evaluator.add("orderBy", new Value(String.class, "aaa;bbb"));
-        String testSql = "select * from aaa where ename = /*name*/'aaa' and sal = /*salary*/-2000 /*#orderBy*/";
-        SqlParser parser = new SqlParser(testSql);
-        SqlNode sqlNode = parser.parse();
-        try {
-            new NodePreparedSqlBuilder(config, evaluator).build(sqlNode);
-            fail();
-        } catch (JdbcException expected) {
-            System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA2117, expected.getMessageCode());
-        }
-    }
-
     public void testEmbeddedVariable_emptyName() throws Exception {
         String testSql = "select * from aaa where ename = /*#   */'aaa'";
         SqlParser parser = new SqlParser(testSql);
@@ -361,7 +325,7 @@ public class SqlParserTest extends TestCase {
         list.add("bbb");
         list.add("ccc");
         evaluator.add("names", new Value(List.class, list));
-        String testSql = "select * from aaa where /*%for n : names*/name = /*n*/'a' --hasNext \"or \" -- /*%end*/";
+        String testSql = "select * from aaa where /*%for n : names*/name = /*n*/'a' /*%hasNext \"or \" *//*%end*/";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, evaluator)

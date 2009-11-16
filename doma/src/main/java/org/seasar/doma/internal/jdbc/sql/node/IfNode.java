@@ -25,7 +25,7 @@ import org.seasar.doma.jdbc.SqlNodeVisitor;
  * @author taedium
  * 
  */
-public class IfNode extends AbstractSqlNode implements DirectiveNode {
+public class IfNode extends AbstractSqlNode implements SpaceStrippingNode {
 
     protected final SqlLocation location;
 

@@ -24,7 +24,6 @@ import java.util.LinkedList;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.BlockNode;
-import org.seasar.doma.internal.jdbc.sql.node.DirectiveNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
@@ -45,6 +44,7 @@ import org.seasar.doma.internal.jdbc.sql.node.OtherNode;
 import org.seasar.doma.internal.jdbc.sql.node.ParensNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
+import org.seasar.doma.internal.jdbc.sql.node.SpaceStrippingNode;
 import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
 import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.WordNode;
@@ -157,8 +157,8 @@ public class SqlParser {
                 parseForBlockComment();
                 break;
             }
-            case HAS_NEXT_LINE_COMMENT: {
-                parseHasNextLineComment();
+            case HAS_NEXT_BLOCK_COMMENT: {
+                parseHasNextBlockComment();
                 break;
             }
             case EOL: {
@@ -396,7 +396,7 @@ public class SqlParser {
         push(forNode);
     }
 
-    protected void parseHasNextLineComment() {
+    protected void parseHasNextBlockComment() {
         if (!isInForBlockNode()) {
             throw new JdbcException(DomaMessageCode.DOMA2127, sql, tokenizer
                     .getLineNumber(), tokenizer.getPosition());
@@ -414,10 +414,10 @@ public class SqlParser {
     }
 
     protected void parseEOL() {
-        if (isAfterDirectiveNode()) {
-            DirectiveNode directiveNode = peek();
-            if (containsOnlySpaces(directiveNode)) {
-                directiveNode.clearChildren();
+        if (isAfterSpaceStrippingNode()) {
+            SpaceStrippingNode spaceStrippingNode = peek();
+            if (containsOnlySpaces(spaceStrippingNode)) {
+                spaceStrippingNode.clearChildren();
                 return;
             }
         }
@@ -455,10 +455,10 @@ public class SqlParser {
             if (containsOnlySpaces(eolNode)) {
                 eolNode.clearChildren();
             }
-        } else if (isAfterDirectiveNode()) {
-            DirectiveNode directiveNode = peek();
-            if (containsOnlySpaces(directiveNode)) {
-                directiveNode.clearChildren();
+        } else if (isAfterSpaceStrippingNode()) {
+            SpaceStrippingNode spaceStrippingNode = peek();
+            if (containsOnlySpaces(spaceStrippingNode)) {
+                spaceStrippingNode.clearChildren();
             }
         }
     }
@@ -515,8 +515,8 @@ public class SqlParser {
         return EolNode.class.isInstance(peek());
     }
 
-    protected boolean isAfterDirectiveNode() {
-        return DirectiveNode.class.isInstance(peek());
+    protected boolean isAfterSpaceStrippingNode() {
+        return SpaceStrippingNode.class.isInstance(peek());
     }
 
     protected boolean isAfterBindVariable() {

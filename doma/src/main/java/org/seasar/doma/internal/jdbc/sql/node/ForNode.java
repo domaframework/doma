@@ -25,7 +25,7 @@ import org.seasar.doma.jdbc.SqlNodeVisitor;
  * @author taedium
  * 
  */
-public class ForNode extends AbstractSqlNode implements DirectiveNode {
+public class ForNode extends AbstractSqlNode implements SpaceStrippingNode {
 
     protected final SqlLocation location;
 

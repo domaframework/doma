@@ -23,7 +23,7 @@ import org.seasar.doma.jdbc.SqlNodeVisitor;
  * @author taedium
  * 
  */
-public class EndNode extends AbstractSqlNode implements DirectiveNode {
+public class EndNode extends AbstractSqlNode implements SpaceStrippingNode {
 
     protected final String text;
 

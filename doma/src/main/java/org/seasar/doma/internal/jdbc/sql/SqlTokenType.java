@@ -46,17 +46,6 @@ public enum SqlTokenType {
 
     ELSE_LINE_COMMENT,
 
-    HAS_NEXT_LINE_COMMENT {
-
-        @Override
-        public String extract(String token) {
-            assertNotNull(token);
-            assertTrue(token.length() >= 11);
-            return token.substring(9, token.length() - 2);
-        }
-
-    },
-
     BLOCK_COMMENT,
 
     BIND_VARIABLE_BLOCK_COMMENT {
@@ -99,6 +88,17 @@ public enum SqlTokenType {
             assertNotNull(token);
             assertTrue(token.length() >= 8);
             return token.substring(6, token.length() - 2);
+        }
+
+    },
+
+    HAS_NEXT_BLOCK_COMMENT {
+
+        @Override
+        public String extract(String token) {
+            assertNotNull(token);
+            assertTrue(token.length() >= 12);
+            return token.substring(10, token.length() - 2);
         }
 
     },

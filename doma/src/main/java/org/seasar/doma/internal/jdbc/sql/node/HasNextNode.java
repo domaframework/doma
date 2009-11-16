@@ -48,6 +48,10 @@ public class HasNextNode extends AbstractSqlNode {
         return expression;
     }
 
+    public String getText() {
+        return text;
+    }
+
     @Override
     public HasNextNode copy() {
         HasNextNode clone = new HasNextNode(location, expression, text);
