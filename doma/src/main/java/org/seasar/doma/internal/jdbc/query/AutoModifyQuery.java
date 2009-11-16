@@ -161,22 +161,32 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
         this.excludedPropertyNames = excludedPropertyNames;
     }
 
+    @Override
     public PreparedSql getSql() {
         return sql;
     }
 
+    @Override
+    public String getSqlFilePath() {
+        return null;
+    }
+
+    @Override
     public String getClassName() {
         return callerClassName;
     }
 
+    @Override
     public String getMethodName() {
         return callerMethodName;
     }
 
+    @Override
     public Config getConfig() {
         return config;
     }
 
+    @Override
     public boolean isOptimisticLockCheckRequired() {
         return optimisticLockCheckRequired;
     }

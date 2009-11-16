@@ -35,11 +35,14 @@ public class BatchUniqueConstraintException extends UniqueConstraintException {
      * 
      * @param sql
      *            SQL
+     * @param sqlFilePath
+     *            SQLファイルのパス
      * @param cause
      *            原因
      */
-    public BatchUniqueConstraintException(Sql<?> sql, Throwable cause) {
-        this(sql.getRawSql(), cause);
+    public BatchUniqueConstraintException(Sql<?> sql, String sqlFilePath,
+            Throwable cause) {
+        this(sql.getRawSql(), sqlFilePath, cause);
     }
 
     /**
@@ -47,11 +50,14 @@ public class BatchUniqueConstraintException extends UniqueConstraintException {
      * 
      * @param rawSql
      *            未加工SQL
+     * @param sqlFilePath
+     *            SQLファイルのパス
      * @param cause
      *            原因
      */
-    public BatchUniqueConstraintException(String rawSql, Throwable cause) {
-        super(DomaMessageCode.DOMA2029, rawSql, cause);
+    public BatchUniqueConstraintException(String rawSql, String sqlFilePath,
+            Throwable cause) {
+        super(DomaMessageCode.DOMA2029, rawSql, sqlFilePath, cause);
     }
 
 }

@@ -101,6 +101,11 @@ public abstract class SqlFileModifyQuery implements ModifyQuery {
     }
 
     @Override
+    public String getSqlFilePath() {
+        return sqlFilePath;
+    }
+
+    @Override
     public String getClassName() {
         return callerClassName;
     }

@@ -82,9 +82,10 @@ public class EntityFetcher implements ResultFetcher<ResultSet, EntityType<?>> {
                     continue;
                 }
                 Sql<?> sql = query.getSql();
+                String sqlFilePath = query.getSqlFilePath();
                 throw new MappedPropertyNotFoundException(columnName,
                         entityType.getEntityClass().getName(), sql.getRawSql(),
-                        sql.getFormattedSql());
+                        sql.getFormattedSql(), sqlFilePath);
             }
             indexMap.put(i, propertyName);
         }

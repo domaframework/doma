@@ -183,6 +183,11 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
     }
 
     @Override
+    public String getSqlFilePath() {
+        return sqlFilePath;
+    }
+
+    @Override
     public Config getConfig() {
         return config;
     }

@@ -66,8 +66,9 @@ public abstract class BatchModifyCommand<Q extends BatchModifyQuery> implements
                 return executeInternal(preparedStatement, query.getSqls());
             } catch (SQLException e) {
                 Dialect dialect = query.getConfig().getDialect();
-                throw new BatchSqlExecutionException(sql, e, dialect
-                        .getRootCause(e));
+                String sqlFilePath = query.getSqlFilePath();
+                throw new BatchSqlExecutionException(sql, sqlFilePath, e,
+                        dialect.getRootCause(e));
             } finally {
                 JdbcUtil.close(preparedStatement, query.getConfig()
                         .getJdbcLogger());
@@ -116,7 +117,8 @@ public abstract class BatchModifyCommand<Q extends BatchModifyQuery> implements
         } catch (SQLException e) {
             Dialect dialect = query.getConfig().getDialect();
             if (dialect.isUniqueConstraintViolated(e)) {
-                throw new BatchUniqueConstraintException(sql, e);
+                String sqlFilePath = query.getSqlFilePath();
+                throw new BatchUniqueConstraintException(sql, sqlFilePath, e);
             }
             throw e;
         }
@@ -143,7 +145,8 @@ public abstract class BatchModifyCommand<Q extends BatchModifyQuery> implements
             }
             for (int i = 0; i < rows.length; ++i) {
                 if (rows[i] != 1) {
-                    throw new BatchOptimisticLockException(sql);
+                    String sqlFilePath = query.getSqlFilePath();
+                    throw new BatchOptimisticLockException(sql, sqlFilePath);
                 }
             }
         } else if (preparedStatement.getUpdateCount() == rows.length) {
@@ -152,7 +155,8 @@ public abstract class BatchModifyCommand<Q extends BatchModifyQuery> implements
             if (!query.isOptimisticLockCheckRequired()) {
                 return;
             }
-            throw new BatchOptimisticLockException(sql);
+            String sqlFilePath = query.getSqlFilePath();
+            throw new BatchOptimisticLockException(sql, sqlFilePath);
         }
     }
 }

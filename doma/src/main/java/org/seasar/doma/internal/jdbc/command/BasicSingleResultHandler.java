@@ -22,6 +22,7 @@ import java.sql.SQLException;
 
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.jdbc.NonUniqueResultException;
+import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -43,7 +44,9 @@ public class BasicSingleResultHandler<V> implements ResultSetHandler<V> {
         if (resultSet.next()) {
             fetcher.fetch(resultSet, wrapper);
             if (resultSet.next()) {
-                throw new NonUniqueResultException(query.getSql());
+                Sql<?> sql = query.getSql();
+                String sqlFilePath = query.getSqlFilePath();
+                throw new NonUniqueResultException(sql, sqlFilePath);
             }
         }
         return wrapper.get();

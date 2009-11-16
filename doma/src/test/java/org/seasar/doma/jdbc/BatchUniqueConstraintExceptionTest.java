@@ -25,9 +25,10 @@ public class BatchUniqueConstraintExceptionTest extends TestCase {
 
     public void test() throws Exception {
         BatchUniqueConstraintException e = new BatchUniqueConstraintException(
-                "aaa", new Exception());
+                "aaa", "bbb", new Exception());
         System.out.println(e.getMessage());
         assertEquals("aaa", e.getRawSql());
+        assertEquals("bbb", e.getSqlFilePath());
         assertNull(e.getFormattedSql());
     }
 }

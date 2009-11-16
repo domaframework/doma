@@ -25,9 +25,10 @@ public class SqlExecutionExceptionTest extends TestCase {
 
     public void test() throws Exception {
         SqlExecutionException e = new SqlExecutionException("aaa", "bbb",
-                new Exception(), new RuntimeException());
+                "ccc", new Exception(), new RuntimeException());
         assertEquals("aaa", e.getRawSql());
         assertEquals("bbb", e.getFormattedSql());
+        assertEquals("ccc", e.getSqlFilePath());
         assertNotNull(e.getRootCause());
         System.out.println(e.getMessage());
     }

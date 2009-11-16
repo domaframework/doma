@@ -33,14 +33,19 @@ public class NonUniqueResultException extends JdbcException {
     /** フォーマット済みSQL */
     protected final String formattedSql;
 
+    /** SQLファイルのパス */
+    protected final String sqlFilePath;
+
     /**
      * 2件以上の結果を返したSQLを指定してインスタンスを構築します。
      * 
      * @param sql
      *            SQL
+     * @param sqlFilePath
+     *            SQLファイルのパス
      */
-    public NonUniqueResultException(Sql<?> sql) {
-        this(sql.getRawSql(), sql.getFormattedSql());
+    public NonUniqueResultException(Sql<?> sql, String sqlFilePath) {
+        this(sql.getRawSql(), sql.getFormattedSql(), sqlFilePath);
     }
 
     /**
@@ -49,12 +54,16 @@ public class NonUniqueResultException extends JdbcException {
      * @param rawSql
      *            未加工SQL
      * @param formattedSql
-     *            フォーマット済みｓQL
+     *            フォーマット済みSQL
+     * @param sqlFilePath
+     *            SQLファイルのパス
      */
-    public NonUniqueResultException(String rawSql, String formattedSql) {
-        super(DomaMessageCode.DOMA2001, formattedSql, rawSql);
+    public NonUniqueResultException(String rawSql, String formattedSql,
+            String sqlFilePath) {
+        super(DomaMessageCode.DOMA2001, sqlFilePath, formattedSql);
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;
+        this.sqlFilePath = sqlFilePath;
     }
 
     /**
@@ -73,6 +82,15 @@ public class NonUniqueResultException extends JdbcException {
      */
     public String getFormattedSql() {
         return formattedSql;
+    }
+
+    /**
+     * SQLファイルのパスを返します。
+     * 
+     * @return SQLファイルのパス、SQLが自動生成された場合 {@code null}
+     */
+    public String getSqlFilePath() {
+        return sqlFilePath;
     }
 
 }

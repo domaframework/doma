@@ -34,6 +34,9 @@ public class SqlExecutionException extends JdbcException {
     /** フォーマット済みSQL、バッチ処理時にスローされた場合 {@code null} */
     protected final String formattedSql;
 
+    /** SQLファイルのパス、SQLが自動生成された場合 {@code null} */
+    protected final String sqlFilePath;
+
     /** 根本原因 */
     protected final Throwable rootCause;
 
@@ -42,14 +45,17 @@ public class SqlExecutionException extends JdbcException {
      * 
      * @param sql
      *            SQL
+     * @param sqlFilePath
+     *            SQLファイルのパス
      * @param cause
      *            原因
      * @param rootCause
      *            根本原因
      */
-    public SqlExecutionException(Sql<?> sql, Throwable cause,
-            Throwable rootCause) {
-        this(sql.getRawSql(), sql.getFormattedSql(), cause, rootCause);
+    public SqlExecutionException(Sql<?> sql, String sqlFilePath,
+            Throwable cause, Throwable rootCause) {
+        this(sql.getRawSql(), sql.getFormattedSql(), sqlFilePath, cause,
+                rootCause);
     }
 
     /**
@@ -59,17 +65,20 @@ public class SqlExecutionException extends JdbcException {
      *            未加工SQL
      * @param formattedSql
      *            フォーマット済みSQL
+     * @param sqlFilePath
+     *            SQLファイルのパス
      * @param cause
      *            原因
      * @param rootCause
      *            根本原因
      */
     public SqlExecutionException(String rawSql, String formattedSql,
-            Throwable cause, Throwable rootCause) {
-        super(DomaMessageCode.DOMA2009, cause, formattedSql, rawSql, cause,
-                rootCause);
+            String sqlFilePath, Throwable cause, Throwable rootCause) {
+        super(DomaMessageCode.DOMA2009, cause, sqlFilePath, formattedSql,
+                cause, rootCause);
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;
+        this.sqlFilePath = sqlFilePath;
         this.rootCause = rootCause;
     }
 
@@ -82,16 +91,20 @@ public class SqlExecutionException extends JdbcException {
      *            未加工SQL
      * @param formattedSql
      *            フォーマット済みSQL
+     * @param sqlFilePath
+     *            SQLファイルのパス
      * @param cause
      *            原因
      * @param rootCause
      *            根本原因
      */
     protected SqlExecutionException(MessageCode messageCode, String rawSql,
-            String formattedSql, Throwable cause, Throwable rootCause) {
-        super(messageCode, cause, rawSql, cause, rootCause);
+            String formattedSql, String sqlFilePath, Throwable cause,
+            Throwable rootCause) {
+        super(messageCode, cause, sqlFilePath, rawSql, cause, rootCause);
         this.rawSql = rawSql;
         this.formattedSql = null;
+        this.sqlFilePath = sqlFilePath;
         this.rootCause = rootCause;
     }
 
@@ -111,6 +124,15 @@ public class SqlExecutionException extends JdbcException {
      */
     public String getFormattedSql() {
         return formattedSql;
+    }
+
+    /**
+     * SQLファイルのパスを返します。
+     * 
+     * @return SQLファイルのパス、SQLが自動生成された場合 {@code null}
+     */
+    public String getSqlFilePath() {
+        return sqlFilePath;
     }
 
     /**

@@ -35,14 +35,16 @@ public class BatchSqlExecutionException extends SqlExecutionException {
      * 
      * @param sql
      *            SQL
+     * @param sqlFilePath
+     *            SQLファイルのパス
      * @param cause
      *            スローされた原因
      * @param rootCause
      *            根本原因
      */
-    public BatchSqlExecutionException(Sql<?> sql, Throwable cause,
-            Throwable rootCause) {
-        this(sql.getRawSql(), cause, rootCause);
+    public BatchSqlExecutionException(Sql<?> sql, String sqlFilePath,
+            Throwable cause, Throwable rootCause) {
+        this(sql.getRawSql(), sqlFilePath, cause, rootCause);
     }
 
     /**
@@ -50,14 +52,17 @@ public class BatchSqlExecutionException extends SqlExecutionException {
      * 
      * @param rawSql
      *            未加工SQL
+     * @param sqlFilePath
+     *            SQLファイルのパス
      * @param cause
      *            スローされた原因
      * @param rootCause
      *            根本原因
      */
-    public BatchSqlExecutionException(String rawSql, Throwable cause,
-            Throwable rootCause) {
-        super(DomaMessageCode.DOMA2030, rawSql, null, cause, rootCause);
+    public BatchSqlExecutionException(String rawSql, String sqlFilePath,
+            Throwable cause, Throwable rootCause) {
+        super(DomaMessageCode.DOMA2030, rawSql, null, sqlFilePath, cause,
+                rootCause);
     }
 
 }

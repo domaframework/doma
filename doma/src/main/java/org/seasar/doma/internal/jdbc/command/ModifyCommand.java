@@ -67,7 +67,9 @@ public abstract class ModifyCommand<Q extends ModifyQuery> implements
                 return executeInternal(preparedStatement);
             } catch (SQLException e) {
                 Dialect dialect = query.getConfig().getDialect();
-                throw new SqlExecutionException(sql, e, dialect.getRootCause(e));
+                String sqlFilePath = query.getSqlFilePath();
+                throw new SqlExecutionException(sql, sqlFilePath, e, dialect
+                        .getRootCause(e));
             } finally {
                 JdbcUtil.close(preparedStatement, query.getConfig()
                         .getJdbcLogger());
@@ -108,7 +110,8 @@ public abstract class ModifyCommand<Q extends ModifyQuery> implements
         } catch (SQLException e) {
             Dialect dialect = query.getConfig().getDialect();
             if (dialect.isUniqueConstraintViolated(e)) {
-                throw new UniqueConstraintException(sql, e);
+                String sqlFilePath = query.getSqlFilePath();
+                throw new UniqueConstraintException(sql, sqlFilePath, e);
             }
             throw e;
         }
@@ -116,7 +119,8 @@ public abstract class ModifyCommand<Q extends ModifyQuery> implements
 
     protected void validateRows(int rows) {
         if (query.isOptimisticLockCheckRequired() && rows == 0) {
-            throw new OptimisticLockException(sql);
+            String sqlFilePath = query.getSqlFilePath();
+            throw new OptimisticLockException(sql, sqlFilePath);
         }
     }
 }

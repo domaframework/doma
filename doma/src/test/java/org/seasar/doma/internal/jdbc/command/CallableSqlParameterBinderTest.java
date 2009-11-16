@@ -26,11 +26,11 @@ import org.seasar.doma.internal.jdbc.mock.MockCallableStatement;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.RegisterOutParameter;
 import org.seasar.doma.internal.jdbc.query.Query;
-import org.seasar.doma.internal.jdbc.sql.CallableSqlParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicInOutParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicOutParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicResultParameter;
+import org.seasar.doma.internal.jdbc.sql.CallableSqlParameter;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.jdbc.Sql;
@@ -77,6 +77,11 @@ public class CallableSqlParameterBinderTest extends TestCase {
 
         @Override
         public Sql<?> getSql() {
+            return null;
+        }
+
+        @Override
+        public String getSqlFilePath() {
             return null;
         }
 

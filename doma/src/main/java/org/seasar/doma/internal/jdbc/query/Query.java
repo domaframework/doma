@@ -26,6 +26,8 @@ public interface Query {
 
     Sql<?> getSql();
 
+    String getSqlFilePath();
+
     String getClassName();
 
     String getMethodName();

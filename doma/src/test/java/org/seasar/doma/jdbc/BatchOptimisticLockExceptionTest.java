@@ -24,9 +24,11 @@ import junit.framework.TestCase;
 public class BatchOptimisticLockExceptionTest extends TestCase {
 
     public void test() throws Exception {
-        BatchOptimisticLockException e = new BatchOptimisticLockException("aaa");
+        BatchOptimisticLockException e = new BatchOptimisticLockException(
+                "aaa", "bbb");
         System.out.println(e.getMessage());
         assertEquals("aaa", e.getRawSql());
+        assertEquals("bbb", e.getSqlFilePath());
         assertNull(e.getFormattedSql());
     }
 }

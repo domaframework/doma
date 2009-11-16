@@ -34,16 +34,22 @@ public class UniqueConstraintException extends JdbcException {
     /** フォーマット済みSQL、バッチ処理時にスローされた場合 {@code null} */
     protected final String formattedSql;
 
+    /** SQLファイルのパス、SQLが自動生成された場合 {@code null} */
+    protected final String sqlFilePath;
+
     /**
      * SQLを指定してインスタンスを構築します。
      * 
      * @param sql
      *            SQL
+     * @param sqlFilePath
+     *            SQLファイルのパス
      * @param cause
      *            原因
      */
-    public UniqueConstraintException(Sql<?> sql, Throwable cause) {
-        this(sql.getRawSql(), sql.getFormattedSql(), cause);
+    public UniqueConstraintException(Sql<?> sql, String sqlFilePath,
+            Throwable cause) {
+        this(sql.getRawSql(), sql.getFormattedSql(), sqlFilePath, cause);
     }
 
     /**
@@ -53,14 +59,17 @@ public class UniqueConstraintException extends JdbcException {
      *            未加工SQL
      * @param formattedSql
      *            フォーマット済みSQL
+     * @param sqlFilePath
+     *            SQLファイルのパス
      * @param cause
      *            原因
      */
     public UniqueConstraintException(String rawSql, String formattedSql,
-            Throwable cause) {
-        super(DomaMessageCode.DOMA2004, formattedSql, rawSql, cause);
+            String sqlFilePath, Throwable cause) {
+        super(DomaMessageCode.DOMA2004, sqlFilePath, formattedSql, cause);
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;
+        this.sqlFilePath = sqlFilePath;
     }
 
     /**
@@ -70,14 +79,17 @@ public class UniqueConstraintException extends JdbcException {
      *            メッセージコード
      * @param rawSql
      *            未加工SQL
+     * @param sqlFilePath
+     *            SQLファイルのパス
      * @param cause
      *            原因
      */
     protected UniqueConstraintException(MessageCode messageCode, String rawSql,
-            Throwable cause) {
-        super(messageCode, cause, rawSql, cause);
+            String sqlFilePath, Throwable cause) {
+        super(messageCode, cause, sqlFilePath, rawSql, cause);
         this.rawSql = rawSql;
         this.formattedSql = null;
+        this.sqlFilePath = sqlFilePath;
     }
 
     /**
@@ -96,6 +108,15 @@ public class UniqueConstraintException extends JdbcException {
      */
     public String getFormattedSql() {
         return formattedSql;
+    }
+
+    /**
+     * SQLファイルのパスを返します。
+     * 
+     * @return SQLファイルのパス、SQLが自動生成された場合 {@code null}
+     */
+    public String getSqlFilePath() {
+        return sqlFilePath;
     }
 
 }

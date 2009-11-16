@@ -24,6 +24,7 @@ import org.seasar.doma.internal.domain.DomainType;
 import org.seasar.doma.internal.domain.DomainTypeFactory;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.jdbc.NonUniqueResultException;
+import org.seasar.doma.jdbc.Sql;
 
 /**
  * @author taedium
@@ -45,7 +46,9 @@ public class DomainSingleResultHandler<V, D> implements ResultSetHandler<D> {
         if (resultSet.next()) {
             fetcher.fetch(resultSet, domainType.getWrapper());
             if (resultSet.next()) {
-                throw new NonUniqueResultException(query.getSql());
+                Sql<?> sql = query.getSql();
+                String sqlFilePath = query.getSqlFilePath();
+                throw new NonUniqueResultException(sql, sqlFilePath);
             }
             return domainType.getDomain();
         }

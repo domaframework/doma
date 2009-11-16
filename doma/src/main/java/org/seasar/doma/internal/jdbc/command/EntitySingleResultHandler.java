@@ -24,6 +24,7 @@ import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.jdbc.NonUniqueResultException;
+import org.seasar.doma.jdbc.Sql;
 
 /**
  * @author taedium
@@ -45,7 +46,9 @@ public class EntitySingleResultHandler<E> implements ResultSetHandler<E> {
         if (resultSet.next()) {
             fetcher.fetch(resultSet, entityType);
             if (resultSet.next()) {
-                throw new NonUniqueResultException(query.getSql());
+                Sql<?> sql = query.getSql();
+                String sqlFilePath = query.getSqlFilePath();
+                throw new NonUniqueResultException(sql, sqlFilePath);
             }
             return entityType.getEntity();
         }

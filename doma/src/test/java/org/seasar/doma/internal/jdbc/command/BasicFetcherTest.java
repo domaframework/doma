@@ -83,6 +83,11 @@ public class BasicFetcherTest extends TestCase {
         }
 
         @Override
+        public String getSqlFilePath() {
+            return null;
+        }
+
+        @Override
         public int getFetchSize() {
             return 0;
         }

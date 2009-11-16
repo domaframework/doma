@@ -25,8 +25,9 @@ public class BatchSqlExecutionExceptionTest extends TestCase {
 
     public void test() throws Exception {
         BatchSqlExecutionException e = new BatchSqlExecutionException("aaa",
-                new Exception(), new RuntimeException());
+                "bbb", new Exception(), new RuntimeException());
         assertEquals("aaa", e.getRawSql());
+        assertEquals("bbb", e.getSqlFilePath());
         assertNull(e.getFormattedSql());
         assertNotNull(e.getRootCause());
         System.out.println(e.getMessage());

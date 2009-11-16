@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.jdbc.NonUniqueResultException;
-
 import junit.framework.TestCase;
 
 /**
@@ -26,9 +24,11 @@ import junit.framework.TestCase;
 public class NonUniqueResultExceptionTest extends TestCase {
 
     public void test() throws Exception {
-        NonUniqueResultException e = new NonUniqueResultException("aaa", "bbb");
+        NonUniqueResultException e = new NonUniqueResultException("aaa", "bbb",
+                "ccc");
+        System.out.println(e.getMessage());
         assertEquals("aaa", e.getRawSql());
         assertEquals("bbb", e.getFormattedSql());
-        System.out.println(e.getMessage());
+        assertEquals("ccc", e.getSqlFilePath());
     }
 }

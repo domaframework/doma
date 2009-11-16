@@ -25,11 +25,12 @@ public class MappedPropertyNotFoundExceptionTest extends TestCase {
 
     public void test() throws Exception {
         MappedPropertyNotFoundException e = new MappedPropertyNotFoundException(
-                "aaa", "bbb", "ccc", "ddd");
+                "aaa", "bbb", "ccc", "ddd", "eee");
         System.out.println(e.getMessage());
         assertEquals("aaa", e.getColumnName());
         assertEquals("bbb", e.getEntityClassName());
         assertEquals("ccc", e.getRawSql());
         assertEquals("ddd", e.getFormattedSql());
+        assertEquals("eee", e.getSqlFilePath());
     }
 }

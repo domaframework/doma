@@ -154,6 +154,11 @@ public class SqlFileSelectQuery implements SelectQuery {
     }
 
     @Override
+    public String getSqlFilePath() {
+        return sqlFilePath;
+    }
+
+    @Override
     public String getClassName() {
         return callerClassName;
     }
@@ -237,6 +242,11 @@ public class SqlFileSelectQuery implements SelectQuery {
         @Override
         public PreparedSql getSql() {
             return sql;
+        }
+
+        @Override
+        public String getSqlFilePath() {
+            return null;
         }
 
         @Override

@@ -36,14 +36,19 @@ public class OptimisticLockException extends JdbcException {
     /** フォーマット済みSQL、バッチ処理時にスローされた場合 {@code null} */
     protected final String formattedSql;
 
+    /** SQLファイルのパス、SQLが自動生成された場合 {@code null} */
+    protected final String sqlFilePath;
+
     /**
      * 楽観的排他制御に失敗したSQLを指定してインスタンスを構築します。
      * 
      * @param sql
      *            SQL
+     * @param sqlFilePath
+     *            SQLファイルのパス
      */
-    public OptimisticLockException(Sql<?> sql) {
-        this(sql.getRawSql(), sql.getFormattedSql());
+    public OptimisticLockException(Sql<?> sql, String sqlFilePath) {
+        this(sql.getRawSql(), sql.getFormattedSql(), sqlFilePath);
     }
 
     /**
@@ -53,11 +58,15 @@ public class OptimisticLockException extends JdbcException {
      *            未加工SQL
      * @param formattedSql
      *            フォーマット済みSQL
+     * @param sqlFilePath
+     *            SQLファイルのパス
      */
-    public OptimisticLockException(String rawSql, String formattedSql) {
-        super(DomaMessageCode.DOMA2003, formattedSql, rawSql);
+    public OptimisticLockException(String rawSql, String formattedSql,
+            String sqlFilePath) {
+        super(DomaMessageCode.DOMA2003, sqlFilePath, formattedSql);
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;
+        this.sqlFilePath = sqlFilePath;
     }
 
     /**
@@ -67,11 +76,15 @@ public class OptimisticLockException extends JdbcException {
      *            メッセージコード
      * @param rawSql
      *            未加工SQL
+     * @param sqlFilePath
+     *            SQLファイルのパス
      */
-    protected OptimisticLockException(MessageCode messageCode, String rawSql) {
-        super(messageCode, rawSql);
+    protected OptimisticLockException(MessageCode messageCode, String rawSql,
+            String sqlFilePath) {
+        super(messageCode, sqlFilePath, rawSql);
         this.rawSql = rawSql;
         this.formattedSql = null;
+        this.sqlFilePath = sqlFilePath;
     }
 
     /**
@@ -90,6 +103,15 @@ public class OptimisticLockException extends JdbcException {
      */
     public String getFormattedSql() {
         return formattedSql;
+    }
+
+    /**
+     * SQLファイルのパスを返します。
+     * 
+     * @return SQLファイルのパス、SQLが自動生成された場合 {@code null}
+     */
+    public String getSqlFilePath() {
+        return sqlFilePath;
     }
 
 }

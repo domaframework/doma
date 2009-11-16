@@ -91,7 +91,7 @@ public class SqlFile {
 
     @Override
     public String toString() {
-        return path;
+        return sqlNode.toString();
     }
 
 }

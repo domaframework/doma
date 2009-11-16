@@ -40,6 +40,9 @@ public class MappedPropertyNotFoundException extends JdbcException {
     /** フォーマット済みSQL、バッチ処理時にスローされた場合 {@code null} */
     protected final String formattedSql;
 
+    /** SQLファイルのパス */
+    protected final String sqlFilePath;
+
     /**
      * インスタンスを構築します。
      * 
@@ -53,13 +56,15 @@ public class MappedPropertyNotFoundException extends JdbcException {
      *            フォーマット済みSQL
      */
     public MappedPropertyNotFoundException(String columnName,
-            String entityClassName, String rawSql, String formattedSql) {
+            String entityClassName, String rawSql, String formattedSql,
+            String sqlFilePath) {
         super(DomaMessageCode.DOMA2002, columnName, entityClassName,
-                formattedSql, rawSql);
+                sqlFilePath, formattedSql);
         this.columnName = columnName;
         this.entityClassName = entityClassName;
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;
+        this.sqlFilePath = sqlFilePath;
     }
 
     /**
@@ -98,4 +103,12 @@ public class MappedPropertyNotFoundException extends JdbcException {
         return formattedSql;
     }
 
+    /**
+     * SQLファイルのパスを返します。
+     * 
+     * @return SQLファイルのパス、SQLが自動生成された場合 {@code null}
+     */
+    public String getSqlFilePath() {
+        return sqlFilePath;
+    }
 }

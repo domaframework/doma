@@ -39,8 +39,8 @@ public class PreparedSqlParameterBinderTest extends TestCase {
         MockPreparedStatement preparedStatement = new MockPreparedStatement();
         List<BasicInParameter> parameters = new ArrayList<BasicInParameter>();
         parameters.add(new BasicInParameter(new StringWrapper("aaa")));
-        parameters.add(new BasicInParameter(
-                new BigDecimalWrapper(new BigDecimal(10))));
+        parameters.add(new BasicInParameter(new BigDecimalWrapper(
+                new BigDecimal(10))));
         PreparedSqlParameterBinder binder = new PreparedSqlParameterBinder(
                 new MyQuery());
         binder.bind(preparedStatement, parameters);
@@ -59,6 +59,11 @@ public class PreparedSqlParameterBinderTest extends TestCase {
 
         @Override
         public Sql<?> getSql() {
+            return null;
+        }
+
+        @Override
+        public String getSqlFilePath() {
             return null;
         }
 

@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.jdbc.UniqueConstraintException;
-
 import junit.framework.TestCase;
 
 /**
@@ -27,9 +25,10 @@ public class UniqueConstraintExceptionTest extends TestCase {
 
     public void test() throws Exception {
         UniqueConstraintException e = new UniqueConstraintException("aaa",
-                "bbb", new Exception());
+                "bbb", "ccc", new Exception());
         assertEquals("aaa", e.getRawSql());
         assertEquals("bbb", e.getFormattedSql());
+        assertEquals("ccc", e.getSqlFilePath());
         System.out.println(e.getMessage());
     }
 }
