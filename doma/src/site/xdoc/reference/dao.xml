@@ -197,6 +197,7 @@ public interface EmployeeDao {
 			<p>
 				コンパイルすると、aptにより実装クラスが生成されます。
 				実装クラスをインスタンス化して使用してください。
+				ただし、<a href="config.html#DIコンテナを利用する場合の設定例">設定クラスをDIコンテナで管理する</a>場合は、Daoのインスタンス化はアプリケーションのコードで行わずDIコンテナで制御してください。
 			</p>
 <source>EmployeeDao employeeDao = new EmployeeDaoImpl();
 Employee employee = employeeDao.selectById(1);</source>
@@ -206,12 +207,22 @@ Employee employee = employeeDao.selectById(1);</source>
 			</p>
 			<p>
 				デフォルトコンストラクタを使用した場合は、<code>@Dao</code>の <code>config</code>要素に
-				指定した設定により<code>DataSource</code>が決定しますが、
+				指定した設定により<code>javax.sql.DataSource</code>が決定しますが、
 				特定の <code>DataSource</code>を指定してインスタンス化することも可能です。
 			</p>
 <source>DataSource dataSource = ...;
 EmployeeDao employeeDao = new EmployeeDaoImpl(dataSource);
 Employee employee = employeeDao.selectById(1);</source>
+			<p>
+				また、同様に<code>java.sql.Connection</code>を指定してインスタンス化することも可能です。
+			</p>
+<source>Connection connection = ...;
+EmployeeDao employeeDao = new EmployeeDaoImpl(connection);
+Employee employee = employeeDao.selectById(1);</source>
+			<p>
+				<code>DataSource</code>や<code>Connection</code>をコンストラクタに指定してインスタンス化する方法は、
+				JDBCを直接利用した既存のアプリケーションで利用するのに適しています。
+			</p>
 			<p>
 				Daoインタフェースはエンティティクラスと1対1で結びついているわけではありません。
 				ひとつのDaoインタフェースで複数のエンティティクラスを扱えます。

@@ -13,13 +13,17 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc;
+package org.seasar.doma.internal.jdbc.dao;
+
+import java.sql.Connection;
 
 import javax.sql.DataSource;
 
 import org.seasar.doma.Dao;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.RuntimeConfig;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.ConfigException;
 
 /**
  * {@link Dao} が注釈されたインタフェースの実装クラスのための骨格実装です。
@@ -28,7 +32,7 @@ import org.seasar.doma.internal.RuntimeConfig;
  * @author taedium
  * 
  */
-public abstract class DomaAbstractDao {
+public abstract class AbstractDao {
 
     /**
      * 実行時用の設定です。
@@ -45,8 +49,35 @@ public abstract class DomaAbstractDao {
      * @throws ConfigException
      *             {@code config} の メソッドのどれかが {@code null} を返す場合
      */
-    public DomaAbstractDao(Config config) {
-        this(config, null);
+    public AbstractDao(Config config) {
+        if (config == null) {
+            new DomaNullPointerException("config");
+        }
+        validateConfig(config, null);
+        this.config = new RuntimeConfig(config, config.getDataSource());
+    }
+
+    /**
+     * 実行時用の設定を作成します。
+     * 
+     * @param config
+     *            JDBCの設定
+     * @throws DomaNullPointerException
+     *             {@code config} が {@code null} の場合
+     * @throws ConfigException
+     *             {@code config} の メソッドのどれかが {@code null} を返す場合
+     */
+    public AbstractDao(Config config, Connection connection) {
+        if (config == null) {
+            new DomaNullPointerException("config");
+        }
+        if (connection == null) {
+            new DomaNullPointerException("connection");
+        }
+        DataSource dataSource = new NeverClosedConnectionProvider(
+                new NeverClosedConnection(connection));
+        validateConfig(config, dataSource);
+        this.config = new RuntimeConfig(config, dataSource);
     }
 
     /**
@@ -61,10 +92,18 @@ public abstract class DomaAbstractDao {
      * @throws ConfigException
      *             {@code config} の メソッドのどれかが {@code null} を返す場合
      */
-    public DomaAbstractDao(Config config, DataSource dataSource) {
+    public AbstractDao(Config config, DataSource dataSource) {
         if (config == null) {
             new DomaNullPointerException("config");
         }
+        if (dataSource == null) {
+            new DomaNullPointerException("dataSource");
+        }
+        validateConfig(config, dataSource);
+        this.config = new RuntimeConfig(config, dataSource);
+    }
+
+    private void validateConfig(Config config, DataSource dataSource) {
         if (dataSource == null) {
             if (config.getDataSource() == null) {
                 throw new ConfigException(config.getClass().getName(),
@@ -86,8 +125,6 @@ public abstract class DomaAbstractDao {
             throw new ConfigException(config.getClass().getName(),
                     "getJdbcLogger");
         }
-        this.config = new RuntimeConfig(config, dataSource != null ? dataSource
-                : config.getDataSource());
     }
 
     /**

@@ -16,6 +16,7 @@
 package example.dao;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.util.List;
 
 import javax.annotation.Generated;
@@ -28,13 +29,12 @@ import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.InsertCommand;
 import org.seasar.doma.internal.jdbc.command.SelectCommand;
 import org.seasar.doma.internal.jdbc.command.UpdateCommand;
+import org.seasar.doma.internal.jdbc.dao.AbstractDao;
 import org.seasar.doma.internal.jdbc.query.AutoDeleteQuery;
 import org.seasar.doma.internal.jdbc.query.AutoInsertQuery;
 import org.seasar.doma.internal.jdbc.query.AutoUpdateQuery;
 import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
-import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.DomaAbstractDao;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.SelectOptions;
 
@@ -46,18 +46,18 @@ import example.entity.Emp_;
  * 
  */
 @Generated("")
-public class EmpDaoImpl extends DomaAbstractDao implements EmpDao {
+public class EmpDaoImpl extends AbstractDao implements EmpDao {
 
     public EmpDaoImpl() {
-        super(new ExampleConfig(), null);
+        super(new ExampleConfig());
+    }
+
+    public EmpDaoImpl(Connection connection) {
+        super(new ExampleConfig(), connection);
     }
 
     public EmpDaoImpl(DataSource dataSource) {
         super(new ExampleConfig(), dataSource);
-    }
-
-    protected EmpDaoImpl(Config config) {
-        super(config, config.getDataSource());
     }
 
     @Override

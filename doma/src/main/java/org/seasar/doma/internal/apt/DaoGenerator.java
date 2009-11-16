@@ -18,6 +18,7 @@ package org.seasar.doma.internal.apt;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -78,6 +79,7 @@ import org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.EntityIterationHandler;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
+import org.seasar.doma.internal.jdbc.dao.AbstractDao;
 import org.seasar.doma.internal.jdbc.sql.BasicInOutParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicListParameter;
@@ -94,7 +96,6 @@ import org.seasar.doma.internal.jdbc.sql.EntityListParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListResultParameter;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.DomaAbstractDao;
 
 /**
  * 
@@ -139,8 +140,7 @@ public class DaoGenerator extends AbstractGenerator {
         }
         printGenerated();
         iprint("public class %1$s extends %2$s implements %3$s {%n",
-                simpleName, DomaAbstractDao.class.getName(), daoMeta
-                        .getDaoType());
+                simpleName, AbstractDao.class.getName(), daoMeta.getDaoType());
         print("%n");
         indent();
         printFields();
@@ -176,6 +176,13 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("public %1$s() {%n", simpleName);
             indent();
             iprint("super(new %1$s());%n", daoMeta.getConfigType());
+            unindent();
+            iprint("}%n");
+            print("%n");
+            iprint("public %1$s(%2$s connection) {%n", simpleName,
+                    Connection.class.getName());
+            indent();
+            iprint("super(new %1$s(), connection);%n", daoMeta.getConfigType());
             unindent();
             iprint("}%n");
             print("%n");

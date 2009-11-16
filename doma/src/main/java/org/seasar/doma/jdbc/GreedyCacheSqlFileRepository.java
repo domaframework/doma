@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentMap;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
- * SQLの解析結果を際限なくキャッシュする {@link SqlFileRepository} の実装です。
+ * SQLの解析結果メモリが許す限り最大限にキャッシュする {@link SqlFileRepository} の実装です。
  * 
  * @author taedium
  * 

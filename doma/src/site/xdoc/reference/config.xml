@@ -115,10 +115,12 @@
 					実装クラスには次のものがあります。
 				</p>
 				<ul>
-					<li><a href ="../apidocs/org/seasar/doma/jdbc/CachedSqlFileRepository.html"><code>org.seasar.doma.jdbc.CachedSqlFileRepository</code></a></li>
+					<li><a href ="../apidocs/org/seasar/doma/jdbc/GreedyCacheSqlFileRepository.html"><code>org.seasar.doma.jdbc.GreedyCacheSqlFileRepository</code></a></li>
+					<li><a href ="../apidocs/org/seasar/doma/jdbc/NoCacheSqlFileRepository.html"><code>org.seasar.doma.jdbc.NoCacheSqlFileRepository</code></a></li>
 				</ul>
 				<p>
-					<code>CachedSqlFileRepository</code>は、読み込んだSQLファイルの内容をパースし、その結果を無制限にキャッシュします。
+					<code>GreedyCacheSqlFileRepository</code>は、読み込んだSQLファイルの内容をパースし、その結果をメモリが許す限り最大限にキャッシュします。
+					<code>NoCacheSqlFileRepository</code>は、一切キャッシュを行いません。毎回、SQLファイルからSQLを読み取りパースします。
 				</p>
 				<p>
 					メモリの利用に厳しい制限がある環境や、扱うSQLファイルが膨大にある環境では、適切なキャッシュアルゴリズムをもった実装クラスを作成し使用してください。
@@ -196,7 +198,7 @@
 					</tr>
 					<tr>
 						<td>SQLファイルのリポジトリの設定</td>
-						<td><code>org.seasar.doma.jdbc.CachedSqlFileRepository</code></td>
+						<td><code>org.seasar.doma.jdbc.GreedyCacheSqlFileRepository</code></td>
 					</tr>
 					<tr>
 						<td>REQUIRES_NEWの属性をもつトランザクションを制御するための設定</td>

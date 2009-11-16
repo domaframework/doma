@@ -66,14 +66,14 @@ public class ItLogger implements JdbcLogger {
     @Override
     public void logSql(String callerClassName, String callerMethodName,
             Sql<?> sql) {
-        Log log = LogFactory.getLog(callerMethodName);
+        Log log = LogFactory.getLog(callerClassName);
         log.info(sql.getFormattedSql());
     }
 
     @Override
     public void logSqlFile(String callerClassName, String callerMethodName,
             SqlFile sqlFile) {
-        Log log = LogFactory.getLog(callerMethodName);
+        Log log = LogFactory.getLog(callerClassName);
         log.info(sqlFile.getPath());
     }
 
