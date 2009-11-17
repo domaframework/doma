@@ -17,11 +17,10 @@ package org.seasar.doma.jdbc;
 
 import java.util.List;
 
-
 /**
  * SQLを表します。
  * <p>
- * SQLの文字列とSQL実行時のパラメータをカプセル化します。また、SQLのバインド変数をパラメータで置換した文字列も保持します。
+ * SQLとSQL実行時のパラメータをカプセル化します。また、SQLのバインド変数をパラメータで置換した文字列やSQLファイルのパスを保持します。
  * 
  * <p>
  * このインタフェースの実装はスレッドセーフであることを要求されません。
@@ -50,6 +49,13 @@ public interface Sql<P extends SqlParameter> {
      * @return フォーマット済みSQL
      */
     String getFormattedSql();
+
+    /**
+     * 未加工SQLが記述されているSQLファイルのパスを返します。
+     * 
+     * @return SQLファイルのパス、SQLが自動生成された場合は {@code null}
+     */
+    String getSqlFilePath();
 
     /**
      * バインド変数へのパラメータのリストを返します。

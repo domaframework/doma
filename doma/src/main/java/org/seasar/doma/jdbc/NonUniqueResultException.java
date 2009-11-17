@@ -41,11 +41,9 @@ public class NonUniqueResultException extends JdbcException {
      * 
      * @param sql
      *            SQL
-     * @param sqlFilePath
-     *            SQLファイルのパス
      */
-    public NonUniqueResultException(Sql<?> sql, String sqlFilePath) {
-        this(sql.getRawSql(), sql.getFormattedSql(), sqlFilePath);
+    public NonUniqueResultException(Sql<?> sql) {
+        this(sql.getRawSql(), sql.getFormattedSql(), sql.getSqlFilePath());
     }
 
     /**

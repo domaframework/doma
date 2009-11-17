@@ -21,7 +21,6 @@ import java.util.List;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.Sql;
 
-
 /**
  * 
  * @author taedium
@@ -51,14 +50,22 @@ public class CallableSql implements Sql<CallableSqlParameter> {
         this.parameters = Collections.unmodifiableList(parameters);
     }
 
+    @Override
     public String getRawSql() {
         return rawSql;
     }
 
+    @Override
     public String getFormattedSql() {
         return formattedSql;
     }
 
+    @Override
+    public String getSqlFilePath() {
+        return null;
+    }
+
+    @Override
     public List<CallableSqlParameter> getParameters() {
         return parameters;
     }

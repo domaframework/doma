@@ -35,16 +35,14 @@ public class BatchSqlExecutionException extends SqlExecutionException {
      * 
      * @param sql
      *            SQL
-     * @param sqlFilePath
-     *            SQLファイルのパス
      * @param cause
      *            スローされた原因
      * @param rootCause
      *            根本原因
      */
-    public BatchSqlExecutionException(Sql<?> sql, String sqlFilePath,
-            Throwable cause, Throwable rootCause) {
-        this(sql.getRawSql(), sqlFilePath, cause, rootCause);
+    public BatchSqlExecutionException(Sql<?> sql, Throwable cause,
+            Throwable rootCause) {
+        this(sql.getRawSql(), sql.getSqlFilePath(), cause, rootCause);
     }
 
     /**

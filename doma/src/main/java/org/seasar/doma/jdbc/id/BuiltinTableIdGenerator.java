@@ -99,12 +99,12 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
         StringWrapper pkColumnValueWrapper = new StringWrapper();
         pkColumnValueWrapper.set(pkColumnValue);
         updateSql = new PreparedSql(createUpdateRawSql(),
-                createUpdateFormattedSql(), Arrays.asList(new BasicInParameter(
-                        allocationSizeWrapper), new BasicInParameter(
-                        pkColumnValueWrapper)));
+                createUpdateFormattedSql(), null, Arrays.asList(
+                        new BasicInParameter(allocationSizeWrapper),
+                        new BasicInParameter(pkColumnValueWrapper)));
         selectSql = new PreparedSql(createSelectRawSql(),
-                createSelectFormattedSql(), Arrays.asList(new BasicInParameter(
-                        pkColumnValueWrapper)));
+                createSelectFormattedSql(), null, Arrays
+                        .asList(new BasicInParameter(pkColumnValueWrapper)));
     }
 
     /**
@@ -220,7 +220,7 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
         Connection connection = JdbcUtil.getConnection(config.getDataSource());
         try {
             PreparedStatement preparedStatement = JdbcUtil.prepareStatement(
-                    connection, sql.getRawSql());
+                    connection, sql);
             try {
                 logger.logSql(getClass().getName(), "updateId", sql);
                 setupOptions(config, preparedStatement);
@@ -258,7 +258,7 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
         Connection connection = JdbcUtil.getConnection(config.getDataSource());
         try {
             PreparedStatement preparedStatement = JdbcUtil.prepareStatement(
-                    connection, sql.getRawSql());
+                    connection, sql);
             try {
                 logger.logSql(getClass().getName(), "selectId", sql);
                 setupOptions(config, preparedStatement);

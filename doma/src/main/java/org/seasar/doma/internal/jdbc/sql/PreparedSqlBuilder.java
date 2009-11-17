@@ -64,6 +64,6 @@ public class PreparedSqlBuilder {
     }
 
     public PreparedSql build() {
-        return new PreparedSql(rawSql, formattedSql, parameters);
+        return new PreparedSql(rawSql, formattedSql, null, parameters);
     }
 }

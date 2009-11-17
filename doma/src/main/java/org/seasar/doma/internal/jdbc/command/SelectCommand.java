@@ -53,7 +53,7 @@ public class SelectCommand<R> implements Command<R, SelectQuery> {
                 .getDataSource());
         try {
             PreparedStatement preparedStatement = JdbcUtil.prepareStatement(
-                    connection, sql.getRawSql());
+                    connection, sql);
             try {
                 log();
                 setupOptions(preparedStatement);
@@ -61,9 +61,7 @@ public class SelectCommand<R> implements Command<R, SelectQuery> {
                 return executeQuery(preparedStatement);
             } catch (SQLException e) {
                 Dialect dialect = query.getConfig().getDialect();
-                String sqlFilePath = query.getSqlFilePath();
-                throw new SqlExecutionException(sql, sqlFilePath, e, dialect
-                        .getRootCause(e));
+                throw new SqlExecutionException(sql, e, dialect.getRootCause(e));
             } finally {
                 JdbcUtil.close(preparedStatement, query.getConfig()
                         .getJdbcLogger());

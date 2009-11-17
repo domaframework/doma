@@ -51,7 +51,7 @@ public abstract class ModuleCommand<R, Q extends ModuleQuery> implements
                 .getDataSource());
         try {
             CallableStatement callableStatement = JdbcUtil.prepareCall(
-                    connection, sql.getRawSql());
+                    connection, sql);
             try {
                 log();
                 setupOptions(callableStatement);
@@ -59,9 +59,7 @@ public abstract class ModuleCommand<R, Q extends ModuleQuery> implements
                 return executeInternal(callableStatement);
             } catch (SQLException e) {
                 Dialect dialect = query.getConfig().getDialect();
-                String sqlFilePath = query.getSqlFilePath();
-                throw new SqlExecutionException(sql, sqlFilePath, e, dialect
-                        .getRootCause(e));
+                throw new SqlExecutionException(sql, e, dialect.getRootCause(e));
             } finally {
                 JdbcUtil.close(callableStatement, query.getConfig()
                         .getJdbcLogger());

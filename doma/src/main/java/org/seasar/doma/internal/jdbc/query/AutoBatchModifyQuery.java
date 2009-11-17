@@ -210,11 +210,6 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
     }
 
     @Override
-    public String getSqlFilePath() {
-        return null;
-    }
-
-    @Override
     public Config getConfig() {
         return config;
     }

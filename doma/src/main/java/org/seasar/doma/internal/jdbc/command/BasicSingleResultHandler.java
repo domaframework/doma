@@ -45,8 +45,7 @@ public class BasicSingleResultHandler<V> implements ResultSetHandler<V> {
             fetcher.fetch(resultSet, wrapper);
             if (resultSet.next()) {
                 Sql<?> sql = query.getSql();
-                String sqlFilePath = query.getSqlFilePath();
-                throw new NonUniqueResultException(sql, sqlFilePath);
+                throw new NonUniqueResultException(sql);
             }
         }
         return wrapper.get();

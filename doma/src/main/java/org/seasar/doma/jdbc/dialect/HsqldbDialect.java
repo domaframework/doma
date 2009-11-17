@@ -122,7 +122,7 @@ public class HsqldbDialect extends StandardDialect {
             throw new DomaNullPointerException("columnName");
         }
         String rawSql = "call identity()";
-        return new PreparedSql(rawSql, rawSql, Collections
+        return new PreparedSql(rawSql, rawSql, null, Collections
                 .<PreparedSqlParameter> emptyList());
     }
 
@@ -135,7 +135,7 @@ public class HsqldbDialect extends StandardDialect {
         String rawSql = "select next value for "
                 + qualifiedSequenceName
                 + " from information_schema.system_tables where table_name = 'SYSTEM_TABLES'";
-        return new PreparedSql(rawSql, rawSql, Collections
+        return new PreparedSql(rawSql, rawSql, null, Collections
                 .<PreparedSqlParameter> emptyList());
     }
 

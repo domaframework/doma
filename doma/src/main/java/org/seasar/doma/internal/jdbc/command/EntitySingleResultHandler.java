@@ -47,8 +47,7 @@ public class EntitySingleResultHandler<E> implements ResultSetHandler<E> {
             fetcher.fetch(resultSet, entityType);
             if (resultSet.next()) {
                 Sql<?> sql = query.getSql();
-                String sqlFilePath = query.getSqlFilePath();
-                throw new NonUniqueResultException(sql, sqlFilePath);
+                throw new NonUniqueResultException(sql);
             }
             return entityType.getEntity();
         }

@@ -47,8 +47,7 @@ public class DomainSingleResultHandler<V, D> implements ResultSetHandler<D> {
             fetcher.fetch(resultSet, domainType.getWrapper());
             if (resultSet.next()) {
                 Sql<?> sql = query.getSql();
-                String sqlFilePath = query.getSqlFilePath();
-                throw new NonUniqueResultException(sql, sqlFilePath);
+                throw new NonUniqueResultException(sql);
             }
             return domainType.getDomain();
         }

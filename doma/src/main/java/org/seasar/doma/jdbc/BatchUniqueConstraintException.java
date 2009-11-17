@@ -35,14 +35,11 @@ public class BatchUniqueConstraintException extends UniqueConstraintException {
      * 
      * @param sql
      *            SQL
-     * @param sqlFilePath
-     *            SQLファイルのパス
      * @param cause
      *            原因
      */
-    public BatchUniqueConstraintException(Sql<?> sql, String sqlFilePath,
-            Throwable cause) {
-        this(sql.getRawSql(), sqlFilePath, cause);
+    public BatchUniqueConstraintException(Sql<?> sql, Throwable cause) {
+        this(sql.getRawSql(), sql.getSqlFilePath(), cause);
     }
 
     /**

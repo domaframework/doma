@@ -50,7 +50,7 @@ public abstract class AbstractIdGenerator implements IdGenerator {
         Connection connection = JdbcUtil.getConnection(config.getDataSource());
         try {
             PreparedStatement preparedStatement = JdbcUtil.prepareStatement(
-                    connection, sql.getRawSql());
+                    connection, sql);
             try {
                 logger.logSql(getClass().getName(), "getGeneratedId", sql);
                 setupOptions(config, preparedStatement);

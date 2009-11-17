@@ -83,14 +83,12 @@ public class SqlFileSelectQuery implements SelectQuery {
     protected void prepareSql() {
         sqlFile = config.getSqlFileRepository().getSqlFile(sqlFilePath,
                 config.getDialect());
-        config.getJdbcLogger().logSqlFile(callerClassName, callerMethodName,
-                sqlFile);
         SqlNode sqlNode = config.getDialect().transformSelectSqlNode(
                 sqlFile.getSqlNode(), options);
         ExpressionEvaluator evaluator = new ExpressionEvaluator(parameters,
                 config.getDialect().getExpressionFunctions());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
-                evaluator);
+                sqlFile.getPath(), evaluator);
         sql = sqlBuilder.build(sqlNode);
     }
 
@@ -151,11 +149,6 @@ public class SqlFileSelectQuery implements SelectQuery {
     @Override
     public PreparedSql getSql() {
         return sql;
-    }
-
-    @Override
-    public String getSqlFilePath() {
-        return sqlFilePath;
     }
 
     @Override
@@ -245,11 +238,6 @@ public class SqlFileSelectQuery implements SelectQuery {
         }
 
         @Override
-        public String getSqlFilePath() {
-            return null;
-        }
-
-        @Override
         public String getClassName() {
             return callerClassName;
         }
@@ -277,7 +265,7 @@ public class SqlFileSelectQuery implements SelectQuery {
             ExpressionEvaluator evaluator = new ExpressionEvaluator(parameters,
                     config.getDialect().getExpressionFunctions());
             NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                    config, evaluator);
+                    config, null, evaluator);
             sql = sqlBuilder.build(sqlNode);
         }
 

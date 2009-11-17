@@ -17,11 +17,10 @@ package org.seasar.doma.jdbc;
 
 import java.util.Collections;
 
+import junit.framework.TestCase;
+
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
-import org.seasar.doma.jdbc.UtilLoggingJdbcLogger;
-
-import junit.framework.TestCase;
 
 /**
  * @author taedium
@@ -30,9 +29,9 @@ import junit.framework.TestCase;
 public class UtilLoggingJdbcLoggerTest extends TestCase {
 
     public void test() throws Exception {
-        PreparedSql sql = new PreparedSql("aaa", "bbb", Collections
+        PreparedSql sql = new PreparedSql("aaa", "bbb", "ccc", Collections
                 .<PreparedSqlParameter> emptyList());
         UtilLoggingJdbcLogger logger = new UtilLoggingJdbcLogger();
-        logger.logSql("ccc", "ddd", sql);
+        logger.logSql("ddd", "eee", sql);
     }
 }

@@ -95,9 +95,4 @@ public abstract class AutoModuleQuery implements ModuleQuery {
         return sql;
     }
 
-    @Override
-    public String getSqlFilePath() {
-        return null;
-    }
-
 }

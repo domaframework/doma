@@ -34,11 +34,9 @@ public class BatchOptimisticLockException extends OptimisticLockException {
      * 
      * @param sql
      *            SQL
-     * @param sqlFilePath
-     *            SQLファイルのパス
      */
-    public BatchOptimisticLockException(Sql<?> sql, String sqlFilePath) {
-        this(sql.getRawSql(), sqlFilePath);
+    public BatchOptimisticLockException(Sql<?> sql) {
+        this(sql.getRawSql(), sql.getSqlFilePath());
     }
 
     /**

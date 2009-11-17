@@ -63,11 +63,6 @@ public class PreparedSqlParameterBinderTest extends TestCase {
         }
 
         @Override
-        public String getSqlFilePath() {
-            return null;
-        }
-
-        @Override
         public Config getConfig() {
             return runtimeConfig;
         }

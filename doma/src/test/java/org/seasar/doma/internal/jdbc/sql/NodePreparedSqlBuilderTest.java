@@ -89,7 +89,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         evaluator.add("salary",
                 new Value(BigDecimal.class, new BigDecimal(100)));
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
-                evaluator);
+                "dummyPath", evaluator);
         PreparedSql sql = builder.build(root);
         assertEquals("select * from aaa where bbb = ? and ccc = ?", sql
                 .getRawSql());
@@ -129,7 +129,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
 
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
-                evaluator);
+                "dummyPath", evaluator);
         PreparedSql sql = builder.build(statement);
         assertEquals("select * from aaa where bbb = ccc", sql.getRawSql());
         assertEquals("select * from aaa where /*if true*/bbb = ccc/*end*/",
@@ -163,7 +163,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
 
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
-                evaluator);
+                "dummyPath", evaluator);
         PreparedSql sql = builder.build(statement);
         assertEquals("select * from aaa", sql.getRawSql());
         assertEquals("select * from aaa where /*if false*/bbb = ccc/*end*/",
@@ -203,7 +203,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
 
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
-                evaluator);
+                "dummyPath", evaluator);
         PreparedSql sql = builder.build(statement);
         assertEquals("select * from aaa where ddd = eee", sql.getRawSql());
         assertEquals(
@@ -252,7 +252,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
 
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
-                evaluator);
+                "dummyPath", evaluator);
         PreparedSql sql = builder.build(statement);
         assertEquals("select * from aaa where bbb = ccc and ddd = eee", sql
                 .getRawSql());
@@ -302,7 +302,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
 
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
-                evaluator);
+                "dummyPath", evaluator);
         PreparedSql sql = builder.build(statement);
         assertEquals("select * from aaa where  ddd = eee", sql.getRawSql());
         assertEquals(
@@ -320,7 +320,8 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         try {
-            new NodePreparedSqlBuilder(config, evaluator).build(sqlNode);
+            new NodePreparedSqlBuilder(config, "dummyPath", evaluator)
+                    .build(sqlNode);
             fail();
         } catch (JdbcException expected) {
             System.out.println(expected.getMessage());
@@ -338,7 +339,8 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         try {
-            new NodePreparedSqlBuilder(config, evaluator).build(sqlNode);
+            new NodePreparedSqlBuilder(config, "dummyPath", evaluator)
+                    .build(sqlNode);
             fail();
         } catch (JdbcException expected) {
             System.out.println(expected.getMessage());
@@ -356,7 +358,8 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         try {
-            new NodePreparedSqlBuilder(config, evaluator).build(sqlNode);
+            new NodePreparedSqlBuilder(config, "dummyPath", evaluator)
+                    .build(sqlNode);
             fail();
         } catch (JdbcException expected) {
             System.out.println(expected.getMessage());
@@ -374,7 +377,8 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         try {
-            new NodePreparedSqlBuilder(config, evaluator).build(sqlNode);
+            new NodePreparedSqlBuilder(config, "dummyPath", evaluator)
+                    .build(sqlNode);
             fail();
         } catch (JdbcException expected) {
             System.out.println(expected.getMessage());
@@ -393,7 +397,8 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         try {
-            new NodePreparedSqlBuilder(config, evaluator).build(sqlNode);
+            new NodePreparedSqlBuilder(config, "dummyPath", evaluator)
+                    .build(sqlNode);
             fail();
         } catch (JdbcException expected) {
             System.out.println(expected.getMessage());
@@ -412,7 +417,8 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         try {
-            new NodePreparedSqlBuilder(config, evaluator).build(sqlNode);
+            new NodePreparedSqlBuilder(config, "dummyPath", evaluator)
+                    .build(sqlNode);
             fail();
         } catch (JdbcException expected) {
             System.out.println(expected.getMessage());
@@ -431,7 +437,8 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         try {
-            new NodePreparedSqlBuilder(config, evaluator).build(sqlNode);
+            new NodePreparedSqlBuilder(config, "dummyPath", evaluator)
+                    .build(sqlNode);
             fail();
         } catch (JdbcException expected) {
             System.out.println(expected.getMessage());
@@ -450,7 +457,8 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         try {
-            new NodePreparedSqlBuilder(config, evaluator).build(sqlNode);
+            new NodePreparedSqlBuilder(config, "dummyPath", evaluator)
+                    .build(sqlNode);
             fail();
         } catch (JdbcException expected) {
             System.out.println(expected.getMessage());

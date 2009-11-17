@@ -183,7 +183,8 @@ public class JdbcExceptionTest extends TestCase {
         SqlParser parser = new SqlParser(
                 "select * from aaa where bbb = \n/*bbb*/'ccc'");
         SqlNode sqlNode = parser.parse();
-        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config);
+        NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
+                "dummyPath");
         try {
             builder.build(sqlNode);
             fail();
@@ -200,7 +201,7 @@ public class JdbcExceptionTest extends TestCase {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("bbb", new Value(int.class, 1));
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
-                evaluator);
+                "dummyPath", evaluator);
         try {
             builder.build(sqlNode);
             fail();
@@ -217,7 +218,7 @@ public class JdbcExceptionTest extends TestCase {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("bbb", new Value(List.class, Arrays.asList(1, null)));
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
-                evaluator);
+                "dummyPath", evaluator);
         try {
             builder.build(sqlNode);
             fail();

@@ -123,18 +123,22 @@ public class NodePreparedSqlBuilder implements
         WhereClauseNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         WordNodeVisitor<Void, NodePreparedSqlBuilder.Context> {
 
-    protected final ExpressionEvaluator evaluator;
-
     protected final Config config;
 
-    public NodePreparedSqlBuilder(Config config) {
-        this(config, new ExpressionEvaluator(config.getDialect()
+    protected final String sqlFilePath;
+
+    protected final ExpressionEvaluator evaluator;
+
+    public NodePreparedSqlBuilder(Config config, String sqlFilePath) {
+        this(config, sqlFilePath, new ExpressionEvaluator(config.getDialect()
                 .getExpressionFunctions()));
     }
 
-    public NodePreparedSqlBuilder(Config config, ExpressionEvaluator evaluator) {
+    public NodePreparedSqlBuilder(Config config, String sqlFilePath,
+            ExpressionEvaluator evaluator) {
         assertNotNull(config, evaluator);
         this.config = config;
+        this.sqlFilePath = sqlFilePath;
         this.evaluator = evaluator;
     }
 
@@ -143,7 +147,7 @@ public class NodePreparedSqlBuilder implements
         Context context = new Context(config, evaluator);
         sqlNode.accept(this, context);
         return new PreparedSql(context.getSqlBuf(), context
-                .getFormattedSqlBuf(), context.getParameters());
+                .getFormattedSqlBuf(), sqlFilePath, context.getParameters());
     }
 
     @Override
@@ -614,9 +618,9 @@ public class NodePreparedSqlBuilder implements
 
     protected static class Context {
 
-        private final ExpressionEvaluator evaluator;
-
         private final Config config;
+
+        private final ExpressionEvaluator evaluator;
 
         private final SqlLogFormattingFunction formattingFunction = new ConvertToLogFormatFunction();
 

@@ -167,11 +167,6 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
     }
 
     @Override
-    public String getSqlFilePath() {
-        return null;
-    }
-
-    @Override
     public String getClassName() {
         return callerClassName;
     }

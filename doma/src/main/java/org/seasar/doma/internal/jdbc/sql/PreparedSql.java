@@ -32,14 +32,12 @@ public class PreparedSql implements Sql<PreparedSqlParameter> {
 
     protected final String formattedSql;
 
+    protected final String sqlFilePath;
+
     protected final List<PreparedSqlParameter> parameters;
 
-    public PreparedSql(CharSequence rawSql) {
-        this(rawSql, rawSql, Collections.<PreparedSqlParameter> emptyList());
-    }
-
     public PreparedSql(CharSequence rawSql, CharSequence formattedSql,
-            List<? extends PreparedSqlParameter> parameters) {
+            String sqlFilePath, List<? extends PreparedSqlParameter> parameters) {
         if (rawSql == null) {
             throw new DomaNullPointerException("rawSql");
         }
@@ -51,17 +49,26 @@ public class PreparedSql implements Sql<PreparedSqlParameter> {
         }
         this.rawSql = rawSql.toString().trim();
         this.formattedSql = formattedSql.toString().trim();
+        this.sqlFilePath = sqlFilePath;
         this.parameters = Collections.unmodifiableList(parameters);
     }
 
+    @Override
     public String getRawSql() {
         return rawSql;
     }
 
+    @Override
     public String getFormattedSql() {
         return formattedSql;
     }
 
+    @Override
+    public String getSqlFilePath() {
+        return sqlFilePath;
+    }
+
+    @Override
     public List<PreparedSqlParameter> getParameters() {
         return parameters;
     }

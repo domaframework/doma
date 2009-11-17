@@ -45,17 +45,15 @@ public class SqlExecutionException extends JdbcException {
      * 
      * @param sql
      *            SQL
-     * @param sqlFilePath
-     *            SQLファイルのパス
      * @param cause
      *            原因
      * @param rootCause
      *            根本原因
      */
-    public SqlExecutionException(Sql<?> sql, String sqlFilePath,
-            Throwable cause, Throwable rootCause) {
-        this(sql.getRawSql(), sql.getFormattedSql(), sqlFilePath, cause,
-                rootCause);
+    public SqlExecutionException(Sql<?> sql, Throwable cause,
+            Throwable rootCause) {
+        this(sql.getRawSql(), sql.getFormattedSql(), sql.getSqlFilePath(),
+                cause, rootCause);
     }
 
     /**

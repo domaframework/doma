@@ -68,11 +68,6 @@ public abstract class AbstractCreateQuery<R> implements CreateQuery<R> {
     }
 
     @Override
-    public String getSqlFilePath() {
-        return null;
-    }
-
-    @Override
     public void complete() {
     }
 

@@ -42,14 +42,12 @@ public class UniqueConstraintException extends JdbcException {
      * 
      * @param sql
      *            SQL
-     * @param sqlFilePath
-     *            SQLファイルのパス
      * @param cause
      *            原因
      */
-    public UniqueConstraintException(Sql<?> sql, String sqlFilePath,
-            Throwable cause) {
-        this(sql.getRawSql(), sql.getFormattedSql(), sqlFilePath, cause);
+    public UniqueConstraintException(Sql<?> sql, Throwable cause) {
+        this(sql.getRawSql(), sql.getFormattedSql(), sql.getSqlFilePath(),
+                cause);
     }
 
     /**

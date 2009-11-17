@@ -79,21 +79,6 @@ public interface JdbcLogger {
             String callerMethodName, SqlExecutionSkipCause cause);
 
     /**
-     * 実行するSQLを格納したSQLファイルを記録します。
-     * 
-     * @param callerClassName
-     *            呼び出し元のクラス名
-     * @param callerMethodName
-     *            呼び出し元のメソッド名
-     * @param sqlFile
-     *            SQLファイル
-     * @throws DomaNullPointerException
-     *             引数のいずれかが {@code null} の場合
-     */
-    void logSqlFile(String callerClassName, String callerMethodName,
-            SqlFile sqlFile);
-
-    /**
      * 実行するSQLを記録します。
      * 
      * @param callerClassName

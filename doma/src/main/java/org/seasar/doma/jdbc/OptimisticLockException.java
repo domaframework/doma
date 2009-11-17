@@ -44,11 +44,9 @@ public class OptimisticLockException extends JdbcException {
      * 
      * @param sql
      *            SQL
-     * @param sqlFilePath
-     *            SQLファイルのパス
      */
-    public OptimisticLockException(Sql<?> sql, String sqlFilePath) {
-        this(sql.getRawSql(), sql.getFormattedSql(), sqlFilePath);
+    public OptimisticLockException(Sql<?> sql) {
+        this(sql.getRawSql(), sql.getFormattedSql(), sql.getSqlFilePath());
     }
 
     /**

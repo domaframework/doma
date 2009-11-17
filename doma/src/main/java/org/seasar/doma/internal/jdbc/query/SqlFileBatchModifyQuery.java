@@ -97,8 +97,6 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
     protected void prepareSqlFile() {
         sqlFile = config.getSqlFileRepository().getSqlFile(sqlFilePath,
                 config.getDialect());
-        config.getJdbcLogger().logSqlFile(callerClassName, callerMethodName,
-                sqlFile);
     }
 
     protected void prepareOptions() {
@@ -117,7 +115,7 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
                 .singletonMap(parameterName, value), config.getDialect()
                 .getExpressionFunctions());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
-                evaluator);
+                sqlFile.getPath(), evaluator);
         PreparedSql sql = sqlBuilder.build(sqlFile.getSqlNode());
         sqls.add(sql);
     }
@@ -180,11 +178,6 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
     @Override
     public List<PreparedSql> getSqls() {
         return sqls;
-    }
-
-    @Override
-    public String getSqlFilePath() {
-        return sqlFilePath;
     }
 
     @Override

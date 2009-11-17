@@ -104,23 +104,6 @@ public class UtilLoggingJdbcLogger implements JdbcLogger {
     }
 
     @Override
-    public void logSqlFile(String callerClassName, String callerMethodName,
-            SqlFile sqlFile) {
-        if (callerClassName == null) {
-            throw new DomaNullPointerException("callerClassName");
-        }
-        if (callerMethodName == null) {
-            throw new DomaNullPointerException("callerMethodName");
-        }
-        if (sqlFile == null) {
-            throw new DomaNullPointerException("sqlFile");
-        }
-        logger
-                .logp(level, callerClassName, callerMethodName, sqlFile
-                        .getPath());
-    }
-
-    @Override
     public void logSql(String callerClassName, String callerMethodName,
             Sql<?> sql) {
         if (callerClassName == null) {
@@ -132,8 +115,9 @@ public class UtilLoggingJdbcLogger implements JdbcLogger {
         if (sql == null) {
             throw new DomaNullPointerException("sql");
         }
-        logger.logp(level, callerClassName, callerMethodName, sql
-                .getFormattedSql());
+        String message = String.format("sqlFilePath=[%s]%n%n", sql
+                .getSqlFilePath(), sql.getFormattedSql());
+        logger.logp(level, callerClassName, callerMethodName, message);
     }
 
     @Override
