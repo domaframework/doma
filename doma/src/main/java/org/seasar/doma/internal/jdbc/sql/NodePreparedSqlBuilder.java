@@ -431,6 +431,9 @@ public class NodePreparedSqlBuilder implements
         }
         p.appendRawSql(value);
         p.appendFormattedSql(value);
+        for (SqlNode child : node.getChildren()) {
+            child.accept(this, p);
+        }
         return null;
     }
 
