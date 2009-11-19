@@ -13,13 +13,22 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.dialect;
-
+package org.seasar.doma.jdbc;
 
 /**
+ * 値をSQLのログ用文字列に変換するフォーマッタです。
+ * 
  * @author taedium
  * 
  */
-public class HsqldbCountGettingTransformer extends StandardCountGettingTransformer {
+public interface SqlLogFormatter<T> {
 
+    /**
+     * 値をSQLのログ用文字列に変換します。
+     * 
+     * @param value
+     *            値
+     * @return ログ用文字列
+     */
+    String convertToLogFormat(T value);
 }

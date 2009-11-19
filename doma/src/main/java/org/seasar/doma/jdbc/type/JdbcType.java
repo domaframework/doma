@@ -22,6 +22,7 @@ import java.sql.SQLException;
 
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.jdbc.SqlLogFormatter;
 
 /**
  * {@literal JDBC} の型を表現します。 型ごとに異なる処理を抽象化します。
@@ -34,7 +35,7 @@ import org.seasar.doma.DomaNullPointerException;
  * @param <T>
  *            JDBCで扱う型
  */
-public interface JdbcType<T> {
+public interface JdbcType<T> extends SqlLogFormatter<T> {
 
     /**
      * {@link ResultSet} から値を取得します。
@@ -94,14 +95,5 @@ public interface JdbcType<T> {
      */
     T getValue(CallableStatement callableStatement, int index)
             throws SQLException;
-
-    /**
-     * 値をログ用フォーマットの文字列に変換します。
-     * 
-     * @param value
-     *            値
-     * @return ログ用フォーマットの文字列
-     */
-    String convertToLogFormat(T value);
 
 }

@@ -15,8 +15,8 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
+import org.seasar.doma.jdbc.SqlLogFormatter;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
-import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -26,8 +26,8 @@ import org.seasar.doma.wrapper.Wrapper;
 public class ConvertToLogFormatFunction implements SqlLogFormattingFunction {
 
     @Override
-    public <V> String apply(Wrapper<V> wrapper, JdbcType<V> jdbcType) {
-        return jdbcType.convertToLogFormat(wrapper.get());
+    public <V> String apply(Wrapper<V> wrapper, SqlLogFormatter<V> formatter) {
+        return formatter.convertToLogFormat(wrapper.get());
     }
 
 }

@@ -15,13 +15,15 @@
  */
 package org.seasar.doma.jdbc.dialect;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Collections;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
-import org.seasar.doma.internal.jdbc.dialect.OracleCountGettingTransformer;
 import org.seasar.doma.internal.jdbc.dialect.OracleForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.OraclePagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
@@ -29,6 +31,7 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
+import org.seasar.doma.jdbc.SqlLogFormatter;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
@@ -36,6 +39,9 @@ import org.seasar.doma.jdbc.type.AbstractResultSetType;
 import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.jdbc.type.JdbcTypes;
 import org.seasar.doma.wrapper.BooleanWrapper;
+import org.seasar.doma.wrapper.DateWrapper;
+import org.seasar.doma.wrapper.TimeWrapper;
+import org.seasar.doma.wrapper.TimestampWrapper;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -140,12 +146,6 @@ public class OracleDialect extends StandardDialect {
     }
 
     @Override
-    protected SqlNode toCountGettingSqlNode(SqlNode sqlNode) {
-        OracleCountGettingTransformer transformer = new OracleCountGettingTransformer();
-        return transformer.transform(sqlNode);
-    }
-
-    @Override
     public boolean isUniqueConstraintViolated(SQLException sqlException) {
         if (sqlException == null) {
             throw new DomaNullPointerException("sqlException");
@@ -237,6 +237,59 @@ public class OracleDialect extends StandardDialect {
                 SqlLogFormattingFunction p) throws RuntimeException {
             return p.apply(wrapper, JdbcTypes.INTEGER_ADAPTIVE_BOOLEAN);
         }
+
+        @Override
+        public String visitDateWrapper(DateWrapper wrapper,
+                SqlLogFormattingFunction p) {
+            return p.apply(wrapper, new DateFormatter());
+        }
+
+        @Override
+        public String visitTimeWrapper(TimeWrapper wrapper,
+                SqlLogFormattingFunction p) {
+            return p.apply(wrapper, new TimeFormatter());
+        }
+
+        @Override
+        public String visitTimestampWrapper(TimestampWrapper wrapper,
+                SqlLogFormattingFunction p) {
+            return p.apply(wrapper, new TimestampFormatter());
+        }
+
+        protected static class DateFormatter implements SqlLogFormatter<Date> {
+
+            @Override
+            public String convertToLogFormat(Date value) {
+                if (value == null) {
+                    return "null";
+                }
+                return "date'" + value + "'";
+            }
+        }
+
+        protected static class TimeFormatter implements SqlLogFormatter<Time> {
+
+            @Override
+            public String convertToLogFormat(Time value) {
+                if (value == null) {
+                    return "null";
+                }
+                return "time'" + value + "'";
+            }
+        }
+
+        protected static class TimestampFormatter implements
+                SqlLogFormatter<Timestamp> {
+
+            @Override
+            public String convertToLogFormat(Timestamp value) {
+                if (value == null) {
+                    return "null";
+                }
+                return "timestamp'" + value + "'";
+            }
+        }
+
     }
 
     /**
