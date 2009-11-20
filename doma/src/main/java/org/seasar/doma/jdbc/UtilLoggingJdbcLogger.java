@@ -115,7 +115,7 @@ public class UtilLoggingJdbcLogger implements JdbcLogger {
         if (sql == null) {
             throw new DomaNullPointerException("sql");
         }
-        String message = String.format("sqlFilePath=[%s]%n%n", sql
+        String message = String.format("SQL log. sqlFilePath=[%s],%n%s", sql
                 .getSqlFilePath(), sql.getFormattedSql());
         logger.logp(level, callerClassName, callerMethodName, message);
     }
