@@ -213,12 +213,12 @@ public interface EmployeeDao {
 					S2Daoでは、メソッドのパラメータがSQLファイル内のバインド変数コメントで参照できるようにArgumentsアノテーションを使用してパラメータごとに名前をつける必要がありました。
 				</p>
 <source><![CDATA[@Arguments( { "job", "salary" })
-List<Employee> selectEmployeeByJobDeptno(String name, BigDecimal salary);]]></source>
+List<Employee> selectEmployeeByJobDeptno(String job, BigDecimal salary);]]></source>
 				<p>
 					Domaでは、Argumentsアノテーションに相当するものは不要です。aptによりメソッドのパラメータ名をそのまま使用できるからです。
 				</p>
 <source><![CDATA[@Select
-List<Employee> selectEmployeeByJobDeptno(String name, BigDecimal salary);]]></source>
+List<Employee> selectEmployeeByJobDeptno(String job, BigDecimal salary);]]></source>
 			</subsection>
 			<subsection name="Daoの初期化コスト">
 				<p>

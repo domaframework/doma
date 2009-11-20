@@ -24,10 +24,8 @@
 			replace="\1${newVersion}\2" encoding="UTF-8" flags="g">
 			<fileset dir="../doma-tutorial" includes=".classpath" />
 			<fileset dir="../doma-tutorial" includes=".factorypath" />
-			<fileset dir="../doma-sastruts-demo" includes=".classpath" />
-			<fileset dir="../doma-sastruts-demo" includes=".factorypath" />
-			<fileset dir="../doma-gwt-demo" includes=".classpath" />
-			<fileset dir="../doma-gwt-demo" includes=".factorypath" />
+			<fileset dir="../doma-jpetstore" includes=".classpath" />
+			<fileset dir="../doma-jpetstore" includes=".factorypath" />
 		</replaceregexp>
 	</target>
 
@@ -58,10 +56,7 @@
 		<ant dir="../doma-tutorial" antfile="build.xml" target="dist">
 			<property name="zipDir" value="../doma/${zipDir}"/>
 		</ant>
-		<ant dir="../doma-sastruts-demo" antfile="build.xml" target="dist">
-			<property name="zipDir" value="../doma/${zipDir}"/>
-		</ant>
-		<ant dir="../doma-gwt-demo" antfile="build.xml" target="dist">
+		<ant dir="../doma-jpetstore" antfile="build.xml" target="dist">
 			<property name="zipDir" value="../doma/${zipDir}"/>
 		</ant>
 	</target>
