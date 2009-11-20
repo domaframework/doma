@@ -1,5 +1,6 @@
 package org.seasar.doma.internal.apt.entity;
 
+/** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
 public class DomainPropertyEntity_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFactory<org.seasar.doma.internal.apt.entity.DomainPropertyEntity> {
 
@@ -44,8 +45,7 @@ public class DomainPropertyEntity_ implements org.seasar.doma.internal.jdbc.enti
         private DomainPropertyEntityType(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity) {
             __entity = entity;
             __originalStates = null;
-            id.getWrapper().set(org.seasar.doma.internal.apt.entity.DomainPropertyEntity_.DomainPropertyEntityAccessor.getId(entity));
-            name.getWrapper().set(org.seasar.doma.internal.apt.entity.DomainPropertyEntity_.DomainPropertyEntityAccessor.getName(entity) != null ? org.seasar.doma.internal.apt.entity.DomainPropertyEntity_.DomainPropertyEntityAccessor.getName(entity).getValue() : null);
+            refreshEntityTypeInternal();
         }
 
         @Override
@@ -71,16 +71,19 @@ public class DomainPropertyEntity_ implements org.seasar.doma.internal.jdbc.enti
         @Override
         public void preInsert() {
             __listener.preInsert(__entity);
+            refreshEntityTypeInternal();
         }
 
         @Override
         public void preUpdate() {
             __listener.preUpdate(__entity);
+            refreshEntityTypeInternal();
         }
 
         @Override
         public void preDelete() {
             __listener.preDelete(__entity);
+            refreshEntityTypeInternal();
         }
 
         @Override
@@ -120,9 +123,14 @@ public class DomainPropertyEntity_ implements org.seasar.doma.internal.jdbc.enti
             refreshEntityInternal();
         }
 
-        public void refreshEntityInternal() {
+        private void refreshEntityInternal() {
             org.seasar.doma.internal.apt.entity.DomainPropertyEntity_.DomainPropertyEntityAccessor.setId(__entity, id.getWrapper().get());
             org.seasar.doma.internal.apt.entity.DomainPropertyEntity_.DomainPropertyEntityAccessor.setName(__entity, new org.seasar.doma.internal.apt.entity.DomainPropertyEntity.Name(name.getWrapper().get()));
+        }
+
+        private void refreshEntityTypeInternal() {
+            id.getWrapper().set(org.seasar.doma.internal.apt.entity.DomainPropertyEntity_.DomainPropertyEntityAccessor.getId(__entity));
+            name.getWrapper().set(org.seasar.doma.internal.apt.entity.DomainPropertyEntity_.DomainPropertyEntityAccessor.getName(__entity) != null ? org.seasar.doma.internal.apt.entity.DomainPropertyEntity_.DomainPropertyEntityAccessor.getName(__entity).getValue() : null);
         }
 
         @Override

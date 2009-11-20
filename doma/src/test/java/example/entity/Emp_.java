@@ -89,10 +89,6 @@ public class Emp_ implements EntityTypeFactory<Emp> {
 
         private EmpType(Emp entity) {
             this.__entity = entity;
-            id.getWrapper().set(entity.id);
-            name.getWrapper().set(entity.name);
-            salary.getWrapper().set(entity.salary);
-            version.getWrapper().set(entity.version);
             if (HashMap.class.isInstance(entity.originalStates)) {
                 @SuppressWarnings("unchecked")
                 HashMap<String, Wrapper<?>> originalStates = (HashMap<String, Wrapper<?>>) entity.originalStates;
@@ -100,6 +96,7 @@ public class Emp_ implements EntityTypeFactory<Emp> {
             } else {
                 __originalStates = null;
             }
+            refreshEntityTypeInternal();
         }
 
         @Override
@@ -118,7 +115,7 @@ public class Emp_ implements EntityTypeFactory<Emp> {
             refreshEntityInternal();
         }
 
-        protected void refreshEntityInternal() {
+        private void refreshEntityInternal() {
             __entity.id = id.getWrapper().get();
             __entity.name = name.getWrapper().get();
             __entity.salary = salary.getWrapper().get();
@@ -131,6 +128,13 @@ public class Emp_ implements EntityTypeFactory<Emp> {
                 __originalStates.put("salary", salary.getWrapper());
                 __originalStates.put("version", version.getWrapper());
             }
+        }
+
+        private void refreshEntityTypeInternal() {
+            id.getWrapper().set(__entity.id);
+            name.getWrapper().set(__entity.name);
+            salary.getWrapper().set(__entity.salary);
+            version.getWrapper().set(__entity.version);
         }
 
         @Override
@@ -182,16 +186,19 @@ public class Emp_ implements EntityTypeFactory<Emp> {
         @Override
         public void preInsert() {
             __listener.preInsert(__entity);
+            refreshEntityTypeInternal();
         }
 
         @Override
         public void preUpdate() {
             __listener.preUpdate(__entity);
+            refreshEntityTypeInternal();
         }
 
         @Override
         public void preDelete() {
             __listener.preDelete(__entity);
+            refreshEntityTypeInternal();
         }
 
         @Override

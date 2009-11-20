@@ -133,6 +133,7 @@ public class DaoGenerator extends AbstractGenerator {
     }
 
     protected void printClass() {
+        iprint("/** */%n");
         for (AnnotationMirror annotation : daoMeta
                 .getAnnotationMirrors(AnnotationTarget.CLASS)) {
             iprint("@%1$s(%2$s)%n", annotation.getTypeValue(), annotation
@@ -155,6 +156,9 @@ public class DaoGenerator extends AbstractGenerator {
 
     protected void printConstructors() {
         if (daoMeta.isConfigProxied()) {
+            iprint("/**%n");
+            iprint(" * @param config the config%n");
+            iprint(" */%n");
             for (AnnotationMirror annotation : daoMeta
                     .getAnnotationMirrors(AnnotationTarget.CONSTRUCTOR)) {
                 iprint("@%1$s(%2$s)%n", annotation.getTypeValue(), annotation
@@ -173,12 +177,16 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("}%n");
             print("%n");
         } else {
+            iprint("/** */%n");
             iprint("public %1$s() {%n", simpleName);
             indent();
             iprint("super(new %1$s());%n", daoMeta.getConfigType());
             unindent();
             iprint("}%n");
             print("%n");
+            iprint("/**%n");
+            iprint(" * @param connection the connection%n");
+            iprint(" */%n");
             iprint("public %1$s(%2$s connection) {%n", simpleName,
                     Connection.class.getName());
             indent();
@@ -186,6 +194,9 @@ public class DaoGenerator extends AbstractGenerator {
             unindent();
             iprint("}%n");
             print("%n");
+            iprint("/**%n");
+            iprint(" * @param dataSource the dataSource%n");
+            iprint(" */%n");
             iprint("public %1$s(%2$s dataSource) {%n", simpleName,
                     DataSource.class.getName());
             indent();

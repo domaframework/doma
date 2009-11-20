@@ -61,6 +61,7 @@ public class DomainTypeFactoryGenerator extends AbstractGenerator {
     }
 
     protected void printClass() {
+        iprint("/** */%n");
         printGenerated();
         iprint("public class %1$s implements %2$s<%3$s, %4$s> {%n", simpleName,
                 DomainTypeFactory.class.getName(), TypeMirrorUtil

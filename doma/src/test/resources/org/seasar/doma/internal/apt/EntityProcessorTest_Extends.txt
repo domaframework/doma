@@ -1,5 +1,6 @@
 package org.seasar.doma.internal.apt.entity;
 
+/** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
 public class ChildEntity_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFactory<org.seasar.doma.internal.apt.entity.ChildEntity> {
 
@@ -46,9 +47,7 @@ public class ChildEntity_ implements org.seasar.doma.internal.jdbc.entity.Entity
         private ChildEntityType(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
             __entity = entity;
             __originalStates = null;
-            aaa.getWrapper().set(org.seasar.doma.internal.apt.entity.ParentEntity_.ParentEntityAccessor.getAaa(entity));
-            bbb.getWrapper().set(org.seasar.doma.internal.apt.entity.ChildEntity_.ChildEntityAccessor.getBbb(entity));
-            ccc.getWrapper().set(org.seasar.doma.internal.apt.entity.ChildEntity_.ChildEntityAccessor.getCcc(entity));
+            refreshEntityTypeInternal();
         }
 
         @Override
@@ -74,16 +73,19 @@ public class ChildEntity_ implements org.seasar.doma.internal.jdbc.entity.Entity
         @Override
         public void preInsert() {
             __listener.preInsert(__entity);
+            refreshEntityTypeInternal();
         }
 
         @Override
         public void preUpdate() {
             __listener.preUpdate(__entity);
+            refreshEntityTypeInternal();
         }
 
         @Override
         public void preDelete() {
             __listener.preDelete(__entity);
+            refreshEntityTypeInternal();
         }
 
         @Override
@@ -125,10 +127,16 @@ public class ChildEntity_ implements org.seasar.doma.internal.jdbc.entity.Entity
             refreshEntityInternal();
         }
 
-        public void refreshEntityInternal() {
+        private void refreshEntityInternal() {
             org.seasar.doma.internal.apt.entity.ParentEntity_.ParentEntityAccessor.setAaa(__entity, aaa.getWrapper().get());
             org.seasar.doma.internal.apt.entity.ChildEntity_.ChildEntityAccessor.setBbb(__entity, bbb.getWrapper().get());
             org.seasar.doma.internal.apt.entity.ChildEntity_.ChildEntityAccessor.setCcc(__entity, ccc.getWrapper().get());
+        }
+
+        private void refreshEntityTypeInternal() {
+            aaa.getWrapper().set(org.seasar.doma.internal.apt.entity.ParentEntity_.ParentEntityAccessor.getAaa(__entity));
+            bbb.getWrapper().set(org.seasar.doma.internal.apt.entity.ChildEntity_.ChildEntityAccessor.getBbb(__entity));
+            ccc.getWrapper().set(org.seasar.doma.internal.apt.entity.ChildEntity_.ChildEntityAccessor.getCcc(__entity));
         }
 
         @Override

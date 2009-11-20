@@ -1,5 +1,6 @@
 package org.seasar.doma.internal.apt.entity;
 
+/** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
 public class PrimitivePropertyEntity_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFactory<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity> {
 
@@ -46,9 +47,7 @@ public class PrimitivePropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         private PrimitivePropertyEntityType(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity) {
             __entity = entity;
             __originalStates = null;
-            id.getWrapper().set(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity_.PrimitivePropertyEntityAccessor.getId(entity));
-            bool.getWrapper().set(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity_.PrimitivePropertyEntityAccessor.getBool(entity));
-            version.getWrapper().set(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity_.PrimitivePropertyEntityAccessor.getVersion(entity));
+            refreshEntityTypeInternal();
         }
 
         @Override
@@ -74,16 +73,19 @@ public class PrimitivePropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         @Override
         public void preInsert() {
             __listener.preInsert(__entity);
+            refreshEntityTypeInternal();
         }
 
         @Override
         public void preUpdate() {
             __listener.preUpdate(__entity);
+            refreshEntityTypeInternal();
         }
 
         @Override
         public void preDelete() {
             __listener.preDelete(__entity);
+            refreshEntityTypeInternal();
         }
 
         @Override
@@ -125,10 +127,16 @@ public class PrimitivePropertyEntity_ implements org.seasar.doma.internal.jdbc.e
             refreshEntityInternal();
         }
 
-        public void refreshEntityInternal() {
+        private void refreshEntityInternal() {
             org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity_.PrimitivePropertyEntityAccessor.setId(__entity, org.seasar.doma.internal.util.BoxedPrimitiveUtil.unbox(id.getWrapper().get()));
             org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity_.PrimitivePropertyEntityAccessor.setBool(__entity, org.seasar.doma.internal.util.BoxedPrimitiveUtil.unbox(bool.getWrapper().get()));
             org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity_.PrimitivePropertyEntityAccessor.setVersion(__entity, org.seasar.doma.internal.util.BoxedPrimitiveUtil.unbox(version.getWrapper().get()));
+        }
+
+        private void refreshEntityTypeInternal() {
+            id.getWrapper().set(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity_.PrimitivePropertyEntityAccessor.getId(__entity));
+            bool.getWrapper().set(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity_.PrimitivePropertyEntityAccessor.getBool(__entity));
+            version.getWrapper().set(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity_.PrimitivePropertyEntityAccessor.getVersion(__entity));
         }
 
         @Override

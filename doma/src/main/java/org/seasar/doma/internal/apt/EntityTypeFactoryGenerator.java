@@ -76,6 +76,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
     }
 
     protected void printClass() {
+        iprint("/** */%n");
         printGenerated();
         iprint("public class %1$s implements %2$s<%3$s> {%n", simpleName,
                 EntityTypeFactory.class.getName(), entityMeta
@@ -296,41 +297,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         } else {
             iprint("    __originalStates = null;%n");
         }
-        for (final EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
-            pm.getDataType().accept(
-                    new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
-
-                        @Override
-                        protected Void defaultAction(DataType dataType, Void p)
-                                throws RuntimeException {
-                            return assertUnreachable();
-                        }
-
-                        @Override
-                        public Void visitBasicType(BasicType basicType, Void p)
-                                throws RuntimeException {
-                            iprint(
-                                    "    %1$s.getWrapper().set(%2$s%3$s.%4$sAccessor.get%5$s(entity));%n",
-                                    pm.getName(), pm.getEntityTypeName(),
-                                    suffix, pm.getEntityName(), StringUtil
-                                            .capitalize(pm.getName()));
-                            return null;
-                        }
-
-                        @Override
-                        public Void visitDomainType(DomainType domainType,
-                                Void p) throws RuntimeException {
-                            iprint(
-                                    "    %1$s.getWrapper().set(%2$s%3$s.%4$sAccessor.get%5$s(entity) != null ? %2$s%3$s.%4$sAccessor.get%5$s(entity).%6$s() : null);%n",
-                                    pm.getName(), pm.getEntityTypeName(),
-                                    suffix, pm.getEntityName(), StringUtil
-                                            .capitalize(pm.getName()),
-                                    domainType.getAccessorMetod());
-                            return null;
-                        }
-
-                    }, null);
-        }
+        iprint("    refreshEntityTypeInternal();%n");
         iprint("}%n");
         print("%n");
     }
@@ -349,6 +316,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         printTypeClassGetVersionPropertyMethod();
         printTypeClassRefreshEntityMethod();
         printTypeClassRefreshEntityInternalMethod();
+        printTypeClassRefreshEntityTypeInternalMethod();
         printTypeClassGetEntityMethod();
         printTypeClassGetEntityClassMethod();
         printTypeClassGetOriginalStatesMethod();
@@ -390,6 +358,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         iprint("@Override%n");
         iprint("public void preInsert() {%n");
         iprint("    __listener.preInsert(__entity);%n");
+        iprint("    refreshEntityTypeInternal();%n");
         iprint("}%n");
         print("%n");
     }
@@ -398,6 +367,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         iprint("@Override%n");
         iprint("public void preUpdate() {%n");
         iprint("    __listener.preUpdate(__entity);%n");
+        iprint("    refreshEntityTypeInternal();%n");
         iprint("}%n");
         print("%n");
     }
@@ -406,6 +376,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         iprint("@Override%n");
         iprint("public void preDelete() {%n");
         iprint("    __listener.preDelete(__entity);%n");
+        iprint("    refreshEntityTypeInternal();%n");
         iprint("}%n");
         print("%n");
     }
@@ -495,7 +466,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
     }
 
     protected void printTypeClassRefreshEntityInternalMethod() {
-        iprint("public void refreshEntityInternal() {%n");
+        iprint("private void refreshEntityInternal() {%n");
         for (final EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             pm.getDataType().accept(
                     new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
@@ -576,6 +547,47 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
                     "    %1$s%2$s.%3$sAccessor.set%4$s(__entity, originalStates);%n",
                     osm.getEntityTypeName(), suffix, osm.getEntityName(),
                     StringUtil.capitalize(osm.getName()));
+        }
+        iprint("}%n");
+        print("%n");
+    }
+
+    protected void printTypeClassRefreshEntityTypeInternalMethod() {
+        iprint("private void refreshEntityTypeInternal() {%n");
+        for (final EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
+            pm.getDataType().accept(
+                    new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+
+                        @Override
+                        protected Void defaultAction(DataType dataType, Void p)
+                                throws RuntimeException {
+                            return assertUnreachable();
+                        }
+
+                        @Override
+                        public Void visitBasicType(BasicType basicType, Void p)
+                                throws RuntimeException {
+                            iprint(
+                                    "    %1$s.getWrapper().set(%2$s%3$s.%4$sAccessor.get%5$s(__entity));%n",
+                                    pm.getName(), pm.getEntityTypeName(),
+                                    suffix, pm.getEntityName(), StringUtil
+                                            .capitalize(pm.getName()));
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitDomainType(DomainType domainType,
+                                Void p) throws RuntimeException {
+                            iprint(
+                                    "    %1$s.getWrapper().set(%2$s%3$s.%4$sAccessor.get%5$s(__entity) != null ? %2$s%3$s.%4$sAccessor.get%5$s(__entity).%6$s() : null);%n",
+                                    pm.getName(), pm.getEntityTypeName(),
+                                    suffix, pm.getEntityName(), StringUtil
+                                            .capitalize(pm.getName()),
+                                    domainType.getAccessorMetod());
+                            return null;
+                        }
+
+                    }, null);
         }
         iprint("}%n");
         print("%n");

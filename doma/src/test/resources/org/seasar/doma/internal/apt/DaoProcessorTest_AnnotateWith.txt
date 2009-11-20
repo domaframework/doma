@@ -1,10 +1,14 @@
 package org.seasar.doma.internal.apt.dao;
 
+/** */
 @org.seasar.doma.internal.apt.dao.ClassAnnotation(aaa = 1, bbb = true)
 @org.seasar.doma.internal.apt.dao.ClassAnnotation2(aaa = 1, bbb = true)
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
 public class AnnotateWithDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.dao.AnnotateWithDao {
 
+    /**
+     * @param config the config
+     */
     @org.seasar.doma.internal.apt.dao.ConstructorAnnotation(aaa = 1, bbb = true)
     @org.seasar.doma.internal.apt.dao.ConstructorAnnotation2(aaa = 1, bbb = true)
     public AnnotateWithDaoImpl(@org.seasar.doma.internal.apt.dao.ConstructorParameterAnnotation(aaa = 1, bbb = true) @org.seasar.doma.internal.apt.dao.ConstructorParameterAnnotation2(aaa = 1, bbb = true) org.seasar.doma.jdbc.Config config) {

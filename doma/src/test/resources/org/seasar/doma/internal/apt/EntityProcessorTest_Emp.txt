@@ -1,5 +1,6 @@
 package org.seasar.doma.internal.apt.entity;
 
+/** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
 public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFactory<org.seasar.doma.internal.apt.entity.Emp> {
 
@@ -62,10 +63,7 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
             } else {
                 __originalStates = null;
             }
-            id.getWrapper().set(org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.getId(entity));
-            name.getWrapper().set(org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.getName(entity));
-            salary.getWrapper().set(org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.getSalary(entity));
-            version.getWrapper().set(org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.getVersion(entity));
+            refreshEntityTypeInternal();
         }
 
         @Override
@@ -91,16 +89,19 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
         @Override
         public void preInsert() {
             __listener.preInsert(__entity);
+            refreshEntityTypeInternal();
         }
 
         @Override
         public void preUpdate() {
             __listener.preUpdate(__entity);
+            refreshEntityTypeInternal();
         }
 
         @Override
         public void preDelete() {
             __listener.preDelete(__entity);
+            refreshEntityTypeInternal();
         }
 
         @Override
@@ -144,7 +145,7 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
             refreshEntityInternal();
         }
 
-        public void refreshEntityInternal() {
+        private void refreshEntityInternal() {
             org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.setId(__entity, id.getWrapper().get());
             org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.setName(__entity, name.getWrapper().get());
             org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.setSalary(__entity, salary.getWrapper().get());
@@ -161,6 +162,13 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
             originalStates.put("salary", salary.getWrapper().copy());
             originalStates.put("version", version.getWrapper().copy());
             org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.setOriginalStates(__entity, originalStates);
+        }
+
+        private void refreshEntityTypeInternal() {
+            id.getWrapper().set(org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.getId(__entity));
+            name.getWrapper().set(org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.getName(__entity));
+            salary.getWrapper().set(org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.getSalary(__entity));
+            version.getWrapper().set(org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.getVersion(__entity));
         }
 
         @Override

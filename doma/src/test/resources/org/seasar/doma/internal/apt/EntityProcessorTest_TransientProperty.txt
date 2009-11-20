@@ -1,5 +1,6 @@
 package org.seasar.doma.internal.apt.entity;
 
+/** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
 public class TransientPropertyEntity_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFactory<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> {
 
@@ -42,7 +43,7 @@ public class TransientPropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         private TransientPropertyEntityType(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity) {
             __entity = entity;
             __originalStates = null;
-            id.getWrapper().set(org.seasar.doma.internal.apt.entity.TransientPropertyEntity_.TransientPropertyEntityAccessor.getId(entity));
+            refreshEntityTypeInternal();
         }
 
         @Override
@@ -68,16 +69,19 @@ public class TransientPropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         @Override
         public void preInsert() {
             __listener.preInsert(__entity);
+            refreshEntityTypeInternal();
         }
 
         @Override
         public void preUpdate() {
             __listener.preUpdate(__entity);
+            refreshEntityTypeInternal();
         }
 
         @Override
         public void preDelete() {
             __listener.preDelete(__entity);
+            refreshEntityTypeInternal();
         }
 
         @Override
@@ -115,8 +119,12 @@ public class TransientPropertyEntity_ implements org.seasar.doma.internal.jdbc.e
             refreshEntityInternal();
         }
 
-        public void refreshEntityInternal() {
+        private void refreshEntityInternal() {
             org.seasar.doma.internal.apt.entity.TransientPropertyEntity_.TransientPropertyEntityAccessor.setId(__entity, id.getWrapper().get());
+        }
+
+        private void refreshEntityTypeInternal() {
+            id.getWrapper().set(org.seasar.doma.internal.apt.entity.TransientPropertyEntity_.TransientPropertyEntityAccessor.getId(__entity));
         }
 
         @Override
