@@ -13,8 +13,8 @@
 						<li><a href="#JDKのインストール">JDKのインストール</a></li>
 						<li><a href="#Eclipseのインストール">Eclipseのインストール</a></li>
 						<li><a href="#Tomcatのインストール">Tomcatのインストール</a></li>
-						<li><a href="#Sysdeo/SQLI Tomcat Launcherのインストール">Sysdeo/SQLI Tomcat Launcherのインストール</a></li>
-						<li><a href="#Doma Toolsのインストール">Doma Toolsのインストール</a></li>
+						<li><a href="#SysdeoSQLI_Tomcat_Launcherのインストール">Sysdeo/SQLI Tomcat Launcherのインストール</a></li>
+						<li><a href="#Doma_Toolsのインストール">Doma Toolsのインストール</a></li>
 						<li><a href="#プロジェクトのインポート">プロジェクトのインポート</a></li>
 					</ul>
 				</li>
@@ -133,7 +133,7 @@
 			<ul>
 				<li>DI（Dependency Injection）はActionFormをActionに注入する場合にのみ使用する</li>
 				<li>ServiceクラスやDaoクラスはアプリケーションでインスタンス化する</li>
-				<li>HOT deploy非対象パッケージをconvention.diconに登録し、HOT deploy対象パッケージから非対象パッケージへの依存関係はつくらない</li>
+				<li>HOT deploy非対象パッケージをconvention.diconに登録し、HOT deploy非対象パッケージからHOT deploy対象パッケージへの依存関係はつくらない</li>
 			</ul>
 		</section>
 	</body>
