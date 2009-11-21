@@ -5,11 +5,6 @@
 		<title>チュートリアル</title>
 	</properties>
 	<body>
-		<section name="概要">
-			<p>
-				このチュートリアルでは、<a href="http://www.junit.org/">JUnit</a>を使いDomaの基本的な使い方を示します。
-			</p>
-		</section>
 		<section name="チュートリアル">
 			<ul>
 				<li>
@@ -20,6 +15,15 @@
 				</li>
 				<li>
 					<a href="select.html">検索</a>
+				</li>
+				<li>
+					<a href="insert.html">挿入</a>
+				</li>
+				<li>
+					<a href="update.html">更新</a>
+				</li>
+				<li>
+					<a href="delete.html">削除</a>
 				</li>
 			</ul>
 		</section>

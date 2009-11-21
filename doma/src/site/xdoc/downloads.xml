@@ -7,103 +7,58 @@
 	<body>
 		<section name="ダウンロード">
 			<p>
-				以下の配布ファイルは、いずれもEclipseのプロジェクト形式です。JDK 6 と Eclipse 3.5 の組み合わせで動作確認をしています。
-				Eclipseプラグインの更新サイトについては<a href="extension/doma_tools.html">Doma Tools</a>を参照ください。
+				JDK 6 と Eclipse 3.5 の組み合わせで動作確認をしています。
+			</p>
+			<p>
+				配布ファイルはEclipseのプロジェクト形式です。
+				<a href="extension/doma_tools.html">Doma Tools</a>は更新サイトからダウンロードできるEclipseプラグインです。
 			</p>
 			<table>
 				<tr>
 					<th>Doma本体</th>
-					<th>JUnitを利用したチュートリアル</th>
-					<th>SAStrutsを利用したデモアプリ</th>
-					<th>GWTを利用したデモアプリ</th>
+					<th>チュートリアル</th>
+					<th>Doma JPetStore</th>
+					<th>Doma Tools (更新サイト)</th>
 				</tr>
 				<tr>
-					<td><a href="download/2009-11-03/doma-0.9.9.zip">doma-0.9.9</a></td>
-					<td><a href="download/2009-11-03/doma-tutorial-0.9.9.zip">doma-tutorial-0.9.9</a></td>
-					<td><a href="download/2009-11-03/doma-sastruts-demo-0.9.9.zip">doma-sastruts-demo-0.9.9</a></td>
-					<td><a href="download/2009-11-03/doma-gwt-demo-0.9.9.zip">doma-gwt-demo-0.9.9</a></td>
-				</tr>
-				<tr>
-					<td><a href="download/2009-10-26/doma-0.9.8.zip">doma-0.9.8</a></td>
-					<td><a href="download/2009-10-26/doma-tutorial-0.9.8.zip">doma-tutorial-0.9.8</a></td>
-					<td><a href="download/2009-10-26/doma-sastruts-demo-0.9.8.zip">doma-sastruts-demo-0.9.8</a></td>
-					<td><a href="download/2009-10-26/doma-gwt-demo-0.9.8.zip">doma-gwt-demo-0.9.8</a></td>
-				</tr>
-				<tr>
-					<td><a href="download/2009-10-21/doma-0.9.7.zip">doma-0.9.7</a></td>
-					<td><a href="download/2009-10-21/doma-tutorial-0.9.7.zip">doma-tutorial-0.9.7</a></td>
-					<td><a href="download/2009-10-21/doma-sastruts-demo-0.9.7.zip">doma-sastruts-demo-0.9.7</a></td>
-					<td><a href="download/2009-10-21/doma-gwt-demo-0.9.7.zip">doma-gwt-demo-0.9.7</a></td>
-				</tr>
-				<tr>
-					<td><a href="download/2009-10-04/doma-0.9.6.zip">doma-0.9.6</a></td>
-					<td><a href="download/2009-10-04/doma-tutorial-0.9.6.zip">doma-tutorial-0.9.6</a></td>
-					<td><a href="download/2009-10-04/doma-sastruts-demo-0.9.6.zip">doma-sastruts-demo-0.9.6</a></td>
-					<td><a href="download/2009-10-04/doma-gwt-demo-0.9.6.zip">doma-gwt-demo-0.9.6</a></td>
-				</tr>
-				<tr>
-					<td><a href="download/2009-10-04/doma-0.9.5.zip">doma-0.9.5</a></td>
-					<td><a href="download/2009-10-04/doma-tutorial-0.9.5.zip">doma-tutorial-0.9.5</a></td>
-					<td><a href="download/2009-10-04/doma-sastruts-demo-0.9.5.zip">doma-sastruts-demo-0.9.5</a></td>
-					<td><a href="download/2009-10-04/doma-gwt-demo-0.9.5.zip">doma-gwt-demo-0.9.5</a></td>
+					<td><a href="download/2009-11-21/doma-0.9.10.zip">doma-0.9.10</a></td>
+					<td><a href="download/2009-11-21/doma-tutorial-0.9.10.zip">doma-tutorial-0.9.10</a></td>
+					<td><a href="download/2009-11-21/doma-jpetstore-0.9.10.zip">doma-jpetstore-0.9.10</a></td>
+					<td><a href="http://doma.sandbox.seasar.org/eclipse/updatesite/3.5">Doma Tools 0.9.10</a></td>
 				</tr>
 			</table>
 			<p>
-				<a href="downloads_old.html">さらに古いバージョンのダウンロード</a>
+				<a href="downloads_old.html">古いバージョンのダウンロード</a>
 			</p>
+		</section>
+		<section name="説明">
 			<subsection name="Doma本体">
 				<p>
 					Domaのjarファイル、ソースコード、ドキュメントを含んでいます。
 				</p>
 			</subsection>
-			<subsection name="JUnitを利用したチュートリアル">
+			<subsection name="チュートリアル">
 				<p>
 					Domaの基本機能の使用例をJUnitを用いて示したコンソールアプリケーションです。
 				</p>
-			</subsection>
-			<subsection name="SAStrutsを利用したデモアプリ">
 				<p>
-					<a href="http://s2container.seasar.org/2.4/ja/">Seasar2（S2Container）</a>との連携方法を示すデモ用Webアプリケーションです。
-					Webフレームワークには<a href="http://sastruts.seasar.org/">SAStruts</a>を使用しています。
-				</p>
-				<p>
-					このアプリケーションでは、次の事柄を示します。
-				</p>
-				<ul>
-					<li>Seasar2で管理されたデータソースの利用方法</li>
-					<li>Seasar2で管理されたトランザクションマネジャーとの連携方法</li>
-					<li>ログ管理の統合方法（JdbcLoggerの実装例）</li>
-					<li>publicフィールドをもったエンティティクラスの利用方法</li>
-				</ul>	
-				<h4>設定と起動方法</h4>
-				<p>
-					このアプリケーションをEclipseで動作させるには、Sysdeo/SQLI Tomcat Launcher をお使いください。
-					Sysdeo/SQLI Tomcat Launcher は <a href="http://eclipse.seasar.org/updates/3.2/">http://eclipse.seasar.org/updates/3.2/</a>
-					の更新サイトからインストールできます。
-					Sysdeo/SQLI Tomcat Launcher をインストールしたら、メニューの「Window」 - 「Preference」 ー「Tomcat」 よりTomcatのバージョンとホームを指定してください。
-					次に、プロジェクトを右クリックし、コンテキストメニューから「Tomcatプロジェクト」 - 「コンテキスト定義を更新」 を実行します。
-					そして、メニューの「Tomcat」 - 「Tomcat起動」 を実行します。
-				</p>
-				<p>
-					Tomcatの起動が完了したことを確認し、<a href="http://localhost:8080/doma-sastruts-demo/emp/">http://localhost:8080/doma-sastruts-demo/emp/</a> にアクセスしてください。
+					<a href="tutorial/index.html">チュートリアルに関するドキュメント</a>を参照してください。
 				</p>
 			</subsection>
-			<subsection name="GWTを利用したデモアプリ">
+			<subsection name="Doma JPetStore">
 				<p>
-					<a href="http://code.google.com/intl/ja/webtoolkit/">Google Web Toolkit</a>との連携方法を示すデモ用Webアプリケーションです。
+					<a href="http://sastruts.seasar.org/">SAStruts</a>との連携方法を示すWebアプリケーションです。
 				</p>
 				<p>
-					このアプリケーションでは、次の事柄を示します。
+					<a href="demoapps/jpetstore.html">Doma JPetStoreのドキュメント</a>を参照してください。
 				</p>
-				<ul>
-					<li>getter/setterをもったエンティティクラスの利用方法</li>
-					<li>ドメインクラスの利用方法</li>
-					<li>GWTのクライアントで利用できるようにエンティティクラスとドメインクラスを配置する方法（sourceタグとexcludeタグの使い方）</li>
-				</ul>
-				<h4>設定と起動方法</h4>
+			</subsection>
+			<subsection name="Doma Tools">
 				<p>
-					このアプリケーションをEclipseで動作させるには、<a href="http://code.google.com/intl/ja/eclipse/">Google Plugin for Eclipse</a> をお使いください。
-					デモを起動させるには、プロジェクトを右クリックし、コンテキストメニューから「Run As」 - 「Web Application」 を実行します。
+					Domaを使った開発を支援するEclipseプラグインです。
+				</p>
+				<p>
+					<a href="extension/doma_tools.html">Doma Tools</a>のドキュメントを参照してください。
 				</p>
 			</subsection>
 		</section>

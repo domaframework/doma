@@ -54,7 +54,7 @@
 			<ul>
 				<li>Eclipseのメニューから「File」 - 「Import」を選択します。</li>
 				<li>「Existing Projects to Workspace」を選択し、「Next」ボタンを押します。</li>
-				<li>「Select archive file」のラジオボタンをチェックし、ダウンロードしたdoma-tutorial-x.x.x.zipを選択します。</li>
+				<li>「Select archive file」のラジオボタンをチェックし、ダウンロードしたdoma-jpetstore-x.x.x.zipを選択します。</li>
 				<li>「Projects」の項目に表示される「doma-tutorial」のチェックボックスをチェックし、「Finish」ボタンを押します。</li>
 			</ul>
 			<p>

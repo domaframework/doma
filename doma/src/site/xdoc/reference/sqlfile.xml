@@ -21,7 +21,7 @@
 						<li><a href="#バインド変数コメント">バインド変数コメント</a></li>
 						<li><a href="#埋め込み変数コメント">埋め込み変数コメント</a></li>
 						<li><a href="#条件コメント">条件コメント</a></li>
-						<li><a href="#ループコメント">ループコメント</a></li>
+						<li><a href="#繰り返しコメント">繰り返しコメント</a></li>
 						<li><a href="#通常のブロックコメント">通常のブロックコメント</a></li>
 						<li><a href="#通常の行コメント">通常の行コメント</a></li>
 					</ul>
@@ -268,10 +268,10 @@ and employeeName like 's%']]></source>
   /*%end*/
 /*%end*/]]></source>
 			</subsection>
-			<subsection name="ループコメント">
+			<subsection name="繰り返しコメント">
 				<h4><code>for</code> と <code>end</code></h4>
 				<p>
-					繰り返しを示す式コメントをループコメントと呼びます。
+					繰り返しを示す式コメントを繰り返しコメントと呼びます。
 					構文は、<code>/*%for 識別子 : 式*/ ～ /*%end*/</code> となります。
 					識別子は、繰り返される要素を指す変数です。
 					式は、java.lang.Iterable型として評価される式でなければいけません。

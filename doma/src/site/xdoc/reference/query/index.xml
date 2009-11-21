@@ -2,10 +2,10 @@
 <document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
 	<properties>
-		<title>クエリ定義</title>
+		<title>クエリ</title>
 	</properties>
 	<body>
-		<section name="クエリ定義">
+		<section name="クエリ">
 			<ul>
 				<li>
 					<a href="select.html">検索</a>

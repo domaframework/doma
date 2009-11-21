@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>Doma JPetStore</title>
+	</properties>
+	<body>
+		<section name="目次">
+			<ul>
+				<li><a href="#概要">概要</a></li>
+				<li><a href="#セットアップ">セットアップ</a>
+					<ul>
+						<li><a href="#JDKのインストール">JDKのインストール</a></li>
+						<li><a href="#Eclipseのインストール">Eclipseのインストール</a></li>
+						<li><a href="#Tomcatのインストール">Tomcatのインストール</a></li>
+						<li><a href="#Sysdeo/SQLI Tomcat Launcherのインストール">Sysdeo/SQLI Tomcat Launcherのインストール</a></li>
+						<li><a href="#Doma Toolsのインストール">Doma Toolsのインストール</a></li>
+						<li><a href="#プロジェクトのインポート">プロジェクトのインポート</a></li>
+					</ul>
+				</li>
+				<li><a href="#アプリケーションの起動">アプリケーションの起動</a>
+					<ul>
+						<li><a href="#制限事項">制限事項</a></li>
+					</ul>
+				</li>
+				<li><a href="#アプリケーションの特徴">アプリケーションの特徴</a></li>
+			</ul>
+		</section>
+		<section name="概要">
+			<p>
+				Doma JPetStoreは、<a href="http://sastruts.seasar.org/">SAStruts</a>との連携方法を示すデモ用Webアプリケーションです。
+			</p>
+			<p>
+				このアプリケーションは、<a href="http://ibatis.apache.org/java.cgi">iBATIS</a>が提供する JPetStore 5.0 Example Application をベースに作成されています。
+			</p>
+		</section>
+		<section name="セットアップ">
+			<subsection name="JDKのインストール">
+				<p>
+					バージョン6以上のJDKをインストールします。
+					JREではなくJDKが必要であることに注意してください。
+					JDK 6 は以下のURLのサイトからダウンロードできます。
+				</p>
+				<p>
+					<a href="http://java.sun.com/javase/ja/6/download.html">http://java.sun.com/javase/ja/6/download.html</a>
+				</p>
+			</subsection>
+			<subsection name="Eclipseのインストール">
+				<p>
+					バージョン3.5以上のEclipseをインストールします。
+					<a href="http://jcp.org/en/jsr/detail?id=269">Pluggable Annotation Processing API</a>
+					をサポートしていれば、Eclipse以外のIDEであってもかまいませんが、
+					このドキュメントではEclipseを使うことを前提に説明を進めます。
+					Eclipseは以下のURLのサイトからダウンロードできます。
+				</p>
+				<p>
+					<a href="http://www.eclipse.org/downloads/">http://www.eclipse.org/downloads/</a>
+				</p>
+				<p>
+					Eclipseは、バージョン6以上のJDKに含まれるJREで起動されるようにしてください。
+					明示的にJREを指定するには、-vm オプションを使用します。
+				</p>
+				<pre>-vm %JAVA_HOME%\bin\javaw.exe</pre>
+			</subsection>
+			<subsection name="Tomcatのインストール">
+				<p>
+					Tomcatのバージョン6.xをインストールします。 
+					Tomcatは以下のURLのサイトからダウンロードできます。
+				</p>
+				<p>
+					<a href="http://tomcat.apache.org/download-60.cgi">http://tomcat.apache.org/download-60.cgi</a>
+				</p>
+			</subsection>
+			<subsection name="Sysdeo/SQLI Tomcat Launcherのインストール">
+				<p>
+					アプリケーションをEclipseから動作させるには、EclipseプラグインのSysdeo/SQLI Tomcat Launcher をインストールｓます。
+					Sysdeo/SQLI Tomcat Launcher は以下の更新サイトからインストールできます。
+				</p>
+				<p>
+					<a href="http://eclipse.seasar.org/updates/3.2/">http://eclipse.seasar.org/updates/3.2/</a>
+				</p>
+				<p>
+					Sysdeo/SQLI Tomcat Launcher をインストールしたら、メニューの「Window」 - 「Preference」 ー「Tomcat」 よりTomcatのバージョンとホームを指定してください。
+				</p>
+			</subsection>
+			<subsection name="Doma Toolsのインストール">
+				<p>
+					必須ではありませんが、<a href="../extension/doma_tools.html">Doma Tools</a>をインストールするとDaoのメソッドと対応するSQLファイルの間で相互移動が簡単に行えます。
+				</p>
+			</subsection>
+			<subsection name="プロジェクトのインポート">
+				<p>
+					<a href="../downloads.html">ダウンロード</a>のページからdoma-jpetstore-x.x.x.zipをダウンロードし、
+					Eclipseへインポートしてください。インポートの具体的な手順は次のとおりです。
+				</p>
+				<ul>
+					<li>Eclipseのメニューから「File」 - 「Import」を選択します。</li>
+					<li>「Existing Projects to Workspace」を選択し、「Next」ボタンを押します。</li>
+					<li>「Select archive file」のラジオボタンをチェックし、ダウンロードしたdoma-jpetstore-x.x.x.zipを選択します。</li>
+					<li>「Projects」の項目に表示される「doma-jpetstore」のチェックボックスをチェックし、「Finish」ボタンを押します。</li>
+				</ul>
+			</subsection>
+		</section>
+		<section name="アプリケーションの起動">
+			<p>
+				プロジェクトを右クリックし、コンテキストメニューから「Tomcatプロジェクト」 - 「コンテキスト定義を更新」 を実行します。
+				そして、メニューの「Tomcat」 - 「Tomcat起動」 を実行します。
+			</p>
+			<p>
+				Tomcatの起動が完了したことを確認し、<a href="http://localhost:8080/doma-jpetstore/">http://localhost:8080/doma-jpetstore/</a> にアクセスしてください。
+			</p>
+			<subsection name="制限事項">
+				<p>
+					Internet Exploreで表示すると画面レイアウトが崩れます。
+					オリジナルのJPetStore 5.0 Example ApplicationのCSSがInternet Exploreに対応できていないようです。
+					Internet Exploreでもレイアウトが崩れないように直してくれる方がいたら歓迎いたします。
+				</p>
+			</subsection>
+		</section>
+		<section name="アプリケーションの特徴">
+			<p>
+				このアプリケーションでは、次の事柄を示します。
+			</p>
+			<ul>
+				<li>Seasar2で管理されたデータソースの利用方法</li>
+				<li>Seasar2で管理されたトランザクションマネジャーとの連携方法</li>
+				<li>ログ管理の統合方法（JdbcLoggerの実装例）</li>
+				<li>HOT deploy環境下でSQLファイルの変更を即座に認識させる方法（SqlFileRepositoryの実装例）</li>
+			</ul>
+			<p>
+				このアプリケーションは、Seasar2の機能の利用について、次の方針に基づいて作られています。
+			</p>
+			<ul>
+				<li>DI（Dependency Injection）はActionFormをActionに注入する場合にのみ使用する</li>
+				<li>ServiceクラスやDaoクラスはアプリケーションでインスタンス化する</li>
+				<li>HOT deploy非対象パッケージをconvention.diconに登録し、HOT deploy対象パッケージから非対象パッケージへの依存関係はつくらない</li>
+			</ul>
+		</section>
+	</body>
+</document>

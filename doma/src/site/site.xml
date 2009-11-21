@@ -47,12 +47,19 @@
 				<item name="セットアップ" href="tutorial/setup.html" />
 				<item name="プロジェクトの概要" href="tutorial/project_overview.html" />
 				<item name="検索" href="tutorial/select.html" />
+				<item name="挿入" href="tutorial/insert.html" />
+				<item name="更新" href="tutorial/update.html" />
+				<item name="削除" href="tutorial/delete.html" />
+			</item>
+			<item name="デモアプリケーション" href="demoapps/index.html" collapse="true" >
+				<item name="Doma JPetStore" href="demoapps/jpetstore.html" />
 			</item>
 			<item name="リファレンス" href="reference/index.html" collapse="true" >
 				<item name="基本型" href="reference/basic.html" />
 				<item name="ドメインクラス" href="reference/domain.html" />
 				<item name="エンティティクラス" href="reference/entity.html" />
-				<item name="Daoインタフェース" href="reference/dao.html" collapse="true" >
+				<item name="Daoインタフェース" href="reference/dao.html" collapse="true" />
+				<item name="クエリ" href="reference/query/index.html" collapse="true" >
 					<item name="検索" href="reference/query/select.html" />
 					<item name="挿入" href="reference/query/insert.html" />
 					<item name="更新" href="reference/query/update.html" />

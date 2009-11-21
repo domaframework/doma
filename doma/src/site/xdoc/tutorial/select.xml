@@ -9,52 +9,63 @@
 			<ul>
 				<li><a href="#概要">概要</a></li>
 				<li><a href="#単純な検索">単純な検索</a></li>
-				<li><a href="#条件分岐のある検索">条件分岐のある検索</a></li>
-				<li><a href="#LIKE述語を使った検索">LIKE述語を使った検索</a>
+				<li><a href="#条件分岐を用いた検索">条件分岐を用いた検索</a></li>
+				<li><a href="#繰り返しを用いた検索">繰り返を用いた検索</a></li>
+				<li><a href="#IN述語による検索">IN述語による検索</a></li>
+				<li><a href="#LIKE述語による検索">LIKE述語による検索</a>
 					<ul>
-						<li><a href="#前方一致検索">設定クラス</a></li>
-						<li><a href="#後方一致検索">エンティティクラス</a></li>
-						<li><a href="#中間一致検索">Daoインタフェース</a></li>
+						<li><a href="#前方一致検索">前方一致検索</a></li>
+						<li><a href="#後方一致検索">後方一致検索</a></li>
+						<li><a href="#中間一致検索">中間一致検索</a></li>
 					</ul>
 				</li>
+				<li><a href="#日付による範囲検索">日付による範囲検索</a></li>
+				<li><a href="#ドメインによる検索">ドメインによる検索</a></li>
+				<li><a href="#エンティティによる検索">エンティティによる検索</a></li>
+				<li><a href="#ページングを行う検索">ページングを行う検索</a></li>
+				<li><a href="#ページングと集計を同時に行う検索">ページングと集計を同時に行う検索</a></li>
+				<li><a href="#イテレーション検索">イテレーション検索</a></li>
 			</ul>
 		</section>
 		<section name="概要">
 			<p>
-				ここに示すコードは、test/tutorial/SelectTest.javaに記述されたものです。
+				検索は、すべて外部化されたSQLを使って行われます。
 			</p>
 			<p>
-				検索は、すべて外部化されたSQLファイルを使って行われます。
-				SQLファイルはsrc/META-INF/tutorial/dao/EmployeeDaoフォルダに格納されています。
-				SQLファイルの名称は、Daoのメソッド名に拡張子「sql」を加えたものになります。
+				外部化されたSQLはすべてバインド変数（?）を使った準備された文に変換されて実行されますが、
+				このドキュメントでは、発行されたSQLがどのようなものかわかりやすくするためにバインド変数を実際の値に置き換えたログ用のSQLを示します。
 			</p>
 		</section>
 		<section name="単純な検索">
 			<p>
-				testSimpleSelectメソッドを参照してください。
+				test/tutorial/SelectTest.javaのtestSimpleSelectメソッドを参照してください。
 				引数をSQLファイルにバインディングして実行する単純な検索です。
 			</p>
 			<p>
-				selectById.sqlに記述されたSQLは次のとおりです。
+				DaoのメソッドとメソッドにマッピングされたSQLは次のとおりです。
 			</p>
+<source><![CDATA[@Select
+Employee selectById(Integer id);]]></source>
 <source><![CDATA[select * from employee where id = /* id */0]]></source>
 			<p>
-				selectById.sqlを実行するJavaコードは次のようになります。
+				Daoのメソッドは次のように呼び出します。
 			</p>
 <source><![CDATA[Employee employee = dao.selectById(1);]]></source>
 			<p>
-				上記のJavaコードを実行すると、SQLのログは次のようになります。
+				SQLのログは次のように出力されます。
 			</p>
 <source><![CDATA[select * from employee where id = 1]]></source>
 		</section>
-		<section name="条件分岐のある検索">
+		<section name="条件分岐を用いた検索">
 			<p>
-				testConditinalSelectメソッドを参照してください。
+				test/tutorial/SelectTest.javaのtestConditinalSelectメソッドを参照してください。
 				SQLファイル中に条件分岐を記述することで、動的なSQLを発行できます。
 			</p>
 			<p>
-				selectByAgeRange.sqlに記述されたSQLは次のとおりです。
+				DaoのメソッドとメソッドにマッピングされたSQLは次のとおりです。
 			</p>
+<source><![CDATA[@Select
+List<Employee> selectByAgeRange(Integer min, Integer max);]]></source>
 <source><![CDATA[select * from employee
 where
 /*%if min != null */
@@ -67,11 +78,11 @@ where
 order by age]]></source>
 			<subsection name="条件1">
 			<p>
-				Javaコードで1番目のパラメータに30、2番目のパラメータに40を渡します。
+				1番目のパラメータに30、2番目のパラメータに40を渡してDaoのメソッドを呼び出します。
 			</p>
 <source><![CDATA[List<Employee> list = dao.selectByAgeRange(30, 40);]]></source>
 			<p>
-				上記のJavaコードを実行すると、SQLのログは次のようになります。
+				SQLのログは次のように出力されます。
 			</p>
 <source><![CDATA[select * from employee
 where
@@ -82,11 +93,11 @@ order by age]]></source>
 			</subsection>
 			<subsection name="条件2">
 			<p>
-				Javaコードで1番目のパラメータに30、2番目のパラメータにnullを渡します。
+				1番目のパラメータに30、2番目のパラメータにnullを渡してDaoのメソッドを呼び出します。
 			</p>
 <source><![CDATA[list = dao.selectByAgeRange(30, null);]]></source>
 			<p>
-				上記のJavaコードを実行すると、SQLのログは次のようになります。
+				SQLのログは次のように出力されます。
 			</p>
 <source><![CDATA[select * from employee
 where
@@ -95,11 +106,11 @@ order by age]]></source>
 			</subsection>
 			<subsection name="条件3">
 			<p>
-				Javaコードで1番目のパラメータにnull、2番目のパラメータに40を渡します。
+				1番目のパラメータにnull、2番目のパラメータに40を渡してDaoのメソッドを呼び出します。
 			</p>
 <source><![CDATA[list = dao.selectByAgeRange(null, 40);]]></source>
 			<p>
-				上記のJavaコードを実行すると、SQLのログは次のようになります。
+				SQLのログは次のように出力されます。
 			</p>
 <source><![CDATA[select * from employee
 where
@@ -108,86 +119,303 @@ order by age]]></source>
 			</subsection>
 			<subsection name="条件4">
 			<p>
-				Javaコードで1番目のパラメータにnull、2番目のパラメータにnullを渡します。
+				1番目のパラメータにnull、2番目のパラメータにnullを渡してDaoのメソッドを呼び出します。
 			</p>
 <source><![CDATA[list = dao.selectByAgeRange(null, null);]]></source>
 			<p>
-				上記のJavaコードを実行すると、SQLのログは次のようになります。
+				SQLのログは次のように出力されます。
 			</p>
 <source><![CDATA[select * from employee
 order by age]]></source>
 			</subsection>
 		</section>
-		<section name="条件分岐のある検索">
+		<section name="繰り返しを用いた検索">
 			<p>
-				testConditinalSelectメソッドを参照してください。
-				SQLファイル中に条件分岐を記述することで、動的なSQLを発行できます。
+				test/tutorial/SelectTest.javaのtestLoopSelectメソッドを参照してください。
+				SQLファイル中に繰り返しを記述することで、動的なSQLを発行できます。
 			</p>
 			<p>
-				selectByAgeRange.sqlに記述されたSQLは次のとおりです。
+				DaoのメソッドとメソッドにマッピングされたSQLは次のとおりです。
 			</p>
-<source><![CDATA[select * from employee
-where
-/*%if min != null */
-  age >= /* min */10
-/*%end */
-/*%if max != null */
-  and
-  age <= /* max */70
-/*%end */
-order by age]]></source>
-			<subsection name="条件1">
+<source><![CDATA[@Select
+List<Employee> selectByAges(List<Integer> ages);]]></source>
+<source><![CDATA[select * from employee where 
+/*%if ages.size() > 0 */
+  /*%for age : ages */
+  age = /* age */30
+/*%hasNext "  or"*/
+  /*%end */
+/*%end */]]></source>
 			<p>
-				Javaコードで1番目のパラメータに30、2番目のパラメータに40を渡します。
+				Daoのメソッドは次のように呼び出します。
 			</p>
-<source><![CDATA[List<Employee> list = dao.selectByAgeRange(30, 40);]]></source>
+<source><![CDATA[List<Integer> ages = Arrays.asList(30, 40, 50, 60);
+List<Employee> list = dao.selectByAges(ages);]]></source>
 			<p>
-				上記のJavaコードを実行すると、SQLのログは次のようになります。
+				SQLのログは次のように出力されます。
 			</p>
-<source><![CDATA[select * from employee
-where
-  age >= 30
-  and
-  age <= 40
-order by age]]></source>
+<source><![CDATA[select * from employee where 
+  age = 30
+  or
+  age = 40
+  or
+  age = 50
+  or
+  age = 60;]]></source>
+		</section>
+		<section name="IN述語による検索">
+			<p>
+				test/tutorial/SelectTest.javaのtestInPredicateメソッドを参照してください。
+				IN述語を使った検索です。
+			</p>
+				<p>
+					DaoのメソッドとメソッドにマッピングされたSQLは次のとおりです。
+				</p>
+<source><![CDATA[@Select
+List<Employee> selectByNames(List<String> names);]]></source>
+<source><![CDATA[select * from employee where name in /* names */('aaa', 'bbb')']]></source>
+			<p>
+				Daoのメソッドは次のように呼び出します。
+			</p>
+<source><![CDATA[List<String> names = Arrays.asList("JONES", "SCOTT", "XXX");
+List<Employee> list = dao.selectByNames(names);]]></source>
+			<p>
+				SQLのログは次のように出力されます。
+			</p>
+<source><![CDATA[select * from employee where name in ('JONES', 'SCOTT', 'XXX')]]></source>
+		</section>
+		<section name="LIKE述語による検索">
+			<subsection name="前方一致検索">
+				<p>
+					test/tutorial/SelectTest.javaのtestLikePredicate_prefixメソッドを参照してください。
+					SQLファイル中で組み込み関数「@prefix()」を使用した前方一致検索ができます。
+					組み込み関数「@prefix()」を使用するとJavaのコード内で「%」を文字列に連結する処理が不要になります。
+				</p>
+				<p>
+					DaoのメソッドとメソッドにマッピングされたSQLは次のとおりです。
+				</p>
+<source><![CDATA[@Select
+List<Employee> selectByNameWithPrefixMatching(String prefix);]]></source>
+<source><![CDATA[select * from employee where name like /* @prefix(prefix) */'X%']]></source>
+				<p>
+					Daoのメソッドは次のように呼び出します。
+				</p>
+<source><![CDATA[List<Employee> list = dao.selectByNameWithPrefixMatching("S");]]></source>
+				<p>
+					SQLのログは次のように出力されます。
+				</p>
+<source><![CDATA[select * from employee where name like 'S%']]></source>
 			</subsection>
-			<subsection name="条件2">
-			<p>
-				Javaコードで1番目のパラメータに30、2番目のパラメータにnullを渡します。
-			</p>
-<source><![CDATA[list = dao.selectByAgeRange(30, null);]]></source>
-			<p>
-				上記のJavaコードを実行すると、SQLのログは次のようになります。
-			</p>
-<source><![CDATA[select * from employee
-where
-  age >= 30
-order by age]]></source>
+			<subsection name="後方一致検索">
+				<p>
+					test/tutorial/SelectTest.javaのtestLikePredicate_suffixメソッドを参照してください。
+					SQLファイル中で組み込み関数「@suffix()」を使用した後方一致検索ができます。
+					組み込み関数「@suffix()」を使用するとJavaのコード内で「%」を文字列に連結する処理が不要になります。
+				</p>
+				<p>
+					DaoのメソッドとメソッドにマッピングされたSQLは次のとおりです。
+				</p>
+<source><![CDATA[@Select
+List<Employee> selectByNameWithSuffixMatching(String suffix);]]></source>
+<source><![CDATA[select * from employee where name like /* @suffix(suffix) */'%X']]></source>
+				<p>
+					Daoのメソッドは次のように呼び出します。
+				</p>
+<source><![CDATA[List<Employee> list = dao.selectByNameWithSuffixMatching("S");]]></source>
+				<p>
+					SQLのログは次のように出力されます。
+				</p>
+<source><![CDATA[select * from employee where name like '%S']]></source>
 			</subsection>
-			<subsection name="条件3">
-			<p>
-				Javaコードで1番目のパラメータにnull、2番目のパラメータに40を渡します。
-			</p>
-<source><![CDATA[list = dao.selectByAgeRange(null, 40);]]></source>
-			<p>
-				上記のJavaコードを実行すると、SQLのログは次のようになります。
-			</p>
-<source><![CDATA[select * from employee
-where
-  age <= 40
-order by age]]></source>
+			<subsection name="中間一致検索">
+				<p>
+					test/tutorial/SelectTest.javaのtestLikePredicate_insideメソッドを参照してください。
+					SQLファイル中で組み込み関数「@contain()」を使用した中間一致検索ができます。
+					組み込み関数「@contain()」を使用するとJavaのコード内で「%」を文字列に連結する処理が不要になります。
+				</p>
+				<p>
+					DaoのメソッドとメソッドにマッピングされたSQLは次のとおりです。
+				</p>
+<source><![CDATA[@Select
+List<Employee> selectByNameWithInsideMatching(String inside);]]></source>
+<source><![CDATA[select * from employee where name like /* @contain(inside) */'%X%']]></source>
+				<p>
+					Daoのメソッドは次のように呼び出します。
+				</p>
+<source><![CDATA[List<Employee> list = dao.selectByNameWithSuffixMatching("A");]]></source>
+				<p>
+					SQLのログは次のように出力されます。
+				</p>
+<source><![CDATA[select * from employee where name like '%A%']]></source>
 			</subsection>
-			<subsection name="条件4">
+		</section>
+		<section name="日付による範囲検索">
 			<p>
-				Javaコードで1番目のパラメータにnull、2番目のパラメータにnullを渡します。
+				test/tutorial/SelectTest.javaのtestSelectByTimestampRangeメソッドを参照してください。
+				日付を用いて範囲検索を行う場合に、日付の時刻部分を切り捨てたり、日付を一日後ろへずらして切りのいい値にしたいことがあります。
+				そのような場合には、組み込み関数の「@roundDownTimePart()」と「@roundUpTimePart()」を使用します。
 			</p>
-<source><![CDATA[list = dao.selectByAgeRange(null, null);]]></source>
 			<p>
-				上記のJavaコードを実行すると、SQLのログは次のようになります。
+				DaoのメソッドとメソッドにマッピングされたSQLは次のとおりです。
 			</p>
-<source><![CDATA[select * from employee
-order by age]]></source>
-			</subsection>
+<source><![CDATA[@Select
+List<Employee> selectByHiredateRange(Timestamp from, Timestamp to);]]></source>
+<source><![CDATA[select * from employee 
+where 
+  hiredate >= /* @roundDownTimePart(from) */'2001-01-01 12:34:56'
+  and 
+  hiredate < /* @roundUpTimePart(to) */'2001-01-01 12:34:56']]></source>
+			<p>
+				Daoのメソッドは次のように呼び出します。
+			</p>
+<source><![CDATA[Timestamp from = Timestamp.valueOf("2008-01-20 12:34:56");
+Timestamp to = Timestamp.valueOf("2008-03-20 12:34:56");
+List<Employee> list = dao.selectByHiredateRange(from, to);]]></source>
+			<p>
+				SQLのログは次のように出力されます。
+			</p>
+<source><![CDATA[select * from employee 
+where 
+  hiredate >= '2008-01-20 00:00:00.0'
+  and 
+  hiredate < '2008-03-21 00:00:00.0']]></source>
+			<p>
+				Javaコードからの引数と比べると時刻部分の切り捨てや切り上げが行われていることがわかります。
+			</p>
+		</section>
+		<section name="ドメインによる検索">
+			<p>
+				test/tutorial/SelectTest.javaのtestSelectByDomainメソッドを参照してください。
+				ドメインを条件に使用した検索です。
+			</p>
+				<p>
+					DaoのメソッドとメソッドにマッピングされたSQLは次のとおりです。
+					パラメータの型がドメインクラスであっても、SQLファイルでの扱い方は基本型と変わりません。
+				</p>
+<source><![CDATA[@Select
+List<Employee> selectBySalary(Salary salary);]]></source>
+<source><![CDATA[select * from employee where salary > /* salary */0]]></source>
+			<p>
+				Daoのメソッドは次のように呼び出します。
+			</p>
+<source><![CDATA[List<Employee> list = dao.selectBySalary(new Salary(2900));]]></source>
+			<p>
+				SQLのログは次のように出力されます。
+			</p>
+<source><![CDATA[select * from employee where salary > 2900]]></source>
+		</section>
+		<section name="エンティティによる検索">
+			<p>
+				test/tutorial/SelectTest.javaのtestSelectByEntityメソッドを参照してください。
+				エンティティを条件に使用した検索です。
+			</p>
+				<p>
+					DaoのメソッドとメソッドにマッピングされたSQLは次のとおりです。
+					パラメータの型がエンティティクラスの場合、SQLファイルの中ではドットを使用してエンティティのプロパティにアクセスできます。
+				</p>
+<source><![CDATA[@Select
+List<Employee> selectByExample(Employee e);]]></source>
+<source><![CDATA[select * from employee where name = /* e.name */'aaa']]></source>
+			<p>
+				Daoのメソッドは次のように呼び出します。
+			</p>
+<source><![CDATA[Employee e = new Employee();
+e.setName("SMITH");
+List<Employee> list = dao.selectByExample(e);]]></source>
+			<p>
+				SQLのログは次のように出力されます。
+			</p>
+<source><![CDATA[select * from employee where name = 'SMITH']]></source>
+		</section>
+		<section name="ページングを行う検索">
+			<p>
+				test/tutorial/SelectTest.javaのtestOffsetLimitメソッドを参照してください。
+				ページングを行う検索です。
+			</p>
+			<p>
+				DaoのメソッドとメソッドにマッピングされたSQLは次のとおりです。
+				Daoのメソッドでは、SelectOptions型のパラメータを定義します。
+				SQLにはORDER BY句の存在が必須です。
+			</p>
+<source><![CDATA[@Select
+List<Employee> selectAll(SelectOptions options);]]></source>
+<source><![CDATA[select * from employee order by id]]></source>
+			<p>
+				Daoのメソッドは次のように呼び出します。
+				SelectOptionsにoffsetとlimitを指定します。
+			</p>
+<source><![CDATA[SelectOptions options = SelectOptions.get().offset(5).limit(3);
+List<Employee> list = dao.selectAll(options);
+assertEquals(3, list.size());]]></source>
+			<p>
+				SQLのログは次のように出力されます。
+			</p>
+<source><![CDATA[select * from employee order by id limit 3 offset 5]]></source>
+		</section>
+		<section name="ページングと集計を同時に行う検索">
+			<p>
+				test/tutorial/SelectTest.javaのtestCountメソッドを参照してください。
+				ページングを行う検索です。
+			</p>
+			<p>
+				DaoのメソッドとメソッドにマッピングされたSQLは次のとおりです。
+				Daoのメソッドでは、SelectOptions型のパラメータを定義します。
+				SQLにはORDER BY句の存在が必須です。
+			</p>
+<source><![CDATA[@Select
+List<Employee> selectAll(SelectOptions options);]]></source>
+<source><![CDATA[select * from employee order by id]]></source>
+			<p>
+				Daoのメソッドは次のように呼び出します。
+				SelectOptionsのcountメソッドをあらかじめ呼び出しておきます。
+				Daoのメソッドを呼び出した後、SelectOptionsのgetCountメソッドにより集計結果を取得できます。
+			</p>
+<source><![CDATA[SelectOptions options = SelectOptions.get().offset(5).limit(3).count();
+List<Employee> list = dao.selectAll(options);
+assertEquals(3, list.size());
+assertEquals(14, options.getCount());]]></source>
+			<p>
+				SQLのログは次のように2つ出力されます。
+			</p>
+<source><![CDATA[select * from employee order by id limit 3 offset 5]]></source>
+<source><![CDATA[select count(*) from ( select * from employee ) t_]]></source>
+		</section>
+		<section name="イテレーション検索">
+			<p>
+				test/tutorial/SelectTest.javaのtestIterateメソッドを参照してください。
+				SQLの結果セットを1件ずつエンティティなどのオブジェクトへインスタンス化する検索です。
+				メモリの使用量を抑えながら大量データを扱う場合に向いています。
+			</p>
+			<p>
+				DaoのメソッドとメソッドにマッピングされたSQLは次のとおりです。
+				@Selectのiterate要素をtrueにします。
+				Daoのメソッドでは、IterationCallback型のパラメータを定義します。
+			</p>
+<source><![CDATA[@Select(iterate = true)
+<R> R selectByAge(int age, IterationCallback<R, Employee> callback);]]></source>
+<source><![CDATA[select * from employee where age > /* age */0 order by age]]></source>
+			<p>
+				Daoのメソッドは次のように呼び出します。
+			</p>
+<source><![CDATA[Salary sum = dao.selectByAge(30,
+        new IterationCallback<Salary, Employee>() {
+
+            private Salary sum = new Salary(0);
+
+                @Override
+                public Salary iterate(Employee target,
+                        IterationContext context) {
+                    Salary salary = target.getSalary();
+                    if (salary != null) {
+                        sum = sum.add(salary);
+                    }
+                    return sum;
+                }
+            });]]></source>
+			<p>
+				SQLのログは次のように出力されます。
+			</p>
+<source><![CDATA[select * from employee where age > 30 order by age]]></source>
 		</section>
 	</body>
 </document>

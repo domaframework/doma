@@ -9,37 +9,7 @@
 			<ul>
 				<li><a href="#概要">概要</a></li>
 				<li><a href="#Dao定義">Dao定義</a></li>
-				<li><a href="#クエリ定義">クエリ定義</a>
-				<ul>
-					<li>
-						<a href="#検索">検索</a>
-					</li>
-					<li>
-						<a href="#挿入">挿入</a>
-					</li>
-					<li>
-						<a href="#更新">更新</a>
-					</li>
-					<li>
-						<a href="#バッチ挿入">バッチ挿入</a>
-					</li>
-					<li>
-						<a href="#バッチ更新">バッチ更新</a>
-					</li>
-					<li>
-						<a href="#バッチ削除">バッチ削除</a>
-					</li>
-					<li>
-						<a href="#ストアドファンクション">ストアドファンクション</a>
-					</li>
-					<li>
-						<a href="#ストアドプロシージャー">ストアドプロシージャー</a>
-					</li>
-					<li>
-						<a href="#ファクトリ">ファクトリ</a>
-					</li>
-				</ul>
-				</li>
+				<li><a href="#クエリ定義">クエリ定義</a></li>
 				<li><a href="#デリゲート定義">デリゲート定義</a></li>
 				<li><a href="#Daoの利用方法">Daoの利用方法</a></li>
 			</ul>
@@ -71,72 +41,8 @@ public interface EmployeeDao {
 		<section name="クエリ定義">
 			<p>
 				SQLを問い合わせるクエリメソッドには、アノテーションが必須です。
+				詳細は、<a href="query/index.html">クエリ</a>を参照してください。
 			</p>
-			<subsection name="検索">
-				<p>
-					検索を行うには、 <a href="../apidocs/org/seasar/doma/Select.html"><code>@Select</code></a>を注釈します。
-					詳細は、<a href="query/select.html"><code>検索</code></a>を参照してください。
-				</p>
-			</subsection>
-			<subsection name="挿入">
-				<p>
-					挿入を行うには、 <a href="../apidocs/org/seasar/doma/Insert.html"><code>@Insert</code></a>を注釈します。
-					詳細は、<a href="query/insert.html"><code>挿入</code></a>を参照してください。
-				</p>
-			</subsection>
-			<subsection name="更新">
-				<p>
-					更新を行うには、<a href="../apidocs/org/seasar/doma/Update.html"><code>@Update</code></a>を注釈します。
-					詳細は、<a href="query/update.html"><code>更新</code></a>を参照してください。
-				</p>
-			</subsection>
-			<subsection name="削除">
-				<p>
-					削除を行うには、 <a href="../apidocs/org/seasar/doma/Delete.html"><code>@Delete</code></a>を注釈します。
-					詳細は、<a href="query/delete.html"><code>削除</code></a>を参照してください。
-				</p>
-			</subsection>
-			<subsection name="バッチ挿入">
-				<p>
-					バッチ挿入を行うには、 <a href="../apidocs/org/seasar/doma/BatchInsert.html"><code>@BatchInsert</code></a>を注釈します。
-					詳細は、<a href="query/batch_insert.html"><code>バッチ挿入</code></a>を参照してください。
-				</p>
-			</subsection>
-			<subsection name="バッチ更新">
-				<p>
-					バッチ更新を行うには、 <a href="../apidocs/org/seasar/doma/BatchUpdate.html"><code>@BatchUpdate</code></a>を注釈します。
-					詳細は、<a href="query/batch_update.html"><code>バッチ更新</code></a>を参照してください。
-				</p>
-			</subsection>
-			<subsection name="バッチ削除">
-				<p>
-					バッチ削除を行うには、 <a href="../apidocs/org/seasar/doma/BatchDelete.html"><code>@BatchDelete</code></a>を注釈します。
-					詳細は、<a href="query/batch_update.html"><code>バッチ削除</code></a>を参照してください。
-				</p>
-			</subsection>
-			<subsection name="ストアドファンクション">
-				<p>
-					ストアドファンクションを呼び出すには、 <a href="../apidocs/org/seasar/doma/Function.html"><code>@Function</code></a>を注釈します。
-					詳細は、<a href="query/function.html"><code>ストアドファンクション</code></a>を参照してください。
-				</p>
-			</subsection>
-			<subsection name="ストアドプロシージャー">
-				<p>
-					ストアドプロシージャーを呼び出すには、 <a href="../apidocs/org/seasar/doma/Procedure.html"><code>@Procedure</code></a>を注釈します。
-					詳細は、<a href="query/procedure.html"><code>ストアドプロシージャー</code></a>を参照してください。
-				</p>
-			</subsection>
-			<subsection name="ファクトリ">
-				<p>
-					JDBC4.0の <code>java.sql.Connection</code>が提供するファクトリメソッドを呼び出すには
-					<a href="../apidocs/org/seasar/doma/ArrayFactory.html"><code>@ArrayFactory</code></a> 、
-					<a href="../apidocs/org/seasar/doma/BlobFactory.html"><code>@BlobFactory</code></a> 、
-					<a href="../apidocs/org/seasar/doma/ClobFactory.html"><code>@ClobFactory</code></a> 、
-					<a href="../apidocs/org/seasar/doma/NClobFactory.html"><code>@NClobFactory</code></a> 、
-					を注釈します。
-					詳細は、<a href="query/factory.html"><code>ファクトリ</code></a>を参照してください。
-				</p>
-			</subsection>
 		</section>
 		<section name="デリゲート定義">
 			<p>
