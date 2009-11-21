@@ -43,6 +43,11 @@
 		<menu name="ドキュメント" inherit="top">
 			<item name="セットアップ" href="setup.html" />
 			<item name="クイックスタート" href="quick_start.html" />
+			<item name="チュートリアル" href="tutorial/index.html" collapse="true" >
+				<item name="セットアップ" href="tutorial/setup.html" />
+				<item name="プロジェクトの概要" href="tutorial/project_overview.html" />
+				<item name="検索" href="tutorial/select.html" />
+			</item>
 			<item name="リファレンス" href="reference/index.html" collapse="true" >
 				<item name="基本型" href="reference/basic.html" />
 				<item name="ドメインクラス" href="reference/domain.html" />

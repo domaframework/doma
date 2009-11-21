@@ -278,7 +278,7 @@ public class ExpressionParserTest extends TestCase {
     }
 
     public void testFunction() throws Exception {
-        ExpressionParser parser = new ExpressionParser("@startWith(\"aaa\")");
+        ExpressionParser parser = new ExpressionParser("@prefix(\"aaa\")");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         EvaluationResult evaluationResult = evaluator.evaluate(expression);

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>セットアップ</title>
+	</properties>
+	<body>
+		<section name="目次">
+			<ul>
+				<li><a href="#概要">概要</a></li>
+				<li><a href="#プロジェクトのインポート">プロジェクトのインポート</a></li>
+				<li><a href="#Doma Toolsのインストール">Doma Toolsのインストール</a></li>
+			</ul>
+		</section>
+		<section name="概要">
+			<p>
+				チュートリアルのプロジェクトをセットアップする方法を説明します。
+			</p>
+		</section>
+		<section name="プロジェクトのインポート">
+			<p>
+				<a href="../downloads.html">ダウンロード</a>のページからdoma-tutorial-x.x.x.zipをダウンロードし、
+				Eclipseへインポートしてください。インポートの具体的な手順は次のとおりです。
+			</p>
+			<ul>
+				<li>Eclipseのメニューから「File」 - 「Import」を選択します。</li>
+				<li>「Existing Projects to Workspace」を選択し、「Next」ボタンを押します。</li>
+				<li>「Select archive file」のラジオボタンをチェックし、ダウンロードしたdoma-tutorial-x.x.x.zipを選択します。</li>
+				<li>「Projects」の項目に表示される「doma-tutorial」のチェックボックスをチェックし、「Finish」ボタンを押します。</li>
+			</ul>
+			<p>
+				インポートが完了したら、doma-tutorialプロジェクトを右クリックし、コンテキストメニューから「Run As」 - 「JUnit Test」 を実行してください。
+				すべてのテストが成功したらセットアップが正しく完了しています。
+			</p>
+		</section>
+		<section name="Doma Toolsのインストール">
+			<p>
+				必須ではありませんが、<a href="../extension/doma_tools.html">Doma Tools</a>をインストールするとDaoのメソッドと対応するSQLファイルの間で相互移動が簡単に行えます。
+			</p>
+		</section>
+	</body>
+</document>

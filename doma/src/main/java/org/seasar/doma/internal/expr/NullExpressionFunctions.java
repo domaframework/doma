@@ -27,22 +27,22 @@ import org.seasar.doma.expr.ExpressionFunctions;
 public class NullExpressionFunctions implements ExpressionFunctions {
 
     @Override
-    public String startWith(String text) {
+    public String prefix(String text) {
         return text;
     }
 
     @Override
-    public String startWith(String text, char escape) {
+    public String prefix(String text, char escape) {
         return text;
     }
 
     @Override
-    public String endWith(String text) {
+    public String suffix(String text) {
         return text;
     }
 
     @Override
-    public String endWith(String text, char escape) {
+    public String suffix(String text, char escape) {
         return text;
     }
 

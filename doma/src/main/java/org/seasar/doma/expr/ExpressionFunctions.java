@@ -29,62 +29,62 @@ public interface ExpressionFunctions {
     /**
      * 前方一致検索を行うことを示します。
      * 
-     * @param text
-     *            文字列
+     * @param prefix
+     *            前に置かれる文字列
      * @return 前方一致検索のための文字列
      */
-    String startWith(String text);
+    String prefix(String prefix);
 
     /**
      * エスケープ文字を指定して前方一致検索を行うことを示します。
      * 
-     * @param text
-     *            文字列
+     * @param prefix
+     *            前に置かれる文字列
      * @param escape
      *            エスケープ文字
      * @return 前方一致検索のための文字列
      */
-    String startWith(String text, char escape);
+    String prefix(String prefix, char escape);
 
     /**
      * 後方一致検索を行うことを示します。
      * 
-     * @param text
-     *            文字列
+     * @param suffix
+     *            後に置かれる文字列
      * @return 後方一致検索のための文字列
      */
-    String endWith(String text);
+    String suffix(String suffix);
 
     /**
      * エスケープ文字を指定して後方一致検索を行うことを示します。
      * 
-     * @param text
-     *            文字列
+     * @param suffix
+     *            後に置かれる文字列
      * @param escape
      *            エスケープ文字
      * @return 後方一致検索のための文字列
      */
-    String endWith(String text, char escape);
+    String suffix(String suffix, char escape);
 
     /**
-     * 前方後方一致検索を行うことを示します。
+     * 中間一致検索を行うことを示します。
      * 
-     * @param text
-     *            文字列
-     * @return 前方後方一致検索のための文字列
+     * @param inside
+     *            含まれる文字列
+     * @return 中間一致検索のための文字列
      */
-    String contain(String text);
+    String contain(String inside);
 
     /**
-     * エスケープ文字を指定して前方後方一致検索を行うことを示します。
+     * エスケープ文字を指定して中間一致検索を行うことを示します。
      * 
-     * @param text
-     *            文字列
+     * @param inside
+     *            含まれる文字列
      * @param escape
      *            エスケープ文字
-     * @return 前方後方一致検索のための文字列
+     * @return 中間一致検索のための文字列
      */
-    String contain(String text, char escape);
+    String contain(String inside, char escape);
 
     /**
      * 日付の時刻部分を切り捨てます。

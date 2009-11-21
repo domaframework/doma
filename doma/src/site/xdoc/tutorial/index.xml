@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>チュートリアル</title>
+	</properties>
+	<body>
+		<section name="概要">
+			<p>
+				このチュートリアルでは、<a href="http://www.junit.org/">JUnit</a>を使いDomaの基本的な使い方を示します。
+			</p>
+		</section>
+		<section name="チュートリアル">
+			<ul>
+				<li>
+					<a href="setup.html">セットアップ</a>
+				</li>
+				<li>
+					<a href="project_overview.html">プロジェクトの概要</a>
+				</li>
+				<li>
+					<a href="select.html">検索</a>
+				</li>
+			</ul>
+		</section>
+	</body>
+</document>

@@ -21,6 +21,7 @@
 						<li><a href="#バインド変数コメント">バインド変数コメント</a></li>
 						<li><a href="#埋め込み変数コメント">埋め込み変数コメント</a></li>
 						<li><a href="#条件コメント">条件コメント</a></li>
+						<li><a href="#ループコメント">ループコメント</a></li>
 						<li><a href="#通常のブロックコメント">通常のブロックコメント</a></li>
 						<li><a href="#通常の行コメント">通常の行コメント</a></li>
 					</ul>
@@ -287,9 +288,9 @@ and employeeName like 's%']]></source>
 employee_name like ? or employee_name like ? or employee_name like ?]]></source>
 				<h4><code>hasNext</code></h4>
 				<p>
-					<code>/*%for 識別子 : 式*/ ～ /*%end*/</code> の内側の<code>/*%forhasNext 式*/</code>は、
+					<code>/*%for 識別子 : 式*/</code> から <code>/*%end*/</code> までの内側の<code>/*%forhasNext 式*/</code>は、
 					次の繰り返しが続く場合にのみ、式の評価結果を繰り返される文字列に連結することを示します。
-					式は、Stringもしくはchar/Character型として評価される式でなければいけません。
+					式は、String、Character、charのいずれかの型として評価可能な式でなければいけません。
 				</p>
 			</subsection>
 			<subsection name="通常のブロックコメント">
@@ -496,10 +497,10 @@ employee_name like ? or employee_name like ? or employee_name like ?]]></source>
 					たとえば、likeで前方一致検索を行う場合に、次のように記述できます。
 				</p>
 <source><![CDATA[select * from employee where 
-    employee_name like /* @startWith(employee.employeeName) */'smith']]></source>
+    employee_name like /* @prefix(employee.employeeName) */'smith']]></source>
 				<p>
-					ここでは、<code>@startWith(employee.employeeName)</code> というように、
-					<code>employee.employeeName</code> を <code>@startWith</code>関数に渡しています。
+					ここでは、<code>@prefix(employee.employeeName)</code> というように、
+					<code>employee.employeeName</code> を <code>@prefix</code>関数に渡しています。
 					組み込み関数の名前はすべて<code>@</code>で始まります。
 					<code>employee.employeeName</code> の値が「ABC」である場合、
 					SQLにバインディングされる値は「ABC%」となります。
@@ -511,12 +512,12 @@ employee_name like ? or employee_name like ? or employee_name like ?]]></source>
 				</p>
 				<table>
 					<tr><th>戻り値の型</th><th>関数名とパラメータ</th><th>概要</th></tr>
-					<tr><td><code>String</code></td><td><code>@startWith(String text)</code></td><td>前方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを後ろに付与した文字列です。エスケープにはデフォルトのエスケープ文字を用いて行われます。</td></tr>
-					<tr><td><code>String</code></td><td><code>@startWith(String text, char escape)</code></td><td>前方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを後ろに付与した文字列です。エスケープは第2引数で指定したエスケープ文字を用いて行われます。</td></tr>
-					<tr><td><code>String</code></td><td><code>@endWith(String text)</code></td><td>後方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを前に付与した文字列です。エスケープはデフォルトのエスケープ文字を用いて行われます。</td></tr>
-					<tr><td><code>String</code></td><td><code>@endWith(String text, char escape)</code></td><td>後方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを前に付与した文字列です。エスケープは第2引数で指定したエスケープ文字を用いて行われます。</td></tr>
-					<tr><td><code>String</code></td><td><code>@contain(String text)</code></td><td>前方後方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを前と後ろに付与した文字列です。エスケープはデフォルトのエスケープ文字を用いて行われます。</td></tr>
-					<tr><td><code>String</code></td><td><code>@contain(String text, char escape)</code></td><td>前方後方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを前と後ろに付与した文字列です。エスケープは第2引数で指定したエスケープ文字を用いて行われます。</td></tr>
+					<tr><td><code>String</code></td><td><code>@prefix(String prefix)</code></td><td>前方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを後ろに付与した文字列です。エスケープにはデフォルトのエスケープ文字を用いて行われます。</td></tr>
+					<tr><td><code>String</code></td><td><code>@prefix(String prefix, char escape)</code></td><td>前方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを後ろに付与した文字列です。エスケープは第2引数で指定したエスケープ文字を用いて行われます。</td></tr>
+					<tr><td><code>String</code></td><td><code>@suffix(String suffix)</code></td><td>後方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを前に付与した文字列です。エスケープはデフォルトのエスケープ文字を用いて行われます。</td></tr>
+					<tr><td><code>String</code></td><td><code>@suffix(String suffix, char escape)</code></td><td>後方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを前に付与した文字列です。エスケープは第2引数で指定したエスケープ文字を用いて行われます。</td></tr>
+					<tr><td><code>String</code></td><td><code>@contain(String inside)</code></td><td>中間一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを前と後ろに付与した文字列です。エスケープはデフォルトのエスケープ文字を用いて行われます。</td></tr>
+					<tr><td><code>String</code></td><td><code>@contain(String inside, char escape)</code></td><td>中間一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを前と後ろに付与した文字列です。エスケープは第2引数で指定したエスケープ文字を用いて行われます。</td></tr>
 					<tr><td><code>java.sql.Date</code></td><td><code>@roundDownTimePart(java.sql.Date date)</code></td><td>時刻部分を切り捨てることを示します。戻り値は時刻部分が切り捨てられた新しい日付です。</td></tr>
 					<tr><td><code>java.sql.Timestamp</code></td><td><code>@roundDownTimePart(java.sql.Timestamp timestamp)</code></td><td>時刻部分を切り捨てることを示します。戻り値は時刻部分が切り捨てられた新しいタイムスタンプです。</td></tr>
 					<tr><td><code>java.sql.Date</code></td><td><code>@roundUpTimePart(java.sql.Date date)</code></td><td>時刻部分を切り上げることを示します。戻り値は時刻部分が切り上げられた新しい日付です。</td></tr>

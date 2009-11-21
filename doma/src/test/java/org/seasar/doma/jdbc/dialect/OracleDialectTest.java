@@ -34,24 +34,24 @@ import org.seasar.doma.wrapper.TimestampWrapper;
  */
 public class OracleDialectTest extends TestCase {
 
-    public void testExpressionFunctions_starts() throws Exception {
+    public void testExpressionFunctions_prefix() throws Exception {
         OracleDialect dialect = new OracleDialect();
         ExpressionFunctions functions = dialect.getExpressionFunctions();
         assertEquals("a\\\\a\\%a\\_a\\％a\\＿%", functions
-                .startWith("a\\a%a_a％a＿"));
+                .prefix("a\\a%a_a％a＿"));
     }
 
     public void testExpressionFunctions_starts_escape() throws Exception {
         OracleDialect dialect = new OracleDialect();
         ExpressionFunctions functions = dialect.getExpressionFunctions();
-        assertEquals("a$$a$%a$_a$％a$＿%", functions.startWith("a$a%a_a％a＿", '$'));
+        assertEquals("a$$a$%a$_a$％a$＿%", functions.prefix("a$a%a_a％a＿", '$'));
     }
 
-    public void testExpressionFunctions_starts_escapeWithDefault()
+    public void testExpressionFunctions_prefix_escapeWithDefault()
             throws Exception {
         OracleDialect dialect = new OracleDialect();
         ExpressionFunctions functions = dialect.getExpressionFunctions();
-        assertEquals("a\\\\a\\%a\\_a\\％a\\＿%", functions.startWith(
+        assertEquals("a\\\\a\\%a\\_a\\％a\\＿%", functions.prefix(
                 "a\\a%a_a％a＿", '\\'));
     }
 

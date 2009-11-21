@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>プロジェクトの概要</title>
+	</properties>
+	<body>
+		<section name="目次">
+			<ul>
+				<li><a href="#概要">概要</a></li>
+				<li><a href="#プロジェクトの構成">プロジェクトの構成</a></li>
+				<li><a href="#データベース">データベース</a></li>
+				<li><a href="#主要クラス">主要クラス</a></li>
+				<ul>
+					<li><a href="#設定クラス">設定クラス</a></li>
+					<li><a href="#エンティティクラス">エンティティクラス</a></li>
+					<li><a href="#ドメインクラス">ドメインクラス</a></li>
+					<li><a href="#Daoインタフェース">Daoインタフェース</a></li>
+				</ul>
+				<li><a href="#SQLファイル">SQLファイル</a></li>
+			</ul>
+		</section>
+		<section name="概要">
+			<p>
+				チュートリアルプロジェクトの構成、データベース、主要クラスを説明します。
+			</p>
+		</section>
+		<section name="プロジェクトの構成">
+			<p>
+				チュートリアルのプロジェクトは以下のフォルダで構成されています。
+			</p>
+			<table>
+				<tr>
+					<th>フォルダ</th>
+					<th>説明</th>
+				</tr>
+				<tr>
+					<td>src</td>
+					<td>
+						設定クラス、Daoインタフェース、エンティティクラス、SQLファイル等のソースフォルダです。
+						SQLファイルは、Domaの規約に則ってMETA-INFフォルダ以下に配置されます。
+					</td>
+				</tr>
+				<tr>
+					<td>test</td>
+					<td>
+						Daoを利用するコードのためのソースフォルダです。
+						Daoを利用するコードはすべてJUnitのテストクラスとして記述されています。
+					</td>
+				</tr>
+				<tr>
+					<td>.apt_generated</td>
+					<td>
+						apt（Annotation Processing Tool）によって生成されたコードを格納するソースフォルダです。
+						Pckage Explorerビューでは、フィルタリングされるため表示されません（フィルタリングは解除可能です）。
+						Nivigatorビューで確認できます。
+					</td>
+				</tr>
+				<tr>
+					<td>lib</td>
+					<td>
+						このチュートリアルで利用するjarファイルを格納するフォルダです。
+						JUnit、HSQLDB、Domaのjarが格納されます。
+						これらのjarはすべてビルドパスに通っていなければいけません。
+					</td>
+				</tr>
+				<tr>
+					<td>libsrc</td>
+					<td>このチュートリアルで利用するjarファイルのソースコードを格納するフォルダです。</td>
+				</tr>
+			</table>
+		</section>
+		<section name="データベース">
+			<p>
+				このチュートリアルでは、データベースに<a href="http://hsqldb.org/">HSQLDB</a>を利用します。
+			</p>
+			<p>
+				使用するスキーマの定義は次のとおりです。
+				1つのシーケンスと1つのテーブルを使用します。
+			</p>
+<source><![CDATA[create sequence employee_seq as integer start with 100 increment by 1;]]></source>
+<source><![CDATA[create table employee (
+  id integer not null primary key,
+  name varchar(255) not null,
+  age integer not null,
+  salary integer,
+  job_type varchar(20),
+  hiredate timestamp, 
+  department_id integer, 
+  version integer not null, 
+  insertTimestamp timestamp, 
+  updateTimestamp timestamp
+);]]></source>
+			<p>
+				HSQLDBはMemory-Onlyモードで起動し、テスト用のスキーマとデータは各テストの実行前に作成し、テスト終了後に破棄します。
+				スキーマとデータの作成と破棄は、共通のテストクラスで行っています。
+				Javaのコードは、test/tutorial/TutorialTestCase.javaになります。
+			</p>
+		</section>
+		<section name="主要なクラス">
+			<p>
+				チュートリアル中の主要なクラスについて説明します。
+			</p>
+			<subsection name="設定クラス">
+				<p>
+					<a href="../reference/config.html">設定クラス</a>とは、Domaに関する各種設定を持つクラスです。
+					このチュートリアルで使用する設定クラスのソースコードは、src/tutorial/AppConfig.javaになります。
+				</p>
+				<p>
+					このクラスでは、HSQLDBのデータソースの作成とHSQLDBの方言の設定を行っています。
+					それ以外の設定については親クラスの<code>DomaAbstractConfig</code>のものを利用しています。
+					設定クラスはDaoインタフェースから利用されます。
+				</p>
+<source><![CDATA[package tutorial;
+
+import javax.sql.DataSource;
+
+import org.seasar.doma.jdbc.DomaAbstractConfig;
+import org.seasar.doma.jdbc.SimpleDataSource;
+import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.jdbc.dialect.HsqldbDialect;
+
+public class AppConfig extends DomaAbstractConfig {
+
+    protected static final DataSource dataSource = createDataSource();
+
+    protected static final Dialect dialect = new HsqldbDialect();
+
+    @Override
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    @Override
+    public Dialect getDialect() {
+        return dialect;
+    }
+
+    protected static DataSource createDataSource() {
+        SimpleDataSource dataSource = new SimpleDataSource();
+        dataSource.setUrl("jdbc:hsqldb:mem:tutorial");
+        dataSource.setUser("sa");
+        return dataSource;
+    }
+
+}]]></source>
+			</subsection>
+			<subsection name="エンティティクラス">
+				<p>
+					<a href="../reference/entity.html">エンティティクラス</a>とは、テーブルやSQLの結果セットにマッピングされたクラスです。
+					エンティティクラスは、@Entityを注釈して示します。
+					このチュートリアルで使用するエンティティクラスのソースコードは、src/tutorial/entity/Employee.javaになります。
+				</p>
+				<p>
+					Employeeクラスは、EMPLOYEEテーブルに対応します。
+				</p>
+				<p>
+					識別子（テーブルの主キー）には@Idを注釈します。
+					識別子を自動生成する場合は、さらに@GeneratedValueを注釈し、自動生成の方法を示します。
+					ここではEMPLOYEE_SEQシーケンスを使って採番することを示しています。
+				</p>
+				<p>
+					プロパティ名がマッピングするカラム名と異なる場合は@Columnのname要素を使って示します。
+				</p>
+				<p>
+					更新や削除時の楽観的排他制御に使用するカラムとマッピングされたプロパティには@Versionを注釈します。
+				</p>
+<source><![CDATA[package tutorial.entity;
+
+import java.io.Serializable;
+import java.sql.Date;
+import java.sql.Timestamp;
+
+import org.seasar.doma.Column;
+import org.seasar.doma.Entity;
+import org.seasar.doma.GeneratedValue;
+import org.seasar.doma.GenerationType;
+import org.seasar.doma.Id;
+import org.seasar.doma.OriginalStates;
+import org.seasar.doma.SequenceGenerator;
+import org.seasar.doma.Version;
+
+import tutorial.domain.Salary;
+
+@Entity(listener = EmployeeListener.class)
+public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(sequence = "EMPLOYEE_SEQ")
+    Integer id;
+
+    String name;
+
+    int age;
+
+    Salary salary;
+
+    @Column(name = "JOB_TYPE")
+    JobType jobType;
+
+    Date hiredate;
+
+    @Column(name = "DEPARTMENT_ID")
+    Integer departmentId;
+
+    @Version
+    @Column(name = "VERSION")
+    Integer version;
+
+    Timestamp insertTimestamp;
+
+    Timestamp updateTimestamp;
+
+    @OriginalStates
+    Serializable originalStates;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public Salary getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Salary salary) {
+        this.salary = salary;
+    }
+
+    public JobType getJobType() {
+        return jobType;
+    }
+
+    public void setJobType(JobType jobType) {
+        this.jobType = jobType;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee [departmentId=" + departmentId + ", hiredate="
+                + hiredate + ", id=" + id + ", jobType=" + jobType + ", name="
+                + name + ", originalStates=" + originalStates + ", salary="
+                + salary + ", version=" + version + ", insertTimestamp="
+                + insertTimestamp + ", updateTimestamp=" + updateTimestamp
+                + "]";
+    }
+
+}
+]]></source>
+			</subsection>
+			<subsection name="ドメインクラス">
+				<p>
+					<a href="../reference/domain.html">ドメインクラス</a>は、データベースのカラムにマッピング可能なアプリケーション固有の値型です。
+					ドメインクラスは@Domainを注釈して示します。
+					このチュートリアルで使用するドメインクラスは、給料を表すSalaryクラスです。
+					ソースコードは、src/tutorial/domain/Salary.javaになります。
+				</p>
+<source><![CDATA[package tutorial.domain;
+
+import org.seasar.doma.Domain;
+
+@Domain(valueType = Integer.class)
+public class Salary {
+
+    private final Integer value;
+
+    public Salary(Integer value) {
+        this.value = value;
+    }
+
+    public Integer getValue() {
+        return value;
+    }
+
+    public Salary add(Salary salary) {
+        if (salary == null) {
+            throw new NullPointerException("The salary parameter is null.");
+        }
+        if (this.value == null || salary.value == null) {
+            return new Salary(null);
+        }
+        return new Salary(this.value + salary.value);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((value == null) ? 0 : value.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Salary other = (Salary) obj;
+        if (value == null) {
+            if (other.value != null) {
+                return false;
+            }
+        } else if (!value.equals(other.value)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return value != null ? String.valueOf(value) : null;
+    }
+
+}]]></source>
+			</subsection>
+			<subsection name="Daoインタフェース">
+				<p>
+					<a href="../reference/dao.html">Daoインタフェース</a>とは、データベースアクセスの境界となるインタフェースです。
+					Daoインタフェースは@Daoを注釈して示します。
+					@Daoのconfig要素には設定クラスであるAppConfigクラスを指定します。
+					このチュートリアルで使用するDaoインタフェースのソースコードは、src/tutorial/dao/EmployeeDao.javaになります。
+				</p>
+				<p>
+					Daoインタフェースの実装クラスはDomaにより自動生成されます。
+				</p>
+				<p>
+					すべてのメソッドは、@Selectや@Updateなど問い合わせの種別を示すアノテーションが注釈されなければいけません。
+				</p>
+<source><![CDATA[package tutorial.dao;
+
+import java.sql.Timestamp;
+import java.util.List;
+
+import org.seasar.doma.BatchDelete;
+import org.seasar.doma.BatchInsert;
+import org.seasar.doma.BatchUpdate;
+import org.seasar.doma.Dao;
+import org.seasar.doma.Delegate;
+import org.seasar.doma.Delete;
+import org.seasar.doma.Insert;
+import org.seasar.doma.Select;
+import org.seasar.doma.Update;
+import org.seasar.doma.jdbc.IterationCallback;
+import org.seasar.doma.jdbc.SelectOptions;
+
+import tutorial.AppConfig;
+import tutorial.domain.Salary;
+import tutorial.entity.Employee;
+import tutorial.entity.JobType;
+
+@Dao(config = AppConfig.class)
+public interface EmployeeDao {
+
+    @Select
+    Employee selectById(Integer id);
+
+    @Select
+    List<Employee> selectByAgeRange(Integer min, Integer max);
+
+    @Select
+    List<Employee> selectByName(String name);
+
+    @Select
+    List<Employee> selectByNames(List<String> names);
+
+    @Select
+    List<Employee> selectByNamePrefix(String prefix);
+
+    @Select
+    List<Employee> selectByNameSuffix(String suffix);
+
+    @Select
+    List<Employee> selectByFuzzyName(String fuzzyName);
+
+    @Select
+    List<Employee> selectByHiredateRange(Timestamp from, Timestamp to);
+
+    @Select
+    List<Employee> selectByJobType(JobType jobType);
+
+    @Select
+    List<JobType> selectAllJobTypes();
+
+    @Select
+    List<Employee> selectBySalary(Salary salary);
+
+    @Select
+    Salary selectSummedSalary();
+
+    @Select
+    List<Employee> selectByExample(Employee e);
+
+    @Select
+    List<Employee> selectAll();
+
+    @Select
+    List<Employee> selectAll(SelectOptions options);
+
+    @Select(iterate = true)
+    <R> R selectAll(IterationCallback<R, Employee> callback);
+
+    @Delegate(to = EmployeeDaoDelegate.class)
+    int count();
+
+    @Insert
+    int insert(Employee employee);
+
+    @Update
+    int update(Employee employee);
+
+    @Delete
+    int delete(Employee employee);
+
+    @BatchInsert
+    int[] batchInsert(List<Employee> employees);
+
+    @BatchUpdate
+    int[] batchUpdate(List<Employee> employees);
+
+    @BatchDelete
+    int[] batchDelete(List<Employee> employees);
+
+}]]></source>
+			</subsection>
+		</section>
+		<section name="SQLファイル">
+			<p>
+				tutorial.EmployeeDaoに対応するSQLファイルは、META-INF/tutorial/EmployeeDaoフォルダ以下に配置されています。
+			</p>
+		</section>
+	</body>
+</document>

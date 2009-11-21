@@ -756,7 +756,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String startWith(String text) {
+        public String prefix(String text) {
             if (text == null) {
                 return null;
             }
@@ -766,7 +766,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String startWith(String text, char escape) {
+        public String prefix(String text, char escape) {
             if (text == null) {
                 return null;
             }
@@ -774,7 +774,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String endWith(String text) {
+        public String suffix(String text) {
             if (text == null) {
                 return null;
             }
@@ -784,7 +784,7 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String endWith(String text, char escape) {
+        public String suffix(String text, char escape) {
             if (text == null) {
                 return null;
             }

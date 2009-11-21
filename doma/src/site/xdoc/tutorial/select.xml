@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>検索</title>
+	</properties>
+	<body>
+		<section name="目次">
+			<ul>
+				<li><a href="#概要">概要</a></li>
+				<li><a href="#単純な検索">単純な検索</a></li>
+				<li><a href="#条件分岐のある検索">条件分岐のある検索</a></li>
+				<li><a href="#LIKE述語を使った検索">LIKE述語を使った検索</a>
+					<ul>
+						<li><a href="#前方一致検索">設定クラス</a></li>
+						<li><a href="#後方一致検索">エンティティクラス</a></li>
+						<li><a href="#中間一致検索">Daoインタフェース</a></li>
+					</ul>
+				</li>
+			</ul>
+		</section>
+		<section name="概要">
+			<p>
+				ここに示すコードは、test/tutorial/SelectTest.javaに記述されたものです。
+			</p>
+			<p>
+				検索は、すべて外部化されたSQLファイルを使って行われます。
+				SQLファイルはsrc/META-INF/tutorial/dao/EmployeeDaoフォルダに格納されています。
+				SQLファイルの名称は、Daoのメソッド名に拡張子「sql」を加えたものになります。
+			</p>
+		</section>
+		<section name="単純な検索">
+			<p>
+				testSimpleSelectメソッドを参照してください。
+				引数をSQLファイルにバインディングして実行する単純な検索です。
+			</p>
+			<p>
+				selectById.sqlに記述されたSQLは次のとおりです。
+			</p>
+<source><![CDATA[select * from employee where id = /* id */0]]></source>
+			<p>
+				selectById.sqlを実行するJavaコードは次のようになります。
+			</p>
+<source><![CDATA[Employee employee = dao.selectById(1);]]></source>
+			<p>
+				上記のJavaコードを実行すると、SQLのログは次のようになります。
+			</p>
+<source><![CDATA[select * from employee where id = 1]]></source>
+		</section>
+		<section name="条件分岐のある検索">
+			<p>
+				testConditinalSelectメソッドを参照してください。
+				SQLファイル中に条件分岐を記述することで、動的なSQLを発行できます。
+			</p>
+			<p>
+				selectByAgeRange.sqlに記述されたSQLは次のとおりです。
+			</p>
+<source><![CDATA[select * from employee
+where
+/*%if min != null */
+  age >= /* min */10
+/*%end */
+/*%if max != null */
+  and
+  age <= /* max */70
+/*%end */
+order by age]]></source>
+			<subsection name="条件1">
+			<p>
+				Javaコードで1番目のパラメータに30、2番目のパラメータに40を渡します。
+			</p>
+<source><![CDATA[List<Employee> list = dao.selectByAgeRange(30, 40);]]></source>
+			<p>
+				上記のJavaコードを実行すると、SQLのログは次のようになります。
+			</p>
+<source><![CDATA[select * from employee
+where
+  age >= 30
+  and
+  age <= 40
+order by age]]></source>
+			</subsection>
+			<subsection name="条件2">
+			<p>
+				Javaコードで1番目のパラメータに30、2番目のパラメータにnullを渡します。
+			</p>
+<source><![CDATA[list = dao.selectByAgeRange(30, null);]]></source>
+			<p>
+				上記のJavaコードを実行すると、SQLのログは次のようになります。
+			</p>
+<source><![CDATA[select * from employee
+where
+  age >= 30
+order by age]]></source>
+			</subsection>
+			<subsection name="条件3">
+			<p>
+				Javaコードで1番目のパラメータにnull、2番目のパラメータに40を渡します。
+			</p>
+<source><![CDATA[list = dao.selectByAgeRange(null, 40);]]></source>
+			<p>
+				上記のJavaコードを実行すると、SQLのログは次のようになります。
+			</p>
+<source><![CDATA[select * from employee
+where
+  age <= 40
+order by age]]></source>
+			</subsection>
+			<subsection name="条件4">
+			<p>
+				Javaコードで1番目のパラメータにnull、2番目のパラメータにnullを渡します。
+			</p>
+<source><![CDATA[list = dao.selectByAgeRange(null, null);]]></source>
+			<p>
+				上記のJavaコードを実行すると、SQLのログは次のようになります。
+			</p>
+<source><![CDATA[select * from employee
+order by age]]></source>
+			</subsection>
+		</section>
+		<section name="条件分岐のある検索">
+			<p>
+				testConditinalSelectメソッドを参照してください。
+				SQLファイル中に条件分岐を記述することで、動的なSQLを発行できます。
+			</p>
+			<p>
+				selectByAgeRange.sqlに記述されたSQLは次のとおりです。
+			</p>
+<source><![CDATA[select * from employee
+where
+/*%if min != null */
+  age >= /* min */10
+/*%end */
+/*%if max != null */
+  and
+  age <= /* max */70
+/*%end */
+order by age]]></source>
+			<subsection name="条件1">
+			<p>
+				Javaコードで1番目のパラメータに30、2番目のパラメータに40を渡します。
+			</p>
+<source><![CDATA[List<Employee> list = dao.selectByAgeRange(30, 40);]]></source>
+			<p>
+				上記のJavaコードを実行すると、SQLのログは次のようになります。
+			</p>
+<source><![CDATA[select * from employee
+where
+  age >= 30
+  and
+  age <= 40
+order by age]]></source>
+			</subsection>
+			<subsection name="条件2">
+			<p>
+				Javaコードで1番目のパラメータに30、2番目のパラメータにnullを渡します。
+			</p>
+<source><![CDATA[list = dao.selectByAgeRange(30, null);]]></source>
+			<p>
+				上記のJavaコードを実行すると、SQLのログは次のようになります。
+			</p>
+<source><![CDATA[select * from employee
+where
+  age >= 30
+order by age]]></source>
+			</subsection>
+			<subsection name="条件3">
+			<p>
+				Javaコードで1番目のパラメータにnull、2番目のパラメータに40を渡します。
+			</p>
+<source><![CDATA[list = dao.selectByAgeRange(null, 40);]]></source>
+			<p>
+				上記のJavaコードを実行すると、SQLのログは次のようになります。
+			</p>
+<source><![CDATA[select * from employee
+where
+  age <= 40
+order by age]]></source>
+			</subsection>
+			<subsection name="条件4">
+			<p>
+				Javaコードで1番目のパラメータにnull、2番目のパラメータにnullを渡します。
+			</p>
+<source><![CDATA[list = dao.selectByAgeRange(null, null);]]></source>
+			<p>
+				上記のJavaコードを実行すると、SQLのログは次のようになります。
+			</p>
+<source><![CDATA[select * from employee
+order by age]]></source>
+			</subsection>
+		</section>
+	</body>
+</document>
