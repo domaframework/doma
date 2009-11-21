@@ -6,7 +6,7 @@
 	<!-- The Basics -->
 	<groupId>org.seasar.doma</groupId>
 	<artifactId>doma</artifactId>
-	<version>0.9.10</version>
+	<version>0.9.11-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<!-- More Project Information -->
