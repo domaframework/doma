@@ -242,7 +242,7 @@ List<Employee> selectByNameWithInsideMatching(String inside);]]></source>
 				<p>
 					Daoのメソッドは次のように呼び出します。
 				</p>
-<source><![CDATA[List<Employee> list = dao.selectByNameWithSuffixMatching("A");]]></source>
+<source><![CDATA[List<Employee> list = dao.selectByNameWithInsideMatching("A");]]></source>
 				<p>
 					SQLのログは次のように出力されます。
 				</p>
