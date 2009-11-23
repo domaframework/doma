@@ -12,6 +12,7 @@
 						<li><a href="#サンプルテーブルの作成">サンプルテーブルの作成</a></li>
 						<li><a href="#JDBCドライバのダウンロードと設定">JDBCドライバのダウンロードと設定</a></li>
 						<li><a href="#エンティティクラスの作成">エンティティクラスの作成</a></li>
+						<li><a href="#設定クラスの作成">設定クラスの作成</a></li>
 						<li><a href="#Daoインタフェースの作成">Daoインタフェースの作成</a></li>
 						<li><a href="#SQLファイルの作成">SQLファイルの作成</a></li>
 						<li><a href="#起動クラスの作成">起動クラスの作成</a></li>
@@ -177,12 +178,12 @@ public class AppConfig extends DomaAbstractConfig {
 	private static Dialect dialect = new PostgresDialect();
 
 	@Override
-	public DataSource dataSource() {
+	public DataSource getDataSource() {
 		return dataSource;
 	}
 
 	@Override
-	public Dialect dialect() {
+	public Dialect getDialect() {
 		return dialect;
 	}
 
