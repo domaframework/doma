@@ -22,4 +22,11 @@ package org.seasar.doma.jdbc;
  * 
  */
 public interface SqlParameter {
+
+    /**
+     * パラメータの値を返します。
+     * 
+     * @return　パラメータの値を返します。
+     */
+    Object getValue();
 }

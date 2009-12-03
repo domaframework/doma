@@ -38,6 +38,11 @@ public class BasicListParameter<V> implements ListParameter<Wrapper<V>> {
     }
 
     @Override
+    public Object getValue() {
+        return values;
+    }
+
+    @Override
     public Wrapper<V> getElementHolder() {
         return wrapper;
     }

@@ -32,6 +32,12 @@ public class BasicInParameter implements InParameter {
         this.wrapper = wrapper;
     }
 
+    @Override
+    public Object getValue() {
+        return wrapper.get();
+    }
+
+    @Override
     public Wrapper<?> getWrapper() {
         return wrapper;
     }

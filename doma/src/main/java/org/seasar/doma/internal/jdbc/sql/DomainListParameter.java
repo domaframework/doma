@@ -43,6 +43,11 @@ public class DomainListParameter<V, D> implements
     }
 
     @Override
+    public Object getValue() {
+        return domains;
+    }
+
+    @Override
     public DomainType<V, D> getElementHolder() {
         domainType = domainTypeFactory.createDomainType();
         return domainType;

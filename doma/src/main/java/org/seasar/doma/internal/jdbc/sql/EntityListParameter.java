@@ -42,6 +42,11 @@ public class EntityListParameter<E> implements ListParameter<EntityType<E>> {
     }
 
     @Override
+    public Object getValue() {
+        return entities;
+    }
+
+    @Override
     public EntityType<E> getElementHolder() {
         entityType = entityTypeFactory.createEntityType();
         return entityType;

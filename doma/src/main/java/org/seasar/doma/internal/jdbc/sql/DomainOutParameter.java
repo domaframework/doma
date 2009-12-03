@@ -40,6 +40,11 @@ public class DomainOutParameter<V, D> implements OutParameter {
     }
 
     @Override
+    public Object getValue() {
+        return reference.get();
+    }
+
+    @Override
     public Wrapper<?> getWrapper() {
         return domainType.getWrapper();
     }

@@ -35,6 +35,11 @@ public class DomainInParameter<V, D> implements InParameter {
     }
 
     @Override
+    public Object getValue() {
+        return domainType.getDomain();
+    }
+
+    @Override
     public Wrapper<?> getWrapper() {
         return domainType.getWrapper();
     }

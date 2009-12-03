@@ -32,6 +32,11 @@ public class BasicResultParameter<V> implements ResultParameter<V> {
         this.wrapper = wrapper;
     }
 
+    @Override
+    public Object getValue() {
+        return wrapper.get();
+    }
+
     public Wrapper<V> getWrapper() {
         return wrapper;
     }

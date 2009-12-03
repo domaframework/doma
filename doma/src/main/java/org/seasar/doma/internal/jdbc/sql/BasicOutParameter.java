@@ -37,6 +37,11 @@ public class BasicOutParameter<T> implements OutParameter {
     }
 
     @Override
+    public Object getValue() {
+        return wrapper.get();
+    }
+
+    @Override
     public Wrapper<T> getWrapper() {
         return wrapper;
     }

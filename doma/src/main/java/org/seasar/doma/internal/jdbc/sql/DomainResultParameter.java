@@ -41,6 +41,11 @@ public class DomainResultParameter<V, D> implements ResultParameter<D> {
     }
 
     @Override
+    public Object getValue() {
+        return domainType.getDomain();
+    }
+
+    @Override
     public D getResult() {
         return domainType.getDomain();
     }

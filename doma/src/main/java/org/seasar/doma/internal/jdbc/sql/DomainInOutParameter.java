@@ -40,10 +40,16 @@ public class DomainInOutParameter<V, D> implements InParameter, OutParameter {
     }
 
     @Override
+    public Object getValue() {
+        return reference.get();
+    }
+
+    @Override
     public Wrapper<?> getWrapper() {
         return domainType.getWrapper();
     }
 
+    @Override
     public void updateReference() {
         reference.set(domainType.getDomain());
     }

@@ -37,10 +37,17 @@ public class BasicInOutParameter<T> implements InParameter, OutParameter {
         this.reference = reference;
     }
 
+    @Override
+    public Object getValue() {
+        return wrapper.get();
+    }
+
+    @Override
     public Wrapper<T> getWrapper() {
         return wrapper;
     }
 
+    @Override
     public void updateReference() {
         reference.set(wrapper.get());
     }
