@@ -25,6 +25,7 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
+import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.wrapper.Wrapper;
@@ -121,8 +122,8 @@ public class HsqldbDialect extends StandardDialect {
             throw new DomaNullPointerException("columnName");
         }
         String rawSql = "call identity()";
-        return new PreparedSql(rawSql, rawSql, null, Collections
-                .<PreparedSqlParameter> emptyList());
+        return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
+                Collections.<PreparedSqlParameter> emptyList());
     }
 
     @Override
@@ -134,8 +135,8 @@ public class HsqldbDialect extends StandardDialect {
         String rawSql = "select next value for "
                 + qualifiedSequenceName
                 + " from information_schema.system_tables where table_name = 'SYSTEM_TABLES'";
-        return new PreparedSql(rawSql, rawSql, null, Collections
-                .<PreparedSqlParameter> emptyList());
+        return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
+                Collections.<PreparedSqlParameter> emptyList());
     }
 
     @Override

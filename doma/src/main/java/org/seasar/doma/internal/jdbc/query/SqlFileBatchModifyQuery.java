@@ -31,12 +31,15 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlFile;
+import org.seasar.doma.jdbc.SqlKind;
 
 /**
  * @author taedium
  * 
  */
 public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
+
+    protected final SqlKind kind;
 
     protected final EntityTypeFactory<E> entityTypeFactory;
 
@@ -68,9 +71,11 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
 
     protected EntityType<E> entityType;
 
-    public SqlFileBatchModifyQuery(EntityTypeFactory<E> entityTypeFactory) {
-        assertNotNull(entityTypeFactory);
+    public SqlFileBatchModifyQuery(EntityTypeFactory<E> entityTypeFactory,
+            SqlKind kind) {
+        assertNotNull(entityTypeFactory, kind);
         this.entityTypeFactory = entityTypeFactory;
+        this.kind = kind;
     }
 
     public void prepare() {
@@ -115,7 +120,7 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
                 .singletonMap(parameterName, value), config.getDialect()
                 .getExpressionFunctions());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
-                sqlFile.getPath(), evaluator);
+                kind, sqlFile.getPath(), evaluator);
         PreparedSql sql = sqlBuilder.build(sqlFile.getSqlNode());
         sqls.add(sql);
     }

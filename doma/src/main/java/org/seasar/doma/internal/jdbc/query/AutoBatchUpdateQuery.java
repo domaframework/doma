@@ -25,6 +25,7 @@ import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
+import org.seasar.doma.jdbc.SqlKind;
 
 /**
  * @author taedium
@@ -100,7 +101,8 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
     }
 
     protected void prepareSql() {
-        PreparedSqlBuilder builder = new PreparedSqlBuilder(config);
+        PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
+                SqlKind.BATCH_UPDATE);
         builder.appendSql("update ");
         builder.appendSql(tableName);
         builder.appendSql(" set ");

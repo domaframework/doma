@@ -28,6 +28,7 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
+import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.type.AbstractResultSetType;
@@ -154,8 +155,8 @@ public class PostgresDialect extends StandardDialect {
         buf.append('_').append(columnName);
         buf.append("_seq')");
         String rawSql = buf.toString();
-        return new PreparedSql(rawSql, rawSql, null, Collections
-                .<PreparedSqlParameter> emptyList());
+        return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
+                Collections.<PreparedSqlParameter> emptyList());
     }
 
     @Override
@@ -165,8 +166,8 @@ public class PostgresDialect extends StandardDialect {
             throw new DomaNullPointerException("qualifiedSequenceName");
         }
         String rawSql = "select nextval('" + qualifiedSequenceName + "')";
-        return new PreparedSql(rawSql, rawSql, null, Collections
-                .<PreparedSqlParameter> emptyList());
+        return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
+                Collections.<PreparedSqlParameter> emptyList());
     }
 
     @Override

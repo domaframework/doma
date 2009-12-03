@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.wrapper.Wrapper;
 
@@ -38,11 +39,14 @@ public class PreparedSqlBuilder {
 
     protected final Config config;
 
+    protected final SqlKind kind;
+
     protected final SqlLogFormattingFunction formattingFunction;
 
-    public PreparedSqlBuilder(Config config) {
-        assertNotNull(config);
+    public PreparedSqlBuilder(Config config, SqlKind kind) {
+        assertNotNull(config, kind);
         this.config = config;
+        this.kind = kind;
         this.formattingFunction = new ConvertToLogFormatFunction();
     }
 
@@ -64,6 +68,6 @@ public class PreparedSqlBuilder {
     }
 
     public PreparedSql build() {
-        return new PreparedSql(rawSql, formattedSql, null, parameters);
+        return new PreparedSql(kind, rawSql, formattedSql, null, parameters);
     }
 }

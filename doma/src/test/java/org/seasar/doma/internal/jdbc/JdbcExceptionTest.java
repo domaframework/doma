@@ -29,6 +29,7 @@ import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.jdbc.GreedyCacheSqlFileRepository;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlFileNotFoundException;
+import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
 
@@ -184,7 +185,7 @@ public class JdbcExceptionTest extends TestCase {
                 "select * from aaa where bbb = \n/*bbb*/'ccc'");
         SqlNode sqlNode = parser.parse();
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
-                "dummyPath");
+                SqlKind.SELECT, "dummyPath");
         try {
             builder.build(sqlNode);
             fail();
@@ -201,7 +202,7 @@ public class JdbcExceptionTest extends TestCase {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("bbb", new Value(int.class, 1));
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
-                "dummyPath", evaluator);
+                SqlKind.SELECT, "dummyPath", evaluator);
         try {
             builder.build(sqlNode);
             fail();
@@ -218,7 +219,7 @@ public class JdbcExceptionTest extends TestCase {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("bbb", new Value(List.class, Arrays.asList(1, null)));
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
-                "dummyPath", evaluator);
+                SqlKind.SELECT, "dummyPath", evaluator);
         try {
             builder.build(sqlNode);
             fail();

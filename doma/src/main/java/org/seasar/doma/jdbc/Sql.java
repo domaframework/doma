@@ -32,6 +32,13 @@ import java.util.List;
 public interface Sql<P extends SqlParameter> {
 
     /**
+     * SQLの種別を返します。
+     * 
+     * @return SQLの種別
+     */
+    SqlKind getKind();
+
+    /**
      * 未加工SQLを返します。
      * <p>
      * バインド変数は {@code ?} で表されます。
@@ -63,4 +70,5 @@ public interface Sql<P extends SqlParameter> {
      * @return バインド変数のパラメータのリスト
      */
     List<P> getParameters();
+
 }

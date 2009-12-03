@@ -30,6 +30,7 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SelectOptionsAccessor;
 import org.seasar.doma.jdbc.SqlFile;
+import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.wrapper.LongWrapper;
 
@@ -88,7 +89,7 @@ public class SqlFileSelectQuery implements SelectQuery {
         ExpressionEvaluator evaluator = new ExpressionEvaluator(parameters,
                 config.getDialect().getExpressionFunctions());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
-                sqlFile.getPath(), evaluator);
+                SqlKind.SELECT, sqlFile.getPath(), evaluator);
         sql = sqlBuilder.build(sqlNode);
     }
 
@@ -265,7 +266,7 @@ public class SqlFileSelectQuery implements SelectQuery {
             ExpressionEvaluator evaluator = new ExpressionEvaluator(parameters,
                     config.getDialect().getExpressionFunctions());
             NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                    config, null, evaluator);
+                    config, SqlKind.SELECT, null, evaluator);
             sql = sqlBuilder.build(sqlNode);
         }
 

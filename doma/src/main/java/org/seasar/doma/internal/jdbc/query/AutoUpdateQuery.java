@@ -22,6 +22,7 @@ import java.util.Map;
 import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
+import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -102,7 +103,8 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void prepareSql() {
-        PreparedSqlBuilder builder = new PreparedSqlBuilder(config);
+        PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
+                SqlKind.UPDATE);
         builder.appendSql("update ");
         builder.appendSql(tableName);
         builder.appendSql(" set ");

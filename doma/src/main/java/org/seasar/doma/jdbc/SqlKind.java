@@ -13,32 +13,40 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.query;
-
-import static org.seasar.doma.internal.util.AssertionUtil.*;
-
-import org.seasar.doma.jdbc.SqlKind;
+package org.seasar.doma.jdbc;
 
 /**
+ * SQLの種別を示します。
+ * 
  * @author taedium
  * 
  */
-public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
-        UpdateQuery {
+public enum SqlKind {
 
-    public SqlFileUpdateQuery() {
-        super(SqlKind.UPDATE);
-    }
+    /** 検索 */
+    SELECT,
 
-    public void prepare() {
-        assertNotNull(config, sqlFilePath, callerClassName, callerMethodName);
-        prepareOptions();
-        prepareSql();
-        assertNotNull(sql);
-    }
+    /** 挿入 */
+    INSERT,
 
-    @Override
-    public void incrementVersion() {
-    }
+    /** 更新 */
+    UPDATE,
 
+    /** 削除 */
+    DELETE,
+
+    /** バッチ挿入 */
+    BATCH_INSERT,
+
+    /** バッチ更新 */
+    BATCH_UPDATE,
+
+    /** バッチ削除 */
+    BATCH_DELETE,
+
+    /** ストアドプロシージャー */
+    PROCEDURE,
+
+    /** ストアドファンクション */
+    FUNCTION
 }

@@ -22,6 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.wrapper.Wrapper;
 
@@ -35,6 +36,8 @@ public class CallableSqlBuilder
 
     protected final Config config;
 
+    protected final SqlKind kind;
+
     protected final ResultParameter<?> resultParameter;
 
     protected final List<CallableSqlParameter> parameters;
@@ -45,16 +48,17 @@ public class CallableSqlBuilder
 
     protected boolean began;
 
-    public CallableSqlBuilder(Config config, String moduleName,
+    public CallableSqlBuilder(Config config, SqlKind kind, String moduleName,
             List<CallableSqlParameter> parameters) {
-        this(config, moduleName, parameters, null);
+        this(config, kind, moduleName, parameters, null);
     }
 
-    public CallableSqlBuilder(Config config, String moduleName,
+    public CallableSqlBuilder(Config config, SqlKind kind, String moduleName,
             List<CallableSqlParameter> parameters,
             ResultParameter<?> resultParameter) {
-        assertNotNull(config, parameters, moduleName);
+        assertNotNull(config, kind, parameters, moduleName);
         this.config = config;
+        this.kind = kind;
         this.resultParameter = resultParameter;
         this.parameters = parameters;
         this.moduleName = moduleName;
@@ -81,7 +85,7 @@ public class CallableSqlBuilder
         if (resultParameter != null) {
             allParameters.addFirst(resultParameter);
         }
-        return new CallableSql(context.getSqlBuf(), context
+        return new CallableSql(kind, context.getSqlBuf(), context
                 .getFormattedSqlBuf(), allParameters);
     }
 

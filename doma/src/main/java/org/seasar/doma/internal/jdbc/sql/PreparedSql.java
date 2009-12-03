@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.SqlKind;
 
 /**
  * 
@@ -27,6 +28,8 @@ import org.seasar.doma.jdbc.Sql;
  * 
  */
 public class PreparedSql implements Sql<PreparedSqlParameter> {
+
+    protected final SqlKind kind;
 
     protected final String rawSql;
 
@@ -36,8 +39,12 @@ public class PreparedSql implements Sql<PreparedSqlParameter> {
 
     protected final List<PreparedSqlParameter> parameters;
 
-    public PreparedSql(CharSequence rawSql, CharSequence formattedSql,
-            String sqlFilePath, List<? extends PreparedSqlParameter> parameters) {
+    public PreparedSql(SqlKind kind, CharSequence rawSql,
+            CharSequence formattedSql, String sqlFilePath,
+            List<? extends PreparedSqlParameter> parameters) {
+        if (kind == null) {
+            throw new DomaNullPointerException("kind");
+        }
         if (rawSql == null) {
             throw new DomaNullPointerException("rawSql");
         }
@@ -47,10 +54,15 @@ public class PreparedSql implements Sql<PreparedSqlParameter> {
         if (parameters == null) {
             throw new DomaNullPointerException("parameters");
         }
+        this.kind = kind;
         this.rawSql = rawSql.toString().trim();
         this.formattedSql = formattedSql.toString().trim();
         this.sqlFilePath = sqlFilePath;
         this.parameters = Collections.unmodifiableList(parameters);
+    }
+
+    public SqlKind getKind() {
+        return kind;
     }
 
     @Override

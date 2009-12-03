@@ -19,12 +19,18 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.sql.Statement;
 
+import org.seasar.doma.jdbc.SqlKind;
+
 /**
  * @author taedium
  * 
  */
 public class SqlFileInsertQuery extends SqlFileModifyQuery implements
         InsertQuery {
+
+    public SqlFileInsertQuery() {
+        super(SqlKind.INSERT);
+    }
 
     public void prepare() {
         assertNotNull(config, sqlFilePath, callerClassName, callerMethodName);

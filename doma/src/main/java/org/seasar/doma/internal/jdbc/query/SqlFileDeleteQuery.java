@@ -17,12 +17,18 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import org.seasar.doma.jdbc.SqlKind;
+
 /**
  * @author taedium
  * 
  */
 public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
         DeleteQuery {
+
+    public SqlFileDeleteQuery() {
+        super(SqlKind.DELETE);
+    }
 
     public void prepare() {
         assertNotNull(config, sqlFilePath, callerClassName, callerMethodName);

@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
+import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 
@@ -32,7 +33,8 @@ public class PreparedSqlBuilderTest extends TestCase {
     private final MockConfig config = new MockConfig();
 
     public void testAppend() throws Exception {
-        PreparedSqlBuilder builder = new PreparedSqlBuilder(config);
+        PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
+                SqlKind.SELECT);
         builder.appendSql("select * from aaa where name = ");
         builder.appendWrapper(new StringWrapper("hoge"));
         builder.appendSql(" and salary = ");
@@ -43,7 +45,8 @@ public class PreparedSqlBuilderTest extends TestCase {
     }
 
     public void testCutBackSql() {
-        PreparedSqlBuilder builder = new PreparedSqlBuilder(config);
+        PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
+                SqlKind.SELECT);
         builder.appendSql("select * from aaa where name = ");
         builder.cutBackSql(14);
         PreparedSql sql = builder.build();

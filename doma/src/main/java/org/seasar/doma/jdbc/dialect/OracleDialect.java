@@ -31,6 +31,7 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SelectForUpdateType;
+import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormatter;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
@@ -162,8 +163,8 @@ public class OracleDialect extends StandardDialect {
         }
         String rawSql = "select " + qualifiedSequenceName
                 + ".nextval from dual";
-        return new PreparedSql(rawSql, rawSql, null, Collections
-                .<PreparedSqlParameter> emptyList());
+        return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
+                Collections.<PreparedSqlParameter> emptyList());
     }
 
     @Override

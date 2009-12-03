@@ -18,6 +18,7 @@ package org.seasar.doma.internal.jdbc.query;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.internal.jdbc.sql.CallableSqlBuilder;
+import org.seasar.doma.jdbc.SqlKind;
 
 /**
  * @author taedium
@@ -37,7 +38,7 @@ public class AutoProcedureQuery extends AutoModuleQuery implements
 
     protected void prepareSql() {
         CallableSqlBuilder builder = new CallableSqlBuilder(config,
-                procedureName, parameters);
+                SqlKind.PROCEDURE, procedureName, parameters);
         sql = builder.build();
     }
 

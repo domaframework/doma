@@ -30,6 +30,7 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
 
 /**
@@ -137,7 +138,8 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
     }
 
     protected void prepareSql() {
-        PreparedSqlBuilder builder = new PreparedSqlBuilder(config);
+        PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
+                SqlKind.BATCH_INSERT);
         builder.appendSql("insert into ");
         builder.appendSql(tableName);
         builder.appendSql(" (");

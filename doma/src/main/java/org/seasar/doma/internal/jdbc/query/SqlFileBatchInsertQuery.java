@@ -18,6 +18,7 @@ package org.seasar.doma.internal.jdbc.query;
 import java.sql.Statement;
 
 import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
+import org.seasar.doma.jdbc.SqlKind;
 
 /**
  * @author taedium
@@ -27,7 +28,7 @@ public class SqlFileBatchInsertQuery<E> extends SqlFileBatchModifyQuery<E>
         implements BatchInsertQuery {
 
     public SqlFileBatchInsertQuery(EntityTypeFactory<E> entityTypeFactory) {
-        super(entityTypeFactory);
+        super(entityTypeFactory, SqlKind.BATCH_INSERT);
     }
 
     @Override

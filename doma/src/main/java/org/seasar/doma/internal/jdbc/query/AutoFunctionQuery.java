@@ -19,6 +19,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.internal.jdbc.sql.CallableSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.ResultParameter;
+import org.seasar.doma.jdbc.SqlKind;
 
 /**
  * @author taedium
@@ -32,7 +33,8 @@ public class AutoFunctionQuery<R> extends AutoModuleQuery implements
     protected ResultParameter<R> resultParameter;
 
     public void prepare() {
-        assertNotNull(config, functionName, resultParameter, callerClassName, callerMethodName);
+        assertNotNull(config, functionName, resultParameter, callerClassName,
+                callerMethodName);
         prepareOptions();
         prepareSql();
         assertNotNull(sql);
@@ -40,7 +42,7 @@ public class AutoFunctionQuery<R> extends AutoModuleQuery implements
 
     protected void prepareSql() {
         CallableSqlBuilder builder = new CallableSqlBuilder(config,
-                functionName, parameters, resultParameter);
+                SqlKind.FUNCTION, functionName, parameters, resultParameter);
         sql = builder.build();
     }
 

@@ -24,6 +24,7 @@ import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
+import org.seasar.doma.jdbc.SqlKind;
 
 /**
  * @author taedium
@@ -78,7 +79,8 @@ public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
     }
 
     protected void prepareSql() {
-        PreparedSqlBuilder builder = new PreparedSqlBuilder(config);
+        PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
+                SqlKind.BATCH_DELETE);
         builder.appendSql("delete from ");
         builder.appendSql(tableName);
         if (idProperties.size() > 0) {

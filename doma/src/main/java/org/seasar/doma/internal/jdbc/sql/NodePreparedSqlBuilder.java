@@ -86,6 +86,7 @@ import org.seasar.doma.internal.wrapper.Wrappers;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
+import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
@@ -125,19 +126,23 @@ public class NodePreparedSqlBuilder implements
 
     protected final Config config;
 
+    protected final SqlKind kind;
+
     protected final String sqlFilePath;
 
     protected final ExpressionEvaluator evaluator;
 
-    public NodePreparedSqlBuilder(Config config, String sqlFilePath) {
-        this(config, sqlFilePath, new ExpressionEvaluator(config.getDialect()
-                .getExpressionFunctions()));
+    public NodePreparedSqlBuilder(Config config, SqlKind kind,
+            String sqlFilePath) {
+        this(config, kind, sqlFilePath, new ExpressionEvaluator(config
+                .getDialect().getExpressionFunctions()));
     }
 
-    public NodePreparedSqlBuilder(Config config, String sqlFilePath,
-            ExpressionEvaluator evaluator) {
-        assertNotNull(config, evaluator);
+    public NodePreparedSqlBuilder(Config config, SqlKind kind,
+            String sqlFilePath, ExpressionEvaluator evaluator) {
+        assertNotNull(config, kind, evaluator);
         this.config = config;
+        this.kind = kind;
         this.sqlFilePath = sqlFilePath;
         this.evaluator = evaluator;
     }
@@ -146,7 +151,7 @@ public class NodePreparedSqlBuilder implements
         assertNotNull(sqlNode);
         Context context = new Context(config, evaluator);
         sqlNode.accept(this, context);
-        return new PreparedSql(context.getSqlBuf(), context
+        return new PreparedSql(kind, context.getSqlBuf(), context
                 .getFormattedSqlBuf(), sqlFilePath, context.getParameters());
     }
 

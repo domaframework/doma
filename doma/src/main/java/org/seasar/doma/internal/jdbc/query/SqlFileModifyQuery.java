@@ -27,12 +27,15 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlFile;
+import org.seasar.doma.jdbc.SqlKind;
 
 /**
  * @author taedium
  * 
  */
 public abstract class SqlFileModifyQuery implements ModifyQuery {
+
+    protected final SqlKind kind;
 
     protected Config config;
 
@@ -48,6 +51,11 @@ public abstract class SqlFileModifyQuery implements ModifyQuery {
 
     protected int queryTimeout;
 
+    public SqlFileModifyQuery(SqlKind kind) {
+        assertNotNull(kind);
+        this.kind = kind;
+    }
+
     protected void prepareOptions() {
         if (queryTimeout <= 0) {
             queryTimeout = config.getQueryTimeout();
@@ -60,7 +68,7 @@ public abstract class SqlFileModifyQuery implements ModifyQuery {
         ExpressionEvaluator evaluator = new ExpressionEvaluator(parameters,
                 config.getDialect().getExpressionFunctions());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
-                sqlFile.getPath(), evaluator);
+                kind, sqlFile.getPath(), evaluator);
         sql = sqlBuilder.build(sqlFile.getSqlNode());
     }
 
