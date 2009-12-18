@@ -43,8 +43,8 @@ public class DomainTypeFactoryGenerator extends AbstractGenerator {
     public DomainTypeFactoryGenerator(ProcessingEnvironment env,
             TypeElement domainElement, DomainMeta domainMeta)
             throws IOException {
-        super(env, domainElement, null, null,
-                Options.Constants.DEFAULT_DOMAIN_PREFIX, "");
+        super(env, domainElement, null, null, Constants.DEFAULT_DOMAIN_PREFIX,
+                "");
         assertNotNull(domainMeta);
         this.domainMeta = domainMeta;
     }

@@ -107,18 +107,12 @@ public class DaoGenerator extends AbstractGenerator {
 
     protected final DaoMeta daoMeta;
 
-    protected final String entityPrefix;
-
-    protected final String domainPrefix;
-
     public DaoGenerator(ProcessingEnvironment env, TypeElement daoElement,
             DaoMeta daoMeta) throws IOException {
         super(env, daoElement, Options.getDaoPackage(env), Options
                 .getDaoSubpackage(env), "", Options.getDaoSuffix(env));
         assertNotNull(daoMeta);
         this.daoMeta = daoMeta;
-        this.entityPrefix = Options.Constants.DEFAULT_ENTITY_PREFIX;
-        this.domainPrefix = Options.Constants.DEFAULT_DOMAIN_PREFIX;
     }
 
     public void generate() {
@@ -1354,12 +1348,14 @@ public class DaoGenerator extends AbstractGenerator {
     }
 
     protected String getPrefixedEntityTypeName(String entityTypeName) {
-        return ClassUtil.getPackageName(entityTypeName) + "." + entityPrefix
+        return ClassUtil.getPackageName(entityTypeName) + "."
+                + Constants.DEFAULT_ENTITY_PREFIX
                 + ClassUtil.getSimpleName(entityTypeName);
     }
 
     protected String getPrefixedDomainTypeName(String domainTypeName) {
-        return ClassUtil.getPackageName(domainTypeName) + "." + domainPrefix
+        return ClassUtil.getPackageName(domainTypeName) + "."
+                + Constants.DEFAULT_DOMAIN_PREFIX
                 + ClassUtil.getSimpleName(domainTypeName);
     }
 }

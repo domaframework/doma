@@ -76,13 +76,9 @@ public final class Options {
         return suffix != null ? suffix : Constants.DEFAULT_DAO_SUFFIX;
     }
 
-    public static class Constants {
+    protected static class Constants {
 
         public static final String DEFAULT_DAO_SUFFIX = "Impl";
-
-        public static final String DEFAULT_ENTITY_PREFIX = "_";
-
-        public static final String DEFAULT_DOMAIN_PREFIX = "_";
 
     }
 }

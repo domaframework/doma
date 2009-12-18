@@ -125,12 +125,12 @@ public class _DomainPropertyEntity implements org.seasar.doma.internal.jdbc.enti
 
         private void refreshEntityInternal() {
             org.seasar.doma.internal.apt.entity._DomainPropertyEntity.DomainPropertyEntityAccessor.setId(__entity, id.getWrapper().get());
-            org.seasar.doma.internal.apt.entity._DomainPropertyEntity.DomainPropertyEntityAccessor.setName(__entity, new org.seasar.doma.internal.apt.entity.DomainPropertyEntity.Name(name.getWrapper().get()));
+            org.seasar.doma.internal.apt.entity._DomainPropertyEntity.DomainPropertyEntityAccessor.setName(__entity, name.getWrapper().get());
         }
 
         private void refreshEntityTypeInternal() {
             id.getWrapper().set(org.seasar.doma.internal.apt.entity._DomainPropertyEntity.DomainPropertyEntityAccessor.getId(__entity));
-            name.getWrapper().set(org.seasar.doma.internal.apt.entity._DomainPropertyEntity.DomainPropertyEntityAccessor.getName(__entity) != null ? org.seasar.doma.internal.apt.entity._DomainPropertyEntity.DomainPropertyEntityAccessor.getName(__entity).getValue() : null);
+            name.getWrapper().set(org.seasar.doma.internal.apt.entity._DomainPropertyEntity.DomainPropertyEntityAccessor.getName(__entity));
         }
 
         @Override
@@ -161,12 +161,15 @@ public class _DomainPropertyEntity implements org.seasar.doma.internal.jdbc.enti
             return entity.id;
         }
 
-        public static void setName(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity, org.seasar.doma.internal.apt.entity.DomainPropertyEntity.Name name) {
-            entity.name = name;
+        public static void setName(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity, java.lang.String name) {
+            org.seasar.doma.internal.domain.DomainType<java.lang.String, org.seasar.doma.internal.apt.domain.Name> __domainType = new org.seasar.doma.internal.apt.domain._Name().createDomainType();
+            __domainType.getWrapper().set(name);
+            entity.name = __domainType.getDomain();
         }
 
-        public static org.seasar.doma.internal.apt.entity.DomainPropertyEntity.Name getName(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity) {
-            return entity.name;
+        public static java.lang.String getName(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity) {
+            org.seasar.doma.internal.domain.DomainType<java.lang.String, org.seasar.doma.internal.apt.domain.Name> __domainType = new org.seasar.doma.internal.apt.domain._Name().createDomainType(entity.name);
+            return __domainType.getWrapper().get();
         }
 
     }

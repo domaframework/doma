@@ -1,8 +1,8 @@
 package org.seasar.doma.internal.apt.entity;
 
-import org.seasar.doma.Domain;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
+import org.seasar.doma.internal.apt.domain.Name;
 
 @Entity
 public class DomainPropertyEntity {
@@ -28,16 +28,4 @@ public class DomainPropertyEntity {
         this.name = name;
     }
 
-    @Domain(valueType = String.class)
-    public static class Name {
-        private final String value;
-
-        public Name(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-    }
 }

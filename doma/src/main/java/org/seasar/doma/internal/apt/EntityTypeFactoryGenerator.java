@@ -59,8 +59,8 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
     public EntityTypeFactoryGenerator(ProcessingEnvironment env,
             TypeElement entityElement, EntityMeta entityMeta)
             throws IOException {
-        super(env, entityElement, null, null,
-                Options.Constants.DEFAULT_ENTITY_PREFIX, "");
+        super(env, entityElement, null, null, Constants.DEFAULT_ENTITY_PREFIX,
+                "");
         assertNotNull(entityMeta);
         this.entityMeta = entityMeta;
     }
@@ -290,7 +290,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
             iprint("        @SuppressWarnings(\"unchecked\")%n");
             iprint(
                     "        java.util.HashMap<String, %1$s<?>> originalStates = (java.util.HashMap<String, %1$s<?>>) %2$s.%3$sAccessor.get%4$s(entity);%n",
-                    Wrapper.class.getName(), getPrefixedName(osm
+                    Wrapper.class.getName(), getPrefixedEntityTypeName(osm
                             .getEntityTypeName()), osm.getEntityName(),
                     StringUtil.capitalize(osm.getName()));
             iprint("        __originalStates = originalStates;%n");
@@ -486,16 +486,18 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
                             if (basicType.isPrimitive()) {
                                 iprint(
                                         "    %1$s.%2$sAccessor.set%3$s(__entity, %4$s.unbox(%5$s.getWrapper().get()));%n",
-                                        getPrefixedName(pm.getEntityTypeName()),
-                                        pm.getEntityName(), StringUtil
+                                        getPrefixedEntityTypeName(pm
+                                                .getEntityTypeName()), pm
+                                                .getEntityName(), StringUtil
                                                 .capitalize(pm.getName()),
                                         BoxedPrimitiveUtil.class.getName(), pm
                                                 .getName());
                             } else {
                                 iprint(
                                         "    %1$s.%2$sAccessor.set%3$s(__entity, %4$s.getWrapper().get());%n",
-                                        getPrefixedName(pm.getEntityTypeName()),
-                                        pm.getEntityName(), StringUtil
+                                        getPrefixedEntityTypeName(pm
+                                                .getEntityTypeName()), pm
+                                                .getEntityName(), StringUtil
                                                 .capitalize(pm.getName()), pm
                                                 .getName());
                             }
@@ -505,24 +507,13 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
                         @Override
                         public Void visitDomainType(DomainType domainType,
                                 Void p) throws RuntimeException {
-                            if (domainType.getBasicType().getTypeMirror()
-                                    .getKind().isPrimitive()) {
-                                iprint(
-                                        "    %1$s.%2$sAccessor.set%3$s(__entity, new %4$s(%5$s.unbox(%6$s.getWrapper().get())));%n",
-                                        getPrefixedName(pm.getEntityTypeName()),
-                                        pm.getEntityName(), StringUtil
-                                                .capitalize(pm.getName()), pm
-                                                .getTypeName(),
-                                        BoxedPrimitiveUtil.class.getName(), pm
-                                                .getName());
-                            } else {
-                                iprint(
-                                        "    %1$s.%2$sAccessor.set%3$s(__entity, new %4$s(%5$s.getWrapper().get()));%n",
-                                        getPrefixedName(pm.getEntityTypeName()),
-                                        pm.getEntityName(), StringUtil
-                                                .capitalize(pm.getName()), pm
-                                                .getTypeName(), pm.getName());
-                            }
+                            iprint(
+                                    "    %1$s.%2$sAccessor.set%3$s(__entity, %4$s.getWrapper().get());%n",
+                                    getPrefixedEntityTypeName(pm
+                                            .getEntityTypeName()), pm
+                                            .getEntityName(), StringUtil
+                                            .capitalize(pm.getName()), pm
+                                            .getName());
                             return null;
                         }
 
@@ -548,7 +539,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
             }
             iprint(
                     "    %1$s.%2$sAccessor.set%3$s(__entity, originalStates);%n",
-                    getPrefixedName(osm.getEntityTypeName()), osm
+                    getPrefixedEntityTypeName(osm.getEntityTypeName()), osm
                             .getEntityName(), StringUtil.capitalize(osm
                             .getName()));
         }
@@ -573,7 +564,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
                                 throws RuntimeException {
                             iprint(
                                     "    %1$s.getWrapper().set(%2$s.%3$sAccessor.get%4$s(__entity));%n",
-                                    pm.getName(), getPrefixedName(pm
+                                    pm.getName(), getPrefixedEntityTypeName(pm
                                             .getEntityTypeName()), pm
                                             .getEntityName(), StringUtil
                                             .capitalize(pm.getName()));
@@ -584,8 +575,8 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
                         public Void visitDomainType(DomainType domainType,
                                 Void p) throws RuntimeException {
                             iprint(
-                                    "    %1$s.getWrapper().set(%2$s.%3$sAccessor.get%4$s(__entity) != null ? %2$s.%3$sAccessor.get%4$s(__entity).%5$s() : null);%n",
-                                    pm.getName(), getPrefixedName(pm
+                                    "    %1$s.getWrapper().set(%2$s.%3$sAccessor.get%4$s(__entity));%n",
+                                    pm.getName(), getPrefixedEntityTypeName(pm
                                             .getEntityTypeName()), pm
                                             .getEntityName(), StringUtil
                                             .capitalize(pm.getName()),
@@ -638,21 +629,83 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
     }
 
     protected void printTypeAccessorMethods() {
-        for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
+        for (final EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             if (!entityMeta.getEntityTypeName().equals(pm.getEntityTypeName())) {
                 continue;
             }
-            iprint("public static void set%1$s(%2$s entity, %3$s %4$s) {%n",
-                    StringUtil.capitalize(pm.getName()),
-                    pm.getEntityTypeName(), pm.getTypeName(), pm.getName());
-            iprint("    entity.%1$s = %1$s;%n", pm.getName());
-            iprint("}%n");
-            print("%n");
-            iprint("public static %1$s get%2$s(%3$s entity) {%n", pm
-                    .getTypeName(), StringUtil.capitalize(pm.getName()), pm
-                    .getEntityTypeName());
-            iprint("    return entity.%1$s;%n", pm.getName());
-            iprint("}%n");
+            pm.getDataType().accept(
+                    new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+
+                        @Override
+                        protected Void defaultAction(DataType dataType, Void p)
+                                throws RuntimeException {
+                            return assertUnreachable();
+                        }
+
+                        @Override
+                        public Void visitBasicType(BasicType basicType, Void p)
+                                throws RuntimeException {
+                            iprint(
+                                    "public static void set%1$s(%2$s entity, %3$s %4$s) {%n",
+                                    StringUtil.capitalize(pm.getName()), pm
+                                            .getEntityTypeName(), pm
+                                            .getTypeName(), pm.getName());
+                            iprint("    entity.%1$s = %1$s;%n", pm.getName());
+                            iprint("}%n");
+                            print("%n");
+                            iprint(
+                                    "public static %1$s get%2$s(%3$s entity) {%n",
+                                    pm.getTypeName(), StringUtil.capitalize(pm
+                                            .getName()), pm.getEntityTypeName());
+                            iprint("    return entity.%1$s;%n", pm.getName());
+                            iprint("}%n");
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitDomainType(DomainType domainType,
+                                Void p) throws RuntimeException {
+                            BasicType basicType = domainType.getBasicType();
+                            iprint(
+                                    "public static void set%1$s(%2$s entity, %3$s %4$s) {%n",
+                                    StringUtil.capitalize(pm.getName()), pm
+                                            .getEntityTypeName(), basicType
+                                            .getTypeNameAsTypeParameter(), pm
+                                            .getName());
+                            iprint(
+                                    "    %1$s<%2$s, %3$s> __domainType = new %4$s().createDomainType();%n",
+                                    org.seasar.doma.internal.domain.DomainType.class
+                                            .getName(), basicType
+                                            .getTypeNameAsTypeParameter(),
+                                    domainType.getTypeName(),
+                                    getPrefixedDomainTypeName(domainType
+                                            .getQualifiedName()));
+                            iprint(
+                                    "    __domainType.getWrapper().set(%1$s);%n",
+                                    pm.getName());
+                            iprint(
+                                    "    entity.%1$s = __domainType.getDomain();%n",
+                                    pm.getName());
+                            iprint("}%n");
+                            print("%n");
+                            iprint(
+                                    "public static %1$s get%2$s(%3$s entity) {%n",
+                                    basicType.getTypeNameAsTypeParameter(),
+                                    StringUtil.capitalize(pm.getName()), pm
+                                            .getEntityTypeName());
+                            iprint(
+                                    "    %1$s<%2$s, %3$s> __domainType = new %4$s().createDomainType(entity.%5$s);%n",
+                                    org.seasar.doma.internal.domain.DomainType.class
+                                            .getName(), basicType
+                                            .getTypeNameAsTypeParameter(),
+                                    domainType.getTypeName(),
+                                    getPrefixedDomainTypeName(domainType
+                                            .getQualifiedName()), pm.getName());
+                            iprint("    return __domainType.getWrapper().get();%n");
+                            iprint("}%n");
+                            return null;
+                        }
+                    }, null);
             print("%n");
         }
         OriginalStatesMeta osm = entityMeta.getOriginalStatesMeta();
@@ -675,9 +728,15 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         }
     }
 
-    protected String getPrefixedName(String entityTypeName) {
+    protected String getPrefixedEntityTypeName(String entityTypeName) {
         return ClassUtil.getPackageName(entityTypeName) + "." + prefix
                 + ClassUtil.getSimpleName(entityTypeName);
+    }
+
+    protected String getPrefixedDomainTypeName(String domainTypeName) {
+        return ClassUtil.getPackageName(domainTypeName) + "."
+                + Constants.DEFAULT_DOMAIN_PREFIX
+                + ClassUtil.getSimpleName(domainTypeName);
     }
 
     protected class IdGeneratorGenerator implements

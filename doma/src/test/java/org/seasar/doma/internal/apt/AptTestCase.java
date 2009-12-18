@@ -78,12 +78,12 @@ public abstract class AptTestCase extends AptinaTestCase {
         }
         if (originalClass.isAnnotationPresent(Entity.class)) {
             return originalClass.getPackage().getName() + "."
-                    + Options.Constants.DEFAULT_ENTITY_PREFIX
+                    + Constants.DEFAULT_ENTITY_PREFIX
                     + originalClass.getSimpleName();
         }
         if (originalClass.isAnnotationPresent(Domain.class)) {
             return originalClass.getPackage().getName() + "."
-                    + Options.Constants.DEFAULT_DOMAIN_PREFIX
+                    + Constants.DEFAULT_DOMAIN_PREFIX
                     + originalClass.getSimpleName();
         }
         throw new AssertionFailedError("annotation not found.");
