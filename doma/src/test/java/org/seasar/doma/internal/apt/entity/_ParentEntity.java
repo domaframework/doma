@@ -5,7 +5,7 @@ import java.util.Map;
 import org.seasar.doma.wrapper.Wrapper;
 
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
-public class ParentEntity_
+public class _ParentEntity
         implements
         org.seasar.doma.internal.jdbc.entity.EntityTypeFactory<org.seasar.doma.internal.apt.entity.ParentEntity> {
 
@@ -61,12 +61,12 @@ public class ParentEntity_
             aaa
                     .getWrapper()
                     .set(
-                            org.seasar.doma.internal.apt.entity.ParentEntity_.ParentEntityAccessor
+                            org.seasar.doma.internal.apt.entity._ParentEntity.ParentEntityAccessor
                                     .getAaa(entity));
             bbb
                     .getWrapper()
                     .set(
-                            org.seasar.doma.internal.apt.entity.ParentEntity_.ParentEntityAccessor
+                            org.seasar.doma.internal.apt.entity._ParentEntity.ParentEntityAccessor
                                     .getBbb(entity));
         }
 
@@ -146,9 +146,9 @@ public class ParentEntity_
         }
 
         public void refreshEntityInternal() {
-            org.seasar.doma.internal.apt.entity.ParentEntity_.ParentEntityAccessor
+            org.seasar.doma.internal.apt.entity._ParentEntity.ParentEntityAccessor
                     .setAaa(__entity, aaa.getWrapper().get());
-            org.seasar.doma.internal.apt.entity.ParentEntity_.ParentEntityAccessor
+            org.seasar.doma.internal.apt.entity._ParentEntity.ParentEntityAccessor
                     .setBbb(__entity, bbb.getWrapper().get());
         }
 

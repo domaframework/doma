@@ -27,7 +27,7 @@ import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 
 import example.entity.Emp;
-import example.entity.Emp_;
+import example.entity._Emp;
 
 /**
  * @author taedium
@@ -53,7 +53,7 @@ public class EntitySingleResultHandlerTest extends TestCase {
         query.prepare();
 
         EntitySingleResultHandler<Emp> handler = new EntitySingleResultHandler<Emp>(
-                new Emp_());
+                new _Emp());
         Emp emp = handler.handle(resultSet, query);
         assertEquals(new Integer(1), emp.getId());
         assertEquals("aaa", emp.getName());
@@ -76,7 +76,7 @@ public class EntitySingleResultHandlerTest extends TestCase {
         query.prepare();
 
         EntitySingleResultHandler<Emp> handler = new EntitySingleResultHandler<Emp>(
-                new Emp_());
+                new _Emp());
         try {
             handler.handle(resultSet, query);
             fail();

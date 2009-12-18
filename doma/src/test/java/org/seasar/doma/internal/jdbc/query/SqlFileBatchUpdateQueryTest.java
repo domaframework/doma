@@ -28,7 +28,7 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 
 import example.entity.Emp;
-import example.entity.Emp_;
+import example.entity._Emp;
 
 /**
  * @author taedium
@@ -50,7 +50,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
         emp2.setVersion(200);
 
         SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(
-                new Emp_());
+                new _Emp());
         query.setConfig(runtimeConfig);
         query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
                 getName()));
@@ -76,7 +76,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
         emp2.setVersion(200);
 
         SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(
-                new Emp_());
+                new _Emp());
         query.setConfig(runtimeConfig);
         query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
                 getName()));
@@ -107,7 +107,7 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
 
     public void testIsExecutable() throws Exception {
         SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(
-                new Emp_());
+                new _Emp());
         query.setConfig(runtimeConfig);
         query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
                 getName()));

@@ -25,7 +25,7 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.query.AutoInsertQuery;
 
 import example.entity.Emp;
-import example.entity.Emp_;
+import example.entity._Emp;
 
 /**
  * @author taedium
@@ -42,7 +42,7 @@ public class InsertCommandTest extends TestCase {
         emp.setSalary(new BigDecimal(1000));
         emp.setVersion(10);
 
-        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(new Emp_());
+        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
@@ -71,7 +71,7 @@ public class InsertCommandTest extends TestCase {
         emp.setSalary(new BigDecimal(1000));
         emp.setVersion(null);
 
-        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(new Emp_());
+        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");

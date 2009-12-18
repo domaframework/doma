@@ -31,7 +31,7 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SelectOptions;
 
 import example.entity.Emp;
-import example.entity.Emp_;
+import example.entity._Emp;
 
 /**
  * @author taedium
@@ -51,7 +51,7 @@ public class EntityFetcherTest extends TestCase {
         resultSet.rows.add(new RowData(1, "aaa", new BigDecimal(10), 100));
         resultSet.next();
 
-        Emp_ empMetaFactory = new Emp_();
+        _Emp empMetaFactory = new _Emp();
         EntityType<Emp> entityType = empMetaFactory.createEntityType();
         EntityFetcher fetcher = new EntityFetcher(new MySelectQuery());
         fetcher.fetch(resultSet, entityType);

@@ -28,7 +28,7 @@ import org.seasar.doma.internal.jdbc.query.AutoDeleteQuery;
 import org.seasar.doma.jdbc.OptimisticLockException;
 
 import example.entity.Emp;
-import example.entity.Emp_;
+import example.entity._Emp;
 
 /**
  * @author taedium
@@ -45,7 +45,7 @@ public class DeleteCommandTest extends TestCase {
         emp.setSalary(new BigDecimal(1000));
         emp.setVersion(10);
 
-        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(new Emp_());
+        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
@@ -73,7 +73,7 @@ public class DeleteCommandTest extends TestCase {
         MockPreparedStatement ps = new MockPreparedStatement();
         ps.updatedRows = 0;
         runtimeConfig.dataSource.connection = new MockConnection(ps);
-        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(new Emp_());
+        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
@@ -94,7 +94,7 @@ public class DeleteCommandTest extends TestCase {
         emp.setName("aaa");
         emp.setVersion(100);
 
-        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(new Emp_());
+        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");

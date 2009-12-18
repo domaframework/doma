@@ -50,6 +50,8 @@ public abstract class AbstractGenerator implements Generator {
 
     protected final String simpleName;
 
+    protected final String prefix;
+
     protected final String suffix;
 
     protected final Formatter formatter;
@@ -58,14 +60,15 @@ public abstract class AbstractGenerator implements Generator {
 
     public AbstractGenerator(ProcessingEnvironment env,
             TypeElement typeElement, String fullpackage, String subpackage,
-            String suffix) throws IOException {
-        assertNotNull(env, typeElement, suffix);
+            String prefix, String suffix) throws IOException {
+        assertNotNull(env, typeElement, prefix, suffix);
         this.env = env;
         this.typeElement = typeElement;
         this.qualifiedName = createQualifiedName(env, typeElement, fullpackage,
-                subpackage, suffix);
+                subpackage, prefix, suffix);
         this.packageName = ClassUtil.getPackageName(qualifiedName);
         this.simpleName = ClassUtil.getSimpleName(qualifiedName);
+        this.prefix = prefix;
         this.suffix = suffix;
         Filer filer = env.getFiler();
         JavaFileObject file = filer
@@ -75,10 +78,11 @@ public abstract class AbstractGenerator implements Generator {
 
     protected String createQualifiedName(ProcessingEnvironment env,
             TypeElement typeElement, String fullpackage, String subpackage,
-            String suffix) {
-        String prefix = getQualifiedNamePrefix(env, typeElement, fullpackage,
-                subpackage);
-        return prefix + typeElement.getSimpleName() + suffix;
+            String prefix, String suffix) {
+        String qualifiedNamePrefix = getQualifiedNamePrefix(env, typeElement,
+                fullpackage, subpackage);
+        return qualifiedNamePrefix + prefix + typeElement.getSimpleName()
+                + suffix;
     }
 
     protected String getQualifiedNamePrefix(ProcessingEnvironment env,

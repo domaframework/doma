@@ -27,7 +27,7 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 
 import example.entity.Emp;
-import example.entity.Emp_;
+import example.entity._Emp;
 
 /**
  * @author taedium
@@ -49,7 +49,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
         emp2.setVersion(200);
 
         AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(
-                new Emp_());
+                new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
@@ -72,7 +72,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
         emp2.setVersion(200);
 
         AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(
-                new Emp_());
+                new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
@@ -116,7 +116,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
         emp2.setVersion(200);
 
         AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(
-                new Emp_());
+                new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setVersionIncluded(true);
@@ -159,7 +159,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
         emp2.setVersion(200);
 
         AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(
-                new Emp_());
+                new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setIncludedPropertyNames("name");
@@ -202,7 +202,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
         emp2.setVersion(200);
 
         AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(
-                new Emp_());
+                new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setExcludedPropertyNames("name");
@@ -235,7 +235,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
 
     public void testIsExecutable() throws Exception {
         AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(
-                new Emp_());
+                new _Emp());
         query.setConfig(runtimeConfig);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");

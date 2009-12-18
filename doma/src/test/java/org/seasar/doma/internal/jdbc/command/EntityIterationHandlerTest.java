@@ -28,7 +28,7 @@ import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
 
 import example.entity.Emp;
-import example.entity.Emp_;
+import example.entity._Emp;
 
 /**
  * @author taedium
@@ -55,7 +55,7 @@ public class EntityIterationHandlerTest extends TestCase {
         query.prepare();
 
         EntityIterationHandler<Integer, Emp> handler = new EntityIterationHandler<Integer, Emp>(
-                new Emp_(), new IterationCallback<Integer, Emp>() {
+                new _Emp(), new IterationCallback<Integer, Emp>() {
 
                     private int count;
 
@@ -88,7 +88,7 @@ public class EntityIterationHandlerTest extends TestCase {
         query.prepare();
 
         EntityIterationHandler<Integer, Emp> handler = new EntityIterationHandler<Integer, Emp>(
-                new Emp_(), new IterationCallback<Integer, Emp>() {
+                new _Emp(), new IterationCallback<Integer, Emp>() {
 
                     private int count;
 

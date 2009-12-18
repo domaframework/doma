@@ -30,7 +30,7 @@ import org.seasar.doma.wrapper.StringWrapper;
 import org.seasar.doma.wrapper.Wrapper;
 
 import example.entity.Emp;
-import example.entity.Emp_;
+import example.entity._Emp;
 
 /**
  * @author taedium
@@ -46,7 +46,7 @@ public class AutoUpdateQueryTest extends TestCase {
         emp.setName("aaa");
         emp.setVersion(100);
 
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new Emp_());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
@@ -69,7 +69,7 @@ public class AutoUpdateQueryTest extends TestCase {
         states.put("version", new IntegerWrapper());
         emp.originalStates = states;
 
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new Emp_());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
@@ -94,7 +94,7 @@ public class AutoUpdateQueryTest extends TestCase {
         emp.setId(10);
         emp.setVersion(100);
 
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new Emp_());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setNullExcluded(true);
@@ -125,7 +125,7 @@ public class AutoUpdateQueryTest extends TestCase {
         states.put("version", new IntegerWrapper());
         emp.originalStates = states;
 
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new Emp_());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setVersionIncluded(true);
@@ -150,7 +150,7 @@ public class AutoUpdateQueryTest extends TestCase {
         emp.setSalary(new BigDecimal(200));
         emp.setVersion(100);
 
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new Emp_());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setIncludedPropertyNames("name");
@@ -177,7 +177,7 @@ public class AutoUpdateQueryTest extends TestCase {
         emp.setSalary(new BigDecimal(200));
         emp.setVersion(100);
 
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new Emp_());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setExcludedPropertyNames("name");
@@ -206,7 +206,7 @@ public class AutoUpdateQueryTest extends TestCase {
         states.put("version", new IntegerWrapper());
         emp.originalStates = states;
 
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new Emp_());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");

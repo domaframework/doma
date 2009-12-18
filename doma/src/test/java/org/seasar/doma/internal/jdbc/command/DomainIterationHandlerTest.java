@@ -28,7 +28,7 @@ import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
 
 import example.domain.PhoneNumber;
-import example.domain.PhoneNumber_;
+import example.domain._PhoneNumber;
 
 /**
  * @author taedium
@@ -54,7 +54,7 @@ public class DomainIterationHandlerTest extends TestCase {
         query.prepare();
 
         DomainIterationHandler<String, String, PhoneNumber> handler = new DomainIterationHandler<String, String, PhoneNumber>(
-                new PhoneNumber_(),
+                new _PhoneNumber(),
                 new IterationCallback<String, PhoneNumber>() {
 
                     private String result = "";
@@ -86,7 +86,7 @@ public class DomainIterationHandlerTest extends TestCase {
         query.prepare();
 
         DomainIterationHandler<String, String, PhoneNumber> handler = new DomainIterationHandler<String, String, PhoneNumber>(
-                new PhoneNumber_(),
+                new _PhoneNumber(),
                 new IterationCallback<String, PhoneNumber>() {
 
                     private String result = "";

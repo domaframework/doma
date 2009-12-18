@@ -2,7 +2,7 @@ package org.seasar.doma.internal.apt.domain;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
-public class EnumDomain_ implements org.seasar.doma.internal.domain.DomainTypeFactory<org.seasar.doma.internal.apt.domain.EnumDomain.JobType, org.seasar.doma.internal.apt.domain.EnumDomain> {
+public class _EnumDomain implements org.seasar.doma.internal.domain.DomainTypeFactory<org.seasar.doma.internal.apt.domain.EnumDomain.JobType, org.seasar.doma.internal.apt.domain.EnumDomain> {
 
     @Override
     public org.seasar.doma.internal.domain.DomainType<org.seasar.doma.internal.apt.domain.EnumDomain.JobType, org.seasar.doma.internal.apt.domain.EnumDomain> createDomainType() {

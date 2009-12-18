@@ -26,7 +26,7 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 
 import example.entity.Emp;
-import example.entity.Emp_;
+import example.entity._Emp;
 
 /**
  * @author taedium
@@ -48,7 +48,7 @@ public class SqlFileBatchDeleteQueryTest extends TestCase {
         emp2.setVersion(200);
 
         SqlFileBatchDeleteQuery<Emp> query = new SqlFileBatchDeleteQuery<Emp>(
-                new Emp_());
+                new _Emp());
         query.setConfig(runtimeConfig);
         query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
                 getName()));
@@ -70,7 +70,7 @@ public class SqlFileBatchDeleteQueryTest extends TestCase {
         emp2.setName("bbb");
 
         SqlFileBatchDeleteQuery<Emp> query = new SqlFileBatchDeleteQuery<Emp>(
-                new Emp_());
+                new _Emp());
         query.setConfig(runtimeConfig);
         query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
                 getName()));

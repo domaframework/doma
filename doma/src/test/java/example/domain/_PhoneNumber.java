@@ -4,7 +4,7 @@ import org.seasar.doma.internal.domain.DomainType;
 import org.seasar.doma.internal.domain.DomainTypeFactory;
 import org.seasar.doma.wrapper.StringWrapper;
 
-public class PhoneNumber_ implements DomainTypeFactory<String, PhoneNumber> {
+public class _PhoneNumber implements DomainTypeFactory<String, PhoneNumber> {
 
     @Override
     public DomainType<String, PhoneNumber> createDomainType() {

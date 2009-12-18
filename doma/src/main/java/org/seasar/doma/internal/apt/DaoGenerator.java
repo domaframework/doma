@@ -95,6 +95,7 @@ import org.seasar.doma.internal.jdbc.sql.DomainResultParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListResultParameter;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
+import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.Config;
 
 /**
@@ -106,18 +107,18 @@ public class DaoGenerator extends AbstractGenerator {
 
     protected final DaoMeta daoMeta;
 
-    protected final String entitySuffix;
+    protected final String entityPrefix;
 
-    protected final String domainSuffix;
+    protected final String domainPrefix;
 
     public DaoGenerator(ProcessingEnvironment env, TypeElement daoElement,
             DaoMeta daoMeta) throws IOException {
         super(env, daoElement, Options.getDaoPackage(env), Options
-                .getDaoSubpackage(env), Options.getDaoSuffix(env));
+                .getDaoSubpackage(env), "", Options.getDaoSuffix(env));
         assertNotNull(daoMeta);
         this.daoMeta = daoMeta;
-        this.entitySuffix = Options.getEntitySuffix(env);
-        this.domainSuffix = Options.getDomainSuffix(env);
+        this.entityPrefix = Options.Constants.DEFAULT_ENTITY_PREFIX;
+        this.domainPrefix = Options.Constants.DEFAULT_DOMAIN_PREFIX;
     }
 
     public void generate() {
@@ -370,15 +371,17 @@ public class DaoGenerator extends AbstractGenerator {
                                         BasicType basicType = dataType
                                                 .getBasicType();
                                         iprint(
-                                                "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s, %5$s>(new %5$s%6$s(), %7$s));%n",
+                                                "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s, %5$s>(new %6$s(), %7$s));%n",
                                                 commandClassName,
                                                 resultMeta
                                                         .getTypeNameAsTypeParameter(),
                                                 DomainIterationHandler.class
-                                                        .getName(), basicType
-                                                        .getTypeName(),
+                                                        .getName(),
+                                                basicType.getTypeName(),
                                                 dataType.getTypeName(),
-                                                domainSuffix, callbackParamName);
+                                                getPrefixedDomainTypeName(dataType
+                                                        .getTypeName()),
+                                                callbackParamName);
                                         return null;
                                     }
 
@@ -387,14 +390,16 @@ public class DaoGenerator extends AbstractGenerator {
                                             EntityType dataType, Void p)
                                             throws RuntimeException {
                                         iprint(
-                                                "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(new %4$s%5$s(), %6$s));%n",
+                                                "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(new %5$s(), %6$s));%n",
                                                 commandClassName,
                                                 resultMeta
                                                         .getTypeNameAsTypeParameter(),
                                                 EntityIterationHandler.class
-                                                        .getName(), dataType
-                                                        .getTypeName(),
-                                                entitySuffix, callbackParamName);
+                                                        .getName(),
+                                                dataType.getTypeName(),
+                                                getPrefixedEntityTypeName(dataType
+                                                        .getTypeName()),
+                                                callbackParamName);
                                         return null;
                                     }
 
@@ -479,13 +484,14 @@ public class DaoGenerator extends AbstractGenerator {
                                         BasicType basicType = dataType
                                                 .getBasicType();
                                         iprint(
-                                                "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s, %2$s>(new %2$s%5$s()));%n",
-                                                commandClassName, dataType
-                                                        .getTypeName(),
+                                                "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s, %2$s>(new %5$s()));%n",
+                                                commandClassName,
+                                                dataType.getTypeName(),
                                                 DomainSingleResultHandler.class
-                                                        .getName(), basicType
-                                                        .getTypeName(),
-                                                domainSuffix);
+                                                        .getName(),
+                                                basicType.getTypeName(),
+                                                getPrefixedDomainTypeName(dataType
+                                                        .getTypeName()));
                                         return null;
                                     }
 
@@ -494,13 +500,13 @@ public class DaoGenerator extends AbstractGenerator {
                                             EntityType dataType, Void p)
                                             throws RuntimeException {
                                         iprint(
-                                                "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(new %4$s%5$s()));%n",
-                                                commandClassName, dataType
-                                                        .getTypeName(),
+                                                "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(new %4$s()));%n",
+                                                commandClassName,
+                                                dataType.getTypeName(),
                                                 EntitySingleResultHandler.class
-                                                        .getName(), dataType
-                                                        .getTypeName(),
-                                                entitySuffix);
+                                                        .getName(),
+                                                getPrefixedEntityTypeName(dataType
+                                                        .getTypeName()));
                                         return null;
                                     }
 
@@ -580,7 +586,7 @@ public class DaoGenerator extends AbstractGenerator {
                                                                 BasicType basicType = dataType
                                                                         .getBasicType();
                                                                 iprint(
-                                                                        "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s, %5$s>(new %5$s%6$s()));%n",
+                                                                        "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s, %5$s>(new %6$s()));%n",
                                                                         commandClassName,
                                                                         listType
                                                                                 .getTypeName(),
@@ -590,7 +596,8 @@ public class DaoGenerator extends AbstractGenerator {
                                                                                 .getTypeName(),
                                                                         dataType
                                                                                 .getTypeName(),
-                                                                        domainSuffix);
+                                                                        getPrefixedDomainTypeName(dataType
+                                                                                .getTypeName()));
                                                                 return null;
                                                             }
 
@@ -600,7 +607,7 @@ public class DaoGenerator extends AbstractGenerator {
                                                                     Void p)
                                                                     throws RuntimeException {
                                                                 iprint(
-                                                                        "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(new %4$s%5$s()));%n",
+                                                                        "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(new %5$s()));%n",
                                                                         commandClassName,
                                                                         listType
                                                                                 .getTypeName(),
@@ -608,7 +615,8 @@ public class DaoGenerator extends AbstractGenerator {
                                                                                 .getName(),
                                                                         dataType
                                                                                 .getTypeName(),
-                                                                        entitySuffix);
+                                                                        getPrefixedEntityTypeName(dataType
+                                                                                .getTypeName()));
                                                                 return null;
                                                             }
 
@@ -632,9 +640,10 @@ public class DaoGenerator extends AbstractGenerator {
             printEnteringStatement(m);
             printPrerequisiteStatements(m);
 
-            iprint("%1$s<%2$s> __query = new %1$s<%2$s>(new %2$s%3$s());%n", m
+            iprint("%1$s<%2$s> __query = new %1$s<%2$s>(new %3$s());%n", m
                     .getQueryClass().getName(), m.getEntityType()
-                    .getTypeNameAsTypeParameter(), entitySuffix);
+                    .getTypeNameAsTypeParameter(), getPrefixedEntityTypeName(m
+                    .getEntityType().getTypeNameAsTypeParameter()));
             iprint("__query.setConfig(config);%n");
             iprint("__query.setEntity(%1$s);%n", m.getEntityParameterName());
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
@@ -740,9 +749,10 @@ public class DaoGenerator extends AbstractGenerator {
             printEnteringStatement(m);
             printPrerequisiteStatements(m);
 
-            iprint("%1$s<%2$s> __query = new %1$s<%2$s>(new %2$s%3$s());%n", m
+            iprint("%1$s<%2$s> __query = new %1$s<%2$s>(new %3$s());%n", m
                     .getQueryClass().getName(), m.getEntityType()
-                    .getTypeNameAsTypeParameter(), entitySuffix);
+                    .getTypeNameAsTypeParameter(), getPrefixedEntityTypeName(m
+                    .getEntityType().getTypeNameAsTypeParameter()));
             iprint("__query.setConfig(config);%n");
             iprint("__query.setEntities(%1$s);%n", m.getEntitiesParameterName());
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
@@ -796,9 +806,10 @@ public class DaoGenerator extends AbstractGenerator {
             printEnteringStatement(m);
             printPrerequisiteStatements(m);
 
-            iprint("%1$s<%2$s> __query = new %1$s<%2$s>(new %2$s%3$s());%n", m
+            iprint("%1$s<%2$s> __query = new %1$s<%2$s>(new %3$s());%n", m
                     .getQueryClass().getName(),
-                    m.getEntityType().getTypeName(), entitySuffix);
+                    m.getEntityType().getTypeName(),
+                    getPrefixedEntityTypeName(m.getEntityType().getTypeName()));
             iprint("__query.setConfig(config);%n");
             iprint("__query.setEntities(%1$s);%n", m.getEntitiesParameterName());
             iprint(
@@ -1042,10 +1053,11 @@ public class DaoGenerator extends AbstractGenerator {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
             iprint(
-                    "__query.addParameter(new %1$s<%2$s, %3$s>(new %3$s%4$s(), %5$s));%n",
+                    "__query.addParameter(new %1$s<%2$s, %3$s>(new %4$s(), %5$s));%n",
                     DomainListParameter.class.getName(), basicType
                             .getTypeName(), domainType.getTypeName(),
-                    domainSuffix, m.getName());
+                    getPrefixedDomainTypeName(domainType.getTypeName()), m
+                            .getName());
             return null;
         }
 
@@ -1053,10 +1065,11 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitEntityListParameterMeta(EntityListParameterMeta m,
                 Void p) {
             EntityType entityType = m.getEntityType();
-            iprint(
-                    "__query.addParameter(new %1$s<%2$s>(new %2$s%3$s(), %4$s));%n",
+            iprint("__query.addParameter(new %1$s<%2$s>(new %3$s(), %4$s));%n",
                     EntityListParameter.class.getName(), entityType
-                            .getTypeName(), entitySuffix, m.getName());
+                            .getTypeName(),
+                    getPrefixedEntityTypeName(entityType.getTypeName()), m
+                            .getName());
             return null;
         }
 
@@ -1104,10 +1117,12 @@ public class DaoGenerator extends AbstractGenerator {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
             iprint(
-                    "__query.addParameter(new %1$s<%2$s, %3$s>(new %3$s%4$s(), %5$s));%n",
+                    "__query.addParameter(new %1$s<%2$s, %3$s>(new %4$s(), %5$s));%n",
                     DomainInOutParameter.class.getName(), basicType
                             .getTypeNameAsTypeParameter(), domainType
-                            .getTypeName(), domainSuffix, m.getName());
+                            .getTypeName(),
+                    getPrefixedDomainTypeName(domainType.getTypeName()), m
+                            .getName());
             return null;
         }
 
@@ -1155,10 +1170,11 @@ public class DaoGenerator extends AbstractGenerator {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
             iprint(
-                    "__query.addParameter(new %1$s<%2$s, %3$s>(new %3$s%4$s(), %5$s));%n",
+                    "__query.addParameter(new %1$s<%2$s, %3$s>(new %4$s(), %5$s));%n",
                     DomainOutParameter.class.getName(),
                     basicType.getTypeName(), domainType.getTypeName(),
-                    domainSuffix, m.getName());
+                    getPrefixedDomainTypeName(domainType.getTypeName()), m
+                            .getName());
             return null;
         }
 
@@ -1202,9 +1218,11 @@ public class DaoGenerator extends AbstractGenerator {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
             iprint(
-                    "__query.addParameter(new %1$s<%2$s, %3$s>(new %3$s%4$s(), %5$s));%n",
+                    "__query.addParameter(new %1$s<%2$s, %3$s>(new %4$s(), %5$s));%n",
                     DomainInParameter.class.getName(), basicType.getTypeName(),
-                    domainType.getTypeName(), domainSuffix, m.getName());
+                    domainType.getTypeName(),
+                    getPrefixedDomainTypeName(domainType.getTypeName()), m
+                            .getName());
             return null;
         }
 
@@ -1252,10 +1270,10 @@ public class DaoGenerator extends AbstractGenerator {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
             iprint(
-                    "__query.setResultParameter(new %1$s<%2$s, %3$s>(new %3$s%4$s()));%n",
+                    "__query.setResultParameter(new %1$s<%2$s, %3$s>(new %4$s()));%n",
                     DomainListResultParameter.class.getName(), basicType
                             .getTypeName(), domainType.getTypeName(),
-                    domainSuffix);
+                    getPrefixedDomainTypeName(domainType.getTypeName()));
             return null;
         }
 
@@ -1263,10 +1281,10 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitEntityListResultParameterMeta(
                 EntityListResultParameterMeta m, Void p) {
             EntityType entityType = m.getEntityType();
-            iprint(
-                    "__query.setResultParameter(new %1$s<%2$s>(new %2$s%3$s()));%n",
+            iprint("__query.setResultParameter(new %1$s<%2$s>(new %3$s()));%n",
                     EntityListResultParameter.class.getName(), entityType
-                            .getTypeName(), entitySuffix);
+                            .getTypeName(),
+                    getPrefixedEntityTypeName(entityType.getTypeName()));
             return null;
         }
 
@@ -1314,10 +1332,10 @@ public class DaoGenerator extends AbstractGenerator {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
             iprint(
-                    "__query.setResultParameter(new %1$s<%2$s, %3$s>(new %3$s%4$s()));%n",
+                    "__query.setResultParameter(new %1$s<%2$s, %3$s>(new %4$s()));%n",
                     DomainResultParameter.class.getName(), basicType
                             .getTypeName(), domainType.getTypeName(),
-                    domainSuffix);
+                    getPrefixedDomainTypeName(domainType.getTypeName()));
             return null;
         }
     }
@@ -1333,5 +1351,15 @@ public class DaoGenerator extends AbstractGenerator {
             buf.setLength(buf.length() - 2);
         }
         return buf.toString();
+    }
+
+    protected String getPrefixedEntityTypeName(String entityTypeName) {
+        return ClassUtil.getPackageName(entityTypeName) + "." + entityPrefix
+                + ClassUtil.getSimpleName(entityTypeName);
+    }
+
+    protected String getPrefixedDomainTypeName(String domainTypeName) {
+        return ClassUtil.getPackageName(domainTypeName) + "." + domainPrefix
+                + ClassUtil.getSimpleName(domainTypeName);
     }
 }

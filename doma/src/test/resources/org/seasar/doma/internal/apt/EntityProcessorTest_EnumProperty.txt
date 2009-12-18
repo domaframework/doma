@@ -2,7 +2,7 @@ package org.seasar.doma.internal.apt.entity;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
-public class EnumPropertyEntity_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFactory<org.seasar.doma.internal.apt.entity.EnumPropertyEntity> {
+public class _EnumPropertyEntity implements org.seasar.doma.internal.jdbc.entity.EntityTypeFactory<org.seasar.doma.internal.apt.entity.EnumPropertyEntity> {
 
     @Override
     public org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.EnumPropertyEntity> createEntityType() {
@@ -124,13 +124,13 @@ public class EnumPropertyEntity_ implements org.seasar.doma.internal.jdbc.entity
         }
 
         private void refreshEntityInternal() {
-            org.seasar.doma.internal.apt.entity.EnumPropertyEntity_.EnumPropertyEntityAccessor.setId(__entity, id.getWrapper().get());
-            org.seasar.doma.internal.apt.entity.EnumPropertyEntity_.EnumPropertyEntityAccessor.setHoge(__entity, hoge.getWrapper().get());
+            org.seasar.doma.internal.apt.entity._EnumPropertyEntity.EnumPropertyEntityAccessor.setId(__entity, id.getWrapper().get());
+            org.seasar.doma.internal.apt.entity._EnumPropertyEntity.EnumPropertyEntityAccessor.setHoge(__entity, hoge.getWrapper().get());
         }
 
         private void refreshEntityTypeInternal() {
-            id.getWrapper().set(org.seasar.doma.internal.apt.entity.EnumPropertyEntity_.EnumPropertyEntityAccessor.getId(__entity));
-            hoge.getWrapper().set(org.seasar.doma.internal.apt.entity.EnumPropertyEntity_.EnumPropertyEntityAccessor.getHoge(__entity));
+            id.getWrapper().set(org.seasar.doma.internal.apt.entity._EnumPropertyEntity.EnumPropertyEntityAccessor.getId(__entity));
+            hoge.getWrapper().set(org.seasar.doma.internal.apt.entity._EnumPropertyEntity.EnumPropertyEntityAccessor.getHoge(__entity));
         }
 
         @Override

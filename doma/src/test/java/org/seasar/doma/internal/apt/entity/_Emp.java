@@ -29,7 +29,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class Emp_ implements EntityTypeFactory<Emp> {
+public class _Emp implements EntityTypeFactory<Emp> {
 
     @Override
     public EntityType<Emp> createEntityType() {

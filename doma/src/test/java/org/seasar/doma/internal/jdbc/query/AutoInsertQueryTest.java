@@ -25,7 +25,7 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 
 import example.entity.Emp;
-import example.entity.Emp_;
+import example.entity._Emp;
 
 /**
  * @author taedium
@@ -40,7 +40,7 @@ public class AutoInsertQueryTest extends TestCase {
         emp.setId(10);
         emp.setName("aaa");
 
-        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(new Emp_());
+        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
@@ -56,7 +56,7 @@ public class AutoInsertQueryTest extends TestCase {
         emp.setId(10);
         emp.setName("aaa");
 
-        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(new Emp_());
+        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
@@ -80,7 +80,7 @@ public class AutoInsertQueryTest extends TestCase {
         emp.setId(10);
         emp.setName("aaa");
 
-        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(new Emp_());
+        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setNullExcluded(true);
@@ -104,7 +104,7 @@ public class AutoInsertQueryTest extends TestCase {
         emp.setName("aaa");
         emp.setSalary(new BigDecimal(200));
 
-        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(new Emp_());
+        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setIncludedPropertyNames("name");
@@ -128,7 +128,7 @@ public class AutoInsertQueryTest extends TestCase {
         emp.setName("aaa");
         emp.setSalary(new BigDecimal(200));
 
-        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(new Emp_());
+        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setExcludedPropertyNames("name");

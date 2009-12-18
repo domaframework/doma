@@ -61,8 +61,7 @@ public abstract class AptTestCase extends AptinaTestCase {
 
     protected void assertGeneratedSource(Class<?> originalClass)
             throws Exception {
-        String generatedClassName = originalClass.getName()
-                + getGeneratedClassSuffix(originalClass);
+        String generatedClassName = getGeneratedClassName(originalClass);
         try {
             assertEqualsGeneratedSource(getExpectedContent(),
                     generatedClassName);
@@ -72,15 +71,20 @@ public abstract class AptTestCase extends AptinaTestCase {
         }
     }
 
-    protected String getGeneratedClassSuffix(Class<?> originalClass) {
+    protected String getGeneratedClassName(Class<?> originalClass) {
         if (originalClass.isAnnotationPresent(Dao.class)) {
-            return Options.Constants.DEFAULT_DAO_SUFFIX;
+            return originalClass.getName()
+                    + Options.Constants.DEFAULT_DAO_SUFFIX;
         }
         if (originalClass.isAnnotationPresent(Entity.class)) {
-            return Options.Constants.DEFAULT_ENTITY_SUFFIX;
+            return originalClass.getPackage().getName() + "."
+                    + Options.Constants.DEFAULT_ENTITY_PREFIX
+                    + originalClass.getSimpleName();
         }
         if (originalClass.isAnnotationPresent(Domain.class)) {
-            return Options.Constants.DEFAULT_DOMAIN_SUFFIX;
+            return originalClass.getPackage().getName() + "."
+                    + Options.Constants.DEFAULT_DOMAIN_PREFIX
+                    + originalClass.getSimpleName();
         }
         throw new AssertionFailedError("annotation not found.");
     }

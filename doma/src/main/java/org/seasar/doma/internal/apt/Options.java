@@ -37,10 +37,6 @@ public final class Options {
 
     public static final String DAO_SUFFIX = "dao.suffix";
 
-    public static final String ENTITY_SUFFIX = "entity.suffix";
-
-    public static final String DOMAIN_SUFFIX = "domain.suffix";
-
     public static boolean isTestEnabled(ProcessingEnvironment env) {
         String test = env.getOptions().get(Options.TEST);
         return Boolean.valueOf(test).booleanValue();
@@ -80,23 +76,13 @@ public final class Options {
         return suffix != null ? suffix : Constants.DEFAULT_DAO_SUFFIX;
     }
 
-    public static String getEntitySuffix(ProcessingEnvironment env) {
-        String suffix = env.getOptions().get(Options.ENTITY_SUFFIX);
-        return suffix != null ? suffix : Constants.DEFAULT_ENTITY_SUFFIX;
-    }
-
-    public static String getDomainSuffix(ProcessingEnvironment env) {
-        String suffix = env.getOptions().get(Options.DOMAIN_SUFFIX);
-        return suffix != null ? suffix : Constants.DEFAULT_DOMAIN_SUFFIX;
-    }
-
     public static class Constants {
 
         public static final String DEFAULT_DAO_SUFFIX = "Impl";
 
-        public static final String DEFAULT_ENTITY_SUFFIX = "_";
+        public static final String DEFAULT_ENTITY_PREFIX = "_";
 
-        public static final String DEFAULT_DOMAIN_SUFFIX = "_";
+        public static final String DEFAULT_DOMAIN_PREFIX = "_";
 
     }
 }

@@ -2,7 +2,7 @@ package org.seasar.doma.internal.apt.entity;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
-public class TransientPropertyEntity_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFactory<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> {
+public class _TransientPropertyEntity implements org.seasar.doma.internal.jdbc.entity.EntityTypeFactory<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> {
 
     @Override
     public org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> createEntityType() {
@@ -120,11 +120,11 @@ public class TransientPropertyEntity_ implements org.seasar.doma.internal.jdbc.e
         }
 
         private void refreshEntityInternal() {
-            org.seasar.doma.internal.apt.entity.TransientPropertyEntity_.TransientPropertyEntityAccessor.setId(__entity, id.getWrapper().get());
+            org.seasar.doma.internal.apt.entity._TransientPropertyEntity.TransientPropertyEntityAccessor.setId(__entity, id.getWrapper().get());
         }
 
         private void refreshEntityTypeInternal() {
-            id.getWrapper().set(org.seasar.doma.internal.apt.entity.TransientPropertyEntity_.TransientPropertyEntityAccessor.getId(__entity));
+            id.getWrapper().set(org.seasar.doma.internal.apt.entity._TransientPropertyEntity.TransientPropertyEntityAccessor.getId(__entity));
         }
 
         @Override

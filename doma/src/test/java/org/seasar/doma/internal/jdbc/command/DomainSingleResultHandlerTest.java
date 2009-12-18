@@ -27,7 +27,7 @@ import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 
 import example.domain.PhoneNumber;
-import example.domain.PhoneNumber_;
+import example.domain._PhoneNumber;
 
 /**
  * @author taedium
@@ -52,7 +52,7 @@ public class DomainSingleResultHandlerTest extends TestCase {
         query.prepare();
 
         DomainSingleResultHandler<String, PhoneNumber> handler = new DomainSingleResultHandler<String, PhoneNumber>(
-                new PhoneNumber_());
+                new _PhoneNumber());
         PhoneNumber result = handler.handle(resultSet, query);
         assertEquals("01-2345-6789", result.getValue());
     }
@@ -71,7 +71,7 @@ public class DomainSingleResultHandlerTest extends TestCase {
         query.prepare();
 
         DomainSingleResultHandler<String, PhoneNumber> handler = new DomainSingleResultHandler<String, PhoneNumber>(
-                new PhoneNumber_());
+                new _PhoneNumber());
         try {
             handler.handle(resultSet, query);
             fail();

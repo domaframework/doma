@@ -34,7 +34,6 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
-import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.Entity;
 import org.seasar.doma.EntityField;
@@ -43,7 +42,6 @@ import org.seasar.doma.Transient;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Notifier;
-import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.mirror.EntityMirror;
 import org.seasar.doma.internal.apt.mirror.TableMirror;
 import org.seasar.doma.internal.apt.util.ElementUtil;
@@ -88,11 +86,6 @@ public class EntityMetaFactory {
         validateEntityListener(classElement, entityMeta);
 
         String entityName = classElement.getSimpleName().toString();
-        String suffix = Options.getEntitySuffix(env);
-        if (entityName.endsWith(suffix)) {
-            Notifier.notify(env, Kind.WARNING, DomaMessageCode.DOMA4026,
-                    classElement, suffix);
-        }
         entityMeta.setEntityName(entityName);
         entityMeta.setEntityTypeName(TypeMirrorUtil.getTypeName(classElement
                 .asType(), env));

@@ -39,7 +39,7 @@ import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.SelectOptions;
 
 import example.entity.Emp;
-import example.entity.Emp_;
+import example.entity._Emp;
 
 /**
  * @author taedium
@@ -72,7 +72,7 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
         query.setCallerMethodName("selectById");
         query.prepare();
         SelectCommand<Emp> command = new SelectCommand<Emp>(query,
-                new EntitySingleResultHandler<Emp>(new Emp_()));
+                new EntitySingleResultHandler<Emp>(new _Emp()));
         return command.execute();
     }
 
@@ -90,7 +90,7 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
         query.setCallerMethodName("selectByNameAndSalary");
         query.prepare();
         SelectCommand<List<Emp>> command = new SelectCommand<List<Emp>>(query,
-                new EntityResultListHandler<Emp>(new Emp_()));
+                new EntityResultListHandler<Emp>(new _Emp()));
         return command.execute();
     }
 
@@ -105,13 +105,13 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
         query.setCallerMethodName("selectByNameAndSalary");
         query.prepare();
         SelectCommand<List<Emp>> command = new SelectCommand<List<Emp>>(query,
-                new EntityResultListHandler<Emp>(new Emp_()));
+                new EntityResultListHandler<Emp>(new _Emp()));
         return command.execute();
     }
 
     @Override
     public int insert(Emp entity) {
-        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(new Emp_());
+        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(new _Emp());
         query.setConfig(config);
         query.setEntity(entity);
         query.setCallerClassName("example.dao.EmpDao");
@@ -123,7 +123,7 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
 
     @Override
     public int update(Emp entity) {
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new Emp_());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new _Emp());
         query.setConfig(config);
         query.setEntity(entity);
         query.setCallerClassName("example.dao.EmpDao");
@@ -135,7 +135,7 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
 
     @Override
     public int delete(Emp entity) {
-        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(new Emp_());
+        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(new _Emp());
         query.setConfig(config);
         query.setEntity(entity);
         query.setCallerClassName("example.dao.EmpDao");
@@ -155,7 +155,7 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
         query.setCallerMethodName("selectById");
         query.prepare();
         SelectCommand<Integer> command = new SelectCommand<Integer>(query,
-                new EntityIterationHandler<Integer, Emp>(new Emp_(), callback));
+                new EntityIterationHandler<Integer, Emp>(new _Emp(), callback));
         return command.execute();
     }
 

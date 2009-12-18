@@ -30,7 +30,7 @@ import org.seasar.doma.wrapper.StringWrapper;
 import org.seasar.doma.wrapper.Wrapper;
 
 import example.entity.Emp;
-import example.entity.Emp_;
+import example.entity._Emp;
 
 /**
  * @author taedium
@@ -52,7 +52,7 @@ public class UpdateCommandTest extends TestCase {
         states.put("version", new IntegerWrapper());
         emp.originalStates = states;
 
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new Emp_());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
@@ -83,7 +83,7 @@ public class UpdateCommandTest extends TestCase {
 
         runtimeConfig.dataSource.connection.preparedStatement.updatedRows = 0;
 
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new Emp_());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
@@ -106,7 +106,7 @@ public class UpdateCommandTest extends TestCase {
 
         runtimeConfig.dataSource.connection.preparedStatement.updatedRows = 0;
 
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new Emp_());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setOptimisticLockExceptionSuppressed(true);

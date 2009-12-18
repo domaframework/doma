@@ -32,7 +32,7 @@ import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 
 import example.entity.Emp;
-import example.entity.Emp_;
+import example.entity._Emp;
 
 /**
  * @author taedium
@@ -64,7 +64,7 @@ public class SelectCommandTest extends TestCase {
         query.prepare();
 
         SelectCommand<Emp> command = new SelectCommand<Emp>(query,
-                new EntitySingleResultHandler<Emp>(new Emp_()));
+                new EntitySingleResultHandler<Emp>(new _Emp()));
         Emp entity = command.execute();
         query.complete();
 
@@ -106,7 +106,7 @@ public class SelectCommandTest extends TestCase {
         query.prepare();
 
         SelectCommand<List<Emp>> command = new SelectCommand<List<Emp>>(query,
-                new EntityResultListHandler<Emp>(new Emp_()));
+                new EntityResultListHandler<Emp>(new _Emp()));
         List<Emp> entities = command.execute();
         query.complete();
 

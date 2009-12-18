@@ -2,7 +2,7 @@ package org.seasar.doma.internal.apt.entity;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
-public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFactory<org.seasar.doma.internal.apt.entity.Emp> {
+public class _Emp implements org.seasar.doma.internal.jdbc.entity.EntityTypeFactory<org.seasar.doma.internal.apt.entity.Emp> {
 
     @Override
     public org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.Emp> createEntityType() {
@@ -58,7 +58,7 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
             __entity = entity;
             if (java.util.HashMap.class.isInstance(entity.originalStates)) {
                 @SuppressWarnings("unchecked")
-                java.util.HashMap<String, org.seasar.doma.wrapper.Wrapper<?>> originalStates = (java.util.HashMap<String, org.seasar.doma.wrapper.Wrapper<?>>) org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.getOriginalStates(entity);
+                java.util.HashMap<String, org.seasar.doma.wrapper.Wrapper<?>> originalStates = (java.util.HashMap<String, org.seasar.doma.wrapper.Wrapper<?>>) org.seasar.doma.internal.apt.entity._Emp.EmpAccessor.getOriginalStates(entity);
                 __originalStates = originalStates;
             } else {
                 __originalStates = null;
@@ -146,10 +146,10 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
         }
 
         private void refreshEntityInternal() {
-            org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.setId(__entity, id.getWrapper().get());
-            org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.setName(__entity, name.getWrapper().get());
-            org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.setSalary(__entity, salary.getWrapper().get());
-            org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.setVersion(__entity, version.getWrapper().get());
+            org.seasar.doma.internal.apt.entity._Emp.EmpAccessor.setId(__entity, id.getWrapper().get());
+            org.seasar.doma.internal.apt.entity._Emp.EmpAccessor.setName(__entity, name.getWrapper().get());
+            org.seasar.doma.internal.apt.entity._Emp.EmpAccessor.setSalary(__entity, salary.getWrapper().get());
+            org.seasar.doma.internal.apt.entity._Emp.EmpAccessor.setVersion(__entity, version.getWrapper().get());
             java.util.HashMap<String, org.seasar.doma.wrapper.Wrapper<?>> originalStates = null;
             if (__originalStates != null) {
                 __originalStates.clear();
@@ -161,14 +161,14 @@ public class Emp_ implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
             originalStates.put("name", name.getWrapper().copy());
             originalStates.put("salary", salary.getWrapper().copy());
             originalStates.put("version", version.getWrapper().copy());
-            org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.setOriginalStates(__entity, originalStates);
+            org.seasar.doma.internal.apt.entity._Emp.EmpAccessor.setOriginalStates(__entity, originalStates);
         }
 
         private void refreshEntityTypeInternal() {
-            id.getWrapper().set(org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.getId(__entity));
-            name.getWrapper().set(org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.getName(__entity));
-            salary.getWrapper().set(org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.getSalary(__entity));
-            version.getWrapper().set(org.seasar.doma.internal.apt.entity.Emp_.EmpAccessor.getVersion(__entity));
+            id.getWrapper().set(org.seasar.doma.internal.apt.entity._Emp.EmpAccessor.getId(__entity));
+            name.getWrapper().set(org.seasar.doma.internal.apt.entity._Emp.EmpAccessor.getName(__entity));
+            salary.getWrapper().set(org.seasar.doma.internal.apt.entity._Emp.EmpAccessor.getSalary(__entity));
+            version.getWrapper().set(org.seasar.doma.internal.apt.entity._Emp.EmpAccessor.getVersion(__entity));
         }
 
         @Override

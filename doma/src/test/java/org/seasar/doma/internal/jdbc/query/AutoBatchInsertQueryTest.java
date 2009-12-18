@@ -26,7 +26,7 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 
 import example.entity.Emp;
-import example.entity.Emp_;
+import example.entity._Emp;
 
 /**
  * @author taedium
@@ -46,7 +46,7 @@ public class AutoBatchInsertQueryTest extends TestCase {
         emp2.setName("bbb");
 
         AutoBatchInsertQuery<Emp> query = new AutoBatchInsertQuery<Emp>(
-                new Emp_());
+                new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp1, emp2));
         query.prepare();
@@ -67,7 +67,7 @@ public class AutoBatchInsertQueryTest extends TestCase {
         emp2.setVersion(new Integer(10));
 
         AutoBatchInsertQuery<Emp> query = new AutoBatchInsertQuery<Emp>(
-                new Emp_());
+                new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp1, emp2));
         query.prepare();

@@ -24,7 +24,7 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 
 import example.entity.Emp;
-import example.entity.Emp_;
+import example.entity._Emp;
 
 /**
  * @author taedium
@@ -37,7 +37,7 @@ public class AutoDeleteQueryTest extends TestCase {
     public void testPrepare() throws Exception {
         Emp emp = new Emp();
 
-        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(new Emp_());
+        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
@@ -54,7 +54,7 @@ public class AutoDeleteQueryTest extends TestCase {
         emp.setName("aaa");
         emp.setVersion(100);
 
-        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(new Emp_());
+        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
@@ -76,7 +76,7 @@ public class AutoDeleteQueryTest extends TestCase {
         emp.setName("aaa");
         emp.setVersion(100);
 
-        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(new Emp_());
+        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(new _Emp());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setVersionIgnored(true);

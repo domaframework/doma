@@ -28,7 +28,7 @@ import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 
 import example.domain.PhoneNumber;
-import example.domain.PhoneNumber_;
+import example.domain._PhoneNumber;
 
 /**
  * @author taedium
@@ -54,7 +54,7 @@ public class DomainResultListHandlerTest extends TestCase {
         query.prepare();
 
         DomainResultListHandler<String, PhoneNumber> handler = new DomainResultListHandler<String, PhoneNumber>(
-                new PhoneNumber_());
+                new _PhoneNumber());
         List<PhoneNumber> results = handler.handle(resultSet, query);
         assertEquals(2, results.size());
         assertEquals("01-2345-6789", results.get(0).getValue());

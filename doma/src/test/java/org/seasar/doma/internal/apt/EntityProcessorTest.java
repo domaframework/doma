@@ -21,7 +21,6 @@ import org.seasar.doma.internal.apt.entity.DomainPropertyEntity;
 import org.seasar.doma.internal.apt.entity.Emp;
 import org.seasar.doma.internal.apt.entity.EnumPropertyEntity;
 import org.seasar.doma.internal.apt.entity.ListenerArgumentTypeIllegalEntity;
-import org.seasar.doma.internal.apt.entity.NameUnsafeEntity_;
 import org.seasar.doma.internal.apt.entity.NotTopLevelEntity;
 import org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity;
 import org.seasar.doma.internal.apt.entity.PrivatePropertyEntity;
@@ -130,16 +129,6 @@ public class EntityProcessorTest extends AptTestCase {
         compile();
         assertFalse(getCompiledResult());
         assertMessageCode(DomaMessageCode.DOMA4025);
-    }
-
-    public void testNameUnsafe() throws Exception {
-        Class<?> target = NameUnsafeEntity_.class;
-        EntityProcessor processor = new EntityProcessor();
-        addProcessor(processor);
-        addCompilationUnit(target);
-        compile();
-        assertTrue(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4026);
     }
 
     public void testTransientProperty() throws Exception {
