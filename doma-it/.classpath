@@ -19,6 +19,7 @@
 	<classpathentry kind="lib" path="lib/s2-tiger-2.4.38.jar"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.7-bin.jar"/>
 	<classpathentry kind="lib" path="lib/ant-1.7.0.jar"/>
+	<classpathentry kind="lib" path="lib/h2-1.2.126.jar"/>
 	<classpathentry kind="src" path=".apt_generated">
 		<attributes>
 			<attribute name="optional" value="true"/>

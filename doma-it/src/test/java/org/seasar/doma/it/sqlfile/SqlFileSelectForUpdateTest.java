@@ -30,7 +30,7 @@ import org.seasar.framework.unit.annotation.Prerequisite;
 @RunWith(Seasar2.class)
 public class SqlFileSelectForUpdateTest {
 
-    @Prerequisite("#ENV not in {'postgres', 'oracle', 'mysql'}")
+    @Prerequisite("#ENV not in {'h2', 'postgres', 'oracle', 'mysql'}")
     public void testUnsupported() throws Exception {
         EmployeeDao dao = new EmployeeDaoImpl();
         try {

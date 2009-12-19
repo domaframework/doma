@@ -13,7 +13,7 @@ import org.seasar.framework.unit.Seasar2;
 import org.seasar.framework.unit.annotation.Prerequisite;
 
 @RunWith(Seasar2.class)
-@Prerequisite("#ENV not in {'hsqldb', 'mysql', 'oracle'}")
+@Prerequisite("#ENV not in {'hsqldb', 'h2', 'mysql', 'oracle'}")
 public class ArrayTest {
 
     public void testSelect() throws Exception {
@@ -120,6 +120,7 @@ public class ArrayTest {
 
         entities = dao.selectAll();
         entity = entities.get(0);
-        assertEquals("aaa", ((String[][]) entity.getSchedule().getArray())[0][0]);
+        assertEquals("aaa",
+                ((String[][]) entity.getSchedule().getArray())[0][0]);
     }
 }
