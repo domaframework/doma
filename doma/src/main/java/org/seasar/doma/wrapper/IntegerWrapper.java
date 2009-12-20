@@ -67,8 +67,7 @@ public class IntegerWrapper extends AbstractWrapper<Integer> implements
         }
         if (IntegerWrapperVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            IntegerWrapperVisitor<R, P, TH> v = IntegerWrapperVisitor.class
-                    .cast(visitor);
+            IntegerWrapperVisitor<R, P, TH> v = (IntegerWrapperVisitor) visitor;
             return v.visitIntegerWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);
@@ -77,7 +76,7 @@ public class IntegerWrapper extends AbstractWrapper<Integer> implements
     private void readObject(ObjectInputStream inputStream) throws IOException,
             ClassNotFoundException {
         inputStream.defaultReadObject();
-        value = Integer.class.cast(inputStream.readObject());
+        value = (Integer) inputStream.readObject();
     }
 
     private void writeObject(ObjectOutputStream outputStream)

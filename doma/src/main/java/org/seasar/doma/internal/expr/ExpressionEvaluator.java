@@ -129,9 +129,9 @@ public class ExpressionEvaluator implements
         }
         try {
             @SuppressWarnings("unchecked")
-            Comparable<Object> c1 = Comparable.class.cast(left);
+            Comparable<Object> c1 = (Comparable) left;
             @SuppressWarnings("unchecked")
-            Comparable<Object> c2 = Comparable.class.cast(right);
+            Comparable<Object> c2 = (Comparable) right;
             return new EvaluationResult(c1.compareTo(c2) == 0, boolean.class);
         } catch (ClassCastException e) {
             ExpressionLocation location = node.getLocation();
@@ -152,9 +152,9 @@ public class ExpressionEvaluator implements
         }
         try {
             @SuppressWarnings("unchecked")
-            Comparable<Object> c1 = Comparable.class.cast(left);
+            Comparable<Object> c1 = (Comparable) left;
             @SuppressWarnings("unchecked")
-            Comparable<Object> c2 = Comparable.class.cast(right);
+            Comparable<Object> c2 = (Comparable) right;
             return new EvaluationResult(c1.compareTo(c2) != 0, boolean.class);
         } catch (ClassCastException e) {
             ExpressionLocation location = node.getLocation();
@@ -205,9 +205,9 @@ public class ExpressionEvaluator implements
         }
         try {
             @SuppressWarnings("unchecked")
-            Comparable<Object> c1 = Comparable.class.cast(left);
+            Comparable<Object> c1 = (Comparable) left;
             @SuppressWarnings("unchecked")
-            Comparable<Object> c2 = Comparable.class.cast(right);
+            Comparable<Object> c2 = (Comparable) right;
             return c1.compareTo(c2);
         } catch (ClassCastException e) {
             ExpressionLocation location = node.getLocation();
@@ -760,27 +760,27 @@ public class ExpressionEvaluator implements
 
         protected BigDecimal widenValue(Object value, Class<?> clazz) {
             if (clazz == BigDecimal.class) {
-                return BigDecimal.class.cast(value);
+                return (BigDecimal) value;
             } else if (clazz == BigInteger.class) {
-                BigInteger v = BigInteger.class.cast(value);
+                BigInteger v = (BigInteger) value;
                 return new BigDecimal(v);
             } else if (clazz == Double.class || clazz == double.class) {
-                Double v = Double.class.cast(value);
+                Double v = (Double) value;
                 return new BigDecimal(v);
             } else if (clazz == Float.class || clazz == float.class) {
-                Float v = Float.class.cast(value);
+                Float v = (Float) value;
                 return new BigDecimal(v);
             } else if (clazz == Long.class || clazz == long.class) {
-                Long v = Long.class.cast(value);
+                Long v = (Long) value;
                 return new BigDecimal(v);
             } else if (clazz == Integer.class || clazz == int.class) {
-                Integer v = Integer.class.cast(value);
+                Integer v = (Integer) value;
                 return new BigDecimal(v);
             } else if (clazz == Short.class || clazz == short.class) {
-                Short v = Short.class.cast(value);
+                Short v = (Short) value;
                 return new BigDecimal(v);
             } else if (clazz == Byte.class || clazz == byte.class) {
-                Byte v = Byte.class.cast(value);
+                Byte v = (Byte) value;
                 return new BigDecimal(v);
             }
             return assertUnreachable();

@@ -38,7 +38,7 @@ public class EnumWrapperTest extends TestCase {
         oos.flush();
         ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
         ObjectInputStream ois = new ObjectInputStream(bais);
-        EnumWrapper<MyEnum> wrapper2 = EnumWrapper.class.cast(ois.readObject());
+        EnumWrapper<MyEnum> wrapper2 = (EnumWrapper) ois.readObject();
         assertEquals(MyEnum.AAA, wrapper2.get());
     }
 

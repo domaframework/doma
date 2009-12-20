@@ -211,7 +211,7 @@ public class MockCallableStatement extends MockPreparedStatement implements
     @Override
     public int getInt(int parameterIndex) throws SQLException {
         Object value = outParameters.get(parameterIndex - 1);
-        return Integer.class.cast(value);
+        return (Integer) value;
     }
 
     @Override

@@ -67,8 +67,7 @@ public class FloatWrapper extends AbstractWrapper<Float> implements
         }
         if (FloatWrapperVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            FloatWrapperVisitor<R, P, TH> v = FloatWrapperVisitor.class
-                    .cast(visitor);
+            FloatWrapperVisitor<R, P, TH> v = (FloatWrapperVisitor) visitor;
             return v.visitFloatWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);
@@ -77,7 +76,7 @@ public class FloatWrapper extends AbstractWrapper<Float> implements
     private void readObject(ObjectInputStream inputStream) throws IOException,
             ClassNotFoundException {
         inputStream.defaultReadObject();
-        value = Float.class.cast(inputStream.readObject());
+        value = (Float) inputStream.readObject();
     }
 
     private void writeObject(ObjectOutputStream outputStream)

@@ -73,7 +73,7 @@ public class OtherNode extends AbstractSqlNode {
         }
         if (OtherNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            OtherNodeVisitor<R, P> v = OtherNodeVisitor.class.cast(visitor);
+            OtherNodeVisitor<R, P> v = (OtherNodeVisitor) visitor;
             return v.visitOtherNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

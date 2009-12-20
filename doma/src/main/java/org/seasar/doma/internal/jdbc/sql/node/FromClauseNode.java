@@ -49,8 +49,7 @@ public class FromClauseNode extends AbstractClauseNode {
         }
         if (FromClauseNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            FromClauseNodeVisitor<R, P> v = FromClauseNodeVisitor.class
-                    .cast(visitor);
+            FromClauseNodeVisitor<R, P> v = (FromClauseNodeVisitor) visitor;
             return v.visitFromClauseNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

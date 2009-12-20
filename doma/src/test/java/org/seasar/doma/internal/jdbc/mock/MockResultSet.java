@@ -43,7 +43,6 @@ import java.util.Map;
 
 import org.seasar.doma.internal.util.AssertionUtil;
 
-
 /**
  * 
  * @author taedium
@@ -163,7 +162,7 @@ public class MockResultSet extends MockWrapper implements ResultSet {
         if (value == null) {
             return null;
         }
-        return BigDecimal.class.cast(value);
+        return (BigDecimal) value;
     }
 
     @SuppressWarnings("deprecation")
@@ -349,7 +348,7 @@ public class MockResultSet extends MockWrapper implements ResultSet {
         if (value == null) {
             return 0;
         }
-        return Integer.class.cast(value);
+        return (Integer) value;
     }
 
     @Override
@@ -365,7 +364,7 @@ public class MockResultSet extends MockWrapper implements ResultSet {
         if (value == null) {
             return 0;
         }
-        return Long.class.cast(value);
+        return (Long) value;
     }
 
     @Override

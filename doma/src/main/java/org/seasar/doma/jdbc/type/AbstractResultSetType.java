@@ -81,7 +81,7 @@ public abstract class AbstractResultSetType extends AbstractJdbcType<ResultSet> 
     protected ResultSet doGetValue(CallableStatement callableStatement,
             int index) throws SQLException {
         Object resultSet = callableStatement.getObject(index);
-        return ResultSet.class.cast(resultSet);
+        return (ResultSet) resultSet;
     }
 
     @Override

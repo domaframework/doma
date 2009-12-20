@@ -49,8 +49,7 @@ public class ForUpdateClauseNode extends AbstractClauseNode {
         }
         if (ForUpdateClauseNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            ForUpdateClauseNodeVisitor<R, P> v = ForUpdateClauseNodeVisitor.class
-                    .cast(visitor);
+            ForUpdateClauseNodeVisitor<R, P> v = (ForUpdateClauseNodeVisitor) visitor;
             return v.visitForUpdateClauseNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

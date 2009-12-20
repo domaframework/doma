@@ -80,7 +80,7 @@ public final class Wrappers {
                         .isInstance(value));
 
         if (Wrapper.class.isAssignableFrom(valueClass)) {
-            return Wrapper.class.cast(value);
+            return (Wrapper<?>) value;
         }
         Wrapper<?> result = wrapBasicObject(value, valueClass);
         if (result == null) {
@@ -109,61 +109,61 @@ public final class Wrappers {
         Class<?> boxedClass = ClassUtil
                 .toBoxedPrimitiveTypeIfPossible(valueClass);
         if (boxedClass == Array.class) {
-            return new ArrayWrapper(Array.class.cast(value));
+            return new ArrayWrapper((Array) value);
         }
         if (boxedClass == BigDecimal.class) {
-            return new BigDecimalWrapper(BigDecimal.class.cast(value));
+            return new BigDecimalWrapper((BigDecimal) value);
         }
         if (boxedClass == BigInteger.class) {
-            return new BigIntegerWrapper(BigInteger.class.cast(value));
+            return new BigIntegerWrapper((BigInteger) value);
         }
         if (boxedClass == Blob.class) {
-            return new BlobWrapper(Blob.class.cast(value));
+            return new BlobWrapper((Blob) value);
         }
         if (boxedClass == Boolean.class) {
-            return new BooleanWrapper(Boolean.class.cast(value));
+            return new BooleanWrapper((Boolean) value);
         }
         if (boxedClass == byte[].class) {
-            return new BytesWrapper(byte[].class.cast(value));
+            return new BytesWrapper((byte[]) value);
         }
         if (boxedClass == Byte.class) {
-            return new ByteWrapper(Byte.class.cast(value));
+            return new ByteWrapper((Byte) value);
         }
         if (boxedClass == Clob.class) {
-            return new ClobWrapper(Clob.class.cast(value));
+            return new ClobWrapper((Clob) value);
         }
         if (boxedClass == Date.class) {
-            return new DateWrapper(Date.class.cast(value));
+            return new DateWrapper((Date) value);
         }
         if (boxedClass == Double.class) {
-            return new DoubleWrapper(Double.class.cast(value));
+            return new DoubleWrapper((Double) value);
         }
         if (boxedClass == Float.class) {
-            return new FloatWrapper(Float.class.cast(value));
+            return new FloatWrapper((Float) value);
         }
         if (boxedClass == Integer.class) {
-            return new IntegerWrapper(Integer.class.cast(value));
+            return new IntegerWrapper((Integer) value);
         }
         if (boxedClass == Long.class) {
-            return new LongWrapper(Long.class.cast(value));
+            return new LongWrapper((Long) value);
         }
         if (boxedClass == NClob.class) {
-            return new NClobWrapper(NClob.class.cast(value));
+            return new NClobWrapper((NClob) value);
         }
         if (boxedClass == Short.class) {
-            return new ShortWrapper(Short.class.cast(value));
+            return new ShortWrapper((Short) value);
         }
         if (boxedClass == String.class) {
-            return new StringWrapper(String.class.cast(value));
+            return new StringWrapper((String) value);
         }
         if (boxedClass == Timestamp.class) {
-            return new TimestampWrapper(Timestamp.class.cast(value));
+            return new TimestampWrapper((Timestamp) value);
         }
         if (boxedClass == Time.class) {
-            return new TimeWrapper(Time.class.cast(value));
+            return new TimeWrapper((Time) value);
         }
         if (boxedClass.isEnum() || Enum.class.isAssignableFrom(boxedClass)) {
-            return new EnumWrapper(boxedClass, Enum.class.cast(value));
+            return new EnumWrapper(boxedClass, (Enum) value);
         }
         return null;
     }

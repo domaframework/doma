@@ -116,7 +116,7 @@ public class IfBlockNode extends AbstractSqlNode implements BlockNode {
         }
         if (IfBlockNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            IfBlockNodeVisitor<R, P> v = IfBlockNodeVisitor.class.cast(visitor);
+            IfBlockNodeVisitor<R, P> v = (IfBlockNodeVisitor) visitor;
             return v.visitIfBlockNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

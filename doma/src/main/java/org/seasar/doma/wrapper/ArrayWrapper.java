@@ -63,8 +63,7 @@ public class ArrayWrapper extends AbstractWrapper<Array> {
         }
         if (ArrayWrapperVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            ArrayWrapperVisitor<R, P, TH> v = ArrayWrapperVisitor.class
-                    .cast(visitor);
+            ArrayWrapperVisitor<R, P, TH> v = (ArrayWrapperVisitor) visitor;
             return v.visitArrayWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);

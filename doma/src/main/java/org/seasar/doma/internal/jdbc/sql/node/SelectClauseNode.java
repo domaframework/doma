@@ -49,8 +49,7 @@ public class SelectClauseNode extends AbstractClauseNode {
         }
         if (SelectClauseNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            SelectClauseNodeVisitor<R, P> v = SelectClauseNodeVisitor.class
-                    .cast(visitor);
+            SelectClauseNodeVisitor<R, P> v = (SelectClauseNodeVisitor) visitor;
             return v.visitSelectClauseNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

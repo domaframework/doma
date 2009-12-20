@@ -61,11 +61,9 @@ public class BlobWrapper extends AbstractWrapper<Blob> {
         }
         if (BlobWrapperVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            BlobWrapperVisitor<R, P, TH> v = BlobWrapperVisitor.class
-                    .cast(visitor);
+            BlobWrapperVisitor<R, P, TH> v = (BlobWrapperVisitor) visitor;
             return v.visitBlobWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);
     }
-
 }

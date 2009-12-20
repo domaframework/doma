@@ -68,7 +68,7 @@ public class HasNextNode extends AbstractSqlNode {
         }
         if (HasNextNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            HasNextNodeVisitor<R, P> v = HasNextNodeVisitor.class.cast(visitor);
+            HasNextNodeVisitor<R, P> v = (HasNextNodeVisitor) visitor;
             return v.visitHasNextNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

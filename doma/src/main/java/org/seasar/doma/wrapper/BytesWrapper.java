@@ -78,8 +78,7 @@ public class BytesWrapper extends AbstractWrapper<byte[]> implements
         }
         if (BytesWrapperVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            BytesWrapperVisitor<R, P, TH> v = BytesWrapperVisitor.class
-                    .cast(visitor);
+            BytesWrapperVisitor<R, P, TH> v = (BytesWrapperVisitor) visitor;
             return v.visitBytesWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);
@@ -88,7 +87,7 @@ public class BytesWrapper extends AbstractWrapper<byte[]> implements
     private void readObject(ObjectInputStream inputStream) throws IOException,
             ClassNotFoundException {
         inputStream.defaultReadObject();
-        value = byte[].class.cast(inputStream.readObject());
+        value = (byte[]) inputStream.readObject();
     }
 
     private void writeObject(ObjectOutputStream outputStream)

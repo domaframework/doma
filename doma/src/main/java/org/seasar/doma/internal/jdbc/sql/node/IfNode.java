@@ -69,7 +69,7 @@ public class IfNode extends AbstractSqlNode implements SpaceStrippingNode {
         }
         if (IfNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            IfNodeVisitor<R, P> v = IfNodeVisitor.class.cast(visitor);
+            IfNodeVisitor<R, P> v = (IfNodeVisitor) visitor;
             return v.visitIfNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

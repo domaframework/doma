@@ -44,8 +44,7 @@ public class AnonymousNode extends AbstractSqlNode {
         }
         if (AnonymousNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            AnonymousNodeVisitor<R, P> v = AnonymousNodeVisitor.class
-                    .cast(visitor);
+            AnonymousNodeVisitor<R, P> v = (AnonymousNodeVisitor) visitor;
             return v.visitAnonymousNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

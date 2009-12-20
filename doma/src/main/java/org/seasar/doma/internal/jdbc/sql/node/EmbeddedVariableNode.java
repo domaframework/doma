@@ -73,8 +73,7 @@ public class EmbeddedVariableNode extends AbstractSqlNode {
         }
         if (EmbeddedVariableNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            EmbeddedVariableNodeVisitor<R, P> v = EmbeddedVariableNodeVisitor.class
-                    .cast(visitor);
+            EmbeddedVariableNodeVisitor<R, P> v = (EmbeddedVariableNodeVisitor) visitor;
             return v.visitEmbeddedVariableNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

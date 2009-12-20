@@ -80,7 +80,7 @@ public class StandardPagingTransformer implements
                 .getWordNode());
         for (SqlNode child : originalOrderBy.getChildren()) {
             if (WordNode.class.isInstance(child)) {
-                WordNode wordNode = WordNode.class.cast(child);
+                WordNode wordNode = (WordNode) child;
                 String word = wordNode.getWord();
                 String[] names = word.split("\\.");
                 if (names.length == 2) {

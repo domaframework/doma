@@ -68,8 +68,7 @@ public class BigDecimalWrapper extends AbstractWrapper<BigDecimal> implements
         }
         if (BigDecimalWrapperVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            BigDecimalWrapperVisitor<R, P, TH> v = BigDecimalWrapperVisitor.class
-                    .cast(visitor);
+            BigDecimalWrapperVisitor<R, P, TH> v = (BigDecimalWrapperVisitor) visitor;
             return v.visitBigDecimalWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);
@@ -78,7 +77,7 @@ public class BigDecimalWrapper extends AbstractWrapper<BigDecimal> implements
     private void readObject(ObjectInputStream inputStream) throws IOException,
             ClassNotFoundException {
         inputStream.defaultReadObject();
-        value = BigDecimal.class.cast(inputStream.readObject());
+        value = (BigDecimal) inputStream.readObject();
     }
 
     private void writeObject(ObjectOutputStream outputStream)

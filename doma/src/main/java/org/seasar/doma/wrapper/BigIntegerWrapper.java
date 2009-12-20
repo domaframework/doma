@@ -68,8 +68,7 @@ public class BigIntegerWrapper extends AbstractWrapper<BigInteger> implements
         }
         if (BigIntegerWrapperVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            BigIntegerWrapperVisitor<R, P, TH> v = BigIntegerWrapperVisitor.class
-                    .cast(visitor);
+            BigIntegerWrapperVisitor<R, P, TH> v = (BigIntegerWrapperVisitor) visitor;
             return v.visitBigIntegerWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);
@@ -78,7 +77,7 @@ public class BigIntegerWrapper extends AbstractWrapper<BigInteger> implements
     private void readObject(ObjectInputStream inputStream) throws IOException,
             ClassNotFoundException {
         inputStream.defaultReadObject();
-        value = BigInteger.class.cast(inputStream.readObject());
+        value = (BigInteger) inputStream.readObject();
     }
 
     private void writeObject(ObjectOutputStream outputStream)

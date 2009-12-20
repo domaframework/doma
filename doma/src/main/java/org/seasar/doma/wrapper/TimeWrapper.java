@@ -65,8 +65,7 @@ public class TimeWrapper extends AbstractWrapper<Time> implements Serializable {
         }
         if (TimeWrapperVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            TimeWrapperVisitor<R, P, TH> v = TimeWrapperVisitor.class
-                    .cast(visitor);
+            TimeWrapperVisitor<R, P, TH> v = (TimeWrapperVisitor) visitor;
             return v.visitTimeWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);
@@ -75,7 +74,7 @@ public class TimeWrapper extends AbstractWrapper<Time> implements Serializable {
     private void readObject(ObjectInputStream inputStream) throws IOException,
             ClassNotFoundException {
         inputStream.defaultReadObject();
-        value = Time.class.cast(inputStream.readObject());
+        value = (Time) inputStream.readObject();
     }
 
     private void writeObject(ObjectOutputStream outputStream)

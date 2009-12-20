@@ -49,8 +49,7 @@ public class OrderByClauseNode extends AbstractClauseNode {
         }
         if (OrderByClauseNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            OrderByClauseNodeVisitor<R, P> v = OrderByClauseNodeVisitor.class
-                    .cast(visitor);
+            OrderByClauseNodeVisitor<R, P> v = (OrderByClauseNodeVisitor) visitor;
             return v.visitOrderByClauseNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

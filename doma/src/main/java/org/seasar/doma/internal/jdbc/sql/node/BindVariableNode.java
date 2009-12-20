@@ -83,8 +83,7 @@ public class BindVariableNode extends AbstractSqlNode {
         }
         if (BindVariableNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            BindVariableNodeVisitor<R, P> v = BindVariableNodeVisitor.class
-                    .cast(visitor);
+            BindVariableNodeVisitor<R, P> v = (BindVariableNodeVisitor) visitor;
             return v.visitBindVariableNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

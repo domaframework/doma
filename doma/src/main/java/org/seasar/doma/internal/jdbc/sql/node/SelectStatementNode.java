@@ -135,8 +135,7 @@ public class SelectStatementNode extends AbstractSqlNode {
         }
         if (SelectStatementNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            SelectStatementNodeVisitor<R, P> v = SelectStatementNodeVisitor.class
-                    .cast(visitor);
+            SelectStatementNodeVisitor<R, P> v = (SelectStatementNodeVisitor) visitor;
             return v.visitSelectStatementNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

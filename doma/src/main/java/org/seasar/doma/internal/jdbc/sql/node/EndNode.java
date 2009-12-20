@@ -52,7 +52,7 @@ public class EndNode extends AbstractSqlNode implements SpaceStrippingNode {
         }
         if (EndNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            EndNodeVisitor<R, P> v = EndNodeVisitor.class.cast(visitor);
+            EndNodeVisitor<R, P> v = (EndNodeVisitor) visitor;
             return v.visitEndNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

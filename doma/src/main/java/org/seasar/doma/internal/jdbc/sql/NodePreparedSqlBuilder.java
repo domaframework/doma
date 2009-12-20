@@ -18,7 +18,6 @@ package org.seasar.doma.internal.jdbc.sql;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -186,7 +185,7 @@ public class NodePreparedSqlBuilder implements
             OtherNode openedFragmentNode = parensNode.getOpenedFragmentNode();
             openedFragmentNode.accept(this, p);
             if (List.class.isAssignableFrom(valueClass)) {
-                handleListBindVarialbeNode(node, p, value, valueClass);
+                handleListBindVarialbeNode(node, p, (List<?>) value, valueClass);
             } else {
                 throw new JdbcException(DomaMessageCode.DOMA2112, location
                         .getSql(), location.getLineNumber(), location
@@ -252,8 +251,7 @@ public class NodePreparedSqlBuilder implements
     }
 
     protected void handleListBindVarialbeNode(BindVariableNode node, Context p,
-            Object value, Class<?> valueClass) {
-        Collection<?> values = Collection.class.cast(value);
+            List<?> values, Class<?> valueClass) {
         int index = 0;
         for (Object v : values) {
             if (v == null) {

@@ -527,10 +527,10 @@ public class SqlParser {
         if (isAfterBindVariable()) {
             BindVariableNode bindVariableNode = pop();
             if (WordNode.class.isInstance(node)) {
-                WordNode wordNode = WordNode.class.cast(node);
+                WordNode wordNode = (WordNode) node;
                 bindVariableNode.setWordNode(wordNode);
             } else if (ParensNode.class.isInstance(node)) {
-                ParensNode parensNode = ParensNode.class.cast(node);
+                ParensNode parensNode = (ParensNode) node;
                 parensNode.setAttachedWithBindVariable(true);
                 bindVariableNode.setParensNode(parensNode);
             } else {

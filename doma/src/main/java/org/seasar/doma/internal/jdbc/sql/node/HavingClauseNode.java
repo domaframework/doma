@@ -49,8 +49,7 @@ public class HavingClauseNode extends AbstractClauseNode {
         }
         if (HavingClauseNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            HavingClauseNodeVisitor<R, P> v = HavingClauseNodeVisitor.class
-                    .cast(visitor);
+            HavingClauseNodeVisitor<R, P> v = (HavingClauseNodeVisitor) visitor;
             return v.visitHavingClauseNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

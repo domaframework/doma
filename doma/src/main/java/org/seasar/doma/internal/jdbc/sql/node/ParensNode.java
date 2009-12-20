@@ -74,7 +74,7 @@ public class ParensNode extends AbstractSqlNode {
         }
         if (ParensNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            ParensNodeVisitor<R, P> v = ParensNodeVisitor.class.cast(visitor);
+            ParensNodeVisitor<R, P> v = (ParensNodeVisitor) visitor;
             return v.visitParensNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

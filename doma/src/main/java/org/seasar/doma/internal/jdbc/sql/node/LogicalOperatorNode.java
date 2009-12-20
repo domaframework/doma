@@ -55,8 +55,7 @@ public class LogicalOperatorNode extends AbstractSqlNode {
         }
         if (LogicalOperatorNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            LogicalOperatorNodeVisitor<R, P> v = LogicalOperatorNodeVisitor.class
-                    .cast(visitor);
+            LogicalOperatorNodeVisitor<R, P> v = (LogicalOperatorNodeVisitor) visitor;
             return v.visitLogicalOperatorNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

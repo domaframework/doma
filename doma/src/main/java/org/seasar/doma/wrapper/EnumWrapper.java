@@ -90,8 +90,7 @@ public class EnumWrapper<E extends Enum<E>> extends AbstractWrapper<E>
         }
         if (EnumWrapperVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            EnumWrapperVisitor<R, P, TH> v = EnumWrapperVisitor.class
-                    .cast(visitor);
+            EnumWrapperVisitor<R, P, TH> v = (EnumWrapperVisitor) visitor;
             return v.visitEnumWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);

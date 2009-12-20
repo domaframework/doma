@@ -54,8 +54,7 @@ public class GroupByClauseNode extends AbstractClauseNode {
         }
         if (GroupByClauseNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            GroupByClauseNodeVisitor<R, P> v = GroupByClauseNodeVisitor.class
-                    .cast(visitor);
+            GroupByClauseNodeVisitor<R, P> v = (GroupByClauseNodeVisitor) visitor;
             return v.visitGroupByClauseNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

@@ -321,7 +321,7 @@ public class StandardDialect implements Dialect {
         SQLException cause = sqlException;
         for (Throwable t : sqlException) {
             if (SQLException.class.isInstance(t)) {
-                cause = SQLException.class.cast(t);
+                cause = (SQLException) t;
             }
         }
         return cause;

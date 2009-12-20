@@ -268,7 +268,7 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
                 if (resultSet.next()) {
                     Object result = resultSet.getObject(1);
                     if (result != null && Number.class.isInstance(result)) {
-                        return Number.class.cast(result).longValue();
+                        return ((Number) result).longValue();
                     }
                 }
                 throw new JdbcException(DomaMessageCode.DOMA2017, config

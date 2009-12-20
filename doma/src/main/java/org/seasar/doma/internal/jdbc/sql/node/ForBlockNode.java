@@ -99,8 +99,7 @@ public class ForBlockNode extends AbstractSqlNode implements BlockNode {
         }
         if (ForBlockNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            ForBlockNodeVisitor<R, P> v = ForBlockNodeVisitor.class
-                    .cast(visitor);
+            ForBlockNodeVisitor<R, P> v = (ForBlockNodeVisitor) visitor;
             return v.visitForBlockNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

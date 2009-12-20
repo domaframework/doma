@@ -62,8 +62,7 @@ public class BooleanWrapper extends AbstractWrapper<Boolean> implements
         }
         if (BooleanWrapperVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            BooleanWrapperVisitor<R, P, TH> v = BooleanWrapperVisitor.class
-                    .cast(visitor);
+            BooleanWrapperVisitor<R, P, TH> v = (BooleanWrapperVisitor) visitor;
             return v.visitBooleanWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);
@@ -72,7 +71,7 @@ public class BooleanWrapper extends AbstractWrapper<Boolean> implements
     private void readObject(ObjectInputStream inputStream) throws IOException,
             ClassNotFoundException {
         inputStream.defaultReadObject();
-        value = Boolean.class.cast(inputStream.readObject());
+        value = (Boolean) inputStream.readObject();
     }
 
     private void writeObject(ObjectOutputStream outputStream)

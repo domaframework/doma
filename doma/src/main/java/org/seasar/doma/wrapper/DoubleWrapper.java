@@ -67,8 +67,7 @@ public class DoubleWrapper extends AbstractWrapper<Double> implements
         }
         if (DoubleWrapperVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            DoubleWrapperVisitor<R, P, TH> v = DoubleWrapperVisitor.class
-                    .cast(visitor);
+            DoubleWrapperVisitor<R, P, TH> v = (DoubleWrapperVisitor) visitor;
             return v.visitDoubleWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);
@@ -77,7 +76,7 @@ public class DoubleWrapper extends AbstractWrapper<Double> implements
     private void readObject(ObjectInputStream inputStream) throws IOException,
             ClassNotFoundException {
         inputStream.defaultReadObject();
-        value = Double.class.cast(inputStream.readObject());
+        value = (Double) inputStream.readObject();
     }
 
     private void writeObject(ObjectOutputStream outputStream)

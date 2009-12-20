@@ -58,8 +58,7 @@ public class FragmentNode extends AbstractSqlNode {
         }
         if (FragmentNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            FragmentNodeVisitor<R, P> v = FragmentNodeVisitor.class
-                    .cast(visitor);
+            FragmentNodeVisitor<R, P> v = (FragmentNodeVisitor) visitor;
             return v.visitFragmentNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

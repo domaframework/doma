@@ -67,8 +67,7 @@ public class ShortWrapper extends AbstractWrapper<Short> implements
         }
         if (ShortWrapperVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            ShortWrapperVisitor<R, P, TH> v = ShortWrapperVisitor.class
-                    .cast(visitor);
+            ShortWrapperVisitor<R, P, TH> v = (ShortWrapperVisitor) visitor;
             return v.visitShortWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);
@@ -77,7 +76,7 @@ public class ShortWrapper extends AbstractWrapper<Short> implements
     private void readObject(ObjectInputStream inputStream) throws IOException,
             ClassNotFoundException {
         inputStream.defaultReadObject();
-        value = Short.class.cast(inputStream.readObject());
+        value = (Short) inputStream.readObject();
     }
 
     private void writeObject(ObjectOutputStream outputStream)

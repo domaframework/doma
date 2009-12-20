@@ -65,8 +65,7 @@ public class DateWrapper extends AbstractWrapper<Date> implements Serializable {
         }
         if (DateWrapperVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            DateWrapperVisitor<R, P, TH> v = DateWrapperVisitor.class
-                    .cast(visitor);
+            DateWrapperVisitor<R, P, TH> v = (DateWrapperVisitor) visitor;
             return v.visitDateWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);
@@ -75,7 +74,7 @@ public class DateWrapper extends AbstractWrapper<Date> implements Serializable {
     private void readObject(ObjectInputStream inputStream) throws IOException,
             ClassNotFoundException {
         inputStream.defaultReadObject();
-        value = Date.class.cast(inputStream.readObject());
+        value = (Date) inputStream.readObject();
     }
 
     private void writeObject(ObjectOutputStream outputStream)

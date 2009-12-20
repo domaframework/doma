@@ -57,7 +57,7 @@ public class WordNode extends AbstractSqlNode {
         }
         if (WordNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            WordNodeVisitor<R, P> v = WordNodeVisitor.class.cast(visitor);
+            WordNodeVisitor<R, P> v = (WordNodeVisitor) visitor;
             return v.visitWordNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

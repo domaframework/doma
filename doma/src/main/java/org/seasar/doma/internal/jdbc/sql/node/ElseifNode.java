@@ -64,7 +64,7 @@ public class ElseifNode extends AbstractSqlNode {
         }
         if (ElseifNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            ElseifNodeVisitor<R, P> v = ElseifNodeVisitor.class.cast(visitor);
+            ElseifNodeVisitor<R, P> v = (ElseifNodeVisitor) visitor;
             return v.visitElseifNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

@@ -53,7 +53,7 @@ public class EolNode extends AbstractSqlNode {
         }
         if (EolNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            EolNodeVisitor<R, P> v = EolNodeVisitor.class.cast(visitor);
+            EolNodeVisitor<R, P> v = (EolNodeVisitor) visitor;
             return v.visitEolNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

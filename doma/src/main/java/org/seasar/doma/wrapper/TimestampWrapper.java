@@ -66,8 +66,7 @@ public class TimestampWrapper extends AbstractWrapper<Timestamp> implements
         }
         if (TimestampWrapperVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            TimestampWrapperVisitor<R, P, TH> v = TimestampWrapperVisitor.class
-                    .cast(visitor);
+            TimestampWrapperVisitor<R, P, TH> v = (TimestampWrapperVisitor) visitor;
             return v.visitTimestampWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);
@@ -76,7 +75,7 @@ public class TimestampWrapper extends AbstractWrapper<Timestamp> implements
     private void readObject(ObjectInputStream inputStream) throws IOException,
             ClassNotFoundException {
         inputStream.defaultReadObject();
-        value = Timestamp.class.cast(inputStream.readObject());
+        value = (Timestamp) inputStream.readObject();
     }
 
     private void writeObject(ObjectOutputStream outputStream)

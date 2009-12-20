@@ -67,8 +67,7 @@ public class LongWrapper extends AbstractWrapper<Long> implements
         }
         if (LongWrapperVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            LongWrapperVisitor<R, P, TH> v = LongWrapperVisitor.class
-                    .cast(visitor);
+            LongWrapperVisitor<R, P, TH> v = (LongWrapperVisitor) visitor;
             return v.visitLongWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);
@@ -77,7 +76,7 @@ public class LongWrapper extends AbstractWrapper<Long> implements
     private void readObject(ObjectInputStream inputStream) throws IOException,
             ClassNotFoundException {
         inputStream.defaultReadObject();
-        value = Long.class.cast(inputStream.readObject());
+        value = (Long) inputStream.readObject();
     }
 
     private void writeObject(ObjectOutputStream outputStream)

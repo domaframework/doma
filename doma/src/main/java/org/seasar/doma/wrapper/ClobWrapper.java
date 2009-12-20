@@ -61,8 +61,7 @@ public class ClobWrapper extends AbstractWrapper<Clob> {
         }
         if (ClobWrapperVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            ClobWrapperVisitor<R, P, TH> v = ClobWrapperVisitor.class
-                    .cast(visitor);
+            ClobWrapperVisitor<R, P, TH> v = (ClobWrapperVisitor) visitor;
             return v.visitClobWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);

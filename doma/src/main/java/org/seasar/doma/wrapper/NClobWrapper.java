@@ -61,8 +61,7 @@ public class NClobWrapper extends AbstractWrapper<NClob> {
         }
         if (NClobWrapperVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            NClobWrapperVisitor<R, P, TH> v = NClobWrapperVisitor.class
-                    .cast(visitor);
+            NClobWrapperVisitor<R, P, TH> v = (NClobWrapperVisitor) visitor;
             return v.visitNClobWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);

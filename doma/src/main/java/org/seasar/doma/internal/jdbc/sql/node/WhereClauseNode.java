@@ -49,8 +49,7 @@ public class WhereClauseNode extends AbstractClauseNode {
         }
         if (WhereClauseNodeVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            WhereClauseNodeVisitor<R, P> v = WhereClauseNodeVisitor.class
-                    .cast(visitor);
+            WhereClauseNodeVisitor<R, P> v = (WhereClauseNodeVisitor) visitor;
             return v.visitWhereClauseNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

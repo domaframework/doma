@@ -62,8 +62,7 @@ public class StringWrapper extends AbstractWrapper<String> implements
         }
         if (StringWrapperVisitor.class.isInstance(visitor)) {
             @SuppressWarnings("unchecked")
-            StringWrapperVisitor<R, P, TH> v = StringWrapperVisitor.class
-                    .cast(visitor);
+            StringWrapperVisitor<R, P, TH> v = (StringWrapperVisitor) visitor;
             return v.visitStringWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);
@@ -72,7 +71,7 @@ public class StringWrapper extends AbstractWrapper<String> implements
     private void readObject(ObjectInputStream inputStream) throws IOException,
             ClassNotFoundException {
         inputStream.defaultReadObject();
-        value = String.class.cast(inputStream.readObject());
+        value = (String) inputStream.readObject();
     }
 
     private void writeObject(ObjectOutputStream outputStream)
