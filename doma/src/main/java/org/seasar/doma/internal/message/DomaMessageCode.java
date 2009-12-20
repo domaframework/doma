@@ -251,9 +251,6 @@ public enum DomaMessageCode implements MessageCode {
     DOMA5001("JDBCドライバがロードされていない可能性があります。JDBCドライバをロードするには、クラスパスが通されたMETA-INF/services/java.sql.DriverファイルにJDBCドライバのクラスの完全修飾名を記述してください。 ex) oracle.jdbc.driver.OracleDriver"),
     DOMA5002("urlプロパティが設定されていません。"), ;
 
-    private static ResourceBundle bundle = ResourceBundle
-            .getBundle(DomaMessageResource.class.getName());
-
     private final String messagePattern;
 
     private DomaMessageCode(String messagePattern) {
@@ -272,6 +269,8 @@ public enum DomaMessageCode implements MessageCode {
 
     @Override
     public String getMessage(Object... args) {
+        ResourceBundle bundle = ResourceBundle
+                .getBundle(DomaMessageResource.class.getName());
         return MessageFormatter.getMessage(this, bundle, args);
     }
 }

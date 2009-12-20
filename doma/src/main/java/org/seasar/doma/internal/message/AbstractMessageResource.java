@@ -55,7 +55,7 @@ public abstract class AbstractMessageResource<M extends Enum<M> & MessageCode>
     @Override
     protected Object handleGetObject(String key) {
         if (key == null) {
-            new DomaNullPointerException("key");
+            throw new DomaNullPointerException("key");
         }
         M messageCode = Enum.valueOf(messageCodeClass, key);
         return messageCode.getMessagePattern();
