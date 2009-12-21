@@ -157,20 +157,41 @@ public class _ChildEntity implements org.seasar.doma.internal.jdbc.entity.Entity
 
     }
 
+    /** */
     public static class ChildEntityAccessor {
 
+        /**
+         * 
+         * @param entity
+         * @param bbb
+         */
         public static void setBbb(org.seasar.doma.internal.apt.entity.ChildEntity entity, java.math.BigDecimal bbb) {
             entity.bbb = bbb;
         }
 
+        /**
+         * 
+         * @param entity
+         * @return
+         */
         public static java.math.BigDecimal getBbb(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
             return entity.bbb;
         }
 
+        /**
+         * 
+         * @param entity
+         * @param ccc
+         */
         public static void setCcc(org.seasar.doma.internal.apt.entity.ChildEntity entity, java.lang.String ccc) {
             entity.ccc = ccc;
         }
 
+        /**
+         * 
+         * @param entity
+         * @return
+         */
         public static java.lang.String getCcc(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
             return entity.ccc;
         }

@@ -157,28 +157,59 @@ public class _PrimitivePropertyEntity implements org.seasar.doma.internal.jdbc.e
 
     }
 
+    /** */
     public static class PrimitivePropertyEntityAccessor {
 
+        /**
+         * 
+         * @param entity
+         * @param id
+         */
         public static void setId(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity, int id) {
             entity.id = id;
         }
 
+        /**
+         * 
+         * @param entity
+         * @return
+         */
         public static int getId(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity) {
             return entity.id;
         }
 
+        /**
+         * 
+         * @param entity
+         * @param bool
+         */
         public static void setBool(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity, boolean bool) {
             entity.bool = bool;
         }
 
+        /**
+         * 
+         * @param entity
+         * @return
+         */
         public static boolean getBool(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity) {
             return entity.bool;
         }
 
+        /**
+         * 
+         * @param entity
+         * @param version
+         */
         public static void setVersion(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity, long version) {
             entity.version = version;
         }
 
+        /**
+         * 
+         * @param entity
+         * @return
+         */
         public static long getVersion(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity) {
             return entity.version;
         }

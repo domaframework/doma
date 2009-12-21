@@ -145,12 +145,23 @@ public class _TransientPropertyEntity implements org.seasar.doma.internal.jdbc.e
 
     }
 
+    /** */
     public static class TransientPropertyEntityAccessor {
 
+        /**
+         * 
+         * @param entity
+         * @param id
+         */
         public static void setId(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity, java.lang.Integer id) {
             entity.id = id;
         }
 
+        /**
+         * 
+         * @param entity
+         * @return
+         */
         public static java.lang.Integer getId(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity) {
             return entity.id;
         }

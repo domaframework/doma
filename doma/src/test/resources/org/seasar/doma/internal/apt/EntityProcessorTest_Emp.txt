@@ -189,44 +189,95 @@ public class _Emp implements org.seasar.doma.internal.jdbc.entity.EntityTypeFact
 
     }
 
+    /** */
     public static class EmpAccessor {
 
+        /**
+         * 
+         * @param entity
+         * @param id
+         */
         public static void setId(org.seasar.doma.internal.apt.entity.Emp entity, java.lang.Integer id) {
             entity.id = id;
         }
 
+        /**
+         * 
+         * @param entity
+         * @return
+         */
         public static java.lang.Integer getId(org.seasar.doma.internal.apt.entity.Emp entity) {
             return entity.id;
         }
 
+        /**
+         * 
+         * @param entity
+         * @param name
+         */
         public static void setName(org.seasar.doma.internal.apt.entity.Emp entity, java.lang.String name) {
             entity.name = name;
         }
 
+        /**
+         * 
+         * @param entity
+         * @return
+         */
         public static java.lang.String getName(org.seasar.doma.internal.apt.entity.Emp entity) {
             return entity.name;
         }
 
+        /**
+         * 
+         * @param entity
+         * @param salary
+         */
         public static void setSalary(org.seasar.doma.internal.apt.entity.Emp entity, java.math.BigDecimal salary) {
             entity.salary = salary;
         }
 
+        /**
+         * 
+         * @param entity
+         * @return
+         */
         public static java.math.BigDecimal getSalary(org.seasar.doma.internal.apt.entity.Emp entity) {
             return entity.salary;
         }
 
+        /**
+         * 
+         * @param entity
+         * @param version
+         */
         public static void setVersion(org.seasar.doma.internal.apt.entity.Emp entity, java.lang.Integer version) {
             entity.version = version;
         }
 
+        /**
+         * 
+         * @param entity
+         * @return
+         */
         public static java.lang.Integer getVersion(org.seasar.doma.internal.apt.entity.Emp entity) {
             return entity.version;
         }
 
+        /**
+         * 
+         * @param entity
+         * @param originalStates
+         */
         public static void setOriginalStates(org.seasar.doma.internal.apt.entity.Emp entity, java.io.Serializable originalStates) {
             entity.originalStates = originalStates;
         }
 
+        /**
+         * 
+         * @param entity
+         * @return
+         */
         public static java.io.Serializable getOriginalStates(org.seasar.doma.internal.apt.entity.Emp entity) {
             return entity.originalStates;
         }

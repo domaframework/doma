@@ -618,6 +618,7 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
     }
 
     protected void printEntityAccessorClass() {
+        iprint("/** */%n");
         iprint("public static class %1$sAccessor {%n", entityMeta
                 .getEntityName());
         print("%n");
@@ -645,6 +646,11 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
                         @Override
                         public Void visitBasicType(BasicType basicType, Void p)
                                 throws RuntimeException {
+                            iprint("/**%n");
+                            iprint(" * %n");
+                            iprint(" * @param entity%n");
+                            iprint(" * @param %1$s%n", pm.getName());
+                            iprint(" */%n");
                             iprint(
                                     "public static void set%1$s(%2$s entity, %3$s %4$s) {%n",
                                     StringUtil.capitalize(pm.getName()), pm
@@ -653,6 +659,11 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
                             iprint("    entity.%1$s = %1$s;%n", pm.getName());
                             iprint("}%n");
                             print("%n");
+                            iprint("/**%n");
+                            iprint(" * %n");
+                            iprint(" * @param entity%n");
+                            iprint(" * @return%n");
+                            iprint(" */%n");
                             iprint(
                                     "public static %1$s get%2$s(%3$s entity) {%n",
                                     pm.getTypeName(), StringUtil.capitalize(pm
@@ -666,6 +677,11 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
                         public Void visitDomainType(DomainType domainType,
                                 Void p) throws RuntimeException {
                             BasicType basicType = domainType.getBasicType();
+                            iprint("/**%n");
+                            iprint(" * %n");
+                            iprint(" * @param entity%n");
+                            iprint(" * @param %1$s%n", pm.getName());
+                            iprint(" */%n");
                             iprint(
                                     "public static void set%1$s(%2$s entity, %3$s %4$s) {%n",
                                     StringUtil.capitalize(pm.getName()), pm
@@ -688,6 +704,11 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
                                     pm.getName());
                             iprint("}%n");
                             print("%n");
+                            iprint("/**%n");
+                            iprint(" * %n");
+                            iprint(" * @param entity%n");
+                            iprint(" * @return%n");
+                            iprint(" */%n");
                             iprint(
                                     "public static %1$s get%2$s(%3$s entity) {%n",
                                     basicType.getTypeNameAsTypeParameter(),
@@ -712,6 +733,11 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
         if (osm != null
                 && entityMeta.getEntityTypeName().equals(
                         osm.getEntityTypeName())) {
+            iprint("/**%n");
+            iprint(" * %n");
+            iprint(" * @param entity%n");
+            iprint(" * @param %1$s%n", osm.getName());
+            iprint(" */%n");
             iprint("public static void set%1$s(%2$s entity, %3$s %4$s) {%n",
                     StringUtil.capitalize(osm.getName()), osm
                             .getEntityTypeName(), Serializable.class.getName(),
@@ -719,6 +745,11 @@ public class EntityTypeFactoryGenerator extends AbstractGenerator {
             iprint("    entity.%1$s = %1$s;%n", osm.getName());
             iprint("}%n");
             print("%n");
+            iprint("/**%n");
+            iprint(" * %n");
+            iprint(" * @param entity%n");
+            iprint(" * @return%n");
+            iprint(" */%n");
             iprint("public static %1$s get%2$s(%3$s entity) {%n",
                     Serializable.class.getName(), StringUtil.capitalize(osm
                             .getName()), osm.getEntityTypeName());
