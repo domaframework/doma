@@ -59,7 +59,11 @@ public abstract class AbstractJdbcType<T> implements JdbcType<T> {
         if (index < 1) {
             throw new DomaIllegalArgumentException("index", "index < 1");
         }
-        return doGetValue(resultSet, index);
+        T result = doGetValue(resultSet, index);
+        if (resultSet.wasNull()) {
+            return null;
+        }
+        return result;
     }
 
     @Override
@@ -99,7 +103,11 @@ public abstract class AbstractJdbcType<T> implements JdbcType<T> {
         if (index < 1) {
             throw new DomaIllegalArgumentException("index", "index < 1");
         }
-        return doGetValue(callableStatement, index);
+        T result = doGetValue(callableStatement, index);
+        if (callableStatement.wasNull()) {
+            return null;
+        }
+        return result;
     }
 
     @Override

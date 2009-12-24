@@ -58,6 +58,8 @@ public class MockResultSet extends MockWrapper implements ResultSet {
 
     protected int rowIndex = -1;
 
+    protected boolean wasNull;
+
     public MockResultSet() {
     }
 
@@ -344,8 +346,10 @@ public class MockResultSet extends MockWrapper implements ResultSet {
     @Override
     public int getInt(int columnIndex) throws SQLException {
         assertTrue(!closed);
+        wasNull = false;
         Object value = getObject(columnIndex);
         if (value == null) {
+            wasNull = true;
             return 0;
         }
         return (Integer) value;
@@ -360,8 +364,10 @@ public class MockResultSet extends MockWrapper implements ResultSet {
     @Override
     public long getLong(int columnIndex) throws SQLException {
         assertTrue(!closed);
+        wasNull = false;
         Object value = getObject(columnIndex);
         if (value == null) {
+            wasNull = true;
             return 0;
         }
         return (Long) value;
@@ -428,7 +434,13 @@ public class MockResultSet extends MockWrapper implements ResultSet {
     @Override
     public Object getObject(int columnIndex) throws SQLException {
         assertTrue(!closed);
-        return getRowData().get(columnIndex);
+        wasNull = false;
+        Object result = getRowData().get(columnIndex);
+        if (result == null) {
+            wasNull = true;
+            return null;
+        }
+        return result;
     }
 
     @Override
@@ -1239,7 +1251,6 @@ public class MockResultSet extends MockWrapper implements ResultSet {
     @Override
     public void updateTime(String columnLabel, Time x) throws SQLException {
         AssertionUtil.notYetImplemented();
-
     }
 
     @Override
@@ -1256,8 +1267,7 @@ public class MockResultSet extends MockWrapper implements ResultSet {
 
     @Override
     public boolean wasNull() throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return false;
+        return wasNull;
     }
 
 }

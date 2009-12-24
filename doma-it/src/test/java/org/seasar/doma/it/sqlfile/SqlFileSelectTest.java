@@ -27,4 +27,9 @@ public class SqlFileSelectTest {
         assertEquals(new Integer(1), list.get(1).getEmployeeId());
     }
 
+    public void testNull() throws Exception {
+        EmployeeDao dao = new EmployeeDaoImpl();
+        Employee employee = dao.selectById(9);
+        assertNull(employee.getManagerId());
+    }
 }

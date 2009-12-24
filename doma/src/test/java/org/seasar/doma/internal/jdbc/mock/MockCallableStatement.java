@@ -49,6 +49,8 @@ public class MockCallableStatement extends MockPreparedStatement implements
 
     public List<RegisterOutParameter> registerOutParameters = new ArrayList<RegisterOutParameter>();
 
+    protected boolean wasNull;
+
     public MockCallableStatement() {
     }
 
@@ -210,7 +212,12 @@ public class MockCallableStatement extends MockPreparedStatement implements
 
     @Override
     public int getInt(int parameterIndex) throws SQLException {
+        wasNull = false;
         Object value = outParameters.get(parameterIndex - 1);
+        if (value == null) {
+            wasNull = true;
+            return 0;
+        }
         return (Integer) value;
     }
 
@@ -757,8 +764,7 @@ public class MockCallableStatement extends MockPreparedStatement implements
 
     @Override
     public boolean wasNull() throws SQLException {
-        notYetImplemented();
-        return false;
+        return wasNull;
     }
 
 }
