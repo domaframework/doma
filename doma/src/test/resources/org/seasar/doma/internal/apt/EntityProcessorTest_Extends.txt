@@ -110,7 +110,11 @@ public final class _ChildEntity implements org.seasar.doma.internal.jdbc.entity.
 
     private final String __tableName;
 
+    private final String __qualifiedTableName;
+
     private final String __name;
+
+    private final java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, ?>> __idPropertyTypes;
 
     private final java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, ?>> __entityPropertyTypes;
 
@@ -122,6 +126,8 @@ public final class _ChildEntity implements org.seasar.doma.internal.jdbc.entity.
         __catalogName = "";
         __schemaName = "";
         __tableName = "ChildEntity";
+        __qualifiedTableName = "ChildEntity";
+        java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, ?>> __idList = new java.util.ArrayList<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, ?>>();
         java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, ?>> __list = new java.util.ArrayList<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, ?>>();
         java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, ?>> __map = new java.util.HashMap<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, ?>>();
         __list.add(aaa);
@@ -130,6 +136,7 @@ public final class _ChildEntity implements org.seasar.doma.internal.jdbc.entity.
         __map.put("bbb", bbb);
         __list.add(ccc);
         __map.put("ccc", ccc);
+        __idPropertyTypes = java.util.Collections.unmodifiableList(__idList);
         __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
         __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);
     }
@@ -155,6 +162,11 @@ public final class _ChildEntity implements org.seasar.doma.internal.jdbc.entity.
     }
 
     @Override
+    public String getQualifiedTableName() {
+        return __qualifiedTableName;
+    }
+
+    @Override
     public void preInsert(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
         __listener.preInsert(entity);
     }
@@ -177,6 +189,11 @@ public final class _ChildEntity implements org.seasar.doma.internal.jdbc.entity.
     @Override
     public org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, ?> getEntityPropertyType(String __name) {
         return __entityPropertyTypeMap.get(__name);
+    }
+
+    @Override
+    public java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, ?>> getIdPropertyTypes() {
+        return __idPropertyTypes;
     }
 
     @Override

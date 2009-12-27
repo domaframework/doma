@@ -73,4 +73,5 @@ public class BuiltinTableIdGeneratorTest extends TestCase {
                 connection2.preparedStatement.sql);
         assertEquals(1, connection2.preparedStatement.bindValues.size());
     }
+
 }

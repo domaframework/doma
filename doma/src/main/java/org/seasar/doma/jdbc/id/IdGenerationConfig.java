@@ -52,12 +52,25 @@ public class IdGenerationConfig {
      *            JDBCの設定
      * @param entityType
      *            識別子が属するエンティティ
+     */
+    public IdGenerationConfig(Config config, EntityType<?> entityType) {
+        this(config, entityType, entityType.getQualifiedTableName(), entityType
+                .getGeneratedIdPropertyType().getColumnName());
+    }
+
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param config
+     *            JDBCの設定
+     * @param entityType
+     *            識別子が属するエンティティ
      * @param qualifiedTableName
      *            識別子が属するエンティティに対応するテーブルの完全修飾名
      * @param idColumnName
      *            識別子にマッピングされたカラムの名前
      */
-    public IdGenerationConfig(Config config, EntityType<?> entityType,
+    protected IdGenerationConfig(Config config, EntityType<?> entityType,
             String qualifiedTableName, String idColumnName) {
         assertNotNull(config, entityType, qualifiedTableName, idColumnName);
         this.config = config;

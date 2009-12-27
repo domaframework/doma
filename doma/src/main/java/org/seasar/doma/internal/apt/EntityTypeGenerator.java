@@ -41,6 +41,7 @@ import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
+import org.seasar.doma.internal.jdbc.util.TableUtil;
 import org.seasar.doma.internal.util.BoxedPrimitiveUtil;
 import org.seasar.doma.internal.util.ClassUtil;
 
@@ -96,7 +97,9 @@ public class EntityTypeGenerator extends AbstractGenerator {
         printCatalogNameField();
         printSchemaNameField();
         printTableNameField();
+        printQualifiedTableNameField();
         printNameField();
+        printIdPropertyTypesField();
         printEntityPropertyTypesField();
         printEntityPropertyTypeMapField();
     }
@@ -307,8 +310,21 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
+    protected void printQualifiedTableNameField() {
+        iprint("private final String __qualifiedTableName;%n");
+        print("%n");
+    }
+
     protected void printNameField() {
         iprint("private final String __name;%n");
+        print("%n");
+    }
+
+    protected void printIdPropertyTypesField() {
+        iprint(
+                "private final java.util.List<%1$s<%2$s, ?>> __idPropertyTypes;%n",
+                EntityPropertyType.class.getName(), entityMeta
+                        .getEntityTypeName());
         print("%n");
     }
 
@@ -335,6 +351,13 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("    __catalogName = \"%1$s\";%n", entityMeta.getCatalogName());
         iprint("    __schemaName = \"%1$s\";%n", entityMeta.getSchemaName());
         iprint("    __tableName = \"%1$s\";%n", entityMeta.getTableName());
+        iprint("    __qualifiedTableName = \"%1$s\";%n", TableUtil
+                .getQualifiedTableName(entityMeta.getCatalogName(), entityMeta
+                        .getSchemaName(), entityMeta.getTableName()));
+        iprint(
+                "    java.util.List<%1$s<%2$s, ?>> __idList = new java.util.ArrayList<%1$s<%2$s, ?>>();%n",
+                EntityPropertyType.class.getName(), entityMeta
+                        .getEntityTypeName());
         iprint(
                 "    java.util.List<%1$s<%2$s, ?>> __list = new java.util.ArrayList<%1$s<%2$s, ?>>();%n",
                 EntityPropertyType.class.getName(), entityMeta
@@ -344,9 +367,13 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 EntityPropertyType.class.getName(), entityMeta
                         .getEntityTypeName());
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
+            if (pm.isId()) {
+                iprint("    __idList.add(%1$s);%n", pm.getName());
+            }
             iprint("    __list.add(%1$s);%n", pm.getName());
             iprint("    __map.put(\"%1$s\", %1$s);%n", pm.getName());
         }
+        iprint("    __idPropertyTypes = java.util.Collections.unmodifiableList(__idList);%n");
         iprint("    __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);%n");
         iprint("    __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);%n");
         iprint("}%n");
@@ -358,11 +385,13 @@ public class EntityTypeGenerator extends AbstractGenerator {
         printGetCatalogNameMethod();
         printGetSchemaNameMethod();
         printGetTableNameMethod();
+        printGetQualifiedTableNameMethod();
         printPreInsertMethod();
         printPreUpdateMethod();
         printPreDeleteMethod();
-        printGetgetEntityPropertyTypesMethod();
+        printGetEntityPropertyTypesMethod();
         printGetEntityPropertyTypeMethod();
+        printGetIdPropertyTypesMethod();
         printGetGeneratedIdPropertyTypeMethod();
         printGetVersionPropertyTypeMethod();
         printNewEntityMethod();
@@ -404,6 +433,14 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
+    protected void printGetQualifiedTableNameMethod() {
+        iprint("@Override%n");
+        iprint("public String getQualifiedTableName() {%n");
+        iprint("    return __qualifiedTableName;%n");
+        iprint("}%n");
+        print("%n");
+    }
+
     protected void printPreInsertMethod() {
         iprint("@Override%n");
         iprint("public void preInsert(%1$s entity) {%n", entityMeta
@@ -431,7 +468,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printGetgetEntityPropertyTypesMethod() {
+    protected void printGetEntityPropertyTypesMethod() {
         iprint("@Override%n");
         iprint(
                 "public java.util.List<%1$s<%2$s, ?>> getEntityPropertyTypes() {%n",
@@ -448,6 +485,16 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 EntityPropertyType.class.getName(), entityMeta
                         .getEntityTypeName());
         iprint("    return __entityPropertyTypeMap.get(__name);%n");
+        iprint("}%n");
+        print("%n");
+    }
+
+    protected void printGetIdPropertyTypesMethod() {
+        iprint("@Override%n");
+        iprint("public java.util.List<%1$s<%2$s, ?>> getIdPropertyTypes() {%n",
+                EntityPropertyType.class.getName(), entityMeta
+                        .getEntityTypeName());
+        iprint("    return __idPropertyTypes;%n");
         iprint("}%n");
         print("%n");
     }

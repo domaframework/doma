@@ -78,7 +78,11 @@ public final class _DomainPropertyEntity implements org.seasar.doma.internal.jdb
 
     private final String __tableName;
 
+    private final String __qualifiedTableName;
+
     private final String __name;
+
+    private final java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, ?>> __idPropertyTypes;
 
     private final java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, ?>> __entityPropertyTypes;
 
@@ -90,12 +94,16 @@ public final class _DomainPropertyEntity implements org.seasar.doma.internal.jdb
         __catalogName = "";
         __schemaName = "";
         __tableName = "DomainPropertyEntity";
+        __qualifiedTableName = "DomainPropertyEntity";
+        java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, ?>> __idList = new java.util.ArrayList<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, ?>>();
         java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, ?>> __list = new java.util.ArrayList<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, ?>>();
         java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, ?>> __map = new java.util.HashMap<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, ?>>();
+        __idList.add(id);
         __list.add(id);
         __map.put("id", id);
         __list.add(name);
         __map.put("name", name);
+        __idPropertyTypes = java.util.Collections.unmodifiableList(__idList);
         __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
         __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);
     }
@@ -121,6 +129,11 @@ public final class _DomainPropertyEntity implements org.seasar.doma.internal.jdb
     }
 
     @Override
+    public String getQualifiedTableName() {
+        return __qualifiedTableName;
+    }
+
+    @Override
     public void preInsert(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity) {
         __listener.preInsert(entity);
     }
@@ -143,6 +156,11 @@ public final class _DomainPropertyEntity implements org.seasar.doma.internal.jdb
     @Override
     public org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, ?> getEntityPropertyType(String __name) {
         return __entityPropertyTypeMap.get(__name);
+    }
+
+    @Override
+    public java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, ?>> getIdPropertyTypes() {
+        return __idPropertyTypes;
     }
 
     @Override

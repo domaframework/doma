@@ -18,15 +18,12 @@ package org.seasar.doma.internal.jdbc.query;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
-import org.seasar.doma.internal.jdbc.util.TableUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
@@ -42,9 +39,7 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
 
     protected final List<EntityPropertyType<E, ?>> targetPropertyTypes = new ArrayList<EntityPropertyType<E, ?>>();
 
-    protected final List<EntityPropertyType<E, ?>> idPropertyTypes = new ArrayList<EntityPropertyType<E, ?>>();
-
-    protected final Map<String, String> columnNameMap = new HashMap<String, String>();
+    protected List<EntityPropertyType<E, ?>> idPropertyTypes;
 
     protected String[] includedPropertyNames = EMPTY_STRINGS;
 
@@ -59,8 +54,6 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
     protected String callerMethodName;
 
     protected VersionPropertyType<E, ?> versionPropertyType;
-
-    protected String tableName;
 
     protected boolean optimisticLockCheckRequired;
 
@@ -85,22 +78,8 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
         this.entityType = entityType;
     }
 
-    protected void prepareTableAndColumnNames() {
-        tableName = TableUtil.getQualifiedTableName(entityType);
-        for (EntityPropertyType<E, ?> p : entityType.getEntityPropertyTypes()) {
-            if (!p.isUpdatable()) {
-                continue;
-            }
-            columnNameMap.put(p.getName(), p.getColumnName());
-        }
-    }
-
     protected void prepareIdAndVersionPropertyTypes() {
-        for (EntityPropertyType<E, ?> p : entityType.getEntityPropertyTypes()) {
-            if (p.isId()) {
-                idPropertyTypes.add(p);
-            }
-        }
+        idPropertyTypes = entityType.getIdPropertyTypes();
         versionPropertyType = entityType.getVersionPropertyType();
     }
 

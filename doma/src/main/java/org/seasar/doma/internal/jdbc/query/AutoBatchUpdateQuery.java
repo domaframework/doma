@@ -48,7 +48,6 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
             executionSkipCause = null;
             currentEntity = it.next();
             entityType.preUpdate(currentEntity);
-            prepareTableAndColumnNames();
             prepareIdAndVersionPropertyTypes();
             validateIdExistent();
             prepareOptions();
@@ -97,10 +96,10 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
         PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
                 SqlKind.BATCH_UPDATE);
         builder.appendSql("update ");
-        builder.appendSql(tableName);
+        builder.appendSql(entityType.getQualifiedTableName());
         builder.appendSql(" set ");
         for (EntityPropertyType<E, ?> p : targetPropertyTypes) {
-            builder.appendSql(columnNameMap.get(p.getName()));
+            builder.appendSql(p.getColumnName());
             builder.appendSql(" = ");
             builder.appendWrapper(p.getWrapper(currentEntity));
             if (p.isVersion() && !versionIncluded) {
@@ -112,7 +111,7 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
         if (idPropertyTypes.size() > 0) {
             builder.appendSql(" where ");
             for (EntityPropertyType<E, ?> p : idPropertyTypes) {
-                builder.appendSql(columnNameMap.get(p.getName()));
+                builder.appendSql(p.getColumnName());
                 builder.appendSql(" = ");
                 builder.appendWrapper(p.getWrapper(currentEntity));
                 builder.appendSql(" and ");
@@ -125,7 +124,7 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
             } else {
                 builder.appendSql(" and ");
             }
-            builder.appendSql(columnNameMap.get(versionPropertyType.getName()));
+            builder.appendSql(versionPropertyType.getColumnName());
             builder.appendSql(" = ");
             builder
                     .appendWrapper(versionPropertyType

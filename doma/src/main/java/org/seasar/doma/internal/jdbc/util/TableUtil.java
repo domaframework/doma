@@ -17,21 +17,11 @@ package org.seasar.doma.internal.jdbc.util;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import org.seasar.doma.internal.jdbc.entity.EntityType;
-
 /**
  * @author taedium
  * 
  */
 public final class TableUtil {
-
-    public static String getQualifiedTableName(EntityType<?> entityType) {
-        assertNotNull(entityType);
-        String catalogName = entityType.getCatalogName();
-        String schemaName = entityType.getSchemaName();
-        String tableName = entityType.getTableName();
-        return getQualifiedTableName(catalogName, schemaName, tableName);
-    }
 
     public static String getQualifiedTableName(String catalogName,
             String schemaName, String tableName) {

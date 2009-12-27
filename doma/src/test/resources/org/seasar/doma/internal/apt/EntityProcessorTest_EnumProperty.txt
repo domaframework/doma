@@ -79,7 +79,11 @@ public final class _EnumPropertyEntity implements org.seasar.doma.internal.jdbc.
 
     private final String __tableName;
 
+    private final String __qualifiedTableName;
+
     private final String __name;
+
+    private final java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.EnumPropertyEntity, ?>> __idPropertyTypes;
 
     private final java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.EnumPropertyEntity, ?>> __entityPropertyTypes;
 
@@ -91,12 +95,16 @@ public final class _EnumPropertyEntity implements org.seasar.doma.internal.jdbc.
         __catalogName = "";
         __schemaName = "";
         __tableName = "EnumPropertyEntity";
+        __qualifiedTableName = "EnumPropertyEntity";
+        java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.EnumPropertyEntity, ?>> __idList = new java.util.ArrayList<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.EnumPropertyEntity, ?>>();
         java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.EnumPropertyEntity, ?>> __list = new java.util.ArrayList<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.EnumPropertyEntity, ?>>();
         java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.EnumPropertyEntity, ?>> __map = new java.util.HashMap<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.EnumPropertyEntity, ?>>();
+        __idList.add(id);
         __list.add(id);
         __map.put("id", id);
         __list.add(hoge);
         __map.put("hoge", hoge);
+        __idPropertyTypes = java.util.Collections.unmodifiableList(__idList);
         __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
         __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);
     }
@@ -122,6 +130,11 @@ public final class _EnumPropertyEntity implements org.seasar.doma.internal.jdbc.
     }
 
     @Override
+    public String getQualifiedTableName() {
+        return __qualifiedTableName;
+    }
+
+    @Override
     public void preInsert(org.seasar.doma.internal.apt.entity.EnumPropertyEntity entity) {
         __listener.preInsert(entity);
     }
@@ -144,6 +157,11 @@ public final class _EnumPropertyEntity implements org.seasar.doma.internal.jdbc.
     @Override
     public org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.EnumPropertyEntity, ?> getEntityPropertyType(String __name) {
         return __entityPropertyTypeMap.get(__name);
+    }
+
+    @Override
+    public java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.EnumPropertyEntity, ?>> getIdPropertyTypes() {
+        return __idPropertyTypes;
     }
 
     @Override

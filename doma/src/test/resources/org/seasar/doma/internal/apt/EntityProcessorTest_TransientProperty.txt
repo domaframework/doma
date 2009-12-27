@@ -46,7 +46,11 @@ public final class _TransientPropertyEntity implements org.seasar.doma.internal.
 
     private final String __tableName;
 
+    private final String __qualifiedTableName;
+
     private final String __name;
+
+    private final java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?>> __idPropertyTypes;
 
     private final java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?>> __entityPropertyTypes;
 
@@ -58,10 +62,13 @@ public final class _TransientPropertyEntity implements org.seasar.doma.internal.
         __catalogName = "";
         __schemaName = "";
         __tableName = "TransientPropertyEntity";
+        __qualifiedTableName = "TransientPropertyEntity";
+        java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?>> __idList = new java.util.ArrayList<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?>>();
         java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?>> __list = new java.util.ArrayList<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?>>();
         java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?>> __map = new java.util.HashMap<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?>>();
         __list.add(id);
         __map.put("id", id);
+        __idPropertyTypes = java.util.Collections.unmodifiableList(__idList);
         __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
         __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);
     }
@@ -87,6 +94,11 @@ public final class _TransientPropertyEntity implements org.seasar.doma.internal.
     }
 
     @Override
+    public String getQualifiedTableName() {
+        return __qualifiedTableName;
+    }
+
+    @Override
     public void preInsert(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity) {
         __listener.preInsert(entity);
     }
@@ -109,6 +121,11 @@ public final class _TransientPropertyEntity implements org.seasar.doma.internal.
     @Override
     public org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?> getEntityPropertyType(String __name) {
         return __entityPropertyTypeMap.get(__name);
+    }
+
+    @Override
+    public java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?>> getIdPropertyTypes() {
+        return __idPropertyTypes;
     }
 
     @Override

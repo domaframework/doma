@@ -204,6 +204,27 @@ public class _Emp implements EntityType<Emp> {
 
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.seasar.doma.internal.jdbc.entity.EntityType#getIdPropertyTypes()
+     */
+    @Override
+    public List<EntityPropertyType<Emp, ?>> getIdPropertyTypes() {
+        return null;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.seasar.doma.internal.jdbc.entity.EntityType#getQualifiedTableName()
+     */
+    @Override
+    public String getQualifiedTableName() {
+        return null;
+    }
+
     public static _Emp get() {
         return null;
     }

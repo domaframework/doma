@@ -40,9 +40,9 @@ public class _Emp implements EntityType<Emp> {
 
     private static _Emp singleton = new _Emp();
 
-    private static final NullEntityListener __listener = new NullEntityListener();
+    private final NullEntityListener __listener = new NullEntityListener();
 
-    public static final AssignedIdPropertyType<Emp, Integer> id = new AssignedIdPropertyType<Emp, Integer>(
+    public final AssignedIdPropertyType<Emp, Integer> id = new AssignedIdPropertyType<Emp, Integer>(
             "id", "ID") {
 
         @Override
@@ -76,7 +76,7 @@ public class _Emp implements EntityType<Emp> {
         }
     };
 
-    private static final BasicPropertyType<Emp, String> name = new BasicPropertyType<Emp, String>(
+    private final BasicPropertyType<Emp, String> name = new BasicPropertyType<Emp, String>(
             "name", "NAME", true, true) {
         @Override
         public StringWrapper getWrapper(Emp entity) {
@@ -109,7 +109,7 @@ public class _Emp implements EntityType<Emp> {
         }
     };
 
-    private static final BasicPropertyType<Emp, BigDecimal> salary = new BasicPropertyType<Emp, BigDecimal>(
+    private final BasicPropertyType<Emp, BigDecimal> salary = new BasicPropertyType<Emp, BigDecimal>(
             "salary", "SALARY", true, true) {
         @Override
         public BigDecimalWrapper getWrapper(Emp entity) {
@@ -143,7 +143,7 @@ public class _Emp implements EntityType<Emp> {
 
     };
 
-    private static final VersionPropertyType<Emp, Integer> version = new VersionPropertyType<Emp, Integer>(
+    private final VersionPropertyType<Emp, Integer> version = new VersionPropertyType<Emp, Integer>(
             "version", "VERSION") {
         @Override
         public IntegerWrapper getWrapper(Emp entity) {
@@ -176,32 +176,38 @@ public class _Emp implements EntityType<Emp> {
         }
     };
 
-    private static final String __name = "Emp";
+    private final String __name = "Emp";
 
-    private static final String __catalogName = null;
+    private final String __catalogName = null;
 
-    private static final String __schemaName = null;
+    private final String __schemaName = null;
 
-    private static final String __tableName = "EMP";
+    private final String __tableName = "EMP";
 
-    private static final List<EntityPropertyType<Emp, ?>> __propertyTypes;
-    static {
-        List<EntityPropertyType<Emp, ?>> list = new ArrayList<EntityPropertyType<Emp, ?>>();
-        list.add(id);
-        list.add(name);
-        list.add(salary);
-        list.add(version);
-        __propertyTypes = Collections.unmodifiableList(list);
-    }
+    private final String __qualifiedTableName = "EMP";
 
-    private static final Map<String, EntityPropertyType<Emp, ?>> __propertyTypeMap;
-    static {
-        Map<String, EntityPropertyType<Emp, ?>> map = new HashMap<String, EntityPropertyType<Emp, ?>>();
-        map.put("id", id);
-        map.put("name", name);
-        map.put("salary", salary);
-        map.put("version", version);
-        __propertyTypeMap = Collections.unmodifiableMap(map);
+    private final List<EntityPropertyType<Emp, ?>> __idPropertyTypes;
+
+    private final List<EntityPropertyType<Emp, ?>> __entityPropertyTypes;
+
+    private final Map<String, EntityPropertyType<Emp, ?>> __entityPropertyTypeMap;
+
+    private _Emp() {
+        List<EntityPropertyType<Emp, ?>> __idList = new ArrayList<EntityPropertyType<Emp, ?>>();
+        __idList.add(id);
+        __idPropertyTypes = Collections.unmodifiableList(__idList);
+        List<EntityPropertyType<Emp, ?>> __list = new ArrayList<EntityPropertyType<Emp, ?>>();
+        __list.add(id);
+        __list.add(name);
+        __list.add(salary);
+        __list.add(version);
+        __entityPropertyTypes = Collections.unmodifiableList(__list);
+        Map<String, EntityPropertyType<Emp, ?>> __map = new HashMap<String, EntityPropertyType<Emp, ?>>();
+        __map.put("id", id);
+        __map.put("name", name);
+        __map.put("salary", salary);
+        __map.put("version", version);
+        __entityPropertyTypeMap = Collections.unmodifiableMap(__map);
     }
 
     @Override
@@ -221,12 +227,12 @@ public class _Emp implements EntityType<Emp> {
 
     @Override
     public List<EntityPropertyType<Emp, ?>> getEntityPropertyTypes() {
-        return __propertyTypes;
+        return __entityPropertyTypes;
     }
 
     @Override
     public EntityPropertyType<Emp, ?> getEntityPropertyType(String propertyName) {
-        return __propertyTypeMap.get(propertyName);
+        return __entityPropertyTypeMap.get(propertyName);
     }
 
     @Override
@@ -258,6 +264,16 @@ public class _Emp implements EntityType<Emp> {
     @Override
     public VersionPropertyType<Emp, ?> getVersionPropertyType() {
         return version;
+    }
+
+    @Override
+    public List<EntityPropertyType<Emp, ?>> getIdPropertyTypes() {
+        return __idPropertyTypes;
+    }
+
+    @Override
+    public String getQualifiedTableName() {
+        return __qualifiedTableName;
     }
 
     @Override

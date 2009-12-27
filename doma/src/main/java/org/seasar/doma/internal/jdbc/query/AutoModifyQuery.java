@@ -22,7 +22,6 @@ import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
-import org.seasar.doma.internal.jdbc.util.TableUtil;
 import org.seasar.doma.internal.message.DomaMessageCode;
 import org.seasar.doma.internal.util.AssertionUtil;
 import org.seasar.doma.jdbc.Config;
@@ -55,11 +54,9 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
 
     protected final List<EntityPropertyType<E, ?>> targetPropertyTypes = new ArrayList<EntityPropertyType<E, ?>>();
 
-    protected final List<EntityPropertyType<E, ?>> idPropertyTypes = new ArrayList<EntityPropertyType<E, ?>>();
+    protected List<EntityPropertyType<E, ?>> idPropertyTypes;
 
     protected VersionPropertyType<E, ?> versionPropertyType;
-
-    protected String tableName;
 
     protected boolean optimisticLockCheckRequired;
 
@@ -76,16 +73,8 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
         this.entityType = entityType;
     }
 
-    protected void prepareTable() {
-        tableName = TableUtil.getQualifiedTableName(entityType);
-    }
-
     protected void prepareIdAndVersionPropertyTypes() {
-        for (EntityPropertyType<E, ?> p : entityType.getEntityPropertyTypes()) {
-            if (p.isId()) {
-                idPropertyTypes.add(p);
-            }
-        }
+        idPropertyTypes = entityType.getIdPropertyTypes();
         versionPropertyType = entityType.getVersionPropertyType();
     }
 

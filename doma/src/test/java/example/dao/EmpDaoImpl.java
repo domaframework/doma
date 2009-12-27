@@ -72,7 +72,7 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
         query.setCallerMethodName("selectById");
         query.prepare();
         SelectCommand<Emp> command = new SelectCommand<Emp>(query,
-                new EntitySingleResultHandler<Emp>(new _Emp()));
+                new EntitySingleResultHandler<Emp>(_Emp.get()));
         return command.execute();
     }
 
@@ -90,7 +90,7 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
         query.setCallerMethodName("selectByNameAndSalary");
         query.prepare();
         SelectCommand<List<Emp>> command = new SelectCommand<List<Emp>>(query,
-                new EntityResultListHandler<Emp>(new _Emp()));
+                new EntityResultListHandler<Emp>(_Emp.get()));
         return command.execute();
     }
 
@@ -105,13 +105,13 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
         query.setCallerMethodName("selectByNameAndSalary");
         query.prepare();
         SelectCommand<List<Emp>> command = new SelectCommand<List<Emp>>(query,
-                new EntityResultListHandler<Emp>(new _Emp()));
+                new EntityResultListHandler<Emp>(_Emp.get()));
         return command.execute();
     }
 
     @Override
     public int insert(Emp entity) {
-        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(new _Emp());
+        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(_Emp.get());
         query.setConfig(config);
         query.setEntity(entity);
         query.setCallerClassName("example.dao.EmpDao");
@@ -123,7 +123,7 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
 
     @Override
     public int update(Emp entity) {
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(new _Emp());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.get());
         query.setConfig(config);
         query.setEntity(entity);
         query.setCallerClassName("example.dao.EmpDao");
@@ -135,7 +135,7 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
 
     @Override
     public int delete(Emp entity) {
-        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(new _Emp());
+        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp.get());
         query.setConfig(config);
         query.setEntity(entity);
         query.setCallerClassName("example.dao.EmpDao");
@@ -155,89 +155,8 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
         query.setCallerMethodName("selectById");
         query.prepare();
         SelectCommand<Integer> command = new SelectCommand<Integer>(query,
-                new EntityIterationHandler<Integer, Emp>(new _Emp(), callback));
+                new EntityIterationHandler<Integer, Emp>(_Emp.get(), callback));
         return command.execute();
     }
 
-    // @Override
-    // public Integer add(Integer arg1, Integer arg2) {
-    // AutoFunctionQuery<Integer> query = new AutoFunctionQuery<Integer>();
-    // query.setConfig(config);
-    // query.setFunctionName("add");
-    // query
-    // .setResultParameter((new DomainResultParameter<BuiltinIntegerDomain>(
-    // BuiltinIntegerDomain.class)));
-    // query.addParameter(new InParameter(arg1));
-    // query.addParameter(new InParameter(arg2));
-    // query.setCallerClassName("example.dao.EmpDao");
-    // query.setCallerMethodName("add");
-    // query.compile();
-    // FunctionCommand<BuiltinIntegerDomain> command = new
-    // FunctionCommand<BuiltinIntegerDomain>(
-    // query);
-    // return command.execute();
-    // }
-    //
-    // @Override
-    // public List<Emp> getEmps(BuiltinIntegerDomain arg1,
-    // BuiltinIntegerDomain arg2) {
-    // AutoFunctionQuery<List<Emp>> query = new AutoFunctionQuery<List<Emp>>();
-    // query.setConfig(config);
-    // query.setFunctionName("add");
-    // query.setResultParameter((new EntityListResultParameter<Emp, Emp_>(
-    // Emp_.class)));
-    // query.addParameter(new InParameter(arg1));
-    // query.addParameter(new InParameter(arg2));
-    // query.setCallerClassName("example.dao.EmpDao");
-    // query.setCallerMethodName("add");
-    // query.compile();
-    // FunctionCommand<List<Emp>> command = new FunctionCommand<List<Emp>>(
-    // query);
-    // return command.execute();
-    // }
-    //
-    // @Override
-    // public void exec(BuiltinIntegerDomain arg1, BuiltinIntegerDomain arg2) {
-    // AutoProcedureQuery query = new AutoProcedureQuery();
-    // query.setConfig(config);
-    // query.setProcedureName("exec");
-    // query.addParameter(new InParameter(arg1));
-    // query.addParameter(new InParameter(arg2));
-    // query.setCallerClassName("example.dao.EmpDao");
-    // query.setCallerMethodName("add");
-    // query.compile();
-    // ProcedureCommand command = new ProcedureCommand(query);
-    // command.execute();
-    // }
-    //
-    // @Override
-    // public BuiltinArrayDomain<String> createStringArrayDomain(String[]
-    // element) {
-    // ArrayCreateQuery<BuiltinArrayDomain<String>> query = new
-    // ArrayCreateQuery<BuiltinArrayDomain<String>>();
-    // query.setConfig(config);
-    // query.setCallerClassName("example.dao.EmpDao");
-    // query.setCallerMethodName("createStringArray");
-    // query.setResult(new BuiltinArrayDomain<String>());
-    // query.compile();
-    // CreateCommand<BuiltinArrayDomain<String>> command = new
-    // CreateCommand<BuiltinArrayDomain<String>>(
-    // query);
-    // return command.execute();
-    // }
-    //
-    // @Override
-    // public BuiltinBlobDomain createBlobDomain() {
-    // BlobCreateQuery<BuiltinBlobDomain> query = new
-    // BlobCreateQuery<BuiltinBlobDomain>();
-    // query.setConfig(config);
-    // query.setCallerClassName("example.dao.EmpDao");
-    // query.setCallerMethodName("createStringArray");
-    // query.setResult(new BuiltinBlobDomain());
-    // query.compile();
-    // CreateCommand<BuiltinBlobDomain> command = new
-    // CreateCommand<BuiltinBlobDomain>(
-    // query);
-    // return command.execute();
-    // }
 }

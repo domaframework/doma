@@ -39,9 +39,13 @@ public interface EntityType<E> {
 
     String getTableName();
 
+    String getQualifiedTableName();
+
     GeneratedIdPropertyType<E, ?> getGeneratedIdPropertyType();
 
     VersionPropertyType<E, ?> getVersionPropertyType();
+
+    List<EntityPropertyType<E, ?>> getIdPropertyTypes();
 
     EntityPropertyType<E, ?> getEntityPropertyType(String __name);
 

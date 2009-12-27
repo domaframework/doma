@@ -49,7 +49,7 @@ public class SqlFileBatchInsertQueryTest extends TestCase {
         emp2.setVersion(200);
 
         SqlFileBatchInsertQuery<Emp> query = new SqlFileBatchInsertQuery<Emp>(
-                new _Emp());
+                _Emp.get());
         query.setConfig(runtimeConfig);
         query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
                 getName()));
@@ -75,7 +75,7 @@ public class SqlFileBatchInsertQueryTest extends TestCase {
         emp2.setVersion(200);
 
         SqlFileBatchInsertQuery<Emp> query = new SqlFileBatchInsertQuery<Emp>(
-                new _Emp());
+                _Emp.get());
         query.setConfig(runtimeConfig);
         query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
                 getName()));

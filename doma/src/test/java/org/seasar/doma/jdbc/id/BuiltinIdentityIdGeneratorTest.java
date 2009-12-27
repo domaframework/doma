@@ -45,4 +45,5 @@ public class BuiltinIdentityIdGeneratorTest extends TestCase {
         assertEquals("select currval('EMP_ID_seq')",
                 config.dataSource.connection.preparedStatement.sql);
     }
+
 }

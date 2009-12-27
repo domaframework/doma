@@ -115,7 +115,17 @@ public class _ParentEntity implements EntityType<ParentEntity> {
 
     }
 
-    public _ParentEntity get() {
+    @Override
+    public List<EntityPropertyType<ParentEntity, ?>> getIdPropertyTypes() {
+        return null;
+    }
+
+    @Override
+    public String getQualifiedTableName() {
+        return null;
+    }
+
+    public static _ParentEntity get() {
         return null;
     }
 

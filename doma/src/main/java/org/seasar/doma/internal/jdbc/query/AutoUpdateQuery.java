@@ -46,7 +46,6 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
         assertNotNull(config, entityType, entity, callerClassName,
                 callerMethodName);
         entityType.preUpdate(entity);
-        prepareTable();
         prepareIdAndVersionPropertyTypes();
         validateIdExistent();
         prepareOptions();
@@ -109,7 +108,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
         PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
                 SqlKind.UPDATE);
         builder.appendSql("update ");
-        builder.appendSql(tableName);
+        builder.appendSql(entityType.getQualifiedTableName());
         builder.appendSql(" set ");
         for (EntityPropertyType<E, ?> p : targetPropertyTypes) {
             builder.appendSql(p.getColumnName());

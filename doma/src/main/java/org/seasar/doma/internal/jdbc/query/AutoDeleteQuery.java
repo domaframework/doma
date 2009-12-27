@@ -41,7 +41,6 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
         assertNotNull(config, entityType, callerClassName, callerMethodName);
         executable = true;
         entityType.preDelete(entity);
-        prepareTable();
         prepareIdAndVersionPropertyTypes();
         validateIdExistent();
         prepareOptions();
@@ -62,7 +61,7 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
         PreparedSqlBuilder builder = new PreparedSqlBuilder(config,
                 SqlKind.DELETE);
         builder.appendSql("delete from ");
-        builder.appendSql(tableName);
+        builder.appendSql(entityType.getQualifiedTableName());
         if (idPropertyTypes.size() > 0) {
             builder.appendSql(" where ");
             for (EntityPropertyType<E, ?> p : idPropertyTypes) {

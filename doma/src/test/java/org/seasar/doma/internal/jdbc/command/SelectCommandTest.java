@@ -64,7 +64,7 @@ public class SelectCommandTest extends TestCase {
         query.prepare();
 
         SelectCommand<Emp> command = new SelectCommand<Emp>(query,
-                new EntitySingleResultHandler<Emp>(new _Emp()));
+                new EntitySingleResultHandler<Emp>(_Emp.get()));
         Emp entity = command.execute();
         query.complete();
 
@@ -106,7 +106,7 @@ public class SelectCommandTest extends TestCase {
         query.prepare();
 
         SelectCommand<List<Emp>> command = new SelectCommand<List<Emp>>(query,
-                new EntityResultListHandler<Emp>(new _Emp()));
+                new EntityResultListHandler<Emp>(_Emp.get()));
         List<Emp> entities = command.execute();
         query.complete();
 
