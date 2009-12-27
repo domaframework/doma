@@ -53,9 +53,9 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
 
     protected PreparedSql sql;
 
-    protected final List<EntityPropertyType<E, ?>> targetProperties = new ArrayList<EntityPropertyType<E, ?>>();
+    protected final List<EntityPropertyType<E, ?>> targetPropertyTypes = new ArrayList<EntityPropertyType<E, ?>>();
 
-    protected final List<EntityPropertyType<E, ?>> idProperties = new ArrayList<EntityPropertyType<E, ?>>();
+    protected final List<EntityPropertyType<E, ?>> idPropertyTypes = new ArrayList<EntityPropertyType<E, ?>>();
 
     protected VersionPropertyType<E, ?> versionPropertyType;
 
@@ -80,17 +80,17 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
         tableName = TableUtil.getQualifiedTableName(entityType);
     }
 
-    protected void prepareIdAndVersionProperties() {
+    protected void prepareIdAndVersionPropertyTypes() {
         for (EntityPropertyType<E, ?> p : entityType.getEntityPropertyTypes()) {
             if (p.isId()) {
-                idProperties.add(p);
+                idPropertyTypes.add(p);
             }
         }
         versionPropertyType = entityType.getVersionPropertyType();
     }
 
     protected void validateIdExistent() {
-        if (idProperties.isEmpty()) {
+        if (idPropertyTypes.isEmpty()) {
             throw new JdbcException(DomaMessageCode.DOMA2022, entityType
                     .getName());
         }

@@ -49,7 +49,7 @@ public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
             currentEntity = it.next();
             entityType.preDelete(currentEntity);
             prepareTableAndColumnNames();
-            prepareIdAndVersionProperties();
+            prepareIdAndVersionPropertyTypes();
             validateIdExistent();
             prepareOptions();
             prepareOptimisticLock();
@@ -78,9 +78,9 @@ public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
                 SqlKind.BATCH_DELETE);
         builder.appendSql("delete from ");
         builder.appendSql(tableName);
-        if (idProperties.size() > 0) {
+        if (idPropertyTypes.size() > 0) {
             builder.appendSql(" where ");
-            for (EntityPropertyType<E, ?> p : idProperties) {
+            for (EntityPropertyType<E, ?> p : idPropertyTypes) {
                 builder.appendSql(columnNameMap.get(p.getName()));
                 builder.appendSql(" = ");
                 builder.appendWrapper(p.getWrapper(currentEntity));
@@ -89,7 +89,7 @@ public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
             builder.cutBackSql(5);
         }
         if (versionPropertyType != null && !versionIgnored) {
-            if (idProperties.size() == 0) {
+            if (idPropertyTypes.size() == 0) {
                 builder.appendSql(" where ");
             } else {
                 builder.appendSql(" and ");

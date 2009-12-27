@@ -49,11 +49,11 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
             currentEntity = it.next();
             entityType.preUpdate(currentEntity);
             prepareTableAndColumnNames();
-            prepareIdAndVersionProperties();
+            prepareIdAndVersionPropertyTypes();
             validateIdExistent();
             prepareOptions();
             prepareOptimisticLock();
-            prepareTargetProperties();
+            prepareTargetPropertyTypes();
             prepareSql();
         } else {
             return;
@@ -74,7 +74,7 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
         }
     }
 
-    protected void prepareTargetProperties() {
+    protected void prepareTargetPropertyTypes() {
         for (EntityPropertyType<E, ?> p : entityType.getEntityPropertyTypes()) {
             if (!p.isUpdatable()) {
                 continue;
@@ -83,13 +83,13 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
                 continue;
             }
             if (p.isVersion()) {
-                targetProperties.add(p);
+                targetPropertyTypes.add(p);
                 continue;
             }
             if (!isTargetPropertyName(p.getName())) {
                 continue;
             }
-            targetProperties.add(p);
+            targetPropertyTypes.add(p);
         }
     }
 
@@ -99,7 +99,7 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
         builder.appendSql("update ");
         builder.appendSql(tableName);
         builder.appendSql(" set ");
-        for (EntityPropertyType<E, ?> p : targetProperties) {
+        for (EntityPropertyType<E, ?> p : targetPropertyTypes) {
             builder.appendSql(columnNameMap.get(p.getName()));
             builder.appendSql(" = ");
             builder.appendWrapper(p.getWrapper(currentEntity));
@@ -109,9 +109,9 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
             builder.appendSql(", ");
         }
         builder.cutBackSql(2);
-        if (idProperties.size() > 0) {
+        if (idPropertyTypes.size() > 0) {
             builder.appendSql(" where ");
-            for (EntityPropertyType<E, ?> p : idProperties) {
+            for (EntityPropertyType<E, ?> p : idPropertyTypes) {
                 builder.appendSql(columnNameMap.get(p.getName()));
                 builder.appendSql(" = ");
                 builder.appendWrapper(p.getWrapper(currentEntity));
@@ -120,7 +120,7 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
             builder.cutBackSql(5);
         }
         if (versionPropertyType != null && !versionIncluded) {
-            if (idProperties.size() == 0) {
+            if (idPropertyTypes.size() == 0) {
                 builder.appendSql(" where ");
             } else {
                 builder.appendSql(" and ");

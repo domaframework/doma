@@ -42,7 +42,7 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
         executable = true;
         entityType.preDelete(entity);
         prepareTable();
-        prepareIdAndVersionProperties();
+        prepareIdAndVersionPropertyTypes();
         validateIdExistent();
         prepareOptions();
         prepareOptimisticLock();
@@ -63,9 +63,9 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
                 SqlKind.DELETE);
         builder.appendSql("delete from ");
         builder.appendSql(tableName);
-        if (idProperties.size() > 0) {
+        if (idPropertyTypes.size() > 0) {
             builder.appendSql(" where ");
-            for (EntityPropertyType<E, ?> p : idProperties) {
+            for (EntityPropertyType<E, ?> p : idPropertyTypes) {
                 builder.appendSql(p.getColumnName());
                 builder.appendSql(" = ");
                 builder.appendWrapper(p.getWrapper(entity));
@@ -74,7 +74,7 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
             builder.cutBackSql(5);
         }
         if (versionPropertyType != null && !versionIgnored) {
-            if (idProperties.size() == 0) {
+            if (idPropertyTypes.size() == 0) {
                 builder.appendSql(" where ");
             } else {
                 builder.appendSql(" and ");

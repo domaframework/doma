@@ -47,7 +47,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
                 callerMethodName);
         entityType.preUpdate(entity);
         prepareTable();
-        prepareIdAndVersionProperties();
+        prepareIdAndVersionPropertyTypes();
         validateIdExistent();
         prepareOptions();
         prepareOptimisticLock();
@@ -74,7 +74,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
                 continue;
             }
             if (p.isVersion()) {
-                targetProperties.add(p);
+                targetPropertyTypes.add(p);
                 continue;
             }
             if (nullExcluded && p.getWrapper(entity).get() == null) {
@@ -85,7 +85,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
                 if (!isTargetPropertyName(p.getName())) {
                     continue;
                 }
-                targetProperties.add(p);
+                targetPropertyTypes.add(p);
                 executable = true;
                 sqlExecutionSkipCause = null;
             }
@@ -111,7 +111,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
         builder.appendSql("update ");
         builder.appendSql(tableName);
         builder.appendSql(" set ");
-        for (EntityPropertyType<E, ?> p : targetProperties) {
+        for (EntityPropertyType<E, ?> p : targetPropertyTypes) {
             builder.appendSql(p.getColumnName());
             builder.appendSql(" = ");
             builder.appendWrapper(p.getWrapper(entity));
@@ -121,9 +121,9 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
             builder.appendSql(", ");
         }
         builder.cutBackSql(2);
-        if (idProperties.size() > 0) {
+        if (idPropertyTypes.size() > 0) {
             builder.appendSql(" where ");
-            for (EntityPropertyType<E, ?> p : idProperties) {
+            for (EntityPropertyType<E, ?> p : idPropertyTypes) {
                 builder.appendSql(p.getColumnName());
                 builder.appendSql(" = ");
                 builder.appendWrapper(p.getWrapper(entity));
@@ -132,7 +132,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
             builder.cutBackSql(5);
         }
         if (versionPropertyType != null && !versionIncluded) {
-            if (idProperties.size() == 0) {
+            if (idPropertyTypes.size() == 0) {
                 builder.appendSql(" where ");
             } else {
                 builder.appendSql(" and ");

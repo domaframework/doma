@@ -56,9 +56,9 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
             currentEntity = it.next();
             entityType.preInsert(currentEntity);
             prepareTableAndColumnNames();
-            prepareIdAndVersionProperties();
+            prepareIdAndVersionPropertyTypes();
             prepareOptions();
-            prepareTargetProperties();
+            prepareTargetPropertyTypes();
             prepareIdValue();
             prepareVersionValue();
             prepareSql();
@@ -77,8 +77,8 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
     }
 
     @Override
-    protected void prepareIdAndVersionProperties() {
-        super.prepareIdAndVersionProperties();
+    protected void prepareIdAndVersionPropertyTypes() {
+        super.prepareIdAndVersionPropertyTypes();
         generatedIdPropertyType = entityType.getGeneratedIdPropertyType();
         if (generatedIdPropertyType != null) {
             if (idGenerationConfig == null) {
@@ -96,7 +96,7 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
         }
     }
 
-    protected void prepareTargetProperties() {
+    protected void prepareTargetPropertyTypes() {
         for (EntityPropertyType<E, ?> p : entityType.getEntityPropertyTypes()) {
             if (!p.isInsertable()) {
                 continue;
@@ -105,7 +105,7 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
                 if (p != generatedIdPropertyType
                         || generatedIdPropertyType
                                 .isIncluded(idGenerationConfig)) {
-                    targetProperties.add(p);
+                    targetPropertyTypes.add(p);
                 }
                 if (generatedIdPropertyType == null
                         && p.getWrapper(currentEntity).get() == null) {
@@ -117,7 +117,7 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
             if (!isTargetPropertyName(p.getName())) {
                 continue;
             }
-            targetProperties.add(p);
+            targetPropertyTypes.add(p);
         }
     }
 
@@ -140,13 +140,13 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
         builder.appendSql("insert into ");
         builder.appendSql(tableName);
         builder.appendSql(" (");
-        for (EntityPropertyType<E, ?> p : targetProperties) {
+        for (EntityPropertyType<E, ?> p : targetPropertyTypes) {
             builder.appendSql(columnNameMap.get(p.getName()));
             builder.appendSql(", ");
         }
         builder.cutBackSql(2);
         builder.appendSql(") values (");
-        for (EntityPropertyType<E, ?> p : targetProperties) {
+        for (EntityPropertyType<E, ?> p : targetPropertyTypes) {
             builder.appendWrapper(p.getWrapper(currentEntity));
             builder.appendSql(", ");
         }

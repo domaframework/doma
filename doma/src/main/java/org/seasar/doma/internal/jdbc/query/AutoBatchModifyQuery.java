@@ -40,9 +40,9 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
 
     protected static final String[] EMPTY_STRINGS = new String[] {};
 
-    protected final List<EntityPropertyType<E, ?>> targetProperties = new ArrayList<EntityPropertyType<E, ?>>();
+    protected final List<EntityPropertyType<E, ?>> targetPropertyTypes = new ArrayList<EntityPropertyType<E, ?>>();
 
-    protected final List<EntityPropertyType<E, ?>> idProperties = new ArrayList<EntityPropertyType<E, ?>>();
+    protected final List<EntityPropertyType<E, ?>> idPropertyTypes = new ArrayList<EntityPropertyType<E, ?>>();
 
     protected final Map<String, String> columnNameMap = new HashMap<String, String>();
 
@@ -95,17 +95,17 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
         }
     }
 
-    protected void prepareIdAndVersionProperties() {
+    protected void prepareIdAndVersionPropertyTypes() {
         for (EntityPropertyType<E, ?> p : entityType.getEntityPropertyTypes()) {
             if (p.isId()) {
-                idProperties.add(p);
+                idPropertyTypes.add(p);
             }
         }
         versionPropertyType = entityType.getVersionPropertyType();
     }
 
     protected void validateIdExistent() {
-        if (idProperties.isEmpty()) {
+        if (idPropertyTypes.isEmpty()) {
             throw new JdbcException(DomaMessageCode.DOMA2022, entityType
                     .getName());
         }

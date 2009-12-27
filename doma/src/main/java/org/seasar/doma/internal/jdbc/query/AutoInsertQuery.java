@@ -51,9 +51,9 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
         executable = true;
         entityType.preInsert(entity);
         prepareTable();
-        prepareIdAndVersionProperties();
+        prepareIdAndVersionPropertyTypes();
         prepareOptions();
-        prepareTargetProperties();
+        prepareTargetPropertyType();
         prepareIdValue();
         prepareVersionValue();
         prepareSql();
@@ -61,8 +61,8 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
     }
 
     @Override
-    protected void prepareIdAndVersionProperties() {
-        super.prepareIdAndVersionProperties();
+    protected void prepareIdAndVersionPropertyTypes() {
+        super.prepareIdAndVersionPropertyTypes();
         generatedIdPropertyType = entityType.getGeneratedIdPropertyType();
         if (generatedIdPropertyType != null) {
             idGenerationConfig = new IdGenerationConfig(config, entityType,
@@ -75,7 +75,7 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
         versionPropertyType = entityType.getVersionPropertyType();
     }
 
-    protected void prepareTargetProperties() {
+    protected void prepareTargetPropertyType() {
         for (EntityPropertyType<E, ?> p : entityType.getEntityPropertyTypes()) {
             if (!p.isInsertable()) {
                 continue;
@@ -84,7 +84,7 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
                 if (p != generatedIdPropertyType
                         || generatedIdPropertyType
                                 .isIncluded(idGenerationConfig)) {
-                    targetProperties.add(p);
+                    targetPropertyTypes.add(p);
                 }
                 if (generatedIdPropertyType == null
                         && p.getWrapper(entity).get() == null) {
@@ -94,7 +94,7 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
                 continue;
             }
             if (p.isVersion()) {
-                targetProperties.add(p);
+                targetPropertyTypes.add(p);
                 continue;
             }
             if (nullExcluded && p.getWrapper(entity).get() == null) {
@@ -103,7 +103,7 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
             if (!isTargetPropertyName(p.getName())) {
                 continue;
             }
-            targetProperties.add(p);
+            targetPropertyTypes.add(p);
         }
     }
 
@@ -125,13 +125,13 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
         builder.appendSql("insert into ");
         builder.appendSql(tableName);
         builder.appendSql(" (");
-        for (EntityPropertyType<E, ?> p : targetProperties) {
+        for (EntityPropertyType<E, ?> p : targetPropertyTypes) {
             builder.appendSql(p.getColumnName());
             builder.appendSql(", ");
         }
         builder.cutBackSql(2);
         builder.appendSql(") values (");
-        for (EntityPropertyType<E, ?> p : targetProperties) {
+        for (EntityPropertyType<E, ?> p : targetPropertyTypes) {
             builder.appendWrapper(p.getWrapper(entity));
             builder.appendSql(", ");
         }
