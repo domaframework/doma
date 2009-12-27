@@ -17,6 +17,8 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.util.ArrayList;
+
 import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
@@ -50,7 +52,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
         validateIdExistent();
         prepareOptions();
         prepareOptimisticLock();
-        prepareTargetProperties();
+        prepareTargetPropertyTypes();
         prepareSql();
         assertNotNull(sql);
     }
@@ -63,7 +65,9 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
         }
     }
 
-    protected void prepareTargetProperties() {
+    protected void prepareTargetPropertyTypes() {
+        targetPropertyTypes = new ArrayList<EntityPropertyType<E, ?>>(
+                entityType.getEntityPropertyTypes().size());
         E originalStates = entityType.getOriginalStates(entity);
         for (EntityPropertyType<E, ?> p : entityType.getEntityPropertyTypes()) {
             if (!p.isUpdatable()) {

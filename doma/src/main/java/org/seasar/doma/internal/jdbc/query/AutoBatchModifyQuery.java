@@ -37,7 +37,7 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
 
     protected static final String[] EMPTY_STRINGS = new String[] {};
 
-    protected final List<EntityPropertyType<E, ?>> targetPropertyTypes = new ArrayList<EntityPropertyType<E, ?>>();
+    protected List<EntityPropertyType<E, ?>> targetPropertyTypes;
 
     protected List<EntityPropertyType<E, ?>> idPropertyTypes;
 

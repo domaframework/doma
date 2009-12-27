@@ -359,13 +359,15 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 EntityPropertyType.class.getName(), entityMeta
                         .getEntityTypeName());
         iprint(
-                "    java.util.List<%1$s<%2$s, ?>> __list = new java.util.ArrayList<%1$s<%2$s, ?>>();%n",
+                "    java.util.List<%1$s<%2$s, ?>> __list = new java.util.ArrayList<%1$s<%2$s, ?>>(%3$s);%n",
                 EntityPropertyType.class.getName(), entityMeta
-                        .getEntityTypeName());
+                        .getEntityTypeName(), entityMeta.getAllPropertyMetas()
+                        .size());
         iprint(
-                "    java.util.Map<String, %1$s<%2$s, ?>> __map = new java.util.HashMap<String, %1$s<%2$s, ?>>();%n",
+                "    java.util.Map<String, %1$s<%2$s, ?>> __map = new java.util.HashMap<String, %1$s<%2$s, ?>>(%3$s);%n",
                 EntityPropertyType.class.getName(), entityMeta
-                        .getEntityTypeName());
+                        .getEntityTypeName(), entityMeta.getAllPropertyMetas()
+                        .size());
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             if (pm.isId()) {
                 iprint("    __idList.add(%1$s);%n", pm.getName());

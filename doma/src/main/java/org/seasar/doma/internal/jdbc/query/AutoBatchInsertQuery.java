@@ -18,6 +18,7 @@ package org.seasar.doma.internal.jdbc.query;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
@@ -93,6 +94,8 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
     }
 
     protected void prepareTargetPropertyTypes() {
+        targetPropertyTypes = new ArrayList<EntityPropertyType<E, ?>>(
+                entityType.getEntityPropertyTypes().size());
         for (EntityPropertyType<E, ?> p : entityType.getEntityPropertyTypes()) {
             if (!p.isInsertable()) {
                 continue;

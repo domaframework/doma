@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.internal.jdbc.query;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
@@ -52,7 +51,7 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
 
     protected PreparedSql sql;
 
-    protected final List<EntityPropertyType<E, ?>> targetPropertyTypes = new ArrayList<EntityPropertyType<E, ?>>();
+    protected List<EntityPropertyType<E, ?>> targetPropertyTypes;
 
     protected List<EntityPropertyType<E, ?>> idPropertyTypes;
 
