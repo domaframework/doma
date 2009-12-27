@@ -44,6 +44,8 @@ public class EntityPropertyMeta {
 
     protected final String typeName;
 
+    protected final boolean ownProperty;
+
     protected String name;
 
     protected boolean id;
@@ -57,14 +59,15 @@ public class EntityPropertyMeta {
     protected DataType dataType;
 
     public EntityPropertyMeta(TypeElement entityElement,
-            VariableElement propertyElement,
-            NamingType namingType, ProcessingEnvironment env) {
+            VariableElement propertyElement, NamingType namingType,
+            boolean ownProperty, ProcessingEnvironment env) {
         assertNotNull(entityElement, propertyElement, namingType, env);
         this.entityName = entityElement.getSimpleName().toString();
         this.entityTypeName = entityElement.getQualifiedName().toString();
         this.namingType = namingType;
         this.type = propertyElement.asType();
         this.typeName = TypeMirrorUtil.getTypeName(type, env);
+        this.ownProperty = ownProperty;
     }
 
     public String getEntityName() {
@@ -115,6 +118,10 @@ public class EntityPropertyMeta {
         return typeName;
     }
 
+    public boolean isOwnProperty() {
+        return ownProperty;
+    }
+
     public DataType getDataType() {
         return dataType;
     }
@@ -130,8 +137,7 @@ public class EntityPropertyMeta {
     public String getColumnName() {
         String columnName = columnMirror != null ? columnMirror.getNameValue()
                 : "";
-        return !columnName.isEmpty() ? columnName : namingType
-                .apply(name);
+        return !columnName.isEmpty() ? columnName : namingType.apply(name);
     }
 
     public boolean isColumnInsertable() {

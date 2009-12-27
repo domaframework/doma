@@ -20,6 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.mirror.EntityMirror;
@@ -38,6 +39,8 @@ public class EntityMeta {
 
     protected final NamingType namingType;
 
+    protected final TypeElement entityElement;
+
     protected TableMirror tableMirror;
 
     protected EntityPropertyMeta versionPropertyMeta;
@@ -50,10 +53,11 @@ public class EntityMeta {
 
     protected OriginalStatesMeta originalStatesMeta;
 
-    public EntityMeta(EntityMirror entityMirror) {
+    public EntityMeta(EntityMirror entityMirror, TypeElement entityElement) {
         assertNotNull(entityMirror);
         this.entityMirror = entityMirror;
         this.namingType = entityMirror.getNamingValue();
+        this.entityElement = entityElement;
     }
 
     public String getEntityName() {
@@ -70,6 +74,10 @@ public class EntityMeta {
 
     public NamingType getNamingType() {
         return namingType;
+    }
+
+    public TypeElement getEntityElement() {
+        return entityElement;
     }
 
     public void setTableMirror(TableMirror tableMirror) {
@@ -144,7 +152,6 @@ public class EntityMeta {
     public String getTableName() {
         String tableName = tableMirror != null ? tableMirror.getNameValue()
                 : "";
-        return !tableName.isEmpty() ? tableName : namingType
-                .apply(entityName);
+        return !tableName.isEmpty() ? tableName : namingType.apply(entityName);
     }
 }

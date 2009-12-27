@@ -269,13 +269,20 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("        if (entity == null) {%n");
         iprint("            return null;%n");
         iprint("        }%n");
-        if (domainType != null) {
-            iprint(
-                    "        return %1$s.get().getWrapper(entity.%2$s).get();%n",
-                    getPrefixedDomainTypeName(domainType.getTypeName()), pm
-                            .getName());
+        if (pm.isOwnProperty()) {
+            if (domainType != null) {
+                iprint(
+                        "        return %1$s.get().getWrapper(entity.%2$s).get();%n",
+                        getPrefixedDomainTypeName(domainType.getTypeName()), pm
+                                .getName());
+            } else {
+                iprint("        return entity.%1$s;%n", pm.getName());
+            }
         } else {
-            iprint("        return entity.%1$s;%n", pm.getName());
+            iprint(
+                    "        return %1$s.get().%2$s.getWrapper(entity).get();%n",
+                    getPrefixedEntityTypeName(pm.getEntityTypeName()), pm
+                            .getName());
         }
         iprint("    }%n");
         print("%n");
@@ -285,25 +292,32 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("        if (entity == null) {%n");
         iprint("            return;%n");
         iprint("        }%n");
-        if (wrapperType.getWrappedType().isPrimitive()) {
-            if (domainType != null) {
-                iprint(
-                        "        entity.%1$s = %2$s.get().newDomain(%3$s.unbox(value));%n",
-                        pm.getName(), getPrefixedDomainTypeName(domainType
-                                .getTypeName()), BoxedPrimitiveUtil.class
-                                .getName());
+        if (pm.isOwnProperty()) {
+            if (wrapperType.getWrappedType().isPrimitive()) {
+                if (domainType != null) {
+                    iprint(
+                            "        entity.%1$s = %2$s.get().newDomain(%3$s.unbox(value));%n",
+                            pm.getName(), getPrefixedDomainTypeName(domainType
+                                    .getTypeName()), BoxedPrimitiveUtil.class
+                                    .getName());
+                } else {
+                    iprint("        entity.%1$s = %2$s.unbox(value);%n", pm
+                            .getName(), BoxedPrimitiveUtil.class.getName());
+                }
             } else {
-                iprint("        entity.%1$s = %2$s.unbox(value);%n", pm
-                        .getName(), BoxedPrimitiveUtil.class.getName());
+                if (domainType != null) {
+                    iprint(
+                            "        entity.%1$s = %2$s.get().newDomain(value);%n",
+                            pm.getName(), getPrefixedDomainTypeName(domainType
+                                    .getTypeName()));
+                } else {
+                    iprint("        entity.%1$s = value;%n", pm.getName());
+                }
             }
         } else {
-            if (domainType != null) {
-                iprint("        entity.%1$s = %2$s.get().newDomain(value);%n",
-                        pm.getName(), getPrefixedDomainTypeName(domainType
-                                .getTypeName()));
-            } else {
-                iprint("        entity.%1$s = value;%n", pm.getName());
-            }
+            iprint("        %1$s.get().%2$s.getWrapper(entity).set(value);%n",
+                    getPrefixedEntityTypeName(pm.getEntityTypeName()), pm
+                            .getName());
         }
         iprint("    }%n");
         iprint("}%n");

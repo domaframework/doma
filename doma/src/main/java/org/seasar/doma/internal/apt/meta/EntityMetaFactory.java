@@ -72,7 +72,7 @@ public class EntityMetaFactory {
         if (entityMirror == null) {
             throw new AptIllegalStateException("entityMirror.");
         }
-        EntityMeta entityMeta = new EntityMeta(entityMirror);
+        EntityMeta entityMeta = new EntityMeta(entityMirror, classElement);
         doClassElement(classElement, entityMeta);
         doFieldElements(classElement, entityMeta);
         return entityMeta;
@@ -236,6 +236,9 @@ public class EntityMetaFactory {
 
     protected void doOriginalStatesField(TypeElement classElement,
             VariableElement fieldElement, EntityMeta entityMeta) {
+        if (!classElement.equals(fieldElement.getEnclosingElement())) {
+            return;
+        }
         if (entityMeta.hasOriginalStatesMeta()) {
             throw new AptException(DomaMessageCode.DOMA4125, env, fieldElement);
         }

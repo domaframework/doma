@@ -25,7 +25,7 @@ public final class _ChildEntity implements org.seasar.doma.internal.jdbc.entity.
                 if (entity == null) {
                     return null;
                 }
-                return entity.aaa;
+                return org.seasar.doma.internal.apt.entity._ParentEntity.get().aaa.getWrapper(entity).get();
             }
 
             @Override
@@ -33,7 +33,7 @@ public final class _ChildEntity implements org.seasar.doma.internal.jdbc.entity.
                 if (entity == null) {
                     return;
                 }
-                entity.aaa = value;
+                org.seasar.doma.internal.apt.entity._ParentEntity.get().aaa.getWrapper(entity).set(value);
             }
         }
     };
