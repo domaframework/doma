@@ -36,26 +36,27 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class EntityFetcher<E> implements
-        ResultFetcher<ResultSet, EntityType<E>> {
+public class EntityFetcher<E> implements ResultFetcher<ResultSet, E> {
 
     protected final Query query;
 
+    protected final EntityType<E> entityType;
+
     protected Map<Integer, String> indexMap;
 
-    public EntityFetcher(Query query) throws SQLException {
-        assertNotNull(query);
+    public EntityFetcher(Query query, EntityType<E> entityType)
+            throws SQLException {
+        assertNotNull(query, entityType);
         this.query = query;
+        this.entityType = entityType;
     }
 
     @Override
-    public E fetch(ResultSet resultSet, EntityType<E> entityType)
-            throws SQLException {
+    public void fetch(ResultSet resultSet, E entity) throws SQLException {
         assertNotNull(resultSet, entityType);
         if (indexMap == null) {
             indexMap = createIndexMap(resultSet.getMetaData(), entityType);
         }
-        E entity = entityType.newEntity();
         JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().getDialect()
                 .getJdbcMappingVisitor();
         for (Map.Entry<Integer, String> entry : indexMap.entrySet()) {
@@ -68,7 +69,6 @@ public class EntityFetcher<E> implements
             wrapper.accept(jdbcMappingVisitor, function);
         }
         entityType.saveCurrentStates(entity);
-        return entity;
     }
 
     protected <W extends Wrapper<?>> W aaa(W a) {

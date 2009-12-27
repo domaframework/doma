@@ -21,7 +21,5 @@ package org.seasar.doma.internal.jdbc.sql;
  */
 public interface ListParameter<H, V> extends CallableSqlParameter {
 
-    H getElementHolder();
-
     void add(V value);
 }

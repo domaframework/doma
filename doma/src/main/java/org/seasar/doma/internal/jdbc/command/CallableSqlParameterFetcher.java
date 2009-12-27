@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+import org.seasar.doma.internal.domain.DomainWrapper;
 import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.internal.jdbc.sql.BasicInOutParameter;
@@ -62,7 +63,7 @@ public class CallableSqlParameterFetcher implements
         this.query = query;
     }
 
-    public Object fetch(CallableStatement callableStatement,
+    public void fetch(CallableStatement callableStatement,
             List<? extends CallableSqlParameter> parameters)
             throws SQLException {
         assertNotNull(callableStatement, parameters);
@@ -71,7 +72,6 @@ public class CallableSqlParameterFetcher implements
         for (CallableSqlParameter parameter : parameters) {
             parameter.accept(fetchngVisitor, null);
         }
-        return null;
     }
 
     protected static class FetchingVisitor implements
@@ -255,16 +255,19 @@ public class CallableSqlParameterFetcher implements
 
             protected EntityListParameter<E> parameter;
 
+            protected EntityType<E> entityType;
+
             public EntityFetcherCallbck(EntityListParameter<E> parameter)
                     throws SQLException {
-                this.fetcher = new EntityFetcher<E>(query);
+                this.entityType = parameter.getEntityType();
+                this.fetcher = new EntityFetcher<E>(query, entityType);
                 this.parameter = parameter;
             }
 
             @Override
             public void fetch(ResultSet resultSet) throws SQLException {
-                EntityType<E> entityType = parameter.getElementHolder();
-                E entity = fetcher.fetch(resultSet, entityType);
+                E entity = entityType.newEntity();
+                fetcher.fetch(resultSet, entity);
                 parameter.add(entity);
             }
         }
@@ -283,9 +286,9 @@ public class CallableSqlParameterFetcher implements
 
             @Override
             public void fetch(ResultSet resultSet) throws SQLException {
-                Wrapper<V> wrapper = parameter.getElementHolder();
+                DomainWrapper<V, D> wrapper = parameter.getWrapper();
                 fetcher.fetch(resultSet, wrapper);
-                parameter.add(wrapper.get());
+                parameter.add(wrapper.getDomain());
             }
         }
 
@@ -303,7 +306,7 @@ public class CallableSqlParameterFetcher implements
 
             @Override
             public void fetch(ResultSet resultSet) throws SQLException {
-                Wrapper<V> wrapper = parameter.getElementHolder();
+                Wrapper<V> wrapper = parameter.getWrapper();
                 fetcher.fetch(resultSet, wrapper);
                 parameter.add(wrapper.get());
             }

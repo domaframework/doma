@@ -39,7 +39,7 @@ public class BasicFetcher implements ResultFetcher<ResultSet, Wrapper<?>> {
     }
 
     @Override
-    public Object fetch(ResultSet resultSet, Wrapper<?> wrapper)
+    public void fetch(ResultSet resultSet, Wrapper<?> wrapper)
             throws SQLException {
         ResultSetMetaData resultSetMeta = resultSet.getMetaData();
         JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().getDialect()
@@ -48,6 +48,5 @@ public class BasicFetcher implements ResultFetcher<ResultSet, Wrapper<?>> {
             GetValueFunction function = new GetValueFunction(resultSet, 1);
             wrapper.accept(jdbcMappingVisitor, function);
         }
-        return wrapper.get();
     }
 }

@@ -40,10 +40,11 @@ public class EntityResultListHandler<E> implements ResultSetHandler<List<E>> {
 
     @Override
     public List<E> handle(ResultSet resultSet, Query query) throws SQLException {
-        EntityFetcher<E> fetcher = new EntityFetcher<E>(query);
+        EntityFetcher<E> fetcher = new EntityFetcher<E>(query, entityType);
         List<E> entities = new ArrayList<E>();
         while (resultSet.next()) {
-            E entity = fetcher.fetch(resultSet, entityType);
+            E entity = entityType.newEntity();
+            fetcher.fetch(resultSet, entity);
             entities.add(entity);
         }
         return entities;

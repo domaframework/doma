@@ -27,13 +27,11 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class DomainListParameter<V, D> implements ListParameter<Wrapper<V>, V> {
+public class DomainListParameter<V, D> implements ListParameter<Wrapper<V>, D> {
 
     protected final List<D> domains;
 
     protected final DomainType<V, D> domainType;
-
-    protected DomainWrapper<V, D> currentWrapper;
 
     public DomainListParameter(DomainType<V, D> domainType, List<D> domains) {
         assertNotNull(domainType, domains);
@@ -46,16 +44,13 @@ public class DomainListParameter<V, D> implements ListParameter<Wrapper<V>, V> {
         return domains;
     }
 
-    @Override
-    public Wrapper<V> getElementHolder() {
-        currentWrapper = domainType.getWrapper(null);
-        return currentWrapper;
+    public DomainWrapper<V, D> getWrapper() {
+        return domainType.getWrapper(null);
     }
 
     @Override
-    public void add(V value) {
-        currentWrapper.set(value);
-        domains.add(currentWrapper.getDomain());
+    public void add(D domain) {
+        domains.add(domain);
     }
 
     @Override

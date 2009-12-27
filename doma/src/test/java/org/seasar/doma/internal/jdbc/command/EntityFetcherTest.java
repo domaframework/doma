@@ -51,8 +51,10 @@ public class EntityFetcherTest extends TestCase {
         resultSet.next();
 
         _Emp entityType = _Emp.get();
-        EntityFetcher<Emp> fetcher = new EntityFetcher<Emp>(new MySelectQuery());
-        Emp emp = fetcher.fetch(resultSet, entityType);
+        EntityFetcher<Emp> fetcher = new EntityFetcher<Emp>(
+                new MySelectQuery(), entityType);
+        Emp emp = entityType.newEntity();
+        fetcher.fetch(resultSet, emp);
 
         assertEquals(new Integer(1), emp.getId());
         assertEquals("aaa", emp.getName());
