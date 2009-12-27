@@ -17,6 +17,8 @@ package org.seasar.doma.internal.jdbc.entity;
 
 import java.util.List;
 
+import org.seasar.doma.jdbc.entity.NamingType;
+
 /**
  * エンティティのインスタンスを管理するクラスを表します。
  * 
@@ -40,6 +42,8 @@ public interface EntityType<E> {
     String getTableName();
 
     String getQualifiedTableName();
+
+    NamingType getNamingType();
 
     GeneratedIdPropertyType<E, ?> getGeneratedIdPropertyType();
 

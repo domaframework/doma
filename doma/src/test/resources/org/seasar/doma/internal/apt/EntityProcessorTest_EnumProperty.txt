@@ -73,6 +73,8 @@ public final class _EnumPropertyEntity implements org.seasar.doma.internal.jdbc.
 
     private final org.seasar.doma.jdbc.entity.NullEntityListener __listener;
 
+    private final org.seasar.doma.jdbc.entity.NamingType __namingType;
+
     private final String __catalogName;
 
     private final String __schemaName;
@@ -91,6 +93,7 @@ public final class _EnumPropertyEntity implements org.seasar.doma.internal.jdbc.
 
     private _EnumPropertyEntity() {
         __listener = new org.seasar.doma.jdbc.entity.NullEntityListener();
+        __namingType = org.seasar.doma.jdbc.entity.NamingType.NONE;
         __name = "EnumPropertyEntity";
         __catalogName = "";
         __schemaName = "";
@@ -107,6 +110,11 @@ public final class _EnumPropertyEntity implements org.seasar.doma.internal.jdbc.
         __idPropertyTypes = java.util.Collections.unmodifiableList(__idList);
         __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
         __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.entity.NamingType getNamingType() {
+        return __namingType;
     }
 
     @Override

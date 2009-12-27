@@ -13,25 +13,13 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc;
-
-import junit.framework.TestCase;
+package org.seasar.doma.internal;
 
 /**
  * @author taedium
  * 
  */
-public class MappedPropertyNotFoundExceptionTest extends TestCase {
+public final class Constants {
 
-    public void test() throws Exception {
-        MappedPropertyNotFoundException e = new MappedPropertyNotFoundException(
-                "aaa", "bbb", "ccc", "ddd", "eee", "fff");
-        System.out.println(e.getMessage());
-        assertEquals("aaa", e.getColumnName());
-        assertEquals("bbb", e.getExpectedPropertyName());
-        assertEquals("ccc", e.getEntityClassName());
-        assertEquals("ddd", e.getRawSql());
-        assertEquals("eee", e.getFormattedSql());
-        assertEquals("fff", e.getSqlFilePath());
-    }
+    public static final String ROWNUMBER_COLUMN_NAME = "doma_rownumber_";
 }

@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
+import static org.seasar.doma.internal.Constants.*;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.sql.ResultSet;
@@ -30,6 +31,7 @@ import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.MappedPropertyNotFoundException;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -71,10 +73,6 @@ public class EntityFetcher<E> implements ResultFetcher<ResultSet, E> {
         entityType.saveCurrentStates(entity);
     }
 
-    protected <W extends Wrapper<?>> W aaa(W a) {
-        return a;
-    }
-
     protected HashMap<Integer, String> createIndexMap(
             ResultSetMetaData resultSetMeta, EntityType<E> entityType)
             throws SQLException {
@@ -86,12 +84,14 @@ public class EntityFetcher<E> implements ResultFetcher<ResultSet, E> {
             String lowerCaseColumnName = columnName.toLowerCase();
             String propertyName = columnNameMap.get(lowerCaseColumnName);
             if (propertyName == null) {
-                if ("rownumber_".equals(lowerCaseColumnName)) {
+                if (ROWNUMBER_COLUMN_NAME.equals(lowerCaseColumnName)) {
                     continue;
                 }
                 Sql<?> sql = query.getSql();
+                NamingType namingType = entityType.getNamingType();
                 throw new MappedPropertyNotFoundException(columnName,
-                        entityType.getEntityClass().getName(), sql.getRawSql(),
+                        namingType.revert(columnName), entityType
+                                .getEntityClass().getName(), sql.getRawSql(),
                         sql.getFormattedSql(), sql.getSqlFilePath());
             }
             indexMap.put(i, propertyName);

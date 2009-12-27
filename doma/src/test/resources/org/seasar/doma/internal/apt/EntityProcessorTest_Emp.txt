@@ -144,6 +144,8 @@ public final class _Emp implements org.seasar.doma.internal.jdbc.entity.EntityTy
 
     private final org.seasar.doma.internal.apt.entity.EmpListener __listener;
 
+    private final org.seasar.doma.jdbc.entity.NamingType __namingType;
+
     private final String __catalogName;
 
     private final String __schemaName;
@@ -162,6 +164,7 @@ public final class _Emp implements org.seasar.doma.internal.jdbc.entity.EntityTy
 
     private _Emp() {
         __listener = new org.seasar.doma.internal.apt.entity.EmpListener();
+        __namingType = org.seasar.doma.jdbc.entity.NamingType.NONE;
         __name = "Emp";
         __catalogName = "";
         __schemaName = "AAA";
@@ -182,6 +185,11 @@ public final class _Emp implements org.seasar.doma.internal.jdbc.entity.EntityTy
         __idPropertyTypes = java.util.Collections.unmodifiableList(__idList);
         __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
         __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.entity.NamingType getNamingType() {
+        return __namingType;
     }
 
     @Override

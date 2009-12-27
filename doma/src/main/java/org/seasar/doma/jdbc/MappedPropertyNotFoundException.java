@@ -31,7 +31,10 @@ public class MappedPropertyNotFoundException extends JdbcException {
     /** プロパティにマッピングされなかったカラム名 */
     protected final String columnName;
 
-    /** マッピング対象のエンティティクラス */
+    /** マッピングを期待されるプロパティの名前 */
+    protected final String expectedPropertyName;
+
+    /** マッピング対象のエンティティクラスの名前 */
     protected final String entityClassName;
 
     /** 未加工SQL */
@@ -48,19 +51,22 @@ public class MappedPropertyNotFoundException extends JdbcException {
      * 
      * @param columnName
      *            プロパティにマッピングされなかったカラム名
+     * @param expectedPropertyName
+     *            マッピングを期待されるプロパティの名前
      * @param entityClassName
-     *            マッピング対象のエンティティクラス
+     *            マッピング対象のエンティティクラスの名前
      * @param rawSql
      *            未加工SQL
      * @param formattedSql
      *            フォーマット済みSQL
      */
     public MappedPropertyNotFoundException(String columnName,
-            String entityClassName, String rawSql, String formattedSql,
-            String sqlFilePath) {
-        super(DomaMessageCode.DOMA2002, columnName, entityClassName,
-                sqlFilePath, formattedSql);
+            String expectedPropertyName, String entityClassName, String rawSql,
+            String formattedSql, String sqlFilePath) {
+        super(DomaMessageCode.DOMA2002, columnName, expectedPropertyName,
+                entityClassName, sqlFilePath, formattedSql);
         this.columnName = columnName;
+        this.expectedPropertyName = expectedPropertyName;
         this.entityClassName = entityClassName;
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;
@@ -68,9 +74,9 @@ public class MappedPropertyNotFoundException extends JdbcException {
     }
 
     /**
-     * マッピング対象のエンティティクラスを返します。
+     * マッピング対象のエンティティクラスの名前を返します。
      * 
-     * @return マッピング対象のエンティティクラス
+     * @return マッピング対象のエンティティクラスの名前
      */
     public String getEntityClassName() {
         return entityClassName;
@@ -83,6 +89,15 @@ public class MappedPropertyNotFoundException extends JdbcException {
      */
     public String getColumnName() {
         return columnName;
+    }
+
+    /**
+     * マッピングを期待されるプロパティの名前を返します。
+     * 
+     * @return マッピングを期待されるプロパティの名前
+     */
+    public String getExpectedPropertyName() {
+        return expectedPropertyName;
     }
 
     /**

@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.internal.jdbc.dialect;
 
+import static org.seasar.doma.internal.Constants.*;
+
 import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.FragmentNode;
 import org.seasar.doma.internal.jdbc.sql.node.FromClauseNode;
@@ -51,21 +53,21 @@ public class OraclePagingTransformer extends StandardPagingTransformer {
         SelectClauseNode select = new SelectClauseNode("select");
         select.addNode(new FragmentNode(" * "));
         FromClauseNode from = new FromClauseNode("from");
-        from.addNode(new FragmentNode(
-                " ( select temp_.*, rownum rownumber_ from ( "));
+        from.addNode(new FragmentNode(" ( select temp_.*, rownum "
+                + ROWNUMBER_COLUMN_NAME + " from ( "));
         from.addNode(subStatement);
         from.addNode(new FragmentNode(" ) temp_ ) "));
         WhereClauseNode where = new WhereClauseNode("where");
         where.addNode(new FragmentNode(" "));
         if (offset >= 0) {
-            where.addNode(new FragmentNode("rownumber_ > "));
+            where.addNode(new FragmentNode(ROWNUMBER_COLUMN_NAME + " > "));
             where.addNode(new FragmentNode(String.valueOf(offset)));
         }
         if (limit > 0) {
             if (offset >= 0) {
                 where.addNode(new FragmentNode(" and "));
             }
-            where.addNode(new FragmentNode("rownumber_ <= "));
+            where.addNode(new FragmentNode(ROWNUMBER_COLUMN_NAME + " <= "));
             long bias = offset < 0 ? 0 : offset;
             where.addNode(new FragmentNode(String.valueOf(bias + limit)));
         }

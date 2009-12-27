@@ -30,6 +30,7 @@ import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
+import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.NullEntityListener;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
 import org.seasar.doma.wrapper.IntegerWrapper;
@@ -186,6 +187,8 @@ public class _Emp implements EntityType<Emp> {
 
     private final String __qualifiedTableName = "EMP";
 
+    private final NamingType __namingType = NamingType.UPPER_CASE;
+
     private final List<EntityPropertyType<Emp, ?>> __idPropertyTypes;
 
     private final List<EntityPropertyType<Emp, ?>> __entityPropertyTypes;
@@ -304,6 +307,11 @@ public class _Emp implements EntityType<Emp> {
     @Override
     public String getTableName() {
         return __tableName;
+    }
+
+    @Override
+    public NamingType getNamingType() {
+        return __namingType;
     }
 
     public static _Emp get() {

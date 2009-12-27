@@ -44,6 +44,7 @@ import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.internal.jdbc.util.TableUtil;
 import org.seasar.doma.internal.util.BoxedPrimitiveUtil;
 import org.seasar.doma.internal.util.ClassUtil;
+import org.seasar.doma.jdbc.entity.NamingType;
 
 /**
  * 
@@ -94,6 +95,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         printIdGeneratorField();
         printPropertyTypeFields();
         printListenerField();
+        printNamingTypeField();
         printCatalogNameField();
         printSchemaNameField();
         printTableNameField();
@@ -295,6 +297,11 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
+    protected void printNamingTypeField() {
+        iprint("private final %1$s __namingType;%n", NamingType.class.getName());
+        print("%n");
+    }
+
     protected void printCatalogNameField() {
         iprint("private final String __catalogName;%n");
         print("%n");
@@ -347,6 +354,8 @@ public class EntityTypeGenerator extends AbstractGenerator {
     protected void printConstructor() {
         iprint("private %1$s() {%n", simpleName);
         iprint("    __listener = new %1$s();%n", entityMeta.getEntityListener());
+        iprint("    __namingType = %1$s.%2$s;%n", NamingType.class.getName(),
+                entityMeta.getNamingType().name());
         iprint("    __name = \"%1$s\";%n", entityMeta.getEntityName());
         iprint("    __catalogName = \"%1$s\";%n", entityMeta.getCatalogName());
         iprint("    __schemaName = \"%1$s\";%n", entityMeta.getSchemaName());
@@ -383,6 +392,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
     }
 
     protected void printMethods() {
+        printGetNamingTypeMethod();
         printGetNameMethod();
         printGetCatalogNameMethod();
         printGetSchemaNameMethod();
@@ -401,6 +411,14 @@ public class EntityTypeGenerator extends AbstractGenerator {
         printGetOriginalStatesMethod();
         printSaveCurrentStatesMethod();
         printGetMethod();
+    }
+
+    protected void printGetNamingTypeMethod() {
+        iprint("@Override%n");
+        iprint("public %1$s getNamingType() {%n", NamingType.class.getName());
+        iprint("    return __namingType;%n");
+        iprint("}%n");
+        print("%n");
     }
 
     protected void printGetNameMethod() {

@@ -51,6 +51,11 @@ public enum NamingType {
             return text;
         }
 
+        @Override
+        public String revert(String text) {
+            return text;
+        }
+
     },
 
     /**
@@ -67,6 +72,14 @@ public enum NamingType {
             }
             String s = StringUtil.fromCamelCaseToSnakeCase(text);
             return s.toUpperCase();
+        }
+
+        @Override
+        public String revert(String text) {
+            if (text == null) {
+                throw new DomaNullPointerException("text");
+            }
+            return StringUtil.fromSnakeCaseToCamelCase(text);
         }
 
     },
@@ -87,6 +100,14 @@ public enum NamingType {
             return s.toLowerCase();
         }
 
+        @Override
+        public String revert(String text) {
+            if (text == null) {
+                throw new DomaNullPointerException("text");
+            }
+            return StringUtil.fromSnakeCaseToCamelCase(text);
+        }
+
     },
 
     /**
@@ -102,6 +123,14 @@ public enum NamingType {
                 throw new DomaNullPointerException("text");
             }
             return text.toUpperCase();
+        }
+
+        @Override
+        public String revert(String text) {
+            if (text == null) {
+                throw new DomaNullPointerException("text");
+            }
+            return text.toLowerCase();
         }
 
     },
@@ -121,6 +150,14 @@ public enum NamingType {
             return text.toLowerCase();
         }
 
+        @Override
+        public String revert(String text) {
+            if (text == null) {
+                throw new DomaNullPointerException("text");
+            }
+            return text;
+        }
+
     };
 
     /**
@@ -131,4 +168,15 @@ public enum NamingType {
      * @return 規約が適用された文字列
      */
     public abstract String apply(String text);
+
+    /**
+     * ネーミング規約が適用された文字列を適用前の文字列に戻します。
+     * <p>
+     * 正確に元に戻せないことがあります。
+     * 
+     * @param text
+     *            ネーミング規約適用後の文字列
+     * @return ネーミング規約適用前の文字列
+     */
+    public abstract String revert(String text);
 }

@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.dialect;
 
+import static org.seasar.doma.internal.Constants.*;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
@@ -100,13 +101,14 @@ public class StandardPagingTransformer implements
                 .addNode(new FragmentNode(
                         " ( select temp_.*, row_number() over( "));
         from.addNode(orderBy);
-        from.addNode(new FragmentNode(" ) as rownumber_ from ( "));
+        from.addNode(new FragmentNode(" ) as " + ROWNUMBER_COLUMN_NAME
+                + " from ( "));
         from.addNode(subStatement);
         from.addNode(new FragmentNode(") as temp_ ) as temp2_ "));
         WhereClauseNode where = new WhereClauseNode("where");
         where.addNode(new FragmentNode(" "));
         if (offset >= 0) {
-            where.addNode(new FragmentNode("rownumber_ > "));
+            where.addNode(new FragmentNode(ROWNUMBER_COLUMN_NAME + " > "));
             where.addNode(new FragmentNode(String.valueOf(offset)));
         }
         if (limit > 0) {
@@ -114,7 +116,7 @@ public class StandardPagingTransformer implements
                 where.addNode(new FragmentNode(" and "));
             }
             long bias = offset < 0 ? 0 : offset;
-            where.addNode(new FragmentNode("rownumber_ <= "));
+            where.addNode(new FragmentNode(ROWNUMBER_COLUMN_NAME + " <= "));
             where.addNode(new FragmentNode(String.valueOf(bias + limit)));
         }
         ForUpdateClauseNode originalForUpdate = node.getForUpdateClauseNode();
