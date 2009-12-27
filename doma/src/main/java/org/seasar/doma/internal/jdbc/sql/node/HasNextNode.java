@@ -66,7 +66,7 @@ public class HasNextNode extends AbstractSqlNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (HasNextNodeVisitor.class.isInstance(visitor)) {
+        if (visitor instanceof HasNextNodeVisitor<?, ?>) {
             @SuppressWarnings("unchecked")
             HasNextNodeVisitor<R, P> v = (HasNextNodeVisitor) visitor;
             return v.visitHasNextNode(this, p);

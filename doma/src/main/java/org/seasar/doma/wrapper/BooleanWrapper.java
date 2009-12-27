@@ -47,12 +47,11 @@ public class BooleanWrapper extends AbstractWrapper<Boolean> {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (BooleanWrapperVisitor.class.isInstance(visitor)) {
+        if (visitor instanceof BooleanWrapperVisitor<?, ?, ?>) {
             @SuppressWarnings("unchecked")
             BooleanWrapperVisitor<R, P, TH> v = (BooleanWrapperVisitor) visitor;
             return v.visitBooleanWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);
     }
-
 }

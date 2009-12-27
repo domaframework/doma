@@ -320,7 +320,7 @@ public class StandardDialect implements Dialect {
     protected SQLException getCauseSQLException(SQLException sqlException) {
         SQLException cause = sqlException;
         for (Throwable t : sqlException) {
-            if (SQLException.class.isInstance(t)) {
+            if (t instanceof SQLException) {
                 cause = (SQLException) t;
             }
         }

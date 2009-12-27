@@ -47,12 +47,11 @@ public class OrderByClauseNode extends AbstractClauseNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (OrderByClauseNodeVisitor.class.isInstance(visitor)) {
+        if (visitor instanceof OrderByClauseNodeVisitor<?, ?>) {
             @SuppressWarnings("unchecked")
             OrderByClauseNodeVisitor<R, P> v = (OrderByClauseNodeVisitor) visitor;
             return v.visitOrderByClauseNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);
     }
-
 }

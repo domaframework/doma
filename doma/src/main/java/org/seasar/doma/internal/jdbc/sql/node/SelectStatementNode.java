@@ -133,7 +133,7 @@ public class SelectStatementNode extends AbstractSqlNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (SelectStatementNodeVisitor.class.isInstance(visitor)) {
+        if (visitor instanceof SelectStatementNodeVisitor<?, ?>) {
             @SuppressWarnings("unchecked")
             SelectStatementNodeVisitor<R, P> v = (SelectStatementNodeVisitor) visitor;
             return v.visitSelectStatementNode(this, p);

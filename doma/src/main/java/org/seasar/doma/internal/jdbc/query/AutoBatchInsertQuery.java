@@ -18,9 +18,7 @@ package org.seasar.doma.internal.jdbc.query;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.internal.jdbc.entity.EntityType;
@@ -40,8 +38,6 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
         BatchInsertQuery {
 
     protected GeneratedIdPropertyType<E, ?> generatedIdPropertyType;
-
-    protected final List<GeneratedIdPropertyType<E, ?>> generatedIdPropertyTypes = new ArrayList<GeneratedIdPropertyType<E, ?>>();
 
     protected IdGenerationConfig idGenerationConfig;
 
@@ -63,20 +59,16 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
             prepareIdAndVersionProperties();
             prepareOptions();
             prepareTargetProperties();
+            prepareIdValue();
             prepareVersionValue();
             prepareSql();
         } else {
             return;
         }
         while (it.hasNext()) {
-            idProperties.clear();
-            generatedIdPropertyType = null;
-            versionPropertyType = null;
-            targetProperties.clear();
             currentEntity = it.next();
             entityType.preInsert(currentEntity);
-            prepareIdAndVersionProperties();
-            prepareTargetProperties();
+            prepareIdValue();
             prepareVersionValue();
             prepareSql();
         }
@@ -88,7 +80,6 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
     protected void prepareIdAndVersionProperties() {
         super.prepareIdAndVersionProperties();
         generatedIdPropertyType = entityType.getGeneratedIdPropertyType();
-        generatedIdPropertyTypes.add(generatedIdPropertyType);
         if (generatedIdPropertyType != null) {
             if (idGenerationConfig == null) {
                 String idColumnName = columnNameMap.get(generatedIdPropertyType
@@ -102,8 +93,6 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
                 batchSupported = generatedIdPropertyType
                         .isBatchSupported(idGenerationConfig);
             }
-            generatedIdPropertyType
-                    .preInsert(currentEntity, idGenerationConfig);
         }
     }
 
@@ -129,6 +118,13 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
                 continue;
             }
             targetProperties.add(p);
+        }
+    }
+
+    protected void prepareIdValue() {
+        if (generatedIdPropertyType != null && idGenerationConfig != null) {
+            generatedIdPropertyType
+                    .preInsert(currentEntity, idGenerationConfig);
         }
     }
 
@@ -167,10 +163,9 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
 
     @Override
     public void generateId(Statement statement, int index) {
-        GeneratedIdPropertyType<E, ?> generatedIdProperty = generatedIdPropertyTypes
-                .get(index);
-        generatedIdProperty.postInsert(entities.get(index), idGenerationConfig,
-                statement);
+        if (generatedIdPropertyType != null && idGenerationConfig != null) {
+            generatedIdPropertyType.postInsert(entities.get(index),
+                    idGenerationConfig, statement);
+        }
     }
-
 }

@@ -21,7 +21,6 @@ import java.util.Iterator;
 
 import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.internal.jdbc.entity.EntityType;
-import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.SqlKind;
@@ -60,13 +59,8 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
             return;
         }
         while (it.hasNext()) {
-            idProperties.clear();
-            versionPropertyType = null;
-            targetProperties.clear();
             currentEntity = it.next();
             entityType.preUpdate(currentEntity);
-            prepareIdAndVersionProperties();
-            prepareTargetProperties();
             prepareSql();
         }
         assertEquals(entities.size(), sqls.size());
@@ -147,8 +141,6 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
             return;
         }
         for (E entity : entities) {
-            VersionPropertyType<E, ?> versionPropertyType = entityType
-                    .getVersionPropertyType();
             if (versionPropertyType != null) {
                 versionPropertyType.increment(entity);
             }

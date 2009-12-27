@@ -267,7 +267,7 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
                     Object result = resultSet.getObject(1);
-                    if (result != null && Number.class.isInstance(result)) {
+                    if (result instanceof Number) {
                         return ((Number) result).longValue();
                     }
                 }

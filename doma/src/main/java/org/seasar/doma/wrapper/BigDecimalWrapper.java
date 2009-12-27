@@ -55,12 +55,11 @@ public class BigDecimalWrapper extends AbstractWrapper<BigDecimal> implements
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (BigDecimalWrapperVisitor.class.isInstance(visitor)) {
+        if (visitor instanceof BigDecimalWrapperVisitor<?, ?, ?>) {
             @SuppressWarnings("unchecked")
             BigDecimalWrapperVisitor<R, P, TH> v = (BigDecimalWrapperVisitor) visitor;
             return v.visitBigDecimalWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);
     }
-
 }

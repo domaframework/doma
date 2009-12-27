@@ -52,12 +52,11 @@ public class StringWrapper extends AbstractWrapper<String> {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (StringWrapperVisitor.class.isInstance(visitor)) {
+        if (visitor instanceof StringWrapperVisitor<?, ?, ?>) {
             @SuppressWarnings("unchecked")
             StringWrapperVisitor<R, P, TH> v = (StringWrapperVisitor) visitor;
             return v.visitStringWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);
     }
-
 }

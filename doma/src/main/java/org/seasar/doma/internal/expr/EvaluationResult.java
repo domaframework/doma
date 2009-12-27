@@ -42,7 +42,7 @@ public class EvaluationResult {
     }
 
     public boolean getBooleanValue() {
-        if (Boolean.class.isInstance(value)) {
+        if (value instanceof Boolean) {
             return ((Boolean) value).booleanValue();
         }
         return false;

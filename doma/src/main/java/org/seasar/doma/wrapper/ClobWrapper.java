@@ -59,12 +59,11 @@ public class ClobWrapper extends AbstractWrapper<Clob> {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (ClobWrapperVisitor.class.isInstance(visitor)) {
+        if (visitor instanceof ClobWrapperVisitor<?, ?, ?>) {
             @SuppressWarnings("unchecked")
             ClobWrapperVisitor<R, P, TH> v = (ClobWrapperVisitor) visitor;
             return v.visitClobWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);
     }
-
 }

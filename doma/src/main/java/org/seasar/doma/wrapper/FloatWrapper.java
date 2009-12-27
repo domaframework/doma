@@ -53,12 +53,11 @@ public class FloatWrapper extends AbstractWrapper<Float> implements
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (FloatWrapperVisitor.class.isInstance(visitor)) {
+        if (visitor instanceof FloatWrapperVisitor<?, ?, ?>) {
             @SuppressWarnings("unchecked")
             FloatWrapperVisitor<R, P, TH> v = (FloatWrapperVisitor) visitor;
             return v.visitFloatWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);
     }
-
 }

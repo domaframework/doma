@@ -58,12 +58,8 @@ public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
             return;
         }
         while (it.hasNext()) {
-            idProperties.clear();
-            versionPropertyType = null;
-            targetProperties.clear();
             currentEntity = it.next();
             entityType.preDelete(currentEntity);
-            prepareIdAndVersionProperties();
             prepareSql();
         }
         assertEquals(entities.size(), sqls.size());

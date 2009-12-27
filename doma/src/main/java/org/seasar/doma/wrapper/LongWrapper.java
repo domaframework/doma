@@ -53,12 +53,11 @@ public class LongWrapper extends AbstractWrapper<Long> implements
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (LongWrapperVisitor.class.isInstance(visitor)) {
+        if (visitor instanceof LongWrapperVisitor<?, ?, ?>) {
             @SuppressWarnings("unchecked")
             LongWrapperVisitor<R, P, TH> v = (LongWrapperVisitor) visitor;
             return v.visitLongWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);
     }
-
 }

@@ -50,7 +50,7 @@ public class EndNode extends AbstractSqlNode implements SpaceStrippingNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (EndNodeVisitor.class.isInstance(visitor)) {
+        if (visitor instanceof EndNodeVisitor<?, ?>) {
             @SuppressWarnings("unchecked")
             EndNodeVisitor<R, P> v = (EndNodeVisitor) visitor;
             return v.visitEndNode(this, p);

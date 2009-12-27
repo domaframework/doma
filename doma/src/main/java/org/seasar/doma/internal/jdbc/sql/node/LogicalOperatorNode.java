@@ -53,7 +53,7 @@ public class LogicalOperatorNode extends AbstractSqlNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (LogicalOperatorNodeVisitor.class.isInstance(visitor)) {
+        if (visitor instanceof LogicalOperatorNodeVisitor<?, ?>) {
             @SuppressWarnings("unchecked")
             LogicalOperatorNodeVisitor<R, P> v = (LogicalOperatorNodeVisitor) visitor;
             return v.visitLogicalOperatorNode(this, p);

@@ -79,7 +79,7 @@ public class StandardPagingTransformer implements
         OrderByClauseNode orderBy = new OrderByClauseNode(originalOrderBy
                 .getWordNode());
         for (SqlNode child : originalOrderBy.getChildren()) {
-            if (WordNode.class.isInstance(child)) {
+            if (child instanceof WordNode) {
                 WordNode wordNode = (WordNode) child;
                 String word = wordNode.getWord();
                 String[] names = word.split("\\.");

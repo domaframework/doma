@@ -55,7 +55,7 @@ public class WordNode extends AbstractSqlNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (WordNodeVisitor.class.isInstance(visitor)) {
+        if (visitor instanceof WordNodeVisitor<?, ?>) {
             @SuppressWarnings("unchecked")
             WordNodeVisitor<R, P> v = (WordNodeVisitor) visitor;
             return v.visitWordNode(this, p);

@@ -114,7 +114,7 @@ public class IfBlockNode extends AbstractSqlNode implements BlockNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (IfBlockNodeVisitor.class.isInstance(visitor)) {
+        if (visitor instanceof IfBlockNodeVisitor<?, ?>) {
             @SuppressWarnings("unchecked")
             IfBlockNodeVisitor<R, P> v = (IfBlockNodeVisitor) visitor;
             return v.visitIfBlockNode(this, p);

@@ -75,12 +75,11 @@ public class EnumWrapper<E extends Enum<E>> extends AbstractWrapper<E> {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (EnumWrapperVisitor.class.isInstance(visitor)) {
+        if (visitor instanceof EnumWrapperVisitor<?, ?, ?>) {
             @SuppressWarnings("unchecked")
             EnumWrapperVisitor<R, P, TH> v = (EnumWrapperVisitor) visitor;
             return v.visitEnumWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);
     }
-
 }

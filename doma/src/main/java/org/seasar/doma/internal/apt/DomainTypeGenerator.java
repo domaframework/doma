@@ -67,72 +67,35 @@ public class DomainTypeGenerator extends AbstractGenerator {
                 domainMeta.getTypeElement().getQualifiedName());
         print("%n");
         indent();
-        printTypeClassFields();
-        printTypeClassConstructors();
-        printTypeClassMethods();
+        printFields();
+        printConstructors();
+        printMethods();
         unindent();
         unindent();
         iprint("}%n");
     }
 
-    protected void printMethods() {
-        iprint("@Override%n");
-        iprint("public %1$s<%2$s, %3$s> createDomainType() {%n",
-                DomainType.class.getName(), TypeMirrorUtil.boxIfPrimitive(
-                        domainMeta.getValueType(), env), domainMeta
-                        .getTypeElement().getQualifiedName());
-        iprint("    return new %1$sType();%n", domainMeta.getTypeElement()
-                .getSimpleName());
-        iprint("}%n");
-        print("%n");
-        iprint("@Override%n");
-        iprint("public %1$s<%2$s, %3$s> createDomainType(%3$s domain) {%n",
-                DomainType.class.getName(), TypeMirrorUtil.boxIfPrimitive(
-                        domainMeta.getValueType(), env), domainMeta
-                        .getTypeElement().getQualifiedName());
-        iprint("    return new %1$sType(domain);%n", domainMeta
-                .getTypeElement().getSimpleName());
-        iprint("}%n");
-        print("%n");
-    }
-
-    protected void printDomainTypeClass() {
-        iprint("private static class %1$sType implements %2$s<%3$s, %4$s> {%n",
-                domainMeta.getTypeElement().getSimpleName(), DomainType.class
-                        .getName(), TypeMirrorUtil.boxIfPrimitive(domainMeta
-                        .getValueType(), env), domainMeta.getTypeElement()
-                        .getQualifiedName());
-        print("%n");
-        indent();
-        printTypeClassFields();
-        printTypeClassConstructors();
-        printTypeClassMethods();
-        unindent();
-        iprint("}%n");
-        print("%n");
-    }
-
-    protected void printTypeClassFields() {
+    protected void printFields() {
         iprint("private static final %1$s singleton = new %1$s();%n",
                 simpleName);
         print("%n");
     }
 
-    protected void printTypeClassConstructors() {
+    protected void printConstructors() {
         iprint("private %1$s() {%n", simpleName);
         iprint("}%n");
         print("%n");
     }
 
-    protected void printTypeClassMethods() {
-        printTypeClassNewDomainMethod();
-        printTypeClassGetDomainClassMethod();
-        printTypeClassGetWrapperMethod();
-        printTypeClassGetMethod();
+    protected void printMethods() {
+        printNewDomainMethod();
+        printGetDomainClassMethod();
+        printGetWrapperMethod();
+        printGetMethod();
         printWrapperClass();
     }
 
-    protected void printTypeClassNewDomainMethod() {
+    protected void printNewDomainMethod() {
         iprint("@Override%n");
         iprint("public %1$s newDomain(%2$s value) {%n", domainMeta
                 .getTypeElement().getQualifiedName(), TypeMirrorUtil
@@ -149,7 +112,7 @@ public class DomainTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printTypeClassGetDomainClassMethod() {
+    protected void printGetDomainClassMethod() {
         iprint("@Override%n");
         iprint("public Class<%1$s> getDomainClass() {%n", domainMeta
                 .getTypeElement().getQualifiedName());
@@ -159,7 +122,7 @@ public class DomainTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printTypeClassGetWrapperMethod() {
+    protected void printGetWrapperMethod() {
         iprint("@Override%n");
         iprint("public %1$s<%2$s, %3$s> getWrapper(%3$s domain) {%n",
                 DomainWrapper.class.getName(), TypeMirrorUtil.boxIfPrimitive(
@@ -170,7 +133,7 @@ public class DomainTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printTypeClassGetMethod() {
+    protected void printGetMethod() {
         iprint("/**%n");
         iprint(" * @return the singleton%n");
         iprint(" */%n");

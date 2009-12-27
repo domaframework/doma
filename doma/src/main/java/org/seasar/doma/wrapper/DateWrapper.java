@@ -58,12 +58,11 @@ public class DateWrapper extends AbstractWrapper<Date> {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (DateWrapperVisitor.class.isInstance(visitor)) {
+        if (visitor instanceof DateWrapperVisitor<?, ?, ?>) {
             @SuppressWarnings("unchecked")
             DateWrapperVisitor<R, P, TH> v = (DateWrapperVisitor) visitor;
             return v.visitDateWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);
     }
-
 }

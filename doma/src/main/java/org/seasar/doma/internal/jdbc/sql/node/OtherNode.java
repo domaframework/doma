@@ -71,7 +71,7 @@ public class OtherNode extends AbstractSqlNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (OtherNodeVisitor.class.isInstance(visitor)) {
+        if (visitor instanceof OtherNodeVisitor<?, ?>) {
             @SuppressWarnings("unchecked")
             OtherNodeVisitor<R, P> v = (OtherNodeVisitor) visitor;
             return v.visitOtherNode(this, p);

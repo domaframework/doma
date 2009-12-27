@@ -72,7 +72,7 @@ public class ParensNode extends AbstractSqlNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (ParensNodeVisitor.class.isInstance(visitor)) {
+        if (visitor instanceof ParensNodeVisitor<?, ?>) {
             @SuppressWarnings("unchecked")
             ParensNodeVisitor<R, P> v = (ParensNodeVisitor) visitor;
             return v.visitParensNode(this, p);

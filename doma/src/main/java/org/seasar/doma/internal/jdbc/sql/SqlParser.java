@@ -465,10 +465,10 @@ public class SqlParser {
 
     protected boolean isInSelectStatementNode() {
         for (SqlNode node : nodeStack) {
-            if (ParensNode.class.isInstance(node)) {
+            if (node instanceof ParensNode) {
                 return false;
             }
-            if (SelectStatementNode.class.isInstance(node)) {
+            if (node instanceof SelectStatementNode) {
                 return true;
             }
         }
@@ -477,7 +477,7 @@ public class SqlParser {
 
     protected boolean isInIfBlockNode() {
         for (SqlNode node : nodeStack) {
-            if (IfBlockNode.class.isInstance(node)) {
+            if (node instanceof IfBlockNode) {
                 return true;
             }
         }
@@ -486,7 +486,7 @@ public class SqlParser {
 
     protected boolean isInForBlockNode() {
         for (SqlNode node : nodeStack) {
-            if (ForBlockNode.class.isInstance(node)) {
+            if (node instanceof ForBlockNode) {
                 return true;
             }
         }
@@ -495,7 +495,7 @@ public class SqlParser {
 
     protected boolean isInParensNode() {
         for (SqlNode node : nodeStack) {
-            if (ParensNode.class.isInstance(node)) {
+            if (node instanceof ParensNode) {
                 return true;
             }
         }
@@ -504,7 +504,7 @@ public class SqlParser {
 
     protected boolean isInBlockNode() {
         for (SqlNode node : nodeStack) {
-            if (BlockNode.class.isInstance(node)) {
+            if (node instanceof BlockNode) {
                 return true;
             }
         }
@@ -512,24 +512,24 @@ public class SqlParser {
     }
 
     protected boolean isAfterEolNode() {
-        return EolNode.class.isInstance(peek());
+        return peek() instanceof EolNode;
     }
 
     protected boolean isAfterSpaceStrippingNode() {
-        return SpaceStrippingNode.class.isInstance(peek());
+        return peek() instanceof SpaceStrippingNode;
     }
 
     protected boolean isAfterBindVariable() {
-        return BindVariableNode.class.isInstance(peek());
+        return peek() instanceof BindVariableNode;
     }
 
     protected void addNode(SqlNode node) {
         if (isAfterBindVariable()) {
             BindVariableNode bindVariableNode = pop();
-            if (WordNode.class.isInstance(node)) {
+            if (node instanceof WordNode) {
                 WordNode wordNode = (WordNode) node;
                 bindVariableNode.setWordNode(wordNode);
-            } else if (ParensNode.class.isInstance(node)) {
+            } else if (node instanceof ParensNode) {
                 ParensNode parensNode = (ParensNode) node;
                 parensNode.setAttachedWithBindVariable(true);
                 bindVariableNode.setParensNode(parensNode);

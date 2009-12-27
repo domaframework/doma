@@ -62,7 +62,7 @@ public class ElseifNode extends AbstractSqlNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (ElseifNodeVisitor.class.isInstance(visitor)) {
+        if (visitor instanceof ElseifNodeVisitor<?, ?>) {
             @SuppressWarnings("unchecked")
             ElseifNodeVisitor<R, P> v = (ElseifNodeVisitor) visitor;
             return v.visitElseifNode(this, p);

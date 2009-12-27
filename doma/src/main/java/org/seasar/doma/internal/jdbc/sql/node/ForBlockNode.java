@@ -97,7 +97,7 @@ public class ForBlockNode extends AbstractSqlNode implements BlockNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (ForBlockNodeVisitor.class.isInstance(visitor)) {
+        if (visitor instanceof ForBlockNodeVisitor<?, ?>) {
             @SuppressWarnings("unchecked")
             ForBlockNodeVisitor<R, P> v = (ForBlockNodeVisitor) visitor;
             return v.visitForBlockNode(this, p);

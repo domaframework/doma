@@ -61,7 +61,7 @@ public class ArrayWrapper extends AbstractWrapper<Array> {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (ArrayWrapperVisitor.class.isInstance(visitor)) {
+        if (visitor instanceof ArrayWrapperVisitor<?, ?, ?>) {
             @SuppressWarnings("unchecked")
             ArrayWrapperVisitor<R, P, TH> v = (ArrayWrapperVisitor) visitor;
             return v.visitArrayWrapper(this, p);

@@ -71,7 +71,7 @@ public class EmbeddedVariableNode extends AbstractSqlNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (EmbeddedVariableNodeVisitor.class.isInstance(visitor)) {
+        if (visitor instanceof EmbeddedVariableNodeVisitor<?, ?>) {
             @SuppressWarnings("unchecked")
             EmbeddedVariableNodeVisitor<R, P> v = (EmbeddedVariableNodeVisitor) visitor;
             return v.visitEmbeddedVariableNode(this, p);

@@ -59,7 +59,7 @@ public class BlobWrapper extends AbstractWrapper<Blob> {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (BlobWrapperVisitor.class.isInstance(visitor)) {
+        if (visitor instanceof BlobWrapperVisitor<?, ?, ?>) {
             @SuppressWarnings("unchecked")
             BlobWrapperVisitor<R, P, TH> v = (BlobWrapperVisitor) visitor;
             return v.visitBlobWrapper(this, p);

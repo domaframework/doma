@@ -52,12 +52,11 @@ public class GroupByClauseNode extends AbstractClauseNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (GroupByClauseNodeVisitor.class.isInstance(visitor)) {
+        if (visitor instanceof GroupByClauseNodeVisitor<?, ?>) {
             @SuppressWarnings("unchecked")
             GroupByClauseNodeVisitor<R, P> v = (GroupByClauseNodeVisitor) visitor;
             return v.visitGroupByClauseNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);
     }
-
 }
