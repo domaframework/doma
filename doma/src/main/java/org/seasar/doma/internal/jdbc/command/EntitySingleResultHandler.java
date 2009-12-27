@@ -21,7 +21,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.seasar.doma.internal.jdbc.entity.EntityType;
-import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.Sql;
@@ -32,24 +31,23 @@ import org.seasar.doma.jdbc.Sql;
  */
 public class EntitySingleResultHandler<E> implements ResultSetHandler<E> {
 
-    protected final EntityTypeFactory<E> entityTypeFactory;
+    protected final EntityType<E> entityType;
 
-    public EntitySingleResultHandler(EntityTypeFactory<E> entityTypeFactory) {
-        assertNotNull(entityTypeFactory);
-        this.entityTypeFactory = entityTypeFactory;
+    public EntitySingleResultHandler(EntityType<E> entityType) {
+        assertNotNull(entityType);
+        this.entityType = entityType;
     }
 
     @Override
     public E handle(ResultSet resultSet, Query query) throws SQLException {
-        EntityFetcher fetcher = new EntityFetcher(query);
-        EntityType<E> entityType = entityTypeFactory.createEntityType();
+        EntityFetcher<E> fetcher = new EntityFetcher<E>(query);
         if (resultSet.next()) {
-            fetcher.fetch(resultSet, entityType);
+            E entity = fetcher.fetch(resultSet, entityType);
             if (resultSet.next()) {
                 Sql<?> sql = query.getSql();
                 throw new NonUniqueResultException(sql);
             }
-            return entityType.getEntity();
+            return entity;
         }
         return null;
     }

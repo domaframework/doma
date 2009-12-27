@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.seasar.doma.internal.jdbc.entity.EntityType;
-import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.query.Query;
 
 /**
@@ -32,21 +31,20 @@ import org.seasar.doma.internal.jdbc.query.Query;
  */
 public class EntityResultListHandler<E> implements ResultSetHandler<List<E>> {
 
-    protected final EntityTypeFactory<E> entityTypeFactory;
+    protected final EntityType<E> entityType;
 
-    public EntityResultListHandler(EntityTypeFactory<E> entityTypeFactory) {
-        assertNotNull(entityTypeFactory);
-        this.entityTypeFactory = entityTypeFactory;
+    public EntityResultListHandler(EntityType<E> entityType) {
+        assertNotNull(entityType);
+        this.entityType = entityType;
     }
 
     @Override
     public List<E> handle(ResultSet resultSet, Query query) throws SQLException {
-        EntityFetcher fetcher = new EntityFetcher(query);
+        EntityFetcher<E> fetcher = new EntityFetcher<E>(query);
         List<E> entities = new ArrayList<E>();
         while (resultSet.next()) {
-            EntityType<E> entityType = entityTypeFactory.createEntityType();
-            fetcher.fetch(resultSet, entityType);
-            entities.add(entityType.getEntity());
+            E entity = fetcher.fetch(resultSet, entityType);
+            entities.add(entity);
         }
         return entities;
     }

@@ -36,7 +36,8 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class EntityFetcher implements ResultFetcher<ResultSet, EntityType<?>> {
+public class EntityFetcher<E> implements
+        ResultFetcher<ResultSet, EntityType<E>> {
 
     protected final Query query;
 
@@ -48,27 +49,34 @@ public class EntityFetcher implements ResultFetcher<ResultSet, EntityType<?>> {
     }
 
     @Override
-    public void fetch(ResultSet resultSet, EntityType<?> entityType)
+    public E fetch(ResultSet resultSet, EntityType<E> entityType)
             throws SQLException {
         assertNotNull(resultSet, entityType);
         if (indexMap == null) {
             indexMap = createIndexMap(resultSet.getMetaData(), entityType);
         }
+        E entity = entityType.newEntity();
         JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().getDialect()
                 .getJdbcMappingVisitor();
         for (Map.Entry<Integer, String> entry : indexMap.entrySet()) {
             Integer index = entry.getKey();
             String propertyName = entry.getValue();
             GetValueFunction function = new GetValueFunction(resultSet, index);
-            EntityPropertyType<?> propertyType = entityType
+            EntityPropertyType<E, ?> propertyType = entityType
                     .getEntityPropertyType(propertyName);
-            Wrapper<?> wrapper = propertyType.getWrapper();
+            Wrapper<?> wrapper = propertyType.getWrapper(entity);
             wrapper.accept(jdbcMappingVisitor, function);
         }
+        entityType.saveCurrentStates(entity);
+        return entity;
+    }
+
+    protected <W extends Wrapper<?>> W aaa(W a) {
+        return a;
     }
 
     protected HashMap<Integer, String> createIndexMap(
-            ResultSetMetaData resultSetMeta, EntityType<?> entityType)
+            ResultSetMetaData resultSetMeta, EntityType<E> entityType)
             throws SQLException {
         HashMap<Integer, String> indexMap = new HashMap<Integer, String>();
         HashMap<String, String> columnNameMap = createColumnNameMap(entityType);
@@ -92,12 +100,12 @@ public class EntityFetcher implements ResultFetcher<ResultSet, EntityType<?>> {
     }
 
     protected HashMap<String, String> createColumnNameMap(
-            EntityType<?> entityType) {
-        List<EntityPropertyType<?>> propertyTypes = entityType
+            EntityType<E> entityType) {
+        List<EntityPropertyType<E, ?>> propertyTypes = entityType
                 .getEntityPropertyTypes();
         HashMap<String, String> result = new HashMap<String, String>(
                 propertyTypes.size());
-        for (EntityPropertyType<?> p : propertyTypes) {
+        for (EntityPropertyType<E, ?> p : propertyTypes) {
             String columnName = p.getColumnName();
             result.put(columnName.toLowerCase(), p.getName());
         }

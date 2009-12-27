@@ -21,7 +21,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.seasar.doma.internal.jdbc.entity.EntityType;
-import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
@@ -32,27 +31,25 @@ import org.seasar.doma.jdbc.IterationContext;
  */
 public class EntityIterationHandler<R, E> implements ResultSetHandler<R> {
 
-    protected final EntityTypeFactory<E> entityTypeFactory;
+    protected final EntityType<E> entityType;
 
     protected final IterationCallback<R, E> iterationCallback;
 
-    public EntityIterationHandler(EntityTypeFactory<E> entityTypeFactory,
+    public EntityIterationHandler(EntityType<E> entityType,
             IterationCallback<R, E> iterationCallback) {
-        assertNotNull(entityTypeFactory, iterationCallback);
-        this.entityTypeFactory = entityTypeFactory;
+        assertNotNull(entityType, iterationCallback);
+        this.entityType = entityType;
         this.iterationCallback = iterationCallback;
     }
 
     @Override
     public R handle(ResultSet resultSet, Query query) throws SQLException {
-        EntityFetcher fetcher = new EntityFetcher(query);
+        EntityFetcher<E> fetcher = new EntityFetcher<E>(query);
         IterationContext iterationContext = new IterationContext();
         R result = null;
         while (resultSet.next()) {
-            EntityType<E> entityType = entityTypeFactory.createEntityType();
-            fetcher.fetch(resultSet, entityType);
-            result = iterationCallback.iterate(entityType.getEntity(),
-                    iterationContext);
+            E entity = fetcher.fetch(resultSet, entityType);
+            result = iterationCallback.iterate(entity, iterationContext);
             if (iterationContext.isExited()) {
                 return result;
             }

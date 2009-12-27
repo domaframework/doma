@@ -23,37 +23,41 @@ public interface CallableSqlParameterVisitor<R, P, TH extends Throwable> {
 
     R visitBasicInParameter(BasicInParameter parameter, P p) throws TH;
 
-    R visitDomainInParameter(DomainInParameter<?, ?> parameter, P p) throws TH;
-
-    R visitBasicOutParameter(BasicOutParameter<?> parameter, P p) throws TH;
-
-    R visitDomainOutParameter(DomainOutParameter<?, ?> parameter, P p)
+    <V, D> R visitDomainInParameter(DomainInParameter<V, D> parameter, P p)
             throws TH;
 
-    R visitBasicInOutParameter(BasicInOutParameter<?> parameter, P p) throws TH;
+    <V> R visitBasicOutParameter(BasicOutParameter<V> parameter, P p) throws TH;
 
-    R visitDomainInOutParameter(DomainInOutParameter<?, ?> parameter, P p)
+    <V, D> R visitDomainOutParameter(DomainOutParameter<V, D> parameter, P p)
             throws TH;
 
-    R visitBasicListParameter(BasicListParameter<?> parameter, P p) throws TH;
-
-    R visitDomainListParameter(DomainListParameter<?, ?> parameter, P p)
+    <V> R visitBasicInOutParameter(BasicInOutParameter<V> parameter, P p)
             throws TH;
 
-    R visitEntityListParameter(EntityListParameter<?> parameter, P p) throws TH;
-
-    R visitBasicListResultParameter(BasicListResultParameter<?> parameter, P p)
+    <V, D> R visitDomainInOutParameter(DomainInOutParameter<V, D> parameter, P p)
             throws TH;
 
-    R visitDomainListResultParameter(DomainListResultParameter<?, ?> parameter,
+    <V> R visitBasicListParameter(BasicListParameter<V> parameter, P p)
+            throws TH;
+
+    <V, D> R visitDomainListParameter(DomainListParameter<V, D> parameter, P p)
+            throws TH;
+
+    <E> R visitEntityListParameter(EntityListParameter<E> parameter, P p)
+            throws TH;
+
+    <V> R visitBasicListResultParameter(BasicListResultParameter<V> parameter,
             P p) throws TH;
 
-    R visitEntityListResultParameter(EntityListResultParameter<?> parameter, P p)
+    <V, D> R visitDomainListResultParameter(
+            DomainListResultParameter<V, D> parameter, P p) throws TH;
+
+    <E> R visitEntityListResultParameter(
+            EntityListResultParameter<E> parameter, P p) throws TH;
+
+    <V> R visitBasicResultParameter(BasicResultParameter<V> parameter, P p)
             throws TH;
 
-    R visitBasicResultParameter(BasicResultParameter<?> parameter, P p)
-            throws TH;
-
-    R visitDomainResultParameter(DomainResultParameter<?, ?> parameter, P p)
-            throws TH;
+    <V, D> R visitDomainResultParameter(DomainResultParameter<V, D> parameter,
+            P p) throws TH;
 }

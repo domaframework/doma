@@ -52,7 +52,7 @@ public class DomainSingleResultHandlerTest extends TestCase {
         query.prepare();
 
         DomainSingleResultHandler<String, PhoneNumber> handler = new DomainSingleResultHandler<String, PhoneNumber>(
-                new _PhoneNumber());
+                _PhoneNumber.get());
         PhoneNumber result = handler.handle(resultSet, query);
         assertEquals("01-2345-6789", result.getValue());
     }
@@ -71,7 +71,7 @@ public class DomainSingleResultHandlerTest extends TestCase {
         query.prepare();
 
         DomainSingleResultHandler<String, PhoneNumber> handler = new DomainSingleResultHandler<String, PhoneNumber>(
-                new _PhoneNumber());
+                _PhoneNumber.get());
         try {
             handler.handle(resultSet, query);
             fail();

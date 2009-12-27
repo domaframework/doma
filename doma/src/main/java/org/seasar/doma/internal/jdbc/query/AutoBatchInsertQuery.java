@@ -24,7 +24,6 @@ import java.util.List;
 
 import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.internal.jdbc.entity.EntityType;
-import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
@@ -40,26 +39,26 @@ import org.seasar.doma.jdbc.id.IdGenerationConfig;
 public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
         BatchInsertQuery {
 
-    protected GeneratedIdPropertyType<?> generatedIdPropertyType;
+    protected GeneratedIdPropertyType<E, ?> generatedIdPropertyType;
 
-    protected final List<GeneratedIdPropertyType<?>> generatedIdPropertyTypes = new ArrayList<GeneratedIdPropertyType<?>>();
+    protected final List<GeneratedIdPropertyType<E, ?>> generatedIdPropertyTypes = new ArrayList<GeneratedIdPropertyType<E, ?>>();
 
     protected IdGenerationConfig idGenerationConfig;
 
     protected boolean batchSupported = true;
 
-    public AutoBatchInsertQuery(EntityTypeFactory<E> entityTypeFactory) {
-        super(entityTypeFactory);
+    public AutoBatchInsertQuery(EntityType<E> entityType) {
+        super(entityType);
     }
 
     public void prepare() {
-        assertNotNull(config);
-        Iterator<EntityType<E>> it = entityTypes.iterator();
+        assertNotNull(config, callerClassName, callerMethodName, entities, sqls);
+        Iterator<E> it = entities.iterator();
         if (it.hasNext()) {
             executable = true;
             executionSkipCause = null;
-            entityType = it.next();
-            entityType.preInsert();
+            currentEntity = it.next();
+            entityType.preInsert(currentEntity);
             prepareTableAndColumnNames();
             prepareIdAndVersionProperties();
             prepareOptions();
@@ -74,14 +73,15 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
             generatedIdPropertyType = null;
             versionPropertyType = null;
             targetProperties.clear();
-            this.entityType = it.next();
-            entityType.preInsert();
+            currentEntity = it.next();
+            entityType.preInsert(currentEntity);
             prepareIdAndVersionProperties();
             prepareTargetProperties();
             prepareVersionValue();
             prepareSql();
         }
-        assertEquals(entityTypes.size(), sqls.size());
+        currentEntity = null;
+        assertEquals(entities.size(), sqls.size());
     }
 
     @Override
@@ -102,12 +102,13 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
                 batchSupported = generatedIdPropertyType
                         .isBatchSupported(idGenerationConfig);
             }
-            generatedIdPropertyType.preInsert(idGenerationConfig);
+            generatedIdPropertyType
+                    .preInsert(currentEntity, idGenerationConfig);
         }
     }
 
     protected void prepareTargetProperties() {
-        for (EntityPropertyType<?> p : entityType.getEntityPropertyTypes()) {
+        for (EntityPropertyType<E, ?> p : entityType.getEntityPropertyTypes()) {
             if (!p.isInsertable()) {
                 continue;
             }
@@ -118,7 +119,7 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
                     targetProperties.add(p);
                 }
                 if (generatedIdPropertyType == null
-                        && p.getWrapper().get() == null) {
+                        && p.getWrapper(currentEntity).get() == null) {
                     throw new JdbcException(DomaMessageCode.DOMA2020,
                             entityType.getName(), p.getName());
                 }
@@ -133,7 +134,7 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
 
     protected void prepareVersionValue() {
         if (versionPropertyType != null) {
-            versionPropertyType.setIfNecessary(1);
+            versionPropertyType.setIfNecessary(currentEntity, 1);
         }
     }
 
@@ -143,14 +144,14 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
         builder.appendSql("insert into ");
         builder.appendSql(tableName);
         builder.appendSql(" (");
-        for (EntityPropertyType<?> p : targetProperties) {
+        for (EntityPropertyType<E, ?> p : targetProperties) {
             builder.appendSql(columnNameMap.get(p.getName()));
             builder.appendSql(", ");
         }
         builder.cutBackSql(2);
         builder.appendSql(") values (");
-        for (EntityPropertyType<?> p : targetProperties) {
-            builder.appendWrapper(p.getWrapper());
+        for (EntityPropertyType<E, ?> p : targetProperties) {
+            builder.appendWrapper(p.getWrapper(currentEntity));
             builder.appendSql(", ");
         }
         builder.cutBackSql(2);
@@ -166,9 +167,10 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
 
     @Override
     public void generateId(Statement statement, int index) {
-        GeneratedIdPropertyType<?> generatedIdProperty = generatedIdPropertyTypes
+        GeneratedIdPropertyType<E, ?> generatedIdProperty = generatedIdPropertyTypes
                 .get(index);
-        generatedIdProperty.postInsert(idGenerationConfig, statement);
+        generatedIdProperty.postInsert(entities.get(index), idGenerationConfig,
+                statement);
     }
 
 }

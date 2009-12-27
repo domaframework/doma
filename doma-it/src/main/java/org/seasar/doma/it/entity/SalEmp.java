@@ -1,6 +1,5 @@
 package org.seasar.doma.it.entity;
 
-import java.io.Serializable;
 import java.sql.Array;
 
 import org.seasar.doma.Entity;
@@ -21,7 +20,7 @@ public class SalEmp {
     Array schedule;
 
     @OriginalStates
-    Serializable originalStates;
+    SalEmp originalStates;
 
     public String getName() {
         return name;

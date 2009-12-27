@@ -15,10 +15,6 @@
  */
 package org.seasar.doma.wrapper;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 import org.seasar.doma.DomaNullPointerException;
@@ -30,9 +26,7 @@ import org.seasar.doma.DomaNullPointerException;
  * 
  */
 public class BigDecimalWrapper extends AbstractWrapper<BigDecimal> implements
-        NumberWrapper<BigDecimal>, Serializable {
-
-    private static final long serialVersionUID = 1L;
+        NumberWrapper<BigDecimal> {
 
     /**
      * インスタンスを構築します。
@@ -48,11 +42,6 @@ public class BigDecimalWrapper extends AbstractWrapper<BigDecimal> implements
      */
     public BigDecimalWrapper(BigDecimal value) {
         super(value);
-    }
-
-    @Override
-    public BigDecimalWrapper copy() {
-        return new BigDecimalWrapper(value);
     }
 
     @Override
@@ -74,15 +63,4 @@ public class BigDecimalWrapper extends AbstractWrapper<BigDecimal> implements
         return visitor.visitUnknownWrapper(this, p);
     }
 
-    private void readObject(ObjectInputStream inputStream) throws IOException,
-            ClassNotFoundException {
-        inputStream.defaultReadObject();
-        value = (BigDecimal) inputStream.readObject();
-    }
-
-    private void writeObject(ObjectOutputStream outputStream)
-            throws IOException {
-        outputStream.defaultWriteObject();
-        outputStream.writeObject(value);
-    }
 }

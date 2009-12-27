@@ -18,7 +18,7 @@ package org.seasar.doma.internal.jdbc.sql;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seasar.doma.internal.domain.DomainTypeFactory;
+import org.seasar.doma.internal.domain.DomainType;
 
 /**
  * @author taedium
@@ -27,8 +27,8 @@ import org.seasar.doma.internal.domain.DomainTypeFactory;
 public class DomainListResultParameter<V, D> extends DomainListParameter<V, D>
         implements ResultParameter<List<D>> {
 
-    public DomainListResultParameter(DomainTypeFactory<V, D> domainTypeFactory) {
-        super(domainTypeFactory, new ArrayList<D>());
+    public DomainListResultParameter(DomainType<V, D> domainType) {
+        super(domainType, new ArrayList<D>());
     }
 
     @Override

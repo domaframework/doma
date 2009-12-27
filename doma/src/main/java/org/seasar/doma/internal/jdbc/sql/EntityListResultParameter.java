@@ -18,7 +18,7 @@ package org.seasar.doma.internal.jdbc.sql;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
+import org.seasar.doma.internal.jdbc.entity.EntityType;
 
 /**
  * @author taedium
@@ -27,8 +27,8 @@ import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 public class EntityListResultParameter<E> extends EntityListParameter<E>
         implements ResultParameter<List<E>> {
 
-    public EntityListResultParameter(EntityTypeFactory<E> entityTypeFactory) {
-        super(entityTypeFactory, new ArrayList<E>());
+    public EntityListResultParameter(EntityType<E> entityType) {
+        super(entityType, new ArrayList<E>());
     }
 
     @Override

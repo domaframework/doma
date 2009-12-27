@@ -17,7 +17,6 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -193,7 +192,8 @@ public class EntityMetaFactory {
                     throw new AptException(DomaMessageCode.DOMA4094, env,
                             fieldElement);
                 } else if (fieldElement.getAnnotation(OriginalStates.class) != null) {
-                    doOriginalStatesField(fieldElement, entityMeta);
+                    doOriginalStatesField(classElement, fieldElement,
+                            entityMeta);
                 } else {
                     doEntityPropertyMeta(fieldElement, entityMeta);
                 }
@@ -234,14 +234,15 @@ public class EntityMetaFactory {
         return results;
     }
 
-    protected void doOriginalStatesField(VariableElement fieldElement,
-            EntityMeta entityMeta) {
+    protected void doOriginalStatesField(TypeElement classElement,
+            VariableElement fieldElement, EntityMeta entityMeta) {
         if (entityMeta.hasOriginalStatesMeta()) {
             throw new AptException(DomaMessageCode.DOMA4125, env, fieldElement);
         }
-        if (!TypeMirrorUtil.isSameType(fieldElement.asType(),
-                Serializable.class, env)) {
-            throw new AptException(DomaMessageCode.DOMA4135, env, fieldElement);
+        if (!TypeMirrorUtil.isSameType(fieldElement.asType(), classElement
+                .asType(), env)) {
+            throw new AptException(DomaMessageCode.DOMA4135, env, fieldElement,
+                    classElement.getQualifiedName());
         }
         TypeElement entityElement = ElementUtil.toTypeElement(fieldElement
                 .getEnclosingElement(), env);

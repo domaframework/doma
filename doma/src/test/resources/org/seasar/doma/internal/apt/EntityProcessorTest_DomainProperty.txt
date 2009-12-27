@@ -2,197 +2,183 @@ package org.seasar.doma.internal.apt.entity;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
-public class _DomainPropertyEntity implements org.seasar.doma.internal.jdbc.entity.EntityTypeFactory<org.seasar.doma.internal.apt.entity.DomainPropertyEntity> {
+public final class _DomainPropertyEntity implements org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity> {
+
+    private static final _DomainPropertyEntity __singleton = new _DomainPropertyEntity();
+
+    public final org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, java.lang.Integer> id = new org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, java.lang.Integer>("id", "id") {
+        @Override
+        public org.seasar.doma.wrapper.IntegerWrapper getWrapper(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity) {
+            return new Wrapper(entity);
+        }
+
+        class Wrapper extends org.seasar.doma.wrapper.IntegerWrapper {
+
+            private final org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity;
+
+            private Wrapper(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity) {
+                this.entity = entity;
+            }
+
+            @Override
+            public java.lang.Integer get() {
+                if (entity == null) {
+                    return null;
+                }
+                return entity.id;
+            }
+
+            @Override
+            public void set(java.lang.Integer value) {
+                if (entity == null) {
+                    return;
+                }
+                entity.id = value;
+            }
+        }
+    };
+
+    public final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, java.lang.String> name = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, java.lang.String>("name", "name", true, true) {
+        @Override
+        public org.seasar.doma.wrapper.StringWrapper getWrapper(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity) {
+            return new Wrapper(entity);
+        }
+
+        class Wrapper extends org.seasar.doma.wrapper.StringWrapper {
+
+            private final org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity;
+
+            private Wrapper(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity) {
+                this.entity = entity;
+            }
+
+            @Override
+            public java.lang.String get() {
+                if (entity == null) {
+                    return null;
+                }
+                return org.seasar.doma.internal.apt.domain._Name.get().getWrapper(entity.name).get();
+            }
+
+            @Override
+            public void set(java.lang.String value) {
+                if (entity == null) {
+                    return;
+                }
+                entity.name = org.seasar.doma.internal.apt.domain._Name.get().newDomain(value);
+            }
+        }
+    };
+
+    private final org.seasar.doma.jdbc.entity.NullEntityListener __listener;
+
+    private final String __catalogName;
+
+    private final String __schemaName;
+
+    private final String __tableName;
+
+    private final String __name;
+
+    private final java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, ?>> __entityPropertyTypes;
+
+    private final java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, ?>> __entityPropertyTypeMap;
+
+    private _DomainPropertyEntity() {
+        __listener = new org.seasar.doma.jdbc.entity.NullEntityListener();
+        __name = "DomainPropertyEntity";
+        __catalogName = "";
+        __schemaName = "";
+        __tableName = "DomainPropertyEntity";
+        java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, ?>> __list = new java.util.ArrayList<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, ?>>();
+        java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, ?>> __map = new java.util.HashMap<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, ?>>();
+        __list.add(id);
+        __map.put("id", id);
+        __list.add(name);
+        __map.put("name", name);
+        __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
+        __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);
+    }
 
     @Override
-    public org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity> createEntityType() {
-        return new DomainPropertyEntityType();
+    public String getName() {
+        return __name;
     }
 
     @Override
-    public org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity> createEntityType(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity) {
-        return new DomainPropertyEntityType(entity);
+    public String getCatalogName() {
+        return __catalogName;
     }
 
-    private static class DomainPropertyEntityType implements org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity> {
-
-        private static final org.seasar.doma.jdbc.entity.NullEntityListener __listener = new org.seasar.doma.jdbc.entity.NullEntityListener();
-
-        private final org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper> id = new org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("id", "id", new org.seasar.doma.wrapper.IntegerWrapper());
-
-        private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.StringWrapper> name = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.StringWrapper>("name", "name", new org.seasar.doma.wrapper.StringWrapper(), true, true);
-
-        private final org.seasar.doma.internal.apt.entity.DomainPropertyEntity __entity;
-
-        private final String __catalogName = "";
-
-        private final String __schemaName = "";
-
-        private final String __tableName = "DomainPropertyEntity";
-
-        private final java.util.HashMap<String, org.seasar.doma.wrapper.Wrapper<?>> __originalStates;
-
-        private final String __name = "DomainPropertyEntity";
-
-        private java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __entityProperties;
-
-        private java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __entityPropertyMap;
-
-        private DomainPropertyEntityType() {
-            this(new org.seasar.doma.internal.apt.entity.DomainPropertyEntity());
-        }
-
-        private DomainPropertyEntityType(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity) {
-            __entity = entity;
-            __originalStates = null;
-            refreshEntityTypeInternal();
-        }
-
-        @Override
-        public String getName() {
-            return __name;
-        }
-
-        @Override
-        public String getCatalogName() {
-            return __catalogName;
-        }
-
-        @Override
-        public String getSchemaName() {
-            return __schemaName;
-        }
-
-        @Override
-        public String getTableName() {
-            return __tableName;
-        }
-
-        @Override
-        public void preInsert() {
-            __listener.preInsert(__entity);
-            refreshEntityTypeInternal();
-        }
-
-        @Override
-        public void preUpdate() {
-            __listener.preUpdate(__entity);
-            refreshEntityTypeInternal();
-        }
-
-        @Override
-        public void preDelete() {
-            __listener.preDelete(__entity);
-            refreshEntityTypeInternal();
-        }
-
-        @Override
-        public java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> getEntityPropertyTypes() {
-            if (__entityProperties == null) {
-                java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __list = new java.util.ArrayList<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>>();
-                __list.add(id);
-                __list.add(name);
-                __entityProperties = java.util.Collections.unmodifiableList(__list);
-            }
-            return __entityProperties;
-        }
-
-        @Override
-        public org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?> getEntityPropertyType(String __name) {
-            if (__entityPropertyMap == null) {
-                java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __map = new java.util.HashMap<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>>();
-                __map.put("id", id);
-                __map.put("name", name);
-                __entityPropertyMap = java.util.Collections.unmodifiableMap(__map);
-            }
-            return __entityPropertyMap.get(__name);
-        }
-
-        @Override
-        public org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType<?> getGeneratedIdPropertyType() {
-            return null;
-        }
-
-        @Override
-        public org.seasar.doma.internal.jdbc.entity.VersionPropertyType<?> getVersionPropertyType() {
-            return null;
-        }
-
-        @Override
-        public void refreshEntity() {
-            refreshEntityInternal();
-        }
-
-        private void refreshEntityInternal() {
-            org.seasar.doma.internal.apt.entity._DomainPropertyEntity.DomainPropertyEntityAccessor.setId(__entity, id.getWrapper().get());
-            org.seasar.doma.internal.apt.entity._DomainPropertyEntity.DomainPropertyEntityAccessor.setName(__entity, name.getWrapper().get());
-        }
-
-        private void refreshEntityTypeInternal() {
-            id.getWrapper().set(org.seasar.doma.internal.apt.entity._DomainPropertyEntity.DomainPropertyEntityAccessor.getId(__entity));
-            name.getWrapper().set(org.seasar.doma.internal.apt.entity._DomainPropertyEntity.DomainPropertyEntityAccessor.getName(__entity));
-        }
-
-        @Override
-        public org.seasar.doma.internal.apt.entity.DomainPropertyEntity getEntity() {
-            refreshEntityInternal();
-            return __entity;
-        }
-
-        @Override
-        public Class<org.seasar.doma.internal.apt.entity.DomainPropertyEntity> getEntityClass() {
-            return org.seasar.doma.internal.apt.entity.DomainPropertyEntity.class;
-        }
-
-        @Override
-        public java.util.Map<String, org.seasar.doma.wrapper.Wrapper<?>> getOriginalStates() {
-            return __originalStates;
-        }
-
+    @Override
+    public String getSchemaName() {
+        return __schemaName;
     }
 
-    /** */
-    public static class DomainPropertyEntityAccessor {
+    @Override
+    public String getTableName() {
+        return __tableName;
+    }
 
-        /**
-         * 
-         * @param entity
-         * @param id
-         */
-        public static void setId(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity, java.lang.Integer id) {
-            entity.id = id;
-        }
+    @Override
+    public void preInsert(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity) {
+        __listener.preInsert(entity);
+    }
 
-        /**
-         * 
-         * @param entity
-         * @return
-         */
-        public static java.lang.Integer getId(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity) {
-            return entity.id;
-        }
+    @Override
+    public void preUpdate(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity) {
+        __listener.preUpdate(entity);
+    }
 
-        /**
-         * 
-         * @param entity
-         * @param name
-         */
-        public static void setName(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity, java.lang.String name) {
-            org.seasar.doma.internal.domain.DomainType<java.lang.String, org.seasar.doma.internal.apt.domain.Name> __domainType = new org.seasar.doma.internal.apt.domain._Name().createDomainType();
-            __domainType.getWrapper().set(name);
-            entity.name = __domainType.getDomain();
-        }
+    @Override
+    public void preDelete(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity) {
+        __listener.preDelete(entity);
+    }
 
-        /**
-         * 
-         * @param entity
-         * @return
-         */
-        public static java.lang.String getName(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity) {
-            org.seasar.doma.internal.domain.DomainType<java.lang.String, org.seasar.doma.internal.apt.domain.Name> __domainType = new org.seasar.doma.internal.apt.domain._Name().createDomainType(entity.name);
-            return __domainType.getWrapper().get();
-        }
+    @Override
+    public java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, ?>> getEntityPropertyTypes() {
+        return __entityPropertyTypes;
+    }
 
+    @Override
+    public org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, ?> getEntityPropertyType(String __name) {
+        return __entityPropertyTypeMap.get(__name);
+    }
+
+    @Override
+    public org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, ?> getGeneratedIdPropertyType() {
+        return null;
+    }
+
+    @Override
+    public org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, ?> getVersionPropertyType() {
+        return null;
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.entity.DomainPropertyEntity newEntity() {
+        return new org.seasar.doma.internal.apt.entity.DomainPropertyEntity();
+    }
+
+    @Override
+    public Class<org.seasar.doma.internal.apt.entity.DomainPropertyEntity> getEntityClass() {
+        return org.seasar.doma.internal.apt.entity.DomainPropertyEntity.class;
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.entity.DomainPropertyEntity getOriginalStates(org.seasar.doma.internal.apt.entity.DomainPropertyEntity __entity) {
+        return null;
+    }
+
+    @Override
+    public void saveCurrentStates(org.seasar.doma.internal.apt.entity.DomainPropertyEntity __entity) {
+    }
+
+    /**
+     * @return the singleton
+     */
+    public static _DomainPropertyEntity get() {
+        return __singleton;
     }
 
 }

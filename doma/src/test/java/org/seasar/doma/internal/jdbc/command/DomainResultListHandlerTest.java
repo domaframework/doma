@@ -54,7 +54,7 @@ public class DomainResultListHandlerTest extends TestCase {
         query.prepare();
 
         DomainResultListHandler<String, PhoneNumber> handler = new DomainResultListHandler<String, PhoneNumber>(
-                new _PhoneNumber());
+                _PhoneNumber.get());
         List<PhoneNumber> results = handler.handle(resultSet, query);
         assertEquals(2, results.size());
         assertEquals("01-2345-6789", results.get(0).getValue());

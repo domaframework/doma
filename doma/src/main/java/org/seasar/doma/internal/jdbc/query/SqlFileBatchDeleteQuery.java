@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.query;
 
-import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
+import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.SqlKind;
 
 /**
@@ -29,8 +29,8 @@ public class SqlFileBatchDeleteQuery<E> extends SqlFileBatchModifyQuery<E>
 
     protected boolean optimisticLockExceptionSuppressed;
 
-    public SqlFileBatchDeleteQuery(EntityTypeFactory<E> entityTypeFactory) {
-        super(entityTypeFactory, SqlKind.BATCH_DELETE);
+    public SqlFileBatchDeleteQuery(EntityType<E> entityType) {
+        super(entityType, SqlKind.BATCH_DELETE);
     }
 
 }

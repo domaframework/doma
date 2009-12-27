@@ -16,7 +16,6 @@
 package org.seasar.doma.internal.jdbc.entity;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * 基本のプロパティです。
@@ -24,20 +23,18 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class BasicPropertyType<W extends Wrapper<?>> implements
-        EntityPropertyType<W> {
+public abstract class BasicPropertyType<E, V> implements
+        EntityPropertyType<E, V> {
 
     protected final String name;
 
     protected final String columnName;
 
-    protected final W wrapper;
-
     protected final boolean insertable;
 
     protected final boolean updatable;
 
-    public BasicPropertyType(String name, String columnName, W wrapper,
+    protected BasicPropertyType(String name, String columnName,
             boolean insertable, boolean updatable) {
         if (name == null) {
             throw new DomaNullPointerException("name");
@@ -45,12 +42,8 @@ public class BasicPropertyType<W extends Wrapper<?>> implements
         if (columnName == null) {
             throw new DomaNullPointerException("columnName");
         }
-        if (wrapper == null) {
-            throw new DomaNullPointerException("wrapper");
-        }
         this.name = name;
         this.columnName = columnName;
-        this.wrapper = wrapper;
         this.insertable = insertable;
         this.updatable = updatable;
     }
@@ -63,11 +56,6 @@ public class BasicPropertyType<W extends Wrapper<?>> implements
     @Override
     public String getColumnName() {
         return columnName;
-    }
-
-    @Override
-    public W getWrapper() {
-        return wrapper;
     }
 
     @Override
@@ -88,11 +76,6 @@ public class BasicPropertyType<W extends Wrapper<?>> implements
     @Override
     public boolean isUpdatable() {
         return updatable;
-    }
-
-    @Override
-    public String toString() {
-        return wrapper != null ? wrapper.toString() : null;
     }
 
 }

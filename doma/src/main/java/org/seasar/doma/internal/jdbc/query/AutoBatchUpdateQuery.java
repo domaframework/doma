@@ -21,7 +21,6 @@ import java.util.Iterator;
 
 import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.internal.jdbc.entity.EntityType;
-import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
@@ -38,18 +37,18 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
 
     protected boolean optimisticLockExceptionSuppressed;
 
-    public AutoBatchUpdateQuery(EntityTypeFactory<E> entityTypeFactory) {
-        super(entityTypeFactory);
+    public AutoBatchUpdateQuery(EntityType<E> entityType) {
+        super(entityType);
     }
 
     public void prepare() {
-        assertNotNull(config, callerClassName, callerMethodName);
-        Iterator<EntityType<E>> it = entityTypes.iterator();
+        assertNotNull(config, callerClassName, callerMethodName, entities, sqls);
+        Iterator<E> it = entities.iterator();
         if (it.hasNext()) {
             executable = true;
             executionSkipCause = null;
-            entityType = it.next();
-            entityType.preUpdate();
+            currentEntity = it.next();
+            entityType.preUpdate(currentEntity);
             prepareTableAndColumnNames();
             prepareIdAndVersionProperties();
             validateIdExistent();
@@ -64,13 +63,13 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
             idProperties.clear();
             versionPropertyType = null;
             targetProperties.clear();
-            this.entityType = it.next();
-            entityType.preUpdate();
+            currentEntity = it.next();
+            entityType.preUpdate(currentEntity);
             prepareIdAndVersionProperties();
             prepareTargetProperties();
             prepareSql();
         }
-        assertEquals(entityTypes.size(), sqls.size());
+        assertEquals(entities.size(), sqls.size());
     }
 
     protected void prepareOptimisticLock() {
@@ -82,7 +81,7 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
     }
 
     protected void prepareTargetProperties() {
-        for (EntityPropertyType<?> p : entityType.getEntityPropertyTypes()) {
+        for (EntityPropertyType<E, ?> p : entityType.getEntityPropertyTypes()) {
             if (!p.isUpdatable()) {
                 continue;
             }
@@ -106,10 +105,10 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
         builder.appendSql("update ");
         builder.appendSql(tableName);
         builder.appendSql(" set ");
-        for (EntityPropertyType<?> p : targetProperties) {
+        for (EntityPropertyType<E, ?> p : targetProperties) {
             builder.appendSql(columnNameMap.get(p.getName()));
             builder.appendSql(" = ");
-            builder.appendWrapper(p.getWrapper());
+            builder.appendWrapper(p.getWrapper(currentEntity));
             if (p.isVersion() && !versionIncluded) {
                 builder.appendSql(" + 1");
             }
@@ -118,10 +117,10 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
         builder.cutBackSql(2);
         if (idProperties.size() > 0) {
             builder.appendSql(" where ");
-            for (EntityPropertyType<?> p : idProperties) {
+            for (EntityPropertyType<E, ?> p : idProperties) {
                 builder.appendSql(columnNameMap.get(p.getName()));
                 builder.appendSql(" = ");
-                builder.appendWrapper(p.getWrapper());
+                builder.appendWrapper(p.getWrapper(currentEntity));
                 builder.appendSql(" and ");
             }
             builder.cutBackSql(5);
@@ -134,7 +133,9 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
             }
             builder.appendSql(columnNameMap.get(versionPropertyType.getName()));
             builder.appendSql(" = ");
-            builder.appendWrapper(versionPropertyType.getWrapper());
+            builder
+                    .appendWrapper(versionPropertyType
+                            .getWrapper(currentEntity));
         }
         PreparedSql sql = builder.build();
         sqls.add(sql);
@@ -145,11 +146,11 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
         if (versionIncluded) {
             return;
         }
-        for (EntityType<E> entityType : entityTypes) {
-            VersionPropertyType<?> versionPropertyType = entityType
+        for (E entity : entities) {
+            VersionPropertyType<E, ?> versionPropertyType = entityType
                     .getVersionPropertyType();
             if (versionPropertyType != null) {
-                versionPropertyType.increment();
+                versionPropertyType.increment(entity);
             }
         }
     }

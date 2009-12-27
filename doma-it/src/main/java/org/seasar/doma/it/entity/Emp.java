@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.it.entity;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
@@ -56,7 +55,7 @@ public class Emp {
     List<String> tempList;
 
     @OriginalStates
-    Serializable originalStates;
+    Emp originalStates;
 
     public Integer getId() {
         return id;

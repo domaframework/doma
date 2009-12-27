@@ -24,13 +24,13 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class BasicInOutParameter<T> implements InParameter, OutParameter {
+public class BasicInOutParameter<V> implements InParameter, OutParameter<V> {
 
-    protected final Wrapper<T> wrapper;
+    protected final Wrapper<V> wrapper;
 
-    protected final Reference<T> reference;
+    protected final Reference<V> reference;
 
-    public BasicInOutParameter(Wrapper<T> wrapper, Reference<T> reference) {
+    public BasicInOutParameter(Wrapper<V> wrapper, Reference<V> reference) {
         assertNotNull(wrapper, reference);
         wrapper.set(reference.get());
         this.wrapper = wrapper;
@@ -38,17 +38,17 @@ public class BasicInOutParameter<T> implements InParameter, OutParameter {
     }
 
     @Override
-    public Object getValue() {
+    public V getValue() {
         return wrapper.get();
     }
 
     @Override
-    public Wrapper<T> getWrapper() {
+    public Wrapper<V> getWrapper() {
         return wrapper;
     }
 
     @Override
-    public void updateReference() {
+    public void update() {
         reference.set(wrapper.get());
     }
 

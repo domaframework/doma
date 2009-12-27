@@ -24,7 +24,6 @@ import java.util.Map;
 
 import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.internal.jdbc.entity.EntityType;
-import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.util.TableUtil;
@@ -41,31 +40,27 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
 
     protected static final String[] EMPTY_STRINGS = new String[] {};
 
+    protected final List<EntityPropertyType<E, ?>> targetProperties = new ArrayList<EntityPropertyType<E, ?>>();
+
+    protected final List<EntityPropertyType<E, ?>> idProperties = new ArrayList<EntityPropertyType<E, ?>>();
+
+    protected final Map<String, String> columnNameMap = new HashMap<String, String>();
+
     protected String[] includedPropertyNames = EMPTY_STRINGS;
 
     protected String[] excludedPropertyNames = EMPTY_STRINGS;
 
-    protected final EntityTypeFactory<E> entityTypeFactory;
+    protected final EntityType<E> entityType;
 
     protected Config config;
-
-    protected List<EntityType<E>> entityTypes;
 
     protected String callerClassName;
 
     protected String callerMethodName;
 
-    protected final List<EntityPropertyType<?>> targetProperties = new ArrayList<EntityPropertyType<?>>();
-
-    protected final List<EntityPropertyType<?>> idProperties = new ArrayList<EntityPropertyType<?>>();
-
-    protected VersionPropertyType<?> versionPropertyType;
+    protected VersionPropertyType<E, ?> versionPropertyType;
 
     protected String tableName;
-
-    protected final Map<String, String> columnNameMap = new HashMap<String, String>();
-
-    protected final List<PreparedSql> sqls = new ArrayList<PreparedSql>(100);
 
     protected boolean optimisticLockCheckRequired;
 
@@ -75,20 +70,24 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
 
     protected SqlExecutionSkipCause executionSkipCause = SqlExecutionSkipCause.BATCH_TARGET_NONEXISTENT;
 
-    protected EntityType<E> entityType;
+    protected List<PreparedSql> sqls;
+
+    protected List<E> entities;
+
+    protected E currentEntity;
 
     protected int queryTimeout;
 
     protected int batchSize;
 
-    public AutoBatchModifyQuery(EntityTypeFactory<E> entityTypeFactory) {
-        assertNotNull(entityTypeFactory);
-        this.entityTypeFactory = entityTypeFactory;
+    public AutoBatchModifyQuery(EntityType<E> entityType) {
+        assertNotNull(entityType);
+        this.entityType = entityType;
     }
 
     protected void prepareTableAndColumnNames() {
         tableName = TableUtil.getQualifiedTableName(entityType);
-        for (EntityPropertyType<?> p : entityType.getEntityPropertyTypes()) {
+        for (EntityPropertyType<E, ?> p : entityType.getEntityPropertyTypes()) {
             if (!p.isUpdatable()) {
                 continue;
             }
@@ -97,7 +96,7 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
     }
 
     protected void prepareIdAndVersionProperties() {
-        for (EntityPropertyType<?> p : entityType.getEntityPropertyTypes()) {
+        for (EntityPropertyType<E, ?> p : entityType.getEntityPropertyTypes()) {
             if (p.isId()) {
                 idProperties.add(p);
             }
@@ -148,9 +147,6 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
 
     @Override
     public void complete() {
-        for (EntityType<E> entityType : entityTypes) {
-            entityType.refreshEntity();
-        }
     }
 
     public void setConfig(Config config) {
@@ -159,10 +155,8 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
 
     public void setEntities(List<E> entities) {
         assertNotNull(entities);
-        entityTypes = new ArrayList<EntityType<E>>(entities.size());
-        for (E entity : entities) {
-            entityTypes.add(entityTypeFactory.createEntityType(entity));
-        }
+        this.entities = entities;
+        this.sqls = new ArrayList<PreparedSql>(entities.size());
     }
 
     public void setCallerClassName(String callerClassName) {

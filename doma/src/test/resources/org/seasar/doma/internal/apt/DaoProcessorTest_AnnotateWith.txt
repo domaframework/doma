@@ -21,7 +21,7 @@ public class AnnotateWithDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
         if (emp == null) {
             throw new org.seasar.doma.DomaNullPointerException("emp");
         }
-        org.seasar.doma.internal.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.entity.Emp> __query = new org.seasar.doma.internal.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.entity.Emp>(new org.seasar.doma.internal.apt.entity._Emp());
+        org.seasar.doma.internal.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.entity.Emp> __query = new org.seasar.doma.internal.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.get());
         __query.setConfig(config);
         __query.setEntity(emp);
         __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AnnotateWithDaoImpl");

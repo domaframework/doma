@@ -21,7 +21,6 @@ import java.util.Iterator;
 
 import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.internal.jdbc.entity.EntityType;
-import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.SqlKind;
@@ -37,18 +36,18 @@ public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
 
     protected boolean optimisticLockExceptionSuppressed;
 
-    public AutoBatchDeleteQuery(EntityTypeFactory<E> entityTypeFactory) {
-        super(entityTypeFactory);
+    public AutoBatchDeleteQuery(EntityType<E> entityType) {
+        super(entityType);
     }
 
     public void prepare() {
-        assertNotNull(config, callerClassName, callerMethodName);
-        Iterator<EntityType<E>> it = entityTypes.iterator();
+        assertNotNull(config, callerClassName, callerMethodName, entities, sqls);
+        Iterator<E> it = entities.iterator();
         if (it.hasNext()) {
             executable = true;
             executionSkipCause = null;
-            entityType = it.next();
-            entityType.preDelete();
+            currentEntity = it.next();
+            entityType.preDelete(currentEntity);
             prepareTableAndColumnNames();
             prepareIdAndVersionProperties();
             validateIdExistent();
@@ -62,12 +61,12 @@ public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
             idProperties.clear();
             versionPropertyType = null;
             targetProperties.clear();
-            this.entityType = it.next();
-            entityType.preDelete();
+            currentEntity = it.next();
+            entityType.preDelete(currentEntity);
             prepareIdAndVersionProperties();
             prepareSql();
         }
-        assertEquals(entityTypes.size(), sqls.size());
+        assertEquals(entities.size(), sqls.size());
     }
 
     protected void prepareOptimisticLock() {
@@ -85,10 +84,10 @@ public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
         builder.appendSql(tableName);
         if (idProperties.size() > 0) {
             builder.appendSql(" where ");
-            for (EntityPropertyType<?> p : idProperties) {
+            for (EntityPropertyType<E, ?> p : idProperties) {
                 builder.appendSql(columnNameMap.get(p.getName()));
                 builder.appendSql(" = ");
-                builder.appendWrapper(p.getWrapper());
+                builder.appendWrapper(p.getWrapper(currentEntity));
                 builder.appendSql(" and ");
             }
             builder.cutBackSql(5);
@@ -101,7 +100,9 @@ public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
             }
             builder.appendSql(columnNameMap.get(versionPropertyType.getName()));
             builder.appendSql(" = ");
-            builder.appendWrapper(versionPropertyType.getWrapper());
+            builder
+                    .appendWrapper(versionPropertyType
+                            .getWrapper(currentEntity));
         }
         PreparedSql sql = builder.build();
         sqls.add(sql);

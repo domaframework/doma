@@ -45,20 +45,20 @@ public interface Wrapper<V> {
     void set(V value);
 
     /**
-     * このインスタンスをコピーします。
+     * 値のコピーを返します。
      * 
-     * @return このインスタンスのコピー
+     * @return 値のコピー
      */
-    Wrapper<V> copy();
+    V getCopy();
 
     /**
-     * 等しい場合 {@code true} を返します。
+     * 等しい値を持っている場合 {@code true} を返します。
      * 
      * @param other
-     *            他のラッパー
-     * @return 等しい場合 {@code true}
+     *            値
+     * @return 等しい値を持っている場合 {@code true}
      */
-    boolean isEqual(Wrapper<?> other);
+    boolean hasEqualValue(Object other);
 
     /**
      * ビジターを受け入れます。

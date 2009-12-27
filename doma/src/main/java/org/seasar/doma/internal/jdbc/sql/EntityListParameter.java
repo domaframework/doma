@@ -20,24 +20,20 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.List;
 
 import org.seasar.doma.internal.jdbc.entity.EntityType;
-import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 
 /**
  * @author taedium
  * 
  */
-public class EntityListParameter<E> implements ListParameter<EntityType<E>> {
-
-    protected final EntityTypeFactory<E> entityTypeFactory;
+public class EntityListParameter<E> implements ListParameter<EntityType<E>, E> {
 
     protected final List<E> entities;
 
     protected EntityType<E> entityType;
 
-    public EntityListParameter(EntityTypeFactory<E> entityTypeFactory,
-            List<E> entities) {
-        assertNotNull(entityTypeFactory, entities);
-        this.entityTypeFactory = entityTypeFactory;
+    public EntityListParameter(EntityType<E> entityType, List<E> entities) {
+        assertNotNull(entityType, entities);
+        this.entityType = entityType;
         this.entities = entities;
     }
 
@@ -48,13 +44,12 @@ public class EntityListParameter<E> implements ListParameter<EntityType<E>> {
 
     @Override
     public EntityType<E> getElementHolder() {
-        entityType = entityTypeFactory.createEntityType();
         return entityType;
     }
 
     @Override
-    public void add() {
-        entities.add(entityType.getEntity());
+    public void add(E entity) {
+        entities.add(entity);
     }
 
     @Override

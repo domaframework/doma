@@ -2,286 +2,268 @@ package org.seasar.doma.internal.apt.entity;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
-public class _Emp implements org.seasar.doma.internal.jdbc.entity.EntityTypeFactory<org.seasar.doma.internal.apt.entity.Emp> {
+public final class _Emp implements org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.Emp> {
 
-    @Override
-    public org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.Emp> createEntityType() {
-        return new EmpType();
+    private static final _Emp __singleton = new _Emp();
+
+    private final org.seasar.doma.jdbc.id.BuiltinSequenceIdGenerator __idGenerator = new org.seasar.doma.jdbc.id.BuiltinSequenceIdGenerator();
+    {
+        __idGenerator.setQualifiedSequenceName("EMP_ID");
+        __idGenerator.setInitialValue(1);
+        __idGenerator.setAllocationSize(1);
+        __idGenerator.initialize();
+    }
+
+    public final org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.entity.Emp, java.lang.Integer> id = new org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.entity.Emp, java.lang.Integer>("id", "id", __idGenerator) {
+        @Override
+        public org.seasar.doma.wrapper.IntegerWrapper getWrapper(org.seasar.doma.internal.apt.entity.Emp entity) {
+            return new Wrapper(entity);
+        }
+
+        class Wrapper extends org.seasar.doma.wrapper.IntegerWrapper {
+
+            private final org.seasar.doma.internal.apt.entity.Emp entity;
+
+            private Wrapper(org.seasar.doma.internal.apt.entity.Emp entity) {
+                this.entity = entity;
+            }
+
+            @Override
+            public java.lang.Integer get() {
+                if (entity == null) {
+                    return null;
+                }
+                return entity.id;
+            }
+
+            @Override
+            public void set(java.lang.Integer value) {
+                if (entity == null) {
+                    return;
+                }
+                entity.id = value;
+            }
+        }
+    };
+
+    public final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.Emp, java.lang.String> name = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.Emp, java.lang.String>("name", "name", true, true) {
+        @Override
+        public org.seasar.doma.wrapper.StringWrapper getWrapper(org.seasar.doma.internal.apt.entity.Emp entity) {
+            return new Wrapper(entity);
+        }
+
+        class Wrapper extends org.seasar.doma.wrapper.StringWrapper {
+
+            private final org.seasar.doma.internal.apt.entity.Emp entity;
+
+            private Wrapper(org.seasar.doma.internal.apt.entity.Emp entity) {
+                this.entity = entity;
+            }
+
+            @Override
+            public java.lang.String get() {
+                if (entity == null) {
+                    return null;
+                }
+                return entity.name;
+            }
+
+            @Override
+            public void set(java.lang.String value) {
+                if (entity == null) {
+                    return;
+                }
+                entity.name = value;
+            }
+        }
+    };
+
+    public final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.Emp, java.math.BigDecimal> salary = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.Emp, java.math.BigDecimal>("salary", "SALARY", false, false) {
+        @Override
+        public org.seasar.doma.wrapper.BigDecimalWrapper getWrapper(org.seasar.doma.internal.apt.entity.Emp entity) {
+            return new Wrapper(entity);
+        }
+
+        class Wrapper extends org.seasar.doma.wrapper.BigDecimalWrapper {
+
+            private final org.seasar.doma.internal.apt.entity.Emp entity;
+
+            private Wrapper(org.seasar.doma.internal.apt.entity.Emp entity) {
+                this.entity = entity;
+            }
+
+            @Override
+            public java.math.BigDecimal get() {
+                if (entity == null) {
+                    return null;
+                }
+                return entity.salary;
+            }
+
+            @Override
+            public void set(java.math.BigDecimal value) {
+                if (entity == null) {
+                    return;
+                }
+                entity.salary = value;
+            }
+        }
+    };
+
+    public final org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.Emp, java.lang.Integer> version = new org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.Emp, java.lang.Integer>("version", "version") {
+        @Override
+        public org.seasar.doma.wrapper.IntegerWrapper getWrapper(org.seasar.doma.internal.apt.entity.Emp entity) {
+            return new Wrapper(entity);
+        }
+
+        class Wrapper extends org.seasar.doma.wrapper.IntegerWrapper {
+
+            private final org.seasar.doma.internal.apt.entity.Emp entity;
+
+            private Wrapper(org.seasar.doma.internal.apt.entity.Emp entity) {
+                this.entity = entity;
+            }
+
+            @Override
+            public java.lang.Integer get() {
+                if (entity == null) {
+                    return null;
+                }
+                return entity.version;
+            }
+
+            @Override
+            public void set(java.lang.Integer value) {
+                if (entity == null) {
+                    return;
+                }
+                entity.version = value;
+            }
+        }
+    };
+
+    private final org.seasar.doma.internal.apt.entity.EmpListener __listener;
+
+    private final String __catalogName;
+
+    private final String __schemaName;
+
+    private final String __tableName;
+
+    private final String __name;
+
+    private final java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Emp, ?>> __entityPropertyTypes;
+
+    private final java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Emp, ?>> __entityPropertyTypeMap;
+
+    private _Emp() {
+        __listener = new org.seasar.doma.internal.apt.entity.EmpListener();
+        __name = "Emp";
+        __catalogName = "";
+        __schemaName = "AAA";
+        __tableName = "Emp";
+        java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Emp, ?>> __list = new java.util.ArrayList<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Emp, ?>>();
+        java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Emp, ?>> __map = new java.util.HashMap<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Emp, ?>>();
+        __list.add(id);
+        __map.put("id", id);
+        __list.add(name);
+        __map.put("name", name);
+        __list.add(salary);
+        __map.put("salary", salary);
+        __list.add(version);
+        __map.put("version", version);
+        __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
+        __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);
     }
 
     @Override
-    public org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.Emp> createEntityType(org.seasar.doma.internal.apt.entity.Emp entity) {
-        return new EmpType(entity);
+    public String getName() {
+        return __name;
     }
 
-    private static class EmpType implements org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.Emp> {
-
-        private static final org.seasar.doma.jdbc.id.BuiltinSequenceIdGenerator __idGenerator = new org.seasar.doma.jdbc.id.BuiltinSequenceIdGenerator();
-        static {
-            __idGenerator.setQualifiedSequenceName("EMP_ID");
-            __idGenerator.setInitialValue(1);
-            __idGenerator.setAllocationSize(1);
-            __idGenerator.initialize();
-        }
-
-        private static final org.seasar.doma.internal.apt.entity.EmpListener __listener = new org.seasar.doma.internal.apt.entity.EmpListener();
-
-        private final org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper> id = new org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("id", "id", new org.seasar.doma.wrapper.IntegerWrapper(), __idGenerator);
-
-        private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.StringWrapper> name = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.StringWrapper>("name", "name", new org.seasar.doma.wrapper.StringWrapper(), true, true);
-
-        private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.BigDecimalWrapper> salary = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.BigDecimalWrapper>("salary", "SALARY", new org.seasar.doma.wrapper.BigDecimalWrapper(), false, false);
-
-        private final org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.wrapper.IntegerWrapper> version = new org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("version", "version", new org.seasar.doma.wrapper.IntegerWrapper());
-
-        private final org.seasar.doma.internal.apt.entity.Emp __entity;
-
-        private final String __catalogName = "";
-
-        private final String __schemaName = "AAA";
-
-        private final String __tableName = "Emp";
-
-        private final java.util.HashMap<String, org.seasar.doma.wrapper.Wrapper<?>> __originalStates;
-
-        private final String __name = "Emp";
-
-        private java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __entityProperties;
-
-        private java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __entityPropertyMap;
-
-        private EmpType() {
-            this(new org.seasar.doma.internal.apt.entity.Emp());
-        }
-
-        private EmpType(org.seasar.doma.internal.apt.entity.Emp entity) {
-            __entity = entity;
-            if (java.util.HashMap.class.isInstance(entity.originalStates)) {
-                @SuppressWarnings("unchecked")
-                java.util.HashMap<String, org.seasar.doma.wrapper.Wrapper<?>> originalStates = (java.util.HashMap<String, org.seasar.doma.wrapper.Wrapper<?>>) org.seasar.doma.internal.apt.entity._Emp.EmpAccessor.getOriginalStates(entity);
-                __originalStates = originalStates;
-            } else {
-                __originalStates = null;
-            }
-            refreshEntityTypeInternal();
-        }
-
-        @Override
-        public String getName() {
-            return __name;
-        }
-
-        @Override
-        public String getCatalogName() {
-            return __catalogName;
-        }
-
-        @Override
-        public String getSchemaName() {
-            return __schemaName;
-        }
-
-        @Override
-        public String getTableName() {
-            return __tableName;
-        }
-
-        @Override
-        public void preInsert() {
-            __listener.preInsert(__entity);
-            refreshEntityTypeInternal();
-        }
-
-        @Override
-        public void preUpdate() {
-            __listener.preUpdate(__entity);
-            refreshEntityTypeInternal();
-        }
-
-        @Override
-        public void preDelete() {
-            __listener.preDelete(__entity);
-            refreshEntityTypeInternal();
-        }
-
-        @Override
-        public java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> getEntityPropertyTypes() {
-            if (__entityProperties == null) {
-                java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __list = new java.util.ArrayList<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>>();
-                __list.add(id);
-                __list.add(name);
-                __list.add(salary);
-                __list.add(version);
-                __entityProperties = java.util.Collections.unmodifiableList(__list);
-            }
-            return __entityProperties;
-        }
-
-        @Override
-        public org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?> getEntityPropertyType(String __name) {
-            if (__entityPropertyMap == null) {
-                java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __map = new java.util.HashMap<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>>();
-                __map.put("id", id);
-                __map.put("name", name);
-                __map.put("salary", salary);
-                __map.put("version", version);
-                __entityPropertyMap = java.util.Collections.unmodifiableMap(__map);
-            }
-            return __entityPropertyMap.get(__name);
-        }
-
-        @Override
-        public org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType<?> getGeneratedIdPropertyType() {
-            return id;
-        }
-
-        @Override
-        public org.seasar.doma.internal.jdbc.entity.VersionPropertyType<?> getVersionPropertyType() {
-            return version;
-        }
-
-        @Override
-        public void refreshEntity() {
-            refreshEntityInternal();
-        }
-
-        private void refreshEntityInternal() {
-            org.seasar.doma.internal.apt.entity._Emp.EmpAccessor.setId(__entity, id.getWrapper().get());
-            org.seasar.doma.internal.apt.entity._Emp.EmpAccessor.setName(__entity, name.getWrapper().get());
-            org.seasar.doma.internal.apt.entity._Emp.EmpAccessor.setSalary(__entity, salary.getWrapper().get());
-            org.seasar.doma.internal.apt.entity._Emp.EmpAccessor.setVersion(__entity, version.getWrapper().get());
-            java.util.HashMap<String, org.seasar.doma.wrapper.Wrapper<?>> originalStates = null;
-            if (__originalStates != null) {
-                __originalStates.clear();
-                originalStates = __originalStates;
-            } else {
-                originalStates = new java.util.HashMap<String, org.seasar.doma.wrapper.Wrapper<?>>();
-            }
-            originalStates.put("id", id.getWrapper().copy());
-            originalStates.put("name", name.getWrapper().copy());
-            originalStates.put("salary", salary.getWrapper().copy());
-            originalStates.put("version", version.getWrapper().copy());
-            org.seasar.doma.internal.apt.entity._Emp.EmpAccessor.setOriginalStates(__entity, originalStates);
-        }
-
-        private void refreshEntityTypeInternal() {
-            id.getWrapper().set(org.seasar.doma.internal.apt.entity._Emp.EmpAccessor.getId(__entity));
-            name.getWrapper().set(org.seasar.doma.internal.apt.entity._Emp.EmpAccessor.getName(__entity));
-            salary.getWrapper().set(org.seasar.doma.internal.apt.entity._Emp.EmpAccessor.getSalary(__entity));
-            version.getWrapper().set(org.seasar.doma.internal.apt.entity._Emp.EmpAccessor.getVersion(__entity));
-        }
-
-        @Override
-        public org.seasar.doma.internal.apt.entity.Emp getEntity() {
-            refreshEntityInternal();
-            return __entity;
-        }
-
-        @Override
-        public Class<org.seasar.doma.internal.apt.entity.Emp> getEntityClass() {
-            return org.seasar.doma.internal.apt.entity.Emp.class;
-        }
-
-        @Override
-        public java.util.Map<String, org.seasar.doma.wrapper.Wrapper<?>> getOriginalStates() {
-            return __originalStates;
-        }
-
+    @Override
+    public String getCatalogName() {
+        return __catalogName;
     }
 
-    /** */
-    public static class EmpAccessor {
+    @Override
+    public String getSchemaName() {
+        return __schemaName;
+    }
 
-        /**
-         * 
-         * @param entity
-         * @param id
-         */
-        public static void setId(org.seasar.doma.internal.apt.entity.Emp entity, java.lang.Integer id) {
-            entity.id = id;
+    @Override
+    public String getTableName() {
+        return __tableName;
+    }
+
+    @Override
+    public void preInsert(org.seasar.doma.internal.apt.entity.Emp entity) {
+        __listener.preInsert(entity);
+    }
+
+    @Override
+    public void preUpdate(org.seasar.doma.internal.apt.entity.Emp entity) {
+        __listener.preUpdate(entity);
+    }
+
+    @Override
+    public void preDelete(org.seasar.doma.internal.apt.entity.Emp entity) {
+        __listener.preDelete(entity);
+    }
+
+    @Override
+    public java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Emp, ?>> getEntityPropertyTypes() {
+        return __entityPropertyTypes;
+    }
+
+    @Override
+    public org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Emp, ?> getEntityPropertyType(String __name) {
+        return __entityPropertyTypeMap.get(__name);
+    }
+
+    @Override
+    public org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.entity.Emp, ?> getGeneratedIdPropertyType() {
+        return id;
+    }
+
+    @Override
+    public org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.Emp, ?> getVersionPropertyType() {
+        return version;
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.entity.Emp newEntity() {
+        return new org.seasar.doma.internal.apt.entity.Emp();
+    }
+
+    @Override
+    public Class<org.seasar.doma.internal.apt.entity.Emp> getEntityClass() {
+        return org.seasar.doma.internal.apt.entity.Emp.class;
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.entity.Emp getOriginalStates(org.seasar.doma.internal.apt.entity.Emp __entity) {
+        if (__entity.originalStates instanceof org.seasar.doma.internal.apt.entity.Emp) {
+            return (Emp) __entity.originalStates;
         }
+        return null;
+    }
 
-        /**
-         * 
-         * @param entity
-         * @return
-         */
-        public static java.lang.Integer getId(org.seasar.doma.internal.apt.entity.Emp entity) {
-            return entity.id;
-        }
+    @Override
+    public void saveCurrentStates(org.seasar.doma.internal.apt.entity.Emp __entity) {
+        org.seasar.doma.internal.apt.entity.Emp __currentStates = new org.seasar.doma.internal.apt.entity.Emp();
+        id.getWrapper(__currentStates).set(id.getWrapper(__entity).getCopy());
+        name.getWrapper(__currentStates).set(name.getWrapper(__entity).getCopy());
+        salary.getWrapper(__currentStates).set(salary.getWrapper(__entity).getCopy());
+        version.getWrapper(__currentStates).set(version.getWrapper(__entity).getCopy());
+        __entity.originalStates = __currentStates;
+    }
 
-        /**
-         * 
-         * @param entity
-         * @param name
-         */
-        public static void setName(org.seasar.doma.internal.apt.entity.Emp entity, java.lang.String name) {
-            entity.name = name;
-        }
-
-        /**
-         * 
-         * @param entity
-         * @return
-         */
-        public static java.lang.String getName(org.seasar.doma.internal.apt.entity.Emp entity) {
-            return entity.name;
-        }
-
-        /**
-         * 
-         * @param entity
-         * @param salary
-         */
-        public static void setSalary(org.seasar.doma.internal.apt.entity.Emp entity, java.math.BigDecimal salary) {
-            entity.salary = salary;
-        }
-
-        /**
-         * 
-         * @param entity
-         * @return
-         */
-        public static java.math.BigDecimal getSalary(org.seasar.doma.internal.apt.entity.Emp entity) {
-            return entity.salary;
-        }
-
-        /**
-         * 
-         * @param entity
-         * @param version
-         */
-        public static void setVersion(org.seasar.doma.internal.apt.entity.Emp entity, java.lang.Integer version) {
-            entity.version = version;
-        }
-
-        /**
-         * 
-         * @param entity
-         * @return
-         */
-        public static java.lang.Integer getVersion(org.seasar.doma.internal.apt.entity.Emp entity) {
-            return entity.version;
-        }
-
-        /**
-         * 
-         * @param entity
-         * @param originalStates
-         */
-        public static void setOriginalStates(org.seasar.doma.internal.apt.entity.Emp entity, java.io.Serializable originalStates) {
-            entity.originalStates = originalStates;
-        }
-
-        /**
-         * 
-         * @param entity
-         * @return
-         */
-        public static java.io.Serializable getOriginalStates(org.seasar.doma.internal.apt.entity.Emp entity) {
-            return entity.originalStates;
-        }
-
+    /**
+     * @return the singleton
+     */
+    public static _Emp get() {
+        return __singleton;
     }
 
 }

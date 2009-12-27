@@ -18,7 +18,6 @@ package org.seasar.doma.internal.jdbc.sql;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.internal.domain.DomainType;
-import org.seasar.doma.internal.domain.DomainTypeFactory;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -29,19 +28,22 @@ public class DomainInParameter<V, D> implements InParameter {
 
     protected final DomainType<V, D> domainType;
 
-    public DomainInParameter(DomainTypeFactory<V, D> domainTypeFactory, D domain) {
-        assertNotNull(domainTypeFactory, domain);
-        domainType = domainTypeFactory.createDomainType(domain);
+    protected final D domain;
+
+    public DomainInParameter(DomainType<V, D> domainType, D domain) {
+        assertNotNull(domainType, domain);
+        this.domainType = domainType;
+        this.domain = domain;
     }
 
     @Override
     public Object getValue() {
-        return domainType.getDomain();
+        return domain;
     }
 
     @Override
     public Wrapper<?> getWrapper() {
-        return domainType.getWrapper();
+        return domainType.getWrapper(domain);
     }
 
     @Override

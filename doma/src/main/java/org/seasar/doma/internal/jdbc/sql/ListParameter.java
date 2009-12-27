@@ -19,9 +19,9 @@ package org.seasar.doma.internal.jdbc.sql;
  * @author taedium
  * 
  */
-public interface ListParameter<H> extends CallableSqlParameter {
+public interface ListParameter<H, V> extends CallableSqlParameter {
 
     H getElementHolder();
 
-    void add();
+    void add(V value);
 }

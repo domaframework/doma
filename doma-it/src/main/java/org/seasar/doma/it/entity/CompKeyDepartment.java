@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.it.entity;
 
-import java.io.Serializable;
-
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
 import org.seasar.doma.OriginalStates;
@@ -44,7 +42,7 @@ public class CompKeyDepartment {
     Integer version;
 
     @OriginalStates
-    Serializable originalStates;
+    CompKeyDepartment originalStates;
 
     public Integer getDepartmentId1() {
         return departmentId1;

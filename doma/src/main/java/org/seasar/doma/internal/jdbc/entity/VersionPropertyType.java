@@ -23,11 +23,11 @@ import org.seasar.doma.wrapper.NumberWrapper;
  * @author taedium
  * 
  */
-public class VersionPropertyType<W extends NumberWrapper<?>> extends
-        BasicPropertyType<W> {
+public abstract class VersionPropertyType<E, V extends Number> extends
+        BasicPropertyType<E, V> {
 
-    public VersionPropertyType(String name, String columnName, W wrapper) {
-        super(name, columnName, wrapper, true, true);
+    public VersionPropertyType(String name, String columnName) {
+        super(name, columnName, true, true);
     }
 
     @Override
@@ -35,17 +35,21 @@ public class VersionPropertyType<W extends NumberWrapper<?>> extends
         return true;
     }
 
-    public void setIfNecessary(Number value) {
+    public void setIfNecessary(E entity, Number value) {
+        NumberWrapper<?> wrapper = getWrapper(entity);
         if (wrapper.get() == null || wrapper.get().intValue() < 0) {
             wrapper.set(value);
         }
     }
 
-    public void increment() {
+    public void increment(E entity) {
+        NumberWrapper<?> wrapper = getWrapper(entity);
         if (wrapper.get() != null) {
             int i = wrapper.get().intValue();
             wrapper.set(i + 1);
         }
     }
 
+    @Override
+    public abstract NumberWrapper<V> getWrapper(E entity);
 }

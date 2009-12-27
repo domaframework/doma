@@ -2,170 +2,149 @@ package org.seasar.doma.internal.apt.entity;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
-public class _TransientPropertyEntity implements org.seasar.doma.internal.jdbc.entity.EntityTypeFactory<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> {
+public final class _TransientPropertyEntity implements org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> {
+
+    private static final _TransientPropertyEntity __singleton = new _TransientPropertyEntity();
+
+    public final org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, java.lang.Integer> id = new org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, java.lang.Integer>("id", "id") {
+        @Override
+        public org.seasar.doma.wrapper.IntegerWrapper getWrapper(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity) {
+            return new Wrapper(entity);
+        }
+
+        class Wrapper extends org.seasar.doma.wrapper.IntegerWrapper {
+
+            private final org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity;
+
+            private Wrapper(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity) {
+                this.entity = entity;
+            }
+
+            @Override
+            public java.lang.Integer get() {
+                if (entity == null) {
+                    return null;
+                }
+                return entity.id;
+            }
+
+            @Override
+            public void set(java.lang.Integer value) {
+                if (entity == null) {
+                    return;
+                }
+                entity.id = value;
+            }
+        }
+    };
+
+    private final org.seasar.doma.jdbc.entity.NullEntityListener __listener;
+
+    private final String __catalogName;
+
+    private final String __schemaName;
+
+    private final String __tableName;
+
+    private final String __name;
+
+    private final java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?>> __entityPropertyTypes;
+
+    private final java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?>> __entityPropertyTypeMap;
+
+    private _TransientPropertyEntity() {
+        __listener = new org.seasar.doma.jdbc.entity.NullEntityListener();
+        __name = "TransientPropertyEntity";
+        __catalogName = "";
+        __schemaName = "";
+        __tableName = "TransientPropertyEntity";
+        java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?>> __list = new java.util.ArrayList<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?>>();
+        java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?>> __map = new java.util.HashMap<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?>>();
+        __list.add(id);
+        __map.put("id", id);
+        __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
+        __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);
+    }
 
     @Override
-    public org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> createEntityType() {
-        return new TransientPropertyEntityType();
+    public String getName() {
+        return __name;
     }
 
     @Override
-    public org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> createEntityType(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity) {
-        return new TransientPropertyEntityType(entity);
+    public String getCatalogName() {
+        return __catalogName;
     }
 
-    private static class TransientPropertyEntityType implements org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> {
-
-        private static final org.seasar.doma.jdbc.entity.NullEntityListener __listener = new org.seasar.doma.jdbc.entity.NullEntityListener();
-
-        private final org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.wrapper.IntegerWrapper> id = new org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("id", "id", new org.seasar.doma.wrapper.IntegerWrapper());
-
-        private final org.seasar.doma.internal.apt.entity.TransientPropertyEntity __entity;
-
-        private final String __catalogName = "";
-
-        private final String __schemaName = "";
-
-        private final String __tableName = "TransientPropertyEntity";
-
-        private final java.util.HashMap<String, org.seasar.doma.wrapper.Wrapper<?>> __originalStates;
-
-        private final String __name = "TransientPropertyEntity";
-
-        private java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __entityProperties;
-
-        private java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __entityPropertyMap;
-
-        private TransientPropertyEntityType() {
-            this(new org.seasar.doma.internal.apt.entity.TransientPropertyEntity());
-        }
-
-        private TransientPropertyEntityType(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity) {
-            __entity = entity;
-            __originalStates = null;
-            refreshEntityTypeInternal();
-        }
-
-        @Override
-        public String getName() {
-            return __name;
-        }
-
-        @Override
-        public String getCatalogName() {
-            return __catalogName;
-        }
-
-        @Override
-        public String getSchemaName() {
-            return __schemaName;
-        }
-
-        @Override
-        public String getTableName() {
-            return __tableName;
-        }
-
-        @Override
-        public void preInsert() {
-            __listener.preInsert(__entity);
-            refreshEntityTypeInternal();
-        }
-
-        @Override
-        public void preUpdate() {
-            __listener.preUpdate(__entity);
-            refreshEntityTypeInternal();
-        }
-
-        @Override
-        public void preDelete() {
-            __listener.preDelete(__entity);
-            refreshEntityTypeInternal();
-        }
-
-        @Override
-        public java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> getEntityPropertyTypes() {
-            if (__entityProperties == null) {
-                java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __list = new java.util.ArrayList<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>>();
-                __list.add(id);
-                __entityProperties = java.util.Collections.unmodifiableList(__list);
-            }
-            return __entityProperties;
-        }
-
-        @Override
-        public org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?> getEntityPropertyType(String __name) {
-            if (__entityPropertyMap == null) {
-                java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __map = new java.util.HashMap<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>>();
-                __map.put("id", id);
-                __entityPropertyMap = java.util.Collections.unmodifiableMap(__map);
-            }
-            return __entityPropertyMap.get(__name);
-        }
-
-        @Override
-        public org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType<?> getGeneratedIdPropertyType() {
-            return null;
-        }
-
-        @Override
-        public org.seasar.doma.internal.jdbc.entity.VersionPropertyType<?> getVersionPropertyType() {
-            return id;
-        }
-
-        @Override
-        public void refreshEntity() {
-            refreshEntityInternal();
-        }
-
-        private void refreshEntityInternal() {
-            org.seasar.doma.internal.apt.entity._TransientPropertyEntity.TransientPropertyEntityAccessor.setId(__entity, id.getWrapper().get());
-        }
-
-        private void refreshEntityTypeInternal() {
-            id.getWrapper().set(org.seasar.doma.internal.apt.entity._TransientPropertyEntity.TransientPropertyEntityAccessor.getId(__entity));
-        }
-
-        @Override
-        public org.seasar.doma.internal.apt.entity.TransientPropertyEntity getEntity() {
-            refreshEntityInternal();
-            return __entity;
-        }
-
-        @Override
-        public Class<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> getEntityClass() {
-            return org.seasar.doma.internal.apt.entity.TransientPropertyEntity.class;
-        }
-
-        @Override
-        public java.util.Map<String, org.seasar.doma.wrapper.Wrapper<?>> getOriginalStates() {
-            return __originalStates;
-        }
-
+    @Override
+    public String getSchemaName() {
+        return __schemaName;
     }
 
-    /** */
-    public static class TransientPropertyEntityAccessor {
+    @Override
+    public String getTableName() {
+        return __tableName;
+    }
 
-        /**
-         * 
-         * @param entity
-         * @param id
-         */
-        public static void setId(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity, java.lang.Integer id) {
-            entity.id = id;
-        }
+    @Override
+    public void preInsert(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity) {
+        __listener.preInsert(entity);
+    }
 
-        /**
-         * 
-         * @param entity
-         * @return
-         */
-        public static java.lang.Integer getId(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity) {
-            return entity.id;
-        }
+    @Override
+    public void preUpdate(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity) {
+        __listener.preUpdate(entity);
+    }
 
+    @Override
+    public void preDelete(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity) {
+        __listener.preDelete(entity);
+    }
+
+    @Override
+    public java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?>> getEntityPropertyTypes() {
+        return __entityPropertyTypes;
+    }
+
+    @Override
+    public org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?> getEntityPropertyType(String __name) {
+        return __entityPropertyTypeMap.get(__name);
+    }
+
+    @Override
+    public org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?> getGeneratedIdPropertyType() {
+        return null;
+    }
+
+    @Override
+    public org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?> getVersionPropertyType() {
+        return id;
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.entity.TransientPropertyEntity newEntity() {
+        return new org.seasar.doma.internal.apt.entity.TransientPropertyEntity();
+    }
+
+    @Override
+    public Class<org.seasar.doma.internal.apt.entity.TransientPropertyEntity> getEntityClass() {
+        return org.seasar.doma.internal.apt.entity.TransientPropertyEntity.class;
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.entity.TransientPropertyEntity getOriginalStates(org.seasar.doma.internal.apt.entity.TransientPropertyEntity __entity) {
+        return null;
+    }
+
+    @Override
+    public void saveCurrentStates(org.seasar.doma.internal.apt.entity.TransientPropertyEntity __entity) {
+    }
+
+    /**
+     * @return the singleton
+     */
+    public static _TransientPropertyEntity get() {
+        return __singleton;
     }
 
 }

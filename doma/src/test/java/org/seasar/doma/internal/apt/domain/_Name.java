@@ -16,51 +16,31 @@
 package org.seasar.doma.internal.apt.domain;
 
 import org.seasar.doma.internal.domain.DomainType;
-import org.seasar.doma.internal.domain.DomainTypeFactory;
-import org.seasar.doma.wrapper.StringWrapper;
+import org.seasar.doma.internal.domain.DomainWrapper;
 
 /**
  * @author taedium
  * 
  */
-public class _Name implements DomainTypeFactory<String, Name> {
+public class _Name implements DomainType<String, Name> {
 
     @Override
-    public DomainType<String, Name> createDomainType() {
-        return new NameType();
+    public Name newDomain(String value) {
+        return null;
     }
 
     @Override
-    public DomainType<String, Name> createDomainType(Name domain) {
-        return new NameType(domain);
+    public Class<Name> getDomainClass() {
+        return null;
     }
 
-    private static class NameType implements DomainType<String, Name> {
+    @Override
+    public DomainWrapper<String, Name> getWrapper(Name domain) {
+        return null;
+    }
 
-        private final StringWrapper wrapper = new StringWrapper();
-
-        private NameType() {
-        }
-
-        private NameType(Name domain) {
-            this.wrapper.set(domain != null ? domain.getValue() : null);
-        }
-
-        @Override
-        public Name getDomain() {
-            return new Name(wrapper.get());
-        }
-
-        @Override
-        public Class<Name> getDomainClass() {
-            return Name.class;
-        }
-
-        @Override
-        public StringWrapper getWrapper() {
-            return wrapper;
-        }
-
+    public static _Name get() {
+        return null;
     }
 
 }

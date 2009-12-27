@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.it.entity;
 
-import java.io.Serializable;
-
 import org.seasar.doma.Entity;
 import org.seasar.doma.OriginalStates;
 import org.seasar.doma.Table;
@@ -31,7 +29,7 @@ public class NoId {
     Integer value2;
 
     @OriginalStates
-    Serializable originalStates;
+    NoId originalStates;
 
     public Integer getValue1() {
         return value1;

@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.it.entity;
 
-import java.io.Serializable;
-
 import org.seasar.doma.Entity;
 import org.seasar.doma.GeneratedValue;
 import org.seasar.doma.GenerationType;
@@ -36,7 +34,7 @@ public class IdentityStrategy {
     Integer value;
 
     @OriginalStates
-    Serializable originalStates;
+    IdentityStrategy originalStates;
 
     public Integer getId() {
         return id;

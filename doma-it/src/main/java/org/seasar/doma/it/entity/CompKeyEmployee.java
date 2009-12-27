@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.it.entity;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
 
@@ -60,7 +59,7 @@ public class CompKeyEmployee {
     Integer version;
 
     @OriginalStates
-    Serializable originalStates;
+    CompKeyEmployee originalStates;
 
     public Integer getEmployeeId1() {
         return employeeId1;

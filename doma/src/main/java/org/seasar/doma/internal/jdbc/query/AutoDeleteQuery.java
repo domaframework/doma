@@ -18,7 +18,7 @@ package org.seasar.doma.internal.jdbc.query;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
-import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
+import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.SqlKind;
 
@@ -33,14 +33,14 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
 
     protected boolean optimisticLockExceptionSuppressed;
 
-    public AutoDeleteQuery(EntityTypeFactory<E> entityTypeFactory) {
-        super(entityTypeFactory);
+    public AutoDeleteQuery(EntityType<E> entityType) {
+        super(entityType);
     }
 
     public void prepare() {
         assertNotNull(config, entityType, callerClassName, callerMethodName);
         executable = true;
-        entityType.preDelete();
+        entityType.preDelete(entity);
         prepareTable();
         prepareIdAndVersionProperties();
         validateIdExistent();
@@ -65,10 +65,10 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
         builder.appendSql(tableName);
         if (idProperties.size() > 0) {
             builder.appendSql(" where ");
-            for (EntityPropertyType<?> p : idProperties) {
+            for (EntityPropertyType<E, ?> p : idProperties) {
                 builder.appendSql(p.getColumnName());
                 builder.appendSql(" = ");
-                builder.appendWrapper(p.getWrapper());
+                builder.appendWrapper(p.getWrapper(entity));
                 builder.appendSql(" and ");
             }
             builder.cutBackSql(5);
@@ -81,7 +81,7 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
             }
             builder.appendSql(versionPropertyType.getColumnName());
             builder.appendSql(" = ");
-            builder.appendWrapper(versionPropertyType.getWrapper());
+            builder.appendWrapper(versionPropertyType.getWrapper(entity));
         }
         sql = builder.build();
     }

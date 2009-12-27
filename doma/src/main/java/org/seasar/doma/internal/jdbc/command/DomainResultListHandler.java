@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.seasar.doma.internal.domain.DomainType;
-import org.seasar.doma.internal.domain.DomainTypeFactory;
+import org.seasar.doma.internal.domain.DomainWrapper;
 import org.seasar.doma.internal.jdbc.query.Query;
 
 /**
@@ -32,11 +32,11 @@ import org.seasar.doma.internal.jdbc.query.Query;
  */
 public class DomainResultListHandler<V, D> implements ResultSetHandler<List<D>> {
 
-    protected final DomainTypeFactory<V, D> domainTypeFactory;
+    protected final DomainType<V, D> domainType;
 
-    public DomainResultListHandler(DomainTypeFactory<V, D> domainTypeFactory) {
-        assertNotNull(domainTypeFactory);
-        this.domainTypeFactory = domainTypeFactory;
+    public DomainResultListHandler(DomainType<V, D> domainType) {
+        assertNotNull(domainType);
+        this.domainType = domainType;
     }
 
     @Override
@@ -44,9 +44,9 @@ public class DomainResultListHandler<V, D> implements ResultSetHandler<List<D>> 
         BasicFetcher fetcher = new BasicFetcher(query);
         List<D> domains = new ArrayList<D>();
         while (resultSet.next()) {
-            DomainType<V, D> domainType = domainTypeFactory.createDomainType();
-            fetcher.fetch(resultSet, domainType.getWrapper());
-            domains.add(domainType.getDomain());
+            DomainWrapper<V, D> wrapper = domainType.getWrapper(null);
+            fetcher.fetch(resultSet, wrapper);
+            domains.add(wrapper.getDomain());
         }
         return domains;
     }

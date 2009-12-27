@@ -94,7 +94,7 @@ public class EntityProcessor extends AbstractProcessor {
 
     protected void generateEntity(TypeElement entityElement,
             EntityMeta entityMeta) {
-        EntityTypeFactoryGenerator generator = null;
+        EntityTypeGenerator generator = null;
         try {
             generator = createEntityMetaFactoryGenerator(entityElement,
                     entityMeta);
@@ -107,10 +107,10 @@ public class EntityProcessor extends AbstractProcessor {
         }
     }
 
-    protected EntityTypeFactoryGenerator createEntityMetaFactoryGenerator(
+    protected EntityTypeGenerator createEntityMetaFactoryGenerator(
             TypeElement entityElement, EntityMeta entityMeta)
             throws IOException {
-        return new EntityTypeFactoryGenerator(processingEnv, entityElement,
+        return new EntityTypeGenerator(processingEnv, entityElement,
                 entityMeta);
     }
 

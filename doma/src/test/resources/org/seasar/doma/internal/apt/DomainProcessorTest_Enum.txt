@@ -2,44 +2,61 @@ package org.seasar.doma.internal.apt.domain;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
-public class _EnumDomain implements org.seasar.doma.internal.domain.DomainTypeFactory<org.seasar.doma.internal.apt.domain.EnumDomain.JobType, org.seasar.doma.internal.apt.domain.EnumDomain> {
+public final class _EnumDomain implements org.seasar.doma.internal.domain.DomainType<org.seasar.doma.internal.apt.domain.EnumDomain.JobType, org.seasar.doma.internal.apt.domain.EnumDomain> {
 
-    @Override
-    public org.seasar.doma.internal.domain.DomainType<org.seasar.doma.internal.apt.domain.EnumDomain.JobType, org.seasar.doma.internal.apt.domain.EnumDomain> createDomainType() {
-        return new EnumDomainType();
+    private static final _EnumDomain singleton = new _EnumDomain();
+
+    private _EnumDomain() {
     }
 
     @Override
-    public org.seasar.doma.internal.domain.DomainType<org.seasar.doma.internal.apt.domain.EnumDomain.JobType, org.seasar.doma.internal.apt.domain.EnumDomain> createDomainType(org.seasar.doma.internal.apt.domain.EnumDomain domain) {
-        return new EnumDomainType(domain);
+    public org.seasar.doma.internal.apt.domain.EnumDomain newDomain(org.seasar.doma.internal.apt.domain.EnumDomain.JobType value) {
+        return new org.seasar.doma.internal.apt.domain.EnumDomain(value);
     }
 
-    private static class EnumDomainType implements org.seasar.doma.internal.domain.DomainType<org.seasar.doma.internal.apt.domain.EnumDomain.JobType, org.seasar.doma.internal.apt.domain.EnumDomain> {
+    @Override
+    public Class<org.seasar.doma.internal.apt.domain.EnumDomain> getDomainClass() {
+        return org.seasar.doma.internal.apt.domain.EnumDomain.class;
+    }
 
-        private final org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.domain.EnumDomain.JobType> wrapper = new org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.domain.EnumDomain.JobType>(org.seasar.doma.internal.apt.domain.EnumDomain.JobType.class);
+    @Override
+    public org.seasar.doma.internal.domain.DomainWrapper<org.seasar.doma.internal.apt.domain.EnumDomain.JobType, org.seasar.doma.internal.apt.domain.EnumDomain> getWrapper(org.seasar.doma.internal.apt.domain.EnumDomain domain) {
+        return new Wrapper(domain);
+    }
 
-        private EnumDomainType() {
+    /**
+     * @return the singleton
+     */
+    public static _EnumDomain get() {
+        return singleton;
+    }
+
+    private static class Wrapper extends org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.domain.EnumDomain.JobType> implements org.seasar.doma.internal.domain.DomainWrapper<org.seasar.doma.internal.apt.domain.EnumDomain.JobType, org.seasar.doma.internal.apt.domain.EnumDomain> {
+
+        private org.seasar.doma.internal.apt.domain.EnumDomain domain;
+
+        private Wrapper(org.seasar.doma.internal.apt.domain.EnumDomain domain) {
+            super(org.seasar.doma.internal.apt.domain.EnumDomain.JobType.class);
+            if (domain == null) {
+                this.domain = new org.seasar.doma.internal.apt.domain.EnumDomain((org.seasar.doma.internal.apt.domain.EnumDomain.JobType) null);
+            } else {
+                this.domain = domain;
+            }
         }
 
-        private EnumDomainType(EnumDomain domain) {
-            this.wrapper.set(domain != null ? domain.getValue() : null);
+        @Override
+        public org.seasar.doma.internal.apt.domain.EnumDomain.JobType get() {
+            return domain.getValue();
+        }
+
+        @Override
+        public void set(org.seasar.doma.internal.apt.domain.EnumDomain.JobType value) {
+            domain = new org.seasar.doma.internal.apt.domain.EnumDomain(value);
         }
 
         @Override
         public org.seasar.doma.internal.apt.domain.EnumDomain getDomain() {
-            return new org.seasar.doma.internal.apt.domain.EnumDomain(wrapper.get());
+            return domain;
         }
-
-        @Override
-        public Class<org.seasar.doma.internal.apt.domain.EnumDomain> getDomainClass() {
-            return org.seasar.doma.internal.apt.domain.EnumDomain.class;
-        }
-
-        @Override
-        public org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.domain.EnumDomain.JobType> getWrapper() {
-            return wrapper;
-        }
-
     }
-
 }

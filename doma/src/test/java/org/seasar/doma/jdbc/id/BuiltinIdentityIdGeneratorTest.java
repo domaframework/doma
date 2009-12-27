@@ -38,7 +38,7 @@ public class BuiltinIdentityIdGeneratorTest extends TestCase {
 
         BuiltinIdentityIdGenerator identityIdGenerator = new BuiltinIdentityIdGenerator();
         IdGenerationConfig idGenerationConfig = new IdGenerationConfig(config,
-                new _Emp().createEntityType(), "EMP", "ID");
+                _Emp.get(), "EMP", "ID");
         Long value = identityIdGenerator.generatePostInsert(idGenerationConfig,
                 config.dataSource.connection.preparedStatement);
         assertEquals(new Long(11), value);

@@ -17,21 +17,9 @@ package org.seasar.doma.internal.jdbc.entity;
 
 import org.seasar.doma.wrapper.Wrapper;
 
-/**
- * エンティティのプロパティを表します。
- * 
- * <p>
- * このインタフェースの実装はスレッドセーフであることは要求されません。
- * </p>
- * 
- * @author taedium
- * 
- * @param <W>
- *            ラッパーの型
- */
-public interface EntityPropertyType<W extends Wrapper<?>> {
+public interface EntityPropertyType<E, V> {
 
-    W getWrapper();
+    Wrapper<V> getWrapper(E entity);
 
     String getName();
 

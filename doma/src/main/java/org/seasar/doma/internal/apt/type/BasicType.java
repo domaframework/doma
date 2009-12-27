@@ -32,6 +32,23 @@ public class BasicType extends AbstractDataType {
         return wrapperType;
     }
 
+    public String getDefaultValue() {
+        switch (typeMirror.getKind()) {
+        case BOOLEAN:
+            return String.valueOf(false);
+        case BYTE:
+        case SHORT:
+        case INT:
+        case LONG:
+        case FLOAT:
+        case DOUBLE:
+        case CHAR:
+            return "0";
+        default:
+            return "null";
+        }
+    }
+
     public static BasicType newInstance(TypeMirror type,
             ProcessingEnvironment env) {
         assertNotNull(type, env);

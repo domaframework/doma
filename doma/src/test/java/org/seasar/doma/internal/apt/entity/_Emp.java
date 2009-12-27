@@ -16,111 +16,196 @@
 package org.seasar.doma.internal.apt.entity;
 
 import java.util.List;
-import java.util.Map;
 
 import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.internal.jdbc.entity.EntityType;
-import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class _Emp implements EntityTypeFactory<Emp> {
+public class _Emp implements EntityType<Emp> {
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.seasar.doma.internal.jdbc.entity.EntityType#copy(java.lang.Object)
+     */
     @Override
-    public EntityType<Emp> createEntityType() {
-        return new EmpType();
+    public void saveCurrentStates(Emp entity) {
+
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.seasar.doma.internal.jdbc.entity.EntityType#getCatalogName()
+     */
     @Override
-    public EntityType<Emp> createEntityType(Emp entity) {
-        return new EmpType(entity);
+    public String getCatalogName() {
+
+        return null;
     }
 
-    public static class EmpType implements EntityType<Emp> {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.seasar.doma.internal.jdbc.entity.EntityType#getEntityClass()
+     */
+    @Override
+    public Class<Emp> getEntityClass() {
 
-        private EmpType() {
-            this(new Emp());
-        }
+        return null;
+    }
 
-        private EmpType(Emp entity) {
-        }
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.seasar.doma.internal.jdbc.entity.EntityType#getEntityPropertyType
+     * (java.lang.String)
+     */
+    @Override
+    public EntityPropertyType<Emp, ?> getEntityPropertyType(String name) {
 
-        @Override
-        public Emp getEntity() {
-            return null;
-        }
+        return null;
+    }
 
-        @Override
-        public Class<Emp> getEntityClass() {
-            return null;
-        }
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.seasar.doma.internal.jdbc.entity.EntityType#getEntityPropertyTypes()
+     */
+    @Override
+    public List<EntityPropertyType<Emp, ?>> getEntityPropertyTypes() {
 
-        @Override
-        public String getName() {
-            return null;
-        }
+        return null;
+    }
 
-        @Override
-        public EntityPropertyType<?> getEntityPropertyType(String propertyName) {
-            return null;
-        }
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.seasar.doma.internal.jdbc.entity.EntityType#getGeneratedIdPropertyType
+     * ()
+     */
+    @Override
+    public GeneratedIdPropertyType<Emp, ?> getGeneratedIdPropertyType() {
 
-        @Override
-        public List<EntityPropertyType<?>> getEntityPropertyTypes() {
-            return null;
-        }
+        return null;
+    }
 
-        @Override
-        public GeneratedIdPropertyType<?> getGeneratedIdPropertyType() {
-            return null;
-        }
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.seasar.doma.internal.jdbc.entity.EntityType#getName()
+     */
+    @Override
+    public String getName() {
 
-        @Override
-        public VersionPropertyType<?> getVersionPropertyType() {
-            return null;
-        }
+        return null;
+    }
 
-        @Override
-        public void preDelete() {
-        }
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.seasar.doma.internal.jdbc.entity.EntityType#getOriginalStates(java
+     * .lang.Object)
+     */
+    @Override
+    public Emp getOriginalStates(Emp entity) {
 
-        @Override
-        public void preInsert() {
-        }
+        return null;
+    }
 
-        @Override
-        public void preUpdate() {
-        }
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.seasar.doma.internal.jdbc.entity.EntityType#getSchemaName()
+     */
+    @Override
+    public String getSchemaName() {
 
-        @Override
-        public Map<String, Wrapper<?>> getOriginalStates() {
-            return null;
-        }
+        return null;
+    }
 
-        @Override
-        public void refreshEntity() {
-        }
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.seasar.doma.internal.jdbc.entity.EntityType#getTableName()
+     */
+    @Override
+    public String getTableName() {
 
-        @Override
-        public String getCatalogName() {
-            return null;
-        }
+        return null;
+    }
 
-        @Override
-        public String getSchemaName() {
-            return null;
-        }
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.seasar.doma.internal.jdbc.entity.EntityType#getVersionPropertyType()
+     */
+    @Override
+    public VersionPropertyType<Emp, ?> getVersionPropertyType() {
 
-        @Override
-        public String getTableName() {
-            return null;
-        }
+        return null;
+    }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.seasar.doma.internal.jdbc.entity.EntityType#newEntity()
+     */
+    @Override
+    public Emp newEntity() {
+
+        return null;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.seasar.doma.internal.jdbc.entity.EntityType#preDelete(java.lang.Object
+     * )
+     */
+    @Override
+    public void preDelete(Emp entity) {
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.seasar.doma.internal.jdbc.entity.EntityType#preInsert(java.lang.Object
+     * )
+     */
+    @Override
+    public void preInsert(Emp entity) {
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.seasar.doma.internal.jdbc.entity.EntityType#preUpdate(java.lang.Object
+     * )
+     */
+    @Override
+    public void preUpdate(Emp entity) {
+
+    }
+
+    public static _Emp get() {
+        return null;
     }
 
 }

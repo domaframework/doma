@@ -13,16 +13,15 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.entity;
+package org.seasar.doma.internal.domain;
+
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
- * 
  * @author taedium
  * 
  */
-public interface EntityTypeFactory<E> {
+public interface DomainWrapper<V, D> extends Wrapper<V> {
 
-    EntityType<E> createEntityType();
-
-    EntityType<E> createEntityType(E entity);
+    D getDomain();
 }

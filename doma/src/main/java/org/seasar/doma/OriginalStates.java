@@ -1,6 +1,5 @@
 package org.seasar.doma;
 
-import java.io.Serializable;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -13,7 +12,7 @@ import java.lang.annotation.Target;
  * 変更があったプロパティのみをUPDATE文のSET句に含めたい場合に使用します。
  * <p>
  * このアノテーションが注釈されるフィールドは、 {@link Entity} が注釈されたクラスのメンバでなければいけません。 フィールドの型は
- * {@link Serializable} でなければいけません。
+ * {@link Entity} が注釈されたクラスと同じでなければいけません。
  * <p>
  * このアノテーションが注釈されるフィールドに対し、アプリケーションはアクセスしてはいけません。
  * 
@@ -26,7 +25,7 @@ import java.lang.annotation.Target;
  *     String name;
  * 
  *     &#064;OriginalStates
- *     Serializable; originalStates;
+ *     Employee originalStates;
  *     
  *     public String getName() {
  *         return name;

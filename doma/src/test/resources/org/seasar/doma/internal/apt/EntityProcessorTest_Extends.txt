@@ -2,200 +2,217 @@ package org.seasar.doma.internal.apt.entity;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
-public class _ChildEntity implements org.seasar.doma.internal.jdbc.entity.EntityTypeFactory<org.seasar.doma.internal.apt.entity.ChildEntity> {
+public final class _ChildEntity implements org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.ChildEntity> {
+
+    private static final _ChildEntity __singleton = new _ChildEntity();
+
+    public final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, java.lang.Integer> aaa = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, java.lang.Integer>("aaa", "aaa", true, true) {
+        @Override
+        public org.seasar.doma.wrapper.IntegerWrapper getWrapper(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
+            return new Wrapper(entity);
+        }
+
+        class Wrapper extends org.seasar.doma.wrapper.IntegerWrapper {
+
+            private final org.seasar.doma.internal.apt.entity.ChildEntity entity;
+
+            private Wrapper(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
+                this.entity = entity;
+            }
+
+            @Override
+            public java.lang.Integer get() {
+                if (entity == null) {
+                    return null;
+                }
+                return entity.aaa;
+            }
+
+            @Override
+            public void set(java.lang.Integer value) {
+                if (entity == null) {
+                    return;
+                }
+                entity.aaa = value;
+            }
+        }
+    };
+
+    public final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, java.math.BigDecimal> bbb = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, java.math.BigDecimal>("bbb", "bbb", true, true) {
+        @Override
+        public org.seasar.doma.wrapper.BigDecimalWrapper getWrapper(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
+            return new Wrapper(entity);
+        }
+
+        class Wrapper extends org.seasar.doma.wrapper.BigDecimalWrapper {
+
+            private final org.seasar.doma.internal.apt.entity.ChildEntity entity;
+
+            private Wrapper(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
+                this.entity = entity;
+            }
+
+            @Override
+            public java.math.BigDecimal get() {
+                if (entity == null) {
+                    return null;
+                }
+                return entity.bbb;
+            }
+
+            @Override
+            public void set(java.math.BigDecimal value) {
+                if (entity == null) {
+                    return;
+                }
+                entity.bbb = value;
+            }
+        }
+    };
+
+    public final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, java.lang.String> ccc = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, java.lang.String>("ccc", "ccc", true, true) {
+        @Override
+        public org.seasar.doma.wrapper.StringWrapper getWrapper(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
+            return new Wrapper(entity);
+        }
+
+        class Wrapper extends org.seasar.doma.wrapper.StringWrapper {
+
+            private final org.seasar.doma.internal.apt.entity.ChildEntity entity;
+
+            private Wrapper(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
+                this.entity = entity;
+            }
+
+            @Override
+            public java.lang.String get() {
+                if (entity == null) {
+                    return null;
+                }
+                return entity.ccc;
+            }
+
+            @Override
+            public void set(java.lang.String value) {
+                if (entity == null) {
+                    return;
+                }
+                entity.ccc = value;
+            }
+        }
+    };
+
+    private final org.seasar.doma.jdbc.entity.NullEntityListener __listener;
+
+    private final String __catalogName;
+
+    private final String __schemaName;
+
+    private final String __tableName;
+
+    private final String __name;
+
+    private final java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, ?>> __entityPropertyTypes;
+
+    private final java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, ?>> __entityPropertyTypeMap;
+
+    private _ChildEntity() {
+        __listener = new org.seasar.doma.jdbc.entity.NullEntityListener();
+        __name = "ChildEntity";
+        __catalogName = "";
+        __schemaName = "";
+        __tableName = "ChildEntity";
+        java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, ?>> __list = new java.util.ArrayList<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, ?>>();
+        java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, ?>> __map = new java.util.HashMap<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, ?>>();
+        __list.add(aaa);
+        __map.put("aaa", aaa);
+        __list.add(bbb);
+        __map.put("bbb", bbb);
+        __list.add(ccc);
+        __map.put("ccc", ccc);
+        __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
+        __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);
+    }
 
     @Override
-    public org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.ChildEntity> createEntityType() {
-        return new ChildEntityType();
+    public String getName() {
+        return __name;
     }
 
     @Override
-    public org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.ChildEntity> createEntityType(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
-        return new ChildEntityType(entity);
+    public String getCatalogName() {
+        return __catalogName;
     }
 
-    private static class ChildEntityType implements org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.ChildEntity> {
-
-        private static final org.seasar.doma.jdbc.entity.NullEntityListener __listener = new org.seasar.doma.jdbc.entity.NullEntityListener();
-
-        private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.IntegerWrapper> aaa = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.IntegerWrapper>("aaa", "aaa", new org.seasar.doma.wrapper.IntegerWrapper(), true, true);
-
-        private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.BigDecimalWrapper> bbb = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.BigDecimalWrapper>("bbb", "bbb", new org.seasar.doma.wrapper.BigDecimalWrapper(), true, true);
-
-        private final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.StringWrapper> ccc = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.wrapper.StringWrapper>("ccc", "ccc", new org.seasar.doma.wrapper.StringWrapper(), true, true);
-
-        private final org.seasar.doma.internal.apt.entity.ChildEntity __entity;
-
-        private final String __catalogName = "";
-
-        private final String __schemaName = "";
-
-        private final String __tableName = "ChildEntity";
-
-        private final java.util.HashMap<String, org.seasar.doma.wrapper.Wrapper<?>> __originalStates;
-
-        private final String __name = "ChildEntity";
-
-        private java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __entityProperties;
-
-        private java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __entityPropertyMap;
-
-        private ChildEntityType() {
-            this(new org.seasar.doma.internal.apt.entity.ChildEntity());
-        }
-
-        private ChildEntityType(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
-            __entity = entity;
-            __originalStates = null;
-            refreshEntityTypeInternal();
-        }
-
-        @Override
-        public String getName() {
-            return __name;
-        }
-
-        @Override
-        public String getCatalogName() {
-            return __catalogName;
-        }
-
-        @Override
-        public String getSchemaName() {
-            return __schemaName;
-        }
-
-        @Override
-        public String getTableName() {
-            return __tableName;
-        }
-
-        @Override
-        public void preInsert() {
-            __listener.preInsert(__entity);
-            refreshEntityTypeInternal();
-        }
-
-        @Override
-        public void preUpdate() {
-            __listener.preUpdate(__entity);
-            refreshEntityTypeInternal();
-        }
-
-        @Override
-        public void preDelete() {
-            __listener.preDelete(__entity);
-            refreshEntityTypeInternal();
-        }
-
-        @Override
-        public java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> getEntityPropertyTypes() {
-            if (__entityProperties == null) {
-                java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __list = new java.util.ArrayList<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>>();
-                __list.add(aaa);
-                __list.add(bbb);
-                __list.add(ccc);
-                __entityProperties = java.util.Collections.unmodifiableList(__list);
-            }
-            return __entityProperties;
-        }
-
-        @Override
-        public org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?> getEntityPropertyType(String __name) {
-            if (__entityPropertyMap == null) {
-                java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>> __map = new java.util.HashMap<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<?>>();
-                __map.put("aaa", aaa);
-                __map.put("bbb", bbb);
-                __map.put("ccc", ccc);
-                __entityPropertyMap = java.util.Collections.unmodifiableMap(__map);
-            }
-            return __entityPropertyMap.get(__name);
-        }
-
-        @Override
-        public org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType<?> getGeneratedIdPropertyType() {
-            return null;
-        }
-
-        @Override
-        public org.seasar.doma.internal.jdbc.entity.VersionPropertyType<?> getVersionPropertyType() {
-            return null;
-        }
-
-        @Override
-        public void refreshEntity() {
-            refreshEntityInternal();
-        }
-
-        private void refreshEntityInternal() {
-            org.seasar.doma.internal.apt.entity._ParentEntity.ParentEntityAccessor.setAaa(__entity, aaa.getWrapper().get());
-            org.seasar.doma.internal.apt.entity._ChildEntity.ChildEntityAccessor.setBbb(__entity, bbb.getWrapper().get());
-            org.seasar.doma.internal.apt.entity._ChildEntity.ChildEntityAccessor.setCcc(__entity, ccc.getWrapper().get());
-        }
-
-        private void refreshEntityTypeInternal() {
-            aaa.getWrapper().set(org.seasar.doma.internal.apt.entity._ParentEntity.ParentEntityAccessor.getAaa(__entity));
-            bbb.getWrapper().set(org.seasar.doma.internal.apt.entity._ChildEntity.ChildEntityAccessor.getBbb(__entity));
-            ccc.getWrapper().set(org.seasar.doma.internal.apt.entity._ChildEntity.ChildEntityAccessor.getCcc(__entity));
-        }
-
-        @Override
-        public org.seasar.doma.internal.apt.entity.ChildEntity getEntity() {
-            refreshEntityInternal();
-            return __entity;
-        }
-
-        @Override
-        public Class<org.seasar.doma.internal.apt.entity.ChildEntity> getEntityClass() {
-            return org.seasar.doma.internal.apt.entity.ChildEntity.class;
-        }
-
-        @Override
-        public java.util.Map<String, org.seasar.doma.wrapper.Wrapper<?>> getOriginalStates() {
-            return __originalStates;
-        }
-
+    @Override
+    public String getSchemaName() {
+        return __schemaName;
     }
 
-    /** */
-    public static class ChildEntityAccessor {
+    @Override
+    public String getTableName() {
+        return __tableName;
+    }
 
-        /**
-         * 
-         * @param entity
-         * @param bbb
-         */
-        public static void setBbb(org.seasar.doma.internal.apt.entity.ChildEntity entity, java.math.BigDecimal bbb) {
-            entity.bbb = bbb;
-        }
+    @Override
+    public void preInsert(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
+        __listener.preInsert(entity);
+    }
 
-        /**
-         * 
-         * @param entity
-         * @return
-         */
-        public static java.math.BigDecimal getBbb(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
-            return entity.bbb;
-        }
+    @Override
+    public void preUpdate(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
+        __listener.preUpdate(entity);
+    }
 
-        /**
-         * 
-         * @param entity
-         * @param ccc
-         */
-        public static void setCcc(org.seasar.doma.internal.apt.entity.ChildEntity entity, java.lang.String ccc) {
-            entity.ccc = ccc;
-        }
+    @Override
+    public void preDelete(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
+        __listener.preDelete(entity);
+    }
 
-        /**
-         * 
-         * @param entity
-         * @return
-         */
-        public static java.lang.String getCcc(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
-            return entity.ccc;
-        }
+    @Override
+    public java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, ?>> getEntityPropertyTypes() {
+        return __entityPropertyTypes;
+    }
 
+    @Override
+    public org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, ?> getEntityPropertyType(String __name) {
+        return __entityPropertyTypeMap.get(__name);
+    }
+
+    @Override
+    public org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, ?> getGeneratedIdPropertyType() {
+        return null;
+    }
+
+    @Override
+    public org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, ?> getVersionPropertyType() {
+        return null;
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.entity.ChildEntity newEntity() {
+        return new org.seasar.doma.internal.apt.entity.ChildEntity();
+    }
+
+    @Override
+    public Class<org.seasar.doma.internal.apt.entity.ChildEntity> getEntityClass() {
+        return org.seasar.doma.internal.apt.entity.ChildEntity.class;
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.entity.ChildEntity getOriginalStates(org.seasar.doma.internal.apt.entity.ChildEntity __entity) {
+        return null;
+    }
+
+    @Override
+    public void saveCurrentStates(org.seasar.doma.internal.apt.entity.ChildEntity __entity) {
+    }
+
+    /**
+     * @return the singleton
+     */
+    public static _ChildEntity get() {
+        return __singleton;
     }
 
 }

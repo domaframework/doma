@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.it.entity;
 
-import java.io.Serializable;
-
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
 import org.seasar.doma.OriginalStates;
@@ -39,7 +37,7 @@ public class Department {
     Integer version;
 
     @OriginalStates
-    Serializable originalStates;
+    Department originalStates;
 
     public Integer getDepartmentId() {
         return departmentId;

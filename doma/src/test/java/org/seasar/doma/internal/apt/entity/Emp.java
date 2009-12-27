@@ -53,7 +53,7 @@ public class Emp {
     String temp;
 
     @OriginalStates
-    Serializable originalStates;
+    Emp originalStates;
 
     @Transient
     List<String> names;

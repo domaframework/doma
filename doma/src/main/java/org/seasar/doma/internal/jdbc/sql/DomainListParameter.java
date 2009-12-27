@@ -20,25 +20,24 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.List;
 
 import org.seasar.doma.internal.domain.DomainType;
-import org.seasar.doma.internal.domain.DomainTypeFactory;
+import org.seasar.doma.internal.domain.DomainWrapper;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class DomainListParameter<V, D> implements
-        ListParameter<DomainType<V, D>> {
-
-    protected final DomainTypeFactory<V, D> domainTypeFactory;
+public class DomainListParameter<V, D> implements ListParameter<Wrapper<V>, V> {
 
     protected final List<D> domains;
 
-    protected DomainType<V, D> domainType;
+    protected final DomainType<V, D> domainType;
 
-    public DomainListParameter(DomainTypeFactory<V, D> domainTypeFactory,
-            List<D> domains) {
-        assertNotNull(domainTypeFactory, domains);
-        this.domainTypeFactory = domainTypeFactory;
+    protected DomainWrapper<V, D> currentWrapper;
+
+    public DomainListParameter(DomainType<V, D> domainType, List<D> domains) {
+        assertNotNull(domainType, domains);
+        this.domainType = domainType;
         this.domains = domains;
     }
 
@@ -48,14 +47,15 @@ public class DomainListParameter<V, D> implements
     }
 
     @Override
-    public DomainType<V, D> getElementHolder() {
-        domainType = domainTypeFactory.createDomainType();
-        return domainType;
+    public Wrapper<V> getElementHolder() {
+        currentWrapper = domainType.getWrapper(null);
+        return currentWrapper;
     }
 
     @Override
-    public void add() {
-        domains.add(domainType.getDomain());
+    public void add(V value) {
+        currentWrapper.set(value);
+        domains.add(currentWrapper.getDomain());
     }
 
     @Override

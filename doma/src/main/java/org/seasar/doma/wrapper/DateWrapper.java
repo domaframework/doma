@@ -15,10 +15,6 @@
  */
 package org.seasar.doma.wrapper;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.sql.Date;
 
 import org.seasar.doma.DomaNullPointerException;
@@ -29,9 +25,7 @@ import org.seasar.doma.DomaNullPointerException;
  * @author taedium
  * 
  */
-public class DateWrapper extends AbstractWrapper<Date> implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class DateWrapper extends AbstractWrapper<Date> {
 
     /**
      * インスタンスを構築します。
@@ -50,11 +44,12 @@ public class DateWrapper extends AbstractWrapper<Date> implements Serializable {
     }
 
     @Override
-    public DateWrapper copy() {
-        if (value == null) {
-            return new DateWrapper();
+    public Date getCopy() {
+        Date original = get();
+        if (original == null) {
+            return null;
         }
-        return new DateWrapper(new Date(value.getTime()));
+        return new Date(original.getTime());
     }
 
     @Override
@@ -71,15 +66,4 @@ public class DateWrapper extends AbstractWrapper<Date> implements Serializable {
         return visitor.visitUnknownWrapper(this, p);
     }
 
-    private void readObject(ObjectInputStream inputStream) throws IOException,
-            ClassNotFoundException {
-        inputStream.defaultReadObject();
-        value = (Date) inputStream.readObject();
-    }
-
-    private void writeObject(ObjectOutputStream outputStream)
-            throws IOException {
-        outputStream.defaultWriteObject();
-        outputStream.writeObject(value);
-    }
 }

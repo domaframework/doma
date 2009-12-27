@@ -25,7 +25,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class BasicListParameter<V> implements ListParameter<Wrapper<V>> {
+public class BasicListParameter<V> implements ListParameter<Wrapper<V>, V> {
 
     protected final Wrapper<V> wrapper;
 
@@ -48,8 +48,8 @@ public class BasicListParameter<V> implements ListParameter<Wrapper<V>> {
     }
 
     @Override
-    public void add() {
-        values.add(wrapper.get());
+    public void add(V value) {
+        values.add(value);
     }
 
     @Override

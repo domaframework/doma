@@ -20,8 +20,8 @@ import java.util.Collections;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
-import org.seasar.doma.internal.jdbc.dialect.H2PagingTransformer;
 import org.seasar.doma.internal.jdbc.dialect.H2ForUpdateTransformer;
+import org.seasar.doma.internal.jdbc.dialect.H2PagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;

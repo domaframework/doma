@@ -15,11 +15,6 @@
  */
 package org.seasar.doma.wrapper;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-
 import org.seasar.doma.DomaNullPointerException;
 
 /**
@@ -29,9 +24,7 @@ import org.seasar.doma.DomaNullPointerException;
  * 
  */
 public class ShortWrapper extends AbstractWrapper<Short> implements
-        NumberWrapper<Short>, Serializable {
-
-    private static final long serialVersionUID = 1L;
+        NumberWrapper<Short> {
 
     /**
      * インスタンスを構築します。
@@ -47,11 +40,6 @@ public class ShortWrapper extends AbstractWrapper<Short> implements
      */
     public ShortWrapper(Short value) {
         super(value);
-    }
-
-    @Override
-    public ShortWrapper copy() {
-        return new ShortWrapper(value);
     }
 
     @Override
@@ -73,15 +61,4 @@ public class ShortWrapper extends AbstractWrapper<Short> implements
         return visitor.visitUnknownWrapper(this, p);
     }
 
-    private void readObject(ObjectInputStream inputStream) throws IOException,
-            ClassNotFoundException {
-        inputStream.defaultReadObject();
-        value = (Short) inputStream.readObject();
-    }
-
-    private void writeObject(ObjectOutputStream outputStream)
-            throws IOException {
-        outputStream.defaultWriteObject();
-        outputStream.writeObject(value);
-    }
 }

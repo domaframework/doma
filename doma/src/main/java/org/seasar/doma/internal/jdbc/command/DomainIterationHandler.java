@@ -21,7 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.seasar.doma.internal.domain.DomainType;
-import org.seasar.doma.internal.domain.DomainTypeFactory;
+import org.seasar.doma.internal.domain.DomainWrapper;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
@@ -32,14 +32,14 @@ import org.seasar.doma.jdbc.IterationContext;
  */
 public class DomainIterationHandler<R, V, D> implements ResultSetHandler<R> {
 
-    protected final DomainTypeFactory<V, D> domainTypeFactory;
+    protected final DomainType<V, D> domainType;
 
     protected final IterationCallback<R, D> iterationCallback;
 
-    public DomainIterationHandler(DomainTypeFactory<V, D> domainTypeFactory,
+    public DomainIterationHandler(DomainType<V, D> domainType,
             IterationCallback<R, D> iterationCallback) {
-        assertNotNull(domainTypeFactory, iterationCallback);
-        this.domainTypeFactory = domainTypeFactory;
+        assertNotNull(domainType, iterationCallback);
+        this.domainType = domainType;
         this.iterationCallback = iterationCallback;
     }
 
@@ -49,9 +49,9 @@ public class DomainIterationHandler<R, V, D> implements ResultSetHandler<R> {
         IterationContext iterationContext = new IterationContext();
         R result = null;
         while (resultSet.next()) {
-            DomainType<V, D> domainType = domainTypeFactory.createDomainType();
-            fetcher.fetch(resultSet, domainType.getWrapper());
-            result = iterationCallback.iterate(domainType.getDomain(),
+            DomainWrapper<V, D> wrapper = domainType.getWrapper(null);
+            fetcher.fetch(resultSet, wrapper);
+            result = iterationCallback.iterate(wrapper.getDomain(),
                     iterationContext);
             if (iterationContext.isExited()) {
                 return result;

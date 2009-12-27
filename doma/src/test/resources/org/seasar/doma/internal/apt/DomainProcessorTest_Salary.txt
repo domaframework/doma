@@ -2,44 +2,60 @@ package org.seasar.doma.internal.apt.domain;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
-public class _Salary implements org.seasar.doma.internal.domain.DomainTypeFactory<java.math.BigDecimal, org.seasar.doma.internal.apt.domain.Salary> {
+public final class _Salary implements org.seasar.doma.internal.domain.DomainType<java.math.BigDecimal, org.seasar.doma.internal.apt.domain.Salary> {
 
-    @Override
-    public org.seasar.doma.internal.domain.DomainType<java.math.BigDecimal, org.seasar.doma.internal.apt.domain.Salary> createDomainType() {
-        return new SalaryType();
+    private static final _Salary singleton = new _Salary();
+
+    private _Salary() {
     }
 
     @Override
-    public org.seasar.doma.internal.domain.DomainType<java.math.BigDecimal, org.seasar.doma.internal.apt.domain.Salary> createDomainType(org.seasar.doma.internal.apt.domain.Salary domain) {
-        return new SalaryType(domain);
+    public org.seasar.doma.internal.apt.domain.Salary newDomain(java.math.BigDecimal value) {
+        return new org.seasar.doma.internal.apt.domain.Salary(value);
     }
 
-    private static class SalaryType implements org.seasar.doma.internal.domain.DomainType<java.math.BigDecimal, org.seasar.doma.internal.apt.domain.Salary> {
+    @Override
+    public Class<org.seasar.doma.internal.apt.domain.Salary> getDomainClass() {
+        return org.seasar.doma.internal.apt.domain.Salary.class;
+    }
 
-        private final org.seasar.doma.wrapper.BigDecimalWrapper wrapper = new org.seasar.doma.wrapper.BigDecimalWrapper();
+    @Override
+    public org.seasar.doma.internal.domain.DomainWrapper<java.math.BigDecimal, org.seasar.doma.internal.apt.domain.Salary> getWrapper(org.seasar.doma.internal.apt.domain.Salary domain) {
+        return new Wrapper(domain);
+    }
 
-        private SalaryType() {
+    /**
+     * @return the singleton
+     */
+    public static _Salary get() {
+        return singleton;
+    }
+
+    private static class Wrapper extends org.seasar.doma.wrapper.BigDecimalWrapper implements org.seasar.doma.internal.domain.DomainWrapper<java.math.BigDecimal, org.seasar.doma.internal.apt.domain.Salary> {
+
+        private org.seasar.doma.internal.apt.domain.Salary domain;
+
+        private Wrapper(org.seasar.doma.internal.apt.domain.Salary domain) {
+            if (domain == null) {
+                this.domain = new org.seasar.doma.internal.apt.domain.Salary((java.math.BigDecimal) null);
+            } else {
+                this.domain = domain;
+            }
         }
 
-        private SalaryType(Salary domain) {
-            this.wrapper.set(domain != null ? domain.getValue() : null);
+        @Override
+        public java.math.BigDecimal get() {
+            return domain.getValue();
+        }
+
+        @Override
+        public void set(java.math.BigDecimal value) {
+            domain = new org.seasar.doma.internal.apt.domain.Salary(value);
         }
 
         @Override
         public org.seasar.doma.internal.apt.domain.Salary getDomain() {
-            return new org.seasar.doma.internal.apt.domain.Salary(wrapper.get());
+            return domain;
         }
-
-        @Override
-        public Class<org.seasar.doma.internal.apt.domain.Salary> getDomainClass() {
-            return org.seasar.doma.internal.apt.domain.Salary.class;
-        }
-
-        @Override
-        public org.seasar.doma.wrapper.BigDecimalWrapper getWrapper() {
-            return wrapper;
-        }
-
     }
-
 }

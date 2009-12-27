@@ -46,12 +46,12 @@ public class ArrayWrapper extends AbstractWrapper<Array> {
     }
 
     @Override
-    public ArrayWrapper copy() {
-        return new ArrayWrapper(value);
+    public Array getCopy() {
+        return null;
     }
 
     @Override
-    public boolean isEqual(Wrapper<?> other) {
+    public boolean hasEqualValue(Object otherValue) {
         return false;
     }
 

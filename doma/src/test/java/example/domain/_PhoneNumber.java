@@ -1,46 +1,61 @@
 package example.domain;
 
 import org.seasar.doma.internal.domain.DomainType;
-import org.seasar.doma.internal.domain.DomainTypeFactory;
+import org.seasar.doma.internal.domain.DomainWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 
-public class _PhoneNumber implements DomainTypeFactory<String, PhoneNumber> {
+public class _PhoneNumber implements DomainType<String, PhoneNumber> {
 
-    @Override
-    public DomainType<String, PhoneNumber> createDomainType() {
-        return new PhoneNumberType();
+    private static final _PhoneNumber singleton = new _PhoneNumber();
+
+    private _PhoneNumber() {
     }
 
     @Override
-    public DomainType<String, PhoneNumber> createDomainType(PhoneNumber domain) {
-        return new PhoneNumberType(domain);
+    public PhoneNumber newDomain(String value) {
+        return new PhoneNumber(value);
     }
 
-    private static class PhoneNumberType implements
-            DomainType<String, PhoneNumber> {
+    @Override
+    public Class<PhoneNumber> getDomainClass() {
+        return PhoneNumber.class;
+    }
 
-        private final StringWrapper wrapper = new StringWrapper();
+    @Override
+    public Wrapper getWrapper(PhoneNumber domain) {
+        return new Wrapper(domain);
+    }
 
-        private PhoneNumberType() {
+    public static _PhoneNumber get() {
+        return singleton;
+    }
+
+    static class Wrapper extends StringWrapper implements
+            DomainWrapper<String, PhoneNumber> {
+
+        private PhoneNumber domain;
+
+        public Wrapper(PhoneNumber domain) {
+            if (domain == null) {
+                this.domain = new PhoneNumber(null);
+            } else {
+                this.domain = domain;
+            }
         }
 
-        private PhoneNumberType(PhoneNumber domain) {
-            this.wrapper.set(domain != null ? domain.getValue() : null);
+        @Override
+        public String get() {
+            return domain.getValue();
+        }
+
+        @Override
+        public void set(String value) {
+            domain = new PhoneNumber(value);
         }
 
         @Override
         public PhoneNumber getDomain() {
-            return new PhoneNumber(wrapper.get());
-        }
-
-        @Override
-        public Class<PhoneNumber> getDomainClass() {
-            return PhoneNumber.class;
-        }
-
-        @Override
-        public StringWrapper getWrapper() {
-            return wrapper;
+            return domain;
         }
 
     }

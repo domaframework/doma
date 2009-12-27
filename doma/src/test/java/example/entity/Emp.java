@@ -25,7 +25,9 @@ import org.seasar.doma.Version;
 import org.seasar.doma.jdbc.entity.NamingType;
 
 @Entity(naming = NamingType.SNAKE_UPPER_CASE)
-public class Emp {
+public class Emp implements Serializable {
+
+    private static final long serialVersionUID = -6511179565163144602L;
 
     @Id
     Integer id;

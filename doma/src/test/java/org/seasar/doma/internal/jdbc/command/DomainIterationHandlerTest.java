@@ -54,7 +54,7 @@ public class DomainIterationHandlerTest extends TestCase {
         query.prepare();
 
         DomainIterationHandler<String, String, PhoneNumber> handler = new DomainIterationHandler<String, String, PhoneNumber>(
-                new _PhoneNumber(),
+                _PhoneNumber.get(),
                 new IterationCallback<String, PhoneNumber>() {
 
                     private String result = "";
@@ -86,7 +86,7 @@ public class DomainIterationHandlerTest extends TestCase {
         query.prepare();
 
         DomainIterationHandler<String, String, PhoneNumber> handler = new DomainIterationHandler<String, String, PhoneNumber>(
-                new _PhoneNumber(),
+                _PhoneNumber.get(),
                 new IterationCallback<String, PhoneNumber>() {
 
                     private String result = "";

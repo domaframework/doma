@@ -15,10 +15,6 @@
  */
 package org.seasar.doma.wrapper;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.sql.Timestamp;
 
 import org.seasar.doma.DomaNullPointerException;
@@ -29,10 +25,7 @@ import org.seasar.doma.DomaNullPointerException;
  * @author taedium
  * 
  */
-public class TimestampWrapper extends AbstractWrapper<Timestamp> implements
-        Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class TimestampWrapper extends AbstractWrapper<Timestamp> {
 
     /**
      * インスタンスを構築します。
@@ -51,11 +44,14 @@ public class TimestampWrapper extends AbstractWrapper<Timestamp> implements
     }
 
     @Override
-    public TimestampWrapper copy() {
-        if (value == null) {
-            return new TimestampWrapper();
+    public Timestamp getCopy() {
+        Timestamp original = get();
+        if (original == null) {
+            return null;
         }
-        return new TimestampWrapper(new Timestamp(value.getTime()));
+        Timestamp copy = new Timestamp(original.getTime());
+        copy.setNanos(original.getNanos());
+        return copy;
     }
 
     @Override
@@ -72,15 +68,4 @@ public class TimestampWrapper extends AbstractWrapper<Timestamp> implements
         return visitor.visitUnknownWrapper(this, p);
     }
 
-    private void readObject(ObjectInputStream inputStream) throws IOException,
-            ClassNotFoundException {
-        inputStream.defaultReadObject();
-        value = (Timestamp) inputStream.readObject();
-    }
-
-    private void writeObject(ObjectOutputStream outputStream)
-            throws IOException {
-        outputStream.defaultWriteObject();
-        outputStream.writeObject(value);
-    }
 }

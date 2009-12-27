@@ -15,29 +15,17 @@
  */
 package org.seasar.doma.internal.jdbc.entity;
 
-import org.seasar.doma.wrapper.Wrapper;
-
 /**
  * アプリケーションにより割り当てられる識別子のプロパティです。
  * 
  * @author taedium
  * 
  */
-public class AssignedIdPropertyType<W extends Wrapper<?>> extends
-        BasicPropertyType<W> {
+public abstract class AssignedIdPropertyType<E, V> extends
+        BasicPropertyType<E, V> {
 
-    /**
-     * インスタンスを構築します。
-     * 
-     * @param name
-     *            名前
-     * @param columnName
-     *            カラム名
-     * @param wrapper
-     *            ラッパー
-     */
-    public AssignedIdPropertyType(String name, String columnName, W wrapper) {
-        super(name, columnName, wrapper, true, true);
+    public AssignedIdPropertyType(String name, String columnName) {
+        super(name, columnName, true, true);
     }
 
     @Override

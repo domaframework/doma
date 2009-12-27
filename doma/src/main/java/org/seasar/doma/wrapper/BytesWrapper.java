@@ -15,10 +15,6 @@
  */
 package org.seasar.doma.wrapper;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.Arrays;
 
 import org.seasar.doma.DomaNullPointerException;
@@ -29,10 +25,7 @@ import org.seasar.doma.DomaNullPointerException;
  * @author taedium
  * 
  */
-public class BytesWrapper extends AbstractWrapper<byte[]> implements
-        Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class BytesWrapper extends AbstractWrapper<byte[]> {
 
     /**
      * インスタンスを構築します。
@@ -51,21 +44,18 @@ public class BytesWrapper extends AbstractWrapper<byte[]> implements
     }
 
     @Override
-    public BytesWrapper copy() {
-        if (value == null) {
-            return new BytesWrapper();
+    public byte[] getCopy() {
+        byte[] original = get();
+        if (original == null) {
+            return null;
         }
-        return new BytesWrapper(Arrays.copyOf(value, value.length));
+        return Arrays.copyOf(original, original.length);
     }
 
     @Override
-    public boolean isEqual(Wrapper<?> other) {
-        if (other == null) {
-            throw new DomaNullPointerException("other");
-        }
-        if (other.get() instanceof byte[]) {
-            byte[] otherValue = (byte[]) other.get();
-            return Arrays.equals(value, otherValue);
+    public boolean hasEqualValue(Object otherValue) {
+        if (otherValue instanceof byte[]) {
+            return Arrays.equals(get(), (byte[]) otherValue);
         }
         return false;
     }
@@ -82,18 +72,6 @@ public class BytesWrapper extends AbstractWrapper<byte[]> implements
             return v.visitBytesWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);
-    }
-
-    private void readObject(ObjectInputStream inputStream) throws IOException,
-            ClassNotFoundException {
-        inputStream.defaultReadObject();
-        value = (byte[]) inputStream.readObject();
-    }
-
-    private void writeObject(ObjectOutputStream outputStream)
-            throws IOException {
-        outputStream.defaultWriteObject();
-        outputStream.writeObject(value);
     }
 
 }

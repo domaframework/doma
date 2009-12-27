@@ -18,7 +18,7 @@ package org.seasar.doma.internal.jdbc.sql;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.internal.domain.DomainType;
-import org.seasar.doma.internal.domain.DomainTypeFactory;
+import org.seasar.doma.internal.domain.DomainWrapper;
 import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.wrapper.Wrapper;
 
@@ -26,17 +26,20 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class DomainInOutParameter<V, D> implements InParameter, OutParameter {
+public class DomainInOutParameter<V, D> implements InParameter, OutParameter<V> {
 
     protected final DomainType<V, D> domainType;
 
     protected final Reference<D> reference;
 
-    public DomainInOutParameter(DomainTypeFactory<V, D> domainTypeFactory,
+    protected final DomainWrapper<V, D> wrapper;
+
+    public DomainInOutParameter(DomainType<V, D> domainType,
             Reference<D> reference) {
-        assertNotNull(domainTypeFactory, reference);
-        this.domainType = domainTypeFactory.createDomainType(reference.get());
+        assertNotNull(domainType, reference);
+        this.domainType = domainType;
         this.reference = reference;
+        this.wrapper = domainType.getWrapper(reference.get());
     }
 
     @Override
@@ -45,13 +48,13 @@ public class DomainInOutParameter<V, D> implements InParameter, OutParameter {
     }
 
     @Override
-    public Wrapper<?> getWrapper() {
-        return domainType.getWrapper();
+    public Wrapper<V> getWrapper() {
+        return domainType.getWrapper(reference.get());
     }
 
     @Override
-    public void updateReference() {
-        reference.set(domainType.getDomain());
+    public void update() {
+        reference.set(wrapper.getDomain());
     }
 
     @Override

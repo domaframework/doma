@@ -16,9 +16,6 @@
 package org.seasar.doma.internal.jdbc.entity;
 
 import java.util.List;
-import java.util.Map;
-
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * エンティティのインスタンスを管理するクラスを表します。
@@ -42,25 +39,25 @@ public interface EntityType<E> {
 
     String getTableName();
 
-    GeneratedIdPropertyType<?> getGeneratedIdPropertyType();
+    GeneratedIdPropertyType<E, ?> getGeneratedIdPropertyType();
 
-    VersionPropertyType<?> getVersionPropertyType();
+    VersionPropertyType<E, ?> getVersionPropertyType();
 
-    EntityPropertyType<?> getEntityPropertyType(String __name);
+    EntityPropertyType<E, ?> getEntityPropertyType(String __name);
 
-    List<EntityPropertyType<?>> getEntityPropertyTypes();
+    List<EntityPropertyType<E, ?>> getEntityPropertyTypes();
 
-    E getEntity();
+    E newEntity();
 
     Class<E> getEntityClass();
 
-    Map<String, Wrapper<?>> getOriginalStates();
+    void saveCurrentStates(E entity);
 
-    void refreshEntity();
+    E getOriginalStates(E entity);
 
-    void preInsert();
+    void preInsert(E entity);
 
-    void preUpdate();
+    void preUpdate(E entity);
 
-    void preDelete();
+    void preDelete(E entity);
 }

@@ -63,7 +63,7 @@ public class BuiltinTableIdGeneratorTest extends TestCase {
         idGenerator.setAllocationSize(1);
         idGenerator.initialize();
         IdGenerationConfig idGenerationConfig = new IdGenerationConfig(config,
-                new _Emp().createEntityType(), "EMP", "ID");
+                _Emp.get(), "EMP", "ID");
         Long value = idGenerator.generatePreInsert(idGenerationConfig);
         assertEquals(new Long(10), value);
         assertEquals("update aaa set VALUE = VALUE + ? where PK = ?",

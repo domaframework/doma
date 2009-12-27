@@ -15,11 +15,6 @@
  */
 package org.seasar.doma.wrapper;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-
 import org.seasar.doma.DomaNullPointerException;
 
 /**
@@ -28,10 +23,7 @@ import org.seasar.doma.DomaNullPointerException;
  * @author taedium
  * 
  */
-public class BooleanWrapper extends AbstractWrapper<Boolean> implements
-        Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class BooleanWrapper extends AbstractWrapper<Boolean> {
 
     /**
      * インスタンスを構築します。
@@ -50,11 +42,6 @@ public class BooleanWrapper extends AbstractWrapper<Boolean> implements
     }
 
     @Override
-    public BooleanWrapper copy() {
-        return new BooleanWrapper(value);
-    }
-
-    @Override
     public <R, P, TH extends Throwable> R accept(
             WrapperVisitor<R, P, TH> visitor, P p) throws TH {
         if (visitor == null) {
@@ -68,15 +55,4 @@ public class BooleanWrapper extends AbstractWrapper<Boolean> implements
         return visitor.visitUnknownWrapper(this, p);
     }
 
-    private void readObject(ObjectInputStream inputStream) throws IOException,
-            ClassNotFoundException {
-        inputStream.defaultReadObject();
-        value = (Boolean) inputStream.readObject();
-    }
-
-    private void writeObject(ObjectOutputStream outputStream)
-            throws IOException {
-        outputStream.defaultWriteObject();
-        outputStream.writeObject(value);
-    }
 }

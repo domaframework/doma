@@ -44,12 +44,12 @@ public class ClobWrapper extends AbstractWrapper<Clob> {
     }
 
     @Override
-    public ClobWrapper copy() {
-        return new ClobWrapper(value);
+    public Clob getCopy() {
+        return null;
     }
 
     @Override
-    public boolean isEqual(Wrapper<?> other) {
+    public boolean hasEqualValue(Object otherValue) {
         return false;
     }
 

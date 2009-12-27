@@ -21,7 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.seasar.doma.internal.domain.DomainType;
-import org.seasar.doma.internal.domain.DomainTypeFactory;
+import org.seasar.doma.internal.domain.DomainWrapper;
 import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.Sql;
@@ -32,24 +32,24 @@ import org.seasar.doma.jdbc.Sql;
  */
 public class DomainSingleResultHandler<V, D> implements ResultSetHandler<D> {
 
-    protected final DomainTypeFactory<V, D> domainTypeFactory;
+    protected final DomainType<V, D> domainType;
 
-    public DomainSingleResultHandler(DomainTypeFactory<V, D> domainTypeFactory) {
-        assertNotNull(domainTypeFactory);
-        this.domainTypeFactory = domainTypeFactory;
+    public DomainSingleResultHandler(DomainType<V, D> domainType) {
+        assertNotNull(domainType);
+        this.domainType = domainType;
     }
 
     @Override
     public D handle(ResultSet resultSet, Query query) throws SQLException {
         BasicFetcher fetcher = new BasicFetcher(query);
-        DomainType<V, D> domainType = domainTypeFactory.createDomainType();
         if (resultSet.next()) {
-            fetcher.fetch(resultSet, domainType.getWrapper());
+            DomainWrapper<V, D> wrapper = domainType.getWrapper(null);
+            fetcher.fetch(resultSet, wrapper);
             if (resultSet.next()) {
                 Sql<?> sql = query.getSql();
                 throw new NonUniqueResultException(sql);
             }
-            return domainType.getDomain();
+            return wrapper.getDomain();
         }
         return null;
     }

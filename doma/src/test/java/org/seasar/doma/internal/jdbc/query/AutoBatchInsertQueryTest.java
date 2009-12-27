@@ -48,6 +48,8 @@ public class AutoBatchInsertQueryTest extends TestCase {
         AutoBatchInsertQuery<Emp> query = new AutoBatchInsertQuery<Emp>(
                 new _Emp());
         query.setConfig(runtimeConfig);
+        query.setCallerClassName("aaa");
+        query.setCallerMethodName("bbb");
         query.setEntities(Arrays.asList(emp1, emp2));
         query.prepare();
 
@@ -69,6 +71,8 @@ public class AutoBatchInsertQueryTest extends TestCase {
         AutoBatchInsertQuery<Emp> query = new AutoBatchInsertQuery<Emp>(
                 new _Emp());
         query.setConfig(runtimeConfig);
+        query.setCallerClassName("aaa");
+        query.setCallerMethodName("bbb");
         query.setEntities(Arrays.asList(emp1, emp2));
         query.prepare();
 

@@ -2,10 +2,10 @@ package org.seasar.doma.internal.jdbc.sql;
 
 import org.seasar.doma.wrapper.Wrapper;
 
-public interface OutParameter extends CallableSqlParameter {
+public interface OutParameter<V> extends CallableSqlParameter {
 
-    Wrapper<?> getWrapper();
+    Wrapper<V> getWrapper();
 
-    void updateReference();
+    void update();
 
 }

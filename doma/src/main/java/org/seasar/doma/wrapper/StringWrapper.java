@@ -15,11 +15,6 @@
  */
 package org.seasar.doma.wrapper;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-
 import org.seasar.doma.DomaNullPointerException;
 
 /**
@@ -28,10 +23,7 @@ import org.seasar.doma.DomaNullPointerException;
  * @author taedium
  * 
  */
-public class StringWrapper extends AbstractWrapper<String> implements
-        Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class StringWrapper extends AbstractWrapper<String> {
 
     /**
      * インスタンスを構築します。
@@ -50,8 +42,8 @@ public class StringWrapper extends AbstractWrapper<String> implements
     }
 
     @Override
-    public StringWrapper copy() {
-        return new StringWrapper(value);
+    public String getCopy() {
+        return get();
     }
 
     @Override
@@ -66,18 +58,6 @@ public class StringWrapper extends AbstractWrapper<String> implements
             return v.visitStringWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);
-    }
-
-    private void readObject(ObjectInputStream inputStream) throws IOException,
-            ClassNotFoundException {
-        inputStream.defaultReadObject();
-        value = (String) inputStream.readObject();
-    }
-
-    private void writeObject(ObjectOutputStream outputStream)
-            throws IOException {
-        outputStream.defaultWriteObject();
-        outputStream.writeObject(value);
     }
 
 }

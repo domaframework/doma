@@ -88,7 +88,7 @@ public class DomainProcessor extends AbstractProcessor {
 
     protected void generateDomain(TypeElement domainElement,
             DomainMeta domainMeta) {
-        DomainTypeFactoryGenerator generator = null;
+        DomainTypeGenerator generator = null;
         try {
             generator = createDomainMetaFactoryGenerator(domainElement,
                     domainMeta);
@@ -101,10 +101,10 @@ public class DomainProcessor extends AbstractProcessor {
         }
     }
 
-    protected DomainTypeFactoryGenerator createDomainMetaFactoryGenerator(
+    protected DomainTypeGenerator createDomainMetaFactoryGenerator(
             TypeElement domainElement, DomainMeta domainMeta)
             throws IOException {
-        return new DomainTypeFactoryGenerator(processingEnv, domainElement,
+        return new DomainTypeGenerator(processingEnv, domainElement,
                 domainMeta);
     }
 

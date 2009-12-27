@@ -22,7 +22,7 @@ import java.sql.SQLException;
  * @author taedium
  * 
  */
-public interface ResultFetcher<R, A> {
+public interface ResultFetcher<R, H> {
 
-    void fetch(R result, A acceptor) throws SQLException;
+    Object fetch(R result, H handler) throws SQLException;
 }

@@ -18,7 +18,8 @@ package org.seasar.doma.internal.jdbc.sql;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.internal.domain.DomainType;
-import org.seasar.doma.internal.domain.DomainTypeFactory;
+import org.seasar.doma.internal.domain.DomainWrapper;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
@@ -26,28 +27,28 @@ import org.seasar.doma.internal.domain.DomainTypeFactory;
  */
 public class DomainResultParameter<V, D> implements ResultParameter<D> {
 
-    protected final DomainTypeFactory<V, D> domainTypeFactory;
+    protected final DomainType<V, D> domainType;
 
-    protected DomainType<V, D> domainType;
+    protected final DomainWrapper<V, D> wrapper;
 
-    public DomainResultParameter(DomainTypeFactory<V, D> domainTypeFactory) {
-        assertNotNull(domainTypeFactory);
-        this.domainTypeFactory = domainTypeFactory;
-        this.domainType = domainTypeFactory.createDomainType();
+    public DomainResultParameter(DomainType<V, D> domainType) {
+        assertNotNull(domainType);
+        this.domainType = domainType;
+        this.wrapper = domainType.getWrapper(null);
     }
 
-    public DomainType<V, D> getDomainType() {
-        return domainType;
+    public Wrapper<V> getWrapper() {
+        return wrapper;
     }
 
     @Override
     public Object getValue() {
-        return domainType.getDomain();
+        return wrapper.getDomain();
     }
 
     @Override
     public D getResult() {
-        return domainType.getDomain();
+        return wrapper.getDomain();
     }
 
     @Override

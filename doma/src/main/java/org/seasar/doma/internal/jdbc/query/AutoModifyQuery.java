@@ -20,7 +20,6 @@ import java.util.List;
 
 import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.internal.jdbc.entity.EntityType;
-import org.seasar.doma.internal.jdbc.entity.EntityTypeFactory;
 import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.util.TableUtil;
@@ -42,11 +41,11 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
 
     protected String[] excludedPropertyNames = EMPTY_STRINGS;
 
-    protected final EntityTypeFactory<E> entityTypeFactory;
+    protected final EntityType<E> entityType;
 
     protected Config config;
 
-    protected EntityType<E> entityType;
+    protected E entity;
 
     protected String callerClassName;
 
@@ -54,11 +53,11 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
 
     protected PreparedSql sql;
 
-    protected final List<EntityPropertyType<?>> targetProperties = new ArrayList<EntityPropertyType<?>>();
+    protected final List<EntityPropertyType<E, ?>> targetProperties = new ArrayList<EntityPropertyType<E, ?>>();
 
-    protected final List<EntityPropertyType<?>> idProperties = new ArrayList<EntityPropertyType<?>>();
+    protected final List<EntityPropertyType<E, ?>> idProperties = new ArrayList<EntityPropertyType<E, ?>>();
 
-    protected VersionPropertyType<?> versionPropertyType;
+    protected VersionPropertyType<E, ?> versionPropertyType;
 
     protected String tableName;
 
@@ -72,9 +71,9 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
 
     protected int queryTimeout;
 
-    public AutoModifyQuery(EntityTypeFactory<E> entityTypeFactory) {
-        AssertionUtil.assertNotNull(entityTypeFactory);
-        this.entityTypeFactory = entityTypeFactory;
+    public AutoModifyQuery(EntityType<E> entityType) {
+        AssertionUtil.assertNotNull(entityType);
+        this.entityType = entityType;
     }
 
     protected void prepareTable() {
@@ -82,7 +81,7 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
     }
 
     protected void prepareIdAndVersionProperties() {
-        for (EntityPropertyType<?> p : entityType.getEntityPropertyTypes()) {
+        for (EntityPropertyType<E, ?> p : entityType.getEntityPropertyTypes()) {
             if (p.isId()) {
                 idProperties.add(p);
             }
@@ -130,7 +129,6 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
 
     @Override
     public void complete() {
-        entityType.refreshEntity();
     }
 
     public void setConfig(Config config) {
@@ -138,7 +136,7 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
     }
 
     public void setEntity(E entity) {
-        this.entityType = entityTypeFactory.createEntityType(entity);
+        this.entity = entity;
     }
 
     public void setCallerClassName(String callerClassName) {

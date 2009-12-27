@@ -90,39 +90,40 @@ public class CallableSqlBuilder
     }
 
     @Override
-    public Void visitBasicResultParameter(BasicResultParameter<?> parameter,
-            Context p) throws RuntimeException {
-        handelResultParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public Void visitDomainResultParameter(
-            DomainResultParameter<?, ?> parameter, Context p)
+    public <V> Void visitBasicResultParameter(
+            BasicResultParameter<V> parameter, Context p)
             throws RuntimeException {
         handelResultParameter(parameter, p);
         return null;
     }
 
     @Override
-    public Void visitBasicListResultParameter(
-            BasicListResultParameter<?> parameter, Context p)
+    public <V, D> Void visitDomainResultParameter(
+            DomainResultParameter<V, D> parameter, Context p)
             throws RuntimeException {
         handelResultParameter(parameter, p);
         return null;
     }
 
     @Override
-    public Void visitDomainListResultParameter(
-            DomainListResultParameter<?, ?> parameter, Context p)
+    public <V> Void visitBasicListResultParameter(
+            BasicListResultParameter<V> parameter, Context p)
             throws RuntimeException {
         handelResultParameter(parameter, p);
         return null;
     }
 
     @Override
-    public Void visitEntityListResultParameter(
-            EntityListResultParameter<?> parameter, Context p)
+    public <V, D> Void visitDomainListResultParameter(
+            DomainListResultParameter<V, D> parameter, Context p)
+            throws RuntimeException {
+        handelResultParameter(parameter, p);
+        return null;
+    }
+
+    @Override
+    public <E> Void visitEntityListResultParameter(
+            EntityListResultParameter<E> parameter, Context p)
             throws RuntimeException {
         handelResultParameter(parameter, p);
         return null;
@@ -134,27 +135,28 @@ public class CallableSqlBuilder
     }
 
     @Override
-    public Void visitBasicListParameter(BasicListParameter<?> parameter,
+    public <V> Void visitBasicListParameter(BasicListParameter<V> parameter,
             Context p) throws RuntimeException {
         handelListParameter(parameter, p);
         return null;
     }
 
     @Override
-    public Void visitDomainListParameter(DomainListParameter<?, ?> parameter,
-            Context p) throws RuntimeException {
+    public <V, D> Void visitDomainListParameter(
+            DomainListParameter<V, D> parameter, Context p)
+            throws RuntimeException {
         handelListParameter(parameter, p);
         return null;
     }
 
     @Override
-    public Void visitEntityListParameter(EntityListParameter<?> parameter,
+    public <E> Void visitEntityListParameter(EntityListParameter<E> parameter,
             Context p) throws RuntimeException {
         handelListParameter(parameter, p);
         return null;
     }
 
-    protected void handelListParameter(ListParameter<?> parameter, Context p) {
+    protected void handelListParameter(ListParameter<?, ?> parameter, Context p) {
         if (config.getDialect().supportsResultSetReturningAsOutParameter()) {
             p.appendRawSql("?, ");
             p.appendFormattedSql("?, ");
@@ -170,22 +172,24 @@ public class CallableSqlBuilder
     }
 
     @Override
-    public Void visitDomainInParameter(DomainInParameter<?, ?> parameter,
+    public <V, D> Void visitDomainInParameter(
+            DomainInParameter<V, D> parameter, Context p)
+            throws RuntimeException {
+        handleInParameter(parameter, parameter.getWrapper(), p);
+        return null;
+    }
+
+    @Override
+    public <V> Void visitBasicInOutParameter(BasicInOutParameter<V> parameter,
             Context p) throws RuntimeException {
         handleInParameter(parameter, parameter.getWrapper(), p);
         return null;
     }
 
     @Override
-    public Void visitBasicInOutParameter(BasicInOutParameter<?> parameter,
-            Context p) throws RuntimeException {
-        handleInParameter(parameter, parameter.getWrapper(), p);
-        return null;
-    }
-
-    @Override
-    public Void visitDomainInOutParameter(DomainInOutParameter<?, ?> parameter,
-            Context p) throws RuntimeException {
+    public <V, D> Void visitDomainInOutParameter(
+            DomainInOutParameter<V, D> parameter, Context p)
+            throws RuntimeException {
         handleInParameter(parameter, parameter.getWrapper(), p);
         return null;
     }
@@ -200,20 +204,21 @@ public class CallableSqlBuilder
     }
 
     @Override
-    public Void visitBasicOutParameter(BasicOutParameter<?> parameter, Context p)
-            throws RuntimeException {
-        handleOutParameter(parameter, p);
-        return null;
-    }
-
-    @Override
-    public Void visitDomainOutParameter(DomainOutParameter<?, ?> parameter,
+    public <V> Void visitBasicOutParameter(BasicOutParameter<V> parameter,
             Context p) throws RuntimeException {
         handleOutParameter(parameter, p);
         return null;
     }
 
-    protected void handleOutParameter(OutParameter parameter, Context p) {
+    @Override
+    public <V, D> Void visitDomainOutParameter(
+            DomainOutParameter<V, D> parameter, Context p)
+            throws RuntimeException {
+        handleOutParameter(parameter, p);
+        return null;
+    }
+
+    protected <V> void handleOutParameter(OutParameter<V> parameter, Context p) {
         p.appendRawSql("?, ");
         p.appendFormattedSql("?, ");
         p.addParameter(parameter);
