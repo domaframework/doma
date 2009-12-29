@@ -60,7 +60,7 @@ public class _Emp implements EntityType<Emp> {
             }
 
             @Override
-            public Integer get() {
+            protected Integer doGet() {
                 if (entity == null) {
                     return null;
                 }
@@ -68,7 +68,7 @@ public class _Emp implements EntityType<Emp> {
             }
 
             @Override
-            public void set(Integer value) {
+            protected void doSet(Integer value) {
                 if (entity == null) {
                     return;
                 }
@@ -93,7 +93,7 @@ public class _Emp implements EntityType<Emp> {
             }
 
             @Override
-            public String get() {
+            protected String doGet() {
                 if (entity == null) {
                     return null;
                 }
@@ -101,7 +101,7 @@ public class _Emp implements EntityType<Emp> {
             }
 
             @Override
-            public void set(String value) {
+            protected void doSet(String value) {
                 if (entity == null) {
                     return;
                 }
@@ -126,7 +126,7 @@ public class _Emp implements EntityType<Emp> {
             }
 
             @Override
-            public BigDecimal get() {
+            protected BigDecimal doGet() {
                 if (entity == null) {
                     return null;
                 }
@@ -134,7 +134,7 @@ public class _Emp implements EntityType<Emp> {
             }
 
             @Override
-            public void set(BigDecimal value) {
+            protected void doSet(BigDecimal value) {
                 if (entity == null) {
                     return;
                 }
@@ -160,7 +160,7 @@ public class _Emp implements EntityType<Emp> {
             }
 
             @Override
-            public Integer get() {
+            protected Integer doGet() {
                 if (entity == null) {
                     return null;
                 }
@@ -168,7 +168,7 @@ public class _Emp implements EntityType<Emp> {
             }
 
             @Override
-            public void set(Integer value) {
+            public void doSet(Integer value) {
                 if (entity == null) {
                     return;
                 }

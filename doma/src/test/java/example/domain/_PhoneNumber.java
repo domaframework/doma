@@ -44,12 +44,12 @@ public class _PhoneNumber implements DomainType<String, PhoneNumber> {
         }
 
         @Override
-        public String get() {
+        protected String doGet() {
             return domain.getValue();
         }
 
         @Override
-        public void set(String value) {
+        protected void doSet(String value) {
             domain = new PhoneNumber(value);
         }
 

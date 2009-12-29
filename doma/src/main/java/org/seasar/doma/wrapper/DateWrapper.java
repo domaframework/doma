@@ -44,7 +44,7 @@ public class DateWrapper extends AbstractWrapper<Date> {
     }
 
     @Override
-    public Date getCopy() {
+    protected Date doGetCopy() {
         Date original = get();
         if (original == null) {
             return null;

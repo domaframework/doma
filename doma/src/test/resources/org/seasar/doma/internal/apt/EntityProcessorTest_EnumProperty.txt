@@ -21,7 +21,7 @@ public final class _EnumPropertyEntity implements org.seasar.doma.internal.jdbc.
             }
 
             @Override
-            public java.lang.Integer get() {
+            protected java.lang.Integer doGet() {
                 if (entity == null) {
                     return null;
                 }
@@ -29,7 +29,7 @@ public final class _EnumPropertyEntity implements org.seasar.doma.internal.jdbc.
             }
 
             @Override
-            public void set(java.lang.Integer value) {
+            protected void doSet(java.lang.Integer value) {
                 if (entity == null) {
                     return;
                 }
@@ -54,7 +54,7 @@ public final class _EnumPropertyEntity implements org.seasar.doma.internal.jdbc.
             }
 
             @Override
-            public org.seasar.doma.internal.apt.entity.EnumPropertyEntity.Hoge get() {
+            protected org.seasar.doma.internal.apt.entity.EnumPropertyEntity.Hoge doGet() {
                 if (entity == null) {
                     return null;
                 }
@@ -62,7 +62,7 @@ public final class _EnumPropertyEntity implements org.seasar.doma.internal.jdbc.
             }
 
             @Override
-            public void set(org.seasar.doma.internal.apt.entity.EnumPropertyEntity.Hoge value) {
+            protected void doSet(org.seasar.doma.internal.apt.entity.EnumPropertyEntity.Hoge value) {
                 if (entity == null) {
                     return;
                 }

@@ -44,12 +44,12 @@ public final class _PrimitiveValueDomain implements org.seasar.doma.internal.dom
         }
 
         @Override
-        public java.lang.Integer get() {
+        protected java.lang.Integer doGet() {
             return domain.getValue();
         }
 
         @Override
-        public void set(java.lang.Integer value) {
+        protected void doSet(java.lang.Integer value) {
             domain = new org.seasar.doma.internal.apt.domain.PrimitiveValueDomain(org.seasar.doma.internal.util.BoxedPrimitiveUtil.unbox(value));
         }
 

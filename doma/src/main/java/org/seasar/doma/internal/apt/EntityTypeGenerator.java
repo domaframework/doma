@@ -232,7 +232,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("    }%n");
         print("%n");
         iprint("    @Override%n");
-        iprint("    public %1$s get() {%n", wrapperType.getWrappedType()
+        iprint("    protected %1$s doGet() {%n", wrapperType.getWrappedType()
                 .getTypeNameAsTypeParameter());
         iprint("        if (entity == null) {%n");
         iprint("            return null;%n");
@@ -255,7 +255,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("    }%n");
         print("%n");
         iprint("    @Override%n");
-        iprint("    public void set(%1$s value) {%n", wrapperType
+        iprint("    protected void doSet(%1$s value) {%n", wrapperType
                 .getWrappedType().getTypeNameAsTypeParameter());
         iprint("        if (entity == null) {%n");
         iprint("            return;%n");

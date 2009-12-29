@@ -44,7 +44,7 @@ public class TimestampWrapper extends AbstractWrapper<Timestamp> {
     }
 
     @Override
-    public Timestamp getCopy() {
+    protected Timestamp doGetCopy() {
         Timestamp original = get();
         if (original == null) {
             return null;

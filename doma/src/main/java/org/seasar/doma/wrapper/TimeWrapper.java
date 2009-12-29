@@ -44,7 +44,7 @@ public class TimeWrapper extends AbstractWrapper<Time> {
     }
 
     @Override
-    public Time getCopy() {
+    protected Time doGetCopy() {
         Time original = get();
         if (original == null) {
             return null;

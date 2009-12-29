@@ -44,7 +44,7 @@ public class BytesWrapper extends AbstractWrapper<byte[]> {
     }
 
     @Override
-    public byte[] getCopy() {
+    protected byte[] doGetCopy() {
         byte[] original = get();
         if (original == null) {
             return null;
@@ -53,7 +53,7 @@ public class BytesWrapper extends AbstractWrapper<byte[]> {
     }
 
     @Override
-    public boolean hasEqualValue(Object otherValue) {
+    protected boolean doHasEqualValue(Object otherValue) {
         if (otherValue instanceof byte[]) {
             return Arrays.equals(get(), (byte[]) otherValue);
         }

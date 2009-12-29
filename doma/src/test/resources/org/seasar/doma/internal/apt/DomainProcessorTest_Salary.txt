@@ -44,12 +44,12 @@ public final class _Salary implements org.seasar.doma.internal.domain.DomainType
         }
 
         @Override
-        public java.math.BigDecimal get() {
+        protected java.math.BigDecimal doGet() {
             return domain.getValue();
         }
 
         @Override
-        public void set(java.math.BigDecimal value) {
+        protected void doSet(java.math.BigDecimal value) {
             domain = new org.seasar.doma.internal.apt.domain.Salary(value);
         }
 

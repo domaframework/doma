@@ -39,27 +39,43 @@ public abstract class AbstractWrapper<V> implements Wrapper<V> {
      *            値
      */
     public AbstractWrapper(V value) {
+        doSet(value);
+    }
+
+    @Override
+    public final void set(V value) {
+        doSet(value);
+    }
+
+    protected void doSet(V value) {
         this.value = value;
     }
 
     @Override
-    public void set(V v) {
-        value = v;
+    public final V get() {
+        return doGet();
     }
 
-    @Override
-    public V get() {
+    protected V doGet() {
         return value;
     }
 
     @Override
-    public V getCopy() {
-        return get();
+    public final V getCopy() {
+        return doGetCopy();
+    }
+
+    protected V doGetCopy() {
+        return doGet();
     }
 
     @Override
-    public boolean hasEqualValue(Object otherValue) {
-        V value = get();
+    public final boolean hasEqualValue(Object otherValue) {
+        return doHasEqualValue(otherValue);
+    }
+
+    protected boolean doHasEqualValue(Object otherValue) {
+        V value = doGet();
         if (value == null) {
             return otherValue == null;
         }

@@ -29,7 +29,7 @@ public final class _Emp implements org.seasar.doma.internal.jdbc.entity.EntityTy
             }
 
             @Override
-            public java.lang.Integer get() {
+            protected java.lang.Integer doGet() {
                 if (entity == null) {
                     return null;
                 }
@@ -37,7 +37,7 @@ public final class _Emp implements org.seasar.doma.internal.jdbc.entity.EntityTy
             }
 
             @Override
-            public void set(java.lang.Integer value) {
+            protected void doSet(java.lang.Integer value) {
                 if (entity == null) {
                     return;
                 }
@@ -61,7 +61,7 @@ public final class _Emp implements org.seasar.doma.internal.jdbc.entity.EntityTy
             }
 
             @Override
-            public java.lang.String get() {
+            protected java.lang.String doGet() {
                 if (entity == null) {
                     return null;
                 }
@@ -69,7 +69,7 @@ public final class _Emp implements org.seasar.doma.internal.jdbc.entity.EntityTy
             }
 
             @Override
-            public void set(java.lang.String value) {
+            protected void doSet(java.lang.String value) {
                 if (entity == null) {
                     return;
                 }
@@ -93,7 +93,7 @@ public final class _Emp implements org.seasar.doma.internal.jdbc.entity.EntityTy
             }
 
             @Override
-            public java.math.BigDecimal get() {
+            protected java.math.BigDecimal doGet() {
                 if (entity == null) {
                     return null;
                 }
@@ -101,7 +101,7 @@ public final class _Emp implements org.seasar.doma.internal.jdbc.entity.EntityTy
             }
 
             @Override
-            public void set(java.math.BigDecimal value) {
+            protected void doSet(java.math.BigDecimal value) {
                 if (entity == null) {
                     return;
                 }
@@ -125,7 +125,7 @@ public final class _Emp implements org.seasar.doma.internal.jdbc.entity.EntityTy
             }
 
             @Override
-            public java.lang.Integer get() {
+            protected java.lang.Integer doGet() {
                 if (entity == null) {
                     return null;
                 }
@@ -133,7 +133,7 @@ public final class _Emp implements org.seasar.doma.internal.jdbc.entity.EntityTy
             }
 
             @Override
-            public void set(java.lang.Integer value) {
+            protected void doSet(java.lang.Integer value) {
                 if (entity == null) {
                     return;
                 }

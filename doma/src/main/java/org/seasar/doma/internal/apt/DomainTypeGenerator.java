@@ -171,14 +171,14 @@ public class DomainTypeGenerator extends AbstractGenerator {
         iprint("    }%n");
         print("%n");
         iprint("    @Override%n");
-        iprint("    public %1$s get() {%n", TypeMirrorUtil.boxIfPrimitive(
+        iprint("    protected %1$s doGet() {%n", TypeMirrorUtil.boxIfPrimitive(
                 domainMeta.getValueType(), env));
         iprint("        return domain.%1$s();%n", domainMeta
                 .getAccessorMethod());
         iprint("    }%n");
         print("%n");
         iprint("    @Override%n");
-        iprint("    public void set(%1$s value) {%n", TypeMirrorUtil
+        iprint("    protected void doSet(%1$s value) {%n", TypeMirrorUtil
                 .boxIfPrimitive(domainMeta.getValueType(), env));
         if (domainMeta.getWrapperType().getWrappedType().isPrimitive()) {
             iprint("        domain = new %1$s(%2$s.unbox(value));%n",

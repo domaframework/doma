@@ -44,12 +44,12 @@ public class NClobWrapper extends AbstractWrapper<NClob> {
     }
 
     @Override
-    public NClob getCopy() {
+    protected NClob doGetCopy() {
         return null;
     }
 
     @Override
-    public boolean hasEqualValue(Object otherValue) {
+    protected boolean doHasEqualValue(Object otherValue) {
         return false;
     }
 

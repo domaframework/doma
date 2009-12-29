@@ -45,12 +45,12 @@ public final class _EnumDomain implements org.seasar.doma.internal.domain.Domain
         }
 
         @Override
-        public org.seasar.doma.internal.apt.domain.EnumDomain.JobType get() {
+        protected org.seasar.doma.internal.apt.domain.EnumDomain.JobType doGet() {
             return domain.getValue();
         }
 
         @Override
-        public void set(org.seasar.doma.internal.apt.domain.EnumDomain.JobType value) {
+        protected void doSet(org.seasar.doma.internal.apt.domain.EnumDomain.JobType value) {
             domain = new org.seasar.doma.internal.apt.domain.EnumDomain(value);
         }
 
