@@ -51,9 +51,7 @@
 				<item name="更新" href="tutorial/update.html" />
 				<item name="削除" href="tutorial/delete.html" />
 			</item>
-			<item name="デモアプリケーション" href="demoapps/index.html" collapse="true" >
-				<item name="Doma JPetStore" href="demoapps/jpetstore.html" />
-			</item>
+			<item name="Doma JPetStore" href="jpetstore.html" />
 			<item name="リファレンス" href="reference/index.html" collapse="true" >
 				<item name="基本型" href="reference/basic.html" />
 				<item name="ドメインクラス" href="reference/domain.html" />
@@ -73,7 +71,7 @@
 				</item>
 				<item name="設定クラス" href="reference/config.html" />
 				<item name="SQLファイル" href="reference/sqlfile.html" />
-				<item name="アノテーション処理" href="reference/apt.html" />
+				<item name="注釈処理" href="reference/apt.html" />
 			</item>
 			<item name="開発支援ツール" href="extension/index.html" collapse="true" >
 				<item name="Eclipseプラグイン - Doma Tools" href="extension/doma_tools.html" />

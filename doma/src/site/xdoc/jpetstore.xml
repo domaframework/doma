@@ -126,15 +126,12 @@
 				<li>Seasar2で管理されたトランザクションマネジャーとの連携方法</li>
 				<li>ログ管理の統合方法（JdbcLoggerの実装例）</li>
 				<li>HOT deploy環境下でSQLファイルの変更を即座に認識させる方法（SqlFileRepositoryの実装例）</li>
+				<li>DomaのDaoをSeasar2のSMART deployでDIする方法（注釈処理のオプションの利用例）</li>
 			</ul>
-			<p>
-				このアプリケーションは、Seasar2の機能の利用について、次の方針に基づいて作られています。
-			</p>
-			<ul>
-				<li>DI（Dependency Injection）はActionFormをActionに注入する場合にのみ使用する</li>
-				<li>ServiceクラスやDaoクラスはアプリケーションでインスタンス化する</li>
-				<li>HOT deploy非対象パッケージをconvention.diconに登録し、HOT deploy非対象パッケージからHOT deploy対象パッケージへの依存関係はつくらない</li>
-			</ul>
+			<subsection name="HOT deploy環境下でSQLファイルの変更を即座に認識させる方法">
+			</subsection>
+			<subsection name="SMART deployでDIする方法">
+			</subsection>
 		</section>
 	</body>
 </document>

@@ -59,6 +59,7 @@
 				<p>
 					doma-x.x.x.jarをプロジェクトのビルドパスに追加してください。
 				</p>
+				<img src="images/eclipse_buildpath_settings.png" width="454" height="152" alt="ビルドパスの設定" />
 				<h4>注釈処理（Annotation Processing）の設定</h4>
 				<p>
 					プロジェクトのプロパティ画面を開き、左側のツリーメニューから Java Compiler - Annotation Processing と辿り、
@@ -97,7 +98,7 @@ public class Employee {
     String name;
 }</source>
 				<p>
-					ビルド後（自動でビルドされる設定ならばエディタの保存後）に、実装クラス「example.Employee_」が自動生成されれば、セットアップは成功していると言えます。
+					ビルド後（自動でビルドされる設定ならばエディタの保存後）に、実装クラス「example._Employee」が自動生成されれば、セットアップは成功していると言えます。
 					生成されたソースコードは、注釈処理（Annotation Processing）の設定画面で変更していなければ、プロジェクト直下の「.apt_generated」というディレクトリに保存されます。
 				</p>
 			</subsection>

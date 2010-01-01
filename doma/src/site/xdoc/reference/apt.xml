@@ -67,32 +67,12 @@
 					<td>注釈処理のデバッグ情報をログ出力するかどうか。「true」の場合、ログ出力を行う。</td>
 					<td>false</td>
 				</tr>
-				<tr>
-					<td>entity.suffix</td>
-					<td>@Entityが注釈されたクラスから生成される内部的なクラス名のサフィックス。
-					@Entityが注釈されたインタフェースの単純名が「Employee」で、ここに指定した値が「Meta」の場合、
-					生成されるクラスの単純名は「EmployeeMeta」となる。
-					アプリケーションから直接使用するクラスではないため、通常は使用する必要性がない。</td>
-					<td>_ （アンダースコア）</td>
-				</tr>
-				<tr>
-					<td>domain.suffix</td>
-				<td>@Domainが注釈されたクラスから生成される内部的なクラス名のサフィックス。
-					@Domainが注釈されたインタフェースの単純名が「Salary」で、ここに指定した値が「Meta」の場合、
-					生成されるクラスの単純名は「SalaryMeta」となる。
-					アプリケーションから直接使用するクラスではないため、通常は使用する必要性がない。</td>
-					<td>_ （アンダースコア）</td>
-				</tr>
 			</table>
 			<subsection name="Eclipseでのオプション指定">
 				<p>
 					Ecipseでは、プロジェクトのプロパティの「Annotation Processing」の項目でオプションを登録します。
 				</p>
 				<img src="../images/eclipse_apt_options.png" width="454" height="152" alt="Eclipseでのオプション指定" />
-				<p>
-					上記の図では、わかりやすさのためにValueを持たないものまで登録していますが、
-					実際には必要なものだけで問題ありません。
-				</p>
 			</subsection>
 			<subsection name="javacでのオプション指定">
 				<p>
@@ -105,7 +85,7 @@
 				</p>
 				<source><![CDATA[<javac fork="yes" srcdir="src" compiler="javac1.6"
 	classpathref="classpath" destdir="target" debug="on" encoding="UTF-8" >
-	<compilerarg line="-Adto.generation=true -Adao.subpackage=impl"/>
+	<compilerarg line="-Adao.subpackage=impl -Adto.suffix=Dao -Adto.debug=true "/>
 </javac>]]></source>
 			</subsection>
 			<subsection name="Mavenでのオプション指定">
