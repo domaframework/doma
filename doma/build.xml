@@ -1,6 +1,6 @@
 <project name="doma" default="update-pom-and-java-version" basedir=".">
 
-	<property name="newVersion" value="0.9.11-SNAPSHOT" />
+	<property name="newVersion" value="0.9.11" />
 
 	<target name="update-pom-and-java-version">
 		<replaceregexp
@@ -8,13 +8,13 @@
 			replace="\1${newVersion}\2" encoding="UTF-8" flags="g">
 			<fileset dir="." includes="**/pom.xml" />
 			<fileset dir="../doma-it" includes="**/pom.xml" />
-			<fileset dir="../doma-tool" includes="**/pom.xml" />
-			<fileset dir="../doma-tool-it" includes="**/pom.xml" />
+			<fileset dir="../doma-gen" includes="**/pom.xml" />
 		</replaceregexp>
 		<replaceregexp
 			match="(private static final String VERSION = &quot;)[^&quot;]*(&quot;)"
 			replace="\1${newVersion}\2" encoding="UTF-8" flags="g">
 			<fileset dir="." includes="**/Artifact.java" />
+			<fileset dir="../doma-gen" includes="**/Artifact.java" />
 		</replaceregexp>
 	</target>
 
