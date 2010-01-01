@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.runner.RunWith;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.it.dao.CompKeyDepartmentDao;
 import org.seasar.doma.it.dao.CompKeyDepartmentDaoImpl;
 import org.seasar.doma.it.dao.DepartmentDao;
@@ -182,7 +182,7 @@ public class AutoBatchUpdateTest {
             dao.update(Arrays.asList(entity, entity2));
             fail();
         } catch (JdbcException expected) {
-            assertEquals(DomaMessageCode.DOMA2022, expected.getMessageCode());
+            assertEquals(Message.DOMA2022, expected.getMessageResource());
         }
     }
 

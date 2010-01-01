@@ -62,7 +62,7 @@ import org.seasar.doma.internal.expr.node.StaticFieldOperatorNode;
 import org.seasar.doma.internal.expr.node.StaticMethodOperatorNode;
 import org.seasar.doma.internal.expr.node.SubtractOperatorNode;
 import org.seasar.doma.internal.expr.node.VariableNode;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.internal.util.ConstructorUtil;
 import org.seasar.doma.internal.util.FieldUtil;
 import org.seasar.doma.internal.util.MethodUtil;
@@ -135,7 +135,7 @@ public class ExpressionEvaluator implements
             return new EvaluationResult(c1.compareTo(c2) == 0, boolean.class);
         } catch (ClassCastException e) {
             ExpressionLocation location = node.getLocation();
-            throw new ExpressionException(DomaMessageCode.DOMA3008, e, location
+            throw new ExpressionException(Message.DOMA3008, e, location
                     .getExpression(), node.getExpression(), e);
         }
     }
@@ -158,7 +158,7 @@ public class ExpressionEvaluator implements
             return new EvaluationResult(c1.compareTo(c2) != 0, boolean.class);
         } catch (ClassCastException e) {
             ExpressionLocation location = node.getLocation();
-            throw new ExpressionException(DomaMessageCode.DOMA3008, e, location
+            throw new ExpressionException(Message.DOMA3008, e, location
                     .getExpression(), node.getExpression(), e);
         }
     }
@@ -199,7 +199,7 @@ public class ExpressionEvaluator implements
             throws ClassCastException {
         if (left == null || right == null) {
             ExpressionLocation location = node.getLocation();
-            throw new ExpressionException(DomaMessageCode.DOMA3009, location
+            throw new ExpressionException(Message.DOMA3009, location
                     .getExpression(), location.getPosition(), node
                     .getExpression());
         }
@@ -211,7 +211,7 @@ public class ExpressionEvaluator implements
             return c1.compareTo(c2);
         } catch (ClassCastException e) {
             ExpressionLocation location = node.getLocation();
-            throw new ExpressionException(DomaMessageCode.DOMA3008, e, location
+            throw new ExpressionException(Message.DOMA3008, e, location
                     .getExpression(), location.getPosition(), node
                     .getExpression(), e);
         }
@@ -278,7 +278,7 @@ public class ExpressionEvaluator implements
     protected void throwNotTextException(OperatorNode operatorNode,
             ExpressionNode operandNode, EvaluationResult evaluationResult) {
         ExpressionLocation location = operandNode.getLocation();
-        throw new ExpressionException(DomaMessageCode.DOMA3020, location
+        throw new ExpressionException(Message.DOMA3020, location
                 .getExpression(), location.getPosition(), operatorNode
                 .getExpression(), evaluationResult.getValue(), evaluationResult
                 .getValueClass().getName());
@@ -356,7 +356,7 @@ public class ExpressionEvaluator implements
     protected void throwNotNumberException(ArithmeticOperatorNode operatorNode,
             ExpressionNode operandNode, EvaluationResult evaluationResult) {
         ExpressionLocation location = operandNode.getLocation();
-        throw new ExpressionException(DomaMessageCode.DOMA3013, location
+        throw new ExpressionException(Message.DOMA3013, location
                 .getExpression(), location.getPosition(), operatorNode
                 .getExpression(), evaluationResult.getValue(), evaluationResult
                 .getValueClass().getName());
@@ -367,7 +367,7 @@ public class ExpressionEvaluator implements
         EvaluationResult evaluationResult = operandNode.accept(this, p);
         if (evaluationResult.getValue() == null) {
             ExpressionLocation location = operandNode.getLocation();
-            throw new ExpressionException(DomaMessageCode.DOMA3015, location
+            throw new ExpressionException(Message.DOMA3015, location
                     .getExpression(), location.getPosition(), operatorNode
                     .getExpression());
         }
@@ -397,7 +397,7 @@ public class ExpressionEvaluator implements
         if (constructor == null) {
             String signature = ConstructorUtil.createSignature(clazz,
                     collection.getParamTypes());
-            throw new ExpressionException(DomaMessageCode.DOMA3006, location
+            throw new ExpressionException(Message.DOMA3006, location
                     .getExpression(), location.getPosition(), signature);
         }
         return invokeConstructor(location, clazz, constructor, collection
@@ -409,7 +409,7 @@ public class ExpressionEvaluator implements
         try {
             return Class.forName(className);
         } catch (ClassNotFoundException e) {
-            throw new ExpressionException(DomaMessageCode.DOMA3005, e, location
+            throw new ExpressionException(Message.DOMA3005, e, location
                     .getExpression(), location.getPosition(), className);
         }
     }
@@ -437,7 +437,7 @@ public class ExpressionEvaluator implements
             value = ConstructorUtil.newInstance(constructor, params);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
-            throw new ExpressionException(DomaMessageCode.DOMA3007, cause,
+            throw new ExpressionException(Message.DOMA3007, cause,
                     location.getExpression(), location.getPosition(),
                     ConstructorUtil.createSignature(constructor), cause);
         }
@@ -452,7 +452,7 @@ public class ExpressionEvaluator implements
         Object target = targetResult.getValue();
         if (target == null) {
             ExpressionLocation location = node.getLocation();
-            throw new ExpressionException(DomaMessageCode.DOMA3027, location
+            throw new ExpressionException(Message.DOMA3027, location
                     .getExpression(), location.getPosition(), targetObjectNode
                     .getExpression(), node.getMethodName());
         }
@@ -466,7 +466,7 @@ public class ExpressionEvaluator implements
         if (method == null) {
             String signature = MethodUtil.createSignature(node.getMethodName(),
                     collection.getParamTypes());
-            throw new ExpressionException(DomaMessageCode.DOMA3002, location
+            throw new ExpressionException(Message.DOMA3002, location
                     .getExpression(), location.getPosition(), targetClass
                     .getName(), signature);
         }
@@ -488,7 +488,7 @@ public class ExpressionEvaluator implements
         if (method == null) {
             String signature = MethodUtil.createSignature(node.getMethodName(),
                     collection.getParamTypes());
-            throw new ExpressionException(DomaMessageCode.DOMA3002, location
+            throw new ExpressionException(Message.DOMA3002, location
                     .getExpression(), location.getPosition(), targetClass
                     .getName(), signature);
         }
@@ -573,7 +573,7 @@ public class ExpressionEvaluator implements
             value = MethodUtil.invoke(method, target, params);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
-            throw new ExpressionException(DomaMessageCode.DOMA3001, cause,
+            throw new ExpressionException(Message.DOMA3001, cause,
                     location.getExpression(), location.getPosition(),
                     targetClass.getName(), method.getName(), cause);
         }
@@ -593,7 +593,7 @@ public class ExpressionEvaluator implements
         if (method == null) {
             String signature = MethodUtil.createSignature(node.getMethodName(),
                     collection.getParamTypes());
-            throw new ExpressionException(DomaMessageCode.DOMA3028, location
+            throw new ExpressionException(Message.DOMA3028, location
                     .getExpression(), location.getPosition(), signature);
         }
         return invokeMethod(node.getLocation(), method, expressionFunctions,
@@ -609,7 +609,7 @@ public class ExpressionEvaluator implements
         ExpressionLocation location = node.getLocation();
         Field field = findField(node.getFieldName(), target.getClass());
         if (field == null) {
-            throw new ExpressionException(DomaMessageCode.DOMA3018, location
+            throw new ExpressionException(Message.DOMA3018, location
                     .getExpression(), location.getPosition(), target.getClass()
                     .getName(), node.getFieldName());
         }
@@ -624,7 +624,7 @@ public class ExpressionEvaluator implements
         ExpressionLocation location = node.getLocation();
         Field field = findStaticField(node.getFieldName(), targetClass);
         if (field == null) {
-            throw new ExpressionException(DomaMessageCode.DOMA3033, location
+            throw new ExpressionException(Message.DOMA3033, location
                     .getExpression(), location.getPosition(), targetClass
                     .getName(), node.getFieldName());
         }
@@ -659,7 +659,7 @@ public class ExpressionEvaluator implements
             value = FieldUtil.get(field, target);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
-            throw new ExpressionException(DomaMessageCode.DOMA3019, cause,
+            throw new ExpressionException(Message.DOMA3019, cause,
                     location.getExpression(), location.getPosition(), target
                             .getClass().getName(), field.getName(), cause);
         }
@@ -672,7 +672,7 @@ public class ExpressionEvaluator implements
         Value value = variableValues.get(node.getExpression());
         if (value == null) {
             ExpressionLocation location = node.getLocation();
-            throw new ExpressionException(DomaMessageCode.DOMA3003, location
+            throw new ExpressionException(Message.DOMA3003, location
                     .getExpression(), location.getPosition(), variableName);
         }
         return new EvaluationResult(value.getValue(), value.getType());
@@ -849,7 +849,7 @@ public class ExpressionEvaluator implements
 
         protected void handleArithmeticException(ArithmeticException e) {
             ExpressionLocation location = operatorNode.getLocation();
-            throw new ExpressionException(DomaMessageCode.DOMA3014, e, location
+            throw new ExpressionException(Message.DOMA3014, e, location
                     .getExpression(), operatorNode.getExpression(), location
                     .getPosition(), e);
         }

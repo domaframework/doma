@@ -18,7 +18,7 @@ package org.seasar.doma.it.auto;
 import static org.junit.Assert.*;
 
 import org.junit.runner.RunWith;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.it.dao.CompKeyEmployeeDao;
 import org.seasar.doma.it.dao.CompKeyEmployeeDaoImpl;
 import org.seasar.doma.it.dao.EmployeeDao;
@@ -105,7 +105,7 @@ public class AutoDeleteTest {
             dao.delete(entity);
             fail();
         } catch (JdbcException expected) {
-            assertEquals(DomaMessageCode.DOMA2022, expected.getMessageCode());
+            assertEquals(Message.DOMA2022, expected.getMessageResource());
         }
     }
 }

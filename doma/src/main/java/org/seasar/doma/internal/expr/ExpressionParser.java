@@ -50,7 +50,7 @@ import org.seasar.doma.internal.expr.node.StaticFieldOperatorNode;
 import org.seasar.doma.internal.expr.node.StaticMethodOperatorNode;
 import org.seasar.doma.internal.expr.node.SubtractOperatorNode;
 import org.seasar.doma.internal.expr.node.VariableNode;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * @author taedium
@@ -135,7 +135,7 @@ public class ExpressionParser {
             }
             case ILLEGAL_NUMBER_LITERAL: {
                 ExpressionLocation location = getLocation();
-                throw new ExpressionException(DomaMessageCode.DOMA3012,
+                throw new ExpressionException(Message.DOMA3012,
                         location.getExpression(), location.getPosition(), token);
             }
             case TRUE_LITERAL: {
@@ -231,7 +231,7 @@ public class ExpressionParser {
             }
             case OTHER: {
                 ExpressionLocation location = getLocation();
-                throw new ExpressionException(DomaMessageCode.DOMA3011,
+                throw new ExpressionException(Message.DOMA3011,
                         location.getExpression(), location.getPosition(), token);
             }
             case EOE: {
@@ -262,7 +262,7 @@ public class ExpressionParser {
         ExpressionNode childExpressionNode = parser.parse();
         if (parser.tokenType != CLOSED_PARENS) {
             ExpressionLocation location = getLocation();
-            throw new ExpressionException(DomaMessageCode.DOMA3026, location
+            throw new ExpressionException(Message.DOMA3026, location
                     .getExpression(), location.getPosition());
         }
         int end = start + parser.tokenizer.getPosition();

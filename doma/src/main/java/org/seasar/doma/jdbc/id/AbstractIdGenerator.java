@@ -21,7 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.Sql;
@@ -57,7 +57,7 @@ public abstract class AbstractIdGenerator implements IdGenerator {
                 ResultSet resultSet = preparedStatement.executeQuery();
                 return getGeneratedValue(config, resultSet);
             } catch (SQLException e) {
-                throw new JdbcException(DomaMessageCode.DOMA2018, e, config
+                throw new JdbcException(Message.DOMA2018, e, config
                         .getEntityType().getName(), e);
             } finally {
                 JdbcUtil.close(preparedStatement, logger);
@@ -108,10 +108,10 @@ public abstract class AbstractIdGenerator implements IdGenerator {
             if (resultSet.next()) {
                 return resultSet.getLong(1);
             }
-            throw new JdbcException(DomaMessageCode.DOMA2017, config
+            throw new JdbcException(Message.DOMA2017, config
                     .getEntityType().getName());
         } catch (final SQLException e) {
-            throw new JdbcException(DomaMessageCode.DOMA2018, e, config
+            throw new JdbcException(Message.DOMA2018, e, config
                     .getEntityType().getName(), e);
         } finally {
             JdbcUtil.close(resultSet, logger);

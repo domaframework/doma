@@ -31,7 +31,7 @@ import org.seasar.doma.internal.apt.mirror.UpdateMirror;
 import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * @author taedium
@@ -88,7 +88,7 @@ public class AutoModifyQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         QueryReturnMeta returnMeta = createReturnMeta(method);
         if (!returnMeta.isPrimitiveInt()) {
-            throw new AptException(DomaMessageCode.DOMA4001, env, returnMeta
+            throw new AptException(Message.DOMA4001, env, returnMeta
                     .getElement());
         }
         queryMeta.setReturnMeta(returnMeta);
@@ -100,7 +100,7 @@ public class AutoModifyQueryMetaFactory extends
         List<? extends VariableElement> parameters = method.getParameters();
         int size = parameters.size();
         if (size != 1) {
-            throw new AptException(DomaMessageCode.DOMA4002, env, method);
+            throw new AptException(Message.DOMA4002, env, method);
         }
         final QueryParameterMeta parameterMeta = createParameterMeta(parameters
                 .get(0));
@@ -113,7 +113,7 @@ public class AutoModifyQueryMetaFactory extends
                             protected EntityType defaultAction(DataType type,
                                     Void p) throws RuntimeException {
                                 throw new AptException(
-                                        DomaMessageCode.DOMA4003, env,
+                                        Message.DOMA4003, env,
                                         parameterMeta.getElement());
                             }
 

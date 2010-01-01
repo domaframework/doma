@@ -30,7 +30,7 @@ import java.sql.Timestamp;
 
 import org.seasar.doma.Domain;
 import org.seasar.doma.internal.WrapException;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.MethodUtil;
 import org.seasar.doma.wrapper.ArrayWrapper;
@@ -86,7 +86,7 @@ public final class Wrappers {
         if (result == null) {
             result = wrapDomainObject(value, valueClass);
             if (result == null) {
-                throw new WrapperException(DomaMessageCode.DOMA1007, valueClass
+                throw new WrapperException(Message.DOMA1007, valueClass
                         .getName(), value);
             }
         }
@@ -220,7 +220,7 @@ public final class Wrappers {
             return MethodUtil.invoke(method, domainObject);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
-            throw new WrapperException(DomaMessageCode.DOMA1006, cause, cause);
+            throw new WrapperException(Message.DOMA1006, cause, cause);
         }
     }
 }

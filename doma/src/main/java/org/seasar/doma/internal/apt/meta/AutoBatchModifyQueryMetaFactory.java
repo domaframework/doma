@@ -32,7 +32,7 @@ import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * @author taedium
@@ -91,7 +91,7 @@ public class AutoBatchModifyQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         QueryReturnMeta returnMeta = createReturnMeta(method);
         if (!returnMeta.isPrimitiveIntArray()) {
-            throw new AptException(DomaMessageCode.DOMA4040, env, returnMeta
+            throw new AptException(Message.DOMA4040, env, returnMeta
                     .getElement());
         }
         queryMeta.setReturnMeta(returnMeta);
@@ -103,7 +103,7 @@ public class AutoBatchModifyQueryMetaFactory extends
         List<? extends VariableElement> parameters = method.getParameters();
         int size = parameters.size();
         if (size != 1) {
-            throw new AptException(DomaMessageCode.DOMA4002, env, method);
+            throw new AptException(Message.DOMA4002, env, method);
         }
         final QueryParameterMeta parameterMeta = createParameterMeta(parameters
                 .get(0));
@@ -113,7 +113,7 @@ public class AutoBatchModifyQueryMetaFactory extends
                     @Override
                     protected ListType defaultAction(DataType dataType, Void p)
                             throws RuntimeException {
-                        throw new AptException(DomaMessageCode.DOMA4042, env,
+                        throw new AptException(Message.DOMA4042, env,
                                 method);
                     }
 
@@ -134,7 +134,7 @@ public class AutoBatchModifyQueryMetaFactory extends
                                     DataType dataType, Void p)
                                     throws RuntimeException {
                                 throw new AptException(
-                                        DomaMessageCode.DOMA4043, env, method);
+                                        Message.DOMA4043, env, method);
                             }
 
                             @Override

@@ -36,7 +36,7 @@ import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.mirror.AnnotateWithMirror;
 import org.seasar.doma.internal.apt.mirror.DaoMirror;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.ConfigProxy;
 
 /**
@@ -74,7 +74,7 @@ public class DaoMetaFactory {
         String name = interfaceElement.getSimpleName().toString();
         String suffix = Options.getDaoSuffix(env);
         if (name.endsWith(suffix)) {
-            Notifier.notify(env, Kind.WARNING, DomaMessageCode.DOMA4026,
+            Notifier.notify(env, Kind.WARNING, Message.DOMA4026,
                     interfaceElement, suffix);
         }
         daoMeta.setName(name);
@@ -91,19 +91,19 @@ public class DaoMetaFactory {
             DaoMeta daoMeta) {
         if (!interfaceElement.getKind().isInterface()) {
             DaoMirror daoMirror = daoMeta.getDaoMirror();
-            throw new AptException(DomaMessageCode.DOMA4014, env,
+            throw new AptException(Message.DOMA4014, env,
                     interfaceElement, daoMirror.getAnnotationMirror());
         }
         if (interfaceElement.getNestingKind().isNested()) {
-            throw new AptException(DomaMessageCode.DOMA4017, env,
+            throw new AptException(Message.DOMA4017, env,
                     interfaceElement);
         }
         if (!interfaceElement.getInterfaces().isEmpty()) {
-            throw new AptException(DomaMessageCode.DOMA4045, env,
+            throw new AptException(Message.DOMA4045, env,
                     interfaceElement);
         }
         if (!interfaceElement.getTypeParameters().isEmpty()) {
-            throw new AptException(DomaMessageCode.DOMA4059, env,
+            throw new AptException(Message.DOMA4059, env,
                     interfaceElement);
         }
     }
@@ -118,7 +118,7 @@ public class DaoMetaFactory {
             daoMeta.setAnnotateWithMirror(annotateWithMirror);
         } else {
             DaoMirror daoMirror = daoMeta.getDaoMirror();
-            throw new AptException(DomaMessageCode.DOMA4142, env, daoMeta
+            throw new AptException(Message.DOMA4142, env, daoMeta
                     .getDaoElement(), daoMirror.getAnnotationMirror(),
                     daoMirror.getConfig());
         }
@@ -152,7 +152,7 @@ public class DaoMetaFactory {
                     declaredType, env);
             if (typeElement.getAnnotation(DaoMethod.class) != null) {
                 if (foundAnnotationTypeElement != null) {
-                    throw new AptException(DomaMessageCode.DOMA4086, env,
+                    throw new AptException(Message.DOMA4086, env,
                             methodElement, foundAnnotationTypeElement
                                     .getQualifiedName(), typeElement
                                     .getQualifiedName());
@@ -170,7 +170,7 @@ public class DaoMetaFactory {
                 return queryMeta;
             }
         }
-        throw new AptException(DomaMessageCode.DOMA4005, env, method);
+        throw new AptException(Message.DOMA4005, env, method);
     }
 
 }

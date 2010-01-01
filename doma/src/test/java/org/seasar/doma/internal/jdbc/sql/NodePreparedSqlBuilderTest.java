@@ -38,7 +38,7 @@ import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
 import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
 import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.WordNode;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlNode;
@@ -326,7 +326,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
             fail();
         } catch (JdbcException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA2116, expected.getMessageCode());
+            assertEquals(Message.DOMA2116, expected.getMessageResource());
         }
     }
 
@@ -345,7 +345,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
             fail();
         } catch (JdbcException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA2117, expected.getMessageCode());
+            assertEquals(Message.DOMA2117, expected.getMessageResource());
         }
     }
 
@@ -364,7 +364,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
             fail();
         } catch (JdbcException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA2122, expected.getMessageCode());
+            assertEquals(Message.DOMA2122, expected.getMessageResource());
         }
     }
 
@@ -383,7 +383,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
             fail();
         } catch (JdbcException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA2123, expected.getMessageCode());
+            assertEquals(Message.DOMA2123, expected.getMessageResource());
         }
     }
 
@@ -403,7 +403,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
             fail();
         } catch (JdbcException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA2133, expected.getMessageCode());
+            assertEquals(Message.DOMA2133, expected.getMessageResource());
         }
     }
 
@@ -423,7 +423,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
             fail();
         } catch (JdbcException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA2134, expected.getMessageCode());
+            assertEquals(Message.DOMA2134, expected.getMessageResource());
         }
     }
 
@@ -443,7 +443,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
             fail();
         } catch (JdbcException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA2135, expected.getMessageCode());
+            assertEquals(Message.DOMA2135, expected.getMessageResource());
         }
     }
 
@@ -463,7 +463,7 @@ public class NodePreparedSqlBuilderTest extends TestCase {
             fail();
         } catch (JdbcException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA2136, expected.getMessageCode());
+            assertEquals(Message.DOMA2136, expected.getMessageResource());
         }
     }
 

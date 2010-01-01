@@ -20,7 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.nio.CharBuffer;
 
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * @author taedium
@@ -245,7 +245,7 @@ public class ExpressionTokenizer {
                     }
                 }
             }
-            throw new ExpressionException(DomaMessageCode.DOMA3016, expression,
+            throw new ExpressionException(Message.DOMA3016, expression,
                     buf.position());
         } else if (c == '"') {
             type = STRING_LITERAL;
@@ -267,7 +267,7 @@ public class ExpressionTokenizer {
                 }
             }
             if (!closed) {
-                throw new ExpressionException(DomaMessageCode.DOMA3004,
+                throw new ExpressionException(Message.DOMA3004,
                         expression, buf.position());
             }
             binaryOpAvailable = true;
@@ -299,7 +299,7 @@ public class ExpressionTokenizer {
             type = FIELD_OPERATOR;
             binaryOpAvailable = true;
             if (!buf.hasRemaining()) {
-                throw new ExpressionException(DomaMessageCode.DOMA3021,
+                throw new ExpressionException(Message.DOMA3021,
                         expression, buf.position());
             }
             buf.mark();
@@ -318,12 +318,12 @@ public class ExpressionTokenizer {
                     }
                 }
             } else {
-                throw new ExpressionException(DomaMessageCode.DOMA3022,
+                throw new ExpressionException(Message.DOMA3022,
                         expression, buf.position(), c2);
             }
         } else if (c == '@') {
             if (!buf.hasRemaining()) {
-                throw new ExpressionException(DomaMessageCode.DOMA3023,
+                throw new ExpressionException(Message.DOMA3023,
                         expression, buf.position());
             }
             buf.mark();
@@ -353,20 +353,20 @@ public class ExpressionTokenizer {
                                         return;
                                     }
                                     throw new ExpressionException(
-                                            DomaMessageCode.DOMA3031,
+                                            Message.DOMA3031,
                                             expression, buf.position(), c4);
                                 }
                             }
                             throw new ExpressionException(
-                                    DomaMessageCode.DOMA3032, expression, buf
+                                    Message.DOMA3032, expression, buf
                                             .position());
                         }
-                        throw new ExpressionException(DomaMessageCode.DOMA3025,
+                        throw new ExpressionException(Message.DOMA3025,
                                 expression, buf.position());
                     }
                 }
             } else {
-                throw new ExpressionException(DomaMessageCode.DOMA3024,
+                throw new ExpressionException(Message.DOMA3024,
                         expression, buf.position(), c2);
             }
         } else {
@@ -378,7 +378,7 @@ public class ExpressionTokenizer {
         type = STATIC_FIELD_OPERATOR;
         binaryOpAvailable = true;
         if (!buf.hasRemaining()) {
-            throw new ExpressionException(DomaMessageCode.DOMA3029, expression,
+            throw new ExpressionException(Message.DOMA3029, expression,
                     buf.position());
         }
         buf.mark();
@@ -397,7 +397,7 @@ public class ExpressionTokenizer {
                 }
             }
         } else {
-            throw new ExpressionException(DomaMessageCode.DOMA3030, expression,
+            throw new ExpressionException(Message.DOMA3030, expression,
                     buf.position(), c);
         }
     }

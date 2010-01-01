@@ -32,7 +32,7 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.SqlValidator;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.internal.util.IOUtil;
 import org.seasar.doma.internal.util.StringUtil;
 import org.seasar.doma.jdbc.JdbcException;
@@ -55,12 +55,12 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
                 .getQualifiedName().toString(), queryMeta.getName());
         File sqlFile = getSqlFile(path, method, daoMeta);
         if (!sqlFile.exists()) {
-            throw new AptException(DomaMessageCode.DOMA4019, env, method, path);
+            throw new AptException(Message.DOMA4019, env, method, path);
         }
         File sqlFileDir = getSqlFileDir(sqlFile);
         File[] sqlFiles = sqlFileDir.listFiles();
         if (sqlFiles == null) {
-            throw new AptException(DomaMessageCode.DOMA4144, env, method,
+            throw new AptException(Message.DOMA4144, env, method,
                     sqlFileDir.getAbsolutePath());
         }
         String dirPath = SqlFileUtil.buildPath(daoMeta.getDaoElement()
@@ -71,7 +71,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
                 String filePath = dirPath + "/" + file.getName();
                 String sql = getSql(method, file, filePath);
                 if (sql.isEmpty() || StringUtil.isWhitespace(sql)) {
-                    throw new AptException(DomaMessageCode.DOMA4020, env,
+                    throw new AptException(Message.DOMA4020, env,
                             method, filePath);
                 }
                 SqlNode sqlNode = createSqlNode(queryMeta, method, daoMeta,
@@ -107,7 +107,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
         try {
             return filer.getResource(StandardLocation.CLASS_OUTPUT, "", path);
         } catch (IOException e) {
-            throw new AptException(DomaMessageCode.DOMA4143, env, method, e,
+            throw new AptException(Message.DOMA4143, env, method, e,
                     path);
         }
     }
@@ -117,7 +117,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
             return IOUtil.readAsString(file);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
-            throw new AptException(DomaMessageCode.DOMA4068, env, method,
+            throw new AptException(Message.DOMA4068, env, method,
                     cause, filePath, cause);
         }
     }
@@ -128,7 +128,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
             SqlParser sqlParser = new SqlParser(sql);
             return sqlParser.parse();
         } catch (JdbcException e) {
-            throw new AptException(DomaMessageCode.DOMA4069, env, method, e,
+            throw new AptException(Message.DOMA4069, env, method, e,
                     path, e);
         }
     }

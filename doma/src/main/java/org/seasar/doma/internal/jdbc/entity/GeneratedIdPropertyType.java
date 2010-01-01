@@ -19,7 +19,7 @@ import java.sql.Statement;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.GenerationType;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
@@ -56,7 +56,7 @@ public abstract class GeneratedIdPropertyType<E, V extends Number> extends
         GenerationType generationType = idGenerator.getGenerationType();
         if (!isGenerationTypeSupported(generationType, dialect)) {
             EntityType<?> entityType = config.getEntityType();
-            throw new JdbcException(DomaMessageCode.DOMA2021, entityType
+            throw new JdbcException(Message.DOMA2021, entityType
                     .getName(), name, generationType.name(), dialect.getName());
         }
     }

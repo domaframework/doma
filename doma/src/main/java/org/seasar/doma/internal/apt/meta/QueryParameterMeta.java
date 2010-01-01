@@ -22,7 +22,7 @@ import org.seasar.doma.internal.apt.type.SelectOptionsType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 public class QueryParameterMeta {
 
@@ -47,7 +47,7 @@ public class QueryParameterMeta {
         this.env = env;
         name = ElementUtil.getParameterName(parameterElement);
         if (name.startsWith(MetaConstants.RESERVED_NAME_PREFIX)) {
-            throw new AptException(DomaMessageCode.DOMA4025, env,
+            throw new AptException(Message.DOMA4025, env,
                     parameterElement, MetaConstants.RESERVED_NAME_PREFIX);
         }
         type = parameterElement.asType();
@@ -66,11 +66,11 @@ public class QueryParameterMeta {
         ListType listType = ListType.newInstance(type, env);
         if (listType != null) {
             if (listType.isRawType()) {
-                throw new AptException(DomaMessageCode.DOMA4108, env,
+                throw new AptException(Message.DOMA4108, env,
                         parameterElement, qualifiedName);
             }
             if (listType.isWildcardType()) {
-                throw new AptException(DomaMessageCode.DOMA4112, env,
+                throw new AptException(Message.DOMA4112, env,
                         parameterElement, qualifiedName);
             }
             return listType;
@@ -101,11 +101,11 @@ public class QueryParameterMeta {
                 .newInstance(type, env);
         if (iterationCallbackType != null) {
             if (iterationCallbackType.isRawType()) {
-                throw new AptException(DomaMessageCode.DOMA4110, env,
+                throw new AptException(Message.DOMA4110, env,
                         parameterElement, qualifiedName);
             }
             if (iterationCallbackType.isWildcardType()) {
-                throw new AptException(DomaMessageCode.DOMA4112, env,
+                throw new AptException(Message.DOMA4112, env,
                         parameterElement, qualifiedName);
             }
             return iterationCallbackType;
@@ -114,11 +114,11 @@ public class QueryParameterMeta {
         ReferenceType referenceType = ReferenceType.newInstance(type, env);
         if (referenceType != null) {
             if (referenceType.isRaw()) {
-                throw new AptException(DomaMessageCode.DOMA4108, env,
+                throw new AptException(Message.DOMA4108, env,
                         parameterElement, qualifiedName);
             }
             if (referenceType.isWildcardType()) {
-                throw new AptException(DomaMessageCode.DOMA4112, env,
+                throw new AptException(Message.DOMA4112, env,
                         parameterElement, qualifiedName);
             }
             return referenceType;

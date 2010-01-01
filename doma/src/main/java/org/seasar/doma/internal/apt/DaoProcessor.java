@@ -45,7 +45,7 @@ import org.seasar.doma.internal.apt.meta.QueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileBatchModifyQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileModifyQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileSelectQueryMetaFactory;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.internal.util.IOUtil;
 
 /**
@@ -71,7 +71,7 @@ public class DaoProcessor extends AbstractProcessor {
                     .getElementsAnnotatedWith(a))) {
                 if (Options.isDebugEnabled(processingEnv)) {
                     Notifier
-                            .debug(processingEnv, DomaMessageCode.DOMA4090,
+                            .debug(processingEnv, Message.DOMA4090,
                                     getClass().getName(), daoElement
                                             .getQualifiedName());
                 }
@@ -82,16 +82,16 @@ public class DaoProcessor extends AbstractProcessor {
                     Notifier.notify(processingEnv, e);
                 } catch (AptIllegalStateException e) {
                     Notifier.notify(processingEnv, Kind.ERROR,
-                            DomaMessageCode.DOMA4039, daoElement);
+                            Message.DOMA4039, daoElement);
                     throw e;
                 } catch (RuntimeException e) {
                     Notifier.notify(processingEnv, Kind.ERROR,
-                            DomaMessageCode.DOMA4016, daoElement);
+                            Message.DOMA4016, daoElement);
                     throw e;
                 }
                 if (Options.isDebugEnabled(processingEnv)) {
                     Notifier
-                            .debug(processingEnv, DomaMessageCode.DOMA4091,
+                            .debug(processingEnv, Message.DOMA4091,
                                     getClass().getName(), daoElement
                                             .getQualifiedName());
                 }
@@ -128,7 +128,7 @@ public class DaoProcessor extends AbstractProcessor {
             daoGenerator = createDaoGenerator(daoElement, daoMeta);
             daoGenerator.generate();
         } catch (IOException e) {
-            throw new AptException(DomaMessageCode.DOMA4011, processingEnv,
+            throw new AptException(Message.DOMA4011, processingEnv,
                     daoElement, e, daoElement.getQualifiedName(), e);
         } finally {
             IOUtil.close(daoGenerator);

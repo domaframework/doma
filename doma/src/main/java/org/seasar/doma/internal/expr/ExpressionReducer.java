@@ -48,7 +48,7 @@ import org.seasar.doma.internal.expr.node.StaticFieldOperatorNode;
 import org.seasar.doma.internal.expr.node.StaticMethodOperatorNode;
 import org.seasar.doma.internal.expr.node.SubtractOperatorNode;
 import org.seasar.doma.internal.expr.node.VariableNode;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * @author taedium
@@ -236,7 +236,7 @@ public class ExpressionReducer implements
     protected ExpressionNode pop(OperatorNode node, Deque<ExpressionNode> p) {
         if (p.peek() == null) {
             ExpressionLocation location = node.getLocation();
-            throw new ExpressionException(DomaMessageCode.DOMA3010, location
+            throw new ExpressionException(Message.DOMA3010, location
                     .getExpression(), location.getPosition(), node
                     .getExpression());
         }

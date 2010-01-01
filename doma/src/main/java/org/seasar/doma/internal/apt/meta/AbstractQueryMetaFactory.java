@@ -38,7 +38,7 @@ import org.seasar.doma.Entity;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.SelectOptions;
@@ -143,14 +143,14 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
             Set<String> names = collector.collect(entityType);
             for (String included : includedPropertyNames) {
                 if (!names.contains(included)) {
-                    throw new AptException(DomaMessageCode.DOMA4084, env,
+                    throw new AptException(Message.DOMA4084, env,
                             method, annotationMirror, includeValue, included,
                             entityType);
                 }
             }
             for (String excluded : excludedPropertyNames) {
                 if (!names.contains(excluded)) {
-                    throw new AptException(DomaMessageCode.DOMA4085, env,
+                    throw new AptException(Message.DOMA4085, env,
                             method, annotationMirror, excludeValue, excluded,
                             entityType);
                 }

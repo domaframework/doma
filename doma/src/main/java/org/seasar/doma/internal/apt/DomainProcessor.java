@@ -30,7 +30,7 @@ import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.internal.apt.meta.DomainMeta;
 import org.seasar.doma.internal.apt.meta.DomainMetaFactory;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.internal.util.IOUtil;
 
 /**
@@ -53,7 +53,7 @@ public class DomainProcessor extends AbstractProcessor {
             for (TypeElement domainElement : ElementFilter.typesIn(roundEnv
                     .getElementsAnnotatedWith(a))) {
                 if (Options.isDebugEnabled(processingEnv)) {
-                    Notifier.debug(processingEnv, DomaMessageCode.DOMA4090,
+                    Notifier.debug(processingEnv, Message.DOMA4090,
                             getClass().getName(), domainElement
                                     .getQualifiedName());
                 }
@@ -65,15 +65,15 @@ public class DomainProcessor extends AbstractProcessor {
                     Notifier.notify(processingEnv, e);
                 } catch (AptIllegalStateException e) {
                     Notifier.notify(processingEnv, Kind.ERROR,
-                            DomaMessageCode.DOMA4039, domainElement);
+                            Message.DOMA4039, domainElement);
                     throw e;
                 } catch (RuntimeException e) {
                     Notifier.notify(processingEnv, Kind.ERROR,
-                            DomaMessageCode.DOMA4016, domainElement);
+                            Message.DOMA4016, domainElement);
                     throw e;
                 }
                 if (Options.isDebugEnabled(processingEnv)) {
-                    Notifier.debug(processingEnv, DomaMessageCode.DOMA4091,
+                    Notifier.debug(processingEnv, Message.DOMA4091,
                             getClass().getName(), domainElement
                                     .getQualifiedName());
                 }
@@ -94,7 +94,7 @@ public class DomainProcessor extends AbstractProcessor {
                     domainMeta);
             generator.generate();
         } catch (IOException e) {
-            throw new AptException(DomaMessageCode.DOMA4011, processingEnv,
+            throw new AptException(Message.DOMA4011, processingEnv,
                     domainElement, e, domainElement.getQualifiedName(), e);
         } finally {
             IOUtil.close(generator);

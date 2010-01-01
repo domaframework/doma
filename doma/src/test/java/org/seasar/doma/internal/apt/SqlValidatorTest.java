@@ -32,7 +32,7 @@ import org.seasar.doma.internal.apt.dao.SqlValidationDao;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.wrapper.StringWrapper;
 
@@ -111,7 +111,7 @@ public class SqlValidatorTest extends AptTestCase {
             fail();
         } catch (AptException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA4152, expected.getMessageCode());
+            assertEquals(Message.DOMA4152, expected.getMessageResource());
         }
     }
 
@@ -150,7 +150,7 @@ public class SqlValidatorTest extends AptTestCase {
             fail();
         } catch (AptException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA4092, expected.getMessageCode());
+            assertEquals(Message.DOMA4092, expected.getMessageResource());
         }
     }
 
@@ -172,7 +172,7 @@ public class SqlValidatorTest extends AptTestCase {
             fail();
         } catch (AptException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA4149, expected.getMessageCode());
+            assertEquals(Message.DOMA4149, expected.getMessageResource());
         }
     }
 
@@ -194,7 +194,7 @@ public class SqlValidatorTest extends AptTestCase {
             fail();
         } catch (AptException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA4150, expected.getMessageCode());
+            assertEquals(Message.DOMA4150, expected.getMessageResource());
         }
     }
 

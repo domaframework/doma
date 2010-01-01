@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * {@link Config}に不適切な設定がある場合にスローされる例外です。
@@ -42,7 +42,7 @@ public class ConfigException extends JdbcException {
      *            {@link Config} の実装クラスのメソッド名
      */
     public ConfigException(String className, String methodName) {
-        super(DomaMessageCode.DOMA2035, className, methodName);
+        super(Message.DOMA2035, className, methodName);
         this.className = className;
         this.methodName = methodName;
     }

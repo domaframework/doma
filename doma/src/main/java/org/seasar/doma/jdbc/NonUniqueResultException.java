@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * 1件であることを期待する検索系SQLの結果が2件以上である場合にスローされる例外です。
@@ -58,7 +58,7 @@ public class NonUniqueResultException extends JdbcException {
      */
     public NonUniqueResultException(String rawSql, String formattedSql,
             String sqlFilePath) {
-        super(DomaMessageCode.DOMA2001, sqlFilePath, formattedSql);
+        super(Message.DOMA2001, sqlFilePath, formattedSql);
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;
         this.sqlFilePath = sqlFilePath;

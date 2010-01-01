@@ -18,7 +18,7 @@ package org.seasar.doma.it.auto;
 import static org.junit.Assert.*;
 
 import org.junit.runner.RunWith;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.it.dao.CompKeyDepartmentDao;
 import org.seasar.doma.it.dao.CompKeyDepartmentDaoImpl;
 import org.seasar.doma.it.dao.DepartmentDao;
@@ -109,7 +109,7 @@ public class AutoInsertTest {
             dao.insert(department);
             fail();
         } catch (JdbcException expected) {
-            assertEquals(DomaMessageCode.DOMA2020, expected.getMessageCode());
+            assertEquals(Message.DOMA2020, expected.getMessageResource());
         }
     }
 

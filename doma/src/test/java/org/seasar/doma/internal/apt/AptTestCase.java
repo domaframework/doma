@@ -28,7 +28,7 @@ import org.seasar.aptina.unit.AptinaTestCase;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Domain;
 import org.seasar.doma.Entity;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.internal.util.ResourceUtil;
 
 /**
@@ -89,7 +89,7 @@ public abstract class AptTestCase extends AptinaTestCase {
         throw new AssertionFailedError("annotation not found.");
     }
 
-    protected void assertMessageCode(DomaMessageCode messageCode) {
+    protected void assertMessageCode(Message messageCode) {
         List<Diagnostic<? extends JavaFileObject>> diagnostics = getDiagnostics();
         if (diagnostics.size() == 1) {
             if (messageCode == extractMessageCode(diagnostics.get(0))) {
@@ -115,14 +115,14 @@ public abstract class AptTestCase extends AptinaTestCase {
         return results;
     }
 
-    protected DomaMessageCode getMessageCode() {
+    protected Message getMessageCode() {
         for (Diagnostic<? extends JavaFileObject> diagnostic : getDiagnostics()) {
             return extractMessageCode(diagnostic);
         }
         return null;
     }
 
-    protected DomaMessageCode extractMessageCode(
+    protected Message extractMessageCode(
             Diagnostic<? extends JavaFileObject> diagnostic) {
         String message = diagnostic.getMessage(locale);
         int start = message.indexOf('[');
@@ -130,7 +130,7 @@ public abstract class AptTestCase extends AptinaTestCase {
         if (start > 0 && end > 0) {
             String code = message.substring(start + 1, end);
             if (code.startsWith("DOMA")) {
-                return Enum.valueOf(DomaMessageCode.class, code);
+                return Enum.valueOf(Message.class, code);
             }
         }
         return null;

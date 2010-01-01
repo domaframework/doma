@@ -16,7 +16,7 @@
 package org.seasar.doma.internal.wrapper;
 
 import org.seasar.doma.DomaException;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -37,7 +37,7 @@ public class WrapperException extends DomaException {
      * @param args
      *            メッセージへの引数
      */
-    public WrapperException(DomaMessageCode messageCode, Object... args) {
+    public WrapperException(Message messageCode, Object... args) {
         super(messageCode, args);
     }
 
@@ -51,7 +51,7 @@ public class WrapperException extends DomaException {
      * @param args
      *            メッセージへの引数
      */
-    public WrapperException(DomaMessageCode messageCode, Throwable cause,
+    public WrapperException(Message messageCode, Throwable cause,
             Object... args) {
         super(messageCode, cause, args);
     }

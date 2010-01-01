@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * JDBCに関するサポートされていないメソッドが呼び出された場合にスローされる例外です。
@@ -42,7 +42,7 @@ public class JdbcUnsupportedOperationException extends JdbcException {
      *            サポートされていないメソッドの名前
      */
     public JdbcUnsupportedOperationException(String className, String methodName) {
-        super(DomaMessageCode.DOMA2034, className, methodName);
+        super(Message.DOMA2034, className, methodName);
         this.className = className;
         this.methodName = methodName;
     }

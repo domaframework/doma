@@ -19,7 +19,7 @@ import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.internal.util.ResourceUtil;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
@@ -137,7 +137,7 @@ public abstract class AbstractSqlFileRepository implements SqlFileRepository {
             return ResourceUtil.getResourceAsString(path);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
-            throw new JdbcException(DomaMessageCode.DOMA2010, cause, path,
+            throw new JdbcException(Message.DOMA2010, cause, path,
                     cause);
         }
     }

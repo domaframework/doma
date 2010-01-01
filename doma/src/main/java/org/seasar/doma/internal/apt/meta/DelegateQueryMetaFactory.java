@@ -35,7 +35,7 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.mirror.DelegateMirror;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * @author taedium
@@ -120,7 +120,7 @@ public class DelegateQueryMetaFactory extends
                 delegateTypeElement, daoMeta);
         if (constructor == null) {
             DelegateMirror delegateMirror = queryMeta.getDelegateMirror();
-            throw new AptException(DomaMessageCode.DOMA4080, env, method,
+            throw new AptException(Message.DOMA4080, env, method,
                     delegateMirror.getAnnotationMirror(), delegateMirror
                             .getTo(), delegateTypeElement.getQualifiedName());
         }
@@ -129,7 +129,7 @@ public class DelegateQueryMetaFactory extends
         }
         if (!hasDelegatableMethod(method, delegateTypeElement)) {
             DelegateMirror delegateMirror = queryMeta.getDelegateMirror();
-            throw new AptException(DomaMessageCode.DOMA4081, env, method,
+            throw new AptException(Message.DOMA4081, env, method,
                     delegateMirror.getAnnotationMirror(), delegateMirror
                             .getTo(), delegateTypeElement.getQualifiedName());
         }

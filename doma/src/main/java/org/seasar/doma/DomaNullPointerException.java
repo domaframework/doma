@@ -15,7 +15,7 @@
  */
 package org.seasar.doma;
 
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * {@code null} でないことを期待されたパラメータへの引数が {@code null} の場合にスローされる例外です。
@@ -40,7 +40,7 @@ public class DomaNullPointerException extends DomaException {
      *            {@code null} であるパラメータの名前
      */
     public DomaNullPointerException(String parameterName) {
-        super(DomaMessageCode.DOMA0001, parameterName);
+        super(Message.DOMA0001, parameterName);
         this.parameterName = parameterName;
     }
 

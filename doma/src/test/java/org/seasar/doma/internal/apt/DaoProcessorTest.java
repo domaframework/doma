@@ -60,7 +60,7 @@ import org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDao;
 import org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao;
 import org.seasar.doma.internal.apt.dao.UnknownBindVariableSqlValidationDao;
 import org.seasar.doma.internal.apt.dao.UnknownVariableSqlValidationDao;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * @author taedium
@@ -151,7 +151,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4005);
+        assertMessageCode(Message.DOMA4005);
     }
 
     public void testNotInterface() throws Exception {
@@ -161,7 +161,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4014);
+        assertMessageCode(Message.DOMA4014);
     }
 
     public void testNotTopLevel() throws Exception {
@@ -171,7 +171,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4017);
+        assertMessageCode(Message.DOMA4017);
     }
 
     public void testNameUnsafe() throws Exception {
@@ -181,7 +181,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertTrue(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4026);
+        assertMessageCode(Message.DOMA4026);
     }
 
     public void testElementOfParamListUnspecified() throws Exception {
@@ -191,7 +191,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4108);
+        assertMessageCode(Message.DOMA4108);
     }
 
     public void testElementOfParamListNotDomain() throws Exception {
@@ -201,7 +201,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4112);
+        assertMessageCode(Message.DOMA4112);
     }
 
     public void testAutoBatchUpdate() throws Exception {
@@ -301,7 +301,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4045);
+        assertMessageCode(Message.DOMA4045);
     }
 
     public void testDelegate() throws Exception {
@@ -331,7 +331,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4080);
+        assertMessageCode(Message.DOMA4080);
     }
 
     public void testNoMethodDelegate() throws Exception {
@@ -341,7 +341,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4081);
+        assertMessageCode(Message.DOMA4081);
     }
 
     public void testIllegalReturnTypeDelegate() throws Exception {
@@ -351,7 +351,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4081);
+        assertMessageCode(Message.DOMA4081);
     }
 
     public void testIllegalParameterTypeDelegate() throws Exception {
@@ -361,7 +361,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4081);
+        assertMessageCode(Message.DOMA4081);
     }
 
     public void testIncludeAndExclude() throws Exception {
@@ -381,7 +381,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4086);
+        assertMessageCode(Message.DOMA4086);
     }
 
     public void testUnknownBindVariableSqlValidation() throws Exception {
@@ -391,7 +391,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4092);
+        assertMessageCode(Message.DOMA4092);
     }
 
     public void testUnknownVariableSqlValidation() throws Exception {
@@ -401,7 +401,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4092);
+        assertMessageCode(Message.DOMA4092);
     }
 
     public void testMethodAccessSqlValidation() throws Exception {
@@ -448,7 +448,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4020);
+        assertMessageCode(Message.DOMA4020);
     }
 
     public void testNoTestLiteral() throws Exception {
@@ -458,7 +458,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4069);
+        assertMessageCode(Message.DOMA4069);
     }
 
     public void testEnum() throws Exception {
@@ -498,7 +498,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4142);
+        assertMessageCode(Message.DOMA4142);
     }
 
     public void testIllegalParameterName() throws Exception {
@@ -508,7 +508,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4025);
+        assertMessageCode(Message.DOMA4025);
     }
 
     public void testPrimitiveType() throws Exception {

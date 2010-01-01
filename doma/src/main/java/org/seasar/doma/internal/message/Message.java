@@ -15,10 +15,7 @@
  */
 package org.seasar.doma.internal.message;
 
-import java.util.ResourceBundle;
-
-import org.seasar.doma.MessageCode;
-import org.seasar.doma.internal.util.MessageFormatter;
+import org.seasar.doma.MessageResource;
 
 /**
  * デフォルトロケール用のメッセージパターンの列挙です。
@@ -26,7 +23,7 @@ import org.seasar.doma.internal.util.MessageFormatter;
  * @author taedium
  * 
  */
-public enum DomaMessageCode implements MessageCode {
+public enum Message implements MessageResource {
 
     // doma
     DOMA0001("パラメータ[{0}]がnullです。"),
@@ -253,7 +250,7 @@ public enum DomaMessageCode implements MessageCode {
 
     private final String messagePattern;
 
-    private DomaMessageCode(String messagePattern) {
+    private Message(String messagePattern) {
         this.messagePattern = messagePattern;
     }
 
@@ -269,8 +266,6 @@ public enum DomaMessageCode implements MessageCode {
 
     @Override
     public String getMessage(Object... args) {
-        ResourceBundle bundle = ResourceBundle
-                .getBundle(DomaMessageResource.class.getName());
-        return MessageFormatter.getMessage(this, bundle, args);
+        return MessageFormatter.getMessage(this, args);
     }
 }

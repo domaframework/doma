@@ -21,7 +21,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.nio.CharBuffer;
 
 import org.seasar.doma.internal.expr.util.ExpressionUtil;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcException;
 
 /**
@@ -193,7 +193,7 @@ public class SqlTokenizer {
                     }
                 }
                 int pos = buf.position() - lineStartPosition;
-                throw new JdbcException(DomaMessageCode.DOMA2103, sql,
+                throw new JdbcException(Message.DOMA2103, sql,
                         lineNumber, pos);
             }
         } else if ((c == 'g' || c == 'G') && (c2 == 'r' || c2 == 'R')
@@ -369,7 +369,7 @@ public class SqlTokenizer {
                             && type != END_BLOCK_COMMENT
                             && type != HAS_NEXT_BLOCK_COMMENT) {
                         int pos = buf.position() - lineStartPosition;
-                        throw new JdbcException(DomaMessageCode.DOMA2119, sql,
+                        throw new JdbcException(Message.DOMA2119, sql,
                                 lineNumber, pos);
                     }
                 }
@@ -391,7 +391,7 @@ public class SqlTokenizer {
                 }
             }
             int pos = buf.position() - lineStartPosition;
-            throw new JdbcException(DomaMessageCode.DOMA2102, sql, lineNumber,
+            throw new JdbcException(Message.DOMA2102, sql, lineNumber,
                     pos);
         } else if (c == '-' && c2 == '-') {
             type = LINE_COMMENT;
@@ -443,7 +443,7 @@ public class SqlTokenizer {
                 return;
             }
             int pos = buf.position() - lineStartPosition;
-            throw new JdbcException(DomaMessageCode.DOMA2101, sql, lineNumber,
+            throw new JdbcException(Message.DOMA2101, sql, lineNumber,
                     pos);
         } else if (isWordStart(c)) {
             type = WORD;

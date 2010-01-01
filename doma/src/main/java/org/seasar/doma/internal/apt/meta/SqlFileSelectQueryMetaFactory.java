@@ -32,7 +32,7 @@ import org.seasar.doma.internal.apt.type.IterationCallbackType;
 import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.SelectOptionsType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * @author taedium
@@ -85,7 +85,7 @@ public class SqlFileSelectQueryMetaFactory extends
             if (callbackReturnType == null
                     || !env.getTypeUtils().isSameType(returnMeta.getType(),
                             callbackReturnType.getTypeMirror())) {
-                throw new AptException(DomaMessageCode.DOMA4055, env, method,
+                throw new AptException(Message.DOMA4055, env, method,
                         returnMeta.getType(), callbackReturnType);
             }
         } else {
@@ -95,7 +95,7 @@ public class SqlFileSelectQueryMetaFactory extends
                         @Override
                         protected Void defaultAction(DataType type, Void p)
                                 throws RuntimeException {
-                            throw new AptException(DomaMessageCode.DOMA4008,
+                            throw new AptException(Message.DOMA4008,
                                     env, returnMeta.getElement(), returnMeta
                                             .getType());
                         }
@@ -131,7 +131,7 @@ public class SqlFileSelectQueryMetaFactory extends
                                                         DataType type, Void p)
                                                         throws RuntimeException {
                                                     throw new AptException(
-                                                            DomaMessageCode.DOMA4007,
+                                                            Message.DOMA4007,
                                                             env,
                                                             returnMeta
                                                                     .getElement(),
@@ -182,7 +182,7 @@ public class SqlFileSelectQueryMetaFactory extends
                         @Override
                         protected Void defaultAction(DataType type, Void p)
                                 throws RuntimeException {
-                            throw new AptException(DomaMessageCode.DOMA4008,
+                            throw new AptException(Message.DOMA4008,
                                     env, parameterMeta.getElement(),
                                     parameterMeta.getType());
                         }
@@ -211,7 +211,7 @@ public class SqlFileSelectQueryMetaFactory extends
                                 throws RuntimeException {
                             if (queryMeta.getIterationCallbackType() != null) {
                                 throw new AptException(
-                                        DomaMessageCode.DOMA4054, env,
+                                        Message.DOMA4054, env,
                                         parameterMeta.getElement());
                             }
                             queryMeta.setIterationCallbackType(dataType);
@@ -227,7 +227,7 @@ public class SqlFileSelectQueryMetaFactory extends
                                 throws RuntimeException {
                             if (queryMeta.getSelectOptionsType() != null) {
                                 throw new AptException(
-                                        DomaMessageCode.DOMA4053, env,
+                                        Message.DOMA4053, env,
                                         parameterMeta.getElement());
                             }
                             queryMeta.setSelectOptionsType(dataType);
@@ -252,12 +252,12 @@ public class SqlFileSelectQueryMetaFactory extends
         }
         if (queryMeta.getIterate()) {
             if (queryMeta.getIterationCallbackType() == null) {
-                throw new AptException(DomaMessageCode.DOMA4056, env, method);
+                throw new AptException(Message.DOMA4056, env, method);
             }
         } else {
             if (queryMeta.getIterationCallbackType() != null) {
                 SelectMirror selectMirror = queryMeta.getSelectMirror();
-                throw new AptException(DomaMessageCode.DOMA4057, env, method,
+                throw new AptException(Message.DOMA4057, env, method,
                         selectMirror.getAnnotationMirror(), selectMirror
                                 .getIterate());
             }

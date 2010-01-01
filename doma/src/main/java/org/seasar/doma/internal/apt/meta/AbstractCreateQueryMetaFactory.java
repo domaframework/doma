@@ -24,7 +24,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * @author taedium
@@ -49,7 +49,7 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
         queryMeta.setReturnMeta(resultMeta);
         if (!returnClass.getName().equals(
                 resultMeta.getDataType().getQualifiedName())) {
-            throw new AptException(DomaMessageCode.DOMA4097, env, method,
+            throw new AptException(Message.DOMA4097, env, method,
                     returnClass.getName());
         }
     }
@@ -60,7 +60,7 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
         List<? extends VariableElement> params = method.getParameters();
         int size = params.size();
         if (size != 0) {
-            throw new AptException(DomaMessageCode.DOMA4078, env, method);
+            throw new AptException(Message.DOMA4078, env, method);
         }
     }
 

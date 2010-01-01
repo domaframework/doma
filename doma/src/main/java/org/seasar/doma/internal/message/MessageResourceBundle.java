@@ -15,19 +15,20 @@
  */
 package org.seasar.doma.internal.message;
 
-import org.seasar.doma.internal.message.DomaMessageCode;
-
-import junit.framework.TestCase;
-
 /**
+ * {@link Message} を扱うリソースバンドルです。
+ * 
  * @author taedium
  * 
  */
-public class DomaMessageCodeTest extends TestCase {
+public class MessageResourceBundle extends
+        AbstractMessageResourceBundle<Message> {
 
-    public void test() throws Exception {
-        String message = DomaMessageCode.DOMA0001.getMessage("aaa", "bbb");
-        assertNotNull(message);
-        System.out.println(message);
+    /**
+     * インスタンスを構築します。
+     */
+    public MessageResourceBundle() {
+        super(Message.class);
     }
+
 }

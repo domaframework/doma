@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 import java.util.Arrays;
 
 import org.junit.runner.RunWith;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.it.dao.CompKeyDepartmentDao;
 import org.seasar.doma.it.dao.CompKeyDepartmentDaoImpl;
 import org.seasar.doma.it.dao.DepartmentDao;
@@ -124,7 +124,7 @@ public class AutoBatchInsertTest {
             dao.insert(Arrays.asList(department, department2));
             fail();
         } catch (JdbcException expected) {
-            assertEquals(DomaMessageCode.DOMA2020, expected.getMessageCode());
+            assertEquals(Message.DOMA2020, expected.getMessageResource());
         }
     }
 

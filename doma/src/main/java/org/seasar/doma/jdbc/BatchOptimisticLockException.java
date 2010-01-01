@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * バッチ処理時に楽観的排他制御に失敗した場合にスローされる例外です。
@@ -48,7 +48,7 @@ public class BatchOptimisticLockException extends OptimisticLockException {
      *            SQLファイルのパス
      */
     public BatchOptimisticLockException(String rawSql, String sqlFilePath) {
-        super(DomaMessageCode.DOMA2028, rawSql, sqlFilePath);
+        super(Message.DOMA2028, rawSql, sqlFilePath);
     }
 
 }

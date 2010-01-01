@@ -18,7 +18,7 @@ import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.mirror.DomainMirror;
 import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 public class DomainMetaFactory {
 
@@ -50,7 +50,7 @@ public class DomainMetaFactory {
                 env);
         if (basicType == null) {
             DomainMirror domainMirror = domainMeta.getDomainMirror();
-            throw new AptException(DomaMessageCode.DOMA4102, env, classElement,
+            throw new AptException(Message.DOMA4102, env, classElement,
                     domainMirror.getAnnotationMirror(), domainMirror
                             .getValueType(), domainMirror.getValueTypeValue());
         }
@@ -60,20 +60,20 @@ public class DomainMetaFactory {
     protected void validateClass(TypeElement classElement, DomainMeta domainMeta) {
         if (!classElement.getKind().isClass()) {
             DomainMirror domainMirror = domainMeta.getDomainMirror();
-            throw new AptException(DomaMessageCode.DOMA4105, env, classElement,
+            throw new AptException(Message.DOMA4105, env, classElement,
                     domainMirror.getAnnotationMirror());
         }
         if (classElement.getModifiers().contains(Modifier.PRIVATE)) {
-            throw new AptException(DomaMessageCode.DOMA4133, env, classElement);
+            throw new AptException(Message.DOMA4133, env, classElement);
         }
         if (classElement.getModifiers().contains(Modifier.ABSTRACT)) {
-            throw new AptException(DomaMessageCode.DOMA4132, env, classElement);
+            throw new AptException(Message.DOMA4132, env, classElement);
         }
         if (classElement.getNestingKind().isNested()) {
-            throw new AptException(DomaMessageCode.DOMA4106, env, classElement);
+            throw new AptException(Message.DOMA4106, env, classElement);
         }
         if (!classElement.getTypeParameters().isEmpty()) {
-            throw new AptException(DomaMessageCode.DOMA4107, env, classElement);
+            throw new AptException(Message.DOMA4107, env, classElement);
         }
     }
 
@@ -96,7 +96,7 @@ public class DomainMetaFactory {
                 return;
             }
         }
-        throw new AptException(DomaMessageCode.DOMA4103, env, classElement,
+        throw new AptException(Message.DOMA4103, env, classElement,
                 domainMeta.getValueType());
     }
 
@@ -125,7 +125,7 @@ public class DomainMetaFactory {
                 }
             }
         }
-        throw new AptException(DomaMessageCode.DOMA4104, env, classElement,
+        throw new AptException(Message.DOMA4104, env, classElement,
                 domainMeta.getValueType(), domainMeta.getAccessorMethod());
     }
 }

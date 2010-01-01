@@ -29,7 +29,7 @@ import javax.lang.model.element.TypeElement;
 import javax.tools.JavaFileObject;
 
 import org.seasar.doma.internal.Artifact;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.internal.util.ClassUtil;
 
 /**
@@ -123,7 +123,7 @@ public abstract class AbstractGenerator implements Generator {
         IOException ioException = formatter.ioException();
         if (ioException != null) {
             formatter.close();
-            throw new AptException(DomaMessageCode.DOMA4079, env, typeElement,
+            throw new AptException(Message.DOMA4079, env, typeElement,
                     ioException, qualifiedName, ioException);
         }
     }

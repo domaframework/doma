@@ -28,6 +28,5 @@
 	<classpathentry kind="lib" path="lib/hsqldb-1.8.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/postgresql-8.3-604.jdbc4.jar"/>
 	<classpathentry kind="lib" path="lib/doma-SNAPSHOT.jar" sourcepath="libsrc/doma-SNAPSHOT-sources.jar"/>
-	<classpathentry kind="lib" path="lib/doma-tool-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

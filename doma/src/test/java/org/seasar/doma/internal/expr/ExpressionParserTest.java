@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.expr.node.ExpressionNode;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * @author taedium
@@ -203,7 +203,7 @@ public class ExpressionParserTest extends TestCase {
             fail();
         } catch (ExpressionException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA3027, expected.getMessageCode());
+            assertEquals(Message.DOMA3027, expected.getMessageResource());
         }
     }
 
@@ -225,7 +225,7 @@ public class ExpressionParserTest extends TestCase {
             evaluator.evaluate(expression);
         } catch (ExpressionException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA3005, expected.getMessageCode());
+            assertEquals(Message.DOMA3005, expected.getMessageResource());
         }
     }
 
@@ -238,7 +238,7 @@ public class ExpressionParserTest extends TestCase {
             evaluator.evaluate(expression);
         } catch (ExpressionException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA3002, expected.getMessageCode());
+            assertEquals(Message.DOMA3002, expected.getMessageResource());
         }
     }
 
@@ -260,7 +260,7 @@ public class ExpressionParserTest extends TestCase {
             evaluator.evaluate(expression);
         } catch (ExpressionException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA3005, expected.getMessageCode());
+            assertEquals(Message.DOMA3005, expected.getMessageResource());
         }
     }
 
@@ -273,7 +273,7 @@ public class ExpressionParserTest extends TestCase {
             evaluator.evaluate(expression);
         } catch (ExpressionException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA3033, expected.getMessageCode());
+            assertEquals(Message.DOMA3033, expected.getMessageResource());
         }
     }
 
@@ -293,7 +293,7 @@ public class ExpressionParserTest extends TestCase {
             evaluator.evaluate(expression);
         } catch (ExpressionException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA3028, expected.getMessageCode());
+            assertEquals(Message.DOMA3028, expected.getMessageResource());
         }
     }
 
@@ -304,7 +304,7 @@ public class ExpressionParserTest extends TestCase {
             fail();
         } catch (ExpressionException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA3026, expected.getMessageCode());
+            assertEquals(Message.DOMA3026, expected.getMessageResource());
         }
     }
 
@@ -417,7 +417,7 @@ public class ExpressionParserTest extends TestCase {
         try {
             evaluator.evaluate(expression);
         } catch (ExpressionException expected) {
-            assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
+            assertEquals(Message.DOMA3009, expected.getMessageResource());
         }
 
         parser = new ExpressionParser("null >= 1");
@@ -427,7 +427,7 @@ public class ExpressionParserTest extends TestCase {
             evaluator.evaluate(expression);
             fail();
         } catch (ExpressionException expected) {
-            assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
+            assertEquals(Message.DOMA3009, expected.getMessageResource());
         }
 
         parser = new ExpressionParser("1 >= null");
@@ -437,7 +437,7 @@ public class ExpressionParserTest extends TestCase {
             evaluator.evaluate(expression);
             fail();
         } catch (ExpressionException expected) {
-            assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
+            assertEquals(Message.DOMA3009, expected.getMessageResource());
         }
     }
 
@@ -470,7 +470,7 @@ public class ExpressionParserTest extends TestCase {
             evaluator.evaluate(expression);
             fail();
         } catch (ExpressionException expected) {
-            assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
+            assertEquals(Message.DOMA3009, expected.getMessageResource());
         }
 
         parser = new ExpressionParser("null <= 1");
@@ -480,7 +480,7 @@ public class ExpressionParserTest extends TestCase {
             evaluator.evaluate(expression);
             fail();
         } catch (ExpressionException expected) {
-            assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
+            assertEquals(Message.DOMA3009, expected.getMessageResource());
         }
 
         parser = new ExpressionParser("1 <= null");
@@ -490,7 +490,7 @@ public class ExpressionParserTest extends TestCase {
             evaluator.evaluate(expression);
             fail();
         } catch (ExpressionException expected) {
-            assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
+            assertEquals(Message.DOMA3009, expected.getMessageResource());
         }
     }
 
@@ -524,7 +524,7 @@ public class ExpressionParserTest extends TestCase {
             evaluator.evaluate(expression);
             fail();
         } catch (ExpressionException expected) {
-            assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
+            assertEquals(Message.DOMA3009, expected.getMessageResource());
         }
 
         parser = new ExpressionParser("null > 1");
@@ -534,7 +534,7 @@ public class ExpressionParserTest extends TestCase {
             evaluator.evaluate(expression);
             fail();
         } catch (ExpressionException expected) {
-            assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
+            assertEquals(Message.DOMA3009, expected.getMessageResource());
         }
 
         parser = new ExpressionParser("1 > null");
@@ -544,7 +544,7 @@ public class ExpressionParserTest extends TestCase {
             evaluator.evaluate(expression);
             fail();
         } catch (ExpressionException expected) {
-            assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
+            assertEquals(Message.DOMA3009, expected.getMessageResource());
         }
     }
 
@@ -579,7 +579,7 @@ public class ExpressionParserTest extends TestCase {
             evaluator.evaluate(expression);
             fail();
         } catch (ExpressionException expected) {
-            assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
+            assertEquals(Message.DOMA3009, expected.getMessageResource());
         }
 
         parser = new ExpressionParser("null < 1");
@@ -589,7 +589,7 @@ public class ExpressionParserTest extends TestCase {
             evaluator.evaluate(expression);
             fail();
         } catch (ExpressionException expected) {
-            assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
+            assertEquals(Message.DOMA3009, expected.getMessageResource());
         }
 
         parser = new ExpressionParser("1 < null");
@@ -599,7 +599,7 @@ public class ExpressionParserTest extends TestCase {
             evaluator.evaluate(expression);
             fail();
         } catch (ExpressionException expected) {
-            assertEquals(DomaMessageCode.DOMA3009, expected.getMessageCode());
+            assertEquals(Message.DOMA3009, expected.getMessageResource());
         }
     }
 
@@ -609,7 +609,7 @@ public class ExpressionParserTest extends TestCase {
             parser.parse();
             fail();
         } catch (ExpressionException expected) {
-            assertEquals(DomaMessageCode.DOMA3011, expected.getMessageCode());
+            assertEquals(Message.DOMA3011, expected.getMessageResource());
         }
     }
 
@@ -619,7 +619,7 @@ public class ExpressionParserTest extends TestCase {
             parser.parse();
             fail();
         } catch (ExpressionException expected) {
-            assertEquals(DomaMessageCode.DOMA3012, expected.getMessageCode());
+            assertEquals(Message.DOMA3012, expected.getMessageResource());
         }
     }
 

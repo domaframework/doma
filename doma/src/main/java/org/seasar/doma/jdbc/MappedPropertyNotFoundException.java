@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * 結果セットに含まれたカラムにマッピングされたプロパティが見つからない場合にスローされます。
@@ -63,7 +63,7 @@ public class MappedPropertyNotFoundException extends JdbcException {
     public MappedPropertyNotFoundException(String columnName,
             String expectedPropertyName, String entityClassName, String rawSql,
             String formattedSql, String sqlFilePath) {
-        super(DomaMessageCode.DOMA2002, columnName, expectedPropertyName,
+        super(Message.DOMA2002, columnName, expectedPropertyName,
                 entityClassName, sqlFilePath, formattedSql);
         this.columnName = columnName;
         this.expectedPropertyName = expectedPropertyName;

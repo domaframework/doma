@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * バッチ処理で一意制約違反が発生した場合にスローされる例外です。
@@ -54,7 +54,7 @@ public class BatchUniqueConstraintException extends UniqueConstraintException {
      */
     public BatchUniqueConstraintException(String rawSql, String sqlFilePath,
             Throwable cause) {
-        super(DomaMessageCode.DOMA2029, rawSql, sqlFilePath, cause);
+        super(Message.DOMA2029, rawSql, sqlFilePath, cause);
     }
 
 }

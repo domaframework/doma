@@ -32,7 +32,7 @@ import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * @author taedium
@@ -92,7 +92,7 @@ public class SqlFileBatchModifyQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         QueryReturnMeta resultMeta = createReturnMeta(method);
         if (!resultMeta.isPrimitiveIntArray()) {
-            throw new AptException(DomaMessageCode.DOMA4040, env, resultMeta
+            throw new AptException(Message.DOMA4040, env, resultMeta
                     .getElement());
         }
         queryMeta.setReturnMeta(resultMeta);
@@ -104,7 +104,7 @@ public class SqlFileBatchModifyQueryMetaFactory extends
         List<? extends VariableElement> parameters = method.getParameters();
         int size = parameters.size();
         if (size != 1) {
-            throw new AptException(DomaMessageCode.DOMA4002, env, method);
+            throw new AptException(Message.DOMA4002, env, method);
         }
         QueryParameterMeta parameterMeta = createParameterMeta(parameters
                 .get(0));
@@ -114,7 +114,7 @@ public class SqlFileBatchModifyQueryMetaFactory extends
                     @Override
                     protected ListType defaultAction(DataType type, Void p)
                             throws RuntimeException {
-                        throw new AptException(DomaMessageCode.DOMA4042, env,
+                        throw new AptException(Message.DOMA4042, env,
                                 method);
                     }
 
@@ -134,7 +134,7 @@ public class SqlFileBatchModifyQueryMetaFactory extends
                             protected EntityType defaultAction(DataType type,
                                     Void p) throws RuntimeException {
                                 throw new AptException(
-                                        DomaMessageCode.DOMA4043, env, method);
+                                        Message.DOMA4043, env, method);
                             }
 
                             @Override

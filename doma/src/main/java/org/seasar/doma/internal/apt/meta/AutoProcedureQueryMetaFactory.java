@@ -22,7 +22,7 @@ import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.mirror.ProcedureMirror;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * @author taedium
@@ -58,7 +58,7 @@ public class AutoProcedureQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         QueryReturnMeta resultMeta = createReturnMeta(method);
         if (!resultMeta.isPrimitiveVoid()) {
-            throw new AptException(DomaMessageCode.DOMA4064, env, resultMeta
+            throw new AptException(Message.DOMA4064, env, resultMeta
                     .getElement());
         }
         queryMeta.setReturnMeta(resultMeta);

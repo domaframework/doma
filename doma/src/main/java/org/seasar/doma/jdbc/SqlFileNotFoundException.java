@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * SQLファイルが見つからない場合にスローされる例外です。
@@ -37,7 +37,7 @@ public class SqlFileNotFoundException extends JdbcException {
      *            見つからないSQLファイルのパス
      */
     public SqlFileNotFoundException(String path) {
-        super(DomaMessageCode.DOMA2011, path);
+        super(Message.DOMA2011, path);
         this.path = path;
     }
 

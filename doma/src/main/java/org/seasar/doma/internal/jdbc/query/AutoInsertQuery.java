@@ -24,7 +24,7 @@ import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
@@ -88,7 +88,7 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
                 }
                 if (generatedIdPropertyType == null
                         && p.getWrapper(entity).get() == null) {
-                    throw new JdbcException(DomaMessageCode.DOMA2020,
+                    throw new JdbcException(Message.DOMA2020,
                             entityType.getName(), p.getName());
                 }
                 continue;

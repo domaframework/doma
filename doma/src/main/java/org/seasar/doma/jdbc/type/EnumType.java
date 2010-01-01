@@ -22,7 +22,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcException;
 
 /**
@@ -63,7 +63,7 @@ public class EnumType<E extends Enum<E>> extends AbstractJdbcType<E> {
         try {
             return Enum.valueOf(enumClass, value);
         } catch (IllegalArgumentException e) {
-            throw new JdbcException(DomaMessageCode.DOMA2040, enumClass
+            throw new JdbcException(Message.DOMA2040, enumClass
                     .getName(), value);
         }
     }
@@ -84,7 +84,7 @@ public class EnumType<E extends Enum<E>> extends AbstractJdbcType<E> {
         try {
             return Enum.valueOf(enumClass, value);
         } catch (IllegalArgumentException e) {
-            throw new JdbcException(DomaMessageCode.DOMA2040, enumClass
+            throw new JdbcException(Message.DOMA2040, enumClass
                     .getName(), value);
         }
     }

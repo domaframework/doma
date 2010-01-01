@@ -15,8 +15,8 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.MessageCode;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.MessageResource;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * SQLの実行に失敗した場合にスローされる例外です。
@@ -72,7 +72,7 @@ public class SqlExecutionException extends JdbcException {
      */
     public SqlExecutionException(String rawSql, String formattedSql,
             String sqlFilePath, Throwable cause, Throwable rootCause) {
-        super(DomaMessageCode.DOMA2009, cause, sqlFilePath, formattedSql,
+        super(Message.DOMA2009, cause, sqlFilePath, formattedSql,
                 cause, rootCause);
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;
@@ -96,7 +96,7 @@ public class SqlExecutionException extends JdbcException {
      * @param rootCause
      *            根本原因
      */
-    protected SqlExecutionException(MessageCode messageCode, String rawSql,
+    protected SqlExecutionException(MessageResource messageCode, String rawSql,
             String formattedSql, String sqlFilePath, Throwable cause,
             Throwable rootCause) {
         super(messageCode, cause, sqlFilePath, rawSql, cause, rootCause);

@@ -13,23 +13,21 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.util;
+package org.seasar.doma.internal.message;
 
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
+import org.seasar.doma.internal.message.Message;
 
-import org.seasar.doma.MessageCode;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
  * 
  */
-public final class MessageFormatter {
+public class MessageTest extends TestCase {
 
-    public static String getMessage(MessageCode messageCode,
-            ResourceBundle bundle, Object... args) {
-        String pattern = bundle.getString(messageCode.getCode());
-        return MessageFormat
-                .format("[" + messageCode.getCode() + "] " + pattern, args);
+    public void test() throws Exception {
+        String message = Message.DOMA0001.getMessage("aaa", "bbb");
+        assertNotNull(message);
+        System.out.println(message);
     }
 }

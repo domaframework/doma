@@ -15,8 +15,8 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.MessageCode;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.MessageResource;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * 一意制約違反が発生した場合にスローされる例外です。
@@ -64,7 +64,7 @@ public class UniqueConstraintException extends JdbcException {
      */
     public UniqueConstraintException(String rawSql, String formattedSql,
             String sqlFilePath, Throwable cause) {
-        super(DomaMessageCode.DOMA2004, sqlFilePath, formattedSql, cause);
+        super(Message.DOMA2004, sqlFilePath, formattedSql, cause);
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;
         this.sqlFilePath = sqlFilePath;
@@ -82,7 +82,7 @@ public class UniqueConstraintException extends JdbcException {
      * @param cause
      *            原因
      */
-    protected UniqueConstraintException(MessageCode messageCode, String rawSql,
+    protected UniqueConstraintException(MessageResource messageCode, String rawSql,
             String sqlFilePath, Throwable cause) {
         super(messageCode, cause, sqlFilePath, rawSql, cause);
         this.rawSql = rawSql;

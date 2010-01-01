@@ -28,7 +28,7 @@ import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * @author taedium
@@ -79,7 +79,7 @@ public class AutoFunctionQueryMetaFactory extends
                                     DataType type, Void p)
                                     throws RuntimeException {
                                 throw new AptException(
-                                        DomaMessageCode.DOMA4063, env,
+                                        Message.DOMA4063, env,
                                         returnMeta.getElement(), returnMeta
                                                 .getType());
                             }
@@ -113,7 +113,7 @@ public class AutoFunctionQueryMetaFactory extends
                                                             Void p)
                                                             throws RuntimeException {
                                                         throw new AptException(
-                                                                DomaMessageCode.DOMA4065,
+                                                                Message.DOMA4065,
                                                                 env,
                                                                 returnMeta
                                                                         .getElement(),

@@ -17,7 +17,7 @@ import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 public class QueryReturnMeta {
 
@@ -46,11 +46,11 @@ public class QueryReturnMeta {
         ListType listType = ListType.newInstance(type, env);
         if (listType != null) {
             if (listType.isRawType()) {
-                throw new AptException(DomaMessageCode.DOMA4109, env,
+                throw new AptException(Message.DOMA4109, env,
                         methodElement, typeName);
             }
             if (listType.isWildcardType()) {
-                throw new AptException(DomaMessageCode.DOMA4113, env,
+                throw new AptException(Message.DOMA4113, env,
                         methodElement, typeName);
             }
             return listType;

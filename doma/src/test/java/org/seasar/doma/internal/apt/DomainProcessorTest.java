@@ -22,7 +22,7 @@ import org.seasar.doma.internal.apt.domain.Outer;
 import org.seasar.doma.internal.apt.domain.PrimitiveValueDomain;
 import org.seasar.doma.internal.apt.domain.Salary;
 import org.seasar.doma.internal.apt.domain.UnsupportedValueTypeDomain;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * @author taedium
@@ -72,7 +72,7 @@ public class DomainProcessorTest extends AptTestCase {
         addCompilationUnit(UnsupportedValueTypeDomain.class);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4102);
+        assertMessageCode(Message.DOMA4102);
     }
 
     public void testConstrutorNotFound() throws Exception {
@@ -81,7 +81,7 @@ public class DomainProcessorTest extends AptTestCase {
         addCompilationUnit(ConstrutorNotFoundDomain.class);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4103);
+        assertMessageCode(Message.DOMA4103);
     }
 
     public void testAccessorNotFound() throws Exception {
@@ -90,7 +90,7 @@ public class DomainProcessorTest extends AptTestCase {
         addCompilationUnit(AccessorNotFoundDomain.class);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4104);
+        assertMessageCode(Message.DOMA4104);
     }
 
     public void testInner() throws Exception {
@@ -99,6 +99,6 @@ public class DomainProcessorTest extends AptTestCase {
         addCompilationUnit(Outer.class);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4106);
+        assertMessageCode(Message.DOMA4106);
     }
 }

@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.MessageCode;
+import org.seasar.doma.MessageResource;
 
 /**
  * {@link Enum} で表現されたメッセージコードを扱うリソースバンドルです。
@@ -31,12 +31,12 @@ import org.seasar.doma.MessageCode;
  * @author taedium
  * 
  */
-public abstract class AbstractMessageResource<M extends Enum<M> & MessageCode>
+public abstract class AbstractMessageResourceBundle<M extends Enum<M> & MessageResource>
         extends ResourceBundle {
 
     protected final Class<M> messageCodeClass;
 
-    public AbstractMessageResource(Class<M> messageCodeClass) {
+    public AbstractMessageResourceBundle(Class<M> messageCodeClass) {
         if (messageCodeClass == null) {
             throw new DomaNullPointerException("messageCodeClass");
         }

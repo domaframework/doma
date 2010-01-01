@@ -284,12 +284,6 @@
 			<type>jar</type>
 		</dependency>
 		<dependency>
-			<groupId>org.seasar.doma</groupId>
-			<artifactId>doma-tool</artifactId>
-			<version>0.9.11-SNAPSHOT</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
 			<groupId>org.seasar.container</groupId>
 			<artifactId>s2-tiger</artifactId>
 			<version>2.4.38</version>

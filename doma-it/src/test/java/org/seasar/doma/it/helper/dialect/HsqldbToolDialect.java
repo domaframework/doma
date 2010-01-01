@@ -13,22 +13,13 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.message;
+package org.seasar.doma.it.helper.dialect;
+
 
 /**
- * {@link DomaMessageCode} を扱うリソースバンドルです。
- * 
  * @author taedium
  * 
  */
-public class DomaMessageResource extends
-        AbstractMessageResource<DomaMessageCode> {
-
-    /**
-     * インスタンスを構築します。
-     */
-    public DomaMessageResource() {
-        super(DomaMessageCode.class);
-    }
+public class HsqldbToolDialect extends StandardToolDialect {
 
 }

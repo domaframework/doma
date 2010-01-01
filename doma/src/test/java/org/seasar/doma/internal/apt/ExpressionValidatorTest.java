@@ -35,7 +35,7 @@ import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.expr.ExpressionParser;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 public class ExpressionValidatorTest extends AptTestCase {
 
@@ -63,7 +63,7 @@ public class ExpressionValidatorTest extends AptTestCase {
             fail();
         } catch (AptException expected) {
             System.out.println(expected);
-            assertEquals(DomaMessageCode.DOMA4067, expected.getMessageCode());
+            assertEquals(Message.DOMA4067, expected.getMessageResource());
         }
     }
 
@@ -101,7 +101,7 @@ public class ExpressionValidatorTest extends AptTestCase {
             fail();
         } catch (AptException expected) {
             System.out.println(expected);
-            assertEquals(DomaMessageCode.DOMA4071, expected.getMessageCode());
+            assertEquals(Message.DOMA4071, expected.getMessageResource());
         }
     }
 
@@ -139,7 +139,7 @@ public class ExpressionValidatorTest extends AptTestCase {
             fail();
         } catch (AptException expected) {
             System.out.println(expected);
-            assertEquals(DomaMessageCode.DOMA4073, expected.getMessageCode());
+            assertEquals(Message.DOMA4073, expected.getMessageResource());
         }
     }
 
@@ -179,7 +179,7 @@ public class ExpressionValidatorTest extends AptTestCase {
             fail();
         } catch (AptException expected) {
             System.out.println(expected);
-            assertEquals(DomaMessageCode.DOMA4145, expected.getMessageCode());
+            assertEquals(Message.DOMA4145, expected.getMessageResource());
         }
     }
 
@@ -201,7 +201,7 @@ public class ExpressionValidatorTest extends AptTestCase {
             fail();
         } catch (AptException expected) {
             System.out.println(expected);
-            assertEquals(DomaMessageCode.DOMA4146, expected.getMessageCode());
+            assertEquals(Message.DOMA4146, expected.getMessageResource());
         }
     }
 
@@ -240,7 +240,7 @@ public class ExpressionValidatorTest extends AptTestCase {
             fail();
         } catch (AptException expected) {
             System.out.println(expected);
-            assertEquals(DomaMessageCode.DOMA4145, expected.getMessageCode());
+            assertEquals(Message.DOMA4145, expected.getMessageResource());
         }
     }
 
@@ -262,7 +262,7 @@ public class ExpressionValidatorTest extends AptTestCase {
             fail();
         } catch (AptException expected) {
             System.out.println(expected);
-            assertEquals(DomaMessageCode.DOMA4148, expected.getMessageCode());
+            assertEquals(Message.DOMA4148, expected.getMessageResource());
         }
     }
 
@@ -301,7 +301,7 @@ public class ExpressionValidatorTest extends AptTestCase {
             fail();
         } catch (AptException expected) {
             System.out.println(expected);
-            assertEquals(DomaMessageCode.DOMA4072, expected.getMessageCode());
+            assertEquals(Message.DOMA4072, expected.getMessageResource());
         }
     }
 
@@ -323,7 +323,7 @@ public class ExpressionValidatorTest extends AptTestCase {
             fail();
         } catch (AptException expected) {
             System.out.println(expected);
-            assertEquals(DomaMessageCode.DOMA4115, expected.getMessageCode());
+            assertEquals(Message.DOMA4115, expected.getMessageResource());
         }
     }
 
@@ -458,7 +458,7 @@ public class ExpressionValidatorTest extends AptTestCase {
             fail();
         } catch (AptException expected) {
             System.out.println(expected);
-            assertEquals(DomaMessageCode.DOMA4121, expected.getMessageCode());
+            assertEquals(Message.DOMA4121, expected.getMessageResource());
         }
     }
 
@@ -495,7 +495,7 @@ public class ExpressionValidatorTest extends AptTestCase {
             fail();
         } catch (AptException expected) {
             System.out.println(expected);
-            assertEquals(DomaMessageCode.DOMA4126, expected.getMessageCode());
+            assertEquals(Message.DOMA4126, expected.getMessageResource());
         }
     }
 

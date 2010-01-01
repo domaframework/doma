@@ -24,7 +24,7 @@ import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
@@ -85,7 +85,7 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
 
     protected void validateIdExistent() {
         if (idPropertyTypes.isEmpty()) {
-            throw new JdbcException(DomaMessageCode.DOMA2022, entityType
+            throw new JdbcException(Message.DOMA2022, entityType
                     .getName());
         }
     }

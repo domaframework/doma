@@ -25,7 +25,7 @@ import org.seasar.doma.GenerationType;
 import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.RequiresNewController;
@@ -83,17 +83,17 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
     @Override
     public void initialize() {
         if (qualifiedTableName == null) {
-            throw new JdbcException(DomaMessageCode.DOMA2033,
+            throw new JdbcException(Message.DOMA2033,
                     "qualifiedTableName");
         }
         if (pkColumnName == null) {
-            throw new JdbcException(DomaMessageCode.DOMA2033, "pkColumnName");
+            throw new JdbcException(Message.DOMA2033, "pkColumnName");
         }
         if (pkColumnValue == null) {
-            throw new JdbcException(DomaMessageCode.DOMA2033, "pkColumnValue");
+            throw new JdbcException(Message.DOMA2033, "pkColumnValue");
         }
         if (valueColumnName == null) {
-            throw new JdbcException(DomaMessageCode.DOMA2033, "valueColumnName");
+            throw new JdbcException(Message.DOMA2033, "valueColumnName");
         }
         LongWrapper allocationSizeWrapper = new LongWrapper();
         allocationSizeWrapper.set(allocationSize);
@@ -201,7 +201,7 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
                     });
             return value - allocationSize;
         } catch (Throwable t) {
-            throw new JdbcException(DomaMessageCode.DOMA2018, t, config
+            throw new JdbcException(Message.DOMA2018, t, config
                     .getEntityType().getName(), t);
         }
     }
@@ -229,11 +229,11 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
                 preparedStatement.setString(2, pkColumnValue);
                 int rows = preparedStatement.executeUpdate();
                 if (rows != 1) {
-                    throw new JdbcException(DomaMessageCode.DOMA2017, config
+                    throw new JdbcException(Message.DOMA2017, config
                             .getEntityType().getName());
                 }
             } catch (SQLException e) {
-                throw new JdbcException(DomaMessageCode.DOMA2018, e, config
+                throw new JdbcException(Message.DOMA2018, e, config
                         .getEntityType().getName(), e);
             } finally {
                 JdbcUtil.close(preparedStatement, logger);
@@ -271,10 +271,10 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
                         return ((Number) result).longValue();
                     }
                 }
-                throw new JdbcException(DomaMessageCode.DOMA2017, config
+                throw new JdbcException(Message.DOMA2017, config
                         .getEntityType().getName());
             } catch (SQLException e) {
-                throw new JdbcException(DomaMessageCode.DOMA2018, e, config
+                throw new JdbcException(Message.DOMA2018, e, config
                         .getEntityType().getName(), e);
             } finally {
                 JdbcUtil.close(preparedStatement, logger);

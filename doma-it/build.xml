@@ -7,16 +7,14 @@
 	
 	<property name="classpath" refid="taskdefClasspath"/>
 			
-	<taskdef name="exec-sql" classname="org.seasar.doma.it.ItExecSqlFileTask" classpath="${classpath}" loaderref="taskdefLoaderref"/>
+	<taskdef name="exec-sql" classname="org.seasar.doma.it.helper.task.ExecSqlFileTask" classpath="${classpath}" loaderref="taskdefLoaderref"/>
 
 	<target name="setup-data" if="isTargetDatabase" depends="check-database">
 		<exec-sql 
 			haltOnError="false"
-			configClassName="org.seasar.doma.it.ItConfig"
 			sqlFile="sql/drop_${database}.sql"/>
 		<exec-sql 
 			haltOnError="true"
-			configClassName="org.seasar.doma.it.ItConfig"
 			sqlFile="sql/create_${database}.sql"/>
 	</target>
 
@@ -33,7 +31,6 @@
 
 	<target name="update-dependent-jars">
 		<ant antfile="build-doma.xml"/>
-		<ant antfile="build-doma-tool.xml"/>
 	</target>
 
 </project>

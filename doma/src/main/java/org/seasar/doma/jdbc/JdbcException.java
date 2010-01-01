@@ -16,7 +16,7 @@
 package org.seasar.doma.jdbc;
 
 import org.seasar.doma.DomaException;
-import org.seasar.doma.MessageCode;
+import org.seasar.doma.MessageResource;
 
 /**
  * JDBCに関する例外です。
@@ -36,7 +36,7 @@ public class JdbcException extends DomaException {
      * @param args
      *            メッセージへの引数
      */
-    public JdbcException(MessageCode messageCode, Object... args) {
+    public JdbcException(MessageResource messageCode, Object... args) {
         super(messageCode, args);
     }
 
@@ -50,7 +50,7 @@ public class JdbcException extends DomaException {
      * @param args
      *            メッセージへの引数
      */
-    public JdbcException(MessageCode messageCode, Throwable cause,
+    public JdbcException(MessageResource messageCode, Throwable cause,
             Object... args) {
         super(messageCode, cause, args);
     }

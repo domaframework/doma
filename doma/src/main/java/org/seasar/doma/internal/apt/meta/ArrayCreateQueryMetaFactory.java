@@ -27,7 +27,7 @@ import javax.lang.model.type.TypeKind;
 
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.mirror.ArrayFactoryMirror;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * @author taedium
@@ -64,12 +64,12 @@ public class ArrayCreateQueryMetaFactory extends
         List<? extends VariableElement> parameters = method.getParameters();
         int size = parameters.size();
         if (size != 1) {
-            throw new AptException(DomaMessageCode.DOMA4002, env, method);
+            throw new AptException(Message.DOMA4002, env, method);
         }
         QueryParameterMeta parameterMeta = createParameterMeta(parameters
                 .get(0));
         if (parameterMeta.getType().getKind() != TypeKind.ARRAY) {
-            throw new AptException(DomaMessageCode.DOMA4076, env, parameterMeta
+            throw new AptException(Message.DOMA4076, env, parameterMeta
                     .getElement());
         }
         queryMeta.setElementsParameterName(parameterMeta.getName());

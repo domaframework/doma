@@ -1,6 +1,6 @@
 package org.seasar.doma;
 
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * 事前条件をもつパラメータへの引数が不正な場合にスローされる例外です。
@@ -30,7 +30,7 @@ public class DomaIllegalArgumentException extends DomaException {
      *            不正な引数であることの説明
      */
     public DomaIllegalArgumentException(String parameterName, String description) {
-        super(DomaMessageCode.DOMA0002, parameterName, description);
+        super(Message.DOMA0002, parameterName, description);
         this.parameterName = parameterName;
         this.description = description;
     }

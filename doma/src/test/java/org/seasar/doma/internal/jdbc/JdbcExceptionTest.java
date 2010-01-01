@@ -25,7 +25,7 @@ import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.GreedyCacheSqlFileRepository;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlFileNotFoundException;
@@ -49,7 +49,7 @@ public class JdbcExceptionTest extends TestCase {
             fail();
         } catch (SqlFileNotFoundException e) {
             System.out.println(e.getMessage());
-            assertEquals(DomaMessageCode.DOMA2011, e.getMessageCode());
+            assertEquals(Message.DOMA2011, e.getMessageResource());
         }
     }
 
@@ -60,7 +60,7 @@ public class JdbcExceptionTest extends TestCase {
             fail();
         } catch (JdbcException e) {
             System.out.println(e.getMessage());
-            assertEquals(DomaMessageCode.DOMA2101, e.getMessageCode());
+            assertEquals(Message.DOMA2101, e.getMessageResource());
         }
     }
 
@@ -71,7 +71,7 @@ public class JdbcExceptionTest extends TestCase {
             fail();
         } catch (JdbcException e) {
             System.out.println(e.getMessage());
-            assertEquals(DomaMessageCode.DOMA2102, e.getMessageCode());
+            assertEquals(Message.DOMA2102, e.getMessageResource());
         }
     }
 
@@ -82,7 +82,7 @@ public class JdbcExceptionTest extends TestCase {
             fail();
         } catch (JdbcException e) {
             System.out.println(e.getMessage());
-            assertEquals(DomaMessageCode.DOMA2103, e.getMessageCode());
+            assertEquals(Message.DOMA2103, e.getMessageResource());
         }
     }
 
@@ -93,7 +93,7 @@ public class JdbcExceptionTest extends TestCase {
             fail();
         } catch (JdbcException e) {
             System.out.println(e.getMessage());
-            assertEquals(DomaMessageCode.DOMA2104, e.getMessageCode());
+            assertEquals(Message.DOMA2104, e.getMessageResource());
         }
     }
 
@@ -105,7 +105,7 @@ public class JdbcExceptionTest extends TestCase {
             fail();
         } catch (JdbcException e) {
             System.out.println(e.getMessage());
-            assertEquals(DomaMessageCode.DOMA2104, e.getMessageCode());
+            assertEquals(Message.DOMA2104, e.getMessageResource());
         }
     }
 
@@ -117,7 +117,7 @@ public class JdbcExceptionTest extends TestCase {
             fail();
         } catch (JdbcException e) {
             System.out.println(e.getMessage());
-            assertEquals(DomaMessageCode.DOMA2105, e.getMessageCode());
+            assertEquals(Message.DOMA2105, e.getMessageResource());
         }
     }
 
@@ -129,7 +129,7 @@ public class JdbcExceptionTest extends TestCase {
             fail();
         } catch (JdbcException e) {
             System.out.println(e.getMessage());
-            assertEquals(DomaMessageCode.DOMA2106, e.getMessageCode());
+            assertEquals(Message.DOMA2106, e.getMessageResource());
         }
     }
 
@@ -141,7 +141,7 @@ public class JdbcExceptionTest extends TestCase {
             fail();
         } catch (JdbcException e) {
             System.out.println(e.getMessage());
-            assertEquals(DomaMessageCode.DOMA2107, e.getMessageCode());
+            assertEquals(Message.DOMA2107, e.getMessageResource());
         }
     }
 
@@ -153,7 +153,7 @@ public class JdbcExceptionTest extends TestCase {
             fail();
         } catch (JdbcException e) {
             System.out.println(e.getMessage());
-            assertEquals(DomaMessageCode.DOMA2108, e.getMessageCode());
+            assertEquals(Message.DOMA2108, e.getMessageResource());
         }
     }
 
@@ -164,7 +164,7 @@ public class JdbcExceptionTest extends TestCase {
             fail();
         } catch (JdbcException e) {
             System.out.println(e.getMessage());
-            assertEquals(DomaMessageCode.DOMA2109, e.getMessageCode());
+            assertEquals(Message.DOMA2109, e.getMessageResource());
         }
     }
 
@@ -176,7 +176,7 @@ public class JdbcExceptionTest extends TestCase {
             fail();
         } catch (JdbcException e) {
             System.out.println(e.getMessage());
-            assertEquals(DomaMessageCode.DOMA2110, e.getMessageCode());
+            assertEquals(Message.DOMA2110, e.getMessageResource());
         }
     }
 
@@ -191,7 +191,7 @@ public class JdbcExceptionTest extends TestCase {
             fail();
         } catch (JdbcException e) {
             System.out.println(e.getMessage());
-            assertEquals(DomaMessageCode.DOMA2111, e.getMessageCode());
+            assertEquals(Message.DOMA2111, e.getMessageResource());
         }
     }
 
@@ -208,7 +208,7 @@ public class JdbcExceptionTest extends TestCase {
             fail();
         } catch (JdbcException e) {
             System.out.println(e.getMessage());
-            assertEquals(DomaMessageCode.DOMA2112, e.getMessageCode());
+            assertEquals(Message.DOMA2112, e.getMessageResource());
         }
     }
 
@@ -225,7 +225,7 @@ public class JdbcExceptionTest extends TestCase {
             fail();
         } catch (JdbcException e) {
             System.out.println(e.getMessage());
-            assertEquals(DomaMessageCode.DOMA2115, e.getMessageCode());
+            assertEquals(Message.DOMA2115, e.getMessageResource());
         }
     }
 }

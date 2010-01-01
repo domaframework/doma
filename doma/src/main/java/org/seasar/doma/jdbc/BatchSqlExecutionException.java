@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * バッチ処理に失敗した場合にスローされる例外です。
@@ -59,7 +59,7 @@ public class BatchSqlExecutionException extends SqlExecutionException {
      */
     public BatchSqlExecutionException(String rawSql, String sqlFilePath,
             Throwable cause, Throwable rootCause) {
-        super(DomaMessageCode.DOMA2030, rawSql, null, sqlFilePath, cause,
+        super(Message.DOMA2030, rawSql, null, sqlFilePath, cause,
                 rootCause);
     }
 

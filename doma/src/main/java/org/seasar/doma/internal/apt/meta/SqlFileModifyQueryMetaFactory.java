@@ -32,7 +32,7 @@ import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * @author taedium
@@ -90,7 +90,7 @@ public class SqlFileModifyQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         QueryReturnMeta returnMeta = createReturnMeta(method);
         if (!returnMeta.isPrimitiveInt()) {
-            throw new AptException(DomaMessageCode.DOMA4001, env, returnMeta
+            throw new AptException(Message.DOMA4001, env, returnMeta
                     .getElement());
         }
         queryMeta.setReturnMeta(returnMeta);
@@ -107,7 +107,7 @@ public class SqlFileModifyQueryMetaFactory extends
                         @Override
                         protected Void defaultAction(DataType type, Void p)
                                 throws RuntimeException {
-                            throw new AptException(DomaMessageCode.DOMA4008,
+                            throw new AptException(Message.DOMA4008,
                                     env, parameterMeta.getElement(),
                                     parameterMeta.getType());
                         }

@@ -32,7 +32,7 @@ import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.ReferenceType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * @author taedium
@@ -76,7 +76,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         if (parameterMeta.isAnnotated(InOut.class)) {
             return createInOutParameterMeta(parameterMeta);
         }
-        throw new AptException(DomaMessageCode.DOMA4066, env, parameterMeta
+        throw new AptException(Message.DOMA4066, env, parameterMeta
                 .getElement());
     }
 
@@ -88,7 +88,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                     @Override
                     protected ListType defaultAction(DataType type, Void p)
                             throws RuntimeException {
-                        throw new AptException(DomaMessageCode.DOMA4062, env,
+                        throw new AptException(Message.DOMA4062, env,
                                 parameterMeta.getElement());
                     }
 
@@ -151,7 +151,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                                     DataType type, Void p)
                                     throws RuntimeException {
                                 throw new AptException(
-                                        DomaMessageCode.DOMA4101, env,
+                                        Message.DOMA4101, env,
                                         parameterMeta.getElement(),
                                         parameterMeta.getType());
                             }
@@ -187,7 +187,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                                     DataType type, Void p)
                                     throws RuntimeException {
                                 throw new AptException(
-                                        DomaMessageCode.DOMA4098, env,
+                                        Message.DOMA4098, env,
                                         parameterMeta.getElement());
                             }
 
@@ -209,7 +209,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                                     DataType type, Void p)
                                     throws RuntimeException {
                                 throw new AptException(
-                                        DomaMessageCode.DOMA4100, env,
+                                        Message.DOMA4100, env,
                                         parameterMeta.getElement(),
                                         referenceType.getReferentTypeMirror());
                             }
@@ -245,7 +245,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                                     DataType type, Void p)
                                     throws RuntimeException {
                                 throw new AptException(
-                                        DomaMessageCode.DOMA4111, env,
+                                        Message.DOMA4111, env,
                                         parameterMeta.getElement());
                             }
 
@@ -267,7 +267,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                                     DataType type, Void p)
                                     throws RuntimeException {
                                 throw new AptException(
-                                        DomaMessageCode.DOMA4100, env,
+                                        Message.DOMA4100, env,
                                         parameterMeta.getElement(),
                                         referenceType.getReferentTypeMirror());
                             }

@@ -18,7 +18,7 @@ package org.seasar.doma.it.sqlfile;
 import static org.junit.Assert.*;
 
 import org.junit.runner.RunWith;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.it.dao.EmployeeDao;
 import org.seasar.doma.it.dao.EmployeeDaoImpl;
 import org.seasar.doma.it.entity.Employee;
@@ -37,7 +37,7 @@ public class SqlFileSelectForUpdateTest {
             dao.selectById(1, SelectOptions.get().forUpdate());
             fail();
         } catch (JdbcException expected) {
-            assertEquals(DomaMessageCode.DOMA2023, expected.getMessageCode());
+            assertEquals(Message.DOMA2023, expected.getMessageResource());
         }
     }
 

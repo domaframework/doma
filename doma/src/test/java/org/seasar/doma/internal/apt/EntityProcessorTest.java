@@ -29,7 +29,7 @@ import org.seasar.doma.internal.apt.entity.TransientPropertyEntity;
 import org.seasar.doma.internal.apt.entity.UnsupportedPropertyEntity;
 import org.seasar.doma.internal.apt.entity.VersionDuplicatedEntity;
 import org.seasar.doma.internal.apt.entity.VersionNotNumberEntity;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * @author taedium
@@ -60,7 +60,7 @@ public class EntityProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4094);
+        assertMessageCode(Message.DOMA4094);
     }
 
     public void testPrivatePropertyEntity() throws Exception {
@@ -70,7 +70,7 @@ public class EntityProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4094);
+        assertMessageCode(Message.DOMA4094);
     }
 
     public void testVersionDuplicated() throws Exception {
@@ -80,7 +80,7 @@ public class EntityProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4024);
+        assertMessageCode(Message.DOMA4024);
     }
 
     public void testNotTopLevel() throws Exception {
@@ -90,7 +90,7 @@ public class EntityProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4018);
+        assertMessageCode(Message.DOMA4018);
     }
 
     public void testUnsupportedProperty() throws Exception {
@@ -100,7 +100,7 @@ public class EntityProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4096);
+        assertMessageCode(Message.DOMA4096);
     }
 
     public void testPrimitiveProperty() throws Exception {
@@ -128,7 +128,7 @@ public class EntityProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4025);
+        assertMessageCode(Message.DOMA4025);
     }
 
     public void testTransientProperty() throws Exception {
@@ -148,7 +148,7 @@ public class EntityProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4093);
+        assertMessageCode(Message.DOMA4093);
     }
 
     public void testListenerArgumentTypeIllegal() throws Exception {
@@ -158,7 +158,7 @@ public class EntityProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4038);
+        assertMessageCode(Message.DOMA4038);
     }
 
     public void testAnnotationConflicted() throws Exception {
@@ -168,7 +168,7 @@ public class EntityProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(DomaMessageCode.DOMA4086);
+        assertMessageCode(Message.DOMA4086);
     }
 
     public void testDomainProperty() throws Exception {

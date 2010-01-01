@@ -23,7 +23,7 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * {@link DriverManager#getConnection(String, Properties)}を使用して
@@ -180,13 +180,13 @@ public class SimpleDataSource implements DataSource {
     protected Connection getConnectionInternal(Properties info)
             throws SQLException {
         if (url == null) {
-            throw new SQLException(DomaMessageCode.DOMA5002.getMessage());
+            throw new SQLException(Message.DOMA5002.getMessage());
         }
         try {
             return DriverManager.getConnection(url, info);
         } catch (SQLException e) {
             if (UNABLE_TO_ESTABLISH_CONNECTION.equals(e.getSQLState())) {
-                throw new SQLException(DomaMessageCode.DOMA5001.getMessage(),
+                throw new SQLException(Message.DOMA5001.getMessage(),
                         UNABLE_TO_ESTABLISH_CONNECTION, e);
             }
             throw e;

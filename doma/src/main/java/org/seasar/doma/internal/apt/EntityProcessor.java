@@ -31,7 +31,7 @@ import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.internal.apt.meta.EntityMeta;
 import org.seasar.doma.internal.apt.meta.EntityMetaFactory;
 import org.seasar.doma.internal.apt.meta.EntityPropertyMetaFactory;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.internal.util.IOUtil;
 
 /**
@@ -54,7 +54,7 @@ public class EntityProcessor extends AbstractProcessor {
             for (TypeElement entityElement : ElementFilter.typesIn(roundEnv
                     .getElementsAnnotatedWith(a))) {
                 if (Options.isDebugEnabled(processingEnv)) {
-                    Notifier.debug(processingEnv, DomaMessageCode.DOMA4090,
+                    Notifier.debug(processingEnv, Message.DOMA4090,
                             getClass().getName(), entityElement
                                     .getQualifiedName());
                 }
@@ -66,15 +66,15 @@ public class EntityProcessor extends AbstractProcessor {
                     Notifier.notify(processingEnv, e);
                 } catch (AptIllegalStateException e) {
                     Notifier.notify(processingEnv, Kind.ERROR,
-                            DomaMessageCode.DOMA4039, entityElement);
+                            Message.DOMA4039, entityElement);
                     throw e;
                 } catch (RuntimeException e) {
                     Notifier.notify(processingEnv, Kind.ERROR,
-                            DomaMessageCode.DOMA4016, entityElement);
+                            Message.DOMA4016, entityElement);
                     throw e;
                 }
                 if (Options.isDebugEnabled(processingEnv)) {
-                    Notifier.debug(processingEnv, DomaMessageCode.DOMA4091,
+                    Notifier.debug(processingEnv, Message.DOMA4091,
                             getClass().getName(), entityElement
                                     .getQualifiedName());
                 }
@@ -100,7 +100,7 @@ public class EntityProcessor extends AbstractProcessor {
                     entityMeta);
             generator.generate();
         } catch (IOException e) {
-            throw new AptException(DomaMessageCode.DOMA4011, processingEnv,
+            throw new AptException(Message.DOMA4011, processingEnv,
                     entityElement, e, entityElement.getQualifiedName(), e);
         } finally {
             IOUtil.close(generator);

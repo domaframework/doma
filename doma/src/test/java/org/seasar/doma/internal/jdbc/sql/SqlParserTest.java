@@ -25,7 +25,7 @@ import junit.framework.TestCase;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlNode;
@@ -107,7 +107,7 @@ public class SqlParserTest extends TestCase {
             fail();
         } catch (JdbcException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA2110, expected.getMessageCode());
+            assertEquals(Message.DOMA2110, expected.getMessageResource());
         }
     }
 
@@ -119,7 +119,7 @@ public class SqlParserTest extends TestCase {
             fail();
         } catch (JdbcException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA2120, expected.getMessageCode());
+            assertEquals(Message.DOMA2120, expected.getMessageResource());
         }
     }
 
@@ -177,7 +177,7 @@ public class SqlParserTest extends TestCase {
             fail();
         } catch (JdbcException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA2121, expected.getMessageCode());
+            assertEquals(Message.DOMA2121, expected.getMessageResource());
         }
     }
 

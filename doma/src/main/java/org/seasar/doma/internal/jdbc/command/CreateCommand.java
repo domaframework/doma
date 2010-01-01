@@ -20,7 +20,7 @@ import java.sql.SQLException;
 
 import org.seasar.doma.internal.jdbc.query.CreateQuery;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcException;
 
 /**
@@ -42,7 +42,7 @@ public class CreateCommand<R> implements Command<R, CreateQuery<R>> {
         try {
             return query.create(connection);
         } catch (SQLException e) {
-            throw new JdbcException(DomaMessageCode.DOMA2008, e, e);
+            throw new JdbcException(Message.DOMA2008, e, e);
         } finally {
             JdbcUtil.close(connection, query.getConfig().getJdbcLogger());
         }

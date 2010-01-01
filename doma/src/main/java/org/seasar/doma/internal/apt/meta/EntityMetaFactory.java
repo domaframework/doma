@@ -45,7 +45,7 @@ import org.seasar.doma.internal.apt.mirror.EntityMirror;
 import org.seasar.doma.internal.apt.mirror.TableMirror;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.entity.EntityListener;
 
 /**
@@ -94,20 +94,20 @@ public class EntityMetaFactory {
     protected void validateClass(TypeElement classElement, EntityMeta entityMeta) {
         if (classElement.getKind() != ElementKind.CLASS) {
             EntityMirror entityMirror = entityMeta.getEntityMirror();
-            throw new AptException(DomaMessageCode.DOMA4015, env, classElement,
+            throw new AptException(Message.DOMA4015, env, classElement,
                     entityMirror.getAnnotationMirror());
         }
         if (classElement.getNestingKind().isNested()) {
-            throw new AptException(DomaMessageCode.DOMA4018, env, classElement);
+            throw new AptException(Message.DOMA4018, env, classElement);
         }
         if (classElement.getModifiers().contains(Modifier.PRIVATE)) {
-            throw new AptException(DomaMessageCode.DOMA4123, env, classElement);
+            throw new AptException(Message.DOMA4123, env, classElement);
         }
         if (classElement.getModifiers().contains(Modifier.ABSTRACT)) {
-            throw new AptException(DomaMessageCode.DOMA4134, env, classElement);
+            throw new AptException(Message.DOMA4134, env, classElement);
         }
         if (!classElement.getTypeParameters().isEmpty()) {
-            throw new AptException(DomaMessageCode.DOMA4051, env, classElement);
+            throw new AptException(Message.DOMA4051, env, classElement);
         }
     }
 
@@ -124,7 +124,7 @@ public class EntityMetaFactory {
                 }
             }
         }
-        throw new AptException(DomaMessageCode.DOMA4124, env, classElement);
+        throw new AptException(Message.DOMA4124, env, classElement);
     }
 
     protected void validateEntityListener(TypeElement classElement,
@@ -137,7 +137,7 @@ public class EntityMetaFactory {
         }
         if (!TypeMirrorUtil.isAssignable(classElement.asType(), argumentType,
                 env)) {
-            throw new AptException(DomaMessageCode.DOMA4038, env, classElement,
+            throw new AptException(Message.DOMA4038, env, classElement,
                     entityMirror.getAnnotationMirror(), entityMirror
                             .getListener(), listenerType, argumentType,
                     classElement.getQualifiedName());
@@ -189,7 +189,7 @@ public class EntityMetaFactory {
                     continue;
                 } else if (fieldElement.getModifiers().contains(
                         Modifier.PRIVATE)) {
-                    throw new AptException(DomaMessageCode.DOMA4094, env,
+                    throw new AptException(Message.DOMA4094, env,
                             fieldElement);
                 } else if (fieldElement.getAnnotation(OriginalStates.class) != null) {
                     doOriginalStatesField(classElement, fieldElement,
@@ -240,11 +240,11 @@ public class EntityMetaFactory {
             return;
         }
         if (entityMeta.hasOriginalStatesMeta()) {
-            throw new AptException(DomaMessageCode.DOMA4125, env, fieldElement);
+            throw new AptException(Message.DOMA4125, env, fieldElement);
         }
         if (!TypeMirrorUtil.isSameType(fieldElement.asType(), classElement
                 .asType(), env)) {
-            throw new AptException(DomaMessageCode.DOMA4135, env, fieldElement,
+            throw new AptException(Message.DOMA4135, env, fieldElement,
                     classElement.getQualifiedName());
         }
         TypeElement entityElement = ElementUtil.toTypeElement(fieldElement
@@ -274,7 +274,7 @@ public class EntityMetaFactory {
                     declaredType, env);
             if (typeElement.getAnnotation(EntityField.class) != null) {
                 if (foundAnnotationTypeElement != null) {
-                    throw new AptException(DomaMessageCode.DOMA4086, env,
+                    throw new AptException(Message.DOMA4086, env,
                             fieldElement, foundAnnotationTypeElement
                                     .getQualifiedName(), typeElement
                                     .getQualifiedName());

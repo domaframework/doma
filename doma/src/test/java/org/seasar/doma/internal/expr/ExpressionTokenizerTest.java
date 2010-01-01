@@ -18,7 +18,7 @@ package org.seasar.doma.internal.expr;
 import static org.seasar.doma.internal.expr.ExpressionTokenType.*;
 import junit.framework.TestCase;
 
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * @author taedium
@@ -176,7 +176,7 @@ public class ExpressionTokenizerTest extends TestCase {
             fail();
         } catch (ExpressionException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA3021, expected.getMessageCode());
+            assertEquals(Message.DOMA3021, expected.getMessageResource());
         }
     }
 
@@ -187,7 +187,7 @@ public class ExpressionTokenizerTest extends TestCase {
             fail();
         } catch (ExpressionException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA3022, expected.getMessageCode());
+            assertEquals(Message.DOMA3022, expected.getMessageResource());
         }
     }
 
@@ -247,7 +247,7 @@ public class ExpressionTokenizerTest extends TestCase {
             fail();
         } catch (ExpressionException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA3023, expected.getMessageCode());
+            assertEquals(Message.DOMA3023, expected.getMessageResource());
         }
     }
 
@@ -258,7 +258,7 @@ public class ExpressionTokenizerTest extends TestCase {
             fail();
         } catch (ExpressionException expected) {
             System.out.println(expected.getMessage());
-            assertEquals(DomaMessageCode.DOMA3024, expected.getMessageCode());
+            assertEquals(Message.DOMA3024, expected.getMessageResource());
         }
     }
 

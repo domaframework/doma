@@ -16,7 +16,7 @@
 package org.seasar.doma.internal.expr;
 
 import org.seasar.doma.DomaException;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * @author taedium
@@ -26,11 +26,11 @@ public class ExpressionException extends DomaException {
 
     private static final long serialVersionUID = 1L;
 
-    public ExpressionException(DomaMessageCode messageCode, Object... args) {
+    public ExpressionException(Message messageCode, Object... args) {
         super(messageCode, args);
     }
 
-    public ExpressionException(DomaMessageCode messageCode, Throwable cause,
+    public ExpressionException(Message messageCode, Throwable cause,
             Object... args) {
         super(messageCode, cause, args);
     }

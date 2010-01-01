@@ -24,7 +24,7 @@ import java.sql.Statement;
 
 import javax.sql.DataSource;
 
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.Sql;
@@ -39,7 +39,7 @@ public final class JdbcUtil {
         try {
             return dataSource.getConnection();
         } catch (SQLException e) {
-            throw new JdbcException(DomaMessageCode.DOMA2015, e, e);
+            throw new JdbcException(Message.DOMA2015, e, e);
         }
     }
 
@@ -47,7 +47,7 @@ public final class JdbcUtil {
         try {
             return connection.createStatement();
         } catch (SQLException e) {
-            throw new JdbcException(DomaMessageCode.DOMA2032, e, e);
+            throw new JdbcException(Message.DOMA2032, e, e);
         }
     }
 
@@ -56,7 +56,7 @@ public final class JdbcUtil {
         try {
             return connection.prepareStatement(sql.getRawSql());
         } catch (SQLException e) {
-            throw new JdbcException(DomaMessageCode.DOMA2016, e, sql
+            throw new JdbcException(Message.DOMA2016, e, sql
                     .getSqlFilePath(), sql.getRawSql(), e);
         }
     }
@@ -67,7 +67,7 @@ public final class JdbcUtil {
             return connection.prepareStatement(sql.getRawSql(),
                     Statement.RETURN_GENERATED_KEYS);
         } catch (SQLException e) {
-            throw new JdbcException(DomaMessageCode.DOMA2016, e, sql
+            throw new JdbcException(Message.DOMA2016, e, sql
                     .getSqlFilePath(), sql.getRawSql(), e);
         }
     }
@@ -77,7 +77,7 @@ public final class JdbcUtil {
         try {
             return connection.prepareCall(sql.getRawSql());
         } catch (SQLException e) {
-            throw new JdbcException(DomaMessageCode.DOMA2025, e, sql
+            throw new JdbcException(Message.DOMA2025, e, sql
                     .getRawSql(), e);
         }
     }

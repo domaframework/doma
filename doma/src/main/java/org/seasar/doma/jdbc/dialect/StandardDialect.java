@@ -32,7 +32,7 @@ import org.seasar.doma.internal.jdbc.dialect.StandardCountGettingTransformer;
 import org.seasar.doma.internal.jdbc.dialect.StandardForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.StandardPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
@@ -194,11 +194,11 @@ public class StandardDialect implements Dialect {
         if (forUpdateType != null) {
             String[] aliases = SelectOptionsAccessor.getAliases(options);
             if (!supportsSelectForUpdate(forUpdateType, false)) {
-                throw new JdbcException(DomaMessageCode.DOMA2023, getName());
+                throw new JdbcException(Message.DOMA2023, getName());
             }
             if (aliases.length > 0) {
                 if (!supportsSelectForUpdate(forUpdateType, true)) {
-                    throw new JdbcException(DomaMessageCode.DOMA2024, getName());
+                    throw new JdbcException(Message.DOMA2024, getName());
                 }
             }
             int waitSeconds = SelectOptionsAccessor.getWaitSeconds(options);
@@ -555,7 +555,7 @@ public class StandardDialect implements Dialect {
         @Override
         public Void visitUnknownWrapper(Wrapper<?> wrapper,
                 JdbcMappingFunction p) throws SQLException {
-            throw new JdbcException(DomaMessageCode.DOMA2019, wrapper
+            throw new JdbcException(Message.DOMA2019, wrapper
                     .getClass().getName());
         }
     }
@@ -689,7 +689,7 @@ public class StandardDialect implements Dialect {
         @Override
         public String visitUnknownWrapper(Wrapper<?> wrapper,
                 SqlLogFormattingFunction p) {
-            throw new JdbcException(DomaMessageCode.DOMA2019, wrapper
+            throw new JdbcException(Message.DOMA2019, wrapper
                     .getClass().getName());
         }
 

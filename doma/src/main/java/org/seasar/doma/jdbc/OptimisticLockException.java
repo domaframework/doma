@@ -15,8 +15,8 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.MessageCode;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.MessageResource;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * 楽観的排他制御に失敗した場合にスローされます。
@@ -61,7 +61,7 @@ public class OptimisticLockException extends JdbcException {
      */
     public OptimisticLockException(String rawSql, String formattedSql,
             String sqlFilePath) {
-        super(DomaMessageCode.DOMA2003, sqlFilePath, formattedSql);
+        super(Message.DOMA2003, sqlFilePath, formattedSql);
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;
         this.sqlFilePath = sqlFilePath;
@@ -77,7 +77,7 @@ public class OptimisticLockException extends JdbcException {
      * @param sqlFilePath
      *            SQLファイルのパス
      */
-    protected OptimisticLockException(MessageCode messageCode, String rawSql,
+    protected OptimisticLockException(MessageResource messageCode, String rawSql,
             String sqlFilePath) {
         super(messageCode, sqlFilePath, rawSql);
         this.rawSql = rawSql;

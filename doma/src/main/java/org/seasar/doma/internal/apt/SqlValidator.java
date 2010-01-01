@@ -50,7 +50,7 @@ import org.seasar.doma.internal.jdbc.sql.node.HasNextNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.SqlNode;
 
 /**
@@ -96,7 +96,7 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
                         if (parameterElement.getSimpleName().contentEquals(
                                 parameterName)) {
                             Notifier.notify(env, Kind.ERROR,
-                                    DomaMessageCode.DOMA4122, parameterElement,
+                                    Message.DOMA4122, parameterElement,
                                     path, parameterName);
                         }
                     }
@@ -116,7 +116,7 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
         TypeDeclaration typeDeclaration = validateExpressionVariable(location,
                 variableName);
         if (!isBindable(typeDeclaration)) {
-            throw new AptException(DomaMessageCode.DOMA4153, env,
+            throw new AptException(Message.DOMA4153, env,
                     methodElement, path, location.getSql(), location
                             .getLineNumber(), location.getPosition(),
                     variableName, typeDeclaration.getQualifiedName());
@@ -161,7 +161,7 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
         TypeDeclaration typeDeclaration = validateExpressionVariable(location,
                 variableName);
         if (!typeDeclaration.isTextType()) {
-            throw new AptException(DomaMessageCode.DOMA4152, env,
+            throw new AptException(Message.DOMA4152, env,
                     methodElement, path, location.getSql(), location
                             .getLineNumber(), location.getPosition(),
                     variableName, typeDeclaration.getQualifiedName());
@@ -177,7 +177,7 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
         TypeDeclaration typeDeclaration = validateExpressionVariable(location,
                 expression);
         if (!typeDeclaration.isBooleanType()) {
-            throw new AptException(DomaMessageCode.DOMA4140, env,
+            throw new AptException(Message.DOMA4140, env,
                     methodElement, path, location.getSql(), location
                             .getLineNumber(), location.getPosition(),
                     expression, typeDeclaration.getQualifiedName());
@@ -193,7 +193,7 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
         TypeDeclaration typeDeclaration = validateExpressionVariable(location,
                 expression);
         if (!typeDeclaration.isBooleanType()) {
-            throw new AptException(DomaMessageCode.DOMA4141, env,
+            throw new AptException(Message.DOMA4141, env,
                     methodElement, path, location.getSql(), location
                             .getLineNumber(), location.getPosition(),
                     expression, typeDeclaration.getQualifiedName());
@@ -211,7 +211,7 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
                 expression);
         TypeMirror typeMirror = typeDeclaration.getType();
         if (!TypeMirrorUtil.isAssignable(typeMirror, Iterable.class, env)) {
-            throw new AptException(DomaMessageCode.DOMA4149, env,
+            throw new AptException(Message.DOMA4149, env,
                     methodElement, path, location.getSql(), location
                             .getLineNumber(), location.getPosition(),
                     expression, typeDeclaration.getQualifiedName());
@@ -220,7 +220,7 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
                 env);
         List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
         if (typeArgs.isEmpty()) {
-            throw new AptException(DomaMessageCode.DOMA4150, env,
+            throw new AptException(Message.DOMA4150, env,
                     methodElement, path, location.getSql(), location
                             .getLineNumber(), location.getPosition(),
                     expression, typeDeclaration.getQualifiedName());
@@ -245,7 +245,7 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
         TypeDeclaration typeDeclaration = validateExpressionVariable(location,
                 expression);
         if (!typeDeclaration.isTextType()) {
-            throw new AptException(DomaMessageCode.DOMA4151, env,
+            throw new AptException(Message.DOMA4151, env,
                     methodElement, path, location.getSql(), location
                             .getLineNumber(), location.getPosition(),
                     expression, typeDeclaration.getQualifiedName());
@@ -275,7 +275,7 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
         } catch (AptIllegalStateException e) {
             throw e;
         } catch (AptException e) {
-            throw new AptException(DomaMessageCode.DOMA4092, env,
+            throw new AptException(Message.DOMA4092, env,
                     methodElement, path, location.getSql(), location
                             .getLineNumber(), location.getPosition(), e
                             .getMessage());
@@ -288,7 +288,7 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
             ExpressionParser parser = new ExpressionParser(expression);
             return parser.parse();
         } catch (ExpressionException e) {
-            throw new AptException(DomaMessageCode.DOMA4092, env,
+            throw new AptException(Message.DOMA4092, env,
                     methodElement, path, location.getSql(), location
                             .getLineNumber(), location.getPosition(), e
                             .getMessage());

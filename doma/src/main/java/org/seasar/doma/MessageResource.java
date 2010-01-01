@@ -24,7 +24,7 @@ package org.seasar.doma;
  * @author taedium
  * 
  */
-public interface MessageCode {
+public interface MessageResource {
 
     /**
      * 一意のコードを返します。

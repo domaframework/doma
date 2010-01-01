@@ -18,7 +18,7 @@ package org.seasar.doma.internal.jdbc.sql;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.*;
 import junit.framework.TestCase;
 
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcException;
 
 /**
@@ -438,7 +438,7 @@ public class SqlTokenizerTest extends TestCase {
             fail();
         } catch (JdbcException expected) {
             System.out.println(expected);
-            assertEquals(DomaMessageCode.DOMA2119, expected.getMessageCode());
+            assertEquals(Message.DOMA2119, expected.getMessageResource());
         }
     }
 }

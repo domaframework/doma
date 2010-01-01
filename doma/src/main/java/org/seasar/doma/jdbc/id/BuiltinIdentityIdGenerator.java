@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.seasar.doma.GenerationType;
-import org.seasar.doma.internal.message.DomaMessageCode;
+import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.Sql;
 
@@ -79,7 +79,7 @@ public class BuiltinIdentityIdGenerator extends AbstractIdGenerator implements
             final ResultSet resultSet = statement.getGeneratedKeys();
             return getGeneratedValue(config, resultSet);
         } catch (final SQLException e) {
-            throw new JdbcException(DomaMessageCode.DOMA2018, e, config
+            throw new JdbcException(Message.DOMA2018, e, config
                     .getEntityType().getName(), e);
         }
     }
