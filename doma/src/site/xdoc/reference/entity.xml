@@ -76,7 +76,7 @@ public class Employee {
 				<code>naming</code> 要素に <code>org.seasar.doma.jdbc.entity.NamingType</code>
 				の列挙型を指定できます。
 			</p>
-<source>@Entity(namingConvention = NamingType.SNAKE_UPPER_CASE)
+<source>@Entity(naming = NamingType.SNAKE_UPPER_CASE)
 public class EmployeeInfo {
     ...
 }</source>
@@ -260,7 +260,7 @@ List&lt;String&gt; nameList;</source>
 				</p>
 				<p>
 					<code>@OriginalStates</code>を注釈して示します。
-					フィールドの型は<code><![CDATA[java.io.Serializable]]></code>でなければいけません。
+					フィールドの型はフィールドが属するエンティティクラスと同じ型でなければいけません。
 					フィールドの可視性は非<code>private</code>でなければいけません。
 					<code>@OriginalStates</code>が注釈されたフィールドはアプリケーションで初期化したりアクセスしたりしてはいけません。
 				</p>
@@ -280,7 +280,7 @@ public class Employee {
    Integer age;
 
    @OriginalStates
-   Serializable originalStates;
+   Employee originalStates;
 
    ...
 }]]></source>

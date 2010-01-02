@@ -7,6 +7,7 @@
 	<body>
 		<section name="目次">
 			<ul>
+				<li><a href="#概要">概要</a></li>
 				<li><a href="#クイックスタート">クイックスタート</a>
 					<ul>
 						<li><a href="#サンプルテーブルの作成">サンプルテーブルの作成</a></li>
@@ -20,6 +21,14 @@
 					</ul>
 				</li>
 			</ul>
+		</section>
+		<section name="概要">
+			<p>
+				このページでは、Domaを使用したデータベースアクセスに最低限必要な手順のみを説明します。
+			</p>
+			<p>
+				Domaが提供する機能を知りたい場合は、<a href="tutorial/index.html">チュートリアル</a>や<a href="reference/index.html">リファレンス</a>を参照してください。
+			</p>
 		</section>
 		<section name="クイックスタート">
 			<p>

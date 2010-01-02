@@ -44,8 +44,6 @@
 			<item name="セットアップ" href="setup.html" />
 			<item name="クイックスタート" href="quick_start.html" />
 			<item name="チュートリアル" href="tutorial/index.html" collapse="true" >
-				<item name="セットアップ" href="tutorial/setup.html" />
-				<item name="プロジェクトの概要" href="tutorial/project_overview.html" />
 				<item name="検索" href="tutorial/select.html" />
 				<item name="挿入" href="tutorial/insert.html" />
 				<item name="更新" href="tutorial/update.html" />

@@ -23,7 +23,15 @@
 						<li><a href="#制限事項">制限事項</a></li>
 					</ul>
 				</li>
-				<li><a href="#アプリケーションの特徴">アプリケーションの特徴</a></li>
+				<li><a href="#Seasar2との連携">Seasar2との連携</a>
+					<ul>
+						<li><a href="#Seasar2で管理されたデータソースを利用する">Seasar2で管理されたデータソースを利用する</a></li>
+						<li><a href="#Seasar2で管理されたトランザクションマネジャーを利用する">Seasar2で管理されたトランザクションマネジャーを利用する</a></li>
+						<li><a href="#ログ管理を統合する">ログ管理を統合する</a></li>
+						<li><a href="#HOT_deploy環境下でSQLファイルの変更を即座に認識させる">HOT deploy環境下でSQLファイルの変更を即座に認識させる</a></li>
+						<li><a href="#DomaのDaoをSMART_deployする">DomaのDaoをSMART deployする</a></li>
+					</ul>
+				</li>
 			</ul>
 		</section>
 		<section name="概要">
@@ -85,8 +93,14 @@
 			</subsection>
 			<subsection name="Doma Toolsのインストール">
 				<p>
-					必須ではありませんが、<a href="../extension/doma_tools.html">Doma Tools</a>をインストールするとDaoのメソッドと対応するSQLファイルの間で相互移動が簡単に行えます。
+					<a href="extension/doma_tools.html">Doma Tools</a>をインストールします。
 				</p>
+				<p>
+					Doma Toolsは、以下の更新サイトからインストールできます。
+				</p>
+				<ul>
+					<li><a href="http://doma.sandbox.seasar.org/eclipse/updatesite/3.5">http://doma.sandbox.seasar.org/eclipse/updatesite/3.5</a></li>
+				</ul>
 			</subsection>
 			<subsection name="プロジェクトのインポート">
 				<p>
@@ -117,20 +131,154 @@
 				</p>
 			</subsection>
 		</section>
-		<section name="アプリケーションの特徴">
+		<section name="Seasar2との連携">
 			<p>
-				このアプリケーションでは、次の事柄を示します。
+				DomaとSeasar2を連携させるためのTipsを説明します。
 			</p>
-			<ul>
-				<li>Seasar2で管理されたデータソースの利用方法</li>
-				<li>Seasar2で管理されたトランザクションマネジャーとの連携方法</li>
-				<li>ログ管理の統合方法（JdbcLoggerの実装例）</li>
-				<li>HOT deploy環境下でSQLファイルの変更を即座に認識させる方法（SqlFileRepositoryの実装例）</li>
-				<li>DomaのDaoをSeasar2のSMART deployでDIする方法（注釈処理のオプションの利用例）</li>
-			</ul>
-			<subsection name="HOT deploy環境下でSQLファイルの変更を即座に認識させる方法">
+			<subsection name="Seasar2で管理されたデータソースを利用する">
+				<p>
+					<a href="reference/config.html">設定クラス</a>のgetDataSourceメソッドで、
+					S2Containerからデータソースを取り出し返します。
+					src/demo/config/AppConfig.javaを参照してください。
+				</p>
+<source><![CDATA[public class AppConfig implements Config {
+
+    ...
+
+    @Override
+    public DataSource getDataSource() {
+        return getDataSourceInternal();
+    }
+
+    protected DataSource getDataSourceInternal() {
+        S2Container container = SingletonS2ContainerFactory.getContainer();
+        return (DataSource) container.getComponent(DataSource.class);
+    }
+    
+    ...
+}]]></source>
+				<p>
+					別の方法としては、設定クラスのコンポーネントをS2Containerで管理してデータソースをDIし、それから設定クラスのコンポーネントをDaoにDIするという戦略もあります。
+					こちら方法を使用したい場合は、<a href="reference/config.html#DIコンテナを利用する場合の設定例">DIコンテナを利用する場合の設定例</a>を参照してください。
+				</p>
 			</subsection>
-			<subsection name="SMART deployでDIする方法">
+			<subsection name="Seasar2で管理されたトランザクションマネジャーを利用する">
+				<p>
+					Seasar2で管理されたデータソースを利用していれば、ほとんど意識することなくSeasar2で管理されたトランザクションマネジャーと連携できます。
+					Doma JPetStoreアプリケーションでは、Actionがトランザクション境界になっているため、Action呼び出し以降であれば
+					Daoで行われるデータアクセスはSeasar2で管理されたトランザクションマネジャーの配下で行われます。
+				</p>
+				<p>
+					通常、Domaがトランザクションマネジャーを意識する必要はないのですが、テーブルを使った採番で行ロックを極力短くするために局所的にトランザクションマネジャーと連携したいことがあります。
+					そのために用意されているのが、<code>org.seasar.doma.jdbc.RequiresNewController</code>というインタフェースです。
+					Seasar2用の実装例としては、src/demo/config/S2RequiresNewController.javaを参照してください。
+				</p>
+<source><![CDATA[public class S2RequiresNewController implements RequiresNewController {
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <R> R requiresNew(final Callback<R> callback) throws Throwable {
+        S2Container container = SingletonS2ContainerFactory.getContainer();
+        TransactionManagerAdapter txAdapter = (TransactionManagerAdapter) container
+                .getComponent(TransactionManagerAdapter.class);
+        Object result = txAdapter.requiresNew(new TransactionCallback() {
+
+            public Object execute(final TransactionManagerAdapter adapter)
+                    throws Throwable {
+                return callback.execute();
+            }
+
+        });
+        return (R) result;
+    }
+}]]></source>
+				<p>
+					<a href="reference/config.html">設定クラス</a>（src/demo/config/AppConfig.java）のgetRequiresNewControllerメソッドでは、上記のS2RequiresNewControllerのインスタンスを返すようにします。
+				</p>
+			</subsection>
+			<subsection name="ログ管理を統合する">
+				<p>
+					Seasar2では、ログ管理にCommons Loggingを使用しています。
+					DomaはデフォルトではJDKのLogging APIを使用していますが、Seasar2に合わせてCommons Loggingに出力したほうが管理しやすいでしょう。
+				</p>
+				<p>
+					Domaのログ出力の実装を切り替えるには、<code>org.seasar.doma.jdbc.JdbcLogger</code>というインタフェースの実装を用意します。
+					実装例としては、src/demo/config/CommonsJdbcLogger.javaを参照してください。
+				</p>
+<source><![CDATA[public class CommonsJdbcLogger implements JdbcLogger {
+
+    ...
+
+    @Override
+    public void logDaoMethodEntering(String callerClassName,
+            String callerMethodName, Object... parameters) {
+        Log log = LogFactory.getLog(callerClassName);
+        log.info("START " + callerClassName + "#" + callerMethodName);
+    }
+
+    @Override
+    public void logDaoMethodExiting(String callerClassName,
+            String callerMethodName, Object result) {
+        Log log = LogFactory.getLog(callerClassName);
+        log.info("END   " + callerClassName + "#" + callerMethodName);
+    }
+
+    ...
+
+    @Override
+    public void logSql(String callerClassName, String callerMethodName,
+            Sql<?> sql) {
+        Log log = LogFactory.getLog(callerClassName);
+        String message = String.format("SQL log. sqlFilePath=[%s],%n%s", sql
+                .getSqlFilePath(), sql.getFormattedSql());
+        log.info(message);
+    }
+
+}]]></source>
+				<p>
+					<a href="reference/config.html">設定クラス</a>（src/demo/config/AppConfig.java）のgetJdbcLoggerメソッドでは、上記のCommonsJdbcLoggerのインスタンスを返すようにします。
+				</p>
+			</subsection>
+			<subsection name="HOT deploy環境下でSQLファイルの変更を即座に認識させる">
+				<p>
+					Seasar2が提供するHotdeployUtilというユーティリティクラスを使用し、
+					HOT deployの場合にはSQLファイルをキャッシュしないようにします。
+					実装例としてはsrc/demo/config/SqlFileRepositoryProxy.javaを参照してください。
+				</p>
+<source><![CDATA[public class SqlFileRepositoryProxy extends AbstractSqlFileRepository {
+
+    private final SqlFileRepository greedyCacheSqlFileRepository = new GreedyCacheSqlFileRepository();
+
+    private final SqlFileRepository noCacheSqlFileRepository = new NoCacheSqlFileRepository();
+
+    @Override
+    protected SqlFile getSqlFileWithCacheControl(String path, Dialect dialect) {
+        if (HotdeployUtil.isHotdeploy()) {
+            return noCacheSqlFileRepository.getSqlFile(path, dialect);
+        }
+        return greedyCacheSqlFileRepository.getSqlFile(path, dialect);
+    }
+
+}]]></source>
+				<p>
+					<a href="reference/config.html">設定クラス</a>（src/demo/config/AppConfig.java）のgetSqlFileRepositoryメソッドでは、上記のSqlFileRepositoryProxyのインスタンスを返すようにします。
+				</p>
+			</subsection>
+			<subsection name="DomaのDaoをSMART deployする">
+				<p>
+					Domaのaptが生成するクラスは、デフォルトでは、Seasar2のSMART deployの命名規約に即していません。
+					SMART deployに対応させるには、aptで生成されるDao実装クラスの名前を調整する必要があります。
+				</p>
+				<p>
+					たとえば、Daoインタフェースが<code>demo.smart.dao.ProductDao</code>という名前の場合、
+					生成されるDao実装クラスが<code>demo.smart.dao.impl.ProductDaoImpl</code>となるようにします（前提としてdemo.smartがルートパッケージでなければいけません）。
+				</p>
+				<p>
+					このような名前の調整は<a href="reference/apt.html">注釈処理</a>のオプション指定で行います。
+					具体的には、「dao.subpackage」には「impl」を、「dao.suffix」には「Impl」を指定します。
+					Eclipseの場合、プロジェクトのプロパティの「Annotation Processing」の項目で次のように指定します。
+				</p>
+				<img src="images/eclipse_apt_options.png" width="454" height="152" alt="Eclipseでのオプション指定" />
 			</subsection>
 		</section>
 	</body>

@@ -5,27 +5,453 @@
 		<title>チュートリアル</title>
 	</properties>
 	<body>
-		<section name="チュートリアル">
+		<section name="目次">
 			<ul>
-				<li>
-					<a href="setup.html">セットアップ</a>
+				<li><a href="#概要">概要</a></li>
+				<li><a href="#セットアップ">セットアップ</a>
+					<ul>
+						<li><a href="#JDKのインストール">JDKのインストール</a></li>
+						<li><a href="#Eclipseのインストール">Eclipseのインストール</a></li>
+						<li><a href="#プロジェクトのインポート">プロジェクトのインポート</a></li>
+						<li><a href="#Doma_Toolsのインストール">Doma Toolsのインストール</a></li>
+					</ul>
 				</li>
-				<li>
-					<a href="project_overview.html">プロジェクトの概要</a>
+				<li><a href="#チュートリアルの構成">チュートリアルの構成</a>
+					<ul>
+						<li><a href="#フォルダ構成">フォルダ構成</a></li>
+						<li><a href="#データベース">データベース</a></li>
+						<li><a href="#JDBCドライバのプロバイダ構成ファイル">JDBCドライバのプロバイダ構成ファイル</a></li>
+						<li><a href="#主要なクラス">主要なクラス</a>
+							<ul>
+								<li><a href="#設定クラス">設定クラス</a></li>
+								<li><a href="#エンティティクラス">エンティティクラス</a></li>
+								<li><a href="#エンティティリスナークラス">エンティティリスナークラス</a></li>
+								<li><a href="#ドメインクラス">ドメインクラス</a></li>
+								<li><a href="#Daoインタフェース">Daoインタフェース</a></li>
+							</ul>
+						</li>
+						<li><a href="#SQLファイル">SQLファイル</a></li>
+					</ul>
 				</li>
-				<li>
-					<a href="select.html">検索</a>
-				</li>
-				<li>
-					<a href="insert.html">挿入</a>
-				</li>
-				<li>
-					<a href="update.html">更新</a>
-				</li>
-				<li>
-					<a href="delete.html">削除</a>
-				</li>
+				<li><a href="#実行方法">実行方法</a></li>
+				<li><a href="#機能の解説">機能の解説</a></li>
 			</ul>
+		</section>
+		<section name="概要">
+			<p>
+				チュートリアルは、JUnitを使用したコンソール形式のアプリケーションです。
+			</p>
+			<p>
+				このページでは、チュートリアルのセットアップ方法と構成について説明します。
+			</p>
+		</section>
+		<section name="セットアップ">
+			<p>
+				チュートリアルのプロジェクトをダウンロードし、環境を整えます。
+				JavaやEclipseのインストールがまだ完了していない場合は、先にそれらのセットアップを済ましてください。
+			</p>
+			<subsection name="JDKのインストール">
+				<p>
+					バージョン6以上のJDKをインストールします。
+					JREではなくJDKが必要であることに注意してください。
+					JDK 6 は以下のURLのサイトからダウンロードできます。
+				</p>
+				<p>
+					<a href="http://java.sun.com/javase/ja/6/download.html">http://java.sun.com/javase/ja/6/download.html</a>
+				</p>
+			</subsection>
+			<subsection name="Eclipseのインストール">
+				<p>
+					バージョン3.5以上のEclipseをインストールします。
+					<a href="http://jcp.org/en/jsr/detail?id=269">Pluggable Annotation Processing API</a>
+					をサポートしていれば、Eclipse以外のIDEであってもかまいませんが、
+					このドキュメントではEclipseを使うことを前提に説明を進めます。
+					Eclipseは以下のURLのサイトからダウンロードできます。
+				</p>
+				<p>
+					<a href="http://www.eclipse.org/downloads/">http://www.eclipse.org/downloads/</a>
+				</p>
+				<p>
+					Eclipseは、バージョン6以上のJDKに含まれるJREで起動されるようにしてください。
+					明示的にJREを指定するには、-vm オプションを使用します。
+				</p>
+				<pre>-vm %JAVA_HOME%\bin\javaw.exe</pre>
+			</subsection>
+			<subsection name="プロジェクトのインポート">
+				<p>
+					<a href="../downloads.html">ダウンロード</a>のページからdoma-tutorial-x.x.x.zipをダウンロードし、
+					Eclipseへインポートしてください。インポートの具体的な手順は次のとおりです。
+				</p>
+				<ul>
+					<li>Eclipseのメニューから「File」 - 「Import」を選択します。</li>
+					<li>「Existing Projects to Workspace」を選択し、「Next」ボタンを押します。</li>
+					<li>「Select archive file」のラジオボタンをチェックし、ダウンロードしたdoma-tutorial-x.x.x.zipを選択します。</li>
+					<li>「Projects」の項目に表示される「doma-tutorial」のチェックボックスをチェックし、「Finish」ボタンを押します。</li>
+				</ul>
+				<p>
+					インポートが完了したら、doma-tutorialプロジェクトを右クリックし、コンテキストメニューから「Run As」 - 「JUnit Test」 を実行してください。
+					すべてのテストが成功したらセットアップが正しく完了しています。
+				</p>
+			</subsection>
+			<subsection name="Doma Toolsのインストール">
+				<p>
+					<a href="../extension/doma_tools.html">Doma Tools</a>をインストールします。
+				</p>
+				<p>
+					Doma Toolsは、以下の更新サイトからインストールできます。
+				</p>
+				<ul>
+					<li><a href="http://doma.sandbox.seasar.org/eclipse/updatesite/3.5">http://doma.sandbox.seasar.org/eclipse/updatesite/3.5</a></li>
+				</ul>
+			</subsection>
+		</section>
+		<section name="チュートリアルの構成">
+			<p>
+				チュートリアルの構成を説明します。
+			</p>
+			<subsection name="フォルダ構成">
+				<p>
+					プロジェクトのフォルダ構成は以下の通りです。主要なものを中心に説明します。
+				</p>
+				<table>
+					<tr>
+						<th>フォルダ</th>
+						<th>説明</th>
+					</tr>
+					<tr>
+						<td>src</td>
+						<td>
+							設定クラス、Daoインタフェース、エンティティクラス、SQLファイル等のソースフォルダです。
+							SQLファイルは、Domaの規約に則ってMETA-INFフォルダ以下に配置されます。
+							また、JDBCドライバのプロバイダ構成ファイルがMETA-INF/servicesフォルダ以下にjava.sql.Driverという名前で配置されます。
+						</td>
+					</tr>
+					<tr>
+						<td>test</td>
+						<td>
+							Daoを利用するコードのためのソースフォルダです。
+							Daoを利用するコードはすべてJUnitのテストクラスとして記述されています。
+						</td>
+					</tr>
+					<tr>
+						<td>.apt_generated</td>
+						<td>
+							apt（Annotation Processing Tool）によって生成されたコードを格納するソースフォルダです。
+							Pckage Explorerビューでは、フィルタリングされるため表示されません（フィルタリングは解除可能です）。
+							Nivigatorビューで確認できます。
+						</td>
+					</tr>
+					<tr>
+						<td>lib</td>
+						<td>
+							このチュートリアルで利用するjarファイルを格納するフォルダです。
+							JUnit、HSQLDB、Domaのjarが格納されます。
+							これらのjarはすべてビルドパスに通っていなければいけません。
+						</td>
+					</tr>
+					<tr>
+						<td>libsrc</td>
+						<td>このチュートリアルで利用するjarファイルのソースコードを格納するフォルダです。</td>
+					</tr>
+				</table>
+			</subsection>
+			<subsection name="データベース">
+				<p>
+					このチュートリアルでは、データベースに<a href="http://hsqldb.org/">HSQLDB</a>を利用します。
+				</p>
+				<p>
+					使用するスキーマの定義は次のとおりです。
+					1つのシーケンスと1つのテーブルを使用します。
+				</p>
+	<source><![CDATA[create sequence employee_seq as integer start with 100 increment by 1;]]></source>
+<source><![CDATA[create table employee (
+  id integer not null primary key,
+  name varchar(255) not null,
+  age integer not null,
+  salary integer,
+  job_type varchar(20),
+  hiredate timestamp, 
+  department_id integer, 
+  version integer not null, 
+  insertTimestamp timestamp, 
+  updateTimestamp timestamp
+);]]></source>
+				<p>
+					HSQLDBはMemory-Onlyモードで起動し、テスト用のスキーマとデータは各テストの実行前に作成し、テスト終了後に破棄します。
+					スキーマとデータの作成と破棄は、共通のテストクラスで行っています。
+					Javaのコードは、test/tutorial/TutorialTestCase.javaになります。
+				</p>
+			</subsection>
+			<subsection name="JDBCドライバのプロバイダ構成ファイル">
+				<p>
+					HSQLDBのJDBCドライバを登録するためのプロバイダ構成ファイルがsrc/META-INF/servicesに必要です。
+					ファイルの名称はjava.sql.Driverで、中身は次のように記述されます。
+				</p>
+<source><![CDATA[org.hsqldb.jdbcDriver]]></source>
+				<p>
+					プロバイダ構成ファイルの詳細については、<a href="http://java.sun.com/javase/ja/6/docs/ja/technotes/guides/jar/jar.html#Service%20Provider">JAR ファイルの仕様</a>
+					を参照してください。
+				</p>
+			</subsection>
+			<subsection name="主要なクラス">
+				<p>
+					チュートリアル中の主要なクラスについて説明します。
+				</p>
+				<h4><a name="設定クラス">設定クラス</a></h4>
+				<p>
+					<a href="../reference/config.html">設定クラス</a>とは、Domaに関する各種設定を持つクラスです。
+					このチュートリアルで使用する設定クラスのソースコードは、src/tutorial/AppConfig.javaになります。
+				</p>
+				<p>
+					このクラスでは、HSQLDBのデータソースの作成とHSQLDBの方言の設定を行っています。
+					それ以外の設定については親クラスの<code>DomaAbstractConfig</code>のものを利用しています。
+					設定クラスはDaoインタフェースから利用されます。
+				</p>
+<source><![CDATA[public class AppConfig extends DomaAbstractConfig {
+
+    protected static final DataSource dataSource = createDataSource();
+
+    protected static final Dialect dialect = new HsqldbDialect();
+
+    @Override
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    @Override
+    public Dialect getDialect() {
+        return dialect;
+    }
+
+    protected static DataSource createDataSource() {
+        SimpleDataSource dataSource = new SimpleDataSource();
+        dataSource.setUrl("jdbc:hsqldb:mem:tutorial");
+        dataSource.setUser("sa");
+        return dataSource;
+    }
+
+}]]></source>
+				<h4><a name="エンティティクラス">エンティティクラス</a></h4>
+				<p>
+					<a href="../reference/entity.html">エンティティクラス</a>とは、テーブルやSQLの結果セットにマッピングされたクラスです。
+					エンティティクラスは、@Entityを注釈して示します。
+					このチュートリアルで使用するエンティティクラスのソースコードは、src/tutorial/entity/Employee.javaになります。
+				</p>
+				<p>
+					Employeeクラスは、EMPLOYEEテーブルに対応します。
+				</p>
+				<p>
+					識別子（テーブルの主キー）には@Idを注釈します。
+					識別子を自動生成する場合は、さらに@GeneratedValueを注釈し、自動生成の方法を示します。
+					ここではEMPLOYEE_SEQシーケンスを使って採番することを示しています。
+				</p>
+				<p>
+					プロパティ名がマッピングするカラム名と異なる場合は@Columnのname要素を使って示します。
+				</p>
+				<p>
+					更新や削除時の楽観的排他制御に使用するカラムとマッピングされたプロパティには@Versionを注釈します。
+				</p>
+				<p>
+					@Entityのlistener要素にはEmployeeListenerクラスを指定しています。
+				</p>
+<source><![CDATA[@Entity(listener = EmployeeListener.class)
+public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(sequence = "EMPLOYEE_SEQ")
+    Integer id;
+
+    String name;
+
+    int age;
+
+    Salary salary;
+
+    @Column(name = "JOB_TYPE")
+    JobType jobType;
+
+    Date hiredate;
+
+    @Column(name = "DEPARTMENT_ID")
+    Integer departmentId;
+
+    @Version
+    @Column(name = "VERSION")
+    Integer version;
+
+    Timestamp insertTimestamp;
+
+    Timestamp updateTimestamp;
+
+    @OriginalStates
+    Employee originalStates;
+
+    ...
+}
+]]></source>
+				<h4><a name="エンティティリスナークラス">エンティティリスナークラス</a></h4>
+				<p>
+					エンティティリスナークラスのインスタンスは、エンティティがデータベースに挿入、更新、削除されるまえに呼び出されます。
+					このチュートリアルで使用するエンティティリスナークラスはEmployeeListenerです。
+					ソースコードは、src/tutorial/entity/EmployeeListener.javaになります。
+				</p>
+<source><![CDATA[public class EmployeeListener implements EntityListener<Employee> {
+
+    @Override
+    public void preDelete(Employee employee) {
+    }
+
+    @Override
+    public void preInsert(Employee employee) {
+        employee.insertTimestamp = new Timestamp(System.currentTimeMillis());
+    }
+
+    @Override
+    public void preUpdate(Employee employee) {
+        employee.updateTimestamp = new Timestamp(System.currentTimeMillis());
+    }
+
+}]]></source>
+				<h4><a name="ドメインクラス">ドメインクラス</a></h4>
+				<p>
+					<a href="../reference/domain.html">ドメインクラス</a>は、データベースのカラムにマッピング可能なアプリケーション固有の値型です。
+					ドメインクラスは@Domainを注釈して示します。
+					このチュートリアルで使用するドメインクラスは、給料を表すSalaryクラスです。
+					ソースコードは、src/tutorial/domain/Salary.javaになります。
+				</p>
+<source><![CDATA[@Domain(valueType = Integer.class)
+public class Salary {
+
+    private final Integer value;
+
+    public Salary(Integer value) {
+        this.value = value;
+    }
+
+    public Integer getValue() {
+        return value;
+    }
+
+    public Salary add(Salary salary) {
+        if (salary == null) {
+            throw new NullPointerException("The salary parameter is null.");
+        }
+        if (this.value == null || salary.value == null) {
+            return new Salary(null);
+        }
+        return new Salary(this.value + salary.value);
+    }
+
+    ...
+
+}]]></source>
+				<h4><a name="Daoインタフェース">Daoインタフェース</a></h4>
+				<p>
+					<a href="../reference/dao.html">Daoインタフェース</a>とは、データベースアクセスの境界となるインタフェースです。
+					Daoインタフェースは@Daoを注釈して示します。
+					@Daoのconfig要素には設定クラスであるAppConfigクラスを指定します。
+					このチュートリアルで使用するDaoインタフェースのソースコードは、src/tutorial/dao/EmployeeDao.javaになります。
+				</p>
+				<p>
+					Daoインタフェースの実装クラスはDomaにより自動生成されます。
+				</p>
+				<p>
+					すべてのメソッドは、@Selectや@Updateなど問い合わせの種別を示すアノテーションが注釈されなければいけません。
+				</p>
+<source><![CDATA[@Dao(config = AppConfig.class)
+public interface EmployeeDao {
+
+    @Select
+    Employee selectById(Integer id);
+
+    @Select
+    List<Employee> selectByAgeRange(Integer min, Integer max);
+
+    @Select
+    List<Employee> selectByAges(List<Integer> ages);
+
+    @Select
+    List<Employee> selectByNames(List<String> names);
+
+    @Select
+    List<Employee> selectByNameWithPrefixMatching(String prefix);
+
+    @Select
+    List<Employee> selectByNameWithSuffixMatching(String suffix);
+
+    @Select
+    List<Employee> selectByNameWithInsideMatching(String inside);
+
+    @Select
+    List<Employee> selectByHiredateRange(Timestamp from, Timestamp to);
+
+    @Select
+    List<Employee> selectBySalary(Salary salary);
+
+    @Select
+    Salary selectSummedSalary();
+
+    @Select
+    List<Employee> selectByExample(Employee e);
+
+    @Select
+    List<Employee> selectAll();
+
+    @Select
+    List<Employee> selectAll(SelectOptions options);
+
+    @Select(iterate = true)
+    <R> R selectByAge(int age, IterationCallback<R, Employee> callback);
+
+    @Delegate(to = EmployeeDaoDelegate.class)
+    int count();
+
+    @Insert
+    int insert(Employee employee);
+
+    @Update
+    int update(Employee employee);
+
+    @Delete
+    int delete(Employee employee);
+
+    @BatchInsert
+    int[] batchInsert(List<Employee> employees);
+
+    @BatchUpdate
+    int[] batchUpdate(List<Employee> employees);
+
+    @BatchDelete
+    int[] batchDelete(List<Employee> employees);
+
+}]]></source>
+			</subsection>
+			<subsection name="SQLファイル">
+				<p>
+					<a href="../reference/sqlfile.html">SQLファイル</a>は、src/META-INF/tutorial/EmployeeDaoフォルダ以下に配置されます。
+					フォルダの名前はDaoインタフェースと対応づけられます。
+				</p>
+				<p>
+					SQLファイルは、名前から拡張子を除いたものがDaoインタフェースのメソッドに一致します。
+					たとえば、selectById.sqlはDaoインタフェースのselectByIdメソッドに対応します。
+					selectById.sqlの中身は次のようなテキストです。
+				</p> 
+<source><![CDATA[select * from employee where id = /* id */0]]></source>
+			</subsection>
+			<subsection name="実行方法">
+				<p>
+					Eclipseの場合、test/tutorial以下のJavaファイルを開き、メニューから「Run」 - 「Run as」 - 「JUnit Test」を選択します。
+				</p>
+			</subsection>
+			<subsection name="機能の解説">
+				<ul>
+					<li><a href="select.html">検索</a></li>
+					<li><a href="insert.html">挿入</a></li>
+					<li><a href="update.html">更新</a></li>
+					<li><a href="delete.html">削除</a></li>
+				</ul>
+			</subsection>
 		</section>
 	</body>
 </document>
