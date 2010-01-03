@@ -47,6 +47,12 @@ public abstract class AbstractWrapper<V> implements Wrapper<V> {
         doSet(value);
     }
 
+    /**
+     * サブクラスで値を設定します。
+     * 
+     * @param value
+     *            値
+     */
     protected void doSet(V value) {
         this.value = value;
     }
@@ -56,6 +62,11 @@ public abstract class AbstractWrapper<V> implements Wrapper<V> {
         return doGet();
     }
 
+    /**
+     * サブクラスで値を返します。
+     * 
+     * @return 値
+     */
     protected V doGet() {
         return value;
     }
@@ -65,6 +76,11 @@ public abstract class AbstractWrapper<V> implements Wrapper<V> {
         return doGetCopy();
     }
 
+    /**
+     * サブクラスで値のコピーを返します。
+     * 
+     * @return 値のコピーを返します。
+     */
     protected V doGetCopy() {
         return doGet();
     }
@@ -74,6 +90,13 @@ public abstract class AbstractWrapper<V> implements Wrapper<V> {
         return doHasEqualValue(otherValue);
     }
 
+    /**
+     * 等しい値を持っているかどうかサブクラスで判定します。
+     * 
+     * @param otherValue
+     *            値
+     * @return 等しい値を持っている場合 {@code true}
+     */
     protected boolean doHasEqualValue(Object otherValue) {
         V value = doGet();
         if (value == null) {
