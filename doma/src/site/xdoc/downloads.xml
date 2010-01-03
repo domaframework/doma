@@ -18,13 +18,15 @@
 					<th>Doma本体</th>
 					<th>チュートリアル</th>
 					<th>Doma JPetStore</th>
+					<th>Doma-Gen</th>
 					<th>Doma Tools (更新サイト)</th>
 				</tr>
 				<tr>
-					<td><a href="download/2009-11-21/doma-0.9.10.zip">doma-0.9.10</a></td>
-					<td><a href="download/2009-11-21/doma-tutorial-0.9.10.zip">doma-tutorial-0.9.10</a></td>
-					<td><a href="download/2009-11-21/doma-jpetstore-0.9.10.zip">doma-jpetstore-0.9.10</a></td>
-					<td><a href="http://doma.sandbox.seasar.org/eclipse/updatesite/3.5">Doma Tools 0.9.10</a></td>
+					<td><a href="download/2010-01-03/doma-0.9.11.zip">doma-0.9.11</a></td>
+					<td><a href="download/2010-01-03/doma-tutorial-0.9.11.zip">doma-tutorial-0.9.11</a></td>
+					<td><a href="download/2010-01-03/doma-jpetstore-0.9.11.zip">doma-jpetstore-0.9.11</a></td>
+					<td><a href="download/2010-01-03/doma-gen-0.9.11.zip">doma-gen-0.9.11</a></td>
+					<td><a href="http://doma.sandbox.seasar.org/eclipse/updatesite/3.5">Doma Tools 0.9.11</a></td>
 				</tr>
 			</table>
 			<p>
@@ -51,6 +53,14 @@
 				</p>
 				<p>
 					<a href="demoapps/jpetstore.html">Doma JPetStoreのドキュメント</a>を参照してください。
+				</p>
+			</subsection>
+			<subsection name="Doma-Gen">
+				<p>
+					Doma用のエンティティクラスやDaoインタフェースのJavaコードを生成するツールです。
+				</p>
+				<p>
+					<a href="extension/doma_gen.html">Doma-Gen</a>のドキュメントを参照してください。
 				</p>
 			</subsection>
 			<subsection name="Doma Tools">

@@ -13,6 +13,20 @@
 			<table>
 				<tr>
 					<th>Doma本体</th>
+					<th>チュートリアル</th>
+					<th>Doma JPetStore</th>
+					<th>Doma Tools (更新サイト)</th>
+				</tr>
+				<tr>
+					<td><a href="download/2009-11-21/doma-0.9.10.zip">doma-0.9.10</a></td>
+					<td><a href="download/2009-11-21/doma-tutorial-0.9.10.zip">doma-tutorial-0.9.10</a></td>
+					<td><a href="download/2009-11-21/doma-jpetstore-0.9.10.zip">doma-jpetstore-0.9.10</a></td>
+					<td><a href="http://doma.sandbox.seasar.org/eclipse/updatesite/3.5">Doma Tools 0.9.10</a></td>
+				</tr>
+			</table>
+			<table>
+				<tr>
+					<th>Doma本体</th>
 					<th>JUnitを利用したチュートリアル</th>
 					<th>SAStrutsを利用したデモアプリ</th>
 					<th>GWTを利用したデモアプリ</th>
