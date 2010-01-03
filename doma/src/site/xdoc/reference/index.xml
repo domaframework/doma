@@ -6,6 +6,9 @@
 	</properties>
 	<body>
 		<section name="リファレンス">
+			<p>
+				Domaの機能を解説します。
+			</p>
 			<ul>
 				<li>
 					<a href="basic.html">基本型</a>

@@ -72,7 +72,8 @@
 				<item name="注釈処理" href="reference/apt.html" />
 			</item>
 			<item name="開発支援ツール" href="extension/index.html" collapse="true" >
-				<item name="Eclipseプラグイン - Doma Tools" href="extension/doma_tools.html" />
+				<item name="Doma Tools" href="extension/doma_tools.html" />
+				<item name="Doma-Gen" href="extension/doma_gen.html" />
 			</item>
 			<item name="Javadocs" href="apidocs/index.html" />
 		</menu>

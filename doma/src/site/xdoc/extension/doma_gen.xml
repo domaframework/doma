@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>Doma-Gen</title>
+	</properties>
+	<body>
+		<section name="目次">
+			<ul>
+				<li><a href="#概要">概要</a></li>
+				<li><a href="#セットアップ">セットアップ</a></li>
+				<li><a href="#Genタスク">Genタスク</a>
+					<ul>
+						<li><a href="#Genタスクのパラメータ">Genタスクのパラメータ</a></li>
+						<li><a href="#Genタスクの使用例">Genタスクの使用例</a>
+							<ul>
+								<li><a href="#エンティティクラスに共通のスーパークラスを指定する">エンティティクラスに共通のスーパークラスを指定する</a></li>
+								<li><a href="#エンティティプロパティのクラス名を指定する">エンティティプロパティのクラス名を指定する</a></li>
+								<li><a href="#独自のテンプレートファイルを使用する">エンティティクラスに共通のスーパークラスを指定する</a></li>
+								<li><a href="#生成するJavaファイルに共通のヘッダーとしてコピーライトを含める">エンティティクラスに共通のスーパークラスを指定する</a></li>
+								<li><a href="#生成するJavaファイルにauthorを指定する">エンティティクラスに共通のスーパークラスを指定する</a></li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</section>
+		<section name="概要">
+			<p>
+				Doma-Genは、<a href="http://ant.apache.org/">Ant</a>と<a href="http://freemarker.org/">FreeMarker</a>を使用したコード生成ツールです。
+			</p>
+			<p>
+				Doma-Genを利用すると、次のことが可能です。
+			</p>
+			<ul>
+				<li>エンティティクラスのJavaコード生成</li>
+				<li>DaoインタフェースのJavaコード生成</li>
+			</ul>
+			<p>
+				Javaコードは、データベースの定義情報を基に作成されます。
+			</p>
+		</section>
+		<section name="セットアップ">
+			<p>
+				Doma-Gen自身のjarファイルと依存ライブラリは、<a href="../downloads.html">ダウンロードページ</a>からダウンロードできます。
+			</p>
+		</section>
+		<section name="Genタスク">
+			<p>
+				Genタスクは、データベースに接続してメタデータを読み取り、その情報を基にエンティティクラスとDaoインタフェースのソースコードを生成します。
+			</p>
+			<p>
+				Genタスクを利用するには、次のようにtaskdefタグを使用します。
+				taskdefのclasspathref属性には、Doma-GenとFreeMarkerの2つのjarファイルが参照されるように設定してください（Doma本体のjarファイルは不要です）。
+			</p>
+<source><![CDATA[<path id="classpath">
+    <fileset dir="lib"/>
+</path>
+
+<taskdef name="gen" classname="org.seasar.doma.extension.gen.task.Gen" classpathref="classpath" />
+
+<target name="xxx">
+    <gen
+        javaDestDir="src"
+        dialectName="hsqldb"
+        driverClassName="org.hsqldb.jdbcDriver"
+        url="jdbc:hsqldb:file:demo"
+        user="sa"
+        password=""
+        configClassName="demo.AppConfig"
+    />
+</target>]]></source>
+			<subsection name="Genタスクのパラメータ">
+				<p>
+					Genタスクのパラメータ定義は次の通りです。
+				</p>
+				<table border="1" cellpadding="2" cellspacing="0">
+					<tr><th>属性</th><th>説明</th><th>デフォルト値</th><th>必須</th></tr>
+					<tr><td>dialectName</td><td>接続するRDBMSの方言名。次のうちのどれかを指定できます。"h2"、"hsqldb"、"mysql"、"postgres"、"oracle"</td><td>-</td><td>dialectClassNameが指定されていない場合<b>YES</b></td></tr>
+					<tr><td>dialectClassName</td><td>接続するRDBMSの方言クラス名。<code>org.seasar.doma.extension.gen.dialect.Dialect</code>の実装クラスでなければいけません。dialectNameの指定により利用できる組み込みの方言クラス以外を利用する場合に指定します。</td><td>-</td><td>dialectNameが指定されていない場合<b>YES</b></td></tr>
+					<tr><td>driverClassName</td><td>JDBCドライバクラス名。<code>java.sql.Driver</code>の実装クラスでなければいけません。</td><td>-</td><td><b><b>YES</b></b></td></tr>
+					<tr><td>user</td><td>JDBC接続ユーザー。</td><td>-</td><td><b>YES</b></td></tr>
+					<tr><td>password</td><td>JDBC接続パスワード。</td><td>-</td><td><b>YES</b></td></tr>
+					<tr><td>url</td><td>JDBC接続URL。</td><td>-</td><td><b>YES</b></td></tr>
+					<tr><td>schemaName</td><td>対象とするスキーマ名です。</td><td>-</td><td>NO</td></tr>
+					<tr><td>tableNamePattern</td><td>対象とするテーブル名の正規表現です。大文字小文字の違いは考慮されません。</td><td>".*"</td><td>NO</td></tr>
+					<tr><td>ignoreTableNamePattern</td><td>対象としないテーブル名の正規表現です。大文字小文字の違いは考慮されません。</td><td>".*\$.*"</td><td>NO</td></tr>
+					<tr><td>versionColumnNamePattern</td><td>エンティティのプロパティに@Versionを付与するカラム名の正規表現です。大文字小文字の違いは考慮されません。</td><td>"VERSION([_]?NO)?"</td><td>NO</td></tr>
+					<tr><td>genEntity</td><td>"true"の場合、エンティティクラスのJavaコードを生成します。</td><td>"true"</td><td>NO</td></tr>
+					<tr><td>entityPackageName</td><td>エンティティクラスのパッケージ名です。</td><td>"example.entity"</td><td>NO</td></tr>
+					<tr><td>entitySuperclassName</td><td>このタスクで対象とするエンティティクラスのスーパークラスの完全修飾名です。</td><td>-</td><td>NO</td></tr>
+					<tr><td>entityListenerClassName</td><td>このタスクで対象とするエンティティクラスに共通のエンティティリスナーの完全修飾名です。@Entityのlistener要素で使用されます。</td><td>-</td><td>NO</td></tr>
+					<tr><td>namingType</td><td>ネーミング規約です。"none"、 "snake_upper_case"、 "snake_lower_case"、"upper_case"、"lower_case"のいずれかの値を指定できます。@Entityのnaming要素に使用されます。</td><td>-</td><td>NO</td></tr>
+					<tr><td>entityPropertyClassNamesFile</td><td>エンティティプロパティのクラス名を解決するためのファイルです。形式は、キーをエンティティプロパティ名の正規表現、値をクラスの完全修飾名とするプロパティファイル形式です。</td><td>-</td><td>NO</td></tr>
+					<tr><td>generationType</td><td>識別子を生成する方法です。"identity"、 "sequence"、 "table"のいずれかの値を指定できます。使用するRDBMSがサポートしていない場合、"identity"や"sequence"を指定するとエラーが発生します。この指定は、エンティティに対応するテーブルが単一の主キーを持つ場合にのみ有効です。複数の主キーがある場合、この指定は無視されます。@GeneratedValueのstrategy要素に使用されます。</td><td>-</td><td>NO</td></tr>
+					<tr><td>initialValue</td><td>識別子の初期値です。generationTypeに"sequence"もしくは"table"を指定した場合にのみ有効です。@SequenceGeneratorや@TableGeneratorのinitialValue要素に指定されます。</td><td>-</td><td>NO</td></tr>
+					<tr><td>allocationSize</td><td>識別子の割り当てサイズです。generationTypeに"sequence"もしくは"table"を指定した場合にのみ有効です。@SequenceGeneratorや@TableGeneratorのallocationSize要素に指定されます。</td><td>-</td><td>NO</td></tr>
+					<tr><td>useAccessor</td><td>"true"の場合、エンティティクラスにアクセサメソッドを付与します。</td><td>"true"</td><td>NO</td></tr>
+					<tr><td>showDbComment</td><td>"true"の場合、データベースに対するコメントをエンティティのJavadocコメントに適用します。テーブルへのコメントはクラスのJavadocコメントに反映され、カラムへのコメントはプロパティのJavadocコメントに反映されます。</td><td>"true"</td><td>NO</td></tr>
+					<tr><td>showCatalogName</td><td>"true"の場合、@Tableのcatalog属性にカタログ名を明記します。</td><td>"false"</td><td>NO</td></tr>
+					<tr><td>showSchemaName</td><td>"true"の場合、@Tableのschema属性にスキーマ名を明記します。</td><td>"false"</td><td>NO</td></tr>
+					<tr><td>showTableName</td><td>"true"の場合、@Tableのname属性にテーブル名を明記します。</td><td>"true"</td><td>NO</td></tr>
+					<tr><td>showColumnName</td><td>"true"の場合、@Columnのname属性にカラム名を明記します。</td><td>"true"</td><td>NO</td></tr>
+					<tr><td>genDao</td><td>"true"の場合、DaoインタフェースのJavaコードを生成します。</td><td>"true"</td><td>NO</td></tr>
+					<tr><td>daoPackageName</td><td>Daoインタフェースのパッケージ名です。</td><td>"example.dao"</td><td>NO</td></tr>
+					<tr><td>daoSuffix</td><td>Daoインタフェース名のサフィックスです。Daoインタフェースの名前はエンティティクラス名に、この値をサフィックスしたものになります。</td><td>"Dao"</td><td>NO</td></tr>
+					<tr><td>configClassName</td><td>設定クラスの完全修飾名です。@Daoのconfig要素に使用されます。</td><td>-</td><td><b>YES</b></td></tr>
+					<tr><td>templateFileEncoding</td><td>テンプレートファイルのエンコーディングです。</td><td>"UTF-8"</td><td>NO</td></tr>
+					<tr><td>templateFilePrimaryDir</td><td>テンプレートファイルを検索する際の優先ディレクトリです。</td><td>-</td><td>NO</td></tr>
+					<tr><td>javaFileDestDir</td><td>Javaファイルの出力先ディレクトリです。</td><td>-</td><td><b>YES</b></td></tr>
+					<tr><td>javaFileEncoding</td><td>Javaファイルのエンコーディングです。</td><td>"UTF-8"</td><td>NO</td></tr>
+					<tr><td>overwrite</td><td>"true"の場合、Javaファイルを上書きします。</td><td>"false"</td><td>NO</td></tr>
+					<tr><td>globalFactoryClassName</td><td>このタスクを実行する際のクラスパスの参照です。</td><td>"org.seasar.doma.extension.gen.GlobalFactory"</td><td>NO</td></tr>
+				</table>
+			</subsection>
+			<subsection name="Genタスクの使用例">
+				<h4><a name="エンティティクラスに共通のスーパークラスを指定する"></a>エンティティクラスに共通のスーパークラスを指定する</h4>
+				<p>
+					entitySuperclassName属性に、エンティティクラスに共通のスーパークラスの名前を指定できます。
+					たとえば、エンティティに対応するすべてのテーブルにCREATE_TIMESTAMPとUPDATE_TIMESTAMPというカラムが定義されている場合、
+					次のようなクラスを作成し、すべてのエンティティのスーパークラスに指定できます。
+				</p>
+<source><![CDATA[@Entity
+public class Common {
+    Date createTimestamp;
+    Date updateTimestamp;
+    ...
+}]]></source>
+				<p>
+					スーパークラス名をentitySuperclassName属性に指定します。
+				</p>
+<source><![CDATA[<gen
+    entitySuperclassName="example.Common"
+    ...
+/>]]></source>
+				<p>
+					タスクを実行するとexample.Commonを継承した次のようなクラスが生成されます。
+				</p>
+<source><![CDATA[@Entity
+public class Employee extends Common {
+    @Id
+    Integer id;
+    String name;
+    ...
+}]]></source>
+				<h4><a name="エンティティプロパティのクラス名を指定する"></a>エンティティプロパティのクラス名を指定する</h4>
+				<p>
+					<a href="../reference/domain.html">ドメインクラス</a>を使用する場合など、特定のエンティティプロパティに対しクラス名を指定したいことがあります。
+				</p>
+				<p>
+					クラス名の指定は、プロパティファイルで行います。
+					キーは、エンティティプロパティの完全修飾名を正規表現で表したもの、値はマッピングしたいクラスの完全修飾名です。
+					エンティティプロパティの完全修飾名とは、「エンティティクラスの完全修飾名」と「エンティティプロパティ名」を「@」で連結したものです。
+					たとえば、Employeeエンティティクラスのエンティティプロパティ名が「Name」で終わるものを「example.domain.Name」クラスにマッピングさせたい場合は次のように記述します。
+				</p>
+<source><![CDATA[example.entity.Employee@.*Name$=example.domain.Name]]></source>
+				<p>
+					生成されるエンティティクラスでは、次のようにemployeeNameプロパティの型が「example.domain.Name」になります。
+				</p>
+<source><![CDATA[@Entity
+public class Employee extends Common {
+    @Id
+    Integer id;
+    Name employeeName;
+    ...
+}]]></source>
+				<p>
+					すべてのエンティティクラスのエンティティプロパティ名が「Name」で終わるものを「example.domain.Name」クラスにマッピングさせたい場合は次のように記述できます。
+				</p>
+<source><![CDATA[.*Name$=example.domain.Name]]></source>
+				<p>
+					プロパティファイルは、エンティティプロパティごとに上から順番に評価され、正規表現がマッチした時点で評価を終えます。
+					どの行にもマッチしない場合、クラス名はデフォルトのクラス名になります。
+				</p>
+				<p>
+					プロパティファイルはentityPropertyClassNamesFile属性に指定できます。（ここでは辞書ファイルの名前をentityPropertyClassNames.propertiesとします。）
+				</p>
+<source><![CDATA[<gen
+    entityPropertyClassNamesFile="entityPropertyClassNames.properties"
+    ...
+/>]]></source>
+				<h4><a name="独自のテンプレートファイルを使用する"></a>独自のテンプレートファイルを使用する</h4>
+				<p>
+					Doma-Genのテンプレートは、配布ファイルのresources/tempalteディレクトリ以下にあります。
+					エンティティクラスのテンプレートはentity.ftl、Daoインタフェースのテンプレートはdao.ftlになります。
+					これをコピーして、修正を加えるのが良いでしょう。
+					テンプレートの記述方法については<a href="http://freemarker.org/">FreeMarker</a>のドキュメントを参照してください。
+				</p>
+				<p>
+					修正したentity.ftlやdao.ftlは、ファイル名を変更せずにtemplateFilePrimaryDir属性に指定するディレクトリに配置します。
+					mytempleteディレクトリに配置する場合、templateFilePrimaryDir属性にmytempletesを指定します。
+				</p>
+<source><![CDATA[<gen
+    templateFilePrimaryDir="mytempletes"
+    ...
+/>]]></source>
+				<h4><a name="生成するJavaファイルに共通のヘッダーとしてコピーライトを含める"></a>生成するJavaファイルに共通のヘッダーとしてコピーライトを含める</h4>
+				<p>
+					lib.ftlというファイルを作成し、これをtemplateFilePrimaryDir属性に指定するディレクトリに配置します。
+					lib.ftlには次のようにcopyrightの定義をします。
+<source><![CDATA[<#assign copyright>
+/*
+ * Copyright 2008-2009 ...
+ * All rights reserved.
+ */
+</#assign>]]></source>
+					mytempletes/lib.ftlと配置する場合、タスクの定義は次のようになります。
+				</p>
+<source><![CDATA[<gen
+    templateFilePrimaryDir="mytempletes"
+    ...
+/>]]></source>
+				<h4><a name="生成するJavaファイルにauthorを指定する"></a>生成するJavaファイルにauthorを指定する</h4>
+				<p>
+					lib.ftlというファイルを作成し、これをtemplateFilePrimaryDir属性に指定するディレクトリに配置します。
+					lib.ftlには次のようにauthorの定義をします。
+<source><![CDATA[<#assign author="Nakamura">]]></source>
+					mytempletes/lib.ftlと配置する場合、タスクの定義は次のようになります。
+				</p>
+<source><![CDATA[<gen
+    templateFilePrimaryDir="mytempletes"
+    ...
+/>]]></source>
+			</subsection>
+		</section>
+	</body>
+</document>
