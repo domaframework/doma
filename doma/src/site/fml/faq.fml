@@ -127,10 +127,10 @@
 			<question>開発を支援するツールはありますか？</question>
 			<answer>
 				<p>
-					はい。Eclipseプラグインを用意しています。
+					はい。Eclipseプラグインとコード生成ツールを用意しています。
 				</p>
 				<p>
-					詳しくは<a href="extension/doma_tools.html">Doma Tools</a>を参照してください。
+					詳しくは<a href="extension/index.html">開発支援ツール</a>を参照してください。
 				</p>
 			</answer>
 		</faq>
