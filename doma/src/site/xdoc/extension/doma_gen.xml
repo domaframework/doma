@@ -58,7 +58,6 @@
 			</p>
 			<p>
 				Genタスクを利用するには、次のようにtaskdefタグを使用します。
-				taskdefのclasspathref属性には、Doma-Gen、FreeMarker、JDBCドライバのjarファイルが参照されるように設定してください（Doma本体のjarファイルは不要です）。
 			</p>
 <source><![CDATA[<path id="classpath">
     <fileset dir="lib"/>
