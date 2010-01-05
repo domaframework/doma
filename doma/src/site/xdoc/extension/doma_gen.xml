@@ -160,7 +160,8 @@ public class Employee extends Common {
 					クラス名の指定は、プロパティファイルで行います。
 					キーは、エンティティプロパティの完全修飾名を正規表現で表したもの、値はマッピングしたいクラスの完全修飾名です。
 					エンティティプロパティの完全修飾名とは、「エンティティクラスの完全修飾名」と「エンティティプロパティ名」を「@」で連結したものです。
-					たとえば、Employeeエンティティクラスのエンティティプロパティ名が「Name」で終わるものを「example.domain.Name」クラスにマッピングさせたい場合は次のように記述します。
+					たとえば、EmployeeエンティティクラスのエンティティプロパティemployeeNameの完全修飾名は、「example.entity.Employee@employeeName」です。
+					Employeeエンティティクラスの中でエンティティプロパティ名が「Name」で終わるものを「example.domain.Name」クラスにマッピングさせるには、次のように記述します。
 				</p>
 <source><![CDATA[example.entity.Employee@.*Name$=example.domain.Name]]></source>
 				<p>
@@ -174,7 +175,7 @@ public class Employee extends Common {
     ...
 }]]></source>
 				<p>
-					すべてのエンティティクラスのエンティティプロパティ名が「Name」で終わるものを「example.domain.Name」クラスにマッピングさせたい場合は次のように記述できます。
+					Employeeエンティティクラスに限らず、すべてのエンティティクラスを対象にエンティティプロパティ名が「Name」で終わるものを「example.domain.Name」クラスにマッピングさせたい場合は次のように記述します。
 				</p>
 <source><![CDATA[.*Name$=example.domain.Name]]></source>
 				<p>
@@ -197,10 +198,10 @@ public class Employee extends Common {
 				</p>
 				<p>
 					修正したentity.ftlやdao.ftlは、ファイル名を変更せずにtemplateFilePrimaryDir属性に指定するディレクトリに配置します。
-					mytempleteディレクトリに配置する場合、templateFilePrimaryDir属性にmytempletesを指定します。
+					mytempleteディレクトリに配置する場合、templateFilePrimaryDir属性にmytempleteを指定します。
 				</p>
 <source><![CDATA[<gen
-    templateFilePrimaryDir="mytempletes"
+    templateFilePrimaryDir="mytemplete"
     ...
 />]]></source>
 				<h4><a name="生成するJavaファイルに共通のヘッダーとしてコピーライトを含める"></a>生成するJavaファイルに共通のヘッダーとしてコピーライトを含める</h4>
@@ -213,10 +214,10 @@ public class Employee extends Common {
  * All rights reserved.
  */
 </#assign>]]></source>
-					mytempletes/lib.ftlと配置する場合、タスクの定義は次のようになります。
+					mytemplete/lib.ftlと配置する場合、タスクの定義は次のようになります。
 				</p>
 <source><![CDATA[<gen
-    templateFilePrimaryDir="mytempletes"
+    templateFilePrimaryDir="mytemplete"
     ...
 />]]></source>
 				<h4><a name="生成するJavaファイルにauthorを指定する"></a>生成するJavaファイルにauthorを指定する</h4>
@@ -224,10 +225,10 @@ public class Employee extends Common {
 					lib.ftlというファイルを作成し、これをtemplateFilePrimaryDir属性に指定するディレクトリに配置します。
 					lib.ftlには次のようにauthorの定義をします。
 <source><![CDATA[<#assign author="Nakamura">]]></source>
-					mytempletes/lib.ftlと配置する場合、タスクの定義は次のようになります。
+					mytemplete/lib.ftlと配置する場合、タスクの定義は次のようになります。
 				</p>
 <source><![CDATA[<gen
-    templateFilePrimaryDir="mytempletes"
+    templateFilePrimaryDir="mytemplete"
     ...
 />]]></source>
 			</subsection>

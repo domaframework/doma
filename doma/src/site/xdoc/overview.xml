@@ -177,7 +177,7 @@ public interface EmployeeDao {
 				</p>
 <source><![CDATA[@Dao(config = AppConfig.class)
 public interface EmployeeDao {
-    @Delegate(to = EmployeeDaoDelegate)
+    @Delegate(to = EmployeeDaoDelegate.class)
     List<Employee> selectByName(String name);
 }]]></source>
 <source><![CDATA[public class EmployeeDaoDelegate {

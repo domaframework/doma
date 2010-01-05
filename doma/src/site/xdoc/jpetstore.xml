@@ -125,9 +125,9 @@
 			</p>
 			<subsection name="制限事項">
 				<p>
-					Internet Exploreで表示すると画面レイアウトが崩れます。
-					オリジナルのJPetStore 5.0 Example ApplicationのCSSがInternet Exploreに対応できていないようです。
-					Internet Exploreでもレイアウトが崩れないように直してくれる方がいたら歓迎いたします。
+					Internet Explorerで表示すると画面レイアウトが崩れます。
+					オリジナルのJPetStore 5.0 Example ApplicationのCSSがInternet Explorerに対応できていないようです。
+					Internet Explorerでもレイアウトが崩れないように直してくれる方がいたら歓迎いたします。
 				</p>
 			</subsection>
 		</section>
