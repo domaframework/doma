@@ -6,6 +6,7 @@ public final class _ChildEntity implements org.seasar.doma.internal.jdbc.entity.
 
     private static final _ChildEntity __singleton = new _ChildEntity();
 
+    /** the aaa */
     public final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, java.lang.Integer> aaa = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, java.lang.Integer>("aaa", "aaa", true, true) {
         @Override
         public org.seasar.doma.wrapper.IntegerWrapper getWrapper(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
@@ -38,6 +39,7 @@ public final class _ChildEntity implements org.seasar.doma.internal.jdbc.entity.
         }
     };
 
+    /** the bbb */
     public final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, java.math.BigDecimal> bbb = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, java.math.BigDecimal>("bbb", "bbb", true, true) {
         @Override
         public org.seasar.doma.wrapper.BigDecimalWrapper getWrapper(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
@@ -70,6 +72,7 @@ public final class _ChildEntity implements org.seasar.doma.internal.jdbc.entity.
         }
     };
 
+    /** the ccc */
     public final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, java.lang.String> ccc = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, java.lang.String>("ccc", "ccc", true, true) {
         @Override
         public org.seasar.doma.wrapper.StringWrapper getWrapper(org.seasar.doma.internal.apt.entity.ChildEntity entity) {

@@ -6,6 +6,7 @@ public final class _PrimitivePropertyEntity implements org.seasar.doma.internal.
 
     private static final _PrimitivePropertyEntity __singleton = new _PrimitivePropertyEntity();
 
+    /** the id */
     public final org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Integer> id = new org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Integer>("id", "id") {
         @Override
         public org.seasar.doma.wrapper.IntegerWrapper getWrapper(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity) {
@@ -38,6 +39,7 @@ public final class _PrimitivePropertyEntity implements org.seasar.doma.internal.
         }
     };
 
+    /** the bool */
     public final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Boolean> bool = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Boolean>("bool", "bool", true, true) {
         @Override
         public org.seasar.doma.wrapper.BooleanWrapper getWrapper(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity) {
@@ -70,6 +72,7 @@ public final class _PrimitivePropertyEntity implements org.seasar.doma.internal.
         }
     };
 
+    /** the version */
     public final org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Long> version = new org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Long>("version", "version") {
         @Override
         public org.seasar.doma.wrapper.LongWrapper getWrapper(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity) {

@@ -6,6 +6,7 @@ public final class _EnumPropertyEntity implements org.seasar.doma.internal.jdbc.
 
     private static final _EnumPropertyEntity __singleton = new _EnumPropertyEntity();
 
+    /** the id */
     public final org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.entity.EnumPropertyEntity, java.lang.Integer> id = new org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.entity.EnumPropertyEntity, java.lang.Integer>("id", "id") {
         @Override
         public org.seasar.doma.wrapper.IntegerWrapper getWrapper(org.seasar.doma.internal.apt.entity.EnumPropertyEntity entity) {
@@ -38,6 +39,7 @@ public final class _EnumPropertyEntity implements org.seasar.doma.internal.jdbc.
         }
     };
 
+    /** the hoge */
     public final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.EnumPropertyEntity, org.seasar.doma.internal.apt.entity.EnumPropertyEntity.Hoge> hoge = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.EnumPropertyEntity, org.seasar.doma.internal.apt.entity.EnumPropertyEntity.Hoge>("hoge", "hoge", true, true) {
         @Override
         public org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.entity.EnumPropertyEntity.Hoge> getWrapper(org.seasar.doma.internal.apt.entity.EnumPropertyEntity entity) {

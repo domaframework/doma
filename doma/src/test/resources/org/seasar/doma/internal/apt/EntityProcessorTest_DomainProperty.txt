@@ -6,6 +6,7 @@ public final class _DomainPropertyEntity implements org.seasar.doma.internal.jdb
 
     private static final _DomainPropertyEntity __singleton = new _DomainPropertyEntity();
 
+    /** the id */
     public final org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, java.lang.Integer> id = new org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, java.lang.Integer>("id", "id") {
         @Override
         public org.seasar.doma.wrapper.IntegerWrapper getWrapper(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity) {
@@ -38,6 +39,7 @@ public final class _DomainPropertyEntity implements org.seasar.doma.internal.jdb
         }
     };
 
+    /** the name */
     public final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, java.lang.String> name = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, java.lang.String>("name", "name", true, true) {
         @Override
         public org.seasar.doma.wrapper.StringWrapper getWrapper(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity) {

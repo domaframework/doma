@@ -155,6 +155,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             Visitor visitor = new Visitor();
             pm.getDataType().accept(visitor, null);
+            iprint("/** the %1$s */%n", pm.getName());
             if (pm.isId()) {
                 if (pm.getIdGeneratorMeta() != null) {
                     iprint(

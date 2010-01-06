@@ -6,6 +6,7 @@ public final class _TransientPropertyEntity implements org.seasar.doma.internal.
 
     private static final _TransientPropertyEntity __singleton = new _TransientPropertyEntity();
 
+    /** the id */
     public final org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, java.lang.Integer> id = new org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, java.lang.Integer>("id", "id") {
         @Override
         public org.seasar.doma.wrapper.IntegerWrapper getWrapper(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity) {
