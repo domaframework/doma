@@ -337,18 +337,6 @@ public class SqlTokenizerTest extends TestCase {
         assertNull(tokenizer.getToken());
     }
 
-    public void testHasNextBlockComment() throws Exception {
-        SqlTokenizer tokenizer = new SqlTokenizer("where /*%hasNext bbb*/");
-        assertEquals(WHERE_WORD, tokenizer.next());
-        assertEquals("where", tokenizer.getToken());
-        assertEquals(OTHER, tokenizer.next());
-        assertEquals(" ", tokenizer.getToken());
-        assertEquals(HAS_NEXT_BLOCK_COMMENT, tokenizer.next());
-        assertEquals("/*%hasNext bbb*/", tokenizer.getToken());
-        assertEquals(EOF, tokenizer.next());
-        assertNull(tokenizer.getToken());
-    }
-
     public void testEndBlockComment() throws Exception {
         SqlTokenizer tokenizer = new SqlTokenizer("where bbb/*%end*/");
         assertEquals(WHERE_WORD, tokenizer.next());

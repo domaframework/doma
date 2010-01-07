@@ -28,8 +28,6 @@ public class ForBlockNode extends AbstractSqlNode implements BlockNode {
 
     protected ForNode forNode;
 
-    protected HasNextNode hasNextNode;
-
     protected EndNode endNode;
 
     public ForBlockNode() {
@@ -44,15 +42,6 @@ public class ForBlockNode extends AbstractSqlNode implements BlockNode {
         return forNode;
     }
 
-    public void setHasNextNode(HasNextNode hasNextNode) {
-        this.hasNextNode = hasNextNode;
-        addNodeInternal(hasNextNode);
-    }
-
-    public HasNextNode getHasNextNode() {
-        return hasNextNode;
-    }
-
     public void setEndNode(EndNode endNode) {
         this.endNode = endNode;
         addNodeInternal(endNode);
@@ -60,10 +49,6 @@ public class ForBlockNode extends AbstractSqlNode implements BlockNode {
 
     public EndNode getEndNode() {
         return endNode;
-    }
-
-    public boolean isHasNextNodeExistent() {
-        return hasNextNode != null;
     }
 
     @Override
@@ -82,9 +67,6 @@ public class ForBlockNode extends AbstractSqlNode implements BlockNode {
     public ForBlockNode copy() {
         ForBlockNode clone = new ForBlockNode();
         clone.forNode = forNode.copy();
-        if (hasNextNode != null) {
-            clone.hasNextNode = hasNextNode.copy();
-        }
         clone.endNode = endNode.copy();
         for (SqlNode child : children) {
             clone.addNodeInternal(child.copy());
@@ -109,9 +91,6 @@ public class ForBlockNode extends AbstractSqlNode implements BlockNode {
     public String toString() {
         StringBuilder buf = new StringBuilder();
         buf.append(forNode);
-        if (hasNextNode != null) {
-            buf.append(hasNextNode);
-        }
         buf.append(endNode);
         return buf.toString();
     }

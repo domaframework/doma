@@ -54,8 +54,6 @@ import org.seasar.doma.internal.jdbc.sql.node.FromClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.FromClauseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.GroupByClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.GroupByClauseNodeVisitor;
-import org.seasar.doma.internal.jdbc.sql.node.HasNextNode;
-import org.seasar.doma.internal.jdbc.sql.node.HasNextNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.HavingClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.HavingClauseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.IfBlockNode;
@@ -110,7 +108,6 @@ public class NodePreparedSqlBuilder implements
         FragmentNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         FromClauseNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         GroupByClauseNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
-        HasNextNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         HavingClauseNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         IfBlockNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         IfNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
@@ -187,9 +184,9 @@ public class NodePreparedSqlBuilder implements
             if (List.class.isAssignableFrom(valueClass)) {
                 handleListBindVarialbeNode(node, p, (List<?>) value, valueClass);
             } else {
-                throw new JdbcException(Message.DOMA2112, location
-                        .getSql(), location.getLineNumber(), location
-                        .getPosition(), node.getText(), valueClass);
+                throw new JdbcException(Message.DOMA2112, location.getSql(),
+                        location.getLineNumber(), location.getPosition(), node
+                                .getText(), valueClass);
             }
             OtherNode closedFragmentNode = parensNode.getClosedFragmentNode();
             closedFragmentNode.accept(this, p);
@@ -207,9 +204,9 @@ public class NodePreparedSqlBuilder implements
         Class<?> valueClass = result.getValueClass();
         if (valueClass != String.class && valueClass != Character.class
                 && valueClass != char.class) {
-            throw new JdbcException(Message.DOMA2132,
-                    location.getSql(), location.getLineNumber(), location
-                            .getPosition(), node.getText(), valueClass);
+            throw new JdbcException(Message.DOMA2132, location.getSql(),
+                    location.getLineNumber(), location.getPosition(), node
+                            .getText(), valueClass);
         }
         Object value = result.getValue();
         if (value == null) {
@@ -217,24 +214,24 @@ public class NodePreparedSqlBuilder implements
         }
         String fragment = value.toString();
         if (fragment.indexOf('\'') > -1) {
-            throw new JdbcException(Message.DOMA2116,
-                    location.getSql(), location.getLineNumber(), location
-                            .getPosition(), node.getText());
+            throw new JdbcException(Message.DOMA2116, location.getSql(),
+                    location.getLineNumber(), location.getPosition(), node
+                            .getText());
         }
         if (fragment.indexOf(';') > -1) {
-            throw new JdbcException(Message.DOMA2117,
-                    location.getSql(), location.getLineNumber(), location
-                            .getPosition(), node.getText());
+            throw new JdbcException(Message.DOMA2117, location.getSql(),
+                    location.getLineNumber(), location.getPosition(), node
+                            .getText());
         }
         if (fragment.indexOf("--") > -1) {
-            throw new JdbcException(Message.DOMA2122,
-                    location.getSql(), location.getLineNumber(), location
-                            .getPosition(), node.getText());
+            throw new JdbcException(Message.DOMA2122, location.getSql(),
+                    location.getLineNumber(), location.getPosition(), node
+                            .getText());
         }
         if (fragment.indexOf("/*") > -1) {
-            throw new JdbcException(Message.DOMA2123,
-                    location.getSql(), location.getLineNumber(), location
-                            .getPosition(), node.getText());
+            throw new JdbcException(Message.DOMA2123, location.getSql(),
+                    location.getLineNumber(), location.getPosition(), node
+                            .getText());
         }
         p.setAvailable(true);
         p.appendRawSql(fragment);
@@ -256,9 +253,9 @@ public class NodePreparedSqlBuilder implements
         for (Object v : values) {
             if (v == null) {
                 SqlLocation location = node.getLocation();
-                throw new JdbcException(Message.DOMA2115, location
-                        .getSql(), location.getLineNumber(), location
-                        .getPosition(), node.getText(), index);
+                throw new JdbcException(Message.DOMA2115, location.getSql(),
+                        location.getLineNumber(), location.getPosition(), node
+                                .getText(), index);
             }
             Wrapper<?> wrapper = wrap(node.getLocation(), node.getText(), v, v
                     .getClass());
@@ -358,33 +355,34 @@ public class NodePreparedSqlBuilder implements
         Object expressionValue = expressionResult.getValue();
         Class<?> expressionValueClass = expressionResult.getValueClass();
         if (!Iterable.class.isAssignableFrom(expressionValueClass)) {
-            throw new JdbcException(Message.DOMA2129,
-                    location.getSql(), location.getLineNumber(), location
-                            .getPosition(), forNode.getExpression(),
-                    expressionValueClass);
+            throw new JdbcException(Message.DOMA2129, location.getSql(),
+                    location.getLineNumber(), location.getPosition(), forNode
+                            .getExpression(), expressionValueClass);
         }
         Iterable<?> iterable = (Iterable<?>) expressionValue;
         String identifier = forNode.getIdentifier();
-        Value originalValue = p.removeValue(identifier);
+        Value originalIdentifierValue = p.removeValue(identifier);
+        String hasNext = identifier + "_has_next";
+        Value originalHasNextValue = p.removeValue(hasNext);
         for (Iterator<?> it = iterable.iterator(); it.hasNext();) {
             Object each = it.next();
             Value value = each == null ? new Value(void.class, null)
                     : new Value(each.getClass(), each);
             p.putValue(identifier, value);
+            p.putValue(hasNext, new Value(boolean.class, it.hasNext()));
             for (SqlNode child : forNode.getChildren()) {
                 child.accept(this, p);
             }
-            if (it.hasNext()) {
-                HasNextNode hasNextNode = node.getHasNextNode();
-                if (hasNextNode != null) {
-                    hasNextNode.accept(this, p);
-                }
-            }
         }
-        if (originalValue == null) {
+        if (originalIdentifierValue == null) {
             p.removeValue(identifier);
         } else {
-            p.putValue(identifier, originalValue);
+            p.putValue(identifier, originalIdentifierValue);
+        }
+        if (originalHasNextValue == null) {
+            p.removeValue(hasNext);
+        } else {
+            p.putValue(hasNext, originalHasNextValue);
         }
         EndNode endNode = node.getEndNode();
         endNode.accept(this, p);
@@ -393,47 +391,6 @@ public class NodePreparedSqlBuilder implements
 
     @Override
     public Void visitForNode(ForNode node, Context p) {
-        for (SqlNode child : node.getChildren()) {
-            child.accept(this, p);
-        }
-        return null;
-    }
-
-    @Override
-    public Void visitHasNextNode(HasNextNode node, Context p) {
-        SqlLocation location = node.getLocation();
-        String expression = node.getExpression();
-        EvaluationResult hasNextResult = p.evaluate(location, expression);
-        Class<?> valueClass = hasNextResult.getValueClass();
-        if (valueClass != String.class && valueClass != Character.class
-                && valueClass != char.class) {
-            throw new JdbcException(Message.DOMA2131,
-                    location.getSql(), location.getLineNumber(), location
-                            .getPosition(), node.getExpression(), valueClass);
-        }
-        String value = hasNextResult.getValue().toString();
-        if (value.indexOf('\'') > -1) {
-            throw new JdbcException(Message.DOMA2133,
-                    location.getSql(), location.getLineNumber(), location
-                            .getPosition(), node.getExpression());
-        }
-        if (value.indexOf(';') > -1) {
-            throw new JdbcException(Message.DOMA2134,
-                    location.getSql(), location.getLineNumber(), location
-                            .getPosition(), node.getExpression());
-        }
-        if (value.indexOf("--") > -1) {
-            throw new JdbcException(Message.DOMA2135,
-                    location.getSql(), location.getLineNumber(), location
-                            .getPosition(), node.getExpression());
-        }
-        if (value.indexOf("/*") > -1) {
-            throw new JdbcException(Message.DOMA2136,
-                    location.getSql(), location.getLineNumber(), location
-                            .getPosition(), node.getExpression());
-        }
-        p.appendRawSql(value);
-        p.appendFormattedSql(value);
         for (SqlNode child : node.getChildren()) {
             child.accept(this, p);
         }
@@ -616,9 +573,9 @@ public class NodePreparedSqlBuilder implements
         try {
             return Wrappers.wrap(value, valueClass);
         } catch (WrapperException e) {
-            throw new JdbcException(Message.DOMA2118, e, location
-                    .getSql(), location.getLineNumber(),
-                    location.getPosition(), bindVariableText, e);
+            throw new JdbcException(Message.DOMA2118, e, location.getSql(),
+                    location.getLineNumber(), location.getPosition(),
+                    bindVariableText, e);
         }
     }
 
@@ -709,9 +666,8 @@ public class NodePreparedSqlBuilder implements
                 ExpressionNode expressionNode = parser.parse();
                 return evaluator.evaluate(expressionNode);
             } catch (ExpressionException e) {
-                throw new JdbcException(Message.DOMA2111, e, location
-                        .getSql(), location.getLineNumber(), location
-                        .getPosition(), e);
+                throw new JdbcException(Message.DOMA2111, e, location.getSql(),
+                        location.getLineNumber(), location.getPosition(), e);
             }
         }
 

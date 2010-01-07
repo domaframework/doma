@@ -193,8 +193,7 @@ public class SqlTokenizer {
                     }
                 }
                 int pos = buf.position() - lineStartPosition;
-                throw new JdbcException(Message.DOMA2103, sql,
-                        lineNumber, pos);
+                throw new JdbcException(Message.DOMA2103, sql, lineNumber, pos);
             }
         } else if ((c == 'g' || c == 'G') && (c2 == 'r' || c2 == 'R')
                 && (c3 == 'o' || c3 == 'O') && (c4 == 'u' || c4 == 'U')
@@ -322,39 +321,6 @@ public class SqlTokenizer {
                                     if (isBlockCommentDirectiveTerminated()) {
                                         type = END_BLOCK_COMMENT;
                                     }
-                                } else if (buf.hasRemaining()) {
-                                    char c7 = buf.get();
-                                    if (buf.hasRemaining()) {
-                                        char c8 = buf.get();
-                                        if (buf.hasRemaining()) {
-                                            char c9 = buf.get();
-                                            if (buf.hasRemaining()) {
-                                                char c10 = buf.get();
-                                                if (c4 == 'h' && c5 == 'a'
-                                                        && c6 == 's'
-                                                        && c7 == 'N'
-                                                        && c8 == 'e'
-                                                        && c9 == 'x'
-                                                        && c10 == 't') {
-                                                    if (isBlockCommentDirectiveTerminated()) {
-                                                        type = HAS_NEXT_BLOCK_COMMENT;
-                                                    }
-                                                } else {
-                                                    buf
-                                                            .position(buf
-                                                                    .position() - 7);
-                                                }
-                                            } else {
-                                                buf
-                                                        .position(buf
-                                                                .position() - 6);
-                                            }
-                                        } else {
-                                            buf.position(buf.position() - 5);
-                                        }
-                                    } else {
-                                        buf.position(buf.position() - 4);
-                                    }
                                 } else {
                                     buf.position(buf.position() - 3);
                                 }
@@ -366,8 +332,7 @@ public class SqlTokenizer {
                         }
                     }
                     if (type != IF_BLOCK_COMMENT && type != FOR_BLOCK_COMMENT
-                            && type != END_BLOCK_COMMENT
-                            && type != HAS_NEXT_BLOCK_COMMENT) {
+                            && type != END_BLOCK_COMMENT) {
                         int pos = buf.position() - lineStartPosition;
                         throw new JdbcException(Message.DOMA2119, sql,
                                 lineNumber, pos);
@@ -391,8 +356,7 @@ public class SqlTokenizer {
                 }
             }
             int pos = buf.position() - lineStartPosition;
-            throw new JdbcException(Message.DOMA2102, sql, lineNumber,
-                    pos);
+            throw new JdbcException(Message.DOMA2102, sql, lineNumber, pos);
         } else if (c == '-' && c2 == '-') {
             type = LINE_COMMENT;
             while (buf.hasRemaining()) {
@@ -443,8 +407,7 @@ public class SqlTokenizer {
                 return;
             }
             int pos = buf.position() - lineStartPosition;
-            throw new JdbcException(Message.DOMA2101, sql, lineNumber,
-                    pos);
+            throw new JdbcException(Message.DOMA2101, sql, lineNumber, pos);
         } else if (isWordStart(c)) {
             type = WORD;
             while (buf.hasRemaining()) {

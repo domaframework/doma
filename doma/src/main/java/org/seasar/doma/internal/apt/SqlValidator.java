@@ -45,8 +45,6 @@ import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.ForNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForNodeVisitor;
-import org.seasar.doma.internal.jdbc.sql.node.HasNextNode;
-import org.seasar.doma.internal.jdbc.sql.node.HasNextNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
@@ -59,8 +57,7 @@ import org.seasar.doma.jdbc.SqlNode;
  */
 public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
         EmbeddedVariableNodeVisitor<Void, Void>, IfNodeVisitor<Void, Void>,
-        ElseifNodeVisitor<Void, Void>, ForNodeVisitor<Void, Void>,
-        HasNextNodeVisitor<Void, Void> {
+        ElseifNodeVisitor<Void, Void>, ForNodeVisitor<Void, Void> {
 
     protected final ProcessingEnvironment env;
 
@@ -95,9 +92,8 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
                             .getParameters()) {
                         if (parameterElement.getSimpleName().contentEquals(
                                 parameterName)) {
-                            Notifier.notify(env, Kind.ERROR,
-                                    Message.DOMA4122, parameterElement,
-                                    path, parameterName);
+                            Notifier.notify(env, Kind.ERROR, Message.DOMA4122,
+                                    parameterElement, path, parameterName);
                         }
                     }
                 }
@@ -116,10 +112,10 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
         TypeDeclaration typeDeclaration = validateExpressionVariable(location,
                 variableName);
         if (!isBindable(typeDeclaration)) {
-            throw new AptException(Message.DOMA4153, env,
-                    methodElement, path, location.getSql(), location
-                            .getLineNumber(), location.getPosition(),
-                    variableName, typeDeclaration.getQualifiedName());
+            throw new AptException(Message.DOMA4153, env, methodElement, path,
+                    location.getSql(), location.getLineNumber(), location
+                            .getPosition(), variableName, typeDeclaration
+                            .getQualifiedName());
         }
         visitNode(node, p);
         return null;
@@ -161,10 +157,10 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
         TypeDeclaration typeDeclaration = validateExpressionVariable(location,
                 variableName);
         if (!typeDeclaration.isTextType()) {
-            throw new AptException(Message.DOMA4152, env,
-                    methodElement, path, location.getSql(), location
-                            .getLineNumber(), location.getPosition(),
-                    variableName, typeDeclaration.getQualifiedName());
+            throw new AptException(Message.DOMA4152, env, methodElement, path,
+                    location.getSql(), location.getLineNumber(), location
+                            .getPosition(), variableName, typeDeclaration
+                            .getQualifiedName());
         }
         visitNode(node, p);
         return null;
@@ -177,10 +173,10 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
         TypeDeclaration typeDeclaration = validateExpressionVariable(location,
                 expression);
         if (!typeDeclaration.isBooleanType()) {
-            throw new AptException(Message.DOMA4140, env,
-                    methodElement, path, location.getSql(), location
-                            .getLineNumber(), location.getPosition(),
-                    expression, typeDeclaration.getQualifiedName());
+            throw new AptException(Message.DOMA4140, env, methodElement, path,
+                    location.getSql(), location.getLineNumber(), location
+                            .getPosition(), expression, typeDeclaration
+                            .getQualifiedName());
         }
         visitNode(node, p);
         return null;
@@ -193,10 +189,10 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
         TypeDeclaration typeDeclaration = validateExpressionVariable(location,
                 expression);
         if (!typeDeclaration.isBooleanType()) {
-            throw new AptException(Message.DOMA4141, env,
-                    methodElement, path, location.getSql(), location
-                            .getLineNumber(), location.getPosition(),
-                    expression, typeDeclaration.getQualifiedName());
+            throw new AptException(Message.DOMA4141, env, methodElement, path,
+                    location.getSql(), location.getLineNumber(), location
+                            .getPosition(), expression, typeDeclaration
+                            .getQualifiedName());
         }
         visitNode(node, p);
         return null;
@@ -211,46 +207,41 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
                 expression);
         TypeMirror typeMirror = typeDeclaration.getType();
         if (!TypeMirrorUtil.isAssignable(typeMirror, Iterable.class, env)) {
-            throw new AptException(Message.DOMA4149, env,
-                    methodElement, path, location.getSql(), location
-                            .getLineNumber(), location.getPosition(),
-                    expression, typeDeclaration.getQualifiedName());
+            throw new AptException(Message.DOMA4149, env, methodElement, path,
+                    location.getSql(), location.getLineNumber(), location
+                            .getPosition(), expression, typeDeclaration
+                            .getQualifiedName());
         }
         DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(typeMirror,
                 env);
         List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
         if (typeArgs.isEmpty()) {
-            throw new AptException(Message.DOMA4150, env,
-                    methodElement, path, location.getSql(), location
-                            .getLineNumber(), location.getPosition(),
-                    expression, typeDeclaration.getQualifiedName());
+            throw new AptException(Message.DOMA4150, env, methodElement, path,
+                    location.getSql(), location.getLineNumber(), location
+                            .getPosition(), expression, typeDeclaration
+                            .getQualifiedName());
         }
-        TypeMirror originalParameterType = expressionValidator
+        TypeMirror originalIdentifierType = expressionValidator
                 .removeParameterType(identifier);
         expressionValidator.putParameterType(identifier, typeArgs.get(0));
+        String hasNext = identifier + "_has_next";
+        TypeMirror originalHasNextType = expressionValidator
+                .removeParameterType(hasNext);
+        expressionValidator.putParameterType(hasNext, TypeMirrorUtil
+                .getTypeMirror(boolean.class, env));
         visitNode(node, p);
-        if (originalParameterType == null) {
+        if (originalIdentifierType == null) {
             expressionValidator.removeParameterType(identifier);
         } else {
             expressionValidator.putParameterType(identifier,
-                    originalParameterType);
+                    originalIdentifierType);
         }
-        return null;
-    }
-
-    @Override
-    public Void visitHasNextNode(HasNextNode node, Void p) {
-        SqlLocation location = node.getLocation();
-        String expression = node.getExpression();
-        TypeDeclaration typeDeclaration = validateExpressionVariable(location,
-                expression);
-        if (!typeDeclaration.isTextType()) {
-            throw new AptException(Message.DOMA4151, env,
-                    methodElement, path, location.getSql(), location
-                            .getLineNumber(), location.getPosition(),
-                    expression, typeDeclaration.getQualifiedName());
+        if (originalHasNextType == null) {
+            expressionValidator.removeParameterType(hasNext);
+        } else {
+            expressionValidator.putParameterType(hasNext,
+                    originalHasNextType);
         }
-        visitNode(node, p);
         return null;
     }
 
@@ -275,10 +266,9 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
         } catch (AptIllegalStateException e) {
             throw e;
         } catch (AptException e) {
-            throw new AptException(Message.DOMA4092, env,
-                    methodElement, path, location.getSql(), location
-                            .getLineNumber(), location.getPosition(), e
-                            .getMessage());
+            throw new AptException(Message.DOMA4092, env, methodElement, path,
+                    location.getSql(), location.getLineNumber(), location
+                            .getPosition(), e.getMessage());
         }
     }
 
@@ -288,10 +278,9 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
             ExpressionParser parser = new ExpressionParser(expression);
             return parser.parse();
         } catch (ExpressionException e) {
-            throw new AptException(Message.DOMA4092, env,
-                    methodElement, path, location.getSql(), location
-                            .getLineNumber(), location.getPosition(), e
-                            .getMessage());
+            throw new AptException(Message.DOMA4092, env, methodElement, path,
+                    location.getSql(), location.getLineNumber(), location
+                            .getPosition(), e.getMessage());
         }
     }
 }

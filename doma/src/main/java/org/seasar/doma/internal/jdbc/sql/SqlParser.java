@@ -34,7 +34,6 @@ import org.seasar.doma.internal.jdbc.sql.node.ForNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.FromClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.GroupByClauseNode;
-import org.seasar.doma.internal.jdbc.sql.node.HasNextNode;
 import org.seasar.doma.internal.jdbc.sql.node.HavingClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfBlockNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;
@@ -155,10 +154,6 @@ public class SqlParser {
             }
             case FOR_BLOCK_COMMENT: {
                 parseForBlockComment();
-                break;
-            }
-            case HAS_NEXT_BLOCK_COMMENT: {
-                parseHasNextBlockComment();
                 break;
             }
             case EOL: {
@@ -396,23 +391,6 @@ public class SqlParser {
         push(forNode);
     }
 
-    protected void parseHasNextBlockComment() {
-        if (!isInForBlockNode()) {
-            throw new JdbcException(Message.DOMA2127, sql, tokenizer
-                    .getLineNumber(), tokenizer.getPosition());
-        }
-        removeNodesTo(ForBlockNode.class);
-        ForBlockNode forBlockNode = peek();
-        if (forBlockNode.isHasNextNodeExistent()) {
-            throw new JdbcException(Message.DOMA2128, sql, tokenizer
-                    .getLineNumber(), tokenizer.getPosition());
-        }
-        String expression = tokenType.extract(token);
-        HasNextNode node = new HasNextNode(getLocation(), expression, token);
-        forBlockNode.setHasNextNode(node);
-        push(node);
-    }
-
     protected void parseEOL() {
         if (isAfterSpaceStrippingNode()) {
             SpaceStrippingNode spaceStrippingNode = peek();
@@ -534,8 +512,8 @@ public class SqlParser {
                 parensNode.setAttachedWithBindVariable(true);
                 bindVariableNode.setParensNode(parensNode);
             } else {
-                throw new JdbcException(Message.DOMA2110, sql,
-                        tokenizer.getLineNumber(), tokenizer.getPosition(),
+                throw new JdbcException(Message.DOMA2110, sql, tokenizer
+                        .getLineNumber(), tokenizer.getPosition(),
                         bindVariableNode.getText());
             }
         } else {

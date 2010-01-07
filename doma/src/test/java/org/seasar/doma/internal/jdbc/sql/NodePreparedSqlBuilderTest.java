@@ -16,8 +16,6 @@
 package org.seasar.doma.internal.jdbc.sql;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -384,86 +382,6 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         } catch (JdbcException expected) {
             System.out.println(expected.getMessage());
             assertEquals(Message.DOMA2123, expected.getMessageResource());
-        }
-    }
-
-    public void testHasNext_containsSingleQuote() throws Exception {
-        ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        ArrayList<String> list = new ArrayList<String>();
-        list.add("aaa");
-        list.add("bbb");
-        list.add("ccc");
-        evaluator.add("names", new Value(List.class, list));
-        String testSql = "select * from aaa where /*%for n : names*/name = /*n*/'a' /*%hasNext \" 'aaa \" *//*%end*/";
-        SqlParser parser = new SqlParser(testSql);
-        SqlNode sqlNode = parser.parse();
-        try {
-            new NodePreparedSqlBuilder(config, SqlKind.SELECT, "dummyPath",
-                    evaluator).build(sqlNode);
-            fail();
-        } catch (JdbcException expected) {
-            System.out.println(expected.getMessage());
-            assertEquals(Message.DOMA2133, expected.getMessageResource());
-        }
-    }
-
-    public void testHasNext_containsSemicolon() throws Exception {
-        ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        ArrayList<String> list = new ArrayList<String>();
-        list.add("aaa");
-        list.add("bbb");
-        list.add("ccc");
-        evaluator.add("names", new Value(List.class, list));
-        String testSql = "select * from aaa where /*%for n : names*/name = /*n*/'a' /*%hasNext \" ; \" *//*%end*/";
-        SqlParser parser = new SqlParser(testSql);
-        SqlNode sqlNode = parser.parse();
-        try {
-            new NodePreparedSqlBuilder(config, SqlKind.SELECT, "dummyPath",
-                    evaluator).build(sqlNode);
-            fail();
-        } catch (JdbcException expected) {
-            System.out.println(expected.getMessage());
-            assertEquals(Message.DOMA2134, expected.getMessageResource());
-        }
-    }
-
-    public void testHasNext_lineComment() throws Exception {
-        ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        ArrayList<String> list = new ArrayList<String>();
-        list.add("aaa");
-        list.add("bbb");
-        list.add("ccc");
-        evaluator.add("names", new Value(List.class, list));
-        String testSql = "select * from aaa where /*%for n : names*/name = /*n*/'a' /*%hasNext \" --aaa \" *//*%end*/";
-        SqlParser parser = new SqlParser(testSql);
-        SqlNode sqlNode = parser.parse();
-        try {
-            new NodePreparedSqlBuilder(config, SqlKind.SELECT, "dummyPath",
-                    evaluator).build(sqlNode);
-            fail();
-        } catch (JdbcException expected) {
-            System.out.println(expected.getMessage());
-            assertEquals(Message.DOMA2135, expected.getMessageResource());
-        }
-    }
-
-    public void testHasNext_blockComment() throws Exception {
-        ExpressionEvaluator evaluator = new ExpressionEvaluator();
-        ArrayList<String> list = new ArrayList<String>();
-        list.add("aaa");
-        list.add("bbb");
-        list.add("ccc");
-        evaluator.add("names", new Value(List.class, list));
-        String testSql = "select * from aaa where /*%for n : names*/name = /*n*/'a' /*%hasNext \" /*aaa \" *//*%end*/";
-        SqlParser parser = new SqlParser(testSql);
-        SqlNode sqlNode = parser.parse();
-        try {
-            new NodePreparedSqlBuilder(config, SqlKind.SELECT, "dummyPath",
-                    evaluator).build(sqlNode);
-            fail();
-        } catch (JdbcException expected) {
-            System.out.println(expected.getMessage());
-            assertEquals(Message.DOMA2136, expected.getMessageResource());
         }
     }
 
