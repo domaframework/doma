@@ -82,6 +82,13 @@ public class SqlParser {
             tokenType = tokenizer.next();
             token = tokenizer.getToken();
             switch (tokenType) {
+            case UNION_WORD:
+            case EXCEPT_WORD:
+            case MINUS_WORD:
+            case INTERSECT_WORD: {
+                parseSetOperatorWord();
+                break;
+            }
             case SELECT_WORD: {
                 parseSelectWord();
                 break;
@@ -172,6 +179,18 @@ public class SqlParser {
             }
         }
         return anonymousNode;
+    }
+
+    protected void parseSetOperatorWord() {
+        pop();
+        AnonymousNode node = new AnonymousNode();
+        node.addNode(new WordNode(token));
+        if (isInSelectStatementNode()) {
+            removeNodesTo(SelectStatementNode.class);
+            pop();
+        }
+        addNode(node);
+        push(node);
     }
 
     protected void parseSelectWord() {

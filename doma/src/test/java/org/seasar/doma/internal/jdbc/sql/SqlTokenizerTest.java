@@ -150,6 +150,38 @@ public class SqlTokenizerTest extends TestCase {
         }
     }
 
+    public void testUnion() throws Exception {
+        SqlTokenizer tokenizer = new SqlTokenizer("union");
+        assertEquals(UNION_WORD, tokenizer.next());
+        assertEquals("union", tokenizer.getToken());
+        assertEquals(EOF, tokenizer.next());
+        assertNull(tokenizer.getToken());
+    }
+
+    public void testExcept() throws Exception {
+        SqlTokenizer tokenizer = new SqlTokenizer("except");
+        assertEquals(EXCEPT_WORD, tokenizer.next());
+        assertEquals("except", tokenizer.getToken());
+        assertEquals(EOF, tokenizer.next());
+        assertNull(tokenizer.getToken());
+    }
+
+    public void testMinus() throws Exception {
+        SqlTokenizer tokenizer = new SqlTokenizer("minus");
+        assertEquals(MINUS_WORD, tokenizer.next());
+        assertEquals("minus", tokenizer.getToken());
+        assertEquals(EOF, tokenizer.next());
+        assertNull(tokenizer.getToken());
+    }
+
+    public void testIntersect() throws Exception {
+        SqlTokenizer tokenizer = new SqlTokenizer("intersect");
+        assertEquals(INTERSECT_WORD, tokenizer.next());
+        assertEquals("intersect", tokenizer.getToken());
+        assertEquals(EOF, tokenizer.next());
+        assertNull(tokenizer.getToken());
+    }
+
     public void testSelect() throws Exception {
         SqlTokenizer tokenizer = new SqlTokenizer("select");
         assertEquals(SELECT_WORD, tokenizer.next());

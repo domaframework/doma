@@ -114,6 +114,14 @@ public enum SqlTokenType {
 
     OR_WORD,
 
+    UNION_WORD,
+
+    MINUS_WORD,
+
+    EXCEPT_WORD,
+
+    INTERSECT_WORD,
+
     WORD,
 
     OTHER,

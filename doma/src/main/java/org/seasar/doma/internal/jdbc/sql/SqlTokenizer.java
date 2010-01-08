@@ -171,6 +171,16 @@ public class SqlTokenizer {
 
     protected void peekNineChars(char c, char c2, char c3, char c4, char c5,
             char c6, char c7, char c8, char c9) {
+        if ((c == 'i' || c == 'I') && (c2 == 'n' || c2 == 'N')
+                && (c3 == 't' || c3 == 'T') && ((c4 == 'e' || c4 == 'E'))
+                && (c5 == 'r' || c5 == 'R') && (c6 == 's' || c6 == 'S')
+                && (c7 == 'e' || c7 == 'E') && (c8 == 'c' || c8 == 'C')
+                && (c9 == 't' || c9 == 'T')) {
+            type = INTERSECT_WORD;
+            if (isWordTerminated()) {
+                return;
+            }
+        }
         buf.position(buf.position() - 1);
         peekEightChars(c, c2, c3, c4, c5, c6, c7, c8);
     }
@@ -246,6 +256,13 @@ public class SqlTokenizer {
             if (isWordTerminated()) {
                 return;
             }
+        } else if ((c == 'e' || c == 'E') && (c2 == 'x' || c2 == 'X')
+                && (c3 == 'c' || c3 == 'C') && (c4 == 'e' || c4 == 'E')
+                && (c5 == 'p' || c5 == 'P') && (c6 == 't' || c6 == 'T')) {
+            type = EXCEPT_WORD;
+            if (isWordTerminated()) {
+                return;
+            }
         }
         buf.position(buf.position() - 1);
         peekFiveChars(c, c2, c3, c4, c5);
@@ -256,6 +273,20 @@ public class SqlTokenizer {
                 && (c3 == 'e' || c3 == 'E') && (c4 == 'r' || c4 == 'R')
                 && (c5 == 'e' || c5 == 'E')) {
             type = WHERE_WORD;
+            if (isWordTerminated()) {
+                return;
+            }
+        } else if ((c == 'u' || c == 'U') && (c2 == 'n' || c2 == 'N')
+                && (c3 == 'i' || c3 == 'I') && (c4 == 'o' || c4 == 'O')
+                && (c5 == 'n' || c5 == 'N')) {
+            type = UNION_WORD;
+            if (isWordTerminated()) {
+                return;
+            }
+        } else if ((c == 'm' || c == 'M') && (c2 == 'i' || c2 == 'I')
+                && (c3 == 'n' || c3 == 'N') && (c4 == 'u' || c4 == 'U')
+                && (c5 == 's' || c5 == 'S')) {
+            type = MINUS_WORD;
             if (isWordTerminated()) {
                 return;
             }

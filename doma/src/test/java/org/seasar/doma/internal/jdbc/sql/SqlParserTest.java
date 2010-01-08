@@ -273,6 +273,18 @@ public class SqlParserTest extends TestCase {
         assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
     }
 
+    public void testUnion() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        String testSql = "select * from aaa where /*%if false*//*%end*/union all select * from bbb";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath", evaluator).build(sqlNode);
+        assertEquals("select * from aaa union all select * from bbb", sql
+                .getRawSql());
+        assertEquals(testSql, sqlNode.toString());
+    }
+
     public void testSelect() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("name", new Value(String.class, "hoge"));
