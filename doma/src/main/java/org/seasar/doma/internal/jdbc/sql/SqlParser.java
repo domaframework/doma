@@ -24,31 +24,47 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
+import org.seasar.doma.internal.jdbc.sql.node.AnonymousNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.BlockNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseNode;
+import org.seasar.doma.internal.jdbc.sql.node.ElseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
+import org.seasar.doma.internal.jdbc.sql.node.ElseifNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.EndNode;
+import org.seasar.doma.internal.jdbc.sql.node.EndNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.EolNode;
+import org.seasar.doma.internal.jdbc.sql.node.EolNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.ForBlockNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForNode;
+import org.seasar.doma.internal.jdbc.sql.node.ForNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.FragmentNode;
 import org.seasar.doma.internal.jdbc.sql.node.FromClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.FromClauseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.GroupByClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.GroupByClauseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.HavingClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.HavingClauseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.IfBlockNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;
+import org.seasar.doma.internal.jdbc.sql.node.IfNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.LogicalOperatorNode;
+import org.seasar.doma.internal.jdbc.sql.node.LogicalOperatorNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.OtherNode;
 import org.seasar.doma.internal.jdbc.sql.node.ParensNode;
+import org.seasar.doma.internal.jdbc.sql.node.ParensNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.SelectClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.SelectClauseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
+import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.SpaceStrippingNode;
 import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
 import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.WhitespaceNode;
 import org.seasar.doma.internal.jdbc.sql.node.WordNode;
 import org.seasar.doma.internal.message.Message;
@@ -186,7 +202,7 @@ public class SqlParser {
             }
             }
         }
-        // optimize(rootNode);
+        new Optimizer().optimize(rootNode);
         return rootNode;
     }
 
@@ -580,28 +596,154 @@ public class SqlParser {
                 .getPosition());
     }
 
-    public void optimize(SqlNode node) {
-        List<SqlNode> children = new ArrayList<SqlNode>(node.getChildren());
-        node.getChildren().clear();
+    protected static class Optimizer implements
+            SelectStatementNodeVisitor<Void, Void>,
+            SelectClauseNodeVisitor<Void, Void>,
+            FromClauseNodeVisitor<Void, Void>,
+            WhereClauseNodeVisitor<Void, Void>,
+            HavingClauseNodeVisitor<Void, Void>,
+            GroupByClauseNodeVisitor<Void, Void>,
+            ForUpdateClauseNodeVisitor<Void, Void>, IfNodeVisitor<Void, Void>,
+            ElseifNodeVisitor<Void, Void>, ElseNodeVisitor<Void, Void>,
+            LogicalOperatorNodeVisitor<Void, Void>, ForNodeVisitor<Void, Void>,
+            EndNodeVisitor<Void, Void>, AnonymousNodeVisitor<Void, Void>,
+            ParensNodeVisitor<Void, Void>, EolNodeVisitor<Void, Void> {
 
-        StringBuilder buf = new StringBuilder();
-        for (SqlNode child : children) {
-            if (child instanceof WordNode) {
-                buf.append(((WordNode) child).getWord());
-            } else if (child instanceof OtherNode) {
-                buf.append(((OtherNode) child).getOther());
-            } else if (buf.length() > 0 && child instanceof WhitespaceNode) {
-                buf.append(((WhitespaceNode) child).getWhitespace());
-            } else {
-                if (buf.length() > 0) {
-                    node.addNode(new FragmentNode(buf.toString()));
-                    buf.setLength(0);
+        public void optimize(SqlNode node) {
+            node.accept(this, null);
+        }
+
+        protected void optimizeChildren(SqlNode node) {
+            List<SqlNode> children = new ArrayList<SqlNode>(node.getChildren());
+            node.getChildren().clear();
+
+            StringBuilder buf = new StringBuilder();
+            for (SqlNode child : children) {
+                if (child instanceof WordNode) {
+                    buf.append(((WordNode) child).getWord());
+                } else if (child instanceof OtherNode) {
+                    buf.append(((OtherNode) child).getOther());
+                } else if (buf.length() > 0 && child instanceof WhitespaceNode) {
+                    buf.append(((WhitespaceNode) child).getWhitespace());
+                } else {
+                    if (buf.length() > 0) {
+                        node.addNode(new FragmentNode(buf.toString()));
+                        buf.setLength(0);
+                    }
+                    if (child.getChildren().size() > 0) {
+                        child.accept(this, null);
+                    }
+                    node.addNode(child);
                 }
-                if (child.getChildren().size() > 0) {
-                    optimize(child);
-                }
-                node.addNode(child);
+            }
+            if (buf.length() > 0) {
+                node.addNode(new FragmentNode(buf.toString()));
+                buf.setLength(0);
             }
         }
+
+        @Override
+        public Void visitSelectStatementNode(SelectStatementNode node, Void p) {
+            for (SqlNode child : node.getChildren()) {
+                child.accept(this, p);
+            }
+            return null;
+        }
+
+        @Override
+        public Void visitSelectClauseNode(SelectClauseNode node, Void p) {
+            optimizeChildren(node);
+            return null;
+        }
+
+        @Override
+        public Void visitAnonymousNode(AnonymousNode node, Void p) {
+            optimizeChildren(node);
+            return null;
+        }
+
+        @Override
+        public Void visitParensNode(ParensNode node, Void p) {
+            optimizeChildren(node);
+            return null;
+        }
+
+        @Override
+        public Void visitIfNode(IfNode node, Void p) {
+            optimizeChildren(node);
+            return null;
+        }
+
+        @Override
+        public Void visitEndNode(EndNode node, Void p) {
+            optimizeChildren(node);
+            return null;
+        }
+
+        @Override
+        public Void visitFromClauseNode(FromClauseNode node, Void p) {
+            optimizeChildren(node);
+            return null;
+        }
+
+        @Override
+        public Void visitForNode(ForNode node, Void p) {
+            optimizeChildren(node);
+            return null;
+        }
+
+        @Override
+        public Void visitHavingClauseNode(HavingClauseNode node, Void p) {
+            optimizeChildren(node);
+            return null;
+        }
+
+        @Override
+        public Void visitWhereClauseNode(WhereClauseNode node, Void p) {
+            optimizeChildren(node);
+            return null;
+        }
+
+        @Override
+        public Void visitLogicalOperatorNode(LogicalOperatorNode node, Void p) {
+            optimizeChildren(node);
+            return null;
+        }
+
+        @Override
+        public Void visitEolNode(EolNode node, Void p) {
+            optimizeChildren(node);
+            return null;
+        }
+
+        @Override
+        public Void visitElseifNode(ElseifNode node, Void p) {
+            optimizeChildren(node);
+            return null;
+        }
+
+        @Override
+        public Void visitForUpdateClauseNode(ForUpdateClauseNode node, Void p) {
+            optimizeChildren(node);
+            return null;
+        }
+
+        @Override
+        public Void visitGroupByClauseNode(GroupByClauseNode node, Void p) {
+            optimizeChildren(node);
+            return null;
+        }
+
+        @Override
+        public Void visitElseNode(ElseNode node, Void p) {
+            optimizeChildren(node);
+            return null;
+        }
+
+        @Override
+        public Void visitUnknownNode(SqlNode node, Void p) {
+            return null;
+        }
     }
+
 }

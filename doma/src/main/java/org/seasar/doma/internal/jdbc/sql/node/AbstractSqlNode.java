@@ -15,8 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.sql.node;
 
-import java.util.Collections;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.seasar.doma.DomaNullPointerException;
@@ -28,7 +27,7 @@ import org.seasar.doma.jdbc.SqlNode;
  */
 public abstract class AbstractSqlNode implements SqlNode {
 
-    protected final LinkedList<SqlNode> children = new LinkedList<SqlNode>();
+    protected final List<SqlNode> children = new ArrayList<SqlNode>();
 
     public void addNode(SqlNode child) {
         if (child == null) {
@@ -39,7 +38,7 @@ public abstract class AbstractSqlNode implements SqlNode {
 
     @Override
     public List<SqlNode> getChildren() {
-        return Collections.unmodifiableList(children);
+        return children;
     }
 
 }
