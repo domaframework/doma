@@ -103,9 +103,6 @@ public class EntityMetaFactory {
         if (classElement.getModifiers().contains(Modifier.PRIVATE)) {
             throw new AptException(Message.DOMA4123, env, classElement);
         }
-        if (classElement.getModifiers().contains(Modifier.ABSTRACT)) {
-            throw new AptException(Message.DOMA4134, env, classElement);
-        }
         if (!classElement.getTypeParameters().isEmpty()) {
             throw new AptException(Message.DOMA4051, env, classElement);
         }
@@ -189,8 +186,7 @@ public class EntityMetaFactory {
                     continue;
                 } else if (fieldElement.getModifiers().contains(
                         Modifier.PRIVATE)) {
-                    throw new AptException(Message.DOMA4094, env,
-                            fieldElement);
+                    throw new AptException(Message.DOMA4094, env, fieldElement);
                 } else if (fieldElement.getAnnotation(OriginalStates.class) != null) {
                     doOriginalStatesField(classElement, fieldElement,
                             entityMeta);
@@ -274,10 +270,9 @@ public class EntityMetaFactory {
                     declaredType, env);
             if (typeElement.getAnnotation(EntityField.class) != null) {
                 if (foundAnnotationTypeElement != null) {
-                    throw new AptException(Message.DOMA4086, env,
-                            fieldElement, foundAnnotationTypeElement
-                                    .getQualifiedName(), typeElement
-                                    .getQualifiedName());
+                    throw new AptException(Message.DOMA4086, env, fieldElement,
+                            foundAnnotationTypeElement.getQualifiedName(),
+                            typeElement.getQualifiedName());
                 }
                 foundAnnotationTypeElement = typeElement;
             }

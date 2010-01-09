@@ -116,6 +116,11 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                             public CallableSqlParameterMeta visitEntityType(
                                     EntityType dataType, Void p)
                                     throws RuntimeException {
+                                if (dataType.isAbstract()) {
+                                    throw new AptException(Message.DOMA4157,
+                                            env, parameterMeta.getElement(),
+                                            dataType.getTypeName());
+                                }
                                 return new EntityListParameterMeta(
                                         parameterMeta.getName(), dataType);
                             }
@@ -150,8 +155,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                             protected CallableSqlParameterMeta defaultAction(
                                     DataType type, Void p)
                                     throws RuntimeException {
-                                throw new AptException(
-                                        Message.DOMA4101, env,
+                                throw new AptException(Message.DOMA4101, env,
                                         parameterMeta.getElement(),
                                         parameterMeta.getType());
                             }
@@ -186,8 +190,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                             protected ReferenceType defaultAction(
                                     DataType type, Void p)
                                     throws RuntimeException {
-                                throw new AptException(
-                                        Message.DOMA4098, env,
+                                throw new AptException(Message.DOMA4098, env,
                                         parameterMeta.getElement());
                             }
 
@@ -208,8 +211,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                             protected CallableSqlParameterMeta defaultAction(
                                     DataType type, Void p)
                                     throws RuntimeException {
-                                throw new AptException(
-                                        Message.DOMA4100, env,
+                                throw new AptException(Message.DOMA4100, env,
                                         parameterMeta.getElement(),
                                         referenceType.getReferentTypeMirror());
                             }
@@ -244,8 +246,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                             protected ReferenceType defaultAction(
                                     DataType type, Void p)
                                     throws RuntimeException {
-                                throw new AptException(
-                                        Message.DOMA4111, env,
+                                throw new AptException(Message.DOMA4111, env,
                                         parameterMeta.getElement());
                             }
 
@@ -266,8 +267,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                             protected CallableSqlParameterMeta defaultAction(
                                     DataType type, Void p)
                                     throws RuntimeException {
-                                throw new AptException(
-                                        Message.DOMA4100, env,
+                                throw new AptException(Message.DOMA4100, env,
                                         parameterMeta.getElement(),
                                         referenceType.getReferentTypeMirror());
                             }

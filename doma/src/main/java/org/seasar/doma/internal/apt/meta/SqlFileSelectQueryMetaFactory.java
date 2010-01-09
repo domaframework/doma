@@ -95,8 +95,8 @@ public class SqlFileSelectQueryMetaFactory extends
                         @Override
                         protected Void defaultAction(DataType type, Void p)
                                 throws RuntimeException {
-                            throw new AptException(Message.DOMA4008,
-                                    env, returnMeta.getElement(), returnMeta
+                            throw new AptException(Message.DOMA4008, env,
+                                    returnMeta.getElement(), returnMeta
                                             .getType());
                         }
 
@@ -115,6 +115,11 @@ public class SqlFileSelectQueryMetaFactory extends
                         @Override
                         public Void visitEntityType(EntityType dataType, Void p)
                                 throws RuntimeException {
+                            if (dataType.isAbstract()) {
+                                throw new AptException(Message.DOMA4154, env,
+                                        returnMeta.getElement(), dataType
+                                                .getQualifiedName());
+                            }
                             return null;
                         }
 
@@ -159,6 +164,15 @@ public class SqlFileSelectQueryMetaFactory extends
                                                         EntityType dataType,
                                                         Void p)
                                                         throws RuntimeException {
+                                                    if (dataType.isAbstract()) {
+                                                        throw new AptException(
+                                                                Message.DOMA4155,
+                                                                env,
+                                                                returnMeta
+                                                                        .getElement(),
+                                                                dataType
+                                                                        .getTypeMirror());
+                                                    }
                                                     return null;
                                                 }
 
@@ -182,9 +196,9 @@ public class SqlFileSelectQueryMetaFactory extends
                         @Override
                         protected Void defaultAction(DataType type, Void p)
                                 throws RuntimeException {
-                            throw new AptException(Message.DOMA4008,
-                                    env, parameterMeta.getElement(),
-                                    parameterMeta.getType());
+                            throw new AptException(Message.DOMA4008, env,
+                                    parameterMeta.getElement(), parameterMeta
+                                            .getType());
                         }
 
                         @Override
@@ -210,8 +224,7 @@ public class SqlFileSelectQueryMetaFactory extends
                                 IterationCallbackType dataType, Void p)
                                 throws RuntimeException {
                             if (queryMeta.getIterationCallbackType() != null) {
-                                throw new AptException(
-                                        Message.DOMA4054, env,
+                                throw new AptException(Message.DOMA4054, env,
                                         parameterMeta.getElement());
                             }
                             queryMeta.setIterationCallbackType(dataType);
@@ -226,8 +239,7 @@ public class SqlFileSelectQueryMetaFactory extends
                                 SelectOptionsType dataType, Void p)
                                 throws RuntimeException {
                             if (queryMeta.getSelectOptionsType() != null) {
-                                throw new AptException(
-                                        Message.DOMA4053, env,
+                                throw new AptException(Message.DOMA4053, env,
                                         parameterMeta.getElement());
                             }
                             queryMeta.setSelectOptionsType(dataType);

@@ -18,6 +18,7 @@ package org.seasar.doma.internal.apt.type;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
@@ -43,6 +44,10 @@ public class EntityType extends AbstractDataType {
             return null;
         }
         return new EntityType(type, env);
+    }
+
+    public boolean isAbstract() {
+        return typeElement.getModifiers().contains(Modifier.ABSTRACT);
     }
 
     @Override

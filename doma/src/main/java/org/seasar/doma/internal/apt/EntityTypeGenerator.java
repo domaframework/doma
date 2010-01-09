@@ -553,7 +553,11 @@ public class EntityTypeGenerator extends AbstractGenerator {
     protected void printNewEntityMethod() {
         iprint("@Override%n");
         iprint("public %1$s newEntity() {%n", entityMeta.getEntityTypeName());
-        iprint("    return new %1$s();%n", entityMeta.getEntityTypeName());
+        if (entityMeta.isAbstract()) {
+            iprint("    return null;%n");
+        } else {
+            iprint("    return new %1$s();%n", entityMeta.getEntityTypeName());
+        }
         iprint("}%n");
         print("%n");
     }
@@ -571,7 +575,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("@Override%n");
         iprint("public %1$s getOriginalStates(%1$s __entity) {%n", entityMeta
                 .getEntityTypeName());
-        if (entityMeta.hasOriginalStatesMeta()) {
+        if (!entityMeta.isAbstract() && entityMeta.hasOriginalStatesMeta()) {
             OriginalStatesMeta osm = entityMeta.getOriginalStatesMeta();
             iprint("    if (__entity.%1$s instanceof %2$s) {%n", osm.getName(),
                     entityMeta.getEntityTypeName());
@@ -588,7 +592,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("@Override%n");
         iprint("public void saveCurrentStates(%1$s __entity) {%n", entityMeta
                 .getEntityTypeName());
-        if (entityMeta.hasOriginalStatesMeta()) {
+        if (!entityMeta.isAbstract() && entityMeta.hasOriginalStatesMeta()) {
             iprint("    %1$s __currentStates = new %1$s();%n", entityMeta
                     .getEntityTypeName());
             for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {

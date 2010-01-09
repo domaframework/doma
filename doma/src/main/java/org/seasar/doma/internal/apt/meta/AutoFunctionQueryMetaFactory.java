@@ -78,8 +78,7 @@ public class AutoFunctionQueryMetaFactory extends
                             protected ResultParameterMeta defaultAction(
                                     DataType type, Void p)
                                     throws RuntimeException {
-                                throw new AptException(
-                                        Message.DOMA4063, env,
+                                throw new AptException(Message.DOMA4063, env,
                                         returnMeta.getElement(), returnMeta
                                                 .getType());
                             }
@@ -144,6 +143,16 @@ public class AutoFunctionQueryMetaFactory extends
                                                             EntityType dataType,
                                                             Void p)
                                                             throws RuntimeException {
+                                                        if (dataType
+                                                                .isAbstract()) {
+                                                            throw new AptException(
+                                                                    Message.DOMA4156,
+                                                                    env,
+                                                                    returnMeta
+                                                                            .getElement(),
+                                                                    dataType
+                                                                            .getTypeName());
+                                                        }
                                                         return new EntityListResultParameterMeta(
                                                                 dataType);
                                                     }

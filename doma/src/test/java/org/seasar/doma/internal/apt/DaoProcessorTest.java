@@ -37,6 +37,7 @@ import org.seasar.doma.internal.apt.dao.EmbeddedVariableDao;
 import org.seasar.doma.internal.apt.dao.EmptySqlFileDao;
 import org.seasar.doma.internal.apt.dao.EnumDao;
 import org.seasar.doma.internal.apt.dao.ExtendsDao;
+import org.seasar.doma.internal.apt.dao.FunctionAbstractEntityListDao;
 import org.seasar.doma.internal.apt.dao.IllegalAnnotateWithDao;
 import org.seasar.doma.internal.apt.dao.IllegalConstructorDelegateDao;
 import org.seasar.doma.internal.apt.dao.IllegalParameterNameDao;
@@ -53,6 +54,9 @@ import org.seasar.doma.internal.apt.dao.NoTestLiteralDao;
 import org.seasar.doma.internal.apt.dao.NotInterfaceDao;
 import org.seasar.doma.internal.apt.dao.NotTopLevelDao;
 import org.seasar.doma.internal.apt.dao.PrimitiveTypeDao;
+import org.seasar.doma.internal.apt.dao.ProcedureAbstractEntityListDao;
+import org.seasar.doma.internal.apt.dao.SelectAbstractEntityDao;
+import org.seasar.doma.internal.apt.dao.SelectAbstractEntityListDao;
 import org.seasar.doma.internal.apt.dao.SqlFileBatchUpdateDao;
 import org.seasar.doma.internal.apt.dao.SqlFileInsertDao;
 import org.seasar.doma.internal.apt.dao.SqlFileSelectBasicDao;
@@ -519,5 +523,45 @@ public class DaoProcessorTest extends AptTestCase {
         compile();
         assertGeneratedSource(target);
         assertTrue(getCompiledResult());
+    }
+
+    public void testSelectAbstractEntity() throws Exception {
+        Class<?> target = SelectAbstractEntityDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessageCode(Message.DOMA4154);
+    }
+
+    public void testSelectAbstractEntityList() throws Exception {
+        Class<?> target = SelectAbstractEntityListDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessageCode(Message.DOMA4155);
+    }
+
+    public void testFunctionAbstractEntityList() throws Exception {
+        Class<?> target = FunctionAbstractEntityListDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessageCode(Message.DOMA4156);
+    }
+
+    public void testProcedureAbstractEntityList() throws Exception {
+        Class<?> target = ProcedureAbstractEntityListDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessageCode(Message.DOMA4157);
     }
 }
