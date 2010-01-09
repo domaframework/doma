@@ -144,9 +144,13 @@ public class SelectStatementNode extends AbstractSqlNode {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
+        buf.append("[");
+        buf.append(getClass().getSimpleName());
+        buf.append(" ");
         for (SqlNode child : children) {
             buf.append(child);
         }
+        buf.append("]");
         return buf.toString();
     }
 

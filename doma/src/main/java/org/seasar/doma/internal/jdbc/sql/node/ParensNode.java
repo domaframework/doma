@@ -87,6 +87,9 @@ public class ParensNode extends AbstractSqlNode {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
+        buf.append("[");
+        buf.append(getClass().getSimpleName());
+        buf.append(" ");
         if (openedParensNode != null) {
             buf.append(openedParensNode);
         }
@@ -96,6 +99,7 @@ public class ParensNode extends AbstractSqlNode {
         if (closedParensNode != null) {
             buf.append(closedParensNode);
         }
+        buf.append("]");
         return buf.toString();
     }
 }

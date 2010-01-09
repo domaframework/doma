@@ -64,10 +64,14 @@ public class LogicalOperatorNode extends AbstractSqlNode {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
+        buf.append("[");
+        buf.append(getClass().getSimpleName());
+        buf.append(" ");
         buf.append(wordNode);
         for (SqlNode child : children) {
             buf.append(child);
         }
+        buf.append("]");
         return buf.toString();
     }
 }

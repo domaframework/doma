@@ -59,7 +59,6 @@ public class SqlParserTest extends TestCase {
                 .getRawSql());
         assertEquals("select * from aaa where ename = 'hoge' and sal = 10000",
                 sql.getFormattedSql());
-        assertEquals(testSql, sqlNode.toString());
         assertEquals(2, sql.getParameters().size());
         assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
         assertEquals(new BigDecimal(10000), sql.getParameters().get(1)
@@ -78,7 +77,6 @@ public class SqlParserTest extends TestCase {
         assertEquals("select * from aaa where phone = ?", sql.getRawSql());
         assertEquals("select * from aaa where phone = '01-2345-6789'", sql
                 .getFormattedSql());
-        assertEquals(testSql, sqlNode.toString());
         assertEquals(1, sql.getParameters().size());
         assertEquals("01-2345-6789", sql.getParameters().get(0).getWrapper()
                 .get());
@@ -96,7 +94,6 @@ public class SqlParserTest extends TestCase {
         assertEquals("select * from aaa where ename in (?, ?)", sql.getRawSql());
         assertEquals("select * from aaa where ename in ('hoge', 'foo')", sql
                 .getFormattedSql());
-        assertEquals(testSql, sqlNode.toString());
         assertEquals(2, sql.getParameters().size());
         assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
         assertEquals("foo", sql.getParameters().get(1).getWrapper().get());
@@ -142,7 +139,6 @@ public class SqlParserTest extends TestCase {
                 .getRawSql());
         assertEquals("select * from aaa where ename = 'BBB' and sal = 10000",
                 sql.getFormattedSql());
-        assertEquals(testSql, sqlNode.toString());
         assertEquals(2, sql.getParameters().size());
         assertEquals(MyEnum.BBB, sql.getParameters().get(0).getWrapper().get());
         assertEquals(new BigDecimal(10000), sql.getParameters().get(1)
@@ -167,7 +163,6 @@ public class SqlParserTest extends TestCase {
         assertEquals(
                 "select * from aaa where ename = 'hoge' and sal = 10000 order by name asc, salary",
                 sql.getFormattedSql());
-        assertEquals(testSql, sqlNode.toString());
         assertEquals(2, sql.getParameters().size());
         assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
         assertEquals(new BigDecimal(10000), sql.getParameters().get(1)
@@ -197,7 +192,6 @@ public class SqlParserTest extends TestCase {
         assertEquals("select * from aaa where bbb = ?", sql.getRawSql());
         assertEquals("select * from aaa where bbb = 'hoge'", sql
                 .getFormattedSql());
-        assertEquals(testSql, sqlNode.toString());
         assertEquals(1, sql.getParameters().size());
         assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
     }
@@ -212,7 +206,6 @@ public class SqlParserTest extends TestCase {
                 "dummyPath", evaluator).build(sqlNode);
         assertEquals("select * from aaa", sql.getRawSql());
         assertEquals("select * from aaa", sql.getFormattedSql());
-        assertEquals(testSql, sqlNode.toString());
         assertEquals(0, sql.getParameters().size());
     }
 
@@ -228,7 +221,6 @@ public class SqlParserTest extends TestCase {
                 .getRawSql());
         assertEquals("select * from aaa where bbb = 'hoge' and ddd = eee", sql
                 .getFormattedSql());
-        assertEquals(testSql, sqlNode.toString());
         assertEquals(1, sql.getParameters().size());
     }
 
@@ -243,7 +235,6 @@ public class SqlParserTest extends TestCase {
                 "dummyPath", evaluator).build(sqlNode);
         assertEquals("select * from aaa", sql.getRawSql());
         assertEquals("select * from aaa", sql.getFormattedSql());
-        assertEquals(testSql, sqlNode.toString());
         assertEquals(0, sql.getParameters().size());
     }
 
@@ -257,7 +248,6 @@ public class SqlParserTest extends TestCase {
                 "dummyPath", evaluator).build(sqlNode);
         assertEquals("select * from aaa where bbb = ?", sql.getRawSql());
         assertEquals("select * from aaa where bbb = ''", sql.getFormattedSql());
-        assertEquals(testSql, sqlNode.toString());
         assertEquals(1, sql.getParameters().size());
         assertEquals("", sql.getParameters().get(0).getWrapper().get());
     }
@@ -273,7 +263,6 @@ public class SqlParserTest extends TestCase {
         assertEquals("select * from aaa where  bbb = ?", sql.getRawSql());
         assertEquals("select * from aaa where  bbb = 'hoge'", sql
                 .getFormattedSql());
-        assertEquals(testSql, sqlNode.toString());
         assertEquals(1, sql.getParameters().size());
         assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
     }
@@ -287,7 +276,6 @@ public class SqlParserTest extends TestCase {
                 "dummyPath", evaluator).build(sqlNode);
         assertEquals("select * from aaa union all select * from bbb", sql
                 .getRawSql());
-        assertEquals(testSql, sqlNode.toString());
     }
 
     public void testSelect() throws Exception {
@@ -305,7 +293,6 @@ public class SqlParserTest extends TestCase {
         assertEquals(
                 "select aaa.deptname, count(*) from aaa join bbb on aaa.id = bbb.id where aaa.name = 'hoge' group by aaa.deptname having count(*) > 5 order by aaa.name for update bbb",
                 sql.getFormattedSql());
-        assertEquals(testSql, sqlNode.toString());
         assertEquals(2, sql.getParameters().size());
         assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
         assertEquals(new Integer(5), sql.getParameters().get(1).getWrapper()
@@ -327,7 +314,6 @@ public class SqlParserTest extends TestCase {
         assertEquals(
                 "update aaa set no = 10, set name = 'hoge' where id = 100", sql
                         .getFormattedSql());
-        assertEquals(testSql, sqlNode.toString());
         assertEquals(3, sql.getParameters().size());
         assertEquals(new Integer(10), sql.getParameters().get(0).getWrapper()
                 .get());
@@ -354,7 +340,6 @@ public class SqlParserTest extends TestCase {
         assertEquals(
                 "select * from aaa where name = 'aaa' or name = 'bbb' or name = 'ccc'",
                 sql.getFormattedSql());
-        assertEquals(testSql, sqlNode.toString());
         assertEquals(3, sql.getParameters().size());
         assertEquals("aaa", sql.getParameters().get(0).getWrapper().get());
         assertEquals("bbb", sql.getParameters().get(1).getWrapper().get());

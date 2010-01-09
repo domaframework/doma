@@ -93,9 +93,6 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         PreparedSql sql = builder.build(root);
         assertEquals("select * from aaa where bbb = ? and ccc = ?", sql
                 .getRawSql());
-        assertEquals(
-                "select * from aaa where bbb = /*#name*/'hoge' and ccc = /*#salary*/100",
-                root.toString());
         assertEquals(2, sql.getParameters().size());
         assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
         assertEquals(new BigDecimal(100), sql.getParameters().get(1)
@@ -132,8 +129,6 @@ public class NodePreparedSqlBuilderTest extends TestCase {
                 SqlKind.SELECT, "dummyPath", evaluator);
         PreparedSql sql = builder.build(statement);
         assertEquals("select * from aaa where bbb = ccc", sql.getRawSql());
-        assertEquals("select * from aaa where /*if true*/bbb = ccc/*end*/",
-                root.toString());
     }
 
     public void testIfNode_false() throws Exception {
@@ -166,8 +161,6 @@ public class NodePreparedSqlBuilderTest extends TestCase {
                 SqlKind.SELECT, "dummyPath", evaluator);
         PreparedSql sql = builder.build(statement);
         assertEquals("select * from aaa", sql.getRawSql());
-        assertEquals("select * from aaa where /*if false*/bbb = ccc/*end*/",
-                root.toString());
     }
 
     public void testElseNode() throws Exception {
@@ -206,9 +199,6 @@ public class NodePreparedSqlBuilderTest extends TestCase {
                 SqlKind.SELECT, "dummyPath", evaluator);
         PreparedSql sql = builder.build(statement);
         assertEquals("select * from aaa where ddd = eee", sql.getRawSql());
-        assertEquals(
-                "select * from aaa where /*if false*/bbb = ccc/*else*/ddd = eee/*end*/",
-                root.toString());
     }
 
     public void testAndNode() throws Exception {
@@ -256,9 +246,6 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         PreparedSql sql = builder.build(statement);
         assertEquals("select * from aaa where bbb = ccc and ddd = eee", sql
                 .getRawSql());
-        assertEquals(
-                "select * from aaa where/*if true*/ bbb = ccc/*end*//*if true*/ and ddd = eee/*end*/",
-                root.toString());
     }
 
     public void testAndNode_remove() throws Exception {
@@ -305,9 +292,6 @@ public class NodePreparedSqlBuilderTest extends TestCase {
                 SqlKind.SELECT, "dummyPath", evaluator);
         PreparedSql sql = builder.build(statement);
         assertEquals("select * from aaa where  ddd = eee", sql.getRawSql());
-        assertEquals(
-                "select * from aaa where/*if false*/ bbb = ccc/*end*//*if true*/ and ddd = eee/*end*/",
-                root.toString());
     }
 
     public void testEmbeddedVariable_containsSingleQuote() throws Exception {

@@ -65,6 +65,12 @@ public class FragmentNode extends AbstractSqlNode {
 
     @Override
     public String toString() {
-        return fragment;
+        StringBuilder buf = new StringBuilder();
+        buf.append("[");
+        buf.append(getClass().getSimpleName());
+        buf.append(" ");
+        buf.append(fragment);
+        buf.append("]");
+        return buf.toString();
     }
 }

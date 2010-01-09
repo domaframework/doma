@@ -65,7 +65,13 @@ public class WordNode extends AbstractSqlNode {
 
     @Override
     public String toString() {
-        return word;
+        StringBuilder buf = new StringBuilder();
+        buf.append("[");
+        buf.append(getClass().getSimpleName());
+        buf.append(" ");
+        buf.append(word);
+        buf.append("]");
+        return buf.toString();
     }
 
 }

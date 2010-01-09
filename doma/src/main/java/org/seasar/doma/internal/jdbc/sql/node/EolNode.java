@@ -61,6 +61,10 @@ public class EolNode extends AbstractSqlNode {
 
     @Override
     public String toString() {
-        return eol;
+        StringBuilder buf = new StringBuilder();
+        buf.append("[");
+        buf.append(getClass().getSimpleName());
+        buf.append("]");
+        return buf.toString();
     }
 }

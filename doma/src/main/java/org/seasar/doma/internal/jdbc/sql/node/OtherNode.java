@@ -80,7 +80,13 @@ public class OtherNode extends AbstractSqlNode {
 
     @Override
     public String toString() {
-        return other;
+        StringBuilder buf = new StringBuilder();
+        buf.append("[");
+        buf.append(getClass().getSimpleName());
+        buf.append(" ");
+        buf.append(other);
+        buf.append("]");
+        return buf.toString();
     }
 
     public static OtherNode of(String other) {

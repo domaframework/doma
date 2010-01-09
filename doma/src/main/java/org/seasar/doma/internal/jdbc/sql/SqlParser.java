@@ -613,7 +613,7 @@ public class SqlParser {
             node.accept(this, null);
         }
 
-        protected void optimizeChildren(SqlNode node) {
+        protected void optimizeSqlNodeChildren(SqlNode node) {
             List<SqlNode> children = new ArrayList<SqlNode>(node.getChildren());
             node.getChildren().clear();
 
@@ -652,91 +652,91 @@ public class SqlParser {
 
         @Override
         public Void visitSelectClauseNode(SelectClauseNode node, Void p) {
-            optimizeChildren(node);
+            optimizeSqlNodeChildren(node);
             return null;
         }
 
         @Override
         public Void visitAnonymousNode(AnonymousNode node, Void p) {
-            optimizeChildren(node);
+            optimizeSqlNodeChildren(node);
             return null;
         }
 
         @Override
         public Void visitParensNode(ParensNode node, Void p) {
-            optimizeChildren(node);
+            optimizeSqlNodeChildren(node);
             return null;
         }
 
         @Override
         public Void visitIfNode(IfNode node, Void p) {
-            optimizeChildren(node);
+            optimizeSqlNodeChildren(node);
             return null;
         }
 
         @Override
         public Void visitEndNode(EndNode node, Void p) {
-            optimizeChildren(node);
+            optimizeSqlNodeChildren(node);
             return null;
         }
 
         @Override
         public Void visitFromClauseNode(FromClauseNode node, Void p) {
-            optimizeChildren(node);
+            optimizeSqlNodeChildren(node);
             return null;
         }
 
         @Override
         public Void visitForNode(ForNode node, Void p) {
-            optimizeChildren(node);
+            optimizeSqlNodeChildren(node);
             return null;
         }
 
         @Override
         public Void visitHavingClauseNode(HavingClauseNode node, Void p) {
-            optimizeChildren(node);
+            optimizeSqlNodeChildren(node);
             return null;
         }
 
         @Override
         public Void visitWhereClauseNode(WhereClauseNode node, Void p) {
-            optimizeChildren(node);
+            optimizeSqlNodeChildren(node);
             return null;
         }
 
         @Override
         public Void visitLogicalOperatorNode(LogicalOperatorNode node, Void p) {
-            optimizeChildren(node);
+            optimizeSqlNodeChildren(node);
             return null;
         }
 
         @Override
         public Void visitEolNode(EolNode node, Void p) {
-            optimizeChildren(node);
+            optimizeSqlNodeChildren(node);
             return null;
         }
 
         @Override
         public Void visitElseifNode(ElseifNode node, Void p) {
-            optimizeChildren(node);
+            optimizeSqlNodeChildren(node);
             return null;
         }
 
         @Override
         public Void visitForUpdateClauseNode(ForUpdateClauseNode node, Void p) {
-            optimizeChildren(node);
+            optimizeSqlNodeChildren(node);
             return null;
         }
 
         @Override
         public Void visitGroupByClauseNode(GroupByClauseNode node, Void p) {
-            optimizeChildren(node);
+            optimizeSqlNodeChildren(node);
             return null;
         }
 
         @Override
         public Void visitElseNode(ElseNode node, Void p) {
-            optimizeChildren(node);
+            optimizeSqlNodeChildren(node);
             return null;
         }
 

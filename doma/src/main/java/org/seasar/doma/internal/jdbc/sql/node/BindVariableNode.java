@@ -116,6 +116,9 @@ public class BindVariableNode extends AbstractSqlNode {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
+        buf.append("[");
+        buf.append(getClass().getSimpleName());
+        buf.append(" ");
         buf.append(text);
         for (SqlNode child : children) {
             buf.append(child);
@@ -125,6 +128,7 @@ public class BindVariableNode extends AbstractSqlNode {
         } else if (parensNode != null) {
             buf.append(parensNode);
         }
+        buf.append("]");
         return buf.toString();
     }
 

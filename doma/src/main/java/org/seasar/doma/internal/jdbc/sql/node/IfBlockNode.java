@@ -129,6 +129,9 @@ public class IfBlockNode extends AbstractSqlNode implements BlockNode {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
+        buf.append("[");
+        buf.append(getClass().getSimpleName());
+        buf.append(" ");
         if (ifNode != null) {
             buf.append(ifNode);
         }
@@ -141,6 +144,7 @@ public class IfBlockNode extends AbstractSqlNode implements BlockNode {
         if (endNode != null) {
             buf.append(endNode);
         }
+        buf.append("]");
         return buf.toString();
     }
 
