@@ -43,7 +43,6 @@ public class FragmentNode extends AbstractSqlNode {
     public void addNode(SqlNode child) {
         throw new JdbcUnsupportedOperationException(getClass().getName(),
                 "addNode");
-
     }
 
     @Override

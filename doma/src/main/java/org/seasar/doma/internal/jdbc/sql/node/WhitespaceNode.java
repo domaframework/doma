@@ -25,32 +25,33 @@ import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
-public class OtherNode extends AbstractSqlNode {
+public class WhitespaceNode extends AbstractSqlNode {
 
-    protected static final Map<String, OtherNode> otherNodeMap = new HashMap<String, OtherNode>();
+    protected static final Map<String, WhitespaceNode> nodeMap = new HashMap<String, WhitespaceNode>();
     static {
-        otherNodeMap.put(",", new OtherNode(","));
-        otherNodeMap.put("=", new OtherNode("="));
-        otherNodeMap.put(">", new OtherNode(">"));
-        otherNodeMap.put("<", new OtherNode("<"));
-        otherNodeMap.put("-", new OtherNode("-"));
-        otherNodeMap.put("+", new OtherNode("+"));
-        otherNodeMap.put("*", new OtherNode("*"));
-        otherNodeMap.put("/", new OtherNode("/"));
-        otherNodeMap.put("(", new OtherNode("("));
-        otherNodeMap.put(")", new OtherNode(")"));
-        otherNodeMap.put(";", new OtherNode(";"));
+        nodeMap.put(String.valueOf('\u0009'), new WhitespaceNode('\u0009'));
+        nodeMap.put(String.valueOf('\u000B'), new WhitespaceNode('\u000B'));
+        nodeMap.put(String.valueOf('\u000C'), new WhitespaceNode('\u000C'));
+        nodeMap.put(String.valueOf('\u001C'), new WhitespaceNode('\u001C'));
+        nodeMap.put(String.valueOf('\u001D'), new WhitespaceNode('\u001D'));
+        nodeMap.put(String.valueOf('\u001E'), new WhitespaceNode('\u001E'));
+        nodeMap.put(String.valueOf('\u001F'), new WhitespaceNode('\u001F'));
+        nodeMap.put(String.valueOf('\u0020'), new WhitespaceNode('\u0020'));
     }
 
-    protected final String other;
+    protected final String whitespace;
 
-    private OtherNode(String other) {
-        assertNotNull(other);
-        this.other = other;
+    private WhitespaceNode(char whitespace) {
+        this(String.valueOf(whitespace));
     }
 
-    public String getOther() {
-        return other;
+    private WhitespaceNode(String whitespace) {
+        assertNotNull(whitespace);
+        this.whitespace = whitespace;
+    }
+
+    public String getWhitespace() {
+        return whitespace;
     }
 
     @Override
@@ -61,7 +62,7 @@ public class OtherNode extends AbstractSqlNode {
     }
 
     @Override
-    public OtherNode copy() {
+    public WhitespaceNode copy() {
         return this;
     }
 
@@ -70,25 +71,25 @@ public class OtherNode extends AbstractSqlNode {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
         }
-        if (visitor instanceof OtherNodeVisitor<?, ?>) {
+        if (visitor instanceof WhitespaceNodeVisitor<?, ?>) {
             @SuppressWarnings("unchecked")
-            OtherNodeVisitor<R, P> v = (OtherNodeVisitor) visitor;
-            return v.visitOtherNode(this, p);
+            WhitespaceNodeVisitor<R, P> v = (WhitespaceNodeVisitor) visitor;
+            return v.visitWhitespaceNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);
     }
 
     @Override
     public String toString() {
-        return other;
+        return whitespace;
     }
 
-    public static OtherNode of(String other) {
-        OtherNode otherNode = otherNodeMap.get(other);
-        if (otherNode != null) {
-            return otherNode;
+    public static WhitespaceNode of(String whitespace) {
+        WhitespaceNode whitespaceNode = nodeMap.get(whitespace);
+        if (whitespaceNode != null) {
+            return whitespaceNode;
         }
-        return new OtherNode(other);
+        return new WhitespaceNode(whitespace);
     }
 
 }

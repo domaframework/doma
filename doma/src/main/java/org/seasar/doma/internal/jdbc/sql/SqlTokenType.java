@@ -126,6 +126,8 @@ public enum SqlTokenType {
 
     OTHER,
 
+    WHITESPACE,
+
     EOL,
 
     EOF;

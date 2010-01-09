@@ -155,8 +155,7 @@ public class SqlTokenizer {
     protected void peekTenChars(char c, char c2, char c3, char c4, char c5,
             char c6, char c7, char c8, char c9, char c10) {
         if ((c == 'f' || c == 'F') && (c2 == 'o' || c2 == 'O')
-                && (c3 == 'r' || c3 == 'R')
-                && (Character.isWhitespace(c4) && (c4 != '\r' && c4 != '\n'))
+                && (c3 == 'r' || c3 == 'R') && (isWhitespace(c4))
                 && (c5 == 'u' || c5 == 'U') && (c6 == 'p' || c6 == 'P')
                 && (c7 == 'd' || c7 == 'D') && (c8 == 'a' || c8 == 'A')
                 && (c9 == 't' || c9 == 'T') && (c10 == 'e' || c10 == 'E')) {
@@ -207,8 +206,7 @@ public class SqlTokenizer {
             }
         } else if ((c == 'g' || c == 'G') && (c2 == 'r' || c2 == 'R')
                 && (c3 == 'o' || c3 == 'O') && (c4 == 'u' || c4 == 'U')
-                && (c5 == 'p' || c5 == 'P')
-                && (Character.isWhitespace(c6) && (c6 != '\r' && c6 != '\n'))
+                && (c5 == 'p' || c5 == 'P') && (isWhitespace(c6))
                 && (c7 == 'b' || c7 == 'B') && (c8 == 'y' || c8 == 'Y')) {
             type = GROUP_BY_WORD;
             if (isWordTerminated()) {
@@ -216,8 +214,7 @@ public class SqlTokenizer {
             }
         } else if ((c == 'o' || c == 'O') && (c2 == 'r' || c2 == 'R')
                 && (c3 == 'd' || c3 == 'D') && (c4 == 'e' || c4 == 'E')
-                && (c5 == 'r' || c5 == 'R')
-                && (Character.isWhitespace(c6) && (c6 != '\r' && c6 != '\n'))
+                && (c5 == 'r' || c5 == 'R') && (Character.isWhitespace(c6))
                 && (c7 == 'b' || c7 == 'B') && (c8 == 'y' || c8 == 'Y')) {
             type = ORDER_BY_WORD;
             if (isWordTerminated()) {
@@ -409,7 +406,9 @@ public class SqlTokenizer {
     }
 
     protected void peekOneChar(char c) {
-        if (c == '(') {
+        if (isWhitespace(c)) {
+            type = WHITESPACE;
+        } else if (c == '(') {
             type = OPENED_PARENS;
         } else if (c == ')') {
             type = CLOSED_PARENS;
@@ -450,7 +449,6 @@ public class SqlTokenizer {
         } else if (c == '\r' || c == '\n') {
             type = EOL;
             currentLineNumber++;
-            return;
         } else {
             type = OTHER;
         }
@@ -467,7 +465,7 @@ public class SqlTokenizer {
                 }
             }
         }
-        return !isOther(c);
+        return isWordPart(c);
     }
 
     protected boolean isWordTerminated() {
@@ -475,7 +473,7 @@ public class SqlTokenizer {
         if (buf.hasRemaining()) {
             char c = buf.get();
             buf.reset();
-            if (isOther(c)) {
+            if (!isWordPart(c)) {
                 return true;
             }
         } else {
@@ -489,7 +487,7 @@ public class SqlTokenizer {
         if (buf.hasRemaining()) {
             char c = buf.get();
             buf.reset();
-            if (isOther(c) || c == '*') {
+            if (!isWordPart(c)) {
                 return true;
             }
         } else {
@@ -498,9 +496,42 @@ public class SqlTokenizer {
         return false;
     }
 
-    protected boolean isOther(char c) {
-        return Character.isWhitespace(c) || c == '=' || c == '<' || c == '>'
-                || c == '-' || c == ',' || c == '/' || c == '+' || c == '('
-                || c == ')' || c == ';';
+    protected boolean isWordPart(char c) {
+        if (Character.isWhitespace(c)) {
+            return false;
+        }
+        switch (c) {
+        case '=':
+        case '<':
+        case '>':
+        case '-':
+        case ',':
+        case '/':
+        case '*':
+        case '+':
+        case '(':
+        case ')':
+        case ';':
+            return false;
+        default:
+            return true;
+        }
     }
+
+    protected boolean isWhitespace(char c) {
+        switch (c) {
+        case '\u0009':
+        case '\u000B':
+        case '\u000C':
+        case '\u001C':
+        case '\u001D':
+        case '\u001E':
+        case '\u001F':
+        case '\u0020':
+            return true;
+        default:
+            return false;
+        }
+    }
+
 }

@@ -75,6 +75,8 @@ import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
 import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNodeVisitor;
+import org.seasar.doma.internal.jdbc.sql.node.WhitespaceNode;
+import org.seasar.doma.internal.jdbc.sql.node.WhitespaceNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.WordNode;
 import org.seasar.doma.internal.jdbc.sql.node.WordNodeVisitor;
 import org.seasar.doma.internal.message.Message;
@@ -118,6 +120,7 @@ public class NodePreparedSqlBuilder implements
         SelectClauseNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         SelectStatementNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         WhereClauseNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
+        WhitespaceNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         WordNodeVisitor<Void, NodePreparedSqlBuilder.Context> {
 
     protected final Config config;
@@ -161,9 +164,18 @@ public class NodePreparedSqlBuilder implements
 
     @Override
     public Void visitOtherNode(OtherNode node, Context p) {
+        p.setAvailable(true);
         String other = node.getOther();
         p.appendRawSql(other);
         p.appendFormattedSql(other);
+        return null;
+    }
+
+    @Override
+    public Void visitWhitespaceNode(WhitespaceNode node, Context p) {
+        String whitespace = node.getWhitespace();
+        p.appendRawSql(whitespace);
+        p.appendFormattedSql(whitespace);
         return null;
     }
 
@@ -399,33 +411,8 @@ public class NodePreparedSqlBuilder implements
 
     @Override
     public Void visitSelectStatementNode(SelectStatementNode node, Context p) {
-        SelectClauseNode selectClauseNode = node.getSelectClauseNode();
-        if (selectClauseNode != null) {
-            selectClauseNode.accept(this, p);
-        }
-        FromClauseNode fromClauseNode = node.getFromClauseNode();
-        if (fromClauseNode != null) {
-            fromClauseNode.accept(this, p);
-        }
-        WhereClauseNode whereClauseNode = node.getWhereClauseNode();
-        if (whereClauseNode != null) {
-            whereClauseNode.accept(this, p);
-        }
-        GroupByClauseNode groupByClauseNode = node.getGroupByClauseNode();
-        if (groupByClauseNode != null) {
-            groupByClauseNode.accept(this, p);
-        }
-        HavingClauseNode havingClauseNode = node.getHavingClauseNode();
-        if (havingClauseNode != null) {
-            havingClauseNode.accept(this, p);
-        }
-        OrderByClauseNode orderByClauseNode = node.getOrderByClauseNode();
-        if (orderByClauseNode != null) {
-            orderByClauseNode.accept(this, p);
-        }
-        ForUpdateClauseNode forUpdateClauseNode = node.getForUpdateClauseNode();
-        if (forUpdateClauseNode != null) {
-            forUpdateClauseNode.accept(this, p);
+        for (SqlNode child : node.getChildren()) {
+            child.accept(this, p);
         }
         return null;
     }

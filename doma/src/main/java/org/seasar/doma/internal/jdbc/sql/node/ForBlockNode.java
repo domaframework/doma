@@ -66,8 +66,12 @@ public class ForBlockNode extends AbstractSqlNode implements BlockNode {
     @Override
     public ForBlockNode copy() {
         ForBlockNode clone = new ForBlockNode();
-        clone.forNode = forNode.copy();
-        clone.endNode = endNode.copy();
+        if (forNode != null) {
+            clone.forNode = forNode.copy();
+        }
+        if (endNode != null) {
+            clone.endNode = endNode.copy();
+        }
         for (SqlNode child : children) {
             clone.addNodeInternal(child.copy());
         }
@@ -90,8 +94,12 @@ public class ForBlockNode extends AbstractSqlNode implements BlockNode {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
-        buf.append(forNode);
-        buf.append(endNode);
+        if (forNode != null) {
+            buf.append(forNode);
+        }
+        if (endNode != null) {
+            buf.append(endNode);
+        }
         return buf.toString();
     }
 

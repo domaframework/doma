@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.internal.jdbc.sql.node;
 
+import static org.seasar.doma.internal.util.AssertionUtil.*;
+
 import org.seasar.doma.jdbc.SqlNode;
 
 /**
@@ -31,6 +33,7 @@ public abstract class AbstractClauseNode extends AbstractSqlNode implements
     }
 
     protected AbstractClauseNode(WordNode wordNode) {
+        assertNotNull(wordNode);
         this.wordNode = wordNode;
     }
 

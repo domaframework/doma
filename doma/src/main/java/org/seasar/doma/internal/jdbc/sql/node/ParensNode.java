@@ -59,8 +59,12 @@ public class ParensNode extends AbstractSqlNode {
     public ParensNode copy() {
         ParensNode clone = new ParensNode();
         clone.attachedWithBindVariable = attachedWithBindVariable;
-        clone.openedParensNode = openedParensNode.copy();
-        clone.closedParensNode = closedParensNode.copy();
+        if (openedParensNode != null) {
+            clone.openedParensNode = openedParensNode.copy();
+        }
+        if (closedParensNode != null) {
+            clone.closedParensNode = closedParensNode.copy();
+        }
         for (SqlNode child : children) {
             clone.addNode(child.copy());
         }
@@ -83,11 +87,15 @@ public class ParensNode extends AbstractSqlNode {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
-        buf.append(openedParensNode);
+        if (openedParensNode != null) {
+            buf.append(openedParensNode);
+        }
         for (SqlNode child : children) {
             buf.append(child);
         }
-        buf.append(closedParensNode);
+        if (closedParensNode != null) {
+            buf.append(closedParensNode);
+        }
         return buf.toString();
     }
 }

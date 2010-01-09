@@ -95,14 +95,18 @@ public class IfBlockNode extends AbstractSqlNode implements BlockNode {
     @Override
     public IfBlockNode copy() {
         IfBlockNode clone = new IfBlockNode();
-        clone.ifNode = ifNode.copy();
+        if (ifNode != null) {
+            clone.ifNode = ifNode.copy();
+        }
         for (ElseifNode elseifNode : elseifNodes) {
             clone.elseifNodes.add(elseifNode.copy());
         }
         if (elseNode != null) {
             clone.elseNode = elseNode.copy();
         }
-        clone.endNode = endNode.copy();
+        if (endNode != null) {
+            clone.endNode = endNode.copy();
+        }
         for (SqlNode child : children) {
             clone.addNodeInternal(child.copy());
         }
@@ -125,14 +129,18 @@ public class IfBlockNode extends AbstractSqlNode implements BlockNode {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
-        buf.append(ifNode);
+        if (ifNode != null) {
+            buf.append(ifNode);
+        }
         for (ElseifNode elseIfNode : elseifNodes) {
             buf.append(elseIfNode);
         }
         if (elseNode != null) {
             buf.append(elseNode);
         }
-        buf.append(endNode);
+        if (endNode != null) {
+            buf.append(endNode);
+        }
         return buf.toString();
     }
 
