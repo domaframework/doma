@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.internal.jdbc.sql.node;
 
+import static org.seasar.doma.internal.util.AssertionUtil.*;
+
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
@@ -25,13 +27,17 @@ import org.seasar.doma.jdbc.SqlNodeVisitor;
  */
 public class ParensNode extends AbstractSqlNode {
 
+    protected final SqlLocation location;
+
     protected boolean attachedWithBindVariable;
 
     protected OtherNode openedParensNode;
 
     protected OtherNode closedParensNode;
 
-    public ParensNode() {
+    public ParensNode(SqlLocation location) {
+        assertNotNull(location);
+        this.location = location;
         openedParensNode = OtherNode.of("(");
     }
 
@@ -51,13 +57,17 @@ public class ParensNode extends AbstractSqlNode {
         return closedParensNode;
     }
 
+    public SqlLocation getLocation() {
+        return location;
+    }
+
     public void close() {
         closedParensNode = OtherNode.of(")");
     }
 
     @Override
     public ParensNode copy() {
-        ParensNode clone = new ParensNode();
+        ParensNode clone = new ParensNode(location);
         clone.attachedWithBindVariable = attachedWithBindVariable;
         if (openedParensNode != null) {
             clone.openedParensNode = openedParensNode.copy();

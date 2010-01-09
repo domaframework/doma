@@ -97,11 +97,8 @@ public class ForBlockNode extends AbstractSqlNode implements BlockNode {
         buf.append("[");
         buf.append(getClass().getSimpleName());
         buf.append(" ");
-        if (forNode != null) {
-            buf.append(forNode);
-        }
-        if (endNode != null) {
-            buf.append(endNode);
+        for (SqlNode child : children) {
+            buf.append(child);
         }
         buf.append("]");
         return buf.toString();

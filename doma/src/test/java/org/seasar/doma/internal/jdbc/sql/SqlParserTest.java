@@ -346,6 +346,40 @@ public class SqlParserTest extends TestCase {
         assertEquals("ccc", sql.getParameters().get(2).getWrapper().get());
     }
 
+    public void testValidate_ifEnd() throws Exception {
+        SqlParser parser = new SqlParser("select * from aaa /*%if true*/");
+        try {
+            parser.parse();
+            fail();
+        } catch (JdbcException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(Message.DOMA2133, expected.getMessageResource());
+        }
+    }
+
+    public void testValidate_forEnd() throws Exception {
+        SqlParser parser = new SqlParser(
+                "select * from aaa /*%for name : names*/");
+        try {
+            parser.parse();
+            fail();
+        } catch (JdbcException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(Message.DOMA2134, expected.getMessageResource());
+        }
+    }
+
+    public void testValidate_closedParens() throws Exception {
+        SqlParser parser = new SqlParser("select * from (select * from bbb");
+        try {
+            parser.parse();
+            fail();
+        } catch (JdbcException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(Message.DOMA2135, expected.getMessageResource());
+        }
+    }
+
     public void testOptimizer() throws Exception {
         AnonymousNode node = new AnonymousNode();
         node.addNode(WhitespaceNode.of(" "));

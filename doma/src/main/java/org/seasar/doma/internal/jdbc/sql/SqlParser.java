@@ -193,7 +193,6 @@ public class SqlParser {
             }
             case DELIMITER:
             case EOF: {
-                validateTermination();
                 break outer;
             }
             default: {
@@ -202,7 +201,8 @@ public class SqlParser {
             }
             }
         }
-        new Optimizer().optimize(rootNode);
+        validate();
+        optimize();
         return rootNode;
     }
 
@@ -311,7 +311,7 @@ public class SqlParser {
     }
 
     protected void parseOpenedParens() {
-        ParensNode parensNode = new ParensNode();
+        ParensNode parensNode = new ParensNode(getLocation());
         addNode(parensNode);
         push(parensNode);
     }
@@ -568,15 +568,6 @@ public class SqlParser {
         }
     }
 
-    protected void validateTermination() {
-        if (isAfterBindVariableNode()) {
-            BindVariableNode bindVariableNode = pop();
-            throw new JdbcException(Message.DOMA2110, sql, tokenizer
-                    .getLineNumber(), tokenizer.getPosition(), bindVariableNode
-                    .getText());
-        }
-    }
-
     protected void push(SqlNode node) {
         nodeStack.push(node);
     }
@@ -596,6 +587,40 @@ public class SqlParser {
                 .getPosition());
     }
 
+    protected void validate() {
+        if (isAfterBindVariableNode()) {
+            BindVariableNode bindVariableNode = pop();
+            throw new JdbcException(Message.DOMA2110, sql, tokenizer
+                    .getLineNumber(), tokenizer.getPosition(), bindVariableNode
+                    .getText());
+        }
+        if (isInIfBlockNode()) {
+            removeNodesTo(IfBlockNode.class);
+            IfBlockNode ifBlockNode = pop();
+            SqlLocation location = ifBlockNode.getIfNode().getLocation();
+            throw new JdbcException(Message.DOMA2133, sql, location
+                    .getLineNumber(), location.getPosition());
+        }
+        if (isInForBlockNode()) {
+            removeNodesTo(ForBlockNode.class);
+            ForBlockNode forBlockNode = pop();
+            SqlLocation location = forBlockNode.getForNode().getLocation();
+            throw new JdbcException(Message.DOMA2134, sql, location
+                    .getLineNumber(), location.getPosition());
+        }
+        if (isInParensNode()) {
+            removeNodesTo(ParensNode.class);
+            ParensNode parensNode = pop();
+            SqlLocation location = parensNode.getLocation();
+            throw new JdbcException(Message.DOMA2135, sql, location
+                    .getLineNumber(), location.getPosition());
+        }
+    }
+
+    protected void optimize() {
+        rootNode.accept(new Optimizer(), null);
+    }
+
     protected static class Optimizer implements
             SelectStatementNodeVisitor<Void, Void>,
             SelectClauseNodeVisitor<Void, Void>,
@@ -609,11 +634,7 @@ public class SqlParser {
             EndNodeVisitor<Void, Void>, AnonymousNodeVisitor<Void, Void>,
             ParensNodeVisitor<Void, Void>, EolNodeVisitor<Void, Void> {
 
-        public void optimize(SqlNode node) {
-            node.accept(this, null);
-        }
-
-        protected void optimizeSqlNodeChildren(SqlNode node) {
+        protected void optimize(SqlNode node) {
             List<SqlNode> children = new ArrayList<SqlNode>(node.getChildren());
             node.getChildren().clear();
 
@@ -652,91 +673,91 @@ public class SqlParser {
 
         @Override
         public Void visitSelectClauseNode(SelectClauseNode node, Void p) {
-            optimizeSqlNodeChildren(node);
+            optimize(node);
             return null;
         }
 
         @Override
         public Void visitAnonymousNode(AnonymousNode node, Void p) {
-            optimizeSqlNodeChildren(node);
+            optimize(node);
             return null;
         }
 
         @Override
         public Void visitParensNode(ParensNode node, Void p) {
-            optimizeSqlNodeChildren(node);
+            optimize(node);
             return null;
         }
 
         @Override
         public Void visitIfNode(IfNode node, Void p) {
-            optimizeSqlNodeChildren(node);
+            optimize(node);
             return null;
         }
 
         @Override
         public Void visitEndNode(EndNode node, Void p) {
-            optimizeSqlNodeChildren(node);
+            optimize(node);
             return null;
         }
 
         @Override
         public Void visitFromClauseNode(FromClauseNode node, Void p) {
-            optimizeSqlNodeChildren(node);
+            optimize(node);
             return null;
         }
 
         @Override
         public Void visitForNode(ForNode node, Void p) {
-            optimizeSqlNodeChildren(node);
+            optimize(node);
             return null;
         }
 
         @Override
         public Void visitHavingClauseNode(HavingClauseNode node, Void p) {
-            optimizeSqlNodeChildren(node);
+            optimize(node);
             return null;
         }
 
         @Override
         public Void visitWhereClauseNode(WhereClauseNode node, Void p) {
-            optimizeSqlNodeChildren(node);
+            optimize(node);
             return null;
         }
 
         @Override
         public Void visitLogicalOperatorNode(LogicalOperatorNode node, Void p) {
-            optimizeSqlNodeChildren(node);
+            optimize(node);
             return null;
         }
 
         @Override
         public Void visitEolNode(EolNode node, Void p) {
-            optimizeSqlNodeChildren(node);
+            optimize(node);
             return null;
         }
 
         @Override
         public Void visitElseifNode(ElseifNode node, Void p) {
-            optimizeSqlNodeChildren(node);
+            optimize(node);
             return null;
         }
 
         @Override
         public Void visitForUpdateClauseNode(ForUpdateClauseNode node, Void p) {
-            optimizeSqlNodeChildren(node);
+            optimize(node);
             return null;
         }
 
         @Override
         public Void visitGroupByClauseNode(GroupByClauseNode node, Void p) {
-            optimizeSqlNodeChildren(node);
+            optimize(node);
             return null;
         }
 
         @Override
         public Void visitElseNode(ElseNode node, Void p) {
-            optimizeSqlNodeChildren(node);
+            optimize(node);
             return null;
         }
 

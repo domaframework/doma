@@ -132,17 +132,8 @@ public class IfBlockNode extends AbstractSqlNode implements BlockNode {
         buf.append("[");
         buf.append(getClass().getSimpleName());
         buf.append(" ");
-        if (ifNode != null) {
-            buf.append(ifNode);
-        }
-        for (ElseifNode elseIfNode : elseifNodes) {
-            buf.append(elseIfNode);
-        }
-        if (elseNode != null) {
-            buf.append(elseNode);
-        }
-        if (endNode != null) {
-            buf.append(endNode);
+        for (SqlNode child : children) {
+            buf.append(child);
         }
         buf.append("]");
         return buf.toString();
