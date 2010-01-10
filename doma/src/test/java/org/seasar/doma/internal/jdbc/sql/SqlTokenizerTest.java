@@ -268,6 +268,40 @@ public class SqlTokenizerTest extends TestCase {
         assertNull(tokenizer.getToken());
     }
 
+    public void testBindBlockComment_followingQuote() throws Exception {
+        SqlTokenizer tokenizer = new SqlTokenizer(
+                "where /*aaa*/'2001-01-01 12:34:56'");
+        assertEquals(WHERE_WORD, tokenizer.next());
+        assertEquals("where", tokenizer.getToken());
+        assertEquals(WHITESPACE, tokenizer.next());
+        assertEquals(" ", tokenizer.getToken());
+        assertEquals(BIND_VARIABLE_BLOCK_COMMENT, tokenizer.next());
+        assertEquals("/*aaa*/", tokenizer.getToken());
+        assertEquals(QUOTE, tokenizer.next());
+        assertEquals("'2001-01-01 12:34:56'", tokenizer.getToken());
+        assertEquals(EOF, tokenizer.next());
+        assertNull(tokenizer.getToken());
+    }
+
+    public void testBindBlockComment_followingWordAndQuote() throws Exception {
+        SqlTokenizer tokenizer = new SqlTokenizer(
+                "where /*aaa*/timestamp'2001-01-01 12:34:56' and");
+        assertEquals(WHERE_WORD, tokenizer.next());
+        assertEquals("where", tokenizer.getToken());
+        assertEquals(WHITESPACE, tokenizer.next());
+        assertEquals(" ", tokenizer.getToken());
+        assertEquals(BIND_VARIABLE_BLOCK_COMMENT, tokenizer.next());
+        assertEquals("/*aaa*/", tokenizer.getToken());
+        assertEquals(WORD, tokenizer.next());
+        assertEquals("timestamp'2001-01-01 12:34:56'", tokenizer.getToken());
+        assertEquals(WHITESPACE, tokenizer.next());
+        assertEquals(" ", tokenizer.getToken());
+        assertEquals(AND_WORD, tokenizer.next());
+        assertEquals("and", tokenizer.getToken());
+        assertEquals(EOF, tokenizer.next());
+        assertNull(tokenizer.getToken());
+    }
+
     public void testBindBlockComment_spaceIncluded() throws Exception {
         SqlTokenizer tokenizer = new SqlTokenizer("where /* aaa */bbb");
         assertEquals(WHERE_WORD, tokenizer.next());

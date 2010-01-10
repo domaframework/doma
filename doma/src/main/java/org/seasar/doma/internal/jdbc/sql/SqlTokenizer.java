@@ -441,10 +441,37 @@ public class SqlTokenizer {
         } else if (isWordStart(c)) {
             type = WORD;
             while (buf.hasRemaining()) {
-                if (isWordTerminated()) {
+                buf.mark();
+                char c2 = buf.get();
+                if (c2 == '\'') {
+                    boolean closed = false;
+                    while (buf.hasRemaining()) {
+                        char c3 = buf.get();
+                        if (c3 == '\'') {
+                            if (buf.hasRemaining()) {
+                                buf.mark();
+                                char c4 = buf.get();
+                                if (c4 != '\'') {
+                                    buf.reset();
+                                    closed = true;
+                                    break;
+                                }
+                            } else {
+                                closed = true;
+                            }
+                        }
+                    }
+                    if (closed) {
+                        return;
+                    }
+                    int pos = buf.position() - lineStartPosition;
+                    throw new JdbcException(Message.DOMA2101, sql, lineNumber,
+                            pos);
+                }
+                if (!isWordPart(c2)) {
+                    buf.reset();
                     return;
                 }
-                buf.get();
             }
         } else if (c == '\r' || c == '\n') {
             type = EOL;

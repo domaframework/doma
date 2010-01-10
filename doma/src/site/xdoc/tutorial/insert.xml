@@ -19,7 +19,7 @@
 		</section>
 		<section name="SQLの自動生成による挿入">
 			<p>
-				test/tutorial/InsertTest.javaのtestInsertメソッドを参照してください。
+				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/InsertTest.java">test/tutorial/InsertTest.java</a>のtestInsertメソッドを参照してください。
 				SQLの自動生成による挿入です。
 			</p>
 			<p>
@@ -72,7 +72,7 @@ values (
 			</p>
 			<p>
 				insertTimestampプロパティはEmployeeListenerで自動設定されます。
-				test/tutorial/EmployeeListener.javaを参照してください。
+				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/src/tutorial/entity/EmployeeListener.java">test/tutorial/EmployeeListener.java</a>を参照してください。
 			</p>
 		</section>
 	</body>

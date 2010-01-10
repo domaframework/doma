@@ -179,13 +179,13 @@
 				<p>
 					HSQLDBはMemory-Onlyモードで起動し、テスト用のスキーマとデータは各テストの実行前に作成し、テスト終了後に破棄します。
 					スキーマとデータの作成と破棄は、共通のテストクラスで行っています。
-					Javaのコードは、test/tutorial/TutorialTestCase.javaになります。
+					Javaのコードは、<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/TutorialTestCase.java">test/tutorial/TutorialTestCase.java</a>になります。
 				</p>
 			</subsection>
 			<subsection name="JDBCドライバのプロバイダ構成ファイル">
 				<p>
 					HSQLDBのJDBCドライバを登録するためのプロバイダ構成ファイルがsrc/META-INF/servicesに必要です。
-					ファイルの名称はjava.sql.Driverで、中身は次のように記述されます。
+					ファイルの名称は<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/src/META-INF/services/java.sql.Driver">java.sql.Driver</a>で、中身は次のように記述されます。
 				</p>
 <source><![CDATA[org.hsqldb.jdbcDriver]]></source>
 				<p>
@@ -200,11 +200,11 @@
 				<h4><a name="設定クラス"></a>設定クラス</h4>
 				<p>
 					<a href="../reference/config.html">設定クラス</a>とは、Domaに関する各種設定を持つクラスです。
-					このチュートリアルで使用する設定クラスのソースコードは、src/tutorial/AppConfig.javaになります。
+					このチュートリアルで使用する設定クラスのソースコードは、<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/src/tutorial/AppConfig.java">src/tutorial/AppConfig.java</a>になります。
 				</p>
 				<p>
 					このクラスでは、HSQLDBのデータソースの作成とHSQLDBの方言の設定を行っています。
-					それ以外の設定については親クラスの<code>DomaAbstractConfig</code>のものを利用しています。
+					それ以外の設定については親クラスの<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma/src/main/java/org/seasar/doma/jdbc/DomaAbstractConfig.java">DomaAbstractConfig</a>のものを利用しています。
 					設定クラスはDaoインタフェースから利用されます。
 				</p>
 <source><![CDATA[public class AppConfig extends DomaAbstractConfig {
@@ -235,7 +235,7 @@
 				<p>
 					<a href="../reference/entity.html">エンティティクラス</a>とは、テーブルやSQLの結果セットにマッピングされたクラスです。
 					エンティティクラスは、@Entityを注釈して示します。
-					このチュートリアルで使用するエンティティクラスのソースコードは、src/tutorial/entity/Employee.javaになります。
+					このチュートリアルで使用するエンティティクラスのソースコードは、<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/src/tutorial/entity/Employee.java">src/tutorial/entity/Employee.java</a>になります。
 				</p>
 				<p>
 					Employeeクラスは、EMPLOYEEテーブルに対応します。
@@ -294,7 +294,7 @@ public class Employee {
 				<p>
 					エンティティリスナークラスのインスタンスは、エンティティがデータベースに挿入、更新、削除されるまえに呼び出されます。
 					このチュートリアルで使用するエンティティリスナークラスはEmployeeListenerです。
-					ソースコードは、src/tutorial/entity/EmployeeListener.javaになります。
+					ソースコードは、<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/src/tutorial/entity/EmployeeListener.java">src/tutorial/entity/EmployeeListener.java</a>になります。
 				</p>
 <source><![CDATA[public class EmployeeListener implements EntityListener<Employee> {
 
@@ -304,12 +304,12 @@ public class Employee {
 
     @Override
     public void preInsert(Employee employee) {
-        employee.insertTimestamp = new Timestamp(System.currentTimeMillis());
+        employee.setInsertTimestamp(new Timestamp(System.currentTimeMillis()));
     }
 
     @Override
     public void preUpdate(Employee employee) {
-        employee.updateTimestamp = new Timestamp(System.currentTimeMillis());
+        employee.setUpdateTimestamp(new Timestamp(System.currentTimeMillis()));
     }
 
 }]]></source>
@@ -318,7 +318,7 @@ public class Employee {
 					<a href="../reference/domain.html">ドメインクラス</a>は、データベースのカラムにマッピング可能なアプリケーション固有の値型です。
 					ドメインクラスは@Domainを注釈して示します。
 					このチュートリアルで使用するドメインクラスは、給料を表すSalaryクラスです。
-					ソースコードは、src/tutorial/domain/Salary.javaになります。
+					ソースコードは、<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/src/tutorial/domain/Salary.java">src/tutorial/domain/Salary.java</a>になります。
 				</p>
 <source><![CDATA[@Domain(valueType = Integer.class)
 public class Salary {
@@ -351,7 +351,7 @@ public class Salary {
 					<a href="../reference/dao.html">Daoインタフェース</a>とは、データベースアクセスの境界となるインタフェースです。
 					Daoインタフェースは@Daoを注釈して示します。
 					@Daoのconfig要素には設定クラスであるAppConfigクラスを指定します。
-					このチュートリアルで使用するDaoインタフェースのソースコードは、src/tutorial/dao/EmployeeDao.javaになります。
+					このチュートリアルで使用するDaoインタフェースのソースコードは、<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/src/tutorial/dao/EmployeeDao.java">src/tutorial/dao/EmployeeDao.java</a>になります。
 				</p>
 				<p>
 					Daoインタフェースの実装クラスはDomaにより自動生成されます。
@@ -367,42 +367,6 @@ public interface EmployeeDao {
 
     @Select
     List<Employee> selectByAgeRange(Integer min, Integer max);
-
-    @Select
-    List<Employee> selectByAges(List<Integer> ages);
-
-    @Select
-    List<Employee> selectByNames(List<String> names);
-
-    @Select
-    List<Employee> selectByNameWithPrefixMatching(String prefix);
-
-    @Select
-    List<Employee> selectByNameWithSuffixMatching(String suffix);
-
-    @Select
-    List<Employee> selectByNameWithInsideMatching(String inside);
-
-    @Select
-    List<Employee> selectByHiredateRange(Timestamp from, Timestamp to);
-
-    @Select
-    List<Employee> selectBySalary(Salary salary);
-
-    @Select
-    Salary selectSummedSalary();
-
-    @Select
-    List<Employee> selectByExample(Employee e);
-
-    @Select
-    List<Employee> selectAll();
-
-    @Select
-    List<Employee> selectAll(SelectOptions options);
-
-    @Select(iterate = true)
-    <R> R selectByAge(int age, IterationCallback<R, Employee> callback);
 
     @Delegate(to = EmployeeDaoDelegate.class)
     int count();
@@ -434,7 +398,7 @@ public interface EmployeeDao {
 				</p>
 				<p>
 					SQLファイルは、名前から拡張子を除いたものがDaoインタフェースのメソッドに一致します。
-					たとえば、selectById.sqlはDaoインタフェースのselectByIdメソッドに対応します。
+					たとえば、<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/src/META-INF/tutorial/dao/EmployeeDao/selectById.sql">selectById.sql</a>はDaoインタフェースのselectByIdメソッドに対応します。
 					selectById.sqlの中身は次のようなテキストです。
 				</p> 
 <source><![CDATA[select * from employee where id = /* id */0]]></source>
@@ -446,10 +410,40 @@ public interface EmployeeDao {
 			</subsection>
 			<subsection name="機能の解説">
 				<ul>
-					<li><a href="select.html">検索</a></li>
-					<li><a href="insert.html">挿入</a></li>
-					<li><a href="update.html">更新</a></li>
-					<li><a href="delete.html">削除</a></li>
+					<li><a href="select.html">検索</a>
+						<ul>
+							<li><a href="select.html#概要">概要</a></li>
+							<li><a href="select.html#単純な検索">単純な検索</a></li>
+							<li><a href="select.html#条件分岐を用いた検索">条件分岐を用いた検索</a></li>
+							<li><a href="select.html#繰り返しを用いた検索">繰り返しを用いた検索</a></li>
+							<li><a href="select.html#IN述語による検索">IN述語による検索</a></li>
+							<li><a href="select.html#LIKE述語による検索">LIKE述語による検索</a></li>
+							<li><a href="select.html#日付による範囲検索">日付による範囲検索</a></li>
+							<li><a href="select.html#ドメインによる検索">ドメインによる検索</a></li>
+							<li><a href="select.html#エンティティによる検索">エンティティによる検索</a></li>
+							<li><a href="select.html#ページングを行う検索">ページングを行う検索</a></li>
+							<li><a href="select.html#ページングと集計を同時に行う検索">ページングと集計を同時に行う検索</a></li>
+							<li><a href="select.html#イテレーション検索">イテレーション検索</a></li>
+						</ul>
+					</li>
+					<li><a href="insert.html">挿入</a>
+						<ul>
+							<li><a href="insert.html#概要">概要</a></li>
+							<li><a href="insert.html#SQLの自動生成による挿入">SQLの自動生成による挿入</a></li>
+						</ul>
+					</li>
+					<li><a href="update.html">更新</a>
+						<ul>
+							<li><a href="update.html#概要">概要</a></li>
+							<li><a href="update.html#SQLの自動生成による更新">SQLの自動生成による更新</a></li>
+						</ul>
+					</li>
+					<li><a  href="delete.html">削除</a>
+						<ul>
+							<li><a href="delete.html#概要">概要</a></li>
+							<li><a href="delete.html#SQLの自動生成による削除">SQLの自動生成による削除</a></li>
+						</ul>
+					</li>
 				</ul>
 			</subsection>
 		</section>

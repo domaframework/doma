@@ -19,14 +19,14 @@
 		</section>
 		<section name="SQLの自動生成による削除">
 			<p>
-				test/tutorial/DeleteTest.javaのtestDeleteメソッドを参照してください。
+				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/DeleteTest.java">test/tutorial/DeleteTest.java</a>のtestDeleteメソッドを参照してください。
 				SQLの自動生成による削除です。
 			</p>
 			<p>
 				Daoのメソッドは次のとおりです。
 			</p>
-<source><![CDATA[@Insert
-int insert(Employee employee);]]></source>
+<source><![CDATA[@Delete
+int delete(Employee employee);]]></source>
 			<p>
 				Daoのメソッドは次のように呼び出します。
 			</p>
