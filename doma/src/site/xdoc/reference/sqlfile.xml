@@ -49,7 +49,7 @@
 				SQLのツールでそのままそのSQLを実行できるように、バインド変数にはテスト用のデータを指定します。テスト用のデータは、実行時には使用されません。
 				たとえば、SQLファイルには次のようなSQL文が格納されます。
 			</p>
-<source><![CDATA[select * from employee where employee_id = /*employeeId*/99]]></source>
+<source><![CDATA[select * from employee where employee_id = /* employeeId */99]]></source>
 			<p>
 				ここでは、ブロックコメントで囲まれた <code>employeeId</code>がDaoインタフェースのメソッドのパラメータに対応し、
 				直後の <code>99</code>はテスト用の条件になります。
@@ -95,7 +95,7 @@
 				<p>
 					ファイル名は、次の形式でなければいけません。
 				</p>
-<source>META-INF/Dalのクラスの完全修飾名をディレクトリに変換したもの/Data Access Objectのメソッド名.sql</source>
+<source>META-INF/Daoのクラスの完全修飾名をディレクトリに変換したもの/Daoのメソッド名.sql</source>
 				<p>
 					例えば、 Daoのクラスが <code>aaa.bbb.EmployeeDao</code>で
 					マッピングしたいメソッドが <code>selectById</code> の場合、パス名は次のようになります。
@@ -124,7 +124,7 @@
 		<section name="SQLコメント">
 			<p>
 				Domaでは、SQLコメント中に式を記述することで、値のバインディングや条件分岐を行います。
-				式を含みDomaに解釈されるSQLコメントを<strong>式コメント</strong>と呼びます。
+				Domaに解釈されるSQLコメントを<strong>式コメント</strong>と呼びます。
 			</p>
 			<subsection name="バインド変数コメント">
 				<p>
@@ -133,7 +133,8 @@
 				</p>
 				<p>
 					バインド変数は/*～*/というブロックコメントで囲んで示します。
-					バインド変数の型は、<a href="basic.html">基本型</a>もしくは<a href="domain.html">ドメインクラス</a>でなければいけません。
+					バインド変数の名前は、Daoメソッドのパラメータ名に対応します。
+					対応するパラメータの型は、<a href="basic.html">基本型</a>もしくは<a href="domain.html">ドメインクラス</a>でなければいけません。
 					バインド変数コメントの直後にはテスト用データを指定する必要があります。
 					テスト用データは、実行時には使用されません。
 				</p>
@@ -161,6 +162,7 @@
 					エンティティクラスのパラメータは、複数のバインド変数コメントに対応します。
 					バインド変数コメントの中では、ドット（.）を使用しエンティティのフィールドにアクセスできます。
 					Daoインタフェースのメソッドと、対応するSQLの例は次のとおりです。
+					Employeeクラスには、employeeNameフィールドやsalaryフィールドが存在するものとします。
 				</p>
 <source><![CDATA[List<Employee> selectByNameAndSalary(Employee employee);]]></source>
 <source><![CDATA[select * from employee
@@ -179,10 +181,10 @@ salary = /* employee.getTaxedSalary() */1234]]></source>
 				<p>
 					埋め込み変数を示す式コメントを埋め込み変数コメントと呼びます。
 					埋め込み変数の値は、SQLを組み立てる際にSQLの一部として直接埋め込まれます。
-					SQLインジェクションを防ぐため、埋め込み変数の一部としてシングルクォテーション、セミコロン、行コメント、ブロックコメントは含めることは禁止しています。
+					SQLインジェクションを防ぐため、埋め込み変数の値にシングルクォテーション、セミコロン、行コメント、ブロックコメントは含めることは禁止しています。
 				</p>
 				<p>
-					埋め込み変数は/*#～*/というブロックコメントで示します。埋め込み変数の名前はメソッドのパラメータ名にマッピングされます。
+					埋め込み変数は/*#～*/というブロックコメントで示します。埋め込み変数の名前はDaoメソッドのパラメータ名にマッピングされます。
 					埋め込み変数はORDER BY句など、SQLの一部をプログラムで組み立てたい場合に使用できます。
 					Daoのメソッドと、対応するSQLの例は次のとおりです。
 				</p>
@@ -204,21 +206,28 @@ List<Employee> list = dao.selectAll(salary, orderBy);]]></source>
 				<h4><code>if</code> と <code>end</code></h4>
 				<p>
 					条件分岐を示す式コメントを条件コメントと呼びます。
-					構文は、<code>/*%if 条件式*/ ～ /*%end*/</code> となります。
+					構文は、次のとおりです。
+<source><![CDATA[/*%if 条件式*/ ～ /*%end*/]]></source>
 					条件式は、結果がbooleanもしくはjava.lang.Boolean型と評価される式でなければいけません。
+					例を示します。
+				</p>
+				<p>
 				</p>
 <source><![CDATA[select * from employee where 
 /*%if employeeId != null */
     employee_id = /*employeeId*/99
 /*%end*/]]></source>
 				<p>
-					このSQL文は、 <code>employeeId</code>が <code>null</code>でない場合 次のような準備された文に変換されます。
+					上記のSQL文は、 <code>employeeId</code>が <code>null</code>でない場合 次のような準備された文に変換されます。
 				</p>
 <source><![CDATA[select * from employee where employee_id = ?]]></source>
 				<p>
 					このSQL文は、 <code>employeeId</code>が<code>null</code>の場合に次のような準備された文に変換されます。
 				</p>
 <source><![CDATA[select * from employee]]></source>
+				<p>
+					ifの条件が成り立たない場合にifの外にあるWHERE句が出力されないのは、下記に述べるように<code>WHERE</code>や <code>HAVING</code>の自動除去機能が働いているためです。
+				</p>
 				<h4><code>WHERE</code>や <code>HAVING</code>の自動除去</h4>
 				<p>
 					条件コメントを使用した場合、条件の前にあるWHEREやHAVINGについて、自動で出力の要/不要を判定します。
@@ -229,7 +238,7 @@ List<Employee> list = dao.selectAll(salary, orderBy);]]></source>
     employee_id = /* employeeId */99
 /*%end*/]]></source>
 				<p>
-					<code>/*%if ～*/</code>の前の <code>where</code>は自動で除去されます。
+					<code>/*%if ～*/</code>の前の <code>where</code>は自動で除去され、次のSQLが生成されます。
 				</p>
 <source><![CDATA[select * from employee]]></source>
 				<h4><code>AND</code>や <code>OR</code>の自動除去</h4>
@@ -243,13 +252,18 @@ List<Employee> list = dao.selectAll(salary, orderBy);]]></source>
 /*%end*/
 and employeeName like 's%']]></source>
 				<p>
-					<code>/*%end*/</code>の後ろの <code>and</code> は自動で除去されます。
+					<code>/*%end*/</code>の後ろの <code>and</code> は自動で除去され、次のSQLが生成されます。
 				</p>
 <source>select * from employee where employeeName like 's%'</source>
 				<h4><code>elseif</code> と <code>else</code></h4>
 				<p>
 					<code>/*%if 条件式*/</code> と <code>/*%end*/</code> の間では、
-					行コメントを使用した <code>--elseif 条件式--</code> や <code>--else</code> という構文も使用できます。
+					行コメントを使用した次の構文も使用できます。
+				</p>
+<source><![CDATA[--elseif 条件式--]]></source>
+<source><![CDATA[--else]]></source>
+				<p>
+					例を示します。
 				</p>
 <source><![CDATA[select * from employee where 
 /*%if employeeId != null */   employee_id = /* employeeId */99
@@ -272,25 +286,39 @@ and employeeName like 's%']]></source>
 				<h4><code>for</code> と <code>end</code></h4>
 				<p>
 					繰り返しを示す式コメントを繰り返しコメントと呼びます。
-					構文は、<code>/*%for 識別子 : 式*/ ～ /*%end*/</code> となります。
+					構文は、次のとおりです。
+<source><![CDATA[/*%for 識別子 : 式*/ ～ /*%end*/]]></source>
 					識別子は、繰り返される要素を指す変数です。
 					式は、java.lang.Iterable型として評価される式でなければいけません。
 				</p>
+				<p>
+					例を示します。
+				</p>
 <source><![CDATA[select * from employee where
 /*%for name : names */
-    employee_name like /* name */'hoge'/*%hasNext " or " */
+employee_name like /* name */'hoge'
+  /*%if name_has_next */
+or
+  /*%end */
 /*%end*/
 ]]></source>
 				<p>
-					このSQL文は、<code>names</code>が3つの要素からなるリストを表す場合、次のような準備された文に変換されます。
+					上記のSQL文は、<code>names</code>が3つの要素からなるリストを表す場合、次のような準備された文に変換されます。
 				</p>
 <source><![CDATA[select * from employee where
-employee_name like ? or employee_name like ? or employee_name like ?]]></source>
-				<h4><code>hasNext</code></h4>
+employee_name like ? 
+or
+employee_name like ?
+or
+employee_name like ?]]></source>
+				<h4><code><i>item</i>_has_next</code></h4>
 				<p>
-					<code>/*%for 識別子 : 式*/</code> から <code>/*%end*/</code> までの内側の<code>/*%forhasNext 式*/</code>は、
-					次の繰り返しが続く場合にのみ、式の評価結果を繰り返される文字列に連結することを示します。
-					式は、String、Character、charのいずれかの型として評価可能な式でなければいけません。
+					<code>/*%for 識別子 : 式*/</code> から <code>/*%end*/</code> までの内側では、次のような特別な変数を使用できます。
+				</p>
+<source><![CDATA[item_has_next]]></source>
+				<p>
+					itemは識別子です。つまり、forの識別子が「name」の場合、この変数は「name_has_next」となります。
+					この変数は、次の繰り返しが可能かどうかを示します。
 				</p>
 			</subsection>
 			<subsection name="通常のブロックコメント">
@@ -333,8 +361,7 @@ employee_name like ? or employee_name like ? or employee_name like ?]]></source>
 					一方、次の例はすべて式コメントだとみなされます。
 				</p>
 <source>--elseif ～ --
---else
---hasNext ～ --</source>
+--else</source>
 			</subsection>
 		</section>
 		<section name="式言語">
