@@ -169,6 +169,27 @@ public class SqlParserTest extends TestCase {
                 .getWrapper().get());
     }
 
+    public void testEmbeddedVariable_inside() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        evaluator.add("name", new Value(String.class, "hoge"));
+        evaluator.add("salary", new Value(BigDecimal.class, new BigDecimal(
+                10000)));
+        evaluator.add("table", new Value(String.class, "aaa"));
+        String testSql = "select * from /*# table */ where ename = /*name*/'aaa' and sal = /*salary*/-2000";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath", evaluator).build(sqlNode);
+        assertEquals("select * from aaa where ename = ? and sal = ?", sql
+                .getRawSql());
+        assertEquals("select * from aaa where ename = 'hoge' and sal = 10000",
+                sql.getFormattedSql());
+        assertEquals(2, sql.getParameters().size());
+        assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
+        assertEquals(new BigDecimal(10000), sql.getParameters().get(1)
+                .getWrapper().get());
+    }
+
     public void testEmbeddedVariable_emptyName() throws Exception {
         String testSql = "select * from aaa where ename = /*#   */'aaa'";
         SqlParser parser = new SqlParser(testSql);
@@ -339,6 +360,59 @@ public class SqlParserTest extends TestCase {
                         .getRawSql());
         assertEquals(
                 "select * from aaa where name = 'aaa' or name = 'bbb' or name = 'ccc'",
+                sql.getFormattedSql());
+        assertEquals(3, sql.getParameters().size());
+        assertEquals("aaa", sql.getParameters().get(0).getWrapper().get());
+        assertEquals("bbb", sql.getParameters().get(1).getWrapper().get());
+        assertEquals("ccc", sql.getParameters().get(2).getWrapper().get());
+    }
+
+    public void testFor_removeWhere() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        ArrayList<String> list = new ArrayList<String>();
+        evaluator.add("names", new Value(List.class, list));
+        String testSql = "select * from aaa where /*%for n : names*/name = /*n*/'a' /*%if n_has_next */or /*%end*//*%end*/";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath", evaluator).build(sqlNode);
+        assertEquals("select * from aaa", sql.getRawSql());
+        assertEquals("select * from aaa", sql.getFormattedSql());
+        assertEquals(0, sql.getParameters().size());
+    }
+
+    public void testFor_removeOr() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        ArrayList<String> list = new ArrayList<String>();
+        evaluator.add("names", new Value(List.class, list));
+        String testSql = "select * from aaa where /*%for n : names*/name = /*n*/'a' /*%if n_has_next */or /*%end*//*%end*/ or salary > 100";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath", evaluator).build(sqlNode);
+        assertEquals("select * from aaa where   salary > 100", sql.getRawSql());
+        assertEquals("select * from aaa where   salary > 100", sql
+                .getFormattedSql());
+        assertEquals(0, sql.getParameters().size());
+    }
+
+    public void testFor_index() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        ArrayList<String> list = new ArrayList<String>();
+        list.add("aaa");
+        list.add("bbb");
+        list.add("ccc");
+        evaluator.add("names", new Value(List.class, list));
+        String testSql = "select * from aaa where /*%for n : names*/name/*# @java.lang.String@valueOf(n_index) */ = /*n*/'a' /*%if n_has_next */or /*%end*//*%end*/";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath", evaluator).build(sqlNode);
+        assertEquals(
+                "select * from aaa where name0 = ? or name1 = ? or name2 = ?",
+                sql.getRawSql());
+        assertEquals(
+                "select * from aaa where name0 = 'aaa' or name1 = 'bbb' or name2 = 'ccc'",
                 sql.getFormattedSql());
         assertEquals(3, sql.getParameters().size());
         assertEquals("aaa", sql.getParameters().get(0).getWrapper().get());

@@ -311,15 +311,58 @@ or
 employee_name like ?
 or
 employee_name like ?]]></source>
-				<h4><code><i>item</i>_has_next</code></h4>
+				<h4><code>item_has_nextとitem_index</code></h4>
 				<p>
-					<code>/*%for 識別子 : 式*/</code> から <code>/*%end*/</code> までの内側では、次のような特別な変数を使用できます。
+					<code>/*%for 識別子 : 式*/</code> から <code>/*%end*/</code> までの内側では、次の2つの特別な変数を使用できます。
 				</p>
-<source><![CDATA[item_has_next]]></source>
+				<ul>
+					<li><i>item</i>_has_next</li>
+					<li><i>item</i>_index</li>
+				</ul>
 				<p>
-					itemは識別子です。つまり、forの識別子が「name」の場合、この変数は「name_has_next」となります。
+					itemは識別子です。つまり、forの識別子が「name」の場合、この変数はそれぞれ「name_has_next」と「name_index」となります。
 					この変数は、次の繰り返しが可能かどうかを示します。
 				</p>
+				<p>
+					<i>item</i>_has_nextは、次の繰り返し要素が存在するかどうかを示すbooleanの値です。
+				</p>
+				<p>
+					<i>item</i>_indexは、次の繰り返しのindexを表すintの値です。値は0始まりです。
+				</p>
+				<h4><code>WHERE</code>や <code>HAVING</code>の自動除去</h4>
+				<p>
+					繰り返しコメントを使用した場合、コメントの前にあるWHEREやHAVINGについて、自動で出力の要/不要を判定します。
+					たとえば、次のようなSQLで<code>names</code>のsizeが0の場合（繰り返しが行われない場合）、
+				</p>
+<source><![CDATA[select * from employee where 
+/*%for name : names */
+employee_name like /* name */'hoge'
+  /*%if name_has_next */
+or
+  /*%end */
+/*%end*/]]></source>
+				<p>
+					<code>/*%for ～*/</code>の前の <code>where</code>は自動で除去され、次のSQLが生成されます。
+				</p>
+<source><![CDATA[select * from employee]]></source>
+				<h4><code>AND</code>や <code>OR</code>の自動除去</h4>
+				<p>
+					繰り返しコメントを使用した場合、コメントの後ろにつづくANDやORについて、自動で出力の要/不要を判定します。
+					たとえば、次のようなSQLで<code>names</code>のsizeが0の場合（繰り返しが行われない場合）、
+				</p>
+<source><![CDATA[select * from employee where 
+/*%for name : names */
+employee_name like /* name */'hoge'
+  /*%if name_has_next */
+or
+  /*%end */
+/*%end*/
+or
+salary > 1000]]></source>
+				<p>
+					<code>/*%end*/</code>の後ろの <code>or</code> は自動で除去され、次のSQLが生成されます。
+				</p>
+<source>select * from employee where salary > 1000</source>
 			</subsection>
 			<subsection name="通常のブロックコメント">
 				<p>

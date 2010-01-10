@@ -248,6 +248,10 @@ public class NodePreparedSqlBuilder implements
         p.setAvailable(true);
         p.appendRawSql(fragment);
         p.appendFormattedSql(fragment);
+
+        for (SqlNode child : node.getChildren()) {
+            child.accept(this, p);
+        }
         return null;
     }
 
@@ -371,20 +375,26 @@ public class NodePreparedSqlBuilder implements
                     location.getLineNumber(), location.getPosition(), forNode
                             .getExpression(), expressionValueClass);
         }
+
         Iterable<?> iterable = (Iterable<?>) expressionValue;
         String identifier = forNode.getIdentifier();
         Value originalIdentifierValue = p.removeValue(identifier);
-        String hasNext = identifier + "_has_next";
-        Value originalHasNextValue = p.removeValue(hasNext);
+        String hasNextVariable = identifier + ForBlockNode.HAS_NEXT_SUFFIX;
+        Value originalHasNextValue = p.removeValue(hasNextVariable);
+        String indexVariable = identifier + ForBlockNode.INDEX_SUFFIX;
+        Value originalIndexValue = p.removeValue(indexVariable);
+        int index = 0;
         for (Iterator<?> it = iterable.iterator(); it.hasNext();) {
             Object each = it.next();
             Value value = each == null ? new Value(void.class, null)
                     : new Value(each.getClass(), each);
             p.putValue(identifier, value);
-            p.putValue(hasNext, new Value(boolean.class, it.hasNext()));
+            p.putValue(hasNextVariable, new Value(boolean.class, it.hasNext()));
+            p.putValue(indexVariable, new Value(int.class, index));
             for (SqlNode child : forNode.getChildren()) {
                 child.accept(this, p);
             }
+            index++;
         }
         if (originalIdentifierValue == null) {
             p.removeValue(identifier);
@@ -392,10 +402,16 @@ public class NodePreparedSqlBuilder implements
             p.putValue(identifier, originalIdentifierValue);
         }
         if (originalHasNextValue == null) {
-            p.removeValue(hasNext);
+            p.removeValue(hasNextVariable);
         } else {
-            p.putValue(hasNext, originalHasNextValue);
+            p.putValue(hasNextVariable, originalHasNextValue);
         }
+        if (originalIndexValue == null) {
+            p.removeValue(indexVariable);
+        } else {
+            p.putValue(indexVariable, originalIndexValue);
+        }
+
         EndNode endNode = node.getEndNode();
         endNode.accept(this, p);
         return null;

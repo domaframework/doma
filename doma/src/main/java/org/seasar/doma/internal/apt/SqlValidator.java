@@ -43,6 +43,7 @@ import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseifNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNodeVisitor;
+import org.seasar.doma.internal.jdbc.sql.node.ForBlockNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;
@@ -221,14 +222,20 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
                             .getPosition(), expression, typeDeclaration
                             .getQualifiedName());
         }
+
         TypeMirror originalIdentifierType = expressionValidator
                 .removeParameterType(identifier);
         expressionValidator.putParameterType(identifier, typeArgs.get(0));
-        String hasNext = identifier + "_has_next";
+        String hasNextVariable = identifier + ForBlockNode.HAS_NEXT_SUFFIX;
         TypeMirror originalHasNextType = expressionValidator
-                .removeParameterType(hasNext);
-        expressionValidator.putParameterType(hasNext, TypeMirrorUtil
+                .removeParameterType(hasNextVariable);
+        expressionValidator.putParameterType(hasNextVariable, TypeMirrorUtil
                 .getTypeMirror(boolean.class, env));
+        String indexVariable = identifier + ForBlockNode.INDEX_SUFFIX;
+        TypeMirror originalIndexType = expressionValidator
+                .removeParameterType(indexVariable);
+        expressionValidator.putParameterType(indexVariable, TypeMirrorUtil
+                .getTypeMirror(int.class, env));
         visitNode(node, p);
         if (originalIdentifierType == null) {
             expressionValidator.removeParameterType(identifier);
@@ -237,10 +244,16 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
                     originalIdentifierType);
         }
         if (originalHasNextType == null) {
-            expressionValidator.removeParameterType(hasNext);
+            expressionValidator.removeParameterType(hasNextVariable);
         } else {
-            expressionValidator.putParameterType(hasNext,
+            expressionValidator.putParameterType(hasNextVariable,
                     originalHasNextType);
+        }
+        if (originalIndexType == null) {
+            expressionValidator.removeParameterType(indexVariable);
+        } else {
+            expressionValidator.putParameterType(indexVariable,
+                    originalIndexType);
         }
         return null;
     }

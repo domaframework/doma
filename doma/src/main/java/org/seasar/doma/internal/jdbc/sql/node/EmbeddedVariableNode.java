@@ -18,7 +18,6 @@ package org.seasar.doma.internal.jdbc.sql.node;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
@@ -58,12 +57,6 @@ public class EmbeddedVariableNode extends AbstractSqlNode {
             clone.addNode(child.copy());
         }
         return clone;
-    }
-
-    @Override
-    public void addNode(SqlNode child) {
-        throw new JdbcUnsupportedOperationException(getClass().getName(),
-                "addNode");
     }
 
     @Override

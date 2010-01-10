@@ -26,6 +26,10 @@ import org.seasar.doma.jdbc.SqlNodeVisitor;
  */
 public class ForBlockNode extends AbstractSqlNode implements BlockNode {
 
+    public static final String HAS_NEXT_SUFFIX = "_has_next";
+
+    public static final String INDEX_SUFFIX = "_index";
+
     protected ForNode forNode;
 
     protected EndNode endNode;
