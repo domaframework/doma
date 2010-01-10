@@ -39,6 +39,7 @@ import org.seasar.doma.internal.expr.node.LeOperatorNode;
 import org.seasar.doma.internal.expr.node.LiteralNode;
 import org.seasar.doma.internal.expr.node.LtOperatorNode;
 import org.seasar.doma.internal.expr.node.MethodOperatorNode;
+import org.seasar.doma.internal.expr.node.ModOperatorNode;
 import org.seasar.doma.internal.expr.node.MultiplyOperatorNode;
 import org.seasar.doma.internal.expr.node.NeOperatorNode;
 import org.seasar.doma.internal.expr.node.NewOperatorNode;
@@ -135,8 +136,8 @@ public class ExpressionParser {
             }
             case ILLEGAL_NUMBER_LITERAL: {
                 ExpressionLocation location = getLocation();
-                throw new ExpressionException(Message.DOMA3012,
-                        location.getExpression(), location.getPosition(), token);
+                throw new ExpressionException(Message.DOMA3012, location
+                        .getExpression(), location.getPosition(), token);
             }
             case TRUE_LITERAL: {
                 parseTrueLiteral();
@@ -176,6 +177,10 @@ public class ExpressionParser {
             }
             case DIVIDE_OPERATOR: {
                 parseOperator(new DivideOperatorNode(getLocation(), token));
+                break;
+            }
+            case MOD_OPERATOR: {
+                parseOperator(new ModOperatorNode(getLocation(), token));
                 break;
             }
             case COMMA_OPERATOR: {
@@ -231,8 +236,8 @@ public class ExpressionParser {
             }
             case OTHER: {
                 ExpressionLocation location = getLocation();
-                throw new ExpressionException(Message.DOMA3011,
-                        location.getExpression(), location.getPosition(), token);
+                throw new ExpressionException(Message.DOMA3011, location
+                        .getExpression(), location.getPosition(), token);
             }
             case EOE: {
                 break outer;

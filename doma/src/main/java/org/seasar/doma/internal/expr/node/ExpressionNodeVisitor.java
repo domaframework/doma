@@ -61,6 +61,8 @@ public interface ExpressionNodeVisitor<R, P> {
 
     R visitDivideOperatorNode(DivideOperatorNode node, P p);
 
+    R visitModOperatorNode(ModOperatorNode node, P p);
+
     R visitParensNode(ParensNode node, P p);
 
     R visitLiteralNode(LiteralNode node, P p);

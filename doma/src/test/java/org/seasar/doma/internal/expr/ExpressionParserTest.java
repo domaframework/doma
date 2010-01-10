@@ -763,6 +763,14 @@ public class ExpressionParserTest extends TestCase {
         assertEquals(new BigDecimal(5), result.getValue());
     }
 
+    public void testMod() throws Exception {
+        ExpressionParser parser = new ExpressionParser("10 % 7B");
+        ExpressionNode node = parser.parse();
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        EvaluationResult result = evaluator.evaluate(node);
+        assertEquals(new BigDecimal(3), result.getValue());
+    }
+
     public void testArithmeticOperators() throws Exception {
         ExpressionParser parser = new ExpressionParser("5 + 3 * 4 - 9 / 3");
         ExpressionNode node = parser.parse();

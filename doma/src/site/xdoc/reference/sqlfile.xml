@@ -492,6 +492,7 @@ salary > 1000]]></source>
 					<tr><td><code>-</code></td></tr>
 					<tr><td><code>*</code></td></tr>
 					<tr><td><code>/</code></td></tr>
+					<tr><td><code>%</code></td></tr>
 				</table>
 				<p>
 					 被演算子は数値型でなければいけません。

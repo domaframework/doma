@@ -51,6 +51,7 @@ import org.seasar.doma.internal.expr.node.LeOperatorNode;
 import org.seasar.doma.internal.expr.node.LiteralNode;
 import org.seasar.doma.internal.expr.node.LtOperatorNode;
 import org.seasar.doma.internal.expr.node.MethodOperatorNode;
+import org.seasar.doma.internal.expr.node.ModOperatorNode;
 import org.seasar.doma.internal.expr.node.MultiplyOperatorNode;
 import org.seasar.doma.internal.expr.node.NeOperatorNode;
 import org.seasar.doma.internal.expr.node.NewOperatorNode;
@@ -344,6 +345,25 @@ public class ExpressionEvaluator implements
         return leftNumber.divide(rightNumber);
     }
 
+    @Override
+    public EvaluationResult visitModOperatorNode(ModOperatorNode node, Void p) {
+        ExpressionNode leftNode = node.getLeftNode();
+        EvaluationResult leftResult = evaluateNotNullableOperandNode(node,
+                leftNode, p);
+        ExpressionNode rightNode = node.getRightNode();
+        EvaluationResult rightResult = evaluateNotNullableOperandNode(node,
+                rightNode, p);
+        Number leftNumber = createNumber(node, leftNode, leftResult);
+        if (leftNumber == null) {
+            throwNotNumberException(node, leftNode, leftResult);
+        }
+        Number rightNumber = createNumber(node, rightNode, rightResult);
+        if (rightNumber == null) {
+            throwNotNumberException(node, rightNode, rightResult);
+        }
+        return leftNumber.mod(rightNumber);
+    }
+
     protected Number createNumber(ArithmeticOperatorNode operatoNode,
             ExpressionNode operandNode, EvaluationResult evaluationResult) {
         if (!Number.isAcceptable(evaluationResult.getValueClass())) {
@@ -437,9 +457,9 @@ public class ExpressionEvaluator implements
             value = ConstructorUtil.newInstance(constructor, params);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
-            throw new ExpressionException(Message.DOMA3007, cause,
-                    location.getExpression(), location.getPosition(),
-                    ConstructorUtil.createSignature(constructor), cause);
+            throw new ExpressionException(Message.DOMA3007, cause, location
+                    .getExpression(), location.getPosition(), ConstructorUtil
+                    .createSignature(constructor), cause);
         }
         return new EvaluationResult(value, clazz);
     }
@@ -573,9 +593,9 @@ public class ExpressionEvaluator implements
             value = MethodUtil.invoke(method, target, params);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
-            throw new ExpressionException(Message.DOMA3001, cause,
-                    location.getExpression(), location.getPosition(),
-                    targetClass.getName(), method.getName(), cause);
+            throw new ExpressionException(Message.DOMA3001, cause, location
+                    .getExpression(), location.getPosition(), targetClass
+                    .getName(), method.getName(), cause);
         }
         return new EvaluationResult(value, method.getReturnType());
     }
@@ -659,9 +679,9 @@ public class ExpressionEvaluator implements
             value = FieldUtil.get(field, target);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
-            throw new ExpressionException(Message.DOMA3019, cause,
-                    location.getExpression(), location.getPosition(), target
-                            .getClass().getName(), field.getName(), cause);
+            throw new ExpressionException(Message.DOMA3019, cause, location
+                    .getExpression(), location.getPosition(), target.getClass()
+                    .getName(), field.getName(), cause);
         }
         return new EvaluationResult(value, field.getType());
     }
@@ -847,6 +867,16 @@ public class ExpressionEvaluator implements
             return createEvaluationResult(other, newValue);
         }
 
+        protected EvaluationResult mod(Number other) {
+            BigDecimal newValue = null;
+            try {
+                newValue = numberValue.remainder(other.numberValue);
+            } catch (ArithmeticException e) {
+                handleArithmeticException(e);
+            }
+            return createEvaluationResult(other, newValue);
+        }
+
         protected void handleArithmeticException(ArithmeticException e) {
             ExpressionLocation location = operatorNode.getLocation();
             throw new ExpressionException(Message.DOMA3014, e, location
@@ -981,6 +1011,13 @@ public class ExpressionEvaluator implements
 
         @Override
         public Void visitDivideOperatorNode(DivideOperatorNode node,
+                List<EvaluationResult> p) {
+            evaluate(node, p);
+            return null;
+        }
+
+        @Override
+        public Void visitModOperatorNode(ModOperatorNode node,
                 List<EvaluationResult> p) {
             evaluate(node, p);
             return null;

@@ -37,6 +37,7 @@ import org.seasar.doma.internal.expr.node.LeOperatorNode;
 import org.seasar.doma.internal.expr.node.LiteralNode;
 import org.seasar.doma.internal.expr.node.LtOperatorNode;
 import org.seasar.doma.internal.expr.node.MethodOperatorNode;
+import org.seasar.doma.internal.expr.node.ModOperatorNode;
 import org.seasar.doma.internal.expr.node.MultiplyOperatorNode;
 import org.seasar.doma.internal.expr.node.NeOperatorNode;
 import org.seasar.doma.internal.expr.node.NewOperatorNode;
@@ -151,6 +152,14 @@ public class ExpressionReducer implements
 
     @Override
     public Void visitDivideOperatorNode(DivideOperatorNode node,
+            Deque<ExpressionNode> p) {
+        node.setRightNode(pop(node, p));
+        node.setLeftNode(pop(node, p));
+        return null;
+    }
+
+    @Override
+    public Void visitModOperatorNode(ModOperatorNode node,
             Deque<ExpressionNode> p) {
         node.setRightNode(pop(node, p));
         node.setLeftNode(pop(node, p));

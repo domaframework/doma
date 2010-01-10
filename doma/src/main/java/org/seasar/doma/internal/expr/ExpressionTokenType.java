@@ -65,6 +65,8 @@ public enum ExpressionTokenType {
 
     DIVIDE_OPERATOR,
 
+    MOD_OPERATOR,
+
     METHOD_OPERATOR,
 
     FIELD_OPERATOR,
