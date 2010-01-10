@@ -403,7 +403,7 @@ public class SqlParserTest extends TestCase {
         list.add("bbb");
         list.add("ccc");
         evaluator.add("names", new Value(List.class, list));
-        String testSql = "select * from aaa where /*%for n : names*/name/*# @java.lang.String@valueOf(n_index) */ = /*n*/'a' /*%if n_has_next */or /*%end*//*%end*/";
+        String testSql = "select * from aaa where /*%for n : names*/name/*# n_index */ = /*n*/'a' /*%if n_has_next */or /*%end*//*%end*/";
         SqlParser parser = new SqlParser(testSql);
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,

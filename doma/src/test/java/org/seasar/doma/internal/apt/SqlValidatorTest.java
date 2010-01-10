@@ -94,27 +94,6 @@ public class SqlValidatorTest extends AptTestCase {
         sqlNode.accept(validator, null);
     }
 
-    public void testEmbeddedVariable_unsupportedType() throws Exception {
-        Class<?> target = SqlValidationDao.class;
-        addCompilationUnit(target);
-        compile();
-
-        ExecutableElement methodElement = createMethodElement(target,
-                "testEmbeddedVariable_unsupportedType", Integer.class);
-        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
-        SqlValidator validator = new SqlValidator(getProcessingEnvironment(),
-                methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql");
-        SqlParser parser = new SqlParser("select * from emp /*# orderBy */");
-        SqlNode sqlNode = parser.parse();
-        try {
-            sqlNode.accept(validator, null);
-            fail();
-        } catch (AptException expected) {
-            System.out.println(expected.getMessage());
-            assertEquals(Message.DOMA4152, expected.getMessageResource());
-        }
-    }
-
     public void testFor() throws Exception {
         Class<?> target = SqlValidationDao.class;
         addCompilationUnit(target);

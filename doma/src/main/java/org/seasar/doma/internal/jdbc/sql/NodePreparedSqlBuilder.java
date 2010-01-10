@@ -213,13 +213,6 @@ public class NodePreparedSqlBuilder implements
         SqlLocation location = node.getLocation();
         String name = node.getVariableName();
         EvaluationResult result = p.evaluate(location, name);
-        Class<?> valueClass = result.getValueClass();
-        if (valueClass != String.class && valueClass != Character.class
-                && valueClass != char.class) {
-            throw new JdbcException(Message.DOMA2132, location.getSql(),
-                    location.getLineNumber(), location.getPosition(), node
-                            .getText(), valueClass);
-        }
         Object value = result.getValue();
         if (value == null) {
             return null;

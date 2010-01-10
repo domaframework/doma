@@ -155,14 +155,7 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
     public Void visitEmbeddedVariableNode(EmbeddedVariableNode node, Void p) {
         SqlLocation location = node.getLocation();
         String variableName = node.getVariableName();
-        TypeDeclaration typeDeclaration = validateExpressionVariable(location,
-                variableName);
-        if (!typeDeclaration.isTextType()) {
-            throw new AptException(Message.DOMA4152, env, methodElement, path,
-                    location.getSql(), location.getLineNumber(), location
-                            .getPosition(), variableName, typeDeclaration
-                            .getQualifiedName());
-        }
+        validateExpressionVariable(location, variableName);
         visitNode(node, p);
         return null;
     }
