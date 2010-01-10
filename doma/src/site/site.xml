@@ -73,7 +73,10 @@
 			</item>
 			<item name="開発支援ツール" href="extension/index.html" collapse="true" >
 				<item name="Doma Tools" href="extension/doma_tools.html" />
-				<item name="Doma-Gen" href="extension/doma_gen.html" />
+				<item name="Doma-Gen" href="extension/doma_gen.html" collapse="true" >
+					<item name="Gen" href="extension/doma_gen_gen_task.html" />
+					<item name="GenTest" href="extension/doma_gen_gentest_task.html" />
+				</item>
 			</item>
 			<item name="Javadocs" href="apidocs/index.html" />
 		</menu>
