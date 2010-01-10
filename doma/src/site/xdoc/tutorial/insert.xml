@@ -9,6 +9,7 @@
 			<ul>
 				<li><a href="#概要">概要</a></li>
 				<li><a href="#SQLの自動生成による挿入">SQLの自動生成による挿入</a></li>
+				<li><a href="#SQLファイルによる挿入">SQLファイルによる挿入</a></li>
 			</ul>
 		</section>
 		<section name="概要">
@@ -23,7 +24,7 @@
 				SQLの自動生成による挿入です。
 			</p>
 			<p>
-				Daoのメソッドは次のとおりです。
+				使用するDaoのメソッド定義は次のとおりです。
 			</p>
 <source><![CDATA[@Insert
 int insert(Employee employee);]]></source>
@@ -51,8 +52,7 @@ dao.insert(employee);]]></source>
   salary, 
   updateTimestamp, 
   VERSION
-) 
-values (
+) values (
   50, 
   null, 
   null, 
@@ -73,6 +73,88 @@ values (
 			<p>
 				insertTimestampプロパティはEmployeeListenerで自動設定されます。
 				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/src/tutorial/entity/EmployeeListener.java">test/tutorial/EmployeeListener.java</a>を参照してください。
+			</p>
+		</section>
+		<section name="SQLファイルによる挿入">
+			<p>
+				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/InsertTest.java">test/tutorial/InsertTest.java</a>のtestInsertWithSqlFileメソッドを参照してください。
+				SQLファイルによる挿入です。
+			</p>
+			<p>
+				使用するDaoのメソッド定義は次のとおりです。
+				@InsertのsqlFile要素にtrueを指定します。
+			</p>
+<source><![CDATA[@Insert(sqlFile = true)
+int insertWithSqlFile(Employee employee);]]></source>
+			<p>
+				Daoのメソッドに対応するSQLファイルのパスはMETA-INF/tutorial/dao/EmployeeDao/insertWithSqlFile.sqlです。
+				SQLファイルには次のように記述されています。
+			</p>
+<source><![CDATA[insert into Employee (
+  ID, 
+  NAME, 
+  AGE, 
+  DEPARTMENT_ID, 
+  HIREDATE, 
+  JOB_TYPE, 
+  SALARY, 
+  INSERTTIMESTAMP, 
+  UPDATETIMESTAMP, 
+  VERSION
+) values (
+  /* employee.id */1, 
+  /* employee.name */'test', 
+  /* employee.age */10, 
+  /* employee.departmentId */1, 
+  /* employee.hiredate */'2010-01-01', 
+  /* employee.jobType */'SALESMAN', 
+  /* employee.salary */300, 
+  /* employee.insertTimestamp */'2010-01-01 12:34:56', 
+  /* employee.updateTimestamp */'2010-01-01 12:34:56', 
+  /* employee.version */1
+)]]></source>
+			<p>
+				Daoのメソッドは次のように呼び出します。
+			</p>
+<source><![CDATA[Employee employee = new Employee();
+employee.setId(100);
+employee.setName("test");
+employee.setAge(50);
+employee.setSalary(new Salary(300));
+employee.setJobType(JobType.PRESIDENT);
+employee.setInsertTimestamp(new Timestamp(System.currentTimeMillis()));
+employee.setVersion(1);
+
+dao.insertWithSqlFile(employee);]]></source>
+			<p>
+				SQLのログは次のように出力されます。
+			</p>
+<source><![CDATA[insert into Employee (
+  ID, 
+  NAME, 
+  AGE, 
+  DEPARTMENT_ID, 
+  HIREDATE, 
+  JOB_TYPE, 
+  SALARY, 
+  INSERTTIMESTAMP, 
+  UPDATETIMESTAMP, 
+  VERSION
+) values (
+  100, 
+  'test', 
+  50, 
+  null, 
+  null, 
+  'PRESIDENT', 
+  300, 
+  '2010-01-11 00:43:56.735', 
+  null, 
+  1
+)]]></source>
+			<p>
+				SQLファイルによる挿入では、識別子の自動生成やバージョンの自動生成は行われません。
+				また、エンティティリスナーも呼び出されません。
 			</p>
 		</section>
 	</body>

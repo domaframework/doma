@@ -52,20 +52,20 @@ List<Employee> selectByNameAndSalary(String name, BigDecimal salary);]]></source
 				<a href="../sqlfile.html">SQLファイル</a>ではSQLコメントを使いメソッドのパラメータをSQLにマッピングさせます。
 				SQLコメントではメソッドのパラメータ名を参照します。
 			</p>
-<source><![CDATA[select * from employee where employee_name = /*name*/'hoge' and salary > /*salary*/100]]></source>
+<source><![CDATA[select * from employee where employee_name = /* name */'hoge' and salary > /* salary */100]]></source>
 			<p>
 				メソッドのパラメータに基本型ではなくエンティティクラスを使用する場合は、ドット（.）でエンティティのプロパティにアクセスしSQLにマッピングさせます。
 			</p>
 <source><![CDATA[@Select
 List<Employee> selectByExample(Employee employee);]]></source>
-<source><![CDATA[select * from employee where employee_name = /*employee.name*/'hoge' and salary > /*employee.salary*/100]]></source>
+<source><![CDATA[select * from employee where employee_name = /* employee.name */'hoge' and salary > /* employee.salary */100]]></source>
 			<p>
 				<a href="../basic.html">基本型</a>や<a href="../domain.html">ドメインクラス</a>を要素とする<code>java.util.List</code>は、
 				IN句を利用した検索を行う場合に使用します。
 			</p>
 <source><![CDATA[@Select
 List<Employee> selectByNames(List<String> names);]]></source>
-<source><![CDATA[select * from employee where employee_name in /*names*/('aaa','bbb','ccc')]]></source>
+<source><![CDATA[select * from employee where employee_name in /* names */('aaa','bbb','ccc')]]></source>
 		</section>
 		<section name="複数件検索">
 			<p>
@@ -162,6 +162,7 @@ List<Employee> list = dao.selectByDepartmentName("ACCOUNT", options);]]></source
 					ロックの取得を待機しない<code>forUpdateNowait</code>が用意されています。
 					詳しくは<a href="../../apidocs/org/seasar/doma/jdbc/SelectOptions.html">Javadocコメント</a>を参照ください。
 				</p>
+			</subsection>
 			<subsection name="集計">
 				<p>
 					<code>SelectOptions</code>の<code>count</code>メソッドを呼び出すことで、集計件数を取得できるようになります。
@@ -175,7 +176,6 @@ long count = options.getCount();]]></source>
 					集計件数は、Daoのメソッド呼出し後に、<code>SelectOptions</code>の<code>getCount</code>メソッドを使って取得します。
 					メソッド呼び出しの前に<code>count</code>メソッドを実行していない場合、<code>getCount</code>メソッドは<code>-1</code>を返します。
 				</p>
-			</subsection>
 			</subsection>
 		</section>
 		<section name="クエリタイムアウト">

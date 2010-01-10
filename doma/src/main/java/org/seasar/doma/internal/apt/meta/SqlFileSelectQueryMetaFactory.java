@@ -227,6 +227,29 @@ public class SqlFileSelectQueryMetaFactory extends
                                 throw new AptException(Message.DOMA4054, env,
                                         parameterMeta.getElement());
                             }
+                            dataType
+                                    .getTargetType()
+                                    .accept(
+                                            new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+
+                                                @Override
+                                                public Void visitEntityType(
+                                                        EntityType dataType,
+                                                        Void p)
+                                                        throws RuntimeException {
+                                                    if (dataType.isAbstract()) {
+                                                        throw new AptException(
+                                                                Message.DOMA4158,
+                                                                env,
+                                                                parameterMeta
+                                                                        .getElement(),
+                                                                dataType
+                                                                        .getTypeName());
+                                                    }
+                                                    return null;
+                                                }
+
+                                            }, null);
                             queryMeta.setIterationCallbackType(dataType);
                             queryMeta
                                     .setIterationCallbackPrameterName(parameterMeta

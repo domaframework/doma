@@ -239,7 +239,7 @@ public interface EmployeeDao {
 					SQLファイルのパスは「META-INF/example/EmployeeDao/selectById.sql」にします。
 					このパスはクラスパスに通っていなければいけません。
 				</p>
-<source>select * from employee where employee_id = /*employeeId*/99</source>
+<source>select * from employee where employee_id = /* employeeId */99</source>
 				<p>
 					ファイルを作成したら、<code>EmployeeDao</code>を再度ビルドしてください。
 					ビルドをするとSQLファイルの存在チェックが再度行われエラーが消えます。

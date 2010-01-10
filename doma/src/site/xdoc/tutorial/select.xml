@@ -42,10 +42,13 @@
 				引数をSQLファイルにバインディングして実行する単純な検索です。
 			</p>
 			<p>
-				DaoのメソッドとメソッドにマッピングされたSQLは次のとおりです。
+				使用するDaoのメソッド定義は次のとおりです。
 			</p>
 <source><![CDATA[@Select
 Employee selectById(Integer id);]]></source>
+			<p>
+				Daoメソッドに対応するSQLファイルのパスはMETA-INF/tutorial/dao/EmployeeDao/selectById.sqlです。SQLは次のように記述されています。
+			</p>
 <source><![CDATA[select * from employee where id = /* id */0]]></source>
 			<p>
 				Daoのメソッドは次のように呼び出します。
@@ -62,10 +65,13 @@ Employee selectById(Integer id);]]></source>
 				SQLファイル中に条件分岐を記述することで、動的なSQLを発行できます。
 			</p>
 			<p>
-				DaoのメソッドとメソッドにマッピングされたSQLは次のとおりです。
+				使用するDaoのメソッド定義は次のとおりです。
 			</p>
 <source><![CDATA[@Select
 List<Employee> selectByAgeRange(Integer min, Integer max);]]></source>
+			<p>
+				Daoメソッドに対応するSQLファイルのパスはMETA-INF/tutorial/dao/EmployeeDao/selectByAgeRange.sqlです。SQLは次のように記述されています。
+			</p>
 <source><![CDATA[select * from employee
 where
 /*%if min != null */
@@ -135,15 +141,18 @@ order by age]]></source>
 				SQLファイル中に繰り返しを記述することで、動的なSQLを発行できます。
 			</p>
 			<p>
-				DaoのメソッドとメソッドにマッピングされたSQLは次のとおりです。
+				使用するDaoのメソッド定義は次のとおりです。
 			</p>
 <source><![CDATA[@Select
 List<Employee> selectByAges(List<Integer> ages);]]></source>
+			<p>
+				Daoメソッドに対応するSQLファイルのパスはMETA-INF/tutorial/dao/EmployeeDao/selectByAges.sqlです。SQLは次のように記述されています。
+			</p>
 <source><![CDATA[select * from employee where 
-/*%if ages.size() > 0 */
-  /*%for age : ages */
+/*%for age : ages */
   age = /* age */30
-/*%hasNext "  or"*/
+  /*%if age_has_next */
+  or
   /*%end */
 /*%end */]]></source>
 			<p>
@@ -168,11 +177,14 @@ List<Employee> list = dao.selectByAges(ages);]]></source>
 				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/SelectTest.java">test/tutorial/SelectTest.java</a>のtestInPredicateメソッドを参照してください。
 				IN述語を使った検索です。
 			</p>
-				<p>
-					DaoのメソッドとメソッドにマッピングされたSQLは次のとおりです。
-				</p>
+			<p>
+				使用するDaoのメソッド定義は次のとおりです。
+			</p>
 <source><![CDATA[@Select
 List<Employee> selectByNames(List<String> names);]]></source>
+			<p>
+				Daoメソッドに対応するSQLファイルのパスはMETA-INF/tutorial/dao/EmployeeDao/selectByNames.sqlです。SQLは次のように記述されています。
+			</p>
 <source><![CDATA[select * from employee where name in /* names */('aaa', 'bbb')']]></source>
 			<p>
 				Daoのメソッドは次のように呼び出します。
@@ -192,10 +204,13 @@ List<Employee> list = dao.selectByNames(names);]]></source>
 					組み込み関数「@prefix()」を使用するとJavaのコード内で「%」を文字列に連結する処理が不要になります。
 				</p>
 				<p>
-					DaoのメソッドとメソッドにマッピングされたSQLは次のとおりです。
+					使用するDaoのメソッド定義は次のとおりです。
 				</p>
 <source><![CDATA[@Select
 List<Employee> selectByNameWithPrefixMatching(String prefix);]]></source>
+				<p>
+					Daoメソッドに対応するSQLファイルのパスはMETA-INF/tutorial/dao/EmployeeDao/selectByNameWithPrefixMatching.sqlです。SQLは次のように記述されています。
+				</p>
 <source><![CDATA[select * from employee where name like /* @prefix(prefix) */'X%']]></source>
 				<p>
 					Daoのメソッドは次のように呼び出します。
@@ -213,10 +228,13 @@ List<Employee> selectByNameWithPrefixMatching(String prefix);]]></source>
 					組み込み関数「@suffix()」を使用するとJavaのコード内で「%」を文字列に連結する処理が不要になります。
 				</p>
 				<p>
-					DaoのメソッドとメソッドにマッピングされたSQLは次のとおりです。
+					使用するDaoのメソッド定義は次のとおりです。
 				</p>
 <source><![CDATA[@Select
 List<Employee> selectByNameWithSuffixMatching(String suffix);]]></source>
+				<p>
+					Daoメソッドに対応するSQLファイルのパスはMETA-INF/tutorial/dao/EmployeeDao/selectByNameWithSuffixMatching.sqlです。SQLは次のように記述されています。
+				</p>
 <source><![CDATA[select * from employee where name like /* @suffix(suffix) */'%X']]></source>
 				<p>
 					Daoのメソッドは次のように呼び出します。
@@ -234,10 +252,13 @@ List<Employee> selectByNameWithSuffixMatching(String suffix);]]></source>
 					組み込み関数「@contain()」を使用するとJavaのコード内で「%」を文字列に連結する処理が不要になります。
 				</p>
 				<p>
-					DaoのメソッドとメソッドにマッピングされたSQLは次のとおりです。
+					使用するDaoのメソッド定義は次のとおりです。
 				</p>
 <source><![CDATA[@Select
 List<Employee> selectByNameWithInsideMatching(String inside);]]></source>
+				<p>
+					Daoメソッドに対応するSQLファイルのパスはMETA-INF/tutorial/dao/EmployeeDao/selectByNameWithInsideMatching.sqlです。SQLは次のように記述されています。
+				</p>
 <source><![CDATA[select * from employee where name like /* @contain(inside) */'%X%']]></source>
 				<p>
 					Daoのメソッドは次のように呼び出します。
@@ -256,10 +277,13 @@ List<Employee> selectByNameWithInsideMatching(String inside);]]></source>
 				そのような場合には、組み込み関数の「@roundDownTimePart()」と「@roundUpTimePart()」を使用します。
 			</p>
 			<p>
-				DaoのメソッドとメソッドにマッピングされたSQLは次のとおりです。
+				使用するDaoのメソッド定義は次のとおりです。
 			</p>
 <source><![CDATA[@Select
 List<Employee> selectByHiredateRange(Timestamp from, Timestamp to);]]></source>
+				<p>
+					Daoメソッドに対応するSQLファイルのパスはMETA-INF/tutorial/dao/EmployeeDao/selectByHiredateRange.sqlです。SQLは次のように記述されています。
+				</p>
 <source><![CDATA[select * from employee 
 where 
   hiredate >= /* @roundDownTimePart(from) */'2001-01-01 12:34:56'
@@ -288,12 +312,16 @@ where
 				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/SelectTest.java">test/tutorial/SelectTest.java</a>のtestSelectByDomainメソッドを参照してください。
 				ドメインを条件に使用した検索です。
 			</p>
-				<p>
-					DaoのメソッドとメソッドにマッピングされたSQLは次のとおりです。
-					パラメータの型がドメインクラスであっても、SQLファイルでの扱い方は基本型と変わりません。
-				</p>
+			<p>
+				使用するDaoのメソッド定義は次のとおりです。
+			</p>
 <source><![CDATA[@Select
 List<Employee> selectBySalary(Salary salary);]]></source>
+			<p>
+				Daoメソッドに対応するSQLファイルのパスはMETA-INF/tutorial/dao/EmployeeDao/selectBySalary.sqlです。
+				SQLは次のように記述されています。
+				パラメータの型がドメインクラスであっても、SQLファイルでの扱い方は基本型と変わりません。
+			</p>
 <source><![CDATA[select * from employee where salary > /* salary */0]]></source>
 			<p>
 				Daoのメソッドは次のように呼び出します。
@@ -309,12 +337,16 @@ List<Employee> selectBySalary(Salary salary);]]></source>
 				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/SelectTest.java">test/tutorial/SelectTest.java</a>のtestSelectByEntityメソッドを参照してください。
 				エンティティを条件に使用した検索です。
 			</p>
-				<p>
-					DaoのメソッドとメソッドにマッピングされたSQLは次のとおりです。
-					パラメータの型がエンティティクラスの場合、SQLファイルの中ではドットを使用してエンティティのプロパティにアクセスできます。
-				</p>
+			<p>
+				使用するDaoのメソッド定義は次のとおりです。
+			</p>
 <source><![CDATA[@Select
 List<Employee> selectByExample(Employee e);]]></source>
+			<p>
+				Daoメソッドに対応するSQLファイルのパスはMETA-INF/tutorial/dao/EmployeeDao/selectByExample.sqlです。
+				SQLは次のように記述されています。
+				パラメータの型がエンティティクラスの場合、SQLファイルの中ではドットを使用してエンティティのプロパティにアクセスできます。
+			</p>
 <source><![CDATA[select * from employee where name = /* e.name */'aaa']]></source>
 			<p>
 				Daoのメソッドは次のように呼び出します。
@@ -333,16 +365,20 @@ List<Employee> list = dao.selectByExample(e);]]></source>
 				ページングを行う検索です。
 			</p>
 			<p>
-				DaoのメソッドとメソッドにマッピングされたSQLは次のとおりです。
+				使用するDaoのメソッド定義は次のとおりです。
 				Daoのメソッドでは、SelectOptions型のパラメータを定義します。
-				SQLにはORDER BY句の存在が必須です。
 			</p>
 <source><![CDATA[@Select
 List<Employee> selectAll(SelectOptions options);]]></source>
+			<p>
+				Daoメソッドに対応するSQLファイルのパスはMETA-INF/tutorial/dao/EmployeeDao/selectAll.sqlです。
+				SQLは次のように記述されています。
+				SQLにはORDER BY句の存在が必須です。
+			</p>
 <source><![CDATA[select * from employee order by id]]></source>
 			<p>
 				Daoのメソッドは次のように呼び出します。
-				SelectOptionsにoffsetとlimitを指定します。
+				SelectOptionsにoffsetとlimitを指定しています。
 			</p>
 <source><![CDATA[SelectOptions options = SelectOptions.get().offset(5).limit(3);
 List<Employee> list = dao.selectAll(options);
@@ -355,15 +391,19 @@ assertEquals(3, list.size());]]></source>
 		<section name="ページングと集計を同時に行う検索">
 			<p>
 				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/SelectTest.java">test/tutorial/SelectTest.java</a>のtestCountメソッドを参照してください。
-				ページングを行う検索です。
+				ページングと集計（ページングしない場合の全件数の取得）を同時に行う検索です。
 			</p>
 			<p>
-				DaoのメソッドとメソッドにマッピングされたSQLは次のとおりです。
+				使用するDaoのメソッド定義は次のとおりです。
 				Daoのメソッドでは、SelectOptions型のパラメータを定義します。
-				SQLにはORDER BY句の存在が必須です。
 			</p>
 <source><![CDATA[@Select
 List<Employee> selectAll(SelectOptions options);]]></source>
+			<p>
+				Daoメソッドに対応するSQLファイルのパスはMETA-INF/tutorial/dao/EmployeeDao/selectAll.sqlです。
+				SQLは次のように記述されています。
+				SQLにはORDER BY句の存在が必須です。
+			</p>
 <source><![CDATA[select * from employee order by id]]></source>
 			<p>
 				Daoのメソッドは次のように呼び出します。
@@ -387,12 +427,15 @@ assertEquals(14, options.getCount());]]></source>
 				メモリの使用量を抑えながら大量データを扱う場合に向いています。
 			</p>
 			<p>
-				DaoのメソッドとメソッドにマッピングされたSQLは次のとおりです。
-				@Selectのiterate要素をtrueにします。
-				Daoのメソッドでは、IterationCallback型のパラメータを定義します。
+				使用するDaoのメソッド定義は次のとおりです。
+				@Selectのiterate要素にtrueを指定し、DaoのメソッドではIterationCallback型のパラメータを定義します。
 			</p>
 <source><![CDATA[@Select(iterate = true)
 <R> R selectByAge(int age, IterationCallback<R, Employee> callback);]]></source>
+			<p>
+				Daoメソッドに対応するSQLファイルのパスはMETA-INF/tutorial/dao/EmployeeDao/selectByAge.sqlです。
+				SQLは次のように記述されています。
+			</p>
 <source><![CDATA[select * from employee where age > /* age */0 order by age]]></source>
 			<p>
 				Daoのメソッドは次のように呼び出します。

@@ -10,13 +10,21 @@
 				<li><a href="#概要">概要</a></li>
 				<li><a href="#エンティティ定義">エンティティ定義</a>
 					<ul>
-						<li><a href="#テーブル定義">テーブル定義</a></li>
+						<li><a href="#エンティティリスナー">エンティティリスナー</a></li>
+						<li><a href="#ネーミング規約">ネーミング規約</a></li>
+						<li><a href="#テーブル">テーブル</a></li>
 						<li><a href="#継承">継承</a></li>
 					</ul>
 				</li>
 				<li><a href="#フィールド定義">フィールド定義</a>
 					<ul>
-						<li><a href="#永続的なフィールド">永続的なフィールド</a></li>
+						<li><a href="#永続的なフィールド">永続的なフィールド</a>
+							<ul>
+								<li><a href="#カラム">カラム</a></li>
+								<li><a href="#識別子">識別子</a></li>
+								<li><a href="#バージョン">バージョン</a></li>
+							</ul>
+						</li>
 						<li><a href="#非永続的なフィールド">非永続的なフィールド</a></li>
 						<li><a href="#取得時の状態を管理するフィールド">取得時の状態を管理するフィールド</a></li>
 					</ul>
@@ -37,18 +45,18 @@
 			<p>
 				エンティティクラスは <code>@Entity</code>が注釈された非<code>private</code>なクラスとして定義します。
 				クラスはトップレベルのクラスでなければいけません（他のクラスやインタフェースにネストされていてはいけません）。
-				エンティティクラスは <code>abstract</code>であってはいけません。
+				エンティティクラスは 非<code>private</code>なデフォルトコンストラクタ（引数なしのコンストラクタ）を持たなければいけません。
 			</p>
 <source><![CDATA[@Entity
 public class Employee {
     ...
 }]]></source>
-			<h4>エンティティリスナー</h4>
-			<p>
-				エンティティがデータベースに対し挿入、更新、削除される直前に処理を実行したい場合、
-				<code>listener</code> 要素に <code>org.seasar.doma.jdbc.entity.EntityListener</code>
-				の実装クラスを指定できます。
-			</p>
+			<subsection name="エンティティリスナー">
+				<p>
+					エンティティがデータベースに対し挿入、更新、削除される直前に処理を実行したい場合、
+					<code>listener</code> 要素に <code>org.seasar.doma.jdbc.entity.EntityListener</code>
+					の実装クラスを指定できます。
+				</p>
 <source>@Entity(listener = EmployeeEntityListener.class)
 public class Employee {
     ...
@@ -67,21 +75,22 @@ public class Employee {
         ...
     }
 }]]></source>
-			<p>
-				<code>EntityListener</code>の実装クラスはpublicなデフォルトコンストラクタ（引数なしのコンストラクタ）を持たねばいけません。
-			</p>
-			<h4>ネーミング規約</h4>
-			<p>
-				エンティティに対応するテーブル名やプロパティに対応するカラム名を解決するためのネーミング規約を変更したい場合、
-				<code>naming</code> 要素に <code>org.seasar.doma.jdbc.entity.NamingType</code>
-				の列挙型を指定できます。
-			</p>
+				<p>
+					<code>EntityListener</code>の実装クラスはpublicなデフォルトコンストラクタ（引数なしのコンストラクタ）を持たねばいけません。
+				</p>
+			</subsection>
+			<subsection name="ネーミング規約">
+				<p>
+					エンティティに対応するテーブル名やプロパティに対応するカラム名を解決するためのネーミング規約を変更したい場合、
+					<code>naming</code> 要素に <code>org.seasar.doma.jdbc.entity.NamingType</code>
+					の列挙型を指定できます。
+				</p>
 <source>@Entity(naming = NamingType.SNAKE_UPPER_CASE)
 public class EmployeeInfo {
     ...
 }</source>
 				<p>
-					<code>NamingType.SNAKE_UPPER_CASE</code>は、値をスネークケースの大文字に変換します。この例の場合、テーブル名は<code>EMPLOYEE_INFO</code>になります。
+					<code>NamingType.SNAKE_UPPER_CASE</code>は、エンティティ名やプロパティ名をスネークケース（アンダースコア区切り）の大文字に変換します。この例の場合、テーブル名は<code>EMPLOYEE_INFO</code>になります。
 				</p>
 				<p>
 					<code>naming</code>要素に何も指定しない場合、デフォルトでは、テーブル名にはエンティティクラスの単純名、カラム名にはプロパティ名が使用されます。
@@ -90,6 +99,18 @@ public class EmployeeInfo {
 					ネーミング規約は、<code>@Table</code>や<code>@Colum</code>の<code>name</code>要素が指定されない場合のみ使用されます。
 					<code>@Table</code>や<code>@Colum</code>の<code>name</code>要素が指定された場合は、<code>name</code>要素に指定した値が使用され、ネーミング規約は適用されません。
 				</p>
+				<p>
+					<code>NamingType</code>には次の列挙定数があります。
+				</p>
+				<table border="1" cellpadding="2" cellspacing="0">
+					<tr><th>列挙定数</th><th>説明</th></tr>
+					<tr><td>NONE</td><td>何も行いません。</td></tr>
+					<tr><td>SNAKE_UPPER_CASE</td><td>キャメルケースをスネークケース（アンダースコア区切り）の大文字に変換します。</td></tr>
+					<tr><td>SNAKE_LOWER_CASE</td><td>キャメルケーススネークケース（アンダースコア区切り）の小文字に変換します。</td></tr>
+					<tr><td>UPPER_CASE</td><td>大文字に変換します。</td></tr>
+					<tr><td>LOWER_CASE</td><td>小文字に変換します。</td></tr>
+				</table>
+			</subsection>
 			<subsection name="テーブル">
 				<p>
 					エンティティに対応するテーブル情報を指定するには、 <code>@Table</code> を使用します。
@@ -112,7 +133,7 @@ public class Employee {
 }]]></source>
 				<p>
 					<code>@Table</code>を使用しない、もしくは <code>@Table</code>の<code>name</code>要素を使用しない場合、
-					テーブル名は、<code>@Entity</code>の<code>naming</code>要素に指定された列挙型により解決されます。
+					テーブル名は、<a href="ネーミング規約">ネーミング規約</a>により解決されます。
 				</p>
 			</subsection>
 			<subsection name="継承">
@@ -130,7 +151,7 @@ public class Employee {
 					永続的なフィールドは、テーブルや結果セットのカラムに対応します。
 				</p>
 				<p>
-					フィールドの型は、<a href="basic">基本型</a>もしくは<code>@Domain</code>が注釈されたクラスでなければいけません。
+					フィールドの型は、<a href="basic.html">基本型</a>もしくは<a href="domain.html">ドメインクラス</a>でなければいけません。
 					フィールドの可視性は非<code>private</code>でなければいけません。
 				</p>
 <source><![CDATA[@Entity
@@ -139,7 +160,7 @@ public class Employee {
     Integer employeeId;
 }]]></source>
 			</subsection>
-				<h4>カラム</h4>
+				<h4><a name="カラム"></a>カラム</h4>
 				<p>
 					プロパティに対応するカラム情報を指定するには、<code>@Column</code>を使用します。
 				</p>
@@ -155,9 +176,9 @@ String employeeName;]]></source>
 String employeeName;]]></source>
 				<p>
 					<code>@Column</code>を使用しない、もしくは<code>@Column</code>の <code>name</code>要素を使用しない場合、
-					カラム名は、<code>@Entity</code>の<code>naming</code>要素に指定された列挙型により解決されます。
+					カラム名は、<a href="ネーミング規約">ネーミング規約</a>により解決されます。
 				</p>
-				<h4>識別子</h4>
+				<h4><a name="識別子"></a>識別子</h4>
 				<p>
 					識別子(主キー)であることを指定するには、<code>@Id</code>を使います。 
 				</p>
@@ -228,7 +249,7 @@ Integer id;]]></source>
 					<code>@TableGenerator</code>の<code>pkColumnValue</code>要素には、
 					識別子を管理するテーブル（デフォルトでは、「ID_GENERATOR」という名前のテーブル）の主キーの値を指定します。
 				</p>
-				<h4>バージョン</h4>
+				<h4><a name="バージョン"></a>バージョン</h4>
 				<p>
 					楽観的排他制御用のバージョンは<code>@Version</code>を注釈して示します。
 				</p>
@@ -297,8 +318,8 @@ dao.update(employee);
 		<section name="メソッド定義">
 			<p>
 				メソッドの定義に制限はありません。
-				フィールドの可視性を<code>protected</code>やパッケージプライベートにしてメソッド経由でアクセスすることも、
-				<code>public</code>にして直接アクセスすることもどちらもサポートされています。
+				フィールドの可視性を<code>protected</code>やパッケージプライベートにしてpublicなメソッド経由でアクセスすることも、
+				メソッドを一切使用せず<code>public</code>フィールドに直接アクセスすることもどちらもサポートされています。
 			</p>
 		</section>
 		<section name="エンティティの利用方法">

@@ -241,6 +241,7 @@ public enum Message implements MessageResource {
     DOMA4155("戻り値のListの実型引数のエンティティクラス[{0}]は抽象型であってはいけません。"),
     DOMA4156("戻り値のListの実型引数のエンティティクラス[{0}]は抽象型であってはいけません。"),
     DOMA4157("Listの実型引数のエンティティクラス[{0}]は抽象型であってはいけません。"),
+    DOMA4158("IterationCallbackの2番目の実型引数に抽象型のエンティティクラス[{0}]は指定できません。"),
 
     // other
     DOMA5001("JDBCドライバがロードされていない可能性があります。JDBCドライバをロードするには、クラスパスが通されたMETA-INF/services/java.sql.DriverファイルにJDBCドライバのクラスの完全修飾名を記述してください。 ex) oracle.jdbc.driver.OracleDriver"),

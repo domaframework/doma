@@ -430,18 +430,21 @@ public interface EmployeeDao {
 						<ul>
 							<li><a href="insert.html#概要">概要</a></li>
 							<li><a href="insert.html#SQLの自動生成による挿入">SQLの自動生成による挿入</a></li>
+							<li><a href="insert.html#SQLファイルによる挿入">SQLファイルによる挿入</a></li>
 						</ul>
 					</li>
 					<li><a href="update.html">更新</a>
 						<ul>
 							<li><a href="update.html#概要">概要</a></li>
 							<li><a href="update.html#SQLの自動生成による更新">SQLの自動生成による更新</a></li>
+							<li><a href="update.html#SQLファイルによる更新">SQLファイルによる更新</a></li>
 						</ul>
 					</li>
 					<li><a  href="delete.html">削除</a>
 						<ul>
 							<li><a href="delete.html#概要">概要</a></li>
 							<li><a href="delete.html#SQLの自動生成による削除">SQLの自動生成による削除</a></li>
+							<li><a href="delete.html#SQLファイルによる削除">SQLファイルによる削除</a></li>
 						</ul>
 					</li>
 				</ul>
