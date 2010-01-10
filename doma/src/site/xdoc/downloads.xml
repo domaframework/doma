@@ -22,16 +22,41 @@
 					<th>Doma Tools (更新サイト)</th>
 				</tr>
 				<tr>
-					<td><a href="download/2010-01-03/doma-0.9.11.zip">doma-0.9.11</a></td>
-					<td><a href="download/2010-01-03/doma-tutorial-0.9.11.zip">doma-tutorial-0.9.11</a></td>
-					<td><a href="download/2010-01-03/doma-jpetstore-0.9.11.zip">doma-jpetstore-0.9.11</a></td>
-					<td><a href="download/2010-01-03/doma-gen-0.9.11.zip">doma-gen-0.9.11</a></td>
-					<td><a href="http://doma.sandbox.seasar.org/eclipse/updatesite/3.5">Doma Tools 0.9.11</a></td>
+					<td><a href="download/2010-01-11/doma-0.9.12.zip">doma-0.9.12</a></td>
+					<td><a href="download/2010-01-11/doma-tutorial-0.9.12.zip">doma-tutorial-0.9.12</a></td>
+					<td><a href="download/2010-01-11/doma-jpetstore-0.9.12.zip">doma-jpetstore-0.9.12</a></td>
+					<td><a href="download/2010-01-11/doma-gen-0.9.12.zip">doma-gen-0.9.12</a></td>
+					<td><a href="http://doma.sandbox.seasar.org/eclipse/updatesite/3.5">Doma Tools 0.9.12</a></td>
 				</tr>
 			</table>
 			<p>
 				<a href="downloads_old.html">古いバージョンのダウンロード</a>
 			</p>
+			<subsection name="Eclipseを使用している場合の注意点">
+				<p>
+					古いdoma-x.x.x.jarを新しいjarファイルで差し替える際は以下の点に注意してください。
+				</p>
+				<ul>
+					<li>
+						<p>
+							ビルドパスとファクトリパスの両方のパスで新しいjarファイルを参照するように設定してください。
+							ビルドパスやファクトリパスの設定方法については<a href="setup.html#プロジェクトの設定">プロジェクトの設定</a>を参照してください。
+						</p>
+					</li>
+					<li>
+						<p>
+							Eclipseがファクトリパスで参照するjarファイルをロックしてしまい、jarファイルを削除できないことがあります。その場合は、Eclipseを再起動してください。
+						</p>
+					</li>
+					<li>
+						<p>
+							jarファイルの差し替え後、プロジェクトのクリーンを行いaptで生成されるソースコードを最新にしてください。
+							（通常は、jarファイルを新しくすれば自動でaptが起動しますが、稀にソースコードが完全に置き換わらないことがあります。）
+							プロジェクトのクリーンは、メニューから「Project」 - 「Clean...」を選択し実行します。
+						</p>
+					</li>
+				</ul>
+			</subsection>
 		</section>
 		<section name="説明">
 			<subsection name="Doma本体">
