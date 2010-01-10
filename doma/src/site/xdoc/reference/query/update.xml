@@ -52,7 +52,7 @@ int update(Employee employee);]]></source>
 				</p>
 				<p>
 					しかし、<code>@Update</code>の<code>includeVersion</code>要素が<code>true</code>の場合、
-					バージョン番号は更新条件には含まれず、UPDATE文のSET句に含まれます。バージョン番号はアプリケーションで設定された値で更新されます。
+					バージョン番号は更新条件には含まれず、UPDATE文のSET句に含まれます。バージョン番号はアプリケーションで設定した値で更新されます。
 					この場合、更新件数が0件であっても、<code>OptimisticLockException</code>はスローされません。
 				</p>
 <source><![CDATA[@Update(includeVersion = true)
@@ -127,7 +127,7 @@ int update(Employee employee);]]></source>
 			<p>
 				たとえば、上記のメソッドに対応するSQLは次のように記述します。
 			</p>
-<source><![CDATA[update employee set name = /*employee.name*/'hoge', salary = /*employee.salary*/100 where id = /*employee.id*/0]]></source>
+<source><![CDATA[update employee set name = /* employee.name */'hoge', salary = /* employee.salary */100 where id = /* employee.id */0]]></source>
 			<p>
 				SQLファイルによる更新では、バージョン番号の自動更新は行われません。
 				また、<code>@Update</code>の<code>exclude</code>要素、<code>include</code>要素、

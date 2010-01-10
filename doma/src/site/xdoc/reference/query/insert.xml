@@ -108,7 +108,7 @@ int insert(Employee employee);]]></source>
 				たとえば、上記のメソッドに対応するSQLは次のように記述します。
 			</p>
 <source><![CDATA[insert into employee (id, name, salary, version) 
-values (/*employee.id*/0, /*employee.name*/'hoge', /*employee.salary*/100, /*employee.version*/0)]]></source>
+values (/*employee.id*/0, /* employee.name */'hoge', /* employee.salary */100, /* employee.version */0)]]></source>
 			<p>
 				SQLファイルによる挿入では、識別子の自動設定やバージョン番号の自動設定は行われません。
 				また、<code>@Insert</code>の<code>exclude</code>要素、<code>include</code>要素、

@@ -81,7 +81,7 @@ int delete(Employee employee);]]></source>
 			<p>
 				たとえば、上記のメソッドに対応するSQLは次のように記述します。
 			</p>
-<source><![CDATA[delete from employee where name = /*employee.name*/'hoge']]></source>
+<source><![CDATA[delete from employee where name = /* employee.name */'hoge']]></source>
 			<p>
 				SQLファイルによる削除では、、<code>@Delete</code>の<code>ignoreVersion</code>要素、
 				<code>suppressOptimisticLockException</code>要素は参照されません。

@@ -91,7 +91,7 @@ int[] insert(List<Employee> employees);]]></source>
 				たとえば、上記のメソッドに対応するSQLは次のように記述します。
 			</p>
 <source><![CDATA[insert into employee (id, name, salary, version) 
-values (/*employees.id*/0, /*employees.name*/'hoge', /*employees.salary*/100, /*employees.version*/0)]]></source>
+values (/* employees.id */0, /* employees.name */'hoge', /* employees.salary */100, /* employees.version */0)]]></source>
 			<p>
 				SQLファイルによるバッチ挿入では、識別子の自動設定やバージョン番号の自動設定は行われません。
 				また、<code>@BatchInsert</code>の<code>exclude</code>要素、<code>include</code>要素は参照されません。

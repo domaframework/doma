@@ -38,6 +38,7 @@ public interface EmployeeDao {
 				デフォルトでは、DELETE文が自動生成されます。
 				<code>@BatchDelete</code>の<code>sqlFile</code>に<code>true</code>を設定することで、任意の<a href="../sqlfile.html">SQLファイル</a>にマッピングできます。
 			</p>
+		</section>
 		<section name="SQLの自動生成によるバッチ削除">
 			<subsection name="バージョン番号と楽観的排他制御">
 				<p>
@@ -72,7 +73,7 @@ int[] delete(List<Employee> employees);]]></source>
 			<p>
 				たとえば、上記のメソッドに対応するSQLは次のように記述します。
 			</p>
-<source><![CDATA[delete from employee where name = /*employees.name*/'hoge']]></source>
+<source><![CDATA[delete from employee where name = /* employees.name */'hoge']]></source>
 			<p>
 				SQLファイルによるバッチ削除では、、<code>@BatchDelete</code>の<code>ignoreVersion</code>要素、
 				<code>suppressOptimisticLockException</code>要素は参照されません。
@@ -89,7 +90,6 @@ int[] delete(List<Employee> employees);]]></source>
 				<code>queryTimeout</code>要素に値を指定しない場合、
 				<a href="../config.html">設定クラス</a>に指定されたクエリタイムアウトが使用されます。
 			</p>
-		</section>
 		</section>
 	</body>
 </document>

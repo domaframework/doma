@@ -98,7 +98,7 @@ int[] update(List<Employee> employees);]]></source>
 			<p>
 				たとえば、上記のメソッドに対応するSQLは次のように記述します。
 			</p>
-<source><![CDATA[update employee set name = /*employees.name*/'hoge', salary = /*employees.salary*/100 where id = /*employees.id*/0]]></source>
+<source><![CDATA[update employee set name = /* employees.name */'hoge', salary = /* employees.salary */100 where id = /* employees.id */0]]></source>
 			<p>
 				SQLファイルによるバッチ更新では、バージョン番号の自動更新は行われません。
 				また、<code>@BatchUpdate</code>の<code>exclude</code>要素、<code>include</code>要素、
