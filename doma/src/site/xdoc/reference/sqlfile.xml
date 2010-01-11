@@ -457,7 +457,7 @@ salary > 1000]]></source>
 				</p>
 				<p>
 					<code>&lt;</code>、<code>&lt;=</code>、<code>&gt;</code>、<code>&gt;=</code>では、
-					非演算子に<code>null</code>リテラルを使用できません。
+					非演算子に<code>null</code>であってはいけません。
 				</p>
 <source><![CDATA[select * from employee where 
 /*%if employeeName.indexOf("s") > -1 */
