@@ -32,6 +32,7 @@ import org.seasar.doma.internal.jdbc.sql.node.ElseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseifNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
+import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.EndNode;
 import org.seasar.doma.internal.jdbc.sql.node.EndNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.EolNode;
@@ -632,7 +633,8 @@ public class SqlParser {
             ElseifNodeVisitor<Void, Void>, ElseNodeVisitor<Void, Void>,
             LogicalOperatorNodeVisitor<Void, Void>, ForNodeVisitor<Void, Void>,
             EndNodeVisitor<Void, Void>, AnonymousNodeVisitor<Void, Void>,
-            ParensNodeVisitor<Void, Void>, EolNodeVisitor<Void, Void> {
+            ParensNodeVisitor<Void, Void>, EolNodeVisitor<Void, Void>,
+            EmbeddedVariableNodeVisitor<Void, Void> {
 
         protected void optimize(SqlNode node) {
             List<SqlNode> children = new ArrayList<SqlNode>(node.getChildren());
@@ -757,6 +759,12 @@ public class SqlParser {
 
         @Override
         public Void visitElseNode(ElseNode node, Void p) {
+            optimize(node);
+            return null;
+        }
+
+        @Override
+        public Void visitEmbeddedVariableNode(EmbeddedVariableNode node, Void p) {
             optimize(node);
             return null;
         }
