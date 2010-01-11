@@ -198,7 +198,7 @@ public enum Message implements MessageResource {
     DOMA4105("クラス以外には注釈できません"),
     DOMA4106("ドメインクラスはトップレベルでなければいけません。"),
     DOMA4107("@Domainを注釈したクラスには型パラメータを定義できません。"),
-    DOMA4108("Listには[{0}]には実型引数が必須です。"),
+    DOMA4108("Listには実型引数が必須です。"),
     DOMA4109("戻り値のListには[{0}]には実型引数が必須です。"),
     DOMA4110("IterationCallback型のパラメータ[{0}]には型パラメータが必須です。"),
     DOMA4111("@InOutが注釈されたパラメータの型は、org.seasar.doma.jdbc.Referenceでなければいけません。"),
