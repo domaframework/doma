@@ -298,7 +298,7 @@ and employeeName like 's%']]></source>
 /*%for name : names */
 employee_name like /* name */'hoge'
   /*%if name_has_next */
-or
+/*# "or" */
   /*%end */
 /*%end*/
 ]]></source>
@@ -338,7 +338,7 @@ employee_name like ?]]></source>
 /*%for name : names */
 employee_name like /* name */'hoge'
   /*%if name_has_next */
-or
+/*# "or" */
   /*%end */
 /*%end*/]]></source>
 				<p>
@@ -354,7 +354,7 @@ or
 /*%for name : names */
 employee_name like /* name */'hoge'
   /*%if name_has_next */
-or
+/*# "or" */
   /*%end */
 /*%end*/
 or

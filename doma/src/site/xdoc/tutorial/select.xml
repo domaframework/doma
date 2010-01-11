@@ -40,6 +40,7 @@
 			<p>
 				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/SelectTest.java">test/tutorial/SelectTest.java</a>のtestSimpleSelectメソッドを参照してください。
 				引数をSQLファイルにバインディングして実行する単純な検索です。
+				バインディングには<a href="../reference/sqlfile.html#バインド変数コメント">バインド変数コメント</a>を使用します。
 			</p>
 			<p>
 				使用するDaoのメソッド定義は次のとおりです。
@@ -62,7 +63,7 @@ Employee selectById(Integer id);]]></source>
 		<section name="条件分岐を用いた検索">
 			<p>
 				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/SelectTest.java">test/tutorial/SelectTest.java</a>のtestConditinalSelectメソッドを参照してください。
-				SQLファイル中に条件分岐を記述することで、動的なSQLを発行できます。
+				SQLファイル中に<a href="../reference/sqlfile.html#条件コメント">条件コメント</a>を記述することで、動的なSQLを発行できます。
 			</p>
 			<p>
 				使用するDaoのメソッド定義は次のとおりです。
@@ -138,7 +139,7 @@ order by age]]></source>
 		<section name="繰り返しを用いた検索">
 			<p>
 				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/SelectTest.java">test/tutorial/SelectTest.java</a>のtestLoopSelectメソッドを参照してください。
-				SQLファイル中に繰り返しを記述することで、動的なSQLを発行できます。
+				SQLファイル中に<a href="../reference/sqlfile.html#繰り返しコメント">繰り返しコメント</a>を記述することで、動的なSQLを発行できます。
 			</p>
 			<p>
 				使用するDaoのメソッド定義は次のとおりです。
@@ -147,12 +148,13 @@ order by age]]></source>
 List<Employee> selectByAges(List<Integer> ages);]]></source>
 			<p>
 				Daoメソッドに対応するSQLファイルのパスはMETA-INF/tutorial/dao/EmployeeDao/selectByAges.sqlです。SQLは次のように記述されています。
+				次の要素がある場合にのみ表示したい文字列（この例ではor）は、<a href="../reference/sqlfile.html#埋め込み変数コメント">埋め込み変数コメント</a>で表します。
 			</p>
 <source><![CDATA[select * from employee where 
 /*%for age : ages */
   age = /* age */30
   /*%if age_has_next */
-  or
+  /*# "or" */
   /*%end */
 /*%end */]]></source>
 			<p>
@@ -200,7 +202,7 @@ List<Employee> list = dao.selectByNames(names);]]></source>
 			<subsection name="前方一致検索">
 				<p>
 					<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/SelectTest.java">test/tutorial/SelectTest.java</a>のtestLikePredicate_prefixメソッドを参照してください。
-					SQLファイル中で組み込み関数「@prefix()」を使用した前方一致検索ができます。
+					SQLファイル中で<a href="../reference/sqlfile.html#組み込み関数の使用">組み込み関数</a>「@prefix()」を使用した前方一致検索ができます。
 					組み込み関数「@prefix()」を使用するとJavaのコード内で「%」を文字列に連結する処理が不要になります。
 				</p>
 				<p>
@@ -274,7 +276,7 @@ List<Employee> selectByNameWithInsideMatching(String inside);]]></source>
 			<p>
 				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/SelectTest.java">test/tutorial/SelectTest.java</a>のtestSelectByTimestampRangeメソッドを参照してください。
 				日付を用いて範囲検索を行う場合に、日付の時刻部分を切り捨てたり、日付を一日後ろへずらして切りのいい値にしたいことがあります。
-				そのような場合には、組み込み関数の「@roundDownTimePart()」と「@roundUpTimePart()」を使用します。
+				そのような場合には、<a href="../reference/sqlfile.html#組み込み関数の使用">組み込み関数</a>の「@roundDownTimePart()」と「@roundUpTimePart()」を使用します。
 			</p>
 			<p>
 				使用するDaoのメソッド定義は次のとおりです。
