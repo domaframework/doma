@@ -144,13 +144,11 @@ public class EntityMetaFactory {
     protected TypeMirror getListenerArgumentType(TypeMirror typeMirror) {
         for (TypeMirror supertype : env.getTypeUtils().directSupertypes(
                 typeMirror)) {
-            TypeElement superElement = TypeMirrorUtil.toTypeElement(supertype,
-                    env);
-            if (superElement == null || !superElement.getKind().isInterface()) {
+            if (!TypeMirrorUtil.isAssignable(supertype, EntityListener.class,
+                    env)) {
                 continue;
             }
-            if (superElement.getQualifiedName().contentEquals(
-                    EntityListener.class.getName())) {
+            if (TypeMirrorUtil.isSameType(supertype, EntityListener.class, env)) {
                 DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(
                         supertype, env);
                 assertNotNull(declaredType);

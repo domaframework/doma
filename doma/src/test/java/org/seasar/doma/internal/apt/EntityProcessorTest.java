@@ -18,6 +18,7 @@ package org.seasar.doma.internal.apt;
 import org.seasar.doma.internal.apt.entity.AbstractEntity;
 import org.seasar.doma.internal.apt.entity.AnnotationConflictedEntity;
 import org.seasar.doma.internal.apt.entity.ChildEntity;
+import org.seasar.doma.internal.apt.entity.CommonChild;
 import org.seasar.doma.internal.apt.entity.DomainPropertyEntity;
 import org.seasar.doma.internal.apt.entity.Emp;
 import org.seasar.doma.internal.apt.entity.EnumPropertyEntity;
@@ -199,6 +200,15 @@ public class EntityProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testCommonListener() throws Exception {
+        Class<?> target = CommonChild.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
         assertTrue(getCompiledResult());
     }
 }
