@@ -156,7 +156,8 @@ where
 					<tr><td>password</td><td>JDBC接続パスワードです。</td><td>-</td><td><b>YES</b></td></tr>
 					<tr><td>schemaName</td><td>対象とするテーブルが所属するスキーマ名です。指定しない場合、JDBC接続ユーザーでアクセス可能な全スキーマが対象になります。</td><td>-</td><td>NO</td></tr>
 					<tr><td>tableNamePattern</td><td>対象とするテーブル名の正規表現です。大文字小文字の違いは考慮されません。</td><td>".*"</td><td>NO</td></tr>
-					<tr><td>ignoreTableNamePattern</td><td>対象としないテーブル名の正規表現です。大文字小文字の違いは考慮されません。</td><td>".*\$.*"</td><td>NO</td></tr>
+					<tr><td>ignoredTableNamePattern</td><td>対象としないテーブル名の正規表現です。大文字小文字の違いは考慮されません。</td><td>".*\$.*"</td><td>NO</td></tr>
+					<tr><td>tableTypes</td><td>対象とするテーブルの型です。複数の値を空白またはカンマで区切って指定できます。たとえば、テーブルに加えビューを対象にしたい場合、"TABLE, VIEW"と指定します。この値は、java.sql.DatabaseMetaDataクラスのgetTablesメソッドの最後のパラメータに渡されます。</td><td>"TABLE"</td><td>NO</td></tr>
 					<tr><td>versionColumnNamePattern</td><td>エンティティのプロパティに@Versionを付与するカラム名の正規表現です。大文字小文字の違いは考慮されません。</td><td>"VERSION([_]?NO)?"</td><td>NO</td></tr>
 					<tr><td>templateEncoding</td><td>テンプレートファイルのエンコーディングです。</td><td>"UTF-8"</td><td>NO</td></tr>
 					<tr><td>templatePrimaryDir</td><td>テンプレートファイルを検索する際の優先ディレクトリです。独自テンプレートファイルを使用する場合に指定します。</td><td>-</td><td>NO</td></tr>
