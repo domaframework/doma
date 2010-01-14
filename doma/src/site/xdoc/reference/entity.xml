@@ -286,7 +286,7 @@ List&lt;String&gt; nameList;</source>
 					<code>@OriginalStates</code>が注釈されたフィールドはアプリケーションで初期化したりアクセスしたりしてはいけません。
 				</p>
 <source><![CDATA[@OriginalStates
-Serializable originalStates;]]></source>
+Employee originalStates;]]></source>
 				<p>
 					<code>@OriginalStates</code>が注釈されたフィールドを持つエンティティの利用法は次のとおりです。
 				</p>
