@@ -77,6 +77,28 @@ public class StandardPagingTransformer implements
         subStatement.setGroupByClauseNode(node.getGroupByClauseNode());
         subStatement.setHavingClauseNode(node.getHavingClauseNode());
 
+        if (!originalOrderBy.getChildren().isEmpty()) {
+            subStatement.getSelectClauseNode().addNode(new FragmentNode(","));
+        }
+        for (SqlNode child : originalOrderBy.getChildren()) {
+            if (child instanceof WordNode) {
+                WordNode wordNode = (WordNode) child;
+                String word = wordNode.getWord();
+                String[] names = word.split("\\.");
+                if (names.length == 2) {
+                    subStatement.getSelectClauseNode().addNode(
+                            new WordNode(names[1]));
+                } else {
+                    subStatement.getSelectClauseNode().addNode(child);
+                }
+            } else {
+                subStatement.getSelectClauseNode().addNode(child);
+            }
+        }
+        if (!originalOrderBy.getChildren().isEmpty()) {
+            subStatement.getSelectClauseNode().addNode(new FragmentNode(" "));
+        }
+
         OrderByClauseNode orderBy = new OrderByClauseNode(originalOrderBy
                 .getWordNode());
         for (SqlNode child : originalOrderBy.getChildren()) {

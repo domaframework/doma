@@ -60,7 +60,7 @@ public class SqlFailedRuntimeException extends RuntimeException {
                 MessageFormat
                         .format(
                                 "SQLの実行に失敗しました(path=[{0}], lineNumber=[{1}], sql=[{2}])。原因は次のものです。{3}",
-                                cause, sqlFilePath, lineNumber, sql, cause));
+                                sqlFilePath, lineNumber, sql, cause));
         this.sqlFilePath = sqlFilePath;
         this.lineNumber = lineNumber;
         this.sql = sql;

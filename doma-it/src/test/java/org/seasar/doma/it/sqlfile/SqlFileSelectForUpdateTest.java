@@ -30,7 +30,7 @@ import org.seasar.framework.unit.annotation.Prerequisite;
 @RunWith(Seasar2.class)
 public class SqlFileSelectForUpdateTest {
 
-    @Prerequisite("#ENV not in {'h2', 'postgres', 'oracle', 'mysql'}")
+    @Prerequisite("#ENV not in {'h2', 'postgres', 'oracle', 'mysql', 'db2'}")
     public void testUnsupported() throws Exception {
         EmployeeDao dao = new EmployeeDaoImpl();
         try {
@@ -48,7 +48,7 @@ public class SqlFileSelectForUpdateTest {
         assertNotNull(employee);
     }
 
-    @Prerequisite("#ENV not in {'hsqldb', 'h2', 'postgres', 'mysql'}")
+    @Prerequisite("#ENV not in {'hsqldb', 'h2', 'postgres', 'mysql', 'db2'}")
     public void testForUpdateWithColumns() throws Exception {
         EmployeeDao dao = new EmployeeDaoImpl();
         Employee employee = dao.selectById(1, SelectOptions.get().forUpdate(
@@ -56,7 +56,7 @@ public class SqlFileSelectForUpdateTest {
         assertNotNull(employee);
     }
 
-    @Prerequisite("#ENV not in {'hsqldb', 'h2', 'oracle', 'mysql'}")
+    @Prerequisite("#ENV not in {'hsqldb', 'h2', 'oracle', 'mysql', 'db2'}")
     public void testForUpdateWithTables() throws Exception {
         EmployeeDao dao = new EmployeeDaoImpl();
         Employee employee = dao.selectById(1, SelectOptions.get().forUpdate(
@@ -64,7 +64,7 @@ public class SqlFileSelectForUpdateTest {
         assertNotNull(employee);
     }
 
-    @Prerequisite("#ENV not in {'hsqldb', 'h2', 'postgres', 'mysql'}")
+    @Prerequisite("#ENV not in {'hsqldb', 'h2', 'postgres', 'mysql', 'db2'}")
     public void testForUpdateNowait() throws Exception {
         EmployeeDao dao = new EmployeeDaoImpl();
         Employee employee = dao.selectById(1, SelectOptions.get()
@@ -72,7 +72,7 @@ public class SqlFileSelectForUpdateTest {
         assertNotNull(employee);
     }
 
-    @Prerequisite("#ENV not in {'hsqldb', 'h2', 'postgres', 'mysql'}")
+    @Prerequisite("#ENV not in {'hsqldb', 'h2', 'postgres', 'mysql', 'db2'}")
     public void testForUpdateNowaitWithColumns() throws Exception {
         EmployeeDao dao = new EmployeeDaoImpl();
         Employee employee = dao.selectById(1, SelectOptions.get()
@@ -80,7 +80,7 @@ public class SqlFileSelectForUpdateTest {
         assertNotNull(employee);
     }
 
-    @Prerequisite("#ENV not in {'hsqldb', 'h2', 'postgres', 'mysql'}")
+    @Prerequisite("#ENV not in {'hsqldb', 'h2', 'postgres', 'mysql', 'db2'}")
     public void testForUpdateWait() throws Exception {
         EmployeeDao dao = new EmployeeDaoImpl();
         Employee employee = dao.selectById(1, SelectOptions.get()
@@ -88,7 +88,7 @@ public class SqlFileSelectForUpdateTest {
         assertNotNull(employee);
     }
 
-    @Prerequisite("#ENV not in {'hsqldb', 'h2', 'postgres', 'mysql'}")
+    @Prerequisite("#ENV not in {'hsqldb', 'h2', 'postgres', 'mysql', 'db2'}")
     public void testForUpdateWaitWithColumns() throws Exception {
         EmployeeDao dao = new EmployeeDaoImpl();
         Employee employee = dao.selectById(1, SelectOptions.get()
