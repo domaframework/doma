@@ -23,6 +23,7 @@ import javax.sql.DataSource;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
+import org.seasar.doma.it.helper.dialect.Db2ToolDialect;
 import org.seasar.doma.it.helper.dialect.H2ToolDialect;
 import org.seasar.doma.it.helper.dialect.HsqldbToolDialect;
 import org.seasar.doma.it.helper.dialect.MySqlToolDialect;
@@ -131,6 +132,9 @@ public class ExecSqlFileTask extends Task {
         }
         if ("oracle".equals(dialectName)) {
             return new OracleToolDialect();
+        }
+        if ("db2".equals(dialectName)) {
+            return new Db2ToolDialect();
         }
         return new StandardToolDialect();
     }
