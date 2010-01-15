@@ -71,33 +71,33 @@ public class StandardPagingTransformer implements
             throw new JdbcException(Message.DOMA2201);
         }
         SelectStatementNode subStatement = new SelectStatementNode();
-        subStatement.setSelectClauseNode(node.getSelectClauseNode());
-        subStatement.setFromClauseNode(node.getFromClauseNode());
-        subStatement.setWhereClauseNode(node.getWhereClauseNode());
-        subStatement.setGroupByClauseNode(node.getGroupByClauseNode());
-        subStatement.setHavingClauseNode(node.getHavingClauseNode());
-
-        if (!originalOrderBy.getChildren().isEmpty()) {
-            subStatement.getSelectClauseNode().addNode(new FragmentNode(","));
-        }
+        SelectClauseNode subSelectClause = new SelectClauseNode(node
+                .getSelectClauseNode().getWordNode());
         for (SqlNode child : originalOrderBy.getChildren()) {
             if (child instanceof WordNode) {
                 WordNode wordNode = (WordNode) child;
                 String word = wordNode.getWord();
                 String[] names = word.split("\\.");
                 if (names.length == 2) {
-                    subStatement.getSelectClauseNode().addNode(
-                            new WordNode(names[1]));
+                    subSelectClause.addNode(new WordNode(names[1]));
                 } else {
-                    subStatement.getSelectClauseNode().addNode(child);
+                    subSelectClause.addNode(child);
                 }
             } else {
-                subStatement.getSelectClauseNode().addNode(child);
+                subSelectClause.addNode(child);
             }
         }
-        if (!originalOrderBy.getChildren().isEmpty()) {
-            subStatement.getSelectClauseNode().addNode(new FragmentNode(" "));
+        if (!subSelectClause.getChildren().isEmpty()) {
+            subSelectClause.addNode(new FragmentNode(","));
         }
+        for (SqlNode child : node.getSelectClauseNode().getChildren()) {
+            subSelectClause.addNode(child);
+        }
+        subStatement.setSelectClauseNode(subSelectClause);
+        subStatement.setFromClauseNode(node.getFromClauseNode());
+        subStatement.setWhereClauseNode(node.getWhereClauseNode());
+        subStatement.setGroupByClauseNode(node.getGroupByClauseNode());
+        subStatement.setHavingClauseNode(node.getHavingClauseNode());
 
         OrderByClauseNode orderBy = new OrderByClauseNode(originalOrderBy
                 .getWordNode());
