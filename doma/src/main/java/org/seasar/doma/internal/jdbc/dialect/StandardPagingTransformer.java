@@ -71,29 +71,7 @@ public class StandardPagingTransformer implements
             throw new JdbcException(Message.DOMA2201);
         }
         SelectStatementNode subStatement = new SelectStatementNode();
-        SelectClauseNode subSelectClause = new SelectClauseNode(node
-                .getSelectClauseNode().getWordNode());
-        for (SqlNode child : originalOrderBy.getChildren()) {
-            if (child instanceof WordNode) {
-                WordNode wordNode = (WordNode) child;
-                String word = wordNode.getWord();
-                String[] names = word.split("\\.");
-                if (names.length == 2) {
-                    subSelectClause.addNode(new WordNode(names[1]));
-                } else {
-                    subSelectClause.addNode(child);
-                }
-            } else {
-                subSelectClause.addNode(child);
-            }
-        }
-        if (!subSelectClause.getChildren().isEmpty()) {
-            subSelectClause.addNode(new FragmentNode(","));
-        }
-        for (SqlNode child : node.getSelectClauseNode().getChildren()) {
-            subSelectClause.addNode(child);
-        }
-        subStatement.setSelectClauseNode(subSelectClause);
+        subStatement.setSelectClauseNode(node.getSelectClauseNode());
         subStatement.setFromClauseNode(node.getFromClauseNode());
         subStatement.setWhereClauseNode(node.getWhereClauseNode());
         subStatement.setGroupByClauseNode(node.getGroupByClauseNode());

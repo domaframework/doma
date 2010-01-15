@@ -1,1 +1,1 @@
-select salary from EMPLOYEE order by EMPLOYEE_ID
+select salary, EMPLOYEE_ID from EMPLOYEE order by EMPLOYEE_ID

@@ -33,10 +33,11 @@ import org.seasar.doma.jdbc.SqlNode;
 public class StandardPagingTransformerTest extends TestCase {
 
     public void testOffsetLimit() throws Exception {
-        String expected = "select * from ( select temp_.*, row_number() over( order by temp_.id ) as doma_rownumber_ from ( select id, * from emp ) as temp_ ) as temp2_ where doma_rownumber_ > 5 and doma_rownumber_ <= 15";
+        String expected = "select * from ( select temp_.*, row_number() over( order by temp_.id ) as doma_rownumber_ from ( select emp.id from emp ) as temp_ ) as temp2_ where doma_rownumber_ > 5 and doma_rownumber_ <= 15";
         StandardPagingTransformer transformer = new StandardPagingTransformer(
                 5, 10);
-        SqlParser parser = new SqlParser("select * from emp order by emp.id");
+        SqlParser parser = new SqlParser(
+                "select emp.id from emp order by emp.id");
         SqlNode sqlNode = transformer.transform(parser.parse());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
                 new MockConfig(), SqlKind.SELECT, "dummyPath");
@@ -45,10 +46,11 @@ public class StandardPagingTransformerTest extends TestCase {
     }
 
     public void testOffsetOnly() throws Exception {
-        String expected = "select * from ( select temp_.*, row_number() over( order by temp_.id ) as doma_rownumber_ from ( select id, * from emp ) as temp_ ) as temp2_ where doma_rownumber_ > 5";
+        String expected = "select * from ( select temp_.*, row_number() over( order by temp_.id ) as doma_rownumber_ from ( select emp.id from emp ) as temp_ ) as temp2_ where doma_rownumber_ > 5";
         StandardPagingTransformer transformer = new StandardPagingTransformer(
                 5, -1);
-        SqlParser parser = new SqlParser("select * from emp order by emp.id");
+        SqlParser parser = new SqlParser(
+                "select emp.id from emp order by emp.id");
         SqlNode sqlNode = transformer.transform(parser.parse());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
                 new MockConfig(), SqlKind.SELECT, "dummyPath");
@@ -57,10 +59,11 @@ public class StandardPagingTransformerTest extends TestCase {
     }
 
     public void testLimitOnly() throws Exception {
-        String expected = "select * from ( select temp_.*, row_number() over( order by temp_.id ) as doma_rownumber_ from ( select id, * from emp ) as temp_ ) as temp2_ where doma_rownumber_ <= 10";
+        String expected = "select * from ( select temp_.*, row_number() over( order by temp_.id ) as doma_rownumber_ from ( select emp.id from emp ) as temp_ ) as temp2_ where doma_rownumber_ <= 10";
         StandardPagingTransformer transformer = new StandardPagingTransformer(
                 -1, 10);
-        SqlParser parser = new SqlParser("select * from emp order by emp.id");
+        SqlParser parser = new SqlParser(
+                "select emp.id from emp order by emp.id");
         SqlNode sqlNode = transformer.transform(parser.parse());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
                 new MockConfig(), SqlKind.SELECT, "dummyPath");
