@@ -41,7 +41,7 @@ public class SqlFileSelectForUpdateTest {
         }
     }
 
-    @Prerequisite("#ENV not in {'hsqldb', 'mysql'}")
+    @Prerequisite("#ENV not in {'hsqldb'}")
     public void testForUpdate() throws Exception {
         EmployeeDao dao = new EmployeeDaoImpl();
         Employee employee = dao.selectById(1, SelectOptions.get().forUpdate());
