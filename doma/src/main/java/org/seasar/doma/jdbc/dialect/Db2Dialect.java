@@ -20,8 +20,7 @@ import java.util.Collections;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
-import org.seasar.doma.internal.jdbc.dialect.H2ForUpdateTransformer;
-import org.seasar.doma.internal.jdbc.dialect.H2PagingTransformer;
+import org.seasar.doma.internal.jdbc.dialect.Db2ForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
@@ -32,22 +31,22 @@ import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
- * H2用の方言です。
+ * DB2用の方言です。
  * 
  * @author taedium
  * 
  */
-public class H2Dialect extends StandardDialect {
+public class Db2Dialect extends StandardDialect {
 
-    /** 一意制約違反を表すエラーコード */
-    protected static final int UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE = 23001;
+    /** 一意制約違反を表す {@literal SQLState} */
+    protected static final String UNIQUE_CONSTRAINT_VIOLATION_STATE_CODE = "23505";
 
     /**
      * インスタンスを構築します。
      */
-    public H2Dialect() {
-        this(new H2JdbcMappingVisitor(), new H2SqlLogFormattingVisitor(),
-                new H2ExpressionFunctions());
+    public Db2Dialect() {
+        this(new Db2JdbcMappingVisitor(), new Db2SqlLogFormattingVisitor(),
+                new Db2ExpressionFunctions());
     }
 
     /**
@@ -56,9 +55,9 @@ public class H2Dialect extends StandardDialect {
      * @param jdbcMappingVisitor
      *            {@link Wrapper} をJDBCの型とマッピングするビジター
      */
-    public H2Dialect(JdbcMappingVisitor jdbcMappingVisitor) {
-        this(jdbcMappingVisitor, new H2SqlLogFormattingVisitor(),
-                new H2ExpressionFunctions());
+    public Db2Dialect(JdbcMappingVisitor jdbcMappingVisitor) {
+        this(jdbcMappingVisitor, new Db2SqlLogFormattingVisitor(),
+                new Db2ExpressionFunctions());
     }
 
     /**
@@ -68,9 +67,9 @@ public class H2Dialect extends StandardDialect {
      *            SQLのバインド変数にマッピングされる {@link Wrapper}
      *            をログ用のフォーマットされた文字列へと変換するビジター
      */
-    public H2Dialect(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
-        this(new H2JdbcMappingVisitor(), sqlLogFormattingVisitor,
-                new H2ExpressionFunctions());
+    public Db2Dialect(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
+        this(new Db2JdbcMappingVisitor(), sqlLogFormattingVisitor,
+                new Db2ExpressionFunctions());
     }
 
     /**
@@ -79,8 +78,8 @@ public class H2Dialect extends StandardDialect {
      * @param expressionFunctions
      *            SQLのコメント式で利用可能な関数群
      */
-    public H2Dialect(ExpressionFunctions expressionFunctions) {
-        this(new H2JdbcMappingVisitor(), new H2SqlLogFormattingVisitor(),
+    public Db2Dialect(ExpressionFunctions expressionFunctions) {
+        this(new Db2JdbcMappingVisitor(), new Db2SqlLogFormattingVisitor(),
                 expressionFunctions);
     }
 
@@ -96,7 +95,7 @@ public class H2Dialect extends StandardDialect {
      * @param expressionFunctions
      *            SQLのコメント式で利用可能な関数群
      */
-    public H2Dialect(JdbcMappingVisitor jdbcMappingVisitor,
+    public Db2Dialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor,
             ExpressionFunctions expressionFunctions) {
         super(jdbcMappingVisitor, sqlLogFormattingVisitor, expressionFunctions);
@@ -104,26 +103,25 @@ public class H2Dialect extends StandardDialect {
 
     @Override
     public String getName() {
-        return "h2";
+        return "db2";
     }
 
     @Override
-    public boolean includesIdentityColumn() {
-        return true;
+    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode,
+            SelectForUpdateType forUpdateType, int waitSeconds,
+            String... aliases) {
+        Db2ForUpdateTransformer transformer = new Db2ForUpdateTransformer(
+                forUpdateType, waitSeconds, aliases);
+        return transformer.transform(sqlNode);
     }
 
     @Override
-    public PreparedSql getIdentitySelectSql(String qualifiedTableName,
-            String columnName) {
-        if (qualifiedTableName == null) {
-            throw new DomaNullPointerException("qualifiedTableName");
+    public boolean isUniqueConstraintViolated(SQLException sqlException) {
+        if (sqlException == null) {
+            throw new DomaNullPointerException("sqlException");
         }
-        if (columnName == null) {
-            throw new DomaNullPointerException("columnName");
-        }
-        String rawSql = "call identity()";
-        return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<PreparedSqlParameter> emptyList());
+        String state = getSQLState(sqlException);
+        return UNIQUE_CONSTRAINT_VIOLATION_STATE_CODE.equals(state);
     }
 
     @Override
@@ -132,33 +130,9 @@ public class H2Dialect extends StandardDialect {
         if (qualifiedSequenceName == null) {
             throw new DomaNullPointerException("qualifiedSequenceName");
         }
-        String rawSql = "call next value for " + qualifiedSequenceName;
+        String rawSql = "values nextval for " + qualifiedSequenceName;
         return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
                 Collections.<PreparedSqlParameter> emptyList());
-    }
-
-    @Override
-    public boolean isUniqueConstraintViolated(SQLException sqlException) {
-        if (sqlException == null) {
-            throw new DomaNullPointerException("sqlException");
-        }
-        int code = getErrorCode(sqlException);
-        return UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE == code;
-    }
-
-    @Override
-    protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
-        H2PagingTransformer transformer = new H2PagingTransformer(offset, limit);
-        return transformer.transform(sqlNode);
-    }
-
-    @Override
-    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode,
-            SelectForUpdateType forUpdateType, int waitSeconds,
-            String... aliases) {
-        H2ForUpdateTransformer transformer = new H2ForUpdateTransformer(
-                forUpdateType, waitSeconds, aliases);
-        return transformer.transform(sqlNode);
     }
 
     @Override
@@ -172,43 +146,60 @@ public class H2Dialect extends StandardDialect {
     }
 
     @Override
-    public boolean supportsAutoGeneratedKeys() {
-        return true;
-    }
-
-    @Override
     public boolean supportsSelectForUpdate(SelectForUpdateType type,
             boolean withTargets) {
         return type == SelectForUpdateType.NORMAL && !withTargets;
     }
 
-    /**
-     * H2用の {@link JdbcMappingVisitor} の実装です。
-     * 
-     * @author taedium
-     * 
-     */
-    public static class H2JdbcMappingVisitor extends StandardJdbcMappingVisitor {
+    @Override
+    public boolean supportsAutoGeneratedKeys() {
+        return true;
     }
 
     /**
-     * H2用の {@link SqlLogFormattingVisitor} の実装です。
+     * DB2用の {@link JdbcMappingVisitor} の実装です。
      * 
      * @author taedium
      * 
      */
-    public static class H2SqlLogFormattingVisitor extends
+    public static class Db2JdbcMappingVisitor extends
+            StandardJdbcMappingVisitor {
+    }
+
+    /**
+     * DB2用の {@link SqlLogFormattingVisitor} の実装です。
+     * 
+     * @author taedium
+     * 
+     */
+    public static class Db2SqlLogFormattingVisitor extends
             StandardSqlLogFormattingVisitor {
     }
 
     /**
-     * H2用の {@link ExpressionFunctions} です。
+     * DB2用の {@link ExpressionFunctions} です。
      * 
      * @author taedium
      * 
      */
-    public static class H2ExpressionFunctions extends
+    public static class Db2ExpressionFunctions extends
             StandardExpressionFunctions {
     }
 
+    /**
+     * DB2用の {@link ExpressionFunctions} です。
+     * 
+     * @author taedium
+     * 
+     */
+    public static class OracleExpressionFunctions extends
+            StandardExpressionFunctions {
+
+        private final static char[] DEFAULT_WILDCARDS = { '%', '_', '％', '＿' };
+
+        public OracleExpressionFunctions() {
+            super(DEFAULT_WILDCARDS);
+        }
+
+    }
 }

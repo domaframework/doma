@@ -15,17 +15,21 @@
  */
 package org.seasar.doma.internal.jdbc.dialect;
 
-import org.seasar.doma.internal.jdbc.sql.node.FragmentNode;
-import org.seasar.doma.internal.jdbc.sql.node.SelectClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
+import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlNode;
 
 /**
  * @author taedium
  * 
  */
-public class MysqlCountCalculatingTransformer extends
-        StandardCountCalculatingTransformer {
+public class Db2ForUpdateTransformer extends StandardForUpdateTransformer {
+
+    public Db2ForUpdateTransformer(SelectForUpdateType forUpdateType,
+            int waitSeconds, String... aliases) {
+        super(forUpdateType, waitSeconds, aliases);
+    }
 
     @Override
     public SqlNode visitSelectStatementNode(SelectStatementNode node, Void p) {
@@ -34,20 +38,17 @@ public class MysqlCountCalculatingTransformer extends
         }
         processed = true;
 
-        SelectClauseNode select = new SelectClauseNode("select");
-        select.addNode(new FragmentNode(" sql_calc_found_rows"));
-        for (SqlNode child : node.getSelectClauseNode().getChildren()) {
-            select.addNode(child);
-        }
+        ForUpdateClauseNode forUpdate = new ForUpdateClauseNode(
+                " for update with rs");
 
         SelectStatementNode result = new SelectStatementNode();
-        result.setSelectClauseNode(select);
+        result.setSelectClauseNode(node.getSelectClauseNode());
         result.setFromClauseNode(node.getFromClauseNode());
         result.setWhereClauseNode(node.getWhereClauseNode());
         result.setGroupByClauseNode(node.getGroupByClauseNode());
         result.setHavingClauseNode(node.getHavingClauseNode());
         result.setOrderByClauseNode(node.getOrderByClauseNode());
-        result.setForUpdateClauseNode(node.getForUpdateClauseNode());
+        result.setForUpdateClauseNode(forUpdate);
         return result;
     }
 }
