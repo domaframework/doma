@@ -32,4 +32,22 @@ public class SqlFileSelectTest {
         Employee employee = dao.selectById(9);
         assertNull(employee.getManagerId());
     }
+
+    public void testPrefixSearch() throws Exception {
+        EmployeeDao dao = new EmployeeDaoImpl();
+        List<Employee> employees = dao.selectByNamePrefix("S");
+        assertEquals(2, employees.size());
+    }
+
+    public void testInsideSearch() throws Exception {
+        EmployeeDao dao = new EmployeeDaoImpl();
+        List<Employee> employees = dao.selectByNameInside("S");
+        assertEquals(5, employees.size());
+    }
+
+    public void testSuffixSearch() throws Exception {
+        EmployeeDao dao = new EmployeeDaoImpl();
+        List<Employee> employees = dao.selectByNameSuffix("S");
+        assertEquals(3, employees.size());
+    }
 }

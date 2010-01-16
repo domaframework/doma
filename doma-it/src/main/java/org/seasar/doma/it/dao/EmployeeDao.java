@@ -43,6 +43,15 @@ public interface EmployeeDao {
     Employee selectById(Integer employeeId, SelectOptions options);
 
     @Select
+    List<Employee> selectByNamePrefix(String employeeName);
+
+    @Select
+    List<Employee> selectByNameInside(String employeeName);
+
+    @Select
+    List<Employee> selectByNameSuffix(String employeeName);
+
+    @Select
     List<Employee> selectAll();
 
     @Select

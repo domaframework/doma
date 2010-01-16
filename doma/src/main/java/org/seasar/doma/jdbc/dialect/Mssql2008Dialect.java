@@ -16,7 +16,6 @@
 package org.seasar.doma.jdbc.dialect;
 
 import java.sql.SQLException;
-import java.util.regex.Pattern;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
@@ -179,8 +178,7 @@ public class Mssql2008Dialect extends StandardDialect {
         private final static char[] DEFAULT_WILDCARDS = { '%', '_', '[' };
 
         public Mssql2008ExpressionFunctions() {
-            super(' ', DEFAULT_WILDCARDS, Pattern.compile("[%_\\[]"),
-                    "\\[$0\\]");
+            super(DEFAULT_WILDCARDS);
         }
     }
 }
