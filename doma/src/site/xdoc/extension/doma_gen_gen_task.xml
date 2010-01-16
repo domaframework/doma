@@ -148,7 +148,7 @@ where
 				</p>
 				<table border="1" cellpadding="2" cellspacing="0">
 					<tr><th>属性</th><th>説明</th><th>デフォルト値</th><th>必須</th></tr>
-					<tr><td>dialectName</td><td>接続するRDBMSの方言名です。次のうちのどれかを指定できます。"h2"、"hsqldb"、"mysql"、"postgres"、"oracle"</td><td>-</td><td><b>genDialectClassNameが指定されていない場合YES</b></td></tr>
+					<tr><td>dialectName</td><td>接続するRDBMSの方言名です。次のうちのどれかを指定できます。"h2"、"hsqldb"、"mysql"、"postgres"、"oracle"、"db2"、"mssql2008"</td><td>-</td><td><b>genDialectClassNameが指定されていない場合YES</b></td></tr>
 					<tr><td>genDialectClassName</td><td>接続するRDBMSの方言クラス名です。<code>org.seasar.doma.extension.gen.dialect.GenDialect</code>の実装クラスでなければいけません。dialectNameの指定により利用できる組み込みの方言クラス以外を利用する場合に指定します。</td><td>-</td><td><b>dialectNameが指定されていない場合YES</b></td></tr>
 					<tr><td>driverClassName</td><td>JDBCドライバクラス名です。<code>java.sql.Driver</code>の実装クラスでなければいけません。</td><td>-</td><td><b><b>YES</b></b></td></tr>
 					<tr><td>url</td><td>JDBC接続URLです。</td><td>-</td><td><b>YES</b></td></tr>
@@ -187,7 +187,7 @@ where
 					<tr><td>overwriteListener</td><td>"true"の場合、エンティティリスナークラスのJavaコードを上書きします。</td><td>"false"</td><td>NO</td></tr>
 					<tr><td>packageName</td><td>エンティティクラスのパッケージ名です。</td><td>"example.entity"</td><td>NO</td></tr>
 					<tr><td>superclassName</td><td>エンティティクラスのスーパークラスの完全修飾名です。生成されるエンティティクラスはここに指定したスーパークラスを継承します。</td><td>-</td><td>NO</td></tr>
-					<tr><td>listenerSuperclassName</td><td>エンティティリスナーのスーパークラスの完全修飾名です。生成されるエンティティリスナークラスはここに指定したスーパークラスを継承します。</td><td>-</td><td>NO</td></tr>
+					<tr><td>listenerSuperclassName</td><td>エンティティリスナーのスーパークラスの完全修飾名です。生成されるエンティティリスナークラスはここに指定したスーパークラスを継承します。ここに指定するクラスは1つの型パラメータを受け取ります。</td><td>-</td><td>NO</td></tr>
 					<tr><td>namingType</td><td>ネーミング規約です。"none"、 "snake_upper_case"、 "snake_lower_case"、"upper_case"、"lower_case"のいずれかの値を指定できます。@Entityのnaming要素に使用されます。</td><td>-</td><td>NO</td></tr>
 					<tr><td>entityPropertyClassNamesFile</td><td>エンティティプロパティのクラス名を解決するためのファイルです。形式は、キーをエンティティプロパティ名の正規表現、値をクラスの完全修飾名とするプロパティファイル形式です。</td><td>-</td><td>NO</td></tr>
 					<tr><td>generationType</td><td>識別子を生成する方法です。"identity"、 "sequence"、 "table"のいずれかの値を指定できます。使用するRDBMSがサポートしていない場合、"identity"や"sequence"を指定するとエラーが発生します。この指定は、エンティティに対応するテーブルが単一の主キーを持つ場合にのみ有効です。複数の主キーがある場合、この指定は無視されます。@GeneratedValueのstrategy要素に使用されます。</td><td>-</td><td>NO</td></tr>
@@ -257,7 +257,7 @@ where
 					次のようなクラスを作成し、すべてのエンティティのスーパークラスに指定できます。
 				</p>
 <source><![CDATA[@Entity
-public class Common {
+public abstract class Common {
     Date createTimestamp;
     Date updateTimestamp;
     ...
@@ -285,6 +285,46 @@ public class Employee extends Common {
     Integer id;
     String name;
     ...
+}]]></source>
+			</subsection>
+			<subsection name="エンティティリスナーに共通のスーパークラスを指定する">
+				<p>
+					EntityConfigのlistenerSuperclassName属性に、エンティティリスナーに共通のスーパークラスの名前を指定できます。
+					通常、EntityConfigのsuperclassName属性と合わせて使用します。
+					たとえば、次のようにエンティティクラスに共通のスーパークラスとそのクラスを型パラメータとして受け取るエンティティリスナーの2つを用意します。
+				</p>
+<source><![CDATA[@Entity
+public abstract class Common {
+    Date createTimestamp;
+    Date updateTimestamp;
+    ...
+}]]></source>
+<source><![CDATA[@Entity
+public class CommonListener<T extends Common> implements EntityListener<T> {
+    public void preInsert(T entity) {...}
+    public void preUpdate(T entity) {...}
+    public void preDelete(T entity) {...}
+}]]></source>
+				<p>
+					これらのクラス名をsuperclassName属性とlistenerSuperclassName属性に指定します。
+				</p>
+<source><![CDATA[<gen
+    dialectName="${dialectName}"
+    driverClassName="${driverClassName}"
+    url="${url}"
+    user="${user}"
+    password="${password}">
+    <entityConfig
+        superclassName="example.Common"
+        listenerSuperclassName="example.CommonListener"
+        ...
+    />
+<gen/>]]></source>
+				<p>
+					タスクを実行するとexample.CommonListenerを継承した次のようなクラスが生成されます。
+				</p>
+<source><![CDATA[@Entity
+public class EmployeeListener extends CommonListener<Employee> {
 }]]></source>
 			</subsection>
 			<subsection name="エンティティプロパティのクラス名を指定する">

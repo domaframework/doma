@@ -2,7 +2,7 @@
 	<part id="general">
 		<title>一般的な質問</title>
 		<faq id="general-1">
-			<question>Domaのとは何ですか？</question>
+			<question>Domaとは何ですか？</question>
 			<answer>
 				<p>
 					<a href="http://s2dao.seasar.org/ja/index.html">S2Dao</a>のスタイル（DAOパターンや2 Way SQL）を踏襲したJava6（JDBC4.0）対応のO/Rマッパーです。
@@ -172,7 +172,18 @@
 			<question>どのRDBMSをサポートしていますか？</question>
 			<answer>
 				<p>
-					Oracle Database、PostgreSQL、MySQL、H2 Database Engine、HSQLDBに対応しています。
+					次のRDBMSに対応しています。
+				</p>
+				<ul>
+					<li>DB2 V9.5 for Linux, UNIX and Windows以上</li>
+					<li>H2 Database Engine 1.2以上</li>
+					<li>HSQLDB 1.8.0.1以上</li>
+					<li>Microsoft SQL Server 2008以上</li>
+					<li>MySQL 5.0以上</li>
+					<li>Oracle Database 10g以上</li>
+					<li>PostgreSQL 8.0以上</li>
+				</ul>
+				<p>
 					要望があれば他のRDBMSへの対応も検討します。
 					また、利用者が独自に対応モジュールを作成することも可能です。
 				</p>

@@ -76,24 +76,32 @@
 						<th>方言クラスの名前</th>
 					</tr>
 					<tr>
-						<td>HSQLDB</td>
-						<td><code>org.seasar.doma.jdbc.dialect.HsqldbDialect</code></td>
+						<td>DB2</td>
+						<td><code>org.seasar.doma.jdbc.dialect.Db2Dialect</code></td>
 					</tr>
 					<tr>
 						<td>H2 Database Engine</td>
 						<td><code>org.seasar.doma.jdbc.dialect.H2Dialect</code></td>
 					</tr>
 					<tr>
+						<td>HSQLDB</td>
+						<td><code>org.seasar.doma.jdbc.dialect.HsqldbDialect</code></td>
+					</tr>
+					<tr>
+						<td>Microsoft SQL Server 2008</td>
+						<td><code>org.seasar.doma.jdbc.dialect.Mssql2008Dialect</code></td>
+					</tr>
+					<tr>
 						<td>MySql</td>
 						<td><code>org.seasar.doma.jdbc.dialect.MySqlDialect</code></td>
 					</tr>
 					<tr>
-						<td>PostgreSQL</td>
-						<td><code>org.seasar.doma.jdbc.dialect.PostgresDialect</code></td>
-					</tr>
-					<tr>
 						<td>Oracle Database</td>
 						<td><code>org.seasar.doma.jdbc.dialect.OracleDialect</code></td>
+					</tr>
+					<tr>
+						<td>PostgreSQL</td>
+						<td><code>org.seasar.doma.jdbc.dialect.PostgresDialect</code></td>
 					</tr>
 				</table>
 				<p>

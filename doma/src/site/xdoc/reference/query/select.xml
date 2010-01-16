@@ -148,6 +148,25 @@ public interface EmployeeDao {
 <source><![CDATA[SelectOptions options = SelectOptions.get().offset(5).limit(10);
 EmployeeDao dao = new EmployeeDao();
 List<Employee> list = dao.selectByDepartmentName("ACCOUNT", options);]]></source>
+				<h4>ページングの制約</h4>
+				<p>
+					ページングは、ファイルに記述されているオリジナルのSQLを書き換え実行することで実現されています。
+					オリジナルのSQLは次の条件を満たしていなければいけません。
+				</p>
+				<ul>
+					<li>SELECT文である</li>
+					<li>最上位のレベルでUNION、EXCEPT、INTERSECT等の集合演算を行っていない（サブクエリで利用している場合は可）</li>
+					<li>ページング処理を含んでいない</li>
+				</ul>
+				<p>
+					さらに、データベースの方言によっては特定の条件を満たしていなければいけません。
+				</p>
+				<table border="1" cellpadding="2" cellspacing="0">
+					<tr><th>方言クラス</th><th>条件</th></tr>
+					<tr><td><code>org.seasar.doma.jdbc.dialect.Db2Dialect</code></td><td>offsetを指定する場合、ORDER BY句を持ちORDER BY句で指定するカラムすべてをSELECT句に含んでいる。</td></tr>
+					<tr><td><code>org.seasar.doma.jdbc.dialect.Mssql2008Dialect</code></td><td>offsetを指定する場合、ORDER BY句を持ちORDER BY句で指定するカラムすべてをSELECT句に含んでいる。</td></tr>
+					<tr><td><code>org.seasar.doma.jdbc.dialect.StandardDialect</code></td><td>ORDER BY句を持ちORDER BY句で指定するカラムすべてをSELECT句に含んでいる。</td></tr>
+				</table>
 			</subsection>
 			<subsection name="悲観的排他制御">
 				<p>
@@ -159,9 +178,33 @@ EmployeeDao dao = new EmployeeDao();
 List<Employee> list = dao.selectByDepartmentName("ACCOUNT", options);]]></source>
 				<p>
 					<code>SelectOptions</code>には、ロック対象のテーブルやカラムのエイリアスを指定できる<code>forUpdate</code>メソッドや、
-					ロックの取得を待機しない<code>forUpdateNowait</code>が用意されています。
+					ロックの取得を待機しない<code>forUpdateNowait</code>など、名前が「forUpdate」で始まる悲観的排他制御用のメソッドが用意されています。
 					詳しくは<a href="../../apidocs/org/seasar/doma/jdbc/SelectOptions.html">Javadocコメント</a>を参照ください。
 				</p>
+				<h4>悲観的排他制御の制約</h4>
+				<p>
+					悲観的排他制御は、ファイルに記述されているオリジナルのSQLを書き換え実行することで実現されています。
+					オリジナルのSQLは次の条件を満たしていなければいけません。
+				</p>
+				<ul>
+					<li>SELECT文である</li>
+					<li>最上位のレベルでUNION、EXCEPT、INTERSECT等の集合演算を行っていない（サブクエリで利用している場合は可）</li>
+					<li>悲観的排他制御の処理を含んでいない</li>
+				</ul>
+				<p>
+					データベースの方言によっては、悲観的排他制御用のメソッドのすべてもしくは一部が使用できません。
+				</p>
+				<table border="1" cellpadding="2" cellspacing="0">
+					<tr><th>方言クラス</th><th>説明</th></tr>
+					<tr><td><code>org.seasar.doma.jdbc.dialect.Db2Dialect</code></td><td><code>forUpdate()</code>を使用できる。</td></tr>
+					<tr><td><code>org.seasar.doma.jdbc.dialect.H2Dialect</code></td><td><code>forUpdate()</code>を使用できる。</td></tr>
+					<tr><td><code>org.seasar.doma.jdbc.dialect.HsqldbDialect</code></td><td><code>forUpdate()</code>を使用できる。</td></tr>
+					<tr><td><code>org.seasar.doma.jdbc.dialect.Mssql2008Dialect</code></td><td><code>forUpdate()</code>と<code>forUpdateNoWait()</code>を使用できる。ただし、オリジナルのSQLのFROM句は1つのテーブルだけから成らねばならない。</td></tr>
+					<tr><td><code>org.seasar.doma.jdbc.dialect.MysqlDialect</code></td><td><code>forUpdate()</code>を使用できる。</td></tr>
+					<tr><td><code>org.seasar.doma.jdbc.dialect.OracleDialect</code></td><td><code>forUpdate()</code>、<code>forUpdate(String... aliases)</code>、<code>forUpdateNowait()</code>、<code>forUpdateNowait(String... aliases)</code>、<code>	forUpdateWait(int waitSeconds)</code>、<code>forUpdateWait(int waitSeconds, String... aliases)</code>を使用できる。</td></tr>
+					<tr><td><code>org.seasar.doma.jdbc.dialect.PostgresDialect</code></td><td><code>forUpdate()</code>と<code>forUpdate(String... aliases)</code>を使用できる。</td></tr>
+					<tr><td><code>org.seasar.doma.jdbc.dialect.StandardDialect</code></td><td>悲観的排他制御用のメソッドすべてを使用できない。</td></tr>
+				</table>
 			</subsection>
 			<subsection name="集計">
 				<p>

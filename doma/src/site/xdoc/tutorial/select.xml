@@ -213,7 +213,7 @@ List<Employee> selectByNameWithPrefixMatching(String prefix);]]></source>
 				<p>
 					Daoメソッドに対応するSQLファイルのパスはMETA-INF/tutorial/dao/EmployeeDao/selectByNameWithPrefixMatching.sqlです。SQLは次のように記述されています。
 				</p>
-<source><![CDATA[select * from employee where name like /* @prefix(prefix) */'X%']]></source>
+<source><![CDATA[select * from employee where name like /* @prefix(prefix) */'X%' escape '\']]></source>
 				<p>
 					Daoのメソッドは次のように呼び出します。
 				</p>
@@ -221,7 +221,7 @@ List<Employee> selectByNameWithPrefixMatching(String prefix);]]></source>
 				<p>
 					SQLのログは次のように出力されます。
 				</p>
-<source><![CDATA[select * from employee where name like 'S%']]></source>
+<source><![CDATA[select * from employee where name like 'S%' escape '\']]></source>
 			</subsection>
 			<subsection name="後方一致検索">
 				<p>
@@ -237,7 +237,7 @@ List<Employee> selectByNameWithSuffixMatching(String suffix);]]></source>
 				<p>
 					Daoメソッドに対応するSQLファイルのパスはMETA-INF/tutorial/dao/EmployeeDao/selectByNameWithSuffixMatching.sqlです。SQLは次のように記述されています。
 				</p>
-<source><![CDATA[select * from employee where name like /* @suffix(suffix) */'%X']]></source>
+<source><![CDATA[select * from employee where name like /* @suffix(suffix) */'%X' escape '\']]></source>
 				<p>
 					Daoのメソッドは次のように呼び出します。
 				</p>
@@ -245,7 +245,7 @@ List<Employee> selectByNameWithSuffixMatching(String suffix);]]></source>
 				<p>
 					SQLのログは次のように出力されます。
 				</p>
-<source><![CDATA[select * from employee where name like '%S']]></source>
+<source><![CDATA[select * from employee where name like '%S' escape '\']]></source>
 			</subsection>
 			<subsection name="中間一致検索">
 				<p>
@@ -261,7 +261,7 @@ List<Employee> selectByNameWithInsideMatching(String inside);]]></source>
 				<p>
 					Daoメソッドに対応するSQLファイルのパスはMETA-INF/tutorial/dao/EmployeeDao/selectByNameWithInsideMatching.sqlです。SQLは次のように記述されています。
 				</p>
-<source><![CDATA[select * from employee where name like /* @contain(inside) */'%X%']]></source>
+<source><![CDATA[select * from employee where name like /* @contain(inside) */'%X%' escape '\']]></source>
 				<p>
 					Daoのメソッドは次のように呼び出します。
 				</p>
@@ -269,7 +269,7 @@ List<Employee> selectByNameWithInsideMatching(String inside);]]></source>
 				<p>
 					SQLのログは次のように出力されます。
 				</p>
-<source><![CDATA[select * from employee where name like '%A%']]></source>
+<source><![CDATA[select * from employee where name like '%A%' escape '\']]></source>
 			</subsection>
 		</section>
 		<section name="日付による範囲検索">

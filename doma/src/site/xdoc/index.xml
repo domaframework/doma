@@ -41,11 +41,13 @@
 				Domaは次のRDBMSをサポートしています。
 			</p>
 			<ul>
-				<li>Oracle Database 10g以上</li>
-				<li>PostgreSQL 8.0以上</li>
-				<li>MySQL 5.0以上</li>
+				<li>DB2 V9.5 for Linux, UNIX and Windows以上</li>
 				<li>H2 Database Engine 1.2以上</li>
 				<li>HSQLDB 1.8.0.1以上</li>
+				<li>Microsoft SQL Server 2008以上</li>
+				<li>MySQL 5.0以上</li>
+				<li>Oracle Database 10g以上</li>
+				<li>PostgreSQL 8.0以上</li>
 			</ul>
 		</section>
 		<section name="News">
