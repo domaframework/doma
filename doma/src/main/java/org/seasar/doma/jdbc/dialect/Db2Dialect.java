@@ -21,6 +21,7 @@ import java.util.Collections;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.dialect.Db2ForUpdateTransformer;
+import org.seasar.doma.internal.jdbc.dialect.Db2PagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
@@ -116,6 +117,13 @@ public class Db2Dialect extends StandardDialect {
     }
 
     @Override
+    protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
+        Db2PagingTransformer transformer = new Db2PagingTransformer(offset,
+                limit);
+        return transformer.transform(sqlNode);
+    }
+
+    @Override
     public boolean isUniqueConstraintViolated(SQLException sqlException) {
         if (sqlException == null) {
             throw new DomaNullPointerException("sqlException");
@@ -184,20 +192,10 @@ public class Db2Dialect extends StandardDialect {
      */
     public static class Db2ExpressionFunctions extends
             StandardExpressionFunctions {
-    }
-
-    /**
-     * DB2用の {@link ExpressionFunctions} です。
-     * 
-     * @author taedium
-     * 
-     */
-    public static class OracleExpressionFunctions extends
-            StandardExpressionFunctions {
 
         private final static char[] DEFAULT_WILDCARDS = { '%', '_', '％', '＿' };
 
-        public OracleExpressionFunctions() {
+        public Db2ExpressionFunctions() {
             super(DEFAULT_WILDCARDS);
         }
 
