@@ -21,5 +21,8 @@
    <feature url="features/org.seasar.doma.extension.feature_0.9.12.201001110554.jar" id="org.seasar.doma.extension.feature" version="0.9.12.201001110554">
       <category name="Doma"/>
    </feature>
+   <feature url="features/org.seasar.doma.extension.feature_1.0.0.RC1.jar" id="org.seasar.doma.extension.feature" version="1.0.0.RC1">
+      <category name="Doma"/>
+   </feature>
    <category-def name="Doma" label="Doma"/>
 </site>
