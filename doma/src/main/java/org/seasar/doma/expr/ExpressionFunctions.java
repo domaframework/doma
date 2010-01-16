@@ -27,6 +27,26 @@ import java.sql.Timestamp;
 public interface ExpressionFunctions {
 
     /**
+     * Like演算子用のエスケープを行います。
+     * 
+     * @param text
+     *            エスケープ対象の文字列
+     * @return エスケープされた文字列
+     */
+    String escape(String text);
+
+    /**
+     * Like演算子用のエスケープを行います。
+     * 
+     * @param text
+     *            エスケープ対象の文字列
+     * @param escapeChar
+     *            エスケープ文字
+     * @return エスケープされた文字列
+     */
+    String escape(String text, char escapeChar);
+
+    /**
      * 前方一致検索を行うことを示します。
      * 
      * @param prefix
@@ -40,11 +60,11 @@ public interface ExpressionFunctions {
      * 
      * @param prefix
      *            前に置かれる文字列
-     * @param escape
+     * @param escapeChar
      *            エスケープ文字
      * @return 前方一致検索のための文字列
      */
-    String prefix(String prefix, char escape);
+    String prefix(String prefix, char escapeChar);
 
     /**
      * 後方一致検索を行うことを示します。
@@ -60,11 +80,11 @@ public interface ExpressionFunctions {
      * 
      * @param suffix
      *            後に置かれる文字列
-     * @param escape
+     * @param escapeChar
      *            エスケープ文字
      * @return 後方一致検索のための文字列
      */
-    String suffix(String suffix, char escape);
+    String suffix(String suffix, char escapeChar);
 
     /**
      * 中間一致検索を行うことを示します。
@@ -80,11 +100,11 @@ public interface ExpressionFunctions {
      * 
      * @param inside
      *            含まれる文字列
-     * @param escape
+     * @param escapeChar
      *            エスケープ文字
      * @return 中間一致検索のための文字列
      */
-    String contain(String inside, char escape);
+    String contain(String inside, char escapeChar);
 
     /**
      * 日付の時刻部分を切り捨てます。

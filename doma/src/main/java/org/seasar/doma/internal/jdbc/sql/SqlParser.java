@@ -55,6 +55,7 @@ import org.seasar.doma.internal.jdbc.sql.node.IfNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.LogicalOperatorNode;
 import org.seasar.doma.internal.jdbc.sql.node.LogicalOperatorNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.OtherNode;
 import org.seasar.doma.internal.jdbc.sql.node.ParensNode;
 import org.seasar.doma.internal.jdbc.sql.node.ParensNodeVisitor;
@@ -629,6 +630,7 @@ public class SqlParser {
             WhereClauseNodeVisitor<Void, Void>,
             HavingClauseNodeVisitor<Void, Void>,
             GroupByClauseNodeVisitor<Void, Void>,
+            OrderByClauseNodeVisitor<Void, Void>,
             ForUpdateClauseNodeVisitor<Void, Void>, IfNodeVisitor<Void, Void>,
             ElseifNodeVisitor<Void, Void>, ElseNodeVisitor<Void, Void>,
             LogicalOperatorNodeVisitor<Void, Void>, ForNodeVisitor<Void, Void>,
@@ -705,7 +707,9 @@ public class SqlParser {
 
         @Override
         public Void visitFromClauseNode(FromClauseNode node, Void p) {
-            optimize(node);
+            for (SqlNode child : node.getChildren()) {
+                optimize(child);
+            }
             return null;
         }
 
@@ -754,6 +758,14 @@ public class SqlParser {
         @Override
         public Void visitGroupByClauseNode(GroupByClauseNode node, Void p) {
             optimize(node);
+            return null;
+        }
+
+        @Override
+        public Void visitOrderByClauseNode(OrderByClauseNode node, Void p) {
+            for (SqlNode child : node.getChildren()) {
+                optimize(child);
+            }
             return null;
         }
 

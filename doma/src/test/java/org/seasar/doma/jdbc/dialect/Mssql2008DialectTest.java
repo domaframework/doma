@@ -23,26 +23,18 @@ import org.seasar.doma.expr.ExpressionFunctions;
  * @author taedium
  * 
  */
-public class Db2DialectTest extends TestCase {
+public class Mssql2008DialectTest extends TestCase {
 
     public void testExpressionFunctions_prefix() throws Exception {
-        Db2Dialect dialect = new Db2Dialect();
+        Mssql2008Dialect dialect = new Mssql2008Dialect();
         ExpressionFunctions functions = dialect.getExpressionFunctions();
-        assertEquals("a\\\\a\\%a\\_a\\％a\\＿%", functions.prefix("a\\a%a_a％a＿"));
+        assertEquals("a[%]a[_]a[[]%", functions.prefix("a%a_a["));
     }
 
     public void testExpressionFunctions_prefix_escape() throws Exception {
-        Db2Dialect dialect = new Db2Dialect();
+        Mssql2008Dialect dialect = new Mssql2008Dialect();
         ExpressionFunctions functions = dialect.getExpressionFunctions();
-        assertEquals("a$$a$%a$_a$％a$＿%", functions.prefix("a$a%a_a％a＿", '$'));
-    }
-
-    public void testExpressionFunctions_prefix_escapeWithDefault()
-            throws Exception {
-        Db2Dialect dialect = new Db2Dialect();
-        ExpressionFunctions functions = dialect.getExpressionFunctions();
-        assertEquals("a\\\\a\\%a\\_a\\％a\\＿%", functions.prefix("a\\a%a_a％a＿",
-                '\\'));
+        assertEquals("a$$a$%a$_a$[%", functions.prefix("a$a%a_a[", '$'));
     }
 
 }

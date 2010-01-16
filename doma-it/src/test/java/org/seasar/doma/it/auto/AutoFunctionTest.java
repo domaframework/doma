@@ -65,14 +65,14 @@ public class AutoFunctionTest {
         assertEquals(Time.valueOf("12:34:56"), result);
     }
 
-    @Prerequisite("#ENV not in {'mysql'}")
+    @Prerequisite("#ENV not in {'mysql', 'mssql2008'}")
     public void testResultSet() throws Exception {
         FunctionDao dao = new FunctionDaoImpl();
         List<Employee> result = dao.func_resultset(new Integer(1));
         assertEquals(13, result.size());
     }
 
-    @Prerequisite("#ENV not in {'mysql'}")
+    @Prerequisite("#ENV not in {'mysql', 'mssql2008'}")
     public void testResultSetAndUpdate() throws Exception {
         FunctionDao dao = new FunctionDaoImpl();
         List<Employee> result = dao.func_resultset_update(new Integer(1));
@@ -82,7 +82,7 @@ public class AutoFunctionTest {
         assertEquals("HOGE", department.getDepartmentName());
     }
 
-    @Prerequisite("#ENV not in {'mysql'}")
+    @Prerequisite("#ENV not in {'mysql', 'mssql2008'}")
     public void testResultSetAndUpdate2() throws Exception {
         FunctionDao dao = new FunctionDaoImpl();
         List<Employee> result = dao.func_resultset_update2(new Integer(1));

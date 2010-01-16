@@ -27,6 +27,16 @@ import org.seasar.doma.expr.ExpressionFunctions;
 public class NullExpressionFunctions implements ExpressionFunctions {
 
     @Override
+    public String escape(String text) {
+        return null;
+    }
+
+    @Override
+    public String escape(String text, char escapeChar) {
+        return null;
+    }
+
+    @Override
     public String prefix(String text) {
         return text;
     }

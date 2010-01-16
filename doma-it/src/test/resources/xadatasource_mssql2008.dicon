@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+	"http://www.seasar.org/dtd/components24.dtd">
+<components>
+	<component name="xaDataSource"
+		class="org.seasar.extension.dbcp.impl.XADataSourceImpl">
+		<property name="driverClassName">
+			"com.microsoft.sqlserver.jdbc.SQLServerDriver"
+		</property>
+		<property name="URL">
+			"jdbc:sqlserver://127.0.0.1;database=Doma;"
+		</property>
+		<property name="user">"doma"</property>
+		<property name="password">"doma"</property>
+	</component>
+	<component class="org.seasar.doma.jdbc.dialect.Mssql2008Dialect"/>
+</components>

@@ -26,6 +26,7 @@
 				<equals arg1="${database}" arg2="oracle"/>
 				<equals arg1="${database}" arg2="postgres"/>
 				<equals arg1="${database}" arg2="db2"/>
+				<equals arg1="${database}" arg2="mssql2008"/>
 			</or>
 		</condition>
 	</target>

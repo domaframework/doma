@@ -26,6 +26,7 @@ import org.apache.tools.ant.Task;
 import org.seasar.doma.it.helper.dialect.Db2ToolDialect;
 import org.seasar.doma.it.helper.dialect.H2ToolDialect;
 import org.seasar.doma.it.helper.dialect.HsqldbToolDialect;
+import org.seasar.doma.it.helper.dialect.Mssql2008ToolDialect;
 import org.seasar.doma.it.helper.dialect.MySqlToolDialect;
 import org.seasar.doma.it.helper.dialect.OracleToolDialect;
 import org.seasar.doma.it.helper.dialect.PostgresToolDialect;
@@ -135,6 +136,9 @@ public class ExecSqlFileTask extends Task {
         }
         if ("db2".equals(dialectName)) {
             return new Db2ToolDialect();
+        }
+        if ("mssql2008".equals(dialectName)) {
+            return new Mssql2008ToolDialect();
         }
         return new StandardToolDialect();
     }

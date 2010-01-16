@@ -123,7 +123,7 @@ public class AutoInsertTest {
         }
     }
 
-    @Prerequisite("#ENV not in {'mysql'}")
+    @Prerequisite("#ENV not in {'mysql', 'mssql2008'}")
     public void testId_sequence() throws Exception {
         SequenceStrategyDao dao = new SequenceStrategyDaoImpl();
         for (int i = 0; i < 110; i++) {

@@ -555,8 +555,8 @@ public class StandardDialect implements Dialect {
         @Override
         public Void visitUnknownWrapper(Wrapper<?> wrapper,
                 JdbcMappingFunction p) throws SQLException {
-            throw new JdbcException(Message.DOMA2019, wrapper
-                    .getClass().getName());
+            throw new JdbcException(Message.DOMA2019, wrapper.getClass()
+                    .getName());
         }
     }
 
@@ -689,8 +689,8 @@ public class StandardDialect implements Dialect {
         @Override
         public String visitUnknownWrapper(Wrapper<?> wrapper,
                 SqlLogFormattingFunction p) {
-            throw new JdbcException(Message.DOMA2019, wrapper
-                    .getClass().getName());
+            throw new JdbcException(Message.DOMA2019, wrapper.getClass()
+                    .getName());
         }
 
     }
@@ -705,13 +705,13 @@ public class StandardDialect implements Dialect {
             ExpressionFunctions {
 
         /** デフォルトのエスケープ文字 */
-        private static char DEFAULT_ESCAPE = '\\';
+        private static char DEFAULT_ESCAPE_CHAR = '\\';
 
         /** デフォルトのワイルドカード */
         private final static char[] DEFAULT_WILDCARDS = { '%', '_' };
 
         /** エスケープ文字 */
-        protected final char escape;
+        protected final char escapeChar;
 
         /** ワイルドカード */
         protected final char[] wildcards;
@@ -736,23 +736,57 @@ public class StandardDialect implements Dialect {
          *            ワイルドカード
          */
         protected StandardExpressionFunctions(char[] wildcards) {
-            this(DEFAULT_ESCAPE, wildcards);
+            this(DEFAULT_ESCAPE_CHAR, wildcards);
         }
 
         /**
          * エスケープ文字とワイルドカードを指定してコンストラクタを構築します。
          * 
-         * @param escape
+         * @param escapeChar
          *            エスケープ文字
          * @param wildcards
          *            ワイルドカード
          */
-        protected StandardExpressionFunctions(char escape, char[] wildcards) {
-            this.escape = escape;
+        protected StandardExpressionFunctions(char escapeChar, char[] wildcards) {
+            this.escapeChar = escapeChar;
             this.wildcards = wildcards != null ? wildcards : DEFAULT_WILDCARDS;
             this.defaultWildcardReplacementPattern = createWildcardReplacementPattern(
-                    escape, this.wildcards);
-            this.defaultReplacement = createWildcardReplacement(escape);
+                    escapeChar, this.wildcards);
+            this.defaultReplacement = createWildcardReplacement(escapeChar);
+        }
+
+        /**
+         * エスケープ文字とワイルドカードを指定してコンストラクタを構築します。
+         * 
+         * @param escapeChar
+         *            エスケープ文字
+         * @param wildcards
+         *            ワイルドカード
+         */
+        protected StandardExpressionFunctions(char escapeChar,
+                char[] wildcards, Pattern defaultWildcardReplacementPattern,
+                String defaultReplacement) {
+            this.escapeChar = escapeChar;
+            this.wildcards = wildcards != null ? wildcards : DEFAULT_WILDCARDS;
+            this.defaultWildcardReplacementPattern = defaultWildcardReplacementPattern;
+            this.defaultReplacement = defaultReplacement;
+        }
+
+        @Override
+        public String escape(String text, char escapeChar) {
+            if (text == null) {
+                return null;
+            }
+            return escapeWildcard(defaultWildcardReplacementPattern, text,
+                    defaultReplacement);
+        }
+
+        @Override
+        public String escape(String text) {
+            if (text == null) {
+                return null;
+            }
+            return escapeWildcard(text, escapeChar);
         }
 
         @Override
@@ -766,11 +800,11 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String prefix(String text, char escape) {
+        public String prefix(String text, char escapeChar) {
             if (text == null) {
                 return null;
             }
-            return escapeWildcard(text, escape) + "%";
+            return escapeWildcard(text, escapeChar) + "%";
         }
 
         @Override
@@ -784,11 +818,11 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String suffix(String text, char escape) {
+        public String suffix(String text, char escapeChar) {
             if (text == null) {
                 return null;
             }
-            return "%" + escapeWildcard(text, escape);
+            return "%" + escapeWildcard(text, escapeChar);
         }
 
         @Override
@@ -805,14 +839,14 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
-        public String contain(String text, char escape) {
+        public String contain(String text, char escapeChar) {
             if (text == null) {
                 return null;
             }
             if (text.isEmpty()) {
                 return "%";
             }
-            return "%" + escapeWildcard(text, escape) + "%";
+            return "%" + escapeWildcard(text, escapeChar) + "%";
         }
 
         /**
@@ -820,14 +854,14 @@ public class StandardDialect implements Dialect {
          * 
          * @param input
          *            入力
-         * @param escape
+         * @param escapeChar
          *            エスケープ文字
          * @return エスケープされた文字列
          */
-        protected String escapeWildcard(String input, char escape) {
-            Pattern pattern = createWildcardReplacementPattern(escape,
+        protected String escapeWildcard(String input, char escapeChar) {
+            Pattern pattern = createWildcardReplacementPattern(escapeChar,
                     wildcards);
-            String replacement = createWildcardReplacement(escape);
+            String replacement = createWildcardReplacement(escapeChar);
             return escapeWildcard(pattern, input, replacement);
         }
 
@@ -909,18 +943,26 @@ public class StandardDialect implements Dialect {
         /**
          * ワイルドカード置換パターンを作成します。
          * 
-         * @param escape
+         * @param escapeChar
          *            エスケープ文字
          * @param wildcards
          *            ワイルドカード
          * @return パターン
          */
-        protected static Pattern createWildcardReplacementPattern(char escape,
+        protected Pattern createWildcardReplacementPattern(char escapeChar,
                 char[] wildcards) {
             StringBuilder buf = new StringBuilder();
             buf.append("[");
-            buf.append(Matcher.quoteReplacement(String.valueOf(escape)));
             for (char wildcard : wildcards) {
+                if (escapeChar == '[' || escapeChar == ']') {
+                    buf.append("\\");
+                }
+                buf
+                        .append(Matcher.quoteReplacement(String
+                                .valueOf(escapeChar)));
+                if (wildcard == '[' || wildcard == ']') {
+                    buf.append("\\");
+                }
                 buf.append(wildcard);
             }
             buf.append("]");
@@ -930,12 +972,12 @@ public class StandardDialect implements Dialect {
         /**
          * ワイルドカード置換文字列正規表現を作成します。
          * 
-         * @param escape
+         * @param escapeChar
          *            エスケープ
          * @return ワイルドカード置換文字列正規表現
          */
-        protected static String createWildcardReplacement(char escape) {
-            return Matcher.quoteReplacement(String.valueOf(escape)) + "$0";
+        protected String createWildcardReplacement(char escapeChar) {
+            return Matcher.quoteReplacement(String.valueOf(escapeChar)) + "$0";
         }
     }
 }

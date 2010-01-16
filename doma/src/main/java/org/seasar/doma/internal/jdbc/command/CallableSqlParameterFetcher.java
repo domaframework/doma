@@ -231,6 +231,9 @@ public class CallableSqlParameterFetcher implements
                 index++;
             } else {
                 ResultSet resultSet = callableStatement.getResultSet();
+                if (resultSet == null && callableStatement.getMoreResults()) {
+                    resultSet = callableStatement.getResultSet();
+                }
                 if (resultSet != null) {
                     try {
                         while (resultSet.next()) {
