@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.internal.jdbc.dialect;
 
-import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.FragmentNode;
 import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
@@ -52,8 +51,7 @@ public class MysqlPagingTransformer extends StandardPagingTransformer {
         orderBy.addNode(new FragmentNode(", "));
         orderBy.addNode(new FragmentNode(limit));
 
-        ForUpdateClauseNode originalForUpdate = node.getForUpdateClauseNode();
-        if (originalForUpdate != null) {
+        if (node.getForUpdateClauseNode() != null) {
             orderBy.addNode(new FragmentNode(" "));
         }
 
@@ -64,7 +62,7 @@ public class MysqlPagingTransformer extends StandardPagingTransformer {
         result.setGroupByClauseNode(node.getGroupByClauseNode());
         result.setHavingClauseNode(node.getHavingClauseNode());
         result.setOrderByClauseNode(orderBy);
-        result.setForUpdateClauseNode(originalForUpdate);
+        result.setForUpdateClauseNode(node.getForUpdateClauseNode());
         return result;
     }
 }

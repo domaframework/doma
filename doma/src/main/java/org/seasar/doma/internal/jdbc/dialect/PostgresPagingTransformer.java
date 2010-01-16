@@ -50,8 +50,8 @@ public class PostgresPagingTransformer extends StandardPagingTransformer {
             orderBy.addNode(new FragmentNode(" offset "));
             orderBy.addNode(new FragmentNode(String.valueOf(offset)));
         }
-        ForUpdateClauseNode originalForUpdate = node.getForUpdateClauseNode();
-        if (originalForUpdate != null) {
+        ForUpdateClauseNode forUpdate = node.getForUpdateClauseNode();
+        if (node.getForUpdateClauseNode() != null) {
             orderBy.addNode(new FragmentNode(" "));
         }
 
@@ -62,7 +62,7 @@ public class PostgresPagingTransformer extends StandardPagingTransformer {
         result.setGroupByClauseNode(node.getGroupByClauseNode());
         result.setHavingClauseNode(node.getHavingClauseNode());
         result.setOrderByClauseNode(orderBy);
-        result.setForUpdateClauseNode(originalForUpdate);
+        result.setForUpdateClauseNode(forUpdate);
         return result;
     }
 

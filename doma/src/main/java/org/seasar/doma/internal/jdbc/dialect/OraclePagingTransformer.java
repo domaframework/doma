@@ -71,8 +71,8 @@ public class OraclePagingTransformer extends StandardPagingTransformer {
             long bias = offset < 0 ? 0 : offset;
             where.addNode(new FragmentNode(String.valueOf(bias + limit)));
         }
-        ForUpdateClauseNode originalForUpdate = node.getForUpdateClauseNode();
-        if (originalForUpdate != null) {
+        ForUpdateClauseNode forUpdate = node.getForUpdateClauseNode();
+        if (node.getForUpdateClauseNode() != null) {
             where.addNode(new FragmentNode(" "));
         }
 
@@ -80,7 +80,7 @@ public class OraclePagingTransformer extends StandardPagingTransformer {
         result.setSelectClauseNode(select);
         result.setFromClauseNode(from);
         result.setWhereClauseNode(where);
-        result.setForUpdateClauseNode(originalForUpdate);
+        result.setForUpdateClauseNode(forUpdate);
         return result;
     }
 }

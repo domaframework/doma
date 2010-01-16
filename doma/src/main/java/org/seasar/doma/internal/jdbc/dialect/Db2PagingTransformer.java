@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.dialect;
 
+import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.FragmentNode;
 import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
@@ -25,10 +26,19 @@ import org.seasar.doma.jdbc.SqlNode;
  * @author taedium
  * 
  */
-public class H2PagingTransformer extends StandardPagingTransformer {
+public class Db2PagingTransformer extends StandardPagingTransformer {
 
-    public H2PagingTransformer(long offset, long limit) {
+    public Db2PagingTransformer(long offset, long limit) {
         super(offset, limit);
+    }
+
+    @Override
+    public SqlNode transform(SqlNode sqlNode) {
+        AnonymousNode result = new AnonymousNode();
+        for (SqlNode child : sqlNode.getChildren()) {
+            result.addNode(child.accept(this, null));
+        }
+        return result;
     }
 
     @Override
@@ -36,22 +46,18 @@ public class H2PagingTransformer extends StandardPagingTransformer {
         if (processed) {
             return node;
         }
+        if (offset > 0) {
+            return super.visitSelectStatementNode(node, p);
+        }
         processed = true;
 
         OrderByClauseNode orderBy = node.getOrderByClauseNode();
         if (orderBy == null) {
             orderBy = new OrderByClauseNode("");
         }
-        orderBy.addNode(new FragmentNode(" limit "));
-        if (limit >= 0) {
-            orderBy.addNode(new FragmentNode(String.valueOf(limit)));
-        } else {
-            orderBy.addNode(new FragmentNode("0"));
-        }
-        if (offset >= 0) {
-            orderBy.addNode(new FragmentNode(" offset "));
-            orderBy.addNode(new FragmentNode(String.valueOf(offset)));
-        }
+        orderBy
+                .addNode(new FragmentNode(" fetch first " + limit
+                        + " rows only"));
         ForUpdateClauseNode forUpdate = node.getForUpdateClauseNode();
         if (node.getForUpdateClauseNode() != null) {
             orderBy.addNode(new FragmentNode(" "));
@@ -67,4 +73,10 @@ public class H2PagingTransformer extends StandardPagingTransformer {
         result.setForUpdateClauseNode(forUpdate);
         return result;
     }
+
+    @Override
+    public SqlNode visitUnknownNode(SqlNode node, Void p) {
+        return node;
+    }
+
 }
