@@ -28,7 +28,7 @@ public class SqlFileInsertDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abst
         entering("org.seasar.doma.internal.apt.dao.SqlFileInsertDaoImpl", "insert", id, salary);
         org.seasar.doma.internal.jdbc.query.SqlFileInsertQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileInsertQuery();
         __query.setConfig(config);
-        __query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFileUtil.buildPath("org.seasar.doma.internal.apt.dao.SqlFileInsertDao", "insert"));
+        __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/SqlFileInsertDao/insert.sql");
         __query.addParameter("id", java.lang.Integer.class, id);
         __query.addParameter("salary", java.math.BigDecimal.class, salary);
         __query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileInsertDaoImpl");

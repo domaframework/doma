@@ -263,10 +263,9 @@ public class DaoGenerator extends AbstractGenerator {
 
             iprint("%1$s __query = new %1$s();%n", m.getQueryClass().getName());
             iprint("__query.setConfig(config);%n");
-            iprint(
-                    "__query.setSqlFilePath(%1$s.buildPath(\"%2$s\", \"%3$s\"));%n",
-                    SqlFileUtil.class.getName(), daoMeta.getDaoElement()
-                            .getQualifiedName(), m.getName());
+            iprint("__query.setSqlFilePath(\"%1$s\");%n", SqlFileUtil
+                    .buildPath(daoMeta.getDaoElement().getQualifiedName()
+                            .toString(), m.getName()));
             if (m.getSelectOptionsType() != null) {
                 iprint("__query.setOptions(%1$s);%n", m
                         .getSelectOptionsParameterName());
@@ -704,10 +703,9 @@ public class DaoGenerator extends AbstractGenerator {
 
             iprint("%1$s __query = new %1$s();%n", m.getQueryClass().getName());
             iprint("__query.setConfig(config);%n");
-            iprint(
-                    "__query.setSqlFilePath(%1$s.buildPath(\"%2$s\", \"%3$s\"));%n",
-                    SqlFileUtil.class.getName(), daoMeta.getDaoElement()
-                            .getQualifiedName(), m.getName());
+            iprint("__query.setSqlFilePath(\"%1$s\");%n", SqlFileUtil
+                    .buildPath(daoMeta.getDaoElement().getQualifiedName()
+                            .toString(), m.getName()));
             for (Iterator<QueryParameterMeta> it = m.getParameterMetas()
                     .iterator(); it.hasNext();) {
                 QueryParameterMeta parameterMeta = it.next();
@@ -806,10 +804,9 @@ public class DaoGenerator extends AbstractGenerator {
                     getPrefixedEntityTypeName(m.getEntityType().getTypeName()));
             iprint("__query.setConfig(config);%n");
             iprint("__query.setEntities(%1$s);%n", m.getEntitiesParameterName());
-            iprint(
-                    "__query.setSqlFilePath(%1$s.buildPath(\"%2$s\", \"%3$s\"));%n",
-                    SqlFileUtil.class.getName(), daoMeta.getDaoElement()
-                            .getQualifiedName(), m.getName());
+            iprint("__query.setSqlFilePath(\"%1$s\");%n", SqlFileUtil
+                    .buildPath(daoMeta.getDaoElement().getQualifiedName()
+                            .toString(), m.getName()));
             iprint("__query.setParameterName(\"%1$s\");%n", m
                     .getEntitiesParameterName());
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);

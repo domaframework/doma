@@ -31,7 +31,7 @@ public class EnumDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao i
         }
         org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
         __query.setConfig(config);
-        __query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFileUtil.buildPath("org.seasar.doma.internal.apt.dao.EnumDao", "selectById"));
+        __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/EnumDao/selectById.sql");
         __query.setOptions(options);
         __query.addParameter("id", org.seasar.doma.internal.apt.dao.EnumDao.MyEnum.class, id);
         __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EnumDaoImpl");
@@ -55,7 +55,7 @@ public class EnumDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao i
         }
         org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
         __query.setConfig(config);
-        __query.setSqlFilePath(org.seasar.doma.internal.jdbc.sql.SqlFileUtil.buildPath("org.seasar.doma.internal.apt.dao.EnumDao", "selectByNameAndSalary"));
+        __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/EnumDao/selectByNameAndSalary.sql");
         __query.setOptions(options);
         __query.addParameter("name", org.seasar.doma.internal.apt.dao.EnumDao.MyEnum.class, name);
         __query.addParameter("salary", org.seasar.doma.internal.apt.dao.EnumDao.MyEnum.class, salary);
