@@ -37,16 +37,16 @@ public class OracleDialectTest extends TestCase {
     public void testExpressionFunctions_prefix() throws Exception {
         OracleDialect dialect = new OracleDialect();
         ExpressionFunctions functions = dialect.getExpressionFunctions();
-        assertEquals("a\\\\a\\%a\\_a\\％a\\＿%", functions.prefix("a\\a%a_a％a＿"));
+        assertEquals("a$$a$%a$_a$％a$＿%", functions.prefix("a$a%a_a％a＿"));
     }
 
     public void testExpressionFunctions_prefix_escape() throws Exception {
         OracleDialect dialect = new OracleDialect();
         ExpressionFunctions functions = dialect.getExpressionFunctions();
-        assertEquals("a$$a$%a$_a$％a$＿%", functions.prefix("a$a%a_a％a＿", '$'));
+        assertEquals("a!!a!%a!_a!％a!＿%", functions.prefix("a!a%a_a％a＿", '!'));
     }
 
-    public void testExpressionFunctions_prefix_escapeWithDefault()
+    public void testExpressionFunctions_prefix_escapeWithBackslash()
             throws Exception {
         OracleDialect dialect = new OracleDialect();
         ExpressionFunctions functions = dialect.getExpressionFunctions();

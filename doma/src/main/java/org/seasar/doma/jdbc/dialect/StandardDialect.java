@@ -705,7 +705,7 @@ public class StandardDialect implements Dialect {
             ExpressionFunctions {
 
         /** デフォルトのエスケープ文字 */
-        private static char DEFAULT_ESCAPE_CHAR = '\\';
+        private static char DEFAULT_ESCAPE_CHAR = '$';
 
         /** デフォルトのワイルドカード */
         private final static char[] DEFAULT_WILDCARDS = { '%', '_' };

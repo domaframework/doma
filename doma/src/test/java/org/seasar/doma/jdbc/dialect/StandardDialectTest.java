@@ -43,16 +43,16 @@ public class StandardDialectTest extends TestCase {
     public void testExpressionFunctions_prefix() throws Exception {
         StandardDialect dialect = new StandardDialect();
         ExpressionFunctions functions = dialect.getExpressionFunctions();
-        assertEquals("a\\\\a\\%a\\_%", functions.prefix("a\\a%a_"));
+        assertEquals("a$$a$%a$_%", functions.prefix("a$a%a_"));
     }
 
     public void testExpressionFunctions_prefix_escape() throws Exception {
         StandardDialect dialect = new StandardDialect();
         ExpressionFunctions functions = dialect.getExpressionFunctions();
-        assertEquals("a$$a$%a$_%", functions.prefix("a$a%a_", '$'));
+        assertEquals("a!!a!%a!_%", functions.prefix("a!a%a_", '!'));
     }
 
-    public void testExpressionFunctions_prefix_escapeWithDefault()
+    public void testExpressionFunctions_prefix_escapeWithBackslash()
             throws Exception {
         StandardDialect dialect = new StandardDialect();
         ExpressionFunctions functions = dialect.getExpressionFunctions();
