@@ -1,6 +1,6 @@
 <project name="doma" default="update-pom-and-java-version" basedir=".">
 
-	<property name="newVersion" value="1.0.0-RC1" />
+	<property name="newVersion" value="1.0.0-RC2-SNAPSHOT" />
 
 	<target name="update-pom-and-java-version">
 		<replaceregexp
@@ -20,7 +20,7 @@
 
 	<target name="update-classpath-version">
 		<replaceregexp
-			match="(/doma-)(?:\d*\.\d*\.\d*(?:-SNAPSHOT)?)((?:-sources)?\.jar)"
+			match="(/doma-)(?:\d*\.\d*\.\d*(?:-RC\d)?(?:-SNAPSHOT)?)((?:-sources)?\.jar)"
 			replace="\1${newVersion}\2" encoding="UTF-8" flags="g">
 			<fileset dir="../doma-tutorial" includes=".classpath" />
 			<fileset dir="../doma-tutorial" includes=".factorypath" />
