@@ -85,8 +85,8 @@ public class ExpressionReducer implements
 
     @Override
     public Void visitGtOperatorNode(GtOperatorNode node, Deque<ExpressionNode> p) {
-        node.setRightNode(p.pop());
-        node.setLeftNode(p.pop());
+        node.setRightNode(pop(node, p));
+        node.setLeftNode(pop(node, p));
         return null;
     }
 
