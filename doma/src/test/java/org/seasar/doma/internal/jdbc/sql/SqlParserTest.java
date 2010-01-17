@@ -217,6 +217,30 @@ public class SqlParserTest extends TestCase {
         assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
     }
 
+    public void testIf_fromClause() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        evaluator.add("type", new Value(String.class, "a"));
+        String testSql = "select * from /*%if type == \"a\"*/aaa--else bbb/*%end*/";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath", evaluator).build(sqlNode);
+        assertEquals("select * from aaa", sql.getRawSql());
+        assertEquals("select * from aaa", sql.getFormattedSql());
+    }
+
+    public void testIf_selectClause() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        evaluator.add("type", new Value(String.class, "a"));
+        String testSql = "select /*%if type == \"a\"*/aaa --else bbb /*%end*/from ccc";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath", evaluator).build(sqlNode);
+        assertEquals("select aaa from ccc", sql.getRawSql());
+        assertEquals("select aaa from ccc", sql.getFormattedSql());
+    }
+
     public void testIf_removeWhere() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("name", new Value(String.class, null));
@@ -422,6 +446,29 @@ public class SqlParserTest extends TestCase {
 
     public void testValidate_ifEnd() throws Exception {
         SqlParser parser = new SqlParser("select * from aaa /*%if true*/");
+        try {
+            parser.parse();
+            fail();
+        } catch (JdbcException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(Message.DOMA2133, expected.getMessageResource());
+        }
+    }
+
+    public void testValidate_ifEnd_selectClause() throws Exception {
+        SqlParser parser = new SqlParser("select /*%if true*/* from aaa");
+        try {
+            parser.parse();
+            fail();
+        } catch (JdbcException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(Message.DOMA2133, expected.getMessageResource());
+        }
+    }
+
+    public void testValidate_ifEnd_subquery() throws Exception {
+        SqlParser parser = new SqlParser(
+                "select *, (select /*%if true */ from aaa) x from aaa");
         try {
             parser.parse();
             fail();
