@@ -34,6 +34,7 @@ import org.seasar.doma.internal.apt.dao.DomainParameterDao;
 import org.seasar.doma.internal.apt.dao.ElementOfParamListUnspecifiedDao;
 import org.seasar.doma.internal.apt.dao.ElementOfParamListWildcardTypeDao;
 import org.seasar.doma.internal.apt.dao.EmbeddedVariableDao;
+import org.seasar.doma.internal.apt.dao.EmpDtoParameterDao;
 import org.seasar.doma.internal.apt.dao.EmptySqlFileDao;
 import org.seasar.doma.internal.apt.dao.EnumDao;
 import org.seasar.doma.internal.apt.dao.ExtendsDao;
@@ -574,5 +575,15 @@ public class DaoProcessorTest extends AptTestCase {
         compile();
         assertFalse(getCompiledResult());
         assertMessageCode(Message.DOMA4158);
+    }
+
+    public void testEmpDtoParameter() throws Exception {
+        Class<?> target = EmpDtoParameterDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
     }
 }

@@ -73,7 +73,7 @@ public class ListType extends AbstractDataType {
                             listType.elementTypeMirror, env);
                     if (listType.elementType == null) {
                         listType.elementType = AnyType.newInstance(
-                                declaredType, env);
+                                listType.elementTypeMirror, env);
                     }
                 }
             }

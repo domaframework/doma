@@ -29,7 +29,6 @@ import org.seasar.doma.internal.apt.mirror.BatchInsertMirror;
 import org.seasar.doma.internal.apt.mirror.BatchModifyMirror;
 import org.seasar.doma.internal.apt.mirror.BatchUpdateMirror;
 import org.seasar.doma.internal.apt.type.DataType;
-import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.message.Message;
@@ -114,8 +113,7 @@ public class SqlFileBatchModifyQueryMetaFactory extends
                     @Override
                     protected ListType defaultAction(DataType type, Void p)
                             throws RuntimeException {
-                        throw new AptException(Message.DOMA4042, env,
-                                method);
+                        throw new AptException(Message.DOMA4042, env, method);
                     }
 
                     @Override
@@ -125,32 +123,13 @@ public class SqlFileBatchModifyQueryMetaFactory extends
                     }
 
                 }, null);
-        EntityType entityType = listType
-                .getElementType()
-                .accept(
-                        new SimpleDataTypeVisitor<EntityType, Void, RuntimeException>() {
-
-                            @Override
-                            protected EntityType defaultAction(DataType type,
-                                    Void p) throws RuntimeException {
-                                throw new AptException(
-                                        Message.DOMA4043, env, method);
-                            }
-
-                            @Override
-                            public EntityType visitEntityType(
-                                    EntityType dataType, Void p)
-                                    throws RuntimeException {
-                                return dataType;
-                            }
-
-                        }, null);
-        queryMeta.setEntityType(entityType);
-        queryMeta.setEntitiesParameterName(parameterMeta.getName());
+        DataType elementType = listType.getElementType();
+        queryMeta.setElementType(elementType);
+        queryMeta.setElementsParameterName(parameterMeta.getName());
         queryMeta.addParameterMeta(parameterMeta);
         if (parameterMeta.isBindable()) {
             queryMeta.addBindableParameterType(parameterMeta.getName(),
-                    entityType.getTypeMirror());
+                    elementType.getTypeMirror());
         }
     }
 

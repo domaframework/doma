@@ -26,12 +26,6 @@ import org.seasar.doma.internal.apt.mirror.DeleteMirror;
 import org.seasar.doma.internal.apt.mirror.InsertMirror;
 import org.seasar.doma.internal.apt.mirror.ModifyMirror;
 import org.seasar.doma.internal.apt.mirror.UpdateMirror;
-import org.seasar.doma.internal.apt.type.BasicType;
-import org.seasar.doma.internal.apt.type.DataType;
-import org.seasar.doma.internal.apt.type.DomainType;
-import org.seasar.doma.internal.apt.type.EntityType;
-import org.seasar.doma.internal.apt.type.ListType;
-import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.message.Message;
 
 /**
@@ -100,42 +94,7 @@ public class SqlFileModifyQueryMetaFactory extends
     protected void doParameters(SqlFileModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         for (VariableElement parameter : method.getParameters()) {
-            final QueryParameterMeta parameterMeta = createParameterMeta(parameter);
-            parameterMeta.getDataType().accept(
-                    new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
-
-                        @Override
-                        protected Void defaultAction(DataType type, Void p)
-                                throws RuntimeException {
-                            throw new AptException(Message.DOMA4008,
-                                    env, parameterMeta.getElement(),
-                                    parameterMeta.getType());
-                        }
-
-                        @Override
-                        public Void visitBasicType(BasicType dataType, Void p)
-                                throws RuntimeException {
-                            return null;
-                        }
-
-                        @Override
-                        public Void visitDomainType(DomainType dataType, Void p)
-                                throws RuntimeException {
-                            return null;
-                        }
-
-                        @Override
-                        public Void visitEntityType(EntityType dataType, Void p)
-                                throws RuntimeException {
-                            return null;
-                        }
-
-                        @Override
-                        public Void visitListType(ListType dataType, Void p)
-                                throws RuntimeException {
-                            return null;
-                        }
-                    }, null);
+            QueryParameterMeta parameterMeta = createParameterMeta(parameter);
             queryMeta.addParameterMeta(parameterMeta);
             if (parameterMeta.isBindable()) {
                 queryMeta.addBindableParameterType(parameterMeta.getName(),

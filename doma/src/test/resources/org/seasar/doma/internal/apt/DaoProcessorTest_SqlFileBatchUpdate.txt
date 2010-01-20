@@ -29,9 +29,9 @@ public class SqlFileBatchUpdateDaoImpl extends org.seasar.doma.internal.jdbc.dao
         if (entities == null) {
             throw new org.seasar.doma.DomaNullPointerException("entities");
         }
-        org.seasar.doma.internal.jdbc.query.SqlFileBatchUpdateQuery<org.seasar.doma.internal.apt.entity.Emp> __query = new org.seasar.doma.internal.jdbc.query.SqlFileBatchUpdateQuery<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.get());
+        org.seasar.doma.internal.jdbc.query.SqlFileBatchUpdateQuery<org.seasar.doma.internal.apt.entity.Emp> __query = new org.seasar.doma.internal.jdbc.query.SqlFileBatchUpdateQuery<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity.Emp.class);
         __query.setConfig(config);
-        __query.setEntities(entities);
+        __query.setElements(entities);
         __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/SqlFileBatchUpdateDao/update.sql");
         __query.setParameterName("entities");
         __query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileBatchUpdateDaoImpl");

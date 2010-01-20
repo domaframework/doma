@@ -24,7 +24,6 @@ import java.util.List;
 
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.Value;
-import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.Config;
@@ -36,9 +35,9 @@ import org.seasar.doma.jdbc.SqlKind;
  * @author taedium
  * 
  */
-public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
+public abstract class SqlFileBatchModifyQuery<T> implements BatchModifyQuery {
 
-    protected final EntityType<E> entityType;
+    protected final Class<T> elementClass;
 
     protected final SqlKind kind;
 
@@ -64,22 +63,22 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
 
     protected int batchSize;
 
-    protected List<E> entities;
+    protected List<T> elements;
 
-    protected E currentEntity;
+    protected T currentEntity;
 
     protected List<PreparedSql> sqls;
 
-    public SqlFileBatchModifyQuery(EntityType<E> entityType, SqlKind kind) {
-        assertNotNull(entityType, kind);
-        this.entityType = entityType;
+    public SqlFileBatchModifyQuery(Class<T> elementClass, SqlKind kind) {
+        assertNotNull(elementClass, kind);
+        this.elementClass = elementClass;
         this.kind = kind;
     }
 
     public void prepare() {
         assertNotNull(config, sqlFilePath, parameterName, callerClassName,
-                callerMethodName, entities, sqls);
-        Iterator<E> it = entities.iterator();
+                callerMethodName, elements, sqls);
+        Iterator<T> it = elements.iterator();
         if (it.hasNext()) {
             executable = true;
             sqlExecutionSkipCause = null;
@@ -94,7 +93,7 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
             currentEntity = it.next();
             prepareSql();
         }
-        assertEquals(entities.size(), sqls.size());
+        assertEquals(elements.size(), sqls.size());
     }
 
     protected void prepareSqlFile() {
@@ -112,7 +111,7 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
     }
 
     protected void prepareSql() {
-        Value value = new Value(entityType.getEntityClass(), currentEntity);
+        Value value = new Value(elementClass, currentEntity);
         ExpressionEvaluator evaluator = new ExpressionEvaluator(Collections
                 .singletonMap(parameterName, value), config.getDialect()
                 .getExpressionFunctions());
@@ -138,10 +137,10 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
         this.parameterName = parameterName;
     }
 
-    public void setEntities(List<E> entities) {
-        assertNotNull(entities);
-        this.entities = entities;
-        this.sqls = new ArrayList<PreparedSql>(entities.size());
+    public void setElements(List<T> elements) {
+        assertNotNull(elements);
+        this.elements = elements;
+        this.sqls = new ArrayList<PreparedSql>(elements.size());
     }
 
     public void setCallerClassName(String callerClassName) {

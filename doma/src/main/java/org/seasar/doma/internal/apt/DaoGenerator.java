@@ -798,17 +798,17 @@ public class DaoGenerator extends AbstractGenerator {
             printEnteringStatement(m);
             printPrerequisiteStatements(m);
 
-            iprint("%1$s<%2$s> __query = new %1$s<%2$s>(%3$s.get());%n", m
-                    .getQueryClass().getName(),
-                    m.getEntityType().getTypeName(),
-                    getPrefixedEntityTypeName(m.getEntityType().getTypeName()));
+            iprint("%1$s<%2$s> __query = new %1$s<%2$s>(%3$s.class);%n", m
+                    .getQueryClass().getName(), m.getElementType()
+                    .getTypeNameAsTypeParameter(), m.getElementType()
+                    .getQualifiedName());
             iprint("__query.setConfig(config);%n");
-            iprint("__query.setEntities(%1$s);%n", m.getEntitiesParameterName());
+            iprint("__query.setElements(%1$s);%n", m.getElementsParameterName());
             iprint("__query.setSqlFilePath(\"%1$s\");%n", SqlFileUtil
                     .buildPath(daoMeta.getDaoElement().getQualifiedName()
                             .toString(), m.getName()));
             iprint("__query.setParameterName(\"%1$s\");%n", m
-                    .getEntitiesParameterName());
+                    .getElementsParameterName());
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             BatchModifyMirror mirror = m.getBatchModifyMirror();

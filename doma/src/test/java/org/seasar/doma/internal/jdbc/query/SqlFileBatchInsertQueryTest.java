@@ -27,7 +27,6 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 
 import example.entity.Emp;
-import example.entity._Emp;
 
 /**
  * @author taedium
@@ -49,12 +48,12 @@ public class SqlFileBatchInsertQueryTest extends TestCase {
         emp2.setVersion(200);
 
         SqlFileBatchInsertQuery<Emp> query = new SqlFileBatchInsertQuery<Emp>(
-                _Emp.get());
+                Emp.class);
         query.setConfig(runtimeConfig);
         query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
                 getName()));
         query.setParameterName("e");
-        query.setEntities(Arrays.asList(emp1, emp2));
+        query.setElements(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.prepare();
@@ -75,12 +74,12 @@ public class SqlFileBatchInsertQueryTest extends TestCase {
         emp2.setVersion(200);
 
         SqlFileBatchInsertQuery<Emp> query = new SqlFileBatchInsertQuery<Emp>(
-                _Emp.get());
+                Emp.class);
         query.setConfig(runtimeConfig);
         query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
                 getName()));
         query.setParameterName("e");
-        query.setEntities(Arrays.asList(emp1, emp2));
+        query.setElements(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.prepare();

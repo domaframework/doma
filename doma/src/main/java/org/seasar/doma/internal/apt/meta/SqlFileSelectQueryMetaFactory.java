@@ -194,32 +194,6 @@ public class SqlFileSelectQueryMetaFactory extends
                     new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
 
                         @Override
-                        protected Void defaultAction(DataType type, Void p)
-                                throws RuntimeException {
-                            throw new AptException(Message.DOMA4008, env,
-                                    parameterMeta.getElement(), parameterMeta
-                                            .getType());
-                        }
-
-                        @Override
-                        public Void visitBasicType(BasicType dataType, Void p)
-                                throws RuntimeException {
-                            return null;
-                        }
-
-                        @Override
-                        public Void visitDomainType(DomainType dataType, Void p)
-                                throws RuntimeException {
-                            return null;
-                        }
-
-                        @Override
-                        public Void visitEntityType(EntityType dataType, Void p)
-                                throws RuntimeException {
-                            return null;
-                        }
-
-                        @Override
                         public Void visitIterationCallbackType(
                                 IterationCallbackType dataType, Void p)
                                 throws RuntimeException {
@@ -269,12 +243,6 @@ public class SqlFileSelectQueryMetaFactory extends
                             queryMeta
                                     .setSelectOptionsParameterName(parameterMeta
                                             .getName());
-                            return null;
-                        }
-
-                        @Override
-                        public Void visitListType(ListType dataType, Void p)
-                                throws RuntimeException {
                             return null;
                         }
 

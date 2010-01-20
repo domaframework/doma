@@ -13,23 +13,17 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.query;
+package org.seasar.doma.internal.apt.entity;
 
-import org.seasar.doma.jdbc.SqlKind;
 
 /**
  * @author taedium
  * 
  */
-public class SqlFileBatchUpdateQuery<T> extends SqlFileBatchModifyQuery<T>
-        implements BatchUpdateQuery {
+public class EmpDto {
 
-    public SqlFileBatchUpdateQuery(Class<T> elementClass) {
-        super(elementClass, SqlKind.BATCH_UPDATE);
-    }
+    Integer id;
 
-    @Override
-    public void incrementVersions() {
-    }
+    String name;
 
 }

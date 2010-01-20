@@ -205,6 +205,12 @@ public class QueryParameterMeta {
                         return true;
                     }
 
+                    @Override
+                    public Boolean visitAnyType(AnyType dataType, Void p)
+                            throws RuntimeException {
+                        return true;
+                    }
+
                 }, null);
     }
 

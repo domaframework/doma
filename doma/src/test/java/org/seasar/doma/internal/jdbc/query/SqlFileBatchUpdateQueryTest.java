@@ -28,7 +28,6 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 
 import example.entity.Emp;
-import example.entity._Emp;
 
 /**
  * @author taedium
@@ -50,12 +49,12 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
         emp2.setVersion(200);
 
         SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(
-                _Emp.get());
+                Emp.class);
         query.setConfig(runtimeConfig);
         query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
                 getName()));
         query.setParameterName("e");
-        query.setEntities(Arrays.asList(emp1, emp2));
+        query.setElements(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.prepare();
@@ -76,12 +75,12 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
         emp2.setVersion(200);
 
         SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(
-                _Emp.get());
+                Emp.class);
         query.setConfig(runtimeConfig);
         query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
                 getName()));
         query.setParameterName("e");
-        query.setEntities(Arrays.asList(emp1, emp2));
+        query.setElements(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.prepare();
@@ -107,14 +106,14 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
 
     public void testIsExecutable() throws Exception {
         SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(
-                _Emp.get());
+                Emp.class);
         query.setConfig(runtimeConfig);
         query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
                 getName()));
         query.setParameterName("e");
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.setEntities(Collections.<Emp> emptyList());
+        query.setElements(Collections.<Emp> emptyList());
         query.prepare();
         assertFalse(query.isExecutable());
     }

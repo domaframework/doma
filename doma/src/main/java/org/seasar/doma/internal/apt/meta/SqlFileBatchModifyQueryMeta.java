@@ -18,7 +18,7 @@ package org.seasar.doma.internal.apt.meta;
 import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.internal.apt.mirror.BatchModifyMirror;
-import org.seasar.doma.internal.apt.type.EntityType;
+import org.seasar.doma.internal.apt.type.DataType;
 
 /**
  * @author taedium
@@ -26,9 +26,9 @@ import org.seasar.doma.internal.apt.type.EntityType;
  */
 public class SqlFileBatchModifyQueryMeta extends AbstractSqlFileQueryMeta {
 
-    protected EntityType entityType;
+    protected DataType elementType;
 
-    protected String entitiesParameterName;
+    protected String elementsParameterName;
 
     protected BatchModifyMirror batchModifyMirror;
 
@@ -36,20 +36,20 @@ public class SqlFileBatchModifyQueryMeta extends AbstractSqlFileQueryMeta {
         super(method);
     }
 
-    public EntityType getEntityType() {
-        return entityType;
+    public DataType getElementType() {
+        return elementType;
     }
 
-    public void setEntityType(EntityType entityType) {
-        this.entityType = entityType;
+    public void setElementType(DataType elementType) {
+        this.elementType = elementType;
     }
 
-    public String getEntitiesParameterName() {
-        return entitiesParameterName;
+    public String getElementsParameterName() {
+        return elementsParameterName;
     }
 
-    public void setEntitiesParameterName(String entitiesParameterName) {
-        this.entitiesParameterName = entitiesParameterName;
+    public void setElementsParameterName(String entitiesParameterName) {
+        this.elementsParameterName = entitiesParameterName;
     }
 
     public BatchModifyMirror getBatchModifyMirror() {

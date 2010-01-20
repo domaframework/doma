@@ -77,7 +77,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
                 SqlNode sqlNode = createSqlNode(queryMeta, method, daoMeta,
                         filePath, sql);
                 SqlValidator validator = new SqlValidator(env, method,
-                        queryMeta.getParameterTypeMap(), filePath);
+                        queryMeta.getBindableParameterTypeMap(), filePath);
                 validator.validate(sqlNode);
             }
         }

@@ -13,23 +13,29 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.query;
+package org.seasar.doma.internal.apt.dao;
 
-import org.seasar.doma.jdbc.SqlKind;
+import java.util.List;
+
+import org.seasar.doma.BatchInsert;
+import org.seasar.doma.Dao;
+import org.seasar.doma.Insert;
+import org.seasar.doma.Select;
+import org.seasar.doma.internal.apt.entity.EmpDto;
 
 /**
  * @author taedium
  * 
  */
-public class SqlFileBatchUpdateQuery<T> extends SqlFileBatchModifyQuery<T>
-        implements BatchUpdateQuery {
+@Dao(config = MyConfig.class)
+public interface EmpDtoParameterDao {
 
-    public SqlFileBatchUpdateQuery(Class<T> elementClass) {
-        super(elementClass, SqlKind.BATCH_UPDATE);
-    }
+    @Select
+    String select(EmpDto dto);
 
-    @Override
-    public void incrementVersions() {
-    }
+    @Insert(sqlFile = true)
+    int insert(EmpDto dto);
 
+    @BatchInsert(sqlFile = true)
+    int[] insert(List<EmpDto> dto);
 }

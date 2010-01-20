@@ -103,7 +103,7 @@ public abstract class AbstractQueryMeta implements QueryMeta {
         this.queryKind = queryKind;
     }
 
-    public Map<String, TypeMirror> getParameterTypeMap() {
+    public Map<String, TypeMirror> getBindableParameterTypeMap() {
         return bindableParameterTypeMap;
     }
 

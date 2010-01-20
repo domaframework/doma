@@ -35,7 +35,7 @@ public interface QueryMeta {
 
     QueryReturnMeta getReturnMeta();
 
-    Map<String, TypeMirror> getParameterTypeMap();
+    Map<String, TypeMirror> getBindableParameterTypeMap();
 
     List<String> getThrownTypeNames();
 
