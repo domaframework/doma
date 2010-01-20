@@ -27,7 +27,6 @@ import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.MappedPropertyNotFoundException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
-import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SqlFileNotFoundException;
 
 /**
@@ -41,8 +40,7 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * <h4>{@code iterate} 要素が {@code false} の場合:</h4>
  * <ul>
  * <li>パラメータは0個以上である。
- * <li>パラメータは基本型、 {@link Domain} が注釈されたクラス、{@link Entity} が注釈されたクラス、もしくは
- * {@link SelectOptions} である。ただし、 {@code SelectOptions} は最大でも1つしか使用できない。
+ * <li>パラメータには任意の型を使用できる。ただし、 {@code SelectOptions} は最大でも1つしか使用できない。
  * <li>戻り値の型は次のいずれかである。なお、 型が {@link List} でなくデータが存在しない場合、値は {@code null} となる。
  * <table border=1>
  * <tr>
@@ -77,33 +75,17 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * 
  * <h4>{@code iterate} 要素が {@code true} の場合:</h4>
  * <ul>
- * <li>パラメータは {@link IterationCallback} 型のものが必須である。そのほか、基本型、{@code Domain}
- * が注釈されたクラス、 {@code Entity} が注釈されたクラス、もしくは {@code SelectOptions} を指定できる。ただし、
- * {@code SelectOptions} は最大でも1つしか指定できない。
- * <li>戻り値の型は パラメータで利用する {@link IterationCallback} の型パラメータと同じ型でなければいけない。
+ * <li>パラメータは {@link IterationCallback} 型のものが必須である。そのほか、任意の型を指定できる。ただし、 {@code
+ * SelectOptions} は最大でも1つしか指定できない。
+ * <li>戻り値の型は パラメータで利用する {@code IterationCallback} の型パラメータと同じ型でなければいけない。
  * </ul>
  * 
  * <p>
  * &nbsp;
  * <p>
- * 注釈されるメソッドに定義できるパラメータは型ごとに意味が異なります。
+ * {@code SelectOptions} と {@code IterationCallback} は特別な意味を持つパラメータです。
  * <ul>
  * <table border=1>
- * <tr>
- * <th>パラメータの型</th>
- * <th>役割</th>
- * <tr>
- * <td>基本型</td>
- * <td>SQLにバインドする単一の値です。</td>
- * </tr>
- * <tr>
- * <td>{@code Domain} が注釈されたクラス</td>
- * <td>SQLにバインドする単一の値です。</td>
- * </tr>
- * <tr>
- * <td>{@code Entity} が注釈されたクラス</td>
- * <td>SQLにバインドする値の集合です。</td>
- * </tr>
  * <tr>
  * <td>{@code SelectOptions}</td>
  * <td>SELECT文の実行に関するオプション（ページングや悲観的排他制御など）です。</td>

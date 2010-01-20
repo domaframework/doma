@@ -32,10 +32,15 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
  * <p>
  * このアノテーションが注釈されるメソッドは、{@link Dao} が注釈されたインタフェースのメンバでなければいけません。
  * <p>
- * 注釈されるメソッドは、次の制約を満たす必要があります。
+ * {@link #sqlFile()} が {@code false} の場合、注釈されるメソッドは次の制約を満たす必要があります。
  * <ul>
  * <li>パラメータを1つだけ受け取る。
  * <li>パラメータは {@link Entity} が注釈された型である。
+ * <li>戻り値の型は {@code int} である。
+ * </ul>
+ * <p>
+ * {@link #sqlFile()} が {@code true} の場合、注釈されるメソッドは次の制約を満たす必要があります。
+ * <ul>
  * <li>戻り値の型は {@code int} である。
  * </ul>
  * 
