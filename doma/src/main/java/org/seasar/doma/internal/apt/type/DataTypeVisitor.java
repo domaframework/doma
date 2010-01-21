@@ -31,7 +31,7 @@ public interface DataTypeVisitor<R, P, TH extends Throwable> {
 
     R visitIterationCallbackType(IterationCallbackType dataType, P p) throws TH;
 
-    R visitListType(ListType dataType, P p) throws TH;
+    R visitIterableType(IterableType dataType, P p) throws TH;
 
     R visitReferenceType(ReferenceType dataType, P p) throws TH;
 

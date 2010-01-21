@@ -405,4 +405,28 @@ public final class TypeMirrorUtil {
         }
         return typeElement.asType();
     }
+
+    public static TypeMirror getSupertypeMirror(TypeMirror typeMirror,
+            Class<?> superclass, ProcessingEnvironment env) {
+        assertNotNull(typeMirror, superclass, env);
+        if (TypeMirrorUtil.isSameType(typeMirror, superclass, env)) {
+            return typeMirror;
+        }
+        switch (typeMirror.getKind()) {
+        case NONE:
+        case NULL:
+        case VOID:
+            return null;
+        }
+        for (TypeMirror t : env.getTypeUtils().directSupertypes(typeMirror)) {
+            if (isSameType(t, superclass, env)) {
+                return t;
+            }
+            TypeMirror candidate = getSupertypeMirror(t, superclass, env);
+            if (candidate != null) {
+                return candidate;
+            }
+        }
+        return null;
+    }
 }

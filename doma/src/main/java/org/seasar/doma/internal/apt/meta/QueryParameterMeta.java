@@ -15,8 +15,8 @@ import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
+import org.seasar.doma.internal.apt.type.IterableType;
 import org.seasar.doma.internal.apt.type.IterationCallbackType;
-import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.ReferenceType;
 import org.seasar.doma.internal.apt.type.SelectOptionsType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
@@ -63,16 +63,15 @@ public class QueryParameterMeta {
 
     protected DataType createDataType(VariableElement parameterElement,
             ProcessingEnvironment env) {
-        ListType listType = ListType.newInstance(type, env);
-        if (listType != null) {
-            if (listType.isRawType()) {
-                throw new AptException(Message.DOMA4108, env, parameterElement);
+        IterableType iterableType = IterableType.newInstance(type, env);
+        if (iterableType != null) {
+            if (iterableType.isRawType()) {
+                throw new AptException(Message.DOMA4159, env, parameterElement);
             }
-            if (listType.isWildcardType()) {
-                throw new AptException(Message.DOMA4112, env, parameterElement,
-                        qualifiedName);
+            if (iterableType.isWildcardType()) {
+                throw new AptException(Message.DOMA4160, env, parameterElement);
             }
-            return listType;
+            return iterableType;
         }
 
         EntityType entityType = EntityType.newInstance(type, env);
@@ -194,8 +193,8 @@ public class QueryParameterMeta {
                     }
 
                     @Override
-                    public Boolean visitListType(ListType dataType, Void p)
-                            throws RuntimeException {
+                    public Boolean visitIterableType(IterableType dataType,
+                            Void p) throws RuntimeException {
                         return true;
                     }
 

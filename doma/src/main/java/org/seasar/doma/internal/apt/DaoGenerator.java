@@ -66,8 +66,8 @@ import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.EnumWrapperType;
+import org.seasar.doma.internal.apt.type.IterableType;
 import org.seasar.doma.internal.apt.type.IterationCallbackType;
-import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.apt.type.WrapperType;
 import org.seasar.doma.internal.jdbc.command.BasicIterationHandler;
@@ -504,10 +504,10 @@ public class DaoGenerator extends AbstractGenerator {
                                     }
 
                                     @Override
-                                    public Void visitListType(
-                                            final ListType listType, Void p)
+                                    public Void visitIterableType(
+                                            final IterableType iterableType, Void p)
                                             throws RuntimeException {
-                                        listType
+                                        iterableType
                                                 .getElementType()
                                                 .accept(
                                                         new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
@@ -530,7 +530,7 @@ public class DaoGenerator extends AbstractGenerator {
                                                                                         iprint(
                                                                                                 "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(new %5$s(%6$s.class)));%n",
                                                                                                 commandClassName,
-                                                                                                listType
+                                                                                                iterableType
                                                                                                         .getTypeName(),
                                                                                                 BasicResultListHandler.class
                                                                                                         .getName(),
@@ -553,7 +553,7 @@ public class DaoGenerator extends AbstractGenerator {
                                                                                         iprint(
                                                                                                 "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(new %5$s()));%n",
                                                                                                 commandClassName,
-                                                                                                listType
+                                                                                                iterableType
                                                                                                         .getTypeNameAsTypeParameter(),
                                                                                                 BasicResultListHandler.class
                                                                                                         .getName(),
@@ -581,7 +581,7 @@ public class DaoGenerator extends AbstractGenerator {
                                                                 iprint(
                                                                         "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s, %5$s>(%6$s.get()));%n",
                                                                         commandClassName,
-                                                                        listType
+                                                                        iterableType
                                                                                 .getTypeName(),
                                                                         DomainResultListHandler.class
                                                                                 .getName(),
@@ -602,7 +602,7 @@ public class DaoGenerator extends AbstractGenerator {
                                                                 iprint(
                                                                         "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(%5$s.get()));%n",
                                                                         commandClassName,
-                                                                        listType
+                                                                        iterableType
                                                                                 .getTypeName(),
                                                                         EntityResultListHandler.class
                                                                                 .getName(),

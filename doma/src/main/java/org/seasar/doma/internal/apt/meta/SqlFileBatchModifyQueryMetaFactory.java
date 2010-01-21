@@ -29,7 +29,7 @@ import org.seasar.doma.internal.apt.mirror.BatchInsertMirror;
 import org.seasar.doma.internal.apt.mirror.BatchModifyMirror;
 import org.seasar.doma.internal.apt.mirror.BatchUpdateMirror;
 import org.seasar.doma.internal.apt.type.DataType;
-import org.seasar.doma.internal.apt.type.ListType;
+import org.seasar.doma.internal.apt.type.IterableType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.message.Message;
 
@@ -107,23 +107,27 @@ public class SqlFileBatchModifyQueryMetaFactory extends
         }
         QueryParameterMeta parameterMeta = createParameterMeta(parameters
                 .get(0));
-        ListType listType = parameterMeta.getDataType().accept(
-                new SimpleDataTypeVisitor<ListType, Void, RuntimeException>() {
+        IterableType iterableType = parameterMeta
+                .getDataType()
+                .accept(
+                        new SimpleDataTypeVisitor<IterableType, Void, RuntimeException>() {
 
-                    @Override
-                    protected ListType defaultAction(DataType type, Void p)
-                            throws RuntimeException {
-                        throw new AptException(Message.DOMA4042, env, method);
-                    }
+                            @Override
+                            protected IterableType defaultAction(DataType type,
+                                    Void p) throws RuntimeException {
+                                throw new AptException(Message.DOMA4042, env,
+                                        method);
+                            }
 
-                    @Override
-                    public ListType visitListType(ListType dataType, Void p)
-                            throws RuntimeException {
-                        return dataType;
-                    }
+                            @Override
+                            public IterableType visitIterableType(
+                                    IterableType dataType, Void p)
+                                    throws RuntimeException {
+                                return dataType;
+                            }
 
-                }, null);
-        DataType elementType = listType.getElementType();
+                        }, null);
+        DataType elementType = iterableType.getElementType();
         queryMeta.setElementType(elementType);
         queryMeta.setElementsParameterName(parameterMeta.getName());
         queryMeta.addParameterMeta(parameterMeta);

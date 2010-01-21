@@ -195,7 +195,7 @@ public class JdbcExceptionTest extends TestCase {
         }
     }
 
-    public void testBindValueTypeNotCollection() throws Exception {
+    public void testBindValueTypeNotIterable() throws Exception {
         SqlParser parser = new SqlParser(
                 "select * from aaa where bbb in /*bbb*/(1,2,3)");
         SqlNode sqlNode = parser.parse();

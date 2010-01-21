@@ -193,8 +193,9 @@ public class NodePreparedSqlBuilder implements
             ParensNode parensNode = node.getParensNode();
             OtherNode openedFragmentNode = parensNode.getOpenedFragmentNode();
             openedFragmentNode.accept(this, p);
-            if (List.class.isAssignableFrom(valueClass)) {
-                handleListBindVarialbeNode(node, p, (List<?>) value, valueClass);
+            if (Iterable.class.isAssignableFrom(valueClass)) {
+                handleIterableBindVarialbeNode(node, p, (Iterable<?>) value,
+                        valueClass);
             } else {
                 throw new JdbcException(Message.DOMA2112, location.getSql(),
                         location.getLineNumber(), location.getPosition(), node
@@ -256,8 +257,8 @@ public class NodePreparedSqlBuilder implements
         return null;
     }
 
-    protected void handleListBindVarialbeNode(BindVariableNode node, Context p,
-            List<?> values, Class<?> valueClass) {
+    protected void handleIterableBindVarialbeNode(BindVariableNode node,
+            Context p, Iterable<?> values, Class<?> valueClass) {
         int index = 0;
         for (Object v : values) {
             if (v == null) {

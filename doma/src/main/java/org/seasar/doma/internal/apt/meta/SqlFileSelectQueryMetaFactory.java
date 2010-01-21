@@ -28,8 +28,8 @@ import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
+import org.seasar.doma.internal.apt.type.IterableType;
 import org.seasar.doma.internal.apt.type.IterationCallbackType;
-import org.seasar.doma.internal.apt.type.ListType;
 import org.seasar.doma.internal.apt.type.SelectOptionsType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.message.Message;
@@ -124,8 +124,8 @@ public class SqlFileSelectQueryMetaFactory extends
                         }
 
                         @Override
-                        public Void visitListType(ListType dataType, Void p)
-                                throws RuntimeException {
+                        public Void visitIterableType(IterableType dataType,
+                                Void p) throws RuntimeException {
                             dataType
                                     .getElementType()
                                     .accept(

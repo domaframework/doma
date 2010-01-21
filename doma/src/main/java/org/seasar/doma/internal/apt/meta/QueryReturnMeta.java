@@ -15,7 +15,7 @@ import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
-import org.seasar.doma.internal.apt.type.ListType;
+import org.seasar.doma.internal.apt.type.IterableType;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.message.Message;
 
@@ -43,17 +43,17 @@ public class QueryReturnMeta {
 
     protected DataType createDataType(ExecutableElement methodElement,
             TypeMirror type, ProcessingEnvironment env) {
-        ListType listType = ListType.newInstance(type, env);
-        if (listType != null) {
-            if (listType.isRawType()) {
-                throw new AptException(Message.DOMA4109, env,
-                        methodElement, typeName);
+        IterableType iterableType = IterableType.newInstance(type, env);
+        if (iterableType != null) {
+            if (iterableType.isRawType()) {
+                throw new AptException(Message.DOMA4109, env, methodElement,
+                        typeName);
             }
-            if (listType.isWildcardType()) {
-                throw new AptException(Message.DOMA4113, env,
-                        methodElement, typeName);
+            if (iterableType.isWildcardType()) {
+                throw new AptException(Message.DOMA4113, env, methodElement,
+                        typeName);
             }
-            return listType;
+            return iterableType;
         }
 
         EntityType entityType = EntityType.newInstance(type, env);

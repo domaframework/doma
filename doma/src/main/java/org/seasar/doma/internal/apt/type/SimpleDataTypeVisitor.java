@@ -62,7 +62,7 @@ public class SimpleDataTypeVisitor<R, P, TH extends Throwable> implements
     }
 
     @Override
-    public R visitListType(ListType dataType, P p) throws TH {
+    public R visitIterableType(IterableType dataType, P p) throws TH {
         return defaultAction(dataType, p);
     }
 

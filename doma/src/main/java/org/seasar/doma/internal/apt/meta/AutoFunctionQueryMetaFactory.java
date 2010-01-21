@@ -26,7 +26,7 @@ import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
-import org.seasar.doma.internal.apt.type.ListType;
+import org.seasar.doma.internal.apt.type.IterableType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.message.Message;
 
@@ -98,8 +98,8 @@ public class AutoFunctionQueryMetaFactory extends
                             }
 
                             @Override
-                            public ResultParameterMeta visitListType(
-                                    ListType dataType, Void p)
+                            public ResultParameterMeta visitIterableType(
+                                    IterableType dataType, Void p)
                                     throws RuntimeException {
                                 return dataType
                                         .getElementType()

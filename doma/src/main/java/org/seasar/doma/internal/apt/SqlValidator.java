@@ -31,7 +31,7 @@ import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.internal.apt.decl.TypeDeclaration;
 import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.type.DomainType;
-import org.seasar.doma.internal.apt.type.ListType;
+import org.seasar.doma.internal.apt.type.IterableType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.expr.ExpressionException;
@@ -112,11 +112,20 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
         String variableName = node.getVariableName();
         TypeDeclaration typeDeclaration = validateExpressionVariable(location,
                 variableName);
-        if (!isBindable(typeDeclaration)) {
-            throw new AptException(Message.DOMA4153, env, methodElement, path,
-                    location.getSql(), location.getLineNumber(), location
-                            .getPosition(), variableName, typeDeclaration
-                            .getQualifiedName());
+        if (node.getWordNode() != null) {
+            if (!isBindable(typeDeclaration)) {
+                throw new AptException(Message.DOMA4153, env, methodElement,
+                        path, location.getSql(), location.getLineNumber(),
+                        location.getPosition(), variableName, typeDeclaration
+                                .getQualifiedName());
+            }
+        } else {
+            if (!isBindableIterable(typeDeclaration)) {
+                throw new AptException(Message.DOMA4161, env, methodElement,
+                        path, location.getSql(), location.getLineNumber(),
+                        location.getPosition(), variableName, typeDeclaration
+                                .getQualifiedName());
+            }
         }
         visitNode(node, p);
         return null;
@@ -124,9 +133,15 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
 
     protected boolean isBindable(TypeDeclaration typeDeclaration) {
         TypeMirror typeMirror = typeDeclaration.getType();
-        ListType listType = ListType.newInstance(typeMirror, env);
-        if (listType != null) {
-            Boolean bindable = listType.getElementType().accept(
+        return BasicType.newInstance(typeMirror, env) != null
+                || DomainType.newInstance(typeMirror, env) != null;
+    }
+
+    protected boolean isBindableIterable(TypeDeclaration typeDeclaration) {
+        TypeMirror typeMirror = typeDeclaration.getType();
+        IterableType iterableType = IterableType.newInstance(typeMirror, env);
+        if (iterableType != null) {
+            return iterableType.getElementType().accept(
                     new SimpleDataTypeVisitor<Boolean, Void, RuntimeException>(
                             false) {
 
@@ -143,12 +158,8 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
                         }
 
                     }, null);
-            if (Boolean.TRUE.equals(bindable)) {
-                return true;
-            }
         }
-        return BasicType.newInstance(typeMirror, env) != null
-                || DomainType.newInstance(typeMirror, env) != null;
+        return false;
     }
 
     @Override

@@ -197,7 +197,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4108);
+        assertMessageCode(Message.DOMA4159);
     }
 
     public void testElementOfParamListNotDomain() throws Exception {
@@ -207,7 +207,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4112);
+        assertMessageCode(Message.DOMA4160);
     }
 
     public void testAutoBatchUpdate() throws Exception {

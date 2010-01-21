@@ -26,13 +26,13 @@ import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 
-public class ListType extends AbstractDataType {
+public class IterableType extends AbstractDataType {
 
     protected TypeMirror elementTypeMirror;
 
     protected DataType elementType;
 
-    public ListType(TypeMirror type, ProcessingEnvironment env) {
+    public IterableType(TypeMirror type, ProcessingEnvironment env) {
         super(type, env);
     }
 
@@ -49,41 +49,44 @@ public class ListType extends AbstractDataType {
                 && elementTypeMirror.getKind() == TypeKind.WILDCARD;
     }
 
-    public static ListType newInstance(TypeMirror type,
+    public static IterableType newInstance(TypeMirror type,
             ProcessingEnvironment env) {
         assertNotNull(type, env);
-        if (!TypeMirrorUtil.isSameType(type, List.class, env)) {
+        TypeMirror supertype = TypeMirrorUtil.getSupertypeMirror(type,
+                Iterable.class, env);
+        if (supertype == null) {
             return null;
         }
-        ListType listType = new ListType(type, env);
-        DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(type, env);
+        IterableType iterableType = new IterableType(type, env);
+        DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(supertype,
+                env);
         if (declaredType == null) {
             return null;
         }
         List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
         if (typeArgs.size() > 0) {
-            listType.elementTypeMirror = typeArgs.get(0);
-            listType.elementType = EntityType.newInstance(
-                    listType.elementTypeMirror, env);
-            if (listType.elementType == null) {
-                listType.elementType = DomainType.newInstance(
-                        listType.elementTypeMirror, env);
-                if (listType.elementType == null) {
-                    listType.elementType = BasicType.newInstance(
-                            listType.elementTypeMirror, env);
-                    if (listType.elementType == null) {
-                        listType.elementType = AnyType.newInstance(
-                                listType.elementTypeMirror, env);
+            iterableType.elementTypeMirror = typeArgs.get(0);
+            iterableType.elementType = EntityType.newInstance(
+                    iterableType.elementTypeMirror, env);
+            if (iterableType.elementType == null) {
+                iterableType.elementType = DomainType.newInstance(
+                        iterableType.elementTypeMirror, env);
+                if (iterableType.elementType == null) {
+                    iterableType.elementType = BasicType.newInstance(
+                            iterableType.elementTypeMirror, env);
+                    if (iterableType.elementType == null) {
+                        iterableType.elementType = AnyType.newInstance(
+                                iterableType.elementTypeMirror, env);
                     }
                 }
             }
         }
-        return listType;
+        return iterableType;
     }
 
     @Override
     public <R, P, TH extends Throwable> R accept(
             DataTypeVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitListType(this, p);
+        return visitor.visitIterableType(this, p);
     }
 }

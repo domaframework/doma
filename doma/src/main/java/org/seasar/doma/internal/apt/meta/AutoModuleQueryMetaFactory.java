@@ -29,7 +29,7 @@ import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
-import org.seasar.doma.internal.apt.type.ListType;
+import org.seasar.doma.internal.apt.type.IterableType;
 import org.seasar.doma.internal.apt.type.ReferenceType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.message.Message;
@@ -82,24 +82,27 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
 
     protected CallableSqlParameterMeta createResultSetParameterMeta(
             final QueryParameterMeta parameterMeta) {
-        ListType listType = parameterMeta.getDataType().accept(
-                new SimpleDataTypeVisitor<ListType, Void, RuntimeException>() {
+        IterableType iterableType = parameterMeta
+                .getDataType()
+                .accept(
+                        new SimpleDataTypeVisitor<IterableType, Void, RuntimeException>() {
 
-                    @Override
-                    protected ListType defaultAction(DataType type, Void p)
-                            throws RuntimeException {
-                        throw new AptException(Message.DOMA4062, env,
-                                parameterMeta.getElement());
-                    }
+                            @Override
+                            protected IterableType defaultAction(DataType type,
+                                    Void p) throws RuntimeException {
+                                throw new AptException(Message.DOMA4062, env,
+                                        parameterMeta.getElement());
+                            }
 
-                    @Override
-                    public ListType visitListType(ListType dataType, Void p)
-                            throws RuntimeException {
-                        return dataType;
-                    }
+                            @Override
+                            public IterableType visitIterableType(
+                                    IterableType dataType, Void p)
+                                    throws RuntimeException {
+                                return dataType;
+                            }
 
-                }, null);
-        return listType
+                        }, null);
+        return iterableType
                 .getElementType()
                 .accept(
                         new SimpleDataTypeVisitor<CallableSqlParameterMeta, Void, RuntimeException>() {
