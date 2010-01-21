@@ -55,6 +55,7 @@ public class StringUtilTest extends TestCase {
 
     public void testTrimWhitespace() throws Exception {
         assertEquals("aaa", StringUtil.trimWhitespace(" aaa "));
+        assertEquals("aaa", StringUtil.trimWhitespace("aaa "));
         assertEquals("aaa", StringUtil.trimWhitespace("\raaa\n\t"));
         assertEquals("aaa", StringUtil.trimWhitespace("aaa"));
     }

@@ -159,44 +159,9 @@ public final class StringUtil {
         }
         if (start < end) {
             return ((start > 0) || (end < chars.length)) ? new String(chars,
-                    start, end - 1) : text;
+                    start, end - start) : text;
         }
         return "";
     }
 
-    public static final String ltrim(final String text) {
-        return ltrim(text, null);
-    }
-
-    public static final String ltrim(final String text, String trimText) {
-        if (text == null) {
-            return null;
-        }
-        String trim = trimText != null ? trimText : " ";
-        int pos = 0;
-        for (; pos < text.length(); pos++) {
-            if (trim.indexOf(text.charAt(pos)) < 0) {
-                break;
-            }
-        }
-        return text.substring(pos);
-    }
-
-    public static final String rtrim(final String text) {
-        return rtrim(text, null);
-    }
-
-    public static final String rtrim(final String text, String trimText) {
-        if (text == null) {
-            return null;
-        }
-        String trim = trimText != null ? trimText : " ";
-        int pos = text.length() - 1;
-        for (; pos >= 0; pos--) {
-            if (trim.indexOf(text.charAt(pos)) < 0) {
-                break;
-            }
-        }
-        return text.substring(0, pos + 1);
-    }
 }
