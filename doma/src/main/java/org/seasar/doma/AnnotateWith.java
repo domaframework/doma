@@ -49,7 +49,7 @@ import org.seasar.doma.jdbc.ConfigProxy;
  * 実装クラスは次のようになります。
  * 
  * <pre>
- * public class EmployeeDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao implements example.EmployeeDao {
+ * public class EmployeeDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements example.EmployeeDao {
  * 
  *     &#064;com.google.inject.Inject()
  *     public EmployeeDaoImpl(@com.google.inject.name.Named(&quot;sales&quot;) org.seasar.doma.jdbc.Config config) {

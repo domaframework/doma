@@ -21,10 +21,10 @@ import org.seasar.doma.jdbc.SqlKind;
  * @author taedium
  * 
  */
-public class SqlFileBatchUpdateQuery<T> extends SqlFileBatchModifyQuery<T>
+public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
         implements BatchUpdateQuery {
 
-    public SqlFileBatchUpdateQuery(Class<T> elementClass) {
+    public SqlFileBatchUpdateQuery(Class<E> elementClass) {
         super(elementClass, SqlKind.BATCH_UPDATE);
     }
 

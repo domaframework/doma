@@ -35,9 +35,9 @@ import org.seasar.doma.jdbc.SqlKind;
  * @author taedium
  * 
  */
-public abstract class SqlFileBatchModifyQuery<T> implements BatchModifyQuery {
+public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
 
-    protected final Class<T> elementClass;
+    protected final Class<E> elementClass;
 
     protected final SqlKind kind;
 
@@ -63,13 +63,13 @@ public abstract class SqlFileBatchModifyQuery<T> implements BatchModifyQuery {
 
     protected int batchSize;
 
-    protected List<T> elements;
+    protected List<E> elements;
 
-    protected T currentEntity;
+    protected E currentEntity;
 
     protected List<PreparedSql> sqls;
 
-    public SqlFileBatchModifyQuery(Class<T> elementClass, SqlKind kind) {
+    public SqlFileBatchModifyQuery(Class<E> elementClass, SqlKind kind) {
         assertNotNull(elementClass, kind);
         this.elementClass = elementClass;
         this.kind = kind;
@@ -78,7 +78,7 @@ public abstract class SqlFileBatchModifyQuery<T> implements BatchModifyQuery {
     public void prepare() {
         assertNotNull(config, sqlFilePath, parameterName, callerClassName,
                 callerMethodName, elements, sqls);
-        Iterator<T> it = elements.iterator();
+        Iterator<E> it = elements.iterator();
         if (it.hasNext()) {
             executable = true;
             sqlExecutionSkipCause = null;
@@ -137,10 +137,13 @@ public abstract class SqlFileBatchModifyQuery<T> implements BatchModifyQuery {
         this.parameterName = parameterName;
     }
 
-    public void setElements(List<T> elements) {
+    public void setElements(Iterable<E> elements) {
         assertNotNull(elements);
-        this.elements = elements;
-        this.sqls = new ArrayList<PreparedSql>(elements.size());
+        this.elements = new ArrayList<E>();
+        for (E element : elements) {
+            this.elements.add(element);
+        }
+        this.sqls = new ArrayList<PreparedSql>(this.elements.size());
     }
 
     public void setCallerClassName(String callerClassName) {

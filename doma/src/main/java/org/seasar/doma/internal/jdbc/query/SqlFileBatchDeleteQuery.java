@@ -21,14 +21,14 @@ import org.seasar.doma.jdbc.SqlKind;
  * @author taedium
  * 
  */
-public class SqlFileBatchDeleteQuery<T> extends SqlFileBatchModifyQuery<T>
+public class SqlFileBatchDeleteQuery<E> extends SqlFileBatchModifyQuery<E>
         implements BatchDeleteQuery {
 
     protected boolean versionIgnored;
 
     protected boolean optimisticLockExceptionSuppressed;
 
-    public SqlFileBatchDeleteQuery(Class<T> elementClass) {
+    public SqlFileBatchDeleteQuery(Class<E> elementClass) {
         super(elementClass, SqlKind.BATCH_DELETE);
     }
 

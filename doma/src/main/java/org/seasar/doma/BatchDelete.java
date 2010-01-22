@@ -20,7 +20,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.sql.Statement;
-import java.util.List;
 
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
@@ -35,14 +34,14 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * {@link #sqlFile()} が {@code false} の場合、注釈されるメソッドは次の制約を満たす必要があります。
  * <ul>
  * <li>パラメータを1つだけ受け取る。
- * <li>パラメータは {@link Entity} が注釈された型を要素とする {@link List} である。
+ * <li>パラメータの型は {@link Entity} が注釈された型を要素とする {@link Iterable} のサブタイプである。
  * <li>戻り値の型は {@code int[]} である。
  * </ul>
  * <p>
  * {@link #sqlFile()} が {@code false} の場合、注釈されるメソッドは次の制約を満たす必要があります。
  * <ul>
  * <li>パラメータを1つだけ受け取る。
- * <li>パラメータは任意の型を要素とする {@link List} である。
+ * <li>パラメータは任意の型を要素とする {@link Iterable} のサブタイプである。
  * <li>戻り値の型は {@code int[]} である。
  * </ul>
  * <p>

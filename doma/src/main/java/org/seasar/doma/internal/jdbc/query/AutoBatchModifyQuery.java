@@ -85,8 +85,7 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
 
     protected void validateIdExistent() {
         if (idPropertyTypes.isEmpty()) {
-            throw new JdbcException(Message.DOMA2022, entityType
-                    .getName());
+            throw new JdbcException(Message.DOMA2022, entityType.getName());
         }
     }
 
@@ -132,10 +131,13 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
         this.config = config;
     }
 
-    public void setEntities(List<E> entities) {
+    public void setEntities(Iterable<E> entities) {
         assertNotNull(entities);
-        this.entities = entities;
-        this.sqls = new ArrayList<PreparedSql>(entities.size());
+        this.entities = new ArrayList<E>();
+        for (E entity : entities) {
+            this.entities.add(entity);
+        }
+        this.sqls = new ArrayList<PreparedSql>(this.entities.size());
     }
 
     public void setCallerClassName(String callerClassName) {

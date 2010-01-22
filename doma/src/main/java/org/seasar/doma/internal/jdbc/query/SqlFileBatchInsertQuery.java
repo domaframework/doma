@@ -23,10 +23,10 @@ import org.seasar.doma.jdbc.SqlKind;
  * @author taedium
  * 
  */
-public class SqlFileBatchInsertQuery<T> extends SqlFileBatchModifyQuery<T>
+public class SqlFileBatchInsertQuery<E> extends SqlFileBatchModifyQuery<E>
         implements BatchInsertQuery {
 
-    public SqlFileBatchInsertQuery(Class<T> elementClass) {
+    public SqlFileBatchInsertQuery(Class<E> elementClass) {
         super(elementClass, SqlKind.BATCH_INSERT);
     }
 
