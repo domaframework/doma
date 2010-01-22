@@ -98,6 +98,9 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                             public IterableType visitIterableType(
                                     IterableType dataType, Void p)
                                     throws RuntimeException {
+                                if (!dataType.isList()) {
+                                    defaultAction(dataType, p);
+                                }
                                 return dataType;
                             }
 

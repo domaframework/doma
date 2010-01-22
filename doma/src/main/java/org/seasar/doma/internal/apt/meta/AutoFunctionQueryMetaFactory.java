@@ -101,6 +101,9 @@ public class AutoFunctionQueryMetaFactory extends
                             public ResultParameterMeta visitIterableType(
                                     IterableType dataType, Void p)
                                     throws RuntimeException {
+                                if (!dataType.isList()) {
+                                    defaultAction(dataType, p);
+                                }
                                 return dataType
                                         .getElementType()
                                         .accept(

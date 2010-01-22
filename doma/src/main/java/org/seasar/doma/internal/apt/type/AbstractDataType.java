@@ -32,6 +32,8 @@ public abstract class AbstractDataType implements DataType {
 
     protected final TypeMirror typeMirror;
 
+    protected final ProcessingEnvironment env;
+
     protected final String typeName;
 
     protected final String typeNameAsTypeParameter;
@@ -43,6 +45,7 @@ public abstract class AbstractDataType implements DataType {
     protected AbstractDataType(TypeMirror typeMirror, ProcessingEnvironment env) {
         assertNotNull(typeMirror, env);
         this.typeMirror = typeMirror;
+        this.env = env;
         this.typeName = TypeMirrorUtil.getTypeName(typeMirror, env);
         this.typeElement = TypeMirrorUtil.toTypeElement(typeMirror, env);
         if (typeElement != null) {

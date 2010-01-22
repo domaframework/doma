@@ -49,6 +49,10 @@ public class IterableType extends AbstractDataType {
                 && elementTypeMirror.getKind() == TypeKind.WILDCARD;
     }
 
+    public boolean isList() {
+        return TypeMirrorUtil.isSameType(typeMirror, List.class, env);
+    }
+
     public static IterableType newInstance(TypeMirror type,
             ProcessingEnvironment env) {
         assertNotNull(type, env);

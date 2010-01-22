@@ -126,6 +126,9 @@ public class SqlFileSelectQueryMetaFactory extends
                         @Override
                         public Void visitIterableType(IterableType dataType,
                                 Void p) throws RuntimeException {
+                            if (!dataType.isList()) {
+                                defaultAction(dataType, p);
+                            }
                             dataType
                                     .getElementType()
                                     .accept(
