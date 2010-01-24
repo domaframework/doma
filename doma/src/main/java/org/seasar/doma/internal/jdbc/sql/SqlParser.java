@@ -522,6 +522,9 @@ public class SqlParser {
 
     protected boolean isInIfBlockNode() {
         for (SqlNode node : nodeStack) {
+            if (node instanceof ParensNode) {
+                return false;
+            }
             if (node instanceof IfBlockNode) {
                 return true;
             }
@@ -531,6 +534,9 @@ public class SqlParser {
 
     protected boolean isInForBlockNode() {
         for (SqlNode node : nodeStack) {
+            if (node instanceof ParensNode) {
+                return false;
+            }
             if (node instanceof ForBlockNode) {
                 return true;
             }
@@ -549,6 +555,9 @@ public class SqlParser {
 
     protected boolean isInBlockNode() {
         for (SqlNode node : nodeStack) {
+            if (node instanceof ParensNode) {
+                return false;
+            }
             if (node instanceof BlockNode) {
                 return true;
             }

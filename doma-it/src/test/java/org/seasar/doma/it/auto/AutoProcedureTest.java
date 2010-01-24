@@ -102,7 +102,7 @@ public class AutoProcedureTest {
     public void testResultSetAndUpdate2() throws Exception {
         ProcedureDao dao = new ProcedureDaoImpl();
         List<Employee> employees = new ArrayList<Employee>();
-        dao.proc_resultset_update2(employees, 1);
+        dao.proc_resultset_update2(employees, employees, 1);
         assertEquals(13, employees.size());
         DepartmentDao departmentDao = new DepartmentDaoImpl();
         Department department = departmentDao.selectById(1);

@@ -490,7 +490,7 @@ public class SqlParserTest extends TestCase {
         }
     }
 
-    public void testValidate_closedParens() throws Exception {
+    public void testValidate_unclosedParens() throws Exception {
         SqlParser parser = new SqlParser("select * from (select * from bbb");
         try {
             parser.parse();
@@ -499,6 +499,12 @@ public class SqlParserTest extends TestCase {
             System.out.println(expected.getMessage());
             assertEquals(Message.DOMA2135, expected.getMessageResource());
         }
+    }
+
+    public void testValidate_enclosedParensByIfBlock() throws Exception {
+        SqlParser parser = new SqlParser(
+                "select * from /*%if true*/(select * from bbb)/*%end*/");
+        parser.parse();
     }
 
     public void testOptimizer() throws Exception {

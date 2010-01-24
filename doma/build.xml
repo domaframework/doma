@@ -1,14 +1,15 @@
-<project name="doma" default="update-pom-and-java-version" basedir=".">
+<project name="doma" default="update-pom-and-artifact-version" basedir=".">
 
-	<property name="newVersion" value="1.0.0-RC2-SNAPSHOT" />
+	<property name="newVersion" value="1.0.0-RC2" />
 
-	<target name="update-pom-and-java-version">
+	<target name="update-pom-and-artifact-version">
 		<replaceregexp
 			match="(&lt;artifactId&gt;doma[^&lt;]*?&lt;/artifactId&gt;\s+&lt;version&gt;)(?:[^&lt;]+)(&lt;/version&gt;)"
 			replace="\1${newVersion}\2" encoding="UTF-8" flags="g">
 			<fileset dir="." includes="**/pom.xml" />
 			<fileset dir="../doma-it" includes="**/pom.xml" />
 			<fileset dir="../doma-gen" includes="**/pom.xml" />
+			<fileset dir="../doma-gen-it" includes="**/pom.xml" />
 		</replaceregexp>
 		<replaceregexp
 			match="(private static final String VERSION = &quot;)[^&quot;]*(&quot;)"
