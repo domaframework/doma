@@ -63,7 +63,7 @@ public interface ProcedureDao {
 
     @Procedure
     void proc_resultset_update2(@ResultSet List<Employee> employees,
-            @ResultSet List<Employee> employees2, @In Integer employee_id);
+            @In Integer employee_id);
 
     @Procedure
     void proc_resultsets(@ResultSet List<Employee> employees,
