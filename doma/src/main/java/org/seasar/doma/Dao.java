@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 import org.seasar.doma.jdbc.Config;
 
 /**
- * {@literal Data Access Object} であることを示します。
+ * Daoインタフェースであることを示します。
  * <p>
  * このアノテーションは、トップレベルのインタフェースに指定できます。注釈されたインタフェースは他のインタフェースを拡張できません。
  * 

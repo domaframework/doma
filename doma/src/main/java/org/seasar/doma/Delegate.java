@@ -25,7 +25,7 @@ import org.seasar.doma.jdbc.Config;
 /**
  * 委譲を示します。
  * <p>
- * このアノテーションが注釈されるメソッドは、 {@link Dao} が注釈されたインタフェースのメンバでなければいけません。
+ * このアノテーションが注釈されるメソッドは、 Daoインタフェースのメンバでなければいけません。
  * <p>
  * {@code to} 要素に指定されたクラスのインスタンスは、注釈されたメソッドが実行されるたびにインスタンス化されます。
  * インスタンス化後、注釈されたメソッドと同じシグニチャのメソッドが実行されます。
@@ -33,7 +33,8 @@ import org.seasar.doma.jdbc.Config;
  * <p>
  * {@code to} 要素に指定されるクラスは次の制約を満たさなければいけません。
  * <ul>
- * <li> {@link Config} 型のパラメータを受け取る {@code public} なコンストラクタをもつ。
+ * <li> {@link Config} 型の1つのパラメータ、もしくは{@code Config}
+ * 型と呼び出し元のDaoインタフェースの2つのパラメータを受け取る {@code public} なコンストラクタをもつ。
  * <li>注釈されたメソッドと同じシグニチャのメソッドをもつ。
  * <li>スレッドセーフである。
  * </ul>
@@ -47,15 +48,39 @@ import org.seasar.doma.jdbc.Config;
  *     &#064;Delegate(to = EmployeeDaoDelegate.class)
  *     int execute(Employee employee);
  * }
+ * </pre>
+ * <p>
+ * コンストラクタのパラメータが{@link Config} 型
  * 
+ * <pre>
  * public class EmployeeDaoDelegate {
  * 
  *     private final Config config;
- *     
+ * 
  *     public EmployeeDaoDelegate(Config config) {
  *         this.config = config;
  *     }
- *     
+ * 
+ *     public int execute(Employee employee) {
+ *         ...
+ *     }
+ * }
+ * </pre>
+ * <p>
+ * コンストラクタのパラメータが{@link Config} 型とDaoインタフェース
+ * 
+ * <pre>
+ * public class EmployeeDaoDelegate {
+ * 
+ *     private final Config config;
+ * 
+ *     private final EmployeeDao dao;
+ * 
+ *     public EmployeeDaoDelegate(Config config, EmployeeDao dao) {
+ *         this.config = config;
+ *         this.dao = dao;
+ *     }
+ * 
  *     public int execute(Employee employee) {
  *         ...
  *     }

@@ -34,7 +34,7 @@ import org.seasar.doma.jdbc.MappedPropertyNotFoundException;
  * <ul>
  * <li>パラメータは0個以上である。
  * <li>パラメータには、パラメータの種別を示す {@link In} 、 {@link InOut} 、 {@link Out} 、
- * {@link ResultSet} のいずれかのアノテーションが必須である。これらは、ストアドファンクションの定義に合わせて注釈しなければいけない。
+ * {@link ResultSet} のいずれかのアノテーションが指定される。これらは、ストアドファンクションの定義に合わせて注釈しなければいけない。
  * <ul>
  * <li> {@code In}は、INパラメータを表す。
  * <li> {@code InOut}は、INOUTパラメータを表す。

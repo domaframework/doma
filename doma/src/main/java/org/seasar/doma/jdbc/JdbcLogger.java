@@ -33,12 +33,12 @@ import org.seasar.doma.DomaNullPointerException;
 public interface JdbcLogger {
 
     /**
-     * {@literal Data Access Object} のメソッドの実行開始を記録します。
+     * Daoメソッドの実行開始を記録します。
      * 
      * @param callerClassName
-     *            {@literal Data Access Object}のクラス名
+     *            Daoのクラス名
      * @param callerMethodName
-     *            {@literal Data Access Object}のメソッド名
+     *            Daoのメソッド名
      * @param args
      *            メソッドの引数
      * @throws DomaNullPointerException
@@ -48,12 +48,12 @@ public interface JdbcLogger {
             Object... args);
 
     /**
-     * {@literal Data Access Object} のメソッドの実行終了を記録します。
+     * Daoメソッドの実行終了を記録します。
      * 
      * @param callerClassName
-     *            {@literal Data Access Object}のクラス名
+     *            Daoのクラス名
      * @param callerMethodName
-     *            {@literal Data Access Object}のメソッド名
+     *            Daoのメソッド名
      * @param result
      *            メソッドの実行結果
      * @throws DomaNullPointerException

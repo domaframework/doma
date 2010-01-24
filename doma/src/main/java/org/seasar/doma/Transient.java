@@ -19,13 +19,11 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.List;
 
 /**
  * 非永続化対象を示します。
  * <p>
- * 注釈されたフィールドは、テーブルのカラムに対応付けされません。一時的な値や、SQLのIN句のパラメータにバインドするための {@link List}
- * を保持するのに適しています。
+ * 注釈されたフィールドは、テーブルのカラムに対応付けされません。一時的な値 を保持するのに適しています。
  * <p>
  * このアノテーションが注釈されるメソッドは、{@link Entity} が注釈されたインタフェースのメンバでなければいけません。
  * 
@@ -37,9 +35,6 @@ import java.util.List;
  *     ...
  *     &#064;Transient
  *     Integer tempNumber;
- *     
- *     &#064;Transient
- *     List&lt;String&gt; names;
  *     
  *     ...
  * }

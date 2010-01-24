@@ -25,7 +25,7 @@ import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.NullEntityListener;
 
 /**
- * テーブルもしくは結果セットを示します。
+ * エンティティクラスを示します。エンティティクラスのインスタンスは、テーブルもしくは結果セットのレコードを表現します。
  * <p>
  * 注釈されたクラスは、 次の制約を満たす必要があります。
  * <ul>

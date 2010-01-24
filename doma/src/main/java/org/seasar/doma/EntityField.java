@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * エンティティ用のアノテーションであることを示します。
+ * エンティティクラスのフィールドのアノテーションであることを示します。
  * <p>
  * {@literal Doma} がアノテーション処理に利用するメタアノテーションです。
  * 

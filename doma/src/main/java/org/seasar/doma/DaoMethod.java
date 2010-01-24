@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * {@literal Data Access Object} 用のアノテーションであることを示します。
+ * Daoインタフェースのメソッドのアノテーションであることを示します。
  * <p>
  * {@literal Doma} がアノテーション処理に利用するメタアノテーションです。
  * 

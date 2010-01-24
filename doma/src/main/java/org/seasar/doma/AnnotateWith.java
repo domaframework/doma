@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 import org.seasar.doma.jdbc.ConfigProxy;
 
 /**
- * {@link Dao} が注釈されたインタフェースの実装クラスのソースコードにアノテーションを付与することを示します。
+ * Daoインタフェースの実装クラスのソースコードにアノテーションを付与することを示します。
  * <p>
  * このアノテーションは次の場合にのみ有効です。
  * <ul>

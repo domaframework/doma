@@ -23,10 +23,27 @@ import java.lang.annotation.Target;
 /**
  * 識別子を自動生成する方法を示します。
  * <p>
- * このアノテーションが注釈されるフィールドは、{@link Entity} が注釈されたクラスのメンバでなければいけません。 このアノテーションは
- * {@link Id} と併わせて使用しなければいけません。
+ * このアノテーションが注釈されるフィールドは、エンティティクラスのメンバでなければいけません。 このアノテーションは {@link Id}
+ * と併わせて使用しなければいけません。
  * <p>
- * 注釈されるフィールドの型は、数値のプリミティブ型もしくは {@link Number} のサブタイプでなければいけません。
+ * 注釈されるフィールドの型は、以下のいずれかでなければいけません。
+ * <ul>
+ * <li>byte</li>
+ * <li>short</li>
+ * <li>int</li>
+ * <li>long</li>
+ * <li>double</li>
+ * <li>float</li>
+ * <li>java.lang.Byte</li>
+ * <li>java.lang.Short</li>
+ * <li>java.lang.Integer</li>
+ * <li>java.lang.Long</li>
+ * <li>java.lang.Double</li>
+ * <li>java.lang.Float</li>
+ * <li>java.math.BigInteger</li>
+ * <li>java.math.BigDecimal</li>
+ * <li>上に示した型を {@link Domain#valueType()} にもつドメインクラス</li>
+ * </ul>
  * <p>
  * {@code strategy} 要素に指定する値によっては追加のアノテーションが必要です。
  * <ul>

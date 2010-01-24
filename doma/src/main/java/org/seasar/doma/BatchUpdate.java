@@ -30,12 +30,12 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
 /**
  * バッチ更新処理を示します。
  * <p>
- * このアノテーションが注釈されるメソッドは、{@link Dao} が注釈されたインタフェースのメンバでなければいけません。
+ * このアノテーションが注釈されるメソッドは、Daoインタフェースのメンバでなければいけません。
  * <p>
  * {@link #sqlFile()} が {@code false} の場合、注釈されるメソッドは次の制約を満たす必要があります。
  * <ul>
  * <li>パラメータを1つだけ受け取る。
- * <li>パラメータの型は {@link Entity} が注釈された型を要素とする {@link Iterable} のサブタイプである。
+ * <li>パラメータの型はエンティティクラスを要素とする {@link Iterable} のサブタイプである。
  * <li>戻り値の型は {@code int[]} である。
  * </ul>
  * <p>

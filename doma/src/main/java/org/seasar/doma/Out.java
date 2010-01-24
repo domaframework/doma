@@ -30,8 +30,7 @@ import org.seasar.doma.jdbc.Reference;
  * 
  * 注釈されるパラメータは、次の制約を満たす必要があります。
  * <ul>
- * <li>型は {@link Reference} である。 {@code Reference} の実型引数は、基本型もしくは {@link Domain}
- * が注釈されたクラスでなければいけない。
+ * <li>型は {@link Reference} である。 {@code Reference} の実型引数は、基本型もしくは ドメインクラスである。
  * </ul>
  * 
  * <h5>例:</h5>

@@ -27,20 +27,21 @@ import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.MappedPropertyNotFoundException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
+import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SqlFileNotFoundException;
 
 /**
  * 検索処理を示します。
  * <p>
- * このアノテーションが注釈されるメソッドは、{@link Dao} が注釈されたインタフェースのメンバでなければいけません。 {@code iterate}
- * 要素に {@code false} を指定することで、エンティティを1件ずつ処理することができます。
+ * このアノテーションが注釈されるメソッドは、Daoインタフェースのメンバでなければいけません。 {@code iterate} 要素に {@code
+ * false} を指定することで、エンティティを1件ずつ処理することができます。
  * <p>
  * 注釈されるメソッドは、次の制約を満たす必要があります。
  * 
  * <h4>{@code iterate} 要素が {@code false} の場合:</h4>
  * <ul>
  * <li>パラメータは0個以上である。
- * <li>パラメータには任意の型を使用できる。ただし、 {@code SelectOptions} は最大でも1つしか使用できない。
+ * <li>パラメータは任意の型である。ただし、 {@code SelectOptions} は最大でも1つしか使用できない。
  * <li>戻り値の型は次のいずれかである。なお、 型が {@link List} でなくデータが存在しない場合、値は {@code null} となる。
  * <table border=1>
  * <tr>
@@ -55,19 +56,19 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * <td>空の {@code List}</td>
  * </tr>
  * <tr>
- * <td>{@code Domain} が注釈されたクラス</td>
+ * <td>ドメインクラス</td>
  * <td>null</td>
  * </tr>
  * <tr>
- * <td>{@code Domain} が注釈されたクラスを要素とする {@code List}</td>
+ * <td>ドメインクラスを要素とする {@code List}</td>
  * <td>空の {@code List}</td>
  * </tr>
  * <tr>
- * <td>{@code Entity} が注釈されたクラス</td>
+ * <td>エンティティクラス</td>
  * <td>null</td>
  * </tr>
  * <tr>
- * <td>{@code Entity} が注釈されたクラスを要素とする {@code List}</td>
+ * <td>エンティティクラスを要素とする {@code List}</td>
  * <td>空の {@code List}</td>
  * </tr>
  * </table>
@@ -75,9 +76,9 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * 
  * <h4>{@code iterate} 要素が {@code true} の場合:</h4>
  * <ul>
- * <li>パラメータは {@link IterationCallback} 型のものが必須である。そのほか、任意の型を指定できる。ただし、 {@code
- * SelectOptions} は最大でも1つしか指定できない。
- * <li>戻り値の型は パラメータで利用する {@code IterationCallback} の型パラメータと同じ型でなければいけない。
+ * <li>パラメータには {@link IterationCallback} 型のものが含まれる。その他のパラメータは任意の型である。ただし、
+ * {@code SelectOptions} は最大でも1つしか指定できない。
+ * <li>戻り値の型は パラメータで利用する {@code IterationCallback} の１番目の型パラメータと同じ型でなければいけない。
  * </ul>
  * 
  * <p>
@@ -137,6 +138,8 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * </ul>
  * 
  * @author taedium
+ * @see SelectOptions
+ * @see IterationCallback
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
