@@ -46,4 +46,8 @@ public class AutoProcedureQuery extends AutoModuleQuery implements
         this.procedureName = procedureName;
     }
 
+    @Override
+    public String getModuleName() {
+        return procedureName;
+    }
 }

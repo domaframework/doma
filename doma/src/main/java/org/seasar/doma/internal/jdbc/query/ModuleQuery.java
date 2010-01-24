@@ -24,4 +24,6 @@ import org.seasar.doma.internal.jdbc.sql.CallableSql;
 public interface ModuleQuery extends Query {
 
     CallableSql getSql();
+
+    String getModuleName();
 }

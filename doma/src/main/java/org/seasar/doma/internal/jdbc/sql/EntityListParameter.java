@@ -29,12 +29,20 @@ public class EntityListParameter<E> implements ListParameter<EntityType<E>, E> {
 
     protected final List<E> entities;
 
-    protected EntityType<E> entityType;
+    protected final EntityType<E> entityType;
 
-    public EntityListParameter(EntityType<E> entityType, List<E> entities) {
-        assertNotNull(entityType, entities);
+    protected final String name;
+
+    public EntityListParameter(EntityType<E> entityType, List<E> entities,
+            String name) {
+        assertNotNull(entityType, entities, name);
         this.entityType = entityType;
         this.entities = entities;
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override

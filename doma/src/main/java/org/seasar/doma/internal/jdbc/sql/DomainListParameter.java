@@ -29,14 +29,22 @@ import org.seasar.doma.wrapper.Wrapper;
  */
 public class DomainListParameter<V, D> implements ListParameter<Wrapper<V>, D> {
 
+    protected final String name;
+
     protected final List<D> domains;
 
     protected final DomainType<V, D> domainType;
 
-    public DomainListParameter(DomainType<V, D> domainType, List<D> domains) {
-        assertNotNull(domainType, domains);
+    public DomainListParameter(DomainType<V, D> domainType, List<D> domains,
+            String name) {
+        assertNotNull(domainType, domains, name);
         this.domainType = domainType;
         this.domains = domains;
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override

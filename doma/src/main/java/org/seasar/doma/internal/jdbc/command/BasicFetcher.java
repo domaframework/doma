@@ -33,7 +33,7 @@ public class BasicFetcher implements ResultFetcher<ResultSet, Wrapper<?>> {
 
     protected final Query query;
 
-    public BasicFetcher(Query query) throws SQLException {
+    public BasicFetcher(Query query) {
         assertNotNull(query);
         this.query = query;
     }

@@ -59,4 +59,9 @@ public class AutoFunctionQuery<R> extends AutoModuleQuery implements
         return resultParameter.getResult();
     }
 
+    @Override
+    public String getModuleName() {
+        return functionName;
+    }
+
 }

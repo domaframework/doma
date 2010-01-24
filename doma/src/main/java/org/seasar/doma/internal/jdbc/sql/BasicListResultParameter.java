@@ -28,7 +28,7 @@ public class BasicListResultParameter<V> extends BasicListParameter<V>
         implements ResultParameter<List<V>> {
 
     public BasicListResultParameter(Wrapper<V> wrapper) {
-        super(wrapper, new ArrayList<V>());
+        super(wrapper, new ArrayList<V>(), "");
     }
 
     @Override

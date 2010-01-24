@@ -46,8 +46,7 @@ public class EntityFetcher<E> implements ResultFetcher<ResultSet, E> {
 
     protected Map<Integer, String> indexMap;
 
-    public EntityFetcher(Query query, EntityType<E> entityType)
-            throws SQLException {
+    public EntityFetcher(Query query, EntityType<E> entityType) {
         assertNotNull(query, entityType);
         this.query = query;
         this.entityType = entityType;

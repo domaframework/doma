@@ -28,7 +28,7 @@ public class EntityListResultParameter<E> extends EntityListParameter<E>
         implements ResultParameter<List<E>> {
 
     public EntityListResultParameter(EntityType<E> entityType) {
-        super(entityType, new ArrayList<E>());
+        super(entityType, new ArrayList<E>(), "");
     }
 
     @Override

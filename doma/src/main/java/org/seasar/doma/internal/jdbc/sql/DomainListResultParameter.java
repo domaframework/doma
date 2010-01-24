@@ -28,7 +28,7 @@ public class DomainListResultParameter<V, D> extends DomainListParameter<V, D>
         implements ResultParameter<List<D>> {
 
     public DomainListResultParameter(DomainType<V, D> domainType) {
-        super(domainType, new ArrayList<D>());
+        super(domainType, new ArrayList<D>(), "");
     }
 
     @Override

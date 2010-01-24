@@ -505,8 +505,8 @@ public class DaoGenerator extends AbstractGenerator {
 
                                     @Override
                                     public Void visitIterableType(
-                                            final IterableType iterableType, Void p)
-                                            throws RuntimeException {
+                                            final IterableType iterableType,
+                                            Void p) throws RuntimeException {
                                         iterableType
                                                 .getElementType()
                                                 .accept(
@@ -1012,7 +1012,7 @@ public class DaoGenerator extends AbstractGenerator {
                                 EnumWrapperType dataType, Void p)
                                 throws RuntimeException {
                             iprint(
-                                    "__query.addParameter(new %1$s<%2$s>(new %3$s(%4$s.class), %5$s));%n",
+                                    "__query.addParameter(new %1$s<%2$s>(new %3$s(%4$s.class), %5$s, \"%5$s\"));%n",
                                     BasicListParameter.class.getName(),
                                     dataType.getWrappedType()
                                             .getTypeNameAsTypeParameter(),
@@ -1026,7 +1026,7 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitWrapperType(WrapperType dataType,
                                 Void p) throws RuntimeException {
                             iprint(
-                                    "__query.addParameter(new %1$s<%2$s>(new %3$s(), %4$s));%n",
+                                    "__query.addParameter(new %1$s<%2$s>(new %3$s(), %4$s, \"%4$s\"));%n",
                                     BasicListParameter.class.getName(),
                                     dataType.getWrappedType()
                                             .getTypeNameAsTypeParameter(),
@@ -1044,7 +1044,7 @@ public class DaoGenerator extends AbstractGenerator {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
             iprint(
-                    "__query.addParameter(new %1$s<%2$s, %3$s>(%4$s.get(), %5$s));%n",
+                    "__query.addParameter(new %1$s<%2$s, %3$s>(%4$s.get(), %5$s, \"%5$s\"));%n",
                     DomainListParameter.class.getName(), basicType
                             .getTypeName(), domainType.getTypeName(),
                     getPrefixedDomainTypeName(domainType.getTypeName()), m
@@ -1056,7 +1056,8 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitEntityListParameterMeta(EntityListParameterMeta m,
                 Void p) {
             EntityType entityType = m.getEntityType();
-            iprint("__query.addParameter(new %1$s<%2$s>(%3$s.get(), %4$s));%n",
+            iprint(
+                    "__query.addParameter(new %1$s<%2$s>(%3$s.get(), %4$s, \"%4$s\"));%n",
                     EntityListParameter.class.getName(), entityType
                             .getTypeName(),
                     getPrefixedEntityTypeName(entityType.getTypeName()), m

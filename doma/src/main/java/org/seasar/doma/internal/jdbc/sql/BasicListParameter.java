@@ -31,10 +31,17 @@ public class BasicListParameter<V> implements ListParameter<Wrapper<V>, V> {
 
     protected final List<V> values;
 
-    public BasicListParameter(Wrapper<V> wrapper, List<V> values) {
-        assertNotNull(wrapper, values);
+    protected final String name;
+
+    public BasicListParameter(Wrapper<V> wrapper, List<V> values, String name) {
+        assertNotNull(wrapper, values, name);
         this.wrapper = wrapper;
         this.values = values;
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override
