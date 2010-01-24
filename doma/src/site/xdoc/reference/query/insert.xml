@@ -98,9 +98,8 @@ int insert(Employee employee);]]></source>
 			<p>
 				戻り値の型は<code>int</code>でなければいけません。
 				戻り値は更新件数を返します。
-				パラメータの型には、<a href="../basic.html">基本型</a>、<a href="../domain.html">ドメインクラス</a>、<a href="../entity.html">エンティティティクラス</a>
-				および<a href="../basic.html">基本型</a>や<a href="../domain.html">ドメインクラス</a>を要素とする<code>java.util.List</code>が使用できます。
-				指定できるパラメータの数に制限はありません。			
+				パラメータには任意の型が使用できます。
+				指定できるパラメータの数に制限はありません。
 			</p>
 <source><![CDATA[@Insert(sqlFile = true)
 int insert(Employee employee);]]></source>

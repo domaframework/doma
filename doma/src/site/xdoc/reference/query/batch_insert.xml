@@ -31,18 +31,18 @@ public interface EmployeeDao {
     ...
 }]]></source>
 			<p>
-				戻り値の型は<code>int[]</code>でなければいけません。
-				パラメータは型は<a href="../entity.html">エンティティティクラス</a>を要素とする<code>java.util.List</code>でなければいけません。
-				指定できるパラメータの数は1つです。
-				戻り値の配列の要素の数はパラメータの<code>List</code>の要素の数と等しくなります。
-				配列のそれぞれの要素が更新された件数を返します。
-			</p>
-			<p>
 				デフォルトでは、INSERT文が自動生成されます。
 				<code>@BatchInsert</code>の<code>sqlFile</code>に<code>true</code>を設定することで、任意の<a href="../sqlfile.html">SQLファイル</a>にマッピングできます。
 			</p>
 		</section>
 		<section name="SQLの自動生成によるバッチ挿入">
+			<p>
+				戻り値の型は<code>int[]</code>でなければいけません。
+				パラメータは型は<a href="../entity.html">エンティティティクラス</a>を要素とする<code>java.lang.Iterable</code>のサブタイプでなければいけません。
+				指定できるパラメータの数は1つです。
+				戻り値の配列の要素の数はパラメータの<code>Iterable</code>の要素の数と等しくなります。
+				配列のそれぞれの要素が更新された件数を返します。
+			</p>
 			<subsection name="識別子">
 				<p>
 					<a href="../entity.html">エンティティティクラス</a>の識別子に、<code>@GeneratedValue</code>が注釈されている場合、
@@ -88,10 +88,20 @@ int[] insert(List<Employee> employees);]]></source>
 <source><![CDATA[@BatchInsert(sqlFile = true)
 int[] insert(List<Employee> employees);]]></source>
 			<p>
+				戻り値の型は<code>int[]</code>でなければいけません。
+				パラメータは任意の型を要素とする<code>java.lang.Iterable</code>のサブタイプでなければいけません。
+				指定できるパラメータの数は1つです。
+				戻り値の配列の要素の数はパラメータの<code>Iterable</code>の要素の数と等しくなります。
+				配列のそれぞれの要素が更新された件数を返します。
+			</p>
+			<p>
 				たとえば、上記のメソッドに対応するSQLは次のように記述します。
 			</p>
 <source><![CDATA[insert into employee (id, name, salary, version) 
 values (/* employees.id */0, /* employees.name */'hoge', /* employees.salary */100, /* employees.version */0)]]></source>
+			<p>
+				SQLファイル上では、パラメータの名前は<code>java.lang.Iterable</code>のサブタイプの要素を指します。
+			</p>
 			<p>
 				SQLファイルによるバッチ挿入では、識別子の自動設定やバージョン番号の自動設定は行われません。
 				また、<code>@BatchInsert</code>の<code>exclude</code>要素、<code>include</code>要素は参照されません。

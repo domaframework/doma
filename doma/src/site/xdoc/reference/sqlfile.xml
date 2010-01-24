@@ -18,10 +18,33 @@
 				</li>
 				<li><a href="#SQLコメント">SQLコメント</a>
 					<ul>
-						<li><a href="#バインド変数コメント">バインド変数コメント</a></li>
+						<li><a href="#バインド変数コメント">バインド変数コメント</a>
+							<ul>
+								<li><a href="#基本型もしくはドメインクラス型のパラメータ">基本型もしくはドメインクラス型のパラメータ</a></li>
+								<li><a href="#Iterable型のパラメータ">Iterable型のパラメータ</a></li>
+								<li><a href="#任意の型のパラメータ">任意の型のパラメータ</a></li>
+							</ul>
+						</li>
 						<li><a href="#埋め込み変数コメント">埋め込み変数コメント</a></li>
-						<li><a href="#条件コメント">条件コメント</a></li>
-						<li><a href="#繰り返しコメント">繰り返しコメント</a></li>
+						<li><a href="#条件コメント">条件コメント</a>
+							<ul>
+								<li><a href="#ifとend">ifとend</a></li>
+								<li><a href="#条件コメントにおけるWHEREやHAVINGの自動除去">条件コメントにおけるWHEREやHAVINGの自動除去</a></li>
+								<li><a href="#条件コメントにおけるANDやORの自動除去">条件コメントにおけるANDやORの自動除去</a></li>
+								<li><a href="#elseifとelse">elseifとelse</a></li>
+								<li><a href="#ネストした条件コメント">ネストした条件コメント</a></li>
+								<li><a href="#条件コメントにおける制約">条件コメントにおける制約</a></li>
+							</ul>
+						</li>
+						<li><a href="#繰り返しコメント">繰り返しコメント</a>
+							<ul>
+								<li><a href="#forとend">forとend</a></li>
+								<li><a href="#item_has_nextとitem_index">item_has_nextとitem_index</a></li>
+								<li><a href="#繰り返しコメントにおけるWHEREやHAVINGの自動除去">条件コメントにおけるWHEREやHAVINGの自動除去</a></li>
+								<li><a href="#繰り返しコメントにおけるANDやORの自動除去">条件コメントにおけるANDやORの自動除去</a></li>
+								<li><a href="#繰り返しコメントにおける制約">繰り返しコメントにおける制約</a></li>
+							</ul>
+						</li>
 						<li><a href="#通常のブロックコメント">通常のブロックコメント</a></li>
 						<li><a href="#通常の行コメント">通常の行コメント</a></li>
 					</ul>
@@ -138,7 +161,7 @@
 					バインド変数コメントの直後にはテスト用データを指定する必要があります。
 					テスト用データは、実行時には使用されません。
 				</p>
-				<h4><code>単一のパラメータ</code></h4>
+				<h4><a name="基本型もしくはドメインクラス型のパラメータ"></a>基本型もしくはドメインクラス型のパラメータ</h4>
 				<p>
 					Daoインタフェースのメソッドのパラメータが<a href="basic.html">基本型</a>もしくは<a href="domain.html">ドメインクラス</a>の場合、
 					このパラメータは、1つのバインド変数を表現できます。
@@ -147,35 +170,36 @@
 				</p>
 <source><![CDATA[List<Employee> selectById(Integer employeeId);]]></source>
 <source><![CDATA[select * from employee where employee_id = /* employeeId */99]]></source>
-				<h4><code>Listのパラメータ</code></h4>
+				<h4><a name="Iterable型のパラメータ"></a><code>Iterable</code>型のパラメータ</h4>
 				<p>
-					Daoインタフェースのメソッドのパラメータがjava.util.Listの場合、
+					Daoインタフェースのメソッドのパラメータが<code>java.lang.Iterable</code>のサブタイプの場合、
 					このパラメータは、IN句内の複数のバインド変数を表現できます。
+					ただし、<code>java.lang.Iterable</code>のサブタイプの実型引数は基本型もしくはドメインクラスでなければいけません。
 					バインド変数コメントはINキーワードの直後に置き、バインド変数コメントの直後には括弧つきでテスト用データを指定しなければいけません。
 					Daoインタフェースのメソッドと、対応するSQLの例は次のとおりです。
 				</p>
 <source><![CDATA[List<Employee> selectByIdList(List<Integer> employeeIdList);]]></source>
 <source><![CDATA[select * from employee where employee_id in /* employeeIdList */(1,2,3)]]></source>
-				<h4><code>エンティティクラスのパラメータ</code></h4>
+				<h4><a name="任意の型のパラメータ"></a>任意の型のパラメータ</h4>
 				<p>
-					Daoインタフェースのメソッドのパラメータが<a href="entity.html">エンティティクラス</a>の場合、
-					エンティティクラスのパラメータは、複数のバインド変数コメントに対応します。
-					バインド変数コメントの中では、ドット（.）を使用しエンティティのフィールドにアクセスできます。
+					Daoインタフェースのメソッドのパラメータが<a href="basic.html">基本型</a>もしくは<a href="domain.html">ドメインクラス</a>でない場合、
+					パラメータは、複数のバインド変数コメントに対応します。
+					バインド変数コメントの中では、ドット（.）を使用し任意の型のフィールドやメソッドにアクセスできます。
 					Daoインタフェースのメソッドと、対応するSQLの例は次のとおりです。
-					Employeeクラスには、employeeNameフィールドやsalaryフィールドが存在するものとします。
+					EmployeeDtoクラスには、employeeNameフィールドやsalaryフィールドが存在するものとします。
 				</p>
-<source><![CDATA[List<Employee> selectByNameAndSalary(Employee employee);]]></source>
+<source><![CDATA[List<Employee> selectByNameAndSalary(EmployeeDto dto);]]></source>
 <source><![CDATA[select * from employee
 where
-employee_name = /* employee.employeeName */'abc' 
+employee_name = /* dto.employeeName */'abc' 
 and
-salary = /* employee.salary */1234]]></source>
+salary = /* dto.salary */1234]]></source>
 				<p>
 					フィールドにアクセスする代わりに、publicなメソッドを呼び出すことも可能です。
 				</p>
 <source><![CDATA[select * from employee
 where
-salary = /* employee.getTaxedSalary() */1234]]></source>
+salary = /* dto.getTaxedSalary() */1234]]></source>
 			</subsection>
 			<subsection name="埋め込み変数コメント">
 				<p>
@@ -203,7 +227,7 @@ List<Employee> list = dao.selectAll(salary, orderBy);]]></source>
 <source><![CDATA[select * from employee where salary > ? order by salary asc, employee_name]]></source>
 			</subsection>
 			<subsection name="条件コメント">
-				<h4><code>if</code> と <code>end</code></h4>
+				<h4><a name="ifとend"></a>ifとend</h4>
 				<p>
 					条件分岐を示す式コメントを条件コメントと呼びます。
 					構文は、次のとおりです。
@@ -226,9 +250,9 @@ List<Employee> list = dao.selectAll(salary, orderBy);]]></source>
 				</p>
 <source><![CDATA[select * from employee]]></source>
 				<p>
-					ifの条件が成り立たない場合にifの外にあるWHERE句が出力されないのは、下記に述べるように<code>WHERE</code>や <code>HAVING</code>の自動除去機能が働いているためです。
+					ifの条件が成り立たない場合にifの外にあるWHERE句が出力されないのは、<code>WHERE</code>や <code>HAVING</code>の自動除去機能が働いているためです。
 				</p>
-				<h4><code>WHERE</code>や <code>HAVING</code>の自動除去</h4>
+				<h4><a name="条件コメントにおけるWHEREやHAVINGの自動除去"></a>条件コメントにおけるWHEREやHAVINGの自動除去</h4>
 				<p>
 					条件コメントを使用した場合、条件の前にあるWHEREやHAVINGについて、自動で出力の要/不要を判定します。
 					たとえば、次のようなSQLで<code>employeeId</code>が <code>null</code>の場合、
@@ -241,7 +265,7 @@ List<Employee> list = dao.selectAll(salary, orderBy);]]></source>
 					<code>/*%if ～*/</code>の前の <code>where</code>は自動で除去され、次のSQLが生成されます。
 				</p>
 <source><![CDATA[select * from employee]]></source>
-				<h4><code>AND</code>や <code>OR</code>の自動除去</h4>
+				<h4><a name="条件コメントにおけるANDやORの自動除去"></a>条件コメントにおけるANDやORの自動除去</h4>
 				<p>
 					条件コメントを使用した場合、条件の後ろにつづくANDやORについて、自動で出力の要/不要を判定します。
 					たとえば、次のようなSQLで<code>employeeId</code>が <code>null</code>の場合、
@@ -255,7 +279,7 @@ and employeeName like 's%']]></source>
 					<code>/*%end*/</code>の後ろの <code>and</code> は自動で除去され、次のSQLが生成されます。
 				</p>
 <source>select * from employee where employeeName like 's%'</source>
-				<h4><code>elseif</code> と <code>else</code></h4>
+				<h4><a name="elseifとelse"></a>elseifとelse</h4>
 				<p>
 					<code>/*%if 条件式*/</code> と <code>/*%end*/</code> の間では、
 					行コメントを使用した次の構文も使用できます。
@@ -270,7 +294,7 @@ and employeeName like 's%']]></source>
 --elseif employeeId == 999-- department_id is null
 --else                       employee_id is null
 /*%end*/]]></source>
-				<h4>ネストした条件コメント</h4>
+				<h4><a name="ネストした条件コメント"></a>ネストした条件コメント</h4>
 				<p>
 					条件コメントはネストさせることができます。
 				</p>
@@ -281,9 +305,23 @@ and employeeName like 's%']]></source>
     and employee_name = /* employeeName */'hoge'
   /*%end*/
 /*%end*/]]></source>
+				<h4><a name="条件コメントにおける制約"></a>条件コメントにおける制約</h4>
+				<p>
+					条件コメントのifとendはSQLの同じ節に含まれなければいけません。
+					節とは、SELECT節、FROM節、WHERE節、GROUP BY節、HAVING節、ORDER BY節などです。
+					次の例では、ifがFROM節にありendがWHERE節にあるため不正です。
+				</p>
+<source><![CDATA[select * from employee /*%if employeeId != null */ 
+where employee_id = /* employeeId */99 /*%end*/]]></source>
+				<p>
+					また、ifとendは同じレベルの文に含まれなければいけません。
+					次の例では、ifが括弧の外にありendが括弧の内側にあるので不正です。
+				</p>
+<source><![CDATA[select * from employee
+where employee_id in /*%if departmentId != null */(...  /*%end*/ ...)]]></source>
 			</subsection>
 			<subsection name="繰り返しコメント">
-				<h4><code>for</code> と <code>end</code></h4>
+				<h4><a name="forとend"></a>forとend</h4>
 				<p>
 					繰り返しを示す式コメントを繰り返しコメントと呼びます。
 					構文は、次のとおりです。
@@ -311,7 +349,7 @@ or
 employee_name like ?
 or
 employee_name like ?]]></source>
-				<h4><code>item_has_nextとitem_index</code></h4>
+				<h4><a name="item_has_nextとitem_index"></a>item_has_nextとitem_index</h4>
 				<p>
 					<code>/*%for 識別子 : 式*/</code> から <code>/*%end*/</code> までの内側では、次の2つの特別な変数を使用できます。
 				</p>
@@ -329,7 +367,7 @@ employee_name like ?]]></source>
 				<p>
 					<i>item</i>_indexは、次の繰り返しのindexを表すintの値です。値は0始まりです。
 				</p>
-				<h4><code>WHERE</code>や <code>HAVING</code>の自動除去</h4>
+				<h4><a name="繰り返しコメントにおけるWHEREやHAVINGの自動除去"></a>繰り返しコメントにおけるWHEREやHAVINGの自動除去</h4>
 				<p>
 					繰り返しコメントを使用した場合、コメントの前にあるWHEREやHAVINGについて、自動で出力の要/不要を判定します。
 					たとえば、次のようなSQLで<code>names</code>のsizeが0の場合（繰り返しが行われない場合）、
@@ -345,7 +383,7 @@ employee_name like /* name */'hoge'
 					<code>/*%for ～*/</code>の前の <code>where</code>は自動で除去され、次のSQLが生成されます。
 				</p>
 <source><![CDATA[select * from employee]]></source>
-				<h4><code>AND</code>や <code>OR</code>の自動除去</h4>
+				<h4><a name="繰り返しコメントにおけるANDやORの自動除去"></a>繰り返しコメントにおけるANDやORの自動除去</h4>
 				<p>
 					繰り返しコメントを使用した場合、コメントの後ろにつづくANDやORについて、自動で出力の要/不要を判定します。
 					たとえば、次のようなSQLで<code>names</code>のsizeが0の場合（繰り返しが行われない場合）、
@@ -363,6 +401,15 @@ salary > 1000]]></source>
 					<code>/*%end*/</code>の後ろの <code>or</code> は自動で除去され、次のSQLが生成されます。
 				</p>
 <source>select * from employee where salary > 1000</source>
+				<h4><a name="繰り返しコメントにおける制約"></a>繰り返しコメントにおける制約</h4>
+				<p>
+					繰り返しコメントのforとendはSQLの同じ節に含まれなければいけません。
+					節とは、SELECT節、FROM節、WHERE節、GROUP BY節、HAVING節、ORDER BY節などです。
+				</p>
+				<p>
+					また、forとendは同じレベルの文に含まれなければいけません。
+					つまり、括弧の外でfor、括弧の内側でendという記述は認められません。
+				</p>
 			</subsection>
 			<subsection name="通常のブロックコメント">
 				<p>

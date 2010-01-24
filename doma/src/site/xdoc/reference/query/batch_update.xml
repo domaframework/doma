@@ -30,18 +30,18 @@ public interface EmployeeDao {
     ...
 }]]></source>
 			<p>
-				戻り値の型は<code>int[]</code>でなければいけません。
-				パラメータは型は<a href="../entity.html">エンティティティクラス</a>を要素とする<code>java.util.List</code>でなければいけません。
-				指定できるパラメータの数は1つです。
-				戻り値の配列の要素の数はパラメータの<code>List</code>の要素の数と等しくなります。
-				配列のそれぞれの要素が更新された件数を返します。
-			</p>
-			<p>
 				デフォルトでは、UPDATE文が自動生成されます。
 				<code>@BatchUpdate</code>の<code>sqlFile</code>に<code>true</code>を設定することで、任意の<a href="../sqlfile.html">SQLファイル</a>にマッピングできます。
 			</p>
 		</section>
 		<section name="SQLの自動生成によるバッチ更新">
+			<p>
+				戻り値の型は<code>int[]</code>でなければいけません。
+				パラメータは型は<a href="../entity.html">エンティティティクラス</a>を要素とする<code>java.lang.Iterable</code>のサブタイプでなければいけません。
+				指定できるパラメータの数は1つです。
+				戻り値の配列の要素の数はパラメータの<code>Iterable</code>の要素の数と等しくなります。
+				配列のそれぞれの要素が更新された件数を返します。
+			</p>
 			<subsection name="バージョン番号と楽観的排他制御">
 				<p>
 					<a href="../entity.html">エンティティティクラス</a>に<code>@Version</code>が注釈されたプロパティがある場合、
@@ -96,9 +96,19 @@ int[] update(List<Employee> employees);]]></source>
 <source><![CDATA[@BatchUpdate(sqlFile = true)
 int[] update(List<Employee> employees);]]></source>
 			<p>
+				戻り値の型は<code>int[]</code>でなければいけません。
+				パラメータは任意の型を要素とする<code>java.lang.Iterable</code>のサブタイプでなければいけません。
+				指定できるパラメータの数は1つです。
+				戻り値の配列の要素の数はパラメータの<code>Iterable</code>の要素の数と等しくなります。
+				配列のそれぞれの要素が更新された件数を返します。
+			</p>
+			<p>
 				たとえば、上記のメソッドに対応するSQLは次のように記述します。
 			</p>
 <source><![CDATA[update employee set name = /* employees.name */'hoge', salary = /* employees.salary */100 where id = /* employees.id */0]]></source>
+			<p>
+				SQLファイル上では、パラメータの名前は<code>java.lang.Iterable</code>のサブタイプの要素を指します。
+			</p>
 			<p>
 				SQLファイルによるバッチ更新では、バージョン番号の自動更新は行われません。
 				また、<code>@BatchUpdate</code>の<code>exclude</code>要素、<code>include</code>要素、
