@@ -13,25 +13,22 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal;
+package org.seasar.doma.internal.apt.dao;
 
+import org.seasar.doma.Dao;
+import org.seasar.doma.Update;
+
+import example.entity.Emp;
 
 /**
+ * 
  * @author taedium
  * 
  */
-public final class Artifact {
+@Dao(config = MyConfig.class)
+interface PackagePrivateDao {
 
-    private static final String NAME = "Doma";
-
-    private static final String VERSION = "1.0.0-RC3-SNAPSHOT";
-
-    public static String getName() {
-        return NAME;
-    }
-
-    public static String getVersion() {
-        return VERSION;
-    }
+    @Update
+    int update(Emp emp);
 
 }

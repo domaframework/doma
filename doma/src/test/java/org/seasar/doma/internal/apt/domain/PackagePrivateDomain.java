@@ -13,25 +13,21 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal;
+package org.seasar.doma.internal.apt.domain;
 
+import org.seasar.doma.Domain;
 
-/**
- * @author taedium
- * 
- */
-public final class Artifact {
+@Domain(valueType = int.class)
+class PackagePrivateDomain {
 
-    private static final String NAME = "Doma";
+    private final int value;
 
-    private static final String VERSION = "1.0.0-RC3-SNAPSHOT";
-
-    public static String getName() {
-        return NAME;
+    PackagePrivateDomain(int value) {
+        this.value = value;
     }
 
-    public static String getVersion() {
-        return VERSION;
+    int getValue() {
+        return value;
     }
 
 }

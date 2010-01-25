@@ -78,9 +78,6 @@ public class DomainMetaFactory {
             throw new AptException(Message.DOMA4105, env, classElement,
                     domainMirror.getAnnotationMirror());
         }
-        if (classElement.getModifiers().contains(Modifier.PRIVATE)) {
-            throw new AptException(Message.DOMA4133, env, classElement);
-        }
         if (classElement.getModifiers().contains(Modifier.ABSTRACT)) {
             throw new AptException(Message.DOMA4132, env, classElement);
         }
@@ -111,8 +108,8 @@ public class DomainMetaFactory {
                 return;
             }
         }
-        throw new AptException(Message.DOMA4103, env, classElement,
-                domainMeta.getValueType());
+        throw new AptException(Message.DOMA4103, env, classElement, domainMeta
+                .getValueType());
     }
 
     protected void validateAccessorMethod(TypeElement classElement,
@@ -126,7 +123,7 @@ public class DomainMetaFactory {
                         domainMeta.getAccessorMethod())) {
                     continue;
                 }
-                if (!method.getModifiers().contains(Modifier.PUBLIC)) {
+                if (method.getModifiers().contains(Modifier.PRIVATE)) {
                     continue;
                 }
                 if (!method.getParameters().isEmpty()) {
@@ -140,7 +137,7 @@ public class DomainMetaFactory {
                 }
             }
         }
-        throw new AptException(Message.DOMA4104, env, classElement,
-                domainMeta.getValueType(), domainMeta.getAccessorMethod());
+        throw new AptException(Message.DOMA4104, env, classElement, domainMeta
+                .getValueType(), domainMeta.getAccessorMethod());
     }
 }

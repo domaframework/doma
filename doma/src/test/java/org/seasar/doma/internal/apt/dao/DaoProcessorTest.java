@@ -13,59 +13,10 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt;
+package org.seasar.doma.internal.apt.dao;
 
-import org.seasar.doma.internal.apt.dao.AnnotateWithDao;
-import org.seasar.doma.internal.apt.dao.AnnotationConflictedDao;
-import org.seasar.doma.internal.apt.dao.AnnotationNotFoundDao;
-import org.seasar.doma.internal.apt.dao.ArrayFactoryDao;
-import org.seasar.doma.internal.apt.dao.AutoBatchUpdateDao;
-import org.seasar.doma.internal.apt.dao.AutoDeleteDao;
-import org.seasar.doma.internal.apt.dao.AutoFunctionDao;
-import org.seasar.doma.internal.apt.dao.AutoInsertDao;
-import org.seasar.doma.internal.apt.dao.AutoProcedureDao;
-import org.seasar.doma.internal.apt.dao.AutoUpdateDao;
-import org.seasar.doma.internal.apt.dao.BlobFactoryDao;
-import org.seasar.doma.internal.apt.dao.ClobFactoryDao;
-import org.seasar.doma.internal.apt.dao.ConfigProxyDao;
-import org.seasar.doma.internal.apt.dao.DaoAwareDelegateDao;
-import org.seasar.doma.internal.apt.dao.DelegateDao;
-import org.seasar.doma.internal.apt.dao.DomainParameterDao;
-import org.seasar.doma.internal.apt.dao.ElementOfParamListUnspecifiedDao;
-import org.seasar.doma.internal.apt.dao.ElementOfParamListWildcardTypeDao;
-import org.seasar.doma.internal.apt.dao.EmbeddedVariableDao;
-import org.seasar.doma.internal.apt.dao.EmpDtoParameterDao;
-import org.seasar.doma.internal.apt.dao.EmptySqlFileDao;
-import org.seasar.doma.internal.apt.dao.EnumDao;
-import org.seasar.doma.internal.apt.dao.ExtendsDao;
-import org.seasar.doma.internal.apt.dao.FunctionAbstractEntityListDao;
-import org.seasar.doma.internal.apt.dao.IllegalAnnotateWithDao;
-import org.seasar.doma.internal.apt.dao.IllegalConstructorDelegateDao;
-import org.seasar.doma.internal.apt.dao.IllegalParameterNameDao;
-import org.seasar.doma.internal.apt.dao.IllegalParameterTypeDelegateDao;
-import org.seasar.doma.internal.apt.dao.IllegalReturnTypeDelegateDao;
-import org.seasar.doma.internal.apt.dao.IncludeAndExcludeDao;
-import org.seasar.doma.internal.apt.dao.IterateAbstractEntityDao;
-import org.seasar.doma.internal.apt.dao.IterationCallbackDao;
-import org.seasar.doma.internal.apt.dao.MethodAccessSqlValidationDao;
-import org.seasar.doma.internal.apt.dao.MultiParamMethodAccessSqlValidationDao;
-import org.seasar.doma.internal.apt.dao.NClobFactoryDao;
-import org.seasar.doma.internal.apt.dao.NameUnsafeDaoImpl;
-import org.seasar.doma.internal.apt.dao.NoMethodDelegateDao;
-import org.seasar.doma.internal.apt.dao.NoTestLiteralDao;
-import org.seasar.doma.internal.apt.dao.NotInterfaceDao;
-import org.seasar.doma.internal.apt.dao.NotTopLevelDao;
-import org.seasar.doma.internal.apt.dao.PrimitiveTypeDao;
-import org.seasar.doma.internal.apt.dao.ProcedureAbstractEntityListDao;
-import org.seasar.doma.internal.apt.dao.SelectAbstractEntityDao;
-import org.seasar.doma.internal.apt.dao.SelectAbstractEntityListDao;
-import org.seasar.doma.internal.apt.dao.SqlFileBatchUpdateDao;
-import org.seasar.doma.internal.apt.dao.SqlFileInsertDao;
-import org.seasar.doma.internal.apt.dao.SqlFileSelectBasicDao;
-import org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDao;
-import org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDao;
-import org.seasar.doma.internal.apt.dao.UnknownBindVariableSqlValidationDao;
-import org.seasar.doma.internal.apt.dao.UnknownVariableSqlValidationDao;
+import org.seasar.doma.internal.apt.AptTestCase;
+import org.seasar.doma.internal.apt.DaoProcessor;
 import org.seasar.doma.internal.message.Message;
 
 /**
@@ -584,6 +535,15 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testPackagePrivate() throws Exception {
+        Class<?> target = PackagePrivateDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
         assertTrue(getCompiledResult());
     }
 }

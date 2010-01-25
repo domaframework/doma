@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt;
+package org.seasar.doma.internal.apt.dao;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -28,7 +28,9 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 
-import org.seasar.doma.internal.apt.dao.SqlValidationDao;
+import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.AptTestCase;
+import org.seasar.doma.internal.apt.SqlValidator;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;

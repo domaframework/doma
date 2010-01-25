@@ -100,9 +100,6 @@ public class EntityMetaFactory {
         if (classElement.getNestingKind().isNested()) {
             throw new AptException(Message.DOMA4018, env, classElement);
         }
-        if (classElement.getModifiers().contains(Modifier.PRIVATE)) {
-            throw new AptException(Message.DOMA4123, env, classElement);
-        }
         if (!classElement.getTypeParameters().isEmpty()) {
             throw new AptException(Message.DOMA4051, env, classElement);
         }

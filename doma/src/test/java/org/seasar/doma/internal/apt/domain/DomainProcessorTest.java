@@ -13,15 +13,10 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt;
+package org.seasar.doma.internal.apt.domain;
 
-import org.seasar.doma.internal.apt.domain.AccessorNotFoundDomain;
-import org.seasar.doma.internal.apt.domain.ConstrutorNotFoundDomain;
-import org.seasar.doma.internal.apt.domain.EnumDomain;
-import org.seasar.doma.internal.apt.domain.Outer;
-import org.seasar.doma.internal.apt.domain.PrimitiveValueDomain;
-import org.seasar.doma.internal.apt.domain.Salary;
-import org.seasar.doma.internal.apt.domain.UnsupportedValueTypeDomain;
+import org.seasar.doma.internal.apt.AptTestCase;
+import org.seasar.doma.internal.apt.DomainProcessor;
 import org.seasar.doma.internal.message.Message;
 
 /**
@@ -100,5 +95,13 @@ public class DomainProcessorTest extends AptTestCase {
         compile();
         assertFalse(getCompiledResult());
         assertMessageCode(Message.DOMA4106);
+    }
+
+    public void testPackagePrivate() throws Exception {
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(PackagePrivateDomain.class);
+        compile();
+        assertTrue(getCompiledResult());
     }
 }

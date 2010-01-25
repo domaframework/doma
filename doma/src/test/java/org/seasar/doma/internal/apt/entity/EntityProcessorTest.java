@@ -13,24 +13,10 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt;
+package org.seasar.doma.internal.apt.entity;
 
-import org.seasar.doma.internal.apt.entity.AbstractEntity;
-import org.seasar.doma.internal.apt.entity.AnnotationConflictedEntity;
-import org.seasar.doma.internal.apt.entity.ChildEntity;
-import org.seasar.doma.internal.apt.entity.CommonChild;
-import org.seasar.doma.internal.apt.entity.DomainPropertyEntity;
-import org.seasar.doma.internal.apt.entity.Emp;
-import org.seasar.doma.internal.apt.entity.EnumPropertyEntity;
-import org.seasar.doma.internal.apt.entity.ListenerArgumentTypeIllegalEntity;
-import org.seasar.doma.internal.apt.entity.NotTopLevelEntity;
-import org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity;
-import org.seasar.doma.internal.apt.entity.PrivatePropertyEntity;
-import org.seasar.doma.internal.apt.entity.PropertyNameReservedEntity;
-import org.seasar.doma.internal.apt.entity.TransientPropertyEntity;
-import org.seasar.doma.internal.apt.entity.UnsupportedPropertyEntity;
-import org.seasar.doma.internal.apt.entity.VersionDuplicatedEntity;
-import org.seasar.doma.internal.apt.entity.VersionNotNumberEntity;
+import org.seasar.doma.internal.apt.AptTestCase;
+import org.seasar.doma.internal.apt.EntityProcessor;
 import org.seasar.doma.internal.message.Message;
 
 /**
@@ -205,6 +191,15 @@ public class EntityProcessorTest extends AptTestCase {
 
     public void testCommonListener() throws Exception {
         Class<?> target = CommonChild.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertTrue(getCompiledResult());
+    }
+
+    public void testPackagePrivate() throws Exception {
+        Class<?> target = PackagePrivateEntity.class;
         EntityProcessor processor = new EntityProcessor();
         addProcessor(processor);
         addCompilationUnit(target);
