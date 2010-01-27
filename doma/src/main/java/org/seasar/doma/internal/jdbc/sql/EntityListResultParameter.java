@@ -18,7 +18,7 @@ package org.seasar.doma.internal.jdbc.sql;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seasar.doma.internal.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.EntityType;
 
 /**
  * @author taedium

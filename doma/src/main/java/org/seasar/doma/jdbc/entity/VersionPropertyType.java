@@ -13,12 +13,12 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.entity;
+package org.seasar.doma.jdbc.entity;
 
 import org.seasar.doma.wrapper.NumberWrapper;
 
 /**
- * バージョンプロパティです。
+ * バージョンのプロパティ型です。
  * 
  * @author taedium
  * 
@@ -26,6 +26,14 @@ import org.seasar.doma.wrapper.NumberWrapper;
 public abstract class VersionPropertyType<E, V extends Number> extends
         BasicPropertyType<E, V> {
 
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param name
+     *            プロパティの名前
+     * @param columnName
+     *            カラム名
+     */
     public VersionPropertyType(String name, String columnName) {
         super(name, columnName, true, true);
     }
@@ -35,6 +43,14 @@ public abstract class VersionPropertyType<E, V extends Number> extends
         return true;
     }
 
+    /**
+     * 必要であればバージョンの値を設定します。
+     * 
+     * @param entity
+     *            エンティティ
+     * @param value
+     *            バージョンの値
+     */
     public void setIfNecessary(E entity, Number value) {
         NumberWrapper<?> wrapper = getWrapper(entity);
         if (wrapper.get() == null || wrapper.get().intValue() < 0) {
@@ -42,6 +58,12 @@ public abstract class VersionPropertyType<E, V extends Number> extends
         }
     }
 
+    /**
+     * バージョン番号をインクリメントします。
+     * 
+     * @param entity
+     *            エンティティ
+     */
     public void increment(E entity) {
         NumberWrapper<?> wrapper = getWrapper(entity);
         if (wrapper.get() != null) {

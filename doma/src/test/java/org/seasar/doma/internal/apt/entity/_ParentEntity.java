@@ -17,12 +17,12 @@ package org.seasar.doma.internal.apt.entity;
 
 import java.util.List;
 
-import org.seasar.doma.internal.jdbc.entity.BasicPropertyType;
-import org.seasar.doma.internal.jdbc.entity.EntityPropertyType;
-import org.seasar.doma.internal.jdbc.entity.EntityType;
-import org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType;
-import org.seasar.doma.internal.jdbc.entity.VersionPropertyType;
+import org.seasar.doma.jdbc.entity.BasicPropertyType;
+import org.seasar.doma.jdbc.entity.EntityPropertyType;
+import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.jdbc.entity.NamingType;
+import org.seasar.doma.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.wrapper.Wrapper;
 
 public class _ParentEntity implements EntityType<ParentEntity> {

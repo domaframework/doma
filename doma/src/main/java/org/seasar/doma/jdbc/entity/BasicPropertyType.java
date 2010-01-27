@@ -13,12 +13,12 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.entity;
+package org.seasar.doma.jdbc.entity;
 
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * 基本のプロパティです。
+ * 基本のプロパティ型です。
  * 
  * @author taedium
  * 
@@ -26,14 +26,30 @@ import org.seasar.doma.DomaNullPointerException;
 public abstract class BasicPropertyType<E, V> implements
         EntityPropertyType<E, V> {
 
+    /** プロパティの名前 */
     protected final String name;
 
+    /** カラム名 */
     protected final String columnName;
 
+    /** 挿入可能かどうか */
     protected final boolean insertable;
 
+    /** 更新可能かどうか */
     protected final boolean updatable;
 
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param name
+     *            プロパティの名前
+     * @param columnName
+     *            カラム名
+     * @param insertable
+     *            挿入可能かどうか
+     * @param updatable
+     *            更新可能かどうか
+     */
     protected BasicPropertyType(String name, String columnName,
             boolean insertable, boolean updatable) {
         if (name == null) {

@@ -2,12 +2,12 @@ package org.seasar.doma.internal.apt.entity;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
-public final class _PrimitivePropertyEntity implements org.seasar.doma.internal.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity> {
+public final class _PrimitivePropertyEntity implements org.seasar.doma.jdbc.entity.EntityType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity> {
 
     private static final _PrimitivePropertyEntity __singleton = new _PrimitivePropertyEntity();
 
     /** the id */
-    public final org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Integer> id = new org.seasar.doma.internal.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Integer>("id", "id") {
+    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Integer> id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Integer>("id", "id") {
         @Override
         public org.seasar.doma.wrapper.IntegerWrapper getWrapper(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity) {
             return new Wrapper(entity);
@@ -40,7 +40,7 @@ public final class _PrimitivePropertyEntity implements org.seasar.doma.internal.
     };
 
     /** the bool */
-    public final org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Boolean> bool = new org.seasar.doma.internal.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Boolean>("bool", "bool", true, true) {
+    public final org.seasar.doma.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Boolean> bool = new org.seasar.doma.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Boolean>("bool", "bool", true, true) {
         @Override
         public org.seasar.doma.wrapper.BooleanWrapper getWrapper(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity) {
             return new Wrapper(entity);
@@ -73,7 +73,7 @@ public final class _PrimitivePropertyEntity implements org.seasar.doma.internal.
     };
 
     /** the version */
-    public final org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Long> version = new org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Long>("version", "version") {
+    public final org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Long> version = new org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Long>("version", "version") {
         @Override
         public org.seasar.doma.wrapper.LongWrapper getWrapper(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity) {
             return new Wrapper(entity);
@@ -119,11 +119,11 @@ public final class _PrimitivePropertyEntity implements org.seasar.doma.internal.
 
     private final String __name;
 
-    private final java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>> __idPropertyTypes;
+    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>> __idPropertyTypes;
 
-    private final java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>> __entityPropertyTypes;
+    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>> __entityPropertyTypes;
 
-    private final java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>> __entityPropertyTypeMap;
+    private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>> __entityPropertyTypeMap;
 
     private _PrimitivePropertyEntity() {
         __listener = new org.seasar.doma.jdbc.entity.NullEntityListener();
@@ -133,9 +133,9 @@ public final class _PrimitivePropertyEntity implements org.seasar.doma.internal.
         __schemaName = "";
         __tableName = "PrimitivePropertyEntity";
         __qualifiedTableName = "PrimitivePropertyEntity";
-        java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>> __idList = new java.util.ArrayList<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>>();
-        java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>> __list = new java.util.ArrayList<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>>(3);
-        java.util.Map<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>> __map = new java.util.HashMap<String, org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>>(3);
+        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>> __idList = new java.util.ArrayList<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>>();
+        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>> __list = new java.util.ArrayList<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>>(3);
+        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>> __map = new java.util.HashMap<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>>(3);
         __idList.add(id);
         __list.add(id);
         __map.put("id", id);
@@ -194,27 +194,27 @@ public final class _PrimitivePropertyEntity implements org.seasar.doma.internal.
     }
 
     @Override
-    public java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>> getEntityPropertyTypes() {
+    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>> getEntityPropertyTypes() {
         return __entityPropertyTypes;
     }
 
     @Override
-    public org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?> getEntityPropertyType(String __name) {
+    public org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?> getEntityPropertyType(String __name) {
         return __entityPropertyTypeMap.get(__name);
     }
 
     @Override
-    public java.util.List<org.seasar.doma.internal.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>> getIdPropertyTypes() {
+    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>> getIdPropertyTypes() {
         return __idPropertyTypes;
     }
 
     @Override
-    public org.seasar.doma.internal.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?> getGeneratedIdPropertyType() {
+    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?> getGeneratedIdPropertyType() {
         return null;
     }
 
     @Override
-    public org.seasar.doma.internal.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?> getVersionPropertyType() {
+    public org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?> getVersionPropertyType() {
         return version;
     }
 

@@ -13,10 +13,10 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.entity;
+package org.seasar.doma.jdbc.entity;
 
 /**
- * アプリケーションにより割り当てられる識別子のプロパティです。
+ * アプリケーションにより割り当てられる識別子のプロパティ型です。
  * 
  * @author taedium
  * 
@@ -24,6 +24,14 @@ package org.seasar.doma.internal.jdbc.entity;
 public abstract class AssignedIdPropertyType<E, V> extends
         BasicPropertyType<E, V> {
 
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param name
+     *            プロパティの名前
+     * @param columnName
+     *            カラム名
+     */
     public AssignedIdPropertyType(String name, String columnName) {
         super(name, columnName, true, true);
     }

@@ -19,11 +19,11 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import javax.sql.DataSource;
 
-import org.seasar.doma.internal.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.jdbc.entity.EntityType;
 
 /**
  * 識別子の生成に関する設定です。
