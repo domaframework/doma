@@ -46,7 +46,7 @@ public class BatchUpdateCommandTest extends TestCase {
         emp2.setVersion(20);
 
         AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp
-                .get());
+                .getSingletonInternal());
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
@@ -73,7 +73,7 @@ public class BatchUpdateCommandTest extends TestCase {
         runtimeConfig.dataSource.connection.preparedStatement.updatedRows = 0;
 
         AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp
-                .get());
+                .getSingletonInternal());
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp));
         query.setCallerClassName("aaa");
@@ -97,7 +97,7 @@ public class BatchUpdateCommandTest extends TestCase {
         runtimeConfig.dataSource.connection.preparedStatement.updatedRows = 0;
 
         AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp
-                .get());
+                .getSingletonInternal());
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp));
         query.setOptimisticLockExceptionSuppressed(true);

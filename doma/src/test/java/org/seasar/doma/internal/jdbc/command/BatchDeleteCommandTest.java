@@ -45,7 +45,7 @@ public class BatchDeleteCommandTest extends TestCase {
         emp2.setVersion(20);
 
         AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<Emp>(_Emp
-                .get());
+                .getSingletonInternal());
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");

@@ -169,8 +169,15 @@ public final class _TransientPropertyEntity implements org.seasar.doma.internal.
     /**
      * @return the singleton
      */
-    public static _TransientPropertyEntity get() {
+    public static _TransientPropertyEntity getSingletonInternal() {
         return __singleton;
+    }
+
+    /**
+     * @return the new instance
+     */
+    public static _TransientPropertyEntity newInstance() {
+        return new _TransientPropertyEntity();
     }
 
 }

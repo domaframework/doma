@@ -55,7 +55,7 @@ public class EntityIterationHandlerTest extends TestCase {
         query.prepare();
 
         EntityIterationHandler<Integer, Emp> handler = new EntityIterationHandler<Integer, Emp>(
-                _Emp.get(), new IterationCallback<Integer, Emp>() {
+                _Emp.getSingletonInternal(), new IterationCallback<Integer, Emp>() {
 
                     private int count;
 
@@ -88,7 +88,7 @@ public class EntityIterationHandlerTest extends TestCase {
         query.prepare();
 
         EntityIterationHandler<Integer, Emp> handler = new EntityIterationHandler<Integer, Emp>(
-                _Emp.get(), new IterationCallback<Integer, Emp>() {
+                _Emp.getSingletonInternal(), new IterationCallback<Integer, Emp>() {
 
                     private int count;
 

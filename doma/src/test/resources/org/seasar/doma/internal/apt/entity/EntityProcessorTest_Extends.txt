@@ -239,8 +239,15 @@ public final class _ChildEntity implements org.seasar.doma.internal.jdbc.entity.
     /**
      * @return the singleton
      */
-    public static _ChildEntity get() {
+    public static _ChildEntity getSingletonInternal() {
         return __singleton;
+    }
+
+    /**
+     * @return the new instance
+     */
+    public static _ChildEntity newInstance() {
+        return new _ChildEntity();
     }
 
 }

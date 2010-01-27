@@ -314,7 +314,7 @@ public class _Emp implements EntityType<Emp> {
         return __namingType;
     }
 
-    public static _Emp get() {
+    public static _Emp getSingletonInternal() {
         return singleton;
     }
 }

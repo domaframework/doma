@@ -27,7 +27,7 @@ public final class _PrimitiveValueDomain implements org.seasar.doma.internal.dom
     /**
      * @return the singleton
      */
-    public static _PrimitiveValueDomain get() {
+    public static _PrimitiveValueDomain getSingletonInternal() {
         return singleton;
     }
 

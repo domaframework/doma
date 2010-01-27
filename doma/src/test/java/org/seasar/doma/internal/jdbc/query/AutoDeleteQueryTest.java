@@ -37,7 +37,7 @@ public class AutoDeleteQueryTest extends TestCase {
     public void testPrepare() throws Exception {
         Emp emp = new Emp();
 
-        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp.get());
+        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
@@ -54,7 +54,7 @@ public class AutoDeleteQueryTest extends TestCase {
         emp.setName("aaa");
         emp.setVersion(100);
 
-        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp.get());
+        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
@@ -76,7 +76,7 @@ public class AutoDeleteQueryTest extends TestCase {
         emp.setName("aaa");
         emp.setVersion(100);
 
-        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp.get());
+        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setVersionIgnored(true);

@@ -59,7 +59,7 @@ public final class _DomainPropertyEntity implements org.seasar.doma.internal.jdb
                 if (entity == null) {
                     return null;
                 }
-                return org.seasar.doma.internal.apt.domain._Name.get().getWrapper(entity.name).get();
+                return org.seasar.doma.internal.apt.domain._Name.getSingletonInternal().getWrapper(entity.name).get();
             }
 
             @Override
@@ -67,7 +67,7 @@ public final class _DomainPropertyEntity implements org.seasar.doma.internal.jdb
                 if (entity == null) {
                     return;
                 }
-                entity.name = org.seasar.doma.internal.apt.domain._Name.get().newDomain(value);
+                entity.name = org.seasar.doma.internal.apt.domain._Name.getSingletonInternal().newDomain(value);
             }
         }
     };
@@ -205,8 +205,15 @@ public final class _DomainPropertyEntity implements org.seasar.doma.internal.jdb
     /**
      * @return the singleton
      */
-    public static _DomainPropertyEntity get() {
+    public static _DomainPropertyEntity getSingletonInternal() {
         return __singleton;
+    }
+
+    /**
+     * @return the new instance
+     */
+    public static _DomainPropertyEntity newInstance() {
+        return new _DomainPropertyEntity();
     }
 
 }

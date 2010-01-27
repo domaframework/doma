@@ -91,7 +91,7 @@ public class DomainTypeGenerator extends AbstractGenerator {
         printNewDomainMethod();
         printGetDomainClassMethod();
         printGetWrapperMethod();
-        printGetMethod();
+        printGetSingletonInternalMethod();
         printWrapperClass();
     }
 
@@ -133,11 +133,11 @@ public class DomainTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printGetMethod() {
+    protected void printGetSingletonInternalMethod() {
         iprint("/**%n");
         iprint(" * @return the singleton%n");
         iprint(" */%n");
-        iprint("public static %1$s get() {%n", simpleName);
+        iprint("public static %1$s getSingletonInternal() {%n", simpleName);
         iprint("    return singleton;%n");
         iprint("}%n");
         print("%n");

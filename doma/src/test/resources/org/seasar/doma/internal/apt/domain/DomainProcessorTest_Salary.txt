@@ -27,7 +27,7 @@ public final class _Salary implements org.seasar.doma.internal.domain.DomainType
     /**
      * @return the singleton
      */
-    public static _Salary get() {
+    public static _Salary getSingletonInternal() {
         return singleton;
     }
 

@@ -27,7 +27,7 @@ public final class _EnumDomain implements org.seasar.doma.internal.domain.Domain
     /**
      * @return the singleton
      */
-    public static _EnumDomain get() {
+    public static _EnumDomain getSingletonInternal() {
         return singleton;
     }
 

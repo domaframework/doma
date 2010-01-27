@@ -46,7 +46,7 @@ public class AutoBatchDeleteQueryTest extends TestCase {
         emp2.setName("bbb");
 
         AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<Emp>(
-                _Emp.get());
+                _Emp.getSingletonInternal());
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
@@ -68,7 +68,7 @@ public class AutoBatchDeleteQueryTest extends TestCase {
         emp2.setVersion(new Integer(10));
 
         AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<Emp>(
-                _Emp.get());
+                _Emp.getSingletonInternal());
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
@@ -103,7 +103,7 @@ public class AutoBatchDeleteQueryTest extends TestCase {
         emp2.setVersion(new Integer(10));
 
         AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<Emp>(
-                _Emp.get());
+                _Emp.getSingletonInternal());
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setVersionIgnored(true);

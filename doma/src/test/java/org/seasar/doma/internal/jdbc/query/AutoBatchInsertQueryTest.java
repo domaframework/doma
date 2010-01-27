@@ -46,7 +46,7 @@ public class AutoBatchInsertQueryTest extends TestCase {
         emp2.setName("bbb");
 
         AutoBatchInsertQuery<Emp> query = new AutoBatchInsertQuery<Emp>(
-                _Emp.get());
+                _Emp.getSingletonInternal());
         query.setConfig(runtimeConfig);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
@@ -69,7 +69,7 @@ public class AutoBatchInsertQueryTest extends TestCase {
         emp2.setVersion(new Integer(10));
 
         AutoBatchInsertQuery<Emp> query = new AutoBatchInsertQuery<Emp>(
-                _Emp.get());
+                _Emp.getSingletonInternal());
         query.setConfig(runtimeConfig);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");

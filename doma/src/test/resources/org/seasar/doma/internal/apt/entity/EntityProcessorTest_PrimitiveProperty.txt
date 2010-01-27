@@ -240,8 +240,15 @@ public final class _PrimitivePropertyEntity implements org.seasar.doma.internal.
     /**
      * @return the singleton
      */
-    public static _PrimitivePropertyEntity get() {
+    public static _PrimitivePropertyEntity getSingletonInternal() {
         return __singleton;
+    }
+
+    /**
+     * @return the new instance
+     */
+    public static _PrimitivePropertyEntity newInstance() {
+        return new _PrimitivePropertyEntity();
     }
 
 }

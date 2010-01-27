@@ -55,7 +55,7 @@ public class EntityResultListHandlerTest extends TestCase {
         query.prepare();
 
         EntityResultListHandler<Emp> handler = new EntityResultListHandler<Emp>(
-                _Emp.get());
+                _Emp.getSingletonInternal());
         List<Emp> entities = handler.handle(resultSet, query);
 
         assertEquals(2, entities.size());

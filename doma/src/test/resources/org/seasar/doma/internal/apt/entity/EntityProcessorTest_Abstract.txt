@@ -170,8 +170,15 @@ public final class _AbstractEntity implements org.seasar.doma.internal.jdbc.enti
     /**
      * @return the singleton
      */
-    public static _AbstractEntity get() {
+    public static _AbstractEntity getSingletonInternal() {
         return __singleton;
+    }
+
+    /**
+     * @return the new instance
+     */
+    public static _AbstractEntity newInstance() {
+        return new _AbstractEntity();
     }
 
 }

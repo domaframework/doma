@@ -292,8 +292,15 @@ public final class _Emp implements org.seasar.doma.internal.jdbc.entity.EntityTy
     /**
      * @return the singleton
      */
-    public static _Emp get() {
+    public static _Emp getSingletonInternal() {
         return __singleton;
+    }
+
+    /**
+     * @return the new instance
+     */
+    public static _Emp newInstance() {
+        return new _Emp();
     }
 
 }

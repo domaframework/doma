@@ -50,7 +50,7 @@ public class EntityFetcherTest extends TestCase {
         resultSet.rows.add(new RowData(1, "aaa", new BigDecimal(10), 100));
         resultSet.next();
 
-        _Emp entityType = _Emp.get();
+        _Emp entityType = _Emp.getSingletonInternal();
         EntityFetcher<Emp> fetcher = new EntityFetcher<Emp>(
                 new MySelectQuery(), entityType);
         Emp emp = entityType.newEntity();

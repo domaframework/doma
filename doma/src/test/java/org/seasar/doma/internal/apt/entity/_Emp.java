@@ -132,7 +132,7 @@ public class _Emp implements EntityType<Emp> {
         return null;
     }
 
-    public static _Emp get() {
+    public static _Emp getSingletonInternal() {
         return null;
     }
 

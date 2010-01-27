@@ -36,7 +36,7 @@ public class SqlFileSelectDomainDaoImpl extends org.seasar.doma.internal.jdbc.da
         __query.setMaxRows(-1);
         __query.setFetchSize(-1);
         __query.prepare();
-        org.seasar.doma.internal.jdbc.command.SelectCommand<example.domain.PhoneNumber> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<example.domain.PhoneNumber>(__query, new org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler<java.lang.String, example.domain.PhoneNumber>(example.domain._PhoneNumber.get()));
+        org.seasar.doma.internal.jdbc.command.SelectCommand<example.domain.PhoneNumber> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<example.domain.PhoneNumber>(__query, new org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler<java.lang.String, example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal()));
         example.domain.PhoneNumber __result = __command.execute();
         __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDaoImpl", "selectById", __result);
@@ -61,7 +61,7 @@ public class SqlFileSelectDomainDaoImpl extends org.seasar.doma.internal.jdbc.da
         __query.setMaxRows(-1);
         __query.setFetchSize(-1);
         __query.prepare();
-        org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<example.domain.PhoneNumber>> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<example.domain.PhoneNumber>>(__query, new org.seasar.doma.internal.jdbc.command.DomainResultListHandler<java.lang.String, example.domain.PhoneNumber>(example.domain._PhoneNumber.get()));
+        org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<example.domain.PhoneNumber>> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<example.domain.PhoneNumber>>(__query, new org.seasar.doma.internal.jdbc.command.DomainResultListHandler<java.lang.String, example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal()));
         java.util.List<example.domain.PhoneNumber> __result = __command.execute();
         __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDaoImpl", "selectByNameAndSalary", __result);

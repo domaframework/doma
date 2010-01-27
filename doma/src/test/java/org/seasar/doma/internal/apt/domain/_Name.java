@@ -39,7 +39,7 @@ public class _Name implements DomainType<String, Name> {
         return null;
     }
 
-    public static _Name get() {
+    public static _Name getSingletonInternal() {
         return null;
     }
 

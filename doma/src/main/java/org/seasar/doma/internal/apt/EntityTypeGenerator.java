@@ -241,7 +241,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         if (pm.isOwnProperty()) {
             if (domainType != null) {
                 iprint(
-                        "        return %1$s.get().getWrapper(entity.%2$s).get();%n",
+                        "        return %1$s.getSingletonInternal().getWrapper(entity.%2$s).get();%n",
                         getPrefixedDomainTypeName(domainType.getTypeName()), pm
                                 .getName());
             } else {
@@ -265,7 +265,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
             if (wrapperType.getWrappedType().isPrimitive()) {
                 if (domainType != null) {
                     iprint(
-                            "        entity.%1$s = %2$s.get().newDomain(%3$s.unbox(value));%n",
+                            "        entity.%1$s = %2$s.getSingletonInternal().newDomain(%3$s.unbox(value));%n",
                             pm.getName(), getPrefixedDomainTypeName(domainType
                                     .getTypeName()), BoxedPrimitiveUtil.class
                                     .getName());
@@ -276,7 +276,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
             } else {
                 if (domainType != null) {
                     iprint(
-                            "        entity.%1$s = %2$s.get().newDomain(value);%n",
+                            "        entity.%1$s = %2$s.getSingletonInternal().newDomain(value);%n",
                             pm.getName(), getPrefixedDomainTypeName(domainType
                                     .getTypeName()));
                 } else {
@@ -411,7 +411,8 @@ public class EntityTypeGenerator extends AbstractGenerator {
         printGetEntityClassMethod();
         printGetOriginalStatesMethod();
         printSaveCurrentStatesMethod();
-        printGetMethod();
+        printGetSingletonInternalMethod();
+        printNewInstanceMethod();
     }
 
     protected void printGetNamingTypeMethod() {
@@ -607,12 +608,22 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printGetMethod() {
+    protected void printGetSingletonInternalMethod() {
         iprint("/**%n");
         iprint(" * @return the singleton%n");
         iprint(" */%n");
-        iprint("public static %1$s get() {%n", simpleName);
+        iprint("public static %1$s getSingletonInternal() {%n", simpleName);
         iprint("    return __singleton;%n");
+        iprint("}%n");
+        print("%n");
+    }
+
+    protected void printNewInstanceMethod() {
+        iprint("/**%n");
+        iprint(" * @return the new instance%n");
+        iprint(" */%n");
+        iprint("public static %1$s newInstance() {%n", simpleName);
+        iprint("    return new %1$s();%n", simpleName);
         iprint("}%n");
         print("%n");
     }

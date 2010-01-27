@@ -41,7 +41,7 @@ public class _PhoneNumber implements DomainType<String, PhoneNumber> {
         return new Wrapper(domain);
     }
 
-    public static _PhoneNumber get() {
+    public static _PhoneNumber getSingletonInternal() {
         return singleton;
     }
 
