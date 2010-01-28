@@ -26,6 +26,9 @@ import org.seasar.doma.DomaNullPointerException;
 public abstract class BasicPropertyType<E, V> implements
         EntityPropertyType<E, V> {
 
+    /** プロパティのクラス */
+    protected final Class<V> entityPropertyClass;
+
     /** プロパティの名前 */
     protected final String name;
 
@@ -41,6 +44,8 @@ public abstract class BasicPropertyType<E, V> implements
     /**
      * インスタンスを構築します。
      * 
+     * @param entityPropertyClass
+     *            プロパティのクラス
      * @param name
      *            プロパティの名前
      * @param columnName
@@ -50,8 +55,11 @@ public abstract class BasicPropertyType<E, V> implements
      * @param updatable
      *            更新可能かどうか
      */
-    protected BasicPropertyType(String name, String columnName,
-            boolean insertable, boolean updatable) {
+    protected BasicPropertyType(Class<V> entityPropertyClass, String name,
+            String columnName, boolean insertable, boolean updatable) {
+        if (entityPropertyClass == null) {
+            throw new DomaNullPointerException("entityPropertyClass");
+        }
         if (name == null) {
             throw new DomaNullPointerException("name");
         }
@@ -62,6 +70,7 @@ public abstract class BasicPropertyType<E, V> implements
         this.columnName = columnName;
         this.insertable = insertable;
         this.updatable = updatable;
+        this.entityPropertyClass = entityPropertyClass;
     }
 
     @Override
@@ -92,6 +101,11 @@ public abstract class BasicPropertyType<E, V> implements
     @Override
     public boolean isUpdatable() {
         return updatable;
+    }
+
+    @Override
+    public Class<V> getEntityPropertyClass() {
+        return entityPropertyClass;
     }
 
 }

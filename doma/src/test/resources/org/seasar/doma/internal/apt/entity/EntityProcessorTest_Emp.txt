@@ -15,7 +15,7 @@ public final class _Emp implements org.seasar.doma.jdbc.entity.EntityType<org.se
     }
 
     /** the id */
-    public final org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.entity.Emp, java.lang.Integer> id = new org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.entity.Emp, java.lang.Integer>("id", "id", __idGenerator) {
+    public final org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.entity.Emp, java.lang.Integer> id = new org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.entity.Emp, java.lang.Integer>(java.lang.Integer.class, "id", "id", __idGenerator) {
         @Override
         public org.seasar.doma.wrapper.IntegerWrapper getWrapper(org.seasar.doma.internal.apt.entity.Emp entity) {
             return new Wrapper(entity);
@@ -48,7 +48,7 @@ public final class _Emp implements org.seasar.doma.jdbc.entity.EntityType<org.se
     };
 
     /** the name */
-    public final org.seasar.doma.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.Emp, java.lang.String> name = new org.seasar.doma.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.Emp, java.lang.String>("name", "name", true, true) {
+    public final org.seasar.doma.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.Emp, java.lang.String> name = new org.seasar.doma.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.Emp, java.lang.String>(java.lang.String.class, "name", "name", true, true) {
         @Override
         public org.seasar.doma.wrapper.StringWrapper getWrapper(org.seasar.doma.internal.apt.entity.Emp entity) {
             return new Wrapper(entity);
@@ -81,7 +81,7 @@ public final class _Emp implements org.seasar.doma.jdbc.entity.EntityType<org.se
     };
 
     /** the salary */
-    public final org.seasar.doma.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.Emp, java.math.BigDecimal> salary = new org.seasar.doma.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.Emp, java.math.BigDecimal>("salary", "SALARY", false, false) {
+    public final org.seasar.doma.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.Emp, java.math.BigDecimal> salary = new org.seasar.doma.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.Emp, java.math.BigDecimal>(java.math.BigDecimal.class, "salary", "SALARY", false, false) {
         @Override
         public org.seasar.doma.wrapper.BigDecimalWrapper getWrapper(org.seasar.doma.internal.apt.entity.Emp entity) {
             return new Wrapper(entity);
@@ -114,7 +114,7 @@ public final class _Emp implements org.seasar.doma.jdbc.entity.EntityType<org.se
     };
 
     /** the version */
-    public final org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.Emp, java.lang.Integer> version = new org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.Emp, java.lang.Integer>("version", "version") {
+    public final org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.Emp, java.lang.Integer> version = new org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.entity.Emp, java.lang.Integer>(java.lang.Integer.class, "version", "version") {
         @Override
         public org.seasar.doma.wrapper.IntegerWrapper getWrapper(org.seasar.doma.internal.apt.entity.Emp entity) {
             return new Wrapper(entity);

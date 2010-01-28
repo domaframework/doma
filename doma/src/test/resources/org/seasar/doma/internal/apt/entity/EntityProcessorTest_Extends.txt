@@ -7,7 +7,7 @@ public final class _ChildEntity implements org.seasar.doma.jdbc.entity.EntityTyp
     private static final _ChildEntity __singleton = new _ChildEntity();
 
     /** the aaa */
-    public final org.seasar.doma.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, java.lang.Integer> aaa = new org.seasar.doma.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, java.lang.Integer>("aaa", "aaa", true, true) {
+    public final org.seasar.doma.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, java.lang.Integer> aaa = new org.seasar.doma.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, java.lang.Integer>(java.lang.Integer.class, "aaa", "aaa", true, true) {
         @Override
         public org.seasar.doma.wrapper.IntegerWrapper getWrapper(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
             return new Wrapper(entity);
@@ -40,7 +40,7 @@ public final class _ChildEntity implements org.seasar.doma.jdbc.entity.EntityTyp
     };
 
     /** the bbb */
-    public final org.seasar.doma.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, java.math.BigDecimal> bbb = new org.seasar.doma.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, java.math.BigDecimal>("bbb", "bbb", true, true) {
+    public final org.seasar.doma.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, java.math.BigDecimal> bbb = new org.seasar.doma.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, java.math.BigDecimal>(java.math.BigDecimal.class, "bbb", "bbb", true, true) {
         @Override
         public org.seasar.doma.wrapper.BigDecimalWrapper getWrapper(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
             return new Wrapper(entity);
@@ -73,7 +73,7 @@ public final class _ChildEntity implements org.seasar.doma.jdbc.entity.EntityTyp
     };
 
     /** the ccc */
-    public final org.seasar.doma.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, java.lang.String> ccc = new org.seasar.doma.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, java.lang.String>("ccc", "ccc", true, true) {
+    public final org.seasar.doma.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, java.lang.String> ccc = new org.seasar.doma.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.ChildEntity, java.lang.String>(java.lang.String.class, "ccc", "ccc", true, true) {
         @Override
         public org.seasar.doma.wrapper.StringWrapper getWrapper(org.seasar.doma.internal.apt.entity.ChildEntity entity) {
             return new Wrapper(entity);

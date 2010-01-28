@@ -28,7 +28,7 @@ import org.seasar.doma.wrapper.Wrapper;
 public class _ParentEntity implements EntityType<ParentEntity> {
 
     public BasicPropertyType<ParentEntity, Integer> aaa = new BasicPropertyType<ParentEntity, Integer>(
-            "aaa", "AAA", true, true) {
+            Integer.class, "aaa", "AAA", true, true) {
 
         public Wrapper<Integer> getWrapper(ParentEntity entity) {
             return null;
@@ -36,7 +36,7 @@ public class _ParentEntity implements EntityType<ParentEntity> {
     };
 
     public BasicPropertyType<ParentEntity, Integer> bbb = new BasicPropertyType<ParentEntity, Integer>(
-            "bbb", "BBB", true, true) {
+            Integer.class, "bbb", "BBB", true, true) {
 
         public Wrapper<Integer> getWrapper(ParentEntity entity) {
             return null;

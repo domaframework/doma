@@ -41,6 +41,8 @@ public abstract class GeneratedIdPropertyType<E, V extends Number> extends
     /**
      * インスタンスを構築します。
      * 
+     * @param entityPropertyClass
+     *            プロパティのクラス
      * @param name
      *            プロパティの名前
      * @param columnName
@@ -48,9 +50,9 @@ public abstract class GeneratedIdPropertyType<E, V extends Number> extends
      * @param idGenerator
      *            識別子のジェネレータ
      */
-    public GeneratedIdPropertyType(String name, String columnName,
-            IdGenerator idGenerator) {
-        super(name, columnName, true, true);
+    public GeneratedIdPropertyType(Class<V> entityPropertyClass, String name,
+            String columnName, IdGenerator idGenerator) {
+        super(entityPropertyClass, name, columnName, true, true);
         if (idGenerator == null) {
             throw new DomaNullPointerException("idGenerator");
         }

@@ -27,13 +27,16 @@ public abstract class AssignedIdPropertyType<E, V> extends
     /**
      * インスタンスを構築します。
      * 
+     * @param entityPropertyClass
+     *            プロパティのクラス
      * @param name
      *            プロパティの名前
      * @param columnName
      *            カラム名
      */
-    public AssignedIdPropertyType(String name, String columnName) {
-        super(name, columnName, true, true);
+    public AssignedIdPropertyType(Class<V> entityPropertyClass, String name,
+            String columnName) {
+        super(entityPropertyClass, name, columnName, true, true);
     }
 
     @Override

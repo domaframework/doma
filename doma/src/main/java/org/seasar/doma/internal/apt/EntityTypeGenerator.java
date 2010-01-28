@@ -159,7 +159,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
             if (pm.isId()) {
                 if (pm.getIdGeneratorMeta() != null) {
                     iprint(
-                            "public final %1$s<%2$s, %3$s> %4$s = new %1$s<%2$s, %3$s>(\"%4$s\", \"%5$s\", __idGenerator) {%n", /* 1 */
+                            "public final %1$s<%2$s, %3$s> %4$s = new %1$s<%2$s, %3$s>(%3$s.class, \"%4$s\", \"%5$s\", __idGenerator) {%n", /* 1 */
                             GeneratedIdPropertyType.class.getName(), /* 2 */
                             entityMeta.getEntityTypeName(), /* 3 */
                             visitor.wrapperType.getWrappedType()
@@ -168,7 +168,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
                             pm.getColumnName());
                 } else {
                     iprint(
-                            "public final %1$s<%2$s, %3$s> %4$s = new %1$s<%2$s, %3$s>(\"%4$s\", \"%5$s\") {%n", /* 1 */
+                            "public final %1$s<%2$s, %3$s> %4$s = new %1$s<%2$s, %3$s>(%3$s.class, \"%4$s\", \"%5$s\") {%n", /* 1 */
                             AssignedIdPropertyType.class.getName(), /* 2 */
                             entityMeta.getEntityTypeName(), /* 3 */
                             visitor.wrapperType.getWrappedType()
@@ -178,7 +178,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 }
             } else if (pm.isVersion()) {
                 iprint(
-                        "public final %1$s<%2$s, %3$s> %4$s = new %1$s<%2$s, %3$s>(\"%4$s\", \"%5$s\") {%n", /* 1 */
+                        "public final %1$s<%2$s, %3$s> %4$s = new %1$s<%2$s, %3$s>(%3$s.class, \"%4$s\", \"%5$s\") {%n", /* 1 */
                         VersionPropertyType.class.getName(), /* 2 */
                         entityMeta.getEntityTypeName(), /* 3 */
                         visitor.wrapperType.getWrappedType()
@@ -187,7 +187,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
                         pm.getColumnName());
             } else {
                 iprint(
-                        "public final %1$s<%2$s, %3$s> %4$s = new %1$s<%2$s, %3$s>(\"%4$s\", \"%5$s\", %6$s, %7$s) {%n", /* 1 */
+                        "public final %1$s<%2$s, %3$s> %4$s = new %1$s<%2$s, %3$s>(%3$s.class, \"%4$s\", \"%5$s\", %6$s, %7$s) {%n", /* 1 */
                         BasicPropertyType.class.getName(), /* 2 */
                         entityMeta.getEntityTypeName(), /* 3 */
                         visitor.wrapperType.getWrappedType()

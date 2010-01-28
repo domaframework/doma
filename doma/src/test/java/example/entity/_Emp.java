@@ -44,7 +44,7 @@ public class _Emp implements EntityType<Emp> {
     private final NullEntityListener __listener = new NullEntityListener();
 
     public final AssignedIdPropertyType<Emp, Integer> id = new AssignedIdPropertyType<Emp, Integer>(
-            "id", "ID") {
+            Integer.class, "id", "ID") {
 
         @Override
         public IntegerWrapper getWrapper(Emp entity) {
@@ -78,7 +78,7 @@ public class _Emp implements EntityType<Emp> {
     };
 
     public final BasicPropertyType<Emp, String> name = new BasicPropertyType<Emp, String>(
-            "name", "NAME", true, true) {
+            String.class, "name", "NAME", true, true) {
         @Override
         public StringWrapper getWrapper(Emp entity) {
             return new Wrapper(entity);
@@ -111,7 +111,7 @@ public class _Emp implements EntityType<Emp> {
     };
 
     public final BasicPropertyType<Emp, BigDecimal> salary = new BasicPropertyType<Emp, BigDecimal>(
-            "salary", "SALARY", true, true) {
+            BigDecimal.class, "salary", "SALARY", true, true) {
         @Override
         public BigDecimalWrapper getWrapper(Emp entity) {
             return new Wrapper(entity);
@@ -145,7 +145,7 @@ public class _Emp implements EntityType<Emp> {
     };
 
     public final VersionPropertyType<Emp, Integer> version = new VersionPropertyType<Emp, Integer>(
-            "version", "VERSION") {
+            Integer.class, "version", "VERSION") {
         @Override
         public IntegerWrapper getWrapper(Emp entity) {
             return new Wrapper(entity);

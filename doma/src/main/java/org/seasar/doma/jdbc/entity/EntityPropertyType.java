@@ -43,6 +43,13 @@ public interface EntityPropertyType<E, V> {
     Wrapper<V> getWrapper(E entity);
 
     /**
+     * エンティティプロパティのクラスを返します。
+     * 
+     * @return エンティティプロパティのクラス
+     */
+    Class<V> getEntityPropertyClass();
+
+    /**
      * プロパティの名前を返します。
      * 
      * @return 名前

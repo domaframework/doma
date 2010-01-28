@@ -7,7 +7,7 @@ public final class _AbstractEntity implements org.seasar.doma.jdbc.entity.Entity
     private static final _AbstractEntity __singleton = new _AbstractEntity();
 
     /** the id */
-    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.entity.AbstractEntity, java.lang.Integer> id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.entity.AbstractEntity, java.lang.Integer>("id", "id") {
+    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.entity.AbstractEntity, java.lang.Integer> id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.entity.AbstractEntity, java.lang.Integer>(java.lang.Integer.class, "id", "id") {
         @Override
         public org.seasar.doma.wrapper.IntegerWrapper getWrapper(org.seasar.doma.internal.apt.entity.AbstractEntity entity) {
             return new Wrapper(entity);
