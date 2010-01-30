@@ -60,6 +60,11 @@ List<Employee> selectByNameAndSalary(String name, BigDecimal salary);]]></source
 List<Employee> selectByExample(Employee employee);]]></source>
 <source><![CDATA[select * from employee where employee_name = /* employee.name */'hoge' and salary > /* employee.getSalary() */100]]></source>
 			<p>
+				任意の型であっても複数のパラメータを指定できます。
+			</p>
+<source><![CDATA[@Select
+List<Employee> selectByEmployeeAndDepartment(Employee employee, Department department);]]></source>
+			<p>
 				<a href="../basic.html">基本型</a>や<a href="../domain.html">ドメインクラス</a>を要素とする<code>java.lang.Iterable</code>のサブタイプは、
 				IN句を利用した検索を行う場合に使用します。<code>java.lang.Iterable</code>のサブタイプは、通常<code>java.util.List</code>が適切でしょう。
 			</p>

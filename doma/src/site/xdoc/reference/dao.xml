@@ -113,7 +113,7 @@ Employee employee = employeeDao.selectById(1);</source>
 			</p>
 			<p>
 				デフォルトコンストラクタを使用した場合は、<code>@Dao</code>の <code>config</code>要素に
-				指定した設定により<code>javax.sql.DataSource</code>が決定しますが、
+				指定した設定により<code>javax.sql.DataSource</code>が決定されますが、
 				特定の <code>DataSource</code>を指定してインスタンス化することも可能です。
 			</p>
 <source>DataSource dataSource = ...;

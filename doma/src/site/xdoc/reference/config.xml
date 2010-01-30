@@ -18,7 +18,7 @@
 				<li><a href="#DIコンテナを利用する場合の設定例">DIコンテナを利用する場合の設定例</a>
 					<ul>
 						<li><a href="#設定クラスのインスタンスのインジェクション">設定クラスのインスタンスのインジェクション</a></li>
-						<li><a href="#aptにより生成されるソースコードに対するアノテーションの付与">aptにより生成されるソースコードに対するアノテーションの付与</a></li>
+						<li><a href="#aptにより生成されるソースコードに対するアノテーションの注釈">aptにより生成されるソースコードに対するアノテーションの注釈</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -252,11 +252,11 @@ public interface EmployeeDao {
 			<subsection name="設定クラスのインスタンスのインジェクション">
 				<p>
 					<code>Dao</code>の実装クラスのインスタンスに設定クラスのインスタンスをインジェクションするには、
-					<code>@Dao</code>の<code>config</code>要素に<a href ="../apidocs/org/seasar/doma/jdbc/ConfigProxy.html"><code>org.seasar.doma.jdbc.ConfigProxy</code></a>を指定してください。
-					<code>ConfigProxy</code>を使用すると、<code>Config</code>型のインスタンスを受け取るコンストラクタが<code>Dao</code>の実装クラスに生成されます。
+					<code>@Dao</code>の<code>config</code>要素に何も指定しないでください。
+					この場合、<code>Config</code>型のインスタンスを受け取るコンストラクタが<code>Dao</code>の実装クラスに生成されます。
 					コンストラクタインジェクションをサポートするDIコンテナであれば、設定ファイルなどによりインジェクションが可能です。
 				</p>
-<source><![CDATA[@Dao(config = ConfigProxy.class)
+<source><![CDATA[@Dao
 public interface EmployeeDao {
     ...
 }]]></source>
@@ -265,36 +265,54 @@ public interface EmployeeDao {
 				</p>
 <source><![CDATA[public class EmployeeDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao implements example.EmployeeDao {
     public EmployeeDaoImpl(org.seasar.doma.jdbc.Config config) {
-        super(new org.seasar.doma.jdbc.ConfigProxy(config));
+        super(config);
     }
     ...
 }]]></source>
 			</subsection>
-				<subsection name="aptにより生成されるソースコードに対するアノテーションの付与">
-					<p>
-						<code>@AnnotateWith</code>を使用することで、インジェクションのためのアノテーションを<code>Dao</code>の実装クラスのソースコードに付与できます。
-						これにより、DIコンテナがサポートしていれば、アノテーションによるインジェクションも可能になります。
-					</p>
-					<p>
-						たとえば、  <a href="http://code.google.com/p/google-guice/">Guice</a>のアノテーションを付与するには次のように記述します。
-					</p>
-<source><![CDATA[@Dao(config = ConfigProxy.class)
+			<subsection name="aptにより生成されるソースコードに対するアノテーションの注釈">
+				<p>
+					<code>@AnnotateWith</code>を使用することで、インジェクションのためのアノテーションを<code>Dao</code>の実装クラスのソースコードに注釈できます。
+					これにより、DIコンテナがサポートしていれば、アノテーションによるインジェクションも可能になります。
+				</p>
+				<p>
+					たとえば、  <a href="http://code.google.com/p/google-guice/">Guice</a>のアノテーションを注釈するには次のように記述します。
+				</p>
+<source><![CDATA[@Dao
 @AnnotateWith(annotations = {
         @Annotation(target = AnnotationTarget.CONSTRUCTOR, type = Inject.class),
         @Annotation(target = AnnotationTarget.CONSTRUCTOR_PARAMETER, type = Named.class, elements = "\"sales\"") })
 public interface EmployeeDao {
     ...
 }]]></source>
-					<p>
-						上のインタフェースに対する実装クラスのソースコードは、aptにより次のように生成されます。
-						コンストラクタとコンストラクタのパラメータにアノテーションが付与されていることに注目してください。
-					</p>
+				<p>
+					上のインタフェースに対する実装クラスのソースコードは、aptにより次のように生成されます。
+					コンストラクタとコンストラクタのパラメータにアノテーションが注釈されていることに注目してください。
+				</p>
 <source><![CDATA[@Dao(config = ConfigProxy.class)
 public class EmployeeDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao implements example.EmployeeDao {
     @com.google.inject.Inject()
     public EmployeeDaoImpl(@com.google.inject.name.Named("sales") org.seasar.doma.jdbc.Config config) {
-        super(new org.seasar.doma.jdbc.ConfigProxy(config));
+        super(config);
     }
+    ...
+}]]></source>
+				<p>
+					<code>@AnnotateWith</code>を任意のアノテーションに注釈し、そのアノテーションをDaoインタフェースに注釈することも可能です。
+					たとえば、<code>@InjectConfig</code>というアノテーションに<code>@AnnotateWith</code>を注釈するとします。
+				</p>
+<source><![CDATA[@AnnotateWith(annotations = {
+        @Annotation(target = AnnotationTarget.CONSTRUCTOR, type = Inject.class),
+        @Annotation(target = AnnotationTarget.CONSTRUCTOR_PARAMETER, type = Named.class, elements = "\"sales\"") })
+public @interface InjectConfig {
+    ...
+}]]></source>
+				<p>
+					<code>@InjectConfig</code>をDaoインタフェースに注釈すれば、<code>@AnnotateWith</code>を直接Daoインタフェースに注釈しているのと同じ効果が得られます。
+				</p>
+<source><![CDATA[@Dao
+@InjectConfig
+public interface EmployeeDao {
     ...
 }]]></source>
 			</subsection>
