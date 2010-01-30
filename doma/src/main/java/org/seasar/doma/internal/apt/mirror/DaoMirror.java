@@ -32,7 +32,6 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.ConfigProxy;
 
 /**
  * @author taedium
@@ -96,30 +95,8 @@ public class DaoMirror {
         return value;
     }
 
-    public boolean hasDefaultConfig() {
-        return hasDefaultConfigInternal();
-    }
-
-    protected boolean hasDefaultConfigInternal() {
-        if (TypeMirrorUtil.isSameType(configValue, Config.class, env)) {
-            return true;
-        }
-        return false;
-    }
-
-    public boolean hasConfigProxy() {
-        return hasConfigProxyInternal();
-    }
-
-    protected boolean hasConfigProxyInternal() {
-        if (TypeMirrorUtil.isSameType(configValue, ConfigProxy.class, env)) {
-            return true;
-        }
-        return false;
-    }
-
     public boolean hasUserDefinedConfig() {
-        return !hasDefaultConfigInternal() && !hasConfigProxyInternal();
+        return !TypeMirrorUtil.isSameType(configValue, Config.class, env);
     }
 
 }

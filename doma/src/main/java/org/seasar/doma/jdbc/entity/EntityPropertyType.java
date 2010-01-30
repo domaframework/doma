@@ -15,8 +15,8 @@
  */
 package org.seasar.doma.jdbc.entity;
 
-import org.seasar.doma.jdbc.criteria.ColumnCriterion;
-import org.seasar.doma.jdbc.criteria.OrderItemCriterion;
+import org.seasar.doma.internal.jdbc.criteria.ColumnCriterion;
+import org.seasar.doma.internal.jdbc.criteria.OrderItemCriterion;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**

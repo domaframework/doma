@@ -107,11 +107,6 @@ public class DaoMetaFactory {
                 daoMeta.getDaoElement(), env);
         DaoMirror daoMirror = daoMeta.getDaoMirror();
         if (annotateWithMirror == null) {
-            if (daoMirror.hasDefaultConfig()) {
-                throw new AptException(Message.DOMA4162, env, daoMeta
-                        .getDaoElement(), daoMirror.getAnnotationMirror(),
-                        daoMirror.getConfig());
-            }
             if (daoMirror.hasUserDefinedConfig()) {
                 TypeElement configElement = TypeMirrorUtil.toTypeElement(
                         daoMirror.getConfigValue(), env);

@@ -2,25 +2,25 @@ package org.seasar.doma.internal.apt.dao;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
-public class ConfigProxyDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.dao.ConfigProxyDao {
+public class NoConfigDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.dao.NoConfigDao {
 
     /**
      * @param config the config
      */
-    public ConfigProxyDaoImpl(org.seasar.doma.jdbc.Config config) {
-        super(new org.seasar.doma.jdbc.ConfigProxy(config));
+    public NoConfigDaoImpl(org.seasar.doma.jdbc.Config config) {
+        super(config);
     }
 
     @Override
     public int insert(org.seasar.doma.internal.apt.entity.Emp emp) {
-        entering("org.seasar.doma.internal.apt.dao.ConfigProxyDaoImpl", "insert", emp);
+        entering("org.seasar.doma.internal.apt.dao.NoConfigDaoImpl", "insert", emp);
         if (emp == null) {
             throw new org.seasar.doma.DomaNullPointerException("emp");
         }
         org.seasar.doma.internal.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.entity.Emp> __query = new org.seasar.doma.internal.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
         __query.setConfig(config);
         __query.setEntity(emp);
-        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.ConfigProxyDaoImpl");
+        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.NoConfigDaoImpl");
         __query.setCallerMethodName("insert");
         __query.setQueryTimeout(-1);
         __query.setNullExcluded(false);
@@ -30,7 +30,7 @@ public class ConfigProxyDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
         org.seasar.doma.internal.jdbc.command.InsertCommand __command = new org.seasar.doma.internal.jdbc.command.InsertCommand(__query);
         int __result = __command.execute();
         __query.complete();
-        exiting("org.seasar.doma.internal.apt.dao.ConfigProxyDaoImpl", "insert", __result);
+        exiting("org.seasar.doma.internal.apt.dao.NoConfigDaoImpl", "insert", __result);
         return __result;
     }
 

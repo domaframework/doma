@@ -12,7 +12,7 @@ public class AnnotateWithDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
     @org.seasar.doma.internal.apt.dao.ConstructorAnnotation(aaa = 1, bbb = true)
     @org.seasar.doma.internal.apt.dao.ConstructorAnnotation2(aaa = 1, bbb = true)
     public AnnotateWithDaoImpl(@org.seasar.doma.internal.apt.dao.ConstructorParameterAnnotation(aaa = 1, bbb = true) @org.seasar.doma.internal.apt.dao.ConstructorParameterAnnotation2(aaa = 1, bbb = true) org.seasar.doma.jdbc.Config config) {
-        super(new org.seasar.doma.jdbc.ConfigProxy(config));
+        super(config);
     }
 
     @Override

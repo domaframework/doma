@@ -13,14 +13,13 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.criteria;
+package org.seasar.doma.internal.jdbc.criteria;
 
 /**
  * @author taedium
  * 
  */
-public interface Criterion<T> {
+public interface ColumnCriterion<T> extends Criterion<T> {
 
-    <R, P, TH extends Throwable> R accept(CriterionVisitor<R, P, TH> visitor,
-            P p) throws TH;
+    Class<T> getType();
 }

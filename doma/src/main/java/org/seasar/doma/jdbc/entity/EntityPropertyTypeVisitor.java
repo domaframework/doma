@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc.entity;
 
-import org.seasar.doma.jdbc.criteria.CriterionVisitor;
+import org.seasar.doma.internal.jdbc.criteria.CriterionVisitor;
 
 /**
  * @author taedium

@@ -13,20 +13,18 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.dao;
+package org.seasar.doma.internal.jdbc.criteria;
 
-import org.seasar.doma.Dao;
-import org.seasar.doma.Insert;
-import org.seasar.doma.internal.apt.entity.Emp;
-import org.seasar.doma.jdbc.ConfigProxy;
+import java.util.List;
 
 /**
  * @author taedium
  * 
  */
-@Dao(config = ConfigProxy.class)
-public interface ConfigProxyDao {
+public interface TableCriterion<T> extends Criterion<T> {
 
-    @Insert
-    int insert(Emp emp);
+    boolean contains(ColumnCriterion<?> column);
+
+    List<? extends ColumnCriterion<?>> getColumns();
+
 }

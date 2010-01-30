@@ -18,8 +18,8 @@ package org.seasar.doma.jdbc.entity;
 import java.util.List;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.jdbc.criteria.ColumnCriterion;
-import org.seasar.doma.jdbc.criteria.CriterionVisitor;
+import org.seasar.doma.internal.jdbc.criteria.ColumnCriterion;
+import org.seasar.doma.internal.jdbc.criteria.CriterionVisitor;
 
 /**
  * @author taedium

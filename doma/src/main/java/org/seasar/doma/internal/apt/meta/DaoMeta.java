@@ -85,8 +85,8 @@ public class DaoMeta {
         return queryMetas;
     }
 
-    public boolean isConfigProxied() {
-        return annotateWithMirror != null || daoMirror.hasConfigProxy();
+    public boolean hasUserDefinedConfig() {
+        return daoMirror.hasUserDefinedConfig();
     }
 
     DaoMirror getDaoMirror() {

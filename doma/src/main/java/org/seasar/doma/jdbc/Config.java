@@ -25,8 +25,7 @@ import org.seasar.doma.jdbc.dialect.Dialect;
 /**
  * JDBCに関する設定です。
  * <p>
- * このインタフェースの実装は、引数なしの {@code public} なコンストラクタを持たなければいけません（ただし、Domaが提供する
- * {@link ConfigProxy} は例外です）。
+ * このインタフェースの実装は、引数なしの {@code public} なコンストラクタを持たなければいけません。
  * <p>
  * このインタフェースの実装はスレッドセーフでなければいけません。
  * 

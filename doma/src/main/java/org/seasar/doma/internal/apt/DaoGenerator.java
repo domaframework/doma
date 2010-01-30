@@ -97,7 +97,6 @@ import org.seasar.doma.internal.jdbc.sql.EntityListResultParameter;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.ConfigProxy;
 
 /**
  * 
@@ -151,28 +150,7 @@ public class DaoGenerator extends AbstractGenerator {
     }
 
     protected void printConstructors() {
-        if (daoMeta.isConfigProxied()) {
-            iprint("/**%n");
-            iprint(" * @param config the config%n");
-            iprint(" */%n");
-            for (AnnotationMirror annotation : daoMeta
-                    .getAnnotationMirrors(AnnotationTarget.CONSTRUCTOR)) {
-                iprint("@%1$s(%2$s)%n", annotation.getTypeValue(), annotation
-                        .getElementsValue());
-            }
-            iprint("public %1$s(", simpleName);
-            for (AnnotationMirror annotation : daoMeta
-                    .getAnnotationMirrors(AnnotationTarget.CONSTRUCTOR_PARAMETER)) {
-                print("@%1$s(%2$s) ", annotation.getTypeValue(), annotation
-                        .getElementsValue());
-            }
-            print("%1$s config) {%n", Config.class.getName());
-            indent();
-            iprint("super(new %1$s(config));%n", ConfigProxy.class.getName());
-            unindent();
-            iprint("}%n");
-            print("%n");
-        } else {
+        if (daoMeta.hasUserDefinedConfig()) {
             iprint("/** */%n");
             iprint("public %1$s() {%n", simpleName);
             indent();
@@ -197,6 +175,27 @@ public class DaoGenerator extends AbstractGenerator {
                     DataSource.class.getName());
             indent();
             iprint("super(new %1$s(), dataSource);%n", daoMeta.getConfigType());
+            unindent();
+            iprint("}%n");
+            print("%n");
+        } else {
+            iprint("/**%n");
+            iprint(" * @param config the config%n");
+            iprint(" */%n");
+            for (AnnotationMirror annotation : daoMeta
+                    .getAnnotationMirrors(AnnotationTarget.CONSTRUCTOR)) {
+                iprint("@%1$s(%2$s)%n", annotation.getTypeValue(), annotation
+                        .getElementsValue());
+            }
+            iprint("public %1$s(", simpleName);
+            for (AnnotationMirror annotation : daoMeta
+                    .getAnnotationMirrors(AnnotationTarget.CONSTRUCTOR_PARAMETER)) {
+                print("@%1$s(%2$s) ", annotation.getTypeValue(), annotation
+                        .getElementsValue());
+            }
+            print("%1$s config) {%n", Config.class.getName());
+            indent();
+            iprint("super(config);%n");
             unindent();
             iprint("}%n");
             print("%n");

@@ -21,7 +21,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.ConfigProxy;
 
 /**
  * Daoインタフェースであることを示します。
@@ -68,11 +67,12 @@ public @interface Dao {
     /**
      * Daoを実行する際の設定（ {@literal JDBC} の接続情報や {@literal RDBMS} の方言等）です。
      * <p>
-     * ここに指定するクラスは、引数なしのpublicなコンストラクタを持つ具象クラスでなければいけません。 ただし、例外として、
-     * {@link AnnotateWith} と併用する場合は、{@link ConfigProxy} が指定されたとみなされます。 {@code
-     * AnnotateWith} と併用する場合は、何も指定しないか、明示的に {@code ConfigProxy} を指定してください。
+     * この要素に値を指定しないでデフォルトの値を使用する場合、 Daoの実装クラスには {@code Config} を受け取る{@code
+     * public} なコンストラクタが生成されます。
      * <p>
-     * ここに指定するクラスは、Daoインタフェースの実装クラスがインスタンス化されるごとにインスタンス化されます。
+     * {@code Config}以外のクラスを指定する場合、そのクラスは、引数なしのpublicなコンストラクタを持つ具象クラスでなければいけません。
+     * その場合、Daoの実装クラスには引数なしの {@code public} なコンストラクタが生成されます。
+     * この要素に指定されたクラスは、そのコンストラクタの中でインスタンス化されます。
      */
     Class<? extends Config> config() default Config.class;
 

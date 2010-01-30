@@ -13,12 +13,13 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.criteria;
+package org.seasar.doma.internal.jdbc.criteria;
 
 /**
  * @author taedium
  * 
  */
-public interface OrderItemCriterion<T> extends Criterion<T> {
+public interface CriterionVisitor<R, P, TH extends Throwable> {
 
+    R visitUnknownExpression(Criterion<?> criterion, P p) throws TH;
 }

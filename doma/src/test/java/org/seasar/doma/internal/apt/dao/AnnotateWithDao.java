@@ -21,13 +21,12 @@ import org.seasar.doma.AnnotationTarget;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Insert;
 import org.seasar.doma.internal.apt.entity.Emp;
-import org.seasar.doma.jdbc.ConfigProxy;
 
 /**
  * @author taedium
  * 
  */
-@Dao(config = ConfigProxy.class)
+@Dao
 @AnnotateWith(annotations = {
         @Annotation(target = AnnotationTarget.CLASS, type = ClassAnnotation.class, elements = "aaa = 1, bbb = true"),
         @Annotation(target = AnnotationTarget.CLASS, type = ClassAnnotation2.class, elements = "aaa = 1, bbb = true"),

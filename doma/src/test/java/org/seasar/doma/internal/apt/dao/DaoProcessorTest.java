@@ -428,16 +428,6 @@ public class DaoProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
-    public void testConfigProxy() throws Exception {
-        Class<?> target = ConfigProxyDao.class;
-        DaoProcessor processor = new DaoProcessor();
-        addProcessor(processor);
-        addCompilationUnit(target);
-        compile();
-        assertGeneratedSource(target);
-        assertTrue(getCompiledResult());
-    }
-
     public void testAnnotateWith() throws Exception {
         Class<?> target = AnnotateWithDao.class;
         DaoProcessor processor = new DaoProcessor();
@@ -563,7 +553,7 @@ public class DaoProcessorTest extends AptTestCase {
         addProcessor(processor);
         addCompilationUnit(target);
         compile();
-        assertFalse(getCompiledResult());
-        assertMessage(Message.DOMA4162);
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
     }
 }
