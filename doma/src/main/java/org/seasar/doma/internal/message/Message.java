@@ -246,6 +246,12 @@ public enum Message implements MessageResource {
     DOMA4163("ユーザー定義の設定クラスは抽象型であってはいけません。クラス[{0}]は抽象型です。"),
     DOMA4164("ユーザー定義の設定クラスは引数なしのpublicなコンストラクタを持たなければいけません。クラス[{0}]には引数なしのpublicなコンストラクタが見つかりません。"),
     DOMA4165("@AnnotateWithを使用する場合、ユーザー定義の設定クラスは指定できません。何も指定しないか、org.seasar.doma.jdbc.ConfigProxyを明示的に指定してください。@AnnotateWithは型[{0}]に注釈されています。"),
+    DOMA4166("エンティティリスナークラスは抽象型であってはいけません。クラス[{0}]は抽象型です。"),
+    DOMA4167("エンティティリスナークラスは引数なしのpublicなコンストラクタを持たなければいけません。クラス[{0}]には引数なしのpublicなコンストラクタが見つかりません。"),
+    DOMA4168("org.seasar.doma.jdbc.id.TableIdGeneratorの実装クラスは抽象型であってはいけません。クラス[{0}]は抽象型です。"),
+    DOMA4169("org.seasar.doma.jdbc.id.TableIdGeneratorの実装クラスは引数なしのpublicなコンストラクタを持たなければいけません。クラス[{0}]には引数なしのpublicなコンストラクタが見つかりません。"),
+    DOMA4170("org.seasar.doma.jdbc.id.SequenceIdGeneratorの実装クラスは抽象型であってはいけません。クラス[{0}]は抽象型です。"),
+    DOMA4171("org.seasar.doma.jdbc.id.SequenceIdGeneratorの実装クラスは引数なしのpublicなコンストラクタを持たなければいけません。クラス[{0}]には引数なしのpublicなコンストラクタが見つかりません。"),
 
     // other
     DOMA5001("JDBCドライバがロードされていない可能性があります。JDBCドライバをロードするには、クラスパスが通されたMETA-INF/services/java.sql.DriverファイルにJDBCドライバのクラスの完全修飾名を記述してください。 ex) oracle.jdbc.driver.OracleDriver"),

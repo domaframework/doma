@@ -206,4 +206,64 @@ public class EntityProcessorTest extends AptTestCase {
         compile();
         assertTrue(getCompiledResult());
     }
+
+    public void testAbstractEntityListener() throws Exception {
+        Class<?> target = AbstractEntityListenerEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4166);
+    }
+
+    public void testNoDefaultConstructorEntityListener() throws Exception {
+        Class<?> target = NoDefaultConstructorEntityListenerEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4167);
+    }
+
+    public void testAbstractSequenceIdGenerator() throws Exception {
+        Class<?> target = AbstractSequenceIdGeneratorEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4170);
+    }
+
+    public void testNoDefaultConstructorSequenceIdGenerator() throws Exception {
+        Class<?> target = NoDefaultConstructorSequenceIdGeneratorEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4171);
+    }
+
+    public void testAbstractTableIdGenerator() throws Exception {
+        Class<?> target = AbstractTableIdGeneratorEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4168);
+    }
+
+    public void testNoDefaultConstructorTableIdGenerator() throws Exception {
+        Class<?> target = NoDefaultConstructorTableIdGeneratorEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4169);
+    }
 }

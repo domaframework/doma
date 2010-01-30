@@ -110,15 +110,12 @@ public class EntityMetaFactory {
         if (classElement.getModifiers().contains(Modifier.ABSTRACT)) {
             return;
         }
-        for (ExecutableElement constructor : ElementFilter
-                .constructorsIn(classElement.getEnclosedElements())) {
-            if (!constructor.getModifiers().contains(Modifier.PRIVATE)) {
-                if (constructor.getParameters().isEmpty()) {
-                    return;
-                }
-            }
+        ExecutableElement constructor = ElementUtil.getNoArgConstructor(
+                classElement, env);
+        if (constructor == null
+                || constructor.getModifiers().contains(Modifier.PRIVATE)) {
+            throw new AptException(Message.DOMA4124, env, classElement);
         }
-        throw new AptException(Message.DOMA4124, env, classElement);
     }
 
     protected void validateEntityListener(TypeElement classElement,
@@ -135,6 +132,25 @@ public class EntityMetaFactory {
                     entityMirror.getAnnotationMirror(), entityMirror
                             .getListener(), listenerType, argumentType,
                     classElement.getQualifiedName());
+        }
+        TypeElement listenerElement = TypeMirrorUtil.toTypeElement(
+                listenerType, env);
+        if (listenerElement == null) {
+            throw new AptIllegalStateException(
+                    "failed to convert to TypeElement");
+        }
+        if (listenerElement.getModifiers().contains(Modifier.ABSTRACT)) {
+            throw new AptException(Message.DOMA4166, env, classElement,
+                    entityMirror.getAnnotationMirror(), entityMirror
+                            .getListener(), listenerElement.getQualifiedName());
+        }
+        ExecutableElement constructor = ElementUtil.getNoArgConstructor(
+                listenerElement, env);
+        if (constructor == null
+                || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
+            throw new AptException(Message.DOMA4167, env, classElement,
+                    entityMirror.getAnnotationMirror(), entityMirror
+                            .getListener(), listenerElement.getQualifiedName());
         }
     }
 

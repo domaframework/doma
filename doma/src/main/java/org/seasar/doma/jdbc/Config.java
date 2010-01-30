@@ -20,14 +20,13 @@ import java.sql.Statement;
 
 import javax.sql.DataSource;
 
-import org.seasar.doma.Dao;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
  * JDBCに関する設定です。
  * <p>
- * このインタフェースの実装は、{@link Dao} の {@code config} 要素に指定する場合、 {@code public}
- * なデフォルトコンストラクタを持たなければいけません。
+ * このインタフェースの実装は、引数なしの {@code public} なコンストラクタを持たなければいけません（ただし、Domaが提供する
+ * {@link ConfigProxy} は例外です）。
  * <p>
  * このインタフェースの実装はスレッドセーフでなければいけません。
  * 

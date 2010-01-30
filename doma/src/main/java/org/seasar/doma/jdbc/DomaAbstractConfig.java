@@ -31,6 +31,12 @@ public abstract class DomaAbstractConfig implements Config {
 
     private static RequiresNewController requiresNewController = new NullRequiresNewController();
 
+    /**
+     * インスタンスを構築します。
+     */
+    protected DomaAbstractConfig() {
+    }
+
     @Override
     public String getDataSourceName() {
         return getClass().getName();

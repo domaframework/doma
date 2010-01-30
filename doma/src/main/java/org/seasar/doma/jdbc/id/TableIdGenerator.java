@@ -19,6 +19,7 @@ import org.seasar.doma.jdbc.JdbcException;
 
 /**
  * データベースのテーブルを使用するジェネレータです。
+ * <p>
  * 
  * @author taedium
  * 
