@@ -16,6 +16,7 @@
 package org.seasar.doma.jdbc.entity;
 
 import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.jdbc.criteria.CriterionVisitor;
 
 /**
  * 基本のプロパティ型です。
@@ -104,8 +105,22 @@ public abstract class BasicPropertyType<E, V> implements
     }
 
     @Override
-    public Class<V> getEntityPropertyClass() {
+    public Class<V> getType() {
         return entityPropertyClass;
+    }
+
+    @Override
+    public <R, P, TH extends Throwable> R accept(
+            CriterionVisitor<R, P, TH> visitor, P p) throws TH {
+        if (visitor == null) {
+            throw new DomaNullPointerException("visitor");
+        }
+        if (visitor instanceof EntityPropertyTypeVisitor<?, ?, ?>) {
+            @SuppressWarnings("unchecked")
+            EntityPropertyTypeVisitor<R, P, TH> v = (EntityPropertyTypeVisitor) visitor;
+            return v.visitEntityPropertyType(this, p);
+        }
+        return visitor.visitUnknownExpression(this, p);
     }
 
 }

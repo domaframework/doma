@@ -17,8 +17,8 @@ package org.seasar.doma.internal.apt.entity;
 
 import java.util.List;
 
+import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
-import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
@@ -27,7 +27,7 @@ import org.seasar.doma.jdbc.entity.VersionPropertyType;
  * @author taedium
  * 
  */
-public class _Emp implements EntityType<Emp> {
+public class _Emp extends AbstractEntityType<Emp> {
 
     @Override
     public String getCatalogName() {

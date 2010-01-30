@@ -38,10 +38,10 @@ import org.seasar.doma.internal.apt.type.WrapperType;
 import org.seasar.doma.internal.jdbc.util.TableUtil;
 import org.seasar.doma.internal.util.BoxedPrimitiveUtil;
 import org.seasar.doma.internal.util.ClassUtil;
+import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.AssignedIdPropertyType;
 import org.seasar.doma.jdbc.entity.BasicPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
-import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
@@ -79,8 +79,9 @@ public class EntityTypeGenerator extends AbstractGenerator {
     protected void printClass() {
         iprint("/** */%n");
         printGenerated();
-        iprint("public final class %1$s implements %2$s<%3$s> {%n", simpleName,
-                EntityType.class.getName(), entityMeta.getEntityTypeName());
+        iprint("public final class %1$s extends %2$s<%3$s> {%n", simpleName,
+                AbstractEntityType.class.getName(), entityMeta
+                        .getEntityTypeName());
         print("%n");
         indent();
         printFields();

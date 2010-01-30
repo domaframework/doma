@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.jdbc.entity;
 
+import org.seasar.doma.jdbc.criteria.ColumnCriterion;
+import org.seasar.doma.jdbc.criteria.OrderItemCriterion;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -31,7 +33,8 @@ import org.seasar.doma.wrapper.Wrapper;
  * @param <V>
  *            プロパティの型
  */
-public interface EntityPropertyType<E, V> {
+public interface EntityPropertyType<E, V> extends ColumnCriterion<V>,
+        OrderItemCriterion<V> {
 
     /**
      * 値のラッパーを返します。
@@ -41,13 +44,6 @@ public interface EntityPropertyType<E, V> {
      * @return 値のラッパー
      */
     Wrapper<V> getWrapper(E entity);
-
-    /**
-     * エンティティプロパティのクラスを返します。
-     * 
-     * @return エンティティプロパティのクラス
-     */
-    Class<V> getEntityPropertyClass();
 
     /**
      * プロパティの名前を返します。

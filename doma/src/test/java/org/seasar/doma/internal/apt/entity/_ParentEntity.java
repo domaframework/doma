@@ -17,15 +17,15 @@ package org.seasar.doma.internal.apt.entity;
 
 import java.util.List;
 
+import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.BasicPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
-import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.wrapper.Wrapper;
 
-public class _ParentEntity implements EntityType<ParentEntity> {
+public class _ParentEntity extends AbstractEntityType<ParentEntity> {
 
     public BasicPropertyType<ParentEntity, Integer> aaa = new BasicPropertyType<ParentEntity, Integer>(
             Integer.class, "aaa", "AAA", true, true) {

@@ -17,6 +17,8 @@ package org.seasar.doma.jdbc.entity;
 
 import java.util.List;
 
+import org.seasar.doma.jdbc.criteria.TableCriterion;
+
 /**
  * エンティティ型を表します。
  * 
@@ -29,7 +31,7 @@ import java.util.List;
  * @param <E>
  *            エンティティの型
  */
-public interface EntityType<E> {
+public interface EntityType<E> extends TableCriterion<E> {
 
     /**
      * エンティティの名前を返します。
