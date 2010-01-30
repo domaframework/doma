@@ -20,24 +20,25 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.seasar.doma.jdbc.ConfigProxy;
-
 /**
- * Daoインタフェースの実装クラスのソースコードにアノテーションを付与することを示します。
+ * Daoインタフェースの実装クラスのソースコードにアノテーションを注釈することを示します。
  * <p>
- * このアノテーションは次の場合にのみ有効です。
+ * このアノテーションには2種類の使い方があります
  * <ul>
- * <li>{@code Dao} と併用されている。
- * <li>{@code Dao} の {@code config} 要素に {@link ConfigProxy} が指定されている。
+ * <li>Daoインタフェースに直接的に注釈する方法。
+ * <li>Daoインタフェースに間接的に注釈する方法。この方法では、任意のアノテーションに{@code AnnotateWith}
+ * を注釈し、そのアノテーションをDaoインタフェースに注釈する。
  * </ul>
  * <p>
+ * このアノテーションを直接的であれ間接的であれDaoインタフェースに注釈する場合、{@link Dao#config()} に値を設定する必要はありません。
+ * <p>
  * 
- * <h5>例:</h5>
+ * <h5>例:直接的に注釈する方法</h5>
  * <a href="http://code.google.com/p/google-guice/">Guice</a>
- * のアノテーションを付与するには次のように記述します。
+ * のアノテーションを注釈するには次のように記述します。
  * 
  * <pre>
- * &#064;Dao(config = ConfigProxy.class)
+ * &#064;Dao
  * &#064;AnnotateWith(annotations = {
  *         &#064;Annotation(target = AnnotationTarget.CONSTRUCTOR, type = Inject.class),
  *         &#064;Annotation(target = AnnotationTarget.CONSTRUCTOR_PARAMETER, type = Named.class, elements = &quot;\&quot;sales\&quot;&quot;) })
@@ -59,10 +60,33 @@ import org.seasar.doma.jdbc.ConfigProxy;
  * }
  * </pre>
  * 
+ * <h5>例:間接的に注釈する方法</h5>
+ * {@code AnnotateWith} は、任意のアノテーションに注釈し、そのアノテーションをDaoに注釈することも可能です。 たとえば、ここでは、
+ * {@code GuiceConfig} というアノテーションに {@code AnnotateWith} を注釈する例を示します。
+ * 
+ * <pre>
+ * &#064;AnnotateWith(annotations = {
+ *         &#064;Annotation(target = AnnotationTarget.CONSTRUCTOR, type = Inject.class),
+ *         &#064;Annotation(target = AnnotationTarget.CONSTRUCTOR_PARAMETER, type = Named.class, elements = &quot;\&quot;sales\&quot;&quot;) })
+ * public &#064;interface GuiceConfig {
+ *     ...
+ * }
+ * </pre>
+ * 
+ * {@code GuiceConfig} をDaoに注釈すれば、{@code AnnotateWith}を直接注釈した場合と同様の実装クラスが生成されます。
+ * 
+ * <pre>
+ * &#064;Dao
+ * &#064;GuiceConfig
+ * public interface EmployeeDao {
+ *     ...
+ * }
+ * </pre>
+ * 
  * @author taedium
  * 
  */
-@Target(ElementType.TYPE)
+@Target( { ElementType.TYPE, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AnnotateWith {
 

@@ -38,28 +38,51 @@ public class AnnotateWithMirror {
 
     protected final javax.lang.model.element.AnnotationMirror annotationMirror;
 
+    protected TypeElement ownerElement;
+
     protected AnnotationValue annotations;
 
     protected List<AnnotationMirror> annotationsValue;
 
     protected AnnotateWithMirror(
-            javax.lang.model.element.AnnotationMirror annotationMirror) {
-        assertNotNull(annotationMirror);
+            javax.lang.model.element.AnnotationMirror annotationMirror,
+            TypeElement ownerElement) {
+        assertNotNull(annotationMirror, ownerElement);
         this.annotationMirror = annotationMirror;
+        this.ownerElement = ownerElement;
     }
 
     public static AnnotateWithMirror newInstance(TypeElement clazz,
             ProcessingEnvironment env) {
         assertNotNull(env);
-        javax.lang.model.element.AnnotationMirror annotationMirror = ElementUtil
+        javax.lang.model.element.AnnotationMirror annotateWith = ElementUtil
                 .getAnnotationMirror(clazz, AnnotateWith.class, env);
-        if (annotationMirror == null) {
-            return null;
+        TypeElement ownerElement = null;
+        if (annotateWith == null) {
+            for (javax.lang.model.element.AnnotationMirror annotationMirror : clazz
+                    .getAnnotationMirrors()) {
+                ownerElement = ElementUtil.toTypeElement(annotationMirror
+                        .getAnnotationType().asElement(), env);
+                if (ownerElement == null) {
+                    continue;
+                }
+                annotateWith = ElementUtil.getAnnotationMirror(ownerElement,
+                        AnnotateWith.class, env);
+                if (annotateWith != null) {
+                    break;
+                }
+            }
+            if (annotateWith == null) {
+                return null;
+            }
+        } else {
+            ownerElement = clazz;
         }
-        AnnotateWithMirror result = new AnnotateWithMirror(annotationMirror);
+        AnnotateWithMirror result = new AnnotateWithMirror(annotateWith,
+                ownerElement);
         for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : env
-                .getElementUtils().getElementValuesWithDefaults(
-                        annotationMirror).entrySet()) {
+                .getElementUtils().getElementValuesWithDefaults(annotateWith)
+                .entrySet()) {
             String name = entry.getKey().getSimpleName().toString();
             AnnotationValue value = entry.getValue();
             if ("annotations".equals(name)) {
@@ -73,6 +96,10 @@ public class AnnotateWithMirror {
             }
         }
         return result;
+    }
+
+    public TypeElement getOwnerElement() {
+        return ownerElement;
     }
 
     public javax.lang.model.element.AnnotationMirror getAnnotationMirror() {

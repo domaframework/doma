@@ -63,9 +63,9 @@ public class DomaException extends RuntimeException {
     }
 
     /**
-     * メッセージコードを返します。
+     * メッセージリソースを返します。
      * 
-     * @return メッセージコード
+     * @return メッセージリソース
      */
     public MessageResource getMessageResource() {
         return messageResource;

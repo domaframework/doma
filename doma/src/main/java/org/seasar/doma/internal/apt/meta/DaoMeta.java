@@ -42,8 +42,6 @@ public class DaoMeta {
 
     protected AnnotateWithMirror annotateWithMirror;
 
-    protected boolean configProxied;
-
     protected TypeMirror daoType;
 
     protected TypeElement daoElement;
@@ -88,11 +86,7 @@ public class DaoMeta {
     }
 
     public boolean isConfigProxied() {
-        return configProxied;
-    }
-
-    public void setConfigProxied(boolean configAdapter) {
-        this.configProxied = configAdapter;
+        return annotateWithMirror != null || daoMirror.hasConfigProxy();
     }
 
     DaoMirror getDaoMirror() {

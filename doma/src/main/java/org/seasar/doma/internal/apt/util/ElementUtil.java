@@ -27,6 +27,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.ExecutableType;
+import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.SimpleElementVisitor6;
 import javax.lang.model.util.SimpleTypeVisitor6;
@@ -121,6 +122,17 @@ public class ElementUtil {
             DeclaredType annotationType = annotationMirror.getAnnotationType();
             if (TypeMirrorUtil.isSameType(annotationType, annotationClass, env)) {
                 return annotationMirror;
+            }
+        }
+        return null;
+    }
+
+    public static ExecutableElement getNoArgConstructor(
+            TypeElement typeElement, ProcessingEnvironment env) {
+        for (ExecutableElement constructor : ElementFilter
+                .constructorsIn(typeElement.getEnclosedElements())) {
+            if (constructor.getParameters().isEmpty()) {
+                return constructor;
             }
         }
         return null;

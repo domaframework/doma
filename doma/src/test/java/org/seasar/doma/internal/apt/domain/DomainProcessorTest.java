@@ -67,7 +67,7 @@ public class DomainProcessorTest extends AptTestCase {
         addCompilationUnit(UnsupportedValueTypeDomain.class);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4102);
+        assertMessage(Message.DOMA4102);
     }
 
     public void testConstrutorNotFound() throws Exception {
@@ -76,7 +76,7 @@ public class DomainProcessorTest extends AptTestCase {
         addCompilationUnit(ConstrutorNotFoundDomain.class);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4103);
+        assertMessage(Message.DOMA4103);
     }
 
     public void testAccessorNotFound() throws Exception {
@@ -85,7 +85,7 @@ public class DomainProcessorTest extends AptTestCase {
         addCompilationUnit(AccessorNotFoundDomain.class);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4104);
+        assertMessage(Message.DOMA4104);
     }
 
     public void testInner() throws Exception {
@@ -94,7 +94,7 @@ public class DomainProcessorTest extends AptTestCase {
         addCompilationUnit(Outer.class);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4106);
+        assertMessage(Message.DOMA4106);
     }
 
     public void testPackagePrivate() throws Exception {

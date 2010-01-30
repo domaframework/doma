@@ -89,10 +89,10 @@ public abstract class AptTestCase extends AptinaTestCase {
         throw new AssertionFailedError("annotation not found.");
     }
 
-    protected void assertMessageCode(Message messageCode) {
+    protected void assertMessage(Message message) {
         List<Diagnostic<? extends JavaFileObject>> diagnostics = getDiagnostics();
         if (diagnostics.size() == 1) {
-            if (messageCode == extractMessageCode(diagnostics.get(0))) {
+            if (message == extractMessage(diagnostics.get(0))) {
                 return;
             }
         }
@@ -117,12 +117,12 @@ public abstract class AptTestCase extends AptinaTestCase {
 
     protected Message getMessageCode() {
         for (Diagnostic<? extends JavaFileObject> diagnostic : getDiagnostics()) {
-            return extractMessageCode(diagnostic);
+            return extractMessage(diagnostic);
         }
         return null;
     }
 
-    protected Message extractMessageCode(
+    protected Message extractMessage(
             Diagnostic<? extends JavaFileObject> diagnostic) {
         String message = diagnostic.getMessage(locale);
         int start = message.indexOf('[');

@@ -97,6 +97,7 @@ import org.seasar.doma.internal.jdbc.sql.EntityListResultParameter;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.ConfigProxy;
 
 /**
  * 
@@ -167,7 +168,7 @@ public class DaoGenerator extends AbstractGenerator {
             }
             print("%1$s config) {%n", Config.class.getName());
             indent();
-            iprint("super(new %1$s(config));%n", daoMeta.getConfigType());
+            iprint("super(new %1$s(config));%n", ConfigProxy.class.getName());
             unindent();
             iprint("}%n");
             print("%n");
@@ -633,7 +634,8 @@ public class DaoGenerator extends AbstractGenerator {
             printEnteringStatement(m);
             printPrerequisiteStatements(m);
 
-            iprint("%1$s<%2$s> __query = new %1$s<%2$s>(%3$s.getSingletonInternal());%n",
+            iprint(
+                    "%1$s<%2$s> __query = new %1$s<%2$s>(%3$s.getSingletonInternal());%n",
                     m.getQueryClass().getName(), m.getEntityType()
                             .getTypeNameAsTypeParameter(),
                     getPrefixedEntityTypeName(m.getEntityType()
@@ -742,7 +744,8 @@ public class DaoGenerator extends AbstractGenerator {
             printEnteringStatement(m);
             printPrerequisiteStatements(m);
 
-            iprint("%1$s<%2$s> __query = new %1$s<%2$s>(%3$s.getSingletonInternal());%n",
+            iprint(
+                    "%1$s<%2$s> __query = new %1$s<%2$s>(%3$s.getSingletonInternal());%n",
                     m.getQueryClass().getName(), m.getEntityType()
                             .getTypeNameAsTypeParameter(),
                     getPrefixedEntityTypeName(m.getEntityType()

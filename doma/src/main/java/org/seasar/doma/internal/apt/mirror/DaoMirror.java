@@ -30,6 +30,9 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementUtil;
+import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.ConfigProxy;
 
 /**
  * @author taedium
@@ -39,11 +42,17 @@ public class DaoMirror {
 
     protected final AnnotationMirror annotationMirror;
 
+    protected final ProcessingEnvironment env;
+
     protected AnnotationValue config;
 
-    protected DaoMirror(AnnotationMirror annotationMirror) {
-        assertNotNull(annotationMirror);
+    protected TypeMirror configValue;
+
+    protected DaoMirror(AnnotationMirror annotationMirror,
+            ProcessingEnvironment env) {
+        assertNotNull(annotationMirror, env);
         this.annotationMirror = annotationMirror;
+        this.env = env;
     }
 
     public static DaoMirror newInstance(TypeElement interfase,
@@ -54,7 +63,7 @@ public class DaoMirror {
         if (annotationMirror == null) {
             return null;
         }
-        DaoMirror result = new DaoMirror(annotationMirror);
+        DaoMirror result = new DaoMirror(annotationMirror, env);
         for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : env
                 .getElementUtils().getElementValuesWithDefaults(
                         annotationMirror).entrySet()) {
@@ -62,6 +71,10 @@ public class DaoMirror {
             AnnotationValue value = entry.getValue();
             if ("config".equals(name)) {
                 result.config = value;
+                result.configValue = AnnotationValueUtil.toType(value);
+                if (result.configValue == null) {
+                    throw new AptIllegalStateException("config");
+                }
             }
         }
         return result;
@@ -81,6 +94,32 @@ public class DaoMirror {
             throw new AptIllegalStateException("config");
         }
         return value;
+    }
+
+    public boolean hasDefaultConfig() {
+        return hasDefaultConfigInternal();
+    }
+
+    protected boolean hasDefaultConfigInternal() {
+        if (TypeMirrorUtil.isSameType(configValue, Config.class, env)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean hasConfigProxy() {
+        return hasConfigProxyInternal();
+    }
+
+    protected boolean hasConfigProxyInternal() {
+        if (TypeMirrorUtil.isSameType(configValue, ConfigProxy.class, env)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean hasUserDefinedConfig() {
+        return !hasDefaultConfigInternal() && !hasConfigProxyInternal();
     }
 
 }

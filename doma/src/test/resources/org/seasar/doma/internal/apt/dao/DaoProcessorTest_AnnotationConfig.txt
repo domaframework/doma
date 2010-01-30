@@ -1,0 +1,41 @@
+package org.seasar.doma.internal.apt.dao;
+
+/** */
+@org.seasar.doma.internal.apt.dao.ClassAnnotation(aaa = 1, bbb = true)
+@org.seasar.doma.internal.apt.dao.ClassAnnotation2(aaa = 1, bbb = true)
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
+public class AnnotationConfigDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.dao.AnnotationConfigDao {
+
+    /**
+     * @param config the config
+     */
+    @org.seasar.doma.internal.apt.dao.ConstructorAnnotation(aaa = 1, bbb = true)
+    @org.seasar.doma.internal.apt.dao.ConstructorAnnotation2(aaa = 1, bbb = true)
+    public AnnotationConfigDaoImpl(@org.seasar.doma.internal.apt.dao.ConstructorParameterAnnotation(aaa = 1, bbb = true) @org.seasar.doma.internal.apt.dao.ConstructorParameterAnnotation2(aaa = 1, bbb = true) org.seasar.doma.jdbc.Config config) {
+        super(new org.seasar.doma.jdbc.ConfigProxy(config));
+    }
+
+    @Override
+    public int insert(org.seasar.doma.internal.apt.entity.Emp emp) {
+        entering("org.seasar.doma.internal.apt.dao.AnnotationConfigDaoImpl", "insert", emp);
+        if (emp == null) {
+            throw new org.seasar.doma.DomaNullPointerException("emp");
+        }
+        org.seasar.doma.internal.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.entity.Emp> __query = new org.seasar.doma.internal.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
+        __query.setConfig(config);
+        __query.setEntity(emp);
+        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AnnotationConfigDaoImpl");
+        __query.setCallerMethodName("insert");
+        __query.setQueryTimeout(-1);
+        __query.setNullExcluded(false);
+        __query.setIncludedPropertyNames();
+        __query.setExcludedPropertyNames();
+        __query.prepare();
+        org.seasar.doma.internal.jdbc.command.InsertCommand __command = new org.seasar.doma.internal.jdbc.command.InsertCommand(__query);
+        int __result = __command.execute();
+        __query.complete();
+        exiting("org.seasar.doma.internal.apt.dao.AnnotationConfigDaoImpl", "insert", __result);
+        return __result;
+    }
+
+}

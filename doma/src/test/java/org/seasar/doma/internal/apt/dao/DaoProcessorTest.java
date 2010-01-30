@@ -108,7 +108,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4005);
+        assertMessage(Message.DOMA4005);
     }
 
     public void testNotInterface() throws Exception {
@@ -118,7 +118,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4014);
+        assertMessage(Message.DOMA4014);
     }
 
     public void testNotTopLevel() throws Exception {
@@ -128,7 +128,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4017);
+        assertMessage(Message.DOMA4017);
     }
 
     public void testNameUnsafe() throws Exception {
@@ -138,7 +138,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertTrue(getCompiledResult());
-        assertMessageCode(Message.DOMA4026);
+        assertMessage(Message.DOMA4026);
     }
 
     public void testElementOfParamListUnspecified() throws Exception {
@@ -148,7 +148,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4159);
+        assertMessage(Message.DOMA4159);
     }
 
     public void testElementOfParamListNotDomain() throws Exception {
@@ -158,7 +158,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4160);
+        assertMessage(Message.DOMA4160);
     }
 
     public void testAutoBatchUpdate() throws Exception {
@@ -258,7 +258,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4045);
+        assertMessage(Message.DOMA4045);
     }
 
     public void testDelegate() throws Exception {
@@ -288,7 +288,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4080);
+        assertMessage(Message.DOMA4080);
     }
 
     public void testNoMethodDelegate() throws Exception {
@@ -298,7 +298,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4081);
+        assertMessage(Message.DOMA4081);
     }
 
     public void testIllegalReturnTypeDelegate() throws Exception {
@@ -308,7 +308,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4081);
+        assertMessage(Message.DOMA4081);
     }
 
     public void testIllegalParameterTypeDelegate() throws Exception {
@@ -318,7 +318,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4081);
+        assertMessage(Message.DOMA4081);
     }
 
     public void testIncludeAndExclude() throws Exception {
@@ -338,7 +338,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4086);
+        assertMessage(Message.DOMA4086);
     }
 
     public void testUnknownBindVariableSqlValidation() throws Exception {
@@ -348,7 +348,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4092);
+        assertMessage(Message.DOMA4092);
     }
 
     public void testUnknownVariableSqlValidation() throws Exception {
@@ -358,7 +358,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4092);
+        assertMessage(Message.DOMA4092);
     }
 
     public void testMethodAccessSqlValidation() throws Exception {
@@ -405,7 +405,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4020);
+        assertMessage(Message.DOMA4020);
     }
 
     public void testNoTestLiteral() throws Exception {
@@ -415,7 +415,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4069);
+        assertMessage(Message.DOMA4069);
     }
 
     public void testEnum() throws Exception {
@@ -455,7 +455,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4142);
+        assertMessage(Message.DOMA4165);
     }
 
     public void testIllegalParameterName() throws Exception {
@@ -465,7 +465,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4025);
+        assertMessage(Message.DOMA4025);
     }
 
     public void testPrimitiveType() throws Exception {
@@ -485,7 +485,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4154);
+        assertMessage(Message.DOMA4154);
     }
 
     public void testSelectAbstractEntityList() throws Exception {
@@ -495,7 +495,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4155);
+        assertMessage(Message.DOMA4155);
     }
 
     public void testFunctionAbstractEntityList() throws Exception {
@@ -505,7 +505,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4156);
+        assertMessage(Message.DOMA4156);
     }
 
     public void testProcedureAbstractEntityList() throws Exception {
@@ -515,7 +515,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4157);
+        assertMessage(Message.DOMA4157);
     }
 
     public void testIterateAbstractEntity() throws Exception {
@@ -525,7 +525,7 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessageCode(Message.DOMA4158);
+        assertMessage(Message.DOMA4158);
     }
 
     public void testEmpDtoParameter() throws Exception {
@@ -545,5 +545,25 @@ public class DaoProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertTrue(getCompiledResult());
+    }
+
+    public void testAnnotationConfig() throws Exception {
+        Class<?> target = AnnotationConfigDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testNoConfig() throws Exception {
+        Class<?> target = NoConfigDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4162);
     }
 }

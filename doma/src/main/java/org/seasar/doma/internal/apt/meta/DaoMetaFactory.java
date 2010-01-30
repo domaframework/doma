@@ -23,6 +23,7 @@ import java.util.List;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.util.ElementFilter;
@@ -35,9 +36,9 @@ import org.seasar.doma.internal.apt.Notifier;
 import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.mirror.AnnotateWithMirror;
 import org.seasar.doma.internal.apt.mirror.DaoMirror;
+import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.message.Message;
-import org.seasar.doma.jdbc.ConfigProxy;
 
 /**
  * @author taedium
@@ -80,10 +81,6 @@ public class DaoMetaFactory {
         daoMeta.setName(name);
         daoMeta.setDaoElement(interfaceElement);
         daoMeta.setDaoType(interfaceElement.asType());
-        if (TypeMirrorUtil.isSameType(daoMeta.getConfigType(),
-                ConfigProxy.class, env)) {
-            daoMeta.setConfigProxied(true);
-        }
         doAnnotateWith(daoMeta);
     }
 
@@ -91,36 +88,62 @@ public class DaoMetaFactory {
             DaoMeta daoMeta) {
         if (!interfaceElement.getKind().isInterface()) {
             DaoMirror daoMirror = daoMeta.getDaoMirror();
-            throw new AptException(Message.DOMA4014, env,
-                    interfaceElement, daoMirror.getAnnotationMirror());
+            throw new AptException(Message.DOMA4014, env, interfaceElement,
+                    daoMirror.getAnnotationMirror());
         }
         if (interfaceElement.getNestingKind().isNested()) {
-            throw new AptException(Message.DOMA4017, env,
-                    interfaceElement);
+            throw new AptException(Message.DOMA4017, env, interfaceElement);
         }
         if (!interfaceElement.getInterfaces().isEmpty()) {
-            throw new AptException(Message.DOMA4045, env,
-                    interfaceElement);
+            throw new AptException(Message.DOMA4045, env, interfaceElement);
         }
         if (!interfaceElement.getTypeParameters().isEmpty()) {
-            throw new AptException(Message.DOMA4059, env,
-                    interfaceElement);
+            throw new AptException(Message.DOMA4059, env, interfaceElement);
         }
     }
 
     protected void doAnnotateWith(DaoMeta daoMeta) {
         AnnotateWithMirror annotateWithMirror = AnnotateWithMirror.newInstance(
                 daoMeta.getDaoElement(), env);
+        DaoMirror daoMirror = daoMeta.getDaoMirror();
         if (annotateWithMirror == null) {
-            return;
-        }
-        if (daoMeta.isConfigProxied()) {
-            daoMeta.setAnnotateWithMirror(annotateWithMirror);
+            if (daoMirror.hasDefaultConfig()) {
+                throw new AptException(Message.DOMA4162, env, daoMeta
+                        .getDaoElement(), daoMirror.getAnnotationMirror(),
+                        daoMirror.getConfig());
+            }
+            if (daoMirror.hasUserDefinedConfig()) {
+                TypeElement configElement = TypeMirrorUtil.toTypeElement(
+                        daoMirror.getConfigValue(), env);
+                if (configElement == null) {
+                    throw new AptIllegalStateException(
+                            "failed to convert to TypeElement.");
+                }
+                if (configElement.getModifiers().contains(Modifier.ABSTRACT)) {
+                    throw new AptException(Message.DOMA4163, env, daoMeta
+                            .getDaoElement(), daoMirror.getAnnotationMirror(),
+                            daoMirror.getConfig(), configElement
+                                    .getQualifiedName());
+                }
+                ExecutableElement constructor = ElementUtil
+                        .getNoArgConstructor(configElement, env);
+                if (constructor == null
+                        || !constructor.getModifiers()
+                                .contains(Modifier.PUBLIC)) {
+                    throw new AptException(Message.DOMA4164, env, daoMeta
+                            .getDaoElement(), daoMirror.getAnnotationMirror(),
+                            daoMirror.getConfig(), configElement
+                                    .getQualifiedName());
+                }
+            }
         } else {
-            DaoMirror daoMirror = daoMeta.getDaoMirror();
-            throw new AptException(Message.DOMA4142, env, daoMeta
-                    .getDaoElement(), daoMirror.getAnnotationMirror(),
-                    daoMirror.getConfig());
+            if (daoMirror.hasUserDefinedConfig()) {
+                throw new AptException(Message.DOMA4165, env, daoMeta
+                        .getDaoElement(), daoMirror.getAnnotationMirror(),
+                        daoMirror.getConfig(), annotateWithMirror
+                                .getOwnerElement());
+            }
+            daoMeta.setAnnotateWithMirror(annotateWithMirror);
         }
     }
 
