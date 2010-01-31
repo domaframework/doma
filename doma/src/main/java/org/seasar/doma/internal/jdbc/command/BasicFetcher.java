@@ -41,6 +41,7 @@ public class BasicFetcher implements ResultFetcher<ResultSet, Wrapper<?>> {
     @Override
     public void fetch(ResultSet resultSet, Wrapper<?> wrapper)
             throws SQLException {
+        assertNotNull(resultSet, wrapper);
         ResultSetMetaData resultSetMeta = resultSet.getMetaData();
         JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().getDialect()
                 .getJdbcMappingVisitor();

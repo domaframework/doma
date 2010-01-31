@@ -54,7 +54,7 @@ public class EntityFetcher<E> implements ResultFetcher<ResultSet, E> {
 
     @Override
     public void fetch(ResultSet resultSet, E entity) throws SQLException {
-        assertNotNull(resultSet, entityType);
+        assertNotNull(resultSet, entity);
         if (indexMap == null) {
             indexMap = createIndexMap(resultSet.getMetaData(), entityType);
         }
