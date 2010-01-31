@@ -87,6 +87,22 @@ public class MysqlDialect extends StandardDialect {
     }
 
     /**
+     * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor}
+     * を指定してインスタンスを構築します。
+     * 
+     * @param jdbcMappingVisitor
+     *            {@link Wrapper} をJDBCの型とマッピングするビジター
+     * @param sqlLogFormattingVisitor
+     *            SQLのバインド変数にマッピングされる {@link Wrapper}
+     *            をログ用のフォーマットされた文字列へと変換するビジター
+     */
+    public MysqlDialect(JdbcMappingVisitor jdbcMappingVisitor,
+            SqlLogFormattingVisitor sqlLogFormattingVisitor) {
+        this(jdbcMappingVisitor, sqlLogFormattingVisitor,
+                new MysqlExpressionFunctions());
+    }
+
+    /**
      * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor} と
      * {@link ExpressionFunctions} を指定してインスタンスを構築します。
      * 
