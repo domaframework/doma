@@ -61,7 +61,7 @@ public abstract class ModifyCommand<Q extends ModifyQuery> implements
             try {
                 log();
                 setupOptions(preparedStatement);
-                bindValues(preparedStatement);
+                bindParameters(preparedStatement);
                 return executeInternal(preparedStatement);
             } catch (SQLException e) {
                 Dialect dialect = query.getConfig().getDialect();
@@ -98,7 +98,7 @@ public abstract class ModifyCommand<Q extends ModifyQuery> implements
         }
     }
 
-    protected void bindValues(PreparedStatement preparedStatement)
+    protected void bindParameters(PreparedStatement preparedStatement)
             throws SQLException {
         PreparedSqlParameterBinder binder = new PreparedSqlParameterBinder(
                 query);
