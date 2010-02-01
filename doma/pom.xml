@@ -6,7 +6,7 @@
 	<!-- The Basics -->
 	<groupId>org.seasar.doma</groupId>
 	<artifactId>doma</artifactId>
-	<version>1.0.0-RC3</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<!-- More Project Information -->
@@ -241,7 +241,7 @@
 		<dependency>
 			<groupId>org.seasar.aptina</groupId>
 			<artifactId>aptina-unit</artifactId>
-			<version>[0.0,)</version>
+			<version>0.0.1</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
