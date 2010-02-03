@@ -289,8 +289,7 @@ public interface EmployeeDao {
 					上のインタフェースに対する実装クラスのソースコードは、aptにより次のように生成されます。
 					コンストラクタとコンストラクタのパラメータにアノテーションが注釈されていることに注目してください。
 				</p>
-<source><![CDATA[@Dao(config = ConfigProxy.class)
-public class EmployeeDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao implements example.EmployeeDao {
+<source><![CDATA[public class EmployeeDaoImpl extends org.seasar.doma.jdbc.DomaAbstractDao implements example.EmployeeDao {
     @com.google.inject.Inject()
     public EmployeeDaoImpl(@com.google.inject.name.Named("sales") org.seasar.doma.jdbc.Config config) {
         super(config);
