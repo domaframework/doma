@@ -1,4 +1,4 @@
-<project name="build-doma" default="jar" basedir=".">
+<project name="doma-it-doma" default="jar" basedir=".">
 
 	<property name="build" value="target/build"/>
 	<property name="src" value="../doma/src/main/java"/>

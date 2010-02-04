@@ -10,6 +10,8 @@
 			<fileset dir="../doma-it" includes="**/pom.xml" />
 			<fileset dir="../doma-gen" includes="**/pom.xml" />
 			<fileset dir="../doma-gen-it" includes="**/pom.xml" />
+			<fileset dir="../doma-jpetstore" includes="**/pom.xml" />
+			<fileset dir="../doma-tutorial" includes="**/pom.xml" />
 		</replaceregexp>
 		<replaceregexp
 			match="(private static final String VERSION = &quot;)[^&quot;]*(&quot;)"
@@ -55,10 +57,10 @@
 			</zipfileset>
 		</zip>
 		<copy file="../doma-gen/${zipDir}/doma-gen-${ver}.zip" todir="${zipDir}"/>
-		<ant dir="../doma-tutorial" antfile="build.xml" target="dist">
+		<ant dir="../doma-tutorial" antfile="build-dist.xml" target="dist">
 			<property name="zipDir" value="../doma/${zipDir}"/>
 		</ant>
-		<ant dir="../doma-jpetstore" antfile="build.xml" target="dist">
+		<ant dir="../doma-jpetstore" antfile="build-dist.xml" target="dist">
 			<property name="zipDir" value="../doma/${zipDir}"/>
 		</ant>
 	</target>
