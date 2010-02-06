@@ -54,6 +54,8 @@ public class EntityMeta {
 
     protected OriginalStatesMeta originalStatesMeta;
 
+    protected boolean error;
+
     public EntityMeta(EntityMirror entityMirror, TypeElement entityElement) {
         assertNotNull(entityMirror);
         this.entityMirror = entityMirror;
@@ -159,4 +161,13 @@ public class EntityMeta {
     public boolean isAbstract() {
         return entityElement.getModifiers().contains(Modifier.ABSTRACT);
     }
+
+    public boolean isError() {
+        return error;
+    }
+
+    public void setError(boolean error) {
+        this.error = error;
+    }
+
 }

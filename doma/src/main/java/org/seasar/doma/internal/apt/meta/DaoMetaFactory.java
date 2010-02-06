@@ -150,6 +150,7 @@ public class DaoMetaFactory {
                 doMethodElement(methodElement, daoMeta);
             } catch (AptException e) {
                 Notifier.notify(env, e);
+                daoMeta.setError(true);
             }
         }
     }

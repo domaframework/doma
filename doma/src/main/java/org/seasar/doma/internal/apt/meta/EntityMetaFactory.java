@@ -206,6 +206,7 @@ public class EntityMetaFactory {
                 }
             } catch (AptException e) {
                 Notifier.notify(env, e);
+                entityMeta.setError(true);
             }
         }
     }

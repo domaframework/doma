@@ -54,14 +54,15 @@ public class EntityProcessor extends AbstractProcessor {
             for (TypeElement entityElement : ElementFilter.typesIn(roundEnv
                     .getElementsAnnotatedWith(a))) {
                 if (Options.isDebugEnabled(processingEnv)) {
-                    Notifier.debug(processingEnv, Message.DOMA4090,
-                            getClass().getName(), entityElement
-                                    .getQualifiedName());
+                    Notifier.debug(processingEnv, Message.DOMA4090, getClass()
+                            .getName(), entityElement.getQualifiedName());
                 }
                 try {
                     EntityMeta entityMeta = entityMetaFactory
                             .createEntityMeta(entityElement);
-                    generateEntity(entityElement, entityMeta);
+                    if (!entityMeta.isError()) {
+                        generateEntity(entityElement, entityMeta);
+                    }
                 } catch (AptException e) {
                     Notifier.notify(processingEnv, e);
                 } catch (AptIllegalStateException e) {
@@ -74,9 +75,8 @@ public class EntityProcessor extends AbstractProcessor {
                     throw e;
                 }
                 if (Options.isDebugEnabled(processingEnv)) {
-                    Notifier.debug(processingEnv, Message.DOMA4091,
-                            getClass().getName(), entityElement
-                                    .getQualifiedName());
+                    Notifier.debug(processingEnv, Message.DOMA4091, getClass()
+                            .getName(), entityElement.getQualifiedName());
                 }
             }
         }
@@ -110,8 +110,7 @@ public class EntityProcessor extends AbstractProcessor {
     protected EntityTypeGenerator createEntityMetaFactoryGenerator(
             TypeElement entityElement, EntityMeta entityMeta)
             throws IOException {
-        return new EntityTypeGenerator(processingEnv, entityElement,
-                entityMeta);
+        return new EntityTypeGenerator(processingEnv, entityElement, entityMeta);
     }
 
 }

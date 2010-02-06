@@ -70,14 +70,14 @@ public class DaoProcessor extends AbstractProcessor {
             for (TypeElement daoElement : ElementFilter.typesIn(roundEnv
                     .getElementsAnnotatedWith(a))) {
                 if (Options.isDebugEnabled(processingEnv)) {
-                    Notifier
-                            .debug(processingEnv, Message.DOMA4090,
-                                    getClass().getName(), daoElement
-                                            .getQualifiedName());
+                    Notifier.debug(processingEnv, Message.DOMA4090, getClass()
+                            .getName(), daoElement.getQualifiedName());
                 }
                 try {
                     DaoMeta daoMeta = daoMetaFactory.createDaoMeta(daoElement);
-                    generateDao(daoElement, daoMeta);
+                    if (!daoMeta.isError()) {
+                        generateDao(daoElement, daoMeta);
+                    }
                 } catch (AptException e) {
                     Notifier.notify(processingEnv, e);
                 } catch (AptIllegalStateException e) {
@@ -90,10 +90,8 @@ public class DaoProcessor extends AbstractProcessor {
                     throw e;
                 }
                 if (Options.isDebugEnabled(processingEnv)) {
-                    Notifier
-                            .debug(processingEnv, Message.DOMA4091,
-                                    getClass().getName(), daoElement
-                                            .getQualifiedName());
+                    Notifier.debug(processingEnv, Message.DOMA4091, getClass()
+                            .getName(), daoElement.getQualifiedName());
                 }
             }
         }
@@ -128,8 +126,8 @@ public class DaoProcessor extends AbstractProcessor {
             daoGenerator = createDaoGenerator(daoElement, daoMeta);
             daoGenerator.generate();
         } catch (IOException e) {
-            throw new AptException(Message.DOMA4011, processingEnv,
-                    daoElement, e, daoElement.getQualifiedName(), e);
+            throw new AptException(Message.DOMA4011, processingEnv, daoElement,
+                    e, daoElement.getQualifiedName(), e);
         } finally {
             IOUtil.close(daoGenerator);
         }

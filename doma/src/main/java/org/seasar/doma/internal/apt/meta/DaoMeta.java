@@ -48,6 +48,8 @@ public class DaoMeta {
 
     protected String name;
 
+    protected boolean error;
+
     public DaoMeta(DaoMirror daoMirror) {
         assertNotNull(daoMirror);
         this.daoMirror = daoMirror;
@@ -121,4 +123,13 @@ public class DaoMeta {
         }
         return results;
     }
+
+    public boolean isError() {
+        return error;
+    }
+
+    public void setError(boolean error) {
+        this.error = error;
+    }
+
 }
