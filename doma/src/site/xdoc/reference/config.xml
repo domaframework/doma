@@ -92,7 +92,7 @@
 						<td><code>org.seasar.doma.jdbc.dialect.Mssql2008Dialect</code></td>
 					</tr>
 					<tr>
-						<td>MySql</td>
+						<td>MySQL</td>
 						<td><code>org.seasar.doma.jdbc.dialect.MySqlDialect</code></td>
 					</tr>
 					<tr>

@@ -35,11 +35,11 @@
 				あらかじめ<a href="setup.html">セットアップ</a>を完了させてください。
 			</p>
 			<p>
-				このクイックスタートでは、PostgresSQLにサンプルテーブルとデータを用意し、取得と更新を行います。
+				このクイックスタートでは、PostgreSQLにサンプルテーブルとデータを用意し、取得と更新を行います。
 			</p>
 			<p>
-				DDL、データベースの接続情報、方言（Dialect）の実装を書き換えれば他のRDBMSでも動作します
-				（ただし、現状サポートしているRDBMSは、PosrgreSQL以外では、Oracle Database、MySQL、HSQLDBの3つです）。
+				DDL、データベースの接続情報、方言（Dialect）の実装を書き換えれば他のRDBMSでも動作します。
+				（現在、サポートしているデータベースは、DB2、H2 Database Engine、HSQLDB、Microsoft SQL Server 2008、MySQL、Oracle Database、PostgreSQLです。）
 			</p>
 			<subsection name="サンプルテーブルの作成">
 				<p>
