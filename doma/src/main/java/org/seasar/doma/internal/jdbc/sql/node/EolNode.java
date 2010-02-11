@@ -18,6 +18,7 @@ package org.seasar.doma.internal.jdbc.sql.node;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
 /**
@@ -64,6 +65,10 @@ public class EolNode extends AbstractSqlNode {
         StringBuilder buf = new StringBuilder();
         buf.append("[");
         buf.append(getClass().getSimpleName());
+        buf.append(" ");
+        for (SqlNode child : children) {
+            buf.append(child);
+        }
         buf.append("]");
         return buf.toString();
     }

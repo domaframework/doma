@@ -69,7 +69,7 @@ public class EndNode extends AbstractSqlNode implements SpaceStrippingNode {
             buf.append(child);
         }
         buf.append("]");
-        return text;
+        return buf.toString();
     }
 
 }
