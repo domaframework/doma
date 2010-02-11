@@ -201,6 +201,51 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         assertEquals("select * from aaa where ddd = eee", sql.getRawSql());
     }
 
+    public void testWhere() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        String testSql = "select * from aaa where /*%if false*/ename = 'aaa'/*%end */";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath", evaluator).build(sqlNode);
+        assertEquals("select * from aaa", sql.getRawSql());
+    }
+
+    public void testWhere_embeddedVariable() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        evaluator.add("embedded", new Value(String.class, "bbb = ccc"));
+        String testSql = "select * from aaa where /*%if false*/ename = 'aaa'/*%end */ /*#embedded*/";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath", evaluator).build(sqlNode);
+        assertEquals("select * from aaa where  bbb = ccc", sql.getRawSql());
+    }
+
+    public void testWhere_embeddedVariable_orderBy() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        evaluator.add("embedded", new Value(String.class, "order by bbb"));
+        String testSql = "select * from aaa where /*%if false*/ename = 'aaa'/*%end */ /*#embedded*/";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath", evaluator).build(sqlNode);
+        assertEquals("select * from aaa   order by bbb", sql.getRawSql());
+    }
+
+    public void testWhere_embeddedVariable_orderBy_followedByForUpdate()
+            throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        evaluator.add("embedded", new Value(String.class, "order by bbb"));
+        String testSql = "select * from aaa where /*%if false*/ename = 'aaa'/*%end */ /*#embedded*/ for update";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath", evaluator).build(sqlNode);
+        assertEquals("select * from aaa   order by bbb for update", sql
+                .getRawSql());
+    }
+
     public void testAndNode() throws Exception {
         SelectClauseNode select = new SelectClauseNode("select");
         select.addNode(OtherNode.of(" * "));

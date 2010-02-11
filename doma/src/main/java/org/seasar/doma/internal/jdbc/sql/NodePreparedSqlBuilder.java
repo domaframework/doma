@@ -20,6 +20,8 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.seasar.doma.internal.expr.EvaluationResult;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
@@ -80,6 +82,7 @@ import org.seasar.doma.internal.jdbc.sql.node.WhitespaceNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.WordNode;
 import org.seasar.doma.internal.jdbc.sql.node.WordNodeVisitor;
 import org.seasar.doma.internal.message.Message;
+import org.seasar.doma.internal.util.StringUtil;
 import org.seasar.doma.internal.wrapper.WrapperException;
 import org.seasar.doma.internal.wrapper.Wrappers;
 import org.seasar.doma.jdbc.Config;
@@ -122,6 +125,10 @@ public class NodePreparedSqlBuilder implements
         WhereClauseNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         WhitespaceNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         WordNodeVisitor<Void, NodePreparedSqlBuilder.Context> {
+
+    protected static final Pattern clauseKeywordPattern = Pattern.compile(
+            "(select|from|where|group by|having|order by|for update)",
+            Pattern.CASE_INSENSITIVE);
 
     protected final Config config;
 
@@ -215,38 +222,44 @@ public class NodePreparedSqlBuilder implements
         String name = node.getVariableName();
         EvaluationResult result = p.evaluate(location, name);
         Object value = result.getValue();
-        if (value == null) {
-            return null;
+        if (value != null) {
+            String fragment = value.toString();
+            if (fragment.indexOf('\'') > -1) {
+                throw new JdbcException(Message.DOMA2116, location.getSql(),
+                        location.getLineNumber(), location.getPosition(), node
+                                .getText());
+            }
+            if (fragment.indexOf(';') > -1) {
+                throw new JdbcException(Message.DOMA2117, location.getSql(),
+                        location.getLineNumber(), location.getPosition(), node
+                                .getText());
+            }
+            if (fragment.indexOf("--") > -1) {
+                throw new JdbcException(Message.DOMA2122, location.getSql(),
+                        location.getLineNumber(), location.getPosition(), node
+                                .getText());
+            }
+            if (fragment.indexOf("/*") > -1) {
+                throw new JdbcException(Message.DOMA2123, location.getSql(),
+                        location.getLineNumber(), location.getPosition(), node
+                                .getText());
+            }
+            if (!startsWithClauseKeyword(fragment)) {
+                p.setAvailable(true);
+            }
+            p.appendRawSql(fragment);
+            p.appendFormattedSql(fragment);
         }
-        String fragment = value.toString();
-        if (fragment.indexOf('\'') > -1) {
-            throw new JdbcException(Message.DOMA2116, location.getSql(),
-                    location.getLineNumber(), location.getPosition(), node
-                            .getText());
-        }
-        if (fragment.indexOf(';') > -1) {
-            throw new JdbcException(Message.DOMA2117, location.getSql(),
-                    location.getLineNumber(), location.getPosition(), node
-                            .getText());
-        }
-        if (fragment.indexOf("--") > -1) {
-            throw new JdbcException(Message.DOMA2122, location.getSql(),
-                    location.getLineNumber(), location.getPosition(), node
-                            .getText());
-        }
-        if (fragment.indexOf("/*") > -1) {
-            throw new JdbcException(Message.DOMA2123, location.getSql(),
-                    location.getLineNumber(), location.getPosition(), node
-                            .getText());
-        }
-        p.setAvailable(true);
-        p.appendRawSql(fragment);
-        p.appendFormattedSql(fragment);
-
         for (SqlNode child : node.getChildren()) {
             child.accept(this, p);
         }
         return null;
+    }
+
+    protected boolean startsWithClauseKeyword(String fragment) {
+        Matcher matcher = clauseKeywordPattern.matcher(StringUtil
+                .trimWhitespace(fragment));
+        return matcher.lookingAt();
     }
 
     protected Void handleSingleBindVarialbeNode(BindVariableNode node,
@@ -500,6 +513,14 @@ public class NodePreparedSqlBuilder implements
             p.appendRawSql(context.getSqlBuf());
             p.appendFormattedSql(context.getFormattedSqlBuf());
             p.addAllParameters(context.getParameters());
+        } else {
+            String fragment = context.getSqlBuf().toString();
+            if (startsWithClauseKeyword(fragment)) {
+                p.setAvailable(true);
+                p.appendRawSql(context.getSqlBuf());
+                p.appendFormattedSql(context.getFormattedSqlBuf());
+                p.addAllParameters(context.getParameters());
+            }
         }
     }
 
