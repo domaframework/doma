@@ -38,6 +38,7 @@ public interface EmployeeDao {
 				戻り値は更新件数を返します。
 				パラメータは型は<a href="../entity.html">エンティティティクラス</a>でなければいけません。
 				指定できるパラメータの数は1つです。
+				引数は<code>null</code>であってはいけません。
 			</p>
 <source><![CDATA[@Delete
 int delete(Employee employee);]]></source>
@@ -74,6 +75,8 @@ int delete(Employee employee);]]></source>
 				戻り値は更新件数を返します。
 				パラメータには任意の型が使用できます。
 				指定できるパラメータの数に制限はありません。
+				パラメータの型が基本型もしくはドメインクラスの場合、引数を<code>null</code>にできます。
+				それ以外の型の場合、引数は<code>null</code>であってはいけません。
 			</p>
 <source><![CDATA[@Delete(sqlFile = true)
 int delete(Employee employee);]]></source>

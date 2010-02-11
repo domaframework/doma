@@ -68,6 +68,8 @@ void execute(@Id Integer id, @InOut Reference<BigDecimal> salary);]]></source>
 			<subsection name="INパラメータ">
 				<p>
 					INパラメータは、<code>@In</code>をメソッドのパラメータに注釈して示します。
+					パラメータの型が基本型もしくはドメインクラスの場合、引数を<code>null</code>にできます。
+					それ以外の型の場合、引数は<code>null</code>であってはいけません。
 				</p>
 <source><![CDATA[@Function
 void execute(@Id Integer id);]]></source>
@@ -83,6 +85,7 @@ dao.execute(1);]]></source>
 					注釈されるパラメータの型は<a href="../../apidocs/org/seasar/doma/jdbc/Reference.html"><code>org.seasar.doma.jdbc.Reference</code></a>
 					でなければいけません。
 					<code>Reference</code>の型パラメータは<a href="../basic.html">基本型</a>もしくは<a href="../domain.html">ドメインクラス</a>でなければいけません。
+					引数は<code>null</code>であってはいけません。
 				</p>
 <source><![CDATA[@Function
 void execute(@InOut Reference<BigDecimal> salary);]]></source>
@@ -101,6 +104,7 @@ BigDecimal out = ref.get();]]></source>
 					注釈されるパラメータの型は<a href="../../apidocs/org/seasar/doma/jdbc/Reference.html"><code>org.seasar.doma.jdbc.Reference</code></a>
 					でなければいけません。
 					<code>Reference</code>の型パラメータは<a href="../basic.html">基本型</a>もしくは<a href="../domain.html">ドメインクラス</a>でなければいけません。
+					引数は<code>null</code>であってはいけません。
 				</p>
 				<p>
 					メソッドの戻り値の型が<code>void</code>以外の場合、戻り値はOUTパラメータとなります。
@@ -120,6 +124,7 @@ BigDecimal out = ref.get();]]></source>
 					カーソルのOUTパラメータ、もしくはストアドファンクションが返す結果セットは、<code>@ResultSet</code>をメソッドのパラメータに注釈して示します。
 					注釈されるパラメータの型は、<a href="../basic.html">基本型</a>、<a href="../domain.html">ドメインクラス</a>、
 					<a href="../entity.html">エンティティクラス</a>のいずれかを要素とする<code>java.util.List</code>でなければいけません。
+					引数は<code>null</code>であってはいけません。
 				</p>
 <source><![CDATA[@Function
 void execute(@ResultSet List<Employee> employee);]]></source>

@@ -39,6 +39,7 @@ public interface EmployeeDao {
 				戻り値の型は<code>int[]</code>でなければいけません。
 				パラメータは型は<a href="../entity.html">エンティティティクラス</a>を要素とする<code>java.lang.Iterable</code>のサブタイプでなければいけません。
 				指定できるパラメータの数は1つです。
+				引数は<code>null</code>であってはいけません。
 				戻り値の配列の要素の数はパラメータの<code>Iterable</code>の要素の数と等しくなります。
 				配列のそれぞれの要素が更新された件数を返します。
 			</p>
@@ -99,6 +100,7 @@ int[] update(List<Employee> employees);]]></source>
 				戻り値の型は<code>int[]</code>でなければいけません。
 				パラメータは任意の型を要素とする<code>java.lang.Iterable</code>のサブタイプでなければいけません。
 				指定できるパラメータの数は1つです。
+				引数は<code>null</code>であってはいけません。
 				戻り値の配列の要素の数はパラメータの<code>Iterable</code>の要素の数と等しくなります。
 				配列のそれぞれの要素が更新された件数を返します。
 			</p>

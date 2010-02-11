@@ -42,9 +42,11 @@ public interface EmployeeDao {
 		<section name="問い合わせ条件">
 			<p>
 				問い合わせ条件にはメソッドのパラメータを使用します。
-				パラメータの型には、<a href="../basic.html">基本型</a>、<a href="../domain.html">ドメインクラス</a>、任意の型
+				パラメータの型には、<a href="../basic.html">基本型</a>、<a href="../domain.html">ドメインクラス</a>、任意の型、
 				および<a href="../basic.html">基本型</a>や<a href="../domain.html">ドメインクラス</a>を要素とする<code>java.lang.Iterable</code>のサブタイプが使用できます。
 				パラメータの数に制限はありません。
+				パラメータの型が基本型もしくはドメインクラスの場合、引数を<code>null</code>にできます。
+				それ以外の型の場合、引数は<code>null</code>であってはいけません。
 			</p>
 <source><![CDATA[@Select
 List<Employee> selectByNameAndSalary(String name, BigDecimal salary);]]></source>

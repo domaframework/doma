@@ -28,6 +28,7 @@
 		<section name="Arrayの生成">
 			<p>
 				戻り値の型は<code>java.sql.Array</code>、パラメータは1つの配列型でなければいけません。
+				引数は<code>null</code>であってはいけません。
 			</p>
 			<p>
 				<code>@ArrayFactory</code>の<code>typeName</code>要素にはデータベースの型名を指定します。
