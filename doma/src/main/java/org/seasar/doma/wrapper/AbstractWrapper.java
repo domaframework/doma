@@ -48,7 +48,7 @@ public abstract class AbstractWrapper<V> implements Wrapper<V> {
     }
 
     /**
-     * サブクラスで値を設定します。
+     * 値を設定します。
      * 
      * @param value
      *            値
@@ -63,7 +63,7 @@ public abstract class AbstractWrapper<V> implements Wrapper<V> {
     }
 
     /**
-     * サブクラスで値を返します。
+     * 値を返します。
      * 
      * @return 値
      */
@@ -77,7 +77,7 @@ public abstract class AbstractWrapper<V> implements Wrapper<V> {
     }
 
     /**
-     * サブクラスで値のコピーを返します。
+     * 値のコピーを返します。
      * 
      * @return 値のコピーを返します。
      */
@@ -91,7 +91,7 @@ public abstract class AbstractWrapper<V> implements Wrapper<V> {
     }
 
     /**
-     * 等しい値を持っているかどうかサブクラスで判定します。
+     * 等しい値を持っているかどうか判定します。
      * 
      * @param otherValue
      *            値

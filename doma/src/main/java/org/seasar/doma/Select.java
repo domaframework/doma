@@ -52,7 +52,7 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * <td>null</td>
  * </tr>
  * <tr>
- * <td>基本型を要素とする {@code List}</td>
+ * <td>基本型を実型引数とする {@code List}</td>
  * <td>空の {@code List}</td>
  * </tr>
  * <tr>
@@ -60,7 +60,7 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * <td>null</td>
  * </tr>
  * <tr>
- * <td>ドメインクラスを要素とする {@code List}</td>
+ * <td>ドメインクラスを実型引数とする {@code List}</td>
  * <td>空の {@code List}</td>
  * </tr>
  * <tr>
@@ -68,7 +68,7 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * <td>null</td>
  * </tr>
  * <tr>
- * <td>エンティティクラスを要素とする {@code List}</td>
+ * <td>エンティティクラスを実型引数とする {@code List}</td>
  * <td>空の {@code List}</td>
  * </tr>
  * </table>

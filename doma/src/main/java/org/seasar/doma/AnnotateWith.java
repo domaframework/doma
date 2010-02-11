@@ -61,7 +61,7 @@ import java.lang.annotation.Target;
  * </pre>
  * 
  * <h5>例:間接的に注釈する方法</h5>
- * {@code AnnotateWith} は、任意のアノテーションに注釈し、そのアノテーションをDaoに注釈することも可能です。 たとえば、ここでは、
+ * {@code AnnotateWith} を任意のアノテーションに注釈し、そのアノテーションをDaoに注釈することも可能です。 たとえば、ここでは、
  * {@code GuiceConfig} というアノテーションに {@code AnnotateWith} を注釈する例を示します。
  * 
  * <pre>
