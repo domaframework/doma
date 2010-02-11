@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>アプリケーションのビルド方法</title>
+	</properties>
+	<body>
+		<section name="目次">
+			<ul>
+				<li><a href="#概要">概要</a></li>
+				<li><a href="#javacのバグについて">javacのバグについて</a></li>
+				<li><a href="#Antによるビルド">Antによるビルド</a></li>
+				<li><a href="#Mavenによるビルド">Mavenによるビルド</a></li>
+			</ul>
+		</section>
+		<section name="概要">
+			<p>
+				Domaを利用するアプリケーションを、AntもしくはMavenによってビルドする方法を示します。
+			</p>
+			<p>
+				2010年2月現在、javacにはaptに関するバグがあることが判明しています。
+				ここでは、このバグの回避を考慮に入れて解説します。
+			</p>
+		</section>
+		<section name="javacのバグについて">
+			<p>
+				バグは、Bug DatabaseにBug ID <a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6403465">6403465</a>として登録されています。
+				このバグの内容は、一言で言うと、本来はコンパイルエラーでないものがエラーとして報告されるというものです。
+			</p>
+			<p>
+				回避方法の1つは、誤って報告されるエラーメッセージを単に無視することです。
+			</p>
+			<p>
+				このバグの現象は、aptにより生成されるJavaコードに依存するコードをjavacの対象にすると起こります。
+				たとえば、javacは、以下のコードに対し間違ったエラー報告をします（EmployeeDaoImplというクラスがaptにより生成されると前提します）。
+			</p>
+<source><![CDATA[package tutorial.service;
+
+import tutorial.dao.EmployeeDao;
+import tutorial.dao.EmployeeDaoImpl;
+import tutorial.entity.Employee;
+
+public class TutorialService {
+
+    public Employee selectById(Integer id) {
+        EmployeeDao dao = new EmployeeDaoImpl();
+        return dao.selectById(id);
+    }
+}]]></source>
+			<p>
+				javacから出力される間違ったエラー報告とは次のようなものです。
+			</p>
+<source><![CDATA[tutorial\service\TutorialService.java:19: シンボルを見つけられません。
+シンボル: クラス EmployeeDaoImpl
+場所    : tutorial.dao の パッケージ
+import tutorial.dao.EmployeeDaoImpl;
+                   ^]]></source>
+			<p>
+				このメッセージが出力されても、実際にはコンパイルは成功しています。
+			</p>
+		</section>
+		<section name="Antによるビルド">
+			<p>
+				<a href="http://ant.apache.org/">Ant</a>でビルドを行うには、あらかじめAntをインストールしてください。
+				Ant 1.7で動作を確認しています。
+			</p>
+			<p>
+				Antでビルドを行う際のポイントを示します。
+			</p>
+			<ul>
+				<li>クラスパスには、doma-x.x.x.jarを指定する</li>
+				<li>コンパイル前にSQLファイルをクラスが出力されるディレクトリにコピーする</li>
+				<li>javacの-sオプションを使い、aptで生成されるコードの出力先ディレクトリを指定する</li>
+			</ul>
+			<p>
+				サンプルのビルドファイルを示します。このビルドファイルは、チュートリアルの配布ファイルに含まれるものです。
+				チュートリアルは<a href="../downloads.html">ダウンロードページ</a>からダウンロードできます。
+			</p>
+<source><![CDATA[<project name="doma-tutorial" default="jar" basedir=".">
+
+    <property name="dest" value="target/build"/>
+    <property name="apt_generated" value="target/apt_generated"/>
+    <property name="src" value="src/main/java"/>
+    <property name="resources" value="src/main/resources"/>
+
+    <path id="classpath">
+        <fileset dir="lib" includes="*.jar"/>
+    </path>
+
+    <target name="jar" depends="clean,copy,compile">
+        <jar jarfile="target/doma-tutorial.jar" basedir="${dest}" />
+    </target>
+
+    <target name="clean">
+        <delete dir="target" failonerror="false"/>
+        <mkdir dir="target"/>
+        <mkdir dir="${dest}"/>
+        <mkdir dir="${apt_generated}"/>
+    </target>
+
+    <target name="compile">
+        <javac fork="yes" compiler="javac1.6" debug="on" encoding="UTF-8"
+            classpathref="classpath" srcdir="${src}" destdir="${dest}">
+            <compilerarg line="-s ${apt_generated}" />
+        </javac>
+    </target>
+
+    <target name="copy">
+        <copy todir="${dest}" filtering="true">
+            <fileset dir="${resources}">
+                <include name="META-INF/**" />
+            </fileset>
+        </copy>
+    </target>
+</project>]]></source>
+			<p>
+				javacタスク実行時にはjavacのバグによりエラーメッセージが誤って報告されますが、「BUILD SUCCESSFUL」というメッセージとともにAntの実行が終了すれば、ビルドは成功しています。
+			</p>
+			<p>
+				Antを使ったWebアプリケーションのビルドについては、Doma JPetStoreの配布ファイルに含まれるbuild.xmlを参考にしてください。
+				Doma JPetStoreは<a href="../downloads.html">ダウンロードページ</a>からダウンロードできます。
+			</p>
+		</section>
+		<section name="Mavenによるビルド">
+			<p>
+				<a href="http://maven.apache.org/">Maven</a>でビルドを行うには、あらかじめMavenをインストールしてください。
+				Maven 2.2.1で動作を確認しています。
+				ここでは、maven-antrun-pluginを使用しています。Antについてもあらかじめインストールしてください。
+			</p>
+			<p>
+				Mavenでビルドを行う際のポイントを示します。
+			</p>
+			<ul>
+				<li>依存関係の設定でdomaへの依存を指定する</li>
+				<li>maven-compiler-pluginでは、excludesタグを使って実質的にコンパイルを行わない</li>
+				<li>実際のコンパイルはmaven-antrun-pluginの中でjavacタスクにより行う</li>
+				<li>javacタスクのclasspathref属性にはmaven.compile.classpathを指定する</li>
+				<li>javacの-sオプションを使い、aptで生成されるコードの出力先ディレクトリを指定する</li>
+			</ul>
+			<p>
+				コンパイルをAntで行う理由は、maven-compiler-pluginでは、javacのバグを回避できないためです。
+			</p>
+			<p>
+				サンプルのpom.xmlの抜粋を示します。pom.xmlは、チュートリアルに含まれるものです。
+				チュートリアルは<a href="../downloads.html">ダウンロードページ</a>からダウンロードできます。
+			</p>
+<source><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    ...
+    
+    <!-- Build Settings -->
+    <build>
+        <defaultGoal>validate</defaultGoal>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>1.6</source>
+                        <target>1.6</target>
+                        <encoding>UTF-8</encoding>
+                        <excludes>
+                            <exclude>**/*</exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+        
+            ...
+            
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>ant-compile</id>
+                        <phase>compile</phase>
+                        <configuration>
+                            <tasks>
+                                <property name="apt_generated" value="target/apt_generated"/>
+                                <delete dir="${apt_generated}" failonerror="false"/>
+                                <mkdir dir="${apt_generated}"/>
+                                <javac fork="yes" compiler="javac1.6" debug="on" encoding="UTF-8"
+                                    classpathref="maven.compile.classpath" srcdir="src/main/java" destdir="target/classes">
+                                    <compilerarg line="-s ${apt_generated}" />
+                                </javac>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            ...
+            
+        </plugins>
+    </build>
+
+    <!-- Dependency Settings -->
+    <dependencies>
+        <dependency>
+            <groupId>org.seasar.doma</groupId>
+            <artifactId>doma</artifactId>
+            <version>1.0.0</version>
+            <type>jar</type>
+        </dependency>
+        
+        ...
+        
+    </dependencies>
+</project>]]></source>
+			<p>
+				javacタスク実行時にはjavacのバグによりエラーメッセージが誤って報告されますが、「BUILD SUCCESSFUL」というメッセージとともにMavenの実行が終了すれば、ビルドは成功しています。
+			</p>
+			<p>
+				Mavenを使ったWebアプリケーションのビルドについては、Doma JPetStoreの配布ファイルに含まれるpom.xmlを参考にしてください。
+				Doma JPetStoreは<a href="../downloads.html">ダウンロードページ</a>からダウンロードできます。
+			</p>
+		</section>
+	</body>
+</document>

@@ -100,8 +100,17 @@
 				<li>
 					<a href="apt.html">注釈処理</a>
 					<ul>
-						<li><a href="#概要">概要</a></li>
-						<li><a href="#オプション">オプション</a></li>
+						<li><a href="apt.html#概要">概要</a></li>
+						<li><a href="apt.html#オプション">オプション</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="app_build.html">アプリケーションのビルド方法</a>
+					<ul>
+						<li><a href="app_bulid.html#概要">概要</a></li>
+						<li><a href="app_bulid.html#javacのバグについて">javacのバグについて</a></li>
+						<li><a href="app_bulid.html#Antによるビルド">Antによるビルド</a></li>
+						<li><a href="app_bulid.html#Mavenによるビルド">Mavenによるビルド</a></li>
 					</ul>
 				</li>
 			</ul>
