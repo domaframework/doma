@@ -136,7 +136,50 @@
 				</p>
 				<p>
 					RDBMS名は、 <code>org.seasar.doma.jdbc.dialect.Dialect</code>の <code>getName</code>メソッドの値が使用されます。
+					あらかじめ用意されたDialectについてそれぞれのRDBMS名を以下の表に示します。
 				</p>
+				<table>
+					<tr>
+						<th>データベース</th>
+						<th>方言クラスの名前</th>
+						<th>RDBMS名</th>
+					</tr>
+					<tr>
+						<td>DB2</td>
+						<td><code>org.seasar.doma.jdbc.dialect.Db2Dialect</code></td>
+						<td>db2</td>
+					</tr>
+					<tr>
+						<td>H2 Database Engine</td>
+						<td><code>org.seasar.doma.jdbc.dialect.H2Dialect</code></td>
+						<td>h2</td>
+					</tr>
+					<tr>
+						<td>HSQLDB</td>
+						<td><code>org.seasar.doma.jdbc.dialect.HsqldbDialect</code></td>
+						<td><code>hsqldb</code></td>
+					</tr>
+					<tr>
+						<td>Microsoft SQL Server 2008</td>
+						<td><code>org.seasar.doma.jdbc.dialect.Mssql2008Dialect</code></td>
+						<td>mssql2008</td>
+					</tr>
+					<tr>
+						<td>MySQL</td>
+						<td><code>org.seasar.doma.jdbc.dialect.MySqlDialect</code></td>
+						<td>mysql</td>
+					</tr>
+					<tr>
+						<td>Oracle Database</td>
+						<td><code>org.seasar.doma.jdbc.dialect.OracleDialect</code></td>
+						<td><code>oracle</code></td>
+					</tr>
+					<tr>
+						<td>PostgreSQL</td>
+						<td><code>org.seasar.doma.jdbc.dialect.PostgresDialect</code></td>
+						<td>postgres</td>
+					</tr>
+				</table>
 			</subsection>
 			<subsection name="エンコーディング">
 				<p>
