@@ -249,6 +249,15 @@ public class OracleDialect extends StandardDialect {
     public static class OracleSqlLogFormattingVisitor extends
             StandardSqlLogFormattingVisitor {
 
+        /** 日付フォーマッタ */
+        protected DateFormatter dateFormatter = new DateFormatter();
+
+        /** 時刻フォーマッタ */
+        protected TimeFormatter timeFormatter = new TimeFormatter();
+
+        /** タイムスタンプフォーマッタ */
+        protected TimestampFormatter timestampFormatter = new TimestampFormatter();
+
         @Override
         public String visitBooleanWrapper(BooleanWrapper wrapper,
                 SqlLogFormattingFunction p) throws RuntimeException {
@@ -258,21 +267,27 @@ public class OracleDialect extends StandardDialect {
         @Override
         public String visitDateWrapper(DateWrapper wrapper,
                 SqlLogFormattingFunction p) {
-            return p.apply(wrapper, new DateFormatter());
+            return p.apply(wrapper, dateFormatter);
         }
 
         @Override
         public String visitTimeWrapper(TimeWrapper wrapper,
                 SqlLogFormattingFunction p) {
-            return p.apply(wrapper, new TimeFormatter());
+            return p.apply(wrapper, timeFormatter);
         }
 
         @Override
         public String visitTimestampWrapper(TimestampWrapper wrapper,
                 SqlLogFormattingFunction p) {
-            return p.apply(wrapper, new TimestampFormatter());
+            return p.apply(wrapper, timestampFormatter);
         }
 
+        /**
+         * dateリテラルへ変換するフォーマッタです。
+         * 
+         * @author taedium
+         * 
+         */
         protected static class DateFormatter implements SqlLogFormatter<Date> {
 
             @Override
@@ -284,6 +299,12 @@ public class OracleDialect extends StandardDialect {
             }
         }
 
+        /**
+         * timeリテラルへ変換するフォーマッタです。
+         * 
+         * @author taedium
+         * 
+         */
         protected static class TimeFormatter implements SqlLogFormatter<Time> {
 
             @Override
@@ -295,6 +316,12 @@ public class OracleDialect extends StandardDialect {
             }
         }
 
+        /**
+         * timestampリテラルへ変換するフォーマッタです。
+         * 
+         * @author taedium
+         * 
+         */
         protected static class TimestampFormatter implements
                 SqlLogFormatter<Timestamp> {
 
