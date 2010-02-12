@@ -22,7 +22,8 @@ import java.sql.SQLException;
 
 import org.seasar.doma.internal.domain.DomainType;
 import org.seasar.doma.internal.domain.DomainWrapper;
-import org.seasar.doma.internal.jdbc.query.Query;
+import org.seasar.doma.internal.jdbc.query.SelectQuery;
+import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.Sql;
 
@@ -40,7 +41,7 @@ public class DomainSingleResultHandler<V, D> implements ResultSetHandler<D> {
     }
 
     @Override
-    public D handle(ResultSet resultSet, Query query) throws SQLException {
+    public D handle(ResultSet resultSet, SelectQuery query) throws SQLException {
         BasicFetcher fetcher = new BasicFetcher(query);
         if (resultSet.next()) {
             DomainWrapper<V, D> wrapper = domainType.getWrapper(null);
@@ -50,6 +51,9 @@ public class DomainSingleResultHandler<V, D> implements ResultSetHandler<D> {
                 throw new NonUniqueResultException(sql);
             }
             return wrapper.getDomain();
+        } else if (query.isResultEnsured()) {
+            Sql<?> sql = query.getSql();
+            throw new NoResultException(sql);
         }
         return null;
     }

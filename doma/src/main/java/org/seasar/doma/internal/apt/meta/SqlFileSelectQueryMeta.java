@@ -99,6 +99,10 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
         return selectMirror.getIterateValue();
     }
 
+    public boolean getEnsureResult() {
+        return selectMirror.getEnsureResultValue();
+    }
+
     @Override
     public <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p) {
         return visitor.visistSqlFileSelectQueryMeta(this, p);

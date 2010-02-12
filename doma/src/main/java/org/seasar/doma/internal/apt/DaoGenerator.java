@@ -282,6 +282,7 @@ public class DaoGenerator extends AbstractGenerator {
             }
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
+            iprint("__query.setResultEnsured(%1$s);%n", m.getEnsureResult());
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             iprint("__query.setMaxRows(%1$s);%n", m.getMaxRows());
             iprint("__query.setFetchSize(%1$s);%n", m.getFetchSize());

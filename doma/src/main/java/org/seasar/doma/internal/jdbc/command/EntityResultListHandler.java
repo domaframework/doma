@@ -22,7 +22,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seasar.doma.internal.jdbc.query.Query;
+import org.seasar.doma.internal.jdbc.query.SelectQuery;
+import org.seasar.doma.jdbc.NoResultException;
+import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.entity.EntityType;
 
 /**
@@ -39,13 +41,18 @@ public class EntityResultListHandler<E> implements ResultSetHandler<List<E>> {
     }
 
     @Override
-    public List<E> handle(ResultSet resultSet, Query query) throws SQLException {
+    public List<E> handle(ResultSet resultSet, SelectQuery query)
+            throws SQLException {
         EntityFetcher<E> fetcher = new EntityFetcher<E>(query, entityType);
         List<E> entities = new ArrayList<E>();
         while (resultSet.next()) {
             E entity = entityType.newEntity();
             fetcher.fetch(resultSet, entity);
             entities.add(entity);
+        }
+        if (query.isResultEnsured() && entities.isEmpty()) {
+            Sql<?> sql = query.getSql();
+            throw new NoResultException(sql);
         }
         return entities;
     }

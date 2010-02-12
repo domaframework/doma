@@ -36,6 +36,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.internal.jdbc.dao.
         __query.addParameter("name", java.lang.String.class, name);
         __query.setCallerClassName("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl");
         __query.setCallerMethodName("iterateByIdAndName");
+        __query.setResultEnsured(false);
         __query.setQueryTimeout(-1);
         __query.setMaxRows(-1);
         __query.setFetchSize(-1);
@@ -59,6 +60,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.internal.jdbc.dao.
         __query.addParameter("id", java.lang.Integer.class, id);
         __query.setCallerClassName("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl");
         __query.setCallerMethodName("iterateById");
+        __query.setResultEnsured(false);
         __query.setQueryTimeout(-1);
         __query.setMaxRows(-1);
         __query.setFetchSize(-1);
@@ -81,6 +83,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.internal.jdbc.dao.
         __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/IterationCallbackDao/iterate.sql");
         __query.setCallerClassName("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl");
         __query.setCallerMethodName("iterate");
+        __query.setResultEnsured(false);
         __query.setQueryTimeout(-1);
         __query.setMaxRows(-1);
         __query.setFetchSize(-1);
@@ -103,6 +106,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.internal.jdbc.dao.
         __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/IterationCallbackDao/iterateWithHogeIterationCallback.sql");
         __query.setCallerClassName("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl");
         __query.setCallerMethodName("iterateWithHogeIterationCallback");
+        __query.setResultEnsured(false);
         __query.setQueryTimeout(-1);
         __query.setMaxRows(-1);
         __query.setFetchSize(-1);

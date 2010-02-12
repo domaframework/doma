@@ -20,9 +20,11 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.seasar.doma.internal.jdbc.query.Query;
+import org.seasar.doma.internal.jdbc.query.SelectQuery;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
+import org.seasar.doma.jdbc.NoResultException;
+import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -43,16 +45,22 @@ public class BasicIterationHandler<R, V> implements ResultSetHandler<R> {
     }
 
     @Override
-    public R handle(ResultSet resultSet, Query query) throws SQLException {
+    public R handle(ResultSet resultSet, SelectQuery query) throws SQLException {
         BasicFetcher fetcher = new BasicFetcher(query);
         IterationContext iterationContext = new IterationContext();
+        boolean existent = false;
         R result = null;
         while (resultSet.next()) {
+            existent = true;
             fetcher.fetch(resultSet, wrapper);
             result = iterationCallback.iterate(wrapper.get(), iterationContext);
             if (iterationContext.isExited()) {
                 return result;
             }
+        }
+        if (query.isResultEnsured() && !existent) {
+            Sql<?> sql = query.getSql();
+            throw new NoResultException(sql);
         }
         return result;
     }

@@ -28,6 +28,8 @@ public interface SelectQuery extends Query {
 
     SelectOptions getOptions();
 
+    boolean isResultEnsured();
+
     int getFetchSize();
 
     int getMaxRows();

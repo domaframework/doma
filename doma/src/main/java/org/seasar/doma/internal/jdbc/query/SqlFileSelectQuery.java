@@ -56,6 +56,8 @@ public class SqlFileSelectQuery implements SelectQuery {
 
     protected SelectOptions options = SelectOptions.get();
 
+    protected boolean resultEnsured;
+
     protected int fetchSize;
 
     protected int maxRows;
@@ -167,6 +169,16 @@ public class SqlFileSelectQuery implements SelectQuery {
         return config;
     }
 
+    @Override
+    public boolean isResultEnsured() {
+        return resultEnsured;
+    }
+
+    public void setResultEnsured(boolean resultEnsured) {
+        this.resultEnsured = resultEnsured;
+    }
+
+    @Override
     public int getFetchSize() {
         return fetchSize;
     }
@@ -175,6 +187,7 @@ public class SqlFileSelectQuery implements SelectQuery {
         this.fetchSize = fetchSize;
     }
 
+    @Override
     public int getMaxRows() {
         return maxRows;
     }
@@ -183,6 +196,7 @@ public class SqlFileSelectQuery implements SelectQuery {
         this.maxRows = maxRows;
     }
 
+    @Override
     public int getQueryTimeout() {
         return queryTimeout;
     }
@@ -217,6 +231,11 @@ public class SqlFileSelectQuery implements SelectQuery {
         protected int maxRows;
 
         protected int queryTimeout;
+
+        @Override
+        public boolean isResultEnsured() {
+            return true;
+        }
 
         @Override
         public int getFetchSize() {

@@ -39,6 +39,8 @@ public class SelectMirror {
 
     protected AnnotationValue iterate;
 
+    protected AnnotationValue ensureResult;
+
     protected AnnotationValue queryTimeout;
 
     protected AnnotationValue fetchSize;
@@ -51,6 +53,10 @@ public class SelectMirror {
 
     public AnnotationValue getIterate() {
         return iterate;
+    }
+
+    public AnnotationValue getEnsureResult() {
+        return ensureResult;
     }
 
     public AnnotationValue getQueryTimeout() {
@@ -97,6 +103,14 @@ public class SelectMirror {
         return value.booleanValue();
     }
 
+    public boolean getEnsureResultValue() {
+        Boolean value = AnnotationValueUtil.toBoolean(ensureResult);
+        if (value == null) {
+            throw new AptIllegalStateException("ensureResult");
+        }
+        return value.booleanValue();
+    }
+
     public AnnotationMirror getAnnotationMirror() {
         return annotationMirror;
     }
@@ -117,6 +131,8 @@ public class SelectMirror {
             AnnotationValue value = entry.getValue();
             if ("iterate".equals(name)) {
                 result.iterate = value;
+            } else if ("ensureResult".equals(name)) {
+                result.ensureResult = value;
             } else if ("queryTimeout".equals(name)) {
                 result.queryTimeout = value;
             } else if ("fetchSize".equals(name)) {

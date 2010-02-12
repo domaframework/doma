@@ -35,6 +35,7 @@ public class EmpDtoParameterDaoImpl extends org.seasar.doma.internal.jdbc.dao.Ab
         __query.addParameter("dto", org.seasar.doma.internal.apt.entity.EmpDto.class, dto);
         __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EmpDtoParameterDaoImpl");
         __query.setCallerMethodName("select");
+        __query.setResultEnsured(false);
         __query.setQueryTimeout(-1);
         __query.setMaxRows(-1);
         __query.setFetchSize(-1);

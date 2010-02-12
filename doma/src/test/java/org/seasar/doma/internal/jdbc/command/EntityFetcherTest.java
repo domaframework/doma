@@ -90,6 +90,11 @@ public class EntityFetcherTest extends TestCase {
         }
 
         @Override
+        public boolean isResultEnsured() {
+            return false;
+        }
+
+        @Override
         public int getFetchSize() {
             return 0;
         }

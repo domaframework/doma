@@ -26,6 +26,7 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.MappedPropertyNotFoundException;
+import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SqlFileNotFoundException;
@@ -42,7 +43,9 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * <ul>
  * <li>パラメータは0個以上である。
  * <li>パラメータは任意の型である。ただし、 {@code SelectOptions} は最大でも1つしか使用できない。
- * <li>戻り値の型は次のいずれかである。なお、 型が {@link List} でなくデータが存在しない場合、値は {@code null} となる。
+ * <li>戻り値の型は次のいずれかである。なお、 型が {@link List} でなくデータが存在しない場合、値は {@code null}
+ * となる。ただし、{@link #ensureResult} に {@code true} が指定された場合、データが存在しなければ
+ * {@link NoResultException} がスローされる。
  * <table border=1>
  * <tr>
  * <th>戻り値の型</th>
@@ -134,6 +137,8 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * 結果セットに含まれるカラムにマッピングされたプロパティが見つからなかった場合
  * <li> {@link NonUniqueResultException} 戻り値の型が {@code List}
  * でない場合で、かつ結果が2件以上返された場合
+ * <li> {@link NoResultException} {@link #ensureResult} に {@code true}
+ * が指定され結果が0件の場合
  * <li> {@link JdbcException} 上記以外でJDBCに関する例外が発生した場合
  * </ul>
  * 
@@ -180,4 +185,12 @@ public @interface Select {
      * 型のパラメータを含める必要があります。
      */
     boolean iterate() default false;
+
+    /**
+     * 結果が少なくとも1件以上存在することを保証します。
+     * <p>
+     * {@code true} の場合に結果が存在しなければ、このアノテーションが注釈されたメソッドから
+     * {@link NoResultException} がスローされます。
+     */
+    boolean ensureResult() default false;
 }

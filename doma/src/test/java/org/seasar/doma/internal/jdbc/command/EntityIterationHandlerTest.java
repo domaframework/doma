@@ -26,6 +26,7 @@ import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
+import org.seasar.doma.jdbc.NoResultException;
 
 import example.entity.Emp;
 import example.entity._Emp;
@@ -55,7 +56,8 @@ public class EntityIterationHandlerTest extends TestCase {
         query.prepare();
 
         EntityIterationHandler<Integer, Emp> handler = new EntityIterationHandler<Integer, Emp>(
-                _Emp.getSingletonInternal(), new IterationCallback<Integer, Emp>() {
+                _Emp.getSingletonInternal(),
+                new IterationCallback<Integer, Emp>() {
 
                     private int count;
 
@@ -88,7 +90,8 @@ public class EntityIterationHandlerTest extends TestCase {
         query.prepare();
 
         EntityIterationHandler<Integer, Emp> handler = new EntityIterationHandler<Integer, Emp>(
-                _Emp.getSingletonInternal(), new IterationCallback<Integer, Emp>() {
+                _Emp.getSingletonInternal(),
+                new IterationCallback<Integer, Emp>() {
 
                     private int count;
 
@@ -103,5 +106,41 @@ public class EntityIterationHandlerTest extends TestCase {
                 });
         Integer result = handler.handle(resultSet, query);
         assertEquals(new Integer(1), result);
+    }
+
+    public void testHandle_NoResultException() throws Exception {
+        MockResultSetMetaData metaData = new MockResultSetMetaData();
+        metaData.columns.add(new ColumnMetaData("id"));
+        metaData.columns.add(new ColumnMetaData("name"));
+        MockResultSet resultSet = new MockResultSet(metaData);
+
+        SqlFileSelectQuery query = new SqlFileSelectQuery();
+        query.setConfig(runtimeConfig);
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                getName()));
+        query.setCallerClassName("aaa");
+        query.setCallerMethodName("bbb");
+        query.setResultEnsured(true);
+        query.prepare();
+
+        EntityIterationHandler<Integer, Emp> handler = new EntityIterationHandler<Integer, Emp>(
+                _Emp.getSingletonInternal(),
+                new IterationCallback<Integer, Emp>() {
+
+                    private int count;
+
+                    @Override
+                    public Integer iterate(Emp target,
+                            IterationContext iterationContext) {
+                        count++;
+                        return count;
+                    }
+
+                });
+        try {
+            handler.handle(resultSet, query);
+            fail();
+        } catch (NoResultException expected) {
+        }
     }
 }

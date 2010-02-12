@@ -24,6 +24,7 @@ import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
 import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
+import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 
 import example.domain.PhoneNumber;
@@ -75,7 +76,28 @@ public class DomainSingleResultHandlerTest extends TestCase {
         try {
             handler.handle(resultSet, query);
             fail();
-        } catch (NonUniqueResultException ignore) {
+        } catch (NonUniqueResultException expected) {
+        }
+    }
+
+    public void testHandle_NoResultException() throws Exception {
+        MockResultSet resultSet = new MockResultSet();
+
+        SqlFileSelectQuery query = new SqlFileSelectQuery();
+        query.setConfig(runtimeConfig);
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                getName()));
+        query.setCallerClassName("aaa");
+        query.setCallerMethodName("bbb");
+        query.setResultEnsured(true);
+        query.prepare();
+
+        DomainSingleResultHandler<String, PhoneNumber> handler = new DomainSingleResultHandler<String, PhoneNumber>(
+                _PhoneNumber.getSingletonInternal());
+        try {
+            handler.handle(resultSet, query);
+            fail();
+        } catch (NoResultException expected) {
         }
     }
 

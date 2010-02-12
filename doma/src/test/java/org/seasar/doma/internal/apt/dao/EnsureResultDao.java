@@ -13,18 +13,30 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.command;
+package org.seasar.doma.internal.apt.dao;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.math.BigDecimal;
+import java.util.List;
 
-import org.seasar.doma.internal.jdbc.query.SelectQuery;
+import org.seasar.doma.Dao;
+import org.seasar.doma.Select;
+import org.seasar.doma.jdbc.SelectOptions;
+
+import example.entity.Emp;
 
 /**
+ * 
  * @author taedium
  * 
  */
-public interface ResultSetHandler<R> {
+@Dao(config = MyConfig.class)
+public interface EnsureResultDao {
 
-    R handle(ResultSet resultSet, SelectQuery query) throws SQLException;
+    @Select(ensureResult = true)
+    Emp selectById(Integer id, SelectOptions options);
+
+    @Select(ensureResult = true)
+    List<Emp> selectByNameAndSalary(String name, BigDecimal salary,
+            SelectOptions options);
+
 }

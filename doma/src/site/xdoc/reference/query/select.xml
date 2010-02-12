@@ -19,6 +19,7 @@
 						<li><a href="#集計">集計</a></li>
 					</ul>
 				</li>
+				<li><a href="#検索結果の保証">検索結果の保証</a></li>
 				<li><a href="#クエリタイムアウト">クエリタイムアウト</a></li>
 				<li><a href="#フェッチサイズ">フェッチサイズ</a></li>
 				<li><a href="#最大行数">最大行数</a></li>
@@ -83,6 +84,8 @@ List<Employee> selectByNames(List<String> names);]]></source>
 List<Employee> selectByNameAndSalary(String name, BigDecimal salary);]]></source>
 			<p>
 				結果が0件のときは、空の<code>List</code>が返されます。<code>null</code>は返されません。
+				ただし、@Selectの<code>ensureResult</code>要素に<code>true</code>を指定した場合、
+				結果が0件ならば<code>org.seasar.doma.jdbc.NoResultException</code>がスローされます。
 			</p>
 		</section>
 		<section name="1件検索">
@@ -93,6 +96,8 @@ List<Employee> selectByNameAndSalary(String name, BigDecimal salary);]]></source
 Employee selectByNameAndSalary(String name, BigDecimal salary);]]></source>
 			<p>
 				結果が0件のときは、<code>null</code>が返されます。
+				ただし、@Selectの<code>ensureResult</code>要素に<code>true</code>を指定した場合、
+				結果が0件ならば<code>org.seasar.doma.jdbc.NoResultException</code>がスローされます。
 			</p>
 			<p>
 				結果が2件以上存在するときは、<code>org.seasar.doma.jdbc.NonUniqueResultException</code>がスローされます。
@@ -123,6 +128,10 @@ dao.selectAll(new IterationCallback<Void, Employee>() {
 				<code><![CDATA[org.seasar.doma.IterationCallback<R, T>]]></code>の最初の型パラメータは、
 				Daoのメソッドの戻り値にあわせなければいけません。2番目の型パラメータは、<a href="../basic.html">基本型</a>、<a href="../domain.html">ドメインクラス</a>、
 				<a href="../entity.html">エンティティティクラス</a>のいずれかでなければいけません。
+			</p>
+			<p>
+				@Selectの<code>ensureResult</code>要素に<code>true</code>を指定した場合、
+				結果が0件ならば<code>org.seasar.doma.jdbc.NoResultException</code>がスローされます。
 			</p>
 		</section>
 		<section name="検索オプションを利用した検索">
@@ -227,6 +236,16 @@ long count = options.getCount();]]></source>
 					メソッド呼び出しの前に<code>count</code>メソッドを実行していない場合、<code>getCount</code>メソッドは<code>-1</code>を返します。
 				</p>
 			</subsection>
+		</section>
+		<section name="検索結果の保証">
+			<p>
+				検索結果が1件以上存在することを保証したい場合は、<code>@Select</code>の<code>ensureResult</code>要素に<code>true</code>を指定します。
+			</p>
+<source><![CDATA[@Select(ensureResult = true)
+Employee selectById(Integer id);]]></source>
+			<p>
+				検索結果が0件ならば<code>org.seasar.doma.jdbc.NoResultException</code>がスローされます。
+			</p>
 		</section>
 		<section name="クエリタイムアウト">
 			<p>

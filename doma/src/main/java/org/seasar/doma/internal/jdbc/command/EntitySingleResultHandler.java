@@ -20,7 +20,8 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.seasar.doma.internal.jdbc.query.Query;
+import org.seasar.doma.internal.jdbc.query.SelectQuery;
+import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.entity.EntityType;
@@ -39,7 +40,7 @@ public class EntitySingleResultHandler<E> implements ResultSetHandler<E> {
     }
 
     @Override
-    public E handle(ResultSet resultSet, Query query) throws SQLException {
+    public E handle(ResultSet resultSet, SelectQuery query) throws SQLException {
         EntityFetcher<E> fetcher = new EntityFetcher<E>(query, entityType);
         if (resultSet.next()) {
             E entity = entityType.newEntity();
@@ -49,6 +50,9 @@ public class EntitySingleResultHandler<E> implements ResultSetHandler<E> {
                 throw new NonUniqueResultException(sql);
             }
             return entity;
+        } else if (query.isResultEnsured()) {
+            Sql<?> sql = query.getSql();
+            throw new NoResultException(sql);
         }
         return null;
     }

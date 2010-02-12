@@ -22,9 +22,11 @@ import java.sql.SQLException;
 
 import org.seasar.doma.internal.domain.DomainType;
 import org.seasar.doma.internal.domain.DomainWrapper;
-import org.seasar.doma.internal.jdbc.query.Query;
+import org.seasar.doma.internal.jdbc.query.SelectQuery;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
+import org.seasar.doma.jdbc.NoResultException;
+import org.seasar.doma.jdbc.Sql;
 
 /**
  * @author taedium
@@ -44,11 +46,13 @@ public class DomainIterationHandler<R, V, D> implements ResultSetHandler<R> {
     }
 
     @Override
-    public R handle(ResultSet resultSet, Query query) throws SQLException {
+    public R handle(ResultSet resultSet, SelectQuery query) throws SQLException {
         BasicFetcher fetcher = new BasicFetcher(query);
         IterationContext iterationContext = new IterationContext();
+        boolean existent = false;
         R result = null;
         while (resultSet.next()) {
+            existent = true;
             DomainWrapper<V, D> wrapper = domainType.getWrapper(null);
             fetcher.fetch(resultSet, wrapper);
             result = iterationCallback.iterate(wrapper.getDomain(),
@@ -56,6 +60,10 @@ public class DomainIterationHandler<R, V, D> implements ResultSetHandler<R> {
             if (iterationContext.isExited()) {
                 return result;
             }
+        }
+        if (query.isResultEnsured() && !existent) {
+            Sql<?> sql = query.getSql();
+            throw new NoResultException(sql);
         }
         return result;
     }

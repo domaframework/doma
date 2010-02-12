@@ -16,6 +16,7 @@
 						<li><a href="select.html#1件検索">1件検索</a></li>
 						<li><a href="select.html#イテレーションによる検索">イテレーションによる検索</a></li>
 						<li><a href="select.html#検索オプションを利用した検索">検索オプションを利用した検索</a></li>
+						<li><a href="select.html#検索結果の保証">検索結果の保証</a></li>
 						<li><a href="select.html#クエリタイムアウト">クエリタイムアウト</a></li>
 						<li><a href="select.html#フェッチサイズ">フェッチサイズ</a></li>
 						<li><a href="select.html#最大行数">最大行数</a></li>

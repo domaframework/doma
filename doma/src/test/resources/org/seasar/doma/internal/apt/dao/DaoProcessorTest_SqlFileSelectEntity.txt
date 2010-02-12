@@ -36,6 +36,7 @@ public class SqlFileSelectEntityDaoImpl extends org.seasar.doma.internal.jdbc.da
         __query.addParameter("id", java.lang.Integer.class, id);
         __query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDaoImpl");
         __query.setCallerMethodName("selectById");
+        __query.setResultEnsured(false);
         __query.setQueryTimeout(-1);
         __query.setMaxRows(-1);
         __query.setFetchSize(-1);
@@ -61,6 +62,7 @@ public class SqlFileSelectEntityDaoImpl extends org.seasar.doma.internal.jdbc.da
         __query.addParameter("salary", java.math.BigDecimal.class, salary);
         __query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileSelectEntityDaoImpl");
         __query.setCallerMethodName("selectByNameAndSalary");
+        __query.setResultEnsured(false);
         __query.setQueryTimeout(-1);
         __query.setMaxRows(-1);
         __query.setFetchSize(-1);

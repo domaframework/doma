@@ -22,7 +22,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seasar.doma.internal.jdbc.query.Query;
+import org.seasar.doma.internal.jdbc.query.SelectQuery;
+import org.seasar.doma.jdbc.NoResultException;
+import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -39,12 +41,17 @@ public class BasicResultListHandler<V> implements ResultSetHandler<List<V>> {
     }
 
     @Override
-    public List<V> handle(ResultSet resultSet, Query query) throws SQLException {
+    public List<V> handle(ResultSet resultSet, SelectQuery query)
+            throws SQLException {
         List<V> results = new ArrayList<V>();
         BasicFetcher fetcher = new BasicFetcher(query);
         while (resultSet.next()) {
             fetcher.fetch(resultSet, wrapper);
             results.add(wrapper.get());
+        }
+        if (query.isResultEnsured() && results.isEmpty()) {
+            Sql<?> sql = query.getSql();
+            throw new NoResultException(sql);
         }
         return results;
     }

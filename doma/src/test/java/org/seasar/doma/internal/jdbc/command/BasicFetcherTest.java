@@ -83,6 +83,11 @@ public class BasicFetcherTest extends TestCase {
         }
 
         @Override
+        public boolean isResultEnsured() {
+            return false;
+        }
+
+        @Override
         public int getFetchSize() {
             return 0;
         }

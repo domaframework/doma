@@ -26,6 +26,7 @@ import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
+import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.wrapper.StringWrapper;
 
 /**
@@ -97,5 +98,38 @@ public class BasicIterationHandlerTest extends TestCase {
                 });
         String result = handler.handle(resultSet, query);
         assertEquals("aaa", result);
+    }
+
+    public void testHandle_NoResultException() throws Exception {
+        MockResultSetMetaData metaData = new MockResultSetMetaData();
+        metaData.columns.add(new ColumnMetaData("name"));
+        MockResultSet resultSet = new MockResultSet(metaData);
+
+        SqlFileSelectQuery query = new SqlFileSelectQuery();
+        query.setConfig(runtimeConfig);
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                getName()));
+        query.setCallerClassName("aaa");
+        query.setCallerMethodName("bbb");
+        query.setResultEnsured(true);
+        query.prepare();
+
+        BasicIterationHandler<String, String> handler = new BasicIterationHandler<String, String>(
+                new StringWrapper(), new IterationCallback<String, String>() {
+
+                    private String result = "";
+
+                    @Override
+                    public String iterate(String target,
+                            IterationContext iterationContext) {
+                        result += target;
+                        return result;
+                    }
+                });
+        try {
+            handler.handle(resultSet, query);
+            fail();
+        } catch (NoResultException expected) {
+        }
     }
 }
