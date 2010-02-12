@@ -22,11 +22,16 @@ import org.seasar.doma.internal.jdbc.criteria.ColumnCriterion;
 import org.seasar.doma.internal.jdbc.criteria.CriterionVisitor;
 
 /**
+ * {@link EntityType} の骨格実装です。
+ * 
  * @author taedium
  * 
  */
 public abstract class AbstractEntityType<E> implements EntityType<E> {
 
+    /**
+     * インスタンスを構築します。
+     */
     protected AbstractEntityType() {
     }
 
