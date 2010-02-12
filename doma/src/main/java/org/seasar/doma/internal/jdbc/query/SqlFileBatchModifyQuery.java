@@ -18,6 +18,7 @@ package org.seasar.doma.internal.jdbc.query;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -139,9 +140,13 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
 
     public void setElements(Iterable<E> elements) {
         assertNotNull(elements);
-        this.elements = new ArrayList<E>();
-        for (E element : elements) {
-            this.elements.add(element);
+        if (elements instanceof Collection<?>) {
+            this.elements = new ArrayList<E>((Collection<E>) elements);
+        } else {
+            this.elements = new ArrayList<E>();
+            for (E element : elements) {
+                this.elements.add(element);
+            }
         }
         this.sqls = new ArrayList<PreparedSql>(this.elements.size());
     }

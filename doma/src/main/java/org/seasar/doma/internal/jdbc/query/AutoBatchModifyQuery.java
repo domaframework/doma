@@ -18,6 +18,7 @@ package org.seasar.doma.internal.jdbc.query;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
@@ -133,9 +134,13 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
 
     public void setEntities(Iterable<E> entities) {
         assertNotNull(entities);
-        this.entities = new ArrayList<E>();
-        for (E entity : entities) {
-            this.entities.add(entity);
+        if (entities instanceof Collection<?>) {
+            this.entities = new ArrayList<E>((Collection<E>) entities);
+        } else {
+            this.entities = new ArrayList<E>();
+            for (E entity : entities) {
+                this.entities.add(entity);
+            }
         }
         this.sqls = new ArrayList<PreparedSql>(this.entities.size());
     }
