@@ -282,7 +282,7 @@ List<Employee> list = dao.selectAll(salary, orderBy);]]></source>
 				</p>
 <source><![CDATA[select * from employee where 
 /*%if employeeId != null */
-    employee_id = /*employeeId*/99
+    employee_id = /* employeeId */99
 /*%end*/]]></source>
 				<p>
 					上記のSQL文は、 <code>employeeId</code>が <code>null</code>でない場合 次のような準備された文に変換されます。
@@ -526,7 +526,7 @@ salary > 1000]]></source>
 				</p>
 <source><![CDATA[select * from employee where 
 /*%if employeeName != null && employeeName.length() > 10 */
-    employee_name = /*employeeName*/'smith'
+    employee_name = /* employeeName */'smith'
 /*%end*/]]></source>
 			</subsection>
 			<subsection name="比較演算子">
@@ -534,20 +534,20 @@ salary > 1000]]></source>
 					以下の比較演算子を使用できます。
 				</p>
 				<table>
-					<tr><th>比較演算子</th></tr>
-					<tr><td><code>==</code></td></tr>
-					<tr><td><code>!=</code></td></tr>
-					<tr><td><code>&lt;</code></td></tr>
-					<tr><td><code>&lt;=</code></td></tr>
-					<tr><td><code>&gt;</code></td></tr>
-					<tr><td><code>&gt;=</code></td></tr>
+					<tr><th>演算子</th><th>説明</th></tr>
+					<tr><td><code>==</code></td><td>等値演算子</td></tr>
+					<tr><td><code>!=</code></td><td>不等演算子</td></tr>
+					<tr><td><code>&lt;</code></td><td>小なり演算子</td></tr>
+					<tr><td><code>&lt;=</code></td><td>小なりイコール演算子</td></tr>
+					<tr><td><code>&gt;</code></td><td>大なり演算子</td></tr>
+					<tr><td><code>&gt;=</code></td><td>大なりイコール演算子</td></tr>
 				</table>
 				<p>
 					比較演算子を利用するには、 被演算子が <code>java.lang.Comparable</code>を実装している必要があります。
 				</p>
 				<p>
 					<code>&lt;</code>、<code>&lt;=</code>、<code>&gt;</code>、<code>&gt;=</code>では、
-					非演算子が<code>null</code>であってはいけません。
+					被演算子が<code>null</code>であってはいけません。
 				</p>
 <source><![CDATA[select * from employee where 
 /*%if employeeName.indexOf("s") > -1 */
@@ -559,10 +559,10 @@ salary > 1000]]></source>
 					以下の論理演算子を使用できます。
 				</p>
 				<table>
-					<tr><th>論理演算子</th></tr>
-					<tr><td><code>!</code></td></tr>
-					<tr><td><code>&amp;&amp;</code></td></tr>
-					<tr><td><code>||</code></td></tr>
+					<tr><th>演算子</th><th>説明</th></tr>
+					<tr><td><code>!</code></td><td>論理否定演算子</td></tr>
+					<tr><td><code>&amp;&amp;</code></td><td>論理積演算子</td></tr>
+					<tr><td><code>||</code></td><td>論理和演算子</td></tr>
 				</table>
 				<p>
 					 括弧を使って、演算子が適用される優先度を制御できます。
@@ -577,12 +577,12 @@ salary > 1000]]></source>
 					以下の算術演算子を使用できます。
 				</p>
 				<table>
-					<tr><th>算術演算子</th></tr>
-					<tr><td><code>+</code></td></tr>
-					<tr><td><code>-</code></td></tr>
-					<tr><td><code>*</code></td></tr>
-					<tr><td><code>/</code></td></tr>
-					<tr><td><code>%</code></td></tr>
+					<tr><th>演算子</th><th>説明</th></tr>
+					<tr><td><code>+</code></td><td>加算演算子</td></tr>
+					<tr><td><code>-</code></td><td>減算演算子</td></tr>
+					<tr><td><code>*</code></td><td>乗算演算子</td></tr>
+					<tr><td><code>/</code></td><td>除算演算子</td></tr>
+					<tr><td><code>%</code></td><td>剰余演算子</td></tr>
 				</table>
 				<p>
 					 被演算子は数値型でなければいけません。
@@ -592,7 +592,7 @@ salary > 1000]]></source>
 			</subsection>
 			<subsection name="その他の演算子">
 				<p>
-					<code>+</code>演算子を使って文字を連結できます。
+					連結演算子（<code>+</code>）を使って文字を連結できます。
 				</p>
 				<p>
 					 被演算子は次のいずれかの型でなければいけません。
