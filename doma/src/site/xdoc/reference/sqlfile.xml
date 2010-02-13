@@ -211,7 +211,7 @@
 					バインド変数コメントはバインド変数を埋め込みたい場所に記述し、バインド変数コメントの直後にはテスト用データを指定しなければいけません。
 					Daoインタフェースのメソッドと、対応するSQLの例は次のとおりです。
 				</p>
-<source><![CDATA[List<Employee> selectById(Integer employeeId);]]></source>
+<source><![CDATA[Employee selectById(Integer employeeId);]]></source>
 <source><![CDATA[select * from employee where employee_id = /* employeeId */99]]></source>
 				<h4><a name="Iterable型のパラメータ"></a><code>Iterable</code>型のパラメータ</h4>
 				<p>
