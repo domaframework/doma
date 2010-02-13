@@ -131,6 +131,7 @@ import tutorial.dao.EmployeeDaoImpl;
 				Mavenでビルドを行う際のポイントを示します。
 			</p>
 			<ul>
+				<li>Seasarのリポジトリを指定する</li>
 				<li>依存関係の設定でdomaへの依存を指定する</li>
 				<li>maven-compiler-pluginでは、excludesタグを使って実質的にコンパイルを行わない</li>
 				<li>実際のコンパイルはmaven-antrun-pluginの中でjavacタスクにより行う</li>
@@ -148,6 +149,21 @@ import tutorial.dao.EmployeeDaoImpl;
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    
+    ...
+    
+    <repositories>
+        <repository>
+            <id>maven.seasar.org</id>
+            <name>The Seasar Foundation Maven2 Repository</name>
+            <url>http://maven.seasar.org/maven2</url>
+        </repository>
+        <repository>
+            <id>maven.snapshot.seasar.org</id>
+            <name>The Seasar Foundation Maven2 Repository(snapshot)</name>
+            <url>http://maven.seasar.org/maven2-snapshot</url>
+        </repository>
+    </repositories>
     
     ...
     

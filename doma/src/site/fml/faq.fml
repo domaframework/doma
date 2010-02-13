@@ -166,6 +166,37 @@
 			</answer>
 		</faq>
 	</part>
+	<part id="build-environment">
+		<title>ビルド環境に関する質問</title>
+		<faq id="build-environment-1">
+			<question>AntでDomaを利用したアプリケーションをビルドしたいのですが、aptに関する設定をどのように行えばいいのでしょうか？</question>
+			<answer>
+				<p>
+					<a href="reference/app_build.html">アプリケーションのビルド方法</a>や<a href="reference/apt.html">注釈処理</a>を参照してください。
+				</p>
+			</answer>
+		</faq>
+		<faq id="build-environment-2">
+			<question>MavenでDomaを利用したアプリケーションをビルドしたいのですが、aptに関する設定をどのように行えばいいのでしょうか？</question>
+			<answer>
+				<p>
+					<a href="reference/app_build.html">アプリケーションのビルド方法</a>や<a href="reference/apt.html">注釈処理</a>を参照してください。
+				</p>
+			</answer>
+		</faq>
+		<faq id="build-environment-3">
+			<question>Domaを利用したアプリケーションをAntやMavenでコンパイルするとエラーになります。何がいけないのでしょうか？</question>
+			<answer>
+				<p>
+					javacには、aptに関するバグがあります。
+					コンパイルが成功しているにもかかわらず、誤ったエラーメッセージが出力されている可能性があります。
+				</p>
+				<p>
+					詳しくは<a href="reference/app_build.html">アプリケーションのビルド方法</a>を参照してください。
+				</p>
+			</answer>
+		</faq>
+	</part>
 	<part id="feature">
 		<title>O/Rマッパーの機能に関する質問</title>
 		<faq id="feature-1">

@@ -117,7 +117,7 @@ public interface AddressDao {
     @Select
     Address selectById(Integer addressId);
 
-    @Select
+    @Select(ensureResult = true)
     Address selectByIdAndVersion(Integer addressId, Integer version);
 
     @Insert

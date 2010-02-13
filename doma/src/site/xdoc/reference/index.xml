@@ -107,10 +107,10 @@
 				<li>
 					<a href="app_build.html">アプリケーションのビルド方法</a>
 					<ul>
-						<li><a href="app_bulid.html#概要">概要</a></li>
-						<li><a href="app_bulid.html#javacのバグについて">javacのバグについて</a></li>
-						<li><a href="app_bulid.html#Antによるビルド">Antによるビルド</a></li>
-						<li><a href="app_bulid.html#Mavenによるビルド">Mavenによるビルド</a></li>
+						<li><a href="app_build.html#概要">概要</a></li>
+						<li><a href="app_build.html#javacのバグについて">javacのバグについて</a></li>
+						<li><a href="app_build.html#Antによるビルド">Antによるビルド</a></li>
+						<li><a href="app_build.html#Mavenによるビルド">Mavenによるビルド</a></li>
 					</ul>
 				</li>
 			</ul>
