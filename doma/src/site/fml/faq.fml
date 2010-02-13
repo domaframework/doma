@@ -387,5 +387,20 @@
 				</p>
 			</answer>
 		</faq>
+		<faq id="feature-17">
+			<question>ジェネリックDAOを使用できますか？</question>
+			<answer>
+				<p>
+					いいえ、使用できません。
+					ジェネリックDAOを使用するとコード量は減りますが、コードの見通しがかえって低下すると考えているため使用できないようにしています。
+					（ジェネリックDAOについては<a href="http://www.ibm.com/developerworks/jp/java/library/j-genericdao/">DAOを繰り返すな！</a>を参照ください。）
+				</p>
+				<p>
+					たとえば、ジェネリックDAOでは、特定のエンティティをパラメータとしてメソッドを呼び出している箇所を探すの容易ではありません。
+					ジェネリックDAOでなければメソッドのシグネチャが固定であるためIDEのCall Hierarchy機能を使って簡単に特定可能ですが、
+					ジェネリックDAOの場合、メソッドのパラメータの型がジェネリクス型であるためにCall Hierarchy機能を使っても呼び出し元を絞り込めません。
+				</p>
+			</answer>
+		</faq>
 	</part>
 </faqs>
