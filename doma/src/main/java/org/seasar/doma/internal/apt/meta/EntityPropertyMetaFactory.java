@@ -89,6 +89,11 @@ public class EntityPropertyMetaFactory {
         if (entityMeta.hasGeneratedIdPropertyMeta()) {
             throw new AptException(Message.DOMA4037, env, fieldElement);
         }
+        TypeMirror boxedType = TypeMirrorUtil.boxIfPrimitive(fieldElement
+                .asType(), env);
+        if (!TypeMirrorUtil.isAssignable(boxedType, Number.class, env)) {
+            throw new AptException(Message.DOMA4095, env, fieldElement);
+        }
         switch (generatedValue.strategy()) {
         case IDENTITY:
             doIdentityIdGeneratorMeta(propertyMeta, fieldElement, entityMeta);
@@ -207,9 +212,9 @@ public class EntityPropertyMetaFactory {
             if (entityMeta.hasVersionPropertyMeta()) {
                 throw new AptException(Message.DOMA4024, env, fieldElement);
             }
-            TypeMirror referenceType = TypeMirrorUtil.boxIfPrimitive(
-                    fieldElement.asType(), env);
-            if (!TypeMirrorUtil.isAssignable(referenceType, Number.class, env)) {
+            TypeMirror boxedType = TypeMirrorUtil.boxIfPrimitive(fieldElement
+                    .asType(), env);
+            if (!TypeMirrorUtil.isAssignable(boxedType, Number.class, env)) {
                 throw new AptException(Message.DOMA4093, env, fieldElement);
             }
             propertyMeta.setVersion(true);

@@ -190,6 +190,7 @@ public enum Message implements MessageResource {
     DOMA4092("SQLファイル[{0}]の妥当検査に失敗しました。SQL[{1}]（[{2}]行目[{3}]番目の文字付近）。詳細は次のものです。{4}"),
     DOMA4093("@Versionは数値のプリミティブ型もしくはNumberのサプタイプのプロパティに対してのみ有効です。"),
     DOMA4094("永続対象のフィールドもしくは@OriginalStatesが注釈されたフィールドはprivateであってはいけません。"),
+    DOMA4095("@GeneratedValueは数値のプリミティブ型もしくはNumberのサプタイプのプロパティに対してのみ有効です。"),
     DOMA4096("クラス[{0}]は、永続対象の型としてサポートされていません。"),
     DOMA4097("戻り値のクラスは、[{0}]でなければいけません。"),
     DOMA4098("@Outが注釈されたパラメータの型は、org.seasar.doma.jdbc.Referenceでなければいけません。"),

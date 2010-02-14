@@ -266,4 +266,14 @@ public class EntityProcessorTest extends AptTestCase {
         assertFalse(getCompiledResult());
         assertMessage(Message.DOMA4169);
     }
+
+    public void testGeneratedValueNotNumber() throws Exception {
+        Class<?> target = GeneratedValueNotNumberEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4095);
+    }
 }
