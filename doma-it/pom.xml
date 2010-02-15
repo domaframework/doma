@@ -12,7 +12,7 @@
 	<!-- More Project Information -->
 	<name>Doma IT</name>
 	<description>Doma Integration Test</description>
-	<url>http://doma.sandbox.seasar.org/</url>
+	<url>http://doma.seasar.org/</url>
 	<inceptionYear>2009</inceptionYear>
 	<licenses>
 		<license>
@@ -64,9 +64,9 @@
 		</mailingList>
 	</mailingLists>
 	<scm>
-		<connection>scm:svn:https://www.seasar.org/svn/sandbox/doma/trunk/doma/</connection>
-		<developerConnection>scm:svn:https://www.seasar.org/svn/sandbox/doma/trunk/doma/</developerConnection>
-		<url>http://svn.seasar.org/browse/?root=sandbox.doma</url>
+		<connection>scm:svn:https://www.seasar.org/svn/doma/trunk/doma-it/</connection>
+		<developerConnection>scm:svn:https://www.seasar.org/svn/doma/trunk/doma-it/</developerConnection>
+		<url>http://svn.seasar.org/browse/?root=doma</url>
 	</scm>
 	<repositories>
 		<repository>
@@ -88,10 +88,6 @@
 			<name>The Seasar Foundation Maven2 Snapshot Repository</name>
 			<url>dav:https://www.seasar.org/maven/maven2-snapshot</url>
 		</snapshotRepository>
-		<site>
-			<id>maven.seasar.org</id>
-			<url>dav:https://www.seasar.org/site/sandbox/doma/</url>
-		</site>
 	</distributionManagement>
 
 	<!-- Profiles -->

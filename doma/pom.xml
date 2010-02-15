@@ -12,7 +12,7 @@
 	<!-- More Project Information -->
 	<name>Doma</name>
 	<description>Domain Oriented MApping framework</description>
-	<url>http://doma.sandbox.seasar.org/</url>
+	<url>http://doma.seasar.org/</url>
 	<inceptionYear>2009</inceptionYear>
 	<licenses>
 		<license>
@@ -64,9 +64,9 @@
 		</mailingList>
 	</mailingLists>
 	<scm>
-		<connection>scm:svn:https://www.seasar.org/svn/sandbox/doma/trunk/doma/</connection>
-		<developerConnection>scm:svn:https://www.seasar.org/svn/sandbox/doma/trunk/doma/</developerConnection>
-		<url>http://svn.seasar.org/browse/?root=sandbox.doma</url>
+		<connection>scm:svn:https://www.seasar.org/svn/doma/trunk/doma/</connection>
+		<developerConnection>scm:svn:https://www.seasar.org/svn/doma/trunk/doma/</developerConnection>
+		<url>http://svn.seasar.org/browse/?root=doma</url>
 	</scm>
 	<repositories>
 		<repository>
@@ -95,7 +95,7 @@
 		</snapshotRepository>
 		<site>
 			<id>maven.seasar.org</id>
-			<url>dav:https://www.seasar.org/site/sandbox/doma/</url>
+			<url>dav:https://www.seasar.org/site/doma/</url>
 		</site>
 	</distributionManagement>
 
