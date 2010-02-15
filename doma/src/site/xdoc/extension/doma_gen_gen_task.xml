@@ -181,7 +181,7 @@ where
 				<table border="1" cellpadding="2" cellspacing="0">
 					<tr><th>属性</th><th>説明</th><th>デフォルト値</th><th>必須</th></tr>
 					<tr><td>generate</td><td>"true"の場合、エンティティクラスとエンティティリスナーのJavaコードを生成します。</td><td>"true"</td><td>NO</td></tr>
-					<tr><td>destDir</td><td>Javaファイルの出力先ディレクトリです。</td><td>src</td><td>NO</td></tr>
+					<tr><td>destDir</td><td>Javaファイルの出力先ディレクトリです。</td><td>"src"</td><td>NO</td></tr>
 					<tr><td>encoding</td><td>Javaファイルのエンコーディングです。</td><td>"UTF-8"</td><td>NO</td></tr>
 					<tr><td>overwrite</td><td>"true"の場合、エンティティクラスのJavaコードを上書きします。</td><td>"true"</td><td>NO</td></tr>
 					<tr><td>overwriteListener</td><td>"true"の場合、エンティティリスナークラスのJavaコードを上書きします。</td><td>"false"</td><td>NO</td></tr>
@@ -215,12 +215,12 @@ where
 				<table border="1" cellpadding="2" cellspacing="0">
 					<tr><th>属性</th><th>説明</th><th>デフォルト値</th><th>必須</th></tr>
 					<tr><td>overwrite</td><td>"true"の場合、Javaコードを上書きします。</td><td>"false"</td><td>NO</td></tr>
-					<tr><td>destDir</td><td>Javaファイルの出力先ディレクトリです。</td><td>src</td><td>NO</td></tr>
+					<tr><td>destDir</td><td>Javaファイルの出力先ディレクトリです。</td><td>"src"</td><td>NO</td></tr>
 					<tr><td>encoding</td><td>Javaファイルのエンコーディングです。</td><td>"UTF-8"</td><td>NO</td></tr>
 					<tr><td>generate</td><td>"true"の場合、DaoインタフェースのJavaコードを生成します。</td><td>"true"</td><td>NO</td></tr>
 					<tr><td>packageName</td><td>Daoインタフェースのパッケージ名です。</td><td>"example.dao"</td><td>NO</td></tr>
 					<tr><td>suffix</td><td>Daoインタフェース名のサフィックスです。Daoインタフェースの名前はエンティティクラス名に、この値をサフィックスしたものになります。</td><td>"Dao"</td><td>NO</td></tr>
-					<tr><td>configClassName</td><td>設定クラスの完全修飾名です。@Daoのconfig要素に使用されます。</td><td>"example.AppConfig"</td><td>NO</td></tr>
+					<tr><td>configClassName</td><td>設定クラスの完全修飾名です。@Daoのconfig要素に使用されます。</td><td>-</td><td>NO</td></tr>
 				</table>
 				<h4><a name="SqlConfigデータ型"></a>SqlConfig</h4>
 				<p>
