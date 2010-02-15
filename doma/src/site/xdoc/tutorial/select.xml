@@ -38,7 +38,7 @@
 		</section>
 		<section name="単純な検索">
 			<p>
-				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/SelectTest.java">test/tutorial/SelectTest.java</a>のtestSimpleSelectメソッドを参照してください。
+				<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/test/java/tutorial/SelectTest.java">src/test/java/tutorial/SelectTest.java</a>のtestSimpleSelectメソッドを参照してください。
 				引数をSQLファイルにバインディングして実行する単純な検索です。
 				バインディングには<a href="../reference/sqlfile.html#バインド変数コメント">バインド変数コメント</a>を使用します。
 			</p>
@@ -62,7 +62,7 @@ Employee selectById(Integer id);]]></source>
 		</section>
 		<section name="条件分岐を用いた検索">
 			<p>
-				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/SelectTest.java">test/tutorial/SelectTest.java</a>のtestConditinalSelectメソッドを参照してください。
+				<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/test/java/tutorial/SelectTest.java">src/test/java/tutorial/SelectTest.java</a>のtestConditinalSelectメソッドを参照してください。
 				SQLファイル中に<a href="../reference/sqlfile.html#条件コメント">条件コメント</a>を記述することで、動的なSQLを発行できます。
 			</p>
 			<p>
@@ -138,7 +138,7 @@ order by age]]></source>
 		</section>
 		<section name="繰り返しを用いた検索">
 			<p>
-				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/SelectTest.java">test/tutorial/SelectTest.java</a>のtestLoopSelectメソッドを参照してください。
+				<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/test/java/tutorial/SelectTest.java">src/test/java/tutorial/SelectTest.java</a>のtestLoopSelectメソッドを参照してください。
 				SQLファイル中に<a href="../reference/sqlfile.html#繰り返しコメント">繰り返しコメント</a>を記述することで、動的なSQLを発行できます。
 			</p>
 			<p>
@@ -176,7 +176,7 @@ List<Employee> list = dao.selectByAges(ages);]]></source>
 		</section>
 		<section name="IN述語による検索">
 			<p>
-				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/SelectTest.java">test/tutorial/SelectTest.java</a>のtestInPredicateメソッドを参照してください。
+				<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/test/java/tutorial/SelectTest.java">src/test/java/tutorial/SelectTest.java</a>のtestInPredicateメソッドを参照してください。
 				IN述語を使った検索です。
 			</p>
 			<p>
@@ -201,7 +201,7 @@ List<Employee> list = dao.selectByNames(names);]]></source>
 		<section name="LIKE述語による検索">
 			<subsection name="前方一致検索">
 				<p>
-					<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/SelectTest.java">test/tutorial/SelectTest.java</a>のtestLikePredicate_prefixメソッドを参照してください。
+					<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/test/java/tutorial/SelectTest.java">src/test/java/tutorial/SelectTest.java</a>のtestLikePredicate_prefixメソッドを参照してください。
 					SQLファイル中で<a href="../reference/sqlfile.html#組み込み関数の使用">組み込み関数</a>「@prefix()」を使用した前方一致検索ができます。
 					組み込み関数「@prefix()」を使用するとJavaのコード内で「%」を文字列に連結する処理が不要になります。
 				</p>
@@ -225,7 +225,7 @@ List<Employee> selectByNameWithPrefixMatching(String prefix);]]></source>
 			</subsection>
 			<subsection name="後方一致検索">
 				<p>
-					<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/SelectTest.java">test/tutorial/SelectTest.java</a>のtestLikePredicate_suffixメソッドを参照してください。
+					<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/test/java/tutorial/SelectTest.java">src/test/java/tutorial/SelectTest.java</a>のtestLikePredicate_suffixメソッドを参照してください。
 					SQLファイル中で組み込み関数「@suffix()」を使用した後方一致検索ができます。
 					組み込み関数「@suffix()」を使用するとJavaのコード内で「%」を文字列に連結する処理が不要になります。
 				</p>
@@ -249,7 +249,7 @@ List<Employee> selectByNameWithSuffixMatching(String suffix);]]></source>
 			</subsection>
 			<subsection name="中間一致検索">
 				<p>
-					<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/SelectTest.java">test/tutorial/SelectTest.java</a>のtestLikePredicate_insideメソッドを参照してください。
+					<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/test/java/tutorial/SelectTest.java">src/test/java/tutorial/SelectTest.java</a>のtestLikePredicate_insideメソッドを参照してください。
 					SQLファイル中で組み込み関数「@contain()」を使用した中間一致検索ができます。
 					組み込み関数「@contain()」を使用するとJavaのコード内で「%」を文字列に連結する処理が不要になります。
 				</p>
@@ -274,7 +274,7 @@ List<Employee> selectByNameWithInsideMatching(String inside);]]></source>
 		</section>
 		<section name="日付による範囲検索">
 			<p>
-				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/SelectTest.java">test/tutorial/SelectTest.java</a>のtestSelectByTimestampRangeメソッドを参照してください。
+				<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/test/java/tutorial/SelectTest.java">src/test/java/tutorial/SelectTest.java</a>のtestSelectByTimestampRangeメソッドを参照してください。
 				日付を用いて範囲検索を行う場合に、日付の時刻部分を切り捨てたり、日付を一日後ろへずらして切りのいい値にしたいことがあります。
 				そのような場合には、<a href="../reference/sqlfile.html#組み込み関数の使用">組み込み関数</a>の「@roundDownTimePart()」と「@roundUpTimePart()」を使用します。
 			</p>
@@ -311,7 +311,7 @@ where
 		</section>
 		<section name="ドメインによる検索">
 			<p>
-				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/SelectTest.java">test/tutorial/SelectTest.java</a>のtestSelectByDomainメソッドを参照してください。
+				<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/test/java/tutorial/SelectTest.java">src/test/java/tutorial/SelectTest.java</a>のtestSelectByDomainメソッドを参照してください。
 				ドメインを条件に使用した検索です。
 			</p>
 			<p>
@@ -336,7 +336,7 @@ List<Employee> selectBySalary(Salary salary);]]></source>
 		</section>
 		<section name="エンティティによる検索">
 			<p>
-				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/SelectTest.java">test/tutorial/SelectTest.java</a>のtestSelectByEntityメソッドを参照してください。
+				<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/test/java/tutorial/SelectTest.java">src/test/java/tutorial/SelectTest.java</a>のtestSelectByEntityメソッドを参照してください。
 				エンティティを条件に使用した検索です。
 			</p>
 			<p>
@@ -363,7 +363,7 @@ List<Employee> list = dao.selectByExample(e);]]></source>
 		</section>
 		<section name="ページングを行う検索">
 			<p>
-				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/SelectTest.java">test/tutorial/SelectTest.java</a>のtestOffsetLimitメソッドを参照してください。
+				<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/test/java/tutorial/SelectTest.java">src/test/java/tutorial/SelectTest.java</a>のtestOffsetLimitメソッドを参照してください。
 				ページングを行う検索です。
 			</p>
 			<p>
@@ -392,7 +392,7 @@ assertEquals(3, list.size());]]></source>
 		</section>
 		<section name="ページングと集計を同時に行う検索">
 			<p>
-				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/SelectTest.java">test/tutorial/SelectTest.java</a>のtestCountメソッドを参照してください。
+				<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/test/java/tutorial/SelectTest.java">src/test/java/tutorial/SelectTest.java</a>のtestCountメソッドを参照してください。
 				ページングと集計（ページングしない場合の全件数の取得）を同時に行う検索です。
 			</p>
 			<p>
@@ -424,7 +424,7 @@ assertEquals(14, options.getCount());]]></source>
 		</section>
 		<section name="イテレーション検索">
 			<p>
-				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/SelectTest.java">test/tutorial/SelectTest.java</a>のtestIterateメソッドを参照してください。
+				<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/test/java/tutorial/SelectTest.java">src/test/java/tutorial/SelectTest.java</a>のtestIterateメソッドを参照してください。
 				SQLの結果セットを1件ずつエンティティなどのオブジェクトへインスタンス化する検索です。
 				メモリの使用量を抑えながら大量データを扱う場合に向いています。
 			</p>

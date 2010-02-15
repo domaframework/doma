@@ -20,7 +20,7 @@
 		</section>
 		<section name="SQLの自動生成による挿入">
 			<p>
-				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/InsertTest.java">test/tutorial/InsertTest.java</a>のtestInsertメソッドを参照してください。
+				<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/test/java/tutorial/InsertTest.java">src/test/java/tutorial/InsertTest.java</a>のtestInsertメソッドを参照してください。
 				SQLの自動生成による挿入です。
 			</p>
 			<p>
@@ -72,12 +72,12 @@ dao.insert(employee);]]></source>
 			</p>
 			<p>
 				insertTimestampプロパティはEmployeeListenerで自動設定されます。
-				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/src/tutorial/entity/EmployeeListener.java">test/tutorial/EmployeeListener.java</a>を参照してください。
+				<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/main/java/tutorial/entity/EmployeeListener.java">src/test/java/tutorial/EmployeeListener.java</a>を参照してください。
 			</p>
 		</section>
 		<section name="SQLファイルによる挿入">
 			<p>
-				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/InsertTest.java">test/tutorial/InsertTest.java</a>のtestInsertWithSqlFileメソッドを参照してください。
+				<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/test/java/tutorial/InsertTest.java">src/test/java/tutorial/InsertTest.java</a>のtestInsertWithSqlFileメソッドを参照してください。
 				SQLファイルによる挿入です。
 			</p>
 			<p>

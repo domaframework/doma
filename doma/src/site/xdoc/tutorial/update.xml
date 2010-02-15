@@ -20,7 +20,7 @@
 		</section>
 		<section name="SQLの自動生成による更新">
 			<p>
-				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/UpdateTest.java">test/tutorial/UpdateTest.java</a>のtestUpdateメソッドを参照してください。
+				<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/test/java/tutorial/UpdateTest.java">src/test/java/tutorial/UpdateTest.java</a>のtestUpdateメソッドを参照してください。
 				SQLの自動生成による更新です。
 			</p>
 			<p>
@@ -55,7 +55,7 @@ where
 			</p>
 			<p>
 				updateTimestampプロパティはEmployeeListenerで自動設定されます。
-				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/src/tutorial/entity/EmployeeListener.java">test/tutorial/EmployeeListener.java</a>を参照してください。
+				<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/main/java/tutorial/entity/EmployeeListener.java">src/test/java/tutorial/EmployeeListener.java</a>を参照してください。
 			</p>
 			<p>
 				エンティティクラスに@OriginalStatesが注釈されたプロパティがある場合、
@@ -65,7 +65,7 @@ where
 		</section>
 		<section name="SQLファイルによる更新">
 			<p>
-				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/UpdateTest.java">test/tutorial/UpdateTest.java</a>のtestUpdateWithSqlFileメソッドを参照してください。
+				<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/test/java/tutorial/UpdateTest.java">src/test/java/tutorial/UpdateTest.java</a>のtestUpdateWithSqlFileメソッドを参照してください。
 				SQLファイルによる更新です。
 			</p>
 			<p>

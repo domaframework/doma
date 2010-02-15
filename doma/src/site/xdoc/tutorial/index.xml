@@ -119,18 +119,30 @@
 						<th>説明</th>
 					</tr>
 					<tr>
-						<td>src</td>
+						<td>src/main/java</td>
 						<td>
-							設定クラス、Daoインタフェース、エンティティクラス、SQLファイル等のソースフォルダです。
+							設定クラス、Daoインタフェース、エンティティクラス等のソースフォルダです。
+						</td>
+					</tr>
+					<tr>
+						<td>src/main/resources</td>
+						<td>
+							SQLファイル等のソースフォルダです。
 							SQLファイルは、Domaの規約に則ってMETA-INFフォルダ以下に配置されます。
 							また、JDBCドライバのプロバイダ構成ファイルがMETA-INF/servicesフォルダ以下にjava.sql.Driverという名前で配置されます。
 						</td>
 					</tr>
 					<tr>
-						<td>test</td>
+						<td>src/test/java</td>
 						<td>
 							Daoを利用するコードのためのソースフォルダです。
 							Daoを利用するコードはすべてJUnitのテストクラスとして記述されています。
+						</td>
+					</tr>
+					<tr>
+						<td>src/test/resources</td>
+						<td>
+							使用していません。
 						</td>
 					</tr>
 					<tr>
@@ -152,6 +164,29 @@
 					<tr>
 						<td>libsrc</td>
 						<td>このチュートリアルで利用するjarファイルのソースコードを格納するフォルダです。</td>
+					</tr>
+				</table>
+				<p>
+					プロジェクト直下には次のファイルがあります。主要なものを説明します。
+				</p>
+				<table>
+					<tr>
+						<th>ファイル</th>
+						<th>説明</th>
+					</tr>
+					<tr>
+						<td>build.xml</td>
+						<td>
+							チュートリアルプロジェクトをAntでビルドするためのビルドファイルです。
+							詳しくは、<a href="../reference/app_build.html#Antによるビルド">Antによるビルド</a>を参照してください。
+						</td>
+					</tr>
+					<tr>
+						<td>pom.xml</td>
+						<td>
+							チュートリアルプロジェクトをMavenでビルドするためのプロジェクト記述ファイルです。
+							詳しくは、<a href="../reference/app_build.html#Mavenによるビルド">Mavenによるビルド</a>を参照してください。
+						</td>
 					</tr>
 				</table>
 			</subsection>
@@ -179,13 +214,13 @@
 				<p>
 					HSQLDBはMemory-Onlyモードで起動し、テスト用のスキーマとデータは各テストの実行前に作成し、テスト終了後に破棄します。
 					スキーマとデータの作成と破棄は、共通のテストクラスで行っています。
-					Javaのコードは、<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/TutorialTestCase.java">test/tutorial/TutorialTestCase.java</a>になります。
+					Javaのコードは、<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/test/java/tutorial/TutorialTestCase.java">src/test/java/tutorial/TutorialTestCase.java</a>になります。
 				</p>
 			</subsection>
 			<subsection name="JDBCドライバのプロバイダ構成ファイル">
 				<p>
-					HSQLDBのJDBCドライバを登録するためのプロバイダ構成ファイルがsrc/META-INF/servicesに必要です。
-					ファイルの名称は<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/src/META-INF/services/java.sql.Driver">java.sql.Driver</a>で、中身は次のように記述されます。
+					HSQLDBのJDBCドライバを登録するためのプロバイダ構成ファイルがsrc/main/resources/META-INF/servicesに必要です。
+					ファイルの名称は<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/main/resources/META-INF/services/java.sql.Driver">java.sql.Driver</a>で、中身は次のように記述されます。
 				</p>
 <source><![CDATA[org.hsqldb.jdbcDriver]]></source>
 				<p>
@@ -200,11 +235,11 @@
 				<h4><a name="設定クラス"></a>設定クラス</h4>
 				<p>
 					<a href="../reference/config.html">設定クラス</a>とは、Domaに関する各種設定を持つクラスです。
-					このチュートリアルで使用する設定クラスのソースコードは、<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/src/tutorial/AppConfig.java">src/tutorial/AppConfig.java</a>になります。
+					このチュートリアルで使用する設定クラスのソースコードは、<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/main/java/tutorial/AppConfig.java">src/main/java/tutorial/AppConfig.java</a>になります。
 				</p>
 				<p>
 					このクラスでは、HSQLDBのデータソースの作成とHSQLDBの方言の設定を行っています。
-					それ以外の設定については親クラスの<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma/src/main/java/org/seasar/doma/jdbc/DomaAbstractConfig.java">DomaAbstractConfig</a>のものを利用しています。
+					それ以外の設定については親クラスの<a href="https://www.seasar.org/svn/doma/trunk/doma/src/main/java/org/seasar/doma/jdbc/DomaAbstractConfig.java">DomaAbstractConfig</a>のものを利用しています。
 					設定クラスはDaoインタフェースから利用されます。
 				</p>
 <source><![CDATA[public class AppConfig extends DomaAbstractConfig {
@@ -235,7 +270,7 @@
 				<p>
 					<a href="../reference/entity.html">エンティティクラス</a>とは、テーブルやSQLの結果セットにマッピングされたクラスです。
 					エンティティクラスは、@Entityを注釈して示します。
-					このチュートリアルで使用するエンティティクラスのソースコードは、<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/src/tutorial/entity/Employee.java">src/tutorial/entity/Employee.java</a>になります。
+					このチュートリアルで使用するエンティティクラスのソースコードは、<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/main/java/tutorial/entity/Employee.java">src/main/java/tutorial/entity/Employee.java</a>になります。
 				</p>
 				<p>
 					Employeeクラスは、EMPLOYEEテーブルに対応します。
@@ -294,7 +329,7 @@ public class Employee {
 				<p>
 					エンティティリスナークラスのインスタンスは、エンティティがデータベースに挿入、更新、削除されるまえに呼び出されます。
 					このチュートリアルで使用するエンティティリスナークラスはEmployeeListenerです。
-					ソースコードは、<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/src/tutorial/entity/EmployeeListener.java">src/tutorial/entity/EmployeeListener.java</a>になります。
+					ソースコードは、<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/main/java/tutorial/entity/EmployeeListener.java">src/main/java/tutorial/entity/EmployeeListener.java</a>になります。
 				</p>
 <source><![CDATA[public class EmployeeListener implements EntityListener<Employee> {
 
@@ -318,7 +353,7 @@ public class Employee {
 					<a href="../reference/domain.html">ドメインクラス</a>は、データベースのカラムにマッピング可能なアプリケーション固有の値型です。
 					ドメインクラスは@Domainを注釈して示します。
 					このチュートリアルで使用するドメインクラスは、給料を表すSalaryクラスです。
-					ソースコードは、<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/src/tutorial/domain/Salary.java">src/tutorial/domain/Salary.java</a>になります。
+					ソースコードは、<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/main/java/tutorial/domain/Salary.java">src/main/java/tutorial/domain/Salary.java</a>になります。
 				</p>
 <source><![CDATA[@Domain(valueType = Integer.class)
 public class Salary {
@@ -351,7 +386,7 @@ public class Salary {
 					<a href="../reference/dao.html">Daoインタフェース</a>とは、データベースアクセスの境界となるインタフェースです。
 					Daoインタフェースは@Daoを注釈して示します。
 					@Daoのconfig要素には設定クラスであるAppConfigクラスを指定します。
-					このチュートリアルで使用するDaoインタフェースのソースコードは、<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/src/tutorial/dao/EmployeeDao.java">src/tutorial/dao/EmployeeDao.java</a>になります。
+					このチュートリアルで使用するDaoインタフェースのソースコードは、<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/main/java/tutorial/dao/EmployeeDao.java">src/main/java/tutorial/dao/EmployeeDao.java</a>になります。
 				</p>
 				<p>
 					Daoインタフェースの実装クラスはDomaにより自動生成されます。
@@ -393,19 +428,19 @@ public interface EmployeeDao {
 			</subsection>
 			<subsection name="SQLファイル">
 				<p>
-					<a href="../reference/sqlfile.html">SQLファイル</a>は、src/META-INF/tutorial/EmployeeDaoフォルダ以下に配置されます。
+					<a href="../reference/sqlfile.html">SQLファイル</a>は、src/main/resources/META-INF/tutorial/EmployeeDaoフォルダ以下に配置されます。
 					フォルダの名前はDaoインタフェースと対応づけられます。
 				</p>
 				<p>
 					SQLファイルは、名前から拡張子を除いたものがDaoインタフェースのメソッドに一致します。
-					たとえば、<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/src/META-INF/tutorial/dao/EmployeeDao/selectById.sql">selectById.sql</a>はDaoインタフェースのselectByIdメソッドに対応します。
+					たとえば、<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/main/resources/META-INF/tutorial/dao/EmployeeDao/selectById.sql">selectById.sql</a>はDaoインタフェースのselectByIdメソッドに対応します。
 					selectById.sqlの中身は次のようなテキストです。
 				</p> 
 <source><![CDATA[select * from employee where id = /* id */0]]></source>
 			</subsection>
 			<subsection name="実行方法">
 				<p>
-					Eclipseの場合、test/tutorial以下のJavaファイルを開き、メニューから「Run」 - 「Run as」 - 「JUnit Test」を選択します。
+					Eclipseの場合、src/test/java/tutorial以下のJavaファイルを開き、メニューから「Run」 - 「Run as」 - 「JUnit Test」を選択します。
 				</p>
 			</subsection>
 			<subsection name="機能の解説">

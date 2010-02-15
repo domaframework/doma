@@ -139,7 +139,7 @@
 				<p>
 					<a href="reference/config.html">設定クラス</a>のgetDataSourceメソッドで、
 					S2Containerからデータソースを取り出し返します。
-					src/demo/config/AppConfig.javaを参照してください。
+					src/main/java/demo/config/AppConfig.javaを参照してください。
 				</p>
 <source><![CDATA[public class AppConfig implements Config {
 
@@ -171,7 +171,7 @@
 				<p>
 					通常、Domaがトランザクションマネジャーを意識する必要はないのですが、テーブルを使った採番で行ロックを極力短くするために局所的にトランザクションマネジャーと連携したいことがあります。
 					そのために用意されているのが、<code>org.seasar.doma.jdbc.RequiresNewController</code>というインタフェースです。
-					Seasar2用の実装例としては、src/demo/config/S2RequiresNewController.javaを参照してください。
+					Seasar2用の実装例としては、src/main/java/demo/config/S2RequiresNewController.javaを参照してください。
 				</p>
 <source><![CDATA[public class S2RequiresNewController implements RequiresNewController {
 
@@ -193,7 +193,7 @@
     }
 }]]></source>
 				<p>
-					<a href="reference/config.html">設定クラス</a>（src/demo/config/AppConfig.java）のgetRequiresNewControllerメソッドでは、上記のS2RequiresNewControllerのインスタンスを返すようにします。
+					<a href="reference/config.html">設定クラス</a>（src/main/java/demo/config/AppConfig.java）のgetRequiresNewControllerメソッドでは、上記のS2RequiresNewControllerのインスタンスを返すようにします。
 				</p>
 			</subsection>
 			<subsection name="ログ管理を統合する">
@@ -203,7 +203,7 @@
 				</p>
 				<p>
 					Domaのログ出力の実装を切り替えるには、<code>org.seasar.doma.jdbc.JdbcLogger</code>というインタフェースの実装を用意します。
-					実装例としては、src/demo/config/CommonsJdbcLogger.javaを参照してください。
+					実装例としては、src/main/java/demo/config/CommonsJdbcLogger.javaを参照してください。
 				</p>
 <source><![CDATA[public class CommonsJdbcLogger implements JdbcLogger {
 
@@ -236,14 +236,14 @@
 
 }]]></source>
 				<p>
-					<a href="reference/config.html">設定クラス</a>（src/demo/config/AppConfig.java）のgetJdbcLoggerメソッドでは、上記のCommonsJdbcLoggerのインスタンスを返すようにします。
+					<a href="reference/config.html">設定クラス</a>（src/main/java/demo/config/AppConfig.java）のgetJdbcLoggerメソッドでは、上記のCommonsJdbcLoggerのインスタンスを返すようにします。
 				</p>
 			</subsection>
 			<subsection name="HOT deploy環境下でSQLファイルの変更を即座に認識させる">
 				<p>
 					Seasar2が提供するHotdeployUtilというユーティリティクラスを使用し、
 					HOT deployの場合にはSQLファイルをキャッシュしないようにします。
-					実装例としてはsrc/demo/config/SqlFileRepositoryProxy.javaを参照してください。
+					実装例としてはsrc/main/java/demo/config/SqlFileRepositoryProxy.javaを参照してください。
 				</p>
 <source><![CDATA[public class SqlFileRepositoryProxy extends AbstractSqlFileRepository {
 
@@ -261,7 +261,7 @@
 
 }]]></source>
 				<p>
-					<a href="reference/config.html">設定クラス</a>（src/demo/config/AppConfig.java）のgetSqlFileRepositoryメソッドでは、上記のSqlFileRepositoryProxyのインスタンスを返すようにします。
+					<a href="reference/config.html">設定クラス</a>（src/main/java/demo/config/AppConfig.java）のgetSqlFileRepositoryメソッドでは、上記のSqlFileRepositoryProxyのインスタンスを返すようにします。
 				</p>
 			</subsection>
 			<subsection name="DomaのDaoをSMART deployする">

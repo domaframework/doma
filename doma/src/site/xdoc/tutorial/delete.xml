@@ -20,7 +20,7 @@
 		</section>
 		<section name="SQLの自動生成による削除">
 			<p>
-				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/DeleteTest.java">test/tutorial/DeleteTest.java</a>のtestDeleteメソッドを参照してください。
+				<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/test/java/tutorial/DeleteTest.java">src/test/java/tutorial/DeleteTest.java</a>のtestDeleteメソッドを参照してください。
 				SQLの自動生成による削除です。
 			</p>
 			<p>
@@ -50,7 +50,7 @@ where
 		</section>
 		<section name="SQLファイルによる削除">
 			<p>
-				<a href="https://www.seasar.org/svn/sandbox/doma/trunk/doma-tutorial/test/tutorial/DeleteTest.java">test/tutorial/DeleteTest.java</a>のtestDeleteWithSqlFileメソッドを参照してください。
+				<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/test/java/tutorial/DeleteTest.java">src/test/java/tutorial/DeleteTest.java</a>のtestDeleteWithSqlFileメソッドを参照してください。
 				SQLファイルによる削除です。
 			</p>
 			<p>
