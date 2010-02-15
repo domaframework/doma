@@ -75,10 +75,12 @@ public class EntityPropertyMetaFactory {
             VariableElement fieldElement, EntityMeta entityMeta) {
         Id id = fieldElement.getAnnotation(Id.class);
         if (id == null) {
+            GeneratedValue generatedValue = fieldElement
+                    .getAnnotation(GeneratedValue.class);
+            if (generatedValue != null) {
+                throw new AptException(Message.DOMA4033, env, fieldElement);
+            }
             return;
-        }
-        if (entityMeta.hasGeneratedIdPropertyMeta()) {
-            throw new AptException(Message.DOMA4036, env, fieldElement);
         }
         propertyMeta.setId(true);
         GeneratedValue generatedValue = fieldElement

@@ -36,6 +36,8 @@ public class EntityMeta {
 
     protected final List<EntityPropertyMeta> allPropertyMetas = new ArrayList<EntityPropertyMeta>();
 
+    protected final List<EntityPropertyMeta> idPropertyMetas = new ArrayList<EntityPropertyMeta>();
+
     protected final EntityMirror entityMirror;
 
     protected final NamingType namingType;
@@ -91,6 +93,7 @@ public class EntityMeta {
         assertNotNull(propertyMeta);
         allPropertyMetas.add(propertyMeta);
         if (propertyMeta.isId()) {
+            idPropertyMetas.add(propertyMeta);
             if (propertyMeta.getIdGeneratorMeta() != null) {
                 generatedIdPropertyMeta = propertyMeta;
             }
@@ -102,6 +105,10 @@ public class EntityMeta {
 
     public List<EntityPropertyMeta> getAllPropertyMetas() {
         return allPropertyMetas;
+    }
+
+    public List<EntityPropertyMeta> getIdPropertyMetas() {
+        return idPropertyMetas;
     }
 
     public boolean hasVersionPropertyMeta() {

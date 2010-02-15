@@ -276,4 +276,24 @@ public class EntityProcessorTest extends AptTestCase {
         assertFalse(getCompiledResult());
         assertMessage(Message.DOMA4095);
     }
+
+    public void testGeneratedValueWithoutId() throws Exception {
+        Class<?> target = GeneratedValueWithoutIdEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4033);
+    }
+
+    public void testGeneratedValueWithCompositeId() throws Exception {
+        Class<?> target = GeneratedValueWithCompositeIdEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4036);
+    }
 }

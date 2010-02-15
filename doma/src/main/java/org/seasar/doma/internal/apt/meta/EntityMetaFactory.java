@@ -75,6 +75,7 @@ public class EntityMetaFactory {
         EntityMeta entityMeta = new EntityMeta(entityMirror, classElement);
         doClassElement(classElement, entityMeta);
         doFieldElements(classElement, entityMeta);
+        validateGeneratedId(classElement, entityMeta);
         return entityMeta;
     }
 
@@ -291,4 +292,11 @@ public class EntityMetaFactory {
         }
     }
 
+    protected void validateGeneratedId(TypeElement classElement,
+            EntityMeta entityMeta) {
+        if (entityMeta.hasGeneratedIdPropertyMeta()
+                && entityMeta.getIdPropertyMetas().size() > 1) {
+            throw new AptException(Message.DOMA4036, env, classElement);
+        }
+    }
 }
