@@ -24,8 +24,8 @@ import org.seasar.doma.jdbc.JdbcException;
  * 識別子のジェネレータです。
  * <p>
  * {@link #generatePreInsert(IdGenerationConfig)} と
- * {@link #generatePostInsert(IdGenerationConfig, Statement)} の両方が {@code null}
- * を返してはいけません。
+ * {@link #generatePostInsert(IdGenerationConfig, Statement)} のどちらか片方が {@code
+ * null} ではない値を返さなければいけません。
  * <p>
  * このインタフェースの実装は、引数なしの {@code public} なコンストラクタを持たなければいけません。
  * <p>

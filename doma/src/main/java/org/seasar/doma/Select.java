@@ -82,6 +82,8 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * <li>パラメータには {@link IterationCallback} 型のものが含まれる。その他のパラメータは任意の型である。ただし、
  * {@code SelectOptions} は最大でも1つしか指定できない。
  * <li>戻り値の型は パラメータで利用する {@code IterationCallback} の１番目の型パラメータと同じ型でなければいけない。
+ * {@link #ensureResult} に {@code true} が指定された場合、データが存在しなければ
+ * {@link NoResultException} がスローされる。
  * </ul>
  * 
  * <p>
@@ -138,7 +140,7 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * <li> {@link NonUniqueResultException} 戻り値の型が {@code List}
  * でない場合で、かつ結果が2件以上返された場合
  * <li> {@link NoResultException} {@link #ensureResult} に {@code true}
- * が指定され結果が0件の場合
+ * が指定され、結果が0件の場合
  * <li> {@link JdbcException} 上記以外でJDBCに関する例外が発生した場合
  * </ul>
  * 
