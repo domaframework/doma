@@ -296,4 +296,24 @@ public class EntityProcessorTest extends AptTestCase {
         assertFalse(getCompiledResult());
         assertMessage(Message.DOMA4036);
     }
+
+    public void testSequenceGeneratorWithoutGeneratedValue() throws Exception {
+        Class<?> target = SequenceGeneratorWithoutGeneratedValueEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4030);
+    }
+
+    public void testTableGeneratorWithoutGeneratedValue() throws Exception {
+        Class<?> target = TableGeneratorWithoutGeneratedValueEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4031);
+    }
 }

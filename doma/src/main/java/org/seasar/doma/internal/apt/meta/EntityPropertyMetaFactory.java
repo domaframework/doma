@@ -26,6 +26,8 @@ import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.GeneratedValue;
 import org.seasar.doma.Id;
+import org.seasar.doma.SequenceGenerator;
+import org.seasar.doma.TableGenerator;
 import org.seasar.doma.Version;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
@@ -77,15 +79,23 @@ public class EntityPropertyMetaFactory {
         if (id == null) {
             GeneratedValue generatedValue = fieldElement
                     .getAnnotation(GeneratedValue.class);
-            if (generatedValue != null) {
-                throw new AptException(Message.DOMA4033, env, fieldElement);
+            if (generatedValue == null) {
+                validateSequenceGeneratorNotExistent(propertyMeta,
+                        fieldElement, entityMeta);
+                validateTableGeneratorNotExistent(propertyMeta, fieldElement,
+                        entityMeta);
+                return;
             }
-            return;
+            throw new AptException(Message.DOMA4033, env, fieldElement);
         }
         propertyMeta.setId(true);
         GeneratedValue generatedValue = fieldElement
                 .getAnnotation(GeneratedValue.class);
         if (generatedValue == null) {
+            validateSequenceGeneratorNotExistent(propertyMeta, fieldElement,
+                    entityMeta);
+            validateTableGeneratorNotExistent(propertyMeta, fieldElement,
+                    entityMeta);
             return;
         }
         if (entityMeta.hasGeneratedIdPropertyMeta()) {
@@ -109,6 +119,26 @@ public class EntityPropertyMetaFactory {
         default:
             assertUnreachable();
             break;
+        }
+    }
+
+    protected void validateSequenceGeneratorNotExistent(
+            EntityPropertyMeta propertyMeta, VariableElement fieldElement,
+            EntityMeta entityMeta) {
+        SequenceGenerator sequenceGenerator = fieldElement
+                .getAnnotation(SequenceGenerator.class);
+        if (sequenceGenerator != null) {
+            throw new AptException(Message.DOMA4030, env, fieldElement);
+        }
+    }
+
+    protected void validateTableGeneratorNotExistent(
+            EntityPropertyMeta propertyMeta, VariableElement fieldElement,
+            EntityMeta entityMeta) {
+        TableGenerator tableGenerator = fieldElement
+                .getAnnotation(TableGenerator.class);
+        if (tableGenerator != null) {
+            throw new AptException(Message.DOMA4031, env, fieldElement);
         }
     }
 
