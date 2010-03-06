@@ -273,10 +273,7 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
 
     @Override
     public org.seasar.doma.internal.apt.entity.Emp getOriginalStates(org.seasar.doma.internal.apt.entity.Emp __entity) {
-        if (__entity.originalStates instanceof org.seasar.doma.internal.apt.entity.Emp) {
-            return (Emp) __entity.originalStates;
-        }
-        return null;
+        return __entity.originalStates;
     }
 
     @Override

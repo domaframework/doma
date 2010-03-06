@@ -579,13 +579,10 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 .getEntityTypeName());
         if (!entityMeta.isAbstract() && entityMeta.hasOriginalStatesMeta()) {
             OriginalStatesMeta osm = entityMeta.getOriginalStatesMeta();
-            iprint("    if (__entity.%1$s instanceof %2$s) {%n", osm.getName(),
-                    entityMeta.getEntityTypeName());
-            iprint("        return (%1$s) __entity.%2$s;%n", entityMeta
-                    .getEntityName(), osm.getName());
-            iprint("    }%n");
+            iprint("    return __entity.%1$s;%n", osm.getName());
+        } else {
+            iprint("    return null;%n");
         }
-        iprint("    return null;%n");
         iprint("}%n");
         print("%n");
     }
