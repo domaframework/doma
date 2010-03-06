@@ -672,8 +672,8 @@ salary > 1000]]></source>
 				</p>
 				<table>
 					<tr><th>戻り値の型</th><th>関数名とパラメータ</th><th>概要</th></tr>
-					<tr><td><code>String</code></td><td><code>@escape(String prefix)</code></td><td>LIKE演算のためのエスケープを行うことを示します。戻り値は入力値をエスケープした文字列です。エスケープにはデフォルトのエスケープ文字（$）を用いて行われます。</td></tr>
-					<tr><td><code>String</code></td><td><code>@escape(String prefix, char escapeChar)</code></td><td>LIKE演算のためのエスケープを行うことを示します。戻り値は入力値をエスケープした文字列です。エスケープは第2引数で指定したエスケープ文字を用いて行われます。</td></tr>
+					<tr><td><code>String</code></td><td><code>@escape(String text)</code></td><td>LIKE演算のためのエスケープを行うことを示します。戻り値は入力値をエスケープした文字列です。エスケープにはデフォルトのエスケープ文字（$）を用いて行われます。</td></tr>
+					<tr><td><code>String</code></td><td><code>@escape(String text, char escapeChar)</code></td><td>LIKE演算のためのエスケープを行うことを示します。戻り値は入力値をエスケープした文字列です。エスケープは第2引数で指定したエスケープ文字を用いて行われます。</td></tr>
 					<tr><td><code>String</code></td><td><code>@prefix(String prefix)</code></td><td>前方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを後ろに付与した文字列です。エスケープにはデフォルトのエスケープ文字（$）を用いて行われます。</td></tr>
 					<tr><td><code>String</code></td><td><code>@prefix(String prefix, char escapeChar)</code></td><td>前方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを後ろに付与した文字列です。エスケープは第2引数で指定したエスケープ文字を用いて行われます。</td></tr>
 					<tr><td><code>String</code></td><td><code>@suffix(String suffix)</code></td><td>後方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを前に付与した文字列です。エスケープはデフォルトのエスケープ文字（$）を用いて行われます。</td></tr>
