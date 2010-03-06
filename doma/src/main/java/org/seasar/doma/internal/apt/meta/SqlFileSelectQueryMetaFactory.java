@@ -86,7 +86,8 @@ public class SqlFileSelectQueryMetaFactory extends
                     || !env.getTypeUtils().isSameType(returnMeta.getType(),
                             callbackReturnType.getTypeMirror())) {
                 throw new AptException(Message.DOMA4055, env, method,
-                        returnMeta.getType(), callbackReturnType);
+                        returnMeta.getType(), callbackReturnType
+                                .getTypeNameAsTypeParameter());
             }
         } else {
             returnMeta.getDataType().accept(
