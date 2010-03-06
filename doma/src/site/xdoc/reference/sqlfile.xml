@@ -402,7 +402,6 @@ employee_name like ?]]></source>
 				</ul>
 				<p>
 					itemは識別子です。つまり、forの識別子が「name」の場合、この変数はそれぞれ「name_has_next」と「name_index」となります。
-					この変数は、次の繰り返しが可能かどうかを示します。
 				</p>
 				<p>
 					<i>item</i>_has_nextは、次の繰り返し要素が存在するかどうかを示すbooleanの値です。
