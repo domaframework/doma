@@ -28,10 +28,25 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
  */
 public class UtilLoggingJdbcLoggerTest extends TestCase {
 
-    public void test() throws Exception {
+    public void testLogSql() throws Exception {
         PreparedSql sql = new PreparedSql(SqlKind.SELECT, "aaa", "bbb", "ccc",
                 Collections.<PreparedSqlParameter> emptyList());
         UtilLoggingJdbcLogger logger = new UtilLoggingJdbcLogger();
         logger.logSql("ddd", "eee", sql);
+    }
+
+    public void testLogLocalTransactionBegun() throws Exception {
+        UtilLoggingJdbcLogger logger = new UtilLoggingJdbcLogger();
+        logger.logLocalTransactionBegun("ddd", "eee", "fff");
+    }
+
+    public void testLogLocalTransactionCommitted() throws Exception {
+        UtilLoggingJdbcLogger logger = new UtilLoggingJdbcLogger();
+        logger.logLocalTransactionCommitted("ddd", "eee", "fff");
+    }
+
+    public void testLogLocalTransactionRolledback() throws Exception {
+        UtilLoggingJdbcLogger logger = new UtilLoggingJdbcLogger();
+        logger.logLocalTransactionRolledback("ddd", "eee", "fff");
     }
 }

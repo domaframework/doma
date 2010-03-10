@@ -25,11 +25,14 @@ package org.seasar.doma.jdbc;
  */
 public abstract class DomaAbstractConfig implements Config {
 
-    private static SqlFileRepository sqlFileRepository = new GreedyCacheSqlFileRepository();
+    /** {@link SqlFile} のリポジトリ */
+    protected static SqlFileRepository sqlFileRepository = new GreedyCacheSqlFileRepository();
 
-    private static JdbcLogger jdbcLogger = new UtilLoggingJdbcLogger();
+    /** DBCに関する処理を記録するロガー */
+    protected static JdbcLogger jdbcLogger = new UtilLoggingJdbcLogger();
 
-    private static RequiresNewController requiresNewController = new NullRequiresNewController();
+    /** {@literal REQUIRES_NEW} の属性をもつトランザクションを制御するコントローラ */
+    protected static RequiresNewController requiresNewController = new NullRequiresNewController();
 
     /**
      * インスタンスを構築します。

@@ -24,6 +24,7 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.RuntimeConfig;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.ConfigException;
+import org.seasar.doma.jdbc.NeverClosedConnection;
 
 /**
  * {@link Dao} が注釈されたインタフェースの実装クラスのための骨格実装です。

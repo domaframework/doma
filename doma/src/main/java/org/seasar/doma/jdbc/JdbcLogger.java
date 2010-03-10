@@ -93,6 +93,48 @@ public interface JdbcLogger {
     void logSql(String callerClassName, String callerMethodName, Sql<?> sql);
 
     /**
+     * トランザクションの開始を記録します。
+     * 
+     * @param callerClassName
+     *            呼び出し元のクラス名
+     * @param callerMethodName
+     *            呼び出し元のメソッド名
+     * @param transactionId
+     *            トランザクションの識別子
+     * @since 1.1.0
+     */
+    void logLocalTransactionBegun(String callerClassName, String callerMethodName,
+            String transactionId);
+
+    /**
+     * トランザクションのコミットを記録します。
+     * 
+     * @param callerClassName
+     *            呼び出し元のクラス名
+     * @param callerMethodName
+     *            呼び出し元のメソッド名
+     * @param transactionId
+     *            トランザクションの識別子
+     * @since 1.1.0
+     */
+    void logLocalTransactionCommitted(String callerClassName,
+            String callerMethodName, String transactionId);
+
+    /**
+     * トランザクションのロールバックを記録します。
+     * 
+     * @param callerClassName
+     *            呼び出し元のクラス名
+     * @param callerMethodName
+     *            呼び出し元のメソッド名
+     * @param transactionId
+     *            トランザクションの識別子
+     * @since 1.1.0
+     */
+    void logLocalTransactionRolledback(String callerClassName,
+            String callerMethodName, String transactionId);
+
+    /**
      * {@link Connection#close()} 時に発生した {@link SQLException} を記録します。
      * 
      * @param callerClassName

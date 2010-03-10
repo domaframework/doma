@@ -56,8 +56,8 @@ public final class JdbcUtil {
         try {
             return connection.prepareStatement(sql.getRawSql());
         } catch (SQLException e) {
-            throw new JdbcException(Message.DOMA2016, e, sql
-                    .getSqlFilePath(), sql.getRawSql(), e);
+            throw new JdbcException(Message.DOMA2016, e, sql.getSqlFilePath(),
+                    sql.getRawSql(), e);
         }
     }
 
@@ -67,8 +67,8 @@ public final class JdbcUtil {
             return connection.prepareStatement(sql.getRawSql(),
                     Statement.RETURN_GENERATED_KEYS);
         } catch (SQLException e) {
-            throw new JdbcException(Message.DOMA2016, e, sql
-                    .getSqlFilePath(), sql.getRawSql(), e);
+            throw new JdbcException(Message.DOMA2016, e, sql.getSqlFilePath(),
+                    sql.getRawSql(), e);
         }
     }
 
@@ -77,8 +77,39 @@ public final class JdbcUtil {
         try {
             return connection.prepareCall(sql.getRawSql());
         } catch (SQLException e) {
-            throw new JdbcException(Message.DOMA2025, e, sql
-                    .getRawSql(), e);
+            throw new JdbcException(Message.DOMA2025, e, sql.getRawSql(), e);
+        }
+    }
+
+    public static void disableAutoCommit(Connection connection) {
+        try {
+            connection.setAutoCommit(false);
+        } catch (SQLException e) {
+            throw new JdbcException(Message.DOMA2041, e, e);
+        }
+    }
+
+    public static void enableAutoCommit(Connection connection) {
+        try {
+            connection.setAutoCommit(true);
+        } catch (SQLException e) {
+            throw new JdbcException(Message.DOMA2042, e, e);
+        }
+    }
+
+    public static void commit(Connection connection) {
+        try {
+            connection.commit();
+        } catch (SQLException e) {
+            throw new JdbcException(Message.DOMA2043, e, e);
+        }
+    }
+
+    public static void rollback(Connection connection) {
+        try {
+            connection.rollback();
+        } catch (SQLException e) {
+            throw new JdbcException(Message.DOMA2044, e, e);
         }
     }
 

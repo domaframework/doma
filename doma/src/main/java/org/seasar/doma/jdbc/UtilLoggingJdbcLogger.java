@@ -121,6 +121,30 @@ public class UtilLoggingJdbcLogger implements JdbcLogger {
     }
 
     @Override
+    public void logLocalTransactionBegun(String callerClassName,
+            String callerMethodName, String transactionId) {
+        logger.logp(level, callerClassName, callerMethodName,
+                "Local transaction begun. transactionId={0}", transactionId);
+    }
+
+    @Override
+    public void logLocalTransactionCommitted(String callerClassName,
+            String callerMethodName, String transactionId) {
+        logger
+                .logp(level, callerClassName, callerMethodName,
+                        "Local transaction committed. transactionId={0}",
+                        transactionId);
+    }
+
+    @Override
+    public void logLocalTransactionRolledback(String callerClassName,
+            String callerMethodName, String transactionId) {
+        logger.logp(level, callerClassName, callerMethodName,
+                "Local transaction rolled back. transactionId={0}",
+                transactionId);
+    }
+
+    @Override
     public void logConnectionClosingFailure(String callerClassName,
             String callerMethodName, SQLException e) {
     }

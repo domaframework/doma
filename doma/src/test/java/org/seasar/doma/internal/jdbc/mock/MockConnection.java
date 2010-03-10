@@ -37,7 +37,6 @@ import java.util.Properties;
 
 import org.seasar.doma.internal.util.AssertionUtil;
 
-
 /**
  * 
  * @author taedium
@@ -50,6 +49,12 @@ public class MockConnection extends MockWrapper implements Connection {
     public MockCallableStatement callableStatement = new MockCallableStatement();
 
     public boolean closed;
+
+    public boolean committed;
+
+    public boolean rolledback;
+
+    public boolean autoCommit;
 
     public MockConnection() {
     }
@@ -76,8 +81,7 @@ public class MockConnection extends MockWrapper implements Connection {
 
     @Override
     public void commit() throws SQLException {
-        AssertionUtil.notYetImplemented();
-
+        this.committed = true;
     }
 
     @Override
@@ -288,8 +292,7 @@ public class MockConnection extends MockWrapper implements Connection {
 
     @Override
     public void rollback() throws SQLException {
-        AssertionUtil.notYetImplemented();
-
+        this.rolledback = true;
     }
 
     @Override
@@ -300,8 +303,7 @@ public class MockConnection extends MockWrapper implements Connection {
 
     @Override
     public void setAutoCommit(boolean autoCommit) throws SQLException {
-        AssertionUtil.notYetImplemented();
-
+        this.autoCommit = autoCommit;
     }
 
     @Override
