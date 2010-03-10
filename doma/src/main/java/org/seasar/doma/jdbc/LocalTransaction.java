@@ -64,7 +64,9 @@ public class LocalTransaction {
      * ローカルトランザクションを開始します。
      * <p>
      * このメソッドを呼び出した場合、{@link #commit()} もしくは {@link #rollback()}
-     * を呼び出しローカルトランザクションを終了する必要があります。
+     * を呼び出しローカルトランザクションを終了する必要があります。このとき、{@link #connectionHolder}
+     * で管理されるコネクションが同一であれば、 このインスタンスとは別のインスタンスの {@link #commit()} もしくは
+     * {@link #rollback()} でも構いません。
      * 
      * @throws LocalTransactionAlreadyBegunException
      *             ローカルトランザクションがすでに開始されている場合
@@ -91,7 +93,9 @@ public class LocalTransaction {
     /**
      * ローカルトランザクションをコミットします。
      * <p>
-     * このメソッドを呼び出す前に {@link #begin()} を呼び出し、ローカルトランザクションを開始しておく必要があります。
+     * このメソッドを呼び出す前に {@link #begin()} を呼び出し、ローカルトランザクションを開始しておく必要があります。 このとき、
+     * {@link #connectionHolder} で管理されるコネクションが同一であれば、 このインスタンスとは別のインスタンスの
+     * {@link #begin()} でも構いません。
      * 
      * @throws LocalTransactionNotYetBegunException
      *             ローカルトランザクションがまだ開始されていない場合
