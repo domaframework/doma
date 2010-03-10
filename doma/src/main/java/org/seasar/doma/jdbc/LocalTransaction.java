@@ -161,8 +161,8 @@ public class LocalTransaction {
      *            コネクション
      */
     protected void release(NeverClosedConnection connection) {
-        JdbcUtil.close(connection.getWrappedConnection(), jdbcLogger);
         connectionHolder.set(null);
+        JdbcUtil.close(connection.getWrappedConnection(), jdbcLogger);
     }
 
     @Override
