@@ -108,8 +108,8 @@ public class LocalTransaction {
             throw new LocalTransactionNotYetBegunException(Message.DOMA2046);
         }
         try {
-            JdbcUtil.commit(connectionHolder.get());
-            JdbcUtil.enableAutoCommit(connectionHolder.get());
+            JdbcUtil.commit(connection);
+            JdbcUtil.enableAutoCommit(connection);
         } finally {
             release(connection);
         }
@@ -131,8 +131,8 @@ public class LocalTransaction {
             return;
         }
         try {
-            JdbcUtil.rollback(connectionHolder.get());
-            JdbcUtil.enableAutoCommit(connectionHolder.get());
+            JdbcUtil.rollback(connection);
+            JdbcUtil.enableAutoCommit(connection);
         } finally {
             release(connection);
         }
@@ -180,7 +180,7 @@ public class LocalTransaction {
      * 
      * @param connection
      *            コネクション
-     * @returnローカル トランザクションの識別子、ローカルトランザクションが存在しない場合 {@code null}
+     * @return ローカルトランザクションの識別子、ローカルトランザクションが存在しない場合 {@code null}
      */
     protected String getId(NeverClosedConnection connection) {
         if (connection == null) {

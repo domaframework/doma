@@ -56,6 +56,7 @@ public class NeverClosedConnection implements Connection {
      */
     public NeverClosedConnection(Connection connection) {
         assertNotNull(connection);
+        assertTrue(!(connection instanceof NeverClosedConnection));
         this.connection = connection;
     }
 

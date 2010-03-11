@@ -75,8 +75,14 @@ public abstract class AbstractDao {
         if (connection == null) {
             new DomaNullPointerException("connection");
         }
-        DataSource dataSource = new NeverClosedConnectionProvider(
-                new NeverClosedConnection(connection));
+        DataSource dataSource = null;
+        if (connection instanceof NeverClosedConnection) {
+            dataSource = new NeverClosedConnectionProvider(
+                    (NeverClosedConnection) connection);
+        } else {
+            dataSource = new NeverClosedConnectionProvider(
+                    new NeverClosedConnection(connection));
+        }
         validateConfig(config, dataSource);
         this.config = new RuntimeConfig(config, dataSource);
     }
