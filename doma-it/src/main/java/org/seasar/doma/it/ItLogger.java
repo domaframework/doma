@@ -71,4 +71,26 @@ public class ItLogger implements JdbcLogger {
         log.info(message);
     }
 
+    @Override
+    public void logLocalTransactionBegun(String callerClassName,
+            String callerMethodName, String transactionId) {
+        Log log = LogFactory.getLog(callerClassName);
+        log.info("Local transaction begun. transactionId=" + transactionId);
+    }
+
+    @Override
+    public void logLocalTransactionCommitted(String callerClassName,
+            String callerMethodName, String transactionId) {
+        Log log = LogFactory.getLog(callerClassName);
+        log.info("Local transaction committed. transactionId=" + transactionId);
+    }
+
+    @Override
+    public void logLocalTransactionRolledback(String callerClassName,
+            String callerMethodName, String transactionId) {
+        Log log = LogFactory.getLog(callerClassName);
+        log.info("Local transaction rolled back. transactionId="
+                + transactionId);
+    }
+
 }
