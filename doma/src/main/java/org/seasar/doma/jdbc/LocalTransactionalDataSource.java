@@ -23,6 +23,7 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.message.Message;
 
 /**
@@ -112,8 +113,13 @@ public class LocalTransactionalDataSource implements DataSource {
      * @param jdbcLogger
      *            JDBCに関するロガー
      * @return ローカルトランザクション
+     * @throws DomaNullPointerException
+     *             引数が {@code null} の場合
      */
     public LocalTransaction getLocalTransaction(JdbcLogger jdbcLogger) {
+        if (jdbcLogger == null) {
+            throw new DomaNullPointerException("jdbcLogger");
+        }
         return new LocalTransaction(dataSource, connectionHolder, jdbcLogger);
     }
 }

@@ -52,9 +52,7 @@ public class LocalTransaction {
     protected LocalTransaction(DataSource dataSource,
             ThreadLocal<NeverClosedConnection> connectionHolder,
             JdbcLogger jdbcLogger) {
-        assertNotNull(dataSource);
-        assertNotNull(connectionHolder);
-        assertNotNull(jdbcLogger);
+        assertNotNull(dataSource, connectionHolder, jdbcLogger);
         this.dataSource = dataSource;
         this.connectionHolder = connectionHolder;
         this.jdbcLogger = jdbcLogger;
