@@ -93,4 +93,37 @@ public class ItLogger implements JdbcLogger {
                 + transactionId);
     }
 
+    @Override
+    public void logLocalTransactionSavepointCreated(String callerClassName,
+            String callerMethodName, String transactionId, String savepointName) {
+        Log log = LogFactory.getLog(callerClassName);
+        String message = String
+                .format(
+                        "Local transaction savepoint created. transactionId={0} savepointName={1}",
+                        transactionId, transactionId);
+        log.info(message);
+    }
+
+    @Override
+    public void logLocalTransactionSavepointReleased(String callerClassName,
+            String callerMethodName, String transactionId, String savepointName) {
+        Log log = LogFactory.getLog(callerClassName);
+        String message = String
+                .format(
+                        "Local transaction savepoint released. transactionId={0} savepointName={1}",
+                        transactionId, transactionId);
+        log.info(message);
+    }
+
+    @Override
+    public void logLocalTransactionSavepointRolledback(String callerClassName,
+            String callerMethodName, String transactionId, String savepointName) {
+        Log log = LogFactory.getLog(callerClassName);
+        String message = String
+                .format(
+                        "Local transaction savepoint rolled back. transactionId={0} savepointName={1}",
+                        transactionId, transactionId);
+        log.info(message);
+    }
+
 }
