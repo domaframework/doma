@@ -25,14 +25,26 @@ package org.seasar.doma.jdbc;
  */
 public abstract class DomaAbstractConfig implements Config {
 
-    /** {@link SqlFile} のリポジトリ */
-    protected static SqlFileRepository sqlFileRepository = new GreedyCacheSqlFileRepository();
+    /**
+     * {@link SqlFile} のリポジトリ
+     * 
+     * @since 1.1.0
+     */
+    protected static SqlFileRepository defaultSqlFileRepository = new GreedyCacheSqlFileRepository();
 
-    /** DBCに関する処理を記録するロガー */
-    protected static JdbcLogger jdbcLogger = new UtilLoggingJdbcLogger();
+    /**
+     * DBCに関する処理を記録するロガー
+     * 
+     * @since 1.1.0
+     */
+    protected static JdbcLogger defaultJdbcLogger = new UtilLoggingJdbcLogger();
 
-    /** {@literal REQUIRES_NEW} の属性をもつトランザクションを制御するコントローラ */
-    protected static RequiresNewController requiresNewController = new NullRequiresNewController();
+    /**
+     * {@literal REQUIRES_NEW} の属性をもつトランザクションを制御するコントローラ
+     * 
+     * @since 1.1.0
+     */
+    protected static RequiresNewController defaultRequiresNewController = new NullRequiresNewController();
 
     /**
      * インスタンスを構築します。
@@ -47,17 +59,17 @@ public abstract class DomaAbstractConfig implements Config {
 
     @Override
     public SqlFileRepository getSqlFileRepository() {
-        return sqlFileRepository;
+        return defaultSqlFileRepository;
     }
 
     @Override
     public JdbcLogger getJdbcLogger() {
-        return jdbcLogger;
+        return defaultJdbcLogger;
     }
 
     @Override
     public RequiresNewController getRequiresNewController() {
-        return requiresNewController;
+        return defaultRequiresNewController;
     }
 
     @Override
