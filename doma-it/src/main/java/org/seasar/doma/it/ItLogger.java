@@ -99,7 +99,7 @@ public class ItLogger implements JdbcLogger {
         Log log = LogFactory.getLog(callerClassName);
         String message = String
                 .format(
-                        "Local transaction savepoint created. transactionId={0} savepointName={1}",
+                        "Local transaction savepoint created. transactionId=%s savepointName=%s",
                         transactionId, transactionId);
         log.info(message);
     }
@@ -110,7 +110,7 @@ public class ItLogger implements JdbcLogger {
         Log log = LogFactory.getLog(callerClassName);
         String message = String
                 .format(
-                        "Local transaction savepoint released. transactionId={0} savepointName={1}",
+                        "Local transaction savepoint released. transactionId=%s savepointName=%s",
                         transactionId, transactionId);
         log.info(message);
     }
