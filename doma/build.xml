@@ -44,7 +44,6 @@
 				<exclude name="**/bin**"/>
 				<exclude name="**/target/**"/>
 				<exclude name="**/site/**"/>
-				<exclude name="src/**"/>
 			</zipfileset>
 			<zipfileset prefix="doma/lib" dir="target">
 				<include name="doma-${ver}.jar"/>

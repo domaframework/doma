@@ -324,7 +324,7 @@ public class Main {
 		</section>
 		<section name="次へのステップ">
 			<p>
-				Domaをさらに知るには<a href="tutorial/index.html">チュートリアル</a>や<a href="reference/index.html">リファレンス</a>を参照してください。
+				Domaが提供するより詳細な機能については<a href="tutorial/index.html">チュートリアル</a>や<a href="reference/index.html">リファレンス</a>を参照してください。
 			</p>
 		</section>
 	</body>
