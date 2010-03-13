@@ -121,7 +121,7 @@ public class ItLogger implements JdbcLogger {
         Log log = LogFactory.getLog(callerClassName);
         String message = String
                 .format(
-                        "Local transaction savepoint rolled back. transactionId={0} savepointName={1}",
+                        "Local transaction savepoint rolled back. transactionId=%s savepointName=%s",
                         transactionId, transactionId);
         log.info(message);
     }
