@@ -319,7 +319,7 @@ public class Main {
 				<p>
 					Eclipseの場合、Package Explorer上のプロジェクト構成は最終的には次のようになります。
 				</p>
-				<img src="images/quick_start_project.png" width="454" height="152" alt="H2コンソール ログイン" />
+				<img src="images/quick_start_project.png" width="454" height="152" alt="プロジェクト構成" />
 			</subsection>
 		</section>
 		<section name="次へのステップ">
