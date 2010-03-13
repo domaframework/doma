@@ -23,7 +23,6 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import org.seasar.doma.jdbc.NeverClosedConnection;
 
 /**
  * @author taedium

@@ -13,11 +13,14 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc;
+package org.seasar.doma.jdbc.tx;
 
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockDataSource;
+import org.seasar.doma.jdbc.UtilLoggingJdbcLogger;
+import org.seasar.doma.jdbc.tx.LocalTransactionNotYetBegunException;
+import org.seasar.doma.jdbc.tx.LocalTransactionalDataSource;
 
 /**
  * @author taedium

@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc;
+package org.seasar.doma.internal.jdbc.dao;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
@@ -36,14 +36,10 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * クローズされない {@link Connection} です。
- * <p>
- * {@link #clone()} の呼び出しを無視します。
  * 
  * @author taedium
- * @since 1.1.0
  */
-public class NeverClosedConnection implements Connection {
+class NeverClosedConnection implements Connection {
 
     /** コネクション */
     protected final Connection connection;
@@ -58,15 +54,6 @@ public class NeverClosedConnection implements Connection {
         assertNotNull(connection);
         assertTrue(!(connection instanceof NeverClosedConnection));
         this.connection = connection;
-    }
-
-    /**
-     * ラップされたコネクションを返します。
-     * 
-     * @return ラップされたコネクション
-     */
-    public Connection getWrappedConnection() {
-        return connection;
     }
 
     public void clearWarnings() throws SQLException {

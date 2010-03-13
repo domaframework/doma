@@ -101,10 +101,12 @@ public interface JdbcLogger {
      *            呼び出し元のメソッド名
      * @param transactionId
      *            トランザクションの識別子
+     * @throws DomaNullPointerException
+     *             引数のいずれかが {@code null} の場合
      * @since 1.1.0
      */
-    void logLocalTransactionBegun(String callerClassName, String callerMethodName,
-            String transactionId);
+    void logLocalTransactionBegun(String callerClassName,
+            String callerMethodName, String transactionId);
 
     /**
      * トランザクションのコミットを記録します。
@@ -115,10 +117,48 @@ public interface JdbcLogger {
      *            呼び出し元のメソッド名
      * @param transactionId
      *            トランザクションの識別子
+     * @throws DomaNullPointerException
+     *             引数のいずれかが {@code null} の場合
      * @since 1.1.0
      */
     void logLocalTransactionCommitted(String callerClassName,
             String callerMethodName, String transactionId);
+
+    /**
+     * トランザクションのセーブポイントの作成を記録します。
+     * 
+     * @param callerClassName
+     *            呼び出し元のクラス名
+     * @param callerMethodName
+     *            呼び出し元のメソッド名
+     * @param transactionId
+     *            トランザクションの識別子
+     * @param savepointName
+     *            セーブポイントの名前
+     * @throws DomaNullPointerException
+     *             引数のいずれかが {@code null} の場合
+     * @since 1.1.0
+     */
+    void logLocalTransactionSavepointCreated(String callerClassName,
+            String callerMethodName, String transactionId, String savepointName);
+
+    /**
+     * トランザクションのセーブポイントの削除を記録します。
+     * 
+     * @param callerClassName
+     *            呼び出し元のクラス名
+     * @param callerMethodName
+     *            呼び出し元のメソッド名
+     * @param transactionId
+     *            トランザクションの識別子
+     * @param savepointName
+     *            セーブポイントの名前
+     * @throws DomaNullPointerException
+     *             引数のいずれかが {@code null} の場合
+     * @since 1.1.0
+     */
+    void logLocalTransactionSavepointReleased(String callerClassName,
+            String callerMethodName, String transactionId, String savepointName);
 
     /**
      * トランザクションのロールバックを記録します。
@@ -129,10 +169,30 @@ public interface JdbcLogger {
      *            呼び出し元のメソッド名
      * @param transactionId
      *            トランザクションの識別子
+     * @throws DomaNullPointerException
+     *             引数のいずれかが {@code null} の場合
      * @since 1.1.0
      */
     void logLocalTransactionRolledback(String callerClassName,
             String callerMethodName, String transactionId);
+
+    /**
+     * トランザクションのセーブポイントのロールバックを記録します。
+     * 
+     * @param callerClassName
+     *            呼び出し元のクラス名
+     * @param callerMethodName
+     *            呼び出し元のメソッド名
+     * @param transactionId
+     *            トランザクションの識別子
+     * @param savepointName
+     *            セーブポイントの名前
+     * @throws DomaNullPointerException
+     *             引数のいずれかが {@code null} の場合
+     * @since 1.1.0
+     */
+    void logLocalTransactionSavepointRolledback(String callerClassName,
+            String callerMethodName, String transactionId, String savepointName);
 
     /**
      * {@link Connection#close()} 時に発生した {@link SQLException} を記録します。

@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc;
+package org.seasar.doma.jdbc.tx;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
@@ -25,20 +25,22 @@ import javax.sql.DataSource;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.message.Message;
+import org.seasar.doma.jdbc.JdbcLogger;
 
 /**
  * ローカルトランザクションと連動するデータソースです。
  * 
+ * @see LocalTransaction
  * @author taedium
  * @since 1.1.0
  */
-public class LocalTransactionalDataSource implements DataSource {
+public final class LocalTransactionalDataSource implements DataSource {
 
     /** コネクションのホルダー */
-    protected final ThreadLocal<NeverClosedConnection> connectionHolder = new ThreadLocal<NeverClosedConnection>();
+    private final ThreadLocal<LocalTransactionContext> localTxContextHolder = new ThreadLocal<LocalTransactionContext>();
 
     /** データソース */
-    protected final DataSource dataSource;
+    private final DataSource dataSource;
 
     /**
      * インスタンスを構築します。
@@ -51,30 +53,41 @@ public class LocalTransactionalDataSource implements DataSource {
         this.dataSource = dataSource;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * このメソッドを実行する前にローカルトランザクションを開始しておかなければいけません。
+     * 
+     * @see LocalTransaction
+     * @throws LocalTransactionNotYetBegunException
+     *             ローカルトランザクションがまだ開始されていない場合
+     */
     @Override
     public Connection getConnection() throws SQLException {
         return getConnectionInternal();
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * このメソッドを実行する前にローカルトランザクションを開始しておかなければいけません。
+     * 
+     * @see LocalTransaction
+     * @throws LocalTransactionNotYetBegunException
+     *             ローカルトランザクションがまだ開始されていない場合
+     */
     @Override
     public Connection getConnection(String username, String password)
             throws SQLException {
         return getConnectionInternal();
     }
 
-    /**
-     * 内部的にコネクションを返します。
-     * 
-     * @return コネクション
-     * @throws LocalTransactionNotYetBegunException
-     *             ローカルトランザクションがまだ開始されていない場合
-     */
-    protected Connection getConnectionInternal() {
-        NeverClosedConnection connection = connectionHolder.get();
-        if (connection == null) {
+    private Connection getConnectionInternal() {
+        LocalTransactionContext context = localTxContextHolder.get();
+        if (context == null) {
             throw new LocalTransactionNotYetBegunException(Message.DOMA2048);
         }
-        return connection;
+        return context.getConnection();
     }
 
     @Override
@@ -120,6 +133,30 @@ public class LocalTransactionalDataSource implements DataSource {
         if (jdbcLogger == null) {
             throw new DomaNullPointerException("jdbcLogger");
         }
-        return new LocalTransaction(dataSource, connectionHolder, jdbcLogger);
+        return new LocalTransaction(dataSource, localTxContextHolder,
+                jdbcLogger);
+    }
+
+    /**
+     * デフォルトのトランザクション分離レベルを指定してローカルトランザクションを返します。
+     * 
+     * @param jdbcLogger
+     *            JDBCに関するロガー
+     * @param transactionIsolationLevel
+     *            デフォルトのトランザクション分離レベル
+     * @return ローカルトランザクション
+     * @throws DomaNullPointerException
+     *             引数のいずれかが {@code null} の場合
+     */
+    public LocalTransaction getLocalTransaction(JdbcLogger jdbcLogger,
+            TransactionIsolationLevel transactionIsolationLevel) {
+        if (jdbcLogger == null) {
+            throw new DomaNullPointerException("jdbcLogger");
+        }
+        if (transactionIsolationLevel == null) {
+            throw new DomaNullPointerException("transactionIsolationLevel");
+        }
+        return new LocalTransaction(dataSource, localTxContextHolder,
+                jdbcLogger, transactionIsolationLevel);
     }
 }

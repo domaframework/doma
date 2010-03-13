@@ -123,25 +123,116 @@ public class UtilLoggingJdbcLogger implements JdbcLogger {
     @Override
     public void logLocalTransactionBegun(String callerClassName,
             String callerMethodName, String transactionId) {
+        if (callerClassName == null) {
+            throw new DomaNullPointerException("callerClassName");
+        }
+        if (callerMethodName == null) {
+            throw new DomaNullPointerException("callerMethodName");
+        }
+        if (transactionId == null) {
+            throw new DomaNullPointerException("transactionId");
+        }
         logger.logp(level, callerClassName, callerMethodName,
-                "Local transaction begun. transactionId={0}", transactionId);
+                "Local transaction begun. transactionId=[{0}]", transactionId);
+    }
+
+    @Override
+    public void logLocalTransactionSavepointCreated(String callerClassName,
+            String callerMethodName, String transactionId, String savepointName) {
+        if (callerClassName == null) {
+            throw new DomaNullPointerException("callerClassName");
+        }
+        if (callerMethodName == null) {
+            throw new DomaNullPointerException("callerMethodName");
+        }
+        if (transactionId == null) {
+            throw new DomaNullPointerException("transactionId");
+        }
+        if (savepointName == null) {
+            throw new DomaNullPointerException("savepointName");
+        }
+        logger.logp(level, callerClassName, callerMethodName,
+                "Local transaction savepoint created. transactionId=[{0}]",
+                transactionId);
+    }
+
+    @Override
+    public void logLocalTransactionSavepointReleased(String callerClassName,
+            String callerMethodName, String transactionId, String savepointName) {
+        if (callerClassName == null) {
+            throw new DomaNullPointerException("callerClassName");
+        }
+        if (callerMethodName == null) {
+            throw new DomaNullPointerException("callerMethodName");
+        }
+        if (transactionId == null) {
+            throw new DomaNullPointerException("transactionId");
+        }
+        if (savepointName == null) {
+            throw new DomaNullPointerException("savepointName");
+        }
+        logger.logp(level, callerClassName, callerMethodName,
+                "Local transaction savepoint released. transactionId=[{0}]",
+                transactionId);
     }
 
     @Override
     public void logLocalTransactionCommitted(String callerClassName,
             String callerMethodName, String transactionId) {
-        logger
-                .logp(level, callerClassName, callerMethodName,
-                        "Local transaction committed. transactionId={0}",
-                        transactionId);
+        if (callerClassName == null) {
+            throw new DomaNullPointerException("callerClassName");
+        }
+        if (callerMethodName == null) {
+            throw new DomaNullPointerException("callerMethodName");
+        }
+        if (transactionId == null) {
+            throw new DomaNullPointerException("transactionId");
+        }
+        logger.logp(level, callerClassName, callerMethodName,
+                "Local transaction committed. transactionId=[{0}]",
+                transactionId);
     }
 
     @Override
     public void logLocalTransactionRolledback(String callerClassName,
             String callerMethodName, String transactionId) {
+        if (callerClassName == null) {
+            throw new DomaNullPointerException("callerClassName");
+        }
+        if (callerMethodName == null) {
+            throw new DomaNullPointerException("callerMethodName");
+        }
+        if (transactionId == null) {
+            throw new DomaNullPointerException("transactionId");
+        }
         logger.logp(level, callerClassName, callerMethodName,
-                "Local transaction rolled back. transactionId={0}",
+                "Local transaction rolled back. transactionId=[{0}]",
                 transactionId);
+    }
+
+    @Override
+    public void logLocalTransactionSavepointRolledback(String callerClassName,
+            String callerMethodName, String transactionId, String savepointName) {
+        if (callerClassName == null) {
+            throw new DomaNullPointerException("callerClassName");
+        }
+        if (callerMethodName == null) {
+            throw new DomaNullPointerException("callerMethodName");
+        }
+        if (transactionId == null) {
+            throw new DomaNullPointerException("transactionId");
+        }
+        if (savepointName == null) {
+            throw new DomaNullPointerException("savepointName");
+        }
+        logger
+                .logp(
+                        level,
+                        callerClassName,
+                        callerMethodName,
+                        "Local transaction rolled back. transactionId=[{0}] savepointName=[{1}]",
+                        new Object[] { transactionId, savepointName });
+
     }
 
     @Override

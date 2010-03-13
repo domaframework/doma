@@ -20,6 +20,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Savepoint;
 import java.sql.Statement;
 
 import javax.sql.DataSource;
@@ -81,6 +82,30 @@ public final class JdbcUtil {
         }
     }
 
+    public static int getTransactionIsolation(Connection connection) {
+        try {
+            return connection.getTransactionIsolation();
+        } catch (SQLException e) {
+            throw new JdbcException(Message.DOMA2056, e, e);
+        }
+    }
+
+    public static void setTransactionIsolation(Connection connection, int level) {
+        try {
+            connection.setTransactionIsolation(level);
+        } catch (SQLException e) {
+            throw new JdbcException(Message.DOMA2055, e, level, e);
+        }
+    }
+
+    public static boolean getAutoCommit(Connection connection) {
+        try {
+            return connection.getAutoCommit();
+        } catch (SQLException e) {
+            throw new JdbcException(Message.DOMA2057, e, e);
+        }
+    }
+
     public static void disableAutoCommit(Connection connection) {
         try {
             connection.setAutoCommit(false);
@@ -89,11 +114,11 @@ public final class JdbcUtil {
         }
     }
 
-    public static void enableAutoCommit(Connection connection) {
+    public static void setAutoCommit(Connection connection, boolean autoCommit) {
         try {
-            connection.setAutoCommit(true);
+            connection.setAutoCommit(autoCommit);
         } catch (SQLException e) {
-            throw new JdbcException(Message.DOMA2042, e, e);
+            throw new JdbcException(Message.DOMA2058, e, e);
         }
     }
 
@@ -110,6 +135,33 @@ public final class JdbcUtil {
             connection.rollback();
         } catch (SQLException e) {
             throw new JdbcException(Message.DOMA2044, e, e);
+        }
+    }
+
+    public static Savepoint setSavepoint(Connection connection,
+            String savepointName) {
+        try {
+            return connection.setSavepoint(savepointName);
+        } catch (SQLException e) {
+            throw new JdbcException(Message.DOMA2051, e, savepointName, e);
+        }
+    }
+
+    public static void releaseSavepoint(Connection connection,
+            String savepointName, Savepoint savepoint) {
+        try {
+            connection.releaseSavepoint(savepoint);
+        } catch (SQLException e) {
+            throw new JdbcException(Message.DOMA2060, e, savepointName, e);
+        }
+    }
+
+    public static void rollback(Connection connection, String savepointName,
+            Savepoint savepoint) {
+        try {
+            connection.rollback(savepoint);
+        } catch (SQLException e) {
+            throw new JdbcException(Message.DOMA2052, e, savepointName, e);
         }
     }
 

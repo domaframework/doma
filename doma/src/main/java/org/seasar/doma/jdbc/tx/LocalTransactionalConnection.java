@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.mock;
+package org.seasar.doma.jdbc.tx;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
@@ -32,352 +32,258 @@ import java.sql.SQLXML;
 import java.sql.Savepoint;
 import java.sql.Statement;
 import java.sql.Struct;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.seasar.doma.internal.util.AssertionUtil;
-
 /**
+ * ローカルトランザクションと連動するコネクションです。
+ * <p>
+ * {@code close()} の呼び出しを無視します。
  * 
+ * @see LocalTransaction
  * @author taedium
- * 
+ * @since 1.1.0
  */
-public class MockConnection extends MockWrapper implements Connection {
+class LocalTransactionalConnection implements Connection {
 
-    public MockPreparedStatement preparedStatement = new MockPreparedStatement();
+    /** コネクション */
+    private final Connection connection;
 
-    public MockCallableStatement callableStatement = new MockCallableStatement();
-
-    public boolean closed;
-
-    public boolean committed;
-
-    public boolean rolledback;
-
-    public boolean autoCommit = true;
-
-    public List<String> savepointNames = new ArrayList<String>();
-
-    public int isolationLevel = Connection.TRANSACTION_READ_COMMITTED;
-
-    public MockConnection() {
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param connection
+     *            コネクション
+     */
+    public LocalTransactionalConnection(Connection connection) {
+        assertNotNull(connection);
+        assertTrue(!(connection instanceof LocalTransactionalConnection));
+        this.connection = connection;
     }
 
-    public MockConnection(MockPreparedStatement preparedStatement) {
-        this.preparedStatement = preparedStatement;
+    /**
+     * ラップされたコネクションを返します。
+     * 
+     * @return ラップされたコネクション
+     */
+    public Connection getWrappedConnection() {
+        return connection;
     }
 
-    public MockConnection(MockCallableStatement callableStatement) {
-        this.callableStatement = callableStatement;
-        this.preparedStatement = callableStatement;
-    }
-
-    @Override
     public void clearWarnings() throws SQLException {
-        AssertionUtil.notYetImplemented();
-
+        connection.clearWarnings();
     }
 
-    @Override
     public void close() throws SQLException {
-        closed = true;
+        // do nothing.
     }
 
-    @Override
     public void commit() throws SQLException {
-        this.committed = true;
+        connection.commit();
     }
 
-    @Override
     public Array createArrayOf(String typeName, Object[] elements)
             throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return null;
+        return connection.createArrayOf(typeName, elements);
     }
 
-    @Override
     public Blob createBlob() throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return null;
+        return connection.createBlob();
     }
 
-    @Override
     public Clob createClob() throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return null;
+        return connection.createClob();
     }
 
-    @Override
     public NClob createNClob() throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return null;
+        return connection.createNClob();
     }
 
-    @Override
     public SQLXML createSQLXML() throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return null;
+        return connection.createSQLXML();
     }
 
-    @Override
     public Statement createStatement() throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return null;
+        return connection.createStatement();
     }
 
-    @Override
     public Statement createStatement(int resultSetType,
             int resultSetConcurrency, int resultSetHoldability)
             throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return null;
+        return connection.createStatement(resultSetType, resultSetConcurrency,
+                resultSetHoldability);
     }
 
-    @Override
     public Statement createStatement(int resultSetType, int resultSetConcurrency)
             throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return null;
+        return connection.createStatement(resultSetType, resultSetConcurrency);
     }
 
-    @Override
     public Struct createStruct(String typeName, Object[] attributes)
             throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return null;
+        return connection.createStruct(typeName, attributes);
     }
 
-    @Override
     public boolean getAutoCommit() throws SQLException {
-        return autoCommit;
+        return connection.getAutoCommit();
     }
 
-    @Override
     public String getCatalog() throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return null;
+        return connection.getCatalog();
     }
 
-    @Override
     public Properties getClientInfo() throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return null;
+        return connection.getClientInfo();
     }
 
-    @Override
     public String getClientInfo(String name) throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return null;
+        return connection.getClientInfo(name);
     }
 
-    @Override
     public int getHoldability() throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return 0;
+        return connection.getHoldability();
     }
 
-    @Override
     public DatabaseMetaData getMetaData() throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return null;
+        return connection.getMetaData();
     }
 
-    @Override
     public int getTransactionIsolation() throws SQLException {
-        return isolationLevel;
+        return connection.getTransactionIsolation();
     }
 
-    @Override
     public Map<String, Class<?>> getTypeMap() throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return null;
+        return connection.getTypeMap();
     }
 
-    @Override
     public SQLWarning getWarnings() throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return null;
+        return connection.getWarnings();
     }
 
-    @Override
     public boolean isClosed() throws SQLException {
-        return closed;
+        return connection.isClosed();
     }
 
-    @Override
     public boolean isReadOnly() throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return false;
+        return connection.isReadOnly();
     }
 
-    @Override
     public boolean isValid(int timeout) throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return false;
+        return connection.isValid(timeout);
     }
 
-    @Override
+    public boolean isWrapperFor(Class<?> iface) throws SQLException {
+        return connection.isWrapperFor(iface);
+    }
+
     public String nativeSQL(String sql) throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return null;
+        return connection.nativeSQL(sql);
     }
 
-    @Override
     public CallableStatement prepareCall(String sql, int resultSetType,
             int resultSetConcurrency, int resultSetHoldability)
             throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return null;
+        return connection.prepareCall(sql, resultSetType, resultSetConcurrency,
+                resultSetHoldability);
     }
 
-    @Override
     public CallableStatement prepareCall(String sql, int resultSetType,
             int resultSetConcurrency) throws SQLException {
-        callableStatement.sql = sql;
-        return callableStatement;
+        return connection.prepareCall(sql, resultSetType, resultSetConcurrency);
     }
 
-    @Override
     public CallableStatement prepareCall(String sql) throws SQLException {
-        callableStatement.sql = sql;
-        return callableStatement;
+        return connection.prepareCall(sql);
     }
 
-    @Override
     public PreparedStatement prepareStatement(String sql, int resultSetType,
             int resultSetConcurrency, int resultSetHoldability)
             throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return null;
+        return connection.prepareStatement(sql, resultSetType,
+                resultSetConcurrency, resultSetHoldability);
     }
 
-    @Override
     public PreparedStatement prepareStatement(String sql, int resultSetType,
             int resultSetConcurrency) throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return null;
+        return connection.prepareStatement(sql, resultSetType,
+                resultSetConcurrency);
     }
 
-    @Override
     public PreparedStatement prepareStatement(String sql, int autoGeneratedKeys)
             throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return null;
+        return connection.prepareStatement(sql, autoGeneratedKeys);
     }
 
-    @Override
     public PreparedStatement prepareStatement(String sql, int[] columnIndexes)
             throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return null;
+        return connection.prepareStatement(sql, columnIndexes);
     }
 
-    @Override
     public PreparedStatement prepareStatement(String sql, String[] columnNames)
             throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return null;
+        return connection.prepareStatement(sql, columnNames);
     }
 
-    @Override
     public PreparedStatement prepareStatement(String sql) throws SQLException {
-        assertTrue(!closed);
-        preparedStatement.sql = sql;
-        return preparedStatement;
+        return connection.prepareStatement(sql);
     }
 
-    @Override
     public void releaseSavepoint(Savepoint savepoint) throws SQLException {
-        String savepointName = savepoint.getSavepointName();
-        int pos = savepointNames.lastIndexOf(savepointName);
-        if (pos == -1) {
-            throw new SQLException();
-        }
-        savepointNames.subList(0, pos + 1).clear();
+        connection.releaseSavepoint(savepoint);
     }
 
-    @Override
     public void rollback() throws SQLException {
-        this.rolledback = true;
+        connection.rollback();
     }
 
-    @Override
     public void rollback(Savepoint savepoint) throws SQLException {
-        String name = savepoint.getSavepointName();
-        savepointNames.remove(name);
+        connection.rollback(savepoint);
     }
 
-    @Override
     public void setAutoCommit(boolean autoCommit) throws SQLException {
-        this.autoCommit = autoCommit;
+        connection.setAutoCommit(autoCommit);
     }
 
-    @Override
     public void setCatalog(String catalog) throws SQLException {
-        AssertionUtil.notYetImplemented();
-
+        connection.setCatalog(catalog);
     }
 
-    @Override
     public void setClientInfo(Properties properties)
             throws SQLClientInfoException {
-        AssertionUtil.notYetImplemented();
-
+        connection.setClientInfo(properties);
     }
 
-    @Override
     public void setClientInfo(String name, String value)
             throws SQLClientInfoException {
-        AssertionUtil.notYetImplemented();
-
+        connection.setClientInfo(name, value);
     }
 
-    @Override
     public void setHoldability(int holdability) throws SQLException {
-        AssertionUtil.notYetImplemented();
-
+        connection.setHoldability(holdability);
     }
 
-    @Override
     public void setReadOnly(boolean readOnly) throws SQLException {
-        AssertionUtil.notYetImplemented();
-
+        connection.setReadOnly(readOnly);
     }
 
-    @Override
     public Savepoint setSavepoint() throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return null;
+        return connection.setSavepoint();
     }
 
-    @Override
-    public Savepoint setSavepoint(final String name) throws SQLException {
-        savepointNames.add(name);
-        return new Savepoint() {
-
-            @Override
-            public String getSavepointName() throws SQLException {
-                return name;
-            }
-
-            @Override
-            public int getSavepointId() throws SQLException {
-                throw new SQLException();
-            }
-        };
+    public Savepoint setSavepoint(String name) throws SQLException {
+        return connection.setSavepoint(name);
     }
 
-    @Override
     public void setTransactionIsolation(int level) throws SQLException {
-        isolationLevel = level;
+        connection.setTransactionIsolation(level);
     }
 
-    @Override
     public void setTypeMap(Map<String, Class<?>> map) throws SQLException {
-        AssertionUtil.notYetImplemented();
+        connection.setTypeMap(map);
+    }
 
+    public <T> T unwrap(Class<T> iface) throws SQLException {
+        return connection.unwrap(iface);
     }
 
 }

@@ -13,28 +13,8 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc;
-
-import java.io.Serializable;
-
-import org.seasar.doma.internal.message.Message;
-
 /**
- * ローカルトランザクションがすでに開始されている場合にスローされる例外です。
- * 
- * @author taedium
+ * トランザクションに関するクラスを提供します。
  * @since 1.1.0
  */
-public class LocalTransactionAlreadyBegunException extends JdbcException
-        implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * インスタンスを構築します。
-     */
-    public LocalTransactionAlreadyBegunException() {
-        super(Message.DOMA2045);
-    }
-
-}
+package org.seasar.doma.jdbc.tx;

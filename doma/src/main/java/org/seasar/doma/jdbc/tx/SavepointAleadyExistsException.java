@@ -13,31 +13,41 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc;
+package org.seasar.doma.jdbc.tx;
 
 import java.io.Serializable;
 
 import org.seasar.doma.internal.message.Message;
+import org.seasar.doma.jdbc.JdbcException;
 
 /**
- * ローカルトランザクションがまだ開始されていない場合にスローされる例外です。
+ * セーブポイントが見つからない場合にスローされる例外です。
  * 
  * @author taedium
  * @since 1.1.0
  */
-public class LocalTransactionNotYetBegunException extends JdbcException
-        implements Serializable {
+public class SavepointAleadyExistsException extends JdbcException implements
+        Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /** セーブポイントの名前 */
+    protected final String savepointName;
+
     /**
      * インスタンスを構築します。
-     * 
-     * @param message
-     *            メッセージ
      */
-    public LocalTransactionNotYetBegunException(Message message) {
-        super(message);
+    public SavepointAleadyExistsException(String savepointName) {
+        super(Message.DOMA2059, savepointName);
+        this.savepointName = savepointName;
     }
 
+    /**
+     * セーブポイントの名前を返します。
+     * 
+     * @return セーブポイントの名前
+     */
+    public String getSavepointName() {
+        return savepointName;
+    }
 }
