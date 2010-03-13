@@ -382,8 +382,10 @@
 			<question>トランザクションを制御する機能はありますか？</question>
 			<answer>
 				<p>
-					いいえ、Domaでは提供していません。
-					Java Transaction API (JTA) など、データーソースと連動するトランザクション機能と組み合わせて使用してください。
+					はい、ローカルトランザクションをサポートしています。
+				</p>
+				<p>
+					詳しくは<a href="reference/transaction.html">トランザクション</a>を参照してください。
 				</p>
 			</answer>
 		</faq>

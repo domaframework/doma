@@ -98,6 +98,14 @@
 					</ul>
 				</li>
 				<li>
+					<a href="transaction.html">トランザクション</a>
+					<ul>
+						<li><a href="transaction.html#概要">概要</a></li>
+						<li><a href="transaction.html#設定方法">設定方法</a></li>
+						<li><a href="transaction.html#利用方法">利用方法</a></li>
+					</ul>
+				</li>
+				<li>
 					<a href="apt.html">注釈処理</a>
 					<ul>
 						<li><a href="apt.html#概要">概要</a></li>

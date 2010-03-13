@@ -244,7 +244,7 @@
 				</p>
 <source><![CDATA[public class AppConfig extends DomaAbstractConfig {
 
-    protected static final DataSource dataSource = createDataSource();
+    protected static final LocalTransactionalDataSource dataSource = createDataSource();
 
     protected static final Dialect dialect = new HsqldbDialect();
 
@@ -258,11 +258,15 @@
         return dialect;
     }
 
-    protected static DataSource createDataSource() {
+    protected static LocalTransactionalDataSource createDataSource() {
         SimpleDataSource dataSource = new SimpleDataSource();
         dataSource.setUrl("jdbc:hsqldb:mem:tutorial");
         dataSource.setUser("sa");
-        return dataSource;
+        return new LocalTransactionalDataSource(dataSource);
+    }
+
+    public static LocalTransaction getLocalTransaction() {
+        return dataSource.getLocalTransaction(defaultJdbcLogger);
     }
 
 }]]></source>

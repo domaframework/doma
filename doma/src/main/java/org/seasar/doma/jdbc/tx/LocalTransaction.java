@@ -258,7 +258,7 @@ public final class LocalTransaction {
     }
 
     /**
-     * ローカルトランザクションのセーブポイントを削除します。
+     * ローカルトランザクションから指定されたセーブポイントと以降のセーブポイントを削除します。
      * <p>
      * このメソッドを呼び出す前に {@link #begin()} または
      * {@link #begin(TransactionIsolationLevel)}
@@ -393,6 +393,9 @@ public final class LocalTransaction {
         JdbcUtil.close(connection.getWrappedConnection(), jdbcLogger);
     }
 
+    /**
+     * トランザクションを簡易的に識別するための文字列表現を返します。
+     */
     @Override
     public String toString() {
         LocalTransactionContext context = localTxContextHolder.get();
