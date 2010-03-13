@@ -17,6 +17,7 @@ package org.seasar.doma.jdbc.tx;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.sql.Connection;
 import java.sql.Savepoint;
 
 import javax.sql.DataSource;
@@ -373,8 +374,10 @@ public final class LocalTransaction {
     private void restoreConnectionSettings(LocalTransactionContext context,
             LocalTransactionalConnection connection) {
         assertNotNull(context, connection);
-        JdbcUtil.setTransactionIsolation(connection, context
-                .getTransactionIsolationLevel());
+        int isolationLevel = context.getTransactionIsolationLevel();
+        if (isolationLevel != Connection.TRANSACTION_NONE) {
+            JdbcUtil.setTransactionIsolation(connection, isolationLevel);
+        }
         JdbcUtil.setAutoCommit(connection, context.getAutoCommit());
     }
 
