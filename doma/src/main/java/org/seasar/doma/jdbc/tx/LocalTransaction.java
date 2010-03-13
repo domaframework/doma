@@ -39,7 +39,7 @@ public final class LocalTransaction {
     /** データソース */
     private final DataSource dataSource;
 
-    /** コネクションのホルダー */
+    /** ローカルトランザクションコンテキストのホルダー */
     private final ThreadLocal<LocalTransactionContext> localTxContextHolder;
 
     /** JDBCに関するロガー */
@@ -394,7 +394,7 @@ public final class LocalTransaction {
     }
 
     /**
-     * トランザクションを簡易的に識別するための文字列表現を返します。
+     * トランザクションを識別するための文字列表現を返します。
      */
     @Override
     public String toString() {

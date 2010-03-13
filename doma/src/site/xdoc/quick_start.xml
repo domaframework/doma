@@ -224,9 +224,9 @@ public interface EmployeeDao {
 					まずは、selectByIdメソッドに対応するSQLを考えます。
 					selectByIdメソッドで実行したいSQLは次のものです。
 				</p>
-<source>select * from EMPLOYEE where EMPLOYEE_ID = /*employeeId*/99</source>
+<source>select * from EMPLOYEE where EMPLOYEE_ID = /* employeeId */99</source>
 				<p>
-					SQLコメント/*employeeId*/は、DaoメソッドのemployeeIdパラメータSQLにバインディングすることを示します。
+					SQLコメント/* employeeId */は、DaoメソッドのemployeeIdパラメータSQLにバインディングすることを示します。
 					その直後の数値である99はテスト用のデータです。
 					プログラムからSQLを発行する際には使用されません。
 				</p>

@@ -62,15 +62,6 @@ public class UtilLoggingJdbcLogger implements JdbcLogger {
     @Override
     public void logDaoMethodEntering(String callerClassName,
             String callerMethodName, Object... args) {
-        if (callerClassName == null) {
-            throw new DomaNullPointerException("callerClassName");
-        }
-        if (callerMethodName == null) {
-            throw new DomaNullPointerException("callerMethodName");
-        }
-        if (args == null) {
-            throw new DomaNullPointerException("args");
-        }
         logger.logp(level, callerClassName, callerMethodName, "ENTRY");
 
     }
@@ -78,12 +69,6 @@ public class UtilLoggingJdbcLogger implements JdbcLogger {
     @Override
     public void logDaoMethodExiting(String callerClassName,
             String callerMethodName, Object result) {
-        if (callerClassName == null) {
-            throw new DomaNullPointerException("callerClassName");
-        }
-        if (callerMethodName == null) {
-            throw new DomaNullPointerException("callerMethodName");
-        }
         logger.logp(level, callerClassName, callerMethodName, "RETURN {0}",
                 result);
     }
@@ -91,30 +76,12 @@ public class UtilLoggingJdbcLogger implements JdbcLogger {
     @Override
     public void logSqlExecutionSkipping(String callerClassName,
             String callerMethodName, SqlExecutionSkipCause cause) {
-        if (callerClassName == null) {
-            throw new DomaNullPointerException("callerClassName");
-        }
-        if (callerMethodName == null) {
-            throw new DomaNullPointerException("callerMethodName");
-        }
-        if (cause == null) {
-            throw new DomaNullPointerException("cause");
-        }
         logger.logp(level, callerClassName, callerMethodName, cause.name());
     }
 
     @Override
     public void logSql(String callerClassName, String callerMethodName,
             Sql<?> sql) {
-        if (callerClassName == null) {
-            throw new DomaNullPointerException("callerClassName");
-        }
-        if (callerMethodName == null) {
-            throw new DomaNullPointerException("callerMethodName");
-        }
-        if (sql == null) {
-            throw new DomaNullPointerException("sql");
-        }
         String message = String.format("SQL log. sqlFilePath=[%s],%n%s", sql
                 .getSqlFilePath(), sql.getFormattedSql());
         logger.logp(level, callerClassName, callerMethodName, message);
@@ -123,15 +90,6 @@ public class UtilLoggingJdbcLogger implements JdbcLogger {
     @Override
     public void logLocalTransactionBegun(String callerClassName,
             String callerMethodName, String transactionId) {
-        if (callerClassName == null) {
-            throw new DomaNullPointerException("callerClassName");
-        }
-        if (callerMethodName == null) {
-            throw new DomaNullPointerException("callerMethodName");
-        }
-        if (transactionId == null) {
-            throw new DomaNullPointerException("transactionId");
-        }
         logger.logp(level, callerClassName, callerMethodName,
                 "Local transaction begun. transactionId=[{0}]", transactionId);
     }
@@ -139,18 +97,6 @@ public class UtilLoggingJdbcLogger implements JdbcLogger {
     @Override
     public void logLocalTransactionSavepointCreated(String callerClassName,
             String callerMethodName, String transactionId, String savepointName) {
-        if (callerClassName == null) {
-            throw new DomaNullPointerException("callerClassName");
-        }
-        if (callerMethodName == null) {
-            throw new DomaNullPointerException("callerMethodName");
-        }
-        if (transactionId == null) {
-            throw new DomaNullPointerException("transactionId");
-        }
-        if (savepointName == null) {
-            throw new DomaNullPointerException("savepointName");
-        }
         logger.logp(level, callerClassName, callerMethodName,
                 "Local transaction savepoint created. transactionId=[{0}]",
                 transactionId);
@@ -159,18 +105,6 @@ public class UtilLoggingJdbcLogger implements JdbcLogger {
     @Override
     public void logLocalTransactionSavepointReleased(String callerClassName,
             String callerMethodName, String transactionId, String savepointName) {
-        if (callerClassName == null) {
-            throw new DomaNullPointerException("callerClassName");
-        }
-        if (callerMethodName == null) {
-            throw new DomaNullPointerException("callerMethodName");
-        }
-        if (transactionId == null) {
-            throw new DomaNullPointerException("transactionId");
-        }
-        if (savepointName == null) {
-            throw new DomaNullPointerException("savepointName");
-        }
         logger.logp(level, callerClassName, callerMethodName,
                 "Local transaction savepoint released. transactionId=[{0}]",
                 transactionId);
@@ -179,15 +113,6 @@ public class UtilLoggingJdbcLogger implements JdbcLogger {
     @Override
     public void logLocalTransactionCommitted(String callerClassName,
             String callerMethodName, String transactionId) {
-        if (callerClassName == null) {
-            throw new DomaNullPointerException("callerClassName");
-        }
-        if (callerMethodName == null) {
-            throw new DomaNullPointerException("callerMethodName");
-        }
-        if (transactionId == null) {
-            throw new DomaNullPointerException("transactionId");
-        }
         logger.logp(level, callerClassName, callerMethodName,
                 "Local transaction committed. transactionId=[{0}]",
                 transactionId);
@@ -196,15 +121,6 @@ public class UtilLoggingJdbcLogger implements JdbcLogger {
     @Override
     public void logLocalTransactionRolledback(String callerClassName,
             String callerMethodName, String transactionId) {
-        if (callerClassName == null) {
-            throw new DomaNullPointerException("callerClassName");
-        }
-        if (callerMethodName == null) {
-            throw new DomaNullPointerException("callerMethodName");
-        }
-        if (transactionId == null) {
-            throw new DomaNullPointerException("transactionId");
-        }
         logger.logp(level, callerClassName, callerMethodName,
                 "Local transaction rolled back. transactionId=[{0}]",
                 transactionId);
@@ -213,18 +129,6 @@ public class UtilLoggingJdbcLogger implements JdbcLogger {
     @Override
     public void logLocalTransactionSavepointRolledback(String callerClassName,
             String callerMethodName, String transactionId, String savepointName) {
-        if (callerClassName == null) {
-            throw new DomaNullPointerException("callerClassName");
-        }
-        if (callerMethodName == null) {
-            throw new DomaNullPointerException("callerMethodName");
-        }
-        if (transactionId == null) {
-            throw new DomaNullPointerException("transactionId");
-        }
-        if (savepointName == null) {
-            throw new DomaNullPointerException("savepointName");
-        }
         logger
                 .logp(
                         level,

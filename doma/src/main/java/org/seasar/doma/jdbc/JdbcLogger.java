@@ -20,12 +20,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.seasar.doma.DomaNullPointerException;
-
 /**
  * JDBCに関する処理を記録するロガーです。
  * <p>
  * このインタフェースの実装はスレッドセーフでなければいけません。
+ * <p>
+ * このインタフェースのメソッドは例外をスローしてはいけません。
  * 
  * @author taedium
  * 
@@ -41,8 +41,6 @@ public interface JdbcLogger {
      *            Daoのメソッド名
      * @param args
      *            メソッドの引数
-     * @throws DomaNullPointerException
-     *             引数のいずれかが {@code null} の場合
      */
     void logDaoMethodEntering(String callerClassName, String callerMethodName,
             Object... args);
@@ -55,10 +53,7 @@ public interface JdbcLogger {
      * @param callerMethodName
      *            Daoのメソッド名
      * @param result
-     *            メソッドの実行結果
-     * @throws DomaNullPointerException
-     *             {@code callerClassName} もしくは {@code callerMethodName} が
-     *             {@code null} の場合
+     *            メソッドの実行結果、実行結果が存在しない場合{@code null}
      */
     void logDaoMethodExiting(String callerClassName, String callerMethodName,
             Object result);
@@ -72,8 +67,6 @@ public interface JdbcLogger {
      *            呼び出し元のメソッド名
      * @param cause
      *            原因
-     * @throws DomaNullPointerException
-     *             引数のいずれかが {@code null} の場合
      */
     void logSqlExecutionSkipping(String callerClassName,
             String callerMethodName, SqlExecutionSkipCause cause);
@@ -87,8 +80,6 @@ public interface JdbcLogger {
      *            呼び出し元のメソッド名
      * @param sql
      *            SQL
-     * @throws DomaNullPointerException
-     *             引数のいずれかが {@code null} の場合
      */
     void logSql(String callerClassName, String callerMethodName, Sql<?> sql);
 
@@ -101,8 +92,6 @@ public interface JdbcLogger {
      *            呼び出し元のメソッド名
      * @param transactionId
      *            トランザクションの識別子
-     * @throws DomaNullPointerException
-     *             引数のいずれかが {@code null} の場合
      * @since 1.1.0
      */
     void logLocalTransactionBegun(String callerClassName,
@@ -117,8 +106,6 @@ public interface JdbcLogger {
      *            呼び出し元のメソッド名
      * @param transactionId
      *            トランザクションの識別子
-     * @throws DomaNullPointerException
-     *             引数のいずれかが {@code null} の場合
      * @since 1.1.0
      */
     void logLocalTransactionCommitted(String callerClassName,
@@ -135,8 +122,6 @@ public interface JdbcLogger {
      *            トランザクションの識別子
      * @param savepointName
      *            セーブポイントの名前
-     * @throws DomaNullPointerException
-     *             引数のいずれかが {@code null} の場合
      * @since 1.1.0
      */
     void logLocalTransactionSavepointCreated(String callerClassName,
@@ -153,8 +138,6 @@ public interface JdbcLogger {
      *            トランザクションの識別子
      * @param savepointName
      *            セーブポイントの名前
-     * @throws DomaNullPointerException
-     *             引数のいずれかが {@code null} の場合
      * @since 1.1.0
      */
     void logLocalTransactionSavepointReleased(String callerClassName,
@@ -169,8 +152,6 @@ public interface JdbcLogger {
      *            呼び出し元のメソッド名
      * @param transactionId
      *            トランザクションの識別子
-     * @throws DomaNullPointerException
-     *             引数のいずれかが {@code null} の場合
      * @since 1.1.0
      */
     void logLocalTransactionRolledback(String callerClassName,
@@ -187,8 +168,6 @@ public interface JdbcLogger {
      *            トランザクションの識別子
      * @param savepointName
      *            セーブポイントの名前
-     * @throws DomaNullPointerException
-     *             引数のいずれかが {@code null} の場合
      * @since 1.1.0
      */
     void logLocalTransactionSavepointRolledback(String callerClassName,
@@ -201,8 +180,6 @@ public interface JdbcLogger {
      * @param callerMethodName
      * @param e
      *            {@link Connection#close()} 時に発生した {@link SQLException}
-     * @throws DomaNullPointerException
-     *             引数のいずれかが {@code null} の場合
      */
     void logConnectionClosingFailure(String callerClassName,
             String callerMethodName, SQLException e);
@@ -214,8 +191,6 @@ public interface JdbcLogger {
      * @param callerMethodName
      * @param e
      *            {@link Statement#close()} 時に発生した {@link SQLException}
-     * @throws DomaNullPointerException
-     *             引数のいずれかが {@code null} の場合
      */
     void logStatementClosingFailure(String callerClassName,
             String callerMethodName, SQLException e);
@@ -227,8 +202,6 @@ public interface JdbcLogger {
      * @param callerMethodName
      * @param e
      *            {@link ResultSet#close()} 時に発生した {@link SQLException}
-     * @throws DomaNullPointerException
-     *             引数のいずれかが {@code null} の場合
      */
     void logResultSetClosingFailure(String callerClassName,
             String callerMethodName, SQLException e);
