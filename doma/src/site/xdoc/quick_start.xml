@@ -246,7 +246,7 @@ public interface EmployeeDao {
 					ファイルを作成したら、上記のSQLをファイルに記述します。
 				</p>
 				<p>
-					SQLファイルが完成作成したら、<code>EmployeeDao</code>を再度ビルドしてください。
+					SQLファイルが完成したら、<code>EmployeeDao</code>を再度ビルドしてください。
 					Doma Toolsを利用している場合は、SQLファイルの保存時に自動でビルドが行われます。
 					ビルドが行われるとSQLファイルの存在チェックが再度行われエラーが消えます。
 				</p>

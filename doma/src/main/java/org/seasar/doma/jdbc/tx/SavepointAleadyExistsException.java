@@ -21,7 +21,7 @@ import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcException;
 
 /**
- * セーブポイントが見つからない場合にスローされる例外です。
+ * セーブポイントがすでに存在する場合にスローされる例外です。
  * 
  * @author taedium
  * @since 1.1.0

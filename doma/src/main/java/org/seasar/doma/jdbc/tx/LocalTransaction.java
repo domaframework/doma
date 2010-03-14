@@ -226,6 +226,8 @@ public final class LocalTransaction {
      *             引数が {@code null} の場合
      * @throws LocalTransactionNotYetBegunException
      *             ローカルトランザクションがまだ開始されていない場合
+     * @throws SavepointAleadyExistsException
+     *             セーブポイントがすでに存在する場合
      * @throws JdbcException
      *             JDBCに関する例外が発生した場合
      */
