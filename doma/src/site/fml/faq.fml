@@ -184,13 +184,13 @@
 					<a href="setup.html">セットアップ</a>を見直してください。
 				<p>
 				</p>
-					もしくは、単にパッケージエクスプローラー上に「.apt_generated」ディレクトリが表示されていないだけかもしれません。
-					「.apt_generated」は、名称が「.」で始まっているために、Pckage Explorerビューで表示対象外になります。
+					もしくは、単にPackage Explorerビュー上に「.apt_generated」ディレクトリが表示されていないだけかもしれません。
+					「.apt_generated」は、名称が「.」で始まっているために、Package Explorerビューで表示対象外になります。
 					対応方法としては以下のいずれかを選択してください。
 				</p>
 				<ul>
-					<li>Pckage Explorerビューではなく、Nivigatorビューから「.apt_generated」ディレクトリを確認する</li>
-					<li>Pckage Explorerビューのフィルタリングの設定を変更し、「.apt_generated」ディレクトリを表示させる</li>
+					<li>Package Explorerビューではなく、Nivigatorビューから「.apt_generated」ディレクトリを確認する</li>
+					<li>Package Explorerビューのフィルタリングの設定を変更し、「.apt_generated」ディレクトリを表示させる</li>
 					<li>出力先ディレクトリを明示的に指定し、名称が「.」で始まらないようにする</li>
 				</ul>
 				<p>

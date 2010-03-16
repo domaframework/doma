@@ -149,7 +149,7 @@
 						<td>.apt_generated</td>
 						<td>
 							apt（Annotation Processing Tool）によって生成されたコードを格納するソースフォルダです。
-							Pckage Explorerビューでは、フィルタリングされるため表示されません（フィルタリングは解除可能です）。
+							Package Explorerビューでは、フィルタリングされるため表示されません（フィルタリングは解除可能です）。
 							Nivigatorビューで確認できます。
 						</td>
 					</tr>

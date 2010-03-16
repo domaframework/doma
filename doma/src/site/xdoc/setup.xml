@@ -111,8 +111,8 @@ public class Employee {
 				<p>
 					ビルド後（自動でビルドされる設定ならばエディタの保存後）に、実装クラス「example._Employee」が自動生成されれば、セットアップは成功していると言えます。
 					生成されたソースコードは、注釈処理（Annotation Processing）の設定画面で変更していなければ、プロジェクト直下の「.apt_generated」というディレクトリに保存されます。
-					「.apt_generated」は、デフォルトではPckage Explorerビューに表示されません。
-					Pckage Explorerビューのフィルタリングの設定を変更するか、Nivigatorビューで確認してください。
+					「.apt_generated」は、デフォルトではPackage Explorerビューに表示されません。
+					Package Explorerビューのフィルタリングの設定を変更するか、Nivigatorビューで確認してください。
 				</p>
 			</subsection>
 		</section>

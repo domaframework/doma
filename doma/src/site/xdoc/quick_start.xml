@@ -144,7 +144,7 @@ public class Employee {
 }</source>
 				<p>
 					エンティティクラスを作成すると、メタ情報を表すクラス（この場合、_Employee）が「.apt_generated」ディレクトリに生成されます。
-					「.apt_generated」はデフォルトではPckage Explorerビューに表示されないので注意してください。
+					「.apt_generated」はデフォルトではPackage Explorerビューに表示されないので注意してください。
 					詳細は、よくある質問のページを参照してください。
 				</p>
 				<ul>
@@ -265,7 +265,7 @@ public interface EmployeeDao {
 				</p>
 				<p>
 					EmployeeDaoImplは「.apt_generated」ディレクトリに生成されます。
-					「.apt_generated」はデフォルトではPckage Explorerビューに表示されないので注意してください。
+					「.apt_generated」はデフォルトではPackage Explorerビューに表示されないので注意してください。
 					詳細は、よくある質問のページを参照してください。
 				</p>
 				<ul>
