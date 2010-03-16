@@ -165,6 +165,39 @@
 				</p>
 			</answer>
 		</faq>
+		<faq id="development-environment-6">
+			<question>aptで生成されたコードはどこに出力されますか？</question>
+			<answer>
+				<p>
+					Eclipseを利用している場合、デフォルトではプロジェクト直下の「.apt_generated」ディレクトリに出力されます。
+				<p>
+				</p>
+					出力先を変更したい場合は、<a href="setup.html#注釈処理の設定">注釈処理の設定</a>を参考にしてください。
+				</p>
+			</answer>
+		</faq>
+		<faq id="development-environment-7">
+			<question>Eclipseを使用していますが、「.apt_generated」ディレクトリが見つかりません。どうしてですか？</question>
+			<answer>
+				<p>
+					aptの処理が行われていない可能性があります。
+					<a href="setup.html">セットアップ</a>を見直してください。
+				<p>
+				</p>
+					もしくは、単にパッケージエクスプローラー上に「.apt_generated」ディレクトリが表示されていないだけかもしれません。
+					「.apt_generated」は、名称が「.」で始まっているために、Pckage Explorerビューで表示対象外になります。
+					対応方法としては以下のいずれかを選択してください。
+				</p>
+				<ul>
+					<li>Pckage Explorerビューではなく、Nivigatorビューから「.apt_generated」ディレクトリを確認する</li>
+					<li>Pckage Explorerビューのフィルタリングの設定を変更し、「.apt_generated」ディレクトリを表示させる</li>
+					<li>出力先ディレクトリを明示的に指定し、名称が「.」で始まらないようにする</li>
+				</ul>
+				<p>
+					出力先を変更したい場合は、<a href="setup.html#注釈処理の設定">注釈処理の設定</a>を参考にしてください。
+				</p>
+			</answer>
+		</faq>
 	</part>
 	<part id="build-environment">
 		<title>ビルド環境に関する質問</title>

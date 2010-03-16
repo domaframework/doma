@@ -142,6 +142,15 @@ public class Employee {
     public Integer versionNo;
 
 }</source>
+				<p>
+					エンティティクラスを作成すると、メタ情報を表すクラス（この場合、_Employee）が「.apt_generated」ディレクトリに生成されます。
+					「.apt_generated」はデフォルトではPckage Explorerビューに表示されないので注意してください。
+					詳細は、よくある質問のページを参照してください。
+				</p>
+				<ul>
+					<li><a href="faq.html#development-environment-6">aptで生成されたコードはどこに出力されますか？</a></li>
+					<li><a href="faq.html#development-environment-7">Eclipseを使用していますが、「.apt_generated」ディレクトリが見つかりません。どうしてですか？</a></li>
+				</ul>
 			</subsection>
 			<subsection name="設定クラスの作成">
 				<p>
@@ -254,6 +263,15 @@ public interface EmployeeDao {
 					また、ビルドが成功すると、インタフェースと同じパッケージに<code>EmployeeDaoImpl</code>という実装クラスが自動生成されます。
 					データベースアクセスは、この実装クラスをインスタンス化しておこないます。
 				</p>
+				<p>
+					EmployeeDaoImplは「.apt_generated」ディレクトリに生成されます。
+					「.apt_generated」はデフォルトではPckage Explorerビューに表示されないので注意してください。
+					詳細は、よくある質問のページを参照してください。
+				</p>
+				<ul>
+					<li><a href="faq.html#development-environment-6">aptで生成されたコードはどこに出力されますか？</a></li>
+					<li><a href="faq.html#development-environment-7">Eclipseを使用していますが、「.apt_generated」ディレクトリが見つかりません。どうしてですか？</a></li>
+				</ul>
 			</subsection>
 			<subsection name="起動クラスの作成">
 				<p>
