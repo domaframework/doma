@@ -83,9 +83,8 @@ public class UtilLoggingJdbcLogger implements JdbcLogger {
     @Override
     public void logSql(String callerClassName, String callerMethodName,
             Sql<?> sql) {
-        String message = String.format("SQL log. sqlFilePath=[%s],%n%s", sql
-                .getSqlFilePath(), sql.getFormattedSql());
-        logger.logp(level, callerClassName, callerMethodName, message);
+        logger.logp(level, callerClassName, callerMethodName, Message.DOMA2076
+                .getMessage(sql.getSqlFilePath(), sql.getFormattedSql()));
     }
 
     @Override
