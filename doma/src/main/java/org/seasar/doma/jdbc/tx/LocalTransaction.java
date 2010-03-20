@@ -195,9 +195,13 @@ public final class LocalTransaction {
             TransactionIsolationLevel transactionIsolationLevel,
             String callerMethodName) {
         if (isActiveInternal()) {
+            rollbackIntenal(callerMethodName);
             throw new LocalTransactionAlreadyBegunException();
         }
         LocalTransactionContext context = createLocalTransactionContext();
+        jdbcLogger.logLocalTransactionBegun(className, callerMethodName,
+                context.getId());
+
         LocalTransactionalConnection connection = context.getConnection();
         try {
             int level = connection.getTransactionIsolation();
@@ -221,8 +225,6 @@ public final class LocalTransaction {
             end(callerMethodName);
             throw new JdbcException(Message.DOMA2041, e, e);
         }
-        jdbcLogger.logLocalTransactionBegun(className, callerMethodName,
-                context.getId());
     }
 
     /**
