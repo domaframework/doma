@@ -34,4 +34,9 @@ public final class Artifact {
         return VERSION;
     }
 
+    public static void validateVersion(String generationtimeVersion) {
+        if (!VERSION.equals(generationtimeVersion)) {
+            throw new VersionConflictException(VERSION, generationtimeVersion);
+        }
+    }
 }

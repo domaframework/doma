@@ -67,6 +67,7 @@ public class DomainTypeGenerator extends AbstractGenerator {
                 domainMeta.getTypeElement().getQualifiedName());
         print("%n");
         indent();
+        printValidateVersionStaticInitializer();
         printFields();
         printConstructors();
         printMethods();

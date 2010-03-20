@@ -4,6 +4,10 @@ package org.seasar.doma.internal.apt.domain;
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
 public final class _PrimitiveValueDomain implements org.seasar.doma.internal.domain.DomainType<java.lang.Integer, org.seasar.doma.internal.apt.domain.PrimitiveValueDomain> {
 
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
     private static final _PrimitiveValueDomain singleton = new _PrimitiveValueDomain();
 
     private _PrimitiveValueDomain() {

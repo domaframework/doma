@@ -139,6 +139,7 @@ public class DaoGenerator extends AbstractGenerator {
                 simpleName, AbstractDao.class.getName(), daoMeta.getDaoType());
         print("%n");
         indent();
+        printValidateVersionStaticInitializer();
         printFields();
         printConstructors();
         printMethods();

@@ -84,6 +84,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
                         .getEntityTypeName());
         print("%n");
         indent();
+        printValidateVersionStaticInitializer();
         printFields();
         printConstructor();
         printMethods();

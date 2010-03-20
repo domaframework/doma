@@ -107,6 +107,14 @@ public abstract class AbstractGenerator implements Generator {
                         .getVersion(env), Options.getDate(env));
     }
 
+    protected void printValidateVersionStaticInitializer() {
+        iprint("static {%n");
+        iprint("    %1$s.validateVersion(\"%2$s\");%n", Artifact.class
+                .getName(), Options.getVersion(env));
+        iprint("}%n");
+        print("%n");
+    }
+
     protected void iprint(String format, Object... args) {
         formatter.format(indentBuffer.toString());
         throwExceptionIfNecessary();
