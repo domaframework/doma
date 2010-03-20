@@ -356,7 +356,6 @@ public final class LocalTransaction {
         context.addSavepoint(savepointName, savepoint);
         jdbcLogger.logLocalTransactionSavepointCreated(className,
                 "setSavepoint", context.getId(), savepointName);
-
     }
 
     /**
