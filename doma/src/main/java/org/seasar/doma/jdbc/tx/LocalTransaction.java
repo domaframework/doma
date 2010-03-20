@@ -194,11 +194,12 @@ public final class LocalTransaction {
     private void beginInternal(
             TransactionIsolationLevel transactionIsolationLevel,
             String callerMethodName) {
-        if (isActiveInternal()) {
+        LocalTransactionContext context = localTxContextHolder.get();
+        if (context != null) {
             rollbackIntenal(callerMethodName);
-            throw new LocalTransactionAlreadyBegunException();
+            throw new LocalTransactionAlreadyBegunException(context.getId());
         }
-        LocalTransactionContext context = createLocalTransactionContext();
+        context = createLocalTransactionContext();
         jdbcLogger.logLocalTransactionBegun(className, callerMethodName,
                 context.getId());
 
@@ -476,15 +477,6 @@ public final class LocalTransaction {
      * @return ローカルトランザクションがアクティブな場合 {@code true}
      */
     public boolean isActive() {
-        return isActiveInternal();
-    }
-
-    /**
-     * ローカルトランザクションがアクティブな場合 {@code true} を返します。
-     * 
-     * @return ローカルトランザクションがアクティブな場合 {@code true}
-     */
-    private boolean isActiveInternal() {
         return localTxContextHolder.get() != null;
     }
 
