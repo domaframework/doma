@@ -180,7 +180,7 @@
 			<question>Eclipseを使用していますが、「.apt_generated」ディレクトリが見つかりません。どうしてですか？</question>
 			<answer>
 				<p>
-					aptの処理が行われていない可能性があります。
+					aptの設定が正しく行われていない可能性があります。
 					<a href="setup.html">セットアップ</a>を見直してください。
 				<p>
 				</p>
