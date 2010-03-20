@@ -98,6 +98,20 @@ public interface JdbcLogger {
             String callerMethodName, String transactionId);
 
     /**
+     * トランザクションの終了を記録します。
+     * 
+     * @param callerClassName
+     *            呼び出し元のクラス名
+     * @param callerMethodName
+     *            呼び出し元のメソッド名
+     * @param transactionId
+     *            トランザクションの識別子
+     * @since 1.2.0
+     */
+    void logLocalTransactionEnded(String callerClassName,
+            String callerMethodName, String transactionId);
+
+    /**
      * トランザクションのコミットを記録します。
      * 
      * @param callerClassName
@@ -172,6 +186,57 @@ public interface JdbcLogger {
      */
     void logLocalTransactionSavepointRolledback(String callerClassName,
             String callerMethodName, String transactionId, String savepointName);
+
+    /**
+     * トランザクションのロールバックの失敗を記録します。
+     * 
+     * @param callerClassName
+     *            呼び出し元のクラス名
+     * @param callerMethodName
+     *            呼び出し元のメソッド名
+     * @param transactionId
+     *            トランザクションの識別子
+     * @param e
+     *            {@link Connection#rollback()} 時に発生した {@link SQLException}
+     * @since 1.2.0
+     */
+    void logLocalTransactionRollbackFailure(String callerClassName,
+            String callerMethodName, String transactionId, SQLException e);
+
+    /**
+     * {@link Connection#setAutoCommit(boolean)} の引数に {@code true} を渡した時に発生した
+     * {@link SQLException} を記録します。
+     * 
+     * @param callerClassName
+     *            呼び出し元のクラス名
+     * @param callerMethodName
+     *            呼び出し元のメソッド名
+     * @param e
+     *            {@link Connection#setAutoCommit(boolean)} 時に発生した
+     *            {@link SQLException}
+     * @since 1.2.0
+     */
+    void logAutoCommitEnablingFailure(String callerClassName,
+            String callerMethodName, SQLException e);
+
+    /**
+     * {@link Connection#setTransactionIsolation(int)} 時に発生した
+     * {@link SQLException} を記録します。
+     * 
+     * @param callerClassName
+     *            呼び出し元のクラス名
+     * @param callerMethodName
+     *            呼び出し元のメソッド名
+     * @param transactionId
+     *            トランザクションの識別子
+     * @param e
+     *            {@link Connection#setTransactionIsolation(int)} 時に発生した
+     *            {@link SQLException}
+     * @since 1.2.0
+     */
+    void logTransactionIsolationSettingFailuer(String callerClassName,
+            String callerMethodName, int transactionIsolationLevel,
+            SQLException e);
 
     /**
      * {@link Connection#close()} 時に発生した {@link SQLException} を記録します。

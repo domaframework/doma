@@ -18,6 +18,7 @@ package org.seasar.doma.jdbc.tx;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Savepoint;
 
 import javax.sql.DataSource;
@@ -30,6 +31,58 @@ import org.seasar.doma.jdbc.JdbcLogger;
 
 /**
  * ローカルトランザクションです。
+ * <p>
+ * このクラスはスレッドセーフです。
+ * <p>
+ * {@link #begin()} もしくは {@link #begin(TransactionIsolationLevel)}
+ * でトランザクションを開始した後、トランザクションは必ず {@link #commit()} もしくは {@link #rollback()}
+ * で終了してください。 {@code rollback()}は、{@code begin()} が成功する前や {@code commit()}
+ * が成功した後に呼び出された場合、実質的には何も行いません。したがって、次のように記述できます。
+ * 
+ * <pre>
+ * LocalTransaction tx = AppConfig.getLocalTransaction();
+ * try {
+ *     // 開始
+ *     tx.begin();
+ * 
+ *     Employee employee = dao.selectById(1);
+ *     employee.setName(&quot;hoge&quot;);
+ *     employee.setJobType(JobType.PRESIDENT);
+ *     dao.update(employee);
+ * 
+ *     // コミット
+ *     tx.commit();
+ * } finally {
+ *     // ロールバック
+ *     tx.rollback();
+ * }
+ * </pre>
+ * 
+ * トランザクションを終了した後、 同じインスタンスに対して {@code begin()} もしくは {@code
+ * begin(TransactionIsolationLevel)} を呼び出した場合、新しいトランザクションを開始できます。
+ * 
+ * <pre>
+ * LocalTransaction tx = AppConfig.getLocalTransaction();
+ * try {
+ *     // トランザクションAの開始
+ *     tx.begin();
+ *     ...
+ *     tx.commit();
+ * } finally {
+ *     tx.rollback();
+ * }
+ * try {
+ *     // トランザクションBの開始
+ *     tx.begin();
+ *     ...
+ *     tx.commit();
+ * } finally {
+ *     tx.rollback();
+ * }
+ * </pre>
+ * 
+ * トランザクション開始後、このクラスのいずれかのメソッドが例外をスローした場合、 トランザクションは直ちにロールバックされます。
+ * <p>
  * 
  * @author taedium
  * @since 1.1.0
@@ -47,6 +100,9 @@ public final class LocalTransaction {
 
     /** デフォルトのトランザクション分離レベル、指定されない場合 {@code null} */
     private final TransactionIsolationLevel defaultTransactionIsolationLevel;
+
+    /** クラス名 */
+    private final String className;
 
     /**
      * インスタンスを構築します。
@@ -85,6 +141,7 @@ public final class LocalTransaction {
         this.localTxContextHolder = localTxContextHolder;
         this.jdbcLogger = jdbcLogger;
         this.defaultTransactionIsolationLevel = defaultTransactionIsolationLevel;
+        this.className = getClass().getName();
     }
 
     /**
@@ -97,10 +154,10 @@ public final class LocalTransaction {
      * @throws LocalTransactionAlreadyBegunException
      *             ローカルトランザクションがすでに開始されている場合
      * @throws JdbcException
-     *             JDBCに関する例外が発生した場合
+     *             トランザクションの開始に失敗した場合
      */
     public void begin() {
-        beginInternal(defaultTransactionIsolationLevel);
+        beginInternal(defaultTransactionIsolationLevel, "begin");
     }
 
     /**
@@ -117,46 +174,70 @@ public final class LocalTransaction {
      * @throws LocalTransactionAlreadyBegunException
      *             ローカルトランザクションがすでに開始されている場合
      * @throws JdbcException
-     *             JDBCに関する例外が発生した場合
+     *             トランザクションの開始に失敗した場合
      */
     public void begin(TransactionIsolationLevel transactionIsolationLevel) {
         if (transactionIsolationLevel == null) {
             throw new DomaNullPointerException("transactionIsolationLevel");
         }
-        beginInternal(transactionIsolationLevel);
+        beginInternal(transactionIsolationLevel, "begin");
     }
 
+    /**
+     * 内部的にローカルトランザクションを開始します。
+     * 
+     * @param transactionIsolationLevel
+     *            トランザクション分離レベル
+     * @param callerMethodName
+     *            呼び出し元のメソッド名
+     */
     private void beginInternal(
-            TransactionIsolationLevel transactionIsolationLevel) {
+            TransactionIsolationLevel transactionIsolationLevel,
+            String callerMethodName) {
         if (isActiveInternal()) {
             throw new LocalTransactionAlreadyBegunException();
         }
-        LocalTransactionalConnection connection = new LocalTransactionalConnection(
-                JdbcUtil.getConnection(dataSource));
+        LocalTransactionContext context = createLocalTransactionContext();
+        LocalTransactionalConnection connection = context.getConnection();
         try {
-            LocalTransactionContext context = createLocalTransactionContext(connection);
-            localTxContextHolder.set(context);
-            if (transactionIsolationLevel != null) {
-                JdbcUtil.setTransactionIsolation(connection,
-                        transactionIsolationLevel.getLevel());
-            }
-            JdbcUtil.disableAutoCommit(connection);
-            jdbcLogger.logLocalTransactionBegun(getClass().getName(), "begin",
-                    context.getId());
-        } catch (RuntimeException e) {
-            releaseConnection(connection);
-            throw e;
+            int level = connection.getTransactionIsolation();
+            context.setTransactionIsolationLevel(level);
+        } catch (SQLException e) {
+            end(callerMethodName);
+            throw new JdbcException(Message.DOMA2056, e, e);
         }
+        if (transactionIsolationLevel != null) {
+            int level = transactionIsolationLevel.getLevel();
+            try {
+                connection.setTransactionIsolation(level);
+            } catch (SQLException e) {
+                end(callerMethodName);
+                throw new JdbcException(Message.DOMA2055, e, level, e);
+            }
+        }
+        try {
+            connection.setAutoCommit(false);
+        } catch (SQLException e) {
+            end(callerMethodName);
+            throw new JdbcException(Message.DOMA2041, e, e);
+        }
+        jdbcLogger.logLocalTransactionBegun(className, callerMethodName,
+                context.getId());
     }
 
-    private LocalTransactionContext createLocalTransactionContext(
-            LocalTransactionalConnection connection) {
-        assertNotNull(connection);
-        int transactionIsolationLevel = JdbcUtil
-                .getTransactionIsolation(connection);
-        boolean autoCommit = JdbcUtil.getAutoCommit(connection);
-        return new LocalTransactionContext(connection,
-                transactionIsolationLevel, autoCommit);
+    /**
+     * ローカルトランザクションコンテキストを返します。
+     * 
+     * @return ローカルトランザクションコンテキスト
+     */
+    private LocalTransactionContext createLocalTransactionContext() {
+        Connection originalConnection = JdbcUtil.getConnection(dataSource);
+        LocalTransactionalConnection connection = new LocalTransactionalConnection(
+                originalConnection);
+        LocalTransactionContext context = new LocalTransactionContext(
+                connection);
+        localTxContextHolder.set(context);
+        return context;
     }
 
     /**
@@ -170,7 +251,7 @@ public final class LocalTransaction {
      * @throws LocalTransactionNotYetBegunException
      *             ローカルトランザクションがまだ開始されていない場合
      * @throws JdbcException
-     *             JDBCに関する例外が発生した場合
+     *             コミットに失敗した場合
      */
     public void commit() {
         LocalTransactionContext context = localTxContextHolder.get();
@@ -179,12 +260,14 @@ public final class LocalTransaction {
         }
         LocalTransactionalConnection connection = context.getConnection();
         try {
-            JdbcUtil.commit(connection);
-            restoreConnectionSettings(context, connection);
-            jdbcLogger.logLocalTransactionCommitted(getClass().getName(),
-                    "commit", context.getId());
+            connection.commit();
+            jdbcLogger.logLocalTransactionCommitted(className, "commit",
+                    context.getId());
+        } catch (SQLException e) {
+            rollbackIntenal("commit");
+            new JdbcException(Message.DOMA2043, e, e);
         } finally {
-            releaseConnection(connection);
+            end("commit");
         }
     }
 
@@ -192,23 +275,36 @@ public final class LocalTransaction {
      * ローカルトランザクションをロールバックします。
      * <p>
      * ローカルトランザクションが開始されていない場合、何もおこないません。
-     * 
-     * @throws JdbcException
-     *             JDBCに関する例外が発生した場合
+     * <p>
+     * このメソッドは、実行時例外をスローしません。
      */
     public void rollback() {
+        rollbackIntenal("rollback");
+    }
+
+    /**
+     * 内部的にロールバックします。
+     * <p>
+     * このメソッドは、実行時例外をスローしません。
+     * 
+     * @param callerMethodName
+     *            呼び出し元のメソッド名
+     */
+    private void rollbackIntenal(String callerMethodName) {
         LocalTransactionContext context = localTxContextHolder.get();
         if (context == null) {
             return;
         }
         LocalTransactionalConnection connection = context.getConnection();
         try {
-            JdbcUtil.rollback(connection);
-            restoreConnectionSettings(context, connection);
-            jdbcLogger.logLocalTransactionRolledback(getClass().getName(),
-                    "rollback", context.getId());
+            connection.rollback();
+            jdbcLogger.logLocalTransactionRolledback(className,
+                    callerMethodName, context.getId());
+        } catch (SQLException ignored) {
+            jdbcLogger.logLocalTransactionRollbackFailure(className,
+                    callerMethodName, context.getId(), ignored);
         } finally {
-            releaseConnection(connection);
+            end(callerMethodName);
         }
     }
 
@@ -229,34 +325,58 @@ public final class LocalTransaction {
      * @throws SavepointAleadyExistsException
      *             セーブポイントがすでに存在する場合
      * @throws JdbcException
-     *             JDBCに関する例外が発生した場合
+     *             セーブポイントの作成に失敗した場合
      */
     public void setSavepoint(String savepointName) {
+        if (savepointName == null) {
+            rollbackIntenal("setSavepoint");
+            throw new DomaNullPointerException("savepointName");
+        }
         LocalTransactionContext context = localTxContextHolder.get();
         if (context == null) {
             throw new LocalTransactionNotYetBegunException(Message.DOMA2053,
                     savepointName);
         }
-        LocalTransactionalConnection connection = context.getConnection();
-        if (savepointName == null) {
-            releaseConnection(connection);
-            throw new DomaNullPointerException("savepointName");
-        }
         Savepoint savepoint = context.getSavepoint(savepointName);
         if (savepoint != null) {
-            releaseConnection(connection);
+            rollbackIntenal("setSavepoint");
             throw new SavepointAleadyExistsException(savepointName);
         }
+        LocalTransactionalConnection connection = context.getConnection();
         try {
-            savepoint = JdbcUtil.setSavepoint(connection, savepointName);
-            context.addSavepoint(savepointName, savepoint);
-            jdbcLogger.logLocalTransactionSavepointCreated(
-                    getClass().getName(), "setSavepoint", context.getId(),
-                    savepointName);
-        } catch (RuntimeException e) {
-            releaseConnection(connection);
-            throw e;
+            savepoint = connection.setSavepoint(savepointName);
+        } catch (SQLException e) {
+            rollbackIntenal("setSavepoint");
+            throw new JdbcException(Message.DOMA2051, e, savepointName, e);
         }
+        context.addSavepoint(savepointName, savepoint);
+        jdbcLogger.logLocalTransactionSavepointCreated(className,
+                "setSavepoint", context.getId(), savepointName);
+
+    }
+
+    /**
+     * このローカルトランザクションでセーブポイントを保持しているかどうかを返します。
+     * 
+     * @param savepointName
+     *            セーブポイントの名前
+     * @throws DomaNullPointerException
+     *             引数が {@code null} の場合
+     * @throws LocalTransactionNotYetBegunException
+     *             ローカルトランザクションがまだ開始されていない場合
+     * @return セーブポイントを保持している場合 {@code ture}
+     */
+    public boolean hasSavepoint(String savepointName) {
+        if (savepointName == null) {
+            rollbackIntenal("hasSavepoint");
+            throw new DomaNullPointerException("savepointName");
+        }
+        LocalTransactionContext context = localTxContextHolder.get();
+        if (context == null) {
+            throw new LocalTransactionNotYetBegunException(Message.DOMA2057,
+                    savepointName);
+        }
+        return context.getSavepoint(savepointName) != null;
     }
 
     /**
@@ -274,33 +394,32 @@ public final class LocalTransaction {
      * @throws LocalTransactionNotYetBegunException
      *             ローカルトランザクションがまだ開始されていない場合
      * @throws JdbcException
-     *             JDBCに関する例外が発生した場合
+     *             セーブポイントの削除に失敗した場合
      */
     public void releaseSavepoint(String savepointName) {
+        if (savepointName == null) {
+            rollbackIntenal("releaseSavepoint");
+            throw new DomaNullPointerException("savepointName");
+        }
         LocalTransactionContext context = localTxContextHolder.get();
         if (context == null) {
             throw new LocalTransactionNotYetBegunException(Message.DOMA2061,
                     savepointName);
         }
-        LocalTransactionalConnection connection = context.getConnection();
-        if (savepointName == null) {
-            releaseConnection(connection);
-            throw new DomaNullPointerException("savepointName");
-        }
         Savepoint savepoint = context.releaseAndGetSavepoint(savepointName);
         if (savepoint == null) {
-            releaseConnection(connection);
+            rollbackIntenal("releaseSavepoint");
             throw new SavepointNotFoundException(savepointName);
         }
+        LocalTransactionalConnection connection = context.getConnection();
         try {
-            JdbcUtil.releaseSavepoint(connection, savepointName, savepoint);
-            jdbcLogger.logLocalTransactionSavepointCreated(
-                    getClass().getName(), "setSavepoint", context.getId(),
-                    savepointName);
-        } catch (RuntimeException e) {
-            releaseConnection(connection);
-            throw e;
+            connection.releaseSavepoint(savepoint);
+        } catch (SQLException e) {
+            rollbackIntenal("releaseSavepoint");
+            throw new JdbcException(Message.DOMA2060, e, savepointName, e);
         }
+        jdbcLogger.logLocalTransactionSavepointCreated(className,
+                "setSavepoint", context.getId(), savepointName);
     }
 
     /**
@@ -321,32 +440,32 @@ public final class LocalTransaction {
      * @throws LocalTransactionNotYetBegunException
      *             ローカルトランザクションがまだ開始されていない場合
      * @throws JdbcException
-     *             JDBCに関する例外が発生した場合
+     *             セーブポイントへのロールバックに失敗した場合
      */
     public void rollback(String savepointName) {
+        if (savepointName == null) {
+            rollbackIntenal("rollback");
+            throw new DomaNullPointerException("savepointName");
+        }
         LocalTransactionContext context = localTxContextHolder.get();
         if (context == null) {
             throw new LocalTransactionNotYetBegunException(Message.DOMA2062,
                     savepointName);
         }
-        LocalTransactionalConnection connection = context.getConnection();
-        if (savepointName == null) {
-            releaseConnection(connection);
-            throw new DomaNullPointerException("savepointName");
-        }
         Savepoint savepoint = context.getSavepoint(savepointName);
         if (savepoint == null) {
-            releaseConnection(connection);
+            rollbackIntenal("rollback");
             throw new SavepointNotFoundException(savepointName);
         }
+        LocalTransactionalConnection connection = context.getConnection();
         try {
-            JdbcUtil.rollback(connection, savepointName, savepoint);
-            jdbcLogger.logLocalTransactionSavepointRolledback(getClass()
-                    .getName(), "rollback", context.getId(), savepointName);
-        } catch (RuntimeException e) {
-            releaseConnection(connection);
-            throw e;
+            connection.rollback(savepoint);
+        } catch (SQLException e) {
+            rollbackIntenal("rollback");
+            throw new JdbcException(Message.DOMA2052, e, savepointName, e);
         }
+        jdbcLogger.logLocalTransactionSavepointRolledback(getClass().getName(),
+                "rollback", context.getId(), savepointName);
     }
 
     /**
@@ -368,31 +487,38 @@ public final class LocalTransaction {
     }
 
     /**
-     * コネクションを元の設定に戻します。
+     * ローカルトランザクションを終了させます。
+     * <p>
+     * このメソッドは、実行時例外をスローしません。
      * 
-     * @param connection
-     *            コネクション
+     * @param callerMethodName
+     *            呼び出し元のメソッド名
      */
-    private void restoreConnectionSettings(LocalTransactionContext context,
-            LocalTransactionalConnection connection) {
-        assertNotNull(context, connection);
+    private void end(String callerMethodName) {
+        LocalTransactionContext context = localTxContextHolder.get();
+        if (context == null) {
+            return;
+        }
+        localTxContextHolder.set(null);
+        LocalTransactionalConnection connection = context.getConnection();
         int isolationLevel = context.getTransactionIsolationLevel();
         if (isolationLevel != Connection.TRANSACTION_NONE) {
-            JdbcUtil.setTransactionIsolation(connection, isolationLevel);
+            try {
+                connection.setTransactionIsolation(isolationLevel);
+            } catch (SQLException ignored) {
+                jdbcLogger.logTransactionIsolationSettingFailuer(getClass()
+                        .getName(), callerMethodName, isolationLevel, ignored);
+            }
         }
-        JdbcUtil.setAutoCommit(connection, context.getAutoCommit());
-    }
-
-    /**
-     * コネクションを開放します。
-     * 
-     * @param connection
-     *            コネクション
-     */
-    private void releaseConnection(LocalTransactionalConnection connection) {
-        assertNotNull(connection);
-        localTxContextHolder.set(null);
+        try {
+            connection.setAutoCommit(true);
+        } catch (SQLException ignored) {
+            jdbcLogger.logAutoCommitEnablingFailure(className,
+                    callerMethodName, ignored);
+        }
         JdbcUtil.close(connection.getWrappedConnection(), jdbcLogger);
+        jdbcLogger.logLocalTransactionEnded(className, callerMethodName,
+                context.getId());
     }
 
     /**

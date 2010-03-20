@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.jdbc.tx;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 
@@ -33,7 +32,7 @@ public class LocalTransactionContextTest extends TestCase {
         LocalTransactionalConnection connection = new LocalTransactionalConnection(
                 new MockConnection());
         LocalTransactionContext context = new LocalTransactionContext(
-                connection, Connection.TRANSACTION_READ_COMMITTED, true);
+                connection);
         context.addSavepoint("1", new MySavepoint("1"));
         context.addSavepoint("2", new MySavepoint("2"));
         context.addSavepoint("3", new MySavepoint("3"));

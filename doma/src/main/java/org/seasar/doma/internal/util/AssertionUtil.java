@@ -128,6 +128,10 @@ public final class AssertionUtil {
         throw new AssertionError("Unreachable.");
     }
 
+    public static <T> T assertUnreachable(Throwable throwable) {
+        throw new AssertionError(throwable);
+    }
+
     public static void notYetImplemented() {
         throw new AssertionError("Not yet implemented.");
     }

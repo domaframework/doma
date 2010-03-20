@@ -29,6 +29,8 @@ import org.seasar.doma.jdbc.JdbcLogger;
 
 /**
  * ローカルトランザクションと連動するデータソースです。
+ * <p>
+ * このクラスはスレッドセーフです。
  * 
  * @see LocalTransaction
  * @author taedium

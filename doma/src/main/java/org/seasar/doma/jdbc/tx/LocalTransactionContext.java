@@ -17,6 +17,7 @@ package org.seasar.doma.jdbc.tx;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.sql.Connection;
 import java.sql.Savepoint;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,32 +32,27 @@ final class LocalTransactionContext {
 
     private final LocalTransactionalConnection connection;
 
-    private final int transactionIsolationLevel;
-
-    private final boolean autoCommit;
+    private int transactionIsolationLevel = Connection.TRANSACTION_NONE;
 
     private final List<String> savepointNames = new ArrayList<String>();
 
     private final Map<String, Savepoint> savepointMap = new HashMap<String, Savepoint>();
 
-    LocalTransactionContext(LocalTransactionalConnection connection,
-            int transactionIsolationLevel, boolean autoCommit) {
+    LocalTransactionContext(LocalTransactionalConnection connection) {
         assertNotNull(connection);
         this.connection = connection;
-        this.transactionIsolationLevel = transactionIsolationLevel;
-        this.autoCommit = autoCommit;
     }
 
     LocalTransactionalConnection getConnection() {
         return connection;
     }
 
-    public int getTransactionIsolationLevel() {
+    int getTransactionIsolationLevel() {
         return transactionIsolationLevel;
     }
 
-    public boolean getAutoCommit() {
-        return autoCommit;
+    void setTransactionIsolationLevel(int transactionIsolationLevel) {
+        this.transactionIsolationLevel = transactionIsolationLevel;
     }
 
     Savepoint getSavepoint(String savepointName) {

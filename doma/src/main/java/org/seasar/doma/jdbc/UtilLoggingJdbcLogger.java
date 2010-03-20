@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * 出力先に {@link java.util.logging.Logger} を使用したJDBCロガーです。
@@ -90,68 +91,94 @@ public class UtilLoggingJdbcLogger implements JdbcLogger {
     @Override
     public void logLocalTransactionBegun(String callerClassName,
             String callerMethodName, String transactionId) {
-        logger.logp(level, callerClassName, callerMethodName,
-                "Local transaction begun. transactionId=[{0}]", transactionId);
+        logger.logp(level, callerClassName, callerMethodName, Message.DOMA2063
+                .getMessage(transactionId));
+    }
+
+    @Override
+    public void logLocalTransactionEnded(String callerClassName,
+            String callerMethodName, String transactionId) {
+        logger.logp(level, callerClassName, callerMethodName, Message.DOMA2064
+                .getMessage(transactionId));
     }
 
     @Override
     public void logLocalTransactionSavepointCreated(String callerClassName,
             String callerMethodName, String transactionId, String savepointName) {
-        logger.logp(level, callerClassName, callerMethodName,
-                "Local transaction savepoint created. transactionId=[{0}]",
-                transactionId);
+        logger.logp(level, callerClassName, callerMethodName, Message.DOMA2065
+                .getMessage(transactionId, savepointName));
     }
 
     @Override
     public void logLocalTransactionSavepointReleased(String callerClassName,
             String callerMethodName, String transactionId, String savepointName) {
-        logger.logp(level, callerClassName, callerMethodName,
-                "Local transaction savepoint released. transactionId=[{0}]",
-                transactionId);
+        logger.logp(level, callerClassName, callerMethodName, Message.DOMA2066
+                .getMessage(transactionId, savepointName));
     }
 
     @Override
     public void logLocalTransactionCommitted(String callerClassName,
             String callerMethodName, String transactionId) {
-        logger.logp(level, callerClassName, callerMethodName,
-                "Local transaction committed. transactionId=[{0}]",
-                transactionId);
+        logger.logp(level, callerClassName, callerMethodName, Message.DOMA2067
+                .getMessage(transactionId));
     }
 
     @Override
     public void logLocalTransactionRolledback(String callerClassName,
             String callerMethodName, String transactionId) {
-        logger.logp(level, callerClassName, callerMethodName,
-                "Local transaction rolled back. transactionId=[{0}]",
-                transactionId);
+        logger.logp(level, callerClassName, callerMethodName, Message.DOMA2068
+                .getMessage(transactionId));
     }
 
     @Override
     public void logLocalTransactionSavepointRolledback(String callerClassName,
             String callerMethodName, String transactionId, String savepointName) {
-        logger
-                .logp(
-                        level,
-                        callerClassName,
-                        callerMethodName,
-                        "Local transaction rolled back. transactionId=[{0}] savepointName=[{1}]",
-                        new Object[] { transactionId, savepointName });
+        logger.logp(level, callerClassName, callerMethodName, Message.DOMA2069
+                .getMessage(transactionId, savepointName));
 
+    }
+
+    @Override
+    public void logLocalTransactionRollbackFailure(String callerClassName,
+            String callerMethodName, String transactionId, SQLException e) {
+        logger.logp(level, callerClassName, callerMethodName, Message.DOMA2070
+                .getMessage(transactionId));
+    }
+
+    @Override
+    public void logAutoCommitEnablingFailure(String callerClassName,
+            String callerMethodName, SQLException e) {
+        logger.logp(level, callerClassName, callerMethodName, Message.DOMA2071
+                .getMessage(), e);
+    }
+
+    @Override
+    public void logTransactionIsolationSettingFailuer(String callerClassName,
+            String callerMethodName, int transactionIsolationLevel,
+            SQLException e) {
+        logger.logp(level, callerClassName, callerMethodName, Message.DOMA2071
+                .getMessage(transactionIsolationLevel), e);
     }
 
     @Override
     public void logConnectionClosingFailure(String callerClassName,
             String callerMethodName, SQLException e) {
+        logger.logp(level, callerClassName, callerMethodName, Message.DOMA2073
+                .getMessage(), e);
     }
 
     @Override
     public void logStatementClosingFailure(String callerClassName,
             String callerMethodName, SQLException e) {
+        logger.logp(level, callerClassName, callerMethodName, Message.DOMA2074
+                .getMessage(), e);
     }
 
     @Override
     public void logResultSetClosingFailure(String callerClassName,
             String callerMethodName, SQLException e) {
+        logger.logp(level, callerClassName, callerMethodName, Message.DOMA2075
+                .getMessage(), e);
     }
 
 }

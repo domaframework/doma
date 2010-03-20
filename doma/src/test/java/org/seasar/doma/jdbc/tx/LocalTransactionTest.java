@@ -17,6 +17,7 @@ package org.seasar.doma.jdbc.tx;
 
 import junit.framework.TestCase;
 
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.jdbc.mock.MockConnection;
 import org.seasar.doma.internal.jdbc.mock.MockDataSource;
 import org.seasar.doma.jdbc.UtilLoggingJdbcLogger;
@@ -104,6 +105,44 @@ public class LocalTransactionTest extends TestCase {
         }
     }
 
+    public void testSetSavepoint_nullPointer() throws Exception {
+        transaction.begin();
+        try {
+            transaction.setSavepoint(null);
+            fail();
+        } catch (DomaNullPointerException expected) {
+            System.out.println(expected.getMessage());
+        }
+    }
+
+    public void testHasSavepoint() throws Exception {
+        transaction.begin();
+        assertFalse(transaction.hasSavepoint("hoge"));
+        transaction.setSavepoint("hoge");
+        assertTrue(transaction.isActive());
+        assertFalse(connection.autoCommit);
+        assertTrue(transaction.hasSavepoint("hoge"));
+    }
+
+    public void testHasSavepoint_notYetBegun() throws Exception {
+        try {
+            transaction.hasSavepoint("hoge");
+            fail();
+        } catch (LocalTransactionNotYetBegunException expected) {
+            System.out.println(expected.getMessage());
+        }
+    }
+
+    public void testHasSavepoint_nullPointer() throws Exception {
+        transaction.begin();
+        try {
+            transaction.hasSavepoint(null);
+            fail();
+        } catch (DomaNullPointerException expected) {
+            System.out.println(expected.getMessage());
+        }
+    }
+
     public void testReleaseSavepoint() throws Exception {
         transaction.begin();
         transaction.setSavepoint("hoge");
@@ -133,6 +172,16 @@ public class LocalTransactionTest extends TestCase {
             transaction.releaseSavepoint("foo");
             fail();
         } catch (SavepointNotFoundException expected) {
+            System.out.println(expected.getMessage());
+        }
+    }
+
+    public void testReleaseSavepoint_nullPointer() throws Exception {
+        transaction.begin();
+        try {
+            transaction.releaseSavepoint(null);
+            fail();
+        } catch (DomaNullPointerException expected) {
             System.out.println(expected.getMessage());
         }
     }
