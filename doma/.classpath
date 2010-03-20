@@ -6,6 +6,6 @@
 	<classpathentry kind="src" path="src/test/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="lib" path="lib/junit-3.8.2.jar"/>
-	<classpathentry kind="lib" path="lib/aptina-unit-0.0.1.jar" sourcepath="libsrc/aptina-unit-0.0.1-sources.jar"/>
+	<classpathentry kind="lib" path="lib/aptina-unit-1.0.0.jar" sourcepath="libsrc/aptina-unit-1.0.0-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
