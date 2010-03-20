@@ -41,6 +41,22 @@ public class ItLogger implements JdbcLogger {
     }
 
     @Override
+    public void logAutoCommitEnablingFailure(String callerClassName,
+            String callerMethodName, SQLException e) {
+    }
+
+    @Override
+    public void logTransactionIsolationSettingFailuer(String callerClassName,
+            String callerMethodName, int transactionIsolationLevel,
+            SQLException e) {
+    }
+
+    @Override
+    public void logLocalTransactionRollbackFailure(String callerClassName,
+            String callerMethodName, String transactionId, SQLException e) {
+    }
+
+    @Override
     public void logDaoMethodEntering(String callerClassName,
             String callerMethodName, Object... parameters) {
         Log log = LogFactory.getLog(callerClassName);
@@ -124,6 +140,13 @@ public class ItLogger implements JdbcLogger {
                         "Local transaction savepoint rolled back. transactionId=%s savepointName=%s",
                         transactionId, transactionId);
         log.info(message);
+    }
+
+    @Override
+    public void logLocalTransactionEnded(String callerClassName,
+            String callerMethodName, String transactionId) {
+        Log log = LogFactory.getLog(callerClassName);
+        log.info("Local transaction ended. transactionId=" + transactionId);
     }
 
 }
