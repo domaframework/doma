@@ -194,21 +194,19 @@ public final class LocalTransaction {
     private void beginInternal(
             TransactionIsolationLevel transactionIsolationLevel,
             String callerMethodName) {
+        assertNotNull(callerMethodName);
         LocalTransactionContext context = localTxContextHolder.get();
         if (context != null) {
             rollbackIntenal(callerMethodName);
             throw new LocalTransactionAlreadyBegunException(context.getId());
         }
         context = createLocalTransactionContext();
-        jdbcLogger.logLocalTransactionBegun(className, callerMethodName,
-                context.getId());
-
         LocalTransactionalConnection connection = context.getConnection();
         try {
             int level = connection.getTransactionIsolation();
             context.setTransactionIsolationLevel(level);
         } catch (SQLException e) {
-            end(callerMethodName);
+            release(context, callerMethodName);
             throw new JdbcException(Message.DOMA2056, e, e);
         }
         if (transactionIsolationLevel != null) {
@@ -216,16 +214,18 @@ public final class LocalTransaction {
             try {
                 connection.setTransactionIsolation(level);
             } catch (SQLException e) {
-                end(callerMethodName);
+                release(context, callerMethodName);
                 throw new JdbcException(Message.DOMA2055, e, level, e);
             }
         }
         try {
             connection.setAutoCommit(false);
         } catch (SQLException e) {
-            end(callerMethodName);
+            release(context, callerMethodName);
             throw new JdbcException(Message.DOMA2041, e, e);
         }
+        jdbcLogger.logLocalTransactionBegun(className, callerMethodName,
+                context.getId());
     }
 
     /**
@@ -270,7 +270,7 @@ public final class LocalTransaction {
             rollbackIntenal("commit");
             new JdbcException(Message.DOMA2043, e, e);
         } finally {
-            end("commit");
+            end(context, "commit");
         }
     }
 
@@ -294,6 +294,7 @@ public final class LocalTransaction {
      *            呼び出し元のメソッド名
      */
     private void rollbackIntenal(String callerMethodName) {
+        assertNotNull(callerMethodName);
         LocalTransactionContext context = localTxContextHolder.get();
         if (context == null) {
             return;
@@ -307,7 +308,7 @@ public final class LocalTransaction {
             jdbcLogger.logLocalTransactionRollbackFailure(className,
                     callerMethodName, context.getId(), ignored);
         } finally {
-            end(callerMethodName);
+            end(context, callerMethodName);
         }
     }
 
@@ -368,6 +369,7 @@ public final class LocalTransaction {
      * @throws LocalTransactionNotYetBegunException
      *             ローカルトランザクションがまだ開始されていない場合
      * @return セーブポイントを保持している場合 {@code ture}
+     * @since 1.2.0
      */
     public boolean hasSavepoint(String savepointName) {
         if (savepointName == null) {
@@ -481,18 +483,33 @@ public final class LocalTransaction {
     }
 
     /**
-     * ローカルトランザクションを終了させます。
+     * ローカルトランザクションを終了します。
      * <p>
      * このメソッドは、実行時例外をスローしません。
      * 
      * @param callerMethodName
      *            呼び出し元のメソッド名
      */
-    private void end(String callerMethodName) {
-        LocalTransactionContext context = localTxContextHolder.get();
-        if (context == null) {
-            return;
-        }
+    private void end(LocalTransactionContext context, String callerMethodName) {
+        assertNotNull(context, callerMethodName);
+        release(context, callerMethodName);
+        jdbcLogger.logLocalTransactionEnded(className, callerMethodName,
+                context.getId());
+    }
+
+    /**
+     * トランザクションコンテキストを開放します。
+     * <p>
+     * このメソッドは、実行時例外をスローしません。
+     * 
+     * @param context
+     *            トランザクションコンテキスト
+     * @param callerMethodName
+     *            呼び出し元のメソッド名
+     */
+    private void release(LocalTransactionContext context,
+            String callerMethodName) {
+        assertNotNull(context, callerMethodName);
         localTxContextHolder.set(null);
         LocalTransactionalConnection connection = context.getConnection();
         int isolationLevel = context.getTransactionIsolationLevel();
@@ -511,8 +528,6 @@ public final class LocalTransaction {
                     callerMethodName, ignored);
         }
         JdbcUtil.close(connection.getWrappedConnection(), jdbcLogger);
-        jdbcLogger.logLocalTransactionEnded(className, callerMethodName,
-                context.getId());
     }
 
     /**

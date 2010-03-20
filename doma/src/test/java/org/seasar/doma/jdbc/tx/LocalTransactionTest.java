@@ -15,11 +15,14 @@
  */
 package org.seasar.doma.jdbc.tx;
 
+import java.sql.SQLException;
+
 import junit.framework.TestCase;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.jdbc.mock.MockConnection;
 import org.seasar.doma.internal.jdbc.mock.MockDataSource;
+import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.UtilLoggingJdbcLogger;
 
 /**
@@ -74,6 +77,38 @@ public class LocalTransactionTest extends TestCase {
             fail();
         } catch (LocalTransactionAlreadyBegunException expected) {
             System.out.println(expected.getMessage());
+        }
+    }
+
+    public void testBegin_failedToBegin() throws Exception {
+        final SQLException exception = new SQLException();
+        MockConnection connection = new MockConnection() {
+
+            @Override
+            public void setAutoCommit(boolean autoCommit) throws SQLException {
+                throw exception;
+            }
+
+        };
+        MockDataSource dataSource = new MockDataSource(connection);
+        ThreadLocal<LocalTransactionContext> connectionHolder = new ThreadLocal<LocalTransactionContext>();
+        UtilLoggingJdbcLogger jdbcLogger = new UtilLoggingJdbcLogger() {
+
+            @Override
+            public void logLocalTransactionBegun(String callerClassName,
+                    String callerMethodName, String transactionId) {
+                fail();
+            }
+
+        };
+        LocalTransaction transaction = new LocalTransaction(dataSource,
+                connectionHolder, jdbcLogger);
+
+        try {
+            transaction.begin();
+            fail();
+        } catch (JdbcException expected) {
+            assertEquals(exception, expected.getCause());
         }
     }
 
@@ -242,4 +277,5 @@ public class LocalTransactionTest extends TestCase {
             System.out.println(expected.getMessage());
         }
     }
+
 }
