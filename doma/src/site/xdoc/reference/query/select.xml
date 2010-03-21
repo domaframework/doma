@@ -90,7 +90,7 @@ List<Employee> selectByNameAndSalary(String name, BigDecimal salary);]]></source
 		</section>
 		<section name="1件検索">
 			<p>
-				複数件を検索するには、メソッドの戻り値の型を<a href="../basic.html">基本型</a>、<a href="../domain.html">ドメインクラス</a>、<a href="../entity.html">エンティティティクラス</a>のいずれかにします。
+				1件を検索するには、メソッドの戻り値の型を<a href="../basic.html">基本型</a>、<a href="../domain.html">ドメインクラス</a>、<a href="../entity.html">エンティティティクラス</a>のいずれかにします。
 			</p>
 <source><![CDATA[@Select
 Employee selectByNameAndSalary(String name, BigDecimal salary);]]></source>
