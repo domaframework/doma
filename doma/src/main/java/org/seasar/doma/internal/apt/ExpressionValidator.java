@@ -108,8 +108,7 @@ public class ExpressionValidator implements
     }
 
     public TypeDeclaration validate(ExpressionNode node) {
-        TypeDeclaration result = validateInternal(node);
-        return result;
+        return validateInternal(node);
     }
 
     protected TypeDeclaration validateInternal(ExpressionNode node) {

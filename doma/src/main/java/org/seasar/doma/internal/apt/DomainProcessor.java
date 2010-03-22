@@ -90,7 +90,7 @@ public class DomainProcessor extends AbstractProcessor {
             DomainMeta domainMeta) {
         DomainTypeGenerator generator = null;
         try {
-            generator = createDomainMetaFactoryGenerator(domainElement,
+            generator = createDomainTypeGenerator(domainElement,
                     domainMeta);
             generator.generate();
         } catch (IOException e) {
@@ -101,7 +101,7 @@ public class DomainProcessor extends AbstractProcessor {
         }
     }
 
-    protected DomainTypeGenerator createDomainMetaFactoryGenerator(
+    protected DomainTypeGenerator createDomainTypeGenerator(
             TypeElement domainElement, DomainMeta domainMeta)
             throws IOException {
         return new DomainTypeGenerator(processingEnv, domainElement,
