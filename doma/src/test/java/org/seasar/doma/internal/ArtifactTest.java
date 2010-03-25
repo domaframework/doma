@@ -17,6 +17,8 @@ package org.seasar.doma.internal;
 
 import junit.framework.TestCase;
 
+import org.seasar.doma.DomaException;
+
 /**
  * @author taedium
  * 
@@ -39,7 +41,7 @@ public class ArtifactTest extends TestCase {
         try {
             Artifact.validateVersion("hoge");
             fail();
-        } catch (VersionConflictException expected) {
+        } catch (DomaException expected) {
             System.out.println(expected.getMessage());
         }
     }

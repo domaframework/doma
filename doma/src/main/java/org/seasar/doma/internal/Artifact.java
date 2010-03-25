@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.internal;
 
+import org.seasar.doma.DomaException;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * @author taedium
@@ -36,7 +38,8 @@ public final class Artifact {
 
     public static void validateVersion(String generationtimeVersion) {
         if (!VERSION.equals(generationtimeVersion)) {
-            throw new VersionConflictException(VERSION, generationtimeVersion);
+            throw new DomaException(Message.DOMA0003, VERSION,
+                    generationtimeVersion);
         }
     }
 }
