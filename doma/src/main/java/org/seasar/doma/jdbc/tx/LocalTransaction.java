@@ -468,7 +468,7 @@ public final class LocalTransaction {
             rollbackIntenal("rollback");
             throw new JdbcException(Message.DOMA2052, e, savepointName, e);
         }
-        jdbcLogger.logLocalTransactionSavepointRolledback(getClass().getName(),
+        jdbcLogger.logLocalTransactionSavepointRolledback(className,
                 "rollback", context.getId(), savepointName);
     }
 
@@ -516,8 +516,8 @@ public final class LocalTransaction {
             try {
                 connection.setTransactionIsolation(isolationLevel);
             } catch (SQLException ignored) {
-                jdbcLogger.logTransactionIsolationSettingFailuer(getClass()
-                        .getName(), callerMethodName, isolationLevel, ignored);
+                jdbcLogger.logTransactionIsolationSettingFailuer(className,
+                        callerMethodName, isolationLevel, ignored);
             }
         }
         try {
