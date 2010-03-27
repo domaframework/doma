@@ -51,6 +51,12 @@
 					SQLファイルが存在しない場合は、SQLファイル作成のダイアログが開きます。
 				</p>
 			</subsection>
+			<subsection name="DaoインタフェースのメソッドをOutline View等で選択している場合">
+				<p>
+					メソッドを右クリックし、「Doma」  - 「Jump to SQL File」 と選択するとSQLファイルへジャンプします。
+					SQLファイルが存在しない場合は、SQLファイル作成のダイアログが開きます。
+				</p>
+			</subsection>
 			<subsection name="SQLファイルをテキストエディタで開いている場合">
 				<p>
 					エディタ上で右クリックし、「Doma」  - 「Jump to Dao」 と選択するとDaoインタフェースへジャンプします。
@@ -61,7 +67,7 @@
 					Daoインタフェースのビルドにより、aptのコード検証が行われます。
 				</p>
 			</subsection>
-			<subsection name="パッケージエクスプローラー等でSQLファイルを選択している場合">
+			<subsection name="SQLファイルをPackage Explorer View等で選択している場合">
 				<p>
 					SQLファイルを右クリックし、「Doma」  - 「Jump to Dao」 と選択するとDaoインタフェースへジャンプします。
 					対応するDaoインタフェースがない場合、何もおきません。
