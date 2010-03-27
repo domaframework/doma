@@ -279,7 +279,7 @@ public final class LocalTransaction {
      * <p>
      * ローカルトランザクションが開始されていない場合、何もおこないません。
      * <p>
-     * このメソッドは、実行時例外をスローしません。
+     * このメソッドは、例外をスローしません。
      */
     public void rollback() {
         rollbackIntenal("rollback");

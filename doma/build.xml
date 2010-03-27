@@ -1,6 +1,6 @@
 <project name="doma" default="update-pom-and-artifact-version" basedir=".">
 
-	<property name="newVersion" value="1.2.1-SNAPSHOT" />
+	<property name="newVersion" value="1.2.1" />
 
 	<target name="update-pom-and-artifact-version">
 		<replaceregexp

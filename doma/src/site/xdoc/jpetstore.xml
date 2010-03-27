@@ -295,7 +295,7 @@
 			</p>
 			<subsection name="convention.dicon">
 				<p>
-					convention.diconには、ルートパッケージを指定します。
+					src/main/resources/convention.diconには、ルートパッケージを指定します。
 					JPetStoreでは、「demo.smart」と「demo」の2つを指定していますが、このパッケージ名を新しいプロジェクトのパッケージ構成に合わせて変更してください。
 				</p>
 <source><![CDATA[<components>
@@ -313,7 +313,7 @@
 			</subsection>
 			<subsection name="jdbc.dicon">
 				<p>
-					jdbc.diconには、JDBCの接続情報を記述します。
+					src/main/resources/jdbc.diconには、JDBCの接続情報を記述します。
 					JPetStoreでは、H2 Database Engineを使用していますが、新しいプロジェクトで使用するデータベースに合わせて変更してください。
 				</p>
 <source><![CDATA[<components namespace="jdbc">
@@ -339,7 +339,8 @@
 			<subsection name="struts-config.xml">
 				<p>
 					JPetStoreでは、独自のRequestProcessorを使用しています。
-					SAStrutsのRequestProcessorを使用するには、controller要素のprocessorClass属性で<code>demo.action.JPetStoreRequestProcessor</code>のかわりに<code>org.seasar.struts.action.S2RequestProcessor</code>を指定してください。
+					SAStrutsのRequestProcessorを使用するには、
+					src/main/webapp/WEB-INF/struts-config.xml内のcontroller要素のprocessorClass属性で<code>demo.action.JPetStoreRequestProcessor</code>のかわりに<code>org.seasar.struts.action.S2RequestProcessor</code>を指定してください。
 				</p>
 <source><![CDATA[<struts-config>
 	．．．
