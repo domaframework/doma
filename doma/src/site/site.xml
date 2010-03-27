@@ -36,9 +36,8 @@
 			<item name="概要" href="overview.html" />
 			<item name="よくある質問" href="faq.html" />
 			<item name="ダウンロード" href="downloads.html" />
-			<!--
-			<item name="変更履歴" href="changelog.html" />
-			-->
+			<item name="課題追跡" href="https://www.seasar.org/issues/browse/DOMA" />
+			<item name="メーリングリスト" href="https://ml.seasar.org/mailman/listinfo/seasar-user" />
 		</menu>
 		<menu name="ドキュメント" inherit="top">
 			<item name="セットアップ" href="setup.html" />
@@ -49,7 +48,6 @@
 				<item name="更新" href="tutorial/update.html" />
 				<item name="削除" href="tutorial/delete.html" />
 			</item>
-			<item name="デモアプリ - Doma JPetStore" href="jpetstore.html" />
 			<item name="リファレンス" href="reference/index.html" collapse="true" >
 				<item name="基本型" href="reference/basic.html" />
 				<item name="ドメインクラス" href="reference/domain.html" />
@@ -73,6 +71,7 @@
 				<item name="注釈処理" href="reference/apt.html" />
 				<item name="アプリケーションのビルド方法" href="reference/app_build.html" />
 			</item>
+			<item name="デモアプリ - Doma JPetStore" href="jpetstore.html" />
 			<item name="開発支援ツール" href="extension/index.html" collapse="true" >
 				<item name="Doma Tools" href="extension/doma_tools.html" />
 				<item name="Doma-Gen" href="extension/doma_gen.html" collapse="true" >

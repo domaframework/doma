@@ -32,11 +32,19 @@
 						<li><a href="#DomaのDaoをSMART_deployする">DomaのDaoをSMART deployする</a></li>
 					</ul>
 				</li>
+				<li><a href="#JPetStoreを他プロジェクトの雛形として使用する際の注意点">JPetStoreを他プロジェクトの雛形として使用する際の注意点</a>
+					<ul>
+						<li><a href="#convention.dicon">convention.dicon</a></li>
+						<li><a href="#jdbc.dicon">jdbc.dicon</a></li>
+						<li><a href="#struts-config.xml">struts-config.xml</a></li>
+					</ul>
+				</li>
 			</ul>
 		</section>
 		<section name="概要">
 			<p>
 				Doma JPetStoreは、<a href="http://sastruts.seasar.org/">SAStruts</a>との連携方法を示すデモ用Webアプリケーションです。
+				他のプロジェクトの雛形として使用されることも想定しています。
 			</p>
 			<p>
 				このアプリケーションは、<a href="http://ibatis.apache.org/java.cgi">iBATIS</a>が提供する JPetStore 5.0 Example Application をベースに作成されています。
@@ -279,6 +287,69 @@
 					Eclipseの場合、プロジェクトのプロパティの「Annotation Processing」の項目で次のように指定します。
 				</p>
 				<img src="images/eclipse_apt_options.png" width="454" height="152" alt="Eclipseでのオプション指定" />
+			</subsection>
+		</section>
+		<section name="JPetStoreを他プロジェクトの雛形として使用する際の注意点">
+			<p>
+				JPetStoreを他プロジェクトの雛形として使用する際の注意点を述べます。
+			</p>
+			<subsection name="convention.dicon">
+				<p>
+					convention.diconには、ルートパッケージを指定します。
+					JPetStoreでは、「demo.smart」と「demo」の2つを指定していますが、このパッケージ名を新しいプロジェクトのパッケージ構成に合わせて変更してください。
+				</p>
+<source><![CDATA[<components>
+	<component class="org.seasar.framework.convention.impl.NamingConventionImpl">
+		<initMethod name="addRootPackageName">
+			<arg>"demo.smart"</arg>
+		</initMethod>
+		<initMethod name="addRootPackageName">
+			<arg>"demo"</arg>
+			<arg>false</arg>
+		</initMethod>
+	</component>
+	<component class="org.seasar.framework.convention.impl.PersistenceConventionImpl"/>
+</components>]]></source>
+			</subsection>
+			<subsection name="jdbc.dicon">
+				<p>
+					jdbc.diconには、JDBCの接続情報を記述します。
+					JPetStoreでは、H2 Database Engineを使用していますが、新しいプロジェクトで使用するデータベースに合わせて変更してください。
+				</p>
+<source><![CDATA[<components namespace="jdbc">
+	<include path="jta.dicon"/>
+
+	<!-- for H2 -->
+	<component name="xaDataSource"
+		class="org.seasar.extension.dbcp.impl.XADataSourceImpl">
+		<property name="driverClassName">
+			"org.h2.Driver"
+		</property>
+		<property name="URL">
+			"jdbc:h2:file:"
+				+ @org.seasar.framework.util.ResourceUtil@getBuildDir("jdbc.dicon").getCanonicalPath()
+				+ "/data-h2/demo;DB_CLOSE_ON_EXIT=FALSE"
+		</property>
+		<property name="user">"sa"</property>
+		<property name="password">""</property>
+	</component>
+	．．．
+</components>]]></source>
+			</subsection>
+			<subsection name="struts-config.xml">
+				<p>
+					JPetStoreでは、独自のRequestProcessorを使用しています。
+					SAStrutsのRequestProcessorを使用するには、controller要素のprocessorClass属性で<code>demo.action.JPetStoreRequestProcessor</code>のかわりに<code>org.seasar.struts.action.S2RequestProcessor</code>を指定してください。
+				</p>
+<source><![CDATA[<struts-config>
+	．．．
+	<controller
+		maxFileSize="1024K"
+		bufferSize="1024"
+		processorClass="demo.action.JPetStoreRequestProcessor"
+		multipartClass="org.seasar.struts.upload.S2MultipartRequestHandler"/>
+	．．．
+</struts-config>]]></source>
 			</subsection>
 		</section>
 	</body>

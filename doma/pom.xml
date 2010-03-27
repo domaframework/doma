@@ -98,6 +98,10 @@
 			<url>dav:https://www.seasar.org/site/doma/</url>
 		</site>
 	</distributionManagement>
+	<ciManagement>
+		<system>hudson</system>
+		<url>https://www.seasar.org/hudson/job/doma-it/</url>
+	</ciManagement>
 
 	<!-- Build Settings -->
 	<build>

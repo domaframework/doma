@@ -198,6 +198,18 @@
 				</p>
 			</answer>
 		</faq>
+		<faq id="development-environment-8">
+			<question>EclipseプラグインのDoltengを使って、Seasar2とDomaを組み合わせたプロジェクトの雛形を作成できますか？</question>
+			<answer>
+				<p>
+					いいえ、できません。
+					また、<a href="http://dolteng.sandbox.seasar.org/">Dolteng</a>への対応は現在のところ予定されていません。
+				</p>
+				<p>
+					Seasar2とDomaを組み合わせたプロジェクトの雛形には、<a href="jpetstore.html">Doma JPetStore</a>をお使いください。
+				</p>
+			</answer>
+		</faq>
 	</part>
 	<part id="build-environment">
 		<title>ビルド環境に関する質問</title>

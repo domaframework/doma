@@ -227,8 +227,9 @@ public interface JdbcLogger {
      *            呼び出し元のクラス名
      * @param callerMethodName
      *            呼び出し元のメソッド名
-     * @param transactionId
-     *            トランザクションの識別子
+     * @param transactionIsolationLevel
+     *            {@link Connection#setTransactionIsolation(int)}
+     *            で渡されるトランザクション分離レベル
      * @param e
      *            {@link Connection#setTransactionIsolation(int)} 時に発生した
      *            {@link SQLException}
