@@ -32,7 +32,7 @@
 		<section name="設定方法">
 			<p>
 				ローカルトランザクションを有効にするには、データソースとして<a href ="../apidocs/org/seasar/doma/jdbc/tx/LocalTransactionalDataSource.html"><code>LocalTransactionalDataSource</code></a>を使用します。
-				このクラスのインスタンスは<a href="config.html">設定クラス</a>でシングルトンとして管理され、<code>getDataSource()</code>メソッドで外部に返さなければいけません。
+				このクラスのインスタンスは<a href="config.html">設定クラス</a>でシングルトンとして管理し、<code>getDataSource()</code>メソッドで外部に返すようにしてください。
 			</p>
 			<p>
 				<code>LocalTransactionalDataSource</code>の<code>getLocalTransaction(JdbcLogger)</code>メソッドは、<a href ="../apidocs/org/seasar/doma/jdbc/tx/LocalTransaction.html"><code>LocalTransaction</code></a>を生成して返します。
@@ -139,7 +139,7 @@ try {
 				</p>
 <source><![CDATA[LocalTransaction tx = AppConfig.getLocalTransaction();
 try {
-    tx.begin(TransactionIsolationLevel.SERIALIZABLE);
+    tx.begin();
 
     // 検索して更新
     Employee employee = dao.selectById(1);
