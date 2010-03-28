@@ -148,6 +148,7 @@ public interface ExpressionFunctions {
      * @param charSequence
      *            文字シーケンス
      * @return 文字シーケンスが {@code null}、もしくは文字シーケンスの長さが {@code 0} の場合 {@code true}
+     * @since 1.3.0
      */
     boolean isEmpty(CharSequence charSequence);
 
@@ -159,6 +160,7 @@ public interface ExpressionFunctions {
      *            文字シーケンス
      * @return 文字シーケンスが {@code null} でない、かつ文字シーケンスの長さが {@code 0} でない場合 {@code
      *         true}
+     * @since 1.3.0
      */
     boolean isNotEmpty(CharSequence charSequence);
 
@@ -170,6 +172,7 @@ public interface ExpressionFunctions {
      *            文字シーケンス
      * @return 文字シーケンスが{@code null}、もしくは文字シーケンスの長さが {@code 0}
      *         、もしくは文字シーケンスが空白だけから形成される場合 {@code true}
+     * @since 1.3.0
      */
     boolean isBlank(CharSequence charSequence);
 
@@ -181,6 +184,7 @@ public interface ExpressionFunctions {
      *            文字シーケンス
      * @return 文字シーケンスが {@code null} でない、かつ文字シーケンスの長さが {@code 0}
      *         でない、かつ文字シーケンスが空白だけで形成されない場合 {@code true}
+     * @since 1.3.0
      */
     boolean isNotBlank(CharSequence charSequence);
 }
