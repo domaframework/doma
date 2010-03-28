@@ -674,22 +674,26 @@ salary > 1000]]></source>
 					「%」はデフォルトのエスケープシーケンス（$）でエスケープされ、値は「AB$%C%」に変換されます。
 				</p>
 				<p>
-					使用可能な関数は以下のとおりです。デフォルトでは、いずれの関数も最初の引数に<code>null</code>を渡した場合、<code>null</code>を返します。
+					使用可能な関数は以下のとおりです。
 				</p>
 				<table>
 					<tr><th>戻り値の型</th><th>関数名とパラメータ</th><th>概要</th></tr>
-					<tr><td><code>String</code></td><td><code>@escape(String text)</code></td><td>LIKE演算のためのエスケープを行うことを示します。戻り値は入力値をエスケープした文字列です。エスケープにはデフォルトのエスケープ文字（$）を用いて行われます。</td></tr>
-					<tr><td><code>String</code></td><td><code>@escape(String text, char escapeChar)</code></td><td>LIKE演算のためのエスケープを行うことを示します。戻り値は入力値をエスケープした文字列です。エスケープは第2引数で指定したエスケープ文字を用いて行われます。</td></tr>
-					<tr><td><code>String</code></td><td><code>@prefix(String prefix)</code></td><td>前方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを後ろに付与した文字列です。エスケープにはデフォルトのエスケープ文字（$）を用いて行われます。</td></tr>
-					<tr><td><code>String</code></td><td><code>@prefix(String prefix, char escapeChar)</code></td><td>前方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを後ろに付与した文字列です。エスケープは第2引数で指定したエスケープ文字を用いて行われます。</td></tr>
-					<tr><td><code>String</code></td><td><code>@suffix(String suffix)</code></td><td>後方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを前に付与した文字列です。エスケープはデフォルトのエスケープ文字（$）を用いて行われます。</td></tr>
-					<tr><td><code>String</code></td><td><code>@suffix(String suffix, char escapeChar)</code></td><td>後方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを前に付与した文字列です。エスケープは第2引数で指定したエスケープ文字を用いて行われます。</td></tr>
-					<tr><td><code>String</code></td><td><code>@contain(String inside)</code></td><td>中間一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを前と後ろに付与した文字列です。エスケープはデフォルトのエスケープ文字（$）を用いて行われます。</td></tr>
-					<tr><td><code>String</code></td><td><code>@contain(String inside, char escapeChar)</code></td><td>中間一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを前と後ろに付与した文字列です。エスケープは第2引数で指定したエスケープ文字を用いて行われます。</td></tr>
-					<tr><td><code>java.sql.Date</code></td><td><code>@roundDownTimePart(java.sql.Date date)</code></td><td>時刻部分を切り捨てることを示します。戻り値は時刻部分が切り捨てられた新しい日付です。</td></tr>
-					<tr><td><code>java.sql.Timestamp</code></td><td><code>@roundDownTimePart(java.sql.Timestamp timestamp)</code></td><td>時刻部分を切り捨てることを示します。戻り値は時刻部分が切り捨てられた新しいタイムスタンプです。</td></tr>
-					<tr><td><code>java.sql.Date</code></td><td><code>@roundUpTimePart(java.sql.Date date)</code></td><td>時刻部分を切り上げることを示します。戻り値は時刻部分が切り上げられた新しい日付です。</td></tr>
-					<tr><td><code>java.sql.Timestamp</code></td><td><code>@roundUpTimePart(java.sql.Timestamp timestamp)</code></td><td>時刻部分を切り上げることを示します。戻り値は時刻部分が切り上げられた新しいタイムスタンプです。</td></tr>
+					<tr><td><code>String</code></td><td><code>@escape(String text)</code></td><td>LIKE演算のためのエスケープを行うことを示します。戻り値は入力値をエスケープした文字列です。エスケープにはデフォルトのエスケープ文字（$）を用いて行われます。引数に<code>null</code>を渡した場合、<code>null</code>を返します。</td></tr>
+					<tr><td><code>String</code></td><td><code>@escape(String text, char escapeChar)</code></td><td>LIKE演算のためのエスケープを行うことを示します。戻り値は入力値をエスケープした文字列です。エスケープは第2引数で指定したエスケープ文字を用いて行われます。最初の引数に<code>null</code>を渡した場合、<code>null</code>を返します。</td></tr>
+					<tr><td><code>String</code></td><td><code>@prefix(String prefix)</code></td><td>前方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを後ろに付与した文字列です。エスケープにはデフォルトのエスケープ文字（$）を用いて行われます。引数に<code>null</code>を渡した場合、<code>null</code>を返します。</td></tr>
+					<tr><td><code>String</code></td><td><code>@prefix(String prefix, char escapeChar)</code></td><td>前方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを後ろに付与した文字列です。エスケープは第2引数で指定したエスケープ文字を用いて行われます。最初の引数に<code>null</code>を渡した場合、<code>null</code>を返します。</td></tr>
+					<tr><td><code>String</code></td><td><code>@suffix(String suffix)</code></td><td>後方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを前に付与した文字列です。エスケープはデフォルトのエスケープ文字（$）を用いて行われます。引数に<code>null</code>を渡した場合、<code>null</code>を返します。</td></tr>
+					<tr><td><code>String</code></td><td><code>@suffix(String suffix, char escapeChar)</code></td><td>後方一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを前に付与した文字列です。エスケープは第2引数で指定したエスケープ文字を用いて行われます。最初の引数に<code>null</code>を渡した場合、<code>null</code>を返します。</td></tr>
+					<tr><td><code>String</code></td><td><code>@contain(String inside)</code></td><td>中間一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを前と後ろに付与した文字列です。エスケープはデフォルトのエスケープ文字（$）を用いて行われます。引数に<code>null</code>を渡した場合、<code>null</code>を返します。</td></tr>
+					<tr><td><code>String</code></td><td><code>@contain(String inside, char escapeChar)</code></td><td>中間一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを前と後ろに付与した文字列です。エスケープは第2引数で指定したエスケープ文字を用いて行われます。最初の引数に<code>null</code>を渡した場合、<code>null</code>を返します。</td></tr>
+					<tr><td><code>java.sql.Date</code></td><td><code>@roundDownTimePart(java.sql.Date date)</code></td><td>時刻部分を切り捨てることを示します。戻り値は時刻部分が切り捨てられた新しい日付です。引数に<code>null</code>を渡した場合、<code>null</code>を返します。</td></tr>
+					<tr><td><code>java.sql.Timestamp</code></td><td><code>@roundDownTimePart(java.sql.Timestamp timestamp)</code></td><td>時刻部分を切り捨てることを示します。戻り値は時刻部分が切り捨てられた新しいタイムスタンプです。引数に<code>null</code>を渡した場合、<code>null</code>を返します。</td></tr>
+					<tr><td><code>java.sql.Date</code></td><td><code>@roundUpTimePart(java.sql.Date date)</code></td><td>時刻部分を切り上げることを示します。戻り値は時刻部分が切り上げられた新しい日付です。引数に<code>null</code>を渡した場合、<code>null</code>を返します。</td></tr>
+					<tr><td><code>java.sql.Timestamp</code></td><td><code>@roundUpTimePart(java.sql.Timestamp timestamp)</code></td><td>時刻部分を切り上げることを示します。戻り値は時刻部分が切り上げられた新しいタイムスタンプです。引数に<code>null</code>を渡した場合、<code>null</code>を返します。</td></tr>
+					<tr><td><code>boolean</code></td><td><code>@isEmpty(CharSequence charSequence)</code></td><td>文字シーケンスが<code>null</code>、もしくは文字シーケンスの長さが<code>0</code>の場合 <code>true</code>を返します。</td></tr>
+					<tr><td><code>boolean</code></td><td><code>@isNotEmpty(CharSequence charSequence)</code></td><td>文字シーケンスが<code>null</code>でない、かつ文字シーケンスの長さが<code>0</code>でない場合 <code>true</code>を返します。</td></tr>
+					<tr><td><code>boolean</code></td><td><code>@isBlank(CharSequence charSequence)</code></td><td>文字シーケンスが<code>null</code>、もしくは文字シーケンスの長さが<code>0</code>、もしくは文字シーケンスが空白だけから形成される場合 <code>true</code>を返します。</td></tr>
+					<tr><td><code>boolean</code></td><td><code>@isNotBlank(CharSequence charSequence)</code></td><td>文字シーケンスが<code>null</code>でない、かつ文字シーケンスの長さが<code>0</code>でない、かつ文字シーケンスが空白だけで形成されない場合 <code>true</code>を返します。</td></tr>
 				</table>
 				<p>
 					これらの関数は、<a href ="../apidocs/org/seasar/doma/expr/ExpressionFunctions.html"><code>org.seasar.doma.expr.ExpressionFunctions</code></a>のメソッドに対応しています。
