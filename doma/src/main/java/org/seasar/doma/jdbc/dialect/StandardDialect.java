@@ -33,6 +33,7 @@ import org.seasar.doma.internal.jdbc.dialect.StandardForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.StandardPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.message.Message;
+import org.seasar.doma.internal.util.CharSequenceUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
@@ -994,6 +995,26 @@ public class StandardDialect implements Dialect {
          */
         protected String createWildcardReplacement(char escapeChar) {
             return Matcher.quoteReplacement(String.valueOf(escapeChar)) + "$0";
+        }
+
+        @Override
+        public boolean isEmpty(CharSequence charSequence) {
+            return CharSequenceUtil.isEmpty(charSequence);
+        }
+
+        @Override
+        public boolean isNotEmpty(CharSequence charSequence) {
+            return CharSequenceUtil.isNotEmpty(charSequence);
+        }
+
+        @Override
+        public boolean isBlank(CharSequence charSequence) {
+            return CharSequenceUtil.isBlank(charSequence);
+        }
+
+        @Override
+        public boolean isNotBlank(CharSequence charSequence) {
+            return CharSequenceUtil.isNotBlank(charSequence);
         }
     }
 }

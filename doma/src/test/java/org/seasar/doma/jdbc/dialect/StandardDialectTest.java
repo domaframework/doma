@@ -100,4 +100,48 @@ public class StandardDialectTest extends TestCase {
         assertEquals(Timestamp.valueOf("2009-01-24 00:00:00.000000000"),
                 functions.roundUpTimePart(timestamp));
     }
+
+    public void testExpressionFunctions_isEmpty() throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        assertTrue(functions.isEmpty(null));
+        assertTrue(functions.isEmpty(""));
+        assertFalse(functions.isEmpty(" "));
+        assertFalse(functions.isEmpty(" \t\n\r "));
+        assertFalse(functions.isEmpty("a"));
+        assertFalse(functions.isEmpty(" a "));
+    }
+
+    public void testExpressionFunctions_isNotEmpty() throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        assertFalse(functions.isNotEmpty(null));
+        assertFalse(functions.isNotEmpty(""));
+        assertTrue(functions.isNotEmpty(" "));
+        assertTrue(functions.isNotEmpty(" \t\n\r "));
+        assertTrue(functions.isNotEmpty("a"));
+        assertTrue(functions.isNotEmpty(" a "));
+    }
+
+    public void testExpressionFunctions_isBlank() throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        assertTrue(functions.isBlank(null));
+        assertTrue(functions.isBlank(""));
+        assertTrue(functions.isBlank(" "));
+        assertTrue(functions.isBlank(" \t\n\r "));
+        assertFalse(functions.isBlank("a"));
+        assertFalse(functions.isBlank(" a "));
+    }
+
+    public void testExpressionFunctions_isNotBlank() throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        assertFalse(functions.isNotBlank(null));
+        assertFalse(functions.isNotBlank(""));
+        assertFalse(functions.isNotBlank(" "));
+        assertFalse(functions.isNotBlank(" \t\n\r "));
+        assertTrue(functions.isNotBlank("a"));
+        assertTrue(functions.isNotBlank(" a "));
+    }
 }

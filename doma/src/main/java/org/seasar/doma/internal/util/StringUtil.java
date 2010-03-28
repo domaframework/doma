@@ -132,17 +132,6 @@ public final class StringUtil {
         return true;
     }
 
-    /**
-     * {@code null} もしくは空文字の場合 {@code true} を返します。
-     * 
-     * @param text
-     *            文字列
-     * @return {@code text} が {@code null} もしくは空文字の場合 {@code true}
-     */
-    public static boolean isNullOrEmpty(String text) {
-        return text == null || text.isEmpty();
-    }
-
     public static String trimWhitespace(String text) {
         if (isNullOrEmpty(text)) {
             return text;
@@ -162,6 +151,10 @@ public final class StringUtil {
                     start, end - start) : text;
         }
         return "";
+    }
+
+    private static boolean isNullOrEmpty(String text) {
+        return text == null || text.isEmpty();
     }
 
 }

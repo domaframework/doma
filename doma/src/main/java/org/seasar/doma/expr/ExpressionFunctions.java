@@ -141,4 +141,46 @@ public interface ExpressionFunctions {
      * @return 時刻部分が切り上げられたタイムスタンプ
      */
     Timestamp roundUpTimePart(Timestamp timestamp);
+
+    /**
+     * 文字シーケンスが {@code null}、もしくは文字シーケンスの長さが {@code 0} の場合 {@code true} を返します。
+     * 
+     * @param charSequence
+     *            文字シーケンス
+     * @return 文字シーケンスが {@code null}、もしくは文字シーケンスの長さが {@code 0} の場合 {@code true}
+     */
+    boolean isEmpty(CharSequence charSequence);
+
+    /**
+     * 文字シーケンスが {@code null} でない、かつ文字シーケンスの長さが {@code 0} でない場合 {@code true}
+     * を返します。
+     * 
+     * @param charSequence
+     *            文字シーケンス
+     * @return 文字シーケンスが {@code null} でない、かつ文字シーケンスの長さが {@code 0} でない場合 {@code
+     *         true}
+     */
+    boolean isNotEmpty(CharSequence charSequence);
+
+    /**
+     * 文字シーケンスが {@code null}、もしくは文字シーケンスの長さが {@code 0}、もしくは文字シーケンスが空白だけから形成される場合
+     * {@code true} を返します。
+     * 
+     * @param charSequence
+     *            文字シーケンス
+     * @return 文字シーケンスが{@code null}、もしくは文字シーケンスの長さが {@code 0}
+     *         、もしくは文字シーケンスが空白だけから形成される場合 {@code true}
+     */
+    boolean isBlank(CharSequence charSequence);
+
+    /**
+     * 文字シーケンスが {@code null} でない、かつ文字シーケンスの長さが {@code 0}
+     * でない、かつ文字シーケンスが空白だけで形成されない場合 {@code true} を返します。
+     * 
+     * @param charSequence
+     *            文字シーケンス
+     * @return 文字シーケンスが {@code null} でない、かつ文字シーケンスの長さが {@code 0}
+     *         でない、かつ文字シーケンスが空白だけで形成されない場合 {@code true}
+     */
+    boolean isNotBlank(CharSequence charSequence);
 }

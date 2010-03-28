@@ -19,6 +19,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 import org.seasar.doma.expr.ExpressionFunctions;
+import org.seasar.doma.internal.util.CharSequenceUtil;
 
 /**
  * @author taedium
@@ -84,6 +85,26 @@ public class NullExpressionFunctions implements ExpressionFunctions {
     @Override
     public Timestamp roundUpTimePart(Timestamp timestamp) {
         return timestamp;
+    }
+
+    @Override
+    public boolean isEmpty(CharSequence charSequence) {
+        return CharSequenceUtil.isEmpty(charSequence);
+    }
+
+    @Override
+    public boolean isNotEmpty(CharSequence charSequence) {
+        return CharSequenceUtil.isNotEmpty(charSequence);
+    }
+
+    @Override
+    public boolean isBlank(CharSequence charSequence) {
+        return CharSequenceUtil.isBlank(charSequence);
+    }
+
+    @Override
+    public boolean isNotBlank(CharSequence charSequence) {
+        return CharSequenceUtil.isNotBlank(charSequence);
     }
 
 }
