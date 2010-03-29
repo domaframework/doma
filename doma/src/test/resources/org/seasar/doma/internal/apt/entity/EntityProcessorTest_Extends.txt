@@ -30,7 +30,7 @@ public final class _ChildEntity extends org.seasar.doma.jdbc.entity.AbstractEnti
                 if (entity == null) {
                     return null;
                 }
-                return org.seasar.doma.internal.apt.entity._ParentEntity.get().aaa.getWrapper(entity).get();
+                return org.seasar.doma.internal.apt.entity._ParentEntity.getSingletonInternal().aaa.getWrapper(entity).get();
             }
 
             @Override
@@ -38,7 +38,7 @@ public final class _ChildEntity extends org.seasar.doma.jdbc.entity.AbstractEnti
                 if (entity == null) {
                     return;
                 }
-                org.seasar.doma.internal.apt.entity._ParentEntity.get().aaa.getWrapper(entity).set(value);
+                org.seasar.doma.internal.apt.entity._ParentEntity.getSingletonInternal().aaa.getWrapper(entity).set(value);
             }
         }
     };

@@ -251,7 +251,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
             }
         } else {
             iprint(
-                    "        return %1$s.get().%2$s.getWrapper(entity).get();%n",
+                    "        return %1$s.getSingletonInternal().%2$s.getWrapper(entity).get();%n",
                     getPrefixedEntityTypeName(pm.getEntityTypeName()), pm
                             .getName());
         }
@@ -286,7 +286,8 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 }
             }
         } else {
-            iprint("        %1$s.get().%2$s.getWrapper(entity).set(value);%n",
+            iprint(
+                    "        %1$s.getSingletonInternal().%2$s.getWrapper(entity).set(value);%n",
                     getPrefixedEntityTypeName(pm.getEntityTypeName()), pm
                             .getName());
         }

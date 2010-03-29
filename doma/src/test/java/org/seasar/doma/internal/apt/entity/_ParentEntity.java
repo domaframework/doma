@@ -146,7 +146,7 @@ public class _ParentEntity extends AbstractEntityType<ParentEntity> {
         return null;
     }
 
-    public static _ParentEntity get() {
+    public static _ParentEntity getSingletonInternal() {
         return null;
     }
 

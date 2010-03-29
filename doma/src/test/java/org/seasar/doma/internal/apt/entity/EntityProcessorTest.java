@@ -98,6 +98,7 @@ public class EntityProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
     }
 
     public void testExtends() throws Exception {
@@ -107,6 +108,7 @@ public class EntityProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
         assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
     }
 
     public void testPropertyNameReserved() throws Exception {
