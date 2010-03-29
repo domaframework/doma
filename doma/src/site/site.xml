@@ -34,10 +34,11 @@
 		<menu name="About" inherit="top">
 			<item name="ホーム" href="index.html" />
 			<item name="概要" href="overview.html" />
-			<item name="よくある質問" href="faq.html" />
 			<item name="ダウンロード" href="downloads.html" />
 			<item name="課題追跡" href="https://www.seasar.org/issues/browse/DOMA" />
+			<item name="変更履歴" href="https://www.seasar.org/issues/browse/DOMA#selectedTab=com.atlassian.jira.plugin.system.project%3Achangelog-panel" />
 			<item name="メーリングリスト" href="https://ml.seasar.org/mailman/listinfo/seasar-user" />
+			<item name="よくある質問" href="faq.html" />
 		</menu>
 		<menu name="ドキュメント" inherit="top">
 			<item name="セットアップ" href="setup.html" />

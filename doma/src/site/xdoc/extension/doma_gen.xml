@@ -11,6 +11,7 @@
 				<li><a href="#セットアップ">セットアップ</a></li>
 				<li><a href="#タスク">タスク</a></li>
 				<li><a href="#サンプル用ビルドファイル">サンプル用ビルドファイル</a></li>
+				<li><a href="#実行方法">実行方法</a></li>
 			</ul>
 		</section>
 		<section name="概要">
@@ -122,6 +123,26 @@
     </target>
 
 </project>]]></source>
+		</section>
+		<section name="実行方法">
+			<p>
+				Windowsを使用している場合、AntはEclipse上からではなく、コマンドラインから実行してください。
+				Windows版のEclipseには、コンソールに日本語を出力できない問題があります。
+				コマンドラインから実行するには、Antを適切にインストールした環境で、次のように実行してください。
+			</p>
+<source><![CDATA[ant -f doma-gen-build.xml ターゲット名]]></source>
+			<p>
+				この例では、上述したdoma-gen-build.xmlを使うものとします。
+				ターゲット名にはgen、もしくはgen-testを指定できます。
+			</p>
+			<p>
+				Eclipseを使用している場合、Eclipseの自動リフレッシュ機能を有効にしておくと、Eclipse外部で生成されたファイルが自動で認識されます。
+				この機能を有効にしておけば、Antでファイルを生成した後、手動でEclipseのワークスペースをリフレッシュする必要がなくなります。
+			</p>
+			<p>
+				この機能を有効にするには、メニューから「Window」 - [Preferences」 - 「General」 - 「Workspace」と辿り、「Reflesh Automatically」をチェックします。
+			</p>
+			<img src="../images/eclipse_auto_refresh.png" width="454" height="152" alt="自動リフレッシュ機能の設定" />
 		</section>
 	</body>
 </document>

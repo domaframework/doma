@@ -210,6 +210,18 @@
 				</p>
 			</answer>
 		</faq>
+		<faq id="development-environment-9">
+			<question>EclipseからAntを使ってDoma-Genのタスクを実行すると処理が止まってしまいます。なぜですか？</question>
+			<answer>
+				<p>
+					Windows版のEclipse上のAntには、日本語をコンソールに出力できないという問題があります。
+					日本語を出力するタスクを実行すると処理が途中で止まってしまいます。
+				</p>
+				<p>
+					Antは、コマンドラインから実行することをお奨めします。
+				</p>
+			</answer>
+		</faq>
 	</part>
 	<part id="build-environment">
 		<title>ビルド環境に関する質問</title>

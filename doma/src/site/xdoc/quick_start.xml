@@ -49,13 +49,13 @@
 					<li><a href="http://www.h2database.com/html/main.html">http://www.h2database.com/html/main.html</a></li>
 				</ul>
 				<p>
-					以下、Platform-Independent Zipをダウンロードするものとして説明します。
+					以下、All Platformsのリンクで示されるzipファイルをダウンロードするものとして説明します。
 					zipファイルをダウンロードしたら解凍しbinディレクトリを開いてください。
 				</p>
 			</subsection>
 			<subsection name="JDBCドライバの設定">
 				<p>
-					binディレクトリにあるjarファイルを開発環境のクラスパスに追加してください。
+					binディレクトリにあるjarファイルをEclipseなど開発環境のクラスパスに追加してください。
 				</p>
 				<p>
 					また、実行時にドライバがロードされるように、次の設定を行ってください。
