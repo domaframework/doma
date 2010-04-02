@@ -461,5 +461,27 @@
 				</p>
 			</answer>
 		</faq>
+		<faq id="feature-18">
+			<question>DomaをS2JDBCやS2Daoといっしょに使用できますか？</question>
+			<answer>
+				<p>
+					可能ですが、推奨しません。
+					同じような設定を重複して用意しなければならず、仕様が似ているようで異なるため混乱の元になります。
+				</p>
+				<p>
+					Domaと他のデータアクセスのライブラリを組み合わせるのであれば、JDBCを薄くラップしたライブラリをお奨めします。
+					たとえば、次のものが挙げられます。
+				</p>
+				<ul>
+					<li>Seasar2を使用するのであれば、<a href="http://s2container.seasar.org/2.4/ja/s2jdbc_base.html">S2JDBCのベース部分</a></li>
+					<li>Spring Frameworkを使用するのであれば、<a href="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/jdbc.html">Spring Framework JDBC</a></li>
+					<li><a href="http://commons.apache.org/dbutils/">Commons DbUtils</a></li>
+				</ul>
+				<p>
+					これらのライブラリは、プログラム上で動的にSQLを組み立て実行したい場合に使用するといいでしょう。
+					その場合、SQLの組み立てと実行は<a href="reference/dao.html#デリゲート定義">デリゲート定義</a>で指定したデリゲート先で行うことを推奨します。
+				</p>
+			</answer>
+		</faq>
 	</part>
 </faqs>
