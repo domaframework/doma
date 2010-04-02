@@ -140,7 +140,7 @@
 				この機能を有効にしておけば、Antでファイルを生成した後、手動でEclipseのワークスペースをリフレッシュする必要がなくなります。
 			</p>
 			<p>
-				この機能を有効にするには、メニューから「Window」 - [Preferences」 - 「General」 - 「Workspace」と辿り、「Reflesh Automatically」をチェックします。
+				この機能を有効にするには、メニューから「Window」 - [Preferences」 - 「General」 - 「Workspace」と辿り、「Refresh Automatically」をチェックします。
 			</p>
 			<img src="../images/eclipse_auto_refresh.png" width="454" height="152" alt="自動リフレッシュ機能の設定" />
 		</section>
