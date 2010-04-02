@@ -64,6 +64,15 @@ public interface Dialect {
      */
     SqlNode transformSelectSqlNode(SqlNode sqlNode, SelectOptions options);
 
+    /**
+     * 件数取得のためにSQLノードを変換します。
+     * 
+     * @param sqlNode
+     *            SQLノード
+     * @return 変換されたSQLノード
+     * @throws DomaNullPointerException
+     *             引数のいずれかが {@code null} の場合
+     */
     SqlNode transformSelectSqlNodeForGettingCount(SqlNode sqlNode);
 
     /**

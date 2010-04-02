@@ -39,6 +39,17 @@ public interface EmployeeDao {
 				検索では、<a href="../sqlfile.html">SQLファイル</a>が必須です。
 				検索系のSQLを自動生成する機能はありません。
 			</p>
+			<p>
+				検索結果を受ける型には、基本型、ドメインクラス、エンティティクラス、また、それらを要素とする<code>java.util.List</code>を使用できますが、
+				エンティティクラスを利用する場合、エンティティクラスは検索結果に応じて作成する必要があります。
+			</p>
+			<p>
+				たとえば、EMPLOYEEテーブルに対応するEmployeeエンティティクラスが定義されている場合、
+				EMPLOYEEテーブルのカラムを含む結果セットはEmployeeエンティティクラスで受けられますが、
+				EMPLOYEEテーブルとDEPARTMENTテーブルを結合して得られる結果セットに対しては、Employeeエンティティクラスとは別のクラス（たとえばEmployeeDepartmentクラス）が必要です。
+				通常は、テーブルごとにエンティティクラスを作成し、結合して得られる結果セットに対しては、テーブルに対応するエンティティクラスを継承したクラスを作成するのがよいでしょう。
+				もちろん、継承せずに作成することも可能です。
+			</p>
 		</section>
 		<section name="問い合わせ条件">
 			<p>
@@ -117,7 +128,7 @@ Void selectByNameAndSalary(String name, BigDecimal salary, IterationCallback<Voi
 				<code><![CDATA[IterationCallback]]></code>の<code>iterate</code>メソッドに検索対象がインスタンス化され1件ずつ渡されます。
 			</p>
 <source><![CDATA[EmployeeDao dao = new EmployeeDao();
-dao.selectAll(new IterationCallback<Void, Employee>() {
+dao.selectByNameAndSalary(name, salary, new IterationCallback<Void, Employee>() {
         @Override
         public Void iterate(Employee target, IterationContext context) {
             ...

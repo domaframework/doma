@@ -276,6 +276,9 @@ public class StandardDialect implements Dialect {
 
     @Override
     public SqlNode transformSelectSqlNodeForGettingCount(SqlNode sqlNode) {
+        if (sqlNode == null) {
+            throw new DomaNullPointerException("sqlNode");
+        }
         return toCountGettingSqlNode(sqlNode);
     }
 
