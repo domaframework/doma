@@ -26,6 +26,7 @@
 				<li><a href="#ページングを行う検索">ページングを行う検索</a></li>
 				<li><a href="#ページングと集計を同時に行う検索">ページングと集計を同時に行う検索</a></li>
 				<li><a href="#イテレーション検索">イテレーション検索</a></li>
+				<li><a href="#結合した結果を取得する検索">結合した結果を取得する検索</a></li>
 			</ul>
 		</section>
 		<section name="概要">
@@ -504,6 +505,64 @@ assertEquals(14, options.getCount());]]></source>
 				SQLのログは次のように出力されます。
 			</p>
 <source><![CDATA[select * from employee where age > 30 order by age]]></source>
+		</section>
+		<section name="結合した結果を取得する検索">
+			<p>
+				<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/test/java/tutorial/SelectTest.java">src/test/java/tutorial/SelectTest.java</a>のtestSelectJoinedResultメソッドを参照してください。
+				結合した結果を取得する検索です。
+				結合した結果が複数テーブルのカラムを含む場合、取得対象カラムすべてに対応するプロパティをもったエンティティクラスが必要です。
+			</p>
+			<p>
+				使用するDaoのメソッド定義は次のとおりです。
+			</p>
+<source><![CDATA[@Select
+List<EmployeeDepartment> selectAllEmployeeDepartment();]]></source>
+			<p>
+				戻り値のListの要素である<code>EmployeeDepartment</code>が結合した結果に対応するエンティティクラスです。
+				このエンティティクラスは、結合のベースとなるテーブルに対応するエンティティクラスを継承すると比較的に簡単に作成できます。
+			</p>
+<source><![CDATA[@Entity
+public class EmployeeDepartment extends Employee {
+
+    @Column(name = "DEPARTMENT_NAME")
+    String departmentName;
+
+    ...
+
+}]]></source>
+			<p>
+				Daoメソッドに対応するSQLファイルのパスはMETA-INF/tutorial/dao/EmployeeDao/selectAllEmployeeDepartment.sqlです。
+				SQLは次のように記述されています。
+			</p>
+<source><![CDATA[select
+  e.*,
+  d.name department_name 
+from 
+  employee e 
+left outer join 
+  department d 
+on 
+  e.department_id = d.id 
+order by 
+  e.id]]></source>
+			<p>
+				Daoのメソッドは次のように呼び出します。
+			</p>
+<source><![CDATA[List<EmployeeDepartment> list = dao.selectAllEmployeeDepartment();]]></source>
+			<p>
+				SQLのログは次のように出力されます。
+			</p>
+<source><![CDATA[select
+  e.*,
+  d.name department_name 
+from 
+  employee e 
+left outer join 
+  department d 
+on 
+  e.department_id = d.id 
+order by 
+  e.id]]></source>
 		</section>
 	</body>
 </document>

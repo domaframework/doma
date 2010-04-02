@@ -196,7 +196,7 @@
 				</p>
 				<p>
 					使用するスキーマの定義は次のとおりです。
-					1つのシーケンスと1つのテーブルを使用します。
+					1つのシーケンスと2つのテーブルを使用します。
 				</p>
 	<source><![CDATA[create sequence employee_seq as integer start with 100 increment by 1;]]></source>
 <source><![CDATA[create table employee (
@@ -210,6 +210,11 @@
   version integer not null, 
   insertTimestamp timestamp, 
   updateTimestamp timestamp
+);]]></source>
+<source><![CDATA[create table department (
+  id integer not null primary key,
+  name varchar(255) not null,
+  version integer not null
 );]]></source>
 				<p>
 					HSQLDBはMemory-Onlyモードで起動し、テスト用のスキーマとデータは各テストの実行前に作成し、テスト終了後に破棄します。
@@ -274,7 +279,11 @@
 				<p>
 					<a href="../reference/entity.html">エンティティクラス</a>とは、テーブルやSQLの結果セットにマッピングされたクラスです。
 					エンティティクラスは、@Entityを注釈して示します。
-					このチュートリアルで使用するエンティティクラスのソースコードは、<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/main/java/tutorial/entity/Employee.java">src/main/java/tutorial/entity/Employee.java</a>になります。
+					このチュートリアルで使用するエンティティクラスのソースコードは、
+					<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/main/java/tutorial/entity/Employee.java">src/main/java/tutorial/entity/Employee.java</a>
+					と
+					<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/main/java/tutorial/entity/EmployeeDepartment.java">src/main/java/tutorial/entity/EmployeeDepartment.java</a>
+					になります。
 				</p>
 				<p>
 					Employeeクラスは、EMPLOYEEテーブルに対応します。
@@ -327,8 +336,22 @@ public class Employee {
     Employee originalStates;
 
     ...
-}
-]]></source>
+}]]></source>
+				<p>
+					EmployeeDepartmentクラスは、EMPLOYEEテーブルとDEPARTMENTテーブルを結合した結果セットに対応します。
+				</p>
+				<p>
+					このクラスは、Employeeクラスを継承し、DEPARTMENTテーブルのNAMEカラムに対応するプロパティを持ちます。
+					@Columnのname要素に指定されている「DEPARTMENT_NAME」はSQL上でDEPARTMENTテーブルのNAMEカラムの別名になります。
+				</p>
+<source><![CDATA[@Entity
+public class EmployeeDepartment extends Employee {
+
+    @Column(name = "DEPARTMENT_NAME")
+    String departmentName;
+
+    ...
+}]]></source>
 				<h4><a name="エンティティリスナークラス"></a>エンティティリスナークラス</h4>
 				<p>
 					エンティティリスナークラスのインスタンスは、エンティティがデータベースに挿入、更新、削除されるまえに呼び出されます。
@@ -407,17 +430,68 @@ public interface EmployeeDao {
     @Select
     List<Employee> selectByAgeRange(Integer min, Integer max);
 
+    @Select
+    List<Employee> selectByAges(List<Integer> ages);
+
+    @Select
+    List<Employee> selectByNames(List<String> names);
+
+    @Select
+    List<Employee> selectByNotEmptyName(String name);
+
+    @Select
+    List<Employee> selectByNameWithPrefixMatching(String prefix);
+
+    @Select
+    List<Employee> selectByNameWithSuffixMatching(String suffix);
+
+    @Select
+    List<Employee> selectByNameWithInsideMatching(String inside);
+
+    @Select
+    List<Employee> selectByHiredateRange(Timestamp from, Timestamp to);
+
+    @Select
+    List<Employee> selectBySalary(Salary salary);
+
+    @Select
+    Salary selectSummedSalary();
+
+    @Select
+    List<Employee> selectByExample(Employee e);
+
+    @Select
+    List<Employee> selectAll();
+
+    @Select
+    List<Employee> selectAll(SelectOptions options);
+
+    @Select(iterate = true)
+    <R> R selectByAge(int age, IterationCallback<R, Employee> callback);
+
     @Delegate(to = EmployeeDaoDelegate.class)
     int count();
+
+    @Select
+    List<EmployeeDepartment> selectAllEmployeeDepartment();
 
     @Insert
     int insert(Employee employee);
 
+    @Insert(sqlFile = true)
+    int insertWithSqlFile(Employee employee);
+
     @Update
     int update(Employee employee);
 
+    @Update(sqlFile = true)
+    int updateWithSqlFile(Employee employee);
+
     @Delete
     int delete(Employee employee);
+
+    @Delete(sqlFile = true)
+    int deleteWithSqlFile(Employee employee);
 
     @BatchInsert
     int[] batchInsert(List<Employee> employees);
@@ -458,11 +532,13 @@ public interface EmployeeDao {
 							<li><a href="select.html#IN述語による検索">IN述語による検索</a></li>
 							<li><a href="select.html#LIKE述語による検索">LIKE述語による検索</a></li>
 							<li><a href="select.html#日付による範囲検索">日付による範囲検索</a></li>
+							<li><a href="select.html#文字シーケンスを組み込み関数で判定する検索">文字シーケンスを組み込み関数で判定する検索</a></li>
 							<li><a href="select.html#ドメインによる検索">ドメインによる検索</a></li>
 							<li><a href="select.html#エンティティによる検索">エンティティによる検索</a></li>
 							<li><a href="select.html#ページングを行う検索">ページングを行う検索</a></li>
 							<li><a href="select.html#ページングと集計を同時に行う検索">ページングと集計を同時に行う検索</a></li>
 							<li><a href="select.html#イテレーション検索">イテレーション検索</a></li>
+							<li><a href="select.html#結合した結果を取得する検索">結合した結果を取得する検索</a></li>
 						</ul>
 					</li>
 					<li><a href="insert.html">挿入</a>
