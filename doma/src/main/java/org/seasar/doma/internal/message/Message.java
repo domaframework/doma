@@ -28,7 +28,7 @@ public enum Message implements MessageResource {
     // doma
     DOMA0001("パラメータ[{0}]がnullです。"),
     DOMA0002("パラメータ[{0}]が不正です。理由は次のとおりです。{1}。"),
-    DOMA0003("Domaのjarファイルのバージョンが実行時と注釈処理時で異なっています（実行時={0}, 注釈処理時={1}）。Eclipseを使用している場合、ビルドパス（Build Path）とファクトリパス（Factory Path）を確認し、プロジェクトのクリーンを実行してください。javacを利用している場合、classpathとprocessorpathのオプションを確認してください。"),
+    DOMA0003("Domaのjarファイルのバージョンが実行時と注釈処理時で異なっています（実行時={0}, 注釈処理時={1}）。Eclipseを使用している場合、ビルドパス（Build Path）とファクトリパス（Factory Path）を確認し、プロジェクトのクリーンを実行してください。javacを利用している場合、classpathとprocessorpathのオプションを確認してください。Webアプリケーションの場合、WEB-INF/libに古いjarファイルが存在しないことを確認してください。"),
 
     // wrapper
     DOMA1006("ドメインの値をラップするのに失敗しました。原因は次のものです。{0}"),
