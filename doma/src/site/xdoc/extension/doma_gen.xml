@@ -133,7 +133,7 @@
 <source><![CDATA[ant -f doma-gen-build.xml ターゲット名]]></source>
 			<p>
 				この例では、上述したdoma-gen-build.xmlを使うものとします。
-				ターゲット名にはgen、もしくはgen-testを指定できます。
+				ターゲット名にはgen、もしくはgenTestを指定できます。
 			</p>
 			<p>
 				Eclipseを使用している場合、Eclipseの自動リフレッシュ機能を有効にしておくと、Eclipse外部で生成されたファイルが自動で認識されます。
