@@ -268,9 +268,9 @@ public final class LocalTransaction {
                     context.getId());
         } catch (SQLException e) {
             rollbackIntenal("commit");
-            new JdbcException(Message.DOMA2043, e, e);
+            throw new JdbcException(Message.DOMA2043, e, e);
         } finally {
-            end(context, "commit");
+            end("commit");
         }
     }
 
@@ -308,7 +308,7 @@ public final class LocalTransaction {
             jdbcLogger.logLocalTransactionRollbackFailure(className,
                     callerMethodName, context.getId(), ignored);
         } finally {
-            end(context, callerMethodName);
+            end(callerMethodName);
         }
     }
 
@@ -489,8 +489,12 @@ public final class LocalTransaction {
      * @param callerMethodName
      *            呼び出し元のメソッド名
      */
-    private void end(LocalTransactionContext context, String callerMethodName) {
-        assertNotNull(context, callerMethodName);
+    private void end(String callerMethodName) {
+        assertNotNull(callerMethodName);
+        LocalTransactionContext context = localTxContextHolder.get();
+        if (context == null) {
+            return;
+        }
         release(context, callerMethodName);
         jdbcLogger.logLocalTransactionEnded(className, callerMethodName,
                 context.getId());
