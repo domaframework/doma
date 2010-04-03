@@ -30,8 +30,8 @@ public class DaoAwareDelegateDaoImpl extends org.seasar.doma.internal.jdbc.dao.A
     @Override
     public java.math.BigDecimal execute(java.lang.String aaa, java.lang.Integer bbb) {
         entering("org.seasar.doma.internal.apt.dao.DaoAwareDelegateDaoImpl", "execute", aaa, bbb);
-        org.seasar.doma.internal.apt.dao.DaoAwareDelegateDaoDelegate delegate = new org.seasar.doma.internal.apt.dao.DaoAwareDelegateDaoDelegate(config, this);
-        java.math.BigDecimal __result = delegate.execute(aaa, bbb);
+        org.seasar.doma.internal.apt.dao.DaoAwareDelegateDaoDelegate __delegate = new org.seasar.doma.internal.apt.dao.DaoAwareDelegateDaoDelegate(config, this);
+        java.math.BigDecimal __result = __delegate.execute(aaa, bbb);
         exiting("org.seasar.doma.internal.apt.dao.DaoAwareDelegateDaoImpl", "execute", __result);
         return __result;
     }
