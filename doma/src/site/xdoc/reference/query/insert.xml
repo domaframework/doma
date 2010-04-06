@@ -43,6 +43,9 @@ public interface EmployeeDao {
 				指定できるパラメータの数は1つです。
 				引数は<code>null</code>であってはいけません。
 			</p>
+			<p>
+				<a href="../entity.html">エンティティ</a>に<a href="../entity.html#エンティティリスナー">エンティティリスナー</a>が指定されている場合、挿入の実行前にエンティティリスナーの<code>preInsert</code>メソッドを呼び出します。
+			</p>
 <source><![CDATA[@Insert
 int insert(Employee employee);]]></source>
 			<subsection name="識別子">
@@ -115,6 +118,9 @@ values (/*employee.id*/0, /* employee.name */'hoge', /* employee.salary */100, /
 				SQLファイルによる挿入では、識別子の自動設定やバージョン番号の自動設定は行われません。
 				また、<code>@Insert</code>の<code>exclude</code>要素、<code>include</code>要素、
 				<code>excludeNull</code>要素は参照されません。
+			</p>
+			<p>
+				<a href="../entity.html">エンティティ</a>に<a href="../entity.html#エンティティリスナー">エンティティリスナー</a>が指定されていても、エンティティリスナーのメソッドは呼び出しません。
 			</p>
 		</section>
 		<section name="一意制約違反">

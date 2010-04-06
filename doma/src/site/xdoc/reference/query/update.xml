@@ -42,6 +42,9 @@ public interface EmployeeDao {
 				指定できるパラメータの数は1つです。
 				引数は<code>null</code>であってはいけません。
 			</p>
+			<p>
+				<a href="../entity.html">エンティティ</a>に<a href="../entity.html#エンティティリスナー">エンティティリスナー</a>が指定されている場合、更新の実行前にエンティティリスナーの<code>preUpdate</code>メソッドを呼び出します。
+			</p>
 <source><![CDATA[@Update
 int update(Employee employee);]]></source>
 			<subsection name="バージョン番号と楽観的排他制御">
@@ -135,6 +138,9 @@ int update(Employee employee);]]></source>
 				また、<code>@Update</code>の<code>exclude</code>要素、<code>include</code>要素、
 				<code>excludeNull</code>要素、<code>includeUnchanged</code>要素、<code>includeVersion</code>要素、
 				<code>suppressOptimisticLockException</code>要素は参照されません。
+			</p>
+			<p>
+				<a href="../entity.html">エンティティ</a>に<a href="../entity.html#エンティティリスナー">エンティティリスナー</a>が指定されていても、エンティティリスナーのメソッドは呼び出しません。
 			</p>
 		</section>
 		<section name="一意制約違反">

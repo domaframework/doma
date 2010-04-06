@@ -61,6 +61,29 @@ public class Employee {
 public class Employee {
     ...
 }</source>
+				<p>
+					<code>EntityListener</code>は、<code>preDelete</code>、<code>preInsert</code>、<code>preUpdate</code>の3つのメソッドをもったインタフェースです。
+				</p>
+				<dl>
+					<dt>preDelete</dt>
+					<dd>
+						<code>@Delete(sqlFile = false)</code>、または<code>@BatchDelete(sqlFile = false)</code>が注釈されたDaoメソッドの実行時にのみ呼び出されます。
+						<code>@Delete</code>や<code>@BatchDelete</code>の<code>sqlFile</code>要素が<code>true</code>である場合には呼び出されません。
+					</dd>
+					<dt>preInsert</dt>
+					<dd>
+						<code>@Delete(sqlFile = false)</code>、または<code>@BatchDelete(sqlFile = false)</code>が注釈されたDaoメソッドの実行時にのみ呼び出されます。
+						<code>@Delete</code>や<code>@BatchDelete</code>の<code>sqlFile</code>要素が<code>true</code>である場合には呼び出されません。
+					</dd>
+					<dt>preUpdate</dt>
+					<dd>
+						<code>@Update(sqlFile = false)</code>、または<code>@BatchUpdate(sqlFile = false)</code>が注釈されたDaoメソッドの実行時にのみ呼び出されます。
+						<code>@Update</code>や<code>@BatchUpdate</code>の<code>sqlFile</code>要素が<code>true</code>である場合には呼び出されません。
+					</dd>
+				</dl>
+				<p>
+					<code>EntityListener</code>は次のように実装できます。
+				</p>
 <source><![CDATA[public class EmployeeEntityListener implements EntityListener<Employee> {
     @Override
     public void preDelete(Employee entity) {

@@ -43,6 +43,9 @@ public interface EmployeeDao {
 				戻り値の配列の要素の数はパラメータの<code>Iterable</code>の要素の数と等しくなります。
 				配列のそれぞれの要素が更新された件数を返します。
 			</p>
+			<p>
+				<a href="../entity.html">エンティティ</a>に<a href="../entity.html#エンティティリスナー">エンティティリスナー</a>が指定されている場合、更新の実行前にエンティティリスナーの<code>preUpdate</code>メソッドをエンティティごとに呼び出します。
+			</p>
 			<subsection name="バージョン番号と楽観的排他制御">
 				<p>
 					<a href="../entity.html">エンティティティクラス</a>に<code>@Version</code>が注釈されたプロパティがある場合、
@@ -103,6 +106,9 @@ int[] update(List<Employee> employees);]]></source>
 				引数は<code>null</code>であってはいけません。
 				戻り値の配列の要素の数はパラメータの<code>Iterable</code>の要素の数と等しくなります。
 				配列のそれぞれの要素が更新された件数を返します。
+			</p>
+			<p>
+				<a href="../entity.html">エンティティ</a>に<a href="../entity.html#エンティティリスナー">エンティティリスナー</a>が指定されていても、エンティティリスナーのメソッドは呼び出しません。
 			</p>
 			<p>
 				たとえば、上記のメソッドに対応するSQLは次のように記述します。

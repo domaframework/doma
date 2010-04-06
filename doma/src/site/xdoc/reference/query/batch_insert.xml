@@ -44,6 +44,9 @@ public interface EmployeeDao {
 				戻り値の配列の要素の数はパラメータの<code>Iterable</code>の要素の数と等しくなります。
 				配列のそれぞれの要素が更新された件数を返します。
 			</p>
+			<p>
+				<a href="../entity.html">エンティティ</a>に<a href="../entity.html#エンティティリスナー">エンティティリスナー</a>が指定されている場合、挿入の実行前にエンティティリスナーの<code>preInsert</code>メソッドをエンティティごとに呼び出します。
+			</p>
 			<subsection name="識別子">
 				<p>
 					<a href="../entity.html">エンティティティクラス</a>の識別子に、<code>@GeneratedValue</code>が注釈されている場合、
@@ -95,6 +98,9 @@ int[] insert(List<Employee> employees);]]></source>
 				引数は<code>null</code>であってはいけません。
 				戻り値の配列の要素の数はパラメータの<code>Iterable</code>の要素の数と等しくなります。
 				配列のそれぞれの要素が更新された件数を返します。
+			</p>
+			<p>
+				<a href="../entity.html">エンティティ</a>に<a href="../entity.html#エンティティリスナー">エンティティリスナー</a>が指定されていても、エンティティリスナーのメソッドは呼び出しません。
 			</p>
 			<p>
 				たとえば、上記のメソッドに対応するSQLは次のように記述します。
