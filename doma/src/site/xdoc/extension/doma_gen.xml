@@ -37,7 +37,7 @@
 				配布ファイルを解凍し、Doma-GenとFreeMarkerのjarファイルとサンプル用のビルドファイル（doma-gen-build.xml）を取り出してください。
 			</p>
 			<p>
-				jarファイルは、Antタスクのクラスパスに通す必要があります。
+				DomaとDoma-Genの両方のjarファイルを、Antタスクのクラスパスに通す必要があります。
 				サンプル用のビルドファイルは、独自ビルドファイル作成時のコピー元として活用してください。
 			</p>
 		</section>
@@ -72,6 +72,7 @@
     <property name="sqlTestClassName" value="example.SqlTest"/>
     <property name="sqlFilePattern" value="META-INF/**/*.sql"/>
     
+    <!-- doma-x.y.z.jar と  doma-gen-x.y.z.jar の両方をクラスパスに通してください。 -->
     <path id="classpath">
         <fileset dir="lib"/>
     </path>
