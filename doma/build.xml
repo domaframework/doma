@@ -55,7 +55,6 @@
 				<exclude name="**/download/**"/>
 			</zipfileset>
 		</zip>
-		<copy file="../doma-gen/${zipDir}/doma-gen-${ver}.zip" todir="${zipDir}"/>
 		<ant dir="../doma-tutorial" antfile="build-dist.xml" target="dist">
 			<property name="zipDir" value="../doma/${zipDir}"/>
 		</ant>
