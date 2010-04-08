@@ -81,6 +81,19 @@ public enum SqlTokenType {
 
     },
 
+    ELSEIF_BLOCK_COMMENT {
+
+        @Override
+        public String extract(String token) {
+            assertNotNull(token);
+            assertTrue(token.length() >= 11);
+            return token.substring(9, token.length() - 2);
+        }
+
+    },
+
+    ELSE_BLOCK_COMMENT,
+
     FOR_BLOCK_COMMENT {
 
         @Override

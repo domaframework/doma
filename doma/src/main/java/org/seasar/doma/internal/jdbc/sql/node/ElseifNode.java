@@ -25,7 +25,7 @@ import org.seasar.doma.jdbc.SqlNodeVisitor;
  * @author taedium
  * 
  */
-public class ElseifNode extends AbstractSqlNode {
+public class ElseifNode extends AbstractSqlNode implements SpaceStrippingNode {
 
     protected final SqlLocation location;
 
@@ -46,6 +46,11 @@ public class ElseifNode extends AbstractSqlNode {
 
     public String getExpression() {
         return expression;
+    }
+
+    @Override
+    public void clearChildren() {
+        children.clear();
     }
 
     @Override

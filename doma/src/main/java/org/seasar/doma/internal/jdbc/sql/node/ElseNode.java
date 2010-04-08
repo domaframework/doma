@@ -25,13 +25,18 @@ import org.seasar.doma.jdbc.SqlNodeVisitor;
  * @author taedium
  * 
  */
-public class ElseNode extends AbstractSqlNode {
+public class ElseNode extends AbstractSqlNode implements SpaceStrippingNode {
 
     protected final String text;
 
     public ElseNode(String text) {
         assertNotNull(text);
         this.text = text;
+    }
+
+    @Override
+    public void clearChildren() {
+        children.clear();
     }
 
     @Override

@@ -349,6 +349,36 @@ public class SqlTokenizer {
                                     if (isBlockCommentDirectiveTerminated()) {
                                         type = END_BLOCK_COMMENT;
                                     }
+                                } else if (buf.hasRemaining()) {
+                                    char c7 = buf.get();
+                                    if (c4 == 'e' && c5 == 'l' && c6 == 's'
+                                            && c7 == 'e') {
+                                        if (isBlockCommentDirectiveTerminated()) {
+                                            type = ELSE_BLOCK_COMMENT;
+                                        } else {
+                                            if (buf.hasRemaining()) {
+                                                char c8 = buf.get();
+                                                if (buf.hasRemaining()) {
+                                                    char c9 = buf.get();
+                                                    if (c8 == 'i' && c9 == 'f') {
+                                                        if (isBlockCommentDirectiveTerminated()) {
+                                                            type = ELSEIF_BLOCK_COMMENT;
+                                                        }
+                                                    } else {
+                                                        buf
+                                                                .position(buf
+                                                                        .position() - 6);
+                                                    }
+                                                } else {
+                                                    buf
+                                                            .position(buf
+                                                                    .position() - 5);
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        buf.position(buf.position() - 4);
+                                    }
                                 } else {
                                     buf.position(buf.position() - 3);
                                 }
@@ -360,7 +390,9 @@ public class SqlTokenizer {
                         }
                     }
                     if (type != IF_BLOCK_COMMENT && type != FOR_BLOCK_COMMENT
-                            && type != END_BLOCK_COMMENT) {
+                            && type != END_BLOCK_COMMENT
+                            && type != ELSE_BLOCK_COMMENT
+                            && type != ELSEIF_BLOCK_COMMENT) {
                         int pos = buf.position() - lineStartPosition;
                         throw new JdbcException(Message.DOMA2119, sql,
                                 lineNumber, pos);
