@@ -28,6 +28,8 @@ import org.seasar.doma.internal.jdbc.sql.node.AnonymousNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.BlockNode;
+import org.seasar.doma.internal.jdbc.sql.node.CommentNode;
+import org.seasar.doma.internal.jdbc.sql.node.CommentNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.ElseNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
@@ -197,6 +199,15 @@ public class SqlParser {
                 parseSetOperatorWord();
                 break;
             }
+            case BLOCK_COMMENT:
+            case LINE_COMMENT: {
+                parseComment();
+                break;
+            }
+            case OTHER: {
+                parseOther();
+                break;
+            }
             case EOL: {
                 parseEOL();
                 break;
@@ -206,7 +217,7 @@ public class SqlParser {
                 break outer;
             }
             default: {
-                parseOther();
+                assertUnreachable();
                 break;
             }
             }
@@ -326,6 +337,11 @@ public class SqlParser {
 
     protected void parseWord() {
         WordNode node = new WordNode(token);
+        addNode(node);
+    }
+
+    protected void parseComment() {
+        CommentNode node = new CommentNode(token);
         addNode(node);
     }
 
@@ -655,7 +671,8 @@ public class SqlParser {
 
     protected static class Optimizer implements SqlNodeVisitor<Void, Void>,
             AnonymousNodeVisitor<Void, Void>,
-            BindVariableNodeVisitor<Void, Void>, ElseifNodeVisitor<Void, Void>,
+            BindVariableNodeVisitor<Void, Void>,
+            CommentNodeVisitor<Void, Void>, ElseifNodeVisitor<Void, Void>,
             ElseNodeVisitor<Void, Void>,
             EmbeddedVariableNodeVisitor<Void, Void>,
             EndNodeVisitor<Void, Void>, EolNodeVisitor<Void, Void>,
@@ -853,6 +870,11 @@ public class SqlParser {
 
         @Override
         public Void visitWordNode(WordNode node, Void p) {
+            return null;
+        }
+
+        @Override
+        public Void visitCommentNode(CommentNode node, Void p) {
             return null;
         }
 

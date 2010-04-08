@@ -254,6 +254,21 @@ public class SqlParserTest extends TestCase {
         assertEquals(0, sql.getParameters().size());
     }
 
+    public void testIf_removeAnd() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        evaluator.add("name", new Value(String.class, null));
+        String testSql = "select * from aaa where /*%if name != null*/bbb = /*name*/'ccc' --else\n --comment\nand ddd is null\n /*%end*/";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath", evaluator).build(sqlNode);
+        assertEquals("select * from aaa where \n --comment\n ddd is null", sql
+                .getRawSql());
+        assertEquals("select * from aaa where \n --comment\n ddd is null", sql
+                .getFormattedSql());
+        assertEquals(0, sql.getParameters().size());
+    }
+
     public void testIf_nest() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("name", new Value(String.class, "hoge"));

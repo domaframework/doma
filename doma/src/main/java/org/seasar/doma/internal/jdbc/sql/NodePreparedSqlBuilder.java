@@ -34,6 +34,8 @@ import org.seasar.doma.internal.jdbc.sql.node.AnonymousNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.ClauseNode;
+import org.seasar.doma.internal.jdbc.sql.node.CommentNode;
+import org.seasar.doma.internal.jdbc.sql.node.CommentNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.ElseNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
@@ -102,6 +104,7 @@ public class NodePreparedSqlBuilder implements
         SqlNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         AnonymousNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         BindVariableNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
+        CommentNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         ElseifNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         ElseNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
         EmbeddedVariableNodeVisitor<Void, NodePreparedSqlBuilder.Context>,
@@ -183,6 +186,14 @@ public class NodePreparedSqlBuilder implements
         String whitespace = node.getWhitespace();
         p.appendRawSql(whitespace);
         p.appendFormattedSql(whitespace);
+        return null;
+    }
+
+    @Override
+    public Void visitCommentNode(CommentNode node, Context p) {
+        String comment = node.getComment();
+        p.appendRawSql(comment);
+        p.appendFormattedSql(comment);
         return null;
     }
 
