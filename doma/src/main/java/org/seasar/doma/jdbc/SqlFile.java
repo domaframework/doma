@@ -81,7 +81,7 @@ public class SqlFile {
     /**
      * SQLの解析結果を返します。
      * <p>
-     * 呼び出し側で {@link SqlNode} を変更しても、このインスタンス保持したSQLの解析結果は影響を受けません。
+     * 呼び出し側で {@link SqlNode} を変更しても、このインスタンスが保持したSQLの解析結果は影響を受けません。
      * 
      * @return SQLの解析結果
      */
