@@ -10,6 +10,7 @@
 				<li><a href="#概要">概要</a></li>
 				<li><a href="#単純な検索">単純な検索</a></li>
 				<li><a href="#条件分岐を用いた検索">条件分岐を用いた検索</a></li>
+				<li><a href="#条件分岐でelseを用いた検索">条件分岐でelseを用いた検索</a></li>
 				<li><a href="#繰り返しを用いた検索">繰り返しを用いた検索</a></li>
 				<li><a href="#IN述語による検索">IN述語による検索</a></li>
 				<li><a href="#LIKE述語による検索">LIKE述語による検索</a>
@@ -65,7 +66,7 @@ Employee selectById(Integer id);]]></source>
 		<section name="条件分岐を用いた検索">
 			<p>
 				<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/test/java/tutorial/SelectTest.java">src/test/java/tutorial/SelectTest.java</a>のtestConditinalSelectメソッドを参照してください。
-				SQLファイル中に<a href="../reference/sqlfile.html#条件コメント">条件コメント</a>を記述することで、動的なSQLを発行できます。
+				SQLファイル中に<a href="../reference/sqlfile.html#条件コメント">条件コメント</a>を記述することで動的なSQLを発行できます。
 			</p>
 			<p>
 				使用するDaoのメソッド定義は次のとおりです。
@@ -136,6 +137,59 @@ order by age]]></source>
 			</p>
 <source><![CDATA[select * from employee
 order by age]]></source>
+			</subsection>
+		</section>
+		<section name="条件分岐でelseを用いた検索">
+			<p>
+				<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/test/java/tutorial/SelectTest.java">src/test/java/tutorial/SelectTest.java</a>のtestConditinalSelect2メソッドを参照してください。
+				SQLファイル中に<a href="../reference/sqlfile.html#条件コメント">条件コメント</a>を記述することで動的なSQLを発行できますが、条件が成り立たない場合を /*%else*/ という式コメントで記述できます。
+			</p>
+			<p>
+				使用するDaoのメソッド定義は次のとおりです。
+			</p>
+<source><![CDATA[@Select
+List<Employee> selectByName(String name);]]></source>
+			<p>
+				Daoメソッドに対応するSQLファイルのパスはMETA-INF/tutorial/dao/EmployeeDao/selectByName.sqlです。SQLは次のように記述されています。
+			</p>
+<source><![CDATA[select * from employee
+where 
+/*%if name != null*/
+  name = /*name*/'hoge'
+/*%else */
+  and
+  name is null
+/*%end */]]></source>
+			<subsection name="条件1">
+			<p>
+				パラメータに"SMITH"を渡してDaoのメソッドを呼び出します。
+				この場合、name != null という条件が成り立ちます。
+			</p>
+<source><![CDATA[List<Employee> list = dao.selectByName("SMITH");]]></source>
+			<p>
+				SQLのログは次のように出力されます。
+			</p>
+<source><![CDATA[select * from employee
+where 
+  name = 'SMITH']]></source>
+			</subsection>
+			<subsection name="条件2">
+			<p>
+				パラメータにnullを渡してDaoのメソッドを呼び出します。
+				この場合、name != null という条件は成り立ちません。
+			</p>
+<source><![CDATA[list = dao.selectByName(null);]]></source>
+			<p>
+				SQLのログは次のように出力されます。where句の直後のandは自動で除去されます。
+			</p>
+<source><![CDATA[select * from employee
+where 
+  
+  name is null]]></source>
+  				<p>
+  					elseだけではなくelseifを表すこともできます。
+  					詳細は<a href="../reference/sqlfile.html#elseifとelse">elseifとelse</a>を参照してください。
+  				</p>
 			</subsection>
 		</section>
 		<section name="繰り返しを用いた検索">

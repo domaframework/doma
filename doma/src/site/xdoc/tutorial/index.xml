@@ -528,6 +528,7 @@ public interface EmployeeDao {
 							<li><a href="select.html#概要">概要</a></li>
 							<li><a href="select.html#単純な検索">単純な検索</a></li>
 							<li><a href="select.html#条件分岐を用いた検索">条件分岐を用いた検索</a></li>
+							<li><a href="select.html#条件分岐でelseを用いた検索">条件分岐でelseを用いた検索</a></li>
 							<li><a href="select.html#繰り返しを用いた検索">繰り返しを用いた検索</a></li>
 							<li><a href="select.html#IN述語による検索">IN述語による検索</a></li>
 							<li><a href="select.html#LIKE述語による検索">LIKE述語による検索</a></li>
