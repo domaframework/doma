@@ -325,18 +325,76 @@ and employeeName like 's%']]></source>
 				<h4><a name="elseifとelse"></a>elseifとelse</h4>
 				<p>
 					<code>/*%if 条件式*/</code> と <code>/*%end*/</code> の間では、
+					elseifやelseを表す次の構文も使用できます。
+				</p>
+<source><![CDATA[/*%elseif 条件式*/]]></source>
+<source><![CDATA[/*%else*/]]></source>
+				<p>
+					例を示します。
+				</p>
+<source><![CDATA[select 
+  * 
+from
+  employee 
+where 
+/*%if employeeId != null */
+  employee_id = /* employeeId */9999
+/*%elseif department_id != null */ 
+  and
+  department_id = /* departmentId */99
+/*%else*/
+  and
+  department_id is null
+/*%end*/]]></source>
+				<p>
+					上のSQLは、employeeId != null が成立するとき実際は次のSQLに変換されます。
+				</p>
+<source><![CDATA[select 
+  * 
+from
+  employee 
+where 
+  employee_id = ?]]></source>
+				<p>
+					employeeId == null <![CDATA[&&]]> department_id != null が成立するとき、実際は次のSQLに変換されます。
+					department_idの直前のANDは自動で除去されるため出力されません。
+				</p>
+<source><![CDATA[select 
+  * 
+from
+  employee 
+where 
+  department_id = ?]]></source>
+				<p>
+					employeeId == null <![CDATA[&&]]> department_id == null が成立するとき、実際は次のSQLに変換されます。
+					department_idの直前のANDは自動で除去されるため出力されません。
+				</p>
+<source><![CDATA[select 
+  * 
+from
+  employee 
+where 
+  department_id is null]]></source>
+				<p>
+					過去との互換性のため、<code>/*%if 条件式*/</code> と <code>/*%end*/</code> の間では、
 					行コメントを使用した次の構文も使用できます。
+					特に理由がない限り、ブロックコメントの /*%elseif 条件式*/ や /*%else*/ を使用してください。 
 				</p>
 <source><![CDATA[--elseif 条件式--]]></source>
 <source><![CDATA[--else]]></source>
 				<p>
-					例を示します。
+					elseifやelseを行コメントで表した場合の例を示します。
 				</p>
-<source><![CDATA[select * from employee where 
-/*%if employeeId != null */   employee_id = /* employeeId */99
---elseif employeeId == 999-- department_id is null
---else                       employee_id is null
-/*%end*/]]></source>
+<source><![CDATA[select 
+  * 
+from
+  employee 
+where 
+/*%if employeeId != null */
+  employee_id = /* employeeId */9999
+--elseif department_id != null -- department_id = /* departmentId */99
+--else department_id is null
+/*%end */]]></source>
 				<h4><a name="ネストした条件コメント"></a>ネストした条件コメント</h4>
 				<p>
 					条件コメントはネストさせることができます。
@@ -345,7 +403,11 @@ and employeeName like 's%']]></source>
 /*%if employeeId != null */
   employee_id = /* employeeId */99
   /*%if employeeName != null */ 
-    and employee_name = /* employeeName */'hoge'
+    and
+    employee_name = /* employeeName */'hoge'
+  /*%else*/
+    and
+    employee_name is null
   /*%end*/
 /*%end*/]]></source>
 				<h4><a name="条件コメントにおける制約"></a>条件コメントにおける制約</h4>
