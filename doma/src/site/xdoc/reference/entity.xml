@@ -72,8 +72,8 @@ public class Employee {
 					</dd>
 					<dt>preInsert</dt>
 					<dd>
-						<code>@Delete(sqlFile = false)</code>、または<code>@BatchDelete(sqlFile = false)</code>が注釈されたDaoメソッドの実行時にのみ呼び出されます。
-						<code>@Delete</code>や<code>@BatchDelete</code>の<code>sqlFile</code>要素が<code>true</code>である場合には呼び出されません。
+						<code>@Insert(sqlFile = false)</code>、または<code>@BatchInsert(sqlFile = false)</code>が注釈されたDaoメソッドの実行時にのみ呼び出されます。
+						<code>@Insert</code>や<code>@BatchInsert</code>の<code>sqlFile</code>要素が<code>true</code>である場合には呼び出されません。
 					</dd>
 					<dt>preUpdate</dt>
 					<dd>
