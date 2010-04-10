@@ -551,6 +551,21 @@ public class SqlParserTest extends TestCase {
         parser.parse();
     }
 
+    public void testParens_removeAnd() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        evaluator.add("name", new Value(String.class, null));
+        String testSql = "select * from aaa where (\n/*%if name != null*/bbb = /*name*/'ccc'\n/*%else*/\nand ddd is null\n /*%end*/)";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath", evaluator).build(sqlNode);
+        assertEquals("select * from aaa where (\n ddd is null\n)", sql
+                .getRawSql());
+        assertEquals("select * from aaa where (\n ddd is null\n)", sql
+                .getFormattedSql());
+        assertEquals(0, sql.getParameters().size());
+    }
+
     public void testOptimizer() throws Exception {
         AnonymousNode node = new AnonymousNode();
         node.addNode(WhitespaceNode.of(" "));

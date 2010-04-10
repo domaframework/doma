@@ -570,13 +570,18 @@ public class NodePreparedSqlBuilder implements
         if (node.isAttachedWithBindVariable()) {
             return null;
         }
-        OtherNode openedFragmentNode = node.getOpenedFragmentNode();
-        openedFragmentNode.accept(this, p);
+        Context context = new Context(p);
         for (SqlNode child : node.getChildren()) {
-            child.accept(this, p);
+            child.accept(this, context);
         }
-        OtherNode closedFragmentNode = node.getClosedFragmentNode();
-        closedFragmentNode.accept(this, p);
+        if (context.isAvailable()) {
+            node.getOpenedFragmentNode().accept(this, p);
+            p.setAvailable(true);
+            p.appendRawSql(context.getSqlBuf());
+            p.appendFormattedSql(context.getFormattedSqlBuf());
+            p.addAllParameters(context.getParameters());
+            node.getClosedFragmentNode().accept(this, p);
+        }
         return null;
     }
 
