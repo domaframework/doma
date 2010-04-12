@@ -34,9 +34,15 @@ public class BasicSingleResultHandler<V> implements ResultSetHandler<V> {
 
     protected final Wrapper<V> wrapper;
 
-    public BasicSingleResultHandler(Wrapper<V> wrapper) {
+    protected final boolean primitveResult;
+
+    public BasicSingleResultHandler(Wrapper<V> wrapper, boolean primitveResult) {
         assertNotNull(wrapper);
+        if (primitveResult) {
+            assertNotNull(wrapper.getDefault());
+        }
         this.wrapper = wrapper;
+        this.primitveResult = primitveResult;
     }
 
     @Override
@@ -52,6 +58,13 @@ public class BasicSingleResultHandler<V> implements ResultSetHandler<V> {
             Sql<?> sql = query.getSql();
             throw new NoResultException(sql);
         }
-        return wrapper.get();
+        V result = wrapper.get();
+        if (result == null && primitveResult) {
+            result = wrapper.getDefault();
+            if (result == null) {
+                assertNotNull(result);
+            }
+        }
+        return result;
     }
 }

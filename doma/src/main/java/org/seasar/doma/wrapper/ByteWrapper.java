@@ -48,6 +48,11 @@ public class ByteWrapper extends AbstractWrapper<Byte> implements
     }
 
     @Override
+    public Byte getDefault() {
+        return Byte.valueOf((byte) 0);
+    }
+
+    @Override
     public <R, P, TH extends Throwable> R accept(
             WrapperVisitor<R, P, TH> visitor, P p) throws TH {
         if (visitor == null) {

@@ -34,7 +34,7 @@ public class AutoFunctionQueryTest extends TestCase {
         query.setConfig(runtimeConfig);
         query.setFunctionName("aaa");
         query.setResultParameter(new BasicResultParameter<Integer>(
-                new IntegerWrapper()));
+                new IntegerWrapper(), false));
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.prepare();

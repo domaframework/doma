@@ -48,6 +48,11 @@ public class ShortWrapper extends AbstractWrapper<Short> implements
     }
 
     @Override
+    public Short getDefault() {
+        return Short.valueOf((short) 0);
+    }
+
+    @Override
     public <R, P, TH extends Throwable> R accept(
             WrapperVisitor<R, P, TH> visitor, P p) throws TH {
         if (visitor == null) {

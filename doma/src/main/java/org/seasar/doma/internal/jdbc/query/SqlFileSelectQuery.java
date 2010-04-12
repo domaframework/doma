@@ -112,11 +112,10 @@ public class SqlFileSelectQuery implements SelectQuery {
         query.sqlFile = sqlFile;
         query.prepare();
         SelectCommand<Long> command = new SelectCommand<Long>(query,
-                new BasicSingleResultHandler<Long>(new LongWrapper()));
-        Long count = command.execute();
-        assertNotNull(count);
+                new BasicSingleResultHandler<Long>(new LongWrapper(), true));
+        long count = command.execute();
         query.complete();
-        SelectOptionsAccessor.setCountSize(options, count.longValue());
+        SelectOptionsAccessor.setCountSize(options, count);
     }
 
     @Override

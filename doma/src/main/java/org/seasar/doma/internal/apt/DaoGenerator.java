@@ -421,9 +421,9 @@ public class DaoGenerator extends AbstractGenerator {
 
                                     @Override
                                     public Void visitBasicType(
-                                            BasicType dataType, Void p)
+                                            final BasicType basicType, Void p)
                                             throws RuntimeException {
-                                        dataType
+                                        basicType
                                                 .getWrapperType()
                                                 .accept(
                                                         new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
@@ -434,7 +434,7 @@ public class DaoGenerator extends AbstractGenerator {
                                                                     Void p)
                                                                     throws RuntimeException {
                                                                 iprint(
-                                                                        "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(new %4$s(%5$s.class)));%n",
+                                                                        "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(new %4$s(%5$s.class), false));%n",
                                                                         commandClassName,
                                                                         dataType
                                                                                 .getWrappedType()
@@ -455,7 +455,7 @@ public class DaoGenerator extends AbstractGenerator {
                                                                     Void p)
                                                                     throws RuntimeException {
                                                                 iprint(
-                                                                        "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(new %4$s()));%n",
+                                                                        "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(new %4$s(), %5$s));%n",
                                                                         commandClassName,
                                                                         dataType
                                                                                 .getWrappedType()
@@ -463,7 +463,9 @@ public class DaoGenerator extends AbstractGenerator {
                                                                         BasicSingleResultHandler.class
                                                                                 .getName(),
                                                                         dataType
-                                                                                .getTypeName());
+                                                                                .getTypeName(),
+                                                                        basicType
+                                                                                .isPrimitive());
                                                                 return null;
                                                             }
 
@@ -1290,7 +1292,7 @@ public class DaoGenerator extends AbstractGenerator {
         @Override
         public Void visitBasicResultParameterMeta(BasicResultParameterMeta m,
                 Void p) {
-            BasicType basicType = m.getBasicType();
+            final BasicType basicType = m.getBasicType();
             basicType.getWrapperType().accept(
                     new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
 
@@ -1299,7 +1301,7 @@ public class DaoGenerator extends AbstractGenerator {
                                 EnumWrapperType dataType, Void p)
                                 throws RuntimeException {
                             iprint(
-                                    "__query.setResultParameter(new %1$s<%2$s>(new %3$s(%4$s.class)));%n",
+                                    "__query.setResultParameter(new %1$s<%2$s>(new %3$s(%4$s.class), false));%n",
                                     BasicResultParameter.class.getName(),
                                     dataType.getWrappedType()
                                             .getTypeNameAsTypeParameter(),
@@ -1313,11 +1315,12 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitWrapperType(WrapperType dataType,
                                 Void p) throws RuntimeException {
                             iprint(
-                                    "__query.setResultParameter(new %1$s<%2$s>(new %3$s()));%n",
+                                    "__query.setResultParameter(new %1$s<%2$s>(new %3$s(), %4$s));%n",
                                     BasicResultParameter.class.getName(),
                                     dataType.getWrappedType()
                                             .getTypeNameAsTypeParameter(),
-                                    dataType.getTypeName());
+                                    dataType.getTypeName(), basicType
+                                            .isPrimitive());
                             return null;
                         }
 

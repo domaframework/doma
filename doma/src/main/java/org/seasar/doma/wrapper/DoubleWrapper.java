@@ -48,6 +48,11 @@ public class DoubleWrapper extends AbstractWrapper<Double> implements
     }
 
     @Override
+    public Double getDefault() {
+        return Double.valueOf(0d);
+    }
+
+    @Override
     public <R, P, TH extends Throwable> R accept(
             WrapperVisitor<R, P, TH> visitor, P p) throws TH {
         if (visitor == null) {

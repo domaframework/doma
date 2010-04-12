@@ -86,6 +86,11 @@ public abstract class AbstractWrapper<V> implements Wrapper<V> {
     }
 
     @Override
+    public V getDefault() {
+        return null;
+    }
+
+    @Override
     public final boolean hasEqualValue(Object otherValue) {
         return doHasEqualValue(otherValue);
     }

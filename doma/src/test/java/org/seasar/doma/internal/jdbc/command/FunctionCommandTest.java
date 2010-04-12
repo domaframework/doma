@@ -51,7 +51,7 @@ public class FunctionCommandTest extends TestCase {
         query.setConfig(runtimeConfig);
         query.setFunctionName("aaa");
         query.setResultParameter(new BasicResultParameter<Integer>(
-                new IntegerWrapper()));
+                new IntegerWrapper(), false));
         query.addParameter(new BasicInParameter(aaa));
         query.addParameter(new BasicOutParameter<Integer>(bbb,
                 new Reference<Integer>()));

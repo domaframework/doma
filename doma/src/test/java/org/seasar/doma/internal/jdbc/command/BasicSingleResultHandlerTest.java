@@ -51,7 +51,7 @@ public class BasicSingleResultHandlerTest extends TestCase {
         query.prepare();
 
         BasicSingleResultHandler<String> handler = new BasicSingleResultHandler<String>(
-                new StringWrapper());
+                new StringWrapper(), false);
         String result = handler.handle(resultSet, query);
         assertEquals("aaa", result);
     }
@@ -70,7 +70,7 @@ public class BasicSingleResultHandlerTest extends TestCase {
         query.prepare();
 
         BasicSingleResultHandler<String> handler = new BasicSingleResultHandler<String>(
-                new StringWrapper());
+                new StringWrapper(), false);
         try {
             handler.handle(resultSet, query);
             fail();
@@ -91,7 +91,7 @@ public class BasicSingleResultHandlerTest extends TestCase {
         query.prepare();
 
         BasicSingleResultHandler<String> handler = new BasicSingleResultHandler<String>(
-                new StringWrapper());
+                new StringWrapper(), false);
         try {
             handler.handle(resultSet, query);
             fail();

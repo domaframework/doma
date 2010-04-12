@@ -48,6 +48,11 @@ public class FloatWrapper extends AbstractWrapper<Float> implements
     }
 
     @Override
+    public Float getDefault() {
+        return Float.valueOf(0);
+    }
+
+    @Override
     public <R, P, TH extends Throwable> R accept(
             WrapperVisitor<R, P, TH> visitor, P p) throws TH {
         if (visitor == null) {

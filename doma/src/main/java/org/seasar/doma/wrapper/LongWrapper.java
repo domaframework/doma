@@ -48,6 +48,11 @@ public class LongWrapper extends AbstractWrapper<Long> implements
     }
 
     @Override
+    public Long getDefault() {
+        return Long.valueOf(0L);
+    }
+
+    @Override
     public <R, P, TH extends Throwable> R accept(
             WrapperVisitor<R, P, TH> visitor, P p) throws TH {
         if (visitor == null) {

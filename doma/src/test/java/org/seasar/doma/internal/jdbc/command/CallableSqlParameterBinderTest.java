@@ -50,7 +50,8 @@ public class CallableSqlParameterBinderTest extends TestCase {
         MockCallableStatement callableStatement = new MockCallableStatement();
 
         List<CallableSqlParameter> parameters = new ArrayList<CallableSqlParameter>();
-        parameters.add(new BasicResultParameter<Integer>(new IntegerWrapper()));
+        parameters.add(new BasicResultParameter<Integer>(new IntegerWrapper(),
+                false));
         parameters.add(new BasicInParameter(new StringWrapper("aaa")));
         parameters.add(new BasicInOutParameter<BigDecimal>(
                 new BigDecimalWrapper(), new Reference<BigDecimal>(

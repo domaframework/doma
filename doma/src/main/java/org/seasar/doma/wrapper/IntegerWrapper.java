@@ -48,6 +48,11 @@ public class IntegerWrapper extends AbstractWrapper<Integer> implements
     }
 
     @Override
+    public Integer getDefault() {
+        return Integer.valueOf(0);
+    }
+
+    @Override
     public <R, P, TH extends Throwable> R accept(
             WrapperVisitor<R, P, TH> visitor, P p) throws TH {
         if (visitor == null) {

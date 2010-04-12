@@ -41,7 +41,7 @@ public class PrimitiveTypeDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abst
         __query.setMaxRows(-1);
         __query.setFetchSize(-1);
         __query.prepare();
-        org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.Integer> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.Integer>(__query, new org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler<java.lang.Integer>(new org.seasar.doma.wrapper.IntegerWrapper()));
+        org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.Integer> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.Integer>(__query, new org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler<java.lang.Integer>(new org.seasar.doma.wrapper.IntegerWrapper(), true));
         int __result = __command.execute();
         __query.complete();
         exiting("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl", "selectById", __result);
@@ -72,7 +72,7 @@ public class PrimitiveTypeDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abst
         org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.lang.Integer> __query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.lang.Integer>();
         __query.setConfig(config);
         __query.setFunctionName("execute");
-        __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.BasicResultParameter<java.lang.Integer>(new org.seasar.doma.wrapper.IntegerWrapper()));
+        __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.BasicResultParameter<java.lang.Integer>(new org.seasar.doma.wrapper.IntegerWrapper(), true));
         __query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicInParameter(new org.seasar.doma.wrapper.IntegerWrapper(id)));
         __query.setCallerClassName("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl");
         __query.setCallerMethodName("execute");
