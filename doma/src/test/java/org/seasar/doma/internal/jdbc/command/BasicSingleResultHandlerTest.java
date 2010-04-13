@@ -25,6 +25,7 @@ import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 import org.seasar.doma.jdbc.NoResultException;
+import org.seasar.doma.jdbc.NonSingleColumnException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.wrapper.StringWrapper;
 
@@ -57,7 +58,9 @@ public class BasicSingleResultHandlerTest extends TestCase {
     }
 
     public void testHandle_NonUniqueResultException() throws Exception {
-        MockResultSet resultSet = new MockResultSet();
+        MockResultSetMetaData metaData = new MockResultSetMetaData();
+        metaData.columns.add(new ColumnMetaData("x"));
+        MockResultSet resultSet = new MockResultSet(metaData);
         resultSet.rows.add(new RowData("aaa"));
         resultSet.rows.add(new RowData("bbb"));
 
@@ -75,6 +78,30 @@ public class BasicSingleResultHandlerTest extends TestCase {
             handler.handle(resultSet, query);
             fail();
         } catch (NonUniqueResultException ignore) {
+        }
+    }
+
+    public void testHandle_NonSingleColumnException() throws Exception {
+        MockResultSetMetaData metaData = new MockResultSetMetaData();
+        metaData.columns.add(new ColumnMetaData("x"));
+        metaData.columns.add(new ColumnMetaData("y"));
+        MockResultSet resultSet = new MockResultSet(metaData);
+        resultSet.rows.add(new RowData("aaa", "bbb"));
+
+        SqlFileSelectQuery query = new SqlFileSelectQuery();
+        query.setConfig(runtimeConfig);
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                getName()));
+        query.setCallerClassName("aaa");
+        query.setCallerMethodName("bbb");
+        query.prepare();
+
+        BasicSingleResultHandler<String> handler = new BasicSingleResultHandler<String>(
+                new StringWrapper(), false);
+        try {
+            handler.handle(resultSet, query);
+            fail();
+        } catch (NonSingleColumnException ignore) {
         }
     }
 

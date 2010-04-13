@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import java.math.BigDecimal;
-
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
@@ -41,11 +39,8 @@ public class BasicFetcherTest extends TestCase {
     public void testFetchDomain() throws Exception {
         MockResultSetMetaData metaData = new MockResultSetMetaData();
         metaData.columns.add(new ColumnMetaData("aaa"));
-        metaData.columns.add(new ColumnMetaData("bbb"));
-        metaData.columns.add(new ColumnMetaData("ccc"));
-        metaData.columns.add(new ColumnMetaData("ddd"));
         MockResultSet resultSet = new MockResultSet(metaData);
-        resultSet.rows.add(new RowData("hoge", "foo", new BigDecimal(10), 100));
+        resultSet.rows.add(new RowData("hoge"));
         resultSet.next();
 
         StringWrapper wrapper = new StringWrapper();

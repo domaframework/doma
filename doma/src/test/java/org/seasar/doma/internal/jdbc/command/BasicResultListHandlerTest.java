@@ -27,6 +27,7 @@ import org.seasar.doma.internal.jdbc.mock.RowData;
 import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 import org.seasar.doma.jdbc.NoResultException;
+import org.seasar.doma.jdbc.NonSingleColumnException;
 import org.seasar.doma.wrapper.StringWrapper;
 
 /**
@@ -58,6 +59,31 @@ public class BasicResultListHandlerTest extends TestCase {
         assertEquals(2, results.size());
         assertEquals("aaa", results.get(0));
         assertEquals("bbb", results.get(1));
+    }
+
+    public void testHandle_NonSingleColumnException() throws Exception {
+        MockResultSetMetaData metaData = new MockResultSetMetaData();
+        metaData.columns.add(new ColumnMetaData("x"));
+        metaData.columns.add(new ColumnMetaData("y"));
+        MockResultSet resultSet = new MockResultSet(metaData);
+        resultSet.rows.add(new RowData("aaa", "bbb"));
+
+        SqlFileSelectQuery query = new SqlFileSelectQuery();
+        query.setConfig(runtimeConfig);
+        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+                getName()));
+        query.setCallerClassName("aaa");
+        query.setCallerMethodName("bbb");
+        query.setResultEnsured(true);
+        query.prepare();
+
+        BasicResultListHandler<String> handler = new BasicResultListHandler<String>(
+                new StringWrapper());
+        try {
+            handler.handle(resultSet, query);
+            fail();
+        } catch (NonSingleColumnException expected) {
+        }
     }
 
     public void testHandle_NoResultException() throws Exception {

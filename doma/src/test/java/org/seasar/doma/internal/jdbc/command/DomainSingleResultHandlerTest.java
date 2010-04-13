@@ -59,7 +59,9 @@ public class DomainSingleResultHandlerTest extends TestCase {
     }
 
     public void testHandle_NonUniqueResultException() throws Exception {
-        MockResultSet resultSet = new MockResultSet();
+        MockResultSetMetaData metaData = new MockResultSetMetaData();
+        metaData.columns.add(new ColumnMetaData("phoneNumber"));
+        MockResultSet resultSet = new MockResultSet(metaData);
         resultSet.rows.add(new RowData("01-2345-6789"));
         resultSet.rows.add(new RowData("02-2345-6789"));
 
