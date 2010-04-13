@@ -21,7 +21,7 @@ import org.seasar.doma.internal.message.Message;
  * 1列であることを期待する検索系SQLの結果が1列でない場合にスローされる例外です。
  * 
  * @author taedium
- * 
+ * @since 1.5.0
  */
 public class NonSingleColumnException extends JdbcException {
 
