@@ -105,6 +105,6 @@ public class SqlFileSelectIterationCallbackTest {
                         return total;
                     }
                 }, SelectOptions.get().limit(5).offset(3));
-        assertTrue(new BigDecimal("12525").compareTo(total) == 0);
+        assertTrue(new BigDecimal("6900").compareTo(total) == 0);
     }
 }
