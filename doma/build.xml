@@ -1,8 +1,29 @@
-<project name="doma" default="update-pom-and-artifact-version" basedir=".">
+<project name="doma" default="update" basedir=".">
 
 	<property name="newVersion" value="1.5.0-SNAPSHOT" />
+	<property name="domaJarPattern" value="(doma-)(?:\d*\.\d*\.\d*(?:-RC\d)?(?:-SNAPSHOT)?)((?:-sources)?\.jar)" />
 
-	<target name="update-pom-and-artifact-version">
+	<target name="update">
+		<delete>
+			<fileset dir="../doma-jpetstore">
+				<include name="src/main/webapp/WEB-INF/lib/*" />
+				<include name="libsrc/*" />
+				<filename regex="${domaJarPattern}"/>
+			</fileset>
+			<fileset dir="../doma-tutorial">
+				<include name="lib/*" />
+				<include name="libsrc/*" />
+				<filename regex="${domaJarPattern}" />
+			</fileset>
+		</delete>
+		<replaceregexp
+			match="/${domaJarPattern}"
+			replace="/\1${newVersion}\2" encoding="UTF-8" flags="g">
+			<fileset dir="../doma-tutorial" includes=".classpath" />
+			<fileset dir="../doma-tutorial" includes=".factorypath" />
+			<fileset dir="../doma-jpetstore" includes=".classpath" />
+			<fileset dir="../doma-jpetstore" includes=".factorypath" />
+		</replaceregexp>
 		<replaceregexp
 			match="(&lt;artifactId&gt;doma[^&lt;]*?&lt;/artifactId&gt;\s+&lt;version&gt;)(?:[^&lt;]+)(&lt;/version&gt;)"
 			replace="\1${newVersion}\2" encoding="UTF-8" flags="g">
@@ -21,17 +42,6 @@
 		</replaceregexp>
 	</target>
 
-	<target name="update-classpath-version">
-		<replaceregexp
-			match="(/doma-)(?:\d*\.\d*\.\d*(?:-RC\d)?(?:-SNAPSHOT)?)((?:-sources)?\.jar)"
-			replace="\1${newVersion}\2" encoding="UTF-8" flags="g">
-			<fileset dir="../doma-tutorial" includes=".classpath" />
-			<fileset dir="../doma-tutorial" includes=".factorypath" />
-			<fileset dir="../doma-jpetstore" includes=".classpath" />
-			<fileset dir="../doma-jpetstore" includes=".factorypath" />
-		</replaceregexp>
-	</target>
-
 	<tstamp>
 		<format property="releaseDate" pattern="yyyy-MM-dd" locale="ja,JP"/>
 	</tstamp>
@@ -44,6 +54,7 @@
 				<exclude name="**/bin**"/>
 				<exclude name="**/target/**"/>
 				<exclude name="**/site/**"/>
+				<exclude name="how-to-release.txt"/>
 			</zipfileset>
 			<zipfileset prefix="doma/lib" dir="target">
 				<include name="doma-${ver}.jar"/>
