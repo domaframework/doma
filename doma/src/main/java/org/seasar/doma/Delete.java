@@ -92,12 +92,16 @@ public @interface Delete {
     int queryTimeout() default -1;
 
     /**
-     * DELETE文のWHERE句からバージョン番号を除去するかどうかを示します。
+     * DELETE文のWHERE句からバージョンプロパティに対応するカラムを除去するかどうかを示します。
+     * <p>
+     * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
      */
     boolean ignoreVersion() default false;
 
     /**
      * 更新結果が1件でない場合にスローされる {@link OptimisticLockException}を抑制するかどうかを示します。
+     * <p>
+     * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
      */
     boolean suppressOptimisticLockException() default false;
 

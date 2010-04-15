@@ -57,12 +57,12 @@ public @interface Column {
     String name() default "";
 
     /**
-     * INSERT文に含めるかどうかを示します。
+     * プロパティに対応するカラムをINSERT文に含めるかどうかを示します。
      */
     boolean insertable() default true;
 
     /**
-     * UPDATE文のSET句に含めるかどうかを示します。
+     * プロパティに対応するカラムをUPDATE文のSET句に含めるかどうかを示します。
      */
     boolean updatable() default true;
 

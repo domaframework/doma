@@ -95,26 +95,34 @@ public @interface BatchUpdate {
     int queryTimeout() default -1;
 
     /**
-     * UPDATE文のSET句にバージョン番号を含めるかどうかを示します。
+     * UPDATE文のSET句にバージョンプロパティに対応するカラムを含めるかどうかを示します。
+     * <p>
+     * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
      */
     boolean includeVersion() default false;
 
     /**
      * UPDATE文のSET句に含めるプロパティ名の配列です。
      * <p>
-     * ここに指定できるのは、カラム名ではなくプロパティ名です。 プロパティ名とは、カラムにマッピングされたエンティティのメソッド名のことです。
+     * ここに指定できるのは、カラム名ではなく更新対象エンティティクラスのプロパティ名です。
+     * <p>
+     * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
      */
     String[] include() default {};
 
     /**
      * UPDATE文のSET句から除外するプロパティ名の配列です。
      * <p>
-     * ここに指定できるのは、カラム名ではなくプロパティ名です。 プロパティ名とは、カラムにマッピングされたエンティティのメソッド名のことです。
+     * ここに指定できるのは、カラム名ではなく更新対象エンティティクラスのプロパティ名です。
+     * <p>
+     * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
      */
     String[] exclude() default {};
 
     /**
      * 更新結果が1件でない場合にスローされる {@link OptimisticLockException}を抑制するかどうかを示します。
+     * <p>
+     * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
      */
     boolean suppressOptimisticLockException() default false;
 }

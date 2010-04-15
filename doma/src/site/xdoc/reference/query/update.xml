@@ -78,7 +78,7 @@ int update(Employee employee);]]></source>
 				<h4><code>@Update</code>の<code>exclude</code>要素</h4>
 				<p>
 					<code>@Update</code>の<code>exclude</code>要素に指定されたプロパティを更新対象外とします。
-					プロパティがこの要素に指定されていれば、<code>@Column</code>の<code>updatable</code>要素が<code>true</code>であっても削除対象外です。
+					プロパティがこの要素に指定されていれば、<code>@Column</code>の<code>updatable</code>要素が<code>true</code>であっても更新対象外です。
 				</p>
 <source><![CDATA[@Update(exclude = {"name", "salary"})
 int update(Employee employee);]]></source>
@@ -102,13 +102,15 @@ int update(Employee employee);]]></source>
 int update(Employee employee);]]></source>
 				<h4><code>@Update</code>の<code>includeUnchanged</code>要素</h4>
 				<p>
-					上記の条件に加え、
-					<a href="../entity.html">エンティティティクラス</a>に<code>@OriginalStates</code>が注釈されたプロパティがあり、
-					<code>@Update</code>の<code>includeUnchanged</code>要素が<code>true</code>の場合、
-					エンティティ取得時から変更された値のみが更新対象となります。
-					エンティティティクラスに<code>@OriginalStates</code>が注釈されたプロパティがなかったり、
-					<code>@Update</code>の<code>includeUnchanged</code>要素が<code>false</code>の場合、
-					変更されていない値についても更新対象になります。
+					この要素は、更新対象の<a href="../entity.html">エンティティティクラス</a>に<code>@OriginalStates</code>が注釈されたプロパティがある場合にのみ有効です。
+				</p>
+				<p>
+					この要素が<code>true</code>の場合、エンティティの全プロパティが更新対象となります。
+					つまり、全プロパティに対応するカラムがUPDATE文のSET句に含まれます。
+				</p>
+				<p>
+					この要素が<code>false</code>の場合、エンティティが取得されてから実際に変更されたプロパティのみが更新対象になります。
+					つまり、変更されたプロパティに対応するカラムのみがUPDATE文のSET句に含まれます。
 				</p>
 <source><![CDATA[@Update(includeUnchanged = true)
 int update(Employee employee);]]></source>
