@@ -27,6 +27,7 @@ import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.MappedPropertyNotFoundException;
 import org.seasar.doma.jdbc.NoResultException;
+import org.seasar.doma.jdbc.NonSingleColumnException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SqlFileNotFoundException;
@@ -139,6 +140,8 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * 結果セットに含まれるカラムにマッピングされたプロパティが見つからなかった場合
  * <li> {@link NonUniqueResultException} 戻り値の型が {@code List}
  * でない場合で、かつ結果が2件以上返された場合
+ * <li> {@link NonSingleColumnException} 戻り値の型が、基本型やドメインクラスもしくは基本型やドメインクラスの
+ * {@code List} 場合で、かつ結果セットに複数のカラムが含まれている場合
  * <li> {@link NoResultException} {@link #ensureResult} に {@code true}
  * が指定され、結果が0件の場合
  * <li> {@link JdbcException} 上記以外でJDBCに関する例外が発生した場合
