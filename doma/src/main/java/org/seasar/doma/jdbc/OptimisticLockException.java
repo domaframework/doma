@@ -30,6 +30,9 @@ public class OptimisticLockException extends JdbcException {
 
     private static final long serialVersionUID = 1L;
 
+    /** SQLの種別 */
+    protected final SqlKind kind;
+
     /** 未加工SQL */
     protected final String rawSql;
 
@@ -46,12 +49,15 @@ public class OptimisticLockException extends JdbcException {
      *            SQL
      */
     public OptimisticLockException(Sql<?> sql) {
-        this(sql.getRawSql(), sql.getFormattedSql(), sql.getSqlFilePath());
+        this(sql.getKind(), sql.getRawSql(), sql.getFormattedSql(), sql
+                .getSqlFilePath());
     }
 
     /**
      * 楽観的排他制御に失敗した未加工SQLとフォーマット済みSQLを指定してインスタンスを構築します。
      * 
+     * @param kind
+     *            SQLの種別
      * @param rawSql
      *            未加工SQL
      * @param formattedSql
@@ -59,9 +65,10 @@ public class OptimisticLockException extends JdbcException {
      * @param sqlFilePath
      *            SQLファイルのパス
      */
-    public OptimisticLockException(String rawSql, String formattedSql,
-            String sqlFilePath) {
+    public OptimisticLockException(SqlKind kind, String rawSql,
+            String formattedSql, String sqlFilePath) {
         super(Message.DOMA2003, sqlFilePath, formattedSql);
+        this.kind = kind;
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;
         this.sqlFilePath = sqlFilePath;
@@ -72,17 +79,30 @@ public class OptimisticLockException extends JdbcException {
      * 
      * @param messageCode
      *            メッセージコード
+     * @param kind
+     *            SQLの種別
      * @param rawSql
      *            未加工SQL
      * @param sqlFilePath
      *            SQLファイルのパス
      */
-    protected OptimisticLockException(MessageResource messageCode, String rawSql,
-            String sqlFilePath) {
+    protected OptimisticLockException(MessageResource messageCode,
+            SqlKind kind, String rawSql, String sqlFilePath) {
         super(messageCode, sqlFilePath, rawSql);
+        this.kind = kind;
         this.rawSql = rawSql;
         this.formattedSql = null;
         this.sqlFilePath = sqlFilePath;
+    }
+
+    /**
+     * SQLの種別を返します。
+     * 
+     * @return SQLの種別
+     * @since 1.5.0
+     */
+    public SqlKind getKind() {
+        return kind;
     }
 
     /**

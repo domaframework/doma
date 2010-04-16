@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.jdbc.tx;
 
-import java.io.Serializable;
-
 import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcException;
 
@@ -26,8 +24,7 @@ import org.seasar.doma.jdbc.JdbcException;
  * @author taedium
  * @since 1.1.0
  */
-public class SavepointAleadyExistsException extends JdbcException implements
-        Serializable {
+public class SavepointAleadyExistsException extends JdbcException {
 
     private static final long serialVersionUID = 1L;
 

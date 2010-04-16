@@ -28,6 +28,9 @@ public class UniqueConstraintException extends JdbcException {
 
     private static final long serialVersionUID = 1L;
 
+    /** SQLの種別 */
+    protected final SqlKind kind;
+
     /** 未加工SQL */
     protected final String rawSql;
 
@@ -46,13 +49,15 @@ public class UniqueConstraintException extends JdbcException {
      *            原因
      */
     public UniqueConstraintException(Sql<?> sql, Throwable cause) {
-        this(sql.getRawSql(), sql.getFormattedSql(), sql.getSqlFilePath(),
-                cause);
+        this(sql.getKind(), sql.getRawSql(), sql.getFormattedSql(), sql
+                .getSqlFilePath(), cause);
     }
 
     /**
      * 未加工SQLとフォーマット済みSQLを指定してインスタンスを構築します。
      * 
+     * @param kind
+     *            SQLの種別
      * @param rawSql
      *            未加工SQL
      * @param formattedSql
@@ -62,9 +67,10 @@ public class UniqueConstraintException extends JdbcException {
      * @param cause
      *            原因
      */
-    public UniqueConstraintException(String rawSql, String formattedSql,
-            String sqlFilePath, Throwable cause) {
+    public UniqueConstraintException(SqlKind kind, String rawSql,
+            String formattedSql, String sqlFilePath, Throwable cause) {
         super(Message.DOMA2004, sqlFilePath, formattedSql, cause);
+        this.kind = kind;
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;
         this.sqlFilePath = sqlFilePath;
@@ -75,6 +81,8 @@ public class UniqueConstraintException extends JdbcException {
      * 
      * @param messageCode
      *            メッセージコード
+     * @param kind
+     *            SQLの種別
      * @param rawSql
      *            未加工SQL
      * @param sqlFilePath
@@ -82,12 +90,23 @@ public class UniqueConstraintException extends JdbcException {
      * @param cause
      *            原因
      */
-    protected UniqueConstraintException(MessageResource messageCode, String rawSql,
-            String sqlFilePath, Throwable cause) {
+    protected UniqueConstraintException(MessageResource messageCode,
+            SqlKind kind, String rawSql, String sqlFilePath, Throwable cause) {
         super(messageCode, cause, sqlFilePath, rawSql, cause);
+        this.kind = kind;
         this.rawSql = rawSql;
         this.formattedSql = null;
         this.sqlFilePath = sqlFilePath;
+    }
+
+    /**
+     * SQLの種別を返します。
+     * 
+     * @return SQLの種別
+     * @since 1.5.0
+     */
+    public SqlKind getKind() {
+        return kind;
     }
 
     /**

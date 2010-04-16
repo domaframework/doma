@@ -25,8 +25,9 @@ public class BatchOptimisticLockExceptionTest extends TestCase {
 
     public void test() throws Exception {
         BatchOptimisticLockException e = new BatchOptimisticLockException(
-                "aaa", "bbb");
+                SqlKind.UPDATE, "aaa", "bbb");
         System.out.println(e.getMessage());
+        assertSame(SqlKind.UPDATE, e.getKind());
         assertEquals("aaa", e.getRawSql());
         assertEquals("bbb", e.getSqlFilePath());
         assertNull(e.getFormattedSql());

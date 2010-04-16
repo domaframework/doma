@@ -27,6 +27,9 @@ public class NonSingleColumnException extends JdbcException {
 
     private static final long serialVersionUID = 1L;
 
+    /** SQLの種別 */
+    protected final SqlKind kind;
+
     /** 未加工SQL */
     protected final String rawSql;
 
@@ -43,12 +46,15 @@ public class NonSingleColumnException extends JdbcException {
      *            SQL
      */
     public NonSingleColumnException(Sql<?> sql) {
-        this(sql.getRawSql(), sql.getFormattedSql(), sql.getSqlFilePath());
+        this(sql.getKind(), sql.getRawSql(), sql.getFormattedSql(), sql
+                .getSqlFilePath());
     }
 
     /**
      * 1列でない結果を返した未加工SQLとフォーマット済みSQLを指定してインスタンスを構築します。
      * 
+     * @param kind
+     *            SQLの種別
      * @param rawSql
      *            未加工SQL
      * @param formattedSql
@@ -56,12 +62,23 @@ public class NonSingleColumnException extends JdbcException {
      * @param sqlFilePath
      *            SQLファイルのパス
      */
-    public NonSingleColumnException(String rawSql, String formattedSql,
-            String sqlFilePath) {
+    public NonSingleColumnException(SqlKind kind, String rawSql,
+            String formattedSql, String sqlFilePath) {
         super(Message.DOMA2006, sqlFilePath, formattedSql);
+        this.kind = kind;
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;
         this.sqlFilePath = sqlFilePath;
+    }
+
+    /**
+     * SQLの種別を返します。
+     * 
+     * @return SQLの種別
+     * @since 1.5.0
+     */
+    public SqlKind getKind() {
+        return kind;
     }
 
     /**

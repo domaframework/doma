@@ -37,6 +37,9 @@ public class MappedPropertyNotFoundException extends JdbcException {
     /** マッピング対象のエンティティクラスの名前 */
     protected final String entityClassName;
 
+    /** SQLの種別 */
+    protected final SqlKind kind;
+
     /** 未加工SQL */
     protected final String rawSql;
 
@@ -55,22 +58,35 @@ public class MappedPropertyNotFoundException extends JdbcException {
      *            マッピングを期待されるプロパティの名前
      * @param entityClassName
      *            マッピング対象のエンティティクラスの名前
+     * @param kind
+     *            SQLの種別
      * @param rawSql
      *            未加工SQL
      * @param formattedSql
      *            フォーマット済みSQL
      */
     public MappedPropertyNotFoundException(String columnName,
-            String expectedPropertyName, String entityClassName, String rawSql,
-            String formattedSql, String sqlFilePath) {
+            String expectedPropertyName, String entityClassName, SqlKind kind,
+            String rawSql, String formattedSql, String sqlFilePath) {
         super(Message.DOMA2002, columnName, expectedPropertyName,
                 entityClassName, sqlFilePath, formattedSql);
         this.columnName = columnName;
         this.expectedPropertyName = expectedPropertyName;
         this.entityClassName = entityClassName;
+        this.kind = kind;
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;
         this.sqlFilePath = sqlFilePath;
+    }
+
+    /**
+     * SQLの種別を返します。
+     * 
+     * @return SQLの種別
+     * @since 1.5.0
+     */
+    public SqlKind getKind() {
+        return kind;
     }
 
     /**

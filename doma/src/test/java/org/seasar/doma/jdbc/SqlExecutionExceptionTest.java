@@ -24,12 +24,13 @@ import junit.framework.TestCase;
 public class SqlExecutionExceptionTest extends TestCase {
 
     public void test() throws Exception {
-        SqlExecutionException e = new SqlExecutionException("aaa", "bbb",
-                "ccc", new Exception(), new RuntimeException());
+        SqlExecutionException e = new SqlExecutionException(SqlKind.UPDATE,
+                "aaa", "bbb", "ccc", new Exception(), new RuntimeException());
+        System.out.println(e.getMessage());
+        assertSame(SqlKind.UPDATE, e.getKind());
         assertEquals("aaa", e.getRawSql());
         assertEquals("bbb", e.getFormattedSql());
         assertEquals("ccc", e.getSqlFilePath());
         assertNotNull(e.getRootCause());
-        System.out.println(e.getMessage());
     }
 }

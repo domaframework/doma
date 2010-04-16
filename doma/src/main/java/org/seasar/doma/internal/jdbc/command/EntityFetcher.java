@@ -90,8 +90,9 @@ public class EntityFetcher<E> implements ResultFetcher<ResultSet, E> {
                 NamingType namingType = entityType.getNamingType();
                 throw new MappedPropertyNotFoundException(columnName,
                         namingType.revert(columnName), entityType
-                                .getEntityClass().getName(), sql.getRawSql(),
-                        sql.getFormattedSql(), sql.getSqlFilePath());
+                                .getEntityClass().getName(), sql.getKind(), sql
+                                .getRawSql(), sql.getFormattedSql(), sql
+                                .getSqlFilePath());
             }
             indexMap.put(i, propertyName);
         }

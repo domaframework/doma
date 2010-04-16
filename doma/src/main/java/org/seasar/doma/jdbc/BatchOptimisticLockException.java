@@ -36,19 +36,21 @@ public class BatchOptimisticLockException extends OptimisticLockException {
      *            SQL
      */
     public BatchOptimisticLockException(Sql<?> sql) {
-        this(sql.getRawSql(), sql.getSqlFilePath());
+        this(sql.getKind(), sql.getRawSql(), sql.getSqlFilePath());
     }
 
     /**
-     * 楽観的排他制御に失敗した未加工SQLを指定してインスタンスを構築します。
+     * 楽観的排他制御に失敗した未加工SQLを指定してインスタンスを構築します。 * @param kind SQLの種別 * @param rawSql
+     * 未加工SQL
      * 
-     * @param rawSql
-     *            未加工SQL
+     * @param kind
+     *            SQLの種別
      * @param sqlFilePath
      *            SQLファイルのパス
      */
-    public BatchOptimisticLockException(String rawSql, String sqlFilePath) {
-        super(Message.DOMA2028, rawSql, sqlFilePath);
+    public BatchOptimisticLockException(SqlKind kind, String rawSql,
+            String sqlFilePath) {
+        super(Message.DOMA2028, kind, rawSql, sqlFilePath);
     }
 
 }

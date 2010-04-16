@@ -24,9 +24,10 @@ import junit.framework.TestCase;
 public class NonSingleColumnExceptionTest extends TestCase {
 
     public void test() throws Exception {
-        NonSingleColumnException e = new NonSingleColumnException("aaa", "bbb",
-                "ccc");
+        NonSingleColumnException e = new NonSingleColumnException(
+                SqlKind.SELECT, "aaa", "bbb", "ccc");
         System.out.println(e.getMessage());
+        assertSame(SqlKind.SELECT, e.getKind());
         assertEquals("aaa", e.getRawSql());
         assertEquals("bbb", e.getFormattedSql());
         assertEquals("ccc", e.getSqlFilePath());
