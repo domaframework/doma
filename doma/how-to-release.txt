@@ -9,11 +9,12 @@
 8)Doma Toolsのバージョンを更新してsvn commit
 
 #リリース
-1)mvn clean install deploy 
+1)mvn clean install deploy site
 2)cd ..doma-gen
-3)mvn clean install deploy
+3)mvn clean install deploy site
 4)cd ../doma
 5)mvn site-deploy
+6)svn commit
 
 #リリース後
 1)svn タグづけ
