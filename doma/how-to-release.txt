@@ -3,9 +3,10 @@
 2)mvn clean install site
 3)doma-jpetstore動作確認
 4)doma-tutorialテスト実行
-5)svn commit
-6)hudsonでdoma-itが通ることを確認
-7)Doma Toolsのバージョンを更新してsvn commit
+5)ダウンロードのリンクとニュースを修正
+6)svn commit
+7)hudsonでdoma-itが通ることを確認
+8)Doma Toolsのバージョンを更新してsvn commit
 
 #リリース
 1)mvn clean install deploy 
