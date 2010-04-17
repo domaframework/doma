@@ -129,7 +129,7 @@ public class EmployeeInfo {
 					<tr><th>列挙定数</th><th>説明</th></tr>
 					<tr><td>NONE</td><td>何も行いません。</td></tr>
 					<tr><td>SNAKE_UPPER_CASE</td><td>キャメルケースをスネークケース（アンダースコア区切り）の大文字に変換します。</td></tr>
-					<tr><td>SNAKE_LOWER_CASE</td><td>キャメルケーススネークケース（アンダースコア区切り）の小文字に変換します。</td></tr>
+					<tr><td>SNAKE_LOWER_CASE</td><td>キャメルケースをスネークケース（アンダースコア区切り）の小文字に変換します。</td></tr>
 					<tr><td>UPPER_CASE</td><td>大文字に変換します。</td></tr>
 					<tr><td>LOWER_CASE</td><td>小文字に変換します。</td></tr>
 				</table>
