@@ -197,7 +197,7 @@ public final class LocalTransaction {
         assertNotNull(callerMethodName);
         LocalTransactionContext context = localTxContextHolder.get();
         if (context != null) {
-            rollbackIntenal(callerMethodName);
+            rollbackInternal(callerMethodName);
             throw new LocalTransactionAlreadyBegunException(context.getId());
         }
         context = createLocalTransactionContext();
@@ -267,7 +267,7 @@ public final class LocalTransaction {
             jdbcLogger.logLocalTransactionCommitted(className, "commit",
                     context.getId());
         } catch (SQLException e) {
-            rollbackIntenal("commit");
+            rollbackInternal("commit");
             throw new JdbcException(Message.DOMA2043, e, e);
         } finally {
             end("commit");
@@ -282,7 +282,7 @@ public final class LocalTransaction {
      * このメソッドは、例外をスローしません。
      */
     public void rollback() {
-        rollbackIntenal("rollback");
+        rollbackInternal("rollback");
     }
 
     /**
@@ -293,7 +293,7 @@ public final class LocalTransaction {
      * @param callerMethodName
      *            呼び出し元のメソッド名
      */
-    private void rollbackIntenal(String callerMethodName) {
+    private void rollbackInternal(String callerMethodName) {
         assertNotNull(callerMethodName);
         LocalTransactionContext context = localTxContextHolder.get();
         if (context == null) {
@@ -333,7 +333,7 @@ public final class LocalTransaction {
      */
     public void setSavepoint(String savepointName) {
         if (savepointName == null) {
-            rollbackIntenal("setSavepoint");
+            rollbackInternal("setSavepoint");
             throw new DomaNullPointerException("savepointName");
         }
         LocalTransactionContext context = localTxContextHolder.get();
@@ -343,14 +343,14 @@ public final class LocalTransaction {
         }
         Savepoint savepoint = context.getSavepoint(savepointName);
         if (savepoint != null) {
-            rollbackIntenal("setSavepoint");
+            rollbackInternal("setSavepoint");
             throw new SavepointAleadyExistsException(savepointName);
         }
         LocalTransactionalConnection connection = context.getConnection();
         try {
             savepoint = connection.setSavepoint(savepointName);
         } catch (SQLException e) {
-            rollbackIntenal("setSavepoint");
+            rollbackInternal("setSavepoint");
             throw new JdbcException(Message.DOMA2051, e, savepointName, e);
         }
         context.addSavepoint(savepointName, savepoint);
@@ -372,7 +372,7 @@ public final class LocalTransaction {
      */
     public boolean hasSavepoint(String savepointName) {
         if (savepointName == null) {
-            rollbackIntenal("hasSavepoint");
+            rollbackInternal("hasSavepoint");
             throw new DomaNullPointerException("savepointName");
         }
         LocalTransactionContext context = localTxContextHolder.get();
@@ -402,7 +402,7 @@ public final class LocalTransaction {
      */
     public void releaseSavepoint(String savepointName) {
         if (savepointName == null) {
-            rollbackIntenal("releaseSavepoint");
+            rollbackInternal("releaseSavepoint");
             throw new DomaNullPointerException("savepointName");
         }
         LocalTransactionContext context = localTxContextHolder.get();
@@ -412,14 +412,14 @@ public final class LocalTransaction {
         }
         Savepoint savepoint = context.releaseAndGetSavepoint(savepointName);
         if (savepoint == null) {
-            rollbackIntenal("releaseSavepoint");
+            rollbackInternal("releaseSavepoint");
             throw new SavepointNotFoundException(savepointName);
         }
         LocalTransactionalConnection connection = context.getConnection();
         try {
             connection.releaseSavepoint(savepoint);
         } catch (SQLException e) {
-            rollbackIntenal("releaseSavepoint");
+            rollbackInternal("releaseSavepoint");
             throw new JdbcException(Message.DOMA2060, e, savepointName, e);
         }
         jdbcLogger.logLocalTransactionSavepointCreated(className,
@@ -448,7 +448,7 @@ public final class LocalTransaction {
      */
     public void rollback(String savepointName) {
         if (savepointName == null) {
-            rollbackIntenal("rollback");
+            rollbackInternal("rollback");
             throw new DomaNullPointerException("savepointName");
         }
         LocalTransactionContext context = localTxContextHolder.get();
@@ -458,14 +458,14 @@ public final class LocalTransaction {
         }
         Savepoint savepoint = context.getSavepoint(savepointName);
         if (savepoint == null) {
-            rollbackIntenal("rollback");
+            rollbackInternal("rollback");
             throw new SavepointNotFoundException(savepointName);
         }
         LocalTransactionalConnection connection = context.getConnection();
         try {
             connection.rollback(savepoint);
         } catch (SQLException e) {
-            rollbackIntenal("rollback");
+            rollbackInternal("rollback");
             throw new JdbcException(Message.DOMA2052, e, savepointName, e);
         }
         jdbcLogger.logLocalTransactionSavepointRolledback(className,
