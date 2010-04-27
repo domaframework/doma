@@ -259,7 +259,7 @@ public class DaoGenerator extends AbstractGenerator {
         @Override
         public Void visistSqlFileSelectQueryMeta(SqlFileSelectQueryMeta m,
                 Void p) {
-            printEnteringStatement(m);
+            printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
             iprint("%1$s __query = new %1$s();%n", m.getQueryClass().getName());
@@ -629,12 +629,13 @@ public class DaoGenerator extends AbstractGenerator {
                         qualifiedName, m.getName());
                 iprint("return __result;%n");
             }
+            printThrowingStatements(m);
             return null;
         }
 
         @Override
         public Void visistAutoModifyQueryMeta(AutoModifyQueryMeta m, Void p) {
-            printEnteringStatement(m);
+            printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
             iprint(
@@ -698,13 +699,14 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName, m
                     .getName());
             iprint("return __result;%n");
+            printThrowingStatements(m);
             return null;
         }
 
         @Override
         public Void visistSqlFileModifyQueryMeta(SqlFileModifyQueryMeta m,
                 Void p) {
-            printEnteringStatement(m);
+            printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
             iprint("%1$s __query = new %1$s();%n", m.getQueryClass().getName());
@@ -738,13 +740,14 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName, m
                     .getName());
             iprint("return __result;%n");
+            printThrowingStatements(m);
             return null;
         }
 
         @Override
         public Void visitAutoBatchModifyQueryMeta(AutoBatchModifyQueryMeta m,
                 Void p) {
-            printEnteringStatement(m);
+            printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
             iprint(
@@ -797,13 +800,14 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName, m
                     .getName());
             iprint("return __result;%n");
+            printThrowingStatements(m);
             return null;
         }
 
         @Override
         public Void visitSqlFileBatchModifyQueryMeta(
                 SqlFileBatchModifyQueryMeta m, Void p) {
-            printEnteringStatement(m);
+            printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
             iprint("%1$s<%2$s> __query = new %1$s<%2$s>(%3$s.class);%n", m
@@ -833,12 +837,13 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName, m
                     .getName());
             iprint("return __result;%n");
+            printThrowingStatements(m);
             return null;
         }
 
         @Override
         public Void visitAutoFunctionQueryMeta(AutoFunctionQueryMeta m, Void p) {
-            printEnteringStatement(m);
+            printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
             QueryReturnMeta resultMeta = m.getReturnMeta();
@@ -866,12 +871,13 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName, m
                     .getName());
             iprint("return __result;%n");
+            printThrowingStatements(m);
             return null;
         }
 
         @Override
         public Void visitAutoProcedureQueryMeta(AutoProcedureQueryMeta m, Void p) {
-            printEnteringStatement(m);
+            printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
             iprint("%1$s __query = new %1$s();%n", m.getQueryClass().getName());
@@ -893,13 +899,14 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.complete();%n");
             iprint("exiting(\"%1$s\", \"%2$s\", null);%n", qualifiedName, m
                     .getName());
+            printThrowingStatements(m);
             return null;
         }
 
         @Override
         public Void visitAbstractCreateQueryMeta(AbstractCreateQueryMeta m,
                 Void p) {
-            printEnteringStatement(m);
+            printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
             QueryReturnMeta resultMeta = m.getReturnMeta();
@@ -917,13 +924,13 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName, m
                     .getName());
             iprint("return __result;%n");
+            printThrowingStatements(m);
             return null;
         }
 
         @Override
         public Void visitArrayCreateQueryMeta(ArrayCreateQueryMeta m, Void p) {
-            iprint("entering(\"%1$s\", \"%2$s\", (Object)%3$s);%n",
-                    qualifiedName, m.getName(), m.getParameterName());
+            printArrayCreateEnteringStatements(m);
             printPrerequisiteStatements(m);
 
             QueryReturnMeta resultMeta = m.getReturnMeta();
@@ -943,12 +950,13 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName, m
                     .getName());
             iprint("return __result;%n");
+            printThrowingStatements(m);
             return null;
         }
 
         @Override
         public Void visitDelegateQueryMeta(DelegateQueryMeta m, Void p) {
-            printEnteringStatement(m);
+            printEnteringStatements(m);
 
             iprint("%1$s __delegate = new %1$s(config", m.getTo());
             if (m.isDaoAware()) {
@@ -976,10 +984,11 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName, m
                     .getName());
             iprint("return __result;%n");
+            printThrowingStatements(m);
             return null;
         }
 
-        protected void printEnteringStatement(QueryMeta m) {
+        protected void printEnteringStatements(QueryMeta m) {
             iprint("entering(\"%1$s\", \"%2$s\"", qualifiedName, m.getName());
             for (Iterator<QueryParameterMeta> it = m.getParameterMetas()
                     .iterator(); it.hasNext();) {
@@ -987,6 +996,26 @@ public class DaoGenerator extends AbstractGenerator {
                 print(", %1$s", parameterMeta.getName());
             }
             print(");%n");
+            iprint("try {%n");
+            indent();
+        }
+
+        protected void printArrayCreateEnteringStatements(ArrayCreateQueryMeta m) {
+            iprint("entering(\"%1$s\", \"%2$s\", (Object)%3$s);%n",
+                    qualifiedName, m.getName(), m.getParameterName());
+            iprint("try {%n");
+            indent();
+        }
+
+        protected void printThrowingStatements(QueryMeta m) {
+            unindent();
+            iprint("} catch (%1$s __e) {%n", RuntimeException.class.getName());
+            indent();
+            iprint("throwing(\"%1$s\", \"%2$s\", __e);%n", qualifiedName, m
+                    .getName());
+            iprint("throw __e;%n");
+            unindent();
+            iprint("}%n");
         }
 
         protected void printPrerequisiteStatements(QueryMeta m) {

@@ -30,59 +30,74 @@ public class PrimitiveTypeDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abst
     @Override
     public int selectById(int id) {
         entering("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl", "selectById", id);
-        org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-        __query.setConfig(config);
-        __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/PrimitiveTypeDao/selectById.sql");
-        __query.addParameter("id", int.class, id);
-        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl");
-        __query.setCallerMethodName("selectById");
-        __query.setResultEnsured(false);
-        __query.setQueryTimeout(-1);
-        __query.setMaxRows(-1);
-        __query.setFetchSize(-1);
-        __query.prepare();
-        org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.Integer> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.Integer>(__query, new org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler<java.lang.Integer>(new org.seasar.doma.wrapper.IntegerWrapper(), true));
-        int __result = __command.execute();
-        __query.complete();
-        exiting("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl", "selectById", __result);
-        return __result;
+        try {
+            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
+            __query.setConfig(config);
+            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/PrimitiveTypeDao/selectById.sql");
+            __query.addParameter("id", int.class, id);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl");
+            __query.setCallerMethodName("selectById");
+            __query.setResultEnsured(false);
+            __query.setQueryTimeout(-1);
+            __query.setMaxRows(-1);
+            __query.setFetchSize(-1);
+            __query.prepare();
+            org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.Integer> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.Integer>(__query, new org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler<java.lang.Integer>(new org.seasar.doma.wrapper.IntegerWrapper(), true));
+            int __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl", "selectById", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl", "selectById", __e);
+            throw __e;
+        }
     }
 
     @Override
     public int update(int id) {
         entering("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl", "update", id);
-        org.seasar.doma.internal.jdbc.query.SqlFileUpdateQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileUpdateQuery();
-        __query.setConfig(config);
-        __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/PrimitiveTypeDao/update.sql");
-        __query.addParameter("id", int.class, id);
-        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl");
-        __query.setCallerMethodName("update");
-        __query.setQueryTimeout(-1);
-        __query.prepare();
-        org.seasar.doma.internal.jdbc.command.UpdateCommand __command = new org.seasar.doma.internal.jdbc.command.UpdateCommand(__query);
-        int __result = __command.execute();
-        __query.complete();
-        exiting("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl", "update", __result);
-        return __result;
+        try {
+            org.seasar.doma.internal.jdbc.query.SqlFileUpdateQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileUpdateQuery();
+            __query.setConfig(config);
+            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/PrimitiveTypeDao/update.sql");
+            __query.addParameter("id", int.class, id);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl");
+            __query.setCallerMethodName("update");
+            __query.setQueryTimeout(-1);
+            __query.prepare();
+            org.seasar.doma.internal.jdbc.command.UpdateCommand __command = new org.seasar.doma.internal.jdbc.command.UpdateCommand(__query);
+            int __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl", "update", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl", "update", __e);
+            throw __e;
+        }
     }
 
     @Override
     public int execute(int id) {
         entering("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl", "execute", id);
-        org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.lang.Integer> __query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.lang.Integer>();
-        __query.setConfig(config);
-        __query.setFunctionName("execute");
-        __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.BasicResultParameter<java.lang.Integer>(new org.seasar.doma.wrapper.IntegerWrapper(), true));
-        __query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicInParameter(new org.seasar.doma.wrapper.IntegerWrapper(id)));
-        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl");
-        __query.setCallerMethodName("execute");
-        __query.setQueryTimeout(-1);
-        __query.prepare();
-        org.seasar.doma.internal.jdbc.command.FunctionCommand<java.lang.Integer> __command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<java.lang.Integer>(__query);
-        int __result = __command.execute();
-        __query.complete();
-        exiting("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl", "execute", __result);
-        return __result;
+        try {
+            org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.lang.Integer> __query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.lang.Integer>();
+            __query.setConfig(config);
+            __query.setFunctionName("execute");
+            __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.BasicResultParameter<java.lang.Integer>(new org.seasar.doma.wrapper.IntegerWrapper(), true));
+            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicInParameter(new org.seasar.doma.wrapper.IntegerWrapper(id)));
+            __query.setCallerClassName("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl");
+            __query.setCallerMethodName("execute");
+            __query.setQueryTimeout(-1);
+            __query.prepare();
+            org.seasar.doma.internal.jdbc.command.FunctionCommand<java.lang.Integer> __command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<java.lang.Integer>(__query);
+            int __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl", "execute", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl", "execute", __e);
+            throw __e;
+        }
     }
 
 }

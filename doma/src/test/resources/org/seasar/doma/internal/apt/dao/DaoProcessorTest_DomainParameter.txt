@@ -30,22 +30,27 @@ public class DomainParameterDaoImpl extends org.seasar.doma.internal.jdbc.dao.Ab
     @Override
     public org.seasar.doma.internal.apt.entity.Emp select(example.domain.PhoneNumber phoneNumber) {
         entering("org.seasar.doma.internal.apt.dao.DomainParameterDaoImpl", "select", phoneNumber);
-        org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-        __query.setConfig(config);
-        __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/DomainParameterDao/select.sql");
-        __query.addParameter("phoneNumber", example.domain.PhoneNumber.class, phoneNumber);
-        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.DomainParameterDaoImpl");
-        __query.setCallerMethodName("select");
-        __query.setResultEnsured(false);
-        __query.setQueryTimeout(-1);
-        __query.setMaxRows(-1);
-        __query.setFetchSize(-1);
-        __query.prepare();
-        org.seasar.doma.internal.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.entity.Emp> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.entity.Emp>(__query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal()));
-        org.seasar.doma.internal.apt.entity.Emp __result = __command.execute();
-        __query.complete();
-        exiting("org.seasar.doma.internal.apt.dao.DomainParameterDaoImpl", "select", __result);
-        return __result;
+        try {
+            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
+            __query.setConfig(config);
+            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/DomainParameterDao/select.sql");
+            __query.addParameter("phoneNumber", example.domain.PhoneNumber.class, phoneNumber);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.dao.DomainParameterDaoImpl");
+            __query.setCallerMethodName("select");
+            __query.setResultEnsured(false);
+            __query.setQueryTimeout(-1);
+            __query.setMaxRows(-1);
+            __query.setFetchSize(-1);
+            __query.prepare();
+            org.seasar.doma.internal.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.entity.Emp> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.entity.Emp>(__query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal()));
+            org.seasar.doma.internal.apt.entity.Emp __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.dao.DomainParameterDaoImpl", "select", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.dao.DomainParameterDaoImpl", "select", __e);
+            throw __e;
+        }
     }
 
 }

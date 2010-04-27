@@ -30,25 +30,30 @@ public class AutoBatchUpdateDaoImpl extends org.seasar.doma.internal.jdbc.dao.Ab
     @Override
     public int[] update(java.util.List<org.seasar.doma.internal.apt.entity.Emp> entities) {
         entering("org.seasar.doma.internal.apt.dao.AutoBatchUpdateDaoImpl", "update", entities);
-        if (entities == null) {
-            throw new org.seasar.doma.DomaNullPointerException("entities");
+        try {
+            if (entities == null) {
+                throw new org.seasar.doma.DomaNullPointerException("entities");
+            }
+            org.seasar.doma.internal.jdbc.query.AutoBatchUpdateQuery<org.seasar.doma.internal.apt.entity.Emp> __query = new org.seasar.doma.internal.jdbc.query.AutoBatchUpdateQuery<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
+            __query.setConfig(config);
+            __query.setEntities(entities);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoBatchUpdateDaoImpl");
+            __query.setCallerMethodName("update");
+            __query.setQueryTimeout(-1);
+            __query.setVersionIncluded(false);
+            __query.setIncludedPropertyNames();
+            __query.setExcludedPropertyNames();
+            __query.setOptimisticLockExceptionSuppressed(false);
+            __query.prepare();
+            org.seasar.doma.internal.jdbc.command.BatchUpdateCommand __command = new org.seasar.doma.internal.jdbc.command.BatchUpdateCommand(__query);
+            int[] __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.dao.AutoBatchUpdateDaoImpl", "update", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.dao.AutoBatchUpdateDaoImpl", "update", __e);
+            throw __e;
         }
-        org.seasar.doma.internal.jdbc.query.AutoBatchUpdateQuery<org.seasar.doma.internal.apt.entity.Emp> __query = new org.seasar.doma.internal.jdbc.query.AutoBatchUpdateQuery<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
-        __query.setConfig(config);
-        __query.setEntities(entities);
-        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoBatchUpdateDaoImpl");
-        __query.setCallerMethodName("update");
-        __query.setQueryTimeout(-1);
-        __query.setVersionIncluded(false);
-        __query.setIncludedPropertyNames();
-        __query.setExcludedPropertyNames();
-        __query.setOptimisticLockExceptionSuppressed(false);
-        __query.prepare();
-        org.seasar.doma.internal.jdbc.command.BatchUpdateCommand __command = new org.seasar.doma.internal.jdbc.command.BatchUpdateCommand(__query);
-        int[] __result = __command.execute();
-        __query.complete();
-        exiting("org.seasar.doma.internal.apt.dao.AutoBatchUpdateDaoImpl", "update", __result);
-        return __result;
     }
 
 }

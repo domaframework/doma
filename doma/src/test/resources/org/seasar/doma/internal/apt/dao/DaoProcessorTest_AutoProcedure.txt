@@ -30,22 +30,27 @@ public class AutoProcedureDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abst
     @Override
     public void executeProcedure(java.lang.Integer arg1, org.seasar.doma.jdbc.Reference<java.lang.Integer> arg2) {
         entering("org.seasar.doma.internal.apt.dao.AutoProcedureDaoImpl", "executeProcedure", arg1, arg2);
-        if (arg2 == null) {
-            throw new org.seasar.doma.DomaNullPointerException("arg2");
+        try {
+            if (arg2 == null) {
+                throw new org.seasar.doma.DomaNullPointerException("arg2");
+            }
+            org.seasar.doma.internal.jdbc.query.AutoProcedureQuery __query = new org.seasar.doma.internal.jdbc.query.AutoProcedureQuery();
+            __query.setConfig(config);
+            __query.setProcedureName("executeProcedure");
+            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicInParameter(new org.seasar.doma.wrapper.IntegerWrapper(arg1)));
+            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicOutParameter<java.lang.Integer>(new org.seasar.doma.wrapper.IntegerWrapper(), arg2));
+            __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoProcedureDaoImpl");
+            __query.setCallerMethodName("executeProcedure");
+            __query.setQueryTimeout(-1);
+            __query.prepare();
+            org.seasar.doma.internal.jdbc.command.ProcedureCommand __command = new org.seasar.doma.internal.jdbc.command.ProcedureCommand(__query);
+            __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.dao.AutoProcedureDaoImpl", "executeProcedure", null);
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.dao.AutoProcedureDaoImpl", "executeProcedure", __e);
+            throw __e;
         }
-        org.seasar.doma.internal.jdbc.query.AutoProcedureQuery __query = new org.seasar.doma.internal.jdbc.query.AutoProcedureQuery();
-        __query.setConfig(config);
-        __query.setProcedureName("executeProcedure");
-        __query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicInParameter(new org.seasar.doma.wrapper.IntegerWrapper(arg1)));
-        __query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicOutParameter<java.lang.Integer>(new org.seasar.doma.wrapper.IntegerWrapper(), arg2));
-        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoProcedureDaoImpl");
-        __query.setCallerMethodName("executeProcedure");
-        __query.setQueryTimeout(-1);
-        __query.prepare();
-        org.seasar.doma.internal.jdbc.command.ProcedureCommand __command = new org.seasar.doma.internal.jdbc.command.ProcedureCommand(__query);
-        __command.execute();
-        __query.complete();
-        exiting("org.seasar.doma.internal.apt.dao.AutoProcedureDaoImpl", "executeProcedure", null);
     }
 
 }

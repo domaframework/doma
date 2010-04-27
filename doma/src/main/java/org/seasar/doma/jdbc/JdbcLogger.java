@@ -59,6 +59,19 @@ public interface JdbcLogger {
             Object result);
 
     /**
+     * Daoメソッドの実行時例外がスローされたことによる実行終了を記録します。
+     * 
+     * @param callerClassName
+     *            Daoのクラス名
+     * @param callerMethodName
+     *            Daoのメソッド名
+     * @param e
+     *            実行時例外
+     */
+    void logDaoMethodThrowing(String callerClassName, String callerMethodName,
+            RuntimeException e);
+
+    /**
      * SQLの実行がスキップされたことを記録します。
      * 
      * @param callerClassName

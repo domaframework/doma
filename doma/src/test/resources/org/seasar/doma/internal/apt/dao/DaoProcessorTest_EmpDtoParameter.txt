@@ -30,68 +30,83 @@ public class EmpDtoParameterDaoImpl extends org.seasar.doma.internal.jdbc.dao.Ab
     @Override
     public java.lang.String select(org.seasar.doma.internal.apt.entity.EmpDto dto) {
         entering("org.seasar.doma.internal.apt.dao.EmpDtoParameterDaoImpl", "select", dto);
-        if (dto == null) {
-            throw new org.seasar.doma.DomaNullPointerException("dto");
+        try {
+            if (dto == null) {
+                throw new org.seasar.doma.DomaNullPointerException("dto");
+            }
+            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
+            __query.setConfig(config);
+            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/EmpDtoParameterDao/select.sql");
+            __query.addParameter("dto", org.seasar.doma.internal.apt.entity.EmpDto.class, dto);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EmpDtoParameterDaoImpl");
+            __query.setCallerMethodName("select");
+            __query.setResultEnsured(false);
+            __query.setQueryTimeout(-1);
+            __query.setMaxRows(-1);
+            __query.setFetchSize(-1);
+            __query.prepare();
+            org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.String> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.String>(__query, new org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler<java.lang.String>(new org.seasar.doma.wrapper.StringWrapper(), false));
+            java.lang.String __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.dao.EmpDtoParameterDaoImpl", "select", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.dao.EmpDtoParameterDaoImpl", "select", __e);
+            throw __e;
         }
-        org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-        __query.setConfig(config);
-        __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/EmpDtoParameterDao/select.sql");
-        __query.addParameter("dto", org.seasar.doma.internal.apt.entity.EmpDto.class, dto);
-        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EmpDtoParameterDaoImpl");
-        __query.setCallerMethodName("select");
-        __query.setResultEnsured(false);
-        __query.setQueryTimeout(-1);
-        __query.setMaxRows(-1);
-        __query.setFetchSize(-1);
-        __query.prepare();
-        org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.String> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.lang.String>(__query, new org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler<java.lang.String>(new org.seasar.doma.wrapper.StringWrapper(), false));
-        java.lang.String __result = __command.execute();
-        __query.complete();
-        exiting("org.seasar.doma.internal.apt.dao.EmpDtoParameterDaoImpl", "select", __result);
-        return __result;
     }
 
     @Override
     public int insert(org.seasar.doma.internal.apt.entity.EmpDto dto) {
         entering("org.seasar.doma.internal.apt.dao.EmpDtoParameterDaoImpl", "insert", dto);
-        if (dto == null) {
-            throw new org.seasar.doma.DomaNullPointerException("dto");
+        try {
+            if (dto == null) {
+                throw new org.seasar.doma.DomaNullPointerException("dto");
+            }
+            org.seasar.doma.internal.jdbc.query.SqlFileInsertQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileInsertQuery();
+            __query.setConfig(config);
+            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/EmpDtoParameterDao/insert.sql");
+            __query.addParameter("dto", org.seasar.doma.internal.apt.entity.EmpDto.class, dto);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EmpDtoParameterDaoImpl");
+            __query.setCallerMethodName("insert");
+            __query.setQueryTimeout(-1);
+            __query.prepare();
+            org.seasar.doma.internal.jdbc.command.InsertCommand __command = new org.seasar.doma.internal.jdbc.command.InsertCommand(__query);
+            int __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.dao.EmpDtoParameterDaoImpl", "insert", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.dao.EmpDtoParameterDaoImpl", "insert", __e);
+            throw __e;
         }
-        org.seasar.doma.internal.jdbc.query.SqlFileInsertQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileInsertQuery();
-        __query.setConfig(config);
-        __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/EmpDtoParameterDao/insert.sql");
-        __query.addParameter("dto", org.seasar.doma.internal.apt.entity.EmpDto.class, dto);
-        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EmpDtoParameterDaoImpl");
-        __query.setCallerMethodName("insert");
-        __query.setQueryTimeout(-1);
-        __query.prepare();
-        org.seasar.doma.internal.jdbc.command.InsertCommand __command = new org.seasar.doma.internal.jdbc.command.InsertCommand(__query);
-        int __result = __command.execute();
-        __query.complete();
-        exiting("org.seasar.doma.internal.apt.dao.EmpDtoParameterDaoImpl", "insert", __result);
-        return __result;
     }
 
     @Override
     public int[] insert(java.util.List<org.seasar.doma.internal.apt.entity.EmpDto> dto) {
         entering("org.seasar.doma.internal.apt.dao.EmpDtoParameterDaoImpl", "insert", dto);
-        if (dto == null) {
-            throw new org.seasar.doma.DomaNullPointerException("dto");
+        try {
+            if (dto == null) {
+                throw new org.seasar.doma.DomaNullPointerException("dto");
+            }
+            org.seasar.doma.internal.jdbc.query.SqlFileBatchInsertQuery<org.seasar.doma.internal.apt.entity.EmpDto> __query = new org.seasar.doma.internal.jdbc.query.SqlFileBatchInsertQuery<org.seasar.doma.internal.apt.entity.EmpDto>(org.seasar.doma.internal.apt.entity.EmpDto.class);
+            __query.setConfig(config);
+            __query.setElements(dto);
+            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/EmpDtoParameterDao/insert.sql");
+            __query.setParameterName("dto");
+            __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EmpDtoParameterDaoImpl");
+            __query.setCallerMethodName("insert");
+            __query.setQueryTimeout(-1);
+            __query.prepare();
+            org.seasar.doma.internal.jdbc.command.BatchInsertCommand __command = new org.seasar.doma.internal.jdbc.command.BatchInsertCommand(__query);
+            int[] __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.dao.EmpDtoParameterDaoImpl", "insert", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.dao.EmpDtoParameterDaoImpl", "insert", __e);
+            throw __e;
         }
-        org.seasar.doma.internal.jdbc.query.SqlFileBatchInsertQuery<org.seasar.doma.internal.apt.entity.EmpDto> __query = new org.seasar.doma.internal.jdbc.query.SqlFileBatchInsertQuery<org.seasar.doma.internal.apt.entity.EmpDto>(org.seasar.doma.internal.apt.entity.EmpDto.class);
-        __query.setConfig(config);
-        __query.setElements(dto);
-        __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/EmpDtoParameterDao/insert.sql");
-        __query.setParameterName("dto");
-        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EmpDtoParameterDaoImpl");
-        __query.setCallerMethodName("insert");
-        __query.setQueryTimeout(-1);
-        __query.prepare();
-        org.seasar.doma.internal.jdbc.command.BatchInsertCommand __command = new org.seasar.doma.internal.jdbc.command.BatchInsertCommand(__query);
-        int[] __result = __command.execute();
-        __query.complete();
-        exiting("org.seasar.doma.internal.apt.dao.EmpDtoParameterDaoImpl", "insert", __result);
-        return __result;
     }
 
 }

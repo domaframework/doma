@@ -18,24 +18,29 @@ public class NoConfigDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractD
     @Override
     public int insert(org.seasar.doma.internal.apt.entity.Emp emp) {
         entering("org.seasar.doma.internal.apt.dao.NoConfigDaoImpl", "insert", emp);
-        if (emp == null) {
-            throw new org.seasar.doma.DomaNullPointerException("emp");
+        try {
+            if (emp == null) {
+                throw new org.seasar.doma.DomaNullPointerException("emp");
+            }
+            org.seasar.doma.internal.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.entity.Emp> __query = new org.seasar.doma.internal.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
+            __query.setConfig(config);
+            __query.setEntity(emp);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.dao.NoConfigDaoImpl");
+            __query.setCallerMethodName("insert");
+            __query.setQueryTimeout(-1);
+            __query.setNullExcluded(false);
+            __query.setIncludedPropertyNames();
+            __query.setExcludedPropertyNames();
+            __query.prepare();
+            org.seasar.doma.internal.jdbc.command.InsertCommand __command = new org.seasar.doma.internal.jdbc.command.InsertCommand(__query);
+            int __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.dao.NoConfigDaoImpl", "insert", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.dao.NoConfigDaoImpl", "insert", __e);
+            throw __e;
         }
-        org.seasar.doma.internal.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.entity.Emp> __query = new org.seasar.doma.internal.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
-        __query.setConfig(config);
-        __query.setEntity(emp);
-        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.NoConfigDaoImpl");
-        __query.setCallerMethodName("insert");
-        __query.setQueryTimeout(-1);
-        __query.setNullExcluded(false);
-        __query.setIncludedPropertyNames();
-        __query.setExcludedPropertyNames();
-        __query.prepare();
-        org.seasar.doma.internal.jdbc.command.InsertCommand __command = new org.seasar.doma.internal.jdbc.command.InsertCommand(__query);
-        int __result = __command.execute();
-        __query.complete();
-        exiting("org.seasar.doma.internal.apt.dao.NoConfigDaoImpl", "insert", __result);
-        return __result;
     }
 
 }

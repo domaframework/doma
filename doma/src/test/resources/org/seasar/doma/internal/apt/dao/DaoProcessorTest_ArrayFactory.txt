@@ -30,21 +30,26 @@ public class ArrayFactoryDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
     @Override
     public java.sql.Array create(java.lang.String[] elements) {
         entering("org.seasar.doma.internal.apt.dao.ArrayFactoryDaoImpl", "create", (Object)elements);
-        if (elements == null) {
-            throw new org.seasar.doma.DomaNullPointerException("elements");
+        try {
+            if (elements == null) {
+                throw new org.seasar.doma.DomaNullPointerException("elements");
+            }
+            org.seasar.doma.internal.jdbc.query.ArrayCreateQuery __query = new org.seasar.doma.internal.jdbc.query.ArrayCreateQuery();
+            __query.setConfig(config);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.dao.ArrayFactoryDaoImpl");
+            __query.setCallerMethodName("create");
+            __query.setTypeName("varchar");
+            __query.setElements(elements);
+            __query.prepare();
+            org.seasar.doma.internal.jdbc.command.CreateCommand<java.sql.Array> __command = new org.seasar.doma.internal.jdbc.command.CreateCommand<java.sql.Array>(__query);
+            java.sql.Array __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.dao.ArrayFactoryDaoImpl", "create", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.dao.ArrayFactoryDaoImpl", "create", __e);
+            throw __e;
         }
-        org.seasar.doma.internal.jdbc.query.ArrayCreateQuery __query = new org.seasar.doma.internal.jdbc.query.ArrayCreateQuery();
-        __query.setConfig(config);
-        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.ArrayFactoryDaoImpl");
-        __query.setCallerMethodName("create");
-        __query.setTypeName("varchar");
-        __query.setElements(elements);
-        __query.prepare();
-        org.seasar.doma.internal.jdbc.command.CreateCommand<java.sql.Array> __command = new org.seasar.doma.internal.jdbc.command.CreateCommand<java.sql.Array>(__query);
-        java.sql.Array __result = __command.execute();
-        __query.complete();
-        exiting("org.seasar.doma.internal.apt.dao.ArrayFactoryDaoImpl", "create", __result);
-        return __result;
     }
 
 }

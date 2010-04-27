@@ -143,7 +143,7 @@ public abstract class AbstractDao {
     }
 
     /**
-     * この {@literal Data Access Object} の {@literal public} なメソッドの実行開始を記録します。
+     * このDaoの {@literal public} なメソッドの実行開始を記録します。
      * 
      * @param callerClassName
      *            クラス名前
@@ -159,7 +159,7 @@ public abstract class AbstractDao {
     }
 
     /**
-     * この {@literal Data Access Object} の {@literal public} なメソッドの実行終了を記録します。
+     * このDaoなメソッドの実行終了を記録します。
      * 
      * @param callerClassName
      *            クラス名
@@ -172,6 +172,22 @@ public abstract class AbstractDao {
             Object result) {
         config.getJdbcLogger().logDaoMethodExiting(callerClassName,
                 callerMethodName, result);
+    }
+
+    /**
+     * このDaoなメソッドの 実行時例外による 実行終了を記録します。
+     * 
+     * @param callerClassName
+     *            クラス名
+     * @param callerMethodName
+     *            メソッド名
+     * @param e
+     *            実行時例外
+     */
+    protected void throwing(String callerClassName, String callerMethodName,
+            RuntimeException e) {
+        config.getJdbcLogger().logDaoMethodThrowing(callerClassName,
+                callerMethodName, e);
     }
 
 }

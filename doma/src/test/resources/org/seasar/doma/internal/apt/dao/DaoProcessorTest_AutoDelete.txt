@@ -30,23 +30,28 @@ public class AutoDeleteDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstrac
     @Override
     public int delete(org.seasar.doma.internal.apt.entity.Emp entity) {
         entering("org.seasar.doma.internal.apt.dao.AutoDeleteDaoImpl", "delete", entity);
-        if (entity == null) {
-            throw new org.seasar.doma.DomaNullPointerException("entity");
+        try {
+            if (entity == null) {
+                throw new org.seasar.doma.DomaNullPointerException("entity");
+            }
+            org.seasar.doma.internal.jdbc.query.AutoDeleteQuery<org.seasar.doma.internal.apt.entity.Emp> __query = new org.seasar.doma.internal.jdbc.query.AutoDeleteQuery<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
+            __query.setConfig(config);
+            __query.setEntity(entity);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoDeleteDaoImpl");
+            __query.setCallerMethodName("delete");
+            __query.setQueryTimeout(-1);
+            __query.setVersionIgnored(false);
+            __query.setOptimisticLockExceptionSuppressed(false);
+            __query.prepare();
+            org.seasar.doma.internal.jdbc.command.DeleteCommand __command = new org.seasar.doma.internal.jdbc.command.DeleteCommand(__query);
+            int __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.dao.AutoDeleteDaoImpl", "delete", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.dao.AutoDeleteDaoImpl", "delete", __e);
+            throw __e;
         }
-        org.seasar.doma.internal.jdbc.query.AutoDeleteQuery<org.seasar.doma.internal.apt.entity.Emp> __query = new org.seasar.doma.internal.jdbc.query.AutoDeleteQuery<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
-        __query.setConfig(config);
-        __query.setEntity(entity);
-        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoDeleteDaoImpl");
-        __query.setCallerMethodName("delete");
-        __query.setQueryTimeout(-1);
-        __query.setVersionIgnored(false);
-        __query.setOptimisticLockExceptionSuppressed(false);
-        __query.prepare();
-        org.seasar.doma.internal.jdbc.command.DeleteCommand __command = new org.seasar.doma.internal.jdbc.command.DeleteCommand(__query);
-        int __result = __command.execute();
-        __query.complete();
-        exiting("org.seasar.doma.internal.apt.dao.AutoDeleteDaoImpl", "delete", __result);
-        return __result;
     }
 
 }

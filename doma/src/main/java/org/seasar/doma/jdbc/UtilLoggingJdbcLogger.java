@@ -75,6 +75,13 @@ public class UtilLoggingJdbcLogger implements JdbcLogger {
     }
 
     @Override
+    public void logDaoMethodThrowing(String callerClassName,
+            String callerMethodName, RuntimeException e) {
+        logger.logp(level, callerClassName, callerMethodName, "THROW {0}", e
+                .toString());
+    }
+
+    @Override
     public void logSqlExecutionSkipping(String callerClassName,
             String callerMethodName, SqlExecutionSkipCause cause) {
         logger.logp(level, callerClassName, callerMethodName, cause.name());

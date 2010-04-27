@@ -30,27 +30,32 @@ public class AutoUpdateDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstrac
     @Override
     public int update(org.seasar.doma.internal.apt.entity.Emp entity) {
         entering("org.seasar.doma.internal.apt.dao.AutoUpdateDaoImpl", "update", entity);
-        if (entity == null) {
-            throw new org.seasar.doma.DomaNullPointerException("entity");
+        try {
+            if (entity == null) {
+                throw new org.seasar.doma.DomaNullPointerException("entity");
+            }
+            org.seasar.doma.internal.jdbc.query.AutoUpdateQuery<org.seasar.doma.internal.apt.entity.Emp> __query = new org.seasar.doma.internal.jdbc.query.AutoUpdateQuery<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
+            __query.setConfig(config);
+            __query.setEntity(entity);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoUpdateDaoImpl");
+            __query.setCallerMethodName("update");
+            __query.setQueryTimeout(-1);
+            __query.setNullExcluded(false);
+            __query.setVersionIncluded(false);
+            __query.setIncludedPropertyNames();
+            __query.setExcludedPropertyNames();
+            __query.setUnchangedPropertyIncluded(false);
+            __query.setOptimisticLockExceptionSuppressed(false);
+            __query.prepare();
+            org.seasar.doma.internal.jdbc.command.UpdateCommand __command = new org.seasar.doma.internal.jdbc.command.UpdateCommand(__query);
+            int __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.dao.AutoUpdateDaoImpl", "update", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.dao.AutoUpdateDaoImpl", "update", __e);
+            throw __e;
         }
-        org.seasar.doma.internal.jdbc.query.AutoUpdateQuery<org.seasar.doma.internal.apt.entity.Emp> __query = new org.seasar.doma.internal.jdbc.query.AutoUpdateQuery<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
-        __query.setConfig(config);
-        __query.setEntity(entity);
-        __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoUpdateDaoImpl");
-        __query.setCallerMethodName("update");
-        __query.setQueryTimeout(-1);
-        __query.setNullExcluded(false);
-        __query.setVersionIncluded(false);
-        __query.setIncludedPropertyNames();
-        __query.setExcludedPropertyNames();
-        __query.setUnchangedPropertyIncluded(false);
-        __query.setOptimisticLockExceptionSuppressed(false);
-        __query.prepare();
-        org.seasar.doma.internal.jdbc.command.UpdateCommand __command = new org.seasar.doma.internal.jdbc.command.UpdateCommand(__query);
-        int __result = __command.execute();
-        __query.complete();
-        exiting("org.seasar.doma.internal.apt.dao.AutoUpdateDaoImpl", "update", __result);
-        return __result;
     }
 
 }
