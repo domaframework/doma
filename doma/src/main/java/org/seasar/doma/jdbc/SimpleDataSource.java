@@ -30,7 +30,7 @@ import org.seasar.doma.internal.message.Message;
  * {@link Connection} を返す単純なデータソースです。
  * <p>
  * ごく単純なアプリケーションやサンプルプログラムで使用されることを想定しています。 通常は、{@literal JTA}トランザクションと連携する
- * {@link DataSource} の実装を使用してください。
+ * 実装やコネクションプーリングを提供する {@link DataSource} の実装を使用してください。
  * 
  * @author taedium
  * 

@@ -23,7 +23,7 @@ package org.seasar.doma.jdbc;
  */
 public enum SqlExecutionSkipCause {
 
-    /** エンティティのステートが変更されていないことを示します。 */
+    /** 更新対象のエンティティのステートが変更されていないことを示します。 */
     STATE_UNCHANGED,
 
     /** バッチ処理対象のエンティティが1件も存在しないことを示します。 */

@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 識別子を示します。
+ * エンティティの識別子を示します。
  * <p>
  * このアノテーションが注釈されるフィールドは、エンティティクラスのメンバでなければいけません。
  * 

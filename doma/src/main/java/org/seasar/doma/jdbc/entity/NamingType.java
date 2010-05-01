@@ -27,13 +27,13 @@ import org.seasar.doma.internal.util.StringUtil;
  * <p>
  * エンティティ名とプロパティ名に規約を適用し、テーブル名とカラム名を求めます。
  * <ul>
- * <li>エンティティ名とは {@link Entity} が注釈されたインタフェースの単純名です。
- * <li>プロパティ名とは {@code Entity} が注釈されたインタフェースのフィールドメソッド（ただし、 {@link Transient}
+ * <li>エンティティ名とは {@link Entity} が注釈されたクラスの単純名です。
+ * <li>プロパティ名とは {@code Entity} が注釈されたクラスに属するフィールド（ただし、 {@link Transient}
  * が注釈されたものは除く ）の名前です。
  * </ul>
  * <p>
- * エンティティのクラスに {@link Table#name()} が指定されていない場合や、プロパティのフィールドに
- * {@link Column#name()} が指定されていない場合にこの規約が適用されます。
+ * エンティティクラスに {@link Table#name()} が指定されていない場合や、フィールドに {@link Column#name()}
+ * が指定されていない場合にこの規約が適用されます。
  * <p>
  * 
  * @author taedium

@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
+ * Copyright 2めｓ004-2010 the Seasar Foundation and the Others.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import org.seasar.doma.jdbc.tx.LocalTransaction;
 
 /**
  * JDBCに関する処理を記録するロガーです。
@@ -47,6 +49,10 @@ public interface JdbcLogger {
 
     /**
      * Daoメソッドの実行終了を記録します。
+     * <p>
+     * Daoメソッドの実行終了時には、このメソッドもしくは
+     * {@link #logDaoMethodThrowing(String, String, RuntimeException)}
+     * のどちらかが呼び出されます。
      * 
      * @param callerClassName
      *            Daoのクラス名
@@ -59,7 +65,10 @@ public interface JdbcLogger {
             Object result);
 
     /**
-     * Daoメソッドの実行時例外がスローされたことによる実行終了を記録します。
+     * Daoメソッドの実行時例外による実行終了を記録します。
+     * <p>
+     * Daoメソッドの実行終了時には、このメソッドもしくは
+     * {@link #logDaoMethodExiting(String, String, Object)} のどちらかが呼び出されます。
      * 
      * @param callerClassName
      *            Daoのクラス名
@@ -67,6 +76,7 @@ public interface JdbcLogger {
      *            Daoのメソッド名
      * @param e
      *            実行時例外
+     * @since 1.6.0
      */
     void logDaoMethodThrowing(String callerClassName, String callerMethodName,
             RuntimeException e);
@@ -97,7 +107,10 @@ public interface JdbcLogger {
     void logSql(String callerClassName, String callerMethodName, Sql<?> sql);
 
     /**
-     * トランザクションの開始を記録します。
+     * ローカルトランザクションの開始を記録します。
+     * <p>
+     * {@link LocalTransaction} から呼び出されます。 {@link LocalTransaction}
+     * を使用しない場合、このメソッドが呼び出されることはありません。
      * 
      * @param callerClassName
      *            呼び出し元のクラス名
@@ -111,7 +124,10 @@ public interface JdbcLogger {
             String callerMethodName, String transactionId);
 
     /**
-     * トランザクションの終了を記録します。
+     * ローカルトランザクションの終了を記録します。
+     * <p>
+     * {@link LocalTransaction} から呼び出されます。 {@link LocalTransaction}
+     * を使用しない場合、このメソッドが呼び出されることはありません。
      * 
      * @param callerClassName
      *            呼び出し元のクラス名
@@ -125,7 +141,10 @@ public interface JdbcLogger {
             String callerMethodName, String transactionId);
 
     /**
-     * トランザクションのコミットを記録します。
+     * ローカルトランザクションのコミットを記録します。
+     * <p>
+     * {@link LocalTransaction} から呼び出されます。 {@link LocalTransaction}
+     * を使用しない場合、このメソッドが呼び出されることはありません。
      * 
      * @param callerClassName
      *            呼び出し元のクラス名
@@ -139,7 +158,10 @@ public interface JdbcLogger {
             String callerMethodName, String transactionId);
 
     /**
-     * トランザクションのセーブポイントの作成を記録します。
+     * ローカルトランザクションのセーブポイントの作成を記録します。
+     * <p>
+     * {@link LocalTransaction} から呼び出されます。 {@link LocalTransaction}
+     * を使用しない場合、このメソッドが呼び出されることはありません。
      * 
      * @param callerClassName
      *            呼び出し元のクラス名
@@ -155,7 +177,10 @@ public interface JdbcLogger {
             String callerMethodName, String transactionId, String savepointName);
 
     /**
-     * トランザクションのセーブポイントの削除を記録します。
+     * ローカルトランザクションのセーブポイントの削除を記録します。
+     * <p>
+     * {@link LocalTransaction} から呼び出されます。 {@link LocalTransaction}
+     * を使用しない場合、このメソッドが呼び出されることはありません。
      * 
      * @param callerClassName
      *            呼び出し元のクラス名
@@ -171,7 +196,10 @@ public interface JdbcLogger {
             String callerMethodName, String transactionId, String savepointName);
 
     /**
-     * トランザクションのロールバックを記録します。
+     * ローカルトランザクションのロールバックを記録します。
+     * <p>
+     * {@link LocalTransaction} から呼び出されます。 {@link LocalTransaction}
+     * を使用しない場合、このメソッドが呼び出されることはありません。
      * 
      * @param callerClassName
      *            呼び出し元のクラス名
@@ -185,7 +213,10 @@ public interface JdbcLogger {
             String callerMethodName, String transactionId);
 
     /**
-     * トランザクションのセーブポイントのロールバックを記録します。
+     * ローカルトランザクションのセーブポイントのロールバックを記録します。
+     * <p>
+     * {@link LocalTransaction} から呼び出されます。 {@link LocalTransaction}
+     * を使用しない場合、このメソッドが呼び出されることはありません。
      * 
      * @param callerClassName
      *            呼び出し元のクラス名
@@ -201,7 +232,10 @@ public interface JdbcLogger {
             String callerMethodName, String transactionId, String savepointName);
 
     /**
-     * トランザクションのロールバックの失敗を記録します。
+     * ローカルトランザクションのロールバックの失敗を記録します。
+     * <p>
+     * {@link LocalTransaction} から呼び出されます。 {@link LocalTransaction}
+     * を使用しない場合、このメソッドが呼び出されることはありません。
      * 
      * @param callerClassName
      *            呼び出し元のクラス名

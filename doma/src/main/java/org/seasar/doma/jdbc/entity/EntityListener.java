@@ -15,6 +15,13 @@
  */
 package org.seasar.doma.jdbc.entity;
 
+import org.seasar.doma.BatchDelete;
+import org.seasar.doma.BatchInsert;
+import org.seasar.doma.BatchUpdate;
+import org.seasar.doma.Delete;
+import org.seasar.doma.Insert;
+import org.seasar.doma.Update;
+
 /**
  * エンティティのリスナーです。
  * <p>
@@ -31,6 +38,9 @@ public interface EntityListener<E> {
 
     /**
      * 挿入処理の前処理を行います。
+     * <p>
+     * 対象となるのは、{@link Insert#sqlFile()} 、または {@link BatchInsert#sqlFile()} に
+     * {@code false} が指定されたDaoメソッドの実行です。
      * 
      * @param entity
      *            エンティティ
@@ -39,6 +49,9 @@ public interface EntityListener<E> {
 
     /**
      * 更新処理の前処理を行います。
+     * <p>
+     * 対象となるのは、{@link Update#sqlFile()} 、または {@link BatchUpdate#sqlFile()} に
+     * {@code false} が指定されたDaoメソッドの実行です。
      * 
      * @param entity
      *            エンティティ
@@ -47,6 +60,9 @@ public interface EntityListener<E> {
 
     /**
      * 削除処理の前処理を行います。
+     * <p>
+     * 対象となるのは、{@link Delete#sqlFile()} 、または {@link BatchDelete#sqlFile()} に
+     * {@code false} が指定されたDaoメソッドの実行です。
      * 
      * @param entity
      *            エンティティ
