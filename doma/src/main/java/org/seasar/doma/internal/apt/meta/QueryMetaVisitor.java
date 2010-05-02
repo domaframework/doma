@@ -27,6 +27,8 @@ public interface QueryMetaVisitor<R, P> {
 
     R visitSqlFileBatchModifyQueryMeta(SqlFileBatchModifyQueryMeta m, P p);
 
+    R visistSqlFileScriptQueryMeta(SqlFileScriptQueryMeta m, P p);
+
     R visistAutoModifyQueryMeta(AutoModifyQueryMeta m, P p);
 
     R visitAutoBatchModifyQueryMeta(AutoBatchModifyQueryMeta m, P p);

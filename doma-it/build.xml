@@ -4,18 +4,12 @@
 		<pathelement location="bin"/>
 		<fileset dir="lib"/>
 	</path>
-	
 	<property name="classpath" refid="taskdefClasspath"/>
-			
 	<taskdef name="exec-sql" classname="org.seasar.doma.it.helper.task.ExecSqlFileTask" classpath="${classpath}" loaderref="taskdefLoaderref"/>
 
 	<target name="setup-data" if="isTargetDatabase" depends="check-database">
-		<exec-sql 
-			haltOnError="false"
-			sqlFile="sql/drop_${database}.sql"/>
-		<exec-sql 
-			haltOnError="true"
-			sqlFile="sql/create_${database}.sql"/>
+		<echo message="database=${database}"/>
+		<exec-sql />
 	</target>
 
 	<target name="check-database">

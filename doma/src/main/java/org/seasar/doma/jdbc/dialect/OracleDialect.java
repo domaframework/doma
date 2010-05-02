@@ -20,6 +20,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Collections;
 
 import org.seasar.doma.DomaNullPointerException;
@@ -30,6 +31,7 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.ScriptBlockContext;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormatter;
@@ -209,6 +211,16 @@ public class OracleDialect extends StandardDialect {
         return RESULT_SET;
     }
 
+    @Override
+    public String getScriptBlockDelimiter() {
+        return "/";
+    }
+
+    @Override
+    public ScriptBlockContext createScriptBlockContext() {
+        return new OracleScriptBlockContext();
+    }
+
     /**
      * Oracle用の {@link ResultSet} の {@link JdbcType} の実装です。
      * 
@@ -351,6 +363,30 @@ public class OracleDialect extends StandardDialect {
             super(DEFAULT_WILDCARDS);
         }
 
+    }
+
+    /**
+     * Oracle用の {@link ScriptBlockContext} です。
+     * 
+     * @author taedium
+     * @since 1.7.0
+     */
+    public static class OracleScriptBlockContext extends
+            StandardScriptBlockContext {
+
+        protected OracleScriptBlockContext() {
+            sqlBlockStartKeywordsList.add(Arrays.asList("create", "or",
+                    "replace", "procedure"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("create", "or",
+                    "replace", "function"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("create", "or",
+                    "replace", "triger"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("create", "procedure"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("create", "function"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("create", "trigger"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("declare"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("begin"));
+        }
     }
 
 }

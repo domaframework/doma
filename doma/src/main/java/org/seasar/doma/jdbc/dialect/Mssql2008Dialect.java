@@ -16,12 +16,14 @@
 package org.seasar.doma.jdbc.dialect;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.dialect.Mssql2008ForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.Mssql2008PagingTransformer;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.ScriptBlockContext;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
@@ -162,6 +164,16 @@ public class Mssql2008Dialect extends StandardDialect {
         return true;
     }
 
+    @Override
+    public String getScriptBlockDelimiter() {
+        return "GO";
+    }
+
+    @Override
+    public ScriptBlockContext createScriptBlockContext() {
+        return new Mssql2008ScriptBlockContext();
+    }
+
     /**
      * Microsoft SQL Server 2008用の {@link JdbcMappingVisitor} の実装です。
      * 
@@ -195,6 +207,27 @@ public class Mssql2008Dialect extends StandardDialect {
 
         public Mssql2008ExpressionFunctions() {
             super(DEFAULT_WILDCARDS);
+        }
+    }
+
+    /**
+     * Microsoft SQL Server 2008用の {@link ScriptBlockContext} です。
+     * 
+     * @author taedium
+     * @since 1.7.0
+     */
+    public static class Mssql2008ScriptBlockContext extends
+            StandardScriptBlockContext {
+
+        protected Mssql2008ScriptBlockContext() {
+            sqlBlockStartKeywordsList.add(Arrays.asList("create", "procedure"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("create", "function"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("create", "trigger"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("alter", "procedure"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("alter", "function"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("alter", "trigger"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("declare"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("begin"));
         }
     }
 }

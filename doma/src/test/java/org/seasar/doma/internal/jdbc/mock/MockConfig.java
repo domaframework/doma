@@ -17,8 +17,8 @@ package org.seasar.doma.internal.jdbc.mock;
 
 import javax.sql.DataSource;
 
-import org.seasar.doma.jdbc.GreedyCacheSqlFileRepository;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.GreedyCacheSqlFileRepository;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.NullRequiresNewController;
 import org.seasar.doma.jdbc.RequiresNewController;
@@ -35,7 +35,7 @@ public class MockConfig implements Config {
 
     public MockDataSource dataSource = new MockDataSource();
 
-    protected Dialect dialect = new StandardDialect();
+    public Dialect dialect = new StandardDialect();
 
     protected SqlFileRepository sqlFileRepository = new GreedyCacheSqlFileRepository();
 

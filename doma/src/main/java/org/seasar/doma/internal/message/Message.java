@@ -97,6 +97,8 @@ public enum Message implements MessageResource {
     DOMA2074("java.sql.Statementのクローズに失敗しました。"),
     DOMA2075("java.sql.ResultSetのクローズに失敗しました。"),
     DOMA2076("SQLログ : SQLファイル=[{0}],\n{1}"),
+    DOMA2077("スクリプトの実行に失敗しました。\nSQL=[{0}]。\nSQLファイル=[{1}]。\n行番号=[{2}]。\n原因は次のものです。{3}"),
+    DOMA2078("SQLファイル[{0}]の読み込みに失敗しました。\n原因は次のものです。{1}"),
     DOMA2101("SQL[{0}]の解析に失敗しました（[{1}]行目[{2}]番目の文字付近）。文字列リテラルの終了を示すクォテーション['']が見つかりません。"),
     DOMA2102("SQL[{0}]の解析に失敗しました（[{1}]行目[{2}]番目の文字付近）。ブロックコメントの終了を示す文字列[*/]が見つかりません。"),
     DOMA2103("SQL[{0}]の解析に失敗しました（[{1}]行目[{2}]番目の文字付近）。--elseifの終了を示す文字列[--]が見つかりません。"),
@@ -295,6 +297,8 @@ public enum Message implements MessageResource {
     DOMA4169("org.seasar.doma.jdbc.id.TableIdGeneratorの実装クラスは引数なしのpublicなコンストラクタを持たなければいけません。クラス[{0}]には引数なしのpublicなコンストラクタが見つかりません。"),
     DOMA4170("org.seasar.doma.jdbc.id.SequenceIdGeneratorの実装クラスは抽象型であってはいけません。クラス[{0}]は抽象型です。"),
     DOMA4171("org.seasar.doma.jdbc.id.SequenceIdGeneratorの実装クラスは引数なしのpublicなコンストラクタを持たなければいけません。クラス[{0}]には引数なしのpublicなコンストラクタが見つかりません。"),
+    DOMA4172("戻り値の型はvoidでなければいけません。"),
+    DOMA4173("パラメータの数は0でなければいけません。"),
 
     // other
     DOMA5001("JDBCドライバがロードされていない可能性があります。JDBCドライバをロードするには、クラスパスが通されたMETA-INF/services/java.sql.DriverファイルにJDBCドライバのクラスの完全修飾名を記述してください。 ex) oracle.jdbc.driver.OracleDriver"),

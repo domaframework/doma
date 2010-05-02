@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.internal;
 
+import java.nio.charset.Charset;
+
 /**
  * @author taedium
  * 
@@ -22,4 +24,6 @@ package org.seasar.doma.internal;
 public final class Constants {
 
     public static final String ROWNUMBER_COLUMN_NAME = "doma_rownumber_";
+
+    public static final Charset UTF_8 = Charset.forName("UTF-8");
 }

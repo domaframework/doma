@@ -16,6 +16,7 @@
 package org.seasar.doma.jdbc.dialect;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Collections;
 
 import org.seasar.doma.DomaNullPointerException;
@@ -25,6 +26,7 @@ import org.seasar.doma.internal.jdbc.dialect.Db2PagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.ScriptBlockContext;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
@@ -180,6 +182,16 @@ public class Db2Dialect extends StandardDialect {
         return true;
     }
 
+    @Override
+    public String getScriptBlockDelimiter() {
+        return "@";
+    }
+
+    @Override
+    public ScriptBlockContext createScriptBlockContext() {
+        return new Db2ScriptBlockContext();
+    }
+
     /**
      * DB2用の {@link JdbcMappingVisitor} の実装です。
      * 
@@ -215,5 +227,23 @@ public class Db2Dialect extends StandardDialect {
             super(DEFAULT_WILDCARDS);
         }
 
+    }
+
+    /**
+     * DB2用の {@link ScriptBlockContext} です。
+     * 
+     * @author taedium
+     * @since 1.7.0
+     */
+    public static class Db2ScriptBlockContext extends StandardScriptBlockContext {
+
+        protected Db2ScriptBlockContext() {
+            sqlBlockStartKeywordsList.add(Arrays.asList("create", "procedure"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("create", "function"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("create", "trigger"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("alter", "procedure"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("alter", "function"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("alter", "trigger"));
+        }
     }
 }

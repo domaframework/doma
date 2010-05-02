@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2009 the Seasar Foundation and the Others.
+ * Copyright 2004-2010 the Seasar Foundation and the Others.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,21 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.it.helper.logging;
+package org.seasar.doma.internal.jdbc.query;
+
+import java.net.URL;
 
 /**
  * @author taedium
- * 
+ * @since 1.7.0
  */
-public interface LoggerDelegate {
+public interface ScriptQuery extends Query {
 
-    void debug(String message);
+    URL getSqlFileUrl();
 
-    void debug(Throwable throwable);
+    String getSqlFilePath();
 
-    void debug(String message, Throwable throwable);
+    String getBlockDelimiter();
+
+    boolean getHaltOnError();
 }

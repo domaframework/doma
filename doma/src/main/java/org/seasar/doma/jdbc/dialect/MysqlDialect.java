@@ -27,6 +27,7 @@ import org.seasar.doma.internal.jdbc.dialect.MysqlCountGettingTransformer;
 import org.seasar.doma.internal.jdbc.dialect.MysqlForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.MysqlPagingTransformer;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.ScriptBlockContext;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
@@ -178,6 +179,16 @@ public class MysqlDialect extends StandardDialect {
         return transformer.transform(sqlNode);
     }
 
+    @Override
+    public String getScriptBlockDelimiter() {
+        return "/";
+    }
+
+    @Override
+    public ScriptBlockContext createScriptBlockContext() {
+        return new MysqlScriptBlockContext();
+    }
+
     /**
      * MySQL用の {@link JdbcMappingVisitor} の実装です。
      * 
@@ -206,6 +217,27 @@ public class MysqlDialect extends StandardDialect {
      */
     public static class MysqlExpressionFunctions extends
             StandardExpressionFunctions {
+    }
+
+    /**
+     * MySQL用の {@link ScriptBlockContext} です。
+     * 
+     * @author taedium
+     * @since 1.7.0
+     */
+    public static class MysqlScriptBlockContext extends
+            StandardScriptBlockContext {
+
+        protected MysqlScriptBlockContext() {
+            sqlBlockStartKeywordsList.add(Arrays.asList("create", "procedure"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("create", "function"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("create", "trigger"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("alter", "procedure"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("alter", "function"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("alter", "trigger"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("declare"));
+            sqlBlockStartKeywordsList.add(Arrays.asList("begin"));
+        }
     }
 
 }

@@ -27,12 +27,14 @@ import org.seasar.doma.internal.jdbc.command.EntityIterationHandler;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.InsertCommand;
+import org.seasar.doma.internal.jdbc.command.ScriptCommand;
 import org.seasar.doma.internal.jdbc.command.SelectCommand;
 import org.seasar.doma.internal.jdbc.command.UpdateCommand;
 import org.seasar.doma.internal.jdbc.dao.AbstractDao;
 import org.seasar.doma.internal.jdbc.query.AutoDeleteQuery;
 import org.seasar.doma.internal.jdbc.query.AutoInsertQuery;
 import org.seasar.doma.internal.jdbc.query.AutoUpdateQuery;
+import org.seasar.doma.internal.jdbc.query.SqlFileScriptQuery;
 import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
 import org.seasar.doma.jdbc.IterationCallback;
@@ -111,7 +113,8 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
 
     @Override
     public int insert(Emp entity) {
-        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(_Emp.getSingletonInternal());
+        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(_Emp
+                .getSingletonInternal());
         query.setConfig(config);
         query.setEntity(entity);
         query.setCallerClassName("example.dao.EmpDao");
@@ -123,7 +126,8 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
 
     @Override
     public int update(Emp entity) {
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp
+                .getSingletonInternal());
         query.setConfig(config);
         query.setEntity(entity);
         query.setCallerClassName("example.dao.EmpDao");
@@ -135,7 +139,8 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
 
     @Override
     public int delete(Emp entity) {
-        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
+        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp
+                .getSingletonInternal());
         query.setConfig(config);
         query.setEntity(entity);
         query.setCallerClassName("example.dao.EmpDao");
@@ -155,8 +160,22 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
         query.setCallerMethodName("selectById");
         query.prepare();
         SelectCommand<Integer> command = new SelectCommand<Integer>(query,
-                new EntityIterationHandler<Integer, Emp>(_Emp.getSingletonInternal(), callback));
+                new EntityIterationHandler<Integer, Emp>(_Emp
+                        .getSingletonInternal(), callback));
         return command.execute();
+    }
+
+    @Override
+    public void execute() {
+        SqlFileScriptQuery query = new SqlFileScriptQuery();
+        query.setConfig(config);
+        query.setSqlFilePath(SqlFileUtil.buildPath("example.dao.EmpDao",
+                "selectById"));
+        query.setCallerClassName("example.dao.EmpDao");
+        query.setCallerMethodName("selectById");
+        query.prepare();
+        ScriptCommand command = new ScriptCommand(query);
+        command.execute();
     }
 
 }

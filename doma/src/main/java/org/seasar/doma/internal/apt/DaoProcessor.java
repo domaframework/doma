@@ -44,6 +44,7 @@ import org.seasar.doma.internal.apt.meta.NClobCreateQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.QueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileBatchModifyQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileModifyQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.SqlFileScriptQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileSelectQueryMetaFactory;
 import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.internal.util.IOUtil;
@@ -100,18 +101,19 @@ public class DaoProcessor extends AbstractProcessor {
 
     protected List<QueryMetaFactory> createQueryMetaFactory() {
         List<QueryMetaFactory> factories = new ArrayList<QueryMetaFactory>();
-        factories.add(new DelegateQueryMetaFactory(processingEnv));
+        factories.add(new SqlFileSelectQueryMetaFactory(processingEnv));
         factories.add(new AutoModifyQueryMetaFactory(processingEnv));
         factories.add(new AutoBatchModifyQueryMetaFactory(processingEnv));
         factories.add(new AutoFunctionQueryMetaFactory(processingEnv));
         factories.add(new AutoProcedureQueryMetaFactory(processingEnv));
+        factories.add(new SqlFileModifyQueryMetaFactory(processingEnv));
+        factories.add(new SqlFileBatchModifyQueryMetaFactory(processingEnv));
+        factories.add(new SqlFileScriptQueryMetaFactory(processingEnv));
+        factories.add(new DelegateQueryMetaFactory(processingEnv));
         factories.add(new ArrayCreateQueryMetaFactory(processingEnv));
         factories.add(new BlobCreateQueryMetaFactory(processingEnv));
         factories.add(new ClobCreateQueryMetaFactory(processingEnv));
         factories.add(new NClobCreateQueryMetaFactory(processingEnv));
-        factories.add(new SqlFileSelectQueryMetaFactory(processingEnv));
-        factories.add(new SqlFileModifyQueryMetaFactory(processingEnv));
-        factories.add(new SqlFileBatchModifyQueryMetaFactory(processingEnv));
         return factories;
     }
 

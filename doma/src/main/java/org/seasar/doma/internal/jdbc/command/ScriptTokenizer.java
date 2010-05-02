@@ -13,59 +13,17 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.it.helper.sqlfile;
+package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.it.helper.sqlfile.SqlFileTokenizer.TokenType.*;
+import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.*;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 /**
- * SQLファイル内のトークンを認識するクラスです。
+ * SQLスクリプト内のトークンを認識するクラスです。
  * 
  * @author taedium
  */
-public class SqlFileTokenizer {
-
-    /**
-     * トークンのタイプを表します。
-     * 
-     * @author taedium
-     */
-    public static enum TokenType {
-        /** 引用符に囲まれたトークン */
-        QUOTE,
-
-        /** 1行コメントのトークン */
-        LINE_COMMENT,
-
-        /** ブロックコメントの始まりを表すトークン */
-        START_OF_BLOCK_COMMENT,
-
-        /** ブロックコメントのトークン */
-        BLOCK_COMMENT,
-
-        /** ブロックコメントの終わりを表すトークン */
-        END_OF_BLOCK_COMMENT,
-
-        /** SQLステートメントの区切りを表すトークン */
-        STATEMENT_DELIMITER,
-
-        /** SQLブロックの区切りを表すトークン */
-        BLOCK_DELIMITER,
-
-        /** SQL内の単語を表すトークン */
-        WORD,
-
-        /** 空白など単語以外を表すトークン */
-        OTHER,
-
-        /** 一行の終わりを表すトークン */
-        END_OF_LINE,
-
-        /** ファイルの終わりを表すトークン */
-        END_OF_FILE
-    }
-
-    /** SQLステートメントの区切り文字 */
-    protected char statementDelimiter;
+public class ScriptTokenizer {
 
     /** SQLブロックの区切り文字 */
     protected String blockDelimiter;
@@ -86,7 +44,7 @@ public class SqlFileTokenizer {
     protected String token;
 
     /** トークンのタイプ */
-    protected TokenType type;
+    protected ScriptTokenType type;
 
     /** ブロックコメントが開始されている場合{@code true} */
     protected boolean blockCommentStarted;
@@ -94,25 +52,19 @@ public class SqlFileTokenizer {
     /**
      * インスタンスを構築します。
      * 
-     * @param statementDelimiter
-     *            SQLステートメントの区切り文字
      * @param blockDelimiter
-     *            SQLブロックの区切り文字
+     *            スクリプトブロックの区切り文字
      */
-    public SqlFileTokenizer(char statementDelimiter, String blockDelimiter) {
-        if (isOther(statementDelimiter) || statementDelimiter == '\'') {
-            throw new IllegalArgumentException("statementDelimiter");
-        }
-        this.statementDelimiter = statementDelimiter;
+    public ScriptTokenizer(String blockDelimiter) {
         this.blockDelimiter = blockDelimiter;
-        type = TokenType.END_OF_LINE;
+        type = END_OF_LINE;
     }
 
     /**
-     * 一行の文字列を追加します。
+     * 1行の文字列を追加します。
      * 
      * @param line
-     *            一行の文字列
+     *            1行の文字列
      */
     public void addLine(String line) {
         if (line == null) {
@@ -182,7 +134,7 @@ public class SqlFileTokenizer {
      *            文字
      */
     protected void peekChar(int index, char c) {
-        if (c == statementDelimiter) {
+        if (c == ';') {
             type = STATEMENT_DELIMITER;
         } else if (isOther(c)) {
             type = OTHER;
@@ -198,7 +150,7 @@ public class SqlFileTokenizer {
      * 
      * @return 次のトークンタイプ
      */
-    public TokenType nextToken() {
+    public ScriptTokenType nextToken() {
         switch (type) {
         case END_OF_FILE:
             token = null;
@@ -281,9 +233,10 @@ public class SqlFileTokenizer {
             }
             token = line.substring(otherStartPos, pos);
             return OTHER;
+        default:
+            assertUnreachable(type.name());
+            return null;
         }
-
-        throw new IllegalStateException(type.name());
     }
 
     /**

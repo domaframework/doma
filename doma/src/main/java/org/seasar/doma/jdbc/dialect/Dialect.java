@@ -23,6 +23,7 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.ScriptBlockContext;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.Sql;
@@ -231,5 +232,21 @@ public interface Dialect {
      * @return SQLのコメント式で使用可能な関数群
      */
     ExpressionFunctions getExpressionFunctions();
+
+    /**
+     * スクリプト内のSQLブロックのコンテキストを生成します。
+     * 
+     * @return スクリプトのSQLブロックのコンテキスト
+     * @since 1.7.0
+     */
+    ScriptBlockContext createScriptBlockContext();
+
+    /**
+     * スクリプト内のSQLブロックの区切り文字を返します。
+     * 
+     * @return スクリプトのブロックの区切り文字
+     * @since 1.7.0
+     */
+    String getScriptBlockDelimiter();
 
 }

@@ -48,5 +48,12 @@ public enum SqlKind {
     PROCEDURE,
 
     /** ストアドファンクション */
-    FUNCTION
+    FUNCTION,
+
+    /**
+     * スクリプト
+     * 
+     * @since 1.7.0
+     */
+    SCRIPT
 }

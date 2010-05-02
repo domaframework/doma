@@ -13,39 +13,36 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.it.helper.sqlfile;
+package org.seasar.doma.internal.jdbc.command;
+
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seasar.doma.it.helper.dialect.ToolDialect;
-import org.seasar.doma.it.helper.dialect.ToolDialect.SqlBlockContext;
-import org.seasar.doma.it.helper.sqlfile.SqlFileTokenizer.TokenType;
+import org.seasar.doma.internal.Constants;
+import org.seasar.doma.internal.jdbc.query.ScriptQuery;
+import org.seasar.doma.internal.message.Message;
+import org.seasar.doma.internal.util.IOUtil;
+import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.ScriptBlockContext;
 
 /**
- * SQLファイルのリーダです。
+ * SQLスクリプトファイルのリーダです。
  * 
  * @author taedium
  */
-public class SqlFileReader {
+public class ScriptReader {
 
-    /** SQLファイル */
-    protected File sqlFile;
-
-    /** SQLファイルのエンコーディング */
-    protected String sqlFileEncoding;
+    /** クエリ */
+    protected ScriptQuery query;
 
     /** トークナイザ */
-    protected SqlFileTokenizer tokenizer;
-
-    /** 方言 */
-    protected ToolDialect dialect;
+    protected ScriptTokenizer tokenizer;
 
     /** リーダ */
     protected BufferedReader reader;
@@ -65,33 +62,13 @@ public class SqlFileReader {
     /**
      * インスタンスを構築します。
      * 
-     * @param sqlFile
-     *            SQLファイル
-     * @param sqlFileEncoding
-     *            SQLファイルのエンコーディング
-     * @param tokenizer
-     *            トークナイザ
-     * @param dialect
-     *            方言
+     * @param query
+     *            クエリ
      */
-    public SqlFileReader(File sqlFile, String sqlFileEncoding,
-            SqlFileTokenizer tokenizer, ToolDialect dialect) {
-        if (sqlFile == null) {
-            throw new NullPointerException("sqlFile");
-        }
-        if (sqlFileEncoding == null) {
-            throw new NullPointerException("sqlFileEncoding");
-        }
-        if (tokenizer == null) {
-            throw new NullPointerException("tokenizer");
-        }
-        if (dialect == null) {
-            throw new NullPointerException("dialect");
-        }
-        this.sqlFile = sqlFile;
-        this.sqlFileEncoding = sqlFileEncoding;
-        this.tokenizer = tokenizer;
-        this.dialect = dialect;
+    public ScriptReader(ScriptQuery query) {
+        assertNotNull(query);
+        this.query = query;
+        this.tokenizer = new ScriptTokenizer(query.getBlockDelimiter());
     }
 
     /**
@@ -123,11 +100,12 @@ public class SqlFileReader {
                     } else if (builder.isCompleted()) {
                         return builder.getSql();
                     }
-                    throw new IllegalStateException("builder");
+                    assertUnreachable();
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new JdbcException(Message.DOMA2078, e,
+                    query.getSqlFilePath(), e);
         }
     }
 
@@ -147,25 +125,20 @@ public class SqlFileReader {
      * クローズします。
      */
     public void close() {
-        try {
-            if (reader != null) {
-                reader.close();
-            }
-        } catch (IOException ignore) {
-            // logger.log(ignore);
-        }
+        IOUtil.close(reader);
     }
 
     /**
-     * {@link #sqlFile}に対する{@link BufferedReader}を作成します。
+     * SQLスクリプトファイルに対する{@link BufferedReader}を作成します。
      * 
      * @return {@link BufferedReader}
      * @throws IOException
      *             IOに関する例外が発生した場合
      */
     protected BufferedReader createBufferedReader() throws IOException {
-        InputStream is = new FileInputStream(sqlFile);
-        return new BufferedReader(new InputStreamReader(is, sqlFileEncoding));
+        InputStream inputStream = query.getSqlFileUrl().openStream();
+        return new BufferedReader(new InputStreamReader(inputStream,
+                Constants.UTF_8));
     }
 
     /**
@@ -191,7 +164,7 @@ public class SqlFileReader {
         protected List<String> wordList = new ArrayList<String>();
 
         /** SQLブロックのコンテキスト */
-        protected SqlBlockContext sqlBlockContext;
+        protected ScriptBlockContext sqlBlockContext;
 
         /** 行が変更された場合{@code true} */
         protected boolean lineChanged;
@@ -200,7 +173,8 @@ public class SqlFileReader {
          * インスタンスを構築します
          */
         protected SqlBuilder() {
-            sqlBlockContext = dialect.createSqlBlockContext();
+            sqlBlockContext = query.getConfig().getDialect()
+                    .createScriptBlockContext();
         }
 
         /**
@@ -211,7 +185,7 @@ public class SqlFileReader {
          * @param token
          *            トークン
          */
-        protected void build(TokenType tokenType, String token) {
+        protected void build(ScriptTokenType tokenType, String token) {
             reset();
             if (buf.length() == 0) {
                 lineNumber = lineCount;
@@ -229,7 +203,7 @@ public class SqlFileReader {
                 requireLine();
                 break;
             case STATEMENT_DELIMITER:
-                if (isInSqlBlock()) {
+                if (isInBlock()) {
                     appendToken(token);
                     requireToken();
                 } else {
@@ -367,8 +341,8 @@ public class SqlFileReader {
          * 
          * @return SQLブロックの内側を組み立てている場合{@code true}
          */
-        protected boolean isInSqlBlock() {
-            return sqlBlockContext.isInSqlBlock();
+        protected boolean isInBlock() {
+            return sqlBlockContext.isInBlock();
         }
 
         /**
@@ -387,7 +361,7 @@ public class SqlFileReader {
          */
         protected String getSql() {
             if (!completed) {
-                throw new IllegalStateException("completed");
+                assertUnreachable();
             }
 
             String sql = buf.toString().trim();

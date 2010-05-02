@@ -58,6 +58,7 @@ import org.seasar.doma.internal.apt.meta.QueryParameterMeta;
 import org.seasar.doma.internal.apt.meta.QueryReturnMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileBatchModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileModifyQueryMeta;
+import org.seasar.doma.internal.apt.meta.SqlFileScriptQueryMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileSelectQueryMeta;
 import org.seasar.doma.internal.apt.mirror.AnnotationMirror;
 import org.seasar.doma.internal.apt.mirror.BatchModifyMirror;
@@ -629,6 +630,35 @@ public class DaoGenerator extends AbstractGenerator {
                         qualifiedName, m.getName());
                 iprint("return __result;%n");
             }
+
+            printThrowingStatements(m);
+            return null;
+        }
+
+        @Override
+        public Void visistSqlFileScriptQueryMeta(SqlFileScriptQueryMeta m,
+                Void p) {
+            printEnteringStatements(m);
+            printPrerequisiteStatements(m);
+
+            iprint("%1$s __query = new %1$s();%n", m.getQueryClass().getName());
+            iprint("__query.setConfig(config);%n");
+            iprint("__query.setSqlFilePath(\"%1$s\");%n", SqlFileUtil
+                    .buildPath(daoMeta.getDaoElement().getQualifiedName()
+                            .toString(), m.getName()));
+            iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
+            iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
+            iprint("__query.setBlockDelimiter(\"%1$s\");%n", m
+                    .getBlockDelimiter());
+            iprint("__query.setHaltOnError(%1$s);%n", m.getHaltOnError());
+            iprint("__query.prepare();%n");
+            iprint("%1$s __command = new %1$s(__query);%n", m.getCommandClass()
+                    .getName());
+            iprint("__command.execute();%n");
+            iprint("__query.complete();%n");
+            iprint("exiting(\"%1$s\", \"%2$s\", null);%n", qualifiedName, m
+                    .getName());
+
             printThrowingStatements(m);
             return null;
         }
@@ -699,6 +729,7 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName, m
                     .getName());
             iprint("return __result;%n");
+
             printThrowingStatements(m);
             return null;
         }
@@ -740,6 +771,7 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName, m
                     .getName());
             iprint("return __result;%n");
+
             printThrowingStatements(m);
             return null;
         }
@@ -800,6 +832,7 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName, m
                     .getName());
             iprint("return __result;%n");
+
             printThrowingStatements(m);
             return null;
         }
@@ -837,6 +870,7 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName, m
                     .getName());
             iprint("return __result;%n");
+
             printThrowingStatements(m);
             return null;
         }
@@ -871,6 +905,7 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName, m
                     .getName());
             iprint("return __result;%n");
+
             printThrowingStatements(m);
             return null;
         }
@@ -899,6 +934,7 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.complete();%n");
             iprint("exiting(\"%1$s\", \"%2$s\", null);%n", qualifiedName, m
                     .getName());
+
             printThrowingStatements(m);
             return null;
         }
@@ -924,6 +960,7 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName, m
                     .getName());
             iprint("return __result;%n");
+
             printThrowingStatements(m);
             return null;
         }
@@ -950,6 +987,7 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName, m
                     .getName());
             iprint("return __result;%n");
+
             printThrowingStatements(m);
             return null;
         }
@@ -984,6 +1022,7 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName, m
                     .getName());
             iprint("return __result;%n");
+
             printThrowingStatements(m);
             return null;
         }

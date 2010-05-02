@@ -51,6 +51,29 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
 
     protected void doSqlFiles(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
+        File[] sqlFiles = getSqlFiles(queryMeta, method, daoMeta);
+        String dirPath = SqlFileUtil.buildPath(daoMeta.getDaoElement()
+                .getQualifiedName().toString());
+        String methodName = queryMeta.getName();
+        for (File file : sqlFiles) {
+            if (SqlFileUtil.isSqlFile(file, methodName)) {
+                String filePath = dirPath + "/" + file.getName();
+                String sql = getSql(method, file, filePath);
+                if (sql.isEmpty() || StringUtil.isWhitespace(sql)) {
+                    throw new AptException(Message.DOMA4020, env, method,
+                            filePath);
+                }
+                SqlNode sqlNode = createSqlNode(queryMeta, method, daoMeta,
+                        filePath, sql);
+                SqlValidator validator = new SqlValidator(env, method,
+                        queryMeta.getBindableParameterTypeMap(), filePath);
+                validator.validate(sqlNode);
+            }
+        }
+    }
+
+    protected File[] getSqlFiles(M queryMeta, ExecutableElement method,
+            DaoMeta daoMeta) {
         String path = SqlFileUtil.buildPath(daoMeta.getDaoElement()
                 .getQualifiedName().toString(), queryMeta.getName());
         File sqlFile = getSqlFile(path, method, daoMeta);
@@ -60,27 +83,10 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
         File sqlFileDir = getSqlFileDir(sqlFile);
         File[] sqlFiles = sqlFileDir.listFiles();
         if (sqlFiles == null) {
-            throw new AptException(Message.DOMA4144, env, method,
-                    sqlFileDir.getAbsolutePath());
+            throw new AptException(Message.DOMA4144, env, method, sqlFileDir
+                    .getAbsolutePath());
         }
-        String dirPath = SqlFileUtil.buildPath(daoMeta.getDaoElement()
-                .getQualifiedName().toString());
-        String methodName = queryMeta.getName();
-        for (File file : sqlFiles) {
-            if (SqlFileUtil.isSqlFile(file, methodName)) {
-                String filePath = dirPath + "/" + file.getName();
-                String sql = getSql(method, file, filePath);
-                if (sql.isEmpty() || StringUtil.isWhitespace(sql)) {
-                    throw new AptException(Message.DOMA4020, env,
-                            method, filePath);
-                }
-                SqlNode sqlNode = createSqlNode(queryMeta, method, daoMeta,
-                        filePath, sql);
-                SqlValidator validator = new SqlValidator(env, method,
-                        queryMeta.getBindableParameterTypeMap(), filePath);
-                validator.validate(sqlNode);
-            }
-        }
+        return sqlFiles;
     }
 
     protected File getSqlFileDir(File sqlFile) {
@@ -107,8 +113,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
         try {
             return filer.getResource(StandardLocation.CLASS_OUTPUT, "", path);
         } catch (IOException e) {
-            throw new AptException(Message.DOMA4143, env, method, e,
-                    path);
+            throw new AptException(Message.DOMA4143, env, method, e, path);
         }
     }
 
@@ -117,8 +122,8 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
             return IOUtil.readAsString(file);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
-            throw new AptException(Message.DOMA4068, env, method,
-                    cause, filePath, cause);
+            throw new AptException(Message.DOMA4068, env, method, cause,
+                    filePath, cause);
         }
     }
 
@@ -128,8 +133,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
             SqlParser sqlParser = new SqlParser(sql);
             return sqlParser.parse();
         } catch (JdbcException e) {
-            throw new AptException(Message.DOMA4069, env, method, e,
-                    path, e);
+            throw new AptException(Message.DOMA4069, env, method, e, path, e);
         }
     }
 

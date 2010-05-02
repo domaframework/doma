@@ -46,6 +46,8 @@ import org.seasar.doma.internal.util.AssertionUtil;
  */
 public class MockConnection extends MockWrapper implements Connection {
 
+    public MockStatement statement = new MockStatement();
+
     public MockPreparedStatement preparedStatement = new MockPreparedStatement();
 
     public MockCallableStatement callableStatement = new MockCallableStatement();
@@ -123,8 +125,7 @@ public class MockConnection extends MockWrapper implements Connection {
 
     @Override
     public Statement createStatement() throws SQLException {
-        AssertionUtil.notYetImplemented();
-        return null;
+        return statement;
     }
 
     @Override

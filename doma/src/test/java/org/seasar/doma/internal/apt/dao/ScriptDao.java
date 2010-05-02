@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2009 the Seasar Foundation and the Others.
+ * Copyright 2004-2010 the Seasar Foundation and the Others.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,21 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.it.helper.dialect;
+package org.seasar.doma.internal.apt.dao;
 
+import org.seasar.doma.Dao;
+import org.seasar.doma.Script;
 
 /**
  * @author taedium
  * 
  */
-public class HsqldbToolDialect extends StandardToolDialect {
+@Dao(config = MyConfig.class)
+public interface ScriptDao {
 
+    @Script
+    void createTables();
+
+    @Script(blockDelimiter = "GO", haltOnError = false)
+    void dropTables();
 }

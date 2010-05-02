@@ -27,6 +27,7 @@ import org.seasar.doma.internal.jdbc.dialect.PostgresPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.ScriptBlockContext;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
@@ -212,6 +213,11 @@ public class PostgresDialect extends StandardDialect {
         return RESULT_SET;
     }
 
+    @Override
+    public ScriptBlockContext createScriptBlockContext() {
+        return new PostgresScriptBlockContext();
+    }
+
     /**
      * PostgreSQL用の {@link ResultSet} の {@link JdbcType} の実装です。
      * 
@@ -253,6 +259,28 @@ public class PostgresDialect extends StandardDialect {
      */
     public static class PostgresExpressionFunctions extends
             StandardExpressionFunctions {
+    }
+
+    /**
+     * PostgreSQL用の {@link ScriptBlockContext} です。
+     * 
+     * @author taedium
+     * @since 1.7.0
+     */
+    public static class PostgresScriptBlockContext implements
+            ScriptBlockContext {
+
+        protected boolean inBlock;
+
+        public void addKeyword(String keyword) {
+            if ("$$".equals(keyword)) {
+                inBlock = !inBlock;
+            }
+        }
+
+        public boolean isInBlock() {
+            return inBlock;
+        }
     }
 
 }

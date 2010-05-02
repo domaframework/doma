@@ -21,6 +21,7 @@ import java.util.List;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
+import org.seasar.doma.Script;
 import org.seasar.doma.Select;
 import org.seasar.doma.Update;
 import org.seasar.doma.jdbc.IterationCallback;
@@ -58,18 +59,6 @@ public interface EmpDao {
     @Delete
     int delete(Emp entity);
 
-    // @Function
-    // Integer add(@In Integer arg1, @In Integer arg2);
-    //
-    // @Function
-    // List<Emp> getEmps(@In Integer arg1, @In Integer arg2);
-    //
-    // @Procedure
-    // void exec(@In Integer arg1, @In Integer arg2);
-    //
-    // @ArrayFactory(typeName = "varchar")
-    // Array createStringArrayDomain(String[] element);
-    //
-    // @BlobFactory
-    // Blob createBlobDomain();
+    @Script
+    void execute();
 }

@@ -19,9 +19,11 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,6 +41,7 @@ import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
 import org.seasar.doma.jdbc.PersistentWrapperVisitor;
+import org.seasar.doma.jdbc.ScriptBlockContext;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SelectOptionsAccessor;
@@ -445,6 +448,14 @@ public class StandardDialect implements Dialect {
     @Override
     public ExpressionFunctions getExpressionFunctions() {
         return expressionFunctions;
+    }
+
+    public ScriptBlockContext createScriptBlockContext() {
+        return new StandardScriptBlockContext();
+    }
+
+    public String getScriptBlockDelimiter() {
+        return null;
     }
 
     /**
@@ -1018,6 +1029,58 @@ public class StandardDialect implements Dialect {
         @Override
         public boolean isNotBlank(CharSequence charSequence) {
             return CharSequenceUtil.isNotBlank(charSequence);
+        }
+    }
+
+    /**
+     * 標準の {@link ScriptBlockContext} の実装です。
+     * 
+     * @author taedium
+     * @since 1.7.0
+     */
+    public static class StandardScriptBlockContext implements
+            ScriptBlockContext {
+
+        /** ブロックの開始を表すキーワードの連なりのリスト */
+        protected List<List<String>> sqlBlockStartKeywordsList = new ArrayList<List<String>>();
+
+        /** 追加されたキーワードの連なり */
+        protected List<String> keywords = new ArrayList<String>();
+
+        /** ブロックの内側の場合{@code true} */
+        protected boolean inBlock;
+
+        public void addKeyword(String keyword) {
+            if (!inBlock) {
+                keywords.add(keyword);
+                check();
+            }
+        }
+
+        /**
+         * ブロックの内側かどうかチェックします。
+         */
+        protected void check() {
+            for (List<String> startKeywords : sqlBlockStartKeywordsList) {
+                if (startKeywords.size() > keywords.size()) {
+                    continue;
+                }
+                for (int i = 0; i < startKeywords.size(); i++) {
+                    String word1 = startKeywords.get(i);
+                    String word2 = keywords.get(i);
+                    inBlock = word1.equalsIgnoreCase(word2);
+                    if (!inBlock) {
+                        break;
+                    }
+                }
+                if (inBlock) {
+                    break;
+                }
+            }
+        }
+
+        public boolean isInBlock() {
+            return inBlock;
         }
     }
 }

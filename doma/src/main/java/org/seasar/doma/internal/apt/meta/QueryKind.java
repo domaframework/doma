@@ -24,6 +24,7 @@ import org.seasar.doma.internal.jdbc.command.DeleteCommand;
 import org.seasar.doma.internal.jdbc.command.FunctionCommand;
 import org.seasar.doma.internal.jdbc.command.InsertCommand;
 import org.seasar.doma.internal.jdbc.command.ProcedureCommand;
+import org.seasar.doma.internal.jdbc.command.ScriptCommand;
 import org.seasar.doma.internal.jdbc.command.SelectCommand;
 import org.seasar.doma.internal.jdbc.command.UpdateCommand;
 import org.seasar.doma.internal.jdbc.query.ArrayCreateQuery;
@@ -44,6 +45,7 @@ import org.seasar.doma.internal.jdbc.query.SqlFileBatchInsertQuery;
 import org.seasar.doma.internal.jdbc.query.SqlFileBatchUpdateQuery;
 import org.seasar.doma.internal.jdbc.query.SqlFileDeleteQuery;
 import org.seasar.doma.internal.jdbc.query.SqlFileInsertQuery;
+import org.seasar.doma.internal.jdbc.query.SqlFileScriptQuery;
 import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.query.SqlFileUpdateQuery;
 
@@ -64,6 +66,20 @@ public enum QueryKind {
         @Override
         public Class<? extends Command> getCommandClass() {
             return SelectCommand.class;
+        }
+
+    },
+    SQLFILE_SCRIPT {
+
+        @Override
+        public Class<? extends Query> getQueryClass() {
+            return SqlFileScriptQuery.class;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public Class<? extends Command> getCommandClass() {
+            return ScriptCommand.class;
         }
 
     },

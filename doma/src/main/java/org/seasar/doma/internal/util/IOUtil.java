@@ -26,8 +26,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.CharBuffer;
-import java.nio.charset.Charset;
 
+import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.WrapException;
 
 /**
@@ -42,7 +42,7 @@ public final class IOUtil {
             throws WrapException {
         assertNotNull(inputStream);
         BufferedReader reader = new BufferedReader(new InputStreamReader(
-                inputStream, Charset.forName("UTF-8")));
+                inputStream, Constants.UTF_8));
         StringBuilder buf = new StringBuilder(200);
         try {
             CharBuffer c = CharBuffer.allocate(BUF_SIZE);
