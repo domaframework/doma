@@ -13,9 +13,9 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.sql;
+package org.seasar.doma.internal.util;
 
-import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
+import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 
 import junit.framework.TestCase;
 

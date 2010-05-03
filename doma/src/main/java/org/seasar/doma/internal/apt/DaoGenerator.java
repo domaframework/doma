@@ -95,7 +95,7 @@ import org.seasar.doma.internal.jdbc.sql.DomainOutParameter;
 import org.seasar.doma.internal.jdbc.sql.DomainResultParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListResultParameter;
-import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
+import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.Config;
 

@@ -19,6 +19,8 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.net.URL;
 
+import org.seasar.doma.internal.Constants;
+import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.internal.util.ResourceUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
@@ -72,9 +74,19 @@ public class SqlFileScriptQuery implements ScriptQuery {
     public void prepare() {
         assertNotNull(config, sqlFilePath, callerClassName, callerMethodName,
                 blockDelimiter);
-        sqlFileUrl = ResourceUtil.getResource(sqlFilePath);
-        if (sqlFileUrl == null) {
-            throw new SqlFileNotFoundException(sqlFilePath);
+        assertTrue(sqlFilePath.startsWith(Constants.SQL_PATH_PREFIX));
+        assertTrue(sqlFilePath.endsWith(Constants.SQL_PATH_SUFFIX));
+
+        String primarySqlFilePath = SqlFileUtil.getDbmsSpecificPath(
+                sqlFilePath, config.getDialect());
+        sqlFileUrl = ResourceUtil.getResource(primarySqlFilePath);
+        if (sqlFileUrl != null) {
+            sqlFilePath = primarySqlFilePath;
+        } else {
+            sqlFileUrl = ResourceUtil.getResource(sqlFilePath);
+            if (sqlFileUrl == null) {
+                throw new SqlFileNotFoundException(sqlFilePath);
+            }
         }
         if (blockDelimiter.isEmpty()) {
             blockDelimiter = config.getDialect().getScriptBlockDelimiter();

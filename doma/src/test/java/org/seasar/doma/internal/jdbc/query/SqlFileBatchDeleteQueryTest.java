@@ -23,7 +23,7 @@ import junit.framework.TestCase;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
-import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
+import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 
 import example.entity.Emp;
 

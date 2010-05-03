@@ -17,8 +17,10 @@ package org.seasar.doma.jdbc;
 
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
+import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.internal.util.ResourceUtil;
 import org.seasar.doma.jdbc.dialect.Dialect;
@@ -34,23 +36,19 @@ import org.seasar.doma.jdbc.dialect.Dialect;
  */
 public abstract class AbstractSqlFileRepository implements SqlFileRepository {
 
-    /** SQLのパスのプレフィックスです。 */
-    protected static final String SQL_PATH_PREFIX = "META-INF/";
-
-    /** SQLのパスのサフィックスです。 */
-    protected static final String SQL_PATH_SUFFIX = ".sql";
-
     public final SqlFile getSqlFile(String path, Dialect dialect) {
         if (path == null) {
             throw new DomaNullPointerException("path");
         }
-        if (!path.startsWith(SQL_PATH_PREFIX)) {
+        if (!path.startsWith(Constants.SQL_PATH_PREFIX)) {
             throw new DomaIllegalArgumentException("path",
-                    "The path does not start with '" + SQL_PATH_PREFIX + "'");
+                    "The path does not start with '"
+                            + Constants.SQL_PATH_PREFIX + "'");
         }
-        if (!path.endsWith(SQL_PATH_SUFFIX)) {
+        if (!path.endsWith(Constants.SQL_PATH_SUFFIX)) {
             throw new DomaIllegalArgumentException("path",
-                    "The path does not end with '" + SQL_PATH_SUFFIX + "'");
+                    "The path does not end with '" + Constants.SQL_PATH_SUFFIX
+                            + "'");
         }
         if (dialect == null) {
             throw new DomaNullPointerException("dialect");
@@ -108,9 +106,7 @@ public abstract class AbstractSqlFileRepository implements SqlFileRepository {
      * @return RDBMS固有の名前を含んだSQLのパス
      */
     protected final String getPrimaryPath(String path, Dialect dialect) {
-        String name = dialect.getName();
-        return path.substring(0, path.length() - SQL_PATH_SUFFIX.length())
-                + "-" + name + SQL_PATH_SUFFIX;
+        return SqlFileUtil.getDbmsSpecificPath(path, dialect);
     }
 
     /**
@@ -137,8 +133,7 @@ public abstract class AbstractSqlFileRepository implements SqlFileRepository {
             return ResourceUtil.getResourceAsString(path);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
-            throw new JdbcException(Message.DOMA2010, cause, path,
-                    cause);
+            throw new JdbcException(Message.DOMA2010, cause, path, cause);
         }
     }
 

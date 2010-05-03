@@ -22,7 +22,7 @@ import junit.framework.TestCase;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockStatement;
 import org.seasar.doma.internal.jdbc.query.SqlFileScriptQuery;
-import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
+import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.ScriptException;
 
 /**

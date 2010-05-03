@@ -36,7 +36,7 @@ import org.seasar.doma.internal.jdbc.query.AutoInsertQuery;
 import org.seasar.doma.internal.jdbc.query.AutoUpdateQuery;
 import org.seasar.doma.internal.jdbc.query.SqlFileScriptQuery;
 import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
-import org.seasar.doma.internal.jdbc.sql.SqlFileUtil;
+import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.SelectOptions;
 
