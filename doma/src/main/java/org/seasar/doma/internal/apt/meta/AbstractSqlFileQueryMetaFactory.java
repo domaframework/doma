@@ -51,61 +51,62 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
 
     protected void doSqlFiles(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
-        File[] sqlFiles = getSqlFiles(queryMeta, method, daoMeta);
+        String filePath = SqlFileUtil.buildPath(daoMeta.getDaoElement()
+                .getQualifiedName().toString(), queryMeta.getName());
+        File file = getFile(queryMeta, method, filePath);
+        File[] siblingfiles = getSiblingFiles(queryMeta, method, file);
         String dirPath = SqlFileUtil.buildPath(daoMeta.getDaoElement()
                 .getQualifiedName().toString());
         String methodName = queryMeta.getName();
-        for (File file : sqlFiles) {
-            if (SqlFileUtil.isSqlFile(file, methodName)) {
-                String filePath = dirPath + "/" + file.getName();
-                String sql = getSql(method, file, filePath);
+        for (File siblingfile : siblingfiles) {
+            if (SqlFileUtil.isSqlFile(siblingfile, methodName)) {
+                String sqlFilePath = dirPath + "/" + siblingfile.getName();
+                String sql = getSql(method, siblingfile, sqlFilePath);
                 if (sql.isEmpty() || StringUtil.isWhitespace(sql)) {
                     throw new AptException(Message.DOMA4020, env, method,
-                            filePath);
+                            sqlFilePath);
                 }
                 SqlNode sqlNode = createSqlNode(queryMeta, method, daoMeta,
-                        filePath, sql);
+                        sqlFilePath, sql);
                 SqlValidator validator = new SqlValidator(env, method,
-                        queryMeta.getBindableParameterTypeMap(), filePath);
+                        queryMeta.getBindableParameterTypeMap(), sqlFilePath);
                 validator.validate(sqlNode);
             }
         }
     }
 
-    protected File[] getSqlFiles(M queryMeta, ExecutableElement method,
-            DaoMeta daoMeta) {
-        String path = SqlFileUtil.buildPath(daoMeta.getDaoElement()
-                .getQualifiedName().toString(), queryMeta.getName());
-        File sqlFile = getSqlFile(path, method, daoMeta);
-        if (!sqlFile.exists()) {
-            throw new AptException(Message.DOMA4019, env, method, path);
-        }
-        File sqlFileDir = getSqlFileDir(sqlFile);
-        File[] sqlFiles = sqlFileDir.listFiles();
-        if (sqlFiles == null) {
-            throw new AptException(Message.DOMA4144, env, method, sqlFileDir
-                    .getAbsolutePath());
-        }
-        return sqlFiles;
-    }
-
-    protected File getSqlFileDir(File sqlFile) {
-        File dir = sqlFile.getParentFile();
-        if (dir == null) {
-            assertUnreachable();
-        }
-        return dir;
-    }
-
-    protected File getSqlFile(String path, ExecutableElement method,
-            DaoMeta daoMeta) {
-        FileObject fileObject = getFileObject(path, method);
+    protected File getFile(M queryMeta, ExecutableElement method,
+            String filePath) {
+        FileObject fileObject = getFileObject(filePath, method);
         URI uri = fileObject.toUri();
         if (!uri.isAbsolute()) {
             URI resolvedUri = new File(".").toURI().resolve(uri);
             return new File(resolvedUri);
         }
-        return new File(uri);
+        File file = new File(uri);
+        if (!file.exists()) {
+            throw new AptException(Message.DOMA4019, env, method, filePath);
+        }
+        return file;
+    }
+
+    protected File[] getSiblingFiles(M queryMeta, ExecutableElement method,
+            File file) {
+        File dir = getDir(file);
+        File[] files = dir.listFiles();
+        if (files == null) {
+            throw new AptException(Message.DOMA4144, env, method, dir
+                    .getAbsolutePath());
+        }
+        return files;
+    }
+
+    protected File getDir(File sqlFile) {
+        File dir = sqlFile.getParentFile();
+        if (dir == null) {
+            assertUnreachable();
+        }
+        return dir;
     }
 
     protected FileObject getFileObject(String path, ExecutableElement method) {

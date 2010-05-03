@@ -17,11 +17,14 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.io.File;
+
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.mirror.ScriptMirror;
+import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
 import org.seasar.doma.internal.message.Message;
 
 /**
@@ -85,6 +88,9 @@ public class SqlFileScriptQueryMetaFactory extends
     @Override
     protected void doSqlFiles(SqlFileScriptQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        getSqlFiles(queryMeta, method, daoMeta);
+        String filePath = ScriptFileUtil.buildPath(daoMeta.getDaoElement()
+                .getQualifiedName().toString(), queryMeta.getName());
+        File file = getFile(queryMeta, method, filePath);
+        getSiblingFiles(queryMeta, method, file);
     }
 }

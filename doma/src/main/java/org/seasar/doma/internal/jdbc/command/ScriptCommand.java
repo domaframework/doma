@@ -56,7 +56,7 @@ public class ScriptCommand implements Command<Void, SelectQuery> {
                 for (String sqlText = reader.readSql(); sqlText != null; sqlText = reader
                         .readSql()) {
                     ScriptSql sql = new ScriptSql(sqlText, query
-                            .getSqlFilePath());
+                            .getScriptFilePath());
                     Statement statement = JdbcUtil.createStatement(connection);
                     try {
                         log(sql);

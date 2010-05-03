@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
 
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.ScriptException;
-import org.seasar.doma.jdbc.SqlFileNotFoundException;
+import org.seasar.doma.jdbc.ScriptFileNotFoundException;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
@@ -50,9 +50,8 @@ import org.seasar.doma.jdbc.dialect.Dialect;
  * 
  * 注釈されるメソッドは、次の例外をスローすることがあります。
  * <ul>
- * <li> {@link SqlFileNotFoundException} {@code sqlFile} 要素が {@code true}
- * で、SQLファイルが見つからなかった場合
- * <li> {@link ScriptException} SQLスクリプトの実行中に例外が発生した場合
+ * <li> {@link ScriptFileNotFoundException} スクリプトファイルが見つからなかった場合
+ * <li> {@link ScriptException} スクリプトファイルの実行中に例外が発生した場合
  * <li> {@link JdbcException} 上記以外でJDBCに関する例外が発生した場合
  * </ul>
  * 

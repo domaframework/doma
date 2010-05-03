@@ -95,6 +95,7 @@ import org.seasar.doma.internal.jdbc.sql.DomainOutParameter;
 import org.seasar.doma.internal.jdbc.sql.DomainResultParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListResultParameter;
+import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.Config;
@@ -643,7 +644,7 @@ public class DaoGenerator extends AbstractGenerator {
 
             iprint("%1$s __query = new %1$s();%n", m.getQueryClass().getName());
             iprint("__query.setConfig(config);%n");
-            iprint("__query.setSqlFilePath(\"%1$s\");%n", SqlFileUtil
+            iprint("__query.setScriptFilePath(\"%1$s\");%n", ScriptFileUtil
                     .buildPath(daoMeta.getDaoElement().getQualifiedName()
                             .toString(), m.getName()));
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);

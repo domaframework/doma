@@ -22,7 +22,7 @@ import junit.framework.TestCase;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockStatement;
 import org.seasar.doma.internal.jdbc.query.SqlFileScriptQuery;
-import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
+import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
 import org.seasar.doma.jdbc.ScriptException;
 
 /**
@@ -36,7 +36,7 @@ public class ScriptCommandTest extends TestCase {
         query.setConfig(new MockConfig());
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+        query.setScriptFilePath(ScriptFileUtil.buildPath(getClass().getName(),
                 getName()));
         query.setBlockDelimiter("");
         query.prepare();
@@ -59,7 +59,7 @@ public class ScriptCommandTest extends TestCase {
         query.setConfig(config);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
+        query.setScriptFilePath(ScriptFileUtil.buildPath(getClass().getName(),
                 getName()));
         query.setBlockDelimiter("");
         query.setHaltOnError(true);

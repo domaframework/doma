@@ -105,7 +105,7 @@ public class ScriptReader {
             }
         } catch (IOException e) {
             throw new JdbcException(Message.DOMA2078, e,
-                    query.getSqlFilePath(), e);
+                    query.getScriptFilePath(), e);
         }
     }
 
@@ -136,7 +136,7 @@ public class ScriptReader {
      *             IOに関する例外が発生した場合
      */
     protected BufferedReader createBufferedReader() throws IOException {
-        InputStream inputStream = query.getSqlFileUrl().openStream();
+        InputStream inputStream = query.getScriptFileUrl().openStream();
         return new BufferedReader(new InputStreamReader(inputStream,
                 Constants.UTF_8));
     }

@@ -30,4 +30,8 @@ public final class Constants {
     public static final String SQL_PATH_PREFIX = "META-INF/";
 
     public static final String SQL_PATH_SUFFIX = ".sql";
+
+    public static final String SCRIPT_PATH_PREFIX = "META-INF/";
+
+    public static final String SCRIPT_PATH_SUFFIX = ".script";
 }

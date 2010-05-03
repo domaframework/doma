@@ -106,7 +106,7 @@ public abstract class AbstractSqlFileRepository implements SqlFileRepository {
      * @return RDBMS固有の名前を含んだSQLのパス
      */
     protected final String getPrimaryPath(String path, Dialect dialect) {
-        return SqlFileUtil.getDbmsSpecificPath(path, dialect);
+        return SqlFileUtil.convertToDbmsSpecificPath(path, dialect);
     }
 
     /**

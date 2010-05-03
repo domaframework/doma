@@ -18,7 +18,7 @@ package org.seasar.doma.jdbc;
 import org.seasar.doma.internal.message.Message;
 
 /**
- * スクリプト内のSQLの実行中に例外が発生した場合にスローされる例外です。
+ * スクリプトファイル内のSQLの実行中に例外が発生した場合にスローされる例外です。
  * 
  * @author taedium
  * @since 1.7.0
@@ -30,8 +30,8 @@ public class ScriptException extends JdbcException {
     /** 未加工SQL */
     protected final String rawSql;
 
-    /** SQLファイルパス */
-    protected final String sqlFilePath;
+    /** スクリプトファイルのパス */
+    protected final String scriptFilePath;
 
     /** 行番号 */
     protected final int lineNumber;
@@ -57,16 +57,16 @@ public class ScriptException extends JdbcException {
      *            原因
      * @param rawSql
      *            未加工SQL
-     * @param sqlFilePath
+     * @param scriptFilePath
      *            SQLファイルのパス
      * @param lineNumber
      *            行番号
      */
-    public ScriptException(Throwable cause, String rawSql, String sqlFilePath,
+    public ScriptException(Throwable cause, String rawSql, String scriptFilePath,
             int lineNumber) {
-        super(Message.DOMA2077, cause, rawSql, sqlFilePath, lineNumber, cause);
+        super(Message.DOMA2077, cause, rawSql, scriptFilePath, lineNumber, cause);
         this.rawSql = rawSql;
-        this.sqlFilePath = sqlFilePath;
+        this.scriptFilePath = scriptFilePath;
         this.lineNumber = lineNumber;
     }
 
@@ -80,12 +80,12 @@ public class ScriptException extends JdbcException {
     }
 
     /**
-     * SQLファイルパスを返します。
+     * スクリプトファイルのパスを返します。
      * 
-     * @return SQLファイルパス
+     * @return スクリプトファイルのパス
      */
-    public String getSqlFilePath() {
-        return sqlFilePath;
+    public String getScriptFilePath() {
+        return scriptFilePath;
     }
 
     /**

@@ -23,9 +23,9 @@ import java.net.URL;
  */
 public interface ScriptQuery extends Query {
 
-    URL getSqlFileUrl();
+    URL getScriptFileUrl();
 
-    String getSqlFilePath();
+    String getScriptFilePath();
 
     String getBlockDelimiter();
 

@@ -20,21 +20,20 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.net.URL;
 
 import org.seasar.doma.internal.Constants;
-import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
+import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
 import org.seasar.doma.internal.util.ResourceUtil;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.ScriptFileNotFoundException;
 import org.seasar.doma.jdbc.Sql;
-import org.seasar.doma.jdbc.SqlFileNotFoundException;
 
 /**
  * @author taedium
- * 
  */
 public class SqlFileScriptQuery implements ScriptQuery {
 
     protected Config config;
 
-    protected String sqlFilePath;
+    protected String scriptFilePath;
 
     protected String callerClassName;
 
@@ -44,14 +43,14 @@ public class SqlFileScriptQuery implements ScriptQuery {
 
     protected boolean haltOnError;
 
-    protected URL sqlFileUrl;
+    protected URL scriptFileUrl;
 
     public void setConfig(Config config) {
         this.config = config;
     }
 
-    public void setSqlFilePath(String sqlFilePath) {
-        this.sqlFilePath = sqlFilePath;
+    public void setScriptFilePath(String scriptFilePath) {
+        this.scriptFilePath = scriptFilePath;
     }
 
     public void setCallerClassName(String callerClassName) {
@@ -72,20 +71,20 @@ public class SqlFileScriptQuery implements ScriptQuery {
 
     @Override
     public void prepare() {
-        assertNotNull(config, sqlFilePath, callerClassName, callerMethodName,
-                blockDelimiter);
-        assertTrue(sqlFilePath.startsWith(Constants.SQL_PATH_PREFIX));
-        assertTrue(sqlFilePath.endsWith(Constants.SQL_PATH_SUFFIX));
+        assertNotNull(config, scriptFilePath, callerClassName,
+                callerMethodName, blockDelimiter);
+        assertTrue(scriptFilePath.startsWith(Constants.SCRIPT_PATH_PREFIX));
+        assertTrue(scriptFilePath.endsWith(Constants.SCRIPT_PATH_SUFFIX));
 
-        String primarySqlFilePath = SqlFileUtil.getDbmsSpecificPath(
-                sqlFilePath, config.getDialect());
-        sqlFileUrl = ResourceUtil.getResource(primarySqlFilePath);
-        if (sqlFileUrl != null) {
-            sqlFilePath = primarySqlFilePath;
+        String dbmsSpecificPath = ScriptFileUtil.convertToDbmsSpecificPath(
+                scriptFilePath, config.getDialect());
+        scriptFileUrl = ResourceUtil.getResource(dbmsSpecificPath);
+        if (scriptFileUrl != null) {
+            scriptFilePath = dbmsSpecificPath;
         } else {
-            sqlFileUrl = ResourceUtil.getResource(sqlFilePath);
-            if (sqlFileUrl == null) {
-                throw new SqlFileNotFoundException(sqlFilePath);
+            scriptFileUrl = ResourceUtil.getResource(scriptFilePath);
+            if (scriptFileUrl == null) {
+                throw new ScriptFileNotFoundException(scriptFilePath);
             }
         }
         if (blockDelimiter.isEmpty()) {
@@ -124,13 +123,13 @@ public class SqlFileScriptQuery implements ScriptQuery {
     }
 
     @Override
-    public String getSqlFilePath() {
-        return sqlFilePath;
+    public String getScriptFilePath() {
+        return scriptFilePath;
     }
 
     @Override
-    public URL getSqlFileUrl() {
-        return sqlFileUrl;
+    public URL getScriptFileUrl() {
+        return scriptFileUrl;
     }
 
     @Override

@@ -169,7 +169,7 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
     public void execute() {
         SqlFileScriptQuery query = new SqlFileScriptQuery();
         query.setConfig(config);
-        query.setSqlFilePath(SqlFileUtil.buildPath("example.dao.EmpDao",
+        query.setScriptFilePath(SqlFileUtil.buildPath("example.dao.EmpDao",
                 "selectById"));
         query.setCallerClassName("example.dao.EmpDao");
         query.setCallerMethodName("selectById");

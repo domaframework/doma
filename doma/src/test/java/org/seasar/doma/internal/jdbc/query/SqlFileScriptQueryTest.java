@@ -18,7 +18,7 @@ package org.seasar.doma.internal.jdbc.query;
 import junit.framework.TestCase;
 
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
-import org.seasar.doma.jdbc.SqlFileNotFoundException;
+import org.seasar.doma.jdbc.ScriptFileNotFoundException;
 import org.seasar.doma.jdbc.dialect.Mssql2008Dialect;
 
 /**
@@ -35,7 +35,7 @@ public class SqlFileScriptQueryTest extends TestCase {
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query
-                .setSqlFilePath("META-INF/org/seasar/doma/internal/jdbc/query/SqlFileScriptQueryTest/testPrepare.sql");
+                .setScriptFilePath("META-INF/org/seasar/doma/internal/jdbc/query/SqlFileScriptQueryTest/testPrepare.script");
         query.setBlockDelimiter("");
         query.prepare();
 
@@ -43,9 +43,9 @@ public class SqlFileScriptQueryTest extends TestCase {
         assertEquals("aaa", query.getClassName());
         assertEquals("bbb", query.getMethodName());
         assertEquals(
-                "META-INF/org/seasar/doma/internal/jdbc/query/SqlFileScriptQueryTest/testPrepare.sql",
-                query.getSqlFilePath());
-        assertNotNull(query.getSqlFileUrl());
+                "META-INF/org/seasar/doma/internal/jdbc/query/SqlFileScriptQueryTest/testPrepare.script",
+                query.getScriptFilePath());
+        assertNotNull(query.getScriptFileUrl());
         assertNull(query.getBlockDelimiter());
     }
 
@@ -56,7 +56,7 @@ public class SqlFileScriptQueryTest extends TestCase {
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query
-                .setSqlFilePath("META-INF/org/seasar/doma/internal/jdbc/query/SqlFileScriptQueryTest/testPrepare_dbmsSpecific.sql");
+                .setScriptFilePath("META-INF/org/seasar/doma/internal/jdbc/query/SqlFileScriptQueryTest/testPrepare_dbmsSpecific.script");
         query.setBlockDelimiter("");
         query.prepare();
 
@@ -64,23 +64,23 @@ public class SqlFileScriptQueryTest extends TestCase {
         assertEquals("aaa", query.getClassName());
         assertEquals("bbb", query.getMethodName());
         assertEquals(
-                "META-INF/org/seasar/doma/internal/jdbc/query/SqlFileScriptQueryTest/testPrepare_dbmsSpecific-mssql2008.sql",
-                query.getSqlFilePath());
-        assertNotNull(query.getSqlFileUrl());
+                "META-INF/org/seasar/doma/internal/jdbc/query/SqlFileScriptQueryTest/testPrepare_dbmsSpecific-mssql2008.script",
+                query.getScriptFilePath());
+        assertNotNull(query.getScriptFileUrl());
         assertEquals("GO", query.getBlockDelimiter());
     }
 
-    public void testPrepare_SqlFileNotFoundException() throws Exception {
+    public void testPrepare_ScriptFileNotFoundException() throws Exception {
         SqlFileScriptQuery query = new SqlFileScriptQuery();
         query.setConfig(config);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query.setSqlFilePath("META-INF/ccc.sql");
+        query.setScriptFilePath("META-INF/ccc.script");
         query.setBlockDelimiter("ddd");
         try {
             query.prepare();
             fail();
-        } catch (SqlFileNotFoundException expected) {
+        } catch (ScriptFileNotFoundException expected) {
             System.out.println(expected.getMessage());
         }
     }
