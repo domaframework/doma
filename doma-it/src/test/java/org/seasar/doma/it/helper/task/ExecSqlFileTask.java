@@ -19,9 +19,11 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.seasar.doma.it.dao.ScriptDao;
 import org.seasar.doma.it.dao.ScriptDaoImpl;
+import org.seasar.doma.jdbc.ScriptException;
 import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 import org.seasar.framework.env.Env;
 
@@ -57,7 +59,11 @@ public class ExecSqlFileTask extends Task {
 
     protected void run() {
         ScriptDao dao = new ScriptDaoImpl();
-        dao.drop();
+        try {
+            dao.drop();
+        } catch (ScriptException e) {
+            log(e, Project.MSG_WARN);
+        }
         dao.create();
     }
 }
