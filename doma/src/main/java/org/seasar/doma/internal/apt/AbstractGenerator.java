@@ -58,7 +58,7 @@ public abstract class AbstractGenerator implements Generator {
 
     protected final StringBuilder indentBuffer = new StringBuilder();
 
-    public AbstractGenerator(ProcessingEnvironment env,
+    protected AbstractGenerator(ProcessingEnvironment env,
             TypeElement typeElement, String fullpackage, String subpackage,
             String prefix, String suffix) throws IOException {
         assertNotNull(env, typeElement, prefix, suffix);

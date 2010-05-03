@@ -29,7 +29,7 @@ public abstract class AbstractWrapper<V> implements Wrapper<V> {
     /**
      * インスタンスを構築します。
      */
-    public AbstractWrapper() {
+    protected AbstractWrapper() {
     }
 
     /**
@@ -38,7 +38,7 @@ public abstract class AbstractWrapper<V> implements Wrapper<V> {
      * @param value
      *            値
      */
-    public AbstractWrapper(V value) {
+    protected AbstractWrapper(V value) {
         doSet(value);
     }
 

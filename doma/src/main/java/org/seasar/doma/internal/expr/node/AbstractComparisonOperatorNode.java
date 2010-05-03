@@ -34,7 +34,7 @@ public abstract class AbstractComparisonOperatorNode implements
 
     protected ExpressionNode rightNode;
 
-    public AbstractComparisonOperatorNode(ExpressionLocation location,
+    protected AbstractComparisonOperatorNode(ExpressionLocation location,
             String expression) {
         assertNotNull(location, expression);
         this.location = location;

@@ -35,7 +35,7 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
 
     protected final Class<?> returnClass;
 
-    public AbstractCreateQueryMetaFactory(ProcessingEnvironment env,
+    protected AbstractCreateQueryMetaFactory(ProcessingEnvironment env,
             Class<?> returnClass) {
         super(env);
         assertNotNull(returnClass);
@@ -49,8 +49,8 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
         queryMeta.setReturnMeta(resultMeta);
         if (!returnClass.getName().equals(
                 resultMeta.getDataType().getQualifiedName())) {
-            throw new AptException(Message.DOMA4097, env, method,
-                    returnClass.getName());
+            throw new AptException(Message.DOMA4097, env, method, returnClass
+                    .getName());
         }
     }
 

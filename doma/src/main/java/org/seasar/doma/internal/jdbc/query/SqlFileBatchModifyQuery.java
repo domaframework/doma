@@ -70,7 +70,7 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
 
     protected List<PreparedSql> sqls;
 
-    public SqlFileBatchModifyQuery(Class<E> elementClass, SqlKind kind) {
+    protected SqlFileBatchModifyQuery(Class<E> elementClass, SqlKind kind) {
         assertNotNull(elementClass, kind);
         this.elementClass = elementClass;
         this.kind = kind;

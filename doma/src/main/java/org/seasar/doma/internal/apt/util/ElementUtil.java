@@ -38,7 +38,7 @@ import org.seasar.doma.ParameterName;
  * @author taedium
  * 
  */
-public class ElementUtil {
+public final class ElementUtil {
 
     public static String getParameterName(VariableElement variableElement) {
         assertNotNull(variableElement);

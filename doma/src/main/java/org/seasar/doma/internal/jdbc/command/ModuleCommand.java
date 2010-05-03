@@ -39,7 +39,7 @@ public abstract class ModuleCommand<R, Q extends ModuleQuery> implements
 
     protected CallableSql sql;
 
-    public ModuleCommand(Q query) {
+    protected ModuleCommand(Q query) {
         assertNotNull(query);
         this.query = query;
         this.sql = query.getSql();

@@ -23,7 +23,7 @@ import javax.lang.model.element.ExecutableElement;
  */
 public abstract class AbstractCreateQueryMeta extends AbstractQueryMeta {
 
-    public AbstractCreateQueryMeta(ExecutableElement method) {
+    protected AbstractCreateQueryMeta(ExecutableElement method) {
         super(method);
     }
 

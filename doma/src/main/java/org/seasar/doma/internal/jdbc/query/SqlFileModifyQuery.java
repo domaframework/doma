@@ -51,7 +51,7 @@ public abstract class SqlFileModifyQuery implements ModifyQuery {
 
     protected int queryTimeout;
 
-    public SqlFileModifyQuery(SqlKind kind) {
+    protected SqlFileModifyQuery(SqlKind kind) {
         assertNotNull(kind);
         this.kind = kind;
     }

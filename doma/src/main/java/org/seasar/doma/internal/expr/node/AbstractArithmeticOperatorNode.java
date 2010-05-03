@@ -34,7 +34,7 @@ public abstract class AbstractArithmeticOperatorNode implements
 
     protected ExpressionNode rightNode;
 
-    public AbstractArithmeticOperatorNode(ExpressionLocation location,
+    protected AbstractArithmeticOperatorNode(ExpressionLocation location,
             String expreexpression, int priority) {
         assertNotNull(location, expreexpression);
         this.location = location;

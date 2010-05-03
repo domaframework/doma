@@ -52,7 +52,7 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
 
     protected final ProcessingEnvironment env;
 
-    public AbstractQueryMetaFactory(ProcessingEnvironment env) {
+    protected AbstractQueryMetaFactory(ProcessingEnvironment env) {
         assertNotNull(env);
         this.env = env;
     }
@@ -143,15 +143,15 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
             Set<String> names = collector.collect(entityType);
             for (String included : includedPropertyNames) {
                 if (!names.contains(included)) {
-                    throw new AptException(Message.DOMA4084, env,
-                            method, annotationMirror, includeValue, included,
+                    throw new AptException(Message.DOMA4084, env, method,
+                            annotationMirror, includeValue, included,
                             entityType);
                 }
             }
             for (String excluded : excludedPropertyNames) {
                 if (!names.contains(excluded)) {
-                    throw new AptException(Message.DOMA4085, env,
-                            method, annotationMirror, excludeValue, excluded,
+                    throw new AptException(Message.DOMA4085, env, method,
+                            annotationMirror, excludeValue, excluded,
                             entityType);
                 }
             }

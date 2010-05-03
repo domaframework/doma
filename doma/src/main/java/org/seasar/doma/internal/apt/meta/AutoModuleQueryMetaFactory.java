@@ -41,7 +41,7 @@ import org.seasar.doma.internal.message.Message;
 public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         extends AbstractQueryMetaFactory<M> {
 
-    public AutoModuleQueryMetaFactory(ProcessingEnvironment env) {
+    protected AutoModuleQueryMetaFactory(ProcessingEnvironment env) {
         super(env);
     }
 

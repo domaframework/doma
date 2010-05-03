@@ -36,7 +36,7 @@ public abstract class VersionPropertyType<E, V extends Number> extends
      * @param columnName
      *            カラム名
      */
-    public VersionPropertyType(Class<V> entityPropertyClass, String name,
+    protected VersionPropertyType(Class<V> entityPropertyClass, String name,
             String columnName) {
         super(entityPropertyClass, name, columnName, true, true);
     }

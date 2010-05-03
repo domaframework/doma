@@ -34,7 +34,7 @@ public abstract class AssignedIdPropertyType<E, V> extends
      * @param columnName
      *            カラム名
      */
-    public AssignedIdPropertyType(Class<V> entityPropertyClass, String name,
+    protected AssignedIdPropertyType(Class<V> entityPropertyClass, String name,
             String columnName) {
         super(entityPropertyClass, name, columnName, true, true);
     }

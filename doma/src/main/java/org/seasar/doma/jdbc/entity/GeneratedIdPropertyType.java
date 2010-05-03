@@ -50,8 +50,8 @@ public abstract class GeneratedIdPropertyType<E, V extends Number> extends
      * @param idGenerator
      *            識別子のジェネレータ
      */
-    public GeneratedIdPropertyType(Class<V> entityPropertyClass, String name,
-            String columnName, IdGenerator idGenerator) {
+    protected GeneratedIdPropertyType(Class<V> entityPropertyClass,
+            String name, String columnName, IdGenerator idGenerator) {
         super(entityPropertyClass, name, columnName, true, true);
         if (idGenerator == null) {
             throw new DomaNullPointerException("idGenerator");

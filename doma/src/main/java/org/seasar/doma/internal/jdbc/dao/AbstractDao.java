@@ -49,7 +49,7 @@ public abstract class AbstractDao {
      * @throws ConfigException
      *             {@code config} の メソッドのどれかが {@code null} を返す場合
      */
-    public AbstractDao(Config config) {
+    protected AbstractDao(Config config) {
         if (config == null) {
             new DomaNullPointerException("config");
         }
@@ -67,7 +67,7 @@ public abstract class AbstractDao {
      * @throws ConfigException
      *             {@code config} の メソッドのどれかが {@code null} を返す場合
      */
-    public AbstractDao(Config config, Connection connection) {
+    protected AbstractDao(Config config, Connection connection) {
         if (config == null) {
             new DomaNullPointerException("config");
         }
@@ -98,7 +98,7 @@ public abstract class AbstractDao {
      * @throws ConfigException
      *             {@code config} の メソッドのどれかが {@code null} を返す場合
      */
-    public AbstractDao(Config config, DataSource dataSource) {
+    protected AbstractDao(Config config, DataSource dataSource) {
         if (config == null) {
             new DomaNullPointerException("config");
         }

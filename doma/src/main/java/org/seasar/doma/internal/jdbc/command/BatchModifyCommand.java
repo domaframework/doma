@@ -41,7 +41,7 @@ public abstract class BatchModifyCommand<Q extends BatchModifyQuery> implements
 
     protected final Q query;
 
-    public BatchModifyCommand(Q query) {
+    protected BatchModifyCommand(Q query) {
         assertNotNull(query);
         this.query = query;
     }

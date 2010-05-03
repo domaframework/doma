@@ -41,7 +41,7 @@ public abstract class ModifyCommand<Q extends ModifyQuery> implements
 
     protected final PreparedSql sql;
 
-    public ModifyCommand(Q query) {
+    protected ModifyCommand(Q query) {
         assertNotNull(query);
         this.query = query;
         this.sql = query.getSql();

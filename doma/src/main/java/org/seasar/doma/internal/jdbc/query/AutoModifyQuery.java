@@ -67,7 +67,7 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
 
     protected int queryTimeout;
 
-    public AutoModifyQuery(EntityType<E> entityType) {
+    protected AutoModifyQuery(EntityType<E> entityType) {
         AssertionUtil.assertNotNull(entityType);
         this.entityType = entityType;
     }
@@ -79,8 +79,7 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
 
     protected void validateIdExistent() {
         if (idPropertyTypes.isEmpty()) {
-            throw new JdbcException(Message.DOMA2022, entityType
-                    .getName());
+            throw new JdbcException(Message.DOMA2022, entityType.getName());
         }
     }
 

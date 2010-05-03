@@ -36,7 +36,7 @@ public abstract class AbstractMessageResourceBundle<M extends Enum<M> & MessageR
 
     protected final Class<M> messageCodeClass;
 
-    public AbstractMessageResourceBundle(Class<M> messageCodeClass) {
+    protected AbstractMessageResourceBundle(Class<M> messageCodeClass) {
         if (messageCodeClass == null) {
             throw new DomaNullPointerException("messageCodeClass");
         }

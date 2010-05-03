@@ -45,7 +45,7 @@ import org.seasar.doma.jdbc.SqlNode;
 public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQueryMeta>
         extends AbstractQueryMetaFactory<M> {
 
-    public AbstractSqlFileQueryMetaFactory(ProcessingEnvironment env) {
+    protected AbstractSqlFileQueryMetaFactory(ProcessingEnvironment env) {
         super(env);
     }
 

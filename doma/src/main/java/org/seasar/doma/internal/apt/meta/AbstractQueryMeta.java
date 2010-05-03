@@ -50,7 +50,7 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
     protected List<QueryParameterMeta> parameterMetas = new ArrayList<QueryParameterMeta>();
 
-    public AbstractQueryMeta(ExecutableElement method) {
+    protected AbstractQueryMeta(ExecutableElement method) {
         assertNotNull(method);
         this.name = method.getSimpleName().toString();
         this.executableElement = method;

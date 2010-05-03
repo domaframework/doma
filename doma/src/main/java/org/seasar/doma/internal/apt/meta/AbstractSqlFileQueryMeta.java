@@ -23,7 +23,7 @@ import javax.lang.model.element.ExecutableElement;
  */
 public abstract class AbstractSqlFileQueryMeta extends AbstractQueryMeta {
 
-    public AbstractSqlFileQueryMeta(ExecutableElement method) {
+    protected AbstractSqlFileQueryMeta(ExecutableElement method) {
         super(method);
     }
 }
