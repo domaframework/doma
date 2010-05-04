@@ -157,7 +157,7 @@
 						<td>lib</td>
 						<td>
 							このチュートリアルで利用するjarファイルを格納するフォルダです。
-							JUnit、HSQLDB、Domaのjarが格納されます。
+							JUnit、H2、Domaのjarが格納されます。
 							これらのjarはすべてビルドパスに通っていなければいけません。
 						</td>
 					</tr>
@@ -192,13 +192,13 @@
 			</subsection>
 			<subsection name="データベース">
 				<p>
-					このチュートリアルでは、データベースに<a href="http://hsqldb.org/">HSQLDB</a>を利用します。
+					このチュートリアルでは、データベースに<a href="http://www.h2database.com/html/main.html">H2 Database Engine</a>を利用します。
 				</p>
 				<p>
 					使用するスキーマの定義は次のとおりです。
 					1つのシーケンスと2つのテーブルを使用します。
 				</p>
-	<source><![CDATA[create sequence employee_seq as integer start with 100 increment by 1;]]></source>
+	<source><![CDATA[create sequence employee_seq start with 100 increment by 1;]]></source>
 <source><![CDATA[create table employee (
   id integer not null primary key,
   name varchar(255) not null,
@@ -217,17 +217,17 @@
   version integer not null
 );]]></source>
 				<p>
-					HSQLDBはMemory-Onlyモードで起動し、テスト用のスキーマとデータは各テストの実行前に作成し、テスト終了後に破棄します。
+					H2はin-memoryモードで起動し、テスト用のスキーマとデータは各テストの実行前に作成し、テスト終了後に破棄します。
 					スキーマとデータの作成と破棄は、共通のテストクラスで行っています。
 					Javaのコードは、<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/test/java/tutorial/TutorialTestCase.java">src/test/java/tutorial/TutorialTestCase.java</a>になります。
 				</p>
 			</subsection>
 			<subsection name="JDBCドライバのプロバイダ構成ファイル">
 				<p>
-					HSQLDBのJDBCドライバを登録するためのプロバイダ構成ファイルがsrc/main/resources/META-INF/servicesに必要です。
+					H2のJDBCドライバを登録するためのプロバイダ構成ファイルがsrc/main/resources/META-INF/servicesに必要です。
 					ファイルの名称は<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/main/resources/META-INF/services/java.sql.Driver">java.sql.Driver</a>で、中身は次のように記述されます。
 				</p>
-<source><![CDATA[org.hsqldb.jdbcDriver]]></source>
+<source><![CDATA[org.h2.Driver]]></source>
 				<p>
 					プロバイダ構成ファイルの詳細については、<a href="http://java.sun.com/javase/ja/6/docs/ja/technotes/guides/jar/jar.html#Service%20Provider">JAR ファイルの仕様</a>
 					を参照してください。
@@ -243,7 +243,7 @@
 					このチュートリアルで使用する設定クラスのソースコードは、<a href="https://www.seasar.org/svn/doma/trunk/doma-tutorial/src/main/java/tutorial/AppConfig.java">src/main/java/tutorial/AppConfig.java</a>になります。
 				</p>
 				<p>
-					このクラスでは、HSQLDBのデータソースの作成とHSQLDBの方言の設定を行っています。
+					このクラスでは、H2のデータソースの作成とH2の方言の設定を行っています。
 					それ以外の設定については親クラスの<a href="https://www.seasar.org/svn/doma/trunk/doma/src/main/java/org/seasar/doma/jdbc/DomaAbstractConfig.java">DomaAbstractConfig</a>のものを利用しています。
 					設定クラスはDaoインタフェースから利用されます。
 				</p>
@@ -251,7 +251,7 @@
 
     protected static final LocalTransactionalDataSource dataSource = createDataSource();
 
-    protected static final Dialect dialect = new HsqldbDialect();
+    protected static final Dialect dialect = new H2Dialect();
 
     @Override
     public DataSource getDataSource() {
@@ -265,7 +265,7 @@
 
     protected static LocalTransactionalDataSource createDataSource() {
         SimpleDataSource dataSource = new SimpleDataSource();
-        dataSource.setUrl("jdbc:hsqldb:mem:tutorial");
+        dataSource.setUrl("jdbc:h2:mem:tutorial;DB_CLOSE_DELAY=-1");
         dataSource.setUser("sa");
         return new LocalTransactionalDataSource(dataSource);
     }
@@ -436,44 +436,7 @@ public interface EmployeeDao {
     @Select
     List<Employee> selectByNames(List<String> names);
 
-    @Select
-    List<Employee> selectByNotEmptyName(String name);
-
-    @Select
-    List<Employee> selectByNameWithPrefixMatching(String prefix);
-
-    @Select
-    List<Employee> selectByNameWithSuffixMatching(String suffix);
-
-    @Select
-    List<Employee> selectByNameWithInsideMatching(String inside);
-
-    @Select
-    List<Employee> selectByHiredateRange(Timestamp from, Timestamp to);
-
-    @Select
-    List<Employee> selectBySalary(Salary salary);
-
-    @Select
-    Salary selectSummedSalary();
-
-    @Select
-    List<Employee> selectByExample(Employee e);
-
-    @Select
-    List<Employee> selectAll();
-
-    @Select
-    List<Employee> selectAll(SelectOptions options);
-
-    @Select(iterate = true)
-    <R> R selectByAge(int age, IterationCallback<R, Employee> callback);
-
-    @Delegate(to = EmployeeDaoDelegate.class)
-    int count();
-
-    @Select
-    List<EmployeeDepartment> selectAllEmployeeDepartment();
+    ...
 
     @Insert
     int insert(Employee employee);
@@ -493,14 +456,7 @@ public interface EmployeeDao {
     @Delete(sqlFile = true)
     int deleteWithSqlFile(Employee employee);
 
-    @BatchInsert
-    int[] batchInsert(List<Employee> employees);
-
-    @BatchUpdate
-    int[] batchUpdate(List<Employee> employees);
-
-    @BatchDelete
-    int[] batchDelete(List<Employee> employees);
+    ...
 
 }]]></source>
 			</subsection>
