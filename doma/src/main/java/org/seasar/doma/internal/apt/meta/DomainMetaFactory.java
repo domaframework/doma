@@ -36,7 +36,7 @@ import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.message.Message;
 
-public class DomainMetaFactory {
+public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
 
     private final ProcessingEnvironment env;
 
@@ -45,7 +45,7 @@ public class DomainMetaFactory {
         this.env = env;
     }
 
-    public DomainMeta createDomainMeta(TypeElement classElement) {
+    public DomainMeta createTypeElementMeta(TypeElement classElement) {
         assertNotNull(classElement);
         DomainMirror domainMirror = DomainMirror.newInstance(classElement, env);
         if (domainMirror == null) {

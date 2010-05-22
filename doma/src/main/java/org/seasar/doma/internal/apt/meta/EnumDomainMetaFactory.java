@@ -31,7 +31,8 @@ import org.seasar.doma.internal.apt.mirror.EnumDomainMirror;
 import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.message.Message;
 
-public class EnumDomainMetaFactory {
+public class EnumDomainMetaFactory implements
+        TypeElementMetaFactory<EnumDomainMeta> {
 
     private final ProcessingEnvironment env;
 
@@ -40,7 +41,7 @@ public class EnumDomainMetaFactory {
         this.env = env;
     }
 
-    public EnumDomainMeta createEnumDomainMeta(TypeElement classElement) {
+    public EnumDomainMeta createTypeElementMeta(TypeElement classElement) {
         assertNotNull(classElement);
         EnumDomainMirror enumDomainMirror = EnumDomainMirror.newInstance(
                 classElement, env);

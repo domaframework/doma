@@ -15,23 +15,18 @@
  */
 package org.seasar.doma.internal.apt;
 
-import java.io.IOException;
-import java.util.Set;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.RoundEnvironment;
+import java.io.IOException;
+
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.util.ElementFilter;
-import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.internal.apt.meta.EnumDomainMeta;
 import org.seasar.doma.internal.apt.meta.EnumDomainMetaFactory;
-import org.seasar.doma.internal.message.Message;
-import org.seasar.doma.internal.util.IOUtil;
 
 /**
  * @author taedium
@@ -40,68 +35,18 @@ import org.seasar.doma.internal.util.IOUtil;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 @SupportedAnnotationTypes( { "org.seasar.doma.EnumDomain" })
 @SupportedOptions( { Options.TEST, Options.DEBUG })
-public class EnumDomainProcessor extends AbstractProcessor {
+public class EnumDomainProcessor extends AbstractProcessor<EnumDomainMeta> {
 
     @Override
-    public boolean process(Set<? extends TypeElement> annotations,
-            RoundEnvironment roundEnv) {
-        if (roundEnv.processingOver()) {
-            return true;
-        }
-        for (TypeElement a : annotations) {
-            EnumDomainMetaFactory domainMetaFactory = createEnumDomainMetaFactory();
-            for (TypeElement domainElement : ElementFilter.typesIn(roundEnv
-                    .getElementsAnnotatedWith(a))) {
-                if (Options.isDebugEnabled(processingEnv)) {
-                    Notifier.debug(processingEnv, Message.DOMA4090, getClass()
-                            .getName(), domainElement.getQualifiedName());
-                }
-                try {
-                    EnumDomainMeta domainMeta = domainMetaFactory
-                            .createEnumDomainMeta(domainElement);
-                    generateEnumDomain(domainElement, domainMeta);
-                } catch (AptException e) {
-                    Notifier.notify(processingEnv, e);
-                } catch (AptIllegalStateException e) {
-                    Notifier.notify(processingEnv, Kind.ERROR,
-                            Message.DOMA4039, domainElement);
-                    throw e;
-                } catch (RuntimeException e) {
-                    Notifier.notify(processingEnv, Kind.ERROR,
-                            Message.DOMA4016, domainElement);
-                    throw e;
-                }
-                if (Options.isDebugEnabled(processingEnv)) {
-                    Notifier.debug(processingEnv, Message.DOMA4091, getClass()
-                            .getName(), domainElement.getQualifiedName());
-                }
-            }
-        }
-        return true;
-    }
-
-    protected EnumDomainMetaFactory createEnumDomainMetaFactory() {
+    protected EnumDomainMetaFactory createTypeElementMetaFactory() {
         return new EnumDomainMetaFactory(processingEnv);
     }
 
-    protected void generateEnumDomain(TypeElement domainElement,
-            EnumDomainMeta domainMeta) {
-        EnumDomainTypeGenerator generator = null;
-        try {
-            generator = createEnumDomainTypeGenerator(domainElement, domainMeta);
-            generator.generate();
-        } catch (IOException e) {
-            throw new AptException(Message.DOMA4011, processingEnv,
-                    domainElement, e, domainElement.getQualifiedName(), e);
-        } finally {
-            IOUtil.close(generator);
-        }
+    @Override
+    protected Generator createGenerator(TypeElement typeElement,
+            EnumDomainMeta meta) throws IOException {
+        assertNotNull(typeElement, meta);
+        return new EnumDomainTypeGenerator(processingEnv, typeElement, meta);
     }
 
-    protected EnumDomainTypeGenerator createEnumDomainTypeGenerator(
-            TypeElement domainElement, EnumDomainMeta domainMeta)
-            throws IOException {
-        return new EnumDomainTypeGenerator(processingEnv, domainElement,
-                domainMeta);
-    }
 }

@@ -15,23 +15,18 @@
  */
 package org.seasar.doma.internal.apt;
 
-import java.io.IOException;
-import java.util.Set;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.RoundEnvironment;
+import java.io.IOException;
+
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.util.ElementFilter;
-import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.internal.apt.meta.DomainMeta;
 import org.seasar.doma.internal.apt.meta.DomainMetaFactory;
-import org.seasar.doma.internal.message.Message;
-import org.seasar.doma.internal.util.IOUtil;
 
 /**
  * @author taedium
@@ -40,68 +35,18 @@ import org.seasar.doma.internal.util.IOUtil;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 @SupportedAnnotationTypes( { "org.seasar.doma.Domain" })
 @SupportedOptions( { Options.TEST, Options.DEBUG })
-public class DomainProcessor extends AbstractProcessor {
+public class DomainProcessor extends AbstractProcessor<DomainMeta> {
 
     @Override
-    public boolean process(Set<? extends TypeElement> annotations,
-            RoundEnvironment roundEnv) {
-        if (roundEnv.processingOver()) {
-            return true;
-        }
-        for (TypeElement a : annotations) {
-            DomainMetaFactory domainMetaFactory = createDomainMetaFactory();
-            for (TypeElement domainElement : ElementFilter.typesIn(roundEnv
-                    .getElementsAnnotatedWith(a))) {
-                if (Options.isDebugEnabled(processingEnv)) {
-                    Notifier.debug(processingEnv, Message.DOMA4090, getClass()
-                            .getName(), domainElement.getQualifiedName());
-                }
-                try {
-                    DomainMeta domainMeta = domainMetaFactory
-                            .createDomainMeta(domainElement);
-                    generateDomain(domainElement, domainMeta);
-                } catch (AptException e) {
-                    Notifier.notify(processingEnv, e);
-                } catch (AptIllegalStateException e) {
-                    Notifier.notify(processingEnv, Kind.ERROR,
-                            Message.DOMA4039, domainElement);
-                    throw e;
-                } catch (RuntimeException e) {
-                    Notifier.notify(processingEnv, Kind.ERROR,
-                            Message.DOMA4016, domainElement);
-                    throw e;
-                }
-                if (Options.isDebugEnabled(processingEnv)) {
-                    Notifier.debug(processingEnv, Message.DOMA4091, getClass()
-                            .getName(), domainElement.getQualifiedName());
-                }
-            }
-        }
-        return true;
-    }
-
-    protected DomainMetaFactory createDomainMetaFactory() {
+    protected DomainMetaFactory createTypeElementMetaFactory() {
         return new DomainMetaFactory(processingEnv);
     }
 
-    protected void generateDomain(TypeElement domainElement,
-            DomainMeta domainMeta) {
-        DomainTypeGenerator generator = null;
-        try {
-            generator = createDomainTypeGenerator(domainElement, domainMeta);
-            generator.generate();
-        } catch (IOException e) {
-            throw new AptException(Message.DOMA4011, processingEnv,
-                    domainElement, e, domainElement.getQualifiedName(), e);
-        } finally {
-            IOUtil.close(generator);
-        }
-    }
-
-    protected DomainTypeGenerator createDomainTypeGenerator(
-            TypeElement domainElement, DomainMeta domainMeta)
+    @Override
+    protected Generator createGenerator(TypeElement typeElement, DomainMeta meta)
             throws IOException {
-        return new DomainTypeGenerator(processingEnv, domainElement, domainMeta);
+        assertNotNull(typeElement, meta);
+        return new DomainTypeGenerator(processingEnv, typeElement, meta);
     }
 
 }

@@ -34,7 +34,7 @@ import org.seasar.doma.internal.apt.mirror.DaoMirror;
  * @author taedium
  * 
  */
-public class DaoMeta {
+public class DaoMeta implements TypeElementMeta {
 
     protected final List<QueryMeta> queryMetas = new ArrayList<QueryMeta>();
 

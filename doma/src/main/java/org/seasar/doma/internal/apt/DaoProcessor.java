@@ -15,20 +15,17 @@
  */
 package org.seasar.doma.internal.apt;
 
+import static org.seasar.doma.internal.util.AssertionUtil.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.util.ElementFilter;
-import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.internal.apt.meta.ArrayCreateQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.AutoBatchModifyQueryMetaFactory;
@@ -46,8 +43,7 @@ import org.seasar.doma.internal.apt.meta.SqlFileBatchModifyQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileModifyQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileScriptQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.SqlFileSelectQueryMetaFactory;
-import org.seasar.doma.internal.message.Message;
-import org.seasar.doma.internal.util.IOUtil;
+import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 
 /**
  * @author taedium
@@ -57,46 +53,12 @@ import org.seasar.doma.internal.util.IOUtil;
 @SupportedAnnotationTypes( { "org.seasar.doma.Dao" })
 @SupportedOptions( { Options.TEST, Options.DEBUG, Options.DAO_PACKAGE,
         Options.DAO_SUBPACKAGE, Options.DAO_SUFFIX })
-public class DaoProcessor extends AbstractProcessor {
+public class DaoProcessor extends AbstractProcessor<DaoMeta> {
 
     @Override
-    public boolean process(Set<? extends TypeElement> annotations,
-            RoundEnvironment roundEnv) {
-        if (roundEnv.processingOver()) {
-            return true;
-        }
-        for (TypeElement a : annotations) {
-            List<QueryMetaFactory> queryMetaFactories = createQueryMetaFactory();
-            DaoMetaFactory daoMetaFactory = createDaoMetaFactory(queryMetaFactories);
-            for (TypeElement daoElement : ElementFilter.typesIn(roundEnv
-                    .getElementsAnnotatedWith(a))) {
-                if (Options.isDebugEnabled(processingEnv)) {
-                    Notifier.debug(processingEnv, Message.DOMA4090, getClass()
-                            .getName(), daoElement.getQualifiedName());
-                }
-                try {
-                    DaoMeta daoMeta = daoMetaFactory.createDaoMeta(daoElement);
-                    if (!daoMeta.isError()) {
-                        generateDao(daoElement, daoMeta);
-                    }
-                } catch (AptException e) {
-                    Notifier.notify(processingEnv, e);
-                } catch (AptIllegalStateException e) {
-                    Notifier.notify(processingEnv, Kind.ERROR,
-                            Message.DOMA4039, daoElement);
-                    throw e;
-                } catch (RuntimeException e) {
-                    Notifier.notify(processingEnv, Kind.ERROR,
-                            Message.DOMA4016, daoElement);
-                    throw e;
-                }
-                if (Options.isDebugEnabled(processingEnv)) {
-                    Notifier.debug(processingEnv, Message.DOMA4091, getClass()
-                            .getName(), daoElement.getQualifiedName());
-                }
-            }
-        }
-        return true;
+    protected TypeElementMetaFactory<DaoMeta> createTypeElementMetaFactory() {
+        List<QueryMetaFactory> queryMetaFactories = createQueryMetaFactory();
+        return new DaoMetaFactory(processingEnv, queryMetaFactories);
     }
 
     protected List<QueryMetaFactory> createQueryMetaFactory() {
@@ -117,26 +79,10 @@ public class DaoProcessor extends AbstractProcessor {
         return factories;
     }
 
-    protected DaoMetaFactory createDaoMetaFactory(
-            List<QueryMetaFactory> queryMetaFactories) {
-        return new DaoMetaFactory(processingEnv, queryMetaFactories);
-    }
-
-    protected void generateDao(TypeElement daoElement, DaoMeta daoMeta) {
-        DaoGenerator daoGenerator = null;
-        try {
-            daoGenerator = createDaoGenerator(daoElement, daoMeta);
-            daoGenerator.generate();
-        } catch (IOException e) {
-            throw new AptException(Message.DOMA4011, processingEnv, daoElement,
-                    e, daoElement.getQualifiedName(), e);
-        } finally {
-            IOUtil.close(daoGenerator);
-        }
-    }
-
-    protected DaoGenerator createDaoGenerator(TypeElement daoElement,
-            DaoMeta daoMeta) throws IOException {
-        return new DaoGenerator(processingEnv, daoElement, daoMeta);
+    @Override
+    protected Generator createGenerator(TypeElement typeElement, DaoMeta meta)
+            throws IOException {
+        assertNotNull(typeElement, meta);
+        return new DaoGenerator(processingEnv, typeElement, meta);
     }
 }

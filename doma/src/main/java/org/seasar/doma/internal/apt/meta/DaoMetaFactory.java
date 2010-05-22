@@ -44,7 +44,7 @@ import org.seasar.doma.internal.message.Message;
  * @author taedium
  * 
  */
-public class DaoMetaFactory {
+public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
     protected final ProcessingEnvironment env;
 
@@ -57,7 +57,7 @@ public class DaoMetaFactory {
         this.queryMetaFactories.addAll(commandMetaFactories);
     }
 
-    public DaoMeta createDaoMeta(TypeElement interfaceElement) {
+    public DaoMeta createTypeElementMeta(TypeElement interfaceElement) {
         assertNotNull(interfaceElement);
         DaoMirror daoMirror = DaoMirror.newInstance(interfaceElement, env);
         if (daoMirror == null) {

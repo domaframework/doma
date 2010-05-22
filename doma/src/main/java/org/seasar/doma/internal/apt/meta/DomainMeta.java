@@ -23,7 +23,7 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.mirror.DomainMirror;
 import org.seasar.doma.internal.apt.type.WrapperType;
 
-public class DomainMeta {
+public class DomainMeta implements TypeElementMeta {
 
     protected final TypeElement typeElement;
 
@@ -69,6 +69,11 @@ public class DomainMeta {
 
     void setDomainMirror(DomainMirror domainMirror) {
         this.domainMirror = domainMirror;
+    }
+
+    @Override
+    public boolean isError() {
+        return false;
     }
 
 }

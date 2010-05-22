@@ -53,7 +53,7 @@ import org.seasar.doma.jdbc.entity.EntityListener;
  * @author taedium
  * 
  */
-public class EntityMetaFactory {
+public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
 
     protected final ProcessingEnvironment env;
 
@@ -66,7 +66,7 @@ public class EntityMetaFactory {
         this.propertyMetaFactory = propertyMetaFactory;
     }
 
-    public EntityMeta createEntityMeta(TypeElement classElement) {
+    public EntityMeta createTypeElementMeta(TypeElement classElement) {
         assertNotNull(classElement);
         EntityMirror entityMirror = EntityMirror.newInstance(classElement, env);
         if (entityMirror == null) {

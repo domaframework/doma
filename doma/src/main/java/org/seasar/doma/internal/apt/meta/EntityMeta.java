@@ -32,7 +32,7 @@ import org.seasar.doma.jdbc.entity.NamingType;
  * @author taedium
  * 
  */
-public class EntityMeta {
+public class EntityMeta implements TypeElementMeta {
 
     protected final List<EntityPropertyMeta> allPropertyMetas = new ArrayList<EntityPropertyMeta>();
 

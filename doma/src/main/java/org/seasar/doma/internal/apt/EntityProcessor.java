@@ -15,24 +15,19 @@
  */
 package org.seasar.doma.internal.apt;
 
-import java.io.IOException;
-import java.util.Set;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.RoundEnvironment;
+import java.io.IOException;
+
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.util.ElementFilter;
-import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.internal.apt.meta.EntityMeta;
 import org.seasar.doma.internal.apt.meta.EntityMetaFactory;
 import org.seasar.doma.internal.apt.meta.EntityPropertyMetaFactory;
-import org.seasar.doma.internal.message.Message;
-import org.seasar.doma.internal.util.IOUtil;
 
 /**
  * @author taedium
@@ -41,49 +36,10 @@ import org.seasar.doma.internal.util.IOUtil;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 @SupportedAnnotationTypes( { "org.seasar.doma.Entity" })
 @SupportedOptions( { Options.TEST, Options.DEBUG })
-public class EntityProcessor extends AbstractProcessor {
+public class EntityProcessor extends AbstractProcessor<EntityMeta> {
 
     @Override
-    public boolean process(Set<? extends TypeElement> annotations,
-            RoundEnvironment roundEnv) {
-        if (roundEnv.processingOver()) {
-            return true;
-        }
-        for (TypeElement a : annotations) {
-            EntityMetaFactory entityMetaFactory = createEntityMetaFactory();
-            for (TypeElement entityElement : ElementFilter.typesIn(roundEnv
-                    .getElementsAnnotatedWith(a))) {
-                if (Options.isDebugEnabled(processingEnv)) {
-                    Notifier.debug(processingEnv, Message.DOMA4090, getClass()
-                            .getName(), entityElement.getQualifiedName());
-                }
-                try {
-                    EntityMeta entityMeta = entityMetaFactory
-                            .createEntityMeta(entityElement);
-                    if (!entityMeta.isError()) {
-                        generateEntity(entityElement, entityMeta);
-                    }
-                } catch (AptException e) {
-                    Notifier.notify(processingEnv, e);
-                } catch (AptIllegalStateException e) {
-                    Notifier.notify(processingEnv, Kind.ERROR,
-                            Message.DOMA4039, entityElement);
-                    throw e;
-                } catch (RuntimeException e) {
-                    Notifier.notify(processingEnv, Kind.ERROR,
-                            Message.DOMA4016, entityElement);
-                    throw e;
-                }
-                if (Options.isDebugEnabled(processingEnv)) {
-                    Notifier.debug(processingEnv, Message.DOMA4091, getClass()
-                            .getName(), entityElement.getQualifiedName());
-                }
-            }
-        }
-        return true;
-    }
-
-    protected EntityMetaFactory createEntityMetaFactory() {
+    protected EntityMetaFactory createTypeElementMetaFactory() {
         EntityPropertyMetaFactory propertyMetaFactory = createEntityPropertyMetaFactory();
         return new EntityMetaFactory(processingEnv, propertyMetaFactory);
     }
@@ -92,25 +48,11 @@ public class EntityProcessor extends AbstractProcessor {
         return new EntityPropertyMetaFactory(processingEnv);
     }
 
-    protected void generateEntity(TypeElement entityElement,
-            EntityMeta entityMeta) {
-        EntityTypeGenerator generator = null;
-        try {
-            generator = createEntityTypeGenerator(entityElement,
-                    entityMeta);
-            generator.generate();
-        } catch (IOException e) {
-            throw new AptException(Message.DOMA4011, processingEnv,
-                    entityElement, e, entityElement.getQualifiedName(), e);
-        } finally {
-            IOUtil.close(generator);
-        }
-    }
-
-    protected EntityTypeGenerator createEntityTypeGenerator(
-            TypeElement entityElement, EntityMeta entityMeta)
+    @Override
+    protected Generator createGenerator(TypeElement typeElement, EntityMeta meta)
             throws IOException {
-        return new EntityTypeGenerator(processingEnv, entityElement, entityMeta);
+        assertNotNull(typeElement, meta);
+        return new EntityTypeGenerator(processingEnv, typeElement, meta);
     }
 
 }
