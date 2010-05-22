@@ -65,6 +65,7 @@
 					<item name="ストアドファンクション" href="reference/query/function.html" />
 					<item name="ストアドプロシージャー" href="reference/query/procedure.html" />
 					<item name="ファクトリ" href="reference/query/factory.html" />
+					<item name="スクリプト" href="reference/query/script.html" />
 				</item>
 				<item name="設定クラス" href="reference/config.html" />
 				<item name="SQLファイル" href="reference/sqlfile.html" />

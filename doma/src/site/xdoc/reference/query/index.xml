@@ -106,6 +106,14 @@
 						<li><a href="factory.html#NClobの生成">NClobの生成</a></li>
 					</ul>
 				</li>
+				<li>
+					<a href="script.html">スクリプト</a>
+					<ul>
+						<li><a href="script.html#概要">概要</a></li>
+						<li><a href="script.html#スクリプトファイル">スクリプトファイル</a></li>
+						<li><a href="script.html#スクリプトの記述例">スクリプトの記述例</a></li>
+					</ul>
+				</li>
 			</ul>
 		</section>
 	</body>
