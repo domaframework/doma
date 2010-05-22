@@ -22,6 +22,7 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
 import org.seasar.doma.jdbc.SelectOptions;
 
+import example.domain.JobType;
 import example.domain.PhoneNumber;
 
 /**
@@ -33,9 +34,16 @@ import example.domain.PhoneNumber;
 public interface SqlFileSelectDomainDao {
 
     @Select
-    PhoneNumber selectById(Integer id);
+    PhoneNumber selectPhoneNumberById(Integer id);
 
     @Select
-    List<PhoneNumber> selectByNameAndSalary(String name, BigDecimal salary,
+    List<PhoneNumber> selectPhoneNumberByNameAndSalary(String name,
+            BigDecimal salary, SelectOptions options);
+
+    @Select
+    JobType selectJobTypeById(Integer id);
+
+    @Select
+    List<JobType> selectJobTypeByNameAndSalary(String name, BigDecimal salary,
             SelectOptions options);
 }

@@ -128,8 +128,8 @@ public class DomainMetaFactory {
         for (TypeElement t = classElement; t != null
                 && t.asType().getKind() != TypeKind.NONE; t = TypeMirrorUtil
                 .toTypeElement(t.getSuperclass(), env)) {
-            for (ExecutableElement method : ElementFilter
-                    .methodsIn(classElement.getEnclosedElements())) {
+            for (ExecutableElement method : ElementFilter.methodsIn(t
+                    .getEnclosedElements())) {
                 if (!method.getSimpleName().contentEquals(
                         domainMeta.getAccessorMethod())) {
                     continue;

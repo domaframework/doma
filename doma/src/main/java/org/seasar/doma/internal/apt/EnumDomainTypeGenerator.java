@@ -22,7 +22,6 @@ import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.internal.apt.meta.EnumDomainMeta;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
-import org.seasar.doma.internal.domain.DomainWrapper;
 import org.seasar.doma.internal.util.BoxedPrimitiveUtil;
 
 /**
@@ -61,61 +60,30 @@ public class EnumDomainTypeGenerator extends DomainTypeGenerator {
     }
 
     @Override
-    protected void printWrapperClass() {
-        iprint(
-                "private static class Wrapper extends %1$s implements %2$s<%3$s, %4$s> {%n",
-                enumDomainMeta.getWrapperType().getTypeName(),
-                DomainWrapper.class.getName(), TypeMirrorUtil.boxIfPrimitive(
-                        enumDomainMeta.getValueType(), env), enumDomainMeta
-                        .getTypeElement().getQualifiedName());
-        print("%n");
-        iprint("    private %1$s domain;%n", enumDomainMeta.getTypeElement()
-                .getQualifiedName());
-        print("%n");
-        iprint("    private Wrapper(%1$s domain) {%n", enumDomainMeta
-                .getTypeElement().getQualifiedName());
-        if (enumDomainMeta.getWrapperType().getWrappedType().isEnum()) {
-            iprint("        super(%1$s.class);%n", TypeMirrorUtil
+    protected WrapperGenerator createWrapperGenerator() {
+        return new WrapperGenerator();
+    }
+
+    protected class WrapperGenerator extends
+            DomainTypeGenerator.WrapperGenerator {
+
+        @Override
+        protected void pirntWrapperDoSetMethod() {
+            iprint("@Override%n");
+            iprint("protected void doSet(%1$s value) {%n", TypeMirrorUtil
                     .boxIfPrimitive(enumDomainMeta.getValueType(), env));
+            if (enumDomainMeta.getWrapperType().getWrappedType().isPrimitive()) {
+                iprint("    domain = %1$s.%2$s(%3$s.unbox(value));%n",
+                        enumDomainMeta.getTypeElement().getQualifiedName(),
+                        enumDomainMeta.getFactoryMethod(),
+                        BoxedPrimitiveUtil.class.getName());
+            } else {
+                iprint("    domain = %1$s.%2$s(value);%n", enumDomainMeta
+                        .getTypeElement().getQualifiedName(), enumDomainMeta
+                        .getFactoryMethod());
+            }
+            iprint("}%n");
+            print("%n");
         }
-        iprint("        this.domain = domain;%n");
-        iprint("    }%n");
-        print("%n");
-        iprint("    @Override%n");
-        iprint("    protected %1$s doGet() {%n", TypeMirrorUtil.boxIfPrimitive(
-                enumDomainMeta.getValueType(), env));
-        iprint("        if (domain == null) {%n");
-        if (enumDomainMeta.getWrapperType().getWrappedType().isPrimitive()) {
-            iprint("            return %1$s.unbox(value);%n",
-                    BoxedPrimitiveUtil.class.getName());
-        } else {
-            iprint("            return null;%n");
-        }
-        iprint("        }%n");
-        iprint("        return domain.%1$s();%n", enumDomainMeta
-                .getAccessorMethod());
-        iprint("    }%n");
-        print("%n");
-        iprint("    @Override%n");
-        iprint("    protected void doSet(%1$s value) {%n", TypeMirrorUtil
-                .boxIfPrimitive(enumDomainMeta.getValueType(), env));
-        if (enumDomainMeta.getWrapperType().getWrappedType().isPrimitive()) {
-            iprint("        domain = %1$s.%2$s(%3$s.unbox(value));%n",
-                    enumDomainMeta.getTypeElement().getQualifiedName(),
-                    enumDomainMeta.getFactoryMethod(), BoxedPrimitiveUtil.class
-                            .getName());
-        } else {
-            iprint("        domain = %1$s.%2$s(value);%n", enumDomainMeta
-                    .getTypeElement().getQualifiedName(), enumDomainMeta
-                    .getFactoryMethod());
-        }
-        iprint("    }%n");
-        print("%n");
-        iprint("    @Override%n");
-        iprint("    public %1$s getDomain() {%n", enumDomainMeta
-                .getTypeElement().getQualifiedName());
-        iprint("        return domain;%n");
-        iprint("    }%n");
-        iprint("}%n");
     }
 }

@@ -112,20 +112,38 @@ public final class Wrappers {
         assertNotNull(valueClass);
         Class<?> boxedClass = ClassUtil
                 .toBoxedPrimitiveTypeIfPossible(valueClass);
-        if (boxedClass == Array.class) {
-            return new ArrayWrapper((Array) value);
+        if (boxedClass == String.class) {
+            return new StringWrapper((String) value);
+        }
+        if (boxedClass == Integer.class) {
+            return new IntegerWrapper((Integer) value);
+        }
+        if (boxedClass == Long.class) {
+            return new LongWrapper((Long) value);
         }
         if (boxedClass == BigDecimal.class) {
             return new BigDecimalWrapper((BigDecimal) value);
+        }
+        if (boxedClass == Date.class) {
+            return new DateWrapper((Date) value);
+        }
+        if (boxedClass == Timestamp.class) {
+            return new TimestampWrapper((Timestamp) value);
+        }
+        if (boxedClass == Time.class) {
+            return new TimeWrapper((Time) value);
+        }
+        if (boxedClass == Boolean.class) {
+            return new BooleanWrapper((Boolean) value);
+        }
+        if (boxedClass == Array.class) {
+            return new ArrayWrapper((Array) value);
         }
         if (boxedClass == BigInteger.class) {
             return new BigIntegerWrapper((BigInteger) value);
         }
         if (boxedClass == Blob.class) {
             return new BlobWrapper((Blob) value);
-        }
-        if (boxedClass == Boolean.class) {
-            return new BooleanWrapper((Boolean) value);
         }
         if (boxedClass == byte[].class) {
             return new BytesWrapper((byte[]) value);
@@ -136,35 +154,17 @@ public final class Wrappers {
         if (boxedClass == Clob.class) {
             return new ClobWrapper((Clob) value);
         }
-        if (boxedClass == Date.class) {
-            return new DateWrapper((Date) value);
-        }
         if (boxedClass == Double.class) {
             return new DoubleWrapper((Double) value);
         }
         if (boxedClass == Float.class) {
             return new FloatWrapper((Float) value);
         }
-        if (boxedClass == Integer.class) {
-            return new IntegerWrapper((Integer) value);
-        }
-        if (boxedClass == Long.class) {
-            return new LongWrapper((Long) value);
-        }
         if (boxedClass == NClob.class) {
             return new NClobWrapper((NClob) value);
         }
         if (boxedClass == Short.class) {
             return new ShortWrapper((Short) value);
-        }
-        if (boxedClass == String.class) {
-            return new StringWrapper((String) value);
-        }
-        if (boxedClass == Timestamp.class) {
-            return new TimestampWrapper((Timestamp) value);
-        }
-        if (boxedClass == Time.class) {
-            return new TimeWrapper((Time) value);
         }
         return null;
     }

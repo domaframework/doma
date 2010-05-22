@@ -41,15 +41,14 @@ public final class _EnumDomain implements org.seasar.doma.internal.domain.Domain
 
         private Wrapper(org.seasar.doma.internal.apt.domain.EnumDomain domain) {
             super(org.seasar.doma.internal.apt.domain.EnumDomain.JobType.class);
-            if (domain == null) {
-                this.domain = new org.seasar.doma.internal.apt.domain.EnumDomain((org.seasar.doma.internal.apt.domain.EnumDomain.JobType) null);
-            } else {
-                this.domain = domain;
-            }
+            this.domain = domain;
         }
 
         @Override
         protected org.seasar.doma.internal.apt.domain.EnumDomain.JobType doGet() {
+            if (domain == null) {
+                return null;
+            }
             return domain.getValue();
         }
 

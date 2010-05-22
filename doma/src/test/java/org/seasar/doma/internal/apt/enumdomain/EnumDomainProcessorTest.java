@@ -40,4 +40,14 @@ public class EnumDomainProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
+    public void testPrimitiveValue() throws Exception {
+        Class<?> target = PrimitiveValue.class;
+        EnumDomainProcessor processor = new EnumDomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
 }

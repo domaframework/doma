@@ -40,15 +40,14 @@ public final class _PrimitiveValueDomain implements org.seasar.doma.internal.dom
         private org.seasar.doma.internal.apt.domain.PrimitiveValueDomain domain;
 
         private Wrapper(org.seasar.doma.internal.apt.domain.PrimitiveValueDomain domain) {
-            if (domain == null) {
-                this.domain = new org.seasar.doma.internal.apt.domain.PrimitiveValueDomain((int) 0);
-            } else {
-                this.domain = domain;
-            }
+            this.domain = domain;
         }
 
         @Override
         protected java.lang.Integer doGet() {
+            if (domain == null) {
+                return null;
+            }
             return domain.getValue();
         }
 

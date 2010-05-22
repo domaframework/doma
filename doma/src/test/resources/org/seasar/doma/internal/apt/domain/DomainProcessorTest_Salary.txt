@@ -40,15 +40,14 @@ public final class _Salary implements org.seasar.doma.internal.domain.DomainType
         private org.seasar.doma.internal.apt.domain.Salary domain;
 
         private Wrapper(org.seasar.doma.internal.apt.domain.Salary domain) {
-            if (domain == null) {
-                this.domain = new org.seasar.doma.internal.apt.domain.Salary((java.math.BigDecimal) null);
-            } else {
-                this.domain = domain;
-            }
+            this.domain = domain;
         }
 
         @Override
         protected java.math.BigDecimal doGet() {
+            if (domain == null) {
+                return null;
+            }
             return domain.getValue();
         }
 

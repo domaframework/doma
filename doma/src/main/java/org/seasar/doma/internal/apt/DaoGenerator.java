@@ -374,8 +374,10 @@ public class DaoGenerator extends AbstractGenerator {
                                                         .getTypeNameAsTypeParameter(),
                                                 DomainIterationHandler.class
                                                         .getName(),
-                                                basicType.getTypeName(),
-                                                dataType.getTypeName(),
+                                                basicType
+                                                        .getTypeNameAsTypeParameter(),
+                                                dataType
+                                                        .getTypeNameAsTypeParameter(),
                                                 getPrefixedDomainTypeName(dataType
                                                         .getTypeName()),
                                                 callbackParamName);
@@ -485,10 +487,12 @@ public class DaoGenerator extends AbstractGenerator {
                                         iprint(
                                                 "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s, %2$s>(%5$s.getSingletonInternal()));%n",
                                                 commandClassName,
-                                                dataType.getTypeName(),
+                                                dataType
+                                                        .getTypeNameAsTypeParameter(),
                                                 DomainSingleResultHandler.class
                                                         .getName(),
-                                                basicType.getTypeName(),
+                                                basicType
+                                                        .getTypeNameAsTypeParameter(),
                                                 getPrefixedDomainTypeName(dataType
                                                         .getTypeName()));
                                         return null;
@@ -592,9 +596,9 @@ public class DaoGenerator extends AbstractGenerator {
                                                                         DomainResultListHandler.class
                                                                                 .getName(),
                                                                         basicType
-                                                                                .getTypeName(),
+                                                                                .getTypeNameAsTypeParameter(),
                                                                         dataType
-                                                                                .getTypeName(),
+                                                                                .getTypeNameAsTypeParameter(),
                                                                         getPrefixedDomainTypeName(dataType
                                                                                 .getTypeName()));
                                                                 return null;
