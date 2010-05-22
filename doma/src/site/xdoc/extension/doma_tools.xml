@@ -45,31 +45,43 @@
 			<p>
 				Daoインタフェースは@Daoが注釈されている場合のみ認識されます。
 			</p>
+			<p>
+				以下で述べる、SQLファイルは拡張子が「sql」であるファイルです。
+				また、スクリプトファイルは拡張子が「script」であるファイルです。
+			</p>
 			<subsection name="DaoインタフェースをJavaエディタで開いている場合">
 				<p>
-					メソッドを選択して右クリックし、「Doma」  - 「Jump to SQL File」 と選択するとSQLファイルへジャンプします。
-					SQLファイルが存在しない場合は、SQLファイル作成のダイアログが開きます。
+					メソッドを選択して右クリックし、「Doma」  - 「Jump to SQL File」 と選択するとSQLファイルもしくはスクリプトファイルへジャンプします。
+					ファイルが存在しない場合は、ファイル作成のダイアログが開きます。
+				</p>
+				<p>
+					スクリプトファイルへのジャンプは、メソッドに<a href="../reference/query/script.html">@Script</a>が注釈されている場合に限り起こります。
+					それ以外では、SQLファイルへジャンプします。
 				</p>
 			</subsection>
 			<subsection name="DaoインタフェースのメソッドをOutline View等で選択している場合">
 				<p>
-					メソッドを右クリックし、「Doma」  - 「Jump to SQL File」 と選択するとSQLファイルへジャンプします。
-					SQLファイルが存在しない場合は、SQLファイル作成のダイアログが開きます。
+					メソッドを選択して右クリックし、「Doma」  - 「Jump to SQL File」 と選択するとSQLファイルもしくはスクリプトファイルへジャンプします。
+					ファイルが存在しない場合は、ファイル作成のダイアログが開きます。
+				</p>
+				<p>
+					スクリプトファイルへのジャンプは、メソッドに<a href="../reference/query/script.html">@Script</a>が注釈されている場合に限り起こります。
+					それ以外では、SQLファイルへジャンプします。
 				</p>
 			</subsection>
-			<subsection name="SQLファイルをテキストエディタで開いている場合">
+			<subsection name="SQLファイルもしくはスクリプトファイルをテキストエディタで開いている場合">
 				<p>
 					エディタ上で右クリックし、「Doma」  - 「Jump to Dao」 と選択するとDaoインタフェースへジャンプします。
 					対応するDaoインタフェースがない場合、何もおきません。
 				</p>
 				<p>
-					SQLファイルを変更すると、対応するDaoクラスがビルドされます。
+					SQLファイルもしくはスクリプトファイルを変更すると、対応するDaoクラスがビルドされます。
 					Daoインタフェースのビルドにより、aptのコード検証が行われます。
 				</p>
 			</subsection>
-			<subsection name="SQLファイルをPackage Explorer View等で選択している場合">
+			<subsection name="SQLファイルもしくはスクリプトファイルをPackage Explorer View等で選択している場合">
 				<p>
-					SQLファイルを右クリックし、「Doma」  - 「Jump to Dao」 と選択するとDaoインタフェースへジャンプします。
+					SQLファイルもしくはスクリプトファイルを右クリックし、「Doma」  - 「Jump to Dao」 と選択するとDaoインタフェースへジャンプします。
 					対応するDaoインタフェースがない場合、何もおきません。
 				</p>
 			</subsection>
