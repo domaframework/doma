@@ -9,6 +9,7 @@
 			<ul>
 				<li><a href="#概要">概要</a></li>
 				<li><a href="#ドメイン定義">ドメイン定義</a></li>
+				<li><a href="#列挙型を使用したドメイン定義">列挙型を使用したドメイン定義</a></li>
 				<li><a href="#利用例">利用例</a>
 					<ul>
 						<li><a href="#エンティティクラス">エンティテクラス</a></li>
@@ -41,7 +42,7 @@
 				<code>@Domain</code>の<code>valueType</code>要素には、ドメインクラスで扱う<a href="basic.html">基本型</a>を指定します。この基本型が、データベースのカラムの型とのマッピングに使用されます。
 			</p>
 			<p>
-				<code>accessorMethod</code>要素には、<code>valueType</code>要素に指定した型を返すアクセッサーメソッドの名前を指定します。デフォルト値は<code>getValue</code>です。
+				<code>accessorMethod</code>要素には、<code>valueType</code>要素に指定した型を返すアクセッサメソッドの名前を指定します。デフォルト値は<code>getValue</code>です。
 			</p>
 			<p>
 				以下の例では、 電話番号を表すドメインクラスを作成しています。
@@ -69,8 +70,8 @@ public class PhoneNumber {
     }
 }]]></source>
 			<p>
-				クラスには、<code>valueType</code>要素に指定した型と同じ型をもつ非<code>private</code>なコンストラクタが必要です。
-				また、<code>accessorMethod</code>要素にしてした値を名前とする非<code>private</code>なメソッドが必要です。
+				クラスには、<code>valueType</code>要素に指定した型と同じ型をもつ非<code>private</code>なコンストラクタが必須です。
+				また、<code>accessorMethod</code>要素に指定した値と同じ名前のメソッドも必須です。
 			</p>
 			<p>
 				任意ですが、ドメインクラスは不変オブジェクトとして作成することを推奨します。
@@ -78,6 +79,65 @@ public class PhoneNumber {
 			</p>
 			<p>
 				クラスには、任意のメソッドを持たせることができます。
+			</p>
+		</section>
+		<section name="列挙型を使用したドメイン定義">
+			<p>
+				扱う値があらかじめ定まっている場合は、列挙型をドメインクラスとして扱えます。
+				列挙型をドメインクラスとして扱うには、 <code>@EnumDomain</code>を注釈して示します。
+			</p>
+			<p>
+				<code>@EnumDomain</code>の<code>valueType</code>要素には、ドメインクラスで扱う<a href="basic.html">基本型</a>を指定します。この基本型が、データベースのカラムの型とのマッピングに使用されます。
+			</p>
+			<p>
+				<code>factoryMethod</code>要素には、<code>valueType</code>要素に指定した型をパラメータとして受け取り、対応する列挙型の値を返すstaticなファクトリメソッドの名前を指定します。
+				ファクトリメソッドは、データベースの値に対応する列挙型の値を返すメソッドです。
+				この要素のデフォルト値は<code>of</code>です。
+			</p>
+			<p>
+				<code>accessorMethod</code>要素には、<code>valueType</code>要素に指定した型を返すアクセッサメソッドの名前を指定します。
+				アクセッサメソッドは、列挙型の値に対応するデータベースの値を返すメソッドです。
+				この要素のデフォルト値は<code>getValue</code>です。
+			</p>
+			<p>
+				以下の例では、 仕事の種別を表すドメインクラスを作成しています。
+			</p>
+<source><![CDATA[package example.domain;
+
+import org.seasar.doma.EnumDomain;
+
+@EnumDomain(valueType = String.class)
+public enum JobType {
+    SALESMAN("10"), 
+    MANAGER("20"), 
+    ANALYST("30"), 
+    PRESIDENT("40"), 
+    CLERK("50");
+
+    private final String value;
+
+    private JobType(String value) {
+        this.value = value;
+    }
+
+    static JobType of(String value) {
+        for (JobType jobType : JobType.values()) {
+            if (jobType.value.equals(value)) {
+                return jobType;
+            }
+        }
+        throw new IllegalArgumentException(value);
+    }
+
+    String getValue() {
+        return value;
+    }
+}]]></source>
+			<p>
+				列挙型には、<code>factoryMethod</code>要素と<code>accessorMethod</code>要素で指定された値と同じ名前のメソッドが必須です。
+			</p>
+			<p>
+				また、列挙型には、任意のメソッドを持たせることができます。
 			</p>
 		</section>
 		<section name="利用例">
@@ -94,6 +154,8 @@ public class Employee {
     String employeeName;
 
     PhoneNumber phoneNumber;
+
+    JobType jobType;
 
     @Version
     Integer versionNo();
@@ -113,6 +175,12 @@ public interface EmployeeDao {
     
     @Select
     List<PhoneNumber> selectAllPhoneNumber();
+    
+    @Select
+    Employee selectByJobType(JobType jobType);
+    
+    @Select
+    List<JobType> selectAllJobType();
 }]]></source>
 			</subsection>
 		</section>
