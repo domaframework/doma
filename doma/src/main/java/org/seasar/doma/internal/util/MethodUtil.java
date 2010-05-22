@@ -44,18 +44,6 @@ public final class MethodUtil {
         }
     }
 
-    public static Method getMethod(Class<?> clazz, String name,
-            Class<?>... parameterTypes) throws WrapException {
-        assertNotNull(clazz, name, parameterTypes);
-        try {
-            return clazz.getMethod(name, parameterTypes);
-        } catch (SecurityException e) {
-            throw new WrapException(e);
-        } catch (NoSuchMethodException e) {
-            throw new WrapException(e);
-        }
-    }
-
     public static String createSignature(String methodName,
             Class<?>[] paramTypes) {
         StringBuilder buf = new StringBuilder();

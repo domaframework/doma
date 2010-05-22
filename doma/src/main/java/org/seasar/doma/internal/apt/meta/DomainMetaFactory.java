@@ -31,6 +31,7 @@ import javax.lang.model.util.ElementFilter;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.mirror.DomainMirror;
+import org.seasar.doma.internal.apt.mirror.EnumDomainMirror;
 import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.message.Message;
@@ -68,6 +69,16 @@ public class DomainMetaFactory {
             throw new AptException(Message.DOMA4102, env, classElement,
                     domainMirror.getAnnotationMirror(), domainMirror
                             .getValueType(), domainMirror.getValueTypeValue());
+        }
+        if (basicType.isEnum()) {
+            EnumDomainMirror enumDomainMirror = EnumDomainMirror.newInstance(
+                    classElement, env);
+            if (enumDomainMirror != null) {
+                throw new AptException(Message.DOMA4178, env, classElement,
+                        enumDomainMirror.getAnnotationMirror(),
+                        enumDomainMirror.getValueType(), enumDomainMirror
+                                .getValueTypeValue());
+            }
         }
         domainMeta.setWrapperType(basicType.getWrapperType());
     }

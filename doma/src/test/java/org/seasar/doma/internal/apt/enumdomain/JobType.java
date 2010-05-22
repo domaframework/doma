@@ -13,31 +13,36 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.type;
+package org.seasar.doma.internal.apt.enumdomain;
 
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
+import org.seasar.doma.EnumDomain;
 
 /**
  * @author taedium
  * 
  */
-public interface DataType {
+@EnumDomain(valueType = String.class)
+enum JobType {
 
-    TypeMirror getTypeMirror();
+    SALESEMAN("01"), CLERK("02");
 
-    TypeElement getTypeElement();
+    private final String value;
 
-    String getTypeName();
+    private JobType(String value) {
+        this.value = value;
+    }
 
-    String getTypeNameAsTypeParameter();
+    static JobType of(String value) {
+        for (JobType jobType : JobType.values()) {
+            if (jobType.value.equals(value)) {
+                return jobType;
+            }
+        }
+        return null;
+    }
 
-    String getQualifiedName();
+    String getValue() {
+        return value;
+    }
 
-    boolean isPrimitive();
-
-    boolean isEnum();
-
-    <R, P, TH extends Throwable> R accept(DataTypeVisitor<R, P, TH> visitor, P p)
-            throws TH;
 }

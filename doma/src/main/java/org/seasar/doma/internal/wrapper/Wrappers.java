@@ -18,6 +18,7 @@ package org.seasar.doma.internal.wrapper;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Array;
@@ -29,6 +30,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 
 import org.seasar.doma.Domain;
+import org.seasar.doma.EnumDomain;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.internal.util.ClassUtil;
@@ -86,23 +88,25 @@ public final class Wrappers {
         if (result == null) {
             result = wrapDomainObject(value, valueClass);
             if (result == null) {
-                throw new WrapperException(Message.DOMA1007, valueClass
-                        .getName(), value);
+                result = wrapEnumObject(value, valueClass);
+                if (result == null) {
+                    throw new WrapperException(Message.DOMA1007, valueClass
+                            .getName(), value);
+                }
             }
         }
         return result;
     }
 
     /**
-     * 基本型の値をラップします。
+     * 基本型（ただし列挙型を除く）の値をラップします。
      * 
      * @param value
      *            値
      * @param valueClass
      *            値クラス
-     * @return ラッパー、値が基本型でない場合 {@code null}
+     * @return ラッパー、値が基本型（ただし列挙型を除く）でない場合 {@code null}
      */
-    @SuppressWarnings("unchecked")
     protected static Wrapper<?> wrapBasicObject(Object value,
             Class<?> valueClass) {
         assertNotNull(valueClass);
@@ -162,6 +166,23 @@ public final class Wrappers {
         if (boxedClass == Time.class) {
             return new TimeWrapper((Time) value);
         }
+        return null;
+    }
+
+    /**
+     * 列挙型の値をラップします。
+     * 
+     * @param value
+     *            値
+     * @param valueClass
+     *            値クラス
+     * @return ラッパー、値が列挙型でない場合 {@code null}
+     */
+    @SuppressWarnings("unchecked")
+    protected static Wrapper<?> wrapEnumObject(Object value, Class<?> valueClass) {
+        assertNotNull(valueClass);
+        Class<?> boxedClass = ClassUtil
+                .toBoxedPrimitiveTypeIfPossible(valueClass);
         if (boxedClass.isEnum() || Enum.class.isAssignableFrom(boxedClass)) {
             return new EnumWrapper(boxedClass, (Enum) value);
         }
@@ -182,20 +203,41 @@ public final class Wrappers {
     protected static Wrapper<?> wrapDomainObject(Object value,
             Class<?> valueClass) {
         assertNotNull(valueClass);
-        Domain domain = valueClass.getAnnotation(Domain.class);
-        if (domain == null) {
-            return null;
-        }
-        Class<?> domainValueClass = domain.valueType();
-        if (domainValueClass == null) {
+        DomainDesc domainDesc = getDomainDesc(valueClass);
+        if (domainDesc == null) {
             return null;
         }
         Object domainValue = null;
         if (value != null) {
-            domainValue = getDomainValue(value, valueClass, domain
+            domainValue = getDomainValue(value, valueClass,
+                    domainDesc.accessorMethod);
+        }
+        Wrapper<?> result = wrapBasicObject(domainValue, domainDesc.valueType);
+        if (result == null) {
+            result = wrapEnumObject(domainValue, domainDesc.valueType);
+        }
+        return result;
+    }
+
+    /**
+     * ドメイン記述を返します。
+     * 
+     * @param clazz
+     *            ドメインクラス
+     * @return ドメイン記述
+     */
+    protected static DomainDesc getDomainDesc(Class<?> clazz) {
+        assertNotNull(clazz);
+        Domain domain = clazz.getAnnotation(Domain.class);
+        if (domain != null) {
+            return new DomainDesc(domain.valueType(), domain.accessorMethod());
+        }
+        EnumDomain enumDomain = clazz.getAnnotation(EnumDomain.class);
+        if (enumDomain != null) {
+            return new DomainDesc(enumDomain.valueType(), enumDomain
                     .accessorMethod());
         }
-        return wrapBasicObject(domainValue, domainValueClass);
+        return null;
     }
 
     /**
@@ -215,12 +257,32 @@ public final class Wrappers {
             Class<?> domainClass, String accessorMethodName) {
         assertNotNull(domainObject, domainClass, accessorMethodName);
         try {
-            Method method = MethodUtil.getMethod(domainClass,
+            Method method = ClassUtil.getDeclaredMethod(domainClass,
                     accessorMethodName);
+            if (!Modifier.isPublic(method.getModifiers())) {
+                method.setAccessible(true);
+            }
+            method.setAccessible(true);
             return MethodUtil.invoke(method, domainObject);
         } catch (WrapException e) {
             Throwable cause = e.getCause();
             throw new WrapperException(Message.DOMA1006, cause, cause);
+        }
+    }
+
+    /**
+     * ドメイン記述。 {@link Domain} と {@link EnumDomain} を抽象化します。
+     */
+    private static class DomainDesc {
+
+        private final Class<?> valueType;
+
+        private final String accessorMethod;
+
+        private DomainDesc(Class<?> valueType, String accessorMethod) {
+            assertNotNull(valueType, accessorMethod);
+            this.valueType = valueType;
+            this.accessorMethod = accessorMethod;
         }
     }
 }

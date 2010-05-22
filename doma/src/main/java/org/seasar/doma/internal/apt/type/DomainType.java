@@ -23,14 +23,13 @@ import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.Domain;
+import org.seasar.doma.EnumDomain;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 
 public class DomainType extends AbstractDataType {
 
     protected BasicType basicType;
-
-    protected String accessorMetod;
 
     public DomainType(TypeMirror type, ProcessingEnvironment env) {
         super(type, env);
@@ -40,10 +39,6 @@ public class DomainType extends AbstractDataType {
         return basicType;
     }
 
-    public String getAccessorMetod() {
-        return accessorMetod;
-    }
-
     public static DomainType newInstance(TypeMirror type,
             ProcessingEnvironment env) {
         assertNotNull(type, env);
@@ -51,24 +46,43 @@ public class DomainType extends AbstractDataType {
         if (typeElement == null) {
             return null;
         }
-        Domain domain = typeElement.getAnnotation(Domain.class);
-        if (domain == null) {
+        TypeMirror valueTypeMirror = getValueType(typeElement);
+        if (valueTypeMirror == null) {
             return null;
         }
-        TypeMirror valueTypeMirror = getValueType(domain);
         BasicType basicType = BasicType.newInstance(valueTypeMirror, env);
         if (basicType == null) {
             return null;
         }
         DomainType domainType = new DomainType(type, env);
         domainType.basicType = basicType;
-        domainType.accessorMetod = domain.accessorMethod();
         return domainType;
+    }
+
+    protected static TypeMirror getValueType(TypeElement typeElement) {
+        Domain domain = typeElement.getAnnotation(Domain.class);
+        if (domain != null) {
+            return getValueType(domain);
+        }
+        EnumDomain enumDomain = typeElement.getAnnotation(EnumDomain.class);
+        if (enumDomain != null) {
+            return getValueType(enumDomain);
+        }
+        return null;
     }
 
     protected static TypeMirror getValueType(Domain domain) {
         try {
             domain.valueType();
+        } catch (MirroredTypeException e) {
+            return e.getTypeMirror();
+        }
+        throw new AptIllegalStateException("unreachable.");
+    }
+
+    protected static TypeMirror getValueType(EnumDomain enumDomain) {
+        try {
+            enumDomain.valueType();
         } catch (MirroredTypeException e) {
             return e.getTypeMirror();
         }

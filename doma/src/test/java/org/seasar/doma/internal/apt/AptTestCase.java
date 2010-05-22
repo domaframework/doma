@@ -28,6 +28,7 @@ import org.seasar.aptina.unit.AptinaTestCase;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Domain;
 import org.seasar.doma.Entity;
+import org.seasar.doma.EnumDomain;
 import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.internal.util.ResourceUtil;
 
@@ -81,7 +82,8 @@ public abstract class AptTestCase extends AptinaTestCase {
                     + Constants.DEFAULT_ENTITY_PREFIX
                     + originalClass.getSimpleName();
         }
-        if (originalClass.isAnnotationPresent(Domain.class)) {
+        if (originalClass.isAnnotationPresent(Domain.class)
+                || originalClass.isAnnotationPresent(EnumDomain.class)) {
             return originalClass.getPackage().getName() + "."
                     + Constants.DEFAULT_DOMAIN_PREFIX
                     + originalClass.getSimpleName();

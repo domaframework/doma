@@ -75,6 +75,18 @@ public final class ClassUtil {
         }
     }
 
+    public static <T> Method getDeclaredMethod(Class<T> clazz, String name,
+            Class<?>... parameterTypes) throws WrapException {
+        assertNotNull(clazz, name, parameterTypes);
+        try {
+            return clazz.getDeclaredMethod(name, parameterTypes);
+        } catch (SecurityException e) {
+            throw new WrapException(e);
+        } catch (NoSuchMethodException e) {
+            throw new WrapException(e);
+        }
+    }
+
     public static String getPackageName(String qualifiedName) {
         assertNotNull(qualifiedName);
         int pos = qualifiedName.lastIndexOf('.');

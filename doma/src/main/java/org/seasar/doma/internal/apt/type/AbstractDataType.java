@@ -65,6 +65,10 @@ public abstract class AbstractDataType implements DataType {
         return typeMirror;
     }
 
+    public TypeElement getTypeElement() {
+        return typeElement;
+    }
+
     public String getTypeName() {
         return typeName;
     }
