@@ -469,7 +469,7 @@ employee_name like ?]]></source>
 					<i>item</i>_has_nextは、次の繰り返し要素が存在するかどうかを示すbooleanの値です。
 				</p>
 				<p>
-					<i>item</i>_indexは、次の繰り返しのindexを表すintの値です。値は0始まりです。
+					<i>item</i>_indexは、繰り返しのindexを表すintの値です。値は0始まりです。
 				</p>
 				<h4><a name="繰り返しコメントにおけるWHEREやHAVINGの自動除去"></a>繰り返しコメントにおけるWHEREやHAVINGの自動除去</h4>
 				<p>
