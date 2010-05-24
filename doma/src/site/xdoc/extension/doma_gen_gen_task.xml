@@ -358,7 +358,7 @@ public class Employee extends Common {
 					どの行にもマッチしない場合、クラス名はデフォルトのクラス名になります。
 				</p>
 				<p>
-					プロパティファイルはentityPropertyClassNamesFile属性に指定できます。（ここでは辞書ファイルの名前をentityPropertyClassNames.propertiesとします。）
+					プロパティファイルはentityPropertyClassNamesFile属性に指定できます。（ここではプロパティファイルの名前をentityPropertyClassNames.propertiesとします。）
 				</p>
 <source><![CDATA[<gen
     dialectName="${dialectName}"
