@@ -34,6 +34,10 @@ public interface DataType {
 
     String getQualifiedName();
 
+    String getPackageName();
+
+    String getPackageExcludedBinaryName();
+
     boolean isPrimitive();
 
     boolean isEnum();

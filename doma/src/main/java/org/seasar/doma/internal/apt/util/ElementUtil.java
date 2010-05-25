@@ -23,6 +23,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
@@ -39,6 +40,24 @@ import org.seasar.doma.ParameterName;
  * 
  */
 public final class ElementUtil {
+
+    public static String getPackageName(Element element,
+            ProcessingEnvironment env) {
+        PackageElement packageElement = env.getElementUtils().getPackageOf(
+                element);
+        return packageElement.getQualifiedName().toString();
+    }
+
+    public static String getPackageExcludedBinaryName(TypeElement typeElement,
+            ProcessingEnvironment env) {
+        String binaryName = env.getElementUtils().getBinaryName(typeElement)
+                .toString();
+        int pos = binaryName.lastIndexOf('.');
+        if (pos < 0) {
+            return binaryName;
+        }
+        return binaryName.substring(pos + 1);
+    }
 
     public static String getParameterName(VariableElement variableElement) {
         assertNotNull(variableElement);

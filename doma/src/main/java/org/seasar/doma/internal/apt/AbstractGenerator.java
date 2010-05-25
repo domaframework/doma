@@ -24,11 +24,11 @@ import java.util.Formatter;
 import javax.annotation.Generated;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.tools.JavaFileObject;
 
 import org.seasar.doma.internal.Artifact;
+import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.internal.util.ClassUtil;
 
@@ -81,7 +81,8 @@ public abstract class AbstractGenerator implements Generator {
             String prefix, String suffix) {
         String qualifiedNamePrefix = getQualifiedNamePrefix(env, typeElement,
                 fullpackage, subpackage);
-        return qualifiedNamePrefix + prefix + typeElement.getSimpleName()
+        return qualifiedNamePrefix + prefix
+                + ElementUtil.getPackageExcludedBinaryName(typeElement, env)
                 + suffix;
     }
 
@@ -90,11 +91,8 @@ public abstract class AbstractGenerator implements Generator {
         if (fullpackage != null) {
             return fullpackage + ".";
         }
-        PackageElement packageElement = env.getElementUtils().getPackageOf(
-                typeElement);
-        String base = packageElement.isUnnamed() ? "" : packageElement
-                .getQualifiedName()
-                + ".";
+        String packageName = ElementUtil.getPackageName(typeElement, env);
+        String base = packageName + ".";
         if (subpackage != null) {
             return base + subpackage + ".";
         }

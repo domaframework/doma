@@ -245,7 +245,6 @@ public enum Message implements MessageResource {
     DOMA4103("型[{0}]をパラメータにもつ非privateなコンストラクタが見つかりません。"),
     DOMA4104("型[{0}]を戻り値とする非privateで引数なしのメソッド[{1}]が見つかりません。"),
     DOMA4105("クラス以外には注釈できません"),
-    DOMA4106("ドメインクラスはトップレベルでなければいけません。"),
     DOMA4107("@Domainを注釈したクラスには型パラメータを定義できません。"),
     DOMA4108("Referenceには実型引数が必須です。"),
     DOMA4109("戻り値であるjava.lang.Iterableのサブタイプ[{0}]には実型引数が必須です。"),
@@ -301,10 +300,11 @@ public enum Message implements MessageResource {
     DOMA4172("戻り値の型はvoidでなければいけません。"),
     DOMA4173("パラメータの数は0でなければいけません。"),
     DOMA4174("列挙型以外には注釈できません"),
-    DOMA4175("@EnumDomainが注釈された列挙型はトップレベルでなければいけません。"),
     DOMA4176("アクセッサメソッド[{0}]が見つかりません。アクセッサメソッドは、型[{1}]を戻り値とする非privateで引数なしのインスタンスメソッドでなければいけません。"),
     DOMA4177("ファクトリメソッド[{0}]が見つかりません。ファクトリメソッドは、型[{1}]を戻り値とし型[{2}]をパラメータにもつ、非privateなstaticメソッドでなければいけません。"),
     DOMA4178("@EnumDomainが注釈された列挙型[{0}]は指定できません。"),
+    DOMA4179("@Domainが注釈されたネストしたクラスはstaticなメンバでなければいけません。"),
+    DOMA4180("@Domainが注釈されたクラスを囲むネストしたクラスはstaticなメンバでなければいけません。"),
 
     // other
     DOMA5001("JDBCドライバがロードされていない可能性があります。JDBCドライバをロードするには、クラスパスが通されたMETA-INF/services/java.sql.DriverファイルにJDBCドライバのクラスの完全修飾名を記述してください。 ex) oracle.jdbc.driver.OracleDriver"),

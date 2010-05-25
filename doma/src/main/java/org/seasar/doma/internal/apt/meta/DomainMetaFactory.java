@@ -20,6 +20,8 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
@@ -33,6 +35,7 @@ import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.mirror.DomainMirror;
 import org.seasar.doma.internal.apt.mirror.EnumDomainMirror;
 import org.seasar.doma.internal.apt.type.BasicType;
+import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.message.Message;
 
@@ -92,11 +95,28 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
         if (classElement.getModifiers().contains(Modifier.ABSTRACT)) {
             throw new AptException(Message.DOMA4132, env, classElement);
         }
-        if (classElement.getNestingKind().isNested()) {
-            throw new AptException(Message.DOMA4106, env, classElement);
-        }
         if (!classElement.getTypeParameters().isEmpty()) {
             throw new AptException(Message.DOMA4107, env, classElement);
+        }
+        if (classElement.getNestingKind().isNested()) {
+            if (!classElement.getModifiers().contains(Modifier.STATIC)) {
+                throw new AptException(Message.DOMA4179, env, classElement);
+            }
+        }
+        for (Element element = classElement.getEnclosingElement(); element
+                .getKind() != ElementKind.PACKAGE; element = element
+                .getEnclosingElement()) {
+            TypeElement enclosingTypeElement = ElementUtil.toTypeElement(
+                    element, env);
+            if (enclosingTypeElement == null) {
+                throw new AptIllegalStateException(
+                        "enclosingTypeElement is null.");
+            }
+            if (enclosingTypeElement.getNestingKind().isNested()
+                    && !enclosingTypeElement.getModifiers().contains(
+                            Modifier.STATIC)) {
+                throw new AptException(Message.DOMA4180, env, element);
+            }
         }
     }
 

@@ -91,9 +91,6 @@ public class EnumDomainMetaFactory implements
             throw new AptException(Message.DOMA4174, env, classElement,
                     enumDomainMirror.getAnnotationMirror());
         }
-        if (classElement.getNestingKind().isNested()) {
-            throw new AptException(Message.DOMA4175, env, classElement);
-        }
     }
 
     protected void validateFactoryMethod(TypeElement classElement,

@@ -378,8 +378,7 @@ public class DaoGenerator extends AbstractGenerator {
                                                         .getTypeNameAsTypeParameter(),
                                                 dataType
                                                         .getTypeNameAsTypeParameter(),
-                                                getPrefixedDomainTypeName(dataType
-                                                        .getTypeName()),
+                                                getPrefixedDomainTypeName(dataType),
                                                 callbackParamName);
                                         return null;
                                     }
@@ -493,8 +492,7 @@ public class DaoGenerator extends AbstractGenerator {
                                                         .getName(),
                                                 basicType
                                                         .getTypeNameAsTypeParameter(),
-                                                getPrefixedDomainTypeName(dataType
-                                                        .getTypeName()));
+                                                getPrefixedDomainTypeName(dataType));
                                         return null;
                                     }
 
@@ -599,8 +597,7 @@ public class DaoGenerator extends AbstractGenerator {
                                                                                 .getTypeNameAsTypeParameter(),
                                                                         dataType
                                                                                 .getTypeNameAsTypeParameter(),
-                                                                        getPrefixedDomainTypeName(dataType
-                                                                                .getTypeName()));
+                                                                        getPrefixedDomainTypeName(dataType));
                                                                 return null;
                                                             }
 
@@ -1128,8 +1125,7 @@ public class DaoGenerator extends AbstractGenerator {
                     "__query.addParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal(), %5$s, \"%5$s\"));%n",
                     DomainListParameter.class.getName(), basicType
                             .getTypeName(), domainType.getTypeName(),
-                    getPrefixedDomainTypeName(domainType.getTypeName()), m
-                            .getName());
+                    getPrefixedDomainTypeName(domainType), m.getName());
             return null;
         }
 
@@ -1194,8 +1190,7 @@ public class DaoGenerator extends AbstractGenerator {
                     DomainInOutParameter.class.getName(), basicType
                             .getTypeNameAsTypeParameter(), domainType
                             .getTypeName(),
-                    getPrefixedDomainTypeName(domainType.getTypeName()), m
-                            .getName());
+                    getPrefixedDomainTypeName(domainType), m.getName());
             return null;
         }
 
@@ -1246,8 +1241,7 @@ public class DaoGenerator extends AbstractGenerator {
                     "__query.addParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal(), %5$s));%n",
                     DomainOutParameter.class.getName(),
                     basicType.getTypeName(), domainType.getTypeName(),
-                    getPrefixedDomainTypeName(domainType.getTypeName()), m
-                            .getName());
+                    getPrefixedDomainTypeName(domainType), m.getName());
             return null;
         }
 
@@ -1294,8 +1288,7 @@ public class DaoGenerator extends AbstractGenerator {
                     "__query.addParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal(), %5$s));%n",
                     DomainInParameter.class.getName(), basicType.getTypeName(),
                     domainType.getTypeName(),
-                    getPrefixedDomainTypeName(domainType.getTypeName()), m
-                            .getName());
+                    getPrefixedDomainTypeName(domainType), m.getName());
             return null;
         }
 
@@ -1346,7 +1339,7 @@ public class DaoGenerator extends AbstractGenerator {
                     "__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal()));%n",
                     DomainListResultParameter.class.getName(), basicType
                             .getTypeName(), domainType.getTypeName(),
-                    getPrefixedDomainTypeName(domainType.getTypeName()));
+                    getPrefixedDomainTypeName(domainType));
             return null;
         }
 
@@ -1410,7 +1403,7 @@ public class DaoGenerator extends AbstractGenerator {
                     "__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal()));%n",
                     DomainResultParameter.class.getName(), basicType
                             .getTypeName(), domainType.getTypeName(),
-                    getPrefixedDomainTypeName(domainType.getTypeName()));
+                    getPrefixedDomainTypeName(domainType));
             return null;
         }
     }
@@ -1434,9 +1427,9 @@ public class DaoGenerator extends AbstractGenerator {
                 + ClassUtil.getSimpleName(entityTypeName);
     }
 
-    protected String getPrefixedDomainTypeName(String domainTypeName) {
-        return ClassUtil.getPackageName(domainTypeName) + "."
+    protected String getPrefixedDomainTypeName(DomainType domainType) {
+        return domainType.getPackageName() + "."
                 + Constants.DEFAULT_DOMAIN_PREFIX
-                + ClassUtil.getSimpleName(domainTypeName);
+                + domainType.getPackageExcludedBinaryName();
     }
 }

@@ -244,7 +244,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
             if (domainType != null) {
                 iprint(
                         "        return %1$s.getSingletonInternal().getWrapper(entity.%2$s).get();%n",
-                        getPrefixedDomainTypeName(domainType.getTypeName()), pm
+                        getPrefixedDomainTypeName(domainType), pm
                                 .getName());
             } else {
                 iprint("        return entity.%1$s;%n", pm.getName());
@@ -268,9 +268,9 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 if (domainType != null) {
                     iprint(
                             "        entity.%1$s = %2$s.getSingletonInternal().newDomain(%3$s.unbox(value));%n",
-                            pm.getName(), getPrefixedDomainTypeName(domainType
-                                    .getTypeName()), BoxedPrimitiveUtil.class
-                                    .getName());
+                            pm.getName(),
+                            getPrefixedDomainTypeName(domainType),
+                            BoxedPrimitiveUtil.class.getName());
                 } else {
                     iprint("        entity.%1$s = %2$s.unbox(value);%n", pm
                             .getName(), BoxedPrimitiveUtil.class.getName());
@@ -279,8 +279,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 if (domainType != null) {
                     iprint(
                             "        entity.%1$s = %2$s.getSingletonInternal().newDomain(value);%n",
-                            pm.getName(), getPrefixedDomainTypeName(domainType
-                                    .getTypeName()));
+                            pm.getName(), getPrefixedDomainTypeName(domainType));
                 } else {
                     iprint("        entity.%1$s = value;%n", pm.getName());
                 }
@@ -633,10 +632,10 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 + ClassUtil.getSimpleName(entityTypeName);
     }
 
-    protected String getPrefixedDomainTypeName(String domainTypeName) {
-        return ClassUtil.getPackageName(domainTypeName) + "."
+    protected String getPrefixedDomainTypeName(DomainType domainType) {
+        return domainType.getPackageName() + "."
                 + Constants.DEFAULT_DOMAIN_PREFIX
-                + ClassUtil.getSimpleName(domainTypeName);
+                + domainType.getPackageExcludedBinaryName();
     }
 
     protected class IdGeneratorGenerator implements

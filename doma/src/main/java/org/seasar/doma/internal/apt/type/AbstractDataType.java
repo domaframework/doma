@@ -22,6 +22,7 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
+import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 
 /**
@@ -40,6 +41,10 @@ public abstract class AbstractDataType implements DataType {
 
     protected final TypeElement typeElement;
 
+    protected final String packageName;
+
+    protected final String packageExcludedBinaryName;
+
     protected String qualifiedName;
 
     protected AbstractDataType(TypeMirror typeMirror, ProcessingEnvironment env) {
@@ -50,8 +55,13 @@ public abstract class AbstractDataType implements DataType {
         this.typeElement = TypeMirrorUtil.toTypeElement(typeMirror, env);
         if (typeElement != null) {
             qualifiedName = typeElement.getQualifiedName().toString();
+            packageName = ElementUtil.getPackageName(typeElement, env);
+            packageExcludedBinaryName = ElementUtil
+                    .getPackageExcludedBinaryName(typeElement, env);
         } else {
             qualifiedName = typeName;
+            packageName = "";
+            packageExcludedBinaryName = typeName;
         }
         if (typeMirror.getKind().isPrimitive()) {
             Class<?> boxedClass = getBoxedClass(typeMirror);
@@ -81,6 +91,16 @@ public abstract class AbstractDataType implements DataType {
     @Override
     public String getQualifiedName() {
         return qualifiedName;
+    }
+
+    @Override
+    public String getPackageName() {
+        return packageName;
+    }
+
+    @Override
+    public String getPackageExcludedBinaryName() {
+        return packageExcludedBinaryName;
     }
 
     @Override

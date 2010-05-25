@@ -30,6 +30,7 @@ import org.seasar.doma.Domain;
 import org.seasar.doma.Entity;
 import org.seasar.doma.EnumDomain;
 import org.seasar.doma.internal.message.Message;
+import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.ResourceUtil;
 
 /**
@@ -84,9 +85,10 @@ public abstract class AptTestCase extends AptinaTestCase {
         }
         if (originalClass.isAnnotationPresent(Domain.class)
                 || originalClass.isAnnotationPresent(EnumDomain.class)) {
-            return originalClass.getPackage().getName() + "."
+            String className = originalClass.getName();
+            return ClassUtil.getPackageName(className) + "."
                     + Constants.DEFAULT_DOMAIN_PREFIX
-                    + originalClass.getSimpleName();
+                    + ClassUtil.getSimpleName(className);
         }
         throw new AssertionFailedError("annotation not found.");
     }

@@ -22,7 +22,7 @@ import org.seasar.doma.Domain;
 public class Outer {
 
     @Domain(valueType = BigDecimal.class)
-    public class Inner {
+    public static class Inner {
 
         private final BigDecimal value;
 
