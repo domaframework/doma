@@ -25,7 +25,6 @@ import java.lang.annotation.Target;
  * <p>
  * 注釈された列挙型は、 次の制約を満たす必要があります。
  * <ul>
- * <li>トップレベルのクラスである。
  * <li>{@code factoryMethod} 要素に指定した名前の非 {@code private} で {@code static}
  * なメソッドを持つ。このメソッドは、注釈された列挙型と同じ型を戻り値とし、{@code valueType}
  * 要素に指定した型と同じ型をパラメータとして受け取る。
@@ -71,7 +70,7 @@ import java.lang.annotation.Target;
 public @interface EnumDomain {
 
     /**
-     * ドメインクラスが扱う値型(基本型)
+     * ドメインクラスが扱う値型(基本型)。
      */
     Class<?> valueType();
 
