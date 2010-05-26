@@ -222,7 +222,7 @@ where
 					<tr><td>suffix</td><td>Daoインタフェース名のサフィックスです。Daoインタフェースの名前はエンティティクラス名に、この値をサフィックスしたものになります。</td><td>"Dao"</td><td>NO</td></tr>
 					<tr><td>configClassName</td><td>設定クラスの完全修飾名です。@Daoのconfig要素に使用されます。</td><td>-</td><td>NO</td></tr>
 				</table>
-				<h4><a name="SqlConfigデータ型"></a>SqlConfig</h4>
+				<h4><a name="SqlConfig"></a>SqlConfig</h4>
 				<p>
 					SQLファイルの生成に関する設定を表すデータ型です。
 				</p>
