@@ -764,9 +764,9 @@ public class DaoGenerator extends AbstractGenerator {
                 iprint("__query.setQueryTimeout(%1$s);%n", mirror
                         .getQueryTimeout());
             }
-            if (m.getEntityType() != null) {
-                iprint("__query.setEntity(%1$s.getSingletonInternal());%n",
-                        getPrefixedEntityTypeName(m.getEntityType()
+            for (EntityType entityType : m.getEntityTypes()) {
+                iprint("__query.addEntityType(%1$s.getSingletonInternal());%n",
+                        getPrefixedEntityTypeName(entityType
                                 .getTypeNameAsTypeParameter()));
             }
             iprint("__query.prepare();%n");

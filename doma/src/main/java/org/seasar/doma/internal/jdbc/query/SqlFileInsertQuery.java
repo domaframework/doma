@@ -43,18 +43,13 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
         assertNotNull(sql);
     }
 
-    protected void executeListener() {
-        if (preInsert != null) {
-            preInsert.execute();
-        }
-    }
-
     @Override
     public void generateId(Statement statement) {
     }
 
-    public <E> void setEntity(EntityType<E> entityType) {
-        preInsert = new PreInsert<E>(entityType);
+    @Override
+    public <E> void addEntityType(EntityType<E> entityType) {
+        listenerExecuters.add(new PreInsert<E>(entityType));
     }
 
     protected class PreInsert<E> extends ListenerExecuter<E> {

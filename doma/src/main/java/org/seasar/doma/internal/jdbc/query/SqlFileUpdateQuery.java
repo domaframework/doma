@@ -41,18 +41,13 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
         assertNotNull(sql);
     }
 
-    protected void executeListener() {
-        if (preUpdate != null) {
-            preUpdate.execute();
-        }
-    }
-
     @Override
     public void incrementVersion() {
     }
 
-    public <E> void setEntity(EntityType<E> entityType) {
-        preUpdate = new PreUpdate<E>(entityType);
+    @Override
+    public <E> void addEntityType(EntityType<E> entityType) {
+        listenerExecuters.add(new PreUpdate<E>(entityType));
     }
 
     protected class PreUpdate<E> extends ListenerExecuter<E> {
@@ -63,6 +58,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
 
         @Override
         protected void doExecute(E entity) {
+            assertNotNull(entityType);
             entityType.preUpdate(entity);
         }
     }

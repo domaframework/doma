@@ -27,8 +27,6 @@ import org.seasar.doma.jdbc.entity.EntityType;
 public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
         DeleteQuery {
 
-    protected PreDelete<?> preDelete;
-
     public SqlFileDeleteQuery() {
         super(SqlKind.DELETE);
     }
@@ -41,14 +39,10 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
         assertNotNull(sql);
     }
 
-    protected void executeListener() {
-        if (preDelete != null) {
-            preDelete.execute();
-        }
-    }
-
-    public <E> void setEntity(EntityType<E> entityType) {
-        preDelete = new PreDelete<E>(entityType);
+    @Override
+    public <E> void addEntityType(EntityType<E> entityType) {
+        assertNotNull(entityType);
+        listenerExecuters.add(new PreDelete<E>(entityType));
     }
 
     protected class PreDelete<E> extends ListenerExecuter<E> {

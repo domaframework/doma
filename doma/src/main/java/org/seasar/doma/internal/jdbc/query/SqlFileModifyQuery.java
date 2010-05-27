@@ -17,7 +17,9 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
@@ -36,13 +38,15 @@ import org.seasar.doma.jdbc.entity.EntityType;
  */
 public abstract class SqlFileModifyQuery implements ModifyQuery {
 
+    protected final List<ListenerExecuter<?>> listenerExecuters = new ArrayList<ListenerExecuter<?>>();
+
     protected final SqlKind kind;
 
     protected Config config;
 
     protected String sqlFilePath;
 
-    protected final Map<String, Value> parameters = new HashMap<String, Value>();
+    protected final Map<String, Value> parameters = new LinkedHashMap<String, Value>();
 
     protected String callerClassName;
 
@@ -55,6 +59,23 @@ public abstract class SqlFileModifyQuery implements ModifyQuery {
     protected SqlFileModifyQuery(SqlKind kind) {
         assertNotNull(kind);
         this.kind = kind;
+    }
+
+    protected void executeListener() {
+        if (listenerExecuters.isEmpty()) {
+            return;
+        }
+        for (Value value : parameters.values()) {
+            Object maybeEntity = value.getValue();
+            if (maybeEntity != null) {
+                for (ListenerExecuter<?> executer : listenerExecuters) {
+                    boolean executed = executer.execute(maybeEntity);
+                    if (executed) {
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     protected void prepareOptions() {
@@ -146,6 +167,8 @@ public abstract class SqlFileModifyQuery implements ModifyQuery {
         return false;
     }
 
+    public abstract <E> void addEntityType(EntityType<E> entityType);
+
     @Override
     public String toString() {
         return sql != null ? sql.toString() : null;
@@ -160,18 +183,18 @@ public abstract class SqlFileModifyQuery implements ModifyQuery {
             this.entityType = entityType;
         }
 
-        protected final void execute() {
+        protected boolean execute(Object maybeEntity) {
+            assertNotNull(entityType);
             Class<E> entityClass = entityType.getEntityClass();
-            for (Value value : parameters.values()) {
-                Object maybeEntity = value.getValue();
-                if (maybeEntity != null
-                        && maybeEntity.getClass() == entityClass) {
-                    doExecute(entityClass.cast(maybeEntity));
-                }
+            if (maybeEntity.getClass() == entityClass) {
+                doExecute(entityClass.cast(maybeEntity));
+                return true;
             }
+            return false;
         }
 
         protected abstract void doExecute(E entity);
+
     }
 
 }

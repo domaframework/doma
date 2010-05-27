@@ -15,6 +15,9 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.internal.apt.mirror.ModifyMirror;
@@ -26,7 +29,7 @@ import org.seasar.doma.internal.apt.type.EntityType;
  */
 public class SqlFileModifyQueryMeta extends AbstractSqlFileQueryMeta {
 
-    protected EntityType entityType;
+    protected final List<EntityType> entityTypes = new ArrayList<EntityType>();
 
     protected ModifyMirror modifyMirror;
 
@@ -34,12 +37,12 @@ public class SqlFileModifyQueryMeta extends AbstractSqlFileQueryMeta {
         super(method);
     }
 
-    public EntityType getEntityType() {
-        return entityType;
+    public List<EntityType> getEntityTypes() {
+        return entityTypes;
     }
 
-    public void setEntityType(EntityType entityType) {
-        this.entityType = entityType;
+    public void addEntityType(EntityType entityType) {
+        entityTypes.add(entityType);
     }
 
     public ModifyMirror getModifyMirror() {

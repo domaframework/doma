@@ -103,7 +103,7 @@ public class SqlFileModifyQueryMetaFactory extends
                         @Override
                         public Void visitEntityType(EntityType dataType, Void p)
                                 throws RuntimeException {
-                            queryMeta.setEntityType(dataType);
+                            queryMeta.addEntityType(dataType);
                             return null;
                         }
 

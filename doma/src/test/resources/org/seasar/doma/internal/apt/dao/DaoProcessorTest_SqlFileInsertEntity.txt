@@ -41,7 +41,7 @@ public class SqlFileInsertEntityDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileInsertEntityDaoImpl");
             __query.setCallerMethodName("insert");
             __query.setQueryTimeout(-1);
-            __query.setEntity(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
+            __query.addEntityType(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
             __query.prepare();
             org.seasar.doma.internal.jdbc.command.InsertCommand __command = new org.seasar.doma.internal.jdbc.command.InsertCommand(__query);
             int __result = __command.execute();
@@ -50,6 +50,38 @@ public class SqlFileInsertEntityDaoImpl extends org.seasar.doma.internal.jdbc.da
             return __result;
         } catch (java.lang.RuntimeException __e) {
             throwing("org.seasar.doma.internal.apt.dao.SqlFileInsertEntityDaoImpl", "insert", __e);
+            throw __e;
+        }
+    }
+
+    @Override
+    public int insertMultipleEntities(org.seasar.doma.internal.apt.entity.Emp emp, org.seasar.doma.internal.apt.entity.ParentEntity parentEntity) {
+        entering("org.seasar.doma.internal.apt.dao.SqlFileInsertEntityDaoImpl", "insertMultipleEntities", emp, parentEntity);
+        try {
+            if (emp == null) {
+                throw new org.seasar.doma.DomaNullPointerException("emp");
+            }
+            if (parentEntity == null) {
+                throw new org.seasar.doma.DomaNullPointerException("parentEntity");
+            }
+            org.seasar.doma.internal.jdbc.query.SqlFileInsertQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileInsertQuery();
+            __query.setConfig(config);
+            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/SqlFileInsertEntityDao/insertMultipleEntities.sql");
+            __query.addParameter("emp", org.seasar.doma.internal.apt.entity.Emp.class, emp);
+            __query.addParameter("parentEntity", org.seasar.doma.internal.apt.entity.ParentEntity.class, parentEntity);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileInsertEntityDaoImpl");
+            __query.setCallerMethodName("insertMultipleEntities");
+            __query.setQueryTimeout(-1);
+            __query.addEntityType(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
+            __query.addEntityType(org.seasar.doma.internal.apt.entity._ParentEntity.getSingletonInternal());
+            __query.prepare();
+            org.seasar.doma.internal.jdbc.command.InsertCommand __command = new org.seasar.doma.internal.jdbc.command.InsertCommand(__query);
+            int __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.dao.SqlFileInsertEntityDaoImpl", "insertMultipleEntities", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.dao.SqlFileInsertEntityDaoImpl", "insertMultipleEntities", __e);
             throw __e;
         }
     }
