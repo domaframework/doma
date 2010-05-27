@@ -20,6 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.sql.Statement;
 
 import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.entity.EntityType;
 
 /**
  * @author taedium
@@ -28,18 +29,43 @@ import org.seasar.doma.jdbc.SqlKind;
 public class SqlFileInsertQuery extends SqlFileModifyQuery implements
         InsertQuery {
 
+    protected PreInsert<?> preInsert;
+
     public SqlFileInsertQuery() {
         super(SqlKind.INSERT);
     }
 
     public void prepare() {
         assertNotNull(config, sqlFilePath, callerClassName, callerMethodName);
+        executeListener();
         prepareOptions();
         prepareSql();
         assertNotNull(sql);
     }
 
+    protected void executeListener() {
+        if (preInsert != null) {
+            preInsert.execute();
+        }
+    }
+
     @Override
     public void generateId(Statement statement) {
+    }
+
+    public <E> void setEntity(EntityType<E> entityType) {
+        preInsert = new PreInsert<E>(entityType);
+    }
+
+    protected class PreInsert<E> extends ListenerExecuter<E> {
+
+        protected PreInsert(EntityType<E> entityType) {
+            super(entityType);
+        }
+
+        @Override
+        protected void doExecute(E entity) {
+            entityType.preInsert(entity);
+        }
     }
 }

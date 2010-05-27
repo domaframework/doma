@@ -18,6 +18,7 @@ package org.seasar.doma.internal.jdbc.query;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.entity.EntityType;
 
 /**
  * @author taedium
@@ -26,15 +27,39 @@ import org.seasar.doma.jdbc.SqlKind;
 public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
         DeleteQuery {
 
+    protected PreDelete<?> preDelete;
+
     public SqlFileDeleteQuery() {
         super(SqlKind.DELETE);
     }
 
     public void prepare() {
         assertNotNull(config, sqlFilePath, callerClassName, callerMethodName);
+        executeListener();
         prepareOptions();
         prepareSql();
         assertNotNull(sql);
     }
 
+    protected void executeListener() {
+        if (preDelete != null) {
+            preDelete.execute();
+        }
+    }
+
+    public <E> void setEntity(EntityType<E> entityType) {
+        preDelete = new PreDelete<E>(entityType);
+    }
+
+    protected class PreDelete<E> extends ListenerExecuter<E> {
+
+        protected PreDelete(EntityType<E> entityType) {
+            super(entityType);
+        }
+
+        @Override
+        protected void doExecute(E entity) {
+            entityType.preDelete(entity);
+        }
+    }
 }

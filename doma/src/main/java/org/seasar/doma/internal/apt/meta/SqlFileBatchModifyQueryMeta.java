@@ -19,12 +19,15 @@ import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.internal.apt.mirror.BatchModifyMirror;
 import org.seasar.doma.internal.apt.type.DataType;
+import org.seasar.doma.internal.apt.type.EntityType;
 
 /**
  * @author taedium
  * 
  */
 public class SqlFileBatchModifyQueryMeta extends AbstractSqlFileQueryMeta {
+
+    protected EntityType entityType;
 
     protected DataType elementType;
 
@@ -34,6 +37,14 @@ public class SqlFileBatchModifyQueryMeta extends AbstractSqlFileQueryMeta {
 
     public SqlFileBatchModifyQueryMeta(ExecutableElement method) {
         super(method);
+    }
+
+    public EntityType getEntityType() {
+        return entityType;
+    }
+
+    public void setEntityType(EntityType entityType) {
+        this.entityType = entityType;
     }
 
     public DataType getElementType() {

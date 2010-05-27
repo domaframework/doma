@@ -1,0 +1,57 @@
+package org.seasar.doma.internal.apt.dao;
+
+/** */
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
+public class SqlFileInsertEntityDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.dao.SqlFileInsertEntityDao {
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    /** */
+    public SqlFileInsertEntityDaoImpl() {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig());
+    }
+
+    /**
+     * @param connection the connection
+     */
+    public SqlFileInsertEntityDaoImpl(java.sql.Connection connection) {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig(), connection);
+    }
+
+    /**
+     * @param dataSource the dataSource
+     */
+    public SqlFileInsertEntityDaoImpl(javax.sql.DataSource dataSource) {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
+    }
+
+    @Override
+    public int insert(org.seasar.doma.internal.apt.entity.Emp emp) {
+        entering("org.seasar.doma.internal.apt.dao.SqlFileInsertEntityDaoImpl", "insert", emp);
+        try {
+            if (emp == null) {
+                throw new org.seasar.doma.DomaNullPointerException("emp");
+            }
+            org.seasar.doma.internal.jdbc.query.SqlFileInsertQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileInsertQuery();
+            __query.setConfig(config);
+            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/SqlFileInsertEntityDao/insert.sql");
+            __query.addParameter("emp", org.seasar.doma.internal.apt.entity.Emp.class, emp);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileInsertEntityDaoImpl");
+            __query.setCallerMethodName("insert");
+            __query.setQueryTimeout(-1);
+            __query.setEntity(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
+            __query.prepare();
+            org.seasar.doma.internal.jdbc.command.InsertCommand __command = new org.seasar.doma.internal.jdbc.command.InsertCommand(__query);
+            int __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.dao.SqlFileInsertEntityDaoImpl", "insert", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.dao.SqlFileInsertEntityDaoImpl", "insert", __e);
+            throw __e;
+        }
+    }
+
+}

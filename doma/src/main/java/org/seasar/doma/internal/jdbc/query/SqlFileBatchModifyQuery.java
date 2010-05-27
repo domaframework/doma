@@ -31,6 +31,7 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlFile;
 import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.entity.EntityType;
 
 /**
  * @author taedium
@@ -70,6 +71,8 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
 
     protected List<PreparedSql> sqls;
 
+    protected EntityType<E> entityType;
+
     protected SqlFileBatchModifyQuery(Class<E> elementClass, SqlKind kind) {
         assertNotNull(elementClass, kind);
         this.elementClass = elementClass;
@@ -84,6 +87,7 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
             executable = true;
             sqlExecutionSkipCause = null;
             currentEntity = it.next();
+            executeListener();
             prepareSqlFile();
             prepareOptions();
             prepareSql();
@@ -92,10 +96,13 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
         }
         while (it.hasNext()) {
             currentEntity = it.next();
+            executeListener();
             prepareSql();
         }
         assertEquals(elements.size(), sqls.size());
     }
+
+    protected abstract void executeListener();
 
     protected void prepareSqlFile() {
         sqlFile = config.getSqlFileRepository().getSqlFile(sqlFilePath,
@@ -165,6 +172,10 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
 
     public void setBatchSize(int batchSize) {
         this.batchSize = batchSize;
+    }
+
+    public void setEntityType(EntityType<E> entityType) {
+        this.entityType = entityType;
     }
 
     @Override

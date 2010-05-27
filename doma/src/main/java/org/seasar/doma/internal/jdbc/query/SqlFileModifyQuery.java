@@ -28,6 +28,7 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlFile;
 import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.entity.EntityType;
 
 /**
  * @author taedium
@@ -148,6 +149,29 @@ public abstract class SqlFileModifyQuery implements ModifyQuery {
     @Override
     public String toString() {
         return sql != null ? sql.toString() : null;
+    }
+
+    protected abstract class ListenerExecuter<E> {
+
+        protected EntityType<E> entityType;
+
+        protected ListenerExecuter(EntityType<E> entityType) {
+            assertNotNull(entityType);
+            this.entityType = entityType;
+        }
+
+        protected final void execute() {
+            Class<E> entityClass = entityType.getEntityClass();
+            for (Value value : parameters.values()) {
+                Object maybeEntity = value.getValue();
+                if (maybeEntity != null
+                        && maybeEntity.getClass() == entityClass) {
+                    doExecute(entityClass.cast(maybeEntity));
+                }
+            }
+        }
+
+        protected abstract void doExecute(E entity);
     }
 
 }

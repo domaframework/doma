@@ -18,6 +18,7 @@ package org.seasar.doma.internal.jdbc.query;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.entity.EntityType;
 
 /**
  * @author taedium
@@ -26,19 +27,43 @@ import org.seasar.doma.jdbc.SqlKind;
 public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
         UpdateQuery {
 
+    protected PreUpdate<?> preUpdate;
+
     public SqlFileUpdateQuery() {
         super(SqlKind.UPDATE);
     }
 
     public void prepare() {
         assertNotNull(config, sqlFilePath, callerClassName, callerMethodName);
+        executeListener();
         prepareOptions();
         prepareSql();
         assertNotNull(sql);
+    }
+
+    protected void executeListener() {
+        if (preUpdate != null) {
+            preUpdate.execute();
+        }
     }
 
     @Override
     public void incrementVersion() {
     }
 
+    public <E> void setEntity(EntityType<E> entityType) {
+        preUpdate = new PreUpdate<E>(entityType);
+    }
+
+    protected class PreUpdate<E> extends ListenerExecuter<E> {
+
+        protected PreUpdate(EntityType<E> entityType) {
+            super(entityType);
+        }
+
+        @Override
+        protected void doExecute(E entity) {
+            entityType.preUpdate(entity);
+        }
+    }
 }

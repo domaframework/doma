@@ -28,17 +28,17 @@ public class SqlFileBatchUpdateDaoImpl extends org.seasar.doma.internal.jdbc.dao
     }
 
     @Override
-    public int[] update(java.util.List<org.seasar.doma.internal.apt.entity.Emp> entities) {
-        entering("org.seasar.doma.internal.apt.dao.SqlFileBatchUpdateDaoImpl", "update", entities);
+    public int[] update(java.util.List<java.lang.String> names) {
+        entering("org.seasar.doma.internal.apt.dao.SqlFileBatchUpdateDaoImpl", "update", names);
         try {
-            if (entities == null) {
-                throw new org.seasar.doma.DomaNullPointerException("entities");
+            if (names == null) {
+                throw new org.seasar.doma.DomaNullPointerException("names");
             }
-            org.seasar.doma.internal.jdbc.query.SqlFileBatchUpdateQuery<org.seasar.doma.internal.apt.entity.Emp> __query = new org.seasar.doma.internal.jdbc.query.SqlFileBatchUpdateQuery<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity.Emp.class);
+            org.seasar.doma.internal.jdbc.query.SqlFileBatchUpdateQuery<java.lang.String> __query = new org.seasar.doma.internal.jdbc.query.SqlFileBatchUpdateQuery<java.lang.String>(java.lang.String.class);
             __query.setConfig(config);
-            __query.setElements(entities);
+            __query.setElements(names);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/SqlFileBatchUpdateDao/update.sql");
-            __query.setParameterName("entities");
+            __query.setParameterName("names");
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileBatchUpdateDaoImpl");
             __query.setCallerMethodName("update");
             __query.setQueryTimeout(-1);

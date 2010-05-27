@@ -39,4 +39,11 @@ public class SqlFileBatchInsertQuery<E> extends SqlFileBatchModifyQuery<E>
     public void generateId(Statement statement, int index) {
     }
 
+    @Override
+    protected void executeListener() {
+        if (entityType != null) {
+            entityType.preInsert(currentEntity);
+        }
+    }
+
 }

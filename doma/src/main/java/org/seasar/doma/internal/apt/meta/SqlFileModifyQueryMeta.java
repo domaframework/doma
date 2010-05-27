@@ -18,6 +18,7 @@ package org.seasar.doma.internal.apt.meta;
 import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.internal.apt.mirror.ModifyMirror;
+import org.seasar.doma.internal.apt.type.EntityType;
 
 /**
  * @author taedium
@@ -25,10 +26,20 @@ import org.seasar.doma.internal.apt.mirror.ModifyMirror;
  */
 public class SqlFileModifyQueryMeta extends AbstractSqlFileQueryMeta {
 
+    protected EntityType entityType;
+
     protected ModifyMirror modifyMirror;
 
     public SqlFileModifyQueryMeta(ExecutableElement method) {
         super(method);
+    }
+
+    public EntityType getEntityType() {
+        return entityType;
+    }
+
+    public void setEntityType(EntityType entityType) {
+        this.entityType = entityType;
     }
 
     public ModifyMirror getModifyMirror() {

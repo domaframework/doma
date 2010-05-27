@@ -32,4 +32,10 @@ public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
     public void incrementVersions() {
     }
 
+    @Override
+    protected void executeListener() {
+        if (entityType != null) {
+            entityType.preUpdate(currentEntity);
+        }
+    }
 }

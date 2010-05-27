@@ -32,4 +32,11 @@ public class SqlFileBatchDeleteQuery<E> extends SqlFileBatchModifyQuery<E>
         super(elementClass, SqlKind.BATCH_DELETE);
     }
 
+    @Override
+    protected void executeListener() {
+        if (entityType != null) {
+            entityType.preDelete(currentEntity);
+        }
+    }
+
 }

@@ -1,1 +1,1 @@
-update hoge set id = /*entities.id*/1
+update hoge set name = /*names*/'aaa'

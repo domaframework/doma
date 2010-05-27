@@ -29,6 +29,7 @@ import org.seasar.doma.internal.apt.mirror.BatchInsertMirror;
 import org.seasar.doma.internal.apt.mirror.BatchModifyMirror;
 import org.seasar.doma.internal.apt.mirror.BatchUpdateMirror;
 import org.seasar.doma.internal.apt.type.DataType;
+import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.IterableType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.message.Message;
@@ -98,7 +99,7 @@ public class SqlFileBatchModifyQueryMetaFactory extends
     }
 
     @Override
-    protected void doParameters(SqlFileBatchModifyQueryMeta queryMeta,
+    protected void doParameters(final SqlFileBatchModifyQueryMeta queryMeta,
             final ExecutableElement method, DaoMeta daoMeta) {
         List<? extends VariableElement> parameters = method.getParameters();
         int size = parameters.size();
@@ -130,6 +131,17 @@ public class SqlFileBatchModifyQueryMetaFactory extends
         DataType elementType = iterableType.getElementType();
         queryMeta.setElementType(elementType);
         queryMeta.setElementsParameterName(parameterMeta.getName());
+        elementType.accept(
+                new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+
+                    @Override
+                    public Void visitEntityType(EntityType dataType, Void p)
+                            throws RuntimeException {
+                        queryMeta.setEntityType(dataType);
+                        return null;
+                    }
+
+                }, null);
         queryMeta.addParameterMeta(parameterMeta);
         if (parameterMeta.isBindable()) {
             queryMeta.addBindableParameterType(parameterMeta.getName(),

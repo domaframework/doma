@@ -26,6 +26,8 @@ import org.seasar.doma.internal.apt.mirror.DeleteMirror;
 import org.seasar.doma.internal.apt.mirror.InsertMirror;
 import org.seasar.doma.internal.apt.mirror.ModifyMirror;
 import org.seasar.doma.internal.apt.mirror.UpdateMirror;
+import org.seasar.doma.internal.apt.type.EntityType;
+import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.message.Message;
 
 /**
@@ -91,10 +93,21 @@ public class SqlFileModifyQueryMetaFactory extends
     }
 
     @Override
-    protected void doParameters(SqlFileModifyQueryMeta queryMeta,
+    protected void doParameters(final SqlFileModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         for (VariableElement parameter : method.getParameters()) {
             QueryParameterMeta parameterMeta = createParameterMeta(parameter);
+            parameterMeta.getDataType().accept(
+                    new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+
+                        @Override
+                        public Void visitEntityType(EntityType dataType, Void p)
+                                throws RuntimeException {
+                            queryMeta.setEntityType(dataType);
+                            return null;
+                        }
+
+                    }, null);
             queryMeta.addParameterMeta(parameterMeta);
             if (parameterMeta.isBindable()) {
                 queryMeta.addBindableParameterType(parameterMeta.getName(),

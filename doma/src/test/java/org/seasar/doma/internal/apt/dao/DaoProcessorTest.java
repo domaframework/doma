@@ -81,6 +81,16 @@ public class DaoProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
+    public void testSqlFileInsertEntity() throws Exception {
+        Class<?> target = SqlFileInsertEntityDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
     public void testAutoUpdate() throws Exception {
         Class<?> target = AutoUpdateDao.class;
         DaoProcessor processor = new DaoProcessor();
@@ -173,6 +183,16 @@ public class DaoProcessorTest extends AptTestCase {
 
     public void testSqlFileBatchUpdate() throws Exception {
         Class<?> target = SqlFileBatchUpdateDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testSqlFileBatchUpdateEntity() throws Exception {
+        Class<?> target = SqlFileBatchUpdateEntityDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
         addCompilationUnit(target);

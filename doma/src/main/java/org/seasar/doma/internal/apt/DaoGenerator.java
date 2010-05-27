@@ -764,6 +764,11 @@ public class DaoGenerator extends AbstractGenerator {
                 iprint("__query.setQueryTimeout(%1$s);%n", mirror
                         .getQueryTimeout());
             }
+            if (m.getEntityType() != null) {
+                iprint("__query.setEntity(%1$s.getSingletonInternal());%n",
+                        getPrefixedEntityTypeName(m.getEntityType()
+                                .getTypeNameAsTypeParameter()));
+            }
             iprint("__query.prepare();%n");
             iprint("%1$s __command = new %1$s(__query);%n", m.getCommandClass()
                     .getName());
@@ -862,6 +867,11 @@ public class DaoGenerator extends AbstractGenerator {
             if (mirror.getQueryTimeout() != null) {
                 iprint("__query.setQueryTimeout(%1$s);%n", mirror
                         .getQueryTimeout());
+            }
+            if (m.getEntityType() != null) {
+                iprint("__query.setEntityType(%1$s.getSingletonInternal());%n",
+                        getPrefixedEntityTypeName(m.getEntityType()
+                                .getTypeNameAsTypeParameter()));
             }
             iprint("__query.prepare();%n");
             iprint("%1$s __command = new %1$s(__query);%n", m.getCommandClass()
