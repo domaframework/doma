@@ -31,6 +31,8 @@ public class ParensNode extends AbstractSqlNode {
 
     protected boolean attachedWithBindVariable;
 
+    protected boolean empty = true;
+
     protected OtherNode openedParensNode;
 
     protected OtherNode closedParensNode;
@@ -41,12 +43,20 @@ public class ParensNode extends AbstractSqlNode {
         openedParensNode = OtherNode.of("(");
     }
 
+    public boolean isAttachedWithBindVariable() {
+        return attachedWithBindVariable;
+    }
+
     public void setAttachedWithBindVariable(boolean attachedWithBindVariable) {
         this.attachedWithBindVariable = attachedWithBindVariable;
     }
 
-    public boolean isAttachedWithBindVariable() {
-        return attachedWithBindVariable;
+    public boolean isEmpty() {
+        return empty;
+    }
+
+    public void setEmpty(boolean empty) {
+        this.empty = empty;
     }
 
     public OtherNode getOpenedFragmentNode() {

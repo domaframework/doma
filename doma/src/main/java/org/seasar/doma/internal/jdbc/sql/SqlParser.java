@@ -367,6 +367,13 @@ public class SqlParser {
         validate();
         removeNodesTo(ParensNode.class);
         ParensNode parensNode = pop();
+        for (SqlNode child : parensNode.getChildren()) {
+            if (!(child instanceof WhitespaceNode)
+                    && !(child instanceof CommentNode)) {
+                parensNode.setEmpty(false);
+                break;
+            }
+        }
         parensNode.close();
     }
 

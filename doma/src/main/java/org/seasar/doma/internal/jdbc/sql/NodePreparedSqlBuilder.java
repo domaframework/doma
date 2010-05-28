@@ -571,6 +571,9 @@ public class NodePreparedSqlBuilder implements
             return null;
         }
         Context context = new Context(p);
+        if (node.isEmpty()) {
+            context.setAvailable(true);
+        }
         for (SqlNode child : node.getChildren()) {
             child.accept(this, context);
         }

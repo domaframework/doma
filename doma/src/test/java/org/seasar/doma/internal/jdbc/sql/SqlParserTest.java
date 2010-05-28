@@ -583,6 +583,24 @@ public class SqlParserTest extends TestCase {
         assertEquals("abc = ?", ((FragmentNode) children.get(1)).getFragment());
     }
 
+    public void testEmptyParens() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        SqlParser parser = new SqlParser("select rank()");
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath", evaluator).build(sqlNode);
+        assertEquals("select rank()", sql.getRawSql());
+    }
+
+    public void testEmptyParens_whiteSpace() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        SqlParser parser = new SqlParser("select rank(   )");
+        SqlNode sqlNode = parser.parse();
+        PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
+                "dummyPath", evaluator).build(sqlNode);
+        assertEquals("select rank(   )", sql.getRawSql());
+    }
+
     public enum MyEnum {
         AAA, BBB, CCC
     }
