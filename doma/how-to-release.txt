@@ -10,7 +10,7 @@
 
 #リリース
 1)mvn clean install deploy site
-2)cd ..doma-gen
+2)cd ../doma-gen
 3)mvn clean install deploy site
 4)cd ../doma
 5)mvn site-deploy

@@ -82,7 +82,10 @@
 				</item>
 			</item>
 			<item name="移行ガイド" href="http://www.seasar.org/wiki/index.php?DomaUpdateOperationLog" />
-			<item name="Javadocs" href="apidocs/index.html" />
+		</menu>
+		<menu name="Javadocs" inherit="top">
+			<item name="Doma" href="apidocs/index.html" />
+			<item name="Doma-Gen" href="extension/doma_gen/apidocs/index.html" />
 		</menu>
 		${reports}
 	</body>

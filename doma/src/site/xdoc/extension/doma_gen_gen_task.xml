@@ -432,7 +432,7 @@ public class Employee extends Common {
 			<subsection name="独自のテンプレートファイルを使用する">
 				<p>
 					Doma-Genのテンプレートは、配布ファイルのresources/tempalteディレクトリ以下にあります。
-					エンティティクラスのテンプレートはentity.ftl、エンティティリスナークラスのテンプレートはentityListener.ftl、Daoインタフェースのテンプレートはdao.ftlになります。
+					エンティティクラスのテンプレートはentity.ftl、エンティティリスナークラスのテンプレートはentityListener.ftl、Daoインタフェースのテンプレートはdao.ftl、DaoデリゲートクラスのテンプレートはdaoDelegate.ftlになります。
 					また、識別子を条件に検索するSQLのテンプレートはselectById.sql.ftl、識別子とバージョンを条件に検索するSQLのテンプレートはselectByIdAndVersion.sql.ftlです。
 					これをコピーして、修正を加えるのが良いでしょう。
 					テンプレートの記述方法については<a href="http://freemarker.org/">FreeMarker</a>のドキュメントを参照してください。
