@@ -31,17 +31,17 @@ public interface EmployeeDao {
 				デフォルトでは、DELETE文が自動生成されます。
 				<code>@Delete</code>の<code>sqlFile</code>に<code>true</code>を設定することで、任意の<a href="../sqlfile.html">SQLファイル</a>にマッピングできます。
 			</p>
+			<p>
+				パラメータの<a href="../entity.html">エンティティクラス</a>に<a href="../entity.html#エンティティリスナー">エンティティリスナー</a>が指定されている場合、削除の実行前にエンティティリスナーの<code>preDelete</code>メソッドを呼び出します。
+			</p>
 		</section>
 		<section name="SQLの自動生成による削除">
 			<p>
 				戻り値の型は<code>int</code>でなければいけません。
 				戻り値は更新件数を返します。
-				パラメータは型は<a href="../entity.html">エンティティティクラス</a>でなければいけません。
+				パラメータの型は<a href="../entity.html">エンティティティクラス</a>でなければいけません。
 				指定できるパラメータの数は1つです。
 				引数は<code>null</code>であってはいけません。
-			</p>
-			<p>
-				<a href="../entity.html">エンティティ</a>に<a href="../entity.html#エンティティリスナー">エンティティリスナー</a>が指定されている場合、削除の実行前にエンティティリスナーの<code>preDelete</code>メソッドを呼び出します。
 			</p>
 <source><![CDATA[@Delete
 int delete(Employee employee);]]></source>

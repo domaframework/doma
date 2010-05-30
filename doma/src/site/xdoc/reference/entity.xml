@@ -67,18 +67,18 @@ public class Employee {
 				<dl>
 					<dt>preDelete</dt>
 					<dd>
-						<code>@Delete(sqlFile = false)</code>、または<code>@BatchDelete(sqlFile = false)</code>が注釈されたDaoメソッドの実行時にのみ呼び出されます。
-						<code>@Delete</code>や<code>@BatchDelete</code>の<code>sqlFile</code>要素が<code>true</code>である場合には呼び出されません。
+						<code>@Delete</code>、または<code>@BatchDelete</code>が注釈されたDaoメソッドの実行時に呼び出されます。
+						ただし、使用するエンティティクラスにエンティティリスナーが指定されている必要があります。
 					</dd>
 					<dt>preInsert</dt>
 					<dd>
-						<code>@Insert(sqlFile = false)</code>、または<code>@BatchInsert(sqlFile = false)</code>が注釈されたDaoメソッドの実行時にのみ呼び出されます。
-						<code>@Insert</code>や<code>@BatchInsert</code>の<code>sqlFile</code>要素が<code>true</code>である場合には呼び出されません。
+						<code>@Insert</code>、または<code>@BatchInsert</code>が注釈されたDaoメソッドの実行時に呼び出されます。
+						ただし、使用するエンティティクラスにエンティティリスナーが指定されている必要があります。
 					</dd>
 					<dt>preUpdate</dt>
 					<dd>
-						<code>@Update(sqlFile = false)</code>、または<code>@BatchUpdate(sqlFile = false)</code>が注釈されたDaoメソッドの実行時にのみ呼び出されます。
-						<code>@Update</code>や<code>@BatchUpdate</code>の<code>sqlFile</code>要素が<code>true</code>である場合には呼び出されません。
+						<code>@Update</code>、または<code>@BatchUpdate</code>が注釈されたDaoメソッドの実行時にのみ呼び出されます。
+						ただし、使用するエンティティクラスにエンティティリスナーが指定されている必要があります。
 					</dd>
 				</dl>
 				<p>

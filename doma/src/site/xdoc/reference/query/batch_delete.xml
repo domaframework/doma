@@ -31,18 +31,18 @@ public interface EmployeeDao {
 				デフォルトでは、DELETE文が自動生成されます。
 				<code>@BatchDelete</code>の<code>sqlFile</code>に<code>true</code>を設定することで、任意の<a href="../sqlfile.html">SQLファイル</a>にマッピングできます。
 			</p>
+			<p>
+				パラメータの要素である<a href="../entity.html">エンティティクラス</a>に<a href="../entity.html#エンティティリスナー">エンティティリスナー</a>が指定されている場合、削除の実行前にエンティティリスナーの<code>preDelete</code>メソッドをエンティティごとに呼び出します。
+			</p>
 		</section>
 		<section name="SQLの自動生成によるバッチ削除">
 			<p>
 				戻り値の型は<code>int[]</code>でなければいけません。
-				パラメータは型は<a href="../entity.html">エンティティティクラス</a>を要素とする<code>java.lang.Iterable</code>のサブタイプでなければいけません。
+				パラメータの型は<a href="../entity.html">エンティティティクラス</a>を要素とする<code>java.lang.Iterable</code>のサブタイプでなければいけません。
 				指定できるパラメータの数は1つです。
 				引数は<code>null</code>であってはいけません。
 				戻り値の配列の要素の数はパラメータの<code>Iterable</code>の要素の数と等しくなります。
 				配列のそれぞれの要素が更新された件数を返します。
-			</p>
-			<p>
-				<a href="../entity.html">エンティティ</a>に<a href="../entity.html#エンティティリスナー">エンティティリスナー</a>が指定されている場合、削除の実行前にエンティティリスナーの<code>preDelete</code>メソッドをエンティティごとに呼び出します。
 			</p>
 			<subsection name="バージョン番号と楽観的排他制御">
 				<p>
@@ -81,9 +81,6 @@ int[] delete(List<Employee> employees);]]></source>
 				引数は<code>null</code>であってはいけません。
 				戻り値の配列の要素の数はパラメータの<code>Iterable</code>の要素の数と等しくなります。
 				配列のそれぞれの要素が更新された件数を返します。
-			</p>
-			<p>
-				<a href="../entity.html">エンティティ</a>に<a href="../entity.html#エンティティリスナー">エンティティリスナー</a>が指定されていても、エンティティリスナーのメソッドは呼び出しません。
 			</p>
 			<p>
 				たとえば、上記のメソッドに対応するSQLは次のように記述します。

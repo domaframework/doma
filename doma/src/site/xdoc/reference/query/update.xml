@@ -33,17 +33,17 @@ public interface EmployeeDao {
 				デフォルトでは、UPDATE文が自動生成されます。
 				<code>@Update</code>の<code>sqlFile</code>に<code>true</code>を設定することで、任意の<a href="../sqlfile.html">SQLファイル</a>にマッピングできます。
 			</p>
+			<p>
+				パラメータの<a href="../entity.html">エンティティクラス</a>に<a href="../entity.html#エンティティリスナー">エンティティリスナー</a>が指定されている場合、更新の実行前にエンティティリスナーの<code>preUpdate</code>メソッドを呼び出します。
+			</p>
 		</section>
 		<section name="SQLの自動生成による更新">
 			<p>
 				戻り値の型は<code>int</code>でなければいけません。
 				戻り値は更新件数を返します。
-				パラメータは型は<a href="../entity.html">エンティティティクラス</a>でなければいけません。
+				パラメータの型は<a href="../entity.html">エンティティティクラス</a>でなければいけません。
 				指定できるパラメータの数は1つです。
 				引数は<code>null</code>であってはいけません。
-			</p>
-			<p>
-				<a href="../entity.html">エンティティ</a>に<a href="../entity.html#エンティティリスナー">エンティティリスナー</a>が指定されている場合、更新の実行前にエンティティリスナーの<code>preUpdate</code>メソッドを呼び出します。
 			</p>
 <source><![CDATA[@Update
 int update(Employee employee);]]></source>
@@ -140,9 +140,6 @@ int update(Employee employee);]]></source>
 				また、<code>@Update</code>の<code>exclude</code>要素、<code>include</code>要素、
 				<code>excludeNull</code>要素、<code>includeUnchanged</code>要素、<code>includeVersion</code>要素、
 				<code>suppressOptimisticLockException</code>要素は参照されません。
-			</p>
-			<p>
-				<a href="../entity.html">エンティティ</a>に<a href="../entity.html#エンティティリスナー">エンティティリスナー</a>が指定されていても、エンティティリスナーのメソッドは呼び出しません。
 			</p>
 		</section>
 		<section name="一意制約違反">
