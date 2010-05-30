@@ -25,6 +25,7 @@
 						<li><a href="#エンティティクラスに共通のスーパークラスを指定する">エンティティクラスに共通のスーパークラスを指定する</a></li>
 						<li><a href="#エンティティプロパティのクラス名を指定する">エンティティプロパティのクラス名を指定する</a></li>
 						<li><a href="#独自のテンプレートファイルを使用する">独自のテンプレートファイルを使用する</a></li>
+						<li><a href="#独自のSQLファイルを生成する">独自のSQLファイルを生成する</a></li>
 						<li><a href="#生成するJavaファイルに共通のヘッダーとしてコピーライトを含める">生成するJavaファイルに共通のヘッダーとしてコピーライトを含める</a></li>
 						<li><a href="#生成するJavaファイルにauthorを指定する">生成するJavaファイルにauthorを指定する</a></li>
 					</ul>
@@ -130,6 +131,38 @@ public interface AddressDao {
     int delete(Address entity);
 }]]></source>
 			<p>
+				Daoデリゲートクラスです。
+			</p>
+<source><![CDATA[public class AddressDaoDelegate {
+
+    private final Config config;
+
+    private final AddressDao dao;
+
+    public AddressDaoDelegate(Config config, AddressDao dao) {
+        if (config == null) {
+            throw new NullPointerException("config");
+        }
+        if (dao == null) {
+            throw new NullPointerException("dao");
+        }
+        this.config = config;
+        this.dao = dao;
+    }
+
+    public int insert(Address entity) {
+        return -1;
+    }
+
+    public int update(Address entity) {
+        return -1;
+    }
+
+    public int delete(Address entity) {
+        return -1;
+    }
+}]]></source>
+			<p>
 				識別子を条件として検索するSQLです。
 			</p>
 <source><![CDATA[select
@@ -140,6 +173,20 @@ from
     ADDRESS
 where
     ADDRESS_ID = /* addressId */1]]></source>
+			<p>
+				識別子とバージョンを条件として検索するSQLです。
+			</p>
+<source><![CDATA[select
+    ADDRESS_ID,
+    STREET,
+    VERSION
+from
+    ADDRESS
+where
+    ADDRESS_ID = /* addressId */1
+    and
+    VERSION = /* version */1
+    ]]></source>
 		</section>
 		<section name="パラメータ">
 			<subsection name="トップレベルパラメータ">
@@ -148,8 +195,8 @@ where
 				</p>
 				<table border="1" cellpadding="2" cellspacing="0">
 					<tr><th>属性</th><th>説明</th><th>デフォルト値</th><th>必須</th></tr>
-					<tr><td>dialectName</td><td>接続するRDBMSの方言名です。次のうちのどれかを指定できます。"h2"、"hsqldb"、"mysql"、"postgres"、"oracle"、"db2"、"mssql2008"</td><td>-</td><td><b>genDialectClassNameが指定されていない場合YES</b></td></tr>
-					<tr><td>genDialectClassName</td><td>接続するRDBMSの方言クラス名です。<code>org.seasar.doma.extension.gen.dialect.GenDialect</code>の実装クラスでなければいけません。dialectNameの指定により利用できる組み込みの方言クラス以外を利用する場合に指定します。</td><td>-</td><td><b>dialectNameが指定されていない場合YES</b></td></tr>
+					<tr><td>dialectName</td><td>接続するRDBMSの方言名です。次のうちのどれかを指定できます。"h2"、"hsqldb"、"mysql"、"postgres"、"oracle"、"db2"、"mssql2008"。指定するクラスは、Genタスクを実行するクラスパスに通されている必要があります。</td><td>-</td><td><b>genDialectClassNameが指定されていない場合YES</b></td></tr>
+					<tr><td>genDialectClassName</td><td>接続するRDBMSの方言クラス名です。<code>org.seasar.doma.extension.gen.dialect.GenDialect</code>の実装クラスでなければいけません。dialectNameの指定により利用できる組み込みの方言クラス以外を利用する場合に指定します。指定するクラスは、Genタスクを実行するクラスパスに通されている必要があります。</td><td>-</td><td><b>dialectNameが指定されていない場合YES</b></td></tr>
 					<tr><td>driverClassName</td><td>JDBCドライバクラス名です。<code>java.sql.Driver</code>の実装クラスでなければいけません。</td><td>-</td><td><b><b>YES</b></b></td></tr>
 					<tr><td>url</td><td>JDBC接続URLです。</td><td>-</td><td><b>YES</b></td></tr>
 					<tr><td>user</td><td>JDBC接続ユーザーです。</td><td>-</td><td><b>YES</b></td></tr>
@@ -186,7 +233,7 @@ where
 					<tr><td>overwrite</td><td>"true"の場合、エンティティクラスのJavaコードを上書きします。</td><td>"true"</td><td>NO</td></tr>
 					<tr><td>overwriteListener</td><td>"true"の場合、エンティティリスナークラスのJavaコードを上書きします。</td><td>"false"</td><td>NO</td></tr>
 					<tr><td>packageName</td><td>エンティティクラスのパッケージ名です。</td><td>"example.entity"</td><td>NO</td></tr>
-					<tr><td>superclassName</td><td>エンティティクラスのスーパークラスの完全修飾名です。生成されるエンティティクラスはここに指定したスーパークラスを継承します。</td><td>-</td><td>NO</td></tr>
+					<tr><td>superclassName</td><td>エンティティクラスのスーパークラスの完全修飾名です。生成されるエンティティクラスはここに指定したスーパークラスを継承します。指定するクラスは、Genタスクを実行するクラスパスに通されている必要があります。</td><td>-</td><td>NO</td></tr>
 					<tr><td>listenerSuperclassName</td><td>エンティティリスナーのスーパークラスの完全修飾名です。生成されるエンティティリスナークラスはここに指定したスーパークラスを継承します。ここに指定するクラスは1つの型パラメータを受け取ります。</td><td>-</td><td>NO</td></tr>
 					<tr><td>namingType</td><td>ネーミング規約です。"none"、 "snake_upper_case"、 "snake_lower_case"、"upper_case"、"lower_case"のいずれかの値を指定できます。@Entityのnaming要素に使用されます。</td><td>-</td><td>NO</td></tr>
 					<tr><td>entityPropertyClassNamesFile</td><td>エンティティプロパティのクラス名を解決するためのファイルです。形式は、キーをエンティティプロパティ名の正規表現、値をクラスの完全修飾名とするプロパティファイル形式です。</td><td>-</td><td>NO</td></tr>
@@ -207,27 +254,29 @@ where
 					Daoインタフェースの生成に関する設定を表すデータ型です。
 				</p>
 				<p>
-					このデータ型を使用するとエンティティごとに1つのDaoインタフェースを生成できます。
+					このデータ型を使用するとエンティティごとに1つのDaoインタフェースとDaoデリゲートクラスを生成できます。
 				</p>
 				<p>
 					DaoConfigのパラメータ定義は次のとおりです。
 				</p>
 				<table border="1" cellpadding="2" cellspacing="0">
 					<tr><th>属性</th><th>説明</th><th>デフォルト値</th><th>必須</th></tr>
-					<tr><td>overwrite</td><td>"true"の場合、Javaコードを上書きします。</td><td>"false"</td><td>NO</td></tr>
+					<tr><td>overwrite</td><td>"true"の場合、DaoインタフェースのJavaコードを上書きします。</td><td>"false"</td><td>NO</td></tr>
+					<tr><td>overwriteDelegate</td><td>"true"の場合、DaoデリゲートクラスのJavaコードを上書きします。</td><td>"false"</td><td>NO</td></tr>
 					<tr><td>destDir</td><td>Javaファイルの出力先ディレクトリです。</td><td>"src"</td><td>NO</td></tr>
 					<tr><td>encoding</td><td>Javaファイルのエンコーディングです。</td><td>"UTF-8"</td><td>NO</td></tr>
 					<tr><td>generate</td><td>"true"の場合、DaoインタフェースのJavaコードを生成します。</td><td>"true"</td><td>NO</td></tr>
 					<tr><td>packageName</td><td>Daoインタフェースのパッケージ名です。</td><td>"example.dao"</td><td>NO</td></tr>
 					<tr><td>suffix</td><td>Daoインタフェース名のサフィックスです。Daoインタフェースの名前はエンティティクラス名に、この値をサフィックスしたものになります。</td><td>"Dao"</td><td>NO</td></tr>
 					<tr><td>configClassName</td><td>設定クラスの完全修飾名です。@Daoのconfig要素に使用されます。</td><td>-</td><td>NO</td></tr>
+					<tr><td>useDelegate</td><td>"true"の場合、DaoデリゲートクラスのJavaコードを生成します。"false"の場合、生成しません。</td><td>"false"</td><td>NO</td></tr>
 				</table>
 				<h4><a name="SqlConfig"></a>SqlConfig</h4>
 				<p>
 					SQLファイルの生成に関する設定を表すデータ型です。
 				</p>
 				<p>
-					このデータ型を使用するとエンティティごとに2つのSQLファイルを生成できます。
+					このデータ型を使用するとエンティティごとにデフォルトで2つのSQLファイルを生成できます。
 					生成されるSQLは次のものです。
 				</p>
 				<ul>
@@ -237,6 +286,9 @@ where
 				<p>
 					ただし、エンティティが識別子を持たない場合、SQLファイルは生成されません。
 					また、エンティティがバージョンを持たない場合は、条件にバージョンを指定するSQLは生成されません。
+				</p>
+				<p>
+					テンプレートファイルを用意することで、独自のSQLファイルを生成できます。詳細は、<a href="#独自のSQLファイルを生成する">独自のSQLファイルを生成する</a>を参照してください。
 				</p>
 				<p>
 					SqlConfigのパラメータ定義は次のとおりです。
@@ -340,9 +392,14 @@ public class EmployeeListener extends CommonListener<Employee> {
 				</p>
 <source><![CDATA[example.entity.Employee@.*Name$=example.domain.Name]]></source>
 				<p>
+					プロパティ名の部分を正規表現で示しています。正規表現はプロパティ名に対してのみ使用できます（@より左のクラス名は必ず完全修飾名でなければいけません）。
+				</p>
+				<p>
 					生成されるエンティティクラスでは、次のようにemployeeNameプロパティの型が「example.domain.Name」になります。
 				</p>
-<source><![CDATA[@Entity
+<source><![CDATA[import example.domain.Name;
+
+@Entity
 public class Employee extends Common {
     @Id
     Integer id;
@@ -395,7 +452,42 @@ public class Employee extends Common {
         ...
     />
 <gen/>]]></source>
-			</subsection>	
+			</subsection>
+			<subsection name="独自のSQLファイルを生成する">
+				<p>
+					テンプレートを用意することで、独自のSQLファイルを生成できます。
+					テンプレートファイルの名前は、「生成したいsqlファイル名」 + 「.ftl」としてください。
+				</p>
+				<p>
+					たとえば、全件検索を行うSQLファイルselectAll.sqlを生成するには、selectAll.sql.ftlという名前のテンプレートファイルを作成します。
+					テンプレートファイルには、次のように記述します。
+				</p>
+<source><![CDATA[select
+<#list entityDesc.entityPropertyDescs as property>
+  ${property.columnName}<#if property_has_next>,</#if>
+</#list>
+from
+  ${entityDesc.tableName}]]></source>
+				<p>
+					selectAll.sql.ftlは、templateFilePrimaryDir属性に指定するディレクトリに配置します。
+					mytempleteディレクトリに配置する場合、templatePrimaryDir属性にmytempleteを指定します。
+				</p>
+<source><![CDATA[<gen
+    dialectName="${dialectName}"
+    driverClassName="${driverClassName}"
+    url="${url}"
+    user="${user}"
+    password="${password}"
+    templatePrimaryDir="mytemplete">
+    <sqlConfig
+        ...
+    />
+<gen/>]]></source>
+				<p>
+					このように、独自のSQLファイルを生成する場合、SQLファイルに対応するDaoメソッドについても生成するとよいでしょう。
+					Daoメソッドを生成するには、Daoインタフェースのテンプレートであるdao.ftlを修正し、templateFilePrimaryDir属性に指定するディレクトリに配置します。
+				</p>
+			</subsection>
 			<subsection name="生成するJavaファイルに共通のヘッダーとしてコピーライトを含める">
 				<p>
 					lib.ftlというファイルを作成し、これをtemplatePrimaryDir属性に指定するディレクトリに配置します。
