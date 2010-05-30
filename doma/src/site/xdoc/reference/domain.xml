@@ -70,6 +70,7 @@ public class PhoneNumber {
     }
 }]]></source>
 			<p>
+				@Domainが注釈されたクラスはトップレベルのクラスでなければいけません。
 				クラスには、<code>valueType</code>要素に指定した型と同じ型をもつ非<code>private</code>なコンストラクタが必須です。
 				また、<code>accessorMethod</code>要素に指定した値と同じ名前のメソッドも必須です。
 			</p>
@@ -134,6 +135,7 @@ public enum JobType {
     }
 }]]></source>
 			<p>
+				@EnumDomainが注釈された列挙型はトップレベルのクラスでなければいけません。
 				列挙型には、<code>factoryMethod</code>要素と<code>accessorMethod</code>要素で指定された値と同じ名前のメソッドが必須です。
 			</p>
 			<p>
@@ -180,7 +182,7 @@ public interface EmployeeDao {
     Employee selectByJobType(JobType jobType);
     
     @Select
-    List<JobType> selectAllJobType();
+    List<JobType> selectAllJobTypes();
 }]]></source>
 			</subsection>
 		</section>

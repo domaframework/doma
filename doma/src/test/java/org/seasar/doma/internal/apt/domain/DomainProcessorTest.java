@@ -17,7 +17,6 @@ package org.seasar.doma.internal.apt.domain;
 
 import org.seasar.doma.internal.apt.AptTestCase;
 import org.seasar.doma.internal.apt.DomainProcessor;
-import org.seasar.doma.internal.apt.domain.Outer.Inner;
 import org.seasar.doma.internal.message.Message;
 
 /**
@@ -94,8 +93,8 @@ public class DomainProcessorTest extends AptTestCase {
         addProcessor(processor);
         addCompilationUnit(Outer.class);
         compile();
-        assertGeneratedSource(Inner.class);
-        assertTrue(getCompiledResult());
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4179);
     }
 
     public void testPackagePrivate() throws Exception {

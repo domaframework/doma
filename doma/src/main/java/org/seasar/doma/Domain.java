@@ -25,6 +25,7 @@ import java.lang.annotation.Target;
  * <p>
  * 注釈されたクラスは、 次の制約を満たす必要があります。
  * <ul>
+ * <li>トップレベルのクラスである。
  * <li>{@code valueType} 要素に指定した型と同じ型を引数とする非 {@code private} なコンストラクタを持つ。
  * <li>{@code accessorMethod} 要素に指定した名前の非 {@code private} なメソッドを持つ。このメソッドは、
  * {@code valueType} 要素に指定した型を戻り値とし、パラメータは受け取らない。

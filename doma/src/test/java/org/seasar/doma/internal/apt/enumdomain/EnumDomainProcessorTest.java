@@ -17,6 +17,7 @@ package org.seasar.doma.internal.apt.enumdomain;
 
 import org.seasar.doma.internal.apt.AptTestCase;
 import org.seasar.doma.internal.apt.EnumDomainProcessor;
+import org.seasar.doma.internal.message.Message;
 
 /**
  * @author taedium
@@ -48,6 +49,16 @@ public class EnumDomainProcessorTest extends AptTestCase {
         compile();
         assertGeneratedSource(target);
         assertTrue(getCompiledResult());
+    }
+
+    public void testInner() throws Exception {
+        Class<?> target = Outer.class;
+        EnumDomainProcessor processor = new EnumDomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4180);
     }
 
 }
