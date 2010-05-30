@@ -288,7 +288,7 @@ where
 					また、エンティティがバージョンを持たない場合は、条件にバージョンを指定するSQLは生成されません。
 				</p>
 				<p>
-					テンプレートファイルを用意することで、独自のSQLファイルを生成できます。詳細は、<a href="#独自のSQLファイルを生成する">独自のSQLファイルを生成する</a>を参照してください。
+					テンプレートを用意することで、独自のSQLファイルを生成できます。詳細は、<a href="#独自のSQLファイルを生成する">独自のSQLファイルを生成する</a>を参照してください。
 				</p>
 				<p>
 					SqlConfigのパラメータ定義は次のとおりです。
@@ -452,6 +452,18 @@ public class Employee extends Common {
         ...
     />
 <gen/>]]></source>
+				<p>
+					それぞれのテンプレートは、特定のデータモデルを参照します。
+					テンプレートとデータモデルクラスの対応付けを以下に示します。
+				</p>
+				<table border="1" cellpadding="2" cellspacing="0">
+					<tr><th>テンプレート</th><th>データモデルクラス</th><th>生成物</th></tr>
+					<tr><td>entity.ftl</td><td><a href="doma_gen/apidocs/org/seasar/doma/extension/gen/EntityDesc.html">org.seasar.doma.extension.gen.EntityDesc</a></td><td>エンティティクラスのJavaファイル</td></tr>
+					<tr><td>entityListener.ftl</td><td><a href="doma_gen/apidocs/org/seasar/doma/extension/gen/EntityListenerDesc.html">org.seasar.doma.extension.gen.EntityListenerDesc</a></td><td>エンティティリスナークラスのJavaファイル</td></tr>
+					<tr><td>dao.ftl</td><td><a href="doma_gen/apidocs/org/seasar/doma/extension/gen/DaoDesc.html">org.seasar.doma.extension.gen.DaoDesc</a></td><td>DaoインタフェースのJavaファイル</td></tr>
+					<tr><td>daoDelegate.ftl</td><td><a href="doma_gen/apidocs/org/seasar/doma/extension/gen/DaoDelegateDesc.html">org.seasar.doma.extension.gen.DaoDelegateDesc</a></td><td>DaoデリゲートクラスのJavaファイル</td></tr>
+					<tr><td>xxx.sql.ftl (xxxは任意の名称)</td><td><a href="doma_gen/apidocs/org/seasar/doma/extension/gen/SqlDesc.html">org.seasar.doma.extension.gen.SqlDesc</a></td><td>SQLファイル</td></tr>
+				</table>
 			</subsection>
 			<subsection name="独自のSQLファイルを生成する">
 				<p>
@@ -460,7 +472,8 @@ public class Employee extends Common {
 				</p>
 				<p>
 					たとえば、全件検索を行うSQLファイルselectAll.sqlを生成するには、selectAll.sql.ftlという名前のテンプレートファイルを作成します。
-					テンプレートファイルには、次のように記述します。
+					テンプレートファイルには、以下のように記述します。
+					（テンプレートはデータモデルとして<a href="doma_gen/apidocs/org/seasar/doma/extension/gen/SqlDesc.html">org.seasar.doma.extension.gen.SqlDesc</a>のインスタンスを参照します。）
 				</p>
 <source><![CDATA[select
 <#list entityDesc.entityPropertyDescs as property>

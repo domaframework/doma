@@ -161,6 +161,14 @@
         ...
     />
 <genTest/>]]></source>
+				<p>
+					テンプレートは、特定のデータモデルを参照します。
+					テンプレートとデータモデルクラスの対応付けを以下に示します。
+				</p>
+				<table border="1" cellpadding="2" cellspacing="0">
+					<tr><th>テンプレート</th><th>データモデルクラス</th><th>生成物</th></tr>
+					<tr><td>sqlTest.ftl</td><td><a href="doma_gen/apidocs/org/seasar/doma/extension/gen/SqlTestDesc.html">org.seasar.doma.extension.gen.SqlTestDesc</a></td><td>SQLテストクラスのJavaファイル</td></tr>
+				</table>
 			</subsection>	
 			<subsection name="生成するJavaファイルに共通のヘッダーとしてコピーライトを含める">
 				<p>
