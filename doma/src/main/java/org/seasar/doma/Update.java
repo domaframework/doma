@@ -101,8 +101,6 @@ public @interface Update {
 
     /**
      * UPDATE文のSET句にバージョンプロパティに対応するカラムを含めるかどうかを示します。
-     * <p>
-     * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
      */
     boolean includeVersion() default false;
 
@@ -132,8 +130,6 @@ public @interface Update {
 
     /**
      * 更新結果が1件でない場合にスローされる {@link OptimisticLockException}を抑制するかどうかを示します。
-     * <p>
-     * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
      */
     boolean suppressOptimisticLockException() default false;
 
