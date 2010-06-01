@@ -149,10 +149,9 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
 
     @Override
     public void incrementVersion() {
-        if (versionIncluded || versionPropertyType == null) {
-            return;
+        if (versionPropertyType != null && !versionIncluded) {
+            versionPropertyType.increment(entity);
         }
-        versionPropertyType.increment(entity);
     }
 
     public void setNullExcluded(boolean nullExcluded) {

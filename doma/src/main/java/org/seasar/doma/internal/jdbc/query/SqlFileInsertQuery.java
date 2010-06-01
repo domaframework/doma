@@ -29,7 +29,7 @@ import org.seasar.doma.jdbc.entity.EntityType;
 public class SqlFileInsertQuery extends SqlFileModifyQuery implements
         InsertQuery {
 
-    protected PreInsert<?> preInsert;
+    protected EntityHandler<?> entityHandler;
 
     public SqlFileInsertQuery() {
         super(SqlKind.INSERT);
@@ -37,10 +37,16 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
 
     public void prepare() {
         assertNotNull(config, sqlFilePath, callerClassName, callerMethodName);
-        executeListener();
+        preInsert();
         prepareOptions();
         prepareSql();
         assertNotNull(sql);
+    }
+
+    protected void preInsert() {
+        if (entityHandler != null) {
+            entityHandler.preInsert();
+        }
     }
 
     @Override
@@ -48,19 +54,25 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
     }
 
     @Override
-    public <E> void addEntityType(EntityType<E> entityType) {
-        listenerExecuters.add(new PreInsert<E>(entityType));
+    public <E> void setEntityAndEntityType(E entity, EntityType<E> entityType) {
+        entityHandler = new EntityHandler<E>(entity, entityType);
     }
 
-    protected class PreInsert<E> extends ListenerExecuter<E> {
+    protected class EntityHandler<E> {
 
-        protected PreInsert(EntityType<E> entityType) {
-            super(entityType);
+        protected E entity;
+
+        protected EntityType<E> entityType;
+
+        protected EntityHandler(E entity, EntityType<E> entityType) {
+            assertNotNull(entity, entityType);
+            this.entity = entity;
+            this.entityType = entityType;
         }
 
-        @Override
-        protected void doExecute(E entity) {
+        protected void preInsert() {
             entityType.preInsert(entity);
         }
+
     }
 }

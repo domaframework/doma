@@ -19,6 +19,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 /**
  * @author taedium
@@ -27,33 +28,76 @@ import org.seasar.doma.jdbc.entity.EntityType;
 public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
         DeleteQuery {
 
+    protected EntityHandler<?> entityHandler;
+
+    protected boolean versionIgnored;
+
+    protected boolean optimisticLockExceptionSuppressed;
+
     public SqlFileDeleteQuery() {
         super(SqlKind.DELETE);
     }
 
     public void prepare() {
         assertNotNull(config, sqlFilePath, callerClassName, callerMethodName);
-        executeListener();
+        preDelete();
         prepareOptions();
+        prepareOptimisticLock();
         prepareSql();
         assertNotNull(sql);
     }
 
-    @Override
-    public <E> void addEntityType(EntityType<E> entityType) {
-        assertNotNull(entityType);
-        listenerExecuters.add(new PreDelete<E>(entityType));
+    protected void preDelete() {
+        if (entityHandler != null) {
+            entityHandler.preDelete();
+        }
     }
 
-    protected class PreDelete<E> extends ListenerExecuter<E> {
+    protected void prepareOptimisticLock() {
+        if (entityHandler != null) {
+            entityHandler.prepareOptimisticLock();
+        }
+    }
 
-        protected PreDelete(EntityType<E> entityType) {
-            super(entityType);
+    @Override
+    public <E> void setEntityAndEntityType(E entity, EntityType<E> entityType) {
+        entityHandler = new EntityHandler<E>(entity, entityType);
+    }
+
+    public void setVersionIgnored(boolean versionIgnored) {
+        this.versionIgnored = versionIgnored;
+    }
+
+    public void setOptimisticLockExceptionSuppressed(
+            boolean optimisticLockExceptionSuppressed) {
+        this.optimisticLockExceptionSuppressed = optimisticLockExceptionSuppressed;
+    }
+
+    protected class EntityHandler<E> {
+
+        protected E entity;
+
+        protected EntityType<E> entityType;
+
+        protected VersionPropertyType<E, ?> versionPropertyType;
+
+        protected EntityHandler(E entity, EntityType<E> entityType) {
+            assertNotNull(entity, entityType);
+            this.entity = entity;
+            this.entityType = entityType;
+            this.versionPropertyType = entityType.getVersionPropertyType();
         }
 
-        @Override
-        protected void doExecute(E entity) {
+        protected void preDelete() {
             entityType.preDelete(entity);
+        }
+
+        protected void prepareOptimisticLock() {
+            if (versionPropertyType != null && !versionIgnored) {
+                if (!optimisticLockExceptionSuppressed) {
+                    optimisticLockCheckRequired = true;
+                }
+            }
         }
     }
 }

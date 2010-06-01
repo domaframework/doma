@@ -15,9 +15,13 @@
  */
 package org.seasar.doma.internal.jdbc.query;
 
+import static org.seasar.doma.internal.util.AssertionUtil.*;
+
 import java.sql.Statement;
+import java.util.Iterator;
 
 import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.entity.EntityType;
 
 /**
  * @author taedium
@@ -26,13 +30,39 @@ import org.seasar.doma.jdbc.SqlKind;
 public class SqlFileBatchInsertQuery<E> extends SqlFileBatchModifyQuery<E>
         implements BatchInsertQuery {
 
+    protected EntityHandler entityHandler;
+
     public SqlFileBatchInsertQuery(Class<E> elementClass) {
         super(elementClass, SqlKind.BATCH_INSERT);
     }
 
     @Override
-    public boolean isBatchSupported() {
-        return true;
+    public void prepare() {
+        super.prepare();
+        Iterator<E> it = elements.iterator();
+        if (it.hasNext()) {
+            executable = true;
+            sqlExecutionSkipCause = null;
+            currentEntity = it.next();
+            preInsert();
+            prepareSqlFile();
+            prepareOptions();
+            prepareSql();
+        } else {
+            return;
+        }
+        while (it.hasNext()) {
+            currentEntity = it.next();
+            preInsert();
+            prepareSql();
+        }
+        assertEquals(elements.size(), sqls.size());
+    }
+
+    protected void preInsert() {
+        if (entityHandler != null) {
+            entityHandler.preInsert();
+        }
     }
 
     @Override
@@ -40,10 +70,27 @@ public class SqlFileBatchInsertQuery<E> extends SqlFileBatchModifyQuery<E>
     }
 
     @Override
-    protected void executeListener() {
-        if (entityType != null) {
-            entityType.preInsert(currentEntity);
-        }
+    public void setEntityType(EntityType<E> entityType) {
+        entityHandler = new EntityHandler(entityType);
     }
 
+    @Override
+    public boolean isBatchSupported() {
+        return true;
+    }
+
+    protected class EntityHandler {
+
+        protected EntityType<E> entityType;
+
+        protected EntityHandler(EntityType<E> entityType) {
+            assertNotNull(entityType);
+            this.entityType = entityType;
+        }
+
+        protected void preInsert() {
+            entityType.preInsert(currentEntity);
+        }
+
+    }
 }

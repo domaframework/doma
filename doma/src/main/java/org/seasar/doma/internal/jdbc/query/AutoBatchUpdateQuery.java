@@ -139,11 +139,8 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
 
     @Override
     public void incrementVersions() {
-        if (versionIncluded) {
-            return;
-        }
-        for (E entity : entities) {
-            if (versionPropertyType != null) {
+        if (versionPropertyType != null && !versionIncluded) {
+            for (E entity : entities) {
                 versionPropertyType.increment(entity);
             }
         }

@@ -20,7 +20,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
@@ -71,8 +70,6 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
 
     protected List<PreparedSql> sqls;
 
-    protected EntityType<E> entityType;
-
     protected SqlFileBatchModifyQuery(Class<E> elementClass, SqlKind kind) {
         assertNotNull(elementClass, kind);
         this.elementClass = elementClass;
@@ -82,27 +79,7 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
     public void prepare() {
         assertNotNull(config, sqlFilePath, parameterName, callerClassName,
                 callerMethodName, elements, sqls);
-        Iterator<E> it = elements.iterator();
-        if (it.hasNext()) {
-            executable = true;
-            sqlExecutionSkipCause = null;
-            currentEntity = it.next();
-            executeListener();
-            prepareSqlFile();
-            prepareOptions();
-            prepareSql();
-        } else {
-            return;
-        }
-        while (it.hasNext()) {
-            currentEntity = it.next();
-            executeListener();
-            prepareSql();
-        }
-        assertEquals(elements.size(), sqls.size());
     }
-
-    protected abstract void executeListener();
 
     protected void prepareSqlFile() {
         sqlFile = config.getSqlFileRepository().getSqlFile(sqlFilePath,
@@ -174,9 +151,7 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
         this.batchSize = batchSize;
     }
 
-    public void setEntityType(EntityType<E> entityType) {
-        this.entityType = entityType;
-    }
+    public abstract void setEntityType(EntityType<E> entityType);
 
     @Override
     public PreparedSql getSql() {

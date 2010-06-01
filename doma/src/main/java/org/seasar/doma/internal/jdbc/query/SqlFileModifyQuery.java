@@ -17,9 +17,7 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
@@ -38,8 +36,6 @@ import org.seasar.doma.jdbc.entity.EntityType;
  */
 public abstract class SqlFileModifyQuery implements ModifyQuery {
 
-    protected final List<ListenerExecuter<?>> listenerExecuters = new ArrayList<ListenerExecuter<?>>();
-
     protected final SqlKind kind;
 
     protected Config config;
@@ -56,26 +52,11 @@ public abstract class SqlFileModifyQuery implements ModifyQuery {
 
     protected int queryTimeout;
 
+    protected boolean optimisticLockCheckRequired;
+
     protected SqlFileModifyQuery(SqlKind kind) {
         assertNotNull(kind);
         this.kind = kind;
-    }
-
-    protected void executeListener() {
-        if (listenerExecuters.isEmpty()) {
-            return;
-        }
-        for (Value value : parameters.values()) {
-            Object maybeEntity = value.getValue();
-            if (maybeEntity != null) {
-                for (ListenerExecuter<?> executer : listenerExecuters) {
-                    boolean executed = executer.execute(maybeEntity);
-                    if (executed) {
-                        break;
-                    }
-                }
-            }
-        }
     }
 
     protected void prepareOptions() {
@@ -145,7 +126,7 @@ public abstract class SqlFileModifyQuery implements ModifyQuery {
 
     @Override
     public boolean isOptimisticLockCheckRequired() {
-        return false;
+        return optimisticLockCheckRequired;
     }
 
     @Override
@@ -167,34 +148,12 @@ public abstract class SqlFileModifyQuery implements ModifyQuery {
         return false;
     }
 
-    public abstract <E> void addEntityType(EntityType<E> entityType);
+    public abstract <E> void setEntityAndEntityType(E entity,
+            EntityType<E> entityType);
 
     @Override
     public String toString() {
         return sql != null ? sql.toString() : null;
-    }
-
-    protected abstract class ListenerExecuter<E> {
-
-        protected EntityType<E> entityType;
-
-        protected ListenerExecuter(EntityType<E> entityType) {
-            assertNotNull(entityType);
-            this.entityType = entityType;
-        }
-
-        protected boolean execute(Object maybeEntity) {
-            assertNotNull(entityType);
-            Class<E> entityClass = entityType.getEntityClass();
-            if (maybeEntity.getClass() == entityClass) {
-                doExecute(entityClass.cast(maybeEntity));
-                return true;
-            }
-            return false;
-        }
-
-        protected abstract void doExecute(E entity);
-
     }
 
 }

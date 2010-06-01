@@ -19,6 +19,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 /**
  * @author taedium
@@ -27,7 +28,11 @@ import org.seasar.doma.jdbc.entity.EntityType;
 public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
         UpdateQuery {
 
-    protected PreUpdate<?> preUpdate;
+    protected EntityHandler<?> entityHandler;
+
+    protected boolean versionIncluded;
+
+    protected boolean optimisticLockExceptionSuppressed;
 
     public SqlFileUpdateQuery() {
         super(SqlKind.UPDATE);
@@ -35,31 +40,78 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
 
     public void prepare() {
         assertNotNull(config, sqlFilePath, callerClassName, callerMethodName);
-        executeListener();
+        preUpdate();
+        prepareOptimisticLock();
         prepareOptions();
         prepareSql();
         assertNotNull(sql);
     }
 
+    protected void preUpdate() {
+        if (entityHandler != null) {
+            entityHandler.preUpdate();
+        }
+    }
+
+    protected void prepareOptimisticLock() {
+        if (entityHandler != null) {
+            entityHandler.prepareOptimisticLock();
+        }
+    }
+
     @Override
     public void incrementVersion() {
+        if (entityHandler != null) {
+            entityHandler.incrementVersion();
+        }
     }
 
     @Override
-    public <E> void addEntityType(EntityType<E> entityType) {
-        listenerExecuters.add(new PreUpdate<E>(entityType));
+    public <E> void setEntityAndEntityType(E entity, EntityType<E> entityType) {
+        entityHandler = new EntityHandler<E>(entity, entityType);
     }
 
-    protected class PreUpdate<E> extends ListenerExecuter<E> {
+    public void setVersionIncluded(boolean versionIncluded) {
+        this.versionIncluded = versionIncluded;
+    }
 
-        protected PreUpdate(EntityType<E> entityType) {
-            super(entityType);
+    public void setOptimisticLockExceptionSuppressed(
+            boolean optimisticLockExceptionSuppressed) {
+        this.optimisticLockExceptionSuppressed = optimisticLockExceptionSuppressed;
+    }
+
+    protected class EntityHandler<E> {
+
+        protected E entity;
+
+        protected EntityType<E> entityType;
+
+        protected VersionPropertyType<E, ?> versionPropertyType;
+
+        protected EntityHandler(E entity, EntityType<E> entityType) {
+            assertNotNull(entity, entityType);
+            this.entity = entity;
+            this.entityType = entityType;
+            this.versionPropertyType = entityType.getVersionPropertyType();
         }
 
-        @Override
-        protected void doExecute(E entity) {
-            assertNotNull(entityType);
+        protected void preUpdate() {
             entityType.preUpdate(entity);
         }
+
+        protected void prepareOptimisticLock() {
+            if (versionPropertyType != null && !versionIncluded) {
+                if (!optimisticLockExceptionSuppressed) {
+                    optimisticLockCheckRequired = true;
+                }
+            }
+        }
+
+        protected void incrementVersion() {
+            if (versionPropertyType != null && !versionIncluded) {
+                versionPropertyType.increment(entity);
+            }
+        }
+
     }
 }

@@ -61,8 +61,6 @@ import org.seasar.doma.internal.apt.meta.SqlFileModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileScriptQueryMeta;
 import org.seasar.doma.internal.apt.meta.SqlFileSelectQueryMeta;
 import org.seasar.doma.internal.apt.mirror.AnnotationMirror;
-import org.seasar.doma.internal.apt.mirror.BatchModifyMirror;
-import org.seasar.doma.internal.apt.mirror.ModifyMirror;
 import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
@@ -759,16 +757,32 @@ public class DaoGenerator extends AbstractGenerator {
             }
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
-            ModifyMirror mirror = m.getModifyMirror();
-            if (mirror.getQueryTimeout() != null) {
-                iprint("__query.setQueryTimeout(%1$s);%n", mirror
-                        .getQueryTimeout());
+            iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
+
+            if (m.getEntityParameterName() != null && m.getEntityType() != null) {
+                iprint(
+                        "__query.setEntityAndEntityType(%1$s, %2$s.getSingletonInternal());%n",
+                        m.getEntityParameterName(), getPrefixedEntityTypeName(m
+                                .getEntityType().getTypeNameAsTypeParameter()));
             }
-            for (EntityType entityType : m.getEntityTypes()) {
-                iprint("__query.addEntityType(%1$s.getSingletonInternal());%n",
-                        getPrefixedEntityTypeName(entityType
-                                .getTypeNameAsTypeParameter()));
+
+            Boolean includeVersion = m.getIncludeVersion();
+            if (includeVersion != null) {
+                iprint("__query.setVersionIncluded(%1$s);%n", includeVersion);
             }
+
+            Boolean ignoreVersion = m.getIgnoreVersion();
+            if (ignoreVersion != null) {
+                iprint("__query.setVersionIgnored(%1$s);%n", ignoreVersion);
+            }
+
+            Boolean suppressOptimisticLockException = m
+                    .getSuppressOptimisticLockException();
+            if (suppressOptimisticLockException != null) {
+                iprint("__query.setOptimisticLockExceptionSuppressed(%1$s);%n",
+                        suppressOptimisticLockException);
+            }
+
             iprint("__query.prepare();%n");
             iprint("%1$s __command = new %1$s(__query);%n", m.getCommandClass()
                     .getName());
@@ -863,16 +877,31 @@ public class DaoGenerator extends AbstractGenerator {
                     .getElementsParameterName());
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
-            BatchModifyMirror mirror = m.getBatchModifyMirror();
-            if (mirror.getQueryTimeout() != null) {
-                iprint("__query.setQueryTimeout(%1$s);%n", mirror
-                        .getQueryTimeout());
-            }
+            iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
+
             if (m.getEntityType() != null) {
                 iprint("__query.setEntityType(%1$s.getSingletonInternal());%n",
                         getPrefixedEntityTypeName(m.getEntityType()
                                 .getTypeNameAsTypeParameter()));
             }
+
+            Boolean includeVersion = m.getIncludeVersion();
+            if (includeVersion != null) {
+                iprint("__query.setVersionIncluded(%1$s);%n", includeVersion);
+            }
+
+            Boolean ignoreVersion = m.getIgnoreVersion();
+            if (ignoreVersion != null) {
+                iprint("__query.setVersionIgnored(%1$s);%n", ignoreVersion);
+            }
+
+            Boolean suppressOptimisticLockException = m
+                    .getSuppressOptimisticLockException();
+            if (suppressOptimisticLockException != null) {
+                iprint("__query.setOptimisticLockExceptionSuppressed(%1$s);%n",
+                        suppressOptimisticLockException);
+            }
+
             iprint("__query.prepare();%n");
             iprint("%1$s __command = new %1$s(__query);%n", m.getCommandClass()
                     .getName());

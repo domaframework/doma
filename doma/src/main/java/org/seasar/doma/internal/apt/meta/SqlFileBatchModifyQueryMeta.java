@@ -71,6 +71,22 @@ public class SqlFileBatchModifyQueryMeta extends AbstractSqlFileQueryMeta {
         this.batchModifyMirror = batchModifyMirror;
     }
 
+    public int getQueryTimeout() {
+        return batchModifyMirror.getQueryTimeoutValue();
+    }
+
+    public Boolean getIgnoreVersion() {
+        return batchModifyMirror.getIgnoreVersionValue();
+    }
+
+    public Boolean getIncludeVersion() {
+        return batchModifyMirror.getIncludeVersionValue();
+    }
+
+    public Boolean getSuppressOptimisticLockException() {
+        return batchModifyMirror.getSuppressOptimisticLockExceptionValue();
+    }
+
     @Override
     public <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p) {
         return visitor.visitSqlFileBatchModifyQueryMeta(this, p);

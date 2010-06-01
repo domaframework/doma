@@ -42,6 +42,8 @@ public class SqlFileBatchUpdateDaoImpl extends org.seasar.doma.internal.jdbc.dao
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileBatchUpdateDaoImpl");
             __query.setCallerMethodName("update");
             __query.setQueryTimeout(-1);
+            __query.setVersionIncluded(false);
+            __query.setOptimisticLockExceptionSuppressed(false);
             __query.prepare();
             org.seasar.doma.internal.jdbc.command.BatchUpdateCommand __command = new org.seasar.doma.internal.jdbc.command.BatchUpdateCommand(__query);
             int[] __result = __command.execute();

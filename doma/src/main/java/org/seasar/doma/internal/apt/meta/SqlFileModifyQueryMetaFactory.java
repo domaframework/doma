@@ -96,23 +96,27 @@ public class SqlFileModifyQueryMetaFactory extends
     protected void doParameters(final SqlFileModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         for (VariableElement parameter : method.getParameters()) {
-            QueryParameterMeta parameterMeta = createParameterMeta(parameter);
+            final QueryParameterMeta parameterMeta = createParameterMeta(parameter);
+            queryMeta.addParameterMeta(parameterMeta);
+            if (parameterMeta.isBindable()) {
+                queryMeta.addBindableParameterType(parameterMeta.getName(),
+                        parameterMeta.getType());
+            }
+            if (queryMeta.getEntityType() != null) {
+                continue;
+            }
             parameterMeta.getDataType().accept(
                     new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
 
                         @Override
                         public Void visitEntityType(EntityType dataType, Void p)
                                 throws RuntimeException {
-                            queryMeta.addEntityType(dataType);
+                            queryMeta.setEntityType(dataType);
+                            queryMeta.setEntityParameterName(parameterMeta
+                                    .getName());
                             return null;
                         }
-
                     }, null);
-            queryMeta.addParameterMeta(parameterMeta);
-            if (parameterMeta.isBindable()) {
-                queryMeta.addBindableParameterType(parameterMeta.getName(),
-                        parameterMeta.getType());
-            }
         }
     }
 }
