@@ -87,14 +87,14 @@ public @interface BatchDelete {
     int queryTimeout() default -1;
 
     /**
-     * DELETE文のWHERE句からバージョンプロパティに対応するカラムを除去するかどうかを示します。
+     * 楽観的排他制御用のバージョン番号を無視するかどうかを示します。
      * <p>
-     * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
+     * {@code true} の場合、削除条件にバージョン番号を含めません。
      */
     boolean ignoreVersion() default false;
 
     /**
-     * 更新結果が1件でない場合にスローされる {@link OptimisticLockException}を抑制するかどうかを示します。
+     * 削除結果が1件でない場合にスローされる {@link OptimisticLockException}を抑制するかどうかを示します。
      * <p>
      * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
      */

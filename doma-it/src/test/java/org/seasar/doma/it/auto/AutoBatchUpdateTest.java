@@ -71,7 +71,7 @@ public class AutoBatchUpdateTest {
         assertEquals(new Integer(2), department.getVersion());
     }
 
-    public void testIncludesVersion() throws Exception {
+    public void testIncludeVersion() throws Exception {
         DepartmentDao dao = new DepartmentDaoImpl();
         Department department = new Department();
         department.setDepartmentId(1);
@@ -83,7 +83,7 @@ public class AutoBatchUpdateTest {
         department2.setDepartmentNo(2);
         department2.setDepartmentName("foo");
         department2.setVersion(200);
-        int[] result = dao.update_includesVersion(Arrays.asList(department,
+        int[] result = dao.update_ignoreVersion(Arrays.asList(department,
                 department2));
         assertEquals(2, result.length);
         assertEquals(1, result[0]);
@@ -157,7 +157,7 @@ public class AutoBatchUpdateTest {
         }
     }
 
-    public void testSuppressesOptimisticLockException() throws Exception {
+    public void testSuppressOptimisticLockException() throws Exception {
         DepartmentDao dao = new DepartmentDaoImpl();
         Department department1 = dao.selectById(1);
         department1.setDepartmentName("hoge");
@@ -166,8 +166,11 @@ public class AutoBatchUpdateTest {
         Department department3 = dao.selectById(1);
         department3.setDepartmentName("bar");
         dao.update(department1);
-        dao.update_suppressesOptimisticLockException(Arrays.asList(department2,
-                department3));
+        int rows[] = dao.update_suppressOptimisticLockException(Arrays.asList(
+                department2, department3));
+        assertEquals(2, rows.length);
+        assertEquals(1, rows[0]);
+        assertEquals(0, rows[1]);
     }
 
     public void testNoId() throws Exception {

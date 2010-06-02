@@ -33,7 +33,7 @@ import org.seasar.doma.jdbc.entity.EntityType;
 public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
         BatchUpdateQuery {
 
-    protected boolean versionIncluded;
+    protected boolean versionIgnored;
 
     protected boolean optimisticLockExceptionSuppressed;
 
@@ -67,7 +67,7 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
     }
 
     protected void prepareOptimisticLock() {
-        if (versionPropertyType != null && !versionIncluded) {
+        if (versionPropertyType != null && !versionIgnored) {
             if (!optimisticLockExceptionSuppressed) {
                 optimisticLockCheckRequired = true;
             }
@@ -105,7 +105,7 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
             builder.appendSql(p.getColumnName());
             builder.appendSql(" = ");
             builder.appendWrapper(p.getWrapper(currentEntity));
-            if (p.isVersion() && !versionIncluded) {
+            if (p.isVersion() && !versionIgnored) {
                 builder.appendSql(" + 1");
             }
             builder.appendSql(", ");
@@ -121,7 +121,7 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
             }
             builder.cutBackSql(5);
         }
-        if (versionPropertyType != null && !versionIncluded) {
+        if (versionPropertyType != null && !versionIgnored) {
             if (idPropertyTypes.size() == 0) {
                 builder.appendSql(" where ");
             } else {
@@ -139,7 +139,7 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
 
     @Override
     public void incrementVersions() {
-        if (versionPropertyType != null && !versionIncluded) {
+        if (versionPropertyType != null && !versionIgnored) {
             for (E entity : entities) {
                 versionPropertyType.increment(entity);
             }
@@ -147,7 +147,11 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
     }
 
     public void setVersionIncluded(boolean versionIncluded) {
-        this.versionIncluded = versionIncluded;
+        this.versionIgnored |= versionIncluded;
+    }
+
+    public void setVersionIgnored(boolean versionIgnored) {
+        this.versionIgnored |= versionIgnored;
     }
 
     public void setOptimisticLockExceptionSuppressed(

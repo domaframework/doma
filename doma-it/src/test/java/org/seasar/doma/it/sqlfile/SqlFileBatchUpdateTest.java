@@ -23,6 +23,7 @@ import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDaoImpl;
 import org.seasar.doma.it.entity.Department;
+import org.seasar.doma.jdbc.BatchOptimisticLockException;
 import org.seasar.framework.unit.Seasar2;
 
 @RunWith(Seasar2.class)
@@ -49,9 +50,43 @@ public class SqlFileBatchUpdateTest {
         department = dao.selectById(1);
         assertEquals(new Integer(1), department.getDepartmentId());
         assertEquals("hoge", department.getDepartmentName());
+        assertEquals(new Integer(2), department.getVersion());
         department = dao.selectById(2);
         assertEquals(new Integer(2), department.getDepartmentId());
         assertEquals("foo", department.getDepartmentName());
+        assertEquals(new Integer(2), department.getVersion());
+    }
+
+    public void testOptimisticLockException() throws Exception {
+        DepartmentDao dao = new DepartmentDaoImpl();
+        Department department1 = dao.selectById(1);
+        department1.setDepartmentName("hoge");
+        Department department2 = dao.selectById(2);
+        department2.setDepartmentName("foo");
+        Department department3 = dao.selectById(1);
+        department3.setDepartmentName("bar");
+        dao.updateBySqlFile(department1);
+        try {
+            dao.updateBySqlFile(Arrays.asList(department2, department3));
+            fail();
+        } catch (BatchOptimisticLockException expected) {
+        }
+    }
+
+    public void testSuppressOptimisticLockException() throws Exception {
+        DepartmentDao dao = new DepartmentDaoImpl();
+        Department department1 = dao.selectById(1);
+        department1.setDepartmentName("hoge");
+        Department department2 = dao.selectById(2);
+        department2.setDepartmentName("foo");
+        Department department3 = dao.selectById(1);
+        department3.setDepartmentName("bar");
+        dao.update(department1);
+        int[] rows = dao.updateBySqlFile_suppressOptimisticLockException(Arrays
+                .asList(department2, department3));
+        assertEquals(2, rows.length);
+        assertEquals(1, rows[0]);
+        assertEquals(0, rows[1]);
     }
 
 }

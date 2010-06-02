@@ -57,7 +57,7 @@ int update(Employee employee);]]></source>
 				</p>
 				<ul>
 					<li>パラメータの<a href="../entity.html">エンティティティクラス</a>に<code>@Version</code>が注釈されたプロパティがある</li>
-					<li>@Updateの<code>includeVersion</code>要素が<code>false</code>である</li>
+					<li>@Updateの<code>ignoreVersion</code>要素が<code>false</code>である</li>
 				</ul>
 				<p>
 					楽観的排他制御が有効であれば、バージョン番号は識別子とともに更新条件に含まれ、1増分して更新されます。
@@ -65,11 +65,11 @@ int update(Employee employee);]]></source>
 					また、更新件数が0件でない場合、<code>OptimisticLockException</code>はスローされず、エンティティのバージョンプロパティの値が1増分されます。
 				</p>
 				<p>
-					<code>@Update</code>の<code>includeVersion</code>要素が<code>true</code>の場合、
+					<code>@Update</code>の<code>ignoreVersion</code>要素が<code>true</code>の場合、
 					バージョン番号は更新条件には含まれず、UPDATE文のSET句に含まれます。バージョン番号はアプリケーションで設定した値で更新されます。
 					この場合、更新件数が0件であっても、<code>OptimisticLockException</code>はスローされません。
 				</p>
-<source><![CDATA[@Update(includeVersion = true)
+<source><![CDATA[@Update(ignoreVersion = true)
 int update(Employee employee);]]></source>
 				<p>
 					<code>@Update</code>の<code>suppressOptimisticLockException</code>要素が<code>true</code>の場合、
@@ -157,7 +157,7 @@ int update(Employee employee);]]></source>
 				<ul>
 					<li>パラメータに<a href="../entity.html">エンティティティクラス</a>を含む</li>
 					<li>パラメータの内、左から数えて最初に登場するエンティティクラスに<code>@Version</code>が注釈されたプロパティがある</li>
-					<li>@Updateの<code>includeVersion</code>要素が<code>false</code>である</li>
+					<li>@Updateの<code>ignoreVersion</code>要素が<code>false</code>である</li>
 				</ul>
 				<p>
 					ただし、SQLファイルに楽観的排他制御用のSQLを記述するのは、アプリケーション開発者の責任です。
@@ -169,11 +169,11 @@ int update(Employee employee);]]></source>
 					更新件数が0件でない場合、<code>OptimisticLockException</code>はスローされず、エンティティのバージョンプロパティの値が1増分されます。
 				</p>
 				<p>
-					<code>@Update</code>の<code>includeVersion</code>要素が<code>true</code>の場合、
+					<code>@Update</code>の<code>ignoreVersion</code>要素が<code>true</code>の場合、
 					更新件数が0件であっても、<code>OptimisticLockException</code>はスローされません。
 					また、エンティティのバージョンプロパティの値は変更されません。
 				</p>
-<source><![CDATA[@Update(sqlFile = true, includeVersion = true)
+<source><![CDATA[@Update(sqlFile = true, ignoreVersion = true)
 int update(Employee employee);]]></source>
 				<p>
 					<code>@Update</code>の<code>suppressOptimisticLockException</code>要素が<code>true</code>の場合、

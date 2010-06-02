@@ -56,7 +56,7 @@ public class AutoBatchDeleteTest {
         assertNull(employee);
     }
 
-    public void testIgnoresVersion() throws Exception {
+    public void testIgnoreVersion() throws Exception {
         EmployeeDao dao = new EmployeeDaoImpl();
         Employee employee = new Employee();
         employee.setEmployeeId(1);
@@ -65,7 +65,7 @@ public class AutoBatchDeleteTest {
         employee2.setEmployeeId(2);
         employee2.setVersion(99);
         ;
-        int[] result = dao.delete_ignoresVersion(Arrays.asList(employee,
+        int[] result = dao.delete_ignoreVersion(Arrays.asList(employee,
                 employee2));
         assertEquals(2, result.length);
         assertEquals(1, result[0]);
@@ -115,7 +115,7 @@ public class AutoBatchDeleteTest {
         }
     }
 
-    public void testSuppressesOptimisticLockException() throws Exception {
+    public void testSuppressOptimisticLockException() throws Exception {
         EmployeeDao dao = new EmployeeDaoImpl();
         Employee employee1 = dao.selectById(1);
         employee1.setEmployeeName("hoge");
@@ -124,7 +124,7 @@ public class AutoBatchDeleteTest {
         Employee employee3 = dao.selectById(1);
         employee2.setEmployeeName("bar");
         dao.delete(employee1);
-        dao.delete_suppressesOptimisticLockException(Arrays.asList(employee2,
+        dao.delete_suppressOptimisticLockException(Arrays.asList(employee2,
                 employee3));
     }
 

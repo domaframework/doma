@@ -101,14 +101,28 @@ public @interface Update {
 
     /**
      * UPDATE文のSET句にバージョンプロパティに対応するカラムを含めるかどうかを示します。
+     * 
+     * @deprecated 代わりに {@link #includeVersion()} を使用してください。
      */
+    @Deprecated
     boolean includeVersion() default false;
+
+    /**
+     * 楽観的排他制御用のバージョン番号を無視するかどうかを示します。
+     * <p>
+     * {@code true} の場合、更新条件にバージョン番号を含めません。
+     * 
+     * @since 1.7.0
+     */
+    boolean ignoreVersion() default false;
 
     /**
      * UPDATE文のSET句に変更されていないプロパティに対応するカラムを含めるかどうかを示します。
      * <p>
      * この要素に対する指定は、更新対象のエンティティが {@link OriginalStates} が注釈されたプロパティをもつ場合、かつ
      * {@link #sqlFile()} が {@code false} の場合にのみ有効です。
+     * <p>
+     * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
      */
     boolean includeUnchanged() default false;
 
@@ -116,6 +130,8 @@ public @interface Update {
      * UPDATE文のSET句に含めるプロパティ名の配列です。
      * <p>
      * ここに指定できるのは、カラム名ではなく更新対象エンティティクラスのプロパティ名です。
+     * <p>
+     * この要素に対する指定は、{@link #sqlFile()} が {@code false} の場合にのみ有効です。
      */
     String[] include() default {};
 

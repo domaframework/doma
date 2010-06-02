@@ -57,6 +57,8 @@ public class UpdateMirror extends ModifyMirror {
                 result.queryTimeout = value;
             } else if ("includeVersion".equals(name)) {
                 result.includeVersion = value;
+            } else if ("ignoreVersion".equals(name)) {
+                result.ignoreVersion = value;
             } else if ("excludeNull".equals(name)) {
                 result.excludeNull = value;
             } else if ("suppressOptimisticLockException".equals(name)) {

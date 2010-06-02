@@ -34,7 +34,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
 
     protected boolean nullExcluded;
 
-    protected boolean versionIncluded;
+    protected boolean versionIgnored;
 
     protected boolean optimisticLockExceptionSuppressed;
 
@@ -58,7 +58,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void prepareOptimisticLock() {
-        if (versionPropertyType != null && !versionIncluded) {
+        if (versionPropertyType != null && !versionIgnored) {
             if (!optimisticLockExceptionSuppressed) {
                 optimisticLockCheckRequired = true;
             }
@@ -118,7 +118,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
             builder.appendSql(p.getColumnName());
             builder.appendSql(" = ");
             builder.appendWrapper(p.getWrapper(entity));
-            if (p.isVersion() && !versionIncluded) {
+            if (p.isVersion() && !versionIgnored) {
                 builder.appendSql(" + 1");
             }
             builder.appendSql(", ");
@@ -134,7 +134,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
             }
             builder.cutBackSql(5);
         }
-        if (versionPropertyType != null && !versionIncluded) {
+        if (versionPropertyType != null && !versionIgnored) {
             if (idPropertyTypes.size() == 0) {
                 builder.appendSql(" where ");
             } else {
@@ -149,7 +149,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
 
     @Override
     public void incrementVersion() {
-        if (versionPropertyType != null && !versionIncluded) {
+        if (versionPropertyType != null && !versionIgnored) {
             versionPropertyType.increment(entity);
         }
     }
@@ -159,7 +159,11 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
     }
 
     public void setVersionIncluded(boolean versionIncluded) {
-        this.versionIncluded = versionIncluded;
+        this.versionIgnored |= versionIncluded;
+    }
+
+    public void setVersionIgnored(boolean versionIgnored) {
+        this.versionIgnored |= versionIgnored;
     }
 
     public void setOptimisticLockExceptionSuppressed(

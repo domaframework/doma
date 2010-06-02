@@ -56,7 +56,7 @@ public interface EmployeeDao {
 				</p>
 				<ul>
 					<li>パラメータの<code>java.lang.Iterable</code>のサブタイプの要素である<a href="../entity.html">エンティティティクラス</a>に<code>@Version</code>が注釈されたプロパティがある</li>
-					<li>@BatchUpdateの<code>includeVersion</code>要素が<code>false</code>である</li>
+					<li>@BatchUpdateの<code>ignoreVersion</code>要素が<code>false</code>である</li>
 				</ul>
 				<p>
 					楽観的排他制御が有効であれば、バージョン番号は識別子とともに更新条件に含まれ、1増分して更新されます。
@@ -64,11 +64,11 @@ public interface EmployeeDao {
 					また、更新件数が0件でない場合、<code>BatchOptimisticLockException</code>はスローされず、エンティティのバージョンプロパティの値が1増分されます。
 				</p>
 				<p>
-					<code>@BatchUpdate</code>の<code>includeVersion</code>要素が<code>true</code>の場合、
+					<code>@BatchUpdate</code>の<code>ignoreVersion</code>要素が<code>true</code>の場合、
 					バージョン番号は更新条件には含まれず、UPDATE文のSET句に含まれます。バージョン番号はアプリケーションで設定した値で更新されます。
 					この場合、更新件数が0件であっても、<code>BatchOptimisticLockException</code>はスローされません。
 				</p>
-<source><![CDATA[@BatchUpdate(includeVersion = true)
+<source><![CDATA[@BatchUpdate(ignoreVersion = true)
 int[] update(List<Employee> employees);]]></source>
 				<p>
 					<code>@BatchUpdate</code>の<code>suppressOptimisticLockException</code>要素が<code>true</code>の場合、
@@ -135,7 +135,7 @@ int[] update(List<Employee> employees);]]></source>
 				</p>
 				<ul>
 					<li>パラメータの<code>java.lang.Iterable</code>のサブタイプの要素が<a href="../entity.html">エンティティティクラス</a>であり、エンティティクラスに<code>@Version</code>が注釈されたプロパティがある</li>
-					<li>@BatchUpdateの<code>includeVersion</code>要素が<code>false</code>である</li>
+					<li>@BatchUpdateの<code>ignoreVersion</code>要素が<code>false</code>である</li>
 				</ul>
 				<p>
 					ただし、SQLファイルに楽観的排他制御用のSQLを記述するのは、アプリケーション開発者の責任です。
@@ -152,11 +152,11 @@ int[] update(List<Employee> employees);]]></source>
 					一方、更新件数が0件でない場合、<code>BatchOptimisticLockException</code>はスローされず、エンティティのバージョンプロパティの値が1増分されます。
 				</p>
 				<p>
-					<code>@BatchUpdate</code>の<code>includeVersion</code>要素が<code>true</code>の場合、
+					<code>@BatchUpdate</code>の<code>ignoreVersion</code>要素が<code>true</code>の場合、
 					更新件数が0件であっても、<code>BatchOptimisticLockException</code>はスローされません。
 					また、エンティティのバージョンプロパティの値は変更されません。
 				</p>
-<source><![CDATA[@BatchUpdate(sqlFile = true, includeVersion = true)
+<source><![CDATA[@BatchUpdate(sqlFile = true, ignoreVersion = true)
 int[] update(List<Employee> employees);]]></source>
 				<p>
 					<code>@BatchUpdate</code>の<code>suppressOptimisticLockException</code>要素が<code>true</code>の場合、

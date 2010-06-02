@@ -41,6 +41,7 @@ public class AutoBatchUpdateDaoImpl extends org.seasar.doma.internal.jdbc.dao.Ab
             __query.setCallerMethodName("update");
             __query.setQueryTimeout(-1);
             __query.setVersionIncluded(false);
+            __query.setVersionIgnored(false);
             __query.setIncludedPropertyNames();
             __query.setExcludedPropertyNames();
             __query.setOptimisticLockExceptionSuppressed(false);

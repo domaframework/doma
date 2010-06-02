@@ -39,7 +39,7 @@ public interface DepartmentDao {
     int insertBySqlFile(Department entity);
 
     @Insert(excludeNull = true)
-    int insert_excludesNull(Department entity);
+    int insert_excludeNull(Department entity);
 
     @Update
     int update(Department entity);
@@ -47,14 +47,17 @@ public interface DepartmentDao {
     @Update(sqlFile = true)
     int updateBySqlFile(Department entity);
 
-    @Update(excludeNull = true)
-    int update_excludesNull(Department entity);
+    @Update(sqlFile = true, ignoreVersion = true)
+    int updateBySqlFile_ignoreVersion(Department entity);
 
-    @Update(includeVersion = true)
-    int update_includesVersion(Department entity);
+    @Update(excludeNull = true)
+    int update_excludeNull(Department entity);
+
+    @Update(ignoreVersion = true)
+    int update_ignoreVersion(Department entity);
 
     @Update(suppressOptimisticLockException = true)
-    int update_suppressesOptimisticLockException(Department entity);
+    int update_suppressOptimisticLockException(Department entity);
 
     @BatchInsert
     int[] insert(List<Department> entity);
@@ -68,9 +71,13 @@ public interface DepartmentDao {
     @BatchUpdate(sqlFile = true)
     int[] updateBySqlFile(List<Department> entity);
 
-    @BatchUpdate(includeVersion = true)
-    int[] update_includesVersion(List<Department> entity);
+    @BatchUpdate(sqlFile = true, suppressOptimisticLockException = true)
+    int[] updateBySqlFile_suppressOptimisticLockException(
+            List<Department> entity);
+
+    @BatchUpdate(ignoreVersion = true)
+    int[] update_ignoreVersion(List<Department> entity);
 
     @BatchUpdate(suppressOptimisticLockException = true)
-    int[] update_suppressesOptimisticLockException(List<Department> entity);
+    int[] update_suppressOptimisticLockException(List<Department> entity);
 }

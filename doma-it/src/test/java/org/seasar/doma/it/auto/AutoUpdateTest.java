@@ -52,13 +52,13 @@ public class AutoUpdateTest {
         assertEquals(new Integer(2), department.getVersion());
     }
 
-    public void testIncludesVersion() throws Exception {
+    public void testIgnoreVersion() throws Exception {
         DepartmentDao dao = new DepartmentDaoImpl();
         Department department = dao.selectById(1);
         department.setDepartmentNo(1);
         department.setDepartmentName("hoge");
         department.setVersion(100);
-        int result = dao.update_includesVersion(department);
+        int result = dao.update_ignoreVersion(department);
         assertEquals(1, result);
         assertEquals(new Integer(100), department.getVersion());
 
@@ -70,12 +70,12 @@ public class AutoUpdateTest {
         assertEquals(new Integer(100), department.getVersion());
     }
 
-    public void testExcludesNull() throws Exception {
+    public void testExcludeNull() throws Exception {
         DepartmentDao dao = new DepartmentDaoImpl();
         Department department = dao.selectById(1);
         department.setDepartmentNo(1);
         department.setDepartmentName(null);
-        int result = dao.update_excludesNull(department);
+        int result = dao.update_excludeNull(department);
         assertEquals(1, result);
 
         department = dao.selectById(1);
@@ -119,14 +119,15 @@ public class AutoUpdateTest {
         }
     }
 
-    public void testSuppressesOptimisticLockException() throws Exception {
+    public void testSuppressOptimisticLockException() throws Exception {
         DepartmentDao dao = new DepartmentDaoImpl();
         Department department1 = dao.selectById(1);
         department1.setDepartmentName("hoge");
         Department department2 = dao.selectById(1);
         department2.setDepartmentName("foo");
         dao.update(department1);
-        dao.update_suppressesOptimisticLockException(department2);
+        int rows = dao.update_suppressOptimisticLockException(department2);
+        assertEquals(0, rows);
     }
 
     public void testNoId() throws Exception {

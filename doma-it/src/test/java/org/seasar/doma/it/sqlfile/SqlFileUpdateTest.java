@@ -21,6 +21,7 @@ import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDaoImpl;
 import org.seasar.doma.it.entity.Department;
+import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.framework.unit.Seasar2;
 
 @RunWith(Seasar2.class)
@@ -39,6 +40,31 @@ public class SqlFileUpdateTest {
         department = dao.selectById(1);
         assertEquals(new Integer(1), department.getDepartmentId());
         assertEquals("hoge", department.getDepartmentName());
+        assertEquals(new Integer(2), department.getVersion());
     }
 
+    public void testOptimisticLockException() throws Exception {
+        DepartmentDao dao = new DepartmentDaoImpl();
+        Department department1 = dao.selectById(1);
+        department1.setDepartmentName("hoge");
+        Department department2 = dao.selectById(1);
+        department2.setDepartmentName("foo");
+        dao.updateBySqlFile(department1);
+        try {
+            dao.updateBySqlFile(department2);
+            fail();
+        } catch (OptimisticLockException expected) {
+        }
+    }
+
+    public void testSuppressOptimisticLockException() throws Exception {
+        DepartmentDao dao = new DepartmentDaoImpl();
+        Department department1 = dao.selectById(1);
+        department1.setDepartmentName("hoge");
+        Department department2 = dao.selectById(1);
+        department2.setDepartmentName("foo");
+        dao.updateBySqlFile(department1);
+        int rows = dao.updateBySqlFile_ignoreVersion(department2);
+        assertEquals(0, rows);
+    }
 }

@@ -30,7 +30,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
 
     protected EntityHandler<?> entityHandler;
 
-    protected boolean versionIncluded;
+    protected boolean versionIgnored;
 
     protected boolean optimisticLockExceptionSuppressed;
 
@@ -72,7 +72,11 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
     }
 
     public void setVersionIncluded(boolean versionIncluded) {
-        this.versionIncluded = versionIncluded;
+        this.versionIgnored |= versionIncluded;
+    }
+
+    public void setVersionIgnored(boolean versionIgnored) {
+        this.versionIgnored |= versionIgnored;
     }
 
     public void setOptimisticLockExceptionSuppressed(
@@ -100,7 +104,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
         }
 
         protected void prepareOptimisticLock() {
-            if (versionPropertyType != null && !versionIncluded) {
+            if (versionPropertyType != null && !versionIgnored) {
                 if (!optimisticLockExceptionSuppressed) {
                     optimisticLockCheckRequired = true;
                 }
@@ -108,7 +112,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
         }
 
         protected void incrementVersion() {
-            if (versionPropertyType != null && !versionIncluded) {
+            if (versionPropertyType != null && !versionIgnored) {
                 versionPropertyType.increment(entity);
             }
         }

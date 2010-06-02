@@ -62,13 +62,13 @@ public class AutoInsertTest {
         assertEquals(new Integer(1), department.getVersion());
     }
 
-    public void testExcludesNull() throws Exception {
+    public void testExcludeNull() throws Exception {
         DepartmentDao dao = new DepartmentDaoImpl();
         Department department = new Department();
         department.setDepartmentId(99);
         department.setDepartmentNo(99);
         department.setDepartmentName("hoge");
-        int result = dao.insert_excludesNull(department);
+        int result = dao.insert_excludeNull(department);
         assertEquals(1, result);
         assertEquals(new Integer(1), department.getVersion());
 

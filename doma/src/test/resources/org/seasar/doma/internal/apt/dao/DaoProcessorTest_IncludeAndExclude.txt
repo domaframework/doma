@@ -42,6 +42,7 @@ public class IncludeAndExcludeDaoImpl extends org.seasar.doma.internal.jdbc.dao.
             __query.setQueryTimeout(-1);
             __query.setNullExcluded(false);
             __query.setVersionIncluded(false);
+            __query.setVersionIgnored(false);
             __query.setIncludedPropertyNames("name", "salary");
             __query.setExcludedPropertyNames("salary");
             __query.setUnchangedPropertyIncluded(false);

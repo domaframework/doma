@@ -47,12 +47,12 @@ public class AutoDeleteTest {
         assertNull(employee);
     }
 
-    public void testIgnoresVersion() throws Exception {
+    public void testIgnoreVersion() throws Exception {
         EmployeeDao dao = new EmployeeDaoImpl();
         Employee employee = new Employee();
         employee.setEmployeeId(1);
         employee.setVersion(99);
-        int result = dao.delete_ignoresVersion(employee);
+        int result = dao.delete_ignoreVersion(employee);
         assertEquals(1, result);
 
         employee = dao.selectById(new Integer(1));
@@ -86,14 +86,14 @@ public class AutoDeleteTest {
         }
     }
 
-    public void testSuppressesOptimisticLockException() throws Exception {
+    public void testSuppressOptimisticLockException() throws Exception {
         EmployeeDao dao = new EmployeeDaoImpl();
         Employee employee1 = dao.selectById(1);
         employee1.setEmployeeName("hoge");
         Employee employee2 = dao.selectById(1);
         employee2.setEmployeeName("foo");
         dao.delete(employee1);
-        dao.delete_suppressesOptimisticLockException(employee2);
+        dao.delete_suppressOptimisticLockException(employee2);
     }
 
     public void testNoId() throws Exception {
