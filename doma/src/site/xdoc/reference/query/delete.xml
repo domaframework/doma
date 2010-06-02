@@ -113,7 +113,7 @@ int delete(Employee employee);]]></source>
 					ただし、SQLファイルに楽観的排他制御用のSQLを記述するのは、アプリケーション開発者の責任です。
 					たとえば、下記のSQLのように、WHERE句でバージョンを番号を指定しなければいけません。
 				</p>
-<source><![CDATA[delete from EMPLOYEE where ID = /* e.id */1 and VERSION = /* e.version */1]]></source>
+<source><![CDATA[delete from EMPLOYEE where ID = /* employee.id */1 and VERSION = /* employee.version */1]]></source>
 				<p>
 					このSQLの削除件数が0件の場合、楽観的排他制御の失敗を示す<a href="../../apidocs/org/seasar/doma/jdbc/OptimisticLockException.html"><code>org.seasar.doma.jdbc.OptimisticLockException</code></a>がスローされます。
 					削除件数が0件でない場合、<code>OptimisticLockException</code>はスローされません。

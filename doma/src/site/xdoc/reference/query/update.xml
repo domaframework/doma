@@ -163,7 +163,7 @@ int update(Employee employee);]]></source>
 					ただし、SQLファイルに楽観的排他制御用のSQLを記述するのは、アプリケーション開発者の責任です。
 					たとえば、下記のSQLのように、WHERE句でバージョンを番号を指定しSET句でバージョン番号を1だけ増分しなければいけません。
 				</p>
-<source><![CDATA[update EMPLOYEE set DELETE_FLAG = 1, VERSION = /* e.version */1 + 1 where ID = /* e.id */1 and VERSION = /* e.version */1]]></source>
+<source><![CDATA[update EMPLOYEE set DELETE_FLAG = 1, VERSION = /* employee.version */1 + 1 where ID = /* employee.id */1 and VERSION = /* employee.version */1]]></source>
 				<p>
 					このSQLの更新件数が0件の場合、楽観的排他制御の失敗を示す<a href="../../apidocs/org/seasar/doma/jdbc/OptimisticLockException.html"><code>org.seasar.doma.jdbc.OptimisticLockException</code></a>がスローされます。
 					更新件数が0件でない場合、<code>OptimisticLockException</code>はスローされず、エンティティのバージョンプロパティの値が1増分されます。

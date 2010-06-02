@@ -10,11 +10,15 @@
 				<li><a href="#概要">概要</a></li>
 				<li><a href="#SQLの自動生成によるバッチ更新">SQLの自動生成によるバッチ更新</a>
 					<ul>
-						<li><a href="#バージョン番号と楽観的排他制御">バージョン番号と楽観的排他制御</a></li>
+						<li><a href="#SQL自動生成におけるバージョン番号と楽観的排他制御">SQL自動生成におけるバージョン番号と楽観的排他制御</a></li>
 						<li><a href="#更新対象プロパティ">更新対象プロパティ</a></li>
 					</ul>
 				</li>
-				<li><a href="#SQLファイルによるバッチ更新">SQLファイルによるバッチ更新</a></li>
+				<li><a href="#SQLファイルによるバッチ更新">SQLファイルによるバッチ更新</a>
+					<ul>
+						<li><a href="#SQLファイルにおけるバージョン番号と楽観的排他制御">SQLファイルにおけるバージョン番号と楽観的排他制御</a></li>
+					</ul>
+				</li>
 				<li><a href="#一意制約違反">一意制約違反</a></li>
 				<li><a href="#クエリタイムアウト">クエリタイムアウト</a></li>
 			</ul>
@@ -56,20 +60,20 @@ public interface EmployeeDao {
 				</ul>
 				<p>
 					楽観的排他制御が有効であれば、バージョン番号は識別子とともに更新条件に含まれ、1増分して更新されます。
-					このときの更新件数が0件の場合、楽観的排他制御の失敗を示す<a href="../../apidocs/org/seasar/doma/jdbc/OptimisticLockException.html"><code>org.seasar.doma.jdbc.OptimisticLockException</code></a>がスローされます。
-					また、更新件数が0件でない場合、<code>OptimisticLockException</code>はスローされず、エンティティのバージョンプロパティの値が1増分されます。
+					このときの更新件数が0件の場合、楽観的排他制御の失敗を示す<a href="../../apidocs/org/seasar/doma/jdbc/BatchOptimisticLockException.html"><code>org.seasar.doma.jdbc.BatchOptimisticLockException</code></a>がスローされます。
+					また、更新件数が0件でない場合、<code>BatchOptimisticLockException</code>はスローされず、エンティティのバージョンプロパティの値が1増分されます。
 				</p>
 				<p>
 					<code>@BatchUpdate</code>の<code>includeVersion</code>要素が<code>true</code>の場合、
 					バージョン番号は更新条件には含まれず、UPDATE文のSET句に含まれます。バージョン番号はアプリケーションで設定した値で更新されます。
-					この場合、更新件数が0件であっても、<code>OptimisticLockException</code>はスローされません。
+					この場合、更新件数が0件であっても、<code>BatchOptimisticLockException</code>はスローされません。
 				</p>
 <source><![CDATA[@BatchUpdate(includeVersion = true)
 int[] update(List<Employee> employees);]]></source>
 				<p>
 					<code>@BatchUpdate</code>の<code>suppressOptimisticLockException</code>要素が<code>true</code>の場合、
 					<code>@Version</code>が注釈されたプロパティがあればバージョン番号は更新条件に含まれ増分もされますが、
-					更新件数が0件であっても<code>OptimisticLockException</code>はスローされません。
+					更新件数が0件であっても<code>BatchOptimisticLockException</code>はスローされません。
 					ただし、エンティティのバージョンプロパティの値は1増分されます。
 				</p>
 <source><![CDATA[@BatchUpdate(suppressOptimisticLockException = true)
@@ -125,7 +129,43 @@ int[] update(List<Employee> employees);]]></source>
 				SQLファイルによるバッチ更新では、バージョン番号の自動更新は行われません。
 				また、<code>@BatchUpdate</code>の<code>exclude</code>要素、<code>include</code>要素は参照されません。
 			</p>
-
+			<subsection name="SQLファイルにおけるバージョン番号と楽観的排他制御">
+				<p>
+					次の条件を満たす場合に、楽観的排他制御が行われます。
+				</p>
+				<ul>
+					<li>パラメータの<code>java.lang.Iterable</code>のサブタイプの要素が<a href="../entity.html">エンティティティクラス</a>であり、エンティティクラスに<code>@Version</code>が注釈されたプロパティがある</li>
+					<li>@BatchUpdateの<code>includeVersion</code>要素が<code>false</code>である</li>
+				</ul>
+				<p>
+					ただし、SQLファイルに楽観的排他制御用のSQLを記述するのは、アプリケーション開発者の責任です。
+					たとえば、下記のSQLのように、WHERE句でバージョンを番号を指定しSET句でバージョン番号を1だけ増分しなければいけません。
+				</p>
+<source><![CDATA[update EMPLOYEE set DELETE_FLAG = 1, VERSION = /* employees.version */1 + 1 where ID = /* employees.id */1 and VERSION = /* employees.version */1]]></source>
+				<p>
+					このSQLの更新件数が0件の場合、楽観的排他制御の失敗を示す<a href="../../apidocs/org/seasar/doma/jdbc/BatchOptimisticLockException.html"><code>org.seasar.doma.jdbc.BatchOptimisticLockException</code></a>がスローされます。
+					更新件数が0件でない場合、<code>BatchOptimisticLockException</code>はスローされず、エンティティのバージョンプロパティの値が1増分されます。
+				</p>
+				<p>
+					楽観的排他制御が有効であれば、バージョン番号は識別子とともに更新条件に含まれ、1増分して更新されます。
+					このときの更新件数が0件の場合、楽観的排他制御の失敗を示す<a href="../../apidocs/org/seasar/doma/jdbc/BatchOptimisticLockException.html"><code>org.seasar.doma.jdbc.BatchOptimisticLockException</code></a>がスローされます。
+					一方、更新件数が0件でない場合、<code>BatchOptimisticLockException</code>はスローされず、エンティティのバージョンプロパティの値が1増分されます。
+				</p>
+				<p>
+					<code>@BatchUpdate</code>の<code>includeVersion</code>要素が<code>true</code>の場合、
+					更新件数が0件であっても、<code>BatchOptimisticLockException</code>はスローされません。
+					また、エンティティのバージョンプロパティの値は変更されません。
+				</p>
+<source><![CDATA[@BatchUpdate(sqlFile = true, includeVersion = true)
+int[] update(List<Employee> employees);]]></source>
+				<p>
+					<code>@BatchUpdate</code>の<code>suppressOptimisticLockException</code>要素が<code>true</code>の場合、
+					更新件数が0件であっても<code>BatchOptimisticLockException</code>はスローされません。
+					ただし、エンティティのバージョンプロパティの値は1増分されます。
+				</p>
+<source><![CDATA[@BatchUpdate(sqlFile = true, suppressOptimisticLockException = true)
+int[] update(List<Employee> employees);]]></source>
+			</subsection>
 		</section>
 		<section name="一意制約違反">
 			<p>

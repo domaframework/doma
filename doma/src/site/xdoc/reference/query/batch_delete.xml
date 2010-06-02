@@ -10,10 +10,14 @@
 				<li><a href="#概要">概要</a></li>
 				<li><a href="#SQLの自動生成によるバッチ削除">SQLの自動生成によるバッチ削除</a>
 					<ul>
-						<li><a href="#バージョン番号と楽観的排他制御">バージョン番号と楽観的排他制御</a></li>
+						<li><a href="#SQL自動生成におけるバージョン番号と楽観的排他制御">SQL自動生成におけるバージョン番号と楽観的排他制御</a></li>
 					</ul>
 				</li>
-				<li><a href="#SQLファイルによるバッチ削除">SQLファイルによるバッチ削除</a></li>
+				<li><a href="#SQLファイルによるバッチ削除">SQLファイルによるバッチ削除</a>
+					<ul>
+						<li><a href="#SQLファイルにおけるバージョン番号と楽観的排他制御">SQLファイルにおけるバージョン番号と楽観的排他制御</a></li>
+					</ul>
+				</li>
 				<li><a href="#クエリタイムアウト">クエリタイムアウト</a></li>
 			</ul>
 		</section>
@@ -44,24 +48,29 @@ public interface EmployeeDao {
 				戻り値の配列の要素の数はパラメータの<code>Iterable</code>の要素の数と等しくなります。
 				配列のそれぞれの要素が更新された件数を返します。
 			</p>
-			<subsection name="バージョン番号と楽観的排他制御">
+			<subsection name="SQL自動生成におけるバージョン番号と楽観的排他制御">
 				<p>
-					<a href="../entity.html">エンティティティクラス</a>に<code>@Version</code>が注釈されたプロパティがある場合、
-					<code>@BatchDelete</code>の<code>ignoreVersion</code>要素が<code>false</code>であれば、
-					バージョン番号は識別子とともに削除条件に含まれます。
-					この場合、削除件数が0件であれば、楽観的排他制御の失敗を示す<a href="../../apidocs/org/seasar/doma/jdbc/OptimisticLockException.html"><code>org.seasar.doma.jdbc.OptimisticLockException</code></a>がスローされます。
+					次の条件を満たす場合に、楽観的排他制御が行われます。
+				</p>
+				<ul>
+					<li>パラメータの<code>java.lang.Iterable</code>のサブタイプの要素である<a href="../entity.html">エンティティティクラス</a>に<code>@Version</code>が注釈されたプロパティがある</li>
+					<li>@BatchDeleteの<code>ignoreVersion</code>要素が<code>false</code>である</li>
+				</ul>
+				<p>
+					楽観的排他制御が有効であれば、バージョン番号は識別子とともに削除条件に含まれます。
+					この場合、削除件数が0件であれば、楽観的排他制御の失敗を示す<a href="../../apidocs/org/seasar/doma/jdbc/BatchOptimisticLockException.html"><code>org.seasar.doma.jdbc.BatchOptimisticLockException</code></a>がスローされます。
 				</p>
 				<p>
-					しかし、<code>@BatchDelete</code>の<code>ignoreVersion</code>要素が<code>true</code>の場合、
-					バージョン番号は削除条件には含まれません。
-					この場合、削除件数が0件であっても、<code>OptimisticLockException</code>はスローされません。
+					<code>@BatchDelete</code>の<code>ignoreVersion</code>要素が<code>true</code>の場合、
+					バージョン番号は削除条件には含まれますが、
+					削除件数が0件であっても<code>BatchOptimisticLockException</code>はスローされません。
 				</p>
-<source><![CDATA[@BatchDelete(includeVersion = true)
+<source><![CDATA[@BatchDelete(ignoreVersion = true)
 int[] delete(List<Employee> employees);]]></source>
 				<p>
 					<code>@BatchDelete</code>の<code>suppressOptimisticLockException</code>要素が<code>true</code>の場合、
-					<code>@Version</code>が注釈されたプロパティがあればバージョン番号は削除条件に含まれますが、
-					削除件数が0件であっても<code>OptimisticLockException</code>のスローは抑制されます。
+					<code>@Version</code>が注釈されたプロパティがあればバージョン番号は削除条件に含まれません。
+					この場合、削除件数が0件であっても<code>BatchOptimisticLockException</code>のスローされません。
 				</p>
 <source><![CDATA[@BatchDelete(suppressOptimisticLockException = true)
 int[] delete(List<Employee> employees);]]></source>
@@ -89,10 +98,33 @@ int[] delete(List<Employee> employees);]]></source>
 			<p>
 				SQLファイル上では、パラメータの名前は<code>java.lang.Iterable</code>のサブタイプの要素を指します。
 			</p>
-			<p>
-				SQLファイルによるバッチ削除では、<code>@BatchDelete</code>の<code>ignoreVersion</code>要素、
-				<code>suppressOptimisticLockException</code>要素は参照されません。
-			</p>
+			<subsection name="SQLファイルにおけるバージョン番号と楽観的排他制御">
+				<p>
+					次の条件を満たす場合に、楽観的排他制御が行われます。
+				</p>
+				<ul>
+					<li>パラメータの<code>java.lang.Iterable</code>のサブタイプの要素が<a href="../entity.html">エンティティティクラス</a>であり、エンティティクラスに<code>@Version</code>が注釈されたプロパティがある</li>
+					<li>@BatchDeleteの<code>ignoreVersion</code>要素が<code>false</code>である</li>
+					<li>@BatchDeleteの<code>suppressOptimisticLockException</code>要素が<code>false</code>である</li>
+				</ul>
+				<p>
+					ただし、SQLファイルに楽観的排他制御用のSQLを記述するのは、アプリケーション開発者の責任です。
+					たとえば、下記のSQLのように、WHERE句でバージョンを番号を指定しなければいけません。
+				</p>
+<source><![CDATA[delete from EMPLOYEE where ID = /* employees.id */1 and VERSION = /* employees.version */1]]></source>
+				<p>
+					このSQLの削除件数が0件の場合、楽観的排他制御の失敗を示す<a href="../../apidocs/org/seasar/doma/jdbc/BatchOptimisticLockException.html"><code>org.seasar.doma.jdbc.BatchOptimisticLockException</code></a>がスローされます。
+					削除件数が0件でない場合、<code>BatchOptimisticLockException</code>はスローされません。
+				</p>
+				<p>
+					<code>@BatchDelete</code>の<code>ignoreVersion</code>要素、または<code>suppressOptimisticLockException</code>要素が<code>true</code>の場合、
+					削除件数が0件であっても<code>BatchOptimisticLockException</code>はスローされません。
+				</p>
+<source><![CDATA[@BatchDelete(sqlFile = true, ignoreVersion = true)
+int[] delete(List<Employee> employees);]]></source>
+<source><![CDATA[@BatchDelete(sqlFile = true, suppressOptimisticLockException = true)
+int[] delete(List<Employee> employees);]]></source>
+			</subsection>
 		</section>
 		<section name="クエリタイムアウト">
 			<p>
