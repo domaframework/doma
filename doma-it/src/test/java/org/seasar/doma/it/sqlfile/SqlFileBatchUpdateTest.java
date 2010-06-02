@@ -82,11 +82,8 @@ public class SqlFileBatchUpdateTest {
         Department department3 = dao.selectById(1);
         department3.setDepartmentName("bar");
         dao.update(department1);
-        int[] rows = dao.updateBySqlFile_suppressOptimisticLockException(Arrays
-                .asList(department2, department3));
-        assertEquals(2, rows.length);
-        assertEquals(1, rows[0]);
-        assertEquals(0, rows[1]);
+        dao.updateBySqlFile_suppressOptimisticLockException(Arrays.asList(
+                department2, department3));
     }
 
 }
