@@ -458,11 +458,11 @@ public class Employee extends Common {
 				</p>
 				<table border="1" cellpadding="2" cellspacing="0">
 					<tr><th>テンプレート</th><th>データモデルクラス</th><th>生成物</th></tr>
-					<tr><td>entity.ftl</td><td><a href="doma_gen/apidocs/org/seasar/doma/extension/gen/EntityDesc.html">org.seasar.doma.extension.gen.EntityDesc</a></td><td>エンティティクラスのJavaファイル</td></tr>
-					<tr><td>entityListener.ftl</td><td><a href="doma_gen/apidocs/org/seasar/doma/extension/gen/EntityListenerDesc.html">org.seasar.doma.extension.gen.EntityListenerDesc</a></td><td>エンティティリスナークラスのJavaファイル</td></tr>
-					<tr><td>dao.ftl</td><td><a href="doma_gen/apidocs/org/seasar/doma/extension/gen/DaoDesc.html">org.seasar.doma.extension.gen.DaoDesc</a></td><td>DaoインタフェースのJavaファイル</td></tr>
-					<tr><td>daoDelegate.ftl</td><td><a href="doma_gen/apidocs/org/seasar/doma/extension/gen/DaoDelegateDesc.html">org.seasar.doma.extension.gen.DaoDelegateDesc</a></td><td>DaoデリゲートクラスのJavaファイル</td></tr>
-					<tr><td>xxx.sql.ftl (xxxは任意の名称)</td><td><a href="doma_gen/apidocs/org/seasar/doma/extension/gen/SqlDesc.html">org.seasar.doma.extension.gen.SqlDesc</a></td><td>SQLファイル</td></tr>
+					<tr><td>entity.ftl</td><td><a href="doma-gen/apidocs/org/seasar/doma/extension/gen/EntityDesc.html">org.seasar.doma.extension.gen.EntityDesc</a></td><td>エンティティクラスのJavaファイル</td></tr>
+					<tr><td>entityListener.ftl</td><td><a href="doma-gen/apidocs/org/seasar/doma/extension/gen/EntityListenerDesc.html">org.seasar.doma.extension.gen.EntityListenerDesc</a></td><td>エンティティリスナークラスのJavaファイル</td></tr>
+					<tr><td>dao.ftl</td><td><a href="doma-gen/apidocs/org/seasar/doma/extension/gen/DaoDesc.html">org.seasar.doma.extension.gen.DaoDesc</a></td><td>DaoインタフェースのJavaファイル</td></tr>
+					<tr><td>daoDelegate.ftl</td><td><a href="doma-gen/apidocs/org/seasar/doma/extension/gen/DaoDelegateDesc.html">org.seasar.doma.extension.gen.DaoDelegateDesc</a></td><td>DaoデリゲートクラスのJavaファイル</td></tr>
+					<tr><td>xxx.sql.ftl (xxxは任意の名称)</td><td><a href="doma-gen/apidocs/org/seasar/doma/extension/gen/SqlDesc.html">org.seasar.doma.extension.gen.SqlDesc</a></td><td>SQLファイル</td></tr>
 				</table>
 			</subsection>
 			<subsection name="独自のSQLファイルを生成する">
@@ -473,7 +473,7 @@ public class Employee extends Common {
 				<p>
 					たとえば、全件検索を行うSQLファイルselectAll.sqlを生成するには、selectAll.sql.ftlという名前のテンプレートファイルを作成します。
 					テンプレートファイルには、以下のように記述します。
-					（テンプレートはデータモデルとして<a href="doma_gen/apidocs/org/seasar/doma/extension/gen/SqlDesc.html">org.seasar.doma.extension.gen.SqlDesc</a>のインスタンスを参照します。）
+					（テンプレートはデータモデルとして<a href="doma-gen/apidocs/org/seasar/doma/extension/gen/SqlDesc.html">org.seasar.doma.extension.gen.SqlDesc</a>のインスタンスを参照します。）
 				</p>
 <source><![CDATA[select
 <#list entityDesc.entityPropertyDescs as property>

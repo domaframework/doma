@@ -167,7 +167,7 @@
 				</p>
 				<table border="1" cellpadding="2" cellspacing="0">
 					<tr><th>テンプレート</th><th>データモデルクラス</th><th>生成物</th></tr>
-					<tr><td>sqlTest.ftl</td><td><a href="doma_gen/apidocs/org/seasar/doma/extension/gen/SqlTestDesc.html">org.seasar.doma.extension.gen.SqlTestDesc</a></td><td>SQLテストクラスのJavaファイル</td></tr>
+					<tr><td>sqlTest.ftl</td><td><a href="doma-gen/apidocs/org/seasar/doma/extension/gen/SqlTestDesc.html">org.seasar.doma.extension.gen.SqlTestDesc</a></td><td>SQLテストクラスのJavaファイル</td></tr>
 				</table>
 			</subsection>	
 			<subsection name="生成するJavaファイルに共通のヘッダーとしてコピーライトを含める">

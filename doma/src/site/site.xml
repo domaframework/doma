@@ -85,7 +85,7 @@
 		</menu>
 		<menu name="Javadocs" inherit="top">
 			<item name="Doma" href="apidocs/index.html" />
-			<item name="Doma-Gen" href="extension/doma_gen/apidocs/index.html" />
+			<item name="Doma-Gen" href="extension/doma-gen/apidocs/index.html" />
 		</menu>
 		${reports}
 	</body>
