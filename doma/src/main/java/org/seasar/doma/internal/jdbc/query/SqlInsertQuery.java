@@ -25,7 +25,7 @@ import org.seasar.doma.jdbc.SqlKind;
  * @author taedium
  * 
  */
-public class SqlInsertQuery extends SqlModofyQuery implements InsertQuery {
+public class SqlInsertQuery extends SqlModifyQuery implements InsertQuery {
 
     public SqlInsertQuery() {
         super(SqlKind.INSERT);

@@ -33,7 +33,7 @@ import org.seasar.doma.jdbc.SqlNode;
  * @author taedium
  * 
  */
-public abstract class SqlModofyQuery implements ModifyQuery {
+public abstract class SqlModifyQuery implements ModifyQuery {
 
     protected final SqlKind kind;
 
@@ -53,7 +53,7 @@ public abstract class SqlModofyQuery implements ModifyQuery {
 
     protected boolean optimisticLockCheckRequired;
 
-    protected SqlModofyQuery(SqlKind kind) {
+    protected SqlModifyQuery(SqlKind kind) {
         assertNotNull(kind);
         this.kind = kind;
     }

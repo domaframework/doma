@@ -23,7 +23,7 @@ import org.seasar.doma.jdbc.SqlKind;
  * @author taedium
  * 
  */
-public class SqlUpdateQuery extends SqlModofyQuery implements UpdateQuery {
+public class SqlUpdateQuery extends SqlModifyQuery implements UpdateQuery {
 
     public SqlUpdateQuery() {
         super(SqlKind.UPDATE);
