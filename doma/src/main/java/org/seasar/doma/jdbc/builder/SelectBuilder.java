@@ -59,7 +59,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * このクラスはスレッドセーフではありません。
  * 
  * <h4>例</h4>
- * <h5>Java</5>
+ * <h5>Java</h5>
  * 
  * <pre>
  * SelectBuilder builder = SelectBuilder.newInstance(config);
