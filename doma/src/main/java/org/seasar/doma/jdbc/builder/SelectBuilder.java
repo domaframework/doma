@@ -62,7 +62,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * <h5>Java</5>
  * 
  * <pre>
- * SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+ * SelectBuilder builder = SelectBuilder.newInstance(config);
  * builder.sql(&quot;select&quot;);
  * builder.sql(&quot;id&quot;).sql(&quot;,&quot;);
  * builder.sql(&quot;name&quot;).sql(&quot;,&quot;);
