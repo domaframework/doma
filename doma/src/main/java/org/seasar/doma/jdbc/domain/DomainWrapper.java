@@ -13,15 +13,30 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.domain;
+package org.seasar.doma.jdbc.domain;
 
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
- * @author taedium
+ * ドメインのラッパーです。
+ * <p>
+ * このインタフェースの実装はスレッドセーフであることは要求されません。
+ * </p>
  * 
+ * @author taedium
+ * @since 1.8.0
+ * 
+ * @param <V>
+ *            ドメインが扱う値の型
+ * @param <D>
+ *            ドメインの型
  */
 public interface DomainWrapper<V, D> extends Wrapper<V> {
 
+    /**
+     * ドメインを返します。
+     * 
+     * @return ドメイン
+     */
     D getDomain();
 }

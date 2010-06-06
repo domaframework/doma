@@ -13,15 +13,21 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt;
+package org.seasar.doma.jdbc.domain;
+
+import junit.framework.TestCase;
 
 /**
  * @author taedium
  * 
  */
-public final class Constants {
+public class DomainTypeNotFoundExceptionTest extends TestCase {
 
-    public static final String DEFAULT_ENTITY_PREFIX = "_";
-
-    public static final String DEFAULT_DOMAIN_PREFIX = "_";
+    public void test() throws Exception {
+        DomainTypeNotFoundException e = new DomainTypeNotFoundException(
+                new Exception(), "aaa", "bbb");
+        System.out.println(e.getMessage());
+        assertEquals("aaa", e.getDomainClassName());
+        assertEquals("bbb", e.getDomainTypeClassName());
+    }
 }

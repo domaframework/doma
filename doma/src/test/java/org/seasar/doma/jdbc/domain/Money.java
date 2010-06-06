@@ -13,34 +13,17 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.domain;
+package org.seasar.doma.jdbc.domain;
 
-import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.jdbc.domain.DomainWrapper;
+import java.math.BigDecimal;
+
+import org.seasar.doma.Domain;
 
 /**
  * @author taedium
  * 
  */
-public class _Name implements DomainType<String, Name> {
-
-    @Override
-    public Name newDomain(String value) {
-        return null;
-    }
-
-    @Override
-    public Class<Name> getDomainClass() {
-        return null;
-    }
-
-    @Override
-    public DomainWrapper<String, Name> getWrapper(Name domain) {
-        return null;
-    }
-
-    public static _Name getSingletonInternal() {
-        return null;
-    }
+@Domain(valueType = BigDecimal.class)
+public class Money {
 
 }

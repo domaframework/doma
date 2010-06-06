@@ -1,0 +1,498 @@
+/*
+ * Copyright 2004-2010 the Seasar Foundation and the Others.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+package org.seasar.doma.jdbc.builder;
+
+import java.sql.Statement;
+import java.util.List;
+
+import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.Domain;
+import org.seasar.doma.Entity;
+import org.seasar.doma.EnumDomain;
+import org.seasar.doma.internal.jdbc.command.BasicIterationHandler;
+import org.seasar.doma.internal.jdbc.command.BasicResultListHandler;
+import org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.DomainIterationHandler;
+import org.seasar.doma.internal.jdbc.command.DomainResultListHandler;
+import org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.EntityIterationHandler;
+import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
+import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.ResultSetHandler;
+import org.seasar.doma.internal.jdbc.command.SelectCommand;
+import org.seasar.doma.internal.jdbc.query.SqlSelectQuery;
+import org.seasar.doma.internal.message.Message;
+import org.seasar.doma.internal.wrapper.WrapperException;
+import org.seasar.doma.internal.wrapper.Wrappers;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.IterationCallback;
+import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.MappedPropertyNotFoundException;
+import org.seasar.doma.jdbc.NoResultException;
+import org.seasar.doma.jdbc.NonSingleColumnException;
+import org.seasar.doma.jdbc.NonUniqueResultException;
+import org.seasar.doma.jdbc.SelectOptions;
+import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.domain.DomainType;
+import org.seasar.doma.jdbc.domain.DomainTypeFactory;
+import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.EntityTypeFactory;
+import org.seasar.doma.wrapper.Wrapper;
+
+/**
+ * SELECT文を組み立て実行するクラスです。
+ * <p>
+ * このクラスはスレッドセーフではありません。
+ * 
+ * <h4>例</h4>
+ * <h5>Java</5>
+ * 
+ * <pre>
+ * SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+ * builder.sql(&quot;select&quot;);
+ * builder.sql(&quot;id&quot;).sql(&quot;,&quot;);
+ * builder.sql(&quot;name&quot;).sql(&quot;,&quot;);
+ * builder.sql(&quot;salary&quot;);
+ * builder.sql(&quot;from Emp&quot;);
+ * builder.sql(&quot;where&quot;);
+ * builder.sql(&quot;name like &quot;).param(String.class, &quot;S%&quot;);
+ * builder.sql(&quot;and&quot;);
+ * builder.sql(&quot;age &gt; &quot;).param(int.class, 20);
+ * Emp emp = builder.getSingleResult(Emp.class);
+ * </pre>
+ * 
+ * <h5>実行されるSQL</h5>
+ * 
+ * <pre>
+ * select
+ * id,
+ * name,
+ * salary
+ * from Emp
+ * where
+ * name like 'S%'
+ * and
+ * age > 20
+ * </pre>
+ * 
+ * @author taedium
+ * @since 1.8.0
+ */
+public class SelectBuilder {
+
+    private final SqlNodeBuilder builder;
+
+    private final SqlSelectQuery query;
+
+    private final ParameterIndex parameterIndex;
+
+    private SelectBuilder(Config config) {
+        this.builder = new SqlNodeBuilder();
+        this.query = new SqlSelectQuery();
+        this.query.setConfig(config);
+        this.query.setCallerClassName(getClass().getName());
+        this.parameterIndex = new ParameterIndex();
+    }
+
+    private SelectBuilder(SqlNodeBuilder builder, SqlSelectQuery query,
+            ParameterIndex parameterIndex) {
+        this.builder = builder;
+        this.query = query;
+        this.parameterIndex = parameterIndex;
+    }
+
+    /**
+     * ファクトリメソッドです。
+     * 
+     * @param config
+     *            設定
+     * @return SELECT文を組み立てるビルダー
+     * @throws DomaNullPointerException
+     *             引数が{@code null} の場合
+     */
+    public static SelectBuilder newInstance(Config config) {
+        if (config == null) {
+            throw new DomaNullPointerException("config");
+        }
+        return new SelectBuilder(config);
+    }
+
+    /**
+     * SQLの断片を追加します。
+     * 
+     * @param fragment
+     *            SQLの断片
+     * @return このインスタンス
+     * @throws DomaNullPointerException
+     *             引数が {@code null} の場合
+     */
+    public SelectBuilder sql(String fragment) {
+        if (fragment == null) {
+            throw new DomaNullPointerException("fragment");
+        }
+        builder.appendSqlWithLineSeparator(fragment);
+        return new SubsequentSelectBuilder(builder, query, parameterIndex);
+    }
+
+    /**
+     * SQLを切り取ります。
+     * <p>
+     * {@link #sql(String)}で追加したSQLの断片を切り取ります。
+     * 
+     * @param length
+     *            長さ
+     * @return このインスタンス
+     */
+    public SelectBuilder cutBackSql(int length) {
+        builder.cutBackSql(length);
+        return new SubsequentSelectBuilder(builder, query, parameterIndex);
+    }
+
+    /**
+     * パラメータを追加します。
+     * <p>
+     * パラメータの型には、基本型とドメインクラスを指定できます。
+     * 
+     * @param <P>
+     *            パラメータの型
+     * @param parameterClass
+     *            パラメータのクラス
+     * @param parameter
+     *            パラメータ
+     * @return このインスタンス
+     * @throws DomaNullPointerException
+     *             {@code parameterClass} が {@code null} の場合
+     */
+    public <P> SelectBuilder param(Class<P> parameterClass, P parameter) {
+        if (parameterClass == null) {
+            throw new DomaNullPointerException("parameterClass");
+        }
+        String parameterName = "p" + parameterIndex.getValue();
+        builder.appendParameter(parameterName);
+        query.addParameter(parameterName, parameterClass, parameter);
+        parameterIndex.increment();
+        return new SubsequentSelectBuilder(builder, query, parameterIndex);
+    }
+
+    /**
+     * 1件を返します。
+     * <p>
+     * 戻り値の型に指定できるのは、エンティティクラス、ドメインクラス、基本型のいずれかです。
+     * <p>
+     * 検索結果が存在しない場合は {@code null}を返しますが、
+     * {@link SelectBuilder#ensuerResult(boolean)} に {@code true} を設定することで、
+     * {@code null}を返す代わりに{@link NoResultException} をスローできます。
+     * 
+     * @param <R>
+     *            戻り値の型
+     * @param resultClass
+     *            戻り値のクラス
+     * @return 検索結果
+     * 
+     * @throws DomaNullPointerException
+     *             引数が{@code null} の場合
+     * @throws DomaIllegalArgumentException
+     *             戻り値のクラスがエンティティクラス、ドメインクラス、基本型のいずれでもない場合
+     * @throws MappedPropertyNotFoundException
+     *             戻り値の型がエンティティクラスで、結果セットに含まれるカラムにマッピングされたプロパティが見つからなかった場合
+     * @throws NonSingleColumnException
+     *             戻り値の型が基本型やドメインクラスで、かつ結果セットに複数のカラムが含まれている場合
+     * @throws NoResultException
+     *             {@link SelectBuilder#ensuerResult(boolean)} に {@code true}
+     *             を設定しており結果が存在しない場合
+     * @throws NonUniqueResultException
+     *             結果が2件以上返された場合
+     * @throws JdbcException
+     *             上記以外でJDBCに関する例外が発生した場合
+     */
+    public <R> R getSingleResult(Class<R> resultClass) {
+        if (resultClass == null) {
+            throw new DomaNullPointerException("resultClass");
+        }
+        if (query.getMethodName() == null) {
+            query.setCallerMethodName("getSingleResult");
+        }
+        ResultSetHandler<R> singleResultHandler = createSingleResultHanlder(resultClass);
+        return execute(singleResultHandler);
+    }
+
+    private <R> ResultSetHandler<R> createSingleResultHanlder(
+            Class<R> resultClass) {
+        if (resultClass.isAnnotationPresent(Entity.class)) {
+            EntityType<R> entityType = EntityTypeFactory
+                    .getEntityType(resultClass);
+            return new EntitySingleResultHandler<R>(entityType);
+        } else if (resultClass.isAnnotationPresent(Domain.class)
+                || resultClass.isAnnotationPresent(EnumDomain.class)) {
+            DomainType<?, R> domainType = DomainTypeFactory
+                    .getDomainType(resultClass);
+            return new DomainSingleResultHandler<R>(domainType);
+        }
+        try {
+            @SuppressWarnings("unchecked")
+            Wrapper<R> wrapper = (Wrapper<R>) Wrappers.wrap(null, resultClass);
+            return new BasicSingleResultHandler<R>(wrapper, resultClass
+                    .isPrimitive());
+        } catch (WrapperException e) {
+            throw new DomaIllegalArgumentException("resultClass",
+                    Message.DOMA2204.getMessage(resultClass, e));
+        }
+    }
+
+    /**
+     * 複数件を返します。
+     * <p>
+     * 戻り値の型に指定できるのは、エンティティクラス、ドメインクラス、基本型のいずれかです。
+     * <p>
+     * 検索結果が存在しない場合は空のリストを返します。
+     * 
+     * @param <R>
+     *            戻り値のリストの要素の型
+     * @param resultClass
+     *            戻り値のリストの要素のクラス
+     * @return 検索結果
+     * 
+     * @throws DomaNullPointerException
+     *             引数が {@code null} の場合
+     * @throws DomaIllegalArgumentException
+     *             戻り値のリストの要素のクラスがエンティティクラス、ドメインクラス、基本型のいずれでもない場合
+     * @throws MappedPropertyNotFoundException
+     *             戻り値のリストの要素の型がエンティティクラスで、結果セットに含まれるカラムにマッピングされたプロパティが見つからなかった場合
+     * @throws NonSingleColumnException
+     *             戻り値のリストの要素の型が基本型やドメインクラスで、かつ結果セットに複数のカラムが含まれている場合
+     * @throws JdbcException
+     *             上記以外でJDBCに関する例外が発生した場合
+     */
+    public <R> List<R> getResultList(Class<R> resultClass) {
+        if (resultClass == null) {
+            throw new DomaNullPointerException("resultClass");
+        }
+        if (query.getMethodName() == null) {
+            query.setCallerMethodName("getResultList");
+        }
+        ResultSetHandler<List<R>> resultListHandler = createResultListHanlder(resultClass);
+        return execute(resultListHandler);
+    }
+
+    private <R> ResultSetHandler<List<R>> createResultListHanlder(
+            Class<R> resultClass) {
+        if (resultClass.isAnnotationPresent(Entity.class)) {
+            EntityType<R> entityType = EntityTypeFactory
+                    .getEntityType(resultClass);
+            return new EntityResultListHandler<R>(entityType);
+        } else if (resultClass.isAnnotationPresent(Domain.class)
+                || resultClass.isAnnotationPresent(EnumDomain.class)) {
+            DomainType<?, R> domainType = DomainTypeFactory
+                    .getDomainType(resultClass);
+            return new DomainResultListHandler<R>(domainType);
+        }
+        try {
+            @SuppressWarnings("unchecked")
+            Wrapper<R> wrapper = (Wrapper<R>) Wrappers.wrap(null, resultClass);
+            return new BasicResultListHandler<R>(wrapper);
+        } catch (WrapperException e) {
+            throw new DomaIllegalArgumentException("resultClass",
+                    Message.DOMA2204.getMessage(resultClass, e));
+        }
+    }
+
+    /**
+     * 処理対象のオブジェクト群を順に1件ずつ処理します。
+     * <p>
+     * 処理対象の型に指定できるのは、エンティティクラス、ドメインクラス、基本型のいずれかです。
+     * 
+     * @param <R>
+     *            戻り値の型
+     * @param <T>
+     *            処理対象の型。すなわち、基本型、ドメインクラス、もしくはエンティティクラス
+     * @param targetClass
+     *            処理対象のクラス
+     * @param iterationCallback
+     *            コールバック
+     * @return 任意の実行結果
+     * @throws DomaNullPointerException
+     *             引数のいずれかが{@code null} の場合
+     * @throws DomaIllegalArgumentException
+     *             処理対象のクラスがエンティティクラス、ドメインクラス、基本型のいずれでもない場合
+     * @throws MappedPropertyNotFoundException
+     *             処理対象の型がエンティティクラスで、結果セットに含まれるカラムにマッピングされたプロパティが見つからなかった場合
+     * @throws NonSingleColumnException
+     *             処理対象の型が基本型やドメインクラスで、かつ結果セットに複数のカラムが含まれている場合
+     * @throws JdbcException
+     *             上記以外でJDBCに関する例外が発生した場合
+     */
+    public <R, T> R iterate(Class<T> targetClass,
+            IterationCallback<R, T> iterationCallback) {
+        if (targetClass == null) {
+            throw new DomaNullPointerException("targetClass");
+        }
+        if (iterationCallback == null) {
+            throw new DomaNullPointerException("iterationCallback");
+        }
+        if (query.getMethodName() == null) {
+            query.setCallerMethodName("iterate");
+        }
+        ResultSetHandler<R> iterationHandler = createIterationHanlder(
+                targetClass, iterationCallback);
+        return execute(iterationHandler);
+    }
+
+    private <R, T> ResultSetHandler<R> createIterationHanlder(
+            Class<T> targetClass, IterationCallback<R, T> iterationCallback) {
+        if (targetClass.isAnnotationPresent(Entity.class)) {
+            EntityType<T> entityType = EntityTypeFactory
+                    .getEntityType(targetClass);
+            return new EntityIterationHandler<R, T>(entityType,
+                    iterationCallback);
+        } else if (targetClass.isAnnotationPresent(Domain.class)
+                || targetClass.isAnnotationPresent(EnumDomain.class)) {
+            DomainType<?, T> domainType = DomainTypeFactory
+                    .getDomainType(targetClass);
+            return new DomainIterationHandler<R, T>(domainType,
+                    iterationCallback);
+        }
+        try {
+            @SuppressWarnings("unchecked")
+            Wrapper<T> wrapper = (Wrapper<T>) Wrappers.wrap(null, targetClass);
+            return new BasicIterationHandler<R, T>(wrapper, iterationCallback);
+        } catch (WrapperException e) {
+            throw new DomaIllegalArgumentException("resultClass",
+                    Message.DOMA2204.getMessage(targetClass, e));
+        }
+    }
+
+    private <R> R execute(ResultSetHandler<R> resultSetHandler) {
+        query.setSqlNode(builder.build());
+        query.prepare();
+        SelectCommand<R> command = new SelectCommand<R>(query, resultSetHandler);
+        return command.execute();
+    }
+
+    /**
+     * 結果が少なくとも1件以上存在することを保証します。
+     * 
+     * @param ensuerResult
+     *            結果が少なくとも1件以上存在することを保証する場合 {@code true}
+     */
+    public void ensuerResult(boolean ensuerResult) {
+        query.setResultEnsured(ensuerResult);
+    }
+
+    /**
+     * フェッチサイズを設定します。
+     * <p>
+     * 指定しない場合、 {@link Config#getFetchSize()} が使用されます。
+     * 
+     * @param fetchSize
+     *            フェッチサイズ
+     * @see Statement#setFetchSize(int)
+     */
+    public void fetchSize(int fetchSize) {
+        query.setFetchSize(fetchSize);
+    }
+
+    /**
+     * 最大行数の制限値を設定します。
+     * <p>
+     * 指定しない場合、 {@link Config#getMaxRows()} が使用されます。
+     * 
+     * @param maxRows
+     *            最大行数の制限値
+     * @see Statement#setMaxRows(int)
+     */
+    public void maxRows(int maxRows) {
+        query.setMaxRows(maxRows);
+    }
+
+    /**
+     * クエリタイムアウト（秒）を設定します。
+     * <p>
+     * 指定しない場合、 {@link Config#getQueryTimeout()} が使用されます。
+     * 
+     * @param queryTimeout
+     *            クエリタイムアウト（秒）
+     * @see Statement#setQueryTimeout(int)
+     */
+    public void queryTimeout(int queryTimeout) {
+        query.setQueryTimeout(queryTimeout);
+    }
+
+    /**
+     * 呼び出し元のクラス名です。
+     * <p>
+     * 指定しない場合このクラスの名前が使用されます。
+     * 
+     * @param className
+     *            呼び出し元のクラス名
+     */
+    public void callerClassName(String className) {
+        query.setCallerClassName(className);
+    }
+
+    /**
+     * 呼び出し元のメソッド名です。
+     * <p>
+     * 指定しない場合このSQLを生成するメソッド（{@link #getSingleResult(Class)},
+     * {@link #getResultList(Class)},{@link #iterate(Class, IterationCallback)},
+     * {@link #getSql()}）の名前が使用されます。
+     * 
+     * @param methodName
+     *            呼び出し元のメソッド名
+     */
+    public void callerMethodName(String methodName) {
+        query.setCallerMethodName(methodName);
+    }
+
+    /**
+     * 検索系SQLを実行する際のオプションを設定します。
+     * 
+     * @param options
+     *            検索系SQLを実行する際のオプション
+     */
+    public void options(SelectOptions options) {
+        query.setOptions(options);
+    }
+
+    /**
+     * 組み立てられたSQLを返します。
+     * 
+     * @return 組み立てられたSQL
+     */
+    public Sql<?> getSql() {
+        if (query.getMethodName() == null) {
+            query.setCallerMethodName("getSql");
+        }
+        query.setSqlNode(builder.build());
+        query.prepare();
+        return query.getSql();
+    }
+
+    private static class SubsequentSelectBuilder extends SelectBuilder {
+
+        private SubsequentSelectBuilder(SqlNodeBuilder builder,
+                SqlSelectQuery query, ParameterIndex parameterIndex) {
+            super(builder, query, parameterIndex);
+        }
+
+        @Override
+        public SelectBuilder sql(String fragment) {
+            super.builder.appendSql(fragment);
+            return this;
+        }
+
+    }
+}

@@ -13,34 +13,25 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.domain;
+package org.seasar.doma.jdbc.builder;
 
-import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.jdbc.domain.DomainWrapper;
+import junit.framework.TestCase;
+
+import org.seasar.doma.internal.jdbc.mock.MockConfig;
 
 /**
  * @author taedium
  * 
  */
-public class _Name implements DomainType<String, Name> {
+public class DeleteBuilderTest extends TestCase {
 
-    @Override
-    public Name newDomain(String value) {
-        return null;
+    public void test() throws Exception {
+        DeleteBuilder builder = DeleteBuilder.newInstance(new MockConfig());
+        builder.sql("delete from Emp");
+        builder.sql("where");
+        builder.sql("name = ").param(String.class, "aaa");
+        builder.sql("and");
+        builder.sql("salary = ").param(int.class, 10);
+        builder.execute();
     }
-
-    @Override
-    public Class<Name> getDomainClass() {
-        return null;
-    }
-
-    @Override
-    public DomainWrapper<String, Name> getWrapper(Name domain) {
-        return null;
-    }
-
-    public static _Name getSingletonInternal() {
-        return null;
-    }
-
 }

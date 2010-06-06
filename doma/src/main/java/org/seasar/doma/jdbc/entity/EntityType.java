@@ -20,7 +20,7 @@ import java.util.List;
 import org.seasar.doma.internal.jdbc.criteria.TableCriterion;
 
 /**
- * エンティティ型を表します。
+ * エンティティのメタタイプです。
  * 
  * <p>
  * このインタフェースの実装はスレッドセーフであることは要求されません。

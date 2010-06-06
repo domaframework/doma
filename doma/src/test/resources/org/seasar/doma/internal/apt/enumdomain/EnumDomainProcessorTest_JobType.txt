@@ -2,7 +2,7 @@ package org.seasar.doma.internal.apt.enumdomain;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
-public final class _JobType implements org.seasar.doma.internal.domain.DomainType<java.lang.String, org.seasar.doma.internal.apt.enumdomain.JobType> {
+public final class _JobType implements org.seasar.doma.jdbc.domain.DomainType<java.lang.String, org.seasar.doma.internal.apt.enumdomain.JobType> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
@@ -24,7 +24,7 @@ public final class _JobType implements org.seasar.doma.internal.domain.DomainTyp
     }
 
     @Override
-    public org.seasar.doma.internal.domain.DomainWrapper<java.lang.String, org.seasar.doma.internal.apt.enumdomain.JobType> getWrapper(org.seasar.doma.internal.apt.enumdomain.JobType domain) {
+    public org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.String, org.seasar.doma.internal.apt.enumdomain.JobType> getWrapper(org.seasar.doma.internal.apt.enumdomain.JobType domain) {
         return new Wrapper(domain);
     }
 
@@ -35,7 +35,7 @@ public final class _JobType implements org.seasar.doma.internal.domain.DomainTyp
         return singleton;
     }
 
-    private static class Wrapper extends org.seasar.doma.wrapper.StringWrapper implements org.seasar.doma.internal.domain.DomainWrapper<java.lang.String, org.seasar.doma.internal.apt.enumdomain.JobType> {
+    private static class Wrapper extends org.seasar.doma.wrapper.StringWrapper implements org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.String, org.seasar.doma.internal.apt.enumdomain.JobType> {
 
         private org.seasar.doma.internal.apt.enumdomain.JobType domain;
 

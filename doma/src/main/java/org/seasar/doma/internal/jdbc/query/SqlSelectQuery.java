@@ -29,7 +29,6 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SelectOptionsAccessor;
-import org.seasar.doma.jdbc.SqlFile;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.wrapper.LongWrapper;
@@ -38,11 +37,9 @@ import org.seasar.doma.wrapper.LongWrapper;
  * @author taedium
  * 
  */
-public class SqlFileSelectQuery implements SelectQuery {
+public class SqlSelectQuery implements SelectQuery {
 
     protected Config config;
-
-    protected String sqlFilePath;
 
     protected final Map<String, Value> parameters = new HashMap<String, Value>();
 
@@ -50,7 +47,7 @@ public class SqlFileSelectQuery implements SelectQuery {
 
     protected String callerMethodName;
 
-    protected SqlFile sqlFile;
+    protected SqlNode sqlNode;
 
     protected PreparedSql sql;
 
@@ -64,8 +61,9 @@ public class SqlFileSelectQuery implements SelectQuery {
 
     protected int queryTimeout;
 
+    @Override
     public void prepare() {
-        assertNotNull(config, sqlFilePath, callerClassName, callerMethodName);
+        assertNotNull(config, sqlNode, callerClassName, callerMethodName);
         prepareOptions();
         prepareSql();
         assertNotNull(sql);
@@ -84,15 +82,38 @@ public class SqlFileSelectQuery implements SelectQuery {
     }
 
     protected void prepareSql() {
-        sqlFile = config.getSqlFileRepository().getSqlFile(sqlFilePath,
-                config.getDialect());
-        SqlNode sqlNode = config.getDialect().transformSelectSqlNode(
-                sqlFile.getSqlNode(), options);
+        SqlNode transformedSqlNode = config.getDialect()
+                .transformSelectSqlNode(sqlNode.copy(), options);
         ExpressionEvaluator evaluator = new ExpressionEvaluator(parameters,
                 config.getDialect().getExpressionFunctions());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
-                SqlKind.SELECT, sqlFile.getPath(), evaluator);
-        sql = sqlBuilder.build(sqlNode);
+                SqlKind.SELECT, null, evaluator);
+        sql = sqlBuilder.build(transformedSqlNode);
+    }
+
+    @Override
+    public int getFetchSize() {
+        return fetchSize;
+    }
+
+    @Override
+    public int getMaxRows() {
+        return maxRows;
+    }
+
+    @Override
+    public SelectOptions getOptions() {
+        return options;
+    }
+
+    @Override
+    public PreparedSql getSql() {
+        return sql;
+    }
+
+    @Override
+    public boolean isResultEnsured() {
+        return resultEnsured;
     }
 
     @Override
@@ -109,7 +130,7 @@ public class SqlFileSelectQuery implements SelectQuery {
         query.options = options;
         query.parameters = parameters;
         query.queryTimeout = queryTimeout;
-        query.sqlNode = sqlFile.getSqlNode();
+        query.sqlNode = sqlNode.copy();
         query.prepare();
         SelectCommand<Long> command = new SelectCommand<Long>(query,
                 new BasicSingleResultHandler<Long>(new LongWrapper(), true));
@@ -119,8 +140,23 @@ public class SqlFileSelectQuery implements SelectQuery {
     }
 
     @Override
-    public SelectOptions getOptions() {
-        return options;
+    public String getClassName() {
+        return callerClassName;
+    }
+
+    @Override
+    public Config getConfig() {
+        return config;
+    }
+
+    @Override
+    public String getMethodName() {
+        return callerMethodName;
+    }
+
+    @Override
+    public int getQueryTimeout() {
+        return queryTimeout;
     }
 
     public void setOptions(SelectOptions options) {
@@ -131,8 +167,8 @@ public class SqlFileSelectQuery implements SelectQuery {
         this.config = config;
     }
 
-    public void setSqlFilePath(String sqlFilePath) {
-        this.sqlFilePath = sqlFilePath;
+    public void setSqlNode(SqlNode sqlNode) {
+        this.sqlNode = sqlNode;
     }
 
     public void addParameter(String name, Class<?> type, Object value) {
@@ -148,56 +184,16 @@ public class SqlFileSelectQuery implements SelectQuery {
         this.callerMethodName = callerMethodName;
     }
 
-    @Override
-    public PreparedSql getSql() {
-        return sql;
-    }
-
-    @Override
-    public String getClassName() {
-        return callerClassName;
-    }
-
-    @Override
-    public String getMethodName() {
-        return callerMethodName;
-    }
-
-    @Override
-    public Config getConfig() {
-        return config;
-    }
-
-    @Override
-    public boolean isResultEnsured() {
-        return resultEnsured;
-    }
-
     public void setResultEnsured(boolean resultEnsured) {
         this.resultEnsured = resultEnsured;
-    }
-
-    @Override
-    public int getFetchSize() {
-        return fetchSize;
     }
 
     public void setFetchSize(int fetchSize) {
         this.fetchSize = fetchSize;
     }
 
-    @Override
-    public int getMaxRows() {
-        return maxRows;
-    }
-
     public void setMaxRows(int maxRows) {
         this.maxRows = maxRows;
-    }
-
-    @Override
-    public int getQueryTimeout() {
-        return queryTimeout;
     }
 
     public void setQueryTimeout(int queryTimeout) {
@@ -208,5 +204,4 @@ public class SqlFileSelectQuery implements SelectQuery {
     public String toString() {
         return sql != null ? sql.toString() : null;
     }
-
 }

@@ -13,33 +13,34 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.sql;
+package org.seasar.doma.internal.jdbc.query;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import org.seasar.doma.jdbc.domain.DomainType;
+import java.sql.Statement;
+
+import org.seasar.doma.jdbc.SqlKind;
 
 /**
  * @author taedium
  * 
  */
-public class DomainListResultParameter<V, D> extends DomainListParameter<V, D>
-        implements ResultParameter<List<D>> {
+public class SqlInsertQuery extends SqlModofyQuery implements InsertQuery {
 
-    public DomainListResultParameter(DomainType<V, D> domainType) {
-        super(domainType, new ArrayList<D>(), "");
+    public SqlInsertQuery() {
+        super(SqlKind.INSERT);
     }
 
     @Override
-    public List<D> getResult() {
-        return domains;
+    public void generateId(Statement statement) {
     }
 
     @Override
-    public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitDomainListResultParameter(this, p);
+    public void prepare() {
+        assertNotNull(config, sqlNode, callerClassName, callerMethodName);
+        prepareOptions();
+        prepareSql();
+        assertNotNull(sql);
     }
 
 }

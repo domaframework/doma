@@ -13,34 +13,27 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.domain;
+package org.seasar.doma.internal.jdbc.util;
 
-import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.jdbc.domain.DomainWrapper;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
+
+import org.seasar.doma.internal.Constants;
+import org.seasar.doma.internal.util.ClassUtil;
 
 /**
  * @author taedium
  * 
  */
-public class _Name implements DomainType<String, Name> {
+public final class MetaTypeUtil {
 
-    @Override
-    public Name newDomain(String value) {
-        return null;
+    public static String getMetaTypeName(String qualifiedName) {
+        assertNotNull(qualifiedName);
+        String packageName = ClassUtil.getPackageName(qualifiedName);
+        String simpleName = ClassUtil.getSimpleName(qualifiedName);
+        String base = "";
+        if (packageName != null && packageName.length() > 0) {
+            base = packageName + ".";
+        }
+        return base + Constants.METATYPE_PREFIX + simpleName;
     }
-
-    @Override
-    public Class<Name> getDomainClass() {
-        return null;
-    }
-
-    @Override
-    public DomainWrapper<String, Name> getWrapper(Name domain) {
-        return null;
-    }
-
-    public static _Name getSingletonInternal() {
-        return null;
-    }
-
 }

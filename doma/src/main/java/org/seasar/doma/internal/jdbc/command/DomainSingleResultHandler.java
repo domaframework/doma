@@ -20,22 +20,22 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.seasar.doma.internal.domain.DomainType;
-import org.seasar.doma.internal.domain.DomainWrapper;
 import org.seasar.doma.internal.jdbc.query.SelectQuery;
 import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.domain.DomainType;
+import org.seasar.doma.jdbc.domain.DomainWrapper;
 
 /**
  * @author taedium
  * 
  */
-public class DomainSingleResultHandler<V, D> implements ResultSetHandler<D> {
+public class DomainSingleResultHandler<D> implements ResultSetHandler<D> {
 
-    protected final DomainType<V, D> domainType;
+    protected final DomainType<?, D> domainType;
 
-    public DomainSingleResultHandler(DomainType<V, D> domainType) {
+    public DomainSingleResultHandler(DomainType<?, D> domainType) {
         assertNotNull(domainType);
         this.domainType = domainType;
     }
@@ -44,7 +44,7 @@ public class DomainSingleResultHandler<V, D> implements ResultSetHandler<D> {
     public D handle(ResultSet resultSet, SelectQuery query) throws SQLException {
         BasicFetcher fetcher = new BasicFetcher(query);
         if (resultSet.next()) {
-            DomainWrapper<V, D> wrapper = domainType.getWrapper(null);
+            DomainWrapper<?, D> wrapper = domainType.getWrapper(null);
             fetcher.fetch(resultSet, wrapper);
             if (resultSet.next()) {
                 Sql<?> sql = query.getSql();

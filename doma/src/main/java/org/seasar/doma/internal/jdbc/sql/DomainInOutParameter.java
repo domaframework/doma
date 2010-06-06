@@ -17,9 +17,9 @@ package org.seasar.doma.internal.jdbc.sql;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import org.seasar.doma.internal.domain.DomainType;
-import org.seasar.doma.internal.domain.DomainWrapper;
 import org.seasar.doma.jdbc.Reference;
+import org.seasar.doma.jdbc.domain.DomainType;
+import org.seasar.doma.jdbc.domain.DomainWrapper;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**

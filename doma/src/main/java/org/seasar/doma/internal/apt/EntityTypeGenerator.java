@@ -22,6 +22,7 @@ import java.io.IOException;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 
+import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.meta.EntityMeta;
 import org.seasar.doma.internal.apt.meta.EntityPropertyMeta;
 import org.seasar.doma.internal.apt.meta.IdGeneratorMeta;
@@ -35,9 +36,9 @@ import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.apt.type.WrapperType;
+import org.seasar.doma.internal.jdbc.util.MetaTypeUtil;
 import org.seasar.doma.internal.jdbc.util.TableUtil;
 import org.seasar.doma.internal.util.BoxedPrimitiveUtil;
-import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.AssignedIdPropertyType;
 import org.seasar.doma.jdbc.entity.BasicPropertyType;
@@ -58,8 +59,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
     public EntityTypeGenerator(ProcessingEnvironment env,
             TypeElement entityElement, EntityMeta entityMeta)
             throws IOException {
-        super(env, entityElement, null, null, Constants.DEFAULT_ENTITY_PREFIX,
-                "");
+        super(env, entityElement, null, null, Constants.METATYPE_PREFIX, "");
         assertNotNull(entityMeta);
         this.entityMeta = entityMeta;
     }
@@ -244,16 +244,14 @@ public class EntityTypeGenerator extends AbstractGenerator {
             if (domainType != null) {
                 iprint(
                         "        return %1$s.getSingletonInternal().getWrapper(entity.%2$s).get();%n",
-                        getPrefixedDomainTypeName(domainType), pm
-                                .getName());
+                        getMetaTypeName(domainType.getTypeName()), pm.getName());
             } else {
                 iprint("        return entity.%1$s;%n", pm.getName());
             }
         } else {
             iprint(
                     "        return %1$s.getSingletonInternal().%2$s.getWrapper(entity).get();%n",
-                    getPrefixedEntityTypeName(pm.getEntityTypeName()), pm
-                            .getName());
+                    getMetaTypeName(pm.getEntityTypeName()), pm.getName());
         }
         iprint("    }%n");
         print("%n");
@@ -268,9 +266,9 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 if (domainType != null) {
                     iprint(
                             "        entity.%1$s = %2$s.getSingletonInternal().newDomain(%3$s.unbox(value));%n",
-                            pm.getName(),
-                            getPrefixedDomainTypeName(domainType),
-                            BoxedPrimitiveUtil.class.getName());
+                            pm.getName(), getMetaTypeName(domainType
+                                    .getTypeName()), BoxedPrimitiveUtil.class
+                                    .getName());
                 } else {
                     iprint("        entity.%1$s = %2$s.unbox(value);%n", pm
                             .getName(), BoxedPrimitiveUtil.class.getName());
@@ -279,7 +277,8 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 if (domainType != null) {
                     iprint(
                             "        entity.%1$s = %2$s.getSingletonInternal().newDomain(value);%n",
-                            pm.getName(), getPrefixedDomainTypeName(domainType));
+                            pm.getName(), getMetaTypeName(domainType
+                                    .getTypeName()));
                 } else {
                     iprint("        entity.%1$s = value;%n", pm.getName());
                 }
@@ -287,8 +286,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         } else {
             iprint(
                     "        %1$s.getSingletonInternal().%2$s.getWrapper(entity).set(value);%n",
-                    getPrefixedEntityTypeName(pm.getEntityTypeName()), pm
-                            .getName());
+                    getMetaTypeName(pm.getEntityTypeName()), pm.getName());
         }
         iprint("    }%n");
         iprint("}%n");
@@ -627,15 +625,8 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected String getPrefixedEntityTypeName(String entityTypeName) {
-        return ClassUtil.getPackageName(entityTypeName) + "." + prefix
-                + ClassUtil.getSimpleName(entityTypeName);
-    }
-
-    protected String getPrefixedDomainTypeName(DomainType domainType) {
-        return domainType.getPackageName() + "."
-                + Constants.DEFAULT_DOMAIN_PREFIX
-                + domainType.getPackageExcludedBinaryName();
+    protected String getMetaTypeName(String qualifiedName) {
+        return MetaTypeUtil.getMetaTypeName(qualifiedName);
     }
 
     protected class IdGeneratorGenerator implements

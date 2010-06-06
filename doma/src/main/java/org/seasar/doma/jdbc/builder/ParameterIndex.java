@@ -13,33 +13,22 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.sql;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.seasar.doma.jdbc.domain.DomainType;
+package org.seasar.doma.jdbc.builder;
 
 /**
  * @author taedium
  * 
  */
-public class DomainListResultParameter<V, D> extends DomainListParameter<V, D>
-        implements ResultParameter<List<D>> {
+class ParameterIndex {
 
-    public DomainListResultParameter(DomainType<V, D> domainType) {
-        super(domainType, new ArrayList<D>(), "");
+    private int value = 1;
+
+    void increment() {
+        value++;
     }
 
-    @Override
-    public List<D> getResult() {
-        return domains;
-    }
-
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitDomainListResultParameter(this, p);
+    int getValue() {
+        return value;
     }
 
 }

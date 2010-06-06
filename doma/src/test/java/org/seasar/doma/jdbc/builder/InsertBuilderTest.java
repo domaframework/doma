@@ -13,13 +13,25 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.domain;
+package org.seasar.doma.jdbc.builder;
 
-public interface DomainType<V, D> {
+import junit.framework.TestCase;
 
-    D newDomain(V value);
+import org.seasar.doma.internal.jdbc.mock.MockConfig;
 
-    Class<D> getDomainClass();
+/**
+ * @author taedium
+ * 
+ */
+public class InsertBuilderTest extends TestCase {
 
-    DomainWrapper<V, D> getWrapper(D domain);
+    public void test() throws Exception {
+        InsertBuilder builder = InsertBuilder.newInstance(new MockConfig());
+        builder.sql("insert into Emp");
+        builder.sql("(name, salary)");
+        builder.sql("values (");
+        builder.param(String.class, "SMITH").sql(", ");
+        builder.param(int.class, 100).sql(")");
+        builder.execute();
+    }
 }

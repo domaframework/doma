@@ -22,11 +22,12 @@ import java.io.IOException;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 
+import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.meta.DomainMeta;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
-import org.seasar.doma.internal.domain.DomainType;
-import org.seasar.doma.internal.domain.DomainWrapper;
 import org.seasar.doma.internal.util.BoxedPrimitiveUtil;
+import org.seasar.doma.jdbc.domain.DomainType;
+import org.seasar.doma.jdbc.domain.DomainWrapper;
 
 /**
  * 
@@ -40,8 +41,7 @@ public class DomainTypeGenerator extends AbstractGenerator {
     public DomainTypeGenerator(ProcessingEnvironment env,
             TypeElement domainElement, DomainMeta domainMeta)
             throws IOException {
-        super(env, domainElement, null, null, Constants.DEFAULT_DOMAIN_PREFIX,
-                "");
+        super(env, domainElement, null, null, Constants.METATYPE_PREFIX, "");
         assertNotNull(domainMeta);
         this.domainMeta = domainMeta;
     }

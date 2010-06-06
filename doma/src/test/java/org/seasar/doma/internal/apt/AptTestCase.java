@@ -29,8 +29,8 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Domain;
 import org.seasar.doma.Entity;
 import org.seasar.doma.EnumDomain;
+import org.seasar.doma.internal.jdbc.util.MetaTypeUtil;
 import org.seasar.doma.internal.message.Message;
-import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.ResourceUtil;
 
 /**
@@ -78,17 +78,10 @@ public abstract class AptTestCase extends AptinaTestCase {
             return originalClass.getName()
                     + Options.Constants.DEFAULT_DAO_SUFFIX;
         }
-        if (originalClass.isAnnotationPresent(Entity.class)) {
-            return originalClass.getPackage().getName() + "."
-                    + Constants.DEFAULT_ENTITY_PREFIX
-                    + originalClass.getSimpleName();
-        }
-        if (originalClass.isAnnotationPresent(Domain.class)
+        if (originalClass.isAnnotationPresent(Entity.class)
+                || originalClass.isAnnotationPresent(Domain.class)
                 || originalClass.isAnnotationPresent(EnumDomain.class)) {
-            String className = originalClass.getName();
-            return ClassUtil.getPackageName(className) + "."
-                    + Constants.DEFAULT_DOMAIN_PREFIX
-                    + ClassUtil.getSimpleName(className);
+            return MetaTypeUtil.getMetaTypeName(originalClass.getName());
         }
         throw new AssertionFailedError("annotation not found.");
     }

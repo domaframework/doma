@@ -15,8 +15,8 @@
  */
 package example.domain;
 
-import org.seasar.doma.internal.domain.DomainType;
-import org.seasar.doma.internal.domain.DomainWrapper;
+import org.seasar.doma.jdbc.domain.DomainType;
+import org.seasar.doma.jdbc.domain.DomainWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 
 public class _PhoneNumber implements DomainType<String, PhoneNumber> {

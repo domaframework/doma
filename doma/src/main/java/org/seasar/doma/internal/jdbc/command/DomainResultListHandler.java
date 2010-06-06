@@ -22,21 +22,21 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seasar.doma.internal.domain.DomainType;
-import org.seasar.doma.internal.domain.DomainWrapper;
 import org.seasar.doma.internal.jdbc.query.SelectQuery;
 import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.domain.DomainType;
+import org.seasar.doma.jdbc.domain.DomainWrapper;
 
 /**
  * @author taedium
  * 
  */
-public class DomainResultListHandler<V, D> implements ResultSetHandler<List<D>> {
+public class DomainResultListHandler<D> implements ResultSetHandler<List<D>> {
 
-    protected final DomainType<V, D> domainType;
+    protected final DomainType<?, D> domainType;
 
-    public DomainResultListHandler(DomainType<V, D> domainType) {
+    public DomainResultListHandler(DomainType<?, D> domainType) {
         assertNotNull(domainType);
         this.domainType = domainType;
     }
@@ -47,7 +47,7 @@ public class DomainResultListHandler<V, D> implements ResultSetHandler<List<D>> 
         BasicFetcher fetcher = new BasicFetcher(query);
         List<D> domains = new ArrayList<D>();
         while (resultSet.next()) {
-            DomainWrapper<V, D> wrapper = domainType.getWrapper(null);
+            DomainWrapper<?, D> wrapper = domainType.getWrapper(null);
             fetcher.fetch(resultSet, wrapper);
             domains.add(wrapper.getDomain());
         }

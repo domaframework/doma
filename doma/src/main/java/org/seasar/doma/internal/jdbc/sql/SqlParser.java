@@ -738,6 +738,9 @@ public class SqlParser {
             WhitespaceNodeVisitor<Void, Void>, WordNodeVisitor<Void, Void> {
 
         protected void optimize(SqlNode node) {
+            if (node == null) {
+                return;
+            }
             if (node.getChildren().isEmpty()) {
                 return;
             }

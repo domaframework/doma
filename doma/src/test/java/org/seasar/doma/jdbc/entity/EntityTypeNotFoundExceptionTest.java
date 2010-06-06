@@ -13,34 +13,21 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.domain;
+package org.seasar.doma.jdbc.entity;
 
-import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.jdbc.domain.DomainWrapper;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
  * 
  */
-public class _Name implements DomainType<String, Name> {
+public class EntityTypeNotFoundExceptionTest extends TestCase {
 
-    @Override
-    public Name newDomain(String value) {
-        return null;
+    public void test() throws Exception {
+        EntityTypeNotFoundException e = new EntityTypeNotFoundException(
+                new Exception(), "aaa", "bbb");
+        System.out.println(e.getMessage());
+        assertEquals("aaa", e.getEntityClassName());
+        assertEquals("bbb", e.getEntityTypeClassName());
     }
-
-    @Override
-    public Class<Name> getDomainClass() {
-        return null;
-    }
-
-    @Override
-    public DomainWrapper<String, Name> getWrapper(Name domain) {
-        return null;
-    }
-
-    public static _Name getSingletonInternal() {
-        return null;
-    }
-
 }
