@@ -58,6 +58,14 @@ public abstract class SqlModifyQuery implements ModifyQuery {
         this.kind = kind;
     }
 
+    @Override
+    public void prepare() {
+        assertNotNull(config, sqlNode, callerClassName, callerMethodName);
+        prepareOptions();
+        prepareSql();
+        assertNotNull(sql);
+    }
+
     protected void prepareOptions() {
         if (queryTimeout <= 0) {
             queryTimeout = config.getQueryTimeout();

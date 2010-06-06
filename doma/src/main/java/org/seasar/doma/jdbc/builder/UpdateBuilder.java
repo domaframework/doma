@@ -168,7 +168,9 @@ public class UpdateBuilder {
         query.setSqlNode(builder.build());
         query.prepare();
         UpdateCommand command = new UpdateCommand(query);
-        return command.execute();
+        int result = command.execute();
+        query.complete();
+        return result;
     }
 
     /**

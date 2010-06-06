@@ -164,7 +164,9 @@ public class InsertBuilder {
         query.setSqlNode(builder.build());
         query.prepare();
         InsertCommand command = new InsertCommand(query);
-        return command.execute();
+        int result = command.execute();
+        query.complete();
+        return result;
     }
 
     /**

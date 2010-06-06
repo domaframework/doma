@@ -379,7 +379,9 @@ public class SelectBuilder {
         query.setSqlNode(builder.build());
         query.prepare();
         SelectCommand<R> command = new SelectCommand<R>(query, resultSetHandler);
-        return command.execute();
+        R result = command.execute();
+        query.complete();
+        return result;
     }
 
     /**

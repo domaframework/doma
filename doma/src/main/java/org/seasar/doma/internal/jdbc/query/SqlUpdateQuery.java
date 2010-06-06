@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.internal.jdbc.query;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
-
 import org.seasar.doma.jdbc.SqlKind;
 
 /**
@@ -31,14 +29,6 @@ public class SqlUpdateQuery extends SqlModifyQuery implements UpdateQuery {
 
     @Override
     public void incrementVersion() {
-    }
-
-    @Override
-    public void prepare() {
-        assertNotNull(config, sqlNode, callerClassName, callerMethodName);
-        prepareOptions();
-        prepareSql();
-        assertNotNull(sql);
     }
 
 }

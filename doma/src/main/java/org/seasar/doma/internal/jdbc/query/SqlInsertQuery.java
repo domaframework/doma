@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.internal.jdbc.query;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
-
 import java.sql.Statement;
 
 import org.seasar.doma.jdbc.SqlKind;
@@ -33,14 +31,6 @@ public class SqlInsertQuery extends SqlModifyQuery implements InsertQuery {
 
     @Override
     public void generateId(Statement statement) {
-    }
-
-    @Override
-    public void prepare() {
-        assertNotNull(config, sqlNode, callerClassName, callerMethodName);
-        prepareOptions();
-        prepareSql();
-        assertNotNull(sql);
     }
 
 }

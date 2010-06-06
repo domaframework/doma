@@ -163,7 +163,9 @@ public class DeleteBuilder {
         query.setSqlNode(builder.build());
         query.prepare();
         DeleteCommand command = new DeleteCommand(query);
-        return command.execute();
+        int result = command.execute();
+        query.complete();
+        return result;
     }
 
     /**

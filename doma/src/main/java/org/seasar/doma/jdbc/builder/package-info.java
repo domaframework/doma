@@ -13,18 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.query;
-
-import org.seasar.doma.jdbc.SqlKind;
-
 /**
- * @author taedium
- * 
+ * SQLを動的に組み立て実行するためのクラスを提供します。
  */
-public class SqlDeleteQuery extends SqlModifyQuery implements DeleteQuery {
-
-    public SqlDeleteQuery() {
-        super(SqlKind.DELETE);
-    }
-
-}
+package org.seasar.doma.jdbc.builder;
