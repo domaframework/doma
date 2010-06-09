@@ -36,9 +36,9 @@ import org.seasar.doma.jdbc.Sql;
  * DeleteBuilder builder = DeleteBuilder.newInstance(config);
  * builder.sql(&quot;delete from Emp&quot;);
  * builder.sql(&quot;where&quot;);
- * builder.sql(&quot;name = &quot;).param(String.class, &quot;aaa&quot;);
+ * builder.sql(&quot;name = &quot;).param(String.class, &quot;SMITH&quot;);
  * builder.sql(&quot;and&quot;);
- * builder.sql(&quot;salary = &quot;).param(int.class, 10);
+ * builder.sql(&quot;salary = &quot;).param(BigDecimal.class, new BigDecimal(1000));
  * builder.execute();
  * </pre>
  * 
@@ -47,7 +47,7 @@ import org.seasar.doma.jdbc.Sql;
  * <pre>
  * delete from Emp
  * where
- * name = 'aaa'
+ * name = 'SMITH'
  * and
  * salary = 10
  * </pre>
