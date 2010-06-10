@@ -101,17 +101,17 @@ public class UpdateBuilder {
     /**
      * SQLの断片を追加します。
      * 
-     * @param fragment
+     * @param sql
      *            SQLの断片
      * @return このインスタンス
      * @throws DomaNullPointerException
      *             引数が {@code null} の場合
      */
-    public UpdateBuilder sql(String fragment) {
-        if (fragment == null) {
-            throw new DomaNullPointerException("fragment");
+    public UpdateBuilder sql(String sql) {
+        if (sql == null) {
+            throw new DomaNullPointerException("sql");
         }
-        helper.appendSqlWithLineSeparator(fragment);
+        helper.appendSqlWithLineSeparator(sql);
         return new SubsequentUpdateBuilder(helper, query, paramIndex);
     }
 
@@ -141,6 +141,9 @@ public class UpdateBuilder {
      *             {@code parameterClass} が {@code null} の場合
      */
     public <P> UpdateBuilder param(Class<P> paramClass, P param) {
+        if (paramClass == null) {
+            throw new DomaNullPointerException("paramClass");
+        }
         helper.appendParam(new Param(paramClass, param, paramIndex));
         paramIndex.increment();
         return new SubsequentUpdateBuilder(helper, query, paramIndex);
@@ -190,8 +193,13 @@ public class UpdateBuilder {
      * 
      * @param className
      *            呼び出し元のクラス名
+     * @throws DomaNullPointerException
+     *             引数が {@code null} の場合
      */
     public void callerClassName(String className) {
+        if (className == null) {
+            throw new DomaNullPointerException("className");
+        }
         query.setCallerClassName(className);
     }
 
@@ -202,8 +210,13 @@ public class UpdateBuilder {
      * 
      * @param methodName
      *            呼び出し元のメソッド名
+     * @throws DomaNullPointerException
+     *             引数が {@code null} の場合
      */
     public void callerMethodName(String methodName) {
+        if (methodName == null) {
+            throw new DomaNullPointerException("methodName");
+        }
         query.setCallerMethodName(methodName);
     }
 
@@ -229,8 +242,11 @@ public class UpdateBuilder {
         }
 
         @Override
-        public UpdateBuilder sql(String fragment) {
-            super.helper.appendSql(fragment);
+        public UpdateBuilder sql(String sql) {
+            if (sql == null) {
+                throw new DomaNullPointerException("sql");
+            }
+            super.helper.appendSql(sql);
             return this;
         }
 

@@ -84,7 +84,7 @@ public class DeleteBuilder {
      * 
      * @param config
      *            設定
-     * @return UPDATE文を組み立てるビルダー
+     * @return DELETE文を組み立てるビルダー
      * @throws DomaNullPointerException
      *             引数が{@code null} の場合
      */
@@ -98,17 +98,17 @@ public class DeleteBuilder {
     /**
      * SQLの断片を追加します。
      * 
-     * @param fragment
+     * @param sql
      *            SQLの断片
      * @return このインスタンス
      * @throws DomaNullPointerException
      *             引数が {@code null} の場合
      */
-    public DeleteBuilder sql(String fragment) {
-        if (fragment == null) {
-            throw new DomaNullPointerException("fragment");
+    public DeleteBuilder sql(String sql) {
+        if (sql == null) {
+            throw new DomaNullPointerException("sql");
         }
-        helper.appendSqlWithLineSeparator(fragment);
+        helper.appendSqlWithLineSeparator(sql);
         return new SubsequentDeleteBuilder(helper, query, paramIndex);
     }
 
@@ -138,6 +138,9 @@ public class DeleteBuilder {
      *             {@code parameterClass} が {@code null} の場合
      */
     public <P> DeleteBuilder param(Class<P> paramClass, P param) {
+        if (paramClass == null) {
+            throw new DomaNullPointerException("paramClass");
+        }
         helper.appendParam(new Param(paramClass, param, paramIndex));
         paramIndex.increment();
         return new SubsequentDeleteBuilder(helper, query, paramIndex);
@@ -185,8 +188,13 @@ public class DeleteBuilder {
      * 
      * @param className
      *            呼び出し元のクラス名
+     * @throws DomaNullPointerException
+     *             引数が {@code null} の場合
      */
     public void callerClassName(String className) {
+        if (className == null) {
+            throw new DomaNullPointerException("className");
+        }
         query.setCallerClassName(className);
     }
 
@@ -197,8 +205,13 @@ public class DeleteBuilder {
      * 
      * @param methodName
      *            呼び出し元のメソッド名
+     * @throws DomaNullPointerException
+     *             引数が {@code null} の場合
      */
     public void callerMethodName(String methodName) {
+        if (methodName == null) {
+            throw new DomaNullPointerException("methodName");
+        }
         query.setCallerMethodName(methodName);
     }
 
@@ -224,8 +237,11 @@ public class DeleteBuilder {
         }
 
         @Override
-        public DeleteBuilder sql(String fragment) {
-            super.helper.appendSql(fragment);
+        public DeleteBuilder sql(String sql) {
+            if (sql == null) {
+                throw new DomaNullPointerException("sql");
+            }
+            super.helper.appendSql(sql);
             return this;
         }
 

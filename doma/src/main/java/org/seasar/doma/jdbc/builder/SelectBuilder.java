@@ -175,7 +175,7 @@ public class SelectBuilder {
      */
     public <P> SelectBuilder param(Class<P> paramClass, P param) {
         if (paramClass == null) {
-            throw new DomaNullPointerException("parameterClass");
+            throw new DomaNullPointerException("paramClass");
         }
         helper.appendParam(new Param(paramClass, param, paramIndex));
         paramIndex.increment();
@@ -437,8 +437,13 @@ public class SelectBuilder {
      * 
      * @param className
      *            呼び出し元のクラス名
+     * @throws DomaNullPointerException
+     *             引数が {@code null} の場合
      */
     public void callerClassName(String className) {
+        if (className == null) {
+            throw new DomaNullPointerException("className");
+        }
         query.setCallerClassName(className);
     }
 
@@ -451,8 +456,13 @@ public class SelectBuilder {
      * 
      * @param methodName
      *            呼び出し元のメソッド名
+     * @throws DomaNullPointerException
+     *             引数が {@code null} の場合
      */
     public void callerMethodName(String methodName) {
+        if (methodName == null) {
+            throw new DomaNullPointerException("methodName");
+        }
         query.setCallerMethodName(methodName);
     }
 
@@ -461,8 +471,13 @@ public class SelectBuilder {
      * 
      * @param options
      *            検索系SQLを実行する際のオプション
+     * @throws DomaNullPointerException
+     *             引数が {@code null} の場合
      */
     public void options(SelectOptions options) {
+        if (options == null) {
+            throw new DomaNullPointerException("options");
+        }
         query.setOptions(options);
     }
 
