@@ -61,25 +61,25 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
  */
 public class UpdateBuilder {
 
-    private final SqlNodeBuilder builder;
+    private final BuildingHelper helper;
 
     private final SqlUpdateQuery query;
 
-    private final ParameterIndex parameterIndex;
+    private final ParamIndex paramIndex;
 
     private UpdateBuilder(Config config) {
-        this.builder = new SqlNodeBuilder();
+        this.helper = new BuildingHelper();
         this.query = new SqlUpdateQuery();
         this.query.setConfig(config);
         this.query.setCallerClassName(getClass().getName());
-        this.parameterIndex = new ParameterIndex();
+        this.paramIndex = new ParamIndex();
     }
 
-    private UpdateBuilder(SqlNodeBuilder builder, SqlUpdateQuery query,
-            ParameterIndex parameterIndex) {
-        this.builder = builder;
+    private UpdateBuilder(BuildingHelper builder, SqlUpdateQuery query,
+            ParamIndex parameterIndex) {
+        this.helper = builder;
         this.query = query;
-        this.parameterIndex = parameterIndex;
+        this.paramIndex = parameterIndex;
     }
 
     /**
@@ -111,22 +111,18 @@ public class UpdateBuilder {
         if (fragment == null) {
             throw new DomaNullPointerException("fragment");
         }
-        builder.appendSqlWithLineSeparator(fragment);
-        return new SubsequentUpdateBuilder(builder, query, parameterIndex);
+        helper.appendSqlWithLineSeparator(fragment);
+        return new SubsequentUpdateBuilder(helper, query, paramIndex);
     }
 
     /**
-     * SQLを切り取ります。
-     * <p>
-     * {@link #sql(String)}で追加したSQLの断片を切り取ります。
+     * 最後に追加したSQLもしくはパラメータを削除します。
      * 
-     * @param length
-     *            長さ
      * @return このインスタンス
      */
-    public UpdateBuilder cutBackSql(int length) {
-        builder.cutBackSql(length);
-        return new SubsequentUpdateBuilder(builder, query, parameterIndex);
+    public UpdateBuilder removeLast() {
+        helper.removeLast();
+        return new SubsequentUpdateBuilder(helper, query, paramIndex);
     }
 
     /**
@@ -136,20 +132,18 @@ public class UpdateBuilder {
      * 
      * @param <P>
      *            パラメータの型
-     * @param parameterClass
+     * @param paramClass
      *            パラメータのクラス
-     * @param parameter
+     * @param param
      *            パラメータ
      * @return このインスタンス
      * @throws DomaNullPointerException
      *             {@code parameterClass} が {@code null} の場合
      */
-    public <P> UpdateBuilder param(Class<P> parameterClass, P parameter) {
-        String parameterName = "p" + parameterIndex.getValue();
-        builder.appendParameter(parameterName);
-        query.addParameter(parameterName, parameterClass, parameter);
-        parameterIndex.increment();
-        return new SubsequentUpdateBuilder(builder, query, parameterIndex);
+    public <P> UpdateBuilder param(Class<P> paramClass, P param) {
+        helper.appendParam(new Param(paramClass, param, paramIndex));
+        paramIndex.increment();
+        return new SubsequentUpdateBuilder(helper, query, paramIndex);
     }
 
     /**
@@ -165,7 +159,10 @@ public class UpdateBuilder {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("execute");
         }
-        query.setSqlNode(builder.build());
+        for (Param p : helper.getParams()) {
+            query.addParameter(p.name, p.paramClass, p.param);
+        }
+        query.setSqlNode(helper.getSqlNode());
         query.prepare();
         UpdateCommand command = new UpdateCommand(query);
         int result = command.execute();
@@ -219,21 +216,21 @@ public class UpdateBuilder {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("getSql");
         }
-        query.setSqlNode(builder.build());
+        query.setSqlNode(helper.getSqlNode());
         query.prepare();
         return query.getSql();
     }
 
     private static class SubsequentUpdateBuilder extends UpdateBuilder {
 
-        private SubsequentUpdateBuilder(SqlNodeBuilder builder,
-                SqlUpdateQuery query, ParameterIndex parameterIndex) {
+        private SubsequentUpdateBuilder(BuildingHelper builder,
+                SqlUpdateQuery query, ParamIndex parameterIndex) {
             super(builder, query, parameterIndex);
         }
 
         @Override
         public UpdateBuilder sql(String fragment) {
-            super.builder.appendSql(fragment);
+            super.helper.appendSql(fragment);
             return this;
         }
 

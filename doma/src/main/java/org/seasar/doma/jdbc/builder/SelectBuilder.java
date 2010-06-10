@@ -94,25 +94,25 @@ import org.seasar.doma.wrapper.Wrapper;
  */
 public class SelectBuilder {
 
-    private final SqlNodeBuilder builder;
+    private final BuildingHelper helper;
 
     private final SqlSelectQuery query;
 
-    private final ParameterIndex parameterIndex;
+    private final ParamIndex paramIndex;
 
     private SelectBuilder(Config config) {
-        this.builder = new SqlNodeBuilder();
+        this.helper = new BuildingHelper();
         this.query = new SqlSelectQuery();
         this.query.setConfig(config);
         this.query.setCallerClassName(getClass().getName());
-        this.parameterIndex = new ParameterIndex();
+        this.paramIndex = new ParamIndex();
     }
 
-    private SelectBuilder(SqlNodeBuilder builder, SqlSelectQuery query,
-            ParameterIndex parameterIndex) {
-        this.builder = builder;
+    private SelectBuilder(BuildingHelper builder, SqlSelectQuery query,
+            ParamIndex parameterIndex) {
+        this.helper = builder;
         this.query = query;
-        this.parameterIndex = parameterIndex;
+        this.paramIndex = parameterIndex;
     }
 
     /**
@@ -134,32 +134,28 @@ public class SelectBuilder {
     /**
      * SQLの断片を追加します。
      * 
-     * @param fragment
+     * @param sql
      *            SQLの断片
      * @return このインスタンス
      * @throws DomaNullPointerException
      *             引数が {@code null} の場合
      */
-    public SelectBuilder sql(String fragment) {
-        if (fragment == null) {
-            throw new DomaNullPointerException("fragment");
+    public SelectBuilder sql(String sql) {
+        if (sql == null) {
+            throw new DomaNullPointerException("sql");
         }
-        builder.appendSqlWithLineSeparator(fragment);
-        return new SubsequentSelectBuilder(builder, query, parameterIndex);
+        helper.appendSqlWithLineSeparator(sql);
+        return new SubsequentSelectBuilder(helper, query, paramIndex);
     }
 
     /**
-     * SQLを切り取ります。
-     * <p>
-     * {@link #sql(String)}で追加したSQLの断片を切り取ります。
+     * 最後に追加したSQLもしくはパラメータを削除します。
      * 
-     * @param length
-     *            長さ
      * @return このインスタンス
      */
-    public SelectBuilder cutBackSql(int length) {
-        builder.cutBackSql(length);
-        return new SubsequentSelectBuilder(builder, query, parameterIndex);
+    public SelectBuilder removeLast() {
+        helper.removeLast();
+        return new SubsequentSelectBuilder(helper, query, paramIndex);
     }
 
     /**
@@ -169,23 +165,21 @@ public class SelectBuilder {
      * 
      * @param <P>
      *            パラメータの型
-     * @param parameterClass
+     * @param paramClass
      *            パラメータのクラス
-     * @param parameter
+     * @param param
      *            パラメータ
      * @return このインスタンス
      * @throws DomaNullPointerException
-     *             {@code parameterClass} が {@code null} の場合
+     *             {@code paramClass} が {@code null} の場合
      */
-    public <P> SelectBuilder param(Class<P> parameterClass, P parameter) {
-        if (parameterClass == null) {
+    public <P> SelectBuilder param(Class<P> paramClass, P param) {
+        if (paramClass == null) {
             throw new DomaNullPointerException("parameterClass");
         }
-        String parameterName = "p" + parameterIndex.getValue();
-        builder.appendParameter(parameterName);
-        query.addParameter(parameterName, parameterClass, parameter);
-        parameterIndex.increment();
-        return new SubsequentSelectBuilder(builder, query, parameterIndex);
+        helper.appendParam(new Param(paramClass, param, paramIndex));
+        paramIndex.increment();
+        return new SubsequentSelectBuilder(helper, query, paramIndex);
     }
 
     /**
@@ -376,7 +370,10 @@ public class SelectBuilder {
     }
 
     private <R> R execute(ResultSetHandler<R> resultSetHandler) {
-        query.setSqlNode(builder.build());
+        for (Param p : helper.getParams()) {
+            query.addParameter(p.name, p.paramClass, p.param);
+        }
+        query.setSqlNode(helper.getSqlNode());
         query.prepare();
         SelectCommand<R> command = new SelectCommand<R>(query, resultSetHandler);
         R result = command.execute();
@@ -478,21 +475,21 @@ public class SelectBuilder {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("getSql");
         }
-        query.setSqlNode(builder.build());
+        query.setSqlNode(helper.getSqlNode());
         query.prepare();
         return query.getSql();
     }
 
     private static class SubsequentSelectBuilder extends SelectBuilder {
 
-        private SubsequentSelectBuilder(SqlNodeBuilder builder,
-                SqlSelectQuery query, ParameterIndex parameterIndex) {
-            super(builder, query, parameterIndex);
+        private SubsequentSelectBuilder(BuildingHelper builder,
+                SqlSelectQuery query, ParamIndex paramIndex) {
+            super(builder, query, paramIndex);
         }
 
         @Override
         public SelectBuilder sql(String fragment) {
-            super.builder.appendSql(fragment);
+            super.helper.appendSql(fragment);
             return this;
         }
 

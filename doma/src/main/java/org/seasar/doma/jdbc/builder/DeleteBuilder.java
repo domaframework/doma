@@ -58,25 +58,25 @@ import org.seasar.doma.jdbc.Sql;
  */
 public class DeleteBuilder {
 
-    private final SqlNodeBuilder builder;
+    private final BuildingHelper helper;
 
     private final SqlDeleteQuery query;
 
-    private final ParameterIndex parameterIndex;
+    private final ParamIndex paramIndex;
 
     private DeleteBuilder(Config config) {
-        this.builder = new SqlNodeBuilder();
+        this.helper = new BuildingHelper();
         this.query = new SqlDeleteQuery();
         this.query.setConfig(config);
         this.query.setCallerClassName(getClass().getName());
-        this.parameterIndex = new ParameterIndex();
+        this.paramIndex = new ParamIndex();
     }
 
-    private DeleteBuilder(SqlNodeBuilder builder, SqlDeleteQuery query,
-            ParameterIndex parameterIndex) {
-        this.builder = builder;
+    private DeleteBuilder(BuildingHelper builder, SqlDeleteQuery query,
+            ParamIndex parameterIndex) {
+        this.helper = builder;
         this.query = query;
-        this.parameterIndex = parameterIndex;
+        this.paramIndex = parameterIndex;
     }
 
     /**
@@ -108,22 +108,18 @@ public class DeleteBuilder {
         if (fragment == null) {
             throw new DomaNullPointerException("fragment");
         }
-        builder.appendSqlWithLineSeparator(fragment);
-        return new SubsequentDeleteBuilder(builder, query, parameterIndex);
+        helper.appendSqlWithLineSeparator(fragment);
+        return new SubsequentDeleteBuilder(helper, query, paramIndex);
     }
 
     /**
-     * SQLを切り取ります。
-     * <p>
-     * {@link #sql(String)}で追加したSQLの断片を切り取ります。
+     * 最後に追加したSQLもしくはパラメータを削除します。
      * 
-     * @param length
-     *            長さ
      * @return このインスタンス
      */
-    public DeleteBuilder cutBackSql(int length) {
-        builder.cutBackSql(length);
-        return new SubsequentDeleteBuilder(builder, query, parameterIndex);
+    public DeleteBuilder removeLast() {
+        helper.removeLast();
+        return new SubsequentDeleteBuilder(helper, query, paramIndex);
     }
 
     /**
@@ -133,20 +129,18 @@ public class DeleteBuilder {
      * 
      * @param <P>
      *            パラメータの型
-     * @param parameterClass
+     * @param paramClass
      *            パラメータのクラス
-     * @param parameter
+     * @param param
      *            パラメータ
      * @return このインスタンス
      * @throws DomaNullPointerException
      *             {@code parameterClass} が {@code null} の場合
      */
-    public <P> DeleteBuilder param(Class<P> parameterClass, P parameter) {
-        String parameterName = "p" + parameterIndex.getValue();
-        builder.appendParameter(parameterName);
-        query.addParameter(parameterName, parameterClass, parameter);
-        parameterIndex.increment();
-        return new SubsequentDeleteBuilder(builder, query, parameterIndex);
+    public <P> DeleteBuilder param(Class<P> paramClass, P param) {
+        helper.appendParam(new Param(paramClass, param, paramIndex));
+        paramIndex.increment();
+        return new SubsequentDeleteBuilder(helper, query, paramIndex);
     }
 
     /**
@@ -160,7 +154,10 @@ public class DeleteBuilder {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("execute");
         }
-        query.setSqlNode(builder.build());
+        for (Param p : helper.getParams()) {
+            query.addParameter(p.name, p.paramClass, p.param);
+        }
+        query.setSqlNode(helper.getSqlNode());
         query.prepare();
         DeleteCommand command = new DeleteCommand(query);
         int result = command.execute();
@@ -214,21 +211,21 @@ public class DeleteBuilder {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("getSql");
         }
-        query.setSqlNode(builder.build());
+        query.setSqlNode(helper.getSqlNode());
         query.prepare();
         return query.getSql();
     }
 
     private static class SubsequentDeleteBuilder extends DeleteBuilder {
 
-        private SubsequentDeleteBuilder(SqlNodeBuilder builder,
-                SqlDeleteQuery query, ParameterIndex parameterIndex) {
+        private SubsequentDeleteBuilder(BuildingHelper builder,
+                SqlDeleteQuery query, ParamIndex parameterIndex) {
             super(builder, query, parameterIndex);
         }
 
         @Override
         public DeleteBuilder sql(String fragment) {
-            super.builder.appendSql(fragment);
+            super.helper.appendSql(fragment);
             return this;
         }
 

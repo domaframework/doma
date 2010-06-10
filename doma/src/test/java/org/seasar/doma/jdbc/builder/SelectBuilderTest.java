@@ -33,6 +33,13 @@ import example.entity.Emp;
  */
 public class SelectBuilderTest extends TestCase {
 
+    public void testRmoveLast() throws Exception {
+        SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+        builder.sql("aaa").sql("bbb");
+        builder.removeLast();
+        assertEquals("aaa", builder.getSql().getRawSql());
+    }
+
     public void testSingleResult_Entity() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
         builder.sql("select");

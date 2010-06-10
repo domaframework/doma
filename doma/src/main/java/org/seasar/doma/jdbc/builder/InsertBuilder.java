@@ -57,25 +57,25 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
  */
 public class InsertBuilder {
 
-    private final SqlNodeBuilder builder;
+    private final BuildingHelper helper;
 
     private final SqlInsertQuery query;
 
-    private final ParameterIndex parameterIndex;
+    private final ParamIndex paramIndex;
 
     private InsertBuilder(Config config) {
-        this.builder = new SqlNodeBuilder();
+        this.helper = new BuildingHelper();
         this.query = new SqlInsertQuery();
         this.query.setConfig(config);
         this.query.setCallerClassName(getClass().getName());
-        this.parameterIndex = new ParameterIndex();
+        this.paramIndex = new ParamIndex();
     }
 
-    private InsertBuilder(SqlNodeBuilder builder, SqlInsertQuery query,
-            ParameterIndex parameterIndex) {
-        this.builder = builder;
+    private InsertBuilder(BuildingHelper builder, SqlInsertQuery query,
+            ParamIndex parameterIndex) {
+        this.helper = builder;
         this.query = query;
-        this.parameterIndex = parameterIndex;
+        this.paramIndex = parameterIndex;
     }
 
     /**
@@ -97,32 +97,28 @@ public class InsertBuilder {
     /**
      * SQLの断片を追加します。
      * 
-     * @param fragment
+     * @param sql
      *            SQLの断片
      * @return このインスタンス
      * @throws DomaNullPointerException
      *             引数が {@code null} の場合
      */
-    public InsertBuilder sql(String fragment) {
-        if (fragment == null) {
-            throw new DomaNullPointerException("fragment");
+    public InsertBuilder sql(String sql) {
+        if (sql == null) {
+            throw new DomaNullPointerException("sql");
         }
-        builder.appendSqlWithLineSeparator(fragment);
-        return new SubsequentInsertBuilder(builder, query, parameterIndex);
+        helper.appendSqlWithLineSeparator(sql);
+        return new SubsequentInsertBuilder(helper, query, paramIndex);
     }
 
     /**
-     * SQLを切り取ります。
-     * <p>
-     * {@link #sql(String)}で追加したSQLの断片を切り取ります。
+     * 最後に追加したSQLもしくはパラメータを削除します。
      * 
-     * @param length
-     *            長さ
      * @return このインスタンス
      */
-    public InsertBuilder cutBackSql(int length) {
-        builder.cutBackSql(length);
-        return new SubsequentInsertBuilder(builder, query, parameterIndex);
+    public InsertBuilder removeLast() {
+        helper.removeLast();
+        return new SubsequentInsertBuilder(helper, query, paramIndex);
     }
 
     /**
@@ -132,20 +128,18 @@ public class InsertBuilder {
      * 
      * @param <P>
      *            パラメータの型
-     * @param parameterClass
+     * @param paramClass
      *            パラメータのクラス
-     * @param parameter
+     * @param param
      *            パラメータ
      * @return このインスタンス
      * @throws DomaNullPointerException
      *             {@code parameterClass} が {@code null} の場合
      */
-    public <P> InsertBuilder param(Class<P> parameterClass, P parameter) {
-        String parameterName = "p" + parameterIndex.getValue();
-        builder.appendParameter(parameterName);
-        query.addParameter(parameterName, parameterClass, parameter);
-        parameterIndex.increment();
-        return new SubsequentInsertBuilder(builder, query, parameterIndex);
+    public <P> InsertBuilder param(Class<P> paramClass, P param) {
+        helper.appendParam(new Param(paramClass, param, paramIndex));
+        paramIndex.increment();
+        return new SubsequentInsertBuilder(helper, query, paramIndex);
     }
 
     /**
@@ -161,7 +155,10 @@ public class InsertBuilder {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("execute");
         }
-        query.setSqlNode(builder.build());
+        for (Param p : helper.getParams()) {
+            query.addParameter(p.name, p.paramClass, p.param);
+        }
+        query.setSqlNode(helper.getSqlNode());
         query.prepare();
         InsertCommand command = new InsertCommand(query);
         int result = command.execute();
@@ -215,21 +212,21 @@ public class InsertBuilder {
         if (query.getMethodName() == null) {
             query.setCallerMethodName("getSql");
         }
-        query.setSqlNode(builder.build());
+        query.setSqlNode(helper.getSqlNode());
         query.prepare();
         return query.getSql();
     }
 
     private static class SubsequentInsertBuilder extends InsertBuilder {
 
-        private SubsequentInsertBuilder(SqlNodeBuilder builder,
-                SqlInsertQuery query, ParameterIndex parameterIndex) {
+        private SubsequentInsertBuilder(BuildingHelper builder,
+                SqlInsertQuery query, ParamIndex parameterIndex) {
             super(builder, query, parameterIndex);
         }
 
         @Override
         public InsertBuilder sql(String fragment) {
-            super.builder.appendSql(fragment);
+            super.helper.appendSql(fragment);
             return this;
         }
 

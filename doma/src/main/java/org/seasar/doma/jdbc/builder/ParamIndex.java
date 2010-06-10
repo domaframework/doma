@@ -19,7 +19,7 @@ package org.seasar.doma.jdbc.builder;
  * @author taedium
  * 
  */
-class ParameterIndex {
+class ParamIndex {
 
     private int value = 1;
 
