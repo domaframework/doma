@@ -40,7 +40,7 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
  * builder.sql(&quot;name = &quot;).param(String.class, &quot;SMIHT&quot;).sql(&quot;,&quot;);
  * builder.sql(&quot;salary = &quot;).param(BigDecimal.class, new BigDecimal(&quot;1000&quot;));
  * builder.sql(&quot;where&quot;);
- * builder.sql(&quot;id = &quot;).param(int.class, 10);
+ * builder.sql(&quot;id = &quot;).param(int.class, 1000);
  * builder.execute();
  * </pre>
  * 

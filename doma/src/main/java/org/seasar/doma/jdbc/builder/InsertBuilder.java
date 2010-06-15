@@ -48,7 +48,7 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
  * <pre>
  * insert into Emp
  * (name, salary)
- * values('SMITH', 100)
+ * values('SMITH', 1000)
  * </pre>
  * 
  * 

@@ -49,7 +49,7 @@ import org.seasar.doma.jdbc.Sql;
  * where
  * name = 'SMITH'
  * and
- * salary = 10
+ * salary = 1000
  * </pre>
  * 
  * 
