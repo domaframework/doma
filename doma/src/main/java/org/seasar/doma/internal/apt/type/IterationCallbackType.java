@@ -106,7 +106,8 @@ public class IterationCallbackType extends AbstractDataType {
             return TypeMirrorUtil.toDeclaredType(type, env);
         }
         for (TypeMirror supertype : env.getTypeUtils().directSupertypes(type)) {
-            if (TypeMirrorUtil.isSameType(supertype, IterationCallback.class, env)) {
+            if (TypeMirrorUtil.isSameType(supertype, IterationCallback.class,
+                    env)) {
                 return TypeMirrorUtil.toDeclaredType(supertype, env);
             }
             getIterationCallbackDeclaredType(supertype, env);

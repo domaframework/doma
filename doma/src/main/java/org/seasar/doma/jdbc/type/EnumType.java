@@ -63,8 +63,8 @@ public class EnumType<E extends Enum<E>> extends AbstractJdbcType<E> {
         try {
             return Enum.valueOf(enumClass, value);
         } catch (IllegalArgumentException e) {
-            throw new JdbcException(Message.DOMA2040, enumClass
-                    .getName(), value);
+            throw new JdbcException(Message.DOMA2040, enumClass.getName(),
+                    value);
         }
     }
 
@@ -84,8 +84,8 @@ public class EnumType<E extends Enum<E>> extends AbstractJdbcType<E> {
         try {
             return Enum.valueOf(enumClass, value);
         } catch (IllegalArgumentException e) {
-            throw new JdbcException(Message.DOMA2040, enumClass
-                    .getName(), value);
+            throw new JdbcException(Message.DOMA2040, enumClass.getName(),
+                    value);
         }
     }
 

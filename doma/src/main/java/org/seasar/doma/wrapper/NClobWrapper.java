@@ -60,8 +60,7 @@ public class NClobWrapper extends AbstractWrapper<NClob> {
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof NClobWrapperVisitor<?, ?, ?>) {
-            @SuppressWarnings("unchecked")
-            NClobWrapperVisitor<R, P, TH> v = (NClobWrapperVisitor) visitor;
+            NClobWrapperVisitor<R, P, TH> v = (NClobWrapperVisitor<R, P, TH>) visitor;
             return v.visitNClobWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);

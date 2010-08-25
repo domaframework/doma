@@ -48,8 +48,7 @@ public class WhereClauseNode extends AbstractClauseNode {
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof WhereClauseNodeVisitor<?, ?>) {
-            @SuppressWarnings("unchecked")
-            WhereClauseNodeVisitor<R, P> v = (WhereClauseNodeVisitor) visitor;
+            WhereClauseNodeVisitor<R, P> v = (WhereClauseNodeVisitor<R, P>) visitor;
             return v.visitWhereClauseNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

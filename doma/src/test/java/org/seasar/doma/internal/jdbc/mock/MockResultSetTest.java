@@ -17,10 +17,6 @@ package org.seasar.doma.internal.jdbc.mock;
 
 import java.math.BigDecimal;
 
-import org.seasar.doma.internal.jdbc.mock.MockResultSet;
-import org.seasar.doma.internal.jdbc.mock.RowData;
-
-
 import junit.framework.TestCase;
 
 public class MockResultSetTest extends TestCase {

@@ -76,16 +76,16 @@ public class AutoBatchDeleteQueryTest extends TestCase {
         query.prepare();
 
         PreparedSql sql = query.getSqls().get(0);
-        assertEquals("delete from EMP where ID = ? and VERSION = ?", sql
-                .getRawSql());
+        assertEquals("delete from EMP where ID = ? and VERSION = ?",
+                sql.getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(2, parameters.size());
         assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
         assertTrue(parameters.get(1).getWrapper().get() == null);
 
         sql = query.getSqls().get(1);
-        assertEquals("delete from EMP where ID = ? and VERSION = ?", sql
-                .getRawSql());
+        assertEquals("delete from EMP where ID = ? and VERSION = ?",
+                sql.getRawSql());
         parameters = sql.getParameters();
         assertEquals(2, parameters.size());
         assertEquals(new Integer(20), parameters.get(0).getWrapper().get());

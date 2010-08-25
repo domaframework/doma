@@ -39,6 +39,7 @@ public class AndOperatorNode implements LogicalBinaryOperatorNode {
         this.expression = expression;
     }
 
+    @Override
     public ExpressionNode getLeftNode() {
         return leftNode;
     }
@@ -47,6 +48,7 @@ public class AndOperatorNode implements LogicalBinaryOperatorNode {
         this.leftNode = leftNode;
     }
 
+    @Override
     public ExpressionNode getRightNode() {
         return rightNode;
     }
@@ -65,10 +67,12 @@ public class AndOperatorNode implements LogicalBinaryOperatorNode {
         return visitor.visitAndOperatorNode(this, p);
     }
 
+    @Override
     public ExpressionLocation getLocation() {
         return location;
     }
 
+    @Override
     public String getExpression() {
         return expression;
     }

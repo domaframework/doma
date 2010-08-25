@@ -28,6 +28,7 @@ public interface BatchModifyQuery extends Query {
 
     List<PreparedSql> getSqls();
 
+    @Override
     PreparedSql getSql();
 
     boolean isOptimisticLockCheckRequired();

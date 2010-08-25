@@ -34,8 +34,7 @@ public class SqlFileScriptQueryTest extends TestCase {
         query.setConfig(config);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query
-                .setScriptFilePath("META-INF/org/seasar/doma/internal/jdbc/query/SqlFileScriptQueryTest/testPrepare.script");
+        query.setScriptFilePath("META-INF/org/seasar/doma/internal/jdbc/query/SqlFileScriptQueryTest/testPrepare.script");
         query.setBlockDelimiter("");
         query.prepare();
 
@@ -55,8 +54,7 @@ public class SqlFileScriptQueryTest extends TestCase {
         query.setConfig(config);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
-        query
-                .setScriptFilePath("META-INF/org/seasar/doma/internal/jdbc/query/SqlFileScriptQueryTest/testPrepare_dbmsSpecific.script");
+        query.setScriptFilePath("META-INF/org/seasar/doma/internal/jdbc/query/SqlFileScriptQueryTest/testPrepare_dbmsSpecific.script");
         query.setBlockDelimiter("");
         query.prepare();
 

@@ -56,8 +56,7 @@ public class BigIntegerWrapper extends AbstractWrapper<BigInteger> implements
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof BigIntegerWrapperVisitor<?, ?, ?>) {
-            @SuppressWarnings("unchecked")
-            BigIntegerWrapperVisitor<R, P, TH> v = (BigIntegerWrapperVisitor) visitor;
+            BigIntegerWrapperVisitor<R, P, TH> v = (BigIntegerWrapperVisitor<R, P, TH>) visitor;
             return v.visitBigIntegerWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);

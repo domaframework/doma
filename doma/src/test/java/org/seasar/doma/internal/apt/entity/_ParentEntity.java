@@ -30,6 +30,7 @@ public class _ParentEntity extends AbstractEntityType<ParentEntity> {
     public BasicPropertyType<ParentEntity, Integer> aaa = new BasicPropertyType<ParentEntity, Integer>(
             Integer.class, "aaa", "AAA", true, true) {
 
+        @Override
         public Wrapper<Integer> getWrapper(ParentEntity entity) {
             return null;
         }
@@ -38,6 +39,7 @@ public class _ParentEntity extends AbstractEntityType<ParentEntity> {
     public BasicPropertyType<ParentEntity, Integer> bbb = new BasicPropertyType<ParentEntity, Integer>(
             Integer.class, "bbb", "BBB", true, true) {
 
+        @Override
         public Wrapper<Integer> getWrapper(ParentEntity entity) {
             return null;
         }

@@ -24,6 +24,7 @@ import org.seasar.doma.jdbc.SqlExecutionSkipCause;
  */
 public interface ModifyQuery extends Query {
 
+    @Override
     PreparedSql getSql();
 
     boolean isOptimisticLockCheckRequired();
@@ -33,7 +34,5 @@ public interface ModifyQuery extends Query {
     boolean isExecutable();
 
     SqlExecutionSkipCause getSqlExecutionSkipCause();
-
-    void complete();
 
 }

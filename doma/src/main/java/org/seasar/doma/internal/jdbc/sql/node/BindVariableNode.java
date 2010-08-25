@@ -82,8 +82,7 @@ public class BindVariableNode extends AbstractSqlNode {
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof BindVariableNodeVisitor<?, ?>) {
-            @SuppressWarnings("unchecked")
-            BindVariableNodeVisitor<R, P> v = (BindVariableNodeVisitor) visitor;
+            BindVariableNodeVisitor<R, P> v = (BindVariableNodeVisitor<R, P>) visitor;
             return v.visitBindVariableNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

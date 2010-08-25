@@ -76,8 +76,7 @@ public class EnumWrapper<E extends Enum<E>> extends AbstractWrapper<E> {
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof EnumWrapperVisitor<?, ?, ?>) {
-            @SuppressWarnings("unchecked")
-            EnumWrapperVisitor<R, P, TH> v = (EnumWrapperVisitor) visitor;
+            EnumWrapperVisitor<R, P, TH> v = (EnumWrapperVisitor<R, P, TH>) visitor;
             return v.visitEnumWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);

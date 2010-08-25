@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.internal.message;
 
-import org.seasar.doma.internal.message.Message;
-
 import junit.framework.TestCase;
 
 /**

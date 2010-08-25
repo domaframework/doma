@@ -292,7 +292,7 @@ public class ExpressionTokenizerTest extends TestCase {
         ExpressionTokenizer tokenizer = new ExpressionTokenizer(
                 "@java.lang.String@CASE_INSENSITIVE_ORDER ");
         assertEquals(STATIC_FIELD_OPERATOR, tokenizer.next());
-        assertEquals("@java.lang.String@CASE_INSENSITIVE_ORDER", tokenizer
-                .getToken());
+        assertEquals("@java.lang.String@CASE_INSENSITIVE_ORDER",
+                tokenizer.getToken());
     }
 }

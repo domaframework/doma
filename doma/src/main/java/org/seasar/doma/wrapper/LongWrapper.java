@@ -59,8 +59,7 @@ public class LongWrapper extends AbstractWrapper<Long> implements
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof LongWrapperVisitor<?, ?, ?>) {
-            @SuppressWarnings("unchecked")
-            LongWrapperVisitor<R, P, TH> v = (LongWrapperVisitor) visitor;
+            LongWrapperVisitor<R, P, TH> v = (LongWrapperVisitor<R, P, TH>) visitor;
             return v.visitLongWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);

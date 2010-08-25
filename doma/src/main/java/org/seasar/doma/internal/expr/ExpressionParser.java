@@ -136,8 +136,8 @@ public class ExpressionParser {
             }
             case ILLEGAL_NUMBER_LITERAL: {
                 ExpressionLocation location = getLocation();
-                throw new ExpressionException(Message.DOMA3012, location
-                        .getExpression(), location.getPosition(), token);
+                throw new ExpressionException(Message.DOMA3012,
+                        location.getExpression(), location.getPosition(), token);
             }
             case TRUE_LITERAL: {
                 parseTrueLiteral();
@@ -236,8 +236,8 @@ public class ExpressionParser {
             }
             case OTHER: {
                 ExpressionLocation location = getLocation();
-                throw new ExpressionException(Message.DOMA3011, location
-                        .getExpression(), location.getPosition(), token);
+                throw new ExpressionException(Message.DOMA3011,
+                        location.getExpression(), location.getPosition(), token);
             }
             case EOE: {
                 break outer;
@@ -267,8 +267,8 @@ public class ExpressionParser {
         ExpressionNode childExpressionNode = parser.parse();
         if (parser.tokenType != CLOSED_PARENS) {
             ExpressionLocation location = getLocation();
-            throw new ExpressionException(Message.DOMA3026, location
-                    .getExpression(), location.getPosition());
+            throw new ExpressionException(Message.DOMA3026,
+                    location.getExpression(), location.getPosition());
         }
         int end = start + parser.tokenizer.getPosition();
         tokenizer.setPosition(end, true);

@@ -46,6 +46,7 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
         super(entityType);
     }
 
+    @Override
     public void prepare() {
         assertNotNull(config, entityType, entity, callerClassName,
                 callerMethodName);

@@ -31,6 +31,7 @@ public class ArrayCreateQuery extends AbstractCreateQuery<Array> {
 
     protected Object[] elements;
 
+    @Override
     public void prepare() {
         assertNotNull(config, callerClassName, callerMethodName, typeName,
                 elements);

@@ -116,15 +116,15 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
             if (!isBindable(typeDeclaration)) {
                 throw new AptException(Message.DOMA4153, env, methodElement,
                         path, location.getSql(), location.getLineNumber(),
-                        location.getPosition(), variableName, typeDeclaration
-                                .getQualifiedName());
+                        location.getPosition(), variableName,
+                        typeDeclaration.getQualifiedName());
             }
         } else {
             if (!isBindableIterable(typeDeclaration)) {
                 throw new AptException(Message.DOMA4161, env, methodElement,
                         path, location.getSql(), location.getLineNumber(),
-                        location.getPosition(), variableName, typeDeclaration
-                                .getQualifiedName());
+                        location.getPosition(), variableName,
+                        typeDeclaration.getQualifiedName());
             }
         }
         visitNode(node, p);
@@ -179,9 +179,9 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
                 expression);
         if (!typeDeclaration.isBooleanType()) {
             throw new AptException(Message.DOMA4140, env, methodElement, path,
-                    location.getSql(), location.getLineNumber(), location
-                            .getPosition(), expression, typeDeclaration
-                            .getQualifiedName());
+                    location.getSql(), location.getLineNumber(),
+                    location.getPosition(), expression,
+                    typeDeclaration.getQualifiedName());
         }
         visitNode(node, p);
         return null;
@@ -195,9 +195,9 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
                 expression);
         if (!typeDeclaration.isBooleanType()) {
             throw new AptException(Message.DOMA4141, env, methodElement, path,
-                    location.getSql(), location.getLineNumber(), location
-                            .getPosition(), expression, typeDeclaration
-                            .getQualifiedName());
+                    location.getSql(), location.getLineNumber(),
+                    location.getPosition(), expression,
+                    typeDeclaration.getQualifiedName());
         }
         visitNode(node, p);
         return null;
@@ -213,18 +213,18 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
         TypeMirror typeMirror = typeDeclaration.getType();
         if (!TypeMirrorUtil.isAssignable(typeMirror, Iterable.class, env)) {
             throw new AptException(Message.DOMA4149, env, methodElement, path,
-                    location.getSql(), location.getLineNumber(), location
-                            .getPosition(), expression, typeDeclaration
-                            .getQualifiedName());
+                    location.getSql(), location.getLineNumber(),
+                    location.getPosition(), expression,
+                    typeDeclaration.getQualifiedName());
         }
         DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(typeMirror,
                 env);
         List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
         if (typeArgs.isEmpty()) {
             throw new AptException(Message.DOMA4150, env, methodElement, path,
-                    location.getSql(), location.getLineNumber(), location
-                            .getPosition(), expression, typeDeclaration
-                            .getQualifiedName());
+                    location.getSql(), location.getLineNumber(),
+                    location.getPosition(), expression,
+                    typeDeclaration.getQualifiedName());
         }
 
         TypeMirror originalIdentifierType = expressionValidator
@@ -233,13 +233,13 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
         String hasNextVariable = identifier + ForBlockNode.HAS_NEXT_SUFFIX;
         TypeMirror originalHasNextType = expressionValidator
                 .removeParameterType(hasNextVariable);
-        expressionValidator.putParameterType(hasNextVariable, TypeMirrorUtil
-                .getTypeMirror(boolean.class, env));
+        expressionValidator.putParameterType(hasNextVariable,
+                TypeMirrorUtil.getTypeMirror(boolean.class, env));
         String indexVariable = identifier + ForBlockNode.INDEX_SUFFIX;
         TypeMirror originalIndexType = expressionValidator
                 .removeParameterType(indexVariable);
-        expressionValidator.putParameterType(indexVariable, TypeMirrorUtil
-                .getTypeMirror(int.class, env));
+        expressionValidator.putParameterType(indexVariable,
+                TypeMirrorUtil.getTypeMirror(int.class, env));
         visitNode(node, p);
         if (originalIdentifierType == null) {
             expressionValidator.removeParameterType(identifier);
@@ -284,8 +284,8 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
             throw e;
         } catch (AptException e) {
             throw new AptException(Message.DOMA4092, env, methodElement, path,
-                    location.getSql(), location.getLineNumber(), location
-                            .getPosition(), e.getMessage());
+                    location.getSql(), location.getLineNumber(),
+                    location.getPosition(), e.getMessage());
         }
     }
 
@@ -296,8 +296,8 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
             return parser.parse();
         } catch (ExpressionException e) {
             throw new AptException(Message.DOMA4092, env, methodElement, path,
-                    location.getSql(), location.getLineNumber(), location
-                            .getPosition(), e.getMessage());
+                    location.getSql(), location.getLineNumber(),
+                    location.getPosition(), e.getMessage());
         }
     }
 }

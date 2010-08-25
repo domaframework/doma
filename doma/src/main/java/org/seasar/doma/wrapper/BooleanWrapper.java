@@ -53,8 +53,7 @@ public class BooleanWrapper extends AbstractWrapper<Boolean> {
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof BooleanWrapperVisitor<?, ?, ?>) {
-            @SuppressWarnings("unchecked")
-            BooleanWrapperVisitor<R, P, TH> v = (BooleanWrapperVisitor) visitor;
+            BooleanWrapperVisitor<R, P, TH> v = (BooleanWrapperVisitor<R, P, TH>) visitor;
             return v.visitBooleanWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);

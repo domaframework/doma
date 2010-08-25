@@ -27,4 +27,27 @@ public class DomaNullPointerExceptionTest extends TestCase {
         DomaNullPointerException e = new DomaNullPointerException("aaa");
         assertEquals("aaa", e.getParameterName());
     }
+
+    public void testGenerics() throws Exception {
+        hoge(new A());
+        hoge(new B());
+        hoge(new C());
+    }
+
+    private <T> T hoge(T t) {
+        return t;
+    }
+
+    private A hoge(A a) {
+        return a;
+    }
+
+    static class A {
+    }
+
+    static class B extends A {
+    }
+
+    static class C {
+    }
 }

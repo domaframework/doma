@@ -57,6 +57,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         this.queryMetaFactories.addAll(commandMetaFactories);
     }
 
+    @Override
     public DaoMeta createTypeElementMeta(TypeElement interfaceElement) {
         assertNotNull(interfaceElement);
         DaoMirror daoMirror = DaoMirror.newInstance(interfaceElement, env);
@@ -115,28 +116,30 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
                             "failed to convert to TypeElement.");
                 }
                 if (configElement.getModifiers().contains(Modifier.ABSTRACT)) {
-                    throw new AptException(Message.DOMA4163, env, daoMeta
-                            .getDaoElement(), daoMirror.getAnnotationMirror(),
-                            daoMirror.getConfig(), configElement
-                                    .getQualifiedName());
+                    throw new AptException(Message.DOMA4163, env,
+                            daoMeta.getDaoElement(),
+                            daoMirror.getAnnotationMirror(),
+                            daoMirror.getConfig(),
+                            configElement.getQualifiedName());
                 }
                 ExecutableElement constructor = ElementUtil
                         .getNoArgConstructor(configElement, env);
                 if (constructor == null
                         || !constructor.getModifiers()
                                 .contains(Modifier.PUBLIC)) {
-                    throw new AptException(Message.DOMA4164, env, daoMeta
-                            .getDaoElement(), daoMirror.getAnnotationMirror(),
-                            daoMirror.getConfig(), configElement
-                                    .getQualifiedName());
+                    throw new AptException(Message.DOMA4164, env,
+                            daoMeta.getDaoElement(),
+                            daoMirror.getAnnotationMirror(),
+                            daoMirror.getConfig(),
+                            configElement.getQualifiedName());
                 }
             }
         } else {
             if (daoMirror.hasUserDefinedConfig()) {
-                throw new AptException(Message.DOMA4165, env, daoMeta
-                        .getDaoElement(), daoMirror.getAnnotationMirror(),
-                        daoMirror.getConfig(), annotateWithMirror
-                                .getOwnerElement());
+                throw new AptException(Message.DOMA4165, env,
+                        daoMeta.getDaoElement(),
+                        daoMirror.getAnnotationMirror(), daoMirror.getConfig(),
+                        annotateWithMirror.getOwnerElement());
             }
             daoMeta.setAnnotateWithMirror(annotateWithMirror);
         }
@@ -172,9 +175,9 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
             if (typeElement.getAnnotation(DaoMethod.class) != null) {
                 if (foundAnnotationTypeElement != null) {
                     throw new AptException(Message.DOMA4086, env,
-                            methodElement, foundAnnotationTypeElement
-                                    .getQualifiedName(), typeElement
-                                    .getQualifiedName());
+                            methodElement,
+                            foundAnnotationTypeElement.getQualifiedName(),
+                            typeElement.getQualifiedName());
                 }
                 foundAnnotationTypeElement = typeElement;
             }

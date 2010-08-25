@@ -365,14 +365,11 @@ public class SqlTokenizer {
                                                             type = ELSEIF_BLOCK_COMMENT;
                                                         }
                                                     } else {
-                                                        buf
-                                                                .position(buf
-                                                                        .position() - 6);
+                                                        buf.position(buf
+                                                                .position() - 6);
                                                     }
                                                 } else {
-                                                    buf
-                                                            .position(buf
-                                                                    .position() - 5);
+                                                    buf.position(buf.position() - 5);
                                                 }
                                             }
                                         }

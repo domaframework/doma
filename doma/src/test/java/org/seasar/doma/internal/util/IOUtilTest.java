@@ -18,8 +18,6 @@ package org.seasar.doma.internal.util;
 import java.io.Closeable;
 import java.io.IOException;
 
-import org.seasar.doma.internal.util.IOUtil;
-
 import junit.framework.TestCase;
 
 /**

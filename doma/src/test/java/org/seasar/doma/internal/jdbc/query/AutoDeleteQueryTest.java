@@ -37,7 +37,8 @@ public class AutoDeleteQueryTest extends TestCase {
     public void testPrepare() throws Exception {
         Emp emp = new Emp();
 
-        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
+        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(
+                _Emp.getSingletonInternal());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
@@ -54,7 +55,8 @@ public class AutoDeleteQueryTest extends TestCase {
         emp.setName("aaa");
         emp.setVersion(100);
 
-        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
+        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(
+                _Emp.getSingletonInternal());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
@@ -62,8 +64,8 @@ public class AutoDeleteQueryTest extends TestCase {
         query.prepare();
 
         PreparedSql sql = query.getSql();
-        assertEquals("delete from EMP where ID = ? and VERSION = ?", sql
-                .getRawSql());
+        assertEquals("delete from EMP where ID = ? and VERSION = ?",
+                sql.getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(2, parameters.size());
         assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
@@ -76,7 +78,8 @@ public class AutoDeleteQueryTest extends TestCase {
         emp.setName("aaa");
         emp.setVersion(100);
 
-        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
+        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(
+                _Emp.getSingletonInternal());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setVersionIgnored(true);

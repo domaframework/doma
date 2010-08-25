@@ -56,8 +56,7 @@ public class CommentNode extends AbstractSqlNode {
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof WordNodeVisitor<?, ?>) {
-            @SuppressWarnings("unchecked")
-            CommentNodeVisitor<R, P> v = (CommentNodeVisitor) visitor;
+            CommentNodeVisitor<R, P> v = (CommentNodeVisitor<R, P>) visitor;
             return v.visitCommentNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

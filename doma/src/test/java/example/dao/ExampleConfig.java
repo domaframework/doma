@@ -22,7 +22,6 @@ import org.seasar.doma.jdbc.DomaAbstractConfig;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
 
-
 /**
  * @author taedium
  * 

@@ -59,8 +59,7 @@ public class ShortWrapper extends AbstractWrapper<Short> implements
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof ShortWrapperVisitor<?, ?, ?>) {
-            @SuppressWarnings("unchecked")
-            ShortWrapperVisitor<R, P, TH> v = (ShortWrapperVisitor) visitor;
+            ShortWrapperVisitor<R, P, TH> v = (ShortWrapperVisitor<R, P, TH>) visitor;
             return v.visitShortWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);

@@ -214,6 +214,7 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
         return executionSkipCause;
     }
 
+    @Override
     public int getQueryTimeout() {
         return queryTimeout;
     }

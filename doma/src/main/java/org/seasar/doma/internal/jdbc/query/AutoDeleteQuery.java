@@ -37,6 +37,7 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
         super(entityType);
     }
 
+    @Override
     public void prepare() {
         assertNotNull(config, entityType, callerClassName, callerMethodName);
         executable = true;

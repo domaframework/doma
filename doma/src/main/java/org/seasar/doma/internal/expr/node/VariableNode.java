@@ -30,6 +30,7 @@ public class VariableNode implements ExpressionNode {
         this.expression = expression;
     }
 
+    @Override
     public String getExpression() {
         return expression;
     }
@@ -39,6 +40,7 @@ public class VariableNode implements ExpressionNode {
         return visitor.visitVariableNode(this, p);
     }
 
+    @Override
     public ExpressionLocation getLocation() {
         return location;
     }

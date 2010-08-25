@@ -272,12 +272,14 @@ public class PostgresDialect extends StandardDialect {
 
         protected boolean inBlock;
 
+        @Override
         public void addKeyword(String keyword) {
             if ("$$".equals(keyword)) {
                 inBlock = !inBlock;
             }
         }
 
+        @Override
         public boolean isInBlock() {
             return inBlock;
         }

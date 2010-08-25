@@ -86,8 +86,8 @@ public class SqlFileSelectQueryMetaFactory extends
                     || !env.getTypeUtils().isSameType(returnMeta.getType(),
                             callbackReturnType.getTypeMirror())) {
                 throw new AptException(Message.DOMA4055, env, method,
-                        returnMeta.getType(), callbackReturnType
-                                .getTypeNameAsTypeParameter());
+                        returnMeta.getType(),
+                        callbackReturnType.getTypeNameAsTypeParameter());
             }
         } else {
             returnMeta.getDataType().accept(
@@ -97,8 +97,8 @@ public class SqlFileSelectQueryMetaFactory extends
                         protected Void defaultAction(DataType type, Void p)
                                 throws RuntimeException {
                             throw new AptException(Message.DOMA4008, env,
-                                    returnMeta.getElement(), returnMeta
-                                            .getType());
+                                    returnMeta.getElement(),
+                                    returnMeta.getType());
                         }
 
                         @Override
@@ -118,8 +118,8 @@ public class SqlFileSelectQueryMetaFactory extends
                                 throws RuntimeException {
                             if (dataType.isAbstract()) {
                                 throw new AptException(Message.DOMA4154, env,
-                                        returnMeta.getElement(), dataType
-                                                .getQualifiedName());
+                                        returnMeta.getElement(),
+                                        dataType.getQualifiedName());
                             }
                             return null;
                         }
@@ -130,57 +130,48 @@ public class SqlFileSelectQueryMetaFactory extends
                             if (!dataType.isList()) {
                                 defaultAction(dataType, p);
                             }
-                            dataType
-                                    .getElementType()
-                                    .accept(
-                                            new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+                            dataType.getElementType()
+                                    .accept(new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
 
-                                                @Override
-                                                protected Void defaultAction(
-                                                        DataType type, Void p)
-                                                        throws RuntimeException {
-                                                    throw new AptException(
-                                                            Message.DOMA4007,
-                                                            env,
-                                                            returnMeta
-                                                                    .getElement(),
-                                                            type.getTypeName());
-                                                }
+                                        @Override
+                                        protected Void defaultAction(
+                                                DataType type, Void p)
+                                                throws RuntimeException {
+                                            throw new AptException(
+                                                    Message.DOMA4007, env,
+                                                    returnMeta.getElement(),
+                                                    type.getTypeName());
+                                        }
 
-                                                @Override
-                                                public Void visitBasicType(
-                                                        BasicType dataType,
-                                                        Void p)
-                                                        throws RuntimeException {
-                                                    return null;
-                                                }
+                                        @Override
+                                        public Void visitBasicType(
+                                                BasicType dataType, Void p)
+                                                throws RuntimeException {
+                                            return null;
+                                        }
 
-                                                @Override
-                                                public Void visitDomainType(
-                                                        DomainType dataType,
-                                                        Void p)
-                                                        throws RuntimeException {
-                                                    return null;
-                                                }
+                                        @Override
+                                        public Void visitDomainType(
+                                                DomainType dataType, Void p)
+                                                throws RuntimeException {
+                                            return null;
+                                        }
 
-                                                @Override
-                                                public Void visitEntityType(
-                                                        EntityType dataType,
-                                                        Void p)
-                                                        throws RuntimeException {
-                                                    if (dataType.isAbstract()) {
-                                                        throw new AptException(
-                                                                Message.DOMA4155,
-                                                                env,
-                                                                returnMeta
-                                                                        .getElement(),
-                                                                dataType
-                                                                        .getTypeMirror());
-                                                    }
-                                                    return null;
-                                                }
+                                        @Override
+                                        public Void visitEntityType(
+                                                EntityType dataType, Void p)
+                                                throws RuntimeException {
+                                            if (dataType.isAbstract()) {
+                                                throw new AptException(
+                                                        Message.DOMA4155,
+                                                        env,
+                                                        returnMeta.getElement(),
+                                                        dataType.getTypeMirror());
+                                            }
+                                            return null;
+                                        }
 
-                                            }, p);
+                                    }, p);
 
                             return null;
                         }
@@ -205,33 +196,27 @@ public class SqlFileSelectQueryMetaFactory extends
                                 throw new AptException(Message.DOMA4054, env,
                                         parameterMeta.getElement());
                             }
-                            dataType
-                                    .getTargetType()
-                                    .accept(
-                                            new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+                            dataType.getTargetType()
+                                    .accept(new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
 
-                                                @Override
-                                                public Void visitEntityType(
-                                                        EntityType dataType,
-                                                        Void p)
-                                                        throws RuntimeException {
-                                                    if (dataType.isAbstract()) {
-                                                        throw new AptException(
-                                                                Message.DOMA4158,
-                                                                env,
-                                                                parameterMeta
-                                                                        .getElement(),
-                                                                dataType
-                                                                        .getTypeName());
-                                                    }
-                                                    return null;
-                                                }
+                                        @Override
+                                        public Void visitEntityType(
+                                                EntityType dataType, Void p)
+                                                throws RuntimeException {
+                                            if (dataType.isAbstract()) {
+                                                throw new AptException(
+                                                        Message.DOMA4158, env,
+                                                        parameterMeta
+                                                                .getElement(),
+                                                        dataType.getTypeName());
+                                            }
+                                            return null;
+                                        }
 
-                                            }, null);
+                                    }, null);
                             queryMeta.setIterationCallbackType(dataType);
-                            queryMeta
-                                    .setIterationCallbackPrameterName(parameterMeta
-                                            .getName());
+                            queryMeta.setIterationCallbackPrameterName(parameterMeta
+                                    .getName());
                             return null;
                         }
 
@@ -244,9 +229,8 @@ public class SqlFileSelectQueryMetaFactory extends
                                         parameterMeta.getElement());
                             }
                             queryMeta.setSelectOptionsType(dataType);
-                            queryMeta
-                                    .setSelectOptionsParameterName(parameterMeta
-                                            .getName());
+                            queryMeta.setSelectOptionsParameterName(parameterMeta
+                                    .getName());
                             return null;
                         }
 
@@ -265,8 +249,8 @@ public class SqlFileSelectQueryMetaFactory extends
             if (queryMeta.getIterationCallbackType() != null) {
                 SelectMirror selectMirror = queryMeta.getSelectMirror();
                 throw new AptException(Message.DOMA4057, env, method,
-                        selectMirror.getAnnotationMirror(), selectMirror
-                                .getIterate());
+                        selectMirror.getAnnotationMirror(),
+                        selectMirror.getIterate());
             }
         }
     }

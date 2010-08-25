@@ -91,8 +91,8 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
                 SqlKind.SELECT, "dummyPath", evaluator);
         PreparedSql sql = builder.build(root);
-        assertEquals("select * from aaa where bbb = ? and ccc = ?", sql
-                .getRawSql());
+        assertEquals("select * from aaa where bbb = ? and ccc = ?",
+                sql.getRawSql());
         assertEquals(2, sql.getParameters().size());
         assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
         assertEquals(new BigDecimal(100), sql.getParameters().get(1)
@@ -242,8 +242,8 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
                 "dummyPath", evaluator).build(sqlNode);
-        assertEquals("select * from aaa   order by bbb for update", sql
-                .getRawSql());
+        assertEquals("select * from aaa   order by bbb for update",
+                sql.getRawSql());
     }
 
     public void testAndNode() throws Exception {
@@ -289,8 +289,8 @@ public class NodePreparedSqlBuilderTest extends TestCase {
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
                 SqlKind.SELECT, "dummyPath", evaluator);
         PreparedSql sql = builder.build(statement);
-        assertEquals("select * from aaa where bbb = ccc and ddd = eee", sql
-                .getRawSql());
+        assertEquals("select * from aaa where bbb = ccc and ddd = eee",
+                sql.getRawSql());
     }
 
     public void testAndNode_remove() throws Exception {

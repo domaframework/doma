@@ -42,6 +42,7 @@ public class ParensNode implements ExpressionNode {
         return visitor.visitParensNode(this, p);
     }
 
+    @Override
     public ExpressionLocation getLocation() {
         return location;
     }

@@ -86,8 +86,8 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
         query.prepare();
 
         PreparedSql sql = query.getSqls().get(0);
-        assertEquals("update emp set name = ?, salary = ? where id = ?", sql
-                .getRawSql());
+        assertEquals("update emp set name = ?, salary = ? where id = ?",
+                sql.getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals("aaa", parameters.get(0).getWrapper().get());
@@ -95,8 +95,8 @@ public class SqlFileBatchUpdateQueryTest extends TestCase {
         assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
 
         sql = query.getSqls().get(1);
-        assertEquals("update emp set name = ?, salary = ? where id = ?", sql
-                .getRawSql());
+        assertEquals("update emp set name = ?, salary = ? where id = ?",
+                sql.getRawSql());
         parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertNull(parameters.get(0).getWrapper().get());

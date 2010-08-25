@@ -42,8 +42,8 @@ public final class ConstructorUtil {
     }
 
     public static String createSignature(Constructor<?> constructor) {
-        return createSignature(constructor.getDeclaringClass(), constructor
-                .getParameterTypes());
+        return createSignature(constructor.getDeclaringClass(),
+                constructor.getParameterTypes());
     }
 
     public static String createSignature(Class<?> clazz, Class<?>[] paramTypes) {

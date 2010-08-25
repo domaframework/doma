@@ -68,8 +68,7 @@ public class ElseifNode extends AbstractSqlNode implements SpaceStrippingNode {
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof ElseifNodeVisitor<?, ?>) {
-            @SuppressWarnings("unchecked")
-            ElseifNodeVisitor<R, P> v = (ElseifNodeVisitor) visitor;
+            ElseifNodeVisitor<R, P> v = (ElseifNodeVisitor<R, P>) visitor;
             return v.visitElseifNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

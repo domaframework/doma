@@ -61,8 +61,7 @@ public class TimestampWrapper extends AbstractWrapper<Timestamp> {
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof TimestampWrapperVisitor<?, ?, ?>) {
-            @SuppressWarnings("unchecked")
-            TimestampWrapperVisitor<R, P, TH> v = (TimestampWrapperVisitor) visitor;
+            TimestampWrapperVisitor<R, P, TH> v = (TimestampWrapperVisitor<R, P, TH>) visitor;
             return v.visitTimestampWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);

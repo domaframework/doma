@@ -23,7 +23,6 @@ import javax.sql.DataSource;
 
 import org.seasar.doma.internal.util.AssertionUtil;
 
-
 /**
  * 
  * @author taedium

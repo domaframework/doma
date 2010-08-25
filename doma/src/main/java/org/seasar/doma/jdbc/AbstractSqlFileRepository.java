@@ -36,6 +36,7 @@ import org.seasar.doma.jdbc.dialect.Dialect;
  */
 public abstract class AbstractSqlFileRepository implements SqlFileRepository {
 
+    @Override
     public final SqlFile getSqlFile(String path, Dialect dialect) {
         if (path == null) {
             throw new DomaNullPointerException("path");

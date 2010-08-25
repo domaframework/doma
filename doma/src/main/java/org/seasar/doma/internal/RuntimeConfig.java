@@ -85,14 +85,17 @@ public class RuntimeConfig implements Config {
         return dataSourceName;
     }
 
+    @Override
     public Dialect getDialect() {
         return dialect;
     }
 
+    @Override
     public SqlFileRepository getSqlFileRepository() {
         return sqlFileRepository;
     }
 
+    @Override
     public JdbcLogger getJdbcLogger() {
         return jdbcLogger;
     }

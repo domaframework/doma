@@ -41,6 +41,7 @@ public abstract class AbstractComparisonOperatorNode implements
         this.expression = expression;
     }
 
+    @Override
     public ExpressionNode getLeftNode() {
         return leftNode;
     }
@@ -49,6 +50,7 @@ public abstract class AbstractComparisonOperatorNode implements
         this.leftNode = leftNode;
     }
 
+    @Override
     public ExpressionNode getRightNode() {
         return rightNode;
     }

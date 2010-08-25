@@ -40,8 +40,8 @@ public class PreparedSqlBuilderTest extends TestCase {
         builder.appendSql(" and salary = ");
         builder.appendWrapper(new BigDecimalWrapper(new BigDecimal(100)));
         PreparedSql sql = builder.build();
-        assertEquals("select * from aaa where name = ? and salary = ?", sql
-                .toString());
+        assertEquals("select * from aaa where name = ? and salary = ?",
+                sql.toString());
     }
 
     public void testCutBackSql() {

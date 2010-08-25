@@ -40,7 +40,6 @@ public interface SqlValidationDao {
 
     void testFor_notIterable(Iterator<String> names);
 
-    @SuppressWarnings("unchecked")
-    void testFor_noTypeArgument(List names);
+    void testFor_noTypeArgument(@SuppressWarnings("rawtypes") List names);
 
 }

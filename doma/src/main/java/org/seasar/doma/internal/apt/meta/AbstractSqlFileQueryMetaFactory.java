@@ -95,8 +95,8 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
         File dir = getDir(file);
         File[] files = dir.listFiles();
         if (files == null) {
-            throw new AptException(Message.DOMA4144, env, method, dir
-                    .getAbsolutePath());
+            throw new AptException(Message.DOMA4144, env, method,
+                    dir.getAbsolutePath());
         }
         return files;
     }

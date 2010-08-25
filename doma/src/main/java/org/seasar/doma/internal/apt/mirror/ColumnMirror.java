@@ -59,8 +59,8 @@ public class ColumnMirror {
         }
         ColumnMirror result = new ColumnMirror(annotationMirror);
         for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : env
-                .getElementUtils().getElementValuesWithDefaults(
-                        annotationMirror).entrySet()) {
+                .getElementUtils()
+                .getElementValuesWithDefaults(annotationMirror).entrySet()) {
             String name = entry.getKey().getSimpleName().toString();
             AnnotationValue value = entry.getValue();
             if ("name".equals(name)) {

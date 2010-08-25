@@ -58,8 +58,8 @@ public class AutoProcedureQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         QueryReturnMeta resultMeta = createReturnMeta(method);
         if (!resultMeta.isPrimitiveVoid()) {
-            throw new AptException(Message.DOMA4064, env, resultMeta
-                    .getElement());
+            throw new AptException(Message.DOMA4064, env,
+                    resultMeta.getElement());
         }
         queryMeta.setReturnMeta(resultMeta);
     }

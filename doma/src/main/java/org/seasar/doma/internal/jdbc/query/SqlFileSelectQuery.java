@@ -64,6 +64,7 @@ public class SqlFileSelectQuery implements SelectQuery {
 
     protected int queryTimeout;
 
+    @Override
     public void prepare() {
         assertNotNull(config, sqlFilePath, callerClassName, callerMethodName);
         prepareOptions();

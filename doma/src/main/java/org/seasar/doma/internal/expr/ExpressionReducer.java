@@ -245,9 +245,9 @@ public class ExpressionReducer implements
     protected ExpressionNode pop(OperatorNode node, Deque<ExpressionNode> p) {
         if (p.peek() == null) {
             ExpressionLocation location = node.getLocation();
-            throw new ExpressionException(Message.DOMA3010, location
-                    .getExpression(), location.getPosition(), node
-                    .getExpression());
+            throw new ExpressionException(Message.DOMA3010,
+                    location.getExpression(), location.getPosition(),
+                    node.getExpression());
         }
         return p.pop();
     }

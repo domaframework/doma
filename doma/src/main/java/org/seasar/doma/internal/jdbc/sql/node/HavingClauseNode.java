@@ -48,8 +48,7 @@ public class HavingClauseNode extends AbstractClauseNode {
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof HavingClauseNodeVisitor<?, ?>) {
-            @SuppressWarnings("unchecked")
-            HavingClauseNodeVisitor<R, P> v = (HavingClauseNodeVisitor) visitor;
+            HavingClauseNodeVisitor<R, P> v = (HavingClauseNodeVisitor<R, P>) visitor;
             return v.visitHavingClauseNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

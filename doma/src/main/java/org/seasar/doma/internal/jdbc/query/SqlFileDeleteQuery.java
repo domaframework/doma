@@ -38,6 +38,7 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
         super(SqlKind.DELETE);
     }
 
+    @Override
     public void prepare() {
         assertNotNull(config, sqlFilePath, callerClassName, callerMethodName);
         preDelete();

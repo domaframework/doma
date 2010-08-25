@@ -90,8 +90,8 @@ public final class Wrappers {
             if (result == null) {
                 result = wrapEnumObject(value, valueClass);
                 if (result == null) {
-                    throw new WrapperException(Message.DOMA1007, valueClass
-                            .getName(), value);
+                    throw new WrapperException(Message.DOMA1007,
+                            valueClass.getName(), value);
                 }
             }
         }
@@ -178,7 +178,7 @@ public final class Wrappers {
      *            値クラス
      * @return ラッパー、値が列挙型でない場合 {@code null}
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     protected static Wrapper<?> wrapEnumObject(Object value, Class<?> valueClass) {
         assertNotNull(valueClass);
         Class<?> boxedClass = ClassUtil
@@ -234,8 +234,8 @@ public final class Wrappers {
         }
         EnumDomain enumDomain = clazz.getAnnotation(EnumDomain.class);
         if (enumDomain != null) {
-            return new DomainDesc(enumDomain.valueType(), enumDomain
-                    .accessorMethod());
+            return new DomainDesc(enumDomain.valueType(),
+                    enumDomain.accessorMethod());
         }
         return null;
     }

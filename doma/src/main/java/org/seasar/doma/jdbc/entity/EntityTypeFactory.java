@@ -64,8 +64,8 @@ public final class EntityTypeFactory {
             Method method = ClassUtil.getMethod(clazz, "getSingletonInternal");
             return MethodUtil.invoke(method, null);
         } catch (WrapException e) {
-            throw new EntityTypeNotFoundException(e.getCause(), entityClass
-                    .getName(), entityTypeClassName);
+            throw new EntityTypeNotFoundException(e.getCause(),
+                    entityClass.getName(), entityTypeClassName);
         }
     }
 }

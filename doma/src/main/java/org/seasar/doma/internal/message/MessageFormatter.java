@@ -26,7 +26,8 @@ import org.seasar.doma.MessageResource;
  */
 final class MessageFormatter {
 
-    public static String getMessage(MessageResource messageResource, Object... args) {
+    public static String getMessage(MessageResource messageResource,
+            Object... args) {
         ResourceBundle bundle = ResourceBundle
                 .getBundle(MessageResourceBundle.class.getName());
         String pattern = bundle.getString(messageResource.getCode());

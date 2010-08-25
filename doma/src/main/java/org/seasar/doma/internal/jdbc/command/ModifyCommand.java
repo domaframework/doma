@@ -47,11 +47,12 @@ public abstract class ModifyCommand<Q extends ModifyQuery> implements
         this.sql = query.getSql();
     }
 
+    @Override
     public Integer execute() {
         if (!query.isExecutable()) {
             JdbcLogger logger = query.getConfig().getJdbcLogger();
-            logger.logSqlExecutionSkipping(query.getClassName(), query
-                    .getMethodName(), query.getSqlExecutionSkipCause());
+            logger.logSqlExecutionSkipping(query.getClassName(),
+                    query.getMethodName(), query.getSqlExecutionSkipCause());
             return 0;
         }
         Connection connection = JdbcUtil.getConnection(query.getConfig()

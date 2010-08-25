@@ -85,8 +85,8 @@ public class CallableSqlBuilder
         if (resultParameter != null) {
             allParameters.addFirst(resultParameter);
         }
-        return new CallableSql(kind, context.getSqlBuf(), context
-                .getFormattedSqlBuf(), allParameters);
+        return new CallableSql(kind, context.getSqlBuf(),
+                context.getFormattedSqlBuf(), allParameters);
     }
 
     @Override

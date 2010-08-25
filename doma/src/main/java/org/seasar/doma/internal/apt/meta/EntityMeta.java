@@ -169,6 +169,7 @@ public class EntityMeta implements TypeElementMeta {
         return entityElement.getModifiers().contains(Modifier.ABSTRACT);
     }
 
+    @Override
     public boolean isError() {
         return error;
     }

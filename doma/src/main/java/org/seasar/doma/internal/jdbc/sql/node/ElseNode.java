@@ -54,8 +54,7 @@ public class ElseNode extends AbstractSqlNode implements SpaceStrippingNode {
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof ElseNodeVisitor<?, ?>) {
-            @SuppressWarnings("unchecked")
-            ElseNodeVisitor<R, P> v = (ElseNodeVisitor) visitor;
+            ElseNodeVisitor<R, P> v = (ElseNodeVisitor<R, P>) visitor;
             return v.visitElseNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

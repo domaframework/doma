@@ -72,8 +72,8 @@ public class TableGeneratorMirror {
         }
         TableGeneratorMirror result = new TableGeneratorMirror(annotationMirror);
         for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : env
-                .getElementUtils().getElementValuesWithDefaults(
-                        annotationMirror).entrySet()) {
+                .getElementUtils()
+                .getElementValuesWithDefaults(annotationMirror).entrySet()) {
             String name = entry.getKey().getSimpleName().toString();
             AnnotationValue value = entry.getValue();
             if ("catalog".equals(name)) {

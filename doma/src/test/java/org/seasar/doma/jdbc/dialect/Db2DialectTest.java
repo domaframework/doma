@@ -41,8 +41,8 @@ public class Db2DialectTest extends TestCase {
             throws Exception {
         Db2Dialect dialect = new Db2Dialect();
         ExpressionFunctions functions = dialect.getExpressionFunctions();
-        assertEquals("a\\\\a\\%a\\_a\\％a\\＿%", functions.prefix("a\\a%a_a％a＿",
-                '\\'));
+        assertEquals("a\\\\a\\%a\\_a\\％a\\＿%",
+                functions.prefix("a\\a%a_a％a＿", '\\'));
     }
 
 }

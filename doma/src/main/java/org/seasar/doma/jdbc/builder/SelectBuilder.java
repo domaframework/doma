@@ -239,8 +239,8 @@ public class SelectBuilder {
         try {
             @SuppressWarnings("unchecked")
             Wrapper<R> wrapper = (Wrapper<R>) Wrappers.wrap(null, resultClass);
-            return new BasicSingleResultHandler<R>(wrapper, resultClass
-                    .isPrimitive());
+            return new BasicSingleResultHandler<R>(wrapper,
+                    resultClass.isPrimitive());
         } catch (WrapperException e) {
             throw new DomaIllegalArgumentException("resultClass",
                     Message.DOMA2204.getMessage(resultClass, e));
@@ -265,7 +265,8 @@ public class SelectBuilder {
      * @throws DomaIllegalArgumentException
      *             戻り値のリストの要素のクラスがエンティティクラス、ドメインクラス、基本型のいずれでもない場合
      * @throws MappedPropertyNotFoundException
-     *             戻り値のリストの要素の型がエンティティクラスで、結果セットに含まれるカラムにマッピングされたプロパティが見つからなかった場合
+     *             戻り値のリストの要素の型がエンティティクラスで、
+     *             結果セットに含まれるカラムにマッピングされたプロパティが見つからなかった場合
      * @throws NonSingleColumnException
      *             戻り値のリストの要素の型が基本型やドメインクラスで、かつ結果セットに複数のカラムが含まれている場合
      * @throws JdbcException

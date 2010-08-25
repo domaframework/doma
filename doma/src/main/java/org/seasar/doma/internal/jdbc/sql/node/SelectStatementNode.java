@@ -134,8 +134,7 @@ public class SelectStatementNode extends AbstractSqlNode {
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof SelectStatementNodeVisitor<?, ?>) {
-            @SuppressWarnings("unchecked")
-            SelectStatementNodeVisitor<R, P> v = (SelectStatementNodeVisitor) visitor;
+            SelectStatementNodeVisitor<R, P> v = (SelectStatementNodeVisitor<R, P>) visitor;
             return v.visitSelectStatementNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

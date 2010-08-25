@@ -58,8 +58,8 @@ import org.seasar.doma.jdbc.JdbcLogger;
  * }
  * </pre>
  * 
- * トランザクションを終了した後、 同じインスタンスに対して {@code begin()} もしくは {@code
- * begin(TransactionIsolationLevel)} を呼び出した場合、新しいトランザクションを開始できます。
+ * トランザクションを終了した後、 同じインスタンスに対して {@code begin()} もしくは
+ * {@code begin(TransactionIsolationLevel)} を呼び出した場合、新しいトランザクションを開始できます。
  * 
  * <pre>
  * LocalTransaction tx = AppConfig.getLocalTransaction();

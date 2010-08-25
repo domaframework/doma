@@ -48,8 +48,7 @@ public class ForUpdateClauseNode extends AbstractClauseNode {
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof ForUpdateClauseNodeVisitor<?, ?>) {
-            @SuppressWarnings("unchecked")
-            ForUpdateClauseNodeVisitor<R, P> v = (ForUpdateClauseNodeVisitor) visitor;
+            ForUpdateClauseNodeVisitor<R, P> v = (ForUpdateClauseNodeVisitor<R, P>) visitor;
             return v.visitForUpdateClauseNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

@@ -57,14 +57,14 @@ public class EntityPropertyMetaFactory {
     public EntityPropertyMeta createEntityPropertyMeta(
             VariableElement fieldElement, EntityMeta entityMeta) {
         assertNotNull(fieldElement, entityMeta);
-        TypeElement entityElement = ElementUtil.toTypeElement(fieldElement
-                .getEnclosingElement(), env);
+        TypeElement entityElement = ElementUtil.toTypeElement(
+                fieldElement.getEnclosingElement(), env);
         if (entityElement == null) {
             throw new AptIllegalStateException(fieldElement.toString());
         }
         EntityPropertyMeta propertyMeta = new EntityPropertyMeta(entityElement,
-                fieldElement, entityMeta.getNamingType(), entityElement
-                        .equals(entityMeta.getEntityElement()), env);
+                fieldElement, entityMeta.getNamingType(),
+                entityElement.equals(entityMeta.getEntityElement()), env);
         doName(propertyMeta, fieldElement, entityMeta);
         doId(propertyMeta, fieldElement, entityMeta);
         doVersion(propertyMeta, fieldElement, entityMeta);
@@ -101,8 +101,8 @@ public class EntityPropertyMetaFactory {
         if (entityMeta.hasGeneratedIdPropertyMeta()) {
             throw new AptException(Message.DOMA4037, env, fieldElement);
         }
-        TypeMirror boxedType = TypeMirrorUtil.boxIfPrimitive(fieldElement
-                .asType(), env);
+        TypeMirror boxedType = TypeMirrorUtil.boxIfPrimitive(
+                fieldElement.asType(), env);
         if (!TypeMirrorUtil.isAssignable(boxedType, Number.class, env)) {
             throw new AptException(Message.DOMA4095, env, fieldElement);
         }
@@ -173,8 +173,8 @@ public class EntityPropertyMetaFactory {
         if (typeElement.getModifiers().contains(Modifier.ABSTRACT)) {
             throw new AptException(Message.DOMA4170, env, fieldElement,
                     sequenceGeneratorMirror.getAnnotationMirror(),
-                    sequenceGeneratorMirror.getImplementer(), typeElement
-                            .getQualifiedName());
+                    sequenceGeneratorMirror.getImplementer(),
+                    typeElement.getQualifiedName());
         }
         ExecutableElement constructor = ElementUtil.getNoArgConstructor(
                 typeElement, env);
@@ -182,8 +182,8 @@ public class EntityPropertyMetaFactory {
                 || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
             throw new AptException(Message.DOMA4171, env, fieldElement,
                     sequenceGeneratorMirror.getAnnotationMirror(),
-                    sequenceGeneratorMirror.getImplementer(), typeElement
-                            .getQualifiedName());
+                    sequenceGeneratorMirror.getImplementer(),
+                    typeElement.getQualifiedName());
         }
     }
 
@@ -213,8 +213,8 @@ public class EntityPropertyMetaFactory {
         if (typeElement.getModifiers().contains(Modifier.ABSTRACT)) {
             throw new AptException(Message.DOMA4168, env, fieldElement,
                     tableGeneratorMirror.getAnnotationMirror(),
-                    tableGeneratorMirror.getImplementer(), typeElement
-                            .getQualifiedName());
+                    tableGeneratorMirror.getImplementer(),
+                    typeElement.getQualifiedName());
         }
         ExecutableElement constructor = ElementUtil.getNoArgConstructor(
                 typeElement, env);
@@ -222,8 +222,8 @@ public class EntityPropertyMetaFactory {
                 || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
             throw new AptException(Message.DOMA4169, env, fieldElement,
                     tableGeneratorMirror.getAnnotationMirror(),
-                    tableGeneratorMirror.getImplementer(), typeElement
-                            .getQualifiedName());
+                    tableGeneratorMirror.getImplementer(),
+                    typeElement.getQualifiedName());
         }
     }
 
@@ -244,8 +244,8 @@ public class EntityPropertyMetaFactory {
             if (entityMeta.hasVersionPropertyMeta()) {
                 throw new AptException(Message.DOMA4024, env, fieldElement);
             }
-            TypeMirror boxedType = TypeMirrorUtil.boxIfPrimitive(fieldElement
-                    .asType(), env);
+            TypeMirror boxedType = TypeMirrorUtil.boxIfPrimitive(
+                    fieldElement.asType(), env);
             if (!TypeMirrorUtil.isAssignable(boxedType, Number.class, env)) {
                 throw new AptException(Message.DOMA4093, env, fieldElement);
             }
@@ -262,13 +262,13 @@ public class EntityPropertyMetaFactory {
         if (propertyMeta.isId() || propertyMeta.isVersion()) {
             if (!columnMirror.getInsertableValue()) {
                 throw new AptException(Message.DOMA4088, env, fieldElement,
-                        columnMirror.getAnnotationMirror(), columnMirror
-                                .getInsertable());
+                        columnMirror.getAnnotationMirror(),
+                        columnMirror.getInsertable());
             }
             if (!columnMirror.getUpdatableValue()) {
                 throw new AptException(Message.DOMA4089, env, fieldElement,
-                        columnMirror.getAnnotationMirror(), columnMirror
-                                .getUpdatable());
+                        columnMirror.getAnnotationMirror(),
+                        columnMirror.getUpdatable());
             }
         }
         propertyMeta.setColumnMirror(columnMirror);

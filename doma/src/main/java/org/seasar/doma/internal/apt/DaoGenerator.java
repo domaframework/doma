@@ -115,6 +115,7 @@ public class DaoGenerator extends AbstractGenerator {
         this.daoMeta = daoMeta;
     }
 
+    @Override
     public void generate() {
         printPackage();
         printClass();
@@ -131,8 +132,8 @@ public class DaoGenerator extends AbstractGenerator {
         iprint("/** */%n");
         for (AnnotationMirror annotation : daoMeta
                 .getAnnotationMirrors(AnnotationTarget.CLASS)) {
-            iprint("@%1$s(%2$s)%n", annotation.getTypeValue(), annotation
-                    .getElementsValue());
+            iprint("@%1$s(%2$s)%n", annotation.getTypeValue(),
+                    annotation.getElementsValue());
         }
         printGenerated();
         iprint("public class %1$s extends %2$s implements %3$s {%n",
@@ -185,14 +186,14 @@ public class DaoGenerator extends AbstractGenerator {
             iprint(" */%n");
             for (AnnotationMirror annotation : daoMeta
                     .getAnnotationMirrors(AnnotationTarget.CONSTRUCTOR)) {
-                iprint("@%1$s(%2$s)%n", annotation.getTypeValue(), annotation
-                        .getElementsValue());
+                iprint("@%1$s(%2$s)%n", annotation.getTypeValue(),
+                        annotation.getElementsValue());
             }
             iprint("public %1$s(", simpleName);
             for (AnnotationMirror annotation : daoMeta
                     .getAnnotationMirrors(AnnotationTarget.CONSTRUCTOR_PARAMETER)) {
-                print("@%1$s(%2$s) ", annotation.getTypeValue(), annotation
-                        .getElementsValue());
+                print("@%1$s(%2$s) ", annotation.getTypeValue(),
+                        annotation.getElementsValue());
             }
             print("%1$s config) {%n", Config.class.getName());
             indent();
@@ -228,8 +229,8 @@ public class DaoGenerator extends AbstractGenerator {
         for (Iterator<QueryParameterMeta> it = m.getParameterMetas().iterator(); it
                 .hasNext();) {
             QueryParameterMeta parameterMeta = it.next();
-            print("%1$s %2$s", parameterMeta.getTypeName(), parameterMeta
-                    .getName());
+            print("%1$s %2$s", parameterMeta.getTypeName(),
+                    parameterMeta.getName());
             if (it.hasNext()) {
                 print(", ");
             }
@@ -264,21 +265,20 @@ public class DaoGenerator extends AbstractGenerator {
 
             iprint("%1$s __query = new %1$s();%n", m.getQueryClass().getName());
             iprint("__query.setConfig(config);%n");
-            iprint("__query.setSqlFilePath(\"%1$s\");%n", SqlFileUtil
-                    .buildPath(daoMeta.getDaoElement().getQualifiedName()
-                            .toString(), m.getName()));
+            iprint("__query.setSqlFilePath(\"%1$s\");%n",
+                    SqlFileUtil.buildPath(daoMeta.getDaoElement()
+                            .getQualifiedName().toString(), m.getName()));
             if (m.getSelectOptionsType() != null) {
-                iprint("__query.setOptions(%1$s);%n", m
-                        .getSelectOptionsParameterName());
+                iprint("__query.setOptions(%1$s);%n",
+                        m.getSelectOptionsParameterName());
             }
             for (Iterator<QueryParameterMeta> it = m.getParameterMetas()
                     .iterator(); it.hasNext();) {
                 QueryParameterMeta parameterMeta = it.next();
                 if (parameterMeta.isBindable()) {
-                    iprint(
-                            "__query.addParameter(\"%1$s\", %2$s.class, %1$s);%n",
-                            parameterMeta.getName(), parameterMeta
-                                    .getQualifiedName());
+                    iprint("__query.addParameter(\"%1$s\", %2$s.class, %1$s);%n",
+                            parameterMeta.getName(),
+                            parameterMeta.getQualifiedName());
                 }
             }
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
@@ -297,152 +297,200 @@ public class DaoGenerator extends AbstractGenerator {
                         .getIterationCallbackPrameterName();
                 callbackType
                         .getTargetType()
-                        .accept(
-                                new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+                        .accept(new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
 
-                                    @Override
-                                    public Void visitBasicType(
-                                            BasicType dataType, Void p)
-                                            throws RuntimeException {
-                                        dataType
-                                                .getWrapperType()
-                                                .accept(
-                                                        new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+                            @Override
+                            public Void visitBasicType(BasicType dataType,
+                                    Void p) throws RuntimeException {
+                                dataType.getWrapperType()
+                                        .accept(new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
 
-                                                            @Override
-                                                            public Void visitEnumWrapperType(
-                                                                    EnumWrapperType dataType,
-                                                                    Void p)
-                                                                    throws RuntimeException {
-                                                                iprint(
-                                                                        "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(new %5$s(%6$s.class), %7$s));%n",
-                                                                        commandClassName,
-                                                                        resultMeta
-                                                                                .getTypeNameAsTypeParameter(),
-                                                                        BasicIterationHandler.class
-                                                                                .getName(),
-                                                                        dataType
-                                                                                .getWrappedType()
-                                                                                .getTypeNameAsTypeParameter(),
-                                                                        dataType
-                                                                                .getTypeName(),
-                                                                        dataType
-                                                                                .getWrappedType()
-                                                                                .getQualifiedName(),
-                                                                        callbackParamName);
-                                                                return null;
-                                                            }
+                                            @Override
+                                            public Void visitEnumWrapperType(
+                                                    EnumWrapperType dataType,
+                                                    Void p)
+                                                    throws RuntimeException {
+                                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(new %5$s(%6$s.class), %7$s));%n",
+                                                        commandClassName,
+                                                        resultMeta
+                                                                .getTypeNameAsTypeParameter(),
+                                                        BasicIterationHandler.class
+                                                                .getName(),
+                                                        dataType.getWrappedType()
+                                                                .getTypeNameAsTypeParameter(),
+                                                        dataType.getTypeName(),
+                                                        dataType.getWrappedType()
+                                                                .getQualifiedName(),
+                                                        callbackParamName);
+                                                return null;
+                                            }
 
-                                                            @Override
-                                                            public Void visitWrapperType(
-                                                                    WrapperType dataType,
-                                                                    Void p)
-                                                                    throws RuntimeException {
-                                                                iprint(
-                                                                        "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(new %5$s(), %6$s));%n",
-                                                                        commandClassName,
-                                                                        resultMeta
-                                                                                .getTypeNameAsTypeParameter(),
-                                                                        BasicIterationHandler.class
-                                                                                .getName(),
-                                                                        dataType
-                                                                                .getWrappedType()
-                                                                                .getTypeNameAsTypeParameter(),
-                                                                        dataType
-                                                                                .getTypeName(),
-                                                                        callbackParamName);
-                                                                return null;
-                                                            }
+                                            @Override
+                                            public Void visitWrapperType(
+                                                    WrapperType dataType, Void p)
+                                                    throws RuntimeException {
+                                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(new %5$s(), %6$s));%n",
+                                                        commandClassName,
+                                                        resultMeta
+                                                                .getTypeNameAsTypeParameter(),
+                                                        BasicIterationHandler.class
+                                                                .getName(),
+                                                        dataType.getWrappedType()
+                                                                .getTypeNameAsTypeParameter(),
+                                                        dataType.getTypeName(),
+                                                        callbackParamName);
+                                                return null;
+                                            }
 
-                                                        }, null);
+                                        }, null);
 
-                                        return null;
-                                    }
+                                return null;
+                            }
 
-                                    @Override
-                                    public Void visitDomainType(
-                                            DomainType dataType, Void p)
-                                            throws RuntimeException {
-                                        iprint(
-                                                "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(%5$s.getSingletonInternal(), %6$s));%n",
-                                                commandClassName,
-                                                resultMeta
-                                                        .getTypeNameAsTypeParameter(),
-                                                DomainIterationHandler.class
-                                                        .getName(),
-                                                dataType
-                                                        .getTypeNameAsTypeParameter(),
-                                                getMetaTypeName(dataType
-                                                        .getTypeName()),
-                                                callbackParamName);
-                                        return null;
-                                    }
+                            @Override
+                            public Void visitDomainType(DomainType dataType,
+                                    Void p) throws RuntimeException {
+                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(%5$s.getSingletonInternal(), %6$s));%n",
+                                        commandClassName,
+                                        resultMeta.getTypeNameAsTypeParameter(),
+                                        DomainIterationHandler.class.getName(),
+                                        dataType.getTypeNameAsTypeParameter(),
+                                        getMetaTypeName(dataType.getTypeName()),
+                                        callbackParamName);
+                                return null;
+                            }
 
-                                    @Override
-                                    public Void visitEntityType(
-                                            EntityType dataType, Void p)
-                                            throws RuntimeException {
-                                        iprint(
-                                                "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(%5$s.getSingletonInternal(), %6$s));%n",
-                                                commandClassName,
-                                                resultMeta
-                                                        .getTypeNameAsTypeParameter(),
-                                                EntityIterationHandler.class
-                                                        .getName(), dataType
-                                                        .getTypeName(),
-                                                getMetaTypeName(dataType
-                                                        .getTypeName()),
-                                                callbackParamName);
-                                        return null;
-                                    }
+                            @Override
+                            public Void visitEntityType(EntityType dataType,
+                                    Void p) throws RuntimeException {
+                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(%5$s.getSingletonInternal(), %6$s));%n",
+                                        commandClassName,
+                                        resultMeta.getTypeNameAsTypeParameter(),
+                                        EntityIterationHandler.class.getName(),
+                                        dataType.getTypeName(),
+                                        getMetaTypeName(dataType.getTypeName()),
+                                        callbackParamName);
+                                return null;
+                            }
 
-                                }, null);
+                        }, null);
                 if ("void".equals(resultMeta.getTypeName())) {
                     iprint("__command.execute();%n");
                     iprint("__query.complete();%n");
                     iprint("exiting(\"%1$s\", \"%2$s\", null);%n",
                             qualifiedName, m.getName());
                 } else {
-                    iprint("%1$s __result = __command.execute();%n", resultMeta
-                            .getTypeName());
+                    iprint("%1$s __result = __command.execute();%n",
+                            resultMeta.getTypeName());
                     iprint("__query.complete();%n");
                     iprint("exiting(\"%1$s\", \"%2$s\", __result);%n",
                             qualifiedName, m.getName());
                     iprint("return __result;%n");
                 }
             } else {
-                m
-                        .getReturnMeta()
+                m.getReturnMeta()
                         .getDataType()
-                        .accept(
-                                new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+                        .accept(new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
 
-                                    @Override
-                                    public Void visitBasicType(
-                                            final BasicType basicType, Void p)
-                                            throws RuntimeException {
-                                        basicType
-                                                .getWrapperType()
-                                                .accept(
-                                                        new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+                            @Override
+                            public Void visitBasicType(
+                                    final BasicType basicType, Void p)
+                                    throws RuntimeException {
+                                basicType
+                                        .getWrapperType()
+                                        .accept(new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+
+                                            @Override
+                                            public Void visitEnumWrapperType(
+                                                    EnumWrapperType dataType,
+                                                    Void p)
+                                                    throws RuntimeException {
+                                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(new %4$s(%5$s.class), false));%n",
+                                                        commandClassName,
+                                                        dataType.getWrappedType()
+                                                                .getTypeNameAsTypeParameter(),
+                                                        BasicSingleResultHandler.class
+                                                                .getName(),
+                                                        dataType.getTypeName(),
+                                                        dataType.getWrappedType()
+                                                                .getQualifiedName());
+                                                return null;
+                                            }
+
+                                            @Override
+                                            public Void visitWrapperType(
+                                                    WrapperType dataType, Void p)
+                                                    throws RuntimeException {
+                                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(new %4$s(), %5$s));%n",
+                                                        commandClassName,
+                                                        dataType.getWrappedType()
+                                                                .getTypeNameAsTypeParameter(),
+                                                        BasicSingleResultHandler.class
+                                                                .getName(),
+                                                        dataType.getTypeName(),
+                                                        basicType.isPrimitive());
+                                                return null;
+                                            }
+
+                                        }, null);
+
+                                return null;
+                            }
+
+                            @Override
+                            public Void visitDomainType(DomainType dataType,
+                                    Void p) throws RuntimeException {
+                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(%4$s.getSingletonInternal()));%n",
+                                        commandClassName, dataType
+                                                .getTypeNameAsTypeParameter(),
+                                        DomainSingleResultHandler.class
+                                                .getName(),
+                                        getMetaTypeName(dataType.getTypeName()));
+                                return null;
+                            }
+
+                            @Override
+                            public Void visitEntityType(EntityType dataType,
+                                    Void p) throws RuntimeException {
+                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(%4$s.getSingletonInternal()));%n",
+                                        commandClassName, dataType
+                                                .getTypeName(),
+                                        EntitySingleResultHandler.class
+                                                .getName(),
+                                        getMetaTypeName(dataType.getTypeName()));
+                                return null;
+                            }
+
+                            @Override
+                            public Void visitIterableType(
+                                    final IterableType iterableType, Void p)
+                                    throws RuntimeException {
+                                iterableType
+                                        .getElementType()
+                                        .accept(new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+
+                                            @Override
+                                            public Void visitBasicType(
+                                                    BasicType dataType, Void p)
+                                                    throws RuntimeException {
+                                                dataType.getWrapperType()
+                                                        .accept(new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
 
                                                             @Override
                                                             public Void visitEnumWrapperType(
                                                                     EnumWrapperType dataType,
                                                                     Void p)
                                                                     throws RuntimeException {
-                                                                iprint(
-                                                                        "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(new %4$s(%5$s.class), false));%n",
+                                                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(new %5$s(%6$s.class)));%n",
                                                                         commandClassName,
-                                                                        dataType
-                                                                                .getWrappedType()
-                                                                                .getTypeNameAsTypeParameter(),
-                                                                        BasicSingleResultHandler.class
-                                                                                .getName(),
-                                                                        dataType
+                                                                        iterableType
                                                                                 .getTypeName(),
-                                                                        dataType
-                                                                                .getWrappedType()
+                                                                        BasicResultListHandler.class
+                                                                                .getName(),
+                                                                        dataType.getWrappedType()
+                                                                                .getTypeNameAsTypeParameter(),
+                                                                        dataType.getTypeName(),
+                                                                        dataType.getWrappedType()
                                                                                 .getQualifiedName());
                                                                 return null;
                                                             }
@@ -452,170 +500,62 @@ public class DaoGenerator extends AbstractGenerator {
                                                                     WrapperType dataType,
                                                                     Void p)
                                                                     throws RuntimeException {
-                                                                iprint(
-                                                                        "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(new %4$s(), %5$s));%n",
+                                                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(new %5$s()));%n",
                                                                         commandClassName,
-                                                                        dataType
-                                                                                .getWrappedType()
+                                                                        iterableType
                                                                                 .getTypeNameAsTypeParameter(),
-                                                                        BasicSingleResultHandler.class
+                                                                        BasicResultListHandler.class
                                                                                 .getName(),
-                                                                        dataType
-                                                                                .getTypeName(),
-                                                                        basicType
-                                                                                .isPrimitive());
+                                                                        dataType.getWrappedType()
+                                                                                .getTypeNameAsTypeParameter(),
+                                                                        dataType.getTypeName());
                                                                 return null;
                                                             }
 
                                                         }, null);
 
-                                        return null;
-                                    }
+                                                return null;
+                                            }
 
-                                    @Override
-                                    public Void visitDomainType(
-                                            DomainType dataType, Void p)
-                                            throws RuntimeException {
-                                        iprint(
-                                                "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(%4$s.getSingletonInternal()));%n",
-                                                commandClassName,
-                                                dataType
-                                                        .getTypeNameAsTypeParameter(),
-                                                DomainSingleResultHandler.class
-                                                        .getName(),
-                                                getMetaTypeName(dataType
-                                                        .getTypeName()));
-                                        return null;
-                                    }
+                                            @Override
+                                            public Void visitDomainType(
+                                                    DomainType dataType, Void p)
+                                                    throws RuntimeException {
+                                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(%5$s.getSingletonInternal()));%n",
+                                                        commandClassName,
+                                                        iterableType
+                                                                .getTypeName(),
+                                                        DomainResultListHandler.class
+                                                                .getName(),
+                                                        dataType.getTypeNameAsTypeParameter(),
+                                                        getMetaTypeName(dataType
+                                                                .getTypeName()));
+                                                return null;
+                                            }
 
-                                    @Override
-                                    public Void visitEntityType(
-                                            EntityType dataType, Void p)
-                                            throws RuntimeException {
-                                        iprint(
-                                                "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(%4$s.getSingletonInternal()));%n",
-                                                commandClassName, dataType
-                                                        .getTypeName(),
-                                                EntitySingleResultHandler.class
-                                                        .getName(),
-                                                getMetaTypeName(dataType
-                                                        .getTypeName()));
-                                        return null;
-                                    }
+                                            @Override
+                                            public Void visitEntityType(
+                                                    EntityType dataType, Void p)
+                                                    throws RuntimeException {
+                                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(%5$s.getSingletonInternal()));%n",
+                                                        commandClassName,
+                                                        iterableType
+                                                                .getTypeName(),
+                                                        EntityResultListHandler.class
+                                                                .getName(),
+                                                        dataType.getTypeName(),
+                                                        getMetaTypeName(dataType
+                                                                .getTypeName()));
+                                                return null;
+                                            }
 
-                                    @Override
-                                    public Void visitIterableType(
-                                            final IterableType iterableType,
-                                            Void p) throws RuntimeException {
-                                        iterableType
-                                                .getElementType()
-                                                .accept(
-                                                        new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+                                        }, null);
+                                return null;
+                            }
 
-                                                            @Override
-                                                            public Void visitBasicType(
-                                                                    BasicType dataType,
-                                                                    Void p)
-                                                                    throws RuntimeException {
-                                                                dataType
-                                                                        .getWrapperType()
-                                                                        .accept(
-                                                                                new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
-
-                                                                                    @Override
-                                                                                    public Void visitEnumWrapperType(
-                                                                                            EnumWrapperType dataType,
-                                                                                            Void p)
-                                                                                            throws RuntimeException {
-                                                                                        iprint(
-                                                                                                "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(new %5$s(%6$s.class)));%n",
-                                                                                                commandClassName,
-                                                                                                iterableType
-                                                                                                        .getTypeName(),
-                                                                                                BasicResultListHandler.class
-                                                                                                        .getName(),
-                                                                                                dataType
-                                                                                                        .getWrappedType()
-                                                                                                        .getTypeNameAsTypeParameter(),
-                                                                                                dataType
-                                                                                                        .getTypeName(),
-                                                                                                dataType
-                                                                                                        .getWrappedType()
-                                                                                                        .getQualifiedName());
-                                                                                        return null;
-                                                                                    }
-
-                                                                                    @Override
-                                                                                    public Void visitWrapperType(
-                                                                                            WrapperType dataType,
-                                                                                            Void p)
-                                                                                            throws RuntimeException {
-                                                                                        iprint(
-                                                                                                "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(new %5$s()));%n",
-                                                                                                commandClassName,
-                                                                                                iterableType
-                                                                                                        .getTypeNameAsTypeParameter(),
-                                                                                                BasicResultListHandler.class
-                                                                                                        .getName(),
-                                                                                                dataType
-                                                                                                        .getWrappedType()
-                                                                                                        .getTypeNameAsTypeParameter(),
-                                                                                                dataType
-                                                                                                        .getTypeName());
-                                                                                        return null;
-                                                                                    }
-
-                                                                                },
-                                                                                null);
-
-                                                                return null;
-                                                            }
-
-                                                            @Override
-                                                            public Void visitDomainType(
-                                                                    DomainType dataType,
-                                                                    Void p)
-                                                                    throws RuntimeException {
-                                                                iprint(
-                                                                        "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(%5$s.getSingletonInternal()));%n",
-                                                                        commandClassName,
-                                                                        iterableType
-                                                                                .getTypeName(),
-                                                                        DomainResultListHandler.class
-                                                                                .getName(),
-                                                                        dataType
-                                                                                .getTypeNameAsTypeParameter(),
-                                                                        getMetaTypeName(dataType
-                                                                                .getTypeName()));
-                                                                return null;
-                                                            }
-
-                                                            @Override
-                                                            public Void visitEntityType(
-                                                                    EntityType dataType,
-                                                                    Void p)
-                                                                    throws RuntimeException {
-                                                                iprint(
-                                                                        "%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(%5$s.getSingletonInternal()));%n",
-                                                                        commandClassName,
-                                                                        iterableType
-                                                                                .getTypeName(),
-                                                                        EntityResultListHandler.class
-                                                                                .getName(),
-                                                                        dataType
-                                                                                .getTypeName(),
-                                                                        getMetaTypeName(dataType
-                                                                                .getTypeName()));
-                                                                return null;
-                                                            }
-
-                                                        }, null);
-                                        return null;
-                                    }
-
-                                }, null);
-                iprint("%1$s __result = __command.execute();%n", resultMeta
-                        .getTypeName());
+                        }, null);
+                iprint("%1$s __result = __command.execute();%n",
+                        resultMeta.getTypeName());
                 iprint("__query.complete();%n");
                 iprint("exiting(\"%1$s\", \"%2$s\", __result);%n",
                         qualifiedName, m.getName());
@@ -634,21 +574,21 @@ public class DaoGenerator extends AbstractGenerator {
 
             iprint("%1$s __query = new %1$s();%n", m.getQueryClass().getName());
             iprint("__query.setConfig(config);%n");
-            iprint("__query.setScriptFilePath(\"%1$s\");%n", ScriptFileUtil
-                    .buildPath(daoMeta.getDaoElement().getQualifiedName()
-                            .toString(), m.getName()));
+            iprint("__query.setScriptFilePath(\"%1$s\");%n",
+                    ScriptFileUtil.buildPath(daoMeta.getDaoElement()
+                            .getQualifiedName().toString(), m.getName()));
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
-            iprint("__query.setBlockDelimiter(\"%1$s\");%n", m
-                    .getBlockDelimiter());
+            iprint("__query.setBlockDelimiter(\"%1$s\");%n",
+                    m.getBlockDelimiter());
             iprint("__query.setHaltOnError(%1$s);%n", m.getHaltOnError());
             iprint("__query.prepare();%n");
             iprint("%1$s __command = new %1$s(__query);%n", m.getCommandClass()
                     .getName());
             iprint("__command.execute();%n");
             iprint("__query.complete();%n");
-            iprint("exiting(\"%1$s\", \"%2$s\", null);%n", qualifiedName, m
-                    .getName());
+            iprint("exiting(\"%1$s\", \"%2$s\", null);%n", qualifiedName,
+                    m.getName());
 
             printThrowingStatements(m);
             return null;
@@ -659,8 +599,7 @@ public class DaoGenerator extends AbstractGenerator {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
-            iprint(
-                    "%1$s<%2$s> __query = new %1$s<%2$s>(%3$s.getSingletonInternal());%n",
+            iprint("%1$s<%2$s> __query = new %1$s<%2$s>(%3$s.getSingletonInternal());%n",
                     m.getQueryClass().getName(), m.getEntityType()
                             .getTypeNameAsTypeParameter(), getMetaTypeName(m
                             .getEntityType().getTypeNameAsTypeParameter()));
@@ -716,8 +655,8 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("%1$s __result = __command.execute();%n", m.getReturnMeta()
                     .getTypeName());
             iprint("__query.complete();%n");
-            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName, m
-                    .getName());
+            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
+                    m.getName());
             iprint("return __result;%n");
 
             printThrowingStatements(m);
@@ -732,17 +671,16 @@ public class DaoGenerator extends AbstractGenerator {
 
             iprint("%1$s __query = new %1$s();%n", m.getQueryClass().getName());
             iprint("__query.setConfig(config);%n");
-            iprint("__query.setSqlFilePath(\"%1$s\");%n", SqlFileUtil
-                    .buildPath(daoMeta.getDaoElement().getQualifiedName()
-                            .toString(), m.getName()));
+            iprint("__query.setSqlFilePath(\"%1$s\");%n",
+                    SqlFileUtil.buildPath(daoMeta.getDaoElement()
+                            .getQualifiedName().toString(), m.getName()));
             for (Iterator<QueryParameterMeta> it = m.getParameterMetas()
                     .iterator(); it.hasNext();) {
                 QueryParameterMeta parameterMeta = it.next();
                 if (parameterMeta.isBindable()) {
-                    iprint(
-                            "__query.addParameter(\"%1$s\", %2$s.class, %1$s);%n",
-                            parameterMeta.getName(), parameterMeta
-                                    .getQualifiedName());
+                    iprint("__query.addParameter(\"%1$s\", %2$s.class, %1$s);%n",
+                            parameterMeta.getName(),
+                            parameterMeta.getQualifiedName());
                 }
             }
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
@@ -750,8 +688,7 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
 
             if (m.getEntityParameterName() != null && m.getEntityType() != null) {
-                iprint(
-                        "__query.setEntityAndEntityType(%1$s, %2$s.getSingletonInternal());%n",
+                iprint("__query.setEntityAndEntityType(%1$s, %2$s.getSingletonInternal());%n",
                         m.getEntityParameterName(), getMetaTypeName(m
                                 .getEntityType().getTypeNameAsTypeParameter()));
             }
@@ -779,8 +716,8 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("%1$s __result = __command.execute();%n", m.getReturnMeta()
                     .getTypeName());
             iprint("__query.complete();%n");
-            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName, m
-                    .getName());
+            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
+                    m.getName());
             iprint("return __result;%n");
 
             printThrowingStatements(m);
@@ -793,8 +730,7 @@ public class DaoGenerator extends AbstractGenerator {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
-            iprint(
-                    "%1$s<%2$s> __query = new %1$s<%2$s>(%3$s.getSingletonInternal());%n",
+            iprint("%1$s<%2$s> __query = new %1$s<%2$s>(%3$s.getSingletonInternal());%n",
                     m.getQueryClass().getName(), m.getEntityType()
                             .getTypeNameAsTypeParameter(), getMetaTypeName(m
                             .getEntityType().getTypeNameAsTypeParameter()));
@@ -839,8 +775,8 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("%1$s __result = __command.execute();%n", m.getReturnMeta()
                     .getTypeName());
             iprint("__query.complete();%n");
-            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName, m
-                    .getName());
+            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
+                    m.getName());
             iprint("return __result;%n");
 
             printThrowingStatements(m);
@@ -859,11 +795,11 @@ public class DaoGenerator extends AbstractGenerator {
                     .getQualifiedName());
             iprint("__query.setConfig(config);%n");
             iprint("__query.setElements(%1$s);%n", m.getElementsParameterName());
-            iprint("__query.setSqlFilePath(\"%1$s\");%n", SqlFileUtil
-                    .buildPath(daoMeta.getDaoElement().getQualifiedName()
-                            .toString(), m.getName()));
-            iprint("__query.setParameterName(\"%1$s\");%n", m
-                    .getElementsParameterName());
+            iprint("__query.setSqlFilePath(\"%1$s\");%n",
+                    SqlFileUtil.buildPath(daoMeta.getDaoElement()
+                            .getQualifiedName().toString(), m.getName()));
+            iprint("__query.setParameterName(\"%1$s\");%n",
+                    m.getElementsParameterName());
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
@@ -897,8 +833,8 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("%1$s __result = __command.execute();%n", m.getReturnMeta()
                     .getTypeName());
             iprint("__query.complete();%n");
-            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName, m
-                    .getName());
+            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
+                    m.getName());
             iprint("return __result;%n");
 
             printThrowingStatements(m);
@@ -912,8 +848,8 @@ public class DaoGenerator extends AbstractGenerator {
 
             QueryReturnMeta resultMeta = m.getReturnMeta();
             iprint("%1$s<%2$s> __query = new %1$s<%2$s>();%n", m
-                    .getQueryClass().getName(), resultMeta
-                    .getTypeNameAsTypeParameter());
+                    .getQueryClass().getName(),
+                    resultMeta.getTypeNameAsTypeParameter());
             iprint("__query.setConfig(config);%n");
             iprint("__query.setFunctionName(\"%1$s\");%n", m.getFunctionName());
             CallableSqlParameterStatementGenerator parameterGenerator = new CallableSqlParameterStatementGenerator();
@@ -927,13 +863,13 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             iprint("__query.prepare();%n");
             iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query);%n", m
-                    .getCommandClass().getName(), resultMeta
-                    .getTypeNameAsTypeParameter());
-            iprint("%1$s __result = __command.execute();%n", resultMeta
-                    .getTypeName());
+                    .getCommandClass().getName(),
+                    resultMeta.getTypeNameAsTypeParameter());
+            iprint("%1$s __result = __command.execute();%n",
+                    resultMeta.getTypeName());
             iprint("__query.complete();%n");
-            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName, m
-                    .getName());
+            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
+                    m.getName());
             iprint("return __result;%n");
 
             printThrowingStatements(m);
@@ -947,8 +883,8 @@ public class DaoGenerator extends AbstractGenerator {
 
             iprint("%1$s __query = new %1$s();%n", m.getQueryClass().getName());
             iprint("__query.setConfig(config);%n");
-            iprint("__query.setProcedureName(\"%1$s\");%n", m
-                    .getProcedureName());
+            iprint("__query.setProcedureName(\"%1$s\");%n",
+                    m.getProcedureName());
             CallableSqlParameterStatementGenerator parameterGenerator = new CallableSqlParameterStatementGenerator();
             for (CallableSqlParameterMeta parameterMeta : m
                     .getCallableSqlParameterMetas()) {
@@ -962,8 +898,8 @@ public class DaoGenerator extends AbstractGenerator {
                     .getName());
             iprint("__command.execute();%n");
             iprint("__query.complete();%n");
-            iprint("exiting(\"%1$s\", \"%2$s\", null);%n", qualifiedName, m
-                    .getName());
+            iprint("exiting(\"%1$s\", \"%2$s\", null);%n", qualifiedName,
+                    m.getName());
 
             printThrowingStatements(m);
             return null;
@@ -984,11 +920,11 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.prepare();%n");
             iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query);%n", m
                     .getCommandClass().getName(), resultMeta.getTypeName());
-            iprint("%1$s __result = __command.execute();%n", resultMeta
-                    .getTypeName());
+            iprint("%1$s __result = __command.execute();%n",
+                    resultMeta.getTypeName());
             iprint("__query.complete();%n");
-            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName, m
-                    .getName());
+            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
+                    m.getName());
             iprint("return __result;%n");
 
             printThrowingStatements(m);
@@ -1009,13 +945,13 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setElements(%1$s);%n", m.getParameterName());
             iprint("__query.prepare();%n");
             iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query);%n", m
-                    .getCommandClass().getName(), resultMeta
-                    .getTypeNameAsTypeParameter());
-            iprint("%1$s __result = __command.execute();%n", resultMeta
-                    .getTypeName());
+                    .getCommandClass().getName(),
+                    resultMeta.getTypeNameAsTypeParameter());
+            iprint("%1$s __result = __command.execute();%n",
+                    resultMeta.getTypeName());
             iprint("__query.complete();%n");
-            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName, m
-                    .getName());
+            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
+                    m.getName());
             iprint("return __result;%n");
 
             printThrowingStatements(m);
@@ -1049,8 +985,8 @@ public class DaoGenerator extends AbstractGenerator {
                 }
             }
             print(");%n");
-            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName, m
-                    .getName());
+            iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
+                    m.getName());
             iprint("return __result;%n");
 
             printThrowingStatements(m);
@@ -1080,8 +1016,8 @@ public class DaoGenerator extends AbstractGenerator {
             unindent();
             iprint("} catch (%1$s __e) {%n", RuntimeException.class.getName());
             indent();
-            iprint("throwing(\"%1$s\", \"%2$s\", __e);%n", qualifiedName, m
-                    .getName());
+            iprint("throwing(\"%1$s\", \"%2$s\", __e);%n", qualifiedName,
+                    m.getName());
             iprint("throw __e;%n");
             unindent();
             iprint("}%n");
@@ -1117,8 +1053,7 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitEnumWrapperType(
                                 EnumWrapperType dataType, Void p)
                                 throws RuntimeException {
-                            iprint(
-                                    "__query.addParameter(new %1$s<%2$s>(new %3$s(%4$s.class), %5$s, \"%5$s\"));%n",
+                            iprint("__query.addParameter(new %1$s<%2$s>(new %3$s(%4$s.class), %5$s, \"%5$s\"));%n",
                                     BasicListParameter.class.getName(),
                                     dataType.getWrappedType()
                                             .getTypeNameAsTypeParameter(),
@@ -1131,8 +1066,7 @@ public class DaoGenerator extends AbstractGenerator {
                         @Override
                         public Void visitWrapperType(WrapperType dataType,
                                 Void p) throws RuntimeException {
-                            iprint(
-                                    "__query.addParameter(new %1$s<%2$s>(new %3$s(), %4$s, \"%4$s\"));%n",
+                            iprint("__query.addParameter(new %1$s<%2$s>(new %3$s(), %4$s, \"%4$s\"));%n",
                                     BasicListParameter.class.getName(),
                                     dataType.getWrappedType()
                                             .getTypeNameAsTypeParameter(),
@@ -1149,10 +1083,9 @@ public class DaoGenerator extends AbstractGenerator {
                 Void p) {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
-            iprint(
-                    "__query.addParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal(), %5$s, \"%5$s\"));%n",
-                    DomainListParameter.class.getName(), basicType
-                            .getTypeName(), domainType.getTypeName(),
+            iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal(), %5$s, \"%5$s\"));%n",
+                    DomainListParameter.class.getName(),
+                    basicType.getTypeName(), domainType.getTypeName(),
                     getMetaTypeName(domainType.getTypeName()), m.getName());
             return null;
         }
@@ -1161,11 +1094,10 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitEntityListParameterMeta(EntityListParameterMeta m,
                 Void p) {
             EntityType entityType = m.getEntityType();
-            iprint(
-                    "__query.addParameter(new %1$s<%2$s>(%3$s.getSingletonInternal(), %4$s, \"%4$s\"));%n",
-                    EntityListParameter.class.getName(), entityType
-                            .getTypeName(), getMetaTypeName(entityType
-                            .getTypeName()), m.getName());
+            iprint("__query.addParameter(new %1$s<%2$s>(%3$s.getSingletonInternal(), %4$s, \"%4$s\"));%n",
+                    EntityListParameter.class.getName(),
+                    entityType.getTypeName(),
+                    getMetaTypeName(entityType.getTypeName()), m.getName());
             return null;
         }
 
@@ -1180,8 +1112,7 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitEnumWrapperType(
                                 EnumWrapperType dataType, Void p)
                                 throws RuntimeException {
-                            iprint(
-                                    "__query.addParameter(new %1$s<%2$s>(new %3$s(%4$s.class), %5$s));%n",
+                            iprint("__query.addParameter(new %1$s<%2$s>(new %3$s(%4$s.class), %5$s));%n",
                                     BasicInOutParameter.class.getName(),
                                     dataType.getWrappedType()
                                             .getTypeNameAsTypeParameter(),
@@ -1194,8 +1125,7 @@ public class DaoGenerator extends AbstractGenerator {
                         @Override
                         public Void visitWrapperType(WrapperType dataType,
                                 Void p) throws RuntimeException {
-                            iprint(
-                                    "__query.addParameter(new %1$s<%2$s>(new %3$s(), %4$s));%n",
+                            iprint("__query.addParameter(new %1$s<%2$s>(new %3$s(), %4$s));%n",
                                     BasicInOutParameter.class.getName(),
                                     dataType.getWrappedType()
                                             .getTypeNameAsTypeParameter(),
@@ -1212,12 +1142,11 @@ public class DaoGenerator extends AbstractGenerator {
                 Void p) {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
-            iprint(
-                    "__query.addParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal(), %5$s));%n",
-                    DomainInOutParameter.class.getName(), basicType
-                            .getTypeNameAsTypeParameter(), domainType
-                            .getTypeName(), getMetaTypeName(domainType
-                            .getTypeName()), m.getName());
+            iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal(), %5$s));%n",
+                    DomainInOutParameter.class.getName(),
+                    basicType.getTypeNameAsTypeParameter(),
+                    domainType.getTypeName(),
+                    getMetaTypeName(domainType.getTypeName()), m.getName());
             return null;
         }
 
@@ -1232,8 +1161,7 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitEnumWrapperType(
                                 EnumWrapperType dataType, Void p)
                                 throws RuntimeException {
-                            iprint(
-                                    "__query.addParameter(new %1$s<%2$s>(new %3$s(%4$s.class), %5$s));%n",
+                            iprint("__query.addParameter(new %1$s<%2$s>(new %3$s(%4$s.class), %5$s));%n",
                                     BasicOutParameter.class.getName(), dataType
                                             .getWrappedType()
                                             .getTypeNameAsTypeParameter(),
@@ -1246,8 +1174,7 @@ public class DaoGenerator extends AbstractGenerator {
                         @Override
                         public Void visitWrapperType(WrapperType dataType,
                                 Void p) throws RuntimeException {
-                            iprint(
-                                    "__query.addParameter(new %1$s<%2$s>(new %3$s(), %4$s));%n",
+                            iprint("__query.addParameter(new %1$s<%2$s>(new %3$s(), %4$s));%n",
                                     BasicOutParameter.class.getName(), dataType
                                             .getWrappedType()
                                             .getTypeNameAsTypeParameter(),
@@ -1264,8 +1191,7 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitDomainOutParameterMeta(DomainOutParameterMeta m, Void p) {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
-            iprint(
-                    "__query.addParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal(), %5$s));%n",
+            iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal(), %5$s));%n",
                     DomainOutParameter.class.getName(),
                     basicType.getTypeName(), domainType.getTypeName(),
                     getMetaTypeName(domainType.getTypeName()), m.getName());
@@ -1283,8 +1209,7 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitEnumWrapperType(
                                 EnumWrapperType dataType, Void p)
                                 throws RuntimeException {
-                            iprint(
-                                    "__query.addParameter(new %1$s(new %2$s(%3$s.class, %4$s)));%n",
+                            iprint("__query.addParameter(new %1$s(new %2$s(%3$s.class, %4$s)));%n",
                                     BasicInParameter.class.getName(), dataType
                                             .getTypeName(), dataType
                                             .getWrappedType().getTypeName(), m
@@ -1295,10 +1220,9 @@ public class DaoGenerator extends AbstractGenerator {
                         @Override
                         public Void visitWrapperType(WrapperType dataType,
                                 Void p) throws RuntimeException {
-                            iprint(
-                                    "__query.addParameter(new %1$s(new %2$s(%3$s)));%n",
-                                    BasicInParameter.class.getName(), dataType
-                                            .getTypeName(), m.getName());
+                            iprint("__query.addParameter(new %1$s(new %2$s(%3$s)));%n",
+                                    BasicInParameter.class.getName(),
+                                    dataType.getTypeName(), m.getName());
                             return null;
                         }
 
@@ -1311,11 +1235,10 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitDomainInParameterMeta(DomainInParameterMeta m, Void p) {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
-            iprint(
-                    "__query.addParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal(), %5$s));%n",
+            iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal(), %5$s));%n",
                     DomainInParameter.class.getName(), basicType.getTypeName(),
-                    domainType.getTypeName(), getMetaTypeName(domainType
-                            .getTypeName()), m.getName());
+                    domainType.getTypeName(),
+                    getMetaTypeName(domainType.getTypeName()), m.getName());
             return null;
         }
 
@@ -1330,8 +1253,7 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitEnumWrapperType(
                                 EnumWrapperType dataType, Void p)
                                 throws RuntimeException {
-                            iprint(
-                                    "__query.setResultParameter(new %1$s<%2$s>(new %3$s(%4$s.class)));%n",
+                            iprint("__query.setResultParameter(new %1$s<%2$s>(new %3$s(%4$s.class)));%n",
                                     BasicListResultParameter.class.getName(),
                                     dataType.getWrappedType()
                                             .getTypeNameAsTypeParameter(),
@@ -1344,8 +1266,7 @@ public class DaoGenerator extends AbstractGenerator {
                         @Override
                         public Void visitWrapperType(WrapperType dataType,
                                 Void p) throws RuntimeException {
-                            iprint(
-                                    "__query.setResultParameter(new %1$s<%2$s>(new %3$s()));%n",
+                            iprint("__query.setResultParameter(new %1$s<%2$s>(new %3$s()));%n",
                                     BasicListResultParameter.class.getName(),
                                     dataType.getWrappedType()
                                             .getTypeNameAsTypeParameter(),
@@ -1362,10 +1283,9 @@ public class DaoGenerator extends AbstractGenerator {
                 DomainListResultParameterMeta m, Void p) {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
-            iprint(
-                    "__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal()));%n",
-                    DomainListResultParameter.class.getName(), basicType
-                            .getTypeName(), domainType.getTypeName(),
+            iprint("__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal()));%n",
+                    DomainListResultParameter.class.getName(),
+                    basicType.getTypeName(), domainType.getTypeName(),
                     getMetaTypeName(domainType.getTypeName()));
             return null;
         }
@@ -1374,11 +1294,10 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitEntityListResultParameterMeta(
                 EntityListResultParameterMeta m, Void p) {
             EntityType entityType = m.getEntityType();
-            iprint(
-                    "__query.setResultParameter(new %1$s<%2$s>(%3$s.getSingletonInternal()));%n",
-                    EntityListResultParameter.class.getName(), entityType
-                            .getTypeName(), getMetaTypeName(entityType
-                            .getTypeName()));
+            iprint("__query.setResultParameter(new %1$s<%2$s>(%3$s.getSingletonInternal()));%n",
+                    EntityListResultParameter.class.getName(),
+                    entityType.getTypeName(),
+                    getMetaTypeName(entityType.getTypeName()));
             return null;
         }
 
@@ -1393,8 +1312,7 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitEnumWrapperType(
                                 EnumWrapperType dataType, Void p)
                                 throws RuntimeException {
-                            iprint(
-                                    "__query.setResultParameter(new %1$s<%2$s>(new %3$s(%4$s.class), false));%n",
+                            iprint("__query.setResultParameter(new %1$s<%2$s>(new %3$s(%4$s.class), false));%n",
                                     BasicResultParameter.class.getName(),
                                     dataType.getWrappedType()
                                             .getTypeNameAsTypeParameter(),
@@ -1407,8 +1325,7 @@ public class DaoGenerator extends AbstractGenerator {
                         @Override
                         public Void visitWrapperType(WrapperType dataType,
                                 Void p) throws RuntimeException {
-                            iprint(
-                                    "__query.setResultParameter(new %1$s<%2$s>(new %3$s(), %4$s));%n",
+                            iprint("__query.setResultParameter(new %1$s<%2$s>(new %3$s(), %4$s));%n",
                                     BasicResultParameter.class.getName(),
                                     dataType.getWrappedType()
                                             .getTypeNameAsTypeParameter(),
@@ -1426,10 +1343,9 @@ public class DaoGenerator extends AbstractGenerator {
                 Void p) {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
-            iprint(
-                    "__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal()));%n",
-                    DomainResultParameter.class.getName(), basicType
-                            .getTypeName(), domainType.getTypeName(),
+            iprint("__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal()));%n",
+                    DomainResultParameter.class.getName(),
+                    basicType.getTypeName(), domainType.getTypeName(),
                     getMetaTypeName(domainType.getTypeName()));
             return null;
         }

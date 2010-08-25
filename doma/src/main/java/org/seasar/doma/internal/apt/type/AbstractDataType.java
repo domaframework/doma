@@ -71,14 +71,17 @@ public abstract class AbstractDataType implements DataType {
         }
     }
 
+    @Override
     public TypeMirror getTypeMirror() {
         return typeMirror;
     }
 
+    @Override
     public TypeElement getTypeElement() {
         return typeElement;
     }
 
+    @Override
     public String getTypeName() {
         return typeName;
     }

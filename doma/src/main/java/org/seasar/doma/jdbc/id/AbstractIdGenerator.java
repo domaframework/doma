@@ -108,11 +108,11 @@ public abstract class AbstractIdGenerator implements IdGenerator {
             if (resultSet.next()) {
                 return resultSet.getLong(1);
             }
-            throw new JdbcException(Message.DOMA2017, config
-                    .getEntityType().getName());
+            throw new JdbcException(Message.DOMA2017, config.getEntityType()
+                    .getName());
         } catch (final SQLException e) {
-            throw new JdbcException(Message.DOMA2018, e, config
-                    .getEntityType().getName(), e);
+            throw new JdbcException(Message.DOMA2018, e, config.getEntityType()
+                    .getName(), e);
         } finally {
             JdbcUtil.close(resultSet, logger);
         }

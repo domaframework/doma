@@ -121,8 +121,9 @@ public class DelegateQueryMetaFactory extends
         if (constructor == null) {
             DelegateMirror delegateMirror = queryMeta.getDelegateMirror();
             throw new AptException(Message.DOMA4080, env, method,
-                    delegateMirror.getAnnotationMirror(), delegateMirror
-                            .getTo(), delegateTypeElement.getQualifiedName());
+                    delegateMirror.getAnnotationMirror(),
+                    delegateMirror.getTo(),
+                    delegateTypeElement.getQualifiedName());
         }
         if (constructor.getParameters().size() == 2) {
             queryMeta.setDaoAware(true);
@@ -130,8 +131,9 @@ public class DelegateQueryMetaFactory extends
         if (!hasDelegatableMethod(method, delegateTypeElement)) {
             DelegateMirror delegateMirror = queryMeta.getDelegateMirror();
             throw new AptException(Message.DOMA4081, env, method,
-                    delegateMirror.getAnnotationMirror(), delegateMirror
-                            .getTo(), delegateTypeElement.getQualifiedName());
+                    delegateMirror.getAnnotationMirror(),
+                    delegateMirror.getTo(),
+                    delegateTypeElement.getQualifiedName());
         }
     }
 
@@ -181,8 +183,8 @@ public class DelegateQueryMetaFactory extends
             return false;
         }
 
-        if (!TypeMirrorUtil.isSameType(srcMethod.getReturnType(), destMethod
-                .getReturnType(), env)) {
+        if (!TypeMirrorUtil.isSameType(srcMethod.getReturnType(),
+                destMethod.getReturnType(), env)) {
             return false;
         }
 
@@ -195,8 +197,7 @@ public class DelegateQueryMetaFactory extends
         }
         for (Iterator<? extends TypeParameterElement> srcIt = srcTypeParams
                 .iterator(), destIt = destTypeParams.iterator(); srcIt
-                .hasNext()
-                && destIt.hasNext();) {
+                .hasNext() && destIt.hasNext();) {
             if (!TypeMirrorUtil.isSameType(srcIt.next().asType(), destIt.next()
                     .asType(), env)) {
                 return false;

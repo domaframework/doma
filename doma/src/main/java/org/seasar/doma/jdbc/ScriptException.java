@@ -62,9 +62,10 @@ public class ScriptException extends JdbcException {
      * @param lineNumber
      *            行番号
      */
-    public ScriptException(Throwable cause, String rawSql, String scriptFilePath,
-            int lineNumber) {
-        super(Message.DOMA2077, cause, rawSql, scriptFilePath, lineNumber, cause);
+    public ScriptException(Throwable cause, String rawSql,
+            String scriptFilePath, int lineNumber) {
+        super(Message.DOMA2077, cause, rawSql, scriptFilePath, lineNumber,
+                cause);
         this.rawSql = rawSql;
         this.scriptFilePath = scriptFilePath;
         this.lineNumber = lineNumber;

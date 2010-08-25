@@ -20,7 +20,6 @@ import java.sql.SQLException;
 
 import org.seasar.doma.internal.jdbc.query.InsertQuery;
 
-
 /**
  * @author taedium
  * 

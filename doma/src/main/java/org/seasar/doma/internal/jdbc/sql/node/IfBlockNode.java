@@ -67,6 +67,7 @@ public class IfBlockNode extends AbstractSqlNode implements BlockNode {
         return elseNode;
     }
 
+    @Override
     public void setEndNode(EndNode endNode) {
         this.endNode = endNode;
         addNodeInternal(endNode);
@@ -119,8 +120,7 @@ public class IfBlockNode extends AbstractSqlNode implements BlockNode {
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof IfBlockNodeVisitor<?, ?>) {
-            @SuppressWarnings("unchecked")
-            IfBlockNodeVisitor<R, P> v = (IfBlockNodeVisitor) visitor;
+            IfBlockNodeVisitor<R, P> v = (IfBlockNodeVisitor<R, P>) visitor;
             return v.visitIfBlockNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

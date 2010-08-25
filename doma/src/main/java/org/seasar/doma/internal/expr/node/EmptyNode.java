@@ -37,6 +37,7 @@ public class EmptyNode implements ExpressionNode {
         return visitor.visitEmptyNode(this, p);
     }
 
+    @Override
     public ExpressionLocation getLocation() {
         return location;
     }

@@ -39,8 +39,7 @@ public class OriginalStatesMeta {
         assertNotNull(entityElement, changedPropertiesElement, env);
         this.entityName = entityElement.getSimpleName().toString();
         this.entityTypeName = entityElement.getQualifiedName().toString();
-        this.name = changedPropertiesElement
-                .getSimpleName().toString();
+        this.name = changedPropertiesElement.getSimpleName().toString();
     }
 
     public String getEntityName() {

@@ -71,98 +71,82 @@ public class AutoFunctionQueryMetaFactory extends
             final QueryReturnMeta returnMeta) {
         return returnMeta
                 .getDataType()
-                .accept(
-                        new SimpleDataTypeVisitor<ResultParameterMeta, Void, RuntimeException>() {
+                .accept(new SimpleDataTypeVisitor<ResultParameterMeta, Void, RuntimeException>() {
 
-                            @Override
-                            protected ResultParameterMeta defaultAction(
-                                    DataType type, Void p)
-                                    throws RuntimeException {
-                                throw new AptException(Message.DOMA4063, env,
-                                        returnMeta.getElement(), returnMeta
-                                                .getType());
-                            }
+                    @Override
+                    protected ResultParameterMeta defaultAction(DataType type,
+                            Void p) throws RuntimeException {
+                        throw new AptException(Message.DOMA4063, env,
+                                returnMeta.getElement(), returnMeta.getType());
+                    }
 
-                            @Override
-                            public ResultParameterMeta visitBasicType(
-                                    BasicType dataType, Void p)
-                                    throws RuntimeException {
-                                return new BasicResultParameterMeta(dataType);
-                            }
+                    @Override
+                    public ResultParameterMeta visitBasicType(
+                            BasicType dataType, Void p) throws RuntimeException {
+                        return new BasicResultParameterMeta(dataType);
+                    }
 
-                            @Override
-                            public ResultParameterMeta visitDomainType(
-                                    DomainType dataType, Void p)
-                                    throws RuntimeException {
-                                return new DomainResultParameterMeta(dataType);
-                            }
+                    @Override
+                    public ResultParameterMeta visitDomainType(
+                            DomainType dataType, Void p)
+                            throws RuntimeException {
+                        return new DomainResultParameterMeta(dataType);
+                    }
 
-                            @Override
-                            public ResultParameterMeta visitIterableType(
-                                    IterableType dataType, Void p)
-                                    throws RuntimeException {
-                                if (!dataType.isList()) {
-                                    defaultAction(dataType, p);
-                                }
-                                return dataType
-                                        .getElementType()
-                                        .accept(
-                                                new SimpleDataTypeVisitor<ResultParameterMeta, Void, RuntimeException>() {
+                    @Override
+                    public ResultParameterMeta visitIterableType(
+                            IterableType dataType, Void p)
+                            throws RuntimeException {
+                        if (!dataType.isList()) {
+                            defaultAction(dataType, p);
+                        }
+                        return dataType
+                                .getElementType()
+                                .accept(new SimpleDataTypeVisitor<ResultParameterMeta, Void, RuntimeException>() {
 
-                                                    @Override
-                                                    protected ResultParameterMeta defaultAction(
-                                                            DataType dataType,
-                                                            Void p)
-                                                            throws RuntimeException {
-                                                        throw new AptException(
-                                                                Message.DOMA4065,
-                                                                env,
-                                                                returnMeta
-                                                                        .getElement(),
-                                                                dataType
-                                                                        .getTypeName());
-                                                    }
+                                    @Override
+                                    protected ResultParameterMeta defaultAction(
+                                            DataType dataType, Void p)
+                                            throws RuntimeException {
+                                        throw new AptException(
+                                                Message.DOMA4065, env,
+                                                returnMeta.getElement(),
+                                                dataType.getTypeName());
+                                    }
 
-                                                    @Override
-                                                    public ResultParameterMeta visitBasicType(
-                                                            BasicType dataType,
-                                                            Void p)
-                                                            throws RuntimeException {
-                                                        return new BasicListResultParameterMeta(
-                                                                dataType);
-                                                    }
+                                    @Override
+                                    public ResultParameterMeta visitBasicType(
+                                            BasicType dataType, Void p)
+                                            throws RuntimeException {
+                                        return new BasicListResultParameterMeta(
+                                                dataType);
+                                    }
 
-                                                    @Override
-                                                    public ResultParameterMeta visitDomainType(
-                                                            DomainType dataType,
-                                                            Void p)
-                                                            throws RuntimeException {
-                                                        return new DomainListResultParameterMeta(
-                                                                dataType);
-                                                    }
+                                    @Override
+                                    public ResultParameterMeta visitDomainType(
+                                            DomainType dataType, Void p)
+                                            throws RuntimeException {
+                                        return new DomainListResultParameterMeta(
+                                                dataType);
+                                    }
 
-                                                    @Override
-                                                    public ResultParameterMeta visitEntityType(
-                                                            EntityType dataType,
-                                                            Void p)
-                                                            throws RuntimeException {
-                                                        if (dataType
-                                                                .isAbstract()) {
-                                                            throw new AptException(
-                                                                    Message.DOMA4156,
-                                                                    env,
-                                                                    returnMeta
-                                                                            .getElement(),
-                                                                    dataType
-                                                                            .getTypeName());
-                                                        }
-                                                        return new EntityListResultParameterMeta(
-                                                                dataType);
-                                                    }
+                                    @Override
+                                    public ResultParameterMeta visitEntityType(
+                                            EntityType dataType, Void p)
+                                            throws RuntimeException {
+                                        if (dataType.isAbstract()) {
+                                            throw new AptException(
+                                                    Message.DOMA4156, env,
+                                                    returnMeta.getElement(),
+                                                    dataType.getTypeName());
+                                        }
+                                        return new EntityListResultParameterMeta(
+                                                dataType);
+                                    }
 
-                                                }, p);
-                            }
+                                }, p);
+                    }
 
-                        }, null);
+                }, null);
     }
 }

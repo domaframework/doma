@@ -361,8 +361,8 @@ public class SqlParser {
 
     protected void parseClosedParens() {
         if (!isInParensNode()) {
-            throw new JdbcException(Message.DOMA2109, sql, tokenizer
-                    .getLineNumber(), tokenizer.getPosition());
+            throw new JdbcException(Message.DOMA2109, sql,
+                    tokenizer.getLineNumber(), tokenizer.getPosition());
         }
         validate();
         removeNodesTo(ParensNode.class);
@@ -380,8 +380,8 @@ public class SqlParser {
     protected void parseBindVariableBlockComment() {
         String varialbeName = tokenType.extract(token);
         if (varialbeName.isEmpty()) {
-            throw new JdbcException(Message.DOMA2120, sql, tokenizer
-                    .getLineNumber(), tokenizer.getPosition(), token);
+            throw new JdbcException(Message.DOMA2120, sql,
+                    tokenizer.getLineNumber(), tokenizer.getPosition(), token);
         }
         BindVariableNode node = new BindVariableNode(getLocation(),
                 varialbeName, token);
@@ -392,8 +392,8 @@ public class SqlParser {
     protected void parseEmbeddedVariableBlockComment() {
         String varialbeName = tokenType.extract(token);
         if (varialbeName.isEmpty()) {
-            throw new JdbcException(Message.DOMA2121, sql, tokenizer
-                    .getLineNumber(), tokenizer.getPosition(), token);
+            throw new JdbcException(Message.DOMA2121, sql,
+                    tokenizer.getLineNumber(), tokenizer.getPosition(), token);
         }
         EmbeddedVariableNode node = new EmbeddedVariableNode(getLocation(),
                 varialbeName, token);
@@ -414,14 +414,14 @@ public class SqlParser {
 
     protected void parseElseifBlockComment() {
         if (!isInIfBlockNode()) {
-            throw new JdbcException(Message.DOMA2138, sql, tokenizer
-                    .getLineNumber(), tokenizer.getPosition());
+            throw new JdbcException(Message.DOMA2138, sql,
+                    tokenizer.getLineNumber(), tokenizer.getPosition());
         }
         removeNodesTo(IfBlockNode.class);
         IfBlockNode ifBlockNode = peek();
         if (ifBlockNode.isElseNodeExistent()) {
-            throw new JdbcException(Message.DOMA2139, sql, tokenizer
-                    .getLineNumber(), tokenizer.getPosition());
+            throw new JdbcException(Message.DOMA2139, sql,
+                    tokenizer.getLineNumber(), tokenizer.getPosition());
         }
         String expression = tokenType.extract(token);
         ElseifNode node = new ElseifNode(getLocation(), expression, token);
@@ -431,14 +431,14 @@ public class SqlParser {
 
     protected void parseElseifLineComment() {
         if (!isInIfBlockNode()) {
-            throw new JdbcException(Message.DOMA2106, sql, tokenizer
-                    .getLineNumber(), tokenizer.getPosition());
+            throw new JdbcException(Message.DOMA2106, sql,
+                    tokenizer.getLineNumber(), tokenizer.getPosition());
         }
         removeNodesTo(IfBlockNode.class);
         IfBlockNode ifBlockNode = peek();
         if (ifBlockNode.isElseNodeExistent()) {
-            throw new JdbcException(Message.DOMA2108, sql, tokenizer
-                    .getLineNumber(), tokenizer.getPosition());
+            throw new JdbcException(Message.DOMA2108, sql,
+                    tokenizer.getLineNumber(), tokenizer.getPosition());
         }
         String expression = tokenType.extract(token);
         ElseifNode node = new ElseifNode(getLocation(), expression, token);
@@ -448,14 +448,14 @@ public class SqlParser {
 
     protected void parseElseBlockComment() {
         if (!isInIfBlockNode()) {
-            throw new JdbcException(Message.DOMA2140, sql, tokenizer
-                    .getLineNumber(), tokenizer.getPosition());
+            throw new JdbcException(Message.DOMA2140, sql,
+                    tokenizer.getLineNumber(), tokenizer.getPosition());
         }
         removeNodesTo(IfBlockNode.class);
         IfBlockNode ifBlockNode = peek();
         if (ifBlockNode.isElseNodeExistent()) {
-            throw new JdbcException(Message.DOMA2141, sql, tokenizer
-                    .getLineNumber(), tokenizer.getPosition());
+            throw new JdbcException(Message.DOMA2141, sql,
+                    tokenizer.getLineNumber(), tokenizer.getPosition());
         }
         ElseNode node = new ElseNode(token);
         ifBlockNode.setElseNode(node);
@@ -464,14 +464,14 @@ public class SqlParser {
 
     protected void parseElseLineComment() {
         if (!isInIfBlockNode()) {
-            throw new JdbcException(Message.DOMA2105, sql, tokenizer
-                    .getLineNumber(), tokenizer.getPosition());
+            throw new JdbcException(Message.DOMA2105, sql,
+                    tokenizer.getLineNumber(), tokenizer.getPosition());
         }
         removeNodesTo(IfBlockNode.class);
         IfBlockNode ifBlockNode = peek();
         if (ifBlockNode.isElseNodeExistent()) {
-            throw new JdbcException(Message.DOMA2107, sql, tokenizer
-                    .getLineNumber(), tokenizer.getPosition());
+            throw new JdbcException(Message.DOMA2107, sql,
+                    tokenizer.getLineNumber(), tokenizer.getPosition());
         }
         ElseNode node = new ElseNode(token);
         ifBlockNode.setElseNode(node);
@@ -480,8 +480,8 @@ public class SqlParser {
 
     protected void parseEndBlockComment() {
         if (!isInBlockNode()) {
-            throw new JdbcException(Message.DOMA2104, sql, tokenizer
-                    .getLineNumber(), tokenizer.getPosition());
+            throw new JdbcException(Message.DOMA2104, sql,
+                    tokenizer.getLineNumber(), tokenizer.getPosition());
         }
         removePrecedentSpaces();
         removeNodesTo(BlockNode.class);
@@ -499,18 +499,18 @@ public class SqlParser {
         String expr = tokenType.extract(token);
         int pos = expr.indexOf(":");
         if (pos == -1) {
-            throw new JdbcException(Message.DOMA2124, sql, tokenizer
-                    .getLineNumber(), tokenizer.getPosition());
+            throw new JdbcException(Message.DOMA2124, sql,
+                    tokenizer.getLineNumber(), tokenizer.getPosition());
         }
         String identifier = expr.substring(0, pos).trim();
         if (identifier.isEmpty()) {
-            throw new JdbcException(Message.DOMA2125, sql, tokenizer
-                    .getLineNumber(), tokenizer.getPosition());
+            throw new JdbcException(Message.DOMA2125, sql,
+                    tokenizer.getLineNumber(), tokenizer.getPosition());
         }
         String expression = expr.substring(pos + 1).trim();
         if (expression.isEmpty()) {
-            throw new JdbcException(Message.DOMA2126, sql, tokenizer
-                    .getLineNumber(), tokenizer.getPosition());
+            throw new JdbcException(Message.DOMA2126, sql,
+                    tokenizer.getLineNumber(), tokenizer.getPosition());
         }
         ForNode forNode = new ForNode(getLocation(), identifier, expression,
                 token);
@@ -652,8 +652,8 @@ public class SqlParser {
                 parensNode.setAttachedWithBindVariable(true);
                 bindVariableNode.setParensNode(parensNode);
             } else {
-                throw new JdbcException(Message.DOMA2110, sql, tokenizer
-                        .getLineNumber(), tokenizer.getPosition(),
+                throw new JdbcException(Message.DOMA2110, sql,
+                        tokenizer.getLineNumber(), tokenizer.getPosition(),
                         bindVariableNode.getText());
             }
         } else {
@@ -676,30 +676,30 @@ public class SqlParser {
     }
 
     protected SqlLocation getLocation() {
-        return new SqlLocation(sql, tokenizer.getLineNumber(), tokenizer
-                .getPosition());
+        return new SqlLocation(sql, tokenizer.getLineNumber(),
+                tokenizer.getPosition());
     }
 
     protected void validate() {
         if (isAfterBindVariableNode()) {
             BindVariableNode bindVariableNode = pop();
-            throw new JdbcException(Message.DOMA2110, sql, tokenizer
-                    .getLineNumber(), tokenizer.getPosition(), bindVariableNode
-                    .getText());
+            throw new JdbcException(Message.DOMA2110, sql,
+                    tokenizer.getLineNumber(), tokenizer.getPosition(),
+                    bindVariableNode.getText());
         }
         if (isInIfBlockNode()) {
             removeNodesTo(IfBlockNode.class);
             IfBlockNode ifBlockNode = pop();
             SqlLocation location = ifBlockNode.getIfNode().getLocation();
-            throw new JdbcException(Message.DOMA2133, sql, location
-                    .getLineNumber(), location.getPosition());
+            throw new JdbcException(Message.DOMA2133, sql,
+                    location.getLineNumber(), location.getPosition());
         }
         if (isInForBlockNode()) {
             removeNodesTo(ForBlockNode.class);
             ForBlockNode forBlockNode = pop();
             SqlLocation location = forBlockNode.getForNode().getLocation();
-            throw new JdbcException(Message.DOMA2134, sql, location
-                    .getLineNumber(), location.getPosition());
+            throw new JdbcException(Message.DOMA2134, sql,
+                    location.getLineNumber(), location.getPosition());
         }
     }
 
@@ -708,8 +708,8 @@ public class SqlParser {
             removeNodesTo(ParensNode.class);
             ParensNode parensNode = pop();
             SqlLocation location = parensNode.getLocation();
-            throw new JdbcException(Message.DOMA2135, sql, location
-                    .getLineNumber(), location.getPosition());
+            throw new JdbcException(Message.DOMA2135, sql,
+                    location.getLineNumber(), location.getPosition());
         }
     }
 

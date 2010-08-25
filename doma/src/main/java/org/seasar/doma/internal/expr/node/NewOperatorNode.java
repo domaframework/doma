@@ -63,10 +63,12 @@ public class NewOperatorNode implements OperatorNode {
         return visitor.visitNewOperatorNode(this, p);
     }
 
+    @Override
     public ExpressionLocation getLocation() {
         return location;
     }
 
+    @Override
     public String getExpression() {
         return expression;
     }

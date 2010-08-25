@@ -29,6 +29,7 @@ public class AutoProcedureQuery extends AutoModuleQuery implements
 
     protected String procedureName;
 
+    @Override
     public void prepare() {
         assertNotNull(config, procedureName, callerClassName, callerMethodName);
         prepareOptions();

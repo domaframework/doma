@@ -41,6 +41,7 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
         super(entityType);
     }
 
+    @Override
     public void prepare() {
         assertNotNull(config, callerClassName, callerMethodName, entities, sqls);
         Iterator<E> it = entities.iterator();
@@ -129,9 +130,7 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
             }
             builder.appendSql(versionPropertyType.getColumnName());
             builder.appendSql(" = ");
-            builder
-                    .appendWrapper(versionPropertyType
-                            .getWrapper(currentEntity));
+            builder.appendWrapper(versionPropertyType.getWrapper(currentEntity));
         }
         PreparedSql sql = builder.build();
         sqls.add(sql);

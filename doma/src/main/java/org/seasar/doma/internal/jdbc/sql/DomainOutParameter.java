@@ -52,6 +52,7 @@ public class DomainOutParameter<V, D> implements OutParameter<V> {
         return wrapper;
     }
 
+    @Override
     public void update() {
         reference.set(wrapper.getDomain());
     }

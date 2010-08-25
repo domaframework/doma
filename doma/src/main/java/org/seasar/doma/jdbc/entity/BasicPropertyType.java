@@ -116,8 +116,7 @@ public abstract class BasicPropertyType<E, V> implements
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof EntityPropertyTypeVisitor<?, ?, ?>) {
-            @SuppressWarnings("unchecked")
-            EntityPropertyTypeVisitor<R, P, TH> v = (EntityPropertyTypeVisitor) visitor;
+            EntityPropertyTypeVisitor<R, P, TH> v = (EntityPropertyTypeVisitor<R, P, TH>) visitor;
             return v.visitEntityPropertyType(this, p);
         }
         return visitor.visitUnknownExpression(this, p);

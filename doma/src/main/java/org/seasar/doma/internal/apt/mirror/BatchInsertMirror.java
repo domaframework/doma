@@ -47,8 +47,8 @@ public class BatchInsertMirror extends BatchModifyMirror {
         }
         BatchInsertMirror result = new BatchInsertMirror(annotationMirror);
         for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : env
-                .getElementUtils().getElementValuesWithDefaults(
-                        annotationMirror).entrySet()) {
+                .getElementUtils()
+                .getElementValuesWithDefaults(annotationMirror).entrySet()) {
             String name = entry.getKey().getSimpleName().toString();
             AnnotationValue value = entry.getValue();
             if ("sqlFile".equals(name)) {

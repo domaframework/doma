@@ -42,7 +42,8 @@ public class UpdateCommandTest extends TestCase {
         emp.setVersion(10);
         emp.originalStates = new Emp();
 
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
+                _Emp.getSingletonInternal());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
@@ -73,7 +74,8 @@ public class UpdateCommandTest extends TestCase {
 
         runtimeConfig.dataSource.connection.preparedStatement.updatedRows = 0;
 
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
+                _Emp.getSingletonInternal());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
@@ -96,7 +98,8 @@ public class UpdateCommandTest extends TestCase {
 
         runtimeConfig.dataSource.connection.preparedStatement.updatedRows = 0;
 
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
+                _Emp.getSingletonInternal());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setOptimisticLockExceptionSuppressed(true);

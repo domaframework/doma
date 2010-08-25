@@ -64,8 +64,8 @@ public class DaoMirror {
         }
         DaoMirror result = new DaoMirror(annotationMirror, env);
         for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : env
-                .getElementUtils().getElementValuesWithDefaults(
-                        annotationMirror).entrySet()) {
+                .getElementUtils()
+                .getElementValuesWithDefaults(annotationMirror).entrySet()) {
             String name = entry.getKey().getSimpleName().toString();
             AnnotationValue value = entry.getValue();
             if ("config".equals(name)) {

@@ -518,8 +518,8 @@ public class TypeDeclaration {
             return;
         }
         typeParameterDeclarationsMap.put(typeElement.getQualifiedName()
-                .toString(), createTypeParameterDeclarations(typeElement, type,
-                env));
+                .toString(),
+                createTypeParameterDeclarations(typeElement, type, env));
         for (TypeMirror superType : env.getTypeUtils().directSupertypes(type)) {
             TypeElement superElement = TypeMirrorUtil.toTypeElement(superType,
                     env);
@@ -530,9 +530,10 @@ public class TypeDeclaration {
                     .getQualifiedName().toString())) {
                 continue;
             }
-            typeParameterDeclarationsMap.put(superElement.getQualifiedName()
-                    .toString(), createTypeParameterDeclarations(superElement,
-                    superType, env));
+            typeParameterDeclarationsMap.put(
+                    superElement.getQualifiedName().toString(),
+                    createTypeParameterDeclarations(superElement, superType,
+                            env));
             gatherTypeParameterDeclarations(superType,
                     typeParameterDeclarationsMap, env);
         }

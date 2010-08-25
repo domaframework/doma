@@ -66,8 +66,8 @@ public class StandardDialectTest extends TestCase {
         Calendar calendar = Calendar.getInstance();
         calendar.set(2009, Calendar.JANUARY, 23, 12, 34, 56);
         Date date = new Date(calendar.getTimeInMillis());
-        assertEquals(Date.valueOf("2009-01-23"), functions
-                .roundDownTimePart(date));
+        assertEquals(Date.valueOf("2009-01-23"),
+                functions.roundDownTimePart(date));
     }
 
     public void testExpressionFunctions_roundDonwTimePart_forTimestamp()

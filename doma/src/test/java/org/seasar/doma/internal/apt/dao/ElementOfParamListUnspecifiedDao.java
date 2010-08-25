@@ -28,7 +28,6 @@ import org.seasar.doma.internal.apt.entity.Emp;
 @Dao(config = MyConfig.class)
 public interface ElementOfParamListUnspecifiedDao {
 
-    @SuppressWarnings("unchecked")
     @Select
-    List<Emp> select(List param);
+    List<Emp> select(@SuppressWarnings("rawtypes") List param);
 }

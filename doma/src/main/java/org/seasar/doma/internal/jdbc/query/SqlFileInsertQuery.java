@@ -35,6 +35,7 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
         super(SqlKind.INSERT);
     }
 
+    @Override
     public void prepare() {
         assertNotNull(config, sqlFilePath, callerClassName, callerMethodName);
         preInsert();

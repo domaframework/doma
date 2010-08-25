@@ -27,6 +27,7 @@ import java.sql.SQLException;
  */
 public class NClobCreateQuery extends AbstractCreateQuery<NClob> {
 
+    @Override
     public void prepare() {
         assertNotNull(config, callerClassName, callerMethodName);
     }

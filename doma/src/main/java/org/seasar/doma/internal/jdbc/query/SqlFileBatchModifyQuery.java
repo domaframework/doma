@@ -76,6 +76,7 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
         this.kind = kind;
     }
 
+    @Override
     public void prepare() {
         assertNotNull(config, sqlFilePath, parameterName, callerClassName,
                 callerMethodName, elements, sqls);
@@ -97,9 +98,9 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
 
     protected void prepareSql() {
         Value value = new Value(elementClass, currentEntity);
-        ExpressionEvaluator evaluator = new ExpressionEvaluator(Collections
-                .singletonMap(parameterName, value), config.getDialect()
-                .getExpressionFunctions());
+        ExpressionEvaluator evaluator = new ExpressionEvaluator(
+                Collections.singletonMap(parameterName, value), config
+                        .getDialect().getExpressionFunctions());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
                 kind, sqlFile.getPath(), evaluator);
         PreparedSql sql = sqlBuilder.build(sqlFile.getSqlNode());
@@ -198,10 +199,12 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
         return sqlExecutionSkipCause;
     }
 
+    @Override
     public int getQueryTimeout() {
         return queryTimeout;
     }
 
+    @Override
     public int getBatchSize() {
         return batchSize;
     }

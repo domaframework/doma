@@ -45,14 +45,15 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
         this.env = env;
     }
 
+    @Override
     public DomainMeta createTypeElementMeta(TypeElement classElement) {
         assertNotNull(classElement);
         DomainMirror domainMirror = DomainMirror.newInstance(classElement, env);
         if (domainMirror == null) {
             throw new AptIllegalStateException("domainMirror");
         }
-        DomainMeta domainMeta = new DomainMeta(classElement, classElement
-                .asType());
+        DomainMeta domainMeta = new DomainMeta(classElement,
+                classElement.asType());
         domainMeta.setDomainMirror(domainMirror);
         doWrapperType(classElement, domainMeta);
         validateClass(classElement, domainMeta);
@@ -67,8 +68,9 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
         if (basicType == null) {
             DomainMirror domainMirror = domainMeta.getDomainMirror();
             throw new AptException(Message.DOMA4102, env, classElement,
-                    domainMirror.getAnnotationMirror(), domainMirror
-                            .getValueType(), domainMirror.getValueTypeValue());
+                    domainMirror.getAnnotationMirror(),
+                    domainMirror.getValueType(),
+                    domainMirror.getValueTypeValue());
         }
         if (basicType.isEnum()) {
             EnumDomainMirror enumDomainMirror = EnumDomainMirror.newInstance(
@@ -76,8 +78,8 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
             if (enumDomainMirror != null) {
                 throw new AptException(Message.DOMA4178, env, classElement,
                         enumDomainMirror.getAnnotationMirror(),
-                        enumDomainMirror.getValueType(), enumDomainMirror
-                                .getValueTypeValue());
+                        enumDomainMirror.getValueType(),
+                        enumDomainMirror.getValueTypeValue());
             }
         }
         domainMeta.setWrapperType(basicType.getWrapperType());
@@ -119,8 +121,8 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
                 return;
             }
         }
-        throw new AptException(Message.DOMA4103, env, classElement, domainMeta
-                .getValueType());
+        throw new AptException(Message.DOMA4103, env, classElement,
+                domainMeta.getValueType());
     }
 
     protected void validateAccessorMethod(TypeElement classElement,
@@ -148,7 +150,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
                 }
             }
         }
-        throw new AptException(Message.DOMA4104, env, classElement, domainMeta
-                .getValueType(), domainMeta.getAccessorMethod());
+        throw new AptException(Message.DOMA4104, env, classElement,
+                domainMeta.getValueType(), domainMeta.getAccessorMethod());
     }
 }

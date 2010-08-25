@@ -59,8 +59,7 @@ public class ByteWrapper extends AbstractWrapper<Byte> implements
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof ByteWrapperVisitor<?, ?, ?>) {
-            @SuppressWarnings("unchecked")
-            ByteWrapperVisitor<R, P, TH> v = (ByteWrapperVisitor) visitor;
+            ByteWrapperVisitor<R, P, TH> v = (ByteWrapperVisitor<R, P, TH>) visitor;
             return v.visitByteWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);

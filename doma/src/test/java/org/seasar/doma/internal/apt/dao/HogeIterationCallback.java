@@ -19,7 +19,6 @@ import org.seasar.doma.internal.apt.entity.Emp;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
 
-
 /**
  * @author taedium
  * 

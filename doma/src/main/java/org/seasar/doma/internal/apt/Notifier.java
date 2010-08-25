@@ -60,8 +60,8 @@ public final class Notifier {
     public static void notify(ProcessingEnvironment env, AptException e) {
         assertNotNull(env, e);
         Messager messager = env.getMessager();
-        messager.printMessage(e.getKind(), e.getMessage(), e.getElement(), e
-                .getAnnotationMirror(), e.getAnnotationValue());
+        messager.printMessage(e.getKind(), e.getMessage(), e.getElement(),
+                e.getAnnotationMirror(), e.getAnnotationValue());
     }
 
 }

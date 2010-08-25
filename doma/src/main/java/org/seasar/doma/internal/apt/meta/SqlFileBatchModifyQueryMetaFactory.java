@@ -92,8 +92,8 @@ public class SqlFileBatchModifyQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         QueryReturnMeta resultMeta = createReturnMeta(method);
         if (!resultMeta.isPrimitiveIntArray()) {
-            throw new AptException(Message.DOMA4040, env, resultMeta
-                    .getElement());
+            throw new AptException(Message.DOMA4040, env,
+                    resultMeta.getElement());
         }
         queryMeta.setReturnMeta(resultMeta);
     }
@@ -110,24 +110,22 @@ public class SqlFileBatchModifyQueryMetaFactory extends
                 .get(0));
         IterableType iterableType = parameterMeta
                 .getDataType()
-                .accept(
-                        new SimpleDataTypeVisitor<IterableType, Void, RuntimeException>() {
+                .accept(new SimpleDataTypeVisitor<IterableType, Void, RuntimeException>() {
 
-                            @Override
-                            protected IterableType defaultAction(DataType type,
-                                    Void p) throws RuntimeException {
-                                throw new AptException(Message.DOMA4042, env,
-                                        method);
-                            }
+                    @Override
+                    protected IterableType defaultAction(DataType type, Void p)
+                            throws RuntimeException {
+                        throw new AptException(Message.DOMA4042, env, method);
+                    }
 
-                            @Override
-                            public IterableType visitIterableType(
-                                    IterableType dataType, Void p)
-                                    throws RuntimeException {
-                                return dataType;
-                            }
+                    @Override
+                    public IterableType visitIterableType(
+                            IterableType dataType, Void p)
+                            throws RuntimeException {
+                        return dataType;
+                    }
 
-                        }, null);
+                }, null);
         DataType elementType = iterableType.getElementType();
         queryMeta.setElementType(elementType);
         queryMeta.setElementsParameterName(parameterMeta.getName());

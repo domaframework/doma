@@ -88,8 +88,8 @@ public class AutoModifyQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         QueryReturnMeta returnMeta = createReturnMeta(method);
         if (!returnMeta.isPrimitiveInt()) {
-            throw new AptException(Message.DOMA4001, env, returnMeta
-                    .getElement());
+            throw new AptException(Message.DOMA4001, env,
+                    returnMeta.getElement());
         }
         queryMeta.setReturnMeta(returnMeta);
     }
@@ -106,25 +106,22 @@ public class AutoModifyQueryMetaFactory extends
                 .get(0));
         EntityType entityType = parameterMeta
                 .getDataType()
-                .accept(
-                        new SimpleDataTypeVisitor<EntityType, Void, RuntimeException>() {
+                .accept(new SimpleDataTypeVisitor<EntityType, Void, RuntimeException>() {
 
-                            @Override
-                            protected EntityType defaultAction(DataType type,
-                                    Void p) throws RuntimeException {
-                                throw new AptException(
-                                        Message.DOMA4003, env,
-                                        parameterMeta.getElement());
-                            }
+                    @Override
+                    protected EntityType defaultAction(DataType type, Void p)
+                            throws RuntimeException {
+                        throw new AptException(Message.DOMA4003, env,
+                                parameterMeta.getElement());
+                    }
 
-                            @Override
-                            public EntityType visitEntityType(
-                                    EntityType dataType, Void p)
-                                    throws RuntimeException {
-                                return dataType;
-                            }
+                    @Override
+                    public EntityType visitEntityType(EntityType dataType,
+                            Void p) throws RuntimeException {
+                        return dataType;
+                    }
 
-                        }, null);
+                }, null);
         queryMeta.setEntityType(entityType);
         queryMeta.setEntityParameterName(parameterMeta.getName());
         queryMeta.addParameterMeta(parameterMeta);

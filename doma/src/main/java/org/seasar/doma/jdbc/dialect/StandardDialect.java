@@ -297,6 +297,7 @@ public class StandardDialect implements Dialect {
         return transformer.transform(sqlNode);
     }
 
+    @Override
     public boolean isUniqueConstraintViolated(SQLException sqlException) {
         if (sqlException == null) {
             throw new DomaNullPointerException("sqlException");
@@ -450,10 +451,12 @@ public class StandardDialect implements Dialect {
         return expressionFunctions;
     }
 
+    @Override
     public ScriptBlockContext createScriptBlockContext() {
         return new StandardScriptBlockContext();
     }
 
+    @Override
     public String getScriptBlockDelimiter() {
         return null;
     }
@@ -988,9 +991,7 @@ public class StandardDialect implements Dialect {
                 if (escapeChar == '[' || escapeChar == ']') {
                     buf.append("\\");
                 }
-                buf
-                        .append(Matcher.quoteReplacement(String
-                                .valueOf(escapeChar)));
+                buf.append(Matcher.quoteReplacement(String.valueOf(escapeChar)));
                 if (wildcard == '[' || wildcard == ']') {
                     buf.append("\\");
                 }
@@ -1050,6 +1051,7 @@ public class StandardDialect implements Dialect {
         /** ブロックの内側の場合{@code true} */
         protected boolean inBlock;
 
+        @Override
         public void addKeyword(String keyword) {
             if (!inBlock) {
                 keywords.add(keyword);
@@ -1079,6 +1081,7 @@ public class StandardDialect implements Dialect {
             }
         }
 
+        @Override
         public boolean isInBlock() {
             return inBlock;
         }

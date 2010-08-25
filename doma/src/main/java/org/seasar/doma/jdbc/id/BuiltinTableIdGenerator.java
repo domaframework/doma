@@ -83,8 +83,7 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
     @Override
     public void initialize() {
         if (qualifiedTableName == null) {
-            throw new JdbcException(Message.DOMA2033,
-                    "qualifiedTableName");
+            throw new JdbcException(Message.DOMA2033, "qualifiedTableName");
         }
         if (pkColumnName == null) {
             throw new JdbcException(Message.DOMA2033, "pkColumnName");
@@ -104,8 +103,8 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
                         new BasicInParameter(allocationSizeWrapper),
                         new BasicInParameter(pkColumnValueWrapper)));
         selectSql = new PreparedSql(SqlKind.SELECT, createSelectRawSql(),
-                createSelectFormattedSql(), null, Arrays
-                        .asList(new BasicInParameter(pkColumnValueWrapper)));
+                createSelectFormattedSql(), null,
+                Arrays.asList(new BasicInParameter(pkColumnValueWrapper)));
     }
 
     /**
@@ -201,8 +200,8 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
                     });
             return value - allocationSize;
         } catch (Throwable t) {
-            throw new JdbcException(Message.DOMA2018, t, config
-                    .getEntityType().getName(), t);
+            throw new JdbcException(Message.DOMA2018, t, config.getEntityType()
+                    .getName(), t);
         }
     }
 

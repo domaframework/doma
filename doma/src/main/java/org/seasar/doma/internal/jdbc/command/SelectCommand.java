@@ -48,6 +48,7 @@ public class SelectCommand<R> implements Command<R, SelectQuery> {
         this.resultSetHandler = resultSetHandler;
     }
 
+    @Override
     public R execute() {
         Connection connection = JdbcUtil.getConnection(query.getConfig()
                 .getDataSource());

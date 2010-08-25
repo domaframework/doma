@@ -41,6 +41,7 @@ public class EnumDomainMetaFactory implements
         this.env = env;
     }
 
+    @Override
     public EnumDomainMeta createTypeElementMeta(TypeElement classElement) {
         assertNotNull(classElement);
         EnumDomainMirror enumDomainMirror = EnumDomainMirror.newInstance(
@@ -60,15 +61,15 @@ public class EnumDomainMetaFactory implements
 
     protected void doWrapperType(TypeElement classElement,
             EnumDomainMeta enumDomainMeta) {
-        BasicType basicType = BasicType.newInstance(enumDomainMeta
-                .getValueType(), env);
+        BasicType basicType = BasicType.newInstance(
+                enumDomainMeta.getValueType(), env);
         if (basicType == null) {
             EnumDomainMirror enumDomainMirror = enumDomainMeta
                     .getEnumDomainMirror();
             throw new AptException(Message.DOMA4102, env, classElement,
-                    enumDomainMirror.getAnnotationMirror(), enumDomainMirror
-                            .getValueType(), enumDomainMirror
-                            .getValueTypeValue());
+                    enumDomainMirror.getAnnotationMirror(),
+                    enumDomainMirror.getValueType(),
+                    enumDomainMirror.getValueTypeValue());
         }
         if (basicType.isEnum()) {
             EnumDomainMirror enumDomainMirror = EnumDomainMirror.newInstance(
@@ -76,8 +77,8 @@ public class EnumDomainMetaFactory implements
             if (enumDomainMirror != null) {
                 throw new AptException(Message.DOMA4178, env, classElement,
                         enumDomainMirror.getAnnotationMirror(),
-                        enumDomainMirror.getValueType(), enumDomainMirror
-                                .getValueTypeValue());
+                        enumDomainMirror.getValueType(),
+                        enumDomainMirror.getValueTypeValue());
             }
         }
         enumDomainMeta.setWrapperType(basicType.getWrapperType());
@@ -127,8 +128,8 @@ public class EnumDomainMetaFactory implements
         }
         throw new AptException(Message.DOMA4177, env, classElement,
                 enumDomainMeta.getFactoryMethod(), classElement.asType(),
-                enumDomainMeta.getValueType(), enumDomainMeta
-                        .getFactoryMethod());
+                enumDomainMeta.getValueType(),
+                enumDomainMeta.getFactoryMethod());
     }
 
     protected void validateAccessorMethod(TypeElement classElement,
@@ -156,7 +157,7 @@ public class EnumDomainMetaFactory implements
             }
         }
         throw new AptException(Message.DOMA4176, env, classElement,
-                enumDomainMeta.getAccessorMethod(), enumDomainMeta
-                        .getValueType());
+                enumDomainMeta.getAccessorMethod(),
+                enumDomainMeta.getValueType());
     }
 }

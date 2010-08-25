@@ -38,6 +38,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
         super(SqlKind.UPDATE);
     }
 
+    @Override
     public void prepare() {
         assertNotNull(config, sqlFilePath, callerClassName, callerMethodName);
         preUpdate();

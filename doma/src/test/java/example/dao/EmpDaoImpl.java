@@ -113,8 +113,8 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
 
     @Override
     public int insert(Emp entity) {
-        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(_Emp
-                .getSingletonInternal());
+        AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(
+                _Emp.getSingletonInternal());
         query.setConfig(config);
         query.setEntity(entity);
         query.setCallerClassName("example.dao.EmpDao");
@@ -126,8 +126,8 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
 
     @Override
     public int update(Emp entity) {
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp
-                .getSingletonInternal());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
+                _Emp.getSingletonInternal());
         query.setConfig(config);
         query.setEntity(entity);
         query.setCallerClassName("example.dao.EmpDao");
@@ -139,8 +139,8 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
 
     @Override
     public int delete(Emp entity) {
-        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp
-                .getSingletonInternal());
+        AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(
+                _Emp.getSingletonInternal());
         query.setConfig(config);
         query.setEntity(entity);
         query.setCallerClassName("example.dao.EmpDao");
@@ -160,8 +160,8 @@ public class EmpDaoImpl extends AbstractDao implements EmpDao {
         query.setCallerMethodName("selectById");
         query.prepare();
         SelectCommand<Integer> command = new SelectCommand<Integer>(query,
-                new EntityIterationHandler<Integer, Emp>(_Emp
-                        .getSingletonInternal(), callback));
+                new EntityIterationHandler<Integer, Emp>(
+                        _Emp.getSingletonInternal(), callback));
         return command.execute();
     }
 

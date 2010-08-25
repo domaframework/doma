@@ -27,6 +27,7 @@ import java.sql.SQLException;
  */
 public class ClobCreateQuery extends AbstractCreateQuery<Clob> {
 
+    @Override
     public void prepare() {
         assertNotNull(config, callerClassName, callerMethodName);
     }

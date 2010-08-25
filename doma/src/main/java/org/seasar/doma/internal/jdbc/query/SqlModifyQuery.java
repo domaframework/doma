@@ -144,6 +144,7 @@ public abstract class SqlModifyQuery implements ModifyQuery {
         return null;
     }
 
+    @Override
     public int getQueryTimeout() {
         return queryTimeout;
     }

@@ -15,9 +15,9 @@
  */
 package org.seasar.doma.internal.util;
 
-import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
-
 import junit.framework.TestCase;
+
+import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 
 /**
  * @author taedium

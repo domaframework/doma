@@ -53,8 +53,7 @@ public class EolNode extends AbstractSqlNode {
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof EolNodeVisitor<?, ?>) {
-            @SuppressWarnings("unchecked")
-            EolNodeVisitor<R, P> v = (EolNodeVisitor) visitor;
+            EolNodeVisitor<R, P> v = (EolNodeVisitor<R, P>) visitor;
             return v.visitEolNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

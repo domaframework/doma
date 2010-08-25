@@ -101,14 +101,14 @@ public abstract class AbstractGenerator implements Generator {
 
     protected void printGenerated() {
         iprint("@%s(value = { \"%s\", \"%s\" }, date = \"%tF %<tT\")%n",
-                Generated.class.getName(), Artifact.getName(), Options
-                        .getVersion(env), Options.getDate(env));
+                Generated.class.getName(), Artifact.getName(),
+                Options.getVersion(env), Options.getDate(env));
     }
 
     protected void printValidateVersionStaticInitializer() {
         iprint("static {%n");
-        iprint("    %1$s.validateVersion(\"%2$s\");%n", Artifact.class
-                .getName(), Options.getVersion(env));
+        iprint("    %1$s.validateVersion(\"%2$s\");%n",
+                Artifact.class.getName(), Options.getVersion(env));
         iprint("}%n");
         print("%n");
     }
@@ -145,6 +145,7 @@ public abstract class AbstractGenerator implements Generator {
         }
     }
 
+    @Override
     public void close() {
         if (formatter != null) {
             formatter.close();

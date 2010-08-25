@@ -69,8 +69,8 @@ public class ArrayCreateQueryMetaFactory extends
         QueryParameterMeta parameterMeta = createParameterMeta(parameters
                 .get(0));
         if (parameterMeta.getType().getKind() != TypeKind.ARRAY) {
-            throw new AptException(Message.DOMA4076, env, parameterMeta
-                    .getElement());
+            throw new AptException(Message.DOMA4076, env,
+                    parameterMeta.getElement());
         }
         queryMeta.setElementsParameterName(parameterMeta.getName());
         queryMeta.addParameterMeta(parameterMeta);

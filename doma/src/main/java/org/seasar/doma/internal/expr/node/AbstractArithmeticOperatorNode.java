@@ -42,6 +42,7 @@ public abstract class AbstractArithmeticOperatorNode implements
         this.priority = priority;
     }
 
+    @Override
     public ExpressionNode getLeftNode() {
         return leftNode;
     }
@@ -50,6 +51,7 @@ public abstract class AbstractArithmeticOperatorNode implements
         this.leftNode = leftNode;
     }
 
+    @Override
     public ExpressionNode getRightNode() {
         return rightNode;
     }

@@ -35,6 +35,7 @@ public abstract class AbstractEntityType<E> implements EntityType<E> {
     protected AbstractEntityType() {
     }
 
+    @Override
     public boolean contains(ColumnCriterion<?> column) {
         return getEntityPropertyTypes().contains(column);
     }
@@ -51,8 +52,7 @@ public abstract class AbstractEntityType<E> implements EntityType<E> {
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof EntityPropertyTypeVisitor<?, ?, ?>) {
-            @SuppressWarnings("unchecked")
-            EntityTypeVisitor<R, P, TH> v = (EntityTypeVisitor) visitor;
+            EntityTypeVisitor<R, P, TH> v = (EntityTypeVisitor<R, P, TH>) visitor;
             return v.visitEntityType(this, p);
         }
         return visitor.visitUnknownExpression(this, p);

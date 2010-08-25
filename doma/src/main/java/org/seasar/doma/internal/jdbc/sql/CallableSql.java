@@ -58,6 +58,7 @@ public class CallableSql implements Sql<CallableSqlParameter> {
         this.parameters = Collections.unmodifiableList(parameters);
     }
 
+    @Override
     public SqlKind getKind() {
         return kind;
     }

@@ -46,6 +46,7 @@ public class ForBlockNode extends AbstractSqlNode implements BlockNode {
         return forNode;
     }
 
+    @Override
     public void setEndNode(EndNode endNode) {
         this.endNode = endNode;
         addNodeInternal(endNode);
@@ -88,8 +89,7 @@ public class ForBlockNode extends AbstractSqlNode implements BlockNode {
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof ForBlockNodeVisitor<?, ?>) {
-            @SuppressWarnings("unchecked")
-            ForBlockNodeVisitor<R, P> v = (ForBlockNodeVisitor) visitor;
+            ForBlockNodeVisitor<R, P> v = (ForBlockNodeVisitor<R, P>) visitor;
             return v.visitForBlockNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

@@ -76,8 +76,7 @@ public class ForNode extends AbstractSqlNode implements SpaceStrippingNode {
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof ForNodeVisitor<?, ?>) {
-            @SuppressWarnings("unchecked")
-            ForNodeVisitor<R, P> v = (ForNodeVisitor) visitor;
+            ForNodeVisitor<R, P> v = (ForNodeVisitor<R, P>) visitor;
             return v.visitForNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

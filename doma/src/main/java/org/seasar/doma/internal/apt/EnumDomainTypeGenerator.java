@@ -44,16 +44,18 @@ public class EnumDomainTypeGenerator extends DomainTypeGenerator {
     protected void printNewDomainMethod() {
         iprint("@Override%n");
         iprint("public %1$s newDomain(%2$s value) {%n", enumDomainMeta
-                .getTypeElement().getQualifiedName(), TypeMirrorUtil
-                .boxIfPrimitive(enumDomainMeta.getValueType(), env));
+                .getTypeElement().getQualifiedName(),
+                TypeMirrorUtil.boxIfPrimitive(enumDomainMeta.getValueType(),
+                        env));
         if (enumDomainMeta.getWrapperType().getWrappedType().isPrimitive()) {
             iprint("    return %1$s.%2$s(%3$s.unbox(value));%n", enumDomainMeta
-                    .getTypeElement().getQualifiedName(), enumDomainMeta
-                    .getFactoryMethod(), BoxedPrimitiveUtil.class.getName());
+                    .getTypeElement().getQualifiedName(),
+                    enumDomainMeta.getFactoryMethod(),
+                    BoxedPrimitiveUtil.class.getName());
         } else {
             iprint("    return %1$s.%2$s(value);%n", enumDomainMeta
-                    .getTypeElement().getQualifiedName(), enumDomainMeta
-                    .getFactoryMethod());
+                    .getTypeElement().getQualifiedName(),
+                    enumDomainMeta.getFactoryMethod());
         }
         iprint("}%n");
         print("%n");
@@ -70,8 +72,9 @@ public class EnumDomainTypeGenerator extends DomainTypeGenerator {
         @Override
         protected void pirntWrapperDoSetMethod() {
             iprint("@Override%n");
-            iprint("protected void doSet(%1$s value) {%n", TypeMirrorUtil
-                    .boxIfPrimitive(enumDomainMeta.getValueType(), env));
+            iprint("protected void doSet(%1$s value) {%n",
+                    TypeMirrorUtil.boxIfPrimitive(
+                            enumDomainMeta.getValueType(), env));
             if (enumDomainMeta.getWrapperType().getWrappedType().isPrimitive()) {
                 iprint("    domain = %1$s.%2$s(%3$s.unbox(value));%n",
                         enumDomainMeta.getTypeElement().getQualifiedName(),
@@ -79,8 +82,8 @@ public class EnumDomainTypeGenerator extends DomainTypeGenerator {
                         BoxedPrimitiveUtil.class.getName());
             } else {
                 iprint("    domain = %1$s.%2$s(value);%n", enumDomainMeta
-                        .getTypeElement().getQualifiedName(), enumDomainMeta
-                        .getFactoryMethod());
+                        .getTypeElement().getQualifiedName(),
+                        enumDomainMeta.getFactoryMethod());
             }
             iprint("}%n");
             print("%n");

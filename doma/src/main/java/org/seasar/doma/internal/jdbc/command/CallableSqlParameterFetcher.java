@@ -65,6 +65,7 @@ public class CallableSqlParameterFetcher implements
         this.query = query;
     }
 
+    @Override
     public void fetch(CallableStatement callableStatement,
             List<? extends CallableSqlParameter> parameters)
             throws SQLException {
@@ -224,16 +225,15 @@ public class CallableSqlParameterFetcher implements
                 ResultSet resultSet = resultSetType.getValue(callableStatement,
                         index);
                 if (resultSet == null) {
-                    throw new JdbcException(Message.DOMA2137, index, callback
-                            .getParameterName(), query.getModuleName());
+                    throw new JdbcException(Message.DOMA2137, index,
+                            callback.getParameterName(), query.getModuleName());
                 }
                 try {
                     while (resultSet.next()) {
                         callback.fetch(resultSet);
                     }
                 } finally {
-                    JdbcUtil
-                            .close(resultSet, query.getConfig().getJdbcLogger());
+                    JdbcUtil.close(resultSet, query.getConfig().getJdbcLogger());
                 }
                 index++;
             } else {
@@ -244,8 +244,8 @@ public class CallableSqlParameterFetcher implements
                     resultSet = callableStatement.getResultSet();
                 }
                 if (resultSet == null) {
-                    throw new JdbcException(Message.DOMA2136, callback
-                            .getParameterName(), query.getModuleName());
+                    throw new JdbcException(Message.DOMA2136,
+                            callback.getParameterName(), query.getModuleName());
                 }
                 try {
                     while (resultSet.next()) {

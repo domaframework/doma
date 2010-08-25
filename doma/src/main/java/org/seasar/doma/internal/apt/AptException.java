@@ -41,32 +41,36 @@ public class AptException extends DomaException {
 
     protected AnnotationValue annotationValue;
 
-    public AptException(MessageResource messageResource, ProcessingEnvironment env,
-            Element element, Object... args) {
+    public AptException(MessageResource messageResource,
+            ProcessingEnvironment env, Element element, Object... args) {
         this(messageResource, env, Kind.ERROR, element, null, null, null, args);
     }
 
-    public AptException(MessageResource messageResource, ProcessingEnvironment env,
-            Element element, Throwable cause, Object... args) {
+    public AptException(MessageResource messageResource,
+            ProcessingEnvironment env, Element element, Throwable cause,
+            Object... args) {
         this(messageResource, env, Kind.ERROR, element, null, null, cause, args);
     }
 
-    public AptException(MessageResource messageResource, ProcessingEnvironment env,
-            Element element, AnnotationMirror annotationMirror, Object... args) {
+    public AptException(MessageResource messageResource,
+            ProcessingEnvironment env, Element element,
+            AnnotationMirror annotationMirror, Object... args) {
         this(messageResource, env, Kind.ERROR, element, annotationMirror, null,
                 null, args);
     }
 
-    public AptException(MessageResource messageResource, ProcessingEnvironment env,
-            Element element, AnnotationMirror annotationMirror,
-            AnnotationValue annotationValue, Object... args) {
+    public AptException(MessageResource messageResource,
+            ProcessingEnvironment env, Element element,
+            AnnotationMirror annotationMirror, AnnotationValue annotationValue,
+            Object... args) {
         this(messageResource, env, Kind.ERROR, element, annotationMirror,
                 annotationValue, null, args);
     }
 
-    public AptException(MessageResource messageResource, ProcessingEnvironment env,
-            Kind kind, Element element, AnnotationMirror annotationMirror,
-            AnnotationValue annotationValue, Throwable cause, Object... args) {
+    public AptException(MessageResource messageResource,
+            ProcessingEnvironment env, Kind kind, Element element,
+            AnnotationMirror annotationMirror, AnnotationValue annotationValue,
+            Throwable cause, Object... args) {
         super(messageResource, cause, args);
         this.kind = kind;
         this.element = element;

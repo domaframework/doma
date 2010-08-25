@@ -68,8 +68,8 @@ public final class DomainTypeFactory {
             Method method = ClassUtil.getMethod(clazz, "getSingletonInternal");
             return MethodUtil.invoke(method, null);
         } catch (WrapException e) {
-            throw new DomainTypeNotFoundException(e.getCause(), domainClass
-                    .getName(), domainTypeClassName);
+            throw new DomainTypeNotFoundException(e.getCause(),
+                    domainClass.getName(), domainTypeClassName);
         }
     }
 }

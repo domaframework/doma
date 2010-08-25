@@ -61,6 +61,7 @@ public class PreparedSql implements Sql<PreparedSqlParameter> {
         this.parameters = Collections.unmodifiableList(parameters);
     }
 
+    @Override
     public SqlKind getKind() {
         return kind;
     }

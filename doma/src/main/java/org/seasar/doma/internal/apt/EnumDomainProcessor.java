@@ -33,8 +33,8 @@ import org.seasar.doma.internal.apt.meta.EnumDomainMetaFactory;
  * 
  */
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
-@SupportedAnnotationTypes( { "org.seasar.doma.EnumDomain" })
-@SupportedOptions( { Options.TEST, Options.DEBUG })
+@SupportedAnnotationTypes({ "org.seasar.doma.EnumDomain" })
+@SupportedOptions({ Options.TEST, Options.DEBUG })
 public class EnumDomainProcessor extends AbstractProcessor<EnumDomainMeta> {
 
     @Override

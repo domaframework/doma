@@ -59,8 +59,7 @@ public class DoubleWrapper extends AbstractWrapper<Double> implements
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof DoubleWrapperVisitor<?, ?, ?>) {
-            @SuppressWarnings("unchecked")
-            DoubleWrapperVisitor<R, P, TH> v = (DoubleWrapperVisitor) visitor;
+            DoubleWrapperVisitor<R, P, TH> v = (DoubleWrapperVisitor<R, P, TH>) visitor;
             return v.visitDoubleWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);

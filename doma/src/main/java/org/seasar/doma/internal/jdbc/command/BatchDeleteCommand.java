@@ -22,7 +22,6 @@ import java.util.List;
 import org.seasar.doma.internal.jdbc.query.BatchDeleteQuery;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 
-
 /**
  * @author taedium
  * 

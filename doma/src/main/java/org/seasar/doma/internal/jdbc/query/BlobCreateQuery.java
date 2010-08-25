@@ -27,6 +27,7 @@ import java.sql.SQLException;
  */
 public class BlobCreateQuery extends AbstractCreateQuery<Blob> {
 
+    @Override
     public void prepare() {
         assertNotNull(config, callerClassName, callerMethodName);
     }

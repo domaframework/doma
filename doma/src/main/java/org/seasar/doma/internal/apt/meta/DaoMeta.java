@@ -124,6 +124,7 @@ public class DaoMeta implements TypeElementMeta {
         return results;
     }
 
+    @Override
     public boolean isError() {
         return error;
     }

@@ -91,8 +91,8 @@ public class AutoBatchModifyQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         QueryReturnMeta returnMeta = createReturnMeta(method);
         if (!returnMeta.isPrimitiveIntArray()) {
-            throw new AptException(Message.DOMA4040, env, returnMeta
-                    .getElement());
+            throw new AptException(Message.DOMA4040, env,
+                    returnMeta.getElement());
         }
         queryMeta.setReturnMeta(returnMeta);
     }
@@ -109,46 +109,39 @@ public class AutoBatchModifyQueryMetaFactory extends
                 .get(0));
         IterableType iterableType = parameterMeta
                 .getDataType()
-                .accept(
-                        new SimpleDataTypeVisitor<IterableType, Void, RuntimeException>() {
+                .accept(new SimpleDataTypeVisitor<IterableType, Void, RuntimeException>() {
 
-                            @Override
-                            protected IterableType defaultAction(
-                                    DataType dataType, Void p)
-                                    throws RuntimeException {
-                                throw new AptException(Message.DOMA4042, env,
-                                        method);
-                            }
+                    @Override
+                    protected IterableType defaultAction(DataType dataType,
+                            Void p) throws RuntimeException {
+                        throw new AptException(Message.DOMA4042, env, method);
+                    }
 
-                            @Override
-                            public IterableType visitIterableType(
-                                    IterableType dataType, Void p)
-                                    throws RuntimeException {
-                                return dataType;
-                            }
+                    @Override
+                    public IterableType visitIterableType(
+                            IterableType dataType, Void p)
+                            throws RuntimeException {
+                        return dataType;
+                    }
 
-                        }, null);
+                }, null);
         EntityType entityType = iterableType
                 .getElementType()
-                .accept(
-                        new SimpleDataTypeVisitor<EntityType, Void, RuntimeException>() {
+                .accept(new SimpleDataTypeVisitor<EntityType, Void, RuntimeException>() {
 
-                            @Override
-                            protected EntityType defaultAction(
-                                    DataType dataType, Void p)
-                                    throws RuntimeException {
-                                throw new AptException(Message.DOMA4043, env,
-                                        method);
-                            }
+                    @Override
+                    protected EntityType defaultAction(DataType dataType, Void p)
+                            throws RuntimeException {
+                        throw new AptException(Message.DOMA4043, env, method);
+                    }
 
-                            @Override
-                            public EntityType visitEntityType(
-                                    EntityType dataType, Void p)
-                                    throws RuntimeException {
-                                return dataType;
-                            }
+                    @Override
+                    public EntityType visitEntityType(EntityType dataType,
+                            Void p) throws RuntimeException {
+                        return dataType;
+                    }
 
-                        }, null);
+                }, null);
         queryMeta.setEntityType(entityType);
         queryMeta.setEntitiesParameterName(parameterMeta.getName());
         queryMeta.addParameterMeta(parameterMeta);
@@ -158,8 +151,8 @@ public class AutoBatchModifyQueryMetaFactory extends
         }
         BatchModifyMirror batchModifyMirror = queryMeta.getBatchModifyMirror();
         validateEntityPropertyNames(entityType.getTypeMirror(), method,
-                batchModifyMirror.getAnnotationMirror(), batchModifyMirror
-                        .getInclude(), batchModifyMirror.getExclude());
+                batchModifyMirror.getAnnotationMirror(),
+                batchModifyMirror.getInclude(), batchModifyMirror.getExclude());
     }
 
 }

@@ -48,8 +48,7 @@ public class StringWrapper extends AbstractWrapper<String> {
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof StringWrapperVisitor<?, ?, ?>) {
-            @SuppressWarnings("unchecked")
-            StringWrapperVisitor<R, P, TH> v = (StringWrapperVisitor) visitor;
+            StringWrapperVisitor<R, P, TH> v = (StringWrapperVisitor<R, P, TH>) visitor;
             return v.visitStringWrapper(this, p);
         }
         return visitor.visitUnknownWrapper(this, p);

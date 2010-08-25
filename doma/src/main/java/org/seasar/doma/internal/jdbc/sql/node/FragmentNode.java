@@ -56,8 +56,7 @@ public class FragmentNode extends AbstractSqlNode {
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof FragmentNodeVisitor<?, ?>) {
-            @SuppressWarnings("unchecked")
-            FragmentNodeVisitor<R, P> v = (FragmentNodeVisitor) visitor;
+            FragmentNodeVisitor<R, P> v = (FragmentNodeVisitor<R, P>) visitor;
             return v.visitFragmentNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

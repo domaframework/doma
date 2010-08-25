@@ -24,6 +24,7 @@ import org.seasar.doma.jdbc.SelectOptions;
  */
 public interface SelectQuery extends Query {
 
+    @Override
     PreparedSql getSql();
 
     SelectOptions getOptions();

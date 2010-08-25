@@ -56,10 +56,12 @@ public abstract class AbstractQueryMeta implements QueryMeta {
         this.executableElement = method;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public ExecutableElement getExecutableElement() {
         return executableElement;
     }
@@ -68,6 +70,7 @@ public abstract class AbstractQueryMeta implements QueryMeta {
         typeParameterNames.add(typeParameterName);
     }
 
+    @Override
     public List<String> getTypeParameterNames() {
         return typeParameterNames;
     }
@@ -76,6 +79,7 @@ public abstract class AbstractQueryMeta implements QueryMeta {
         thrownTypeNames.add(thrownTypeName);
     }
 
+    @Override
     public List<String> getThrownTypeNames() {
         return thrownTypeNames;
     }
@@ -87,7 +91,7 @@ public abstract class AbstractQueryMeta implements QueryMeta {
         return queryKind.getQueryClass();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     public Class<? extends Command> getCommandClass() {
         if (queryKind == null) {
             return null;
@@ -95,6 +99,7 @@ public abstract class AbstractQueryMeta implements QueryMeta {
         return queryKind.getCommandClass();
     }
 
+    @Override
     public QueryKind getQueryKind() {
         return queryKind;
     }
@@ -103,6 +108,7 @@ public abstract class AbstractQueryMeta implements QueryMeta {
         this.queryKind = queryKind;
     }
 
+    @Override
     public Map<String, TypeMirror> getBindableParameterTypeMap() {
         return bindableParameterTypeMap;
     }
@@ -113,6 +119,7 @@ public abstract class AbstractQueryMeta implements QueryMeta {
                 bindableParameterTypeMap);
     }
 
+    @Override
     public QueryReturnMeta getReturnMeta() {
         return returnMeta;
     }
@@ -121,6 +128,7 @@ public abstract class AbstractQueryMeta implements QueryMeta {
         this.returnMeta = returnMeta;
     }
 
+    @Override
     public List<QueryParameterMeta> getParameterMetas() {
         return parameterMetas;
     }

@@ -218,8 +218,8 @@ public class ExpressionValidatorTest extends AptTestCase {
         ExpressionValidator validator = new ExpressionValidator(
                 getProcessingEnvironment(), methodElement, parameterTypeMap);
 
-        String expression = String.format("@%s@staticField", Emp.class
-                .getName());
+        String expression = String.format("@%s@staticField",
+                Emp.class.getName());
         ExpressionNode node = new ExpressionParser(expression).parse();
         TypeDeclaration result = validator.validate(node);
         assertTrue(result.isTextType());

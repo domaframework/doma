@@ -48,6 +48,7 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
         super(entityType);
     }
 
+    @Override
     public void prepare() {
         assertNotNull(config, callerClassName, callerMethodName, entities, sqls);
         Iterator<E> it = entities.iterator();

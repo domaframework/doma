@@ -48,8 +48,7 @@ public class OrderByClauseNode extends AbstractClauseNode {
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof OrderByClauseNodeVisitor<?, ?>) {
-            @SuppressWarnings("unchecked")
-            OrderByClauseNodeVisitor<R, P> v = (OrderByClauseNodeVisitor) visitor;
+            OrderByClauseNodeVisitor<R, P> v = (OrderByClauseNodeVisitor<R, P>) visitor;
             return v.visitOrderByClauseNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

@@ -17,8 +17,6 @@ package org.seasar.doma.internal.util;
 
 import java.lang.reflect.Constructor;
 
-import org.seasar.doma.internal.util.ConstructorUtil;
-
 import junit.framework.TestCase;
 
 /**
@@ -28,9 +26,9 @@ import junit.framework.TestCase;
 public class ConstructorUtilTest extends TestCase {
 
     public void testToSignature() throws Exception {
-        Constructor<String> constructor = String.class
-                .getConstructor(char[].class, int.class, int.class);
-        assertEquals("java.lang.String(char[], int, int)", ConstructorUtil
-                .createSignature(constructor));
+        Constructor<String> constructor = String.class.getConstructor(
+                char[].class, int.class, int.class);
+        assertEquals("java.lang.String(char[], int, int)",
+                ConstructorUtil.createSignature(constructor));
     }
 }

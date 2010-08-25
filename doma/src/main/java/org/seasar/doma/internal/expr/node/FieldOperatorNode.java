@@ -63,10 +63,12 @@ public class FieldOperatorNode implements OperatorNode {
         return visitor.visitFieldOperatorNode(this, p);
     }
 
+    @Override
     public ExpressionLocation getLocation() {
         return location;
     }
 
+    @Override
     public String getExpression() {
         return expression;
     }

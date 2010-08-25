@@ -79,8 +79,8 @@ public class BuiltinIdentityIdGenerator extends AbstractIdGenerator implements
             final ResultSet resultSet = statement.getGeneratedKeys();
             return getGeneratedValue(config, resultSet);
         } catch (final SQLException e) {
-            throw new JdbcException(Message.DOMA2018, e, config
-                    .getEntityType().getName(), e);
+            throw new JdbcException(Message.DOMA2018, e, config.getEntityType()
+                    .getName(), e);
         }
     }
 

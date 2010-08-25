@@ -86,8 +86,8 @@ public class SqlFileModifyQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         QueryReturnMeta returnMeta = createReturnMeta(method);
         if (!returnMeta.isPrimitiveInt()) {
-            throw new AptException(Message.DOMA4001, env, returnMeta
-                    .getElement());
+            throw new AptException(Message.DOMA4001, env,
+                    returnMeta.getElement());
         }
         queryMeta.setReturnMeta(returnMeta);
     }

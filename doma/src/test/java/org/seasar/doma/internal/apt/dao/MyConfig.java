@@ -21,7 +21,6 @@ import org.seasar.doma.internal.jdbc.mock.MockDataSource;
 import org.seasar.doma.jdbc.DomaAbstractConfig;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
 
-
 /**
  * @author taedium
  * 

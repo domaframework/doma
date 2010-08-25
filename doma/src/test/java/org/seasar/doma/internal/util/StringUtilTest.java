@@ -32,17 +32,17 @@ public class StringUtilTest extends TestCase {
     }
 
     public void testFromSnakeCaseToCamelCase() throws Exception {
-        assertEquals("aaaBbbCcc", StringUtil
-                .fromSnakeCaseToCamelCase("AAA_BBB_CCC"));
-        assertEquals("aaaBbbCcc", StringUtil
-                .fromSnakeCaseToCamelCase("aaa_bbb_ccc"));
+        assertEquals("aaaBbbCcc",
+                StringUtil.fromSnakeCaseToCamelCase("AAA_BBB_CCC"));
+        assertEquals("aaaBbbCcc",
+                StringUtil.fromSnakeCaseToCamelCase("aaa_bbb_ccc"));
         assertEquals("abc", StringUtil.fromSnakeCaseToCamelCase("ABC"));
         assertEquals("abc", StringUtil.fromSnakeCaseToCamelCase("abc"));
     }
 
     public void testFromCamelCaseToSnakeCase() throws Exception {
-        assertEquals("aaa_bbb_ccc", StringUtil
-                .fromCamelCaseToSnakeCase("aaaBbbCcc"));
+        assertEquals("aaa_bbb_ccc",
+                StringUtil.fromCamelCaseToSnakeCase("aaaBbbCcc"));
         assertEquals("abc", StringUtil.fromCamelCaseToSnakeCase("abc"));
     }
 

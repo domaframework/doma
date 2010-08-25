@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.jdbc.SqlFileNotFoundException;
-
 import junit.framework.TestCase;
 
 /**

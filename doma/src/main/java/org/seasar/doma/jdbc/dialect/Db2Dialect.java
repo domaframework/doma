@@ -235,7 +235,8 @@ public class Db2Dialect extends StandardDialect {
      * @author taedium
      * @since 1.7.0
      */
-    public static class Db2ScriptBlockContext extends StandardScriptBlockContext {
+    public static class Db2ScriptBlockContext extends
+            StandardScriptBlockContext {
 
         protected Db2ScriptBlockContext() {
             sqlBlockStartKeywordsList.add(Arrays.asList("create", "procedure"));

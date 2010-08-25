@@ -86,7 +86,7 @@ import java.lang.annotation.Target;
  * @author taedium
  * 
  */
-@Target( { ElementType.TYPE, ElementType.ANNOTATION_TYPE })
+@Target({ ElementType.TYPE, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AnnotateWith {
 

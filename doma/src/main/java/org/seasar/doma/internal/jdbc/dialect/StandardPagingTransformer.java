@@ -77,8 +77,8 @@ public class StandardPagingTransformer implements
         subStatement.setGroupByClauseNode(node.getGroupByClauseNode());
         subStatement.setHavingClauseNode(node.getHavingClauseNode());
 
-        OrderByClauseNode orderBy = new OrderByClauseNode(originalOrderBy
-                .getWordNode());
+        OrderByClauseNode orderBy = new OrderByClauseNode(
+                originalOrderBy.getWordNode());
         for (SqlNode child : originalOrderBy.getChildren()) {
             if (child instanceof WordNode) {
                 WordNode wordNode = (WordNode) child;
@@ -97,9 +97,7 @@ public class StandardPagingTransformer implements
         SelectClauseNode select = new SelectClauseNode("select");
         select.addNode(new FragmentNode(" * "));
         FromClauseNode from = new FromClauseNode("from");
-        from
-                .addNode(new FragmentNode(
-                        " ( select temp_.*, row_number() over( "));
+        from.addNode(new FragmentNode(" ( select temp_.*, row_number() over( "));
         from.addNode(orderBy);
         from.addNode(new FragmentNode(" ) as " + ROWNUMBER_COLUMN_NAME
                 + " from ( "));

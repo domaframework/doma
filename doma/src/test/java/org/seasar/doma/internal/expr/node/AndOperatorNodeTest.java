@@ -15,13 +15,10 @@
  */
 package org.seasar.doma.internal.expr.node;
 
+import junit.framework.TestCase;
+
 import org.seasar.doma.internal.expr.EvaluationResult;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
-import org.seasar.doma.internal.expr.node.AndOperatorNode;
-import org.seasar.doma.internal.expr.node.ExpressionLocation;
-import org.seasar.doma.internal.expr.node.LiteralNode;
-
-import junit.framework.TestCase;
 
 /**
  * @author taedium

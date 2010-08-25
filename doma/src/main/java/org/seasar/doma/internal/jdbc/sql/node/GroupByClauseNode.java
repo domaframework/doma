@@ -53,8 +53,7 @@ public class GroupByClauseNode extends AbstractClauseNode {
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof GroupByClauseNodeVisitor<?, ?>) {
-            @SuppressWarnings("unchecked")
-            GroupByClauseNodeVisitor<R, P> v = (GroupByClauseNodeVisitor) visitor;
+            GroupByClauseNodeVisitor<R, P> v = (GroupByClauseNodeVisitor<R, P>) visitor;
             return v.visitGroupByClauseNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

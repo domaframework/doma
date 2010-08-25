@@ -60,10 +60,12 @@ public class StaticFieldOperatorNode implements OperatorNode {
         return visitor.visitStaticFieldOperatorNode(this, p);
     }
 
+    @Override
     public ExpressionLocation getLocation() {
         return location;
     }
 
+    @Override
     public String getExpression() {
         return expression;
     }

@@ -62,7 +62,7 @@ public enum QueryKind {
             return SqlFileSelectQuery.class;
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("rawtypes")
         @Override
         public Class<? extends Command> getCommandClass() {
             return SelectCommand.class;
@@ -76,7 +76,7 @@ public enum QueryKind {
             return SqlFileScriptQuery.class;
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("rawtypes")
         @Override
         public Class<? extends Command> getCommandClass() {
             return ScriptCommand.class;
@@ -90,7 +90,7 @@ public enum QueryKind {
             return SqlFileInsertQuery.class;
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("rawtypes")
         @Override
         public Class<? extends Command> getCommandClass() {
             return InsertCommand.class;
@@ -104,7 +104,7 @@ public enum QueryKind {
             return SqlFileUpdateQuery.class;
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("rawtypes")
         @Override
         public Class<? extends Command> getCommandClass() {
             return UpdateCommand.class;
@@ -118,7 +118,7 @@ public enum QueryKind {
             return SqlFileDeleteQuery.class;
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("rawtypes")
         @Override
         public Class<? extends Command> getCommandClass() {
             return DeleteCommand.class;
@@ -132,7 +132,7 @@ public enum QueryKind {
             return SqlFileBatchInsertQuery.class;
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("rawtypes")
         @Override
         public Class<? extends Command> getCommandClass() {
             return BatchInsertCommand.class;
@@ -146,7 +146,7 @@ public enum QueryKind {
             return SqlFileBatchUpdateQuery.class;
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("rawtypes")
         @Override
         public Class<? extends Command> getCommandClass() {
             return BatchUpdateCommand.class;
@@ -160,7 +160,7 @@ public enum QueryKind {
             return SqlFileBatchDeleteQuery.class;
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("rawtypes")
         @Override
         public Class<? extends Command> getCommandClass() {
             return BatchDeleteCommand.class;
@@ -174,7 +174,7 @@ public enum QueryKind {
             return AutoInsertQuery.class;
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("rawtypes")
         @Override
         public Class<? extends Command> getCommandClass() {
             return InsertCommand.class;
@@ -188,7 +188,7 @@ public enum QueryKind {
             return AutoUpdateQuery.class;
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("rawtypes")
         @Override
         public Class<? extends Command> getCommandClass() {
             return UpdateCommand.class;
@@ -202,7 +202,7 @@ public enum QueryKind {
             return AutoDeleteQuery.class;
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("rawtypes")
         @Override
         public Class<? extends Command> getCommandClass() {
             return DeleteCommand.class;
@@ -216,7 +216,7 @@ public enum QueryKind {
             return AutoBatchInsertQuery.class;
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("rawtypes")
         @Override
         public Class<? extends Command> getCommandClass() {
             return BatchInsertCommand.class;
@@ -230,7 +230,7 @@ public enum QueryKind {
             return AutoBatchUpdateQuery.class;
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("rawtypes")
         @Override
         public Class<? extends Command> getCommandClass() {
             return BatchUpdateCommand.class;
@@ -244,7 +244,7 @@ public enum QueryKind {
             return AutoBatchDeleteQuery.class;
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("rawtypes")
         @Override
         public Class<? extends Command> getCommandClass() {
             return BatchDeleteCommand.class;
@@ -258,7 +258,7 @@ public enum QueryKind {
             return AutoFunctionQuery.class;
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("rawtypes")
         @Override
         public Class<? extends Command> getCommandClass() {
             return FunctionCommand.class;
@@ -272,7 +272,7 @@ public enum QueryKind {
             return AutoProcedureQuery.class;
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("rawtypes")
         @Override
         public Class<? extends Command> getCommandClass() {
             return ProcedureCommand.class;
@@ -286,7 +286,7 @@ public enum QueryKind {
             return ArrayCreateQuery.class;
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("rawtypes")
         @Override
         public Class<? extends Command> getCommandClass() {
             return CreateCommand.class;
@@ -300,7 +300,7 @@ public enum QueryKind {
             return BlobCreateQuery.class;
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("rawtypes")
         @Override
         public Class<? extends Command> getCommandClass() {
             return CreateCommand.class;
@@ -314,7 +314,7 @@ public enum QueryKind {
             return ClobCreateQuery.class;
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("rawtypes")
         @Override
         public Class<? extends Command> getCommandClass() {
             return CreateCommand.class;
@@ -328,7 +328,7 @@ public enum QueryKind {
             return NClobCreateQuery.class;
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("rawtypes")
         @Override
         public Class<? extends Command> getCommandClass() {
             return CreateCommand.class;
@@ -342,7 +342,7 @@ public enum QueryKind {
             return null;
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("rawtypes")
         @Override
         public Class<? extends Command> getCommandClass() {
             return null;
@@ -353,7 +353,7 @@ public enum QueryKind {
 
     public abstract Class<? extends Query> getQueryClass();
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     public abstract Class<? extends Command> getCommandClass();
 
 }

@@ -41,7 +41,8 @@ public class AutoUpdateQueryTest extends TestCase {
         emp.setName("aaa");
         emp.setVersion(100);
 
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
+                _Emp.getSingletonInternal());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
@@ -59,7 +60,8 @@ public class AutoUpdateQueryTest extends TestCase {
         emp.setVersion(100);
         emp.originalStates = new Emp();
 
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
+                _Emp.getSingletonInternal());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
@@ -84,7 +86,8 @@ public class AutoUpdateQueryTest extends TestCase {
         emp.setId(10);
         emp.setVersion(100);
 
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
+                _Emp.getSingletonInternal());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setNullExcluded(true);
@@ -110,7 +113,8 @@ public class AutoUpdateQueryTest extends TestCase {
         emp.setVersion(100);
         emp.originalStates = new Emp();
 
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
+                _Emp.getSingletonInternal());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setVersionIncluded(true);
@@ -119,8 +123,8 @@ public class AutoUpdateQueryTest extends TestCase {
         query.prepare();
 
         PreparedSql sql = query.getSql();
-        assertEquals("update EMP set NAME = ?, VERSION = ? where ID = ?", sql
-                .getRawSql());
+        assertEquals("update EMP set NAME = ?, VERSION = ? where ID = ?",
+                sql.getRawSql());
         List<PreparedSqlParameter> parameters = sql.getParameters();
         assertEquals(3, parameters.size());
         assertEquals("aaa", parameters.get(0).getWrapper().get());
@@ -135,7 +139,8 @@ public class AutoUpdateQueryTest extends TestCase {
         emp.setSalary(new BigDecimal(200));
         emp.setVersion(100);
 
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
+                _Emp.getSingletonInternal());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setIncludedPropertyNames("name");
@@ -162,7 +167,8 @@ public class AutoUpdateQueryTest extends TestCase {
         emp.setSalary(new BigDecimal(200));
         emp.setVersion(100);
 
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
+                _Emp.getSingletonInternal());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setExcludedPropertyNames("name");
@@ -186,7 +192,8 @@ public class AutoUpdateQueryTest extends TestCase {
         Emp emp = new Emp();
         emp.originalStates = new Emp();
 
-        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
+        AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
+                _Emp.getSingletonInternal());
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");

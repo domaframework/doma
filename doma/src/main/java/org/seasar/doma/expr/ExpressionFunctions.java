@@ -158,8 +158,8 @@ public interface ExpressionFunctions {
      * 
      * @param charSequence
      *            文字シーケンス
-     * @return 文字シーケンスが {@code null} でない、かつ文字シーケンスの長さが {@code 0} でない場合 {@code
-     *         true}
+     * @return 文字シーケンスが {@code null} でない、かつ文字シーケンスの長さが {@code 0} でない場合
+     *         {@code true}
      * @since 1.3.0
      */
     boolean isNotEmpty(CharSequence charSequence);

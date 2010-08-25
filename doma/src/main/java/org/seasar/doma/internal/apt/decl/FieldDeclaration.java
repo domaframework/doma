@@ -54,8 +54,9 @@ public class FieldDeclaration {
             List<TypeParameterDeclaration> typeParameterDeclarations,
             ProcessingEnvironment env) {
         assertNotNull(fieldElement, typeParameterDeclarations, env);
-        assertTrue(fieldElement.getKind() == ElementKind.FIELD
-                || fieldElement.getKind() == ElementKind.ENUM_CONSTANT,
+        assertTrue(
+                fieldElement.getKind() == ElementKind.FIELD
+                        || fieldElement.getKind() == ElementKind.ENUM_CONSTANT,
                 fieldElement.getKind().toString());
         FieldDeclaration fieldDeclaration = new FieldDeclaration();
         fieldDeclaration.element = fieldElement;

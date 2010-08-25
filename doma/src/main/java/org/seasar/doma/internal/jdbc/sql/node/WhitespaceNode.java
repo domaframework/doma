@@ -72,8 +72,7 @@ public class WhitespaceNode extends AbstractSqlNode {
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof WhitespaceNodeVisitor<?, ?>) {
-            @SuppressWarnings("unchecked")
-            WhitespaceNodeVisitor<R, P> v = (WhitespaceNodeVisitor) visitor;
+            WhitespaceNodeVisitor<R, P> v = (WhitespaceNodeVisitor<R, P>) visitor;
             return v.visitWhitespaceNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

@@ -87,6 +87,7 @@ public abstract class DomaAbstractConfig implements Config {
         return 0;
     }
 
+    @Override
     public int getBatchSize() {
         return 10;
     }

@@ -50,8 +50,8 @@ public abstract class BatchModifyCommand<Q extends BatchModifyQuery> implements
     public int[] execute() {
         if (!query.isExecutable()) {
             JdbcLogger logger = query.getConfig().getJdbcLogger();
-            logger.logSqlExecutionSkipping(query.getClassName(), query
-                    .getMethodName(), query.getSqlExecutionSkipCause());
+            logger.logSqlExecutionSkipping(query.getClassName(),
+                    query.getMethodName(), query.getSqlExecutionSkipCause());
             return new int[] {};
         }
         Connection connection = JdbcUtil.getConnection(query.getConfig()
@@ -65,8 +65,8 @@ public abstract class BatchModifyCommand<Q extends BatchModifyQuery> implements
                 return executeInternal(preparedStatement, query.getSqls());
             } catch (SQLException e) {
                 Dialect dialect = query.getConfig().getDialect();
-                throw new BatchSqlExecutionException(sql, e, dialect
-                        .getRootCause(e));
+                throw new BatchSqlExecutionException(sql, e,
+                        dialect.getRootCause(e));
             } finally {
                 JdbcUtil.close(preparedStatement, query.getConfig()
                         .getJdbcLogger());

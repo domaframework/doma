@@ -47,6 +47,7 @@ public class ScriptCommand implements Command<Void, SelectQuery> {
         this.query = query;
     }
 
+    @Override
     public Void execute() {
         Connection connection = JdbcUtil.getConnection(query.getConfig()
                 .getDataSource());
@@ -55,8 +56,8 @@ public class ScriptCommand implements Command<Void, SelectQuery> {
             try {
                 for (String sqlText = reader.readSql(); sqlText != null; sqlText = reader
                         .readSql()) {
-                    ScriptSql sql = new ScriptSql(sqlText, query
-                            .getScriptFilePath());
+                    ScriptSql sql = new ScriptSql(sqlText,
+                            query.getScriptFilePath());
                     Statement statement = JdbcUtil.createStatement(connection);
                     try {
                         log(sql);
@@ -64,8 +65,8 @@ public class ScriptCommand implements Command<Void, SelectQuery> {
                         statement.execute(sqlText);
                     } catch (Exception e) {
                         if (query.getHaltOnError()) {
-                            throw new ScriptException(e, sql, reader
-                                    .getLineNumber());
+                            throw new ScriptException(e, sql,
+                                    reader.getLineNumber());
                         }
                         if (savedScriptException == null) {
                             savedScriptException = new ScriptException(e, sql,

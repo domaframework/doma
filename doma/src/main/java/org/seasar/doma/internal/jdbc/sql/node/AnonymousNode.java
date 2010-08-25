@@ -43,8 +43,7 @@ public class AnonymousNode extends AbstractSqlNode {
             throw new DomaNullPointerException("visitor");
         }
         if (visitor instanceof AnonymousNodeVisitor<?, ?>) {
-            @SuppressWarnings("unchecked")
-            AnonymousNodeVisitor<R, P> v = (AnonymousNodeVisitor) visitor;
+            AnonymousNodeVisitor<R, P> v = (AnonymousNodeVisitor<R, P>) visitor;
             return v.visitAnonymousNode(this, p);
         }
         return visitor.visitUnknownNode(this, p);

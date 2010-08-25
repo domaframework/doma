@@ -50,32 +50,32 @@ public class OracleDialectTest extends TestCase {
             throws Exception {
         OracleDialect dialect = new OracleDialect();
         ExpressionFunctions functions = dialect.getExpressionFunctions();
-        assertEquals("a\\\\a\\%a\\_a\\％a\\＿%", functions.prefix("a\\a%a_a％a＿",
-                '\\'));
+        assertEquals("a\\\\a\\%a\\_a\\％a\\＿%",
+                functions.prefix("a\\a%a_a％a＿", '\\'));
     }
 
     public void testDateFormat() throws Exception {
         OracleDialect dialect = new OracleDialect();
         SqlLogFormattingVisitor visitor = dialect.getSqlLogFormattingVisitor();
         DateWrapper wrapper = new DateWrapper(Date.valueOf("2009-01-23"));
-        assertEquals("date'2009-01-23'", wrapper.accept(visitor,
-                new ConvertToLogFormatFunction()));
+        assertEquals("date'2009-01-23'",
+                wrapper.accept(visitor, new ConvertToLogFormatFunction()));
     }
 
     public void testTimeFormat() throws Exception {
         OracleDialect dialect = new OracleDialect();
         SqlLogFormattingVisitor visitor = dialect.getSqlLogFormattingVisitor();
         TimeWrapper wrapper = new TimeWrapper(Time.valueOf("01:23:45"));
-        assertEquals("time'01:23:45'", wrapper.accept(visitor,
-                new ConvertToLogFormatFunction()));
+        assertEquals("time'01:23:45'",
+                wrapper.accept(visitor, new ConvertToLogFormatFunction()));
     }
 
     public void testTimestampFormat() throws Exception {
         OracleDialect dialect = new OracleDialect();
         SqlLogFormattingVisitor visitor = dialect.getSqlLogFormattingVisitor();
-        TimestampWrapper wrapper = new TimestampWrapper(Timestamp
-                .valueOf("2009-01-23 01:23:45.123456789"));
-        assertEquals("timestamp'2009-01-23 01:23:45.123456789'", wrapper
-                .accept(visitor, new ConvertToLogFormatFunction()));
+        TimestampWrapper wrapper = new TimestampWrapper(
+                Timestamp.valueOf("2009-01-23 01:23:45.123456789"));
+        assertEquals("timestamp'2009-01-23 01:23:45.123456789'",
+                wrapper.accept(visitor, new ConvertToLogFormatFunction()));
     }
 }
