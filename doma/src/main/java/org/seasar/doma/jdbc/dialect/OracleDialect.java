@@ -20,6 +20,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -45,6 +46,7 @@ import org.seasar.doma.wrapper.BooleanWrapper;
 import org.seasar.doma.wrapper.DateWrapper;
 import org.seasar.doma.wrapper.TimeWrapper;
 import org.seasar.doma.wrapper.TimestampWrapper;
+import org.seasar.doma.wrapper.UtilDateWrapper;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -261,7 +263,7 @@ public class OracleDialect extends StandardDialect {
     public static class OracleSqlLogFormattingVisitor extends
             StandardSqlLogFormattingVisitor {
 
-        /** 日付フォーマッタ */
+        /** {@link Date}用日付フォーマッタ */
         protected DateFormatter dateFormatter = new DateFormatter();
 
         /** 時刻フォーマッタ */
@@ -269,6 +271,9 @@ public class OracleDialect extends StandardDialect {
 
         /** タイムスタンプフォーマッタ */
         protected TimestampFormatter timestampFormatter = new TimestampFormatter();
+
+        /** {@link java.util.Date}用日付フォーマッタ */
+        protected UtilDateFormatter utilDateFormatter = new UtilDateFormatter();
 
         @Override
         public String visitBooleanWrapper(BooleanWrapper wrapper,
@@ -294,8 +299,14 @@ public class OracleDialect extends StandardDialect {
             return p.apply(wrapper, timestampFormatter);
         }
 
+        @Override
+        public String visitUtilDateWrapper(UtilDateWrapper wrapper,
+                SqlLogFormattingFunction p) {
+            return p.apply(wrapper, utilDateFormatter);
+        }
+
         /**
-         * dateリテラルへ変換するフォーマッタです。
+         * {@link Date} をdateリテラルへ変換するフォーマッタです。
          * 
          * @author taedium
          * 
@@ -343,6 +354,25 @@ public class OracleDialect extends StandardDialect {
                     return "null";
                 }
                 return "timestamp'" + value + "'";
+            }
+        }
+
+        /**
+         * {@link java.util.Date} をdateリテラルへ変換するフォーマッタです。
+         * 
+         * @author taedium
+         * @since 1.9.0
+         */
+        protected static class UtilDateFormatter implements
+                SqlLogFormatter<java.util.Date> {
+
+            @Override
+            public String convertToLogFormat(java.util.Date value) {
+                if (value == null) {
+                    return "null";
+                }
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                return "date'" + dateFormat.format(value) + "'";
             }
         }
 

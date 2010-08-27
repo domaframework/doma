@@ -58,6 +58,7 @@ import org.seasar.doma.wrapper.ShortWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 import org.seasar.doma.wrapper.TimeWrapper;
 import org.seasar.doma.wrapper.TimestampWrapper;
+import org.seasar.doma.wrapper.UtilDateWrapper;
 
 /*
  * Copyright 2004-2009 the Seasar Foundation and the Others.
@@ -182,6 +183,9 @@ public class WrapperType extends AbstractDataType {
             }
             if (TypeMirrorUtil.isAssignable(t, Date.class, env)) {
                 return DateWrapper.class;
+            }
+            if (TypeMirrorUtil.isAssignable(t, java.util.Date.class, env)) {
+                return UtilDateWrapper.class;
             }
             if (TypeMirrorUtil.isAssignable(t, Array.class, env)) {
                 return ArrayWrapper.class;

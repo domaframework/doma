@@ -54,6 +54,7 @@ import org.seasar.doma.wrapper.ShortWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 import org.seasar.doma.wrapper.TimeWrapper;
 import org.seasar.doma.wrapper.TimestampWrapper;
+import org.seasar.doma.wrapper.UtilDateWrapper;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -123,6 +124,9 @@ public final class Wrappers {
         }
         if (boxedClass == BigDecimal.class) {
             return new BigDecimalWrapper((BigDecimal) value);
+        }
+        if (boxedClass == java.util.Date.class) {
+            return new UtilDateWrapper((java.util.Date) value);
         }
         if (boxedClass == Date.class) {
             return new DateWrapper((Date) value);

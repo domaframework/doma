@@ -65,4 +65,6 @@ public final class JdbcTypes {
 
     public static final TimestampType TIMESTAMP = new TimestampType();
 
+    public static final UtilDateType UTIL_DATE = new UtilDateType();
+
 }

@@ -18,6 +18,7 @@ package org.seasar.doma.jdbc.dialect;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 import junit.framework.TestCase;
 
@@ -27,6 +28,7 @@ import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.wrapper.DateWrapper;
 import org.seasar.doma.wrapper.TimeWrapper;
 import org.seasar.doma.wrapper.TimestampWrapper;
+import org.seasar.doma.wrapper.UtilDateWrapper;
 
 /**
  * @author taedium
@@ -76,6 +78,15 @@ public class OracleDialectTest extends TestCase {
         TimestampWrapper wrapper = new TimestampWrapper(
                 Timestamp.valueOf("2009-01-23 01:23:45.123456789"));
         assertEquals("timestamp'2009-01-23 01:23:45.123456789'",
+                wrapper.accept(visitor, new ConvertToLogFormatFunction()));
+    }
+
+    public void testUtilDateFormat() throws Exception {
+        OracleDialect dialect = new OracleDialect();
+        SqlLogFormattingVisitor visitor = dialect.getSqlLogFormattingVisitor();
+        UtilDateWrapper wrapper = new UtilDateWrapper(new SimpleDateFormat(
+                "yyyy-MM-dd").parse("2009-01-23"));
+        assertEquals("date'2009-01-23'",
                 wrapper.accept(visitor, new ConvertToLogFormatFunction()));
     }
 }

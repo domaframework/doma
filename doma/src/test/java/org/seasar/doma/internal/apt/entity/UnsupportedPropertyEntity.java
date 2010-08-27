@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.entity;
 
-import java.util.Date;
+import java.util.Calendar;
 
 import org.seasar.doma.Entity;
 
@@ -26,14 +26,14 @@ import org.seasar.doma.Entity;
 @Entity
 public class UnsupportedPropertyEntity {
 
-    Date date;
+    Calendar calendar;
 
-    public Date getDate() {
-        return date;
+    public Calendar getCalendar() {
+        return calendar;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setCalendar(Calendar calendar) {
+        this.calendar = calendar;
     }
 
 }

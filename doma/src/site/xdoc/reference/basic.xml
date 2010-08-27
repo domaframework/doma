@@ -45,6 +45,7 @@
 				<li>java.sql.Blob</li>
 				<li>java.sql.Clob</li>
 				<li>java.sql.NClob</li>
+				<li>java.util.Date</li>
 			</ul>
 		</section>
 		<section name="利用例">

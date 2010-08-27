@@ -63,6 +63,7 @@ public class WrappersTest extends TestCase {
         assertNotNull(Wrappers.wrap(Time.valueOf("12:34:56"), Time.class));
         assertNotNull(Wrappers.wrap(Timestamp.valueOf("2009-01-23 12:34:56"),
                 Timestamp.class));
+        assertNotNull(Wrappers.wrap(new java.util.Date(), java.util.Date.class));
         assertNotNull(Wrappers.wrap(null, Array.class));
         assertNotNull(Wrappers.wrap(null, Blob.class));
         assertNotNull(Wrappers.wrap(null, Clob.class));
