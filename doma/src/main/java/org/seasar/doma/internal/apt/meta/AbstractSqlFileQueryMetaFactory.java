@@ -80,12 +80,12 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
         FileObject fileObject = getFileObject(filePath, method);
         URI uri = fileObject.toUri();
         if (!uri.isAbsolute()) {
-            URI resolvedUri = new File(".").toURI().resolve(uri);
-            return new File(resolvedUri);
+            uri = new File(".").toURI().resolve(uri);
         }
         File file = new File(uri);
         if (!file.exists()) {
-            throw new AptException(Message.DOMA4019, env, method, filePath);
+            throw new AptException(Message.DOMA4019, env, method, filePath,
+                    file.getAbsolutePath());
         }
         return file;
     }
