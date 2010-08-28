@@ -300,6 +300,12 @@
 				<p>
 					SQLコメントについては<a href="reference/sqlfile.html">SQLファイル</a>を参照してください。
 				</p>
+				<p>
+					SQLコメントの機能だけで条件を指定することが困難な場合には、SQLビルダを利用してプログラム上でSQLを組み立てられます。
+				</p>
+				<p>
+					SQLビルダについては<a href="http://doma.seasar.org/reference/dao.html#ビルダを利用したSQLの組み立て">ビルダを利用したSQLの組み立て</a>を参照してください。
+				</p>
 			</answer>
 		</faq>
 		<faq id="feature-4">
@@ -480,6 +486,10 @@
 				<p>
 					これらのライブラリは、プログラム上で動的にSQLを組み立て実行したい場合に使用するといいでしょう。
 					その場合、SQLの組み立てと実行は<a href="reference/dao.html#デリゲート定義">デリゲート定義</a>で指定したデリゲート先で行うことを推奨します。
+				</p>
+				<p>
+					単にSQLをプログラムで組み立てることが目的であれば、Domaが提供するSQLビルダを利用できます。
+					SQLビルダについては<a href="http://doma.seasar.org/reference/dao.html#ビルダを利用したSQLの組み立て">ビルダを利用したSQLの組み立て</a>を参照してください。
 				</p>
 			</answer>
 		</faq>
