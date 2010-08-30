@@ -371,8 +371,9 @@ public class OracleDialect extends StandardDialect {
                 if (value == null) {
                     return "null";
                 }
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                return "date'" + dateFormat.format(value) + "'";
+                SimpleDateFormat dateFormat = new SimpleDateFormat(
+                        "yyyy-MM-dd HH:mm:ss.SSS");
+                return "timestamp'" + dateFormat.format(value) + "'";
             }
         }
 

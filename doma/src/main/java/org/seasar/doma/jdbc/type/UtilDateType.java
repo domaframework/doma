@@ -19,7 +19,9 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.sql.Types;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -36,24 +38,28 @@ public class UtilDateType extends AbstractJdbcType<Date> {
 
     @Override
     public Date doGetValue(ResultSet resultSet, int index) throws SQLException {
-        return resultSet.getDate(index);
+        Timestamp timestamp = resultSet.getTimestamp(index);
+        return new Date(timestamp.getTime());
     }
 
     @Override
     protected void doSetValue(PreparedStatement preparedStatement, int index,
             Date value) throws SQLException {
-        preparedStatement.setDate(index, new java.sql.Date(value.getTime()));
+        preparedStatement.setTimestamp(index, new Timestamp(value.getTime()));
     }
 
     @Override
     protected Date doGetValue(CallableStatement callableStatement, int index)
             throws SQLException {
-        return callableStatement.getDate(index);
+        Timestamp timestamp = callableStatement.getTimestamp(index);
+        return new Date(timestamp.getTime());
     }
 
     @Override
     protected String doConvertToLogFormat(Date value) {
-        return "'" + value + "'";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss.SSS");
+        return "'" + dateFormat.format(value) + "'";
     }
 
 }

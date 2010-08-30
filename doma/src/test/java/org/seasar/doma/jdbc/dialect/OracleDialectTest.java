@@ -85,8 +85,8 @@ public class OracleDialectTest extends TestCase {
         OracleDialect dialect = new OracleDialect();
         SqlLogFormattingVisitor visitor = dialect.getSqlLogFormattingVisitor();
         UtilDateWrapper wrapper = new UtilDateWrapper(new SimpleDateFormat(
-                "yyyy-MM-dd").parse("2009-01-23"));
-        assertEquals("date'2009-01-23'",
+                "yyyy-MM-dd HH:mm:sss.SSS").parse("2009-01-23 12:34:56.789"));
+        assertEquals("timestamp'2009-01-23 12:34:56.789'",
                 wrapper.accept(visitor, new ConvertToLogFormatFunction()));
     }
 }
