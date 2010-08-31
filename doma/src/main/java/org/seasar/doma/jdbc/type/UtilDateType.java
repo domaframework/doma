@@ -33,12 +33,15 @@ import java.util.Date;
 public class UtilDateType extends AbstractJdbcType<Date> {
 
     public UtilDateType() {
-        super(Types.DATE);
+        super(Types.TIMESTAMP);
     }
 
     @Override
     public Date doGetValue(ResultSet resultSet, int index) throws SQLException {
         Timestamp timestamp = resultSet.getTimestamp(index);
+        if (timestamp == null) {
+            return null;
+        }
         return new Date(timestamp.getTime());
     }
 
@@ -52,6 +55,9 @@ public class UtilDateType extends AbstractJdbcType<Date> {
     protected Date doGetValue(CallableStatement callableStatement, int index)
             throws SQLException {
         Timestamp timestamp = callableStatement.getTimestamp(index);
+        if (timestamp == null) {
+            return null;
+        }
         return new Date(timestamp.getTime());
     }
 
