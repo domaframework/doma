@@ -8,7 +8,11 @@
 		<section name="目次">
 			<ul>
 				<li><a href="#概要">概要</a></li>
-				<li><a href="#基本型の種類">基本型の種類</a></li>
+				<li><a href="#基本型の種類">基本型の種類</a>
+					<ul>
+						<li><a href="#日付時刻型">日付・時刻型</a></li>
+					</ul>
+				</li>
 				<li><a href="#利用例">利用例</a>
 					<ul>
 						<li><a href="#エンティティクラス">エンティティクラス</a></li>
@@ -47,6 +51,21 @@
 				<li>java.sql.NClob</li>
 				<li>java.util.Date</li>
 			</ul>
+			<subsection name="日付・時刻型">
+				<p>
+					日付・時刻型の違いを説明します。
+				</p>
+				<dl>
+					<dt>java.sql.Date</dt>
+					<dd>SQL標準のDATE型 (日付のみ)を表します。</dd>
+					<dt>java.sql.Time</dt>
+					<dd>SQL標準のTIME型 (時刻のみ)を表します。</dd>
+					<dt>java.sql.Timestamp</dt>
+					<dd>SQL標準のTIMESTAMP型 (日付と時刻)を表します。RDBMSがサポートしている場合ナノ秒を保持します。</dd>
+					<dt>java.util.Date</dt>
+					<dd>SQL標準のTIMESTAMP型 (日付と時刻)を表します。ナノ秒を保持しません。</dd>
+				</dl>
+			</subsection>
 		</section>
 		<section name="利用例">
 			<subsection name="エンティティクラス">
