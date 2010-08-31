@@ -126,8 +126,8 @@
 		</section>
 		<section name="実行方法">
 			<p>
-				Windowsを使用している場合、AntはEclipse上からではなく、コマンドラインから実行してください。
-				Windows版のEclipseには、コンソールに日本語を出力できない問題があります。
+				Eclipse3.5のWindows版を使用している場合、AntはEclipse上からではなく、コマンドラインから実行してください。
+				Eclipse3.5のWindows版には、コンソールに日本語を出力できない問題があります（Ecipse3.6では解決されています）。
 				コマンドラインから実行するには、Antを適切にインストールした環境で、次のように実行してください。
 			</p>
 <source><![CDATA[ant -f doma-gen-build.xml ターゲット名]]></source>
