@@ -35,7 +35,6 @@ import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.ResultSetHandler;
 import org.seasar.doma.internal.jdbc.command.SelectCommand;
 import org.seasar.doma.internal.jdbc.query.SqlSelectQuery;
-import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.internal.wrapper.WrapperException;
 import org.seasar.doma.internal.wrapper.Wrappers;
 import org.seasar.doma.jdbc.Config;
@@ -51,6 +50,7 @@ import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.jdbc.domain.DomainTypeFactory;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.EntityTypeFactory;
+import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**

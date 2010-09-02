@@ -15,7 +15,7 @@
  */
 package org.seasar.doma;
 
-import org.seasar.doma.internal.message.Message;
+import org.seasar.doma.message.Message;
 
 /**
  * 事前条件をもつパラメータへの引数が不正な場合にスローされる例外です。

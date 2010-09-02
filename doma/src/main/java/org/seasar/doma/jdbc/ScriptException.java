@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.internal.message.Message;
+import org.seasar.doma.message.Message;
 
 /**
  * スクリプトファイル内のSQLの実行中に例外が発生した場合にスローされる例外です。

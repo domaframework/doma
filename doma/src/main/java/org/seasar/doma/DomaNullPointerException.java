@@ -15,7 +15,7 @@
  */
 package org.seasar.doma;
 
-import org.seasar.doma.internal.message.Message;
+import org.seasar.doma.message.Message;
 
 /**
  * {@code null} でないことを期待されたパラメータへの引数が {@code null} の場合にスローされる例外です。

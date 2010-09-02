@@ -24,10 +24,10 @@ import java.sql.Statement;
 
 import javax.sql.DataSource;
 
-import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.message.Message;
 
 /**
  * @author taedium

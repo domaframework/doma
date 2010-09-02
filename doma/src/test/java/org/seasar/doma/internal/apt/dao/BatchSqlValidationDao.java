@@ -13,19 +13,34 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.message;
+package org.seasar.doma.internal.apt.dao;
 
-import junit.framework.TestCase;
+import java.util.List;
+
+import org.seasar.doma.Dao;
+import org.seasar.doma.Suppress;
+import org.seasar.doma.message.Message;
 
 /**
+ * 
  * @author taedium
  * 
  */
-public class MessageTest extends TestCase {
+@Dao(config = MyConfig.class)
+public interface BatchSqlValidationDao {
 
-    public void test() throws Exception {
-        String message = Message.DOMA0001.getMessage("aaa", "bbb");
-        assertNotNull(message);
-        System.out.println(message);
-    }
+    void testEmbeddedVariable(String orderBy);
+
+    @Suppress(message = Message.DOMA4181)
+    void testEmbeddedVariableSuppressed(String orderBy);
+
+    void testIf();
+
+    @Suppress(message = Message.DOMA4182)
+    void testIfSuppressed();
+
+    void testFor(List<String> names);
+
+    @Suppress(message = Message.DOMA4183)
+    void testForSuppressed(List<String> names);
 }

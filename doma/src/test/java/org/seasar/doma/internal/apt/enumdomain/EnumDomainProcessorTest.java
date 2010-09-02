@@ -17,7 +17,7 @@ package org.seasar.doma.internal.apt.enumdomain;
 
 import org.seasar.doma.internal.apt.AptTestCase;
 import org.seasar.doma.internal.apt.EnumDomainProcessor;
-import org.seasar.doma.internal.message.Message;
+import org.seasar.doma.message.Message;
 
 /**
  * @author taedium

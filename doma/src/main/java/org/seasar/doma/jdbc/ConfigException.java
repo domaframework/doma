@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.internal.message.Message;
+import org.seasar.doma.message.Message;
 
 /**
  * {@link Config}に不適切な設定がある場合にスローされる例外です。

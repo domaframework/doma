@@ -83,7 +83,6 @@ import org.seasar.doma.internal.jdbc.sql.node.WhitespaceNode;
 import org.seasar.doma.internal.jdbc.sql.node.WhitespaceNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.WordNode;
 import org.seasar.doma.internal.jdbc.sql.node.WordNodeVisitor;
-import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.internal.util.StringUtil;
 import org.seasar.doma.internal.wrapper.WrapperException;
 import org.seasar.doma.internal.wrapper.Wrappers;
@@ -94,6 +93,7 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
+import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**

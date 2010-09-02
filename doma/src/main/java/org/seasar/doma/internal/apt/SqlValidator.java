@@ -49,8 +49,8 @@ import org.seasar.doma.internal.jdbc.sql.node.ForNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
-import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.message.Message;
 
 /**
  * @author taedium

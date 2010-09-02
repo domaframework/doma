@@ -13,9 +13,9 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.message;
+package org.seasar.doma.message;
 
-import org.seasar.doma.MessageResource;
+import org.seasar.doma.internal.message.MessageFormatter;
 
 /**
  * デフォルトロケール用のメッセージの列挙です。
@@ -310,6 +310,12 @@ public enum Message implements MessageResource {
     DOMA4178("@EnumDomainが注釈された列挙型[{0}]は指定できません。"),
     DOMA4179("@Domainが注釈されたクラスはトップレベルのクラスでなければいけません。"),
     DOMA4180("@EnumDomainが注釈された列挙型はトップレベルのクラスでなければいけません。"),
+    /** SQLファイルに埋め込み変数コメントが含まれていることを示す警告メッセージ */
+    DOMA4181("SQLファイル[{0}]に埋め込み変数コメントが含まれています。バッチの中で実行されるSQLは一定であるため、埋め込み変数コメントにより動的なSQLを発行しようとしても意図したSQLにならない可能性があります。この警告を抑制するには、メソッドに@Suppress(message = Message.DOMA4181)と注釈してください。"),
+    /** SQLファイルに条件コメントが含まれていることを示す警告メッセージ */
+    DOMA4182("SQLファイル[{0}]に条件コメントが含まれています。バッチの中で実行されるSQLは一定であるため、条件コメントにより動的なSQLを発行しようとしても意図したSQLにならない可能性があります。この警告を抑制するには、メソッドに@Suppress(message = Message.DOMA4182)と注釈してください。"),
+    /** SQLファイルに繰り返しコメントが含まれていることを示す警告メッセージ */
+    DOMA4183("SQLファイル[{0}]に繰り返しコメントが含まれています。バッチの中で実行されるSQLは一定であるため、繰り返しコメントにより動的なSQLを発行しようとしても意図したSQLにならない可能性があります。この警告を抑制するには、メソッドに@Suppress(message = Message.DOMA4183)と注釈してください。"),
 
     // other
     DOMA5001("JDBCドライバがロードされていない可能性があります。JDBCドライバをロードするには、クラスパスが通されたMETA-INF/services/java.sql.DriverファイルにJDBCドライバのクラスの完全修飾名を記述してください。 ex) oracle.jdbc.driver.OracleDriver"),

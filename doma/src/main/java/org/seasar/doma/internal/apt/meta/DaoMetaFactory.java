@@ -38,7 +38,7 @@ import org.seasar.doma.internal.apt.mirror.AnnotateWithMirror;
 import org.seasar.doma.internal.apt.mirror.DaoMirror;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
-import org.seasar.doma.internal.message.Message;
+import org.seasar.doma.message.Message;
 
 /**
  * @author taedium

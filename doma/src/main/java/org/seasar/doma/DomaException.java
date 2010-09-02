@@ -15,6 +15,8 @@
  */
 package org.seasar.doma;
 
+import org.seasar.doma.message.MessageResource;
+
 /**
  * このフレームワークでルートとなる実行時例外です。
  * <p>

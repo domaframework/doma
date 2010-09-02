@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.internal.message.Message;
+import org.seasar.doma.message.Message;
 
 /**
  * 1件以上存在することを期待する検索系SQLの結果が0件である場合にスローされる例外です。

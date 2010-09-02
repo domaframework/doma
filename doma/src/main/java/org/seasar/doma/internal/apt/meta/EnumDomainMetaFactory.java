@@ -29,7 +29,7 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.mirror.EnumDomainMirror;
 import org.seasar.doma.internal.apt.type.BasicType;
-import org.seasar.doma.internal.message.Message;
+import org.seasar.doma.message.Message;
 
 public class EnumDomainMetaFactory implements
         TypeElementMetaFactory<EnumDomainMeta> {

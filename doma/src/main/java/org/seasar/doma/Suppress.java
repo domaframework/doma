@@ -13,33 +13,27 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal;
+package org.seasar.doma;
 
-import org.seasar.doma.DomaException;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 import org.seasar.doma.message.Message;
 
 /**
- * @author taedium
+ * 警告メッセージを抑制することを示します。
  * 
+ * @author taedium
+ * @since 1.10.0
  */
-public final class Artifact {
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Suppress {
 
-    private static final String NAME = "Doma";
-
-    private static final String VERSION = "1.9.0";
-
-    public static String getName() {
-        return NAME;
-    }
-
-    public static String getVersion() {
-        return VERSION;
-    }
-
-    public static void validateVersion(String generationtimeVersion) {
-        if (!VERSION.equals(generationtimeVersion)) {
-            throw new DomaException(Message.DOMA0003, VERSION,
-                    generationtimeVersion);
-        }
-    }
+    /**
+     * 抑制対象の警告メッセージです。
+     */
+    Message message();
 }

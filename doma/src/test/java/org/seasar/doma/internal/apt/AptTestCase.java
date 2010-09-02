@@ -16,9 +16,18 @@
 package org.seasar.doma.internal.apt;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
@@ -29,9 +38,11 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Domain;
 import org.seasar.doma.Entity;
 import org.seasar.doma.EnumDomain;
+import org.seasar.doma.internal.apt.util.ElementUtil;
+import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.jdbc.util.MetaTypeUtil;
-import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.internal.util.ResourceUtil;
+import org.seasar.doma.message.Message;
 
 /**
  * @author taedium
@@ -96,6 +107,13 @@ public abstract class AptTestCase extends AptinaTestCase {
         fail();
     }
 
+    protected void assertNoMessage() {
+        List<Diagnostic<? extends JavaFileObject>> diagnostics = getDiagnostics();
+        if (!diagnostics.isEmpty()) {
+            fail();
+        }
+    }
+
     @Override
     protected List<Diagnostic<? extends JavaFileObject>> getDiagnostics() {
         List<Diagnostic<? extends JavaFileObject>> results = new ArrayList<Diagnostic<? extends JavaFileObject>>();
@@ -133,4 +151,46 @@ public abstract class AptTestCase extends AptinaTestCase {
         return null;
     }
 
+    protected ExecutableElement createMethodElement(Class<?> clazz,
+            String methodName, Class<?>... parameterClasses) {
+        ProcessingEnvironment env = getProcessingEnvironment();
+        TypeElement typeElement = ElementUtil.getTypeElement(clazz, env);
+        for (TypeElement t = typeElement; t != null
+                && t.asType().getKind() != TypeKind.NONE; t = TypeMirrorUtil
+                .toTypeElement(t.getSuperclass(), env)) {
+            for (ExecutableElement methodElement : ElementFilter.methodsIn(t
+                    .getEnclosedElements())) {
+                if (!methodElement.getSimpleName().contentEquals(methodName)) {
+                    continue;
+                }
+                List<? extends VariableElement> parameterElements = methodElement
+                        .getParameters();
+                if (parameterElements.size() != parameterClasses.length) {
+                    continue;
+                }
+                for (int i = 0; i < parameterElements.size(); i++) {
+                    TypeMirror parameterType = parameterElements.get(i)
+                            .asType();
+                    Class<?> parameterClass = parameterClasses[i];
+                    if (!TypeMirrorUtil.isSameType(parameterType,
+                            parameterClass, env)) {
+                        return null;
+                    }
+                }
+                return methodElement;
+            }
+        }
+        return null;
+    }
+
+    protected Map<String, TypeMirror> createParameterTypeMap(
+            ExecutableElement methodElement) {
+        Map<String, TypeMirror> result = new HashMap<String, TypeMirror>();
+        for (VariableElement parameter : methodElement.getParameters()) {
+            String name = parameter.getSimpleName().toString();
+            TypeMirror type = parameter.asType();
+            result.put(name, type);
+        }
+        return result;
+    }
 }

@@ -22,7 +22,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.tools.Diagnostic.Kind;
 
-import org.seasar.doma.MessageResource;
+import org.seasar.doma.message.MessageResource;
 
 /**
  * @author taedium

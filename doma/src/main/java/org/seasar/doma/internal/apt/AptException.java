@@ -22,8 +22,8 @@ import javax.lang.model.element.Element;
 import javax.tools.Diagnostic.Kind;
 
 import org.seasar.doma.DomaException;
-import org.seasar.doma.MessageResource;
-import org.seasar.doma.internal.message.Message;
+import org.seasar.doma.message.Message;
+import org.seasar.doma.message.MessageResource;
 
 /**
  * @author taedium

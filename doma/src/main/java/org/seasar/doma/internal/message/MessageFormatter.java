@@ -18,13 +18,13 @@ package org.seasar.doma.internal.message;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
-import org.seasar.doma.MessageResource;
+import org.seasar.doma.message.MessageResource;
 
 /**
  * @author taedium
  * 
  */
-final class MessageFormatter {
+public final class MessageFormatter {
 
     public static String getMessage(MessageResource messageResource,
             Object... args) {

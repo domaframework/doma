@@ -21,13 +21,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
-import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
+import org.seasar.doma.message.Message;
 
 /**
  * @author taedium

@@ -16,7 +16,7 @@
 package org.seasar.doma.jdbc;
 
 import org.seasar.doma.DomaException;
-import org.seasar.doma.MessageResource;
+import org.seasar.doma.message.MessageResource;
 
 /**
  * JDBCに関する例外です。

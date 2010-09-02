@@ -19,11 +19,11 @@ import java.sql.Statement;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.GenerationType;
-import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.jdbc.id.IdGenerator;
+import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.NumberWrapper;
 
 /**

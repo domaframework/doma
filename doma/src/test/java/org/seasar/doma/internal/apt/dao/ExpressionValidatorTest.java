@@ -15,17 +15,10 @@
  */
 package org.seasar.doma.internal.apt.dao;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.ElementFilter;
 
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.apt.AptException;
@@ -33,11 +26,9 @@ import org.seasar.doma.internal.apt.AptTestCase;
 import org.seasar.doma.internal.apt.ExpressionValidator;
 import org.seasar.doma.internal.apt.decl.TypeDeclaration;
 import org.seasar.doma.internal.apt.entity.Emp;
-import org.seasar.doma.internal.apt.util.ElementUtil;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.expr.ExpressionParser;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
-import org.seasar.doma.internal.message.Message;
+import org.seasar.doma.message.Message;
 
 public class ExpressionValidatorTest extends AptTestCase {
 
@@ -499,49 +490,6 @@ public class ExpressionValidatorTest extends AptTestCase {
             System.out.println(expected);
             assertEquals(Message.DOMA4126, expected.getMessageResource());
         }
-    }
-
-    protected ExecutableElement createMethodElement(Class<?> clazz,
-            String methodName, Class<?>... parameterClasses) {
-        ProcessingEnvironment env = getProcessingEnvironment();
-        TypeElement typeElement = ElementUtil.getTypeElement(clazz, env);
-        for (TypeElement t = typeElement; t != null
-                && t.asType().getKind() != TypeKind.NONE; t = TypeMirrorUtil
-                .toTypeElement(t.getSuperclass(), env)) {
-            for (ExecutableElement methodElement : ElementFilter.methodsIn(t
-                    .getEnclosedElements())) {
-                if (!methodElement.getSimpleName().contentEquals(methodName)) {
-                    continue;
-                }
-                List<? extends VariableElement> parameterElements = methodElement
-                        .getParameters();
-                if (parameterElements.size() != parameterClasses.length) {
-                    continue;
-                }
-                for (int i = 0; i < parameterElements.size(); i++) {
-                    TypeMirror parameterType = parameterElements.get(i)
-                            .asType();
-                    Class<?> parameterClass = parameterClasses[i];
-                    if (!TypeMirrorUtil.isSameType(parameterType,
-                            parameterClass, env)) {
-                        return null;
-                    }
-                }
-                return methodElement;
-            }
-        }
-        return null;
-    }
-
-    protected Map<String, TypeMirror> createParameterTypeMap(
-            ExecutableElement methodElement) {
-        Map<String, TypeMirror> result = new HashMap<String, TypeMirror>();
-        for (VariableElement parameter : methodElement.getParameters()) {
-            String name = parameter.getSimpleName().toString();
-            TypeMirror type = parameter.asType();
-            result.put(name, type);
-        }
-        return result;
     }
 
 }

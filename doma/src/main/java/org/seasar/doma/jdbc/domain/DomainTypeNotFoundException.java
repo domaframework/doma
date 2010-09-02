@@ -15,8 +15,8 @@
  */
 package org.seasar.doma.jdbc.domain;
 
-import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.message.Message;
 
 /**
  * ドメインクラスに対応するメタクラスが見つからない場合にスローされる例外です。

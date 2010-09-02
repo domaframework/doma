@@ -35,7 +35,7 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.mirror.DelegateMirror;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
-import org.seasar.doma.internal.message.Message;
+import org.seasar.doma.message.Message;
 
 /**
  * @author taedium

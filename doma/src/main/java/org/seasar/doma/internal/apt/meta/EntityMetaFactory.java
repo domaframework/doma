@@ -45,8 +45,8 @@ import org.seasar.doma.internal.apt.mirror.EntityMirror;
 import org.seasar.doma.internal.apt.mirror.TableMirror;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
-import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.entity.EntityListener;
+import org.seasar.doma.message.Message;
 
 /**
  * 

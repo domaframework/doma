@@ -17,8 +17,8 @@ package org.seasar.doma.jdbc.tx;
 
 import java.io.Serializable;
 
-import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.message.Message;
 
 /**
  * セーブポイントが見つからない場合にスローされる例外です。

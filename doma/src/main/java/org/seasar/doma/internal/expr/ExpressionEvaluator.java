@@ -63,10 +63,10 @@ import org.seasar.doma.internal.expr.node.StaticFieldOperatorNode;
 import org.seasar.doma.internal.expr.node.StaticMethodOperatorNode;
 import org.seasar.doma.internal.expr.node.SubtractOperatorNode;
 import org.seasar.doma.internal.expr.node.VariableNode;
-import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.internal.util.ConstructorUtil;
 import org.seasar.doma.internal.util.FieldUtil;
 import org.seasar.doma.internal.util.MethodUtil;
+import org.seasar.doma.message.Message;
 
 /**
  * @author taedium

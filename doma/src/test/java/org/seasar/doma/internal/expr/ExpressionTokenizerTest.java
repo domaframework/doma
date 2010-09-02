@@ -18,7 +18,7 @@ package org.seasar.doma.internal.expr;
 import static org.seasar.doma.internal.expr.ExpressionTokenType.*;
 import junit.framework.TestCase;
 
-import org.seasar.doma.internal.message.Message;
+import org.seasar.doma.message.Message;
 
 /**
  * @author taedium

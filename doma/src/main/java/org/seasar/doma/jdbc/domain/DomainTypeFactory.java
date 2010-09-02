@@ -23,9 +23,9 @@ import org.seasar.doma.Domain;
 import org.seasar.doma.EnumDomain;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.jdbc.util.MetaTypeUtil;
-import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.MethodUtil;
+import org.seasar.doma.message.Message;
 
 /**
  * {@link DomainType} のファクトリクラスです。

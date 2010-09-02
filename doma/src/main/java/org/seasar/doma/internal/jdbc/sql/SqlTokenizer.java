@@ -21,8 +21,8 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.nio.CharBuffer;
 
 import org.seasar.doma.internal.expr.util.ExpressionUtil;
-import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.message.Message;
 
 /**
  * @author taedium

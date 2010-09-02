@@ -22,9 +22,9 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Entity;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.jdbc.util.MetaTypeUtil;
-import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.MethodUtil;
+import org.seasar.doma.message.Message;
 
 /**
  * {@link EntityType} のファクトリクラスです。

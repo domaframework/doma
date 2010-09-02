@@ -18,8 +18,8 @@ package org.seasar.doma.internal.jdbc.sql;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.*;
 import junit.framework.TestCase;
 
-import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.message.Message;
 
 /**
  * @author taedium

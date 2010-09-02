@@ -20,10 +20,12 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Map;
 
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.type.TypeMirror;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 
@@ -32,11 +34,11 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.SqlValidator;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
-import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.internal.util.IOUtil;
 import org.seasar.doma.internal.util.StringUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.message.Message;
 
 /**
  * @author taedium
@@ -68,7 +70,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
                 }
                 SqlNode sqlNode = createSqlNode(queryMeta, method, daoMeta,
                         sqlFilePath, sql);
-                SqlValidator validator = new SqlValidator(env, method,
+                SqlValidator validator = createSqlValidator(method,
                         queryMeta.getBindableParameterTypeMap(), sqlFilePath);
                 validator.validate(sqlNode);
             }
@@ -138,4 +140,8 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
         }
     }
 
+    protected SqlValidator createSqlValidator(ExecutableElement method,
+            Map<String, TypeMirror> parameterTypeMap, String sqlFilePath) {
+        return new SqlValidator(env, method, parameterTypeMap, sqlFilePath);
+    }
 }

@@ -15,8 +15,8 @@
  */
 package org.seasar.doma.jdbc;
 
-import org.seasar.doma.MessageResource;
-import org.seasar.doma.internal.message.Message;
+import org.seasar.doma.message.Message;
+import org.seasar.doma.message.MessageResource;
 
 /**
  * SQLの実行に失敗した場合にスローされる例外です。

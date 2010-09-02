@@ -18,12 +18,16 @@ package org.seasar.doma.internal.apt.meta;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.SqlValidator;
+import org.seasar.doma.internal.apt.BatchSqlValidator;
 import org.seasar.doma.internal.apt.mirror.BatchDeleteMirror;
 import org.seasar.doma.internal.apt.mirror.BatchInsertMirror;
 import org.seasar.doma.internal.apt.mirror.BatchModifyMirror;
@@ -32,7 +36,7 @@ import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.IterableType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
-import org.seasar.doma.internal.message.Message;
+import org.seasar.doma.message.Message;
 
 /**
  * @author taedium
@@ -145,6 +149,13 @@ public class SqlFileBatchModifyQueryMetaFactory extends
             queryMeta.addBindableParameterType(parameterMeta.getName(),
                     elementType.getTypeMirror());
         }
+    }
+
+    @Override
+    protected SqlValidator createSqlValidator(ExecutableElement method,
+            Map<String, TypeMirror> parameterTypeMap, String sqlFilePath) {
+        return new BatchSqlValidator(env, method, parameterTypeMap,
+                sqlFilePath);
     }
 
 }

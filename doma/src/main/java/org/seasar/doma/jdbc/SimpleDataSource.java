@@ -23,7 +23,7 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.seasar.doma.internal.message.Message;
+import org.seasar.doma.message.Message;
 
 /**
  * {@link DriverManager#getConnection(String, Properties)}を使用して

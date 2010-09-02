@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.MessageResource;
+import org.seasar.doma.message.MessageResource;
 
 /**
  * {@link Enum} で表現されたメッセージコードを扱うリソースバンドルです。

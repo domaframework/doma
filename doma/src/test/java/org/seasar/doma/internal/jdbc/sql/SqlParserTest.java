@@ -30,10 +30,10 @@ import org.seasar.doma.internal.jdbc.sql.node.FragmentNode;
 import org.seasar.doma.internal.jdbc.sql.node.OtherNode;
 import org.seasar.doma.internal.jdbc.sql.node.WhitespaceNode;
 import org.seasar.doma.internal.jdbc.sql.node.WordNode;
-import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.message.Message;
 
 import example.domain.PhoneNumber;
 

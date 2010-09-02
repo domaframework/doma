@@ -24,8 +24,8 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcLogger;
+import org.seasar.doma.message.Message;
 
 /**
  * ローカルトランザクションと連動するデータソースです。

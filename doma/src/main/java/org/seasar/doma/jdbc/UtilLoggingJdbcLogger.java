@@ -20,7 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.internal.message.Message;
+import org.seasar.doma.message.Message;
 
 /**
  * 出力先に {@link java.util.logging.Logger} を使用したJDBCロガーです。

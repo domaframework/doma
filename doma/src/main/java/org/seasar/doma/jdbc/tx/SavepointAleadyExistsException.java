@@ -15,8 +15,8 @@
  */
 package org.seasar.doma.jdbc.tx;
 
-import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.message.Message;
 
 /**
  * セーブポイントがすでに存在する場合にスローされる例外です。

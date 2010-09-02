@@ -20,8 +20,8 @@ import java.sql.SQLException;
 
 import org.seasar.doma.internal.jdbc.query.CreateQuery;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
-import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.message.Message;
 
 /**
  * @author taedium

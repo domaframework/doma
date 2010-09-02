@@ -21,10 +21,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
-import org.seasar.doma.internal.message.Message;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.message.Message;
 
 /**
  * {@link IdGenerator} の骨格実装です。
