@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 import java.util.Arrays;
 
 import org.junit.runner.RunWith;
-import org.seasar.doma.internal.message.Message;
+import org.seasar.doma.message.Message;
 import org.seasar.doma.it.dao.CompKeyDepartmentDao;
 import org.seasar.doma.it.dao.CompKeyDepartmentDaoImpl;
 import org.seasar.doma.it.dao.DepartmentDao;

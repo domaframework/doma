@@ -18,7 +18,7 @@ package org.seasar.doma.it.sqlfile;
 import static org.junit.Assert.*;
 
 import org.junit.runner.RunWith;
-import org.seasar.doma.internal.message.Message;
+import org.seasar.doma.message.Message;
 import org.seasar.doma.it.dao.EmployeeDao;
 import org.seasar.doma.it.dao.EmployeeDaoImpl;
 import org.seasar.doma.it.entity.Employee;
