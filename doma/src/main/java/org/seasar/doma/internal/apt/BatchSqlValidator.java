@@ -80,7 +80,14 @@ public class BatchSqlValidator extends SqlValidator {
     }
 
     protected boolean isSuppressed(Message message) {
-        return suppress != null && suppress.message() == message;
+        if (suppress != null) {
+            for (Message suppressMessage : suppress.messages()) {
+                if (suppressMessage == message) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }

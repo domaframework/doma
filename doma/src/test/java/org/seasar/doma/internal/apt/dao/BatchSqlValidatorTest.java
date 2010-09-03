@@ -108,4 +108,39 @@ public class BatchSqlValidatorTest extends AptTestCase {
         assertNoMessage();
     }
 
+    public void testIfAndEmbeddedVariable() throws Exception {
+        Class<?> target = BatchSqlValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testIfAndEmbeddedVariable", String.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        BatchSqlValidator validator = new BatchSqlValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap,
+                "aaa/bbbDao/ccc.sql");
+        SqlParser parser = new SqlParser(
+                "select * from emp where /*%if true*/ id = 1 /*%end */ /*# orderBy */");
+        SqlNode sqlNode = parser.parse();
+        sqlNode.accept(validator, null);
+        assertEquals(2, getDiagnostics().size());
+    }
+
+    public void testIfAndEmbeddedVariableSuppressed() throws Exception {
+        Class<?> target = BatchSqlValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testIfAndEmbeddedVariableSuppressed", String.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        BatchSqlValidator validator = new BatchSqlValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap,
+                "aaa/bbbDao/ccc.sql");
+        SqlParser parser = new SqlParser(
+                "select * from emp where /*%if true*/ id = 1 /*%end */ /*# orderBy */");
+        SqlNode sqlNode = parser.parse();
+        sqlNode.accept(validator, null);
+        assertNoMessage();
+    }
 }

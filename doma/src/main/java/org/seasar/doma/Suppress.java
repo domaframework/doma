@@ -35,5 +35,5 @@ public @interface Suppress {
     /**
      * 抑制対象の警告メッセージです。
      */
-    Message message();
+    Message[] messages();
 }
