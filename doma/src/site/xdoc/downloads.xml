@@ -7,7 +7,7 @@
 	<body>
 		<section name="ダウンロード">
 			<p>
-				JDK 6 と Eclipse 3.5 の組み合わせで動作確認をしています。
+				JDK 6 と Eclipse 3.6 の組み合わせで動作確認をしています。
 			</p>
 			<p>
 				配布ファイルはEclipseのプロジェクト形式です。
@@ -22,11 +22,11 @@
 					<th>Doma Tools (更新サイト)</th>
 				</tr>
 				<tr>
-					<td><a href="download/2010-08-31/doma-1.9.0.zip">doma-1.9.0</a></td>
-					<td><a href="download/2010-08-31/doma-tutorial-1.9.0.zip">doma-tutorial-1.9.0</a></td>
-					<td><a href="download/2010-08-31/doma-jpetstore-1.9.0.zip">doma-jpetstore-1.9.0</a></td>
-					<td><a href="download/2010-08-31/doma-gen-1.9.0.zip">doma-gen-1.9.0</a></td>
-					<td><a href="http://eclipse.seasar.org/updates/3.5/">Doma Tools 1.9.0</a></td>
+					<td><a href="download/2010-10-02/doma-1.10.0.zip">doma-1.10.0</a></td>
+					<td><a href="download/2010-10-02/doma-tutorial-1.10.0.zip">doma-tutorial-1.10.0</a></td>
+					<td><a href="download/2010-10-02/doma-jpetstore-1.10.0.zip">doma-jpetstore-1.10.0</a></td>
+					<td><a href="download/2010-10-02/doma-gen-1.10.0.zip">doma-gen-1.10.0</a></td>
+					<td><a href="http://eclipse.seasar.org/updates/3.5/">Doma Tools 1.10.0</a></td>
 				</tr>
 			</table>
 			<p>
