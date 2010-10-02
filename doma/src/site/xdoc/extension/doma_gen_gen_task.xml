@@ -239,7 +239,7 @@ where
 					<tr><td>allocationSize</td><td>識別子の割り当てサイズです。generationTypeに"sequence"もしくは"table"を指定した場合にのみ有効です。@SequenceGeneratorや@TableGeneratorのallocationSize要素に指定されます。</td><td>-</td><td>NO</td></tr>
 					<tr><td>useAccessor</td><td>"true"の場合、エンティティクラスにアクセサメソッドを付与します。"false"の場合、エンティティのプロパティはpublicフィールドになります。</td><td>"true"</td><td>NO</td></tr>
 					<tr><td>useListener</td><td>"true"の場合、エンティティリスナークラスのJavaコードを生成し、@Entityのlistener要素にエンティティリスナークラスを指定します。"false"の場合、エンティティリスナークラスのJavaコードは生成されません。</td><td>"true"</td><td>NO</td></tr>
-					<tr><td>useUtilDate</td><td>"true"の場合、エンティティクラスのプロパティの日付型にjava.sql.Dateではなくjava.util.Dateを使用します。</td><td>"false"</td><td>NO</td></tr>
+					<tr><td>useUtilDate</td><td>"true"の場合、エンティティクラスのプロパティの日付、時刻、タイムスタンプ型にjava.util.Dateを使用します。"false"の場合、日付、時刻、タイムスタンプ型にjava.sql.Date、java.sql.Time、java.sql.Timestampを使用します。</td><td>"false"</td><td>NO</td></tr>
 					<tr><td>showDbComment</td><td>"true"の場合、データベースに対するコメントをエンティティのJavadocコメントに適用します。テーブルへのコメントはクラスのJavadocコメントに反映され、カラムへのコメントはプロパティのJavadocコメントに反映されます。</td><td>"true"</td><td>NO</td></tr>
 					<tr><td>showCatalogName</td><td>"true"の場合、@Tableのcatalog属性にカタログ名を明記します。</td><td>"false"</td><td>NO</td></tr>
 					<tr><td>showSchemaName</td><td>"true"の場合、@Tableのschema属性にスキーマ名を明記します。</td><td>"false"</td><td>NO</td></tr>

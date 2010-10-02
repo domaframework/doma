@@ -11,6 +11,7 @@
 					<ul>
 						<li><a href="#JDKのインストール">JDKのインストール</a></li>
 						<li><a href="#Eclipseのインストール">Eclipseのインストール</a></li>
+						<li><a href="#Eclipseの設定">Eclipseの設定</a></li>
 						<li><a href="#プロジェクトの設定">プロジェクトの設定</a>
 							<ul>
 								<li><a href="#JREの設定">JREの設定</a></li>
@@ -52,10 +53,19 @@
 					<a href="http://www.eclipse.org/downloads/">http://www.eclipse.org/downloads/</a>
 				</p>
 				<p>
-					Eclipseは、バージョン6以上のJDKに含まれるJREで起動されるようにしてください。
+					Eclipseは、バージョン6以上の<b>JDKに含まれるJRE</b>で起動されるようにしてください。
 					明示的にJREを指定するには、-vm オプションを使用します。
 				</p>
 				<pre>-vm %JAVA_HOME%\bin\javaw.exe</pre>
+			</subsection>
+			<subsection name="Eclipseの設定">
+				<p>
+					Installed JREsに、バージョン6以上の<b>JDKに含まれるJRE</b>を登録します（登録されていない場合）。
+				</p>
+				<p>
+					Installed JREsの設定は、メニューの Window - Preferences と選択してPreferences画面を開き、左のメニューから Java - Installed JREs と辿ります。
+				</p>
+				<img src="images/eclipse_installed_jres.png" width="454" height="152" alt="Installed JREsの設定" />
 			</subsection>
 			<subsection name="プロジェクトの設定">
 				<p>
@@ -63,8 +73,7 @@
 				</p>
 				<h4><a name="JREの設定"></a>JREの設定</h4>
 				<p>
-					プロジェクトのJREの設定項目には、バージョン6以上のJREを指定してください。
-					JREはJDKに含まれたものでなければいけません。
+					プロジェクトのJREの設定項目には、<a href="#Eclipseの設定">Eclipseの設定</a>で登録したJREを指定してください。
 				</p>
 				<h4><a name="ビルドパスの設定"></a>ビルドパス（Build Path）の設定</h4>
 				<p>
