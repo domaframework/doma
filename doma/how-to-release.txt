@@ -22,3 +22,4 @@
 3)seasar wikiに告知
 4)seasar トップページにseasar wikiへのリンクをはる
 5)MLで告知
+6)ant update
