@@ -75,10 +75,6 @@ public abstract class SqlFileModifyQuery implements ModifyQuery {
         sql = sqlBuilder.build(sqlFile.getSqlNode());
     }
 
-    @Override
-    public void complete() {
-    }
-
     public void setConfig(Config config) {
         this.config = config;
     }

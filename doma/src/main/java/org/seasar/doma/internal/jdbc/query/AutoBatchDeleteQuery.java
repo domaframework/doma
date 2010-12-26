@@ -19,12 +19,14 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.Iterator;
 
+import org.seasar.doma.internal.jdbc.entity.AbstractPostDeleteContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreDeleteContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.PostDeleteContext;
 import org.seasar.doma.jdbc.entity.PreDeleteContext;
 
 /**
@@ -109,6 +111,19 @@ public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
         sqls.add(sql);
     }
 
+    @Override
+    public void complete() {
+        for (E entity : entities) {
+            currentEntity = entity;
+            postDelete();
+        }
+    }
+
+    protected void postDelete() {
+        PostDeleteContext context = new AutoBatchPostDeleteContext(entityType);
+        entityType.postDelete(currentEntity, context);
+    }
+
     public void setVersionIgnored(boolean versionIgnored) {
         this.versionIgnored = versionIgnored;
     }
@@ -126,4 +141,11 @@ public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
         }
     }
 
+    protected static class AutoBatchPostDeleteContext extends
+            AbstractPostDeleteContext {
+
+        public AutoBatchPostDeleteContext(EntityType<?> entityType) {
+            super(entityType);
+        }
+    }
 }

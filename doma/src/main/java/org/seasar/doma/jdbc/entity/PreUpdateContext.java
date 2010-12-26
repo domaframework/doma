@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.jdbc.entity;
 
+import org.seasar.doma.Update;
+
 /**
  * 更新処理の前処理のコンテキストです。
  * 
@@ -25,22 +27,19 @@ public interface PreUpdateContext {
 
     /**
      * エンティティが変更されたかどうかを返します。
+     * <p>
+     * {@link Update#sqlFile()} に {@code false} が指定されたDaoメソッドによる実行でない場合、常に
+     * {@code true}を返します。
      * 
      * @return エンティティが変更されたかどうか
      */
     public boolean isEntityChanged();
 
     /**
-     * プロパティがエンティティに定義されているかどうかを返します。
-     * 
-     * @param propertyName
-     *            プロパティ名
-     * @return プロパティがエンティティに定義されているかどうか
-     */
-    public boolean isPropertyDefined(String propertyName);
-
-    /**
-     * プロパティが変更されているかどうかを返します。
+     * プロパティが変更されたかどうかを返します。
+     * <p>
+     * {@link Update#sqlFile()} に {@code false} が指定されたDaoメソッドによる実行でない場合、常に
+     * {@code true}を返します。
      * 
      * @param propertyName
      *            プロパティ名

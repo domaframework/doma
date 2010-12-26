@@ -19,14 +19,16 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.seasar.doma.internal.jdbc.entity.AbstractPostUpdateContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreUpdateContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
-import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.PostUpdateContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.wrapper.Wrapper;
 
@@ -64,14 +66,14 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void preUpdate() {
-        prepareTargetPropertyTypes();
-        PreUpdateContext context = new AutoPreUpdateContext(entityType,
-                changedPropertyNames);
+        List<EntityPropertyType<E, ?>> targetPropertyTypes = getTargetPropertyTypes();
+        PreUpdateContext context = new AutoPreUpdateContext<E>(entityType,
+                targetPropertyTypes);
         entityType.preUpdate(entity, context);
     }
 
     protected void prepareOptimisticLock() {
-        if (versionPropertyType != null && !versionIgnored) {
+        if (!versionIgnored && versionPropertyType != null) {
             if (!optimisticLockExceptionSuppressed) {
                 optimisticLockCheckRequired = true;
             }
@@ -79,11 +81,17 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void prepareTargetPropertyTypes() {
+        targetPropertyTypes = getTargetPropertyTypes();
+        if (!targetPropertyTypes.isEmpty()) {
+            executable = true;
+            sqlExecutionSkipCause = null;
+        }
+    }
+
+    protected List<EntityPropertyType<E, ?>> getTargetPropertyTypes() {
         int capacity = entityType.getEntityPropertyTypes().size();
-        changedPropertyNames = new HashSet<String>(capacity);
-        targetPropertyTypes = new ArrayList<EntityPropertyType<E, ?>>(capacity);
-        executable = false;
-        sqlExecutionSkipCause = SqlExecutionSkipCause.STATE_UNCHANGED;
+        List<EntityPropertyType<E, ?>> results = new ArrayList<EntityPropertyType<E, ?>>(
+                capacity);
         E originalStates = entityType.getOriginalStates(entity);
         for (EntityPropertyType<E, ?> p : entityType.getEntityPropertyTypes()) {
             if (!p.isUpdatable()) {
@@ -92,8 +100,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
             if (p.isId()) {
                 continue;
             }
-            if (p.isVersion()) {
-                targetPropertyTypes.add(p);
+            if (!versionIgnored && p.isVersion()) {
                 continue;
             }
             if (nullExcluded && p.getWrapper(entity).get() == null) {
@@ -105,12 +112,10 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
                 if (!isTargetPropertyName(name)) {
                     continue;
                 }
-                changedPropertyNames.add(name);
-                targetPropertyTypes.add(p);
-                executable = true;
-                sqlExecutionSkipCause = null;
+                results.add(p);
             }
         }
+        return results;
     }
 
     protected boolean isChanged(E originalStates,
@@ -136,12 +141,16 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
             builder.appendSql(p.getColumnName());
             builder.appendSql(" = ");
             builder.appendWrapper(p.getWrapper(entity));
-            if (p.isVersion() && !versionIgnored) {
-                builder.appendSql(" + 1");
-            }
             builder.appendSql(", ");
         }
-        builder.cutBackSql(2);
+        if (!versionIgnored && versionPropertyType != null) {
+            builder.appendSql(versionPropertyType.getColumnName());
+            builder.appendSql(" = ");
+            builder.appendWrapper(versionPropertyType.getWrapper(entity));
+            builder.appendSql(" + 1");
+        } else {
+            builder.cutBackSql(2);
+        }
         if (idPropertyTypes.size() > 0) {
             builder.appendSql(" where ");
             for (EntityPropertyType<E, ?> p : idPropertyTypes) {
@@ -152,7 +161,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
             }
             builder.cutBackSql(5);
         }
-        if (versionPropertyType != null && !versionIgnored) {
+        if (!versionIgnored && versionPropertyType != null) {
             if (idPropertyTypes.size() == 0) {
                 builder.appendSql(" where ");
             } else {
@@ -167,9 +176,24 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
 
     @Override
     public void incrementVersion() {
-        if (versionPropertyType != null && !versionIgnored) {
+        if (!versionIgnored && versionPropertyType != null) {
             versionPropertyType.increment(entity);
         }
+    }
+
+    @Override
+    public void complete() {
+        postUpdate();
+    }
+
+    protected void postUpdate() {
+        List<EntityPropertyType<E, ?>> targetPropertyTypes = getTargetPropertyTypes();
+        if (!versionIgnored && versionPropertyType != null) {
+            targetPropertyTypes.add(versionPropertyType);
+        }
+        PostUpdateContext context = new AutoPostUpdateContext<E>(entityType,
+                targetPropertyTypes);
+        entityType.postUpdate(entity, context);
     }
 
     public void setNullExcluded(boolean nullExcluded) {
@@ -193,21 +217,48 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
         this.unchangedPropertyIncluded = unchangedPropertyIncluded;
     }
 
-    protected static class AutoPreUpdateContext extends
+    protected static class AutoPreUpdateContext<E> extends
             AbstractPreUpdateContext {
 
-        protected Set<String> changedPropertyNames;
+        protected final Set<String> changedPropertyNames;
 
-        public AutoPreUpdateContext(EntityType<?> entityType,
-                Set<String> changedPropertyNames) {
+        public AutoPreUpdateContext(EntityType<E> entityType,
+                List<EntityPropertyType<E, ?>> targetPropertyTypes) {
             super(entityType);
-            assertNotNull(changedPropertyNames);
-            this.changedPropertyNames = changedPropertyNames;
+            assertNotNull(targetPropertyTypes);
+            changedPropertyNames = new HashSet<String>(
+                    targetPropertyTypes.size());
+            for (EntityPropertyType<?, ?> propertyType : targetPropertyTypes) {
+                changedPropertyNames.add(propertyType.getName());
+            }
         }
 
         @Override
         public boolean isEntityChanged() {
             return !changedPropertyNames.isEmpty();
+        }
+
+        @Override
+        public boolean isPropertyChanged(String propertyName) {
+            validatePropertyDefined(propertyName);
+            return changedPropertyNames.contains(propertyName);
+        }
+    }
+
+    protected static class AutoPostUpdateContext<E> extends
+            AbstractPostUpdateContext {
+
+        protected final Set<String> changedPropertyNames;
+
+        public AutoPostUpdateContext(EntityType<E> entityType,
+                List<EntityPropertyType<E, ?>> targetPropertyTypes) {
+            super(entityType);
+            assertNotNull(targetPropertyTypes);
+            changedPropertyNames = new HashSet<String>(
+                    targetPropertyTypes.size());
+            for (EntityPropertyType<?, ?> propertyType : targetPropertyTypes) {
+                changedPropertyNames.add(propertyType.getName());
+            }
         }
 
         @Override

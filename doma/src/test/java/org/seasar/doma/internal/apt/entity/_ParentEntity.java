@@ -22,6 +22,9 @@ import org.seasar.doma.jdbc.entity.BasicPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.jdbc.entity.NamingType;
+import org.seasar.doma.jdbc.entity.PostDeleteContext;
+import org.seasar.doma.jdbc.entity.PostInsertContext;
+import org.seasar.doma.jdbc.entity.PostUpdateContext;
 import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
@@ -133,6 +136,21 @@ public class _ParentEntity extends AbstractEntityType<ParentEntity> {
 
     @Override
     public void preUpdate(ParentEntity entity, PreUpdateContext context) {
+
+    }
+
+    @Override
+    public void postDelete(ParentEntity entity, PostDeleteContext context) {
+
+    }
+
+    @Override
+    public void postInsert(ParentEntity entity, PostInsertContext context) {
+
+    }
+
+    @Override
+    public void postUpdate(ParentEntity entity, PostUpdateContext context) {
 
     }
 

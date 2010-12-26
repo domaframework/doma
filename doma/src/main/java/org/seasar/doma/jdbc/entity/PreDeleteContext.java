@@ -24,15 +24,6 @@ package org.seasar.doma.jdbc.entity;
 public interface PreDeleteContext {
 
     /**
-     * プロパティがエンティティに定義されているかどうかを返します。
-     * 
-     * @param propertyName
-     *            プロパティ名
-     * @return プロパティがエンティティに定義されているかどうか
-     */
-    public boolean isPropertyDefined(String propertyName);
-
-    /**
      * エンティティのメタタイプを返します。
      * 
      * @return エンティティのメタタイプ

@@ -17,11 +17,13 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import org.seasar.doma.internal.jdbc.entity.AbstractPostDeleteContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreDeleteContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.PostDeleteContext;
 import org.seasar.doma.jdbc.entity.PreDeleteContext;
 
 /**
@@ -93,6 +95,16 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
         sql = builder.build();
     }
 
+    @Override
+    public void complete() {
+        postDelete();
+    }
+
+    protected void postDelete() {
+        PostDeleteContext context = new AutoPostDeleteContext(entityType);
+        entityType.postDelete(entity, context);
+    }
+
     public void setVersionIgnored(boolean versionIgnored) {
         this.versionIgnored = versionIgnored;
     }
@@ -106,6 +118,14 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
             AbstractPreDeleteContext {
 
         public AutoPreDeleteContext(EntityType<?> entityType) {
+            super(entityType);
+        }
+    }
+
+    protected static class AutoPostDeleteContext extends
+            AbstractPostDeleteContext {
+
+        public AutoPostDeleteContext(EntityType<?> entityType) {
             super(entityType);
         }
     }

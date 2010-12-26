@@ -124,10 +124,6 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
         return true;
     }
 
-    @Override
-    public void complete() {
-    }
-
     public void setConfig(Config config) {
         this.config = config;
     }

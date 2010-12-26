@@ -16,12 +16,12 @@
 package org.seasar.doma.jdbc.entity;
 
 /**
- * 挿入処理の前処理のコンテキストです。
+ * 削除処理の後処理のコンテキストです。
  * 
  * @author taedium
  * @since 1.11.0
  */
-public interface PreInsertContext {
+public interface PostDeleteContext {
 
     /**
      * エンティティのメタタイプを返します。

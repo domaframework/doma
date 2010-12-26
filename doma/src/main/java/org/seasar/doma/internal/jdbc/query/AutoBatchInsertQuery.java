@@ -21,6 +21,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.seasar.doma.internal.jdbc.entity.AbstractPostInsertContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreInsertContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
@@ -29,6 +30,7 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
+import org.seasar.doma.jdbc.entity.PostInsertContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.message.Message;
@@ -176,10 +178,31 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
         }
     }
 
+    @Override
+    public void complete() {
+        for (E entity : entities) {
+            currentEntity = entity;
+            postInsert();
+        }
+    }
+
+    protected void postInsert() {
+        PostInsertContext context = new AutoBatchPostInsertContext(entityType);
+        entityType.postInsert(currentEntity, context);
+    }
+
     protected static class AutoBatchPreInsertContext extends
             AbstractPreInsertContext {
 
         public AutoBatchPreInsertContext(EntityType<?> entityType) {
+            super(entityType);
+        }
+    }
+
+    protected static class AutoBatchPostInsertContext extends
+            AbstractPostInsertContext {
+
+        public AutoBatchPostInsertContext(EntityType<?> entityType) {
             super(entityType);
         }
     }

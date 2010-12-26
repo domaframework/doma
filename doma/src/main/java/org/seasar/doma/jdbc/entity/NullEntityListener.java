@@ -35,4 +35,16 @@ public class NullEntityListener implements EntityListener<Object> {
     public void preDelete(Object entity, PreDeleteContext context) {
     }
 
+    @Override
+    public void postInsert(Object entity, PostInsertContext context) {
+    }
+
+    @Override
+    public void postUpdate(Object entity, PostUpdateContext context) {
+    }
+
+    @Override
+    public void postDelete(Object entity, PostDeleteContext context) {
+    }
+
 }

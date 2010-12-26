@@ -19,9 +19,11 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.sql.Statement;
 
+import org.seasar.doma.internal.jdbc.entity.AbstractPostInsertContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreInsertContext;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.PostInsertContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 
 /**
@@ -57,6 +59,13 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
     }
 
     @Override
+    public void complete() {
+        if (entityHandler != null) {
+            entityHandler.postInsert();
+        }
+    }
+
+    @Override
     public <E> void setEntityAndEntityType(E entity, EntityType<E> entityType) {
         entityHandler = new EntityHandler<E>(entity, entityType);
     }
@@ -78,12 +87,25 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
             entityType.preInsert(entity, context);
         }
 
+        protected void postInsert() {
+            PostInsertContext context = new SqlFilePostInsertContext(entityType);
+            entityType.postInsert(entity, context);
+        }
+
     }
 
     protected static class SqlFilePreInsertContext extends
             AbstractPreInsertContext {
 
         public SqlFilePreInsertContext(EntityType<?> entityType) {
+            super(entityType);
+        }
+    }
+
+    protected static class SqlFilePostInsertContext extends
+            AbstractPostInsertContext {
+
+        public SqlFilePostInsertContext(EntityType<?> entityType) {
             super(entityType);
         }
     }

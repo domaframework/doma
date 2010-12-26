@@ -17,27 +17,27 @@ package org.seasar.doma.internal.jdbc.entity;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import org.seasar.doma.jdbc.entity.EntityPropertyNotDefinedException;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.PostUpdateContext;
 
 /**
  * @author taedium
  * 
  */
-public abstract class AbstractEntityListenerContext {
+public abstract class AbstractPostUpdateContext extends
+        AbstractEntityListenerContext implements PostUpdateContext {
 
-    protected final EntityType<?> entityType;
-
-    protected AbstractEntityListenerContext(EntityType<?> entityType) {
-        assertNotNull(entityType);
-        this.entityType = entityType;
+    protected AbstractPostUpdateContext(EntityType<?> entityType) {
+        super(entityType);
     }
 
-    protected boolean isPropertyDefinedInternal(String propertyName) {
+    protected void validatePropertyDefined(String propertyName) {
         assertNotNull(propertyName);
-        return entityType.getEntityPropertyType(propertyName) != null;
+        if (!isPropertyDefinedInternal(propertyName)) {
+            throw new EntityPropertyNotDefinedException(entityType
+                    .getEntityClass().getName(), propertyName);
+        }
     }
 
-    public EntityType<?> getEntityType() {
-        return entityType;
-    }
 }

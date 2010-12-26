@@ -107,10 +107,6 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
         sqls.add(sql);
     }
 
-    @Override
-    public void complete() {
-    }
-
     public void setConfig(Config config) {
         this.config = config;
     }

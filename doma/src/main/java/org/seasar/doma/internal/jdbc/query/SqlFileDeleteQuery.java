@@ -17,6 +17,7 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import org.seasar.doma.internal.jdbc.entity.AbstractPostDeleteContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreDeleteContext;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityType;
@@ -62,6 +63,13 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
     }
 
     @Override
+    public void complete() {
+        if (entityHandler != null) {
+            entityHandler.postDelete();
+        }
+    }
+
+    @Override
     public <E> void setEntityAndEntityType(E entity, EntityType<E> entityType) {
         entityHandler = new EntityHandler<E>(entity, entityType);
     }
@@ -96,6 +104,12 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
             entityType.preDelete(entity, context);
         }
 
+        protected void postDelete() {
+            SqlFilePostDeleteContext context = new SqlFilePostDeleteContext(
+                    entityType);
+            entityType.postDelete(entity, context);
+        }
+
         protected void prepareOptimisticLock() {
             if (versionPropertyType != null && !versionIgnored) {
                 if (!optimisticLockExceptionSuppressed) {
@@ -109,6 +123,14 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
             AbstractPreDeleteContext {
 
         public SqlFilePreDeleteContext(EntityType<?> entityType) {
+            super(entityType);
+        }
+    }
+
+    protected static class SqlFilePostDeleteContext extends
+            AbstractPostDeleteContext {
+
+        public SqlFilePostDeleteContext(EntityType<?> entityType) {
             super(entityType);
         }
     }

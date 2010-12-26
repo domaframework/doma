@@ -21,6 +21,9 @@ import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.jdbc.entity.NamingType;
+import org.seasar.doma.jdbc.entity.PostDeleteContext;
+import org.seasar.doma.jdbc.entity.PostInsertContext;
+import org.seasar.doma.jdbc.entity.PostUpdateContext;
 import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
@@ -122,6 +125,21 @@ public class _Emp extends AbstractEntityType<Emp> {
 
     @Override
     public void preUpdate(Emp entity, PreUpdateContext context) {
+
+    }
+
+    @Override
+    public void postDelete(Emp entity, PostDeleteContext context) {
+
+    }
+
+    @Override
+    public void postInsert(Emp entity, PostInsertContext context) {
+
+    }
+
+    @Override
+    public void postUpdate(Emp entity, PostUpdateContext context) {
 
     }
 

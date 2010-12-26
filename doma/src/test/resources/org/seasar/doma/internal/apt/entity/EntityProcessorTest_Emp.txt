@@ -241,6 +241,21 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
     }
 
     @Override
+    public void postInsert(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PostInsertContext context) {
+        __listener.postInsert(entity, context);
+    }
+
+    @Override
+    public void postUpdate(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PostUpdateContext context) {
+        __listener.postUpdate(entity, context);
+    }
+
+    @Override
+    public void postDelete(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PostDeleteContext context) {
+        __listener.postDelete(entity, context);
+    }
+
+    @Override
     public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Emp, ?>> getEntityPropertyTypes() {
         return __entityPropertyTypes;
     }

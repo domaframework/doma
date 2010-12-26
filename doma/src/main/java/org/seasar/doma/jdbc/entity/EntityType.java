@@ -23,7 +23,7 @@ import org.seasar.doma.internal.jdbc.criteria.TableCriterion;
  * エンティティのメタタイプです。
  * 
  * <p>
- * このインタフェースの実装はスレッドセーフであることは要求されません。
+ * このインタフェースの実装はスレッドセーフでなければいけません。
  * </p>
  * 
  * @author taedium
@@ -168,6 +168,38 @@ public interface EntityType<E> extends TableCriterion<E> {
      * 
      * @param entity
      *            エンティティ
+     * @param context
+     *            コンテキスト
      */
     void preDelete(E entity, PreDeleteContext context);
+
+    /**
+     * 挿入処理の後処理を行います。
+     * 
+     * @param entity
+     *            エンティティ
+     * @param context
+     *            コンテキスト
+     */
+    void postInsert(E entity, PostInsertContext context);
+
+    /**
+     * 更新処理の後処理を行います。
+     * 
+     * @param entity
+     *            エンティティ
+     * @param context
+     *            コンテキスト
+     */
+    void postUpdate(E entity, PostUpdateContext context);
+
+    /**
+     * 削除処理の後処理を行います。
+     * 
+     * @param entity
+     *            エンティティ
+     * @param context
+     *            コンテキスト
+     */
+    void postDelete(E entity, PostDeleteContext context);
 }

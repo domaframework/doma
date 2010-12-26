@@ -45,6 +45,9 @@ import org.seasar.doma.jdbc.entity.BasicPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.jdbc.entity.NamingType;
+import org.seasar.doma.jdbc.entity.PostDeleteContext;
+import org.seasar.doma.jdbc.entity.PostInsertContext;
+import org.seasar.doma.jdbc.entity.PostUpdateContext;
 import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
@@ -391,6 +394,9 @@ public class EntityTypeGenerator extends AbstractGenerator {
         printPreInsertMethod();
         printPreUpdateMethod();
         printPreDeleteMethod();
+        printPostInsertMethod();
+        printPostUpdateMethod();
+        printPostDeleteMethod();
         printGetEntityPropertyTypesMethod();
         printGetEntityPropertyTypeMethod();
         printGetIdPropertyTypesMethod();
@@ -478,6 +484,36 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 entityMeta.getEntityTypeName(),
                 PreDeleteContext.class.getName());
         iprint("    __listener.preDelete(entity, context);%n");
+        iprint("}%n");
+        print("%n");
+    }
+
+    protected void printPostInsertMethod() {
+        iprint("@Override%n");
+        iprint("public void postInsert(%1$s entity, %2$s context) {%n",
+                entityMeta.getEntityTypeName(),
+                PostInsertContext.class.getName());
+        iprint("    __listener.postInsert(entity, context);%n");
+        iprint("}%n");
+        print("%n");
+    }
+
+    protected void printPostUpdateMethod() {
+        iprint("@Override%n");
+        iprint("public void postUpdate(%1$s entity, %2$s context) {%n",
+                entityMeta.getEntityTypeName(),
+                PostUpdateContext.class.getName());
+        iprint("    __listener.postUpdate(entity, context);%n");
+        iprint("}%n");
+        print("%n");
+    }
+
+    protected void printPostDeleteMethod() {
+        iprint("@Override%n");
+        iprint("public void postDelete(%1$s entity, %2$s context) {%n",
+                entityMeta.getEntityTypeName(),
+                PostDeleteContext.class.getName());
+        iprint("    __listener.postDelete(entity, context);%n");
         iprint("}%n");
         print("%n");
     }

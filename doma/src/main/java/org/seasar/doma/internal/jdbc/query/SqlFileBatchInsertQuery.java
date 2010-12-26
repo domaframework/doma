@@ -20,9 +20,11 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.sql.Statement;
 import java.util.Iterator;
 
+import org.seasar.doma.internal.jdbc.entity.AbstractPostInsertContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreInsertContext;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.PostInsertContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 
 /**
@@ -72,6 +74,16 @@ public class SqlFileBatchInsertQuery<E> extends SqlFileBatchModifyQuery<E>
     }
 
     @Override
+    public void complete() {
+        if (entityHandler != null) {
+            for (E element : elements) {
+                currentEntity = element;
+                entityHandler.postInsert();
+            }
+        }
+    }
+
+    @Override
     public void setEntityType(EntityType<E> entityType) {
         entityHandler = new EntityHandler(entityType);
     }
@@ -95,12 +107,26 @@ public class SqlFileBatchInsertQuery<E> extends SqlFileBatchModifyQuery<E>
                     entityType);
             entityType.preInsert(currentEntity, context);
         }
+
+        protected void postInsert() {
+            PostInsertContext context = new SqlFileBatchPostInsertContext(
+                    entityType);
+            entityType.postInsert(currentEntity, context);
+        }
     }
 
     protected static class SqlFileBatchPreInsertContext extends
             AbstractPreInsertContext {
 
         public SqlFileBatchPreInsertContext(EntityType<?> entityType) {
+            super(entityType);
+        }
+    }
+
+    protected static class SqlFileBatchPostInsertContext extends
+            AbstractPostInsertContext {
+
+        public SqlFileBatchPostInsertContext(EntityType<?> entityType) {
             super(entityType);
         }
     }

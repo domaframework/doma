@@ -19,9 +19,12 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.Iterator;
 
+import org.seasar.doma.internal.jdbc.entity.AbstractPostDeleteContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreDeleteContext;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.PostDeleteContext;
+import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 /**
@@ -78,6 +81,16 @@ public class SqlFileBatchDeleteQuery<E> extends SqlFileBatchModifyQuery<E>
     }
 
     @Override
+    public void complete() {
+        if (entityHandler != null) {
+            for (E element : elements) {
+                currentEntity = element;
+                entityHandler.postDelete();
+            }
+        }
+    }
+
+    @Override
     public void setEntityType(EntityType<E> entityType) {
         entityHandler = new EntityHandler(entityType);
     }
@@ -104,9 +117,15 @@ public class SqlFileBatchDeleteQuery<E> extends SqlFileBatchModifyQuery<E>
         }
 
         protected void preDelete() {
-            SqlFileBatchPreDeleteContext context = new SqlFileBatchPreDeleteContext(
+            PreDeleteContext context = new SqlFileBatchPreDeleteContext(
                     entityType);
             entityType.preDelete(currentEntity, context);
+        }
+
+        protected void postDelete() {
+            PostDeleteContext context = new SqlFileBatchPostDeleteContext(
+                    entityType);
+            entityType.postDelete(currentEntity, context);
         }
 
         protected void prepareOptimisticLock() {
@@ -122,6 +141,14 @@ public class SqlFileBatchDeleteQuery<E> extends SqlFileBatchModifyQuery<E>
             AbstractPreDeleteContext {
 
         public SqlFileBatchPreDeleteContext(EntityType<?> entityType) {
+            super(entityType);
+        }
+    }
+
+    protected static class SqlFileBatchPostDeleteContext extends
+            AbstractPostDeleteContext {
+
+        public SqlFileBatchPostDeleteContext(EntityType<?> entityType) {
             super(entityType);
         }
     }

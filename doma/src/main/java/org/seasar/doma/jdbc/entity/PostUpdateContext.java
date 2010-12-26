@@ -15,13 +15,29 @@
  */
 package org.seasar.doma.jdbc.entity;
 
+import org.seasar.doma.Update;
+
 /**
- * 挿入処理の前処理のコンテキストです。
+ * 更新処理の後処理のコンテキストです。
  * 
  * @author taedium
  * @since 1.11.0
  */
-public interface PreInsertContext {
+public interface PostUpdateContext {
+
+    /**
+     * プロパティが変更されたかどうかを返します。
+     * <p>
+     * {@link Update#sqlFile()} に {@code false} が指定されたDaoメソッドによる実行でない場合、常に
+     * {@code true}を返します。
+     * 
+     * @param propertyName
+     *            プロパティ名
+     * @return プロパティが変更されているかどうか
+     * @exception EntityPropertyNotDefinedException
+     *                プロパティがエンティティに定義されていない場合
+     */
+    public boolean isPropertyChanged(String propertyName);
 
     /**
      * エンティティのメタタイプを返します。

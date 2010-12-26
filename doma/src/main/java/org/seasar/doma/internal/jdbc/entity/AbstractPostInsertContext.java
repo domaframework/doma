@@ -13,20 +13,19 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.jdbc.entity;
+package org.seasar.doma.internal.jdbc.entity;
+
+import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.PostInsertContext;
 
 /**
- * 挿入処理の前処理のコンテキストです。
- * 
  * @author taedium
- * @since 1.11.0
+ * 
  */
-public interface PreInsertContext {
+public class AbstractPostInsertContext extends AbstractEntityListenerContext
+        implements PostInsertContext {
 
-    /**
-     * エンティティのメタタイプを返します。
-     * 
-     * @return エンティティのメタタイプ
-     */
-    public EntityType<?> getEntityType();
+    protected AbstractPostInsertContext(EntityType<?> entityType) {
+        super(entityType);
+    }
 }

@@ -77,4 +77,46 @@ public interface EntityListener<E> {
      * @since 1.11.0
      */
     void preDelete(E entity, PreDeleteContext context);
+
+    /**
+     * 挿入処理の後処理を行います。
+     * <p>
+     * 対象となるのは、{@link Insert} 、または {@link BatchInsert}
+     * のパラメータにエンティティを受け取るDaoメソッドの実行です。
+     * 
+     * @param entity
+     *            エンティティ
+     * @param context
+     *            コンテキスト
+     * @since 1.11.0
+     */
+    void postInsert(E entity, PostInsertContext context);
+
+    /**
+     * 更新処理の後処理を行います。
+     * <p>
+     * 対象となるのは、{@link Update} 、または {@link BatchUpdate}
+     * のパラメータにエンティティを受け取るDaoメソッドの実行です。
+     * 
+     * @param entity
+     *            エンティティ
+     * @param context
+     *            コンテキスト
+     * @since 1.11.0
+     */
+    void postUpdate(E entity, PostUpdateContext context);
+
+    /**
+     * 削除処理の後処理を行います。
+     * <p>
+     * 対象となるのは、{@link Delete} 、または {@link BatchDelete}
+     * のパラメータにエンティティを受け取るDaoメソッドの実行です。
+     * 
+     * @param entity
+     *            エンティティ
+     * @param context
+     *            コンテキスト
+     * @since 1.11.0
+     */
+    void postDelete(E entity, PostDeleteContext context);
 }

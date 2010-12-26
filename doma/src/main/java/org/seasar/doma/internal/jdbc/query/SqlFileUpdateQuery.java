@@ -17,9 +17,11 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import org.seasar.doma.internal.jdbc.entity.AbstractPostUpdateContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreUpdateContext;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.PostUpdateContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
@@ -70,6 +72,13 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
     }
 
     @Override
+    public void complete() {
+        if (entityHandler != null) {
+            entityHandler.postUpdate();
+        }
+    }
+
+    @Override
     public <E> void setEntityAndEntityType(E entity, EntityType<E> entityType) {
         entityHandler = new EntityHandler<E>(entity, entityType);
     }
@@ -107,6 +116,11 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
             entityType.preUpdate(entity, context);
         }
 
+        protected void postUpdate() {
+            PostUpdateContext context = new SqlFilePostUpdateContext(entityType);
+            entityType.postUpdate(entity, context);
+        }
+
         protected void prepareOptimisticLock() {
             if (versionPropertyType != null && !versionIgnored) {
                 if (!optimisticLockExceptionSuppressed) {
@@ -132,6 +146,20 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
         @Override
         public boolean isEntityChanged() {
             return true;
+        }
+
+        @Override
+        public boolean isPropertyChanged(String propertyName) {
+            validatePropertyDefined(propertyName);
+            return true;
+        }
+    }
+
+    protected static class SqlFilePostUpdateContext extends
+            AbstractPostUpdateContext {
+
+        public SqlFilePostUpdateContext(EntityType<?> entityType) {
+            super(entityType);
         }
 
         @Override
