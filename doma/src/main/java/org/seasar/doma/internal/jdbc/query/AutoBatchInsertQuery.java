@@ -21,6 +21,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.seasar.doma.internal.jdbc.entity.AbstractPreInsertContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.JdbcException;
@@ -28,6 +29,7 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
+import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.message.Message;
 
@@ -56,7 +58,7 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
             executable = true;
             executionSkipCause = null;
             currentEntity = it.next();
-            entityType.preInsert(currentEntity);
+            preInsert();
             prepareIdAndVersionPropertyTypes();
             prepareOptions();
             prepareTargetPropertyTypes();
@@ -68,13 +70,18 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
         }
         while (it.hasNext()) {
             currentEntity = it.next();
-            entityType.preInsert(currentEntity);
+            preInsert();
             prepareIdValue();
             prepareVersionValue();
             prepareSql();
         }
         currentEntity = null;
         assertEquals(entities.size(), sqls.size());
+    }
+
+    protected void preInsert() {
+        PreInsertContext context = new AutoBatchPreInsertContext(entityType);
+        entityType.preInsert(currentEntity, context);
     }
 
     @Override
@@ -166,6 +173,14 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
         if (generatedIdPropertyType != null && idGenerationConfig != null) {
             generatedIdPropertyType.postInsert(entities.get(index),
                     idGenerationConfig, statement);
+        }
+    }
+
+    protected static class AutoBatchPreInsertContext extends
+            AbstractPreInsertContext {
+
+        public AutoBatchPreInsertContext(EntityType<?> entityType) {
+            super(entityType);
         }
     }
 }

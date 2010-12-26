@@ -22,6 +22,9 @@ import org.seasar.doma.jdbc.entity.BasicPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.jdbc.entity.NamingType;
+import org.seasar.doma.jdbc.entity.PreDeleteContext;
+import org.seasar.doma.jdbc.entity.PreInsertContext;
+import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.wrapper.Wrapper;
 
@@ -119,17 +122,17 @@ public class _ParentEntity extends AbstractEntityType<ParentEntity> {
     }
 
     @Override
-    public void preDelete(ParentEntity entity) {
+    public void preDelete(ParentEntity entity, PreDeleteContext context) {
 
     }
 
     @Override
-    public void preInsert(ParentEntity entity) {
+    public void preInsert(ParentEntity entity, PreInsertContext context) {
 
     }
 
     @Override
-    public void preUpdate(ParentEntity entity) {
+    public void preUpdate(ParentEntity entity, PreUpdateContext context) {
 
     }
 

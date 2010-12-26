@@ -148,16 +148,20 @@ public interface EntityType<E> extends TableCriterion<E> {
      * 
      * @param entity
      *            エンティティ
+     * @param context
+     *            コンテキスト
      */
-    void preInsert(E entity);
+    void preInsert(E entity, PreInsertContext context);
 
     /**
      * 更新処理の前処理を行います。
      * 
      * @param entity
      *            エンティティ
+     * @param context
+     *            コンテキスト
      */
-    void preUpdate(E entity);
+    void preUpdate(E entity, PreUpdateContext context);
 
     /**
      * 削除処理の前処理を行います。
@@ -165,5 +169,5 @@ public interface EntityType<E> extends TableCriterion<E> {
      * @param entity
      *            エンティティ
      */
-    void preDelete(E entity);
+    void preDelete(E entity, PreDeleteContext context);
 }

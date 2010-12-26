@@ -31,6 +31,9 @@ import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.NullEntityListener;
+import org.seasar.doma.jdbc.entity.PreDeleteContext;
+import org.seasar.doma.jdbc.entity.PreInsertContext;
+import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
 import org.seasar.doma.wrapper.IntegerWrapper;
@@ -280,18 +283,18 @@ public class _Emp extends AbstractEntityType<Emp> {
     }
 
     @Override
-    public void preInsert(Emp entity) {
-        __listener.preInsert(entity);
+    public void preInsert(Emp entity, PreInsertContext context) {
+        __listener.preInsert(entity, context);
     }
 
     @Override
-    public void preUpdate(Emp entity) {
-        __listener.preUpdate(entity);
+    public void preUpdate(Emp entity, PreUpdateContext context) {
+        __listener.preUpdate(entity, context);
     }
 
     @Override
-    public void preDelete(Emp entity) {
-        __listener.preDelete(entity);
+    public void preDelete(Emp entity, PreDeleteContext context) {
+        __listener.preDelete(entity, context);
     }
 
     @Override

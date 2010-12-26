@@ -20,8 +20,10 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.sql.Statement;
 import java.util.Iterator;
 
+import org.seasar.doma.internal.jdbc.entity.AbstractPreInsertContext;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.PreInsertContext;
 
 /**
  * @author taedium
@@ -89,8 +91,17 @@ public class SqlFileBatchInsertQuery<E> extends SqlFileBatchModifyQuery<E>
         }
 
         protected void preInsert() {
-            entityType.preInsert(currentEntity);
+            PreInsertContext context = new SqlFileBatchPreInsertContext(
+                    entityType);
+            entityType.preInsert(currentEntity, context);
         }
+    }
 
+    protected static class SqlFileBatchPreInsertContext extends
+            AbstractPreInsertContext {
+
+        public SqlFileBatchPreInsertContext(EntityType<?> entityType) {
+            super(entityType);
+        }
     }
 }

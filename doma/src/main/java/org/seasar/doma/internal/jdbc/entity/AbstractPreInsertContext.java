@@ -13,29 +13,19 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.entity;
+package org.seasar.doma.internal.jdbc.entity;
 
-import org.seasar.doma.jdbc.entity.EntityListener;
-import org.seasar.doma.jdbc.entity.PreDeleteContext;
+import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
-import org.seasar.doma.jdbc.entity.PreUpdateContext;
 
 /**
  * @author taedium
  * 
  */
-public class EmpListener implements EntityListener<Emp> {
+public class AbstractPreInsertContext extends AbstractEntityListenerContext
+        implements PreInsertContext {
 
-    @Override
-    public void preDelete(Emp entity, PreDeleteContext context) {
+    protected AbstractPreInsertContext(EntityType<?> entityType) {
+        super(entityType);
     }
-
-    @Override
-    public void preInsert(Emp entity, PreInsertContext context) {
-    }
-
-    @Override
-    public void preUpdate(Emp entity, PreUpdateContext context) {
-    }
-
 }

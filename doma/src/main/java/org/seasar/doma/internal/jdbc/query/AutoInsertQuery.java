@@ -20,12 +20,14 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.seasar.doma.internal.jdbc.entity.AbstractPreInsertContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
+import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.message.Message;
 
@@ -51,7 +53,7 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
         assertNotNull(config, entityType, entity, callerClassName,
                 callerMethodName);
         executable = true;
-        entityType.preInsert(entity);
+        preInsert();
         prepareIdAndVersionPropertyTypes();
         prepareOptions();
         prepareTargetPropertyType();
@@ -59,6 +61,11 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
         prepareVersionValue();
         prepareSql();
         assertNotNull(sql);
+    }
+
+    protected void preInsert() {
+        PreInsertContext context = new AutoPreInsertContext(entityType);
+        entityType.preInsert(entity, context);
     }
 
     @Override
@@ -153,4 +160,11 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
         this.nullExcluded = nullExcluded;
     }
 
+    protected static class AutoPreInsertContext extends
+            AbstractPreInsertContext {
+
+        public AutoPreInsertContext(EntityType<?> entityType) {
+            super(entityType);
+        }
+    }
 }

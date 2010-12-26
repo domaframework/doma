@@ -20,11 +20,13 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.seasar.doma.internal.jdbc.entity.AbstractPreUpdateContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.PreUpdateContext;
 
 /**
  * @author taedium
@@ -49,7 +51,7 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
             executable = true;
             executionSkipCause = null;
             currentEntity = it.next();
-            entityType.preUpdate(currentEntity);
+            preUpdate();
             prepareIdAndVersionPropertyTypes();
             validateIdExistent();
             prepareOptions();
@@ -61,10 +63,15 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
         }
         while (it.hasNext()) {
             currentEntity = it.next();
-            entityType.preUpdate(currentEntity);
+            preUpdate();
             prepareSql();
         }
         assertEquals(entities.size(), sqls.size());
+    }
+
+    protected void preUpdate() {
+        PreUpdateContext context = new AutoBatchPreUpdateContext(entityType);
+        entityType.preUpdate(currentEntity, context);
     }
 
     protected void prepareOptimisticLock() {
@@ -158,4 +165,22 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
         this.optimisticLockExceptionSuppressed = optimisticLockExceptionSuppressed;
     }
 
+    protected static class AutoBatchPreUpdateContext extends
+            AbstractPreUpdateContext {
+
+        public AutoBatchPreUpdateContext(EntityType<?> entityType) {
+            super(entityType);
+        }
+
+        @Override
+        public boolean isEntityChanged() {
+            return true;
+        }
+
+        @Override
+        public boolean isPropertyChanged(String propertyName) {
+            validatePropertyDefined(propertyName);
+            return true;
+        }
+    }
 }

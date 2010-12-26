@@ -16,6 +16,9 @@
 package org.seasar.doma.internal.apt.entity;
 
 import org.seasar.doma.jdbc.entity.EntityListener;
+import org.seasar.doma.jdbc.entity.PreDeleteContext;
+import org.seasar.doma.jdbc.entity.PreInsertContext;
+import org.seasar.doma.jdbc.entity.PreUpdateContext;
 
 /**
  * @author taedium
@@ -25,15 +28,15 @@ public class ListenerArgumentTypeIllegalEntityListener implements
         EntityListener<String> {
 
     @Override
-    public void preDelete(String entity) {
+    public void preDelete(String entity, PreDeleteContext context) {
     }
 
     @Override
-    public void preInsert(String entity) {
+    public void preInsert(String entity, PreInsertContext context) {
     }
 
     @Override
-    public void preUpdate(String entity) {
+    public void preUpdate(String entity, PreUpdateContext context) {
     }
 
 }

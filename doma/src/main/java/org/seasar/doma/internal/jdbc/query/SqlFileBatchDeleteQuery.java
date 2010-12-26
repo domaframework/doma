@@ -19,6 +19,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.Iterator;
 
+import org.seasar.doma.internal.jdbc.entity.AbstractPreDeleteContext;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
@@ -103,7 +104,9 @@ public class SqlFileBatchDeleteQuery<E> extends SqlFileBatchModifyQuery<E>
         }
 
         protected void preDelete() {
-            entityType.preDelete(currentEntity);
+            SqlFileBatchPreDeleteContext context = new SqlFileBatchPreDeleteContext(
+                    entityType);
+            entityType.preDelete(currentEntity, context);
         }
 
         protected void prepareOptimisticLock() {
@@ -112,6 +115,14 @@ public class SqlFileBatchDeleteQuery<E> extends SqlFileBatchModifyQuery<E>
                     optimisticLockCheckRequired = true;
                 }
             }
+        }
+    }
+
+    protected static class SqlFileBatchPreDeleteContext extends
+            AbstractPreDeleteContext {
+
+        public SqlFileBatchPreDeleteContext(EntityType<?> entityType) {
+            super(entityType);
         }
     }
 }

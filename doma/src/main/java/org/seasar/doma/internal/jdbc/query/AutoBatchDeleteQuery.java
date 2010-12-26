@@ -19,11 +19,13 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.Iterator;
 
+import org.seasar.doma.internal.jdbc.entity.AbstractPreDeleteContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.PreDeleteContext;
 
 /**
  * @author taedium
@@ -48,7 +50,7 @@ public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
             executable = true;
             executionSkipCause = null;
             currentEntity = it.next();
-            entityType.preDelete(currentEntity);
+            preDelete();
             prepareIdAndVersionPropertyTypes();
             validateIdExistent();
             prepareOptions();
@@ -59,10 +61,15 @@ public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
         }
         while (it.hasNext()) {
             currentEntity = it.next();
-            entityType.preDelete(currentEntity);
+            preDelete();
             prepareSql();
         }
         assertEquals(entities.size(), sqls.size());
+    }
+
+    protected void preDelete() {
+        PreDeleteContext context = new AutoBatchPreDeleteContext(entityType);
+        entityType.preDelete(currentEntity, context);
     }
 
     protected void prepareOptimisticLock() {
@@ -109,6 +116,14 @@ public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
     public void setOptimisticLockExceptionSuppressed(
             boolean optimisticLockExceptionSuppressed) {
         this.optimisticLockExceptionSuppressed = optimisticLockExceptionSuppressed;
+    }
+
+    protected static class AutoBatchPreDeleteContext extends
+            AbstractPreDeleteContext {
+
+        public AutoBatchPreDeleteContext(EntityType<?> entityType) {
+            super(entityType);
+        }
     }
 
 }

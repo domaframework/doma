@@ -16,23 +16,26 @@
 package org.seasar.doma.jdbc.entity;
 
 /**
- * 何も行わない {@link EntityListener} の実装です。
+ * 挿入処理の前処理のコンテキストです。
  * 
  * @author taedium
- * 
+ * @since 1.11.0
  */
-public class NullEntityListener implements EntityListener<Object> {
+public interface PreInsertContext {
 
-    @Override
-    public void preInsert(Object entity, PreInsertContext context) {
-    }
+    /**
+     * プロパティがエンティティに定義されているかどうかを返します。
+     * 
+     * @param propertyName
+     *            プロパティ名
+     * @return プロパティがエンティティに定義されているかどうか
+     */
+    public boolean isPropertyDefined(String propertyName);
 
-    @Override
-    public void preUpdate(Object entity, PreUpdateContext context) {
-    }
-
-    @Override
-    public void preDelete(Object entity, PreDeleteContext context) {
-    }
-
+    /**
+     * エンティティのメタタイプを返します。
+     * 
+     * @return エンティティのメタタイプ
+     */
+    public EntityType<?> getEntityType();
 }

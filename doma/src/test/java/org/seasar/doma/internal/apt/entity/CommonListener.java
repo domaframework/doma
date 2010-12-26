@@ -16,6 +16,9 @@
 package org.seasar.doma.internal.apt.entity;
 
 import org.seasar.doma.jdbc.entity.EntityListener;
+import org.seasar.doma.jdbc.entity.PreDeleteContext;
+import org.seasar.doma.jdbc.entity.PreInsertContext;
+import org.seasar.doma.jdbc.entity.PreUpdateContext;
 
 /**
  * @author taedium
@@ -24,15 +27,15 @@ import org.seasar.doma.jdbc.entity.EntityListener;
 public class CommonListener<T extends Common> implements EntityListener<T> {
 
     @Override
-    public void preDelete(T entity) {
+    public void preDelete(T entity, PreDeleteContext context) {
     }
 
     @Override
-    public void preInsert(T entity) {
+    public void preInsert(T entity, PreInsertContext context) {
     }
 
     @Override
-    public void preUpdate(T entity) {
+    public void preUpdate(T entity, PreUpdateContext context) {
     }
 
 }

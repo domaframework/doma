@@ -39,33 +39,42 @@ public interface EntityListener<E> {
     /**
      * 挿入処理の前処理を行います。
      * <p>
-     * 対象となるのは、{@link Insert#sqlFile()} 、または {@link BatchInsert#sqlFile()} に
-     * {@code false} が指定されたDaoメソッドの実行です。
+     * 対象となるのは、{@link Insert} 、または {@link BatchInsert}
+     * のパラメータにエンティティを受け取るDaoメソッドの実行です。
      * 
      * @param entity
      *            エンティティ
+     * @param context
+     *            コンテキスト
+     * @since 1.11.0
      */
-    void preInsert(E entity);
+    void preInsert(E entity, PreInsertContext context);
 
     /**
      * 更新処理の前処理を行います。
      * <p>
-     * 対象となるのは、{@link Update#sqlFile()} 、または {@link BatchUpdate#sqlFile()} に
-     * {@code false} が指定されたDaoメソッドの実行です。
+     * 対象となるのは、{@link Update} 、または {@link BatchUpdate}
+     * のパラメータにエンティティを受け取るDaoメソッドの実行です。
      * 
      * @param entity
      *            エンティティ
+     * @param context
+     *            コンテキスト
+     * @since 1.11.0
      */
-    void preUpdate(E entity);
+    void preUpdate(E entity, PreUpdateContext context);
 
     /**
      * 削除処理の前処理を行います。
      * <p>
-     * 対象となるのは、{@link Delete#sqlFile()} 、または {@link BatchDelete#sqlFile()} に
-     * {@code false} が指定されたDaoメソッドの実行です。
+     * 対象となるのは、{@link Delete} 、または {@link BatchDelete}
+     * のパラメータにエンティティを受け取るDaoメソッドの実行です。
      * 
      * @param entity
      *            エンティティ
+     * @param context
+     *            コンテキスト
+     * @since 1.11.0
      */
-    void preDelete(E entity);
+    void preDelete(E entity, PreDeleteContext context);
 }

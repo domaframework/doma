@@ -19,8 +19,10 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.sql.Statement;
 
+import org.seasar.doma.internal.jdbc.entity.AbstractPreInsertContext;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.PreInsertContext;
 
 /**
  * @author taedium
@@ -72,8 +74,17 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
         }
 
         protected void preInsert() {
-            entityType.preInsert(entity);
+            PreInsertContext context = new SqlFilePreInsertContext(entityType);
+            entityType.preInsert(entity, context);
         }
 
+    }
+
+    protected static class SqlFilePreInsertContext extends
+            AbstractPreInsertContext {
+
+        public SqlFilePreInsertContext(EntityType<?> entityType) {
+            super(entityType);
+        }
     }
 }

@@ -17,10 +17,12 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import org.seasar.doma.internal.jdbc.entity.AbstractPreDeleteContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.PreDeleteContext;
 
 /**
  * @author taedium
@@ -41,13 +43,18 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
     public void prepare() {
         assertNotNull(config, entityType, callerClassName, callerMethodName);
         executable = true;
-        entityType.preDelete(entity);
+        preDelete();
         prepareIdAndVersionPropertyTypes();
         validateIdExistent();
         prepareOptions();
         prepareOptimisticLock();
         prepareSql();
         assertNotNull(sql);
+    }
+
+    protected void preDelete() {
+        PreDeleteContext context = new AutoPreDeleteContext(entityType);
+        entityType.preDelete(entity, context);
     }
 
     protected void prepareOptimisticLock() {
@@ -95,4 +102,11 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
         this.optimisticLockExceptionSuppressed = optimisticLockExceptionSuppressed;
     }
 
+    protected static class AutoPreDeleteContext extends
+            AbstractPreDeleteContext {
+
+        public AutoPreDeleteContext(EntityType<?> entityType) {
+            super(entityType);
+        }
+    }
 }

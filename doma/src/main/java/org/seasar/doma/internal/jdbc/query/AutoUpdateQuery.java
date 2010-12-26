@@ -18,11 +18,16 @@ package org.seasar.doma.internal.jdbc.query;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
+import org.seasar.doma.internal.jdbc.entity.AbstractPreUpdateContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
+import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -48,7 +53,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
     public void prepare() {
         assertNotNull(config, entityType, entity, callerClassName,
                 callerMethodName);
-        entityType.preUpdate(entity);
+        preUpdate();
         prepareIdAndVersionPropertyTypes();
         validateIdExistent();
         prepareOptions();
@@ -56,6 +61,13 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
         prepareTargetPropertyTypes();
         prepareSql();
         assertNotNull(sql);
+    }
+
+    protected void preUpdate() {
+        prepareTargetPropertyTypes();
+        PreUpdateContext context = new AutoPreUpdateContext(entityType,
+                changedPropertyNames);
+        entityType.preUpdate(entity, context);
     }
 
     protected void prepareOptimisticLock() {
@@ -67,8 +79,11 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void prepareTargetPropertyTypes() {
-        targetPropertyTypes = new ArrayList<EntityPropertyType<E, ?>>(
-                entityType.getEntityPropertyTypes().size());
+        int capacity = entityType.getEntityPropertyTypes().size();
+        changedPropertyNames = new HashSet<String>(capacity);
+        targetPropertyTypes = new ArrayList<EntityPropertyType<E, ?>>(capacity);
+        executable = false;
+        sqlExecutionSkipCause = SqlExecutionSkipCause.STATE_UNCHANGED;
         E originalStates = entityType.getOriginalStates(entity);
         for (EntityPropertyType<E, ?> p : entityType.getEntityPropertyTypes()) {
             if (!p.isUpdatable()) {
@@ -86,9 +101,11 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
             }
             if (unchangedPropertyIncluded || originalStates == null
                     || isChanged(originalStates, p)) {
-                if (!isTargetPropertyName(p.getName())) {
+                String name = p.getName();
+                if (!isTargetPropertyName(name)) {
                     continue;
                 }
+                changedPropertyNames.add(name);
                 targetPropertyTypes.add(p);
                 executable = true;
                 sqlExecutionSkipCause = null;
@@ -174,6 +191,30 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
 
     public void setUnchangedPropertyIncluded(Boolean unchangedPropertyIncluded) {
         this.unchangedPropertyIncluded = unchangedPropertyIncluded;
+    }
+
+    protected static class AutoPreUpdateContext extends
+            AbstractPreUpdateContext {
+
+        protected Set<String> changedPropertyNames;
+
+        public AutoPreUpdateContext(EntityType<?> entityType,
+                Set<String> changedPropertyNames) {
+            super(entityType);
+            assertNotNull(changedPropertyNames);
+            this.changedPropertyNames = changedPropertyNames;
+        }
+
+        @Override
+        public boolean isEntityChanged() {
+            return !changedPropertyNames.isEmpty();
+        }
+
+        @Override
+        public boolean isPropertyChanged(String propertyName) {
+            validatePropertyDefined(propertyName);
+            return changedPropertyNames.contains(propertyName);
+        }
     }
 
 }

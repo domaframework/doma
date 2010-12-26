@@ -17,8 +17,10 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import org.seasar.doma.internal.jdbc.entity.AbstractPreUpdateContext;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 /**
@@ -101,7 +103,8 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
         }
 
         protected void preUpdate() {
-            entityType.preUpdate(entity);
+            PreUpdateContext context = new SqlFilePreUpdateContext(entityType);
+            entityType.preUpdate(entity, context);
         }
 
         protected void prepareOptimisticLock() {
@@ -117,6 +120,25 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
                 versionPropertyType.increment(entity);
             }
         }
-
     }
+
+    protected static class SqlFilePreUpdateContext extends
+            AbstractPreUpdateContext {
+
+        public SqlFilePreUpdateContext(EntityType<?> entityType) {
+            super(entityType);
+        }
+
+        @Override
+        public boolean isEntityChanged() {
+            return true;
+        }
+
+        @Override
+        public boolean isPropertyChanged(String propertyName) {
+            validatePropertyDefined(propertyName);
+            return true;
+        }
+    }
+
 }

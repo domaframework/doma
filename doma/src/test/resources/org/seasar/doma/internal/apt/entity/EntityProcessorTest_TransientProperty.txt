@@ -112,18 +112,18 @@ public final class _TransientPropertyEntity extends org.seasar.doma.jdbc.entity.
     }
 
     @Override
-    public void preInsert(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity) {
-        __listener.preInsert(entity);
+    public void preInsert(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity, org.seasar.doma.jdbc.entity.PreInsertContext context) {
+        __listener.preInsert(entity, context);
     }
 
     @Override
-    public void preUpdate(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity) {
-        __listener.preUpdate(entity);
+    public void preUpdate(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity, org.seasar.doma.jdbc.entity.PreUpdateContext context) {
+        __listener.preUpdate(entity, context);
     }
 
     @Override
-    public void preDelete(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity) {
-        __listener.preDelete(entity);
+    public void preDelete(org.seasar.doma.internal.apt.entity.TransientPropertyEntity entity, org.seasar.doma.jdbc.entity.PreDeleteContext context) {
+        __listener.preDelete(entity, context);
     }
 
     @Override

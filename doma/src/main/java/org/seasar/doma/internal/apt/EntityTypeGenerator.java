@@ -45,6 +45,9 @@ import org.seasar.doma.jdbc.entity.BasicPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.jdbc.entity.NamingType;
+import org.seasar.doma.jdbc.entity.PreDeleteContext;
+import org.seasar.doma.jdbc.entity.PreInsertContext;
+import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 /**
@@ -451,27 +454,30 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
     protected void printPreInsertMethod() {
         iprint("@Override%n");
-        iprint("public void preInsert(%1$s entity) {%n",
-                entityMeta.getEntityTypeName());
-        iprint("    __listener.preInsert(entity);%n");
+        iprint("public void preInsert(%1$s entity, %2$s context) {%n",
+                entityMeta.getEntityTypeName(),
+                PreInsertContext.class.getName());
+        iprint("    __listener.preInsert(entity, context);%n");
         iprint("}%n");
         print("%n");
     }
 
     protected void printPreUpdateMethod() {
         iprint("@Override%n");
-        iprint("public void preUpdate(%1$s entity) {%n",
-                entityMeta.getEntityTypeName());
-        iprint("    __listener.preUpdate(entity);%n");
+        iprint("public void preUpdate(%1$s entity, %2$s context) {%n",
+                entityMeta.getEntityTypeName(),
+                PreUpdateContext.class.getName());
+        iprint("    __listener.preUpdate(entity, context);%n");
         iprint("}%n");
         print("%n");
     }
 
     protected void printPreDeleteMethod() {
         iprint("@Override%n");
-        iprint("public void preDelete(%1$s entity) {%n",
-                entityMeta.getEntityTypeName());
-        iprint("    __listener.preDelete(entity);%n");
+        iprint("public void preDelete(%1$s entity, %2$s context) {%n",
+                entityMeta.getEntityTypeName(),
+                PreDeleteContext.class.getName());
+        iprint("    __listener.preDelete(entity, context);%n");
         iprint("}%n");
         print("%n");
     }
