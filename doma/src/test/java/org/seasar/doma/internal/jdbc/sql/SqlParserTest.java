@@ -125,6 +125,18 @@ public class SqlParserTest extends TestCase {
         }
     }
 
+    public void testBindVariable_illegalLiteral() throws Exception {
+        String testSql = "select * from aaa where ename = /*name*/bbb";
+        SqlParser parser = new SqlParser(testSql);
+        try {
+            parser.parse();
+            fail();
+        } catch (JdbcException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(Message.DOMA2142, expected.getMessageResource());
+        }
+    }
+
     public void testBindVariable_enum() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("name", new Value(MyEnum.class, MyEnum.BBB));

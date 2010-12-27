@@ -22,6 +22,8 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNodeVisitor;
@@ -88,6 +90,9 @@ import org.seasar.doma.message.Message;
  * 
  */
 public class SqlParser {
+
+    protected static final Pattern LITERAL_PATTERN = Pattern
+            .compile(".*'|[-+.0-9]");
 
     protected final Deque<SqlNode> nodeStack = new LinkedList<SqlNode>();
 
@@ -646,7 +651,15 @@ public class SqlParser {
             BindVariableNode bindVariableNode = pop();
             if (node instanceof WordNode) {
                 WordNode wordNode = (WordNode) node;
-                bindVariableNode.setWordNode(wordNode);
+                String word = wordNode.getWord();
+                Matcher matcher = LITERAL_PATTERN.matcher(word);
+                if (matcher.lookingAt()) {
+                    bindVariableNode.setWordNode(wordNode);
+                } else {
+                    throw new JdbcException(Message.DOMA2142, sql,
+                            tokenizer.getLineNumber(), tokenizer.getPosition(),
+                            bindVariableNode.getText(), word);
+                }
             } else if (node instanceof ParensNode) {
                 ParensNode parensNode = (ParensNode) node;
                 parensNode.setAttachedWithBindVariable(true);
