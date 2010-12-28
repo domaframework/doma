@@ -39,6 +39,7 @@ public interface EmployeeDao {
 			</p>
 			<p>
 				パラメータの要素の<a href="../entity.html">エンティティクラス</a>に<a href="../entity.html#エンティティリスナー">エンティティリスナー</a>が指定されている場合、更新の実行前にエンティティリスナーの<code>preUpdate</code>メソッドをエンティティごとに呼び出します。
+				また、更新の実行後にエンティティリスナーの<code>postUpdate</code>メソッドをエンティティごとに呼び出します。
 			</p>
 		</section>
 		<section name="SQLの自動生成によるバッチ更新">

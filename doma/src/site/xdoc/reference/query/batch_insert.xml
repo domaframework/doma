@@ -36,6 +36,7 @@ public interface EmployeeDao {
 			</p>
 			<p>
 				パラメータの要素の<a href="../entity.html">エンティティクラス</a>に<a href="../entity.html#エンティティリスナー">エンティティリスナー</a>が指定されている場合、挿入の実行前にエンティティリスナーの<code>preInsert</code>メソッドをエンティティごとに呼び出します。
+				また、挿入の実行後にエンティティリスナーの<code>postInsert</code>メソッドをエンティティごとに呼び出します。
 			</p>
 		</section>
 		<section name="SQLの自動生成によるバッチ挿入">

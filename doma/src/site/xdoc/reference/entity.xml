@@ -53,7 +53,7 @@ public class Employee {
 }]]></source>
 			<subsection name="エンティティリスナー">
 				<p>
-					エンティティがデータベースに対し挿入、更新、削除される直前に処理を実行したい場合、
+					エンティティがデータベースに対し挿入、更新、削除される直前/直後に処理を実行したい場合、
 					<code>listener</code> 要素に <code>org.seasar.doma.jdbc.entity.EntityListener</code>
 					の実装クラスを指定できます。
 				</p>
@@ -62,22 +62,37 @@ public class Employee {
     ...
 }</source>
 				<p>
-					<code>EntityListener</code>は、<code>preDelete</code>、<code>preInsert</code>、<code>preUpdate</code>の3つのメソッドをもったインタフェースです。
+					<code>EntityListener</code>は、<code>preDelete</code>、<code>preInsert</code>、<code>preUpdate</code>、<code>postDelete</code>、<code>postInsert</code>、<code>postUpdate</code>の6つのメソッドをもったインタフェースです。
 				</p>
 				<dl>
 					<dt>preDelete</dt>
 					<dd>
-						<code>@Delete</code>、または<code>@BatchDelete</code>が注釈されたDaoメソッドの実行時に呼び出されます。
+						<code>@Delete</code>、または<code>@BatchDelete</code>が注釈されたDaoメソッドの実行時、削除処理の直前に呼び出されます。
 						ただし、使用するエンティティクラスにエンティティリスナーが指定されている必要があります。
 					</dd>
 					<dt>preInsert</dt>
 					<dd>
-						<code>@Insert</code>、または<code>@BatchInsert</code>が注釈されたDaoメソッドの実行時に呼び出されます。
+						<code>@Insert</code>、または<code>@BatchInsert</code>が注釈されたDaoメソッドの実行時、挿入処理の直前に呼び出されます。
 						ただし、使用するエンティティクラスにエンティティリスナーが指定されている必要があります。
 					</dd>
 					<dt>preUpdate</dt>
 					<dd>
-						<code>@Update</code>、または<code>@BatchUpdate</code>が注釈されたDaoメソッドの実行時にのみ呼び出されます。
+						<code>@Update</code>、または<code>@BatchUpdate</code>が注釈されたDaoメソッドの実行時、更新処理の直前に呼び出されます。
+						ただし、使用するエンティティクラスにエンティティリスナーが指定されている必要があります。
+					</dd>
+					<dt>postDelete</dt>
+					<dd>
+						<code>@Delete</code>、または<code>@BatchDelete</code>が注釈されたDaoメソッドの実行時、削除処理の直後に呼び出されます。
+						ただし、使用するエンティティクラスにエンティティリスナーが指定されている必要があります。
+					</dd>
+					<dt>postInsert</dt>
+					<dd>
+						<code>@Insert</code>、または<code>@BatchInsert</code>が注釈されたDaoメソッドの実行時、挿入処理の直後に呼び出されます。
+						ただし、使用するエンティティクラスにエンティティリスナーが指定されている必要があります。
+					</dd>
+					<dt>postUpdate</dt>
+					<dd>
+						<code>@Update</code>、または<code>@BatchUpdate</code>が注釈されたDaoメソッドの実行時、更新処理の直後に呼び出されます。
 						ただし、使用するエンティティクラスにエンティティリスナーが指定されている必要があります。
 					</dd>
 				</dl>
@@ -86,15 +101,27 @@ public class Employee {
 				</p>
 <source><![CDATA[public class EmployeeEntityListener implements EntityListener<Employee> {
     @Override
-    public void preDelete(Employee entity) {
+    public void preDelete(Employee entity, PreDeleteContext context) {
         ...
     }
     @Override
-    public void preInsert(Employee entity) {
+    public void preInsert(Employee entity, PreInsertContext context) {
         ...
     }
     @Override
-    public void preUpdate(Employee entity) {
+    public void preUpdate(Employee entity, PreUpdateContext context) {
+        ...
+    }
+    @Override
+    public void postDelete(Employee entity, PostDeleteContext context) {
+        ...
+    }
+    @Override
+    public void postInsert(Employee entity, PostInsertContext context) {
+        ...
+    }
+    @Override
+    public void postUpdate(Employee entity, PostUpdateContext context) {
         ...
     }
 }]]></source>

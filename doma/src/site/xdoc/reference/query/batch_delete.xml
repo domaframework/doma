@@ -37,6 +37,7 @@ public interface EmployeeDao {
 			</p>
 			<p>
 				パラメータの要素である<a href="../entity.html">エンティティクラス</a>に<a href="../entity.html#エンティティリスナー">エンティティリスナー</a>が指定されている場合、削除の実行前にエンティティリスナーの<code>preDelete</code>メソッドをエンティティごとに呼び出します。
+				また、削除の実行後にエンティティリスナーの<code>postDelete</code>メソッドをエンティティごとに呼び出します。
 			</p>
 		</section>
 		<section name="SQLの自動生成によるバッチ削除">

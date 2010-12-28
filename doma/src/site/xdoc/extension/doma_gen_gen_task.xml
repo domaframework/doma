@@ -99,15 +99,27 @@ public class Address {
 <source><![CDATA[public class AddressListener implements EntityListener<Address> {
 
     @Override
-    public void preInsert(Address entity) {
+    public void preInsert(Address entity, PreInsertContext context) {
     }
 
     @Override
-    public void preUpdate(Address entity) {
+    public void preUpdate(Address entity, PreUpdateContext context) {
     }
 
     @Override
-    public void preDelete(Address entity) {
+    public void preDelete(Address entity, PreDeleteContext context) {
+    }
+
+    @Override
+    public void postInsert(Address entity, PostInsertContext context) {
+    }
+
+    @Override
+    public void postUpdate(Address entity, PostUpdateContext context) {
+    }
+
+    @Override
+    public void postDelete(Address entity, PostDeleteContext context) {
     }
 }]]></source>
 			<p>
@@ -352,9 +364,12 @@ public abstract class Common {
 }]]></source>
 <source><![CDATA[@Entity
 public class CommonListener<T extends Common> implements EntityListener<T> {
-    public void preInsert(T entity) {...}
-    public void preUpdate(T entity) {...}
-    public void preDelete(T entity) {...}
+    public void preInsert(T entity, PreInsertContext context) {...}
+    public void preUpdate(T entity, PreUpdateContext context) {...}
+    public void preDelete(T entity, PreDeleteContext context) {...}
+    public void postInsert(T entity, PostInsertContext context) {...}
+    public void postUpdate(T entity, PostUpdateContext context) {...}
+    public void postDelete(T entity, PostDeleteContext context) {...}
 }]]></source>
 				<p>
 					これらのクラス名をsuperclassName属性とlistenerSuperclassName属性に指定します。
