@@ -69,10 +69,7 @@ public abstract class VersionPropertyType<E, V extends Number> extends
      */
     public void increment(E entity) {
         NumberWrapper<?> wrapper = getWrapper(entity);
-        if (wrapper.get() != null) {
-            int i = wrapper.get().intValue();
-            wrapper.set(i + 1);
-        }
+        wrapper.increment();
     }
 
     @Override

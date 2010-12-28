@@ -53,6 +53,22 @@ public class DoubleWrapper extends AbstractWrapper<Double> implements
     }
 
     @Override
+    public void increment() {
+        Double value = doGet();
+        if (value != null) {
+            doSet(Double.valueOf((value.doubleValue() + 1d)));
+        }
+    }
+
+    @Override
+    public void decrement() {
+        Double value = doGet();
+        if (value != null) {
+            doSet(Double.valueOf(value.doubleValue() - 1d));
+        }
+    }
+
+    @Override
     public <R, P, TH extends Throwable> R accept(
             WrapperVisitor<R, P, TH> visitor, P p) throws TH {
         if (visitor == null) {

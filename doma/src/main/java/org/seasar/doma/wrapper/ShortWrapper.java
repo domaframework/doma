@@ -53,6 +53,22 @@ public class ShortWrapper extends AbstractWrapper<Short> implements
     }
 
     @Override
+    public void increment() {
+        Short value = doGet();
+        if (value != null) {
+            doSet(Short.valueOf((short) (value.shortValue() + 1)));
+        }
+    }
+
+    @Override
+    public void decrement() {
+        Short value = doGet();
+        if (value != null) {
+            doSet(Short.valueOf((short) (value.shortValue() - 1)));
+        }
+    }
+
+    @Override
     public <R, P, TH extends Throwable> R accept(
             WrapperVisitor<R, P, TH> visitor, P p) throws TH {
         if (visitor == null) {

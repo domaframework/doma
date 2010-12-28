@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.wrapper;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import org.seasar.doma.DomaNullPointerException;
@@ -46,7 +47,29 @@ public class BigIntegerWrapper extends AbstractWrapper<BigInteger> implements
 
     @Override
     public void set(Number v) {
-        super.set(BigInteger.valueOf(v.longValue()));
+        if (v instanceof BigInteger) {
+            super.set((BigInteger) v);
+        } else if (v instanceof BigDecimal) {
+            super.set(((BigDecimal) v).toBigInteger());
+        } else {
+            super.set(BigInteger.valueOf(v.longValue()));
+        }
+    }
+
+    @Override
+    public void increment() {
+        BigInteger value = doGet();
+        if (value != null) {
+            doSet(value.add(BigInteger.ONE));
+        }
+    }
+
+    @Override
+    public void decrement() {
+        BigInteger value = doGet();
+        if (value != null) {
+            doSet(value.subtract(BigInteger.ONE));
+        }
     }
 
     @Override

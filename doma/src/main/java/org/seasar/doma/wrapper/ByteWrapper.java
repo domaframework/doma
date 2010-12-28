@@ -53,6 +53,22 @@ public class ByteWrapper extends AbstractWrapper<Byte> implements
     }
 
     @Override
+    public void increment() {
+        Byte value = doGet();
+        if (value != null) {
+            doSet(Byte.valueOf((byte) (value.byteValue() + 1)));
+        }
+    }
+
+    @Override
+    public void decrement() {
+        Byte value = doGet();
+        if (value != null) {
+            doSet(Byte.valueOf((byte) (value.byteValue() - 1)));
+        }
+    }
+
+    @Override
     public <R, P, TH extends Throwable> R accept(
             WrapperVisitor<R, P, TH> visitor, P p) throws TH {
         if (visitor == null) {

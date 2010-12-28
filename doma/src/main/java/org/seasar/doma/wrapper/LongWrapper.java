@@ -53,6 +53,22 @@ public class LongWrapper extends AbstractWrapper<Long> implements
     }
 
     @Override
+    public void increment() {
+        Long value = doGet();
+        if (value != null) {
+            doSet(Long.valueOf((value.longValue() + 1L)));
+        }
+    }
+
+    @Override
+    public void decrement() {
+        Long value = doGet();
+        if (value != null) {
+            doSet(Long.valueOf(value.longValue() - 1L));
+        }
+    }
+
+    @Override
     public <R, P, TH extends Throwable> R accept(
             WrapperVisitor<R, P, TH> visitor, P p) throws TH {
         if (visitor == null) {

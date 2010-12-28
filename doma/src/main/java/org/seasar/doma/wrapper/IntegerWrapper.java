@@ -53,6 +53,22 @@ public class IntegerWrapper extends AbstractWrapper<Integer> implements
     }
 
     @Override
+    public void increment() {
+        Integer value = doGet();
+        if (value != null) {
+            doSet(Integer.valueOf((value.intValue() + 1)));
+        }
+    }
+
+    @Override
+    public void decrement() {
+        Integer value = doGet();
+        if (value != null) {
+            doSet(Integer.valueOf(value.intValue() - 1));
+        }
+    }
+
+    @Override
     public <R, P, TH extends Throwable> R accept(
             WrapperVisitor<R, P, TH> visitor, P p) throws TH {
         if (visitor == null) {

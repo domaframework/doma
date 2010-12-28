@@ -15,26 +15,29 @@
  */
 package org.seasar.doma.wrapper;
 
+import junit.framework.TestCase;
+
 /**
- * {@link Number} のラッパーです。
- * 
  * @author taedium
  * 
- * @param <V>
- *            値の型
  */
-public interface NumberWrapper<V extends Number> extends Wrapper<V> {
-
-    @Override
-    void set(Number value);
+public class LongWrapperTest extends TestCase {
 
     /**
-     * 値をインクリメントします。
+     * 
      */
-    void increment();
+    public void testIncrement() {
+        LongWrapper wrapper = new LongWrapper(10L);
+        wrapper.increment();
+        assertEquals(new Long(11L), wrapper.get());
+    }
 
     /**
-     * 値をデクリメントします。
+     * 
      */
-    void decrement();
+    public void testDecrement() {
+        LongWrapper wrapper = new LongWrapper(10L);
+        wrapper.decrement();
+        assertEquals(new Long(9L), wrapper.get());
+    }
 }

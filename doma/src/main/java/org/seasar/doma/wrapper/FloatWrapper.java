@@ -49,7 +49,23 @@ public class FloatWrapper extends AbstractWrapper<Float> implements
 
     @Override
     public Float getDefault() {
-        return Float.valueOf(0);
+        return Float.valueOf(0f);
+    }
+
+    @Override
+    public void increment() {
+        Float value = doGet();
+        if (value != null) {
+            doSet(Float.valueOf((value.floatValue() + 1f)));
+        }
+    }
+
+    @Override
+    public void decrement() {
+        Float value = doGet();
+        if (value != null) {
+            doSet(Float.valueOf(value.floatValue() - 1f));
+        }
     }
 
     @Override
