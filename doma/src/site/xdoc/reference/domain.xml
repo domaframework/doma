@@ -121,7 +121,7 @@ public enum JobType {
         this.value = value;
     }
 
-    static JobType of(String value) {
+    public static JobType of(String value) {
         for (JobType jobType : JobType.values()) {
             if (jobType.value.equals(value)) {
                 return jobType;
@@ -130,7 +130,7 @@ public enum JobType {
         throw new IllegalArgumentException(value);
     }
 
-    String getValue() {
+    public String getValue() {
         return value;
     }
 }]]></source>
