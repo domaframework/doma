@@ -215,7 +215,8 @@ public final class LocalTransaction {
                 connection.setTransactionIsolation(level);
             } catch (SQLException e) {
                 release(context, callerMethodName);
-                throw new JdbcException(Message.DOMA2055, e, level, e);
+                throw new JdbcException(Message.DOMA2055, e,
+                        transactionIsolationLevel.name(), e);
             }
         }
         try {

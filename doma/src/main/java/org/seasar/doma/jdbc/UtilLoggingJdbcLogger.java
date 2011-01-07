@@ -167,7 +167,7 @@ public class UtilLoggingJdbcLogger implements JdbcLogger {
             String callerMethodName, int transactionIsolationLevel,
             SQLException e) {
         logger.logp(level, callerClassName, callerMethodName,
-                Message.DOMA2071.getMessage(transactionIsolationLevel), e);
+                Message.DOMA2072.getMessage(transactionIsolationLevel), e);
     }
 
     @Override

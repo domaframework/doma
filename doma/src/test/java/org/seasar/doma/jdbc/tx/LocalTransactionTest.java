@@ -108,6 +108,40 @@ public class LocalTransactionTest extends TestCase {
             transaction.begin();
             fail();
         } catch (JdbcException expected) {
+            System.out.println(expected.getMessage());
+            assertEquals(exception, expected.getCause());
+        }
+    }
+
+    public void testBegin_failedToSetTransactionIsolation() throws Exception {
+        final SQLException exception = new SQLException();
+        MockConnection connection = new MockConnection() {
+
+            @Override
+            public void setTransactionIsolation(int level) throws SQLException {
+                throw exception;
+            }
+
+        };
+        MockDataSource dataSource = new MockDataSource(connection);
+        ThreadLocal<LocalTransactionContext> connectionHolder = new ThreadLocal<LocalTransactionContext>();
+        UtilLoggingJdbcLogger jdbcLogger = new UtilLoggingJdbcLogger() {
+
+            @Override
+            public void logLocalTransactionBegun(String callerClassName,
+                    String callerMethodName, String transactionId) {
+                fail();
+            }
+
+        };
+        LocalTransaction transaction = new LocalTransaction(dataSource,
+                connectionHolder, jdbcLogger);
+
+        try {
+            transaction.begin(TransactionIsolationLevel.READ_COMMITTED);
+            fail();
+        } catch (JdbcException expected) {
+            System.out.println(expected.getMessage());
             assertEquals(exception, expected.getCause());
         }
     }
