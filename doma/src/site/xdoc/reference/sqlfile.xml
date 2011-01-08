@@ -157,7 +157,7 @@
 					<tr>
 						<td>HSQLDB</td>
 						<td><code>org.seasar.doma.jdbc.dialect.HsqldbDialect</code></td>
-						<td><code>hsqldb</code></td>
+						<td>hsqldb</td>
 					</tr>
 					<tr>
 						<td>Microsoft SQL Server 2008</td>
@@ -172,7 +172,7 @@
 					<tr>
 						<td>Oracle Database</td>
 						<td><code>org.seasar.doma.jdbc.dialect.OracleDialect</code></td>
-						<td><code>oracle</code></td>
+						<td>oracle</td>
 					</tr>
 					<tr>
 						<td>PostgreSQL</td>

@@ -65,9 +65,9 @@ import java.lang.annotation.Target;
  * 
  * @author taedium
  * @since 1.7.0
- * @deprecated 1.12.0で非推奨になりました。代わりに {@link Domain} を使用してください。1.12.0から
- *             {@code Domain} は列挙型に指定可能になっています。 {@link Domain#factoryMethod()}
- *             には明示的にファクトリメソッドの名前を指定するようにしてください。
+ * @deprecated 代わりに {@link Domain} を使用してください。1.12.0から {@code Domain}
+ *             は列挙型に指定可能になっています。 {@link Domain#factoryMethod()}
+ *             には明示的にファクトリメソッドの名前を指定してください。
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

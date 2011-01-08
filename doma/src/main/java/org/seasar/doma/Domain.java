@@ -25,11 +25,11 @@ import java.lang.annotation.Target;
  * <p>
  * 注釈されたクラスは、 次の制約を満たす必要があります。
  * <ul>
- * <li>トップレベルのクラスである。
- * <li>{@code valueType} 要素に指定した型と同じ型を引数とする非 {@code private} なコンストラクタを持ち、
+ * <li>トップレベルのクラスまたは列挙型である。
+ * <li>{@code valueType} 要素に指定した型を引数とする非 {@code private} なコンストラクタを持ち、
  * {@code factoryMethod} 要素が {@code "new"} である。もしくは、{@code factoryMethod}
- * 要素に指定した名前の非 {@code private} で {@code static} なメソッドを持ち、戻り値は注釈された型と同じ型であり
- * {@code valueType} 要素に指定した型と同じ型をパラメータとして受け取る。
+ * 要素に指定した名前の{@code static} で非 {@code private} なメソッドを持ち、戻り値は注釈された型であり、 パラメータは
+ * {@code valueType} 要素に指定した型である。
  * <li>{@code accessorMethod} 要素に指定した名前の非 {@code private} なメソッドを持つ。このメソッドは、
  * {@code valueType} 要素に指定した型を戻り値とし、パラメータは受け取らない。
  * </ul>

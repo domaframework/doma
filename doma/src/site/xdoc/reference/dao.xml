@@ -28,7 +28,7 @@
 		</section>
 		<section name="Dao定義">
 			<p>
-				Daoは <code>@Dao</code>が注釈されたインタフェースとして定義します。
+				Daoは <a href="../apidocs/org/seasar/doma/Dao.html"><code>@Dao</code></a>が注釈されたインタフェースとして定義します。
 				インタフェースはトップレベルのインタフェースでなければいけません（他のクラスやインタフェースにネストされていてはいけません）。
 				インタフェースの実装クラスはaptによりコンパイル時に自動生成されます。
 			</p>

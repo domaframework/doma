@@ -8,8 +8,12 @@
 		<section name="目次">
 			<ul>
 				<li><a href="#概要">概要</a></li>
-				<li><a href="#ドメイン定義">ドメイン定義</a></li>
-				<li><a href="#列挙型を使用したドメイン定義">列挙型を使用したドメイン定義</a></li>
+				<li><a href="#ドメイン定義">ドメイン定義</a>
+					<ul>
+						<li><a href="#コンストラクタで生成する">コンストラクタで生成する</a></li>
+						<li><a href="#ファクトリメソッドで生成する">ファクトリメソッドで生成する</a></li>
+					</ul>				
+				</li>
 				<li><a href="#利用例">利用例</a>
 					<ul>
 						<li><a href="#エンティティクラス">エンティテクラス</a></li>
@@ -36,17 +40,45 @@
 		</section>
 		<section name="ドメイン定義">
 			<p>
-				ドメインクラスは <code>@Domain</code>を注釈して示します。
+				ドメインクラスは <a href="../apidocs/org/seasar/doma/Domain.html"><code>@Domain</code></a>を注釈して示します。
 			</p>
 			<p>
 				<code>@Domain</code>の<code>valueType</code>要素には、ドメインクラスで扱う<a href="basic.html">基本型</a>を指定します。この基本型が、データベースのカラムの型とのマッピングに使用されます。
 			</p>
 			<p>
-				<code>accessorMethod</code>要素には、<code>valueType</code>要素に指定した型を返すアクセッサメソッドの名前を指定します。デフォルト値は<code>getValue</code>です。
+				<code>accessorMethod</code>要素には、<code>valueType</code>要素に指定した型を返すアクセッサメソッドの名前を指定します。デフォルト値は<code>"getValue"</code>です。
 			</p>
 			<p>
-				以下の例では、 電話番号を表すドメインクラスを作成しています。
+				<code>factoryMethod</code>要素には、<code>valueType</code>要素に指定した型をパラメータとし受け取りドメインクラスの型を返すファクトリメソッドの名前を指定します。デフォルト値は<code>"new"</code>であり、これはコンストラクタにより生成することを示します。
 			</p>
+			<p>
+				<code>@Domain</code>が注釈されたクラスは以下の制約を満たす必要があります。
+			</p>
+			<ul>
+				<li>トップレベルのクラスまたは列挙型である。</li>
+				<li><code>valueType</code>要素に指定した型を引数とする非<code>private</code>なコンストラクタを持ち、
+					<code>factoryMethod</code>要素が<code>"new"</code>である。もしくは、<code>factoryMethod</code>
+					要素に指定した名前の<code>static</code>で非<code>private</code>なメソッドを持ち、戻り値は注釈された型であり、 パラメータは
+					<code>valueType</code>要素に指定した型である。</li>
+				<li><code>accessorMethod</code>要素に指定した名前の非<code>private</code>なメソッドを持つ。このメソッドは、
+					<code>valueType</code>要素に指定した型を戻り値とし、パラメータは受け取らない。</li>
+			</ul>
+			<p>
+				任意ですが、ドメインクラスは不変オブジェクトとして作成することを推奨します。
+				クラスには、任意のメソッドを持たせることができます。
+			</p>
+			<p>
+				列挙型は非privateなコンストラクタを定義できないため、列挙型に対してはファクトリメソッドを用いた方法を使用する必要があります。
+			</p>
+			<subsection name="コンストラクタで生成する">
+				<p>
+					<code>@Domain</code>の<code>factoryMethod</code>要素のデフォルトの値は<code>new</code>であり、
+					非privateなコンストラクタでインスタンスを生成することを示します。そのため、コンストラクタで生成する場合は<code>factoryMethod</code>要素を省略できます。
+				</p>
+				<p>
+					次の例では、 publicなコンストラクタを持つドメインクラスを作成しています。
+					このクラスは電話番号を表しています。
+				</p>
 <source><![CDATA[package example.domain;
 
 import org.seasar.doma.Domain;
@@ -69,45 +101,51 @@ public class PhoneNumber {
        ...
     }
 }]]></source>
-			<p>
-				@Domainが注釈されたクラスはトップレベルのクラスでなければいけません。
-				クラスには、<code>valueType</code>要素に指定した型と同じ型をもつ非<code>private</code>なコンストラクタが必須です。
-				また、<code>accessorMethod</code>要素に指定した値と同じ名前のメソッドも必須です。
-			</p>
-			<p>
-				任意ですが、ドメインクラスは不変オブジェクトとして作成することを推奨します。
-				上記の例では、<code>value</code>フィールドは一度設定されると二度と変更されません。
-			</p>
-			<p>
-				クラスには、任意のメソッドを持たせることができます。
-			</p>
-		</section>
-		<section name="列挙型を使用したドメイン定義">
-			<p>
-				扱う値があらかじめ定まっている場合は、列挙型をドメインクラスとして扱えます。
-				列挙型をドメインクラスとして扱うには、 <code>@EnumDomain</code>を注釈して示します。
-			</p>
-			<p>
-				<code>@EnumDomain</code>の<code>valueType</code>要素には、ドメインクラスで扱う<a href="basic.html">基本型</a>を指定します。この基本型が、データベースのカラムの型とのマッピングに使用されます。
-			</p>
-			<p>
-				<code>factoryMethod</code>要素には、<code>valueType</code>要素に指定した型をパラメータとして受け取り、対応する列挙型の値を返すstaticなファクトリメソッドの名前を指定します。
-				ファクトリメソッドは、データベースの値に対応する列挙型の値を返すメソッドです。
-				この要素のデフォルト値は<code>of</code>です。
-			</p>
-			<p>
-				<code>accessorMethod</code>要素には、<code>valueType</code>要素に指定した型を返すアクセッサメソッドの名前を指定します。
-				アクセッサメソッドは、列挙型の値に対応するデータベースの値を返すメソッドです。
-				この要素のデフォルト値は<code>getValue</code>です。
-			</p>
-			<p>
-				以下の例では、 仕事の種別を表すドメインクラスを作成しています。
-			</p>
+			</subsection>
+			<subsection name="ファクトリメソッドで生成する">
+				<p>
+					コンストラクタをprivateにし、ファクトリメソッドを使ってインスタンスを生成したい場合は、
+					staticな非privateなメソッドを定義し<code>@Domain</code>の<code>factoryMethod</code>要素にそのメソッドの名前を指定します。
+				</p>
+				<p>
+					次の例では、publicな ファクトリメソッドをもつドメインクラスを作成しています。
+					このクラスは電話番号を表しています。
+				</p>
 <source><![CDATA[package example.domain;
 
-import org.seasar.doma.EnumDomain;
+import org.seasar.doma.Domain;
 
-@EnumDomain(valueType = String.class)
+@Domain(valueType = String.class, factoryMethod = "of")
+public class PhoneNumber {
+
+    private final String value;
+
+    private PhoneNumber(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public String getAreaCode() {
+       // ドメインに固有の振る舞いを記述できる。
+       ...
+    }
+    
+    public static PhoneNumber of(String value) {
+        return new PhoneNumber(value);
+    }
+}]]></source>
+				<p>
+					次の例では、publicな ファクトリメソッドをもつ列挙型をドメインクラスとして作成しています。
+					この列挙型は仕事の種別を表しています。
+				</p>
+<source><![CDATA[package example.domain;
+
+import org.seasar.doma.Domain;
+
+@Domain(valueType = String.class, factoryMethod = "of")
 public enum JobType {
     SALESMAN("10"), 
     MANAGER("20"), 
@@ -134,13 +172,7 @@ public enum JobType {
         return value;
     }
 }]]></source>
-			<p>
-				@EnumDomainが注釈された列挙型はトップレベルのクラスでなければいけません。
-				列挙型には、<code>factoryMethod</code>要素と<code>accessorMethod</code>要素で指定された値と同じ名前のメソッドが必須です。
-			</p>
-			<p>
-				また、列挙型には、任意のメソッドを持たせることができます。
-			</p>
+			</subsection>
 		</section>
 		<section name="利用例">
 			<subsection name="エンティティクラス">
