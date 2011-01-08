@@ -48,6 +48,7 @@ import org.seasar.doma.message.Message;
  * @author taedium
  * 
  */
+@SuppressWarnings("deprecation")
 public abstract class AptTestCase extends AptinaTestCase {
 
     protected Locale locale = Locale.JAPAN;

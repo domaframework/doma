@@ -13,36 +13,35 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.enumdomain;
+package org.seasar.doma.internal.apt.domain;
 
-import org.seasar.doma.EnumDomain;
+import org.seasar.doma.Domain;
 
 /**
  * @author taedium
  * 
  */
-@SuppressWarnings("deprecation")
-@EnumDomain(valueType = int.class)
-enum PrimitiveValue {
+@Domain(valueType = String.class, factoryMethod = "of")
+enum OfJobType {
 
-    INT(1), DOUBLE(2);
+    SALESEMAN("01"), CLERK("02");
 
-    private final int value;
+    private final String value;
 
-    private PrimitiveValue(int value) {
+    private OfJobType(String value) {
         this.value = value;
     }
 
-    static PrimitiveValue of(int value) {
-        for (PrimitiveValue primitiveValue : PrimitiveValue.values()) {
-            if (primitiveValue.value == value) {
-                return primitiveValue;
+    static OfJobType of(String value) {
+        for (OfJobType jobType : OfJobType.values()) {
+            if (jobType.value.equals(value)) {
+                return jobType;
             }
         }
         return null;
     }
 
-    int getValue() {
+    String getValue() {
         return value;
     }
 

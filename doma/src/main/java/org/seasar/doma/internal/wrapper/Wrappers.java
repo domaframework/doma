@@ -63,6 +63,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
+@SuppressWarnings("deprecation")
 public final class Wrappers {
 
     /**

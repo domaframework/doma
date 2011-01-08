@@ -102,13 +102,26 @@ public class DomainTypeGenerator extends AbstractGenerator {
         iprint("public %1$s newDomain(%2$s value) {%n", domainMeta
                 .getTypeElement().getQualifiedName(),
                 TypeMirrorUtil.boxIfPrimitive(domainMeta.getValueType(), env));
-        if (domainMeta.getWrapperType().getWrappedType().isPrimitive()) {
-            iprint("    return new %1$s(%2$s.unbox(value));%n", domainMeta
-                    .getTypeElement().getQualifiedName(),
-                    BoxedPrimitiveUtil.class.getName());
+        if (domainMeta.providesConstructor()) {
+            if (domainMeta.getWrapperType().getWrappedType().isPrimitive()) {
+                iprint("    return new %1$s(%2$s.unbox(value));%n", domainMeta
+                        .getTypeElement().getQualifiedName(),
+                        BoxedPrimitiveUtil.class.getName());
+            } else {
+                iprint("    return new %1$s(value);%n", domainMeta
+                        .getTypeElement().getQualifiedName());
+            }
         } else {
-            iprint("    return new %1$s(value);%n", domainMeta.getTypeElement()
-                    .getQualifiedName());
+            if (domainMeta.getWrapperType().getWrappedType().isPrimitive()) {
+                iprint("    return %1$s.%2$s(%3$s.unbox(value));%n", domainMeta
+                        .getTypeElement().getQualifiedName(),
+                        domainMeta.getFactoryMethod(),
+                        BoxedPrimitiveUtil.class.getName());
+            } else {
+                iprint("    return %1$s.%2$s(value);%n", domainMeta
+                        .getTypeElement().getQualifiedName(),
+                        domainMeta.getFactoryMethod());
+            }
         }
         iprint("}%n");
         print("%n");
@@ -210,13 +223,26 @@ public class DomainTypeGenerator extends AbstractGenerator {
             iprint("protected void doSet(%1$s value) {%n",
                     TypeMirrorUtil.boxIfPrimitive(domainMeta.getValueType(),
                             env));
-            if (domainMeta.getWrapperType().getWrappedType().isPrimitive()) {
-                iprint("    domain = new %1$s(%2$s.unbox(value));%n",
-                        domainMeta.getTypeElement().getQualifiedName(),
-                        BoxedPrimitiveUtil.class.getName());
+            if (domainMeta.providesConstructor()) {
+                if (domainMeta.getWrapperType().getWrappedType().isPrimitive()) {
+                    iprint("    domain = new %1$s(%2$s.unbox(value));%n",
+                            domainMeta.getTypeElement().getQualifiedName(),
+                            BoxedPrimitiveUtil.class.getName());
+                } else {
+                    iprint("    domain = new %1$s(value);%n", domainMeta
+                            .getTypeElement().getQualifiedName());
+                }
             } else {
-                iprint("    domain = new %1$s(value);%n", domainMeta
-                        .getTypeElement().getQualifiedName());
+                if (domainMeta.getWrapperType().getWrappedType().isPrimitive()) {
+                    iprint("    domain = %1$s.%2$s(%3$s.unbox(value));%n",
+                            domainMeta.getTypeElement().getQualifiedName(),
+                            domainMeta.getFactoryMethod(),
+                            BoxedPrimitiveUtil.class.getName());
+                } else {
+                    iprint("    domain = %1$s.%2$s(value);%n", domainMeta
+                            .getTypeElement().getQualifiedName(),
+                            domainMeta.getFactoryMethod());
+                }
             }
             iprint("}%n");
             print("%n");

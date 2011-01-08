@@ -41,6 +41,8 @@ public class DomainMirror {
 
     protected AnnotationValue valueType;
 
+    protected AnnotationValue factoryMethod;
+
     protected AnnotationValue accessorMethod;
 
     protected DomainMirror(AnnotationMirror annotationMirror) {
@@ -65,6 +67,9 @@ public class DomainMirror {
             if ("valueType".equals(name)) {
                 result.valueType = value;
             }
+            if ("factoryMethod".equals(name)) {
+                result.factoryMethod = value;
+            }
             if ("accessorMethod".equals(name)) {
                 result.accessorMethod = value;
             }
@@ -80,6 +85,10 @@ public class DomainMirror {
         return valueType;
     }
 
+    public AnnotationValue getFactoryMethod() {
+        return factoryMethod;
+    }
+
     public AnnotationValue getAccessorMethod() {
         return accessorMethod;
     }
@@ -88,6 +97,14 @@ public class DomainMirror {
         TypeMirror value = AnnotationValueUtil.toType(valueType);
         if (value == null) {
             throw new AptIllegalStateException("valueType");
+        }
+        return value;
+    }
+
+    public String getFactoryMethodValue() {
+        String value = AnnotationValueUtil.toString(factoryMethod);
+        if (value == null) {
+            throw new AptIllegalStateException("factoryMethod");
         }
         return value;
     }

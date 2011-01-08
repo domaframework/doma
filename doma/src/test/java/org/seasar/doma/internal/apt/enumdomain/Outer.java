@@ -17,6 +17,7 @@ package org.seasar.doma.internal.apt.enumdomain;
 
 import org.seasar.doma.EnumDomain;
 
+@SuppressWarnings("deprecation")
 public class Outer {
 
     @EnumDomain(valueType = String.class)

@@ -1,0 +1,65 @@
+package org.seasar.doma.internal.apt.domain;
+
+/** */
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
+public final class _OfEnumDomain implements org.seasar.doma.jdbc.domain.DomainType<org.seasar.doma.internal.apt.domain.OfEnumDomain.JobType, org.seasar.doma.internal.apt.domain.OfEnumDomain> {
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    private static final _OfEnumDomain singleton = new _OfEnumDomain();
+
+    private _OfEnumDomain() {
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.domain.OfEnumDomain newDomain(org.seasar.doma.internal.apt.domain.OfEnumDomain.JobType value) {
+        return org.seasar.doma.internal.apt.domain.OfEnumDomain.of(value);
+    }
+
+    @Override
+    public Class<org.seasar.doma.internal.apt.domain.OfEnumDomain> getDomainClass() {
+        return org.seasar.doma.internal.apt.domain.OfEnumDomain.class;
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.domain.DomainWrapper<org.seasar.doma.internal.apt.domain.OfEnumDomain.JobType, org.seasar.doma.internal.apt.domain.OfEnumDomain> getWrapper(org.seasar.doma.internal.apt.domain.OfEnumDomain domain) {
+        return new Wrapper(domain);
+    }
+
+    /**
+     * @return the singleton
+     */
+    public static _OfEnumDomain getSingletonInternal() {
+        return singleton;
+    }
+
+    private static class Wrapper extends org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.domain.OfEnumDomain.JobType> implements org.seasar.doma.jdbc.domain.DomainWrapper<org.seasar.doma.internal.apt.domain.OfEnumDomain.JobType, org.seasar.doma.internal.apt.domain.OfEnumDomain> {
+
+        private org.seasar.doma.internal.apt.domain.OfEnumDomain domain;
+
+        private Wrapper(org.seasar.doma.internal.apt.domain.OfEnumDomain domain) {
+            super(org.seasar.doma.internal.apt.domain.OfEnumDomain.JobType.class);
+            this.domain = domain;
+        }
+
+        @Override
+        protected org.seasar.doma.internal.apt.domain.OfEnumDomain.JobType doGet() {
+            if (domain == null) {
+                return null;
+            }
+            return domain.getValue();
+        }
+
+        @Override
+        protected void doSet(org.seasar.doma.internal.apt.domain.OfEnumDomain.JobType value) {
+            domain = org.seasar.doma.internal.apt.domain.OfEnumDomain.of(value);
+        }
+
+        @Override
+        public org.seasar.doma.internal.apt.domain.OfEnumDomain getDomain() {
+            return domain;
+        }
+    }
+}

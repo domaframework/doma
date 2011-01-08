@@ -26,13 +26,16 @@ import java.lang.annotation.Target;
  * 注釈されたクラスは、 次の制約を満たす必要があります。
  * <ul>
  * <li>トップレベルのクラスである。
- * <li>{@code valueType} 要素に指定した型と同じ型を引数とする非 {@code private} なコンストラクタを持つ。
+ * <li>{@code valueType} 要素に指定した型と同じ型を引数とする非 {@code private} なコンストラクタを持ち、
+ * {@code factoryMethod} 要素が {@code "new"} である。もしくは、{@code factoryMethod}
+ * 要素に指定した名前の非 {@code private} で {@code static} なメソッドを持ち、戻り値は注釈された型と同じ型であり
+ * {@code valueType} 要素に指定した型と同じ型をパラメータとして受け取る。
  * <li>{@code accessorMethod} 要素に指定した名前の非 {@code private} なメソッドを持つ。このメソッドは、
  * {@code valueType} 要素に指定した型を戻り値とし、パラメータは受け取らない。
  * </ul>
  * <p>
  * 
- * <h5>例:</h5>
+ * <h5>例1:コンストラクタで生成するケース</h5>
  * 
  * <pre>
  * &#064;Domain(valueType = String.class)
@@ -50,6 +53,28 @@ import java.lang.annotation.Target;
  * }
  * </pre>
  * 
+ * <h5>例2:ファクトリメソッドで生成するケース</h5>
+ * 
+ * <pre>
+ * &#064;Domain(valueType = String.class, factoryMethod = &quot;of&quot;)
+ * public class PhoneNumber {
+ * 
+ *     private final String value;
+ * 
+ *     private PhoneNumber(String value) {
+ *         this.value = value;
+ *     }
+ * 
+ *     public String getValue() {
+ *         return value;
+ *     }
+ * 
+ *     public static PhoneNumber of(String value) {
+ *         return new PhoneNumber(value);
+ *     }
+ * }
+ * </pre>
+ * 
  * @author taedium
  * 
  */
@@ -61,6 +86,15 @@ public @interface Domain {
      * ドメインクラスが扱う値型(基本型)。
      */
     Class<?> valueType();
+
+    /**
+     * ドメインクラスのファクトリメソッドの名前。
+     * <p>
+     * デフォルトの値である {@code "new"} はコンストラクタで生成することを意味します。
+     * 
+     * @since 1.12.0
+     */
+    String factoryMethod() default "new";
 
     /**
      * ドメインクラスが扱う値に対するアクセッサーメソッドの名前。

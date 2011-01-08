@@ -59,6 +59,10 @@ public class DomainMeta implements TypeElementMeta {
         return domainMirror.getValueTypeValue();
     }
 
+    public String getFactoryMethod() {
+        return domainMirror.getFactoryMethodValue();
+    }
+
     public String getAccessorMethod() {
         return domainMirror.getAccessorMethodValue();
     }
@@ -69,6 +73,10 @@ public class DomainMeta implements TypeElementMeta {
 
     void setDomainMirror(DomainMirror domainMirror) {
         this.domainMirror = domainMirror;
+    }
+
+    public boolean providesConstructor() {
+        return "new".equals(domainMirror.getFactoryMethodValue());
     }
 
     @Override

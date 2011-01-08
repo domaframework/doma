@@ -104,4 +104,64 @@ public class DomainProcessorTest extends AptTestCase {
         compile();
         assertTrue(getCompiledResult());
     }
+
+    public void testJobType() throws Exception {
+        Class<?> target = JobType.class;
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4184);
+    }
+
+    public void testOfSalary() throws Exception {
+        Class<?> target = OfSalary.class;
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testOfPrimitiveValue() throws Exception {
+        Class<?> target = OfPrimitiveValueDomain.class;
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testOfEnum() throws Exception {
+        Class<?> target = OfEnumDomain.class;
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testOfJobType() throws Exception {
+        Class<?> target = OfJobType.class;
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testOfPrimitiveValueType() throws Exception {
+        Class<?> target = OfPrimitiveValueType.class;
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
 }

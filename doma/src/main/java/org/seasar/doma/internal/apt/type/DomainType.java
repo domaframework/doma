@@ -27,6 +27,7 @@ import org.seasar.doma.EnumDomain;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 
+@SuppressWarnings("deprecation")
 public class DomainType extends AbstractDataType {
 
     protected BasicType basicType;

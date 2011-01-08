@@ -20,6 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
@@ -57,7 +58,11 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
         domainMeta.setDomainMirror(domainMirror);
         doWrapperType(classElement, domainMeta);
         validateClass(classElement, domainMeta);
-        validateConstructor(classElement, domainMeta);
+        if (domainMeta.providesConstructor()) {
+            validateConstructor(classElement, domainMeta);
+        } else {
+            validateFactoryMethod(classElement, domainMeta);
+        }
         validateAccessorMethod(classElement, domainMeta);
         return domainMeta;
     }
@@ -86,19 +91,30 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
     }
 
     protected void validateClass(TypeElement classElement, DomainMeta domainMeta) {
-        if (!classElement.getKind().isClass()) {
+        if (classElement.getKind() == ElementKind.CLASS) {
+            if (classElement.getModifiers().contains(Modifier.ABSTRACT)) {
+                throw new AptException(Message.DOMA4132, env, classElement);
+            }
+            if (!classElement.getTypeParameters().isEmpty()) {
+                throw new AptException(Message.DOMA4107, env, classElement);
+            }
+            if (classElement.getNestingKind().isNested()) {
+                throw new AptException(Message.DOMA4179, env, classElement);
+            }
+        } else if (classElement.getKind() == ElementKind.ENUM) {
+            if (domainMeta.providesConstructor()) {
+                DomainMirror domainMirror = domainMeta.getDomainMirror();
+                throw new AptException(Message.DOMA4184, env, classElement,
+                        domainMirror.getAnnotationMirror(),
+                        domainMirror.getFactoryMethod());
+            }
+            if (classElement.getNestingKind().isNested()) {
+                throw new AptException(Message.DOMA4179, env, classElement);
+            }
+        } else {
             DomainMirror domainMirror = domainMeta.getDomainMirror();
             throw new AptException(Message.DOMA4105, env, classElement,
                     domainMirror.getAnnotationMirror());
-        }
-        if (classElement.getModifiers().contains(Modifier.ABSTRACT)) {
-            throw new AptException(Message.DOMA4132, env, classElement);
-        }
-        if (!classElement.getTypeParameters().isEmpty()) {
-            throw new AptException(Message.DOMA4107, env, classElement);
-        }
-        if (classElement.getNestingKind().isNested()) {
-            throw new AptException(Message.DOMA4179, env, classElement);
         }
     }
 
@@ -123,6 +139,40 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
         }
         throw new AptException(Message.DOMA4103, env, classElement,
                 domainMeta.getValueType());
+    }
+
+    protected void validateFactoryMethod(TypeElement classElement,
+            DomainMeta domainMeta) {
+        for (ExecutableElement method : ElementFilter.methodsIn(classElement
+                .getEnclosedElements())) {
+            if (!method.getSimpleName().contentEquals(
+                    domainMeta.getFactoryMethod())) {
+                continue;
+            }
+            if (method.getModifiers().contains(Modifier.PRIVATE)) {
+                continue;
+            }
+            if (!method.getModifiers().contains(Modifier.STATIC)) {
+                continue;
+            }
+            if (method.getParameters().size() != 1) {
+                continue;
+            }
+            TypeMirror parameterType = method.getParameters().get(0).asType();
+            if (!env.getTypeUtils().isAssignable(domainMeta.getValueType(),
+                    parameterType)) {
+                continue;
+            }
+            TypeMirror returnType = env.getTypeUtils().erasure(
+                    method.getReturnType());
+            if (env.getTypeUtils().isAssignable(returnType,
+                    domainMeta.getType())) {
+                return;
+            }
+        }
+        throw new AptException(Message.DOMA4106, env, classElement,
+                domainMeta.getFactoryMethod(), classElement.asType(),
+                domainMeta.getValueType(), domainMeta.getFactoryMethod());
     }
 
     protected void validateAccessorMethod(TypeElement classElement,
@@ -151,6 +201,6 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
             }
         }
         throw new AptException(Message.DOMA4104, env, classElement,
-                domainMeta.getValueType(), domainMeta.getAccessorMethod());
+                domainMeta.getAccessorMethod(), domainMeta.getValueType());
     }
 }

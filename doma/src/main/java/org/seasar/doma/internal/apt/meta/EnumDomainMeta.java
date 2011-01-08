@@ -33,6 +33,7 @@ public class EnumDomainMeta extends DomainMeta {
         return enumDomainMirror.getValueTypeValue();
     }
 
+    @Override
     public String getFactoryMethod() {
         return enumDomainMirror.getFactoryMethodValue();
     }

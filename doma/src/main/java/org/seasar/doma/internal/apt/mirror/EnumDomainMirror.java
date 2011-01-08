@@ -35,6 +35,7 @@ import org.seasar.doma.internal.apt.util.ElementUtil;
  * @author taedium
  * 
  */
+@SuppressWarnings("deprecation")
 public class EnumDomainMirror {
 
     protected final AnnotationMirror annotationMirror;

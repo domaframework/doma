@@ -13,37 +13,30 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.enumdomain;
+package org.seasar.doma.internal.apt.domain;
 
-import org.seasar.doma.EnumDomain;
+import java.math.BigDecimal;
+
+import org.seasar.doma.Domain;
 
 /**
  * @author taedium
  * 
  */
-@SuppressWarnings("deprecation")
-@EnumDomain(valueType = int.class)
-enum PrimitiveValue {
+@Domain(valueType = BigDecimal.class, factoryMethod = "of")
+public class OfSalary {
 
-    INT(1), DOUBLE(2);
+    private final BigDecimal value;
 
-    private final int value;
-
-    private PrimitiveValue(int value) {
+    private OfSalary(BigDecimal value) {
         this.value = value;
     }
 
-    static PrimitiveValue of(int value) {
-        for (PrimitiveValue primitiveValue : PrimitiveValue.values()) {
-            if (primitiveValue.value == value) {
-                return primitiveValue;
-            }
-        }
-        return null;
-    }
-
-    int getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 
+    public static OfSalary of(BigDecimal value) {
+        return new OfSalary(value);
+    }
 }

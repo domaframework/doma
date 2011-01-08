@@ -33,6 +33,7 @@ import org.seasar.doma.message.Message;
  * @author taedium
  * @since 1.8.0
  */
+@SuppressWarnings("deprecation")
 public final class DomainTypeFactory {
 
     /**
@@ -48,7 +49,7 @@ public final class DomainTypeFactory {
      * @throws DomaNullPointerException
      *             引数が {@code null} の場合
      * @throws DomaIllegalArgumentException
-     *             ドメインクラスに {@link Domain} もしくは {@link EnumDomain} が注釈されていない場合
+     *             ドメインクラスに {@link Domain} もしくは {@code EnumDomain} が注釈されていない場合
      * @throws DomainTypeNotFoundException
      *             ドメインクラスに対応するメタクラスが見つからない場合
      */

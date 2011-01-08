@@ -92,6 +92,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * @since 1.8.0
  */
+@SuppressWarnings("deprecation")
 public class SelectBuilder {
 
     private final BuildingHelper helper;

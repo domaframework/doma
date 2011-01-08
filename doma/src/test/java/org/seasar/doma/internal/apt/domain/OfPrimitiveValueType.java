@@ -13,28 +13,27 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.enumdomain;
+package org.seasar.doma.internal.apt.domain;
 
-import org.seasar.doma.EnumDomain;
+import org.seasar.doma.Domain;
 
 /**
  * @author taedium
  * 
  */
-@SuppressWarnings("deprecation")
-@EnumDomain(valueType = int.class)
-enum PrimitiveValue {
+@Domain(valueType = int.class, factoryMethod = "of")
+enum OfPrimitiveValueType {
 
     INT(1), DOUBLE(2);
 
     private final int value;
 
-    private PrimitiveValue(int value) {
+    private OfPrimitiveValueType(int value) {
         this.value = value;
     }
 
-    static PrimitiveValue of(int value) {
-        for (PrimitiveValue primitiveValue : PrimitiveValue.values()) {
+    static OfPrimitiveValueType of(int value) {
+        for (OfPrimitiveValueType primitiveValue : OfPrimitiveValueType.values()) {
             if (primitiveValue.value == value) {
                 return primitiveValue;
             }

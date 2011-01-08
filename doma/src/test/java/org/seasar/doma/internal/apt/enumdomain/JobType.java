@@ -21,6 +21,7 @@ import org.seasar.doma.EnumDomain;
  * @author taedium
  * 
  */
+@SuppressWarnings("deprecation")
 @EnumDomain(valueType = String.class)
 enum JobType {
 
