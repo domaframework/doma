@@ -125,6 +125,48 @@ public class SqlParserTest extends TestCase {
         }
     }
 
+    public void testBindVariable_stringLiteral() throws Exception {
+        String testSql = "select * from aaa where ename = /*name*/'bbb'";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode node = parser.parse();
+        assertNotNull(node);
+    }
+
+    public void testBindVariable_intLiteral() throws Exception {
+        String testSql = "select * from aaa where ename = /*name*/10";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode node = parser.parse();
+        assertNotNull(node);
+    }
+
+    public void testBindVariable_floatLiteral() throws Exception {
+        String testSql = "select * from aaa where ename = /*name*/.0";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode node = parser.parse();
+        assertNotNull(node);
+    }
+
+    public void testBindVariable_booleanTrueLiteral() throws Exception {
+        String testSql = "select * from aaa where ename = /*name*/true";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode node = parser.parse();
+        assertNotNull(node);
+    }
+
+    public void testBindVariable_booleanFalseLiteral() throws Exception {
+        String testSql = "select * from aaa where ename = /*name*/false";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode node = parser.parse();
+        assertNotNull(node);
+    }
+
+    public void testBindVariable_nullLiteral() throws Exception {
+        String testSql = "select * from aaa where ename = /*name*/null";
+        SqlParser parser = new SqlParser(testSql);
+        SqlNode node = parser.parse();
+        assertNotNull(node);
+    }
+
     public void testBindVariable_illegalLiteral() throws Exception {
         String testSql = "select * from aaa where ename = /*name*/bbb";
         SqlParser parser = new SqlParser(testSql);

@@ -91,8 +91,8 @@ import org.seasar.doma.message.Message;
  */
 public class SqlParser {
 
-    protected static final Pattern LITERAL_PATTERN = Pattern
-            .compile("[-+'.0-9]|.*'");
+    protected static final Pattern LITERAL_PATTERN = Pattern.compile(
+            "[-+'.0-9]|.*'|true|false|null", Pattern.CASE_INSENSITIVE);
 
     protected final Deque<SqlNode> nodeStack = new LinkedList<SqlNode>();
 
