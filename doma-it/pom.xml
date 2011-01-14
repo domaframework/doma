@@ -6,7 +6,7 @@
 	<!-- The Basics -->
 	<groupId>org.seasar.doma</groupId>
 	<artifactId>doma-it</artifactId>
-	<version>1.12.0-SNAPSHOT</version>
+	<version>1.12.0</version>
 	<packaging>jar</packaging>
 
 	<!-- More Project Information -->
@@ -291,7 +291,7 @@
 		<dependency>
 			<groupId>org.seasar.doma</groupId>
 			<artifactId>doma</artifactId>
-			<version>1.12.0-SNAPSHOT</version>
+			<version>1.12.0</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
