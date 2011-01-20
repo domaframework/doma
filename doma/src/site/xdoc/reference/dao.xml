@@ -150,7 +150,7 @@ public interface EmployeeDao {
 				</p>
 				<h4>更新</h4>
 				<p>
-					更新には、<code>InsertBuilder</code>クラスを使用します。
+					更新には、<code>UpdateBuilder</code>クラスを使用します。
 					このクラスのインスタンスは、<code>org.seasar.doma.jdbc.Config</code>型の引数をとる<code>static</code>な<code>newInstance</code>メソッドで生成できます。
 					インスタンスには、<code>sql</code>メソッドでSQL文字列の断片を、<code>param</code>メソッドでパラメータの型とパラメータを渡せます。
 				</p>
@@ -168,7 +168,7 @@ public interface EmployeeDao {
 				</p>
 				<h4>削除</h4>
 				<p>
-					削除には、<code>InsertBuilder</code>クラスを使用します。
+					削除には、<code>DeleteBuilder</code>クラスを使用します。
 					このクラスのインスタンスは、<code>org.seasar.doma.jdbc.Config</code>型の引数をとる<code>static</code>な<code>newInstance</code>メソッドで生成できます。
 					インスタンスには、<code>sql</code>メソッドでSQL文字列の断片を、<code>param</code>メソッドでパラメータの型とパラメータを渡せます。
 				</p>
