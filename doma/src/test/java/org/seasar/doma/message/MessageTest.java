@@ -34,4 +34,10 @@ public class MessageTest extends TestCase {
         assertNotNull(message);
         System.out.println(message);
     }
+
+    public void testDOMA4021() throws Exception {
+        String message = Message.DOMA4021.getMessage("aaa", "bbb");
+        assertNotNull(message);
+        System.out.println(message);
+    }
 }
