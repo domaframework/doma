@@ -35,7 +35,11 @@ public final class ResourceUtil {
         if (loader == null) {
             return null;
         }
-        return loader.getResource(path);
+        URL url = loader.getResource(path);
+        if (url == null) {
+            url = ResourceUtil.class.getResource("/" + path);
+        }
+        return url;
     }
 
     public static InputStream getResourceAsStream(String path) {
