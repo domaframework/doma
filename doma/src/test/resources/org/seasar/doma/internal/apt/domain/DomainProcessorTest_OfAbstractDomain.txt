@@ -1,0 +1,64 @@
+package org.seasar.doma.internal.apt.domain;
+
+/** */
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
+public final class _OfAbstractDomain implements org.seasar.doma.jdbc.domain.DomainType<java.lang.Integer, org.seasar.doma.internal.apt.domain.OfAbstractDomain> {
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    private static final _OfAbstractDomain singleton = new _OfAbstractDomain();
+
+    private _OfAbstractDomain() {
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.domain.OfAbstractDomain newDomain(java.lang.Integer value) {
+        return org.seasar.doma.internal.apt.domain.OfAbstractDomain.of(org.seasar.doma.internal.util.BoxedPrimitiveUtil.unbox(value));
+    }
+
+    @Override
+    public Class<org.seasar.doma.internal.apt.domain.OfAbstractDomain> getDomainClass() {
+        return org.seasar.doma.internal.apt.domain.OfAbstractDomain.class;
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.Integer, org.seasar.doma.internal.apt.domain.OfAbstractDomain> getWrapper(org.seasar.doma.internal.apt.domain.OfAbstractDomain domain) {
+        return new Wrapper(domain);
+    }
+
+    /**
+     * @return the singleton
+     */
+    public static _OfAbstractDomain getSingletonInternal() {
+        return singleton;
+    }
+
+    private static class Wrapper extends org.seasar.doma.wrapper.IntegerWrapper implements org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.Integer, org.seasar.doma.internal.apt.domain.OfAbstractDomain> {
+
+        private org.seasar.doma.internal.apt.domain.OfAbstractDomain domain;
+
+        private Wrapper(org.seasar.doma.internal.apt.domain.OfAbstractDomain domain) {
+            this.domain = domain;
+        }
+
+        @Override
+        protected java.lang.Integer doGet() {
+            if (domain == null) {
+                return null;
+            }
+            return domain.getValue();
+        }
+
+        @Override
+        protected void doSet(java.lang.Integer value) {
+            domain = org.seasar.doma.internal.apt.domain.OfAbstractDomain.of(org.seasar.doma.internal.util.BoxedPrimitiveUtil.unbox(value));
+        }
+
+        @Override
+        public org.seasar.doma.internal.apt.domain.OfAbstractDomain getDomain() {
+            return domain;
+        }
+    }
+}

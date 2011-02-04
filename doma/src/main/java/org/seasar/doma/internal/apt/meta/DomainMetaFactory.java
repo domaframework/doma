@@ -92,7 +92,8 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
 
     protected void validateClass(TypeElement classElement, DomainMeta domainMeta) {
         if (classElement.getKind() == ElementKind.CLASS) {
-            if (classElement.getModifiers().contains(Modifier.ABSTRACT)) {
+            if (domainMeta.providesConstructor()
+                    && classElement.getModifiers().contains(Modifier.ABSTRACT)) {
                 throw new AptException(Message.DOMA4132, env, classElement);
             }
             if (!classElement.getTypeParameters().isEmpty()) {

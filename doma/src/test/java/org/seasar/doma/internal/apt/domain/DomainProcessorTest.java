@@ -115,6 +115,16 @@ public class DomainProcessorTest extends AptTestCase {
         assertMessage(Message.DOMA4184);
     }
 
+    public void testAbstractDomain() throws Exception {
+        Class<?> target = AbstractDomain.class;
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4132);
+    }
+
     public void testOfSalary() throws Exception {
         Class<?> target = OfSalary.class;
         DomainProcessor processor = new DomainProcessor();
@@ -157,6 +167,16 @@ public class DomainProcessorTest extends AptTestCase {
 
     public void testOfPrimitiveValueType() throws Exception {
         Class<?> target = OfPrimitiveValueType.class;
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testOfAbstractDomain() throws Exception {
+        Class<?> target = OfAbstractDomain.class;
         DomainProcessor processor = new DomainProcessor();
         addProcessor(processor);
         addCompilationUnit(target);
