@@ -31,7 +31,7 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * <p>
  * このアノテーションが注釈されるメソッドは、Daoインタフェースのメンバでなければいけません。
  * <p>
- * {@link #sqlFile()} が {@code true} の場合、注釈されるメソッドは次の制約を満たす必要があります。
+ * {@link #sqlFile()} が {@code false} の場合、注釈されるメソッドは次の制約を満たす必要があります。
  * <ul>
  * <li>パラメータを1つだけ受け取る。
  * <li>パラメータの型はエンティティクラスである。
