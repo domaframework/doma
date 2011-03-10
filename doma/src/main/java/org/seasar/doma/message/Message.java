@@ -359,7 +359,8 @@ public enum Message implements MessageResource {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             throwable.printStackTrace(pw);
-            return "Failed to get a message because of following error : " + sw;
+            return "[DOMA9001] Failed to get a message because of following error : "
+                    + sw;
         }
     }
 }
