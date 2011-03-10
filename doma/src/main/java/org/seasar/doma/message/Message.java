@@ -15,7 +15,10 @@
  */
 package org.seasar.doma.message;
 
-import org.seasar.doma.internal.message.MessageFormatter;
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
+
+import org.seasar.doma.internal.message.MessageResourceBundle;
 
 /**
  * デフォルトロケール用のメッセージの列挙です。
@@ -344,6 +347,15 @@ public enum Message implements MessageResource {
 
     @Override
     public String getMessage(Object... args) {
-        return MessageFormatter.getMessage(this, args);
+        try {
+            ResourceBundle bundle = ResourceBundle
+                    .getBundle(MessageResourceBundle.class.getName());
+            String code = name();
+            String pattern = bundle.getString(code);
+            return MessageFormat.format("[" + code + "] " + pattern, args);
+        } catch (Throwable t) {
+            return "Failed to get a message because of following error : "
+                    + t.toString();
+        }
     }
 }
