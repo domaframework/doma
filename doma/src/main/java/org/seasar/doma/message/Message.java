@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.message;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
@@ -353,9 +355,11 @@ public enum Message implements MessageResource {
             String code = name();
             String pattern = bundle.getString(code);
             return MessageFormat.format("[" + code + "] " + pattern, args);
-        } catch (Throwable t) {
-            return "Failed to get a message because of following error : "
-                    + t.toString();
+        } catch (Throwable throwable) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            throwable.printStackTrace(pw);
+            return "Failed to get a message because of following error : " + sw;
         }
     }
 }
