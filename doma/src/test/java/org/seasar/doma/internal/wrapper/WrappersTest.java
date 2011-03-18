@@ -32,6 +32,7 @@ import org.seasar.doma.wrapper.IntegerWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 import org.seasar.doma.wrapper.Wrapper;
 
+import example.domain.InternationalPhoneNumber;
 import example.domain.PhoneNumber;
 
 /**
@@ -101,6 +102,15 @@ public class WrappersTest extends TestCase {
     public void testWrapDomain() throws Exception {
         PhoneNumber phoneNumber = new PhoneNumber("123-456-789");
         Wrapper<?> wrapper = Wrappers.wrap(phoneNumber, PhoneNumber.class);
+        assertNotNull(wrapper);
+        assertEquals(StringWrapper.class, wrapper.getClass());
+        assertEquals("123-456-789", wrapper.get());
+    }
+
+    public void testWrapDomain_subclass() throws Exception {
+        PhoneNumber phoneNumber = new InternationalPhoneNumber("123-456-789");
+        Wrapper<?> wrapper = Wrappers.wrap(phoneNumber,
+                InternationalPhoneNumber.class);
         assertNotNull(wrapper);
         assertEquals(StringWrapper.class, wrapper.getClass());
         assertEquals("123-456-789", wrapper.get());

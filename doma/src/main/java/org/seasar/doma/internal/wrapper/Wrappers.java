@@ -262,8 +262,7 @@ public final class Wrappers {
             Class<?> domainClass, String accessorMethodName) {
         assertNotNull(domainObject, domainClass, accessorMethodName);
         try {
-            Method method = ClassUtil.getDeclaredMethod(domainClass,
-                    accessorMethodName);
+            Method method = findAccessorMethod(domainClass, accessorMethodName);
             if (!Modifier.isPublic(method.getModifiers())) {
                 method.setAccessible(true);
             }
@@ -273,6 +272,28 @@ public final class Wrappers {
             Throwable cause = e.getCause();
             throw new WrapperException(Message.DOMA1006, cause, cause);
         }
+    }
+
+    /**
+     * アクセッサーメソッドを見つけます。
+     * 
+     * @param domainClass
+     *            ドメインクラス
+     * @param accessorMethodName
+     *            ドメインクラスのアクセッサーメソッドの名前
+     * @return アクセッサーメソッド
+     */
+    protected static Method findAccessorMethod(Class<?> domainClass,
+            String accessorMethodName) {
+        for (Class<?> clazz = domainClass; clazz != null; clazz = clazz
+                .getSuperclass()) {
+            for (Method m : clazz.getDeclaredMethods()) {
+                if (m.getParameterTypes().length == 0) {
+                    return m;
+                }
+            }
+        }
+        return assertUnreachable();
     }
 
     /**
