@@ -34,6 +34,7 @@ import org.seasar.doma.internal.jdbc.dialect.StandardCountGettingTransformer;
 import org.seasar.doma.internal.jdbc.dialect.StandardForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.StandardPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
+import org.seasar.doma.internal.util.AssertionUtil;
 import org.seasar.doma.internal.util.CharSequenceUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
@@ -215,11 +216,29 @@ public class StandardDialect implements Dialect {
         if (forUpdateType != null) {
             String[] aliases = SelectOptionsAccessor.getAliases(options);
             if (!supportsSelectForUpdate(forUpdateType, false)) {
-                throw new JdbcException(Message.DOMA2023, getName());
+                switch (forUpdateType) {
+                case NORMAL:
+                    throw new JdbcException(Message.DOMA2023, getName());
+                case WAIT:
+                    throw new JdbcException(Message.DOMA2079, getName());
+                case NOWAIT:
+                    throw new JdbcException(Message.DOMA2080, getName());
+                default:
+                    AssertionUtil.assertUnreachable();
+                }
             }
             if (aliases.length > 0) {
                 if (!supportsSelectForUpdate(forUpdateType, true)) {
-                    throw new JdbcException(Message.DOMA2024, getName());
+                    switch (forUpdateType) {
+                    case NORMAL:
+                        throw new JdbcException(Message.DOMA2024, getName());
+                    case WAIT:
+                        throw new JdbcException(Message.DOMA2081, getName());
+                    case NOWAIT:
+                        throw new JdbcException(Message.DOMA2082, getName());
+                    default:
+                        AssertionUtil.assertUnreachable();
+                    }
                 }
             }
             int waitSeconds = SelectOptionsAccessor.getWaitSeconds(options);

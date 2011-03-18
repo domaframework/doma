@@ -22,6 +22,11 @@ import java.util.Calendar;
 import junit.framework.TestCase;
 
 import org.seasar.doma.expr.ExpressionFunctions;
+import org.seasar.doma.internal.jdbc.sql.SqlParser;
+import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.SelectForUpdateType;
+import org.seasar.doma.jdbc.SelectOptions;
+import org.seasar.doma.jdbc.SqlNode;
 
 /**
  * @author taedium
@@ -143,5 +148,101 @@ public class StandardDialectTest extends TestCase {
         assertFalse(functions.isNotBlank(" \t\n\r "));
         assertTrue(functions.isNotBlank("a"));
         assertTrue(functions.isNotBlank(" a "));
+    }
+
+    public void testTransformSelectSqlNode_forUpdate() throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        SqlParser parser = new SqlParser("select * from emp order by emp.id");
+        SqlNode sqlNode = parser.parse();
+        SelectOptions options = SelectOptions.get().forUpdate();
+        try {
+            dialect.transformSelectSqlNode(sqlNode, options);
+            fail();
+        } catch (JdbcException ex) {
+            System.out.println(ex.getMessage());
+            assertEquals("DOMA2023", ex.getMessageResource().getCode());
+        }
+    }
+
+    public void testTransformSelectSqlNode_forUpdateWait() throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        SqlParser parser = new SqlParser("select * from emp order by emp.id");
+        SqlNode sqlNode = parser.parse();
+        SelectOptions options = SelectOptions.get().forUpdateWait(1);
+        try {
+            dialect.transformSelectSqlNode(sqlNode, options);
+            fail();
+        } catch (JdbcException ex) {
+            System.out.println(ex.getMessage());
+            assertEquals("DOMA2079", ex.getMessageResource().getCode());
+        }
+    }
+
+    public void testTransformSelectSqlNode_forUpdateNowait() throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        SqlParser parser = new SqlParser("select * from emp order by emp.id");
+        SqlNode sqlNode = parser.parse();
+        SelectOptions options = SelectOptions.get().forUpdateNowait();
+        try {
+            dialect.transformSelectSqlNode(sqlNode, options);
+            fail();
+        } catch (JdbcException ex) {
+            System.out.println(ex.getMessage());
+            assertEquals("DOMA2080", ex.getMessageResource().getCode());
+        }
+    }
+
+    public void testTransformSelectSqlNode_forUpdate_alias() throws Exception {
+        StandardDialect dialect = new StandardDialectStab();
+        SqlParser parser = new SqlParser("select * from emp order by emp.id");
+        SqlNode sqlNode = parser.parse();
+        SelectOptions options = SelectOptions.get().forUpdate("emp");
+        try {
+            dialect.transformSelectSqlNode(sqlNode, options);
+            fail();
+        } catch (JdbcException ex) {
+            System.out.println(ex.getMessage());
+            assertEquals("DOMA2024", ex.getMessageResource().getCode());
+        }
+    }
+
+    public void testTransformSelectSqlNode_forUpdateWait_alias()
+            throws Exception {
+        StandardDialect dialect = new StandardDialectStab();
+        SqlParser parser = new SqlParser("select * from emp order by emp.id");
+        SqlNode sqlNode = parser.parse();
+        SelectOptions options = SelectOptions.get().forUpdateWait(1, "emp");
+        try {
+            dialect.transformSelectSqlNode(sqlNode, options);
+            fail();
+        } catch (JdbcException ex) {
+            System.out.println(ex.getMessage());
+            assertEquals("DOMA2081", ex.getMessageResource().getCode());
+        }
+    }
+
+    public void testTransformSelectSqlNode_forUpdateNowait_alias()
+            throws Exception {
+        StandardDialect dialect = new StandardDialectStab();
+        SqlParser parser = new SqlParser("select * from emp order by emp.id");
+        SqlNode sqlNode = parser.parse();
+        SelectOptions options = SelectOptions.get().forUpdateNowait("emp");
+        try {
+            dialect.transformSelectSqlNode(sqlNode, options);
+            fail();
+        } catch (JdbcException ex) {
+            System.out.println(ex.getMessage());
+            assertEquals("DOMA2082", ex.getMessageResource().getCode());
+        }
+    }
+
+    public static class StandardDialectStab extends StandardDialect {
+
+        @Override
+        public boolean supportsSelectForUpdate(SelectForUpdateType type,
+                boolean withTargets) {
+            return !withTargets;
+        }
+
     }
 }
