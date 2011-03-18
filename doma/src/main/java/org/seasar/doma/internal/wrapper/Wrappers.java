@@ -285,10 +285,12 @@ public final class Wrappers {
      */
     protected static Method findAccessorMethod(Class<?> domainClass,
             String accessorMethodName) {
+        assertNotNull(domainClass, accessorMethodName);
         for (Class<?> clazz = domainClass; clazz != null; clazz = clazz
                 .getSuperclass()) {
             for (Method m : clazz.getDeclaredMethods()) {
-                if (m.getParameterTypes().length == 0) {
+                if (accessorMethodName.equals(m.getName())
+                        && m.getParameterTypes().length == 0) {
                     return m;
                 }
             }
