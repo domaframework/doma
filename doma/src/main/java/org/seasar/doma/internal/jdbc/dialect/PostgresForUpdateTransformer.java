@@ -48,6 +48,9 @@ public class PostgresForUpdateTransformer extends StandardForUpdateTransformer {
             }
             buf.setLength(buf.length() - 2);
         }
+        if (forUpdateType == SelectForUpdateType.NOWAIT) {
+            buf.append(" nowait ");
+        }
         ForUpdateClauseNode forUpdate = new ForUpdateClauseNode(" for update");
         forUpdate.addNode(new FragmentNode(buf.toString()));
 

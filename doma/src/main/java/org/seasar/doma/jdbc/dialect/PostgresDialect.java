@@ -200,7 +200,8 @@ public class PostgresDialect extends StandardDialect {
     @Override
     public boolean supportsSelectForUpdate(SelectForUpdateType type,
             boolean withTargets) {
-        return type == SelectForUpdateType.NORMAL;
+        return type == SelectForUpdateType.NORMAL
+                || type == SelectForUpdateType.NOWAIT;
     }
 
     @Override
