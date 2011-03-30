@@ -224,6 +224,7 @@ public enum Message implements MessageResource {
     DOMA4055("戻り値の型[{0}]とIterationCallbackの1番目の実型引数の型[{1}]が一致していません。"),
     DOMA4056("@Selectのiterate要素にtrueを設定した場合、IterationCallback型のパラメータが必要です。"),
     DOMA4057("IterationCallback型のパラメータを利用するには、iterate要素にtrueを設定しなければいけません。"),
+    DOMA4058("IterationCallbackの2番目の実型引数の型は、基本型、ドメインクラス、エンティティクラスのいずれかでなければいけません。"),
     DOMA4059("Daoインタフェースには型パラメータを定義できません。"),
     DOMA4062("@ResultSetが注釈されたパラメータの型は、java.util.Listでなければいけません。"),
     DOMA4063("@Functionの戻り値として型[{0}]はサポートされていません。戻り値の型は、次のいずれかでなければいけません。基本型、ドメインクラス、基本型を要素とするjava.util.List、ドメインクラスを要素とするjava.util.List、エンティティクラスを要素とするjava.util.List。"),

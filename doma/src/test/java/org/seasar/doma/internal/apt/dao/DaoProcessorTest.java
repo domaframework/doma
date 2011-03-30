@@ -211,6 +211,16 @@ public class DaoProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
+    public void testIllegalTargetTypeIterationCallback() throws Exception {
+        Class<?> target = IllegalTargetTypeIterationCallbackDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4058);
+    }
+
     public void testAutoFunction() throws Exception {
         Class<?> target = AutoFunctionDao.class;
         DaoProcessor processor = new DaoProcessor();

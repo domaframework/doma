@@ -74,7 +74,7 @@ public class SqlFileSelectQueryMetaFactory extends
     }
 
     @Override
-    protected void doReturnType(SqlFileSelectQueryMeta queryMeta,
+    protected void doReturnType(final SqlFileSelectQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         final QueryReturnMeta returnMeta = createReturnMeta(method);
         queryMeta.setReturnMeta(returnMeta);
@@ -89,6 +89,36 @@ public class SqlFileSelectQueryMetaFactory extends
                         returnMeta.getType(),
                         callbackReturnType.getTypeNameAsTypeParameter());
             }
+            DataType callbackTargetType = iterationCallbackType.getTargetType();
+            callbackTargetType.accept(
+                    new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+
+                        @Override
+                        protected Void defaultAction(DataType type, Void p)
+                                throws RuntimeException {
+                            throw new AptException(Message.DOMA4058, env,
+                                    queryMeta.getExecutableElement());
+                        }
+
+                        @Override
+                        public Void visitBasicType(BasicType dataType, Void p)
+                                throws RuntimeException {
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitDomainType(DomainType dataType, Void p)
+                                throws RuntimeException {
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitEntityType(EntityType dataType, Void p)
+                                throws RuntimeException {
+                            return null;
+                        }
+                    }, null);
+
         } else {
             returnMeta.getDataType().accept(
                     new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
