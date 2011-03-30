@@ -96,6 +96,28 @@ public class StandardDialectTest extends TestCase {
                 .roundUpTimePart(date).getTime());
     }
 
+    public void testExpressionFunctions_roundUpTimePart_forDate_endOfMonth()
+            throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2009, Calendar.MARCH, 31, 0, 0, 0);
+        Date date = new Date(calendar.getTimeInMillis());
+        assertEquals(Date.valueOf("2009-04-01").getTime(), functions
+                .roundUpTimePart(date).getTime());
+    }
+
+    public void testExpressionFunctions_roundUpTimePart_forDate_endOfYear()
+            throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2009, Calendar.DECEMBER, 31, 0, 0, 0);
+        Date date = new Date(calendar.getTimeInMillis());
+        assertEquals(Date.valueOf("2010-01-01").getTime(), functions
+                .roundUpTimePart(date).getTime());
+    }
+
     public void testExpressionFunctions_roundUpTimePart_forTimestamp()
             throws Exception {
         StandardDialect dialect = new StandardDialect();
@@ -103,6 +125,26 @@ public class StandardDialectTest extends TestCase {
         Timestamp timestamp = Timestamp
                 .valueOf("2009-01-23 12:34:56.123456789");
         assertEquals(Timestamp.valueOf("2009-01-24 00:00:00.000000000"),
+                functions.roundUpTimePart(timestamp));
+    }
+
+    public void testExpressionFunctions_roundUpTimePart_forTimestamp_endOfMonth()
+            throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        Timestamp timestamp = Timestamp
+                .valueOf("2009-03-31 00:00:00.000000000");
+        assertEquals(Timestamp.valueOf("2009-04-01 00:00:00.000000000"),
+                functions.roundUpTimePart(timestamp));
+    }
+
+    public void testExpressionFunctions_roundUpTimePart_forTimestamp_endOfYear()
+            throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        Timestamp timestamp = Timestamp
+                .valueOf("2009-12-31 00:00:00.000000000");
+        assertEquals(Timestamp.valueOf("2010-01-01 00:00:00.000000000"),
                 functions.roundUpTimePart(timestamp));
     }
 
