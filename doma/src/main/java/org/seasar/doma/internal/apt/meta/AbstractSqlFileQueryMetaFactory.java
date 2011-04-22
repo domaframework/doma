@@ -120,7 +120,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
         try {
             return filer.getResource(StandardLocation.CLASS_OUTPUT, "", path);
         } catch (IOException e) {
-            throw new AptException(Message.DOMA4143, env, method, e, path);
+            throw new AptException(Message.DOMA4143, env, method, e, path, e);
         }
     }
 
