@@ -30,6 +30,7 @@ import org.seasar.doma.internal.jdbc.sql.node.FragmentNode;
 import org.seasar.doma.internal.jdbc.sql.node.OtherNode;
 import org.seasar.doma.internal.jdbc.sql.node.WhitespaceNode;
 import org.seasar.doma.internal.jdbc.sql.node.WordNode;
+import org.seasar.doma.internal.util.ResourceUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlNode;
@@ -654,6 +655,15 @@ public class SqlParserTest extends TestCase {
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
                 "dummyPath", evaluator).build(sqlNode);
         assertEquals("select rank(   )", sql.getRawSql());
+    }
+
+    public void testManyEol() throws Exception {
+        String path = "META-INF/" + getClass().getName().replace('.', '/')
+                + "/manyEol.sql";
+        String sql = ResourceUtil.getResourceAsString(path);
+        SqlParser parser = new SqlParser(sql);
+        SqlNode sqlNode = parser.parse();
+        assertNotNull(sqlNode);
     }
 
     public enum MyEnum {
