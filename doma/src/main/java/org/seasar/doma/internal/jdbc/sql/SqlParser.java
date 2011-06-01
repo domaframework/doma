@@ -72,7 +72,6 @@ import org.seasar.doma.internal.jdbc.sql.node.SelectClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectClauseNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNodeVisitor;
-import org.seasar.doma.internal.jdbc.sql.node.SpaceStrippingNode;
 import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
 import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNodeVisitor;
@@ -407,7 +406,6 @@ public class SqlParser {
     }
 
     protected void parseIfBlockComment() {
-        removePrecedentSpaces();
         IfBlockNode ifBlockNode = new IfBlockNode();
         addNode(ifBlockNode);
         push(ifBlockNode);
@@ -488,7 +486,6 @@ public class SqlParser {
             throw new JdbcException(Message.DOMA2104, sql,
                     tokenizer.getLineNumber(), tokenizer.getPosition());
         }
-        removePrecedentSpaces();
         removeNodesTo(BlockNode.class);
         BlockNode blockNode = pop();
         EndNode node = new EndNode(token);
@@ -497,7 +494,6 @@ public class SqlParser {
     }
 
     protected void parseForBlockComment() {
-        removePrecedentSpaces();
         ForBlockNode forBlockNode = new ForBlockNode();
         addNode(forBlockNode);
         push(forBlockNode);
@@ -528,16 +524,8 @@ public class SqlParser {
     }
 
     protected void parseEOL() {
-        if (isAfterSpaceStrippingNode()) {
-            SpaceStrippingNode spaceStrippingNode = peek();
-            if (containsOnlyWhitespaces(spaceStrippingNode)) {
-                spaceStrippingNode.clearChildren();
-                return;
-            }
-        }
         EolNode node = new EolNode(token);
         addNode(node);
-        push(node);
     }
 
     protected boolean containsOnlyWhitespaces(SqlNode node) {
@@ -560,20 +548,6 @@ public class SqlParser {
                 break;
             }
             it.remove();
-        }
-    }
-
-    protected void removePrecedentSpaces() {
-        if (isAfterEolNode()) {
-            EolNode eolNode = peek();
-            if (containsOnlyWhitespaces(eolNode)) {
-                eolNode.clearChildren();
-            }
-        } else if (isAfterSpaceStrippingNode()) {
-            SpaceStrippingNode spaceStrippingNode = peek();
-            if (containsOnlyWhitespaces(spaceStrippingNode)) {
-                spaceStrippingNode.clearChildren();
-            }
         }
     }
 
@@ -632,14 +606,6 @@ public class SqlParser {
             }
         }
         return false;
-    }
-
-    protected boolean isAfterEolNode() {
-        return peek() instanceof EolNode;
-    }
-
-    protected boolean isAfterSpaceStrippingNode() {
-        return peek() instanceof SpaceStrippingNode;
     }
 
     protected boolean isAfterBindVariableNode() {
@@ -768,6 +734,8 @@ public class SqlParser {
                     buf.append(((OtherNode) child).getOther());
                 } else if (buf.length() > 0 && child instanceof WhitespaceNode) {
                     buf.append(((WhitespaceNode) child).getWhitespace());
+                } else if (buf.length() > 0 && child instanceof EolNode) {
+                    buf.append(((EolNode) child).getEol());
                 } else {
                     if (buf.length() > 0) {
                         node.addNode(new FragmentNode(buf.toString()));
@@ -859,7 +827,6 @@ public class SqlParser {
 
         @Override
         public Void visitEolNode(EolNode node, Void p) {
-            optimize(node);
             return null;
         }
 

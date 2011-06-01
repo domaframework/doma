@@ -594,9 +594,6 @@ public class NodePreparedSqlBuilder implements
         String eol = node.getEol();
         p.appendRawSql(eol);
         p.appendFormattedSql(eol);
-        for (SqlNode child : node.getChildren()) {
-            child.accept(this, p);
-        }
         return null;
     }
 

@@ -316,9 +316,9 @@ public class SqlParserTest extends TestCase {
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
                 "dummyPath", evaluator).build(sqlNode);
-        assertEquals("select * from aaa where \n --comment\n ddd is null",
+        assertEquals("select * from aaa where \n\n --comment\n ddd is null",
                 sql.getRawSql());
-        assertEquals("select * from aaa where \n --comment\n ddd is null",
+        assertEquals("select * from aaa where \n\n --comment\n ddd is null",
                 sql.getFormattedSql());
         assertEquals(0, sql.getParameters().size());
     }
@@ -374,8 +374,9 @@ public class SqlParserTest extends TestCase {
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
                 "dummyPath", evaluator).build(sqlNode);
-        assertEquals("select * from aaa where bbb = ?", sql.getRawSql());
-        assertEquals("select * from aaa where bbb = ''", sql.getFormattedSql());
+        assertEquals("select * from aaa where \nbbb = ?", sql.getRawSql());
+        assertEquals("select * from aaa where \nbbb = ''",
+                sql.getFormattedSql());
         assertEquals(1, sql.getParameters().size());
         assertEquals("", sql.getParameters().get(0).getWrapper().get());
     }
@@ -613,9 +614,9 @@ public class SqlParserTest extends TestCase {
         SqlNode sqlNode = parser.parse();
         PreparedSql sql = new NodePreparedSqlBuilder(config, SqlKind.SELECT,
                 "dummyPath", evaluator).build(sqlNode);
-        assertEquals("select * from aaa where (\n ddd is null\n)",
+        assertEquals("select * from aaa where (\n\n ddd is null\n )",
                 sql.getRawSql());
-        assertEquals("select * from aaa where (\n ddd is null\n)",
+        assertEquals("select * from aaa where (\n\n ddd is null\n )",
                 sql.getFormattedSql());
         assertEquals(0, sql.getParameters().size());
     }

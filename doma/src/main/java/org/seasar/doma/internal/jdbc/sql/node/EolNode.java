@@ -18,6 +18,7 @@ package org.seasar.doma.internal.jdbc.sql.node;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
@@ -38,8 +39,10 @@ public class EolNode extends AbstractSqlNode {
         return eol;
     }
 
-    public void clearChildren() {
-        children.clear();
+    @Override
+    public void addNode(SqlNode child) {
+        throw new JdbcUnsupportedOperationException(getClass().getName(),
+                "addNode");
     }
 
     @Override
@@ -65,9 +68,6 @@ public class EolNode extends AbstractSqlNode {
         buf.append("[");
         buf.append(getClass().getSimpleName());
         buf.append(" ");
-        for (SqlNode child : children) {
-            buf.append(child);
-        }
         buf.append("]");
         return buf.toString();
     }
