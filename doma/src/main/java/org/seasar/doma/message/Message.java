@@ -250,7 +250,7 @@ public enum Message implements MessageResource {
     DOMA4089("@Idもしくは@Versionを注釈する場合、falseを指定してはいけません。"),
     DOMA4090("注釈プロセッサ[{0}]でクラス[{1}]の処理を開始しました。"),
     DOMA4091("注釈プロセッサ[{0}]でクラス[{1}]の処理を終了しました。"),
-    DOMA4092("SQLファイル[{0}]の妥当検査に失敗しました。SQL[{1}]（[{2}]行目[{3}]番目の文字付近）。詳細は次のものです。{4}"),
+    DOMA4092("SQLファイル[{0}]の妥当検査に失敗しました。詳細は次のものです。{4} SQL[{1}]（[{2}]行目[{3}]番目の文字付近）。"),
     DOMA4093("@Versionは数値のプリミティブ型もしくはNumberのサプタイプのプロパティに対してのみ有効です。"),
     DOMA4094("永続対象のフィールドもしくは@OriginalStatesが注釈されたフィールドはprivateであってはいけません。"),
     DOMA4095("@GeneratedValueは数値のプリミティブ型もしくはNumberのサプタイプのプロパティに対してのみ有効です。"),
@@ -331,6 +331,7 @@ public enum Message implements MessageResource {
     /** SQLファイルに繰り返しコメントが含まれていることを示す警告メッセージ */
     DOMA4183("SQLファイル[{0}]に繰り返しコメントが含まれています。バッチの中で実行されるSQLは一定であるため、繰り返しコメントにより動的なSQLを発行しようとしても意図したSQLにならない可能性があります。この警告を抑制するには、メソッドに@Suppress(message = Message.DOMA4183)と注釈してください。"),
     DOMA4184("列挙型に@Domainを注釈する場合、factoryMethod属性に\"new\"は指定できません（\"new\"はコンストラクタで生成することを示します）。staticで非privateなファクトリメソッドの名前を指定してください。"),
+    DOMA4185(" ... /** SQLが長すぎるため最初の{0}文字のみを表示しています。 */"),
 
     // other
     DOMA5001("JDBCドライバがロードされていない可能性があります。JDBCドライバをロードするには、クラスパスが通されたMETA-INF/services/java.sql.DriverファイルにJDBCドライバのクラスの完全修飾名を記述してください。 ex) oracle.jdbc.driver.OracleDriver"),
@@ -354,12 +355,23 @@ public enum Message implements MessageResource {
 
     @Override
     public String getMessage(Object... args) {
+        String simpleMessage = getSimpleMessageInternal(args);
+        String code = name();
+        return "[" + code + "] " + simpleMessage;
+    }
+
+    @Override
+    public String getSimpleMessage(Object... args) {
+        return getSimpleMessageInternal(args);
+    }
+
+    protected String getSimpleMessageInternal(Object... args) {
         try {
             ResourceBundle bundle = ResourceBundle
                     .getBundle(MessageResourceBundle.class.getName());
             String code = name();
             String pattern = bundle.getString(code);
-            return MessageFormat.format("[" + code + "] " + pattern, args);
+            return MessageFormat.format(pattern, args);
         } catch (Throwable throwable) {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);

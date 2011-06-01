@@ -60,6 +60,8 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
         EmbeddedVariableNodeVisitor<Void, Void>, IfNodeVisitor<Void, Void>,
         ElseifNodeVisitor<Void, Void>, ForNodeVisitor<Void, Void> {
 
+    protected static final int SQL_MAX_LENGTH = 5000;
+
     protected final ProcessingEnvironment env;
 
     protected final ExecutableElement methodElement;
@@ -283,9 +285,10 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
         } catch (AptIllegalStateException e) {
             throw e;
         } catch (AptException e) {
+            String sql = getSql(location);
             throw new AptException(Message.DOMA4092, env, methodElement, path,
-                    location.getSql(), location.getLineNumber(),
-                    location.getPosition(), e.getMessage());
+                    sql, location.getLineNumber(), location.getPosition(),
+                    e.getMessage());
         }
     }
 
@@ -295,9 +298,19 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
             ExpressionParser parser = new ExpressionParser(expression);
             return parser.parse();
         } catch (ExpressionException e) {
+            String sql = getSql(location);
             throw new AptException(Message.DOMA4092, env, methodElement, path,
-                    location.getSql(), location.getLineNumber(),
-                    location.getPosition(), e.getMessage());
+                    sql, location.getLineNumber(), location.getPosition(),
+                    e.getMessage());
         }
+    }
+
+    protected String getSql(SqlLocation location) {
+        String sql = location.getSql();
+        if (sql != null && sql.length() > SQL_MAX_LENGTH) {
+            sql = sql.substring(0, SQL_MAX_LENGTH);
+            sql += Message.DOMA4185.getSimpleMessage(SQL_MAX_LENGTH);
+        }
+        return sql;
     }
 }

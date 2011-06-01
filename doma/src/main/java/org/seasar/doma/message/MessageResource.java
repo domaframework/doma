@@ -43,7 +43,7 @@ public interface MessageResource {
     String getMessagePattern();
 
     /**
-     * メッセージを返します。
+     * メッセージコードを含んだメッセージを返します。
      * <p>
      * メッセージパターンに含まれる置換パラメータは引数により解決されます。
      * 
@@ -52,4 +52,15 @@ public interface MessageResource {
      * @return メッセージ
      */
     String getMessage(Object... args);
+
+    /**
+     * メッセージコードを含まないメッセージを返します。
+     * <p>
+     * メッセージパターンに含まれる置換パラメータは引数により解決されます。
+     * 
+     * @param args
+     *            置換パラメータに対応する引数
+     * @return メッセージ
+     */
+    String getSimpleMessage(Object... args);
 }
