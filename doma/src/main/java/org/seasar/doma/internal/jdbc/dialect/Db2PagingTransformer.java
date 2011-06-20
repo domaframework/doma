@@ -51,8 +51,14 @@ public class Db2PagingTransformer extends StandardPagingTransformer {
         }
         processed = true;
 
-        OrderByClauseNode orderBy = node.getOrderByClauseNode();
-        if (orderBy == null) {
+        OrderByClauseNode originalOrderBy = node.getOrderByClauseNode();
+        OrderByClauseNode orderBy = null;
+        if (originalOrderBy != null) {
+            orderBy = new OrderByClauseNode(originalOrderBy.getWordNode());
+            for (SqlNode child : originalOrderBy.getChildren()) {
+                orderBy.addNode(child);
+            }
+        } else {
             orderBy = new OrderByClauseNode("");
         }
         orderBy.addNode(new FragmentNode(" fetch first " + limit + " rows only"));

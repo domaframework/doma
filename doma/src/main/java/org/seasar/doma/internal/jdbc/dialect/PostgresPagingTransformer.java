@@ -38,8 +38,14 @@ public class PostgresPagingTransformer extends StandardPagingTransformer {
         }
         processed = true;
 
+        OrderByClauseNode originalOrderBy = node.getOrderByClauseNode();
         OrderByClauseNode orderBy = node.getOrderByClauseNode();
-        if (orderBy == null) {
+        if (originalOrderBy != null) {
+            orderBy = new OrderByClauseNode(originalOrderBy.getWordNode());
+            for (SqlNode child : originalOrderBy.getChildren()) {
+                orderBy.addNode(child);
+            }
+        } else {
             orderBy = new OrderByClauseNode("");
         }
         if (limit > 0) {
@@ -51,7 +57,7 @@ public class PostgresPagingTransformer extends StandardPagingTransformer {
             orderBy.addNode(new FragmentNode(String.valueOf(offset)));
         }
         ForUpdateClauseNode forUpdate = node.getForUpdateClauseNode();
-        if (node.getForUpdateClauseNode() != null) {
+        if (forUpdate != null) {
             orderBy.addNode(new FragmentNode(" "));
         }
 

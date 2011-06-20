@@ -54,6 +54,7 @@ public class BindVariableNode extends AbstractSqlNode {
         return text;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public BindVariableNode copy() {
         BindVariableNode clone = new BindVariableNode(location, variableName,

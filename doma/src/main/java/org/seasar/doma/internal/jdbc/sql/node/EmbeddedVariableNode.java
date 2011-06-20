@@ -49,6 +49,7 @@ public class EmbeddedVariableNode extends AbstractSqlNode {
         return text;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public EmbeddedVariableNode copy() {
         EmbeddedVariableNode clone = new EmbeddedVariableNode(location,

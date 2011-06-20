@@ -39,6 +39,7 @@ public class LogicalOperatorNode extends AbstractSqlNode {
         return wordNode;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public LogicalOperatorNode copy() {
         LogicalOperatorNode clone = new LogicalOperatorNode(wordNode.copy());

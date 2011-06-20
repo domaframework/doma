@@ -72,7 +72,7 @@ public class OraclePagingTransformer extends StandardPagingTransformer {
             where.addNode(new FragmentNode(String.valueOf(bias + limit)));
         }
         ForUpdateClauseNode forUpdate = node.getForUpdateClauseNode();
-        if (node.getForUpdateClauseNode() != null) {
+        if (forUpdate != null) {
             where.addNode(new FragmentNode(" "));
         }
 

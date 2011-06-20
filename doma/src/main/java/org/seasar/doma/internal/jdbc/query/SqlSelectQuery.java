@@ -83,7 +83,7 @@ public class SqlSelectQuery implements SelectQuery {
 
     protected void prepareSql() {
         SqlNode transformedSqlNode = config.getDialect()
-                .transformSelectSqlNode(sqlNode.copy(), options);
+                .transformSelectSqlNode(sqlNode, options);
         ExpressionEvaluator evaluator = new ExpressionEvaluator(parameters,
                 config.getDialect().getExpressionFunctions());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
@@ -130,7 +130,7 @@ public class SqlSelectQuery implements SelectQuery {
         query.options = options;
         query.parameters = parameters;
         query.queryTimeout = queryTimeout;
-        query.sqlNode = sqlNode.copy();
+        query.sqlNode = sqlNode;
         query.prepare();
         SelectCommand<Long> command = new SelectCommand<Long>(query,
                 new BasicSingleResultHandler<Long>(new LongWrapper(), true));

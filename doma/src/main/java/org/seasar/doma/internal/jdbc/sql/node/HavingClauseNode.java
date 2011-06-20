@@ -33,6 +33,7 @@ public class HavingClauseNode extends AbstractClauseNode {
         super(wordNode);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public HavingClauseNode copy() {
         HavingClauseNode clone = new HavingClauseNode(wordNode.copy());

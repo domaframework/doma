@@ -77,7 +77,7 @@ public abstract class SqlModifyQuery implements ModifyQuery {
                 config.getDialect().getExpressionFunctions());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
                 kind, null, evaluator);
-        sql = sqlBuilder.build(sqlNode.copy());
+        sql = sqlBuilder.build(sqlNode);
     }
 
     @Override

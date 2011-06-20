@@ -33,6 +33,7 @@ public class ForUpdateClauseNode extends AbstractClauseNode {
         super(wordNode);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public ForUpdateClauseNode copy() {
         ForUpdateClauseNode clone = new ForUpdateClauseNode(wordNode.copy());

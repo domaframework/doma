@@ -68,6 +68,7 @@ public class ForBlockNode extends AbstractSqlNode implements BlockNode {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public ForBlockNode copy() {
         ForBlockNode clone = new ForBlockNode();

@@ -61,6 +61,7 @@ public class ForNode extends AbstractSqlNode implements SpaceStrippingNode {
         children.clear();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public ForNode copy() {
         ForNode clone = new ForNode(location, identifier, expression, text);

@@ -117,15 +117,15 @@ public class StandardPagingTransformer implements
             where.addNode(new FragmentNode(ROWNUMBER_COLUMN_NAME + " <= "));
             where.addNode(new FragmentNode(String.valueOf(bias + limit)));
         }
-        ForUpdateClauseNode originalForUpdate = node.getForUpdateClauseNode();
-        if (originalForUpdate != null) {
+        ForUpdateClauseNode forUpdate = node.getForUpdateClauseNode();
+        if (forUpdate != null) {
             where.addNode(new FragmentNode(" "));
         }
         SelectStatementNode result = new SelectStatementNode();
         result.setSelectClauseNode(select);
         result.setFromClauseNode(from);
         result.setWhereClauseNode(where);
-        result.setForUpdateClauseNode(originalForUpdate);
+        result.setForUpdateClauseNode(forUpdate);
         return result;
     }
 

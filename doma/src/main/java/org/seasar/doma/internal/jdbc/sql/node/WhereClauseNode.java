@@ -33,6 +33,7 @@ public class WhereClauseNode extends AbstractClauseNode {
         super(wordNode);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public WhereClauseNode copy() {
         WhereClauseNode clone = new WhereClauseNode(wordNode.copy());

@@ -93,6 +93,7 @@ public class IfBlockNode extends AbstractSqlNode implements BlockNode {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public IfBlockNode copy() {
         IfBlockNode clone = new IfBlockNode();

@@ -39,6 +39,7 @@ public class ElseNode extends AbstractSqlNode implements SpaceStrippingNode {
         children.clear();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public ElseNode copy() {
         ElseNode clone = new ElseNode(text);

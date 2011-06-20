@@ -53,6 +53,7 @@ public class IfNode extends AbstractSqlNode implements SpaceStrippingNode {
         children.clear();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public IfNode copy() {
         IfNode clone = new IfNode(location, expression, text);

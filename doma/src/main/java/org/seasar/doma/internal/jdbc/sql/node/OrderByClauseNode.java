@@ -33,6 +33,7 @@ public class OrderByClauseNode extends AbstractClauseNode {
         super(wordNode);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public OrderByClauseNode copy() {
         OrderByClauseNode clone = new OrderByClauseNode(wordNode.copy());

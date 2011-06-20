@@ -45,6 +45,7 @@ public class WordNode extends AbstractSqlNode {
                 "addNode");
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public WordNode copy() {
         return this;

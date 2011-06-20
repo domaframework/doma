@@ -118,6 +118,7 @@ public class SelectStatementNode extends AbstractSqlNode {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public SqlNode copy() {
         CopyingVisitor visitor = new CopyingVisitor();

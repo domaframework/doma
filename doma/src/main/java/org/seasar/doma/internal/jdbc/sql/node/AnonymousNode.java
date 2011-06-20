@@ -28,6 +28,7 @@ public class AnonymousNode extends AbstractSqlNode {
     public AnonymousNode() {
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public AnonymousNode copy() {
         AnonymousNode clone = new AnonymousNode();

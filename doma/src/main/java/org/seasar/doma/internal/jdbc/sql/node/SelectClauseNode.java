@@ -33,6 +33,7 @@ public class SelectClauseNode extends AbstractClauseNode {
         super(wordNode);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public SelectClauseNode copy() {
         SelectClauseNode clone = new SelectClauseNode(wordNode.copy());

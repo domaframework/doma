@@ -33,6 +33,7 @@ public class GroupByClauseNode extends AbstractClauseNode {
         super(wordNode);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public GroupByClauseNode copy() {
         GroupByClauseNode clone = new GroupByClauseNode(wordNode.copy());

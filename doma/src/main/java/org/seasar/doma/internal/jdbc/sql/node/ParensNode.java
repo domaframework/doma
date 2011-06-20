@@ -75,6 +75,7 @@ public class ParensNode extends AbstractSqlNode {
         closedParensNode = OtherNode.of(")");
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public ParensNode copy() {
         ParensNode clone = new ParensNode(location);

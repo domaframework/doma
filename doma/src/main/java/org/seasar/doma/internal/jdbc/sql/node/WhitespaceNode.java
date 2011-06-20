@@ -61,6 +61,7 @@ public class WhitespaceNode extends AbstractSqlNode {
 
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public WhitespaceNode copy() {
         return this;

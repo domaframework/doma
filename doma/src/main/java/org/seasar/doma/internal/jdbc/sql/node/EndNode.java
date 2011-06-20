@@ -36,6 +36,7 @@ public class EndNode extends AbstractSqlNode implements SpaceStrippingNode {
         children.clear();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public EndNode copy() {
         EndNode clone = new EndNode(text);

@@ -81,12 +81,12 @@ public class SqlFile {
     /**
      * SQLの解析結果を返します。
      * <p>
-     * 呼び出し側で {@link SqlNode} を変更しても、このインスタンスが保持したSQLの解析結果は影響を受けません。
+     * 呼び出し側でSQLの解析結果を変更してはいけません。
      * 
      * @return SQLの解析結果
      */
     public SqlNode getSqlNode() {
-        return sqlNode.copy();
+        return sqlNode;
     }
 
     @Override

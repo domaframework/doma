@@ -25,11 +25,6 @@ import junit.framework.TestCase;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
-import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
-import org.seasar.doma.internal.jdbc.sql.node.FragmentNode;
-import org.seasar.doma.internal.jdbc.sql.node.OtherNode;
-import org.seasar.doma.internal.jdbc.sql.node.WhitespaceNode;
-import org.seasar.doma.internal.jdbc.sql.node.WordNode;
 import org.seasar.doma.internal.util.ResourceUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlKind;
@@ -620,23 +615,6 @@ public class SqlParserTest extends TestCase {
         assertEquals("select * from aaa where (\n\n ddd is null\n )",
                 sql.getFormattedSql());
         assertEquals(0, sql.getParameters().size());
-    }
-
-    public void testOptimizer() throws Exception {
-        AnonymousNode node = new AnonymousNode();
-        node.addNode(WhitespaceNode.of(" "));
-        node.addNode(new WordNode("abc"));
-        node.addNode(WhitespaceNode.of(" "));
-        node.addNode(OtherNode.of("="));
-        node.addNode(WhitespaceNode.of(" "));
-        node.addNode(new WordNode("?"));
-
-        new SqlParser.Optimizer().optimize(node);
-        List<SqlNode> children = node.getChildren();
-        assertEquals(2, children.size());
-        assertEquals(WhitespaceNode.class, children.get(0).getClass());
-        assertEquals(" ", ((WhitespaceNode) children.get(0)).getWhitespace());
-        assertEquals("abc = ?", ((FragmentNode) children.get(1)).getFragment());
     }
 
     public void testEmptyParens() throws Exception {

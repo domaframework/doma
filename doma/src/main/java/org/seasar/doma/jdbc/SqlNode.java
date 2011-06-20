@@ -23,6 +23,8 @@ import org.seasar.doma.DomaNullPointerException;
  * SQLの文字列の解析結果です。
  * <p>
  * このインタフェースの実装はスレッドセーフであることは要求されません。
+ * <p>
+ * このインスタンスのライフサイクルを制御できない場合は参照専用として扱わなければいけません。
  * 
  * @author taedium
  * 
@@ -34,7 +36,9 @@ public interface SqlNode {
      * 
      * @param child
      *            子ノード
+     * @deprecated 1.15.1から非推奨となりました。
      */
+    @Deprecated
     void addNode(SqlNode child);
 
     /**
@@ -48,7 +52,9 @@ public interface SqlNode {
      * このノードをコピー(deep copy)します。
      * 
      * @return このノードのコピー
+     * @deprecated 1.15.1から非推奨となりました。
      */
+    @Deprecated
     SqlNode copy();
 
     /**
