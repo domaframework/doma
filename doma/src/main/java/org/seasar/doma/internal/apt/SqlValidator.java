@@ -116,15 +116,17 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
                 variableName);
         if (node.getWordNode() != null) {
             if (!isBindable(typeDeclaration)) {
+                String sql = getSql(location);
                 throw new AptException(Message.DOMA4153, env, methodElement,
-                        path, location.getSql(), location.getLineNumber(),
+                        path, sql, location.getLineNumber(),
                         location.getPosition(), variableName,
                         typeDeclaration.getQualifiedName());
             }
         } else {
             if (!isBindableIterable(typeDeclaration)) {
+                String sql = getSql(location);
                 throw new AptException(Message.DOMA4161, env, methodElement,
-                        path, location.getSql(), location.getLineNumber(),
+                        path, sql, location.getLineNumber(),
                         location.getPosition(), variableName,
                         typeDeclaration.getQualifiedName());
             }
@@ -180,10 +182,10 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
         TypeDeclaration typeDeclaration = validateExpressionVariable(location,
                 expression);
         if (!typeDeclaration.isBooleanType()) {
+            String sql = getSql(location);
             throw new AptException(Message.DOMA4140, env, methodElement, path,
-                    location.getSql(), location.getLineNumber(),
-                    location.getPosition(), expression,
-                    typeDeclaration.getQualifiedName());
+                    sql, location.getLineNumber(), location.getPosition(),
+                    expression, typeDeclaration.getQualifiedName());
         }
         visitNode(node, p);
         return null;
@@ -196,10 +198,10 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
         TypeDeclaration typeDeclaration = validateExpressionVariable(location,
                 expression);
         if (!typeDeclaration.isBooleanType()) {
+            String sql = getSql(location);
             throw new AptException(Message.DOMA4141, env, methodElement, path,
-                    location.getSql(), location.getLineNumber(),
-                    location.getPosition(), expression,
-                    typeDeclaration.getQualifiedName());
+                    sql, location.getLineNumber(), location.getPosition(),
+                    expression, typeDeclaration.getQualifiedName());
         }
         visitNode(node, p);
         return null;
@@ -214,19 +216,19 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
                 expression);
         TypeMirror typeMirror = typeDeclaration.getType();
         if (!TypeMirrorUtil.isAssignable(typeMirror, Iterable.class, env)) {
+            String sql = getSql(location);
             throw new AptException(Message.DOMA4149, env, methodElement, path,
-                    location.getSql(), location.getLineNumber(),
-                    location.getPosition(), expression,
-                    typeDeclaration.getQualifiedName());
+                    sql, location.getLineNumber(), location.getPosition(),
+                    expression, typeDeclaration.getQualifiedName());
         }
         DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(typeMirror,
                 env);
         List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
         if (typeArgs.isEmpty()) {
+            String sql = getSql(location);
             throw new AptException(Message.DOMA4150, env, methodElement, path,
-                    location.getSql(), location.getLineNumber(),
-                    location.getPosition(), expression,
-                    typeDeclaration.getQualifiedName());
+                    sql, location.getLineNumber(), location.getPosition(),
+                    expression, typeDeclaration.getQualifiedName());
         }
 
         TypeMirror originalIdentifierType = expressionValidator
