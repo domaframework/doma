@@ -58,6 +58,13 @@ import tutorial.dao.EmployeeDaoImpl;
 			<p>
 				このメッセージが出力されても、実際にはコンパイルは成功しています。
 			</p>
+			<p>
+			</p>
+			<p>
+				もう1つの回避方法は、aptにより生成されるJavaコードに直接依存するコードを書かないことです。
+				この方法を利用する場合、aptにより生成されるJavaコードのクラスには実行時にリフレクションを使ってアクセスする必要があります。
+				この場合、自前でファクトリクラスを作成するか、Seasar2やSpring Frameworkといった汎用的なDIコンテナを活用することを推奨します。
+			</p>
 		</section>
 		<section name="Antによるビルド">
 			<p>
@@ -125,22 +132,21 @@ import tutorial.dao.EmployeeDaoImpl;
 			<p>
 				<a href="http://maven.apache.org/">Maven</a>でビルドを行うには、あらかじめMavenをインストールしてください。
 				Maven 2.2.1で動作を確認しています。
-				ここでは、maven-antrun-pluginを使用しています。Antについてもあらかじめインストールしてください。
+			</p>
+			<p>
+				Mavenのプラグインであるmaven-compiler-pluginを使うとコンパイルとaptの処理を実行できますが、maven-compiler-pluginはaptに複数のパラメータを渡せないというバグがあります。
+				このバグは、<a href="http://jira.codehaus.org/browse/MCOMPILER-135">MCOMPILER-135</a>としてJIRAに登録されています。
+				そこで、maven-compiler-pluginではコンパイルのみを行い、aptの処理にはmaven-processor-pluginを利用します。
 			</p>
 			<p>
 				Mavenでビルドを行う際のポイントを示します。
 			</p>
 			<ul>
-				<li>Seasarのリポジトリを指定する</li>
 				<li>依存関係の設定でdomaへの依存を指定する</li>
-				<li>maven-compiler-pluginでは、excludesタグを使って実質的にコンパイルを行わない</li>
-				<li>実際のコンパイルはmaven-antrun-pluginの中でjavacタスクにより行う</li>
-				<li>javacタスクのclasspathref属性にはmaven.compile.classpathを指定する</li>
-				<li>javacの-sオプションを使い、aptで生成されるコードの出力先ディレクトリを指定する</li>
+				<li>maven-resources-pluginを使いSQLファイルのコピーを行う</li>
+				<li>上記処理後、maven-processor-pluginでapt処理を行う</li>
+				<li>上記処理後、maven-compiler-pluginを使いコンパイルを行う（ただし、aptの処理は行わない。つまり、compilerArgumentで-proc:noneを指定する）</li>
 			</ul>
-			<p>
-				コンパイルをAntで行う理由は、maven-compiler-pluginでは、javacのバグを回避できないためです。
-			</p>
 			<p>
 				サンプルのpom.xmlの抜粋を示します。pom.xmlは、チュートリアルに含まれるものです。
 				チュートリアルは<a href="../downloads.html">ダウンロードページ</a>からダウンロードできます。
@@ -150,23 +156,6 @@ import tutorial.dao.EmployeeDaoImpl;
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     
-    ...
-    
-    <repositories>
-        <repository>
-            <id>maven.seasar.org</id>
-            <name>The Seasar Foundation Maven2 Repository</name>
-            <url>http://maven.seasar.org/maven2</url>
-        </repository>
-        <repository>
-            <id>maven.snapshot.seasar.org</id>
-            <name>The Seasar Foundation Maven2 Repository(snapshot)</name>
-            <url>http://maven.seasar.org/maven2-snapshot</url>
-        </repository>
-    </repositories>
-    
-    ...
-    
     <!-- Build Settings -->
     <build>
         <defaultGoal>validate</defaultGoal>
@@ -174,13 +163,12 @@ import tutorial.dao.EmployeeDaoImpl;
             <plugins>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
+                    <version>2.3.2</version>
                     <configuration>
                         <source>1.6</source>
                         <target>1.6</target>
                         <encoding>UTF-8</encoding>
-                        <excludes>
-                            <exclude>**/*</exclude>
-                        </excludes>
+                        <compilerArgument>-proc:none</compilerArgument>
                     </configuration>
                 </plugin>
             </plugins>
@@ -190,25 +178,25 @@ import tutorial.dao.EmployeeDaoImpl;
             ...
             
             <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.bsc.maven</groupId>
+                <artifactId>maven-processor-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>ant-compile</id>
-                        <phase>compile</phase>
-                        <configuration>
-                            <tasks>
-                                <property name="apt_generated" value="target/apt_generated"/>
-                                <delete dir="${apt_generated}" failonerror="false"/>
-                                <mkdir dir="${apt_generated}"/>
-                                <javac fork="yes" compiler="javac1.6" debug="on" encoding="UTF-8"
-                                    classpathref="maven.compile.classpath" srcdir="src/main/java" destdir="target/classes">
-                                    <compilerarg line="-s ${apt_generated}" />
-                                </javac>
-                            </tasks>
-                        </configuration>
+                        <id>process</id>
                         <goals>
-                            <goal>run</goal>
+                            <goal>process</goal>
                         </goals>
+                        <phase>process-resources</phase>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/apt_generated</outputDirectory>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -231,6 +219,9 @@ import tutorial.dao.EmployeeDaoImpl;
         
     </dependencies>
 </project>]]></source>
+			<p>
+				この例では使用していませんが、aptにパラメータを渡す場合にはmaven-processor-pluginのcompilerArguments要素を使ってください。
+			</p>
 			<p>
 				javacタスク実行時にはjavacのバグによりエラーメッセージが誤って報告されますが、「BUILD SUCCESSFUL」というメッセージとともにMavenの実行が終了すれば、ビルドは成功しています。
 			</p>

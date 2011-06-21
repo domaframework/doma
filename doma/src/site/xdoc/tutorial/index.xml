@@ -80,8 +80,9 @@
 			<subsection name="プロジェクトのインポート">
 				<p>
 					<a href="../downloads.html">ダウンロード</a>のページからdoma-tutorial-x.x.x.zipをダウンロードし、
-					Eclipseへインポートしてください。インポートの具体的な手順は次のとおりです。
+					Eclipseへインポートしてください。インポートの具体的な手順は次のとおりです。2つの方法を説明します。
 				</p>
+				<h4>通常の方法</h4>
 				<ul>
 					<li>Eclipseのメニューから「File」 - 「Import」を選択します。</li>
 					<li>「Existing Projects to Workspace」を選択し、「Next」ボタンを押します。</li>
@@ -90,6 +91,23 @@
 				</ul>
 				<p>
 					インポートが完了したら、doma-tutorialプロジェクトを右クリックし、コンテキストメニューから「Run As」 - 「JUnit Test」 を実行してください。
+					すべてのテストが成功したらセットアップが正しく完了しています。
+				</p>
+				<h4>m2eclipseを使ってMaven Projectとしてインポートする方法</h4>
+				<ul>
+					<li>doma-tutorial-x.x.x.zipを解凍します。</li>
+					<li>Eclipseのメニューから「File」 - 「Import」を選択します。</li>
+					<li>「Existing Maven Projects」を選択し、「Next」ボタンを押します。</li>
+					<li>Root Directoryの入力欄にdoma-tutorial-x.x.x.zipを解凍したディレクトリを指定します。</li>
+					<li>「Projects」の項目に表示されるpom.xmlのチェックボックスをチェックし、「Finish」ボタンを押します。</li>
+					<li>インポートが完了した時点ではビルドエラーが発生します。</li>
+					<li>エラーを解消するために、プロジェクトのプロパティからJavaのビルドパスのダイアログを開きます。</li>
+					<li>Javaのビルドパスのダイアログでは、src/main/resourcesとsrc/test/resourcesのソースフォルダの「Exclude:**/*」となっている項目を選択して「Remove」を押します（「Exclude:(None)」に変わります）。</li>
+					<li>また、同じJavaのビルドパスのダイアログで「Add Folder...」を押し、プロジェクト直下の.apt_generatedをソースフォルダとして登録します。</li>
+				</ul>
+				<p>
+					以上の手順を実行し終えるとビルドエラーは解消されます。
+					最後に、doma-tutorialプロジェクトを右クリックし、コンテキストメニューから「Run As」 - 「JUnit Test」 を実行してください。
 					すべてのテストが成功したらセットアップが正しく完了しています。
 				</p>
 			</subsection>
