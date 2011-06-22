@@ -581,6 +581,7 @@ public class SqlParser {
         return peek() instanceof BindVariableNode;
     }
 
+    @SuppressWarnings("deprecation")
     protected void addNode(SqlNode node) {
         if (isAfterBindVariableNode()) {
             BindVariableNode bindVariableNode = pop();

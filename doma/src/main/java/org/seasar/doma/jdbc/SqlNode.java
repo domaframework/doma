@@ -36,7 +36,7 @@ public interface SqlNode {
      * 
      * @param child
      *            子ノード
-     * @deprecated 1.15.1から非推奨となりました。
+     * @deprecated 1.16.0から非推奨となりました。
      */
     @Deprecated
     void addNode(SqlNode child);
@@ -52,7 +52,7 @@ public interface SqlNode {
      * このノードをコピー(deep copy)します。
      * 
      * @return このノードのコピー
-     * @deprecated 1.15.1から非推奨となりました。
+     * @deprecated 1.15.0から非推奨となりました。
      */
     @Deprecated
     SqlNode copy();
