@@ -43,5 +43,7 @@ public interface QueryMeta {
 
     QueryKind getQueryKind();
 
+    boolean isVarArgs();
+
     <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p);
 }

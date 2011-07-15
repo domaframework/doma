@@ -30,4 +30,9 @@ public interface DelegateDao {
     @Delegate(to = DelegateDaoDelegate.class)
     BigDecimal execute(String aaa, Integer bbb);
 
+    @Delegate(to = DelegateDaoDelegate.class)
+    BigDecimal execute2(String aaa, Integer bbb, String... ccc);
+
+    @Delegate(to = DelegateDaoDelegate.class)
+    void execute3(String aaa, Integer bbb, String... ccc);
 }

@@ -137,4 +137,8 @@ public abstract class AbstractQueryMeta implements QueryMeta {
         this.parameterMetas.add(queryParameterMeta);
     }
 
+    @Override
+    public boolean isVarArgs() {
+        return this.executableElement.isVarArgs();
+    }
 }

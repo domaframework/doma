@@ -229,8 +229,11 @@ public class DaoGenerator extends AbstractGenerator {
         for (Iterator<QueryParameterMeta> it = m.getParameterMetas().iterator(); it
                 .hasNext();) {
             QueryParameterMeta parameterMeta = it.next();
-            print("%1$s %2$s", parameterMeta.getTypeName(),
-                    parameterMeta.getName());
+            String parameterTypeName = parameterMeta.getTypeName();
+            if (!it.hasNext() && m.isVarArgs()) {
+                parameterTypeName = parameterTypeName.replace("[]", "...");
+            }
+            print("%1$s %2$s", parameterTypeName, parameterMeta.getName());
             if (it.hasNext()) {
                 print(", ");
             }
@@ -987,7 +990,9 @@ public class DaoGenerator extends AbstractGenerator {
             print(");%n");
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
                     m.getName());
-            iprint("return __result;%n");
+            if (!"void".equals(resultMeta.getTypeName())) {
+                iprint("return __result;%n");
+            }
 
             printThrowingStatements(m);
             return null;

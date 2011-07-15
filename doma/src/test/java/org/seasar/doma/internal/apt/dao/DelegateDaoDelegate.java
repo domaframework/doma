@@ -35,4 +35,10 @@ public class DelegateDaoDelegate {
         return null;
     }
 
+    public BigDecimal execute2(String aaa, Integer bbb, String... ccc) {
+        return null;
+    }
+
+    public void execute3(String aaa, Integer bbb, String... ccc) {
+    }
 }
