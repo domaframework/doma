@@ -18,6 +18,7 @@ package org.seasar.doma.it.sqlfile;
 import static junit.framework.Assert.*;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -106,5 +107,41 @@ public class SqlFileSelectIterationCallbackTest {
                     }
                 }, SelectOptions.get().limit(5).offset(3));
         assertTrue(new BigDecimal("6900").compareTo(total) == 0);
+    }
+
+    @Test
+    public void testMap() throws Exception {
+        EmployeeDao dao = new EmployeeDaoImpl();
+        Integer count = dao
+                .selectAllAsMapList(new IterationCallback<Integer, Map<String, Object>>() {
+
+                    int count;
+
+                    @Override
+                    public Integer iterate(Map<String, Object> target,
+                            IterationContext context) {
+                        count++;
+                        return count;
+                    }
+                });
+        assertEquals(new Integer(14), count);
+    }
+
+    @Test
+    public void testMap_limitOffset() throws Exception {
+        EmployeeDao dao = new EmployeeDaoImpl();
+        Integer count = dao.selectAllAsMapList(
+                new IterationCallback<Integer, Map<String, Object>>() {
+
+                    int count;
+
+                    @Override
+                    public Integer iterate(Map<String, Object> target,
+                            IterationContext context) {
+                        count++;
+                        return count;
+                    }
+                }, SelectOptions.get().limit(5).offset(3));
+        assertEquals(new Integer(5), count);
     }
 }

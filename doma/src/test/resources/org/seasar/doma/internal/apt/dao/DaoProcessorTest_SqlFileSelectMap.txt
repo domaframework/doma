@@ -1,0 +1,91 @@
+package org.seasar.doma.internal.apt.dao;
+
+/** */
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
+public class SqlFileSelectMapDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.dao.SqlFileSelectMapDao {
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    /** */
+    public SqlFileSelectMapDaoImpl() {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig());
+    }
+
+    /**
+     * @param connection the connection
+     */
+    public SqlFileSelectMapDaoImpl(java.sql.Connection connection) {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig(), connection);
+    }
+
+    /**
+     * @param dataSource the dataSource
+     */
+    public SqlFileSelectMapDaoImpl(javax.sql.DataSource dataSource) {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
+    }
+
+    @Override
+    public java.util.Map<java.lang.String, java.lang.Object> selectById(java.lang.Integer id, org.seasar.doma.jdbc.SelectOptions options) {
+        entering("org.seasar.doma.internal.apt.dao.SqlFileSelectMapDaoImpl", "selectById", id, options);
+        try {
+            if (options == null) {
+                throw new org.seasar.doma.DomaNullPointerException("options");
+            }
+            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
+            __query.setConfig(config);
+            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/SqlFileSelectMapDao/selectById.sql");
+            __query.setOptions(options);
+            __query.addParameter("id", java.lang.Integer.class, id);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileSelectMapDaoImpl");
+            __query.setCallerMethodName("selectById");
+            __query.setResultEnsured(false);
+            __query.setQueryTimeout(-1);
+            __query.setMaxRows(-1);
+            __query.setFetchSize(-1);
+            __query.prepare();
+            org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.Map<java.lang.String, java.lang.Object>> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.Map<java.lang.String, java.lang.Object>>(__query, new org.seasar.doma.internal.jdbc.command.MapSingleResultHandler(org.seasar.doma.MapKeyNamingType.CAMEL_CASE));
+            java.util.Map<java.lang.String, java.lang.Object> __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.dao.SqlFileSelectMapDaoImpl", "selectById", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.dao.SqlFileSelectMapDaoImpl", "selectById", __e);
+            throw __e;
+        }
+    }
+
+    @Override
+    public java.util.List<java.util.Map<java.lang.String, java.lang.Object>> selectByNameAndSalary(java.lang.String name, java.math.BigDecimal salary, org.seasar.doma.jdbc.SelectOptions options) {
+        entering("org.seasar.doma.internal.apt.dao.SqlFileSelectMapDaoImpl", "selectByNameAndSalary", name, salary, options);
+        try {
+            if (options == null) {
+                throw new org.seasar.doma.DomaNullPointerException("options");
+            }
+            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
+            __query.setConfig(config);
+            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/SqlFileSelectMapDao/selectByNameAndSalary.sql");
+            __query.setOptions(options);
+            __query.addParameter("name", java.lang.String.class, name);
+            __query.addParameter("salary", java.math.BigDecimal.class, salary);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileSelectMapDaoImpl");
+            __query.setCallerMethodName("selectByNameAndSalary");
+            __query.setResultEnsured(false);
+            __query.setQueryTimeout(-1);
+            __query.setMaxRows(-1);
+            __query.setFetchSize(-1);
+            __query.prepare();
+            org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<java.util.Map<java.lang.String, java.lang.Object>>> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<java.util.List<java.util.Map<java.lang.String, java.lang.Object>>>(__query, new org.seasar.doma.internal.jdbc.command.MapResultListHandler(org.seasar.doma.MapKeyNamingType.NONE));
+            java.util.List<java.util.Map<java.lang.String, java.lang.Object>> __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.dao.SqlFileSelectMapDaoImpl", "selectByNameAndSalary", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.dao.SqlFileSelectMapDaoImpl", "selectByNameAndSalary", __e);
+            throw __e;
+        }
+    }
+
+}

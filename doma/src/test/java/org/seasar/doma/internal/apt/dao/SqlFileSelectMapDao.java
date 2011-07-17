@@ -15,37 +15,27 @@
  */
 package org.seasar.doma.internal.apt.dao;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 import org.seasar.doma.Dao;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.Select;
-import org.seasar.doma.internal.apt.entity.Emp;
-import org.seasar.doma.jdbc.IterationCallback;
-
-import example.domain.PhoneNumber;
+import org.seasar.doma.jdbc.SelectOptions;
 
 /**
+ * 
  * @author taedium
  * 
  */
 @Dao(config = MyConfig.class)
-public interface IterationCallbackDao {
+public interface SqlFileSelectMapDao {
 
-    @Select(iterate = true)
-    Integer iterateByIdAndName(Integer id, String name,
-            IterationCallback<Integer, Emp> callback);
+    @Select(mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
+    Map<String, Object> selectById(Integer id, SelectOptions options);
 
-    @Select(iterate = true)
-    <R> R iterateById(Integer id, IterationCallback<R, PhoneNumber> callback);
-
-    @Select(iterate = true)
-    <R extends Number> R iterate(IterationCallback<R, String> callback);
-
-    @Select(iterate = true)
-    String iterateWithHogeIterationCallback(HogeIterationCallback callback);
-
-    @Select(iterate = true, mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
-    <R> R iterateByIdAsMap(Integer id,
-            IterationCallback<R, Map<String, Object>> callback);
+    @Select
+    List<Map<String, Object>> selectByNameAndSalary(String name,
+            BigDecimal salary, SelectOptions options);
 }

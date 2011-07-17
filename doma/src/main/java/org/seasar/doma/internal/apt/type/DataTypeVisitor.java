@@ -40,4 +40,7 @@ public interface DataTypeVisitor<R, P, TH extends Throwable> {
     R visitWrapperType(WrapperType dataType, P p) throws TH;
 
     R visitEnumWrapperType(EnumWrapperType dataType, P p) throws TH;
+
+    R visitMapType(MapType dataType, P p) throws TH;
+
 }

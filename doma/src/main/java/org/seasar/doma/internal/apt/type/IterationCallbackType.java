@@ -90,8 +90,12 @@ public class IterationCallbackType extends AbstractDataType {
                     callbackType.targetType = BasicType.newInstance(
                             callbackType.targetTypeMirror, env);
                     if (callbackType.targetType == null) {
-                        callbackType.targetType = AnyType.newInstance(
+                        callbackType.targetType = MapType.newInstance(
                                 callbackType.targetTypeMirror, env);
+                        if (callbackType.targetType == null) {
+                            callbackType.targetType = AnyType.newInstance(
+                                    callbackType.targetTypeMirror, env);
+                        }
                     }
                 }
             }

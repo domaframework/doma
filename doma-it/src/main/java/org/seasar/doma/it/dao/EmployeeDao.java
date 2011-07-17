@@ -17,10 +17,12 @@ package org.seasar.doma.it.dao;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import org.seasar.doma.BatchDelete;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Delete;
+import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.Select;
 import org.seasar.doma.it.ItConfig;
 import org.seasar.doma.it.entity.Employee;
@@ -41,6 +43,20 @@ public interface EmployeeDao {
 
     @Select
     Employee selectById(Integer employeeId, SelectOptions options);
+
+    @Select(mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
+    Map<String, Object> selectByIdAsMap(Integer employeeId);
+
+    @Select(mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
+    List<Map<String, Object>> selectAllAsMapList();
+
+    @Select(iterate = true, mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
+    <R> R selectAllAsMapList(IterationCallback<R, Map<String, Object>> callback);
+
+    @Select(iterate = true, mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
+    <R> R selectAllAsMapList(
+            IterationCallback<R, Map<String, Object>> callback,
+            SelectOptions options);
 
     @Select
     List<Employee> selectByNamePrefix(String employeeName);

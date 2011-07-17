@@ -23,7 +23,9 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.VariableElement;
 
+import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.Select;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
@@ -47,6 +49,8 @@ public class SelectMirror {
 
     protected AnnotationValue maxRows;
 
+    protected AnnotationValue mapKeyNaming;
+
     protected SelectMirror(AnnotationMirror annotationMirror) {
         this.annotationMirror = annotationMirror;
     }
@@ -69,6 +73,10 @@ public class SelectMirror {
 
     public AnnotationValue getMaxRows() {
         return maxRows;
+    }
+
+    public AnnotationValue getMapKeyNaming() {
+        return mapKeyNaming;
     }
 
     public int getQueryTimeoutValue() {
@@ -111,6 +119,16 @@ public class SelectMirror {
         return value.booleanValue();
     }
 
+    public MapKeyNamingType getMapKeyNamingValue() {
+        VariableElement enumConstant = AnnotationValueUtil
+                .toEnumConstant(mapKeyNaming);
+        if (enumConstant == null) {
+            throw new AptIllegalStateException("mapKeyNaming");
+        }
+        return MapKeyNamingType
+                .valueOf(enumConstant.getSimpleName().toString());
+    }
+
     public AnnotationMirror getAnnotationMirror() {
         return annotationMirror;
     }
@@ -139,6 +157,8 @@ public class SelectMirror {
                 result.fetchSize = value;
             } else if ("maxRows".equals(name)) {
                 result.maxRows = value;
+            } else if ("mapKeyNaming".equals(name)) {
+                result.mapKeyNaming = value;
             }
         }
         return result;

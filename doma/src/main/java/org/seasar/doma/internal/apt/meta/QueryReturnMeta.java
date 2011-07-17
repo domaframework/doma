@@ -31,6 +31,7 @@ import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.IterableType;
+import org.seasar.doma.internal.apt.type.MapType;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.message.Message;
 
@@ -84,6 +85,11 @@ public class QueryReturnMeta {
         BasicType basicType = BasicType.newInstance(type, env);
         if (basicType != null) {
             return basicType;
+        }
+
+        MapType mapType = MapType.newInstance(type, env);
+        if (mapType != null) {
+            return mapType;
         }
 
         return AnyType.newInstance(type, env);

@@ -28,6 +28,7 @@ import javax.sql.DataSource;
 
 import org.seasar.doma.AnnotationTarget;
 import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.apt.meta.AbstractCreateQueryMeta;
 import org.seasar.doma.internal.apt.meta.ArrayCreateQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoBatchModifyQueryMeta;
@@ -67,6 +68,7 @@ import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.EnumWrapperType;
 import org.seasar.doma.internal.apt.type.IterableType;
 import org.seasar.doma.internal.apt.type.IterationCallbackType;
+import org.seasar.doma.internal.apt.type.MapType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.apt.type.WrapperType;
 import org.seasar.doma.internal.jdbc.command.BasicIterationHandler;
@@ -78,6 +80,9 @@ import org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.EntityIterationHandler;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.MapIterationHandler;
+import org.seasar.doma.internal.jdbc.command.MapResultListHandler;
+import org.seasar.doma.internal.jdbc.command.MapSingleResultHandler;
 import org.seasar.doma.internal.jdbc.dao.AbstractDao;
 import org.seasar.doma.internal.jdbc.sql.BasicInOutParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
@@ -261,8 +266,8 @@ public class DaoGenerator extends AbstractGenerator {
     protected class MethodBodyGenerator implements QueryMetaVisitor<Void, Void> {
 
         @Override
-        public Void visistSqlFileSelectQueryMeta(SqlFileSelectQueryMeta m,
-                Void p) {
+        public Void visistSqlFileSelectQueryMeta(
+                final SqlFileSelectQueryMeta m, Void p) {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
@@ -364,6 +369,20 @@ public class DaoGenerator extends AbstractGenerator {
                             }
 
                             @Override
+                            public Void visitMapType(MapType dataType, Void p)
+                                    throws RuntimeException {
+                                MapKeyNamingType namingType = m.getMapKeyNamingType();
+                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(%4$s.%5$s, %6$s));%n",
+                                        commandClassName, resultMeta
+                                                .getTypeNameAsTypeParameter(),
+                                        MapIterationHandler.class.getName(),
+                                        namingType.getDeclaringClass()
+                                                .getName(), namingType.name(),
+                                        callbackParamName);
+                                return null;
+                            }
+
+                            @Override
                             public Void visitEntityType(EntityType dataType,
                                     Void p) throws RuntimeException {
                                 iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(%5$s.getSingletonInternal(), %6$s));%n",
@@ -453,6 +472,19 @@ public class DaoGenerator extends AbstractGenerator {
                             }
 
                             @Override
+                            public Void visitMapType(MapType dataType, Void p)
+                                    throws RuntimeException {
+                                MapKeyNamingType namingType = m.getMapKeyNamingType();
+                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s(%4$s.%5$s));%n",
+                                        commandClassName, dataType
+                                                .getTypeNameAsTypeParameter(),
+                                        MapSingleResultHandler.class.getName(),
+                                        namingType.getDeclaringClass()
+                                                .getName(), namingType.name());
+                                return null;
+                            }
+
+                            @Override
                             public Void visitEntityType(EntityType dataType,
                                     Void p) throws RuntimeException {
                                 iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(%4$s.getSingletonInternal()));%n",
@@ -533,6 +565,25 @@ public class DaoGenerator extends AbstractGenerator {
                                                         dataType.getTypeNameAsTypeParameter(),
                                                         getMetaTypeName(dataType
                                                                 .getTypeName()));
+                                                return null;
+                                            }
+
+                                            @Override
+                                            public Void visitMapType(
+                                                    MapType dataType, Void p)
+                                                    throws RuntimeException {
+                                                MapKeyNamingType namingType = m
+                                                        .getMapKeyNamingType();
+                                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s(%4$s.%5$s));%n",
+                                                        commandClassName,
+                                                        iterableType
+                                                                .getTypeName(),
+                                                        MapResultListHandler.class
+                                                                .getName(),
+                                                        namingType
+                                                                .getDeclaringClass()
+                                                                .getName(),
+                                                        namingType.name());
                                                 return null;
                                             }
 

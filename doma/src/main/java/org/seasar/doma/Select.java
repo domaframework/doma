@@ -75,6 +75,14 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
  * <td>エンティティクラスを実型引数とする {@code List}</td>
  * <td>空の {@code List}</td>
  * </tr>
+ * <tr>
+ * <td>{@code Map<String, Object>}</td>
+ * <td>null</td>
+ * </tr>
+ * <tr>
+ * <td>{@code Map<String, Object>} を実型引数とする {@code List}</td>
+ * <td>空の {@code List}</td>
+ * </tr>
  * </table>
  * </ul>
  * 
@@ -198,4 +206,12 @@ public @interface Select {
      * {@link NoResultException} がスローされます。
      */
     boolean ensureResult() default false;
+
+    /**
+     * 検索結果を @code{Map<Object, String>} もしくは @code{List<Map<Object, String>>}
+     * として取得する場合のマップのキーに対するネーミング規約です。
+     * 
+     * @since 1.7.0
+     */
+    MapKeyNamingType mapKeyNaming() default MapKeyNamingType.NONE;
 }

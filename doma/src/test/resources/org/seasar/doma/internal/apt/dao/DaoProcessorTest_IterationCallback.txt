@@ -142,4 +142,33 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.internal.jdbc.dao.
         }
     }
 
+    @Override
+    public <R> R iterateByIdAsMap(java.lang.Integer id, org.seasar.doma.jdbc.IterationCallback<R, java.util.Map<java.lang.String, java.lang.Object>> callback) {
+        entering("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl", "iterateByIdAsMap", id, callback);
+        try {
+            if (callback == null) {
+                throw new org.seasar.doma.DomaNullPointerException("callback");
+            }
+            org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
+            __query.setConfig(config);
+            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/IterationCallbackDao/iterateByIdAsMap.sql");
+            __query.addParameter("id", java.lang.Integer.class, id);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl");
+            __query.setCallerMethodName("iterateByIdAsMap");
+            __query.setResultEnsured(false);
+            __query.setQueryTimeout(-1);
+            __query.setMaxRows(-1);
+            __query.setFetchSize(-1);
+            __query.prepare();
+            org.seasar.doma.internal.jdbc.command.SelectCommand<R> __command = new org.seasar.doma.internal.jdbc.command.SelectCommand<R>(__query, new org.seasar.doma.internal.jdbc.command.MapIterationHandler<R>(org.seasar.doma.MapKeyNamingType.CAMEL_CASE, callback));
+            R __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl", "iterateByIdAsMap", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl", "iterateByIdAsMap", __e);
+            throw __e;
+        }
+    }
+
 }

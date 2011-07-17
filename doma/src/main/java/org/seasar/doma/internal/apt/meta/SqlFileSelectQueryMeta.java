@@ -17,6 +17,7 @@ package org.seasar.doma.internal.apt.meta;
 
 import javax.lang.model.element.ExecutableElement;
 
+import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.apt.mirror.SelectMirror;
 import org.seasar.doma.internal.apt.type.IterationCallbackType;
 import org.seasar.doma.internal.apt.type.SelectOptionsType;
@@ -101,6 +102,10 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
     public boolean getEnsureResult() {
         return selectMirror.getEnsureResultValue();
+    }
+
+    public MapKeyNamingType getMapKeyNamingType() {
+        return selectMirror.getMapKeyNamingValue();
     }
 
     @Override

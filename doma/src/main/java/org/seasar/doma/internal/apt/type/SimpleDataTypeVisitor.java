@@ -86,4 +86,8 @@ public class SimpleDataTypeVisitor<R, P, TH extends Throwable> implements
         return visitWrapperType(dataType, p);
     }
 
+    @Override
+    public R visitMapType(MapType dataType, P p) throws TH {
+        return defaultAction(dataType, p);
+    }
 }

@@ -30,7 +30,7 @@ import java.sql.ResultSet;
  * @param <R>
  *            戻り値の型
  * @param <T>
- *            処理対象の型。すなわち、基本型、ドメインクラス、もしくはエンティティクラス
+ *            処理対象の型。すなわち、基本型、ドメインクラス、エンティティクラス、もしくは @coce{Map<String, Object>}
  */
 public interface IterationCallback<R, T> {
 

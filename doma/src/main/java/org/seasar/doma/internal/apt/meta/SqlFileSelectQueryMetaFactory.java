@@ -30,6 +30,7 @@ import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.IterableType;
 import org.seasar.doma.internal.apt.type.IterationCallbackType;
+import org.seasar.doma.internal.apt.type.MapType;
 import org.seasar.doma.internal.apt.type.SelectOptionsType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.message.Message;
@@ -113,12 +114,17 @@ public class SqlFileSelectQueryMetaFactory extends
                         }
 
                         @Override
+                        public Void visitMapType(MapType dataType, Void p)
+                                throws RuntimeException {
+                            return null;
+                        }
+
+                        @Override
                         public Void visitEntityType(EntityType dataType, Void p)
                                 throws RuntimeException {
                             return null;
                         }
                     }, null);
-
         } else {
             returnMeta.getDataType().accept(
                     new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
@@ -155,6 +161,12 @@ public class SqlFileSelectQueryMetaFactory extends
                         }
 
                         @Override
+                        public Void visitMapType(MapType dataType, Void p)
+                                throws RuntimeException {
+                            return null;
+                        }
+
+                        @Override
                         public Void visitIterableType(IterableType dataType,
                                 Void p) throws RuntimeException {
                             if (!dataType.isList()) {
@@ -183,6 +195,13 @@ public class SqlFileSelectQueryMetaFactory extends
                                         @Override
                                         public Void visitDomainType(
                                                 DomainType dataType, Void p)
+                                                throws RuntimeException {
+                                            return null;
+                                        }
+
+                                        @Override
+                                        public Void visitMapType(
+                                                MapType dataType, Void p)
                                                 throws RuntimeException {
                                             return null;
                                         }

@@ -79,8 +79,12 @@ public class IterableType extends AbstractDataType {
                     iterableType.elementType = BasicType.newInstance(
                             iterableType.elementTypeMirror, env);
                     if (iterableType.elementType == null) {
-                        iterableType.elementType = AnyType.newInstance(
+                        iterableType.elementType = MapType.newInstance(
                                 iterableType.elementTypeMirror, env);
+                        if (iterableType.elementType == null) {
+                            iterableType.elementType = AnyType.newInstance(
+                                    iterableType.elementTypeMirror, env);
+                        }
                     }
                 }
             }

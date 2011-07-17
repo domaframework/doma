@@ -41,6 +41,16 @@ public class DaoProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
+    public void testSqlFileSelectMap() throws Exception {
+        Class<?> target = SqlFileSelectMapDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
     public void testSqlFileSelectDomain() throws Exception {
         Class<?> target = SqlFileSelectDomainDao.class;
         DaoProcessor processor = new DaoProcessor();

@@ -3,6 +3,7 @@ package org.seasar.doma.it.sqlfile;
 import static org.junit.Assert.*;
 
 import java.util.List;
+import java.util.Map;
 
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.EmployeeDao;
@@ -50,4 +51,20 @@ public class SqlFileSelectTest {
         List<Employee> employees = dao.selectByNameSuffix("S");
         assertEquals(3, employees.size());
     }
+
+    public void testMap() throws Exception {
+        EmployeeDao dao = new EmployeeDaoImpl();
+        Map<String, Object> employee = dao.selectByIdAsMap(1);
+        assertNotNull(employee);
+        assertNotNull(employee.get("employeeId"));
+        assertNotNull(employee.get("employeeName"));
+        assertNotNull(employee.get("hiredate"));
+    }
+
+    public void testMapList() throws Exception {
+        EmployeeDao dao = new EmployeeDaoImpl();
+        List<Map<String, Object>> employees = dao.selectAllAsMapList();
+        assertEquals(14, employees.size());
+    }
+
 }

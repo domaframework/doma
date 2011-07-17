@@ -67,6 +67,7 @@ import org.seasar.doma.wrapper.FloatWrapper;
 import org.seasar.doma.wrapper.IntegerWrapper;
 import org.seasar.doma.wrapper.LongWrapper;
 import org.seasar.doma.wrapper.NClobWrapper;
+import org.seasar.doma.wrapper.ObjectWrapper;
 import org.seasar.doma.wrapper.ShortWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 import org.seasar.doma.wrapper.TimeWrapper;
@@ -613,6 +614,12 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
+        public Void visitObjectWrapper(ObjectWrapper wrapper,
+                JdbcMappingFunction p) throws SQLException {
+            return p.apply(wrapper, JdbcTypes.OBJECT);
+        }
+
+        @Override
         public Void visitUnknownWrapper(Wrapper<?> wrapper,
                 JdbcMappingFunction p) throws SQLException {
             throw new JdbcException(Message.DOMA2019, wrapper.getClass()
@@ -750,6 +757,12 @@ public class StandardDialect implements Dialect {
         public String visitUtilDateWrapper(UtilDateWrapper wrapper,
                 SqlLogFormattingFunction p) {
             return p.apply(wrapper, JdbcTypes.UTIL_DATE);
+        }
+
+        @Override
+        public String visitObjectWrapper(ObjectWrapper wrapper,
+                SqlLogFormattingFunction p) {
+            return p.apply(wrapper, JdbcTypes.OBJECT);
         }
 
         @Override
