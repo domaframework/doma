@@ -35,21 +35,21 @@ import org.seasar.doma.jdbc.Sql;
  */
 public class MapIterationHandler<R> implements ResultSetHandler<R> {
 
-    private final MapKeyNamingType keyNamingType;
+    private final MapKeyNamingType mapKeyNamingType;
 
     protected final IterationCallback<R, Map<String, Object>> iterationCallback;
 
-    public MapIterationHandler(MapKeyNamingType keyNamingType,
+    public MapIterationHandler(MapKeyNamingType mapKeyNamingType,
             IterationCallback<R, Map<String, Object>> iterationCallback) {
-        assertNotNull(keyNamingType, iterationCallback);
-        this.keyNamingType = keyNamingType;
+        assertNotNull(mapKeyNamingType, iterationCallback);
+        this.mapKeyNamingType = mapKeyNamingType;
         this.iterationCallback = iterationCallback;
     }
 
     @Override
     public R handle(ResultSet resultSet, SelectQuery query) throws SQLException {
         assertNotNull(resultSet, query);
-        MapFetcher fetcher = new MapFetcher(query, keyNamingType);
+        MapFetcher fetcher = new MapFetcher(query, mapKeyNamingType);
         IterationContext iterationContext = new IterationContext();
         boolean existent = false;
         R result = null;

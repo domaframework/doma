@@ -36,18 +36,18 @@ import org.seasar.doma.jdbc.Sql;
 public class MapResultListHandler implements
         ResultSetHandler<List<Map<String, Object>>> {
 
-    private final MapKeyNamingType keyNamingType;
+    private final MapKeyNamingType mapKeyNamingType;
 
-    public MapResultListHandler(MapKeyNamingType keyNamingType) {
-        assertNotNull(keyNamingType);
-        this.keyNamingType = keyNamingType;
+    public MapResultListHandler(MapKeyNamingType mapKeyNamingType) {
+        assertNotNull(mapKeyNamingType);
+        this.mapKeyNamingType = mapKeyNamingType;
     }
 
     @Override
     public List<Map<String, Object>> handle(ResultSet resultSet,
             SelectQuery query) throws SQLException {
         assertNotNull(resultSet, query);
-        MapFetcher fetcher = new MapFetcher(query, keyNamingType);
+        MapFetcher fetcher = new MapFetcher(query, mapKeyNamingType);
         List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
         while (resultSet.next()) {
             Map<String, Object> map = new LinkedHashMap<String, Object>();

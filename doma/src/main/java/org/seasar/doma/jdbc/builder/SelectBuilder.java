@@ -17,12 +17,14 @@ package org.seasar.doma.jdbc.builder;
 
 import java.sql.Statement;
 import java.util.List;
+import java.util.Map;
 
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Domain;
 import org.seasar.doma.Entity;
 import org.seasar.doma.EnumDomain;
+import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.jdbc.command.BasicIterationHandler;
 import org.seasar.doma.internal.jdbc.command.BasicResultListHandler;
 import org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler;
@@ -32,6 +34,9 @@ import org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.EntityIterationHandler;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
+import org.seasar.doma.internal.jdbc.command.MapIterationHandler;
+import org.seasar.doma.internal.jdbc.command.MapResultListHandler;
+import org.seasar.doma.internal.jdbc.command.MapSingleResultHandler;
 import org.seasar.doma.internal.jdbc.command.ResultSetHandler;
 import org.seasar.doma.internal.jdbc.command.SelectCommand;
 import org.seasar.doma.internal.jdbc.query.SqlSelectQuery;
@@ -225,6 +230,40 @@ public class SelectBuilder {
         return execute(singleResultHandler);
     }
 
+    /**
+     * {@code Map<String, Object>} として1件を返します。
+     * <p>
+     * 検索結果が存在しない場合は {@code null}を返しますが、
+     * {@link SelectBuilder#ensuerResult(boolean)} に {@code true} を設定することで、
+     * {@code null}を返す代わりに {@link NoResultException} をスローできます。
+     * 
+     * @param mapKeyNamingType
+     *            マップのキーのネーミング規約
+     * @return 検索結果
+     * 
+     * @throws DomaNullPointerException
+     *             引数が{@code null} の場合
+     * @throws NoResultException
+     *             {@link SelectBuilder#ensuerResult(boolean)} に {@code true}
+     *             を設定しており結果が存在しない場合
+     * @throws NonUniqueResultException
+     *             結果が2件以上返された場合
+     * @throws JdbcException
+     *             上記以外でJDBCに関する例外が発生した場合
+     * @since 1.17.0
+     */
+    public Map<String, Object> getSingleResult(MapKeyNamingType mapKeyNamingType) {
+        if (mapKeyNamingType == null) {
+            throw new DomaNullPointerException("mapKeyNamingType");
+        }
+        if (query.getMethodName() == null) {
+            query.setCallerMethodName("getSingleResult");
+        }
+        MapSingleResultHandler singleResultHandler = new MapSingleResultHandler(
+                mapKeyNamingType);
+        return execute(singleResultHandler);
+    }
+
     private <R> ResultSetHandler<R> createSingleResultHanlder(
             Class<R> resultClass) {
         if (resultClass.isAnnotationPresent(Entity.class)) {
@@ -281,6 +320,34 @@ public class SelectBuilder {
             query.setCallerMethodName("getResultList");
         }
         ResultSetHandler<List<R>> resultListHandler = createResultListHanlder(resultClass);
+        return execute(resultListHandler);
+    }
+
+    /**
+     * {@code List<Map<String, Object>>} として 複数件を返します。
+     * <p>
+     * 検索結果が存在しない場合は空のリストを返します。
+     * 
+     * @param mapKeyNamingType
+     *            マップのキーのネーミング規約
+     * @return 検索結果
+     * 
+     * @throws DomaNullPointerException
+     *             引数が {@code null} の場合
+     * @throws JdbcException
+     *             上記以外でJDBCに関する例外が発生した場合
+     * @since 1.17.0
+     */
+    public List<Map<String, Object>> getResultList(
+            MapKeyNamingType mapKeyNamingType) {
+        if (mapKeyNamingType == null) {
+            throw new DomaNullPointerException("mapKeyNamingType");
+        }
+        if (query.getMethodName() == null) {
+            query.setCallerMethodName("getResultList");
+        }
+        MapResultListHandler resultListHandler = new MapResultListHandler(
+                mapKeyNamingType);
         return execute(resultListHandler);
     }
 
@@ -344,6 +411,38 @@ public class SelectBuilder {
         }
         ResultSetHandler<R> iterationHandler = createIterationHanlder(
                 targetClass, iterationCallback);
+        return execute(iterationHandler);
+    }
+
+    /**
+     * 処理対象のオブジェクト群を {@code Map<String, Object>} として順に1件ずつ処理します。
+     * 
+     * @param <R>
+     *            戻り値の型
+     * @param mapKeyNamingType
+     *            マップのキーのネーミング規約
+     * @param iterationCallback
+     *            コールバック
+     * @return 任意の実行結果
+     * @throws DomaNullPointerException
+     *             引数のいずれかが{@code null} の場合
+     * @throws JdbcException
+     *             上記以外でJDBCに関する例外が発生した場合
+     * @since 1.17.0
+     */
+    public <R> R iterate(MapKeyNamingType mapKeyNamingType,
+            IterationCallback<R, Map<String, Object>> iterationCallback) {
+        if (mapKeyNamingType == null) {
+            throw new DomaNullPointerException("mapKeyNamingType");
+        }
+        if (iterationCallback == null) {
+            throw new DomaNullPointerException("iterationCallback");
+        }
+        if (query.getMethodName() == null) {
+            query.setCallerMethodName("iterate");
+        }
+        MapIterationHandler<R> iterationHandler = new MapIterationHandler<R>(
+                mapKeyNamingType, iterationCallback);
         return execute(iterationHandler);
     }
 

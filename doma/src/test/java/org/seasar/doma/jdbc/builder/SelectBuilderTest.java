@@ -16,10 +16,12 @@
 package org.seasar.doma.jdbc.builder;
 
 import java.util.List;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
 import org.seasar.doma.DomaIllegalArgumentException;
+import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
@@ -52,6 +54,22 @@ public class SelectBuilderTest extends TestCase {
         builder.sql("and");
         builder.sql("age > ").param(int.class, 20);
         Emp emp = builder.getSingleResult(Emp.class);
+        assertNull(emp);
+    }
+
+    public void testSingleResult_Map() throws Exception {
+        SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+        builder.sql("select");
+        builder.sql("id").sql(",");
+        builder.sql("name").sql(",");
+        builder.sql("salary");
+        builder.sql("from Emp");
+        builder.sql("where");
+        builder.sql("name like ").param(String.class, "S%");
+        builder.sql("and");
+        builder.sql("age > ").param(int.class, 20);
+        Map<String, Object> emp = builder
+                .getSingleResult(MapKeyNamingType.CAMEL_CASE);
         assertNull(emp);
     }
 
@@ -107,6 +125,18 @@ public class SelectBuilderTest extends TestCase {
         assertNotNull(list);
     }
 
+    public void testGetResultList_Map() throws Exception {
+        SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+        builder.sql("select * from Emp");
+        builder.sql("where");
+        builder.sql("aaa = ").param(String.class, "aaa");
+        builder.sql("and");
+        builder.sql("bbb = ").param(int.class, 100);
+        List<Map<String, Object>> list = builder
+                .getResultList(MapKeyNamingType.CAMEL_CASE);
+        assertNotNull(list);
+    }
+
     public void testGetResultList_Domain() throws Exception {
         SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
         builder.sql("select ccc from Emp");
@@ -144,6 +174,25 @@ public class SelectBuilderTest extends TestCase {
             }
 
         });
+    }
+
+    public void testIterate_Map() throws Exception {
+        SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
+        builder.sql("select * from Emp");
+        builder.sql("where");
+        builder.sql("aaa =").param(String.class, "aaa");
+        builder.sql("and");
+        builder.sql("bbb = ").param(int.class, 100);
+        builder.iterate(MapKeyNamingType.CAMEL_CASE,
+                new IterationCallback<Void, Map<String, Object>>() {
+
+                    @Override
+                    public Void iterate(Map<String, Object> target,
+                            IterationContext context) {
+                        return null;
+                    }
+
+                });
     }
 
     public void testIterate_Domain() throws Exception {
