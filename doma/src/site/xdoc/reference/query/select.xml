@@ -23,6 +23,7 @@
 				<li><a href="#クエリタイムアウト">クエリタイムアウト</a></li>
 				<li><a href="#フェッチサイズ">フェッチサイズ</a></li>
 				<li><a href="#最大行数">最大行数</a></li>
+				<li><a href="#マップのキーのネーミング規約">マップのキーのネーミング規約</a></li>
 			</ul>
 		</section>
 		<section name="概要">
@@ -40,7 +41,7 @@ public interface EmployeeDao {
 				検索系のSQLを自動生成する機能はありません。
 			</p>
 			<p>
-				検索結果を受ける型には、基本型、ドメインクラス、エンティティクラス、また、それらを要素とする<code>java.util.List</code>を使用できますが、
+				検索結果を受ける型には、基本型、ドメインクラス、エンティティクラス、<code><![CDATA[java.util.Map<String, Object>]]></code>、また、それらを要素とする<code>java.util.List</code>を使用できますが、
 				エンティティクラスを利用する場合、エンティティクラスは検索結果に応じて作成する必要があります。
 			</p>
 			<p>
@@ -89,7 +90,7 @@ List<Employee> selectByNames(List<String> names);]]></source>
 		<section name="複数件検索">
 			<p>
 				複数件を検索するには、メソッドの戻り値の型を<code>java.util.List</code>にします。
-				<code>List</code>の要素の型には、<a href="../basic.html">基本型</a>、<a href="../domain.html">ドメインクラス</a>、<a href="../entity.html">エンティティティクラス</a>が使用できます。
+				<code>List</code>の要素の型には、<a href="../basic.html">基本型</a>、<a href="../domain.html">ドメインクラス</a>、<a href="../entity.html">エンティティティクラス</a>、<code><![CDATA[java.util.Map<String, Object>]]></code>が使用できます。
 			</p>
 <source><![CDATA[@Select
 List<Employee> selectByNameAndSalary(String name, BigDecimal salary);]]></source>
@@ -101,7 +102,7 @@ List<Employee> selectByNameAndSalary(String name, BigDecimal salary);]]></source
 		</section>
 		<section name="1件検索">
 			<p>
-				1件を検索するには、メソッドの戻り値の型を<a href="../basic.html">基本型</a>、<a href="../domain.html">ドメインクラス</a>、<a href="../entity.html">エンティティティクラス</a>のいずれかにします。
+				1件を検索するには、メソッドの戻り値の型を<a href="../basic.html">基本型</a>、<a href="../domain.html">ドメインクラス</a>、<a href="../entity.html">エンティティティクラス</a>、<code><![CDATA[java.util.Map<String, Object>]]></code>のいずれかにします。
 			</p>
 <source><![CDATA[@Select
 Employee selectByNameAndSalary(String name, BigDecimal salary);]]></source>
@@ -138,7 +139,7 @@ dao.selectByNameAndSalary(name, salary, new IterationCallback<Void, Employee>() 
 			<p>
 				<code><![CDATA[org.seasar.doma.IterationCallback<R, T>]]></code>の最初の型パラメータは、
 				Daoのメソッドの戻り値にあわせなければいけません。2番目の型パラメータは、<a href="../basic.html">基本型</a>、<a href="../domain.html">ドメインクラス</a>、
-				<a href="../entity.html">エンティティティクラス</a>のいずれかでなければいけません。
+				<a href="../entity.html">エンティティティクラス</a>、<code><![CDATA[java.util.Map<String, Object>]]></code>のいずれかでなければいけません。
 			</p>
 			<p>
 				@Selectの<code>ensureResult</code>要素に<code>true</code>を指定した場合、
@@ -289,6 +290,19 @@ List<Employee> selectAll();]]></source>
 			<p>
 				<code>maxRows</code>要素に値を指定しない場合、
 				<a href="../config.html">設定クラス</a>に指定された最大行数が使用されます。
+			</p>
+		</section>
+		<section name="マップのキーのネーミング規約">
+			<p>
+				検索結果を<code><![CDATA[java.util.Map<String, Object>]]></code>にマッピングする場合、
+				<code>@Select</code>の<code>mapKeyNaming</code>要素にマップのキーのネーミング規約を指定できます。
+			</p>
+<source><![CDATA[@Select(mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
+List<Map<String, Object>> selectAll();]]></source>
+			<p>
+				<code>MapKeyNamingType.CAMEL_CASE</code>は、カラム名をキャメルケースに変換することを示します。
+				そのほかに、カラム名をを大文字や小文字に変換する規約があります。
+				指定しない場合、変換は行われません。
 			</p>
 		</section>
 	</body>
