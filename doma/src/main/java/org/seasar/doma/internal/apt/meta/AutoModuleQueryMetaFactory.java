@@ -24,12 +24,12 @@ import org.seasar.doma.InOut;
 import org.seasar.doma.Out;
 import org.seasar.doma.ResultSet;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.IterableType;
+import org.seasar.doma.internal.apt.type.MapType;
 import org.seasar.doma.internal.apt.type.ReferenceType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.message.Message;
@@ -111,8 +111,8 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                     @Override
                     protected CallableSqlParameterMeta defaultAction(
                             DataType type, Void p) throws RuntimeException {
-                        throw new AptIllegalStateException(parameterMeta
-                                .getElement().toString());
+                        throw new AptException(Message.DOMA4186, env,
+                                parameterMeta.getElement(), type.getTypeName());
                     }
 
                     @Override
@@ -126,6 +126,13 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                         }
                         return new EntityListParameterMeta(parameterMeta
                                 .getName(), dataType);
+                    }
+
+                    @Override
+                    public CallableSqlParameterMeta visitMapType(
+                            MapType dataType, Void p) throws RuntimeException {
+                        return new MapListParameterMeta(
+                                parameterMeta.getName(), dataType);
                     }
 
                     @Override

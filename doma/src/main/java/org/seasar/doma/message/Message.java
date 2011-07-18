@@ -229,7 +229,7 @@ public enum Message implements MessageResource {
     DOMA4062("@ResultSetが注釈されたパラメータの型は、java.util.Listでなければいけません。"),
     DOMA4063("@Functionの戻り値として型[{0}]はサポートされていません。戻り値の型は、次のいずれかでなければいけません。基本型、ドメインクラス、基本型を要素とするjava.util.List、ドメインクラスを要素とするjava.util.List、エンティティクラスを要素とするjava.util.List。"),
     DOMA4064("@Procedureが注釈されたメソッドの戻り値の型はvoidでなければいけません。"),
-    DOMA4065("戻り値のjava.util.Listに対する実型引数の型[{0}]は、サポートされていません。"),
+    DOMA4065("戻り値のjava.util.Listに対する実型引数の型[{0}]は、サポートされていません。サポートされている型は次のものです。基本型、ドメインクラス、エンティティクラス、java.util.Map<String, Object>。"),
     DOMA4066("@Functionもしくは@Procedureが注釈されたメソッドのパラメータには、@In、@InOut、@Out、@ResultSetのいずれかの注釈が必須です。"),
     DOMA4067("SQL内の変数[{0}]に対応するパラメータがメソッドに存在しません（[{1}]番目の文字付近）。"),
     DOMA4068("SQLファイル[{0}]の読み込みに失敗しました。原因は次のものです。{1}"),
@@ -332,6 +332,7 @@ public enum Message implements MessageResource {
     DOMA4183("SQLファイル[{0}]に繰り返しコメントが含まれています。バッチの中で実行されるSQLは一定であるため、繰り返しコメントにより動的なSQLを発行しようとしても意図したSQLにならない可能性があります。この警告を抑制するには、メソッドに@Suppress(message = Message.DOMA4183)と注釈してください。"),
     DOMA4184("列挙型に@Domainを注釈する場合、factoryMethod属性に\"new\"は指定できません（\"new\"はコンストラクタで生成することを示します）。staticで非privateなファクトリメソッドの名前を指定してください。"),
     DOMA4185(" ... /** SQLが長すぎるため最初の{0}文字のみを表示しています。 */"),
+    DOMA4186("java.util.Listに対する実型引数の型[{0}]はサポートされていません。サポートされている型は次のものです。基本型、ドメインクラス、エンティティクラス、java.util.Map<String, Object>。"),
 
     // other
     DOMA5001("JDBCドライバがロードされていない可能性があります。JDBCドライバをロードするには、クラスパスが通されたMETA-INF/services/java.sql.DriverファイルにJDBCドライバのクラスの完全修飾名を記述してください。 ex) oracle.jdbc.driver.OracleDriver"),

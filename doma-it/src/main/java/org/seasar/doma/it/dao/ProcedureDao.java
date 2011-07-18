@@ -17,10 +17,12 @@ package org.seasar.doma.it.dao;
 
 import java.sql.Time;
 import java.util.List;
+import java.util.Map;
 
 import org.seasar.doma.Dao;
 import org.seasar.doma.In;
 import org.seasar.doma.InOut;
+import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.Out;
 import org.seasar.doma.Procedure;
 import org.seasar.doma.ResultSet;
@@ -51,6 +53,10 @@ public interface ProcedureDao {
 
     @Procedure
     void proc_resultset(@ResultSet List<Employee> employees,
+            @In Integer employee_id);
+
+    @Procedure(name = "proc_resultset", mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
+    void proc_resultset_map(@ResultSet List<Map<String, Object>> employees,
             @In Integer employee_id);
 
     @Procedure

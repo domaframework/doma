@@ -34,6 +34,7 @@ import org.seasar.doma.internal.apt.meta.ArrayCreateQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoBatchModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoFunctionQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoModifyQueryMeta;
+import org.seasar.doma.internal.apt.meta.AutoModuleQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoProcedureQueryMeta;
 import org.seasar.doma.internal.apt.meta.BasicInOutParameterMeta;
 import org.seasar.doma.internal.apt.meta.BasicInParameterMeta;
@@ -53,6 +54,8 @@ import org.seasar.doma.internal.apt.meta.DomainOutParameterMeta;
 import org.seasar.doma.internal.apt.meta.DomainResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.EntityListParameterMeta;
 import org.seasar.doma.internal.apt.meta.EntityListResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.MapListParameterMeta;
+import org.seasar.doma.internal.apt.meta.MapListResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.QueryMeta;
 import org.seasar.doma.internal.apt.meta.QueryMetaVisitor;
 import org.seasar.doma.internal.apt.meta.QueryParameterMeta;
@@ -98,6 +101,8 @@ import org.seasar.doma.internal.jdbc.sql.DomainOutParameter;
 import org.seasar.doma.internal.jdbc.sql.DomainResultParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListResultParameter;
+import org.seasar.doma.internal.jdbc.sql.MapListParameter;
+import org.seasar.doma.internal.jdbc.sql.MapListResultParameter;
 import org.seasar.doma.internal.jdbc.util.MetaTypeUtil;
 import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
@@ -371,7 +376,8 @@ public class DaoGenerator extends AbstractGenerator {
                             @Override
                             public Void visitMapType(MapType dataType, Void p)
                                     throws RuntimeException {
-                                MapKeyNamingType namingType = m.getMapKeyNamingType();
+                                MapKeyNamingType namingType = m
+                                        .getMapKeyNamingType();
                                 iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(%4$s.%5$s, %6$s));%n",
                                         commandClassName, resultMeta
                                                 .getTypeNameAsTypeParameter(),
@@ -474,7 +480,8 @@ public class DaoGenerator extends AbstractGenerator {
                             @Override
                             public Void visitMapType(MapType dataType, Void p)
                                     throws RuntimeException {
-                                MapKeyNamingType namingType = m.getMapKeyNamingType();
+                                MapKeyNamingType namingType = m
+                                        .getMapKeyNamingType();
                                 iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s(%4$s.%5$s));%n",
                                         commandClassName, dataType
                                                 .getTypeNameAsTypeParameter(),
@@ -907,10 +914,10 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setConfig(config);%n");
             iprint("__query.setFunctionName(\"%1$s\");%n", m.getFunctionName());
             CallableSqlParameterStatementGenerator parameterGenerator = new CallableSqlParameterStatementGenerator();
-            m.getResultParameterMeta().accept(parameterGenerator, p);
+            m.getResultParameterMeta().accept(parameterGenerator, m);
             for (CallableSqlParameterMeta parameterMeta : m
                     .getCallableSqlParameterMetas()) {
-                parameterMeta.accept(parameterGenerator, p);
+                parameterMeta.accept(parameterGenerator, m);
             }
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
@@ -942,7 +949,7 @@ public class DaoGenerator extends AbstractGenerator {
             CallableSqlParameterStatementGenerator parameterGenerator = new CallableSqlParameterStatementGenerator();
             for (CallableSqlParameterMeta parameterMeta : m
                     .getCallableSqlParameterMetas()) {
-                parameterMeta.accept(parameterGenerator, p);
+                parameterMeta.accept(parameterGenerator, m);
             }
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
@@ -1096,11 +1103,11 @@ public class DaoGenerator extends AbstractGenerator {
     }
 
     protected class CallableSqlParameterStatementGenerator implements
-            CallableSqlParameterMetaVisitor<Void, Void> {
+            CallableSqlParameterMetaVisitor<Void, AutoModuleQueryMeta> {
 
         @Override
         public Void visitBasicListParameterMeta(final BasicListParameterMeta m,
-                Void p) {
+                AutoModuleQueryMeta p) {
             BasicType basicType = m.getBasicType();
             basicType.getWrapperType().accept(
                     new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
@@ -1136,7 +1143,7 @@ public class DaoGenerator extends AbstractGenerator {
 
         @Override
         public Void visitDomainListParameterMeta(DomainListParameterMeta m,
-                Void p) {
+                AutoModuleQueryMeta p) {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
             iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal(), %5$s, \"%5$s\"));%n",
@@ -1148,7 +1155,7 @@ public class DaoGenerator extends AbstractGenerator {
 
         @Override
         public Void visitEntityListParameterMeta(EntityListParameterMeta m,
-                Void p) {
+                AutoModuleQueryMeta p) {
             EntityType entityType = m.getEntityType();
             iprint("__query.addParameter(new %1$s<%2$s>(%3$s.getSingletonInternal(), %4$s, \"%4$s\"));%n",
                     EntityListParameter.class.getName(),
@@ -1158,8 +1165,19 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
+        public Void visitMapListParameterMeta(MapListParameterMeta m,
+                AutoModuleQueryMeta p) {
+            MapKeyNamingType namingType = p.getMapKeyNamingType();
+            iprint("__query.addParameter(new %1$s(%2$s.%3$s, %4$s, \"%4$s\"));%n",
+                    MapListParameter.class.getName(), namingType
+                            .getDeclaringClass().getName(), namingType.name(),
+                    m.getName());
+            return null;
+        }
+
+        @Override
         public Void visitBasicInOutParameterMeta(
-                final BasicInOutParameterMeta m, Void p) {
+                final BasicInOutParameterMeta m, AutoModuleQueryMeta p) {
             BasicType basicType = m.getBasicType();
             basicType.getWrapperType().accept(
                     new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
@@ -1195,7 +1213,7 @@ public class DaoGenerator extends AbstractGenerator {
 
         @Override
         public Void visitDomainInOutParameterMeta(DomainInOutParameterMeta m,
-                Void p) {
+                AutoModuleQueryMeta p) {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
             iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal(), %5$s));%n",
@@ -1208,7 +1226,7 @@ public class DaoGenerator extends AbstractGenerator {
 
         @Override
         public Void visitBasicOutParameterMeta(final BasicOutParameterMeta m,
-                Void p) {
+                AutoModuleQueryMeta p) {
             BasicType basicType = m.getBasicType();
             basicType.getWrapperType().accept(
                     new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
@@ -1244,7 +1262,8 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visitDomainOutParameterMeta(DomainOutParameterMeta m, Void p) {
+        public Void visitDomainOutParameterMeta(DomainOutParameterMeta m,
+                AutoModuleQueryMeta p) {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
             iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal(), %5$s));%n",
@@ -1256,7 +1275,7 @@ public class DaoGenerator extends AbstractGenerator {
 
         @Override
         public Void visitBasicInParameterMeta(final BasicInParameterMeta m,
-                Void p) {
+                AutoModuleQueryMeta p) {
             BasicType basicType = m.getBasicType();
             basicType.getWrapperType().accept(
                     new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
@@ -1288,7 +1307,8 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visitDomainInParameterMeta(DomainInParameterMeta m, Void p) {
+        public Void visitDomainInParameterMeta(DomainInParameterMeta m,
+                AutoModuleQueryMeta p) {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
             iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal(), %5$s));%n",
@@ -1300,7 +1320,7 @@ public class DaoGenerator extends AbstractGenerator {
 
         @Override
         public Void visitBasicListResultParameterMeta(
-                BasicListResultParameterMeta m, Void p) {
+                BasicListResultParameterMeta m, AutoModuleQueryMeta p) {
             BasicType basicType = m.getBasicType();
             basicType.getWrapperType().accept(
                     new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
@@ -1336,7 +1356,7 @@ public class DaoGenerator extends AbstractGenerator {
 
         @Override
         public Void visitDomainListResultParameterMeta(
-                DomainListResultParameterMeta m, Void p) {
+                DomainListResultParameterMeta m, AutoModuleQueryMeta p) {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
             iprint("__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal()));%n",
@@ -1348,7 +1368,7 @@ public class DaoGenerator extends AbstractGenerator {
 
         @Override
         public Void visitEntityListResultParameterMeta(
-                EntityListResultParameterMeta m, Void p) {
+                EntityListResultParameterMeta m, AutoModuleQueryMeta p) {
             EntityType entityType = m.getEntityType();
             iprint("__query.setResultParameter(new %1$s<%2$s>(%3$s.getSingletonInternal()));%n",
                     EntityListResultParameter.class.getName(),
@@ -1358,8 +1378,18 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
+        public Void visitMapListResultParameterMeta(
+                MapListResultParameterMeta m, AutoModuleQueryMeta p) {
+            MapKeyNamingType namingType = p.getMapKeyNamingType();
+            iprint("__query.setResultParameter(new %1$s(%2$s.%3$s));%n",
+                    MapListResultParameter.class.getName(), namingType
+                            .getDeclaringClass().getName(), namingType.name());
+            return null;
+        }
+
+        @Override
         public Void visitBasicResultParameterMeta(BasicResultParameterMeta m,
-                Void p) {
+                AutoModuleQueryMeta p) {
             final BasicType basicType = m.getBasicType();
             basicType.getWrapperType().accept(
                     new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
@@ -1396,7 +1426,7 @@ public class DaoGenerator extends AbstractGenerator {
 
         @Override
         public Void visitDomainResultParameterMeta(DomainResultParameterMeta m,
-                Void p) {
+                AutoModuleQueryMeta p) {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
             iprint("__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal()));%n",

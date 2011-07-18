@@ -17,6 +17,7 @@ package org.seasar.doma.internal.apt.meta;
 
 import javax.lang.model.element.ExecutableElement;
 
+import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.apt.mirror.ProcedureMirror;
 
 /**
@@ -45,6 +46,11 @@ public class AutoProcedureQueryMeta extends AutoModuleQueryMeta {
 
     public int getQueryTimeout() {
         return procedureMirror.getQueryTimeoutValue();
+    }
+
+    @Override
+    public MapKeyNamingType getMapKeyNamingType() {
+        return procedureMirror.getMapKeyNamingValue();
     }
 
     @Override

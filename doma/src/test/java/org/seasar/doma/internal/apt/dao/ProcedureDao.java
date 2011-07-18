@@ -13,35 +13,26 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.meta;
+package org.seasar.doma.internal.apt.dao;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import javax.lang.model.element.ExecutableElement;
-
+import org.seasar.doma.Dao;
+import org.seasar.doma.In;
 import org.seasar.doma.MapKeyNamingType;
+import org.seasar.doma.Procedure;
+import org.seasar.doma.ResultSet;
 
 /**
+ * 
  * @author taedium
  * 
  */
-public abstract class AutoModuleQueryMeta extends AbstractQueryMeta {
+@Dao(config = MyConfig.class)
+public interface ProcedureDao {
 
-    protected final List<CallableSqlParameterMeta> sqlParameterMetas = new ArrayList<CallableSqlParameterMeta>();
+    @Procedure(mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
+    void execute(@ResultSet List<Map<String, Object>> result, @In int id);
 
-    protected AutoModuleQueryMeta(ExecutableElement method) {
-        super(method);
-    }
-
-    public void addCallableSqlParameterMeta(
-            CallableSqlParameterMeta sqlParameterMeta) {
-        sqlParameterMetas.add(sqlParameterMeta);
-    }
-
-    public List<CallableSqlParameterMeta> getCallableSqlParameterMetas() {
-        return sqlParameterMetas;
-    }
-
-    public abstract MapKeyNamingType getMapKeyNamingType();
 }

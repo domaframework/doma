@@ -23,7 +23,9 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.VariableElement;
 
+import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.Procedure;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
@@ -46,6 +48,8 @@ public class ProcedureMirror {
     protected AnnotationValue queryTimeout;
 
     protected String defaultName;
+
+    protected AnnotationValue mapKeyNaming;
 
     protected ProcedureMirror(AnnotationMirror annotationMirror,
             String defaultName) {
@@ -77,6 +81,8 @@ public class ProcedureMirror {
                 result.name = value;
             } else if ("queryTimeout".equals(name)) {
                 result.queryTimeout = value;
+            } else if ("mapKeyNaming".equals(name)) {
+                result.mapKeyNaming = value;
             }
         }
         return result;
@@ -114,6 +120,20 @@ public class ProcedureMirror {
             throw new AptIllegalStateException("queryTimeout");
         }
         return value;
+    }
+
+    public AnnotationValue getMapKeyNaming() {
+        return mapKeyNaming;
+    }
+
+    public MapKeyNamingType getMapKeyNamingValue() {
+        VariableElement enumConstant = AnnotationValueUtil
+                .toEnumConstant(mapKeyNaming);
+        if (enumConstant == null) {
+            throw new AptIllegalStateException("mapKeyNaming");
+        }
+        return MapKeyNamingType
+                .valueOf(enumConstant.getSimpleName().toString());
     }
 
 }

@@ -98,4 +98,12 @@ public @interface Procedure {
      * @see Statement#setQueryTimeout(int)
      */
     int queryTimeout() default -1;
+
+    /**
+     * 結果セットを @code{Map<Object, String>} もしくは @code{List<Map<Object, String>>}
+     * として取得する場合のマップのキーに対するネーミング規約です。
+     * 
+     * @since 1.7.0
+     */
+    MapKeyNamingType mapKeyNaming() default MapKeyNamingType.NONE;
 }

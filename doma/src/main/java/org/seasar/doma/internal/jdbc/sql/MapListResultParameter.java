@@ -13,12 +13,11 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.meta;
+package org.seasar.doma.internal.jdbc.sql;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.lang.model.element.ExecutableElement;
+import java.util.Map;
 
 import org.seasar.doma.MapKeyNamingType;
 
@@ -26,22 +25,22 @@ import org.seasar.doma.MapKeyNamingType;
  * @author taedium
  * 
  */
-public abstract class AutoModuleQueryMeta extends AbstractQueryMeta {
+public class MapListResultParameter extends MapListParameter implements
+        ResultParameter<List<Map<String, Object>>> {
 
-    protected final List<CallableSqlParameterMeta> sqlParameterMetas = new ArrayList<CallableSqlParameterMeta>();
-
-    protected AutoModuleQueryMeta(ExecutableElement method) {
-        super(method);
+    public MapListResultParameter(MapKeyNamingType mapKeyNamingType) {
+        super(mapKeyNamingType, new ArrayList<Map<String, Object>>(), "");
     }
 
-    public void addCallableSqlParameterMeta(
-            CallableSqlParameterMeta sqlParameterMeta) {
-        sqlParameterMetas.add(sqlParameterMeta);
+    @Override
+    public List<Map<String, Object>> getResult() {
+        return mapList;
     }
 
-    public List<CallableSqlParameterMeta> getCallableSqlParameterMetas() {
-        return sqlParameterMetas;
+    @Override
+    public <R, P, TH extends Throwable> R accept(
+            CallableSqlParameterVisitor<R, P, TH> visitor, P p) throws TH {
+        return visitor.visitMapListResultParameter(this, p);
     }
 
-    public abstract MapKeyNamingType getMapKeyNamingType();
 }

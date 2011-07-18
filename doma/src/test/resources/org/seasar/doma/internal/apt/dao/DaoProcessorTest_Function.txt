@@ -1,0 +1,54 @@
+package org.seasar.doma.internal.apt.dao;
+
+/** */
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01 09:00:00")
+public class FunctionDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.dao.FunctionDao {
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    /** */
+    public FunctionDaoImpl() {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig());
+    }
+
+    /**
+     * @param connection the connection
+     */
+    public FunctionDaoImpl(java.sql.Connection connection) {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig(), connection);
+    }
+
+    /**
+     * @param dataSource the dataSource
+     */
+    public FunctionDaoImpl(javax.sql.DataSource dataSource) {
+        super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
+    }
+
+    @Override
+    public java.util.List<java.util.Map<java.lang.String, java.lang.Object>> execute(int id) {
+        entering("org.seasar.doma.internal.apt.dao.FunctionDaoImpl", "execute", id);
+        try {
+            org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.util.List<java.util.Map<java.lang.String, java.lang.Object>>> __query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.util.List<java.util.Map<java.lang.String, java.lang.Object>>>();
+            __query.setConfig(config);
+            __query.setFunctionName("execute");
+            __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.MapListResultParameter(org.seasar.doma.MapKeyNamingType.CAMEL_CASE));
+            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.BasicInParameter(new org.seasar.doma.wrapper.IntegerWrapper(id)));
+            __query.setCallerClassName("org.seasar.doma.internal.apt.dao.FunctionDaoImpl");
+            __query.setCallerMethodName("execute");
+            __query.setQueryTimeout(-1);
+            __query.prepare();
+            org.seasar.doma.internal.jdbc.command.FunctionCommand<java.util.List<java.util.Map<java.lang.String, java.lang.Object>>> __command = new org.seasar.doma.internal.jdbc.command.FunctionCommand<java.util.List<java.util.Map<java.lang.String, java.lang.Object>>>(__query);
+            java.util.List<java.util.Map<java.lang.String, java.lang.Object>> __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.dao.FunctionDaoImpl", "execute", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.dao.FunctionDaoImpl", "execute", __e);
+            throw __e;
+        }
+    }
+
+}

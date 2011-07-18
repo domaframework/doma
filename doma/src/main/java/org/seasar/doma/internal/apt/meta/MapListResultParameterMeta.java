@@ -15,33 +15,30 @@
  */
 package org.seasar.doma.internal.apt.meta;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import javax.lang.model.element.ExecutableElement;
-
-import org.seasar.doma.MapKeyNamingType;
+import org.seasar.doma.internal.apt.type.MapType;
 
 /**
  * @author taedium
  * 
  */
-public abstract class AutoModuleQueryMeta extends AbstractQueryMeta {
+public class MapListResultParameterMeta implements ResultParameterMeta {
 
-    protected final List<CallableSqlParameterMeta> sqlParameterMetas = new ArrayList<CallableSqlParameterMeta>();
+    protected final MapType mapType;
 
-    protected AutoModuleQueryMeta(ExecutableElement method) {
-        super(method);
+    public MapListResultParameterMeta(MapType mapType) {
+        assertNotNull(mapType);
+        this.mapType = mapType;
     }
 
-    public void addCallableSqlParameterMeta(
-            CallableSqlParameterMeta sqlParameterMeta) {
-        sqlParameterMetas.add(sqlParameterMeta);
+    public MapType getMapType() {
+        return mapType;
     }
 
-    public List<CallableSqlParameterMeta> getCallableSqlParameterMetas() {
-        return sqlParameterMetas;
+    @Override
+    public <R, P> R accept(CallableSqlParameterMetaVisitor<R, P> visitor, P p) {
+        return visitor.visitMapListResultParameterMeta(this, p);
     }
 
-    public abstract MapKeyNamingType getMapKeyNamingType();
 }

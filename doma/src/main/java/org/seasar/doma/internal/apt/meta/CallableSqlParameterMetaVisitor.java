@@ -39,11 +39,15 @@ public interface CallableSqlParameterMetaVisitor<R, P> {
 
     R visitEntityListParameterMeta(EntityListParameterMeta m, P p);
 
+    R visitMapListParameterMeta(MapListParameterMeta m, P p);
+
     R visitBasicListResultParameterMeta(BasicListResultParameterMeta m, P p);
 
     R visitDomainListResultParameterMeta(DomainListResultParameterMeta m, P p);
 
     R visitEntityListResultParameterMeta(EntityListResultParameterMeta m, P p);
+
+    R visitMapListResultParameterMeta(MapListResultParameterMeta m, P p);
 
     R visitBasicResultParameterMeta(BasicResultParameterMeta m, P p);
 

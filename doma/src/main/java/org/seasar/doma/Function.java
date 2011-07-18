@@ -47,7 +47,8 @@ import org.seasar.doma.jdbc.MappedPropertyNotFoundException;
  * <li>{@code void}
  * <li>基本型。
  * <li>ドメインクラス。
- * <li>{@link List}。実型引数は、基本型、ドメインクラス、もしくはエンティティクラスでなければならない。ただし、戻り値を{@code List}
+ * <li>{@link List}。実型引数は、基本型、ドメインクラス、エンティティクラス、もしくは @code{Map<String, Object>}
+ * のいずれかでなければならない。ただし、戻り値を{@code List}
  * にできるのは、ストアドファンクションがカーソルをファンクションの実行結果として返す場合のみである。
  * </ul>
  * </ul>
@@ -107,4 +108,12 @@ public @interface Function {
      * @see Statement#setQueryTimeout(int)
      */
     int queryTimeout() default -1;
+
+    /**
+     * 結果セットを @code{Map<Object, String>} もしくは @code{List<Map<Object, String>>}
+     * として取得する場合のマップのキーに対するネーミング規約です。
+     * 
+     * @since 1.7.0
+     */
+    MapKeyNamingType mapKeyNaming() default MapKeyNamingType.NONE;
 }

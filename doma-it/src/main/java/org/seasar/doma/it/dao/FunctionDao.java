@@ -17,10 +17,12 @@ package org.seasar.doma.it.dao;
 
 import java.sql.Time;
 import java.util.List;
+import java.util.Map;
 
 import org.seasar.doma.Dao;
 import org.seasar.doma.Function;
 import org.seasar.doma.In;
+import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.it.ItConfig;
 import org.seasar.doma.it.entity.Employee;
 
@@ -44,6 +46,9 @@ public interface FunctionDao {
 
     @Function
     List<Employee> func_resultset(@In Integer employee_id);
+
+    @Function(name = "func_resultset", mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
+    List<Map<String, Object>> func_resultset_map(@In Integer employee_id);
 
     @Function
     List<Employee> func_resultset_update(@In Integer employee_id);

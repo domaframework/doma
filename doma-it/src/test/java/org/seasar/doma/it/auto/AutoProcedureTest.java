@@ -20,6 +20,7 @@ import static junit.framework.Assert.*;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.DepartmentDao;
@@ -77,6 +78,13 @@ public class AutoProcedureTest {
         ProcedureDao dao = new ProcedureDaoImpl();
         List<Employee> employees = new ArrayList<Employee>();
         dao.proc_resultset(employees, 1);
+        assertEquals(13, employees.size());
+    }
+
+    public void testResultSet_map() throws Exception {
+        ProcedureDao dao = new ProcedureDaoImpl();
+        List<Map<String, Object>> employees = new ArrayList<Map<String, Object>>();
+        dao.proc_resultset_map(employees, 1);
         assertEquals(13, employees.size());
     }
 

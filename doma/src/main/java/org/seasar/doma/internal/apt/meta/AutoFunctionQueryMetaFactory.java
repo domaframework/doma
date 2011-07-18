@@ -27,6 +27,7 @@ import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.IterableType;
+import org.seasar.doma.internal.apt.type.MapType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.message.Message;
 
@@ -141,6 +142,14 @@ public class AutoFunctionQueryMetaFactory extends
                                                     dataType.getTypeName());
                                         }
                                         return new EntityListResultParameterMeta(
+                                                dataType);
+                                    }
+
+                                    @Override
+                                    public ResultParameterMeta visitMapType(
+                                            MapType dataType, Void p)
+                                            throws RuntimeException {
+                                        return new MapListResultParameterMeta(
                                                 dataType);
                                     }
 

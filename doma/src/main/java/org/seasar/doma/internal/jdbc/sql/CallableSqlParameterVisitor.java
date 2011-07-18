@@ -46,6 +46,8 @@ public interface CallableSqlParameterVisitor<R, P, TH extends Throwable> {
     <E> R visitEntityListParameter(EntityListParameter<E> parameter, P p)
             throws TH;
 
+    R visitMapListParameter(MapListParameter parameter, P p) throws TH;
+
     <V> R visitBasicListResultParameter(BasicListResultParameter<V> parameter,
             P p) throws TH;
 
@@ -54,6 +56,9 @@ public interface CallableSqlParameterVisitor<R, P, TH extends Throwable> {
 
     <E> R visitEntityListResultParameter(
             EntityListResultParameter<E> parameter, P p) throws TH;
+
+    R visitMapListResultParameter(MapListResultParameter parameter, P p)
+            throws TH;
 
     <V> R visitBasicResultParameter(BasicResultParameter<V> parameter, P p)
             throws TH;

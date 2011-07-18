@@ -41,6 +41,8 @@ import org.seasar.doma.internal.jdbc.sql.EntityListParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListResultParameter;
 import org.seasar.doma.internal.jdbc.sql.InParameter;
 import org.seasar.doma.internal.jdbc.sql.ListParameter;
+import org.seasar.doma.internal.jdbc.sql.MapListParameter;
+import org.seasar.doma.internal.jdbc.sql.MapListResultParameter;
 import org.seasar.doma.internal.jdbc.sql.OutParameter;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.dialect.Dialect;
@@ -113,6 +115,13 @@ public class CallableSqlParameterBinder implements
         }
 
         @Override
+        public Void visitMapListParameter(MapListParameter parameter, Void p)
+                throws SQLException {
+            handleListParameter(parameter);
+            return null;
+        }
+
+        @Override
         public <V> Void visitBasicListResultParameter(
                 BasicListResultParameter<V> parameter, Void p)
                 throws SQLException {
@@ -132,6 +141,13 @@ public class CallableSqlParameterBinder implements
         public <E> Void visitEntityListResultParameter(
                 EntityListResultParameter<E> parameter, Void p)
                 throws SQLException {
+            handleListParameter(parameter);
+            return null;
+        }
+
+        @Override
+        public Void visitMapListResultParameter(
+                MapListResultParameter parameter, Void p) throws SQLException {
             handleListParameter(parameter);
             return null;
         }

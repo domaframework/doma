@@ -19,6 +19,7 @@ import static junit.framework.Assert.*;
 
 import java.sql.Time;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.DepartmentDao;
@@ -69,6 +70,14 @@ public class AutoFunctionTest {
     public void testResultSet() throws Exception {
         FunctionDao dao = new FunctionDaoImpl();
         List<Employee> result = dao.func_resultset(new Integer(1));
+        assertEquals(13, result.size());
+    }
+
+    @Prerequisite("#ENV not in {'mysql', 'mssql2008'}")
+    public void testResultSet_map() throws Exception {
+        FunctionDao dao = new FunctionDaoImpl();
+        List<Map<String, Object>> result = dao
+                .func_resultset_map(new Integer(1));
         assertEquals(13, result.size());
     }
 

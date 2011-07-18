@@ -21,7 +21,9 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.seasar.doma.internal.jdbc.query.ModuleQuery;
 import org.seasar.doma.internal.jdbc.sql.BasicInOutParameter;
@@ -40,6 +42,8 @@ import org.seasar.doma.internal.jdbc.sql.DomainOutParameter;
 import org.seasar.doma.internal.jdbc.sql.DomainResultParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListParameter;
 import org.seasar.doma.internal.jdbc.sql.EntityListResultParameter;
+import org.seasar.doma.internal.jdbc.sql.MapListParameter;
+import org.seasar.doma.internal.jdbc.sql.MapListResultParameter;
 import org.seasar.doma.internal.jdbc.sql.OutParameter;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
 import org.seasar.doma.jdbc.JdbcException;
@@ -175,7 +179,7 @@ public class CallableSqlParameterFetcher implements
         @Override
         public <V> Void visitBasicListParameter(
                 BasicListParameter<V> parameter, Void p) throws SQLException {
-            handleListParameter(new BasicFetcherCallbck<V>(parameter));
+            handleListParameter(new BasicFetcherCallback<V>(parameter));
             return null;
         }
 
@@ -183,14 +187,21 @@ public class CallableSqlParameterFetcher implements
         public <V, D> Void visitDomainListParameter(
                 DomainListParameter<V, D> parameter, Void p)
                 throws SQLException {
-            handleListParameter(new DomainFetcherCallbck<V, D>(parameter));
+            handleListParameter(new DomainFetcherCallback<V, D>(parameter));
             return null;
         }
 
         @Override
         public <E> Void visitEntityListParameter(
                 EntityListParameter<E> parameter, Void p) throws SQLException {
-            handleListParameter(new EntityFetcherCallbck<E>(parameter));
+            handleListParameter(new EntityFetcherCallback<E>(parameter));
+            return null;
+        }
+
+        @Override
+        public Void visitMapListParameter(MapListParameter parameter, Void p)
+                throws SQLException {
+            handleListParameter(new MapFetcherCallback(parameter));
             return null;
         }
 
@@ -198,7 +209,7 @@ public class CallableSqlParameterFetcher implements
         public <V> Void visitBasicListResultParameter(
                 BasicListResultParameter<V> parameter, Void p)
                 throws SQLException {
-            handleListParameter(new BasicFetcherCallbck<V>(parameter));
+            handleListParameter(new BasicFetcherCallback<V>(parameter));
             return null;
         }
 
@@ -206,7 +217,7 @@ public class CallableSqlParameterFetcher implements
         public <V, D> Void visitDomainListResultParameter(
                 DomainListResultParameter<V, D> parameter, Void p)
                 throws SQLException {
-            handleListParameter(new DomainFetcherCallbck<V, D>(parameter));
+            handleListParameter(new DomainFetcherCallback<V, D>(parameter));
             return null;
         }
 
@@ -214,7 +225,14 @@ public class CallableSqlParameterFetcher implements
         public <E> Void visitEntityListResultParameter(
                 EntityListResultParameter<E> parameter, Void p)
                 throws SQLException {
-            handleListParameter(new EntityFetcherCallbck<E>(parameter));
+            handleListParameter(new EntityFetcherCallback<E>(parameter));
+            return null;
+        }
+
+        @Override
+        public Void visitMapListResultParameter(
+                MapListResultParameter parameter, Void p) throws SQLException {
+            handleListParameter(new MapFetcherCallback(parameter));
             return null;
         }
 
@@ -266,7 +284,7 @@ public class CallableSqlParameterFetcher implements
 
         }
 
-        protected class EntityFetcherCallbck<E> implements FetcherCallback {
+        protected class EntityFetcherCallback<E> implements FetcherCallback {
 
             protected EntityFetcher<E> fetcher;
 
@@ -274,7 +292,7 @@ public class CallableSqlParameterFetcher implements
 
             protected EntityType<E> entityType;
 
-            public EntityFetcherCallbck(EntityListParameter<E> parameter) {
+            public EntityFetcherCallback(EntityListParameter<E> parameter) {
                 this.entityType = parameter.getEntityType();
                 this.fetcher = new EntityFetcher<E>(query, entityType);
                 this.parameter = parameter;
@@ -293,13 +311,38 @@ public class CallableSqlParameterFetcher implements
             }
         }
 
-        protected class DomainFetcherCallbck<V, D> implements FetcherCallback {
+        protected class MapFetcherCallback implements FetcherCallback {
+
+            protected MapFetcher fetcher;
+
+            protected MapListParameter parameter;
+
+            public MapFetcherCallback(MapListParameter parameter) {
+                this.fetcher = new MapFetcher(query,
+                        parameter.getMapKeyNamingType());
+                this.parameter = parameter;
+            }
+
+            @Override
+            public void fetch(ResultSet resultSet) throws SQLException {
+                Map<String, Object> map = new LinkedHashMap<String, Object>();
+                fetcher.fetch(resultSet, map);
+                parameter.add(map);
+            }
+
+            @Override
+            public String getParameterName() {
+                return parameter.getName();
+            }
+        }
+
+        protected class DomainFetcherCallback<V, D> implements FetcherCallback {
 
             protected BasicFetcher fetcher;
 
             protected DomainListParameter<V, D> parameter;
 
-            public DomainFetcherCallbck(DomainListParameter<V, D> parameter) {
+            public DomainFetcherCallback(DomainListParameter<V, D> parameter) {
                 this.fetcher = new BasicFetcher(query);
                 this.parameter = parameter;
             }
@@ -317,13 +360,13 @@ public class CallableSqlParameterFetcher implements
             }
         }
 
-        protected class BasicFetcherCallbck<V> implements FetcherCallback {
+        protected class BasicFetcherCallback<V> implements FetcherCallback {
 
             protected BasicFetcher fetcher;
 
             protected BasicListParameter<V> parameter;
 
-            public BasicFetcherCallbck(BasicListParameter<V> parameter) {
+            public BasicFetcherCallback(BasicListParameter<V> parameter) {
                 this.fetcher = new BasicFetcher(query);
                 this.parameter = parameter;
             }

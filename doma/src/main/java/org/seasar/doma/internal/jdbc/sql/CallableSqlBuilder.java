@@ -129,6 +129,13 @@ public class CallableSqlBuilder
         return null;
     }
 
+    @Override
+    public Void visitMapListResultParameter(MapListResultParameter parameter,
+            Context p) throws RuntimeException {
+        handelResultParameter(parameter, p);
+        return null;
+    }
+
     protected void handelResultParameter(ResultParameter<?> parameter, Context p) {
         p.appendRawSql("? ");
         p.appendFormattedSql("? ");
@@ -152,6 +159,13 @@ public class CallableSqlBuilder
     @Override
     public <E> Void visitEntityListParameter(EntityListParameter<E> parameter,
             Context p) throws RuntimeException {
+        handelListParameter(parameter, p);
+        return null;
+    }
+
+    @Override
+    public Void visitMapListParameter(MapListParameter parameter, Context p)
+            throws RuntimeException {
         handelListParameter(parameter, p);
         return null;
     }
