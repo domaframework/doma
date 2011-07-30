@@ -36,7 +36,7 @@ import java.util.List;
  * 注釈されるパラメータは、次の制約を満たす必要があります。
  * <ul>
  * <li>型は {@link List} である。 {@code List} の実型引数は、基本型、 ドメインクラス 、エンティティクラス、もしくは
- * @code{Map<String, Object>} のいずれかでなければならない。
+ * {@code Map<String, Object> } のいずれかでなければならない。
  * </ul>
  * 
  * <h5>例:</h5>
