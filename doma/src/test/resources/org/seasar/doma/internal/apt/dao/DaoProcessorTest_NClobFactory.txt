@@ -27,6 +27,29 @@ public class NClobFactoryDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
         super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
     }
 
+    /**
+     * @param config the configuration
+     */
+    protected NClobFactoryDaoImpl(org.seasar.doma.jdbc.Config config) {
+        super(config);
+    }
+
+    /**
+     * @param config the configuration
+     * @param connection the connection
+     */
+    protected NClobFactoryDaoImpl(org.seasar.doma.jdbc.Config config, java.sql.Connection connection) {
+        super(config, connection);
+    }
+
+    /**
+     * @param config the configuration
+     * @param dataSource the dataSource
+     */
+    protected NClobFactoryDaoImpl(org.seasar.doma.jdbc.Config config, javax.sql.DataSource dataSource) {
+        super(config, dataSource);
+    }
+
     @Override
     public java.sql.NClob create() {
         entering("org.seasar.doma.internal.apt.dao.NClobFactoryDaoImpl", "create");

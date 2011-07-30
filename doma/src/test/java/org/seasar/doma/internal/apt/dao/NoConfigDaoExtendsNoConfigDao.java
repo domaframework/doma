@@ -13,33 +13,26 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal;
+package org.seasar.doma.internal.apt.dao;
 
-import org.seasar.doma.DomaException;
-import org.seasar.doma.message.Message;
+import org.seasar.doma.Dao;
+import org.seasar.doma.Select;
+import org.seasar.doma.Update;
+import org.seasar.doma.jdbc.SelectOptions;
+
+import example.entity.Emp;
 
 /**
  * @author taedium
  * 
  */
-public final class Artifact {
+@Dao(config = MyConfig.class)
+public interface NoConfigDaoExtendsNoConfigDao extends NoConfigEmpDao {
 
-    private static final String NAME = "Doma";
+    @Override
+    @Select
+    public Emp selectById(Integer id, SelectOptions options);
 
-    private static final String VERSION = "1.18.0-SNAPSHOT";
-
-    public static String getName() {
-        return NAME;
-    }
-
-    public static String getVersion() {
-        return VERSION;
-    }
-
-    public static void validateVersion(String generationtimeVersion) {
-        if (!VERSION.equals(generationtimeVersion)) {
-            throw new DomaException(Message.DOMA0003, VERSION,
-                    generationtimeVersion);
-        }
-    }
+    @Update
+    public int update2(Emp entity);
 }

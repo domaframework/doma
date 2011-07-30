@@ -27,6 +27,29 @@ public class FunctionDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractD
         super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
     }
 
+    /**
+     * @param config the configuration
+     */
+    protected FunctionDaoImpl(org.seasar.doma.jdbc.Config config) {
+        super(config);
+    }
+
+    /**
+     * @param config the configuration
+     * @param connection the connection
+     */
+    protected FunctionDaoImpl(org.seasar.doma.jdbc.Config config, java.sql.Connection connection) {
+        super(config, connection);
+    }
+
+    /**
+     * @param config the configuration
+     * @param dataSource the dataSource
+     */
+    protected FunctionDaoImpl(org.seasar.doma.jdbc.Config config, javax.sql.DataSource dataSource) {
+        super(config, dataSource);
+    }
+
     @Override
     public java.util.List<java.util.Map<java.lang.String, java.lang.Object>> execute(int id) {
         entering("org.seasar.doma.internal.apt.dao.FunctionDaoImpl", "execute", id);

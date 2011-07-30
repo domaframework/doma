@@ -217,7 +217,6 @@ public enum Message implements MessageResource {
     DOMA4040("戻り値の型は更新件数を示すintの配列でなければいけません。"),
     DOMA4042("型はjava.lang.Iterableのサブタイプでなければいけません。"),
     DOMA4043("java.lang.Iterableのサブタイプに対する実型引数はエンティティクラスでなければいけません。"),
-    DOMA4045("Daoインタフェースは他のインタフェースを継承してはいけません。"),
     DOMA4051("エンティティクラスには型パラメータを定義できません。"),
     DOMA4053("SelectOption型のパラメータは複数指定できません。"),
     DOMA4054("IterationCallback型のパラメータは複数指定できません。"),
@@ -333,6 +332,8 @@ public enum Message implements MessageResource {
     DOMA4184("列挙型に@Domainを注釈する場合、factoryMethod属性に\"new\"は指定できません（\"new\"はコンストラクタで生成することを示します）。staticで非privateなファクトリメソッドの名前を指定してください。"),
     DOMA4185(" ... /** SQLが長すぎるため最初の{0}文字のみを表示しています。 */"),
     DOMA4186("java.util.Listに対する実型引数の型[{0}]はサポートされていません。サポートされている型は次のものです。基本型、ドメインクラス、エンティティクラス、java.util.Map<String, Object>。"),
+    DOMA4187("@Daoが注釈されたインタフェースは2つ以上のインタフェースをextendsできません。"),
+    DOMA4188("@Daoが注釈されたインタフェースは@Daoが注釈されてないインタフェース[{0}]をextendsできません。"),
 
     // other
     DOMA5001("JDBCドライバがロードされていない可能性があります。JDBCドライバをロードするには、クラスパスが通されたMETA-INF/services/java.sql.DriverファイルにJDBCドライバのクラスの完全修飾名を記述してください。 ex) oracle.jdbc.driver.OracleDriver"),

@@ -25,7 +25,10 @@ import org.seasar.doma.jdbc.Config;
 /**
  * Daoインタフェースであることを示します。
  * <p>
- * このアノテーションは、トップレベルのインタフェースに指定できます。Daoインタフェースは他のインタフェースを拡張できません。
+ * このアノテーションは、トップレベルのインタフェースに指定できます。
+ * 
+ * <p>
+ * Daoインタフェースは、他のDaoインタフェースを1つのみ拡張できます。
  * 
  * <p>
  * インタフェースのメンバメソッドには、メタアノテーション {@link DaoMethod}
@@ -41,8 +44,6 @@ import org.seasar.doma.jdbc.Config;
  *     int insert(Employee employee);
  * }
  * </pre>
- * 
- * 注釈されたインタフェースの実装はスレッドセーフでなければいけません。
  * 
  * @author taedium
  * @see ArrayFactory

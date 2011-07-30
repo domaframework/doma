@@ -27,6 +27,29 @@ public class AutoUpdateDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstrac
         super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
     }
 
+    /**
+     * @param config the configuration
+     */
+    protected AutoUpdateDaoImpl(org.seasar.doma.jdbc.Config config) {
+        super(config);
+    }
+
+    /**
+     * @param config the configuration
+     * @param connection the connection
+     */
+    protected AutoUpdateDaoImpl(org.seasar.doma.jdbc.Config config, java.sql.Connection connection) {
+        super(config, connection);
+    }
+
+    /**
+     * @param config the configuration
+     * @param dataSource the dataSource
+     */
+    protected AutoUpdateDaoImpl(org.seasar.doma.jdbc.Config config, javax.sql.DataSource dataSource) {
+        super(config, dataSource);
+    }
+
     @Override
     public int update(org.seasar.doma.internal.apt.entity.Emp entity) {
         entering("org.seasar.doma.internal.apt.dao.AutoUpdateDaoImpl", "update", entity);

@@ -50,6 +50,8 @@ public class DaoMeta implements TypeElementMeta {
 
     protected boolean error;
 
+    protected ParentDaoMeta parentDaoMeta;
+
     public DaoMeta(DaoMirror daoMirror) {
         assertNotNull(daoMirror);
         this.daoMirror = daoMirror;
@@ -131,6 +133,14 @@ public class DaoMeta implements TypeElementMeta {
 
     public void setError(boolean error) {
         this.error = error;
+    }
+
+    public ParentDaoMeta getParentDaoMeta() {
+        return parentDaoMeta;
+    }
+
+    public void setParentDaoMeta(ParentDaoMeta parentDaoMeta) {
+        this.parentDaoMeta = parentDaoMeta;
     }
 
 }

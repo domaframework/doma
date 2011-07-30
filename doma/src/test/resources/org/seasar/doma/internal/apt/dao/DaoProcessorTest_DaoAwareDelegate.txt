@@ -27,6 +27,29 @@ public class DaoAwareDelegateDaoImpl extends org.seasar.doma.internal.jdbc.dao.A
         super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
     }
 
+    /**
+     * @param config the configuration
+     */
+    protected DaoAwareDelegateDaoImpl(org.seasar.doma.jdbc.Config config) {
+        super(config);
+    }
+
+    /**
+     * @param config the configuration
+     * @param connection the connection
+     */
+    protected DaoAwareDelegateDaoImpl(org.seasar.doma.jdbc.Config config, java.sql.Connection connection) {
+        super(config, connection);
+    }
+
+    /**
+     * @param config the configuration
+     * @param dataSource the dataSource
+     */
+    protected DaoAwareDelegateDaoImpl(org.seasar.doma.jdbc.Config config, javax.sql.DataSource dataSource) {
+        super(config, dataSource);
+    }
+
     @Override
     public java.math.BigDecimal execute(java.lang.String aaa, java.lang.Integer bbb) {
         entering("org.seasar.doma.internal.apt.dao.DaoAwareDelegateDaoImpl", "execute", aaa, bbb);

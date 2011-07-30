@@ -291,14 +291,44 @@ public class DaoProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
-    public void testExtendsDao() throws Exception {
-        Class<?> target = ExtendsDao.class;
+    public void testDaoExtends() throws Exception {
+        Class<?> target = DaoExtendsDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testNoConfigDaoExtends() throws Exception {
+        Class<?> target = NoConfigDaoExtendsDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testNoConfigDaoExtendsNoConfig() throws Exception {
+        Class<?> target = NoConfigDaoExtendsNoConfigDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testNonDaoExtends() throws Exception {
+        Class<?> target = NonDaoExtendsDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
         addCompilationUnit(target);
         compile();
         assertFalse(getCompiledResult());
-        assertMessage(Message.DOMA4045);
+        assertMessage(Message.DOMA4188);
     }
 
     public void testDelegate() throws Exception {

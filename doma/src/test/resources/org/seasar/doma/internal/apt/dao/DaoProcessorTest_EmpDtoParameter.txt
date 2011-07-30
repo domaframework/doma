@@ -27,6 +27,29 @@ public class EmpDtoParameterDaoImpl extends org.seasar.doma.internal.jdbc.dao.Ab
         super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
     }
 
+    /**
+     * @param config the configuration
+     */
+    protected EmpDtoParameterDaoImpl(org.seasar.doma.jdbc.Config config) {
+        super(config);
+    }
+
+    /**
+     * @param config the configuration
+     * @param connection the connection
+     */
+    protected EmpDtoParameterDaoImpl(org.seasar.doma.jdbc.Config config, java.sql.Connection connection) {
+        super(config, connection);
+    }
+
+    /**
+     * @param config the configuration
+     * @param dataSource the dataSource
+     */
+    protected EmpDtoParameterDaoImpl(org.seasar.doma.jdbc.Config config, javax.sql.DataSource dataSource) {
+        super(config, dataSource);
+    }
+
     @Override
     public java.lang.String select(org.seasar.doma.internal.apt.entity.EmpDto dto) {
         entering("org.seasar.doma.internal.apt.dao.EmpDtoParameterDaoImpl", "select", dto);

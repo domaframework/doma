@@ -27,6 +27,29 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.internal.jdbc.dao.
         super(new org.seasar.doma.internal.apt.dao.MyConfig(), dataSource);
     }
 
+    /**
+     * @param config the configuration
+     */
+    protected IterationCallbackDaoImpl(org.seasar.doma.jdbc.Config config) {
+        super(config);
+    }
+
+    /**
+     * @param config the configuration
+     * @param connection the connection
+     */
+    protected IterationCallbackDaoImpl(org.seasar.doma.jdbc.Config config, java.sql.Connection connection) {
+        super(config, connection);
+    }
+
+    /**
+     * @param config the configuration
+     * @param dataSource the dataSource
+     */
+    protected IterationCallbackDaoImpl(org.seasar.doma.jdbc.Config config, javax.sql.DataSource dataSource) {
+        super(config, dataSource);
+    }
+
     @Override
     public java.lang.Integer iterateByIdAndName(java.lang.Integer id, java.lang.String name, org.seasar.doma.jdbc.IterationCallback<java.lang.Integer, org.seasar.doma.internal.apt.entity.Emp> callback) {
         entering("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl", "iterateByIdAndName", id, name, callback);

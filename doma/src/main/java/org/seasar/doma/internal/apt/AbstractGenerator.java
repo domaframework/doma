@@ -50,6 +50,10 @@ public abstract class AbstractGenerator implements Generator {
 
     protected final String simpleName;
 
+    protected final String fullpackage;
+
+    protected final String subpackage;
+
     protected final String prefix;
 
     protected final String suffix;
@@ -64,12 +68,14 @@ public abstract class AbstractGenerator implements Generator {
         assertNotNull(env, typeElement, prefix, suffix);
         this.env = env;
         this.typeElement = typeElement;
+        this.fullpackage = fullpackage;
+        this.subpackage = subpackage;
+        this.prefix = prefix;
+        this.suffix = suffix;
         this.qualifiedName = createQualifiedName(env, typeElement, fullpackage,
                 subpackage, prefix, suffix);
         this.packageName = ClassUtil.getPackageName(qualifiedName);
         this.simpleName = ClassUtil.getSimpleName(qualifiedName);
-        this.prefix = prefix;
-        this.suffix = suffix;
         Filer filer = env.getFiler();
         JavaFileObject file = filer
                 .createSourceFile(qualifiedName, typeElement);

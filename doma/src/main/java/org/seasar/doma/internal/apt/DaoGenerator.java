@@ -56,6 +56,7 @@ import org.seasar.doma.internal.apt.meta.EntityListParameterMeta;
 import org.seasar.doma.internal.apt.meta.EntityListResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.MapListParameterMeta;
 import org.seasar.doma.internal.apt.meta.MapListResultParameterMeta;
+import org.seasar.doma.internal.apt.meta.ParentDaoMeta;
 import org.seasar.doma.internal.apt.meta.QueryMeta;
 import org.seasar.doma.internal.apt.meta.QueryMetaVisitor;
 import org.seasar.doma.internal.apt.meta.QueryParameterMeta;
@@ -146,8 +147,15 @@ public class DaoGenerator extends AbstractGenerator {
                     annotation.getElementsValue());
         }
         printGenerated();
+        String parentClassName = AbstractDao.class.getName();
+        ParentDaoMeta parentDaoMeta = daoMeta.getParentDaoMeta();
+        if (parentDaoMeta != null) {
+            TypeElement parentDaotElement = parentDaoMeta.getDaoElement();
+            parentClassName = createQualifiedName(env, parentDaotElement,
+                    fullpackage, subpackage, prefix, suffix);
+        }
         iprint("public class %1$s extends %2$s implements %3$s {%n",
-                simpleName, AbstractDao.class.getName(), daoMeta.getDaoType());
+                simpleName, parentClassName, daoMeta.getDaoType());
         print("%n");
         indent();
         printValidateVersionStaticInitializer();
@@ -163,6 +171,9 @@ public class DaoGenerator extends AbstractGenerator {
 
     protected void printConstructors() {
         if (daoMeta.hasUserDefinedConfig()) {
+            ParentDaoMeta parentDaoMeta = daoMeta.getParentDaoMeta();
+            boolean jdbcConstructorsNecessary = parentDaoMeta == null
+                    || parentDaoMeta.hasUserDefinedConfig();
             iprint("/** */%n");
             iprint("public %1$s() {%n", simpleName);
             indent();
@@ -170,26 +181,66 @@ public class DaoGenerator extends AbstractGenerator {
             unindent();
             iprint("}%n");
             print("%n");
+            if (jdbcConstructorsNecessary) {
+                iprint("/**%n");
+                iprint(" * @param connection the connection%n");
+                iprint(" */%n");
+                iprint("public %1$s(%2$s connection) {%n", simpleName,
+                        Connection.class.getName());
+                indent();
+                iprint("super(new %1$s(), connection);%n",
+                        daoMeta.getConfigType());
+                unindent();
+                iprint("}%n");
+                print("%n");
+                iprint("/**%n");
+                iprint(" * @param dataSource the dataSource%n");
+                iprint(" */%n");
+                iprint("public %1$s(%2$s dataSource) {%n", simpleName,
+                        DataSource.class.getName());
+                indent();
+                iprint("super(new %1$s(), dataSource);%n",
+                        daoMeta.getConfigType());
+                unindent();
+                iprint("}%n");
+                print("%n");
+            }
             iprint("/**%n");
-            iprint(" * @param connection the connection%n");
+            iprint(" * @param config the configuration%n");
             iprint(" */%n");
-            iprint("public %1$s(%2$s connection) {%n", simpleName,
-                    Connection.class.getName());
+            iprint("protected %1$s(%2$s config) {%n", simpleName,
+                    Config.class.getName());
             indent();
-            iprint("super(new %1$s(), connection);%n", daoMeta.getConfigType());
+            iprint("super(config);%n", daoMeta.getConfigType());
             unindent();
             iprint("}%n");
             print("%n");
-            iprint("/**%n");
-            iprint(" * @param dataSource the dataSource%n");
-            iprint(" */%n");
-            iprint("public %1$s(%2$s dataSource) {%n", simpleName,
-                    DataSource.class.getName());
-            indent();
-            iprint("super(new %1$s(), dataSource);%n", daoMeta.getConfigType());
-            unindent();
-            iprint("}%n");
-            print("%n");
+            if (jdbcConstructorsNecessary) {
+                iprint("/**%n");
+                iprint(" * @param config the configuration%n");
+                iprint(" * @param connection the connection%n");
+                iprint(" */%n");
+                iprint("protected %1$s(%2$s config, %3$s connection) {%n",
+                        simpleName, Config.class.getName(),
+                        Connection.class.getName());
+                indent();
+                iprint("super(config, connection);%n", daoMeta.getConfigType());
+                unindent();
+                iprint("}%n");
+                print("%n");
+                iprint("/**%n");
+                iprint(" * @param config the configuration%n");
+                iprint(" * @param dataSource the dataSource%n");
+                iprint(" */%n");
+                iprint("protected %1$s(%2$s config, %3$s dataSource) {%n",
+                        simpleName, Config.class.getName(),
+                        DataSource.class.getName());
+                indent();
+                iprint("super(config, dataSource);%n", daoMeta.getConfigType());
+                unindent();
+                iprint("}%n");
+                print("%n");
+            }
         } else {
             iprint("/**%n");
             iprint(" * @param config the config%n");
@@ -212,6 +263,11 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("}%n");
             print("%n");
         }
+    }
+
+    protected boolean isJdbcConstructoNecessary() {
+        ParentDaoMeta parentDaoMeta = daoMeta.getParentDaoMeta();
+        return parentDaoMeta == null || parentDaoMeta.hasUserDefinedConfig();
     }
 
     protected void printMethods() {

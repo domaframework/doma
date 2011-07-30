@@ -13,33 +13,16 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal;
+package org.seasar.doma.internal.apt.dao;
 
-import org.seasar.doma.DomaException;
-import org.seasar.doma.message.Message;
+import java.io.Serializable;
+
+import org.seasar.doma.Dao;
 
 /**
  * @author taedium
  * 
  */
-public final class Artifact {
-
-    private static final String NAME = "Doma";
-
-    private static final String VERSION = "1.18.0-SNAPSHOT";
-
-    public static String getName() {
-        return NAME;
-    }
-
-    public static String getVersion() {
-        return VERSION;
-    }
-
-    public static void validateVersion(String generationtimeVersion) {
-        if (!VERSION.equals(generationtimeVersion)) {
-            throw new DomaException(Message.DOMA0003, VERSION,
-                    generationtimeVersion);
-        }
-    }
+@Dao(config = MyConfig.class)
+public interface NonDaoExtendsDao extends Serializable {
 }

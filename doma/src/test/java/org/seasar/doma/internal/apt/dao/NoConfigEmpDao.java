@@ -13,33 +13,41 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal;
+package org.seasar.doma.internal.apt.dao;
 
-import org.seasar.doma.DomaException;
-import org.seasar.doma.message.Message;
+import java.math.BigDecimal;
+import java.util.List;
+
+import org.seasar.doma.Dao;
+import org.seasar.doma.Delete;
+import org.seasar.doma.Insert;
+import org.seasar.doma.Select;
+import org.seasar.doma.Update;
+import org.seasar.doma.jdbc.SelectOptions;
+
+import example.entity.Emp;
 
 /**
+ * 
  * @author taedium
  * 
  */
-public final class Artifact {
+@Dao
+public interface NoConfigEmpDao {
 
-    private static final String NAME = "Doma";
+    @Select
+    Emp selectById(Integer id, SelectOptions options);
 
-    private static final String VERSION = "1.18.0-SNAPSHOT";
+    @Select
+    List<Emp> selectByNameAndSalary(String name, BigDecimal salary,
+            SelectOptions options);
 
-    public static String getName() {
-        return NAME;
-    }
+    @Insert
+    int insert(Emp entity);
 
-    public static String getVersion() {
-        return VERSION;
-    }
+    @Update
+    int update(Emp entity);
 
-    public static void validateVersion(String generationtimeVersion) {
-        if (!VERSION.equals(generationtimeVersion)) {
-            throw new DomaException(Message.DOMA0003, VERSION,
-                    generationtimeVersion);
-        }
-    }
+    @Delete
+    int delete(Emp entity);
 }

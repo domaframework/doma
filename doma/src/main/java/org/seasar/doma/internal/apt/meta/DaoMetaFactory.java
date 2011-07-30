@@ -26,6 +26,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 
@@ -83,6 +84,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         daoMeta.setDaoElement(interfaceElement);
         daoMeta.setDaoType(interfaceElement.asType());
         doAnnotateWith(daoMeta);
+        doParentDao(daoMeta);
     }
 
     protected void validateInterface(TypeElement interfaceElement,
@@ -94,9 +96,6 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         }
         if (interfaceElement.getNestingKind().isNested()) {
             throw new AptException(Message.DOMA4017, env, interfaceElement);
-        }
-        if (!interfaceElement.getInterfaces().isEmpty()) {
-            throw new AptException(Message.DOMA4045, env, interfaceElement);
         }
         if (!interfaceElement.getTypeParameters().isEmpty()) {
             throw new AptException(Message.DOMA4059, env, interfaceElement);
@@ -143,6 +142,35 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
             }
             daoMeta.setAnnotateWithMirror(annotateWithMirror);
         }
+    }
+
+    protected void doParentDao(DaoMeta daoMeta) {
+        List<? extends TypeMirror> interfaces = daoMeta.getDaoElement()
+                .getInterfaces();
+        int size = interfaces.size();
+        if (size == 0) {
+            return;
+        }
+        if (size > 1) {
+            throw new AptException(Message.DOMA4187, env,
+                    daoMeta.getDaoElement());
+        }
+        TypeMirror parentMirror = interfaces.get(0);
+        TypeElement parentElement = TypeMirrorUtil.toTypeElement(parentMirror,
+                env);
+        if (parentElement == null) {
+            throw new AptIllegalStateException(
+                    "failed to convert to TypeElement.");
+        }
+        DaoMirror daoMirror = DaoMirror.newInstance(parentElement, env);
+        if (daoMirror == null) {
+            throw new AptException(Message.DOMA4188, env,
+                    daoMeta.getDaoElement(), parentElement.getQualifiedName());
+        }
+        ParentDaoMeta parentDaoMeta = new ParentDaoMeta(daoMirror);
+        parentDaoMeta.setDaoType(parentMirror);
+        parentDaoMeta.setDaoElement(parentElement);
+        daoMeta.setParentDaoMeta(parentDaoMeta);
     }
 
     protected void doMethodElements(TypeElement interfaceElement,
