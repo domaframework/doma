@@ -8,7 +8,11 @@
 		<section name="目次">
 			<ul>
 				<li><a href="#概要">概要</a></li>
-				<li><a href="#Dao定義">Dao定義</a></li>
+				<li><a href="#Dao定義">Dao定義</a>
+					<ul>
+						<li><a href="#継承">継承</a></li>
+					</ul>
+				</li>
 				<li><a href="#クエリ定義">クエリ定義</a></li>
 				<li><a href="#デリゲート定義">デリゲート定義</a>
 					<ul>
@@ -41,6 +45,17 @@ public interface EmployeeDao {
 				<code>org.seasar.doma.jdbc.Config</code>の実装クラスを指定しなければいけません。
 				<code>Config</code>の実装クラスは、データソース、データベースの方言、ネーミング規約等の<a href="config.html">設定</a>を行います。
 			</p>
+			<subsection name="継承">
+				@Daoが注釈された他のDaoを1つのみ継承できます。
+<source>@Dao(config = AppConfig.class)
+public interface EmployeeDao {
+    ...
+}</source>
+<source>@Dao(config = AppConfig.class)
+public interface ParttimeEmployeeDao extends EmployeeDao {
+    ...
+}</source>
+			</subsection>
 		</section>
 		<section name="クエリ定義">
 			<p>

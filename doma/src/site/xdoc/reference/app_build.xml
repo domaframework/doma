@@ -18,8 +18,11 @@
 				Domaを利用するアプリケーションを、AntもしくはMavenによってビルドする方法を示します。
 			</p>
 			<p>
-				2010年2月現在、javacにはaptに関するバグがあることが判明しています。
+				2011年8月現在、JDK6のjavacにはaptに関するバグがあることが判明しています。
 				ここでは、このバグの回避を考慮に入れて解説します。
+			</p>
+			<p>
+				なお、このバグはJDK7のjavacでは解決されています。
 			</p>
 		</section>
 		<section name="javacのバグについて">
@@ -223,7 +226,7 @@ import tutorial.dao.EmployeeDaoImpl;
 				この例では使用していませんが、aptにパラメータを渡す場合にはmaven-processor-pluginのcompilerArguments要素を使ってください。
 			</p>
 			<p>
-				javacタスク実行時にはjavacのバグによりエラーメッセージが誤って報告されますが、「BUILD SUCCESSFUL」というメッセージとともにMavenの実行が終了すれば、ビルドは成功しています。
+				maven-compiler-plugin実行時にはjavacのバグによりエラーメッセージが誤って報告されますが、「BUILD SUCCESSFUL」というメッセージとともにMavenの実行が終了すれば、ビルドは成功しています。
 			</p>
 			<p>
 				Mavenを使ったWebアプリケーションのビルドについては、Doma JPetStoreの配布ファイルに含まれるpom.xmlを参考にしてください。
