@@ -31,25 +31,9 @@ import org.seasar.doma.jdbc.dialect.Dialect;
  */
 public class RuntimeConfig implements Config {
 
+    protected final Config config;
+
     protected final DataSource dataSource;
-
-    protected final String dataSourceName;
-
-    protected final Dialect dialect;
-
-    protected final SqlFileRepository sqlFileRepository;
-
-    protected final JdbcLogger jdbcLogger;
-
-    protected final RequiresNewController requiresNewController;
-
-    protected final int fetchSize;
-
-    protected final int maxRows;
-
-    protected final int queryTimeout;
-
-    protected final int batchSize;
 
     public RuntimeConfig(Config originalConfig) {
         this(originalConfig, originalConfig.getDataSource());
@@ -58,21 +42,8 @@ public class RuntimeConfig implements Config {
     public RuntimeConfig(Config config, DataSource dataSource) {
         assertNotNull(config);
         assertNotNull(dataSource);
-        assertNotNull(config.getDataSourceName());
-        assertNotNull(config.getDialect());
-        assertNotNull(config.getSqlFileRepository());
-        assertNotNull(config.getJdbcLogger());
-        assertNotNull(config.getRequiresNewController());
+        this.config = config;
         this.dataSource = dataSource;
-        this.dataSourceName = config.getDataSourceName();
-        this.dialect = config.getDialect();
-        this.sqlFileRepository = config.getSqlFileRepository();
-        this.jdbcLogger = config.getJdbcLogger();
-        this.requiresNewController = config.getRequiresNewController();
-        this.fetchSize = config.getFetchSize();
-        this.maxRows = config.getMaxRows();
-        this.queryTimeout = config.getQueryTimeout();
-        this.batchSize = config.getBatchSize();
     }
 
     @Override
@@ -82,47 +53,47 @@ public class RuntimeConfig implements Config {
 
     @Override
     public String getDataSourceName() {
-        return dataSourceName;
+        return config.getDataSourceName();
     }
 
     @Override
     public Dialect getDialect() {
-        return dialect;
+        return config.getDialect();
     }
 
     @Override
     public SqlFileRepository getSqlFileRepository() {
-        return sqlFileRepository;
+        return config.getSqlFileRepository();
     }
 
     @Override
     public JdbcLogger getJdbcLogger() {
-        return jdbcLogger;
+        return config.getJdbcLogger();
     }
 
     @Override
     public RequiresNewController getRequiresNewController() {
-        return requiresNewController;
+        return config.getRequiresNewController();
     }
 
     @Override
     public int getFetchSize() {
-        return fetchSize;
+        return config.getFetchSize();
     }
 
     @Override
     public int getMaxRows() {
-        return maxRows;
+        return config.getMaxRows();
     }
 
     @Override
     public int getQueryTimeout() {
-        return queryTimeout;
+        return config.getQueryTimeout();
     }
 
     @Override
     public int getBatchSize() {
-        return batchSize;
+        return config.getBatchSize();
     }
 
 }
