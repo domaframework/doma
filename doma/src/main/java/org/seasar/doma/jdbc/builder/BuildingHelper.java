@@ -72,6 +72,7 @@ class BuildingHelper {
 
     SqlNode getSqlNode() {
         StringBuilder buf = new StringBuilder(200);
+        @SuppressWarnings("unused")
         int index = 1;
         for (Item item : items) {
             switch (item.kind) {
