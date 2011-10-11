@@ -116,10 +116,6 @@ public abstract class AbstractDao {
                         "getDataSource");
             }
         }
-        if (config.getDataSourceName() == null) {
-            throw new ConfigException(config.getClass().getName(),
-                    "getDataSourceName");
-        }
         if (config.getDialect() == null) {
             throw new ConfigException(config.getClass().getName(), "getDialect");
         }
