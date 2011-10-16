@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
@@ -60,10 +61,12 @@ public abstract class AptTestCase extends AptinaTestCase {
         addSourcePath("src/test/resources");
         setCharset("UTF-8");
         setLocale(locale);
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+9"));
     }
 
     @Override
     protected void tearDown() throws Exception {
+        TimeZone.setDefault(null);
         super.tearDown();
     }
 

@@ -106,7 +106,7 @@ public abstract class AbstractGenerator implements Generator {
     }
 
     protected void printGenerated() {
-        iprint("@%s(value = { \"%s\", \"%s\" }, date = \"%tF %<tT\")%n",
+        iprint("@%s(value = { \"%s\", \"%s\" }, date = \"%tFT%<tT.%<tL%<tz\")%n",
                 Generated.class.getName(), Artifact.getName(),
                 Options.getVersion(env), Options.getDate(env));
     }
