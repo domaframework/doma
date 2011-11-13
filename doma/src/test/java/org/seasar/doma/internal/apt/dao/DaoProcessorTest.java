@@ -508,14 +508,14 @@ public class DaoProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
-    public void testIllegalAnnotateWith() throws Exception {
-        Class<?> target = IllegalAnnotateWithDao.class;
+    public void testConfigAnnotateWith() throws Exception {
+        Class<?> target = ConfigAnnotateWithDao.class;
         DaoProcessor processor = new DaoProcessor();
         addProcessor(processor);
         addCompilationUnit(target);
         compile();
-        assertFalse(getCompiledResult());
-        assertMessage(Message.DOMA4165);
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
     }
 
     public void testIllegalParameterName() throws Exception {

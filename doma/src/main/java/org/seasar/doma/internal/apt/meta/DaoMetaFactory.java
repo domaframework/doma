@@ -85,6 +85,31 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         daoMeta.setDaoType(interfaceElement.asType());
         doAnnotateWith(daoMeta);
         doParentDao(daoMeta);
+
+        DaoMirror daoMirror = daoMeta.getDaoMirror();
+        if (daoMirror.hasUserDefinedConfig()) {
+            TypeElement configElement = TypeMirrorUtil.toTypeElement(
+                    daoMirror.getConfigValue(), env);
+            if (configElement == null) {
+                throw new AptIllegalStateException(
+                        "failed to convert to TypeElement.");
+            }
+            if (configElement.getModifiers().contains(Modifier.ABSTRACT)) {
+                throw new AptException(Message.DOMA4163, env,
+                        daoMeta.getDaoElement(),
+                        daoMirror.getAnnotationMirror(), daoMirror.getConfig(),
+                        configElement.getQualifiedName());
+            }
+            ExecutableElement constructor = ElementUtil.getNoArgConstructor(
+                    configElement, env);
+            if (constructor == null
+                    || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
+                throw new AptException(Message.DOMA4164, env,
+                        daoMeta.getDaoElement(),
+                        daoMirror.getAnnotationMirror(), daoMirror.getConfig(),
+                        configElement.getQualifiedName());
+            }
+        }
     }
 
     protected void validateInterface(TypeElement interfaceElement,
@@ -105,41 +130,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     protected void doAnnotateWith(DaoMeta daoMeta) {
         AnnotateWithMirror annotateWithMirror = AnnotateWithMirror.newInstance(
                 daoMeta.getDaoElement(), env);
-        DaoMirror daoMirror = daoMeta.getDaoMirror();
-        if (annotateWithMirror == null) {
-            if (daoMirror.hasUserDefinedConfig()) {
-                TypeElement configElement = TypeMirrorUtil.toTypeElement(
-                        daoMirror.getConfigValue(), env);
-                if (configElement == null) {
-                    throw new AptIllegalStateException(
-                            "failed to convert to TypeElement.");
-                }
-                if (configElement.getModifiers().contains(Modifier.ABSTRACT)) {
-                    throw new AptException(Message.DOMA4163, env,
-                            daoMeta.getDaoElement(),
-                            daoMirror.getAnnotationMirror(),
-                            daoMirror.getConfig(),
-                            configElement.getQualifiedName());
-                }
-                ExecutableElement constructor = ElementUtil
-                        .getNoArgConstructor(configElement, env);
-                if (constructor == null
-                        || !constructor.getModifiers()
-                                .contains(Modifier.PUBLIC)) {
-                    throw new AptException(Message.DOMA4164, env,
-                            daoMeta.getDaoElement(),
-                            daoMirror.getAnnotationMirror(),
-                            daoMirror.getConfig(),
-                            configElement.getQualifiedName());
-                }
-            }
-        } else {
-            if (daoMirror.hasUserDefinedConfig()) {
-                throw new AptException(Message.DOMA4165, env,
-                        daoMeta.getDaoElement(),
-                        daoMirror.getAnnotationMirror(), daoMirror.getConfig(),
-                        annotateWithMirror.getOwnerElement());
-            }
+        if (annotateWithMirror != null) {
             daoMeta.setAnnotateWithMirror(annotateWithMirror);
         }
     }

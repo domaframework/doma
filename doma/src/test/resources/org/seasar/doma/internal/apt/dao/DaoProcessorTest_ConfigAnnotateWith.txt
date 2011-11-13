@@ -1,0 +1,52 @@
+package org.seasar.doma.internal.apt.dao;
+
+/** */
+@org.seasar.doma.internal.apt.dao.ClassAnnotation(aaa = 1, bbb = true)
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+public class ConfigAnnotateWithDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.dao.ConfigAnnotateWithDao {
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    /** */
+    public ConfigAnnotateWithDaoImpl() {
+        super(new example.dao.ExampleConfig());
+    }
+
+    /**
+     * @param config the config
+     */
+    public ConfigAnnotateWithDaoImpl(org.seasar.doma.jdbc.Config config) {
+        super(config);
+    }
+
+    @Override
+    public int insert(org.seasar.doma.internal.apt.entity.Emp emp) {
+        entering("org.seasar.doma.internal.apt.dao.ConfigAnnotateWithDaoImpl", "insert", emp);
+        try {
+            if (emp == null) {
+                throw new org.seasar.doma.DomaNullPointerException("emp");
+            }
+            org.seasar.doma.internal.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.entity.Emp> __query = new org.seasar.doma.internal.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
+            __query.setConfig(config);
+            __query.setEntity(emp);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.dao.ConfigAnnotateWithDaoImpl");
+            __query.setCallerMethodName("insert");
+            __query.setQueryTimeout(-1);
+            __query.setNullExcluded(false);
+            __query.setIncludedPropertyNames();
+            __query.setExcludedPropertyNames();
+            __query.prepare();
+            org.seasar.doma.internal.jdbc.command.InsertCommand __command = new org.seasar.doma.internal.jdbc.command.InsertCommand(__query);
+            int __result = __command.execute();
+            __query.complete();
+            exiting("org.seasar.doma.internal.apt.dao.ConfigAnnotateWithDaoImpl", "insert", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.dao.ConfigAnnotateWithDaoImpl", "insert", __e);
+            throw __e;
+        }
+    }
+
+}

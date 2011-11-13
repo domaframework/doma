@@ -171,9 +171,6 @@ public class DaoGenerator extends AbstractGenerator {
 
     protected void printConstructors() {
         if (daoMeta.hasUserDefinedConfig()) {
-            ParentDaoMeta parentDaoMeta = daoMeta.getParentDaoMeta();
-            boolean jdbcConstructorsNecessary = parentDaoMeta == null
-                    || parentDaoMeta.hasUserDefinedConfig();
             iprint("/** */%n");
             iprint("public %1$s() {%n", simpleName);
             indent();
@@ -181,67 +178,76 @@ public class DaoGenerator extends AbstractGenerator {
             unindent();
             iprint("}%n");
             print("%n");
-            if (jdbcConstructorsNecessary) {
-                iprint("/**%n");
-                iprint(" * @param connection the connection%n");
-                iprint(" */%n");
-                iprint("public %1$s(%2$s connection) {%n", simpleName,
-                        Connection.class.getName());
-                indent();
-                iprint("super(new %1$s(), connection);%n",
-                        daoMeta.getConfigType());
-                unindent();
-                iprint("}%n");
-                print("%n");
-                iprint("/**%n");
-                iprint(" * @param dataSource the dataSource%n");
-                iprint(" */%n");
-                iprint("public %1$s(%2$s dataSource) {%n", simpleName,
-                        DataSource.class.getName());
-                indent();
-                iprint("super(new %1$s(), dataSource);%n",
-                        daoMeta.getConfigType());
-                unindent();
-                iprint("}%n");
-                print("%n");
-            }
-            iprint("/**%n");
-            iprint(" * @param config the configuration%n");
-            iprint(" */%n");
-            iprint("protected %1$s(%2$s config) {%n", simpleName,
-                    Config.class.getName());
-            indent();
-            iprint("super(config);%n", daoMeta.getConfigType());
-            unindent();
-            iprint("}%n");
-            print("%n");
-            if (jdbcConstructorsNecessary) {
+            if (daoMeta.getAnnotateWithMirror() == null) {
+                ParentDaoMeta parentDaoMeta = daoMeta.getParentDaoMeta();
+                boolean jdbcConstructorsNecessary = parentDaoMeta == null
+                        || parentDaoMeta.hasUserDefinedConfig();
+                if (jdbcConstructorsNecessary) {
+                    iprint("/**%n");
+                    iprint(" * @param connection the connection%n");
+                    iprint(" */%n");
+                    iprint("public %1$s(%2$s connection) {%n", simpleName,
+                            Connection.class.getName());
+                    indent();
+                    iprint("super(new %1$s(), connection);%n",
+                            daoMeta.getConfigType());
+                    unindent();
+                    iprint("}%n");
+                    print("%n");
+                    iprint("/**%n");
+                    iprint(" * @param dataSource the dataSource%n");
+                    iprint(" */%n");
+                    iprint("public %1$s(%2$s dataSource) {%n", simpleName,
+                            DataSource.class.getName());
+                    indent();
+                    iprint("super(new %1$s(), dataSource);%n",
+                            daoMeta.getConfigType());
+                    unindent();
+                    iprint("}%n");
+                    print("%n");
+                }
                 iprint("/**%n");
                 iprint(" * @param config the configuration%n");
-                iprint(" * @param connection the connection%n");
                 iprint(" */%n");
-                iprint("protected %1$s(%2$s config, %3$s connection) {%n",
-                        simpleName, Config.class.getName(),
-                        Connection.class.getName());
+                iprint("protected %1$s(%2$s config) {%n", simpleName,
+                        Config.class.getName());
                 indent();
-                iprint("super(config, connection);%n", daoMeta.getConfigType());
+                iprint("super(config);%n", daoMeta.getConfigType());
                 unindent();
                 iprint("}%n");
                 print("%n");
-                iprint("/**%n");
-                iprint(" * @param config the configuration%n");
-                iprint(" * @param dataSource the dataSource%n");
-                iprint(" */%n");
-                iprint("protected %1$s(%2$s config, %3$s dataSource) {%n",
-                        simpleName, Config.class.getName(),
-                        DataSource.class.getName());
-                indent();
-                iprint("super(config, dataSource);%n", daoMeta.getConfigType());
-                unindent();
-                iprint("}%n");
-                print("%n");
+                if (jdbcConstructorsNecessary) {
+                    iprint("/**%n");
+                    iprint(" * @param config the configuration%n");
+                    iprint(" * @param connection the connection%n");
+                    iprint(" */%n");
+                    iprint("protected %1$s(%2$s config, %3$s connection) {%n",
+                            simpleName, Config.class.getName(),
+                            Connection.class.getName());
+                    indent();
+                    iprint("super(config, connection);%n",
+                            daoMeta.getConfigType());
+                    unindent();
+                    iprint("}%n");
+                    print("%n");
+                    iprint("/**%n");
+                    iprint(" * @param config the configuration%n");
+                    iprint(" * @param dataSource the dataSource%n");
+                    iprint(" */%n");
+                    iprint("protected %1$s(%2$s config, %3$s dataSource) {%n",
+                            simpleName, Config.class.getName(),
+                            DataSource.class.getName());
+                    indent();
+                    iprint("super(config, dataSource);%n",
+                            daoMeta.getConfigType());
+                    unindent();
+                    iprint("}%n");
+                    print("%n");
+                }
             }
-        } else {
+        }
+        if (!daoMeta.hasUserDefinedConfig()
+                || daoMeta.getAnnotateWithMirror() != null) {
             iprint("/**%n");
             iprint(" * @param config the config%n");
             iprint(" */%n");

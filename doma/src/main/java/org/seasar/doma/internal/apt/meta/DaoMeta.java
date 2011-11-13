@@ -101,11 +101,11 @@ public class DaoMeta implements TypeElementMeta {
         return daoMirror.getConfigValue();
     }
 
-    AnnotateWithMirror getAnnotateWithMirror() {
+    public AnnotateWithMirror getAnnotateWithMirror() {
         return annotateWithMirror;
     }
 
-    void setAnnotateWithMirror(AnnotateWithMirror annotateWithMirror) {
+    public void setAnnotateWithMirror(AnnotateWithMirror annotateWithMirror) {
         this.annotateWithMirror = annotateWithMirror;
     }
 
