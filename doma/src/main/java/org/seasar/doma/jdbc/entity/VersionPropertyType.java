@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.jdbc.entity;
 
+import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.wrapper.NumberWrapper;
 
 /**
@@ -23,22 +24,35 @@ import org.seasar.doma.wrapper.NumberWrapper;
  * @author taedium
  * 
  */
-public abstract class VersionPropertyType<E, V extends Number> extends
-        BasicPropertyType<E, V> {
+public class VersionPropertyType<PE, E extends PE, V extends Number, D> extends
+        BasicPropertyType<PE, E, V, D> {
 
     /**
      * インスタンスを構築します。
      * 
+     * @param entityClass
+     *            エンティティのクラス
      * @param entityPropertyClass
      *            プロパティのクラス
+     * @param wrapperClass
+     *            ラッパーのクラス
+     * @param parentEntityPropertyType
+     *            親のエンティティのプロパティ型、親のエンティティを持たない場合 {@code null}
+     * @param domainType
+     *            ドメインのメタタイプ、ドメインでない場合 {@code null}
      * @param name
      *            プロパティの名前
      * @param columnName
      *            カラム名
      */
-    protected VersionPropertyType(Class<V> entityPropertyClass, String name,
-            String columnName) {
-        super(entityPropertyClass, name, columnName, true, true);
+    public VersionPropertyType(Class<E> entityClass,
+            Class<V> entityPropertyClass,
+            Class<? extends NumberWrapper<V>> wrapperClass,
+            EntityPropertyType<PE, V> parentEntityPropertyType,
+            DomainType<V, D> domainType, String name, String columnName) {
+        super(entityClass, entityPropertyClass, wrapperClass,
+                parentEntityPropertyType, domainType, name, columnName, true,
+                true);
     }
 
     @Override
@@ -55,7 +69,7 @@ public abstract class VersionPropertyType<E, V extends Number> extends
      *            バージョンの値
      */
     public void setIfNecessary(E entity, Number value) {
-        NumberWrapper<?> wrapper = getWrapper(entity);
+        NumberWrapper<V> wrapper = (NumberWrapper<V>) getWrapper(entity);
         if (wrapper.get() == null || wrapper.get().intValue() < 0) {
             wrapper.set(value);
         }
@@ -68,10 +82,8 @@ public abstract class VersionPropertyType<E, V extends Number> extends
      *            エンティティ
      */
     public void increment(E entity) {
-        NumberWrapper<?> wrapper = getWrapper(entity);
+        NumberWrapper<V> wrapper = (NumberWrapper<V>) getWrapper(entity);
         wrapper.increment();
     }
 
-    @Override
-    public abstract NumberWrapper<V> getWrapper(E entity);
 }

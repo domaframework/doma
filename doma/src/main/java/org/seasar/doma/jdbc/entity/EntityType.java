@@ -80,14 +80,14 @@ public interface EntityType<E> extends TableCriterion<E> {
      * 
      * @return 自動生成される識別子のプロパティ型
      */
-    GeneratedIdPropertyType<E, ?> getGeneratedIdPropertyType();
+    GeneratedIdPropertyType<? super E, E, ?, ?> getGeneratedIdPropertyType();
 
     /**
      * バージョンのプロパティ型を返します。
      * 
      * @return バージョンのプロパティ型
      */
-    VersionPropertyType<E, ?> getVersionPropertyType();
+    VersionPropertyType<? super E, E, ?, ?> getVersionPropertyType();
 
     /**
      * 識別子のプロパティ型のリストを返します。

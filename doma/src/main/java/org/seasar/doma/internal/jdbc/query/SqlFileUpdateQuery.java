@@ -102,7 +102,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
 
         protected EntityType<E> entityType;
 
-        protected VersionPropertyType<E, ?> versionPropertyType;
+        protected VersionPropertyType<? super E, E, ?, ?> versionPropertyType;
 
         protected EntityHandler(E entity, EntityType<E> entityType) {
             assertNotNull(entity, entityType);

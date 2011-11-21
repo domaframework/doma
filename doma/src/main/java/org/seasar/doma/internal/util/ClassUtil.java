@@ -18,6 +18,7 @@ package org.seasar.doma.internal.util;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.seasar.doma.internal.WrapException;
@@ -83,6 +84,18 @@ public final class ClassUtil {
         } catch (SecurityException e) {
             throw new WrapException(e);
         } catch (NoSuchMethodException e) {
+            throw new WrapException(e);
+        }
+    }
+
+    public static <T> Field getDeclaredField(Class<T> clazz, String name)
+            throws WrapException {
+        assertNotNull(clazz, name);
+        try {
+            return clazz.getDeclaredField(name);
+        } catch (SecurityException e) {
+            throw new WrapException(e);
+        } catch (NoSuchFieldException e) {
             throw new WrapException(e);
         }
     }

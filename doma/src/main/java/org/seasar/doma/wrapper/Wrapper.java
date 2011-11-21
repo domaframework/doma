@@ -70,6 +70,8 @@ public interface Wrapper<V> {
      */
     boolean hasEqualValue(Object other);
 
+    void setAccessor(Accessor<V> accessor);
+
     /**
      * ビジターを受け入れます。
      * 

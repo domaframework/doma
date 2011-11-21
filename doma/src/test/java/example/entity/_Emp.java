@@ -49,139 +49,21 @@ public class _Emp extends AbstractEntityType<Emp> {
 
     private final NullEntityListener __listener = new NullEntityListener();
 
-    public final AssignedIdPropertyType<Emp, Integer> id = new AssignedIdPropertyType<Emp, Integer>(
-            Integer.class, "id", "ID") {
+    public final AssignedIdPropertyType<Object, Emp, Integer, Object> id = new AssignedIdPropertyType<Object, Emp, Integer, Object>(
+            Emp.class, Integer.class, IntegerWrapper.class, null, null, "id",
+            "ID");
 
-        @Override
-        public IntegerWrapper getWrapper(Emp entity) {
-            return new Wrapper(entity);
-        }
+    public final BasicPropertyType<Object, Emp, String, Object> name = new BasicPropertyType<Object, Emp, String, Object>(
+            Emp.class, String.class, StringWrapper.class, null, null, "name",
+            "NAME", true, true);
 
-        class Wrapper extends IntegerWrapper {
+    public final BasicPropertyType<Object, Emp, BigDecimal, Object> salary = new BasicPropertyType<Object, Emp, BigDecimal, Object>(
+            Emp.class, BigDecimal.class, BigDecimalWrapper.class, null, null,
+            "salary", "SALARY", true, true);
 
-            private final Emp entity;
-
-            Wrapper(Emp entity) {
-                this.entity = entity;
-            }
-
-            @Override
-            protected Integer doGet() {
-                if (entity == null) {
-                    return null;
-                }
-                return entity.id;
-            }
-
-            @Override
-            protected void doSet(Integer value) {
-                if (entity == null) {
-                    return;
-                }
-                entity.id = value;
-            }
-        }
-    };
-
-    public final BasicPropertyType<Emp, String> name = new BasicPropertyType<Emp, String>(
-            String.class, "name", "NAME", true, true) {
-        @Override
-        public StringWrapper getWrapper(Emp entity) {
-            return new Wrapper(entity);
-        }
-
-        class Wrapper extends StringWrapper {
-
-            private final Emp entity;
-
-            Wrapper(Emp entity) {
-                this.entity = entity;
-            }
-
-            @Override
-            protected String doGet() {
-                if (entity == null) {
-                    return null;
-                }
-                return entity.name;
-            }
-
-            @Override
-            protected void doSet(String value) {
-                if (entity == null) {
-                    return;
-                }
-                entity.name = value;
-            }
-        }
-    };
-
-    public final BasicPropertyType<Emp, BigDecimal> salary = new BasicPropertyType<Emp, BigDecimal>(
-            BigDecimal.class, "salary", "SALARY", true, true) {
-        @Override
-        public BigDecimalWrapper getWrapper(Emp entity) {
-            return new Wrapper(entity);
-        }
-
-        class Wrapper extends BigDecimalWrapper {
-
-            private final Emp entity;
-
-            Wrapper(Emp entity) {
-                this.entity = entity;
-            }
-
-            @Override
-            protected BigDecimal doGet() {
-                if (entity == null) {
-                    return null;
-                }
-                return entity.salary;
-            }
-
-            @Override
-            protected void doSet(BigDecimal value) {
-                if (entity == null) {
-                    return;
-                }
-                entity.salary = value;
-            }
-        }
-
-    };
-
-    public final VersionPropertyType<Emp, Integer> version = new VersionPropertyType<Emp, Integer>(
-            Integer.class, "version", "VERSION") {
-        @Override
-        public IntegerWrapper getWrapper(Emp entity) {
-            return new Wrapper(entity);
-        }
-
-        class Wrapper extends IntegerWrapper {
-
-            private final Emp entity;
-
-            Wrapper(Emp entity) {
-                this.entity = entity;
-            }
-
-            @Override
-            protected Integer doGet() {
-                if (entity == null) {
-                    return null;
-                }
-                return entity.version;
-            }
-
-            @Override
-            public void doSet(Integer value) {
-                if (entity == null) {
-                    return;
-                }
-                entity.version = value;
-            }
-        }
-    };
+    public final VersionPropertyType<Object, Emp, Integer, Object> version = new VersionPropertyType<Object, Emp, Integer, Object>(
+            Emp.class, Integer.class, IntegerWrapper.class, null, null,
+            "version", "VERSION");
 
     private final String __name = "Emp";
 
@@ -266,12 +148,12 @@ public class _Emp extends AbstractEntityType<Emp> {
     }
 
     @Override
-    public GeneratedIdPropertyType<Emp, ?> getGeneratedIdPropertyType() {
+    public GeneratedIdPropertyType<Object, Emp, ?, ?> getGeneratedIdPropertyType() {
         return null;
     }
 
     @Override
-    public VersionPropertyType<Emp, ?> getVersionPropertyType() {
+    public VersionPropertyType<Object, Emp, ?, ?> getVersionPropertyType() {
         return version;
     }
 

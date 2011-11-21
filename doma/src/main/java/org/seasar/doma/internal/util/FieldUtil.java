@@ -49,4 +49,13 @@ public final class FieldUtil {
             throw new WrapException(e);
         }
     }
+
+    public static void setAccessible(Field field, boolean flag)
+            throws WrapException {
+        try {
+            field.setAccessible(flag);
+        } catch (SecurityException e) {
+            throw new WrapException(e);
+        }
+    }
 }

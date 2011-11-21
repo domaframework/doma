@@ -21,6 +21,7 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.GenerationType;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.jdbc.id.IdGenerator;
 import org.seasar.doma.message.Message;
@@ -32,8 +33,8 @@ import org.seasar.doma.wrapper.NumberWrapper;
  * @author taedium
  * 
  */
-public abstract class GeneratedIdPropertyType<E, V extends Number> extends
-        BasicPropertyType<E, V> {
+public class GeneratedIdPropertyType<PE, E extends PE, V extends Number, D>
+        extends BasicPropertyType<PE, E, V, D> {
 
     /** 識別子のジェネレータ */
     protected final IdGenerator idGenerator;
@@ -41,8 +42,16 @@ public abstract class GeneratedIdPropertyType<E, V extends Number> extends
     /**
      * インスタンスを構築します。
      * 
+     * @param entityClass
+     *            エンティティのクラス
      * @param entityPropertyClass
      *            プロパティのクラス
+     * @param wrapperClass
+     *            ラッパーのクラス
+     * @param parentEntityPropertyType
+     *            親のエンティティのプロパティ型、親のエンティティを持たない場合 {@code null}
+     * @param domainType
+     *            ドメインのメタタイプ、ドメインでない場合 {@code null}
      * @param name
      *            プロパティの名前
      * @param columnName
@@ -50,9 +59,15 @@ public abstract class GeneratedIdPropertyType<E, V extends Number> extends
      * @param idGenerator
      *            識別子のジェネレータ
      */
-    protected GeneratedIdPropertyType(Class<V> entityPropertyClass,
-            String name, String columnName, IdGenerator idGenerator) {
-        super(entityPropertyClass, name, columnName, true, true);
+    public GeneratedIdPropertyType(Class<E> entityClass,
+            Class<V> entityPropertyClass,
+            Class<? extends NumberWrapper<V>> wrapperClass,
+            EntityPropertyType<PE, V> parentEntityPropertyType,
+            DomainType<V, D> domainType, String name, String columnName,
+            IdGenerator idGenerator) {
+        super(entityClass, entityPropertyClass, wrapperClass,
+                parentEntityPropertyType, domainType, name, columnName, true,
+                true);
         if (idGenerator == null) {
             throw new DomaNullPointerException("idGenerator");
         }
@@ -146,7 +161,7 @@ public abstract class GeneratedIdPropertyType<E, V extends Number> extends
     public void preInsert(E entity, IdGenerationConfig config) {
         Long value = idGenerator.generatePreInsert(config);
         if (value != null) {
-            NumberWrapper<?> wrapper = getWrapper(entity);
+            NumberWrapper<V> wrapper = (NumberWrapper<V>) getWrapper(entity);
             wrapper.set(value);
         }
     }
@@ -165,11 +180,9 @@ public abstract class GeneratedIdPropertyType<E, V extends Number> extends
             Statement statement) {
         Long value = idGenerator.generatePostInsert(config, statement);
         if (value != null) {
-            NumberWrapper<?> wrapper = getWrapper(entity);
+            NumberWrapper<V> wrapper = (NumberWrapper<V>) getWrapper(entity);
             wrapper.set(value);
         }
     }
 
-    @Override
-    public abstract NumberWrapper<V> getWrapper(E entity);
 }

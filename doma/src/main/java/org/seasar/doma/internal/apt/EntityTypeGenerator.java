@@ -38,7 +38,6 @@ import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.apt.type.WrapperType;
 import org.seasar.doma.internal.jdbc.util.MetaTypeUtil;
 import org.seasar.doma.internal.jdbc.util.TableUtil;
-import org.seasar.doma.internal.util.BoxedPrimitiveUtil;
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.AssignedIdPropertyType;
 import org.seasar.doma.jdbc.entity.BasicPropertyType;
@@ -59,6 +58,8 @@ import org.seasar.doma.jdbc.entity.VersionPropertyType;
  * 
  */
 public class EntityTypeGenerator extends AbstractGenerator {
+
+    protected static final String NULL = "null";
 
     protected final EntityMeta entityMeta;
 
@@ -164,130 +165,87 @@ public class EntityTypeGenerator extends AbstractGenerator {
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             Visitor visitor = new Visitor();
             pm.getDataType().accept(visitor, null);
+            String parentEntityPropertyType = "null";
+            String parentEntityTypeNameAsTypeParameter = Object.class.getName();
+            if (!pm.isOwnProperty()) {
+                parentEntityPropertyType = getMetaTypeName(pm
+                        .getEntityTypeName())
+                        + ".getSingletonInternal()."
+                        + pm.getName();
+                parentEntityTypeNameAsTypeParameter = pm.getEntityTypeName();
+            }
+            String domainType = "null";
+            String domainTypeNameAsTypeParameter = Object.class.getName();
+            if (visitor.domainType != null) {
+                domainType = getMetaTypeName(visitor.domainType.getTypeName())
+                        + ".getSingletonInternal()";
+                domainTypeNameAsTypeParameter = visitor.domainType
+                        .getTypeNameAsTypeParameter();
+            }
             iprint("/** the %1$s */%n", pm.getName());
             if (pm.isId()) {
                 if (pm.getIdGeneratorMeta() != null) {
-                    iprint("public final %1$s<%2$s, %3$s> %4$s = new %1$s<%2$s, %3$s>(%3$s.class, \"%4$s\", \"%5$s\", __idGenerator) {%n", /* 1 */
-                    GeneratedIdPropertyType.class.getName(), /* 2 */
-                    entityMeta.getEntityTypeName(), /* 3 */
-                    visitor.wrapperType.getWrappedType()
-                            .getTypeNameAsTypeParameter(), /* 4 */
-                    pm.getName(), /* 5 */
-                    pm.getColumnName());
+                    iprint("public final %1$s<%11$s, %2$s, %3$s, %9$s> %4$s = new %1$s<%11$s, %2$s, %3$s, %9$s>(%6$s.class, %3$s.class, %7$s.class, %10$s, %8$s, \"%4$s\", \"%5$s\", __idGenerator);%n",
+                    /* 1 */GeneratedIdPropertyType.class.getName(),
+                    /* 2 */entityMeta.getEntityTypeName(),
+                    /* 3 */visitor.wrapperType.getWrappedType()
+                            .getTypeNameAsTypeParameter(),
+                    /* 4 */pm.getName(),
+                    /* 5 */pm.getColumnName(),
+                    /* 6 */entityMeta.getEntityTypeName(),
+                    /* 7 */visitor.wrapperType.getQualifiedName(),
+                    /* 8 */domainType,
+                    /* 9 */domainTypeNameAsTypeParameter,
+                    /* 10 */parentEntityPropertyType,
+                    /* 11 */parentEntityTypeNameAsTypeParameter);
                 } else {
-                    iprint("public final %1$s<%2$s, %3$s> %4$s = new %1$s<%2$s, %3$s>(%3$s.class, \"%4$s\", \"%5$s\") {%n", /* 1 */
-                    AssignedIdPropertyType.class.getName(), /* 2 */
-                    entityMeta.getEntityTypeName(), /* 3 */
-                    visitor.wrapperType.getWrappedType()
-                            .getTypeNameAsTypeParameter(), /* 4 */
-                    pm.getName(), /* 5 */
-                    pm.getColumnName());
+                    iprint("public final %1$s<%11$s, %2$s, %3$s, %9$s> %4$s = new %1$s<%11$s, %2$s, %3$s, %9$s>(%6$s.class, %3$s.class, %7$s.class, %10$s, %8$s, \"%4$s\", \"%5$s\");%n",
+                    /* 1 */AssignedIdPropertyType.class.getName(),
+                    /* 2 */entityMeta.getEntityTypeName(),
+                    /* 3 */visitor.wrapperType.getWrappedType()
+                            .getTypeNameAsTypeParameter(),
+                    /* 4 */pm.getName(),
+                    /* 5 */pm.getColumnName(),
+                    /* 6 */entityMeta.getEntityTypeName(),
+                    /* 7 */visitor.wrapperType.getQualifiedName(),
+                    /* 8 */domainType,
+                    /* 9 */domainTypeNameAsTypeParameter,
+                    /* 10 */parentEntityPropertyType,
+                    /* 11 */parentEntityTypeNameAsTypeParameter);
                 }
             } else if (pm.isVersion()) {
-                iprint("public final %1$s<%2$s, %3$s> %4$s = new %1$s<%2$s, %3$s>(%3$s.class, \"%4$s\", \"%5$s\") {%n", /* 1 */
-                VersionPropertyType.class.getName(), /* 2 */
-                entityMeta.getEntityTypeName(), /* 3 */
-                visitor.wrapperType.getWrappedType()
-                        .getTypeNameAsTypeParameter(), /* 4 */
-                pm.getName(), /* 5 */
-                pm.getColumnName());
+                iprint("public final %1$s<%11$s, %2$s, %3$s, %9$s> %4$s = new %1$s<%11$s, %2$s, %3$s, %9$s>(%6$s.class, %3$s.class, %7$s.class, %10$s, %8$s, \"%4$s\", \"%5$s\");%n",
+                /* 1 */VersionPropertyType.class.getName(),
+                /* 2 */entityMeta.getEntityTypeName(),
+                /* 3 */visitor.wrapperType.getWrappedType()
+                        .getTypeNameAsTypeParameter(),
+                /* 4 */pm.getName(),
+                /* 5 */pm.getColumnName(),
+                /* 6 */entityMeta.getEntityTypeName(),
+                /* 7 */visitor.wrapperType.getQualifiedName(),
+                /* 8 */domainType,
+                /* 9 */domainTypeNameAsTypeParameter,
+                /* 10 */parentEntityPropertyType,
+                /* 11 */parentEntityTypeNameAsTypeParameter);
             } else {
-                iprint("public final %1$s<%2$s, %3$s> %4$s = new %1$s<%2$s, %3$s>(%3$s.class, \"%4$s\", \"%5$s\", %6$s, %7$s) {%n", /* 1 */
-                BasicPropertyType.class.getName(), /* 2 */
-                entityMeta.getEntityTypeName(), /* 3 */
-                visitor.wrapperType.getWrappedType()
-                        .getTypeNameAsTypeParameter(), /* 4 */
-                pm.getName(), /* 5 */
-                pm.getColumnName(), /* 6 */pm.isColumnInsertable(), /* 7 */
-                pm.isColumnUpdatable());
+                iprint("public final %1$s<%13$s, %2$s, %3$s, %11$s> %4$s = new %1$s<%13$s, %2$s, %3$s, %11$s>(%8$s.class, %3$s.class, %9$s.class, %12$s, %10$s, \"%4$s\", \"%5$s\", %6$s, %7$s);%n",
+                /* 1 */BasicPropertyType.class.getName(),
+                /* 2 */entityMeta.getEntityTypeName(),
+                /* 3 */visitor.wrapperType.getWrappedType()
+                        .getTypeNameAsTypeParameter(),
+                /* 4 */pm.getName(),
+                /* 5 */pm.getColumnName(),
+                /* 6 */pm.isColumnInsertable(),
+                /* 7 */pm.isColumnUpdatable(),
+                /* 8 */entityMeta.getEntityTypeName(),
+                /* 9 */visitor.wrapperType.getQualifiedName(),
+                /* 10 */domainType,
+                /* 11 */domainTypeNameAsTypeParameter,
+                /* 12 */parentEntityPropertyType,
+                /* 13 */parentEntityTypeNameAsTypeParameter);
             }
-            indent();
-            printPropertyTypeFields_getWrapperMethod(pm, visitor.wrapperType);
-            printPropertyTypeFields_WrapperClass(pm, visitor.wrapperType,
-                    visitor.domainType);
-            unindent();
-            iprint("};%n");
             print("%n");
         }
-    }
-
-    protected void printPropertyTypeFields_getWrapperMethod(
-            EntityPropertyMeta pm, WrapperType wrapperType) {
-        iprint("@Override%n");
-        iprint("public %1$s getWrapper(%2$s entity) {%n",
-                wrapperType.getTypeName(), entityMeta.getEntityTypeName());
-        iprint("    return new Wrapper(entity);%n");
-        iprint("}%n");
-        print("%n");
-    }
-
-    protected void printPropertyTypeFields_WrapperClass(EntityPropertyMeta pm,
-            WrapperType wrapperType, DomainType domainType) {
-        iprint("class Wrapper extends %1$s {%n", wrapperType.getTypeName());
-        print("%n");
-        iprint("    private final %1$s entity;%n",
-                entityMeta.getEntityTypeName());
-        print("%n");
-        iprint("    private Wrapper(%1$s entity) {%n",
-                entityMeta.getEntityTypeName());
-        if (wrapperType.getWrappedType().isEnum()) {
-            iprint("        super(%1$s.class);%n", wrapperType.getWrappedType()
-                    .getQualifiedName());
-        }
-        iprint("        this.entity = entity;%n");
-        iprint("    }%n");
-        print("%n");
-        iprint("    @Override%n");
-        iprint("    protected %1$s doGet() {%n", wrapperType.getWrappedType()
-                .getTypeNameAsTypeParameter());
-        iprint("        if (entity == null) {%n");
-        iprint("            return null;%n");
-        iprint("        }%n");
-        if (pm.isOwnProperty()) {
-            if (domainType != null) {
-                iprint("        return %1$s.getSingletonInternal().getWrapper(entity.%2$s).get();%n",
-                        getMetaTypeName(domainType.getTypeName()), pm.getName());
-            } else {
-                iprint("        return entity.%1$s;%n", pm.getName());
-            }
-        } else {
-            iprint("        return %1$s.getSingletonInternal().%2$s.getWrapper(entity).get();%n",
-                    getMetaTypeName(pm.getEntityTypeName()), pm.getName());
-        }
-        iprint("    }%n");
-        print("%n");
-        iprint("    @Override%n");
-        iprint("    protected void doSet(%1$s value) {%n", wrapperType
-                .getWrappedType().getTypeNameAsTypeParameter());
-        iprint("        if (entity == null) {%n");
-        iprint("            return;%n");
-        iprint("        }%n");
-        if (pm.isOwnProperty()) {
-            if (wrapperType.getWrappedType().isPrimitive()) {
-                if (domainType != null) {
-                    iprint("        entity.%1$s = %2$s.getSingletonInternal().newDomain(%3$s.unbox(value));%n",
-                            pm.getName(),
-                            getMetaTypeName(domainType.getTypeName()),
-                            BoxedPrimitiveUtil.class.getName());
-                } else {
-                    iprint("        entity.%1$s = %2$s.unbox(value);%n",
-                            pm.getName(), BoxedPrimitiveUtil.class.getName());
-                }
-            } else {
-                if (domainType != null) {
-                    iprint("        entity.%1$s = %2$s.getSingletonInternal().newDomain(value);%n",
-                            pm.getName(),
-                            getMetaTypeName(domainType.getTypeName()));
-                } else {
-                    iprint("        entity.%1$s = value;%n", pm.getName());
-                }
-            }
-        } else {
-            iprint("        %1$s.getSingletonInternal().%2$s.getWrapper(entity).set(value);%n",
-                    getMetaTypeName(pm.getEntityTypeName()), pm.getName());
-        }
-        iprint("    }%n");
-        iprint("}%n");
     }
 
     protected void printListenerField() {
@@ -549,30 +507,40 @@ public class EntityTypeGenerator extends AbstractGenerator {
     }
 
     protected void printGetGeneratedIdPropertyTypeMethod() {
-        iprint("@Override%n");
-        iprint("public %1$s<%2$s, ?> getGeneratedIdPropertyType() {%n",
-                GeneratedIdPropertyType.class.getName(),
-                entityMeta.getEntityTypeName());
+        String parentEntityTypeNameAsTypeParameter = Object.class.getName();
         String idName = "null";
         if (entityMeta.hasGeneratedIdPropertyMeta()) {
             EntityPropertyMeta pm = entityMeta.getGeneratedIdPropertyMeta();
             idName = pm.getName();
+            if (!pm.isOwnProperty()) {
+                parentEntityTypeNameAsTypeParameter = pm.getEntityTypeName();
+            }
         }
+        iprint("@Override%n");
+        iprint("public %1$s<%3$s, %2$s, ?, ?> getGeneratedIdPropertyType() {%n",
+                GeneratedIdPropertyType.class.getName(),
+                entityMeta.getEntityTypeName(),
+                parentEntityTypeNameAsTypeParameter);
         iprint("    return %1$s;%n", idName);
         iprint("}%n");
         print("%n");
     }
 
     protected void printGetVersionPropertyTypeMethod() {
-        iprint("@Override%n");
-        iprint("public %1$s<%2$s, ?> getVersionPropertyType() {%n",
-                VersionPropertyType.class.getName(),
-                entityMeta.getEntityTypeName());
+        String parentEntityTypeNameAsTypeParameter = Object.class.getName();
         String versionName = "null";
         if (entityMeta.hasVersionPropertyMeta()) {
             EntityPropertyMeta pm = entityMeta.getVersionPropertyMeta();
             versionName = pm.getName();
+            if (!pm.isOwnProperty()) {
+                parentEntityTypeNameAsTypeParameter = pm.getEntityTypeName();
+            }
         }
+        iprint("@Override%n");
+        iprint("public %1$s<%3$s, %2$s, ?, ?> getVersionPropertyType() {%n",
+                VersionPropertyType.class.getName(),
+                entityMeta.getEntityTypeName(),
+                parentEntityTypeNameAsTypeParameter);
         iprint("    return %1$s;%n", versionName);
         iprint("}%n");
         print("%n");

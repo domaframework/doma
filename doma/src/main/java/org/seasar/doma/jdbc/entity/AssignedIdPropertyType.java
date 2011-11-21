@@ -15,28 +15,44 @@
  */
 package org.seasar.doma.jdbc.entity;
 
+import org.seasar.doma.jdbc.domain.DomainType;
+import org.seasar.doma.wrapper.Wrapper;
+
 /**
  * アプリケーションにより割り当てられる識別子のプロパティ型です。
  * 
  * @author taedium
  * 
  */
-public abstract class AssignedIdPropertyType<E, V> extends
-        BasicPropertyType<E, V> {
+public class AssignedIdPropertyType<PE, E extends PE, V, D> extends
+        BasicPropertyType<PE, E, V, D> {
 
     /**
      * インスタンスを構築します。
      * 
+     * @param entityClass
+     *            エンティティのクラス
      * @param entityPropertyClass
      *            プロパティのクラス
+     * @param wrapperClass
+     *            ラッパーのクラス
+     * @param parentEntityPropertyType
+     *            親のエンティティのプロパティ型、親のエンティティを持たない場合 {@code null}
+     * @param domainType
+     *            ドメインのメタタイプ、ドメインでない場合 {@code null}
      * @param name
      *            プロパティの名前
      * @param columnName
      *            カラム名
      */
-    protected AssignedIdPropertyType(Class<V> entityPropertyClass, String name,
-            String columnName) {
-        super(entityPropertyClass, name, columnName, true, true);
+    public AssignedIdPropertyType(Class<E> entityClass,
+            Class<V> entityPropertyClass,
+            Class<? extends Wrapper<V>> wrapperClass,
+            EntityPropertyType<PE, V> parentEntityPropertyType,
+            DomainType<V, D> domainType, String name, String columnName) {
+        super(entityClass, entityPropertyClass, wrapperClass,
+                parentEntityPropertyType, domainType, name, columnName, true,
+                true);
     }
 
     @Override

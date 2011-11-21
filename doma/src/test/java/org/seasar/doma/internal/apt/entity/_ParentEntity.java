@@ -29,27 +29,17 @@ import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
-import org.seasar.doma.wrapper.Wrapper;
+import org.seasar.doma.wrapper.IntegerWrapper;
 
 public class _ParentEntity extends AbstractEntityType<ParentEntity> {
 
-    public BasicPropertyType<ParentEntity, Integer> aaa = new BasicPropertyType<ParentEntity, Integer>(
-            Integer.class, "aaa", "AAA", true, true) {
+    public BasicPropertyType<Object, ParentEntity, Integer, Object> aaa = new BasicPropertyType<Object, ParentEntity, Integer, Object>(
+            ParentEntity.class, Integer.class, IntegerWrapper.class, null,
+            null, "aaa", "AAA", true, true);
 
-        @Override
-        public Wrapper<Integer> getWrapper(ParentEntity entity) {
-            return null;
-        }
-    };
-
-    public BasicPropertyType<ParentEntity, Integer> bbb = new BasicPropertyType<ParentEntity, Integer>(
-            Integer.class, "bbb", "BBB", true, true) {
-
-        @Override
-        public Wrapper<Integer> getWrapper(ParentEntity entity) {
-            return null;
-        }
-    };
+    public BasicPropertyType<Object, ParentEntity, Integer, Object> bbb = new BasicPropertyType<Object, ParentEntity, Integer, Object>(
+            ParentEntity.class, Integer.class, IntegerWrapper.class, null,
+            null, "bbb", "BBB", true, true);
 
     private _ParentEntity() {
     }
@@ -83,7 +73,7 @@ public class _ParentEntity extends AbstractEntityType<ParentEntity> {
     }
 
     @Override
-    public GeneratedIdPropertyType<ParentEntity, ?> getGeneratedIdPropertyType() {
+    public GeneratedIdPropertyType<Object, ParentEntity, ?, ?> getGeneratedIdPropertyType() {
 
         return null;
     }
@@ -113,7 +103,7 @@ public class _ParentEntity extends AbstractEntityType<ParentEntity> {
     }
 
     @Override
-    public VersionPropertyType<ParentEntity, ?> getVersionPropertyType() {
+    public VersionPropertyType<Object, ParentEntity, ?, ?> getVersionPropertyType() {
 
         return null;
     }

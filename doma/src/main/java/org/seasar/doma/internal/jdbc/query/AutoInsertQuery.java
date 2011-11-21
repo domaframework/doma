@@ -42,7 +42,7 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
 
     protected boolean nullExcluded;
 
-    protected GeneratedIdPropertyType<E, ?> generatedIdPropertyType;
+    protected GeneratedIdPropertyType<? super E, E, ?, ?> generatedIdPropertyType;
 
     protected IdGenerationConfig idGenerationConfig;
 
