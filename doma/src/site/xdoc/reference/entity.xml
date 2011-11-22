@@ -202,7 +202,6 @@ public class Employee {
 				</p>
 				<p>
 					フィールドの型は、<a href="basic.html">基本型</a>もしくは<a href="domain.html">ドメインクラス</a>でなければいけません。
-					フィールドの可視性は非<code>private</code>でなければいけません。
 				</p>
 <source><![CDATA[@Entity
 public class Employee {
@@ -332,7 +331,6 @@ List&lt;String&gt; nameList;</source>
 				<p>
 					<code>@OriginalStates</code>を注釈して示します。
 					フィールドの型はフィールドが属するエンティティクラスと同じ型でなければいけません。
-					フィールドの可視性は非<code>private</code>でなければいけません。
 					<code>@OriginalStates</code>が注釈されたフィールドはアプリケーションで初期化したりアクセスしたりしてはいけません。
 				</p>
 <source><![CDATA[@OriginalStates
