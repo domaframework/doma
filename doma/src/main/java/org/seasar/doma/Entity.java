@@ -32,12 +32,6 @@ import org.seasar.doma.jdbc.entity.NullEntityListener;
  * <li>トップレベルのクラスである。
  * <li>引数なしの 非 {@code private} なコンストラクタを持つ。
  * </ul>
- * <p>
- * エンティティクラスの永続的なメンバフィールド（ {@link Transient} が注釈されていないフィールド）は、 次の制約を満たす必要があります。
- * <ul>
- * <li>非 {@code private} である。
- * </ul>
- * 
  * 
  * <h5>例:</h5>
  * 
