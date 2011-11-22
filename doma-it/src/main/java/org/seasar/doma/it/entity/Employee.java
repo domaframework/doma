@@ -26,27 +26,28 @@ import org.seasar.doma.jdbc.entity.NamingType;
 public class Employee {
 
     @Id
-    Integer employeeId;
+    private Integer employeeId;
 
-    Integer employeeNo;
+    private Integer employeeNo;
 
-    String employeeName;
+    private String employeeName;
 
-    Integer managerId;
+    private Integer managerId;
 
-    java.sql.Date hiredate;
+    private java.sql.Date hiredate;
 
-    Salary salary;
+    private Salary salary;
 
-    Integer departmentId;
+    private Integer departmentId;
 
-    Integer addressId;
+    private Integer addressId;
 
     @Version
-    Integer version;
+    private Integer version;
 
+    @SuppressWarnings("unused")
     @OriginalStates
-    Employee originalStates;
+    private Employee originalStates;
 
     public Integer getEmployeeId() {
         return employeeId;

@@ -44,6 +44,7 @@ import org.seasar.doma.jdbc.entity.BasicPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.jdbc.entity.NamingType;
+import org.seasar.doma.jdbc.entity.OriginalStatesAccessor;
 import org.seasar.doma.jdbc.entity.PostDeleteContext;
 import org.seasar.doma.jdbc.entity.PostInsertContext;
 import org.seasar.doma.jdbc.entity.PostUpdateContext;
@@ -102,6 +103,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
     protected void printFields() {
         printSingletonField();
+        printOriginalStatesAccessorField();
         printIdGeneratorField();
         printPropertyTypeFields();
         printListenerField();
@@ -120,6 +122,16 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("private static final %1$s __singleton = new %1$s();%n",
                 simpleName);
         print("%n");
+    }
+
+    protected void printOriginalStatesAccessorField() {
+        if (!entityMeta.isAbstract() && entityMeta.hasOriginalStatesMeta()) {
+            OriginalStatesMeta osm = entityMeta.getOriginalStatesMeta();
+            iprint("private static final %1$s<%2$s> __originalStatesAccessor = new %1$s<%2$s>(%2$s.class, \"%3$s\");%n",
+                    OriginalStatesAccessor.class.getName(),
+                    osm.getEntityTypeName(), osm.getName());
+            print("%n");
+        }
     }
 
     protected void printIdGeneratorField() {
@@ -572,8 +584,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("public %1$s getOriginalStates(%1$s __entity) {%n",
                 entityMeta.getEntityTypeName());
         if (!entityMeta.isAbstract() && entityMeta.hasOriginalStatesMeta()) {
-            OriginalStatesMeta osm = entityMeta.getOriginalStatesMeta();
-            iprint("    return __entity.%1$s;%n", osm.getName());
+            iprint("    return __originalStatesAccessor.get(__entity);%n");
         } else {
             iprint("    return null;%n");
         }
@@ -592,8 +603,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 iprint("    %1$s.getWrapper(__currentStates).set(%1$s.getWrapper(__entity).getCopy());%n",
                         pm.getName());
             }
-            OriginalStatesMeta osm = entityMeta.getOriginalStatesMeta();
-            iprint("    __entity.%1$s = __currentStates;%n", osm.getName());
+            iprint("    __originalStatesAccessor.set(__entity, __currentStates);%n");
         }
         iprint("}%n");
         print("%n");

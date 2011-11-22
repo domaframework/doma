@@ -199,9 +199,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
                 } else if (fieldElement.getModifiers()
                         .contains(Modifier.STATIC)) {
                     continue;
-                } else if (fieldElement.getModifiers().contains(
-                        Modifier.PRIVATE)) {
-                    throw new AptException(Message.DOMA4094, env, fieldElement);
                 } else if (fieldElement.getAnnotation(OriginalStates.class) != null) {
                     doOriginalStatesField(classElement, fieldElement,
                             entityMeta);

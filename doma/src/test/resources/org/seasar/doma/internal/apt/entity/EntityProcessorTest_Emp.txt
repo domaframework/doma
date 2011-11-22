@@ -10,6 +10,8 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
 
     private static final _Emp __singleton = new _Emp();
 
+    private static final org.seasar.doma.jdbc.entity.OriginalStatesAccessor<org.seasar.doma.internal.apt.entity.Emp> __originalStatesAccessor = new org.seasar.doma.jdbc.entity.OriginalStatesAccessor<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity.Emp.class, "originalStates");
+
     private final org.seasar.doma.jdbc.id.BuiltinSequenceIdGenerator __idGenerator = new org.seasar.doma.jdbc.id.BuiltinSequenceIdGenerator();
     {
         __idGenerator.setQualifiedSequenceName("EMP_ID");
@@ -172,7 +174,7 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
 
     @Override
     public org.seasar.doma.internal.apt.entity.Emp getOriginalStates(org.seasar.doma.internal.apt.entity.Emp __entity) {
-        return __entity.originalStates;
+        return __originalStatesAccessor.get(__entity);
     }
 
     @Override
@@ -182,7 +184,7 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
         name.getWrapper(__currentStates).set(name.getWrapper(__entity).getCopy());
         salary.getWrapper(__currentStates).set(salary.getWrapper(__entity).getCopy());
         version.getWrapper(__currentStates).set(version.getWrapper(__entity).getCopy());
-        __entity.originalStates = __currentStates;
+        __originalStatesAccessor.set(__entity, __currentStates);
     }
 
     /**

@@ -41,24 +41,24 @@ public class EntityProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
-    public void testPrivateEntity() throws Exception {
-        Class<?> target = PrivatePropertyEntity.class;
-        EntityProcessor processor = new EntityProcessor();
-        addProcessor(processor);
-        addCompilationUnit(target);
-        compile();
-        assertFalse(getCompiledResult());
-        assertMessage(Message.DOMA4094);
-    }
-
     public void testPrivatePropertyEntity() throws Exception {
         Class<?> target = PrivatePropertyEntity.class;
         EntityProcessor processor = new EntityProcessor();
         addProcessor(processor);
         addCompilationUnit(target);
         compile();
-        assertFalse(getCompiledResult());
-        assertMessage(Message.DOMA4094);
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testPrivateOriginalStatesEntity() throws Exception {
+        Class<?> target = PrivateOriginalStatesEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
     }
 
     public void testVersionDuplicated() throws Exception {
