@@ -43,6 +43,22 @@ public class Mssql2008ForUpdateTransformerTest extends TestCase {
         assertEquals(expected, sql.getRawSql());
     }
 
+    public void testForUpdateNormal_originalSqlNodeUnchanged() throws Exception {
+        String original = "select * from emp order by emp.id";
+        Mssql2008ForUpdateTransformer transformer = new Mssql2008ForUpdateTransformer(
+                SelectForUpdateType.NORMAL, 0);
+        SqlParser parser = new SqlParser(original);
+        SqlNode originalSqlNode = parser.parse();
+        SqlNode sqlNode = transformer.transform(originalSqlNode);
+        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
+                new MockConfig(), SqlKind.SELECT, "dummyPath");
+        sqlBuilder.build(sqlNode);
+        sqlBuilder = new NodePreparedSqlBuilder(new MockConfig(),
+                SqlKind.SELECT, "dummyPath");
+        PreparedSql sql = sqlBuilder.build(originalSqlNode);
+        assertEquals(original, sql.getRawSql());
+    }
+
     public void testForUpdateNowait() throws Exception {
         String expected = "select * from emp with (updlock, rowlock, nowait) order by emp.id";
         Mssql2008ForUpdateTransformer transformer = new Mssql2008ForUpdateTransformer(
