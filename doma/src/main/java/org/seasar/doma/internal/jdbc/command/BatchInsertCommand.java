@@ -40,13 +40,13 @@ public class BatchInsertCommand extends BatchModifyCommand<BatchInsertQuery> {
         if (query.isBatchSupported()) {
             return executeBatch(preparedStatement, sqls);
         }
-        int[] updatedRows = new int[sqls.size()];
         int sqlSize = sqls.size();
+        int[] updatedRows = new int[sqlSize];
         for (int i = 0; i < sqlSize; i++) {
             PreparedSql sql = sqls.get(i);
             log(sql);
             bindParameters(preparedStatement, sql);
-            executeUpdate(preparedStatement, sql);
+            updatedRows[i] = executeUpdate(preparedStatement, sql);
             query.generateId(preparedStatement, i);
         }
         return updatedRows;

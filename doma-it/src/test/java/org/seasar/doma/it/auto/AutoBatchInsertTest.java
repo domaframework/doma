@@ -20,7 +20,6 @@ import static org.junit.Assert.*;
 import java.util.Arrays;
 
 import org.junit.runner.RunWith;
-import org.seasar.doma.message.Message;
 import org.seasar.doma.it.dao.CompKeyDepartmentDao;
 import org.seasar.doma.it.dao.CompKeyDepartmentDaoImpl;
 import org.seasar.doma.it.dao.DepartmentDao;
@@ -40,6 +39,7 @@ import org.seasar.doma.it.entity.NoId;
 import org.seasar.doma.it.entity.SequenceStrategy;
 import org.seasar.doma.it.entity.TableStrategy;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.message.Message;
 import org.seasar.framework.unit.Seasar2;
 import org.seasar.framework.unit.annotation.Prerequisite;
 
@@ -134,7 +134,10 @@ public class AutoBatchInsertTest {
         for (int i = 0; i < 110; i++) {
             IdentityStrategy entity = new IdentityStrategy();
             IdentityStrategy entity2 = new IdentityStrategy();
-            dao.insert(Arrays.asList(entity, entity2));
+            int[] result = dao.insert(Arrays.asList(entity, entity2));
+            assertEquals(2, result.length);
+            assertEquals(1, result[0]);
+            assertEquals(1, result[1]);
             assertNotNull(entity.getId());
             assertNotNull(entity2.getId());
             assertTrue(entity.getId() < entity2.getId());
@@ -147,7 +150,10 @@ public class AutoBatchInsertTest {
         for (int i = 0; i < 110; i++) {
             SequenceStrategy entity = new SequenceStrategy();
             SequenceStrategy entity2 = new SequenceStrategy();
-            dao.insert(Arrays.asList(entity, entity2));
+            int[] result = dao.insert(Arrays.asList(entity, entity2));
+            assertEquals(2, result.length);
+            assertEquals(1, result[0]);
+            assertEquals(1, result[1]);
             assertNotNull(entity.getId());
             assertNotNull(entity2.getId());
             assertTrue(entity.getId() < entity2.getId());
@@ -159,7 +165,10 @@ public class AutoBatchInsertTest {
         for (int i = 0; i < 110; i++) {
             TableStrategy entity = new TableStrategy();
             TableStrategy entity2 = new TableStrategy();
-            dao.insert(Arrays.asList(entity, entity2));
+            int[] result = dao.insert(Arrays.asList(entity, entity2));
+            assertEquals(2, result.length);
+            assertEquals(1, result[0]);
+            assertEquals(1, result[1]);
             assertNotNull(entity.getId());
             assertNotNull(entity2.getId());
             assertTrue(entity.getId() < entity2.getId());
