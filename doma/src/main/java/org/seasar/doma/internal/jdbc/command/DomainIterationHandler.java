@@ -24,6 +24,7 @@ import org.seasar.doma.internal.jdbc.query.SelectQuery;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
 import org.seasar.doma.jdbc.NoResultException;
+import org.seasar.doma.jdbc.PostIterationCallback;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.jdbc.domain.DomainWrapper;
@@ -64,6 +65,10 @@ public class DomainIterationHandler<R, D> implements ResultSetHandler<R> {
         if (query.isResultEnsured() && !existent) {
             Sql<?> sql = query.getSql();
             throw new NoResultException(sql);
+        }
+        if (iterationCallback instanceof PostIterationCallback) {
+            result = ((PostIterationCallback<R, D>) iterationCallback)
+                    .postIterate(result, iterationContext);
         }
         return result;
     }
