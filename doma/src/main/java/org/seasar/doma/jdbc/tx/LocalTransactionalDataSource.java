@@ -161,4 +161,46 @@ public final class LocalTransactionalDataSource implements DataSource {
         return new LocalTransaction(dataSource, localTxContextHolder,
                 jdbcLogger, transactionIsolationLevel);
     }
+
+    /**
+     * 明示的に破棄されるまで接続を維持し続けるローカルトランザクションを返します。
+     * 
+     * @param jdbcLogger
+     *            JDBCに関するロガー
+     * @return ローカルトランザクション
+     * @throws DomaNullPointerException
+     *             引数が {@code null} の場合
+     */
+    public KeepAliveLocalTransaction getKeepAliveLocalTransaction(
+            JdbcLogger jdbcLogger) {
+        if (jdbcLogger == null) {
+            throw new DomaNullPointerException("jdbcLogger");
+        }
+        return new KeepAliveLocalTransaction(dataSource, localTxContextHolder,
+                jdbcLogger);
+    }
+
+    /**
+     * デフォルトのトランザクション分離レベルを指定して、明示的に破棄されるまで接続を維持し続けるローカルトランザクションを返します。
+     * 
+     * @param jdbcLogger
+     *            JDBCに関するロガー
+     * @param transactionIsolationLevel
+     *            デフォルトのトランザクション分離レベル
+     * @return ローカルトランザクション
+     * @throws DomaNullPointerException
+     *             引数のいずれかが {@code null} の場合
+     */
+    public KeepAliveLocalTransaction getKeepAliveLocalTransaction(
+            JdbcLogger jdbcLogger,
+            TransactionIsolationLevel transactionIsolationLevel) {
+        if (jdbcLogger == null) {
+            throw new DomaNullPointerException("jdbcLogger");
+        }
+        if (transactionIsolationLevel == null) {
+            throw new DomaNullPointerException("transactionIsolationLevel");
+        }
+        return new KeepAliveLocalTransaction(dataSource, localTxContextHolder,
+                jdbcLogger, transactionIsolationLevel);
+    }
 }

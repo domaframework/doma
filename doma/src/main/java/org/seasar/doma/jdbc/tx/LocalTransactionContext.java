@@ -38,6 +38,8 @@ final class LocalTransactionContext {
 
     private final Map<String, Savepoint> savepointMap = new HashMap<String, Savepoint>();
 
+    private String id;
+
     LocalTransactionContext(LocalTransactionalConnection connection) {
         assertNotNull(connection);
         this.connection = connection;
@@ -82,6 +84,10 @@ final class LocalTransactionContext {
     }
 
     String getId() {
-        return String.valueOf(hashCode());
+        return id;
+    }
+
+    void setId(String id) {
+        this.id = id;
     }
 }
