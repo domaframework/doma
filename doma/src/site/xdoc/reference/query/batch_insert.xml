@@ -18,6 +18,7 @@
 				<li><a href="#SQLファイルによるバッチ挿入">SQLファイルによるバッチ挿入</a></li>
 				<li><a href="#一意制約違反">一意制約違反</a></li>
 				<li><a href="#クエリタイムアウト">クエリタイムアウト</a></li>
+				<li><a href="#バッチサイズ">バッチサイズ</a></li>
 			</ul>
 		</section>
 		<section name="概要">
@@ -131,6 +132,18 @@ int[] insert(List<Employee> employees);]]></source>
 				この設定は、SQLファイルの使用の有無に関係なく適用されます。
 				<code>queryTimeout</code>要素に値を指定しない場合、
 				<a href="../config.html">設定クラス</a>に指定されたクエリタイムアウトが使用されます。
+			</p>
+		</section>
+		<section name="バッチサイズ">
+			<p>
+				<code>@BatchInsert</code>の<code>batchSize</code>要素にバッチサイズを指定できます。
+			</p>
+<source><![CDATA[@BatchInsert(batchSize = 10)
+int[] insert(List<Employee> employees);]]></source>
+			<p>
+				この設定は、SQLファイルの使用の有無に関係なく適用されます。
+				<code>batchSize</code>要素に値を指定しない場合、
+				<a href="../config.html">設定クラス</a>に指定されたバッチサイズが使用されます。
 			</p>
 		</section>
 	</body>

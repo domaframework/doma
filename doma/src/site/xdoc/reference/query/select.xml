@@ -145,6 +145,25 @@ dao.selectByNameAndSalary(name, salary, new IterationCallback<Void, Employee>() 
 				@Selectの<code>ensureResult</code>要素に<code>true</code>を指定した場合、
 				結果が0件ならば<code>org.seasar.doma.jdbc.NoResultException</code>がスローされます。
 			</p>
+			<p>
+				イテレーションが完了した後に任意の処理を行うには、<code><![CDATA[org.seasar.doma.IterationCallback<R, T>]]></code>の代わりに
+				<code><![CDATA[org.seasar.doma.PostIterationCallback<R, T>]]></code>のサブタイプを定義します。
+				イテレーション完了後に<code>postIterate</code>が呼び出されます。
+			</p>
+<source><![CDATA[EmployeeDao dao = new EmployeeDao();
+dao.selectByNameAndSalary(name, salary, new PostIterationCallback<Void, Employee>() {
+        @Override
+        public Void iterate(Employee target, IterationContext context) {
+            ...
+            return null;
+        }
+
+        @Override
+        public Void postIterate(Void result, IterationContext context) {
+            ...
+            return null;
+        }
+    });]]></source>
 		</section>
 		<section name="検索オプションを利用した検索">
 			<p>
