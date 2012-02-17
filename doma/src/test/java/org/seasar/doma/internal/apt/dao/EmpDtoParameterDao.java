@@ -36,6 +36,6 @@ public interface EmpDtoParameterDao {
     @Insert(sqlFile = true)
     int insert(EmpDto dto);
 
-    @BatchInsert(sqlFile = true)
+    @BatchInsert(sqlFile = true, batchSize = 10)
     int[] insert(List<EmpDto> dto);
 }

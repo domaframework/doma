@@ -55,6 +55,8 @@ public class BatchDeleteMirror extends BatchModifyMirror {
                 result.sqlFile = value;
             } else if ("queryTimeout".equals(name)) {
                 result.queryTimeout = value;
+            } else if ("batchSize".equals(name)) {
+                result.batchSize = value;
             } else if ("ignoreVersion".equals(name)) {
                 result.ignoreVersion = value;
             } else if ("suppressOptimisticLockException".equals(name)) {

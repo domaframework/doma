@@ -66,6 +66,10 @@ public class AutoBatchModifyQueryMeta extends AbstractQueryMeta {
         return batchModifyMirror.getQueryTimeoutValue();
     }
 
+    public int getBatchSize() {
+        return batchModifyMirror.getBatchSizeValue();
+    }
+
     public Boolean getIgnoreVersion() {
         return batchModifyMirror.getIgnoreVersionValue();
     }

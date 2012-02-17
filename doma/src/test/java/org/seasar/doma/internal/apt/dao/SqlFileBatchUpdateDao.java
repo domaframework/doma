@@ -27,6 +27,6 @@ import org.seasar.doma.Dao;
 @Dao(config = MyConfig.class)
 public interface SqlFileBatchUpdateDao {
 
-    @BatchUpdate(sqlFile = true)
+    @BatchUpdate(sqlFile = true, batchSize = 10)
     int[] update(List<String> names);
 }

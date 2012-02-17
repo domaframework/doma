@@ -120,6 +120,7 @@ public class EmpDtoParameterDaoImpl extends org.seasar.doma.internal.jdbc.dao.Ab
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EmpDtoParameterDaoImpl");
             __query.setCallerMethodName("insert");
             __query.setQueryTimeout(-1);
+            __query.setBatchSize(10);
             __query.prepare();
             org.seasar.doma.internal.jdbc.command.BatchInsertCommand __command = new org.seasar.doma.internal.jdbc.command.BatchInsertCommand(__query);
             int[] __result = __command.execute();

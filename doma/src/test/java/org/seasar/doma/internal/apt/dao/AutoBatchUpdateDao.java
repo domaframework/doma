@@ -28,6 +28,6 @@ import org.seasar.doma.internal.apt.entity.Emp;
 @Dao(config = MyConfig.class)
 public interface AutoBatchUpdateDao {
 
-    @BatchUpdate
+    @BatchUpdate(batchSize = 10)
     int[] update(List<Emp> entities);
 }

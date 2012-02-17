@@ -63,6 +63,7 @@ public class AutoBatchUpdateDaoImpl extends org.seasar.doma.internal.jdbc.dao.Ab
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoBatchUpdateDaoImpl");
             __query.setCallerMethodName("update");
             __query.setQueryTimeout(-1);
+            __query.setBatchSize(10);
             __query.setVersionIncluded(false);
             __query.setVersionIgnored(false);
             __query.setIncludedPropertyNames();

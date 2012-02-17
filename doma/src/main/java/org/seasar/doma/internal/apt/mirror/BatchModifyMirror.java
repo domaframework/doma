@@ -37,6 +37,8 @@ public abstract class BatchModifyMirror {
 
     protected AnnotationValue queryTimeout;
 
+    protected AnnotationValue batchSize;
+
     protected AnnotationValue ignoreVersion;
 
     protected AnnotationValue includeVersion;
@@ -64,6 +66,10 @@ public abstract class BatchModifyMirror {
         return queryTimeout;
     }
 
+    public AnnotationValue getBatchSize() {
+        return batchSize;
+    }
+
     public AnnotationValue getIgnoreVersion() {
         return ignoreVersion;
     }
@@ -88,6 +94,14 @@ public abstract class BatchModifyMirror {
         Integer value = AnnotationValueUtil.toInteger(queryTimeout);
         if (value == null) {
             throw new AptIllegalStateException("queryTimeout");
+        }
+        return value;
+    }
+
+    public int getBatchSizeValue() {
+        Integer value = AnnotationValueUtil.toInteger(batchSize);
+        if (value == null) {
+            throw new AptIllegalStateException("batchSize");
         }
         return value;
     }

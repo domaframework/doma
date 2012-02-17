@@ -75,6 +75,10 @@ public class SqlFileBatchModifyQueryMeta extends AbstractSqlFileQueryMeta {
         return batchModifyMirror.getQueryTimeoutValue();
     }
 
+    public int getBatchSize() {
+        return batchModifyMirror.getBatchSizeValue();
+    }
+
     public Boolean getIgnoreVersion() {
         return batchModifyMirror.getIgnoreVersionValue();
     }

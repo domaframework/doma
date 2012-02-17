@@ -862,6 +862,7 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
+            iprint("__query.setBatchSize(%1$s);%n", m.getBatchSize());
 
             Boolean includeVersion = m.getIncludeVersion();
             if (includeVersion != null) {
@@ -926,6 +927,7 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
+            iprint("__query.setBatchSize(%1$s);%n", m.getBatchSize());
 
             if (m.getEntityType() != null) {
                 iprint("__query.setEntityType(%1$s.getSingletonInternal());%n",

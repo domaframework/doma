@@ -55,6 +55,8 @@ public class BatchInsertMirror extends BatchModifyMirror {
                 result.sqlFile = value;
             } else if ("queryTimeout".equals(name)) {
                 result.queryTimeout = value;
+            } else if ("batchSize".equals(name)) {
+                result.batchSize = value;
             } else if ("include".equals(name)) {
                 result.include = value;
             } else if ("exclude".equals(name)) {

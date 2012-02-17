@@ -19,6 +19,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.sql.PreparedStatement;
 import java.sql.Statement;
 
 import org.seasar.doma.jdbc.Config;
@@ -84,6 +85,20 @@ public @interface BatchInsert {
      * @see Statement#setQueryTimeout(int)
      */
     int queryTimeout() default -1;
+
+    /**
+     * バッチサイズです。
+     * <p>
+     * 指定しない場合、{@link Config#getBatchSize()}が使用されます。
+     * <p>
+     * {@link PreparedStatement#executeBatch()} を実行する際のバッチサイズです。
+     * バッチ対象の数がバッチサイズを上回る場合、バッチサイズの数だけ {@link PreparedStatement#addBatch()}
+     * を呼び出し、 {@link PreparedStatement#executeBatch()} を実行するということを繰り返します。
+     * 
+     * @see PreparedStatement#addBatch()
+     * @since 1.21.0
+     */
+    int batchSize() default -1;
 
     /**
      * INSERT文に含めるプロパティ名の配列です。
