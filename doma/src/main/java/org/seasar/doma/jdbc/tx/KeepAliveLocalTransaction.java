@@ -109,11 +109,16 @@ public class KeepAliveLocalTransaction extends LocalTransaction {
      *             JDBCの接続に失敗した場合
      */
     public void init() {
+        createLocalTransactionContext();
+    }
+
+    @Override
+    protected LocalTransactionContext createLocalTransactionContext() {
         LocalTransactionContext context = localTxContextHolder.get();
         if (context != null) {
-            return;
+            return context;
         }
-        createLocalTransactionContext();
+        return super.createLocalTransactionContext();
     }
 
     /**
