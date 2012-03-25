@@ -88,7 +88,8 @@ public class EntityFetcher<E> implements ResultFetcher<ResultSet, E> {
                 }
                 Sql<?> sql = query.getSql();
                 NamingType namingType = entityType.getNamingType();
-                throw new MappedPropertyNotFoundException(columnName,
+                throw new MappedPropertyNotFoundException(query.getConfig()
+                        .getExceptionSqlLogType(), columnName,
                         namingType.revert(columnName), entityType
                                 .getEntityClass().getName(), sql.getKind(),
                         sql.getRawSql(), sql.getFormattedSql(),

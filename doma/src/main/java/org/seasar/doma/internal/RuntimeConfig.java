@@ -23,6 +23,7 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.SqlFileRepository;
+import org.seasar.doma.jdbc.ExceptionSqlLogType;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
@@ -74,6 +75,11 @@ public class RuntimeConfig implements Config {
     @Override
     public RequiresNewController getRequiresNewController() {
         return config.getRequiresNewController();
+    }
+
+    @Override
+    public ExceptionSqlLogType getExceptionSqlLogType() {
+        return config.getExceptionSqlLogType();
     }
 
     @Override

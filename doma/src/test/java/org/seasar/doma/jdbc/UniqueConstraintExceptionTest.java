@@ -25,7 +25,8 @@ public class UniqueConstraintExceptionTest extends TestCase {
 
     public void test() throws Exception {
         UniqueConstraintException e = new UniqueConstraintException(
-                SqlKind.INSERT, "aaa", "bbb", "ccc", new Exception());
+                ExceptionSqlLogType.FORMATTED_SQL, SqlKind.INSERT, "aaa",
+                "bbb", "ccc", new Exception());
         System.out.println(e.getMessage());
         assertSame(SqlKind.INSERT, e.getKind());
         assertEquals("aaa", e.getRawSql());

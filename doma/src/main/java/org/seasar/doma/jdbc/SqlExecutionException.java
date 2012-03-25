@@ -46,6 +46,8 @@ public class SqlExecutionException extends JdbcException {
     /**
      * SQLを指定してインスタンスを構築します。
      * 
+     * @param logType
+     *            ログタイプ
      * @param sql
      *            SQL
      * @param cause
@@ -53,15 +55,17 @@ public class SqlExecutionException extends JdbcException {
      * @param rootCause
      *            根本原因
      */
-    public SqlExecutionException(Sql<?> sql, Throwable cause,
-            Throwable rootCause) {
-        this(sql.getKind(), sql.getRawSql(), sql.getFormattedSql(), sql
-                .getSqlFilePath(), cause, rootCause);
+    public SqlExecutionException(ExceptionSqlLogType logType, Sql<?> sql,
+            Throwable cause, Throwable rootCause) {
+        this(logType, sql.getKind(), sql.getRawSql(), sql.getFormattedSql(),
+                sql.getSqlFilePath(), cause, rootCause);
     }
 
     /**
      * 未加工SQLとフォーマット済みSQLを指定してインスタンスを構築します。
      * 
+     * @param logType
+     *            ログタイプ
      * @param kind
      *            SQLの種別
      * @param rawSql
@@ -75,11 +79,11 @@ public class SqlExecutionException extends JdbcException {
      * @param rootCause
      *            根本原因
      */
-    public SqlExecutionException(SqlKind kind, String rawSql,
-            String formattedSql, String sqlFilePath, Throwable cause,
-            Throwable rootCause) {
-        super(Message.DOMA2009, cause, sqlFilePath, formattedSql, cause,
-                rootCause);
+    public SqlExecutionException(ExceptionSqlLogType logType, SqlKind kind,
+            String rawSql, String formattedSql, String sqlFilePath,
+            Throwable cause, Throwable rootCause) {
+        super(Message.DOMA2009, cause, sqlFilePath, choiceSql(logType, rawSql,
+                formattedSql), cause, rootCause);
         this.kind = kind;
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;

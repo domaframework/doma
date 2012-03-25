@@ -52,7 +52,8 @@ public class EntityResultListHandler<E> implements ResultSetHandler<List<E>> {
         }
         if (query.isResultEnsured() && entities.isEmpty()) {
             Sql<?> sql = query.getSql();
-            throw new NoResultException(sql);
+            throw new NoResultException(query.getConfig()
+                    .getExceptionSqlLogType(), sql);
         }
         return entities;
     }

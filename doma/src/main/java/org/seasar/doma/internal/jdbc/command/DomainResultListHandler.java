@@ -53,7 +53,8 @@ public class DomainResultListHandler<D> implements ResultSetHandler<List<D>> {
         }
         if (query.isResultEnsured() && domains.isEmpty()) {
             Sql<?> sql = query.getSql();
-            throw new NoResultException(sql);
+            throw new NoResultException(query.getConfig()
+                    .getExceptionSqlLogType(), sql);
         }
         return domains;
     }

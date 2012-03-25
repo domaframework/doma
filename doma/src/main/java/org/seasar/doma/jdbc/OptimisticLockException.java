@@ -45,17 +45,21 @@ public class OptimisticLockException extends JdbcException {
     /**
      * 楽観的排他制御に失敗したSQLを指定してインスタンスを構築します。
      * 
+     * @param logType
+     *            ログタイプ
      * @param sql
      *            SQL
      */
-    public OptimisticLockException(Sql<?> sql) {
-        this(sql.getKind(), sql.getRawSql(), sql.getFormattedSql(), sql
-                .getSqlFilePath());
+    public OptimisticLockException(ExceptionSqlLogType logType, Sql<?> sql) {
+        this(logType, sql.getKind(), sql.getRawSql(), sql.getFormattedSql(),
+                sql.getSqlFilePath());
     }
 
     /**
      * 楽観的排他制御に失敗した未加工SQLとフォーマット済みSQLを指定してインスタンスを構築します。
      * 
+     * @param logType
+     *            ログタイプ
      * @param kind
      *            SQLの種別
      * @param rawSql
@@ -65,9 +69,10 @@ public class OptimisticLockException extends JdbcException {
      * @param sqlFilePath
      *            SQLファイルのパス
      */
-    public OptimisticLockException(SqlKind kind, String rawSql,
-            String formattedSql, String sqlFilePath) {
-        super(Message.DOMA2003, sqlFilePath, formattedSql);
+    public OptimisticLockException(ExceptionSqlLogType logType, SqlKind kind,
+            String rawSql, String formattedSql, String sqlFilePath) {
+        super(Message.DOMA2003, sqlFilePath, choiceSql(logType, rawSql,
+                formattedSql));
         this.kind = kind;
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;

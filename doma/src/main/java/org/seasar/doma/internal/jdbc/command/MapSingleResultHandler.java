@@ -52,12 +52,14 @@ public class MapSingleResultHandler implements
             fetcher.fetch(resultSet, map);
             if (resultSet.next()) {
                 Sql<?> sql = query.getSql();
-                throw new NonUniqueResultException(sql);
+                throw new NonUniqueResultException(query.getConfig()
+                        .getExceptionSqlLogType(), sql);
             }
             return map;
         } else if (query.isResultEnsured()) {
             Sql<?> sql = query.getSql();
-            throw new NoResultException(sql);
+            throw new NoResultException(query.getConfig()
+                    .getExceptionSqlLogType(), sql);
         }
         return null;
     }

@@ -83,6 +83,14 @@ public interface Config {
     RequiresNewController getRequiresNewController();
 
     /**
+     * 例外に含めるSQLログのタイプを返します。
+     * 
+     * @return SQLログのタイプ
+     * @since 1.22.0
+     */
+    ExceptionSqlLogType getExceptionSqlLogType();
+
+    /**
      * 最大行数の制限値を返します。
      * <p>
      * 0以下の値は、 {@link Statement#setMaxRows(int)}へは渡されません。

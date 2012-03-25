@@ -33,18 +33,24 @@ public class BatchUniqueConstraintException extends UniqueConstraintException {
     /**
      * SQLと原因を指定してインスタンスを構築します。
      * 
+     * @param logType
+     *            ログタイプ
      * @param sql
      *            SQL
      * @param cause
      *            原因
      */
-    public BatchUniqueConstraintException(Sql<?> sql, Throwable cause) {
-        this(sql.getKind(), sql.getRawSql(), sql.getSqlFilePath(), cause);
+    public BatchUniqueConstraintException(ExceptionSqlLogType logType,
+            Sql<?> sql, Throwable cause) {
+        this(logType, sql.getKind(), sql.getRawSql(), sql.getSqlFilePath(),
+                cause);
     }
 
     /**
      * 未加工SQLと原因を指定してインスタンスを構築します。
      * 
+     * @param logType
+     *            ログタイプ
      * @param kind
      *            SQLの種別
      * @param rawSql
@@ -54,9 +60,10 @@ public class BatchUniqueConstraintException extends UniqueConstraintException {
      * @param cause
      *            原因
      */
-    public BatchUniqueConstraintException(SqlKind kind, String rawSql,
-            String sqlFilePath, Throwable cause) {
-        super(Message.DOMA2029, kind, rawSql, sqlFilePath, cause);
+    public BatchUniqueConstraintException(ExceptionSqlLogType logType,
+            SqlKind kind, String rawSql, String sqlFilePath, Throwable cause) {
+        super(Message.DOMA2029, kind, choiceSql(logType, rawSql, rawSql),
+                sqlFilePath, cause);
     }
 
 }

@@ -61,7 +61,8 @@ public class BasicIterationHandler<R, V> implements ResultSetHandler<R> {
         }
         if (query.isResultEnsured() && !existent) {
             Sql<?> sql = query.getSql();
-            throw new NoResultException(sql);
+            throw new NoResultException(query.getConfig()
+                    .getExceptionSqlLogType(), sql);
         }
         if (iterationCallback instanceof PostIterationCallback) {
             result = ((PostIterationCallback<R, V>) iterationCallback)

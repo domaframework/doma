@@ -127,6 +127,10 @@ public abstract class AbstractDao {
             throw new ConfigException(config.getClass().getName(),
                     "getJdbcLogger");
         }
+        if (config.getExceptionSqlLogType() == null) {
+            throw new ConfigException(config.getClass().getName(),
+                    "getExceptionSqlLogType");
+        }
     }
 
     /**

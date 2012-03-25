@@ -42,17 +42,21 @@ public class NonUniqueResultException extends JdbcException {
     /**
      * 2件以上の結果を返したSQLを指定してインスタンスを構築します。
      * 
+     * @param logType
+     *            ログタイプ
      * @param sql
      *            SQL
      */
-    public NonUniqueResultException(Sql<?> sql) {
-        this(sql.getKind(), sql.getRawSql(), sql.getFormattedSql(), sql
-                .getSqlFilePath());
+    public NonUniqueResultException(ExceptionSqlLogType logType, Sql<?> sql) {
+        this(logType, sql.getKind(), sql.getRawSql(), sql.getFormattedSql(),
+                sql.getSqlFilePath());
     }
 
     /**
      * 2件以上の結果を返した未加工SQLとフォーマット済みSQLを指定してインスタンスを構築します。
      * 
+     * @param logType
+     *            ログタイプ
      * @param kind
      *            SQLの種別
      * @param rawSql
@@ -62,9 +66,10 @@ public class NonUniqueResultException extends JdbcException {
      * @param sqlFilePath
      *            SQLファイルのパス
      */
-    public NonUniqueResultException(SqlKind kind, String rawSql,
-            String formattedSql, String sqlFilePath) {
-        super(Message.DOMA2001, sqlFilePath, formattedSql);
+    public NonUniqueResultException(ExceptionSqlLogType logType, SqlKind kind,
+            String rawSql, String formattedSql, String sqlFilePath) {
+        super(Message.DOMA2001, sqlFilePath, choiceSql(logType, rawSql,
+                formattedSql));
         this.kind = kind;
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;

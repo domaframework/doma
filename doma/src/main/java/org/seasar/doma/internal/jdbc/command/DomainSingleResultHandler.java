@@ -48,12 +48,14 @@ public class DomainSingleResultHandler<D> implements ResultSetHandler<D> {
             fetcher.fetch(resultSet, wrapper);
             if (resultSet.next()) {
                 Sql<?> sql = query.getSql();
-                throw new NonUniqueResultException(sql);
+                throw new NonUniqueResultException(query.getConfig()
+                        .getExceptionSqlLogType(), sql);
             }
             return wrapper.getDomain();
         } else if (query.isResultEnsured()) {
             Sql<?> sql = query.getSql();
-            throw new NoResultException(sql);
+            throw new NoResultException(query.getConfig()
+                    .getExceptionSqlLogType(), sql);
         }
         return null;
     }

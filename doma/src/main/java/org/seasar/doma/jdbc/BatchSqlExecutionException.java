@@ -33,6 +33,8 @@ public class BatchSqlExecutionException extends SqlExecutionException {
     /**
      * SQL、スローされた原因、根本原因を指定してインスタンスを構築します。
      * 
+     * @param logType
+     *            ログタイプ
      * @param sql
      *            SQL
      * @param cause
@@ -40,15 +42,17 @@ public class BatchSqlExecutionException extends SqlExecutionException {
      * @param rootCause
      *            根本原因
      */
-    public BatchSqlExecutionException(Sql<?> sql, Throwable cause,
-            Throwable rootCause) {
-        this(sql.getKind(), sql.getRawSql(), sql.getSqlFilePath(), cause,
-                rootCause);
+    public BatchSqlExecutionException(ExceptionSqlLogType logType, Sql<?> sql,
+            Throwable cause, Throwable rootCause) {
+        this(logType, sql.getKind(), sql.getRawSql(), sql.getSqlFilePath(),
+                cause, rootCause);
     }
 
     /**
      * 未加工SQL、スローされた原因、根本原因を指定してインスタンスを構築します。
      * 
+     * @param logType
+     *            ログタイプ
      * @param kind
      *            SQLの種別
      * @param rawSql
@@ -60,10 +64,11 @@ public class BatchSqlExecutionException extends SqlExecutionException {
      * @param rootCause
      *            根本原因
      */
-    public BatchSqlExecutionException(SqlKind kind, String rawSql,
-            String sqlFilePath, Throwable cause, Throwable rootCause) {
-        super(Message.DOMA2030, kind, rawSql, null, sqlFilePath, cause,
-                rootCause);
+    public BatchSqlExecutionException(ExceptionSqlLogType logType,
+            SqlKind kind, String rawSql, String sqlFilePath, Throwable cause,
+            Throwable rootCause) {
+        super(Message.DOMA2030, kind, choiceSql(logType, rawSql, rawSql), null,
+                sqlFilePath, cause, rootCause);
     }
 
 }

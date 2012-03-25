@@ -56,7 +56,8 @@ public class MapResultListHandler implements
         }
         if (query.isResultEnsured() && mapList.isEmpty()) {
             Sql<?> sql = query.getSql();
-            throw new NoResultException(sql);
+            throw new NoResultException(query.getConfig()
+                    .getExceptionSqlLogType(), sql);
         }
         return mapList;
     }

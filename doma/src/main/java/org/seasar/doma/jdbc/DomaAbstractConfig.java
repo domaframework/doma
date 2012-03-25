@@ -73,6 +73,11 @@ public abstract class DomaAbstractConfig implements Config {
     }
 
     @Override
+    public ExceptionSqlLogType getExceptionSqlLogType() {
+        return ExceptionSqlLogType.FORMATTED_SQL;
+    }
+
+    @Override
     public int getFetchSize() {
         return 0;
     }

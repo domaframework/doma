@@ -65,7 +65,8 @@ public abstract class BatchModifyCommand<Q extends BatchModifyQuery> implements
                 return executeInternal(preparedStatement, query.getSqls());
             } catch (SQLException e) {
                 Dialect dialect = query.getConfig().getDialect();
-                throw new BatchSqlExecutionException(sql, e,
+                throw new BatchSqlExecutionException(query.getConfig()
+                        .getExceptionSqlLogType(), sql, e,
                         dialect.getRootCause(e));
             } finally {
                 JdbcUtil.close(preparedStatement, query.getConfig()
@@ -124,7 +125,8 @@ public abstract class BatchModifyCommand<Q extends BatchModifyQuery> implements
         } catch (SQLException e) {
             Dialect dialect = query.getConfig().getDialect();
             if (dialect.isUniqueConstraintViolated(e)) {
-                throw new BatchUniqueConstraintException(sql, e);
+                throw new BatchUniqueConstraintException(query.getConfig()
+                        .getExceptionSqlLogType(), sql, e);
             }
             throw e;
         }
@@ -151,7 +153,8 @@ public abstract class BatchModifyCommand<Q extends BatchModifyQuery> implements
             }
             for (int i = 0; i < rows.length; ++i) {
                 if (rows[i] != 1) {
-                    throw new BatchOptimisticLockException(sql);
+                    throw new BatchOptimisticLockException(query.getConfig()
+                            .getExceptionSqlLogType(), sql);
                 }
             }
         } else if (preparedStatement.getUpdateCount() == rows.length) {
@@ -160,7 +163,8 @@ public abstract class BatchModifyCommand<Q extends BatchModifyQuery> implements
             if (!query.isOptimisticLockCheckRequired()) {
                 return;
             }
-            throw new BatchOptimisticLockException(sql);
+            throw new BatchOptimisticLockException(query.getConfig()
+                    .getExceptionSqlLogType(), sql);
         }
     }
 }

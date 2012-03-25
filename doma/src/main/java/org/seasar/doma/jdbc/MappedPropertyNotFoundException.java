@@ -52,6 +52,8 @@ public class MappedPropertyNotFoundException extends JdbcException {
     /**
      * インスタンスを構築します。
      * 
+     * @param logType
+     *            ログタイプ
      * @param columnName
      *            プロパティにマッピングされなかったカラム名
      * @param expectedPropertyName
@@ -65,11 +67,13 @@ public class MappedPropertyNotFoundException extends JdbcException {
      * @param formattedSql
      *            フォーマット済みSQL
      */
-    public MappedPropertyNotFoundException(String columnName,
-            String expectedPropertyName, String entityClassName, SqlKind kind,
-            String rawSql, String formattedSql, String sqlFilePath) {
+    public MappedPropertyNotFoundException(ExceptionSqlLogType logType,
+            String columnName, String expectedPropertyName,
+            String entityClassName, SqlKind kind, String rawSql,
+            String formattedSql, String sqlFilePath) {
         super(Message.DOMA2002, columnName, expectedPropertyName,
-                entityClassName, sqlFilePath, formattedSql);
+                entityClassName, sqlFilePath, choiceSql(logType, rawSql,
+                        formattedSql));
         this.columnName = columnName;
         this.expectedPropertyName = expectedPropertyName;
         this.entityClassName = entityClassName;

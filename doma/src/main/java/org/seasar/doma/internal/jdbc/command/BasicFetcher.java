@@ -62,7 +62,8 @@ public class BasicFetcher implements ResultFetcher<ResultSet, Wrapper<?>> {
         int columnCount = getColumnCount(resultSet);
         if (columnCount != 1) {
             Sql<?> sql = query.getSql();
-            throw new NonSingleColumnException(sql);
+            throw new NonSingleColumnException(query.getConfig()
+                    .getExceptionSqlLogType(), sql);
         }
         columnCountValidated = true;
     }

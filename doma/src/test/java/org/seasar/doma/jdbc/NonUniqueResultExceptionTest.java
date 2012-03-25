@@ -25,7 +25,8 @@ public class NonUniqueResultExceptionTest extends TestCase {
 
     public void test() throws Exception {
         NonUniqueResultException e = new NonUniqueResultException(
-                SqlKind.SELECT, "aaa", "bbb", "ccc");
+                ExceptionSqlLogType.FORMATTED_SQL, SqlKind.SELECT, "aaa",
+                "bbb", "ccc");
         System.out.println(e.getMessage());
         assertSame(SqlKind.SELECT, e.getKind());
         assertEquals("aaa", e.getRawSql());

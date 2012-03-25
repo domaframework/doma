@@ -47,12 +47,14 @@ public class EntitySingleResultHandler<E> implements ResultSetHandler<E> {
             fetcher.fetch(resultSet, entity);
             if (resultSet.next()) {
                 Sql<?> sql = query.getSql();
-                throw new NonUniqueResultException(sql);
+                throw new NonUniqueResultException(query.getConfig()
+                        .getExceptionSqlLogType(), sql);
             }
             return entity;
         } else if (query.isResultEnsured()) {
             Sql<?> sql = query.getSql();
-            throw new NoResultException(sql);
+            throw new NoResultException(query.getConfig()
+                    .getExceptionSqlLogType(), sql);
         }
         return null;
     }

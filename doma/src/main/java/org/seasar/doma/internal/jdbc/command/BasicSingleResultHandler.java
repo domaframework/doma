@@ -52,11 +52,13 @@ public class BasicSingleResultHandler<V> implements ResultSetHandler<V> {
             fetcher.fetch(resultSet, wrapper);
             if (resultSet.next()) {
                 Sql<?> sql = query.getSql();
-                throw new NonUniqueResultException(sql);
+                throw new NonUniqueResultException(query.getConfig()
+                        .getExceptionSqlLogType(), sql);
             }
         } else if (query.isResultEnsured()) {
             Sql<?> sql = query.getSql();
-            throw new NoResultException(sql);
+            throw new NoResultException(query.getConfig()
+                    .getExceptionSqlLogType(), sql);
         }
         V result = wrapper.get();
         if (result == null && primitveResult) {

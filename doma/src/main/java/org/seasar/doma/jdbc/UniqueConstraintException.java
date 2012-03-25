@@ -43,19 +43,24 @@ public class UniqueConstraintException extends JdbcException {
     /**
      * SQLを指定してインスタンスを構築します。
      * 
+     * @param logType
+     *            ログタイプ
      * @param sql
      *            SQL
      * @param cause
      *            原因
      */
-    public UniqueConstraintException(Sql<?> sql, Throwable cause) {
-        this(sql.getKind(), sql.getRawSql(), sql.getFormattedSql(), sql
-                .getSqlFilePath(), cause);
+    public UniqueConstraintException(ExceptionSqlLogType logType, Sql<?> sql,
+            Throwable cause) {
+        this(logType, sql.getKind(), sql.getRawSql(), sql.getFormattedSql(),
+                sql.getSqlFilePath(), cause);
     }
 
     /**
      * 未加工SQLとフォーマット済みSQLを指定してインスタンスを構築します。
      * 
+     * @param logType
+     *            ログタイプ
      * @param kind
      *            SQLの種別
      * @param rawSql
@@ -67,9 +72,11 @@ public class UniqueConstraintException extends JdbcException {
      * @param cause
      *            原因
      */
-    public UniqueConstraintException(SqlKind kind, String rawSql,
-            String formattedSql, String sqlFilePath, Throwable cause) {
-        super(Message.DOMA2004, sqlFilePath, formattedSql, cause);
+    public UniqueConstraintException(ExceptionSqlLogType logType, SqlKind kind,
+            String rawSql, String formattedSql, String sqlFilePath,
+            Throwable cause) {
+        super(Message.DOMA2004, sqlFilePath, choiceSql(logType, rawSql,
+                formattedSql), cause);
         this.kind = kind;
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;

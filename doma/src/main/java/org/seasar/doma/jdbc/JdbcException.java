@@ -55,4 +55,29 @@ public class JdbcException extends DomaException {
         super(messageCode, cause, args);
     }
 
+    /**
+     * ログタイプに応じてログ用SQLを選択します。
+     * 
+     * @param logType
+     *            ログタイプ
+     * @param rawSql
+     *            未加工SQL
+     * @param formattedSql
+     *            フォーマット済みSQL
+     * @return ログ用SQL
+     * @since 1.22.0
+     */
+    protected static String choiceSql(ExceptionSqlLogType logType,
+            String rawSql, String formattedSql) {
+        switch (logType) {
+        case RAW_SQL:
+            return rawSql;
+        case FORMATTED_SQL:
+            return formattedSql;
+        case EMPTY:
+            return "";
+        default:
+            throw new AssertionError("unreachable");
+        }
+    }
 }

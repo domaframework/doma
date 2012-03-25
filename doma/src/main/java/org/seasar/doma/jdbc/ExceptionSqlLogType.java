@@ -15,22 +15,20 @@
  */
 package org.seasar.doma.jdbc;
 
-import junit.framework.TestCase;
-
 /**
- * @author taedium
+ * 例外のメッセージに含めるSQLログのタイプです。
  * 
+ * @author taedium
+ * @since 1.22.0
  */
-public class NonSingleColumnExceptionTest extends TestCase {
+public enum ExceptionSqlLogType {
 
-    public void test() throws Exception {
-        NonSingleColumnException e = new NonSingleColumnException(
-                ExceptionSqlLogType.FORMATTED_SQL, SqlKind.SELECT, "aaa",
-                "bbb", "ccc");
-        System.out.println(e.getMessage());
-        assertSame(SqlKind.SELECT, e.getKind());
-        assertEquals("aaa", e.getRawSql());
-        assertEquals("bbb", e.getFormattedSql());
-        assertEquals("ccc", e.getSqlFilePath());
-    }
+    /** 未加工SQL */
+    RAW_SQL,
+
+    /** フォーマット済みSQL */
+    FORMATTED_SQL,
+
+    /** 空文字 */
+    EMPTY
 }
