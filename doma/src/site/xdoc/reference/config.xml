@@ -38,6 +38,7 @@
 				<li>JDBC関連のログ出力に使用するロギングフレームワークへのアダプタ</li>
 				<li>SQLファイルのキャッシュ戦略</li>
 				<li>トランザクション属性がREQUIRES_NEWであるトランザクションとの連動方法</li>
+				<li>例外メッセージに含めるSQLのタイプ</li>
 				<li>クエリ時に使用するパラメータ（タイムアウト、最大件数、フェッチ件数、バッチサイズ）</li>
 			</ul>
 		</section>
@@ -155,6 +156,11 @@
 					<code>@TableGenerator</code>を利用しない場合は、<code>NullRequiresNewController</code>を使用してもかまいません。
 					また、<code>@TableGenerator</code>を利用する場合であっても、識別子を採番するための更新ロックが問題にならない程度のトランザクション数であれば、<code>NullRequiresNewController</code>を使用してもかまいません。
 				</p>
+				<h4>例外メッセージに含めるSQLのタイプの設定</h4>
+				<p>
+					例外メッセージに含めるSQLのタイプをあらわす、<a href ="../apidocs/org/seasar/doma/jdbc/ExceptionSqlLogType.html"><code>org.seasar.doma.jdbc.ExceptionSqlLogType</code></a>を<code>getExceptionSqlLogType</code>メソッドで返します。
+					この値は、<a href ="../apidocs/org/seasar/doma/jdbc/UniqueConstraintException.html"><code>UniqueConstraintException</code></a>などの例外にどのような形式のSQLを含めるかを決定します。
+				</p>
 				<h4>クエリタイムアウト（秒）の設定</h4>
 				<p>
 					クエリタイムアウト（秒）をあらわす、<code>int</code>を<code>getQueryTimeout</code>メソッドで返します。
@@ -215,6 +221,10 @@
 					<tr>
 						<td>REQUIRES_NEWの属性をもつトランザクションを制御するための設定</td>
 						<td><code>org.seasar.doma.jdbc.NullRequiresNewController</code></td>
+					</tr>
+					<tr>
+						<td>例外メッセージに含めるSQLのタイプの設定</td>
+						<td><code>org.seasar.doma.jdbc.ExceptionSqlLogType.FORMATTED_SQL</code></td>
 					</tr>
 					<tr>
 						<td>クエリタイムアウト（秒）の設定</td>
