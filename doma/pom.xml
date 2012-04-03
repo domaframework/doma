@@ -6,7 +6,7 @@
 	<!-- The Basics -->
 	<groupId>org.seasar.doma</groupId>
 	<artifactId>doma</artifactId>
-	<version>1.22.0-SNAPSHOT</version>
+	<version>1.22.0</version>
 	<packaging>jar</packaging>
 
 	<!-- More Project Information -->
@@ -182,7 +182,7 @@
 					<docencoding>UTF-8</docencoding>
 					<charset>UTF-8</charset>
 					<links>
-						<link>http://java.sun.com/javase/ja/6/docs/ja/api/</link>
+						<link>http://docs.oracle.com/javase/6/docs/api/</link>
 						<link>http://www.junit.org/junit/javadoc/3.8.1/</link>
 					</links>
 					<excludePackageNames>*.internal</excludePackageNames>
