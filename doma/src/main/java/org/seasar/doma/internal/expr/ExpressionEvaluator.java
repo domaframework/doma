@@ -603,7 +603,7 @@ public class ExpressionEvaluator implements
     @Override
     public EvaluationResult visitFunctionOperatorNode(
             FunctionOperatorNode node, Void p) {
-        Class<?> targetClass = ExpressionFunctions.class;
+        Class<?> targetClass = expressionFunctions.getClass();
         ParameterCollector collector = new ParameterCollector();
         ParameterCollection collection = collector.collect(node
                 .getParametersNode());
