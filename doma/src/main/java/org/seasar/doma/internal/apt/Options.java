@@ -37,6 +37,8 @@ public final class Options {
 
     public static final String DAO_SUFFIX = "dao.suffix";
 
+    public static final String EXPR_FUNCTIONS = "expr.functions";
+
     public static boolean isTestEnabled(ProcessingEnvironment env) {
         String test = env.getOptions().get(Options.TEST);
         return Boolean.valueOf(test).booleanValue();
@@ -74,6 +76,11 @@ public final class Options {
     public static String getDaoSuffix(ProcessingEnvironment env) {
         String suffix = env.getOptions().get(Options.DAO_SUFFIX);
         return suffix != null ? suffix : Constants.DEFAULT_DAO_SUFFIX;
+    }
+
+    public static String getExprFunctions(ProcessingEnvironment env) {
+        String name = env.getOptions().get(Options.EXPR_FUNCTIONS);
+        return name != null ? name : null;
     }
 
     protected static class Constants {

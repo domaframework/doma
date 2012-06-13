@@ -18,6 +18,8 @@ package org.seasar.doma.internal.apt.util;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
@@ -46,6 +48,11 @@ public final class ElementUtil {
         PackageElement packageElement = env.getElementUtils().getPackageOf(
                 element);
         return packageElement.getQualifiedName().toString();
+    }
+
+    public static String getBinaryName(TypeElement typeElement,
+            ProcessingEnvironment env) {
+        return env.getElementUtils().getBinaryName(typeElement).toString();
     }
 
     public static String getPackageExcludedBinaryName(TypeElement typeElement,
@@ -111,15 +118,33 @@ public final class ElementUtil {
         }, null);
     }
 
+    /**
+     * バイナリ名に対応する 型要素 を返します。
+     * 
+     * @param className
+     *            バイナリ名
+     * @param env
+     *            環境
+     * @return 型要素、見つからない場合 {@code null}
+     */
     public static TypeElement getTypeElement(String className,
             ProcessingEnvironment env) {
         assertNotNull(className, env);
-        Class<?> clazz = null;
-        try {
-            clazz = Class.forName(className);
-            return getTypeElement(clazz, env);
-        } catch (ClassNotFoundException ignored) {
+        String[] parts = className.split("\\$");
+        if (parts.length > 1) {
+            TypeElement topElement = getTypeElement(parts[0], env);
+            if (topElement == null) {
+                return null;
+            }
+            return getEnclosedTypeElement(topElement, Arrays.asList(parts)
+                    .subList(1, parts.length), env);
         }
+        // Class<?> clazz = null;
+        // try {
+        // clazz = Class.forName(className);
+        // return getTypeElement(clazz, env);
+        // } catch (ClassNotFoundException ignored) {
+        // }
         Elements elements = env.getElementUtils();
         try {
             return elements.getTypeElement(className);
@@ -132,6 +157,21 @@ public final class ElementUtil {
             ProcessingEnvironment env) {
         assertNotNull(clazz, env);
         return env.getElementUtils().getTypeElement(clazz.getCanonicalName());
+    }
+
+    public static TypeElement getEnclosedTypeElement(TypeElement typeElement,
+            List<String> enclosedNames, ProcessingEnvironment env) {
+        TypeElement enclosing = typeElement;
+        for (String enclosedName : enclosedNames) {
+            for (TypeElement enclosed : ElementFilter.typesIn(enclosing
+                    .getEnclosedElements())) {
+                if (enclosed.getSimpleName().contentEquals(enclosedName)) {
+                    enclosing = enclosed;
+                    break;
+                }
+            }
+        }
+        return typeElement != enclosing ? enclosing : null;
     }
 
     public static AnnotationMirror getAnnotationMirror(Element element,

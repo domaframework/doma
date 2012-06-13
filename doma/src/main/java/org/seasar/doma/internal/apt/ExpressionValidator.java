@@ -82,9 +82,19 @@ public class ExpressionValidator implements
 
     protected final TypeDeclaration unknownTypeDeclaration;
 
+    protected final String exprFunctionsClassName;
+
     public ExpressionValidator(ProcessingEnvironment env,
             ExecutableElement methodElement,
             Map<String, TypeMirror> parameterTypeMap) {
+        this(env, methodElement, parameterTypeMap, Options
+                .getExprFunctions(env));
+    }
+
+    public ExpressionValidator(ProcessingEnvironment env,
+            ExecutableElement methodElement,
+            Map<String, TypeMirror> parameterTypeMap,
+            String exprFunctionsClassName) {
         assertNotNull(env, methodElement, parameterTypeMap);
         this.env = env;
         this.methodElement = methodElement;
@@ -93,6 +103,7 @@ public class ExpressionValidator implements
         this.validatedParameterNames = new HashSet<String>();
         this.unknownTypeDeclaration = TypeDeclaration
                 .newUnknownTypeDeclaration(env);
+        this.exprFunctionsClassName = exprFunctionsClassName;
     }
 
     public TypeMirror removeParameterType(String parameterName) {
@@ -449,8 +460,7 @@ public class ExpressionValidator implements
     @Override
     public TypeDeclaration visitFunctionOperatorNode(FunctionOperatorNode node,
             Void p) {
-        TypeDeclaration typeDeclaration = TypeDeclaration.newTypeDeclaration(
-                ExpressionFunctions.class, env);
+        TypeDeclaration typeDeclaration = getExpressionFunctionsDeclaration();
         List<TypeDeclaration> parameterTypeDeclarations = new ParameterCollector()
                 .collect(node.getParametersNode());
         String methodName = node.getMethodName();
@@ -473,6 +483,20 @@ public class ExpressionValidator implements
             }
         }
         throw new AptIllegalStateException(methodName);
+    }
+
+    protected TypeDeclaration getExpressionFunctionsDeclaration() {
+        if (exprFunctionsClassName == null) {
+            return TypeDeclaration.newTypeDeclaration(
+                    ExpressionFunctions.class, env);
+        }
+        TypeElement element = env.getElementUtils().getTypeElement(
+                exprFunctionsClassName);
+        if (element == null) {
+            // TODO
+            throw new RuntimeException("todo");
+        }
+        return TypeDeclaration.newTypeDeclaration(element.asType(), env);
     }
 
     protected String createMethodSignature(String methodName,

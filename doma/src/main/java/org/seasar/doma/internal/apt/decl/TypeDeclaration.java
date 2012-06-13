@@ -87,7 +87,7 @@ public class TypeDeclaration {
         if (typeElement == null) {
             return type.toString();
         }
-        return typeElement.getQualifiedName().toString();
+        return ElementUtil.getBinaryName(typeElement, env);
     }
 
     public boolean isUnknownType() {
@@ -124,8 +124,8 @@ public class TypeDeclaration {
         if (typeElement == null) {
             return false;
         }
-        return NUMBER_PRIORITY_MAP.containsKey(typeElement.getQualifiedName()
-                .toString());
+        return NUMBER_PRIORITY_MAP.containsKey(ElementUtil.getBinaryName(
+                typeElement, env));
     }
 
     public int getNumberPriority() {
@@ -313,11 +313,14 @@ public class TypeDeclaration {
         List<MethodDeclaration> results = new LinkedList<MethodDeclaration>();
         for (Map.Entry<String, List<TypeParameterDeclaration>> e : typeParameterDeclarationsMap
                 .entrySet()) {
-            String typeQualifiedName = e.getKey();
+            String binaryName = e.getKey();
             List<TypeParameterDeclaration> typeParameterDeclarations = e
                     .getValue();
             TypeElement typeElement = ElementUtil.getTypeElement(
-                    typeQualifiedName, env);
+                    binaryName, env);
+            if (typeElement == null) {
+                continue;
+            }
 
             outer: for (ExecutableElement method : ElementFilter
                     .methodsIn(typeElement.getEnclosedElements())) {
@@ -517,8 +520,8 @@ public class TypeDeclaration {
         if (typeElement == null) {
             return;
         }
-        typeParameterDeclarationsMap.put(typeElement.getQualifiedName()
-                .toString(),
+        typeParameterDeclarationsMap.put(
+                ElementUtil.getBinaryName(typeElement, env),
                 createTypeParameterDeclarations(typeElement, type, env));
         for (TypeMirror superType : env.getTypeUtils().directSupertypes(type)) {
             TypeElement superElement = TypeMirrorUtil.toTypeElement(superType,
@@ -526,12 +529,13 @@ public class TypeDeclaration {
             if (superElement == null) {
                 continue;
             }
-            if (typeParameterDeclarationsMap.containsKey(superElement
-                    .getQualifiedName().toString())) {
+            String superBinaryName = ElementUtil.getBinaryName(superElement,
+                    env);
+            if (typeParameterDeclarationsMap.containsKey(superBinaryName)) {
                 continue;
             }
             typeParameterDeclarationsMap.put(
-                    superElement.getQualifiedName().toString(),
+                    superBinaryName,
                     createTypeParameterDeclarations(superElement, superType,
                             env));
             gatherTypeParameterDeclarations(superType,
