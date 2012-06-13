@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.jdbc;
 
+import java.io.Serializable;
+
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 
@@ -32,7 +34,9 @@ import org.seasar.doma.DomaNullPointerException;
  * @author taedium
  * 
  */
-public class SelectOptions {
+public class SelectOptions implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /** ページングのオフセット */
     protected long offset = -1;
