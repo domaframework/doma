@@ -37,6 +37,7 @@ import javax.lang.model.type.WildcardType;
 import javax.lang.model.util.SimpleElementVisitor6;
 import javax.lang.model.util.SimpleTypeVisitor6;
 import javax.lang.model.util.TypeKindVisitor6;
+import javax.lang.model.util.Types;
 
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 
@@ -76,41 +77,41 @@ public final class TypeMirrorUtil {
         }, null);
     }
 
-    public static boolean isAssignable(TypeMirror typeMirror, Class<?> clazz,
+    public static boolean isAssignable(TypeMirror lhs, Class<?> rhs,
             ProcessingEnvironment env) {
-        assertNotNull(typeMirror, clazz, env);
-        TypeElement typeElement = ElementUtil.getTypeElement(clazz, env);
+        assertNotNull(lhs, rhs, env);
+        TypeElement typeElement = ElementUtil.getTypeElement(rhs, env);
         if (typeElement == null) {
             return false;
         }
-        return isAssignable(typeMirror, typeElement.asType(), env);
+        return isAssignable(lhs, typeElement.asType(), env);
     }
 
-    public static boolean isAssignable(TypeMirror typeMirror1,
-            TypeMirror typeMirror2, ProcessingEnvironment env) {
-        assertNotNull(typeMirror1, typeMirror2, env);
-        if (typeMirror1.getKind() == TypeKind.NONE
-                || typeMirror2.getKind() == TypeKind.NONE) {
+    public static boolean isAssignable(TypeMirror lhs, TypeMirror rhs,
+            ProcessingEnvironment env) {
+        assertNotNull(lhs, rhs, env);
+        if (lhs.getKind() == TypeKind.NONE || rhs.getKind() == TypeKind.NONE) {
             return false;
         }
-        if (typeMirror1.getKind() == TypeKind.NULL) {
-            return typeMirror2.getKind() == TypeKind.NULL;
+        if (lhs.getKind() == TypeKind.NULL) {
+            return rhs.getKind() == TypeKind.NULL;
         }
-        if (typeMirror2.getKind() == TypeKind.NULL) {
-            return typeMirror1.getKind() == TypeKind.NULL;
+        if (rhs.getKind() == TypeKind.NULL) {
+            return lhs.getKind() == TypeKind.NULL;
         }
-        if (typeMirror1.getKind() == TypeKind.VOID) {
-            return typeMirror2.getKind() == TypeKind.VOID;
+        if (lhs.getKind() == TypeKind.VOID) {
+            return rhs.getKind() == TypeKind.VOID;
         }
-        if (typeMirror2.getKind() == TypeKind.VOID) {
-            return typeMirror1.getKind() == TypeKind.VOID;
+        if (rhs.getKind() == TypeKind.VOID) {
+            return lhs.getKind() == TypeKind.VOID;
         }
-        TypeMirror t1 = env.getTypeUtils().erasure(typeMirror1);
-        TypeMirror t2 = env.getTypeUtils().erasure(typeMirror2);
+        Types types = env.getTypeUtils();
+        TypeMirror t1 = types.erasure(lhs);
+        TypeMirror t2 = types.erasure(rhs);
         if (t1.equals(t2)) {
             return true;
         }
-        for (TypeMirror supertype : env.getTypeUtils().directSupertypes(t1)) {
+        for (TypeMirror supertype : types.directSupertypes(t1)) {
             if (isAssignable(supertype, t2, env)) {
                 return true;
             }

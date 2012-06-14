@@ -120,7 +120,7 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
                 throw new AptException(Message.DOMA4153, env, methodElement,
                         path, sql, location.getLineNumber(),
                         location.getPosition(), variableName,
-                        typeDeclaration.getQualifiedName());
+                        typeDeclaration.getBinaryName());
             }
         } else {
             if (!isBindableIterable(typeDeclaration)) {
@@ -128,7 +128,7 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
                 throw new AptException(Message.DOMA4161, env, methodElement,
                         path, sql, location.getLineNumber(),
                         location.getPosition(), variableName,
-                        typeDeclaration.getQualifiedName());
+                        typeDeclaration.getBinaryName());
             }
         }
         visitNode(node, p);
@@ -185,7 +185,7 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
             String sql = getSql(location);
             throw new AptException(Message.DOMA4140, env, methodElement, path,
                     sql, location.getLineNumber(), location.getPosition(),
-                    expression, typeDeclaration.getQualifiedName());
+                    expression, typeDeclaration.getBinaryName());
         }
         visitNode(node, p);
         return null;
@@ -201,7 +201,7 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
             String sql = getSql(location);
             throw new AptException(Message.DOMA4141, env, methodElement, path,
                     sql, location.getLineNumber(), location.getPosition(),
-                    expression, typeDeclaration.getQualifiedName());
+                    expression, typeDeclaration.getBinaryName());
         }
         visitNode(node, p);
         return null;
@@ -219,7 +219,7 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
             String sql = getSql(location);
             throw new AptException(Message.DOMA4149, env, methodElement, path,
                     sql, location.getLineNumber(), location.getPosition(),
-                    expression, typeDeclaration.getQualifiedName());
+                    expression, typeDeclaration.getBinaryName());
         }
         DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(typeMirror,
                 env);
@@ -228,7 +228,7 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
             String sql = getSql(location);
             throw new AptException(Message.DOMA4150, env, methodElement, path,
                     sql, location.getLineNumber(), location.getPosition(),
-                    expression, typeDeclaration.getQualifiedName());
+                    expression, typeDeclaration.getBinaryName());
         }
 
         TypeMirror originalIdentifierType = expressionValidator

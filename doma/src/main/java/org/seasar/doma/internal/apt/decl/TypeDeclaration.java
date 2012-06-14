@@ -83,7 +83,7 @@ public class TypeDeclaration {
         return env;
     }
 
-    public String getQualifiedName() {
+    public String getBinaryName() {
         if (typeElement == null) {
             return type.toString();
         }
@@ -316,8 +316,8 @@ public class TypeDeclaration {
             String binaryName = e.getKey();
             List<TypeParameterDeclaration> typeParameterDeclarations = e
                     .getValue();
-            TypeElement typeElement = ElementUtil.getTypeElement(
-                    binaryName, env);
+            TypeElement typeElement = ElementUtil.getTypeElement(binaryName,
+                    env);
             if (typeElement == null) {
                 continue;
             }
@@ -475,15 +475,15 @@ public class TypeDeclaration {
         typeDeclaration.typeParameterDeclarationsMap = map;
         typeDeclaration.env = env;
         typeDeclaration.numberPriority = determineNumberPriority(typeElement,
-                type);
+                type, env);
         return typeDeclaration;
     }
 
     protected static int determineNumberPriority(TypeElement typeElement,
-            TypeMirror type) {
+            TypeMirror type, ProcessingEnvironment env) {
         if (typeElement != null) {
-            Integer result = NUMBER_PRIORITY_MAP.get(typeElement
-                    .getQualifiedName().toString());
+            Integer result = NUMBER_PRIORITY_MAP.get(ElementUtil.getBinaryName(
+                    typeElement, env));
             if (result != null) {
                 return result.intValue();
             }

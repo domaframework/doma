@@ -276,7 +276,29 @@ public class ExpressionValidatorTest extends AptTestCase {
         assertTrue(result.isTextType());
     }
 
-    public void testCustomeFunction_found() throws Exception {
+    public void testFunction_notFound() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(ExpressionFunctions.class);
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testEmp", Emp.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap);
+
+        ExpressionNode node = new ExpressionParser("@hoge(emp.name)").parse();
+        try {
+            validator.validate(node);
+            fail();
+        } catch (AptException expected) {
+            System.out.println(expected);
+            assertEquals(Message.DOMA4072, expected.getMessageResource());
+        }
+    }
+
+    public void testCustomFunction_found() throws Exception {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(ExpressionFunctions.class);
         addCompilationUnit(target);
@@ -289,12 +311,12 @@ public class ExpressionValidatorTest extends AptTestCase {
                 getProcessingEnvironment(), methodElement, parameterTypeMap,
                 MyExpressionFunctions.class.getName());
 
-        ExpressionNode node = new ExpressionParser("@hoge(emp.name)").parse();
+        ExpressionNode node = new ExpressionParser("@hello(emp.name)").parse();
         TypeDeclaration result = validator.validate(node);
         assertTrue(result.isTextType());
     }
 
-    public void testFunction_notFound() throws Exception {
+    public void testCustomFunction_classNotfound() throws Exception {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(ExpressionFunctions.class);
         addCompilationUnit(target);
@@ -304,7 +326,54 @@ public class ExpressionValidatorTest extends AptTestCase {
                 "testEmp", Emp.class);
         Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
         ExpressionValidator validator = new ExpressionValidator(
-                getProcessingEnvironment(), methodElement, parameterTypeMap);
+                getProcessingEnvironment(), methodElement, parameterTypeMap,
+                "nonExistent");
+
+        ExpressionNode node = new ExpressionParser("@hello(emp.name)").parse();
+        try {
+            validator.validate(node);
+            fail();
+        } catch (AptException expected) {
+            System.out.println(expected);
+            assertEquals(Message.DOMA4189, expected.getMessageResource());
+        }
+    }
+
+    public void testCustomFunction_classIllegal() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(ExpressionFunctions.class);
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testEmp", Emp.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap,
+                "java.lang.String");
+
+        ExpressionNode node = new ExpressionParser("@hello(emp.name)").parse();
+        try {
+            validator.validate(node);
+            fail();
+        } catch (AptException expected) {
+            System.out.println(expected);
+            assertEquals(Message.DOMA4190, expected.getMessageResource());
+        }
+    }
+
+    public void testCustomFunction_notFound() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(ExpressionFunctions.class);
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testEmp", Emp.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap,
+                MyExpressionFunctions.class.getName());
 
         ExpressionNode node = new ExpressionParser("@hoge(emp.name)").parse();
         try {

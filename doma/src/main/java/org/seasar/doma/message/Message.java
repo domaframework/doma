@@ -338,6 +338,8 @@ public enum Message implements MessageResource {
     DOMA4186("java.util.Listに対する実型引数の型[{0}]はサポートされていません。サポートされている型は次のものです。基本型、ドメインクラス、エンティティクラス、java.util.Map<String, Object>。"),
     DOMA4187("@Daoが注釈されたインタフェースは2つ以上のインタフェースをextendsできません。"),
     DOMA4188("@Daoが注釈されたインタフェースは@Daoが注釈されてないインタフェース[{0}]をextendsできません。"),
+    DOMA4189("式[{0}]（[{1}]番目の文字付近）の関数[{2}]の解決に失敗しました。注釈処理のオプションexpr.functionsに指定されたクラス[{3}]が見つかりません。"),
+    DOMA4190("式[{0}]（[{1}]番目の文字付近）の関数[{2}]の解決に失敗しました。注釈処理のオプションexpr.functionsに指定されたクラス[{3}]はorg.seasar.doma.expr.ExpressionFunctionsのサブタイプでなければいけません。"),
 
     // other
     DOMA5001("JDBCドライバがロードされていない可能性があります。JDBCドライバをロードするには、クラスパスが通されたMETA-INF/services/java.sql.DriverファイルにJDBCドライバのクラスの完全修飾名を記述してください。 ex) oracle.jdbc.driver.OracleDriver"),
