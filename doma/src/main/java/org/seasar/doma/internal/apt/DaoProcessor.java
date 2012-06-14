@@ -52,7 +52,7 @@ import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 @SupportedAnnotationTypes({ "org.seasar.doma.Dao" })
 @SupportedOptions({ Options.TEST, Options.DEBUG, Options.DAO_PACKAGE,
-        Options.DAO_SUBPACKAGE, Options.DAO_SUFFIX })
+        Options.DAO_SUBPACKAGE, Options.DAO_SUFFIX, Options.EXPR_FUNCTIONS })
 public class DaoProcessor extends AbstractProcessor<DaoMeta> {
 
     @Override

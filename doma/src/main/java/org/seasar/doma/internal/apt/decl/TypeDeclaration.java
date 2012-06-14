@@ -37,6 +37,7 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
+import javax.lang.model.util.Elements;
 
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.ElementUtil;
@@ -368,16 +369,20 @@ public class TypeDeclaration {
             List<MethodDeclaration> candidates) {
         List<MethodDeclaration> overriders = new LinkedList<MethodDeclaration>(
                 candidates);
+        Elements elements = env.getElementUtils();
         for (Iterator<MethodDeclaration> it = candidates.iterator(); it
                 .hasNext();) {
             MethodDeclaration overridden = it.next();
             for (MethodDeclaration overrider : overriders) {
                 TypeElement overriderTypeElement = ElementUtil.toTypeElement(
                         overrider.getElement().getEnclosingElement(), env);
+                if (overriderTypeElement == null) {
+                    continue;
+                }
                 if (typeElement.equals(overriderTypeElement)) {
                     continue;
                 }
-                if (env.getElementUtils().overrides(overrider.getElement(),
+                if (elements.overrides(overrider.getElement(),
                         overridden.getElement(), overriderTypeElement)) {
                     it.remove();
                 }
