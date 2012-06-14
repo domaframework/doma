@@ -372,12 +372,13 @@ public class TypeDeclaration {
                 .hasNext();) {
             MethodDeclaration overridden = it.next();
             for (MethodDeclaration overrider : overriders) {
-                if (typeElement.equals(overrider.getElement()
-                        .getEnclosingElement())) {
+                TypeElement overriderTypeElement = ElementUtil.toTypeElement(
+                        overrider.getElement().getEnclosingElement(), env);
+                if (typeElement.equals(overriderTypeElement)) {
                     continue;
                 }
                 if (env.getElementUtils().overrides(overrider.getElement(),
-                        overridden.getElement(), typeElement)) {
+                        overridden.getElement(), overriderTypeElement)) {
                     it.remove();
                 }
             }

@@ -316,6 +316,24 @@ public class ExpressionValidatorTest extends AptTestCase {
         assertTrue(result.isTextType());
     }
 
+    public void testCustomFunction_superClassMethodFound() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(ExpressionFunctions.class);
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testEmp", Emp.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap,
+                MyExpressionFunctions.class.getName());
+
+        ExpressionNode node = new ExpressionParser("@prefix(emp.name)").parse();
+        TypeDeclaration result = validator.validate(node);
+        assertTrue(result.isTextType());
+    }
+
     public void testCustomFunction_classNotfound() throws Exception {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(ExpressionFunctions.class);
