@@ -149,12 +149,7 @@ import tutorial.dao.EmployeeDaoImpl;
 		<section name="Mavenによるビルド">
 			<p>
 				<a href="http://maven.apache.org/">Maven</a>でビルドを行うには、あらかじめMavenをインストールしてください。
-				Maven 2.2.1で動作を確認しています。
-			</p>
-			<p>
-				Mavenのプラグインであるmaven-compiler-pluginを使うとコンパイルとaptの処理を実行できますが、maven-compiler-pluginはaptに複数のパラメータを渡せないというバグがあります。
-				このバグは、<a href="http://jira.codehaus.org/browse/MCOMPILER-135">MCOMPILER-135</a>としてJIRAに登録されています。
-				そこで、maven-compiler-pluginではコンパイルのみを行い、aptの処理にはmaven-processor-pluginを利用します。
+				Maven 3.0.3で動作を確認しています。
 			</p>
 			<p>
 				Mavenでビルドを行う際のポイントを示します。
@@ -169,79 +164,30 @@ import tutorial.dao.EmployeeDaoImpl;
 				サンプルのpom.xmlの抜粋を示します。pom.xmlは、チュートリアルに含まれるものです。
 				チュートリアルは<a href="../downloads.html">ダウンロードページ</a>からダウンロードできます。
 			</p>
-<source><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    
-    <!-- Build Settings -->
-    <build>
-        <defaultGoal>validate</defaultGoal>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>2.3.2</version>
-                    <configuration>
-                        <source>1.6</source>
-                        <target>1.6</target>
-                        <encoding>UTF-8</encoding>
-                        <compilerArgument>-proc:none</compilerArgument>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-        <plugins>
-        
-            ...
-            
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.5</version>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.bsc.maven</groupId>
-                <artifactId>maven-processor-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>process</id>
-                        <goals>
-                            <goal>process</goal>
-                        </goals>
-                        <phase>process-resources</phase>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/apt_generated</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            
-            ...
-            
-        </plugins>
-    </build>
-
-    <!-- Dependency Settings -->
-    <dependencies>
-        <dependency>
-            <groupId>org.seasar.doma</groupId>
-            <artifactId>doma</artifactId>
-            <version>1.0.0</version>
-            <type>jar</type>
-        </dependency>
-        
-        ...
-        
-    </dependencies>
-</project>]]></source>
+<source><![CDATA[			<plugin>
+				<groupId>org.bsc.maven</groupId>
+				<artifactId>maven-processor-plugin</artifactId>
+				<version>2.0.5</version>
+				<executions>
+					<execution>
+						<id>process</id>
+						<goals>
+							<goal>process</goal>
+						</goals>
+						<phase>process-resources</phase>
+						<configuration>
+							<outputDirectory>${project.build.directory}/apt_generated</outputDirectory>
+							<failOnError>false</failOnError>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>]]></source>
 			<p>
-				この例では使用していませんが、aptにパラメータを渡す場合にはmaven-processor-pluginのcompilerArguments要素を使ってください。
+				failOnErrorにはfalseを指定してください。
+				javacのバグにより報告されるエラーによって処理を中断しないようにするためです。
 			</p>
 			<p>
-				maven-compiler-plugin実行時にはjavacのバグによりエラーメッセージが誤って報告されますが、「BUILD SUCCESSFUL」というメッセージとともにMavenの実行が終了すれば、ビルドは成功しています。
+				この例では使用していませんが、aptにパラメータを渡す場合にはmaven-processor-pluginのcompilerArguments要素を使ってください。
 			</p>
 			<p>
 				Mavenを使ったWebアプリケーションのビルドについては、Doma JPetStoreの配布ファイルに含まれるpom.xmlを参考にしてください。
