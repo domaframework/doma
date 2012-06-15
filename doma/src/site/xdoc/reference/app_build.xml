@@ -164,24 +164,24 @@ import tutorial.dao.EmployeeDaoImpl;
 				サンプルのpom.xmlの抜粋を示します。pom.xmlは、チュートリアルに含まれるものです。
 				チュートリアルは<a href="../downloads.html">ダウンロードページ</a>からダウンロードできます。
 			</p>
-<source><![CDATA[			<plugin>
-				<groupId>org.bsc.maven</groupId>
-				<artifactId>maven-processor-plugin</artifactId>
-				<version>2.0.5</version>
-				<executions>
-					<execution>
-						<id>process</id>
-						<goals>
-							<goal>process</goal>
-						</goals>
-						<phase>process-resources</phase>
-						<configuration>
-							<outputDirectory>${project.build.directory}/apt_generated</outputDirectory>
-							<failOnError>false</failOnError>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>]]></source>
+<source><![CDATA[<plugin>
+    <groupId>org.bsc.maven</groupId>
+    <artifactId>maven-processor-plugin</artifactId>
+    <version>2.0.5</version>
+    <executions>
+        <execution>
+            <id>process</id>
+            <goals>
+                <goal>process</goal>
+            </goals>
+            <phase>process-resources</phase>
+            <configuration>
+                <outputDirectory>${project.build.directory}/apt_generated</outputDirectory>
+                <failOnError>false</failOnError>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>]]></source>
 			<p>
 				failOnErrorにはfalseを指定してください。
 				javacのバグにより報告されるエラーによって処理を中断しないようにするためです。
