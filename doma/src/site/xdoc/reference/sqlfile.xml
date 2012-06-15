@@ -61,6 +61,7 @@
 						<li><a href="#staticメソッドの呼び出し">staticメソッドの呼び出し</a></li>
 						<li><a href="#staticフィールドへのアクセス">staticフィールドへのアクセス</a></li>
 						<li><a href="#組み込み関数の使用">組み込み関数の使用</a></li>
+						<li><a href="#カスタム関数の使用">カスタム関数の使用</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -760,6 +761,34 @@ salary > 1000]]></source>
 				<p>
 					これらの関数は、<a href ="../apidocs/org/seasar/doma/expr/ExpressionFunctions.html"><code>org.seasar.doma.expr.ExpressionFunctions</code></a>のメソッドに対応しています。
 				</p>
+			</subsection>
+			<subsection name="カスタム関数の使用">
+				<p>
+					関数を独自に定義し使用できます。
+				</p>
+				<p>
+					独自に定義した関数（カスタム関数）を使用するには次の設定が必要です。
+				</p>
+				<ul>
+					<li>
+						関数は、<a href ="../apidocs/org/seasar/doma/expr/ExpressionFunctions.html"><code>org.seasar.doma.expr.ExpressionFunctions</code></a>を実装したクラスのメソッドとして定義する。
+						メソッドは、publicなインスタンスメソッドでなければいけない。
+					</li>
+					<li>
+						作成したクラスは、<a href="apt.html#オプション">注釈処理のオプション</a>で登録する。
+						オプションのキーはexpr.functionsである。
+					</li>
+					<li>
+						作成したクラスのインスタンスを<a href="config.html">設定クラス</a>のRDBMSの方言で使用する
+						（Domaが提供するRDBMSの方言の実装はコンストラクタで<code>org.seasar.doma.expr.ExpressionFunctions</code>を受け取ることが可能）。
+					</li>
+				</ul>
+				<p>
+					カスタム関数を呼び出すには、組み込み関数と同じように関数名の先頭に@をつけます。
+					たとえば、myfuncという関数の呼び出しは、次のように記述できます。
+				</p>
+<source><![CDATA[select * from employee where 
+    employee_name = /* @myfunc(employee.employeeName) */'smith']]></source>
 			</subsection>
 		</section>
 	</body>

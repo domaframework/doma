@@ -67,7 +67,7 @@
 				</p>
 				<h4>RDBMS方言の設定</h4>
 				<p>
-					<a href ="../apidocs/org/seasar/doma/jdbc/Dialect.html"><code>org.seasar.doma.jdbc.dialect.Dialect</code></a>を、<code>getDialect</code>メソッドで返します。
+					<a href ="../apidocs/org/seasar/doma/jdbc/dialect/Dialect.html"><code>org.seasar.doma.jdbc.dialect.Dialect</code></a>を、<code>getDialect</code>メソッドで返します。
 					<code>Dialect</code>はRDBMSの方言をあらわすインタフェースです。
 					実装クラスには次のものがあります。
 				</p>

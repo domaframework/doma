@@ -63,6 +63,12 @@
 					<td>Impl</td>
 				</tr>
 				<tr>
+					<td>expr.functions</td>
+					<td><a href="sqlfile.html#SQLコメント">式コメント</a>で利用可能な関数群を表すクラスの完全修飾名。
+					<a href ="../apidocs/org/seasar/doma/expr/ExpressionFunctions.html"><code>org.seasar.doma.expr.ExpressionFunctions</code></a>のサブタイプでなければいけない。</td>
+					<td>org.seasar.doma.expr.ExpressionFunctions</td>
+				</tr>
+				<tr>
 					<td>debug</td>
 					<td>注釈処理のデバッグ情報をログ出力するかどうか。「true」の場合、ログ出力を行う。</td>
 					<td>false</td>
