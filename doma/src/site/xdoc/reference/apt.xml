@@ -63,6 +63,13 @@
 					<td>Impl</td>
 				</tr>
 				<tr>
+					<td>entity.field.prefix</td>
+					<td>@Entityが注釈されたクラスごとに生成されるタイプクラスで使用される。
+					タイプクラスのpublicなフィールド名のプレフィックス。
+					「none」を指定すると、プレフィックスを使用しないという意味になる。</td>
+					<td>$</td>
+				</tr>
+				<tr>
 					<td>expr.functions</td>
 					<td><a href="sqlfile.html#SQLコメント">式コメント</a>で利用可能な関数群を表すクラスの完全修飾名。
 					<a href ="../apidocs/org/seasar/doma/expr/ExpressionFunctions.html"><code>org.seasar.doma.expr.ExpressionFunctions</code></a>のサブタイプでなければいけない。</td>
