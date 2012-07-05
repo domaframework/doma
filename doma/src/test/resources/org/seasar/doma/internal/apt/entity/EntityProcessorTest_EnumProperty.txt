@@ -11,10 +11,10 @@ public final class _EnumPropertyEntity extends org.seasar.doma.jdbc.entity.Abstr
     private static final _EnumPropertyEntity __singleton = new _EnumPropertyEntity();
 
     /** the id */
-    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.EnumPropertyEntity, java.lang.Integer, java.lang.Object> id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.EnumPropertyEntity, java.lang.Integer, java.lang.Object>(org.seasar.doma.internal.apt.entity.EnumPropertyEntity.class, java.lang.Integer.class, org.seasar.doma.wrapper.IntegerWrapper.class, null, null, "id", "id");
+    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.EnumPropertyEntity, java.lang.Integer, java.lang.Object> $id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.EnumPropertyEntity, java.lang.Integer, java.lang.Object>(org.seasar.doma.internal.apt.entity.EnumPropertyEntity.class, java.lang.Integer.class, org.seasar.doma.wrapper.IntegerWrapper.class, null, null, "id", "id");
 
     /** the hoge */
-    public final org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.EnumPropertyEntity, org.seasar.doma.internal.apt.entity.EnumPropertyEntity.Hoge, java.lang.Object> hoge = new org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.EnumPropertyEntity, org.seasar.doma.internal.apt.entity.EnumPropertyEntity.Hoge, java.lang.Object>(org.seasar.doma.internal.apt.entity.EnumPropertyEntity.class, org.seasar.doma.internal.apt.entity.EnumPropertyEntity.Hoge.class, org.seasar.doma.wrapper.EnumWrapper.class, null, null, "hoge", "hoge", true, true);
+    public final org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.EnumPropertyEntity, org.seasar.doma.internal.apt.entity.EnumPropertyEntity.Hoge, java.lang.Object> $hoge = new org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.EnumPropertyEntity, org.seasar.doma.internal.apt.entity.EnumPropertyEntity.Hoge, java.lang.Object>(org.seasar.doma.internal.apt.entity.EnumPropertyEntity.class, org.seasar.doma.internal.apt.entity.EnumPropertyEntity.Hoge.class, org.seasar.doma.wrapper.EnumWrapper.class, null, null, "hoge", "hoge", true, true);
 
     private final org.seasar.doma.jdbc.entity.NullEntityListener __listener;
 
@@ -47,11 +47,11 @@ public final class _EnumPropertyEntity extends org.seasar.doma.jdbc.entity.Abstr
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.EnumPropertyEntity, ?>> __idList = new java.util.ArrayList<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.EnumPropertyEntity, ?>>();
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.EnumPropertyEntity, ?>> __list = new java.util.ArrayList<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.EnumPropertyEntity, ?>>(2);
         java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.EnumPropertyEntity, ?>> __map = new java.util.HashMap<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.EnumPropertyEntity, ?>>(2);
-        __idList.add(id);
-        __list.add(id);
-        __map.put("id", id);
-        __list.add(hoge);
-        __map.put("hoge", hoge);
+        __idList.add($id);
+        __list.add($id);
+        __map.put("id", $id);
+        __list.add($hoge);
+        __map.put("hoge", $hoge);
         __idPropertyTypes = java.util.Collections.unmodifiableList(__idList);
         __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
         __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);

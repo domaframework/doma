@@ -11,7 +11,7 @@ public final class _TransientPropertyEntity extends org.seasar.doma.jdbc.entity.
     private static final _TransientPropertyEntity __singleton = new _TransientPropertyEntity();
 
     /** the id */
-    public final org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.TransientPropertyEntity, java.lang.Integer, java.lang.Object> id = new org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.TransientPropertyEntity, java.lang.Integer, java.lang.Object>(org.seasar.doma.internal.apt.entity.TransientPropertyEntity.class, java.lang.Integer.class, org.seasar.doma.wrapper.IntegerWrapper.class, null, null, "id", "id");
+    public final org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.TransientPropertyEntity, java.lang.Integer, java.lang.Object> $id = new org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.TransientPropertyEntity, java.lang.Integer, java.lang.Object>(org.seasar.doma.internal.apt.entity.TransientPropertyEntity.class, java.lang.Integer.class, org.seasar.doma.wrapper.IntegerWrapper.class, null, null, "id", "id");
 
     private final org.seasar.doma.jdbc.entity.NullEntityListener __listener;
 
@@ -44,8 +44,8 @@ public final class _TransientPropertyEntity extends org.seasar.doma.jdbc.entity.
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?>> __idList = new java.util.ArrayList<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?>>();
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?>> __list = new java.util.ArrayList<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?>>(1);
         java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?>> __map = new java.util.HashMap<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?>>(1);
-        __list.add(id);
-        __map.put("id", id);
+        __list.add($id);
+        __map.put("id", $id);
         __idPropertyTypes = java.util.Collections.unmodifiableList(__idList);
         __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
         __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);
@@ -133,7 +133,7 @@ public final class _TransientPropertyEntity extends org.seasar.doma.jdbc.entity.
 
     @Override
     public org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.TransientPropertyEntity, ?, ?> getVersionPropertyType() {
-        return id;
+        return $id;
     }
 
     @Override

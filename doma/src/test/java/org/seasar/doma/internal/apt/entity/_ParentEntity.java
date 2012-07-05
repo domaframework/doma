@@ -33,11 +33,11 @@ import org.seasar.doma.wrapper.IntegerWrapper;
 
 public class _ParentEntity extends AbstractEntityType<ParentEntity> {
 
-    public BasicPropertyType<Object, ParentEntity, Integer, Object> aaa = new BasicPropertyType<Object, ParentEntity, Integer, Object>(
+    public BasicPropertyType<Object, ParentEntity, Integer, Object> $aaa = new BasicPropertyType<Object, ParentEntity, Integer, Object>(
             ParentEntity.class, Integer.class, IntegerWrapper.class, null,
             null, "aaa", "AAA", true, true);
 
-    public BasicPropertyType<Object, ParentEntity, Integer, Object> bbb = new BasicPropertyType<Object, ParentEntity, Integer, Object>(
+    public BasicPropertyType<Object, ParentEntity, Integer, Object> $bbb = new BasicPropertyType<Object, ParentEntity, Integer, Object>(
             ParentEntity.class, Integer.class, IntegerWrapper.class, null,
             null, "bbb", "BBB", true, true);
 

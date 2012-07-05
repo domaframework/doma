@@ -22,6 +22,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
+import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.mirror.ColumnMirror;
 import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
@@ -46,6 +47,8 @@ public class EntityPropertyMeta {
 
     protected final boolean ownProperty;
 
+    protected final String fieldPrefix;
+
     protected String name;
 
     protected boolean id;
@@ -68,6 +71,7 @@ public class EntityPropertyMeta {
         this.type = propertyElement.asType();
         this.typeName = TypeMirrorUtil.getTypeName(type, env);
         this.ownProperty = ownProperty;
+        this.fieldPrefix = Options.getEntityFieldPrefix(env);
     }
 
     public String getEntityName() {
@@ -84,6 +88,10 @@ public class EntityPropertyMeta {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getFieldName() {
+        return fieldPrefix + name;
     }
 
     public boolean isId() {

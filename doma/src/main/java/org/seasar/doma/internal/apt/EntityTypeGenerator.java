@@ -183,7 +183,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 parentEntityPropertyType = getMetaTypeName(pm
                         .getEntityTypeName())
                         + ".getSingletonInternal()."
-                        + pm.getName();
+                        + pm.getFieldName();
                 parentEntityTypeNameAsTypeParameter = pm.getEntityTypeName();
             }
             String domainType = "null";
@@ -197,7 +197,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
             iprint("/** the %1$s */%n", pm.getName());
             if (pm.isId()) {
                 if (pm.getIdGeneratorMeta() != null) {
-                    iprint("public final %1$s<%11$s, %2$s, %3$s, %9$s> %4$s = new %1$s<%11$s, %2$s, %3$s, %9$s>(%6$s.class, %3$s.class, %7$s.class, %10$s, %8$s, \"%4$s\", \"%5$s\", __idGenerator);%n",
+                    iprint("public final %1$s<%11$s, %2$s, %3$s, %9$s> %12$s = new %1$s<%11$s, %2$s, %3$s, %9$s>(%6$s.class, %3$s.class, %7$s.class, %10$s, %8$s, \"%4$s\", \"%5$s\", __idGenerator);%n",
                     /* 1 */GeneratedIdPropertyType.class.getName(),
                     /* 2 */entityMeta.getEntityTypeName(),
                     /* 3 */visitor.wrapperType.getWrappedType()
@@ -209,9 +209,10 @@ public class EntityTypeGenerator extends AbstractGenerator {
                     /* 8 */domainType,
                     /* 9 */domainTypeNameAsTypeParameter,
                     /* 10 */parentEntityPropertyType,
-                    /* 11 */parentEntityTypeNameAsTypeParameter);
+                    /* 11 */parentEntityTypeNameAsTypeParameter,
+                    /* 12 */pm.getFieldName());
                 } else {
-                    iprint("public final %1$s<%11$s, %2$s, %3$s, %9$s> %4$s = new %1$s<%11$s, %2$s, %3$s, %9$s>(%6$s.class, %3$s.class, %7$s.class, %10$s, %8$s, \"%4$s\", \"%5$s\");%n",
+                    iprint("public final %1$s<%11$s, %2$s, %3$s, %9$s> %12$s = new %1$s<%11$s, %2$s, %3$s, %9$s>(%6$s.class, %3$s.class, %7$s.class, %10$s, %8$s, \"%4$s\", \"%5$s\");%n",
                     /* 1 */AssignedIdPropertyType.class.getName(),
                     /* 2 */entityMeta.getEntityTypeName(),
                     /* 3 */visitor.wrapperType.getWrappedType()
@@ -223,10 +224,11 @@ public class EntityTypeGenerator extends AbstractGenerator {
                     /* 8 */domainType,
                     /* 9 */domainTypeNameAsTypeParameter,
                     /* 10 */parentEntityPropertyType,
-                    /* 11 */parentEntityTypeNameAsTypeParameter);
+                    /* 11 */parentEntityTypeNameAsTypeParameter,
+                    /* 12 */pm.getFieldName());
                 }
             } else if (pm.isVersion()) {
-                iprint("public final %1$s<%11$s, %2$s, %3$s, %9$s> %4$s = new %1$s<%11$s, %2$s, %3$s, %9$s>(%6$s.class, %3$s.class, %7$s.class, %10$s, %8$s, \"%4$s\", \"%5$s\");%n",
+                iprint("public final %1$s<%11$s, %2$s, %3$s, %9$s> %12$s = new %1$s<%11$s, %2$s, %3$s, %9$s>(%6$s.class, %3$s.class, %7$s.class, %10$s, %8$s, \"%4$s\", \"%5$s\");%n",
                 /* 1 */VersionPropertyType.class.getName(),
                 /* 2 */entityMeta.getEntityTypeName(),
                 /* 3 */visitor.wrapperType.getWrappedType()
@@ -238,9 +240,10 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 /* 8 */domainType,
                 /* 9 */domainTypeNameAsTypeParameter,
                 /* 10 */parentEntityPropertyType,
-                /* 11 */parentEntityTypeNameAsTypeParameter);
+                /* 11 */parentEntityTypeNameAsTypeParameter,
+                /* 12 */pm.getFieldName());
             } else {
-                iprint("public final %1$s<%13$s, %2$s, %3$s, %11$s> %4$s = new %1$s<%13$s, %2$s, %3$s, %11$s>(%8$s.class, %3$s.class, %9$s.class, %12$s, %10$s, \"%4$s\", \"%5$s\", %6$s, %7$s);%n",
+                iprint("public final %1$s<%13$s, %2$s, %3$s, %11$s> %14$s = new %1$s<%13$s, %2$s, %3$s, %11$s>(%8$s.class, %3$s.class, %9$s.class, %12$s, %10$s, \"%4$s\", \"%5$s\", %6$s, %7$s);%n",
                 /* 1 */BasicPropertyType.class.getName(),
                 /* 2 */entityMeta.getEntityTypeName(),
                 /* 3 */visitor.wrapperType.getWrappedType()
@@ -254,7 +257,8 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 /* 10 */domainType,
                 /* 11 */domainTypeNameAsTypeParameter,
                 /* 12 */parentEntityPropertyType,
-                /* 13 */parentEntityTypeNameAsTypeParameter);
+                /* 13 */parentEntityTypeNameAsTypeParameter,
+                /* 14 */pm.getFieldName());
             }
             print("%n");
         }
@@ -342,10 +346,11 @@ public class EntityTypeGenerator extends AbstractGenerator {
                         .size());
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             if (pm.isId()) {
-                iprint("    __idList.add(%1$s);%n", pm.getName());
+                iprint("    __idList.add(%1$s);%n", pm.getFieldName());
             }
-            iprint("    __list.add(%1$s);%n", pm.getName());
-            iprint("    __map.put(\"%1$s\", %1$s);%n", pm.getName());
+            iprint("    __list.add(%1$s);%n", pm.getFieldName());
+            iprint("    __map.put(\"%1$s\", %2$s);%n", pm.getName(),
+                    pm.getFieldName());
         }
         iprint("    __idPropertyTypes = java.util.Collections.unmodifiableList(__idList);%n");
         iprint("    __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);%n");
@@ -523,7 +528,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         String idName = "null";
         if (entityMeta.hasGeneratedIdPropertyMeta()) {
             EntityPropertyMeta pm = entityMeta.getGeneratedIdPropertyMeta();
-            idName = pm.getName();
+            idName = pm.getFieldName();
             if (!pm.isOwnProperty()) {
                 parentEntityTypeNameAsTypeParameter = pm.getEntityTypeName();
             }
@@ -543,7 +548,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         String versionName = "null";
         if (entityMeta.hasVersionPropertyMeta()) {
             EntityPropertyMeta pm = entityMeta.getVersionPropertyMeta();
-            versionName = pm.getName();
+            versionName = pm.getFieldName();
             if (!pm.isOwnProperty()) {
                 parentEntityTypeNameAsTypeParameter = pm.getEntityTypeName();
             }
@@ -601,7 +606,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
                     entityMeta.getEntityTypeName());
             for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
                 iprint("    %1$s.getWrapper(__currentStates).set(%1$s.getWrapper(__entity).getCopy());%n",
-                        pm.getName());
+                        pm.getFieldName());
             }
             iprint("    __originalStatesAccessor.set(__entity, __currentStates);%n");
         }

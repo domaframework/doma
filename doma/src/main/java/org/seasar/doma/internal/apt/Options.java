@@ -37,6 +37,8 @@ public final class Options {
 
     public static final String DAO_SUFFIX = "dao.suffix";
 
+    public static final String ENTITY_FIELD_PREFIX = "entity.field.prefix";
+
     public static final String EXPR_FUNCTIONS = "expr.functions";
 
     public static boolean isTestEnabled(ProcessingEnvironment env) {
@@ -78,6 +80,14 @@ public final class Options {
         return suffix != null ? suffix : Constants.DEFAULT_DAO_SUFFIX;
     }
 
+    public static String getEntityFieldPrefix(ProcessingEnvironment env) {
+        String prefix = env.getOptions().get(Options.ENTITY_FIELD_PREFIX);
+        if ("none".equalsIgnoreCase(prefix)) {
+            return "";
+        }
+        return prefix != null ? prefix : Constants.DEFAULT_ENTITY_FIELD_PREFIX;
+    }
+
     public static String getExprFunctions(ProcessingEnvironment env) {
         String name = env.getOptions().get(Options.EXPR_FUNCTIONS);
         return name != null ? name : null;
@@ -86,6 +96,8 @@ public final class Options {
     protected static class Constants {
 
         public static final String DEFAULT_DAO_SUFFIX = "Impl";
+
+        public static final String DEFAULT_ENTITY_FIELD_PREFIX = "$";
 
     }
 }

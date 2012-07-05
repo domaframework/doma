@@ -13,7 +13,7 @@ public final class _PrivateOriginalStatesEntity extends org.seasar.doma.jdbc.ent
     private static final org.seasar.doma.jdbc.entity.OriginalStatesAccessor<org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity> __originalStatesAccessor = new org.seasar.doma.jdbc.entity.OriginalStatesAccessor<org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity>(org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity.class, "originalStates");
 
     /** the name */
-    public final org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity, java.lang.String, java.lang.Object> name = new org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity, java.lang.String, java.lang.Object>(org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity.class, java.lang.String.class, org.seasar.doma.wrapper.StringWrapper.class, null, null, "name", "name", true, true);
+    public final org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity, java.lang.String, java.lang.Object> $name = new org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity, java.lang.String, java.lang.Object>(org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity.class, java.lang.String.class, org.seasar.doma.wrapper.StringWrapper.class, null, null, "name", "name", true, true);
 
     private final org.seasar.doma.jdbc.entity.NullEntityListener __listener;
 
@@ -46,8 +46,8 @@ public final class _PrivateOriginalStatesEntity extends org.seasar.doma.jdbc.ent
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity, ?>> __idList = new java.util.ArrayList<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity, ?>>();
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity, ?>> __list = new java.util.ArrayList<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity, ?>>(1);
         java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity, ?>> __map = new java.util.HashMap<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity, ?>>(1);
-        __list.add(name);
-        __map.put("name", name);
+        __list.add($name);
+        __map.put("name", $name);
         __idPropertyTypes = java.util.Collections.unmodifiableList(__idList);
         __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
         __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);
@@ -156,7 +156,7 @@ public final class _PrivateOriginalStatesEntity extends org.seasar.doma.jdbc.ent
     @Override
     public void saveCurrentStates(org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity __entity) {
         org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity __currentStates = new org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity();
-        name.getWrapper(__currentStates).set(name.getWrapper(__entity).getCopy());
+        $name.getWrapper(__currentStates).set($name.getWrapper(__entity).getCopy());
         __originalStatesAccessor.set(__entity, __currentStates);
     }
 
