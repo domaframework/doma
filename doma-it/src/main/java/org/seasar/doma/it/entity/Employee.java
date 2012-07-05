@@ -45,7 +45,6 @@ public class Employee {
     @Version
     private Integer version;
 
-    @SuppressWarnings("unused")
     @OriginalStates
     private Employee originalStates;
 

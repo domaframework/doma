@@ -27,7 +27,6 @@ public class PrivateOriginalStatesEntity {
 
     private String name;
 
-    @SuppressWarnings("unused")
     @OriginalStates
     private PrivateOriginalStatesEntity originalStates;
 
