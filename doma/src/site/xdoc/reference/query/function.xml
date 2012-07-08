@@ -27,7 +27,7 @@
 <source><![CDATA[@Config(config = AppConfig.class)
 public interface EmployeeDao {
     @Function
-    Integer execute(@Id Integer id, @InOut Reference<BigDecimal> salary);
+    Integer execute(@In Integer id, @InOut Reference<BigDecimal> salary);
     ...
 }]]></source>
 			<p>
@@ -54,13 +54,13 @@ public interface EmployeeDao {
 				<code>@Function</code>の<code>name</code>要素に値を指定した場合は、その値がファンクション名になります。
 			</p>
 <source><![CDATA[@Function(name = "calculateSalary")
-void execute(@Id Integer id, @InOut Reference<BigDecimal> salary);]]></source>
+void execute(@In Integer id, @InOut Reference<BigDecimal> salary);]]></source>
 			<p>
 				<code>@Function</code>の<code>catalog</code>要素や<code>schema</code>要素にカタログ名やスキーマ名を指定できます。
 				このときファンクションの名前は<code>catalog</code>要素、<code>schema</code>要素、<code>name</code>要素（指定されていなければメソッド名）をピリオドで連結したものになります。
 			</p>
 <source><![CDATA[@Function(catlog = "CATALOG", schema ="SCHEMA", name = "calculateSalary")
-void execute(@Id Integer id, @InOut Reference<BigDecimal> salary);]]></source>
+void execute(@In Integer id, @InOut Reference<BigDecimal> salary);]]></source>
 		</section>
 		<section name="パラメータ">
 			<p>
@@ -73,7 +73,7 @@ void execute(@Id Integer id, @InOut Reference<BigDecimal> salary);]]></source>
 					それ以外の型の場合、引数は<code>null</code>であってはいけません。
 				</p>
 <source><![CDATA[@Function
-void execute(@Id Integer id);]]></source>
+void execute(@In Integer id);]]></source>
 				<p>
 					次のように使用します。
 				</p>

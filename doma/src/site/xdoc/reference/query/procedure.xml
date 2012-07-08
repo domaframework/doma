@@ -27,7 +27,7 @@
 <source><![CDATA[@Config(config = AppConfig.class)
 public interface EmployeeDao {
     @Procedure
-    void execute(@Id Integer id, @InOut Reference<BigDecimal> salary);
+    void execute(@In Integer id, @InOut Reference<BigDecimal> salary);
     ...
 }]]></source>
 			<p>
@@ -45,13 +45,13 @@ public interface EmployeeDao {
 				<code>@Procedure</code>の<code>name</code>要素に値を指定した場合は、その値がプロシージャー名になります。
 			</p>
 <source><![CDATA[@Procedure(name = "calculateSalary")
-void execute(@Id Integer id, @InOut Reference<BigDecimal> salary);]]></source>
+void execute(@In Integer id, @InOut Reference<BigDecimal> salary);]]></source>
 			<p>
 				<code>@Procedure</code>の<code>catalog</code>要素や<code>schema</code>要素にカタログ名やスキーマ名を指定できます。
 				このときプロシージャーの名前は<code>catalog</code>要素、<code>schema</code>要素、<code>name</code>要素（指定されていなければメソッド名）をピリオドで連結したものになります。
 			</p>
 <source><![CDATA[@Procedure(catlog = "CATALOG", schema ="SCHEMA", name = "calculateSalary")
-void execute(@Id Integer id, @InOut Reference<BigDecimal> salary);]]></source>
+void execute(@In Integer id, @InOut Reference<BigDecimal> salary);]]></source>
 		</section>
 		<section name="パラメータ">
 			<p>
@@ -64,7 +64,7 @@ void execute(@Id Integer id, @InOut Reference<BigDecimal> salary);]]></source>
 					それ以外の型の場合、引数は<code>null</code>であってはいけません。
 				</p>
 <source><![CDATA[@Procedure
-void execute(@Id Integer id);]]></source>
+void execute(@In Integer id);]]></source>
 				<p>
 					次のように使用します。
 				</p>
