@@ -41,6 +41,8 @@ public final class Options {
 
     public static final String EXPR_FUNCTIONS = "expr.functions";
 
+    public static final String DOMAIN_CONVERTERS = "domain.converters";
+
     public static boolean isTestEnabled(ProcessingEnvironment env) {
         String test = env.getOptions().get(Options.TEST);
         return Boolean.valueOf(test).booleanValue();
@@ -91,6 +93,11 @@ public final class Options {
     public static String getExprFunctions(ProcessingEnvironment env) {
         String name = env.getOptions().get(Options.EXPR_FUNCTIONS);
         return name != null ? name : null;
+    }
+
+    public static String getDomainConverters(ProcessingEnvironment env) {
+        String converters = env.getOptions().get(Options.DOMAIN_CONVERTERS);
+        return converters != null ? converters : null;
     }
 
     protected static class Constants {
