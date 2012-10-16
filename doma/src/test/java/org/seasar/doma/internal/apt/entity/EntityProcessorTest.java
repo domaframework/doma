@@ -29,7 +29,8 @@ public class EntityProcessorTest extends AptTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         addSourcePath("src/test/java");
-        addOption("-Atest=true");
+        addOption("-Atest=true",
+                "-Adomain.converters=org.seasar.doma.internal.apt.entity.BranchConverter");
     }
 
     public void testEmp() throws Exception {
@@ -317,5 +318,14 @@ public class EntityProcessorTest extends AptTestCase {
         compile();
         assertFalse(getCompiledResult());
         assertMessage(Message.DOMA4031);
+    }
+
+    public void testDept() throws Exception {
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(Dept.class);
+        compile();
+        assertGeneratedSource(Dept.class);
+        assertTrue(getCompiledResult());
     }
 }

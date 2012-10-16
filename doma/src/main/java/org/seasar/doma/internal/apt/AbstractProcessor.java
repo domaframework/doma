@@ -46,31 +46,35 @@ public abstract class AbstractProcessor<M extends TypeElementMeta> extends
         }
         for (TypeElement a : annotations) {
             TypeElementMetaFactory<M> factory = createTypeElementMetaFactory();
-            for (TypeElement entityElement : ElementFilter.typesIn(roundEnv
+            for (TypeElement typeElement : ElementFilter.typesIn(roundEnv
                     .getElementsAnnotatedWith(a))) {
                 if (Options.isDebugEnabled(processingEnv)) {
                     Notifier.debug(processingEnv, Message.DOMA4090, getClass()
-                            .getName(), entityElement.getQualifiedName());
+                            .getName(), typeElement.getQualifiedName());
                 }
                 try {
-                    M meta = factory.createTypeElementMeta(entityElement);
+                    M meta = factory.createTypeElementMeta(typeElement);
                     if (!meta.isError()) {
-                        generate(entityElement, meta);
+                        generate(typeElement, meta);
                     }
                 } catch (AptException e) {
                     Notifier.notify(processingEnv, e);
+                } catch (AptOptionException e) {
+                    Notifier.notify(processingEnv, Kind.ERROR, e.getMessage(),
+                            typeElement);
+                    throw e;
                 } catch (AptIllegalStateException e) {
                     Notifier.notify(processingEnv, Kind.ERROR,
-                            Message.DOMA4039, entityElement);
+                            Message.DOMA4039, typeElement);
                     throw e;
                 } catch (RuntimeException e) {
                     Notifier.notify(processingEnv, Kind.ERROR,
-                            Message.DOMA4016, entityElement);
+                            Message.DOMA4016, typeElement);
                     throw e;
                 }
                 if (Options.isDebugEnabled(processingEnv)) {
                     Notifier.debug(processingEnv, Message.DOMA4091, getClass()
-                            .getName(), entityElement.getQualifiedName());
+                            .getName(), typeElement.getQualifiedName());
                 }
             }
         }

@@ -345,6 +345,7 @@ public enum Message implements MessageResource {
     DOMA4193("@ExternalDomainを注釈したクラスは引数なしのpublicなコンストラクタを持たなければいけません。クラス[{0}]には引数なしのpublicなコンストラクタが見つかりません。"),
     DOMA4194("org.seasar.doma.jdbc.domain.DomainConverterの第2型引数に指定された型[{0}]は永続対象としてサポートされていません。"),
     DOMA4195("@EnumDomainが注釈された列挙型[{0}]はorg.seasar.doma.jdbc.domain.DomainConverterの第2型引数に指定できません。"),
+    DOMA4200("注釈処理のオプション domain.converters で指定されたクラス[{0}]が見つかりません。"),
 
     // other
     DOMA5001("JDBCドライバがロードされていない可能性があります。JDBCドライバをロードするには、クラスパスが通されたMETA-INF/services/java.sql.DriverファイルにJDBCドライバのクラスの完全修飾名を記述してください。 ex) oracle.jdbc.driver.OracleDriver"),

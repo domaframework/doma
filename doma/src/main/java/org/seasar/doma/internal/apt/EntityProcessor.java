@@ -35,7 +35,8 @@ import org.seasar.doma.internal.apt.meta.EntityPropertyMetaFactory;
  */
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 @SupportedAnnotationTypes({ "org.seasar.doma.Entity" })
-@SupportedOptions({ Options.ENTITY_FIELD_PREFIX, Options.TEST, Options.DEBUG })
+@SupportedOptions({ Options.ENTITY_FIELD_PREFIX, Options.DOMAIN_CONVERTERS,
+        Options.TEST, Options.DEBUG })
 public class EntityProcessor extends AbstractProcessor<EntityMeta> {
 
     @Override

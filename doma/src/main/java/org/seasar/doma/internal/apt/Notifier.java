@@ -57,6 +57,13 @@ public final class Notifier {
         messager.printMessage(kind, messageResource.getMessage(args), element);
     }
 
+    public static void notify(ProcessingEnvironment env, Kind kind,
+            String message, Element element) {
+        assertNotNull(env, kind, message, element);
+        Messager messager = env.getMessager();
+        messager.printMessage(kind, message, element);
+    }
+
     public static void notify(ProcessingEnvironment env, AptException e) {
         assertNotNull(env, e);
         Messager messager = env.getMessager();
