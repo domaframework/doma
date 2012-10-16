@@ -43,6 +43,11 @@ public final class _Branch implements
     }
 
     @Override
+    public Class<String> getValueClass() {
+        return String.class;
+    }
+
+    @Override
     public Class<Branch> getDomainClass() {
         return Branch.class;
     }

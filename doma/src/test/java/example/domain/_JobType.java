@@ -35,6 +35,11 @@ public class _JobType implements DomainType<Integer, JobType> {
     }
 
     @Override
+    public Class<Integer> getValueClass() {
+        return Integer.class;
+    }
+
+    @Override
     public Class<JobType> getDomainClass() {
         return JobType.class;
     }

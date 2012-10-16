@@ -24,6 +24,7 @@ import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.meta.ExternalDomainMeta;
+import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.jdbc.domain.DomainWrapper;
 
@@ -91,6 +92,7 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
 
     protected void printMethods() {
         printNewDomainMethod();
+        printGetValueClassMethod();
         printGetDomainClassMethod();
         printGetWrapperMethod();
         printGetSingletonInternalMethod();
@@ -103,6 +105,16 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
                 .getDomainElement().getQualifiedName(), domainMeta
                 .getValueElement().getQualifiedName());
         iprint("    return converter.fromValueToDomain(value);%n");
+        iprint("}%n");
+        print("%n");
+    }
+
+    protected void printGetValueClassMethod() {
+        iprint("@Override%n");
+        iprint("public Class<%1$s> getValueClass() {%n", domainMeta
+                .getValueElement().getQualifiedName());
+        iprint("    return %1$s.class;%n", domainMeta.getValueElement()
+                .getQualifiedName());
         iprint("}%n");
         print("%n");
     }

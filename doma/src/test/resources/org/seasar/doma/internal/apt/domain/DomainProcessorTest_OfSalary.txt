@@ -19,6 +19,11 @@ public final class _OfSalary implements org.seasar.doma.jdbc.domain.DomainType<j
     }
 
     @Override
+    public Class<java.math.BigDecimal> getValueClass() {
+        return java.math.BigDecimal.class;
+    }
+
+    @Override
     public Class<org.seasar.doma.internal.apt.domain.OfSalary> getDomainClass() {
         return org.seasar.doma.internal.apt.domain.OfSalary.class;
     }

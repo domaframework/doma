@@ -21,6 +21,11 @@ public final class _ValueObjectConverter implements org.seasar.doma.jdbc.domain.
     }
 
     @Override
+    public Class<java.lang.String> getValueClass() {
+        return java.lang.String.class;
+    }
+
+    @Override
     public Class<org.seasar.doma.internal.apt.domain.ValueObjectConverter.ValueObject> getDomainClass() {
         return org.seasar.doma.internal.apt.domain.ValueObjectConverter.ValueObject.class;
     }

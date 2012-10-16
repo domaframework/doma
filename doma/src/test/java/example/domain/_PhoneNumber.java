@@ -32,6 +32,11 @@ public class _PhoneNumber implements DomainType<String, PhoneNumber> {
     }
 
     @Override
+    public Class<String> getValueClass() {
+        return String.class;
+    }
+
+    @Override
     public Class<PhoneNumber> getDomainClass() {
         return PhoneNumber.class;
     }

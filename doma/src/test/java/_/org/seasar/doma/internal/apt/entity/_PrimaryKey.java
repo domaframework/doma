@@ -43,6 +43,11 @@ public final class _PrimaryKey implements
     }
 
     @Override
+    public Class<Integer> getValueClass() {
+        return Integer.class;
+    }
+
+    @Override
     public Class<PrimaryKey> getDomainClass() {
         return PrimaryKey.class;
     }

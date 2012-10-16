@@ -19,6 +19,11 @@ public final class _JobType implements org.seasar.doma.jdbc.domain.DomainType<ja
     }
 
     @Override
+    public Class<java.lang.String> getValueClass() {
+        return java.lang.String.class;
+    }
+
+    @Override
     public Class<org.seasar.doma.internal.apt.enumdomain.JobType> getDomainClass() {
         return org.seasar.doma.internal.apt.enumdomain.JobType.class;
     }

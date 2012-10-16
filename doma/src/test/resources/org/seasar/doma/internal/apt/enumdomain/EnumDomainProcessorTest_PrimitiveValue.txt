@@ -19,6 +19,11 @@ public final class _PrimitiveValue implements org.seasar.doma.jdbc.domain.Domain
     }
 
     @Override
+    public Class<java.lang.Integer> getValueClass() {
+        return java.lang.Integer.class;
+    }
+
+    @Override
     public Class<org.seasar.doma.internal.apt.enumdomain.PrimitiveValue> getDomainClass() {
         return org.seasar.doma.internal.apt.enumdomain.PrimitiveValue.class;
     }

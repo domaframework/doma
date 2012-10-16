@@ -43,6 +43,11 @@ public final class _VersionNo implements
     }
 
     @Override
+    public Class<Integer> getValueClass() {
+        return Integer.class;
+    }
+
+    @Override
     public Class<VersionNo> getDomainClass() {
         return VersionNo.class;
     }

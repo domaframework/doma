@@ -19,6 +19,11 @@ public final class _OfPrimitiveValueDomain implements org.seasar.doma.jdbc.domai
     }
 
     @Override
+    public Class<java.lang.Integer> getValueClass() {
+        return java.lang.Integer.class;
+    }
+
+    @Override
     public Class<org.seasar.doma.internal.apt.domain.OfPrimitiveValueDomain> getDomainClass() {
         return org.seasar.doma.internal.apt.domain.OfPrimitiveValueDomain.class;
     }

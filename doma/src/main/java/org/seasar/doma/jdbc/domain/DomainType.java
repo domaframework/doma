@@ -41,6 +41,14 @@ public interface DomainType<V, D> {
     D newDomain(V value);
 
     /**
+     * 値のクラスを返します。
+     * 
+     * @return 値のクラス
+     * @since 1.25.0
+     */
+    Class<V> getValueClass();
+
+    /**
      * ドメインクラスを返します。
      * 
      * @return ドメインクラス

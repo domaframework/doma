@@ -30,6 +30,11 @@ public class _Name implements DomainType<String, Name> {
     }
 
     @Override
+    public Class<String> getValueClass() {
+        return null;
+    }
+
+    @Override
     public Class<Name> getDomainClass() {
         return null;
     }

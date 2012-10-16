@@ -91,6 +91,7 @@ public class DomainTypeGenerator extends AbstractGenerator {
 
     protected void printMethods() {
         printNewDomainMethod();
+        printGetValueClassMethod();
         printGetDomainClassMethod();
         printGetWrapperMethod();
         printGetSingletonInternalMethod();
@@ -123,6 +124,16 @@ public class DomainTypeGenerator extends AbstractGenerator {
                         domainMeta.getFactoryMethod());
             }
         }
+        iprint("}%n");
+        print("%n");
+    }
+
+    protected void printGetValueClassMethod() {
+        iprint("@Override%n");
+        iprint("public Class<%1$s> getValueClass() {%n",
+                TypeMirrorUtil.boxIfPrimitive(domainMeta.getValueType(), env));
+        iprint("    return %1$s.class;%n",
+                TypeMirrorUtil.boxIfPrimitive(domainMeta.getValueType(), env));
         iprint("}%n");
         print("%n");
     }

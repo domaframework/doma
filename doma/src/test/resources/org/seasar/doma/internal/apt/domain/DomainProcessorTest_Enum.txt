@@ -19,6 +19,11 @@ public final class _EnumDomain implements org.seasar.doma.jdbc.domain.DomainType
     }
 
     @Override
+    public Class<org.seasar.doma.internal.apt.domain.EnumDomain.JobType> getValueClass() {
+        return org.seasar.doma.internal.apt.domain.EnumDomain.JobType.class;
+    }
+
+    @Override
     public Class<org.seasar.doma.internal.apt.domain.EnumDomain> getDomainClass() {
         return org.seasar.doma.internal.apt.domain.EnumDomain.class;
     }
