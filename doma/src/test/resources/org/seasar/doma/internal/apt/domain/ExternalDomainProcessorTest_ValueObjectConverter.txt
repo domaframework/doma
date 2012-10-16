@@ -9,6 +9,7 @@ public final class _ValueObjectConverter implements org.seasar.doma.jdbc.domain.
     }
 
     private static final _ValueObjectConverter singleton = new _ValueObjectConverter();
+
     private static final org.seasar.doma.internal.apt.domain.ValueObjectConverter converter = new org.seasar.doma.internal.apt.domain.ValueObjectConverter();
 
     private _ValueObjectConverter() {

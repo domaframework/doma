@@ -77,6 +77,7 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
     protected void printFields() {
         iprint("private static final %1$s singleton = new %1$s();%n",
                 simpleName);
+        print("%n");
         iprint("private static final %1$s converter = new %1$s();%n",
                 typeElement.getQualifiedName());
         print("%n");
