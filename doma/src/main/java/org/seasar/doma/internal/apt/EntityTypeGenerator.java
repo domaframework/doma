@@ -36,7 +36,6 @@ import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.apt.type.WrapperType;
-import org.seasar.doma.internal.jdbc.util.MetaTypeUtil;
 import org.seasar.doma.internal.jdbc.util.TableUtil;
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.AssignedIdPropertyType;
@@ -180,16 +179,14 @@ public class EntityTypeGenerator extends AbstractGenerator {
             String parentEntityPropertyType = "null";
             String parentEntityTypeNameAsTypeParameter = Object.class.getName();
             if (!pm.isOwnProperty()) {
-                parentEntityPropertyType = getMetaTypeName(pm
-                        .getEntityTypeName())
-                        + ".getSingletonInternal()."
-                        + pm.getFieldName();
+                parentEntityPropertyType = pm.getEntityMetaTypeName()
+                        + ".getSingletonInternal()." + pm.getFieldName();
                 parentEntityTypeNameAsTypeParameter = pm.getEntityTypeName();
             }
             String domainType = "null";
             String domainTypeNameAsTypeParameter = Object.class.getName();
             if (visitor.domainType != null) {
-                domainType = getMetaTypeName(visitor.domainType.getTypeName())
+                domainType = visitor.domainType.getMetaTypeName()
                         + ".getSingletonInternal()";
                 domainTypeNameAsTypeParameter = visitor.domainType
                         .getTypeNameAsTypeParameter();
@@ -632,10 +629,6 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("    return new %1$s();%n", simpleName);
         iprint("}%n");
         print("%n");
-    }
-
-    protected String getMetaTypeName(String qualifiedName) {
-        return MetaTypeUtil.getMetaTypeName(qualifiedName);
     }
 
     protected class IdGeneratorGenerator implements

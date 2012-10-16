@@ -26,6 +26,7 @@ import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.mirror.ColumnMirror;
 import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
+import org.seasar.doma.internal.jdbc.util.MetaTypeUtil;
 import org.seasar.doma.jdbc.entity.NamingType;
 
 /**
@@ -38,6 +39,8 @@ public class EntityPropertyMeta {
     protected final String entityName;
 
     protected final String entityTypeName;
+
+    protected final String entityMetaTypeName;
 
     protected final NamingType namingType;
 
@@ -67,6 +70,7 @@ public class EntityPropertyMeta {
         assertNotNull(entityElement, propertyElement, namingType, env);
         this.entityName = entityElement.getSimpleName().toString();
         this.entityTypeName = entityElement.getQualifiedName().toString();
+        this.entityMetaTypeName = MetaTypeUtil.getMetaTypeName(entityTypeName);
         this.namingType = namingType;
         this.type = propertyElement.asType();
         this.typeName = TypeMirrorUtil.getTypeName(type, env);
@@ -80,6 +84,10 @@ public class EntityPropertyMeta {
 
     public String getEntityTypeName() {
         return entityTypeName;
+    }
+
+    public String getEntityMetaTypeName() {
+        return entityMetaTypeName;
     }
 
     public String getName() {

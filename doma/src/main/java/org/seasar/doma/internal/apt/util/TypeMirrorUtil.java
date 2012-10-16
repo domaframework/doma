@@ -230,6 +230,31 @@ public final class TypeMirrorUtil {
         return p.toString();
     }
 
+    public static String getTypeNameAsTypeParameter(TypeMirror typeMirror,
+            final ProcessingEnvironment env) {
+        assertNotNull(typeMirror, env);
+        switch (typeMirror.getKind()) {
+        case BOOLEAN:
+            return Boolean.class.getName();
+        case BYTE:
+            return Byte.class.getName();
+        case SHORT:
+            return Short.class.getName();
+        case INT:
+            return Integer.class.getName();
+        case LONG:
+            return Long.class.getName();
+        case FLOAT:
+            return Float.class.getName();
+        case DOUBLE:
+            return Double.class.getName();
+        case CHAR:
+            return Character.class.getName();
+        default:
+            return getTypeName(typeMirror, env);
+        }
+    }
+
     public static String getTypeParameterName(TypeMirror typeMirror,
             final ProcessingEnvironment env) {
         assertNotNull(typeMirror, env);

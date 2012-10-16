@@ -29,8 +29,9 @@ public class EntityProcessorTest extends AptTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         addSourcePath("src/test/java");
-        addOption("-Atest=true",
-                "-Adomain.converters=org.seasar.doma.internal.apt.entity.BranchConverter");
+        addOption(
+                "-Atest=true",
+                "-Adomain.converters=org.seasar.doma.internal.apt.entity.BranchConverter, org.seasar.doma.internal.apt.entity.PrimaryKeyConverter, org.seasar.doma.internal.apt.entity.VersionNoConverter");
     }
 
     public void testEmp() throws Exception {

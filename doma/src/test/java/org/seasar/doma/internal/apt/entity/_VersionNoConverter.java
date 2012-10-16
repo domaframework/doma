@@ -20,54 +20,55 @@ package org.seasar.doma.internal.apt.entity;
  * 
  */
 
-public final class _Branch implements
-        org.seasar.doma.jdbc.domain.DomainType<java.lang.String, Branch> {
+public final class _VersionNoConverter implements
+        org.seasar.doma.jdbc.domain.DomainType<java.lang.Integer, VersionNo> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final _Branch singleton = new _Branch();
-    private static final BranchConverter converter = new BranchConverter();
+    private static final _VersionNoConverter singleton = new _VersionNoConverter();
 
-    private _Branch() {
+    private static final VersionNoConverter converter = new VersionNoConverter();
+
+    private _VersionNoConverter() {
     }
 
     @Override
-    public Branch newDomain(java.lang.String value) {
+    public VersionNo newDomain(java.lang.Integer value) {
         return converter.fromValueToDomain(value);
     }
 
     @Override
-    public Class<Branch> getDomainClass() {
-        return Branch.class;
+    public Class<VersionNo> getDomainClass() {
+        return VersionNo.class;
     }
 
     @Override
-    public org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.String, Branch> getWrapper(
-            Branch domain) {
+    public org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.Integer, VersionNo> getWrapper(
+            VersionNo domain) {
         return new Wrapper(domain);
     }
 
     /**
      * @return the singleton
      */
-    public static _Branch getSingletonInternal() {
+    public static _VersionNoConverter getSingletonInternal() {
         return singleton;
     }
 
-    private static class Wrapper extends org.seasar.doma.wrapper.StringWrapper
+    private static class Wrapper extends org.seasar.doma.wrapper.IntegerWrapper
             implements
-            org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.String, Branch> {
+            org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.Integer, VersionNo> {
 
-        private Branch domain;
+        private VersionNo domain;
 
-        private Wrapper(Branch domain) {
+        private Wrapper(VersionNo domain) {
             this.domain = domain;
         }
 
         @Override
-        protected java.lang.String doGet() {
+        protected java.lang.Integer doGet() {
             if (domain == null) {
                 return null;
             }
@@ -75,12 +76,12 @@ public final class _Branch implements
         }
 
         @Override
-        protected void doSet(java.lang.String value) {
+        protected void doSet(java.lang.Integer value) {
             domain = converter.fromValueToDomain(value);
         }
 
         @Override
-        public Branch getDomain() {
+        public VersionNo getDomain() {
             return domain;
         }
     }

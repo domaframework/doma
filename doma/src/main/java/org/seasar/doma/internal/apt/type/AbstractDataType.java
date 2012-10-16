@@ -24,6 +24,7 @@ import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
+import org.seasar.doma.internal.jdbc.util.MetaTypeUtil;
 
 /**
  * @author taedium
@@ -39,6 +40,10 @@ public abstract class AbstractDataType implements DataType {
 
     protected final String typeNameAsTypeParameter;
 
+    protected final String metaTypeName;
+
+    protected final String metaTypeNameAsTypeParameter;
+
     protected final TypeElement typeElement;
 
     protected final String packageName;
@@ -52,6 +57,11 @@ public abstract class AbstractDataType implements DataType {
         this.typeMirror = typeMirror;
         this.env = env;
         this.typeName = TypeMirrorUtil.getTypeName(typeMirror, env);
+        this.typeNameAsTypeParameter = TypeMirrorUtil
+                .getTypeNameAsTypeParameter(typeMirror, env);
+        this.metaTypeName = MetaTypeUtil.getMetaTypeName(typeName);
+        this.metaTypeNameAsTypeParameter = MetaTypeUtil
+                .getMetaTypeName(typeNameAsTypeParameter);
         this.typeElement = TypeMirrorUtil.toTypeElement(typeMirror, env);
         if (typeElement != null) {
             qualifiedName = typeElement.getQualifiedName().toString();
@@ -62,12 +72,6 @@ public abstract class AbstractDataType implements DataType {
             qualifiedName = typeName;
             packageName = "";
             packageExcludedBinaryName = typeName;
-        }
-        if (typeMirror.getKind().isPrimitive()) {
-            Class<?> boxedClass = getBoxedClass(typeMirror);
-            typeNameAsTypeParameter = boxedClass.getName();
-        } else {
-            typeNameAsTypeParameter = typeName;
         }
     }
 
@@ -89,6 +93,16 @@ public abstract class AbstractDataType implements DataType {
     @Override
     public String getTypeNameAsTypeParameter() {
         return typeNameAsTypeParameter;
+    }
+
+    @Override
+    public String getMetaTypeName() {
+        return metaTypeName;
+    }
+
+    @Override
+    public String getMetaTypeNameAsTypeParameter() {
+        return metaTypeNameAsTypeParameter;
     }
 
     @Override
@@ -114,28 +128,6 @@ public abstract class AbstractDataType implements DataType {
     @Override
     public boolean isPrimitive() {
         return typeMirror.getKind().isPrimitive();
-    }
-
-    protected Class<?> getBoxedClass(TypeMirror typeMirror) {
-        switch (typeMirror.getKind()) {
-        case BOOLEAN:
-            return Boolean.class;
-        case BYTE:
-            return Byte.class;
-        case SHORT:
-            return Short.class;
-        case INT:
-            return Integer.class;
-        case LONG:
-            return Long.class;
-        case FLOAT:
-            return Float.class;
-        case DOUBLE:
-            return Double.class;
-        case CHAR:
-            return Character.class;
-        }
-        return assertUnreachable();
     }
 
 }

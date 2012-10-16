@@ -16,6 +16,7 @@
 package org.seasar.doma.internal.apt.entity;
 
 import org.seasar.doma.Entity;
+import org.seasar.doma.Id;
 
 /**
  * @author taedium
@@ -24,7 +25,12 @@ import org.seasar.doma.Entity;
 @Entity
 public class Dept {
 
-    public int id;
+    @Id
+    public PrimaryKey id;
 
     public Branch branch;
+
+    // TODO
+    // @Version
+    // public VersionNo versionNo;
 }

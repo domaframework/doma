@@ -13,39 +13,27 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.type;
+package org.seasar.doma.internal.apt.entity;
 
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
+import org.seasar.doma.ExternalDomain;
+import org.seasar.doma.jdbc.domain.DomainConverter;
 
 /**
  * @author taedium
  * 
  */
-public interface DataType {
+@ExternalDomain
+public class PrimaryKeyConverter implements
+        DomainConverter<PrimaryKey, Integer> {
 
-    TypeMirror getTypeMirror();
+    @Override
+    public Integer fromDomainToValue(PrimaryKey domain) {
+        return null;
+    }
 
-    TypeElement getTypeElement();
+    @Override
+    public PrimaryKey fromValueToDomain(Integer value) {
+        return null;
+    }
 
-    String getTypeName();
-
-    String getTypeNameAsTypeParameter();
-
-    String getMetaTypeName();
-
-    String getMetaTypeNameAsTypeParameter();
-
-    String getQualifiedName();
-
-    String getPackageName();
-
-    String getPackageExcludedBinaryName();
-
-    boolean isPrimitive();
-
-    boolean isEnum();
-
-    <R, P, TH extends Throwable> R accept(DataTypeVisitor<R, P, TH> visitor, P p)
-            throws TH;
 }
