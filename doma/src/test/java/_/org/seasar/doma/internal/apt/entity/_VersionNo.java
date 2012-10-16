@@ -13,57 +13,60 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.entity;
+package _.org.seasar.doma.internal.apt.entity;
+
+import org.seasar.doma.internal.apt.entity.VersionNo;
+import org.seasar.doma.internal.apt.entity.VersionNoConverter;
 
 /**
  * @author taedium
  * 
  */
 
-public final class _PrimaryKeyConverter implements
-        org.seasar.doma.jdbc.domain.DomainType<java.lang.Integer, PrimaryKey> {
+public final class _VersionNo implements
+        org.seasar.doma.jdbc.domain.DomainType<java.lang.Integer, VersionNo> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final _PrimaryKeyConverter singleton = new _PrimaryKeyConverter();
+    private static final _VersionNo singleton = new _VersionNo();
 
-    private static final PrimaryKeyConverter converter = new PrimaryKeyConverter();
+    private static final VersionNoConverter converter = new VersionNoConverter();
 
-    private _PrimaryKeyConverter() {
+    private _VersionNo() {
     }
 
     @Override
-    public PrimaryKey newDomain(java.lang.Integer value) {
+    public VersionNo newDomain(java.lang.Integer value) {
         return converter.fromValueToDomain(value);
     }
 
     @Override
-    public Class<PrimaryKey> getDomainClass() {
-        return PrimaryKey.class;
+    public Class<VersionNo> getDomainClass() {
+        return VersionNo.class;
     }
 
     @Override
-    public org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.Integer, PrimaryKey> getWrapper(
-            PrimaryKey domain) {
+    public org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.Integer, VersionNo> getWrapper(
+            VersionNo domain) {
         return new Wrapper(domain);
     }
 
     /**
      * @return the singleton
      */
-    public static _PrimaryKeyConverter getSingletonInternal() {
+    public static _VersionNo getSingletonInternal() {
         return singleton;
     }
 
     private static class Wrapper extends org.seasar.doma.wrapper.IntegerWrapper
             implements
-            org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.Integer, PrimaryKey> {
+            org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.Integer, VersionNo> {
 
-        private PrimaryKey domain;
+        private VersionNo domain;
 
-        private Wrapper(PrimaryKey domain) {
+        private Wrapper(VersionNo domain) {
             this.domain = domain;
         }
 
@@ -81,7 +84,7 @@ public final class _PrimaryKeyConverter implements
         }
 
         @Override
-        public PrimaryKey getDomain() {
+        public VersionNo getDomain() {
             return domain;
         }
     }

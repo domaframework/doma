@@ -27,6 +27,7 @@ import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.Domain;
 import org.seasar.doma.EnumDomain;
+import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.AptOptionException;
 import org.seasar.doma.internal.apt.Options;
@@ -41,24 +42,27 @@ public class DomainType extends AbstractDataType {
 
     protected final BasicType basicType;
 
-    protected final TypeMirror convType;
+    protected final String domainTypeName;
 
-    protected final String convMetaTypeName;
-
-    protected final String convMetaTypeNameAsTypeParameter;
+    protected final String domainTypeNameAsTypeParameter;
 
     public DomainType(TypeMirror domainType, ProcessingEnvironment env,
-            TypeMirror convType, BasicType basicType) {
+            BasicType basicType, boolean external) {
         super(domainType, env);
-        assertNotNull(convType, basicType);
-        this.convType = convType;
+        assertNotNull(basicType);
         this.basicType = basicType;
-        String convTypeName = TypeMirrorUtil.getTypeName(convType, env);
-        String convTypeNameAsTypeParameter = TypeMirrorUtil
-                .getTypeNameAsTypeParameter(convType, env);
-        this.convMetaTypeName = MetaTypeUtil.getMetaTypeName(convTypeName);
-        this.convMetaTypeNameAsTypeParameter = MetaTypeUtil
-                .getMetaTypeName(convTypeNameAsTypeParameter);
+        String metaTypeName = MetaTypeUtil.getMetaTypeName(typeName);
+        String metaTypeNameAsTypeParameter = MetaTypeUtil
+                .getMetaTypeName(typeNameAsTypeParameter);
+        if (external) {
+            this.domainTypeName = Constants.METATYPE_PREFIX + "."
+                    + metaTypeName;
+            this.domainTypeNameAsTypeParameter = Constants.METATYPE_PREFIX
+                    + "." + metaTypeNameAsTypeParameter;
+        } else {
+            this.domainTypeName = metaTypeName;
+            this.domainTypeNameAsTypeParameter = metaTypeNameAsTypeParameter;
+        }
     }
 
     public BasicType getBasicType() {
@@ -67,12 +71,12 @@ public class DomainType extends AbstractDataType {
 
     @Override
     public String getMetaTypeName() {
-        return convMetaTypeName;
+        return domainTypeName;
     }
 
     @Override
     public String getMetaTypeNameAsTypeParameter() {
-        return convMetaTypeNameAsTypeParameter;
+        return domainTypeNameAsTypeParameter;
     }
 
     public static DomainType newInstance(TypeMirror type,
@@ -90,7 +94,7 @@ public class DomainType extends AbstractDataType {
         if (basicType == null) {
             return null;
         }
-        return new DomainType(type, env, info.convType, basicType);
+        return new DomainType(type, env, basicType, info.external);
     }
 
     protected static DomainInfo getDomainInfo(TypeElement typeElement,
@@ -111,7 +115,7 @@ public class DomainType extends AbstractDataType {
         try {
             domain.valueType();
         } catch (MirroredTypeException e) {
-            return new DomainInfo(e.getTypeMirror(), typeElement.asType());
+            return new DomainInfo(e.getTypeMirror(), false);
         }
         throw new AptIllegalStateException("unreachable.");
     }
@@ -121,7 +125,7 @@ public class DomainType extends AbstractDataType {
         try {
             enumDomain.valueType();
         } catch (MirroredTypeException e) {
-            return new DomainInfo(e.getTypeMirror(), typeElement.asType());
+            return new DomainInfo(e.getTypeMirror(), false);
         }
         throw new AptIllegalStateException("unreachable.");
     }
@@ -141,15 +145,14 @@ public class DomainType extends AbstractDataType {
                     throw new AptOptionException(
                             Message.DOMA4200.getMessage(className));
                 }
-                TypeMirror convType = e.asType();
                 TypeMirror[] argumentTypes = getConverterArgumentTypes(
-                        convType, env);
+                        e.asType(), env);
                 if (argumentTypes == null
                         || !TypeMirrorUtil.isSameType(domainType,
                                 argumentTypes[0], env)) {
                     continue;
                 }
-                return new DomainInfo(argumentTypes[1], convType);
+                return new DomainInfo(argumentTypes[1], true);
             }
         }
         return null;
@@ -191,12 +194,12 @@ public class DomainType extends AbstractDataType {
     private static class DomainInfo {
         private final TypeMirror valueType;
 
-        private final TypeMirror convType;
+        private final boolean external;
 
-        public DomainInfo(TypeMirror valueType, TypeMirror convType) {
-            assertNotNull(valueType, convType);
+        public DomainInfo(TypeMirror valueType, boolean external) {
+            assertNotNull(valueType);
             this.valueType = valueType;
-            this.convType = convType;
+            this.external = external;
         }
     }
 }

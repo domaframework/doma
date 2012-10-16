@@ -13,62 +13,65 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt.entity;
+package _.org.seasar.doma.internal.apt.entity;
+
+import org.seasar.doma.internal.apt.entity.PrimaryKey;
+import org.seasar.doma.internal.apt.entity.PrimaryKeyConverter;
 
 /**
  * @author taedium
  * 
  */
 
-public final class _BranchConverter implements
-        org.seasar.doma.jdbc.domain.DomainType<java.lang.String, Branch> {
+public final class _PrimaryKey implements
+        org.seasar.doma.jdbc.domain.DomainType<java.lang.Integer, PrimaryKey> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final _BranchConverter singleton = new _BranchConverter();
+    private static final _PrimaryKey singleton = new _PrimaryKey();
 
-    private static final BranchConverter converter = new BranchConverter();
+    private static final PrimaryKeyConverter converter = new PrimaryKeyConverter();
 
-    private _BranchConverter() {
+    private _PrimaryKey() {
     }
 
     @Override
-    public Branch newDomain(java.lang.String value) {
+    public PrimaryKey newDomain(java.lang.Integer value) {
         return converter.fromValueToDomain(value);
     }
 
     @Override
-    public Class<Branch> getDomainClass() {
-        return Branch.class;
+    public Class<PrimaryKey> getDomainClass() {
+        return PrimaryKey.class;
     }
 
     @Override
-    public org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.String, Branch> getWrapper(
-            Branch domain) {
+    public org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.Integer, PrimaryKey> getWrapper(
+            PrimaryKey domain) {
         return new Wrapper(domain);
     }
 
     /**
      * @return the singleton
      */
-    public static _BranchConverter getSingletonInternal() {
+    public static _PrimaryKey getSingletonInternal() {
         return singleton;
     }
 
-    private static class Wrapper extends org.seasar.doma.wrapper.StringWrapper
+    private static class Wrapper extends org.seasar.doma.wrapper.IntegerWrapper
             implements
-            org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.String, Branch> {
+            org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.Integer, PrimaryKey> {
 
-        private Branch domain;
+        private PrimaryKey domain;
 
-        private Wrapper(Branch domain) {
+        private Wrapper(PrimaryKey domain) {
             this.domain = domain;
         }
 
         @Override
-        protected java.lang.String doGet() {
+        protected java.lang.Integer doGet() {
             if (domain == null) {
                 return null;
             }
@@ -76,12 +79,12 @@ public final class _BranchConverter implements
         }
 
         @Override
-        protected void doSet(java.lang.String value) {
+        protected void doSet(java.lang.Integer value) {
             domain = converter.fromValueToDomain(value);
         }
 
         @Override
-        public Branch getDomain() {
+        public PrimaryKey getDomain() {
             return domain;
         }
     }
