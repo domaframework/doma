@@ -21,6 +21,8 @@ import java.io.IOException;
 
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
+import javax.annotation.processing.SupportedSourceVersion;
+import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.internal.apt.meta.ExternalDomainMeta;
@@ -30,6 +32,7 @@ import org.seasar.doma.internal.apt.meta.ExternalDomainMetaFactory;
  * @author taedium
  * 
  */
+@SupportedSourceVersion(SourceVersion.RELEASE_6)
 @SupportedAnnotationTypes({ "org.seasar.doma.ExternalDomain" })
 @SupportedOptions({ Options.TEST, Options.DEBUG })
 public class ExternalDomainProcessor extends

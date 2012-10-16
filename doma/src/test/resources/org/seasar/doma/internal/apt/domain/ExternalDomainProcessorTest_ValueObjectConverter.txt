@@ -1,0 +1,65 @@
+package org.seasar.doma.internal.apt.domain;
+
+/** */
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+public final class _ValueObjectConverter implements org.seasar.doma.jdbc.domain.DomainType<java.lang.String, org.seasar.doma.internal.apt.domain.ValueObjectConverter.ValueObject> {
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    private static final _ValueObjectConverter singleton = new _ValueObjectConverter();
+    private static final org.seasar.doma.internal.apt.domain.ValueObjectConverter converter = new org.seasar.doma.internal.apt.domain.ValueObjectConverter();
+
+    private _ValueObjectConverter() {
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.domain.ValueObjectConverter.ValueObject newDomain(java.lang.String value) {
+        return converter.fromValueToDomain(value);
+    }
+
+    @Override
+    public Class<org.seasar.doma.internal.apt.domain.ValueObjectConverter.ValueObject> getDomainClass() {
+        return org.seasar.doma.internal.apt.domain.ValueObjectConverter.ValueObject.class;
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.String, org.seasar.doma.internal.apt.domain.ValueObjectConverter.ValueObject> getWrapper(org.seasar.doma.internal.apt.domain.ValueObjectConverter.ValueObject domain) {
+        return new Wrapper(domain);
+    }
+
+    /**
+     * @return the singleton
+     */
+    public static _ValueObjectConverter getSingletonInternal() {
+        return singleton;
+    }
+
+    private static class Wrapper extends org.seasar.doma.wrapper.StringWrapper implements org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.String, org.seasar.doma.internal.apt.domain.ValueObjectConverter.ValueObject> {
+
+        private org.seasar.doma.internal.apt.domain.ValueObjectConverter.ValueObject domain;
+
+        private Wrapper(org.seasar.doma.internal.apt.domain.ValueObjectConverter.ValueObject domain) {
+            this.domain = domain;
+        }
+
+        @Override
+        protected java.lang.String doGet() {
+            if (domain == null) {
+                return null;
+            }
+            return converter.fromDomainToValue(domain);
+        }
+
+        @Override
+        protected void doSet(java.lang.String value) {
+            domain = converter.fromValueToDomain(value);
+        }
+
+        @Override
+        public org.seasar.doma.internal.apt.domain.ValueObjectConverter.ValueObject getDomain() {
+            return domain;
+        }
+    }
+}

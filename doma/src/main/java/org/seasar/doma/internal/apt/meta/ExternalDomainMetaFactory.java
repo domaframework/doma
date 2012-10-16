@@ -20,12 +20,20 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 
+import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.AptIllegalStateException;
+import org.seasar.doma.internal.apt.mirror.EnumDomainMirror;
+import org.seasar.doma.internal.apt.type.BasicType;
+import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.domain.DomainConverter;
+import org.seasar.doma.message.Message;
 
 /**
  * @author taedium
@@ -42,25 +50,64 @@ public class ExternalDomainMetaFactory implements
     }
 
     @Override
-    public ExternalDomainMeta createTypeElementMeta(TypeElement typeElement) {
-        // TODO Auto-generated method stub
-
-        TypeMirror[] argumentTypes = getConverterArgumentTypes(typeElement
+    public ExternalDomainMeta createTypeElementMeta(TypeElement convElement) {
+        ExternalDomainMeta meta = new ExternalDomainMeta(convElement);
+        validateConverter(convElement);
+        TypeMirror[] argumentTypes = getConverterArgumentTypes(convElement
                 .asType());
         if (argumentTypes == null) {
-            // TODO error. typeElement is not instanceof DomainConverter
+            throw new AptIllegalStateException(
+                    "converter doesn't have type args: "
+                            + convElement.getQualifiedName());
         }
-
         TypeMirror domainType = argumentTypes[0];
+        TypeElement domainElement = TypeMirrorUtil.toTypeElement(domainType,
+                env);
+        if (domainElement == null) {
+            throw new AptIllegalStateException(domainType.toString());
+        }
+        meta.setDomainElement(domainElement);
+
         TypeMirror valueType = argumentTypes[1];
+        TypeElement valueElement = TypeMirrorUtil.toTypeElement(valueType, env);
+        if (valueElement == null) {
+            throw new AptIllegalStateException(valueType.toString());
+        }
+        meta.setValueElement(valueElement);
 
-        // get domain type
+        BasicType basicType = BasicType.newInstance(valueType, env);
+        if (basicType == null) {
+            throw new AptException(Message.DOMA4194, env, convElement,
+                    valueElement.getQualifiedName());
+        }
+        if (basicType.isEnum()) {
+            EnumDomainMirror enumDomainMirror = EnumDomainMirror.newInstance(
+                    valueElement, env);
+            if (enumDomainMirror != null) {
+                throw new AptException(Message.DOMA4195, env, convElement,
+                        basicType.getQualifiedName());
+            }
+        }
+        meta.setWrapperType(basicType.getWrapperType());
+        return meta;
+    }
 
-        // get value type
-
-        // check if value type is basic type
-
-        return null;
+    protected void validateConverter(TypeElement classElement) {
+        if (!TypeMirrorUtil.isAssignable(classElement.asType(),
+                DomainConverter.class, env)) {
+            throw new AptException(Message.DOMA4191, env, classElement);
+        }
+        if (classElement.getModifiers().contains(Modifier.ABSTRACT)) {
+            throw new AptException(Message.DOMA4192, env, classElement,
+                    classElement.getQualifiedName());
+        }
+        ExecutableElement constructor = ElementUtil.getNoArgConstructor(
+                classElement, env);
+        if (constructor == null
+                || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
+            throw new AptException(Message.DOMA4193, env, classElement,
+                    classElement.getQualifiedName());
+        }
     }
 
     protected TypeMirror[] getConverterArgumentTypes(TypeMirror typeMirror) {

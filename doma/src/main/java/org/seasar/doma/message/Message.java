@@ -340,6 +340,11 @@ public enum Message implements MessageResource {
     DOMA4188("@Daoが注釈されたインタフェースは@Daoが注釈されてないインタフェース[{0}]をextendsできません。"),
     DOMA4189("式[{0}]（[{1}]番目の文字付近）の関数[{2}]の解決に失敗しました。注釈処理のオプションexpr.functionsに指定されたクラス[{3}]が見つかりません。"),
     DOMA4190("式[{0}]（[{1}]番目の文字付近）の関数[{2}]の解決に失敗しました。注釈処理のオプションexpr.functionsに指定されたクラス[{3}]はorg.seasar.doma.expr.ExpressionFunctionsのサブタイプでなければいけません。"),
+    DOMA4191("@ExternalDomainはorg.seasar.doma.jdbc.domain.DomainConverterのサブタイプにのみ注釈できます。"),
+    DOMA4192("@ExternalDomainを注釈したクラスは抽象型であってはいけません。クラス[{0}]は抽象型です。"),
+    DOMA4193("@ExternalDomainを注釈したクラスは引数なしのpublicなコンストラクタを持たなければいけません。クラス[{0}]には引数なしのpublicなコンストラクタが見つかりません。"),
+    DOMA4194("org.seasar.doma.jdbc.domain.DomainConverterの第2型引数に指定された型[{0}]は永続対象としてサポートされていません。"),
+    DOMA4195("@EnumDomainが注釈された列挙型[{0}]はorg.seasar.doma.jdbc.domain.DomainConverterの第2型引数に指定できません。"),
 
     // other
     DOMA5001("JDBCドライバがロードされていない可能性があります。JDBCドライバをロードするには、クラスパスが通されたMETA-INF/services/java.sql.DriverファイルにJDBCドライバのクラスの完全修飾名を記述してください。 ex) oracle.jdbc.driver.OracleDriver"),

@@ -39,6 +39,7 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Domain;
 import org.seasar.doma.Entity;
 import org.seasar.doma.EnumDomain;
+import org.seasar.doma.ExternalDomain;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.jdbc.util.MetaTypeUtil;
@@ -95,7 +96,8 @@ public abstract class AptTestCase extends AptinaTestCase {
         }
         if (originalClass.isAnnotationPresent(Entity.class)
                 || originalClass.isAnnotationPresent(Domain.class)
-                || originalClass.isAnnotationPresent(EnumDomain.class)) {
+                || originalClass.isAnnotationPresent(EnumDomain.class)
+                || originalClass.isAnnotationPresent(ExternalDomain.class)) {
             return MetaTypeUtil.getMetaTypeName(originalClass.getName());
         }
         throw new AssertionFailedError("annotation not found.");
