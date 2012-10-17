@@ -17,8 +17,6 @@ package org.seasar.doma.internal.wrapper;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Array;
@@ -31,9 +29,9 @@ import java.sql.Timestamp;
 
 import org.seasar.doma.Domain;
 import org.seasar.doma.EnumDomain;
-import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.ClassUtil;
-import org.seasar.doma.internal.util.MethodUtil;
+import org.seasar.doma.jdbc.domain.DomainType;
+import org.seasar.doma.jdbc.domain.DomainTypeFactory;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.ArrayWrapper;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
@@ -79,18 +77,18 @@ public final class Wrappers {
      */
     public static Wrapper<?> wrap(Object value, Class<?> valueClass) {
         assertNotNull(valueClass);
-        assertTrue(value == null
-                || ClassUtil.toBoxedPrimitiveTypeIfPossible(valueClass)
-                        .isInstance(value));
+        Class<?> boxedClass = ClassUtil
+                .toBoxedPrimitiveTypeIfPossible(valueClass);
+        assertTrue(value == null || boxedClass.isInstance(value));
 
-        if (Wrapper.class.isAssignableFrom(valueClass)) {
+        if (Wrapper.class.isAssignableFrom(boxedClass)) {
             return (Wrapper<?>) value;
         }
-        Wrapper<?> result = wrapBasicObject(value, valueClass);
+        Wrapper<?> result = wrapBasicObject(value, boxedClass);
         if (result == null) {
-            result = wrapDomainObject(value, valueClass);
+            result = wrapDomainObject(value, boxedClass);
             if (result == null) {
-                result = wrapEnumObject(value, valueClass);
+                result = wrapEnumObject(value, boxedClass);
                 if (result == null) {
                     throw new WrapperException(Message.DOMA1007,
                             valueClass.getName(), value);
@@ -112,63 +110,61 @@ public final class Wrappers {
     protected static Wrapper<?> wrapBasicObject(Object value,
             Class<?> valueClass) {
         assertNotNull(valueClass);
-        Class<?> boxedClass = ClassUtil
-                .toBoxedPrimitiveTypeIfPossible(valueClass);
-        if (boxedClass == String.class) {
+        if (valueClass == String.class) {
             return new StringWrapper((String) value);
         }
-        if (boxedClass == Integer.class) {
+        if (valueClass == Integer.class) {
             return new IntegerWrapper((Integer) value);
         }
-        if (boxedClass == Long.class) {
+        if (valueClass == Long.class) {
             return new LongWrapper((Long) value);
         }
-        if (boxedClass == BigDecimal.class) {
+        if (valueClass == BigDecimal.class) {
             return new BigDecimalWrapper((BigDecimal) value);
         }
-        if (boxedClass == java.util.Date.class) {
+        if (valueClass == java.util.Date.class) {
             return new UtilDateWrapper((java.util.Date) value);
         }
-        if (boxedClass == Date.class) {
+        if (valueClass == Date.class) {
             return new DateWrapper((Date) value);
         }
-        if (boxedClass == Timestamp.class) {
+        if (valueClass == Timestamp.class) {
             return new TimestampWrapper((Timestamp) value);
         }
-        if (boxedClass == Time.class) {
+        if (valueClass == Time.class) {
             return new TimeWrapper((Time) value);
         }
-        if (boxedClass == Boolean.class) {
+        if (valueClass == Boolean.class) {
             return new BooleanWrapper((Boolean) value);
         }
-        if (boxedClass == Array.class) {
+        if (valueClass == Array.class) {
             return new ArrayWrapper((Array) value);
         }
-        if (boxedClass == BigInteger.class) {
+        if (valueClass == BigInteger.class) {
             return new BigIntegerWrapper((BigInteger) value);
         }
-        if (boxedClass == Blob.class) {
+        if (valueClass == Blob.class) {
             return new BlobWrapper((Blob) value);
         }
-        if (boxedClass == byte[].class) {
+        if (valueClass == byte[].class) {
             return new BytesWrapper((byte[]) value);
         }
-        if (boxedClass == Byte.class) {
+        if (valueClass == Byte.class) {
             return new ByteWrapper((Byte) value);
         }
-        if (boxedClass == Clob.class) {
+        if (valueClass == Clob.class) {
             return new ClobWrapper((Clob) value);
         }
-        if (boxedClass == Double.class) {
+        if (valueClass == Double.class) {
             return new DoubleWrapper((Double) value);
         }
-        if (boxedClass == Float.class) {
+        if (valueClass == Float.class) {
             return new FloatWrapper((Float) value);
         }
-        if (boxedClass == NClob.class) {
+        if (valueClass == NClob.class) {
             return new NClobWrapper((NClob) value);
         }
-        if (boxedClass == Short.class) {
+        if (valueClass == Short.class) {
             return new ShortWrapper((Short) value);
         }
         return null;
@@ -186,10 +182,8 @@ public final class Wrappers {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     protected static Wrapper<?> wrapEnumObject(Object value, Class<?> valueClass) {
         assertNotNull(valueClass);
-        Class<?> boxedClass = ClassUtil
-                .toBoxedPrimitiveTypeIfPossible(valueClass);
-        if (boxedClass.isEnum() || Enum.class.isAssignableFrom(boxedClass)) {
-            return new EnumWrapper(boxedClass, (Enum) value);
+        if (valueClass.isEnum() || Enum.class.isAssignableFrom(valueClass)) {
+            return new EnumWrapper(valueClass, (Enum) value);
         }
         return null;
     }
@@ -202,115 +196,27 @@ public final class Wrappers {
      * @param valueClass
      *            値クラス
      * @return ラッパー、値がドメインクラスのオブジェクトでない場合 {@code null}
-     * @throws WrapperException
-     *             ラップに失敗した場合
      */
-    protected static Wrapper<?> wrapDomainObject(Object value,
-            Class<?> valueClass) {
-        assertNotNull(valueClass);
-        DomainDesc domainDesc = getDomainDesc(valueClass);
-        if (domainDesc == null) {
+    protected static <V, D> Wrapper<?> wrapDomainObject(Object value,
+            Class<D> valueClass) {
+        DomainType<V, D> domainType;
+        if (valueClass.isAnnotationPresent(Domain.class)
+                || valueClass.isAnnotationPresent(EnumDomain.class)) {
+            domainType = DomainTypeFactory.getDomainType(valueClass);
+        } else {
+            domainType = DomainTypeFactory.getExternalDomainType(valueClass);
+        }
+        if (domainType == null) {
             return null;
         }
-        Object domainValue = null;
-        if (value != null) {
-            domainValue = getDomainValue(value, valueClass,
-                    domainDesc.accessorMethod);
-        }
-        Wrapper<?> result = wrapBasicObject(domainValue, domainDesc.valueType);
+        @SuppressWarnings("unchecked")
+        V domainValue = domainType.getWrapper((D) value).get();
+        Class<V> domainValueClass = domainType.getValueClass();
+        Wrapper<?> result = wrapBasicObject(domainValue, domainValueClass);
         if (result == null) {
-            result = wrapEnumObject(domainValue, domainDesc.valueType);
+            result = wrapEnumObject(domainValue, domainValueClass);
         }
         return result;
     }
 
-    /**
-     * ドメイン記述を返します。
-     * 
-     * @param clazz
-     *            ドメインクラス
-     * @return ドメイン記述
-     */
-    protected static DomainDesc getDomainDesc(Class<?> clazz) {
-        assertNotNull(clazz);
-        Domain domain = clazz.getAnnotation(Domain.class);
-        if (domain != null) {
-            return new DomainDesc(domain.valueType(), domain.accessorMethod());
-        }
-        EnumDomain enumDomain = clazz.getAnnotation(EnumDomain.class);
-        if (enumDomain != null) {
-            return new DomainDesc(enumDomain.valueType(),
-                    enumDomain.accessorMethod());
-        }
-        return null;
-    }
-
-    /**
-     * ドメインクラスに管理された値を返します。
-     * 
-     * @param domainObject
-     *            ドメインクラスのオブジェクト
-     * @param domainClass
-     *            ドメインクラス
-     * @param accessorMethodName
-     *            ドメインクラスのアクセッサーメソッドの名前
-     * @return ドメインクラスに管理された値
-     * @throws WrapperException
-     *             ラップに失敗した場合
-     */
-    protected static Object getDomainValue(Object domainObject,
-            Class<?> domainClass, String accessorMethodName) {
-        assertNotNull(domainObject, domainClass, accessorMethodName);
-        try {
-            Method method = findAccessorMethod(domainClass, accessorMethodName);
-            if (!Modifier.isPublic(method.getModifiers())) {
-                method.setAccessible(true);
-            }
-            method.setAccessible(true);
-            return MethodUtil.invoke(method, domainObject);
-        } catch (WrapException e) {
-            Throwable cause = e.getCause();
-            throw new WrapperException(Message.DOMA1006, cause, cause);
-        }
-    }
-
-    /**
-     * アクセッサーメソッドを見つけます。
-     * 
-     * @param domainClass
-     *            ドメインクラス
-     * @param accessorMethodName
-     *            ドメインクラスのアクセッサーメソッドの名前
-     * @return アクセッサーメソッド
-     */
-    protected static Method findAccessorMethod(Class<?> domainClass,
-            String accessorMethodName) {
-        assertNotNull(domainClass, accessorMethodName);
-        for (Class<?> clazz = domainClass; clazz != null; clazz = clazz
-                .getSuperclass()) {
-            for (Method m : clazz.getDeclaredMethods()) {
-                if (accessorMethodName.equals(m.getName())
-                        && m.getParameterTypes().length == 0) {
-                    return m;
-                }
-            }
-        }
-        return assertUnreachable();
-    }
-
-    /**
-     * ドメイン記述。 {@link Domain} と {@link EnumDomain} を抽象化します。
-     */
-    private static class DomainDesc {
-
-        private final Class<?> valueType;
-
-        private final String accessorMethod;
-
-        private DomainDesc(Class<?> valueType, String accessorMethod) {
-            assertNotNull(valueType, accessorMethod);
-            this.valueType = valueType;
-            this.accessorMethod = accessorMethod;
-        }
-    }
 }

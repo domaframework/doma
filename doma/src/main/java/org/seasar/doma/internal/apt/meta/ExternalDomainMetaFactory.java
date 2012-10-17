@@ -51,7 +51,6 @@ public class ExternalDomainMetaFactory implements
 
     @Override
     public ExternalDomainMeta createTypeElementMeta(TypeElement convElement) {
-        ExternalDomainMeta meta = new ExternalDomainMeta(convElement);
         validateConverter(convElement);
         TypeMirror[] argumentTypes = getConverterArgumentTypes(convElement
                 .asType());
@@ -66,6 +65,7 @@ public class ExternalDomainMetaFactory implements
         if (domainElement == null) {
             throw new AptIllegalStateException(domainType.toString());
         }
+        ExternalDomainMeta meta = new ExternalDomainMeta(convElement);
         meta.setDomainElement(domainElement);
 
         TypeMirror valueType = argumentTypes[1];

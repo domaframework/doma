@@ -1,22 +1,22 @@
-package org.seasar.doma.internal.apt.domain;
+package _.org.seasar.doma.internal.apt.domain;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public final class _ValueObjectConverter implements org.seasar.doma.jdbc.domain.DomainType<java.lang.String, org.seasar.doma.internal.apt.domain.ValueObjectConverter.ValueObject> {
+public final class _ValueObject implements org.seasar.doma.jdbc.domain.DomainType<java.lang.String, org.seasar.doma.internal.apt.domain.ValueObject> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final _ValueObjectConverter singleton = new _ValueObjectConverter();
+    private static final _ValueObject singleton = new _ValueObject();
 
     private static final org.seasar.doma.internal.apt.domain.ValueObjectConverter converter = new org.seasar.doma.internal.apt.domain.ValueObjectConverter();
 
-    private _ValueObjectConverter() {
+    private _ValueObject() {
     }
 
     @Override
-    public org.seasar.doma.internal.apt.domain.ValueObjectConverter.ValueObject newDomain(java.lang.String value) {
+    public org.seasar.doma.internal.apt.domain.ValueObject newDomain(java.lang.String value) {
         return converter.fromValueToDomain(value);
     }
 
@@ -26,27 +26,27 @@ public final class _ValueObjectConverter implements org.seasar.doma.jdbc.domain.
     }
 
     @Override
-    public Class<org.seasar.doma.internal.apt.domain.ValueObjectConverter.ValueObject> getDomainClass() {
-        return org.seasar.doma.internal.apt.domain.ValueObjectConverter.ValueObject.class;
+    public Class<org.seasar.doma.internal.apt.domain.ValueObject> getDomainClass() {
+        return org.seasar.doma.internal.apt.domain.ValueObject.class;
     }
 
     @Override
-    public org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.String, org.seasar.doma.internal.apt.domain.ValueObjectConverter.ValueObject> getWrapper(org.seasar.doma.internal.apt.domain.ValueObjectConverter.ValueObject domain) {
+    public org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.String, org.seasar.doma.internal.apt.domain.ValueObject> getWrapper(org.seasar.doma.internal.apt.domain.ValueObject domain) {
         return new Wrapper(domain);
     }
 
     /**
      * @return the singleton
      */
-    public static _ValueObjectConverter getSingletonInternal() {
+    public static _ValueObject getSingletonInternal() {
         return singleton;
     }
 
-    private static class Wrapper extends org.seasar.doma.wrapper.StringWrapper implements org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.String, org.seasar.doma.internal.apt.domain.ValueObjectConverter.ValueObject> {
+    private static class Wrapper extends org.seasar.doma.wrapper.StringWrapper implements org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.String, org.seasar.doma.internal.apt.domain.ValueObject> {
 
-        private org.seasar.doma.internal.apt.domain.ValueObjectConverter.ValueObject domain;
+        private org.seasar.doma.internal.apt.domain.ValueObject domain;
 
-        private Wrapper(org.seasar.doma.internal.apt.domain.ValueObjectConverter.ValueObject domain) {
+        private Wrapper(org.seasar.doma.internal.apt.domain.ValueObject domain) {
             this.domain = domain;
         }
 
@@ -64,7 +64,7 @@ public final class _ValueObjectConverter implements org.seasar.doma.jdbc.domain.
         }
 
         @Override
-        public org.seasar.doma.internal.apt.domain.ValueObjectConverter.ValueObject getDomain() {
+        public org.seasar.doma.internal.apt.domain.ValueObject getDomain() {
             return domain;
         }
     }

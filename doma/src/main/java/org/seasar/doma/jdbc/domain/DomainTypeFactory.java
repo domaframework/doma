@@ -21,6 +21,7 @@ import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Domain;
 import org.seasar.doma.EnumDomain;
+import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.jdbc.util.MetaTypeUtil;
 import org.seasar.doma.internal.util.ClassUtil;
@@ -71,6 +72,35 @@ public final class DomainTypeFactory {
         } catch (WrapException e) {
             throw new DomainTypeNotFoundException(e.getCause(),
                     domainClass.getName(), domainTypeClassName);
+        }
+    }
+
+    /**
+     * {@link DomainType} のインスタンスを生成します。
+     * 
+     * @param <V>
+     *            ドメインクラスが扱う値の型
+     * @param <D>
+     *            ドメインクラスの型
+     * @param domainClass
+     *            ドメインクラス
+     * @return {@link DomainType} のインスタンス、存在しない場合 {@code null}
+     * @throws DomaNullPointerException
+     *             引数が {@code null} の場合
+     */
+    public static <V, D> DomainType<V, D> getExternalDomainType(
+            Class<D> domainClass) {
+        if (domainClass == null) {
+            throw new DomaNullPointerException("domainClass");
+        }
+        String domainTypeClassName = Constants.METATYPE_PREFIX + "."
+                + MetaTypeUtil.getMetaTypeName(domainClass.getName());
+        try {
+            Class<D> clazz = ClassUtil.forName(domainTypeClassName);
+            Method method = ClassUtil.getMethod(clazz, "getSingletonInternal");
+            return MethodUtil.invoke(method, null);
+        } catch (WrapException e) {
+            return null;
         }
     }
 }

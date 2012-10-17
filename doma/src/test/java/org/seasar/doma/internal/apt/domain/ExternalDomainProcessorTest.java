@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.internal.apt.domain;
 
+import junit.framework.AssertionFailedError;
+
 import org.seasar.doma.internal.apt.AptTestCase;
 import org.seasar.doma.internal.apt.ExternalDomainProcessor;
 import org.seasar.doma.message.Message;
@@ -82,7 +84,15 @@ public class ExternalDomainProcessorTest extends AptTestCase {
         addProcessor(processor);
         addCompilationUnit(target);
         compile();
-        assertGeneratedSource(target);
+        String generatedClassName = "_.org.seasar.doma.internal.apt.domain._"
+                + ValueObject.class.getSimpleName();
+        try {
+            assertEqualsGeneratedSource(getExpectedContent(),
+                    generatedClassName);
+        } catch (AssertionFailedError error) {
+            System.out.println(getGeneratedSource(generatedClassName));
+            throw error;
+        }
         assertTrue(getCompiledResult());
     }
 }

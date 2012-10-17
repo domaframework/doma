@@ -47,6 +47,7 @@ public class ExternalDomainProcessor extends
     protected Generator createGenerator(TypeElement typeElement,
             ExternalDomainMeta meta) throws IOException {
         assertNotNull(typeElement, meta);
-        return new ExternalDomainTypeGenerator(processingEnv, typeElement, meta);
+        return new ExternalDomainTypeGenerator(processingEnv,
+                meta.getDomainElement(), meta);
     }
 }

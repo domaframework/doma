@@ -24,7 +24,7 @@ import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.meta.ExternalDomainMeta;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
+import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.jdbc.domain.DomainWrapper;
 
@@ -37,9 +37,11 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
     protected final ExternalDomainMeta domainMeta;
 
     public ExternalDomainTypeGenerator(ProcessingEnvironment env,
-            TypeElement convElement, ExternalDomainMeta domainMeta)
+            TypeElement typeElement, ExternalDomainMeta domainMeta)
             throws IOException {
-        super(env, convElement, null, null, Constants.METATYPE_PREFIX, "");
+        super(env, typeElement, Constants.METATYPE_PREFIX + "."
+                + ElementUtil.getPackageName(typeElement, env), null,
+                Constants.METATYPE_PREFIX, "");
         assertNotNull(domainMeta);
         this.domainMeta = domainMeta;
     }
@@ -80,7 +82,7 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
                 simpleName);
         print("%n");
         iprint("private static final %1$s converter = new %1$s();%n",
-                typeElement.getQualifiedName());
+                domainMeta.getTypeElement().getQualifiedName());
         print("%n");
     }
 
