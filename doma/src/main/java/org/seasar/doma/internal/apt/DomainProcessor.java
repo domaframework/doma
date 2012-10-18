@@ -35,7 +35,7 @@ import org.seasar.doma.internal.apt.meta.DomainMetaFactory;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 @SupportedAnnotationTypes({ "org.seasar.doma.Domain" })
 @SupportedOptions({ Options.TEST, Options.DEBUG })
-public class DomainProcessor extends AbstractProcessor<DomainMeta> {
+public class DomainProcessor extends AbstractGeneratingProcessor<DomainMeta> {
 
     @Override
     protected DomainMetaFactory createTypeElementMetaFactory() {

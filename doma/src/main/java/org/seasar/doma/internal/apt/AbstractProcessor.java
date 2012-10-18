@@ -15,87 +15,48 @@
  */
 package org.seasar.doma.internal.apt;
 
-import java.io.IOException;
-import java.util.Set;
-
-import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 
-import org.seasar.doma.internal.apt.meta.TypeElementMeta;
-import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
-import org.seasar.doma.internal.util.IOUtil;
 import org.seasar.doma.message.Message;
 
 /**
  * @author taedium
  * 
  */
-public abstract class AbstractProcessor<M extends TypeElementMeta> extends
+public abstract class AbstractProcessor extends
         javax.annotation.processing.AbstractProcessor {
 
     protected AbstractProcessor() {
     }
 
-    @Override
-    public boolean process(Set<? extends TypeElement> annotations,
-            RoundEnvironment roundEnv) {
-        if (roundEnv.processingOver()) {
-            return true;
+    protected void handleTypeElement(TypeElement typeElement,
+            TypeElementHandler handler) {
+        if (Options.isDebugEnabled(processingEnv)) {
+            Notifier.debug(processingEnv, Message.DOMA4090, getClass()
+                    .getName(), typeElement.getQualifiedName());
         }
-        for (TypeElement a : annotations) {
-            TypeElementMetaFactory<M> factory = createTypeElementMetaFactory();
-            for (TypeElement typeElement : ElementFilter.typesIn(roundEnv
-                    .getElementsAnnotatedWith(a))) {
-                if (Options.isDebugEnabled(processingEnv)) {
-                    Notifier.debug(processingEnv, Message.DOMA4090, getClass()
-                            .getName(), typeElement.getQualifiedName());
-                }
-                try {
-                    M meta = factory.createTypeElementMeta(typeElement);
-                    if (!meta.isError()) {
-                        generate(typeElement, meta);
-                    }
-                } catch (AptException e) {
-                    Notifier.notify(processingEnv, e);
-                } catch (AptIllegalOptionException e) {
-                    Notifier.notify(processingEnv, Kind.ERROR, e.getMessage(),
-                            typeElement);
-                    throw e;
-                } catch (AptIllegalStateException e) {
-                    Notifier.notify(processingEnv, Kind.ERROR,
-                            Message.DOMA4039, typeElement);
-                    throw e;
-                } catch (RuntimeException e) {
-                    Notifier.notify(processingEnv, Kind.ERROR,
-                            Message.DOMA4016, typeElement);
-                    throw e;
-                }
-                if (Options.isDebugEnabled(processingEnv)) {
-                    Notifier.debug(processingEnv, Message.DOMA4091, getClass()
-                            .getName(), typeElement.getQualifiedName());
-                }
-            }
-        }
-        return true;
-    }
-
-    protected abstract TypeElementMetaFactory<M> createTypeElementMetaFactory();
-
-    protected void generate(TypeElement typeElement, M meta) {
-        Generator generator = null;
         try {
-            generator = createGenerator(typeElement, meta);
-            generator.generate();
-        } catch (IOException e) {
-            throw new AptException(Message.DOMA4011, processingEnv,
-                    typeElement, e, typeElement.getQualifiedName(), e);
-        } finally {
-            IOUtil.close(generator);
+            handler.handle(typeElement);
+        } catch (AptException e) {
+            Notifier.notify(processingEnv, e);
+        } catch (AptIllegalOptionException e) {
+            Notifier.notify(processingEnv, Kind.ERROR, e.getMessage(),
+                    typeElement);
+            throw e;
+        } catch (AptIllegalStateException e) {
+            Notifier.notify(processingEnv, Kind.ERROR, Message.DOMA4039,
+                    typeElement);
+            throw e;
+        } catch (RuntimeException e) {
+            Notifier.notify(processingEnv, Kind.ERROR, Message.DOMA4016,
+                    typeElement);
+            throw e;
+        }
+        if (Options.isDebugEnabled(processingEnv)) {
+            Notifier.debug(processingEnv, Message.DOMA4091, getClass()
+                    .getName(), typeElement.getQualifiedName());
         }
     }
 
-    protected abstract Generator createGenerator(TypeElement typeElement, M meta)
-            throws IOException;
 }

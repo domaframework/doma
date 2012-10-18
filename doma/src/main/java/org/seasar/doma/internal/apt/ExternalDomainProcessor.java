@@ -36,7 +36,7 @@ import org.seasar.doma.internal.apt.meta.ExternalDomainMetaFactory;
 @SupportedAnnotationTypes({ "org.seasar.doma.ExternalDomain" })
 @SupportedOptions({ Options.TEST, Options.DEBUG })
 public class ExternalDomainProcessor extends
-        AbstractProcessor<ExternalDomainMeta> {
+        AbstractGeneratingProcessor<ExternalDomainMeta> {
 
     @Override
     protected ExternalDomainMetaFactory createTypeElementMetaFactory() {
