@@ -58,6 +58,32 @@ public final class AnnotationValueUtil {
         return results;
     }
 
+    public static List<TypeMirror> toTypeList(AnnotationValue value) {
+        if (value == null) {
+            return null;
+        }
+        final List<TypeMirror> results = new ArrayList<TypeMirror>();
+        value.accept(new SimpleAnnotationValueVisitor6<Void, Void>() {
+
+            @Override
+            public Void visitArray(List<? extends AnnotationValue> values,
+                    Void p) {
+                for (AnnotationValue value : values) {
+                    value.accept(this, p);
+                }
+                return null;
+            }
+
+            @Override
+            public Void visitType(TypeMirror t, Void p) {
+                results.add(t);
+                return null;
+            }
+
+        }, null);
+        return results;
+    }
+
     public static List<AnnotationMirror> toAnnotationList(AnnotationValue value) {
         if (value == null) {
             return null;

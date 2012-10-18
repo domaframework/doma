@@ -59,7 +59,7 @@ public abstract class AbstractProcessor<M extends TypeElementMeta> extends
                     }
                 } catch (AptException e) {
                     Notifier.notify(processingEnv, e);
-                } catch (AptOptionException e) {
+                } catch (AptIllegalOptionException e) {
                     Notifier.notify(processingEnv, Kind.ERROR, e.getMessage(),
                             typeElement);
                     throw e;

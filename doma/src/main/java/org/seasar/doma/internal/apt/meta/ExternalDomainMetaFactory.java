@@ -52,14 +52,14 @@ public class ExternalDomainMetaFactory implements
     @Override
     public ExternalDomainMeta createTypeElementMeta(TypeElement convElement) {
         validateConverter(convElement);
-        TypeMirror[] argumentTypes = getConverterArgumentTypes(convElement
+        TypeMirror[] argTypes = getConverterArgTypes(convElement
                 .asType());
-        if (argumentTypes == null) {
+        if (argTypes == null) {
             throw new AptIllegalStateException(
                     "converter doesn't have type args: "
                             + convElement.getQualifiedName());
         }
-        TypeMirror domainType = argumentTypes[0];
+        TypeMirror domainType = argTypes[0];
         TypeElement domainElement = TypeMirrorUtil.toTypeElement(domainType,
                 env);
         if (domainElement == null) {
@@ -68,7 +68,7 @@ public class ExternalDomainMetaFactory implements
         ExternalDomainMeta meta = new ExternalDomainMeta(convElement);
         meta.setDomainElement(domainElement);
 
-        TypeMirror valueType = argumentTypes[1];
+        TypeMirror valueType = argTypes[1];
         TypeElement valueElement = TypeMirrorUtil.toTypeElement(valueType, env);
         if (valueElement == null) {
             throw new AptIllegalStateException(valueType.toString());
@@ -110,7 +110,7 @@ public class ExternalDomainMetaFactory implements
         }
     }
 
-    protected TypeMirror[] getConverterArgumentTypes(TypeMirror typeMirror) {
+    protected TypeMirror[] getConverterArgTypes(TypeMirror typeMirror) {
         for (TypeMirror supertype : env.getTypeUtils().directSupertypes(
                 typeMirror)) {
             if (!TypeMirrorUtil.isAssignable(supertype, DomainConverter.class,
@@ -127,9 +127,9 @@ public class ExternalDomainMetaFactory implements
                 assertEquals(2, args.size());
                 return new TypeMirror[] { args.get(0), args.get(1) };
             }
-            TypeMirror[] argumentTypes = getConverterArgumentTypes(supertype);
-            if (argumentTypes != null) {
-                return argumentTypes;
+            TypeMirror[] argTypes = getConverterArgTypes(supertype);
+            if (argTypes != null) {
+                return argTypes;
             }
         }
         return null;

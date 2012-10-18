@@ -29,8 +29,9 @@ import org.seasar.doma.Domain;
 import org.seasar.doma.EnumDomain;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.AptOptionException;
+import org.seasar.doma.internal.apt.AptIllegalOptionException;
 import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.mirror.DomainConvertersMirror;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.jdbc.util.MetaTypeUtil;
@@ -140,26 +141,37 @@ public class DomainType extends AbstractDataType {
                 if (className.isEmpty()) {
                     continue;
                 }
-                TypeElement e = ElementUtil.getTypeElement(className, env);
-                if (e == null) {
-                    throw new AptOptionException(
+                TypeElement convertersProviderElement = ElementUtil
+                        .getTypeElement(className, env);
+                if (convertersProviderElement == null) {
+                    throw new AptIllegalOptionException(
                             Message.DOMA4200.getMessage(className));
                 }
-                TypeMirror[] argumentTypes = getConverterArgumentTypes(
-                        e.asType(), env);
-                if (argumentTypes == null
-                        || !TypeMirrorUtil.isSameType(domainType,
-                                argumentTypes[0], env)) {
-                    continue;
+                DomainConvertersMirror convertersMirror = DomainConvertersMirror
+                        .newInstance(convertersProviderElement, env);
+                if (convertersMirror == null) {
+                    throw new AptIllegalOptionException(
+                            Message.DOMA4201.getMessage(className));
                 }
-                return new DomainInfo(argumentTypes[1], true);
+                for (TypeMirror converterType : convertersMirror
+                        .getValueValue()) {
+                    TypeMirror[] argTypes = getConverterArgTypes(converterType,
+                            env);
+                    if (argTypes == null
+                            || !TypeMirrorUtil.isSameType(domainType,
+                                    argTypes[0], env)) {
+                        continue;
+                    }
+                    TypeMirror valueType = argTypes[1];
+                    return new DomainInfo(valueType, true);
+                }
             }
         }
         return null;
     }
 
-    protected static TypeMirror[] getConverterArgumentTypes(
-            TypeMirror typeMirror, ProcessingEnvironment env) {
+    protected static TypeMirror[] getConverterArgTypes(TypeMirror typeMirror,
+            ProcessingEnvironment env) {
         for (TypeMirror supertype : env.getTypeUtils().directSupertypes(
                 typeMirror)) {
             if (!TypeMirrorUtil.isAssignable(supertype, DomainConverter.class,
@@ -176,10 +188,9 @@ public class DomainType extends AbstractDataType {
                 assertEquals(2, args.size());
                 return new TypeMirror[] { args.get(0), args.get(1) };
             }
-            TypeMirror[] argumentTypes = getConverterArgumentTypes(supertype,
-                    env);
-            if (argumentTypes != null) {
-                return argumentTypes;
+            TypeMirror[] argTypes = getConverterArgTypes(supertype, env);
+            if (argTypes != null) {
+                return argTypes;
             }
         }
         return null;

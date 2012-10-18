@@ -13,18 +13,15 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.apt;
+package org.seasar.doma.internal.apt.entity;
+
+import org.seasar.doma.DomainConverters;
 
 /**
  * @author taedium
  * 
  */
-public class AptOptionException extends RuntimeException {
-
-    private static final long serialVersionUID = 1L;
-
-    public AptOptionException(String message) {
-        super(message);
-    }
-
+@DomainConverters({ BranchConverter.class, PrimaryKeyConverter.class,
+        VersionNoConverter.class })
+public class DomainConvertersProvider {
 }
