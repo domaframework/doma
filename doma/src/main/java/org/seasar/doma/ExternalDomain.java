@@ -20,7 +20,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.seasar.doma.jdbc.domain.DomainConverter;
+
 /**
+ * 任意のValueObjectをドメインクラスとして扱うことを示します。
+ * <p>
+ * このアノテーションは、{@link DomainConverter} のサブタイプに注釈できます。
+ * 
  * @author taedium
  * @since 1.25.0
  */
