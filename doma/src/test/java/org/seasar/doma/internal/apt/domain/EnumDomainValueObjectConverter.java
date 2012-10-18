@@ -17,8 +17,7 @@ package org.seasar.doma.internal.apt.domain;
 
 import org.seasar.doma.EnumDomain;
 import org.seasar.doma.ExternalDomain;
-import org.seasar.doma.internal.apt.domain.EnumDomainConverter.Inner;
-import org.seasar.doma.internal.apt.domain.EnumDomainConverter.ValueObject;
+import org.seasar.doma.internal.apt.domain.EnumDomainValueObjectConverter.Inner;
 import org.seasar.doma.jdbc.domain.DomainConverter;
 
 /**
@@ -27,19 +26,17 @@ import org.seasar.doma.jdbc.domain.DomainConverter;
  */
 @SuppressWarnings("deprecation")
 @ExternalDomain
-public class EnumDomainConverter implements DomainConverter<ValueObject, Inner> {
+public class EnumDomainValueObjectConverter implements
+        DomainConverter<EnumDomainValueObject, Inner> {
 
     @Override
-    public Inner fromDomainToValue(ValueObject domain) {
+    public Inner fromDomainToValue(EnumDomainValueObject domain) {
         return null;
     }
 
     @Override
-    public ValueObject fromValueToDomain(Inner value) {
+    public EnumDomainValueObject fromValueToDomain(Inner value) {
         return null;
-    }
-
-    static class ValueObject {
     }
 
     @EnumDomain(valueType = String.class)

@@ -16,7 +16,6 @@
 package org.seasar.doma.internal.apt.domain;
 
 import org.seasar.doma.ExternalDomain;
-import org.seasar.doma.internal.apt.domain.NotPersistentValueObjectConverter.ValueObject;
 import org.seasar.doma.jdbc.domain.DomainConverter;
 
 /**
@@ -25,19 +24,16 @@ import org.seasar.doma.jdbc.domain.DomainConverter;
  */
 @ExternalDomain
 public class NotPersistentValueObjectConverter implements
-        DomainConverter<ValueObject, StringBuilder> {
+        DomainConverter<NotPersistentValueObject, StringBuilder> {
 
     @Override
-    public StringBuilder fromDomainToValue(ValueObject domain) {
+    public StringBuilder fromDomainToValue(NotPersistentValueObject domain) {
         return null;
     }
 
     @Override
-    public ValueObject fromValueToDomain(StringBuilder value) {
+    public NotPersistentValueObject fromValueToDomain(StringBuilder value) {
         return null;
-    }
-
-    static class ValueObject {
     }
 
 }

@@ -22,6 +22,7 @@ import java.util.List;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
@@ -52,61 +53,36 @@ public class ExternalDomainMetaFactory implements
     @Override
     public ExternalDomainMeta createTypeElementMeta(TypeElement convElement) {
         validateConverter(convElement);
-        TypeMirror[] argTypes = getConverterArgTypes(convElement
-                .asType());
+        TypeMirror[] argTypes = getConverterArgTypes(convElement.asType());
         if (argTypes == null) {
             throw new AptIllegalStateException(
                     "converter doesn't have type args: "
                             + convElement.getQualifiedName());
         }
-        TypeMirror domainType = argTypes[0];
-        TypeElement domainElement = TypeMirrorUtil.toTypeElement(domainType,
-                env);
-        if (domainElement == null) {
-            throw new AptIllegalStateException(domainType.toString());
-        }
         ExternalDomainMeta meta = new ExternalDomainMeta(convElement);
-        meta.setDomainElement(domainElement);
-
-        TypeMirror valueType = argTypes[1];
-        TypeElement valueElement = TypeMirrorUtil.toTypeElement(valueType, env);
-        if (valueElement == null) {
-            throw new AptIllegalStateException(valueType.toString());
-        }
-        meta.setValueElement(valueElement);
-
-        BasicType basicType = BasicType.newInstance(valueType, env);
-        if (basicType == null) {
-            throw new AptException(Message.DOMA4194, env, convElement,
-                    valueElement.getQualifiedName());
-        }
-        if (basicType.isEnum()) {
-            EnumDomainMirror enumDomainMirror = EnumDomainMirror.newInstance(
-                    valueElement, env);
-            if (enumDomainMirror != null) {
-                throw new AptException(Message.DOMA4195, env, convElement,
-                        basicType.getQualifiedName());
-            }
-        }
-        meta.setWrapperType(basicType.getWrapperType());
+        doDomainType(convElement, argTypes[0], meta);
+        doValueType(convElement, argTypes[1], meta);
         return meta;
     }
 
-    protected void validateConverter(TypeElement classElement) {
-        if (!TypeMirrorUtil.isAssignable(classElement.asType(),
+    protected void validateConverter(TypeElement convElement) {
+        if (!TypeMirrorUtil.isAssignable(convElement.asType(),
                 DomainConverter.class, env)) {
-            throw new AptException(Message.DOMA4191, env, classElement);
+            throw new AptException(Message.DOMA4191, env, convElement);
         }
-        if (classElement.getModifiers().contains(Modifier.ABSTRACT)) {
-            throw new AptException(Message.DOMA4192, env, classElement,
-                    classElement.getQualifiedName());
+        if (convElement.getNestingKind().isNested()) {
+            throw new AptException(Message.DOMA4198, env, convElement);
+        }
+        if (convElement.getModifiers().contains(Modifier.ABSTRACT)) {
+            throw new AptException(Message.DOMA4192, env, convElement,
+                    convElement.getQualifiedName());
         }
         ExecutableElement constructor = ElementUtil.getNoArgConstructor(
-                classElement, env);
+                convElement, env);
         if (constructor == null
                 || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
-            throw new AptException(Message.DOMA4193, env, classElement,
-                    classElement.getQualifiedName());
+            throw new AptException(Message.DOMA4193, env, convElement,
+                    convElement.getQualifiedName());
         }
     }
 
@@ -133,5 +109,49 @@ public class ExternalDomainMetaFactory implements
             }
         }
         return null;
+    }
+
+    protected void doDomainType(TypeElement convElement, TypeMirror domainType,
+            ExternalDomainMeta meta) {
+        TypeElement domainElement = TypeMirrorUtil.toTypeElement(domainType,
+                env);
+        if (domainElement == null) {
+            throw new AptIllegalStateException(domainType.toString());
+        }
+        if (domainElement.getNestingKind().isNested()) {
+            throw new AptException(Message.DOMA4199, env, convElement,
+                    domainElement.getQualifiedName());
+        }
+        PackageElement pkgElement = env.getElementUtils().getPackageOf(
+                domainElement);
+        if (pkgElement.isUnnamed()) {
+            throw new AptException(Message.DOMA4197, env, convElement,
+                    domainElement.getQualifiedName());
+        }
+        meta.setDomainElement(domainElement);
+    }
+
+    protected void doValueType(TypeElement convElement, TypeMirror valueType,
+            ExternalDomainMeta meta) {
+        TypeElement valueElement = TypeMirrorUtil.toTypeElement(valueType, env);
+        if (valueElement == null) {
+            throw new AptIllegalStateException(valueType.toString());
+        }
+        meta.setValueElement(valueElement);
+
+        BasicType basicType = BasicType.newInstance(valueType, env);
+        if (basicType == null) {
+            throw new AptException(Message.DOMA4194, env, convElement,
+                    valueElement.getQualifiedName());
+        }
+        if (basicType.isEnum()) {
+            EnumDomainMirror enumDomainMirror = EnumDomainMirror.newInstance(
+                    valueElement, env);
+            if (enumDomainMirror != null) {
+                throw new AptException(Message.DOMA4195, env, convElement,
+                        basicType.getQualifiedName());
+            }
+        }
+        meta.setWrapperType(basicType.getWrapperType());
     }
 }

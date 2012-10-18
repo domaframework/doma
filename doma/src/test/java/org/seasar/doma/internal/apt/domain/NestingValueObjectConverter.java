@@ -15,23 +15,28 @@
  */
 package org.seasar.doma.internal.apt.domain;
 
-import java.math.BigDecimal;
+import org.seasar.doma.ExternalDomain;
+import org.seasar.doma.internal.apt.domain.NestingValueObjectConverter.NestingValueObject;
+import org.seasar.doma.jdbc.domain.DomainConverter;
 
-import org.seasar.doma.Domain;
+/**
+ * @author taedium
+ * 
+ */
+@ExternalDomain
+public class NestingValueObjectConverter implements
+        DomainConverter<NestingValueObject, String> {
 
-public class Outer {
+    public static class NestingValueObject {
+    }
 
-    @Domain(valueType = BigDecimal.class)
-    public static class Inner {
+    @Override
+    public String fromDomainToValue(NestingValueObject domain) {
+        return null;
+    }
 
-        private final BigDecimal value;
-
-        public Inner(BigDecimal value) {
-            this.value = value;
-        }
-
-        public BigDecimal getValue() {
-            return value;
-        }
+    @Override
+    public NestingValueObject fromValueToDomain(String value) {
+        return null;
     }
 }

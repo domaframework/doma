@@ -72,10 +72,19 @@ public class ExternalDomainProcessorTest extends AptTestCase {
     public void testEnumDomain() throws Exception {
         ExternalDomainProcessor processor = new ExternalDomainProcessor();
         addProcessor(processor);
-        addCompilationUnit(EnumDomainConverter.class);
+        addCompilationUnit(EnumDomainValueObjectConverter.class);
         compile();
         assertFalse(getCompiledResult());
         assertMessage(Message.DOMA4195);
+    }
+
+    public void testNestingValueObjectConverter() throws Exception {
+        ExternalDomainProcessor processor = new ExternalDomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(NestingValueObjectConverter.class);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4199);
     }
 
     public void testValueObjectConverter() throws Exception {
@@ -95,4 +104,5 @@ public class ExternalDomainProcessorTest extends AptTestCase {
         }
         assertTrue(getCompiledResult());
     }
+
 }
