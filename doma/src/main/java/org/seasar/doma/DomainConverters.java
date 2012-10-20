@@ -25,15 +25,26 @@ import org.seasar.doma.jdbc.domain.DomainConverter;
 /**
  * {@link DomainConverter} を複数登録します。
  * <p>
- * このアノテーションの{@code value} 要素に指定される {@code DomainConverter} は
+ * このアノテーションの{@code value} 要素に指定される {@code DomainConverter} のクラスには
  * {@link ExternalDomain} が注釈されていないければいけません。
  * 
  * このアノテーションが注釈されたクラスの完全修飾名は、注釈処理のオプションに登録する必要があります。オプションのキーは
  * {@code domain.converters} です。オプションの指定方法については、<a
  * href="http://doma.seasar.org/reference/apt.html">注釈処理</a>を参照ください。
  * 
+ * <h5>例:</h5>
+ * 
+ * <pre>
+ * &#064;DomainConverters({ SalaryConverter.class, DayConverter.class,
+ *         LocationConverter.class })
+ * public class DomainConvertersProvider {
+ * }
+ * </pre>
+ * 
  * @author taedium
  * @since 1.25.0
+ * @see DomainConverter
+ * @see ExternalDomain
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

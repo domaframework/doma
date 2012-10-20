@@ -23,12 +23,37 @@ import java.lang.annotation.Target;
 import org.seasar.doma.jdbc.domain.DomainConverter;
 
 /**
- * 任意のValueObjectをドメインクラスとして扱うことを示します。
+ * 任意のクラスをドメインクラスとして扱うことを示します。
  * <p>
- * このアノテーションは、{@link DomainConverter} のサブタイプに注釈できます。
+ * 注釈されたクラスは次の制約を満たす必要があります。
+ * <ul>
+ * <li>{@link DomainConverter} のサブタイプである。
+ * <li>トップレベルのクラスである。
+ * <li>引数なしの {@code public} なコンストラクタを持つ。
+ * <li>具象クラスである。
+ * <li>スレッドセーフである。
+ * </ul>
+ * 
+ * <h5>例:</h5>
+ * 
+ * <pre>
+ * &#064;ExtenalDomain
+ * public class SalaryConverter implements DomainConverter&lt;Salary, BigDecimal&gt; {
+ * 
+ *     public BigDecimal fromDomainToValue(Salary domain) {
+ *         return domain.getValue();
+ *     }
+ * 
+ *     public Salary fromValueToDomain(BigDecimal value) {
+ *         return new Salary(value);
+ *     }
+ * }
+ * </pre>
  * 
  * @author taedium
  * @since 1.25.0
+ * @see DomainConverter
+ * @see DomainConverters
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
