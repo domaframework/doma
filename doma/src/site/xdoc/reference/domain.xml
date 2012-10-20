@@ -14,6 +14,7 @@
 						<li><a href="#ファクトリメソッドで生成する">ファクトリメソッドで生成する</a></li>
 					</ul>				
 				</li>
+				<li><a href="#外部ドメイン定義">外部ドメイン定義</a></li>
 				<li><a href="#利用例">利用例</a>
 					<ul>
 						<li><a href="#エンティティクラス">エンティテクラス</a></li>
@@ -173,6 +174,84 @@ public enum JobType {
     }
 }]]></source>
 			</subsection>
+		</section>
+		<section name="外部ドメイン定義">
+			<p>
+				ソースコードに手を加えられないなどの理由で任意の型をドメインクラスとして扱いたい場合は、外部ドメイン定義が使えます。
+			</p>
+			<p>
+				外部ドメイン定義は、 <a href="../apidocs/org/seasar/doma/jdbc/domain/DomainConverter.html"><code>DomainConverter</code></a> 
+				の実装クラスに <a href="../apidocs/org/seasar/doma/ExternalDomain.html"><code>@ExternalDomain</code></a> を注釈して示します。
+			</p>
+			<p>
+				<code>DomainConverter</code>の第1型パラメータにはドメインクラスとして扱いたい型、第2型パラメータには <a href="basic.html">基本型</a> を指定します。
+			</p>
+			<p>
+				<code>@ExternalDomain</code>が注釈された<code>DomainConverter</code>の実装クラスは以下の制約を満たす必要があります。
+			</p>
+			<ul>
+				<li>トップレベルのクラスである。</li>
+				<li>引数なしのpublicなコンストラクタを持つ。</li>
+				<li>具象クラスである。</li>
+				<li>スレッドセーフである。</li>
+			</ul>
+			<p>
+				例えば、次のような<code>PhoneNumber</code>というクラスがあり、ソースコードに手を加えられないとします。
+			</p>
+<source><![CDATA[package sample;
+
+public class PhoneNumber {
+
+    private final String value;
+
+    public PhoneNumber(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public String getAreaCode() {
+       ...
+    }
+}]]></source>
+			<p>
+				上記の<code>PhoneNumber</code>をドメインクラスとして扱うには、次のようなクラスを作成します。
+			</p>
+<source><![CDATA[package example.domain;
+
+import sample.PhoneNumber;
+
+@ExtenalDomain
+public class PhoneNumberConverter implements DomainConverter<PhoneNumber, String> {
+
+    public String fromDomainToValue(PhoneNumber domain) {
+        return domain.getValue();
+    }
+
+    public Salary fromValueToDomain(String value) {
+        return new PhoneNumber(value);
+    }
+}]]></source>
+				<p>
+					これで外部ドメイン定義は完成ですが、これだけではまだ利用できません。
+					外部ドメインの定義は注釈処理のオプションで指定する必要があります。
+				</p>
+				<p>
+					注釈処理のオプションで指定する前段階として、外部ドメイン定義を <a href="../apidocs/org/seasar/doma/DomainConverters.html"><code>@DomainConverters</code></a> で登録します。
+					<code>@DomainConverters</code> には複数の外部ドメイン定義を登録可能です。
+				</p>
+<source><![CDATA[package example.domain;
+
+@DomainConverters({ PhoneNumberConverter.class })
+public class DomainConvertersProvider {
+}]]></source>
+				<p>
+					そして、 <code>@DomainConverters</code> が注釈されたクラスの完全修飾名を注釈処理のオプションに指定します。
+					オプションのkeyは、「domain.converters」です。
+					オプションの指定の仕方については <a href="../apt.html">注釈処理</a> を参照してください。
+				</p>
 		</section>
 		<section name="利用例">
 			<subsection name="エンティティクラス">

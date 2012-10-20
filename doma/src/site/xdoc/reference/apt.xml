@@ -63,6 +63,13 @@
 					<td>Impl</td>
 				</tr>
 				<tr>
+					<td>domain.converters</td>
+					<td>任意の型と基本型を相互変換するDomainConverterのプロバイダとなるクラスの完全修飾名のカンマ区切り。
+					クラスは<a href="http://doma.seasar.org/apidocs/org/seasar/doma/DomainConverters.html"><code>org.seasar.doma.DomainConverters</code></a>
+					によって注釈されていないければいけない。</td>
+					<td></td>
+				</tr>
+				<tr>
 					<td>entity.field.prefix</td>
 					<td>@Entityが注釈されたクラスごとに生成されるタイプクラスで使用される。
 					タイプクラスのpublicなフィールド名のプレフィックス。
