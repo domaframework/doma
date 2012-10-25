@@ -250,7 +250,7 @@ public class DomainConvertersProvider {
 				<p>
 					そして、 <code>@DomainConverters</code> が注釈されたクラスの完全修飾名を注釈処理のオプションに指定します。
 					オプションのkeyは、「domain.converters」です。
-					オプションの指定の仕方については <a href="../apt.html">注釈処理</a> を参照してください。
+					オプションの指定の仕方については <a href="apt.html">注釈処理</a> を参照してください。
 				</p>
 		</section>
 		<section name="利用例">
