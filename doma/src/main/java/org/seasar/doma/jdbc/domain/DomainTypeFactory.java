@@ -87,6 +87,7 @@ public final class DomainTypeFactory {
      * @return {@link DomainType} のインスタンス、存在しない場合 {@code null}
      * @throws DomaNullPointerException
      *             引数が {@code null} の場合
+     * @since 1.25.0
      */
     public static <V, D> DomainType<V, D> getExternalDomainType(
             Class<D> domainClass) {
