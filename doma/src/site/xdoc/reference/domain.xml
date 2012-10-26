@@ -230,7 +230,7 @@ public class PhoneNumberConverter implements DomainConverter<PhoneNumber, String
         return domain.getValue();
     }
 
-    public Salary fromValueToDomain(String value) {
+    public PhoneNumber fromValueToDomain(String value) {
         return new PhoneNumber(value);
     }
 }]]></source>
