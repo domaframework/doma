@@ -63,6 +63,11 @@
 					<td>Impl</td>
 				</tr>
 				<tr>
+					<td>debug</td>
+					<td>注釈処理のデバッグ情報をログ出力するかどうか。「true」の場合、ログ出力を行う。</td>
+					<td>false</td>
+				</tr>
+				<tr>
 					<td>domain.converters</td>
 					<td>任意の型と基本型を相互変換するDomainConverterのプロバイダとなるクラスの完全修飾名のカンマ区切り。
 					クラスは<a href="http://doma.seasar.org/apidocs/org/seasar/doma/DomainConverters.html"><code>org.seasar.doma.DomainConverters</code></a>
@@ -83,9 +88,9 @@
 					<td>org.seasar.doma.expr.ExpressionFunctions</td>
 				</tr>
 				<tr>
-					<td>debug</td>
-					<td>注釈処理のデバッグ情報をログ出力するかどうか。「true」の場合、ログ出力を行う。</td>
-					<td>false</td>
+					<td>sql.validation</td>
+					<td>SQLファイルの存在チェックとSQLコメントの文法チェックを行う場合は、true。行わない場合は、false。</td>
+					<td>true</td>
 				</tr>
 			</table>
 			<subsection name="Eclipseでのオプション指定">
@@ -123,6 +128,8 @@
 </plugin>]]></source>
 				<p>
 					指定したいオプションが1つの場合は問題ありませんが、複数のオプションは<a href="http://jira.codehaus.org/browse/MCOMPILER-62">Mavenの制限</a>により指定できません。
+					複数のオプションを使いたい場合は、maven-processor-pluginの利用を検討してください。
+					maven-processor-pluginとmaven-compiler-pluginの併用方法については、<a href="app_build.html">アプリケーションのビルド方法</a>を参照してください。
 				</p>
 			</subsection>
 		</section>
