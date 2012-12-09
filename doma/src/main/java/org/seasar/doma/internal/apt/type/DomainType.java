@@ -28,8 +28,8 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.Domain;
 import org.seasar.doma.EnumDomain;
 import org.seasar.doma.internal.Constants;
-import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.AptIllegalOptionException;
+import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.mirror.DomainConvertersMirror;
 import org.seasar.doma.internal.apt.util.ElementUtil;
@@ -155,6 +155,12 @@ public class DomainType extends AbstractDataType {
                 }
                 for (TypeMirror converterType : convertersMirror
                         .getValueValue()) {
+                    // converterType does not contain adequate information in
+                    // eclipse incremental compile, so reload typeMirror
+                    converterType = reloadTypeMirror(converterType, env);
+                    if (converterType == null) {
+                        continue;
+                    }
                     TypeMirror[] argTypes = getConverterArgTypes(converterType,
                             env);
                     if (argTypes == null
@@ -168,6 +174,20 @@ public class DomainType extends AbstractDataType {
             }
         }
         return null;
+    }
+
+    protected static TypeMirror reloadTypeMirror(TypeMirror typeMirror,
+            ProcessingEnvironment env) {
+        TypeElement typeElement = TypeMirrorUtil.toTypeElement(typeMirror, env);
+        if (typeElement == null) {
+            return null;
+        }
+        String binaryName = ElementUtil.getBinaryName(typeElement, env);
+        typeElement = ElementUtil.getTypeElement(binaryName, env);
+        if (typeElement == null) {
+            return null;
+        }
+        return typeElement.asType();
     }
 
     protected static TypeMirror[] getConverterArgTypes(TypeMirror typeMirror,
