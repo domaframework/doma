@@ -31,6 +31,7 @@ import javax.tools.StandardLocation;
 
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.SqlValidator;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
@@ -53,6 +54,9 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
 
     protected void doSqlFiles(M queryMeta, ExecutableElement method,
             DaoMeta daoMeta) {
+        if (!Options.getSqlValidation(env)) {
+            return;
+        }
         String filePath = SqlFileUtil.buildPath(daoMeta.getDaoElement()
                 .getQualifiedName().toString(), queryMeta.getName());
         File file = getFile(queryMeta, method, filePath);

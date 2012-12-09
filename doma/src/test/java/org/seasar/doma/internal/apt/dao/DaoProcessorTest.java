@@ -666,4 +666,15 @@ public class DaoProcessorTest extends AptTestCase {
         assertGeneratedSource(target);
         assertTrue(getCompiledResult());
     }
+
+    public void testSqlValidationSkip() throws Exception {
+        addOption("-Asql.validation=false");
+        Class<?> target = SqlValidationSkipDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
 }

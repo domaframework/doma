@@ -43,6 +43,8 @@ public final class Options {
 
     public static final String DOMAIN_CONVERTERS = "domain.converters";
 
+    public static final String SQL_VALIDATION = "sql.validation";
+
     public static boolean isTestEnabled(ProcessingEnvironment env) {
         String test = env.getOptions().get(Options.TEST);
         return Boolean.valueOf(test).booleanValue();
@@ -98,6 +100,11 @@ public final class Options {
     public static String getDomainConverters(ProcessingEnvironment env) {
         String converters = env.getOptions().get(Options.DOMAIN_CONVERTERS);
         return converters != null ? converters : null;
+    }
+
+    public static boolean getSqlValidation(ProcessingEnvironment env) {
+        String v = env.getOptions().get(Options.SQL_VALIDATION);
+        return v != null ? Boolean.valueOf(v).booleanValue() : true;
     }
 
     protected static class Constants {
