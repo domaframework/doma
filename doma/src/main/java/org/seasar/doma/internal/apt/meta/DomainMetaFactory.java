@@ -24,9 +24,12 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.type.TypeVariable;
 import javax.lang.model.util.ElementFilter;
 
 import org.seasar.doma.internal.apt.AptException;
@@ -178,10 +181,10 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
 
     protected void validateAccessorMethod(TypeElement classElement,
             DomainMeta domainMeta) {
-        for (TypeElement t = classElement; t != null
-                && t.asType().getKind() != TypeKind.NONE; t = TypeMirrorUtil
-                .toTypeElement(t.getSuperclass(), env)) {
-            for (ExecutableElement method : ElementFilter.methodsIn(t
+        TypeElement typeElement = classElement;
+        TypeMirror typeMirror = classElement.asType();
+        for (; typeElement != null && typeMirror.getKind() != TypeKind.NONE;) {
+            for (ExecutableElement method : ElementFilter.methodsIn(typeElement
                     .getEnclosedElements())) {
                 if (!method.getSimpleName().contentEquals(
                         domainMeta.getAccessorMethod())) {
@@ -193,15 +196,59 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
                 if (!method.getParameters().isEmpty()) {
                     continue;
                 }
-                TypeMirror returnType = env.getTypeUtils().erasure(
-                        method.getReturnType());
-                if (env.getTypeUtils().isAssignable(returnType,
+                TypeMirror returnType = method.getReturnType();
+                if (env.getTypeUtils().isAssignable(
+                        env.getTypeUtils().erasure(returnType),
                         domainMeta.getValueType())) {
                     return;
                 }
+                TypeVariable typeVariable = TypeMirrorUtil.toTypeVariable(
+                        returnType, env);
+                if (typeVariable != null) {
+                    TypeMirror inferredReturnType = inferType(typeVariable,
+                            typeElement, typeMirror);
+                    if (inferredReturnType != null) {
+                        if (env.getTypeUtils().isAssignable(inferredReturnType,
+                                domainMeta.getValueType())) {
+                            return;
+                        }
+                    }
+                }
             }
+            typeMirror = typeElement.getSuperclass();
+            typeElement = TypeMirrorUtil.toTypeElement(typeMirror, env);
         }
         throw new AptException(Message.DOMA4104, env, classElement,
                 domainMeta.getAccessorMethod(), domainMeta.getValueType());
+    }
+
+    protected TypeMirror erasureReturnType(TypeMirror returnType) {
+        return env.getTypeUtils().erasure(returnType);
+    }
+
+    protected TypeMirror inferType(TypeVariable typeVariable,
+            TypeElement classElement, TypeMirror classMirror) {
+        DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(classMirror,
+                env);
+        if (declaredType == null) {
+            return null;
+        }
+        List<? extends TypeMirror> args = declaredType.getTypeArguments();
+        if (args.isEmpty()) {
+            return null;
+        }
+        int argsSize = args.size();
+        int index = 0;
+        for (TypeParameterElement typeParam : classElement.getTypeParameters()) {
+            if (index >= argsSize) {
+                break;
+            }
+            if (TypeMirrorUtil
+                    .isSameType(typeVariable, typeParam.asType(), env)) {
+                return args.get(index);
+            }
+            index++;
+        }
+        return null;
     }
 }

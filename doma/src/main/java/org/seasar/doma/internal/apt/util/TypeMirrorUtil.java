@@ -77,6 +77,19 @@ public final class TypeMirrorUtil {
         }, null);
     }
 
+    public static TypeVariable toTypeVariable(TypeMirror typeMirror,
+            ProcessingEnvironment env) {
+        assertNotNull(typeMirror, env);
+        return typeMirror.accept(new SimpleTypeVisitor6<TypeVariable, Void>() {
+
+            @Override
+            public TypeVariable visitTypeVariable(TypeVariable t, Void p) {
+                return t;
+            }
+
+        }, null);
+    }
+
     public static boolean isAssignable(TypeMirror lhs, Class<?> rhs,
             ProcessingEnvironment env) {
         assertNotNull(lhs, rhs, env);
