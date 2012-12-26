@@ -17,10 +17,12 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.lang.reflect.Method;
 import java.util.Iterator;
 
 import org.seasar.doma.internal.jdbc.entity.AbstractPostUpdateContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreUpdateContext;
+import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.PostUpdateContext;
@@ -129,13 +131,13 @@ public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
 
         protected void preUpdate() {
             PreUpdateContext context = new SqlFileBatchPreUpdateContext(
-                    entityType);
+                    entityType, method, config);
             entityType.preUpdate(currentEntity, context);
         }
 
         protected void postUpdate() {
             PostUpdateContext context = new SqlFileBatchPostUpdateContext(
-                    entityType);
+                    entityType, method, config);
             entityType.postUpdate(currentEntity, context);
         }
 
@@ -159,8 +161,9 @@ public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
     protected static class SqlFileBatchPreUpdateContext extends
             AbstractPreUpdateContext {
 
-        public SqlFileBatchPreUpdateContext(EntityType<?> entityType) {
-            super(entityType);
+        public SqlFileBatchPreUpdateContext(EntityType<?> entityType,
+                Method method, Config config) {
+            super(entityType, method, config);
         }
 
         @Override
@@ -178,8 +181,9 @@ public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
     protected static class SqlFileBatchPostUpdateContext extends
             AbstractPostUpdateContext {
 
-        public SqlFileBatchPostUpdateContext(EntityType<?> entityType) {
-            super(entityType);
+        public SqlFileBatchPostUpdateContext(EntityType<?> entityType,
+                Method method, Config config) {
+            super(entityType, method, config);
         }
 
         @Override

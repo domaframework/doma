@@ -17,10 +17,12 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.lang.reflect.Method;
 import java.sql.Statement;
 
 import org.seasar.doma.internal.jdbc.entity.AbstractPostInsertContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreInsertContext;
+import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.PostInsertContext;
@@ -83,12 +85,14 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
         }
 
         protected void preInsert() {
-            PreInsertContext context = new SqlFilePreInsertContext(entityType);
+            PreInsertContext context = new SqlFilePreInsertContext(entityType,
+                    method, config);
             entityType.preInsert(entity, context);
         }
 
         protected void postInsert() {
-            PostInsertContext context = new SqlFilePostInsertContext(entityType);
+            PostInsertContext context = new SqlFilePostInsertContext(
+                    entityType, method, config);
             entityType.postInsert(entity, context);
         }
 
@@ -97,16 +101,18 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
     protected static class SqlFilePreInsertContext extends
             AbstractPreInsertContext {
 
-        public SqlFilePreInsertContext(EntityType<?> entityType) {
-            super(entityType);
+        public SqlFilePreInsertContext(EntityType<?> entityType, Method method,
+                Config config) {
+            super(entityType, method, config);
         }
     }
 
     protected static class SqlFilePostInsertContext extends
             AbstractPostInsertContext {
 
-        public SqlFilePostInsertContext(EntityType<?> entityType) {
-            super(entityType);
+        public SqlFilePostInsertContext(EntityType<?> entityType,
+                Method method, Config config) {
+            super(entityType, method, config);
         }
     }
 }

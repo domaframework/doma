@@ -8,6 +8,10 @@ public class SqlFileSelectBasicDaoImpl extends org.seasar.doma.internal.jdbc.dao
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.SqlFileSelectBasicDao.class, "selectById", java.lang.Integer.class);
+
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.SqlFileSelectBasicDao.class, "selectByNameAndSalary", java.lang.String.class, java.math.BigDecimal.class, org.seasar.doma.jdbc.SelectOptions.class);
+
     /** */
     public SqlFileSelectBasicDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -55,6 +59,7 @@ public class SqlFileSelectBasicDaoImpl extends org.seasar.doma.internal.jdbc.dao
         entering("org.seasar.doma.internal.apt.dao.SqlFileSelectBasicDaoImpl", "selectById", id);
         try {
             org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
+            __query.setMethod(__method0);
             __query.setConfig(config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/SqlFileSelectBasicDao/selectById.sql");
             __query.addParameter("id", java.lang.Integer.class, id);
@@ -84,6 +89,7 @@ public class SqlFileSelectBasicDaoImpl extends org.seasar.doma.internal.jdbc.dao
                 throw new org.seasar.doma.DomaNullPointerException("options");
             }
             org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
+            __query.setMethod(__method1);
             __query.setConfig(config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/SqlFileSelectBasicDao/selectByNameAndSalary.sql");
             __query.setOptions(options);

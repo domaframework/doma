@@ -44,6 +44,7 @@ public class InsertCommandTest extends TestCase {
 
         AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(
                 _Emp.getSingletonInternal());
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
@@ -74,6 +75,7 @@ public class InsertCommandTest extends TestCase {
 
         AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(
                 _Emp.getSingletonInternal());
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");

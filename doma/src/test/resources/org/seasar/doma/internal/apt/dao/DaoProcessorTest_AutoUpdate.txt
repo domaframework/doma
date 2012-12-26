@@ -8,6 +8,8 @@ public class AutoUpdateDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstrac
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.AutoUpdateDao.class, "update", org.seasar.doma.internal.apt.entity.Emp.class);
+
     /** */
     public AutoUpdateDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -58,6 +60,7 @@ public class AutoUpdateDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstrac
                 throw new org.seasar.doma.DomaNullPointerException("entity");
             }
             org.seasar.doma.internal.jdbc.query.AutoUpdateQuery<org.seasar.doma.internal.apt.entity.Emp> __query = new org.seasar.doma.internal.jdbc.query.AutoUpdateQuery<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
+            __query.setMethod(__method0);
             __query.setConfig(config);
             __query.setEntity(entity);
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoUpdateDaoImpl");

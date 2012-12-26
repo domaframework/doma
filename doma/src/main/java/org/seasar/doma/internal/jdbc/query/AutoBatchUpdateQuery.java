@@ -17,6 +17,7 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -24,6 +25,7 @@ import org.seasar.doma.internal.jdbc.entity.AbstractPostUpdateContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreUpdateContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
+import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
@@ -72,7 +74,8 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
     }
 
     protected void preUpdate() {
-        PreUpdateContext context = new AutoBatchPreUpdateContext(entityType);
+        PreUpdateContext context = new AutoBatchPreUpdateContext(entityType,
+                method, config);
         entityType.preUpdate(currentEntity, context);
     }
 
@@ -163,7 +166,8 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
     }
 
     protected void postUpdate() {
-        PostUpdateContext context = new AutoBatchPostUpdateContext(entityType);
+        PostUpdateContext context = new AutoBatchPostUpdateContext(entityType,
+                method, config);
         entityType.postUpdate(currentEntity, context);
     }
 
@@ -183,8 +187,9 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
     protected static class AutoBatchPreUpdateContext extends
             AbstractPreUpdateContext {
 
-        public AutoBatchPreUpdateContext(EntityType<?> entityType) {
-            super(entityType);
+        public AutoBatchPreUpdateContext(EntityType<?> entityType,
+                Method method, Config config) {
+            super(entityType, method, config);
         }
 
         @Override
@@ -202,8 +207,9 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
     protected static class AutoBatchPostUpdateContext extends
             AbstractPostUpdateContext {
 
-        public AutoBatchPostUpdateContext(EntityType<?> entityType) {
-            super(entityType);
+        public AutoBatchPostUpdateContext(EntityType<?> entityType,
+                Method method, Config config) {
+            super(entityType, method, config);
         }
 
         @Override

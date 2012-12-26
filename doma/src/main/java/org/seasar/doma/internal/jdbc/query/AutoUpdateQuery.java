@@ -17,6 +17,7 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.Set;
 import org.seasar.doma.internal.jdbc.entity.AbstractPostUpdateContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreUpdateContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
+import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
@@ -68,7 +70,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
     protected void preUpdate() {
         List<EntityPropertyType<E, ?>> targetPropertyTypes = getTargetPropertyTypes();
         PreUpdateContext context = new AutoPreUpdateContext<E>(entityType,
-                targetPropertyTypes);
+                method, config, targetPropertyTypes);
         entityType.preUpdate(entity, context);
     }
 
@@ -192,7 +194,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
             targetPropertyTypes.add(versionPropertyType);
         }
         PostUpdateContext context = new AutoPostUpdateContext<E>(entityType,
-                targetPropertyTypes);
+                method, config, targetPropertyTypes);
         entityType.postUpdate(entity, context);
     }
 
@@ -222,9 +224,10 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
 
         protected final Set<String> changedPropertyNames;
 
-        public AutoPreUpdateContext(EntityType<E> entityType,
+        public AutoPreUpdateContext(EntityType<E> entityType, Method method,
+                Config config,
                 List<EntityPropertyType<E, ?>> targetPropertyTypes) {
-            super(entityType);
+            super(entityType, method, config);
             assertNotNull(targetPropertyTypes);
             changedPropertyNames = new HashSet<String>(
                     targetPropertyTypes.size());
@@ -250,9 +253,10 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
 
         protected final Set<String> changedPropertyNames;
 
-        public AutoPostUpdateContext(EntityType<E> entityType,
+        public AutoPostUpdateContext(EntityType<E> entityType, Method method,
+                Config config,
                 List<EntityPropertyType<E, ?>> targetPropertyTypes) {
-            super(entityType);
+            super(entityType, method, config);
             assertNotNull(targetPropertyTypes);
             changedPropertyNames = new HashSet<String>(
                     targetPropertyTypes.size());

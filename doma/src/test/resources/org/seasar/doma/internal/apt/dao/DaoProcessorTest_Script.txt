@@ -8,6 +8,10 @@ public class ScriptDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.ScriptDao.class, "createTables");
+
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.ScriptDao.class, "dropTables");
+
     /** */
     public ScriptDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -55,6 +59,7 @@ public class ScriptDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao
         entering("org.seasar.doma.internal.apt.dao.ScriptDaoImpl", "createTables");
         try {
             org.seasar.doma.internal.jdbc.query.SqlFileScriptQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileScriptQuery();
+            __query.setMethod(__method0);
             __query.setConfig(config);
             __query.setScriptFilePath("META-INF/org/seasar/doma/internal/apt/dao/ScriptDao/createTables.script");
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.ScriptDaoImpl");
@@ -77,6 +82,7 @@ public class ScriptDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao
         entering("org.seasar.doma.internal.apt.dao.ScriptDaoImpl", "dropTables");
         try {
             org.seasar.doma.internal.jdbc.query.SqlFileScriptQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileScriptQuery();
+            __query.setMethod(__method1);
             __query.setConfig(config);
             __query.setScriptFilePath("META-INF/org/seasar/doma/internal/apt/dao/ScriptDao/dropTables.script");
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.ScriptDaoImpl");

@@ -17,10 +17,12 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.lang.reflect.Method;
 import java.util.Iterator;
 
 import org.seasar.doma.internal.jdbc.entity.AbstractPostDeleteContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreDeleteContext;
+import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.PostDeleteContext;
@@ -118,13 +120,13 @@ public class SqlFileBatchDeleteQuery<E> extends SqlFileBatchModifyQuery<E>
 
         protected void preDelete() {
             PreDeleteContext context = new SqlFileBatchPreDeleteContext(
-                    entityType);
+                    entityType, method, config);
             entityType.preDelete(currentEntity, context);
         }
 
         protected void postDelete() {
             PostDeleteContext context = new SqlFileBatchPostDeleteContext(
-                    entityType);
+                    entityType, method, config);
             entityType.postDelete(currentEntity, context);
         }
 
@@ -140,16 +142,18 @@ public class SqlFileBatchDeleteQuery<E> extends SqlFileBatchModifyQuery<E>
     protected static class SqlFileBatchPreDeleteContext extends
             AbstractPreDeleteContext {
 
-        public SqlFileBatchPreDeleteContext(EntityType<?> entityType) {
-            super(entityType);
+        public SqlFileBatchPreDeleteContext(EntityType<?> entityType,
+                Method method, Config config) {
+            super(entityType, method, config);
         }
     }
 
     protected static class SqlFileBatchPostDeleteContext extends
             AbstractPostDeleteContext {
 
-        public SqlFileBatchPostDeleteContext(EntityType<?> entityType) {
-            super(entityType);
+        public SqlFileBatchPostDeleteContext(EntityType<?> entityType,
+                Method method, Config config) {
+            super(entityType, method, config);
         }
     }
 }

@@ -17,6 +17,7 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.lang.reflect.Method;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,6 +26,7 @@ import org.seasar.doma.internal.jdbc.entity.AbstractPostInsertContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreInsertContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
+import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
@@ -82,7 +84,8 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
     }
 
     protected void preInsert() {
-        PreInsertContext context = new AutoBatchPreInsertContext(entityType);
+        PreInsertContext context = new AutoBatchPreInsertContext(entityType,
+                method, config);
         entityType.preInsert(currentEntity, context);
     }
 
@@ -187,23 +190,26 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
     }
 
     protected void postInsert() {
-        PostInsertContext context = new AutoBatchPostInsertContext(entityType);
+        PostInsertContext context = new AutoBatchPostInsertContext(entityType,
+                method, config);
         entityType.postInsert(currentEntity, context);
     }
 
     protected static class AutoBatchPreInsertContext extends
             AbstractPreInsertContext {
 
-        public AutoBatchPreInsertContext(EntityType<?> entityType) {
-            super(entityType);
+        public AutoBatchPreInsertContext(EntityType<?> entityType,
+                Method method, Config config) {
+            super(entityType, method, config);
         }
     }
 
     protected static class AutoBatchPostInsertContext extends
             AbstractPostInsertContext {
 
-        public AutoBatchPostInsertContext(EntityType<?> entityType) {
-            super(entityType);
+        public AutoBatchPostInsertContext(EntityType<?> entityType,
+                Method method, Config config) {
+            super(entityType, method, config);
         }
     }
 }

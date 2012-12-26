@@ -17,6 +17,9 @@ package org.seasar.doma.internal.jdbc.entity;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.lang.reflect.Method;
+
+import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.entity.EntityPropertyNotDefinedException;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
@@ -28,8 +31,9 @@ import org.seasar.doma.jdbc.entity.PreUpdateContext;
 public abstract class AbstractPreUpdateContext extends
         AbstractEntityListenerContext implements PreUpdateContext {
 
-    protected AbstractPreUpdateContext(EntityType<?> entityType) {
-        super(entityType);
+    protected AbstractPreUpdateContext(EntityType<?> entityType, Method method,
+            Config config) {
+        super(entityType, method, config);
     }
 
     protected void validatePropertyDefined(String propertyName) {

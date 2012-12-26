@@ -8,6 +8,8 @@ public class FunctionDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractD
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.FunctionDao.class, "execute", int.class);
+
     /** */
     public FunctionDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -55,6 +57,7 @@ public class FunctionDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractD
         entering("org.seasar.doma.internal.apt.dao.FunctionDaoImpl", "execute", id);
         try {
             org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.util.List<java.util.Map<java.lang.String, java.lang.Object>>> __query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.util.List<java.util.Map<java.lang.String, java.lang.Object>>>();
+            __query.setMethod(__method0);
             __query.setConfig(config);
             __query.setFunctionName("execute");
             __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.MapListResultParameter(org.seasar.doma.MapKeyNamingType.CAMEL_CASE));

@@ -8,6 +8,8 @@ public class ClobFactoryDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.ClobFactoryDao.class, "create");
+
     /** */
     public ClobFactoryDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -55,6 +57,7 @@ public class ClobFactoryDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstra
         entering("org.seasar.doma.internal.apt.dao.ClobFactoryDaoImpl", "create");
         try {
             org.seasar.doma.internal.jdbc.query.ClobCreateQuery __query = new org.seasar.doma.internal.jdbc.query.ClobCreateQuery();
+            __query.setMethod(__method0);
             __query.setConfig(config);
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.ClobFactoryDaoImpl");
             __query.setCallerMethodName("create");

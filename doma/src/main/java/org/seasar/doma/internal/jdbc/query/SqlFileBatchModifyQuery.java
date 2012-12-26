@@ -17,6 +17,7 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -41,6 +42,8 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
     protected final Class<E> elementClass;
 
     protected final SqlKind kind;
+
+    protected Method method;
 
     protected Config config;
 
@@ -105,6 +108,10 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
                 kind, sqlFile.getPath(), evaluator);
         PreparedSql sql = sqlBuilder.build(sqlFile.getSqlNode());
         sqls.add(sql);
+    }
+
+    public void setMethod(Method method) {
+        this.method = method;
     }
 
     public void setConfig(Config config) {

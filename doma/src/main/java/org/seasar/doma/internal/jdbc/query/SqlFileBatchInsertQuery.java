@@ -17,11 +17,13 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.lang.reflect.Method;
 import java.sql.Statement;
 import java.util.Iterator;
 
 import org.seasar.doma.internal.jdbc.entity.AbstractPostInsertContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreInsertContext;
+import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.PostInsertContext;
@@ -104,13 +106,13 @@ public class SqlFileBatchInsertQuery<E> extends SqlFileBatchModifyQuery<E>
 
         protected void preInsert() {
             PreInsertContext context = new SqlFileBatchPreInsertContext(
-                    entityType);
+                    entityType, method, config);
             entityType.preInsert(currentEntity, context);
         }
 
         protected void postInsert() {
             PostInsertContext context = new SqlFileBatchPostInsertContext(
-                    entityType);
+                    entityType, method, config);
             entityType.postInsert(currentEntity, context);
         }
     }
@@ -118,16 +120,18 @@ public class SqlFileBatchInsertQuery<E> extends SqlFileBatchModifyQuery<E>
     protected static class SqlFileBatchPreInsertContext extends
             AbstractPreInsertContext {
 
-        public SqlFileBatchPreInsertContext(EntityType<?> entityType) {
-            super(entityType);
+        public SqlFileBatchPreInsertContext(EntityType<?> entityType,
+                Method method, Config config) {
+            super(entityType, method, config);
         }
     }
 
     protected static class SqlFileBatchPostInsertContext extends
             AbstractPostInsertContext {
 
-        public SqlFileBatchPostInsertContext(EntityType<?> entityType) {
-            super(entityType);
+        public SqlFileBatchPostInsertContext(EntityType<?> entityType,
+                Method method, Config config) {
+            super(entityType, method, config);
         }
     }
 }

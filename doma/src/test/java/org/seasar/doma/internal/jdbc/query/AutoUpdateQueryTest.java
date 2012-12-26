@@ -43,6 +43,7 @@ public class AutoUpdateQueryTest extends TestCase {
 
         AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
                 _Emp.getSingletonInternal());
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
@@ -62,6 +63,7 @@ public class AutoUpdateQueryTest extends TestCase {
 
         AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
                 _Emp.getSingletonInternal());
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
@@ -88,6 +90,7 @@ public class AutoUpdateQueryTest extends TestCase {
 
         AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
                 _Emp.getSingletonInternal());
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setNullExcluded(true);
@@ -115,6 +118,7 @@ public class AutoUpdateQueryTest extends TestCase {
 
         AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
                 _Emp.getSingletonInternal());
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setVersionIncluded(true);
@@ -141,6 +145,7 @@ public class AutoUpdateQueryTest extends TestCase {
 
         AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
                 _Emp.getSingletonInternal());
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setIncludedPropertyNames("name");
@@ -169,6 +174,7 @@ public class AutoUpdateQueryTest extends TestCase {
 
         AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
                 _Emp.getSingletonInternal());
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setExcludedPropertyNames("name");
@@ -194,6 +200,7 @@ public class AutoUpdateQueryTest extends TestCase {
 
         AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
                 _Emp.getSingletonInternal());
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");

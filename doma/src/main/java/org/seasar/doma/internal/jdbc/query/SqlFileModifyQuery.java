@@ -17,6 +17,7 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -37,6 +38,8 @@ import org.seasar.doma.jdbc.entity.EntityType;
 public abstract class SqlFileModifyQuery implements ModifyQuery {
 
     protected final SqlKind kind;
+
+    protected Method method;
 
     protected Config config;
 
@@ -73,6 +76,10 @@ public abstract class SqlFileModifyQuery implements ModifyQuery {
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
                 kind, sqlFile.getPath(), evaluator);
         sql = sqlBuilder.build(sqlFile.getSqlNode());
+    }
+
+    public void setMethod(Method method) {
+        this.method = method;
     }
 
     public void setConfig(Config config) {

@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.query;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 import org.seasar.doma.internal.jdbc.sql.PreparedSql;
@@ -40,6 +41,8 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
     protected String[] excludedPropertyNames = EMPTY_STRINGS;
 
     protected final EntityType<E> entityType;
+
+    protected Method method;
 
     protected Config config;
 
@@ -112,6 +115,10 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
             return true;
         }
         return true;
+    }
+
+    public void setMethod(Method method) {
+        this.method = method;
     }
 
     public void setConfig(Config config) {

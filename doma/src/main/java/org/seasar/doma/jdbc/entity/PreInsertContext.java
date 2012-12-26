@@ -15,6 +15,11 @@
  */
 package org.seasar.doma.jdbc.entity;
 
+import java.lang.reflect.Method;
+
+import org.seasar.doma.Insert;
+import org.seasar.doma.jdbc.Config;
+
 /**
  * 挿入処理の前処理のコンテキストです。
  * 
@@ -29,4 +34,21 @@ public interface PreInsertContext {
      * @return エンティティのメタタイプ
      */
     public EntityType<?> getEntityType();
+
+    /**
+     * {@link Insert} が注釈されたメソッドを返します。
+     * 
+     * @return メソッド
+     * @since 1.27.0
+     */
+    public Method getMethod();
+
+    /**
+     * JDBCに関する設定を返します。
+     * 
+     * @return JDBCに関する設定
+     * @since 1.27.0
+     */
+    public Config getConfig();
+
 }

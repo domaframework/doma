@@ -15,6 +15,9 @@
  */
 package org.seasar.doma.internal.jdbc.entity;
 
+import java.lang.reflect.Method;
+
+import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.PreDeleteContext;
 
@@ -25,7 +28,8 @@ import org.seasar.doma.jdbc.entity.PreDeleteContext;
 public class AbstractPreDeleteContext extends AbstractEntityListenerContext
         implements PreDeleteContext {
 
-    protected AbstractPreDeleteContext(EntityType<?> entityType) {
-        super(entityType);
+    protected AbstractPreDeleteContext(EntityType<?> entityType, Method method,
+            Config config) {
+        super(entityType, method, config);
     }
 }

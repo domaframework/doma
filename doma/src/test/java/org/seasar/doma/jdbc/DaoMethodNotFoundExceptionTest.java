@@ -13,23 +13,24 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.entity;
+package org.seasar.doma.jdbc;
 
-import java.lang.reflect.Method;
-
-import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.entity.PreInsertContext;
+import junit.framework.TestCase;
 
 /**
  * @author taedium
  * 
  */
-public class AbstractPreInsertContext extends AbstractEntityListenerContext
-        implements PreInsertContext {
+public class DaoMethodNotFoundExceptionTest extends TestCase {
 
-    protected AbstractPreInsertContext(EntityType<?> entityType, Method method,
-            Config config) {
-        super(entityType, method, config);
+    public void test() throws Exception {
+        Exception cause = new Exception("hoge");
+        DaoMethodNotFoundException e = new DaoMethodNotFoundException(cause,
+                "aaa", "bbb");
+        System.out.println(e.getMessage());
+        assertSame(cause, e.getCause());
+        assertEquals("aaa", e.getClassName());
+        assertEquals("bbb", e.getSignature());
     }
+
 }

@@ -17,6 +17,7 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +40,8 @@ import org.seasar.doma.wrapper.LongWrapper;
  * 
  */
 public class SqlFileSelectQuery implements SelectQuery {
+
+    protected Method method;
 
     protected Config config;
 
@@ -126,6 +129,10 @@ public class SqlFileSelectQuery implements SelectQuery {
 
     public void setOptions(SelectOptions options) {
         this.options = options;
+    }
+
+    public void setMethod(Method method) {
+        this.method = method;
     }
 
     public void setConfig(Config config) {

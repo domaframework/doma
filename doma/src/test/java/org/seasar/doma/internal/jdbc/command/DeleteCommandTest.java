@@ -47,6 +47,7 @@ public class DeleteCommandTest extends TestCase {
 
         AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(
                 _Emp.getSingletonInternal());
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
@@ -76,6 +77,7 @@ public class DeleteCommandTest extends TestCase {
         runtimeConfig.dataSource.connection = new MockConnection(ps);
         AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(
                 _Emp.getSingletonInternal());
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
@@ -98,6 +100,7 @@ public class DeleteCommandTest extends TestCase {
 
         AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(
                 _Emp.getSingletonInternal());
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");

@@ -8,6 +8,10 @@ public class DaoExtendsDaoImpl extends org.seasar.doma.internal.apt.dao.EmpDaoIm
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.DaoExtendsDao.class, "selectById", java.lang.Integer.class, org.seasar.doma.jdbc.SelectOptions.class);
+
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.DaoExtendsDao.class, "update2", example.entity.Emp.class);
+
     /** */
     public DaoExtendsDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -58,6 +62,7 @@ public class DaoExtendsDaoImpl extends org.seasar.doma.internal.apt.dao.EmpDaoIm
                 throw new org.seasar.doma.DomaNullPointerException("options");
             }
             org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
+            __query.setMethod(__method0);
             __query.setConfig(config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/DaoExtendsDao/selectById.sql");
             __query.setOptions(options);
@@ -88,6 +93,7 @@ public class DaoExtendsDaoImpl extends org.seasar.doma.internal.apt.dao.EmpDaoIm
                 throw new org.seasar.doma.DomaNullPointerException("entity");
             }
             org.seasar.doma.internal.jdbc.query.AutoUpdateQuery<example.entity.Emp> __query = new org.seasar.doma.internal.jdbc.query.AutoUpdateQuery<example.entity.Emp>(example.entity._Emp.getSingletonInternal());
+            __query.setMethod(__method1);
             __query.setConfig(config);
             __query.setEntity(entity);
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.DaoExtendsDaoImpl");

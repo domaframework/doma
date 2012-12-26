@@ -17,9 +17,12 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.lang.reflect.Method;
+
 import org.seasar.doma.internal.jdbc.entity.AbstractPostDeleteContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreDeleteContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
+import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
@@ -55,7 +58,8 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void preDelete() {
-        PreDeleteContext context = new AutoPreDeleteContext(entityType);
+        PreDeleteContext context = new AutoPreDeleteContext(entityType, method,
+                config);
         entityType.preDelete(entity, context);
     }
 
@@ -101,7 +105,8 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void postDelete() {
-        PostDeleteContext context = new AutoPostDeleteContext(entityType);
+        PostDeleteContext context = new AutoPostDeleteContext(entityType,
+                method, config);
         entityType.postDelete(entity, context);
     }
 
@@ -117,16 +122,18 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
     protected static class AutoPreDeleteContext extends
             AbstractPreDeleteContext {
 
-        public AutoPreDeleteContext(EntityType<?> entityType) {
-            super(entityType);
+        public AutoPreDeleteContext(EntityType<?> entityType, Method method,
+                Config config) {
+            super(entityType, method, config);
         }
     }
 
     protected static class AutoPostDeleteContext extends
             AbstractPostDeleteContext {
 
-        public AutoPostDeleteContext(EntityType<?> entityType) {
-            super(entityType);
+        public AutoPostDeleteContext(EntityType<?> entityType, Method method,
+                Config config) {
+            super(entityType, method, config);
         }
     }
 }

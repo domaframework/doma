@@ -44,6 +44,7 @@ public class UpdateCommandTest extends TestCase {
 
         AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
                 _Emp.getSingletonInternal());
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
@@ -76,6 +77,7 @@ public class UpdateCommandTest extends TestCase {
 
         AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
                 _Emp.getSingletonInternal());
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setCallerClassName("aaa");
@@ -100,6 +102,7 @@ public class UpdateCommandTest extends TestCase {
 
         AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(
                 _Emp.getSingletonInternal());
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
         query.setOptimisticLockExceptionSuppressed(true);

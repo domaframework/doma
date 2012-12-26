@@ -8,6 +8,8 @@ public class SqlFileBatchUpdateDaoImpl extends org.seasar.doma.internal.jdbc.dao
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.SqlFileBatchUpdateDao.class, "update", java.util.List.class);
+
     /** */
     public SqlFileBatchUpdateDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -58,6 +60,7 @@ public class SqlFileBatchUpdateDaoImpl extends org.seasar.doma.internal.jdbc.dao
                 throw new org.seasar.doma.DomaNullPointerException("names");
             }
             org.seasar.doma.internal.jdbc.query.SqlFileBatchUpdateQuery<java.lang.String> __query = new org.seasar.doma.internal.jdbc.query.SqlFileBatchUpdateQuery<java.lang.String>(java.lang.String.class);
+            __query.setMethod(__method0);
             __query.setConfig(config);
             __query.setElements(names);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/SqlFileBatchUpdateDao/update.sql");

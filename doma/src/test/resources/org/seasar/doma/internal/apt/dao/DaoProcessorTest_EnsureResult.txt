@@ -8,6 +8,10 @@ public class EnsureResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.EnsureResultDao.class, "selectById", java.lang.Integer.class, org.seasar.doma.jdbc.SelectOptions.class);
+
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.EnsureResultDao.class, "selectByNameAndSalary", java.lang.String.class, java.math.BigDecimal.class, org.seasar.doma.jdbc.SelectOptions.class);
+
     /** */
     public EnsureResultDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -58,6 +62,7 @@ public class EnsureResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
                 throw new org.seasar.doma.DomaNullPointerException("options");
             }
             org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
+            __query.setMethod(__method0);
             __query.setConfig(config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/EnsureResultDao/selectById.sql");
             __query.setOptions(options);
@@ -88,6 +93,7 @@ public class EnsureResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
                 throw new org.seasar.doma.DomaNullPointerException("options");
             }
             org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
+            __query.setMethod(__method1);
             __query.setConfig(config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/EnsureResultDao/selectByNameAndSalary.sql");
             __query.setOptions(options);

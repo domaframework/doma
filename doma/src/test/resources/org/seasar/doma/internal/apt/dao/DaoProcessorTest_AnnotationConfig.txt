@@ -10,6 +10,8 @@ public class AnnotationConfigDaoImpl extends org.seasar.doma.internal.jdbc.dao.A
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.AnnotationConfigDao.class, "insert", org.seasar.doma.internal.apt.entity.Emp.class);
+
     /**
      * @param config the config
      */
@@ -27,6 +29,7 @@ public class AnnotationConfigDaoImpl extends org.seasar.doma.internal.jdbc.dao.A
                 throw new org.seasar.doma.DomaNullPointerException("emp");
             }
             org.seasar.doma.internal.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.entity.Emp> __query = new org.seasar.doma.internal.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal());
+            __query.setMethod(__method0);
             __query.setConfig(config);
             __query.setEntity(emp);
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AnnotationConfigDaoImpl");

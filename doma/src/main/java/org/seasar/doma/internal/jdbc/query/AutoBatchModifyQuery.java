@@ -17,6 +17,7 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -47,6 +48,8 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
     protected String[] excludedPropertyNames = EMPTY_STRINGS;
 
     protected final EntityType<E> entityType;
+
+    protected Method method;
 
     protected Config config;
 
@@ -122,6 +125,10 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
             return true;
         }
         return true;
+    }
+
+    public void setMethod(Method method) {
+        this.method = method;
     }
 
     public void setConfig(Config config) {

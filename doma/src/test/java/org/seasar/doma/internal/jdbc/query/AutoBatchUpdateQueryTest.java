@@ -50,6 +50,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
 
         AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(
                 _Emp.getSingletonInternal());
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
@@ -73,6 +74,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
 
         AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(
                 _Emp.getSingletonInternal());
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setCallerClassName("aaa");
@@ -117,6 +119,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
 
         AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(
                 _Emp.getSingletonInternal());
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setVersionIncluded(true);
@@ -160,6 +163,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
 
         AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(
                 _Emp.getSingletonInternal());
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setIncludedPropertyNames("name");
@@ -203,6 +207,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
 
         AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(
                 _Emp.getSingletonInternal());
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp1, emp2));
         query.setExcludedPropertyNames("name");

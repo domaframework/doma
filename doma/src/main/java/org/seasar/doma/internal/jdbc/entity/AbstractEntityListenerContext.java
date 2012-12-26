@@ -17,6 +17,9 @@ package org.seasar.doma.internal.jdbc.entity;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.lang.reflect.Method;
+
+import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.entity.EntityType;
 
 /**
@@ -27,9 +30,16 @@ public abstract class AbstractEntityListenerContext {
 
     protected final EntityType<?> entityType;
 
-    protected AbstractEntityListenerContext(EntityType<?> entityType) {
-        assertNotNull(entityType);
+    protected final Method method;
+
+    protected final Config config;
+
+    protected AbstractEntityListenerContext(EntityType<?> entityType,
+            Method method, Config config) {
+        assertNotNull(entityType, method, config);
         this.entityType = entityType;
+        this.method = method;
+        this.config = config;
     }
 
     protected boolean isPropertyDefinedInternal(String propertyName) {
@@ -39,5 +49,13 @@ public abstract class AbstractEntityListenerContext {
 
     public EntityType<?> getEntityType() {
         return entityType;
+    }
+
+    public Method getMethod() {
+        return method;
+    }
+
+    public Config getConfig() {
+        return config;
     }
 }

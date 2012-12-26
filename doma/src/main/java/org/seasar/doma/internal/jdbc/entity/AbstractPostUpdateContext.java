@@ -17,6 +17,9 @@ package org.seasar.doma.internal.jdbc.entity;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.lang.reflect.Method;
+
+import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.entity.EntityPropertyNotDefinedException;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.PostUpdateContext;
@@ -28,8 +31,9 @@ import org.seasar.doma.jdbc.entity.PostUpdateContext;
 public abstract class AbstractPostUpdateContext extends
         AbstractEntityListenerContext implements PostUpdateContext {
 
-    protected AbstractPostUpdateContext(EntityType<?> entityType) {
-        super(entityType);
+    protected AbstractPostUpdateContext(EntityType<?> entityType,
+            Method method, Config config) {
+        super(entityType, method, config);
     }
 
     protected void validatePropertyDefined(String propertyName) {

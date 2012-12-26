@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.query;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,8 @@ import org.seasar.doma.jdbc.Config;
  * 
  */
 public abstract class AutoModuleQuery implements ModuleQuery {
+
+    protected Method method;
 
     protected Config config;
 
@@ -48,6 +51,10 @@ public abstract class AutoModuleQuery implements ModuleQuery {
 
     @Override
     public void complete() {
+    }
+
+    public void setMethod(Method method) {
+        this.method = method;
     }
 
     public void setConfig(Config config) {

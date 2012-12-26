@@ -15,7 +15,10 @@
  */
 package org.seasar.doma.jdbc.entity;
 
+import java.lang.reflect.Method;
+
 import org.seasar.doma.Update;
+import org.seasar.doma.jdbc.Config;
 
 /**
  * 更新処理の前処理のコンテキストです。
@@ -55,5 +58,21 @@ public interface PreUpdateContext {
      * @return エンティティのメタタイプ
      */
     public EntityType<?> getEntityType();
+
+    /**
+     * {@link Update} が注釈されたメソッドを返します。
+     * 
+     * @return メソッド
+     * @since 1.27.0
+     */
+    public Method getMethod();
+
+    /**
+     * JDBCに関する設定を返します。
+     * 
+     * @return JDBCに関する設定
+     * @since 1.27.0
+     */
+    public Config getConfig();
 
 }

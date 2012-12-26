@@ -17,6 +17,7 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.lang.reflect.Method;
 import java.net.URL;
 
 import org.seasar.doma.internal.Constants;
@@ -31,6 +32,8 @@ import org.seasar.doma.jdbc.Sql;
  */
 public class SqlFileScriptQuery implements ScriptQuery {
 
+    protected Method method;
+
     protected Config config;
 
     protected String scriptFilePath;
@@ -44,6 +47,10 @@ public class SqlFileScriptQuery implements ScriptQuery {
     protected boolean haltOnError;
 
     protected URL scriptFileUrl;
+
+    public void setMethod(Method method) {
+        this.method = method;
+    }
 
     public void setConfig(Config config) {
         this.config = config;

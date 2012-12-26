@@ -17,12 +17,14 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.lang.reflect.Method;
 import java.sql.Statement;
 import java.util.ArrayList;
 
 import org.seasar.doma.internal.jdbc.entity.AbstractPostInsertContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreInsertContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
+import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
@@ -66,7 +68,8 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void preInsert() {
-        PreInsertContext context = new AutoPreInsertContext(entityType);
+        PreInsertContext context = new AutoPreInsertContext(entityType, method,
+                config);
         entityType.preInsert(entity, context);
     }
 
@@ -164,7 +167,8 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void postInsert() {
-        PostInsertContext context = new AutoPostInsertContext(entityType);
+        PostInsertContext context = new AutoPostInsertContext(entityType,
+                method, config);
         entityType.postInsert(entity, context);
     }
 
@@ -175,16 +179,18 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
     protected static class AutoPreInsertContext extends
             AbstractPreInsertContext {
 
-        public AutoPreInsertContext(EntityType<?> entityType) {
-            super(entityType);
+        public AutoPreInsertContext(EntityType<?> entityType, Method method,
+                Config config) {
+            super(entityType, method, config);
         }
     }
 
     protected static class AutoPostInsertContext extends
             AbstractPostInsertContext {
 
-        public AutoPostInsertContext(EntityType<?> entityType) {
-            super(entityType);
+        public AutoPostInsertContext(EntityType<?> entityType, Method method,
+                Config config) {
+            super(entityType, method, config);
         }
     }
 }

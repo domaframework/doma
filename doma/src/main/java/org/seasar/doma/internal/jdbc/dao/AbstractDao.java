@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.dao;
 
+import java.lang.reflect.Method;
 import java.sql.Connection;
 
 import javax.sql.DataSource;
@@ -22,8 +23,12 @@ import javax.sql.DataSource;
 import org.seasar.doma.Dao;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.RuntimeConfig;
+import org.seasar.doma.internal.WrapException;
+import org.seasar.doma.internal.util.ClassUtil;
+import org.seasar.doma.internal.util.MethodUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.ConfigException;
+import org.seasar.doma.jdbc.DaoMethodNotFoundException;
 
 /**
  * {@link Dao} が注釈されたインタフェースの実装クラスのための骨格実装です。
@@ -190,4 +195,14 @@ public abstract class AbstractDao {
                 callerMethodName, e);
     }
 
+    public static <T> Method __getDeclaredMethod(Class<T> clazz, String name,
+            Class<?>... parameterTypes) {
+        try {
+            return ClassUtil.getDeclaredMethod(clazz, name, parameterTypes);
+        } catch (WrapException e) {
+            String signature = MethodUtil.createSignature(name, parameterTypes);
+            throw new DaoMethodNotFoundException(e.getCause(), clazz.getName(),
+                    signature);
+        }
+    }
 }

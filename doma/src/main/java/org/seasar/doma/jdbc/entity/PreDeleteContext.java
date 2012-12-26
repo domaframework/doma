@@ -15,6 +15,11 @@
  */
 package org.seasar.doma.jdbc.entity;
 
+import java.lang.reflect.Method;
+
+import org.seasar.doma.Delete;
+import org.seasar.doma.jdbc.Config;
+
 /**
  * 削除処理の前処理のコンテキストです。
  * 
@@ -29,4 +34,21 @@ public interface PreDeleteContext {
      * @return エンティティのメタタイプ
      */
     public EntityType<?> getEntityType();
+
+    /**
+     * {@link Delete} が注釈されたメソッドを返します。
+     * 
+     * @return メソッド
+     * @since 1.27.0
+     */
+    public Method getMethod();
+
+    /**
+     * JDBCに関する設定を返します。
+     * 
+     * @return JDBCに関する設定
+     * @since 1.27.0
+     */
+    public Config getConfig();
+
 }
