@@ -78,7 +78,7 @@ public class SqlFileScriptQuery implements ScriptQuery {
 
     @Override
     public void prepare() {
-        assertNotNull(config, scriptFilePath, callerClassName,
+        assertNotNull(method, config, scriptFilePath, callerClassName,
                 callerMethodName, blockDelimiter);
         assertTrue(scriptFilePath.startsWith(Constants.SCRIPT_PATH_PREFIX));
         assertTrue(scriptFilePath.endsWith(Constants.SCRIPT_PATH_SUFFIX));

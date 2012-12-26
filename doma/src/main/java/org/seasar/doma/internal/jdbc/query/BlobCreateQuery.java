@@ -29,7 +29,7 @@ public class BlobCreateQuery extends AbstractCreateQuery<Blob> {
 
     @Override
     public void prepare() {
-        assertNotNull(config, callerClassName, callerMethodName);
+        assertNotNull(method, config, callerClassName, callerMethodName);
     }
 
     @Override

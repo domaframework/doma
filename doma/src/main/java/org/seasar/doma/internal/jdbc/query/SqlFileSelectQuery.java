@@ -69,7 +69,8 @@ public class SqlFileSelectQuery implements SelectQuery {
 
     @Override
     public void prepare() {
-        assertNotNull(config, sqlFilePath, callerClassName, callerMethodName);
+        assertNotNull(method, config, sqlFilePath, callerClassName,
+                callerMethodName);
         prepareOptions();
         prepareSql();
         assertNotNull(sql);

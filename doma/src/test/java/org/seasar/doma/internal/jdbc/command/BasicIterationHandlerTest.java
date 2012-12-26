@@ -46,6 +46,7 @@ public class BasicIterationHandlerTest extends TestCase {
         resultSet.rows.add(new RowData("bbb"));
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
                 getName()));
@@ -77,6 +78,7 @@ public class BasicIterationHandlerTest extends TestCase {
         resultSet.rows.add(new RowData("bbb"));
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
                 getName()));
@@ -109,6 +111,7 @@ public class BasicIterationHandlerTest extends TestCase {
         resultSet.rows.add(new RowData("hoge", 10));
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
                 getName()));
@@ -142,6 +145,7 @@ public class BasicIterationHandlerTest extends TestCase {
         MockResultSet resultSet = new MockResultSet(metaData);
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
                 getName()));

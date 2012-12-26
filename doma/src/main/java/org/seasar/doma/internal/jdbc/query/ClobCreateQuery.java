@@ -29,7 +29,7 @@ public class ClobCreateQuery extends AbstractCreateQuery<Clob> {
 
     @Override
     public void prepare() {
-        assertNotNull(config, callerClassName, callerMethodName);
+        assertNotNull(method, config, callerClassName, callerMethodName);
     }
 
     @Override

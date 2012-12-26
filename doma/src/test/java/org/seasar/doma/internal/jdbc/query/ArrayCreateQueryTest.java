@@ -29,6 +29,7 @@ public class ArrayCreateQueryTest extends TestCase {
 
     public void testPrepare() throws Exception {
         ArrayCreateQuery query = new ArrayCreateQuery();
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(config);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");

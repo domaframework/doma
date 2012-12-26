@@ -31,6 +31,7 @@ public class SqlFileScriptQueryTest extends TestCase {
 
     public void testPrepare() throws Exception {
         SqlFileScriptQuery query = new SqlFileScriptQuery();
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(config);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
@@ -51,6 +52,7 @@ public class SqlFileScriptQueryTest extends TestCase {
     public void testPrepare_dbmsSpecific() throws Exception {
         config.dialect = new Mssql2008Dialect();
         SqlFileScriptQuery query = new SqlFileScriptQuery();
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(config);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
@@ -70,6 +72,7 @@ public class SqlFileScriptQueryTest extends TestCase {
 
     public void testPrepare_ScriptFileNotFoundException() throws Exception {
         SqlFileScriptQuery query = new SqlFileScriptQuery();
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(config);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");

@@ -31,7 +31,8 @@ public class AutoProcedureQuery extends AutoModuleQuery implements
 
     @Override
     public void prepare() {
-        assertNotNull(config, procedureName, callerClassName, callerMethodName);
+        assertNotNull(method, config, procedureName, callerClassName,
+                callerMethodName);
         prepareOptions();
         prepareSql();
         assertNotNull(sql);

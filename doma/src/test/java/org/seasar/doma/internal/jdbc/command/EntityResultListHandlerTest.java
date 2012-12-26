@@ -48,6 +48,7 @@ public class EntityResultListHandlerTest extends TestCase {
         resultSet.rows.add(new RowData(2, "bbb"));
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
                 getName()));
@@ -75,6 +76,7 @@ public class EntityResultListHandlerTest extends TestCase {
         MockResultSet resultSet = new MockResultSet(metaData);
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
                 getName()));

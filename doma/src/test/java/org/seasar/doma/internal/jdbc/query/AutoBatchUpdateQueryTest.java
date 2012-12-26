@@ -241,6 +241,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
     public void testIsExecutable() throws Exception {
         AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(
                 _Emp.getSingletonInternal());
+        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");

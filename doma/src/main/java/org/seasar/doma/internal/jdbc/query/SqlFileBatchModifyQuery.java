@@ -81,8 +81,8 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
 
     @Override
     public void prepare() {
-        assertNotNull(config, sqlFilePath, parameterName, callerClassName,
-                callerMethodName, elements, sqls);
+        assertNotNull(method, config, sqlFilePath, parameterName,
+                callerClassName, callerMethodName, elements, sqls);
     }
 
     protected void prepareSqlFile() {

@@ -17,7 +17,6 @@ package org.seasar.doma.internal.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -37,8 +36,6 @@ import org.seasar.doma.jdbc.SqlNode;
 public abstract class SqlModifyQuery implements ModifyQuery {
 
     protected final SqlKind kind;
-
-    protected Method method;
 
     protected Config config;
 
@@ -85,10 +82,6 @@ public abstract class SqlModifyQuery implements ModifyQuery {
 
     @Override
     public void complete() {
-    }
-
-    public void setMethod(Method method) {
-        this.method = method;
     }
 
     public void setConfig(Config config) {

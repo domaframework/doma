@@ -55,7 +55,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
 
     @Override
     public void prepare() {
-        assertNotNull(config, entityType, entity, callerClassName,
+        assertNotNull(method, config, entityType, entity, callerClassName,
                 callerMethodName);
         preUpdate();
         prepareIdAndVersionPropertyTypes();

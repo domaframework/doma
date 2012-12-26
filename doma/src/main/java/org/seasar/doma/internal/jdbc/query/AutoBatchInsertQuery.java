@@ -56,7 +56,8 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
 
     @Override
     public void prepare() {
-        assertNotNull(config, callerClassName, callerMethodName, entities, sqls);
+        assertNotNull(method, config, callerClassName, callerMethodName,
+                entities, sqls);
         Iterator<E> it = entities.iterator();
         if (it.hasNext()) {
             executable = true;

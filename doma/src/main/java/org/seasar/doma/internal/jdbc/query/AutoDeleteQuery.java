@@ -46,7 +46,8 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
 
     @Override
     public void prepare() {
-        assertNotNull(config, entityType, callerClassName, callerMethodName);
+        assertNotNull(method, config, entityType, callerClassName,
+                callerMethodName);
         executable = true;
         preDelete();
         prepareIdAndVersionPropertyTypes();
