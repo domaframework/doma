@@ -329,4 +329,24 @@ public class EntityProcessorTest extends AptTestCase {
         assertGeneratedSource(Dept.class);
         assertTrue(getCompiledResult());
     }
+
+    public void testIllegalIdProperty() throws Exception {
+        Class<?> target = IllegalIdPropertyEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4095);
+    }
+
+    public void testIllegalVersionProperty() throws Exception {
+        Class<?> target = IllegalVersionPropertyEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4093);
+    }
 }

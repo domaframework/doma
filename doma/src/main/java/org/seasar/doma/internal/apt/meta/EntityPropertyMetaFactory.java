@@ -35,7 +35,9 @@ import org.seasar.doma.internal.apt.mirror.ColumnMirror;
 import org.seasar.doma.internal.apt.mirror.SequenceGeneratorMirror;
 import org.seasar.doma.internal.apt.mirror.TableGeneratorMirror;
 import org.seasar.doma.internal.apt.type.BasicType;
+import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.DomainType;
+import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.message.Message;
@@ -65,12 +67,39 @@ public class EntityPropertyMetaFactory {
         EntityPropertyMeta propertyMeta = new EntityPropertyMeta(entityElement,
                 fieldElement, entityMeta.getNamingType(),
                 entityElement.equals(entityMeta.getEntityElement()), env);
+        doDataType(propertyMeta, fieldElement, entityMeta);
         doName(propertyMeta, fieldElement, entityMeta);
         doId(propertyMeta, fieldElement, entityMeta);
         doVersion(propertyMeta, fieldElement, entityMeta);
         doColumn(propertyMeta, fieldElement, entityMeta);
-        doDataType(propertyMeta, fieldElement, entityMeta);
         return propertyMeta;
+    }
+
+    protected void doDataType(EntityPropertyMeta propertyMeta,
+            VariableElement fieldElement, EntityMeta entityMeta) {
+        TypeMirror type = fieldElement.asType();
+        DomainType domainType = DomainType.newInstance(type, env);
+        if (domainType != null) {
+            propertyMeta.setDataType(domainType);
+        } else {
+            BasicType basicType = BasicType.newInstance(type, env);
+            if (basicType != null) {
+                propertyMeta.setDataType(basicType);
+            } else {
+                throw new AptException(Message.DOMA4096, env, fieldElement,
+                        type);
+            }
+        }
+    }
+
+    protected void doName(EntityPropertyMeta propertyMeta,
+            VariableElement fieldElement, EntityMeta entityMeta) {
+        String name = fieldElement.getSimpleName().toString();
+        if (name.startsWith(MetaConstants.RESERVED_NAME_PREFIX)) {
+            throw new AptException(Message.DOMA4025, env, fieldElement,
+                    MetaConstants.RESERVED_NAME_PREFIX);
+        }
+        propertyMeta.setName(name);
     }
 
     protected void doId(EntityPropertyMeta propertyMeta,
@@ -101,9 +130,7 @@ public class EntityPropertyMetaFactory {
         if (entityMeta.hasGeneratedIdPropertyMeta()) {
             throw new AptException(Message.DOMA4037, env, fieldElement);
         }
-        TypeMirror boxedType = TypeMirrorUtil.boxIfPrimitive(
-                fieldElement.asType(), env);
-        if (!TypeMirrorUtil.isAssignable(boxedType, Number.class, env)) {
+        if (!isNumber(propertyMeta.getDataType())) {
             throw new AptException(Message.DOMA4095, env, fieldElement);
         }
         switch (generatedValue.strategy()) {
@@ -227,16 +254,6 @@ public class EntityPropertyMetaFactory {
         }
     }
 
-    protected void doName(EntityPropertyMeta propertyMeta,
-            VariableElement fieldElement, EntityMeta entityMeta) {
-        String name = fieldElement.getSimpleName().toString();
-        if (name.startsWith(MetaConstants.RESERVED_NAME_PREFIX)) {
-            throw new AptException(Message.DOMA4025, env, fieldElement,
-                    MetaConstants.RESERVED_NAME_PREFIX);
-        }
-        propertyMeta.setName(name);
-    }
-
     protected void doVersion(EntityPropertyMeta propertyMeta,
             VariableElement fieldElement, EntityMeta entityMeta) {
         Version version = fieldElement.getAnnotation(Version.class);
@@ -244,9 +261,7 @@ public class EntityPropertyMetaFactory {
             if (entityMeta.hasVersionPropertyMeta()) {
                 throw new AptException(Message.DOMA4024, env, fieldElement);
             }
-            TypeMirror boxedType = TypeMirrorUtil.boxIfPrimitive(
-                    fieldElement.asType(), env);
-            if (!TypeMirrorUtil.isAssignable(boxedType, Number.class, env)) {
+            if (!isNumber(propertyMeta.getDataType())) {
                 throw new AptException(Message.DOMA4093, env, fieldElement);
             }
             propertyMeta.setVersion(true);
@@ -274,25 +289,26 @@ public class EntityPropertyMetaFactory {
         propertyMeta.setColumnMirror(columnMirror);
     }
 
-    protected void doDataType(EntityPropertyMeta propertyMeta,
-            VariableElement fieldElement, EntityMeta entityMeta) {
-        TypeMirror type = fieldElement.asType();
-        DomainType domainType = DomainType.newInstance(type, env);
-        if (domainType != null) {
-            propertyMeta.setDataType(domainType);
-        } else {
-            BasicType basicType = BasicType.newInstance(type, env);
-            if (basicType != null) {
-                propertyMeta.setDataType(basicType);
-            } else {
-                throw new AptException(Message.DOMA4096, env, fieldElement,
-                        type);
-            }
-        }
-    }
+    protected boolean isNumber(DataType dataType) {
+        Boolean isNumber = dataType.accept(
+                new SimpleDataTypeVisitor<Boolean, Void, RuntimeException>() {
 
-    protected boolean isNumber(TypeMirror typeMirror) {
-        return TypeMirrorUtil.isAssignable(typeMirror, Number.class, env);
+                    @Override
+                    public Boolean visitDomainType(DomainType dataType, Void p)
+                            throws RuntimeException {
+                        return dataType.getBasicType().accept(this, p);
+                    }
+
+                    @Override
+                    public Boolean visitBasicType(BasicType dataType, Void p)
+                            throws RuntimeException {
+                        TypeMirror boxedType = TypeMirrorUtil.boxIfPrimitive(
+                                dataType.getTypeMirror(), env);
+                        return TypeMirrorUtil.isAssignable(boxedType,
+                                Number.class, env);
+                    }
+                }, null);
+        return isNumber == Boolean.TRUE;
     }
 
 }
