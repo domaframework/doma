@@ -29,8 +29,4 @@ public class Dept {
     public PrimaryKey id;
 
     public Branch branch;
-
-    // TODO
-    // @Version
-    // public VersionNo versionNo;
 }

@@ -126,7 +126,9 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
         TypeMirror listenerType = entityMirror.getListenerValue();
         TypeMirror argumentType = getListenerArgumentType(listenerType);
         if (argumentType == null) {
-            throw new AptIllegalStateException("argumentType");
+            throw new AptException(Message.DOMA4202, env, classElement,
+                    entityMirror.getAnnotationMirror(),
+                    entityMirror.getListener());
         }
         if (!TypeMirrorUtil.isAssignable(classElement.asType(), argumentType,
                 env)) {
@@ -168,10 +170,14 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
             if (TypeMirrorUtil.isSameType(supertype, EntityListener.class, env)) {
                 DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(
                         supertype, env);
-                assertNotNull(declaredType);
+                if (declaredType == null) {
+                    throw new AptIllegalStateException("declaredType");
+                }
                 List<? extends TypeMirror> args = declaredType
                         .getTypeArguments();
-                assertEquals(1, args.size());
+                if (args.size() != 1) {
+                    return null;
+                }
                 return args.get(0);
             }
             TypeMirror argumentType = getListenerArgumentType(supertype);

@@ -353,6 +353,7 @@ public enum Message implements MessageResource {
     DOMA4199("org.seasar.doma.jdbc.domain.DomainConverterの第1型引数に指定された型[{0}]はトップレベルでなければいけません。"),
     DOMA4200("注釈処理のオプション domain.converters で指定されたクラス[{0}]が見つかりません。"),
     DOMA4201("注釈処理のオプション domain.converters で指定されたクラス[{0}]に@DomainConvertersが注釈されていません。"),
+    DOMA4202("org.seasar.doma.jdbc.entity.EntityListenerの型引数が解決されていません。"),
 
     // other
     DOMA5001("JDBCドライバがロードされていない可能性があります。JDBCドライバをロードするには、クラスパスが通されたMETA-INF/services/java.sql.DriverファイルにJDBCドライバのクラスの完全修飾名を記述してください。 ex) oracle.jdbc.driver.OracleDriver"),
