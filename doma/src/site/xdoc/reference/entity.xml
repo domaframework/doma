@@ -67,32 +67,32 @@ public class Employee {
 				<dl>
 					<dt>preDelete</dt>
 					<dd>
-						<code>@Delete</code>、または<code>@BatchDelete</code>が注釈されたDaoメソッドの実行時、削除処理の直前に呼び出されます。
+						<code>@Delete</code>、または<code>@BatchDelete</code>が注釈されたDaoメソッドでパラメータにエンティティが含まれる場合、削除処理の直前に呼び出されます。
 						ただし、使用するエンティティクラスにエンティティリスナーが指定されている必要があります。
 					</dd>
 					<dt>preInsert</dt>
 					<dd>
-						<code>@Insert</code>、または<code>@BatchInsert</code>が注釈されたDaoメソッドの実行時、挿入処理の直前に呼び出されます。
+						<code>@Insert</code>、または<code>@BatchInsert</code>が注釈されたDaoメソッドでパラメータにエンティティが含まれる場合、挿入処理の直前に呼び出されます。
 						ただし、使用するエンティティクラスにエンティティリスナーが指定されている必要があります。
 					</dd>
 					<dt>preUpdate</dt>
 					<dd>
-						<code>@Update</code>、または<code>@BatchUpdate</code>が注釈されたDaoメソッドの実行時、更新処理の直前に呼び出されます。
+						<code>@Update</code>、または<code>@BatchUpdate</code>が注釈されたDaoメソッドでパラメータにエンティティが含まれる場合、更新処理の直前に呼び出されます。
 						ただし、使用するエンティティクラスにエンティティリスナーが指定されている必要があります。
 					</dd>
 					<dt>postDelete</dt>
 					<dd>
-						<code>@Delete</code>、または<code>@BatchDelete</code>が注釈されたDaoメソッドの実行時、削除処理の直後に呼び出されます。
+						<code>@Delete</code>、または<code>@BatchDelete</code>が注釈されたDaoメソッドでパラメータにエンティティが含まれる場合、削除処理の直後に呼び出されます。
 						ただし、使用するエンティティクラスにエンティティリスナーが指定されている必要があります。
 					</dd>
 					<dt>postInsert</dt>
 					<dd>
-						<code>@Insert</code>、または<code>@BatchInsert</code>が注釈されたDaoメソッドの実行時、挿入処理の直後に呼び出されます。
+						<code>@Insert</code>、または<code>@BatchInsert</code>が注釈されたDaoメソッドでパラメータにエンティティが含まれる場合、挿入処理の直後に呼び出されます。
 						ただし、使用するエンティティクラスにエンティティリスナーが指定されている必要があります。
 					</dd>
 					<dt>postUpdate</dt>
 					<dd>
-						<code>@Update</code>、または<code>@BatchUpdate</code>が注釈されたDaoメソッドの実行時、更新処理の直後に呼び出されます。
+						<code>@Update</code>、または<code>@BatchUpdate</code>が注釈されたDaoメソッドでパラメータにエンティティが含まれる場合、更新処理の直後に呼び出されます。
 						ただし、使用するエンティティクラスにエンティティリスナーが指定されている必要があります。
 					</dd>
 				</dl>
@@ -125,6 +125,11 @@ public class Employee {
         ...
     }
 }]]></source>
+				<p>
+					<code>EntityListener</code>の各メソッドの2番目のパラメータは挿入、更新、削除が行われた場合のコンテキスト情報です。
+					このコンテキスト情報には、エンティティのメタクラス、Daoのメソッド、Daoの設定が含まれます。
+					たとえば、Daoのメソッドに独自のアノテーションをつけておくと、そのアノテーションの有無を見て特定のプロパティを更新するといったことが可能です。
+				</p>
 				<p>
 					<code>EntityListener</code>の実装クラスはpublicなデフォルトコンストラクタ（引数なしのコンストラクタ）を持たねばいけません。
 				</p>

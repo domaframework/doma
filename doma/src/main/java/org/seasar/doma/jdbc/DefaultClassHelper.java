@@ -25,6 +25,9 @@ import org.seasar.doma.internal.WrapException;
  */
 public class DefaultClassHelper implements ClassHelper {
 
+    /**
+     * このメソッドは {@link Class#forName(String)} を用いてクラスを取得します。
+     */
     @Override
     public <T> Class<T> forName(String className) throws Exception {
         try {

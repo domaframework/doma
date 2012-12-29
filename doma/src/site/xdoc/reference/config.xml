@@ -38,6 +38,7 @@
 				<li>JDBC関連のログ出力に使用するロギングフレームワークへのアダプタ</li>
 				<li>SQLファイルのキャッシュ戦略</li>
 				<li>トランザクション属性がREQUIRES_NEWであるトランザクションとの連動方法</li>
+				<li>使用するアプリケーションサーバやフレームワークに依存した仕方でのクラスの取得</li>
 				<li>例外メッセージに含めるSQLのタイプ</li>
 				<li>クエリ時に使用するパラメータ（タイムアウト、最大件数、フェッチ件数、バッチサイズ）</li>
 			</ul>
@@ -156,6 +157,18 @@
 					<code>@TableGenerator</code>を利用しない場合は、<code>NullRequiresNewController</code>を使用してもかまいません。
 					また、<code>@TableGenerator</code>を利用する場合であっても、識別子を採番するための更新ロックが問題にならない程度のトランザクション数であれば、<code>NullRequiresNewController</code>を使用してもかまいません。
 				</p>
+				<h4>クラスの扱いに関する設定</h4>
+				<p>
+					<a href ="../apidocs/org/seasar/doma/jdbc/ClassHelper.html"><code>org.seasar.doma.jdbc.ClassHelper</code></a>を、<code>getClassHelper</code>メソッドで返します。
+					<code>ClassHelper</code>はクラスの扱いに関してアプリケーションサーバやフレームワークの差異を抽象化するインタフェースです。
+					実装クラスには次のものがあります。
+				</p>
+				<ul>
+					<li><a href ="../apidocs/org/seasar/doma/jdbc/DefaultClassHelper.html"><code>org.seasar.doma.jdbc.DefaultClassHelper</code></a></li>
+				</ul>
+				<p>
+					<code>DefaultClassHelper</code>は、<code>java.lang.Class.forName(name)</code> を用いてクラスをロードします。
+				</p>
 				<h4>例外メッセージに含めるSQLのタイプの設定</h4>
 				<p>
 					例外メッセージに含めるSQLのタイプをあらわす、<a href ="../apidocs/org/seasar/doma/jdbc/ExceptionSqlLogType.html"><code>org.seasar.doma.jdbc.ExceptionSqlLogType</code></a>を<code>getExceptionSqlLogType</code>メソッドで返します。
@@ -221,6 +234,10 @@
 					<tr>
 						<td>REQUIRES_NEWの属性をもつトランザクションを制御するための設定</td>
 						<td><code>org.seasar.doma.jdbc.NullRequiresNewController</code></td>
+					</tr>
+					<tr>
+						<td>クラスの扱いに関する設定</td>
+						<td><code>org.seasar.doma.jdbc.DefaultClassHelper</code></td>
 					</tr>
 					<tr>
 						<td>例外メッセージに含めるSQLのタイプの設定</td>
