@@ -22,6 +22,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.seasar.doma.internal.WrapException;
+import org.seasar.doma.jdbc.ClassHelper;
 
 /**
  * @author taedium
@@ -39,11 +40,19 @@ public final class ClassUtil {
         }
     }
 
+    /**
+     * @deprecated クラスのロードには {@link ClassHelper#forName(String)} を使ってください。
+     */
+    @Deprecated
     public static <T> T newInstance(String name) throws WrapException {
         Class<T> clazz = forName(name);
         return newInstance(clazz);
     }
 
+    /**
+     * @deprecated {@link ClassHelper#forName(String)} を使ってください。
+     */
+    @Deprecated
     public static <T> Class<T> forName(String name) throws WrapException {
         try {
             @SuppressWarnings("unchecked")

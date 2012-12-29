@@ -100,6 +100,8 @@ import org.seasar.doma.wrapper.Wrapper;
 @SuppressWarnings("deprecation")
 public class SelectBuilder {
 
+    private final Config config;
+
     private final BuildingHelper helper;
 
     private final SqlSelectQuery query;
@@ -107,6 +109,7 @@ public class SelectBuilder {
     private final ParamIndex paramIndex;
 
     private SelectBuilder(Config config) {
+        this.config = config;
         this.helper = new BuildingHelper();
         this.query = new SqlSelectQuery();
         this.query.setConfig(config);
@@ -114,8 +117,9 @@ public class SelectBuilder {
         this.paramIndex = new ParamIndex();
     }
 
-    private SelectBuilder(BuildingHelper builder, SqlSelectQuery query,
-            ParamIndex parameterIndex) {
+    private SelectBuilder(Config config, BuildingHelper builder,
+            SqlSelectQuery query, ParamIndex parameterIndex) {
+        this.config = config;
         this.helper = builder;
         this.query = query;
         this.paramIndex = parameterIndex;
@@ -151,7 +155,7 @@ public class SelectBuilder {
             throw new DomaNullPointerException("sql");
         }
         helper.appendSqlWithLineSeparator(sql);
-        return new SubsequentSelectBuilder(helper, query, paramIndex);
+        return new SubsequentSelectBuilder(config, helper, query, paramIndex);
     }
 
     /**
@@ -161,7 +165,7 @@ public class SelectBuilder {
      */
     public SelectBuilder removeLast() {
         helper.removeLast();
-        return new SubsequentSelectBuilder(helper, query, paramIndex);
+        return new SubsequentSelectBuilder(config, helper, query, paramIndex);
     }
 
     /**
@@ -185,7 +189,7 @@ public class SelectBuilder {
         }
         helper.appendParam(new Param(paramClass, param, paramIndex));
         paramIndex.increment();
-        return new SubsequentSelectBuilder(helper, query, paramIndex);
+        return new SubsequentSelectBuilder(config, helper, query, paramIndex);
     }
 
     /**
@@ -267,18 +271,25 @@ public class SelectBuilder {
     private <R> ResultSetHandler<R> createSingleResultHanlder(
             Class<R> resultClass) {
         if (resultClass.isAnnotationPresent(Entity.class)) {
-            EntityType<R> entityType = EntityTypeFactory
-                    .getEntityType(resultClass);
+            EntityType<R> entityType = EntityTypeFactory.getEntityType(
+                    resultClass, config.getClassHelper());
             return new EntitySingleResultHandler<R>(entityType);
         } else if (resultClass.isAnnotationPresent(Domain.class)
                 || resultClass.isAnnotationPresent(EnumDomain.class)) {
-            DomainType<?, R> domainType = DomainTypeFactory
-                    .getDomainType(resultClass);
+            DomainType<?, R> domainType = DomainTypeFactory.getDomainType(
+                    resultClass, config.getClassHelper());
             return new DomainSingleResultHandler<R>(domainType);
+        } else {
+            DomainType<?, R> domainType = DomainTypeFactory
+                    .getExternalDomainType(resultClass, config.getClassHelper());
+            if (domainType != null) {
+                return new DomainSingleResultHandler<R>(domainType);
+            }
         }
         try {
             @SuppressWarnings("unchecked")
-            Wrapper<R> wrapper = (Wrapper<R>) Wrappers.wrap(null, resultClass);
+            Wrapper<R> wrapper = (Wrapper<R>) Wrappers.wrap(null, resultClass,
+                    config.getClassHelper());
             return new BasicSingleResultHandler<R>(wrapper,
                     resultClass.isPrimitive());
         } catch (WrapperException e) {
@@ -354,18 +365,25 @@ public class SelectBuilder {
     private <R> ResultSetHandler<List<R>> createResultListHanlder(
             Class<R> resultClass) {
         if (resultClass.isAnnotationPresent(Entity.class)) {
-            EntityType<R> entityType = EntityTypeFactory
-                    .getEntityType(resultClass);
+            EntityType<R> entityType = EntityTypeFactory.getEntityType(
+                    resultClass, config.getClassHelper());
             return new EntityResultListHandler<R>(entityType);
         } else if (resultClass.isAnnotationPresent(Domain.class)
                 || resultClass.isAnnotationPresent(EnumDomain.class)) {
-            DomainType<?, R> domainType = DomainTypeFactory
-                    .getDomainType(resultClass);
+            DomainType<?, R> domainType = DomainTypeFactory.getDomainType(
+                    resultClass, config.getClassHelper());
             return new DomainResultListHandler<R>(domainType);
+        } else {
+            DomainType<?, R> domainType = DomainTypeFactory
+                    .getExternalDomainType(resultClass, config.getClassHelper());
+            if (domainType != null) {
+                return new DomainResultListHandler<R>(domainType);
+            }
         }
         try {
             @SuppressWarnings("unchecked")
-            Wrapper<R> wrapper = (Wrapper<R>) Wrappers.wrap(null, resultClass);
+            Wrapper<R> wrapper = (Wrapper<R>) Wrappers.wrap(null, resultClass,
+                    config.getClassHelper());
             return new BasicResultListHandler<R>(wrapper);
         } catch (WrapperException e) {
             throw new DomaIllegalArgumentException("resultClass",
@@ -449,20 +467,28 @@ public class SelectBuilder {
     private <R, T> ResultSetHandler<R> createIterationHanlder(
             Class<T> targetClass, IterationCallback<R, T> iterationCallback) {
         if (targetClass.isAnnotationPresent(Entity.class)) {
-            EntityType<T> entityType = EntityTypeFactory
-                    .getEntityType(targetClass);
+            EntityType<T> entityType = EntityTypeFactory.getEntityType(
+                    targetClass, config.getClassHelper());
             return new EntityIterationHandler<R, T>(entityType,
                     iterationCallback);
         } else if (targetClass.isAnnotationPresent(Domain.class)
                 || targetClass.isAnnotationPresent(EnumDomain.class)) {
-            DomainType<?, T> domainType = DomainTypeFactory
-                    .getDomainType(targetClass);
+            DomainType<?, T> domainType = DomainTypeFactory.getDomainType(
+                    targetClass, config.getClassHelper());
             return new DomainIterationHandler<R, T>(domainType,
                     iterationCallback);
+        } else {
+            DomainType<?, T> domainType = DomainTypeFactory
+                    .getExternalDomainType(targetClass, config.getClassHelper());
+            if (domainType != null) {
+                return new DomainIterationHandler<R, T>(domainType,
+                        iterationCallback);
+            }
         }
         try {
             @SuppressWarnings("unchecked")
-            Wrapper<T> wrapper = (Wrapper<T>) Wrappers.wrap(null, targetClass);
+            Wrapper<T> wrapper = (Wrapper<T>) Wrappers.wrap(null, targetClass,
+                    config.getClassHelper());
             return new BasicIterationHandler<R, T>(wrapper, iterationCallback);
         } catch (WrapperException e) {
             throw new DomaIllegalArgumentException("resultClass",
@@ -598,9 +624,9 @@ public class SelectBuilder {
 
     private static class SubsequentSelectBuilder extends SelectBuilder {
 
-        private SubsequentSelectBuilder(BuildingHelper builder,
+        private SubsequentSelectBuilder(Config config, BuildingHelper builder,
                 SqlSelectQuery query, ParamIndex paramIndex) {
-            super(builder, query, paramIndex);
+            super(config, builder, query, paramIndex);
         }
 
         @Override

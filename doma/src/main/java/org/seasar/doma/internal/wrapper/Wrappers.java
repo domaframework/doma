@@ -30,6 +30,7 @@ import java.sql.Timestamp;
 import org.seasar.doma.Domain;
 import org.seasar.doma.EnumDomain;
 import org.seasar.doma.internal.util.ClassUtil;
+import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.jdbc.domain.DomainTypeFactory;
 import org.seasar.doma.message.Message;
@@ -71,12 +72,15 @@ public final class Wrappers {
      *            値
      * @param valueClass
      *            値クラス
+     * @param classHelper
+     *            クラスヘルパー
      * @return ラッパー
      * @throws WrapperException
      *             ラップに失敗した場合
      */
-    public static Wrapper<?> wrap(Object value, Class<?> valueClass) {
-        assertNotNull(valueClass);
+    public static Wrapper<?> wrap(Object value, Class<?> valueClass,
+            ClassHelper classHelper) {
+        assertNotNull(valueClass, classHelper);
         Class<?> boxedClass = ClassUtil
                 .toBoxedPrimitiveTypeIfPossible(valueClass);
         assertTrue(value == null || boxedClass.isInstance(value));
@@ -86,7 +90,7 @@ public final class Wrappers {
         }
         Wrapper<?> result = wrapBasicObject(value, boxedClass);
         if (result == null) {
-            result = wrapDomainObject(value, boxedClass);
+            result = wrapDomainObject(value, boxedClass, classHelper);
             if (result == null) {
                 result = wrapEnumObject(value, boxedClass);
                 if (result == null) {
@@ -195,16 +199,20 @@ public final class Wrappers {
      *            値
      * @param valueClass
      *            値クラス
+     * @param classHelper
+     *            クラスヘルパー
      * @return ラッパー、値がドメインクラスのオブジェクトでない場合 {@code null}
      */
     protected static <V, D> Wrapper<?> wrapDomainObject(Object value,
-            Class<D> valueClass) {
+            Class<D> valueClass, ClassHelper classHelper) {
         DomainType<V, D> domainType;
         if (valueClass.isAnnotationPresent(Domain.class)
                 || valueClass.isAnnotationPresent(EnumDomain.class)) {
-            domainType = DomainTypeFactory.getDomainType(valueClass);
+            domainType = DomainTypeFactory.getDomainType(valueClass,
+                    classHelper);
         } else {
-            domainType = DomainTypeFactory.getExternalDomainType(valueClass);
+            domainType = DomainTypeFactory.getExternalDomainType(valueClass,
+                    classHelper);
         }
         if (domainType == null) {
             return null;

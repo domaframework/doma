@@ -606,7 +606,7 @@ public class NodePreparedSqlBuilder implements
     protected Wrapper<?> wrap(SqlLocation location, String bindVariableText,
             Object value, Class<?> valueClass) {
         try {
-            return Wrappers.wrap(value, valueClass);
+            return Wrappers.wrap(value, valueClass, config.getClassHelper());
         } catch (WrapperException e) {
             throw new JdbcException(Message.DOMA2118, e, location.getSql(),
                     location.getLineNumber(), location.getPosition(),

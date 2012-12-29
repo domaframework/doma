@@ -47,6 +47,13 @@ public abstract class DomaAbstractConfig implements Config {
     protected static RequiresNewController defaultRequiresNewController = new NullRequiresNewController();
 
     /**
+     * クラスのヘルパー
+     * 
+     * @since 1.27.0
+     */
+    protected static ClassHelper defaultClassHelper = new DefaultClassHelper();
+
+    /**
      * インスタンスを構築します。
      */
     protected DomaAbstractConfig() {
@@ -70,6 +77,11 @@ public abstract class DomaAbstractConfig implements Config {
     @Override
     public RequiresNewController getRequiresNewController() {
         return defaultRequiresNewController;
+    }
+
+    @Override
+    public ClassHelper getClassHelper() {
+        return defaultClassHelper;
     }
 
     @Override

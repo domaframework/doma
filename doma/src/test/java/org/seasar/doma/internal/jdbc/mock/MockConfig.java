@@ -17,7 +17,9 @@ package org.seasar.doma.internal.jdbc.mock;
 
 import javax.sql.DataSource;
 
+import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.DefaultClassHelper;
 import org.seasar.doma.jdbc.ExceptionSqlLogType;
 import org.seasar.doma.jdbc.GreedyCacheSqlFileRepository;
 import org.seasar.doma.jdbc.JdbcLogger;
@@ -43,6 +45,8 @@ public class MockConfig implements Config {
     protected JdbcLogger sqlLogger = new UtilLoggingJdbcLogger();
 
     protected RequiresNewController requiresNewController = new NullRequiresNewController();
+
+    protected ClassHelper classHelper = new DefaultClassHelper();
 
     protected ExceptionSqlLogType exceptionSqlLogType = ExceptionSqlLogType.FORMATTED_SQL;
 
@@ -74,6 +78,11 @@ public class MockConfig implements Config {
     @Override
     public RequiresNewController getRequiresNewController() {
         return requiresNewController;
+    }
+
+    @Override
+    public ClassHelper getClassHelper() {
+        return classHelper;
     }
 
     @Override

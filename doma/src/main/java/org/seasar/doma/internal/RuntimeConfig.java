@@ -19,11 +19,12 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import javax.sql.DataSource;
 
+import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.ExceptionSqlLogType;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.SqlFileRepository;
-import org.seasar.doma.jdbc.ExceptionSqlLogType;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
@@ -75,6 +76,11 @@ public class RuntimeConfig implements Config {
     @Override
     public RequiresNewController getRequiresNewController() {
         return config.getRequiresNewController();
+    }
+
+    @Override
+    public ClassHelper getClassHelper() {
+        return config.getClassHelper();
     }
 
     @Override

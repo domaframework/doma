@@ -83,6 +83,14 @@ public interface Config {
     RequiresNewController getRequiresNewController();
 
     /**
+     * クラスのヘルパーを返します。
+     * 
+     * @return クラスのヘルパー
+     * @since 1.27.0
+     */
+    ClassHelper getClassHelper();
+
+    /**
      * 例外に含めるSQLログのタイプを返します。
      * 
      * @return SQLログのタイプ

@@ -27,6 +27,8 @@ import java.sql.Timestamp;
 
 import junit.framework.TestCase;
 
+import org.seasar.doma.jdbc.ClassHelper;
+import org.seasar.doma.jdbc.DefaultClassHelper;
 import org.seasar.doma.wrapper.EnumWrapper;
 import org.seasar.doma.wrapper.IntegerWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
@@ -41,59 +43,71 @@ import example.domain.PhoneNumber;
  */
 public class WrappersTest extends TestCase {
 
+    private final ClassHelper classHelper = new DefaultClassHelper();
+
     public void testWrap() throws Exception {
-        assertNotNull(Wrappers.wrap(true, boolean.class));
-        assertNotNull(Wrappers.wrap(true, Boolean.class));
-        assertNotNull(Wrappers.wrap((byte) 1, byte.class));
-        assertNotNull(Wrappers.wrap(new Byte((byte) 1), Byte.class));
-        assertNotNull(Wrappers.wrap((short) 1, short.class));
-        assertNotNull(Wrappers.wrap(new Short((short) 1), Short.class));
-        assertNotNull(Wrappers.wrap(1, int.class));
-        assertNotNull(Wrappers.wrap(new Integer(1), Integer.class));
-        assertNotNull(Wrappers.wrap(1L, long.class));
-        assertNotNull(Wrappers.wrap(new Long(1), Long.class));
-        assertNotNull(Wrappers.wrap(1f, float.class));
-        assertNotNull(Wrappers.wrap(new Float(1), Float.class));
-        assertNotNull(Wrappers.wrap(1d, double.class));
-        assertNotNull(Wrappers.wrap(new Double(1), Double.class));
-        assertNotNull(Wrappers.wrap(new byte[] { 1 }, byte[].class));
-        assertNotNull(Wrappers.wrap("", String.class));
-        assertNotNull(Wrappers.wrap(new BigDecimal("1"), BigDecimal.class));
-        assertNotNull(Wrappers.wrap(new BigInteger("1"), BigInteger.class));
-        assertNotNull(Wrappers.wrap(Date.valueOf("2009-01-23"), Date.class));
-        assertNotNull(Wrappers.wrap(Time.valueOf("12:34:56"), Time.class));
+        assertNotNull(Wrappers.wrap(true, boolean.class, classHelper));
+        assertNotNull(Wrappers.wrap(true, Boolean.class, classHelper));
+        assertNotNull(Wrappers.wrap((byte) 1, byte.class, classHelper));
+        assertNotNull(Wrappers
+                .wrap(new Byte((byte) 1), Byte.class, classHelper));
+        assertNotNull(Wrappers.wrap((short) 1, short.class, classHelper));
+        assertNotNull(Wrappers.wrap(new Short((short) 1), Short.class,
+                classHelper));
+        assertNotNull(Wrappers.wrap(1, int.class, classHelper));
+        assertNotNull(Wrappers.wrap(new Integer(1), Integer.class, classHelper));
+        assertNotNull(Wrappers.wrap(1L, long.class, classHelper));
+        assertNotNull(Wrappers.wrap(new Long(1), Long.class, classHelper));
+        assertNotNull(Wrappers.wrap(1f, float.class, classHelper));
+        assertNotNull(Wrappers.wrap(new Float(1), Float.class, classHelper));
+        assertNotNull(Wrappers.wrap(1d, double.class, classHelper));
+        assertNotNull(Wrappers.wrap(new Double(1), Double.class, classHelper));
+        assertNotNull(Wrappers
+                .wrap(new byte[] { 1 }, byte[].class, classHelper));
+        assertNotNull(Wrappers.wrap("", String.class, classHelper));
+        assertNotNull(Wrappers.wrap(new BigDecimal("1"), BigDecimal.class,
+                classHelper));
+        assertNotNull(Wrappers.wrap(new BigInteger("1"), BigInteger.class,
+                classHelper));
+        assertNotNull(Wrappers.wrap(Date.valueOf("2009-01-23"), Date.class,
+                classHelper));
+        assertNotNull(Wrappers.wrap(Time.valueOf("12:34:56"), Time.class,
+                classHelper));
         assertNotNull(Wrappers.wrap(Timestamp.valueOf("2009-01-23 12:34:56"),
-                Timestamp.class));
-        assertNotNull(Wrappers.wrap(new java.util.Date(), java.util.Date.class));
-        assertNotNull(Wrappers.wrap(null, Array.class));
-        assertNotNull(Wrappers.wrap(null, Blob.class));
-        assertNotNull(Wrappers.wrap(null, Clob.class));
-        assertNotNull(Wrappers.wrap(null, NClob.class));
+                Timestamp.class, classHelper));
+        assertNotNull(Wrappers.wrap(new java.util.Date(), java.util.Date.class,
+                classHelper));
+        assertNotNull(Wrappers.wrap(null, Array.class, classHelper));
+        assertNotNull(Wrappers.wrap(null, Blob.class, classHelper));
+        assertNotNull(Wrappers.wrap(null, Clob.class, classHelper));
+        assertNotNull(Wrappers.wrap(null, NClob.class, classHelper));
     }
 
     public void testWrapBasic_boxedValue_primitiveType() throws Exception {
-        Wrapper<?> wrapper = Wrappers.wrap(new Integer(10), int.class);
+        Wrapper<?> wrapper = Wrappers.wrap(new Integer(10), int.class,
+                classHelper);
         assertNotNull(wrapper);
         assertEquals(IntegerWrapper.class, wrapper.getClass());
         assertEquals(new Integer(10), wrapper.get());
     }
 
     public void testWrapBasic_null() throws Exception {
-        Wrapper<?> wrapper = Wrappers.wrap(null, Integer.class);
+        Wrapper<?> wrapper = Wrappers.wrap(null, Integer.class, classHelper);
         assertNotNull(wrapper);
         assertEquals(IntegerWrapper.class, wrapper.getClass());
         assertNull(null, wrapper.get());
     }
 
     public void testWrapEnum() throws Exception {
-        Wrapper<?> wrapper = Wrappers.wrap(MyEnum.AAA, MyEnum.class);
+        Wrapper<?> wrapper = Wrappers.wrap(MyEnum.AAA, MyEnum.class,
+                classHelper);
         assertNotNull(wrapper);
         assertEquals(EnumWrapper.class, wrapper.getClass());
         assertEquals(MyEnum.AAA, wrapper.get());
     }
 
     public void testWrapEnum_null() throws Exception {
-        Wrapper<?> wrapper = Wrappers.wrap(null, MyEnum.class);
+        Wrapper<?> wrapper = Wrappers.wrap(null, MyEnum.class, classHelper);
         assertNotNull(wrapper);
         assertEquals(EnumWrapper.class, wrapper.getClass());
         assertNull(wrapper.get());
@@ -101,7 +115,8 @@ public class WrappersTest extends TestCase {
 
     public void testWrapDomain() throws Exception {
         PhoneNumber phoneNumber = new PhoneNumber("123-456-789");
-        Wrapper<?> wrapper = Wrappers.wrap(phoneNumber, PhoneNumber.class);
+        Wrapper<?> wrapper = Wrappers.wrap(phoneNumber, PhoneNumber.class,
+                classHelper);
         assertNotNull(wrapper);
         assertEquals(StringWrapper.class, wrapper.getClass());
         assertEquals("123-456-789", wrapper.get());
@@ -110,14 +125,15 @@ public class WrappersTest extends TestCase {
     public void testWrapDomain_subclass() throws Exception {
         PhoneNumber phoneNumber = new InternationalPhoneNumber("123-456-789");
         Wrapper<?> wrapper = Wrappers.wrap(phoneNumber,
-                InternationalPhoneNumber.class);
+                InternationalPhoneNumber.class, classHelper);
         assertNotNull(wrapper);
         assertEquals(StringWrapper.class, wrapper.getClass());
         assertEquals("123-456-789", wrapper.get());
     }
 
     public void testWrapDomain_null() throws Exception {
-        Wrapper<?> wrapper = Wrappers.wrap(null, PhoneNumber.class);
+        Wrapper<?> wrapper = Wrappers
+                .wrap(null, PhoneNumber.class, classHelper);
         assertNotNull(wrapper);
         assertEquals(StringWrapper.class, wrapper.getClass());
         assertNull(wrapper.get());
