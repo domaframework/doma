@@ -8,8 +8,6 @@ public class DaoAwareDelegateDaoImpl extends org.seasar.doma.internal.jdbc.dao.A
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.DaoAwareDelegateDao.class, "execute", java.lang.String.class, java.lang.Integer.class);
-
     /** */
     public DaoAwareDelegateDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());

@@ -58,6 +58,7 @@ import org.seasar.doma.internal.apt.meta.EntityListResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.MapListParameterMeta;
 import org.seasar.doma.internal.apt.meta.MapListResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.ParentDaoMeta;
+import org.seasar.doma.internal.apt.meta.QueryKind;
 import org.seasar.doma.internal.apt.meta.QueryMeta;
 import org.seasar.doma.internal.apt.meta.QueryMetaVisitor;
 import org.seasar.doma.internal.apt.meta.QueryParameterMeta;
@@ -169,18 +170,19 @@ public class DaoGenerator extends AbstractGenerator {
     protected void printStaticFields() {
         int i = 0;
         for (QueryMeta queryMeta : daoMeta.getQueryMetas()) {
-            iprint("private static final %1$s __method%2$s = %3$s.__getDeclaredMethod(%4$s.class, \"%5$s\"",
-                    Method.class.getName(), i, AbstractDao.class.getName(),
-                    daoMeta.getDaoType(), queryMeta.getName());
-            for (QueryParameterMeta parameterMeta : queryMeta
-                    .getParameterMetas()) {
-                print(", %1$s.class", parameterMeta.getQualifiedName());
+            if (queryMeta.getQueryKind() != QueryKind.DELEGATE) {
+                iprint("private static final %1$s __method%2$s = %3$s.__getDeclaredMethod(%4$s.class, \"%5$s\"",
+                        Method.class.getName(), i, AbstractDao.class.getName(),
+                        daoMeta.getDaoType(), queryMeta.getName());
+                for (QueryParameterMeta parameterMeta : queryMeta
+                        .getParameterMetas()) {
+                    print(", %1$s.class", parameterMeta.getQualifiedName());
+                }
+                print(");%n");
+                print("%n");
             }
-            print(");%n");
-            print("%n");
             i++;
         }
-        i++;
     }
 
     protected void printConstructors() {
