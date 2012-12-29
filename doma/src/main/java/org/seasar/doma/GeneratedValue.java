@@ -42,7 +42,7 @@ import java.lang.annotation.Target;
  * <li>java.lang.Float</li>
  * <li>java.math.BigInteger</li>
  * <li>java.math.BigDecimal</li>
- * <li>上に示した型を {@link Domain#valueType()} にもつドメインクラス</li>
+ * <li>上に示した型にマッピングされたドメインクラス</li>
  * </ul>
  * <p>
  * {@code strategy} 要素に指定する値によっては追加のアノテーションが必要です。
