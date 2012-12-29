@@ -8,10 +8,6 @@ public class EnumDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao i
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.EnumDao.class, "selectById", org.seasar.doma.internal.apt.dao.EnumDao.MyEnum.class, org.seasar.doma.jdbc.SelectOptions.class);
-
-    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.EnumDao.class, "selectByNameAndSalary", org.seasar.doma.internal.apt.dao.EnumDao.MyEnum.class, org.seasar.doma.internal.apt.dao.EnumDao.MyEnum.class, org.seasar.doma.jdbc.SelectOptions.class);
-
     /** */
     public EnumDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -62,7 +58,6 @@ public class EnumDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao i
                 throw new org.seasar.doma.DomaNullPointerException("options");
             }
             org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setMethod(__method0);
             __query.setConfig(config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/EnumDao/selectById.sql");
             __query.setOptions(options);
@@ -93,7 +88,6 @@ public class EnumDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao i
                 throw new org.seasar.doma.DomaNullPointerException("options");
             }
             org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setMethod(__method1);
             __query.setConfig(config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/EnumDao/selectByNameAndSalary.sql");
             __query.setOptions(options);

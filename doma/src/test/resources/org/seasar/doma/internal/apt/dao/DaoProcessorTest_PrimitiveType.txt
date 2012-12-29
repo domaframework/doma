@@ -8,11 +8,7 @@ public class PrimitiveTypeDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abst
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.PrimitiveTypeDao.class, "selectById", int.class);
-
     private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.PrimitiveTypeDao.class, "update", int.class);
-
-    private static final java.lang.reflect.Method __method2 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.PrimitiveTypeDao.class, "execute", int.class);
 
     /** */
     public PrimitiveTypeDaoImpl() {
@@ -61,7 +57,6 @@ public class PrimitiveTypeDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abst
         entering("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl", "selectById", id);
         try {
             org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setMethod(__method0);
             __query.setConfig(config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/PrimitiveTypeDao/selectById.sql");
             __query.addParameter("id", int.class, id);
@@ -115,7 +110,6 @@ public class PrimitiveTypeDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abst
         entering("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl", "execute", id);
         try {
             org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.lang.Integer> __query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.lang.Integer>();
-            __query.setMethod(__method2);
             __query.setConfig(config);
             __query.setFunctionName("execute");
             __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.BasicResultParameter<java.lang.Integer>(new org.seasar.doma.wrapper.IntegerWrapper(), true));

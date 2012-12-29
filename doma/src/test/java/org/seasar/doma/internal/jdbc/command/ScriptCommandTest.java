@@ -33,7 +33,6 @@ public class ScriptCommandTest extends TestCase {
 
     public void testExecute() throws Exception {
         SqlFileScriptQuery query = new SqlFileScriptQuery();
-        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(new MockConfig());
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
@@ -57,7 +56,6 @@ public class ScriptCommandTest extends TestCase {
         };
 
         SqlFileScriptQuery query = new SqlFileScriptQuery();
-        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(config);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");

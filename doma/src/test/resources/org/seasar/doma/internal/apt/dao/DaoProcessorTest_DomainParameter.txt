@@ -8,8 +8,6 @@ public class DomainParameterDaoImpl extends org.seasar.doma.internal.jdbc.dao.Ab
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.DomainParameterDao.class, "select", example.domain.PhoneNumber.class);
-
     /** */
     public DomainParameterDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -57,7 +55,6 @@ public class DomainParameterDaoImpl extends org.seasar.doma.internal.jdbc.dao.Ab
         entering("org.seasar.doma.internal.apt.dao.DomainParameterDaoImpl", "select", phoneNumber);
         try {
             org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setMethod(__method0);
             __query.setConfig(config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/DomainParameterDao/select.sql");
             __query.addParameter("phoneNumber", example.domain.PhoneNumber.class, phoneNumber);

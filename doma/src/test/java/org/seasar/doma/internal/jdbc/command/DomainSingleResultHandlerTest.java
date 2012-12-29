@@ -45,7 +45,6 @@ public class DomainSingleResultHandlerTest extends TestCase {
         resultSet.rows.add(new RowData("01-2345-6789"));
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
-        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
                 getName()));
@@ -67,7 +66,6 @@ public class DomainSingleResultHandlerTest extends TestCase {
         resultSet.rows.add(new RowData("02-2345-6789"));
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
-        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
                 getName()));
@@ -88,7 +86,6 @@ public class DomainSingleResultHandlerTest extends TestCase {
         MockResultSet resultSet = new MockResultSet();
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
-        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
                 getName()));

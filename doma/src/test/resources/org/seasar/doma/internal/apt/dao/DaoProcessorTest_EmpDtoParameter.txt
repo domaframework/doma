@@ -8,8 +8,6 @@ public class EmpDtoParameterDaoImpl extends org.seasar.doma.internal.jdbc.dao.Ab
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.EmpDtoParameterDao.class, "select", org.seasar.doma.internal.apt.entity.EmpDto.class);
-
     private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.EmpDtoParameterDao.class, "insert", org.seasar.doma.internal.apt.entity.EmpDto.class);
 
     private static final java.lang.reflect.Method __method2 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.EmpDtoParameterDao.class, "insert", java.util.List.class);
@@ -64,7 +62,6 @@ public class EmpDtoParameterDaoImpl extends org.seasar.doma.internal.jdbc.dao.Ab
                 throw new org.seasar.doma.DomaNullPointerException("dto");
             }
             org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setMethod(__method0);
             __query.setConfig(config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/EmpDtoParameterDao/select.sql");
             __query.addParameter("dto", org.seasar.doma.internal.apt.entity.EmpDto.class, dto);

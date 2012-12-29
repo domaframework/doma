@@ -68,6 +68,11 @@ public enum QueryKind {
             return SelectCommand.class;
         }
 
+        @Override
+        public boolean isTrigger() {
+            return false;
+        }
+
     },
     SQLFILE_SCRIPT {
 
@@ -80,6 +85,11 @@ public enum QueryKind {
         @Override
         public Class<? extends Command> getCommandClass() {
             return ScriptCommand.class;
+        }
+
+        @Override
+        public boolean isTrigger() {
+            return false;
         }
 
     },
@@ -96,6 +106,11 @@ public enum QueryKind {
             return InsertCommand.class;
         }
 
+        @Override
+        public boolean isTrigger() {
+            return true;
+        }
+
     },
     SQLFILE_UPDATE {
 
@@ -108,6 +123,11 @@ public enum QueryKind {
         @Override
         public Class<? extends Command> getCommandClass() {
             return UpdateCommand.class;
+        }
+
+        @Override
+        public boolean isTrigger() {
+            return true;
         }
 
     },
@@ -124,6 +144,11 @@ public enum QueryKind {
             return DeleteCommand.class;
         }
 
+        @Override
+        public boolean isTrigger() {
+            return true;
+        }
+
     },
     SQLFILE_BATCH_INSERT {
 
@@ -136,6 +161,11 @@ public enum QueryKind {
         @Override
         public Class<? extends Command> getCommandClass() {
             return BatchInsertCommand.class;
+        }
+
+        @Override
+        public boolean isTrigger() {
+            return true;
         }
 
     },
@@ -152,6 +182,11 @@ public enum QueryKind {
             return BatchUpdateCommand.class;
         }
 
+        @Override
+        public boolean isTrigger() {
+            return true;
+        }
+
     },
     SQLFILE_BATCH_DELETE {
 
@@ -164,6 +199,11 @@ public enum QueryKind {
         @Override
         public Class<? extends Command> getCommandClass() {
             return BatchDeleteCommand.class;
+        }
+
+        @Override
+        public boolean isTrigger() {
+            return true;
         }
 
     },
@@ -180,6 +220,11 @@ public enum QueryKind {
             return InsertCommand.class;
         }
 
+        @Override
+        public boolean isTrigger() {
+            return true;
+        }
+
     },
     AUTO_UPDATE {
 
@@ -192,6 +237,11 @@ public enum QueryKind {
         @Override
         public Class<? extends Command> getCommandClass() {
             return UpdateCommand.class;
+        }
+
+        @Override
+        public boolean isTrigger() {
+            return true;
         }
 
     },
@@ -208,6 +258,11 @@ public enum QueryKind {
             return DeleteCommand.class;
         }
 
+        @Override
+        public boolean isTrigger() {
+            return true;
+        }
+
     },
     AUTO_BATCH_INSERT {
 
@@ -220,6 +275,11 @@ public enum QueryKind {
         @Override
         public Class<? extends Command> getCommandClass() {
             return BatchInsertCommand.class;
+        }
+
+        @Override
+        public boolean isTrigger() {
+            return true;
         }
 
     },
@@ -236,6 +296,11 @@ public enum QueryKind {
             return BatchUpdateCommand.class;
         }
 
+        @Override
+        public boolean isTrigger() {
+            return true;
+        }
+
     },
     AUTO_BATCH_DELETE {
 
@@ -248,6 +313,11 @@ public enum QueryKind {
         @Override
         public Class<? extends Command> getCommandClass() {
             return BatchDeleteCommand.class;
+        }
+
+        @Override
+        public boolean isTrigger() {
+            return true;
         }
 
     },
@@ -264,6 +334,11 @@ public enum QueryKind {
             return FunctionCommand.class;
         }
 
+        @Override
+        public boolean isTrigger() {
+            return false;
+        }
+
     },
     AUTO_PROCEDURE {
 
@@ -276,6 +351,11 @@ public enum QueryKind {
         @Override
         public Class<? extends Command> getCommandClass() {
             return ProcedureCommand.class;
+        }
+
+        @Override
+        public boolean isTrigger() {
+            return false;
         }
 
     },
@@ -292,6 +372,11 @@ public enum QueryKind {
             return CreateCommand.class;
         }
 
+        @Override
+        public boolean isTrigger() {
+            return false;
+        }
+
     },
     BLOB_FACTORY {
 
@@ -304,6 +389,11 @@ public enum QueryKind {
         @Override
         public Class<? extends Command> getCommandClass() {
             return CreateCommand.class;
+        }
+
+        @Override
+        public boolean isTrigger() {
+            return false;
         }
 
     },
@@ -320,6 +410,11 @@ public enum QueryKind {
             return CreateCommand.class;
         }
 
+        @Override
+        public boolean isTrigger() {
+            return false;
+        }
+
     },
     NCLOB_FACTORY {
 
@@ -332,6 +427,11 @@ public enum QueryKind {
         @Override
         public Class<? extends Command> getCommandClass() {
             return CreateCommand.class;
+        }
+
+        @Override
+        public boolean isTrigger() {
+            return false;
         }
 
     },
@@ -348,6 +448,10 @@ public enum QueryKind {
             return null;
         }
 
+        @Override
+        public boolean isTrigger() {
+            return false;
+        }
     },
     ;
 
@@ -355,5 +459,7 @@ public enum QueryKind {
 
     @SuppressWarnings("rawtypes")
     public abstract Class<? extends Command> getCommandClass();
+
+    public abstract boolean isTrigger();
 
 }

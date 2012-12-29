@@ -48,7 +48,6 @@ public class FunctionCommandTest extends TestCase {
         IntegerWrapper ccc = new IntegerWrapper(60);
 
         AutoFunctionQuery<Integer> query = new AutoFunctionQuery<Integer>();
-        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setFunctionName("aaa");
         query.setResultParameter(new BasicResultParameter<Integer>(

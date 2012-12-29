@@ -34,8 +34,8 @@ public class AutoFunctionQuery<R> extends AutoModuleQuery implements
 
     @Override
     public void prepare() {
-        assertNotNull(method, config, functionName, resultParameter,
-                callerClassName, callerMethodName);
+        assertNotNull(config, functionName, resultParameter, callerClassName,
+                callerMethodName);
         prepareOptions();
         prepareSql();
         assertNotNull(sql);

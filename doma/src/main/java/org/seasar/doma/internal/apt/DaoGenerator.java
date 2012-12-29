@@ -58,7 +58,6 @@ import org.seasar.doma.internal.apt.meta.EntityListResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.MapListParameterMeta;
 import org.seasar.doma.internal.apt.meta.MapListResultParameterMeta;
 import org.seasar.doma.internal.apt.meta.ParentDaoMeta;
-import org.seasar.doma.internal.apt.meta.QueryKind;
 import org.seasar.doma.internal.apt.meta.QueryMeta;
 import org.seasar.doma.internal.apt.meta.QueryMetaVisitor;
 import org.seasar.doma.internal.apt.meta.QueryParameterMeta;
@@ -170,7 +169,7 @@ public class DaoGenerator extends AbstractGenerator {
     protected void printStaticFields() {
         int i = 0;
         for (QueryMeta queryMeta : daoMeta.getQueryMetas()) {
-            if (queryMeta.getQueryKind() != QueryKind.DELEGATE) {
+            if (queryMeta.getQueryKind().isTrigger()) {
                 iprint("private static final %1$s __method%2$s = %3$s.__getDeclaredMethod(%4$s.class, \"%5$s\"",
                         Method.class.getName(), i, AbstractDao.class.getName(),
                         daoMeta.getDaoType(), queryMeta.getName());
@@ -359,7 +358,9 @@ public class DaoGenerator extends AbstractGenerator {
             printPrerequisiteStatements(m);
 
             iprint("%1$s __query = new %1$s();%n", m.getQueryClass().getName());
-            iprint("__query.setMethod(__method%1$s);%n", p);
+            if (m.isTrigger()) {
+                iprint("__query.setMethod(__method%1$s);%n", p);
+            }
             iprint("__query.setConfig(config);%n");
             iprint("__query.setSqlFilePath(\"%1$s\");%n",
                     SqlFileUtil.buildPath(daoMeta.getDaoElement()
@@ -715,7 +716,9 @@ public class DaoGenerator extends AbstractGenerator {
             printPrerequisiteStatements(m);
 
             iprint("%1$s __query = new %1$s();%n", m.getQueryClass().getName());
-            iprint("__query.setMethod(__method%1$s);%n", p);
+            if (m.isTrigger()) {
+                iprint("__query.setMethod(__method%1$s);%n", p);
+            }
             iprint("__query.setConfig(config);%n");
             iprint("__query.setScriptFilePath(\"%1$s\");%n",
                     ScriptFileUtil.buildPath(daoMeta.getDaoElement()
@@ -746,7 +749,9 @@ public class DaoGenerator extends AbstractGenerator {
                     m.getQueryClass().getName(), m.getEntityType()
                             .getTypeNameAsTypeParameter(), m.getEntityType()
                             .getMetaTypeNameAsTypeParameter());
-            iprint("__query.setMethod(__method%1$s);%n", p);
+            if (m.isTrigger()) {
+                iprint("__query.setMethod(__method%1$s);%n", p);
+            }
             iprint("__query.setConfig(config);%n");
             iprint("__query.setEntity(%1$s);%n", m.getEntityParameterName());
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
@@ -814,7 +819,9 @@ public class DaoGenerator extends AbstractGenerator {
             printPrerequisiteStatements(m);
 
             iprint("%1$s __query = new %1$s();%n", m.getQueryClass().getName());
-            iprint("__query.setMethod(__method%1$s);%n", p);
+            if (m.isTrigger()) {
+                iprint("__query.setMethod(__method%1$s);%n", p);
+            }
             iprint("__query.setConfig(config);%n");
             iprint("__query.setSqlFilePath(\"%1$s\");%n",
                     SqlFileUtil.buildPath(daoMeta.getDaoElement()
@@ -879,7 +886,9 @@ public class DaoGenerator extends AbstractGenerator {
                     m.getQueryClass().getName(), m.getEntityType()
                             .getTypeNameAsTypeParameter(), m.getEntityType()
                             .getMetaTypeNameAsTypeParameter());
-            iprint("__query.setMethod(__method%1$s);%n", p);
+            if (m.isTrigger()) {
+                iprint("__query.setMethod(__method%1$s);%n", p);
+            }
             iprint("__query.setConfig(config);%n");
             iprint("__query.setEntities(%1$s);%n", m.getEntitiesParameterName());
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
@@ -940,7 +949,9 @@ public class DaoGenerator extends AbstractGenerator {
                     .getQueryClass().getName(), m.getElementType()
                     .getTypeNameAsTypeParameter(), m.getElementType()
                     .getQualifiedName());
-            iprint("__query.setMethod(__method%1$s);%n", p);
+            if (m.isTrigger()) {
+                iprint("__query.setMethod(__method%1$s);%n", p);
+            }
             iprint("__query.setConfig(config);%n");
             iprint("__query.setElements(%1$s);%n", m.getElementsParameterName());
             iprint("__query.setSqlFilePath(\"%1$s\");%n",
@@ -999,7 +1010,9 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("%1$s<%2$s> __query = new %1$s<%2$s>();%n", m
                     .getQueryClass().getName(),
                     resultMeta.getTypeNameAsTypeParameter());
-            iprint("__query.setMethod(__method%1$s);%n", p);
+            if (m.isTrigger()) {
+                iprint("__query.setMethod(__method%1$s);%n", p);
+            }
             iprint("__query.setConfig(config);%n");
             iprint("__query.setFunctionName(\"%1$s\");%n", m.getFunctionName());
             CallableSqlParameterStatementGenerator parameterGenerator = new CallableSqlParameterStatementGenerator();
@@ -1033,7 +1046,9 @@ public class DaoGenerator extends AbstractGenerator {
             printPrerequisiteStatements(m);
 
             iprint("%1$s __query = new %1$s();%n", m.getQueryClass().getName());
-            iprint("__query.setMethod(__method%1$s);%n", p);
+            if (m.isTrigger()) {
+                iprint("__query.setMethod(__method%1$s);%n", p);
+            }
             iprint("__query.setConfig(config);%n");
             iprint("__query.setProcedureName(\"%1$s\");%n",
                     m.getProcedureName());
@@ -1066,7 +1081,9 @@ public class DaoGenerator extends AbstractGenerator {
             QueryReturnMeta resultMeta = m.getReturnMeta();
             iprint("%1$s __query = new %1$s();%n", m.getQueryClass().getName(),
                     resultMeta.getTypeName());
-            iprint("__query.setMethod(__method%1$s);%n", p);
+            if (m.isTrigger()) {
+                iprint("__query.setMethod(__method%1$s);%n", p);
+            }
             iprint("__query.setConfig(config);%n");
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
@@ -1091,7 +1108,9 @@ public class DaoGenerator extends AbstractGenerator {
 
             QueryReturnMeta resultMeta = m.getReturnMeta();
             iprint("%1$s __query = new %1$s();%n", m.getQueryClass().getName());
-            iprint("__query.setMethod(__method%1$s);%n", p);
+            if (m.isTrigger()) {
+                iprint("__query.setMethod(__method%1$s);%n", p);
+            }
             iprint("__query.setConfig(config);%n");
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());

@@ -33,8 +33,8 @@ public class ArrayCreateQuery extends AbstractCreateQuery<Array> {
 
     @Override
     public void prepare() {
-        assertNotNull(method, config, callerClassName, callerMethodName,
-                typeName, elements);
+        assertNotNull(config, callerClassName, callerMethodName, typeName,
+                elements);
     }
 
     public String getTypeName() {

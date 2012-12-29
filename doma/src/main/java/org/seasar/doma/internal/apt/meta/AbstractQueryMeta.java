@@ -99,6 +99,13 @@ public abstract class AbstractQueryMeta implements QueryMeta {
         return queryKind.getCommandClass();
     }
 
+    public boolean isTrigger() {
+        if (queryKind == null) {
+            return false;
+        }
+        return queryKind.isTrigger();
+    }
+
     @Override
     public QueryKind getQueryKind() {
         return queryKind;

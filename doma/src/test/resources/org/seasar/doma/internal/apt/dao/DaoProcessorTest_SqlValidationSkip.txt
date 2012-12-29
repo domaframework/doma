@@ -8,8 +8,6 @@ public class SqlValidationSkipDaoImpl extends org.seasar.doma.internal.jdbc.dao.
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.SqlValidationSkipDao.class, "selectById", java.lang.String.class);
-
     /** */
     public SqlValidationSkipDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -57,7 +55,6 @@ public class SqlValidationSkipDaoImpl extends org.seasar.doma.internal.jdbc.dao.
         entering("org.seasar.doma.internal.apt.dao.SqlValidationSkipDaoImpl", "selectById", name);
         try {
             org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery __query = new org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery();
-            __query.setMethod(__method0);
             __query.setConfig(config);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/dao/SqlValidationSkipDao/selectById.sql");
             __query.addParameter("name", java.lang.String.class, name);

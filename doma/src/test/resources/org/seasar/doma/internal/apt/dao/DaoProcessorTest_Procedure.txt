@@ -8,8 +8,6 @@ public class ProcedureDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstract
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.__getDeclaredMethod(org.seasar.doma.internal.apt.dao.ProcedureDao.class, "execute", java.util.List.class, int.class);
-
     /** */
     public ProcedureDaoImpl() {
         super(new org.seasar.doma.internal.apt.dao.MyConfig());
@@ -60,7 +58,6 @@ public class ProcedureDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstract
                 throw new org.seasar.doma.DomaNullPointerException("result");
             }
             org.seasar.doma.internal.jdbc.query.AutoProcedureQuery __query = new org.seasar.doma.internal.jdbc.query.AutoProcedureQuery();
-            __query.setMethod(__method0);
             __query.setConfig(config);
             __query.setProcedureName("execute");
             __query.addParameter(new org.seasar.doma.internal.jdbc.sql.MapListParameter(org.seasar.doma.MapKeyNamingType.CAMEL_CASE, result, "result"));

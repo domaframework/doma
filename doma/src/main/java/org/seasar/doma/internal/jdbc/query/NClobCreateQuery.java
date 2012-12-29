@@ -29,7 +29,7 @@ public class NClobCreateQuery extends AbstractCreateQuery<NClob> {
 
     @Override
     public void prepare() {
-        assertNotNull(method, config, callerClassName, callerMethodName);
+        assertNotNull(config, callerClassName, callerMethodName);
     }
 
     @Override

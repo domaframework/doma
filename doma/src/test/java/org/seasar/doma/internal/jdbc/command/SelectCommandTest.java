@@ -54,7 +54,6 @@ public class SelectCommandTest extends TestCase {
                 new MockPreparedStatement(resultSet));
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
-        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
                 getName()));
@@ -98,7 +97,6 @@ public class SelectCommandTest extends TestCase {
                 new MockPreparedStatement(resultSet));
 
         SqlFileSelectQuery query = new SqlFileSelectQuery();
-        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(),
                 getName()));

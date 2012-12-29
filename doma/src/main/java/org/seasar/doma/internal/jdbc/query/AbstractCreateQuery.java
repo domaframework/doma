@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.internal.jdbc.query;
 
-import java.lang.reflect.Method;
-
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
 
@@ -26,17 +24,11 @@ import org.seasar.doma.jdbc.Sql;
  */
 public abstract class AbstractCreateQuery<R> implements CreateQuery<R> {
 
-    protected Method method;
-
     protected Config config;
 
     protected String callerClassName;
 
     protected String callerMethodName;
-
-    public void setMethod(Method method) {
-        this.method = method;
-    }
 
     public void setConfig(Config config) {
         this.config = config;

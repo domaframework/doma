@@ -31,7 +31,6 @@ public class AutoFunctionQueryTest extends TestCase {
 
     public void testPrepare() throws Exception {
         AutoFunctionQuery<Integer> query = new AutoFunctionQuery<Integer>();
-        query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setFunctionName("aaa");
         query.setResultParameter(new BasicResultParameter<Integer>(
