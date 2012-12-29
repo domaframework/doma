@@ -362,8 +362,7 @@ public abstract class Common {
     Date updateTimestamp;
     ...
 }]]></source>
-<source><![CDATA[@Entity
-public class CommonListener<T extends Common> implements EntityListener<T> {
+<source><![CDATA[public class CommonListener<T extends Common> implements EntityListener<T> {
     public void preInsert(T entity, PreInsertContext context) {...}
     public void preUpdate(T entity, PreUpdateContext context) {...}
     public void preDelete(T entity, PreDeleteContext context) {...}
@@ -389,8 +388,7 @@ public class CommonListener<T extends Common> implements EntityListener<T> {
 				<p>
 					タスクを実行するとexample.CommonListenerを継承した次のようなクラスが生成されます。
 				</p>
-<source><![CDATA[@Entity
-public class EmployeeListener extends CommonListener<Employee> {
+<source><![CDATA[public class EmployeeListener extends CommonListener<Employee> {
 }]]></source>
 			</subsection>
 			<subsection name="エンティティプロパティのクラス名を指定する">
