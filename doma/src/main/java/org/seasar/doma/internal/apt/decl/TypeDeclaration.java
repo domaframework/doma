@@ -379,9 +379,6 @@ public class TypeDeclaration {
                 if (overriderTypeElement == null) {
                     continue;
                 }
-                if (typeElement.equals(overriderTypeElement)) {
-                    continue;
-                }
                 if (elements.overrides(overrider.getElement(),
                         overridden.getElement(), overriderTypeElement)) {
                     it.remove();

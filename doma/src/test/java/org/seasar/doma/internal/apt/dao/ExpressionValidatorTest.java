@@ -76,6 +76,23 @@ public class ExpressionValidatorTest extends AptTestCase {
         assertTrue(result.isBooleanType());
     }
 
+    public void testMethod_overriderFound() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testEmp", Emp.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap);
+
+        ExpressionNode node = new ExpressionParser("\"aaa\".equals(\"aaa\")")
+                .parse();
+        TypeDeclaration result = validator.validate(node);
+        assertTrue(result.isBooleanType());
+    }
+
     public void testMethod_notFound() throws Exception {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
