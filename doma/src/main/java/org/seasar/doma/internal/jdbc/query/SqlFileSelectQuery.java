@@ -90,7 +90,8 @@ public class SqlFileSelectQuery implements SelectQuery {
         SqlNode sqlNode = config.getDialect().transformSelectSqlNode(
                 sqlFile.getSqlNode(), options);
         ExpressionEvaluator evaluator = new ExpressionEvaluator(parameters,
-                config.getDialect().getExpressionFunctions());
+                config.getDialect().getExpressionFunctions(),
+                config.getClassHelper());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
                 SqlKind.SELECT, sqlFile.getPath(), evaluator);
         sql = sqlBuilder.build(sqlNode);

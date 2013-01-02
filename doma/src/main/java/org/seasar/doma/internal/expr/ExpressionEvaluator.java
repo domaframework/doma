@@ -69,6 +69,8 @@ import org.seasar.doma.internal.util.ConstructorUtil;
 import org.seasar.doma.internal.util.FieldUtil;
 import org.seasar.doma.internal.util.GenericsUtil;
 import org.seasar.doma.internal.util.MethodUtil;
+import org.seasar.doma.jdbc.ClassHelper;
+import org.seasar.doma.jdbc.DefaultClassHelper;
 import org.seasar.doma.message.Message;
 
 /**
@@ -82,19 +84,24 @@ public class ExpressionEvaluator implements
 
     protected final ExpressionFunctions expressionFunctions;
 
+    protected final ClassHelper classHelper;
+
     public ExpressionEvaluator() {
-        this(new NullExpressionFunctions());
+        this(new NullExpressionFunctions(), new DefaultClassHelper());
     }
 
-    public ExpressionEvaluator(ExpressionFunctions expressionFunctions) {
-        this(Collections.<String, Value> emptyMap(), expressionFunctions);
+    public ExpressionEvaluator(ExpressionFunctions expressionFunctions,
+            ClassHelper classHelper) {
+        this(Collections.<String, Value> emptyMap(), expressionFunctions,
+                classHelper);
     }
 
     public ExpressionEvaluator(Map<String, Value> variableValues,
-            ExpressionFunctions expressionFunctions) {
-        assertNotNull(variableValues);
+            ExpressionFunctions expressionFunctions, ClassHelper classHelper) {
+        assertNotNull(variableValues, expressionFunctions, classHelper);
         this.variableValues = new HashMap<String, Value>(variableValues);
         this.expressionFunctions = expressionFunctions;
+        this.classHelper = classHelper;
     }
 
     public void putValue(String variableName, Value value) {
@@ -430,8 +437,11 @@ public class ExpressionEvaluator implements
     protected Class<?> forClassName(ExpressionLocation location,
             String className) {
         try {
-            return Class.forName(className);
-        } catch (ClassNotFoundException e) {
+            return classHelper.forName(className);
+        } catch (WrapException e) {
+            throw new ExpressionException(Message.DOMA3005, e.getCause(),
+                    location.getExpression(), location.getPosition(), className);
+        } catch (Exception e) {
             throw new ExpressionException(Message.DOMA3005, e,
                     location.getExpression(), location.getPosition(), className);
         }

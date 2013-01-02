@@ -143,8 +143,9 @@ public class NodePreparedSqlBuilder implements
 
     public NodePreparedSqlBuilder(Config config, SqlKind kind,
             String sqlFilePath) {
-        this(config, kind, sqlFilePath, new ExpressionEvaluator(config
-                .getDialect().getExpressionFunctions()));
+        this(config, kind, sqlFilePath,
+                new ExpressionEvaluator(config.getDialect()
+                        .getExpressionFunctions(), config.getClassHelper()));
     }
 
     public NodePreparedSqlBuilder(Config config, SqlKind kind,

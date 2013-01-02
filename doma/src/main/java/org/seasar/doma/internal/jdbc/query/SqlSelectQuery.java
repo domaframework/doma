@@ -85,7 +85,8 @@ public class SqlSelectQuery implements SelectQuery {
         SqlNode transformedSqlNode = config.getDialect()
                 .transformSelectSqlNode(sqlNode, options);
         ExpressionEvaluator evaluator = new ExpressionEvaluator(parameters,
-                config.getDialect().getExpressionFunctions());
+                config.getDialect().getExpressionFunctions(),
+                config.getClassHelper());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
                 SqlKind.SELECT, null, evaluator);
         sql = sqlBuilder.build(transformedSqlNode);

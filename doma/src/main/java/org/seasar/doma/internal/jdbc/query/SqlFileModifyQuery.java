@@ -72,7 +72,8 @@ public abstract class SqlFileModifyQuery implements ModifyQuery {
         SqlFile sqlFile = config.getSqlFileRepository().getSqlFile(sqlFilePath,
                 config.getDialect());
         ExpressionEvaluator evaluator = new ExpressionEvaluator(parameters,
-                config.getDialect().getExpressionFunctions());
+                config.getDialect().getExpressionFunctions(),
+                config.getClassHelper());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
                 kind, sqlFile.getPath(), evaluator);
         sql = sqlBuilder.build(sqlFile.getSqlNode());

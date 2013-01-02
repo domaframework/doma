@@ -74,7 +74,8 @@ public abstract class SqlModifyQuery implements ModifyQuery {
 
     protected void prepareSql() {
         ExpressionEvaluator evaluator = new ExpressionEvaluator(parameters,
-                config.getDialect().getExpressionFunctions());
+                config.getDialect().getExpressionFunctions(),
+                config.getClassHelper());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
                 kind, null, evaluator);
         sql = sqlBuilder.build(sqlNode);

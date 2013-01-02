@@ -103,7 +103,8 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
         Value value = new Value(elementClass, currentEntity);
         ExpressionEvaluator evaluator = new ExpressionEvaluator(
                 Collections.singletonMap(parameterName, value), config
-                        .getDialect().getExpressionFunctions());
+                        .getDialect().getExpressionFunctions(),
+                config.getClassHelper());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(config,
                 kind, sqlFile.getPath(), evaluator);
         PreparedSql sql = sqlBuilder.build(sqlFile.getSqlNode());
