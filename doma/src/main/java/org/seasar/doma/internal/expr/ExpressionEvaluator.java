@@ -21,6 +21,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -65,6 +67,7 @@ import org.seasar.doma.internal.expr.node.SubtractOperatorNode;
 import org.seasar.doma.internal.expr.node.VariableNode;
 import org.seasar.doma.internal.util.ConstructorUtil;
 import org.seasar.doma.internal.util.FieldUtil;
+import org.seasar.doma.internal.util.GenericsUtil;
 import org.seasar.doma.internal.util.MethodUtil;
 import org.seasar.doma.message.Message;
 
@@ -597,6 +600,16 @@ public class ExpressionEvaluator implements
                     location.getExpression(), location.getPosition(),
                     targetClass.getName(), method.getName(), cause);
         }
+        if (target != null) {
+            Type genericType = method.getGenericReturnType();
+            if (genericType instanceof TypeVariable) {
+                Class<?> typeArgument = GenericsUtil.inferTypeArgument(
+                        target.getClass(), (TypeVariable<?>) genericType);
+                if (typeArgument != null) {
+                    return new EvaluationResult(value, typeArgument);
+                }
+            }
+        }
         return new EvaluationResult(value, method.getReturnType());
     }
 
@@ -682,6 +695,16 @@ public class ExpressionEvaluator implements
             throw new ExpressionException(Message.DOMA3019, cause,
                     location.getExpression(), location.getPosition(), target
                             .getClass().getName(), field.getName(), cause);
+        }
+        if (target != null) {
+            Type genericType = field.getGenericType();
+            if (genericType instanceof TypeVariable) {
+                Class<?> typeArgument = GenericsUtil.inferTypeArgument(
+                        target.getClass(), (TypeVariable<?>) genericType);
+                if (typeArgument != null) {
+                    return new EvaluationResult(value, typeArgument);
+                }
+            }
         }
         return new EvaluationResult(value, field.getType());
     }

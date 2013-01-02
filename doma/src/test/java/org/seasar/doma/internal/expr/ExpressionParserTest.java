@@ -194,6 +194,19 @@ public class ExpressionParserTest extends TestCase {
         assertEquals(new Integer(2), evaluationResult.getValue());
     }
 
+    public void testMethod6() throws Exception {
+        ExpressionParser parser = new ExpressionParser(
+                "bbb.method(bbb.method(bbb.value))");
+        ExpressionNode expression = parser.parse();
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        Bbb bbb = new Bbb();
+        bbb.value = "hoge";
+        evaluator.add("bbb", new Value(Bbb.class, bbb));
+        EvaluationResult evaluationResult = evaluator.evaluate(expression);
+        assertEquals("hoge", evaluationResult.getValue());
+        assertEquals(String.class, evaluationResult.getValueClass());
+    }
+
     public void testMethod_targetObjectIsNull() throws Exception {
         ExpressionParser parser = new ExpressionParser("null.length()");
         try {
@@ -240,6 +253,18 @@ public class ExpressionParserTest extends TestCase {
             System.out.println(expected.getMessage());
             assertEquals(Message.DOMA3002, expected.getMessageResource());
         }
+    }
+
+    public void testField() throws Exception {
+        ExpressionParser parser = new ExpressionParser("bbb.value");
+        ExpressionNode expression = parser.parse();
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        Bbb bbb = new Bbb();
+        bbb.value = "hoge";
+        evaluator.add("bbb", new Value(Bbb.class, bbb));
+        EvaluationResult evaluationResult = evaluator.evaluate(expression);
+        assertEquals("hoge", evaluationResult.getValue());
+        assertEquals(String.class, evaluationResult.getValueClass());
     }
 
     public void testStatictField() throws Exception {
@@ -817,4 +842,14 @@ public class ExpressionParserTest extends TestCase {
 
     }
 
+    public static class Aaa<T> {
+        public T value;
+
+        public T method(T value) {
+            return value;
+        }
+    }
+
+    public static class Bbb extends Aaa<String> {
+    }
 }
