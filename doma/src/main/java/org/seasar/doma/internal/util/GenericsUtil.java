@@ -24,7 +24,7 @@ import java.lang.reflect.TypeVariable;
 
 /**
  * @author taedium
- * @since 1.28.0
+ * @since 1.27.1
  */
 public final class GenericsUtil {
 
