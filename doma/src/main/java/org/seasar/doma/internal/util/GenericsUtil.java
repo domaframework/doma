@@ -35,10 +35,8 @@ public final class GenericsUtil {
         TypeArgumentInferrer inferrer = new TypeArgumentInferrer(clazz,
                 typeVariable);
         Type arg = inferrer.infer();
-        if (arg != null) {
-            if (arg instanceof Class) {
-                return (Class<?>) arg;
-            }
+        if (arg instanceof Class) {
+            return (Class<?>) arg;
         }
         return null;
     }
@@ -53,15 +51,20 @@ public final class GenericsUtil {
 
         public TypeArgumentInferrer(Class<?> clazz, TypeVariable<?> typeVariable) {
             this.clazz = clazz;
-            genericDeclaration = typeVariable.getGenericDeclaration();
-            int i = 0;
-            for (TypeVariable<?> v : genericDeclaration.getTypeParameters()) {
-                if (v == typeVariable) {
-                    break;
+            this.genericDeclaration = typeVariable.getGenericDeclaration();
+            this.index = getTypeParameterIndex(genericDeclaration, typeVariable);
+        }
+
+        private int getTypeParameterIndex(
+                GenericDeclaration genericDeclaration,
+                TypeVariable<?> typeVariable) {
+            Type[] types = genericDeclaration.getTypeParameters();
+            for (int i = 0, len = types.length; i < len; i++) {
+                if (types[i] == typeVariable) {
+                    return i;
                 }
-                i++;
             }
-            index = i;
+            return 0;
         }
 
         public Type infer() {
@@ -122,8 +125,10 @@ public final class GenericsUtil {
             if (genericDeclaration == clazz
                     && type instanceof ParameterizedType) {
                 ParameterizedType parameterizedType = (ParameterizedType) type;
-                Type arg = parameterizedType.getActualTypeArguments()[index];
-                return arg;
+                Type[] args = parameterizedType.getActualTypeArguments();
+                if (index < args.length) {
+                    return args[index];
+                }
             }
             return null;
         }
