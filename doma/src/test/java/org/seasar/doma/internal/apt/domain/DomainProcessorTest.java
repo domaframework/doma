@@ -194,4 +194,15 @@ public class DomainProcessorTest extends AptTestCase {
         assertGeneratedSource(target);
         assertTrue(getCompiledResult());
     }
+
+    public void testVersionCheckSuppressed() throws Exception {
+        addOption("-Aversion.validation=false");
+        Class<?> target = VersionCheckSuppressedDomain.class;
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
 }

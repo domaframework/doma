@@ -45,6 +45,8 @@ public final class Options {
 
     public static final String SQL_VALIDATION = "sql.validation";
 
+    public static final String VERSION_VALIDATION = "version.validation";
+
     public static boolean isTestEnabled(ProcessingEnvironment env) {
         String test = env.getOptions().get(Options.TEST);
         return Boolean.valueOf(test).booleanValue();
@@ -104,6 +106,11 @@ public final class Options {
 
     public static boolean getSqlValidation(ProcessingEnvironment env) {
         String v = env.getOptions().get(Options.SQL_VALIDATION);
+        return v != null ? Boolean.valueOf(v).booleanValue() : true;
+    }
+
+    public static boolean getVersionValidation(ProcessingEnvironment env) {
+        String v = env.getOptions().get(Options.VERSION_VALIDATION);
         return v != null ? Boolean.valueOf(v).booleanValue() : true;
     }
 
