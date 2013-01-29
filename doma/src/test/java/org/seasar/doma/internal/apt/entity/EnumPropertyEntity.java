@@ -26,7 +26,7 @@ import org.seasar.doma.Id;
 public class EnumPropertyEntity {
 
     @Id
-    Integer id;
+    Hoge id;
 
     Hoge hoge;
 
