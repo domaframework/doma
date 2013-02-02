@@ -121,6 +121,10 @@
 				<p>
 					詳しくは<a href="setup.html">セットアップ</a>を参照してください。
 				</p>
+				<p>
+					実績は聞きませんが、IntelliJ IDEAでも動作します。
+					<a href="http://d.hatena.ne.jp/taedium/20121229/p1">DomaをIntelliJ IDEAで動かす</a>を参照ください。
+				</p>
 			</answer>
 		</faq>
 		<faq id="development-environment-3">
@@ -270,10 +274,11 @@
 					<li>MySQL 5.0以上</li>
 					<li>Oracle Database 10g以上</li>
 					<li>PostgreSQL 8.0以上</li>
+					<li>SQLite 3以上</li>
 				</ul>
 				<p>
 					要望があれば他のRDBMSへの対応も検討します。
-					また、利用者が独自に対応モジュールを作成することも可能です。
+					また、利用者が独自に対応モジュール(org.seasar.doma.jdbc.dialect.Dialectの実装クラス)を作成することも可能です。
 				</p>
 			</answer>
 		</faq>

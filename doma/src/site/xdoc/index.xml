@@ -54,6 +54,7 @@
 				<li>MySQL 5.0以上</li>
 				<li>Oracle Database 10g以上</li>
 				<li>PostgreSQL 8.0以上</li>
+				<li>SQLite 3以上</li>
 			</ul>
 		</section>
 		<section name="News">

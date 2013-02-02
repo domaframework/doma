@@ -105,6 +105,10 @@
 						<td>PostgreSQL</td>
 						<td><code>org.seasar.doma.jdbc.dialect.PostgresDialect</code></td>
 					</tr>
+					<tr>
+						<td>SQLite</td>
+						<td><code>org.seasar.doma.jdbc.dialect.SqliteDialect</code></td>
+					</tr>
 				</table>
 				<p>
 					接続先のRDBMSにあわせて、実装クラスを選んでください。
