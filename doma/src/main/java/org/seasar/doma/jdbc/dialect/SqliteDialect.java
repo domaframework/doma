@@ -166,7 +166,7 @@ public class SqliteDialect extends StandardDialect {
         SQLException cause = getCauseSQLException(sqlException);
         String message = cause.getMessage();
         return message != null && message.startsWith("[SQLITE_CONSTRAINT]")
-                && message.contains("unique");
+                && message.contains(" unique)");
     }
 
     /**
