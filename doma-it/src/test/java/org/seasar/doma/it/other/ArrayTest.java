@@ -13,7 +13,7 @@ import org.seasar.framework.unit.Seasar2;
 import org.seasar.framework.unit.annotation.Prerequisite;
 
 @RunWith(Seasar2.class)
-@Prerequisite("#ENV not in {'hsqldb', 'h2', 'mysql', 'oracle', 'db2', 'mssql2008'}")
+@Prerequisite("#ENV not in {'hsqldb', 'h2', 'mysql', 'oracle', 'db2', 'mssql2008', 'sqlite'}")
 public class ArrayTest {
 
     public void testSelect() throws Exception {

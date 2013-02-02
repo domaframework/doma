@@ -32,7 +32,7 @@ import org.seasar.framework.unit.Seasar2;
 import org.seasar.framework.unit.annotation.Prerequisite;
 
 @RunWith(Seasar2.class)
-@Prerequisite("#ENV not in {'hsqldb', 'h2', 'db2'}")
+@Prerequisite("#ENV not in {'hsqldb', 'h2', 'db2', 'sqlite'}")
 public class AutoFunctionTest {
 
     public void testNoParam() throws Exception {

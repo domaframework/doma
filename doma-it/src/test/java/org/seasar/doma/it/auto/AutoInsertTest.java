@@ -18,7 +18,6 @@ package org.seasar.doma.it.auto;
 import static org.junit.Assert.*;
 
 import org.junit.runner.RunWith;
-import org.seasar.doma.message.Message;
 import org.seasar.doma.it.dao.CompKeyDepartmentDao;
 import org.seasar.doma.it.dao.CompKeyDepartmentDaoImpl;
 import org.seasar.doma.it.dao.DepartmentDao;
@@ -38,6 +37,8 @@ import org.seasar.doma.it.entity.NoId;
 import org.seasar.doma.it.entity.SequenceStrategy;
 import org.seasar.doma.it.entity.TableStrategy;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.UniqueConstraintException;
+import org.seasar.doma.message.Message;
 import org.seasar.framework.unit.Seasar2;
 import org.seasar.framework.unit.annotation.Prerequisite;
 
@@ -60,6 +61,22 @@ public class AutoInsertTest {
         assertEquals("hoge", department.getDepartmentName());
         assertNull(department.getLocation());
         assertEquals(new Integer(1), department.getVersion());
+    }
+
+    public void test_UniqueConstraintException() throws Exception {
+        DepartmentDao dao = new DepartmentDaoImpl();
+        Department department = new Department();
+        department.setDepartmentId(99);
+        department.setDepartmentNo(99);
+        department.setDepartmentName("hoge");
+        int result = dao.insert(department);
+        assertEquals(1, result);
+        assertEquals(new Integer(1), department.getVersion());
+        try {
+            dao.insert(department);
+            fail();
+        } catch (UniqueConstraintException e) {
+        }
     }
 
     public void testExcludeNull() throws Exception {
@@ -123,7 +140,7 @@ public class AutoInsertTest {
         }
     }
 
-    @Prerequisite("#ENV not in {'mysql', 'mssql2008'}")
+    @Prerequisite("#ENV not in {'mysql', 'mssql2008', 'sqlite'}")
     public void testId_sequence() throws Exception {
         SequenceStrategyDao dao = new SequenceStrategyDaoImpl();
         for (int i = 0; i < 110; i++) {
@@ -133,6 +150,9 @@ public class AutoInsertTest {
         }
     }
 
+    // it seems that sqlite doesn't support requiresNew transaction
+    // so ignore this test case
+    @Prerequisite("#ENV not in {'sqlite'}")
     public void testId_table() throws Exception {
         TableStrategyDao dao = new TableStrategyDaoImpl();
         for (int i = 0; i < 110; i++) {

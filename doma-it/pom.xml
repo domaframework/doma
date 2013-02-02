@@ -99,6 +99,9 @@
 			<id>h2</id>
 		</profile>
 		<profile>
+			<id>sqlite</id>
+		</profile>
+		<profile>
 			<id>postgres</id>
 			<dependencies>
 				<dependency>
@@ -376,6 +379,13 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<version>1.2.126</version>
+			<type>jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.xerial</groupId>
+			<artifactId>sqlite-jdbc</artifactId>
+			<version>3.7.2</version>
 			<type>jar</type>
 			<scope>test</scope>
 		</dependency>

@@ -144,7 +144,7 @@ public class AutoBatchInsertTest {
         }
     }
 
-    @Prerequisite("#ENV not in {'mysql', 'mssql2008'}")
+    @Prerequisite("#ENV not in {'mysql', 'mssql2008', 'sqlite'}")
     public void testId_sequence() throws Exception {
         SequenceStrategyDao dao = new SequenceStrategyDaoImpl();
         for (int i = 0; i < 110; i++) {
@@ -160,6 +160,9 @@ public class AutoBatchInsertTest {
         }
     }
 
+    // it seems that sqlite doesn't support requiresNew transaction
+    // so ignore this test case
+    @Prerequisite("#ENV not in {'sqlite'}")
     public void testId_table() throws Exception {
         TableStrategyDao dao = new TableStrategyDaoImpl();
         for (int i = 0; i < 110; i++) {
