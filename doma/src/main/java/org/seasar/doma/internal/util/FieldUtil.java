@@ -63,6 +63,6 @@ public final class FieldUtil {
 
     public static boolean isPublic(Field field) {
         assertNotNull(field);
-        return (field.getModifiers() & Modifier.PUBLIC) == 1;
+        return Modifier.isPublic(field.getModifiers());
     }
 }
