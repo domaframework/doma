@@ -70,11 +70,13 @@ public class OriginalStatesAccessor<E> {
             throw new OriginalStatesNotFoundException(wrapException.getCause(),
                     entityClass.getName(), name);
         }
-        try {
-            FieldUtil.setAccessible(field, true);
-        } catch (WrapException wrapException) {
-            throw new OriginalStatesNotFoundException(wrapException.getCause(),
-                    entityClass.getName(), name);
+        if (!FieldUtil.isPublic(field)) {
+            try {
+                FieldUtil.setAccessible(field, true);
+            } catch (WrapException wrapException) {
+                throw new OriginalStatesNotFoundException(
+                        wrapException.getCause(), entityClass.getName(), name);
+            }
         }
         return field;
     }

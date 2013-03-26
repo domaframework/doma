@@ -18,6 +18,7 @@ package org.seasar.doma.internal.util;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 import org.seasar.doma.internal.WrapException;
 
@@ -52,10 +53,16 @@ public final class FieldUtil {
 
     public static void setAccessible(Field field, boolean flag)
             throws WrapException {
+        assertNotNull(field);
         try {
             field.setAccessible(flag);
         } catch (SecurityException e) {
             throw new WrapException(e);
         }
+    }
+
+    public static boolean isPublic(Field field) {
+        assertNotNull(field);
+        return (field.getModifiers() & Modifier.PUBLIC) == 1;
     }
 }
