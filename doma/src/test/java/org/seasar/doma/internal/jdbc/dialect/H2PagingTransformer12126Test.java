@@ -28,11 +28,12 @@ import org.seasar.doma.jdbc.SqlNode;
  * @author taedium
  * 
  */
-public class H2PagingTransformerTest extends TestCase {
+public class H2PagingTransformer12126Test extends TestCase {
 
     public void testOffsetLimit() throws Exception {
         String expected = "select * from emp order by emp.id limit 10 offset 5";
-        H2PagingTransformer transformer = new H2PagingTransformer(5, 10);
+        H2PagingTransformer12126 transformer = new H2PagingTransformer12126(5,
+                10);
         SqlParser parser = new SqlParser("select * from emp order by emp.id");
         SqlNode sqlNode = transformer.transform(parser.parse());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
@@ -43,7 +44,8 @@ public class H2PagingTransformerTest extends TestCase {
 
     public void testOffsetLimit_forUpdate() throws Exception {
         String expected = "select * from emp order by emp.id  limit 10 offset 5 for update";
-        H2PagingTransformer transformer = new H2PagingTransformer(5, 10);
+        H2PagingTransformer12126 transformer = new H2PagingTransformer12126(5,
+                10);
         SqlParser parser = new SqlParser(
                 "select * from emp order by emp.id for update");
         SqlNode sqlNode = transformer.transform(parser.parse());
@@ -54,8 +56,9 @@ public class H2PagingTransformerTest extends TestCase {
     }
 
     public void testOffsetOnly() throws Exception {
-        String expected = "select * from emp order by emp.id limit -1 offset 5";
-        H2PagingTransformer transformer = new H2PagingTransformer(5, -1);
+        String expected = "select * from emp order by emp.id limit 0 offset 5";
+        H2PagingTransformer12126 transformer = new H2PagingTransformer12126(5,
+                -1);
         SqlParser parser = new SqlParser("select * from emp order by emp.id");
         SqlNode sqlNode = transformer.transform(parser.parse());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
@@ -66,7 +69,8 @@ public class H2PagingTransformerTest extends TestCase {
 
     public void testLimitOnly() throws Exception {
         String expected = "select * from emp order by emp.id limit 10";
-        H2PagingTransformer transformer = new H2PagingTransformer(-1, 10);
+        H2PagingTransformer12126 transformer = new H2PagingTransformer12126(-1,
+                10);
         SqlParser parser = new SqlParser("select * from emp order by emp.id");
         SqlNode sqlNode = transformer.transform(parser.parse());
         NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(

@@ -22,12 +22,14 @@ import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
 import org.seasar.doma.jdbc.SqlNode;
 
 /**
+ * H2の古いバージョン1.2.126で稼動実績があるトランスフォーマーです。
+ * 
  * @author taedium
  * 
  */
-public class H2PagingTransformer extends StandardPagingTransformer {
+public class H2PagingTransformer12126 extends H2PagingTransformer {
 
-    public H2PagingTransformer(long offset, long limit) {
+    public H2PagingTransformer12126(long offset, long limit) {
         super(offset, limit);
     }
 
@@ -49,10 +51,10 @@ public class H2PagingTransformer extends StandardPagingTransformer {
             orderBy = new OrderByClauseNode("");
         }
         orderBy.addNode(new FragmentNode(" limit "));
-        if (limit > 0) {
+        if (limit >= 0) {
             orderBy.addNode(new FragmentNode(String.valueOf(limit)));
         } else {
-            orderBy.addNode(new FragmentNode("-1"));
+            orderBy.addNode(new FragmentNode("0"));
         }
         if (offset >= 0) {
             orderBy.addNode(new FragmentNode(" offset "));

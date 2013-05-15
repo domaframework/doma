@@ -16,36 +16,31 @@
 package org.seasar.doma.jdbc.dialect;
 
 import java.sql.SQLException;
-import java.util.Collections;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
-import org.seasar.doma.internal.jdbc.dialect.H2ForUpdateTransformer;
-import org.seasar.doma.internal.jdbc.dialect.H2PagingTransformer;
-import org.seasar.doma.internal.jdbc.sql.PreparedSql;
-import org.seasar.doma.internal.jdbc.sql.PreparedSqlParameter;
+import org.seasar.doma.internal.jdbc.dialect.H2PagingTransformer12126;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
-import org.seasar.doma.jdbc.SelectForUpdateType;
-import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
- * H2用の方言です。
+ * H2の古いバージョン1.2.126で稼動実績のある方言です。
  * 
  * @author taedium
  * 
  */
-public class H2Dialect extends StandardDialect {
+public class H2Dialect12126 extends H2Dialect {
 
     /** 一意制約違反を表すエラーコード */
-    protected static final int UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE = 23505;
+    @SuppressWarnings("hiding")
+    protected static final int UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE = 23001;
 
     /**
      * インスタンスを構築します。
      */
-    public H2Dialect() {
+    public H2Dialect12126() {
         this(new H2JdbcMappingVisitor(), new H2SqlLogFormattingVisitor(),
                 new H2ExpressionFunctions());
     }
@@ -56,7 +51,7 @@ public class H2Dialect extends StandardDialect {
      * @param jdbcMappingVisitor
      *            {@link Wrapper} をJDBCの型とマッピングするビジター
      */
-    public H2Dialect(JdbcMappingVisitor jdbcMappingVisitor) {
+    public H2Dialect12126(JdbcMappingVisitor jdbcMappingVisitor) {
         this(jdbcMappingVisitor, new H2SqlLogFormattingVisitor(),
                 new H2ExpressionFunctions());
     }
@@ -68,7 +63,7 @@ public class H2Dialect extends StandardDialect {
      *            SQLのバインド変数にマッピングされる {@link Wrapper}
      *            をログ用のフォーマットされた文字列へと変換するビジター
      */
-    public H2Dialect(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
+    public H2Dialect12126(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         this(new H2JdbcMappingVisitor(), sqlLogFormattingVisitor,
                 new H2ExpressionFunctions());
     }
@@ -79,7 +74,7 @@ public class H2Dialect extends StandardDialect {
      * @param expressionFunctions
      *            SQLのコメント式で利用可能な関数群
      */
-    public H2Dialect(ExpressionFunctions expressionFunctions) {
+    public H2Dialect12126(ExpressionFunctions expressionFunctions) {
         this(new H2JdbcMappingVisitor(), new H2SqlLogFormattingVisitor(),
                 expressionFunctions);
     }
@@ -94,7 +89,7 @@ public class H2Dialect extends StandardDialect {
      *            SQLのバインド変数にマッピングされる {@link Wrapper}
      *            をログ用のフォーマットされた文字列へと変換するビジター
      */
-    public H2Dialect(JdbcMappingVisitor jdbcMappingVisitor,
+    public H2Dialect12126(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         this(jdbcMappingVisitor, sqlLogFormattingVisitor,
                 new H2ExpressionFunctions());
@@ -112,45 +107,10 @@ public class H2Dialect extends StandardDialect {
      * @param expressionFunctions
      *            SQLのコメント式で利用可能な関数群
      */
-    public H2Dialect(JdbcMappingVisitor jdbcMappingVisitor,
+    public H2Dialect12126(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor,
             ExpressionFunctions expressionFunctions) {
         super(jdbcMappingVisitor, sqlLogFormattingVisitor, expressionFunctions);
-    }
-
-    @Override
-    public String getName() {
-        return "h2";
-    }
-
-    @Override
-    public boolean includesIdentityColumn() {
-        return true;
-    }
-
-    @Override
-    public PreparedSql getIdentitySelectSql(String qualifiedTableName,
-            String columnName) {
-        if (qualifiedTableName == null) {
-            throw new DomaNullPointerException("qualifiedTableName");
-        }
-        if (columnName == null) {
-            throw new DomaNullPointerException("columnName");
-        }
-        String rawSql = "call identity()";
-        return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<PreparedSqlParameter> emptyList());
-    }
-
-    @Override
-    public PreparedSql getSequenceNextValSql(String qualifiedSequenceName,
-            long allocationSize) {
-        if (qualifiedSequenceName == null) {
-            throw new DomaNullPointerException("qualifiedSequenceName");
-        }
-        String rawSql = "call next value for " + qualifiedSequenceName;
-        return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<PreparedSqlParameter> emptyList());
     }
 
     @Override
@@ -164,67 +124,9 @@ public class H2Dialect extends StandardDialect {
 
     @Override
     protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
-        H2PagingTransformer transformer = new H2PagingTransformer(offset, limit);
+        H2PagingTransformer12126 transformer = new H2PagingTransformer12126(
+                offset, limit);
         return transformer.transform(sqlNode);
-    }
-
-    @Override
-    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode,
-            SelectForUpdateType forUpdateType, int waitSeconds,
-            String... aliases) {
-        H2ForUpdateTransformer transformer = new H2ForUpdateTransformer(
-                forUpdateType, waitSeconds, aliases);
-        return transformer.transform(sqlNode);
-    }
-
-    @Override
-    public boolean supportsIdentity() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSequence() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsAutoGeneratedKeys() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSelectForUpdate(SelectForUpdateType type,
-            boolean withTargets) {
-        return type == SelectForUpdateType.NORMAL && !withTargets;
-    }
-
-    /**
-     * H2用の {@link JdbcMappingVisitor} の実装です。
-     * 
-     * @author taedium
-     * 
-     */
-    public static class H2JdbcMappingVisitor extends StandardJdbcMappingVisitor {
-    }
-
-    /**
-     * H2用の {@link SqlLogFormattingVisitor} の実装です。
-     * 
-     * @author taedium
-     * 
-     */
-    public static class H2SqlLogFormattingVisitor extends
-            StandardSqlLogFormattingVisitor {
-    }
-
-    /**
-     * H2用の {@link ExpressionFunctions} です。
-     * 
-     * @author taedium
-     * 
-     */
-    public static class H2ExpressionFunctions extends
-            StandardExpressionFunctions {
     }
 
 }
