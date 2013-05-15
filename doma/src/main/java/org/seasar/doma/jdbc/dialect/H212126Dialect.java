@@ -19,7 +19,7 @@ import java.sql.SQLException;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
-import org.seasar.doma.internal.jdbc.dialect.H2PagingTransformer12126;
+import org.seasar.doma.internal.jdbc.dialect.H212126PagingTransformer;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
@@ -31,7 +31,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class H2Dialect12126 extends H2Dialect {
+public class H212126Dialect extends H2Dialect {
 
     /** 一意制約違反を表すエラーコード */
     @SuppressWarnings("hiding")
@@ -40,7 +40,7 @@ public class H2Dialect12126 extends H2Dialect {
     /**
      * インスタンスを構築します。
      */
-    public H2Dialect12126() {
+    public H212126Dialect() {
         this(new H2JdbcMappingVisitor(), new H2SqlLogFormattingVisitor(),
                 new H2ExpressionFunctions());
     }
@@ -51,7 +51,7 @@ public class H2Dialect12126 extends H2Dialect {
      * @param jdbcMappingVisitor
      *            {@link Wrapper} をJDBCの型とマッピングするビジター
      */
-    public H2Dialect12126(JdbcMappingVisitor jdbcMappingVisitor) {
+    public H212126Dialect(JdbcMappingVisitor jdbcMappingVisitor) {
         this(jdbcMappingVisitor, new H2SqlLogFormattingVisitor(),
                 new H2ExpressionFunctions());
     }
@@ -63,7 +63,7 @@ public class H2Dialect12126 extends H2Dialect {
      *            SQLのバインド変数にマッピングされる {@link Wrapper}
      *            をログ用のフォーマットされた文字列へと変換するビジター
      */
-    public H2Dialect12126(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
+    public H212126Dialect(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         this(new H2JdbcMappingVisitor(), sqlLogFormattingVisitor,
                 new H2ExpressionFunctions());
     }
@@ -74,7 +74,7 @@ public class H2Dialect12126 extends H2Dialect {
      * @param expressionFunctions
      *            SQLのコメント式で利用可能な関数群
      */
-    public H2Dialect12126(ExpressionFunctions expressionFunctions) {
+    public H212126Dialect(ExpressionFunctions expressionFunctions) {
         this(new H2JdbcMappingVisitor(), new H2SqlLogFormattingVisitor(),
                 expressionFunctions);
     }
@@ -89,7 +89,7 @@ public class H2Dialect12126 extends H2Dialect {
      *            SQLのバインド変数にマッピングされる {@link Wrapper}
      *            をログ用のフォーマットされた文字列へと変換するビジター
      */
-    public H2Dialect12126(JdbcMappingVisitor jdbcMappingVisitor,
+    public H212126Dialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor) {
         this(jdbcMappingVisitor, sqlLogFormattingVisitor,
                 new H2ExpressionFunctions());
@@ -107,7 +107,7 @@ public class H2Dialect12126 extends H2Dialect {
      * @param expressionFunctions
      *            SQLのコメント式で利用可能な関数群
      */
-    public H2Dialect12126(JdbcMappingVisitor jdbcMappingVisitor,
+    public H212126Dialect(JdbcMappingVisitor jdbcMappingVisitor,
             SqlLogFormattingVisitor sqlLogFormattingVisitor,
             ExpressionFunctions expressionFunctions) {
         super(jdbcMappingVisitor, sqlLogFormattingVisitor, expressionFunctions);
@@ -124,7 +124,7 @@ public class H2Dialect12126 extends H2Dialect {
 
     @Override
     protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
-        H2PagingTransformer12126 transformer = new H2PagingTransformer12126(
+        H212126PagingTransformer transformer = new H212126PagingTransformer(
                 offset, limit);
         return transformer.transform(sqlNode);
     }

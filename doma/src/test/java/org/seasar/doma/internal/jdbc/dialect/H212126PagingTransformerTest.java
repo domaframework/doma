@@ -28,11 +28,11 @@ import org.seasar.doma.jdbc.SqlNode;
  * @author taedium
  * 
  */
-public class H2PagingTransformer12126Test extends TestCase {
+public class H212126PagingTransformerTest extends TestCase {
 
     public void testOffsetLimit() throws Exception {
         String expected = "select * from emp order by emp.id limit 10 offset 5";
-        H2PagingTransformer12126 transformer = new H2PagingTransformer12126(5,
+        H212126PagingTransformer transformer = new H212126PagingTransformer(5,
                 10);
         SqlParser parser = new SqlParser("select * from emp order by emp.id");
         SqlNode sqlNode = transformer.transform(parser.parse());
@@ -44,7 +44,7 @@ public class H2PagingTransformer12126Test extends TestCase {
 
     public void testOffsetLimit_forUpdate() throws Exception {
         String expected = "select * from emp order by emp.id  limit 10 offset 5 for update";
-        H2PagingTransformer12126 transformer = new H2PagingTransformer12126(5,
+        H212126PagingTransformer transformer = new H212126PagingTransformer(5,
                 10);
         SqlParser parser = new SqlParser(
                 "select * from emp order by emp.id for update");
@@ -57,7 +57,7 @@ public class H2PagingTransformer12126Test extends TestCase {
 
     public void testOffsetOnly() throws Exception {
         String expected = "select * from emp order by emp.id limit 0 offset 5";
-        H2PagingTransformer12126 transformer = new H2PagingTransformer12126(5,
+        H212126PagingTransformer transformer = new H212126PagingTransformer(5,
                 -1);
         SqlParser parser = new SqlParser("select * from emp order by emp.id");
         SqlNode sqlNode = transformer.transform(parser.parse());
@@ -69,7 +69,7 @@ public class H2PagingTransformer12126Test extends TestCase {
 
     public void testLimitOnly() throws Exception {
         String expected = "select * from emp order by emp.id limit 10";
-        H2PagingTransformer12126 transformer = new H2PagingTransformer12126(-1,
+        H212126PagingTransformer transformer = new H212126PagingTransformer(-1,
                 10);
         SqlParser parser = new SqlParser("select * from emp order by emp.id");
         SqlNode sqlNode = transformer.transform(parser.parse());
