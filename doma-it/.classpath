@@ -19,7 +19,6 @@
 	<classpathentry kind="lib" path="lib/s2-tiger-2.4.38.jar"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.7-bin.jar"/>
 	<classpathentry kind="lib" path="lib/ant-1.7.0.jar"/>
-	<classpathentry kind="lib" path="lib/h2-1.2.126.jar"/>
 	<classpathentry kind="lib" path="lib/sqlite-jdbc-3.7.2.jar"/>
 	<classpathentry kind="src" path=".apt_generated">
 		<attributes>
@@ -29,5 +28,6 @@
 	<classpathentry kind="lib" path="lib/hsqldb-1.8.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/postgresql-8.3-604.jdbc4.jar"/>
 	<classpathentry kind="lib" path="lib/doma-SNAPSHOT.jar" sourcepath="libsrc/doma-SNAPSHOT-sources.jar"/>
+	<classpathentry kind="lib" path="lib/h2-1.3.171.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

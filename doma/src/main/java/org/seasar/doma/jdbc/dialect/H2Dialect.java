@@ -16,7 +16,10 @@
 package org.seasar.doma.jdbc.dialect;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
@@ -40,7 +43,8 @@ import org.seasar.doma.wrapper.Wrapper;
 public class H2Dialect extends StandardDialect {
 
     /** 一意制約違反を表すエラーコード */
-    protected static final int UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE = 23001;
+    protected static final Set<Integer> UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODES = new HashSet<Integer>(
+            Arrays.asList(23001, 23505));
 
     /**
      * インスタンスを構築します。
@@ -159,7 +163,7 @@ public class H2Dialect extends StandardDialect {
             throw new DomaNullPointerException("sqlException");
         }
         int code = getErrorCode(sqlException);
-        return UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE == code;
+        return UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODES.contains(code);
     }
 
     @Override
