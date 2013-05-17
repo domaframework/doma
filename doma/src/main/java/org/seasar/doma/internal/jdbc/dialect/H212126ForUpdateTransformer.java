@@ -16,19 +16,19 @@
 package org.seasar.doma.internal.jdbc.dialect;
 
 import org.seasar.doma.internal.jdbc.sql.node.ForUpdateClauseNode;
-import org.seasar.doma.internal.jdbc.sql.node.FragmentNode;
-import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
+import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlNode;
 
 /**
  * @author taedium
  * 
  */
-public class H2PagingTransformer extends H212126PagingTransformer {
+public class H212126ForUpdateTransformer extends StandardForUpdateTransformer {
 
-    public H2PagingTransformer(long offset, long limit) {
-        super(offset, limit);
+    public H212126ForUpdateTransformer(SelectForUpdateType forUpdateType,
+            int waitSeconds, String... aliases) {
+        super(forUpdateType, waitSeconds, aliases);
     }
 
     @Override
@@ -38,30 +38,7 @@ public class H2PagingTransformer extends H212126PagingTransformer {
         }
         processed = true;
 
-        OrderByClauseNode originalOrderBy = node.getOrderByClauseNode();
-        OrderByClauseNode orderBy = node.getOrderByClauseNode();
-        if (originalOrderBy != null) {
-            orderBy = new OrderByClauseNode(originalOrderBy.getWordNode());
-            for (SqlNode child : originalOrderBy.getChildren()) {
-                orderBy.addNode(child);
-            }
-        } else {
-            orderBy = new OrderByClauseNode("");
-        }
-        orderBy.addNode(new FragmentNode(" limit "));
-        if (limit > 0) {
-            orderBy.addNode(new FragmentNode(String.valueOf(limit)));
-        } else {
-            orderBy.addNode(new FragmentNode("-1"));
-        }
-        if (offset >= 0) {
-            orderBy.addNode(new FragmentNode(" offset "));
-            orderBy.addNode(new FragmentNode(String.valueOf(offset)));
-        }
-        ForUpdateClauseNode forUpdate = node.getForUpdateClauseNode();
-        if (node.getForUpdateClauseNode() != null) {
-            orderBy.addNode(new FragmentNode(" "));
-        }
+        ForUpdateClauseNode forUpdate = new ForUpdateClauseNode(" for update");
 
         SelectStatementNode result = new SelectStatementNode();
         result.setSelectClauseNode(node.getSelectClauseNode());
@@ -69,7 +46,7 @@ public class H2PagingTransformer extends H212126PagingTransformer {
         result.setWhereClauseNode(node.getWhereClauseNode());
         result.setGroupByClauseNode(node.getGroupByClauseNode());
         result.setHavingClauseNode(node.getHavingClauseNode());
-        result.setOrderByClauseNode(orderBy);
+        result.setOrderByClauseNode(node.getOrderByClauseNode());
         result.setForUpdateClauseNode(forUpdate);
         return result;
     }

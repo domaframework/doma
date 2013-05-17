@@ -27,7 +27,7 @@ import org.seasar.doma.jdbc.SqlNode;
  * @author taedium
  * 
  */
-public class H212126PagingTransformer extends H2PagingTransformer {
+public class H212126PagingTransformer extends StandardPagingTransformer {
 
     public H212126PagingTransformer(long offset, long limit) {
         super(offset, limit);
