@@ -19,8 +19,10 @@ import java.sql.SQLException;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
+import org.seasar.doma.internal.jdbc.dialect.H2ForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.H2PagingTransformer;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.wrapper.Wrapper;
@@ -125,6 +127,15 @@ public class H2Dialect extends H212126Dialect {
     @Override
     protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
         H2PagingTransformer transformer = new H2PagingTransformer(offset, limit);
+        return transformer.transform(sqlNode);
+    }
+
+    @Override
+    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode,
+            SelectForUpdateType forUpdateType, int waitSeconds,
+            String... aliases) {
+        H2ForUpdateTransformer transformer = new H2ForUpdateTransformer(
+                forUpdateType, waitSeconds, aliases);
         return transformer.transform(sqlNode);
     }
 
