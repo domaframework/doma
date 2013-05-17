@@ -93,7 +93,7 @@
 				</p>
 				<table border="1" cellpadding="2" cellspacing="0">
 					<tr><th>属性</th><th>説明</th><th>デフォルト値</th><th>必須</th></tr>
-					<tr><td>dialectName</td><td>接続するRDBMSの方言名です。次のうちのどれかを指定できます。"h2"、"hsqldb"、"mysql"、"postgres"、"oracle"、"db2"、"mssql2008"。指定するクラスは、GenTestタスクを実行するクラスパスに通されている必要があります。</td><td>-</td><td><b>dialectClassNameが指定されていない場合YES</b></td></tr>
+					<tr><td>dialectName</td><td>接続するRDBMSの方言名です。次のうちのどれかを指定できます。"h2"、"hsqldb"、"mysql"、"postgres"、"oracle"、"db2"、"mssql2008"、"mssql"。この名前に対応するクラスは、GenTestタスクを実行するクラスパスに通されている必要があります。</td><td>-</td><td><b>dialectClassNameが指定されていない場合YES</b></td></tr>
 					<tr><td>dialectClassName</td><td>接続するRDBMSの方言クラス名です。<code>org.seasar.doma.jdbc.dialect.Dialect</code>の実装クラスでなければいけません。dialectNameの指定により利用できる組み込みの方言クラス以外を利用する場合に指定します。指定するクラスは、GenTestタスクを実行するクラスパスに通されている必要があります。</td><td>-</td><td><b>dialectNameが指定されていない場合YES</b></td></tr>
 					<tr><td>driverClassName</td><td>JDBCドライバクラス名です。<code>java.sql.Driver</code>の実装クラスでなければいけません。</td><td>-</td><td><b><b>YES</b></b></td></tr>
 					<tr><td>url</td><td>JDBC接続URLです。</td><td>-</td><td><b>YES</b></td></tr>

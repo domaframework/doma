@@ -76,38 +76,57 @@
 					<tr>
 						<th>データベース</th>
 						<th>方言クラスの名前</th>
+						<th>説明</th>
 					</tr>
 					<tr>
 						<td>DB2</td>
 						<td><code>org.seasar.doma.jdbc.dialect.Db2Dialect</code></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>H2 Database Engine 1.2.126</td>
+						<td><code>org.seasar.doma.jdbc.dialect.H212126Dialect</code></td>
+						<td>H2 Database Engine 1.2.126で稼動実績あり</td>
 					</tr>
 					<tr>
 						<td>H2 Database Engine</td>
 						<td><code>org.seasar.doma.jdbc.dialect.H2Dialect</code></td>
+						<td>H2 Database Engine 1.3.171以降に対応</td>
 					</tr>
 					<tr>
 						<td>HSQLDB</td>
 						<td><code>org.seasar.doma.jdbc.dialect.HsqldbDialect</code></td>
+						<td></td>
 					</tr>
 					<tr>
 						<td>Microsoft SQL Server 2008</td>
 						<td><code>org.seasar.doma.jdbc.dialect.Mssql2008Dialect</code></td>
+						<td>Microsoft SQL Server 2008に対応</td>
+					</tr>
+					<tr>
+						<td>Microsoft SQL Server</td>
+						<td><code>org.seasar.doma.jdbc.dialect.MssqlDialect</code></td>
+						<td>Microsoft SQL Server 2012以降に対応</td>
 					</tr>
 					<tr>
 						<td>MySQL</td>
 						<td><code>org.seasar.doma.jdbc.dialect.MySqlDialect</code></td>
+						<td></td>
 					</tr>
 					<tr>
 						<td>Oracle Database</td>
 						<td><code>org.seasar.doma.jdbc.dialect.OracleDialect</code></td>
+						<td></td>
 					</tr>
 					<tr>
 						<td>PostgreSQL</td>
 						<td><code>org.seasar.doma.jdbc.dialect.PostgresDialect</code></td>
+						<td></td>
 					</tr>
 					<tr>
 						<td>SQLite</td>
 						<td><code>org.seasar.doma.jdbc.dialect.SqliteDialect</code></td>
+						<td></td>
 					</tr>
 				</table>
 				<p>
