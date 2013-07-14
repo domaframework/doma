@@ -43,15 +43,15 @@ public abstract class AbstractProcessor extends
         } catch (AptIllegalOptionException e) {
             Notifier.notify(processingEnv, Kind.ERROR, e.getMessage(),
                     typeElement);
-            throw e;
+            throw new AptTypeHandleException(typeElement, e);
         } catch (AptIllegalStateException e) {
             Notifier.notify(processingEnv, Kind.ERROR, Message.DOMA4039,
                     typeElement);
-            throw e;
+            throw new AptTypeHandleException(typeElement, e);
         } catch (RuntimeException e) {
             Notifier.notify(processingEnv, Kind.ERROR, Message.DOMA4016,
                     typeElement);
-            throw e;
+            throw new AptTypeHandleException(typeElement, e);
         }
         if (Options.isDebugEnabled(processingEnv)) {
             Notifier.debug(processingEnv, Message.DOMA4091, getClass()
