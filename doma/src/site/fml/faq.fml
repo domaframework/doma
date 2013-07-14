@@ -246,7 +246,15 @@
 			</answer>
 		</faq>
 		<faq id="build-environment-3">
-			<question>Domaを利用したアプリケーションをAntやMavenでコンパイルするとエラーになります。何がいけないのでしょうか？</question>
+			<question>GradleでDomaを利用したアプリケーションをビルドしたいのですが、aptに関する設定をどのように行えばいいのでしょうか？</question>
+			<answer>
+				<p>
+					<a href="reference/app_build.html">アプリケーションのビルド方法</a>や<a href="reference/apt.html">注釈処理</a>を参照してください。
+				</p>
+			</answer>
+		</faq>
+		<faq id="build-environment-4">
+			<question>Domaを利用したアプリケーションをAntやMavenやGradleでコンパイルするとエラーになります。何がいけないのでしょうか？</question>
 			<answer>
 				<p>
 					javacには、aptに関するバグがあります。

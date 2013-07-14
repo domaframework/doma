@@ -12,6 +12,7 @@
 				<li><a href="#javacの警告について">javacの警告について</a></li>
 				<li><a href="#Antによるビルド">Antによるビルド</a></li>
 				<li><a href="#Mavenによるビルド">Mavenによるビルド</a></li>
+				<li><a href="#Gradleによるビルド">Gradleによるビルド</a></li>
 			</ul>
 		</section>
 		<section name="概要">
@@ -192,6 +193,54 @@ import tutorial.dao.EmployeeDaoImpl;
 			<p>
 				Mavenを使ったWebアプリケーションのビルドについては、Doma JPetStoreの配布ファイルに含まれるpom.xmlを参考にしてください。
 				Doma JPetStoreは<a href="../downloads.html">ダウンロードページ</a>からダウンロードできます。
+			</p>
+		</section>
+		<section name="Gradleによるビルド">
+			<p>
+				Gradle 1.6で動作確認しています。
+			</p>
+			<p>
+				Gradleでビルドを行う際のポイントを示します。
+			</p>
+			<ul>
+				<li>JavaクラスとSQLファイルの出力先ディレクトリを同じにする</li>
+				<li>コンパイルより前にSQLファイルを出力先ディレクトリにコピーする</li>
+				<li>依存関係の設定でdomaへの依存を指定する</li>
+			</ul>
+			<p>
+				サンプルのbuild.gradleを示します。このファイルはチュートリアルに含まれています。
+			</p>
+<source><![CDATA[apply plugin: 'java'
+
+sourceCompatibility = targetCompatibility = 1.6
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+// JavaクラスとSQLファイルの出力先ディレクトリを同じにする
+processResources.destinationDir = compileJava.destinationDir
+// コンパイルより前にSQLファイルを出力先ディレクトリにコピーするために依存関係を逆転する
+compileJava.dependsOn processResources
+
+def aptGeneratePath = 'build/apt_generated'
+compileJava.options.compilerArgs = ['-s', aptGeneratePath]
+new File(aptGeneratePath).mkdirs()
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+  // domaのMavenリポジトリを指定する
+  maven {url 'http://maven.seasar.org/maven2'}
+}
+
+dependencies {
+  // domaへの依存を指定する
+  compile 'org.seasar.doma:doma:1.31.0'
+  compile 'com.h2database:h2:1.3.171'
+  testCompile 'junit:junit:3.8.2'
+}]]></source>
+			<p>
+				Java6でビルドする場合は、<a href="#javacのバグについて">javacのバグについて</a>も参照ください。
+			</p>
+			<p>
+				Java7以上でビルドする場合は、<a href="#javacの警告について">javacの警告について</a>も参照ください。
 			</p>
 		</section>
 	</body>

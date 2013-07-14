@@ -35,6 +35,11 @@
 			<fileset dir="../doma-tutorial" includes="**/pom.xml" />
 		</replaceregexp>
 		<replaceregexp
+			match="('org.seasar.doma:doma:)(?:[^']+)(')"
+			replace="\1${newVersion}\2" encoding="UTF-8" flags="g">
+			<fileset dir="../doma-tutorial" includes="**/build.gradle" />
+		</replaceregexp>
+		<replaceregexp
 			match="(private static final String VERSION = &quot;)[^&quot;]*(&quot;)"
 			replace="\1${newVersion}\2" encoding="UTF-8" flags="g">
 			<fileset dir="." includes="**/Artifact.java" />
