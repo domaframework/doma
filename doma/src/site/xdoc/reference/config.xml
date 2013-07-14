@@ -12,6 +12,7 @@
 					<ul>
 						<li><a href="#Configインタフェースを直接実装する場合">Configインタフェースを直接実装する場合</a></li>
 						<li><a href="#DomaAbstractConfigを継承する場合">DomaAbstractConfigを継承する場合</a></li>
+						<li><a href="#JDBCドライバの設定">JDBCドライバの設定</a></li>
 					</ul>
 				</li>
 				<li><a href="#設定クラスの利用">設定クラスの利用</a></li>
@@ -283,6 +284,29 @@
 						<td><code>10</code></td>
 					</tr>
 				</table>
+			</subsection>
+			<subsection name="JDBCドライバの設定">
+				<p>
+					通常、クラスパスが通っていれば、JDBC 4.0 ドライバは<a href="http://docs.oracle.com/javase/6/docs/technotes/guides/jar/jar.html#Service%20Provider">サービスプロバイダ</a>メカニズムにより自動でロードされます。
+				</p>
+				<p>
+					しかし、たとえばTomcatでは、<a href="http://tomcat.apache.org/tomcat-7.0-doc/jndi-datasource-examples-howto.html#DriverManager, the service provider mechanism and memory leaks">WEB-INF/libの下のJDBCドライバを自動でロードしません</a>。
+					自動でロードされない条件下では、Class.forNameを使ってJDBCドライバをロードしてください。
+				</p>
+				<p>
+					Class.forNameを実行する場所は、設定クラスのstatic初期化子が1つの候補です。
+					たとえば、H2 DatabaseのJDBCドライバを明示的にロードする場合には次のようにします。
+				</p>
+<source>public class AppConfig extends DomaAbstractConfig {
+    static {
+        try {
+            Class.forName("org.h2.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    ...
+}</source>
 			</subsection>
 		</section>
 		<section name="設定クラスの利用">

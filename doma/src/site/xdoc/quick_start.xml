@@ -39,7 +39,7 @@
 			</p>
 			<p>
 				DDL、データベースの接続情報、方言（Dialect）の実装を書き換えれば他のRDBMSでも動作します。
-				（現在、サポートしているデータベースは、DB2、H2 Database Engine、HSQLDB、Microsoft SQL Server 2008、MySQL、Oracle Database、PostgreSQLです。）
+				（現在、サポートしているデータベースは、DB2、H2 Database Engine、HSQLDB、Microsoft SQL Server 2008、MySQL、Oracle Database、PostgreSQL、SQLiteです。）
 			</p>
 			<subsection name="H2 Database Engineのダウンロード">
 				<p>
@@ -58,15 +58,9 @@
 					binディレクトリにあるjarファイルをEclipseなど開発環境のクラスパスに追加してください。
 				</p>
 				<p>
-					また、実行時にドライバがロードされるように、次の設定を行ってください。
+					通常、クラスパスが通っていれば、JDBC 4.0 ドライバはサービスプロバイダメカニズムにより自動でロードされます。
+					詳細は、<a href="reference/config.html#JDBCドライバの設定">設定クラスのリファレンス</a>を参照ください。
 				</p>
-				<ul>
-					<li>クラスパスが通ったところに「META-INF/services」ディレクトリを作成します。</li>
-					<li>「META-INF/services」ディレクトリに「java.sql.Driver」ファイルを作成します。</li>
-					<li>「java.sql.Driver」ファイルにJDBCドライバのクラス名を記述します。
-						<pre>org.h2.Driver</pre>
-					</li>
-				</ul>
 			</subsection>
 			<subsection name="サンプルテーブルとデータの作成">
 				<p>

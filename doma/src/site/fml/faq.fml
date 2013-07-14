@@ -498,5 +498,13 @@
 				</p>
 			</answer>
 		</faq>
+		<faq id="feature-19">
+			<question>JDBCドライバはどのように設定しますか？</question>
+			<answer>
+				<p>
+					<a href="reference/config.html#JDBCドライバの設定">JDBCドライバの設定</a>を参照してください。
+				</p>
+			</answer>
+		</faq>
 	</part>
 </faqs>

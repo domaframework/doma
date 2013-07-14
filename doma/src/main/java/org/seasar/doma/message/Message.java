@@ -356,7 +356,7 @@ public enum Message implements MessageResource {
     DOMA4202("org.seasar.doma.jdbc.entity.EntityListenerの型引数が解決されていません。"),
 
     // other
-    DOMA5001("JDBCドライバがロードされていない可能性があります。JDBCドライバをロードするには、クラスパスが通されたMETA-INF/services/java.sql.DriverファイルにJDBCドライバのクラスの完全修飾名を記述してください。 ex) oracle.jdbc.driver.OracleDriver"),
+    DOMA5001("JDBCドライバがロードされていない可能性があります。まず、JDBCドライバがクラスパスにあることを確認してください。次に、JDBCドライバが自動でロードされない場合は、Class.forNameで明示的にロードしてください。 ex) Class.forName(\"oracle.jdbc.driver.OracleDriver\")"),
     DOMA5002("urlプロパティが設定されていません。"), ;
 
     private final String messagePattern;
