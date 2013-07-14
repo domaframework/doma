@@ -123,6 +123,7 @@
 						<li><a href="app_build.html#javacのバグについて">javacのバグについて</a></li>
 						<li><a href="app_build.html#Antによるビルド">Antによるビルド</a></li>
 						<li><a href="app_build.html#Mavenによるビルド">Mavenによるビルド</a></li>
+						<li><a href="app_build.html#Gradleによるビルド">Gradleによるビルド</a></li>
 					</ul>
 				</li>
 			</ul>

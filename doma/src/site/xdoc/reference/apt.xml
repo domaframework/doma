@@ -14,6 +14,7 @@
 						<li><a href="#javacでのオプション指定">javacでのオプション指定</a></li>
 						<li><a href="#Antでのオプション指定">Antでのオプション指定</a></li>
 						<li><a href="#Mavenでのオプション指定">Mavenでのオプション指定</a></li>
+						<li><a href="#Gradleでのオプション指定">Gradleでのオプション指定</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -140,6 +141,14 @@
 					複数のオプションを使いたい場合は、maven-processor-pluginの利用を検討してください。
 					maven-processor-pluginとmaven-compiler-pluginの併用方法については、<a href="app_build.html">アプリケーションのビルド方法</a>を参照してください。
 				</p>
+			</subsection>
+			<subsection name="Gradleでのオプション指定">
+				<p>
+					compileJava.options.compilerArgsに指定します。
+					以下の例では、'-Adao.subpackage=impl' と '-Adao.suffix=Impl' が注釈処理のオプション指定です。
+				</p>
+				<source><![CDATA[def aptGeneratePath = 'build/apt_generated'
+compileJava.options.compilerArgs = ['-s', aptGeneratePath, '-Adao.subpackage=impl', '-Adao.suffix=Impl']]]></source>
 			</subsection>
 		</section>
 	</body>
