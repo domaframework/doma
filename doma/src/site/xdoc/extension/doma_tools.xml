@@ -9,6 +9,7 @@
 			<ul>
 				<li><a href="#概要">概要</a></li>
 				<li><a href="#インストール">インストール</a></li>
+				<li><a href="#事前条件">事前条件</a></li>
 				<li><a href="#使用方法">使用方法</a></li>
 			</ul>
 		</section>
@@ -41,13 +42,18 @@
 				Domaを利用するには、Doma本体のjarファイルを別途<a href="../setup.html">セットアップ</a>してください。
 			</p>
 		</section>
-		<section name="使用方法">
-			<p>
-				Daoインタフェースは@Daoが注釈されている場合のみ認識されます。
-			</p>
+		<section name="事前条件">
 			<p>
 				以下で述べる「SQLファイル」とは拡張子が「sql」であるファイルを示し、
 				「スクリプトファイル」とは拡張子が「script」であるファイルを示します。
+			</p>
+			<p>
+				SQLファイルとスクリプトファイルは、Eclipse内のエディタで開くように設定してください。
+			</p>
+		</section>
+		<section name="使用方法">
+			<p>
+				Daoインタフェースは@Daoが注釈されている場合のみ認識されます。
 			</p>
 			<subsection name="DaoインタフェースをJavaエディタで開いている場合">
 				<p>
