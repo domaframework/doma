@@ -25,6 +25,7 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.AptException;
@@ -127,6 +128,17 @@ public class ExternalDomainMetaFactory implements
         if (pkgElement.isUnnamed()) {
             throw new AptException(Message.DOMA4197, env, convElement,
                     domainElement.getQualifiedName());
+        }
+        DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(domainType,
+                env);
+        if (declaredType == null) {
+            throw new AptIllegalStateException(domainType.toString());
+        }
+        for (TypeMirror typeArg : declaredType.getTypeArguments()) {
+            if (typeArg.getKind() != TypeKind.WILDCARD) {
+                throw new AptException(Message.DOMA4203, env, convElement,
+                        domainElement.getQualifiedName());
+            }
         }
         meta.setDomainElement(domainElement);
     }

@@ -21,9 +21,11 @@ import java.io.IOException;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.TypeParameterElement;
 
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.meta.DomainMeta;
+import org.seasar.doma.internal.apt.util.MetaUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.util.BoxedPrimitiveUtil;
 import org.seasar.doma.jdbc.domain.DomainType;
@@ -38,12 +40,32 @@ public class DomainTypeGenerator extends AbstractGenerator {
 
     protected final DomainMeta domainMeta;
 
+    protected final String typeName;
+
+    protected final String metaTypeName;
+
+    protected final String simpleMetaTypeName;
+
+    protected final String typeParamDecl;
+
     public DomainTypeGenerator(ProcessingEnvironment env,
             TypeElement domainElement, DomainMeta domainMeta)
             throws IOException {
         super(env, domainElement, null, null, Constants.METATYPE_PREFIX, "");
         assertNotNull(domainMeta);
         this.domainMeta = domainMeta;
+        this.typeName = TypeMirrorUtil.getTypeName(domainMeta.getType(), env);
+        this.metaTypeName = MetaUtil.getMetaTypeName(typeName);
+        this.simpleMetaTypeName = MetaUtil.getSimpleMetaTypeName(typeName);
+        this.typeParamDecl = makeTypeParamDecl(typeName);
+    }
+
+    private String makeTypeParamDecl(String typeName) {
+        int pos = typeName.indexOf("<");
+        if (pos == -1) {
+            return "";
+        }
+        return typeName.substring(pos);
     }
 
     @Override
@@ -60,12 +82,21 @@ public class DomainTypeGenerator extends AbstractGenerator {
     }
 
     protected void printClass() {
-        iprint("/** */%n");
+        if (typeElement.getTypeParameters().isEmpty()) {
+            iprint("/** */%n");
+        } else {
+            iprint("/**%n");
+            for (TypeParameterElement typeParam : typeElement
+                    .getTypeParameters()) {
+                iprint(" * @param <%1$s> %1$s%n", typeParam.getSimpleName());
+            }
+            iprint(" */%n");
+        }
         printGenerated();
         iprint("public final class %1$s implements %2$s<%3$s, %4$s> {%n",
-                simpleName, DomainType.class.getName(),
+                simpleMetaTypeName, DomainType.class.getName(),
                 TypeMirrorUtil.boxIfPrimitive(domainMeta.getValueType(), env),
-                domainMeta.getTypeElement().getQualifiedName());
+                typeName);
         print("%n");
         indent();
         printValidateVersionStaticInitializer();
@@ -78,6 +109,9 @@ public class DomainTypeGenerator extends AbstractGenerator {
     }
 
     protected void printFields() {
+        if (domainMeta.isParametarized()) {
+            iprint("@SuppressWarnings(\"rawtypes\")%n");
+        }
         iprint("private static final %1$s singleton = new %1$s();%n",
                 simpleName);
         print("%n");
@@ -100,17 +134,14 @@ public class DomainTypeGenerator extends AbstractGenerator {
 
     protected void printNewDomainMethod() {
         iprint("@Override%n");
-        iprint("public %1$s newDomain(%2$s value) {%n", domainMeta
-                .getTypeElement().getQualifiedName(),
+        iprint("public %1$s newDomain(%2$s value) {%n", typeName,
                 TypeMirrorUtil.boxIfPrimitive(domainMeta.getValueType(), env));
         if (domainMeta.providesConstructor()) {
             if (domainMeta.getWrapperType().getWrappedType().isPrimitive()) {
-                iprint("    return new %1$s(%2$s.unbox(value));%n", domainMeta
-                        .getTypeElement().getQualifiedName(),
+                iprint("    return new %1$s(%2$s.unbox(value));%n", typeName,
                         BoxedPrimitiveUtil.class.getName());
             } else {
-                iprint("    return new %1$s(value);%n", domainMeta
-                        .getTypeElement().getQualifiedName());
+                iprint("    return new %1$s(value);%n", typeName);
             }
         } else {
             if (domainMeta.getWrapperType().getWrappedType().isPrimitive()) {
@@ -139,11 +170,19 @@ public class DomainTypeGenerator extends AbstractGenerator {
     }
 
     protected void printGetDomainClassMethod() {
+        if (domainMeta.isParametarized()) {
+            iprint("@SuppressWarnings(\"unchecked\")%n");
+        }
         iprint("@Override%n");
-        iprint("public Class<%1$s> getDomainClass() {%n", domainMeta
-                .getTypeElement().getQualifiedName());
-        iprint("    return %1$s.class;%n", domainMeta.getTypeElement()
-                .getQualifiedName());
+        iprint("public Class<%1$s> getDomainClass() {%n", typeName);
+        if (domainMeta.isParametarized()) {
+            iprint("    Class<?> clazz = %1$s.class;%n", domainMeta
+                    .getTypeElement().getQualifiedName());
+            iprint("    return (Class<%1$s>) clazz;%n", typeName);
+        } else {
+            iprint("    return %1$s.class;%n", domainMeta.getTypeElement()
+                    .getQualifiedName());
+        }
         iprint("}%n");
         print("%n");
     }
@@ -153,8 +192,8 @@ public class DomainTypeGenerator extends AbstractGenerator {
         iprint("public %1$s<%2$s, %3$s> getWrapper(%3$s domain) {%n",
                 DomainWrapper.class.getName(),
                 TypeMirrorUtil.boxIfPrimitive(domainMeta.getValueType(), env),
-                domainMeta.getTypeElement().getQualifiedName());
-        iprint("    return new Wrapper(domain);%n");
+                typeName);
+        iprint("    return new Wrapper%1$s(domain);%n", typeParamDecl);
         iprint("}%n");
         print("%n");
     }
@@ -163,8 +202,16 @@ public class DomainTypeGenerator extends AbstractGenerator {
         iprint("/**%n");
         iprint(" * @return the singleton%n");
         iprint(" */%n");
-        iprint("public static %1$s getSingletonInternal() {%n", simpleName);
-        iprint("    return singleton;%n");
+        if (domainMeta.isParametarized()) {
+            iprint("@SuppressWarnings(\"unchecked\")%n");
+            iprint("public static %1$s %2$s getSingletonInternal() {%n",
+                    typeParamDecl, simpleMetaTypeName);
+            iprint("    return (%1$s) singleton;%n", simpleMetaTypeName);
+        } else {
+            iprint("public static %1$s getSingletonInternal() {%n",
+                    simpleMetaTypeName);
+            iprint("    return singleton;%n");
+        }
         iprint("}%n");
         print("%n");
     }
@@ -181,11 +228,11 @@ public class DomainTypeGenerator extends AbstractGenerator {
     protected class WrapperGenerator {
 
         protected void generate() {
-            iprint("private static class Wrapper extends %1$s implements %2$s<%3$s, %4$s> {%n",
-                    domainMeta.getWrapperType().getTypeName(),
+            iprint("private static class Wrapper%1$s extends %2$s implements %3$s<%4$s, %5$s> {%n",
+                    typeParamDecl, domainMeta.getWrapperType().getTypeName(),
                     DomainWrapper.class.getName(), TypeMirrorUtil
                             .boxIfPrimitive(domainMeta.getValueType(), env),
-                    domainMeta.getTypeElement().getQualifiedName());
+                    typeName);
             print("%n");
             indent();
             printWrapperField();
@@ -198,14 +245,12 @@ public class DomainTypeGenerator extends AbstractGenerator {
         }
 
         protected void printWrapperField() {
-            iprint("private %1$s domain;%n", domainMeta.getTypeElement()
-                    .getQualifiedName());
+            iprint("private %1$s domain;%n", typeName);
             print("%n");
         }
 
         protected void printWrapperConstructor() {
-            iprint("private Wrapper(%1$s domain) {%n", domainMeta
-                    .getTypeElement().getQualifiedName());
+            iprint("private Wrapper(%1$s domain) {%n", typeName);
             if (domainMeta.getWrapperType().getWrappedType().isEnum()) {
                 iprint("    super(%1$s.class);%n",
                         TypeMirrorUtil.boxIfPrimitive(
@@ -237,11 +282,9 @@ public class DomainTypeGenerator extends AbstractGenerator {
             if (domainMeta.providesConstructor()) {
                 if (domainMeta.getWrapperType().getWrappedType().isPrimitive()) {
                     iprint("    domain = new %1$s(%2$s.unbox(value));%n",
-                            domainMeta.getTypeElement().getQualifiedName(),
-                            BoxedPrimitiveUtil.class.getName());
+                            typeName, BoxedPrimitiveUtil.class.getName());
                 } else {
-                    iprint("    domain = new %1$s(value);%n", domainMeta
-                            .getTypeElement().getQualifiedName());
+                    iprint("    domain = new %1$s(value);%n", typeName);
                 }
             } else {
                 if (domainMeta.getWrapperType().getWrappedType().isPrimitive()) {
@@ -261,8 +304,7 @@ public class DomainTypeGenerator extends AbstractGenerator {
 
         protected void printWrapperGetDomainMethod() {
             iprint("@Override%n");
-            iprint("public %1$s getDomain() {%n", domainMeta.getTypeElement()
-                    .getQualifiedName());
+            iprint("public %1$s getDomain() {%n", typeName);
             iprint("    return domain;%n");
             iprint("}%n");
         }

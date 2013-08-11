@@ -76,8 +76,8 @@ public class QueryParameterMeta {
         dataType = createDataType(parameterElement, env);
     }
 
-    protected DataType createDataType(VariableElement parameterElement,
-            ProcessingEnvironment env) {
+    protected DataType createDataType(final VariableElement parameterElement,
+            final ProcessingEnvironment env) {
         IterableType iterableType = IterableType.newInstance(type, env);
         if (iterableType != null) {
             if (iterableType.isRawType()) {
@@ -86,6 +86,26 @@ public class QueryParameterMeta {
             if (iterableType.isWildcardType()) {
                 throw new AptException(Message.DOMA4160, env, parameterElement);
             }
+            iterableType.getElementType().accept(
+                    new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+
+                        @Override
+                        public Void visitDomainType(final DomainType dataType,
+                                Void p) throws RuntimeException {
+                            if (dataType.isRawType()) {
+                                throw new AptException(Message.DOMA4212, env,
+                                        parameterElement,
+                                        dataType.getQualifiedName());
+                            }
+                            if (dataType.isWildcardType()) {
+                                throw new AptException(Message.DOMA4213, env,
+                                        parameterElement,
+                                        dataType.getQualifiedName());
+                            }
+                            return null;
+                        }
+
+                    }, null);
             return iterableType;
         }
 
@@ -94,8 +114,16 @@ public class QueryParameterMeta {
             return entityType;
         }
 
-        DomainType domainType = DomainType.newInstance(type, env);
+        final DomainType domainType = DomainType.newInstance(type, env);
         if (domainType != null) {
+            if (domainType.isRawType()) {
+                throw new AptException(Message.DOMA4208, env, parameterElement,
+                        domainType.getQualifiedName());
+            }
+            if (domainType.isWildcardType()) {
+                throw new AptException(Message.DOMA4209, env, parameterElement,
+                        domainType.getQualifiedName());
+            }
             return domainType;
         }
 
@@ -121,6 +149,46 @@ public class QueryParameterMeta {
                 throw new AptException(Message.DOMA4112, env, parameterElement,
                         qualifiedName);
             }
+            iterationCallbackType.getReturnType().accept(
+                    new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+
+                        @Override
+                        public Void visitDomainType(final DomainType dataType,
+                                Void p) throws RuntimeException {
+                            if (dataType.isRawType()) {
+                                throw new AptException(Message.DOMA4214, env,
+                                        parameterElement,
+                                        dataType.getQualifiedName());
+                            }
+                            if (dataType.isWildcardType()) {
+                                throw new AptException(Message.DOMA4215, env,
+                                        parameterElement,
+                                        dataType.getQualifiedName());
+                            }
+                            return null;
+                        }
+
+                    }, null);
+            iterationCallbackType.getTargetType().accept(
+                    new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+
+                        @Override
+                        public Void visitDomainType(final DomainType dataType,
+                                Void p) throws RuntimeException {
+                            if (dataType.isRawType()) {
+                                throw new AptException(Message.DOMA4216, env,
+                                        parameterElement,
+                                        dataType.getQualifiedName());
+                            }
+                            if (dataType.isWildcardType()) {
+                                throw new AptException(Message.DOMA4217, env,
+                                        parameterElement,
+                                        dataType.getQualifiedName());
+                            }
+                            return null;
+                        }
+
+                    }, null);
             return iterationCallbackType;
         }
 
@@ -134,6 +202,26 @@ public class QueryParameterMeta {
                 throw new AptException(Message.DOMA4112, env, parameterElement,
                         qualifiedName);
             }
+            referenceType.getReferentType().accept(
+                    new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+
+                        @Override
+                        public Void visitDomainType(final DomainType dataType,
+                                Void p) throws RuntimeException {
+                            if (dataType.isRawType()) {
+                                throw new AptException(Message.DOMA4218, env,
+                                        parameterElement,
+                                        dataType.getQualifiedName());
+                            }
+                            if (dataType.isWildcardType()) {
+                                throw new AptException(Message.DOMA4219, env,
+                                        parameterElement,
+                                        dataType.getQualifiedName());
+                            }
+                            return null;
+                        }
+
+                    }, null);
             return referenceType;
         }
 

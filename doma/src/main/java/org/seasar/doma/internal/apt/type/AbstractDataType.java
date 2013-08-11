@@ -23,8 +23,8 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.util.ElementUtil;
+import org.seasar.doma.internal.apt.util.MetaUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
-import org.seasar.doma.internal.jdbc.util.MetaTypeUtil;
 
 /**
  * @author taedium
@@ -59,8 +59,8 @@ public abstract class AbstractDataType implements DataType {
         this.typeName = TypeMirrorUtil.getTypeName(typeMirror, env);
         this.typeNameAsTypeParameter = TypeMirrorUtil
                 .getTypeNameAsTypeParameter(typeMirror, env);
-        this.metaTypeName = MetaTypeUtil.getMetaTypeName(typeName);
-        this.metaTypeNameAsTypeParameter = MetaTypeUtil
+        this.metaTypeName = MetaUtil.getMetaTypeName(typeName);
+        this.metaTypeNameAsTypeParameter = MetaUtil
                 .getMetaTypeName(typeNameAsTypeParameter);
         this.typeElement = TypeMirrorUtil.toTypeElement(typeMirror, env);
         if (typeElement != null) {

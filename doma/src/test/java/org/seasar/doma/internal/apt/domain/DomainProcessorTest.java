@@ -205,4 +205,43 @@ public class DomainProcessorTest extends AptTestCase {
         assertGeneratedSource(target);
         assertTrue(getCompiledResult());
     }
+
+    public void testParametarizedSalary() throws Exception {
+        Class<?> target = ParametarizedSalary.class;
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testParametarizedOfSalary() throws Exception {
+        Class<?> target = ParametarizedOfSalary.class;
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testIllegalSizeParametarizedOfSalary() throws Exception {
+        Class<?> target = IllegalSizeParametarizedOfSalary.class;
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertMessage(Message.DOMA4106);
+    }
+
+    public void testIllegalTypeParametarizedOfSalary() throws Exception {
+        Class<?> target = IllegalTypeParametarizedOfSalary.class;
+        DomainProcessor processor = new DomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertMessage(Message.DOMA4106);
+    }
+
 }

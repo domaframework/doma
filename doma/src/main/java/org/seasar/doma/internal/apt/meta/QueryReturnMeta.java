@@ -32,6 +32,7 @@ import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.EntityType;
 import org.seasar.doma.internal.apt.type.IterableType;
 import org.seasar.doma.internal.apt.type.MapType;
+import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.message.Message;
 
@@ -57,8 +58,8 @@ public class QueryReturnMeta {
         dataType = createDataType(methodElement, type, env);
     }
 
-    protected DataType createDataType(ExecutableElement methodElement,
-            TypeMirror type, ProcessingEnvironment env) {
+    protected DataType createDataType(final ExecutableElement methodElement,
+            final TypeMirror type, final ProcessingEnvironment env) {
         IterableType iterableType = IterableType.newInstance(type, env);
         if (iterableType != null) {
             if (iterableType.isRawType()) {
@@ -69,6 +70,26 @@ public class QueryReturnMeta {
                 throw new AptException(Message.DOMA4113, env, methodElement,
                         typeName);
             }
+            iterableType.getElementType().accept(
+                    new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+
+                        @Override
+                        public Void visitDomainType(final DomainType dataType,
+                                Void p) throws RuntimeException {
+                            if (dataType.isRawType()) {
+                                throw new AptException(Message.DOMA4210, env,
+                                        methodElement,
+                                        dataType.getQualifiedName());
+                            }
+                            if (dataType.isWildcardType()) {
+                                throw new AptException(Message.DOMA4211, env,
+                                        methodElement,
+                                        dataType.getQualifiedName());
+                            }
+                            return null;
+                        }
+
+                    }, null);
             return iterableType;
         }
 
@@ -77,8 +98,16 @@ public class QueryReturnMeta {
             return entityType;
         }
 
-        DomainType domainType = DomainType.newInstance(type, env);
+        final DomainType domainType = DomainType.newInstance(type, env);
         if (domainType != null) {
+            if (domainType.isRawType()) {
+                throw new AptException(Message.DOMA4206, env, methodElement,
+                        domainType.getQualifiedName());
+            }
+            if (domainType.isWildcardType()) {
+                throw new AptException(Message.DOMA4207, env, methodElement,
+                        domainType.getQualifiedName());
+            }
             return domainType;
         }
 

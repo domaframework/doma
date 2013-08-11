@@ -76,10 +76,18 @@ public class EntityPropertyMetaFactory {
     }
 
     protected void doDataType(EntityPropertyMeta propertyMeta,
-            VariableElement fieldElement, EntityMeta entityMeta) {
-        TypeMirror type = fieldElement.asType();
-        DomainType domainType = DomainType.newInstance(type, env);
+            final VariableElement fieldElement, EntityMeta entityMeta) {
+        final TypeMirror type = fieldElement.asType();
+        final DomainType domainType = DomainType.newInstance(type, env);
         if (domainType != null) {
+            if (domainType.isRawType()) {
+                throw new AptException(Message.DOMA4204, env, fieldElement,
+                        domainType.getQualifiedName());
+            }
+            if (domainType.isWildcardType()) {
+                throw new AptException(Message.DOMA4205, env, fieldElement,
+                        domainType.getQualifiedName());
+            }
             propertyMeta.setDataType(domainType);
         } else {
             BasicType basicType = BasicType.newInstance(type, env);

@@ -29,14 +29,19 @@ public class DomainMeta implements TypeElementMeta {
 
     protected final TypeMirror type;
 
+    protected final boolean parametarized;
+
     protected WrapperType wrapperType;
 
     protected DomainMirror domainMirror;
+
+    protected String simpleTypeName;
 
     public DomainMeta(TypeElement typeElement, TypeMirror type) {
         assertNotNull(typeElement, type);
         this.typeElement = typeElement;
         this.type = type;
+        this.parametarized = !typeElement.getTypeParameters().isEmpty();
     }
 
     public TypeMirror getType() {
@@ -77,6 +82,10 @@ public class DomainMeta implements TypeElementMeta {
 
     public boolean providesConstructor() {
         return "new".equals(domainMirror.getFactoryMethodValue());
+    }
+
+    public boolean isParametarized() {
+        return parametarized;
     }
 
     @Override

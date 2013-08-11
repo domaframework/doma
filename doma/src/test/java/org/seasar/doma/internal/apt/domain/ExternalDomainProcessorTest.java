@@ -93,6 +93,7 @@ public class ExternalDomainProcessorTest extends AptTestCase {
         addProcessor(processor);
         addCompilationUnit(target);
         compile();
+
         String generatedClassName = "_.org.seasar.doma.internal.apt.domain._"
                 + ValueObject.class.getSimpleName();
         try {
@@ -103,6 +104,34 @@ public class ExternalDomainProcessorTest extends AptTestCase {
             throw error;
         }
         assertTrue(getCompiledResult());
+    }
+
+    public void testParameterizedValueObjectConverter() throws Exception {
+        Class<?> target = ParameterizedValueObjectConverter.class;
+        ExternalDomainProcessor processor = new ExternalDomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        String generatedClassName = "_.org.seasar.doma.internal.apt.domain._"
+                + ParameterizedValueObject.class.getSimpleName();
+        try {
+            assertEqualsGeneratedSource(getExpectedContent(),
+                    generatedClassName);
+        } catch (AssertionFailedError error) {
+            System.out.println(getGeneratedSource(generatedClassName));
+            throw error;
+        }
+        assertTrue(getCompiledResult());
+    }
+
+    public void testIllegalParameterizedValueObjectConverter() throws Exception {
+        Class<?> target = IllegalParameterizedValueObjectConverter.class;
+        ExternalDomainProcessor processor = new ExternalDomainProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4203);
     }
 
 }

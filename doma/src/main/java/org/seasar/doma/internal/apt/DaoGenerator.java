@@ -447,12 +447,12 @@ public class DaoGenerator extends AbstractGenerator {
                             @Override
                             public Void visitDomainType(DomainType dataType,
                                     Void p) throws RuntimeException {
-                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(%5$s.getSingletonInternal(), %6$s));%n",
+                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(%5$s, %6$s));%n",
                                         commandClassName,
                                         resultMeta.getTypeNameAsTypeParameter(),
                                         DomainIterationHandler.class.getName(),
                                         dataType.getTypeNameAsTypeParameter(),
-                                        dataType.getMetaTypeName(),
+                                        dataType.getInstantiationCommand(),
                                         callbackParamName);
                                 return null;
                             }
@@ -552,12 +552,12 @@ public class DaoGenerator extends AbstractGenerator {
                             @Override
                             public Void visitDomainType(DomainType dataType,
                                     Void p) throws RuntimeException {
-                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(%4$s.getSingletonInternal()));%n",
+                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(%4$s));%n",
                                         commandClassName, dataType
                                                 .getTypeNameAsTypeParameter(),
                                         DomainSingleResultHandler.class
                                                 .getName(), dataType
-                                                .getMetaTypeName());
+                                                .getInstantiationCommand());
                                 return null;
                             }
 
@@ -647,14 +647,14 @@ public class DaoGenerator extends AbstractGenerator {
                                             public Void visitDomainType(
                                                     DomainType dataType, Void p)
                                                     throws RuntimeException {
-                                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(%5$s.getSingletonInternal()));%n",
+                                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(%5$s));%n",
                                                         commandClassName,
                                                         iterableType
                                                                 .getTypeName(),
                                                         DomainResultListHandler.class
                                                                 .getName(),
                                                         dataType.getTypeNameAsTypeParameter(),
-                                                        dataType.getMetaTypeName());
+                                                        dataType.getInstantiationCommand());
                                                 return null;
                                             }
 
@@ -1258,10 +1258,10 @@ public class DaoGenerator extends AbstractGenerator {
                 AutoModuleQueryMeta p) {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
-            iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal(), %5$s, \"%5$s\"));%n",
+            iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s, \"%5$s\"));%n",
                     DomainListParameter.class.getName(),
                     basicType.getTypeName(), domainType.getTypeName(),
-                    domainType.getMetaTypeName(), m.getName());
+                    domainType.getInstantiationCommand(), m.getName());
             return null;
         }
 
@@ -1328,11 +1328,11 @@ public class DaoGenerator extends AbstractGenerator {
                 AutoModuleQueryMeta p) {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
-            iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal(), %5$s));%n",
+            iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
                     DomainInOutParameter.class.getName(),
                     basicType.getTypeNameAsTypeParameter(),
-                    domainType.getTypeName(), domainType.getMetaTypeName(),
-                    m.getName());
+                    domainType.getTypeName(),
+                    domainType.getInstantiationCommand(), m.getName());
             return null;
         }
 
@@ -1378,10 +1378,10 @@ public class DaoGenerator extends AbstractGenerator {
                 AutoModuleQueryMeta p) {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
-            iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal(), %5$s));%n",
+            iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
                     DomainOutParameter.class.getName(),
                     basicType.getTypeName(), domainType.getTypeName(),
-                    domainType.getMetaTypeName(), m.getName());
+                    domainType.getInstantiationCommand(), m.getName());
             return null;
         }
 
@@ -1423,10 +1423,10 @@ public class DaoGenerator extends AbstractGenerator {
                 AutoModuleQueryMeta p) {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
-            iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal(), %5$s));%n",
+            iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
                     DomainInParameter.class.getName(), basicType.getTypeName(),
-                    domainType.getTypeName(), domainType.getMetaTypeName(),
-                    m.getName());
+                    domainType.getTypeName(),
+                    domainType.getInstantiationCommand(), m.getName());
             return null;
         }
 
@@ -1471,10 +1471,10 @@ public class DaoGenerator extends AbstractGenerator {
                 DomainListResultParameterMeta m, AutoModuleQueryMeta p) {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
-            iprint("__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal()));%n",
+            iprint("__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s));%n",
                     DomainListResultParameter.class.getName(),
                     basicType.getTypeName(), domainType.getTypeName(),
-                    domainType.getMetaTypeName());
+                    domainType.getInstantiationCommand());
             return null;
         }
 
@@ -1540,10 +1540,10 @@ public class DaoGenerator extends AbstractGenerator {
                 AutoModuleQueryMeta p) {
             DomainType domainType = m.getDomainType();
             BasicType basicType = domainType.getBasicType();
-            iprint("__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s.getSingletonInternal()));%n",
+            iprint("__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s));%n",
                     DomainResultParameter.class.getName(),
                     basicType.getTypeName(), domainType.getTypeName(),
-                    domainType.getMetaTypeName());
+                    domainType.getInstantiationCommand());
             return null;
         }
     }

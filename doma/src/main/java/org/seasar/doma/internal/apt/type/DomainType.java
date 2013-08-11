@@ -23,6 +23,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.MirroredTypeException;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.Domain;
@@ -34,7 +35,6 @@ import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.mirror.DomainConvertersMirror;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
-import org.seasar.doma.internal.jdbc.util.MetaTypeUtil;
 import org.seasar.doma.jdbc.domain.DomainConverter;
 import org.seasar.doma.message.Message;
 
@@ -43,26 +43,45 @@ public class DomainType extends AbstractDataType {
 
     protected final BasicType basicType;
 
-    protected final String domainTypeName;
+    protected final boolean external;
 
-    protected final String domainTypeNameAsTypeParameter;
+    protected final String metaClassName;
+
+    private final String typeParamDecl;
+
+    private boolean isRawType;
+
+    private boolean isWildcardType;
 
     public DomainType(TypeMirror domainType, ProcessingEnvironment env,
             BasicType basicType, boolean external) {
         super(domainType, env);
         assertNotNull(basicType);
         this.basicType = basicType;
-        String metaTypeName = MetaTypeUtil.getMetaTypeName(typeName);
-        String metaTypeNameAsTypeParameter = MetaTypeUtil
-                .getMetaTypeName(typeNameAsTypeParameter);
-        if (external) {
-            this.domainTypeName = Constants.METATYPE_PREFIX + "."
-                    + metaTypeName;
-            this.domainTypeNameAsTypeParameter = Constants.METATYPE_PREFIX
-                    + "." + metaTypeNameAsTypeParameter;
+        this.external = external;
+        int pos = metaTypeName.indexOf('<');
+        if (pos > -1) {
+            this.metaClassName = metaTypeName.substring(0, pos);
+            this.typeParamDecl = metaTypeName.substring(pos);
         } else {
-            this.domainTypeName = metaTypeName;
-            this.domainTypeNameAsTypeParameter = metaTypeNameAsTypeParameter;
+            this.metaClassName = metaTypeName;
+            this.typeParamDecl = "";
+        }
+        if (!typeElement.getTypeParameters().isEmpty()) {
+            DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(
+                    getTypeMirror(), env);
+            if (declaredType == null) {
+                throw new AptIllegalStateException(getTypeName());
+            }
+            if (declaredType.getTypeArguments().isEmpty()) {
+                isRawType = true;
+            }
+            for (TypeMirror typeArg : declaredType.getTypeArguments()) {
+                if (typeArg.getKind() == TypeKind.WILDCARD
+                        || typeArg.getKind() == TypeKind.TYPEVAR) {
+                    isWildcardType = true;
+                }
+            }
         }
     }
 
@@ -70,14 +89,34 @@ public class DomainType extends AbstractDataType {
         return basicType;
     }
 
+    public boolean isRawType() {
+        return isRawType;
+    }
+
+    public boolean isWildcardType() {
+        return isWildcardType;
+    }
+
+    public String getInstantiationCommand() {
+        return normalize(metaClassName) + "." + typeParamDecl
+                + "getSingletonInternal()";
+    }
+
     @Override
     public String getMetaTypeName() {
-        return domainTypeName;
+        return normalize(metaTypeName);
     }
 
     @Override
     public String getMetaTypeNameAsTypeParameter() {
-        return domainTypeNameAsTypeParameter;
+        return normalize(metaTypeNameAsTypeParameter);
+    }
+
+    protected String normalize(String name) {
+        if (external) {
+            return Constants.METATYPE_PREFIX + "." + name;
+        }
+        return name;
     }
 
     public static DomainType newInstance(TypeMirror type,
@@ -233,4 +272,5 @@ public class DomainType extends AbstractDataType {
             this.external = external;
         }
     }
+
 }

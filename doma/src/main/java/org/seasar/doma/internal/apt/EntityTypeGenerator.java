@@ -186,8 +186,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
             String domainType = "null";
             String domainTypeNameAsTypeParameter = Object.class.getName();
             if (visitor.domainType != null) {
-                domainType = visitor.domainType.getMetaTypeName()
-                        + ".getSingletonInternal()";
+                domainType = visitor.domainType.getInstantiationCommand();
                 domainTypeNameAsTypeParameter = visitor.domainType
                         .getTypeNameAsTypeParameter();
             }

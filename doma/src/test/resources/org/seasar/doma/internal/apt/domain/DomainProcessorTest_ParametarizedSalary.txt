@@ -1,0 +1,76 @@
+package org.seasar.doma.internal.apt.domain;
+
+/**
+ * @param <T> T
+ * @param <U> U
+ */
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+public final class _ParametarizedSalary<T, U> implements org.seasar.doma.jdbc.domain.DomainType<java.math.BigDecimal, org.seasar.doma.internal.apt.domain.ParametarizedSalary<T, U>> {
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    @SuppressWarnings("rawtypes")
+    private static final _ParametarizedSalary singleton = new _ParametarizedSalary();
+
+    private _ParametarizedSalary() {
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.domain.ParametarizedSalary<T, U> newDomain(java.math.BigDecimal value) {
+        return new org.seasar.doma.internal.apt.domain.ParametarizedSalary<T, U>(value);
+    }
+
+    @Override
+    public Class<java.math.BigDecimal> getValueClass() {
+        return java.math.BigDecimal.class;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Class<org.seasar.doma.internal.apt.domain.ParametarizedSalary<T, U>> getDomainClass() {
+        Class<?> clazz = org.seasar.doma.internal.apt.domain.ParametarizedSalary.class;
+        return (Class<org.seasar.doma.internal.apt.domain.ParametarizedSalary<T, U>>) clazz;
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.domain.DomainWrapper<java.math.BigDecimal, org.seasar.doma.internal.apt.domain.ParametarizedSalary<T, U>> getWrapper(org.seasar.doma.internal.apt.domain.ParametarizedSalary<T, U> domain) {
+        return new Wrapper<T, U>(domain);
+    }
+
+    /**
+     * @return the singleton
+     */
+    @SuppressWarnings("unchecked")
+    public static <T, U> _ParametarizedSalary<T, U> getSingletonInternal() {
+        return (_ParametarizedSalary<T, U>) singleton;
+    }
+
+    private static class Wrapper<T, U> extends org.seasar.doma.wrapper.BigDecimalWrapper implements org.seasar.doma.jdbc.domain.DomainWrapper<java.math.BigDecimal, org.seasar.doma.internal.apt.domain.ParametarizedSalary<T, U>> {
+
+        private org.seasar.doma.internal.apt.domain.ParametarizedSalary<T, U> domain;
+
+        private Wrapper(org.seasar.doma.internal.apt.domain.ParametarizedSalary<T, U> domain) {
+            this.domain = domain;
+        }
+
+        @Override
+        protected java.math.BigDecimal doGet() {
+            if (domain == null) {
+                return null;
+            }
+            return domain.getValue();
+        }
+
+        @Override
+        protected void doSet(java.math.BigDecimal value) {
+            domain = new org.seasar.doma.internal.apt.domain.ParametarizedSalary<T, U>(value);
+        }
+
+        @Override
+        public org.seasar.doma.internal.apt.domain.ParametarizedSalary<T, U> getDomain() {
+            return domain;
+        }
+    }
+}

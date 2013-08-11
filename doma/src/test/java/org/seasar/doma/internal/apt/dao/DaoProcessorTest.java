@@ -677,4 +677,145 @@ public class DaoProcessorTest extends AptTestCase {
         assertGeneratedSource(target);
         assertTrue(getCompiledResult());
     }
+
+    public void testParameterizedParam() throws Exception {
+        Class<?> target = ParameterizedParamDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testParameterizedReturn() throws Exception {
+        Class<?> target = ParameterizedReturnDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testRawTypeReturn() throws Exception {
+        Class<?> target = RawTypeReturnDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4206);
+    }
+
+    public void testWildcardTypeReturn() throws Exception {
+        Class<?> target = WildcardTypeReturnDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4207);
+    }
+
+    public void testRawTypeParam() throws Exception {
+        Class<?> target = RawTypeParamDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4208);
+    }
+
+    public void testWildcardTypeParam() throws Exception {
+        Class<?> target = WildcardTypeParamDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4209);
+    }
+
+    public void testIterableRawTypeReturn() throws Exception {
+        Class<?> target = IterableRawTypeReturnDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4210);
+    }
+
+    public void testIterableWildcardTypeReturn() throws Exception {
+        Class<?> target = IterableWildcardTypeReturnDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4211);
+    }
+
+    public void testIterableRawTypeParam() throws Exception {
+        Class<?> target = IterableRawTypeParamDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4212);
+    }
+
+    public void testIterableWildcardTypeParam() throws Exception {
+        Class<?> target = IterableWildcardTypeParamDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4213);
+    }
+
+    public void testIterateWildcardTypeParam() throws Exception {
+        Class<?> target = IterateWildcardTypeDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4216);
+    }
+
+    public void testIterateRawTypeParam() throws Exception {
+        Class<?> target = IterateRawTypeDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4217);
+    }
+
+    public void testReferenceRawTypeParam() throws Exception {
+        Class<?> target = ReferenceRawTypeParamDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4218);
+    }
+
+    public void testReferenceWildcardTypeParam() throws Exception {
+        Class<?> target = ReferenceWildcardTypeParamDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4219);
+    }
+
 }

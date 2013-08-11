@@ -17,6 +17,7 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -99,9 +100,6 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
                     && classElement.getModifiers().contains(Modifier.ABSTRACT)) {
                 throw new AptException(Message.DOMA4132, env, classElement);
             }
-            if (!classElement.getTypeParameters().isEmpty()) {
-                throw new AptException(Message.DOMA4107, env, classElement);
-            }
             if (classElement.getNestingKind().isNested()) {
                 throw new AptException(Message.DOMA4179, env, classElement);
             }
@@ -147,8 +145,8 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
 
     protected void validateFactoryMethod(TypeElement classElement,
             DomainMeta domainMeta) {
-        for (ExecutableElement method : ElementFilter.methodsIn(classElement
-                .getEnclosedElements())) {
+        outer: for (ExecutableElement method : ElementFilter
+                .methodsIn(classElement.getEnclosedElements())) {
             if (!method.getSimpleName().contentEquals(
                     domainMeta.getFactoryMethod())) {
                 continue;
@@ -169,10 +167,28 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
             }
             TypeMirror returnType = env.getTypeUtils().erasure(
                     method.getReturnType());
-            if (env.getTypeUtils().isAssignable(returnType,
+            if (!env.getTypeUtils().isAssignable(returnType,
                     domainMeta.getType())) {
-                return;
+                continue;
             }
+            List<? extends TypeParameterElement> classTypeParams = classElement
+                    .getTypeParameters();
+            List<? extends TypeParameterElement> methodTypeParams = method
+                    .getTypeParameters();
+            if (classTypeParams.size() != methodTypeParams.size()) {
+                continue;
+            }
+            for (Iterator<? extends TypeParameterElement> cit = classTypeParams
+                    .iterator(), mit = methodTypeParams.iterator(); cit
+                    .hasNext() && mit.hasNext();) {
+                TypeParameterElement classTypeParam = cit.next();
+                TypeParameterElement methodTypeParam = mit.next();
+                if (!TypeMirrorUtil.isSameType(classTypeParam.asType(),
+                        methodTypeParam.asType(), env)) {
+                    continue outer;
+                }
+            }
+            return;
         }
         throw new AptException(Message.DOMA4106, env, classElement,
                 domainMeta.getFactoryMethod(), classElement.asType(),

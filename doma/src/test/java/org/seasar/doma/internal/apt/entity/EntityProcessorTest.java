@@ -349,4 +349,24 @@ public class EntityProcessorTest extends AptTestCase {
         assertFalse(getCompiledResult());
         assertMessage(Message.DOMA4093);
     }
+
+    public void testRawtypeProperty() throws Exception {
+        Class<?> target = RawtypePropertyEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4204);
+    }
+
+    public void testWildcardProperty() throws Exception {
+        Class<?> target = WildcardPropertyEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4205);
+    }
 }
