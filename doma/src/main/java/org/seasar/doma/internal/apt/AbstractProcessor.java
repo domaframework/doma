@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.apt;
 
+import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic.Kind;
 
@@ -28,6 +29,11 @@ public abstract class AbstractProcessor extends
         javax.annotation.processing.AbstractProcessor {
 
     protected AbstractProcessor() {
+    }
+
+    @Override
+    public SourceVersion getSupportedSourceVersion() {
+        return SourceVersion.latest();
     }
 
     protected void handleTypeElement(TypeElement typeElement,
