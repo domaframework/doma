@@ -21,8 +21,6 @@ import java.io.IOException;
 
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
-import javax.annotation.processing.SupportedSourceVersion;
-import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.internal.apt.meta.DomainMeta;
@@ -32,7 +30,6 @@ import org.seasar.doma.internal.apt.meta.DomainMetaFactory;
  * @author taedium
  * 
  */
-@SupportedSourceVersion(SourceVersion.RELEASE_6)
 @SupportedAnnotationTypes({ "org.seasar.doma.Domain" })
 @SupportedOptions({ Options.VERSION_VALIDATION, Options.TEST, Options.DEBUG })
 public class DomainProcessor extends AbstractGeneratingProcessor<DomainMeta> {

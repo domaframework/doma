@@ -23,8 +23,6 @@ import java.util.List;
 
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
-import javax.annotation.processing.SupportedSourceVersion;
-import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.internal.apt.meta.ArrayCreateQueryMetaFactory;
@@ -49,7 +47,6 @@ import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
  * @author taedium
  * 
  */
-@SupportedSourceVersion(SourceVersion.RELEASE_6)
 @SupportedAnnotationTypes({ "org.seasar.doma.Dao" })
 @SupportedOptions({ Options.TEST, Options.DEBUG, Options.DAO_PACKAGE,
         Options.DAO_SUBPACKAGE, Options.DAO_SUFFIX, Options.EXPR_FUNCTIONS,

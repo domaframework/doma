@@ -21,8 +21,6 @@ import java.io.IOException;
 
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
-import javax.annotation.processing.SupportedSourceVersion;
-import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.internal.apt.meta.EntityMeta;
@@ -33,7 +31,6 @@ import org.seasar.doma.internal.apt.meta.EntityPropertyMetaFactory;
  * @author taedium
  * 
  */
-@SupportedSourceVersion(SourceVersion.RELEASE_6)
 @SupportedAnnotationTypes({ "org.seasar.doma.Entity" })
 @SupportedOptions({ Options.ENTITY_FIELD_PREFIX, Options.DOMAIN_CONVERTERS,
         Options.VERSION_VALIDATION, Options.TEST, Options.DEBUG })

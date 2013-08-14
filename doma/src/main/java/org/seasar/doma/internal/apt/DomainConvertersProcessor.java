@@ -20,8 +20,6 @@ import java.util.Set;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
-import javax.annotation.processing.SupportedSourceVersion;
-import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
@@ -35,7 +33,6 @@ import org.seasar.doma.message.Message;
  * @author taedium
  * @since 1.25.0
  */
-@SupportedSourceVersion(SourceVersion.RELEASE_6)
 @SupportedAnnotationTypes({ "org.seasar.doma.DomainConverters" })
 @SupportedOptions({ Options.TEST, Options.DEBUG })
 public class DomainConvertersProcessor extends AbstractProcessor {
