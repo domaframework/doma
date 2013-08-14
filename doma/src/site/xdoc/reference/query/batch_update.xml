@@ -46,7 +46,7 @@ public interface EmployeeDao {
 		<section name="SQLの自動生成によるバッチ更新">
 			<p>
 				戻り値の型は<code>int[]</code>でなければいけません。
-				パラメータの型は<a href="../entity.html">エンティティティクラス</a>を要素とする<code>java.lang.Iterable</code>のサブタイプでなければいけません。
+				パラメータの型は<a href="../entity.html">エンティティクラス</a>を要素とする<code>java.lang.Iterable</code>のサブタイプでなければいけません。
 				指定できるパラメータの数は1つです。
 				引数は<code>null</code>であってはいけません。
 				戻り値の配列の要素の数はパラメータの<code>Iterable</code>の要素の数と等しくなります。
@@ -57,7 +57,7 @@ public interface EmployeeDao {
 					次の条件を満たす場合に、楽観的排他制御が行われます。
 				</p>
 				<ul>
-					<li>パラメータの<code>java.lang.Iterable</code>のサブタイプの要素である<a href="../entity.html">エンティティティクラス</a>に<code>@Version</code>が注釈されたプロパティがある</li>
+					<li>パラメータの<code>java.lang.Iterable</code>のサブタイプの要素である<a href="../entity.html">エンティティクラス</a>に<code>@Version</code>が注釈されたプロパティがある</li>
 					<li>@BatchUpdateの<code>ignoreVersion</code>要素が<code>false</code>である</li>
 				</ul>
 				<p>
@@ -84,7 +84,7 @@ int[] update(List<Employee> employees);]]></source>
 			<subsection name="更新対象プロパティ">
 				<h4><code>@Column</code>の<code>updatable</code>要素</h4>
 				<p>
-					<a href="../entity.html">エンティティティクラス</a>に<code>@Column</code>が注釈されたプロパティがある場合、
+					<a href="../entity.html">エンティティクラス</a>に<code>@Column</code>が注釈されたプロパティがある場合、
 					<code>@Column</code>の<code>updatable</code>要素が<code>false</code>のものは更新対象外です。
 				</p>
 				<h4><code>@BatchUpdate</code>の<code>exclude</code>要素</h4>
@@ -136,7 +136,7 @@ int[] update(List<Employee> employees);]]></source>
 					次の条件を満たす場合に、楽観的排他制御が行われます。
 				</p>
 				<ul>
-					<li>パラメータの<code>java.lang.Iterable</code>のサブタイプの要素が<a href="../entity.html">エンティティティクラス</a>であり、エンティティクラスに<code>@Version</code>が注釈されたプロパティがある</li>
+					<li>パラメータの<code>java.lang.Iterable</code>のサブタイプの要素が<a href="../entity.html">エンティティクラス</a>であり、エンティティクラスに<code>@Version</code>が注釈されたプロパティがある</li>
 					<li>@BatchUpdateの<code>ignoreVersion</code>要素が<code>false</code>である</li>
 				</ul>
 				<p>

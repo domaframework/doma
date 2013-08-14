@@ -46,7 +46,7 @@ public interface EmployeeDao {
 			<p>
 				戻り値の型は<code>int</code>でなければいけません。
 				戻り値は更新件数を返します。
-				パラメータの型は<a href="../entity.html">エンティティティクラス</a>でなければいけません。
+				パラメータの型は<a href="../entity.html">エンティティクラス</a>でなければいけません。
 				指定できるパラメータの数は1つです。
 				引数は<code>null</code>であってはいけません。
 			</p>
@@ -57,7 +57,7 @@ int update(Employee employee);]]></source>
 					次の条件を満たす場合に、楽観的排他制御が行われます。
 				</p>
 				<ul>
-					<li>パラメータの<a href="../entity.html">エンティティティクラス</a>に<code>@Version</code>が注釈されたプロパティがある</li>
+					<li>パラメータの<a href="../entity.html">エンティティクラス</a>に<code>@Version</code>が注釈されたプロパティがある</li>
 					<li>@Updateの<code>ignoreVersion</code>要素が<code>false</code>である</li>
 				</ul>
 				<p>
@@ -84,7 +84,7 @@ int update(Employee employee);]]></source>
 			<subsection name="更新対象プロパティ">
 				<h4><code>@Column</code>の<code>updatable</code>要素</h4>
 				<p>
-					<a href="../entity.html">エンティティティクラス</a>に<code>@Column</code>が注釈されたプロパティがある場合、
+					<a href="../entity.html">エンティティクラス</a>に<code>@Column</code>が注釈されたプロパティがある場合、
 					<code>@Column</code>の<code>updatable</code>要素が<code>false</code>のものは更新対象外です。
 				</p>
 				<h4><code>@Update</code>の<code>exclude</code>要素</h4>
@@ -114,7 +114,7 @@ int update(Employee employee);]]></source>
 int update(Employee employee);]]></source>
 				<h4><code>@Update</code>の<code>includeUnchanged</code>要素</h4>
 				<p>
-					この要素は、更新対象の<a href="../entity.html">エンティティティクラス</a>に<code>@OriginalStates</code>が注釈されたプロパティがある場合にのみ有効です。
+					この要素は、更新対象の<a href="../entity.html">エンティティクラス</a>に<code>@OriginalStates</code>が注釈されたプロパティがある場合にのみ有効です。
 				</p>
 				<p>
 					この要素が<code>true</code>の場合、エンティティの全プロパティが更新対象となります。
@@ -156,7 +156,7 @@ int update(Employee employee);]]></source>
 					次の条件を満たす場合に、楽観的排他制御が行われます。
 				</p>
 				<ul>
-					<li>パラメータに<a href="../entity.html">エンティティティクラス</a>を含む</li>
+					<li>パラメータに<a href="../entity.html">エンティティクラス</a>を含む</li>
 					<li>パラメータの内、左から数えて最初に登場するエンティティクラスに<code>@Version</code>が注釈されたプロパティがある</li>
 					<li>@Updateの<code>ignoreVersion</code>要素が<code>false</code>である</li>
 				</ul>

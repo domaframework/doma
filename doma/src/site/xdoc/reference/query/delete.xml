@@ -44,7 +44,7 @@ public interface EmployeeDao {
 			<p>
 				戻り値の型は<code>int</code>でなければいけません。
 				戻り値は更新件数を返します。
-				パラメータの型は<a href="../entity.html">エンティティティクラス</a>でなければいけません。
+				パラメータの型は<a href="../entity.html">エンティティクラス</a>でなければいけません。
 				指定できるパラメータの数は1つです。
 				引数は<code>null</code>であってはいけません。
 			</p>
@@ -55,7 +55,7 @@ int delete(Employee employee);]]></source>
 					次の条件を満たす場合に、楽観的排他制御が行われます。 
 				</p>
 				<ul>
-					<li>パラメータの<a href="../entity.html">エンティティティクラス</a>に<code>@Version</code>が注釈されたプロパティがある</li>
+					<li>パラメータの<a href="../entity.html">エンティティクラス</a>に<code>@Version</code>が注釈されたプロパティがある</li>
 					<li>@Deleteの<code>ignoreVersion</code>要素が<code>false</code>である</li>
 				</ul>
 				<p>
@@ -105,7 +105,7 @@ int delete(Employee employee);]]></source>
 					次の条件を満たす場合に、楽観的排他制御が行われます。 
 				</p>
 				<ul>
-					<li>パラメータに<a href="../entity.html">エンティティティクラス</a>を含む</li>
+					<li>パラメータに<a href="../entity.html">エンティティクラス</a>を含む</li>
 					<li>パラメータの内、左から数えて最初に登場するエンティティクラスに<code>@Version</code>が注釈されたプロパティがある</li>
 					<li>@Deleteの<code>ignoreVersion</code>要素が<code>false</code>である</li>
 					<li>@Deleteの<code>suppressOptimisticLockException</code>要素が<code>false</code>である</li>

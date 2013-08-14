@@ -43,7 +43,7 @@ public interface EmployeeDao {
 			<p>
 				戻り値の型は<code>int</code>でなければいけません。
 				戻り値は更新件数を返します。
-				パラメータの型は<a href="../entity.html">エンティティティクラス</a>でなければいけません。
+				パラメータの型は<a href="../entity.html">エンティティクラス</a>でなければいけません。
 				指定できるパラメータの数は1つです。
 				引数は<code>null</code>であってはいけません。
 			</p>
@@ -51,13 +51,13 @@ public interface EmployeeDao {
 int insert(Employee employee);]]></source>
 			<subsection name="識別子">
 				<p>
-					<a href="../entity.html">エンティティティクラス</a>の識別子に、<code>@GeneratedValue</code>が注釈されている場合、
+					<a href="../entity.html">エンティティクラス</a>の識別子に、<code>@GeneratedValue</code>が注釈されている場合、
 					識別子が自動的に生成され設定されます。
 				</p>
 			</subsection>
 			<subsection name="バージョン番号">
 				<p>
-					<a href="../entity.html">エンティティティクラス</a>に<code>@Version</code>が注釈されたプロパティがある場合、
+					<a href="../entity.html">エンティティクラス</a>に<code>@Version</code>が注釈されたプロパティがある場合、
 					そのプロパティに明示的に1以上の値が設定されていればその値を使用します。
 					もし設定されていないか、0以下の値が設定されていれば<code>1</code>を自動で設定します。
 				</p>
@@ -65,7 +65,7 @@ int insert(Employee employee);]]></source>
 			<subsection name="挿入対象プロパティ">
 				<h4><code>@Column</code>の<code>insertable</code>要素</h4>
 				<p>
-					<a href="../entity.html">エンティティティクラス</a>に<code>@Column</code>が注釈されたプロパティがある場合、
+					<a href="../entity.html">エンティティクラス</a>に<code>@Column</code>が注釈されたプロパティがある場合、
 					<code>@Column</code>の<code>insertable</code>要素が<code>false</code>のものは挿入対象外です。
 				</p>
 				<h4><code>@Insert</code>の<code>exclude</code>要素</h4>
