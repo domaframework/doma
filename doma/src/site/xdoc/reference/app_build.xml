@@ -9,7 +9,6 @@
 			<ul>
 				<li><a href="#概要">概要</a></li>
 				<li><a href="#javacのバグについて">javacのバグについて</a></li>
-				<li><a href="#javacの警告について">javacの警告について</a></li>
 				<li><a href="#Antによるビルド">Antによるビルド</a></li>
 				<li><a href="#Mavenによるビルド">Mavenによるビルド</a></li>
 				<li><a href="#Gradleによるビルド">Gradleによるビルド</a></li>
@@ -70,20 +69,6 @@ import tutorial.dao.EmployeeDaoImpl;
 				この方法を利用する場合、aptにより生成されるJavaコードのクラスには実行時にリフレクションを使ってアクセスする必要があります。
 				この場合、自前でファクトリクラスを作成するか、Seasar2やSpring Frameworkといった汎用的なDIコンテナを活用することを推奨します。
 			</p>
-		</section>
-		<section name="javacの警告について">
-			<p>
-				JDK7のjavacを使ってDomaを利用するプログラムをコンパイルすると、次のような警告メッセージが出力されます。
-			</p>
-<source><![CDATA[  [javac] 警告:注釈プロセッサ'org.seasar.doma.internal.apt.DomainProcessor'から-source '1.7'より小さいソース・バージョン'RELEASE_6'がサポートされています
-  [javac] 警告:注釈プロセッサ'org.seasar.doma.internal.apt.EnumDomainProcessor'から-source '1.7'より小さいソース・バージョン'RELEASE_6'がサポートされています
-  [javac] 警告:注釈プロセッサ'org.seasar.doma.internal.apt.EntityProcessor'から-source '1.7'より小さいソース・バージョン'RELEASE_6'がサポートされています
-  [javac] 警告:注釈プロセッサ'org.seasar.doma.internal.apt.DaoProcessor'から-source '1.7'より小さいソース・バージョン'RELEASE_6'がサポートされています
-  [javac] 警告4個]]></source>
-  			<p>
-  				これは、DomaがJava6で作成されているためです。
-  				この警告が出てもDomaの動作には問題はありません。
-  			</p>
 		</section>
 		<section name="Antによるビルド">
 			<p>
