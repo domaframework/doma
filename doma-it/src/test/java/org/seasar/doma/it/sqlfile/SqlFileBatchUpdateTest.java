@@ -22,6 +22,7 @@ import java.util.Arrays;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDaoImpl;
+import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.jdbc.BatchOptimisticLockException;
 import org.seasar.framework.unit.Seasar2;
@@ -32,12 +33,12 @@ public class SqlFileBatchUpdateTest {
     public void test() throws Exception {
         DepartmentDao dao = new DepartmentDaoImpl();
         Department department = new Department();
-        department.setDepartmentId(1);
+        department.setDepartmentId(new Identity<Department>(1));
         department.setDepartmentNo(1);
         department.setDepartmentName("hoge");
         department.setVersion(1);
         Department department2 = new Department();
-        department2.setDepartmentId(2);
+        department2.setDepartmentId(new Identity<Department>(2));
         department2.setDepartmentNo(2);
         department2.setDepartmentName("foo");
         department2.setVersion(1);
@@ -48,11 +49,11 @@ public class SqlFileBatchUpdateTest {
         assertEquals(1, result[1]);
 
         department = dao.selectById(1);
-        assertEquals(new Integer(1), department.getDepartmentId());
+        assertEquals(new Integer(1), department.getDepartmentId().getValue());
         assertEquals("hoge", department.getDepartmentName());
         assertEquals(new Integer(2), department.getVersion());
         department = dao.selectById(2);
-        assertEquals(new Integer(2), department.getDepartmentId());
+        assertEquals(new Integer(2), department.getDepartmentId().getValue());
         assertEquals("foo", department.getDepartmentName());
         assertEquals(new Integer(2), department.getVersion());
     }

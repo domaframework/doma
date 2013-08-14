@@ -12,9 +12,14 @@
 					<ul>
 						<li><a href="#コンストラクタで生成する">コンストラクタで生成する</a></li>
 						<li><a href="#ファクトリメソッドで生成する">ファクトリメソッドで生成する</a></li>
-					</ul>				
+						<li><a href="#型パラメータの利用">型パラメータの利用</a></li>
+					</ul>
 				</li>
-				<li><a href="#外部ドメイン定義">外部ドメイン定義</a></li>
+				<li><a href="#外部ドメイン定義">外部ドメイン定義</a>
+					<ul>
+						<li><a href="#外部ドメイン定義で型パラメータの利用">外部ドメイン定義で型パラメータの利用</a></li>
+					</ul>
+				</li>
 				<li><a href="#利用例">利用例</a>
 					<ul>
 						<li><a href="#エンティティクラス">エンティテクラス</a></li>
@@ -174,6 +179,57 @@ public enum JobType {
     }
 }]]></source>
 			</subsection>
+			<subsection name="型パラメータの利用">
+				<p>
+					ドメインクラスには任意の数の型パラメータを宣言できます。
+				</p>
+				<p>
+					次の例では、1つの型パラメータを持ち、さらにpublicなコンストラクタを持つドメインクラスを作成しています。
+					このクラスは識別子を表しています。
+				</p>
+<source><![CDATA[package example.domain;
+
+import org.seasar.doma.Domain;
+
+@Domain(valueType = int.class)
+public class Identity<T> {
+
+    private final int value;
+
+    public Identity(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
+}]]></source>
+				<p>
+					型パラメータを持ったドメインクラスはファクトリメソッドで生成することも可能です。
+					この場合、ファクトリメソッドにはクラスの型変数宣言と同等の宣言が必要です。
+				</p>
+<source><![CDATA[package example.domain;
+
+import org.seasar.doma.Domain;
+
+@Domain(valueType = int.class, factoryMethod = "of")
+public class Identity<T> {
+
+    private final int value;
+
+    private Identity(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public static <T> Identity<T> of(int value) {
+        return new Identity<T>(value);
+    }
+}]]></source>
+			</subsection>
 		</section>
 		<section name="外部ドメイン定義">
 			<p>
@@ -252,8 +308,58 @@ public class DomainConvertersProvider {
 					オプションのkeyは、「domain.converters」です。
 					オプションの指定の仕方については <a href="apt.html">注釈処理</a> を参照してください。
 				</p>
+				<subsection name="外部ドメイン定義で型パラメータの利用">
+					<p>
+						外部ドメイン定義では、任意の数の型パラメータを持ったクラスを扱えます。
+					</p>
+					<p>
+						次の例のような1つの型パラメータを持つクラスがあるとします。
+						このクラスは識別子を表しています。
+					</p>
+<source><![CDATA[package sample;
+
+public class Identity<T> {
+
+    private final int value;
+
+    public Identity(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
+}]]></source>
+			<p>
+				上記の<code>Identity</code>をドメインクラスとして扱うには、次のようなクラスを作成します。
+				<code>Identity</code>の型パラメータにはワイルドカード（?）を指定しなければいけません。
+			</p>
+<source><![CDATA[package example.domain;
+
+import sample.Identity;
+
+@ExtenalDomain
+public class IdentityConverter implements DomainConverter<Identity<?>, String> {
+
+    public String fromDomainToValue(Identity<?> domain) {
+        return domain.getValue();
+    }
+
+    @SuppressWarnings("rawtypes")
+    public Identity<?> fromValueToDomain(String value) {
+        return new Identity(value);
+    }
+}]]></source>
+				</subsection>
+				<p>
+					その他の設定方法については、型パラメータを使用しない場合と同様です。
+				</p>
 		</section>
 		<section name="利用例">
+			<p>
+				ドメインクラスが型パラメータを持つ場合、型パラメータには具体的な型が必要です。
+				ワイルドカード（?）や型変数の指定はサポートされていません。
+			</p>
 			<subsection name="エンティティクラス">
 				<p>
 					エンティティクラスのフィールドの型での利用例です。
@@ -262,7 +368,7 @@ public class DomainConvertersProvider {
 public class Employee {
 
     @Id
-    Integer employeeId;
+    Identity<Employee> employeeId;
 
     String employeeName;
 
@@ -282,6 +388,9 @@ public class Employee {
 				</p>
 <source><![CDATA[@Dao(config = AppConfig.class)
 public interface EmployeeDao {
+
+    @Select
+    Employee selectById(Identity<Employee> employeeId);
 
     @Select
     Employee selectByPhoneNumber(PhoneNumber phoneNumber);

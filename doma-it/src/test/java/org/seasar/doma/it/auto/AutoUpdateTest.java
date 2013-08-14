@@ -18,7 +18,6 @@ package org.seasar.doma.it.auto;
 import static org.junit.Assert.*;
 
 import org.junit.runner.RunWith;
-import org.seasar.doma.message.Message;
 import org.seasar.doma.it.dao.CompKeyDepartmentDao;
 import org.seasar.doma.it.dao.CompKeyDepartmentDaoImpl;
 import org.seasar.doma.it.dao.DepartmentDao;
@@ -30,6 +29,7 @@ import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.NoId;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.OptimisticLockException;
+import org.seasar.doma.message.Message;
 import org.seasar.framework.unit.Seasar2;
 
 @RunWith(Seasar2.class)
@@ -45,10 +45,10 @@ public class AutoUpdateTest {
         assertEquals(new Integer(2), department.getVersion());
 
         department = dao.selectById(1);
-        assertEquals(new Integer(1), department.getDepartmentId());
+        assertEquals(new Integer(1), department.getDepartmentId().getValue());
         assertEquals(new Integer(1), department.getDepartmentNo());
         assertEquals("hoge", department.getDepartmentName());
-        assertEquals("NEW YORK", department.getLocation());
+        assertEquals("NEW YORK", department.getLocation().getValue());
         assertEquals(new Integer(2), department.getVersion());
     }
 
@@ -63,10 +63,10 @@ public class AutoUpdateTest {
         assertEquals(new Integer(100), department.getVersion());
 
         department = dao.selectById(1);
-        assertEquals(new Integer(1), department.getDepartmentId());
+        assertEquals(new Integer(1), department.getDepartmentId().getValue());
         assertEquals(new Integer(1), department.getDepartmentNo());
         assertEquals("hoge", department.getDepartmentName());
-        assertEquals("NEW YORK", department.getLocation());
+        assertEquals("NEW YORK", department.getLocation().getValue());
         assertEquals(new Integer(100), department.getVersion());
     }
 
@@ -79,10 +79,10 @@ public class AutoUpdateTest {
         assertEquals(1, result);
 
         department = dao.selectById(1);
-        assertEquals(new Integer(1), department.getDepartmentId());
+        assertEquals(new Integer(1), department.getDepartmentId().getValue());
         assertEquals(new Integer(1), department.getDepartmentNo());
         assertEquals("ACCOUNTING", department.getDepartmentName());
-        assertEquals("NEW YORK", department.getLocation());
+        assertEquals("NEW YORK", department.getLocation().getValue());
         assertEquals(new Integer(2), department.getVersion());
     }
 

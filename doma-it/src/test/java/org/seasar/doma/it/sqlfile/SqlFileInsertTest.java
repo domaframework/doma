@@ -20,6 +20,7 @@ import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDaoImpl;
+import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.entity.Department;
 import org.seasar.framework.unit.Seasar2;
 
@@ -29,14 +30,14 @@ public class SqlFileInsertTest {
     public void test() throws Exception {
         DepartmentDao dao = new DepartmentDaoImpl();
         Department department = new Department();
-        department.setDepartmentId(99);
+        department.setDepartmentId(new Identity<Department>(99));
         department.setDepartmentNo(99);
         department.setDepartmentName("hoge");
         int result = dao.insertBySqlFile(department);
         assertEquals(1, result);
 
         department = dao.selectById(new Integer(99));
-        assertEquals(new Integer(99), department.getDepartmentId());
+        assertEquals(new Integer(99), department.getDepartmentId().getValue());
         assertEquals(new Integer(99), department.getDepartmentNo());
     }
 

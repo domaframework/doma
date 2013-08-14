@@ -21,18 +21,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.runner.RunWith;
-import org.seasar.doma.message.Message;
 import org.seasar.doma.it.dao.CompKeyDepartmentDao;
 import org.seasar.doma.it.dao.CompKeyDepartmentDaoImpl;
 import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDaoImpl;
 import org.seasar.doma.it.dao.NoIdDao;
 import org.seasar.doma.it.dao.NoIdDaoImpl;
+import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.entity.CompKeyDepartment;
 import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.NoId;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.OptimisticLockException;
+import org.seasar.doma.message.Message;
 import org.seasar.framework.unit.Seasar2;
 
 @RunWith(Seasar2.class)
@@ -41,12 +42,12 @@ public class AutoBatchUpdateTest {
     public void test() throws Exception {
         DepartmentDao dao = new DepartmentDaoImpl();
         Department department = new Department();
-        department.setDepartmentId(1);
+        department.setDepartmentId(new Identity<Department>(1));
         department.setDepartmentNo(1);
         department.setDepartmentName("hoge");
         department.setVersion(1);
         Department department2 = new Department();
-        department2.setDepartmentId(2);
+        department2.setDepartmentId(new Identity<Department>(2));
         department2.setDepartmentNo(2);
         department2.setDepartmentName("foo");
         department2.setVersion(1);
@@ -58,28 +59,28 @@ public class AutoBatchUpdateTest {
         assertEquals(new Integer(2), department2.getVersion());
 
         department = dao.selectById(1);
-        assertEquals(new Integer(1), department.getDepartmentId());
+        assertEquals(new Integer(1), department.getDepartmentId().getValue());
         assertEquals(new Integer(1), department.getDepartmentNo());
         assertEquals("hoge", department.getDepartmentName());
-        assertNull(department.getLocation());
+        assertNull(department.getLocation().getValue());
         assertEquals(new Integer(2), department.getVersion());
         department = dao.selectById(2);
-        assertEquals(new Integer(2), department.getDepartmentId());
+        assertEquals(new Integer(2), department.getDepartmentId().getValue());
         assertEquals(new Integer(2), department.getDepartmentNo());
         assertEquals("foo", department.getDepartmentName());
-        assertNull(department.getLocation());
+        assertNull(department.getLocation().getValue());
         assertEquals(new Integer(2), department.getVersion());
     }
 
     public void testIncludeVersion() throws Exception {
         DepartmentDao dao = new DepartmentDaoImpl();
         Department department = new Department();
-        department.setDepartmentId(1);
+        department.setDepartmentId(new Identity<Department>(1));
         department.setDepartmentNo(1);
         department.setDepartmentName("hoge");
         department.setVersion(100);
         Department department2 = new Department();
-        department2.setDepartmentId(2);
+        department2.setDepartmentId(new Identity<Department>(2));
         department2.setDepartmentNo(2);
         department2.setDepartmentName("foo");
         department2.setVersion(200);
@@ -92,16 +93,16 @@ public class AutoBatchUpdateTest {
         assertEquals(new Integer(200), department2.getVersion());
 
         department = dao.selectById(new Integer(1));
-        assertEquals(new Integer(1), department.getDepartmentId());
+        assertEquals(new Integer(1), department.getDepartmentId().getValue());
         assertEquals(new Integer(1), department.getDepartmentNo());
         assertEquals("hoge", department.getDepartmentName());
-        assertNull(department.getLocation());
+        assertNull(department.getLocation().getValue());
         assertEquals(new Integer(100), department.getVersion());
         department = dao.selectById(new Integer(2));
-        assertEquals(new Integer(2), department.getDepartmentId());
+        assertEquals(new Integer(2), department.getDepartmentId().getValue());
         assertEquals(new Integer(2), department.getDepartmentNo());
         assertEquals("foo", department.getDepartmentName());
-        assertNull(department.getLocation());
+        assertNull(department.getLocation().getValue());
         assertEquals(new Integer(200), department.getVersion());
     }
 

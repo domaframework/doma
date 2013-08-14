@@ -30,6 +30,8 @@ import org.seasar.doma.it.dao.SequenceStrategyDao;
 import org.seasar.doma.it.dao.SequenceStrategyDaoImpl;
 import org.seasar.doma.it.dao.TableStrategyDao;
 import org.seasar.doma.it.dao.TableStrategyDaoImpl;
+import org.seasar.doma.it.domain.Identity;
+import org.seasar.doma.it.domain.Location;
 import org.seasar.doma.it.entity.CompKeyDepartment;
 import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.IdentityStrategy;
@@ -48,25 +50,26 @@ public class AutoInsertTest {
     public void test() throws Exception {
         DepartmentDao dao = new DepartmentDaoImpl();
         Department department = new Department();
-        department.setDepartmentId(99);
+        department.setDepartmentId(new Identity<Department>(99));
         department.setDepartmentNo(99);
         department.setDepartmentName("hoge");
+        department.setLocation(new Location<Department>("foo"));
         int result = dao.insert(department);
         assertEquals(1, result);
         assertEquals(new Integer(1), department.getVersion());
 
         department = dao.selectById(new Integer(99));
-        assertEquals(new Integer(99), department.getDepartmentId());
+        assertEquals(new Integer(99), department.getDepartmentId().getValue());
         assertEquals(new Integer(99), department.getDepartmentNo());
         assertEquals("hoge", department.getDepartmentName());
-        assertNull(department.getLocation());
+        assertEquals("foo", department.getLocation().getValue());
         assertEquals(new Integer(1), department.getVersion());
     }
 
     public void test_UniqueConstraintException() throws Exception {
         DepartmentDao dao = new DepartmentDaoImpl();
         Department department = new Department();
-        department.setDepartmentId(99);
+        department.setDepartmentId(new Identity<Department>(99));
         department.setDepartmentNo(99);
         department.setDepartmentName("hoge");
         int result = dao.insert(department);
@@ -82,7 +85,7 @@ public class AutoInsertTest {
     public void testExcludeNull() throws Exception {
         DepartmentDao dao = new DepartmentDaoImpl();
         Department department = new Department();
-        department.setDepartmentId(99);
+        department.setDepartmentId(new Identity<Department>(99));
         department.setDepartmentNo(99);
         department.setDepartmentName("hoge");
         int result = dao.insert_excludeNull(department);
@@ -90,10 +93,10 @@ public class AutoInsertTest {
         assertEquals(new Integer(1), department.getVersion());
 
         department = dao.selectById(new Integer(99));
-        assertEquals(new Integer(99), department.getDepartmentId());
+        assertEquals(new Integer(99), department.getDepartmentId().getValue());
         assertEquals(new Integer(99), department.getDepartmentNo());
         assertEquals("hoge", department.getDepartmentName());
-        assertEquals("TOKYO", department.getLocation());
+        assertEquals("TOKYO", department.getLocation().getValue());
         assertEquals(new Integer(1), department.getVersion());
     }
 

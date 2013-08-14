@@ -20,6 +20,7 @@ import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDaoImpl;
+import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.framework.unit.Seasar2;
@@ -30,7 +31,7 @@ public class SqlFileUpdateTest {
     public void test() throws Exception {
         DepartmentDao dao = new DepartmentDaoImpl();
         Department department = new Department();
-        department.setDepartmentId(1);
+        department.setDepartmentId(new Identity<Department>(1));
         department.setDepartmentNo(1);
         department.setDepartmentName("hoge");
         department.setVersion(1);
@@ -38,7 +39,7 @@ public class SqlFileUpdateTest {
         assertEquals(1, result);
 
         department = dao.selectById(1);
-        assertEquals(new Integer(1), department.getDepartmentId());
+        assertEquals(new Integer(1), department.getDepartmentId().getValue());
         assertEquals("hoge", department.getDepartmentName());
         assertEquals(new Integer(2), department.getVersion());
     }

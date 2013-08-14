@@ -19,6 +19,7 @@ import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
 import org.seasar.doma.OriginalStates;
 import org.seasar.doma.Version;
+import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.domain.Salary;
 import org.seasar.doma.jdbc.entity.NamingType;
 
@@ -38,7 +39,7 @@ public class Employee {
 
     private Salary salary;
 
-    private Integer departmentId;
+    private Identity<Department> departmentId;
 
     private Integer addressId;
 
@@ -96,11 +97,11 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Integer getDepartmentId() {
+    public Identity<Department> getDepartmentId() {
         return departmentId;
     }
 
-    public void setDepartmentId(Integer departmentId) {
+    public void setDepartmentId(Identity<Department> departmentId) {
         this.departmentId = departmentId;
     }
 

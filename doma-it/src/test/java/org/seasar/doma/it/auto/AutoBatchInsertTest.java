@@ -32,6 +32,7 @@ import org.seasar.doma.it.dao.SequenceStrategyDao;
 import org.seasar.doma.it.dao.SequenceStrategyDaoImpl;
 import org.seasar.doma.it.dao.TableStrategyDao;
 import org.seasar.doma.it.dao.TableStrategyDaoImpl;
+import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.entity.CompKeyDepartment;
 import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.IdentityStrategy;
@@ -49,11 +50,11 @@ public class AutoBatchInsertTest {
     public void test() throws Exception {
         DepartmentDao dao = new DepartmentDaoImpl();
         Department department = new Department();
-        department.setDepartmentId(99);
+        department.setDepartmentId(new Identity<Department>(99));
         department.setDepartmentNo(99);
         department.setDepartmentName("hoge");
         Department department2 = new Department();
-        department2.setDepartmentId(98);
+        department2.setDepartmentId(new Identity<Department>(98));
         department2.setDepartmentNo(98);
         department2.setDepartmentName("foo");
         int[] result = dao.insert(Arrays.asList(department, department2));
@@ -64,16 +65,16 @@ public class AutoBatchInsertTest {
         assertEquals(new Integer(1), department2.getVersion());
 
         department = dao.selectById(99);
-        assertEquals(new Integer(99), department.getDepartmentId());
+        assertEquals(new Integer(99), department.getDepartmentId().getValue());
         assertEquals(new Integer(99), department.getDepartmentNo());
         assertEquals("hoge", department.getDepartmentName());
-        assertNull(department.getLocation());
+        assertNull(department.getLocation().getValue());
         assertEquals(new Integer(1), department.getVersion());
         department = dao.selectById(new Integer(98));
-        assertEquals(new Integer(98), department.getDepartmentId());
+        assertEquals(new Integer(98), department.getDepartmentId().getValue());
         assertEquals(new Integer(98), department.getDepartmentNo());
         assertEquals("foo", department.getDepartmentName());
-        assertNull(department.getLocation());
+        assertNull(department.getLocation().getValue());
         assertEquals(new Integer(1), department.getVersion());
     }
 

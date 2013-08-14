@@ -19,19 +19,21 @@ import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
 import org.seasar.doma.OriginalStates;
 import org.seasar.doma.Version;
+import org.seasar.doma.it.domain.Identity;
+import org.seasar.doma.it.domain.Location;
 import org.seasar.doma.jdbc.entity.NamingType;
 
 @Entity(naming = NamingType.SNAKE_UPPER_CASE)
 public class Department {
 
     @Id
-    Integer departmentId;
+    Identity<Department> departmentId;
 
     Integer departmentNo;
 
     String departmentName;
 
-    String location;
+    Location<Department> location;
 
     @Version
     Integer version;
@@ -39,11 +41,11 @@ public class Department {
     @OriginalStates
     Department originalStates;
 
-    public Integer getDepartmentId() {
+    public Identity<Department> getDepartmentId() {
         return departmentId;
     }
 
-    public void setDepartmentId(Integer departmentId) {
+    public void setDepartmentId(Identity<Department> departmentId) {
         this.departmentId = departmentId;
     }
 
@@ -63,11 +65,11 @@ public class Department {
         this.departmentName = departmentName;
     }
 
-    public String getLocation() {
+    public Location<Department> getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(Location<Department> location) {
         this.location = location;
     }
 
