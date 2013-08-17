@@ -101,7 +101,7 @@ public @interface Update {
     /**
      * UPDATE文のSET句にバージョンプロパティに対応するカラムを含めるかどうかを示します。
      * 
-     * @deprecated 代わりに {@link #includeVersion()} を使用してください。
+     * @deprecated 代わりに {@link #ignoreVersion()} を使用してください。
      */
     @Deprecated
     boolean includeVersion() default false;
