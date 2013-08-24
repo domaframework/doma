@@ -113,6 +113,16 @@ public class EntityProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
+    public void testExtendsWithOriginalStates() throws Exception {
+        Class<?> target = OriginalStatesChildEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
     public void testPropertyNameReserved() throws Exception {
         Class<?> target = PropertyNameReservedEntity.class;
         EntityProcessor processor = new EntityProcessor();

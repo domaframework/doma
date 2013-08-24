@@ -34,7 +34,7 @@ import org.seasar.doma.internal.util.FieldUtil;
 public class OriginalStatesAccessor<E> {
 
     /** エンティティクラス */
-    protected final Class<E> entityClass;
+    protected final Class<? super E> entityClass;
 
     /** {@link OriginalStates} が注釈されたフィールドの名前 */
     protected final String name;
@@ -50,7 +50,7 @@ public class OriginalStatesAccessor<E> {
      * @param name
      *            {@link OriginalStates} が注釈されたフィールドの名前
      */
-    public OriginalStatesAccessor(Class<E> entityClass, String name) {
+    public OriginalStatesAccessor(Class<? super E> entityClass, String name) {
         if (entityClass == null) {
             throw new DomaNullPointerException("entityClass");
         }

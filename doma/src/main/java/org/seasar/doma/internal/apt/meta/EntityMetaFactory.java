@@ -251,25 +251,24 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
 
     protected void doOriginalStatesField(TypeElement classElement,
             VariableElement fieldElement, EntityMeta entityMeta) {
-        if (!classElement.equals(fieldElement.getEnclosingElement())) {
-            return;
-        }
         if (entityMeta.hasOriginalStatesMeta()) {
             throw new AptException(Message.DOMA4125, env, fieldElement);
         }
-        if (!TypeMirrorUtil.isSameType(fieldElement.asType(),
-                classElement.asType(), env)) {
-            throw new AptException(Message.DOMA4135, env, fieldElement,
-                    classElement.getQualifiedName());
+        if (classElement.equals(fieldElement.getEnclosingElement())) {
+            if (!TypeMirrorUtil.isSameType(fieldElement.asType(),
+                    classElement.asType(), env)) {
+                throw new AptException(Message.DOMA4135, env, fieldElement,
+                        classElement.getQualifiedName());
+            }
         }
-        TypeElement entityElement = ElementUtil.toTypeElement(
+        TypeElement enclosingElement = ElementUtil.toTypeElement(
                 fieldElement.getEnclosingElement(), env);
-        if (entityElement == null) {
+        if (enclosingElement == null) {
             throw new AptIllegalStateException(fieldElement.toString());
         }
-        OriginalStatesMeta changedPropertiesMeta = new OriginalStatesMeta(
-                entityElement, fieldElement, env);
-        entityMeta.setOriginalStatesMeta(changedPropertiesMeta);
+        OriginalStatesMeta originalStatesMeta = new OriginalStatesMeta(
+                classElement, fieldElement, enclosingElement, env);
+        entityMeta.setOriginalStatesMeta(originalStatesMeta);
     }
 
     protected void doEntityPropertyMeta(VariableElement fieldElement,

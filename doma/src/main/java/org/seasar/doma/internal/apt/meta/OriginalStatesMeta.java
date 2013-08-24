@@ -28,30 +28,31 @@ import javax.lang.model.element.VariableElement;
  */
 public class OriginalStatesMeta {
 
-    protected final String entityName;
+    protected final TypeElement typeElement;
 
-    protected final String entityTypeName;
+    protected final VariableElement fieldElement;
 
-    protected final String name;
+    protected final TypeElement fieldEnclosingElement;
 
-    public OriginalStatesMeta(TypeElement entityElement,
-            VariableElement changedPropertiesElement, ProcessingEnvironment env) {
-        assertNotNull(entityElement, changedPropertiesElement, env);
-        this.entityName = entityElement.getSimpleName().toString();
-        this.entityTypeName = entityElement.getQualifiedName().toString();
-        this.name = changedPropertiesElement.getSimpleName().toString();
+    public OriginalStatesMeta(TypeElement typeElement,
+            VariableElement fieldElement, TypeElement fieldEnclosingElement,
+            ProcessingEnvironment env) {
+        assertNotNull(typeElement, fieldElement, fieldEnclosingElement, env);
+        this.typeElement = typeElement;
+        this.fieldElement = fieldElement;
+        this.fieldEnclosingElement = fieldEnclosingElement;
     }
 
-    public String getEntityName() {
-        return entityName;
+    public TypeElement getTypeElement() {
+        return typeElement;
     }
 
-    public String getEntityTypeName() {
-        return entityTypeName;
+    public VariableElement getFieldElement() {
+        return fieldElement;
     }
 
-    public String getName() {
-        return name;
+    public TypeElement getFieldEnclosingElement() {
+        return fieldEnclosingElement;
     }
 
 }

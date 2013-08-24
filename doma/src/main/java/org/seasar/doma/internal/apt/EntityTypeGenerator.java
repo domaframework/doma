@@ -126,9 +126,11 @@ public class EntityTypeGenerator extends AbstractGenerator {
     protected void printOriginalStatesAccessorField() {
         if (!entityMeta.isAbstract() && entityMeta.hasOriginalStatesMeta()) {
             OriginalStatesMeta osm = entityMeta.getOriginalStatesMeta();
-            iprint("private static final %1$s<%2$s> __originalStatesAccessor = new %1$s<%2$s>(%2$s.class, \"%3$s\");%n",
-                    OriginalStatesAccessor.class.getName(),
-                    osm.getEntityTypeName(), osm.getName());
+            iprint("private static final %1$s<%2$s> __originalStatesAccessor = new %1$s<%2$s>(%3$s.class, \"%4$s\");%n",
+                    OriginalStatesAccessor.class.getName(), osm
+                            .getTypeElement().getQualifiedName(), osm
+                            .getFieldEnclosingElement().getQualifiedName(), osm
+                            .getFieldElement().getSimpleName());
             print("%n");
         }
     }
