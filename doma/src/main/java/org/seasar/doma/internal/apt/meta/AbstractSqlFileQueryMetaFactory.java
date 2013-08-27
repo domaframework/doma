@@ -66,7 +66,8 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
         String methodName = queryMeta.getName();
         for (File siblingfile : siblingfiles) {
             if (SqlFileUtil.isSqlFile(siblingfile, methodName)) {
-                String sqlFilePath = dirPath + "/" + siblingfile.getName();
+                String fileName = siblingfile.getName();
+                String sqlFilePath = dirPath + "/" + fileName;
                 String sql = getSql(method, siblingfile, sqlFilePath);
                 if (sql.isEmpty() || StringUtil.isWhitespace(sql)) {
                     throw new AptException(Message.DOMA4020, env, method,
@@ -77,6 +78,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
                 SqlValidator validator = createSqlValidator(method,
                         queryMeta.getBindableParameterTypeMap(), sqlFilePath);
                 validator.validate(sqlNode);
+                queryMeta.addFileName(fileName);
             }
         }
     }

@@ -91,6 +91,13 @@ public class SqlFileScriptQueryMetaFactory extends
         String filePath = ScriptFileUtil.buildPath(daoMeta.getDaoElement()
                 .getQualifiedName().toString(), queryMeta.getName());
         File file = getFile(queryMeta, method, filePath);
-        getSiblingFiles(queryMeta, method, file);
+        File[] siblingfiles = getSiblingFiles(queryMeta, method, file);
+        String methodName = queryMeta.getName();
+        for (File siblingfile : siblingfiles) {
+            if (ScriptFileUtil.isScriptFile(siblingfile, methodName)) {
+                String fileName = siblingfile.getName();
+                queryMeta.addFileName(fileName);
+            }
+        }
     }
 }

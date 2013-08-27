@@ -17,9 +17,17 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.io.File;
+import java.io.FilenameFilter;
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
@@ -29,8 +37,12 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
+import javax.tools.FileObject;
+import javax.tools.StandardLocation;
 
 import org.seasar.doma.DaoMethod;
+import org.seasar.doma.Suppress;
+import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Notifier;
@@ -39,6 +51,7 @@ import org.seasar.doma.internal.apt.mirror.AnnotateWithMirror;
 import org.seasar.doma.internal.apt.mirror.DaoMirror;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
+import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.message.Message;
 
 /**
@@ -68,6 +81,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         DaoMeta daoMeta = new DaoMeta(daoMirror);
         doDaoElement(interfaceElement, daoMeta);
         doMethodElements(interfaceElement, daoMeta);
+        validateFiles(interfaceElement, daoMeta);
         return daoMeta;
     }
 
@@ -214,4 +228,82 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         throw new AptException(Message.DOMA4005, env, method);
     }
 
+    protected void validateFiles(TypeElement interfaceElement, DaoMeta daoMeta) {
+        if (daoMeta.isError()) {
+            return;
+        }
+        if (!Options.getSqlValidation(env)) {
+            return;
+        }
+        String dirPath = SqlFileUtil.buildPath(interfaceElement
+                .getQualifiedName().toString());
+        Set<String> fileNames = getFileNames(dirPath);
+        for (QueryMeta queryMeta : daoMeta.getQueryMetas()) {
+            for (String fileName : queryMeta.getFileNames()) {
+                fileNames.remove(fileName);
+            }
+        }
+        Suppress suppress = interfaceElement.getAnnotation(Suppress.class);
+        Message message = Message.DOMA4220;
+        if (!isSuppressed(suppress, message)) {
+            for (String fileName : fileNames) {
+                Notifier.notify(env, Kind.WARNING, message, interfaceElement,
+                        dirPath + "/" + fileName);
+            }
+        }
+    }
+
+    protected Set<String> getFileNames(String dirPath) {
+        File dir = getDir(dirPath);
+        if (dir == null) {
+            return Collections.emptySet();
+        }
+        String[] fileNames = dir.list(new FilenameFilter() {
+
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.endsWith(Constants.SQL_PATH_SUFFIX)
+                        || name.endsWith(Constants.SCRIPT_PATH_SUFFIX);
+            }
+        });
+        return new HashSet<String>(Arrays.asList(fileNames));
+    }
+
+    protected File getDir(String dirPath) {
+        FileObject fileObject = getFileObject(dirPath);
+        if (fileObject == null) {
+            return null;
+        }
+        URI uri = fileObject.toUri();
+        if (!uri.isAbsolute()) {
+            uri = new File(".").toURI().resolve(uri);
+        }
+        File dir = new File(uri);
+        if (dir.exists() && dir.isDirectory()) {
+            return dir;
+        }
+        return null;
+    }
+
+    protected FileObject getFileObject(String path) {
+        Filer filer = env.getFiler();
+        try {
+            return filer.getResource(StandardLocation.CLASS_OUTPUT, "", path);
+        } catch (Exception ignored) {
+            // Ignore, in case the Filer implementation doesn't support
+            // directory path.
+            return null;
+        }
+    }
+
+    protected boolean isSuppressed(Suppress suppress, Message message) {
+        if (suppress != null) {
+            for (Message suppressMessage : suppress.messages()) {
+                if (suppressMessage == message) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

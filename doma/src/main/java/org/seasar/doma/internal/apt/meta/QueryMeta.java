@@ -45,5 +45,7 @@ public interface QueryMeta {
 
     boolean isVarArgs();
 
+    List<String> getFileNames();
+
     <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p);
 }

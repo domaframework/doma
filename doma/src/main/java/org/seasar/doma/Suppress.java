@@ -28,7 +28,7 @@ import org.seasar.doma.message.Message;
  * @author taedium
  * @since 1.10.0
  */
-@Target(ElementType.METHOD)
+@Target({ ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Suppress {
 

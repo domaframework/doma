@@ -50,6 +50,8 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
     protected List<QueryParameterMeta> parameterMetas = new ArrayList<QueryParameterMeta>();
 
+    protected List<String> fileNames = new ArrayList<String>();
+
     protected AbstractQueryMeta(ExecutableElement method) {
         assertNotNull(method);
         this.name = method.getSimpleName().toString();
@@ -142,6 +144,15 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
     public void addParameterMeta(QueryParameterMeta queryParameterMeta) {
         this.parameterMetas.add(queryParameterMeta);
+    }
+
+    @Override
+    public List<String> getFileNames() {
+        return fileNames;
+    }
+
+    public void addFileName(String fileName) {
+        this.fileNames.add(fileName);
     }
 
     @Override
