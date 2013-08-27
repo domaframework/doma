@@ -52,8 +52,8 @@ public interface EmployeeDao {
 				</p>
 <source>META-INF/aaa/bbb/EmployeeDao/createTables-postgres.script</source>
 				<p>
-					この場合、PostgreSQLを使用している場合に限り、<code>META-INF/aaa/bbb/EmployeeDao/createTable.sql</code> よりも
-					<code>META-INF/aaa/bbb/EmployeeDao/createTable-postgres.sql</code> が優先的に使用されます。
+					この場合、PostgreSQLを使用している場合に限り、<code>META-INF/aaa/bbb/EmployeeDao/createTable.script</code> よりも
+					<code>META-INF/aaa/bbb/EmployeeDao/createTable-postgres.script</code> が優先的に使用されます。
 				</p>
 				<p>
 					RDBMS名は、 <code>org.seasar.doma.jdbc.dialect.Dialect</code>の <code>getName</code>メソッドの値が使用されます。
@@ -68,12 +68,17 @@ public interface EmployeeDao {
 					<tr>
 						<td>DB2</td>
 						<td><code>org.seasar.doma.jdbc.dialect.Db2Dialect</code></td>
-						<td>db2</td>
+						<td><code>db2</code></td>
+					</tr>
+					<tr>
+						<td>H2 Database Engine 1.2.126</td>
+						<td><code>org.seasar.doma.jdbc.dialect.H212126Dialect</code></td>
+						<td><code>h2</code></td>
 					</tr>
 					<tr>
 						<td>H2 Database Engine</td>
 						<td><code>org.seasar.doma.jdbc.dialect.H2Dialect</code></td>
-						<td>h2</td>
+						<td><code>h2</code></td>
 					</tr>
 					<tr>
 						<td>HSQLDB</td>
@@ -83,12 +88,17 @@ public interface EmployeeDao {
 					<tr>
 						<td>Microsoft SQL Server 2008</td>
 						<td><code>org.seasar.doma.jdbc.dialect.Mssql2008Dialect</code></td>
-						<td>mssql2008</td>
+						<td><code>mssql2008</code></td>
+					</tr>
+					<tr>
+						<td>Microsoft SQL Server</td>
+						<td><code>org.seasar.doma.jdbc.dialect.MssqlDialect</code></td>
+						<td><code>mssql</code></td>
 					</tr>
 					<tr>
 						<td>MySQL</td>
 						<td><code>org.seasar.doma.jdbc.dialect.MySqlDialect</code></td>
-						<td>mysql</td>
+						<td><code>mysql</code></td>
 					</tr>
 					<tr>
 						<td>Oracle Database</td>
@@ -98,7 +108,12 @@ public interface EmployeeDao {
 					<tr>
 						<td>PostgreSQL</td>
 						<td><code>org.seasar.doma.jdbc.dialect.PostgresDialect</code></td>
-						<td>postgres</td>
+						<td><code>postgres</code></td>
+					</tr>
+					<tr>
+						<td>SQLite</td>
+						<td><code>org.seasar.doma.jdbc.dialect.SqliteDialect</code></td>
+						<td><code>sqlite</code></td>
 					</tr>
 				</table>
 			</subsection>
@@ -129,6 +144,11 @@ public interface EmployeeDao {
 						<td>@</td>
 					</tr>
 					<tr>
+						<td>H2 Database Engine 1.2.126</td>
+						<td><code>org.seasar.doma.jdbc.dialect.H212126Dialect</code></td>
+						<td>なし</td>
+					</tr>
+					<tr>
 						<td>H2 Database Engine</td>
 						<td><code>org.seasar.doma.jdbc.dialect.H2Dialect</code></td>
 						<td>なし</td>
@@ -141,6 +161,11 @@ public interface EmployeeDao {
 					<tr>
 						<td>Microsoft SQL Server 2008</td>
 						<td><code>org.seasar.doma.jdbc.dialect.Mssql2008Dialect</code></td>
+						<td>GO</td>
+					</tr>
+					<tr>
+						<td>Microsoft SQL Server</td>
+						<td><code>org.seasar.doma.jdbc.dialect.MssqlDialect</code></td>
 						<td>GO</td>
 					</tr>
 					<tr>
@@ -157,6 +182,11 @@ public interface EmployeeDao {
 						<td>PostgreSQL</td>
 						<td><code>org.seasar.doma.jdbc.dialect.PostgresDialect</code></td>
 						<td>$$</td>
+					</tr>
+					<tr>
+						<td>SQLite</td>
+						<td><code>org.seasar.doma.jdbc.dialect.SqliteDialect</code></td>
+						<td>なし</td>
 					</tr>
 				</table>
 				<p>
