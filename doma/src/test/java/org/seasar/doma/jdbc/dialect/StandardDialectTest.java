@@ -102,6 +102,17 @@ public class StandardDialectTest extends TestCase {
         assertEquals("%a\\\\a\\%a\\_%", functions.infix("a\\a%a_", '\\'));
     }
 
+    public void testExpressionFunctions_roundDonwTimePart_forUtilDate()
+            throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2009, Calendar.JANUARY, 23, 12, 34, 56);
+        java.util.Date date = new java.util.Date(calendar.getTimeInMillis());
+        assertEquals(Date.valueOf("2009-01-23"),
+                functions.roundDownTimePart(date));
+    }
+
     public void testExpressionFunctions_roundDonwTimePart_forDate()
             throws Exception {
         StandardDialect dialect = new StandardDialect();
@@ -121,6 +132,17 @@ public class StandardDialectTest extends TestCase {
                 .valueOf("2009-01-23 12:34:56.123456789");
         assertEquals(Timestamp.valueOf("2009-01-23 00:00:00.000000000"),
                 functions.roundDownTimePart(timestamp));
+    }
+
+    public void testExpressionFunctions_roundUpTimePart_forUtilDate()
+            throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2009, Calendar.JANUARY, 23, 12, 34, 56);
+        java.util.Date date = new java.util.Date(calendar.getTimeInMillis());
+        assertEquals(Date.valueOf("2009-01-24").getTime(), functions
+                .roundUpTimePart(date).getTime());
     }
 
     public void testExpressionFunctions_roundUpTimePart_forDate()

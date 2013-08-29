@@ -422,7 +422,7 @@ public class TypeDeclaration {
                         .next().getType(), env);
                 TypeMirror t2 = TypeMirrorUtil.boxIfPrimitive(
                         valueElementIterator.next().asType(), env);
-                if (!TypeMirrorUtil.isSameType(t1, t2, env)) {
+                if (!TypeMirrorUtil.isAssignable(t1, t2, env)) {
                     continue outer;
                 }
             }

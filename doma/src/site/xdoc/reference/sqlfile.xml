@@ -751,8 +751,10 @@ salary > 1000]]></source>
 					<tr><td><code>String</code></td><td><code>@infix(String infix, char escapeChar)</code></td><td>中間一致検索を行うことを示します。戻り値は入力値をエスケープしワイルドカードを前と後ろに付与した文字列です。エスケープは第2引数で指定したエスケープ文字を用いて行われます。最初の引数に<code>null</code>を渡した場合、<code>null</code>を返します。</td></tr>
 					<tr><td><code>String</code></td><td><code>@contain(String inside)</code></td><td><code>@infix(String infix)</code>の別名です。非推奨です。</td></tr>
 					<tr><td><code>String</code></td><td><code>@contain(String inside, char escapeChar)</code></td><td><code>@infix(String infix, char escapeChar)</code>の別名です。非推奨です。</td></tr>
+					<tr><td><code>java.util.Date</code></td><td><code>@roundDownTimePart(java.util.Date date)</code></td><td>時刻部分を切り捨てることを示します。戻り値は時刻部分が切り捨てられた新しい日付です。引数に<code>null</code>を渡した場合、<code>null</code>を返します。</td></tr>
 					<tr><td><code>java.sql.Date</code></td><td><code>@roundDownTimePart(java.sql.Date date)</code></td><td>時刻部分を切り捨てることを示します。戻り値は時刻部分が切り捨てられた新しい日付です。引数に<code>null</code>を渡した場合、<code>null</code>を返します。</td></tr>
 					<tr><td><code>java.sql.Timestamp</code></td><td><code>@roundDownTimePart(java.sql.Timestamp timestamp)</code></td><td>時刻部分を切り捨てることを示します。戻り値は時刻部分が切り捨てられた新しいタイムスタンプです。引数に<code>null</code>を渡した場合、<code>null</code>を返します。</td></tr>
+					<tr><td><code>java.util.Date</code></td><td><code>@roundUpTimePart(java.util.Date date)</code></td><td>時刻部分を切り上げることを示します。戻り値は時刻部分が切り上げられた新しい日付です。引数に<code>null</code>を渡した場合、<code>null</code>を返します。</td></tr>
 					<tr><td><code>java.sql.Date</code></td><td><code>@roundUpTimePart(java.sql.Date date)</code></td><td>時刻部分を切り上げることを示します。戻り値は時刻部分が切り上げられた新しい日付です。引数に<code>null</code>を渡した場合、<code>null</code>を返します。</td></tr>
 					<tr><td><code>java.sql.Timestamp</code></td><td><code>@roundUpTimePart(java.sql.Timestamp timestamp)</code></td><td>時刻部分を切り上げることを示します。戻り値は時刻部分が切り上げられた新しいタイムスタンプです。引数に<code>null</code>を渡した場合、<code>null</code>を返します。</td></tr>
 					<tr><td><code>boolean</code></td><td><code>@isEmpty(CharSequence charSequence)</code></td><td>文字シーケンスが<code>null</code>、もしくは文字シーケンスの長さが<code>0</code>の場合 <code>true</code>を返します。</td></tr>

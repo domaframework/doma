@@ -571,19 +571,50 @@ public class ExpressionEvaluator implements
     }
 
     protected Method findSuiteMethod(List<Method> methods, Object target,
-            Class<?> targetClass, Class<?>[] paramTypes) {
+            Class<?> targetClass, Class<?>[] argTypes) {
+        CandidateMethod candidate = null;
         outer: for (Method method : methods) {
-            Class<?> types[] = method.getParameterTypes();
-            if (types.length == paramTypes.length) {
-                for (int i = 0; i < types.length; i++) {
-                    if (!types[i].isAssignableFrom(paramTypes[i])) {
+            Class<?> paramTypes[] = method.getParameterTypes();
+            if (paramTypes.length == argTypes.length) {
+                int degreeOfcoincidence = 0;
+                for (int i = 0; i < paramTypes.length; i++) {
+                    int difference = calculateHierarchyDifference(paramTypes[i],
+                            argTypes[i], 0);
+                    if (difference == -1) {
                         continue outer;
                     }
+                    degreeOfcoincidence += difference;
                 }
-                return method;
+                if (degreeOfcoincidence == 0) {
+                    return method;
+                }
+                if (candidate == null
+                        || degreeOfcoincidence < candidate.degreeOfcoincidence) {
+                    candidate = new CandidateMethod(degreeOfcoincidence, method);
+                }
             }
         }
-        return null;
+        return candidate != null ? candidate.method : null;
+    }
+
+    protected int calculateHierarchyDifference(Class<?> paramType,
+            Class<?> argType, int initDifference) {
+        int difference = initDifference;
+        for (Class<?> type = argType; type != null; type = type
+                .getSuperclass()) {
+            if (paramType.equals(type)) {
+                return difference;
+            }
+            difference++;
+            for (Class<?> interfaceClass : type.getInterfaces()) {
+                int result = calculateHierarchyDifference(paramType,
+                        interfaceClass, difference);
+                if (result != -1) {
+                    return result;
+                }
+            }
+        }
+        return -1;
     }
 
     protected Method findStaticMethod(String methodName, Class<?> targetClass,
@@ -1147,4 +1178,23 @@ public class ExpressionEvaluator implements
 
     }
 
+    static class CandidateMethod {
+        final int degreeOfcoincidence;
+        final Method method;
+
+        CandidateMethod(int degreeOfcoincidence, Method method) {
+            this.degreeOfcoincidence = degreeOfcoincidence;
+            this.method = method;
+        }
+    }
+
+    static class Pair<F, S> {
+        final F first;
+        final S second;
+
+        Pair(F first, S second) {
+            this.first = first;
+            this.second = second;
+        }
+    }
 }

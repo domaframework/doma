@@ -51,6 +51,30 @@ public class ExpressionEvaluatorTest extends TestCase {
         assertEquals(Collection.class, method.getDeclaringClass());
     }
 
+    public void testFindMethod_subtype() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        Method method = evaluator.findMethod("add", new ArrayList<Object>(),
+                ArrayList.class, new Class[] { String.class });
+        assertNotNull(method);
+        assertEquals(Collection.class, method.getDeclaringClass());
+    }
+
+    public void testFindMethod_overload_int() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        Method method = evaluator.findMethod("indexOf", "string", String.class,
+                new Class[] { int.class });
+        assertNotNull(method);
+        assertEquals(String.class, method.getDeclaringClass());
+    }
+
+    public void testFindMethod_overload_string() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        Method method = evaluator.findMethod("indexOf", "string", String.class,
+                new Class[] { String.class });
+        assertNotNull(method);
+        assertEquals(String.class, method.getDeclaringClass());
+    }
+
     public void testFindMethod_notFound() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         Method method = evaluator.findMethod("inexistentMethod", "aaa",

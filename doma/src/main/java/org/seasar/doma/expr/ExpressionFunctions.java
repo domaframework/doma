@@ -138,6 +138,16 @@ public interface ExpressionFunctions {
      * @param date
      *            日付
      * @return 時刻部分が切り捨てられた日付
+     * @since 1.33.0
+     */
+    java.util.Date roundDownTimePart(java.util.Date date);
+
+    /**
+     * 日付の時刻部分を切り捨てます。
+     * 
+     * @param date
+     *            日付
+     * @return 時刻部分が切り捨てられた日付
      */
     Date roundDownTimePart(Date date);
 
@@ -149,6 +159,16 @@ public interface ExpressionFunctions {
      * @return 時刻部分が切り捨てられたタイムスタンプ
      */
     Timestamp roundDownTimePart(Timestamp timestamp);
+
+    /**
+     * 日付の時刻部分を切り上げます。
+     * 
+     * @param date
+     *            日付
+     * @return 時刻部分が切り上げられた日付
+     * @since 1.33.0
+     */
+    java.util.Date roundUpTimePart(java.util.Date date);
 
     /**
      * 日付の時刻部分を切り上げます。

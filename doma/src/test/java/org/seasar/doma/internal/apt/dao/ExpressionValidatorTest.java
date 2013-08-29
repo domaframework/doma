@@ -131,7 +131,7 @@ public class ExpressionValidatorTest extends AptTestCase {
         assertTrue(result.isNumberType());
     }
 
-    public void testMethod_notFoundFromCandidates() throws Exception {
+    public void testMethod_foundWithSupertype() throws Exception {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);
         compile();
@@ -144,13 +144,8 @@ public class ExpressionValidatorTest extends AptTestCase {
 
         ExpressionNode node = new ExpressionParser(
                 "emp.hoge(new java.lang.Integer(1))").parse();
-        try {
-            validator.validate(node);
-            fail();
-        } catch (AptException expected) {
-            System.out.println(expected);
-            assertEquals(Message.DOMA4073, expected.getMessageResource());
-        }
+        TypeDeclaration result = validator.validate(node);
+        assertTrue(result.isNumberType());
     }
 
     public void testStaticMethod_found() throws Exception {

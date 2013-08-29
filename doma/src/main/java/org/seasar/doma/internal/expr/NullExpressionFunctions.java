@@ -80,6 +80,11 @@ public class NullExpressionFunctions implements ExpressionFunctions {
     }
 
     @Override
+    public java.util.Date roundDownTimePart(java.util.Date date) {
+        return date;
+    }
+
+    @Override
     public Date roundDownTimePart(Date date) {
         return date;
     }
@@ -87,6 +92,11 @@ public class NullExpressionFunctions implements ExpressionFunctions {
     @Override
     public Timestamp roundDownTimePart(Timestamp timestamp) {
         return timestamp;
+    }
+
+    @Override
+    public java.util.Date roundUpTimePart(java.util.Date date) {
+        return date;
     }
 
     @Override
