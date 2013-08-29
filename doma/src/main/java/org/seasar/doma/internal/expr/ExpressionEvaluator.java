@@ -578,8 +578,8 @@ public class ExpressionEvaluator implements
             if (paramTypes.length == argTypes.length) {
                 int degreeOfcoincidence = 0;
                 for (int i = 0; i < paramTypes.length; i++) {
-                    int difference = calculateHierarchyDifference(paramTypes[i],
-                            argTypes[i], 0);
+                    int difference = calculateHierarchyDifference(
+                            paramTypes[i], argTypes[i], 0);
                     if (difference == -1) {
                         continue outer;
                     }
@@ -600,8 +600,7 @@ public class ExpressionEvaluator implements
     protected int calculateHierarchyDifference(Class<?> paramType,
             Class<?> argType, int initDifference) {
         int difference = initDifference;
-        for (Class<?> type = argType; type != null; type = type
-                .getSuperclass()) {
+        for (Class<?> type = argType; type != null; type = type.getSuperclass()) {
             if (paramType.equals(type)) {
                 return difference;
             }
@@ -1185,16 +1184,6 @@ public class ExpressionEvaluator implements
         CandidateMethod(int degreeOfcoincidence, Method method) {
             this.degreeOfcoincidence = degreeOfcoincidence;
             this.method = method;
-        }
-    }
-
-    static class Pair<F, S> {
-        final F first;
-        final S second;
-
-        Pair(F first, S second) {
-            this.first = first;
-            this.second = second;
         }
     }
 }
