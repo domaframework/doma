@@ -89,10 +89,34 @@ public interface ExpressionFunctions {
     /**
      * 中間一致検索を行うことを示します。
      * 
+     * @param infix
+     *            含まれる文字列
+     * @return 中間一致検索のための文字列
+     * @since 1.33.0
+     */
+    String infix(String infix);
+
+    /**
+     * エスケープ文字を指定して中間一致検索を行うことを示します。
+     * 
+     * @param infix
+     *            含まれる文字列
+     * @param escapeChar
+     *            エスケープ文字
+     * @return 中間一致検索のための文字列
+     * @since 1.33.0
+     */
+    String infix(String infix, char escapeChar);
+
+    /**
+     * 中間一致検索を行うことを示します。
+     * 
      * @param inside
      *            含まれる文字列
      * @return 中間一致検索のための文字列
+     * @deprecated {@link ExpressionFunctions#infix(String)} を使用してください
      */
+    @Deprecated
     String contain(String inside);
 
     /**
@@ -103,7 +127,9 @@ public interface ExpressionFunctions {
      * @param escapeChar
      *            エスケープ文字
      * @return 中間一致検索のための文字列
+     * @deprecated {@link ExpressionFunctions#infix(String, char)} を使用してください
      */
+    @Deprecated
     String contain(String inside, char escapeChar);
 
     /**

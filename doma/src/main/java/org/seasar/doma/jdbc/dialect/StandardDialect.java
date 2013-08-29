@@ -905,6 +905,31 @@ public class StandardDialect implements Dialect {
         }
 
         @Override
+        public String infix(String text) {
+            if (text == null) {
+                return null;
+            }
+            if (text.isEmpty()) {
+                return "%";
+            }
+            String escaped = escapeWildcard(defaultWildcardReplacementPattern,
+                    text, defaultReplacement);
+            return "%" + escaped + "%";
+        }
+
+        @Override
+        public String infix(String text, char escapeChar) {
+            if (text == null) {
+                return null;
+            }
+            if (text.isEmpty()) {
+                return "%";
+            }
+            return "%" + escapeWildcard(text, escapeChar) + "%";
+        }
+
+        @SuppressWarnings("deprecation")
+        @Override
         public String contain(String text) {
             if (text == null) {
                 return null;
@@ -917,6 +942,7 @@ public class StandardDialect implements Dialect {
             return "%" + escaped + "%";
         }
 
+        @SuppressWarnings("deprecation")
         @Override
         public String contain(String text, char escapeChar) {
             if (text == null) {

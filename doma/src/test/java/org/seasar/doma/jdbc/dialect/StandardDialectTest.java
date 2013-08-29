@@ -64,6 +64,44 @@ public class StandardDialectTest extends TestCase {
         assertEquals("a\\\\a\\%a\\_%", functions.prefix("a\\a%a_", '\\'));
     }
 
+    public void testExpressionFunctions_suffix() throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        assertEquals("%a$$a$%a$_", functions.suffix("a$a%a_"));
+    }
+
+    public void testExpressionFunctions_suffix_escape() throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        assertEquals("%a!!a!%a!_", functions.suffix("a!a%a_", '!'));
+    }
+
+    public void testExpressionFunctions_suffix_escapeWithBackslash()
+            throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        assertEquals("%a\\\\a\\%a\\_", functions.suffix("a\\a%a_", '\\'));
+    }
+
+    public void testExpressionFunctions_infix() throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        assertEquals("%a$$a$%a$_%", functions.infix("a$a%a_"));
+    }
+
+    public void testExpressionFunctions_infix_escape() throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        assertEquals("%a!!a!%a!_%", functions.infix("a!a%a_", '!'));
+    }
+
+    public void testExpressionFunctions_infix_escapeWithBackslash()
+            throws Exception {
+        StandardDialect dialect = new StandardDialect();
+        ExpressionFunctions functions = dialect.getExpressionFunctions();
+        assertEquals("%a\\\\a\\%a\\_%", functions.infix("a\\a%a_", '\\'));
+    }
+
     public void testExpressionFunctions_roundDonwTimePart_forDate()
             throws Exception {
         StandardDialect dialect = new StandardDialect();

@@ -58,10 +58,22 @@ public class NullExpressionFunctions implements ExpressionFunctions {
     }
 
     @Override
+    public String infix(String text) {
+        return text;
+    }
+
+    @Override
+    public String infix(String text, char escapeChar) {
+        return text;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
     public String contain(String text) {
         return text;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public String contain(String text, char escape) {
         return text;
