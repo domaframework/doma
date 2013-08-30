@@ -75,6 +75,14 @@ public class ExpressionEvaluatorTest extends TestCase {
         assertEquals(String.class, method.getDeclaringClass());
     }
 
+    public void testFindMethod_autoBoxing() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        Method method = evaluator.findMethod("compareTo", Integer.valueOf(1),
+                Integer.class, new Class[] { int.class });
+        assertNotNull(method);
+        assertEquals(Integer.class, method.getDeclaringClass());
+    }
+
     public void testFindMethod_notFound() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         Method method = evaluator.findMethod("inexistentMethod", "aaa",

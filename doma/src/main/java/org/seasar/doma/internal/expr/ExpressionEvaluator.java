@@ -65,6 +65,7 @@ import org.seasar.doma.internal.expr.node.StaticFieldOperatorNode;
 import org.seasar.doma.internal.expr.node.StaticMethodOperatorNode;
 import org.seasar.doma.internal.expr.node.SubtractOperatorNode;
 import org.seasar.doma.internal.expr.node.VariableNode;
+import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.ConstructorUtil;
 import org.seasar.doma.internal.util.FieldUtil;
 import org.seasar.doma.internal.util.GenericsUtil;
@@ -601,7 +602,9 @@ public class ExpressionEvaluator implements
             Class<?> argType, int initDifference) {
         int difference = initDifference;
         for (Class<?> type = argType; type != null; type = type.getSuperclass()) {
-            if (paramType.equals(type)) {
+            if (paramType.equals(type)
+                    || paramType.equals(ClassUtil
+                            .toBoxedPrimitiveTypeIfPossible(type))) {
                 return difference;
             }
             difference++;
@@ -1177,7 +1180,7 @@ public class ExpressionEvaluator implements
 
     }
 
-    static class CandidateMethod {
+    protected static class CandidateMethod {
         final int degreeOfcoincidence;
         final Method method;
 
