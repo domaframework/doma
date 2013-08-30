@@ -151,6 +151,11 @@
 						<td>db2</td>
 					</tr>
 					<tr>
+						<td>H2 Database Engine 1.2.126</td>
+						<td><code>org.seasar.doma.jdbc.dialect.H212126Dialect</code></td>
+						<td>h2</td>
+					</tr>
+					<tr>
 						<td>H2 Database Engine</td>
 						<td><code>org.seasar.doma.jdbc.dialect.H2Dialect</code></td>
 						<td>h2</td>
@@ -166,6 +171,11 @@
 						<td>mssql2008</td>
 					</tr>
 					<tr>
+						<td>Microsoft SQL Server</td>
+						<td><code>org.seasar.doma.jdbc.dialect.MssqlDialect</code></td>
+						<td>mssql</td>
+					</tr>
+					<tr>
 						<td>MySQL</td>
 						<td><code>org.seasar.doma.jdbc.dialect.MySqlDialect</code></td>
 						<td>mysql</td>
@@ -179,6 +189,11 @@
 						<td>PostgreSQL</td>
 						<td><code>org.seasar.doma.jdbc.dialect.PostgresDialect</code></td>
 						<td>postgres</td>
+					</tr>
+					<tr>
+						<td>SQLite</td>
+						<td><code>org.seasar.doma.jdbc.dialect.SqliteDialect</code></td>
+						<td>sqlite</td>
 					</tr>
 				</table>
 			</subsection>
