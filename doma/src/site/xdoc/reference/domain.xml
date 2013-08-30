@@ -279,7 +279,7 @@ public class PhoneNumber {
 
 import sample.PhoneNumber;
 
-@ExtenalDomain
+@ExternalDomain
 public class PhoneNumberConverter implements DomainConverter<PhoneNumber, String> {
 
     public String fromDomainToValue(PhoneNumber domain) {
@@ -338,7 +338,7 @@ public class Identity<T> {
 
 import sample.Identity;
 
-@ExtenalDomain
+@ExternalDomain
 public class IdentityConverter implements DomainConverter<Identity<?>, String> {
 
     public String fromDomainToValue(Identity<?> domain) {
