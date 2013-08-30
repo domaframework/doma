@@ -25,6 +25,7 @@
 				<li><a href="#セットアップの確認">セットアップの確認</a>
 					<ul>
 						<li><a href="#エンティティクラスの作成">エンティティクラスの作成</a></li>
+						<li><a href="#その他">その他</a></li>
 					</ul>
 				</li>
 				<li><a href="#Eclipseプラグインのインストール">Eclipseプラグインのインストール</a></li>
@@ -122,6 +123,11 @@ public class Employee {
 					生成されたソースコードは、注釈処理（Annotation Processing）の設定画面で変更していなければ、プロジェクト直下の「.apt_generated」というディレクトリに保存されます。
 					「.apt_generated」は、デフォルトではPackage Explorerビューに表示されません。
 					Package Explorerビューのフィルタリングの設定を変更するか、Nivigatorビューで確認してください。
+				</p>
+			</subsection>
+			<subsection name="その他">
+				<p>
+					セットアップがうまくいかない場合は、<a href="faq.html">よくある質問</a>が参考になるかもしれません。
 				</p>
 			</subsection>
 		</section>
