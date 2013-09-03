@@ -86,4 +86,9 @@ public class VersionPropertyType<PE, E extends PE, V extends Number, D> extends
         wrapper.increment();
     }
 
+    // TODO
+    public E incrementAndMakeNewEntity() {
+        return null;
+    }
+
 }

@@ -26,14 +26,14 @@ import org.seasar.doma.jdbc.Config;
  * @author taedium
  * @since 1.11.0
  */
-public interface PreInsertContext {
+public interface PreInsertContext<E> {
 
     /**
      * エンティティのメタタイプを返します。
      * 
      * @return エンティティのメタタイプ
      */
-    public EntityType<?> getEntityType();
+    public EntityType<E> getEntityType();
 
     /**
      * {@link Insert} が注釈されたメソッドを返します。
@@ -50,5 +50,8 @@ public interface PreInsertContext {
      * @since 1.27.0
      */
     public Config getConfig();
+
+    // TODO
+    public void setNewEntity(E entity);
 
 }

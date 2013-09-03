@@ -16,6 +16,7 @@
 package org.seasar.doma.jdbc.entity;
 
 import java.sql.Statement;
+import java.util.Map;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.GenerationType;
@@ -166,6 +167,12 @@ public class GeneratedIdPropertyType<PE, E extends PE, V extends Number, D>
         }
     }
 
+    public E preInsertAndMakeEntity(EntityType<E> entityType, E entity,
+            IdGenerationConfig config) {
+        Long value = idGenerator.generatePreInsert(config);
+        return makeEntity(entityType, entity, value);
+    }
+
     /**
      * INSERTの実行後に識別子の生成を行います。
      * 
@@ -176,6 +183,7 @@ public class GeneratedIdPropertyType<PE, E extends PE, V extends Number, D>
      * @param statement
      *            INSERT文を実行した文
      */
+    // TODO
     public void postInsert(E entity, IdGenerationConfig config,
             Statement statement) {
         Long value = idGenerator.generatePostInsert(config, statement);
@@ -183,6 +191,18 @@ public class GeneratedIdPropertyType<PE, E extends PE, V extends Number, D>
             NumberWrapper<V> wrapper = (NumberWrapper<V>) getWrapper(entity);
             wrapper.set(value);
         }
+    }
+
+    public E postInsertAndMakeEntity(EntityType<E> entityType, E entity,
+            IdGenerationConfig config, Statement statement) {
+        Long value = idGenerator.generatePostInsert(config, statement);
+        return makeEntity(entityType, entity, value);
+    }
+
+    protected E makeEntity(EntityType<E> entityType, E entity, Long value) {
+        Map<String, Object> values = makeMap(entityType, entity);
+        values.put(name, value);
+        return entityType.newEntity(values);
     }
 
 }

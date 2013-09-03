@@ -26,15 +26,17 @@ import org.seasar.doma.jdbc.entity.EntityType;
  * @author taedium
  * 
  */
-public abstract class AbstractEntityListenerContext {
+public abstract class AbstractEntityListenerContext<E> {
 
-    protected final EntityType<?> entityType;
+    protected final EntityType<E> entityType;
 
     protected final Method method;
 
     protected final Config config;
 
-    protected AbstractEntityListenerContext(EntityType<?> entityType,
+    protected E entity;
+
+    protected AbstractEntityListenerContext(EntityType<E> entityType,
             Method method, Config config) {
         assertNotNull(entityType, method, config);
         this.entityType = entityType;
@@ -47,7 +49,7 @@ public abstract class AbstractEntityListenerContext {
         return entityType.getEntityPropertyType(propertyName) != null;
     }
 
-    public EntityType<?> getEntityType() {
+    public EntityType<E> getEntityType() {
         return entityType;
     }
 
@@ -57,5 +59,13 @@ public abstract class AbstractEntityListenerContext {
 
     public Config getConfig() {
         return config;
+    }
+
+    public void setNewEntity(E entity) {
+        this.entity = entity;
+    }
+
+    public E getNewEntity() {
+        return this.entity;
     }
 }

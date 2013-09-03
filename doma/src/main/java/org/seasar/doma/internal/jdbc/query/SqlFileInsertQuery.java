@@ -25,8 +25,6 @@ import org.seasar.doma.internal.jdbc.entity.AbstractPreInsertContext;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.entity.PostInsertContext;
-import org.seasar.doma.jdbc.entity.PreInsertContext;
 
 /**
  * @author taedium
@@ -86,32 +84,39 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
         }
 
         protected void preInsert() {
-            PreInsertContext context = new SqlFilePreInsertContext(entityType,
-                    method, config);
+            SqlFilePreInsertContext<E> context = new SqlFilePreInsertContext<E>(
+                    entityType, method, config);
             entityType.preInsert(entity, context);
+            if (entityType.isImmutable() && context.getNewEntity() != null) {
+                entity = context.getNewEntity();
+            }
         }
 
         protected void postInsert() {
-            PostInsertContext context = new SqlFilePostInsertContext(
+            SqlFilePostInsertContext<E> context = new SqlFilePostInsertContext<E>(
                     entityType, method, config);
             entityType.postInsert(entity, context);
+            if (entityType.isImmutable() && context.getNewEntity() != null) {
+                entity = context.getNewEntity();
+            }
+
         }
 
     }
 
-    protected static class SqlFilePreInsertContext extends
-            AbstractPreInsertContext {
+    protected static class SqlFilePreInsertContext<E> extends
+            AbstractPreInsertContext<E> {
 
-        public SqlFilePreInsertContext(EntityType<?> entityType, Method method,
+        public SqlFilePreInsertContext(EntityType<E> entityType, Method method,
                 Config config) {
             super(entityType, method, config);
         }
     }
 
-    protected static class SqlFilePostInsertContext extends
-            AbstractPostInsertContext {
+    protected static class SqlFilePostInsertContext<E> extends
+            AbstractPostInsertContext<E> {
 
-        public SqlFilePostInsertContext(EntityType<?> entityType,
+        public SqlFilePostInsertContext(EntityType<E> entityType,
                 Method method, Config config) {
             super(entityType, method, config);
         }

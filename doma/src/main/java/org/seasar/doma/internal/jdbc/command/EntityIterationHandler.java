@@ -47,14 +47,13 @@ public class EntityIterationHandler<R, E> implements ResultSetHandler<R> {
 
     @Override
     public R handle(ResultSet resultSet, SelectQuery query) throws SQLException {
-        EntityFetcher<E> fetcher = new EntityFetcher<E>(query, entityType);
+        EntityBuilder<E> builder = new EntityBuilder<E>(query, entityType);
         IterationContext iterationContext = new IterationContext();
         boolean existent = false;
         R result = null;
         while (resultSet.next()) {
             existent = true;
-            E entity = entityType.newEntity();
-            fetcher.fetch(resultSet, entity);
+            E entity = builder.build(resultSet);
             result = iterationCallback.iterate(entity, iterationContext);
             if (iterationContext.isExited()) {
                 return result;

@@ -36,11 +36,11 @@ import example.entity._Emp;
  * @author taedium
  * 
  */
-public class EntityFetcherTest extends TestCase {
+public class EntityBuilderTest extends TestCase {
 
     private final MockConfig runtimeConfig = new MockConfig();
 
-    public void testFetch() throws Exception {
+    public void testBuild() throws Exception {
         MockResultSetMetaData metaData = new MockResultSetMetaData();
         metaData.columns.add(new ColumnMetaData("id"));
         metaData.columns.add(new ColumnMetaData("name"));
@@ -51,10 +51,9 @@ public class EntityFetcherTest extends TestCase {
         resultSet.next();
 
         _Emp entityType = _Emp.getSingletonInternal();
-        EntityFetcher<Emp> fetcher = new EntityFetcher<Emp>(
+        EntityBuilder<Emp> builder = new EntityBuilder<Emp>(
                 new MySelectQuery(), entityType);
-        Emp emp = entityType.newEntity();
-        fetcher.fetch(resultSet, emp);
+        Emp emp = builder.build(resultSet);
 
         assertEquals(new Integer(1), emp.getId());
         assertEquals("aaa", emp.getName());

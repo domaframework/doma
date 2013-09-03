@@ -41,10 +41,9 @@ public class EntitySingleResultHandler<E> implements ResultSetHandler<E> {
 
     @Override
     public E handle(ResultSet resultSet, SelectQuery query) throws SQLException {
-        EntityFetcher<E> fetcher = new EntityFetcher<E>(query, entityType);
+        EntityBuilder<E> builder = new EntityBuilder<E>(query, entityType);
         if (resultSet.next()) {
-            E entity = entityType.newEntity();
-            fetcher.fetch(resultSet, entity);
+            E entity = builder.build(resultSet);
             if (resultSet.next()) {
                 Sql<?> sql = query.getSql();
                 throw new NonUniqueResultException(query.getConfig()

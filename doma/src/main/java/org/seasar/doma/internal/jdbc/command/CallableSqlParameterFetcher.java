@@ -286,7 +286,7 @@ public class CallableSqlParameterFetcher implements
 
         protected class EntityFetcherCallback<E> implements FetcherCallback {
 
-            protected EntityFetcher<E> fetcher;
+            protected EntityBuilder<E> builder;
 
             protected EntityListParameter<E> parameter;
 
@@ -294,14 +294,13 @@ public class CallableSqlParameterFetcher implements
 
             public EntityFetcherCallback(EntityListParameter<E> parameter) {
                 this.entityType = parameter.getEntityType();
-                this.fetcher = new EntityFetcher<E>(query, entityType);
+                this.builder = new EntityBuilder<E>(query, entityType);
                 this.parameter = parameter;
             }
 
             @Override
             public void fetch(ResultSet resultSet) throws SQLException {
-                E entity = entityType.newEntity();
-                fetcher.fetch(resultSet, entity);
+                E entity = builder.build(resultSet);
                 parameter.add(entity);
             }
 

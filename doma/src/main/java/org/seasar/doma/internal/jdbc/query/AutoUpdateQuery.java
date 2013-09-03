@@ -30,8 +30,6 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.entity.PostUpdateContext;
-import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -69,9 +67,12 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
 
     protected void preUpdate() {
         List<EntityPropertyType<E, ?>> targetPropertyTypes = getTargetPropertyTypes();
-        PreUpdateContext context = new AutoPreUpdateContext<E>(entityType,
-                method, config, targetPropertyTypes);
+        AutoPreUpdateContext<E> context = new AutoPreUpdateContext<E>(
+                entityType, method, config, targetPropertyTypes);
         entityType.preUpdate(entity, context);
+        if (entityType.isImmutable() && context.getNewEntity() != null) {
+            entity = context.getNewEntity();
+        }
     }
 
     protected void prepareOptimisticLock() {
@@ -193,9 +194,12 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
         if (!versionIgnored && versionPropertyType != null) {
             targetPropertyTypes.add(versionPropertyType);
         }
-        PostUpdateContext context = new AutoPostUpdateContext<E>(entityType,
-                method, config, targetPropertyTypes);
+        AutoPostUpdateContext<E> context = new AutoPostUpdateContext<E>(
+                entityType, method, config, targetPropertyTypes);
         entityType.postUpdate(entity, context);
+        if (entityType.isImmutable() && context.getNewEntity() != null) {
+            entity = context.getNewEntity();
+        }
     }
 
     public void setNullExcluded(boolean nullExcluded) {
@@ -220,7 +224,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected static class AutoPreUpdateContext<E> extends
-            AbstractPreUpdateContext {
+            AbstractPreUpdateContext<E> {
 
         protected final Set<String> changedPropertyNames;
 
@@ -249,7 +253,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected static class AutoPostUpdateContext<E> extends
-            AbstractPostUpdateContext {
+            AbstractPostUpdateContext<E> {
 
         protected final Set<String> changedPropertyNames;
 

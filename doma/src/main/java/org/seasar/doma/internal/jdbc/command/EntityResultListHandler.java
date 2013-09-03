@@ -43,11 +43,10 @@ public class EntityResultListHandler<E> implements ResultSetHandler<List<E>> {
     @Override
     public List<E> handle(ResultSet resultSet, SelectQuery query)
             throws SQLException {
-        EntityFetcher<E> fetcher = new EntityFetcher<E>(query, entityType);
+        EntityBuilder<E> builder = new EntityBuilder<E>(query, entityType);
         List<E> entities = new ArrayList<E>();
         while (resultSet.next()) {
-            E entity = entityType.newEntity();
-            fetcher.fetch(resultSet, entity);
+            E entity = builder.build(resultSet);
             entities.add(entity);
         }
         if (query.isResultEnsured() && entities.isEmpty()) {

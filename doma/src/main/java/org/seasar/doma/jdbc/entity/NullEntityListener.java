@@ -21,30 +21,37 @@ package org.seasar.doma.jdbc.entity;
  * @author taedium
  * 
  */
-public class NullEntityListener implements EntityListener<Object> {
+// TODO finalの追加を説明
+public final class NullEntityListener implements EntityListener<Object> {
 
     @Override
-    public void preInsert(Object entity, PreInsertContext context) {
+    public void preInsert(Object entity,
+            PreInsertContext<? extends Object> context) {
     }
 
     @Override
-    public void preUpdate(Object entity, PreUpdateContext context) {
+    public void preUpdate(Object entity,
+            PreUpdateContext<? extends Object> context) {
     }
 
     @Override
-    public void preDelete(Object entity, PreDeleteContext context) {
+    public void preDelete(Object entity,
+            PreDeleteContext<? extends Object> context) {
     }
 
     @Override
-    public void postInsert(Object entity, PostInsertContext context) {
+    public void postInsert(Object entity,
+            PostInsertContext<? extends Object> context) {
     }
 
     @Override
-    public void postUpdate(Object entity, PostUpdateContext context) {
+    public void postUpdate(Object entity,
+            PostUpdateContext<? extends Object> context) {
     }
 
     @Override
-    public void postDelete(Object entity, PostDeleteContext context) {
+    public void postDelete(Object entity,
+            PostDeleteContext<? extends Object> context) {
     }
 
 }

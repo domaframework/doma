@@ -24,8 +24,6 @@ import org.seasar.doma.internal.jdbc.entity.AbstractPreUpdateContext;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.entity.PostUpdateContext;
-import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 /**
@@ -116,15 +114,23 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
         }
 
         protected void preUpdate() {
-            PreUpdateContext context = new SqlFilePreUpdateContext(entityType,
-                    method, config);
+            SqlFilePreUpdateContext<E> context = new SqlFilePreUpdateContext<E>(
+                    entityType, method, config);
             entityType.preUpdate(entity, context);
+            if (entityType.isImmutable() && context.getNewEntity() != null) {
+                entity = context.getNewEntity();
+            }
+
         }
 
         protected void postUpdate() {
-            PostUpdateContext context = new SqlFilePostUpdateContext(
+            SqlFilePostUpdateContext<E> context = new SqlFilePostUpdateContext<E>(
                     entityType, method, config);
             entityType.postUpdate(entity, context);
+            if (entityType.isImmutable() && context.getNewEntity() != null) {
+                entity = context.getNewEntity();
+            }
+
         }
 
         protected void prepareOptimisticLock() {
@@ -142,10 +148,10 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
         }
     }
 
-    protected static class SqlFilePreUpdateContext extends
-            AbstractPreUpdateContext {
+    protected static class SqlFilePreUpdateContext<E> extends
+            AbstractPreUpdateContext<E> {
 
-        public SqlFilePreUpdateContext(EntityType<?> entityType, Method method,
+        public SqlFilePreUpdateContext(EntityType<E> entityType, Method method,
                 Config config) {
             super(entityType, method, config);
         }
@@ -162,10 +168,10 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
         }
     }
 
-    protected static class SqlFilePostUpdateContext extends
-            AbstractPostUpdateContext {
+    protected static class SqlFilePostUpdateContext<E> extends
+            AbstractPostUpdateContext<E> {
 
-        public SqlFilePostUpdateContext(EntityType<?> entityType,
+        public SqlFilePostUpdateContext(EntityType<E> entityType,
                 Method method, Config config) {
             super(entityType, method, config);
         }

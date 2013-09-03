@@ -17,6 +17,8 @@ package org.seasar.doma.jdbc.entity;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.WrapException;
@@ -166,6 +168,11 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
         return field;
     }
 
+    @Override
+    public Wrapper<V> getWrapper() {
+        return wrapperFactory.getWrapper();
+    }
+
     /**
      * 値のラッパーを返します。
      * 
@@ -227,6 +234,16 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
             return v.visitEntityPropertyType(this, p);
         }
         return visitor.visitUnknownExpression(this, p);
+    }
+
+    protected Map<String, Object> makeMap(EntityType<E> entityType, E entity) {
+        Map<String, Object> values = new HashMap<String, Object>();
+        for (EntityPropertyType<E, ?> propType : entityType
+                .getEntityPropertyTypes()) {
+            Wrapper<?> wrapper = propType.getWrapper(entity);
+            values.put(propType.getName(), wrapper.get());
+        }
+        return values;
     }
 
     /**

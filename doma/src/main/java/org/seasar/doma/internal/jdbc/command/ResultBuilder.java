@@ -13,23 +13,16 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.entity;
+package org.seasar.doma.internal.jdbc.command;
 
-import java.lang.reflect.Method;
-
-import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.entity.PostDeleteContext;
+import java.sql.SQLException;
 
 /**
  * @author taedium
  * 
  */
-public class AbstractPostDeleteContext<E> extends
-        AbstractEntityListenerContext<E> implements PostDeleteContext<E> {
+// TODO
+public interface ResultBuilder<P, R> {
 
-    protected AbstractPostDeleteContext(EntityType<E> entityType,
-            Method method, Config config) {
-        super(entityType, method, config);
-    }
+    R build(P producer) throws SQLException;
 }

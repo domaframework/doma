@@ -42,6 +42,8 @@ public class EntityMeta implements TypeElementMeta {
 
     protected final NamingType namingType;
 
+    protected final boolean immutable;
+
     protected final TypeElement entityElement;
 
     protected TableMirror tableMirror;
@@ -62,6 +64,7 @@ public class EntityMeta implements TypeElementMeta {
         assertNotNull(entityMirror);
         this.entityMirror = entityMirror;
         this.namingType = entityMirror.getNamingValue();
+        this.immutable = entityMirror.getImmutableValue();
         this.entityElement = entityElement;
     }
 
@@ -79,6 +82,10 @@ public class EntityMeta implements TypeElementMeta {
 
     public NamingType getNamingType() {
         return namingType;
+    }
+
+    public boolean isImmutable() {
+        return immutable;
     }
 
     public TypeElement getEntityElement() {

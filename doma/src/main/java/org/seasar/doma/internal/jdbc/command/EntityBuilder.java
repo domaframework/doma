@@ -21,6 +21,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +39,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class EntityFetcher<E> implements ResultFetcher<ResultSet, E> {
+public class EntityBuilder<E> implements ResultBuilder<ResultSet, E> {
 
     protected final Query query;
 
@@ -46,20 +47,39 @@ public class EntityFetcher<E> implements ResultFetcher<ResultSet, E> {
 
     protected Map<Integer, String> indexMap;
 
-    public EntityFetcher(Query query, EntityType<E> entityType) {
+    public EntityBuilder(Query query, EntityType<E> entityType) {
         assertNotNull(query, entityType);
         this.query = query;
         this.entityType = entityType;
     }
 
     @Override
-    public void fetch(ResultSet resultSet, E entity) throws SQLException {
-        assertNotNull(resultSet, entity);
+    public E build(ResultSet resultSet) throws SQLException {
+        assertNotNull(resultSet);
         if (indexMap == null) {
             indexMap = createIndexMap(resultSet.getMetaData(), entityType);
         }
         JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().getDialect()
                 .getJdbcMappingVisitor();
+        if (entityType.isImmutable()) {
+            Map<String, Object> values = new HashMap<String, Object>(
+                    indexMap.size());
+            for (Map.Entry<Integer, String> entry : indexMap.entrySet()) {
+                Integer index = entry.getKey();
+                String propertyName = entry.getValue();
+                GetValueFunction function = new GetValueFunction(resultSet,
+                        index);
+                EntityPropertyType<E, ?> propertyType = entityType
+                        .getEntityPropertyType(propertyName);
+                Wrapper<?> wrapper = propertyType.getWrapper();
+                wrapper.accept(jdbcMappingVisitor, function);
+                values.put(propertyName, wrapper.get());
+            }
+            // TODO
+            return entityType.newEntity(values);
+        }
+        E entity = entityType
+                .newEntity(Collections.<String, Object> emptyMap());
         for (Map.Entry<Integer, String> entry : indexMap.entrySet()) {
             Integer index = entry.getKey();
             String propertyName = entry.getValue();
@@ -70,6 +90,7 @@ public class EntityFetcher<E> implements ResultFetcher<ResultSet, E> {
             wrapper.accept(jdbcMappingVisitor, function);
         }
         entityType.saveCurrentStates(entity);
+        return entity;
     }
 
     protected HashMap<Integer, String> createIndexMap(

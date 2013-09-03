@@ -30,8 +30,6 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
-import org.seasar.doma.jdbc.entity.PostInsertContext;
-import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.message.Message;
 
@@ -68,9 +66,12 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void preInsert() {
-        PreInsertContext context = new AutoPreInsertContext(entityType, method,
-                config);
+        AutoPreInsertContext<E> context = new AutoPreInsertContext<E>(
+                entityType, method, config);
         entityType.preInsert(entity, context);
+        if (entityType.isImmutable() && context.getNewEntity() != null) {
+            entity = context.getNewEntity();
+        }
     }
 
     @Override
@@ -122,7 +123,12 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
 
     protected void prepareIdValue() {
         if (generatedIdPropertyType != null && idGenerationConfig != null) {
-            generatedIdPropertyType.preInsert(entity, idGenerationConfig);
+            if (entityType.isImmutable()) {
+                entity = generatedIdPropertyType.preInsertAndMakeEntity(
+                        entityType, entity, idGenerationConfig);
+            } else {
+                generatedIdPropertyType.preInsert(entity, idGenerationConfig);
+            }
         }
     }
 
@@ -156,8 +162,13 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
     @Override
     public void generateId(Statement statement) {
         if (generatedIdPropertyType != null && idGenerationConfig != null) {
-            generatedIdPropertyType.postInsert(entity, idGenerationConfig,
-                    statement);
+            if (entityType.isImmutable()) {
+                entity = generatedIdPropertyType.postInsertAndMakeEntity(
+                        entityType, entity, idGenerationConfig, statement);
+            } else {
+                generatedIdPropertyType.postInsert(entity, idGenerationConfig,
+                        statement);
+            }
         }
     }
 
@@ -167,28 +178,31 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void postInsert() {
-        PostInsertContext context = new AutoPostInsertContext(entityType,
-                method, config);
+        AutoPostInsertContext<E> context = new AutoPostInsertContext<E>(
+                entityType, method, config);
         entityType.postInsert(entity, context);
+        if (entityType.isImmutable() && context.getNewEntity() != null) {
+            entity = context.getNewEntity();
+        }
     }
 
     public void setNullExcluded(boolean nullExcluded) {
         this.nullExcluded = nullExcluded;
     }
 
-    protected static class AutoPreInsertContext extends
-            AbstractPreInsertContext {
+    protected static class AutoPreInsertContext<E> extends
+            AbstractPreInsertContext<E> {
 
-        public AutoPreInsertContext(EntityType<?> entityType, Method method,
+        public AutoPreInsertContext(EntityType<E> entityType, Method method,
                 Config config) {
             super(entityType, method, config);
         }
     }
 
-    protected static class AutoPostInsertContext extends
-            AbstractPostInsertContext {
+    protected static class AutoPostInsertContext<E> extends
+            AbstractPostInsertContext<E> {
 
-        public AutoPostInsertContext(EntityType<?> entityType, Method method,
+        public AutoPostInsertContext(EntityType<E> entityType, Method method,
                 Config config) {
             super(entityType, method, config);
         }

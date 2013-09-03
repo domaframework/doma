@@ -16,6 +16,7 @@
 package org.seasar.doma.jdbc.entity;
 
 import java.util.List;
+import java.util.Map;
 
 import org.seasar.doma.internal.jdbc.criteria.TableCriterion;
 
@@ -32,6 +33,9 @@ import org.seasar.doma.internal.jdbc.criteria.TableCriterion;
  *            エンティティの型
  */
 public interface EntityType<E> extends TableCriterion<E> {
+
+    // TODO
+    boolean isImmutable();
 
     /**
      * エンティティの名前を返します。
@@ -119,6 +123,9 @@ public interface EntityType<E> extends TableCriterion<E> {
      */
     E newEntity();
 
+    // TODO
+    E newEntity(Map<String, Object> __args);
+
     /**
      * エンティティのクラスを返します。
      * 
@@ -151,7 +158,7 @@ public interface EntityType<E> extends TableCriterion<E> {
      * @param context
      *            コンテキスト
      */
-    void preInsert(E entity, PreInsertContext context);
+    void preInsert(E entity, PreInsertContext<E> context);
 
     /**
      * 更新処理の前処理を行います。
@@ -161,7 +168,7 @@ public interface EntityType<E> extends TableCriterion<E> {
      * @param context
      *            コンテキスト
      */
-    void preUpdate(E entity, PreUpdateContext context);
+    void preUpdate(E entity, PreUpdateContext<E> context);
 
     /**
      * 削除処理の前処理を行います。
@@ -171,7 +178,7 @@ public interface EntityType<E> extends TableCriterion<E> {
      * @param context
      *            コンテキスト
      */
-    void preDelete(E entity, PreDeleteContext context);
+    void preDelete(E entity, PreDeleteContext<E> context);
 
     /**
      * 挿入処理の後処理を行います。
@@ -181,7 +188,7 @@ public interface EntityType<E> extends TableCriterion<E> {
      * @param context
      *            コンテキスト
      */
-    void postInsert(E entity, PostInsertContext context);
+    void postInsert(E entity, PostInsertContext<E> context);
 
     /**
      * 更新処理の後処理を行います。
@@ -191,7 +198,7 @@ public interface EntityType<E> extends TableCriterion<E> {
      * @param context
      *            コンテキスト
      */
-    void postUpdate(E entity, PostUpdateContext context);
+    void postUpdate(E entity, PostUpdateContext<E> context);
 
     /**
      * 削除処理の後処理を行います。
@@ -201,5 +208,5 @@ public interface EntityType<E> extends TableCriterion<E> {
      * @param context
      *            コンテキスト
      */
-    void postDelete(E entity, PostDeleteContext context);
+    void postDelete(E entity, PostDeleteContext<E> context);
 }

@@ -36,6 +36,10 @@ import org.seasar.doma.wrapper.Wrapper;
 public interface EntityPropertyType<E, V> extends ColumnCriterion<V>,
         OrderItemCriterion<V> {
 
+    // TODO
+    // エンティティにひもつかないWrapper
+    Wrapper<V> getWrapper();
+
     /**
      * 値のラッパーを返します。
      * 

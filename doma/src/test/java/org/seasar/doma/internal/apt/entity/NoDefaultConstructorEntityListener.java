@@ -34,33 +34,39 @@ public class NoDefaultConstructorEntityListener implements
     }
 
     @Override
-    public void preDelete(NoDefaultConstructorEntityListenerEntity entity,
-            PreDeleteContext context) {
+    public void preDelete(
+            NoDefaultConstructorEntityListenerEntity entity,
+            PreDeleteContext<? extends NoDefaultConstructorEntityListenerEntity> context) {
     }
 
     @Override
-    public void preInsert(NoDefaultConstructorEntityListenerEntity entity,
-            PreInsertContext context) {
+    public void preInsert(
+            NoDefaultConstructorEntityListenerEntity entity,
+            PreInsertContext<? extends NoDefaultConstructorEntityListenerEntity> context) {
     }
 
     @Override
-    public void preUpdate(NoDefaultConstructorEntityListenerEntity entity,
-            PreUpdateContext context) {
+    public void preUpdate(
+            NoDefaultConstructorEntityListenerEntity entity,
+            PreUpdateContext<? extends NoDefaultConstructorEntityListenerEntity> context) {
     }
 
     @Override
-    public void postInsert(NoDefaultConstructorEntityListenerEntity entity,
-            PostInsertContext context) {
+    public void postInsert(
+            NoDefaultConstructorEntityListenerEntity entity,
+            PostInsertContext<? extends NoDefaultConstructorEntityListenerEntity> context) {
     }
 
     @Override
-    public void postUpdate(NoDefaultConstructorEntityListenerEntity entity,
-            PostUpdateContext context) {
+    public void postUpdate(
+            NoDefaultConstructorEntityListenerEntity entity,
+            PostUpdateContext<? extends NoDefaultConstructorEntityListenerEntity> context) {
     }
 
     @Override
-    public void postDelete(NoDefaultConstructorEntityListenerEntity entity,
-            PostDeleteContext context) {
+    public void postDelete(
+            NoDefaultConstructorEntityListenerEntity entity,
+            PostDeleteContext<? extends NoDefaultConstructorEntityListenerEntity> context) {
     }
 
 }

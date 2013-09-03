@@ -45,6 +45,8 @@ public class EntityMirror {
 
     protected AnnotationValue naming;
 
+    protected AnnotationValue immutable;
+
     public EntityMirror(AnnotationMirror annotationMirror) {
         this.annotationMirror = annotationMirror;
     }
@@ -59,6 +61,10 @@ public class EntityMirror {
 
     public AnnotationValue getNaming() {
         return naming;
+    }
+
+    public AnnotationValue getImmutable() {
+        return immutable;
     }
 
     public TypeMirror getListenerValue() {
@@ -76,6 +82,14 @@ public class EntityMirror {
             throw new AptIllegalStateException("naming");
         }
         return NamingType.valueOf(enumConstant.getSimpleName().toString());
+    }
+
+    public boolean getImmutableValue() {
+        Boolean result = AnnotationValueUtil.toBoolean(immutable);
+        if (result == null) {
+            throw new AptIllegalStateException("immutable");
+        }
+        return result.booleanValue();
     }
 
     public static EntityMirror newInstance(TypeElement clazz,
@@ -96,6 +110,8 @@ public class EntityMirror {
                 result.listener = value;
             } else if ("naming".equals(name)) {
                 result.naming = value;
+            } else if ("immutable".equals(name)) {
+                result.immutable = value;
             }
         }
         return result;

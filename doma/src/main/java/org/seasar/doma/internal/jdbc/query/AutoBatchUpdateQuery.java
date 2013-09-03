@@ -29,8 +29,6 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.entity.PostUpdateContext;
-import org.seasar.doma.jdbc.entity.PreUpdateContext;
 
 /**
  * @author taedium
@@ -75,9 +73,12 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
     }
 
     protected void preUpdate() {
-        PreUpdateContext context = new AutoBatchPreUpdateContext(entityType,
-                method, config);
+        AutoBatchPreUpdateContext<E> context = new AutoBatchPreUpdateContext<E>(
+                entityType, method, config);
         entityType.preUpdate(currentEntity, context);
+        if (entityType.isImmutable() && context.getNewEntity() != null) {
+            currentEntity = context.getNewEntity();
+        }
     }
 
     protected void prepareOptimisticLock() {
@@ -167,9 +168,12 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
     }
 
     protected void postUpdate() {
-        PostUpdateContext context = new AutoBatchPostUpdateContext(entityType,
-                method, config);
+        AutoBatchPostUpdateContext<E> context = new AutoBatchPostUpdateContext<E>(
+                entityType, method, config);
         entityType.postUpdate(currentEntity, context);
+        if (entityType.isImmutable() && context.getNewEntity() != null) {
+            currentEntity = context.getNewEntity();
+        }
     }
 
     public void setVersionIncluded(boolean versionIncluded) {
@@ -185,10 +189,10 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
         this.optimisticLockExceptionSuppressed = optimisticLockExceptionSuppressed;
     }
 
-    protected static class AutoBatchPreUpdateContext extends
-            AbstractPreUpdateContext {
+    protected static class AutoBatchPreUpdateContext<E> extends
+            AbstractPreUpdateContext<E> {
 
-        public AutoBatchPreUpdateContext(EntityType<?> entityType,
+        public AutoBatchPreUpdateContext(EntityType<E> entityType,
                 Method method, Config config) {
             super(entityType, method, config);
         }
@@ -205,10 +209,10 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
         }
     }
 
-    protected static class AutoBatchPostUpdateContext extends
-            AbstractPostUpdateContext {
+    protected static class AutoBatchPostUpdateContext<E> extends
+            AbstractPostUpdateContext<E> {
 
-        public AutoBatchPostUpdateContext(EntityType<?> entityType,
+        public AutoBatchPostUpdateContext(EntityType<E> entityType,
                 Method method, Config config) {
             super(entityType, method, config);
         }

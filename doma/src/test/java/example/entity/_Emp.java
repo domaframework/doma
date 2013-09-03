@@ -102,7 +102,17 @@ public class _Emp extends AbstractEntityType<Emp> {
     }
 
     @Override
+    public boolean isImmutable() {
+        return false;
+    }
+
+    @Override
     public Emp newEntity() {
+        return new Emp();
+    }
+
+    @Override
+    public Emp newEntity(Map<String, Object> args) {
         return new Emp();
     }
 
@@ -168,32 +178,32 @@ public class _Emp extends AbstractEntityType<Emp> {
     }
 
     @Override
-    public void preInsert(Emp entity, PreInsertContext context) {
+    public void preInsert(Emp entity, PreInsertContext<Emp> context) {
         __listener.preInsert(entity, context);
     }
 
     @Override
-    public void preUpdate(Emp entity, PreUpdateContext context) {
+    public void preUpdate(Emp entity, PreUpdateContext<Emp> context) {
         __listener.preUpdate(entity, context);
     }
 
     @Override
-    public void preDelete(Emp entity, PreDeleteContext context) {
+    public void preDelete(Emp entity, PreDeleteContext<Emp> context) {
         __listener.preDelete(entity, context);
     }
 
     @Override
-    public void postInsert(Emp entity, PostInsertContext context) {
+    public void postInsert(Emp entity, PostInsertContext<Emp> context) {
         __listener.postInsert(entity, context);
     }
 
     @Override
-    public void postUpdate(Emp entity, PostUpdateContext context) {
+    public void postUpdate(Emp entity, PostUpdateContext<Emp> context) {
         __listener.postUpdate(entity, context);
     }
 
     @Override
-    public void postDelete(Emp entity, PostDeleteContext context) {
+    public void postDelete(Emp entity, PostDeleteContext<Emp> context) {
         __listener.postDelete(entity, context);
     }
 

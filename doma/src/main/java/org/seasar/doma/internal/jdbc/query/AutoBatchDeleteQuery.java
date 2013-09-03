@@ -28,8 +28,6 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.entity.PostDeleteContext;
-import org.seasar.doma.jdbc.entity.PreDeleteContext;
 
 /**
  * @author taedium
@@ -73,9 +71,12 @@ public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
     }
 
     protected void preDelete() {
-        PreDeleteContext context = new AutoBatchPreDeleteContext(entityType,
-                method, config);
+        AutoBatchPreDeleteContext<E> context = new AutoBatchPreDeleteContext<E>(
+                entityType, method, config);
         entityType.preDelete(currentEntity, context);
+        if (entityType.isImmutable() && context.getNewEntity() != null) {
+            currentEntity = context.getNewEntity();
+        }
     }
 
     protected void prepareOptimisticLock() {
@@ -124,9 +125,12 @@ public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
     }
 
     protected void postDelete() {
-        PostDeleteContext context = new AutoBatchPostDeleteContext(entityType,
-                method, config);
+        AutoBatchPostDeleteContext<E> context = new AutoBatchPostDeleteContext<E>(
+                entityType, method, config);
         entityType.postDelete(currentEntity, context);
+        if (entityType.isImmutable() && context.getNewEntity() != null) {
+            currentEntity = context.getNewEntity();
+        }
     }
 
     public void setVersionIgnored(boolean versionIgnored) {
@@ -138,19 +142,19 @@ public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
         this.optimisticLockExceptionSuppressed = optimisticLockExceptionSuppressed;
     }
 
-    protected static class AutoBatchPreDeleteContext extends
-            AbstractPreDeleteContext {
+    protected static class AutoBatchPreDeleteContext<E> extends
+            AbstractPreDeleteContext<E> {
 
-        public AutoBatchPreDeleteContext(EntityType<?> entityType,
+        public AutoBatchPreDeleteContext(EntityType<E> entityType,
                 Method method, Config config) {
             super(entityType, method, config);
         }
     }
 
-    protected static class AutoBatchPostDeleteContext extends
-            AbstractPostDeleteContext {
+    protected static class AutoBatchPostDeleteContext<E> extends
+            AbstractPostDeleteContext<E> {
 
-        public AutoBatchPostDeleteContext(EntityType<?> entityType,
+        public AutoBatchPostDeleteContext(EntityType<E> entityType,
                 Method method, Config config) {
             super(entityType, method, config);
         }

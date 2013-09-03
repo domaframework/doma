@@ -16,6 +16,7 @@
 package org.seasar.doma.internal.apt.entity;
 
 import java.util.List;
+import java.util.Map;
 
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.BasicPropertyType;
@@ -115,33 +116,33 @@ public class _ParentEntity extends AbstractEntityType<ParentEntity> {
     }
 
     @Override
-    public void preDelete(ParentEntity entity, PreDeleteContext context) {
-
+    public void preDelete(ParentEntity entity,
+            PreDeleteContext<ParentEntity> context) {
     }
 
     @Override
-    public void preInsert(ParentEntity entity, PreInsertContext context) {
-
+    public void preInsert(ParentEntity entity,
+            PreInsertContext<ParentEntity> context) {
     }
 
     @Override
-    public void preUpdate(ParentEntity entity, PreUpdateContext context) {
-
+    public void preUpdate(ParentEntity entity,
+            PreUpdateContext<ParentEntity> context) {
     }
 
     @Override
-    public void postDelete(ParentEntity entity, PostDeleteContext context) {
-
+    public void postDelete(ParentEntity entity,
+            PostDeleteContext<ParentEntity> context) {
     }
 
     @Override
-    public void postInsert(ParentEntity entity, PostInsertContext context) {
-
+    public void postInsert(ParentEntity entity,
+            PostInsertContext<ParentEntity> context) {
     }
 
     @Override
-    public void postUpdate(ParentEntity entity, PostUpdateContext context) {
-
+    public void postUpdate(ParentEntity entity,
+            PostUpdateContext<ParentEntity> context) {
     }
 
     @Override
@@ -160,6 +161,16 @@ public class _ParentEntity extends AbstractEntityType<ParentEntity> {
     }
 
     public static _ParentEntity getSingletonInternal() {
+        return null;
+    }
+
+    @Override
+    public boolean isImmutable() {
+        return false;
+    }
+
+    @Override
+    public ParentEntity newEntity(Map<String, Object> args) {
         return null;
     }
 

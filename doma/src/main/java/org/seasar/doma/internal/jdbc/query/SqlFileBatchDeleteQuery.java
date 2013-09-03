@@ -25,8 +25,6 @@ import org.seasar.doma.internal.jdbc.entity.AbstractPreDeleteContext;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.entity.PostDeleteContext;
-import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 /**
@@ -119,15 +117,21 @@ public class SqlFileBatchDeleteQuery<E> extends SqlFileBatchModifyQuery<E>
         }
 
         protected void preDelete() {
-            PreDeleteContext context = new SqlFileBatchPreDeleteContext(
+            SqlFileBatchPreDeleteContext<E> context = new SqlFileBatchPreDeleteContext<E>(
                     entityType, method, config);
             entityType.preDelete(currentEntity, context);
+            if (entityType.isImmutable() && context.getNewEntity() != null) {
+                currentEntity = context.getNewEntity();
+            }
         }
 
         protected void postDelete() {
-            PostDeleteContext context = new SqlFileBatchPostDeleteContext(
+            SqlFileBatchPostDeleteContext<E> context = new SqlFileBatchPostDeleteContext<E>(
                     entityType, method, config);
             entityType.postDelete(currentEntity, context);
+            if (entityType.isImmutable() && context.getNewEntity() != null) {
+                currentEntity = context.getNewEntity();
+            }
         }
 
         protected void prepareOptimisticLock() {
@@ -139,19 +143,19 @@ public class SqlFileBatchDeleteQuery<E> extends SqlFileBatchModifyQuery<E>
         }
     }
 
-    protected static class SqlFileBatchPreDeleteContext extends
-            AbstractPreDeleteContext {
+    protected static class SqlFileBatchPreDeleteContext<E> extends
+            AbstractPreDeleteContext<E> {
 
-        public SqlFileBatchPreDeleteContext(EntityType<?> entityType,
+        public SqlFileBatchPreDeleteContext(EntityType<E> entityType,
                 Method method, Config config) {
             super(entityType, method, config);
         }
     }
 
-    protected static class SqlFileBatchPostDeleteContext extends
-            AbstractPostDeleteContext {
+    protected static class SqlFileBatchPostDeleteContext<E> extends
+            AbstractPostDeleteContext<E> {
 
-        public SqlFileBatchPostDeleteContext(EntityType<?> entityType,
+        public SqlFileBatchPostDeleteContext(EntityType<E> entityType,
                 Method method, Config config) {
             super(entityType, method, config);
         }

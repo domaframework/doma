@@ -25,8 +25,6 @@ import org.seasar.doma.internal.jdbc.entity.AbstractPreUpdateContext;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.entity.PostUpdateContext;
-import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 /**
@@ -130,15 +128,21 @@ public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
         }
 
         protected void preUpdate() {
-            PreUpdateContext context = new SqlFileBatchPreUpdateContext(
+            SqlFileBatchPreUpdateContext<E> context = new SqlFileBatchPreUpdateContext<E>(
                     entityType, method, config);
             entityType.preUpdate(currentEntity, context);
+            if (entityType.isImmutable() && context.getNewEntity() != null) {
+                currentEntity = context.getNewEntity();
+            }
         }
 
         protected void postUpdate() {
-            PostUpdateContext context = new SqlFileBatchPostUpdateContext(
+            SqlFileBatchPostUpdateContext<E> context = new SqlFileBatchPostUpdateContext<E>(
                     entityType, method, config);
             entityType.postUpdate(currentEntity, context);
+            if (entityType.isImmutable() && context.getNewEntity() != null) {
+                currentEntity = context.getNewEntity();
+            }
         }
 
         protected void prepareOptimisticLock() {
@@ -158,10 +162,10 @@ public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
         }
     }
 
-    protected static class SqlFileBatchPreUpdateContext extends
-            AbstractPreUpdateContext {
+    protected static class SqlFileBatchPreUpdateContext<E> extends
+            AbstractPreUpdateContext<E> {
 
-        public SqlFileBatchPreUpdateContext(EntityType<?> entityType,
+        public SqlFileBatchPreUpdateContext(EntityType<E> entityType,
                 Method method, Config config) {
             super(entityType, method, config);
         }
@@ -178,10 +182,10 @@ public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
         }
     }
 
-    protected static class SqlFileBatchPostUpdateContext extends
-            AbstractPostUpdateContext {
+    protected static class SqlFileBatchPostUpdateContext<E> extends
+            AbstractPostUpdateContext<E> {
 
-        public SqlFileBatchPostUpdateContext(EntityType<?> entityType,
+        public SqlFileBatchPostUpdateContext(EntityType<E> entityType,
                 Method method, Config config) {
             super(entityType, method, config);
         }

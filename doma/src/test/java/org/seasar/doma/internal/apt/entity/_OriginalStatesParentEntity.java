@@ -16,6 +16,7 @@
 package org.seasar.doma.internal.apt.entity;
 
 import java.util.List;
+import java.util.Map;
 
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.BasicPropertyType;
@@ -119,38 +120,32 @@ public class _OriginalStatesParentEntity extends
 
     @Override
     public void preDelete(OriginalStatesParentEntity entity,
-            PreDeleteContext context) {
-
+            PreDeleteContext<OriginalStatesParentEntity> context) {
     }
 
     @Override
     public void preInsert(OriginalStatesParentEntity entity,
-            PreInsertContext context) {
-
+            PreInsertContext<OriginalStatesParentEntity> context) {
     }
 
     @Override
     public void preUpdate(OriginalStatesParentEntity entity,
-            PreUpdateContext context) {
-
+            PreUpdateContext<OriginalStatesParentEntity> context) {
     }
 
     @Override
     public void postDelete(OriginalStatesParentEntity entity,
-            PostDeleteContext context) {
-
+            PostDeleteContext<OriginalStatesParentEntity> context) {
     }
 
     @Override
     public void postInsert(OriginalStatesParentEntity entity,
-            PostInsertContext context) {
-
+            PostInsertContext<OriginalStatesParentEntity> context) {
     }
 
     @Override
     public void postUpdate(OriginalStatesParentEntity entity,
-            PostUpdateContext context) {
-
+            PostUpdateContext<OriginalStatesParentEntity> context) {
     }
 
     @Override
@@ -169,6 +164,16 @@ public class _OriginalStatesParentEntity extends
     }
 
     public static _OriginalStatesParentEntity getSingletonInternal() {
+        return null;
+    }
+
+    @Override
+    public boolean isImmutable() {
+        return false;
+    }
+
+    @Override
+    public OriginalStatesParentEntity newEntity(Map<String, Object> args) {
         return null;
     }
 

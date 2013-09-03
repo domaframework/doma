@@ -36,6 +36,8 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
 
     private final org.seasar.doma.jdbc.entity.NamingType __namingType;
 
+    private final boolean __immutable;
+
     private final String __catalogName;
 
     private final String __schemaName;
@@ -55,6 +57,7 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
     private _Emp() {
         __listener = new org.seasar.doma.internal.apt.entity.EmpListener();
         __namingType = org.seasar.doma.jdbc.entity.NamingType.NONE;
+        __immutable = false;
         __name = "Emp";
         __catalogName = "";
         __schemaName = "AAA";
@@ -83,6 +86,11 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
     }
 
     @Override
+    public boolean isImmutable() {
+        return __immutable;
+    }
+
+    @Override
     public String getName() {
         return __name;
     }
@@ -108,32 +116,32 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
     }
 
     @Override
-    public void preInsert(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PreInsertContext context) {
+    public void preInsert(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PreInsertContext<org.seasar.doma.internal.apt.entity.Emp> context) {
         __listener.preInsert(entity, context);
     }
 
     @Override
-    public void preUpdate(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PreUpdateContext context) {
+    public void preUpdate(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PreUpdateContext<org.seasar.doma.internal.apt.entity.Emp> context) {
         __listener.preUpdate(entity, context);
     }
 
     @Override
-    public void preDelete(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PreDeleteContext context) {
+    public void preDelete(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PreDeleteContext<org.seasar.doma.internal.apt.entity.Emp> context) {
         __listener.preDelete(entity, context);
     }
 
     @Override
-    public void postInsert(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PostInsertContext context) {
+    public void postInsert(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PostInsertContext<org.seasar.doma.internal.apt.entity.Emp> context) {
         __listener.postInsert(entity, context);
     }
 
     @Override
-    public void postUpdate(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PostUpdateContext context) {
+    public void postUpdate(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PostUpdateContext<org.seasar.doma.internal.apt.entity.Emp> context) {
         __listener.postUpdate(entity, context);
     }
 
     @Override
-    public void postDelete(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PostDeleteContext context) {
+    public void postDelete(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PostDeleteContext<org.seasar.doma.internal.apt.entity.Emp> context) {
         __listener.postDelete(entity, context);
     }
 
@@ -164,6 +172,11 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
 
     @Override
     public org.seasar.doma.internal.apt.entity.Emp newEntity() {
+        return new org.seasar.doma.internal.apt.entity.Emp();
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.entity.Emp newEntity(java.util.Map<String, Object> __args) {
         return new org.seasar.doma.internal.apt.entity.Emp();
     }
 

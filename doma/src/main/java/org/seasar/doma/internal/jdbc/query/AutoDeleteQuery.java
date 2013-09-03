@@ -26,8 +26,6 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.entity.PostDeleteContext;
-import org.seasar.doma.jdbc.entity.PreDeleteContext;
 
 /**
  * @author taedium
@@ -59,9 +57,12 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void preDelete() {
-        PreDeleteContext context = new AutoPreDeleteContext(entityType, method,
-                config);
+        AutoPreDeleteContext<E> context = new AutoPreDeleteContext<E>(
+                entityType, method, config);
         entityType.preDelete(entity, context);
+        if (entityType.isImmutable() && context.getNewEntity() != null) {
+            entity = context.getNewEntity();
+        }
     }
 
     protected void prepareOptimisticLock() {
@@ -106,9 +107,12 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void postDelete() {
-        PostDeleteContext context = new AutoPostDeleteContext(entityType,
-                method, config);
+        AutoPostDeleteContext<E> context = new AutoPostDeleteContext<E>(
+                entityType, method, config);
         entityType.postDelete(entity, context);
+        if (entityType.isImmutable() && context.getNewEntity() != null) {
+            entity = context.getNewEntity();
+        }
     }
 
     public void setVersionIgnored(boolean versionIgnored) {
@@ -120,19 +124,19 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
         this.optimisticLockExceptionSuppressed = optimisticLockExceptionSuppressed;
     }
 
-    protected static class AutoPreDeleteContext extends
-            AbstractPreDeleteContext {
+    protected static class AutoPreDeleteContext<E> extends
+            AbstractPreDeleteContext<E> {
 
-        public AutoPreDeleteContext(EntityType<?> entityType, Method method,
+        public AutoPreDeleteContext(EntityType<E> entityType, Method method,
                 Config config) {
             super(entityType, method, config);
         }
     }
 
-    protected static class AutoPostDeleteContext extends
-            AbstractPostDeleteContext {
+    protected static class AutoPostDeleteContext<E> extends
+            AbstractPostDeleteContext<E> {
 
-        public AutoPostDeleteContext(EntityType<?> entityType, Method method,
+        public AutoPostDeleteContext(EntityType<E> entityType, Method method,
                 Config config) {
             super(entityType, method, config);
         }

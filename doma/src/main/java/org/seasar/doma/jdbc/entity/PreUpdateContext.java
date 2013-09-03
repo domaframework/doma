@@ -26,7 +26,7 @@ import org.seasar.doma.jdbc.Config;
  * @author taedium
  * @since 1.11.0
  */
-public interface PreUpdateContext {
+public interface PreUpdateContext<E> {
 
     /**
      * エンティティが変更されたかどうかを返します。
@@ -57,7 +57,7 @@ public interface PreUpdateContext {
      * 
      * @return エンティティのメタタイプ
      */
-    public EntityType<?> getEntityType();
+    public EntityType<E> getEntityType();
 
     /**
      * {@link Update} が注釈されたメソッドを返します。
@@ -74,5 +74,8 @@ public interface PreUpdateContext {
      * @since 1.27.0
      */
     public Config getConfig();
+
+    // TODO
+    public void setNewEntity(E entity);
 
 }

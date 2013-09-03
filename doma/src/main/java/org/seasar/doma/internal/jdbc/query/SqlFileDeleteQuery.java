@@ -103,15 +103,21 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
         }
 
         protected void preDelete() {
-            SqlFilePreDeleteContext context = new SqlFilePreDeleteContext(
+            SqlFilePreDeleteContext<E> context = new SqlFilePreDeleteContext<E>(
                     entityType, method, config);
             entityType.preDelete(entity, context);
+            if (entityType.isImmutable() && context.getNewEntity() != null) {
+                entity = context.getNewEntity();
+            }
         }
 
         protected void postDelete() {
-            SqlFilePostDeleteContext context = new SqlFilePostDeleteContext(
+            SqlFilePostDeleteContext<E> context = new SqlFilePostDeleteContext<E>(
                     entityType, method, config);
             entityType.postDelete(entity, context);
+            if (entityType.isImmutable() && context.getNewEntity() != null) {
+                entity = context.getNewEntity();
+            }
         }
 
         protected void prepareOptimisticLock() {
@@ -123,19 +129,19 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
         }
     }
 
-    protected static class SqlFilePreDeleteContext extends
-            AbstractPreDeleteContext {
+    protected static class SqlFilePreDeleteContext<E> extends
+            AbstractPreDeleteContext<E> {
 
-        public SqlFilePreDeleteContext(EntityType<?> entityType, Method method,
+        public SqlFilePreDeleteContext(EntityType<E> entityType, Method method,
                 Config config) {
             super(entityType, method, config);
         }
     }
 
-    protected static class SqlFilePostDeleteContext extends
-            AbstractPostDeleteContext {
+    protected static class SqlFilePostDeleteContext<E> extends
+            AbstractPostDeleteContext<E> {
 
-        public SqlFilePostDeleteContext(EntityType<?> entityType,
+        public SqlFilePostDeleteContext(EntityType<E> entityType,
                 Method method, Config config) {
             super(entityType, method, config);
         }

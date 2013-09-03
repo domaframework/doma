@@ -18,6 +18,7 @@ package org.seasar.doma.internal.apt;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
@@ -36,6 +37,7 @@ import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.DomainType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.apt.type.WrapperType;
+import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.jdbc.util.TableUtil;
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.AssignedIdPropertyType;
@@ -43,6 +45,7 @@ import org.seasar.doma.jdbc.entity.BasicPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.jdbc.entity.NamingType;
+import org.seasar.doma.jdbc.entity.NullEntityListener;
 import org.seasar.doma.jdbc.entity.OriginalStatesAccessor;
 import org.seasar.doma.jdbc.entity.PostDeleteContext;
 import org.seasar.doma.jdbc.entity.PostInsertContext;
@@ -107,6 +110,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         printPropertyTypeFields();
         printListenerField();
         printNamingTypeField();
+        printImmutableField();
         printCatalogNameField();
         printSchemaNameField();
         printTableNameField();
@@ -273,6 +277,11 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
+    protected void printImmutableField() {
+        iprint("private final boolean __immutable;%n");
+        print("%n");
+    }
+
     protected void printCatalogNameField() {
         iprint("private final String __catalogName;%n");
         print("%n");
@@ -324,6 +333,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("    __listener = new %1$s();%n", entityMeta.getEntityListener());
         iprint("    __namingType = %1$s.%2$s;%n", NamingType.class.getName(),
                 entityMeta.getNamingType().name());
+        iprint("    __immutable = %1$s;%n", entityMeta.isImmutable());
         iprint("    __name = \"%1$s\";%n", entityMeta.getEntityName());
         iprint("    __catalogName = \"%1$s\";%n", entityMeta.getCatalogName());
         iprint("    __schemaName = \"%1$s\";%n", entityMeta.getSchemaName());
@@ -359,6 +369,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
     protected void printMethods() {
         printGetNamingTypeMethod();
+        printIsImmutableMethod();
         printGetNameMethod();
         printGetCatalogNameMethod();
         printGetSchemaNameMethod();
@@ -376,6 +387,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         printGetGeneratedIdPropertyTypeMethod();
         printGetVersionPropertyTypeMethod();
         printNewEntityMethod();
+        printNewEntityWithMapMethod();
         printGetEntityClassMethod();
         printGetOriginalStatesMethod();
         printSaveCurrentStatesMethod();
@@ -387,6 +399,14 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("@Override%n");
         iprint("public %1$s getNamingType() {%n", NamingType.class.getName());
         iprint("    return __namingType;%n");
+        iprint("}%n");
+        print("%n");
+    }
+
+    protected void printIsImmutableMethod() {
+        iprint("@Override%n");
+        iprint("public boolean isImmutable() {%n");
+        iprint("    return __immutable;%n");
         iprint("}%n");
         print("%n");
     }
@@ -433,7 +453,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
     protected void printPreInsertMethod() {
         iprint("@Override%n");
-        iprint("public void preInsert(%1$s entity, %2$s context) {%n",
+        iprint("public void preInsert(%1$s entity, %2$s<%1$s> context) {%n",
                 entityMeta.getEntityTypeName(),
                 PreInsertContext.class.getName());
         iprint("    __listener.preInsert(entity, context);%n");
@@ -443,7 +463,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
     protected void printPreUpdateMethod() {
         iprint("@Override%n");
-        iprint("public void preUpdate(%1$s entity, %2$s context) {%n",
+        iprint("public void preUpdate(%1$s entity, %2$s<%1$s> context) {%n",
                 entityMeta.getEntityTypeName(),
                 PreUpdateContext.class.getName());
         iprint("    __listener.preUpdate(entity, context);%n");
@@ -453,7 +473,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
     protected void printPreDeleteMethod() {
         iprint("@Override%n");
-        iprint("public void preDelete(%1$s entity, %2$s context) {%n",
+        iprint("public void preDelete(%1$s entity, %2$s<%1$s> context) {%n",
                 entityMeta.getEntityTypeName(),
                 PreDeleteContext.class.getName());
         iprint("    __listener.preDelete(entity, context);%n");
@@ -463,7 +483,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
     protected void printPostInsertMethod() {
         iprint("@Override%n");
-        iprint("public void postInsert(%1$s entity, %2$s context) {%n",
+        iprint("public void postInsert(%1$s entity, %2$s<%1$s> context) {%n",
                 entityMeta.getEntityTypeName(),
                 PostInsertContext.class.getName());
         iprint("    __listener.postInsert(entity, context);%n");
@@ -473,7 +493,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
     protected void printPostUpdateMethod() {
         iprint("@Override%n");
-        iprint("public void postUpdate(%1$s entity, %2$s context) {%n",
+        iprint("public void postUpdate(%1$s entity, %2$s<%1$s> context) {%n",
                 entityMeta.getEntityTypeName(),
                 PostUpdateContext.class.getName());
         iprint("    __listener.postUpdate(entity, context);%n");
@@ -483,7 +503,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
     protected void printPostDeleteMethod() {
         iprint("@Override%n");
-        iprint("public void postDelete(%1$s entity, %2$s context) {%n",
+        iprint("public void postDelete(%1$s entity, %2$s<%1$s> context) {%n",
                 entityMeta.getEntityTypeName(),
                 PostDeleteContext.class.getName());
         iprint("    __listener.postDelete(entity, context);%n");
@@ -573,6 +593,26 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
+    protected void printNewEntityWithMapMethod() {
+        iprint("@Override%n");
+        iprint("public %1$s newEntity(%2$s<String, Object> __args) {%n",
+                entityMeta.getEntityTypeName(), Map.class.getName());
+        if (entityMeta.isAbstract()) {
+            iprint("    return null;%n");
+        } else {
+            if (entityMeta.isImmutable()) {
+                // TODO
+                iprint("    return new %1$s();%n",
+                        entityMeta.getEntityTypeName());
+            } else {
+                iprint("    return new %1$s();%n",
+                        entityMeta.getEntityTypeName());
+            }
+        }
+        iprint("}%n");
+        print("%n");
+    }
+
     protected void printGetEntityClassMethod() {
         iprint("@Override%n");
         iprint("public Class<%1$s> getEntityClass() {%n",
@@ -630,6 +670,11 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("    return new %1$s();%n", simpleName);
         iprint("}%n");
         print("%n");
+    }
+
+    protected boolean isDefaultEntityListener() {
+        return TypeMirrorUtil.isSameType(entityMeta.getEntityListener(),
+                NullEntityListener.class, env);
     }
 
     protected class IdGeneratorGenerator implements

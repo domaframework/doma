@@ -83,4 +83,7 @@ public @interface Entity {
      * 指定しない場合、デフォルトのネーミング規約が設定されます。
      */
     NamingType naming() default NamingType.NONE;
+
+    // TODO
+    boolean immutable() default false;
 }
