@@ -30,6 +30,7 @@ import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.MappedPropertyNotFoundException;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.domain.DomainWrapper;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.NamingType;
@@ -71,9 +72,15 @@ public class EntityBuilder<E> implements ResultBuilder<ResultSet, E> {
                         index);
                 EntityPropertyType<E, ?> propertyType = entityType
                         .getEntityPropertyType(propertyName);
+                // TODO Mapを渡してAccessor経由でset/get
                 Wrapper<?> wrapper = propertyType.getWrapper();
                 wrapper.accept(jdbcMappingVisitor, function);
-                values.put(propertyName, wrapper.get());
+                if (wrapper instanceof DomainWrapper) {
+                    DomainWrapper<?, ?> domainWrapper = (DomainWrapper<?, ?>) wrapper;
+                    values.put(propertyName, domainWrapper.getDomain());
+                } else {
+                    values.put(propertyName, wrapper.get());
+                }
             }
             // TODO
             return entityType.newEntity(values);

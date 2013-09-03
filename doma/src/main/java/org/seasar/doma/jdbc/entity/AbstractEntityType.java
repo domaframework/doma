@@ -15,7 +15,9 @@
  */
 package org.seasar.doma.jdbc.entity;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.jdbc.criteria.ColumnCriterion;
@@ -43,6 +45,17 @@ public abstract class AbstractEntityType<E> implements EntityType<E> {
     @Override
     public List<? extends ColumnCriterion<?>> getColumns() {
         return getEntityPropertyTypes();
+    }
+
+    @Override
+    public Map<String, Object> makeMap(E entity) {
+        List<EntityPropertyType<E, ?>> propertyTypes = getEntityPropertyTypes();
+        Map<String, Object> values = new HashMap<String, Object>(
+                propertyTypes.size());
+        for (EntityPropertyType<E, ?> p : propertyTypes) {
+            values.put(p.getName(), p.getWrapper(entity).get());
+        }
+        return values;
     }
 
     @Override

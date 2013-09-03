@@ -200,7 +200,7 @@ public class GeneratedIdPropertyType<PE, E extends PE, V extends Number, D>
     }
 
     protected E makeEntity(EntityType<E> entityType, E entity, Long value) {
-        Map<String, Object> values = makeMap(entityType, entity);
+        Map<String, Object> values = entityType.makeMap(entity);
         values.put(name, value);
         return entityType.newEntity(values);
     }

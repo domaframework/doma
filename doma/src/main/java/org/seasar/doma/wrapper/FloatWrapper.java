@@ -54,18 +54,36 @@ public class FloatWrapper extends AbstractWrapper<Float> implements
 
     @Override
     public void increment() {
-        Float value = doGet();
+        Float value = getIncrementedValue();
         if (value != null) {
-            doSet(Float.valueOf((value.floatValue() + 1f)));
+            doSet(value);
         }
     }
 
     @Override
     public void decrement() {
+        Float value = getDecrementedValue();
+        if (value != null) {
+            doSet(value);
+        }
+    }
+
+    @Override
+    public Float getIncrementedValue() {
         Float value = doGet();
         if (value != null) {
-            doSet(Float.valueOf(value.floatValue() - 1f));
+            return Float.valueOf((value.floatValue() + 1f));
         }
+        return null;
+    }
+
+    @Override
+    public Float getDecrementedValue() {
+        Float value = doGet();
+        if (value != null) {
+            return Float.valueOf(value.floatValue() - 1f);
+        }
+        return null;
     }
 
     @Override

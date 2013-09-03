@@ -54,18 +54,36 @@ public class ByteWrapper extends AbstractWrapper<Byte> implements
 
     @Override
     public void increment() {
-        Byte value = doGet();
+        Byte value = getIncrementedValue();
         if (value != null) {
-            doSet(Byte.valueOf((byte) (value.byteValue() + 1)));
+            doSet(value);
         }
     }
 
     @Override
     public void decrement() {
+        Byte value = getDecrementedValue();
+        if (value != null) {
+            doSet(value);
+        }
+    }
+
+    @Override
+    public Byte getIncrementedValue() {
         Byte value = doGet();
         if (value != null) {
-            doSet(Byte.valueOf((byte) (value.byteValue() - 1)));
+            return Byte.valueOf((byte) (value.byteValue() + 1));
         }
+        return null;
+    }
+
+    @Override
+    public Byte getDecrementedValue() {
+        Byte value = doGet();
+        if (value != null) {
+            return Byte.valueOf((byte) (value.byteValue() - 1));
+        }
+        return null;
     }
 
     @Override

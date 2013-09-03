@@ -143,7 +143,12 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
 
         protected void incrementVersion() {
             if (versionPropertyType != null && !versionIgnored) {
-                versionPropertyType.increment(entity);
+                if (entityType.isImmutable()) {
+                    entity = versionPropertyType.incrementAndMakeNewEntity(
+                            entityType, entity);
+                } else {
+                    versionPropertyType.increment(entity);
+                }
             }
         }
     }

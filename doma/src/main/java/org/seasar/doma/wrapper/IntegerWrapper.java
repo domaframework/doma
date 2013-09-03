@@ -54,18 +54,36 @@ public class IntegerWrapper extends AbstractWrapper<Integer> implements
 
     @Override
     public void increment() {
-        Integer value = doGet();
+        Integer value = getIncrementedValue();
         if (value != null) {
-            doSet(Integer.valueOf((value.intValue() + 1)));
+            doSet(value);
         }
     }
 
     @Override
     public void decrement() {
+        Integer value = getDecrementedValue();
+        if (value != null) {
+            doSet(value);
+        }
+    }
+
+    @Override
+    public Integer getIncrementedValue() {
         Integer value = doGet();
         if (value != null) {
-            doSet(Integer.valueOf(value.intValue() - 1));
+            return Integer.valueOf((value.intValue() + 1));
         }
+        return null;
+    }
+
+    @Override
+    public Integer getDecrementedValue() {
+        Integer value = doGet();
+        if (value != null) {
+            return Integer.valueOf(value.intValue() - 1);
+        }
+        return null;
     }
 
     @Override

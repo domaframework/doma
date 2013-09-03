@@ -18,9 +18,11 @@ package org.seasar.doma.internal.apt.meta;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
@@ -77,13 +79,13 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
         doClassElement(classElement, entityMeta);
         doFieldElements(classElement, entityMeta);
         validateGeneratedId(classElement, entityMeta);
+        doConstructor(classElement, entityMeta);
         return entityMeta;
     }
 
     protected void doClassElement(TypeElement classElement,
             EntityMeta entityMeta) {
         validateClass(classElement, entityMeta);
-        validateConstructor(classElement, entityMeta);
         validateEntityListener(classElement, entityMeta);
 
         String entityName = classElement.getSimpleName().toString();
@@ -104,19 +106,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
         }
         if (!classElement.getTypeParameters().isEmpty()) {
             throw new AptException(Message.DOMA4051, env, classElement);
-        }
-    }
-
-    protected void validateConstructor(TypeElement classElement,
-            EntityMeta entityMeta) {
-        if (classElement.getModifiers().contains(Modifier.ABSTRACT)) {
-            return;
-        }
-        ExecutableElement constructor = ElementUtil.getNoArgConstructor(
-                classElement, env);
-        if (constructor == null
-                || constructor.getModifiers().contains(Modifier.PRIVATE)) {
-            throw new AptException(Message.DOMA4124, env, classElement);
         }
     }
 
@@ -303,5 +292,57 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
                 && entityMeta.getIdPropertyMetas().size() > 1) {
             throw new AptException(Message.DOMA4036, env, classElement);
         }
+    }
+
+    protected void doConstructor(TypeElement classElement, EntityMeta entityMeta) {
+        if (classElement.getModifiers().contains(Modifier.ABSTRACT)) {
+            return;
+        }
+        if (entityMeta.isImmutable()) {
+            ExecutableElement constructor = getSuitableConstructor(
+                    classElement, entityMeta);
+            if (constructor == null
+                    || constructor.getModifiers().contains(Modifier.PRIVATE)) {
+                // TODO イミュータブル
+                throw new AptException(Message.DOMA4221, env, classElement);
+            }
+            entityMeta.setConstructor(constructor);
+        } else {
+            ExecutableElement constructor = ElementUtil.getNoArgConstructor(
+                    classElement, env);
+            if (constructor == null
+                    || constructor.getModifiers().contains(Modifier.PRIVATE)) {
+                // TODO ミュータブル
+                throw new AptException(Message.DOMA4124, env, classElement);
+            }
+        }
+    }
+
+    protected ExecutableElement getSuitableConstructor(
+            TypeElement classElement, EntityMeta entityMeta) {
+        Map<String, TypeMirror> types = new HashMap<String, TypeMirror>();
+        for (EntityPropertyMeta propertyMeta : entityMeta.getAllPropertyMetas()) {
+            types.put(propertyMeta.getName(), propertyMeta.getType());
+        }
+        outer: for (ExecutableElement constructor : ElementFilter
+                .constructorsIn(classElement.getEnclosedElements())) {
+            int validCount = 0;
+            for (VariableElement param : constructor.getParameters()) {
+                String name = param.getSimpleName().toString();
+                TypeMirror paramType = param.asType();
+                TypeMirror propertyType = types.get(name);
+                if (propertyType == null) {
+                    continue outer;
+                }
+                if (!TypeMirrorUtil.isSameType(paramType, propertyType, env)) {
+                    continue outer;
+                }
+                validCount++;
+            }
+            if (types.size() == validCount) {
+                return constructor;
+            }
+        }
+        return null;
     }
 }

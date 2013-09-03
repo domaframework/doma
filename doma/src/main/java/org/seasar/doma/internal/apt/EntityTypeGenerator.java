@@ -18,6 +18,7 @@ package org.seasar.doma.internal.apt;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -584,7 +585,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
     protected void printNewEntityMethod() {
         iprint("@Override%n");
         iprint("public %1$s newEntity() {%n", entityMeta.getEntityTypeName());
-        if (entityMeta.isAbstract()) {
+        if (entityMeta.isImmutable() || entityMeta.isAbstract()) {
             iprint("    return null;%n");
         } else {
             iprint("    return new %1$s();%n", entityMeta.getEntityTypeName());
@@ -601,9 +602,20 @@ public class EntityTypeGenerator extends AbstractGenerator {
             iprint("    return null;%n");
         } else {
             if (entityMeta.isImmutable()) {
-                // TODO
-                iprint("    return new %1$s();%n",
-                        entityMeta.getEntityTypeName());
+                iprint("    return new %1$s(%n", entityMeta.getEntityTypeName());
+                for (Iterator<EntityPropertyMeta> it = entityMeta
+                        .getAllPropertyMetasInCtorArgsOrder().iterator(); it
+                        .hasNext();) {
+                    EntityPropertyMeta propertyMeta = it.next();
+                    iprint("        (%1$s)__args.get(\"%2$s\")",
+                            TypeMirrorUtil.boxIfPrimitive(
+                                    propertyMeta.getType(), env),
+                            propertyMeta.getName());
+                    if (it.hasNext()) {
+                        print(",\n");
+                    }
+                }
+                print(");%n");
             } else {
                 iprint("    return new %1$s();%n",
                         entityMeta.getEntityTypeName());

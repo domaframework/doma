@@ -134,7 +134,15 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
 
     protected void prepareVersionValue() {
         if (versionPropertyType != null) {
-            versionPropertyType.setIfNecessary(entity, 1);
+            if (entityType.isImmutable()) {
+                E newEntity = versionPropertyType
+                        .setIfNecessaryAndMakeNewEntity(entityType, entity, 1);
+                if (newEntity != null) {
+                    entity = newEntity;
+                }
+            } else {
+                versionPropertyType.setIfNecessary(entity, 1);
+            }
         }
     }
 

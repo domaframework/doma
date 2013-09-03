@@ -149,7 +149,15 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
 
     protected void prepareVersionValue() {
         if (versionPropertyType != null) {
-            versionPropertyType.setIfNecessary(currentEntity, 1);
+            if (entityType.isImmutable()) {
+                E newEntity = versionPropertyType.setIfNecessaryAndMakeNewEntity(
+                        entityType, currentEntity, 1);
+                if (newEntity != null) {
+                    currentEntity = newEntity;
+                }
+            } else {
+                versionPropertyType.setIfNecessary(currentEntity, 1);
+            }
         }
     }
 

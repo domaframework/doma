@@ -18,10 +18,14 @@ package org.seasar.doma.internal.apt.meta;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.mirror.EntityMirror;
@@ -35,6 +39,8 @@ import org.seasar.doma.jdbc.entity.NamingType;
 public class EntityMeta implements TypeElementMeta {
 
     protected final List<EntityPropertyMeta> allPropertyMetas = new ArrayList<EntityPropertyMeta>();
+
+    protected final Map<String, EntityPropertyMeta> allPropertyMetaMap = new HashMap<String, EntityPropertyMeta>();
 
     protected final List<EntityPropertyMeta> idPropertyMetas = new ArrayList<EntityPropertyMeta>();
 
@@ -57,6 +63,8 @@ public class EntityMeta implements TypeElementMeta {
     protected String entityTypeName;
 
     protected OriginalStatesMeta originalStatesMeta;
+
+    protected ExecutableElement constructor;
 
     protected boolean error;
 
@@ -99,6 +107,7 @@ public class EntityMeta implements TypeElementMeta {
     public void addPropertyMeta(EntityPropertyMeta propertyMeta) {
         assertNotNull(propertyMeta);
         allPropertyMetas.add(propertyMeta);
+        allPropertyMetaMap.put(propertyMeta.getName(), propertyMeta);
         if (propertyMeta.isId()) {
             idPropertyMetas.add(propertyMeta);
             if (propertyMeta.getIdGeneratorMeta() != null) {
@@ -112,6 +121,18 @@ public class EntityMeta implements TypeElementMeta {
 
     public List<EntityPropertyMeta> getAllPropertyMetas() {
         return allPropertyMetas;
+    }
+
+    public List<EntityPropertyMeta> getAllPropertyMetasInCtorArgsOrder() {
+        if (constructor == null) {
+            return allPropertyMetas;
+        }
+        List<EntityPropertyMeta> results = new ArrayList<EntityPropertyMeta>();
+        for (VariableElement param : constructor.getParameters()) {
+            results.add(allPropertyMetaMap
+                    .get(param.getSimpleName().toString()));
+        }
+        return results;
     }
 
     public List<EntityPropertyMeta> getIdPropertyMetas() {
@@ -152,6 +173,14 @@ public class EntityMeta implements TypeElementMeta {
 
     public void setOriginalStatesMeta(OriginalStatesMeta originalStatesMeta) {
         this.originalStatesMeta = originalStatesMeta;
+    }
+
+    public ExecutableElement getConstructor() {
+        return constructor;
+    }
+
+    public void setConstructor(ExecutableElement constructor) {
+        this.constructor = constructor;
     }
 
     public TypeMirror getEntityListener() {

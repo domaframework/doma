@@ -58,18 +58,36 @@ public class BigDecimalWrapper extends AbstractWrapper<BigDecimal> implements
 
     @Override
     public void increment() {
-        BigDecimal value = doGet();
+        BigDecimal value = getIncrementedValue();
         if (value != null) {
-            doSet(value.add(BigDecimal.ONE));
+            doSet(value);
         }
     }
 
     @Override
     public void decrement() {
+        BigDecimal value = getDecrementedValue();
+        if (value != null) {
+            doSet(value);
+        }
+    }
+
+    @Override
+    public BigDecimal getIncrementedValue() {
         BigDecimal value = doGet();
         if (value != null) {
-            doSet(value.subtract(BigDecimal.ONE));
+            return value.add(BigDecimal.ONE);
         }
+        return null;
+    }
+
+    @Override
+    public BigDecimal getDecrementedValue() {
+        BigDecimal value = doGet();
+        if (value != null) {
+            return value.subtract(BigDecimal.ONE);
+        }
+        return null;
     }
 
     @Override

@@ -18,7 +18,9 @@ package org.seasar.doma.internal.jdbc.query;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.seasar.doma.internal.jdbc.entity.AbstractPostUpdateContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreUpdateContext;
@@ -155,8 +157,18 @@ public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
 
         protected void incrementVersions() {
             if (versionPropertyType != null && !versionIgnored) {
-                for (E entity : elements) {
-                    versionPropertyType.increment(entity);
+                if (entityType.isImmutable()) {
+                    List<E> newEntities = new ArrayList<E>(elements.size());
+                    for (E entity : elements) {
+                        E newEntity = versionPropertyType
+                                .incrementAndMakeNewEntity(entityType, entity);
+                        newEntities.add(newEntity);
+                    }
+                    elements = newEntities;
+                } else {
+                    for (E entity : elements) {
+                        versionPropertyType.increment(entity);
+                    }
                 }
             }
         }

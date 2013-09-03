@@ -37,4 +37,18 @@ public interface NumberWrapper<V extends Number> extends Wrapper<V> {
      * 値をデクリメントします。
      */
     void decrement();
+
+    /**
+     * インクリメントした値を取得します。
+     * 
+     * @return インクリメントした値
+     */
+    V getIncrementedValue();
+
+    /**
+     * デクリメントした値を取得します。
+     * 
+     * @return デクリメントした値
+     */
+    V getDecrementedValue();
 }

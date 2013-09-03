@@ -120,11 +120,16 @@ public interface EntityType<E> extends TableCriterion<E> {
      * エンティティをインスタンス化して返します。
      * 
      * @return エンティティ
+     * @deprecated
      */
+    @Deprecated
     E newEntity();
 
     // TODO
     E newEntity(Map<String, Object> __args);
+
+    // TODO
+    Map<String, Object> makeMap(E entity);
 
     /**
      * エンティティのクラスを返します。

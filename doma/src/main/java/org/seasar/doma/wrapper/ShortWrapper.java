@@ -54,18 +54,36 @@ public class ShortWrapper extends AbstractWrapper<Short> implements
 
     @Override
     public void increment() {
-        Short value = doGet();
+        Short value = getIncrementedValue();
         if (value != null) {
-            doSet(Short.valueOf((short) (value.shortValue() + 1)));
+            doSet(value);
         }
     }
 
     @Override
     public void decrement() {
+        Short value = getDecrementedValue();
+        if (value != null) {
+            doSet(value);
+        }
+    }
+
+    @Override
+    public Short getIncrementedValue() {
         Short value = doGet();
         if (value != null) {
-            doSet(Short.valueOf((short) (value.shortValue() - 1)));
+            return Short.valueOf((short) (value.shortValue() + 1));
         }
+        return null;
+    }
+
+    @Override
+    public Short getDecrementedValue() {
+        Short value = doGet();
+        if (value != null) {
+            return Short.valueOf((short) (value.shortValue() - 1));
+        }
+        return null;
     }
 
     @Override

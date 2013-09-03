@@ -379,4 +379,13 @@ public class EntityProcessorTest extends AptTestCase {
         assertFalse(getCompiledResult());
         assertMessage(Message.DOMA4205);
     }
+
+    public void testImmutableEntity() throws Exception {
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(ImmutableEntity.class);
+        compile();
+        assertGeneratedSource(ImmutableEntity.class);
+        assertTrue(getCompiledResult());
+    }
 }

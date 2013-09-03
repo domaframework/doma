@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.jdbc.entity;
 
+import java.util.Map;
+
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.wrapper.NumberWrapper;
 
@@ -70,9 +72,23 @@ public class VersionPropertyType<PE, E extends PE, V extends Number, D> extends
      */
     public void setIfNecessary(E entity, Number value) {
         NumberWrapper<V> wrapper = (NumberWrapper<V>) getWrapper(entity);
-        if (wrapper.get() == null || wrapper.get().intValue() < 0) {
+        V currentValue = wrapper.get();
+        if (currentValue == null || currentValue.intValue() < 0) {
             wrapper.set(value);
         }
+    }
+
+    // TODO
+    public E setIfNecessaryAndMakeNewEntity(EntityType<E> entityType, E entity,
+            Number value) {
+        NumberWrapper<V> wrapper = (NumberWrapper<V>) getWrapper(entity);
+        V currentValue = wrapper.get();
+        if (currentValue == null || currentValue.intValue() < 0) {
+            Map<String, Object> values = entityType.makeMap(entity);
+            values.put(name, value);
+            return entityType.newEntity(values);
+        }
+        return null;
     }
 
     /**
@@ -87,8 +103,12 @@ public class VersionPropertyType<PE, E extends PE, V extends Number, D> extends
     }
 
     // TODO
-    public E incrementAndMakeNewEntity() {
-        return null;
+    public E incrementAndMakeNewEntity(EntityType<E> entityType, E entity) {
+        NumberWrapper<V> wrapper = (NumberWrapper<V>) getWrapper(entity);
+        V value = wrapper.getIncrementedValue();
+        Map<String, Object> values = entityType.makeMap(entity);
+        values.put(name, value);
+        return entityType.newEntity(values);
     }
 
 }

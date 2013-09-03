@@ -1,0 +1,198 @@
+package org.seasar.doma.internal.apt.entity;
+
+/** */
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+public final class _ImmutableEntity extends org.seasar.doma.jdbc.entity.AbstractEntityType<org.seasar.doma.internal.apt.entity.ImmutableEntity> {
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    private static final _ImmutableEntity __singleton = new _ImmutableEntity();
+
+    /** the aaa */
+    public final org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.ImmutableEntity, java.lang.String, java.lang.Object> $aaa = new org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.ImmutableEntity, java.lang.String, java.lang.Object>(org.seasar.doma.internal.apt.entity.ImmutableEntity.class, java.lang.String.class, org.seasar.doma.wrapper.StringWrapper.class, null, null, "aaa", "aaa", true, true);
+
+    /** the bbb */
+    public final org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.ImmutableEntity, java.lang.Integer, java.lang.Object> $bbb = new org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.ImmutableEntity, java.lang.Integer, java.lang.Object>(org.seasar.doma.internal.apt.entity.ImmutableEntity.class, java.lang.Integer.class, org.seasar.doma.wrapper.IntegerWrapper.class, null, null, "bbb", "bbb", true, true);
+
+    /** the ccc */
+    public final org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.ImmutableEntity, java.lang.Integer, java.lang.Object> $ccc = new org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.ImmutableEntity, java.lang.Integer, java.lang.Object>(org.seasar.doma.internal.apt.entity.ImmutableEntity.class, java.lang.Integer.class, org.seasar.doma.wrapper.IntegerWrapper.class, null, null, "ccc", "ccc", true, true);
+
+    private final org.seasar.doma.jdbc.entity.NullEntityListener __listener;
+
+    private final org.seasar.doma.jdbc.entity.NamingType __namingType;
+
+    private final boolean __immutable;
+
+    private final String __catalogName;
+
+    private final String __schemaName;
+
+    private final String __tableName;
+
+    private final String __qualifiedTableName;
+
+    private final String __name;
+
+    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ImmutableEntity, ?>> __idPropertyTypes;
+
+    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ImmutableEntity, ?>> __entityPropertyTypes;
+
+    private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ImmutableEntity, ?>> __entityPropertyTypeMap;
+
+    private _ImmutableEntity() {
+        __listener = new org.seasar.doma.jdbc.entity.NullEntityListener();
+        __namingType = org.seasar.doma.jdbc.entity.NamingType.NONE;
+        __immutable = true;
+        __name = "ImmutableEntity";
+        __catalogName = "";
+        __schemaName = "";
+        __tableName = "ImmutableEntity";
+        __qualifiedTableName = "ImmutableEntity";
+        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ImmutableEntity, ?>> __idList = new java.util.ArrayList<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ImmutableEntity, ?>>();
+        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ImmutableEntity, ?>> __list = new java.util.ArrayList<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ImmutableEntity, ?>>(3);
+        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ImmutableEntity, ?>> __map = new java.util.HashMap<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ImmutableEntity, ?>>(3);
+        __list.add($aaa);
+        __map.put("aaa", $aaa);
+        __list.add($bbb);
+        __map.put("bbb", $bbb);
+        __list.add($ccc);
+        __map.put("ccc", $ccc);
+        __idPropertyTypes = java.util.Collections.unmodifiableList(__idList);
+        __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
+        __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.entity.NamingType getNamingType() {
+        return __namingType;
+    }
+
+    @Override
+    public boolean isImmutable() {
+        return __immutable;
+    }
+
+    @Override
+    public String getName() {
+        return __name;
+    }
+
+    @Override
+    public String getCatalogName() {
+        return __catalogName;
+    }
+
+    @Override
+    public String getSchemaName() {
+        return __schemaName;
+    }
+
+    @Override
+    public String getTableName() {
+        return __tableName;
+    }
+
+    @Override
+    public String getQualifiedTableName() {
+        return __qualifiedTableName;
+    }
+
+    @Override
+    public void preInsert(org.seasar.doma.internal.apt.entity.ImmutableEntity entity, org.seasar.doma.jdbc.entity.PreInsertContext<org.seasar.doma.internal.apt.entity.ImmutableEntity> context) {
+        __listener.preInsert(entity, context);
+    }
+
+    @Override
+    public void preUpdate(org.seasar.doma.internal.apt.entity.ImmutableEntity entity, org.seasar.doma.jdbc.entity.PreUpdateContext<org.seasar.doma.internal.apt.entity.ImmutableEntity> context) {
+        __listener.preUpdate(entity, context);
+    }
+
+    @Override
+    public void preDelete(org.seasar.doma.internal.apt.entity.ImmutableEntity entity, org.seasar.doma.jdbc.entity.PreDeleteContext<org.seasar.doma.internal.apt.entity.ImmutableEntity> context) {
+        __listener.preDelete(entity, context);
+    }
+
+    @Override
+    public void postInsert(org.seasar.doma.internal.apt.entity.ImmutableEntity entity, org.seasar.doma.jdbc.entity.PostInsertContext<org.seasar.doma.internal.apt.entity.ImmutableEntity> context) {
+        __listener.postInsert(entity, context);
+    }
+
+    @Override
+    public void postUpdate(org.seasar.doma.internal.apt.entity.ImmutableEntity entity, org.seasar.doma.jdbc.entity.PostUpdateContext<org.seasar.doma.internal.apt.entity.ImmutableEntity> context) {
+        __listener.postUpdate(entity, context);
+    }
+
+    @Override
+    public void postDelete(org.seasar.doma.internal.apt.entity.ImmutableEntity entity, org.seasar.doma.jdbc.entity.PostDeleteContext<org.seasar.doma.internal.apt.entity.ImmutableEntity> context) {
+        __listener.postDelete(entity, context);
+    }
+
+    @Override
+    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ImmutableEntity, ?>> getEntityPropertyTypes() {
+        return __entityPropertyTypes;
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ImmutableEntity, ?> getEntityPropertyType(String __name) {
+        return __entityPropertyTypeMap.get(__name);
+    }
+
+    @Override
+    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.ImmutableEntity, ?>> getIdPropertyTypes() {
+        return __idPropertyTypes;
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.ImmutableEntity, ?, ?> getGeneratedIdPropertyType() {
+        return null;
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.ImmutableEntity, ?, ?> getVersionPropertyType() {
+        return null;
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.entity.ImmutableEntity newEntity() {
+        return null;
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.entity.ImmutableEntity newEntity(java.util.Map<String, Object> __args) {
+        return new org.seasar.doma.internal.apt.entity.ImmutableEntity(
+            (java.lang.String)__args.get("aaa"),
+            (java.lang.Integer)__args.get("bbb"),
+            (java.lang.Integer)__args.get("ccc"));
+    }
+
+    @Override
+    public Class<org.seasar.doma.internal.apt.entity.ImmutableEntity> getEntityClass() {
+        return org.seasar.doma.internal.apt.entity.ImmutableEntity.class;
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.entity.ImmutableEntity getOriginalStates(org.seasar.doma.internal.apt.entity.ImmutableEntity __entity) {
+        return null;
+    }
+
+    @Override
+    public void saveCurrentStates(org.seasar.doma.internal.apt.entity.ImmutableEntity __entity) {
+    }
+
+    /**
+     * @return the singleton
+     */
+    public static _ImmutableEntity getSingletonInternal() {
+        return __singleton;
+    }
+
+    /**
+     * @return the new instance
+     */
+    public static _ImmutableEntity newInstance() {
+        return new _ImmutableEntity();
+    }
+
+}
