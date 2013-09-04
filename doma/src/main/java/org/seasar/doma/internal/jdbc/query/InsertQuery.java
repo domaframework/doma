@@ -24,4 +24,6 @@ import java.sql.Statement;
 public interface InsertQuery extends ModifyQuery {
 
     void generateId(Statement statement);
+
+    Object getEntity();
 }

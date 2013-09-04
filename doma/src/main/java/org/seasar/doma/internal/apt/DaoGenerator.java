@@ -31,6 +31,7 @@ import org.seasar.doma.AnnotationTarget;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.apt.meta.AbstractCreateQueryMeta;
+import org.seasar.doma.internal.apt.meta.AbstractQueryMeta;
 import org.seasar.doma.internal.apt.meta.ArrayCreateQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoBatchModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoFunctionQueryMeta;
@@ -107,6 +108,7 @@ import org.seasar.doma.internal.jdbc.sql.MapListParameter;
 import org.seasar.doma.internal.jdbc.sql.MapListResultParameter;
 import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
+import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.Config;
 
 /**
@@ -352,8 +354,8 @@ public class DaoGenerator extends AbstractGenerator {
             QueryMetaVisitor<Void, Integer> {
 
         @Override
-        public Void visistSqlFileSelectQueryMeta(
-                final SqlFileSelectQueryMeta m, Integer p) {
+        public Void visitSqlFileSelectQueryMeta(final SqlFileSelectQueryMeta m,
+                Integer p) {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
@@ -710,7 +712,7 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visistSqlFileScriptQueryMeta(SqlFileScriptQueryMeta m,
+        public Void visitSqlFileScriptQueryMeta(SqlFileScriptQueryMeta m,
                 Integer p) {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
@@ -741,7 +743,7 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visistAutoModifyQueryMeta(AutoModifyQueryMeta m, Integer p) {
+        public Void visitAutoModifyQueryMeta(AutoModifyQueryMeta m, Integer p) {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
@@ -799,8 +801,18 @@ public class DaoGenerator extends AbstractGenerator {
             }
 
             iprint("__query.prepare();%n");
-            iprint("%1$s __command = new %1$s(__query);%n", m.getCommandClass()
-                    .getName());
+
+            EntityType entityType = m.getEntityType();
+            if (entityType != null && entityType.isImmutable()
+                    && m.supportsImmutable()) {
+                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query);%n",
+                        getImmutableCommandClassName(m),
+                        entityType.getTypeName());
+            } else {
+                iprint("%1$s __command = new %1$s(__query);%n", m
+                        .getCommandClass().getName());
+            }
+
             iprint("%1$s __result = __command.execute();%n", m.getReturnMeta()
                     .getTypeName());
             iprint("__query.complete();%n");
@@ -813,7 +825,7 @@ public class DaoGenerator extends AbstractGenerator {
         }
 
         @Override
-        public Void visistSqlFileModifyQueryMeta(SqlFileModifyQueryMeta m,
+        public Void visitSqlFileModifyQueryMeta(SqlFileModifyQueryMeta m,
                 Integer p) {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
@@ -863,8 +875,18 @@ public class DaoGenerator extends AbstractGenerator {
             }
 
             iprint("__query.prepare();%n");
-            iprint("%1$s __command = new %1$s(__query);%n", m.getCommandClass()
-                    .getName());
+
+            EntityType entityType = m.getEntityType();
+            if (entityType != null && entityType.isImmutable()
+                    && m.supportsImmutable()) {
+                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query);%n",
+                        getImmutableCommandClassName(m),
+                        entityType.getTypeName());
+            } else {
+                iprint("%1$s __command = new %1$s(__query);%n", m
+                        .getCommandClass().getName());
+            }
+
             iprint("%1$s __result = __command.execute();%n", m.getReturnMeta()
                     .getTypeName());
             iprint("__query.complete();%n");
@@ -926,8 +948,18 @@ public class DaoGenerator extends AbstractGenerator {
             }
 
             iprint("__query.prepare();%n");
-            iprint("%1$s __command = new %1$s(__query);%n", m.getCommandClass()
-                    .getName());
+
+            EntityType entityType = m.getEntityType();
+            if (entityType != null && entityType.isImmutable()
+                    && m.supportsImmutable()) {
+                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query);%n",
+                        getImmutableCommandClassName(m),
+                        entityType.getTypeName());
+            } else {
+                iprint("%1$s __command = new %1$s(__query);%n", m
+                        .getCommandClass().getName());
+            }
+
             iprint("%1$s __result = __command.execute();%n", m.getReturnMeta()
                     .getTypeName());
             iprint("__query.complete();%n");
@@ -987,8 +1019,18 @@ public class DaoGenerator extends AbstractGenerator {
             }
 
             iprint("__query.prepare();%n");
-            iprint("%1$s __command = new %1$s(__query);%n", m.getCommandClass()
-                    .getName());
+
+            EntityType entityType = m.getEntityType();
+            if (entityType != null && entityType.isImmutable()
+                    && m.supportsImmutable()) {
+                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query);%n",
+                        getImmutableCommandClassName(m),
+                        entityType.getTypeName());
+            } else {
+                iprint("%1$s __command = new %1$s(__query);%n", m
+                        .getCommandClass().getName());
+            }
+
             iprint("%1$s __result = __command.execute();%n", m.getReturnMeta()
                     .getTypeName());
             iprint("__query.complete();%n");
@@ -1211,6 +1253,13 @@ public class DaoGenerator extends AbstractGenerator {
                         DomaNullPointerException.class.getName(), paramName);
                 iprint("}%n");
             }
+        }
+
+        protected String getImmutableCommandClassName(AbstractQueryMeta m) {
+            String className = m.getCommandClass().getName();
+            String packageName = ClassUtil.getPackageName(className);
+            String simpleName = ClassUtil.getSimpleName(className);
+            return packageName + ".Immutable" + simpleName;
         }
     }
 

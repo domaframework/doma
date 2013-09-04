@@ -26,10 +26,16 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
  * @author taedium
  * 
  */
-public class BatchUpdateCommand extends BatchModifyCommand<BatchUpdateQuery> {
+public class BatchUpdateCommand extends
+        BatchModifyCommand<int[], BatchUpdateQuery> {
 
     public BatchUpdateCommand(BatchUpdateQuery query) {
         super(query);
+    }
+
+    @Override
+    protected int[] getDefaultValue() {
+        return new int[] {};
     }
 
     @Override

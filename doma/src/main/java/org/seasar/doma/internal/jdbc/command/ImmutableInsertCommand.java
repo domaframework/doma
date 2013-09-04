@@ -19,28 +19,30 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import org.seasar.doma.internal.jdbc.query.InsertQuery;
+import org.seasar.doma.jdbc.Result;
 
 /**
  * @author taedium
  * 
  */
-public class InsertCommand extends ModifyCommand<Integer, InsertQuery> {
+public class ImmutableInsertCommand<E> extends
+        ModifyCommand<Result<E>, InsertQuery> {
 
-    public InsertCommand(InsertQuery query) {
+    public ImmutableInsertCommand(InsertQuery query) {
         super(query);
     }
 
     @Override
-    protected Integer getDefaultValue() {
-        return Integer.valueOf(0);
+    protected Result<E> getDefaultValue() {
+        return new Result<E>(0, null);
     }
 
     @Override
-    protected Integer executeInternal(PreparedStatement preparedStatement)
+    protected Result<E> executeInternal(PreparedStatement preparedStatement)
             throws SQLException {
         int rows = executeUpdate(preparedStatement);
         query.generateId(preparedStatement);
-        return rows;
+        return new Result<E>(rows, (E) query.getEntity());
     }
 
 }

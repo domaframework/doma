@@ -31,4 +31,9 @@ public class SqlUpdateQuery extends SqlModifyQuery implements UpdateQuery {
     public void incrementVersion() {
     }
 
+    @Override
+    public Object getEntity() {
+        return null;
+    }
+
 }

@@ -13,29 +13,36 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.query;
+package org.seasar.doma.internal.jdbc.command;
 
-import java.sql.Statement;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
-import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.internal.jdbc.query.UpdateQuery;
+import org.seasar.doma.jdbc.Result;
 
 /**
  * @author taedium
  * 
  */
-public class SqlInsertQuery extends SqlModifyQuery implements InsertQuery {
+public class ImmutableUpdateCommand<E> extends
+        ModifyCommand<Result<E>, UpdateQuery> {
 
-    public SqlInsertQuery() {
-        super(SqlKind.INSERT);
+    public ImmutableUpdateCommand(UpdateQuery query) {
+        super(query);
     }
 
     @Override
-    public void generateId(Statement statement) {
+    protected Result<E> getDefaultValue() {
+        return new Result<E>(0, null);
     }
 
     @Override
-    public Object getEntity() {
-        return null;
+    protected Result<E> executeInternal(PreparedStatement preparedStatement)
+            throws SQLException {
+        int rows = executeUpdate(preparedStatement);
+        query.incrementVersion();
+        return new Result<E>(rows, (E) query.getEntity());
     }
 
 }

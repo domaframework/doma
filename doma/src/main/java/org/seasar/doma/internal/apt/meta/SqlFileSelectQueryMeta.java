@@ -110,7 +110,7 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
     @Override
     public <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p) {
-        return visitor.visistSqlFileSelectQueryMeta(this, p);
+        return visitor.visitSqlFileSelectQueryMeta(this, p);
     }
 
 }

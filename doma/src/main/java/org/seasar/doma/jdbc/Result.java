@@ -13,29 +13,35 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.query;
-
-import java.sql.Statement;
-
-import org.seasar.doma.jdbc.SqlKind;
+package org.seasar.doma.jdbc;
 
 /**
  * @author taedium
  * 
  */
-public class SqlInsertQuery extends SqlModifyQuery implements InsertQuery {
+// TODO
+public class Result<E> {
 
-    public SqlInsertQuery() {
-        super(SqlKind.INSERT);
+    private final int count;
+
+    private final E entity;
+
+    public Result(int count, E entity) {
+        this.count = count;
+        this.entity = entity;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public E getEntity() {
+        return entity;
     }
 
     @Override
-    public void generateId(Statement statement) {
-    }
-
-    @Override
-    public Object getEntity() {
-        return null;
+    public String toString() {
+        return "Result [count=" + count + ", entity=" + entity + "]";
     }
 
 }

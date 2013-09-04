@@ -49,7 +49,7 @@ public class SqlFileScriptQueryMeta extends AbstractSqlFileQueryMeta {
 
     @Override
     public <R, P> R accept(QueryMetaVisitor<R, P> visitor, P p) {
-        return visitor.visistSqlFileScriptQueryMeta(this, p);
+        return visitor.visitSqlFileScriptQueryMeta(this, p);
     }
 
 }

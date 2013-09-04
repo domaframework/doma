@@ -74,6 +74,14 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
     }
 
     @Override
+    public Object getEntity() {
+        if (entityHandler != null) {
+            return entityHandler.entity;
+        }
+        return null;
+    }
+
+    @Override
     public void complete() {
         if (entityHandler != null) {
             entityHandler.postUpdate();

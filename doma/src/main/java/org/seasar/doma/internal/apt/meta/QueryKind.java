@@ -73,6 +73,11 @@ public enum QueryKind {
             return false;
         }
 
+        @Override
+        public boolean supportsImmutable() {
+            return false;
+        }
+
     },
     SQLFILE_SCRIPT {
 
@@ -89,6 +94,11 @@ public enum QueryKind {
 
         @Override
         public boolean isTrigger() {
+            return false;
+        }
+
+        @Override
+        public boolean supportsImmutable() {
             return false;
         }
 
@@ -111,6 +121,11 @@ public enum QueryKind {
             return true;
         }
 
+        @Override
+        public boolean supportsImmutable() {
+            return true;
+        }
+
     },
     SQLFILE_UPDATE {
 
@@ -127,6 +142,11 @@ public enum QueryKind {
 
         @Override
         public boolean isTrigger() {
+            return true;
+        }
+
+        @Override
+        public boolean supportsImmutable() {
             return true;
         }
 
@@ -149,6 +169,11 @@ public enum QueryKind {
             return true;
         }
 
+        @Override
+        public boolean supportsImmutable() {
+            return false;
+        }
+
     },
     SQLFILE_BATCH_INSERT {
 
@@ -165,6 +190,11 @@ public enum QueryKind {
 
         @Override
         public boolean isTrigger() {
+            return true;
+        }
+
+        @Override
+        public boolean supportsImmutable() {
             return true;
         }
 
@@ -187,6 +217,11 @@ public enum QueryKind {
             return true;
         }
 
+        @Override
+        public boolean supportsImmutable() {
+            return true;
+        }
+
     },
     SQLFILE_BATCH_DELETE {
 
@@ -206,6 +241,11 @@ public enum QueryKind {
             return true;
         }
 
+        @Override
+        public boolean supportsImmutable() {
+            return false;
+        }
+
     },
     AUTO_INSERT {
 
@@ -222,6 +262,11 @@ public enum QueryKind {
 
         @Override
         public boolean isTrigger() {
+            return true;
+        }
+
+        @Override
+        public boolean supportsImmutable() {
             return true;
         }
 
@@ -244,6 +289,11 @@ public enum QueryKind {
             return true;
         }
 
+        @Override
+        public boolean supportsImmutable() {
+            return true;
+        }
+
     },
     AUTO_DELETE {
 
@@ -263,6 +313,11 @@ public enum QueryKind {
             return true;
         }
 
+        @Override
+        public boolean supportsImmutable() {
+            return false;
+        }
+
     },
     AUTO_BATCH_INSERT {
 
@@ -279,6 +334,11 @@ public enum QueryKind {
 
         @Override
         public boolean isTrigger() {
+            return true;
+        }
+
+        @Override
+        public boolean supportsImmutable() {
             return true;
         }
 
@@ -301,6 +361,11 @@ public enum QueryKind {
             return true;
         }
 
+        @Override
+        public boolean supportsImmutable() {
+            return true;
+        }
+
     },
     AUTO_BATCH_DELETE {
 
@@ -320,6 +385,11 @@ public enum QueryKind {
             return true;
         }
 
+        @Override
+        public boolean supportsImmutable() {
+            return false;
+        }
+
     },
     AUTO_FUNCTION {
 
@@ -336,6 +406,11 @@ public enum QueryKind {
 
         @Override
         public boolean isTrigger() {
+            return false;
+        }
+
+        @Override
+        public boolean supportsImmutable() {
             return false;
         }
 
@@ -358,6 +433,11 @@ public enum QueryKind {
             return false;
         }
 
+        @Override
+        public boolean supportsImmutable() {
+            return false;
+        }
+
     },
     ARRAY_FACTORY {
 
@@ -374,6 +454,11 @@ public enum QueryKind {
 
         @Override
         public boolean isTrigger() {
+            return false;
+        }
+
+        @Override
+        public boolean supportsImmutable() {
             return false;
         }
 
@@ -396,6 +481,11 @@ public enum QueryKind {
             return false;
         }
 
+        @Override
+        public boolean supportsImmutable() {
+            return false;
+        }
+
     },
     CLOB_FACTORY {
 
@@ -412,6 +502,11 @@ public enum QueryKind {
 
         @Override
         public boolean isTrigger() {
+            return false;
+        }
+
+        @Override
+        public boolean supportsImmutable() {
             return false;
         }
 
@@ -434,6 +529,11 @@ public enum QueryKind {
             return false;
         }
 
+        @Override
+        public boolean supportsImmutable() {
+            return false;
+        }
+
     },
     DELEGATE {
 
@@ -452,6 +552,12 @@ public enum QueryKind {
         public boolean isTrigger() {
             return false;
         }
+
+        @Override
+        public boolean supportsImmutable() {
+            return false;
+        }
+
     },
     ;
 
@@ -461,5 +567,7 @@ public enum QueryKind {
     public abstract Class<? extends Command> getCommandClass();
 
     public abstract boolean isTrigger();
+
+    public abstract boolean supportsImmutable();
 
 }

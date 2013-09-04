@@ -13,29 +13,39 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.doma.internal.jdbc.query;
+package org.seasar.doma.jdbc;
 
-import java.sql.Statement;
-
-import org.seasar.doma.jdbc.SqlKind;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author taedium
  * 
  */
-public class SqlInsertQuery extends SqlModifyQuery implements InsertQuery {
+// TODO
+public class BatchResult<E> {
 
-    public SqlInsertQuery() {
-        super(SqlKind.INSERT);
+    private final int[] counts;
+
+    private final List<E> entities;
+
+    public BatchResult(int[] counts, List<E> entities) {
+        this.counts = counts;
+        this.entities = entities;
+    }
+
+    public int[] getCounts() {
+        return counts;
+    }
+
+    public List<E> getEntities() {
+        return entities;
     }
 
     @Override
-    public void generateId(Statement statement) {
-    }
-
-    @Override
-    public Object getEntity() {
-        return null;
+    public String toString() {
+        return "BatchResult [counts=" + Arrays.toString(counts) + ", entities="
+                + entities + "]";
     }
 
 }

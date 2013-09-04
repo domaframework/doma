@@ -34,8 +34,8 @@ import org.seasar.doma.jdbc.dialect.Dialect;
  * @author taedium
  * 
  */
-public abstract class ModifyCommand<Q extends ModifyQuery> implements
-        Command<Integer, Q> {
+public abstract class ModifyCommand<R, Q extends ModifyQuery> implements
+        Command<R, Q> {
 
     protected final Q query;
 
@@ -48,12 +48,12 @@ public abstract class ModifyCommand<Q extends ModifyQuery> implements
     }
 
     @Override
-    public Integer execute() {
+    public R execute() {
         if (!query.isExecutable()) {
             JdbcLogger logger = query.getConfig().getJdbcLogger();
             logger.logSqlExecutionSkipping(query.getClassName(),
                     query.getMethodName(), query.getSqlExecutionSkipCause());
-            return 0;
+            return getDefaultValue();
         }
         Connection connection = JdbcUtil.getConnection(query.getConfig()
                 .getDataSource());
@@ -86,7 +86,9 @@ public abstract class ModifyCommand<Q extends ModifyQuery> implements
         return JdbcUtil.prepareStatement(connection, sql);
     }
 
-    protected abstract int executeInternal(PreparedStatement preparedStatement)
+    protected abstract R getDefaultValue();
+
+    protected abstract R executeInternal(PreparedStatement preparedStatement)
             throws SQLException;
 
     protected void log() {

@@ -24,14 +24,19 @@ import org.seasar.doma.internal.jdbc.query.DeleteQuery;
  * @author taedium
  * 
  */
-public class DeleteCommand extends ModifyCommand<DeleteQuery> {
+public class DeleteCommand extends ModifyCommand<Integer, DeleteQuery> {
 
     public DeleteCommand(DeleteQuery query) {
         super(query);
     }
 
     @Override
-    protected int executeInternal(PreparedStatement preparedStatement)
+    protected Integer getDefaultValue() {
+        return Integer.valueOf(0);
+    }
+
+    @Override
+    protected Integer executeInternal(PreparedStatement preparedStatement)
             throws SQLException {
         return executeUpdate(preparedStatement);
     }

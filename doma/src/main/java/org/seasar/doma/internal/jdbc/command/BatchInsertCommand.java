@@ -28,10 +28,16 @@ import org.seasar.doma.jdbc.dialect.Dialect;
  * @author taedium
  * 
  */
-public class BatchInsertCommand extends BatchModifyCommand<BatchInsertQuery> {
+public class BatchInsertCommand extends
+        BatchModifyCommand<int[], BatchInsertQuery> {
 
     public BatchInsertCommand(BatchInsertQuery query) {
         super(query);
+    }
+
+    @Override
+    protected int[] getDefaultValue() {
+        return new int[] {};
     }
 
     @Override

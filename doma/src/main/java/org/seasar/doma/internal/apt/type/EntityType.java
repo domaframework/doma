@@ -31,19 +31,30 @@ import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
  */
 public class EntityType extends AbstractDataType {
 
-    public EntityType(TypeMirror type, ProcessingEnvironment env) {
+    private final boolean immutable;
+
+    public EntityType(TypeMirror type, ProcessingEnvironment env,
+            boolean immutable) {
         super(type, env);
+        this.immutable = immutable;
     }
 
     public static EntityType newInstance(TypeMirror type,
             ProcessingEnvironment env) {
         assertNotNull(type, env);
         TypeElement typeElement = TypeMirrorUtil.toTypeElement(type, env);
-        if (typeElement == null
-                || typeElement.getAnnotation(Entity.class) == null) {
+        if (typeElement == null) {
             return null;
         }
-        return new EntityType(type, env);
+        Entity entity = typeElement.getAnnotation(Entity.class);
+        if (entity == null) {
+            return null;
+        }
+        return new EntityType(type, env, entity.immutable());
+    }
+
+    public boolean isImmutable() {
+        return immutable;
     }
 
     public boolean isAbstract() {

@@ -26,8 +26,8 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.SqlValidator;
 import org.seasar.doma.internal.apt.BatchSqlValidator;
+import org.seasar.doma.internal.apt.SqlValidator;
 import org.seasar.doma.internal.apt.mirror.BatchDeleteMirror;
 import org.seasar.doma.internal.apt.mirror.BatchInsertMirror;
 import org.seasar.doma.internal.apt.mirror.BatchModifyMirror;
@@ -94,12 +94,21 @@ public class SqlFileBatchModifyQueryMetaFactory extends
     @Override
     protected void doReturnType(SqlFileBatchModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
-        QueryReturnMeta resultMeta = createReturnMeta(method);
-        if (!resultMeta.isPrimitiveIntArray()) {
-            throw new AptException(Message.DOMA4040, env,
-                    resultMeta.getElement());
+        QueryReturnMeta returnMeta = createReturnMeta(method);
+        EntityType entityType = queryMeta.getEntityType();
+        if (entityType != null && entityType.isImmutable()
+                && queryMeta.supportsImmutable()) {
+            if (!returnMeta.isBatchResult(entityType)) {
+                throw new AptException(Message.DOMA4223, env,
+                        returnMeta.getElement());
+            }
+        } else {
+            if (!returnMeta.isPrimitiveIntArray()) {
+                throw new AptException(Message.DOMA4040, env,
+                        returnMeta.getElement());
+            }
         }
-        queryMeta.setReturnMeta(resultMeta);
+        queryMeta.setReturnMeta(returnMeta);
     }
 
     @Override
@@ -154,8 +163,7 @@ public class SqlFileBatchModifyQueryMetaFactory extends
     @Override
     protected SqlValidator createSqlValidator(ExecutableElement method,
             Map<String, TypeMirror> parameterTypeMap, String sqlFilePath) {
-        return new BatchSqlValidator(env, method, parameterTypeMap,
-                sqlFilePath);
+        return new BatchSqlValidator(env, method, parameterTypeMap, sqlFilePath);
     }
 
 }

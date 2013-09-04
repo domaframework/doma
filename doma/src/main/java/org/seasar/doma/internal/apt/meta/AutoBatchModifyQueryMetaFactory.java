@@ -54,8 +54,8 @@ public class AutoBatchModifyQueryMetaFactory extends
             return null;
         }
         doTypeParameters(queryMeta, method, daoMeta);
-        doReturnType(queryMeta, method, daoMeta);
         doParameters(queryMeta, method, daoMeta);
+        doReturnType(queryMeta, method, daoMeta);
         doThrowTypes(queryMeta, method, daoMeta);
         return queryMeta;
     }
@@ -90,9 +90,18 @@ public class AutoBatchModifyQueryMetaFactory extends
     protected void doReturnType(AutoBatchModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         QueryReturnMeta returnMeta = createReturnMeta(method);
-        if (!returnMeta.isPrimitiveIntArray()) {
-            throw new AptException(Message.DOMA4040, env,
-                    returnMeta.getElement());
+        EntityType entityType = queryMeta.getEntityType();
+        if (entityType != null && entityType.isImmutable()
+                && queryMeta.supportsImmutable()) {
+            if (!returnMeta.isBatchResult(entityType)) {
+                throw new AptException(Message.DOMA4223, env,
+                        returnMeta.getElement());
+            }
+        } else {
+            if (!returnMeta.isPrimitiveIntArray()) {
+                throw new AptException(Message.DOMA4040, env,
+                        returnMeta.getElement());
+            }
         }
         queryMeta.setReturnMeta(returnMeta);
     }

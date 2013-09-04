@@ -181,6 +181,11 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
     }
 
     @Override
+    public Object getEntity() {
+        return entity;
+    }
+
+    @Override
     public void complete() {
         postInsert();
     }

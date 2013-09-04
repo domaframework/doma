@@ -21,15 +21,15 @@ package org.seasar.doma.internal.apt.meta;
  */
 public interface QueryMetaVisitor<R, P> {
 
-    R visistSqlFileSelectQueryMeta(SqlFileSelectQueryMeta m, P p);
+    R visitSqlFileSelectQueryMeta(SqlFileSelectQueryMeta m, P p);
 
-    R visistSqlFileModifyQueryMeta(SqlFileModifyQueryMeta m, P p);
+    R visitSqlFileModifyQueryMeta(SqlFileModifyQueryMeta m, P p);
 
     R visitSqlFileBatchModifyQueryMeta(SqlFileBatchModifyQueryMeta m, P p);
 
-    R visistSqlFileScriptQueryMeta(SqlFileScriptQueryMeta m, P p);
+    R visitSqlFileScriptQueryMeta(SqlFileScriptQueryMeta m, P p);
 
-    R visistAutoModifyQueryMeta(AutoModifyQueryMeta m, P p);
+    R visitAutoModifyQueryMeta(AutoModifyQueryMeta m, P p);
 
     R visitAutoBatchModifyQueryMeta(AutoBatchModifyQueryMeta m, P p);
 

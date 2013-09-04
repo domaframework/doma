@@ -17,9 +17,12 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.util.List;
+
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.ArrayType;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.TypeKindVisitor6;
@@ -34,6 +37,8 @@ import org.seasar.doma.internal.apt.type.IterableType;
 import org.seasar.doma.internal.apt.type.MapType;
 import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
+import org.seasar.doma.jdbc.BatchResult;
+import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.message.Message;
 
 public class QueryReturnMeta {
@@ -148,6 +153,44 @@ public class QueryReturnMeta {
 
     public boolean isPrimitiveVoid() {
         return type.getKind() == TypeKind.VOID;
+    }
+
+    // TODO
+    public boolean isResult(EntityType entityType) {
+        if (!TypeMirrorUtil.isSameType(env.getTypeUtils().erasure(type),
+                Result.class, env)) {
+            return false;
+        }
+        DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(type, env);
+        if (declaredType == null) {
+            return false;
+        }
+        List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
+        if (typeArgs.size() != 1) {
+            return false;
+        }
+        TypeMirror typeArg = typeArgs.get(0);
+        return TypeMirrorUtil.isSameType(typeArg, entityType.getTypeMirror(),
+                env);
+    }
+
+    // TODO
+    public boolean isBatchResult(EntityType entityType) {
+        if (!TypeMirrorUtil.isSameType(env.getTypeUtils().erasure(type),
+                BatchResult.class, env)) {
+            return false;
+        }
+        DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(type, env);
+        if (declaredType == null) {
+            return false;
+        }
+        List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
+        if (typeArgs.size() != 1) {
+            return false;
+        }
+        TypeMirror typeArg = typeArgs.get(0);
+        return TypeMirrorUtil.isSameType(typeArg, entityType.getTypeMirror(),
+                env);
     }
 
     public ExecutableElement getElement() {
