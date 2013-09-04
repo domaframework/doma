@@ -30,7 +30,6 @@ import org.seasar.doma.internal.jdbc.query.Query;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.MappedPropertyNotFoundException;
 import org.seasar.doma.jdbc.Sql;
-import org.seasar.doma.jdbc.domain.DomainWrapper;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.NamingType;
@@ -63,7 +62,7 @@ public class EntityBuilder<E> implements ResultBuilder<ResultSet, E> {
         JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().getDialect()
                 .getJdbcMappingVisitor();
         if (entityType.isImmutable()) {
-            Map<String, Object> values = new HashMap<String, Object>(
+            Map<String, Object> properties = new HashMap<String, Object>(
                     indexMap.size());
             for (Map.Entry<Integer, String> entry : indexMap.entrySet()) {
                 Integer index = entry.getKey();
@@ -72,18 +71,10 @@ public class EntityBuilder<E> implements ResultBuilder<ResultSet, E> {
                         index);
                 EntityPropertyType<E, ?> propertyType = entityType
                         .getEntityPropertyType(propertyName);
-                // TODO Mapを渡してAccessor経由でset/get
-                Wrapper<?> wrapper = propertyType.getWrapper();
+                Wrapper<?> wrapper = propertyType.getWrapper(properties);
                 wrapper.accept(jdbcMappingVisitor, function);
-                if (wrapper instanceof DomainWrapper) {
-                    DomainWrapper<?, ?> domainWrapper = (DomainWrapper<?, ?>) wrapper;
-                    values.put(propertyName, domainWrapper.getDomain());
-                } else {
-                    values.put(propertyName, wrapper.get());
-                }
             }
-            // TODO
-            return entityType.newEntity(values);
+            return entityType.newEntity(properties);
         }
         E entity = entityType
                 .newEntity(Collections.<String, Object> emptyMap());

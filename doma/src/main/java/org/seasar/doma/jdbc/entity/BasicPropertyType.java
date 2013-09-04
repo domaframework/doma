@@ -17,6 +17,7 @@ package org.seasar.doma.jdbc.entity;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.util.Map;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.WrapException;
@@ -65,11 +66,17 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
     /** 更新可能かどうか */
     protected final boolean updatable;
 
+    // TODO
+    protected final Field field;
+
     /** ラッパーのファクトリ */
     protected final WrapperFactory<V> wrapperFactory;
 
     /** ラッパーのアクセサのファクトリ */
     protected final AccessorFactory<E, V> accessorFactory;
+
+    // TODO
+    protected final MapAccessorFactory<V> mapAccessorFactory;
 
     /**
      * インスタンスを構築します。
@@ -122,8 +129,10 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
         this.columnName = columnName;
         this.insertable = insertable;
         this.updatable = updatable;
+        this.field = parentEntityPropertyType == null ? getField() : null;
         this.wrapperFactory = createWrapperFactory();
-        this.accessorFactory = createAccessorFactory();
+        this.accessorFactory = createAccessorFactory(field);
+        this.mapAccessorFactory = createMapAccessorFactory(field);
     }
 
     private WrapperFactory<V> createWrapperFactory() {
@@ -133,17 +142,29 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
         return new SimpleWrapperFactory<V>(wrapperClass);
     }
 
-    private AccessorFactory<E, V> createAccessorFactory() {
+    private AccessorFactory<E, V> createAccessorFactory(Field field) {
         if (parentEntityPropertyType != null) {
             return new ParentValueAccessorFactory<PE, E, V>(
                     parentEntityPropertyType);
         }
-        Field field = getField();
         if (domainType != null) {
             return new DomainAccessorFactory<E, V, D>(entityClass.getName(),
                     name, field, domainType);
         }
         return new ValueAccessorFactory<E, V>(entityClass.getName(), name,
+                field);
+    }
+
+    private MapAccessorFactory<V> createMapAccessorFactory(Field field) {
+        if (parentEntityPropertyType != null) {
+            return new ParentValueMapAccessorFactory<PE, E, V>(
+                    parentEntityPropertyType);
+        }
+        if (domainType != null) {
+            return new DomainMapAccessorFactory<V, D>(entityClass.getName(),
+                    name, field, domainType);
+        }
+        return new ValueMapAccessorFactory<V>(entityClass.getName(), name,
                 field);
     }
 
@@ -166,9 +187,17 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
         return field;
     }
 
-    @Override
-    public Wrapper<V> getWrapper() {
-        return wrapperFactory.getWrapper();
+    public Object getValue(E entity) {
+        try {
+            return FieldUtil.get(field, entity);
+        } catch (WrapException wrapException) {
+            throw new EntityPropertyAccessException(wrapException.getCause(),
+                    entityClass.getName(), name);
+        }
+    }
+
+    public Object getValue(Map<String, Object> properties) {
+        return properties.get(name);
     }
 
     /**
@@ -182,6 +211,15 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
     public Wrapper<V> getWrapper(E entity) {
         Wrapper<V> wrapper = wrapperFactory.getWrapper();
         Accessor<V> accessor = accessorFactory.getAccessor(entity, wrapper);
+        wrapper.setAccessor(accessor);
+        return wrapper;
+    }
+
+    @Override
+    public Wrapper<V> getWrapper(Map<String, Object> properties) {
+        Wrapper<V> wrapper = wrapperFactory.getWrapper();
+        Accessor<V> accessor = mapAccessorFactory.getAccessor(properties,
+                wrapper);
         wrapper.setAccessor(accessor);
         return wrapper;
     }
@@ -248,6 +286,11 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
      */
     protected interface AccessorFactory<E, V> {
         Accessor<V> getAccessor(E entity, Wrapper<V> wrapper);
+    }
+
+    protected interface MapAccessorFactory<V> {
+        Accessor<V> getAccessor(Map<String, Object> properties,
+                Wrapper<V> wrapper);
     }
 
     /**
@@ -458,6 +501,167 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
                                 wrapException.getCause(), entityClassName,
                                 entityPropertyName);
                     }
+                }
+            };
+        }
+    }
+
+    // TODO
+    protected static class ValueMapAccessorFactory<V> implements
+            MapAccessorFactory<V> {
+
+        protected final String entityClassName;
+
+        protected final String entityPropertyName;
+
+        protected final Field field;
+
+        protected final boolean primitive;
+
+        protected ValueMapAccessorFactory(String entityClassName,
+                String entityPropertyName, Field field) {
+            if (entityClassName == null) {
+                throw new DomaNullPointerException("entityClassName");
+            }
+            if (entityPropertyName == null) {
+                throw new DomaNullPointerException("entityPropertyName");
+            }
+            if (field == null) {
+                throw new DomaNullPointerException("field");
+            }
+            this.entityClassName = entityClassName;
+            this.entityPropertyName = entityPropertyName;
+            this.field = field;
+            this.primitive = field.getType().isPrimitive();
+        }
+
+        @Override
+        public Accessor<V> getAccessor(final Map<String, Object> properties,
+                final Wrapper<V> wrapper) {
+            if (properties == null) {
+                throw new DomaNullPointerException("properties");
+            }
+            if (wrapper == null) {
+                throw new DomaNullPointerException("wrapper");
+            }
+            return new Accessor<V>() {
+
+                @SuppressWarnings("unchecked")
+                @Override
+                public V get() {
+                    return (V) properties.get(entityPropertyName);
+                }
+
+                @Override
+                public void set(V value) {
+                    V actualValue = (primitive && value == null) ? wrapper
+                            .getDefault() : value;
+                    properties.put(entityPropertyName, actualValue);
+                }
+            };
+        }
+    }
+
+    // TODO
+    protected static class ParentValueMapAccessorFactory<PE, E extends PE, V>
+            implements MapAccessorFactory<V> {
+
+        protected final EntityPropertyType<PE, V> parentEntityPropertyType;
+
+        protected ParentValueMapAccessorFactory(
+                EntityPropertyType<PE, V> parentEntityPropertyType) {
+            if (parentEntityPropertyType == null) {
+                throw new DomaNullPointerException("parentEntityPropertyType");
+            }
+            this.parentEntityPropertyType = parentEntityPropertyType;
+        }
+
+        @Override
+        public Accessor<V> getAccessor(final Map<String, Object> properties,
+                final Wrapper<V> wrapper) {
+            if (properties == null) {
+                throw new DomaNullPointerException("properties");
+            }
+            if (wrapper == null) {
+                throw new DomaNullPointerException("wrapper");
+            }
+            return new Accessor<V>() {
+
+                @Override
+                public V get() {
+                    return parentEntityPropertyType.getWrapper(properties)
+                            .get();
+                }
+
+                @Override
+                public void set(V value) {
+                    parentEntityPropertyType.getWrapper(properties).set(value);
+                }
+            };
+        }
+    }
+
+    // TODO
+    protected static class DomainMapAccessorFactory<V, D> implements
+            MapAccessorFactory<V> {
+
+        protected final String entityClassName;
+
+        protected final String entityPropertyName;
+
+        protected final Field field;
+
+        protected final boolean primitive;
+
+        protected final DomainType<V, D> domainType;
+
+        protected DomainMapAccessorFactory(String entityClassName,
+                String entityPropertyName, Field field,
+                DomainType<V, D> domainType) {
+            if (entityClassName == null) {
+                throw new DomaNullPointerException("entityClassName");
+            }
+            if (entityPropertyName == null) {
+                throw new DomaNullPointerException("entityPropertyName");
+            }
+            if (field == null) {
+                throw new DomaNullPointerException("field");
+            }
+            if (domainType == null) {
+                throw new DomaNullPointerException("domainType");
+            }
+            this.entityClassName = entityClassName;
+            this.entityPropertyName = entityPropertyName;
+            this.field = field;
+            this.primitive = field.getType().isPrimitive();
+            this.domainType = domainType;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public Accessor<V> getAccessor(final Map<String, Object> properties,
+                final Wrapper<V> wrapper) {
+            if (properties == null) {
+                throw new DomaNullPointerException("properties");
+            }
+            if (wrapper == null) {
+                throw new DomaNullPointerException("wrapper");
+            }
+            return new Accessor<V>() {
+
+                @Override
+                public V get() {
+                    D domain;
+                    domain = (D) properties.get(entityPropertyName);
+                    return domainType.getWrapper(domain).get();
+                }
+
+                @Override
+                public void set(V value) {
+                    V actualValue = (primitive && value == null) ? wrapper
+                            .getDefault() : value;
+                    Object domain = domainType.newDomain(actualValue);
+                    properties.put(entityPropertyName, domain);
                 }
             };
         }

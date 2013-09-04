@@ -48,14 +48,14 @@ public abstract class AbstractEntityType<E> implements EntityType<E> {
     }
 
     @Override
-    public Map<String, Object> makeMap(E entity) {
+    public Map<String, Object> getProperties(E entity) {
         List<EntityPropertyType<E, ?>> propertyTypes = getEntityPropertyTypes();
-        Map<String, Object> values = new HashMap<String, Object>(
+        Map<String, Object> properties = new HashMap<String, Object>(
                 propertyTypes.size());
         for (EntityPropertyType<E, ?> p : propertyTypes) {
-            values.put(p.getName(), p.getWrapper(entity).get());
+            properties.put(p.getName(), p.getValue(entity));
         }
-        return values;
+        return properties;
     }
 
     @Override
