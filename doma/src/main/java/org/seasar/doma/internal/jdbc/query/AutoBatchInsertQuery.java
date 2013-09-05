@@ -21,6 +21,7 @@ import java.lang.reflect.Method;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.seasar.doma.internal.jdbc.entity.AbstractPostInsertContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreInsertContext;
@@ -150,8 +151,9 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
     protected void prepareVersionValue() {
         if (versionPropertyType != null) {
             if (entityType.isImmutable()) {
-                E newEntity = versionPropertyType.setIfNecessaryAndMakeNewEntity(
-                        entityType, currentEntity, 1);
+                E newEntity = versionPropertyType
+                        .setIfNecessaryAndMakeNewEntity(entityType,
+                                currentEntity, 1);
                 if (newEntity != null) {
                     currentEntity = newEntity;
                 }
@@ -201,6 +203,10 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
                         idGenerationConfig, statement);
             }
         }
+    }
+
+    public List<E> getEntities() {
+        return entities;
     }
 
     @Override

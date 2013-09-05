@@ -89,6 +89,10 @@ public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
         }
     }
 
+    public List<E> getEntities() {
+        return elements;
+    }
+
     @Override
     public void complete() {
         if (entityHandler != null) {

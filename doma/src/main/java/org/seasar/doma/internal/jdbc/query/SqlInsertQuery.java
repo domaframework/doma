@@ -33,9 +33,4 @@ public class SqlInsertQuery extends SqlModifyQuery implements InsertQuery {
     public void generateId(Statement statement) {
     }
 
-    @Override
-    public Object getEntity() {
-        return null;
-    }
-
 }

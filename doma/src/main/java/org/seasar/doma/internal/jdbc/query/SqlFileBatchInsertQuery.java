@@ -20,6 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.lang.reflect.Method;
 import java.sql.Statement;
 import java.util.Iterator;
+import java.util.List;
 
 import org.seasar.doma.internal.jdbc.entity.AbstractPostInsertContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreInsertContext;
@@ -71,6 +72,10 @@ public class SqlFileBatchInsertQuery<E> extends SqlFileBatchModifyQuery<E>
 
     @Override
     public void generateId(Statement statement, int index) {
+    }
+
+    public List<E> getEntities() {
+        return elements;
     }
 
     @Override

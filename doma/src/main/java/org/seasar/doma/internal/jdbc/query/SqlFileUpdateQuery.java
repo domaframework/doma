@@ -73,10 +73,9 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
         }
     }
 
-    @Override
-    public Object getEntity() {
+    public <E> E getEntity(Class<E> entityType) {
         if (entityHandler != null) {
-            return entityHandler.entity;
+            return (E) entityHandler.entity;
         }
         return null;
     }

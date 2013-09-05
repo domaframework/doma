@@ -23,7 +23,4 @@ public interface UpdateQuery extends ModifyQuery {
 
     void incrementVersion();
 
-    // TODO
-    Object getEntity();
-
 }

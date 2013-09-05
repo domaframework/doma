@@ -26,4 +26,5 @@ public interface BatchInsertQuery extends BatchModifyQuery {
     boolean isBatchSupported();
 
     void generateId(Statement statement, int index);
+
 }

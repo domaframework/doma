@@ -31,7 +31,6 @@ import org.seasar.doma.AnnotationTarget;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.apt.meta.AbstractCreateQueryMeta;
-import org.seasar.doma.internal.apt.meta.AbstractQueryMeta;
 import org.seasar.doma.internal.apt.meta.ArrayCreateQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoBatchModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.AutoFunctionQueryMeta;
@@ -108,7 +107,6 @@ import org.seasar.doma.internal.jdbc.sql.MapListParameter;
 import org.seasar.doma.internal.jdbc.sql.MapListResultParameter;
 import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
-import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.Config;
 
 /**
@@ -801,20 +799,19 @@ public class DaoGenerator extends AbstractGenerator {
             }
 
             iprint("__query.prepare();%n");
+            iprint("%1$s __command = new %1$s(__query);%n", m.getCommandClass()
+                    .getName());
 
             EntityType entityType = m.getEntityType();
             if (entityType != null && entityType.isImmutable()
                     && m.supportsImmutable()) {
-                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query);%n",
-                        getImmutableCommandClassName(m),
-                        entityType.getTypeName());
+                iprint("%1$s __result = new %1$s(__command.execute(), __query.getEntity());%n",
+                        m.getReturnMeta().getTypeName());
             } else {
-                iprint("%1$s __command = new %1$s(__query);%n", m
-                        .getCommandClass().getName());
+                iprint("%1$s __result = __command.execute();%n", m
+                        .getReturnMeta().getTypeName());
             }
 
-            iprint("%1$s __result = __command.execute();%n", m.getReturnMeta()
-                    .getTypeName());
             iprint("__query.complete();%n");
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
                     m.getName());
@@ -875,20 +872,20 @@ public class DaoGenerator extends AbstractGenerator {
             }
 
             iprint("__query.prepare();%n");
+            iprint("%1$s __command = new %1$s(__query);%n", m.getCommandClass()
+                    .getName());
 
             EntityType entityType = m.getEntityType();
             if (entityType != null && entityType.isImmutable()
                     && m.supportsImmutable()) {
-                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query);%n",
-                        getImmutableCommandClassName(m),
-                        entityType.getTypeName());
+                iprint("%1$s __result = new %1$s(__command.execute(), __query.getEntity(%2$s.class));%n",
+                        m.getReturnMeta().getTypeName(),
+                        entityType.getTypeNameAsTypeParameter());
             } else {
-                iprint("%1$s __command = new %1$s(__query);%n", m
-                        .getCommandClass().getName());
+                iprint("%1$s __result = __command.execute();%n", m
+                        .getReturnMeta().getTypeName());
             }
 
-            iprint("%1$s __result = __command.execute();%n", m.getReturnMeta()
-                    .getTypeName());
             iprint("__query.complete();%n");
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
                     m.getName());
@@ -948,20 +945,19 @@ public class DaoGenerator extends AbstractGenerator {
             }
 
             iprint("__query.prepare();%n");
+            iprint("%1$s __command = new %1$s(__query);%n", m.getCommandClass()
+                    .getName());
 
             EntityType entityType = m.getEntityType();
             if (entityType != null && entityType.isImmutable()
                     && m.supportsImmutable()) {
-                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query);%n",
-                        getImmutableCommandClassName(m),
-                        entityType.getTypeName());
+                iprint("%1$s __result = new %1$s(__command.execute(), __query.getEntities());%n",
+                        m.getReturnMeta().getTypeName());
             } else {
-                iprint("%1$s __command = new %1$s(__query);%n", m
-                        .getCommandClass().getName());
+                iprint("%1$s __result = __command.execute();%n", m
+                        .getReturnMeta().getTypeName());
             }
 
-            iprint("%1$s __result = __command.execute();%n", m.getReturnMeta()
-                    .getTypeName());
             iprint("__query.complete();%n");
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
                     m.getName());
@@ -1019,20 +1015,19 @@ public class DaoGenerator extends AbstractGenerator {
             }
 
             iprint("__query.prepare();%n");
+            iprint("%1$s __command = new %1$s(__query);%n", m.getCommandClass()
+                    .getName());
 
             EntityType entityType = m.getEntityType();
             if (entityType != null && entityType.isImmutable()
                     && m.supportsImmutable()) {
-                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query);%n",
-                        getImmutableCommandClassName(m),
-                        entityType.getTypeName());
+                iprint("%1$s __result = new %1$s(__command.execute(), __query.getEntities());%n",
+                        m.getReturnMeta().getTypeName());
             } else {
-                iprint("%1$s __command = new %1$s(__query);%n", m
-                        .getCommandClass().getName());
+                iprint("%1$s __result = __command.execute();%n", m
+                        .getReturnMeta().getTypeName());
             }
 
-            iprint("%1$s __result = __command.execute();%n", m.getReturnMeta()
-                    .getTypeName());
             iprint("__query.complete();%n");
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
                     m.getName());
@@ -1255,12 +1250,6 @@ public class DaoGenerator extends AbstractGenerator {
             }
         }
 
-        protected String getImmutableCommandClassName(AbstractQueryMeta m) {
-            String className = m.getCommandClass().getName();
-            String packageName = ClassUtil.getPackageName(className);
-            String simpleName = ClassUtil.getSimpleName(className);
-            return packageName + ".Immutable" + simpleName;
-        }
     }
 
     protected class CallableSqlParameterStatementGenerator implements
