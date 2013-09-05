@@ -109,6 +109,7 @@ public class _ParentEntity extends AbstractEntityType<ParentEntity> {
         return null;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public ParentEntity newEntity() {
 

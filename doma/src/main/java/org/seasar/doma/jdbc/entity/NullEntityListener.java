@@ -21,8 +21,7 @@ package org.seasar.doma.jdbc.entity;
  * @author taedium
  * 
  */
-// TODO finalの追加を説明
-public final class NullEntityListener implements EntityListener<Object> {
+public class NullEntityListener implements EntityListener<Object> {
 
     @Override
     public void preInsert(Object entity,

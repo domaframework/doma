@@ -51,7 +51,15 @@ public interface PostInsertContext<E> {
      */
     public Config getConfig();
 
-    // TODO
+    /**
+     * 新しいエンティティを設定します。
+     * <p>
+     * このメソッドは {@code Entity#immutable()} が {@code true} の場合に使用できます。
+     * 
+     * @param entity
+     *            エンティティ
+     * @since 1.34.0
+     */
     public void setNewEntity(E entity);
 
 }

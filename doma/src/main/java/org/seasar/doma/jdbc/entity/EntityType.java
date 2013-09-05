@@ -34,7 +34,12 @@ import org.seasar.doma.internal.jdbc.criteria.TableCriterion;
  */
 public interface EntityType<E> extends TableCriterion<E> {
 
-    // TODO
+    /**
+     * エンティティがイミュータブルかどうかを返します。
+     * 
+     * @return イミュータブルの場合 {@code true}
+     * @since 1.34.0
+     */
     boolean isImmutable();
 
     /**
@@ -120,15 +125,29 @@ public interface EntityType<E> extends TableCriterion<E> {
      * エンティティをインスタンス化して返します。
      * 
      * @return エンティティ
-     * @deprecated
+     * @deprecated 代わりに {@link EntityType#newEntity(Map)} を使ってください。
      */
     @Deprecated
     E newEntity();
 
-    // TODO
+    /**
+     * コンストラクタを使って新しいエンティティをインスタンス化します。
+     * 
+     * @param __args
+     *            コンストラクタの引数
+     * @return 新しいエンティティ
+     * @since 1.34.0
+     */
     E newEntity(Map<String, Object> __args);
 
-    // TODO
+    /**
+     * エンティティプロパティのマップを返します。
+     * 
+     * @param entity
+     *            エンティティ
+     * @return エンティティのマップ
+     * @since 1.34.0
+     */
     Map<String, Object> getProperties(E entity);
 
     /**

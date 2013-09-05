@@ -24,19 +24,14 @@ import org.seasar.doma.internal.jdbc.query.InsertQuery;
  * @author taedium
  * 
  */
-public class InsertCommand extends ModifyCommand<Integer, InsertQuery> {
+public class InsertCommand extends ModifyCommand<InsertQuery> {
 
     public InsertCommand(InsertQuery query) {
         super(query);
     }
 
     @Override
-    protected Integer getDefaultValue() {
-        return Integer.valueOf(0);
-    }
-
-    @Override
-    protected Integer executeInternal(PreparedStatement preparedStatement)
+    protected int executeInternal(PreparedStatement preparedStatement)
             throws SQLException {
         int rows = executeUpdate(preparedStatement);
         query.generateId(preparedStatement);

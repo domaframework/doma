@@ -628,13 +628,16 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    public boolean hasGenericTypeProperty() {
-        for (EntityPropertyMeta propertyMeta : entityMeta.getAllPropertyMetas()) {
-            TypeElement element = TypeMirrorUtil.toTypeElement(
-                    propertyMeta.getType(), env);
-            if (element != null) {
-                if (!element.getTypeParameters().isEmpty()) {
-                    return true;
+    protected boolean hasGenericTypeProperty() {
+        if (entityMeta.isImmutable()) {
+            for (EntityPropertyMeta propertyMeta : entityMeta
+                    .getAllPropertyMetas()) {
+                TypeElement element = TypeMirrorUtil.toTypeElement(
+                        propertyMeta.getType(), env);
+                if (element != null) {
+                    if (!element.getTypeParameters().isEmpty()) {
+                        return true;
+                    }
                 }
             }
         }

@@ -255,6 +255,9 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
         if (enclosingElement == null) {
             throw new AptIllegalStateException(fieldElement.toString());
         }
+        if (entityMeta.isImmutable() && classElement.equals(enclosingElement)) {
+            throw new AptException(Message.DOMA4224, env, fieldElement);
+        }
         OriginalStatesMeta originalStatesMeta = new OriginalStatesMeta(
                 classElement, fieldElement, enclosingElement, env);
         entityMeta.setOriginalStatesMeta(originalStatesMeta);
@@ -303,7 +306,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
                     classElement, entityMeta);
             if (constructor == null
                     || constructor.getModifiers().contains(Modifier.PRIVATE)) {
-                // TODO イミュータブル
                 throw new AptException(Message.DOMA4221, env, classElement);
             }
             entityMeta.setConstructor(constructor);
@@ -312,7 +314,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
                     classElement, env);
             if (constructor == null
                     || constructor.getModifiers().contains(Modifier.PRIVATE)) {
-                // TODO ミュータブル
                 throw new AptException(Message.DOMA4124, env, classElement);
             }
         }

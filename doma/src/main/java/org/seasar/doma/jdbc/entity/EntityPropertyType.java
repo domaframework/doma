@@ -38,10 +38,24 @@ import org.seasar.doma.wrapper.Wrapper;
 public interface EntityPropertyType<E, V> extends ColumnCriterion<V>,
         OrderItemCriterion<V> {
 
-    // TODO
+    /**
+     * エンティティからこのプロパティ型に対応する値を返します。
+     * 
+     * @param entity
+     *            エンティティ
+     * @return プロパティの値
+     * @since 1.34.0
+     */
     Object getValue(E entity);
 
-    // TODO
+    /**
+     * エンティティプロパティのマップからこのプロパティ型に対応する値を返します。
+     * 
+     * @param properties
+     *            エンティティプロパティのマップ
+     * @return プロパティの値
+     * @since 1.34.0
+     */
     Object getValue(Map<String, Object> properties);
 
     /**
@@ -53,7 +67,14 @@ public interface EntityPropertyType<E, V> extends ColumnCriterion<V>,
      */
     Wrapper<V> getWrapper(E entity);
 
-    // TODO
+    /**
+     * 値のラッパーを返します。
+     * 
+     * @param properties
+     *            エンティティプロパティのマップ
+     * @return 値のラッパー
+     * @since 1.34.0
+     */
     Wrapper<V> getWrapper(Map<String, Object> properties);
 
     /**

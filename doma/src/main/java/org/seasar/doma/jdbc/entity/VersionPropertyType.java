@@ -102,7 +102,16 @@ public class VersionPropertyType<PE, E extends PE, V extends Number, D> extends
         wrapper.increment();
     }
 
-    // TODO
+    /**
+     * バージョン番号をインクリメントして新しいエンティティを返します。
+     * 
+     * @param entityType
+     *            エンティティタイプ
+     * @param entity
+     *            エンティティ
+     * @return 新しいエンティティ
+     * @since 1.34.0
+     */
     public E incrementAndMakeNewEntity(EntityType<E> entityType, E entity) {
         NumberWrapper<V> wrapper = (NumberWrapper<V>) getWrapper(entity);
         V value = wrapper.getIncrementedValue();

@@ -26,16 +26,10 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
  * @author taedium
  * 
  */
-public class BatchDeleteCommand extends
-        BatchModifyCommand<int[], BatchDeleteQuery> {
+public class BatchDeleteCommand extends BatchModifyCommand<BatchDeleteQuery> {
 
     public BatchDeleteCommand(BatchDeleteQuery query) {
         super(query);
-    }
-
-    @Override
-    protected int[] getDefaultValue() {
-        return new int[] {};
     }
 
     @Override

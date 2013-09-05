@@ -24,19 +24,14 @@ import org.seasar.doma.internal.jdbc.query.UpdateQuery;
  * @author taedium
  * 
  */
-public class UpdateCommand extends ModifyCommand<Integer, UpdateQuery> {
+public class UpdateCommand extends ModifyCommand<UpdateQuery> {
 
     public UpdateCommand(UpdateQuery query) {
         super(query);
     }
 
     @Override
-    protected Integer getDefaultValue() {
-        return Integer.valueOf(0);
-    }
-
-    @Override
-    protected Integer executeInternal(PreparedStatement preparedStatement)
+    protected int executeInternal(PreparedStatement preparedStatement)
             throws SQLException {
         int rows = executeUpdate(preparedStatement);
         query.incrementVersion();

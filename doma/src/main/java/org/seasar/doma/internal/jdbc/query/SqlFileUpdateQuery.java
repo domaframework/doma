@@ -73,6 +73,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
         }
     }
 
+    @SuppressWarnings("unchecked")
     public <E> E getEntity(Class<E> entityType) {
         if (entityHandler != null) {
             return (E) entityHandler.entity;

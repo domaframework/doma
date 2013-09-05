@@ -36,8 +36,8 @@ import org.seasar.doma.jdbc.dialect.Dialect;
  * @author taedium
  * 
  */
-public abstract class BatchModifyCommand<R, Q extends BatchModifyQuery>
-        implements Command<R, Q> {
+public abstract class BatchModifyCommand<Q extends BatchModifyQuery> implements
+        Command<int[], Q> {
 
     protected final Q query;
 
@@ -47,12 +47,12 @@ public abstract class BatchModifyCommand<R, Q extends BatchModifyQuery>
     }
 
     @Override
-    public R execute() {
+    public int[] execute() {
         if (!query.isExecutable()) {
             JdbcLogger logger = query.getConfig().getJdbcLogger();
             logger.logSqlExecutionSkipping(query.getClassName(),
                     query.getMethodName(), query.getSqlExecutionSkipCause());
-            return getDefaultValue();
+            return new int[] {};
         }
         Connection connection = JdbcUtil.getConnection(query.getConfig()
                 .getDataSource());
@@ -86,10 +86,9 @@ public abstract class BatchModifyCommand<R, Q extends BatchModifyQuery>
         return JdbcUtil.prepareStatement(connection, sql);
     }
 
-    protected abstract R getDefaultValue();
-
-    protected abstract R executeInternal(PreparedStatement preparedStatement,
-            List<PreparedSql> sqls) throws SQLException;
+    protected abstract int[] executeInternal(
+            PreparedStatement preparedStatement, List<PreparedSql> sqls)
+            throws SQLException;
 
     protected void setupOptions(PreparedStatement preparedStatement)
             throws SQLException {

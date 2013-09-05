@@ -66,7 +66,7 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
     /** 更新可能かどうか */
     protected final boolean updatable;
 
-    // TODO
+    /** プロパティのフィールド */
     protected final Field field;
 
     /** ラッパーのファクトリ */
@@ -75,7 +75,7 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
     /** ラッパーのアクセサのファクトリ */
     protected final AccessorFactory<E, V> accessorFactory;
 
-    // TODO
+    /** ラッパーのMapアクセサのファクトリ */
     protected final MapAccessorFactory<V> mapAccessorFactory;
 
     /**
@@ -187,6 +187,7 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
         return field;
     }
 
+    @Override
     public Object getValue(E entity) {
         try {
             return FieldUtil.get(field, entity);
@@ -196,6 +197,7 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
         }
     }
 
+    @Override
     public Object getValue(Map<String, Object> properties) {
         return properties.get(name);
     }
@@ -374,7 +376,8 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
      * 親の値のアクセサのファクトリです。
      * 
      * @author taedium
-     * 
+     * @param <PE>
+     *            親エンティティの型
      * @param <E>
      *            エンティティの型
      * @param <V>
@@ -428,7 +431,7 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
      *            値の型
      * @param <D>
      *            ドメインの型
-     * @since 1.20.0
+     * @since 1.34.0
      */
     protected static class DomainAccessorFactory<E, V, D> implements
             AccessorFactory<E, V> {
@@ -506,7 +509,15 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
         }
     }
 
-    // TODO
+    /**
+     * 値のMap用アクセサのファクトリです。
+     * 
+     * @author taedium
+     * 
+     * @param <V>
+     *            値の型
+     * @since 1.34.0
+     */
     protected static class ValueMapAccessorFactory<V> implements
             MapAccessorFactory<V> {
 
@@ -562,7 +573,18 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
         }
     }
 
-    // TODO
+    /**
+     * 親の値のMap用アクセサのファクトリです。
+     * 
+     * @author taedium
+     * @param <PE>
+     *            親エンティティの型
+     * @param <E>
+     *            エンティティの型
+     * @param <V>
+     *            値の型
+     * @since 1.34.0
+     */
     protected static class ParentValueMapAccessorFactory<PE, E extends PE, V>
             implements MapAccessorFactory<V> {
 
@@ -601,7 +623,17 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
         }
     }
 
-    // TODO
+    /**
+     * ドメインのMap用アクセサのファクトリです。
+     * 
+     * @author taedium
+     * 
+     * @param <V>
+     *            値の型
+     * @param <D>
+     *            ドメインの型
+     * @since 1.34.0
+     */
     protected static class DomainMapAccessorFactory<V, D> implements
             MapAccessorFactory<V> {
 
