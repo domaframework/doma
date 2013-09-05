@@ -19,25 +19,44 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author taedium
+ * イミュータブルなエンティティに対するバッチ更新やバッチ挿入の結果を表します。
  * 
+ * @author taedium
+ * @since 1.34.0
  */
-// TODO
 public class BatchResult<E> {
 
     private final int[] counts;
 
     private final List<E> entities;
 
+    /**
+     * 
+     * @param counts
+     *            更新件数の配列
+     * @param entities
+     *            エンティティのリスト
+     */
     public BatchResult(int[] counts, List<E> entities) {
         this.counts = counts;
         this.entities = entities;
     }
 
+    /**
+     * 更新件数の配列を返します。
+     * 
+     * 
+     * @return 更新件数の配列
+     */
     public int[] getCounts() {
         return counts;
     }
 
+    /**
+     * エンティティのリストを返します。
+     * 
+     * @return エンティティのリスト
+     */
     public List<E> getEntities() {
         return entities;
     }

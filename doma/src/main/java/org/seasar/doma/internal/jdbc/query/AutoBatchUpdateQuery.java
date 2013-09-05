@@ -19,8 +19,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import org.seasar.doma.internal.jdbc.entity.AbstractPostUpdateContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreUpdateContext;
@@ -50,25 +48,26 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
     public void prepare() {
         assertNotNull(method, config, callerClassName, callerMethodName,
                 entities, sqls);
-        Iterator<E> it = entities.iterator();
-        if (it.hasNext()) {
-            executable = true;
-            executionSkipCause = null;
-            currentEntity = it.next();
-            preUpdate();
-            prepareIdAndVersionPropertyTypes();
-            validateIdExistent();
-            prepareOptions();
-            prepareOptimisticLock();
-            prepareTargetPropertyTypes();
-            prepareSql();
-        } else {
+        int size = entities.size();
+        if (size == 0) {
             return;
         }
-        while (it.hasNext()) {
-            currentEntity = it.next();
+        executable = true;
+        executionSkipCause = null;
+        currentEntity = entities.get(0);
+        preUpdate();
+        prepareIdAndVersionPropertyTypes();
+        validateIdExistent();
+        prepareOptions();
+        prepareOptimisticLock();
+        prepareTargetPropertyTypes();
+        prepareSql();
+        entities.set(0, currentEntity);
+        for (int i = 1; i < size; i++) {
+            currentEntity = entities.get(i);
             preUpdate();
             prepareSql();
+            entities.set(i, currentEntity);
         }
         assertEquals(entities.size(), sqls.size());
     }
@@ -77,7 +76,7 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
         AutoBatchPreUpdateContext<E> context = new AutoBatchPreUpdateContext<E>(
                 entityType, method, config);
         entityType.preUpdate(currentEntity, context);
-        if (entityType.isImmutable() && context.getNewEntity() != null) {
+        if (context.getNewEntity() != null) {
             currentEntity = context.getNewEntity();
         }
     }
@@ -154,16 +153,14 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
     @Override
     public void incrementVersions() {
         if (versionPropertyType != null && !versionIgnored) {
-            if (entityType.isImmutable()) {
-                List<E> newEntities = new ArrayList<E>(entities.size());
-                for (E entity : entities) {
-                    E newEntity = versionPropertyType
-                            .incrementAndMakeNewEntity(entityType, entity);
-                    newEntities.add(newEntity);
-                }
-                entities = newEntities;
-            } else {
-                for (E entity : entities) {
+            boolean immutable = entityType.isImmutable();
+            for (int i = 0, size = entities.size(); i < size; i++) {
+                E entity = entities.get(i);
+                if (immutable) {
+                    E newEntity = versionPropertyType.incrementAndNewEntity(
+                            entity, entityType);
+                    entities.set(i, newEntity);
+                } else {
                     versionPropertyType.increment(entity);
                 }
             }
@@ -175,9 +172,7 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
         for (int i = 0, len = entities.size(); i < len; i++) {
             currentEntity = entities.get(i);
             postUpdate();
-            if (entityType.isImmutable()) {
-                entities.set(i, currentEntity);
-            }
+            entities.set(i, currentEntity);
         }
     }
 
@@ -185,7 +180,7 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
         AutoBatchPostUpdateContext<E> context = new AutoBatchPostUpdateContext<E>(
                 entityType, method, config);
         entityType.postUpdate(currentEntity, context);
-        if (entityType.isImmutable() && context.getNewEntity() != null) {
+        if (context.getNewEntity() != null) {
             currentEntity = context.getNewEntity();
         }
     }

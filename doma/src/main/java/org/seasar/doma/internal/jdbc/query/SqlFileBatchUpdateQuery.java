@@ -18,8 +18,6 @@ package org.seasar.doma.internal.jdbc.query;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.seasar.doma.internal.jdbc.entity.AbstractPostUpdateContext;
@@ -49,25 +47,26 @@ public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
     @Override
     public void prepare() {
         super.prepare();
-        Iterator<E> it = elements.iterator();
-        if (it.hasNext()) {
-            executable = true;
-            sqlExecutionSkipCause = null;
-            currentEntity = it.next();
-            preUpdate();
-            prepareSqlFile();
-            prepareOptions();
-            prepareOptimisticLock();
-            prepareSql();
-        } else {
+        int size = elements.size();
+        if (size == 0) {
             return;
         }
-        while (it.hasNext()) {
-            currentEntity = it.next();
+        executable = true;
+        sqlExecutionSkipCause = null;
+        currentEntity = elements.get(0);
+        preUpdate();
+        prepareSqlFile();
+        prepareOptions();
+        prepareOptimisticLock();
+        prepareSql();
+        elements.set(0, currentEntity);
+        for (int i = 1; i < size; i++) {
+            currentEntity = elements.get(i);
             preUpdate();
             prepareSql();
+            elements.set(0, currentEntity);
         }
-        assertEquals(elements.size(), sqls.size());
+        assertEquals(size, sqls.size());
     }
 
     protected void preUpdate() {
@@ -99,9 +98,7 @@ public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
             for (int i = 0, len = elements.size(); i < len; i++) {
                 currentEntity = elements.get(i);
                 entityHandler.postUpdate();
-                if (entityHandler.entityType.isImmutable()) {
-                    elements.set(i, currentEntity);
-                }
+                elements.set(i, currentEntity);
             }
         }
     }
@@ -140,7 +137,7 @@ public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
             SqlFileBatchPreUpdateContext<E> context = new SqlFileBatchPreUpdateContext<E>(
                     entityType, method, config);
             entityType.preUpdate(currentEntity, context);
-            if (entityType.isImmutable() && context.getNewEntity() != null) {
+            if (context.getNewEntity() != null) {
                 currentEntity = context.getNewEntity();
             }
         }
@@ -149,7 +146,7 @@ public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
             SqlFileBatchPostUpdateContext<E> context = new SqlFileBatchPostUpdateContext<E>(
                     entityType, method, config);
             entityType.postUpdate(currentEntity, context);
-            if (entityType.isImmutable() && context.getNewEntity() != null) {
+            if (context.getNewEntity() != null) {
                 currentEntity = context.getNewEntity();
             }
         }
@@ -164,16 +161,14 @@ public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
 
         protected void incrementVersions() {
             if (versionPropertyType != null && !versionIgnored) {
-                if (entityType.isImmutable()) {
-                    List<E> newEntities = new ArrayList<E>(elements.size());
-                    for (E entity : elements) {
+                boolean immutable = entityType.isImmutable();
+                for (int i = 0, size = elements.size(); i < size; i++) {
+                    E entity = elements.get(i);
+                    if (immutable) {
                         E newEntity = versionPropertyType
-                                .incrementAndMakeNewEntity(entityType, entity);
-                        newEntities.add(newEntity);
-                    }
-                    elements = newEntities;
-                } else {
-                    for (E entity : elements) {
+                                .incrementAndNewEntity(entity, entityType);
+                        elements.set(i, newEntity);
+                    } else {
                         versionPropertyType.increment(entity);
                     }
                 }

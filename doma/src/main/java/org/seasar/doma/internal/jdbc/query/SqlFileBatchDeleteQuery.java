@@ -18,7 +18,6 @@ package org.seasar.doma.internal.jdbc.query;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.lang.reflect.Method;
-import java.util.Iterator;
 
 import org.seasar.doma.internal.jdbc.entity.AbstractPostDeleteContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreDeleteContext;
@@ -47,25 +46,26 @@ public class SqlFileBatchDeleteQuery<E> extends SqlFileBatchModifyQuery<E>
     @Override
     public void prepare() {
         super.prepare();
-        Iterator<E> it = elements.iterator();
-        if (it.hasNext()) {
-            executable = true;
-            sqlExecutionSkipCause = null;
-            currentEntity = it.next();
-            preDelete();
-            prepareSqlFile();
-            prepareOptions();
-            prepareOptimisticLock();
-            prepareSql();
-        } else {
+        int size = elements.size();
+        if (size == 0) {
             return;
         }
-        while (it.hasNext()) {
-            currentEntity = it.next();
+        executable = true;
+        sqlExecutionSkipCause = null;
+        currentEntity = elements.get(0);
+        preDelete();
+        prepareSqlFile();
+        prepareOptions();
+        prepareOptimisticLock();
+        prepareSql();
+        elements.set(0, currentEntity);
+        for (int i = 1; i < size; i++) {
+            currentEntity = elements.get(i);
             preDelete();
             prepareSql();
+            elements.set(i, currentEntity);
         }
-        assertEquals(elements.size(), sqls.size());
+        assertEquals(size, sqls.size());
     }
 
     protected void preDelete() {
@@ -83,9 +83,10 @@ public class SqlFileBatchDeleteQuery<E> extends SqlFileBatchModifyQuery<E>
     @Override
     public void complete() {
         if (entityHandler != null) {
-            for (E element : elements) {
-                currentEntity = element;
+            for (int i = 0, len = elements.size(); i < len; i++) {
+                currentEntity = elements.get(i);
                 entityHandler.postDelete();
+                elements.set(i, currentEntity);
             }
         }
     }
@@ -120,7 +121,7 @@ public class SqlFileBatchDeleteQuery<E> extends SqlFileBatchModifyQuery<E>
             SqlFileBatchPreDeleteContext<E> context = new SqlFileBatchPreDeleteContext<E>(
                     entityType, method, config);
             entityType.preDelete(currentEntity, context);
-            if (entityType.isImmutable() && context.getNewEntity() != null) {
+            if (context.getNewEntity() != null) {
                 currentEntity = context.getNewEntity();
             }
         }
@@ -129,7 +130,7 @@ public class SqlFileBatchDeleteQuery<E> extends SqlFileBatchModifyQuery<E>
             SqlFileBatchPostDeleteContext<E> context = new SqlFileBatchPostDeleteContext<E>(
                     entityType, method, config);
             entityType.postDelete(currentEntity, context);
-            if (entityType.isImmutable() && context.getNewEntity() != null) {
+            if (context.getNewEntity() != null) {
                 currentEntity = context.getNewEntity();
             }
         }

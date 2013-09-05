@@ -108,13 +108,6 @@ public abstract class AbstractQueryMeta implements QueryMeta {
         return queryKind.isTrigger();
     }
 
-    public boolean supportsImmutable() {
-        if (queryKind == null) {
-            return false;
-        }
-        return queryKind.supportsImmutable();
-    }
-
     @Override
     public QueryKind getQueryKind() {
         return queryKind;

@@ -19,7 +19,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.lang.reflect.Method;
 import java.sql.Statement;
-import java.util.Iterator;
 import java.util.List;
 
 import org.seasar.doma.internal.jdbc.entity.AbstractPostInsertContext;
@@ -44,24 +43,25 @@ public class SqlFileBatchInsertQuery<E> extends SqlFileBatchModifyQuery<E>
     @Override
     public void prepare() {
         super.prepare();
-        Iterator<E> it = elements.iterator();
-        if (it.hasNext()) {
-            executable = true;
-            sqlExecutionSkipCause = null;
-            currentEntity = it.next();
-            preInsert();
-            prepareSqlFile();
-            prepareOptions();
-            prepareSql();
-        } else {
+        int size = elements.size();
+        if (size == 0) {
             return;
         }
-        while (it.hasNext()) {
-            currentEntity = it.next();
+        executable = true;
+        sqlExecutionSkipCause = null;
+        currentEntity = elements.get(0);
+        preInsert();
+        prepareSqlFile();
+        prepareOptions();
+        prepareSql();
+        elements.set(0, currentEntity);
+        for (int i = 1; i < size; i++) {
+            currentEntity = elements.get(i);
             preInsert();
             prepareSql();
+            elements.set(i, currentEntity);
         }
-        assertEquals(elements.size(), sqls.size());
+        assertEquals(size, sqls.size());
     }
 
     protected void preInsert() {
@@ -84,9 +84,7 @@ public class SqlFileBatchInsertQuery<E> extends SqlFileBatchModifyQuery<E>
             for (int i = 0, len = elements.size(); i < len; i++) {
                 currentEntity = elements.get(i);
                 entityHandler.postInsert();
-                if (entityHandler.entityType.isImmutable()) {
-                    elements.set(i, currentEntity);
-                }
+                elements.set(i, currentEntity);
             }
         }
     }
@@ -114,7 +112,7 @@ public class SqlFileBatchInsertQuery<E> extends SqlFileBatchModifyQuery<E>
             SqlFileBatchPreInsertContext<E> context = new SqlFileBatchPreInsertContext<E>(
                     entityType, method, config);
             entityType.preInsert(currentEntity, context);
-            if (entityType.isImmutable() && context.getNewEntity() != null) {
+            if (context.getNewEntity() != null) {
                 currentEntity = context.getNewEntity();
             }
         }
@@ -123,7 +121,7 @@ public class SqlFileBatchInsertQuery<E> extends SqlFileBatchModifyQuery<E>
             SqlFileBatchPostInsertContext<E> context = new SqlFileBatchPostInsertContext<E>(
                     entityType, method, config);
             entityType.postInsert(currentEntity, context);
-            if (entityType.isImmutable() && context.getNewEntity() != null) {
+            if (context.getNewEntity() != null) {
                 currentEntity = context.getNewEntity();
             }
         }

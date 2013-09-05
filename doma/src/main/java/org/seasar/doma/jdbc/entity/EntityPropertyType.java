@@ -39,24 +39,14 @@ public interface EntityPropertyType<E, V> extends ColumnCriterion<V>,
         OrderItemCriterion<V> {
 
     /**
-     * エンティティからこのプロパティ型に対応する値を返します。
+     * エンティティからこのプロパティ型に対応する値をコピーして返します。
      * 
      * @param entity
      *            エンティティ
      * @return プロパティの値
      * @since 1.34.0
      */
-    Object getValue(E entity);
-
-    /**
-     * エンティティプロパティのマップからこのプロパティ型に対応する値を返します。
-     * 
-     * @param properties
-     *            エンティティプロパティのマップ
-     * @return プロパティの値
-     * @since 1.34.0
-     */
-    Object getValue(Map<String, Object> properties);
+    Object getCopy(E entity);
 
     /**
      * 値のラッパーを返します。

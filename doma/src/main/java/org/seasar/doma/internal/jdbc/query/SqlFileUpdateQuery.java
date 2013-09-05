@@ -125,7 +125,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
             SqlFilePreUpdateContext<E> context = new SqlFilePreUpdateContext<E>(
                     entityType, method, config);
             entityType.preUpdate(entity, context);
-            if (entityType.isImmutable() && context.getNewEntity() != null) {
+            if (context.getNewEntity() != null) {
                 entity = context.getNewEntity();
             }
 
@@ -135,7 +135,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
             SqlFilePostUpdateContext<E> context = new SqlFilePostUpdateContext<E>(
                     entityType, method, config);
             entityType.postUpdate(entity, context);
-            if (entityType.isImmutable() && context.getNewEntity() != null) {
+            if (context.getNewEntity() != null) {
                 entity = context.getNewEntity();
             }
 
@@ -152,8 +152,8 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements
         protected void incrementVersion() {
             if (versionPropertyType != null && !versionIgnored) {
                 if (entityType.isImmutable()) {
-                    entity = versionPropertyType.incrementAndMakeNewEntity(
-                            entityType, entity);
+                    entity = versionPropertyType.incrementAndNewEntity(entity,
+                            entityType);
                 } else {
                     versionPropertyType.increment(entity);
                 }

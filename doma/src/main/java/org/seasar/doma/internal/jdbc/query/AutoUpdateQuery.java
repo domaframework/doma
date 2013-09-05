@@ -70,7 +70,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
         AutoPreUpdateContext<E> context = new AutoPreUpdateContext<E>(
                 entityType, method, config, targetPropertyTypes);
         entityType.preUpdate(entity, context);
-        if (entityType.isImmutable() && context.getNewEntity() != null) {
+        if (context.getNewEntity() != null) {
             entity = context.getNewEntity();
         }
     }
@@ -181,8 +181,8 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
     public void incrementVersion() {
         if (!versionIgnored && versionPropertyType != null) {
             if (entityType.isImmutable()) {
-                entity = versionPropertyType.incrementAndMakeNewEntity(
-                        entityType, entity);
+                entity = versionPropertyType.incrementAndNewEntity(entity,
+                        entityType);
             } else {
                 versionPropertyType.increment(entity);
             }
@@ -206,7 +206,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
         AutoPostUpdateContext<E> context = new AutoPostUpdateContext<E>(
                 entityType, method, config, targetPropertyTypes);
         entityType.postUpdate(entity, context);
-        if (entityType.isImmutable() && context.getNewEntity() != null) {
+        if (context.getNewEntity() != null) {
             entity = context.getNewEntity();
         }
     }

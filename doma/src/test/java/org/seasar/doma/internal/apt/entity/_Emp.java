@@ -108,7 +108,6 @@ public class _Emp extends AbstractEntityType<Emp> {
         return null;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public Emp newEntity() {
 

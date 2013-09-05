@@ -69,7 +69,7 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
         AutoPreInsertContext<E> context = new AutoPreInsertContext<E>(
                 entityType, method, config);
         entityType.preInsert(entity, context);
-        if (entityType.isImmutable() && context.getNewEntity() != null) {
+        if (context.getNewEntity() != null) {
             entity = context.getNewEntity();
         }
     }
@@ -124,8 +124,8 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
     protected void prepareIdValue() {
         if (generatedIdPropertyType != null && idGenerationConfig != null) {
             if (entityType.isImmutable()) {
-                entity = generatedIdPropertyType.preInsertAndMakeEntity(
-                        entityType, entity, idGenerationConfig);
+                entity = generatedIdPropertyType.preInsertAndNewEntity(entity,
+                        idGenerationConfig, entityType);
             } else {
                 generatedIdPropertyType.preInsert(entity, idGenerationConfig);
             }
@@ -136,7 +136,7 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
         if (versionPropertyType != null) {
             if (entityType.isImmutable()) {
                 E newEntity = versionPropertyType
-                        .setIfNecessaryAndMakeNewEntity(entityType, entity, 1);
+                        .setIfNecessaryAndMakeNewEntity(entity, 1, entityType);
                 if (newEntity != null) {
                     entity = newEntity;
                 }
@@ -171,8 +171,8 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
     public void generateId(Statement statement) {
         if (generatedIdPropertyType != null && idGenerationConfig != null) {
             if (entityType.isImmutable()) {
-                entity = generatedIdPropertyType.postInsertAndMakeEntity(
-                        entityType, entity, idGenerationConfig, statement);
+                entity = generatedIdPropertyType.postInsertAndNewEntity(entity,
+                        idGenerationConfig, statement, entityType);
             } else {
                 generatedIdPropertyType.postInsert(entity, idGenerationConfig,
                         statement);
@@ -193,7 +193,7 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
         AutoPostInsertContext<E> context = new AutoPostInsertContext<E>(
                 entityType, method, config);
         entityType.postInsert(entity, context);
-        if (entityType.isImmutable() && context.getNewEntity() != null) {
+        if (context.getNewEntity() != null) {
             entity = context.getNewEntity();
         }
     }

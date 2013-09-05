@@ -20,7 +20,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.lang.reflect.Method;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.seasar.doma.internal.jdbc.entity.AbstractPostInsertContext;
@@ -57,27 +56,28 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
     public void prepare() {
         assertNotNull(method, config, callerClassName, callerMethodName,
                 entities, sqls);
-        Iterator<E> it = entities.iterator();
-        if (it.hasNext()) {
-            executable = true;
-            executionSkipCause = null;
-            currentEntity = it.next();
-            preInsert();
-            prepareIdAndVersionPropertyTypes();
-            prepareOptions();
-            prepareTargetPropertyTypes();
-            prepareIdValue();
-            prepareVersionValue();
-            prepareSql();
-        } else {
+        int size = entities.size();
+        if (size == 0) {
             return;
         }
-        while (it.hasNext()) {
-            currentEntity = it.next();
+        executable = true;
+        executionSkipCause = null;
+        currentEntity = entities.get(0);
+        preInsert();
+        prepareIdAndVersionPropertyTypes();
+        prepareOptions();
+        prepareTargetPropertyTypes();
+        prepareIdValue();
+        prepareVersionValue();
+        prepareSql();
+        entities.set(0, currentEntity);
+        for (int i = 1; i < size; i++) {
+            currentEntity = entities.get(i);
             preInsert();
             prepareIdValue();
             prepareVersionValue();
             prepareSql();
+            entities.set(i, currentEntity);
         }
         currentEntity = null;
         assertEquals(entities.size(), sqls.size());
@@ -87,7 +87,7 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
         AutoBatchPreInsertContext<E> context = new AutoBatchPreInsertContext<E>(
                 entityType, method, config);
         entityType.preInsert(currentEntity, context);
-        if (entityType.isImmutable() && context.getNewEntity() != null) {
+        if (context.getNewEntity() != null) {
             currentEntity = context.getNewEntity();
         }
     }
@@ -139,8 +139,8 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
     protected void prepareIdValue() {
         if (generatedIdPropertyType != null && idGenerationConfig != null) {
             if (entityType.isImmutable()) {
-                currentEntity = generatedIdPropertyType.preInsertAndMakeEntity(
-                        entityType, currentEntity, idGenerationConfig);
+                currentEntity = generatedIdPropertyType.preInsertAndNewEntity(
+                        currentEntity, idGenerationConfig, entityType);
             } else {
                 generatedIdPropertyType.preInsert(currentEntity,
                         idGenerationConfig);
@@ -152,8 +152,8 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
         if (versionPropertyType != null) {
             if (entityType.isImmutable()) {
                 E newEntity = versionPropertyType
-                        .setIfNecessaryAndMakeNewEntity(entityType,
-                                currentEntity, 1);
+                        .setIfNecessaryAndMakeNewEntity(currentEntity, 1,
+                                entityType);
                 if (newEntity != null) {
                     currentEntity = newEntity;
                 }
@@ -194,9 +194,9 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
     public void generateId(Statement statement, int index) {
         if (generatedIdPropertyType != null && idGenerationConfig != null) {
             if (entityType.isImmutable()) {
-                E entity = generatedIdPropertyType.postInsertAndMakeEntity(
-                        entityType, entities.get(index), idGenerationConfig,
-                        statement);
+                E entity = generatedIdPropertyType.postInsertAndNewEntity(
+                        entities.get(index), idGenerationConfig, statement,
+                        entityType);
                 entities.set(index, entity);
             } else {
                 generatedIdPropertyType.postInsert(entities.get(index),
@@ -214,9 +214,7 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
         for (int i = 0, len = entities.size(); i < len; i++) {
             currentEntity = entities.get(i);
             postInsert();
-            if (entityType.isImmutable()) {
-                entities.set(i, currentEntity);
-            }
+            entities.set(i, currentEntity);
         }
     }
 
@@ -224,7 +222,7 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
         AutoBatchPostInsertContext<E> context = new AutoBatchPostInsertContext<E>(
                 entityType, method, config);
         entityType.postInsert(currentEntity, context);
-        if (entityType.isImmutable() && context.getNewEntity() != null) {
+        if (context.getNewEntity() != null) {
             currentEntity = context.getNewEntity();
         }
     }

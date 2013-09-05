@@ -122,16 +122,14 @@ public interface EntityType<E> extends TableCriterion<E> {
     List<EntityPropertyType<E, ?>> getEntityPropertyTypes();
 
     /**
-     * エンティティをインスタンス化して返します。
+     * デフォルトコンストラクタでエンティティをインスタンス化します。
      * 
      * @return エンティティ
-     * @deprecated 代わりに {@link EntityType#newEntity(Map)} を使ってください。
      */
-    @Deprecated
     E newEntity();
 
     /**
-     * コンストラクタを使って新しいエンティティをインスタンス化します。
+     * パラメータを持つコンストラクタを使って新しいエンティティをインスタンス化します。
      * 
      * @param __args
      *            コンストラクタの引数
@@ -141,14 +139,14 @@ public interface EntityType<E> extends TableCriterion<E> {
     E newEntity(Map<String, Object> __args);
 
     /**
-     * エンティティプロパティのマップを返します。
+     * エンティティの各プロパティをコピーしてマップとして返します。
      * 
      * @param entity
      *            エンティティ
-     * @return エンティティのマップ
+     * @return エンティティプロパティのマップ
      * @since 1.34.0
      */
-    Map<String, Object> getProperties(E entity);
+    Map<String, Object> getCopy(E entity);
 
     /**
      * エンティティのクラスを返します。

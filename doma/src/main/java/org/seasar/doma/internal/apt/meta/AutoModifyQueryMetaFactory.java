@@ -88,8 +88,7 @@ public class AutoModifyQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         QueryReturnMeta returnMeta = createReturnMeta(method);
         EntityType entityType = queryMeta.getEntityType();
-        if (entityType != null && entityType.isImmutable()
-                && queryMeta.supportsImmutable()) {
+        if (entityType != null && entityType.isImmutable()) {
             if (!returnMeta.isResult(entityType)) {
                 throw new AptException(Message.DOMA4222, env,
                         returnMeta.getElement());

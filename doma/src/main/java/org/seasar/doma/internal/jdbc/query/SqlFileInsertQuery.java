@@ -95,7 +95,7 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
             SqlFilePreInsertContext<E> context = new SqlFilePreInsertContext<E>(
                     entityType, method, config);
             entityType.preInsert(entity, context);
-            if (entityType.isImmutable() && context.getNewEntity() != null) {
+            if (context.getNewEntity() != null) {
                 entity = context.getNewEntity();
             }
         }
@@ -104,7 +104,7 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements
             SqlFilePostInsertContext<E> context = new SqlFilePostInsertContext<E>(
                     entityType, method, config);
             entityType.postInsert(entity, context);
-            if (entityType.isImmutable() && context.getNewEntity() != null) {
+            if (context.getNewEntity() != null) {
                 entity = context.getNewEntity();
             }
 

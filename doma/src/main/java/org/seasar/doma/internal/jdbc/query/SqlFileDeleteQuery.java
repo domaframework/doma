@@ -106,7 +106,7 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
             SqlFilePreDeleteContext<E> context = new SqlFilePreDeleteContext<E>(
                     entityType, method, config);
             entityType.preDelete(entity, context);
-            if (entityType.isImmutable() && context.getNewEntity() != null) {
+            if (context.getNewEntity() != null) {
                 entity = context.getNewEntity();
             }
         }
@@ -115,7 +115,7 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
             SqlFilePostDeleteContext<E> context = new SqlFilePostDeleteContext<E>(
                     entityType, method, config);
             entityType.postDelete(entity, context);
-            if (entityType.isImmutable() && context.getNewEntity() != null) {
+            if (context.getNewEntity() != null) {
                 entity = context.getNewEntity();
             }
         }

@@ -17,6 +17,7 @@ package org.seasar.doma.jdbc.entity;
 
 import java.lang.reflect.Method;
 
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Update;
 import org.seasar.doma.jdbc.Config;
 
@@ -67,11 +68,11 @@ public interface PostUpdateContext<E> {
 
     /**
      * 新しいエンティティを設定します。
-     * <p>
-     * このメソッドは {@code Entity#immutable()} が {@code true} の場合に使用できます。
      * 
      * @param entity
      *            エンティティ
+     * @throws DomaNullPointerException
+     *             引数が {@code null} の場合
      * @since 1.34.0
      */
     public void setNewEntity(E entity);

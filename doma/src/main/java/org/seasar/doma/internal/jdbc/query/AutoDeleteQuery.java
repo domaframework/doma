@@ -60,7 +60,7 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
         AutoPreDeleteContext<E> context = new AutoPreDeleteContext<E>(
                 entityType, method, config);
         entityType.preDelete(entity, context);
-        if (entityType.isImmutable() && context.getNewEntity() != null) {
+        if (context.getNewEntity() != null) {
             entity = context.getNewEntity();
         }
     }
@@ -110,7 +110,7 @@ public class AutoDeleteQuery<E> extends AutoModifyQuery<E> implements
         AutoPostDeleteContext<E> context = new AutoPostDeleteContext<E>(
                 entityType, method, config);
         entityType.postDelete(entity, context);
-        if (entityType.isImmutable() && context.getNewEntity() != null) {
+        if (context.getNewEntity() != null) {
             entity = context.getNewEntity();
         }
     }

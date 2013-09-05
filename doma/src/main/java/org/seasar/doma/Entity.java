@@ -27,7 +27,7 @@ import org.seasar.doma.jdbc.entity.NullEntityListener;
 /**
  * エンティティクラスを示します。エンティティクラスのインスタンスは、テーブルもしくは結果セットのレコードを表現します。
  * <p>
- * エンティティクラスは、 次の制約を満たす必要があります。
+ * ミュータブルなエンティティクラスは、 次の制約を満たす必要があります。
  * <ul>
  * <li>トップレベルのクラスである。
  * <li>引数なしの 非 {@code private} なコンストラクタを持つ。
@@ -53,7 +53,38 @@ import org.seasar.doma.jdbc.entity.NullEntityListener;
  *     ...
  * }
  * </pre>
+ * <p>
+ * イミュータブルなエンティティクラスは、 次の制約を満たす必要があります。
+ * <ul>
+ * <li>トップレベルのクラスである。
+ * <li>非 {@code private} なコンストラクタを持ち、コンストラクタのパラメータの型と名前は永続フィールドに対応する。
+ * </ul>
  * 
+ * <h5>例:</h5>
+ * 
+ * <pre>
+ * &#064;Entity(immutable = true)
+ * public class Employee {
+ * 
+ *     &#064;Id
+ *     &#064;Column(name = &quot;ID&quot;)
+ *     final Integer id;
+ * 
+ *     &#064;Column(name = &quot;EMPLOYEE_NAME&quot;)
+ *     final String employeeName;
+ * 
+ *     &#064;Version
+ *     &#064;Column(name = &quot;VERSION&quot;)
+ *     final int version;
+ * 
+ *     public Employee(Integer id, String employeeName, int version) {
+ *         this.id = id;
+ *         this.employeeName = employeeName;
+ *         this.version = version;
+ *     }
+ *     ...
+ * }
+ * </pre>
  * <p>
  * 注釈されたインタフェースの実装はスレッドセーフであることを要求されません。
  * <p>
@@ -84,6 +115,10 @@ public @interface Entity {
      */
     NamingType naming() default NamingType.NONE;
 
-    // TODO
+    /**
+     * イミュータブルかどうかです。
+     * 
+     * @return イミュータブルの場合 {@code true}
+     */
     boolean immutable() default false;
 }

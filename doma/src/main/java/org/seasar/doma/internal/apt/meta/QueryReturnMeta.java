@@ -155,7 +155,6 @@ public class QueryReturnMeta {
         return type.getKind() == TypeKind.VOID;
     }
 
-    // TODO
     public boolean isResult(EntityType entityType) {
         if (!TypeMirrorUtil.isSameType(env.getTypeUtils().erasure(type),
                 Result.class, env)) {
@@ -174,7 +173,6 @@ public class QueryReturnMeta {
                 env);
     }
 
-    // TODO
     public boolean isBatchResult(EntityType entityType) {
         if (!TypeMirrorUtil.isSameType(env.getTypeUtils().erasure(type),
                 BatchResult.class, env)) {

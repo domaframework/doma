@@ -112,7 +112,6 @@ public class _OriginalStatesParentEntity extends
         return null;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public OriginalStatesParentEntity newEntity() {
 

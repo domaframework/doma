@@ -803,8 +803,7 @@ public class DaoGenerator extends AbstractGenerator {
                     .getName());
 
             EntityType entityType = m.getEntityType();
-            if (entityType != null && entityType.isImmutable()
-                    && m.supportsImmutable()) {
+            if (entityType != null && entityType.isImmutable()) {
                 iprint("%1$s __result = new %1$s(__command.execute(), __query.getEntity());%n",
                         m.getReturnMeta().getTypeName());
             } else {
@@ -876,8 +875,7 @@ public class DaoGenerator extends AbstractGenerator {
                     .getName());
 
             EntityType entityType = m.getEntityType();
-            if (entityType != null && entityType.isImmutable()
-                    && m.supportsImmutable()) {
+            if (entityType != null && entityType.isImmutable()) {
                 iprint("%1$s __result = new %1$s(__command.execute(), __query.getEntity(%2$s.class));%n",
                         m.getReturnMeta().getTypeName(),
                         entityType.getTypeNameAsTypeParameter());
@@ -949,8 +947,7 @@ public class DaoGenerator extends AbstractGenerator {
                     .getName());
 
             EntityType entityType = m.getEntityType();
-            if (entityType != null && entityType.isImmutable()
-                    && m.supportsImmutable()) {
+            if (entityType != null && entityType.isImmutable()) {
                 iprint("%1$s __result = new %1$s(__command.execute(), __query.getEntities());%n",
                         m.getReturnMeta().getTypeName());
             } else {
@@ -1019,8 +1016,7 @@ public class DaoGenerator extends AbstractGenerator {
                     .getName());
 
             EntityType entityType = m.getEntityType();
-            if (entityType != null && entityType.isImmutable()
-                    && m.supportsImmutable()) {
+            if (entityType != null && entityType.isImmutable()) {
                 iprint("%1$s __result = new %1$s(__command.execute(), __query.getEntities());%n",
                         m.getReturnMeta().getTypeName());
             } else {

@@ -36,10 +36,14 @@ import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
- * @author taedium
+ * エンティティのビルダーです。
  * 
+ * @author taedium
+ * @since 1.34.0
+ * @param <E>
+ *            エンティティの型
  */
-public class EntityBuilder<E> implements ResultBuilder<ResultSet, E> {
+public class EntityBuilder<E> {
 
     protected final Query query;
 
@@ -53,7 +57,6 @@ public class EntityBuilder<E> implements ResultBuilder<ResultSet, E> {
         this.entityType = entityType;
     }
 
-    @Override
     public E build(ResultSet resultSet) throws SQLException {
         assertNotNull(resultSet);
         if (indexMap == null) {

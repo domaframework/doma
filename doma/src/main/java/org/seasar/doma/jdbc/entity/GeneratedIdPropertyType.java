@@ -167,10 +167,21 @@ public class GeneratedIdPropertyType<PE, E extends PE, V extends Number, D>
         }
     }
 
-    public E preInsertAndMakeEntity(EntityType<E> entityType, E entity,
-            IdGenerationConfig config) {
+    /**
+     * INSERTの実行前に識別子を生成し、新しいエンティティを返します。
+     * 
+     * @param entity
+     *            エンティティ
+     * @param config
+     *            識別子の生成に関する設定
+     * @param entityType
+     *            エンティティタイプ
+     * @since 1.34.0
+     */
+    public E preInsertAndNewEntity(E entity, IdGenerationConfig config,
+            EntityType<E> entityType) {
         Long value = idGenerator.generatePreInsert(config);
-        return makeEntity(entityType, entity, value);
+        return newEntity(entity, value, entityType);
     }
 
     /**
@@ -183,7 +194,6 @@ public class GeneratedIdPropertyType<PE, E extends PE, V extends Number, D>
      * @param statement
      *            INSERT文を実行した文
      */
-    // TODO
     public void postInsert(E entity, IdGenerationConfig config,
             Statement statement) {
         Long value = idGenerator.generatePostInsert(config, statement);
@@ -193,14 +203,39 @@ public class GeneratedIdPropertyType<PE, E extends PE, V extends Number, D>
         }
     }
 
-    public E postInsertAndMakeEntity(EntityType<E> entityType, E entity,
-            IdGenerationConfig config, Statement statement) {
+    /**
+     * INSERTの実行後に識別子の生成を行い、新しいエンティティを返します。
+     * 
+     * @param entity
+     *            エンティティ
+     * @param config
+     *            識別子の生成に関する設定
+     * @param statement
+     *            INSERT文を実行した文
+     * @param entityType
+     *            エンティティタイプ
+     * @since 1.34.0
+     */
+    public E postInsertAndNewEntity(E entity, IdGenerationConfig config,
+            Statement statement, EntityType<E> entityType) {
         Long value = idGenerator.generatePostInsert(config, statement);
-        return makeEntity(entityType, entity, value);
+        return newEntity(entity, value, entityType);
     }
 
-    protected E makeEntity(EntityType<E> entityType, E entity, Long value) {
-        Map<String, Object> properties = entityType.getProperties(entity);
+    /**
+     * 新しいエンティティをインスタンス化します。
+     * 
+     * @param entity
+     *            エンティティ
+     * @param value
+     *            値
+     * @param entityType
+     *            エンティティタイプ
+     * @return 新しいエンティティ
+     * @since 1.34.0
+     */
+    protected E newEntity(E entity, Long value, EntityType<E> entityType) {
+        Map<String, Object> properties = entityType.getCopy(entity);
         properties.put(name, value);
         return entityType.newEntity(properties);
     }

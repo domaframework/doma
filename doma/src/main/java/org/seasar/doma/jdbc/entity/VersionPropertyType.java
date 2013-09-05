@@ -78,13 +78,23 @@ public class VersionPropertyType<PE, E extends PE, V extends Number, D> extends
         }
     }
 
-    // TODO
-    public E setIfNecessaryAndMakeNewEntity(EntityType<E> entityType, E entity,
-            Number value) {
+    /**
+     * 必要であればバージョンの値を設定し、新しいエンティティを返します。
+     * 
+     * @param entity
+     *            エンティティ
+     * @param value
+     *            バージョンの値
+     * @param entityType
+     *            エンティティタイプ
+     * @since 1.34.0
+     */
+    public E setIfNecessaryAndMakeNewEntity(E entity, Number value,
+            EntityType<E> entityType) {
         NumberWrapper<V> wrapper = (NumberWrapper<V>) getWrapper(entity);
         V currentValue = wrapper.get();
         if (currentValue == null || currentValue.intValue() < 0) {
-            Map<String, Object> properties = entityType.getProperties(entity);
+            Map<String, Object> properties = entityType.getCopy(entity);
             properties.put(name, value);
             return entityType.newEntity(properties);
         }
@@ -105,17 +115,17 @@ public class VersionPropertyType<PE, E extends PE, V extends Number, D> extends
     /**
      * バージョン番号をインクリメントして新しいエンティティを返します。
      * 
-     * @param entityType
-     *            エンティティタイプ
      * @param entity
      *            エンティティ
+     * @param entityType
+     *            エンティティタイプ
      * @return 新しいエンティティ
      * @since 1.34.0
      */
-    public E incrementAndMakeNewEntity(EntityType<E> entityType, E entity) {
+    public E incrementAndNewEntity(E entity, EntityType<E> entityType) {
         NumberWrapper<V> wrapper = (NumberWrapper<V>) getWrapper(entity);
         V value = wrapper.getIncrementedValue();
-        Map<String, Object> properties = entityType.getProperties(entity);
+        Map<String, Object> properties = entityType.getCopy(entity);
         properties.put(name, value);
         return entityType.newEntity(properties);
     }

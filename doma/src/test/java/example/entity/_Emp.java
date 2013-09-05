@@ -30,7 +30,6 @@ import org.seasar.doma.jdbc.entity.BasicPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.jdbc.entity.NamingType;
-import org.seasar.doma.jdbc.entity.NullEntityListener;
 import org.seasar.doma.jdbc.entity.PostDeleteContext;
 import org.seasar.doma.jdbc.entity.PostInsertContext;
 import org.seasar.doma.jdbc.entity.PostUpdateContext;
@@ -46,8 +45,6 @@ import org.seasar.doma.wrapper.StringWrapper;
 public class _Emp extends AbstractEntityType<Emp> {
 
     private static _Emp singleton = new _Emp();
-
-    private final NullEntityListener __listener = new NullEntityListener();
 
     public final AssignedIdPropertyType<Object, Emp, Integer, Object> id = new AssignedIdPropertyType<Object, Emp, Integer, Object>(
             Emp.class, Integer.class, IntegerWrapper.class, null, null, "id",
@@ -106,7 +103,6 @@ public class _Emp extends AbstractEntityType<Emp> {
         return false;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public Emp newEntity() {
         return new Emp();
@@ -180,32 +176,26 @@ public class _Emp extends AbstractEntityType<Emp> {
 
     @Override
     public void preInsert(Emp entity, PreInsertContext<Emp> context) {
-        __listener.preInsert(entity, context);
     }
 
     @Override
     public void preUpdate(Emp entity, PreUpdateContext<Emp> context) {
-        __listener.preUpdate(entity, context);
     }
 
     @Override
     public void preDelete(Emp entity, PreDeleteContext<Emp> context) {
-        __listener.preDelete(entity, context);
     }
 
     @Override
     public void postInsert(Emp entity, PostInsertContext<Emp> context) {
-        __listener.postInsert(entity, context);
     }
 
     @Override
     public void postUpdate(Emp entity, PostUpdateContext<Emp> context) {
-        __listener.postUpdate(entity, context);
     }
 
     @Override
     public void postDelete(Emp entity, PostDeleteContext<Emp> context) {
-        __listener.postDelete(entity, context);
     }
 
     @Override

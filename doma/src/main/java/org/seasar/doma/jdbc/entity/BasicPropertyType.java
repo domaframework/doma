@@ -188,18 +188,13 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
     }
 
     @Override
-    public Object getValue(E entity) {
-        try {
-            return FieldUtil.get(field, entity);
-        } catch (WrapException wrapException) {
-            throw new EntityPropertyAccessException(wrapException.getCause(),
-                    entityClass.getName(), name);
+    public Object getCopy(E entity) {
+        Wrapper<V> wrapper = getWrapper(entity);
+        V value = wrapper.getCopy();
+        if (domainType != null) {
+            return domainType.newDomain(value);
         }
-    }
-
-    @Override
-    public Object getValue(Map<String, Object> properties) {
-        return properties.get(name);
+        return value;
     }
 
     /**
@@ -431,7 +426,7 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
      *            値の型
      * @param <D>
      *            ドメインの型
-     * @since 1.34.0
+     * @since 1.20.0
      */
     protected static class DomainAccessorFactory<E, V, D> implements
             AccessorFactory<E, V> {

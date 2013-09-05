@@ -268,9 +268,11 @@ public class EntityTypeGenerator extends AbstractGenerator {
     }
 
     protected void printListenerField() {
-        iprint("private final %1$s __listener;%n",
-                entityMeta.getEntityListener());
-        print("%n");
+        if (!hasSpecificEntityListener()) {
+            iprint("private final %1$s __listener;%n",
+                    entityMeta.getEntityListener());
+            print("%n");
+        }
     }
 
     protected void printNamingTypeField() {
@@ -331,7 +333,10 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
     protected void printConstructor() {
         iprint("private %1$s() {%n", simpleName);
-        iprint("    __listener = new %1$s();%n", entityMeta.getEntityListener());
+        if (!hasSpecificEntityListener()) {
+            iprint("    __listener = new %1$s();%n",
+                    entityMeta.getEntityListener());
+        }
         iprint("    __namingType = %1$s.%2$s;%n", NamingType.class.getName(),
                 entityMeta.getNamingType().name());
         iprint("    __immutable = %1$s;%n", entityMeta.isImmutable());
@@ -457,7 +462,9 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("public void preInsert(%1$s entity, %2$s<%1$s> context) {%n",
                 entityMeta.getEntityTypeName(),
                 PreInsertContext.class.getName());
-        iprint("    __listener.preInsert(entity, context);%n");
+        if (!hasSpecificEntityListener()) {
+            iprint("    __listener.preInsert(entity, context);%n");
+        }
         iprint("}%n");
         print("%n");
     }
@@ -467,7 +474,9 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("public void preUpdate(%1$s entity, %2$s<%1$s> context) {%n",
                 entityMeta.getEntityTypeName(),
                 PreUpdateContext.class.getName());
-        iprint("    __listener.preUpdate(entity, context);%n");
+        if (!hasSpecificEntityListener()) {
+            iprint("    __listener.preUpdate(entity, context);%n");
+        }
         iprint("}%n");
         print("%n");
     }
@@ -477,7 +486,9 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("public void preDelete(%1$s entity, %2$s<%1$s> context) {%n",
                 entityMeta.getEntityTypeName(),
                 PreDeleteContext.class.getName());
-        iprint("    __listener.preDelete(entity, context);%n");
+        if (!hasSpecificEntityListener()) {
+            iprint("    __listener.preDelete(entity, context);%n");
+        }
         iprint("}%n");
         print("%n");
     }
@@ -487,7 +498,9 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("public void postInsert(%1$s entity, %2$s<%1$s> context) {%n",
                 entityMeta.getEntityTypeName(),
                 PostInsertContext.class.getName());
-        iprint("    __listener.postInsert(entity, context);%n");
+        if (!hasSpecificEntityListener()) {
+            iprint("    __listener.postInsert(entity, context);%n");
+        }
         iprint("}%n");
         print("%n");
     }
@@ -497,7 +510,9 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("public void postUpdate(%1$s entity, %2$s<%1$s> context) {%n",
                 entityMeta.getEntityTypeName(),
                 PostUpdateContext.class.getName());
-        iprint("    __listener.postUpdate(entity, context);%n");
+        if (!hasSpecificEntityListener()) {
+            iprint("    __listener.postUpdate(entity, context);%n");
+        }
         iprint("}%n");
         print("%n");
     }
@@ -507,7 +522,9 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("public void postDelete(%1$s entity, %2$s<%1$s> context) {%n",
                 entityMeta.getEntityTypeName(),
                 PostDeleteContext.class.getName());
-        iprint("    __listener.postDelete(entity, context);%n");
+        if (!hasSpecificEntityListener()) {
+            iprint("    __listener.postDelete(entity, context);%n");
+        }
         iprint("}%n");
         print("%n");
     }
@@ -703,7 +720,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected boolean isDefaultEntityListener() {
+    protected boolean hasSpecificEntityListener() {
         return TypeMirrorUtil.isSameType(entityMeta.getEntityListener(),
                 NullEntityListener.class, env);
     }

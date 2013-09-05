@@ -18,7 +18,6 @@ package org.seasar.doma.internal.jdbc.query;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.lang.reflect.Method;
-import java.util.Iterator;
 
 import org.seasar.doma.internal.jdbc.entity.AbstractPostDeleteContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreDeleteContext;
@@ -48,33 +47,34 @@ public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
     public void prepare() {
         assertNotNull(method, config, callerClassName, callerMethodName,
                 entities, sqls);
-        Iterator<E> it = entities.iterator();
-        if (it.hasNext()) {
-            executable = true;
-            executionSkipCause = null;
-            currentEntity = it.next();
-            preDelete();
-            prepareIdAndVersionPropertyTypes();
-            validateIdExistent();
-            prepareOptions();
-            prepareOptimisticLock();
-            prepareSql();
-        } else {
+        int size = entities.size();
+        if (size == 0) {
             return;
         }
-        while (it.hasNext()) {
-            currentEntity = it.next();
+        executable = true;
+        executionSkipCause = null;
+        currentEntity = entities.get(0);
+        preDelete();
+        prepareIdAndVersionPropertyTypes();
+        validateIdExistent();
+        prepareOptions();
+        prepareOptimisticLock();
+        prepareSql();
+        entities.set(0, currentEntity);
+        for (int i = 1; i < size; i++) {
+            currentEntity = entities.get(i);
             preDelete();
             prepareSql();
+            entities.set(i, currentEntity);
         }
-        assertEquals(entities.size(), sqls.size());
+        assertEquals(size, sqls.size());
     }
 
     protected void preDelete() {
         AutoBatchPreDeleteContext<E> context = new AutoBatchPreDeleteContext<E>(
                 entityType, method, config);
         entityType.preDelete(currentEntity, context);
-        if (entityType.isImmutable() && context.getNewEntity() != null) {
+        if (context.getNewEntity() != null) {
             currentEntity = context.getNewEntity();
         }
     }
@@ -118,9 +118,10 @@ public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
 
     @Override
     public void complete() {
-        for (E entity : entities) {
-            currentEntity = entity;
+        for (int i = 0, len = entities.size(); i < len; i++) {
+            currentEntity = entities.get(i);
             postDelete();
+            entities.set(i, currentEntity);
         }
     }
 
@@ -128,7 +129,7 @@ public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
         AutoBatchPostDeleteContext<E> context = new AutoBatchPostDeleteContext<E>(
                 entityType, method, config);
         entityType.postDelete(currentEntity, context);
-        if (entityType.isImmutable() && context.getNewEntity() != null) {
+        if (context.getNewEntity() != null) {
             currentEntity = context.getNewEntity();
         }
     }

@@ -91,8 +91,7 @@ public class AutoBatchModifyQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         QueryReturnMeta returnMeta = createReturnMeta(method);
         EntityType entityType = queryMeta.getEntityType();
-        if (entityType != null && entityType.isImmutable()
-                && queryMeta.supportsImmutable()) {
+        if (entityType != null && entityType.isImmutable()) {
             if (!returnMeta.isBatchResult(entityType)) {
                 throw new AptException(Message.DOMA4223, env,
                         returnMeta.getElement());

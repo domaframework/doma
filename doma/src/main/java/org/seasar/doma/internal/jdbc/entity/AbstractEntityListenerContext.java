@@ -19,6 +19,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.lang.reflect.Method;
 
+import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.entity.EntityType;
 
@@ -62,6 +63,9 @@ public abstract class AbstractEntityListenerContext<E> {
     }
 
     public void setNewEntity(E entity) {
+        if (entity == null) {
+            throw new DomaNullPointerException("entity");
+        }
         this.entity = entity;
     }
 
