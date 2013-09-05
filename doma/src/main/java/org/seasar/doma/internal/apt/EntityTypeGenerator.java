@@ -595,6 +595,9 @@ public class EntityTypeGenerator extends AbstractGenerator {
     }
 
     protected void printNewEntityWithMapMethod() {
+        if (hasGenericTypeProperty()) {
+            iprint("@SuppressWarnings(\"unchecked\")%n");
+        }
         iprint("@Override%n");
         iprint("public %1$s newEntity(%2$s<String, Object> __args) {%n",
                 entityMeta.getEntityTypeName(), Map.class.getName());
@@ -623,6 +626,19 @@ public class EntityTypeGenerator extends AbstractGenerator {
         }
         iprint("}%n");
         print("%n");
+    }
+
+    public boolean hasGenericTypeProperty() {
+        for (EntityPropertyMeta propertyMeta : entityMeta.getAllPropertyMetas()) {
+            TypeElement element = TypeMirrorUtil.toTypeElement(
+                    propertyMeta.getType(), env);
+            if (element != null) {
+                if (!element.getTypeParameters().isEmpty()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     protected void printGetEntityClassMethod() {

@@ -172,9 +172,12 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
 
     @Override
     public void complete() {
-        for (E entity : entities) {
-            currentEntity = entity;
+        for (int i = 0, len = entities.size(); i < len; i++) {
+            currentEntity = entities.get(i);
             postUpdate();
+            if (entityType.isImmutable()) {
+                entities.set(i, currentEntity);
+            }
         }
     }
 

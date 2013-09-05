@@ -96,9 +96,12 @@ public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
     @Override
     public void complete() {
         if (entityHandler != null) {
-            for (E element : elements) {
-                currentEntity = element;
+            for (int i = 0, len = elements.size(); i < len; i++) {
+                currentEntity = elements.get(i);
                 entityHandler.postUpdate();
+                if (entityHandler.entityType.isImmutable()) {
+                    elements.set(i, currentEntity);
+                }
             }
         }
     }
