@@ -22,9 +22,13 @@ import java.util.Arrays;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDaoImpl;
+import org.seasar.doma.it.dao.DeptDao;
+import org.seasar.doma.it.dao.DeptDaoImpl;
 import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.entity.Department;
+import org.seasar.doma.it.entity.Dept;
 import org.seasar.doma.jdbc.BatchOptimisticLockException;
+import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.framework.unit.Seasar2;
 
 @RunWith(Seasar2.class)
@@ -56,6 +60,31 @@ public class SqlFileBatchUpdateTest {
         assertEquals(new Integer(2), department.getDepartmentId().getValue());
         assertEquals("foo", department.getDepartmentName());
         assertEquals(new Integer(2), department.getVersion());
+    }
+
+    public void testImmutable() throws Exception {
+        DeptDao dao = new DeptDaoImpl();
+        Dept dept = new Dept(new Identity<Dept>(1), 1, "hoge", null, 1);
+        Dept dept2 = new Dept(new Identity<Dept>(2), 2, "foo", null, 1);
+        BatchResult<Dept> result = dao.updateBySqlFile(Arrays.asList(dept,
+                dept2));
+        int[] counts = result.getCounts();
+        assertEquals(2, counts.length);
+        assertEquals(1, counts[0]);
+        assertEquals(1, counts[1]);
+        dept = result.getEntities().get(0);
+        assertEquals("hoge_preU_postU", dept.getDepartmentName());
+        dept2 = result.getEntities().get(1);
+        assertEquals("foo_preU_postU", dept2.getDepartmentName());
+
+        dept = dao.selectById(1);
+        assertEquals(new Integer(1), dept.getDepartmentId().getValue());
+        assertEquals("hoge_preU", dept.getDepartmentName());
+        assertEquals(new Integer(2), dept.getVersion());
+        dept2 = dao.selectById(2);
+        assertEquals(new Integer(2), dept2.getDepartmentId().getValue());
+        assertEquals("foo_preU", dept2.getDepartmentName());
+        assertEquals(new Integer(2), dept2.getVersion());
     }
 
     public void testOptimisticLockException() throws Exception {

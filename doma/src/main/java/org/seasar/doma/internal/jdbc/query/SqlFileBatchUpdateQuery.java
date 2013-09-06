@@ -63,7 +63,7 @@ public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
             currentEntity = elements.get(i);
             preUpdate();
             prepareSql();
-            elements.set(0, currentEntity);
+            elements.set(i, currentEntity);
         }
         assertEquals(size, sqls.size());
     }

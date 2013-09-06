@@ -44,16 +44,22 @@ public interface DeptDao {
     @Update
     Result<Dept> update(Dept d);
 
+    @BatchInsert
+    BatchResult<Dept> insert(List<Dept> entity);
+
+    @BatchUpdate
+    BatchResult<Dept> update(List<Dept> entity);
+
     @Insert(sqlFile = true)
     Result<Dept> insertBySqlFile(Dept entity);
 
     @Update(sqlFile = true)
     Result<Dept> updateBySqlFile(Dept entity);
 
-    @BatchInsert
-    BatchResult<Dept> insert(List<Dept> entity);
+    @BatchInsert(sqlFile = true)
+    BatchResult<Dept> insertBySqlFile(List<Dept> entity);
 
-    @BatchUpdate
-    BatchResult<Dept> update(List<Dept> entity);
+    @BatchUpdate(sqlFile = true)
+    BatchResult<Dept> updateBySqlFile(List<Dept> entity);
 
 }
