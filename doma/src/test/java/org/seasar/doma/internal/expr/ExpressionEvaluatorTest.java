@@ -19,6 +19,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -51,10 +52,26 @@ public class ExpressionEvaluatorTest extends TestCase {
         assertEquals(Collection.class, method.getDeclaringClass());
     }
 
-    public void testFindMethod_subtype() throws Exception {
+    public void testFindMethod_String_is_subtype_of_Object() throws Exception {
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         Method method = evaluator.findMethod("add", new ArrayList<Object>(),
                 ArrayList.class, new Class[] { String.class });
+        assertNotNull(method);
+        assertEquals(Collection.class, method.getDeclaringClass());
+    }
+
+    public void testFindMethod_List_is_subtype_of_Object() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        Method method = evaluator.findMethod("add", new ArrayList<Object>(),
+                ArrayList.class, new Class[] { List.class });
+        assertNotNull(method);
+        assertEquals(Collection.class, method.getDeclaringClass());
+    }
+
+    public void testFindMethod_List_is_subtype_of_Collection() throws Exception {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator();
+        Method method = evaluator.findMethod("addAll", new ArrayList<Object>(),
+                ArrayList.class, new Class[] { List.class });
         assertNotNull(method);
         assertEquals(Collection.class, method.getDeclaringClass());
     }

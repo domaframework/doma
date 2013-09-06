@@ -148,6 +148,23 @@ public class ExpressionValidatorTest extends AptTestCase {
         assertTrue(result.isNumberType());
     }
 
+    public void testMethod_foundWithTypeParameter() throws Exception {
+        Class<?> target = ExpressionValidationDao.class;
+        addCompilationUnit(target);
+        compile();
+
+        ExecutableElement methodElement = createMethodElement(target,
+                "testEmp", Emp.class);
+        Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+        ExpressionValidator validator = new ExpressionValidator(
+                getProcessingEnvironment(), methodElement, parameterTypeMap);
+
+        ExpressionNode node = new ExpressionParser(
+                "emp.foo(new java.lang.Integer(1))").parse();
+        TypeDeclaration result = validator.validate(node);
+        assertTrue(result.isNumberType());
+    }
+
     public void testStaticMethod_found() throws Exception {
         Class<?> target = ExpressionValidationDao.class;
         addCompilationUnit(target);

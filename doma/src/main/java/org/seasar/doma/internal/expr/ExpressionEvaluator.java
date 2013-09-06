@@ -601,6 +601,9 @@ public class ExpressionEvaluator implements
     protected int calculateHierarchyDifference(Class<?> paramType,
             Class<?> argType, int initDifference) {
         int difference = initDifference;
+        if (paramType.equals(Object.class) && argType.isInterface()) {
+            return Integer.MAX_VALUE;
+        }
         for (Class<?> type = argType; type != null; type = type.getSuperclass()) {
             if (paramType.equals(type)
                     || paramType.equals(ClassUtil
@@ -608,11 +611,13 @@ public class ExpressionEvaluator implements
                 return difference;
             }
             difference++;
-            for (Class<?> interfaceClass : type.getInterfaces()) {
-                int result = calculateHierarchyDifference(paramType,
-                        interfaceClass, difference);
-                if (result != -1) {
-                    return result;
+            if (paramType.isInterface()) {
+                for (Class<?> interfaceClass : type.getInterfaces()) {
+                    int result = calculateHierarchyDifference(paramType,
+                            interfaceClass, difference);
+                    if (result != -1) {
+                        return result;
+                    }
                 }
             }
         }

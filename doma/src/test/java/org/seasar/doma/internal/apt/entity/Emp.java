@@ -114,6 +114,10 @@ public class Emp {
         return 0;
     }
 
+    public <T> int foo(T arg) {
+        return 0;
+    }
+
     public static int staticMethod(String arg) {
         return 0;
     }
