@@ -181,7 +181,10 @@ public class GeneratedIdPropertyType<PE, E extends PE, V extends Number, D>
     public E preInsertAndNewEntity(E entity, IdGenerationConfig config,
             EntityType<E> entityType) {
         Long value = idGenerator.generatePreInsert(config);
-        return newEntity(entity, value, entityType);
+        if (value != null) {
+            return newEntity(entity, value, entityType);
+        }
+        return null;
     }
 
     /**
@@ -219,7 +222,10 @@ public class GeneratedIdPropertyType<PE, E extends PE, V extends Number, D>
     public E postInsertAndNewEntity(E entity, IdGenerationConfig config,
             Statement statement, EntityType<E> entityType) {
         Long value = idGenerator.generatePostInsert(config, statement);
-        return newEntity(entity, value, entityType);
+        if (value != null) {
+            return newEntity(entity, value, entityType);
+        }
+        return null;
     }
 
     /**
@@ -236,7 +242,8 @@ public class GeneratedIdPropertyType<PE, E extends PE, V extends Number, D>
      */
     protected E newEntity(E entity, Long value, EntityType<E> entityType) {
         Map<String, Object> properties = entityType.getCopy(entity);
-        properties.put(name, value);
+        NumberWrapper<V> setter = (NumberWrapper<V>) getWrapper(properties);
+        setter.set(value);
         return entityType.newEntity(properties);
     }
 

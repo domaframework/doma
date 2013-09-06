@@ -124,8 +124,11 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
     protected void prepareIdValue() {
         if (generatedIdPropertyType != null && idGenerationConfig != null) {
             if (entityType.isImmutable()) {
-                entity = generatedIdPropertyType.preInsertAndNewEntity(entity,
+                E newEntity = generatedIdPropertyType.preInsertAndNewEntity(entity,
                         idGenerationConfig, entityType);
+                if (newEntity != null) {
+                    entity = newEntity;
+                }
             } else {
                 generatedIdPropertyType.preInsert(entity, idGenerationConfig);
             }
@@ -171,8 +174,11 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
     public void generateId(Statement statement) {
         if (generatedIdPropertyType != null && idGenerationConfig != null) {
             if (entityType.isImmutable()) {
-                entity = generatedIdPropertyType.postInsertAndNewEntity(entity,
+                E newEntity = generatedIdPropertyType.postInsertAndNewEntity(entity,
                         idGenerationConfig, statement, entityType);
+                if (newEntity != null) {
+                    entity = newEntity;
+                }
             } else {
                 generatedIdPropertyType.postInsert(entity, idGenerationConfig,
                         statement);

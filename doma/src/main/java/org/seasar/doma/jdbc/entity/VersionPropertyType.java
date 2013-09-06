@@ -91,11 +91,12 @@ public class VersionPropertyType<PE, E extends PE, V extends Number, D> extends
      */
     public E setIfNecessaryAndMakeNewEntity(E entity, Number value,
             EntityType<E> entityType) {
-        NumberWrapper<V> wrapper = (NumberWrapper<V>) getWrapper(entity);
-        V currentValue = wrapper.get();
+        NumberWrapper<V> getter = (NumberWrapper<V>) getWrapper(entity);
+        V currentValue = getter.get();
         if (currentValue == null || currentValue.intValue() < 0) {
             Map<String, Object> properties = entityType.getCopy(entity);
-            properties.put(name, value);
+            NumberWrapper<V> setter = (NumberWrapper<V>) getWrapper(properties);
+            setter.set(value);
             return entityType.newEntity(properties);
         }
         return null;
@@ -123,10 +124,11 @@ public class VersionPropertyType<PE, E extends PE, V extends Number, D> extends
      * @since 1.34.0
      */
     public E incrementAndNewEntity(E entity, EntityType<E> entityType) {
-        NumberWrapper<V> wrapper = (NumberWrapper<V>) getWrapper(entity);
-        V value = wrapper.getIncrementedValue();
+        NumberWrapper<V> getter = (NumberWrapper<V>) getWrapper(entity);
+        V value = getter.getIncrementedValue();
         Map<String, Object> properties = entityType.getCopy(entity);
-        properties.put(name, value);
+        NumberWrapper<V> setter = (NumberWrapper<V>) getWrapper(properties);
+        setter.set(value);
         return entityType.newEntity(properties);
     }
 

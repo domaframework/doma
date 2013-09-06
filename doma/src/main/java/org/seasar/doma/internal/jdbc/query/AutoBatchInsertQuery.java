@@ -138,8 +138,11 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
     protected void prepareIdValue() {
         if (generatedIdPropertyType != null && idGenerationConfig != null) {
             if (entityType.isImmutable()) {
-                currentEntity = generatedIdPropertyType.preInsertAndNewEntity(
+                E newEntity = generatedIdPropertyType.preInsertAndNewEntity(
                         currentEntity, idGenerationConfig, entityType);
+                if (newEntity != null) {
+                    currentEntity = newEntity;
+                }
             } else {
                 generatedIdPropertyType.preInsert(currentEntity,
                         idGenerationConfig);
@@ -193,10 +196,12 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
     public void generateId(Statement statement, int index) {
         if (generatedIdPropertyType != null && idGenerationConfig != null) {
             if (entityType.isImmutable()) {
-                E entity = generatedIdPropertyType.postInsertAndNewEntity(
+                E newEntity = generatedIdPropertyType.postInsertAndNewEntity(
                         entities.get(index), idGenerationConfig, statement,
                         entityType);
-                entities.set(index, entity);
+                if (newEntity != null) {
+                    entities.set(index, newEntity);
+                }
             } else {
                 generatedIdPropertyType.postInsert(entities.get(index),
                         idGenerationConfig, statement);
