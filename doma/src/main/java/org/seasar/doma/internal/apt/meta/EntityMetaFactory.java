@@ -26,6 +26,7 @@ import java.util.Map;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
@@ -45,9 +46,11 @@ import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Notifier;
 import org.seasar.doma.internal.apt.mirror.EntityMirror;
 import org.seasar.doma.internal.apt.mirror.TableMirror;
+import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.entity.EntityListener;
+import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.message.Message;
 
 /**
@@ -88,11 +91,55 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
         validateClass(classElement, entityMeta);
         validateEntityListener(classElement, entityMeta);
 
+        NamingType namingType = resolveNamingType(classElement);
+        entityMeta.setNamingType(namingType);
         String entityName = classElement.getSimpleName().toString();
         entityMeta.setEntityName(entityName);
         entityMeta.setEntityTypeName(TypeMirrorUtil.getTypeName(
                 classElement.asType(), env));
         doTable(classElement, entityMeta);
+    }
+
+    protected NamingType resolveNamingType(TypeElement classElement) {
+        NamingType result = NamingType.NONE;
+        for (NamingType namingType : getNamingTypeList(classElement)) {
+            if (namingType != null) {
+                result = namingType;
+            }
+        }
+        return result;
+    }
+
+    protected List<NamingType> getNamingTypeList(TypeElement classElement) {
+        List<NamingType> list = new LinkedList<NamingType>();
+        for (TypeElement t = classElement; t != null
+                && t.asType().getKind() != TypeKind.NONE; t = TypeMirrorUtil
+                .toTypeElement(t.getSuperclass(), env)) {
+            AnnotationMirror annMirror = ElementUtil.getAnnotationMirror(t,
+                    Entity.class, env);
+            if (annMirror == null) {
+                continue;
+            }
+            for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : annMirror
+                    .getElementValues().entrySet()) {
+                ExecutableElement element = entry.getKey();
+                AnnotationValue value = entry.getValue();
+                if ("naming".equals(element.getSimpleName().toString())) {
+                    VariableElement enumConstant = AnnotationValueUtil
+                            .toEnumConstant(value);
+                    if (enumConstant == null) {
+                        throw new AptIllegalStateException("naming");
+                    }
+                    NamingType namingType = NamingType.valueOf(enumConstant
+                            .getSimpleName().toString());
+                    list.add(namingType);
+                } else {
+                    list.add(null);
+                }
+            }
+        }
+        Collections.reverse(list);
+        return list;
     }
 
     protected void validateClass(TypeElement classElement, EntityMeta entityMeta) {
