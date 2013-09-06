@@ -93,8 +93,9 @@ public class ImmutableEmpDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setExcludedPropertyNames();
             __query.prepare();
             org.seasar.doma.internal.jdbc.command.InsertCommand __command = new org.seasar.doma.internal.jdbc.command.InsertCommand(__query);
-            org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.entity.ImmutableEmp> __result = new org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.entity.ImmutableEmp>(__command.execute(), __query.getEntity());
+            int __count = __command.execute();
             __query.complete();
+            org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.entity.ImmutableEmp> __result = new org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.entity.ImmutableEmp>(__count, __query.getEntity());
             exiting("org.seasar.doma.internal.apt.dao.ImmutableEmpDaoImpl", "insert", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
@@ -121,8 +122,9 @@ public class ImmutableEmpDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setOptimisticLockExceptionSuppressed(false);
             __query.prepare();
             org.seasar.doma.internal.jdbc.command.DeleteCommand __command = new org.seasar.doma.internal.jdbc.command.DeleteCommand(__query);
-            org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.entity.ImmutableEmp> __result = new org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.entity.ImmutableEmp>(__command.execute(), __query.getEntity());
+            int __count = __command.execute();
             __query.complete();
+            org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.entity.ImmutableEmp> __result = new org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.entity.ImmutableEmp>(__count, __query.getEntity());
             exiting("org.seasar.doma.internal.apt.dao.ImmutableEmpDaoImpl", "update", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
@@ -154,8 +156,9 @@ public class ImmutableEmpDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setOptimisticLockExceptionSuppressed(false);
             __query.prepare();
             org.seasar.doma.internal.jdbc.command.UpdateCommand __command = new org.seasar.doma.internal.jdbc.command.UpdateCommand(__query);
-            org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.entity.ImmutableEmp> __result = new org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.entity.ImmutableEmp>(__command.execute(), __query.getEntity());
+            int __count = __command.execute();
             __query.complete();
+            org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.entity.ImmutableEmp> __result = new org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.entity.ImmutableEmp>(__count, __query.getEntity());
             exiting("org.seasar.doma.internal.apt.dao.ImmutableEmpDaoImpl", "delete", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
@@ -183,8 +186,9 @@ public class ImmutableEmpDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setExcludedPropertyNames();
             __query.prepare();
             org.seasar.doma.internal.jdbc.command.BatchInsertCommand __command = new org.seasar.doma.internal.jdbc.command.BatchInsertCommand(__query);
-            org.seasar.doma.jdbc.BatchResult<org.seasar.doma.internal.apt.entity.ImmutableEmp> __result = new org.seasar.doma.jdbc.BatchResult<org.seasar.doma.internal.apt.entity.ImmutableEmp>(__command.execute(), __query.getEntities());
+            int[] __counts = __command.execute();
             __query.complete();
+            org.seasar.doma.jdbc.BatchResult<org.seasar.doma.internal.apt.entity.ImmutableEmp> __result = new org.seasar.doma.jdbc.BatchResult<org.seasar.doma.internal.apt.entity.ImmutableEmp>(__counts, __query.getEntities());
             exiting("org.seasar.doma.internal.apt.dao.ImmutableEmpDaoImpl", "batchInsert", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
@@ -215,8 +219,9 @@ public class ImmutableEmpDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setOptimisticLockExceptionSuppressed(false);
             __query.prepare();
             org.seasar.doma.internal.jdbc.command.BatchUpdateCommand __command = new org.seasar.doma.internal.jdbc.command.BatchUpdateCommand(__query);
-            org.seasar.doma.jdbc.BatchResult<org.seasar.doma.internal.apt.entity.ImmutableEmp> __result = new org.seasar.doma.jdbc.BatchResult<org.seasar.doma.internal.apt.entity.ImmutableEmp>(__command.execute(), __query.getEntities());
+            int[] __counts = __command.execute();
             __query.complete();
+            org.seasar.doma.jdbc.BatchResult<org.seasar.doma.internal.apt.entity.ImmutableEmp> __result = new org.seasar.doma.jdbc.BatchResult<org.seasar.doma.internal.apt.entity.ImmutableEmp>(__counts, __query.getEntities());
             exiting("org.seasar.doma.internal.apt.dao.ImmutableEmpDaoImpl", "batchUpdate", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
@@ -244,8 +249,9 @@ public class ImmutableEmpDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setOptimisticLockExceptionSuppressed(false);
             __query.prepare();
             org.seasar.doma.internal.jdbc.command.BatchDeleteCommand __command = new org.seasar.doma.internal.jdbc.command.BatchDeleteCommand(__query);
-            org.seasar.doma.jdbc.BatchResult<org.seasar.doma.internal.apt.entity.ImmutableEmp> __result = new org.seasar.doma.jdbc.BatchResult<org.seasar.doma.internal.apt.entity.ImmutableEmp>(__command.execute(), __query.getEntities());
+            int[] __counts = __command.execute();
             __query.complete();
+            org.seasar.doma.jdbc.BatchResult<org.seasar.doma.internal.apt.entity.ImmutableEmp> __result = new org.seasar.doma.jdbc.BatchResult<org.seasar.doma.internal.apt.entity.ImmutableEmp>(__counts, __query.getEntities());
             exiting("org.seasar.doma.internal.apt.dao.ImmutableEmpDaoImpl", "batchDelete", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
@@ -269,11 +275,12 @@ public class ImmutableEmpDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.ImmutableEmpDaoImpl");
             __query.setCallerMethodName("insert2");
             __query.setQueryTimeout(-1);
-            __query.setEntityAndEntityType(emp, org.seasar.doma.internal.apt.entity._ImmutableEmp.getSingletonInternal());
+            __query.setEntityAndEntityType("emp", emp, org.seasar.doma.internal.apt.entity._ImmutableEmp.getSingletonInternal());
             __query.prepare();
             org.seasar.doma.internal.jdbc.command.InsertCommand __command = new org.seasar.doma.internal.jdbc.command.InsertCommand(__query);
-            org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.entity.ImmutableEmp> __result = new org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.entity.ImmutableEmp>(__command.execute(), __query.getEntity(org.seasar.doma.internal.apt.entity.ImmutableEmp.class));
+            int __count = __command.execute();
             __query.complete();
+            org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.entity.ImmutableEmp> __result = new org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.entity.ImmutableEmp>(__count, __query.getEntity(org.seasar.doma.internal.apt.entity.ImmutableEmp.class));
             exiting("org.seasar.doma.internal.apt.dao.ImmutableEmpDaoImpl", "insert2", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
@@ -297,13 +304,14 @@ public class ImmutableEmpDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.ImmutableEmpDaoImpl");
             __query.setCallerMethodName("update2");
             __query.setQueryTimeout(-1);
-            __query.setEntityAndEntityType(emp, org.seasar.doma.internal.apt.entity._ImmutableEmp.getSingletonInternal());
+            __query.setEntityAndEntityType("emp", emp, org.seasar.doma.internal.apt.entity._ImmutableEmp.getSingletonInternal());
             __query.setVersionIgnored(false);
             __query.setOptimisticLockExceptionSuppressed(false);
             __query.prepare();
             org.seasar.doma.internal.jdbc.command.DeleteCommand __command = new org.seasar.doma.internal.jdbc.command.DeleteCommand(__query);
-            org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.entity.ImmutableEmp> __result = new org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.entity.ImmutableEmp>(__command.execute(), __query.getEntity(org.seasar.doma.internal.apt.entity.ImmutableEmp.class));
+            int __count = __command.execute();
             __query.complete();
+            org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.entity.ImmutableEmp> __result = new org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.entity.ImmutableEmp>(__count, __query.getEntity(org.seasar.doma.internal.apt.entity.ImmutableEmp.class));
             exiting("org.seasar.doma.internal.apt.dao.ImmutableEmpDaoImpl", "update2", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
@@ -327,14 +335,15 @@ public class ImmutableEmpDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.ImmutableEmpDaoImpl");
             __query.setCallerMethodName("delete2");
             __query.setQueryTimeout(-1);
-            __query.setEntityAndEntityType(emp, org.seasar.doma.internal.apt.entity._ImmutableEmp.getSingletonInternal());
+            __query.setEntityAndEntityType("emp", emp, org.seasar.doma.internal.apt.entity._ImmutableEmp.getSingletonInternal());
             __query.setVersionIncluded(false);
             __query.setVersionIgnored(false);
             __query.setOptimisticLockExceptionSuppressed(false);
             __query.prepare();
             org.seasar.doma.internal.jdbc.command.UpdateCommand __command = new org.seasar.doma.internal.jdbc.command.UpdateCommand(__query);
-            org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.entity.ImmutableEmp> __result = new org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.entity.ImmutableEmp>(__command.execute(), __query.getEntity(org.seasar.doma.internal.apt.entity.ImmutableEmp.class));
+            int __count = __command.execute();
             __query.complete();
+            org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.entity.ImmutableEmp> __result = new org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.entity.ImmutableEmp>(__count, __query.getEntity(org.seasar.doma.internal.apt.entity.ImmutableEmp.class));
             exiting("org.seasar.doma.internal.apt.dao.ImmutableEmpDaoImpl", "delete2", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
@@ -363,8 +372,9 @@ public class ImmutableEmpDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setEntityType(org.seasar.doma.internal.apt.entity._ImmutableEmp.getSingletonInternal());
             __query.prepare();
             org.seasar.doma.internal.jdbc.command.BatchInsertCommand __command = new org.seasar.doma.internal.jdbc.command.BatchInsertCommand(__query);
-            org.seasar.doma.jdbc.BatchResult<org.seasar.doma.internal.apt.entity.ImmutableEmp> __result = new org.seasar.doma.jdbc.BatchResult<org.seasar.doma.internal.apt.entity.ImmutableEmp>(__command.execute(), __query.getEntities());
+            int[] __counts = __command.execute();
             __query.complete();
+            org.seasar.doma.jdbc.BatchResult<org.seasar.doma.internal.apt.entity.ImmutableEmp> __result = new org.seasar.doma.jdbc.BatchResult<org.seasar.doma.internal.apt.entity.ImmutableEmp>(__counts, __query.getEntities());
             exiting("org.seasar.doma.internal.apt.dao.ImmutableEmpDaoImpl", "batchInsert2", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
@@ -396,8 +406,9 @@ public class ImmutableEmpDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setOptimisticLockExceptionSuppressed(false);
             __query.prepare();
             org.seasar.doma.internal.jdbc.command.BatchUpdateCommand __command = new org.seasar.doma.internal.jdbc.command.BatchUpdateCommand(__query);
-            org.seasar.doma.jdbc.BatchResult<org.seasar.doma.internal.apt.entity.ImmutableEmp> __result = new org.seasar.doma.jdbc.BatchResult<org.seasar.doma.internal.apt.entity.ImmutableEmp>(__command.execute(), __query.getEntities());
+            int[] __counts = __command.execute();
             __query.complete();
+            org.seasar.doma.jdbc.BatchResult<org.seasar.doma.internal.apt.entity.ImmutableEmp> __result = new org.seasar.doma.jdbc.BatchResult<org.seasar.doma.internal.apt.entity.ImmutableEmp>(__counts, __query.getEntities());
             exiting("org.seasar.doma.internal.apt.dao.ImmutableEmpDaoImpl", "batchUpdate2", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
@@ -428,8 +439,9 @@ public class ImmutableEmpDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setOptimisticLockExceptionSuppressed(false);
             __query.prepare();
             org.seasar.doma.internal.jdbc.command.BatchDeleteCommand __command = new org.seasar.doma.internal.jdbc.command.BatchDeleteCommand(__query);
-            org.seasar.doma.jdbc.BatchResult<org.seasar.doma.internal.apt.entity.ImmutableEmp> __result = new org.seasar.doma.jdbc.BatchResult<org.seasar.doma.internal.apt.entity.ImmutableEmp>(__command.execute(), __query.getEntities());
+            int[] __counts = __command.execute();
             __query.complete();
+            org.seasar.doma.jdbc.BatchResult<org.seasar.doma.internal.apt.entity.ImmutableEmp> __result = new org.seasar.doma.jdbc.BatchResult<org.seasar.doma.internal.apt.entity.ImmutableEmp>(__counts, __query.getEntities());
             exiting("org.seasar.doma.internal.apt.dao.ImmutableEmpDaoImpl", "batchDelete2", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {

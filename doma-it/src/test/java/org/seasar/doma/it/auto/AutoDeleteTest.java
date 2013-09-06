@@ -18,18 +18,22 @@ package org.seasar.doma.it.auto;
 import static org.junit.Assert.*;
 
 import org.junit.runner.RunWith;
-import org.seasar.doma.message.Message;
 import org.seasar.doma.it.dao.CompKeyEmployeeDao;
 import org.seasar.doma.it.dao.CompKeyEmployeeDaoImpl;
 import org.seasar.doma.it.dao.EmployeeDao;
 import org.seasar.doma.it.dao.EmployeeDaoImpl;
 import org.seasar.doma.it.dao.NoIdDao;
 import org.seasar.doma.it.dao.NoIdDaoImpl;
+import org.seasar.doma.it.dao.PersonDao;
+import org.seasar.doma.it.dao.PersonDaoImpl;
 import org.seasar.doma.it.entity.CompKeyEmployee;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.it.entity.NoId;
+import org.seasar.doma.it.entity.Person;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.OptimisticLockException;
+import org.seasar.doma.jdbc.Result;
+import org.seasar.doma.message.Message;
 import org.seasar.framework.unit.Seasar2;
 
 @RunWith(Seasar2.class)
@@ -45,6 +49,19 @@ public class AutoDeleteTest {
 
         employee = dao.selectById(new Integer(1));
         assertNull(employee);
+    }
+
+    public void testImmutable() throws Exception {
+        PersonDao dao = new PersonDaoImpl();
+        Person person = new Person(1, null, null, null, null, null, null, null,
+                1);
+        Result<Person> result = dao.delete(person);
+        assertEquals(1, result.getCount());
+        person = result.getEntity();
+        assertEquals("null_preD_postD", person.getEmployeeName());
+
+        person = dao.selectById(new Integer(1));
+        assertNull(person);
     }
 
     public void testIgnoreVersion() throws Exception {

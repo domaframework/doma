@@ -93,6 +93,10 @@ public abstract class SqlFileModifyQuery implements ModifyQuery {
 
     public void addParameter(String name, Class<?> type, Object value) {
         assertNotNull(name, type);
+        addParameterInternal(name, type, value);
+    }
+
+    public void addParameterInternal(String name, Class<?> type, Object value) {
         parameters.put(name, new Value(type, value));
     }
 
@@ -153,7 +157,7 @@ public abstract class SqlFileModifyQuery implements ModifyQuery {
         return false;
     }
 
-    public abstract <E> void setEntityAndEntityType(E entity,
+    public abstract <E> void setEntityAndEntityType(String name, E entity,
             EntityType<E> entityType);
 
     @Override

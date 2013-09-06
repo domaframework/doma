@@ -20,8 +20,12 @@ import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDaoImpl;
+import org.seasar.doma.it.dao.DeptDao;
+import org.seasar.doma.it.dao.DeptDaoImpl;
 import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.entity.Department;
+import org.seasar.doma.it.entity.Dept;
+import org.seasar.doma.jdbc.Result;
 import org.seasar.framework.unit.Seasar2;
 
 @RunWith(Seasar2.class)
@@ -41,4 +45,18 @@ public class SqlFileInsertTest {
         assertEquals(new Integer(99), department.getDepartmentNo());
     }
 
+    public void testImmutable() throws Exception {
+        DeptDao dao = new DeptDaoImpl();
+        Dept dept = new Dept(new Identity<Dept>(99), 99, "hoge", null,
+                null);
+        Result<Dept> result = dao.insertBySqlFile(dept);
+        assertEquals(1, result.getCount());
+        dept = result.getEntity();
+        assertEquals("hoge_preI_postI", dept.getDepartmentName());
+
+        dept = dao.selectById(new Integer(99));
+        assertEquals(new Integer(99), dept.getDepartmentId().getValue());
+        assertEquals(new Integer(99), dept.getDepartmentNo());
+        assertEquals("hoge_preI", dept.getDepartmentName());
+    }
 }

@@ -20,9 +20,13 @@ import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDaoImpl;
+import org.seasar.doma.it.dao.DeptDao;
+import org.seasar.doma.it.dao.DeptDaoImpl;
 import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.entity.Department;
+import org.seasar.doma.it.entity.Dept;
 import org.seasar.doma.jdbc.OptimisticLockException;
+import org.seasar.doma.jdbc.Result;
 import org.seasar.framework.unit.Seasar2;
 
 @RunWith(Seasar2.class)
@@ -42,6 +46,20 @@ public class SqlFileUpdateTest {
         assertEquals(new Integer(1), department.getDepartmentId().getValue());
         assertEquals("hoge", department.getDepartmentName());
         assertEquals(new Integer(2), department.getVersion());
+    }
+
+    public void testImmutable() throws Exception {
+        DeptDao dao = new DeptDaoImpl();
+        Dept dept = new Dept(new Identity<Dept>(1), 1, "hoge", null, 1);
+        Result<Dept> result = dao.updateBySqlFile(dept);
+        assertEquals(1, result.getCount());
+        dept = result.getEntity();
+        assertEquals("hoge_preU_postU", dept.getDepartmentName());
+
+        dept = dao.selectById(1);
+        assertEquals(new Integer(1), dept.getDepartmentId().getValue());
+        assertEquals("hoge_preU", dept.getDepartmentName());
+        assertEquals(new Integer(2), dept.getVersion());
     }
 
     public void testOptimisticLockException() throws Exception {

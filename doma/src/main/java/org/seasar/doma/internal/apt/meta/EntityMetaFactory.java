@@ -95,28 +95,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
         doTable(classElement, entityMeta);
     }
 
-    protected boolean isImmutable(TypeElement classElement,
-            EntityMeta entityMeta) {
-        TypeMirror firstEntity = getFirstParentEntity(classElement);
-        if (TypeMirrorUtil.isSameType(firstEntity, classElement.asType(), env)) {
-            return entityMeta.isImmutable();
-        }
-        return false;
-
-    }
-
-    protected TypeMirror getFirstParentEntity(TypeElement classElement) {
-        TypeMirror firstEntity = null;
-        for (TypeElement t = classElement; t != null
-                && t.asType().getKind() != TypeKind.NONE; t = TypeMirrorUtil
-                .toTypeElement(t.getSuperclass(), env)) {
-            if (t.getAnnotation(Entity.class) != null) {
-                firstEntity = t.asType();
-            }
-        }
-        return firstEntity;
-    }
-
     protected void validateClass(TypeElement classElement, EntityMeta entityMeta) {
         if (classElement.getKind() != ElementKind.CLASS) {
             EntityMirror entityMirror = entityMeta.getEntityMirror();
@@ -129,6 +107,26 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
         if (!classElement.getTypeParameters().isEmpty()) {
             throw new AptException(Message.DOMA4051, env, classElement);
         }
+        Entity parentEntity = getParentEntity(classElement);
+        if (parentEntity != null) {
+            if (parentEntity.immutable() != entityMeta.isImmutable()) {
+                throw new AptException(Message.DOMA4226, env, classElement);
+            }
+        }
+    }
+
+    protected Entity getParentEntity(TypeElement classElement) {
+        TypeElement parent = TypeMirrorUtil.toTypeElement(
+                classElement.getSuperclass(), env);
+        for (TypeElement t = parent; t != null
+                && t.asType().getKind() != TypeKind.NONE; t = TypeMirrorUtil
+                .toTypeElement(t.getSuperclass(), env)) {
+            Entity entity = t.getAnnotation(Entity.class);
+            if (entity != null) {
+                return entity;
+            }
+        }
+        return null;
     }
 
     protected void validateEntityListener(TypeElement classElement,

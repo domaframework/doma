@@ -804,14 +804,16 @@ public class DaoGenerator extends AbstractGenerator {
 
             EntityType entityType = m.getEntityType();
             if (entityType != null && entityType.isImmutable()) {
-                iprint("%1$s __result = new %1$s(__command.execute(), __query.getEntity());%n",
+                iprint("int __count = __command.execute();%n");
+                iprint("__query.complete();%n");
+                iprint("%1$s __result = new %1$s(__count, __query.getEntity());%n",
                         m.getReturnMeta().getTypeName());
             } else {
                 iprint("%1$s __result = __command.execute();%n", m
                         .getReturnMeta().getTypeName());
+                iprint("__query.complete();%n");
             }
 
-            iprint("__query.complete();%n");
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
                     m.getName());
             iprint("return __result;%n");
@@ -848,9 +850,9 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
 
             if (m.getEntityParameterName() != null && m.getEntityType() != null) {
-                iprint("__query.setEntityAndEntityType(%1$s, %2$s.getSingletonInternal());%n",
-                        m.getEntityParameterName(), m.getEntityType()
-                                .getMetaTypeNameAsTypeParameter());
+                iprint("__query.setEntityAndEntityType(\"%1$s\", %2$s, %3$s.getSingletonInternal());%n",
+                        m.getEntityParameterName(), m.getEntityParameterName(),
+                        m.getEntityType().getMetaTypeNameAsTypeParameter());
             }
 
             Boolean includeVersion = m.getIncludeVersion();
@@ -876,15 +878,17 @@ public class DaoGenerator extends AbstractGenerator {
 
             EntityType entityType = m.getEntityType();
             if (entityType != null && entityType.isImmutable()) {
-                iprint("%1$s __result = new %1$s(__command.execute(), __query.getEntity(%2$s.class));%n",
+                iprint("int __count = __command.execute();%n");
+                iprint("__query.complete();%n");
+                iprint("%1$s __result = new %1$s(__count, __query.getEntity(%2$s.class));%n",
                         m.getReturnMeta().getTypeName(),
                         entityType.getTypeNameAsTypeParameter());
             } else {
                 iprint("%1$s __result = __command.execute();%n", m
                         .getReturnMeta().getTypeName());
+                iprint("__query.complete();%n");
             }
 
-            iprint("__query.complete();%n");
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
                     m.getName());
             iprint("return __result;%n");
@@ -948,14 +952,16 @@ public class DaoGenerator extends AbstractGenerator {
 
             EntityType entityType = m.getEntityType();
             if (entityType != null && entityType.isImmutable()) {
-                iprint("%1$s __result = new %1$s(__command.execute(), __query.getEntities());%n",
+                iprint("int[] __counts = __command.execute();%n");
+                iprint("__query.complete();%n");
+                iprint("%1$s __result = new %1$s(__counts, __query.getEntities());%n",
                         m.getReturnMeta().getTypeName());
             } else {
                 iprint("%1$s __result = __command.execute();%n", m
                         .getReturnMeta().getTypeName());
+                iprint("__query.complete();%n");
             }
 
-            iprint("__query.complete();%n");
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
                     m.getName());
             iprint("return __result;%n");
@@ -1017,14 +1023,16 @@ public class DaoGenerator extends AbstractGenerator {
 
             EntityType entityType = m.getEntityType();
             if (entityType != null && entityType.isImmutable()) {
-                iprint("%1$s __result = new %1$s(__command.execute(), __query.getEntities());%n",
+                iprint("int[] __counts = __command.execute();%n");
+                iprint("__query.complete();%n");
+                iprint("%1$s __result = new %1$s(__counts, __query.getEntities());%n",
                         m.getReturnMeta().getTypeName());
             } else {
                 iprint("%1$s __result = __command.execute();%n", m
                         .getReturnMeta().getTypeName());
+                iprint("__query.complete();%n");
             }
 
-            iprint("__query.complete();%n");
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
                     m.getName());
             iprint("return __result;%n");

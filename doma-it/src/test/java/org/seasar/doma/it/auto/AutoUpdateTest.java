@@ -22,13 +22,17 @@ import org.seasar.doma.it.dao.CompKeyDepartmentDao;
 import org.seasar.doma.it.dao.CompKeyDepartmentDaoImpl;
 import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDaoImpl;
+import org.seasar.doma.it.dao.DeptDao;
+import org.seasar.doma.it.dao.DeptDaoImpl;
 import org.seasar.doma.it.dao.NoIdDao;
 import org.seasar.doma.it.dao.NoIdDaoImpl;
 import org.seasar.doma.it.entity.CompKeyDepartment;
 import org.seasar.doma.it.entity.Department;
+import org.seasar.doma.it.entity.Dept;
 import org.seasar.doma.it.entity.NoId;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.OptimisticLockException;
+import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.message.Message;
 import org.seasar.framework.unit.Seasar2;
 
@@ -50,6 +54,25 @@ public class AutoUpdateTest {
         assertEquals("hoge", department.getDepartmentName());
         assertEquals("NEW YORK", department.getLocation().getValue());
         assertEquals(new Integer(2), department.getVersion());
+    }
+
+    public void testImmutable() throws Exception {
+        DeptDao dao = new DeptDaoImpl();
+        Dept dept = dao.selectById(1);
+        dept = new Dept(dept.getDepartmentId(), 1, "hoge", dept.getLocation(),
+                dept.getVersion());
+        Result<Dept> result = dao.update(dept);
+        assertEquals(1, result.getCount());
+        dept = result.getEntity();
+        assertEquals(new Integer(2), dept.getVersion());
+        assertEquals("hoge_preU_postU", dept.getDepartmentName());
+
+        dept = dao.selectById(1);
+        assertEquals(new Integer(1), dept.getDepartmentId().getValue());
+        assertEquals(new Integer(1), dept.getDepartmentNo());
+        assertEquals("hoge_preU", dept.getDepartmentName());
+        assertEquals("NEW YORK", dept.getLocation().getValue());
+        assertEquals(new Integer(2), dept.getVersion());
     }
 
     public void testIgnoreVersion() throws Exception {

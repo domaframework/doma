@@ -415,4 +415,13 @@ public class EntityProcessorTest extends AptTestCase {
         assertGeneratedSource(ImmutableChildEntity.class);
         assertTrue(getCompiledResult());
     }
+
+    public void testIllegalMutableChildEntity() throws Exception {
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(IllegalMutableChildEntity.class);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4226);
+    }
 }

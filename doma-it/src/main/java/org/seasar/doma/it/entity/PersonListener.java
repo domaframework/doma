@@ -15,9 +15,6 @@
  */
 package org.seasar.doma.it.entity;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
 import org.seasar.doma.jdbc.entity.EntityListener;
 import org.seasar.doma.jdbc.entity.PostDeleteContext;
 import org.seasar.doma.jdbc.entity.PostInsertContext;
@@ -26,34 +23,41 @@ import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
 
-public class EmpListener implements EntityListener<Emp> {
+public class PersonListener implements EntityListener<Person> {
 
     @Override
-    public void preDelete(Emp entity, PreDeleteContext<Emp> context) {
+    public void preDelete(Person entity, PreDeleteContext<Person> context) {
+        context.setNewEntity(newPerson(entity, "_preD"));
     }
 
     @Override
-    public void preInsert(Emp entity, PreInsertContext<Emp> context) {
-        entity.setInsertTimestamp(new Timestamp(new Date().getTime()));
+    public void preInsert(Person entity, PreInsertContext<Person> context) {
+        context.setNewEntity(newPerson(entity, "_preI"));
     }
 
     @Override
-    public void preUpdate(Emp entity, PreUpdateContext<Emp> context) {
-        if (context.isEntityChanged()) {
-            entity.setUpdateTimestamp(new Timestamp(new Date().getTime()));
-        }
+    public void preUpdate(Person entity, PreUpdateContext<Person> context) {
+        context.setNewEntity(newPerson(entity, "_preU"));
     }
 
     @Override
-    public void postInsert(Emp entity, PostInsertContext<Emp> context) {
+    public void postInsert(Person entity, PostInsertContext<Person> context) {
+        context.setNewEntity(newPerson(entity, "_postI"));
     }
 
     @Override
-    public void postUpdate(Emp entity, PostUpdateContext<Emp> context) {
+    public void postUpdate(Person entity, PostUpdateContext<Person> context) {
+        context.setNewEntity(newPerson(entity, "_postU"));
     }
 
     @Override
-    public void postDelete(Emp entity, PostDeleteContext<Emp> context) {
+    public void postDelete(Person entity, PostDeleteContext<Person> context) {
+        context.setNewEntity(newPerson(entity, "_postD"));
     }
 
+    protected Person newPerson(Person p, String suffix) {
+        return new Person(p.employeeId, p.employeeNo, p.employeeName + suffix,
+                p.managerId, p.hiredate, p.salary, p.departmentId, p.addressId,
+                p.version);
+    }
 }

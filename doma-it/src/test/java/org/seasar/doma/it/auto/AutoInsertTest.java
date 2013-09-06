@@ -22,6 +22,8 @@ import org.seasar.doma.it.dao.CompKeyDepartmentDao;
 import org.seasar.doma.it.dao.CompKeyDepartmentDaoImpl;
 import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDaoImpl;
+import org.seasar.doma.it.dao.DeptDao;
+import org.seasar.doma.it.dao.DeptDaoImpl;
 import org.seasar.doma.it.dao.IdentityStrategyDao;
 import org.seasar.doma.it.dao.IdentityStrategyDaoImpl;
 import org.seasar.doma.it.dao.NoIdDao;
@@ -34,11 +36,13 @@ import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.domain.Location;
 import org.seasar.doma.it.entity.CompKeyDepartment;
 import org.seasar.doma.it.entity.Department;
+import org.seasar.doma.it.entity.Dept;
 import org.seasar.doma.it.entity.IdentityStrategy;
 import org.seasar.doma.it.entity.NoId;
 import org.seasar.doma.it.entity.SequenceStrategy;
 import org.seasar.doma.it.entity.TableStrategy;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.UniqueConstraintException;
 import org.seasar.doma.message.Message;
 import org.seasar.framework.unit.Seasar2;
@@ -64,6 +68,24 @@ public class AutoInsertTest {
         assertEquals("hoge", department.getDepartmentName());
         assertEquals("foo", department.getLocation().getValue());
         assertEquals(new Integer(1), department.getVersion());
+    }
+
+    public void testImmutable() throws Exception {
+        DeptDao dao = new DeptDaoImpl();
+        Dept dept = new Dept(new Identity<Dept>(99), 99, "hoge",
+                new Location<Dept>("foo"), null);
+        Result<Dept> result = dao.insert(dept);
+        assertEquals(1, result.getCount());
+        dept = result.getEntity();
+        assertEquals(new Integer(1), dept.getVersion());
+        assertEquals("hoge_preI_postI", dept.getDepartmentName());
+
+        dept = dao.selectById(new Integer(99));
+        assertEquals(new Integer(99), dept.getDepartmentId().getValue());
+        assertEquals(new Integer(99), dept.getDepartmentNo());
+        assertEquals("hoge_preI", dept.getDepartmentName());
+        assertEquals("foo", dept.getLocation().getValue());
+        assertEquals(new Integer(1), dept.getVersion());
     }
 
     public void test_UniqueConstraintException() throws Exception {

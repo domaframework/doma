@@ -7,7 +7,11 @@ import java.util.Arrays;
 import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.EmployeeDao;
 import org.seasar.doma.it.dao.EmployeeDaoImpl;
+import org.seasar.doma.it.dao.PersonDao;
+import org.seasar.doma.it.dao.PersonDaoImpl;
 import org.seasar.doma.it.entity.Employee;
+import org.seasar.doma.it.entity.Person;
+import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.framework.unit.Seasar2;
 
 @RunWith(Seasar2.class)
@@ -30,5 +34,28 @@ public class SqlFileBatchDeleteTest {
         assertNull(employee);
         employee = dao.selectById(2);
         assertNull(employee);
+    }
+
+    public void testImmutable() throws Exception {
+        PersonDao dao = new PersonDaoImpl();
+        Person person = new Person(1, null, null, null, null, null, null, null,
+                1);
+        Person person2 = new Person(2, null, null, null, null, null, null,
+                null, 1);
+        BatchResult<Person> result = dao.deleteBySqlFile(Arrays.asList(person,
+                person2));
+        int[] counts = result.getCounts();
+        assertEquals(2, counts.length);
+        assertEquals(1, counts[0]);
+        assertEquals(1, counts[1]);
+        person = result.getEntities().get(0);
+        assertEquals("null_preD_postD", person.getEmployeeName());
+        person2 = result.getEntities().get(1);
+        assertEquals("null_preD_postD", person2.getEmployeeName());
+
+        person = dao.selectById(1);
+        assertNull(person);
+        person2 = dao.selectById(2);
+        assertNull(person);
     }
 }

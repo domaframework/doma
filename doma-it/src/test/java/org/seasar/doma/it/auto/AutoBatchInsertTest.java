@@ -24,6 +24,8 @@ import org.seasar.doma.it.dao.CompKeyDepartmentDao;
 import org.seasar.doma.it.dao.CompKeyDepartmentDaoImpl;
 import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDaoImpl;
+import org.seasar.doma.it.dao.DeptDao;
+import org.seasar.doma.it.dao.DeptDaoImpl;
 import org.seasar.doma.it.dao.IdentityStrategyDao;
 import org.seasar.doma.it.dao.IdentityStrategyDaoImpl;
 import org.seasar.doma.it.dao.NoIdDao;
@@ -35,10 +37,12 @@ import org.seasar.doma.it.dao.TableStrategyDaoImpl;
 import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.entity.CompKeyDepartment;
 import org.seasar.doma.it.entity.Department;
+import org.seasar.doma.it.entity.Dept;
 import org.seasar.doma.it.entity.IdentityStrategy;
 import org.seasar.doma.it.entity.NoId;
 import org.seasar.doma.it.entity.SequenceStrategy;
 import org.seasar.doma.it.entity.TableStrategy;
+import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.Message;
 import org.seasar.framework.unit.Seasar2;
@@ -76,6 +80,40 @@ public class AutoBatchInsertTest {
         assertEquals("foo", department.getDepartmentName());
         assertNull(department.getLocation().getValue());
         assertEquals(new Integer(1), department.getVersion());
+    }
+
+    public void testImmutable() throws Exception {
+        DeptDao dao = new DeptDaoImpl();
+        Dept dept = new Dept(new Identity<Dept>(99), 99, "hoge", null,
+                null);
+        Dept dept2 = new Dept(new Identity<Dept>(98), 98, "foo", null,
+                null);
+        BatchResult<Dept> result = dao.insert(Arrays.asList(dept,
+                dept2));
+        int[] counts = result.getCounts();
+        assertEquals(2, counts.length);
+        assertEquals(1, counts[0]);
+        assertEquals(1, counts[1]);
+        dept = result.getEntities().get(0);
+        dept2 = result.getEntities().get(1);
+        assertEquals(new Integer(1), dept.getVersion());
+        assertEquals("hoge_preI_postI", dept.getDepartmentName());
+        assertEquals(new Integer(1), dept2.getVersion());
+        assertEquals(new Integer(1), dept.getVersion());
+        assertEquals("foo_preI_postI", dept2.getDepartmentName());
+
+        dept = dao.selectById(99);
+        assertEquals(new Integer(99), dept.getDepartmentId().getValue());
+        assertEquals(new Integer(99), dept.getDepartmentNo());
+        assertEquals("hoge_preI", dept.getDepartmentName());
+        assertNull(dept.getLocation().getValue());
+        assertEquals(new Integer(1), dept.getVersion());
+        dept = dao.selectById(new Integer(98));
+        assertEquals(new Integer(98), dept.getDepartmentId().getValue());
+        assertEquals(new Integer(98), dept.getDepartmentNo());
+        assertEquals("foo_preI", dept.getDepartmentName());
+        assertNull(dept.getLocation().getValue());
+        assertEquals(new Integer(1), dept.getVersion());
     }
 
     public void testCompositeKey() throws Exception {

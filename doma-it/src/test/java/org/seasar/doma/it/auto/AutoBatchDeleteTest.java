@@ -20,18 +20,22 @@ import static org.junit.Assert.*;
 import java.util.Arrays;
 
 import org.junit.runner.RunWith;
-import org.seasar.doma.message.Message;
 import org.seasar.doma.it.dao.CompKeyEmployeeDao;
 import org.seasar.doma.it.dao.CompKeyEmployeeDaoImpl;
 import org.seasar.doma.it.dao.EmployeeDao;
 import org.seasar.doma.it.dao.EmployeeDaoImpl;
 import org.seasar.doma.it.dao.NoIdDao;
 import org.seasar.doma.it.dao.NoIdDaoImpl;
+import org.seasar.doma.it.dao.PersonDao;
+import org.seasar.doma.it.dao.PersonDaoImpl;
 import org.seasar.doma.it.entity.CompKeyEmployee;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.it.entity.NoId;
+import org.seasar.doma.it.entity.Person;
+import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.OptimisticLockException;
+import org.seasar.doma.message.Message;
 import org.seasar.framework.unit.Seasar2;
 
 @RunWith(Seasar2.class)
@@ -54,6 +58,28 @@ public class AutoBatchDeleteTest {
         assertNull(employee);
         employee = dao.selectById(2);
         assertNull(employee);
+    }
+
+    public void testImmutable() throws Exception {
+        PersonDao dao = new PersonDaoImpl();
+        Person person = new Person(1, null, null, null, null, null, null, null,
+                1);
+        Person person2 = new Person(2, null, null, null, null, null, null,
+                null, 1);
+        BatchResult<Person> result = dao.delete(Arrays.asList(person, person2));
+        int[] counts = result.getCounts();
+        assertEquals(2, counts.length);
+        assertEquals(1, counts[0]);
+        assertEquals(1, counts[1]);
+        person = result.getEntities().get(0);
+        assertEquals("null_preD_postD", person.getEmployeeName());
+        person2 = result.getEntities().get(0);
+        assertEquals("null_preD_postD", person2.getEmployeeName());
+
+        person = dao.selectById(1);
+        assertNull(person);
+        person2 = dao.selectById(2);
+        assertNull(person2);
     }
 
     public void testIgnoreVersion() throws Exception {

@@ -25,12 +25,16 @@ import org.seasar.doma.it.dao.CompKeyDepartmentDao;
 import org.seasar.doma.it.dao.CompKeyDepartmentDaoImpl;
 import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDaoImpl;
+import org.seasar.doma.it.dao.DeptDao;
+import org.seasar.doma.it.dao.DeptDaoImpl;
 import org.seasar.doma.it.dao.NoIdDao;
 import org.seasar.doma.it.dao.NoIdDaoImpl;
 import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.entity.CompKeyDepartment;
 import org.seasar.doma.it.entity.Department;
+import org.seasar.doma.it.entity.Dept;
 import org.seasar.doma.it.entity.NoId;
+import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.doma.message.Message;
@@ -70,6 +74,37 @@ public class AutoBatchUpdateTest {
         assertEquals("foo", department.getDepartmentName());
         assertNull(department.getLocation().getValue());
         assertEquals(new Integer(2), department.getVersion());
+    }
+
+    public void testImmutable() throws Exception {
+        DeptDao dao = new DeptDaoImpl();
+        Dept dept = new Dept(new Identity<Dept>(1), 1, "hoge", null, 1);
+        Dept dept2 = new Dept(new Identity<Dept>(2), 2, "foo", null, 1);
+        BatchResult<Dept> result = dao.update(Arrays.asList(dept,
+                dept2));
+        int[] counts = result.getCounts();
+        assertEquals(2, counts.length);
+        assertEquals(1, counts[0]);
+        assertEquals(1, counts[1]);
+        dept = result.getEntities().get(0);
+        dept2 = result.getEntities().get(1);
+        assertEquals(new Integer(2), dept.getVersion());
+        assertEquals("hoge_preU_postU", dept.getDepartmentName());
+        assertEquals(new Integer(2), dept2.getVersion());
+        assertEquals("foo_preU_postU", dept2.getDepartmentName());
+
+        dept = dao.selectById(1);
+        assertEquals(new Integer(1), dept.getDepartmentId().getValue());
+        assertEquals(new Integer(1), dept.getDepartmentNo());
+        assertEquals("hoge_preU", dept.getDepartmentName());
+        assertNull(dept.getLocation().getValue());
+        assertEquals(new Integer(2), dept.getVersion());
+        dept = dao.selectById(2);
+        assertEquals(new Integer(2), dept.getDepartmentId().getValue());
+        assertEquals(new Integer(2), dept.getDepartmentNo());
+        assertEquals("foo_preU", dept.getDepartmentName());
+        assertNull(dept.getLocation().getValue());
+        assertEquals(new Integer(2), dept.getVersion());
     }
 
     public void testIncludeVersion() throws Exception {

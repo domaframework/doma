@@ -74,8 +74,9 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
     }
 
     @Override
-    public <E> void setEntityAndEntityType(E entity, EntityType<E> entityType) {
-        entityHandler = new EntityHandler<E>(entity, entityType);
+    public <E> void setEntityAndEntityType(String name, E entity,
+            EntityType<E> entityType) {
+        entityHandler = new EntityHandler<E>(name, entity, entityType);
     }
 
     public void setVersionIgnored(boolean versionIgnored) {
@@ -97,14 +98,17 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
 
     protected class EntityHandler<E> {
 
+        protected String name;
+
         protected E entity;
 
         protected EntityType<E> entityType;
 
         protected VersionPropertyType<? super E, E, ?, ?> versionPropertyType;
 
-        protected EntityHandler(E entity, EntityType<E> entityType) {
-            assertNotNull(entity, entityType);
+        protected EntityHandler(String name, E entity, EntityType<E> entityType) {
+            assertNotNull(name, entity, entityType);
+            this.name = name;
             this.entity = entity;
             this.entityType = entityType;
             this.versionPropertyType = entityType.getVersionPropertyType();
@@ -116,6 +120,7 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
             entityType.preDelete(entity, context);
             if (context.getNewEntity() != null) {
                 entity = context.getNewEntity();
+                addParameterInternal(name, entityType.getEntityClass(), entity);
             }
         }
 
