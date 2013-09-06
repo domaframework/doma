@@ -106,9 +106,11 @@ public abstract class AptTestCase extends AptinaTestCase {
     protected void assertMessage(Message message) {
         List<Diagnostic<? extends JavaFileObject>> diagnostics = getDiagnostics();
         if (diagnostics.size() == 1) {
-            if (message == extractMessage(diagnostics.get(0))) {
+            Message m = extractMessage(diagnostics.get(0));
+            if (message == m) {
                 return;
             }
+            fail("actual message id: " + m.name());
         }
         fail();
     }

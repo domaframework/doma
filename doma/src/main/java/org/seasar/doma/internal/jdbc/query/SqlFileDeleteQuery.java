@@ -87,6 +87,14 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements
         this.optimisticLockExceptionSuppressed = optimisticLockExceptionSuppressed;
     }
 
+    @SuppressWarnings("unchecked")
+    public <E> E getEntity(Class<E> entityType) {
+        if (entityHandler != null) {
+            return (E) entityHandler.entity;
+        }
+        return null;
+    }
+
     protected class EntityHandler<E> {
 
         protected E entity;

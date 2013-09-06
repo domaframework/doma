@@ -189,10 +189,6 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
         }
     }
 
-    public E getEntity() {
-        return entity;
-    }
-
     @Override
     public void complete() {
         postUpdate();

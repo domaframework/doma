@@ -180,10 +180,6 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
         }
     }
 
-    public E getEntity() {
-        return entity;
-    }
-
     @Override
     public void complete() {
         postInsert();

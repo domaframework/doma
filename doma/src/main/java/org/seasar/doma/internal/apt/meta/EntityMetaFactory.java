@@ -95,6 +95,28 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
         doTable(classElement, entityMeta);
     }
 
+    protected boolean isImmutable(TypeElement classElement,
+            EntityMeta entityMeta) {
+        TypeMirror firstEntity = getFirstParentEntity(classElement);
+        if (TypeMirrorUtil.isSameType(firstEntity, classElement.asType(), env)) {
+            return entityMeta.isImmutable();
+        }
+        return false;
+
+    }
+
+    protected TypeMirror getFirstParentEntity(TypeElement classElement) {
+        TypeMirror firstEntity = null;
+        for (TypeElement t = classElement; t != null
+                && t.asType().getKind() != TypeKind.NONE; t = TypeMirrorUtil
+                .toTypeElement(t.getSuperclass(), env)) {
+            if (t.getAnnotation(Entity.class) != null) {
+                firstEntity = t.asType();
+            }
+        }
+        return firstEntity;
+    }
+
     protected void validateClass(TypeElement classElement, EntityMeta entityMeta) {
         if (classElement.getKind() != ElementKind.CLASS) {
             EntityMirror entityMirror = entityMeta.getEntityMirror();
@@ -199,6 +221,12 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
                             entityMeta);
                 } else {
                     doEntityPropertyMeta(fieldElement, entityMeta);
+                    if (entityMeta.isImmutable()
+                            && !fieldElement.getModifiers().contains(
+                                    Modifier.FINAL)) {
+                        throw new AptException(Message.DOMA4225, env,
+                                fieldElement);
+                    }
                 }
             } catch (AptException e) {
                 Notifier.notify(env, e);

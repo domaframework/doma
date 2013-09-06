@@ -818,4 +818,34 @@ public class DaoProcessorTest extends AptTestCase {
         assertMessage(Message.DOMA4219);
     }
 
+    public void testImmutableEmp() throws Exception {
+        Class<?> target = ImmutableEmpDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testIllegalModifyImmutableEmp() throws Exception {
+        Class<?> target = IllegalModifyImmutableEmpDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4222);
+    }
+
+    public void testIllegalBatchModifyImmutableEmp() throws Exception {
+        Class<?> target = IllegalBatchModifyImmutableEmpDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4223);
+    }
+
 }

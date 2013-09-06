@@ -140,6 +140,10 @@ public abstract class SqlFileBatchModifyQuery<E> implements BatchModifyQuery {
         this.sqls = new ArrayList<PreparedSql>(this.elements.size());
     }
 
+    public List<E> getEntities() {
+        return elements;
+    }
+
     public void setCallerClassName(String callerClassName) {
         this.callerClassName = callerClassName;
     }

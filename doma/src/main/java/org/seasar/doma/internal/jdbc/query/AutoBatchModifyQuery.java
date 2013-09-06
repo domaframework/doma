@@ -148,6 +148,10 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
         this.sqls = new ArrayList<PreparedSql>(this.entities.size());
     }
 
+    public List<E> getEntities() {
+        return entities;
+    }
+
     public void setCallerClassName(String callerClassName) {
         this.callerClassName = callerClassName;
     }

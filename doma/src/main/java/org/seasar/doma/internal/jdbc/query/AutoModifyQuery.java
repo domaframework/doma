@@ -129,6 +129,10 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
         this.entity = entity;
     }
 
+    public E getEntity() {
+        return entity;
+    }
+
     public void setCallerClassName(String callerClassName) {
         this.callerClassName = callerClassName;
     }

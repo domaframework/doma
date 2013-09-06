@@ -18,7 +18,6 @@ package org.seasar.doma.internal.jdbc.query;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.lang.reflect.Method;
-import java.util.List;
 
 import org.seasar.doma.internal.jdbc.entity.AbstractPostUpdateContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreUpdateContext;
@@ -86,10 +85,6 @@ public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
         if (entityHandler != null) {
             entityHandler.incrementVersions();
         }
-    }
-
-    public List<E> getEntities() {
-        return elements;
     }
 
     @Override

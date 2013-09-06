@@ -20,7 +20,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.lang.reflect.Method;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.seasar.doma.internal.jdbc.entity.AbstractPostInsertContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreInsertContext;
@@ -203,10 +202,6 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
                         idGenerationConfig, statement);
             }
         }
-    }
-
-    public List<E> getEntities() {
-        return entities;
     }
 
     @Override
