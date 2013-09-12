@@ -22,8 +22,8 @@ import javax.lang.model.element.VariableElement;
 import org.seasar.doma.In;
 import org.seasar.doma.InOut;
 import org.seasar.doma.Out;
-import org.seasar.doma.ResultSet;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.mirror.ResultSetMirror;
 import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.type.DomainType;
@@ -64,8 +64,10 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
 
     protected CallableSqlParameterMeta createParameterMeta(
             final QueryParameterMeta parameterMeta) {
-        if (parameterMeta.isAnnotated(ResultSet.class)) {
-            return createResultSetParameterMeta(parameterMeta);
+        ResultSetMirror resultSetMirror = ResultSetMirror.newInstance(
+                parameterMeta.getElement(), env);
+        if (resultSetMirror != null) {
+            return createResultSetParameterMeta(parameterMeta, resultSetMirror);
         }
         if (parameterMeta.isAnnotated(In.class)) {
             return createInParameterMeta(parameterMeta);
@@ -81,7 +83,8 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     }
 
     protected CallableSqlParameterMeta createResultSetParameterMeta(
-            final QueryParameterMeta parameterMeta) {
+            final QueryParameterMeta parameterMeta,
+            final ResultSetMirror resultSetMirror) {
         IterableType iterableType = parameterMeta
                 .getDataType()
                 .accept(new SimpleDataTypeVisitor<IterableType, Void, RuntimeException>() {
@@ -125,7 +128,8 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
                                             .getTypeName());
                         }
                         return new EntityListParameterMeta(parameterMeta
-                                .getName(), dataType);
+                                .getName(), dataType, resultSetMirror
+                                .getEnsureResultMappingValue());
                     }
 
                     @Override

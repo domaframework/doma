@@ -25,6 +25,7 @@ import java.util.List;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.MappedPropertyNotFoundException;
+import org.seasar.doma.jdbc.ResultMappingException;
 
 /**
  * ストアドファンクションの呼び出しを示します。
@@ -116,4 +117,14 @@ public @interface Function {
      * @since 1.7.0
      */
     MapKeyNamingType mapKeyNaming() default MapKeyNamingType.NONE;
+
+    /**
+     * 結果がエンティティやエンティティのリストの場合、エンティティのすべてのプロパティに結果セットのカラムがマッピングされることを保証します。
+     * <p>
+     * {@code true} の場合、マッピングされないプロパティが存在すれば、このアノテーションが注釈されたメソッドから
+     * {@link ResultMappingException} がスローされます。
+     * 
+     * @since 1.34.0
+     */
+    boolean ensureResultMapping() default false;
 }

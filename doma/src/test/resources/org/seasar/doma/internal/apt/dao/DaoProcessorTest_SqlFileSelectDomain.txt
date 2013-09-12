@@ -61,6 +61,7 @@ public class SqlFileSelectDomainDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDaoImpl");
             __query.setCallerMethodName("selectPhoneNumberById");
             __query.setResultEnsured(false);
+            __query.setResultMappingEnsured(false);
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
@@ -92,6 +93,7 @@ public class SqlFileSelectDomainDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDaoImpl");
             __query.setCallerMethodName("selectPhoneNumberByNameAndSalary");
             __query.setResultEnsured(false);
+            __query.setResultMappingEnsured(false);
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
@@ -118,6 +120,7 @@ public class SqlFileSelectDomainDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDaoImpl");
             __query.setCallerMethodName("selectJobTypeById");
             __query.setResultEnsured(false);
+            __query.setResultMappingEnsured(false);
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
@@ -149,6 +152,7 @@ public class SqlFileSelectDomainDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlFileSelectDomainDaoImpl");
             __query.setCallerMethodName("selectJobTypeByNameAndSalary");
             __query.setResultEnsured(false);
+            __query.setResultMappingEnsured(false);
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);

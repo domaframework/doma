@@ -43,7 +43,8 @@ public class EntityResultListHandler<E> implements ResultSetHandler<List<E>> {
     @Override
     public List<E> handle(ResultSet resultSet, SelectQuery query)
             throws SQLException {
-        EntityBuilder<E> builder = new EntityBuilder<E>(query, entityType);
+        EntityBuilder<E> builder = new EntityBuilder<E>(query, entityType,
+                query.isResultMappingEnsured());
         List<E> entities = new ArrayList<E>();
         while (resultSet.next()) {
             E entity = builder.build(resultSet);

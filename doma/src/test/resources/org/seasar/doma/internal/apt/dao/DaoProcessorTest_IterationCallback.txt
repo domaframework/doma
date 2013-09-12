@@ -65,6 +65,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.internal.jdbc.dao.
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl");
             __query.setCallerMethodName("iterateByIdAndName");
             __query.setResultEnsured(false);
+            __query.setResultMappingEnsured(false);
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
@@ -94,6 +95,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.internal.jdbc.dao.
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl");
             __query.setCallerMethodName("iterateById");
             __query.setResultEnsured(false);
+            __query.setResultMappingEnsured(false);
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
@@ -122,6 +124,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.internal.jdbc.dao.
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl");
             __query.setCallerMethodName("iterate");
             __query.setResultEnsured(false);
+            __query.setResultMappingEnsured(false);
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
@@ -150,6 +153,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.internal.jdbc.dao.
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl");
             __query.setCallerMethodName("iterateWithHogeIterationCallback");
             __query.setResultEnsured(false);
+            __query.setResultMappingEnsured(false);
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
@@ -179,6 +183,7 @@ public class IterationCallbackDaoImpl extends org.seasar.doma.internal.jdbc.dao.
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.IterationCallbackDaoImpl");
             __query.setCallerMethodName("iterateByIdAsMap");
             __query.setResultEnsured(false);
+            __query.setResultMappingEnsured(false);
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);

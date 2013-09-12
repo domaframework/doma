@@ -58,6 +58,11 @@ public class CountQuery implements SelectQuery {
     }
 
     @Override
+    public boolean isResultMappingEnsured() {
+        return false;
+    }
+
+    @Override
     public int getFetchSize() {
         return fetchSize;
     }

@@ -47,7 +47,8 @@ public class EntityIterationHandler<R, E> implements ResultSetHandler<R> {
 
     @Override
     public R handle(ResultSet resultSet, SelectQuery query) throws SQLException {
-        EntityBuilder<E> builder = new EntityBuilder<E>(query, entityType);
+        EntityBuilder<E> builder = new EntityBuilder<E>(query, entityType,
+                query.isResultMappingEnsured());
         IterationContext iterationContext = new IterationContext();
         boolean existent = false;
         R result = null;

@@ -52,7 +52,7 @@ public class EntityBuilderTest extends TestCase {
 
         _Emp entityType = _Emp.getSingletonInternal();
         EntityBuilder<Emp> builder = new EntityBuilder<Emp>(
-                new MySelectQuery(), entityType);
+                new MySelectQuery(), entityType, false);
         Emp emp = builder.build(resultSet);
 
         assertEquals(new Integer(1), emp.getId());
@@ -90,6 +90,11 @@ public class EntityBuilderTest extends TestCase {
 
         @Override
         public boolean isResultEnsured() {
+            return false;
+        }
+
+        @Override
+        public boolean isResultMappingEnsured() {
             return false;
         }
 

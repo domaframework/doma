@@ -33,12 +33,15 @@ public class EntityListParameter<E> implements ListParameter<EntityType<E>, E> {
 
     protected final String name;
 
+    protected final boolean resultMappingEnsured;
+
     public EntityListParameter(EntityType<E> entityType, List<E> entities,
-            String name) {
+            String name, boolean resultMappingEnsured) {
         assertNotNull(entityType, entities, name);
         this.entityType = entityType;
         this.entities = entities;
         this.name = name;
+        this.resultMappingEnsured = resultMappingEnsured;
     }
 
     public String getName() {
@@ -57,6 +60,10 @@ public class EntityListParameter<E> implements ListParameter<EntityType<E>, E> {
     @Override
     public void add(E entity) {
         entities.add(entity);
+    }
+
+    public boolean isResultMappingEnsured() {
+        return resultMappingEnsured;
     }
 
     @Override

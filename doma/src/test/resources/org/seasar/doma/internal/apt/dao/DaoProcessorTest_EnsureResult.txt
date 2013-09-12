@@ -65,6 +65,7 @@ public class EnsureResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EnsureResultDaoImpl");
             __query.setCallerMethodName("selectById");
             __query.setResultEnsured(true);
+            __query.setResultMappingEnsured(false);
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);
@@ -96,6 +97,7 @@ public class EnsureResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.EnsureResultDaoImpl");
             __query.setCallerMethodName("selectByNameAndSalary");
             __query.setResultEnsured(true);
+            __query.setResultMappingEnsured(false);
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);

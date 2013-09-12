@@ -15,27 +15,28 @@
  */
 package org.seasar.doma.jdbc;
 
+import java.util.List;
+
 import org.seasar.doma.message.Message;
 
 /**
- * 結果セットに含まれたカラムにマッピングされたプロパティが見つからない場合にスローされます。
- * <p>
+ * エンティティのすべてのプロパティに対し、結果セットのカラムがマッピングされない場合にスローされます。
  * 
  * @author taedium
- * 
+ * @1.34.0
  */
-public class MappedPropertyNotFoundException extends JdbcException {
+public class ResultMappingException extends JdbcException {
 
     private static final long serialVersionUID = 1L;
 
-    /** プロパティにマッピングされなかったカラム名 */
-    protected final String columnName;
-
-    /** マッピングを期待されるプロパティの名前 */
-    protected final String expectedPropertyName;
-
     /** マッピング対象のエンティティクラスの名前 */
     protected final String entityClassName;
+
+    /** マッピングされなかったプロパティの名前のリスト */
+    protected final List<String> unmappedPropertyNames;
+
+    /** 期待されるカラムの名前のリスト */
+    protected final List<String> expectedColumnNames;
 
     /** SQLの種別 */
     protected final SqlKind kind;
@@ -54,12 +55,12 @@ public class MappedPropertyNotFoundException extends JdbcException {
      * 
      * @param logType
      *            ログタイプ
-     * @param columnName
-     *            プロパティにマッピングされなかったカラム名
-     * @param expectedPropertyName
-     *            マッピングを期待されるプロパティの名前
      * @param entityClassName
      *            マッピング対象のエンティティクラスの名前
+     * @param unmappedPropertyNames
+     *            マッピングされなかったプロパティの名前のリスト
+     * @param expectedColumnNames
+     *            期待されるカラムの名前のリスト
      * @param kind
      *            SQLの種別
      * @param rawSql
@@ -69,30 +70,20 @@ public class MappedPropertyNotFoundException extends JdbcException {
      * @param sqlFilePath
      *            SQLファイルのパス
      */
-    public MappedPropertyNotFoundException(ExceptionSqlLogType logType,
-            String columnName, String expectedPropertyName,
-            String entityClassName, SqlKind kind, String rawSql,
+    public ResultMappingException(ExceptionSqlLogType logType,
+            String entityClassName, List<String> unmappedPropertyNames,
+            List<String> expectedColumnNames, SqlKind kind, String rawSql,
             String formattedSql, String sqlFilePath) {
-        super(Message.DOMA2002, columnName, expectedPropertyName,
-                entityClassName, sqlFilePath, choiceSql(logType, rawSql,
+        super(Message.DOMA2216, entityClassName, unmappedPropertyNames,
+                expectedColumnNames, sqlFilePath, choiceSql(logType, rawSql,
                         formattedSql));
-        this.columnName = columnName;
-        this.expectedPropertyName = expectedPropertyName;
         this.entityClassName = entityClassName;
+        this.unmappedPropertyNames = unmappedPropertyNames;
+        this.expectedColumnNames = expectedColumnNames;
         this.kind = kind;
         this.rawSql = rawSql;
         this.formattedSql = formattedSql;
         this.sqlFilePath = sqlFilePath;
-    }
-
-    /**
-     * SQLの種別を返します。
-     * 
-     * @return SQLの種別
-     * @since 1.5.0
-     */
-    public SqlKind getKind() {
-        return kind;
     }
 
     /**
@@ -105,21 +96,30 @@ public class MappedPropertyNotFoundException extends JdbcException {
     }
 
     /**
-     * プロパティにマッピングされなかったカラム名を返します。
+     * マッピングされなかったプロパティの名前のリストを返します。
      * 
-     * @return プロパティにマッピングされなかったカラム名
+     * @return マッピングされなかったプロパティの名前のリスト
      */
-    public String getColumnName() {
-        return columnName;
+    public List<String> getUnmappedPropertyNames() {
+        return unmappedPropertyNames;
     }
 
     /**
-     * マッピングを期待されるプロパティの名前を返します。
+     * 期待されるカラムの名前のリストを返します。
      * 
-     * @return マッピングを期待されるプロパティの名前
+     * @return 期待されるカラムの名前のリスト
      */
-    public String getExpectedPropertyName() {
-        return expectedPropertyName;
+    public List<String> getExpectedColumnNames() {
+        return expectedColumnNames;
+    }
+
+    /**
+     * SQLの種別を返します。
+     * 
+     * @return SQLの種別
+     */
+    public SqlKind getKind() {
+        return kind;
     }
 
     /**

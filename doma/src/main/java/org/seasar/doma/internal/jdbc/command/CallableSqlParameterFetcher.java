@@ -294,7 +294,8 @@ public class CallableSqlParameterFetcher implements
 
             public EntityFetcherCallback(EntityListParameter<E> parameter) {
                 this.entityType = parameter.getEntityType();
-                this.builder = new EntityBuilder<E>(query, entityType);
+                this.builder = new EntityBuilder<E>(query, entityType,
+                        parameter.isResultMappingEnsured());
                 this.parameter = parameter;
             }
 

@@ -58,6 +58,10 @@ public class AutoFunctionQueryMeta extends AutoModuleQueryMeta {
         return functionMirror.getQueryTimeoutValue();
     }
 
+    public boolean getEnsureResultMapping() {
+        return functionMirror.getEnsureResultMappingValue();
+    }
+
     @Override
     public MapKeyNamingType getMapKeyNamingType() {
         return functionMirror.getMapKeyNamingValue();

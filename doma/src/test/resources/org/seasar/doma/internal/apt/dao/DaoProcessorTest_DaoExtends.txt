@@ -67,6 +67,7 @@ public class DaoExtendsDaoImpl extends org.seasar.doma.internal.apt.dao.EmpDaoIm
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.DaoExtendsDaoImpl");
             __query.setCallerMethodName("selectById");
             __query.setResultEnsured(false);
+            __query.setResultMappingEnsured(false);
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);

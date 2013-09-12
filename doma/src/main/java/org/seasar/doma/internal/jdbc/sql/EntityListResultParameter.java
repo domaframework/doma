@@ -27,8 +27,9 @@ import org.seasar.doma.jdbc.entity.EntityType;
 public class EntityListResultParameter<E> extends EntityListParameter<E>
         implements ResultParameter<List<E>> {
 
-    public EntityListResultParameter(EntityType<E> entityType) {
-        super(entityType, new ArrayList<E>(), "");
+    public EntityListResultParameter(EntityType<E> entityType,
+            boolean resultMappingEnsured) {
+        super(entityType, new ArrayList<E>(), "", resultMappingEnsured);
     }
 
     @Override

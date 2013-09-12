@@ -63,6 +63,7 @@ public class PrimitiveTypeDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abst
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.PrimitiveTypeDaoImpl");
             __query.setCallerMethodName("selectById");
             __query.setResultEnsured(false);
+            __query.setResultMappingEnsured(false);
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);

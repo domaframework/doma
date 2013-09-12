@@ -29,10 +29,14 @@ public class EntityListParameterMeta implements CallableSqlParameterMeta {
 
     protected final EntityType entityType;
 
-    public EntityListParameterMeta(String name, EntityType entityType) {
+    protected final boolean ensureResultMapping;
+
+    public EntityListParameterMeta(String name, EntityType entityType,
+            boolean ensureResultMapping) {
         assertNotNull(name, entityType);
         this.name = name;
         this.entityType = entityType;
+        this.ensureResultMapping = ensureResultMapping;
     }
 
     public String getName() {
@@ -41,6 +45,10 @@ public class EntityListParameterMeta implements CallableSqlParameterMeta {
 
     public EntityType getEntityType() {
         return entityType;
+    }
+
+    public boolean getEnsureResultMapping() {
+        return ensureResultMapping;
     }
 
     @Override

@@ -43,6 +43,8 @@ public class SelectMirror {
 
     protected AnnotationValue ensureResult;
 
+    protected AnnotationValue ensureResultMapping;
+
     protected AnnotationValue queryTimeout;
 
     protected AnnotationValue fetchSize;
@@ -61,6 +63,10 @@ public class SelectMirror {
 
     public AnnotationValue getEnsureResult() {
         return ensureResult;
+    }
+
+    public AnnotationValue getEnsureResultMapping() {
+        return ensureResultMapping;
     }
 
     public AnnotationValue getQueryTimeout() {
@@ -119,6 +125,14 @@ public class SelectMirror {
         return value.booleanValue();
     }
 
+    public boolean getEnsureResultMappingValue() {
+        Boolean value = AnnotationValueUtil.toBoolean(ensureResultMapping);
+        if (value == null) {
+            throw new AptIllegalStateException("ensureResultMapping");
+        }
+        return value.booleanValue();
+    }
+
     public MapKeyNamingType getMapKeyNamingValue() {
         VariableElement enumConstant = AnnotationValueUtil
                 .toEnumConstant(mapKeyNaming);
@@ -151,6 +165,8 @@ public class SelectMirror {
                 result.iterate = value;
             } else if ("ensureResult".equals(name)) {
                 result.ensureResult = value;
+            } else if ("ensureResultMapping".equals(name)) {
+                result.ensureResultMapping = value;
             } else if ("queryTimeout".equals(name)) {
                 result.queryTimeout = value;
             } else if ("fetchSize".equals(name)) {

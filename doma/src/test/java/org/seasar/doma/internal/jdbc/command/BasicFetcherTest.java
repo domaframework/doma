@@ -83,6 +83,11 @@ public class BasicFetcherTest extends TestCase {
         }
 
         @Override
+        public boolean isResultMappingEnsured() {
+            return false;
+        }
+
+        @Override
         public int getFetchSize() {
             return 0;
         }

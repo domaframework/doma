@@ -178,8 +178,8 @@ public class AutoFunctionDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.util.List<org.seasar.doma.internal.apt.entity.Emp>> __query = new org.seasar.doma.internal.jdbc.query.AutoFunctionQuery<java.util.List<org.seasar.doma.internal.apt.entity.Emp>>();
             __query.setConfig(config);
             __query.setFunctionName("executeFunction5");
-            __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.EntityListResultParameter<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal()));
-            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.EntityListParameter<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal(), arg1, "arg1"));
+            __query.setResultParameter(new org.seasar.doma.internal.jdbc.sql.EntityListResultParameter<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal(), false));
+            __query.addParameter(new org.seasar.doma.internal.jdbc.sql.EntityListParameter<org.seasar.doma.internal.apt.entity.Emp>(org.seasar.doma.internal.apt.entity._Emp.getSingletonInternal(), arg1, "arg1", false));
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.AutoFunctionDaoImpl");
             __query.setCallerMethodName("executeFunction5");
             __query.setQueryTimeout(-1);

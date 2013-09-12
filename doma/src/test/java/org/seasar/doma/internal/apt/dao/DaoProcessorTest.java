@@ -848,4 +848,13 @@ public class DaoProcessorTest extends AptTestCase {
         assertMessage(Message.DOMA4223);
     }
 
+    public void testEnsureResultMapping() throws Exception {
+        Class<?> target = EnsureResultMappingDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
 }

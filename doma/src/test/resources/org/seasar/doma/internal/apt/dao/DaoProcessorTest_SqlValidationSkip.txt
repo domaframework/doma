@@ -61,6 +61,7 @@ public class SqlValidationSkipDaoImpl extends org.seasar.doma.internal.jdbc.dao.
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.SqlValidationSkipDaoImpl");
             __query.setCallerMethodName("selectById");
             __query.setResultEnsured(false);
+            __query.setResultMappingEnsured(false);
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);

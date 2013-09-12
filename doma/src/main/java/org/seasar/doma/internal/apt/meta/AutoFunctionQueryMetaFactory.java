@@ -64,11 +64,13 @@ public class AutoFunctionQueryMetaFactory extends
             ExecutableElement method, DaoMeta daoMeta) {
         QueryReturnMeta returnMeta = createReturnMeta(method);
         queryMeta.setReturnMeta(returnMeta);
-        ResultParameterMeta resultParameterMeta = createCallableSqlResultParameterMeta(returnMeta);
+        ResultParameterMeta resultParameterMeta = createCallableSqlResultParameterMeta(
+                queryMeta, returnMeta);
         queryMeta.setResultParameterMeta(resultParameterMeta);
     }
 
     protected ResultParameterMeta createCallableSqlResultParameterMeta(
+            final AutoFunctionQueryMeta queryMeta,
             final QueryReturnMeta returnMeta) {
         return returnMeta
                 .getDataType()
@@ -142,7 +144,9 @@ public class AutoFunctionQueryMetaFactory extends
                                                     dataType.getTypeName());
                                         }
                                         return new EntityListResultParameterMeta(
-                                                dataType);
+                                                dataType,
+                                                queryMeta
+                                                        .getEnsureResultMapping());
                                     }
 
                                     @Override

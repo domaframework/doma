@@ -58,6 +58,8 @@ public class SqlFileSelectQuery implements SelectQuery {
 
     protected boolean resultEnsured;
 
+    protected boolean resultMappingEnsured;
+
     protected int fetchSize;
 
     protected int maxRows;
@@ -177,6 +179,15 @@ public class SqlFileSelectQuery implements SelectQuery {
 
     public void setResultEnsured(boolean resultEnsured) {
         this.resultEnsured = resultEnsured;
+    }
+
+    @Override
+    public boolean isResultMappingEnsured() {
+        return resultMappingEnsured;
+    }
+
+    public void setResultMappingEnsured(boolean resultMappingEnsured) {
+        this.resultMappingEnsured = resultMappingEnsured;
     }
 
     @Override

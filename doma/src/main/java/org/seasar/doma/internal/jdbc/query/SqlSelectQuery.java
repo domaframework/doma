@@ -55,6 +55,8 @@ public class SqlSelectQuery implements SelectQuery {
 
     protected boolean resultEnsured;
 
+    protected boolean resultMappingEnsured;
+
     protected int fetchSize;
 
     protected int maxRows;
@@ -115,6 +117,11 @@ public class SqlSelectQuery implements SelectQuery {
     @Override
     public boolean isResultEnsured() {
         return resultEnsured;
+    }
+
+    @Override
+    public boolean isResultMappingEnsured() {
+        return resultMappingEnsured;
     }
 
     @Override
@@ -187,6 +194,10 @@ public class SqlSelectQuery implements SelectQuery {
 
     public void setResultEnsured(boolean resultEnsured) {
         this.resultEnsured = resultEnsured;
+    }
+
+    public void setResultMappingEnsured(boolean resultMappingEnsured) {
+        this.resultMappingEnsured = resultMappingEnsured;
     }
 
     public void setFetchSize(int fetchSize) {

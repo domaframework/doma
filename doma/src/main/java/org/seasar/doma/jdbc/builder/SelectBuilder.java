@@ -519,6 +519,17 @@ public class SelectBuilder {
     }
 
     /**
+     * 結果のエンティティのすべてのプロパティが結果セットのカラムにマッピングされることを保証します。
+     * 
+     * @param entityMappingEnsured
+     *            結果のエンティティのすべてのプロパティが結果セットのカラムにマッピングされることを保証する場合 {@code true}
+     * @since 1.34.0
+     */
+    public void ensureEntityMappingEnsured(boolean entityMappingEnsured) {
+        query.setResultMappingEnsured(entityMappingEnsured);
+    }
+
+    /**
      * フェッチサイズを設定します。
      * <p>
      * 指定しない場合、 {@link Config#getFetchSize()} が使用されます。

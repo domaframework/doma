@@ -37,6 +37,7 @@ public class NoConfigDaoExtendsNoConfigDaoImpl extends org.seasar.doma.internal.
             __query.setCallerClassName("org.seasar.doma.internal.apt.dao.NoConfigDaoExtendsNoConfigDaoImpl");
             __query.setCallerMethodName("selectById");
             __query.setResultEnsured(false);
+            __query.setResultMappingEnsured(false);
             __query.setQueryTimeout(-1);
             __query.setMaxRows(-1);
             __query.setFetchSize(-1);

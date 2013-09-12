@@ -31,6 +31,8 @@ public interface SelectQuery extends Query {
 
     boolean isResultEnsured();
 
+    boolean isResultMappingEnsured();
+
     int getFetchSize();
 
     int getMaxRows();

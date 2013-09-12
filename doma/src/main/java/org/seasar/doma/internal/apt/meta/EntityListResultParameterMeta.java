@@ -27,13 +27,21 @@ public class EntityListResultParameterMeta implements ResultParameterMeta {
 
     protected final EntityType entityType;
 
-    public EntityListResultParameterMeta(EntityType entityType) {
+    protected final boolean ensureResultMapping;
+
+    public EntityListResultParameterMeta(EntityType entityType,
+            boolean ensureResultMapping) {
         assertNotNull(entityType);
         this.entityType = entityType;
+        this.ensureResultMapping = ensureResultMapping;
     }
 
     public EntityType getEntityType() {
         return entityType;
+    }
+
+    public boolean getEnsureResultMapping() {
+        return ensureResultMapping;
     }
 
     @Override

@@ -29,6 +29,7 @@ import org.seasar.doma.jdbc.MappedPropertyNotFoundException;
 import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.NonSingleColumnException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
+import org.seasar.doma.jdbc.ResultMappingException;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SqlFileNotFoundException;
 
@@ -206,6 +207,16 @@ public @interface Select {
      * {@link NoResultException} がスローされます。
      */
     boolean ensureResult() default false;
+
+    /**
+     * 結果がエンティティやエンティティのリストの場合、エンティティのすべてのプロパティに結果セットのカラムがマッピングされることを保証します。
+     * <p>
+     * {@code true} の場合、マッピングされないプロパティが存在すれば、このアノテーションが注釈されたメソッドから
+     * {@link ResultMappingException} がスローされます。
+     * 
+     * @since 1.34.0
+     */
+    boolean ensureResultMapping() default false;
 
     /**
      * 検索結果を @code{Map<Object, String>} もしくは @code{List<Map<Object, String>>}

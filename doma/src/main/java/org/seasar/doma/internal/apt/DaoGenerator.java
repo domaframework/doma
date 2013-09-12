@@ -381,6 +381,8 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.setResultEnsured(%1$s);%n", m.getEnsureResult());
+            iprint("__query.setResultMappingEnsured(%1$s);%n",
+                    m.getEnsureResultMapping());
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             iprint("__query.setMaxRows(%1$s);%n", m.getMaxRows());
             iprint("__query.setFetchSize(%1$s);%n", m.getFetchSize());
@@ -1311,10 +1313,10 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitEntityListParameterMeta(EntityListParameterMeta m,
                 AutoModuleQueryMeta p) {
             EntityType entityType = m.getEntityType();
-            iprint("__query.addParameter(new %1$s<%2$s>(%3$s.getSingletonInternal(), %4$s, \"%4$s\"));%n",
+            iprint("__query.addParameter(new %1$s<%2$s>(%3$s.getSingletonInternal(), %4$s, \"%4$s\", %5$s));%n",
                     EntityListParameter.class.getName(),
                     entityType.getTypeName(), entityType.getMetaTypeName(),
-                    m.getName());
+                    m.getName(), m.getEnsureResultMapping());
             return null;
         }
 
@@ -1524,9 +1526,10 @@ public class DaoGenerator extends AbstractGenerator {
         public Void visitEntityListResultParameterMeta(
                 EntityListResultParameterMeta m, AutoModuleQueryMeta p) {
             EntityType entityType = m.getEntityType();
-            iprint("__query.setResultParameter(new %1$s<%2$s>(%3$s.getSingletonInternal()));%n",
+            iprint("__query.setResultParameter(new %1$s<%2$s>(%3$s.getSingletonInternal(), %4$s));%n",
                     EntityListResultParameter.class.getName(),
-                    entityType.getTypeName(), entityType.getMetaTypeName());
+                    entityType.getTypeName(), entityType.getMetaTypeName(),
+                    m.getEnsureResultMapping());
             return null;
         }
 

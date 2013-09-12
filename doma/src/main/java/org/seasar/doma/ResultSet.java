@@ -22,6 +22,8 @@ import java.lang.annotation.Target;
 import java.sql.Statement;
 import java.util.List;
 
+import org.seasar.doma.jdbc.ResultMappingException;
+
 /**
  * ストアドファンクションやストアドプロシージャーから返される結果セットにマッピングされることを示します。
  * <p>
@@ -65,4 +67,14 @@ import java.util.List;
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ResultSet {
+
+    /**
+     * 結果がエンティティやエンティティのリストの場合、エンティティのすべてのプロパティに結果セットのカラムがマッピングされることを保証します。
+     * <p>
+     * {@code true} の場合、マッピングされないプロパティが存在すれば、このアノテーションが注釈されたパラメータを持つメソッドから
+     * {@link ResultMappingException} がスローされます。
+     * 
+     * @since 1.34.0
+     */
+    boolean ensureResultMapping() default false;
 }

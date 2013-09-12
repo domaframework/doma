@@ -51,6 +51,8 @@ public class FunctionMirror {
 
     protected AnnotationValue mapKeyNaming;
 
+    protected AnnotationValue ensureResultMapping;
+
     protected FunctionMirror(AnnotationMirror annotationMirror,
             String defaltName) {
         assertNotNull(annotationMirror, defaltName);
@@ -83,6 +85,8 @@ public class FunctionMirror {
                 result.queryTimeout = value;
             } else if ("mapKeyNaming".equals(name)) {
                 result.mapKeyNaming = value;
+            } else if ("ensureResultMapping".equals(name)) {
+                result.ensureResultMapping = value;
             }
         }
         return result;
@@ -134,6 +138,14 @@ public class FunctionMirror {
         }
         return MapKeyNamingType
                 .valueOf(enumConstant.getSimpleName().toString());
+    }
+
+    public boolean getEnsureResultMappingValue() {
+        Boolean value = AnnotationValueUtil.toBoolean(ensureResultMapping);
+        if (value == null) {
+            throw new AptIllegalStateException("ensureResultMapping");
+        }
+        return value.booleanValue();
     }
 
 }

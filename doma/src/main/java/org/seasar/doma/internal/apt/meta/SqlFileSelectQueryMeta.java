@@ -104,6 +104,10 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
         return selectMirror.getEnsureResultValue();
     }
 
+    public boolean getEnsureResultMapping() {
+        return selectMirror.getEnsureResultMappingValue();
+    }
+
     public MapKeyNamingType getMapKeyNamingType() {
         return selectMirror.getMapKeyNamingValue();
     }
