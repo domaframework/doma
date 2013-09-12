@@ -164,26 +164,6 @@ BEGIN
 END;
 $$ language plpgsql;
 
-CREATE OR REPLACE FUNCTION PROC_RESULTSET_CHECK(
-  cur OUT refcursor,
-  employeeId IN INTEGER)
-AS $$
-BEGIN
-  OPEN cur FOR SELECT EMPLOYEE_NO, EMPLOYEE_NAME FROM EMPLOYEE WHERE employee_id > employeeId ORDER BY employee_id;
-  RETURN;
-END;
-$$ language plpgsql;
-
-CREATE OR REPLACE FUNCTION PROC_RESULTSET_NOCHECK(
-  cur OUT refcursor,
-  employeeId IN INTEGER)
-AS $$
-BEGIN
-  OPEN cur FOR SELECT EMPLOYEE_NO, EMPLOYEE_NAME FROM EMPLOYEE WHERE employee_id > employeeId ORDER BY employee_id;
-  RETURN;
-END;
-$$ language plpgsql;
-
 CREATE OR REPLACE FUNCTION PROC_RESULTSET_OUT(
   cur OUT refcursor,
   employeeId IN INTEGER,

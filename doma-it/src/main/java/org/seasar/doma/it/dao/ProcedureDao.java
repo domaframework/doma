@@ -55,12 +55,12 @@ public interface ProcedureDao {
     void proc_resultset(@ResultSet List<Employee> employees,
             @In Integer employee_id);
 
-    @Procedure
+    @Procedure(name = "proc_resultset")
     void proc_resultset_check(
             @ResultSet(ensureResultMapping = true) List<Employee> employees,
             @In Integer employee_id);
 
-    @Procedure
+    @Procedure(name = "proc_resultset")
     void proc_resultset_nocheck(
             @ResultSet(ensureResultMapping = false) List<Employee> employees,
             @In Integer employee_id);
