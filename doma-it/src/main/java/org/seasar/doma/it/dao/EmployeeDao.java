@@ -73,6 +73,12 @@ public interface EmployeeDao {
     @Select
     List<Employee> selectAll(SelectOptions options);
 
+    @Select(ensureResultMapping = true)
+    List<Employee> selectOnlyNameWithMappingCheck();
+
+    @Select(ensureResultMapping = false)
+    List<Employee> selectOnlyNameWithoutMappingCheck();
+
     @Select(iterate = true)
     <R> R selectAll(IterationCallback<R, Employee> callback);
 

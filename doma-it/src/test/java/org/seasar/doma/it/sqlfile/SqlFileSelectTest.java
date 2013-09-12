@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.seasar.doma.it.dao.EmployeeDao;
 import org.seasar.doma.it.dao.EmployeeDaoImpl;
 import org.seasar.doma.it.entity.Employee;
+import org.seasar.doma.jdbc.ResultMappingException;
 import org.seasar.framework.unit.Seasar2;
 
 @RunWith(Seasar2.class)
@@ -67,4 +68,19 @@ public class SqlFileSelectTest {
         assertEquals(14, employees.size());
     }
 
+    public void testEnsureResultMappping_false() throws Exception {
+        EmployeeDao dao = new EmployeeDaoImpl();
+        List<Employee> employees = dao.selectOnlyNameWithoutMappingCheck();
+        assertEquals(14, employees.size());
+    }
+
+    public void testEnsureResultMappping_true() throws Exception {
+        EmployeeDao dao = new EmployeeDaoImpl();
+        try {
+            dao.selectOnlyNameWithMappingCheck();
+            fail();
+        } catch (ResultMappingException expected) {
+            System.err.print(expected);
+        }
+    }
 }
