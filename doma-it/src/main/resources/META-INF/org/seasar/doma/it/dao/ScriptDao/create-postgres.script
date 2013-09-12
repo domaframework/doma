@@ -276,7 +276,7 @@ AS $$
 DECLARE
     cur refcursor;
 BEGIN
-  OPEN cur FOR SELECT * FROM EMPLOYEE WHERE employee_id > employeeId ORDER BY employee_id;
+  OPEN cur FOR SELECT EMPLOYEE_NO, EMPLOYEE_NAME FROM EMPLOYEE WHERE employee_id > employeeId ORDER BY employee_id;
   RETURN cur;
 END;
 $$ language plpgsql;

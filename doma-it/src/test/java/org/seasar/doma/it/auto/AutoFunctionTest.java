@@ -28,6 +28,7 @@ import org.seasar.doma.it.dao.FunctionDao;
 import org.seasar.doma.it.dao.FunctionDaoImpl;
 import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.Employee;
+import org.seasar.doma.jdbc.ResultMappingException;
 import org.seasar.framework.unit.Seasar2;
 import org.seasar.framework.unit.annotation.Prerequisite;
 
@@ -70,6 +71,24 @@ public class AutoFunctionTest {
     public void testResultSet() throws Exception {
         FunctionDao dao = new FunctionDaoImpl();
         List<Employee> result = dao.func_resultset(new Integer(1));
+        assertEquals(13, result.size());
+    }
+
+    @Prerequisite("#ENV not in {'mysql', 'mssql2008'}")
+    public void testResultSet_check() throws Exception {
+        FunctionDao dao = new FunctionDaoImpl();
+        try {
+            dao.func_resultset_check(new Integer(1));
+            fail();
+        } catch (ResultMappingException ignored) {
+            System.err.println(ignored);
+        }
+    }
+
+    @Prerequisite("#ENV not in {'mysql', 'mssql2008'}")
+    public void testResultSet_nocheck() throws Exception {
+        FunctionDao dao = new FunctionDaoImpl();
+        List<Employee> result = dao.func_resultset_nocheck(new Integer(1));
         assertEquals(13, result.size());
     }
 

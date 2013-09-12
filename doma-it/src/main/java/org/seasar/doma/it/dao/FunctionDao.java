@@ -47,6 +47,12 @@ public interface FunctionDao {
     @Function
     List<Employee> func_resultset(@In Integer employee_id);
 
+    @Function(name = "func_resultset", ensureResultMapping = true)
+    List<Employee> func_resultset_check(@In Integer employee_id);
+
+    @Function(name = "func_resultset", ensureResultMapping = false)
+    List<Employee> func_resultset_nocheck(@In Integer employee_id);
+
     @Function(name = "func_resultset", mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
     List<Map<String, Object>> func_resultset_map(@In Integer employee_id);
 
