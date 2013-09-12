@@ -30,6 +30,7 @@ import org.seasar.doma.it.dao.ProcedureDaoImpl;
 import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.jdbc.Reference;
+import org.seasar.doma.jdbc.ResultMappingException;
 import org.seasar.framework.unit.Seasar2;
 import org.seasar.framework.unit.annotation.Prerequisite;
 
@@ -78,6 +79,24 @@ public class AutoProcedureTest {
         ProcedureDao dao = new ProcedureDaoImpl();
         List<Employee> employees = new ArrayList<Employee>();
         dao.proc_resultset(employees, 1);
+        assertEquals(13, employees.size());
+    }
+
+    public void testResultSet_check() throws Exception {
+        ProcedureDao dao = new ProcedureDaoImpl();
+        List<Employee> employees = new ArrayList<Employee>();
+        try {
+            dao.proc_resultset_check(employees, 1);
+            fail();
+        } catch (ResultMappingException ignored) {
+            System.err.println(ignored);
+        }
+    }
+
+    public void testResultSet_nocheck() throws Exception {
+        ProcedureDao dao = new ProcedureDaoImpl();
+        List<Employee> employees = new ArrayList<Employee>();
+        dao.proc_resultset_nocheck(employees, 1);
         assertEquals(13, employees.size());
     }
 

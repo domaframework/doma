@@ -55,6 +55,16 @@ public interface ProcedureDao {
     void proc_resultset(@ResultSet List<Employee> employees,
             @In Integer employee_id);
 
+    @Procedure
+    void proc_resultset_check(
+            @ResultSet(ensureResultMapping = true) List<Employee> employees,
+            @In Integer employee_id);
+
+    @Procedure
+    void proc_resultset_nocheck(
+            @ResultSet(ensureResultMapping = false) List<Employee> employees,
+            @In Integer employee_id);
+
     @Procedure(name = "proc_resultset", mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
     void proc_resultset_map(@ResultSet List<Map<String, Object>> employees,
             @In Integer employee_id);

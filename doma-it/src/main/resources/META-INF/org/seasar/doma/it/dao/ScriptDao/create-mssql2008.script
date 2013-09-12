@@ -165,6 +165,22 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [dbo].[PROC_RESULTSET_CHECK]
+    @employeeId int
+AS
+BEGIN
+    SELECT EMPLOYEE_NO, EMPLOYEE_NAME FROM EMPLOYEE WHERE employee_id > @employeeId ORDER BY employee_id;
+END
+GO
+
+CREATE PROCEDURE [dbo].[PROC_RESULTSET_NOCHECK]
+    @employeeId int
+AS
+BEGIN
+    SELECT EMPLOYEE_NO, EMPLOYEE_NAME FROM EMPLOYEE WHERE employee_id > @employeeId ORDER BY employee_id;
+END
+GO
+
 CREATE PROCEDURE [dbo].[PROC_RESULTSET_OUT]
     @employeeId int,
     @employeeCount int OUTPUT
