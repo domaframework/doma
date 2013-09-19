@@ -21,7 +21,7 @@ import org.seasar.doma.Entity;
  * @author taedium
  * 
  */
-@Entity(immutable = true)
+@Entity
 public class ImmutableChildEntity extends ImmutableParentEntity {
 
     final String ccc;

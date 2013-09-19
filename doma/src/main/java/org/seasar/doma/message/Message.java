@@ -380,7 +380,7 @@ public enum Message implements MessageResource {
     DOMA4223("イミュータブルなエンティティクラスを@BatchInsertや@BatchUpdateや@BatchDeleteが注釈されたメソッドのパラメータとする場合、戻り値はorg.seasar.doma.jdbc.BatchResult<E>でなければいけません。型パラメータEの実型引数にはパラメータと同じエンティティクラスを指定してください。"),
     DOMA4224("イミュータブルなエンティティクラスのフィールドには@OriginalStatesを注釈できません。"),
     DOMA4225("イミュータブルなエンティティクラスの永続対象フィールドにはfinal修飾子が必須です。"),
-    DOMA4226("@Entityのimmutable要素の値は親エンティティクラスの値と同じでなければいけません。"),
+    DOMA4226("@Entityのimmutable要素の値はエンティティクラスの継承階層で同一でなければいけません。"),
     DOMA4300("型[{0}]の処理中に例外が発生しました。注釈処理とは直接関係ない場所でコンパイルエラーがありませんか？"),
 
     // other

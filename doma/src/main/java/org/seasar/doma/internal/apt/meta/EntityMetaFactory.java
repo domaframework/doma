@@ -17,6 +17,7 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -80,6 +81,15 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
             throw new AptIllegalStateException("entityMirror.");
         }
         EntityMeta entityMeta = new EntityMeta(entityMirror, classElement);
+        TypeMirror entityListener = resolveEntityListener(classElement);
+        entityMeta.setEntityListener(entityListener);
+        NamingType namingType = resolveNamingType(classElement);
+        entityMeta.setNamingType(namingType);
+        boolean immutable = resolveImmutable(classElement, entityMirror);
+        entityMeta.setImmutable(immutable);
+        entityMeta.setEntityName(classElement.getSimpleName().toString());
+        entityMeta.setEntityTypeName(TypeMirrorUtil.getTypeName(
+                classElement.asType(), env));
         doClassElement(classElement, entityMeta);
         doFieldElements(classElement, entityMeta);
         validateGeneratedId(classElement, entityMeta);
@@ -87,20 +97,20 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
         return entityMeta;
     }
 
-    protected void doClassElement(TypeElement classElement,
-            EntityMeta entityMeta) {
-        validateClass(classElement, entityMeta);
-        validateEntityListener(classElement, entityMeta);
-
-        NamingType namingType = resolveNamingType(classElement);
-        entityMeta.setNamingType(namingType);
-        TypeMirror entityListener = resolveEntityListener(classElement);
-        entityMeta.setEntityListener(entityListener);
-        String entityName = classElement.getSimpleName().toString();
-        entityMeta.setEntityName(entityName);
-        entityMeta.setEntityTypeName(TypeMirrorUtil.getTypeName(
-                classElement.asType(), env));
-        doTable(classElement, entityMeta);
+    protected TypeMirror resolveEntityListener(TypeElement classElement) {
+        TypeMirror result = TypeMirrorUtil.getTypeMirror(
+                NullEntityListener.class, env);
+        for (AnnotationValue value : getEntityElementValueList(classElement,
+                "listener")) {
+            if (value != null) {
+                TypeMirror listenerType = AnnotationValueUtil.toType(value);
+                if (listenerType == null) {
+                    throw new AptIllegalStateException("listener");
+                }
+                result = listenerType;
+            }
+        }
+        return result;
     }
 
     protected NamingType resolveNamingType(TypeElement classElement) {
@@ -120,18 +130,26 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
         return result;
     }
 
-    protected TypeMirror resolveEntityListener(TypeElement classElement) {
-        TypeMirror result = TypeMirrorUtil.getTypeMirror(
-                NullEntityListener.class, env);
+    protected boolean resolveImmutable(TypeElement classElement,
+            EntityMirror entityMirror) {
+        boolean result = false;
+        List<Boolean> resolvedList = new ArrayList<Boolean>();
         for (AnnotationValue value : getEntityElementValueList(classElement,
-                "listener")) {
+                "immutable")) {
             if (value != null) {
-                TypeMirror listenerType = AnnotationValueUtil.toType(value);
-                if (listenerType == null) {
-                    throw new AptIllegalStateException("listener");
+                Boolean immutable = AnnotationValueUtil.toBoolean(value);
+                if (immutable == null) {
+                    throw new AptIllegalStateException("immutable");
                 }
-                result = listenerType;
+                result = immutable.booleanValue();
+                resolvedList.add(immutable);
             }
+        }
+        if (resolvedList.contains(Boolean.TRUE)
+                && resolvedList.contains(Boolean.FALSE)) {
+            throw new AptException(Message.DOMA4226, env, classElement,
+                    entityMirror.getAnnotationMirror(),
+                    entityMirror.getImmutable());
         }
         return result;
     }
@@ -147,25 +165,33 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
             if (annMirror == null) {
                 continue;
             }
+            AnnotationValue value = null;
             for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : annMirror
                     .getElementValues().entrySet()) {
                 ExecutableElement element = entry.getKey();
-                AnnotationValue value = entry.getValue();
                 if (entityElementName
                         .equals(element.getSimpleName().toString())) {
-                    list.add(value);
-                } else {
-                    list.add(null);
+                    value = entry.getValue();
+                    break;
                 }
             }
+            list.add(value);
         }
         Collections.reverse(list);
         return list;
     }
 
+    protected void doClassElement(TypeElement classElement,
+            EntityMeta entityMeta) {
+        validateClass(classElement, entityMeta);
+        validateEntityListener(classElement, entityMeta);
+
+        doTable(classElement, entityMeta);
+    }
+
     protected void validateClass(TypeElement classElement, EntityMeta entityMeta) {
+        EntityMirror entityMirror = entityMeta.getEntityMirror();
         if (classElement.getKind() != ElementKind.CLASS) {
-            EntityMirror entityMirror = entityMeta.getEntityMirror();
             throw new AptException(Message.DOMA4015, env, classElement,
                     entityMirror.getAnnotationMirror());
         }
@@ -175,26 +201,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
         if (!classElement.getTypeParameters().isEmpty()) {
             throw new AptException(Message.DOMA4051, env, classElement);
         }
-        Entity parentEntity = getParentEntity(classElement);
-        if (parentEntity != null) {
-            if (parentEntity.immutable() != entityMeta.isImmutable()) {
-                throw new AptException(Message.DOMA4226, env, classElement);
-            }
-        }
-    }
-
-    protected Entity getParentEntity(TypeElement classElement) {
-        TypeElement parent = TypeMirrorUtil.toTypeElement(
-                classElement.getSuperclass(), env);
-        for (TypeElement t = parent; t != null
-                && t.asType().getKind() != TypeKind.NONE; t = TypeMirrorUtil
-                .toTypeElement(t.getSuperclass(), env)) {
-            Entity entity = t.getAnnotation(Entity.class);
-            if (entity != null) {
-                return entity;
-            }
-        }
-        return null;
     }
 
     protected void validateEntityListener(TypeElement classElement,
@@ -440,4 +446,5 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
         }
         return null;
     }
+
 }
