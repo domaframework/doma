@@ -27,7 +27,7 @@ import org.seasar.doma.jdbc.Config;
  * @author taedium
  * @since 1.11.0
  */
-public interface PostUpdateContext<E> {
+public interface PostUpdateContext {
 
     /**
      * プロパティが変更されたかどうかを返します。
@@ -48,7 +48,7 @@ public interface PostUpdateContext<E> {
      * 
      * @return エンティティのメタタイプ
      */
-    public EntityType<E> getEntityType();
+    public EntityType<?> getEntityType();
 
     /**
      * {@link Update} が注釈されたメソッドを返します。
@@ -69,12 +69,12 @@ public interface PostUpdateContext<E> {
     /**
      * 新しいエンティティを設定します。
      * 
-     * @param entity
+     * @param newEntity
      *            エンティティ
      * @throws DomaNullPointerException
      *             引数が {@code null} の場合
      * @since 1.34.0
      */
-    public void setNewEntity(E entity);
+    public void setNewEntity(Object newEntity);
 
 }

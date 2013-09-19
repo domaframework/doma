@@ -115,33 +115,27 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
     }
 
     @Override
-    public void preDelete(ImmutableEmp entity,
-            PreDeleteContext<ImmutableEmp> context) {
+    public void preDelete(ImmutableEmp entity, PreDeleteContext context) {
     }
 
     @Override
-    public void preInsert(ImmutableEmp entity,
-            PreInsertContext<ImmutableEmp> context) {
+    public void preInsert(ImmutableEmp entity, PreInsertContext context) {
     }
 
     @Override
-    public void preUpdate(ImmutableEmp entity,
-            PreUpdateContext<ImmutableEmp> context) {
+    public void preUpdate(ImmutableEmp entity, PreUpdateContext context) {
     }
 
     @Override
-    public void postDelete(ImmutableEmp entity,
-            PostDeleteContext<ImmutableEmp> context) {
+    public void postDelete(ImmutableEmp entity, PostDeleteContext context) {
     }
 
     @Override
-    public void postInsert(ImmutableEmp entity,
-            PostInsertContext<ImmutableEmp> context) {
+    public void postInsert(ImmutableEmp entity, PostInsertContext context) {
     }
 
     @Override
-    public void postUpdate(ImmutableEmp entity,
-            PostUpdateContext<ImmutableEmp> context) {
+    public void postUpdate(ImmutableEmp entity, PostUpdateContext context) {
     }
 
     @Override

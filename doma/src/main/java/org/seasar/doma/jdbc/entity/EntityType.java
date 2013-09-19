@@ -180,7 +180,7 @@ public interface EntityType<E> extends TableCriterion<E> {
      * @param context
      *            コンテキスト
      */
-    void preInsert(E entity, PreInsertContext<E> context);
+    void preInsert(E entity, PreInsertContext context);
 
     /**
      * 更新処理の前処理を行います。
@@ -190,7 +190,7 @@ public interface EntityType<E> extends TableCriterion<E> {
      * @param context
      *            コンテキスト
      */
-    void preUpdate(E entity, PreUpdateContext<E> context);
+    void preUpdate(E entity, PreUpdateContext context);
 
     /**
      * 削除処理の前処理を行います。
@@ -200,7 +200,7 @@ public interface EntityType<E> extends TableCriterion<E> {
      * @param context
      *            コンテキスト
      */
-    void preDelete(E entity, PreDeleteContext<E> context);
+    void preDelete(E entity, PreDeleteContext context);
 
     /**
      * 挿入処理の後処理を行います。
@@ -210,7 +210,7 @@ public interface EntityType<E> extends TableCriterion<E> {
      * @param context
      *            コンテキスト
      */
-    void postInsert(E entity, PostInsertContext<E> context);
+    void postInsert(E entity, PostInsertContext context);
 
     /**
      * 更新処理の後処理を行います。
@@ -220,7 +220,7 @@ public interface EntityType<E> extends TableCriterion<E> {
      * @param context
      *            コンテキスト
      */
-    void postUpdate(E entity, PostUpdateContext<E> context);
+    void postUpdate(E entity, PostUpdateContext context);
 
     /**
      * 削除処理の後処理を行います。
@@ -230,5 +230,5 @@ public interface EntityType<E> extends TableCriterion<E> {
      * @param context
      *            コンテキスト
      */
-    void postDelete(E entity, PostDeleteContext<E> context);
+    void postDelete(E entity, PostDeleteContext context);
 }

@@ -120,32 +120,32 @@ public class _OriginalStatesParentEntity extends
 
     @Override
     public void preDelete(OriginalStatesParentEntity entity,
-            PreDeleteContext<OriginalStatesParentEntity> context) {
+            PreDeleteContext context) {
     }
 
     @Override
     public void preInsert(OriginalStatesParentEntity entity,
-            PreInsertContext<OriginalStatesParentEntity> context) {
+            PreInsertContext context) {
     }
 
     @Override
     public void preUpdate(OriginalStatesParentEntity entity,
-            PreUpdateContext<OriginalStatesParentEntity> context) {
+            PreUpdateContext context) {
     }
 
     @Override
     public void postDelete(OriginalStatesParentEntity entity,
-            PostDeleteContext<OriginalStatesParentEntity> context) {
+            PostDeleteContext context) {
     }
 
     @Override
     public void postInsert(OriginalStatesParentEntity entity,
-            PostInsertContext<OriginalStatesParentEntity> context) {
+            PostInsertContext context) {
     }
 
     @Override
     public void postUpdate(OriginalStatesParentEntity entity,
-            PostUpdateContext<OriginalStatesParentEntity> context) {
+            PostUpdateContext context) {
     }
 
     @Override

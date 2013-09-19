@@ -35,7 +35,7 @@ public abstract class AbstractEntityListenerContext<E> {
 
     protected final Config config;
 
-    protected E entity;
+    protected E newEntity;
 
     protected AbstractEntityListenerContext(EntityType<E> entityType,
             Method method, Config config) {
@@ -50,7 +50,7 @@ public abstract class AbstractEntityListenerContext<E> {
         return entityType.getEntityPropertyType(propertyName) != null;
     }
 
-    public EntityType<E> getEntityType() {
+    public EntityType<?> getEntityType() {
         return entityType;
     }
 
@@ -62,14 +62,18 @@ public abstract class AbstractEntityListenerContext<E> {
         return config;
     }
 
-    public void setNewEntity(E entity) {
-        if (entity == null) {
-            throw new DomaNullPointerException("entity");
+    public void setNewEntity(Object newEntity) {
+        if (newEntity == null) {
+            throw new DomaNullPointerException("newEntity");
         }
-        this.entity = entity;
+        if (!entityType.getEntityClass().isInstance(newEntity)) {
+            // TODO
+            throw new RuntimeException("newEntity");
+        }
+        this.newEntity = entityType.getEntityClass().cast(newEntity);
     }
 
     public E getNewEntity() {
-        return this.entity;
+        return this.newEntity;
     }
 }

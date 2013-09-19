@@ -89,27 +89,27 @@ public final class _PrivateOriginalStatesEntity extends org.seasar.doma.jdbc.ent
     }
 
     @Override
-    public void preInsert(org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity entity, org.seasar.doma.jdbc.entity.PreInsertContext<org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity> context) {
+    public void preInsert(org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity entity, org.seasar.doma.jdbc.entity.PreInsertContext context) {
     }
 
     @Override
-    public void preUpdate(org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity entity, org.seasar.doma.jdbc.entity.PreUpdateContext<org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity> context) {
+    public void preUpdate(org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity entity, org.seasar.doma.jdbc.entity.PreUpdateContext context) {
     }
 
     @Override
-    public void preDelete(org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity entity, org.seasar.doma.jdbc.entity.PreDeleteContext<org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity> context) {
+    public void preDelete(org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity entity, org.seasar.doma.jdbc.entity.PreDeleteContext context) {
     }
 
     @Override
-    public void postInsert(org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity entity, org.seasar.doma.jdbc.entity.PostInsertContext<org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity> context) {
+    public void postInsert(org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity entity, org.seasar.doma.jdbc.entity.PostInsertContext context) {
     }
 
     @Override
-    public void postUpdate(org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity entity, org.seasar.doma.jdbc.entity.PostUpdateContext<org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity> context) {
+    public void postUpdate(org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity entity, org.seasar.doma.jdbc.entity.PostUpdateContext context) {
     }
 
     @Override
-    public void postDelete(org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity entity, org.seasar.doma.jdbc.entity.PostDeleteContext<org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity> context) {
+    public void postDelete(org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity entity, org.seasar.doma.jdbc.entity.PostDeleteContext context) {
     }
 
     @Override

@@ -27,14 +27,14 @@ import org.seasar.doma.jdbc.Config;
  * @author taedium
  * @since 1.11.0
  */
-public interface PreDeleteContext<E> {
+public interface PreDeleteContext {
 
     /**
      * エンティティのメタタイプを返します。
      * 
      * @return エンティティのメタタイプ
      */
-    public EntityType<E> getEntityType();
+    public EntityType<?> getEntityType();
 
     /**
      * {@link Delete} が注釈されたメソッドを返します。
@@ -55,12 +55,12 @@ public interface PreDeleteContext<E> {
     /**
      * 新しいエンティティを設定します。
      * 
-     * @param entity
+     * @param newEntity
      *            エンティティ
      * @throws DomaNullPointerException
      *             引数が {@code null} の場合
      * @since 1.34.0
      */
-    public void setNewEntity(E entity);
+    public void setNewEntity(Object newEntity);
 
 }

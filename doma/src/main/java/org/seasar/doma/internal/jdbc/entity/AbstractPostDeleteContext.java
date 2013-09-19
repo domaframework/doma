@@ -26,7 +26,7 @@ import org.seasar.doma.jdbc.entity.PostDeleteContext;
  * 
  */
 public class AbstractPostDeleteContext<E> extends
-        AbstractEntityListenerContext<E> implements PostDeleteContext<E> {
+        AbstractEntityListenerContext<E> implements PostDeleteContext {
 
     protected AbstractPostDeleteContext(EntityType<E> entityType,
             Method method, Config config) {

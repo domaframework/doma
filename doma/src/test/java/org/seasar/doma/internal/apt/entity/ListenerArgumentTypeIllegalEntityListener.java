@@ -31,27 +31,27 @@ public class ListenerArgumentTypeIllegalEntityListener implements
         EntityListener<String> {
 
     @Override
-    public void preDelete(String entity, PreDeleteContext<String> context) {
+    public void preDelete(String entity, PreDeleteContext context) {
     }
 
     @Override
-    public void preInsert(String entity, PreInsertContext<String> context) {
+    public void preInsert(String entity, PreInsertContext context) {
     }
 
     @Override
-    public void preUpdate(String entity, PreUpdateContext<String> context) {
+    public void preUpdate(String entity, PreUpdateContext context) {
     }
 
     @Override
-    public void postInsert(String entity, PostInsertContext<String> context) {
+    public void postInsert(String entity, PostInsertContext context) {
     }
 
     @Override
-    public void postUpdate(String entity, PostUpdateContext<String> context) {
+    public void postUpdate(String entity, PostUpdateContext context) {
     }
 
     @Override
-    public void postDelete(String entity, PostDeleteContext<String> context) {
+    public void postDelete(String entity, PostDeleteContext context) {
     }
 
 }

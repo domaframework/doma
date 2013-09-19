@@ -26,7 +26,7 @@ import org.seasar.doma.jdbc.entity.PreUpdateContext;
 public class DeptListener implements EntityListener<Dept> {
 
     @Override
-    public void preDelete(Dept entity, PreDeleteContext<Dept> context) {
+    public void preDelete(Dept entity, PreDeleteContext context) {
         Dept newEntity = new Dept(entity.departmentId, entity.departmentNo,
                 entity.departmentName + "_preD", entity.location,
                 entity.version);
@@ -34,7 +34,7 @@ public class DeptListener implements EntityListener<Dept> {
     }
 
     @Override
-    public void preInsert(Dept entity, PreInsertContext<Dept> context) {
+    public void preInsert(Dept entity, PreInsertContext context) {
         Dept newEntity = new Dept(entity.departmentId, entity.departmentNo,
                 entity.departmentName + "_preI", entity.location,
                 entity.version);
@@ -42,7 +42,7 @@ public class DeptListener implements EntityListener<Dept> {
     }
 
     @Override
-    public void preUpdate(Dept entity, PreUpdateContext<Dept> context) {
+    public void preUpdate(Dept entity, PreUpdateContext context) {
         Dept newEntity = new Dept(entity.departmentId, entity.departmentNo,
                 entity.departmentName + "_preU", entity.location,
                 entity.version);
@@ -50,7 +50,7 @@ public class DeptListener implements EntityListener<Dept> {
     }
 
     @Override
-    public void postInsert(Dept entity, PostInsertContext<Dept> context) {
+    public void postInsert(Dept entity, PostInsertContext context) {
         Dept newEntity = new Dept(entity.departmentId, entity.departmentNo,
                 entity.departmentName + "_postI", entity.location,
                 entity.version);
@@ -58,7 +58,7 @@ public class DeptListener implements EntityListener<Dept> {
     }
 
     @Override
-    public void postUpdate(Dept entity, PostUpdateContext<Dept> context) {
+    public void postUpdate(Dept entity, PostUpdateContext context) {
         Dept newEntity = new Dept(entity.departmentId, entity.departmentNo,
                 entity.departmentName + "_postU", entity.location,
                 entity.version);
@@ -66,7 +66,7 @@ public class DeptListener implements EntityListener<Dept> {
     }
 
     @Override
-    public void postDelete(Dept entity, PostDeleteContext<Dept> context) {
+    public void postDelete(Dept entity, PostDeleteContext context) {
         Dept newEntity = new Dept(entity.departmentId, entity.departmentNo,
                 entity.departmentName + "_postD", entity.location,
                 entity.version);

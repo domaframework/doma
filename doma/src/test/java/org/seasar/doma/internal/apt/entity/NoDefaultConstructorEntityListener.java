@@ -35,32 +35,32 @@ public class NoDefaultConstructorEntityListener implements
 
     @Override
     public void preDelete(NoDefaultConstructorEntityListenerEntity entity,
-            PreDeleteContext<NoDefaultConstructorEntityListenerEntity> context) {
+            PreDeleteContext context) {
     }
 
     @Override
     public void preInsert(NoDefaultConstructorEntityListenerEntity entity,
-            PreInsertContext<NoDefaultConstructorEntityListenerEntity> context) {
+            PreInsertContext context) {
     }
 
     @Override
     public void preUpdate(NoDefaultConstructorEntityListenerEntity entity,
-            PreUpdateContext<NoDefaultConstructorEntityListenerEntity> context) {
+            PreUpdateContext context) {
     }
 
     @Override
     public void postInsert(NoDefaultConstructorEntityListenerEntity entity,
-            PostInsertContext<NoDefaultConstructorEntityListenerEntity> context) {
+            PostInsertContext context) {
     }
 
     @Override
     public void postUpdate(NoDefaultConstructorEntityListenerEntity entity,
-            PostUpdateContext<NoDefaultConstructorEntityListenerEntity> context) {
+            PostUpdateContext context) {
     }
 
     @Override
     public void postDelete(NoDefaultConstructorEntityListenerEntity entity,
-            PostDeleteContext<NoDefaultConstructorEntityListenerEntity> context) {
+            PostDeleteContext context) {
     }
 
 }

@@ -116,32 +116,32 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
     }
 
     @Override
-    public void preInsert(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PreInsertContext<org.seasar.doma.internal.apt.entity.Emp> context) {
+    public void preInsert(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PreInsertContext context) {
         __listener.preInsert(entity, context);
     }
 
     @Override
-    public void preUpdate(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PreUpdateContext<org.seasar.doma.internal.apt.entity.Emp> context) {
+    public void preUpdate(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PreUpdateContext context) {
         __listener.preUpdate(entity, context);
     }
 
     @Override
-    public void preDelete(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PreDeleteContext<org.seasar.doma.internal.apt.entity.Emp> context) {
+    public void preDelete(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PreDeleteContext context) {
         __listener.preDelete(entity, context);
     }
 
     @Override
-    public void postInsert(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PostInsertContext<org.seasar.doma.internal.apt.entity.Emp> context) {
+    public void postInsert(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PostInsertContext context) {
         __listener.postInsert(entity, context);
     }
 
     @Override
-    public void postUpdate(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PostUpdateContext<org.seasar.doma.internal.apt.entity.Emp> context) {
+    public void postUpdate(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PostUpdateContext context) {
         __listener.postUpdate(entity, context);
     }
 
     @Override
-    public void postDelete(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PostDeleteContext<org.seasar.doma.internal.apt.entity.Emp> context) {
+    public void postDelete(org.seasar.doma.internal.apt.entity.Emp entity, org.seasar.doma.jdbc.entity.PostDeleteContext context) {
         __listener.postDelete(entity, context);
     }
 

@@ -116,33 +116,27 @@ public class _ParentEntity extends AbstractEntityType<ParentEntity> {
     }
 
     @Override
-    public void preDelete(ParentEntity entity,
-            PreDeleteContext<ParentEntity> context) {
+    public void preDelete(ParentEntity entity, PreDeleteContext context) {
     }
 
     @Override
-    public void preInsert(ParentEntity entity,
-            PreInsertContext<ParentEntity> context) {
+    public void preInsert(ParentEntity entity, PreInsertContext context) {
     }
 
     @Override
-    public void preUpdate(ParentEntity entity,
-            PreUpdateContext<ParentEntity> context) {
+    public void preUpdate(ParentEntity entity, PreUpdateContext context) {
     }
 
     @Override
-    public void postDelete(ParentEntity entity,
-            PostDeleteContext<ParentEntity> context) {
+    public void postDelete(ParentEntity entity, PostDeleteContext context) {
     }
 
     @Override
-    public void postInsert(ParentEntity entity,
-            PostInsertContext<ParentEntity> context) {
+    public void postInsert(ParentEntity entity, PostInsertContext context) {
     }
 
     @Override
-    public void postUpdate(ParentEntity entity,
-            PostUpdateContext<ParentEntity> context) {
+    public void postUpdate(ParentEntity entity, PostUpdateContext context) {
     }
 
     @Override
