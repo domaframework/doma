@@ -62,6 +62,13 @@ public class Employee {
     ...
 }</source>
 				<p>
+					<code>listener</code> 要素に何も指定しない場合、エンティティクラスが他のエンティティクラスを継承しているかどうかで採用する設定が変わります。
+				</p>
+				<ul>
+					<li>継承している場合、親エンティティクラスの設定を引き継ぎます</li>
+					<li>継承していない場合、何も行いません（<code>org.seasar.doma.jdbc.entity.NullEntityListener</code> が使用されます）</li>
+				</ul>
+				<p>
 					<code>EntityListener</code>は、<code>preDelete</code>、<code>preInsert</code>、<code>preUpdate</code>、<code>postDelete</code>、<code>postInsert</code>、<code>postUpdate</code>の6つのメソッドをもったインタフェースです。
 				</p>
 				<dl>
@@ -144,6 +151,13 @@ public class Employee {
 public class EmployeeInfo {
     ...
 }</source>
+				<p>
+					<code>naming</code> 要素に何も指定しない場合、エンティティクラスが他のエンティティクラスを継承しているかどうかで採用する設定が変わります。
+				</p>
+				<ul>
+					<li>継承している場合、親エンティティクラスの設定を引き継ぎます</li>
+					<li>継承していない場合、何も行いません（<code>org.seasar.doma.jdbc.entity.NamingType.NONE</code> が使用されます）</li>
+				</ul>
 				<p>
 					<code>NamingType.SNAKE_UPPER_CASE</code>は、エンティティ名やプロパティ名をスネークケース（アンダースコア区切り）の大文字に変換します。この例の場合、テーブル名は<code>EMPLOYEE_INFO</code>になります。
 				</p>
