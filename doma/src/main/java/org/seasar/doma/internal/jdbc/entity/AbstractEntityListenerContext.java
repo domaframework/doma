@@ -19,9 +19,11 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.lang.reflect.Method;
 
+import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.message.Message;
 
 /**
  * @author taedium
@@ -67,8 +69,9 @@ public abstract class AbstractEntityListenerContext<E> {
             throw new DomaNullPointerException("newEntity");
         }
         if (!entityType.getEntityClass().isInstance(newEntity)) {
-            // TODO
-            throw new RuntimeException("newEntity");
+            throw new DomaIllegalArgumentException("newEntity",
+                    Message.DOMA2217.getMessage(entityType.getEntityClass()
+                            .getName()));
         }
         this.newEntity = entityType.getEntityClass().cast(newEntity);
     }
