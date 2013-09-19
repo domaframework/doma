@@ -444,4 +444,34 @@ public class EntityProcessorTest extends AptTestCase {
         assertFalse(getCompiledResult());
         assertMessage(Message.DOMA4226);
     }
+
+    public void testNamingType1() throws Exception {
+        Class<?> target = NamingType1Entity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testNamingType2() throws Exception {
+        Class<?> target = NamingType2Entity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testNamingType3() throws Exception {
+        Class<?> target = NamingType3Entity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
 }

@@ -23,6 +23,6 @@ import org.seasar.doma.jdbc.entity.NamingType;
  * 
  */
 @Entity(naming = NamingType.NONE)
-public class NamingType3Entity {
+public class NamingType3Entity extends NamingType2Entity {
 
 }

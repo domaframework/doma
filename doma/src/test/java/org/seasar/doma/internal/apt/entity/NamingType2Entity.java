@@ -22,6 +22,6 @@ import org.seasar.doma.Entity;
  * 
  */
 @Entity
-public class NamingType2Entity {
+public class NamingType2Entity extends NamingType1Entity {
 
 }
