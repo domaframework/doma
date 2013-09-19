@@ -23,7 +23,7 @@ import org.seasar.doma.message.Message;
  * エンティティのすべてのプロパティに対し、結果セットのカラムがマッピングされない場合にスローされます。
  * 
  * @author taedium
- * @1.34.0
+ * @since 1.34.0
  */
 public class ResultMappingException extends JdbcException {
 
