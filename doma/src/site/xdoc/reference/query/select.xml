@@ -20,6 +20,7 @@
 					</ul>
 				</li>
 				<li><a href="#検索結果の保証">検索結果の保証</a></li>
+				<li><a href="#検索結果のマッピングの保証">検索結果のマッピングの保証</a></li>
 				<li><a href="#クエリタイムアウト">クエリタイムアウト</a></li>
 				<li><a href="#フェッチサイズ">フェッチサイズ</a></li>
 				<li><a href="#最大行数">最大行数</a></li>
@@ -276,6 +277,16 @@ long count = options.getCount();]]></source>
 Employee selectById(Integer id);]]></source>
 			<p>
 				検索結果が0件ならば<code>org.seasar.doma.jdbc.NoResultException</code>がスローされます。
+			</p>
+		</section>
+		<section name="検索結果のマッピングの保証">
+			<p>
+				検索結果を受ける型がエンティティクラスやエンティティクラスを要素とする<code>java.util.List</code>の場合において、エンティティのプロパティすべてに対して漏れなく結果セットのカラムをマッピングすることを保証したい場合は、<code>@Select</code>の<code>ensureResultMapping</code>要素に<code>true</code>を指定します。
+			</p>
+<source><![CDATA[@Select(ensureResultMapping = true)
+Employee selectById(Integer id);]]></source>
+			<p>
+				結果セットのカラムにマッピングされないプロパティが存在する場合<code>org.seasar.doma.jdbc.ResultMappingException</code>がスローされます。
 			</p>
 		</section>
 		<section name="クエリタイムアウト">

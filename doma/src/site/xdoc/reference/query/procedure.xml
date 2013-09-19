@@ -126,6 +126,14 @@ dao.execute(employees);
 for (Employee e : employees) {
     ...
 }]]></source>
+			<p>
+				検索結果を受ける型がエンティティクラスやエンティティクラスを要素とする<code>java.util.List</code>の場合において、エンティティのプロパティすべてに対して漏れなく結果セットのカラムをマッピングすることを保証したい場合は、<code>@ResultSet</code>の<code>ensureResultMapping</code>要素に<code>true</code>を指定します。
+			</p>
+<source><![CDATA[@Procedure
+void execute(@ResultSet(ensureResultMapping = true) List<Employee> employee);]]></source>
+			<p>
+				結果セットのカラムにマッピングされないプロパティが存在する場合<code>org.seasar.doma.jdbc.ResultMappingException</code>がスローされます。
+			</p>
 			</subsection>
 		</section>
 		<section name="マップのキーのネーミング規約">
