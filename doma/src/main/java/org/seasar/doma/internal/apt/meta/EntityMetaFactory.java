@@ -51,6 +51,7 @@ import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.entity.EntityListener;
 import org.seasar.doma.jdbc.entity.NamingType;
+import org.seasar.doma.jdbc.entity.NullEntityListener;
 import org.seasar.doma.message.Message;
 
 /**
@@ -93,6 +94,8 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
 
         NamingType namingType = resolveNamingType(classElement);
         entityMeta.setNamingType(namingType);
+        TypeMirror entityListener = resolveEntityListener(classElement);
+        entityMeta.setEntityListener(entityListener);
         String entityName = classElement.getSimpleName().toString();
         entityMeta.setEntityName(entityName);
         entityMeta.setEntityTypeName(TypeMirrorUtil.getTypeName(
@@ -102,16 +105,40 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
 
     protected NamingType resolveNamingType(TypeElement classElement) {
         NamingType result = NamingType.NONE;
-        for (NamingType namingType : getNamingTypeList(classElement)) {
-            if (namingType != null) {
-                result = namingType;
+        for (AnnotationValue value : getEntityElementValueList(classElement,
+                "naming")) {
+            if (value != null) {
+                VariableElement enumConstant = AnnotationValueUtil
+                        .toEnumConstant(value);
+                if (enumConstant == null) {
+                    throw new AptIllegalStateException("naming");
+                }
+                result = NamingType.valueOf(enumConstant.getSimpleName()
+                        .toString());
             }
         }
         return result;
     }
 
-    protected List<NamingType> getNamingTypeList(TypeElement classElement) {
-        List<NamingType> list = new LinkedList<NamingType>();
+    protected TypeMirror resolveEntityListener(TypeElement classElement) {
+        TypeMirror result = TypeMirrorUtil.getTypeMirror(
+                NullEntityListener.class, env);
+        for (AnnotationValue value : getEntityElementValueList(classElement,
+                "listener")) {
+            if (value != null) {
+                TypeMirror listenerType = AnnotationValueUtil.toType(value);
+                if (listenerType == null) {
+                    throw new AptIllegalStateException("listener");
+                }
+                result = listenerType;
+            }
+        }
+        return result;
+    }
+
+    protected List<AnnotationValue> getEntityElementValueList(
+            TypeElement classElement, String entityElementName) {
+        List<AnnotationValue> list = new LinkedList<AnnotationValue>();
         for (TypeElement t = classElement; t != null
                 && t.asType().getKind() != TypeKind.NONE; t = TypeMirrorUtil
                 .toTypeElement(t.getSuperclass(), env)) {
@@ -124,15 +151,9 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
                     .getElementValues().entrySet()) {
                 ExecutableElement element = entry.getKey();
                 AnnotationValue value = entry.getValue();
-                if ("naming".equals(element.getSimpleName().toString())) {
-                    VariableElement enumConstant = AnnotationValueUtil
-                            .toEnumConstant(value);
-                    if (enumConstant == null) {
-                        throw new AptIllegalStateException("naming");
-                    }
-                    NamingType namingType = NamingType.valueOf(enumConstant
-                            .getSimpleName().toString());
-                    list.add(namingType);
+                if (entityElementName
+                        .equals(element.getSimpleName().toString())) {
+                    list.add(value);
                 } else {
                     list.add(null);
                 }

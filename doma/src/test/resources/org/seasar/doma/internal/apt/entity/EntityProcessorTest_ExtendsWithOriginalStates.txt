@@ -21,6 +21,8 @@ public final class _OriginalStatesChildEntity extends org.seasar.doma.jdbc.entit
     /** the ccc */
     public final org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity, java.lang.String, java.lang.Object> $ccc = new org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity, java.lang.String, java.lang.Object>(org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity.class, java.lang.String.class, org.seasar.doma.wrapper.StringWrapper.class, null, null, "ccc", "ccc", true, true);
 
+    private final org.seasar.doma.jdbc.entity.NullEntityListener __listener;
+
     private final org.seasar.doma.jdbc.entity.NamingType __namingType;
 
     private final boolean __immutable;
@@ -42,6 +44,7 @@ public final class _OriginalStatesChildEntity extends org.seasar.doma.jdbc.entit
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity, ?>> __entityPropertyTypeMap;
 
     private _OriginalStatesChildEntity() {
+        __listener = new org.seasar.doma.jdbc.entity.NullEntityListener();
         __namingType = org.seasar.doma.jdbc.entity.NamingType.NONE;
         __immutable = false;
         __name = "OriginalStatesChildEntity";
@@ -100,26 +103,32 @@ public final class _OriginalStatesChildEntity extends org.seasar.doma.jdbc.entit
 
     @Override
     public void preInsert(org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity entity, org.seasar.doma.jdbc.entity.PreInsertContext context) {
+        __listener.preInsert(entity, context);
     }
 
     @Override
     public void preUpdate(org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity entity, org.seasar.doma.jdbc.entity.PreUpdateContext context) {
+        __listener.preUpdate(entity, context);
     }
 
     @Override
     public void preDelete(org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity entity, org.seasar.doma.jdbc.entity.PreDeleteContext context) {
+        __listener.preDelete(entity, context);
     }
 
     @Override
     public void postInsert(org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity entity, org.seasar.doma.jdbc.entity.PostInsertContext context) {
+        __listener.postInsert(entity, context);
     }
 
     @Override
     public void postUpdate(org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity entity, org.seasar.doma.jdbc.entity.PostUpdateContext context) {
+        __listener.postUpdate(entity, context);
     }
 
     @Override
     public void postDelete(org.seasar.doma.internal.apt.entity.OriginalStatesChildEntity entity, org.seasar.doma.jdbc.entity.PostDeleteContext context) {
+        __listener.postDelete(entity, context);
     }
 
     @Override

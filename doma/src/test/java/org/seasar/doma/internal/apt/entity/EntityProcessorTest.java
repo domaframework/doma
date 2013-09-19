@@ -113,6 +113,26 @@ public class EntityProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
+    public void testExtendsListenerInherited() throws Exception {
+        Class<?> target = Child2InheritingEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testExtendsListenerNoInherited() throws Exception {
+        Class<?> target = Child2NoInheritingEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
     public void testExtendsWithOriginalStates() throws Exception {
         Class<?> target = OriginalStatesChildEntity.class;
         EntityProcessor processor = new EntityProcessor();

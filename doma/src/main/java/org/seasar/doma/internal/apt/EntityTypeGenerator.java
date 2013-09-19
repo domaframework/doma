@@ -46,7 +46,6 @@ import org.seasar.doma.jdbc.entity.BasicPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.jdbc.entity.NamingType;
-import org.seasar.doma.jdbc.entity.NullEntityListener;
 import org.seasar.doma.jdbc.entity.OriginalStatesAccessor;
 import org.seasar.doma.jdbc.entity.PostDeleteContext;
 import org.seasar.doma.jdbc.entity.PostInsertContext;
@@ -268,11 +267,9 @@ public class EntityTypeGenerator extends AbstractGenerator {
     }
 
     protected void printListenerField() {
-        if (!hasSpecificEntityListener()) {
-            iprint("private final %1$s __listener;%n",
-                    entityMeta.getEntityListener());
-            print("%n");
-        }
+        iprint("private final %1$s __listener;%n",
+                entityMeta.getEntityListener());
+        print("%n");
     }
 
     protected void printNamingTypeField() {
@@ -333,10 +330,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
     protected void printConstructor() {
         iprint("private %1$s() {%n", simpleName);
-        if (!hasSpecificEntityListener()) {
-            iprint("    __listener = new %1$s();%n",
-                    entityMeta.getEntityListener());
-        }
+        iprint("    __listener = new %1$s();%n", entityMeta.getEntityListener());
         iprint("    __namingType = %1$s.%2$s;%n", NamingType.class.getName(),
                 entityMeta.getNamingType().name());
         iprint("    __immutable = %1$s;%n", entityMeta.isImmutable());
@@ -462,9 +456,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("public void preInsert(%1$s entity, %2$s context) {%n",
                 entityMeta.getEntityTypeName(),
                 PreInsertContext.class.getName());
-        if (!hasSpecificEntityListener()) {
-            iprint("    __listener.preInsert(entity, context);%n");
-        }
+        iprint("    __listener.preInsert(entity, context);%n");
         iprint("}%n");
         print("%n");
     }
@@ -474,9 +466,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("public void preUpdate(%1$s entity, %2$s context) {%n",
                 entityMeta.getEntityTypeName(),
                 PreUpdateContext.class.getName());
-        if (!hasSpecificEntityListener()) {
-            iprint("    __listener.preUpdate(entity, context);%n");
-        }
+        iprint("    __listener.preUpdate(entity, context);%n");
         iprint("}%n");
         print("%n");
     }
@@ -486,9 +476,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("public void preDelete(%1$s entity, %2$s context) {%n",
                 entityMeta.getEntityTypeName(),
                 PreDeleteContext.class.getName());
-        if (!hasSpecificEntityListener()) {
-            iprint("    __listener.preDelete(entity, context);%n");
-        }
+        iprint("    __listener.preDelete(entity, context);%n");
         iprint("}%n");
         print("%n");
     }
@@ -498,9 +486,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("public void postInsert(%1$s entity, %2$s context) {%n",
                 entityMeta.getEntityTypeName(),
                 PostInsertContext.class.getName());
-        if (!hasSpecificEntityListener()) {
-            iprint("    __listener.postInsert(entity, context);%n");
-        }
+        iprint("    __listener.postInsert(entity, context);%n");
         iprint("}%n");
         print("%n");
     }
@@ -510,9 +496,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("public void postUpdate(%1$s entity, %2$s context) {%n",
                 entityMeta.getEntityTypeName(),
                 PostUpdateContext.class.getName());
-        if (!hasSpecificEntityListener()) {
-            iprint("    __listener.postUpdate(entity, context);%n");
-        }
+        iprint("    __listener.postUpdate(entity, context);%n");
         iprint("}%n");
         print("%n");
     }
@@ -522,9 +506,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("public void postDelete(%1$s entity, %2$s context) {%n",
                 entityMeta.getEntityTypeName(),
                 PostDeleteContext.class.getName());
-        if (!hasSpecificEntityListener()) {
-            iprint("    __listener.postDelete(entity, context);%n");
-        }
+        iprint("    __listener.postDelete(entity, context);%n");
         iprint("}%n");
         print("%n");
     }
@@ -718,11 +700,6 @@ public class EntityTypeGenerator extends AbstractGenerator {
         iprint("    return new %1$s();%n", simpleName);
         iprint("}%n");
         print("%n");
-    }
-
-    protected boolean hasSpecificEntityListener() {
-        return TypeMirrorUtil.isSameType(entityMeta.getEntityListener(),
-                NullEntityListener.class, env);
     }
 
     protected class IdGeneratorGenerator implements

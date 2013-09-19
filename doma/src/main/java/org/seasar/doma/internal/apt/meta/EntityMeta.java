@@ -48,9 +48,11 @@ public class EntityMeta implements TypeElementMeta {
 
     protected final boolean immutable;
 
+    protected final TypeElement entityElement;
+
     protected NamingType namingType;
 
-    protected final TypeElement entityElement;
+    protected TypeMirror entityListener;
 
     protected TableMirror tableMirror;
 
@@ -187,7 +189,11 @@ public class EntityMeta implements TypeElementMeta {
     }
 
     public TypeMirror getEntityListener() {
-        return entityMirror.getListenerValue();
+        return entityListener;
+    }
+
+    public void setEntityListener(TypeMirror entityListener) {
+        this.entityListener = entityListener;
     }
 
     public String getCatalogName() {
