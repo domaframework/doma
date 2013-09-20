@@ -17,6 +17,7 @@ package org.seasar.doma.jdbc.entity;
 
 import java.lang.reflect.Method;
 
+import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Insert;
 import org.seasar.doma.jdbc.Config;
@@ -54,11 +55,17 @@ public interface PostInsertContext {
 
     /**
      * 新しいエンティティを設定します。
+     * <p>
+     * このメソッドは、 {@link PostInsertContext#getEntityType()}
+     * に対応するエンティティがイミュータブルである場合にのみ利用してください。
      * 
      * @param newEntity
      *            エンティティ
      * @throws DomaNullPointerException
      *             引数が {@code null} の場合
+     * @throws DomaIllegalArgumentException
+     *             引数が {@link PostInsertContext#getEntityType()}
+     *             に対応するエンティティクラスのサブタイプでない場合
      * @since 1.34.0
      */
     public void setNewEntity(Object newEntity);
