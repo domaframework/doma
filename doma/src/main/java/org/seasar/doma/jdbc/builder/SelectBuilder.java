@@ -49,6 +49,7 @@ import org.seasar.doma.jdbc.MappedPropertyNotFoundException;
 import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.NonSingleColumnException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
+import org.seasar.doma.jdbc.ResultMappingException;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.domain.DomainType;
@@ -198,7 +199,7 @@ public class SelectBuilder {
      * 戻り値の型に指定できるのは、エンティティクラス、ドメインクラス、基本型のいずれかです。
      * <p>
      * 検索結果が存在しない場合は {@code null}を返しますが、
-     * {@link SelectBuilder#ensuerResult(boolean)} に {@code true} を設定することで、
+     * {@link SelectBuilder#ensureResult(boolean)} に {@code true} を設定することで、
      * {@code null}を返す代わりに{@link NoResultException} をスローできます。
      * 
      * @param <R>
@@ -216,8 +217,12 @@ public class SelectBuilder {
      * @throws NonSingleColumnException
      *             戻り値の型が基本型やドメインクラスで、かつ結果セットに複数のカラムが含まれている場合
      * @throws NoResultException
-     *             {@link SelectBuilder#ensuerResult(boolean)} に {@code true}
+     *             {@link SelectBuilder#ensureResult(boolean)} に {@code true}
      *             を設定しており結果が存在しない場合
+     * @throws ResultMappingException
+     *             {@link SelectBuilder#ensureResultMapping(boolean)} に
+     *             {@code true} を設定しており戻り値の型がエンティティクラスやエンティティクラスを要素とする
+     *             {@link List} の場合で、マッピングされないエンティティプロパティが存在する場合
      * @throws NonUniqueResultException
      *             結果が2件以上返された場合
      * @throws JdbcException
@@ -238,7 +243,7 @@ public class SelectBuilder {
      * {@code Map<String, Object>} として1件を返します。
      * <p>
      * 検索結果が存在しない場合は {@code null}を返しますが、
-     * {@link SelectBuilder#ensuerResult(boolean)} に {@code true} を設定することで、
+     * {@link SelectBuilder#ensureResult(boolean)} に {@code true} を設定することで、
      * {@code null}を返す代わりに {@link NoResultException} をスローできます。
      * 
      * @param mapKeyNamingType
@@ -248,7 +253,7 @@ public class SelectBuilder {
      * @throws DomaNullPointerException
      *             引数が{@code null} の場合
      * @throws NoResultException
-     *             {@link SelectBuilder#ensuerResult(boolean)} に {@code true}
+     *             {@link SelectBuilder#ensureResult(boolean)} に {@code true}
      *             を設定しており結果が存在しない場合
      * @throws NonUniqueResultException
      *             結果が2件以上返された場合
@@ -511,22 +516,22 @@ public class SelectBuilder {
     /**
      * 結果が少なくとも1件以上存在することを保証します。
      * 
-     * @param ensuerResult
+     * @param ensureResult
      *            結果が少なくとも1件以上存在することを保証する場合 {@code true}
      */
-    public void ensuerResult(boolean ensuerResult) {
-        query.setResultEnsured(ensuerResult);
+    public void ensureResult(boolean ensureResult) {
+        query.setResultEnsured(ensureResult);
     }
 
     /**
      * 結果のエンティティのすべてのプロパティが結果セットのカラムにマッピングされることを保証します。
      * 
-     * @param entityMappingEnsured
+     * @param ensureResultMapping
      *            結果のエンティティのすべてのプロパティが結果セットのカラムにマッピングされることを保証する場合 {@code true}
      * @since 1.34.0
      */
-    public void ensureEntityMappingEnsured(boolean entityMappingEnsured) {
-        query.setResultMappingEnsured(entityMappingEnsured);
+    public void ensureResultMapping(boolean ensureResultMapping) {
+        query.setResultMappingEnsured(ensureResultMapping);
     }
 
     /**
