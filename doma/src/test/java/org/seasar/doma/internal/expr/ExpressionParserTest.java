@@ -290,8 +290,7 @@ public class ExpressionParserTest extends TestCase {
     }
 
     public void testStatictField_fieldNotFound() throws Exception {
-        ExpressionParser parser = new ExpressionParser(
-                "@java.lang.String@count");
+        ExpressionParser parser = new ExpressionParser("@java.lang.String@hoge");
         ExpressionNode expression = parser.parse();
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         try {

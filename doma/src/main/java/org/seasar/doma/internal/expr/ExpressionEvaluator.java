@@ -727,7 +727,7 @@ public class ExpressionEvaluator implements
 
     protected Field findStaticField(String fieldName, Class<?> targetClass) {
         Field field = findField(fieldName, targetClass);
-        if ((field.getModifiers() & Modifier.STATIC) != 0) {
+        if (field != null && (field.getModifiers() & Modifier.STATIC) != 0) {
             return field;
         }
         return null;
