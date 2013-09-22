@@ -131,6 +131,11 @@ public abstract class AptTestCase extends AptinaTestCase {
             case ERROR:
             case WARNING:
             case MANDATORY_WARNING:
+                String message = diagnostic.getMessage(locale);
+                if (message.contains("AptinaUnitProcessor")
+                        && message.contains("'RELEASE_6'")) {
+                    continue;
+                }
                 results.add(diagnostic);
                 break;
             }
@@ -150,7 +155,7 @@ public abstract class AptTestCase extends AptinaTestCase {
         String message = diagnostic.getMessage(locale);
         int start = message.indexOf('[');
         int end = message.indexOf(']');
-        if (start > 0 && end > 0) {
+        if (start > -1 && end > -1) {
             String code = message.substring(start + 1, end);
             if (code.startsWith("DOMA")) {
                 return Enum.valueOf(Message.class, code);
