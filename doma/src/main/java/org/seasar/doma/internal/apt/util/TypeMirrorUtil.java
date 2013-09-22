@@ -121,7 +121,7 @@ public final class TypeMirrorUtil {
         Types types = env.getTypeUtils();
         TypeMirror t1 = types.erasure(lhs);
         TypeMirror t2 = types.erasure(rhs);
-        if (t1.equals(t2)) {
+        if (env.getTypeUtils().isSameType(t1, t2) || t1.equals(t2)) {
             return true;
         }
         for (TypeMirror supertype : types.directSupertypes(t1)) {
@@ -163,9 +163,10 @@ public final class TypeMirrorUtil {
         if (t2.getKind() == TypeKind.VOID) {
             return t1.getKind() == TypeKind.VOID;
         }
-        TypeMirror eraasuredType1 = env.getTypeUtils().erasure(t1);
-        TypeMirror eraasuredType2 = env.getTypeUtils().erasure(t2);
-        return eraasuredType1.equals(eraasuredType2);
+        TypeMirror erasuredType1 = env.getTypeUtils().erasure(t1);
+        TypeMirror erasuredType2 = env.getTypeUtils().erasure(t2);
+        return env.getTypeUtils().isSameType(erasuredType1, erasuredType2)
+                || erasuredType1.equals(erasuredType2);
     }
 
     public static String getTypeName(TypeMirror typeMirror,
