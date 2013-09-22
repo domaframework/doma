@@ -114,7 +114,7 @@ public class DomainType extends AbstractDataType {
 
     protected String normalize(String name) {
         if (external) {
-            return Constants.METATYPE_PREFIX + "." + name;
+            return Constants.EXTERNAL_DOMAIN_METATYPE_ROOT_PACKAGE + "." + name;
         }
         return name;
     }

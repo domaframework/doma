@@ -1,4 +1,4 @@
-package _.org.seasar.doma.internal.apt.domain;
+package __.org.seasar.doma.internal.apt.domain;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")

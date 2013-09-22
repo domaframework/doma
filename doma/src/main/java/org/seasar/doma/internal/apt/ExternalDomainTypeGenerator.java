@@ -52,8 +52,8 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
     public ExternalDomainTypeGenerator(ProcessingEnvironment env,
             TypeElement typeElement, ExternalDomainMeta domainMeta)
             throws IOException {
-        super(env, typeElement, Constants.METATYPE_PREFIX + "."
-                + ElementUtil.getPackageName(typeElement, env), null,
+        super(env, typeElement, Constants.EXTERNAL_DOMAIN_METATYPE_ROOT_PACKAGE
+                + "." + ElementUtil.getPackageName(typeElement, env), null,
                 Constants.METATYPE_PREFIX, "");
         assertNotNull(domainMeta);
         this.domainMeta = domainMeta;

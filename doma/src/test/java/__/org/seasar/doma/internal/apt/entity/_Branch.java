@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package _.org.seasar.doma.internal.apt.entity;
+package __.org.seasar.doma.internal.apt.entity;
 
 import org.seasar.doma.internal.apt.entity.Branch;
 import org.seasar.doma.internal.apt.entity.BranchConverter;

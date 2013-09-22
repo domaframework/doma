@@ -94,7 +94,7 @@ public class ExternalDomainProcessorTest extends AptTestCase {
         addCompilationUnit(target);
         compile();
 
-        String generatedClassName = "_.org.seasar.doma.internal.apt.domain._"
+        String generatedClassName = "__.org.seasar.doma.internal.apt.domain._"
                 + ValueObject.class.getSimpleName();
         try {
             assertEqualsGeneratedSource(getExpectedContent(),
@@ -112,7 +112,7 @@ public class ExternalDomainProcessorTest extends AptTestCase {
         addProcessor(processor);
         addCompilationUnit(target);
         compile();
-        String generatedClassName = "_.org.seasar.doma.internal.apt.domain._"
+        String generatedClassName = "__.org.seasar.doma.internal.apt.domain._"
                 + ParameterizedValueObject.class.getSimpleName();
         try {
             assertEqualsGeneratedSource(getExpectedContent(),

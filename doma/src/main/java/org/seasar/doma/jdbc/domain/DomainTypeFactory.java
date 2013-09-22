@@ -157,8 +157,8 @@ public final class DomainTypeFactory {
         if (classHelper == null) {
             throw new DomaNullPointerException("classHelper");
         }
-        String domainTypeClassName = Constants.METATYPE_PREFIX + "."
-                + MetaTypeUtil.getMetaTypeName(domainClass.getName());
+        String domainTypeClassName = Constants.EXTERNAL_DOMAIN_METATYPE_ROOT_PACKAGE
+                + "." + MetaTypeUtil.getMetaTypeName(domainClass.getName());
         try {
             Class<D> clazz = classHelper.forName(domainTypeClassName);
             Method method = ClassUtil.getMethod(clazz, "getSingletonInternal");

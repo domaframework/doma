@@ -1,4 +1,4 @@
-package _.org.seasar.doma.internal.apt.domain;
+package __.org.seasar.doma.internal.apt.domain;
 
 /**
  * @param <T> T

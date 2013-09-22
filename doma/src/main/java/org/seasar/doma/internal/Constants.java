@@ -37,4 +37,6 @@ public final class Constants {
 
     public static final String METATYPE_PREFIX = "_";
 
+    public static final String EXTERNAL_DOMAIN_METATYPE_ROOT_PACKAGE = "__";
+
 }
