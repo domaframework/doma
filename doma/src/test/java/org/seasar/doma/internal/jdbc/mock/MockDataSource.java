@@ -18,6 +18,8 @@ package org.seasar.doma.internal.jdbc.mock;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
+import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
@@ -75,4 +77,9 @@ public class MockDataSource extends MockWrapper implements DataSource {
 
     }
 
+    @SuppressWarnings("all")
+    public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+        AssertionUtil.notYetImplemented();
+        return null;
+    }
 }

@@ -20,10 +20,13 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
+import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
 import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.internal.jdbc.util.DataSourceUtil;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.message.Message;
 
@@ -202,5 +205,10 @@ public final class LocalTransactionalDataSource implements DataSource {
         }
         return new KeepAliveLocalTransaction(dataSource, localTxContextHolder,
                 jdbcLogger, transactionIsolationLevel);
+    }
+
+    @SuppressWarnings("all")
+    public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+        return DataSourceUtil.getParentLogger(dataSource);
     }
 }

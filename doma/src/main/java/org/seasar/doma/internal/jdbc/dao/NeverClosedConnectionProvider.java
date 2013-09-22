@@ -20,6 +20,8 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
+import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
@@ -76,4 +78,8 @@ class NeverClosedConnectionProvider implements DataSource {
         throw new SQLException("unwrap method is unsupported.");
     }
 
+    @SuppressWarnings("all")
+    public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+        throw new SQLFeatureNotSupportedException();
+    }
 }

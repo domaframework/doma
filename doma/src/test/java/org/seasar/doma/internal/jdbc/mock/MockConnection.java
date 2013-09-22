@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.Executor;
 
 import org.seasar.doma.internal.util.AssertionUtil;
 
@@ -379,6 +380,34 @@ public class MockConnection extends MockWrapper implements Connection {
     public void setTypeMap(Map<String, Class<?>> map) throws SQLException {
         AssertionUtil.notYetImplemented();
 
+    }
+
+    @SuppressWarnings("all")
+    public void setSchema(String schema) throws SQLException {
+        AssertionUtil.notYetImplemented();
+    }
+
+    @SuppressWarnings("all")
+    public String getSchema() throws SQLException {
+        AssertionUtil.notYetImplemented();
+        return null;
+    }
+
+    @SuppressWarnings("all")
+    public void abort(Executor executor) throws SQLException {
+        AssertionUtil.notYetImplemented();
+    }
+
+    @SuppressWarnings("all")
+    public void setNetworkTimeout(Executor executor, int milliseconds)
+            throws SQLException {
+        AssertionUtil.notYetImplemented();
+    }
+
+    @SuppressWarnings("all")
+    public int getNetworkTimeout() throws SQLException {
+        AssertionUtil.notYetImplemented();
+        return 0;
     }
 
 }

@@ -31,6 +31,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.RowId;
 import java.sql.SQLException;
+import java.sql.SQLType;
 import java.sql.SQLWarning;
 import java.sql.SQLXML;
 import java.sql.Statement;
@@ -1268,6 +1269,47 @@ public class MockResultSet extends MockWrapper implements ResultSet {
     @Override
     public boolean wasNull() throws SQLException {
         return wasNull;
+    }
+
+    @SuppressWarnings("all")
+    public <T> T getObject(int columnIndex, Class<T> type) throws SQLException {
+        AssertionUtil.notYetImplemented();
+        return null;
+    }
+
+    @SuppressWarnings("all")
+    public <T> T getObject(String columnLabel, Class<T> type)
+            throws SQLException {
+        AssertionUtil.notYetImplemented();
+        return null;
+    }
+
+    @SuppressWarnings("all")
+    public void updateObject(int columnIndex, Object x, SQLType targetSqlType,
+            int scaleOrLength) throws SQLException {
+        AssertionUtil.notYetImplemented();
+
+    }
+
+    @SuppressWarnings("all")
+    public void updateObject(String columnLabel, Object x,
+            SQLType targetSqlType, int scaleOrLength) throws SQLException {
+        AssertionUtil.notYetImplemented();
+
+    }
+
+    @SuppressWarnings("all")
+    public void updateObject(int columnIndex, Object x, SQLType targetSqlType)
+            throws SQLException {
+        AssertionUtil.notYetImplemented();
+
+    }
+
+    @SuppressWarnings("all")
+    public void updateObject(String columnLabel, Object x, SQLType targetSqlType)
+            throws SQLException {
+        AssertionUtil.notYetImplemented();
+
     }
 
 }
