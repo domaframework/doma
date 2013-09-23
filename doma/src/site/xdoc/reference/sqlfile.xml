@@ -729,7 +729,7 @@ salary > 1000]]></source>
 					可視性はprivateであってもアクセス可能です。
 				</p>
 <source><![CDATA[select * from employee where 
-/*%if employeeName.lenght() < @java.lang.Byte@MAX_VALUE */
+/*%if employeeName.length() < @java.lang.Byte@MAX_VALUE */
     employee_name = /* employeeName */'smith'
 /*%end*/]]></source>
 			</subsection>
