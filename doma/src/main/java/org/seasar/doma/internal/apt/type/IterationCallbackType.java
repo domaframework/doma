@@ -114,7 +114,11 @@ public class IterationCallbackType extends AbstractDataType {
                     env)) {
                 return TypeMirrorUtil.toDeclaredType(supertype, env);
             }
-            getIterationCallbackDeclaredType(supertype, env);
+            DeclaredType result = getIterationCallbackDeclaredType(supertype,
+                    env);
+            if (result != null) {
+                return result;
+            }
         }
         return null;
     }
