@@ -1,6 +1,6 @@
 <project name="doma" default="update" basedir=".">
 
-	<property name="newVersion" value="1.35.0-SNAPSHOT" />
+	<property name="newVersion" value="1.35.0" />
 	<property name="domaJarPattern" value="(doma-)(?:\d*\.\d*\.\d*(?:-RC\d)?(?:-SNAPSHOT)?)((?:-sources)?\.jar)" />
 
 	<target name="update">
