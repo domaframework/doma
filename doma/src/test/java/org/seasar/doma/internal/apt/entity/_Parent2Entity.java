@@ -117,27 +117,33 @@ public class _Parent2Entity extends AbstractEntityType<Parent2Entity> {
     }
 
     @Override
-    public void preDelete(Parent2Entity entity, PreDeleteContext context) {
+    public void preDelete(Parent2Entity entity,
+            PreDeleteContext<Parent2Entity> context) {
     }
 
     @Override
-    public void preInsert(Parent2Entity entity, PreInsertContext context) {
+    public void preInsert(Parent2Entity entity,
+            PreInsertContext<Parent2Entity> context) {
     }
 
     @Override
-    public void preUpdate(Parent2Entity entity, PreUpdateContext context) {
+    public void preUpdate(Parent2Entity entity,
+            PreUpdateContext<Parent2Entity> context) {
     }
 
     @Override
-    public void postDelete(Parent2Entity entity, PostDeleteContext context) {
+    public void postDelete(Parent2Entity entity,
+            PostDeleteContext<Parent2Entity> context) {
     }
 
     @Override
-    public void postInsert(Parent2Entity entity, PostInsertContext context) {
+    public void postInsert(Parent2Entity entity,
+            PostInsertContext<Parent2Entity> context) {
     }
 
     @Override
-    public void postUpdate(Parent2Entity entity, PostUpdateContext context) {
+    public void postUpdate(Parent2Entity entity,
+            PostUpdateContext<Parent2Entity> context) {
     }
 
     @Override

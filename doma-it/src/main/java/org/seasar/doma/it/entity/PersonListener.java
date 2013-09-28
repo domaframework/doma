@@ -26,32 +26,32 @@ import org.seasar.doma.jdbc.entity.PreUpdateContext;
 public class PersonListener implements EntityListener<Person> {
 
     @Override
-    public void preDelete(Person entity, PreDeleteContext context) {
+    public void preDelete(Person entity, PreDeleteContext<Person> context) {
         context.setNewEntity(newPerson(entity, "_preD"));
     }
 
     @Override
-    public void preInsert(Person entity, PreInsertContext context) {
+    public void preInsert(Person entity, PreInsertContext<Person> context) {
         context.setNewEntity(newPerson(entity, "_preI"));
     }
 
     @Override
-    public void preUpdate(Person entity, PreUpdateContext context) {
+    public void preUpdate(Person entity, PreUpdateContext<Person> context) {
         context.setNewEntity(newPerson(entity, "_preU"));
     }
 
     @Override
-    public void postInsert(Person entity, PostInsertContext context) {
+    public void postInsert(Person entity, PostInsertContext<Person> context) {
         context.setNewEntity(newPerson(entity, "_postI"));
     }
 
     @Override
-    public void postUpdate(Person entity, PostUpdateContext context) {
+    public void postUpdate(Person entity, PostUpdateContext<Person> context) {
         context.setNewEntity(newPerson(entity, "_postU"));
     }
 
     @Override
-    public void postDelete(Person entity, PostDeleteContext context) {
+    public void postDelete(Person entity, PostDeleteContext<Person> context) {
         context.setNewEntity(newPerson(entity, "_postD"));
     }
 

@@ -27,42 +27,31 @@ import org.seasar.doma.jdbc.entity.PreUpdateContext;
  * @author taedium
  * 
  */
-public class Parent2EntityListener implements EntityListener<Parent2Entity> {
+public class Parent2EntityListener<E extends Parent2Entity> implements
+        EntityListener<E> {
 
     @Override
-    public void preInsert(Parent2Entity entity, PreInsertContext context) {
-        // TODO Auto-generated method stub
-
+    public void preInsert(E entity, PreInsertContext<E> context) {
     }
 
     @Override
-    public void preUpdate(Parent2Entity entity, PreUpdateContext context) {
-        // TODO Auto-generated method stub
-
+    public void preUpdate(E entity, PreUpdateContext<E> context) {
     }
 
     @Override
-    public void preDelete(Parent2Entity entity, PreDeleteContext context) {
-        // TODO Auto-generated method stub
-
+    public void preDelete(E entity, PreDeleteContext<E> context) {
     }
 
     @Override
-    public void postInsert(Parent2Entity entity, PostInsertContext context) {
-        // TODO Auto-generated method stub
-
+    public void postInsert(E entity, PostInsertContext<E> context) {
     }
 
     @Override
-    public void postUpdate(Parent2Entity entity, PostUpdateContext context) {
-        // TODO Auto-generated method stub
-
+    public void postUpdate(E entity, PostUpdateContext<E> context) {
     }
 
     @Override
-    public void postDelete(Parent2Entity entity, PostDeleteContext context) {
-        // TODO Auto-generated method stub
-
+    public void postDelete(E entity, PostDeleteContext<E> context) {
     }
 
 }

@@ -30,27 +30,27 @@ import org.seasar.doma.jdbc.entity.PreUpdateContext;
 public class CommonListener<T extends Common> implements EntityListener<T> {
 
     @Override
-    public void preDelete(T entity, PreDeleteContext context) {
+    public void preDelete(T entity, PreDeleteContext<T> context) {
     }
 
     @Override
-    public void preInsert(T entity, PreInsertContext context) {
+    public void preInsert(T entity, PreInsertContext<T> context) {
     }
 
     @Override
-    public void preUpdate(T entity, PreUpdateContext context) {
+    public void preUpdate(T entity, PreUpdateContext<T> context) {
     }
 
     @Override
-    public void postInsert(T entity, PostInsertContext context) {
+    public void postInsert(T entity, PostInsertContext<T> context) {
     }
 
     @Override
-    public void postUpdate(T entity, PostUpdateContext context) {
+    public void postUpdate(T entity, PostUpdateContext<T> context) {
     }
 
     @Override
-    public void postDelete(T entity, PostDeleteContext context) {
+    public void postDelete(T entity, PostDeleteContext<T> context) {
     }
 
 }

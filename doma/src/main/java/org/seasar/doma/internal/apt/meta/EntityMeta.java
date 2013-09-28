@@ -54,6 +54,10 @@ public class EntityMeta implements TypeElementMeta {
 
     protected TypeMirror entityListener;
 
+    protected TypeElement entityListenerElement;
+
+    protected boolean genericEntityListener;
+
     protected TableMirror tableMirror;
 
     protected EntityPropertyMeta versionPropertyMeta;
@@ -197,6 +201,22 @@ public class EntityMeta implements TypeElementMeta {
 
     public void setEntityListener(TypeMirror entityListener) {
         this.entityListener = entityListener;
+    }
+
+    public TypeElement getEntityListenerElement() {
+        return entityListenerElement;
+    }
+
+    public void setEntityListenerElement(TypeElement entityListenerElement) {
+        this.entityListenerElement = entityListenerElement;
+    }
+
+    public boolean isGenericEntityListener() {
+        return genericEntityListener;
+    }
+
+    public void setGenericEntityListener(boolean genericEntityListener) {
+        this.genericEntityListener = genericEntityListener;
     }
 
     public String getCatalogName() {

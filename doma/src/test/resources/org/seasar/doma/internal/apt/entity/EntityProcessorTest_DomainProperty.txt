@@ -27,7 +27,7 @@ public final class _DomainPropertyEntity extends org.seasar.doma.jdbc.entity.Abs
     /** the ver */
     public final org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.DomainPropertyEntity, java.lang.Integer, org.seasar.doma.internal.apt.entity.Ver> $ver = new org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.DomainPropertyEntity, java.lang.Integer, org.seasar.doma.internal.apt.entity.Ver>(org.seasar.doma.internal.apt.entity.DomainPropertyEntity.class, java.lang.Integer.class, org.seasar.doma.wrapper.IntegerWrapper.class, null, org.seasar.doma.internal.apt.entity._Ver.getSingletonInternal(), "ver", "ver");
 
-    private final org.seasar.doma.jdbc.entity.NullEntityListener __listener;
+    private final org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.DomainPropertyEntity> __listener;
 
     private final org.seasar.doma.jdbc.entity.NamingType __namingType;
 
@@ -50,7 +50,7 @@ public final class _DomainPropertyEntity extends org.seasar.doma.jdbc.entity.Abs
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.DomainPropertyEntity, ?>> __entityPropertyTypeMap;
 
     private _DomainPropertyEntity() {
-        __listener = new org.seasar.doma.jdbc.entity.NullEntityListener();
+        __listener = new org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.DomainPropertyEntity>();
         __namingType = org.seasar.doma.jdbc.entity.NamingType.NONE;
         __immutable = false;
         __name = "DomainPropertyEntity";
@@ -109,32 +109,32 @@ public final class _DomainPropertyEntity extends org.seasar.doma.jdbc.entity.Abs
     }
 
     @Override
-    public void preInsert(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity, org.seasar.doma.jdbc.entity.PreInsertContext context) {
+    public void preInsert(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity, org.seasar.doma.jdbc.entity.PreInsertContext<org.seasar.doma.internal.apt.entity.DomainPropertyEntity> context) {
         __listener.preInsert(entity, context);
     }
 
     @Override
-    public void preUpdate(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity, org.seasar.doma.jdbc.entity.PreUpdateContext context) {
+    public void preUpdate(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity, org.seasar.doma.jdbc.entity.PreUpdateContext<org.seasar.doma.internal.apt.entity.DomainPropertyEntity> context) {
         __listener.preUpdate(entity, context);
     }
 
     @Override
-    public void preDelete(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity, org.seasar.doma.jdbc.entity.PreDeleteContext context) {
+    public void preDelete(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity, org.seasar.doma.jdbc.entity.PreDeleteContext<org.seasar.doma.internal.apt.entity.DomainPropertyEntity> context) {
         __listener.preDelete(entity, context);
     }
 
     @Override
-    public void postInsert(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity, org.seasar.doma.jdbc.entity.PostInsertContext context) {
+    public void postInsert(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity, org.seasar.doma.jdbc.entity.PostInsertContext<org.seasar.doma.internal.apt.entity.DomainPropertyEntity> context) {
         __listener.postInsert(entity, context);
     }
 
     @Override
-    public void postUpdate(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity, org.seasar.doma.jdbc.entity.PostUpdateContext context) {
+    public void postUpdate(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity, org.seasar.doma.jdbc.entity.PostUpdateContext<org.seasar.doma.internal.apt.entity.DomainPropertyEntity> context) {
         __listener.postUpdate(entity, context);
     }
 
     @Override
-    public void postDelete(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity, org.seasar.doma.jdbc.entity.PostDeleteContext context) {
+    public void postDelete(org.seasar.doma.internal.apt.entity.DomainPropertyEntity entity, org.seasar.doma.jdbc.entity.PostDeleteContext<org.seasar.doma.internal.apt.entity.DomainPropertyEntity> context) {
         __listener.postDelete(entity, context);
     }
 

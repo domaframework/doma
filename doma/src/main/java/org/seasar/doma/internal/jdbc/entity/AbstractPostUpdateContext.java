@@ -29,7 +29,7 @@ import org.seasar.doma.jdbc.entity.PostUpdateContext;
  * 
  */
 public abstract class AbstractPostUpdateContext<E> extends
-        AbstractEntityListenerContext<E> implements PostUpdateContext {
+        AbstractEntityListenerContext<E> implements PostUpdateContext<E> {
 
     protected AbstractPostUpdateContext(EntityType<E> entityType,
             Method method, Config config) {

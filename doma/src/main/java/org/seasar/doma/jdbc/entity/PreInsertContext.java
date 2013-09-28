@@ -17,7 +17,6 @@ package org.seasar.doma.jdbc.entity;
 
 import java.lang.reflect.Method;
 
-import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Insert;
 import org.seasar.doma.jdbc.Config;
@@ -25,17 +24,19 @@ import org.seasar.doma.jdbc.Config;
 /**
  * 挿入処理の前処理のコンテキストです。
  * 
+ * @param <E>
+ *            エンティティの型
  * @author taedium
  * @since 1.11.0
  */
-public interface PreInsertContext {
+public interface PreInsertContext<E> {
 
     /**
      * エンティティのメタタイプを返します。
      * 
      * @return エンティティのメタタイプ
      */
-    public EntityType<?> getEntityType();
+    public EntityType<E> getEntityType();
 
     /**
      * {@link Insert} が注釈されたメソッドを返します。
@@ -54,6 +55,14 @@ public interface PreInsertContext {
     public Config getConfig();
 
     /**
+     * 新しいエンティティを返します。
+     * 
+     * @return 新しいエンティティ
+     * @since 1.35.0
+     */
+    public E getNewEntity();
+
+    /**
      * 新しいエンティティを設定します。
      * <p>
      * このメソッドは、 {@link PreInsertContext#getEntityType()}
@@ -63,11 +72,8 @@ public interface PreInsertContext {
      *            エンティティ
      * @throws DomaNullPointerException
      *             引数が {@code null} の場合
-     * @throws DomaIllegalArgumentException
-     *             引数が {@link PreInsertContext#getEntityType()}
-     *             に対応するエンティティクラスのサブタイプでない場合
      * @since 1.34.0
      */
-    public void setNewEntity(Object newEntity);
+    public void setNewEntity(E newEntity);
 
 }

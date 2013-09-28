@@ -32,10 +32,12 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.type.TypeVariable;
 import javax.lang.model.util.ElementFilter;
 
 import org.seasar.doma.Entity;
@@ -83,6 +85,14 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
         EntityMeta entityMeta = new EntityMeta(entityMirror, classElement);
         TypeMirror entityListener = resolveEntityListener(classElement);
         entityMeta.setEntityListener(entityListener);
+        TypeElement entityListenerElement = TypeMirrorUtil.toTypeElement(
+                entityListener, env);
+        if (entityListenerElement == null) {
+            throw new AptIllegalStateException("entityListener.");
+        }
+        entityMeta.setEntityListenerElement(entityListenerElement);
+        entityMeta.setGenericEntityListener(!entityListenerElement
+                .getTypeParameters().isEmpty());
         NamingType namingType = resolveNamingType(classElement);
         entityMeta.setNamingType(namingType);
         boolean immutable = resolveImmutable(classElement, entityMirror);
@@ -207,6 +217,155 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
             EntityMeta entityMeta) {
         EntityMirror entityMirror = entityMeta.getEntityMirror();
         TypeMirror listenerType = entityMirror.getListenerValue();
+        TypeElement listenerElement = TypeMirrorUtil.toTypeElement(
+                listenerType, env);
+        if (listenerElement == null) {
+            throw new AptIllegalStateException(
+                    "failed to convert to TypeElement");
+        }
+
+        if (listenerElement.getModifiers().contains(Modifier.ABSTRACT)) {
+            throw new AptException(Message.DOMA4166, env, classElement,
+                    entityMirror.getAnnotationMirror(),
+                    entityMirror.getListener(),
+                    listenerElement.getQualifiedName());
+        }
+
+        ExecutableElement constructor = ElementUtil.getNoArgConstructor(
+                listenerElement, env);
+        if (constructor == null
+                || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
+            throw new AptException(Message.DOMA4167, env, classElement,
+                    entityMirror.getAnnotationMirror(),
+                    entityMirror.getListener(),
+                    listenerElement.getQualifiedName());
+        }
+        if (listenerElement.getTypeParameters().size() > 0) {
+            validateGenericEntityListener(classElement, entityMeta,
+                    listenerElement);
+        } else {
+            validateNonGenericEntityListener(classElement, entityMeta,
+                    listenerType);
+        }
+
+        TypeElement inheritedListenerElement = entityMeta
+                .getEntityListenerElement();
+        if (!TypeMirrorUtil.isSameType(listenerType,
+                inheritedListenerElement.asType(), env)) {
+            validateInheritedEntityListener(classElement, entityMeta,
+                    inheritedListenerElement);
+        }
+    }
+
+    protected void validateGenericEntityListener(TypeElement classElement,
+            EntityMeta entityMeta, TypeElement listenerElement) {
+        EntityMirror entityMirror = entityMeta.getEntityMirror();
+        List<? extends TypeParameterElement> typeParams = listenerElement
+                .getTypeParameters();
+        if (typeParams.size() == 0) {
+            throw new AptIllegalStateException(
+                    "typeParams size should be more than 0");
+        }
+        if (typeParams.size() > 1) {
+            throw new AptException(Message.DOMA4227, env, classElement,
+                    entityMirror.getAnnotationMirror(),
+                    entityMirror.getListener());
+        }
+        TypeParameterElement typeParam = typeParams.get(0);
+        for (TypeMirror bound : typeParam.getBounds()) {
+            if (!TypeMirrorUtil.isAssignable(classElement.asType(), bound, env)) {
+                throw new AptException(Message.DOMA4229, env, classElement,
+                        entityMirror.getAnnotationMirror(),
+                        entityMirror.getListener(), typeParam.getSimpleName(),
+                        bound, classElement.getQualifiedName());
+            }
+        }
+        if (findListenerTypeParam(listenerElement, 0) == null) {
+            throw new AptException(Message.DOMA4228, env, classElement,
+                    entityMirror.getAnnotationMirror(),
+                    entityMirror.getListener(), typeParam.getSimpleName());
+        }
+    }
+
+    protected TypeParameterElement findListenerTypeParam(
+            TypeElement listenerElement, int typeParamIndex) {
+        TypeParameterElement typeParam = listenerElement.getTypeParameters()
+                .get(typeParamIndex);
+
+        for (TypeMirror interfase : listenerElement.getInterfaces()) {
+            DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(
+                    interfase, env);
+            if (declaredType == null) {
+                continue;
+            }
+            int i = -1;
+            for (TypeMirror typeArg : declaredType.getTypeArguments()) {
+                i++;
+                TypeVariable typeVariable = TypeMirrorUtil.toTypeVariable(
+                        typeArg, env);
+                if (typeVariable == null) {
+                    continue;
+                }
+                if (typeParam.getSimpleName().equals(
+                        typeVariable.asElement().getSimpleName())) {
+                    if (TypeMirrorUtil.isSameType(declaredType,
+                            EntityListener.class, env)) {
+                        return typeParam;
+                    }
+                    TypeElement typeElement = TypeMirrorUtil.toTypeElement(
+                            declaredType, env);
+                    if (typeElement == null) {
+                        throw new AptIllegalStateException(
+                                declaredType.toString());
+                    }
+                    TypeParameterElement candidate = findListenerTypeParam(
+                            typeElement, i);
+                    if (candidate != null) {
+                        return candidate;
+                    }
+                }
+            }
+        }
+
+        TypeMirror superclass = listenerElement.getSuperclass();
+        DeclaredType declaredType = TypeMirrorUtil.toDeclaredType(superclass,
+                env);
+        if (declaredType == null) {
+            return null;
+        }
+        int i = -1;
+        for (TypeMirror typeArg : declaredType.getTypeArguments()) {
+            i++;
+            TypeVariable typeVariable = TypeMirrorUtil.toTypeVariable(typeArg,
+                    env);
+            if (typeVariable == null) {
+                continue;
+            }
+            if (typeParam.getSimpleName().equals(
+                    typeVariable.asElement().getSimpleName())) {
+                if (TypeMirrorUtil.isSameType(declaredType,
+                        EntityListener.class, env)) {
+                    return typeParam;
+                }
+                TypeElement typeElement = TypeMirrorUtil.toTypeElement(
+                        declaredType, env);
+                if (typeElement == null) {
+                    throw new AptIllegalStateException(declaredType.toString());
+                }
+                TypeParameterElement candidate = findListenerTypeParam(
+                        typeElement, i);
+                if (candidate != null) {
+                    return candidate;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    protected void validateNonGenericEntityListener(TypeElement classElement,
+            EntityMeta entityMeta, TypeMirror listenerType) {
+        EntityMirror entityMirror = entityMeta.getEntityMirror();
         TypeMirror argumentType = getListenerArgumentType(listenerType);
         if (argumentType == null) {
             throw new AptException(Message.DOMA4202, env, classElement,
@@ -220,26 +379,28 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
                     entityMirror.getListener(), listenerType, argumentType,
                     classElement.getQualifiedName());
         }
-        TypeElement listenerElement = TypeMirrorUtil.toTypeElement(
-                listenerType, env);
-        if (listenerElement == null) {
-            throw new AptIllegalStateException(
-                    "failed to convert to TypeElement");
-        }
-        if (listenerElement.getModifiers().contains(Modifier.ABSTRACT)) {
-            throw new AptException(Message.DOMA4166, env, classElement,
+    }
+
+    protected void validateInheritedEntityListener(TypeElement classElement,
+            EntityMeta entityMeta, TypeElement inheritedListenerElement) {
+        EntityMirror entityMirror = entityMeta.getEntityMirror();
+        List<? extends TypeParameterElement> typeParams = inheritedListenerElement
+                .getTypeParameters();
+        if (typeParams.size() == 0) {
+            throw new AptException(Message.DOMA4230, env, classElement,
                     entityMirror.getAnnotationMirror(),
-                    entityMirror.getListener(),
-                    listenerElement.getQualifiedName());
+                    inheritedListenerElement.getQualifiedName(),
+                    classElement.getQualifiedName());
         }
-        ExecutableElement constructor = ElementUtil.getNoArgConstructor(
-                listenerElement, env);
-        if (constructor == null
-                || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
-            throw new AptException(Message.DOMA4167, env, classElement,
-                    entityMirror.getAnnotationMirror(),
-                    entityMirror.getListener(),
-                    listenerElement.getQualifiedName());
+        TypeParameterElement typeParam = typeParams.get(0);
+        for (TypeMirror bound : typeParam.getBounds()) {
+            if (!TypeMirrorUtil.isAssignable(classElement.asType(), bound, env)) {
+                throw new AptException(Message.DOMA4231, env, classElement,
+                        entityMirror.getAnnotationMirror(),
+                        inheritedListenerElement.getQualifiedName(),
+                        typeParam.getSimpleName(), bound,
+                        classElement.getQualifiedName());
+            }
         }
     }
 

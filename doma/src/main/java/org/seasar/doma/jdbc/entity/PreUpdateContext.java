@@ -17,7 +17,6 @@ package org.seasar.doma.jdbc.entity;
 
 import java.lang.reflect.Method;
 
-import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Update;
 import org.seasar.doma.jdbc.Config;
@@ -25,10 +24,12 @@ import org.seasar.doma.jdbc.Config;
 /**
  * 更新処理の前処理のコンテキストです。
  * 
+ * @param <E>
+ *            エンティティの型
  * @author taedium
  * @since 1.11.0
  */
-public interface PreUpdateContext {
+public interface PreUpdateContext<E> {
 
     /**
      * エンティティが変更されたかどうかを返します。
@@ -78,6 +79,14 @@ public interface PreUpdateContext {
     public Config getConfig();
 
     /**
+     * 新しいエンティティを返します。
+     * 
+     * @return 新しいエンティティ
+     * @since 1.35.0
+     */
+    public E getNewEntity();
+
+    /**
      * 新しいエンティティを設定します。
      * <p>
      * このメソッドは、 {@link PreUpdateContext#getEntityType()}
@@ -87,11 +96,8 @@ public interface PreUpdateContext {
      *            エンティティ
      * @throws DomaNullPointerException
      *             引数が {@code null} の場合
-     * @throws DomaIllegalArgumentException
-     *             引数が {@link PreUpdateContext#getEntityType()}
-     *             に対応するエンティティクラスのサブタイプでない場合
      * @since 1.34.0
      */
-    public void setNewEntity(Object newEntity);
+    public void setNewEntity(E newEntity);
 
 }

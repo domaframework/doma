@@ -112,7 +112,8 @@ public @interface Entity {
      * <p>
      * リスナーは、エンティティクラスごとに1つだけインスタンス化されます。
      */
-    Class<? extends EntityListener<?>> listener() default NullEntityListener.class;
+    @SuppressWarnings("rawtypes")
+    Class<? extends EntityListener> listener() default NullEntityListener.class;
 
     /**
      * ネーミング規約です。

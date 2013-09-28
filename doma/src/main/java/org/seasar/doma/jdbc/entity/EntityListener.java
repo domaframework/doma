@@ -48,7 +48,7 @@ public interface EntityListener<E> {
      *            コンテキスト
      * @since 1.11.0
      */
-    void preInsert(E entity, PreInsertContext context);
+    void preInsert(E entity, PreInsertContext<E> context);
 
     /**
      * 更新処理の前処理を行います。
@@ -62,7 +62,7 @@ public interface EntityListener<E> {
      *            コンテキスト
      * @since 1.11.0
      */
-    void preUpdate(E entity, PreUpdateContext context);
+    void preUpdate(E entity, PreUpdateContext<E> context);
 
     /**
      * 削除処理の前処理を行います。
@@ -76,7 +76,7 @@ public interface EntityListener<E> {
      *            コンテキスト
      * @since 1.11.0
      */
-    void preDelete(E entity, PreDeleteContext context);
+    void preDelete(E entity, PreDeleteContext<E> context);
 
     /**
      * 挿入処理の後処理を行います。
@@ -90,7 +90,7 @@ public interface EntityListener<E> {
      *            コンテキスト
      * @since 1.11.0
      */
-    void postInsert(E entity, PostInsertContext context);
+    void postInsert(E entity, PostInsertContext<E> context);
 
     /**
      * 更新処理の後処理を行います。
@@ -104,7 +104,7 @@ public interface EntityListener<E> {
      *            コンテキスト
      * @since 1.11.0
      */
-    void postUpdate(E entity, PostUpdateContext context);
+    void postUpdate(E entity, PostUpdateContext<E> context);
 
     /**
      * 削除処理の後処理を行います。
@@ -118,5 +118,5 @@ public interface EntityListener<E> {
      *            コンテキスト
      * @since 1.11.0
      */
-    void postDelete(E entity, PostDeleteContext context);
+    void postDelete(E entity, PostDeleteContext<E> context);
 }

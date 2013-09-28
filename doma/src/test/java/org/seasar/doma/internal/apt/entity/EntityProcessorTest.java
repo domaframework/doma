@@ -133,6 +133,16 @@ public class EntityProcessorTest extends AptTestCase {
         assertTrue(getCompiledResult());
     }
 
+    public void testExtendsListenerIllegalInherited() throws Exception {
+        Class<?> target = Child3InheritingEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4230);
+    }
+
     public void testExtendsWithOriginalStates() throws Exception {
         Class<?> target = OriginalStatesChildEntity.class;
         EntityProcessor processor = new EntityProcessor();
@@ -474,4 +484,75 @@ public class EntityProcessorTest extends AptTestCase {
         assertGeneratedSource(target);
         assertTrue(getCompiledResult());
     }
+
+    public void testGenericListener1() throws Exception {
+        Class<?> target = GenericListener1Entity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testGenericListener2() throws Exception {
+        Class<?> target = GenericListener2Entity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4227);
+    }
+
+    public void testGenericListener3() throws Exception {
+        Class<?> target = GenericListener3Entity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testGenericListener4() throws Exception {
+        Class<?> target = GenericListener4Entity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4229);
+    }
+
+    public void testGenericListener5() throws Exception {
+        Class<?> target = GenericListener5Entity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4166);
+    }
+
+    public void testGenericListener6() throws Exception {
+        Class<?> target = GenericListener6Entity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testGenericListener8() throws Exception {
+        Class<?> target = GenericListener8Entity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4228);
+    }
+
 }

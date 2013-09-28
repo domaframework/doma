@@ -1,0 +1,180 @@
+package org.seasar.doma.internal.apt.entity;
+
+/** */
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+public final class _GenericListener6Entity extends org.seasar.doma.jdbc.entity.AbstractEntityType<org.seasar.doma.internal.apt.entity.GenericListener6Entity> {
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    private static final _GenericListener6Entity __singleton = new _GenericListener6Entity();
+
+    private final org.seasar.doma.internal.apt.entity.GenericListener6<org.seasar.doma.internal.apt.entity.GenericListener6Entity> __listener;
+
+    private final org.seasar.doma.jdbc.entity.NamingType __namingType;
+
+    private final boolean __immutable;
+
+    private final String __catalogName;
+
+    private final String __schemaName;
+
+    private final String __tableName;
+
+    private final String __qualifiedTableName;
+
+    private final String __name;
+
+    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.GenericListener6Entity, ?>> __idPropertyTypes;
+
+    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.GenericListener6Entity, ?>> __entityPropertyTypes;
+
+    private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.GenericListener6Entity, ?>> __entityPropertyTypeMap;
+
+    private _GenericListener6Entity() {
+        __listener = new org.seasar.doma.internal.apt.entity.GenericListener6<org.seasar.doma.internal.apt.entity.GenericListener6Entity>();
+        __namingType = org.seasar.doma.jdbc.entity.NamingType.NONE;
+        __immutable = false;
+        __name = "GenericListener6Entity";
+        __catalogName = "";
+        __schemaName = "";
+        __tableName = "GenericListener6Entity";
+        __qualifiedTableName = "GenericListener6Entity";
+        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.GenericListener6Entity, ?>> __idList = new java.util.ArrayList<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.GenericListener6Entity, ?>>();
+        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.GenericListener6Entity, ?>> __list = new java.util.ArrayList<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.GenericListener6Entity, ?>>(0);
+        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.GenericListener6Entity, ?>> __map = new java.util.HashMap<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.GenericListener6Entity, ?>>(0);
+        __idPropertyTypes = java.util.Collections.unmodifiableList(__idList);
+        __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
+        __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.entity.NamingType getNamingType() {
+        return __namingType;
+    }
+
+    @Override
+    public boolean isImmutable() {
+        return __immutable;
+    }
+
+    @Override
+    public String getName() {
+        return __name;
+    }
+
+    @Override
+    public String getCatalogName() {
+        return __catalogName;
+    }
+
+    @Override
+    public String getSchemaName() {
+        return __schemaName;
+    }
+
+    @Override
+    public String getTableName() {
+        return __tableName;
+    }
+
+    @Override
+    public String getQualifiedTableName() {
+        return __qualifiedTableName;
+    }
+
+    @Override
+    public void preInsert(org.seasar.doma.internal.apt.entity.GenericListener6Entity entity, org.seasar.doma.jdbc.entity.PreInsertContext<org.seasar.doma.internal.apt.entity.GenericListener6Entity> context) {
+        __listener.preInsert(entity, context);
+    }
+
+    @Override
+    public void preUpdate(org.seasar.doma.internal.apt.entity.GenericListener6Entity entity, org.seasar.doma.jdbc.entity.PreUpdateContext<org.seasar.doma.internal.apt.entity.GenericListener6Entity> context) {
+        __listener.preUpdate(entity, context);
+    }
+
+    @Override
+    public void preDelete(org.seasar.doma.internal.apt.entity.GenericListener6Entity entity, org.seasar.doma.jdbc.entity.PreDeleteContext<org.seasar.doma.internal.apt.entity.GenericListener6Entity> context) {
+        __listener.preDelete(entity, context);
+    }
+
+    @Override
+    public void postInsert(org.seasar.doma.internal.apt.entity.GenericListener6Entity entity, org.seasar.doma.jdbc.entity.PostInsertContext<org.seasar.doma.internal.apt.entity.GenericListener6Entity> context) {
+        __listener.postInsert(entity, context);
+    }
+
+    @Override
+    public void postUpdate(org.seasar.doma.internal.apt.entity.GenericListener6Entity entity, org.seasar.doma.jdbc.entity.PostUpdateContext<org.seasar.doma.internal.apt.entity.GenericListener6Entity> context) {
+        __listener.postUpdate(entity, context);
+    }
+
+    @Override
+    public void postDelete(org.seasar.doma.internal.apt.entity.GenericListener6Entity entity, org.seasar.doma.jdbc.entity.PostDeleteContext<org.seasar.doma.internal.apt.entity.GenericListener6Entity> context) {
+        __listener.postDelete(entity, context);
+    }
+
+    @Override
+    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.GenericListener6Entity, ?>> getEntityPropertyTypes() {
+        return __entityPropertyTypes;
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.GenericListener6Entity, ?> getEntityPropertyType(String __name) {
+        return __entityPropertyTypeMap.get(__name);
+    }
+
+    @Override
+    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.GenericListener6Entity, ?>> getIdPropertyTypes() {
+        return __idPropertyTypes;
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.GenericListener6Entity, ?, ?> getGeneratedIdPropertyType() {
+        return null;
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.GenericListener6Entity, ?, ?> getVersionPropertyType() {
+        return null;
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.entity.GenericListener6Entity newEntity() {
+        return new org.seasar.doma.internal.apt.entity.GenericListener6Entity();
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.entity.GenericListener6Entity newEntity(java.util.Map<String, Object> __args) {
+        return new org.seasar.doma.internal.apt.entity.GenericListener6Entity();
+    }
+
+    @Override
+    public Class<org.seasar.doma.internal.apt.entity.GenericListener6Entity> getEntityClass() {
+        return org.seasar.doma.internal.apt.entity.GenericListener6Entity.class;
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.entity.GenericListener6Entity getOriginalStates(org.seasar.doma.internal.apt.entity.GenericListener6Entity __entity) {
+        return null;
+    }
+
+    @Override
+    public void saveCurrentStates(org.seasar.doma.internal.apt.entity.GenericListener6Entity __entity) {
+    }
+
+    /**
+     * @return the singleton
+     */
+    public static _GenericListener6Entity getSingletonInternal() {
+        return __singleton;
+    }
+
+    /**
+     * @return the new instance
+     */
+    public static _GenericListener6Entity newInstance() {
+        return new _GenericListener6Entity();
+    }
+
+}

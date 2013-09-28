@@ -108,27 +108,27 @@ public class Employee {
 				</p>
 <source><![CDATA[public class EmployeeEntityListener implements EntityListener<Employee> {
     @Override
-    public void preDelete(Employee entity, PreDeleteContext context) {
+    public void preDelete(Employee entity, PreDeleteContext<Employee> context) {
         ...
     }
     @Override
-    public void preInsert(Employee entity, PreInsertContext context) {
+    public void preInsert(Employee entity, PreInsertContext<Employee> context) {
         ...
     }
     @Override
-    public void preUpdate(Employee entity, PreUpdateContext context) {
+    public void preUpdate(Employee entity, PreUpdateContext<Employee> context) {
         ...
     }
     @Override
-    public void postDelete(Employee entity, PostDeleteContext context) {
+    public void postDelete(Employee entity, PostDeleteContext<Employee> context) {
         ...
     }
     @Override
-    public void postInsert(Employee entity, PostInsertContext context) {
+    public void postInsert(Employee entity, PostInsertContext<Employee> context) {
         ...
     }
     @Override
-    public void postUpdate(Employee entity, PostUpdateContext context) {
+    public void postUpdate(Employee entity, PostUpdateContext<Employee> context) {
         ...
     }
 }]]></source>

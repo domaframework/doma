@@ -29,7 +29,7 @@ import org.seasar.doma.jdbc.entity.PreUpdateContext;
  * 
  */
 public abstract class AbstractPreUpdateContext<E> extends
-        AbstractEntityListenerContext<E> implements PreUpdateContext {
+        AbstractEntityListenerContext<E> implements PreUpdateContext<E> {
 
     protected AbstractPreUpdateContext(EntityType<E> entityType, Method method,
             Config config) {

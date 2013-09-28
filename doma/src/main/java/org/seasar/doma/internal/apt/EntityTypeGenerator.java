@@ -267,8 +267,14 @@ public class EntityTypeGenerator extends AbstractGenerator {
     }
 
     protected void printListenerField() {
-        iprint("private final %1$s __listener;%n",
-                entityMeta.getEntityListener());
+        if (entityMeta.isGenericEntityListener()) {
+            iprint("private final %1$s<%2$s> __listener;%n", entityMeta
+                    .getEntityListenerElement().getQualifiedName(),
+                    entityMeta.getEntityTypeName());
+        } else {
+            iprint("private final %1$s __listener;%n", entityMeta
+                    .getEntityListenerElement().getQualifiedName());
+        }
         print("%n");
     }
 
@@ -330,7 +336,14 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
     protected void printConstructor() {
         iprint("private %1$s() {%n", simpleName);
-        iprint("    __listener = new %1$s();%n", entityMeta.getEntityListener());
+        if (entityMeta.isGenericEntityListener()) {
+            iprint("    __listener = new %1$s<%2$s>();%n", entityMeta
+                    .getEntityListenerElement().getQualifiedName(),
+                    entityMeta.getEntityTypeName());
+        } else {
+            iprint("    __listener = new %1$s();%n", entityMeta
+                    .getEntityListenerElement().getQualifiedName());
+        }
         iprint("    __namingType = %1$s.%2$s;%n", NamingType.class.getName(),
                 entityMeta.getNamingType().name());
         iprint("    __immutable = %1$s;%n", entityMeta.isImmutable());
@@ -453,7 +466,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
     protected void printPreInsertMethod() {
         iprint("@Override%n");
-        iprint("public void preInsert(%1$s entity, %2$s context) {%n",
+        iprint("public void preInsert(%1$s entity, %2$s<%1$s> context) {%n",
                 entityMeta.getEntityTypeName(),
                 PreInsertContext.class.getName());
         iprint("    __listener.preInsert(entity, context);%n");
@@ -463,7 +476,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
     protected void printPreUpdateMethod() {
         iprint("@Override%n");
-        iprint("public void preUpdate(%1$s entity, %2$s context) {%n",
+        iprint("public void preUpdate(%1$s entity, %2$s<%1$s> context) {%n",
                 entityMeta.getEntityTypeName(),
                 PreUpdateContext.class.getName());
         iprint("    __listener.preUpdate(entity, context);%n");
@@ -473,7 +486,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
     protected void printPreDeleteMethod() {
         iprint("@Override%n");
-        iprint("public void preDelete(%1$s entity, %2$s context) {%n",
+        iprint("public void preDelete(%1$s entity, %2$s<%1$s> context) {%n",
                 entityMeta.getEntityTypeName(),
                 PreDeleteContext.class.getName());
         iprint("    __listener.preDelete(entity, context);%n");
@@ -483,7 +496,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
     protected void printPostInsertMethod() {
         iprint("@Override%n");
-        iprint("public void postInsert(%1$s entity, %2$s context) {%n",
+        iprint("public void postInsert(%1$s entity, %2$s<%1$s> context) {%n",
                 entityMeta.getEntityTypeName(),
                 PostInsertContext.class.getName());
         iprint("    __listener.postInsert(entity, context);%n");
@@ -493,7 +506,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
     protected void printPostUpdateMethod() {
         iprint("@Override%n");
-        iprint("public void postUpdate(%1$s entity, %2$s context) {%n",
+        iprint("public void postUpdate(%1$s entity, %2$s<%1$s> context) {%n",
                 entityMeta.getEntityTypeName(),
                 PostUpdateContext.class.getName());
         iprint("    __listener.postUpdate(entity, context);%n");
@@ -503,7 +516,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
     protected void printPostDeleteMethod() {
         iprint("@Override%n");
-        iprint("public void postDelete(%1$s entity, %2$s context) {%n",
+        iprint("public void postDelete(%1$s entity, %2$s<%1$s> context) {%n",
                 entityMeta.getEntityTypeName(),
                 PostDeleteContext.class.getName());
         iprint("    __listener.postDelete(entity, context);%n");

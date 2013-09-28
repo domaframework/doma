@@ -118,30 +118,33 @@ public class _ImmutableParentEntity extends
     }
 
     @Override
-    public void preDelete(ImmutableParentEntity entity, PreDeleteContext context) {
+    public void preDelete(ImmutableParentEntity entity,
+            PreDeleteContext<ImmutableParentEntity> context) {
     }
 
     @Override
-    public void preInsert(ImmutableParentEntity entity, PreInsertContext context) {
+    public void preInsert(ImmutableParentEntity entity,
+            PreInsertContext<ImmutableParentEntity> context) {
     }
 
     @Override
-    public void preUpdate(ImmutableParentEntity entity, PreUpdateContext context) {
+    public void preUpdate(ImmutableParentEntity entity,
+            PreUpdateContext<ImmutableParentEntity> context) {
     }
 
     @Override
     public void postDelete(ImmutableParentEntity entity,
-            PostDeleteContext context) {
+            PostDeleteContext<ImmutableParentEntity> context) {
     }
 
     @Override
     public void postInsert(ImmutableParentEntity entity,
-            PostInsertContext context) {
+            PostInsertContext<ImmutableParentEntity> context) {
     }
 
     @Override
     public void postUpdate(ImmutableParentEntity entity,
-            PostUpdateContext context) {
+            PostUpdateContext<ImmutableParentEntity> context) {
     }
 
     @Override
