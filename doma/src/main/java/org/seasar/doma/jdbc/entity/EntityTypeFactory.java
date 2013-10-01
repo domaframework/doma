@@ -25,7 +25,6 @@ import org.seasar.doma.internal.jdbc.util.MetaTypeUtil;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.MethodUtil;
 import org.seasar.doma.jdbc.ClassHelper;
-import org.seasar.doma.jdbc.DefaultClassHelper;
 import org.seasar.doma.message.Message;
 
 /**
@@ -35,28 +34,6 @@ import org.seasar.doma.message.Message;
  * @since 1.8.0
  */
 public final class EntityTypeFactory {
-
-    /**
-     * {@link EntityType} のインスタンスを生成します。
-     * 
-     * @param <E>
-     *            エンティティの型
-     * @param entityClass
-     *            エンティティクラス
-     * @return {@link EntityType} のインスタンス
-     * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
-     * @throws DomaIllegalArgumentException
-     *             エンティティクラスに {@link Entity} が注釈されていない場合
-     * @throws EntityTypeNotFoundException
-     *             エンティティクラスに対応するメタクラスが見つからない場合
-     * @deprecated {@link EntityTypeFactory#getEntityType(Class, ClassHelper)}
-     *             を使ってください。
-     */
-    @Deprecated
-    public static <E> EntityType<E> getEntityType(Class<E> entityClass) {
-        return getEntityType(entityClass, new DefaultClassHelper());
-    }
 
     /**
      * {@link EntityType} のインスタンスを生成します。
