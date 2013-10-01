@@ -48,30 +48,6 @@ public final class DomainTypeFactory {
      *            ドメインクラスの型
      * @param domainClass
      *            ドメインクラス
-     * @return {@link DomainType} のインスタンス
-     * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
-     * @throws DomaIllegalArgumentException
-     *             ドメインクラスに {@link Domain} もしくは {@code EnumDomain} が注釈されていない場合
-     * @throws DomainTypeNotFoundException
-     *             ドメインクラスに対応するメタクラスが見つからない場合
-     * @deprecated {@link DomainTypeFactory#getDomainType(Class, ClassHelper)}
-     *             を使ってください。
-     */
-    @Deprecated
-    public static <V, D> DomainType<V, D> getDomainType(Class<D> domainClass) {
-        return getDomainType(domainClass, new DefaultClassHelper());
-    }
-
-    /**
-     * {@link DomainType} のインスタンスを生成します。
-     * 
-     * @param <V>
-     *            ドメインクラスが扱う値の型
-     * @param <D>
-     *            ドメインクラスの型
-     * @param domainClass
-     *            ドメインクラス
      * @param classHelper
      *            クラスヘルパー
      * @return {@link DomainType} のインスタンス
