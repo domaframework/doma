@@ -109,30 +109,6 @@ public interface ExpressionFunctions {
     String infix(String infix, char escapeChar);
 
     /**
-     * 中間一致検索を行うことを示します。
-     * 
-     * @param inside
-     *            含まれる文字列
-     * @return 中間一致検索のための文字列
-     * @deprecated {@link ExpressionFunctions#infix(String)} を使用してください
-     */
-    @Deprecated
-    String contain(String inside);
-
-    /**
-     * エスケープ文字を指定して中間一致検索を行うことを示します。
-     * 
-     * @param inside
-     *            含まれる文字列
-     * @param escapeChar
-     *            エスケープ文字
-     * @return 中間一致検索のための文字列
-     * @deprecated {@link ExpressionFunctions#infix(String, char)} を使用してください
-     */
-    @Deprecated
-    String contain(String inside, char escapeChar);
-
-    /**
      * 日付の時刻部分を切り捨てます。
      * 
      * @param date

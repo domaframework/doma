@@ -928,32 +928,6 @@ public class StandardDialect implements Dialect {
             return "%" + escapeWildcard(text, escapeChar) + "%";
         }
 
-        @SuppressWarnings("deprecation")
-        @Override
-        public String contain(String text) {
-            if (text == null) {
-                return null;
-            }
-            if (text.isEmpty()) {
-                return "%";
-            }
-            String escaped = escapeWildcard(defaultWildcardReplacementPattern,
-                    text, defaultReplacement);
-            return "%" + escaped + "%";
-        }
-
-        @SuppressWarnings("deprecation")
-        @Override
-        public String contain(String text, char escapeChar) {
-            if (text == null) {
-                return null;
-            }
-            if (text.isEmpty()) {
-                return "%";
-            }
-            return "%" + escapeWildcard(text, escapeChar) + "%";
-        }
-
         /**
          * 入力に含まれるワイルドカードをエスケープします。
          * 

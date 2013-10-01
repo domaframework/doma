@@ -67,18 +67,6 @@ public class NullExpressionFunctions implements ExpressionFunctions {
         return text;
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public String contain(String text) {
-        return text;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public String contain(String text, char escape) {
-        return text;
-    }
-
     @Override
     public java.util.Date roundDownTimePart(java.util.Date date) {
         return date;
