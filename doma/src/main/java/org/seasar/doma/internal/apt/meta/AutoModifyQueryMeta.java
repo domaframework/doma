@@ -74,10 +74,6 @@ public class AutoModifyQueryMeta extends AbstractQueryMeta {
         return modifyMirror.getIgnoreVersionValue();
     }
 
-    public Boolean getIncludeVersion() {
-        return modifyMirror.getIncludeVersionValue();
-    }
-
     public Boolean getExcludeNull() {
         return modifyMirror.getExcludeNullValue();
     }

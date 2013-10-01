@@ -106,7 +106,7 @@ public class AutoBatchUpdateQueryTest extends TestCase {
         assertEquals(new Integer(200), parameters.get(4).getWrapper().get());
     }
 
-    public void testOption_includeVersion() throws Exception {
+    public void testOption_ignoreVersion() throws Exception {
         Emp emp1 = new Emp();
         emp1.setId(10);
         emp1.setName("aaa");
@@ -122,9 +122,9 @@ public class AutoBatchUpdateQueryTest extends TestCase {
         query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntities(Arrays.asList(emp1, emp2));
-        query.setVersionIncluded(true);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
+        query.setVersionIgnored(true);
         query.prepare();
 
         PreparedSql sql = query.getSqls().get(0);

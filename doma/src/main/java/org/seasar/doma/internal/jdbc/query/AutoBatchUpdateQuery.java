@@ -185,10 +185,6 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
         }
     }
 
-    public void setVersionIncluded(boolean versionIncluded) {
-        this.versionIgnored |= versionIncluded;
-    }
-
     public void setVersionIgnored(boolean versionIgnored) {
         this.versionIgnored |= versionIgnored;
     }

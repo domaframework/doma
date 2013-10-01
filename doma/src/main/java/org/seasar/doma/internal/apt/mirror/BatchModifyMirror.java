@@ -41,8 +41,6 @@ public abstract class BatchModifyMirror {
 
     protected AnnotationValue ignoreVersion;
 
-    protected AnnotationValue includeVersion;
-
     protected AnnotationValue suppressOptimisticLockException;
 
     protected AnnotationValue include;
@@ -72,10 +70,6 @@ public abstract class BatchModifyMirror {
 
     public AnnotationValue getIgnoreVersion() {
         return ignoreVersion;
-    }
-
-    public AnnotationValue getIncludeVersion() {
-        return includeVersion;
     }
 
     public AnnotationValue getSuppressOptimisticLockException() {
@@ -108,10 +102,6 @@ public abstract class BatchModifyMirror {
 
     public Boolean getIgnoreVersionValue() {
         return AnnotationValueUtil.toBoolean(ignoreVersion);
-    }
-
-    public Boolean getIncludeVersionValue() {
-        return AnnotationValueUtil.toBoolean(includeVersion);
     }
 
     public Boolean getSuppressOptimisticLockExceptionValue() {

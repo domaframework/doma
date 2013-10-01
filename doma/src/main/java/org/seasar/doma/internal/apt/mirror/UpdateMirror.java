@@ -55,8 +55,6 @@ public class UpdateMirror extends ModifyMirror {
                 result.sqlFile = value;
             } else if ("queryTimeout".equals(name)) {
                 result.queryTimeout = value;
-            } else if ("includeVersion".equals(name)) {
-                result.includeVersion = value;
             } else if ("ignoreVersion".equals(name)) {
                 result.ignoreVersion = value;
             } else if ("excludeNull".equals(name)) {

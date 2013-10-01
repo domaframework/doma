@@ -211,10 +211,6 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
         this.nullExcluded = nullExcluded;
     }
 
-    public void setVersionIncluded(boolean versionIncluded) {
-        this.versionIgnored |= versionIncluded;
-    }
-
     public void setVersionIgnored(boolean versionIgnored) {
         this.versionIgnored |= versionIgnored;
     }

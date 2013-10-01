@@ -39,8 +39,6 @@ public abstract class ModifyMirror {
 
     protected AnnotationValue ignoreVersion;
 
-    protected AnnotationValue includeVersion;
-
     protected AnnotationValue excludeNull;
 
     protected AnnotationValue suppressOptimisticLockException;
@@ -70,10 +68,6 @@ public abstract class ModifyMirror {
 
     public AnnotationValue getIgnoreVersion() {
         return ignoreVersion;
-    }
-
-    public AnnotationValue getIncludeVersion() {
-        return includeVersion;
     }
 
     public AnnotationValue getExcludeNull() {
@@ -106,10 +100,6 @@ public abstract class ModifyMirror {
 
     public Boolean getIgnoreVersionValue() {
         return AnnotationValueUtil.toBoolean(ignoreVersion);
-    }
-
-    public Boolean getIncludeVersionValue() {
-        return AnnotationValueUtil.toBoolean(includeVersion);
     }
 
     public Boolean getExcludeNullValue() {

@@ -83,10 +83,6 @@ public class SqlFileBatchModifyQueryMeta extends AbstractSqlFileQueryMeta {
         return batchModifyMirror.getIgnoreVersionValue();
     }
 
-    public Boolean getIncludeVersion() {
-        return batchModifyMirror.getIncludeVersionValue();
-    }
-
     public Boolean getSuppressOptimisticLockException() {
         return batchModifyMirror.getSuppressOptimisticLockExceptionValue();
     }

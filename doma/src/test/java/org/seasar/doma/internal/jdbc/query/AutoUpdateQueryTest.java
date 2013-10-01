@@ -109,7 +109,7 @@ public class AutoUpdateQueryTest extends TestCase {
         assertEquals(new Integer(100), parameters.get(2).getWrapper().get());
     }
 
-    public void testOption_includeVersion() throws Exception {
+    public void testOption_ignoreVersion() throws Exception {
         Emp emp = new Emp();
         emp.setId(10);
         emp.setName("aaa");
@@ -121,7 +121,7 @@ public class AutoUpdateQueryTest extends TestCase {
         query.setMethod(getClass().getDeclaredMethod(getName()));
         query.setConfig(runtimeConfig);
         query.setEntity(emp);
-        query.setVersionIncluded(true);
+        query.setVersionIgnored(true);
         query.setCallerClassName("aaa");
         query.setCallerMethodName("bbb");
         query.prepare();

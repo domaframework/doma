@@ -68,10 +68,6 @@ public class SqlFileModifyQueryMeta extends AbstractSqlFileQueryMeta {
         return modifyMirror.getIgnoreVersionValue();
     }
 
-    public Boolean getIncludeVersion() {
-        return modifyMirror.getIncludeVersionValue();
-    }
-
     public Boolean getSuppressOptimisticLockException() {
         return modifyMirror.getSuppressOptimisticLockExceptionValue();
     }

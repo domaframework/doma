@@ -74,10 +74,6 @@ public class AutoBatchModifyQueryMeta extends AbstractQueryMeta {
         return batchModifyMirror.getIgnoreVersionValue();
     }
 
-    public Boolean getIncludeVersion() {
-        return batchModifyMirror.getIncludeVersionValue();
-    }
-
     public Boolean getSuppressOptimisticLockException() {
         return batchModifyMirror.getSuppressOptimisticLockExceptionValue();
     }

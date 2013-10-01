@@ -99,14 +99,6 @@ public @interface Update {
     boolean excludeNull() default false;
 
     /**
-     * UPDATE文のSET句にバージョンプロパティに対応するカラムを含めるかどうかを示します。
-     * 
-     * @deprecated 代わりに {@link #ignoreVersion()} を使用してください。
-     */
-    @Deprecated
-    boolean includeVersion() default false;
-
-    /**
      * 楽観的排他制御用のバージョン番号を無視するかどうかを示します。
      * <p>
      * {@code true} の場合、更新条件にバージョン番号を含めません。

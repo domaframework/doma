@@ -765,11 +765,6 @@ public class DaoGenerator extends AbstractGenerator {
                 iprint("__query.setNullExcluded(%1$s);%n", excludeNull);
             }
 
-            Boolean includeVersion = m.getIncludeVersion();
-            if (includeVersion != null) {
-                iprint("__query.setVersionIncluded(%1$s);%n", includeVersion);
-            }
-
             Boolean ignoreVersion = m.getIgnoreVersion();
             if (ignoreVersion != null) {
                 iprint("__query.setVersionIgnored(%1$s);%n", ignoreVersion);
@@ -857,11 +852,6 @@ public class DaoGenerator extends AbstractGenerator {
                         m.getEntityType().getMetaTypeNameAsTypeParameter());
             }
 
-            Boolean includeVersion = m.getIncludeVersion();
-            if (includeVersion != null) {
-                iprint("__query.setVersionIncluded(%1$s);%n", includeVersion);
-            }
-
             Boolean ignoreVersion = m.getIgnoreVersion();
             if (ignoreVersion != null) {
                 iprint("__query.setVersionIgnored(%1$s);%n", ignoreVersion);
@@ -918,11 +908,6 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             iprint("__query.setBatchSize(%1$s);%n", m.getBatchSize());
-
-            Boolean includeVersion = m.getIncludeVersion();
-            if (includeVersion != null) {
-                iprint("__query.setVersionIncluded(%1$s);%n", includeVersion);
-            }
 
             Boolean ignoreVersion = m.getIgnoreVersion();
             if (ignoreVersion != null) {
@@ -1000,11 +985,6 @@ public class DaoGenerator extends AbstractGenerator {
             if (m.getEntityType() != null) {
                 iprint("__query.setEntityType(%1$s.getSingletonInternal());%n",
                         m.getEntityType().getMetaTypeNameAsTypeParameter());
-            }
-
-            Boolean includeVersion = m.getIncludeVersion();
-            if (includeVersion != null) {
-                iprint("__query.setVersionIncluded(%1$s);%n", includeVersion);
             }
 
             Boolean ignoreVersion = m.getIgnoreVersion();
