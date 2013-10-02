@@ -20,7 +20,6 @@ import java.lang.reflect.Method;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Domain;
-import org.seasar.doma.EnumDomain;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.jdbc.util.MetaTypeUtil;
@@ -36,7 +35,6 @@ import org.seasar.doma.message.Message;
  * @author taedium
  * @since 1.8.0
  */
-@SuppressWarnings("deprecation")
 public final class DomainTypeFactory {
 
     /**
@@ -67,8 +65,7 @@ public final class DomainTypeFactory {
         if (classHelper == null) {
             throw new DomaNullPointerException("classHelper");
         }
-        if (!domainClass.isAnnotationPresent(Domain.class)
-                && !domainClass.isAnnotationPresent(EnumDomain.class)) {
+        if (!domainClass.isAnnotationPresent(Domain.class)) {
             throw new DomaIllegalArgumentException("domainClass",
                     Message.DOMA2205.getMessage(domainClass.getName()));
         }

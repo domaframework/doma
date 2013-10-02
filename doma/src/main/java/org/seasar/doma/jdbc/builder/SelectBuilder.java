@@ -23,7 +23,6 @@ import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Domain;
 import org.seasar.doma.Entity;
-import org.seasar.doma.EnumDomain;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.jdbc.command.BasicIterationHandler;
 import org.seasar.doma.internal.jdbc.command.BasicResultListHandler;
@@ -98,7 +97,6 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * @since 1.8.0
  */
-@SuppressWarnings("deprecation")
 public class SelectBuilder {
 
     private final Config config;
@@ -279,8 +277,7 @@ public class SelectBuilder {
             EntityType<R> entityType = EntityTypeFactory.getEntityType(
                     resultClass, config.getClassHelper());
             return new EntitySingleResultHandler<R>(entityType);
-        } else if (resultClass.isAnnotationPresent(Domain.class)
-                || resultClass.isAnnotationPresent(EnumDomain.class)) {
+        } else if (resultClass.isAnnotationPresent(Domain.class)) {
             DomainType<?, R> domainType = DomainTypeFactory.getDomainType(
                     resultClass, config.getClassHelper());
             return new DomainSingleResultHandler<R>(domainType);
@@ -373,8 +370,7 @@ public class SelectBuilder {
             EntityType<R> entityType = EntityTypeFactory.getEntityType(
                     resultClass, config.getClassHelper());
             return new EntityResultListHandler<R>(entityType);
-        } else if (resultClass.isAnnotationPresent(Domain.class)
-                || resultClass.isAnnotationPresent(EnumDomain.class)) {
+        } else if (resultClass.isAnnotationPresent(Domain.class)) {
             DomainType<?, R> domainType = DomainTypeFactory.getDomainType(
                     resultClass, config.getClassHelper());
             return new DomainResultListHandler<R>(domainType);
@@ -476,8 +472,7 @@ public class SelectBuilder {
                     targetClass, config.getClassHelper());
             return new EntityIterationHandler<R, T>(entityType,
                     iterationCallback);
-        } else if (targetClass.isAnnotationPresent(Domain.class)
-                || targetClass.isAnnotationPresent(EnumDomain.class)) {
+        } else if (targetClass.isAnnotationPresent(Domain.class)) {
             DomainType<?, T> domainType = DomainTypeFactory.getDomainType(
                     targetClass, config.getClassHelper());
             return new DomainIterationHandler<R, T>(domainType,

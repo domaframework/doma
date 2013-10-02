@@ -28,7 +28,6 @@ import java.sql.Time;
 import java.sql.Timestamp;
 
 import org.seasar.doma.Domain;
-import org.seasar.doma.EnumDomain;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.jdbc.domain.DomainType;
@@ -62,7 +61,6 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-@SuppressWarnings("deprecation")
 public final class Wrappers {
 
     /**
@@ -206,8 +204,7 @@ public final class Wrappers {
     protected static <V, D> Wrapper<?> wrapDomainObject(Object value,
             Class<D> valueClass, ClassHelper classHelper) {
         DomainType<V, D> domainType;
-        if (valueClass.isAnnotationPresent(Domain.class)
-                || valueClass.isAnnotationPresent(EnumDomain.class)) {
+        if (valueClass.isAnnotationPresent(Domain.class)) {
             domainType = DomainTypeFactory.getDomainType(valueClass,
                     classHelper);
         } else {

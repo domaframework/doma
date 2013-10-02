@@ -30,7 +30,6 @@ import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.mirror.EnumDomainMirror;
 import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
@@ -155,14 +154,6 @@ public class ExternalDomainMetaFactory implements
         if (basicType == null) {
             throw new AptException(Message.DOMA4194, env, convElement,
                     valueElement.getQualifiedName());
-        }
-        if (basicType.isEnum()) {
-            EnumDomainMirror enumDomainMirror = EnumDomainMirror.newInstance(
-                    valueElement, env);
-            if (enumDomainMirror != null) {
-                throw new AptException(Message.DOMA4195, env, convElement,
-                        basicType.getQualifiedName());
-            }
         }
         meta.setWrapperType(basicType.getWrapperType());
     }

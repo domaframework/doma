@@ -27,7 +27,6 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.Domain;
-import org.seasar.doma.EnumDomain;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptIllegalOptionException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
@@ -38,7 +37,6 @@ import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.domain.DomainConverter;
 import org.seasar.doma.message.Message;
 
-@SuppressWarnings("deprecation")
 public class DomainType extends AbstractDataType {
 
     protected final BasicType basicType;
@@ -143,10 +141,6 @@ public class DomainType extends AbstractDataType {
         if (domain != null) {
             return getDomainInfo(typeElement, domain);
         }
-        EnumDomain enumDomain = typeElement.getAnnotation(EnumDomain.class);
-        if (enumDomain != null) {
-            return getEnumDomainInfo(typeElement, enumDomain);
-        }
         return getExternalDomainInfo(typeElement, env);
     }
 
@@ -154,16 +148,6 @@ public class DomainType extends AbstractDataType {
             Domain domain) {
         try {
             domain.valueType();
-        } catch (MirroredTypeException e) {
-            return new DomainInfo(e.getTypeMirror(), false);
-        }
-        throw new AptIllegalStateException("unreachable.");
-    }
-
-    protected static DomainInfo getEnumDomainInfo(TypeElement typeElement,
-            EnumDomain enumDomain) {
-        try {
-            enumDomain.valueType();
         } catch (MirroredTypeException e) {
             return new DomainInfo(e.getTypeMirror(), false);
         }

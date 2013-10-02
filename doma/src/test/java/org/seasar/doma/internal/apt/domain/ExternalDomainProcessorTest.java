@@ -69,15 +69,6 @@ public class ExternalDomainProcessorTest extends AptTestCase {
         assertMessage(Message.DOMA4194);
     }
 
-    public void testEnumDomain() throws Exception {
-        ExternalDomainProcessor processor = new ExternalDomainProcessor();
-        addProcessor(processor);
-        addCompilationUnit(EnumDomainValueObjectConverter.class);
-        compile();
-        assertFalse(getCompiledResult());
-        assertMessage(Message.DOMA4195);
-    }
-
     public void testNestingValueObjectConverter() throws Exception {
         ExternalDomainProcessor processor = new ExternalDomainProcessor();
         addProcessor(processor);
