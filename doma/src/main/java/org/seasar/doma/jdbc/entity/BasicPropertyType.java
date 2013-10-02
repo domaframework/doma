@@ -21,7 +21,6 @@ import java.util.Map;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.WrapException;
-import org.seasar.doma.internal.jdbc.criteria.CriterionVisitor;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.ConstructorUtil;
 import org.seasar.doma.internal.util.FieldUtil;
@@ -249,24 +248,6 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
     @Override
     public boolean isUpdatable() {
         return updatable;
-    }
-
-    @Override
-    public Class<V> getType() {
-        return entityPropertyClass;
-    }
-
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            CriterionVisitor<R, P, TH> visitor, P p) throws TH {
-        if (visitor == null) {
-            throw new DomaNullPointerException("visitor");
-        }
-        if (visitor instanceof EntityPropertyTypeVisitor<?, ?, ?>) {
-            EntityPropertyTypeVisitor<R, P, TH> v = (EntityPropertyTypeVisitor<R, P, TH>) visitor;
-            return v.visitEntityPropertyType(this, p);
-        }
-        return visitor.visitUnknownExpression(this, p);
     }
 
     /**

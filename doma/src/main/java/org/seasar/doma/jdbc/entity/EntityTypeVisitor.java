@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.jdbc.entity;
 
-import org.seasar.doma.internal.jdbc.criteria.CriterionVisitor;
 
 /**
  * {@link EntityType} のビジターです。
@@ -29,8 +28,7 @@ import org.seasar.doma.internal.jdbc.criteria.CriterionVisitor;
  * @param <TH>
  *            例外の型
  */
-public interface EntityTypeVisitor<R, P, TH extends Throwable> extends
-        CriterionVisitor<R, P, TH> {
+public interface EntityTypeVisitor<R, P, TH extends Throwable> {
 
     <E> R visitEntityType(EntityType<E> entityType, P p) throws TH;
 }

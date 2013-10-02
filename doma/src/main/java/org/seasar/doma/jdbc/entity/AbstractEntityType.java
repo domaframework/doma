@@ -19,10 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.internal.jdbc.criteria.ColumnCriterion;
-import org.seasar.doma.internal.jdbc.criteria.CriterionVisitor;
-
 /**
  * {@link EntityType} の骨格実装です。
  * 
@@ -38,16 +34,6 @@ public abstract class AbstractEntityType<E> implements EntityType<E> {
     }
 
     @Override
-    public boolean contains(ColumnCriterion<?> column) {
-        return getEntityPropertyTypes().contains(column);
-    }
-
-    @Override
-    public List<? extends ColumnCriterion<?>> getColumns() {
-        return getEntityPropertyTypes();
-    }
-
-    @Override
     public Map<String, Object> getCopy(E entity) {
         List<EntityPropertyType<E, ?>> propertyTypes = getEntityPropertyTypes();
         Map<String, Object> properties = new HashMap<String, Object>(
@@ -56,19 +42,6 @@ public abstract class AbstractEntityType<E> implements EntityType<E> {
             properties.put(p.getName(), p.getCopy(entity));
         }
         return properties;
-    }
-
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            CriterionVisitor<R, P, TH> visitor, P p) throws TH {
-        if (visitor == null) {
-            throw new DomaNullPointerException("visitor");
-        }
-        if (visitor instanceof EntityPropertyTypeVisitor<?, ?, ?>) {
-            EntityTypeVisitor<R, P, TH> v = (EntityTypeVisitor<R, P, TH>) visitor;
-            return v.visitEntityType(this, p);
-        }
-        return visitor.visitUnknownExpression(this, p);
     }
 
 }

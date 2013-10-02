@@ -18,8 +18,6 @@ package org.seasar.doma.jdbc.entity;
 import java.util.List;
 import java.util.Map;
 
-import org.seasar.doma.internal.jdbc.criteria.TableCriterion;
-
 /**
  * エンティティのメタタイプです。
  * 
@@ -32,7 +30,7 @@ import org.seasar.doma.internal.jdbc.criteria.TableCriterion;
  * @param <E>
  *            エンティティの型
  */
-public interface EntityType<E> extends TableCriterion<E> {
+public interface EntityType<E> {
 
     /**
      * エンティティがイミュータブルかどうかを返します。

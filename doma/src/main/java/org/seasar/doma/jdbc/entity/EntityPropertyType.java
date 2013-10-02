@@ -17,8 +17,6 @@ package org.seasar.doma.jdbc.entity;
 
 import java.util.Map;
 
-import org.seasar.doma.internal.jdbc.criteria.ColumnCriterion;
-import org.seasar.doma.internal.jdbc.criteria.OrderItemCriterion;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -35,8 +33,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * @param <V>
  *            プロパティの型
  */
-public interface EntityPropertyType<E, V> extends ColumnCriterion<V>,
-        OrderItemCriterion<V> {
+public interface EntityPropertyType<E, V> {
 
     /**
      * エンティティからこのプロパティ型に対応する値をコピーして返します。
