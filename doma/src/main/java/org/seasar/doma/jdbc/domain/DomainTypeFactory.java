@@ -26,7 +26,6 @@ import org.seasar.doma.internal.jdbc.util.MetaTypeUtil;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.MethodUtil;
 import org.seasar.doma.jdbc.ClassHelper;
-import org.seasar.doma.jdbc.DefaultClassHelper;
 import org.seasar.doma.message.Message;
 
 /**
@@ -82,28 +81,6 @@ public final class DomainTypeFactory {
             throw new DomainTypeNotFoundException(e, domainClass.getName(),
                     domainTypeClassName);
         }
-    }
-
-    /**
-     * {@link DomainType} のインスタンスを生成します。
-     * 
-     * @param <V>
-     *            ドメインクラスが扱う値の型
-     * @param <D>
-     *            ドメインクラスの型
-     * @param domainClass
-     *            ドメインクラス
-     * @return {@link DomainType} のインスタンス、存在しない場合 {@code null}
-     * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
-     * @since 1.25.0
-     * @deprecated {@link DomainTypeFactory#getExternalDomainType(Class, ClassHelper)}
-     *             を使ってください。
-     */
-    @Deprecated
-    public static <V, D> DomainType<V, D> getExternalDomainType(
-            Class<D> domainClass) {
-        return getExternalDomainType(domainClass, new DefaultClassHelper());
     }
 
     /**
