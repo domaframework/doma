@@ -36,8 +36,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
-import org.seasar.doma.internal.jdbc.util.ConnectionUtil;
-
 /**
  * ローカルトランザクションと連動するコネクションです。
  * <p>
@@ -338,29 +336,30 @@ class LocalTransactionalConnection implements Connection {
         return connection.unwrap(iface);
     }
 
-    @SuppressWarnings("all")
+    @Override
     public void setSchema(String schema) throws SQLException {
-        ConnectionUtil.setSchema(connection, schema);
+        connection.setSchema(schema);
     }
 
-    @SuppressWarnings("all")
+    @Override
     public String getSchema() throws SQLException {
-        return ConnectionUtil.getSchema(connection);
+        return connection.getSchema();
     }
 
-    @SuppressWarnings("all")
+    @Override
     public void abort(Executor executor) throws SQLException {
-        ConnectionUtil.abort(connection, executor);
+        connection.abort(executor);
     }
 
-    @SuppressWarnings("all")
+    @Override
     public void setNetworkTimeout(Executor executor, int milliseconds)
             throws SQLException {
-        ConnectionUtil.setNetworkTimeout(connection, executor, milliseconds);
+        connection.setNetworkTimeout(executor, milliseconds);
     }
 
-    @SuppressWarnings("all")
+    @Override
     public int getNetworkTimeout() throws SQLException {
-        return ConnectionUtil.getNetworkTimeout(connection);
+        return connection.getNetworkTimeout();
     }
+
 }

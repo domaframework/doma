@@ -78,8 +78,9 @@ class NeverClosedConnectionProvider implements DataSource {
         throw new SQLException("unwrap method is unsupported.");
     }
 
-    @SuppressWarnings("all")
+    @Override
     public Logger getParentLogger() throws SQLFeatureNotSupportedException {
         throw new SQLFeatureNotSupportedException();
     }
+
 }

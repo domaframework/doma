@@ -26,7 +26,6 @@ import java.util.logging.Logger;
 import javax.sql.DataSource;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.internal.jdbc.util.DataSourceUtil;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.message.Message;
 
@@ -207,8 +206,9 @@ public final class LocalTransactionalDataSource implements DataSource {
                 jdbcLogger, transactionIsolationLevel);
     }
 
-    @SuppressWarnings("all")
+    @Override
     public Logger getParentLogger() throws SQLFeatureNotSupportedException {
-        return DataSourceUtil.getParentLogger(dataSource);
+        return dataSource.getParentLogger();
     }
+
 }
