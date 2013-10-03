@@ -34,6 +34,7 @@ import java.sql.Struct;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.Executor;
 
 import org.seasar.extension.dbcp.ConnectionWrapper;
 
@@ -352,6 +353,32 @@ public class ItConnection implements Connection {
 
     protected Connection getPhysicalConnection() {
         return connectionWrapper.getPhysicalConnection();
+    }
+
+    @Override
+    public void setSchema(String schema) throws SQLException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String getSchema() throws SQLException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void abort(Executor executor) throws SQLException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setNetworkTimeout(Executor executor, int milliseconds)
+            throws SQLException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public int getNetworkTimeout() throws SQLException {
+        throw new UnsupportedOperationException();
     }
 
 }
