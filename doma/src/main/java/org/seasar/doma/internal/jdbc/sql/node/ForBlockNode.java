@@ -39,7 +39,7 @@ public class ForBlockNode extends AbstractSqlNode implements BlockNode {
 
     public void setForNode(ForNode forNode) {
         this.forNode = forNode;
-        addNodeInternal(forNode);
+        appendNodeInternal(forNode);
     }
 
     public ForNode getForNode() {
@@ -49,7 +49,7 @@ public class ForBlockNode extends AbstractSqlNode implements BlockNode {
     @Override
     public void setEndNode(EndNode endNode) {
         this.endNode = endNode;
-        addNodeInternal(endNode);
+        appendNodeInternal(endNode);
     }
 
     public EndNode getEndNode() {
@@ -57,14 +57,14 @@ public class ForBlockNode extends AbstractSqlNode implements BlockNode {
     }
 
     @Override
-    public void addNode(SqlNode child) {
+    public void appendNode(SqlNode child) {
         throw new JdbcUnsupportedOperationException(getClass().getName(),
                 "addNode");
     }
 
-    protected void addNodeInternal(SqlNode child) {
+    protected void appendNodeInternal(SqlNode child) {
         if (child != null) {
-            super.addNode(child);
+            super.appendNode(child);
         }
     }
 

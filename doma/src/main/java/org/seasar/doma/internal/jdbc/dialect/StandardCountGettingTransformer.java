@@ -35,7 +35,7 @@ public class StandardCountGettingTransformer implements
     public SqlNode transform(SqlNode sqlNode) {
         AnonymousNode result = new AnonymousNode();
         for (SqlNode child : sqlNode.getChildren()) {
-            result.addNode(child.accept(this, null));
+            result.appendNode(child.accept(this, null));
         }
         return result;
     }
@@ -55,11 +55,11 @@ public class StandardCountGettingTransformer implements
         subStatement.setHavingClauseNode(node.getHavingClauseNode());
 
         SelectClauseNode select = new SelectClauseNode("select");
-        select.addNode(new FragmentNode(" count(*) "));
+        select.appendNode(new FragmentNode(" count(*) "));
         FromClauseNode from = new FromClauseNode("from");
-        from.addNode(new FragmentNode(" ( "));
-        from.addNode(subStatement);
-        from.addNode(new FragmentNode(") t_"));
+        from.appendNode(new FragmentNode(" ( "));
+        from.appendNode(subStatement);
+        from.appendNode(new FragmentNode(") t_"));
 
         SelectStatementNode result = new SelectStatementNode();
         result.setSelectClauseNode(select);

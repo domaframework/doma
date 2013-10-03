@@ -42,7 +42,7 @@ public class IfBlockNode extends AbstractSqlNode implements BlockNode {
 
     public void setIfNode(IfNode ifNode) {
         this.ifNode = ifNode;
-        addNodeInternal(ifNode);
+        appendNodeInternal(ifNode);
     }
 
     public IfNode getIfNode() {
@@ -51,7 +51,7 @@ public class IfBlockNode extends AbstractSqlNode implements BlockNode {
 
     public void addElseifNode(ElseifNode elseIfNode) {
         elseifNodes.add(elseIfNode);
-        addNodeInternal(elseIfNode);
+        appendNodeInternal(elseIfNode);
     }
 
     public List<ElseifNode> getElseifNodes() {
@@ -60,7 +60,7 @@ public class IfBlockNode extends AbstractSqlNode implements BlockNode {
 
     public void setElseNode(ElseNode elseNode) {
         this.elseNode = elseNode;
-        addNodeInternal(elseNode);
+        appendNodeInternal(elseNode);
     }
 
     public ElseNode getElseNode() {
@@ -70,7 +70,7 @@ public class IfBlockNode extends AbstractSqlNode implements BlockNode {
     @Override
     public void setEndNode(EndNode endNode) {
         this.endNode = endNode;
-        addNodeInternal(endNode);
+        appendNodeInternal(endNode);
     }
 
     public EndNode getEndNode() {
@@ -82,14 +82,14 @@ public class IfBlockNode extends AbstractSqlNode implements BlockNode {
     }
 
     @Override
-    public void addNode(SqlNode child) {
+    public void appendNode(SqlNode child) {
         throw new JdbcUnsupportedOperationException(getClass().getName(),
                 "addNode");
     }
 
-    protected void addNodeInternal(SqlNode child) {
+    protected void appendNodeInternal(SqlNode child) {
         if (child != null) {
-            super.addNode(child);
+            super.appendNode(child);
         }
     }
 

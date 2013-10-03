@@ -44,7 +44,7 @@ public class SqlitePagingTransformer extends StandardPagingTransformer {
         if (originalOrderBy != null) {
             orderBy = new OrderByClauseNode(originalOrderBy.getWordNode());
             for (SqlNode child : originalOrderBy.getChildren()) {
-                orderBy.addNode(child);
+                orderBy.appendNode(child);
             }
         } else {
             orderBy = new OrderByClauseNode("");
@@ -52,13 +52,13 @@ public class SqlitePagingTransformer extends StandardPagingTransformer {
         String offset = this.offset <= 0 ? "0" : String.valueOf(this.offset);
         String limit = this.limit <= 0 ? MAXIMUM_LIMIT : String
                 .valueOf(this.limit);
-        orderBy.addNode(new FragmentNode(" limit "));
-        orderBy.addNode(new FragmentNode(limit));
-        orderBy.addNode(new FragmentNode(" offset "));
-        orderBy.addNode(new FragmentNode(offset));
+        orderBy.appendNode(new FragmentNode(" limit "));
+        orderBy.appendNode(new FragmentNode(limit));
+        orderBy.appendNode(new FragmentNode(" offset "));
+        orderBy.appendNode(new FragmentNode(offset));
 
         if (node.getForUpdateClauseNode() != null) {
-            orderBy.addNode(new FragmentNode(" "));
+            orderBy.appendNode(new FragmentNode(" "));
         }
 
         SelectStatementNode result = new SelectStatementNode();

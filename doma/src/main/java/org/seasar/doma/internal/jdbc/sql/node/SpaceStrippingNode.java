@@ -15,13 +15,11 @@
  */
 package org.seasar.doma.internal.jdbc.sql.node;
 
-import org.seasar.doma.jdbc.SqlNode;
-
 /**
  * @author taedium
  * 
  */
-public interface SpaceStrippingNode extends SqlNode {
+public interface SpaceStrippingNode extends AppendableSqlNode {
 
     void clearChildren();
 }

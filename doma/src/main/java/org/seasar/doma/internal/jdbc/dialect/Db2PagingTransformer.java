@@ -36,7 +36,7 @@ public class Db2PagingTransformer extends StandardPagingTransformer {
     public SqlNode transform(SqlNode sqlNode) {
         AnonymousNode result = new AnonymousNode();
         for (SqlNode child : sqlNode.getChildren()) {
-            result.addNode(child.accept(this, null));
+            result.appendNode(child.accept(this, null));
         }
         return result;
     }
@@ -56,15 +56,15 @@ public class Db2PagingTransformer extends StandardPagingTransformer {
         if (originalOrderBy != null) {
             orderBy = new OrderByClauseNode(originalOrderBy.getWordNode());
             for (SqlNode child : originalOrderBy.getChildren()) {
-                orderBy.addNode(child);
+                orderBy.appendNode(child);
             }
         } else {
             orderBy = new OrderByClauseNode("");
         }
-        orderBy.addNode(new FragmentNode(" fetch first " + limit + " rows only"));
+        orderBy.appendNode(new FragmentNode(" fetch first " + limit + " rows only"));
         ForUpdateClauseNode forUpdate = node.getForUpdateClauseNode();
         if (node.getForUpdateClauseNode() != null) {
-            orderBy.addNode(new FragmentNode(" "));
+            orderBy.appendNode(new FragmentNode(" "));
         }
 
         SelectStatementNode result = new SelectStatementNode();

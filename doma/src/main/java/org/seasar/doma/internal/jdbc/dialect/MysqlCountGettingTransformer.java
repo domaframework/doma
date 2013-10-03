@@ -35,7 +35,7 @@ public class MysqlCountGettingTransformer extends
         processed = true;
 
         SelectClauseNode select = new SelectClauseNode("select");
-        select.addNode(new FragmentNode(" found_rows()"));
+        select.appendNode(new FragmentNode(" found_rows()"));
 
         SelectStatementNode result = new SelectStatementNode();
         result.setSelectClauseNode(select);

@@ -54,7 +54,7 @@ public class OtherNode extends AbstractSqlNode {
     }
 
     @Override
-    public void addNode(SqlNode child) {
+    public void appendNode(SqlNode child) {
         throw new JdbcUnsupportedOperationException(getClass().getName(),
                 "addNode");
 

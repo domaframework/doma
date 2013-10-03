@@ -52,7 +52,7 @@ public class PostgresForUpdateTransformer extends StandardForUpdateTransformer {
             buf.append(" nowait ");
         }
         ForUpdateClauseNode forUpdate = new ForUpdateClauseNode(" for update");
-        forUpdate.addNode(new FragmentNode(buf.toString()));
+        forUpdate.appendNode(new FragmentNode(buf.toString()));
 
         SelectStatementNode result = new SelectStatementNode();
         result.setSelectClauseNode(node.getSelectClauseNode());

@@ -46,7 +46,7 @@ public class SelectStatementNode extends AbstractSqlNode {
 
     public void setSelectClauseNode(SelectClauseNode selectClauseNode) {
         this.selectClauseNode = selectClauseNode;
-        addNodeInternal(selectClauseNode);
+        appendNodeInternal(selectClauseNode);
     }
 
     public FromClauseNode getFromClauseNode() {
@@ -55,7 +55,7 @@ public class SelectStatementNode extends AbstractSqlNode {
 
     public void setFromClauseNode(FromClauseNode fromClauseNode) {
         this.fromClauseNode = fromClauseNode;
-        addNodeInternal(fromClauseNode);
+        appendNodeInternal(fromClauseNode);
     }
 
     public WhereClauseNode getWhereClauseNode() {
@@ -64,7 +64,7 @@ public class SelectStatementNode extends AbstractSqlNode {
 
     public void setWhereClauseNode(WhereClauseNode whereClauseNode) {
         this.whereClauseNode = whereClauseNode;
-        addNodeInternal(whereClauseNode);
+        appendNodeInternal(whereClauseNode);
     }
 
     public GroupByClauseNode getGroupByClauseNode() {
@@ -73,7 +73,7 @@ public class SelectStatementNode extends AbstractSqlNode {
 
     public void setGroupByClauseNode(GroupByClauseNode groupByClauseNode) {
         this.groupByClauseNode = groupByClauseNode;
-        addNodeInternal(groupByClauseNode);
+        appendNodeInternal(groupByClauseNode);
     }
 
     public HavingClauseNode getHavingClauseNode() {
@@ -82,7 +82,7 @@ public class SelectStatementNode extends AbstractSqlNode {
 
     public void setHavingClauseNode(HavingClauseNode havingClauseNode) {
         this.havingClauseNode = havingClauseNode;
-        addNodeInternal(havingClauseNode);
+        appendNodeInternal(havingClauseNode);
     }
 
     public OrderByClauseNode getOrderByClauseNode() {
@@ -91,7 +91,7 @@ public class SelectStatementNode extends AbstractSqlNode {
 
     public void setOrderByClauseNode(OrderByClauseNode orderByClauseNode) {
         this.orderByClauseNode = orderByClauseNode;
-        addNodeInternal(orderByClauseNode);
+        appendNodeInternal(orderByClauseNode);
     }
 
     public ForUpdateClauseNode getForUpdateClauseNode() {
@@ -100,19 +100,19 @@ public class SelectStatementNode extends AbstractSqlNode {
 
     public void setForUpdateClauseNode(ForUpdateClauseNode forUpdateClauseNode) {
         this.forUpdateClauseNode = forUpdateClauseNode;
-        addNodeInternal(forUpdateClauseNode);
+        appendNodeInternal(forUpdateClauseNode);
     }
 
     @Override
-    public void addNode(SqlNode child) {
+    public void appendNode(SqlNode child) {
         throw new JdbcUnsupportedOperationException(getClass().getName(),
                 "addNode");
 
     }
 
-    protected void addNodeInternal(SqlNode child) {
+    protected void appendNodeInternal(SqlNode child) {
         if (child != null) {
-            super.addNode(child);
+            super.appendNode(child);
         }
     }
 

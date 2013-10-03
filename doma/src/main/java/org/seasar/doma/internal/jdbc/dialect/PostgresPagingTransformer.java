@@ -43,22 +43,22 @@ public class PostgresPagingTransformer extends StandardPagingTransformer {
         if (originalOrderBy != null) {
             orderBy = new OrderByClauseNode(originalOrderBy.getWordNode());
             for (SqlNode child : originalOrderBy.getChildren()) {
-                orderBy.addNode(child);
+                orderBy.appendNode(child);
             }
         } else {
             orderBy = new OrderByClauseNode("");
         }
         if (limit > 0) {
-            orderBy.addNode(new FragmentNode(" limit "));
-            orderBy.addNode(new FragmentNode(String.valueOf(limit)));
+            orderBy.appendNode(new FragmentNode(" limit "));
+            orderBy.appendNode(new FragmentNode(String.valueOf(limit)));
         }
         if (offset >= 0) {
-            orderBy.addNode(new FragmentNode(" offset "));
-            orderBy.addNode(new FragmentNode(String.valueOf(offset)));
+            orderBy.appendNode(new FragmentNode(" offset "));
+            orderBy.appendNode(new FragmentNode(String.valueOf(offset)));
         }
         ForUpdateClauseNode forUpdate = node.getForUpdateClauseNode();
         if (forUpdate != null) {
-            orderBy.addNode(new FragmentNode(" "));
+            orderBy.appendNode(new FragmentNode(" "));
         }
 
         SelectStatementNode result = new SelectStatementNode();

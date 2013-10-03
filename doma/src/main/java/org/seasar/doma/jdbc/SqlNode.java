@@ -32,16 +32,6 @@ import org.seasar.doma.DomaNullPointerException;
 public interface SqlNode {
 
     /**
-     * 子ノードを追加します。
-     * 
-     * @param child
-     *            子ノード
-     * @deprecated 1.16.0から非推奨となりました。
-     */
-    @Deprecated
-    void addNode(SqlNode child);
-
-    /**
      * 子ノードのリストを返します。
      * 
      * @return 子ノードのリスト

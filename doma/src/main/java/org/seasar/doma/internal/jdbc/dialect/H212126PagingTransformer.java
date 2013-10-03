@@ -45,24 +45,24 @@ public class H212126PagingTransformer extends StandardPagingTransformer {
         if (originalOrderBy != null) {
             orderBy = new OrderByClauseNode(originalOrderBy.getWordNode());
             for (SqlNode child : originalOrderBy.getChildren()) {
-                orderBy.addNode(child);
+                orderBy.appendNode(child);
             }
         } else {
             orderBy = new OrderByClauseNode("");
         }
-        orderBy.addNode(new FragmentNode(" limit "));
+        orderBy.appendNode(new FragmentNode(" limit "));
         if (limit >= 0) {
-            orderBy.addNode(new FragmentNode(String.valueOf(limit)));
+            orderBy.appendNode(new FragmentNode(String.valueOf(limit)));
         } else {
-            orderBy.addNode(new FragmentNode("0"));
+            orderBy.appendNode(new FragmentNode("0"));
         }
         if (offset >= 0) {
-            orderBy.addNode(new FragmentNode(" offset "));
-            orderBy.addNode(new FragmentNode(String.valueOf(offset)));
+            orderBy.appendNode(new FragmentNode(" offset "));
+            orderBy.appendNode(new FragmentNode(String.valueOf(offset)));
         }
         ForUpdateClauseNode forUpdate = node.getForUpdateClauseNode();
         if (node.getForUpdateClauseNode() != null) {
-            orderBy.addNode(new FragmentNode(" "));
+            orderBy.appendNode(new FragmentNode(" "));
         }
 
         SelectStatementNode result = new SelectStatementNode();

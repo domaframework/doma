@@ -16,6 +16,7 @@
 package org.seasar.doma.internal.jdbc.sql.node;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.seasar.doma.DomaNullPointerException;
@@ -25,12 +26,12 @@ import org.seasar.doma.jdbc.SqlNode;
  * @author taedium
  * 
  */
-public abstract class AbstractSqlNode implements SqlNode {
+public abstract class AbstractSqlNode implements AppendableSqlNode {
 
     protected final List<SqlNode> children = new ArrayList<SqlNode>();
 
     @Override
-    public void addNode(SqlNode child) {
+    public void appendNode(SqlNode child) {
         if (child == null) {
             throw new DomaNullPointerException("child");
         }
@@ -39,7 +40,7 @@ public abstract class AbstractSqlNode implements SqlNode {
 
     @Override
     public List<SqlNode> getChildren() {
-        return children;
+        return Collections.unmodifiableList(children);
     }
 
 }

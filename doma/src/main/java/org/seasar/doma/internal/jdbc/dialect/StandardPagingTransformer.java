@@ -54,7 +54,7 @@ public class StandardPagingTransformer implements
     public SqlNode transform(SqlNode sqlNode) {
         AnonymousNode result = new AnonymousNode();
         for (SqlNode child : sqlNode.getChildren()) {
-            result.addNode(child.accept(this, null));
+            result.appendNode(child.accept(this, null));
         }
         return result;
     }
@@ -85,41 +85,41 @@ public class StandardPagingTransformer implements
                 String word = wordNode.getWord();
                 String[] names = word.split("\\.");
                 if (names.length == 2) {
-                    orderBy.addNode(new WordNode("temp_." + names[1]));
+                    orderBy.appendNode(new WordNode("temp_." + names[1]));
                 } else {
-                    orderBy.addNode(child);
+                    orderBy.appendNode(child);
                 }
             } else {
-                orderBy.addNode(child);
+                orderBy.appendNode(child);
             }
         }
 
         SelectClauseNode select = new SelectClauseNode("select");
-        select.addNode(new FragmentNode(" * "));
+        select.appendNode(new FragmentNode(" * "));
         FromClauseNode from = new FromClauseNode("from");
-        from.addNode(new FragmentNode(" ( select temp_.*, row_number() over( "));
-        from.addNode(orderBy);
-        from.addNode(new FragmentNode(" ) as " + ROWNUMBER_COLUMN_NAME
+        from.appendNode(new FragmentNode(" ( select temp_.*, row_number() over( "));
+        from.appendNode(orderBy);
+        from.appendNode(new FragmentNode(" ) as " + ROWNUMBER_COLUMN_NAME
                 + " from ( "));
-        from.addNode(subStatement);
-        from.addNode(new FragmentNode(") as temp_ ) as temp2_ "));
+        from.appendNode(subStatement);
+        from.appendNode(new FragmentNode(") as temp_ ) as temp2_ "));
         WhereClauseNode where = new WhereClauseNode("where");
-        where.addNode(new FragmentNode(" "));
+        where.appendNode(new FragmentNode(" "));
         if (offset >= 0) {
-            where.addNode(new FragmentNode(ROWNUMBER_COLUMN_NAME + " > "));
-            where.addNode(new FragmentNode(String.valueOf(offset)));
+            where.appendNode(new FragmentNode(ROWNUMBER_COLUMN_NAME + " > "));
+            where.appendNode(new FragmentNode(String.valueOf(offset)));
         }
         if (limit > 0) {
             if (offset >= 0) {
-                where.addNode(new FragmentNode(" and "));
+                where.appendNode(new FragmentNode(" and "));
             }
             long bias = offset < 0 ? 0 : offset;
-            where.addNode(new FragmentNode(ROWNUMBER_COLUMN_NAME + " <= "));
-            where.addNode(new FragmentNode(String.valueOf(bias + limit)));
+            where.appendNode(new FragmentNode(ROWNUMBER_COLUMN_NAME + " <= "));
+            where.appendNode(new FragmentNode(String.valueOf(bias + limit)));
         }
         ForUpdateClauseNode forUpdate = node.getForUpdateClauseNode();
         if (forUpdate != null) {
-            where.addNode(new FragmentNode(" "));
+            where.appendNode(new FragmentNode(" "));
         }
         SelectStatementNode result = new SelectStatementNode();
         result.setSelectClauseNode(select);

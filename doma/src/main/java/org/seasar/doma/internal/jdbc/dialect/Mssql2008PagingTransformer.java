@@ -35,7 +35,7 @@ public class Mssql2008PagingTransformer extends StandardPagingTransformer {
     public SqlNode transform(SqlNode sqlNode) {
         AnonymousNode result = new AnonymousNode();
         for (SqlNode child : sqlNode.getChildren()) {
-            result.addNode(child.accept(this, null));
+            result.appendNode(child.accept(this, null));
         }
         return result;
     }
@@ -52,9 +52,9 @@ public class Mssql2008PagingTransformer extends StandardPagingTransformer {
 
         SelectClauseNode select = new SelectClauseNode(node
                 .getSelectClauseNode().getWordNode());
-        select.addNode(new FragmentNode(" top " + limit));
+        select.appendNode(new FragmentNode(" top " + limit));
         for (SqlNode child : node.getSelectClauseNode().getChildren()) {
-            select.addNode(child);
+            select.appendNode(child);
         }
 
         SelectStatementNode result = new SelectStatementNode();

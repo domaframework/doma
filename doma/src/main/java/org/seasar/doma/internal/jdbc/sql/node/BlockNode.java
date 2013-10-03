@@ -15,13 +15,12 @@
  */
 package org.seasar.doma.internal.jdbc.sql.node;
 
-import org.seasar.doma.jdbc.SqlNode;
 
 /**
  * @author taedium
  * 
  */
-public interface BlockNode extends SqlNode {
+public interface BlockNode extends AppendableSqlNode {
 
     void setEndNode(EndNode endNode);
 }

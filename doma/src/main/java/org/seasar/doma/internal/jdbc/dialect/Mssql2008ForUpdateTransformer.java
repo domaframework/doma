@@ -48,9 +48,9 @@ public class Mssql2008ForUpdateTransformer extends StandardForUpdateTransformer 
         FromClauseNode originalFrom = node.getFromClauseNode();
         FromClauseNode from = new FromClauseNode(originalFrom.getWordNode());
         for (SqlNode child : originalFrom.getChildren()) {
-            from.addNode(child);
+            from.appendNode(child);
         }
-        from.addNode(new FragmentNode(buf.toString()));
+        from.appendNode(new FragmentNode(buf.toString()));
 
         SelectStatementNode result = new SelectStatementNode();
         result.setSelectClauseNode(node.getSelectClauseNode());

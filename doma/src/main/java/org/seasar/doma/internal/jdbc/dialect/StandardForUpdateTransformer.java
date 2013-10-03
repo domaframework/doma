@@ -49,7 +49,7 @@ public class StandardForUpdateTransformer implements
     public SqlNode transform(SqlNode sqlNode) {
         AnonymousNode result = new AnonymousNode();
         for (SqlNode child : sqlNode.getChildren()) {
-            result.addNode(child.accept(this, null));
+            result.appendNode(child.accept(this, null));
         }
         return result;
     }

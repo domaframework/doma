@@ -54,35 +54,35 @@ public class NodePreparedSqlBuilderTest extends TestCase {
 
     public void testBindVariableNode() throws Exception {
         SelectClauseNode select = new SelectClauseNode("select");
-        select.addNode(OtherNode.of(" * "));
+        select.appendNode(OtherNode.of(" * "));
         FromClauseNode from = new FromClauseNode("from");
-        from.addNode(WhitespaceNode.of(" "));
-        from.addNode(new WordNode("aaa"));
-        from.addNode(WhitespaceNode.of(" "));
+        from.appendNode(WhitespaceNode.of(" "));
+        from.appendNode(new WordNode("aaa"));
+        from.appendNode(WhitespaceNode.of(" "));
         WhereClauseNode where = new WhereClauseNode("where");
-        where.addNode(WhitespaceNode.of(" "));
-        where.addNode(new WordNode("bbb"));
-        where.addNode(OtherNode.of(" = "));
+        where.appendNode(WhitespaceNode.of(" "));
+        where.appendNode(new WordNode("bbb"));
+        where.appendNode(OtherNode.of(" = "));
         BindVariableNode variable1 = new BindVariableNode(location, "name",
                 "/*#name*/");
         variable1.setWordNode(new WordNode("'hoge'"));
-        where.addNode(variable1);
-        where.addNode(WhitespaceNode.of(" "));
-        where.addNode(new LogicalOperatorNode("and"));
-        where.addNode(WhitespaceNode.of(" "));
-        where.addNode(new WordNode("ccc"));
-        where.addNode(OtherNode.of(" = "));
+        where.appendNode(variable1);
+        where.appendNode(WhitespaceNode.of(" "));
+        where.appendNode(new LogicalOperatorNode("and"));
+        where.appendNode(WhitespaceNode.of(" "));
+        where.appendNode(new WordNode("ccc"));
+        where.appendNode(OtherNode.of(" = "));
         BindVariableNode variable2 = new BindVariableNode(location, "salary",
                 "/*#salary*/");
         variable2.setWordNode(new WordNode("100"));
-        where.addNode(variable2);
+        where.appendNode(variable2);
 
         SelectStatementNode statement = new SelectStatementNode();
         statement.setSelectClauseNode(select);
         statement.setFromClauseNode(from);
         statement.setWhereClauseNode(where);
         AnonymousNode root = new AnonymousNode();
-        root.addNode(statement);
+        root.appendNode(statement);
 
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         evaluator.add("name", new Value(String.class, "hoge"));
@@ -101,28 +101,28 @@ public class NodePreparedSqlBuilderTest extends TestCase {
 
     public void testIfNode_true() throws Exception {
         SelectClauseNode select = new SelectClauseNode("select");
-        select.addNode(OtherNode.of(" * "));
+        select.appendNode(OtherNode.of(" * "));
         FromClauseNode from = new FromClauseNode("from");
-        from.addNode(WhitespaceNode.of(" "));
-        from.addNode(new WordNode("aaa"));
-        from.addNode(WhitespaceNode.of(" "));
+        from.appendNode(WhitespaceNode.of(" "));
+        from.appendNode(new WordNode("aaa"));
+        from.appendNode(WhitespaceNode.of(" "));
         WhereClauseNode where = new WhereClauseNode("where");
-        where.addNode(WhitespaceNode.of(" "));
+        where.appendNode(WhitespaceNode.of(" "));
         IfNode ifNode = new IfNode(location, "true", "/*if true*/");
-        ifNode.addNode(new WordNode("bbb"));
-        ifNode.addNode(OtherNode.of(" = "));
-        ifNode.addNode(new WordNode("ccc"));
+        ifNode.appendNode(new WordNode("bbb"));
+        ifNode.appendNode(OtherNode.of(" = "));
+        ifNode.appendNode(new WordNode("ccc"));
         IfBlockNode ifBlockNode = new IfBlockNode();
         ifBlockNode.setIfNode(ifNode);
         ifBlockNode.setEndNode(new EndNode("/*end*/"));
-        where.addNode(ifBlockNode);
+        where.appendNode(ifBlockNode);
 
         SelectStatementNode statement = new SelectStatementNode();
         statement.setSelectClauseNode(select);
         statement.setFromClauseNode(from);
         statement.setWhereClauseNode(where);
         AnonymousNode root = new AnonymousNode();
-        root.addNode(statement);
+        root.appendNode(statement);
 
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
@@ -133,28 +133,28 @@ public class NodePreparedSqlBuilderTest extends TestCase {
 
     public void testIfNode_false() throws Exception {
         SelectClauseNode select = new SelectClauseNode("select");
-        select.addNode(OtherNode.of(" * "));
+        select.appendNode(OtherNode.of(" * "));
         FromClauseNode from = new FromClauseNode("from");
-        from.addNode(WhitespaceNode.of(" "));
-        from.addNode(new WordNode("aaa"));
-        from.addNode(WhitespaceNode.of(" "));
+        from.appendNode(WhitespaceNode.of(" "));
+        from.appendNode(new WordNode("aaa"));
+        from.appendNode(WhitespaceNode.of(" "));
         WhereClauseNode where = new WhereClauseNode("where");
-        where.addNode(WhitespaceNode.of(" "));
+        where.appendNode(WhitespaceNode.of(" "));
         IfNode ifNode = new IfNode(location, "false", "/*if false*/");
-        ifNode.addNode(new WordNode("bbb"));
-        ifNode.addNode(OtherNode.of(" = "));
-        ifNode.addNode(new WordNode("ccc"));
+        ifNode.appendNode(new WordNode("bbb"));
+        ifNode.appendNode(OtherNode.of(" = "));
+        ifNode.appendNode(new WordNode("ccc"));
         IfBlockNode ifBlockNode = new IfBlockNode();
         ifBlockNode.setIfNode(ifNode);
         ifBlockNode.setEndNode(new EndNode("/*end*/"));
-        where.addNode(ifBlockNode);
+        where.appendNode(ifBlockNode);
 
         SelectStatementNode statement = new SelectStatementNode();
         statement.setSelectClauseNode(select);
         statement.setFromClauseNode(from);
         statement.setWhereClauseNode(where);
         AnonymousNode root = new AnonymousNode();
-        root.addNode(statement);
+        root.appendNode(statement);
 
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
@@ -165,34 +165,34 @@ public class NodePreparedSqlBuilderTest extends TestCase {
 
     public void testElseNode() throws Exception {
         SelectClauseNode select = new SelectClauseNode("select");
-        select.addNode(OtherNode.of(" * "));
+        select.appendNode(OtherNode.of(" * "));
         FromClauseNode from = new FromClauseNode("from");
-        from.addNode(WhitespaceNode.of(" "));
-        from.addNode(new WordNode("aaa"));
-        from.addNode(WhitespaceNode.of(" "));
+        from.appendNode(WhitespaceNode.of(" "));
+        from.appendNode(new WordNode("aaa"));
+        from.appendNode(WhitespaceNode.of(" "));
         WhereClauseNode where = new WhereClauseNode("where");
-        where.addNode(WhitespaceNode.of(" "));
+        where.appendNode(WhitespaceNode.of(" "));
         IfNode ifNode = new IfNode(location, "false", "/*if false*/");
-        ifNode.addNode(new WordNode("bbb"));
-        ifNode.addNode(OtherNode.of(" = "));
-        ifNode.addNode(new WordNode("ccc"));
+        ifNode.appendNode(new WordNode("bbb"));
+        ifNode.appendNode(OtherNode.of(" = "));
+        ifNode.appendNode(new WordNode("ccc"));
         ElseNode elseNode = new ElseNode("/*else*/");
-        elseNode.addNode(new WordNode("ddd"));
-        elseNode.addNode(OtherNode.of(" = "));
-        elseNode.addNode(new WordNode("eee"));
+        elseNode.appendNode(new WordNode("ddd"));
+        elseNode.appendNode(OtherNode.of(" = "));
+        elseNode.appendNode(new WordNode("eee"));
         EndNode endNode = new EndNode("/*end*/");
         IfBlockNode ifBlock = new IfBlockNode();
         ifBlock.setIfNode(ifNode);
         ifBlock.setElseNode(elseNode);
         ifBlock.setEndNode(endNode);
-        where.addNode(ifBlock);
+        where.appendNode(ifBlock);
 
         SelectStatementNode statement = new SelectStatementNode();
         statement.setSelectClauseNode(select);
         statement.setFromClauseNode(from);
         statement.setWhereClauseNode(where);
         AnonymousNode root = new AnonymousNode();
-        root.addNode(statement);
+        root.appendNode(statement);
 
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
@@ -248,42 +248,42 @@ public class NodePreparedSqlBuilderTest extends TestCase {
 
     public void testAndNode() throws Exception {
         SelectClauseNode select = new SelectClauseNode("select");
-        select.addNode(OtherNode.of(" * "));
+        select.appendNode(OtherNode.of(" * "));
         FromClauseNode from = new FromClauseNode("from");
-        from.addNode(WhitespaceNode.of(" "));
-        from.addNode(new WordNode("aaa"));
-        from.addNode(WhitespaceNode.of(" "));
+        from.appendNode(WhitespaceNode.of(" "));
+        from.appendNode(new WordNode("aaa"));
+        from.appendNode(WhitespaceNode.of(" "));
         WhereClauseNode where = new WhereClauseNode("where");
         IfNode ifNode1 = new IfNode(location, "true", "/*if true*/");
-        ifNode1.addNode(WhitespaceNode.of(" "));
-        ifNode1.addNode(new WordNode("bbb"));
-        ifNode1.addNode(OtherNode.of(" = "));
-        ifNode1.addNode(new WordNode("ccc"));
+        ifNode1.appendNode(WhitespaceNode.of(" "));
+        ifNode1.appendNode(new WordNode("bbb"));
+        ifNode1.appendNode(OtherNode.of(" = "));
+        ifNode1.appendNode(new WordNode("ccc"));
         EndNode endNode1 = new EndNode("/*end*/");
         IfBlockNode ifBlock1 = new IfBlockNode();
         ifBlock1.setIfNode(ifNode1);
         ifBlock1.setEndNode(endNode1);
-        where.addNode(ifBlock1);
+        where.appendNode(ifBlock1);
         IfNode ifNode2 = new IfNode(location, "true", "/*if true*/");
-        ifNode2.addNode(WhitespaceNode.of(" "));
+        ifNode2.appendNode(WhitespaceNode.of(" "));
         LogicalOperatorNode and = new LogicalOperatorNode("and");
-        ifNode2.addNode(and);
-        and.addNode(WhitespaceNode.of(" "));
-        and.addNode(new WordNode("ddd"));
-        and.addNode(OtherNode.of(" = "));
-        and.addNode(new WordNode("eee"));
+        ifNode2.appendNode(and);
+        and.appendNode(WhitespaceNode.of(" "));
+        and.appendNode(new WordNode("ddd"));
+        and.appendNode(OtherNode.of(" = "));
+        and.appendNode(new WordNode("eee"));
         EndNode endNode2 = new EndNode("/*end*/");
         IfBlockNode ifBlock2 = new IfBlockNode();
         ifBlock2.setIfNode(ifNode2);
         ifBlock2.setEndNode(endNode2);
-        where.addNode(ifBlock2);
+        where.appendNode(ifBlock2);
 
         SelectStatementNode statement = new SelectStatementNode();
         statement.setSelectClauseNode(select);
         statement.setFromClauseNode(from);
         statement.setWhereClauseNode(where);
         AnonymousNode root = new AnonymousNode();
-        root.addNode(statement);
+        root.appendNode(statement);
 
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
@@ -295,42 +295,42 @@ public class NodePreparedSqlBuilderTest extends TestCase {
 
     public void testAndNode_remove() throws Exception {
         SelectClauseNode select = new SelectClauseNode("select");
-        select.addNode(OtherNode.of(" * "));
+        select.appendNode(OtherNode.of(" * "));
         FromClauseNode from = new FromClauseNode("from");
-        from.addNode(WhitespaceNode.of(" "));
-        from.addNode(new WordNode("aaa"));
-        from.addNode(WhitespaceNode.of(" "));
+        from.appendNode(WhitespaceNode.of(" "));
+        from.appendNode(new WordNode("aaa"));
+        from.appendNode(WhitespaceNode.of(" "));
         WhereClauseNode where = new WhereClauseNode("where");
         IfNode ifNode1 = new IfNode(location, "false", "/*if false*/");
-        ifNode1.addNode(WhitespaceNode.of(" "));
-        ifNode1.addNode(new WordNode("bbb"));
-        ifNode1.addNode(OtherNode.of(" = "));
-        ifNode1.addNode(new WordNode("ccc"));
+        ifNode1.appendNode(WhitespaceNode.of(" "));
+        ifNode1.appendNode(new WordNode("bbb"));
+        ifNode1.appendNode(OtherNode.of(" = "));
+        ifNode1.appendNode(new WordNode("ccc"));
         EndNode endNode1 = new EndNode("/*end*/");
         IfBlockNode ifBlock1 = new IfBlockNode();
         ifBlock1.setIfNode(ifNode1);
         ifBlock1.setEndNode(endNode1);
-        where.addNode(ifBlock1);
+        where.appendNode(ifBlock1);
         IfNode ifNode2 = new IfNode(location, "true", "/*if true*/");
-        ifNode2.addNode(WhitespaceNode.of(" "));
+        ifNode2.appendNode(WhitespaceNode.of(" "));
         LogicalOperatorNode and = new LogicalOperatorNode("and");
-        ifNode2.addNode(and);
-        and.addNode(WhitespaceNode.of(" "));
-        and.addNode(new WordNode("ddd"));
-        and.addNode(OtherNode.of(" = "));
-        and.addNode(new WordNode("eee"));
+        ifNode2.appendNode(and);
+        and.appendNode(WhitespaceNode.of(" "));
+        and.appendNode(new WordNode("ddd"));
+        and.appendNode(OtherNode.of(" = "));
+        and.appendNode(new WordNode("eee"));
         EndNode endNode2 = new EndNode("/*end*/");
         IfBlockNode ifBlock2 = new IfBlockNode();
         ifBlock2.setIfNode(ifNode2);
         ifBlock2.setEndNode(endNode2);
-        where.addNode(ifBlock2);
+        where.appendNode(ifBlock2);
 
         SelectStatementNode statement = new SelectStatementNode();
         statement.setSelectClauseNode(select);
         statement.setFromClauseNode(from);
         statement.setWhereClauseNode(where);
         AnonymousNode root = new AnonymousNode();
-        root.addNode(statement);
+        root.appendNode(statement);
 
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         NodePreparedSqlBuilder builder = new NodePreparedSqlBuilder(config,
