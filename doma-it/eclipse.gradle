@@ -1,0 +1,47 @@
+apply plugin: 'eclipse'
+ext { aptDir='.apt_generated' }
+ 
+eclipse {
+    jdt.file.withProperties { it['org.eclipse.jdt.core.compiler.processAnnotations'] = 'enabled' }
+    classpath {
+        containers = [
+            // 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
+            'org.eclipse.jdt.launching.JRE_CONTAINER'
+        ]
+    }
+}
+ 
+eclipseJdt {
+    def clos = []
+ 
+    def fp = file('.factorypath')
+    outputs.file fp
+    clos += {
+        fp.withWriter {
+            def domaJar = configurations.compile.find {
+                it.name.contains('doma-')
+            }
+            new groovy.xml.MarkupBuilder(it).factorypath() {
+                factorypathentry(kind:'EXTJAR', id:domaJar, enabled:true, runInBatchMode:false)
+            }
+        }
+    }
+ 
+    def prefs = { name, contents ->
+        def f = file(".settings/$name")
+        clos += {
+            f.text = contents.stripMargin()
+        }
+        outputs.file f
+    }
+ 
+    prefs 'org.eclipse.jdt.apt.core.prefs', """\
+        |eclipse.preferences.version=1
+        |org.eclipse.jdt.apt.aptEnabled=true
+        |org.eclipse.jdt.apt.genSrcDir=${aptDir}
+        |org.eclipse.jdt.apt.processorOptions/domain.converters=org.seasar.doma.it.domain.DomainConverterProvider
+        |org.eclipse.jdt.apt.reconcileEnabled=true
+        |"""
+ 
+    doLast { clos*.run() }
+}

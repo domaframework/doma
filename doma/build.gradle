@@ -30,3 +30,5 @@ repositories {
 dependencies {
     testCompile 'org.seasar.aptina:aptina-unit:1.0.0'
 }
+
+apply from:'eclipse.gradle'
