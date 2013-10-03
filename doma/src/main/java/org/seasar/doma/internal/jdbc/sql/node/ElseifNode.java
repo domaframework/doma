@@ -53,16 +53,6 @@ public class ElseifNode extends AbstractSqlNode implements SpaceStrippingNode {
         children.clear();
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public ElseifNode copy() {
-        ElseifNode clone = new ElseifNode(location, expression, text);
-        for (SqlNode child : children) {
-            clone.addNode(child.copy());
-        }
-        return clone;
-    }
-
     @Override
     public <R, P> R accept(SqlNodeVisitor<R, P> visitor, P p) {
         if (visitor == null) {

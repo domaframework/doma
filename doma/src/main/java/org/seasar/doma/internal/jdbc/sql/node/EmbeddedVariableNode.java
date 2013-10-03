@@ -49,17 +49,6 @@ public class EmbeddedVariableNode extends AbstractSqlNode {
         return text;
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public EmbeddedVariableNode copy() {
-        EmbeddedVariableNode clone = new EmbeddedVariableNode(location,
-                variableName, text);
-        for (SqlNode child : children) {
-            clone.addNode(child.copy());
-        }
-        return clone;
-    }
-
     @Override
     public <R, P> R accept(SqlNodeVisitor<R, P> visitor, P p) {
         if (visitor == null) {

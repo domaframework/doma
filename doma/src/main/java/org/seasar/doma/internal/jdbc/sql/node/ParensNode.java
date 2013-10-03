@@ -75,23 +75,6 @@ public class ParensNode extends AbstractSqlNode {
         closedParensNode = OtherNode.of(")");
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public ParensNode copy() {
-        ParensNode clone = new ParensNode(location);
-        clone.attachedWithBindVariable = attachedWithBindVariable;
-        if (openedParensNode != null) {
-            clone.openedParensNode = openedParensNode.copy();
-        }
-        if (closedParensNode != null) {
-            clone.closedParensNode = closedParensNode.copy();
-        }
-        for (SqlNode child : children) {
-            clone.addNode(child.copy());
-        }
-        return clone;
-    }
-
     @Override
     public <R, P> R accept(SqlNodeVisitor<R, P> visitor, P p) {
         if (visitor == null) {

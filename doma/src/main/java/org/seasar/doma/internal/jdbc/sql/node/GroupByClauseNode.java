@@ -16,7 +16,6 @@
 package org.seasar.doma.internal.jdbc.sql.node;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
 /**
@@ -31,16 +30,6 @@ public class GroupByClauseNode extends AbstractClauseNode {
 
     public GroupByClauseNode(WordNode wordNode) {
         super(wordNode);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public GroupByClauseNode copy() {
-        GroupByClauseNode clone = new GroupByClauseNode(wordNode.copy());
-        for (SqlNode child : children) {
-            clone.addNode(child.copy());
-        }
-        return clone;
     }
 
     @Override

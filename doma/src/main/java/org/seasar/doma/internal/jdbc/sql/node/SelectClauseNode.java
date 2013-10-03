@@ -16,7 +16,6 @@
 package org.seasar.doma.internal.jdbc.sql.node;
 
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
 /**
@@ -31,16 +30,6 @@ public class SelectClauseNode extends AbstractClauseNode {
 
     public SelectClauseNode(WordNode wordNode) {
         super(wordNode);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public SelectClauseNode copy() {
-        SelectClauseNode clone = new SelectClauseNode(wordNode.copy());
-        for (SqlNode child : children) {
-            clone.addNode(child.copy());
-        }
-        return clone;
     }
 
     @Override

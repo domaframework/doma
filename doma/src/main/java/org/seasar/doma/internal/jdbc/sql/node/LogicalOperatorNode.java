@@ -39,16 +39,6 @@ public class LogicalOperatorNode extends AbstractSqlNode {
         return wordNode;
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public LogicalOperatorNode copy() {
-        LogicalOperatorNode clone = new LogicalOperatorNode(wordNode.copy());
-        for (SqlNode child : children) {
-            clone.addNode(child.copy());
-        }
-        return clone;
-    }
-
     @Override
     public <R, P> R accept(SqlNodeVisitor<R, P> visitor, P p) {
         if (visitor == null) {

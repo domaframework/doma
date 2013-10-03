@@ -46,11 +46,6 @@ public class CommentNode extends AbstractSqlNode {
     }
 
     @Override
-    public CommentNode copy() {
-        return this;
-    }
-
-    @Override
     public <R, P> R accept(SqlNodeVisitor<R, P> visitor, P p) {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");

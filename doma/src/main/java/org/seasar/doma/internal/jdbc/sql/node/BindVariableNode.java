@@ -54,23 +54,6 @@ public class BindVariableNode extends AbstractSqlNode {
         return text;
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public BindVariableNode copy() {
-        BindVariableNode clone = new BindVariableNode(location, variableName,
-                text);
-        if (wordNode != null) {
-            clone.wordNode = wordNode.copy();
-        }
-        if (parensNode != null) {
-            clone.parensNode = parensNode.copy();
-        }
-        for (SqlNode child : children) {
-            clone.addNode(child.copy());
-        }
-        return clone;
-    }
-
     @Override
     public void addNode(SqlNode child) {
         throw new JdbcUnsupportedOperationException(getClass().getName(),

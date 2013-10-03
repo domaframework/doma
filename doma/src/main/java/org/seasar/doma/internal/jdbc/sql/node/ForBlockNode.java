@@ -68,22 +68,6 @@ public class ForBlockNode extends AbstractSqlNode implements BlockNode {
         }
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public ForBlockNode copy() {
-        ForBlockNode clone = new ForBlockNode();
-        if (forNode != null) {
-            clone.forNode = forNode.copy();
-        }
-        if (endNode != null) {
-            clone.endNode = endNode.copy();
-        }
-        for (SqlNode child : children) {
-            clone.addNodeInternal(child.copy());
-        }
-        return clone;
-    }
-
     @Override
     public <R, P> R accept(SqlNodeVisitor<R, P> visitor, P p) {
         if (visitor == null) {

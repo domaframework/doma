@@ -49,15 +49,6 @@ public interface SqlNode {
     List<SqlNode> getChildren();
 
     /**
-     * このノードをコピー(deep copy)します。
-     * 
-     * @return このノードのコピー
-     * @deprecated 1.15.0から非推奨となりました。
-     */
-    @Deprecated
-    SqlNode copy();
-
-    /**
      * ビジターを受け入れ、ビジターの適切なメソッドにディスパッチします。
      * 
      * @param <R>

@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.internal.jdbc.sql.node;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
-
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
 import org.seasar.doma.jdbc.SqlNode;
@@ -119,16 +117,6 @@ public class SelectStatementNode extends AbstractSqlNode {
     }
 
     @Override
-    public SqlNode copy() {
-        CopyingVisitor visitor = new CopyingVisitor();
-        SelectStatementNode clone = new SelectStatementNode();
-        for (SqlNode child : children) {
-            child.accept(visitor, clone);
-        }
-        return clone;
-    }
-
-    @Override
     public <R, P> R accept(SqlNodeVisitor<R, P> visitor, P p) {
         if (visitor == null) {
             throw new DomaNullPointerException("visitor");
@@ -151,71 +139,5 @@ public class SelectStatementNode extends AbstractSqlNode {
         }
         buf.append("]");
         return buf.toString();
-    }
-
-    protected static class CopyingVisitor implements
-            SelectClauseNodeVisitor<Void, SelectStatementNode>,
-            FromClauseNodeVisitor<Void, SelectStatementNode>,
-            WhereClauseNodeVisitor<Void, SelectStatementNode>,
-            GroupByClauseNodeVisitor<Void, SelectStatementNode>,
-            HavingClauseNodeVisitor<Void, SelectStatementNode>,
-            OrderByClauseNodeVisitor<Void, SelectStatementNode>,
-            ForUpdateClauseNodeVisitor<Void, SelectStatementNode> {
-
-        @Override
-        public Void visitSelectClauseNode(SelectClauseNode node,
-                SelectStatementNode p) {
-            p.setSelectClauseNode(node.copy());
-            return null;
-        }
-
-        @Override
-        public Void visitFromClauseNode(FromClauseNode node,
-                SelectStatementNode p) {
-            p.setFromClauseNode(node.copy());
-            return null;
-        }
-
-        @Override
-        public Void visitWhereClauseNode(WhereClauseNode node,
-                SelectStatementNode p) {
-            p.setWhereClauseNode(node.copy());
-            return null;
-        }
-
-        @Override
-        public Void visitGroupByClauseNode(GroupByClauseNode node,
-                SelectStatementNode p) {
-            p.setGroupByClauseNode(node);
-            return null;
-        }
-
-        @Override
-        public Void visitHavingClauseNode(HavingClauseNode node,
-                SelectStatementNode p) {
-            p.setHavingClauseNode(node.copy());
-            return null;
-        }
-
-        @Override
-        public Void visitOrderByClauseNode(OrderByClauseNode node,
-                SelectStatementNode p) {
-            p.setOrderByClauseNode(node.copy());
-            return null;
-        }
-
-        @Override
-        public Void visitForUpdateClauseNode(ForUpdateClauseNode node,
-                SelectStatementNode p) {
-            p.setForUpdateClauseNode(node.copy());
-            return null;
-        }
-
-        @Override
-        public Void visitUnknownNode(SqlNode node, SelectStatementNode p) {
-            assertUnreachable();
-            return null;
-        }
-
     }
 }

@@ -28,16 +28,6 @@ public class AnonymousNode extends AbstractSqlNode {
     public AnonymousNode() {
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public AnonymousNode copy() {
-        AnonymousNode clone = new AnonymousNode();
-        for (SqlNode child : children) {
-            clone.addNode(child.copy());
-        }
-        return clone;
-    }
-
     @Override
     public <R, P> R accept(SqlNodeVisitor<R, P> visitor, P p) {
         if (visitor == null) {
