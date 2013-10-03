@@ -1,18 +1,23 @@
-Doma - Domain Oriented MApping Framework
+Doma
 ========================================
 
-Doma is a Database access framework in Java. 
+Doma is a Database access framework. 
 
 Doma uses [Annotation Processing Tool][apt] to generate source code and validate sql mappings in compile time.
 
 Versions
 --------
 
-Doma 1 は安定版です。Java 6 以上で動作します。
-- http://doma.seasar.org/
-
-Doma 2 は開発版です。Java 8 で動作します。以下のブランチで開発中です。 
-- 2.0-beta-1 branch
+<dl>
+	<dt>Doma 1</dt>
+	<dd>
+	安定版。Java 6 以上で動作する。<br />
+	http://doma.seasar.org/</dd>
+	<dt>Doma 2</dt>
+	<dd>
+	開発版。Java 8 で動作する。<br />
+	2.0-beta-1 ブランチで開発中</dd>
+</dl>
 
 Projects
 --------
@@ -28,12 +33,21 @@ Related Repositories
 --------------------
 
 <dl>
-	<dt>[doma-gen](https://github.com/seasarorg/doma-gen)</dt>
-	<dd>データベースのメタデータからコードを生成ツール</dd>
-		<dt>[doma-tools](https://github.com/seasarorg/doma-tools)</dt>
-	<dd>Dao クラスと SQL ファイル の相互遷移を可能にする Eclipse プラグイン</dd>
-		<dt>[doma-samples](https://github.com/seasarorg/doma-samples)</dt>
-	<dd>サンプル</dd>
+	<dt>doma-gen</dt>
+	<dd>
+	データベースのメタデータからコードを生成するツール<br />
+	https://github.com/seasarorg/doma-gen
+	</dd>
+	<dt>doma-tools</dt>
+	<dd>
+	Dao クラスと SQL ファイル の相互遷移を可能にする Eclipse プラグイン<br />
+	https://github.com/seasarorg/doma-tools
+	</dd>
+	<dt>doma-samples</dt>
+	<dd>
+	サンプル<br />
+	https://github.com/seasarorg/doma-samples
+	</dd>
 </dl>
 
 License
