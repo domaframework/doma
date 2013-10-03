@@ -206,8 +206,9 @@ public class WrapperType extends AbstractDataType {
                 return DoubleWrapper.class;
             case CHAR:
                 return null;
+            default:
+                return assertUnreachable();
             }
-            return assertUnreachable();
         }
 
     }

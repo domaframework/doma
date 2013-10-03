@@ -119,14 +119,14 @@ public class TypeDeclaration {
         case FLOAT:
         case DOUBLE:
             return true;
+        default:
+            TypeElement typeElement = TypeMirrorUtil.toTypeElement(type, env);
+            if (typeElement == null) {
+                return false;
+            }
+            return NUMBER_PRIORITY_MAP.containsKey(ElementUtil.getBinaryName(
+                    typeElement, env));
         }
-
-        TypeElement typeElement = TypeMirrorUtil.toTypeElement(type, env);
-        if (typeElement == null) {
-            return false;
-        }
-        return NUMBER_PRIORITY_MAP.containsKey(ElementUtil.getBinaryName(
-                typeElement, env));
     }
 
     public int getNumberPriority() {

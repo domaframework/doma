@@ -60,7 +60,6 @@ public class OtherNode extends AbstractSqlNode {
 
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public OtherNode copy() {
         return this;

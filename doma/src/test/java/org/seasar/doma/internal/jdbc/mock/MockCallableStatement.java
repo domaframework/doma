@@ -73,7 +73,6 @@ public class MockCallableStatement extends MockPreparedStatement implements
         return null;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public BigDecimal getBigDecimal(int parameterIndex, int scale)
             throws SQLException {

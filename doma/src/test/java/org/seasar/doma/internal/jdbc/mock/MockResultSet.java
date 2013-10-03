@@ -150,7 +150,6 @@ public class MockResultSet extends MockWrapper implements ResultSet {
         return null;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public BigDecimal getBigDecimal(int columnIndex, int scale)
             throws SQLException {
@@ -168,7 +167,6 @@ public class MockResultSet extends MockWrapper implements ResultSet {
         return (BigDecimal) value;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public BigDecimal getBigDecimal(String columnLabel, int scale)
             throws SQLException {
@@ -588,14 +586,12 @@ public class MockResultSet extends MockWrapper implements ResultSet {
         return 0;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public InputStream getUnicodeStream(int columnIndex) throws SQLException {
         AssertionUtil.notYetImplemented();
         return null;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public InputStream getUnicodeStream(String columnLabel) throws SQLException {
         AssertionUtil.notYetImplemented();

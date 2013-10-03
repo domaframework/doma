@@ -26,7 +26,6 @@ import org.seasar.doma.Entity;
 @Entity
 public class ChildEntity extends ParentEntity {
 
-    @SuppressWarnings("hiding")
     BigDecimal bbb;
 
     String ccc;

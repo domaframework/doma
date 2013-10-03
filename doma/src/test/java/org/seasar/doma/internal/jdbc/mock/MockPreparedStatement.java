@@ -408,7 +408,6 @@ public class MockPreparedStatement extends MockStatement implements
 
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void setUnicodeStream(int parameterIndex, InputStream x, int length)
             throws SQLException {

@@ -45,7 +45,6 @@ public class FragmentNode extends AbstractSqlNode {
                 "addNode");
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public FragmentNode copy() {
         return this;

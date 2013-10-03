@@ -108,14 +108,13 @@ public class GeneratedIdPropertyType<PE, E extends PE, V extends Number, D>
     protected boolean isGenerationTypeSupported(GenerationType generationType,
             Dialect dialect) {
         switch (generationType) {
-        case IDENTITY: {
+        case IDENTITY:
             return dialect.supportsIdentity();
-        }
-        case SEQUENCE: {
+        case SEQUENCE:
             return dialect.supportsSequence();
+        default:
+            return true;
         }
-        }
-        return true;
     }
 
     /**

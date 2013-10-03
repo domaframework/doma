@@ -457,16 +457,17 @@ public final class TypeMirrorUtil {
         case NULL:
         case VOID:
             return null;
-        }
-        for (TypeMirror t : env.getTypeUtils().directSupertypes(typeMirror)) {
-            if (isSameType(t, superclass, env)) {
-                return t;
+        default:
+            for (TypeMirror t : env.getTypeUtils().directSupertypes(typeMirror)) {
+                if (isSameType(t, superclass, env)) {
+                    return t;
+                }
+                TypeMirror candidate = getSupertypeMirror(t, superclass, env);
+                if (candidate != null) {
+                    return candidate;
+                }
             }
-            TypeMirror candidate = getSupertypeMirror(t, superclass, env);
-            if (candidate != null) {
-                return candidate;
-            }
+            return null;
         }
-        return null;
     }
 }

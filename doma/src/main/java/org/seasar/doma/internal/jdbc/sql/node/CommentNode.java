@@ -45,7 +45,6 @@ public class CommentNode extends AbstractSqlNode {
                 "addNode");
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public CommentNode copy() {
         return this;

@@ -36,7 +36,6 @@ import org.seasar.doma.wrapper.Wrapper;
 public class H2Dialect extends H212126Dialect {
 
     /** 一意制約違反を表すエラーコード */
-    @SuppressWarnings("hiding")
     protected static final int UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE = 23505;
 
     /**

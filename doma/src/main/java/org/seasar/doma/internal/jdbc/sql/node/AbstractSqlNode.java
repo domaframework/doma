@@ -29,7 +29,6 @@ public abstract class AbstractSqlNode implements SqlNode {
 
     protected final List<SqlNode> children = new ArrayList<SqlNode>();
 
-    @SuppressWarnings("deprecation")
     @Override
     public void addNode(SqlNode child) {
         if (child == null) {

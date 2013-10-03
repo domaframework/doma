@@ -45,7 +45,6 @@ public class EolNode extends AbstractSqlNode {
                 "addNode");
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public EolNode copy() {
         return this;
