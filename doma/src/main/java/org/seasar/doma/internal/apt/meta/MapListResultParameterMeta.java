@@ -17,7 +17,7 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import org.seasar.doma.internal.apt.type.MapType;
+import org.seasar.doma.internal.apt.cttype.MapCtType;
 
 /**
  * @author taedium
@@ -25,15 +25,15 @@ import org.seasar.doma.internal.apt.type.MapType;
  */
 public class MapListResultParameterMeta implements ResultParameterMeta {
 
-    protected final MapType mapType;
+    protected final MapCtType mapCtType;
 
-    public MapListResultParameterMeta(MapType mapType) {
-        assertNotNull(mapType);
-        this.mapType = mapType;
+    public MapListResultParameterMeta(MapCtType mapCtType) {
+        assertNotNull(mapCtType);
+        this.mapCtType = mapCtType;
     }
 
-    public MapType getMapType() {
-        return mapType;
+    public MapCtType getMapCtType() {
+        return mapCtType;
     }
 
     @Override

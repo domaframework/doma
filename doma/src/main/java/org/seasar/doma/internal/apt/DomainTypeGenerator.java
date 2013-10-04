@@ -137,14 +137,14 @@ public class DomainTypeGenerator extends AbstractGenerator {
         iprint("public %1$s newDomain(%2$s value) {%n", typeName,
                 TypeMirrorUtil.boxIfPrimitive(domainMeta.getValueType(), env));
         if (domainMeta.providesConstructor()) {
-            if (domainMeta.getWrapperType().getWrappedType().isPrimitive()) {
+            if (domainMeta.getWrapperCtType().getBasicCtType().isPrimitive()) {
                 iprint("    return new %1$s(%2$s.unbox(value));%n", typeName,
                         BoxedPrimitiveUtil.class.getName());
             } else {
                 iprint("    return new %1$s(value);%n", typeName);
             }
         } else {
-            if (domainMeta.getWrapperType().getWrappedType().isPrimitive()) {
+            if (domainMeta.getWrapperCtType().getBasicCtType().isPrimitive()) {
                 iprint("    return %1$s.%2$s(%3$s.unbox(value));%n", domainMeta
                         .getTypeElement().getQualifiedName(),
                         domainMeta.getFactoryMethod(),
@@ -229,7 +229,7 @@ public class DomainTypeGenerator extends AbstractGenerator {
 
         protected void generate() {
             iprint("private static class Wrapper%1$s extends %2$s implements %3$s<%4$s, %5$s> {%n",
-                    typeParamDecl, domainMeta.getWrapperType().getTypeName(),
+                    typeParamDecl, domainMeta.getWrapperCtType().getTypeName(),
                     DomainWrapper.class.getName(), TypeMirrorUtil
                             .boxIfPrimitive(domainMeta.getValueType(), env),
                     typeName);
@@ -251,7 +251,7 @@ public class DomainTypeGenerator extends AbstractGenerator {
 
         protected void printWrapperConstructor() {
             iprint("private Wrapper(%1$s domain) {%n", typeName);
-            if (domainMeta.getWrapperType().getWrappedType().isEnum()) {
+            if (domainMeta.getWrapperCtType().getBasicCtType().isEnum()) {
                 iprint("    super(%1$s.class);%n",
                         TypeMirrorUtil.boxIfPrimitive(
                                 domainMeta.getValueType(), env));
@@ -280,14 +280,14 @@ public class DomainTypeGenerator extends AbstractGenerator {
                     TypeMirrorUtil.boxIfPrimitive(domainMeta.getValueType(),
                             env));
             if (domainMeta.providesConstructor()) {
-                if (domainMeta.getWrapperType().getWrappedType().isPrimitive()) {
+                if (domainMeta.getWrapperCtType().getBasicCtType().isPrimitive()) {
                     iprint("    domain = new %1$s(%2$s.unbox(value));%n",
                             typeName, BoxedPrimitiveUtil.class.getName());
                 } else {
                     iprint("    domain = new %1$s(value);%n", typeName);
                 }
             } else {
-                if (domainMeta.getWrapperType().getWrappedType().isPrimitive()) {
+                if (domainMeta.getWrapperCtType().getBasicCtType().isPrimitive()) {
                     iprint("    domain = %1$s.%2$s(%3$s.unbox(value));%n",
                             domainMeta.getTypeElement().getQualifiedName(),
                             domainMeta.getFactoryMethod(),

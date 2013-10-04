@@ -25,16 +25,16 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.type.AnyType;
-import org.seasar.doma.internal.apt.type.BasicType;
-import org.seasar.doma.internal.apt.type.DataType;
-import org.seasar.doma.internal.apt.type.DomainType;
-import org.seasar.doma.internal.apt.type.EntityType;
-import org.seasar.doma.internal.apt.type.IterableType;
-import org.seasar.doma.internal.apt.type.IterationCallbackType;
-import org.seasar.doma.internal.apt.type.ReferenceType;
-import org.seasar.doma.internal.apt.type.SelectOptionsType;
-import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
+import org.seasar.doma.internal.apt.cttype.AnyCtType;
+import org.seasar.doma.internal.apt.cttype.BasicCtType;
+import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.apt.cttype.DomainCtType;
+import org.seasar.doma.internal.apt.cttype.EntityCtType;
+import org.seasar.doma.internal.apt.cttype.IterableCtType;
+import org.seasar.doma.internal.apt.cttype.IterationCallbackCtType;
+import org.seasar.doma.internal.apt.cttype.ReferenceCtType;
+import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
+import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.message.Message;
@@ -53,7 +53,7 @@ public class QueryParameterMeta {
 
     protected final String qualifiedName;
 
-    protected final DataType dataType;
+    protected final CtType ctType;
 
     public QueryParameterMeta(VariableElement parameterElement,
             ProcessingEnvironment env) {
@@ -73,159 +73,159 @@ public class QueryParameterMeta {
         } else {
             qualifiedName = typeName;
         }
-        dataType = createDataType(parameterElement, env);
+        ctType = createCtType(parameterElement, env);
     }
 
-    protected DataType createDataType(final VariableElement parameterElement,
+    protected CtType createCtType(final VariableElement parameterElement,
             final ProcessingEnvironment env) {
-        IterableType iterableType = IterableType.newInstance(type, env);
-        if (iterableType != null) {
-            if (iterableType.isRawType()) {
+        IterableCtType iterableCtType = IterableCtType.newInstance(type, env);
+        if (iterableCtType != null) {
+            if (iterableCtType.isRawType()) {
                 throw new AptException(Message.DOMA4159, env, parameterElement);
             }
-            if (iterableType.isWildcardType()) {
+            if (iterableCtType.isWildcardType()) {
                 throw new AptException(Message.DOMA4160, env, parameterElement);
             }
-            iterableType.getElementType().accept(
-                    new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+            iterableCtType.getElementType().accept(
+                    new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
 
                         @Override
-                        public Void visitDomainType(final DomainType dataType,
+                        public Void visitDomainCtType(final DomainCtType ctType,
                                 Void p) throws RuntimeException {
-                            if (dataType.isRawType()) {
+                            if (ctType.isRawType()) {
                                 throw new AptException(Message.DOMA4212, env,
                                         parameterElement,
-                                        dataType.getQualifiedName());
+                                        ctType.getQualifiedName());
                             }
-                            if (dataType.isWildcardType()) {
+                            if (ctType.isWildcardType()) {
                                 throw new AptException(Message.DOMA4213, env,
                                         parameterElement,
-                                        dataType.getQualifiedName());
+                                        ctType.getQualifiedName());
                             }
                             return null;
                         }
 
                     }, null);
-            return iterableType;
+            return iterableCtType;
         }
 
-        EntityType entityType = EntityType.newInstance(type, env);
-        if (entityType != null) {
-            return entityType;
+        EntityCtType entityCtType = EntityCtType.newInstance(type, env);
+        if (entityCtType != null) {
+            return entityCtType;
         }
 
-        final DomainType domainType = DomainType.newInstance(type, env);
-        if (domainType != null) {
-            if (domainType.isRawType()) {
+        final DomainCtType domainCtType = DomainCtType.newInstance(type, env);
+        if (domainCtType != null) {
+            if (domainCtType.isRawType()) {
                 throw new AptException(Message.DOMA4208, env, parameterElement,
-                        domainType.getQualifiedName());
+                        domainCtType.getQualifiedName());
             }
-            if (domainType.isWildcardType()) {
+            if (domainCtType.isWildcardType()) {
                 throw new AptException(Message.DOMA4209, env, parameterElement,
-                        domainType.getQualifiedName());
+                        domainCtType.getQualifiedName());
             }
-            return domainType;
+            return domainCtType;
         }
 
-        BasicType basicType = BasicType.newInstance(type, env);
-        if (basicType != null) {
-            return basicType;
+        BasicCtType basicCtType = BasicCtType.newInstance(type, env);
+        if (basicCtType != null) {
+            return basicCtType;
         }
 
-        SelectOptionsType selectOptionsType = SelectOptionsType.newInstance(
+        SelectOptionsCtType selectOptionsCtType = SelectOptionsCtType.newInstance(
                 type, env);
-        if (selectOptionsType != null) {
-            return selectOptionsType;
+        if (selectOptionsCtType != null) {
+            return selectOptionsCtType;
         }
 
-        IterationCallbackType iterationCallbackType = IterationCallbackType
+        IterationCallbackCtType iterationCallbackCtType = IterationCallbackCtType
                 .newInstance(type, env);
-        if (iterationCallbackType != null) {
-            if (iterationCallbackType.isRawType()) {
+        if (iterationCallbackCtType != null) {
+            if (iterationCallbackCtType.isRawType()) {
                 throw new AptException(Message.DOMA4110, env, parameterElement,
                         qualifiedName);
             }
-            if (iterationCallbackType.isWildcardType()) {
+            if (iterationCallbackCtType.isWildcardType()) {
                 throw new AptException(Message.DOMA4112, env, parameterElement,
                         qualifiedName);
             }
-            iterationCallbackType.getReturnType().accept(
-                    new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+            iterationCallbackCtType.getReturnType().accept(
+                    new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
 
                         @Override
-                        public Void visitDomainType(final DomainType dataType,
+                        public Void visitDomainCtType(final DomainCtType ctType,
                                 Void p) throws RuntimeException {
-                            if (dataType.isRawType()) {
+                            if (ctType.isRawType()) {
                                 throw new AptException(Message.DOMA4214, env,
                                         parameterElement,
-                                        dataType.getQualifiedName());
+                                        ctType.getQualifiedName());
                             }
-                            if (dataType.isWildcardType()) {
+                            if (ctType.isWildcardType()) {
                                 throw new AptException(Message.DOMA4215, env,
                                         parameterElement,
-                                        dataType.getQualifiedName());
+                                        ctType.getQualifiedName());
                             }
                             return null;
                         }
 
                     }, null);
-            iterationCallbackType.getTargetType().accept(
-                    new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+            iterationCallbackCtType.getTargetType().accept(
+                    new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
 
                         @Override
-                        public Void visitDomainType(final DomainType dataType,
+                        public Void visitDomainCtType(final DomainCtType ctType,
                                 Void p) throws RuntimeException {
-                            if (dataType.isRawType()) {
+                            if (ctType.isRawType()) {
                                 throw new AptException(Message.DOMA4216, env,
                                         parameterElement,
-                                        dataType.getQualifiedName());
+                                        ctType.getQualifiedName());
                             }
-                            if (dataType.isWildcardType()) {
+                            if (ctType.isWildcardType()) {
                                 throw new AptException(Message.DOMA4217, env,
                                         parameterElement,
-                                        dataType.getQualifiedName());
+                                        ctType.getQualifiedName());
                             }
                             return null;
                         }
 
                     }, null);
-            return iterationCallbackType;
+            return iterationCallbackCtType;
         }
 
-        ReferenceType referenceType = ReferenceType.newInstance(type, env);
-        if (referenceType != null) {
-            if (referenceType.isRaw()) {
+        ReferenceCtType referenceCtType = ReferenceCtType.newInstance(type, env);
+        if (referenceCtType != null) {
+            if (referenceCtType.isRaw()) {
                 throw new AptException(Message.DOMA4108, env, parameterElement,
                         qualifiedName);
             }
-            if (referenceType.isWildcardType()) {
+            if (referenceCtType.isWildcardType()) {
                 throw new AptException(Message.DOMA4112, env, parameterElement,
                         qualifiedName);
             }
-            referenceType.getReferentType().accept(
-                    new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+            referenceCtType.getReferentType().accept(
+                    new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
 
                         @Override
-                        public Void visitDomainType(final DomainType dataType,
+                        public Void visitDomainCtType(final DomainCtType ctType,
                                 Void p) throws RuntimeException {
-                            if (dataType.isRawType()) {
+                            if (ctType.isRawType()) {
                                 throw new AptException(Message.DOMA4218, env,
                                         parameterElement,
-                                        dataType.getQualifiedName());
+                                        ctType.getQualifiedName());
                             }
-                            if (dataType.isWildcardType()) {
+                            if (ctType.isWildcardType()) {
                                 throw new AptException(Message.DOMA4219, env,
                                         parameterElement,
-                                        dataType.getQualifiedName());
+                                        ctType.getQualifiedName());
                             }
                             return null;
                         }
 
                     }, null);
-            return referenceType;
+            return referenceCtType;
         }
 
-        return AnyType.newInstance(type, env);
+        return AnyCtType.newInstance(type, env);
     }
 
     public VariableElement getElement() {
@@ -248,23 +248,23 @@ public class QueryParameterMeta {
         return qualifiedName;
     }
 
-    public DataType getDataType() {
-        return dataType;
+    public CtType getCtType() {
+        return ctType;
     }
 
     public boolean isNullable() {
-        return dataType.accept(
-                new SimpleDataTypeVisitor<Boolean, Void, RuntimeException>(
+        return ctType.accept(
+                new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(
                         false) {
 
                     @Override
-                    public Boolean visitBasicType(BasicType dataType, Void p)
+                    public Boolean visitBasicCtType(BasicCtType ctType, Void p)
                             throws RuntimeException {
                         return true;
                     }
 
                     @Override
-                    public Boolean visitDomainType(DomainType dataType, Void p)
+                    public Boolean visitDomainCtType(DomainCtType ctType, Void p)
                             throws RuntimeException {
                         return true;
                     }
@@ -273,42 +273,42 @@ public class QueryParameterMeta {
     }
 
     public boolean isBindable() {
-        return dataType.accept(
-                new SimpleDataTypeVisitor<Boolean, Void, RuntimeException>(
+        return ctType.accept(
+                new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(
                         false) {
 
                     @Override
-                    public Boolean visitBasicType(BasicType dataType, Void p)
+                    public Boolean visitBasicCtType(BasicCtType ctType, Void p)
                             throws RuntimeException {
                         return true;
                     }
 
                     @Override
-                    public Boolean visitDomainType(DomainType dataType, Void p)
+                    public Boolean visitDomainCtType(DomainCtType ctType, Void p)
                             throws RuntimeException {
                         return true;
                     }
 
                     @Override
-                    public Boolean visitEntityType(EntityType dataType, Void p)
+                    public Boolean visitEntityCtType(EntityCtType ctType, Void p)
                             throws RuntimeException {
                         return true;
                     }
 
                     @Override
-                    public Boolean visitIterableType(IterableType dataType,
+                    public Boolean visitIterableCtType(IterableCtType ctType,
                             Void p) throws RuntimeException {
                         return true;
                     }
 
                     @Override
-                    public Boolean visitReferenceType(ReferenceType dataType,
+                    public Boolean visitReferenceCtType(ReferenceCtType ctType,
                             Void p) throws RuntimeException {
                         return true;
                     }
 
                     @Override
-                    public Boolean visitAnyType(AnyType dataType, Void p)
+                    public Boolean visitAnyCtType(AnyCtType ctType, Void p)
                             throws RuntimeException {
                         return true;
                     }

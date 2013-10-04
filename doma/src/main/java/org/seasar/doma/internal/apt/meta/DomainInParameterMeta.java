@@ -17,7 +17,7 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import org.seasar.doma.internal.apt.type.DomainType;
+import org.seasar.doma.internal.apt.cttype.DomainCtType;
 
 /**
  * @author taedium
@@ -27,20 +27,20 @@ public class DomainInParameterMeta implements CallableSqlParameterMeta {
 
     private final String name;
 
-    protected final DomainType domainType;
+    protected final DomainCtType domainCtType;
 
-    public DomainInParameterMeta(String name, DomainType domainType) {
-        assertNotNull(name, domainType);
+    public DomainInParameterMeta(String name, DomainCtType domainCtType) {
+        assertNotNull(name, domainCtType);
         this.name = name;
-        this.domainType = domainType;
+        this.domainCtType = domainCtType;
     }
 
     public String getName() {
         return name;
     }
 
-    public DomainType getDomainType() {
-        return domainType;
+    public DomainCtType getDomainCtType() {
+        return domainCtType;
     }
 
     @Override

@@ -17,7 +17,7 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import org.seasar.doma.internal.apt.type.DomainType;
+import org.seasar.doma.internal.apt.cttype.DomainCtType;
 
 /**
  * @author taedium
@@ -25,15 +25,15 @@ import org.seasar.doma.internal.apt.type.DomainType;
  */
 public class DomainListResultParameterMeta implements ResultParameterMeta {
 
-    protected final DomainType domainType;
+    protected final DomainCtType domainCtType;
 
-    public DomainListResultParameterMeta(DomainType domainType) {
-        assertNotNull(domainType);
-        this.domainType = domainType;
+    public DomainListResultParameterMeta(DomainCtType domainCtType) {
+        assertNotNull(domainCtType);
+        this.domainCtType = domainCtType;
     }
 
-    public DomainType getDomainType() {
-        return domainType;
+    public DomainCtType getDomainCtType() {
+        return domainCtType;
     }
 
     @Override

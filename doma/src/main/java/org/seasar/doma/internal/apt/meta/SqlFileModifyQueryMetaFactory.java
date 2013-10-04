@@ -22,12 +22,12 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.cttype.EntityCtType;
+import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.mirror.DeleteMirror;
 import org.seasar.doma.internal.apt.mirror.InsertMirror;
 import org.seasar.doma.internal.apt.mirror.ModifyMirror;
 import org.seasar.doma.internal.apt.mirror.UpdateMirror;
-import org.seasar.doma.internal.apt.type.EntityType;
-import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.message.Message;
 
 /**
@@ -85,9 +85,9 @@ public class SqlFileModifyQueryMetaFactory extends
     protected void doReturnType(SqlFileModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         QueryReturnMeta returnMeta = createReturnMeta(method);
-        EntityType entityType = queryMeta.getEntityType();
-        if (entityType != null && entityType.isImmutable()) {
-            if (!returnMeta.isResult(entityType)) {
+        EntityCtType entityCtType = queryMeta.getEntityCtType();
+        if (entityCtType != null && entityCtType.isImmutable()) {
+            if (!returnMeta.isResult(entityCtType)) {
                 throw new AptException(Message.DOMA4222, env,
                         returnMeta.getElement());
             }
@@ -110,16 +110,16 @@ public class SqlFileModifyQueryMetaFactory extends
                 queryMeta.addBindableParameterType(parameterMeta.getName(),
                         parameterMeta.getType());
             }
-            if (queryMeta.getEntityType() != null) {
+            if (queryMeta.getEntityCtType() != null) {
                 continue;
             }
-            parameterMeta.getDataType().accept(
-                    new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+            parameterMeta.getCtType().accept(
+                    new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
 
                         @Override
-                        public Void visitEntityType(EntityType dataType, Void p)
+                        public Void visitEntityCtType(EntityCtType ctType, Void p)
                                 throws RuntimeException {
-                            queryMeta.setEntityType(dataType);
+                            queryMeta.setEntityCtType(ctType);
                             queryMeta.setEntityParameterName(parameterMeta
                                     .getName());
                             return null;

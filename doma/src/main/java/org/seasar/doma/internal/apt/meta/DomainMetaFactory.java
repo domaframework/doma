@@ -35,8 +35,8 @@ import javax.lang.model.util.ElementFilter;
 
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
+import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.mirror.DomainMirror;
-import org.seasar.doma.internal.apt.type.BasicType;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.message.Message;
 
@@ -71,16 +71,16 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
     }
 
     protected void doWrapperType(TypeElement classElement, DomainMeta domainMeta) {
-        BasicType basicType = BasicType.newInstance(domainMeta.getValueType(),
+        BasicCtType basicCtType = BasicCtType.newInstance(domainMeta.getValueType(),
                 env);
-        if (basicType == null) {
+        if (basicCtType == null) {
             DomainMirror domainMirror = domainMeta.getDomainMirror();
             throw new AptException(Message.DOMA4102, env, classElement,
                     domainMirror.getAnnotationMirror(),
                     domainMirror.getValueType(),
                     domainMirror.getValueTypeValue());
         }
-        domainMeta.setWrapperType(basicType.getWrapperType());
+        domainMeta.setWrapperCtType(basicCtType.getWrapperType());
     }
 
     protected void validateClass(TypeElement classElement, DomainMeta domainMeta) {

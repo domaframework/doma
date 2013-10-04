@@ -31,13 +31,13 @@ import org.seasar.doma.TableGenerator;
 import org.seasar.doma.Version;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
+import org.seasar.doma.internal.apt.cttype.BasicCtType;
+import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.apt.cttype.DomainCtType;
+import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.mirror.ColumnMirror;
 import org.seasar.doma.internal.apt.mirror.SequenceGeneratorMirror;
 import org.seasar.doma.internal.apt.mirror.TableGeneratorMirror;
-import org.seasar.doma.internal.apt.type.BasicType;
-import org.seasar.doma.internal.apt.type.DataType;
-import org.seasar.doma.internal.apt.type.DomainType;
-import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.message.Message;
@@ -78,21 +78,21 @@ public class EntityPropertyMetaFactory {
     protected void doDataType(EntityPropertyMeta propertyMeta,
             final VariableElement fieldElement, EntityMeta entityMeta) {
         final TypeMirror type = fieldElement.asType();
-        final DomainType domainType = DomainType.newInstance(type, env);
-        if (domainType != null) {
-            if (domainType.isRawType()) {
+        final DomainCtType domainCtType = DomainCtType.newInstance(type, env);
+        if (domainCtType != null) {
+            if (domainCtType.isRawType()) {
                 throw new AptException(Message.DOMA4204, env, fieldElement,
-                        domainType.getQualifiedName());
+                        domainCtType.getQualifiedName());
             }
-            if (domainType.isWildcardType()) {
+            if (domainCtType.isWildcardType()) {
                 throw new AptException(Message.DOMA4205, env, fieldElement,
-                        domainType.getQualifiedName());
+                        domainCtType.getQualifiedName());
             }
-            propertyMeta.setDataType(domainType);
+            propertyMeta.setDataType(domainCtType);
         } else {
-            BasicType basicType = BasicType.newInstance(type, env);
-            if (basicType != null) {
-                propertyMeta.setDataType(basicType);
+            BasicCtType basicCtType = BasicCtType.newInstance(type, env);
+            if (basicCtType != null) {
+                propertyMeta.setDataType(basicCtType);
             } else {
                 throw new AptException(Message.DOMA4096, env, fieldElement,
                         type);
@@ -297,21 +297,21 @@ public class EntityPropertyMetaFactory {
         propertyMeta.setColumnMirror(columnMirror);
     }
 
-    protected boolean isNumber(DataType dataType) {
-        Boolean isNumber = dataType.accept(
-                new SimpleDataTypeVisitor<Boolean, Void, RuntimeException>() {
+    protected boolean isNumber(CtType ctType) {
+        Boolean isNumber = ctType.accept(
+                new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>() {
 
                     @Override
-                    public Boolean visitDomainType(DomainType dataType, Void p)
+                    public Boolean visitDomainCtType(DomainCtType ctType, Void p)
                             throws RuntimeException {
-                        return dataType.getBasicType().accept(this, p);
+                        return ctType.getBasicType().accept(this, p);
                     }
 
                     @Override
-                    public Boolean visitBasicType(BasicType dataType, Void p)
+                    public Boolean visitBasicCtType(BasicCtType ctType, Void p)
                             throws RuntimeException {
                         TypeMirror boxedType = TypeMirrorUtil.boxIfPrimitive(
-                                dataType.getTypeMirror(), env);
+                                ctType.getTypeMirror(), env);
                         return TypeMirrorUtil.isAssignable(boxedType,
                                 Number.class, env);
                     }

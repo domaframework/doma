@@ -17,7 +17,7 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import org.seasar.doma.internal.apt.type.BasicType;
+import org.seasar.doma.internal.apt.cttype.BasicCtType;
 
 /**
  * @author taedium
@@ -27,20 +27,20 @@ public class BasicInOutParameterMeta implements CallableSqlParameterMeta {
 
     private final String name;
 
-    protected final BasicType basicType;
+    protected final BasicCtType basicCtType;
 
-    public BasicInOutParameterMeta(String name, BasicType basicType) {
-        assertNotNull(name, basicType);
+    public BasicInOutParameterMeta(String name, BasicCtType basicCtType) {
+        assertNotNull(name, basicCtType);
         this.name = name;
-        this.basicType = basicType;
+        this.basicCtType = basicCtType;
     }
 
     public String getName() {
         return name;
     }
 
-    public BasicType getBasicType() {
-        return basicType;
+    public BasicCtType getBasicCtType() {
+        return basicCtType;
     }
 
     @Override

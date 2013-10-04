@@ -18,9 +18,9 @@ package org.seasar.doma.internal.apt.meta;
 import javax.lang.model.element.ExecutableElement;
 
 import org.seasar.doma.MapKeyNamingType;
+import org.seasar.doma.internal.apt.cttype.IterationCallbackCtType;
+import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
 import org.seasar.doma.internal.apt.mirror.SelectMirror;
-import org.seasar.doma.internal.apt.type.IterationCallbackType;
-import org.seasar.doma.internal.apt.type.SelectOptionsType;
 
 /**
  * @author taedium
@@ -32,11 +32,11 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
     protected String iterationCallbackPrameterName;
 
-    protected IterationCallbackType iterationCallbackType;
+    protected IterationCallbackCtType iterationCallbackCtType;
 
     protected String selectOptionsParameterName;
 
-    protected SelectOptionsType selectOptionsType;
+    protected SelectOptionsCtType selectOptionsCtType;
 
     public SqlFileSelectQueryMeta(ExecutableElement method) {
         super(method);
@@ -51,13 +51,13 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
         this.iterationCallbackPrameterName = iterationCallbackPrameterName;
     }
 
-    public IterationCallbackType getIterationCallbackType() {
-        return iterationCallbackType;
+    public IterationCallbackCtType getIterationCallbackCtType() {
+        return iterationCallbackCtType;
     }
 
-    public void setIterationCallbackType(
-            IterationCallbackType iterationCallbackType) {
-        this.iterationCallbackType = iterationCallbackType;
+    public void setIterationCallbackCtType(
+            IterationCallbackCtType iterationCallbackCtType) {
+        this.iterationCallbackCtType = iterationCallbackCtType;
     }
 
     public String getSelectOptionsParameterName() {
@@ -68,12 +68,12 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
         this.selectOptionsParameterName = selectOptionsParameterName;
     }
 
-    public SelectOptionsType getSelectOptionsType() {
-        return selectOptionsType;
+    public SelectOptionsCtType getSelectOptionsCtType() {
+        return selectOptionsCtType;
     }
 
-    public void setSelectOptionsType(SelectOptionsType selectOptionsType) {
-        this.selectOptionsType = selectOptionsType;
+    public void setSelectOptionsCtType(SelectOptionsCtType selectOptionsCtType) {
+        this.selectOptionsCtType = selectOptionsCtType;
     }
 
     void setSelectMirror(SelectMirror selectMirror) {

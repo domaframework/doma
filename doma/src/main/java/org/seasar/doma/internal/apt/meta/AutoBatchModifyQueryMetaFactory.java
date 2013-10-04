@@ -24,14 +24,14 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.apt.cttype.EntityCtType;
+import org.seasar.doma.internal.apt.cttype.IterableCtType;
+import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.mirror.BatchDeleteMirror;
 import org.seasar.doma.internal.apt.mirror.BatchInsertMirror;
 import org.seasar.doma.internal.apt.mirror.BatchModifyMirror;
 import org.seasar.doma.internal.apt.mirror.BatchUpdateMirror;
-import org.seasar.doma.internal.apt.type.DataType;
-import org.seasar.doma.internal.apt.type.EntityType;
-import org.seasar.doma.internal.apt.type.IterableType;
-import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.message.Message;
 
 /**
@@ -90,9 +90,9 @@ public class AutoBatchModifyQueryMetaFactory extends
     protected void doReturnType(AutoBatchModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         QueryReturnMeta returnMeta = createReturnMeta(method);
-        EntityType entityType = queryMeta.getEntityType();
-        if (entityType != null && entityType.isImmutable()) {
-            if (!returnMeta.isBatchResult(entityType)) {
+        EntityCtType entityCtType = queryMeta.getEntityCtType();
+        if (entityCtType != null && entityCtType.isImmutable()) {
+            if (!returnMeta.isBatchResult(entityCtType)) {
                 throw new AptException(Message.DOMA4223, env,
                         returnMeta.getElement());
             }
@@ -115,50 +115,50 @@ public class AutoBatchModifyQueryMetaFactory extends
         }
         final QueryParameterMeta parameterMeta = createParameterMeta(parameters
                 .get(0));
-        IterableType iterableType = parameterMeta
-                .getDataType()
-                .accept(new SimpleDataTypeVisitor<IterableType, Void, RuntimeException>() {
+        IterableCtType iterableCtType = parameterMeta
+                .getCtType()
+                .accept(new SimpleCtTypeVisitor<IterableCtType, Void, RuntimeException>() {
 
                     @Override
-                    protected IterableType defaultAction(DataType dataType,
+                    protected IterableCtType defaultAction(CtType ctType,
                             Void p) throws RuntimeException {
                         throw new AptException(Message.DOMA4042, env, method);
                     }
 
                     @Override
-                    public IterableType visitIterableType(
-                            IterableType dataType, Void p)
+                    public IterableCtType visitIterableCtType(
+                            IterableCtType ctType, Void p)
                             throws RuntimeException {
-                        return dataType;
+                        return ctType;
                     }
 
                 }, null);
-        EntityType entityType = iterableType
+        EntityCtType entityCtType = iterableCtType
                 .getElementType()
-                .accept(new SimpleDataTypeVisitor<EntityType, Void, RuntimeException>() {
+                .accept(new SimpleCtTypeVisitor<EntityCtType, Void, RuntimeException>() {
 
                     @Override
-                    protected EntityType defaultAction(DataType dataType, Void p)
+                    protected EntityCtType defaultAction(CtType ctType, Void p)
                             throws RuntimeException {
                         throw new AptException(Message.DOMA4043, env, method);
                     }
 
                     @Override
-                    public EntityType visitEntityType(EntityType dataType,
+                    public EntityCtType visitEntityCtType(EntityCtType ctType,
                             Void p) throws RuntimeException {
-                        return dataType;
+                        return ctType;
                     }
 
                 }, null);
-        queryMeta.setEntityType(entityType);
+        queryMeta.setEntityCtType(entityCtType);
         queryMeta.setEntitiesParameterName(parameterMeta.getName());
         queryMeta.addParameterMeta(parameterMeta);
         if (parameterMeta.isBindable()) {
             queryMeta.addBindableParameterType(parameterMeta.getName(),
-                    entityType.getTypeMirror());
+                    entityCtType.getTypeMirror());
         }
         BatchModifyMirror batchModifyMirror = queryMeta.getBatchModifyMirror();
-        validateEntityPropertyNames(entityType.getTypeMirror(), method,
+        validateEntityPropertyNames(entityCtType.getTypeMirror(), method,
                 batchModifyMirror.getAnnotationMirror(),
                 batchModifyMirror.getInclude(), batchModifyMirror.getExclude());
     }

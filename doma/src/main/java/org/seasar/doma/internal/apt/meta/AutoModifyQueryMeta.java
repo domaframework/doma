@@ -19,8 +19,8 @@ import java.util.List;
 
 import javax.lang.model.element.ExecutableElement;
 
+import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.mirror.ModifyMirror;
-import org.seasar.doma.internal.apt.type.EntityType;
 
 /**
  * @author taedium
@@ -28,7 +28,7 @@ import org.seasar.doma.internal.apt.type.EntityType;
  */
 public class AutoModifyQueryMeta extends AbstractQueryMeta {
 
-    protected EntityType entityType;
+    protected EntityCtType entityCtType;
 
     protected String entityParameterName;
 
@@ -38,12 +38,12 @@ public class AutoModifyQueryMeta extends AbstractQueryMeta {
         super(method);
     }
 
-    public EntityType getEntityType() {
-        return entityType;
+    public EntityCtType getEntityCtType() {
+        return entityCtType;
     }
 
-    public void setEntityType(EntityType entityType) {
-        this.entityType = entityType;
+    public void setEntityCtType(EntityCtType entityCtType) {
+        this.entityCtType = entityCtType;
     }
 
     public String getEntityParameterName() {

@@ -244,7 +244,7 @@ public final class TypeMirrorUtil {
         return p.toString();
     }
 
-    public static String getTypeNameAsTypeParameter(TypeMirror typeMirror,
+    public static String getBoxedTypeName(TypeMirror typeMirror,
             final ProcessingEnvironment env) {
         assertNotNull(typeMirror, env);
         switch (typeMirror.getKind()) {

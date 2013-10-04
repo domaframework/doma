@@ -28,11 +28,11 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
 
+import org.seasar.doma.internal.apt.cttype.BasicCtType;
+import org.seasar.doma.internal.apt.cttype.DomainCtType;
+import org.seasar.doma.internal.apt.cttype.IterableCtType;
+import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.decl.TypeDeclaration;
-import org.seasar.doma.internal.apt.type.BasicType;
-import org.seasar.doma.internal.apt.type.DomainType;
-import org.seasar.doma.internal.apt.type.IterableType;
-import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.expr.ExpressionException;
 import org.seasar.doma.internal.expr.ExpressionParser;
@@ -137,26 +137,26 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
 
     protected boolean isBindable(TypeDeclaration typeDeclaration) {
         TypeMirror typeMirror = typeDeclaration.getType();
-        return BasicType.newInstance(typeMirror, env) != null
-                || DomainType.newInstance(typeMirror, env) != null;
+        return BasicCtType.newInstance(typeMirror, env) != null
+                || DomainCtType.newInstance(typeMirror, env) != null;
     }
 
     protected boolean isBindableIterable(TypeDeclaration typeDeclaration) {
         TypeMirror typeMirror = typeDeclaration.getType();
-        IterableType iterableType = IterableType.newInstance(typeMirror, env);
-        if (iterableType != null) {
-            return iterableType.getElementType().accept(
-                    new SimpleDataTypeVisitor<Boolean, Void, RuntimeException>(
+        IterableCtType iterableCtType = IterableCtType.newInstance(typeMirror, env);
+        if (iterableCtType != null) {
+            return iterableCtType.getElementType().accept(
+                    new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(
                             false) {
 
                         @Override
-                        public Boolean visitBasicType(BasicType dataType, Void p)
+                        public Boolean visitBasicCtType(BasicCtType ctType, Void p)
                                 throws RuntimeException {
                             return true;
                         }
 
                         @Override
-                        public Boolean visitDomainType(DomainType dataType,
+                        public Boolean visitDomainCtType(DomainCtType ctType,
                                 Void p) throws RuntimeException {
                             return true;
                         }

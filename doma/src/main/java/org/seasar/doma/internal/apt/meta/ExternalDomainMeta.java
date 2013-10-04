@@ -19,7 +19,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import javax.lang.model.element.TypeElement;
 
-import org.seasar.doma.internal.apt.type.WrapperType;
+import org.seasar.doma.internal.apt.cttype.WrapperCtType;
 
 /**
  * @author taedium
@@ -29,7 +29,7 @@ public class ExternalDomainMeta implements TypeElementMeta {
 
     protected final TypeElement typeElement;
 
-    protected WrapperType wrapperType;
+    protected WrapperCtType wrapperCtType;
 
     protected TypeElement valueElement;
 
@@ -44,12 +44,12 @@ public class ExternalDomainMeta implements TypeElementMeta {
         return typeElement;
     }
 
-    public WrapperType getWrapperType() {
-        return wrapperType;
+    public WrapperCtType getWrapperCtType() {
+        return wrapperCtType;
     }
 
-    public void setWrapperType(WrapperType wrapperType) {
-        this.wrapperType = wrapperType;
+    public void setWrapperCtType(WrapperCtType wrapperCtType) {
+        this.wrapperCtType = wrapperCtType;
     }
 
     public TypeElement getValueElement() {

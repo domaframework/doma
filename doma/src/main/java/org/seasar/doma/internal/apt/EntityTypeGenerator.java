@@ -25,6 +25,11 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 
 import org.seasar.doma.internal.Constants;
+import org.seasar.doma.internal.apt.cttype.BasicCtType;
+import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.apt.cttype.DomainCtType;
+import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
+import org.seasar.doma.internal.apt.cttype.WrapperCtType;
 import org.seasar.doma.internal.apt.meta.EntityMeta;
 import org.seasar.doma.internal.apt.meta.EntityPropertyMeta;
 import org.seasar.doma.internal.apt.meta.IdGeneratorMeta;
@@ -33,11 +38,6 @@ import org.seasar.doma.internal.apt.meta.IdentityIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.OriginalStatesMeta;
 import org.seasar.doma.internal.apt.meta.SequenceIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.TableIdGeneratorMeta;
-import org.seasar.doma.internal.apt.type.BasicType;
-import org.seasar.doma.internal.apt.type.DataType;
-import org.seasar.doma.internal.apt.type.DomainType;
-import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
-import org.seasar.doma.internal.apt.type.WrapperType;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.jdbc.util.TableUtil;
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
@@ -151,30 +151,30 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
     protected void printPropertyTypeFields() {
         class Visitor extends
-                SimpleDataTypeVisitor<Void, Void, RuntimeException> {
+                SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-            WrapperType wrapperType;
+            WrapperCtType wrapperCtType;
 
-            DomainType domainType;
+            DomainCtType domainCtType;
 
             @Override
-            protected Void defaultAction(DataType dataType, Void p)
+            protected Void defaultAction(CtType ctType, Void p)
                     throws RuntimeException {
                 return assertUnreachable();
             }
 
             @Override
-            public Void visitBasicType(BasicType basicType, Void p)
+            public Void visitBasicCtType(BasicCtType basicCtType, Void p)
                     throws RuntimeException {
-                this.wrapperType = basicType.getWrapperType();
+                this.wrapperCtType = basicCtType.getWrapperType();
                 return null;
             }
 
             @Override
-            public Void visitDomainType(DomainType domainType, Void p)
+            public Void visitDomainCtType(DomainCtType domainCtType, Void p)
                     throws RuntimeException {
-                this.domainType = domainType;
-                this.wrapperType = domainType.getBasicType().getWrapperType();
+                this.domainCtType = domainCtType;
+                this.wrapperCtType = domainCtType.getBasicType().getWrapperType();
                 return null;
             }
         }
@@ -191,10 +191,10 @@ public class EntityTypeGenerator extends AbstractGenerator {
             }
             String domainType = "null";
             String domainTypeNameAsTypeParameter = Object.class.getName();
-            if (visitor.domainType != null) {
-                domainType = visitor.domainType.getInstantiationCommand();
-                domainTypeNameAsTypeParameter = visitor.domainType
-                        .getTypeNameAsTypeParameter();
+            if (visitor.domainCtType != null) {
+                domainType = visitor.domainCtType.getInstantiationCommand();
+                domainTypeNameAsTypeParameter = visitor.domainCtType
+                        .getBoxedTypeName();
             }
             iprint("/** the %1$s */%n", pm.getName());
             if (pm.isId()) {
@@ -202,12 +202,12 @@ public class EntityTypeGenerator extends AbstractGenerator {
                     iprint("public final %1$s<%11$s, %2$s, %3$s, %9$s> %12$s = new %1$s<%11$s, %2$s, %3$s, %9$s>(%6$s.class, %3$s.class, %7$s.class, %10$s, %8$s, \"%4$s\", \"%5$s\", __idGenerator);%n",
                     /* 1 */GeneratedIdPropertyType.class.getName(),
                     /* 2 */entityMeta.getEntityTypeName(),
-                    /* 3 */visitor.wrapperType.getWrappedType()
-                            .getTypeNameAsTypeParameter(),
+                    /* 3 */visitor.wrapperCtType.getBasicCtType()
+                            .getBoxedTypeName(),
                     /* 4 */pm.getName(),
                     /* 5 */pm.getColumnName(),
                     /* 6 */entityMeta.getEntityTypeName(),
-                    /* 7 */visitor.wrapperType.getQualifiedName(),
+                    /* 7 */visitor.wrapperCtType.getQualifiedName(),
                     /* 8 */domainType,
                     /* 9 */domainTypeNameAsTypeParameter,
                     /* 10 */parentEntityPropertyType,
@@ -217,12 +217,12 @@ public class EntityTypeGenerator extends AbstractGenerator {
                     iprint("public final %1$s<%11$s, %2$s, %3$s, %9$s> %12$s = new %1$s<%11$s, %2$s, %3$s, %9$s>(%6$s.class, %3$s.class, %7$s.class, %10$s, %8$s, \"%4$s\", \"%5$s\");%n",
                     /* 1 */AssignedIdPropertyType.class.getName(),
                     /* 2 */entityMeta.getEntityTypeName(),
-                    /* 3 */visitor.wrapperType.getWrappedType()
-                            .getTypeNameAsTypeParameter(),
+                    /* 3 */visitor.wrapperCtType.getBasicCtType()
+                            .getBoxedTypeName(),
                     /* 4 */pm.getName(),
                     /* 5 */pm.getColumnName(),
                     /* 6 */entityMeta.getEntityTypeName(),
-                    /* 7 */visitor.wrapperType.getQualifiedName(),
+                    /* 7 */visitor.wrapperCtType.getQualifiedName(),
                     /* 8 */domainType,
                     /* 9 */domainTypeNameAsTypeParameter,
                     /* 10 */parentEntityPropertyType,
@@ -233,12 +233,12 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 iprint("public final %1$s<%11$s, %2$s, %3$s, %9$s> %12$s = new %1$s<%11$s, %2$s, %3$s, %9$s>(%6$s.class, %3$s.class, %7$s.class, %10$s, %8$s, \"%4$s\", \"%5$s\");%n",
                 /* 1 */VersionPropertyType.class.getName(),
                 /* 2 */entityMeta.getEntityTypeName(),
-                /* 3 */visitor.wrapperType.getWrappedType()
-                        .getTypeNameAsTypeParameter(),
+                /* 3 */visitor.wrapperCtType.getBasicCtType()
+                        .getBoxedTypeName(),
                 /* 4 */pm.getName(),
                 /* 5 */pm.getColumnName(),
                 /* 6 */entityMeta.getEntityTypeName(),
-                /* 7 */visitor.wrapperType.getQualifiedName(),
+                /* 7 */visitor.wrapperCtType.getQualifiedName(),
                 /* 8 */domainType,
                 /* 9 */domainTypeNameAsTypeParameter,
                 /* 10 */parentEntityPropertyType,
@@ -248,14 +248,14 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 iprint("public final %1$s<%13$s, %2$s, %3$s, %11$s> %14$s = new %1$s<%13$s, %2$s, %3$s, %11$s>(%8$s.class, %3$s.class, %9$s.class, %12$s, %10$s, \"%4$s\", \"%5$s\", %6$s, %7$s);%n",
                 /* 1 */BasicPropertyType.class.getName(),
                 /* 2 */entityMeta.getEntityTypeName(),
-                /* 3 */visitor.wrapperType.getWrappedType()
-                        .getTypeNameAsTypeParameter(),
+                /* 3 */visitor.wrapperCtType.getBasicCtType()
+                        .getBoxedTypeName(),
                 /* 4 */pm.getName(),
                 /* 5 */pm.getColumnName(),
                 /* 6 */pm.isColumnInsertable(),
                 /* 7 */pm.isColumnUpdatable(),
                 /* 8 */entityMeta.getEntityTypeName(),
-                /* 9 */visitor.wrapperType.getQualifiedName(),
+                /* 9 */visitor.wrapperCtType.getQualifiedName(),
                 /* 10 */domainType,
                 /* 11 */domainTypeNameAsTypeParameter,
                 /* 12 */parentEntityPropertyType,

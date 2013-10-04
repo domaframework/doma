@@ -30,7 +30,7 @@ import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.type.BasicType;
+import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.util.ElementUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.domain.DomainConverter;
@@ -150,11 +150,11 @@ public class ExternalDomainMetaFactory implements
         }
         meta.setValueElement(valueElement);
 
-        BasicType basicType = BasicType.newInstance(valueType, env);
-        if (basicType == null) {
+        BasicCtType basicCtType = BasicCtType.newInstance(valueType, env);
+        if (basicCtType == null) {
             throw new AptException(Message.DOMA4194, env, convElement,
                     valueElement.getQualifiedName());
         }
-        meta.setWrapperType(basicType.getWrapperType());
+        meta.setWrapperCtType(basicCtType.getWrapperType());
     }
 }

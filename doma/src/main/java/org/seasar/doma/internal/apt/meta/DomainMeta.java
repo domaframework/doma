@@ -20,8 +20,8 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
+import org.seasar.doma.internal.apt.cttype.WrapperCtType;
 import org.seasar.doma.internal.apt.mirror.DomainMirror;
-import org.seasar.doma.internal.apt.type.WrapperType;
 
 public class DomainMeta implements TypeElementMeta {
 
@@ -31,7 +31,7 @@ public class DomainMeta implements TypeElementMeta {
 
     protected final boolean parametarized;
 
-    protected WrapperType wrapperType;
+    protected WrapperCtType wrapperCtType;
 
     protected DomainMirror domainMirror;
 
@@ -52,12 +52,12 @@ public class DomainMeta implements TypeElementMeta {
         return typeElement;
     }
 
-    public WrapperType getWrapperType() {
-        return wrapperType;
+    public WrapperCtType getWrapperCtType() {
+        return wrapperCtType;
     }
 
-    public void setWrapperType(WrapperType wrapperType) {
-        this.wrapperType = wrapperType;
+    public void setWrapperCtType(WrapperCtType wrapperCtType) {
+        this.wrapperCtType = wrapperCtType;
     }
 
     public TypeMirror getValueType() {

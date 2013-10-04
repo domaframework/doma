@@ -227,7 +227,7 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
 
         protected void generate() {
             iprint("private static class Wrapper%1$s extends %2$s implements %3$s<%4$s, %5$s> {%n",
-                    typeParamDecl, domainMeta.getWrapperType().getTypeName(),
+                    typeParamDecl, domainMeta.getWrapperCtType().getTypeName(),
                     DomainWrapper.class.getName(), domainMeta.getValueElement()
                             .getQualifiedName(), domainTypeName);
             print("%n");
@@ -248,7 +248,7 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
 
         protected void printWrapperConstructor() {
             iprint("private Wrapper(%1$s domain) {%n", domainTypeName);
-            if (domainMeta.getWrapperType().getWrappedType().isEnum()) {
+            if (domainMeta.getWrapperCtType().getBasicCtType().isEnum()) {
                 iprint("    super(%1$s.class);%n", domainMeta.getValueElement()
                         .getQualifiedName());
             }

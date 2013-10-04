@@ -17,9 +17,9 @@ package org.seasar.doma.internal.apt.meta;
 
 import javax.lang.model.element.ExecutableElement;
 
+import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.mirror.BatchModifyMirror;
-import org.seasar.doma.internal.apt.type.DataType;
-import org.seasar.doma.internal.apt.type.EntityType;
 
 /**
  * @author taedium
@@ -27,9 +27,9 @@ import org.seasar.doma.internal.apt.type.EntityType;
  */
 public class SqlFileBatchModifyQueryMeta extends AbstractSqlFileQueryMeta {
 
-    protected EntityType entityType;
+    protected EntityCtType entityCtType;
 
-    protected DataType elementType;
+    protected CtType elementCtType;
 
     protected String elementsParameterName;
 
@@ -39,20 +39,20 @@ public class SqlFileBatchModifyQueryMeta extends AbstractSqlFileQueryMeta {
         super(method);
     }
 
-    public EntityType getEntityType() {
-        return entityType;
+    public EntityCtType getEntityType() {
+        return entityCtType;
     }
 
-    public void setEntityType(EntityType entityType) {
-        this.entityType = entityType;
+    public void setEntityType(EntityCtType entityCtType) {
+        this.entityCtType = entityCtType;
     }
 
-    public DataType getElementType() {
-        return elementType;
+    public CtType getElementCtType() {
+        return elementCtType;
     }
 
-    public void setElementType(DataType elementType) {
-        this.elementType = elementType;
+    public void setElementCtType(CtType elementCtType) {
+        this.elementCtType = elementCtType;
     }
 
     public String getElementsParameterName() {

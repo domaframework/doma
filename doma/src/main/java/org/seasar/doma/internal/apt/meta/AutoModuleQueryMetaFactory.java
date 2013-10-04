@@ -23,15 +23,15 @@ import org.seasar.doma.In;
 import org.seasar.doma.InOut;
 import org.seasar.doma.Out;
 import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.cttype.BasicCtType;
+import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.apt.cttype.DomainCtType;
+import org.seasar.doma.internal.apt.cttype.EntityCtType;
+import org.seasar.doma.internal.apt.cttype.IterableCtType;
+import org.seasar.doma.internal.apt.cttype.MapCtType;
+import org.seasar.doma.internal.apt.cttype.ReferenceCtType;
+import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.mirror.ResultSetMirror;
-import org.seasar.doma.internal.apt.type.BasicType;
-import org.seasar.doma.internal.apt.type.DataType;
-import org.seasar.doma.internal.apt.type.DomainType;
-import org.seasar.doma.internal.apt.type.EntityType;
-import org.seasar.doma.internal.apt.type.IterableType;
-import org.seasar.doma.internal.apt.type.MapType;
-import org.seasar.doma.internal.apt.type.ReferenceType;
-import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.message.Message;
 
 /**
@@ -85,73 +85,73 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     protected CallableSqlParameterMeta createResultSetParameterMeta(
             final QueryParameterMeta parameterMeta,
             final ResultSetMirror resultSetMirror) {
-        IterableType iterableType = parameterMeta
-                .getDataType()
-                .accept(new SimpleDataTypeVisitor<IterableType, Void, RuntimeException>() {
+        IterableCtType iterableCtType = parameterMeta
+                .getCtType()
+                .accept(new SimpleCtTypeVisitor<IterableCtType, Void, RuntimeException>() {
 
                     @Override
-                    protected IterableType defaultAction(DataType type, Void p)
+                    protected IterableCtType defaultAction(CtType type, Void p)
                             throws RuntimeException {
                         throw new AptException(Message.DOMA4062, env,
                                 parameterMeta.getElement());
                     }
 
                     @Override
-                    public IterableType visitIterableType(
-                            IterableType dataType, Void p)
+                    public IterableCtType visitIterableCtType(
+                            IterableCtType ctType, Void p)
                             throws RuntimeException {
-                        if (!dataType.isList()) {
-                            defaultAction(dataType, p);
+                        if (!ctType.isList()) {
+                            defaultAction(ctType, p);
                         }
-                        return dataType;
+                        return ctType;
                     }
 
                 }, null);
-        return iterableType
+        return iterableCtType
                 .getElementType()
-                .accept(new SimpleDataTypeVisitor<CallableSqlParameterMeta, Void, RuntimeException>() {
+                .accept(new SimpleCtTypeVisitor<CallableSqlParameterMeta, Void, RuntimeException>() {
 
                     @Override
                     protected CallableSqlParameterMeta defaultAction(
-                            DataType type, Void p) throws RuntimeException {
+                            CtType type, Void p) throws RuntimeException {
                         throw new AptException(Message.DOMA4186, env,
                                 parameterMeta.getElement(), type.getTypeName());
                     }
 
                     @Override
-                    public CallableSqlParameterMeta visitEntityType(
-                            EntityType dataType, Void p)
+                    public CallableSqlParameterMeta visitEntityCtType(
+                            EntityCtType ctType, Void p)
                             throws RuntimeException {
-                        if (dataType.isAbstract()) {
+                        if (ctType.isAbstract()) {
                             throw new AptException(Message.DOMA4157, env,
-                                    parameterMeta.getElement(), dataType
+                                    parameterMeta.getElement(), ctType
                                             .getTypeName());
                         }
                         return new EntityListParameterMeta(parameterMeta
-                                .getName(), dataType, resultSetMirror
+                                .getName(), ctType, resultSetMirror
                                 .getEnsureResultMappingValue());
                     }
 
                     @Override
-                    public CallableSqlParameterMeta visitMapType(
-                            MapType dataType, Void p) throws RuntimeException {
+                    public CallableSqlParameterMeta visitMapCtType(
+                            MapCtType ctType, Void p) throws RuntimeException {
                         return new MapListParameterMeta(
-                                parameterMeta.getName(), dataType);
+                                parameterMeta.getName(), ctType);
                     }
 
                     @Override
-                    public CallableSqlParameterMeta visitBasicType(
-                            BasicType dataType, Void p) throws RuntimeException {
+                    public CallableSqlParameterMeta visitBasicCtType(
+                            BasicCtType ctType, Void p) throws RuntimeException {
                         return new BasicListParameterMeta(parameterMeta
-                                .getName(), dataType);
+                                .getName(), ctType);
                     }
 
                     @Override
-                    public CallableSqlParameterMeta visitDomainType(
-                            DomainType dataType, Void p)
+                    public CallableSqlParameterMeta visitDomainCtType(
+                            DomainCtType ctType, Void p)
                             throws RuntimeException {
                         return new DomainListParameterMeta(parameterMeta
-                                .getName(), dataType);
+                                .getName(), ctType);
                     }
 
                 }, null);
@@ -160,30 +160,30 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     protected CallableSqlParameterMeta createInParameterMeta(
             final QueryParameterMeta parameterMeta) {
         return parameterMeta
-                .getDataType()
-                .accept(new SimpleDataTypeVisitor<CallableSqlParameterMeta, Void, RuntimeException>() {
+                .getCtType()
+                .accept(new SimpleCtTypeVisitor<CallableSqlParameterMeta, Void, RuntimeException>() {
 
                     @Override
                     protected CallableSqlParameterMeta defaultAction(
-                            DataType type, Void p) throws RuntimeException {
+                            CtType type, Void p) throws RuntimeException {
                         throw new AptException(Message.DOMA4101, env,
                                 parameterMeta.getElement(), parameterMeta
                                         .getType());
                     }
 
                     @Override
-                    public CallableSqlParameterMeta visitBasicType(
-                            BasicType dataType, Void p) throws RuntimeException {
+                    public CallableSqlParameterMeta visitBasicCtType(
+                            BasicCtType ctType, Void p) throws RuntimeException {
                         return new BasicInParameterMeta(
-                                parameterMeta.getName(), dataType);
+                                parameterMeta.getName(), ctType);
                     }
 
                     @Override
-                    public CallableSqlParameterMeta visitDomainType(
-                            DomainType dataType, Void p)
+                    public CallableSqlParameterMeta visitDomainCtType(
+                            DomainCtType ctType, Void p)
                             throws RuntimeException {
                         return new DomainInParameterMeta(parameterMeta
-                                .getName(), dataType);
+                                .getName(), ctType);
                     }
 
                 }, null);
@@ -191,50 +191,50 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
 
     protected CallableSqlParameterMeta createOutParameterMeta(
             final QueryParameterMeta parameterMeta) {
-        final ReferenceType referenceType = parameterMeta
-                .getDataType()
-                .accept(new SimpleDataTypeVisitor<ReferenceType, Void, RuntimeException>() {
+        final ReferenceCtType referenceCtType = parameterMeta
+                .getCtType()
+                .accept(new SimpleCtTypeVisitor<ReferenceCtType, Void, RuntimeException>() {
 
                     @Override
-                    protected ReferenceType defaultAction(DataType type, Void p)
+                    protected ReferenceCtType defaultAction(CtType type, Void p)
                             throws RuntimeException {
                         throw new AptException(Message.DOMA4098, env,
                                 parameterMeta.getElement());
                     }
 
                     @Override
-                    public ReferenceType visitReferenceType(
-                            ReferenceType dataType, Void p)
+                    public ReferenceCtType visitReferenceCtType(
+                            ReferenceCtType ctType, Void p)
                             throws RuntimeException {
-                        return dataType;
+                        return ctType;
                     }
 
                 }, null);
-        return referenceType
+        return referenceCtType
                 .getReferentType()
-                .accept(new SimpleDataTypeVisitor<CallableSqlParameterMeta, Void, RuntimeException>() {
+                .accept(new SimpleCtTypeVisitor<CallableSqlParameterMeta, Void, RuntimeException>() {
 
                     @Override
                     protected CallableSqlParameterMeta defaultAction(
-                            DataType type, Void p) throws RuntimeException {
+                            CtType type, Void p) throws RuntimeException {
                         throw new AptException(Message.DOMA4100, env,
-                                parameterMeta.getElement(), referenceType
+                                parameterMeta.getElement(), referenceCtType
                                         .getReferentTypeMirror());
                     }
 
                     @Override
-                    public CallableSqlParameterMeta visitBasicType(
-                            BasicType dataType, Void p) throws RuntimeException {
+                    public CallableSqlParameterMeta visitBasicCtType(
+                            BasicCtType ctType, Void p) throws RuntimeException {
                         return new BasicOutParameterMeta(parameterMeta
-                                .getName(), dataType);
+                                .getName(), ctType);
                     }
 
                     @Override
-                    public CallableSqlParameterMeta visitDomainType(
-                            DomainType dataType, Void p)
+                    public CallableSqlParameterMeta visitDomainCtType(
+                            DomainCtType ctType, Void p)
                             throws RuntimeException {
                         return new DomainOutParameterMeta(parameterMeta
-                                .getName(), dataType);
+                                .getName(), ctType);
                     }
 
                 }, null);
@@ -242,50 +242,50 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
 
     protected CallableSqlParameterMeta createInOutParameterMeta(
             final QueryParameterMeta parameterMeta) {
-        final ReferenceType referenceType = parameterMeta
-                .getDataType()
-                .accept(new SimpleDataTypeVisitor<ReferenceType, Void, RuntimeException>() {
+        final ReferenceCtType referenceCtType = parameterMeta
+                .getCtType()
+                .accept(new SimpleCtTypeVisitor<ReferenceCtType, Void, RuntimeException>() {
 
                     @Override
-                    protected ReferenceType defaultAction(DataType type, Void p)
+                    protected ReferenceCtType defaultAction(CtType type, Void p)
                             throws RuntimeException {
                         throw new AptException(Message.DOMA4111, env,
                                 parameterMeta.getElement());
                     }
 
                     @Override
-                    public ReferenceType visitReferenceType(
-                            ReferenceType dataType, Void p)
+                    public ReferenceCtType visitReferenceCtType(
+                            ReferenceCtType ctType, Void p)
                             throws RuntimeException {
-                        return dataType;
+                        return ctType;
                     }
 
                 }, null);
-        return referenceType
+        return referenceCtType
                 .getReferentType()
-                .accept(new SimpleDataTypeVisitor<CallableSqlParameterMeta, Void, RuntimeException>() {
+                .accept(new SimpleCtTypeVisitor<CallableSqlParameterMeta, Void, RuntimeException>() {
 
                     @Override
                     protected CallableSqlParameterMeta defaultAction(
-                            DataType type, Void p) throws RuntimeException {
+                            CtType type, Void p) throws RuntimeException {
                         throw new AptException(Message.DOMA4100, env,
-                                parameterMeta.getElement(), referenceType
+                                parameterMeta.getElement(), referenceCtType
                                         .getReferentTypeMirror());
                     }
 
                     @Override
-                    public CallableSqlParameterMeta visitBasicType(
-                            BasicType dataType, Void p) throws RuntimeException {
+                    public CallableSqlParameterMeta visitBasicCtType(
+                            BasicCtType ctType, Void p) throws RuntimeException {
                         return new BasicInOutParameterMeta(parameterMeta
-                                .getName(), dataType);
+                                .getName(), ctType);
                     }
 
                     @Override
-                    public CallableSqlParameterMeta visitDomainType(
-                            DomainType dataType, Void p)
+                    public CallableSqlParameterMeta visitDomainCtType(
+                            DomainCtType ctType, Void p)
                             throws RuntimeException {
                         return new DomainInOutParameterMeta(parameterMeta
-                                .getName(), dataType);
+                                .getName(), ctType);
                     }
 
                 }, null);

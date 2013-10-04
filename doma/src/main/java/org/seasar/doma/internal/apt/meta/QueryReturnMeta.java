@@ -28,14 +28,14 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.TypeKindVisitor6;
 
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.type.AnyType;
-import org.seasar.doma.internal.apt.type.BasicType;
-import org.seasar.doma.internal.apt.type.DataType;
-import org.seasar.doma.internal.apt.type.DomainType;
-import org.seasar.doma.internal.apt.type.EntityType;
-import org.seasar.doma.internal.apt.type.IterableType;
-import org.seasar.doma.internal.apt.type.MapType;
-import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
+import org.seasar.doma.internal.apt.cttype.AnyCtType;
+import org.seasar.doma.internal.apt.cttype.BasicCtType;
+import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.apt.cttype.DomainCtType;
+import org.seasar.doma.internal.apt.cttype.EntityCtType;
+import org.seasar.doma.internal.apt.cttype.IterableCtType;
+import org.seasar.doma.internal.apt.cttype.MapCtType;
+import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.Result;
@@ -51,7 +51,7 @@ public class QueryReturnMeta {
 
     protected final String typeName;
 
-    protected final DataType dataType;
+    protected final CtType ctType;
 
     public QueryReturnMeta(ExecutableElement methodElement,
             ProcessingEnvironment env) {
@@ -60,81 +60,81 @@ public class QueryReturnMeta {
         this.env = env;
         type = methodElement.getReturnType();
         typeName = TypeMirrorUtil.getTypeName(type, env);
-        dataType = createDataType(methodElement, type, env);
+        ctType = createCtType(methodElement, type, env);
     }
 
-    protected DataType createDataType(final ExecutableElement methodElement,
+    protected CtType createCtType(final ExecutableElement methodElement,
             final TypeMirror type, final ProcessingEnvironment env) {
-        IterableType iterableType = IterableType.newInstance(type, env);
-        if (iterableType != null) {
-            if (iterableType.isRawType()) {
+        IterableCtType iterableCtType = IterableCtType.newInstance(type, env);
+        if (iterableCtType != null) {
+            if (iterableCtType.isRawType()) {
                 throw new AptException(Message.DOMA4109, env, methodElement,
                         typeName);
             }
-            if (iterableType.isWildcardType()) {
+            if (iterableCtType.isWildcardType()) {
                 throw new AptException(Message.DOMA4113, env, methodElement,
                         typeName);
             }
-            iterableType.getElementType().accept(
-                    new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+            iterableCtType.getElementType().accept(
+                    new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
 
                         @Override
-                        public Void visitDomainType(final DomainType dataType,
+                        public Void visitDomainCtType(final DomainCtType ctType,
                                 Void p) throws RuntimeException {
-                            if (dataType.isRawType()) {
+                            if (ctType.isRawType()) {
                                 throw new AptException(Message.DOMA4210, env,
                                         methodElement,
-                                        dataType.getQualifiedName());
+                                        ctType.getQualifiedName());
                             }
-                            if (dataType.isWildcardType()) {
+                            if (ctType.isWildcardType()) {
                                 throw new AptException(Message.DOMA4211, env,
                                         methodElement,
-                                        dataType.getQualifiedName());
+                                        ctType.getQualifiedName());
                             }
                             return null;
                         }
 
                     }, null);
-            return iterableType;
+            return iterableCtType;
         }
 
-        EntityType entityType = EntityType.newInstance(type, env);
-        if (entityType != null) {
-            return entityType;
+        EntityCtType entityCtType = EntityCtType.newInstance(type, env);
+        if (entityCtType != null) {
+            return entityCtType;
         }
 
-        final DomainType domainType = DomainType.newInstance(type, env);
-        if (domainType != null) {
-            if (domainType.isRawType()) {
+        final DomainCtType domainCtType = DomainCtType.newInstance(type, env);
+        if (domainCtType != null) {
+            if (domainCtType.isRawType()) {
                 throw new AptException(Message.DOMA4206, env, methodElement,
-                        domainType.getQualifiedName());
+                        domainCtType.getQualifiedName());
             }
-            if (domainType.isWildcardType()) {
+            if (domainCtType.isWildcardType()) {
                 throw new AptException(Message.DOMA4207, env, methodElement,
-                        domainType.getQualifiedName());
+                        domainCtType.getQualifiedName());
             }
-            return domainType;
+            return domainCtType;
         }
 
-        BasicType basicType = BasicType.newInstance(type, env);
-        if (basicType != null) {
-            return basicType;
+        BasicCtType basicCtType = BasicCtType.newInstance(type, env);
+        if (basicCtType != null) {
+            return basicCtType;
         }
 
-        MapType mapType = MapType.newInstance(type, env);
-        if (mapType != null) {
-            return mapType;
+        MapCtType mapCtType = MapCtType.newInstance(type, env);
+        if (mapCtType != null) {
+            return mapCtType;
         }
 
-        return AnyType.newInstance(type, env);
+        return AnyCtType.newInstance(type, env);
     }
 
     public String getTypeName() {
         return typeName;
     }
 
-    public String getTypeNameAsTypeParameter() {
-        return dataType.getTypeNameAsTypeParameter();
+    public String getBoxedTypeName() {
+        return ctType.getBoxedTypeName();
     }
 
     public boolean isPrimitiveInt() {
@@ -155,7 +155,7 @@ public class QueryReturnMeta {
         return type.getKind() == TypeKind.VOID;
     }
 
-    public boolean isResult(EntityType entityType) {
+    public boolean isResult(EntityCtType entityCtType) {
         if (!TypeMirrorUtil.isSameType(env.getTypeUtils().erasure(type),
                 Result.class, env)) {
             return false;
@@ -169,11 +169,11 @@ public class QueryReturnMeta {
             return false;
         }
         TypeMirror typeArg = typeArgs.get(0);
-        return TypeMirrorUtil.isSameType(typeArg, entityType.getTypeMirror(),
+        return TypeMirrorUtil.isSameType(typeArg, entityCtType.getTypeMirror(),
                 env);
     }
 
-    public boolean isBatchResult(EntityType entityType) {
+    public boolean isBatchResult(EntityCtType entityCtType) {
         if (!TypeMirrorUtil.isSameType(env.getTypeUtils().erasure(type),
                 BatchResult.class, env)) {
             return false;
@@ -187,7 +187,7 @@ public class QueryReturnMeta {
             return false;
         }
         TypeMirror typeArg = typeArgs.get(0);
-        return TypeMirrorUtil.isSameType(typeArg, entityType.getTypeMirror(),
+        return TypeMirrorUtil.isSameType(typeArg, entityCtType.getTypeMirror(),
                 env);
     }
 
@@ -199,8 +199,8 @@ public class QueryReturnMeta {
         return type;
     }
 
-    public DataType getDataType() {
-        return dataType;
+    public CtType getDataType() {
+        return ctType;
     }
 
 }

@@ -23,8 +23,8 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
 import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.mirror.ColumnMirror;
-import org.seasar.doma.internal.apt.type.DataType;
 import org.seasar.doma.internal.apt.util.MetaUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.entity.NamingType;
@@ -62,7 +62,7 @@ public class EntityPropertyMeta {
 
     protected IdGeneratorMeta idGeneratorMeta;
 
-    protected DataType dataType;
+    protected CtType ctType;
 
     public EntityPropertyMeta(TypeElement entityElement,
             VariableElement propertyElement, NamingType namingType,
@@ -138,12 +138,12 @@ public class EntityPropertyMeta {
         return ownProperty;
     }
 
-    public DataType getDataType() {
-        return dataType;
+    public CtType getDataType() {
+        return ctType;
     }
 
-    public void setDataType(DataType dataType) {
-        this.dataType = dataType;
+    public void setDataType(CtType ctType) {
+        this.ctType = ctType;
     }
 
     public void setColumnMirror(ColumnMirror columnMirror) {

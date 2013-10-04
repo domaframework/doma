@@ -28,14 +28,14 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.BatchSqlValidator;
 import org.seasar.doma.internal.apt.SqlValidator;
+import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.apt.cttype.EntityCtType;
+import org.seasar.doma.internal.apt.cttype.IterableCtType;
+import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.mirror.BatchDeleteMirror;
 import org.seasar.doma.internal.apt.mirror.BatchInsertMirror;
 import org.seasar.doma.internal.apt.mirror.BatchModifyMirror;
 import org.seasar.doma.internal.apt.mirror.BatchUpdateMirror;
-import org.seasar.doma.internal.apt.type.DataType;
-import org.seasar.doma.internal.apt.type.EntityType;
-import org.seasar.doma.internal.apt.type.IterableType;
-import org.seasar.doma.internal.apt.type.SimpleDataTypeVisitor;
 import org.seasar.doma.message.Message;
 
 /**
@@ -95,9 +95,9 @@ public class SqlFileBatchModifyQueryMetaFactory extends
     protected void doReturnType(SqlFileBatchModifyQueryMeta queryMeta,
             ExecutableElement method, DaoMeta daoMeta) {
         QueryReturnMeta returnMeta = createReturnMeta(method);
-        EntityType entityType = queryMeta.getEntityType();
-        if (entityType != null && entityType.isImmutable()) {
-            if (!returnMeta.isBatchResult(entityType)) {
+        EntityCtType entityCtType = queryMeta.getEntityType();
+        if (entityCtType != null && entityCtType.isImmutable()) {
+            if (!returnMeta.isBatchResult(entityCtType)) {
                 throw new AptException(Message.DOMA4223, env,
                         returnMeta.getElement());
             }
@@ -120,34 +120,34 @@ public class SqlFileBatchModifyQueryMetaFactory extends
         }
         QueryParameterMeta parameterMeta = createParameterMeta(parameters
                 .get(0));
-        IterableType iterableType = parameterMeta
-                .getDataType()
-                .accept(new SimpleDataTypeVisitor<IterableType, Void, RuntimeException>() {
+        IterableCtType iterableCtType = parameterMeta
+                .getCtType()
+                .accept(new SimpleCtTypeVisitor<IterableCtType, Void, RuntimeException>() {
 
                     @Override
-                    protected IterableType defaultAction(DataType type, Void p)
+                    protected IterableCtType defaultAction(CtType type, Void p)
                             throws RuntimeException {
                         throw new AptException(Message.DOMA4042, env, method);
                     }
 
                     @Override
-                    public IterableType visitIterableType(
-                            IterableType dataType, Void p)
+                    public IterableCtType visitIterableCtType(
+                            IterableCtType ctType, Void p)
                             throws RuntimeException {
-                        return dataType;
+                        return ctType;
                     }
 
                 }, null);
-        DataType elementType = iterableType.getElementType();
-        queryMeta.setElementType(elementType);
+        CtType elementType = iterableCtType.getElementType();
+        queryMeta.setElementCtType(elementType);
         queryMeta.setElementsParameterName(parameterMeta.getName());
         elementType.accept(
-                new SimpleDataTypeVisitor<Void, Void, RuntimeException>() {
+                new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
 
                     @Override
-                    public Void visitEntityType(EntityType dataType, Void p)
+                    public Void visitEntityCtType(EntityCtType ctType, Void p)
                             throws RuntimeException {
-                        queryMeta.setEntityType(dataType);
+                        queryMeta.setEntityType(ctType);
                         return null;
                     }
 

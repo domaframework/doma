@@ -17,7 +17,7 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import org.seasar.doma.internal.apt.type.EntityType;
+import org.seasar.doma.internal.apt.cttype.EntityCtType;
 
 /**
  * @author taedium
@@ -25,19 +25,19 @@ import org.seasar.doma.internal.apt.type.EntityType;
  */
 public class EntityListResultParameterMeta implements ResultParameterMeta {
 
-    protected final EntityType entityType;
+    protected final EntityCtType entityCtType;
 
     protected final boolean ensureResultMapping;
 
-    public EntityListResultParameterMeta(EntityType entityType,
+    public EntityListResultParameterMeta(EntityCtType entityCtType,
             boolean ensureResultMapping) {
-        assertNotNull(entityType);
-        this.entityType = entityType;
+        assertNotNull(entityCtType);
+        this.entityCtType = entityCtType;
         this.ensureResultMapping = ensureResultMapping;
     }
 
-    public EntityType getEntityType() {
-        return entityType;
+    public EntityCtType getEntityCtType() {
+        return entityCtType;
     }
 
     public boolean getEnsureResultMapping() {

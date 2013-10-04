@@ -17,7 +17,7 @@ package org.seasar.doma.internal.apt.meta;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import org.seasar.doma.internal.apt.type.BasicType;
+import org.seasar.doma.internal.apt.cttype.BasicCtType;
 
 /**
  * @author taedium
@@ -25,15 +25,15 @@ import org.seasar.doma.internal.apt.type.BasicType;
  */
 public class BasicResultParameterMeta implements ResultParameterMeta {
 
-    protected final BasicType basicType;
+    protected final BasicCtType basicCtType;
 
-    public BasicResultParameterMeta(BasicType basicType) {
-        assertNotNull(basicType);
-        this.basicType = basicType;
+    public BasicResultParameterMeta(BasicCtType basicCtType) {
+        assertNotNull(basicCtType);
+        this.basicCtType = basicCtType;
     }
 
-    public BasicType getBasicType() {
-        return basicType;
+    public BasicCtType getBasicCtType() {
+        return basicCtType;
     }
 
     @Override
