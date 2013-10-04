@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.internal.apt;
 
+import java.util.function.Consumer;
+
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic.Kind;
@@ -37,13 +39,13 @@ public abstract class AbstractProcessor extends
     }
 
     protected void handleTypeElement(TypeElement typeElement,
-            TypeElementHandler handler) {
+            Consumer<TypeElement> handler) {
         if (Options.isDebugEnabled(processingEnv)) {
             Notifier.debug(processingEnv, Message.DOMA4090, getClass()
                     .getName(), typeElement.getQualifiedName());
         }
         try {
-            handler.handle(typeElement);
+            handler.accept(typeElement);
         } catch (AptException e) {
             Notifier.notify(processingEnv, e);
         } catch (AptIllegalOptionException e) {

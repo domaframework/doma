@@ -46,16 +46,10 @@ public class DomainConvertersProcessor extends AbstractProcessor {
         if (roundEnv.processingOver()) {
             return true;
         }
-        TypeElementHandler handler = new TypeElementHandler() {
-            @Override
-            public void handle(TypeElement typeElement) {
-                validate(typeElement);
-            }
-        };
         for (TypeElement a : annotations) {
             for (TypeElement typeElement : ElementFilter.typesIn(roundEnv
                     .getElementsAnnotatedWith(a))) {
-                handleTypeElement(typeElement, handler);
+                handleTypeElement(typeElement, t -> validate(t));
             }
         }
         return true;

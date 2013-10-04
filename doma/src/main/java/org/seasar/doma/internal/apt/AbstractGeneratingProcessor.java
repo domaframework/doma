@@ -45,19 +45,14 @@ public abstract class AbstractGeneratingProcessor<M extends TypeElementMeta>
         }
         for (TypeElement a : annotations) {
             final TypeElementMetaFactory<M> factory = createTypeElementMetaFactory();
-            TypeElementHandler handler = new TypeElementHandler() {
-
-                @Override
-                public void handle(TypeElement typeElement) {
+            for (TypeElement typeElement : ElementFilter.typesIn(roundEnv
+                    .getElementsAnnotatedWith(a))) {
+                handleTypeElement(typeElement, t -> {
                     M meta = factory.createTypeElementMeta(typeElement);
                     if (!meta.isError()) {
                         generate(typeElement, meta);
                     }
-                }
-            };
-            for (TypeElement typeElement : ElementFilter.typesIn(roundEnv
-                    .getElementsAnnotatedWith(a))) {
-                handleTypeElement(typeElement, handler);
+                });
             }
         }
         return true;
