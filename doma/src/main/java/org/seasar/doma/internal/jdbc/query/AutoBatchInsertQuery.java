@@ -142,31 +142,16 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
 
     protected void prepareIdValue() {
         if (generatedIdPropertyType != null && idGenerationConfig != null) {
-            if (entityType.isImmutable()) {
-                E newEntity = generatedIdPropertyType.preInsertAndNewEntity(
-                        currentEntity, idGenerationConfig, entityType);
-                if (newEntity != null) {
-                    currentEntity = newEntity;
-                }
-            } else {
-                generatedIdPropertyType.preInsert(currentEntity,
-                        idGenerationConfig);
-            }
+            E newEntity = generatedIdPropertyType.preInsert(entityType,
+                    currentEntity, idGenerationConfig);
+            currentEntity = newEntity;
         }
     }
 
     protected void prepareVersionValue() {
         if (versionPropertyType != null) {
-            if (entityType.isImmutable()) {
-                E newEntity = versionPropertyType
-                        .setIfNecessaryAndMakeNewEntity(currentEntity, 1,
-                                entityType);
-                if (newEntity != null) {
-                    currentEntity = newEntity;
-                }
-            } else {
-                versionPropertyType.setIfNecessary(currentEntity, 1);
-            }
+            currentEntity = versionPropertyType.setIfNecessary(entityType,
+                    currentEntity, 1);
         }
     }
 
@@ -202,17 +187,9 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
     @Override
     public void generateId(Statement statement, int index) {
         if (generatedIdPropertyType != null && idGenerationConfig != null) {
-            if (entityType.isImmutable()) {
-                E newEntity = generatedIdPropertyType.postInsertAndNewEntity(
-                        entities.get(index), idGenerationConfig, statement,
-                        entityType);
-                if (newEntity != null) {
-                    entities.set(index, newEntity);
-                }
-            } else {
-                generatedIdPropertyType.postInsert(entities.get(index),
-                        idGenerationConfig, statement);
-            }
+            E newEntity = generatedIdPropertyType.postInsert(entityType,
+                    entities.get(index), idGenerationConfig, statement);
+            entities.set(index, newEntity);
         }
     }
 

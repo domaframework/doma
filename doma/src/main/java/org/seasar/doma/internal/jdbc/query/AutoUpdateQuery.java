@@ -189,12 +189,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
     @Override
     public void incrementVersion() {
         if (!versionIgnored && versionPropertyType != null) {
-            if (entityType.isImmutable()) {
-                entity = versionPropertyType.incrementAndNewEntity(entity,
-                        entityType);
-            } else {
-                versionPropertyType.increment(entity);
-            }
+            entity = versionPropertyType.increment(entityType, entity);
         }
     }
 

@@ -37,6 +37,7 @@ import org.seasar.doma.wrapper.NumberWrapper;
 import org.seasar.doma.wrapper.ShortWrapper;
 import org.seasar.doma.wrapper.ShortWrapperVisitor;
 import org.seasar.doma.wrapper.Wrapper;
+import org.seasar.doma.wrapper.WrapperVisitor;
 
 /**
  * バージョンのプロパティ型です。
@@ -83,81 +84,65 @@ public class VersionPropertyType<PE, E extends PE, P, V extends Number> extends
     /**
      * 必要であればバージョンの値を設定します。
      * 
-     * @param entity
-     *            エンティティ
-     * @param value
-     *            バージョンの値
-     */
-    public void setIfNecessary(E entity, Number value) {
-        Accessor<E, ?, ?> accessor = getAccessor();
-        accessor.load(entity);
-        accessor.getWrapper().accept(new ValueSetter(), value);
-        accessor.save(entity);
-    }
-
-    /**
-     * 必要であればバージョンの値を設定し、新しいエンティティを返します。
-     * 
-     * @param entity
-     *            エンティティ
-     * @param value
-     *            バージョンの値
      * @param entityType
-     *            エンティティタイプ
-     * @since 1.34.0
+     *            エンティティのタイプ
+     * @param entity
+     *            エンティティ
+     * @param value
+     *            バージョンの値
+     * @return エンティティ
      */
-    public E setIfNecessaryAndMakeNewEntity(E entity, Number value,
-            EntityType<E> entityType) {
-        ValueSetter valueSetter = new ValueSetter();
-        Map<String, Accessor<E, ?, ?>> accessors = new HashMap<>();
-        for (EntityPropertyType<E, ?, ?> p : entityType
-                .getEntityPropertyTypes()) {
-            Accessor<E, ?, ?> accessor = p.getAccessor();
-            accessor.load(entity);
-            if (p == this) {
-                accessor.getWrapper().accept(valueSetter, value);
-            }
-            accessors.put(p.getName(), accessor);
-        }
-        return entityType.newEntity(accessors);
+    public E setIfNecessary(EntityType<E> entityType, E entity, Number value) {
+        return modifyValue(entityType, entity, new ValueSetter(), value);
     }
 
     /**
      * バージョン番号をインクリメントします。
      * 
+     * @param entityType
+     *            エンティティのタイプ
      * @param entity
      *            エンティティ
+     * @return エンティティ
      */
-    public void increment(E entity) {
-        Accessor<E, ?, ?> accessor = getAccessor();
-        accessor.load(entity);
-        accessor.getWrapper().accept(new Incrementer(), null);
-        accessor.save(entity);
+    public E increment(EntityType<E> entityType, E entity) {
+        return modifyValue(entityType, entity, new Incrementer(), null);
     }
 
     /**
-     * バージョン番号をインクリメントして新しいエンティティを返します。
+     * エンティティに値を設定して返します。
      * 
-     * @param entity
-     *            エンティティ
      * @param entityType
      *            エンティティタイプ
-     * @return 新しいエンティティ
-     * @since 1.34.0
+     * @param entity
+     *            エンティティ
+     * @param visitor
+     *            ビジター
+     * @param value
+     *            値
+     * @return エンティティ
      */
-    public E incrementAndNewEntity(E entity, EntityType<E> entityType) {
-        Incrementer incrementer = new Incrementer();
-        Map<String, Accessor<E, ?, ?>> accessors = new HashMap<>();
-        for (EntityPropertyType<E, ?, ?> p : entityType
-                .getEntityPropertyTypes()) {
-            Accessor<E, ?, ?> accessor = p.getAccessor();
-            accessor.load(entity);
-            if (p == this) {
-                accessor.getWrapper().accept(incrementer, null);
+    protected <PARAM> E modifyValue(EntityType<E> entityType, E entity,
+            WrapperVisitor<Void, PARAM, RuntimeException> visitor, PARAM value) {
+        if (entityType.isImmutable()) {
+            Map<String, Accessor<E, ?, ?>> accessors = new HashMap<>();
+            for (EntityPropertyType<E, ?, ?> p : entityType
+                    .getEntityPropertyTypes()) {
+                Accessor<E, ?, ?> accessor = p.getAccessor();
+                accessor.load(entity);
+                if (p == this) {
+                    accessor.getWrapper().accept(visitor, value);
+                }
+                accessors.put(p.getName(), accessor);
             }
-            accessors.put(p.getName(), accessor);
+            return entityType.newEntity(accessors);
+        } else {
+            Accessor<E, ?, ?> accessor = getAccessor();
+            accessor.load(entity);
+            accessor.getWrapper().accept(visitor, value);
+            accessor.save(entity);
+            return entity;
         }
-        return entityType.newEntity(accessors);
     }
 
     protected static class ValueSetter implements

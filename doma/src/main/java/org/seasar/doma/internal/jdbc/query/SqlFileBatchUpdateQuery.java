@@ -156,16 +156,11 @@ public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
 
         protected void incrementVersions() {
             if (versionPropertyType != null && !versionIgnored) {
-                boolean immutable = entityType.isImmutable();
                 for (int i = 0, size = elements.size(); i < size; i++) {
                     E entity = elements.get(i);
-                    if (immutable) {
-                        E newEntity = versionPropertyType
-                                .incrementAndNewEntity(entity, entityType);
-                        elements.set(i, newEntity);
-                    } else {
-                        versionPropertyType.increment(entity);
-                    }
+                    E newEntity = versionPropertyType.increment(entityType,
+                            entity);
+                    elements.set(i, newEntity);
                 }
             }
         }

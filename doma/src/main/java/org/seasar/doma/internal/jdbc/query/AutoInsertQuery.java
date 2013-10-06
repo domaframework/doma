@@ -129,29 +129,15 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
 
     protected void prepareIdValue() {
         if (generatedIdPropertyType != null && idGenerationConfig != null) {
-            if (entityType.isImmutable()) {
-                E newEntity = generatedIdPropertyType.preInsertAndNewEntity(
-                        entity, idGenerationConfig, entityType);
-                if (newEntity != null) {
-                    entity = newEntity;
-                }
-            } else {
-                generatedIdPropertyType.preInsert(entity, idGenerationConfig);
-            }
+            E newEntity = generatedIdPropertyType.preInsert(entityType, entity,
+                    idGenerationConfig);
+            entity = newEntity;
         }
     }
 
     protected void prepareVersionValue() {
         if (versionPropertyType != null) {
-            if (entityType.isImmutable()) {
-                E newEntity = versionPropertyType
-                        .setIfNecessaryAndMakeNewEntity(entity, 1, entityType);
-                if (newEntity != null) {
-                    entity = newEntity;
-                }
-            } else {
-                versionPropertyType.setIfNecessary(entity, 1);
-            }
+            entity = versionPropertyType.setIfNecessary(entityType, entity, 1);
         }
     }
 
@@ -181,16 +167,9 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
     @Override
     public void generateId(Statement statement) {
         if (generatedIdPropertyType != null && idGenerationConfig != null) {
-            if (entityType.isImmutable()) {
-                E newEntity = generatedIdPropertyType.postInsertAndNewEntity(
-                        entity, idGenerationConfig, statement, entityType);
-                if (newEntity != null) {
-                    entity = newEntity;
-                }
-            } else {
-                generatedIdPropertyType.postInsert(entity, idGenerationConfig,
-                        statement);
-            }
+            E newEntity = generatedIdPropertyType.postInsert(entityType,
+                    entity, idGenerationConfig, statement);
+            entity = newEntity;
         }
     }
 

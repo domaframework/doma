@@ -26,9 +26,9 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.entity.Accessor;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.entity.Accessor;
 
 /**
  * @author taedium
@@ -148,8 +148,7 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
             } else {
                 builder.appendSql(" and ");
             }
-            Accessor<E, ?, ?> accessor = versionPropertyType
-                    .getAccessor();
+            Accessor<E, ?, ?> accessor = versionPropertyType.getAccessor();
             accessor.load(currentEntity);
             builder.appendSql(versionPropertyType.getColumnName());
             builder.appendSql(" = ");
@@ -162,16 +161,10 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
     @Override
     public void incrementVersions() {
         if (versionPropertyType != null && !versionIgnored) {
-            boolean immutable = entityType.isImmutable();
             for (int i = 0, size = entities.size(); i < size; i++) {
                 E entity = entities.get(i);
-                if (immutable) {
-                    E newEntity = versionPropertyType.incrementAndNewEntity(
-                            entity, entityType);
-                    entities.set(i, newEntity);
-                } else {
-                    versionPropertyType.increment(entity);
-                }
+                E newEntity = versionPropertyType.increment(entityType, entity);
+                entities.set(i, newEntity);
             }
         }
     }

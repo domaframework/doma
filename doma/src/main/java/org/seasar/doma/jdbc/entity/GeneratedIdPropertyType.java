@@ -18,6 +18,7 @@ package org.seasar.doma.jdbc.entity;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.GenerationType;
@@ -173,109 +174,76 @@ public class GeneratedIdPropertyType<PE, E extends PE, P, V extends Number>
     /**
      * INSERTの実行前に識別子を生成します。
      * 
-     * @param entity
-     *            エンティティ
-     * @param config
-     *            識別子の生成に関する設定
-     */
-    public void preInsert(E entity, IdGenerationConfig config) {
-        Long value = idGenerator.generatePreInsert(config);
-        if (value != null) {
-            Accessor<E, ?, ?> accessor = getAccessor();
-            accessor.load(entity);
-            accessor.getWrapper().accept(new ValueSetter(), value);
-            accessor.save(entity);
-        }
-    }
-
-    /**
-     * INSERTの実行前に識別子を生成し、新しいエンティティを返します。
-     * 
-     * @param entity
-     *            エンティティ
-     * @param config
-     *            識別子の生成に関する設定
      * @param entityType
      *            エンティティタイプ
-     * @since 1.34.0
+     * @param entity
+     *            エンティティ
+     * @param config
+     *            識別子の生成に関する設定
+     * @return エンティティ
      */
-    public E preInsertAndNewEntity(E entity, IdGenerationConfig config,
-            EntityType<E> entityType) {
-        Long value = idGenerator.generatePreInsert(config);
-        if (value != null) {
-            return newEntity(entity, value, entityType);
-        }
-        return null;
+    public E preInsert(EntityType<E> entityType, E entity,
+            IdGenerationConfig config) {
+        return setValue(entityType, entity,
+                () -> idGenerator.generatePreInsert(config));
     }
 
     /**
      * INSERTの実行後に識別子の生成を行います。
      * 
+     * @param entityType
+     *            エンティティタイプ
      * @param entity
      *            エンティティ
      * @param config
      *            識別子の生成に関する設定
      * @param statement
      *            INSERT文を実行した文
+     * @return エンティティ
      */
-    public void postInsert(E entity, IdGenerationConfig config,
-            Statement statement) {
-        Long value = idGenerator.generatePostInsert(config, statement);
-        if (value != null) {
+    public E postInsert(EntityType<E> entityType, E entity,
+            IdGenerationConfig config, Statement statement) {
+        return setValue(entityType, entity,
+                () -> idGenerator.generatePostInsert(config, statement));
+    }
+
+    /**
+     * エンティティに値を設定して返します。
+     * 
+     * @param entityType
+     *            エンティティタイプ
+     * @param entity
+     *            エンティティ
+     * @param supplier
+     *            値のサプライヤ
+     * @return エンティティ
+     */
+    protected E setValue(EntityType<E> entityType, E entity,
+            Supplier<Long> supplier) {
+        Long value = supplier.get();
+        if (value == null) {
+            return entity;
+        }
+        ValueSetter valueSetter = new ValueSetter();
+        if (entityType.isImmutable()) {
+            Map<String, Accessor<E, ?, ?>> accessors = new HashMap<>();
+            for (EntityPropertyType<E, ?, ?> p : entityType
+                    .getEntityPropertyTypes()) {
+                Accessor<E, ?, ?> accessor = p.getAccessor();
+                accessor.load(entity);
+                if (p == this) {
+                    accessor.getWrapper().accept(valueSetter, value);
+                }
+                accessors.put(p.getName(), accessor);
+            }
+            return entityType.newEntity(accessors);
+        } else {
             Accessor<E, ?, ?> accessor = getAccessor();
             accessor.load(entity);
-            accessor.getWrapper().accept(new ValueSetter(), value);
+            accessor.getWrapper().accept(valueSetter, value);
             accessor.save(entity);
+            return entity;
         }
-    }
-
-    /**
-     * INSERTの実行後に識別子の生成を行い、新しいエンティティを返します。
-     * 
-     * @param entity
-     *            エンティティ
-     * @param config
-     *            識別子の生成に関する設定
-     * @param statement
-     *            INSERT文を実行した文
-     * @param entityType
-     *            エンティティタイプ
-     * @since 1.34.0
-     */
-    public E postInsertAndNewEntity(E entity, IdGenerationConfig config,
-            Statement statement, EntityType<E> entityType) {
-        Long value = idGenerator.generatePostInsert(config, statement);
-        if (value != null) {
-            return newEntity(entity, value, entityType);
-        }
-        return null;
-    }
-
-    /**
-     * 新しいエンティティをインスタンス化します。
-     * 
-     * @param entity
-     *            エンティティ
-     * @param value
-     *            値
-     * @param entityType
-     *            エンティティタイプ
-     * @return 新しいエンティティ
-     * @since 1.34.0
-     */
-    protected E newEntity(E entity, Long value, EntityType<E> entityType) {
-        ValueSetter valueSetter = new ValueSetter();
-        Map<String, Accessor<E, ?, ?>> accessors = new HashMap<>();
-        for (EntityPropertyType<E, ?, ?> p : entityType
-                .getEntityPropertyTypes()) {
-            Accessor<E, ?, ?> accessor = p.getAccessor();
-            accessor.load(entity);
-            if (p == this) {
-                accessor.getWrapper().accept(valueSetter, value);
-            }
-            accessors.put(p.getName(), accessor);
-        }
-        return entityType.newEntity(accessors);
     }
 
     protected static class ValueSetter implements
