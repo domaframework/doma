@@ -119,7 +119,7 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
         builder.appendSql(entityType.getQualifiedTableName());
         builder.appendSql(" set ");
         for (EntityPropertyType<E, ?, ?> p : targetPropertyTypes) {
-            Accessor<E, ?, ?> accessor = p.getAccessor();
+            Accessor<E, ?> accessor = p.getAccessor();
             accessor.load(currentEntity);
             builder.appendSql(p.getColumnName());
             builder.appendSql(" = ");
@@ -133,7 +133,7 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
         if (idPropertyTypes.size() > 0) {
             builder.appendSql(" where ");
             for (EntityPropertyType<E, ?, ?> p : idPropertyTypes) {
-                Accessor<E, ?, ?> accessor = p.getAccessor();
+                Accessor<E, ?> accessor = p.getAccessor();
                 accessor.load(currentEntity);
                 builder.appendSql(p.getColumnName());
                 builder.appendSql(" = ");
@@ -148,7 +148,7 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
             } else {
                 builder.appendSql(" and ");
             }
-            Accessor<E, ?, ?> accessor = versionPropertyType.getAccessor();
+            Accessor<E, ?> accessor = versionPropertyType.getAccessor();
             accessor.load(currentEntity);
             builder.appendSql(versionPropertyType.getColumnName());
             builder.appendSql(" = ");

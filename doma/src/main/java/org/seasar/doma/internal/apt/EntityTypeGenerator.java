@@ -28,6 +28,7 @@ import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.cttype.WrapperCtType;
 import org.seasar.doma.internal.apt.meta.EntityMeta;
@@ -164,6 +165,12 @@ public class EntityTypeGenerator extends AbstractGenerator {
             }
 
             @Override
+            public Void visitOptionalCtType(OptionalCtType ctType, Void p)
+                    throws RuntimeException {
+                return ctType.getTypeArgCtType().accept(this, p);
+            }
+
+            @Override
             public Void visitBasicCtType(BasicCtType basicCtType, Void p)
                     throws RuntimeException {
                 this.wrapperCtType = basicCtType.getWrapperType();
@@ -182,7 +189,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
         for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
             Visitor visitor = new Visitor();
-            pm.getDataType().accept(visitor, null);
+            pm.getCtType().accept(visitor, null);
             String parentEntityPropertyType = "null";
             String parentEntityBoxedTypeName = Object.class.getName();
             if (!pm.isOwnProperty()) {
@@ -191,13 +198,15 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 parentEntityBoxedTypeName = pm.getEntityTypeName();
             }
             String domainType = "null";
+            String domainTypeName = "Object";
             if (visitor.domainCtType != null) {
                 domainType = visitor.domainCtType.getInstantiationCommand();
+                domainTypeName = visitor.domainCtType.getTypeName();
             }
             iprint("/** the %1$s */%n", pm.getName());
             if (pm.isId()) {
                 if (pm.getIdGeneratorMeta() != null) {
-                    iprint("public final %1$s<%11$s, %2$s, %9$s, %3$s> %12$s = new %1$s<>(%6$s.class, %13$s.class, %3$s.class, %7$s.class, %10$s, %8$s, \"%4$s\", \"%5$s\", __idGenerator);%n",
+                    iprint("public final %1$s<%11$s, %2$s, %9$s, %3$s, %14$s> %12$s = new %1$s<>(%6$s.class, %13$s.class, %3$s.class, %7$s.class, %10$s, %8$s, \"%4$s\", \"%5$s\", __idGenerator);%n",
                     /* 1 */GeneratedIdPropertyType.class.getName(),
                     /* 2 */entityMeta.getEntityTypeName(),
                     /* 3 */visitor.wrapperCtType.getBasicCtType()
@@ -211,9 +220,10 @@ public class EntityTypeGenerator extends AbstractGenerator {
                     /* 10 */parentEntityPropertyType,
                     /* 11 */parentEntityBoxedTypeName,
                     /* 12 */pm.getFieldName(),
-                    /* 13 */pm.getTypeElement().getQualifiedName());
+                    /* 13 */pm.getTypeElement().getQualifiedName(),
+                    /* 14 */domainTypeName);
                 } else {
-                    iprint("public final %1$s<%11$s, %2$s, %9$s, %3$s> %12$s = new %1$s<>(%6$s.class, %13$s.class, %3$s.class, %7$s.class, %10$s, %8$s, \"%4$s\", \"%5$s\");%n",
+                    iprint("public final %1$s<%11$s, %2$s, %9$s, %3$s, %14$s> %12$s = new %1$s<>(%6$s.class, %13$s.class, %3$s.class, %7$s.class, %10$s, %8$s, \"%4$s\", \"%5$s\");%n",
                     /* 1 */AssignedIdPropertyType.class.getName(),
                     /* 2 */entityMeta.getEntityTypeName(),
                     /* 3 */visitor.wrapperCtType.getBasicCtType()
@@ -227,10 +237,11 @@ public class EntityTypeGenerator extends AbstractGenerator {
                     /* 10 */parentEntityPropertyType,
                     /* 11 */parentEntityBoxedTypeName,
                     /* 12 */pm.getFieldName(),
-                    /* 13 */pm.getTypeElement().getQualifiedName());
+                    /* 13 */pm.getTypeElement().getQualifiedName(),
+                    /* 14 */domainTypeName);
                 }
             } else if (pm.isVersion()) {
-                iprint("public final %1$s<%11$s, %2$s, %9$s, %3$s> %12$s = new %1$s<>(%6$s.class,  %13$s.class, %3$s.class, %7$s.class, %10$s, %8$s, \"%4$s\", \"%5$s\");%n",
+                iprint("public final %1$s<%11$s, %2$s, %9$s, %3$s, %14$s> %12$s = new %1$s<>(%6$s.class,  %13$s.class, %3$s.class, %7$s.class, %10$s, %8$s, \"%4$s\", \"%5$s\");%n",
                 /* 1 */VersionPropertyType.class.getName(),
                 /* 2 */entityMeta.getEntityTypeName(),
                 /* 3 */visitor.wrapperCtType.getBasicCtType()
@@ -244,9 +255,10 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 /* 10 */parentEntityPropertyType,
                 /* 11 */parentEntityBoxedTypeName,
                 /* 12 */pm.getFieldName(),
-                /* 13 */pm.getTypeElement().getQualifiedName());
+                /* 13 */pm.getTypeElement().getQualifiedName(),
+                /* 14 */domainTypeName);
             } else {
-                iprint("public final %1$s<%13$s, %2$s, %11$s, %3$s> %14$s = new %1$s<>(%8$s.class, %15$s.class, %3$s.class, %9$s.class, %12$s, %10$s, \"%4$s\", \"%5$s\", %6$s, %7$s);%n",
+                iprint("public final %1$s<%13$s, %2$s, %11$s, %3$s, %16$s> %14$s = new %1$s<>(%8$s.class, %15$s.class, %3$s.class, %9$s.class, %12$s, %10$s, \"%4$s\", \"%5$s\", %6$s, %7$s);%n",
                 /* 1 */BasicPropertyType.class.getName(),
                 /* 2 */entityMeta.getEntityTypeName(),
                 /* 3 */visitor.wrapperCtType.getBasicCtType()
@@ -262,7 +274,8 @@ public class EntityTypeGenerator extends AbstractGenerator {
                 /* 12 */parentEntityPropertyType,
                 /* 13 */parentEntityBoxedTypeName,
                 /* 14 */pm.getFieldName(),
-                /* 15 */pm.getTypeElement().getQualifiedName());
+                /* 15 */pm.getTypeElement().getQualifiedName(),
+                /* 16 */domainTypeName);
             }
             print("%n");
         }
@@ -566,7 +579,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
             }
         }
         iprint("@Override%n");
-        iprint("public %1$s<%3$s, %2$s, ?, ?> getGeneratedIdPropertyType() {%n",
+        iprint("public %1$s<%3$s, %2$s, ?, ?, ?> getGeneratedIdPropertyType() {%n",
                 GeneratedIdPropertyType.class.getName(),
                 entityMeta.getEntityTypeName(),
                 parentEntityTypeNameAsTypeParameter);
@@ -586,7 +599,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
             }
         }
         iprint("@Override%n");
-        iprint("public %1$s<%3$s, %2$s, ?, ?> getVersionPropertyType() {%n",
+        iprint("public %1$s<%3$s, %2$s, ?, ?, ?> getVersionPropertyType() {%n",
                 VersionPropertyType.class.getName(),
                 entityMeta.getEntityTypeName(),
                 parentEntityTypeNameAsTypeParameter);
@@ -600,7 +613,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
             iprint("@SuppressWarnings(\"unchecked\")%n");
         }
         iprint("@Override%n");
-        iprint("public %1$s newEntity(%2$s<String, %3$s<%1$s, ?, ?>> __args) {%n",
+        iprint("public %1$s newEntity(%2$s<String, %3$s<%1$s, ?>> __args) {%n",
                 entityMeta.getEntityTypeName(), Map.class.getName(),
                 Accessor.class.getName());
         if (entityMeta.isAbstract()) {

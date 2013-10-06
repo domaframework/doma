@@ -130,17 +130,17 @@ public final class _GenericListener1Entity extends org.seasar.doma.jdbc.entity.A
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.GenericListener1Entity, ?, ?> getGeneratedIdPropertyType() {
+    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.GenericListener1Entity, ?, ?, ?> getGeneratedIdPropertyType() {
         return null;
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.GenericListener1Entity, ?, ?> getVersionPropertyType() {
+    public org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.GenericListener1Entity, ?, ?, ?> getVersionPropertyType() {
         return null;
     }
 
     @Override
-    public org.seasar.doma.internal.apt.entity.GenericListener1Entity newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Accessor<org.seasar.doma.internal.apt.entity.GenericListener1Entity, ?, ?>> __args) {
+    public org.seasar.doma.internal.apt.entity.GenericListener1Entity newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Accessor<org.seasar.doma.internal.apt.entity.GenericListener1Entity, ?>> __args) {
         org.seasar.doma.internal.apt.entity.GenericListener1Entity entity = new org.seasar.doma.internal.apt.entity.GenericListener1Entity();
         __args.values().forEach(v -> v.save(entity));
         return entity;

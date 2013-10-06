@@ -43,7 +43,7 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
 
     protected boolean nullExcluded;
 
-    protected GeneratedIdPropertyType<? super E, E, ?, ?> generatedIdPropertyType;
+    protected GeneratedIdPropertyType<? super E, E, ?, ?, ?> generatedIdPropertyType;
 
     protected IdGenerationConfig idGenerationConfig;
 
@@ -96,7 +96,7 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
             if (!p.isInsertable()) {
                 continue;
             }
-            Accessor<E, ?, ?> accessor = p.getAccessor();
+            Accessor<E, ?> accessor = p.getAccessor();
             accessor.load(entity);
             if (p.isId()) {
                 if (p != generatedIdPropertyType
@@ -154,7 +154,7 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
         builder.cutBackSql(2);
         builder.appendSql(") values (");
         for (EntityPropertyType<E, ?, ?> p : targetPropertyTypes) {
-            Accessor<E, ?, ?> accessor = p.getAccessor();
+            Accessor<E, ?> accessor = p.getAccessor();
             accessor.load(entity);
             builder.appendWrapper(accessor.getWrapper());
             builder.appendSql(", ");

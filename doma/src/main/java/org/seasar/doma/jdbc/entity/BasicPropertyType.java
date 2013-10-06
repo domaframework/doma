@@ -17,6 +17,7 @@ package org.seasar.doma.jdbc.entity;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import org.seasar.doma.DomaNullPointerException;
@@ -34,7 +35,7 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class BasicPropertyType<PE, E extends PE, P, V> implements
+public class BasicPropertyType<PE, E extends PE, P, V, D> implements
         EntityPropertyType<E, P, V> {
 
     /** エンティティのクラス */
@@ -53,7 +54,9 @@ public class BasicPropertyType<PE, E extends PE, P, V> implements
     protected final EntityPropertyType<PE, P, V> parentEntityPropertyType;
 
     /** ドメインのメタタイプ */
-    protected final DomainType<V, P> domainType;
+    protected final DomainType<V, D> domainType;
+
+    protected final boolean isOptional;
 
     /** プロパティの名前 */
     protected final String name;
@@ -74,7 +77,7 @@ public class BasicPropertyType<PE, E extends PE, P, V> implements
     protected final WrapperFactory<V> wrapperFactory;
 
     /** アクセサのサプライヤ */
-    protected final Supplier<Accessor<E, P, V>> accessorSupplier;
+    protected final Supplier<Accessor<E, V>> accessorSupplier;
 
     /**
      * インスタンスを構築します。
@@ -105,7 +108,7 @@ public class BasicPropertyType<PE, E extends PE, P, V> implements
             Class<?> entityPropertyClass, Class<V> valueClass,
             Class<?> wrapperClass,
             EntityPropertyType<PE, P, V> parentEntityPropertyType,
-            DomainType<V, P> domainType, String name, String columnName,
+            DomainType<V, D> domainType, String name, String columnName,
             boolean insertable, boolean updatable) {
         if (entityClass == null) {
             throw new DomaNullPointerException("entityClass");
@@ -131,6 +134,7 @@ public class BasicPropertyType<PE, E extends PE, P, V> implements
         this.wrapperClass = wrapperClass;
         this.parentEntityPropertyType = parentEntityPropertyType;
         this.domainType = domainType;
+        this.isOptional = entityPropertyClass == Optional.class;
         this.name = name;
         this.columnName = columnName;
         this.insertable = insertable;
@@ -147,14 +151,16 @@ public class BasicPropertyType<PE, E extends PE, P, V> implements
         return new SimpleWrapperFactory();
     }
 
-    private Supplier<Accessor<E, P, V>> createPropertyAccessorSupplier() {
+    private Supplier<Accessor<E, V>> createPropertyAccessorSupplier() {
         if (parentEntityPropertyType != null) {
-            return () -> new ParentPropertyAccessor();
+            return () -> new ParentAccessor();
         }
         if (domainType != null) {
-            return () -> new DomainPropertyAccessor();
+            return isOptional ? () -> new OptionalDomainAccessor()
+                    : () -> new DomainAccessor();
         }
-        return () -> new ValuePropertyAccessor();
+        return isOptional ? () -> new OptionalBasicAccessor()
+                : () -> new BasicAccessor();
     }
 
     private Field getField() {
@@ -177,15 +183,15 @@ public class BasicPropertyType<PE, E extends PE, P, V> implements
     }
 
     @Override
-    public Accessor<E, P, V> getAccessor() {
+    public Accessor<E, V> getAccessor() {
         return accessorSupplier.get();
     }
 
     @Override
     public void copy(E destEntity, E srcEntity) {
-        Accessor<E, P, V> dest = getAccessor();
+        Accessor<E, V> dest = getAccessor();
         dest.load(destEntity);
-        Accessor<E, P, V> src = getAccessor();
+        Accessor<E, V> src = getAccessor();
         src.load(srcEntity);
         dest.getWrapper().set(src.getWrapper().getCopy());
         dest.save(destEntity);
@@ -302,37 +308,31 @@ public class BasicPropertyType<PE, E extends PE, P, V> implements
     }
 
     /**
-     * 親プロパティのアクセサです。
+     * 親プロパティへのアクセサです。
      * 
      * @author nakamura-to
      */
-    protected class ParentPropertyAccessor implements Accessor<E, P, V> {
+    protected class ParentAccessor implements Accessor<E, V> {
 
-        protected final Accessor<PE, P, V> delegate;
+        protected final Accessor<PE, V> delegate;
 
-        protected ParentPropertyAccessor() {
+        protected ParentAccessor() {
             this.delegate = parentEntityPropertyType.getAccessor();
         }
 
         @Override
-        public P get() {
+        public Object get() {
             return delegate.get();
         }
 
         @Override
-        public ParentPropertyAccessor set(P value) {
-            delegate.set(value);
-            return this;
-        }
-
-        @Override
-        public ParentPropertyAccessor load(E entity) {
+        public ParentAccessor load(E entity) {
             delegate.load(entity);
             return this;
         }
 
         @Override
-        public ParentPropertyAccessor save(E entity) {
+        public ParentAccessor save(E entity) {
             delegate.save(entity);
             return this;
         }
@@ -345,38 +345,31 @@ public class BasicPropertyType<PE, E extends PE, P, V> implements
     }
 
     /**
-     * ドメインプロパティのアクセサです。
+     * ドメインクラスへのアクセサです。
      * 
      * @author nakamura-to
      */
-    protected class DomainPropertyAccessor implements Accessor<E, P, V> {
+    protected class DomainAccessor implements Accessor<E, V> {
 
         protected final Wrapper<V> wrapper;
 
-        protected DomainPropertyAccessor() {
+        protected DomainAccessor() {
             this.wrapper = wrapperFactory.getWrapper();
         }
 
         @Override
-        public P get() {
+        public Object get() {
             V value = wrapper.get();
-            V actualValue = (field.getType().isPrimitive() && value == null) ? wrapper
-                    .getDefault() : value;
-            return domainType.newDomain(actualValue);
+            return domainType.newDomain(value);
         }
 
         @Override
-        public DomainPropertyAccessor set(P domain) {
-            wrapper.set(domainType.getWrapper(domain).get());
-            return this;
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public DomainPropertyAccessor load(E entity) {
+        public DomainAccessor load(E entity) {
             try {
-                P domain = (P) FieldUtil.get(field, entity);
-                wrapper.set(domainType.getWrapper(domain).get());
+                Object domain = FieldUtil.get(field, entity);
+                V value = domainType.getWrapper(
+                        domainType.getDomainClass().cast(domain)).get();
+                wrapper.set(value);
             } catch (WrapException wrapException) {
                 throw new EntityPropertyAccessException(
                         wrapException.getCause(), entityClass.getName(), name);
@@ -385,11 +378,9 @@ public class BasicPropertyType<PE, E extends PE, P, V> implements
         }
 
         @Override
-        public DomainPropertyAccessor save(E entity) {
+        public DomainAccessor save(E entity) {
             V value = wrapper.get();
-            V actualValue = (field.getType().isPrimitive() && value == null) ? wrapper
-                    .getDefault() : value;
-            P domain = domainType.newDomain(actualValue);
+            D domain = domainType.newDomain(value);
             try {
                 FieldUtil.set(field, entity, domain);
             } catch (WrapException wrapException) {
@@ -405,36 +396,38 @@ public class BasicPropertyType<PE, E extends PE, P, V> implements
         }
     }
 
-    /**
-     * 値プロパティのアクセサです。
-     * 
-     * @author nakamura-to
-     */
-    protected class ValuePropertyAccessor implements Accessor<E, P, V> {
+    protected class OptionalDomainAccessor implements Accessor<E, V> {
 
         protected final Wrapper<V> wrapper;
 
-        protected ValuePropertyAccessor() {
+        protected OptionalDomainAccessor() {
             this.wrapper = wrapperFactory.getWrapper();
         }
 
         @Override
-        public P get() {
-            return entityPropertyClass.cast(wrapper.get());
-        }
-
-        @Override
-        public ValuePropertyAccessor set(P value) {
-            wrapper.set(valueClass.cast(value));
-            return this;
+        public Object get() {
+            V value = wrapper.get();
+            if (value == null) {
+                return Optional.empty();
+            } else {
+                D domain = domainType.newDomain(value);
+                return Optional.of(domain);
+            }
         }
 
         @SuppressWarnings("unchecked")
         @Override
-        public ValuePropertyAccessor load(E entity) {
+        public OptionalDomainAccessor load(E entity) {
             try {
-                V value = (V) FieldUtil.get(field, entity);
-                wrapper.set(value);
+                Optional<D> optional = (Optional<D>) FieldUtil.get(field,
+                        entity);
+                if (optional.isPresent()) {
+                    D domain = optional.get();
+                    V value = domainType.getWrapper(domain).get();
+                    wrapper.set(value);
+                } else {
+                    wrapper.set(null);
+                }
             } catch (WrapException wrapException) {
                 throw new EntityPropertyAccessException(
                         wrapException.getCause(), entityClass.getName(), name);
@@ -443,12 +436,65 @@ public class BasicPropertyType<PE, E extends PE, P, V> implements
         }
 
         @Override
-        public ValuePropertyAccessor save(E entity) {
+        public OptionalDomainAccessor save(E entity) {
             V value = wrapper.get();
-            V actualValue = (field.getType().isPrimitive() && value == null) ? wrapper
-                    .getDefault() : value;
+            Optional<D> optional;
+            if (value == null) {
+                optional = Optional.empty();
+            } else {
+                D domain = domainType.newDomain(value);
+                optional = Optional.of(domain);
+            }
             try {
-                FieldUtil.set(field, entity, actualValue);
+                FieldUtil.set(field, entity, optional);
+            } catch (WrapException wrapException) {
+                throw new EntityPropertyAccessException(
+                        wrapException.getCause(), entityClass.getName(), name);
+            }
+            return this;
+        }
+
+        @Override
+        public Wrapper<V> getWrapper() {
+            return wrapper;
+        }
+    }
+
+    /**
+     * 基本型へのアクセサです。
+     * 
+     * @author nakamura-to
+     */
+    protected class BasicAccessor implements Accessor<E, V> {
+
+        protected final Wrapper<V> wrapper;
+
+        protected BasicAccessor() {
+            this.wrapper = wrapperFactory.getWrapper();
+        }
+
+        @Override
+        public Object get() {
+            return getWrappedValue(wrapper);
+        }
+
+        @Override
+        public BasicAccessor load(E entity) {
+            try {
+                Object value = FieldUtil.get(field, entity);
+                wrapper.set(valueClass.cast(value));
+            } catch (WrapException wrapException) {
+                throw new EntityPropertyAccessException(
+                        wrapException.getCause(), entityClass.getName(), name);
+            }
+            return this;
+        }
+
+        @Override
+        public BasicAccessor save(E entity) {
+            V value = getWrappedValue(wrapper);
+            try {
+                FieldUtil.set(field, entity, value);
             } catch (WrapException wrapException) {
                 throw new EntityPropertyAccessException(
                         wrapException.getCause(), entityClass.getName(), name);
@@ -461,5 +507,64 @@ public class BasicPropertyType<PE, E extends PE, P, V> implements
             return wrapper;
         }
 
+        protected V getWrappedValue(Wrapper<V> wrapper) {
+            V value = wrapper.get();
+            if (field.getType().isPrimitive() && value == null) {
+                return wrapper.getDefault();
+            }
+            return value;
+        }
+    }
+
+    protected class OptionalBasicAccessor implements Accessor<E, V> {
+
+        protected final Wrapper<V> wrapper;
+
+        protected OptionalBasicAccessor() {
+            this.wrapper = wrapperFactory.getWrapper();
+        }
+
+        @Override
+        public Object get() {
+            V value = wrapper.get();
+            return Optional.ofNullable(value);
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public OptionalBasicAccessor load(E entity) {
+            try {
+                Optional<V> optional = (Optional<V>) FieldUtil.get(field,
+                        entity);
+                if (optional.isPresent()) {
+                    V value = optional.get();
+                    wrapper.set(value);
+                } else {
+                    wrapper.set(null);
+                }
+            } catch (WrapException wrapException) {
+                throw new EntityPropertyAccessException(
+                        wrapException.getCause(), entityClass.getName(), name);
+            }
+            return this;
+        }
+
+        @Override
+        public OptionalBasicAccessor save(E entity) {
+            V value = wrapper.get();
+            Optional<V> optional = Optional.ofNullable(value);
+            try {
+                FieldUtil.set(field, entity, optional);
+            } catch (WrapException wrapException) {
+                throw new EntityPropertyAccessException(
+                        wrapException.getCause(), entityClass.getName(), name);
+            }
+            return this;
+        }
+
+        @Override
+        public Wrapper<V> getWrapper() {
+            return wrapper;
+        }
     }
 }

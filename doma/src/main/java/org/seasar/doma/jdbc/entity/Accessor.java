@@ -24,29 +24,18 @@ import org.seasar.doma.wrapper.Wrapper;
  * 
  * @param <E>
  *            エンティティの型
- * @param <P>
- *            プロパティの型
  * @param <V>
  *            値の型
  * @since 2.0.0
  */
-public interface Accessor<E, P, V> {
+public interface Accessor<E, V> {
 
     /**
      * プロパティを返します。
      * 
      * @return プロパティ
      */
-    P get();
-
-    /**
-     * プロパティを設定します。
-     * 
-     * @param value
-     *            プロパティ
-     * @return プロパティ
-     */
-    Accessor<E, P, V> set(P value);
+    Object get();
 
     /**
      * エンティティからこのアクセサへ値を読み込みます。
@@ -55,7 +44,7 @@ public interface Accessor<E, P, V> {
      *            エンティティ
      * @return このアクセサ
      */
-    Accessor<E, P, V> load(E entity);
+    Accessor<E, V> load(E entity);
 
     /**
      * エンティティへこのアクセサが保持する値を保存します。
@@ -63,7 +52,7 @@ public interface Accessor<E, P, V> {
      * @param entity
      * @return このアクセサ
      */
-    Accessor<E, P, V> save(E entity);
+    Accessor<E, V> save(E entity);
 
     /**
      * 値のラッパーを返します。

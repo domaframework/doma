@@ -25,9 +25,9 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSql;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.entity.Accessor;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.entity.Accessor;
 
 /**
  * @author taedium
@@ -96,7 +96,7 @@ public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
         if (idPropertyTypes.size() > 0) {
             builder.appendSql(" where ");
             for (EntityPropertyType<E, ?, ?> p : idPropertyTypes) {
-                Accessor<E, ?, ?> accessor = p.getAccessor();
+                Accessor<E, ?> accessor = p.getAccessor();
                 accessor.load(currentEntity);
                 builder.appendSql(p.getColumnName());
                 builder.appendSql(" = ");
@@ -111,8 +111,7 @@ public class AutoBatchDeleteQuery<E> extends AutoBatchModifyQuery<E> implements
             } else {
                 builder.appendSql(" and ");
             }
-            Accessor<E, ?, ?> accessor = versionPropertyType
-                    .getAccessor();
+            Accessor<E, ?> accessor = versionPropertyType.getAccessor();
             accessor.load(currentEntity);
             builder.appendSql(versionPropertyType.getColumnName());
             builder.appendSql(" = ");

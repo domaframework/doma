@@ -45,8 +45,8 @@ import org.seasar.doma.wrapper.WrapperVisitor;
  * @author taedium
  * 
  */
-public class VersionPropertyType<PE, E extends PE, P, V extends Number> extends
-        BasicPropertyType<PE, E, P, V> {
+public class VersionPropertyType<PE, E extends PE, P, V extends Number, D>
+        extends BasicPropertyType<PE, E, P, V, D> {
 
     /**
      * インスタンスを構築します。
@@ -70,7 +70,7 @@ public class VersionPropertyType<PE, E extends PE, P, V extends Number> extends
             Class<?> entityPropertyClass, Class<V> valueClass,
             Class<? extends NumberWrapper<V>> wrapperClass,
             EntityPropertyType<PE, P, V> parentEntityPropertyType,
-            DomainType<V, P> domainType, String name, String columnName) {
+            DomainType<V, D> domainType, String name, String columnName) {
         super(entityClass, entityPropertyClass, valueClass, wrapperClass,
                 parentEntityPropertyType, domainType, name, columnName, true,
                 true);
@@ -125,10 +125,10 @@ public class VersionPropertyType<PE, E extends PE, P, V extends Number> extends
     protected <PARAM> E modifyValue(EntityType<E> entityType, E entity,
             WrapperVisitor<Void, PARAM, RuntimeException> visitor, PARAM value) {
         if (entityType.isImmutable()) {
-            Map<String, Accessor<E, ?, ?>> accessors = new HashMap<>();
+            Map<String, Accessor<E, ?>> accessors = new HashMap<>();
             for (EntityPropertyType<E, ?, ?> p : entityType
                     .getEntityPropertyTypes()) {
-                Accessor<E, ?, ?> accessor = p.getAccessor();
+                Accessor<E, ?> accessor = p.getAccessor();
                 accessor.load(entity);
                 if (p == this) {
                     accessor.getWrapper().accept(visitor, value);
@@ -137,7 +137,7 @@ public class VersionPropertyType<PE, E extends PE, P, V extends Number> extends
             }
             return entityType.newEntity(accessors);
         } else {
-            Accessor<E, ?, ?> accessor = getAccessor();
+            Accessor<E, ?> accessor = getAccessor();
             accessor.load(entity);
             accessor.getWrapper().accept(visitor, value);
             accessor.save(entity);

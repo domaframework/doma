@@ -23,8 +23,8 @@ import org.seasar.doma.jdbc.domain.DomainType;
  * @author taedium
  * 
  */
-public class AssignedIdPropertyType<PE, E extends PE, P, V> extends
-        BasicPropertyType<PE, E, P, V> {
+public class AssignedIdPropertyType<PE, E extends PE, P, V, D> extends
+        BasicPropertyType<PE, E, P, V, D> {
 
     /**
      * インスタンスを構築します。
@@ -50,7 +50,7 @@ public class AssignedIdPropertyType<PE, E extends PE, P, V> extends
             Class<?> entityPropertyClass, Class<V> valueClass,
             Class<?> wrapperClass,
             EntityPropertyType<PE, P, V> parentEntityPropertyType,
-            DomainType<V, P> domainType, String name, String columnName) {
+            DomainType<V, D> domainType, String name, String columnName) {
         super(entityClass, entityPropertyClass, valueClass, wrapperClass,
                 parentEntityPropertyType, domainType, name, columnName, true,
                 true);

@@ -72,7 +72,8 @@ public class SimpleCtTypeVisitor<R, P, TH extends Throwable> implements
     }
 
     @Override
-    public R visitSelectOptionsCtType(SelectOptionsCtType ctType, P p) throws TH {
+    public R visitSelectOptionsCtType(SelectOptionsCtType ctType, P p)
+            throws TH {
         return defaultAction(ctType, p);
     }
 
@@ -90,4 +91,10 @@ public class SimpleCtTypeVisitor<R, P, TH extends Throwable> implements
     public R visitMapCtType(MapCtType ctType, P p) throws TH {
         return defaultAction(ctType, p);
     }
+
+    @Override
+    public R visitOptionalCtType(OptionalCtType ctType, P p) throws TH {
+        return defaultAction(ctType, p);
+    }
+
 }

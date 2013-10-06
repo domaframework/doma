@@ -34,6 +34,7 @@ import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.mirror.ColumnMirror;
 import org.seasar.doma.internal.apt.mirror.SequenceGeneratorMirror;
@@ -78,24 +79,39 @@ public class EntityPropertyMetaFactory {
     protected void doDataType(EntityPropertyMeta propertyMeta,
             final VariableElement fieldElement, EntityMeta entityMeta) {
         final TypeMirror type = fieldElement.asType();
-        final DomainCtType domainCtType = DomainCtType.newInstance(type, env);
-        if (domainCtType != null) {
-            if (domainCtType.isRawType()) {
-                throw new AptException(Message.DOMA4204, env, fieldElement,
-                        domainCtType.getQualifiedName());
+        final OptionalCtType optionalCtType = OptionalCtType.newInstance(type,
+                env);
+        if (optionalCtType != null) {
+            if (optionalCtType.isRawType()) {
+                throw new AptException(Message.DOMA4232, env, fieldElement,
+                        optionalCtType.getQualifiedName());
             }
-            if (domainCtType.isWildcardType()) {
-                throw new AptException(Message.DOMA4205, env, fieldElement,
-                        domainCtType.getQualifiedName());
+            if (optionalCtType.isWildcardType()) {
+                throw new AptException(Message.DOMA4233, env, fieldElement,
+                        optionalCtType.getQualifiedName());
             }
-            propertyMeta.setDataType(domainCtType);
+            propertyMeta.setCtType(optionalCtType);
         } else {
-            BasicCtType basicCtType = BasicCtType.newInstance(type, env);
-            if (basicCtType != null) {
-                propertyMeta.setDataType(basicCtType);
+            final DomainCtType domainCtType = DomainCtType.newInstance(type,
+                    env);
+            if (domainCtType != null) {
+                if (domainCtType.isRawType()) {
+                    throw new AptException(Message.DOMA4204, env, fieldElement,
+                            domainCtType.getQualifiedName());
+                }
+                if (domainCtType.isWildcardType()) {
+                    throw new AptException(Message.DOMA4205, env, fieldElement,
+                            domainCtType.getQualifiedName());
+                }
+                propertyMeta.setCtType(domainCtType);
             } else {
-                throw new AptException(Message.DOMA4096, env, fieldElement,
-                        type);
+                BasicCtType basicCtType = BasicCtType.newInstance(type, env);
+                if (basicCtType != null) {
+                    propertyMeta.setCtType(basicCtType);
+                } else {
+                    throw new AptException(Message.DOMA4096, env, fieldElement,
+                            type);
+                }
             }
         }
     }
@@ -138,7 +154,7 @@ public class EntityPropertyMetaFactory {
         if (entityMeta.hasGeneratedIdPropertyMeta()) {
             throw new AptException(Message.DOMA4037, env, fieldElement);
         }
-        if (!isNumber(propertyMeta.getDataType())) {
+        if (!isNumber(propertyMeta.getCtType())) {
             throw new AptException(Message.DOMA4095, env, fieldElement);
         }
         switch (generatedValue.strategy()) {
@@ -269,7 +285,7 @@ public class EntityPropertyMetaFactory {
             if (entityMeta.hasVersionPropertyMeta()) {
                 throw new AptException(Message.DOMA4024, env, fieldElement);
             }
-            if (!isNumber(propertyMeta.getDataType())) {
+            if (!isNumber(propertyMeta.getCtType())) {
                 throw new AptException(Message.DOMA4093, env, fieldElement);
             }
             propertyMeta.setVersion(true);
@@ -300,6 +316,12 @@ public class EntityPropertyMetaFactory {
     protected boolean isNumber(CtType ctType) {
         Boolean isNumber = ctType.accept(
                 new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>() {
+
+                    @Override
+                    public Boolean visitOptionalCtType(OptionalCtType ctType,
+                            Void p) throws RuntimeException {
+                        return ctType.getTypeArgCtType().accept(this, p);
+                    }
 
                     @Override
                     public Boolean visitDomainCtType(DomainCtType ctType, Void p)

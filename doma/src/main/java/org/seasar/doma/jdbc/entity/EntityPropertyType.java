@@ -80,7 +80,7 @@ public interface EntityPropertyType<E, P, V> {
      * 
      * @return プロパティのアクセサ
      */
-    Accessor<E, P, V> getAccessor();
+    Accessor<E, V> getAccessor();
 
     /**
      * プロパティの値をコピーします。

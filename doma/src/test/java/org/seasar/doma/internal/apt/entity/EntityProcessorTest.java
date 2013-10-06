@@ -565,4 +565,33 @@ public class EntityProcessorTest extends AptTestCase {
         assertMessage(Message.DOMA4228);
     }
 
+    public void testOptional() throws Exception {
+        Class<?> target = OptionalEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
+    public void testRawtypeOptional() throws Exception {
+        Class<?> target = RawtypeOptionalEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4232);
+    }
+
+    public void testWildcardOptional() throws Exception {
+        Class<?> target = WildcardOptionalEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertFalse(getCompiledResult());
+        assertMessage(Message.DOMA4233);
+    }
 }

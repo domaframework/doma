@@ -11,13 +11,13 @@ public final class _ImmutableEntity extends org.seasar.doma.jdbc.entity.Abstract
     private static final _ImmutableEntity __singleton = new _ImmutableEntity();
 
     /** the aaa */
-    public final org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.ImmutableEntity, java.lang.String, java.lang.String> $aaa = new org.seasar.doma.jdbc.entity.BasicPropertyType<>(org.seasar.doma.internal.apt.entity.ImmutableEntity.class, java.lang.String.class, java.lang.String.class, org.seasar.doma.wrapper.StringWrapper.class, null, null, "aaa", "aaa", true, true);
+    public final org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.ImmutableEntity, java.lang.String, java.lang.String, Object> $aaa = new org.seasar.doma.jdbc.entity.BasicPropertyType<>(org.seasar.doma.internal.apt.entity.ImmutableEntity.class, java.lang.String.class, java.lang.String.class, org.seasar.doma.wrapper.StringWrapper.class, null, null, "aaa", "aaa", true, true);
 
     /** the bbb */
-    public final org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.ImmutableEntity, java.lang.Integer, java.lang.Integer> $bbb = new org.seasar.doma.jdbc.entity.BasicPropertyType<>(org.seasar.doma.internal.apt.entity.ImmutableEntity.class, java.lang.Integer.class, java.lang.Integer.class, org.seasar.doma.wrapper.IntegerWrapper.class, null, null, "bbb", "bbb", true, true);
+    public final org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.ImmutableEntity, java.lang.Integer, java.lang.Integer, Object> $bbb = new org.seasar.doma.jdbc.entity.BasicPropertyType<>(org.seasar.doma.internal.apt.entity.ImmutableEntity.class, java.lang.Integer.class, java.lang.Integer.class, org.seasar.doma.wrapper.IntegerWrapper.class, null, null, "bbb", "bbb", true, true);
 
     /** the ccc */
-    public final org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.ImmutableEntity, java.lang.Integer, java.lang.Integer> $ccc = new org.seasar.doma.jdbc.entity.BasicPropertyType<>(org.seasar.doma.internal.apt.entity.ImmutableEntity.class, java.lang.Integer.class, java.lang.Integer.class, org.seasar.doma.wrapper.IntegerWrapper.class, null, null, "ccc", "ccc", true, true);
+    public final org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.ImmutableEntity, java.lang.Integer, java.lang.Integer, Object> $ccc = new org.seasar.doma.jdbc.entity.BasicPropertyType<>(org.seasar.doma.internal.apt.entity.ImmutableEntity.class, java.lang.Integer.class, java.lang.Integer.class, org.seasar.doma.wrapper.IntegerWrapper.class, null, null, "ccc", "ccc", true, true);
 
     private final org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.ImmutableEntity> __listener;
 
@@ -145,17 +145,17 @@ public final class _ImmutableEntity extends org.seasar.doma.jdbc.entity.Abstract
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.ImmutableEntity, ?, ?> getGeneratedIdPropertyType() {
+    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.ImmutableEntity, ?, ?, ?> getGeneratedIdPropertyType() {
         return null;
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.ImmutableEntity, ?, ?> getVersionPropertyType() {
+    public org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.ImmutableEntity, ?, ?, ?> getVersionPropertyType() {
         return null;
     }
 
     @Override
-    public org.seasar.doma.internal.apt.entity.ImmutableEntity newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Accessor<org.seasar.doma.internal.apt.entity.ImmutableEntity, ?, ?>> __args) {
+    public org.seasar.doma.internal.apt.entity.ImmutableEntity newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Accessor<org.seasar.doma.internal.apt.entity.ImmutableEntity, ?>> __args) {
         return new org.seasar.doma.internal.apt.entity.ImmutableEntity(
             (java.lang.String)__args.get("aaa").get(),
             (java.lang.Integer)__args.get("bbb").get(),

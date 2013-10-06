@@ -42,7 +42,7 @@ import org.seasar.doma.message.Message;
 public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
         BatchInsertQuery {
 
-    protected GeneratedIdPropertyType<? super E, E, ?, ?> generatedIdPropertyType;
+    protected GeneratedIdPropertyType<? super E, E, ?, ?, ?> generatedIdPropertyType;
 
     protected IdGenerationConfig idGenerationConfig;
 
@@ -124,7 +124,7 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
                     targetPropertyTypes.add(p);
                 }
                 if (generatedIdPropertyType == null) {
-                    Accessor<E, ?, ?> accessor = p.getAccessor();
+                    Accessor<E, ?> accessor = p.getAccessor();
                     accessor.load(currentEntity);
                     if (accessor.getWrapper().get() == null) {
                         throw new JdbcException(Message.DOMA2020,
@@ -168,7 +168,7 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
         builder.cutBackSql(2);
         builder.appendSql(") values (");
         for (EntityPropertyType<E, ?, ?> p : targetPropertyTypes) {
-            Accessor<E, ?, ?> accessor = p.getAccessor();
+            Accessor<E, ?> accessor = p.getAccessor();
             accessor.load(currentEntity);
             builder.appendWrapper(accessor.getWrapper());
             builder.appendSql(", ");

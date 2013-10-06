@@ -53,8 +53,8 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class GeneratedIdPropertyType<PE, E extends PE, P, V extends Number>
-        extends BasicPropertyType<PE, E, P, V> {
+public class GeneratedIdPropertyType<PE, E extends PE, P, V extends Number, D>
+        extends BasicPropertyType<PE, E, P, V, D> {
 
     /** 識別子のジェネレータ */
     protected final IdGenerator idGenerator;
@@ -85,7 +85,7 @@ public class GeneratedIdPropertyType<PE, E extends PE, P, V extends Number>
             Class<?> entityPropertyClass, Class<V> valueClass,
             Class<?> wrapperClass,
             EntityPropertyType<PE, P, V> parentEntityPropertyType,
-            DomainType<V, P> domainType, String name, String columnName,
+            DomainType<V, D> domainType, String name, String columnName,
             IdGenerator idGenerator) {
         super(entityClass, entityPropertyClass, valueClass, wrapperClass,
                 parentEntityPropertyType, domainType, name, columnName, true,
@@ -226,10 +226,10 @@ public class GeneratedIdPropertyType<PE, E extends PE, P, V extends Number>
         }
         ValueSetter valueSetter = new ValueSetter();
         if (entityType.isImmutable()) {
-            Map<String, Accessor<E, ?, ?>> accessors = new HashMap<>();
+            Map<String, Accessor<E, ?>> accessors = new HashMap<>();
             for (EntityPropertyType<E, ?, ?> p : entityType
                     .getEntityPropertyTypes()) {
-                Accessor<E, ?, ?> accessor = p.getAccessor();
+                Accessor<E, ?> accessor = p.getAccessor();
                 accessor.load(entity);
                 if (p == this) {
                     accessor.getWrapper().accept(valueSetter, value);
@@ -238,7 +238,7 @@ public class GeneratedIdPropertyType<PE, E extends PE, P, V extends Number>
             }
             return entityType.newEntity(accessors);
         } else {
-            Accessor<E, ?, ?> accessor = getAccessor();
+            Accessor<E, ?> accessor = getAccessor();
             accessor.load(entity);
             accessor.getWrapper().accept(valueSetter, value);
             accessor.save(entity);

@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
+import org.seasar.doma.jdbc.entity.Accessor;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.jdbc.entity.NamingType;
@@ -28,7 +29,6 @@ import org.seasar.doma.jdbc.entity.PostUpdateContext;
 import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
-import org.seasar.doma.jdbc.entity.Accessor;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 /**
@@ -63,7 +63,7 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
     }
 
     @Override
-    public GeneratedIdPropertyType<Object, ImmutableEmp, ?, ?> getGeneratedIdPropertyType() {
+    public GeneratedIdPropertyType<Object, ImmutableEmp, ?, ?, ?> getGeneratedIdPropertyType() {
 
         return null;
     }
@@ -105,7 +105,7 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
     }
 
     @Override
-    public VersionPropertyType<Object, ImmutableEmp, ?, ?> getVersionPropertyType() {
+    public VersionPropertyType<Object, ImmutableEmp, ?, ?, ?> getVersionPropertyType() {
 
         return null;
     }
@@ -160,8 +160,7 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
     }
 
     @Override
-    public ImmutableEmp newEntity(
-            Map<String, Accessor<ImmutableEmp, ?, ?>> args) {
+    public ImmutableEmp newEntity(Map<String, Accessor<ImmutableEmp, ?>> args) {
         return null;
     }
 

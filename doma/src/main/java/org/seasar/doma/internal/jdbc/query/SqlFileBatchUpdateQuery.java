@@ -120,7 +120,7 @@ public class SqlFileBatchUpdateQuery<E> extends SqlFileBatchModifyQuery<E>
 
         protected EntityType<E> entityType;
 
-        protected VersionPropertyType<? super E, E, ?, ?> versionPropertyType;
+        protected VersionPropertyType<? super E, E, ?, ?, ?> versionPropertyType;
 
         protected EntityHandler(EntityType<E> entityType) {
             assertNotNull(entityType);

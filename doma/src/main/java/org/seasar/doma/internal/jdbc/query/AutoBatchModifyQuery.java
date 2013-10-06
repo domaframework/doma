@@ -57,7 +57,7 @@ public abstract class AutoBatchModifyQuery<E> implements BatchModifyQuery {
 
     protected String callerMethodName;
 
-    protected VersionPropertyType<? super E, E, ?, ?> versionPropertyType;
+    protected VersionPropertyType<? super E, E, ?, ?, ?> versionPropertyType;
 
     protected boolean optimisticLockCheckRequired;
 

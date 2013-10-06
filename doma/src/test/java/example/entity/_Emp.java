@@ -50,19 +50,19 @@ public class _Emp extends AbstractEntityType<Emp> {
     private static final org.seasar.doma.jdbc.entity.OriginalStatesAccessor<Emp> __originalStatesAccessor = new org.seasar.doma.jdbc.entity.OriginalStatesAccessor<>(
             Emp.class, "originalStates");
 
-    public final AssignedIdPropertyType<Object, Emp, Integer, Integer> id = new AssignedIdPropertyType<Object, Emp, Integer, Integer>(
+    public final AssignedIdPropertyType<Object, Emp, Integer, Integer, Object> id = new AssignedIdPropertyType<>(
             Emp.class, Integer.class, Integer.class, IntegerWrapper.class,
             null, null, "id", "ID");
 
-    public final BasicPropertyType<Object, Emp, String, String> name = new BasicPropertyType<Object, Emp, String, String>(
+    public final BasicPropertyType<Object, Emp, String, String, Object> name = new BasicPropertyType<>(
             Emp.class, String.class, String.class, StringWrapper.class, null,
             null, "name", "NAME", true, true);
 
-    public final BasicPropertyType<Object, Emp, BigDecimal, BigDecimal> salary = new BasicPropertyType<Object, Emp, BigDecimal, BigDecimal>(
+    public final BasicPropertyType<Object, Emp, BigDecimal, BigDecimal, BigDecimal> salary = new BasicPropertyType<>(
             Emp.class, BigDecimal.class, BigDecimal.class,
             BigDecimalWrapper.class, null, null, "salary", "SALARY", true, true);
 
-    public final VersionPropertyType<Object, Emp, Integer, Integer> version = new VersionPropertyType<Object, Emp, Integer, Integer>(
+    public final VersionPropertyType<Object, Emp, Integer, Integer, Integer> version = new VersionPropertyType<>(
             Emp.class, Integer.class, Integer.class, IntegerWrapper.class,
             null, null, "version", "VERSION");
 
@@ -108,7 +108,7 @@ public class _Emp extends AbstractEntityType<Emp> {
     }
 
     @Override
-    public Emp newEntity(Map<String, Accessor<Emp, ?, ?>> args) {
+    public Emp newEntity(Map<String, Accessor<Emp, ?>> args) {
         Emp entity = new Emp();
         args.values().forEach(v -> v.save(entity));
         return entity;
@@ -155,12 +155,12 @@ public class _Emp extends AbstractEntityType<Emp> {
     }
 
     @Override
-    public GeneratedIdPropertyType<Object, Emp, ?, ?> getGeneratedIdPropertyType() {
+    public GeneratedIdPropertyType<Object, Emp, ?, ?, ?> getGeneratedIdPropertyType() {
         return null;
     }
 
     @Override
-    public VersionPropertyType<Object, Emp, ?, ?> getVersionPropertyType() {
+    public VersionPropertyType<Object, Emp, ?, ?, ?> getVersionPropertyType() {
         return version;
     }
 

@@ -58,7 +58,7 @@ public abstract class AutoModifyQuery<E> implements ModifyQuery {
 
     protected List<EntityPropertyType<E, ?, ?>> idPropertyTypes;
 
-    protected VersionPropertyType<? super E, E, ?, ?> versionPropertyType;
+    protected VersionPropertyType<? super E, E, ?, ?, ?> versionPropertyType;
 
     protected boolean optimisticLockCheckRequired;
 

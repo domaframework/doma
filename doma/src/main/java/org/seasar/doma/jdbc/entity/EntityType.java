@@ -87,14 +87,14 @@ public interface EntityType<E> {
      * 
      * @return 自動生成される識別子のプロパティ型
      */
-    GeneratedIdPropertyType<? super E, E, ?, ?> getGeneratedIdPropertyType();
+    GeneratedIdPropertyType<? super E, E, ?, ?, ?> getGeneratedIdPropertyType();
 
     /**
      * バージョンのプロパティ型を返します。
      * 
      * @return バージョンのプロパティ型
      */
-    VersionPropertyType<? super E, E, ?, ?> getVersionPropertyType();
+    VersionPropertyType<? super E, E, ?, ?, ?> getVersionPropertyType();
 
     /**
      * 識別子のプロパティ型のリストを返します。
@@ -127,7 +127,7 @@ public interface EntityType<E> {
      * @return 新しいエンティティ
      * @since 1.34.0
      */
-    E newEntity(Map<String, Accessor<E, ?, ?>> __args);
+    E newEntity(Map<String, Accessor<E, ?>> __args);
 
     /**
      * エンティティのクラスを返します。

@@ -157,11 +157,11 @@ public class EntityPropertyMeta {
         return ownProperty;
     }
 
-    public CtType getDataType() {
+    public CtType getCtType() {
         return ctType;
     }
 
-    public void setDataType(CtType ctType) {
+    public void setCtType(CtType ctType) {
         this.ctType = ctType;
     }
 
