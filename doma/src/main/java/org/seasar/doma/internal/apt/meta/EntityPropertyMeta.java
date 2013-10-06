@@ -22,6 +22,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
+import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.mirror.ColumnMirror;
@@ -44,9 +45,13 @@ public class EntityPropertyMeta {
 
     protected final NamingType namingType;
 
+    protected final TypeElement typeElement;
+
     protected final TypeMirror type;
 
     protected final String typeName;
+
+    protected final String boxedTypeName;
 
     protected final boolean ownProperty;
 
@@ -73,7 +78,13 @@ public class EntityPropertyMeta {
         this.entityMetaTypeName = MetaUtil.getMetaTypeName(entityTypeName);
         this.namingType = namingType;
         this.type = propertyElement.asType();
+        this.typeElement = TypeMirrorUtil.toTypeElement(
+                TypeMirrorUtil.boxIfPrimitive(type, env), env);
+        if (this.typeElement == null) {
+            throw new AptIllegalStateException(propertyElement.toString());
+        }
         this.typeName = TypeMirrorUtil.getTypeName(type, env);
+        this.boxedTypeName = TypeMirrorUtil.getBoxedTypeName(type, env);
         this.ownProperty = ownProperty;
         this.fieldPrefix = Options.getEntityFieldPrefix(env);
     }
@@ -126,12 +137,20 @@ public class EntityPropertyMeta {
         this.idGeneratorMeta = idGeneratorMeta;
     }
 
+    public TypeElement getTypeElement() {
+        return typeElement;
+    }
+
     public TypeMirror getType() {
         return type;
     }
 
     public String getTypeName() {
         return typeName;
+    }
+
+    public String getBoxedTypeName() {
+        return boxedTypeName;
     }
 
     public boolean isOwnProperty() {
@@ -164,4 +183,7 @@ public class EntityPropertyMeta {
         return columnMirror != null ? columnMirror.getUpdatableValue() : true;
     }
 
+    public boolean hasTypeParameter() {
+        return typeElement.getTypeParameters().size() > 0;
+    }
 }

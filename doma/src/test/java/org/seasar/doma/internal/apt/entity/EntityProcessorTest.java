@@ -390,6 +390,16 @@ public class EntityProcessorTest extends AptTestCase {
         assertMessage(Message.DOMA4093);
     }
 
+    public void testParameterizedProperty() throws Exception {
+        Class<?> target = ParameterizedPropertyEntity.class;
+        EntityProcessor processor = new EntityProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
+
     public void testRawtypeProperty() throws Exception {
         Class<?> target = RawtypePropertyEntity.class;
         EntityProcessor processor = new EntityProcessor();

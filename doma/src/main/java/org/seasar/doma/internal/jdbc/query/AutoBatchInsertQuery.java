@@ -28,6 +28,7 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.entity.Accessor;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
@@ -109,9 +110,10 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
     }
 
     protected void prepareTargetPropertyTypes() {
-        targetPropertyTypes = new ArrayList<EntityPropertyType<E, ?>>(
-                entityType.getEntityPropertyTypes().size());
-        for (EntityPropertyType<E, ?> p : entityType.getEntityPropertyTypes()) {
+        targetPropertyTypes = new ArrayList<>(entityType
+                .getEntityPropertyTypes().size());
+        for (EntityPropertyType<E, ?, ?> p : entityType
+                .getEntityPropertyTypes()) {
             if (!p.isInsertable()) {
                 continue;
             }
@@ -121,10 +123,13 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
                                 .isIncluded(idGenerationConfig)) {
                     targetPropertyTypes.add(p);
                 }
-                if (generatedIdPropertyType == null
-                        && p.getWrapper(currentEntity).get() == null) {
-                    throw new JdbcException(Message.DOMA2020,
-                            entityType.getName(), p.getName());
+                if (generatedIdPropertyType == null) {
+                    Accessor<E, ?, ?> accessor = p.getAccessor();
+                    accessor.load(currentEntity);
+                    if (accessor.getWrapper().get() == null) {
+                        throw new JdbcException(Message.DOMA2020,
+                                entityType.getName(), p.getName());
+                    }
                 }
                 continue;
             }
@@ -171,14 +176,16 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
         builder.appendSql("insert into ");
         builder.appendSql(entityType.getQualifiedTableName());
         builder.appendSql(" (");
-        for (EntityPropertyType<E, ?> p : targetPropertyTypes) {
+        for (EntityPropertyType<E, ?, ?> p : targetPropertyTypes) {
             builder.appendSql(p.getColumnName());
             builder.appendSql(", ");
         }
         builder.cutBackSql(2);
         builder.appendSql(") values (");
-        for (EntityPropertyType<E, ?> p : targetPropertyTypes) {
-            builder.appendWrapper(p.getWrapper(currentEntity));
+        for (EntityPropertyType<E, ?, ?> p : targetPropertyTypes) {
+            Accessor<E, ?, ?> accessor = p.getAccessor();
+            accessor.load(currentEntity);
+            builder.appendWrapper(accessor.getWrapper());
             builder.appendSql(", ");
         }
         builder.cutBackSql(2);

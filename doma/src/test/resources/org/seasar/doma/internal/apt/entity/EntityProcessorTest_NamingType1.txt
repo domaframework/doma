@@ -26,11 +26,11 @@ public final class _NamingType1Entity extends org.seasar.doma.jdbc.entity.Abstra
 
     private final String __name;
 
-    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NamingType1Entity, ?>> __idPropertyTypes;
+    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NamingType1Entity, ?, ?>> __idPropertyTypes;
 
-    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NamingType1Entity, ?>> __entityPropertyTypes;
+    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NamingType1Entity, ?, ?>> __entityPropertyTypes;
 
-    private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NamingType1Entity, ?>> __entityPropertyTypeMap;
+    private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NamingType1Entity, ?, ?>> __entityPropertyTypeMap;
 
     private _NamingType1Entity() {
         __listener = new org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.NamingType1Entity>();
@@ -41,9 +41,9 @@ public final class _NamingType1Entity extends org.seasar.doma.jdbc.entity.Abstra
         __schemaName = "";
         __tableName = "NAMINGTYPE1ENTITY";
         __qualifiedTableName = "NAMINGTYPE1ENTITY";
-        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NamingType1Entity, ?>> __idList = new java.util.ArrayList<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NamingType1Entity, ?>>();
-        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NamingType1Entity, ?>> __list = new java.util.ArrayList<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NamingType1Entity, ?>>(0);
-        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NamingType1Entity, ?>> __map = new java.util.HashMap<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NamingType1Entity, ?>>(0);
+        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NamingType1Entity, ?, ?>> __idList = new java.util.ArrayList<>();
+        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NamingType1Entity, ?, ?>> __list = new java.util.ArrayList<>(0);
+        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NamingType1Entity, ?, ?>> __map = new java.util.HashMap<>(0);
         __idPropertyTypes = java.util.Collections.unmodifiableList(__idList);
         __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
         __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);
@@ -115,17 +115,17 @@ public final class _NamingType1Entity extends org.seasar.doma.jdbc.entity.Abstra
     }
 
     @Override
-    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NamingType1Entity, ?>> getEntityPropertyTypes() {
+    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NamingType1Entity, ?, ?>> getEntityPropertyTypes() {
         return __entityPropertyTypes;
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NamingType1Entity, ?> getEntityPropertyType(String __name) {
+    public org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NamingType1Entity, ?, ?> getEntityPropertyType(String __name) {
         return __entityPropertyTypeMap.get(__name);
     }
 
     @Override
-    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NamingType1Entity, ?>> getIdPropertyTypes() {
+    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.NamingType1Entity, ?, ?>> getIdPropertyTypes() {
         return __idPropertyTypes;
     }
 
@@ -140,13 +140,10 @@ public final class _NamingType1Entity extends org.seasar.doma.jdbc.entity.Abstra
     }
 
     @Override
-    public org.seasar.doma.internal.apt.entity.NamingType1Entity newEntity() {
-        return new org.seasar.doma.internal.apt.entity.NamingType1Entity();
-    }
-
-    @Override
-    public org.seasar.doma.internal.apt.entity.NamingType1Entity newEntity(java.util.Map<String, Object> __args) {
-        return new org.seasar.doma.internal.apt.entity.NamingType1Entity();
+    public org.seasar.doma.internal.apt.entity.NamingType1Entity newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Accessor<org.seasar.doma.internal.apt.entity.NamingType1Entity, ?, ?>> __args) {
+        org.seasar.doma.internal.apt.entity.NamingType1Entity entity = new org.seasar.doma.internal.apt.entity.NamingType1Entity();
+        __args.values().forEach(v -> v.save(entity));
+        return entity;
     }
 
     @Override

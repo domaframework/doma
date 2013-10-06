@@ -101,7 +101,7 @@ public interface EntityType<E> {
      * 
      * @return 識別子のプロパティ型のリスト
      */
-    List<EntityPropertyType<E, ?>> getIdPropertyTypes();
+    List<EntityPropertyType<E, ?, ?>> getIdPropertyTypes();
 
     /**
      * 名前を指定してプロパティ型を返します。
@@ -110,41 +110,24 @@ public interface EntityType<E> {
      *            プロパティ名
      * @return プロパティ名、存在しない場合 {@code null}
      */
-    EntityPropertyType<E, ?> getEntityPropertyType(String __name);
+    EntityPropertyType<E, ?, ?> getEntityPropertyType(String __name);
 
     /**
      * プロパティ型のリストを返します。
      * 
      * @return プロパティ型のリスト
      */
-    List<EntityPropertyType<E, ?>> getEntityPropertyTypes();
+    List<EntityPropertyType<E, ?, ?>> getEntityPropertyTypes();
 
     /**
-     * デフォルトコンストラクタでエンティティをインスタンス化します。
-     * 
-     * @return エンティティ
-     */
-    E newEntity();
-
-    /**
-     * パラメータを持つコンストラクタを使って新しいエンティティをインスタンス化します。
+     * 新しいエンティティをインスタンス化します。
      * 
      * @param __args
-     *            コンストラクタの引数
+     *            プロパティ
      * @return 新しいエンティティ
      * @since 1.34.0
      */
-    E newEntity(Map<String, Object> __args);
-
-    /**
-     * エンティティの各プロパティをコピーしてマップとして返します。
-     * 
-     * @param entity
-     *            エンティティ
-     * @return エンティティプロパティのマップ
-     * @since 1.34.0
-     */
-    Map<String, Object> getCopy(E entity);
+    E newEntity(Map<String, Accessor<E, ?, ?>> __args);
 
     /**
      * エンティティのクラスを返します。

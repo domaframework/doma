@@ -40,7 +40,7 @@ public class Emp implements Serializable {
     Integer version;
 
     @OriginalStates
-    public Serializable originalStates;
+    public Emp originalStates;
 
     public Integer getId() {
         return id;

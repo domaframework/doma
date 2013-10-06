@@ -15,10 +15,6 @@
  */
 package org.seasar.doma.jdbc.entity;
 
-import java.util.Map;
-
-import org.seasar.doma.wrapper.Wrapper;
-
 /**
  * エンティティのプロパティ型を表します。
  * 
@@ -30,39 +26,12 @@ import org.seasar.doma.wrapper.Wrapper;
  * 
  * @param <E>
  *            エンティティの型
- * @param <V>
+ * @param <P>
  *            プロパティの型
+ * @param <V>
+ *            値の型
  */
-public interface EntityPropertyType<E, V> {
-
-    /**
-     * エンティティからこのプロパティ型に対応する値をコピーして返します。
-     * 
-     * @param entity
-     *            エンティティ
-     * @return プロパティの値
-     * @since 1.34.0
-     */
-    Object getCopy(E entity);
-
-    /**
-     * 値のラッパーを返します。
-     * 
-     * @param entity
-     *            エンティティ
-     * @return 値のラッパー
-     */
-    Wrapper<V> getWrapper(E entity);
-
-    /**
-     * 値のラッパーを返します。
-     * 
-     * @param properties
-     *            エンティティプロパティのマップ
-     * @return 値のラッパー
-     * @since 1.34.0
-     */
-    Wrapper<V> getWrapper(Map<String, Object> properties);
+public interface EntityPropertyType<E, P, V> {
 
     /**
      * プロパティの名前を返します。
@@ -105,5 +74,24 @@ public interface EntityPropertyType<E, V> {
      * @return 更新可能の場合 {@code true}
      */
     boolean isUpdatable();
+
+    /**
+     * プロパティのアクセサです。
+     * 
+     * @return プロパティのアクセサ
+     */
+    Accessor<E, P, V> getAccessor();
+
+    /**
+     * プロパティの値をコピーします。
+     * <p>
+     * deep copy を行います。 ただし、{@code Blob} など JDBC に依存する値はコピーしません。
+     * 
+     * @param dest
+     *            コピー先のエンティティ
+     * @param src
+     *            コピー元のエンティティ
+     */
+    void copy(E dest, E src);
 
 }

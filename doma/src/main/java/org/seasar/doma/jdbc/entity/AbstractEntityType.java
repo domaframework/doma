@@ -15,9 +15,6 @@
  */
 package org.seasar.doma.jdbc.entity;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * {@link EntityType} の骨格実装です。
@@ -31,17 +28,6 @@ public abstract class AbstractEntityType<E> implements EntityType<E> {
      * インスタンスを構築します。
      */
     protected AbstractEntityType() {
-    }
-
-    @Override
-    public Map<String, Object> getCopy(E entity) {
-        List<EntityPropertyType<E, ?>> propertyTypes = getEntityPropertyTypes();
-        Map<String, Object> properties = new HashMap<String, Object>(
-                propertyTypes.size());
-        for (EntityPropertyType<E, ?> p : propertyTypes) {
-            properties.put(p.getName(), p.getCopy(entity));
-        }
-        return properties;
     }
 
 }

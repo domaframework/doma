@@ -17,7 +17,7 @@ package org.seasar.doma.jdbc.entity;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.util.Map;
+import java.util.function.Supplier;
 
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.WrapException;
@@ -25,7 +25,6 @@ import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.ConstructorUtil;
 import org.seasar.doma.internal.util.FieldUtil;
 import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.wrapper.Accessor;
 import org.seasar.doma.wrapper.EnumWrapper;
 import org.seasar.doma.wrapper.Wrapper;
 
@@ -35,23 +34,26 @@ import org.seasar.doma.wrapper.Wrapper;
  * @author taedium
  * 
  */
-public class BasicPropertyType<PE, E extends PE, V, D> implements
-        EntityPropertyType<E, V> {
+public class BasicPropertyType<PE, E extends PE, P, V> implements
+        EntityPropertyType<E, P, V> {
 
     /** エンティティのクラス */
     protected final Class<E> entityClass;
 
     /** プロパティのクラス */
-    protected final Class<V> entityPropertyClass;
+    protected final Class<P> entityPropertyClass;
+
+    /** 値のクラス */
+    protected final Class<V> valueClass;
 
     /** ラッパーのクラス */
     protected final Class<?> wrapperClass;
 
     /** 親のエンティティのプロパティ型 */
-    protected final EntityPropertyType<PE, V> parentEntityPropertyType;
+    protected final EntityPropertyType<PE, P, V> parentEntityPropertyType;
 
     /** ドメインのメタタイプ */
-    protected final DomainType<V, D> domainType;
+    protected final DomainType<V, P> domainType;
 
     /** プロパティの名前 */
     protected final String name;
@@ -71,11 +73,8 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
     /** ラッパーのファクトリ */
     protected final WrapperFactory<V> wrapperFactory;
 
-    /** ラッパーのアクセサのファクトリ */
-    protected final AccessorFactory<E, V> accessorFactory;
-
-    /** ラッパーのMapアクセサのファクトリ */
-    protected final MapAccessorFactory<V> mapAccessorFactory;
+    /** アクセサのサプライヤ */
+    protected final Supplier<Accessor<E, P, V>> accessorSupplier;
 
     /**
      * インスタンスを構築します。
@@ -84,6 +83,8 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
      *            エンティティのクラス
      * @param entityPropertyClass
      *            プロパティのクラス
+     * @param valueClass
+     *            値のクラス
      * @param wrapperClass
      *            ラッパーのクラス
      * @param parentEntityPropertyType
@@ -99,16 +100,21 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
      * @param updatable
      *            更新可能かどうか
      */
+    @SuppressWarnings("unchecked")
     public BasicPropertyType(Class<E> entityClass,
-            Class<V> entityPropertyClass, Class<?> wrapperClass,
-            EntityPropertyType<PE, V> parentEntityPropertyType,
-            DomainType<V, D> domainType, String name, String columnName,
+            Class<?> entityPropertyClass, Class<V> valueClass,
+            Class<?> wrapperClass,
+            EntityPropertyType<PE, P, V> parentEntityPropertyType,
+            DomainType<V, P> domainType, String name, String columnName,
             boolean insertable, boolean updatable) {
         if (entityClass == null) {
             throw new DomaNullPointerException("entityClass");
         }
         if (entityPropertyClass == null) {
             throw new DomaNullPointerException("entityPropertyClass");
+        }
+        if (valueClass == null) {
+            throw new DomaNullPointerException("valueClass");
         }
         if (wrapperClass == null) {
             throw new DomaNullPointerException("wrapperClass");
@@ -120,7 +126,8 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
             throw new DomaNullPointerException("columnName");
         }
         this.entityClass = entityClass;
-        this.entityPropertyClass = entityPropertyClass;
+        this.entityPropertyClass = (Class<P>) entityPropertyClass;
+        this.valueClass = valueClass;
         this.wrapperClass = wrapperClass;
         this.parentEntityPropertyType = parentEntityPropertyType;
         this.domainType = domainType;
@@ -130,41 +137,24 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
         this.updatable = updatable;
         this.field = parentEntityPropertyType == null ? getField() : null;
         this.wrapperFactory = createWrapperFactory();
-        this.accessorFactory = createAccessorFactory(field);
-        this.mapAccessorFactory = createMapAccessorFactory(field);
+        this.accessorSupplier = createPropertyAccessorSupplier();
     }
 
     private WrapperFactory<V> createWrapperFactory() {
-        if (entityPropertyClass.isEnum()) {
-            return new EnumWrapperFactory<V>(entityPropertyClass);
+        if (valueClass.isEnum()) {
+            return new EnumWrapperFactory();
         }
-        return new SimpleWrapperFactory<V>(wrapperClass);
+        return new SimpleWrapperFactory();
     }
 
-    private AccessorFactory<E, V> createAccessorFactory(Field field) {
+    private Supplier<Accessor<E, P, V>> createPropertyAccessorSupplier() {
         if (parentEntityPropertyType != null) {
-            return new ParentValueAccessorFactory<PE, E, V>(
-                    parentEntityPropertyType);
+            return () -> new ParentPropertyAccessor();
         }
         if (domainType != null) {
-            return new DomainAccessorFactory<E, V, D>(entityClass.getName(),
-                    name, field, domainType);
+            return () -> new DomainPropertyAccessor();
         }
-        return new ValueAccessorFactory<E, V>(entityClass.getName(), name,
-                field);
-    }
-
-    private MapAccessorFactory<V> createMapAccessorFactory(Field field) {
-        if (parentEntityPropertyType != null) {
-            return new ParentValueMapAccessorFactory<PE, E, V>(
-                    parentEntityPropertyType);
-        }
-        if (domainType != null) {
-            return new DomainMapAccessorFactory<V, D>(entityClass.getName(),
-                    name, field, domainType);
-        }
-        return new ValueMapAccessorFactory<V>(entityClass.getName(), name,
-                field);
+        return () -> new ValuePropertyAccessor();
     }
 
     private Field getField() {
@@ -187,37 +177,18 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
     }
 
     @Override
-    public Object getCopy(E entity) {
-        Wrapper<V> wrapper = getWrapper(entity);
-        V value = wrapper.getCopy();
-        if (domainType != null) {
-            return domainType.newDomain(value);
-        }
-        return value;
-    }
-
-    /**
-     * 値のラッパーを返します。
-     * 
-     * @param entity
-     *            エンティティ
-     * @return 値のラッパー
-     */
-    @Override
-    public Wrapper<V> getWrapper(E entity) {
-        Wrapper<V> wrapper = wrapperFactory.getWrapper();
-        Accessor<V> accessor = accessorFactory.getAccessor(entity, wrapper);
-        wrapper.setAccessor(accessor);
-        return wrapper;
+    public Accessor<E, P, V> getAccessor() {
+        return accessorSupplier.get();
     }
 
     @Override
-    public Wrapper<V> getWrapper(Map<String, Object> properties) {
-        Wrapper<V> wrapper = wrapperFactory.getWrapper();
-        Accessor<V> accessor = mapAccessorFactory.getAccessor(properties,
-                wrapper);
-        wrapper.setAccessor(accessor);
-        return wrapper;
+    public void copy(E destEntity, E srcEntity) {
+        Accessor<E, P, V> dest = getAccessor();
+        dest.load(destEntity);
+        Accessor<E, P, V> src = getAccessor();
+        src.load(srcEntity);
+        dest.getWrapper().set(src.getWrapper().getCopy());
+        dest.save(destEntity);
     }
 
     @Override
@@ -251,431 +222,6 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
     }
 
     /**
-     * ラッパーのアクセサのファクトリです。
-     * 
-     * @author taedium
-     * 
-     * @param <E>
-     *            エンティティの型
-     * @param <V>
-     *            値の型
-     * 
-     * @since 1.20.0
-     */
-    protected interface AccessorFactory<E, V> {
-        Accessor<V> getAccessor(E entity, Wrapper<V> wrapper);
-    }
-
-    protected interface MapAccessorFactory<V> {
-        Accessor<V> getAccessor(Map<String, Object> properties,
-                Wrapper<V> wrapper);
-    }
-
-    /**
-     * 値のアクセサのファクトリです。
-     * 
-     * @author taedium
-     * 
-     * @param <E>
-     *            エンティティの型
-     * @param <V>
-     *            値の型
-     * @since 1.20.0
-     */
-    protected static class ValueAccessorFactory<E, V> implements
-            AccessorFactory<E, V> {
-
-        protected final String entityClassName;
-
-        protected final String entityPropertyName;
-
-        protected final Field field;
-
-        protected final boolean primitive;
-
-        protected ValueAccessorFactory(String entityClassName,
-                String entityPropertyName, Field field) {
-            if (entityClassName == null) {
-                throw new DomaNullPointerException("entityClassName");
-            }
-            if (entityPropertyName == null) {
-                throw new DomaNullPointerException("entityPropertyName");
-            }
-            if (field == null) {
-                throw new DomaNullPointerException("field");
-            }
-            this.entityClassName = entityClassName;
-            this.entityPropertyName = entityPropertyName;
-            this.field = field;
-            this.primitive = field.getType().isPrimitive();
-        }
-
-        @Override
-        public Accessor<V> getAccessor(final E entity, final Wrapper<V> wrapper) {
-            if (entity == null) {
-                throw new DomaNullPointerException("entity");
-            }
-            if (wrapper == null) {
-                throw new DomaNullPointerException("wrapper");
-            }
-            return new Accessor<V>() {
-
-                @SuppressWarnings("unchecked")
-                @Override
-                public V get() {
-                    try {
-                        return (V) FieldUtil.get(field, entity);
-                    } catch (WrapException wrapException) {
-                        throw new EntityPropertyAccessException(
-                                wrapException.getCause(), entityClassName,
-                                entityPropertyName);
-                    }
-                }
-
-                @Override
-                public void set(V value) {
-                    V actualValue = (primitive && value == null) ? wrapper
-                            .getDefault() : value;
-                    try {
-                        FieldUtil.set(field, entity, actualValue);
-                    } catch (WrapException wrapException) {
-                        throw new EntityPropertyAccessException(
-                                wrapException.getCause(), entityClassName,
-                                entityPropertyName);
-                    }
-                }
-            };
-        }
-    }
-
-    /**
-     * 親の値のアクセサのファクトリです。
-     * 
-     * @author taedium
-     * @param <PE>
-     *            親エンティティの型
-     * @param <E>
-     *            エンティティの型
-     * @param <V>
-     *            値の型
-     * @since 1.20.0
-     */
-    protected static class ParentValueAccessorFactory<PE, E extends PE, V>
-            implements AccessorFactory<E, V> {
-
-        protected final EntityPropertyType<PE, V> parentEntityPropertyType;
-
-        protected ParentValueAccessorFactory(
-                EntityPropertyType<PE, V> parentEntityPropertyType) {
-            if (parentEntityPropertyType == null) {
-                throw new DomaNullPointerException("parentEntityPropertyType");
-            }
-            this.parentEntityPropertyType = parentEntityPropertyType;
-        }
-
-        @Override
-        public Accessor<V> getAccessor(final E entity, final Wrapper<V> wrapper) {
-            if (entity == null) {
-                throw new DomaNullPointerException("entity");
-            }
-            if (wrapper == null) {
-                throw new DomaNullPointerException("wrapper");
-            }
-            return new Accessor<V>() {
-
-                @Override
-                public V get() {
-                    return parentEntityPropertyType.getWrapper(entity).get();
-                }
-
-                @Override
-                public void set(V value) {
-                    parentEntityPropertyType.getWrapper(entity).set(value);
-                }
-            };
-        }
-    }
-
-    /**
-     * ドメインのアクセサのファクトリです。
-     * 
-     * @author taedium
-     * 
-     * @param <E>
-     *            エンティティの型
-     * @param <V>
-     *            値の型
-     * @param <D>
-     *            ドメインの型
-     * @since 1.20.0
-     */
-    protected static class DomainAccessorFactory<E, V, D> implements
-            AccessorFactory<E, V> {
-
-        protected final String entityClassName;
-
-        protected final String entityPropertyName;
-
-        protected final Field field;
-
-        protected final boolean primitive;
-
-        protected final DomainType<V, D> domainType;
-
-        protected DomainAccessorFactory(String entityClassName,
-                String entityPropertyName, Field field,
-                DomainType<V, D> domainType) {
-            if (entityClassName == null) {
-                throw new DomaNullPointerException("entityClassName");
-            }
-            if (entityPropertyName == null) {
-                throw new DomaNullPointerException("entityPropertyName");
-            }
-            if (field == null) {
-                throw new DomaNullPointerException("field");
-            }
-            if (domainType == null) {
-                throw new DomaNullPointerException("domainType");
-            }
-            this.entityClassName = entityClassName;
-            this.entityPropertyName = entityPropertyName;
-            this.field = field;
-            this.primitive = field.getType().isPrimitive();
-            this.domainType = domainType;
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public Accessor<V> getAccessor(final E entity, final Wrapper<V> wrapper) {
-            if (entity == null) {
-                throw new DomaNullPointerException("entity");
-            }
-            if (wrapper == null) {
-                throw new DomaNullPointerException("wrapper");
-            }
-            return new Accessor<V>() {
-
-                @Override
-                public V get() {
-                    D domain;
-                    try {
-                        domain = (D) FieldUtil.get(field, entity);
-                    } catch (WrapException wrapException) {
-                        throw new EntityPropertyAccessException(
-                                wrapException.getCause(), entityClassName,
-                                entityPropertyName);
-                    }
-                    return domainType.getWrapper(domain).get();
-                }
-
-                @Override
-                public void set(V value) {
-                    V actualValue = (primitive && value == null) ? wrapper
-                            .getDefault() : value;
-                    Object domain = domainType.newDomain(actualValue);
-                    try {
-                        FieldUtil.set(field, entity, domain);
-                    } catch (WrapException wrapException) {
-                        throw new EntityPropertyAccessException(
-                                wrapException.getCause(), entityClassName,
-                                entityPropertyName);
-                    }
-                }
-            };
-        }
-    }
-
-    /**
-     * 値のMap用アクセサのファクトリです。
-     * 
-     * @author taedium
-     * 
-     * @param <V>
-     *            値の型
-     * @since 1.34.0
-     */
-    protected static class ValueMapAccessorFactory<V> implements
-            MapAccessorFactory<V> {
-
-        protected final String entityClassName;
-
-        protected final String entityPropertyName;
-
-        protected final Field field;
-
-        protected final boolean primitive;
-
-        protected ValueMapAccessorFactory(String entityClassName,
-                String entityPropertyName, Field field) {
-            if (entityClassName == null) {
-                throw new DomaNullPointerException("entityClassName");
-            }
-            if (entityPropertyName == null) {
-                throw new DomaNullPointerException("entityPropertyName");
-            }
-            if (field == null) {
-                throw new DomaNullPointerException("field");
-            }
-            this.entityClassName = entityClassName;
-            this.entityPropertyName = entityPropertyName;
-            this.field = field;
-            this.primitive = field.getType().isPrimitive();
-        }
-
-        @Override
-        public Accessor<V> getAccessor(final Map<String, Object> properties,
-                final Wrapper<V> wrapper) {
-            if (properties == null) {
-                throw new DomaNullPointerException("properties");
-            }
-            if (wrapper == null) {
-                throw new DomaNullPointerException("wrapper");
-            }
-            return new Accessor<V>() {
-
-                @SuppressWarnings("unchecked")
-                @Override
-                public V get() {
-                    return (V) properties.get(entityPropertyName);
-                }
-
-                @Override
-                public void set(V value) {
-                    V actualValue = (primitive && value == null) ? wrapper
-                            .getDefault() : value;
-                    properties.put(entityPropertyName, actualValue);
-                }
-            };
-        }
-    }
-
-    /**
-     * 親の値のMap用アクセサのファクトリです。
-     * 
-     * @author taedium
-     * @param <PE>
-     *            親エンティティの型
-     * @param <E>
-     *            エンティティの型
-     * @param <V>
-     *            値の型
-     * @since 1.34.0
-     */
-    protected static class ParentValueMapAccessorFactory<PE, E extends PE, V>
-            implements MapAccessorFactory<V> {
-
-        protected final EntityPropertyType<PE, V> parentEntityPropertyType;
-
-        protected ParentValueMapAccessorFactory(
-                EntityPropertyType<PE, V> parentEntityPropertyType) {
-            if (parentEntityPropertyType == null) {
-                throw new DomaNullPointerException("parentEntityPropertyType");
-            }
-            this.parentEntityPropertyType = parentEntityPropertyType;
-        }
-
-        @Override
-        public Accessor<V> getAccessor(final Map<String, Object> properties,
-                final Wrapper<V> wrapper) {
-            if (properties == null) {
-                throw new DomaNullPointerException("properties");
-            }
-            if (wrapper == null) {
-                throw new DomaNullPointerException("wrapper");
-            }
-            return new Accessor<V>() {
-
-                @Override
-                public V get() {
-                    return parentEntityPropertyType.getWrapper(properties)
-                            .get();
-                }
-
-                @Override
-                public void set(V value) {
-                    parentEntityPropertyType.getWrapper(properties).set(value);
-                }
-            };
-        }
-    }
-
-    /**
-     * ドメインのMap用アクセサのファクトリです。
-     * 
-     * @author taedium
-     * 
-     * @param <V>
-     *            値の型
-     * @param <D>
-     *            ドメインの型
-     * @since 1.34.0
-     */
-    protected static class DomainMapAccessorFactory<V, D> implements
-            MapAccessorFactory<V> {
-
-        protected final String entityClassName;
-
-        protected final String entityPropertyName;
-
-        protected final Field field;
-
-        protected final boolean primitive;
-
-        protected final DomainType<V, D> domainType;
-
-        protected DomainMapAccessorFactory(String entityClassName,
-                String entityPropertyName, Field field,
-                DomainType<V, D> domainType) {
-            if (entityClassName == null) {
-                throw new DomaNullPointerException("entityClassName");
-            }
-            if (entityPropertyName == null) {
-                throw new DomaNullPointerException("entityPropertyName");
-            }
-            if (field == null) {
-                throw new DomaNullPointerException("field");
-            }
-            if (domainType == null) {
-                throw new DomaNullPointerException("domainType");
-            }
-            this.entityClassName = entityClassName;
-            this.entityPropertyName = entityPropertyName;
-            this.field = field;
-            this.primitive = field.getType().isPrimitive();
-            this.domainType = domainType;
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public Accessor<V> getAccessor(final Map<String, Object> properties,
-                final Wrapper<V> wrapper) {
-            if (properties == null) {
-                throw new DomaNullPointerException("properties");
-            }
-            if (wrapper == null) {
-                throw new DomaNullPointerException("wrapper");
-            }
-            return new Accessor<V>() {
-
-                @Override
-                public V get() {
-                    D domain;
-                    domain = (D) properties.get(entityPropertyName);
-                    return domainType.getWrapper(domain).get();
-                }
-
-                @Override
-                public void set(V value) {
-                    V actualValue = (primitive && value == null) ? wrapper
-                            .getDefault() : value;
-                    Object domain = domainType.newDomain(actualValue);
-                    properties.put(entityPropertyName, domain);
-                }
-            };
-        }
-    }
-
-    /**
      * ラッパーのファクトリです。
      * 
      * @author taedium
@@ -694,23 +240,14 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
      * 
      * @author taedium
      * 
-     * @param <V>
-     *            値の型
-     * 
      * @since 1.20.0
      */
-    protected static class SimpleWrapperFactory<V> implements WrapperFactory<V> {
-
-        protected final Class<?> wrapperClass;
+    protected class SimpleWrapperFactory implements WrapperFactory<V> {
 
         protected final Constructor<? extends Wrapper<V>> constructor;
 
         @SuppressWarnings("unchecked")
-        protected SimpleWrapperFactory(Class<?> wrapperClass) {
-            if (wrapperClass == null) {
-                throw new DomaNullPointerException("wrapperClass");
-            }
-            this.wrapperClass = wrapperClass;
+        protected SimpleWrapperFactory() {
             try {
                 constructor = (Constructor<? extends Wrapper<V>>) ClassUtil
                         .getConstructor(wrapperClass);
@@ -736,21 +273,13 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
      * 
      * @author taedium
      * 
-     * @param <V>
-     *            値の型
      */
-    protected static class EnumWrapperFactory<V> implements WrapperFactory<V> {
-
-        protected final Class<V> enumClass;
+    protected class EnumWrapperFactory implements WrapperFactory<V> {
 
         @SuppressWarnings("rawtypes")
         protected final Constructor<EnumWrapper> constructor;
 
-        protected EnumWrapperFactory(Class<V> enumClass) {
-            if (enumClass == null) {
-                throw new DomaNullPointerException("enumClass");
-            }
-            this.enumClass = enumClass;
+        protected EnumWrapperFactory() {
             try {
                 this.constructor = ClassUtil.getConstructor(EnumWrapper.class,
                         Class.class);
@@ -764,11 +293,173 @@ public class BasicPropertyType<PE, E extends PE, V, D> implements
         @Override
         public Wrapper<V> getWrapper() {
             try {
-                return ConstructorUtil.newInstance(constructor, enumClass);
+                return ConstructorUtil.newInstance(constructor, valueClass);
             } catch (WrapException wrapException) {
                 throw new WrapperInstantiationException(
                         wrapException.getCause(), EnumWrapper.class.getName());
             }
         }
+    }
+
+    /**
+     * 親プロパティのアクセサです。
+     * 
+     * @author nakamura-to
+     */
+    protected class ParentPropertyAccessor implements Accessor<E, P, V> {
+
+        protected final Accessor<PE, P, V> delegate;
+
+        protected ParentPropertyAccessor() {
+            this.delegate = parentEntityPropertyType.getAccessor();
+        }
+
+        @Override
+        public P get() {
+            return delegate.get();
+        }
+
+        @Override
+        public ParentPropertyAccessor set(P value) {
+            delegate.set(value);
+            return this;
+        }
+
+        @Override
+        public ParentPropertyAccessor load(E entity) {
+            delegate.load(entity);
+            return this;
+        }
+
+        @Override
+        public ParentPropertyAccessor save(E entity) {
+            delegate.save(entity);
+            return this;
+        }
+
+        @Override
+        public Wrapper<V> getWrapper() {
+            return delegate.getWrapper();
+        }
+
+    }
+
+    /**
+     * ドメインプロパティのアクセサです。
+     * 
+     * @author nakamura-to
+     */
+    protected class DomainPropertyAccessor implements Accessor<E, P, V> {
+
+        protected final Wrapper<V> wrapper;
+
+        protected DomainPropertyAccessor() {
+            this.wrapper = wrapperFactory.getWrapper();
+        }
+
+        @Override
+        public P get() {
+            V value = wrapper.get();
+            V actualValue = (field.getType().isPrimitive() && value == null) ? wrapper
+                    .getDefault() : value;
+            return domainType.newDomain(actualValue);
+        }
+
+        @Override
+        public DomainPropertyAccessor set(P domain) {
+            wrapper.set(domainType.getWrapper(domain).get());
+            return this;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public DomainPropertyAccessor load(E entity) {
+            try {
+                P domain = (P) FieldUtil.get(field, entity);
+                wrapper.set(domainType.getWrapper(domain).get());
+            } catch (WrapException wrapException) {
+                throw new EntityPropertyAccessException(
+                        wrapException.getCause(), entityClass.getName(), name);
+            }
+            return this;
+        }
+
+        @Override
+        public DomainPropertyAccessor save(E entity) {
+            V value = wrapper.get();
+            V actualValue = (field.getType().isPrimitive() && value == null) ? wrapper
+                    .getDefault() : value;
+            P domain = domainType.newDomain(actualValue);
+            try {
+                FieldUtil.set(field, entity, domain);
+            } catch (WrapException wrapException) {
+                throw new EntityPropertyAccessException(
+                        wrapException.getCause(), entityClass.getName(), name);
+            }
+            return this;
+        }
+
+        @Override
+        public Wrapper<V> getWrapper() {
+            return wrapper;
+        }
+    }
+
+    /**
+     * 値プロパティのアクセサです。
+     * 
+     * @author nakamura-to
+     */
+    protected class ValuePropertyAccessor implements Accessor<E, P, V> {
+
+        protected final Wrapper<V> wrapper;
+
+        protected ValuePropertyAccessor() {
+            this.wrapper = wrapperFactory.getWrapper();
+        }
+
+        @Override
+        public P get() {
+            return entityPropertyClass.cast(wrapper.get());
+        }
+
+        @Override
+        public ValuePropertyAccessor set(P value) {
+            wrapper.set(valueClass.cast(value));
+            return this;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public ValuePropertyAccessor load(E entity) {
+            try {
+                V value = (V) FieldUtil.get(field, entity);
+                wrapper.set(value);
+            } catch (WrapException wrapException) {
+                throw new EntityPropertyAccessException(
+                        wrapException.getCause(), entityClass.getName(), name);
+            }
+            return this;
+        }
+
+        @Override
+        public ValuePropertyAccessor save(E entity) {
+            V value = wrapper.get();
+            V actualValue = (field.getType().isPrimitive() && value == null) ? wrapper
+                    .getDefault() : value;
+            try {
+                FieldUtil.set(field, entity, actualValue);
+            } catch (WrapException wrapException) {
+                throw new EntityPropertyAccessException(
+                        wrapException.getCause(), entityClass.getName(), name);
+            }
+            return this;
+        }
+
+        @Override
+        public Wrapper<V> getWrapper() {
+            return wrapper;
+        }
+
     }
 }

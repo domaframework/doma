@@ -26,8 +26,6 @@ public abstract class AbstractWrapper<V> implements Wrapper<V> {
     /** 値 */
     protected V value;
 
-    protected Accessor<V> accessor;
-
     /**
      * インスタンスを構築します。
      */
@@ -56,11 +54,7 @@ public abstract class AbstractWrapper<V> implements Wrapper<V> {
      *            値
      */
     protected void doSet(V value) {
-        if (accessor != null) {
-            accessor.set(value);
-        } else {
-            this.value = value;
-        }
+        this.value = value;
     }
 
     @Override
@@ -74,9 +68,6 @@ public abstract class AbstractWrapper<V> implements Wrapper<V> {
      * @return 値
      */
     protected V doGet() {
-        if (accessor != null) {
-            return accessor.get();
-        }
         return value;
     }
 
@@ -117,15 +108,6 @@ public abstract class AbstractWrapper<V> implements Wrapper<V> {
             return otherValue == null;
         }
         return value.equals(otherValue);
-    }
-
-    @Override
-    public void setAccessor(Accessor<V> accessor) {
-        doSetAccessor(accessor);
-    }
-
-    protected void doSetAccessor(Accessor<V> accessor) {
-        this.accessor = accessor;
     }
 
 }

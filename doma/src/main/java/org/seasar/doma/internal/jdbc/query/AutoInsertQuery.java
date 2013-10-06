@@ -27,6 +27,7 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.entity.Accessor;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
@@ -88,12 +89,15 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
     }
 
     protected void prepareTargetPropertyType() {
-        targetPropertyTypes = new ArrayList<EntityPropertyType<E, ?>>(
-                entityType.getEntityPropertyTypes().size());
-        for (EntityPropertyType<E, ?> p : entityType.getEntityPropertyTypes()) {
+        targetPropertyTypes = new ArrayList<>(entityType
+                .getEntityPropertyTypes().size());
+        for (EntityPropertyType<E, ?, ?> p : entityType
+                .getEntityPropertyTypes()) {
             if (!p.isInsertable()) {
                 continue;
             }
+            Accessor<E, ?, ?> accessor = p.getAccessor();
+            accessor.load(entity);
             if (p.isId()) {
                 if (p != generatedIdPropertyType
                         || generatedIdPropertyType
@@ -101,7 +105,7 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
                     targetPropertyTypes.add(p);
                 }
                 if (generatedIdPropertyType == null
-                        && p.getWrapper(entity).get() == null) {
+                        && accessor.getWrapper().get() == null) {
                     throw new JdbcException(Message.DOMA2020,
                             entityType.getName(), p.getName());
                 }
@@ -111,8 +115,10 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
                 targetPropertyTypes.add(p);
                 continue;
             }
-            if (nullExcluded && p.getWrapper(entity).get() == null) {
-                continue;
+            if (nullExcluded) {
+                if (accessor.getWrapper().get() == null) {
+                    continue;
+                }
             }
             if (!isTargetPropertyName(p.getName())) {
                 continue;
@@ -124,8 +130,8 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
     protected void prepareIdValue() {
         if (generatedIdPropertyType != null && idGenerationConfig != null) {
             if (entityType.isImmutable()) {
-                E newEntity = generatedIdPropertyType.preInsertAndNewEntity(entity,
-                        idGenerationConfig, entityType);
+                E newEntity = generatedIdPropertyType.preInsertAndNewEntity(
+                        entity, idGenerationConfig, entityType);
                 if (newEntity != null) {
                     entity = newEntity;
                 }
@@ -155,14 +161,16 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
         builder.appendSql("insert into ");
         builder.appendSql(entityType.getQualifiedTableName());
         builder.appendSql(" (");
-        for (EntityPropertyType<E, ?> p : targetPropertyTypes) {
+        for (EntityPropertyType<E, ?, ?> p : targetPropertyTypes) {
             builder.appendSql(p.getColumnName());
             builder.appendSql(", ");
         }
         builder.cutBackSql(2);
         builder.appendSql(") values (");
-        for (EntityPropertyType<E, ?> p : targetPropertyTypes) {
-            builder.appendWrapper(p.getWrapper(entity));
+        for (EntityPropertyType<E, ?, ?> p : targetPropertyTypes) {
+            Accessor<E, ?, ?> accessor = p.getAccessor();
+            accessor.load(entity);
+            builder.appendWrapper(accessor.getWrapper());
             builder.appendSql(", ");
         }
         builder.cutBackSql(2);
@@ -174,8 +182,8 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
     public void generateId(Statement statement) {
         if (generatedIdPropertyType != null && idGenerationConfig != null) {
             if (entityType.isImmutable()) {
-                E newEntity = generatedIdPropertyType.postInsertAndNewEntity(entity,
-                        idGenerationConfig, statement, entityType);
+                E newEntity = generatedIdPropertyType.postInsertAndNewEntity(
+                        entity, idGenerationConfig, statement, entityType);
                 if (newEntity != null) {
                     entity = newEntity;
                 }

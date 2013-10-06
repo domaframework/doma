@@ -28,6 +28,7 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.Accessor;
 
 /**
  * @author taedium
@@ -90,9 +91,10 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
     }
 
     protected void prepareTargetPropertyTypes() {
-        targetPropertyTypes = new ArrayList<EntityPropertyType<E, ?>>(
+        targetPropertyTypes = new ArrayList<EntityPropertyType<E, ?, ?>>(
                 entityType.getEntityPropertyTypes().size());
-        for (EntityPropertyType<E, ?> p : entityType.getEntityPropertyTypes()) {
+        for (EntityPropertyType<E, ?, ?> p : entityType
+                .getEntityPropertyTypes()) {
             if (!p.isUpdatable()) {
                 continue;
             }
@@ -116,10 +118,12 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
         builder.appendSql("update ");
         builder.appendSql(entityType.getQualifiedTableName());
         builder.appendSql(" set ");
-        for (EntityPropertyType<E, ?> p : targetPropertyTypes) {
+        for (EntityPropertyType<E, ?, ?> p : targetPropertyTypes) {
+            Accessor<E, ?, ?> accessor = p.getAccessor();
+            accessor.load(currentEntity);
             builder.appendSql(p.getColumnName());
             builder.appendSql(" = ");
-            builder.appendWrapper(p.getWrapper(currentEntity));
+            builder.appendWrapper(accessor.getWrapper());
             if (p.isVersion() && !versionIgnored) {
                 builder.appendSql(" + 1");
             }
@@ -128,10 +132,12 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
         builder.cutBackSql(2);
         if (idPropertyTypes.size() > 0) {
             builder.appendSql(" where ");
-            for (EntityPropertyType<E, ?> p : idPropertyTypes) {
+            for (EntityPropertyType<E, ?, ?> p : idPropertyTypes) {
+                Accessor<E, ?, ?> accessor = p.getAccessor();
+                accessor.load(currentEntity);
                 builder.appendSql(p.getColumnName());
                 builder.appendSql(" = ");
-                builder.appendWrapper(p.getWrapper(currentEntity));
+                builder.appendWrapper(accessor.getWrapper());
                 builder.appendSql(" and ");
             }
             builder.cutBackSql(5);
@@ -142,9 +148,12 @@ public class AutoBatchUpdateQuery<E> extends AutoBatchModifyQuery<E> implements
             } else {
                 builder.appendSql(" and ");
             }
+            Accessor<E, ?, ?> accessor = versionPropertyType
+                    .getAccessor();
+            accessor.load(currentEntity);
             builder.appendSql(versionPropertyType.getColumnName());
             builder.appendSql(" = ");
-            builder.appendWrapper(versionPropertyType.getWrapper(currentEntity));
+            builder.appendWrapper(accessor.getWrapper());
         }
         PreparedSql sql = builder.build();
         sqls.add(sql);

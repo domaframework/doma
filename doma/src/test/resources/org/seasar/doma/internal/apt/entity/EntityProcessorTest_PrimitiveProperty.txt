@@ -11,13 +11,13 @@ public final class _PrimitivePropertyEntity extends org.seasar.doma.jdbc.entity.
     private static final _PrimitivePropertyEntity __singleton = new _PrimitivePropertyEntity();
 
     /** the id */
-    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Integer, java.lang.Object> $id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Integer, java.lang.Object>(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity.class, java.lang.Integer.class, org.seasar.doma.wrapper.IntegerWrapper.class, null, null, "id", "id");
+    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Integer, java.lang.Integer> $id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<>(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity.class, java.lang.Integer.class, java.lang.Integer.class, org.seasar.doma.wrapper.IntegerWrapper.class, null, null, "id", "id");
 
     /** the bool */
-    public final org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Boolean, java.lang.Object> $bool = new org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Boolean, java.lang.Object>(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity.class, java.lang.Boolean.class, org.seasar.doma.wrapper.BooleanWrapper.class, null, null, "bool", "bool", true, true);
+    public final org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Boolean, java.lang.Boolean> $bool = new org.seasar.doma.jdbc.entity.BasicPropertyType<>(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity.class, java.lang.Boolean.class, java.lang.Boolean.class, org.seasar.doma.wrapper.BooleanWrapper.class, null, null, "bool", "bool", true, true);
 
     /** the version */
-    public final org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Long, java.lang.Object> $version = new org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Long, java.lang.Object>(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity.class, java.lang.Long.class, org.seasar.doma.wrapper.LongWrapper.class, null, null, "version", "version");
+    public final org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, java.lang.Long, java.lang.Long> $version = new org.seasar.doma.jdbc.entity.VersionPropertyType<>(org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity.class,  java.lang.Long.class, java.lang.Long.class, org.seasar.doma.wrapper.LongWrapper.class, null, null, "version", "version");
 
     private final org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity> __listener;
 
@@ -35,11 +35,11 @@ public final class _PrimitivePropertyEntity extends org.seasar.doma.jdbc.entity.
 
     private final String __name;
 
-    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>> __idPropertyTypes;
+    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?, ?>> __idPropertyTypes;
 
-    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>> __entityPropertyTypes;
+    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?, ?>> __entityPropertyTypes;
 
-    private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>> __entityPropertyTypeMap;
+    private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?, ?>> __entityPropertyTypeMap;
 
     private _PrimitivePropertyEntity() {
         __listener = new org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity>();
@@ -50,9 +50,9 @@ public final class _PrimitivePropertyEntity extends org.seasar.doma.jdbc.entity.
         __schemaName = "";
         __tableName = "PrimitivePropertyEntity";
         __qualifiedTableName = "PrimitivePropertyEntity";
-        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>> __idList = new java.util.ArrayList<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>>();
-        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>> __list = new java.util.ArrayList<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>>(3);
-        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>> __map = new java.util.HashMap<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>>(3);
+        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?, ?>> __idList = new java.util.ArrayList<>();
+        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?, ?>> __list = new java.util.ArrayList<>(3);
+        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?, ?>> __map = new java.util.HashMap<>(3);
         __idList.add($id);
         __list.add($id);
         __map.put("id", $id);
@@ -131,17 +131,17 @@ public final class _PrimitivePropertyEntity extends org.seasar.doma.jdbc.entity.
     }
 
     @Override
-    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>> getEntityPropertyTypes() {
+    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?, ?>> getEntityPropertyTypes() {
         return __entityPropertyTypes;
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?> getEntityPropertyType(String __name) {
+    public org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?, ?> getEntityPropertyType(String __name) {
         return __entityPropertyTypeMap.get(__name);
     }
 
     @Override
-    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?>> getIdPropertyTypes() {
+    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?, ?>> getIdPropertyTypes() {
         return __idPropertyTypes;
     }
 
@@ -156,13 +156,10 @@ public final class _PrimitivePropertyEntity extends org.seasar.doma.jdbc.entity.
     }
 
     @Override
-    public org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity newEntity() {
-        return new org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity();
-    }
-
-    @Override
-    public org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity newEntity(java.util.Map<String, Object> __args) {
-        return new org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity();
+    public org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Accessor<org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity, ?, ?>> __args) {
+        org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity entity = new org.seasar.doma.internal.apt.entity.PrimitivePropertyEntity();
+        __args.values().forEach(v -> v.save(entity));
+        return entity;
     }
 
     @Override

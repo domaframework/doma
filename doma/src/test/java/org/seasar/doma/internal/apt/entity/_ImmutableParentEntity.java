@@ -29,19 +29,20 @@ import org.seasar.doma.jdbc.entity.PostUpdateContext;
 import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
+import org.seasar.doma.jdbc.entity.Accessor;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.wrapper.IntegerWrapper;
 
 public class _ImmutableParentEntity extends
         AbstractEntityType<ImmutableParentEntity> {
 
-    public BasicPropertyType<Object, ImmutableParentEntity, Integer, Object> $aaa = new BasicPropertyType<Object, ImmutableParentEntity, Integer, Object>(
-            ImmutableParentEntity.class, Integer.class, IntegerWrapper.class,
-            null, null, "aaa", "AAA", true, true);
+    public BasicPropertyType<Object, ImmutableParentEntity, Integer, Integer> $aaa = new BasicPropertyType<>(
+            ImmutableParentEntity.class, Integer.class, Integer.class,
+            IntegerWrapper.class, null, null, "aaa", "AAA", true, true);
 
-    public BasicPropertyType<Object, ImmutableParentEntity, Integer, Object> $bbb = new BasicPropertyType<Object, ImmutableParentEntity, Integer, Object>(
-            ImmutableParentEntity.class, Integer.class, IntegerWrapper.class,
-            null, null, "bbb", "BBB", true, true);
+    public BasicPropertyType<Object, ImmutableParentEntity, Integer, Integer> $bbb = new BasicPropertyType<>(
+            ImmutableParentEntity.class, Integer.class, Integer.class,
+            IntegerWrapper.class, null, null, "bbb", "BBB", true, true);
 
     private _ImmutableParentEntity() {
     }
@@ -63,14 +64,14 @@ public class _ImmutableParentEntity extends
     }
 
     @Override
-    public EntityPropertyType<ImmutableParentEntity, ?> getEntityPropertyType(
+    public EntityPropertyType<ImmutableParentEntity, ?, ?> getEntityPropertyType(
             String name) {
 
         return null;
     }
 
     @Override
-    public List<EntityPropertyType<ImmutableParentEntity, ?>> getEntityPropertyTypes() {
+    public List<EntityPropertyType<ImmutableParentEntity, ?, ?>> getEntityPropertyTypes() {
 
         return null;
     }
@@ -112,12 +113,6 @@ public class _ImmutableParentEntity extends
     }
 
     @Override
-    public ImmutableParentEntity newEntity() {
-
-        return null;
-    }
-
-    @Override
     public void preDelete(ImmutableParentEntity entity,
             PreDeleteContext<ImmutableParentEntity> context) {
     }
@@ -148,7 +143,7 @@ public class _ImmutableParentEntity extends
     }
 
     @Override
-    public List<EntityPropertyType<ImmutableParentEntity, ?>> getIdPropertyTypes() {
+    public List<EntityPropertyType<ImmutableParentEntity, ?, ?>> getIdPropertyTypes() {
         return null;
     }
 
@@ -172,7 +167,8 @@ public class _ImmutableParentEntity extends
     }
 
     @Override
-    public ImmutableParentEntity newEntity(Map<String, Object> args) {
+    public ImmutableParentEntity newEntity(
+            Map<String, Accessor<ImmutableParentEntity, ?, ?>> args) {
         return null;
     }
 

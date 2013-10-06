@@ -29,18 +29,19 @@ import org.seasar.doma.jdbc.entity.PostUpdateContext;
 import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
+import org.seasar.doma.jdbc.entity.Accessor;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.wrapper.IntegerWrapper;
 
 public class _ParentEntity extends AbstractEntityType<ParentEntity> {
 
-    public BasicPropertyType<Object, ParentEntity, Integer, Object> $aaa = new BasicPropertyType<Object, ParentEntity, Integer, Object>(
-            ParentEntity.class, Integer.class, IntegerWrapper.class, null,
-            null, "aaa", "AAA", true, true);
+    public BasicPropertyType<Object, ParentEntity, Integer, Integer> $aaa = new BasicPropertyType<>(
+            ParentEntity.class, Integer.class, Integer.class,
+            IntegerWrapper.class, null, null, "aaa", "AAA", true, true);
 
-    public BasicPropertyType<Object, ParentEntity, Integer, Object> $bbb = new BasicPropertyType<Object, ParentEntity, Integer, Object>(
-            ParentEntity.class, Integer.class, IntegerWrapper.class, null,
-            null, "bbb", "BBB", true, true);
+    public BasicPropertyType<Object, ParentEntity, Integer, Integer> $bbb = new BasicPropertyType<>(
+            ParentEntity.class, Integer.class, Integer.class,
+            IntegerWrapper.class, null, null, "bbb", "BBB", true, true);
 
     private _ParentEntity() {
     }
@@ -62,13 +63,14 @@ public class _ParentEntity extends AbstractEntityType<ParentEntity> {
     }
 
     @Override
-    public EntityPropertyType<ParentEntity, ?> getEntityPropertyType(String name) {
+    public EntityPropertyType<ParentEntity, ?, ?> getEntityPropertyType(
+            String name) {
 
         return null;
     }
 
     @Override
-    public List<EntityPropertyType<ParentEntity, ?>> getEntityPropertyTypes() {
+    public List<EntityPropertyType<ParentEntity, ?, ?>> getEntityPropertyTypes() {
 
         return null;
     }
@@ -110,12 +112,6 @@ public class _ParentEntity extends AbstractEntityType<ParentEntity> {
     }
 
     @Override
-    public ParentEntity newEntity() {
-
-        return null;
-    }
-
-    @Override
     public void preDelete(ParentEntity entity,
             PreDeleteContext<ParentEntity> context) {
     }
@@ -146,7 +142,7 @@ public class _ParentEntity extends AbstractEntityType<ParentEntity> {
     }
 
     @Override
-    public List<EntityPropertyType<ParentEntity, ?>> getIdPropertyTypes() {
+    public List<EntityPropertyType<ParentEntity, ?, ?>> getIdPropertyTypes() {
         return null;
     }
 
@@ -170,7 +166,8 @@ public class _ParentEntity extends AbstractEntityType<ParentEntity> {
     }
 
     @Override
-    public ParentEntity newEntity(Map<String, Object> args) {
+    public ParentEntity newEntity(
+            Map<String, Accessor<ParentEntity, ?, ?>> args) {
         return null;
     }
 

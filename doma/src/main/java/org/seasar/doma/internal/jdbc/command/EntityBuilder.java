@@ -37,7 +37,7 @@ import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.NamingType;
-import org.seasar.doma.wrapper.Wrapper;
+import org.seasar.doma.jdbc.entity.Accessor;
 
 /**
  * エンティティのビルダーです。
@@ -55,7 +55,7 @@ public class EntityBuilder<E> {
 
     protected final boolean resultMappingEnsured;
 
-    protected Map<Integer, EntityPropertyType<E, ?>> indexMap;
+    protected Map<Integer, EntityPropertyType<E, ?, ?>> indexMap;
 
     public EntityBuilder(Query query, EntityType<E> entityType,
             boolean resultMappingEnsured) {
@@ -72,47 +72,37 @@ public class EntityBuilder<E> {
         }
         JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().getDialect()
                 .getJdbcMappingVisitor();
-        if (entityType.isImmutable()) {
-            Map<String, Object> properties = new HashMap<String, Object>(
-                    indexMap.size());
-            for (Map.Entry<Integer, EntityPropertyType<E, ?>> entry : indexMap
-                    .entrySet()) {
-                Integer index = entry.getKey();
-                EntityPropertyType<E, ?> propertyType = entry.getValue();
-                GetValueFunction function = new GetValueFunction(resultSet,
-                        index);
-                Wrapper<?> wrapper = propertyType.getWrapper(properties);
-                wrapper.accept(jdbcMappingVisitor, function);
-            }
-            return entityType.newEntity(properties);
-        }
-        E entity = entityType
-                .newEntity(Collections.<String, Object> emptyMap());
-        for (Map.Entry<Integer, EntityPropertyType<E, ?>> entry : indexMap
+        Map<String, Accessor<E, ?, ?>> accessors = new HashMap<>(
+                indexMap.size());
+        for (Map.Entry<Integer, EntityPropertyType<E, ?, ?>> entry : indexMap
                 .entrySet()) {
             Integer index = entry.getKey();
-            EntityPropertyType<E, ?> propertyType = entry.getValue();
+            EntityPropertyType<E, ?, ?> propertyType = entry.getValue();
+            Accessor<E, ?, ?> accessor = propertyType
+                    .getAccessor();
             GetValueFunction function = new GetValueFunction(resultSet, index);
-            Wrapper<?> wrapper = propertyType.getWrapper(entity);
-            wrapper.accept(jdbcMappingVisitor, function);
+            accessor.getWrapper().accept(jdbcMappingVisitor, function);
+            accessors.put(propertyType.getName(), accessor);
         }
-        entityType.saveCurrentStates(entity);
+        E entity = entityType.newEntity(accessors);
+        if (!entityType.isImmutable()) {
+            entityType.saveCurrentStates(entity);
+        }
         return entity;
     }
 
-    protected HashMap<Integer, EntityPropertyType<E, ?>> createIndexMap(
+    protected HashMap<Integer, EntityPropertyType<E, ?, ?>> createIndexMap(
             ResultSetMetaData resultSetMeta, EntityType<E> entityType)
             throws SQLException {
-        HashMap<Integer, EntityPropertyType<E, ?>> indexMap = new HashMap<Integer, EntityPropertyType<E, ?>>();
-        HashMap<String, EntityPropertyType<E, ?>> columnNameMap = createColumnNameMap(entityType);
-        Set<EntityPropertyType<E, ?>> unmappedPropertySet = resultMappingEnsured ? new HashSet<EntityPropertyType<E, ?>>(
-                columnNameMap.values()) : Collections
-                .<EntityPropertyType<E, ?>> emptySet();
+        HashMap<Integer, EntityPropertyType<E, ?, ?>> indexMap = new HashMap<>();
+        HashMap<String, EntityPropertyType<E, ?, ?>> columnNameMap = createColumnNameMap(entityType);
+        Set<EntityPropertyType<E, ?, ?>> unmappedPropertySet = resultMappingEnsured ? new HashSet<>(
+                columnNameMap.values()) : Collections.emptySet();
         int count = resultSetMeta.getColumnCount();
         for (int i = 1; i < count + 1; i++) {
             String columnName = resultSetMeta.getColumnLabel(i);
             String lowerCaseColumnName = columnName.toLowerCase();
-            EntityPropertyType<E, ?> propertyType = columnNameMap
+            EntityPropertyType<E, ?, ?> propertyType = columnNameMap
                     .get(lowerCaseColumnName);
             if (propertyType == null) {
                 if (ROWNUMBER_COLUMN_NAME.equals(lowerCaseColumnName)) {
@@ -129,13 +119,13 @@ public class EntityBuilder<E> {
         return indexMap;
     }
 
-    protected HashMap<String, EntityPropertyType<E, ?>> createColumnNameMap(
+    protected HashMap<String, EntityPropertyType<E, ?, ?>> createColumnNameMap(
             EntityType<E> entityType) {
-        List<EntityPropertyType<E, ?>> propertyTypes = entityType
+        List<EntityPropertyType<E, ?, ?>> propertyTypes = entityType
                 .getEntityPropertyTypes();
-        HashMap<String, EntityPropertyType<E, ?>> result = new HashMap<String, EntityPropertyType<E, ?>>(
+        HashMap<String, EntityPropertyType<E, ?, ?>> result = new HashMap<>(
                 propertyTypes.size());
-        for (EntityPropertyType<E, ?> propertyType : propertyTypes) {
+        for (EntityPropertyType<E, ?, ?> propertyType : propertyTypes) {
             String columnName = propertyType.getColumnName();
             result.put(columnName.toLowerCase(), propertyType);
         }
@@ -153,11 +143,11 @@ public class EntityBuilder<E> {
     }
 
     protected void throwResultMappingException(
-            Set<EntityPropertyType<E, ?>> unmappedPropertySet) {
+            Set<EntityPropertyType<E, ?, ?>> unmappedPropertySet) {
         int size = unmappedPropertySet.size();
-        List<String> unmappedPropertyNames = new ArrayList<String>(size);
-        List<String> expectedColumnNames = new ArrayList<String>(size);
-        for (EntityPropertyType<E, ?> propertyType : unmappedPropertySet) {
+        List<String> unmappedPropertyNames = new ArrayList<>(size);
+        List<String> expectedColumnNames = new ArrayList<>(size);
+        for (EntityPropertyType<E, ?, ?> propertyType : unmappedPropertySet) {
             unmappedPropertyNames.add(propertyType.getName());
             expectedColumnNames.add(propertyType.getColumnName());
         }

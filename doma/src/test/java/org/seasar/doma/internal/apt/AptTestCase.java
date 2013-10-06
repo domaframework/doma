@@ -15,14 +15,21 @@
  */
 package org.seasar.doma.internal.apt;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
 
+import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.annotation.processing.Processor;
+import javax.annotation.processing.RoundEnvironment;
+import javax.annotation.processing.SupportedAnnotationTypes;
+import javax.lang.model.SourceVersion;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
@@ -53,9 +60,19 @@ public abstract class AptTestCase extends AptinaTestCase {
 
     protected Locale locale = Locale.JAPAN;
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        try {
+            Field field = AptinaTestCase.class.getDeclaredField("processors");
+            field.setAccessible(true);
+            List<Processor> processors = (List<Processor>) field.get(this);
+            processors.clear();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        addProcessor(new AdHocProcessor());
         addSourcePath("src/test/java");
         addSourcePath("src/test/resources");
         setCharset("UTF-8");
@@ -204,5 +221,35 @@ public abstract class AptTestCase extends AptinaTestCase {
             result.put(name, type);
         }
         return result;
+    }
+
+    @SupportedAnnotationTypes("*")
+    class AdHocProcessor extends AbstractProcessor {
+
+        @Override
+        public synchronized void init(
+                final ProcessingEnvironment processingEnvironment) {
+            super.init(processingEnvironment);
+            try {
+                Field field = AptinaTestCase.class
+                        .getDeclaredField("processingEnvironment");
+                field.setAccessible(true);
+                field.set(AptTestCase.this, processingEnvironment);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        @Override
+        public SourceVersion getSupportedSourceVersion() {
+            return SourceVersion.latest();
+        }
+
+        @Override
+        public boolean process(final Set<? extends TypeElement> annotations,
+                final RoundEnvironment roundEnv) {
+            return false;
+        }
+
     }
 }

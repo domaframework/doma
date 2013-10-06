@@ -11,13 +11,13 @@ public final class _Child2InheritingEntity extends org.seasar.doma.jdbc.entity.A
     private static final _Child2InheritingEntity __singleton = new _Child2InheritingEntity();
 
     /** the aaa */
-    public final org.seasar.doma.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.Parent2Entity, org.seasar.doma.internal.apt.entity.Child2InheritingEntity, java.lang.Integer, java.lang.Object> $aaa = new org.seasar.doma.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.Parent2Entity, org.seasar.doma.internal.apt.entity.Child2InheritingEntity, java.lang.Integer, java.lang.Object>(org.seasar.doma.internal.apt.entity.Child2InheritingEntity.class, java.lang.Integer.class, org.seasar.doma.wrapper.IntegerWrapper.class, org.seasar.doma.internal.apt.entity._Parent2Entity.getSingletonInternal().$aaa, null, "aaa", "aaa", true, true);
+    public final org.seasar.doma.jdbc.entity.BasicPropertyType<org.seasar.doma.internal.apt.entity.Parent2Entity, org.seasar.doma.internal.apt.entity.Child2InheritingEntity, java.lang.Integer, java.lang.Integer> $aaa = new org.seasar.doma.jdbc.entity.BasicPropertyType<>(org.seasar.doma.internal.apt.entity.Child2InheritingEntity.class, java.lang.Integer.class, java.lang.Integer.class, org.seasar.doma.wrapper.IntegerWrapper.class, org.seasar.doma.internal.apt.entity._Parent2Entity.getSingletonInternal().$aaa, null, "aaa", "aaa", true, true);
 
     /** the bbb */
-    public final org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.Child2InheritingEntity, java.math.BigDecimal, java.lang.Object> $bbb = new org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.Child2InheritingEntity, java.math.BigDecimal, java.lang.Object>(org.seasar.doma.internal.apt.entity.Child2InheritingEntity.class, java.math.BigDecimal.class, org.seasar.doma.wrapper.BigDecimalWrapper.class, null, null, "bbb", "bbb", true, true);
+    public final org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.Child2InheritingEntity, java.math.BigDecimal, java.math.BigDecimal> $bbb = new org.seasar.doma.jdbc.entity.BasicPropertyType<>(org.seasar.doma.internal.apt.entity.Child2InheritingEntity.class, java.math.BigDecimal.class, java.math.BigDecimal.class, org.seasar.doma.wrapper.BigDecimalWrapper.class, null, null, "bbb", "bbb", true, true);
 
     /** the ccc */
-    public final org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.Child2InheritingEntity, java.lang.String, java.lang.Object> $ccc = new org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.Child2InheritingEntity, java.lang.String, java.lang.Object>(org.seasar.doma.internal.apt.entity.Child2InheritingEntity.class, java.lang.String.class, org.seasar.doma.wrapper.StringWrapper.class, null, null, "ccc", "ccc", true, true);
+    public final org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.Child2InheritingEntity, java.lang.String, java.lang.String> $ccc = new org.seasar.doma.jdbc.entity.BasicPropertyType<>(org.seasar.doma.internal.apt.entity.Child2InheritingEntity.class, java.lang.String.class, java.lang.String.class, org.seasar.doma.wrapper.StringWrapper.class, null, null, "ccc", "ccc", true, true);
 
     private final org.seasar.doma.internal.apt.entity.Parent2EntityListener<org.seasar.doma.internal.apt.entity.Child2InheritingEntity> __listener;
 
@@ -35,11 +35,11 @@ public final class _Child2InheritingEntity extends org.seasar.doma.jdbc.entity.A
 
     private final String __name;
 
-    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, ?>> __idPropertyTypes;
+    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, ?, ?>> __idPropertyTypes;
 
-    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, ?>> __entityPropertyTypes;
+    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, ?, ?>> __entityPropertyTypes;
 
-    private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, ?>> __entityPropertyTypeMap;
+    private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, ?, ?>> __entityPropertyTypeMap;
 
     private _Child2InheritingEntity() {
         __listener = new org.seasar.doma.internal.apt.entity.Parent2EntityListener<org.seasar.doma.internal.apt.entity.Child2InheritingEntity>();
@@ -50,9 +50,9 @@ public final class _Child2InheritingEntity extends org.seasar.doma.jdbc.entity.A
         __schemaName = "";
         __tableName = "Child2InheritingEntity";
         __qualifiedTableName = "Child2InheritingEntity";
-        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, ?>> __idList = new java.util.ArrayList<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, ?>>();
-        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, ?>> __list = new java.util.ArrayList<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, ?>>(3);
-        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, ?>> __map = new java.util.HashMap<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, ?>>(3);
+        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, ?, ?>> __idList = new java.util.ArrayList<>();
+        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, ?, ?>> __list = new java.util.ArrayList<>(3);
+        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, ?, ?>> __map = new java.util.HashMap<>(3);
         __list.add($aaa);
         __map.put("aaa", $aaa);
         __list.add($bbb);
@@ -130,17 +130,17 @@ public final class _Child2InheritingEntity extends org.seasar.doma.jdbc.entity.A
     }
 
     @Override
-    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, ?>> getEntityPropertyTypes() {
+    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, ?, ?>> getEntityPropertyTypes() {
         return __entityPropertyTypes;
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, ?> getEntityPropertyType(String __name) {
+    public org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, ?, ?> getEntityPropertyType(String __name) {
         return __entityPropertyTypeMap.get(__name);
     }
 
     @Override
-    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, ?>> getIdPropertyTypes() {
+    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, ?, ?>> getIdPropertyTypes() {
         return __idPropertyTypes;
     }
 
@@ -155,13 +155,10 @@ public final class _Child2InheritingEntity extends org.seasar.doma.jdbc.entity.A
     }
 
     @Override
-    public org.seasar.doma.internal.apt.entity.Child2InheritingEntity newEntity() {
-        return new org.seasar.doma.internal.apt.entity.Child2InheritingEntity();
-    }
-
-    @Override
-    public org.seasar.doma.internal.apt.entity.Child2InheritingEntity newEntity(java.util.Map<String, Object> __args) {
-        return new org.seasar.doma.internal.apt.entity.Child2InheritingEntity();
+    public org.seasar.doma.internal.apt.entity.Child2InheritingEntity newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Accessor<org.seasar.doma.internal.apt.entity.Child2InheritingEntity, ?, ?>> __args) {
+        org.seasar.doma.internal.apt.entity.Child2InheritingEntity entity = new org.seasar.doma.internal.apt.entity.Child2InheritingEntity();
+        __args.values().forEach(v -> v.save(entity));
+        return entity;
     }
 
     @Override
