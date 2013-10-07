@@ -68,8 +68,8 @@ public class GeneratedIdPropertyType<PE, E extends PE, P, V extends Number, D>
      *            プロパティのクラス
      * @param valueClass
      *            値のクラス
-     * @param wrapperClass
-     *            ラッパーのクラス
+     * @param wrapperSupplier
+     *            ラッパーのサプライヤ
      * @param parentEntityPropertyType
      *            親のエンティティのプロパティ型、親のエンティティを持たない場合 {@code null}
      * @param domainType
@@ -83,11 +83,11 @@ public class GeneratedIdPropertyType<PE, E extends PE, P, V extends Number, D>
      */
     public GeneratedIdPropertyType(Class<E> entityClass,
             Class<?> entityPropertyClass, Class<V> valueClass,
-            Class<?> wrapperClass,
+            Supplier<Wrapper<V>> wrapperSupplier,
             EntityPropertyType<PE, P, V> parentEntityPropertyType,
             DomainType<V, D> domainType, String name, String columnName,
             IdGenerator idGenerator) {
-        super(entityClass, entityPropertyClass, valueClass, wrapperClass,
+        super(entityClass, entityPropertyClass, valueClass, wrapperSupplier,
                 parentEntityPropertyType, domainType, name, columnName, true,
                 true);
         if (idGenerator == null) {
@@ -226,10 +226,10 @@ public class GeneratedIdPropertyType<PE, E extends PE, P, V extends Number, D>
         }
         ValueSetter valueSetter = new ValueSetter();
         if (entityType.isImmutable()) {
-            Map<String, Accessor<E, ?>> accessors = new HashMap<>();
+            Map<String, PropertyState<E, ?>> accessors = new HashMap<>();
             for (EntityPropertyType<E, ?, ?> p : entityType
                     .getEntityPropertyTypes()) {
-                Accessor<E, ?> accessor = p.getAccessor();
+                PropertyState<E, ?> accessor = p.createState();
                 accessor.load(entity);
                 if (p == this) {
                     accessor.getWrapper().accept(valueSetter, value);
@@ -238,7 +238,7 @@ public class GeneratedIdPropertyType<PE, E extends PE, P, V extends Number, D>
             }
             return entityType.newEntity(accessors);
         } else {
-            Accessor<E, ?> accessor = getAccessor();
+            PropertyState<E, ?> accessor = createState();
             accessor.load(entity);
             accessor.getWrapper().accept(valueSetter, value);
             accessor.save(entity);

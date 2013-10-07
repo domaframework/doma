@@ -28,7 +28,7 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlKind;
-import org.seasar.doma.jdbc.entity.Accessor;
+import org.seasar.doma.jdbc.entity.PropertyState;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
@@ -124,7 +124,7 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
                     targetPropertyTypes.add(p);
                 }
                 if (generatedIdPropertyType == null) {
-                    Accessor<E, ?> accessor = p.getAccessor();
+                    PropertyState<E, ?> accessor = p.createState();
                     accessor.load(currentEntity);
                     if (accessor.getWrapper().get() == null) {
                         throw new JdbcException(Message.DOMA2020,
@@ -168,7 +168,7 @@ public class AutoBatchInsertQuery<E> extends AutoBatchModifyQuery<E> implements
         builder.cutBackSql(2);
         builder.appendSql(") values (");
         for (EntityPropertyType<E, ?, ?> p : targetPropertyTypes) {
-            Accessor<E, ?> accessor = p.getAccessor();
+            PropertyState<E, ?> accessor = p.createState();
             accessor.load(currentEntity);
             builder.appendWrapper(accessor.getWrapper());
             builder.appendSql(", ");

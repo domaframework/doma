@@ -27,7 +27,7 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlKind;
-import org.seasar.doma.jdbc.entity.Accessor;
+import org.seasar.doma.jdbc.entity.PropertyState;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
@@ -96,7 +96,7 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
             if (!p.isInsertable()) {
                 continue;
             }
-            Accessor<E, ?> accessor = p.getAccessor();
+            PropertyState<E, ?> accessor = p.createState();
             accessor.load(entity);
             if (p.isId()) {
                 if (p != generatedIdPropertyType
@@ -154,7 +154,7 @@ public class AutoInsertQuery<E> extends AutoModifyQuery<E> implements
         builder.cutBackSql(2);
         builder.appendSql(") values (");
         for (EntityPropertyType<E, ?, ?> p : targetPropertyTypes) {
-            Accessor<E, ?> accessor = p.getAccessor();
+            PropertyState<E, ?> accessor = p.createState();
             accessor.load(entity);
             builder.appendWrapper(accessor.getWrapper());
             builder.appendSql(", ");

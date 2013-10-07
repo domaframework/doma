@@ -127,7 +127,7 @@ public interface EntityType<E> {
      * @return 新しいエンティティ
      * @since 1.34.0
      */
-    E newEntity(Map<String, Accessor<E, ?>> __args);
+    E newEntity(Map<String, PropertyState<E, ?>> __args);
 
     /**
      * エンティティのクラスを返します。

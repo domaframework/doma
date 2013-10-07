@@ -17,6 +17,7 @@ package org.seasar.doma.jdbc.entity;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
@@ -55,8 +56,8 @@ public class VersionPropertyType<PE, E extends PE, P, V extends Number, D>
      *            エンティティのクラス
      * @param entityPropertyClass
      *            プロパティのクラス
-     * @param wrapperClass
-     *            ラッパーのクラス
+     * @param wrapperSupplier
+     *            ラッパーのサプライヤ
      * @param parentEntityPropertyType
      *            親のエンティティのプロパティ型、親のエンティティを持たない場合 {@code null}
      * @param domainType
@@ -68,10 +69,10 @@ public class VersionPropertyType<PE, E extends PE, P, V extends Number, D>
      */
     public VersionPropertyType(Class<E> entityClass,
             Class<?> entityPropertyClass, Class<V> valueClass,
-            Class<? extends NumberWrapper<V>> wrapperClass,
+            Supplier<Wrapper<V>> wrapperSupplier,
             EntityPropertyType<PE, P, V> parentEntityPropertyType,
             DomainType<V, D> domainType, String name, String columnName) {
-        super(entityClass, entityPropertyClass, valueClass, wrapperClass,
+        super(entityClass, entityPropertyClass, valueClass, wrapperSupplier,
                 parentEntityPropertyType, domainType, name, columnName, true,
                 true);
     }
@@ -125,10 +126,10 @@ public class VersionPropertyType<PE, E extends PE, P, V extends Number, D>
     protected <PARAM> E modifyValue(EntityType<E> entityType, E entity,
             WrapperVisitor<Void, PARAM, RuntimeException> visitor, PARAM value) {
         if (entityType.isImmutable()) {
-            Map<String, Accessor<E, ?>> accessors = new HashMap<>();
+            Map<String, PropertyState<E, ?>> accessors = new HashMap<>();
             for (EntityPropertyType<E, ?, ?> p : entityType
                     .getEntityPropertyTypes()) {
-                Accessor<E, ?> accessor = p.getAccessor();
+                PropertyState<E, ?> accessor = p.createState();
                 accessor.load(entity);
                 if (p == this) {
                     accessor.getWrapper().accept(visitor, value);
@@ -137,7 +138,7 @@ public class VersionPropertyType<PE, E extends PE, P, V extends Number, D>
             }
             return entityType.newEntity(accessors);
         } else {
-            Accessor<E, ?> accessor = getAccessor();
+            PropertyState<E, ?> accessor = createState();
             accessor.load(entity);
             accessor.getWrapper().accept(visitor, value);
             accessor.save(entity);

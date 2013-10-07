@@ -34,7 +34,7 @@ import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.MappedPropertyNotFoundException;
 import org.seasar.doma.jdbc.ResultMappingException;
 import org.seasar.doma.jdbc.Sql;
-import org.seasar.doma.jdbc.entity.Accessor;
+import org.seasar.doma.jdbc.entity.PropertyState;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.NamingType;
@@ -72,12 +72,12 @@ public class EntityBuilder<E> {
         }
         JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().getDialect()
                 .getJdbcMappingVisitor();
-        Map<String, Accessor<E, ?>> accessors = new HashMap<>(indexMap.size());
+        Map<String, PropertyState<E, ?>> accessors = new HashMap<>(indexMap.size());
         for (Map.Entry<Integer, EntityPropertyType<E, ?, ?>> entry : indexMap
                 .entrySet()) {
             Integer index = entry.getKey();
             EntityPropertyType<E, ?, ?> propertyType = entry.getValue();
-            Accessor<E, ?> accessor = propertyType.getAccessor();
+            PropertyState<E, ?> accessor = propertyType.createState();
             GetValueFunction function = new GetValueFunction(resultSet, index);
             accessor.getWrapper().accept(jdbcMappingVisitor, function);
             accessors.put(propertyType.getName(), accessor);

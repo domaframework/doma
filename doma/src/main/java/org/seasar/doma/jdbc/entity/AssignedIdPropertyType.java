@@ -15,7 +15,10 @@
  */
 package org.seasar.doma.jdbc.entity;
 
+import java.util.function.Supplier;
+
 import org.seasar.doma.jdbc.domain.DomainType;
+import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * アプリケーションにより割り当てられる識別子のプロパティ型です。
@@ -35,8 +38,8 @@ public class AssignedIdPropertyType<PE, E extends PE, P, V, D> extends
      *            プロパティのクラス
      * @param valueClass
      *            値のクラス
-     * @param wrapperClass
-     *            ラッパーのクラス
+     * @param wrapperSupplier
+     *            ラッパーのサプライヤ
      * @param parentEntityPropertyType
      *            親のエンティティのプロパティ型、親のエンティティを持たない場合 {@code null}
      * @param domainType
@@ -48,10 +51,10 @@ public class AssignedIdPropertyType<PE, E extends PE, P, V, D> extends
      */
     public AssignedIdPropertyType(Class<E> entityClass,
             Class<?> entityPropertyClass, Class<V> valueClass,
-            Class<?> wrapperClass,
+            Supplier<Wrapper<V>> wrapperSupplier,
             EntityPropertyType<PE, P, V> parentEntityPropertyType,
             DomainType<V, D> domainType, String name, String columnName) {
-        super(entityClass, entityPropertyClass, valueClass, wrapperClass,
+        super(entityClass, entityPropertyClass, valueClass, wrapperSupplier,
                 parentEntityPropertyType, domainType, name, columnName, true,
                 true);
     }

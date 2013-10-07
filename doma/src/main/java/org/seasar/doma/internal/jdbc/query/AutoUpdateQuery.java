@@ -28,7 +28,7 @@ import org.seasar.doma.internal.jdbc.entity.AbstractPreUpdateContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
-import org.seasar.doma.jdbc.entity.Accessor;
+import org.seasar.doma.jdbc.entity.PropertyState;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.wrapper.Wrapper;
@@ -108,7 +108,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
                 continue;
             }
             if (nullExcluded) {
-                Accessor<E, ?> accessor = p.getAccessor();
+                PropertyState<E, ?> accessor = p.createState();
                 accessor.load(entity);
                 if (accessor.getWrapper().get() == null) {
                     continue;
@@ -128,9 +128,9 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
 
     protected boolean isChanged(E originalStates,
             EntityPropertyType<E, ?, ?> propertyType) {
-        Wrapper<?> originalWrapper = propertyType.getAccessor()
+        Wrapper<?> originalWrapper = propertyType.createState()
                 .load(originalStates).getWrapper();
-        Wrapper<?> wrapper = propertyType.getAccessor().load(entity)
+        Wrapper<?> wrapper = propertyType.createState().load(entity)
                 .getWrapper();
         return !wrapper.hasEqualValue(originalWrapper.get());
     }
@@ -142,7 +142,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
         builder.appendSql(entityType.getQualifiedTableName());
         builder.appendSql(" set ");
         for (EntityPropertyType<E, ?, ?> p : targetPropertyTypes) {
-            Accessor<E, ?> accessor = p.getAccessor();
+            PropertyState<E, ?> accessor = p.createState();
             accessor.load(entity);
             builder.appendSql(p.getColumnName());
             builder.appendSql(" = ");
@@ -150,7 +150,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
             builder.appendSql(", ");
         }
         if (!versionIgnored && versionPropertyType != null) {
-            Accessor<E, ?> accessor = versionPropertyType.getAccessor();
+            PropertyState<E, ?> accessor = versionPropertyType.createState();
             accessor.load(entity);
             builder.appendSql(versionPropertyType.getColumnName());
             builder.appendSql(" = ");
@@ -162,7 +162,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
         if (idPropertyTypes.size() > 0) {
             builder.appendSql(" where ");
             for (EntityPropertyType<E, ?, ?> p : idPropertyTypes) {
-                Accessor<E, ?> accessor = p.getAccessor();
+                PropertyState<E, ?> accessor = p.createState();
                 accessor.load(entity);
                 builder.appendSql(p.getColumnName());
                 builder.appendSql(" = ");
@@ -177,7 +177,7 @@ public class AutoUpdateQuery<E> extends AutoModifyQuery<E> implements
             } else {
                 builder.appendSql(" and ");
             }
-            Accessor<E, ?> accessor = versionPropertyType.getAccessor();
+            PropertyState<E, ?> accessor = versionPropertyType.createState();
             accessor.load(entity);
             builder.appendSql(versionPropertyType.getColumnName());
             builder.appendSql(" = ");

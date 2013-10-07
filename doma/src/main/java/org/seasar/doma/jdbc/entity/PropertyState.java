@@ -28,7 +28,7 @@ import org.seasar.doma.wrapper.Wrapper;
  *            値の型
  * @since 2.0.0
  */
-public interface Accessor<E, V> {
+public interface PropertyState<E, V> {
 
     /**
      * プロパティを返します。
@@ -44,7 +44,7 @@ public interface Accessor<E, V> {
      *            エンティティ
      * @return このアクセサ
      */
-    Accessor<E, V> load(E entity);
+    PropertyState<E, V> load(E entity);
 
     /**
      * エンティティへこのアクセサが保持する値を保存します。
@@ -52,7 +52,7 @@ public interface Accessor<E, V> {
      * @param entity
      * @return このアクセサ
      */
-    Accessor<E, V> save(E entity);
+    PropertyState<E, V> save(E entity);
 
     /**
      * 値のラッパーを返します。

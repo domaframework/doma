@@ -76,11 +76,11 @@ public interface EntityPropertyType<E, P, V> {
     boolean isUpdatable();
 
     /**
-     * プロパティのアクセサです。
+     * プロパティのステートを作ります。
      * 
-     * @return プロパティのアクセサ
+     * @return プロパティのステート
      */
-    Accessor<E, V> getAccessor();
+    PropertyState<E, V> createState();
 
     /**
      * プロパティの値をコピーします。

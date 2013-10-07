@@ -140,7 +140,7 @@ public final class _NamingType2Entity extends org.seasar.doma.jdbc.entity.Abstra
     }
 
     @Override
-    public org.seasar.doma.internal.apt.entity.NamingType2Entity newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Accessor<org.seasar.doma.internal.apt.entity.NamingType2Entity, ?>> __args) {
+    public org.seasar.doma.internal.apt.entity.NamingType2Entity newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.PropertyState<org.seasar.doma.internal.apt.entity.NamingType2Entity, ?>> __args) {
         org.seasar.doma.internal.apt.entity.NamingType2Entity entity = new org.seasar.doma.internal.apt.entity.NamingType2Entity();
         __args.values().forEach(v -> v.save(entity));
         return entity;

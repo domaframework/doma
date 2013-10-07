@@ -25,7 +25,6 @@ import java.util.Map;
 import javax.annotation.Generated;
 
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
-import org.seasar.doma.jdbc.entity.Accessor;
 import org.seasar.doma.jdbc.entity.AssignedIdPropertyType;
 import org.seasar.doma.jdbc.entity.BasicPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
@@ -37,10 +36,8 @@ import org.seasar.doma.jdbc.entity.PostUpdateContext;
 import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
+import org.seasar.doma.jdbc.entity.PropertyState;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
-import org.seasar.doma.wrapper.BigDecimalWrapper;
-import org.seasar.doma.wrapper.IntegerWrapper;
-import org.seasar.doma.wrapper.StringWrapper;
 
 @Generated("")
 public class _Emp extends AbstractEntityType<Emp> {
@@ -51,20 +48,24 @@ public class _Emp extends AbstractEntityType<Emp> {
             Emp.class, "originalStates");
 
     public final AssignedIdPropertyType<Object, Emp, Integer, Integer, Object> id = new AssignedIdPropertyType<>(
-            Emp.class, Integer.class, Integer.class, IntegerWrapper.class,
-            null, null, "id", "ID");
+            Emp.class, Integer.class, Integer.class,
+            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
+            "id", "ID");
 
     public final BasicPropertyType<Object, Emp, String, String, Object> name = new BasicPropertyType<>(
-            Emp.class, String.class, String.class, StringWrapper.class, null,
-            null, "name", "NAME", true, true);
+            Emp.class, String.class, String.class,
+            () -> new org.seasar.doma.wrapper.StringWrapper(), null, null,
+            "name", "NAME", true, true);
 
     public final BasicPropertyType<Object, Emp, BigDecimal, BigDecimal, BigDecimal> salary = new BasicPropertyType<>(
             Emp.class, BigDecimal.class, BigDecimal.class,
-            BigDecimalWrapper.class, null, null, "salary", "SALARY", true, true);
+            () -> new org.seasar.doma.wrapper.BigDecimalWrapper(), null, null,
+            "salary", "SALARY", true, true);
 
     public final VersionPropertyType<Object, Emp, Integer, Integer, Integer> version = new VersionPropertyType<>(
-            Emp.class, Integer.class, Integer.class, IntegerWrapper.class,
-            null, null, "version", "VERSION");
+            Emp.class, Integer.class, Integer.class,
+            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
+            "version", "VERSION");
 
     private final String __name = "Emp";
 
@@ -108,7 +109,7 @@ public class _Emp extends AbstractEntityType<Emp> {
     }
 
     @Override
-    public Emp newEntity(Map<String, Accessor<Emp, ?>> args) {
+    public Emp newEntity(Map<String, PropertyState<Emp, ?>> args) {
         Emp entity = new Emp();
         args.values().forEach(v -> v.save(entity));
         return entity;

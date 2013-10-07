@@ -13,7 +13,7 @@ public final class _PrivateOriginalStatesEntity extends org.seasar.doma.jdbc.ent
     private static final org.seasar.doma.jdbc.entity.OriginalStatesAccessor<org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity> __originalStatesAccessor = new org.seasar.doma.jdbc.entity.OriginalStatesAccessor<>(org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity.class, "originalStates");
 
     /** the name */
-    public final org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity, java.lang.String, java.lang.String, Object> $name = new org.seasar.doma.jdbc.entity.BasicPropertyType<>(org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity.class, java.lang.String.class, java.lang.String.class, org.seasar.doma.wrapper.StringWrapper.class, null, null, "name", "name", true, true);
+    public final org.seasar.doma.jdbc.entity.BasicPropertyType<java.lang.Object, org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity, java.lang.String, java.lang.String, Object> $name = new org.seasar.doma.jdbc.entity.BasicPropertyType<>(org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity.class, java.lang.String.class, java.lang.String.class, () -> new org.seasar.doma.wrapper.StringWrapper(), null, null, "name", "name", true, true);
 
     private final org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity> __listener;
 
@@ -147,7 +147,7 @@ public final class _PrivateOriginalStatesEntity extends org.seasar.doma.jdbc.ent
     }
 
     @Override
-    public org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Accessor<org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity, ?>> __args) {
+    public org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.PropertyState<org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity, ?>> __args) {
         org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity entity = new org.seasar.doma.internal.apt.entity.PrivateOriginalStatesEntity();
         __args.values().forEach(v -> v.save(entity));
         return entity;

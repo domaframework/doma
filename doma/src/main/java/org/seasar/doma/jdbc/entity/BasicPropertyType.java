@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.jdbc.entity;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -23,12 +22,10 @@ import java.util.function.Supplier;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.ClassUtil;
-import org.seasar.doma.internal.util.ConstructorUtil;
 import org.seasar.doma.internal.util.FieldUtil;
 import org.seasar.doma.jdbc.domain.DomainState;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.jdbc.domain.OptionalDomainState;
-import org.seasar.doma.wrapper.EnumWrapper;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -49,8 +46,8 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
     /** 値のクラス */
     protected final Class<V> valueClass;
 
-    /** ラッパーのクラス */
-    protected final Class<?> wrapperClass;
+    /** ラッパーのサプライヤ */
+    protected final Supplier<Wrapper<V>> wrapperSupplier;
 
     /** 親のエンティティのプロパティ型 */
     protected final EntityPropertyType<PE, P, V> parentEntityPropertyType;
@@ -75,11 +72,8 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
     /** プロパティのフィールド */
     protected final Field field;
 
-    /** ラッパーのファクトリ */
-    protected final WrapperFactory<V> wrapperFactory;
-
     /** アクセサのサプライヤ */
-    protected final Supplier<Accessor<E, V>> accessorSupplier;
+    protected final Supplier<PropertyState<E, V>> accessorSupplier;
 
     /**
      * インスタンスを構築します。
@@ -108,7 +102,7 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
     @SuppressWarnings("unchecked")
     public BasicPropertyType(Class<E> entityClass,
             Class<?> entityPropertyClass, Class<V> valueClass,
-            Class<?> wrapperClass,
+            Supplier<Wrapper<V>> wrapperSupplier,
             EntityPropertyType<PE, P, V> parentEntityPropertyType,
             DomainType<V, D> domainType, String name, String columnName,
             boolean insertable, boolean updatable) {
@@ -121,8 +115,8 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
         if (valueClass == null) {
             throw new DomaNullPointerException("valueClass");
         }
-        if (wrapperClass == null) {
-            throw new DomaNullPointerException("wrapperClass");
+        if (wrapperSupplier == null) {
+            throw new DomaNullPointerException("wrapperSupplier");
         }
         if (name == null) {
             throw new DomaNullPointerException("name");
@@ -133,7 +127,7 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
         this.entityClass = entityClass;
         this.entityPropertyClass = (Class<P>) entityPropertyClass;
         this.valueClass = valueClass;
-        this.wrapperClass = wrapperClass;
+        this.wrapperSupplier = wrapperSupplier;
         this.parentEntityPropertyType = parentEntityPropertyType;
         this.domainType = domainType;
         this.isOptional = entityPropertyClass == Optional.class;
@@ -142,27 +136,19 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
         this.insertable = insertable;
         this.updatable = updatable;
         this.field = parentEntityPropertyType == null ? getField() : null;
-        this.wrapperFactory = createWrapperFactory();
         this.accessorSupplier = createPropertyAccessorSupplier();
     }
 
-    private WrapperFactory<V> createWrapperFactory() {
-        if (valueClass.isEnum()) {
-            return new EnumWrapperFactory();
-        }
-        return new SimpleWrapperFactory();
-    }
-
-    private Supplier<Accessor<E, V>> createPropertyAccessorSupplier() {
+    private Supplier<PropertyState<E, V>> createPropertyAccessorSupplier() {
         if (parentEntityPropertyType != null) {
-            return () -> new ParentPropertyAccessor();
+            return () -> new ParentPropertyState();
         }
         if (domainType != null) {
-            return isOptional ? () -> new OptionalDomainPropertyAccessor()
-                    : () -> new DomainPropertyAccessor();
+            return isOptional ? () -> new OptionalDomainPropertyState()
+                    : () -> new DomainPropertyState();
         }
-        return isOptional ? () -> new OptionalValuePropertyAccessor()
-                : () -> new ValuePropertyAccessor();
+        return isOptional ? () -> new OptionalValuePropertyState()
+                : () -> new ValuePropertyState();
     }
 
     private Field getField() {
@@ -185,15 +171,15 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
     }
 
     @Override
-    public Accessor<E, V> getAccessor() {
+    public PropertyState<E, V> createState() {
         return accessorSupplier.get();
     }
 
     @Override
     public void copy(E destEntity, E srcEntity) {
-        Accessor<E, V> dest = getAccessor();
+        PropertyState<E, V> dest = createState();
         dest.load(destEntity);
-        Accessor<E, V> src = getAccessor();
+        PropertyState<E, V> src = createState();
         src.load(srcEntity);
         dest.getWrapper().set(src.getWrapper().getCopy());
         dest.save(destEntity);
@@ -230,96 +216,14 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
     }
 
     /**
-     * ラッパーのファクトリです。
-     * 
-     * @author taedium
-     * 
-     * @param <V>
-     *            値の型
-     * 
-     * @since 1.20.0
-     */
-    protected interface WrapperFactory<V> {
-        Wrapper<V> getWrapper();
-    }
-
-    /**
-     * 単純なラッパーのファクトリです。
-     * 
-     * @author taedium
-     * 
-     * @since 1.20.0
-     */
-    protected class SimpleWrapperFactory implements WrapperFactory<V> {
-
-        protected final Constructor<? extends Wrapper<V>> constructor;
-
-        @SuppressWarnings("unchecked")
-        protected SimpleWrapperFactory() {
-            try {
-                constructor = (Constructor<? extends Wrapper<V>>) ClassUtil
-                        .getConstructor(wrapperClass);
-            } catch (WrapException wrapException) {
-                throw new WrapperConstructorNotFoundException(
-                        wrapException.getCause(), wrapperClass.getName());
-            }
-        }
-
-        @Override
-        public Wrapper<V> getWrapper() {
-            try {
-                return ConstructorUtil.newInstance(constructor);
-            } catch (WrapException wrapException) {
-                throw new WrapperInstantiationException(
-                        wrapException.getCause(), wrapperClass.getName());
-            }
-        }
-    }
-
-    /**
-     * 列挙型のラッパーのファクトリです。
-     * 
-     * @author taedium
-     * 
-     */
-    protected class EnumWrapperFactory implements WrapperFactory<V> {
-
-        @SuppressWarnings("rawtypes")
-        protected final Constructor<EnumWrapper> constructor;
-
-        protected EnumWrapperFactory() {
-            try {
-                this.constructor = ClassUtil.getConstructor(EnumWrapper.class,
-                        Class.class);
-            } catch (WrapException wrapException) {
-                throw new WrapperConstructorNotFoundException(
-                        wrapException.getCause(), EnumWrapper.class.getName());
-            }
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public Wrapper<V> getWrapper() {
-            try {
-                return ConstructorUtil.newInstance(constructor, valueClass);
-            } catch (WrapException wrapException) {
-                throw new WrapperInstantiationException(
-                        wrapException.getCause(), EnumWrapper.class.getName());
-            }
-        }
-    }
-
-    /**
-     * 親プロパティへのアクセサです。
-     * 
      * @author nakamura-to
      */
-    protected class ParentPropertyAccessor implements Accessor<E, V> {
+    protected class ParentPropertyState implements PropertyState<E, V> {
 
-        protected final Accessor<PE, V> delegate;
+        protected final PropertyState<PE, V> delegate;
 
-        protected ParentPropertyAccessor() {
-            this.delegate = parentEntityPropertyType.getAccessor();
+        protected ParentPropertyState() {
+            this.delegate = parentEntityPropertyType.createState();
         }
 
         @Override
@@ -328,13 +232,13 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
         }
 
         @Override
-        public ParentPropertyAccessor load(E entity) {
+        public ParentPropertyState load(E entity) {
             delegate.load(entity);
             return this;
         }
 
         @Override
-        public ParentPropertyAccessor save(E entity) {
+        public ParentPropertyState save(E entity) {
             delegate.save(entity);
             return this;
         }
@@ -347,15 +251,13 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
     }
 
     /**
-     * ドメインクラスへのアクセサです。
-     * 
      * @author nakamura-to
      */
-    protected class DomainPropertyAccessor implements Accessor<E, V> {
+    protected class DomainPropertyState implements PropertyState<E, V> {
 
         protected final DomainState<V, D> accessor;
 
-        protected DomainPropertyAccessor() {
+        protected DomainPropertyState() {
             this.accessor = domainType.createState();
         }
 
@@ -365,7 +267,7 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
         }
 
         @Override
-        public DomainPropertyAccessor load(E entity) {
+        public DomainPropertyState load(E entity) {
             try {
                 Object value = FieldUtil.get(field, entity);
                 D domain = domainType.getDomainClass().cast(value);
@@ -378,51 +280,7 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
         }
 
         @Override
-        public DomainPropertyAccessor save(E entity) {
-            try {
-                FieldUtil.set(field, entity, accessor.get());
-            } catch (WrapException wrapException) {
-                throw new EntityPropertyAccessException(
-                        wrapException.getCause(), entityClass.getName(), name);
-            }
-            return this;
-        }
-
-        @Override
-        public Wrapper<V> getWrapper() {
-            return accessor.getWrapper();
-        }
-    }
-
-    protected class OptionalDomainPropertyAccessor implements Accessor<E, V> {
-
-        protected final OptionalDomainState<V, D> accessor;
-
-        protected OptionalDomainPropertyAccessor() {
-            this.accessor = domainType.createOptionalState();
-        }
-
-        @Override
-        public Object get() {
-            return accessor.get();
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public OptionalDomainPropertyAccessor load(E entity) {
-            try {
-                Optional<D> optional = (Optional<D>) FieldUtil.get(field,
-                        entity);
-                accessor.set(optional);
-            } catch (WrapException wrapException) {
-                throw new EntityPropertyAccessException(
-                        wrapException.getCause(), entityClass.getName(), name);
-            }
-            return this;
-        }
-
-        @Override
-        public OptionalDomainPropertyAccessor save(E entity) {
+        public DomainPropertyState save(E entity) {
             try {
                 FieldUtil.set(field, entity, accessor.get());
             } catch (WrapException wrapException) {
@@ -439,16 +297,61 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
     }
 
     /**
-     * 基本型へのアクセサです。
-     * 
      * @author nakamura-to
      */
-    protected class ValuePropertyAccessor implements Accessor<E, V> {
+    protected class OptionalDomainPropertyState implements PropertyState<E, V> {
+
+        protected final OptionalDomainState<V, D> accessor;
+
+        protected OptionalDomainPropertyState() {
+            this.accessor = domainType.createOptionalState();
+        }
+
+        @Override
+        public Object get() {
+            return accessor.get();
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public OptionalDomainPropertyState load(E entity) {
+            try {
+                Optional<D> optional = (Optional<D>) FieldUtil.get(field,
+                        entity);
+                accessor.set(optional);
+            } catch (WrapException wrapException) {
+                throw new EntityPropertyAccessException(
+                        wrapException.getCause(), entityClass.getName(), name);
+            }
+            return this;
+        }
+
+        @Override
+        public OptionalDomainPropertyState save(E entity) {
+            try {
+                FieldUtil.set(field, entity, accessor.get());
+            } catch (WrapException wrapException) {
+                throw new EntityPropertyAccessException(
+                        wrapException.getCause(), entityClass.getName(), name);
+            }
+            return this;
+        }
+
+        @Override
+        public Wrapper<V> getWrapper() {
+            return accessor.getWrapper();
+        }
+    }
+
+    /**
+     * @author nakamura-to
+     */
+    protected class ValuePropertyState implements PropertyState<E, V> {
 
         protected final Wrapper<V> wrapper;
 
-        protected ValuePropertyAccessor() {
-            this.wrapper = wrapperFactory.getWrapper();
+        protected ValuePropertyState() {
+            this.wrapper = wrapperSupplier.get();
         }
 
         @Override
@@ -457,7 +360,7 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
         }
 
         @Override
-        public ValuePropertyAccessor load(E entity) {
+        public ValuePropertyState load(E entity) {
             try {
                 Object value = FieldUtil.get(field, entity);
                 wrapper.set(valueClass.cast(value));
@@ -469,7 +372,7 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
         }
 
         @Override
-        public ValuePropertyAccessor save(E entity) {
+        public ValuePropertyState save(E entity) {
             V value = getWrappedValue(wrapper);
             try {
                 FieldUtil.set(field, entity, value);
@@ -494,12 +397,15 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
         }
     }
 
-    protected class OptionalValuePropertyAccessor implements Accessor<E, V> {
+    /**
+     * @author nakamura-to
+     */
+    protected class OptionalValuePropertyState implements PropertyState<E, V> {
 
         protected final Wrapper<V> wrapper;
 
-        protected OptionalValuePropertyAccessor() {
-            this.wrapper = wrapperFactory.getWrapper();
+        protected OptionalValuePropertyState() {
+            this.wrapper = wrapperSupplier.get();
         }
 
         @Override
@@ -510,7 +416,7 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
 
         @SuppressWarnings("unchecked")
         @Override
-        public OptionalValuePropertyAccessor load(E entity) {
+        public OptionalValuePropertyState load(E entity) {
             try {
                 Optional<V> optional = (Optional<V>) FieldUtil.get(field,
                         entity);
@@ -528,7 +434,7 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
         }
 
         @Override
-        public OptionalValuePropertyAccessor save(E entity) {
+        public OptionalValuePropertyState save(E entity) {
             V value = wrapper.get();
             Optional<V> optional = Optional.ofNullable(value);
             try {

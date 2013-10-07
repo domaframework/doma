@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
-import org.seasar.doma.jdbc.entity.Accessor;
 import org.seasar.doma.jdbc.entity.BasicPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
@@ -30,18 +29,20 @@ import org.seasar.doma.jdbc.entity.PostUpdateContext;
 import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
+import org.seasar.doma.jdbc.entity.PropertyState;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
-import org.seasar.doma.wrapper.IntegerWrapper;
 
 public class _ParentEntity extends AbstractEntityType<ParentEntity> {
 
     public BasicPropertyType<Object, ParentEntity, Integer, Integer, Integer> $aaa = new BasicPropertyType<>(
             ParentEntity.class, Integer.class, Integer.class,
-            IntegerWrapper.class, null, null, "aaa", "AAA", true, true);
+            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
+            "aaa", "AAA", true, true);
 
     public BasicPropertyType<Object, ParentEntity, Integer, Integer, Integer> $bbb = new BasicPropertyType<>(
             ParentEntity.class, Integer.class, Integer.class,
-            IntegerWrapper.class, null, null, "bbb", "BBB", true, true);
+            () -> new org.seasar.doma.wrapper.IntegerWrapper(), null, null,
+            "bbb", "BBB", true, true);
 
     private _ParentEntity() {
     }
@@ -166,7 +167,8 @@ public class _ParentEntity extends AbstractEntityType<ParentEntity> {
     }
 
     @Override
-    public ParentEntity newEntity(Map<String, Accessor<ParentEntity, ?>> args) {
+    public ParentEntity newEntity(
+            Map<String, PropertyState<ParentEntity, ?>> args) {
         return null;
     }
 
