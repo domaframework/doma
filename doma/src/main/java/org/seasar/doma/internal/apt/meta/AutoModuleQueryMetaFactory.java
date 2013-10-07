@@ -56,8 +56,8 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
             queryMeta.addCallableSqlParameterMeta(callableSqlParameterMeta);
 
             if (parameterMeta.isBindable()) {
-                queryMeta.addBindableParameterType(parameterMeta.getName(),
-                        parameterMeta.getType());
+                queryMeta.addBindableParameterCtType(parameterMeta.getName(),
+                        parameterMeta.getCtType());
             }
         }
     }

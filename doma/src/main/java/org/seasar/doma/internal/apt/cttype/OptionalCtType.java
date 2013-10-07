@@ -29,7 +29,7 @@ import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 
 public class OptionalCtType extends AbstractCtType {
 
-    private final CtType typeArgCtType;
+    private final CtType elementCtType;
 
     private boolean isRawType;
 
@@ -44,33 +44,33 @@ public class OptionalCtType extends AbstractCtType {
         }
         if (declaredType.getTypeArguments().isEmpty()) {
             isRawType = true;
-            typeArgCtType = null;
+            elementCtType = null;
         } else {
             TypeMirror typeArg = declaredType.getTypeArguments().get(0);
             if (typeArg.getKind() == TypeKind.WILDCARD
                     || typeArg.getKind() == TypeKind.TYPEVAR) {
                 isWildcardType = true;
-                typeArgCtType = null;
+                elementCtType = null;
             } else {
                 DomainCtType domainCtType = DomainCtType.newInstance(typeArg,
                         env);
                 if (domainCtType != null) {
-                    typeArgCtType = domainCtType;
+                    elementCtType = domainCtType;
                 } else {
                     BasicCtType basicCtType = BasicCtType.newInstance(typeArg,
                             env);
                     if (basicCtType != null) {
-                        typeArgCtType = basicCtType;
+                        elementCtType = basicCtType;
                     } else {
-                        typeArgCtType = null;
+                        elementCtType = null;
                     }
                 }
             }
         }
     }
 
-    public CtType getTypeArgCtType() {
-        return typeArgCtType;
+    public CtType getElementCtType() {
+        return elementCtType;
     }
 
     public boolean isRawType() {

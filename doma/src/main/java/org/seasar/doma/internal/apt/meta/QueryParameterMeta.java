@@ -32,6 +32,7 @@ import org.seasar.doma.internal.apt.cttype.DomainCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.IterationCallbackCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalCtType;
 import org.seasar.doma.internal.apt.cttype.ReferenceCtType;
 import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
@@ -90,8 +91,9 @@ public class QueryParameterMeta {
                     new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
 
                         @Override
-                        public Void visitDomainCtType(final DomainCtType ctType,
-                                Void p) throws RuntimeException {
+                        public Void visitDomainCtType(
+                                final DomainCtType ctType, Void p)
+                                throws RuntimeException {
                             if (ctType.isRawType()) {
                                 throw new AptException(Message.DOMA4212, env,
                                         parameterElement,
@@ -114,6 +116,19 @@ public class QueryParameterMeta {
             return entityCtType;
         }
 
+        OptionalCtType optionalCtType = OptionalCtType.newInstance(type, env);
+        if (optionalCtType != null) {
+            if (optionalCtType.isRawType()) {
+                throw new AptException(Message.DOMA4236, env, parameterElement,
+                        optionalCtType.getQualifiedName());
+            }
+            if (optionalCtType.isWildcardType()) {
+                throw new AptException(Message.DOMA4237, env, parameterElement,
+                        optionalCtType.getQualifiedName());
+            }
+            return optionalCtType;
+        }
+
         final DomainCtType domainCtType = DomainCtType.newInstance(type, env);
         if (domainCtType != null) {
             if (domainCtType.isRawType()) {
@@ -132,8 +147,8 @@ public class QueryParameterMeta {
             return basicCtType;
         }
 
-        SelectOptionsCtType selectOptionsCtType = SelectOptionsCtType.newInstance(
-                type, env);
+        SelectOptionsCtType selectOptionsCtType = SelectOptionsCtType
+                .newInstance(type, env);
         if (selectOptionsCtType != null) {
             return selectOptionsCtType;
         }
@@ -153,8 +168,9 @@ public class QueryParameterMeta {
                     new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
 
                         @Override
-                        public Void visitDomainCtType(final DomainCtType ctType,
-                                Void p) throws RuntimeException {
+                        public Void visitDomainCtType(
+                                final DomainCtType ctType, Void p)
+                                throws RuntimeException {
                             if (ctType.isRawType()) {
                                 throw new AptException(Message.DOMA4214, env,
                                         parameterElement,
@@ -173,8 +189,9 @@ public class QueryParameterMeta {
                     new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
 
                         @Override
-                        public Void visitDomainCtType(final DomainCtType ctType,
-                                Void p) throws RuntimeException {
+                        public Void visitDomainCtType(
+                                final DomainCtType ctType, Void p)
+                                throws RuntimeException {
                             if (ctType.isRawType()) {
                                 throw new AptException(Message.DOMA4216, env,
                                         parameterElement,
@@ -192,7 +209,8 @@ public class QueryParameterMeta {
             return iterationCallbackCtType;
         }
 
-        ReferenceCtType referenceCtType = ReferenceCtType.newInstance(type, env);
+        ReferenceCtType referenceCtType = ReferenceCtType
+                .newInstance(type, env);
         if (referenceCtType != null) {
             if (referenceCtType.isRaw()) {
                 throw new AptException(Message.DOMA4108, env, parameterElement,
@@ -206,8 +224,9 @@ public class QueryParameterMeta {
                     new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
 
                         @Override
-                        public Void visitDomainCtType(final DomainCtType ctType,
-                                Void p) throws RuntimeException {
+                        public Void visitDomainCtType(
+                                final DomainCtType ctType, Void p)
+                                throws RuntimeException {
                             if (ctType.isRawType()) {
                                 throw new AptException(Message.DOMA4218, env,
                                         parameterElement,
@@ -253,8 +272,8 @@ public class QueryParameterMeta {
     }
 
     public boolean isNullable() {
-        return ctType.accept(
-                new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(
+        return ctType
+                .accept(new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(
                         false) {
 
                     @Override
@@ -273,8 +292,8 @@ public class QueryParameterMeta {
     }
 
     public boolean isBindable() {
-        return ctType.accept(
-                new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(
+        return ctType
+                .accept(new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(
                         false) {
 
                     @Override
@@ -292,6 +311,12 @@ public class QueryParameterMeta {
                     @Override
                     public Boolean visitEntityCtType(EntityCtType ctType, Void p)
                             throws RuntimeException {
+                        return true;
+                    }
+
+                    @Override
+                    public Boolean visitOptionalCtType(OptionalCtType ctType,
+                            Void p) throws RuntimeException {
                         return true;
                     }
 

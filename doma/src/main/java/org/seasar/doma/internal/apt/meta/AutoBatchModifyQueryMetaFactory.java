@@ -120,8 +120,8 @@ public class AutoBatchModifyQueryMetaFactory extends
                 .accept(new SimpleCtTypeVisitor<IterableCtType, Void, RuntimeException>() {
 
                     @Override
-                    protected IterableCtType defaultAction(CtType ctType,
-                            Void p) throws RuntimeException {
+                    protected IterableCtType defaultAction(CtType ctType, Void p)
+                            throws RuntimeException {
                         throw new AptException(Message.DOMA4042, env, method);
                     }
 
@@ -154,8 +154,8 @@ public class AutoBatchModifyQueryMetaFactory extends
         queryMeta.setEntitiesParameterName(parameterMeta.getName());
         queryMeta.addParameterMeta(parameterMeta);
         if (parameterMeta.isBindable()) {
-            queryMeta.addBindableParameterType(parameterMeta.getName(),
-                    entityCtType.getTypeMirror());
+            queryMeta.addBindableParameterCtType(parameterMeta.getName(),
+                    parameterMeta.getCtType());
         }
         BatchModifyMirror batchModifyMirror = queryMeta.getBatchModifyMirror();
         validateEntityPropertyNames(entityCtType.getTypeMirror(), method,

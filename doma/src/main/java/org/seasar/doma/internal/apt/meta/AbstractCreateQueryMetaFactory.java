@@ -48,7 +48,7 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
         QueryReturnMeta resultMeta = createReturnMeta(method);
         queryMeta.setReturnMeta(resultMeta);
         if (!returnClass.getName().equals(
-                resultMeta.getDataType().getQualifiedName())) {
+                resultMeta.getCtType().getQualifiedName())) {
             throw new AptException(Message.DOMA4097, env, method,
                     returnClass.getName());
         }

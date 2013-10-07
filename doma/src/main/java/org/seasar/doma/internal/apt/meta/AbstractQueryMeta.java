@@ -25,6 +25,10 @@ import java.util.Map;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
 
+import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.apt.cttype.IterableCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalCtType;
+import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.jdbc.command.Command;
 import org.seasar.doma.internal.jdbc.query.Query;
 
@@ -122,10 +126,32 @@ public abstract class AbstractQueryMeta implements QueryMeta {
         return bindableParameterTypeMap;
     }
 
-    public void addBindableParameterType(String parameterName,
-            TypeMirror bindableParameterTypeMap) {
-        this.bindableParameterTypeMap.put(parameterName,
-                bindableParameterTypeMap);
+    public void addBindableParameterCtType(final String parameterName,
+            CtType bindableParameterCtType) {
+        bindableParameterCtType.accept(
+                new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
+
+                    @Override
+                    protected Void defaultAction(CtType ctType, Void p)
+                            throws RuntimeException {
+                        bindableParameterTypeMap.put(parameterName,
+                                ctType.getTypeMirror());
+                        return null;
+                    }
+
+                    @Override
+                    public Void visitIterableCtType(IterableCtType ctType,
+                            Void p) throws RuntimeException {
+                        return ctType.getElementType().accept(this, p);
+                    }
+
+                    @Override
+                    public Void visitOptionalCtType(OptionalCtType ctType,
+                            Void p) throws RuntimeException {
+                        return ctType.getElementCtType().accept(this, p);
+                    }
+
+                }, null);
     }
 
     @Override

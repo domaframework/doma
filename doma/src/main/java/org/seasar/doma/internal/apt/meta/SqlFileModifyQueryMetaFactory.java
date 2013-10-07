@@ -107,8 +107,8 @@ public class SqlFileModifyQueryMetaFactory extends
             final QueryParameterMeta parameterMeta = createParameterMeta(parameter);
             queryMeta.addParameterMeta(parameterMeta);
             if (parameterMeta.isBindable()) {
-                queryMeta.addBindableParameterType(parameterMeta.getName(),
-                        parameterMeta.getType());
+                queryMeta.addBindableParameterCtType(parameterMeta.getName(),
+                        parameterMeta.getCtType());
             }
             if (queryMeta.getEntityCtType() != null) {
                 continue;
@@ -117,8 +117,8 @@ public class SqlFileModifyQueryMetaFactory extends
                     new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
 
                         @Override
-                        public Void visitEntityCtType(EntityCtType ctType, Void p)
-                                throws RuntimeException {
+                        public Void visitEntityCtType(EntityCtType ctType,
+                                Void p) throws RuntimeException {
                             queryMeta.setEntityCtType(ctType);
                             queryMeta.setEntityParameterName(parameterMeta
                                     .getName());

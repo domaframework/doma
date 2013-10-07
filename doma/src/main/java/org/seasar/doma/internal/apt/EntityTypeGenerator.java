@@ -167,7 +167,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
             @Override
             public Void visitOptionalCtType(OptionalCtType ctType, Void p)
                     throws RuntimeException {
-                return ctType.getTypeArgCtType().accept(this, p);
+                return ctType.getElementCtType().accept(this, p);
             }
 
             @Override

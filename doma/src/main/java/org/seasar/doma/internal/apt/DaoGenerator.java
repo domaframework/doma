@@ -31,12 +31,14 @@ import org.seasar.doma.AnnotationTarget;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
+import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.EnumWrapperCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.IterationCallbackCtType;
 import org.seasar.doma.internal.apt.cttype.MapCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.cttype.WrapperCtType;
 import org.seasar.doma.internal.apt.meta.AbstractCreateQueryMeta;
@@ -89,6 +91,9 @@ import org.seasar.doma.internal.jdbc.command.MapIterationHandler;
 import org.seasar.doma.internal.jdbc.command.MapResultListHandler;
 import org.seasar.doma.internal.jdbc.command.MapSingleResultHandler;
 import org.seasar.doma.internal.jdbc.dao.AbstractDao;
+import org.seasar.doma.internal.jdbc.query.FunctionQuery;
+import org.seasar.doma.internal.jdbc.query.ProcedureQuery;
+import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.sql.BasicInOutParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
 import org.seasar.doma.internal.jdbc.sql.BasicListParameter;
@@ -108,6 +113,7 @@ import org.seasar.doma.internal.jdbc.sql.MapListResultParameter;
 import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.IterationCallback;
 
 /**
  * 
@@ -291,6 +297,19 @@ public class DaoGenerator extends AbstractGenerator {
         return parentDaoMeta == null || parentDaoMeta.hasUserDefinedConfig();
     }
 
+    protected String toCSVFormat(List<String> values) {
+        final StringBuilder buf = new StringBuilder();
+        if (values.size() > 0) {
+            for (String value : values) {
+                buf.append("\"");
+                buf.append(value);
+                buf.append("\", ");
+            }
+            buf.setLength(buf.length() - 2);
+        }
+        return buf.toString();
+    }
+
     protected void printMethods() {
         MethodBodyGenerator generator = new MethodBodyGenerator();
         int i = 0;
@@ -348,6 +367,11 @@ public class DaoGenerator extends AbstractGenerator {
         print("%n");
     }
 
+    /**
+     * メソッドボディのコードを生成します。
+     * 
+     * @author nakamura-to
+     */
     protected class MethodBodyGenerator implements
             QueryMetaVisitor<Void, Integer> {
 
@@ -369,15 +393,9 @@ public class DaoGenerator extends AbstractGenerator {
                 iprint("__query.setOptions(%1$s);%n",
                         m.getSelectOptionsParameterName());
             }
-            for (Iterator<QueryParameterMeta> it = m.getParameterMetas()
-                    .iterator(); it.hasNext();) {
-                QueryParameterMeta parameterMeta = it.next();
-                if (parameterMeta.isBindable()) {
-                    iprint("__query.addParameter(\"%1$s\", %2$s.class, %1$s);%n",
-                            parameterMeta.getName(),
-                            parameterMeta.getQualifiedName());
-                }
-            }
+
+            printAddParameterStatements(m.getParameterMetas());
+
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.setResultEnsured(%1$s);%n", m.getEnsureResult());
@@ -388,106 +406,11 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setFetchSize(%1$s);%n", m.getFetchSize());
             iprint("__query.prepare();%n");
             final QueryReturnMeta resultMeta = m.getReturnMeta();
-            final String commandClassName = m.getCommandClass().getName();
             if (m.getIterate()) {
-                IterationCallbackCtType callbackType = m
+                IterationCallbackCtType callbackCtType = m
                         .getIterationCallbackCtType();
-                final String callbackParamName = m
-                        .getIterationCallbackPrameterName();
-                callbackType
-                        .getTargetType()
-                        .accept(new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
-
-                            @Override
-                            public Void visitBasicCtType(BasicCtType ctType,
-                                    Void p) throws RuntimeException {
-                                ctType.getWrapperType()
-                                        .accept(new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
-
-                                            @Override
-                                            public Void visitEnumWrapperCtType(
-                                                    EnumWrapperCtType dataType,
-                                                    Void p)
-                                                    throws RuntimeException {
-                                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(new %5$s(%6$s.class), %7$s));%n",
-                                                        commandClassName,
-                                                        resultMeta
-                                                                .getBoxedTypeName(),
-                                                        BasicIterationHandler.class
-                                                                .getName(),
-                                                        dataType.getBasicCtType()
-                                                                .getBoxedTypeName(),
-                                                        dataType.getTypeName(),
-                                                        dataType.getBasicCtType()
-                                                                .getQualifiedName(),
-                                                        callbackParamName);
-                                                return null;
-                                            }
-
-                                            @Override
-                                            public Void visitWrapperCtType(
-                                                    WrapperCtType ctType, Void p)
-                                                    throws RuntimeException {
-                                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(new %5$s(), %6$s));%n",
-                                                        commandClassName,
-                                                        resultMeta
-                                                                .getBoxedTypeName(),
-                                                        BasicIterationHandler.class
-                                                                .getName(),
-                                                        ctType.getBasicCtType()
-                                                                .getBoxedTypeName(),
-                                                        ctType.getTypeName(),
-                                                        callbackParamName);
-                                                return null;
-                                            }
-
-                                        }, null);
-
-                                return null;
-                            }
-
-                            @Override
-                            public Void visitDomainCtType(DomainCtType ctType,
-                                    Void p) throws RuntimeException {
-                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(%5$s, %6$s));%n",
-                                        commandClassName,
-                                        resultMeta.getBoxedTypeName(),
-                                        DomainIterationHandler.class.getName(),
-                                        ctType.getBoxedTypeName(),
-                                        ctType.getInstantiationCommand(),
-                                        callbackParamName);
-                                return null;
-                            }
-
-                            @Override
-                            public Void visitMapCtType(MapCtType ctType, Void p)
-                                    throws RuntimeException {
-                                MapKeyNamingType namingType = m
-                                        .getMapKeyNamingType();
-                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(%4$s.%5$s, %6$s));%n",
-                                        commandClassName, resultMeta
-                                                .getBoxedTypeName(),
-                                        MapIterationHandler.class.getName(),
-                                        namingType.getDeclaringClass()
-                                                .getName(), namingType.name(),
-                                        callbackParamName);
-                                return null;
-                            }
-
-                            @Override
-                            public Void visitEntityCtType(EntityCtType ctType,
-                                    Void p) throws RuntimeException {
-                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(%5$s.getSingletonInternal(), %6$s));%n",
-                                        commandClassName,
-                                        resultMeta.getBoxedTypeName(),
-                                        EntityIterationHandler.class.getName(),
-                                        ctType.getTypeName(),
-                                        ctType.getMetaTypeName(),
-                                        callbackParamName);
-                                return null;
-                            }
-
-                        }, null);
+                callbackCtType.getTargetType().accept(
+                        new SqlFileSelectQueryCallbackCtTypeVisitor(m), null);
                 if ("void".equals(resultMeta.getTypeName())) {
                     iprint("__command.execute();%n");
                     iprint("__query.complete();%n");
@@ -502,205 +425,12 @@ public class DaoGenerator extends AbstractGenerator {
                     iprint("return __result;%n");
                 }
             } else {
-                m.getReturnMeta()
-                        .getDataType()
-                        .accept(new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
-
-                            @Override
-                            public Void visitBasicCtType(
-                                    final BasicCtType basicCtType, Void p)
-                                    throws RuntimeException {
-                                basicCtType
-                                        .getWrapperType()
-                                        .accept(new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
-
-                                            @Override
-                                            public Void visitEnumWrapperCtType(
-                                                    EnumWrapperCtType dataType,
-                                                    Void p)
-                                                    throws RuntimeException {
-                                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(new %4$s(%5$s.class), false));%n",
-                                                        commandClassName,
-                                                        dataType.getBasicCtType()
-                                                                .getBoxedTypeName(),
-                                                        BasicSingleResultHandler.class
-                                                                .getName(),
-                                                        dataType.getTypeName(),
-                                                        dataType.getBasicCtType()
-                                                                .getQualifiedName());
-                                                return null;
-                                            }
-
-                                            @Override
-                                            public Void visitWrapperCtType(
-                                                    WrapperCtType ctType, Void p)
-                                                    throws RuntimeException {
-                                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(new %4$s(), %5$s));%n",
-                                                        commandClassName,
-                                                        ctType.getBasicCtType()
-                                                                .getBoxedTypeName(),
-                                                        BasicSingleResultHandler.class
-                                                                .getName(),
-                                                        ctType.getTypeName(),
-                                                        basicCtType.isPrimitive());
-                                                return null;
-                                            }
-
-                                        }, null);
-
-                                return null;
-                            }
-
-                            @Override
-                            public Void visitDomainCtType(DomainCtType ctType,
-                                    Void p) throws RuntimeException {
-                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(%4$s));%n",
-                                        commandClassName, ctType
-                                                .getBoxedTypeName(),
-                                        DomainSingleResultHandler.class
-                                                .getName(), ctType
-                                                .getInstantiationCommand());
-                                return null;
-                            }
-
-                            @Override
-                            public Void visitMapCtType(MapCtType ctType, Void p)
-                                    throws RuntimeException {
-                                MapKeyNamingType namingType = m
-                                        .getMapKeyNamingType();
-                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s(%4$s.%5$s));%n",
-                                        commandClassName, ctType
-                                                .getBoxedTypeName(),
-                                        MapSingleResultHandler.class.getName(),
-                                        namingType.getDeclaringClass()
-                                                .getName(), namingType.name());
-                                return null;
-                            }
-
-                            @Override
-                            public Void visitEntityCtType(EntityCtType ctType,
-                                    Void p) throws RuntimeException {
-                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(%4$s.getSingletonInternal()));%n",
-                                        commandClassName, ctType
-                                                .getTypeName(),
-                                        EntitySingleResultHandler.class
-                                                .getName(), ctType
-                                                .getMetaTypeName());
-                                return null;
-                            }
-
-                            @Override
-                            public Void visitIterableCtType(
-                                    final IterableCtType iterableCtType, Void p)
-                                    throws RuntimeException {
-                                iterableCtType
-                                        .getElementType()
-                                        .accept(new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
-
-                                            @Override
-                                            public Void visitBasicCtType(
-                                                    BasicCtType ctType, Void p)
-                                                    throws RuntimeException {
-                                                ctType.getWrapperType()
-                                                        .accept(new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
-
-                                                            @Override
-                                                            public Void visitEnumWrapperCtType(
-                                                                    EnumWrapperCtType dataType,
-                                                                    Void p)
-                                                                    throws RuntimeException {
-                                                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(new %5$s(%6$s.class)));%n",
-                                                                        commandClassName,
-                                                                        iterableCtType
-                                                                                .getTypeName(),
-                                                                        BasicResultListHandler.class
-                                                                                .getName(),
-                                                                        dataType.getBasicCtType()
-                                                                                .getBoxedTypeName(),
-                                                                        dataType.getTypeName(),
-                                                                        dataType.getBasicCtType()
-                                                                                .getQualifiedName());
-                                                                return null;
-                                                            }
-
-                                                            @Override
-                                                            public Void visitWrapperCtType(
-                                                                    WrapperCtType ctType,
-                                                                    Void p)
-                                                                    throws RuntimeException {
-                                                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(new %5$s()));%n",
-                                                                        commandClassName,
-                                                                        iterableCtType
-                                                                                .getBoxedTypeName(),
-                                                                        BasicResultListHandler.class
-                                                                                .getName(),
-                                                                        ctType.getBasicCtType()
-                                                                                .getBoxedTypeName(),
-                                                                        ctType.getTypeName());
-                                                                return null;
-                                                            }
-
-                                                        }, null);
-
-                                                return null;
-                                            }
-
-                                            @Override
-                                            public Void visitDomainCtType(
-                                                    DomainCtType ctType, Void p)
-                                                    throws RuntimeException {
-                                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(%5$s));%n",
-                                                        commandClassName,
-                                                        iterableCtType
-                                                                .getTypeName(),
-                                                        DomainResultListHandler.class
-                                                                .getName(),
-                                                        ctType.getBoxedTypeName(),
-                                                        ctType.getInstantiationCommand());
-                                                return null;
-                                            }
-
-                                            @Override
-                                            public Void visitMapCtType(
-                                                    MapCtType ctType, Void p)
-                                                    throws RuntimeException {
-                                                MapKeyNamingType namingType = m
-                                                        .getMapKeyNamingType();
-                                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s(%4$s.%5$s));%n",
-                                                        commandClassName,
-                                                        iterableCtType
-                                                                .getTypeName(),
-                                                        MapResultListHandler.class
-                                                                .getName(),
-                                                        namingType
-                                                                .getDeclaringClass()
-                                                                .getName(),
-                                                        namingType.name());
-                                                return null;
-                                            }
-
-                                            @Override
-                                            public Void visitEntityCtType(
-                                                    EntityCtType ctType, Void p)
-                                                    throws RuntimeException {
-                                                iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(%5$s.getSingletonInternal()));%n",
-                                                        commandClassName,
-                                                        iterableCtType
-                                                                .getTypeName(),
-                                                        EntityResultListHandler.class
-                                                                .getName(),
-                                                        ctType.getTypeName(),
-                                                        ctType.getMetaTypeName());
-                                                return null;
-                                            }
-
-                                        }, null);
-                                return null;
-                            }
-
-                        }, null);
+                QueryReturnMeta returnMeta = m.getReturnMeta();
+                CtType returnCtType = returnMeta.getCtType();
+                returnCtType.accept(
+                        new SqlFileSelectQueryReturnCtTypeVisitor(m), null);
                 iprint("%1$s __result = __command.execute();%n",
-                        resultMeta.getTypeName());
+                        returnMeta.getTypeName());
                 iprint("__query.complete();%n");
                 iprint("exiting(\"%1$s\", \"%2$s\", __result);%n",
                         qualifiedName, m.getName());
@@ -833,20 +563,15 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setSqlFilePath(\"%1$s\");%n",
                     SqlFileUtil.buildPath(daoMeta.getDaoElement()
                             .getQualifiedName().toString(), m.getName()));
-            for (Iterator<QueryParameterMeta> it = m.getParameterMetas()
-                    .iterator(); it.hasNext();) {
-                QueryParameterMeta parameterMeta = it.next();
-                if (parameterMeta.isBindable()) {
-                    iprint("__query.addParameter(\"%1$s\", %2$s.class, %1$s);%n",
-                            parameterMeta.getName(),
-                            parameterMeta.getQualifiedName());
-                }
-            }
+
+            printAddParameterStatements(m.getParameterMetas());
+
             iprint("__query.setCallerClassName(\"%1$s\");%n", qualifiedName);
             iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
 
-            if (m.getEntityParameterName() != null && m.getEntityCtType() != null) {
+            if (m.getEntityParameterName() != null
+                    && m.getEntityCtType() != null) {
                 iprint("__query.setEntityAndEntityType(\"%1$s\", %2$s, %3$s.getSingletonInternal());%n",
                         m.getEntityParameterName(), m.getEntityParameterName(),
                         m.getEntityCtType().getBoxedMetaTypeName());
@@ -1029,10 +754,9 @@ public class DaoGenerator extends AbstractGenerator {
             printEnteringStatements(m);
             printPrerequisiteStatements(m);
 
-            QueryReturnMeta resultMeta = m.getReturnMeta();
+            QueryReturnMeta returnMeta = m.getReturnMeta();
             iprint("%1$s<%2$s> __query = new %1$s<%2$s>();%n", m
-                    .getQueryClass().getName(),
-                    resultMeta.getBoxedTypeName());
+                    .getQueryClass().getName(), returnMeta.getBoxedTypeName());
             if (m.isTrigger()) {
                 iprint("__query.setMethod(__method%1$s);%n", p);
             }
@@ -1049,10 +773,9 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
             iprint("__query.prepare();%n");
             iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query);%n", m
-                    .getCommandClass().getName(),
-                    resultMeta.getBoxedTypeName());
+                    .getCommandClass().getName(), returnMeta.getBoxedTypeName());
             iprint("%1$s __result = __command.execute();%n",
-                    resultMeta.getTypeName());
+                    returnMeta.getTypeName());
             iprint("__query.complete();%n");
             iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", qualifiedName,
                     m.getName());
@@ -1141,8 +864,7 @@ public class DaoGenerator extends AbstractGenerator {
             iprint("__query.setElements(%1$s);%n", m.getParameterName());
             iprint("__query.prepare();%n");
             iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query);%n", m
-                    .getCommandClass().getName(),
-                    resultMeta.getBoxedTypeName());
+                    .getCommandClass().getName(), resultMeta.getBoxedTypeName());
             iprint("%1$s __result = __command.execute();%n",
                     resultMeta.getTypeName());
             iprint("__query.complete();%n");
@@ -1236,8 +958,48 @@ public class DaoGenerator extends AbstractGenerator {
             }
         }
 
+        protected void printAddParameterStatements(
+                List<QueryParameterMeta> ParameterMetas) {
+            for (Iterator<QueryParameterMeta> it = ParameterMetas.iterator(); it
+                    .hasNext();) {
+                QueryParameterMeta parameterMeta = it.next();
+                if (parameterMeta.isBindable()) {
+                    CtType ctType = parameterMeta.getCtType();
+                    ctType.accept(
+                            new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
+
+                                @Override
+                                protected Void defaultAction(CtType ctType,
+                                        Void p) throws RuntimeException {
+                                    iprint("__query.addParameter(\"%1$s\", %2$s.class, %1$s);%n",
+                                            parameterMeta.getName(),
+                                            ctType.getQualifiedName());
+                                    return null;
+                                }
+
+                                @Override
+                                public Void visitOptionalCtType(
+                                        OptionalCtType ctType, Void p)
+                                        throws RuntimeException {
+                                    iprint("__query.addParameter(\"%1$s\", %2$s.class, %1$s.orElse(null));%n",
+                                            parameterMeta.getName(), ctType
+                                                    .getElementCtType()
+                                                    .getQualifiedName());
+                                    return null;
+                                }
+
+                            }, null);
+                }
+            }
+        }
     }
 
+    /**
+     * {@link ProcedureQuery } や {@link FunctionQuery} のパラメータに関するコードを生成します。
+     * 
+     * @author nakamura-to
+     * 
+     */
     protected class CallableSqlParameterStatementGenerator implements
             CallableSqlParameterMetaVisitor<Void, AutoModuleQueryMeta> {
 
@@ -1255,8 +1017,8 @@ public class DaoGenerator extends AbstractGenerator {
                             iprint("__query.addParameter(new %1$s<%2$s>(new %3$s(%4$s.class), %5$s, \"%5$s\"));%n",
                                     BasicListParameter.class.getName(),
                                     dataType.getBasicCtType()
-                                            .getBoxedTypeName(),
-                                    dataType.getTypeName(), dataType
+                                            .getBoxedTypeName(), dataType
+                                            .getTypeName(), dataType
                                             .getBasicCtType()
                                             .getQualifiedName(), m.getName());
                             return null;
@@ -1266,10 +1028,10 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitWrapperCtType(WrapperCtType ctType,
                                 Void p) throws RuntimeException {
                             iprint("__query.addParameter(new %1$s<%2$s>(new %3$s(), %4$s, \"%4$s\"));%n",
-                                    BasicListParameter.class.getName(),
-                                    ctType.getBasicCtType()
-                                            .getBoxedTypeName(),
-                                    ctType.getTypeName(), m.getName());
+                                    BasicListParameter.class.getName(), ctType
+                                            .getBasicCtType()
+                                            .getBoxedTypeName(), ctType
+                                            .getTypeName(), m.getName());
                             return null;
                         }
 
@@ -1325,8 +1087,8 @@ public class DaoGenerator extends AbstractGenerator {
                             iprint("__query.addParameter(new %1$s<%2$s>(new %3$s(%4$s.class), %5$s));%n",
                                     BasicInOutParameter.class.getName(),
                                     dataType.getBasicCtType()
-                                            .getBoxedTypeName(),
-                                    dataType.getTypeName(), dataType
+                                            .getBoxedTypeName(), dataType
+                                            .getTypeName(), dataType
                                             .getBasicCtType()
                                             .getQualifiedName(), m.getName());
                             return null;
@@ -1336,10 +1098,10 @@ public class DaoGenerator extends AbstractGenerator {
                         public Void visitWrapperCtType(WrapperCtType ctType,
                                 Void p) throws RuntimeException {
                             iprint("__query.addParameter(new %1$s<%2$s>(new %3$s(), %4$s));%n",
-                                    BasicInOutParameter.class.getName(),
-                                    ctType.getBasicCtType()
-                                            .getBoxedTypeName(),
-                                    ctType.getTypeName(), m.getName());
+                                    BasicInOutParameter.class.getName(), ctType
+                                            .getBasicCtType()
+                                            .getBoxedTypeName(), ctType
+                                            .getTypeName(), m.getName());
                             return null;
                         }
 
@@ -1354,8 +1116,7 @@ public class DaoGenerator extends AbstractGenerator {
             BasicCtType basicCtType = domainCtType.getBasicType();
             iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
                     DomainInOutParameter.class.getName(),
-                    basicCtType.getBoxedTypeName(),
-                    domainCtType.getTypeName(),
+                    basicCtType.getBoxedTypeName(), domainCtType.getTypeName(),
                     domainCtType.getInstantiationCommand(), m.getName());
             return null;
         }
@@ -1374,8 +1135,8 @@ public class DaoGenerator extends AbstractGenerator {
                             iprint("__query.addParameter(new %1$s<%2$s>(new %3$s(%4$s.class), %5$s));%n",
                                     BasicOutParameter.class.getName(), dataType
                                             .getBasicCtType()
-                                            .getBoxedTypeName(),
-                                    dataType.getTypeName(), dataType
+                                            .getBoxedTypeName(), dataType
+                                            .getTypeName(), dataType
                                             .getBasicCtType()
                                             .getQualifiedName(), m.getName());
                             return null;
@@ -1387,8 +1148,8 @@ public class DaoGenerator extends AbstractGenerator {
                             iprint("__query.addParameter(new %1$s<%2$s>(new %3$s(), %4$s));%n",
                                     BasicOutParameter.class.getName(), ctType
                                             .getBasicCtType()
-                                            .getBoxedTypeName(),
-                                    ctType.getTypeName(), m.getName());
+                                            .getBoxedTypeName(), ctType
+                                            .getTypeName(), m.getName());
                             return null;
                         }
 
@@ -1448,8 +1209,8 @@ public class DaoGenerator extends AbstractGenerator {
             DomainCtType domainCtType = m.getDomainCtType();
             BasicCtType basicCtType = domainCtType.getBasicType();
             iprint("__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
-                    DomainInParameter.class.getName(), basicCtType.getTypeName(),
-                    domainCtType.getTypeName(),
+                    DomainInParameter.class.getName(),
+                    basicCtType.getTypeName(), domainCtType.getTypeName(),
                     domainCtType.getInstantiationCommand(), m.getName());
             return null;
         }
@@ -1468,8 +1229,8 @@ public class DaoGenerator extends AbstractGenerator {
                             iprint("__query.setResultParameter(new %1$s<%2$s>(new %3$s(%4$s.class)));%n",
                                     BasicListResultParameter.class.getName(),
                                     dataType.getBasicCtType()
-                                            .getBoxedTypeName(),
-                                    dataType.getTypeName(), dataType
+                                            .getBoxedTypeName(), dataType
+                                            .getTypeName(), dataType
                                             .getBasicCtType()
                                             .getQualifiedName());
                             return null;
@@ -1480,8 +1241,7 @@ public class DaoGenerator extends AbstractGenerator {
                                 Void p) throws RuntimeException {
                             iprint("__query.setResultParameter(new %1$s<%2$s>(new %3$s()));%n",
                                     BasicListResultParameter.class.getName(),
-                                    ctType.getBasicCtType()
-                                            .getBoxedTypeName(),
+                                    ctType.getBasicCtType().getBoxedTypeName(),
                                     ctType.getTypeName());
                             return null;
                         }
@@ -1537,8 +1297,8 @@ public class DaoGenerator extends AbstractGenerator {
                             iprint("__query.setResultParameter(new %1$s<%2$s>(new %3$s(%4$s.class), false));%n",
                                     BasicResultParameter.class.getName(),
                                     dataType.getBasicCtType()
-                                            .getBoxedTypeName(),
-                                    dataType.getTypeName(), dataType
+                                            .getBoxedTypeName(), dataType
+                                            .getTypeName(), dataType
                                             .getBasicCtType()
                                             .getQualifiedName());
                             return null;
@@ -1549,10 +1309,9 @@ public class DaoGenerator extends AbstractGenerator {
                                 Void p) throws RuntimeException {
                             iprint("__query.setResultParameter(new %1$s<%2$s>(new %3$s(), %4$s));%n",
                                     BasicResultParameter.class.getName(),
-                                    ctType.getBasicCtType()
-                                            .getBoxedTypeName(),
-                                    ctType.getTypeName(), basicCtType
-                                            .isPrimitive());
+                                    ctType.getBasicCtType().getBoxedTypeName(),
+                                    ctType.getTypeName(),
+                                    basicCtType.isPrimitive());
                             return null;
                         }
 
@@ -1573,17 +1332,282 @@ public class DaoGenerator extends AbstractGenerator {
         }
     }
 
-    public String toCSVFormat(List<String> values) {
-        final StringBuilder buf = new StringBuilder();
-        if (values.size() > 0) {
-            for (String value : values) {
-                buf.append("\"");
-                buf.append(value);
-                buf.append("\", ");
-            }
-            buf.setLength(buf.length() - 2);
+    /**
+     * {@link SqlFileSelectQuery} に関して、 {@link IterationCallback}
+     * を使う場合のコードを生成します。
+     * 
+     * @author nakamura-to
+     */
+    protected class SqlFileSelectQueryCallbackCtTypeVisitor extends
+            SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+
+        protected final SqlFileSelectQueryMeta m;
+
+        protected final QueryReturnMeta resultMeta;
+
+        protected final String commandClassName;
+
+        protected final String callbackParamName;
+
+        protected SqlFileSelectQueryCallbackCtTypeVisitor(
+                SqlFileSelectQueryMeta m) {
+            this.m = m;
+            this.resultMeta = m.getReturnMeta();
+            this.commandClassName = m.getCommandClass().getName();
+            this.callbackParamName = m.getIterationCallbackPrameterName();
         }
-        return buf.toString();
+
+        @Override
+        public Void visitBasicCtType(BasicCtType ctType, Void p)
+                throws RuntimeException {
+            ctType.getWrapperType().accept(
+                    new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
+
+                        @Override
+                        public Void visitEnumWrapperCtType(
+                                EnumWrapperCtType dataType, Void p)
+                                throws RuntimeException {
+                            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(new %5$s(%6$s.class), %7$s));%n",
+                                    commandClassName, resultMeta
+                                            .getBoxedTypeName(),
+                                    BasicIterationHandler.class.getName(),
+                                    dataType.getBasicCtType()
+                                            .getBoxedTypeName(), dataType
+                                            .getTypeName(), dataType
+                                            .getBasicCtType()
+                                            .getQualifiedName(),
+                                    callbackParamName);
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitWrapperCtType(WrapperCtType ctType,
+                                Void p) throws RuntimeException {
+                            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(new %5$s(), %6$s));%n",
+                                    commandClassName,
+                                    resultMeta.getBoxedTypeName(),
+                                    BasicIterationHandler.class.getName(),
+                                    ctType.getBasicCtType().getBoxedTypeName(),
+                                    ctType.getTypeName(), callbackParamName);
+                            return null;
+                        }
+
+                    }, null);
+
+            return null;
+        }
+
+        @Override
+        public Void visitDomainCtType(DomainCtType ctType, Void p)
+                throws RuntimeException {
+            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(%5$s, %6$s));%n",
+                    commandClassName, resultMeta.getBoxedTypeName(),
+                    DomainIterationHandler.class.getName(),
+                    ctType.getBoxedTypeName(),
+                    ctType.getInstantiationCommand(), callbackParamName);
+            return null;
+        }
+
+        @Override
+        public Void visitMapCtType(MapCtType ctType, Void p)
+                throws RuntimeException {
+            MapKeyNamingType namingType = m.getMapKeyNamingType();
+            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(%4$s.%5$s, %6$s));%n",
+                    commandClassName, resultMeta.getBoxedTypeName(),
+                    MapIterationHandler.class.getName(), namingType
+                            .getDeclaringClass().getName(), namingType.name(),
+                    callbackParamName);
+            return null;
+        }
+
+        @Override
+        public Void visitEntityCtType(EntityCtType ctType, Void p)
+                throws RuntimeException {
+            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s, %4$s>(%5$s.getSingletonInternal(), %6$s));%n",
+                    commandClassName, resultMeta.getBoxedTypeName(),
+                    EntityIterationHandler.class.getName(),
+                    ctType.getTypeName(), ctType.getMetaTypeName(),
+                    callbackParamName);
+            return null;
+        }
     }
 
+    /**
+     * {@link SqlFileSelectQuery} に関して、 戻り値に関するコードを生成します。
+     * 
+     * @author nakamura-to
+     */
+    protected class SqlFileSelectQueryReturnCtTypeVisitor extends
+            SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+
+        protected final SqlFileSelectQueryMeta m;
+
+        protected final String commandClassName;
+
+        protected SqlFileSelectQueryReturnCtTypeVisitor(SqlFileSelectQueryMeta m) {
+            this.m = m;
+            this.commandClassName = m.getCommandClass().getName();
+        }
+
+        @Override
+        public Void visitBasicCtType(final BasicCtType basicCtType, Void p)
+                throws RuntimeException {
+            basicCtType.getWrapperType().accept(
+                    new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
+
+                        @Override
+                        public Void visitEnumWrapperCtType(
+                                EnumWrapperCtType dataType, Void p)
+                                throws RuntimeException {
+                            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(new %4$s(%5$s.class), false));%n",
+                                    commandClassName, dataType.getBasicCtType()
+                                            .getBoxedTypeName(),
+                                    BasicSingleResultHandler.class.getName(),
+                                    dataType.getTypeName(), dataType
+                                            .getBasicCtType()
+                                            .getQualifiedName());
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitWrapperCtType(WrapperCtType ctType,
+                                Void p) throws RuntimeException {
+                            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(new %4$s(), %5$s));%n",
+                                    commandClassName, ctType.getBasicCtType()
+                                            .getBoxedTypeName(),
+                                    BasicSingleResultHandler.class.getName(),
+                                    ctType.getTypeName(), basicCtType
+                                            .isPrimitive());
+                            return null;
+                        }
+
+                    }, null);
+
+            return null;
+        }
+
+        @Override
+        public Void visitDomainCtType(DomainCtType ctType, Void p)
+                throws RuntimeException {
+            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(%4$s));%n",
+                    commandClassName, ctType.getBoxedTypeName(),
+                    DomainSingleResultHandler.class.getName(),
+                    ctType.getInstantiationCommand());
+            return null;
+        }
+
+        @Override
+        public Void visitMapCtType(MapCtType ctType, Void p)
+                throws RuntimeException {
+            MapKeyNamingType namingType = m.getMapKeyNamingType();
+            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s(%4$s.%5$s));%n",
+                    commandClassName, ctType.getBoxedTypeName(),
+                    MapSingleResultHandler.class.getName(), namingType
+                            .getDeclaringClass().getName(), namingType.name());
+            return null;
+        }
+
+        @Override
+        public Void visitEntityCtType(EntityCtType ctType, Void p)
+                throws RuntimeException {
+            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%2$s>(%4$s.getSingletonInternal()));%n",
+                    commandClassName, ctType.getTypeName(),
+                    EntitySingleResultHandler.class.getName(),
+                    ctType.getMetaTypeName());
+            return null;
+        }
+
+        @Override
+        public Void visitIterableCtType(final IterableCtType iterableCtType,
+                Void p) throws RuntimeException {
+            iterableCtType.getElementType().accept(
+                    new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
+
+                        @Override
+                        public Void visitBasicCtType(BasicCtType ctType, Void p)
+                                throws RuntimeException {
+                            ctType.getWrapperType()
+                                    .accept(new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
+
+                                        @Override
+                                        public Void visitEnumWrapperCtType(
+                                                EnumWrapperCtType dataType,
+                                                Void p) throws RuntimeException {
+                                            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(new %5$s(%6$s.class)));%n",
+                                                    commandClassName,
+                                                    iterableCtType
+                                                            .getTypeName(),
+                                                    BasicResultListHandler.class
+                                                            .getName(),
+                                                    dataType.getBasicCtType()
+                                                            .getBoxedTypeName(),
+                                                    dataType.getTypeName(),
+                                                    dataType.getBasicCtType()
+                                                            .getQualifiedName());
+                                            return null;
+                                        }
+
+                                        @Override
+                                        public Void visitWrapperCtType(
+                                                WrapperCtType ctType, Void p)
+                                                throws RuntimeException {
+                                            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(new %5$s()));%n",
+                                                    commandClassName,
+                                                    iterableCtType
+                                                            .getBoxedTypeName(),
+                                                    BasicResultListHandler.class
+                                                            .getName(),
+                                                    ctType.getBasicCtType()
+                                                            .getBoxedTypeName(),
+                                                    ctType.getTypeName());
+                                            return null;
+                                        }
+
+                                    }, null);
+
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitDomainCtType(DomainCtType ctType,
+                                Void p) throws RuntimeException {
+                            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(%5$s));%n",
+                                    commandClassName,
+                                    iterableCtType.getTypeName(),
+                                    DomainResultListHandler.class.getName(),
+                                    ctType.getBoxedTypeName(),
+                                    ctType.getInstantiationCommand());
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitMapCtType(MapCtType ctType, Void p)
+                                throws RuntimeException {
+                            MapKeyNamingType namingType = m.getMapKeyNamingType();
+                            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s(%4$s.%5$s));%n",
+                                    commandClassName,
+                                    iterableCtType.getTypeName(),
+                                    MapResultListHandler.class.getName(),
+                                    namingType.getDeclaringClass().getName(),
+                                    namingType.name());
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitEntityCtType(EntityCtType ctType,
+                                Void p) throws RuntimeException {
+                            iprint("%1$s<%2$s> __command = new %1$s<%2$s>(__query, new %3$s<%4$s>(%5$s.getSingletonInternal()));%n",
+                                    commandClassName,
+                                    iterableCtType.getTypeName(),
+                                    EntityResultListHandler.class.getName(),
+                                    ctType.getTypeName(),
+                                    ctType.getMetaTypeName());
+                            return null;
+                        }
+
+                    }, null);
+            return null;
+        }
+
+    }
 }

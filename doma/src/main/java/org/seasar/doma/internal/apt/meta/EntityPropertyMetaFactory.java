@@ -320,7 +320,7 @@ public class EntityPropertyMetaFactory {
                     @Override
                     public Boolean visitOptionalCtType(OptionalCtType ctType,
                             Void p) throws RuntimeException {
-                        return ctType.getTypeArgCtType().accept(this, p);
+                        return ctType.getElementCtType().accept(this, p);
                     }
 
                     @Override

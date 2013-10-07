@@ -134,8 +134,8 @@ public class AutoModifyQueryMetaFactory extends
         queryMeta.setEntityParameterName(parameterMeta.getName());
         queryMeta.addParameterMeta(parameterMeta);
         if (parameterMeta.isBindable()) {
-            queryMeta.addBindableParameterType(parameterMeta.getName(),
-                    entityCtType.getTypeMirror());
+            queryMeta.addBindableParameterCtType(parameterMeta.getName(),
+                    parameterMeta.getCtType());
         }
         ModifyMirror modifyMirror = queryMeta.getModifyMirror();
         validateEntityPropertyNames(entityCtType.getTypeMirror(), method,

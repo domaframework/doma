@@ -199,7 +199,7 @@ public class QueryReturnMeta {
         return type;
     }
 
-    public CtType getDataType() {
+    public CtType getCtType() {
         return ctType;
     }
 

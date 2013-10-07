@@ -73,7 +73,7 @@ public class AutoFunctionQueryMetaFactory extends
             final AutoFunctionQueryMeta queryMeta,
             final QueryReturnMeta returnMeta) {
         return returnMeta
-                .getDataType()
+                .getCtType()
                 .accept(new SimpleCtTypeVisitor<ResultParameterMeta, Void, RuntimeException>() {
 
                     @Override

@@ -867,4 +867,14 @@ public class DaoProcessorTest extends AptTestCase {
         assertGeneratedSource(target);
         assertTrue(getCompiledResult());
     }
+
+    public void testOptional() throws Exception {
+        Class<?> target = OptionalDao.class;
+        DaoProcessor processor = new DaoProcessor();
+        addProcessor(processor);
+        addCompilationUnit(target);
+        compile();
+        assertGeneratedSource(target);
+        assertTrue(getCompiledResult());
+    }
 }

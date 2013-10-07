@@ -138,10 +138,10 @@ public class SqlFileBatchModifyQueryMetaFactory extends
                     }
 
                 }, null);
-        CtType elementType = iterableCtType.getElementType();
-        queryMeta.setElementCtType(elementType);
+        CtType elementCtType = iterableCtType.getElementType();
+        queryMeta.setElementCtType(elementCtType);
         queryMeta.setElementsParameterName(parameterMeta.getName());
-        elementType.accept(
+        elementCtType.accept(
                 new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
 
                     @Override
@@ -154,8 +154,8 @@ public class SqlFileBatchModifyQueryMetaFactory extends
                 }, null);
         queryMeta.addParameterMeta(parameterMeta);
         if (parameterMeta.isBindable()) {
-            queryMeta.addBindableParameterType(parameterMeta.getName(),
-                    elementType.getTypeMirror());
+            queryMeta.addBindableParameterCtType(parameterMeta.getName(),
+                    parameterMeta.getCtType());
         }
     }
 
