@@ -23,8 +23,9 @@ import org.seasar.doma.internal.apt.entity.BranchConverter;
  * 
  */
 
-public final class _Branch implements
-        org.seasar.doma.jdbc.domain.DomainType<java.lang.String, Branch> {
+public final class _Branch
+        extends
+        org.seasar.doma.jdbc.domain.AbstractDomainType<java.lang.String, Branch> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
@@ -35,11 +36,20 @@ public final class _Branch implements
     private static final BranchConverter converter = new BranchConverter();
 
     private _Branch() {
+        super(() -> new org.seasar.doma.wrapper.StringWrapper());
     }
 
     @Override
     public Branch newDomain(java.lang.String value) {
         return converter.fromValueToDomain(value);
+    }
+
+    @Override
+    public String getValue(Branch domain) {
+        if (domain == null) {
+            return null;
+        }
+        return converter.fromDomainToValue(domain);
     }
 
     @Override
@@ -52,12 +62,6 @@ public final class _Branch implements
         return Branch.class;
     }
 
-    @Override
-    public org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.String, Branch> getWrapper(
-            Branch domain) {
-        return new Wrapper(domain);
-    }
-
     /**
      * @return the singleton
      */
@@ -65,32 +69,4 @@ public final class _Branch implements
         return singleton;
     }
 
-    private static class Wrapper extends org.seasar.doma.wrapper.StringWrapper
-            implements
-            org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.String, Branch> {
-
-        private Branch domain;
-
-        private Wrapper(Branch domain) {
-            this.domain = domain;
-        }
-
-        @Override
-        protected java.lang.String doGet() {
-            if (domain == null) {
-                return null;
-            }
-            return converter.fromDomainToValue(domain);
-        }
-
-        @Override
-        protected void doSet(java.lang.String value) {
-            domain = converter.fromValueToDomain(value);
-        }
-
-        @Override
-        public Branch getDomain() {
-            return domain;
-        }
-    }
 }

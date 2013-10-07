@@ -2,7 +2,7 @@ package org.seasar.doma.internal.apt.domain;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public final class _SpecificDomain implements org.seasar.doma.jdbc.domain.DomainType<java.lang.Integer, org.seasar.doma.internal.apt.domain.SpecificDomain> {
+public final class _SpecificDomain extends org.seasar.doma.jdbc.domain.AbstractDomainType<java.lang.Integer, org.seasar.doma.internal.apt.domain.SpecificDomain> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
@@ -11,11 +11,20 @@ public final class _SpecificDomain implements org.seasar.doma.jdbc.domain.Domain
     private static final _SpecificDomain singleton = new _SpecificDomain();
 
     private _SpecificDomain() {
+        super(() -> new org.seasar.doma.wrapper.IntegerWrapper());
     }
 
     @Override
     public org.seasar.doma.internal.apt.domain.SpecificDomain newDomain(java.lang.Integer value) {
         return new org.seasar.doma.internal.apt.domain.SpecificDomain(value);
+    }
+
+    @Override
+    public java.lang.Integer getValue(org.seasar.doma.internal.apt.domain.SpecificDomain domain) {
+        if (domain == null) {
+            return null;
+        }
+        return domain.getValue();
     }
 
     @Override
@@ -28,11 +37,6 @@ public final class _SpecificDomain implements org.seasar.doma.jdbc.domain.Domain
         return org.seasar.doma.internal.apt.domain.SpecificDomain.class;
     }
 
-    @Override
-    public org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.Integer, org.seasar.doma.internal.apt.domain.SpecificDomain> getWrapper(org.seasar.doma.internal.apt.domain.SpecificDomain domain) {
-        return new Wrapper(domain);
-    }
-
     /**
      * @return the singleton
      */
@@ -40,30 +44,4 @@ public final class _SpecificDomain implements org.seasar.doma.jdbc.domain.Domain
         return singleton;
     }
 
-    private static class Wrapper extends org.seasar.doma.wrapper.IntegerWrapper implements org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.Integer, org.seasar.doma.internal.apt.domain.SpecificDomain> {
-
-        private org.seasar.doma.internal.apt.domain.SpecificDomain domain;
-
-        private Wrapper(org.seasar.doma.internal.apt.domain.SpecificDomain domain) {
-            this.domain = domain;
-        }
-
-        @Override
-        protected java.lang.Integer doGet() {
-            if (domain == null) {
-                return null;
-            }
-            return domain.getValue();
-        }
-
-        @Override
-        protected void doSet(java.lang.Integer value) {
-            domain = new org.seasar.doma.internal.apt.domain.SpecificDomain(value);
-        }
-
-        @Override
-        public org.seasar.doma.internal.apt.domain.SpecificDomain getDomain() {
-            return domain;
-        }
-    }
 }

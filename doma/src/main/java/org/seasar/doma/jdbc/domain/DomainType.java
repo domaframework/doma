@@ -31,20 +31,14 @@ package org.seasar.doma.jdbc.domain;
  */
 public interface DomainType<V, D> {
 
-    /**
-     * ドメインを生成します。
-     * 
-     * @param value
-     *            値
-     * @return ドメイン
-     */
     D newDomain(V value);
+
+    V getValue(D domain);
 
     /**
      * 値のクラスを返します。
      * 
      * @return 値のクラス
-     * @since 1.25.0
      */
     Class<V> getValueClass();
 
@@ -55,12 +49,8 @@ public interface DomainType<V, D> {
      */
     Class<D> getDomainClass();
 
-    /**
-     * ドメインのラッパーを返します。
-     * 
-     * @param domain
-     *            ドメイン
-     * @return ドメインのラッパー
-     */
-    DomainWrapper<V, D> getWrapper(D domain);
+    DomainState<V, D> createState();
+
+    OptionalDomainState<V, D> createOptionalState();
+
 }

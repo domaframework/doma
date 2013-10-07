@@ -15,15 +15,14 @@
  */
 package example.domain;
 
-import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.jdbc.domain.DomainWrapper;
-import org.seasar.doma.wrapper.IntegerWrapper;
+import org.seasar.doma.jdbc.domain.AbstractDomainType;
 
-public class _JobType implements DomainType<Integer, JobType> {
+public class _JobType extends AbstractDomainType<Integer, JobType> {
 
     private static final _JobType singleton = new _JobType();
 
     private _JobType() {
+        super(() -> new org.seasar.doma.wrapper.IntegerWrapper());
     }
 
     @Override
@@ -32,6 +31,11 @@ public class _JobType implements DomainType<Integer, JobType> {
             return new JobType(0);
         }
         return new JobType(value);
+    }
+
+    @Override
+    public Integer getValue(JobType domain) {
+        return domain.getValue();
     }
 
     @Override
@@ -44,43 +48,8 @@ public class _JobType implements DomainType<Integer, JobType> {
         return JobType.class;
     }
 
-    @Override
-    public Wrapper getWrapper(JobType domain) {
-        return new Wrapper(domain);
-    }
-
     public static _JobType getSingletonInternal() {
         return singleton;
-    }
-
-    static class Wrapper extends IntegerWrapper implements
-            DomainWrapper<Integer, JobType> {
-
-        private JobType domain;
-
-        public Wrapper(JobType domain) {
-            if (domain == null) {
-                this.domain = new JobType(0);
-            } else {
-                this.domain = domain;
-            }
-        }
-
-        @Override
-        protected Integer doGet() {
-            return domain.getValue();
-        }
-
-        @Override
-        protected void doSet(Integer value) {
-            domain = new JobType(value);
-        }
-
-        @Override
-        public JobType getDomain() {
-            return domain;
-        }
-
     }
 
 }

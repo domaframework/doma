@@ -2,7 +2,7 @@ package org.seasar.doma.internal.apt.domain;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public final class _OfSalary implements org.seasar.doma.jdbc.domain.DomainType<java.math.BigDecimal, org.seasar.doma.internal.apt.domain.OfSalary> {
+public final class _OfSalary extends org.seasar.doma.jdbc.domain.AbstractDomainType<java.math.BigDecimal, org.seasar.doma.internal.apt.domain.OfSalary> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
@@ -11,11 +11,20 @@ public final class _OfSalary implements org.seasar.doma.jdbc.domain.DomainType<j
     private static final _OfSalary singleton = new _OfSalary();
 
     private _OfSalary() {
+        super(() -> new org.seasar.doma.wrapper.BigDecimalWrapper());
     }
 
     @Override
     public org.seasar.doma.internal.apt.domain.OfSalary newDomain(java.math.BigDecimal value) {
         return org.seasar.doma.internal.apt.domain.OfSalary.of(value);
+    }
+
+    @Override
+    public java.math.BigDecimal getValue(org.seasar.doma.internal.apt.domain.OfSalary domain) {
+        if (domain == null) {
+            return null;
+        }
+        return domain.getValue();
     }
 
     @Override
@@ -28,11 +37,6 @@ public final class _OfSalary implements org.seasar.doma.jdbc.domain.DomainType<j
         return org.seasar.doma.internal.apt.domain.OfSalary.class;
     }
 
-    @Override
-    public org.seasar.doma.jdbc.domain.DomainWrapper<java.math.BigDecimal, org.seasar.doma.internal.apt.domain.OfSalary> getWrapper(org.seasar.doma.internal.apt.domain.OfSalary domain) {
-        return new Wrapper(domain);
-    }
-
     /**
      * @return the singleton
      */
@@ -40,30 +44,4 @@ public final class _OfSalary implements org.seasar.doma.jdbc.domain.DomainType<j
         return singleton;
     }
 
-    private static class Wrapper extends org.seasar.doma.wrapper.BigDecimalWrapper implements org.seasar.doma.jdbc.domain.DomainWrapper<java.math.BigDecimal, org.seasar.doma.internal.apt.domain.OfSalary> {
-
-        private org.seasar.doma.internal.apt.domain.OfSalary domain;
-
-        private Wrapper(org.seasar.doma.internal.apt.domain.OfSalary domain) {
-            this.domain = domain;
-        }
-
-        @Override
-        protected java.math.BigDecimal doGet() {
-            if (domain == null) {
-                return null;
-            }
-            return domain.getValue();
-        }
-
-        @Override
-        protected void doSet(java.math.BigDecimal value) {
-            domain = org.seasar.doma.internal.apt.domain.OfSalary.of(value);
-        }
-
-        @Override
-        public org.seasar.doma.internal.apt.domain.OfSalary getDomain() {
-            return domain;
-        }
-    }
 }

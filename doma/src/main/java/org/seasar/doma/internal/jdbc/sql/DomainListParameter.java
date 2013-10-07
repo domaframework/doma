@@ -19,8 +19,8 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.List;
 
+import org.seasar.doma.jdbc.domain.DomainState;
 import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.jdbc.domain.DomainWrapper;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -52,8 +52,8 @@ public class DomainListParameter<V, D> implements ListParameter<Wrapper<V>, D> {
         return domains;
     }
 
-    public DomainWrapper<V, D> getWrapper() {
-        return domainType.getWrapper(null);
+    public DomainState<V, D> getDomainState() {
+        return domainType.createState();
     }
 
     @Override

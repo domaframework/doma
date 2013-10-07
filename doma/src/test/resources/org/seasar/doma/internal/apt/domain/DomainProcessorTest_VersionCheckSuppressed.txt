@@ -2,16 +2,25 @@ package org.seasar.doma.internal.apt.domain;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public final class _VersionCheckSuppressedDomain implements org.seasar.doma.jdbc.domain.DomainType<java.math.BigDecimal, org.seasar.doma.internal.apt.domain.VersionCheckSuppressedDomain> {
+public final class _VersionCheckSuppressedDomain extends org.seasar.doma.jdbc.domain.AbstractDomainType<java.math.BigDecimal, org.seasar.doma.internal.apt.domain.VersionCheckSuppressedDomain> {
 
     private static final _VersionCheckSuppressedDomain singleton = new _VersionCheckSuppressedDomain();
 
     private _VersionCheckSuppressedDomain() {
+        super(() -> new org.seasar.doma.wrapper.BigDecimalWrapper());
     }
 
     @Override
     public org.seasar.doma.internal.apt.domain.VersionCheckSuppressedDomain newDomain(java.math.BigDecimal value) {
         return new org.seasar.doma.internal.apt.domain.VersionCheckSuppressedDomain(value);
+    }
+
+    @Override
+    public java.math.BigDecimal getValue(org.seasar.doma.internal.apt.domain.VersionCheckSuppressedDomain domain) {
+        if (domain == null) {
+            return null;
+        }
+        return domain.getValue();
     }
 
     @Override
@@ -24,11 +33,6 @@ public final class _VersionCheckSuppressedDomain implements org.seasar.doma.jdbc
         return org.seasar.doma.internal.apt.domain.VersionCheckSuppressedDomain.class;
     }
 
-    @Override
-    public org.seasar.doma.jdbc.domain.DomainWrapper<java.math.BigDecimal, org.seasar.doma.internal.apt.domain.VersionCheckSuppressedDomain> getWrapper(org.seasar.doma.internal.apt.domain.VersionCheckSuppressedDomain domain) {
-        return new Wrapper(domain);
-    }
-
     /**
      * @return the singleton
      */
@@ -36,30 +40,4 @@ public final class _VersionCheckSuppressedDomain implements org.seasar.doma.jdbc
         return singleton;
     }
 
-    private static class Wrapper extends org.seasar.doma.wrapper.BigDecimalWrapper implements org.seasar.doma.jdbc.domain.DomainWrapper<java.math.BigDecimal, org.seasar.doma.internal.apt.domain.VersionCheckSuppressedDomain> {
-
-        private org.seasar.doma.internal.apt.domain.VersionCheckSuppressedDomain domain;
-
-        private Wrapper(org.seasar.doma.internal.apt.domain.VersionCheckSuppressedDomain domain) {
-            this.domain = domain;
-        }
-
-        @Override
-        protected java.math.BigDecimal doGet() {
-            if (domain == null) {
-                return null;
-            }
-            return domain.getValue();
-        }
-
-        @Override
-        protected void doSet(java.math.BigDecimal value) {
-            domain = new org.seasar.doma.internal.apt.domain.VersionCheckSuppressedDomain(value);
-        }
-
-        @Override
-        public org.seasar.doma.internal.apt.domain.VersionCheckSuppressedDomain getDomain() {
-            return domain;
-        }
-    }
 }

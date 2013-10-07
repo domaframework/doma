@@ -22,9 +22,9 @@ import org.seasar.doma.internal.apt.entity.PrimaryKeyConverter;
  * @author taedium
  * 
  */
-
-public final class _PrimaryKey implements
-        org.seasar.doma.jdbc.domain.DomainType<java.lang.Integer, PrimaryKey> {
+public final class _PrimaryKey
+        extends
+        org.seasar.doma.jdbc.domain.AbstractDomainType<java.lang.Integer, PrimaryKey> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
@@ -35,11 +35,20 @@ public final class _PrimaryKey implements
     private static final PrimaryKeyConverter converter = new PrimaryKeyConverter();
 
     private _PrimaryKey() {
+        super(() -> new org.seasar.doma.wrapper.IntegerWrapper());
     }
 
     @Override
     public PrimaryKey newDomain(java.lang.Integer value) {
         return converter.fromValueToDomain(value);
+    }
+
+    @Override
+    public Integer getValue(PrimaryKey domain) {
+        if (domain == null) {
+            return null;
+        }
+        return converter.fromDomainToValue(domain);
     }
 
     @Override
@@ -52,12 +61,6 @@ public final class _PrimaryKey implements
         return PrimaryKey.class;
     }
 
-    @Override
-    public org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.Integer, PrimaryKey> getWrapper(
-            PrimaryKey domain) {
-        return new Wrapper(domain);
-    }
-
     /**
      * @return the singleton
      */
@@ -65,32 +68,4 @@ public final class _PrimaryKey implements
         return singleton;
     }
 
-    private static class Wrapper extends org.seasar.doma.wrapper.IntegerWrapper
-            implements
-            org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.Integer, PrimaryKey> {
-
-        private PrimaryKey domain;
-
-        private Wrapper(PrimaryKey domain) {
-            this.domain = domain;
-        }
-
-        @Override
-        protected java.lang.Integer doGet() {
-            if (domain == null) {
-                return null;
-            }
-            return converter.fromDomainToValue(domain);
-        }
-
-        @Override
-        protected void doSet(java.lang.Integer value) {
-            domain = converter.fromValueToDomain(value);
-        }
-
-        @Override
-        public PrimaryKey getDomain() {
-            return domain;
-        }
-    }
 }

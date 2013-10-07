@@ -26,8 +26,8 @@ import org.seasar.doma.jdbc.IterationContext;
 import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.PostIterationCallback;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.domain.DomainState;
 import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.jdbc.domain.DomainWrapper;
 
 /**
  * @author taedium
@@ -54,10 +54,9 @@ public class DomainIterationHandler<R, D> implements ResultSetHandler<R> {
         R result = null;
         while (resultSet.next()) {
             existent = true;
-            DomainWrapper<?, D> wrapper = domainType.getWrapper(null);
-            fetcher.fetch(resultSet, wrapper);
-            result = iterationCallback.iterate(wrapper.getDomain(),
-                    iterationContext);
+            DomainState<?, D> state = domainType.createState();
+            fetcher.fetch(resultSet, state.getWrapper());
+            result = iterationCallback.iterate(state.get(), iterationContext);
             if (iterationContext.isExited()) {
                 return result;
             }

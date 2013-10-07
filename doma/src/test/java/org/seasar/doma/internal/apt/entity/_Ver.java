@@ -15,17 +15,25 @@
  */
 package org.seasar.doma.internal.apt.entity;
 
-import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.jdbc.domain.DomainWrapper;
+import org.seasar.doma.jdbc.domain.AbstractDomainType;
 
 /**
  * @author taedium
  * 
  */
-public class _Ver implements DomainType<Integer, Ver> {
+public class _Ver extends AbstractDomainType<Integer, Ver> {
+
+    private _Ver() {
+        super(() -> new org.seasar.doma.wrapper.IntegerWrapper());
+    }
 
     @Override
     public Ver newDomain(Integer value) {
+        return null;
+    }
+
+    @Override
+    public Integer getValue(Ver domain) {
         return null;
     }
 
@@ -36,11 +44,6 @@ public class _Ver implements DomainType<Integer, Ver> {
 
     @Override
     public Class<Ver> getDomainClass() {
-        return null;
-    }
-
-    @Override
-    public DomainWrapper<Integer, Ver> getWrapper(Ver domain) {
         return null;
     }
 

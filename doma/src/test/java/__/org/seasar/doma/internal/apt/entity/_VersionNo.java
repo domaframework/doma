@@ -22,9 +22,9 @@ import org.seasar.doma.internal.apt.entity.VersionNoConverter;
  * @author taedium
  * 
  */
-
-public final class _VersionNo implements
-        org.seasar.doma.jdbc.domain.DomainType<java.lang.Integer, VersionNo> {
+public final class _VersionNo
+        extends
+        org.seasar.doma.jdbc.domain.AbstractDomainType<java.lang.Integer, VersionNo> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
@@ -35,11 +35,20 @@ public final class _VersionNo implements
     private static final VersionNoConverter converter = new VersionNoConverter();
 
     private _VersionNo() {
+        super(() -> new org.seasar.doma.wrapper.IntegerWrapper());
     }
 
     @Override
     public VersionNo newDomain(java.lang.Integer value) {
         return converter.fromValueToDomain(value);
+    }
+
+    @Override
+    public Integer getValue(VersionNo domain) {
+        if (domain == null) {
+            return null;
+        }
+        return converter.fromDomainToValue(domain);
     }
 
     @Override
@@ -52,12 +61,6 @@ public final class _VersionNo implements
         return VersionNo.class;
     }
 
-    @Override
-    public org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.Integer, VersionNo> getWrapper(
-            VersionNo domain) {
-        return new Wrapper(domain);
-    }
-
     /**
      * @return the singleton
      */
@@ -65,32 +68,4 @@ public final class _VersionNo implements
         return singleton;
     }
 
-    private static class Wrapper extends org.seasar.doma.wrapper.IntegerWrapper
-            implements
-            org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.Integer, VersionNo> {
-
-        private VersionNo domain;
-
-        private Wrapper(VersionNo domain) {
-            this.domain = domain;
-        }
-
-        @Override
-        protected java.lang.Integer doGet() {
-            if (domain == null) {
-                return null;
-            }
-            return converter.fromDomainToValue(domain);
-        }
-
-        @Override
-        protected void doSet(java.lang.Integer value) {
-            domain = converter.fromValueToDomain(value);
-        }
-
-        @Override
-        public VersionNo getDomain() {
-            return domain;
-        }
-    }
 }

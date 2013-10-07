@@ -25,8 +25,8 @@ import java.util.List;
 import org.seasar.doma.internal.jdbc.query.SelectQuery;
 import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.domain.DomainState;
 import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.jdbc.domain.DomainWrapper;
 
 /**
  * @author taedium
@@ -47,9 +47,9 @@ public class DomainResultListHandler<D> implements ResultSetHandler<List<D>> {
         BasicFetcher fetcher = new BasicFetcher(query);
         List<D> domains = new ArrayList<D>();
         while (resultSet.next()) {
-            DomainWrapper<?, D> wrapper = domainType.getWrapper(null);
-            fetcher.fetch(resultSet, wrapper);
-            domains.add(wrapper.getDomain());
+            DomainState<?, D> state = domainType.createState();
+            fetcher.fetch(resultSet, state.getWrapper());
+            domains.add(state.get());
         }
         if (query.isResultEnsured() && domains.isEmpty()) {
             Sql<?> sql = query.getSql();

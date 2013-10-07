@@ -15,17 +15,25 @@
  */
 package org.seasar.doma.internal.apt.entity;
 
-import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.jdbc.domain.DomainWrapper;
+import org.seasar.doma.jdbc.domain.AbstractDomainType;
 
 /**
  * @author taedium
  * 
  */
-public class _Identifier implements DomainType<Integer, Identifier> {
+public class _Identifier extends AbstractDomainType<Integer, Identifier> {
+
+    private _Identifier() {
+        super(() -> new org.seasar.doma.wrapper.IntegerWrapper());
+    }
 
     @Override
     public Identifier newDomain(Integer value) {
+        return null;
+    }
+
+    @Override
+    public Integer getValue(Identifier domain) {
         return null;
     }
 
@@ -36,11 +44,6 @@ public class _Identifier implements DomainType<Integer, Identifier> {
 
     @Override
     public Class<Identifier> getDomainClass() {
-        return null;
-    }
-
-    @Override
-    public DomainWrapper<Integer, Identifier> getWrapper(Identifier domain) {
         return null;
     }
 

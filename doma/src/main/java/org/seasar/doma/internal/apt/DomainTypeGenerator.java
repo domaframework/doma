@@ -28,8 +28,7 @@ import org.seasar.doma.internal.apt.meta.DomainMeta;
 import org.seasar.doma.internal.apt.util.MetaUtil;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.internal.util.BoxedPrimitiveUtil;
-import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.jdbc.domain.DomainWrapper;
+import org.seasar.doma.jdbc.domain.AbstractDomainType;
 
 /**
  * 
@@ -93,8 +92,8 @@ public class DomainTypeGenerator extends AbstractGenerator {
             iprint(" */%n");
         }
         printGenerated();
-        iprint("public final class %1$s implements %2$s<%3$s, %4$s> {%n",
-                simpleMetaTypeName, DomainType.class.getName(),
+        iprint("public final class %1$s extends %2$s<%3$s, %4$s> {%n",
+                simpleMetaTypeName, AbstractDomainType.class.getName(),
                 TypeMirrorUtil.boxIfPrimitive(domainMeta.getValueType(), env),
                 typeName);
         print("%n");
@@ -119,17 +118,25 @@ public class DomainTypeGenerator extends AbstractGenerator {
 
     protected void printConstructors() {
         iprint("private %1$s() {%n", simpleName);
+        if (domainMeta.getWrapperCtType().getBasicCtType().isEnum()) {
+            iprint("    super(() -> new %1$s(%2$s.class));%n", domainMeta
+                    .getWrapperCtType().getTypeName(),
+                    TypeMirrorUtil.boxIfPrimitive(domainMeta.getValueType(),
+                            env));
+        } else {
+            iprint("    super(() -> new %1$s());%n", domainMeta
+                    .getWrapperCtType().getTypeName());
+        }
         iprint("}%n");
         print("%n");
     }
 
     protected void printMethods() {
         printNewDomainMethod();
+        printGetValueMethod();
         printGetValueClassMethod();
         printGetDomainClassMethod();
-        printGetWrapperMethod();
         printGetSingletonInternalMethod();
-        printWrapperClass();
     }
 
     protected void printNewDomainMethod() {
@@ -155,6 +162,19 @@ public class DomainTypeGenerator extends AbstractGenerator {
                         domainMeta.getFactoryMethod());
             }
         }
+        iprint("}%n");
+        print("%n");
+    }
+
+    protected void printGetValueMethod() {
+        iprint("@Override%n");
+        iprint("public %1$s getValue(%2$s domain) {%n",
+                TypeMirrorUtil.boxIfPrimitive(domainMeta.getValueType(), env),
+                typeName);
+        iprint("    if (domain == null) {%n");
+        iprint("        return null;%n");
+        iprint("    }%n");
+        iprint("    return domain.%1$s();%n", domainMeta.getAccessorMethod());
         iprint("}%n");
         print("%n");
     }
@@ -187,17 +207,6 @@ public class DomainTypeGenerator extends AbstractGenerator {
         print("%n");
     }
 
-    protected void printGetWrapperMethod() {
-        iprint("@Override%n");
-        iprint("public %1$s<%2$s, %3$s> getWrapper(%3$s domain) {%n",
-                DomainWrapper.class.getName(),
-                TypeMirrorUtil.boxIfPrimitive(domainMeta.getValueType(), env),
-                typeName);
-        iprint("    return new Wrapper%1$s(domain);%n", typeParamDecl);
-        iprint("}%n");
-        print("%n");
-    }
-
     protected void printGetSingletonInternalMethod() {
         iprint("/**%n");
         iprint(" * @return the singleton%n");
@@ -214,99 +223,5 @@ public class DomainTypeGenerator extends AbstractGenerator {
         }
         iprint("}%n");
         print("%n");
-    }
-
-    protected void printWrapperClass() {
-        WrapperGenerator wrapperGenerator = createWrapperGenerator();
-        wrapperGenerator.generate();
-    }
-
-    protected WrapperGenerator createWrapperGenerator() {
-        return new WrapperGenerator();
-    }
-
-    protected class WrapperGenerator {
-
-        protected void generate() {
-            iprint("private static class Wrapper%1$s extends %2$s implements %3$s<%4$s, %5$s> {%n",
-                    typeParamDecl, domainMeta.getWrapperCtType().getTypeName(),
-                    DomainWrapper.class.getName(), TypeMirrorUtil
-                            .boxIfPrimitive(domainMeta.getValueType(), env),
-                    typeName);
-            print("%n");
-            indent();
-            printWrapperField();
-            printWrapperConstructor();
-            printWrapperDoGetMethod();
-            pirntWrapperDoSetMethod();
-            printWrapperGetDomainMethod();
-            unindent();
-            iprint("}%n");
-        }
-
-        protected void printWrapperField() {
-            iprint("private %1$s domain;%n", typeName);
-            print("%n");
-        }
-
-        protected void printWrapperConstructor() {
-            iprint("private Wrapper(%1$s domain) {%n", typeName);
-            if (domainMeta.getWrapperCtType().getBasicCtType().isEnum()) {
-                iprint("    super(%1$s.class);%n",
-                        TypeMirrorUtil.boxIfPrimitive(
-                                domainMeta.getValueType(), env));
-            }
-            iprint("    this.domain = domain;%n");
-            iprint("}%n");
-            print("%n");
-        }
-
-        protected void printWrapperDoGetMethod() {
-            iprint("@Override%n");
-            iprint("protected %1$s doGet() {%n", TypeMirrorUtil.boxIfPrimitive(
-                    domainMeta.getValueType(), env));
-            iprint("    if (domain == null) {%n");
-            iprint("        return null;%n");
-            iprint("    }%n");
-            iprint("    return domain.%1$s();%n",
-                    domainMeta.getAccessorMethod());
-            iprint("}%n");
-            print("%n");
-        }
-
-        protected void pirntWrapperDoSetMethod() {
-            iprint("@Override%n");
-            iprint("protected void doSet(%1$s value) {%n",
-                    TypeMirrorUtil.boxIfPrimitive(domainMeta.getValueType(),
-                            env));
-            if (domainMeta.providesConstructor()) {
-                if (domainMeta.getWrapperCtType().getBasicCtType().isPrimitive()) {
-                    iprint("    domain = new %1$s(%2$s.unbox(value));%n",
-                            typeName, BoxedPrimitiveUtil.class.getName());
-                } else {
-                    iprint("    domain = new %1$s(value);%n", typeName);
-                }
-            } else {
-                if (domainMeta.getWrapperCtType().getBasicCtType().isPrimitive()) {
-                    iprint("    domain = %1$s.%2$s(%3$s.unbox(value));%n",
-                            domainMeta.getTypeElement().getQualifiedName(),
-                            domainMeta.getFactoryMethod(),
-                            BoxedPrimitiveUtil.class.getName());
-                } else {
-                    iprint("    domain = %1$s.%2$s(value);%n", domainMeta
-                            .getTypeElement().getQualifiedName(),
-                            domainMeta.getFactoryMethod());
-                }
-            }
-            iprint("}%n");
-            print("%n");
-        }
-
-        protected void printWrapperGetDomainMethod() {
-            iprint("@Override%n");
-            iprint("public %1$s getDomain() {%n", typeName);
-            iprint("    return domain;%n");
-            iprint("}%n");
-        }
     }
 }

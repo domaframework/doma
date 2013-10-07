@@ -2,7 +2,7 @@ package org.seasar.doma.internal.apt.domain;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public final class _OfJobType implements org.seasar.doma.jdbc.domain.DomainType<java.lang.String, org.seasar.doma.internal.apt.domain.OfJobType> {
+public final class _OfJobType extends org.seasar.doma.jdbc.domain.AbstractDomainType<java.lang.String, org.seasar.doma.internal.apt.domain.OfJobType> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
@@ -11,11 +11,20 @@ public final class _OfJobType implements org.seasar.doma.jdbc.domain.DomainType<
     private static final _OfJobType singleton = new _OfJobType();
 
     private _OfJobType() {
+        super(() -> new org.seasar.doma.wrapper.StringWrapper());
     }
 
     @Override
     public org.seasar.doma.internal.apt.domain.OfJobType newDomain(java.lang.String value) {
         return org.seasar.doma.internal.apt.domain.OfJobType.of(value);
+    }
+
+    @Override
+    public java.lang.String getValue(org.seasar.doma.internal.apt.domain.OfJobType domain) {
+        if (domain == null) {
+            return null;
+        }
+        return domain.getValue();
     }
 
     @Override
@@ -28,11 +37,6 @@ public final class _OfJobType implements org.seasar.doma.jdbc.domain.DomainType<
         return org.seasar.doma.internal.apt.domain.OfJobType.class;
     }
 
-    @Override
-    public org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.String, org.seasar.doma.internal.apt.domain.OfJobType> getWrapper(org.seasar.doma.internal.apt.domain.OfJobType domain) {
-        return new Wrapper(domain);
-    }
-
     /**
      * @return the singleton
      */
@@ -40,30 +44,4 @@ public final class _OfJobType implements org.seasar.doma.jdbc.domain.DomainType<
         return singleton;
     }
 
-    private static class Wrapper extends org.seasar.doma.wrapper.StringWrapper implements org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.String, org.seasar.doma.internal.apt.domain.OfJobType> {
-
-        private org.seasar.doma.internal.apt.domain.OfJobType domain;
-
-        private Wrapper(org.seasar.doma.internal.apt.domain.OfJobType domain) {
-            this.domain = domain;
-        }
-
-        @Override
-        protected java.lang.String doGet() {
-            if (domain == null) {
-                return null;
-            }
-            return domain.getValue();
-        }
-
-        @Override
-        protected void doSet(java.lang.String value) {
-            domain = org.seasar.doma.internal.apt.domain.OfJobType.of(value);
-        }
-
-        @Override
-        public org.seasar.doma.internal.apt.domain.OfJobType getDomain() {
-            return domain;
-        }
-    }
 }

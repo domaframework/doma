@@ -5,7 +5,7 @@ package __.org.seasar.doma.internal.apt.domain;
  * @param <U> U
  */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public final class _ParameterizedValueObject<T, U> implements org.seasar.doma.jdbc.domain.DomainType<java.lang.String, org.seasar.doma.internal.apt.domain.ParameterizedValueObject<T, U>> {
+public final class _ParameterizedValueObject<T, U> extends org.seasar.doma.jdbc.domain.AbstractDomainType<java.lang.String, org.seasar.doma.internal.apt.domain.ParameterizedValueObject<T, U>> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
@@ -17,12 +17,21 @@ public final class _ParameterizedValueObject<T, U> implements org.seasar.doma.jd
     private static final org.seasar.doma.internal.apt.domain.ParameterizedValueObjectConverter converter = new org.seasar.doma.internal.apt.domain.ParameterizedValueObjectConverter();
 
     private _ParameterizedValueObject() {
+        super(() -> new org.seasar.doma.wrapper.StringWrapper());
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.internal.apt.domain.ParameterizedValueObject<T, U> newDomain(java.lang.String value) {
         return (org.seasar.doma.internal.apt.domain.ParameterizedValueObject<T, U>) converter.fromValueToDomain(value);
+    }
+
+    @Override
+    public java.lang.String getValue(org.seasar.doma.internal.apt.domain.ParameterizedValueObject<T, U> domain) {
+        if (domain == null) {
+            return null;
+        }
+        return converter.fromDomainToValue(domain);
     }
 
     @Override
@@ -37,11 +46,6 @@ public final class _ParameterizedValueObject<T, U> implements org.seasar.doma.jd
         return (Class<org.seasar.doma.internal.apt.domain.ParameterizedValueObject<T, U>>) clazz;
     }
 
-    @Override
-    public org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.String, org.seasar.doma.internal.apt.domain.ParameterizedValueObject<T, U>> getWrapper(org.seasar.doma.internal.apt.domain.ParameterizedValueObject<T, U> domain) {
-        return new Wrapper<T, U>(domain);
-    }
-
     /**
      * @return the singleton
      */
@@ -50,31 +54,4 @@ public final class _ParameterizedValueObject<T, U> implements org.seasar.doma.jd
         return (_ParameterizedValueObject<T, U>) singleton;
     }
 
-    private static class Wrapper<T, U> extends org.seasar.doma.wrapper.StringWrapper implements org.seasar.doma.jdbc.domain.DomainWrapper<java.lang.String, org.seasar.doma.internal.apt.domain.ParameterizedValueObject<T, U>> {
-
-        private org.seasar.doma.internal.apt.domain.ParameterizedValueObject<T, U> domain;
-
-        private Wrapper(org.seasar.doma.internal.apt.domain.ParameterizedValueObject<T, U> domain) {
-            this.domain = domain;
-        }
-
-        @Override
-        protected java.lang.String doGet() {
-            if (domain == null) {
-                return null;
-            }
-            return converter.fromDomainToValue(domain);
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
-        protected void doSet(java.lang.String value) {
-            domain = (org.seasar.doma.internal.apt.domain.ParameterizedValueObject<T, U>) converter.fromValueToDomain(value);
-        }
-
-        @Override
-        public org.seasar.doma.internal.apt.domain.ParameterizedValueObject<T, U> getDomain() {
-            return domain;
-        }
-    }
 }

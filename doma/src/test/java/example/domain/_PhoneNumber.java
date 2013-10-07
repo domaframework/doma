@@ -15,20 +15,27 @@
  */
 package example.domain;
 
-import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.jdbc.domain.DomainWrapper;
-import org.seasar.doma.wrapper.StringWrapper;
+import org.seasar.doma.jdbc.domain.AbstractDomainType;
 
-public class _PhoneNumber implements DomainType<String, PhoneNumber> {
+public class _PhoneNumber extends AbstractDomainType<String, PhoneNumber> {
 
     private static final _PhoneNumber singleton = new _PhoneNumber();
 
     private _PhoneNumber() {
+        super(() -> new org.seasar.doma.wrapper.StringWrapper());
     }
 
     @Override
     public PhoneNumber newDomain(String value) {
         return new PhoneNumber(value);
+    }
+
+    @Override
+    public String getValue(PhoneNumber domain) {
+        if (domain == null) {
+            return null;
+        }
+        return domain.getValue();
     }
 
     @Override
@@ -41,43 +48,8 @@ public class _PhoneNumber implements DomainType<String, PhoneNumber> {
         return PhoneNumber.class;
     }
 
-    @Override
-    public Wrapper getWrapper(PhoneNumber domain) {
-        return new Wrapper(domain);
-    }
-
     public static _PhoneNumber getSingletonInternal() {
         return singleton;
-    }
-
-    static class Wrapper extends StringWrapper implements
-            DomainWrapper<String, PhoneNumber> {
-
-        private PhoneNumber domain;
-
-        public Wrapper(PhoneNumber domain) {
-            if (domain == null) {
-                this.domain = new PhoneNumber(null);
-            } else {
-                this.domain = domain;
-            }
-        }
-
-        @Override
-        protected String doGet() {
-            return domain.getValue();
-        }
-
-        @Override
-        protected void doSet(String value) {
-            domain = new PhoneNumber(value);
-        }
-
-        @Override
-        public PhoneNumber getDomain() {
-            return domain;
-        }
-
     }
 
 }

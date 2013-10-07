@@ -15,14 +15,18 @@
  */
 package org.seasar.doma.internal.apt.dao;
 
-import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.jdbc.domain.DomainWrapper;
+import org.seasar.doma.jdbc.domain.AbstractDomainType;
 
 /**
  * @author taedium
  * 
  */
-public class _Height<T> implements DomainType<Integer, Height<T>> {
+@SuppressWarnings("all")
+public class _Height<T> extends AbstractDomainType<Integer, Height<T>> {
+
+    private _Height() {
+        super(() -> new org.seasar.doma.wrapper.IntegerWrapper());
+    }
 
     @Override
     public Height<T> newDomain(Integer value) {
@@ -30,18 +34,17 @@ public class _Height<T> implements DomainType<Integer, Height<T>> {
     }
 
     @Override
+    public Integer getValue(Height<T> domain) {
+        return null;
+    }
+
     public Class<Integer> getValueClass() {
-        return null;
+        return Integer.class;
     }
 
-    @Override
     public Class<Height<T>> getDomainClass() {
-        return null;
-    }
-
-    @Override
-    public DomainWrapper<Integer, Height<T>> getWrapper(Height<T> domain) {
-        return null;
+        Class<?> clazz = Height.class;
+        return (Class<Height<T>>) clazz;
     }
 
     public static <T> _Height<T> getSingletonInternal() {

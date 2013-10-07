@@ -15,17 +15,25 @@
  */
 package org.seasar.doma.internal.apt.domain;
 
-import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.jdbc.domain.DomainWrapper;
+import org.seasar.doma.jdbc.domain.AbstractDomainType;
 
 /**
  * @author taedium
  * 
  */
-public class _Name implements DomainType<String, Name> {
+public class _Name extends AbstractDomainType<String, Name> {
+
+    private _Name() {
+        super(() -> new org.seasar.doma.wrapper.StringWrapper());
+    }
 
     @Override
     public Name newDomain(String value) {
+        return null;
+    }
+
+    @Override
+    public String getValue(Name domain) {
         return null;
     }
 
@@ -36,11 +44,6 @@ public class _Name implements DomainType<String, Name> {
 
     @Override
     public Class<Name> getDomainClass() {
-        return null;
-    }
-
-    @Override
-    public DomainWrapper<String, Name> getWrapper(Name domain) {
         return null;
     }
 

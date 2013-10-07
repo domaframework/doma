@@ -49,7 +49,7 @@ import org.seasar.doma.internal.jdbc.util.JdbcUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.domain.DomainWrapper;
+import org.seasar.doma.jdbc.domain.DomainState;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.message.Message;
@@ -349,9 +349,9 @@ public class CallableSqlParameterFetcher implements
 
             @Override
             public void fetch(ResultSet resultSet) throws SQLException {
-                DomainWrapper<V, D> wrapper = parameter.getWrapper();
-                fetcher.fetch(resultSet, wrapper);
-                parameter.add(wrapper.getDomain());
+                DomainState<V, D> state = parameter.getDomainState();
+                fetcher.fetch(resultSet, state.getWrapper());
+                parameter.add(state.get());
             }
 
             @Override

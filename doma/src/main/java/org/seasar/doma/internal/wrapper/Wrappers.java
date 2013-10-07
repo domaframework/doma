@@ -30,6 +30,7 @@ import java.sql.Timestamp;
 import org.seasar.doma.Domain;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.ClassHelper;
+import org.seasar.doma.jdbc.domain.DomainState;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.jdbc.domain.DomainTypeFactory;
 import org.seasar.doma.message.Message;
@@ -201,6 +202,7 @@ public final class Wrappers {
      *            クラスヘルパー
      * @return ラッパー、値がドメインクラスのオブジェクトでない場合 {@code null}
      */
+    @SuppressWarnings("unchecked")
     protected static <V, D> Wrapper<?> wrapDomainObject(Object value,
             Class<D> valueClass, ClassHelper classHelper) {
         DomainType<V, D> domainType;
@@ -214,14 +216,10 @@ public final class Wrappers {
         if (domainType == null) {
             return null;
         }
-        @SuppressWarnings("unchecked")
-        V domainValue = domainType.getWrapper((D) value).get();
-        Class<V> domainValueClass = domainType.getValueClass();
-        Wrapper<?> result = wrapBasicObject(domainValue, domainValueClass);
-        if (result == null) {
-            result = wrapEnumObject(domainValue, domainValueClass);
-        }
-        return result;
+        // TODO
+        DomainState<V, D> domainState = domainType.createState();
+        domainState.set((D) value);
+        return domainState.getWrapper();
     }
 
 }

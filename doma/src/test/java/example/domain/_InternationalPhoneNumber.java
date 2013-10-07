@@ -15,21 +15,25 @@
  */
 package example.domain;
 
-import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.jdbc.domain.DomainWrapper;
-import org.seasar.doma.wrapper.StringWrapper;
+import org.seasar.doma.jdbc.domain.AbstractDomainType;
 
-public class _InternationalPhoneNumber implements
-        DomainType<String, InternationalPhoneNumber> {
+public class _InternationalPhoneNumber extends
+        AbstractDomainType<String, InternationalPhoneNumber> {
 
     private static final _InternationalPhoneNumber singleton = new _InternationalPhoneNumber();
 
     private _InternationalPhoneNumber() {
+        super(() -> new org.seasar.doma.wrapper.StringWrapper());
     }
 
     @Override
     public InternationalPhoneNumber newDomain(String value) {
         return new InternationalPhoneNumber(value);
+    }
+
+    @Override
+    public String getValue(InternationalPhoneNumber domain) {
+        return domain.getValue();
     }
 
     @Override
@@ -42,43 +46,8 @@ public class _InternationalPhoneNumber implements
         return InternationalPhoneNumber.class;
     }
 
-    @Override
-    public Wrapper getWrapper(InternationalPhoneNumber domain) {
-        return new Wrapper(domain);
-    }
-
     public static _InternationalPhoneNumber getSingletonInternal() {
         return singleton;
-    }
-
-    static class Wrapper extends StringWrapper implements
-            DomainWrapper<String, InternationalPhoneNumber> {
-
-        private InternationalPhoneNumber domain;
-
-        public Wrapper(InternationalPhoneNumber domain) {
-            if (domain == null) {
-                this.domain = new InternationalPhoneNumber(null);
-            } else {
-                this.domain = domain;
-            }
-        }
-
-        @Override
-        protected String doGet() {
-            return domain.getValue();
-        }
-
-        @Override
-        protected void doSet(String value) {
-            domain = new InternationalPhoneNumber(value);
-        }
-
-        @Override
-        public InternationalPhoneNumber getDomain() {
-            return domain;
-        }
-
     }
 
 }
