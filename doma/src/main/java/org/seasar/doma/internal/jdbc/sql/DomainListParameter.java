@@ -15,11 +15,11 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
 
-import org.seasar.doma.jdbc.domain.DomainState;
+import org.seasar.doma.internal.wrapper.Holder;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.wrapper.Wrapper;
 
@@ -52,8 +52,8 @@ public class DomainListParameter<V, D> implements ListParameter<Wrapper<V>, D> {
         return domains;
     }
 
-    public DomainState<V, D> getDomainState() {
-        return domainType.createState();
+    public Holder<V, D> getDomainHolder() {
+        return domainType.createDomainHolder();
     }
 
     @Override

@@ -15,18 +15,18 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.seasar.doma.internal.jdbc.query.SelectQuery;
+import org.seasar.doma.internal.wrapper.Holder;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
 import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.PostIterationCallback;
 import org.seasar.doma.jdbc.Sql;
-import org.seasar.doma.jdbc.domain.DomainState;
 import org.seasar.doma.jdbc.domain.DomainType;
 
 /**
@@ -54,9 +54,9 @@ public class DomainIterationHandler<R, D> implements ResultSetHandler<R> {
         R result = null;
         while (resultSet.next()) {
             existent = true;
-            DomainState<?, D> state = domainType.createState();
-            fetcher.fetch(resultSet, state.getWrapper());
-            result = iterationCallback.iterate(state.get(), iterationContext);
+            Holder<?, D> holder = domainType.createDomainHolder();
+            fetcher.fetch(resultSet, holder.getWrapper());
+            result = iterationCallback.iterate(holder.get(), iterationContext);
             if (iterationContext.isExited()) {
                 return result;
             }

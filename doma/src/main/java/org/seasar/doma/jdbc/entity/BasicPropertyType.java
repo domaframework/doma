@@ -23,9 +23,8 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.FieldUtil;
-import org.seasar.doma.jdbc.domain.DomainState;
+import org.seasar.doma.internal.wrapper.Holder;
 import org.seasar.doma.jdbc.domain.DomainType;
-import org.seasar.doma.jdbc.domain.OptionalDomainState;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
@@ -144,11 +143,24 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
             return () -> new ParentPropertyState();
         }
         if (domainType != null) {
-            return isOptional ? () -> new OptionalDomainPropertyState()
-                    : () -> new DomainPropertyState();
+            if (isOptional) {
+                return () -> new BasicPropertyState<Optional<D>>(
+                        () -> domainType.createOptionalDomainHolder());
+            } else {
+                return () -> new BasicPropertyState<D>(
+                        () -> domainType.createDomainHolder());
+            }
         }
-        return isOptional ? () -> new OptionalValuePropertyState()
-                : () -> new ValuePropertyState();
+        if (isOptional) {
+            return () -> new BasicPropertyState<Optional<V>>(
+                    () -> new org.seasar.doma.internal.wrapper.OptionalValueHolder<>(
+                            wrapperSupplier.get()));
+        } else {
+            return () -> new BasicPropertyState<V>(
+                    () -> new org.seasar.doma.internal.wrapper.ValueHolder<>(
+                            wrapperSupplier.get(), field.getClass()
+                                    .isPrimitive()));
+        }
     }
 
     private Field getField() {
@@ -232,13 +244,13 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
         }
 
         @Override
-        public ParentPropertyState load(E entity) {
+        public PropertyState<E, V> load(E entity) {
             delegate.load(entity);
             return this;
         }
 
         @Override
-        public ParentPropertyState save(E entity) {
+        public PropertyState<E, V> save(E entity) {
             delegate.save(entity);
             return this;
         }
@@ -247,31 +259,28 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
         public Wrapper<V> getWrapper() {
             return delegate.getWrapper();
         }
-
     }
 
     /**
      * @author nakamura-to
      */
-    protected class DomainPropertyState implements PropertyState<E, V> {
+    protected class BasicPropertyState<C> implements PropertyState<E, V> {
 
-        protected final DomainState<V, D> accessor;
+        protected final Holder<V, C> holder;
 
-        protected DomainPropertyState() {
-            this.accessor = domainType.createState();
+        protected BasicPropertyState(Supplier<Holder<V, C>> holderSupplier) {
+            this.holder = holderSupplier.get();
         }
 
         @Override
         public Object get() {
-            return accessor.get();
+            return holder.get();
         }
 
         @Override
-        public DomainPropertyState load(E entity) {
+        public PropertyState<E, V> load(E entity) {
             try {
-                Object value = FieldUtil.get(field, entity);
-                D domain = domainType.getDomainClass().cast(value);
-                accessor.set(domain);
+                holder.set(FieldUtil.get(field, entity));
             } catch (WrapException wrapException) {
                 throw new EntityPropertyAccessException(
                         wrapException.getCause(), entityClass.getName(), name);
@@ -280,9 +289,9 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
         }
 
         @Override
-        public DomainPropertyState save(E entity) {
+        public PropertyState<E, V> save(E entity) {
             try {
-                FieldUtil.set(field, entity, accessor.get());
+                FieldUtil.set(field, entity, holder.get());
             } catch (WrapException wrapException) {
                 throw new EntityPropertyAccessException(
                         wrapException.getCause(), entityClass.getName(), name);
@@ -292,163 +301,8 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
 
         @Override
         public Wrapper<V> getWrapper() {
-            return accessor.getWrapper();
+            return holder.getWrapper();
         }
     }
 
-    /**
-     * @author nakamura-to
-     */
-    protected class OptionalDomainPropertyState implements PropertyState<E, V> {
-
-        protected final OptionalDomainState<V, D> accessor;
-
-        protected OptionalDomainPropertyState() {
-            this.accessor = domainType.createOptionalState();
-        }
-
-        @Override
-        public Object get() {
-            return accessor.get();
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public OptionalDomainPropertyState load(E entity) {
-            try {
-                Optional<D> optional = (Optional<D>) FieldUtil.get(field,
-                        entity);
-                accessor.set(optional);
-            } catch (WrapException wrapException) {
-                throw new EntityPropertyAccessException(
-                        wrapException.getCause(), entityClass.getName(), name);
-            }
-            return this;
-        }
-
-        @Override
-        public OptionalDomainPropertyState save(E entity) {
-            try {
-                FieldUtil.set(field, entity, accessor.get());
-            } catch (WrapException wrapException) {
-                throw new EntityPropertyAccessException(
-                        wrapException.getCause(), entityClass.getName(), name);
-            }
-            return this;
-        }
-
-        @Override
-        public Wrapper<V> getWrapper() {
-            return accessor.getWrapper();
-        }
-    }
-
-    /**
-     * @author nakamura-to
-     */
-    protected class ValuePropertyState implements PropertyState<E, V> {
-
-        protected final Wrapper<V> wrapper;
-
-        protected ValuePropertyState() {
-            this.wrapper = wrapperSupplier.get();
-        }
-
-        @Override
-        public Object get() {
-            return getWrappedValue(wrapper);
-        }
-
-        @Override
-        public ValuePropertyState load(E entity) {
-            try {
-                Object value = FieldUtil.get(field, entity);
-                wrapper.set(valueClass.cast(value));
-            } catch (WrapException wrapException) {
-                throw new EntityPropertyAccessException(
-                        wrapException.getCause(), entityClass.getName(), name);
-            }
-            return this;
-        }
-
-        @Override
-        public ValuePropertyState save(E entity) {
-            V value = getWrappedValue(wrapper);
-            try {
-                FieldUtil.set(field, entity, value);
-            } catch (WrapException wrapException) {
-                throw new EntityPropertyAccessException(
-                        wrapException.getCause(), entityClass.getName(), name);
-            }
-            return this;
-        }
-
-        @Override
-        public Wrapper<V> getWrapper() {
-            return wrapper;
-        }
-
-        protected V getWrappedValue(Wrapper<V> wrapper) {
-            V value = wrapper.get();
-            if (field.getType().isPrimitive() && value == null) {
-                return wrapper.getDefault();
-            }
-            return value;
-        }
-    }
-
-    /**
-     * @author nakamura-to
-     */
-    protected class OptionalValuePropertyState implements PropertyState<E, V> {
-
-        protected final Wrapper<V> wrapper;
-
-        protected OptionalValuePropertyState() {
-            this.wrapper = wrapperSupplier.get();
-        }
-
-        @Override
-        public Object get() {
-            V value = wrapper.get();
-            return Optional.ofNullable(value);
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public OptionalValuePropertyState load(E entity) {
-            try {
-                Optional<V> optional = (Optional<V>) FieldUtil.get(field,
-                        entity);
-                if (optional.isPresent()) {
-                    V value = optional.get();
-                    wrapper.set(value);
-                } else {
-                    wrapper.set(null);
-                }
-            } catch (WrapException wrapException) {
-                throw new EntityPropertyAccessException(
-                        wrapException.getCause(), entityClass.getName(), name);
-            }
-            return this;
-        }
-
-        @Override
-        public OptionalValuePropertyState save(E entity) {
-            V value = wrapper.get();
-            Optional<V> optional = Optional.ofNullable(value);
-            try {
-                FieldUtil.set(field, entity, optional);
-            } catch (WrapException wrapException) {
-                throw new EntityPropertyAccessException(
-                        wrapException.getCause(), entityClass.getName(), name);
-            }
-            return this;
-        }
-
-        @Override
-        public Wrapper<V> getWrapper() {
-            return wrapper;
-        }
-    }
 }

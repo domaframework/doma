@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,9 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.seasar.doma.internal.jdbc.query.SelectQuery;
+import org.seasar.doma.internal.wrapper.Holder;
 import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.Sql;
-import org.seasar.doma.jdbc.domain.DomainState;
 import org.seasar.doma.jdbc.domain.DomainType;
 
 /**
@@ -47,9 +47,9 @@ public class DomainResultListHandler<D> implements ResultSetHandler<List<D>> {
         BasicFetcher fetcher = new BasicFetcher(query);
         List<D> domains = new ArrayList<D>();
         while (resultSet.next()) {
-            DomainState<?, D> state = domainType.createState();
-            fetcher.fetch(resultSet, state.getWrapper());
-            domains.add(state.get());
+            Holder<?, D> holder = domainType.createDomainHolder();
+            fetcher.fetch(resultSet, holder.getWrapper());
+            domains.add(holder.get());
         }
         if (query.isResultEnsured() && domains.isEmpty()) {
             Sql<?> sql = query.getSql();

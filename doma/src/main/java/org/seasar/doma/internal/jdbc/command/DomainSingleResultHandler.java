@@ -15,16 +15,16 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.seasar.doma.internal.jdbc.query.SelectQuery;
+import org.seasar.doma.internal.wrapper.Holder;
 import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.Sql;
-import org.seasar.doma.jdbc.domain.DomainState;
 import org.seasar.doma.jdbc.domain.DomainType;
 
 /**
@@ -44,14 +44,14 @@ public class DomainSingleResultHandler<D> implements ResultSetHandler<D> {
     public D handle(ResultSet resultSet, SelectQuery query) throws SQLException {
         BasicFetcher fetcher = new BasicFetcher(query);
         if (resultSet.next()) {
-            DomainState<?, D> state = domainType.createState();
-            fetcher.fetch(resultSet, state.getWrapper());
+            Holder<?, D> holder = domainType.createDomainHolder();
+            fetcher.fetch(resultSet, holder.getWrapper());
             if (resultSet.next()) {
                 Sql<?> sql = query.getSql();
                 throw new NonUniqueResultException(query.getConfig()
                         .getExceptionSqlLogType(), sql);
             }
-            return state.get();
+            return holder.get();
         } else if (query.isResultEnsured()) {
             Sql<?> sql = query.getSql();
             throw new NoResultException(query.getConfig()

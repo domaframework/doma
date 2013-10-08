@@ -15,6 +15,10 @@
  */
 package org.seasar.doma.jdbc.domain;
 
+import java.util.Optional;
+
+import org.seasar.doma.internal.wrapper.Holder;
+
 /**
  * ドメインのメタタイプです。
  * 
@@ -49,8 +53,8 @@ public interface DomainType<V, D> {
      */
     Class<D> getDomainClass();
 
-    DomainState<V, D> createState();
+    Holder<V, D> createDomainHolder();
 
-    OptionalDomainState<V, D> createOptionalState();
+    Holder<V, Optional<D>> createOptionalDomainHolder();
 
 }

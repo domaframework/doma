@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import org.seasar.doma.internal.util.AssertionUtil;
+import org.seasar.doma.internal.wrapper.Holder;
 import org.seasar.doma.wrapper.Wrapper;
 
 public abstract class AbstractDomainType<V, D> implements DomainType<V, D> {
@@ -16,56 +17,63 @@ public abstract class AbstractDomainType<V, D> implements DomainType<V, D> {
     }
 
     @Override
-    public DomainState<V, D> createState() {
-        return new DomainState<V, D>() {
-
-            Wrapper<V> wrapper = wrapperSupplier.get();
-
-            @Override
-            public D get() {
-                return newDomain(wrapper.get());
-            }
-
-            @Override
-            public void set(D domain) {
-                V value = getValue(domain);
-                wrapper.set(value);
-            }
-
-            @Override
-            public Wrapper<V> getWrapper() {
-                return wrapper;
-            }
-        };
+    public DomainHolder createDomainHolder() {
+        return new DomainHolder();
     }
 
     @Override
-    public OptionalDomainState<V, D> createOptionalState() {
-        return new OptionalDomainState<V, D>() {
-
-            Wrapper<V> wrapper = wrapperSupplier.get();
-
-            @Override
-            public Optional<D> get() {
-                V value = wrapper.get();
-                return value == null ? Optional.empty() : Optional
-                        .of(newDomain(value));
-            }
-
-            @Override
-            public void set(Optional<D> domain) {
-                if (domain.isPresent()) {
-                    wrapper.set(getValue(domain.get()));
-                } else {
-                    wrapper.set(null);
-                }
-            }
-
-            @Override
-            public Wrapper<V> getWrapper() {
-                return wrapper;
-            }
-
-        };
+    public OptionalDomainHolder createOptionalDomainHolder() {
+        return new OptionalDomainHolder();
     }
+
+    protected class DomainHolder implements Holder<V, D> {
+
+        Wrapper<V> wrapper = wrapperSupplier.get();
+
+        @Override
+        public D get() {
+            return newDomain(wrapper.get());
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public void set(Object domain) {
+            V value = getValue((D) domain);
+            wrapper.set(value);
+        }
+
+        @Override
+        public Wrapper<V> getWrapper() {
+            return wrapper;
+        }
+    }
+
+    protected class OptionalDomainHolder implements Holder<V, Optional<D>> {
+
+        Wrapper<V> wrapper = wrapperSupplier.get();
+
+        @Override
+        public Optional<D> get() {
+            V value = wrapper.get();
+            return value == null ? Optional.empty() : Optional
+                    .of(newDomain(value));
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public void set(Object domain) {
+            Optional<D> optional = (Optional<D>) domain;
+            if (optional.isPresent()) {
+                wrapper.set(getValue(optional.get()));
+            } else {
+                wrapper.set(null);
+            }
+        }
+
+        @Override
+        public Wrapper<V> getWrapper() {
+            return wrapper;
+        }
+    }
+
 }

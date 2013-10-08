@@ -15,7 +15,8 @@
  */
 package org.seasar.doma.internal.wrapper;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -30,7 +31,6 @@ import java.sql.Timestamp;
 import org.seasar.doma.Domain;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.jdbc.ClassHelper;
-import org.seasar.doma.jdbc.domain.DomainState;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.jdbc.domain.DomainTypeFactory;
 import org.seasar.doma.message.Message;
@@ -216,10 +216,9 @@ public final class Wrappers {
         if (domainType == null) {
             return null;
         }
-        // TODO
-        DomainState<V, D> domainState = domainType.createState();
-        domainState.set((D) value);
-        return domainState.getWrapper();
+        Holder<V, D> wrappedValue = domainType.createDomainHolder();
+        wrappedValue.set((D) value);
+        return wrappedValue.getWrapper();
     }
 
 }

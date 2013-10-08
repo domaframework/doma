@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
@@ -46,10 +46,10 @@ import org.seasar.doma.internal.jdbc.sql.MapListParameter;
 import org.seasar.doma.internal.jdbc.sql.MapListResultParameter;
 import org.seasar.doma.internal.jdbc.sql.OutParameter;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
+import org.seasar.doma.internal.wrapper.Holder;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.domain.DomainState;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.message.Message;
@@ -349,7 +349,7 @@ public class CallableSqlParameterFetcher implements
 
             @Override
             public void fetch(ResultSet resultSet) throws SQLException {
-                DomainState<V, D> state = parameter.getDomainState();
+                Holder<V, D> state = parameter.getDomainHolder();
                 fetcher.fetch(resultSet, state.getWrapper());
                 parameter.add(state.get());
             }

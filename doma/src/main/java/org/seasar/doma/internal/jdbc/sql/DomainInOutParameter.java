@@ -15,10 +15,10 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import org.seasar.doma.internal.wrapper.Holder;
 import org.seasar.doma.jdbc.Reference;
-import org.seasar.doma.jdbc.domain.DomainState;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.wrapper.Wrapper;
 
@@ -32,15 +32,15 @@ public class DomainInOutParameter<V, D> implements InParameter, OutParameter<V> 
 
     protected final Reference<D> reference;
 
-    protected final DomainState<V, D> state;
+    protected final Holder<V, D> holder;
 
     public DomainInOutParameter(DomainType<V, D> domainType,
             Reference<D> reference) {
         assertNotNull(domainType, reference);
         this.domainType = domainType;
         this.reference = reference;
-        this.state = domainType.createState();
-        state.set(reference.get());
+        this.holder = domainType.createDomainHolder();
+        holder.set(reference.get());
     }
 
     @Override
@@ -50,12 +50,12 @@ public class DomainInOutParameter<V, D> implements InParameter, OutParameter<V> 
 
     @Override
     public Wrapper<V> getWrapper() {
-        return state.getWrapper();
+        return holder.getWrapper();
     }
 
     @Override
     public void update() {
-        reference.set(state.get());
+        reference.set(holder.get());
     }
 
     @Override

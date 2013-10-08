@@ -15,9 +15,9 @@
  */
 package org.seasar.doma.internal.jdbc.sql;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import org.seasar.doma.jdbc.domain.DomainState;
+import org.seasar.doma.internal.wrapper.Holder;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.wrapper.Wrapper;
 
@@ -31,14 +31,14 @@ public class DomainInParameter<V, D> implements InParameter {
 
     protected final D domain;
 
-    protected final DomainState<V, D> state;
+    protected final Holder<V, D> holder;
 
     public DomainInParameter(DomainType<V, D> domainType, D domain) {
         assertNotNull(domainType, domain);
         this.domainType = domainType;
         this.domain = domain;
-        this.state = domainType.createState();
-        state.set(domain);
+        this.holder = domainType.createDomainHolder();
+        holder.set(domain);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class DomainInParameter<V, D> implements InParameter {
 
     @Override
     public Wrapper<?> getWrapper() {
-        return state.getWrapper();
+        return holder.getWrapper();
     }
 
     @Override
