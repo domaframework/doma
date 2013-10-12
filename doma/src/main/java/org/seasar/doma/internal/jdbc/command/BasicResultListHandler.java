@@ -17,44 +17,29 @@ package org.seasar.doma.internal.jdbc.command;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.function.Supplier;
 
 import org.seasar.doma.internal.jdbc.query.SelectQuery;
-import org.seasar.doma.jdbc.NoResultException;
-import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class BasicResultListHandler<V> implements ResultSetHandler<List<V>> {
+public class BasicResultListHandler<BASIC> extends AbstractResultListHandler<BASIC> {
 
-    protected final Wrapper<V> wrapper;
+    protected final Supplier<Wrapper<BASIC>> supplier;
 
-    public BasicResultListHandler(Wrapper<V> wrapper) {
-        assertNotNull(wrapper);
-        this.wrapper = wrapper;
+    public BasicResultListHandler(Supplier<Wrapper<BASIC>> supplier) {
+        assertNotNull(supplier);
+        this.supplier = supplier;
     }
 
     @Override
-    public List<V> handle(ResultSet resultSet, SelectQuery query)
-            throws SQLException {
-        List<V> results = new ArrayList<V>();
-        BasicFetcher fetcher = new BasicFetcher(query);
-        while (resultSet.next()) {
-            fetcher.fetch(resultSet, wrapper);
-            results.add(wrapper.get());
-        }
-        if (query.isResultEnsured() && results.isEmpty()) {
-            Sql<?> sql = query.getSql();
-            throw new NoResultException(query.getConfig()
-                    .getExceptionSqlLogType(), sql);
-        }
-        return results;
+    protected ResultProvider<BASIC> createResultProvider(SelectQuery query) {
+        return new BasicResultProvider<BASIC, BASIC>(
+                () -> new org.seasar.doma.internal.wrapper.BasicHolder<>(
+                        supplier, false), query);
     }
 
 }

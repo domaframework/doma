@@ -28,7 +28,6 @@ import org.seasar.doma.internal.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.NonSingleColumnException;
-import org.seasar.doma.wrapper.StringWrapper;
 
 /**
  * @author taedium
@@ -54,7 +53,7 @@ public class BasicResultListHandlerTest extends TestCase {
         query.prepare();
 
         BasicResultListHandler<String> handler = new BasicResultListHandler<String>(
-                new StringWrapper());
+                () -> new org.seasar.doma.wrapper.StringWrapper());
         List<String> results = handler.handle(resultSet, query);
         assertEquals(2, results.size());
         assertEquals("aaa", results.get(0));
@@ -78,7 +77,7 @@ public class BasicResultListHandlerTest extends TestCase {
         query.prepare();
 
         BasicResultListHandler<String> handler = new BasicResultListHandler<String>(
-                new StringWrapper());
+                () -> new org.seasar.doma.wrapper.StringWrapper());
         try {
             handler.handle(resultSet, query);
             fail();
@@ -101,7 +100,7 @@ public class BasicResultListHandlerTest extends TestCase {
         query.prepare();
 
         BasicResultListHandler<String> handler = new BasicResultListHandler<String>(
-                new StringWrapper());
+                () -> new org.seasar.doma.wrapper.StringWrapper());
         try {
             handler.handle(resultSet, query);
             fail();

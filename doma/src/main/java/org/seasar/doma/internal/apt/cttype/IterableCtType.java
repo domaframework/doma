@@ -30,14 +30,14 @@ public class IterableCtType extends AbstractCtType {
 
     protected TypeMirror elementTypeMirror;
 
-    protected CtType elementType;
+    protected CtType elementCtType;
 
     public IterableCtType(TypeMirror type, ProcessingEnvironment env) {
         super(type, env);
     }
 
-    public CtType getElementType() {
-        return elementType;
+    public CtType getElementCtType() {
+        return elementCtType;
     }
 
     public boolean isRawType() {
@@ -70,20 +70,26 @@ public class IterableCtType extends AbstractCtType {
         List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
         if (typeArgs.size() > 0) {
             iterableCtType.elementTypeMirror = typeArgs.get(0);
-            iterableCtType.elementType = EntityCtType.newInstance(
+            iterableCtType.elementCtType = EntityCtType.newInstance(
                     iterableCtType.elementTypeMirror, env);
-            if (iterableCtType.elementType == null) {
-                iterableCtType.elementType = DomainCtType.newInstance(
+            if (iterableCtType.elementCtType == null) {
+                iterableCtType.elementCtType = OptionalCtType.newInstance(
                         iterableCtType.elementTypeMirror, env);
-                if (iterableCtType.elementType == null) {
-                    iterableCtType.elementType = BasicCtType.newInstance(
+                if (iterableCtType.elementCtType == null) {
+                    iterableCtType.elementCtType = DomainCtType.newInstance(
                             iterableCtType.elementTypeMirror, env);
-                    if (iterableCtType.elementType == null) {
-                        iterableCtType.elementType = MapCtType.newInstance(
+                    if (iterableCtType.elementCtType == null) {
+                        iterableCtType.elementCtType = BasicCtType.newInstance(
                                 iterableCtType.elementTypeMirror, env);
-                        if (iterableCtType.elementType == null) {
-                            iterableCtType.elementType = AnyCtType.newInstance(
+                        if (iterableCtType.elementCtType == null) {
+                            iterableCtType.elementCtType = MapCtType.newInstance(
                                     iterableCtType.elementTypeMirror, env);
+                            if (iterableCtType.elementCtType == null) {
+                                iterableCtType.elementCtType = AnyCtType
+                                        .newInstance(
+                                                iterableCtType.elementTypeMirror,
+                                                env);
+                            }
                         }
                     }
                 }

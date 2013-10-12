@@ -27,7 +27,6 @@ import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.NonSingleColumnException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
-import org.seasar.doma.wrapper.StringWrapper;
 
 /**
  * @author taedium
@@ -52,7 +51,7 @@ public class BasicSingleResultHandlerTest extends TestCase {
         query.prepare();
 
         BasicSingleResultHandler<String> handler = new BasicSingleResultHandler<String>(
-                new StringWrapper(), false);
+                () -> new org.seasar.doma.wrapper.StringWrapper(), false);
         String result = handler.handle(resultSet, query);
         assertEquals("aaa", result);
     }
@@ -73,7 +72,7 @@ public class BasicSingleResultHandlerTest extends TestCase {
         query.prepare();
 
         BasicSingleResultHandler<String> handler = new BasicSingleResultHandler<String>(
-                new StringWrapper(), false);
+                () -> new org.seasar.doma.wrapper.StringWrapper(), false);
         try {
             handler.handle(resultSet, query);
             fail();
@@ -97,7 +96,7 @@ public class BasicSingleResultHandlerTest extends TestCase {
         query.prepare();
 
         BasicSingleResultHandler<String> handler = new BasicSingleResultHandler<String>(
-                new StringWrapper(), false);
+                () -> new org.seasar.doma.wrapper.StringWrapper(), false);
         try {
             handler.handle(resultSet, query);
             fail();
@@ -118,7 +117,7 @@ public class BasicSingleResultHandlerTest extends TestCase {
         query.prepare();
 
         BasicSingleResultHandler<String> handler = new BasicSingleResultHandler<String>(
-                new StringWrapper(), false);
+                () -> new org.seasar.doma.wrapper.StringWrapper(), false);
         try {
             handler.handle(resultSet, query);
             fail();

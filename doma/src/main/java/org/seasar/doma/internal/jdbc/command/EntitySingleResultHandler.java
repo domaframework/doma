@@ -17,46 +17,26 @@ package org.seasar.doma.internal.jdbc.command;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import org.seasar.doma.internal.jdbc.query.SelectQuery;
-import org.seasar.doma.jdbc.NoResultException;
-import org.seasar.doma.jdbc.NonUniqueResultException;
-import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.entity.EntityType;
 
 /**
  * @author taedium
  * 
  */
-public class EntitySingleResultHandler<E> implements ResultSetHandler<E> {
+public class EntitySingleResultHandler<ENTITY> extends
+        AbstractSingleResultHandler<ENTITY> {
 
-    protected final EntityType<E> entityType;
+    protected final EntityType<ENTITY> entityType;
 
-    public EntitySingleResultHandler(EntityType<E> entityType) {
+    public EntitySingleResultHandler(EntityType<ENTITY> entityType) {
         assertNotNull(entityType);
         this.entityType = entityType;
     }
 
     @Override
-    public E handle(ResultSet resultSet, SelectQuery query) throws SQLException {
-        EntityBuilder<E> builder = new EntityBuilder<E>(query, entityType,
-                query.isResultMappingEnsured());
-        if (resultSet.next()) {
-            E entity = builder.build(resultSet);
-            if (resultSet.next()) {
-                Sql<?> sql = query.getSql();
-                throw new NonUniqueResultException(query.getConfig()
-                        .getExceptionSqlLogType(), sql);
-            }
-            return entity;
-        } else if (query.isResultEnsured()) {
-            Sql<?> sql = query.getSql();
-            throw new NoResultException(query.getConfig()
-                    .getExceptionSqlLogType(), sql);
-        }
-        return null;
+    protected ResultProvider<ENTITY> createResultProvider(SelectQuery query) {
+        return new EntityResultProvider<>(entityType, query, entity -> entity);
     }
 
 }

@@ -17,49 +17,29 @@ package org.seasar.doma.internal.jdbc.command;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.jdbc.query.SelectQuery;
-import org.seasar.doma.jdbc.NoResultException;
-import org.seasar.doma.jdbc.Sql;
 
 /**
  * @author taedium
  * 
  */
-public class MapResultListHandler implements
-        ResultSetHandler<List<Map<String, Object>>> {
+public class MapResultListHandler extends
+        AbstractResultListHandler<Map<String, Object>> {
 
-    private final MapKeyNamingType mapKeyNamingType;
+    private final MapKeyNamingType keyNamingType;
 
-    public MapResultListHandler(MapKeyNamingType mapKeyNamingType) {
-        assertNotNull(mapKeyNamingType);
-        this.mapKeyNamingType = mapKeyNamingType;
+    public MapResultListHandler(MapKeyNamingType keyNamingType) {
+        assertNotNull(keyNamingType);
+        this.keyNamingType = keyNamingType;
     }
 
     @Override
-    public List<Map<String, Object>> handle(ResultSet resultSet,
-            SelectQuery query) throws SQLException {
-        assertNotNull(resultSet, query);
-        MapFetcher fetcher = new MapFetcher(query, mapKeyNamingType);
-        List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
-        while (resultSet.next()) {
-            Map<String, Object> map = new LinkedHashMap<String, Object>();
-            fetcher.fetch(resultSet, map);
-            mapList.add(map);
-        }
-        if (query.isResultEnsured() && mapList.isEmpty()) {
-            Sql<?> sql = query.getSql();
-            throw new NoResultException(query.getConfig()
-                    .getExceptionSqlLogType(), sql);
-        }
-        return mapList;
+    protected ResultProvider<Map<String, Object>> createResultProvider(
+            SelectQuery query) {
+        return new MapResultProvider<>(query, keyNamingType, m -> m);
     }
 
 }

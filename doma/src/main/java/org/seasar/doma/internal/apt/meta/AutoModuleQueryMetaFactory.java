@@ -108,7 +108,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
 
                 }, null);
         return iterableCtType
-                .getElementType()
+                .getElementCtType()
                 .accept(new SimpleCtTypeVisitor<CallableSqlParameterMeta, Void, RuntimeException>() {
 
                     @Override

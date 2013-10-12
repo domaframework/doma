@@ -17,62 +17,32 @@ package org.seasar.doma.internal.jdbc.command;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.internal.jdbc.query.SelectQuery;
 import org.seasar.doma.jdbc.IterationCallback;
-import org.seasar.doma.jdbc.IterationContext;
-import org.seasar.doma.jdbc.NoResultException;
-import org.seasar.doma.jdbc.PostIterationCallback;
-import org.seasar.doma.jdbc.Sql;
 
 /**
  * @author taedium
  * 
  */
-public class MapIterationHandler<R> implements ResultSetHandler<R> {
+public class MapIterationHandler<RESULT> extends
+        AbstractIterationHandler<RESULT, Map<String, Object>> {
 
-    private final MapKeyNamingType mapKeyNamingType;
+    private final MapKeyNamingType keyNamingType;
 
-    protected final IterationCallback<R, Map<String, Object>> iterationCallback;
-
-    public MapIterationHandler(MapKeyNamingType mapKeyNamingType,
-            IterationCallback<R, Map<String, Object>> iterationCallback) {
-        assertNotNull(mapKeyNamingType, iterationCallback);
-        this.mapKeyNamingType = mapKeyNamingType;
-        this.iterationCallback = iterationCallback;
+    public MapIterationHandler(MapKeyNamingType keyNamingType,
+            IterationCallback<RESULT, Map<String, Object>> iterationCallback) {
+        super(iterationCallback);
+        assertNotNull(keyNamingType);
+        this.keyNamingType = keyNamingType;
     }
 
     @Override
-    public R handle(ResultSet resultSet, SelectQuery query) throws SQLException {
-        assertNotNull(resultSet, query);
-        MapFetcher fetcher = new MapFetcher(query, mapKeyNamingType);
-        IterationContext iterationContext = new IterationContext();
-        boolean existent = false;
-        R result = null;
-        while (resultSet.next()) {
-            existent = true;
-            Map<String, Object> map = new LinkedHashMap<String, Object>();
-            fetcher.fetch(resultSet, map);
-            result = iterationCallback.iterate(map, iterationContext);
-            if (iterationContext.isExited()) {
-                return result;
-            }
-        }
-        if (query.isResultEnsured() && !existent) {
-            Sql<?> sql = query.getSql();
-            throw new NoResultException(query.getConfig()
-                    .getExceptionSqlLogType(), sql);
-        }
-        if (iterationCallback instanceof PostIterationCallback) {
-            result = ((PostIterationCallback<R, Map<String, Object>>) iterationCallback)
-                    .postIterate(result, iterationContext);
-        }
-        return result;
+    protected ResultProvider<Map<String, Object>> createResultProvider(
+            SelectQuery query) {
+        return new MapResultProvider<>(query, keyNamingType, m -> m);
     }
 
 }

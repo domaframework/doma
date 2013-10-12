@@ -17,58 +17,32 @@ package org.seasar.doma.internal.jdbc.command;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.function.Supplier;
 
 import org.seasar.doma.internal.jdbc.query.SelectQuery;
 import org.seasar.doma.jdbc.IterationCallback;
-import org.seasar.doma.jdbc.IterationContext;
-import org.seasar.doma.jdbc.NoResultException;
-import org.seasar.doma.jdbc.PostIterationCallback;
-import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class BasicIterationHandler<R, V> implements ResultSetHandler<R> {
+public class BasicIterationHandler<RESULT, BASIC> extends AbstractIterationHandler<RESULT, BASIC> {
 
-    protected final Wrapper<V> wrapper;
+    protected final Supplier<Wrapper<BASIC>> supplier;
 
-    protected final IterationCallback<R, V> iterationCallback;
-
-    public BasicIterationHandler(Wrapper<V> wrapper,
-            IterationCallback<R, V> iterationCallback) {
-        assertNotNull(wrapper);
-        this.wrapper = wrapper;
-        this.iterationCallback = iterationCallback;
+    public BasicIterationHandler(Supplier<Wrapper<BASIC>> supplier,
+            IterationCallback<RESULT, BASIC> iterationCallback) {
+        super(iterationCallback);
+        assertNotNull(supplier);
+        this.supplier = supplier;
     }
 
     @Override
-    public R handle(ResultSet resultSet, SelectQuery query) throws SQLException {
-        BasicFetcher fetcher = new BasicFetcher(query);
-        IterationContext iterationContext = new IterationContext();
-        boolean existent = false;
-        R result = null;
-        while (resultSet.next()) {
-            existent = true;
-            fetcher.fetch(resultSet, wrapper);
-            result = iterationCallback.iterate(wrapper.get(), iterationContext);
-            if (iterationContext.isExited()) {
-                return result;
-            }
-        }
-        if (query.isResultEnsured() && !existent) {
-            Sql<?> sql = query.getSql();
-            throw new NoResultException(query.getConfig()
-                    .getExceptionSqlLogType(), sql);
-        }
-        if (iterationCallback instanceof PostIterationCallback) {
-            result = ((PostIterationCallback<R, V>) iterationCallback)
-                    .postIterate(result, iterationContext);
-        }
-        return result;
+    protected ResultProvider<BASIC> createResultProvider(SelectQuery query) {
+        return new BasicResultProvider<BASIC, BASIC>(
+                () -> new org.seasar.doma.internal.wrapper.BasicHolder<>(
+                        supplier, false), query);
     }
 
 }

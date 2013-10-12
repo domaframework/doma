@@ -153,13 +153,12 @@ public class BasicPropertyType<PE, E extends PE, P, V, D> implements
         }
         if (isOptional) {
             return () -> new BasicPropertyState<Optional<V>>(
-                    () -> new org.seasar.doma.internal.wrapper.OptionalValueHolder<>(
-                            wrapperSupplier.get()));
+                    () -> new org.seasar.doma.internal.wrapper.OptionalBasicHolder<>(
+                            wrapperSupplier));
         } else {
             return () -> new BasicPropertyState<V>(
-                    () -> new org.seasar.doma.internal.wrapper.ValueHolder<>(
-                            wrapperSupplier.get(), field.getClass()
-                                    .isPrimitive()));
+                    () -> new org.seasar.doma.internal.wrapper.BasicHolder<>(
+                            wrapperSupplier, field.getClass().isPrimitive()));
         }
     }
 

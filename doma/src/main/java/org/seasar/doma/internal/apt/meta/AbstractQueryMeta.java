@@ -142,7 +142,7 @@ public abstract class AbstractQueryMeta implements QueryMeta {
                     @Override
                     public Void visitIterableCtType(IterableCtType ctType,
                             Void p) throws RuntimeException {
-                        return ctType.getElementType().accept(this, p);
+                        return ctType.getElementCtType().accept(this, p);
                     }
 
                     @Override

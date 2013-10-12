@@ -15,48 +15,29 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.internal.jdbc.query.SelectQuery;
-import org.seasar.doma.internal.wrapper.Holder;
-import org.seasar.doma.jdbc.NoResultException;
-import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.domain.DomainType;
 
 /**
  * @author taedium
  * 
  */
-public class DomainResultListHandler<D> implements ResultSetHandler<List<D>> {
+public class DomainResultListHandler<DOMAIN> extends
+        AbstractResultListHandler<DOMAIN> {
 
-    protected final DomainType<?, D> domainType;
+    protected final DomainType<?, DOMAIN> domainType;
 
-    public DomainResultListHandler(DomainType<?, D> domainType) {
+    public DomainResultListHandler(DomainType<?, DOMAIN> domainType) {
         assertNotNull(domainType);
         this.domainType = domainType;
     }
 
     @Override
-    public List<D> handle(ResultSet resultSet, SelectQuery query)
-            throws SQLException {
-        BasicFetcher fetcher = new BasicFetcher(query);
-        List<D> domains = new ArrayList<D>();
-        while (resultSet.next()) {
-            Holder<?, D> holder = domainType.createDomainHolder();
-            fetcher.fetch(resultSet, holder.getWrapper());
-            domains.add(holder.get());
-        }
-        if (query.isResultEnsured() && domains.isEmpty()) {
-            Sql<?> sql = query.getSql();
-            throw new NoResultException(query.getConfig()
-                    .getExceptionSqlLogType(), sql);
-        }
-        return domains;
+    protected ResultProvider<DOMAIN> createResultProvider(SelectQuery query) {
+        return new DomainResultProvider<>(
+                () -> domainType.createDomainHolder(), query);
     }
 
 }

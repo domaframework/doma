@@ -35,6 +35,7 @@ import org.seasar.doma.internal.apt.cttype.DomainCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.MapCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
 import org.seasar.doma.jdbc.BatchResult;
@@ -75,26 +76,8 @@ public class QueryReturnMeta {
                 throw new AptException(Message.DOMA4113, env, methodElement,
                         typeName);
             }
-            iterableCtType.getElementType().accept(
-                    new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
-
-                        @Override
-                        public Void visitDomainCtType(final DomainCtType ctType,
-                                Void p) throws RuntimeException {
-                            if (ctType.isRawType()) {
-                                throw new AptException(Message.DOMA4210, env,
-                                        methodElement,
-                                        ctType.getQualifiedName());
-                            }
-                            if (ctType.isWildcardType()) {
-                                throw new AptException(Message.DOMA4211, env,
-                                        methodElement,
-                                        ctType.getQualifiedName());
-                            }
-                            return null;
-                        }
-
-                    }, null);
+            iterableCtType.getElementCtType().accept(
+                    new IterableElementCtTypeVisitor(methodElement), null);
             return iterableCtType;
         }
 
@@ -103,7 +86,22 @@ public class QueryReturnMeta {
             return entityCtType;
         }
 
-        final DomainCtType domainCtType = DomainCtType.newInstance(type, env);
+        OptionalCtType optionalCtType = OptionalCtType.newInstance(type, env);
+        if (optionalCtType != null) {
+            if (optionalCtType.isRawType()) {
+                throw new AptException(Message.DOMA4236, env, methodElement,
+                        optionalCtType.getQualifiedName());
+            }
+            if (optionalCtType.isWildcardType()) {
+                throw new AptException(Message.DOMA4237, env, methodElement,
+                        optionalCtType.getQualifiedName());
+            }
+            optionalCtType.getElementCtType().accept(
+                    new OptionalElementCtTypeVisitor(methodElement), null);
+            return optionalCtType;
+        }
+
+        DomainCtType domainCtType = DomainCtType.newInstance(type, env);
         if (domainCtType != null) {
             if (domainCtType.isRawType()) {
                 throw new AptException(Message.DOMA4206, env, methodElement,
@@ -203,4 +201,61 @@ public class QueryReturnMeta {
         return ctType;
     }
 
+    /**
+     * 
+     * @author nakamura-to
+     * 
+     */
+    protected class IterableElementCtTypeVisitor extends
+            SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+
+        protected final ExecutableElement methodElement;
+
+        protected IterableElementCtTypeVisitor(ExecutableElement methodElement) {
+            this.methodElement = methodElement;
+        }
+
+        @Override
+        public Void visitDomainCtType(final DomainCtType ctType, Void p)
+                throws RuntimeException {
+            if (ctType.isRawType()) {
+                throw new AptException(Message.DOMA4210, env, methodElement,
+                        ctType.getQualifiedName());
+            }
+            if (ctType.isWildcardType()) {
+                throw new AptException(Message.DOMA4211, env, methodElement,
+                        ctType.getQualifiedName());
+            }
+            return null;
+        }
+    }
+
+    /**
+     * 
+     * @author nakamura-to
+     * 
+     */
+    protected class OptionalElementCtTypeVisitor extends
+            SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+
+        protected final ExecutableElement methodElement;
+
+        protected OptionalElementCtTypeVisitor(ExecutableElement methodElement) {
+            this.methodElement = methodElement;
+        }
+
+        @Override
+        public Void visitDomainCtType(final DomainCtType ctType, Void p)
+                throws RuntimeException {
+            if (ctType.isRawType()) {
+                throw new AptException(Message.DOMA4238, env, methodElement,
+                        ctType.getQualifiedName());
+            }
+            if (ctType.isWildcardType()) {
+                throw new AptException(Message.DOMA4239, env, methodElement,
+                        ctType.getQualifiedName());
+            }
+            return null;
+        }
+    }
 }

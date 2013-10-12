@@ -87,27 +87,8 @@ public class QueryParameterMeta {
             if (iterableCtType.isWildcardType()) {
                 throw new AptException(Message.DOMA4160, env, parameterElement);
             }
-            iterableCtType.getElementType().accept(
-                    new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
-
-                        @Override
-                        public Void visitDomainCtType(
-                                final DomainCtType ctType, Void p)
-                                throws RuntimeException {
-                            if (ctType.isRawType()) {
-                                throw new AptException(Message.DOMA4212, env,
-                                        parameterElement,
-                                        ctType.getQualifiedName());
-                            }
-                            if (ctType.isWildcardType()) {
-                                throw new AptException(Message.DOMA4213, env,
-                                        parameterElement,
-                                        ctType.getQualifiedName());
-                            }
-                            return null;
-                        }
-
-                    }, null);
+            iterableCtType.getElementCtType().accept(
+                    new IterableElementCtTypeVisitor(parameterElement), null);
             return iterableCtType;
         }
 
@@ -126,6 +107,8 @@ public class QueryParameterMeta {
                 throw new AptException(Message.DOMA4237, env, parameterElement,
                         optionalCtType.getQualifiedName());
             }
+            optionalCtType.getElementCtType().accept(
+                    new OptionalElementCtTypeVisitor(parameterElement), null);
             return optionalCtType;
         }
 
@@ -164,48 +147,9 @@ public class QueryParameterMeta {
                 throw new AptException(Message.DOMA4112, env, parameterElement,
                         qualifiedName);
             }
-            iterationCallbackCtType.getReturnType().accept(
-                    new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
-
-                        @Override
-                        public Void visitDomainCtType(
-                                final DomainCtType ctType, Void p)
-                                throws RuntimeException {
-                            if (ctType.isRawType()) {
-                                throw new AptException(Message.DOMA4214, env,
-                                        parameterElement,
-                                        ctType.getQualifiedName());
-                            }
-                            if (ctType.isWildcardType()) {
-                                throw new AptException(Message.DOMA4215, env,
-                                        parameterElement,
-                                        ctType.getQualifiedName());
-                            }
-                            return null;
-                        }
-
-                    }, null);
             iterationCallbackCtType.getTargetType().accept(
-                    new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
-
-                        @Override
-                        public Void visitDomainCtType(
-                                final DomainCtType ctType, Void p)
-                                throws RuntimeException {
-                            if (ctType.isRawType()) {
-                                throw new AptException(Message.DOMA4216, env,
-                                        parameterElement,
-                                        ctType.getQualifiedName());
-                            }
-                            if (ctType.isWildcardType()) {
-                                throw new AptException(Message.DOMA4217, env,
-                                        parameterElement,
-                                        ctType.getQualifiedName());
-                            }
-                            return null;
-                        }
-
-                    }, null);
+                    new IterationCallbackTargetCtTypeVisitor(parameterElement),
+                    null);
             return iterationCallbackCtType;
         }
 
@@ -221,26 +165,7 @@ public class QueryParameterMeta {
                         qualifiedName);
             }
             referenceCtType.getReferentType().accept(
-                    new SimpleCtTypeVisitor<Void, Void, RuntimeException>() {
-
-                        @Override
-                        public Void visitDomainCtType(
-                                final DomainCtType ctType, Void p)
-                                throws RuntimeException {
-                            if (ctType.isRawType()) {
-                                throw new AptException(Message.DOMA4218, env,
-                                        parameterElement,
-                                        ctType.getQualifiedName());
-                            }
-                            if (ctType.isWildcardType()) {
-                                throw new AptException(Message.DOMA4219, env,
-                                        parameterElement,
-                                        ctType.getQualifiedName());
-                            }
-                            return null;
-                        }
-
-                    }, null);
+                    new ReferenceReferentCtTypeVisitor(parameterElement), null);
             return referenceCtType;
         }
 
@@ -272,77 +197,212 @@ public class QueryParameterMeta {
     }
 
     public boolean isNullable() {
-        return ctType
-                .accept(new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(
-                        false) {
-
-                    @Override
-                    public Boolean visitBasicCtType(BasicCtType ctType, Void p)
-                            throws RuntimeException {
-                        return true;
-                    }
-
-                    @Override
-                    public Boolean visitDomainCtType(DomainCtType ctType, Void p)
-                            throws RuntimeException {
-                        return true;
-                    }
-
-                }, null);
+        return ctType.accept(new NullableCtTypeVisitor(false), null);
     }
 
     public boolean isBindable() {
-        return ctType
-                .accept(new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(
-                        false) {
-
-                    @Override
-                    public Boolean visitBasicCtType(BasicCtType ctType, Void p)
-                            throws RuntimeException {
-                        return true;
-                    }
-
-                    @Override
-                    public Boolean visitDomainCtType(DomainCtType ctType, Void p)
-                            throws RuntimeException {
-                        return true;
-                    }
-
-                    @Override
-                    public Boolean visitEntityCtType(EntityCtType ctType, Void p)
-                            throws RuntimeException {
-                        return true;
-                    }
-
-                    @Override
-                    public Boolean visitOptionalCtType(OptionalCtType ctType,
-                            Void p) throws RuntimeException {
-                        return true;
-                    }
-
-                    @Override
-                    public Boolean visitIterableCtType(IterableCtType ctType,
-                            Void p) throws RuntimeException {
-                        return true;
-                    }
-
-                    @Override
-                    public Boolean visitReferenceCtType(ReferenceCtType ctType,
-                            Void p) throws RuntimeException {
-                        return true;
-                    }
-
-                    @Override
-                    public Boolean visitAnyCtType(AnyCtType ctType, Void p)
-                            throws RuntimeException {
-                        return true;
-                    }
-
-                }, null);
+        return ctType.accept(new BindableCtTypeVisitor(false), null);
     }
 
     public boolean isAnnotated(Class<? extends Annotation> annotationType) {
         return element.getAnnotation(annotationType) != null;
     }
 
+    /**
+     * 
+     * @author nakamura-to
+     * 
+     */
+    protected class NullableCtTypeVisitor extends
+            SimpleCtTypeVisitor<Boolean, Void, RuntimeException> {
+
+        public NullableCtTypeVisitor(boolean nullable) {
+            super(nullable);
+        }
+
+        @Override
+        public Boolean visitBasicCtType(BasicCtType ctType, Void p)
+                throws RuntimeException {
+            return true;
+        }
+
+        @Override
+        public Boolean visitDomainCtType(DomainCtType ctType, Void p)
+                throws RuntimeException {
+            return true;
+        }
+    }
+
+    /**
+     * 
+     * @author nakamura-to
+     * 
+     */
+    protected class BindableCtTypeVisitor extends
+            SimpleCtTypeVisitor<Boolean, Void, RuntimeException> {
+
+        public BindableCtTypeVisitor(boolean bindable) {
+            super(bindable);
+        }
+
+        @Override
+        public Boolean visitBasicCtType(BasicCtType ctType, Void p)
+                throws RuntimeException {
+            return true;
+        }
+
+        @Override
+        public Boolean visitDomainCtType(DomainCtType ctType, Void p)
+                throws RuntimeException {
+            return true;
+        }
+
+        @Override
+        public Boolean visitEntityCtType(EntityCtType ctType, Void p)
+                throws RuntimeException {
+            return true;
+        }
+
+        @Override
+        public Boolean visitOptionalCtType(OptionalCtType ctType, Void p)
+                throws RuntimeException {
+            return true;
+        }
+
+        @Override
+        public Boolean visitIterableCtType(IterableCtType ctType, Void p)
+                throws RuntimeException {
+            return true;
+        }
+
+        @Override
+        public Boolean visitReferenceCtType(ReferenceCtType ctType, Void p)
+                throws RuntimeException {
+            return true;
+        }
+
+        @Override
+        public Boolean visitAnyCtType(AnyCtType ctType, Void p)
+                throws RuntimeException {
+            return true;
+        }
+    }
+
+    /**
+     * 
+     * @author nakamura-to
+     * 
+     */
+    protected class IterableElementCtTypeVisitor extends
+            SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+
+        protected final VariableElement parameterElement;
+
+        protected IterableElementCtTypeVisitor(VariableElement parameterElement) {
+            this.parameterElement = parameterElement;
+        }
+
+        @Override
+        public Void visitDomainCtType(final DomainCtType ctType, Void p)
+                throws RuntimeException {
+            if (ctType.isRawType()) {
+                throw new AptException(Message.DOMA4212, env, parameterElement,
+                        ctType.getQualifiedName());
+            }
+            if (ctType.isWildcardType()) {
+                throw new AptException(Message.DOMA4213, env, parameterElement,
+                        ctType.getQualifiedName());
+            }
+            return null;
+        }
+    }
+
+    /**
+     * 
+     * @author nakamura-to
+     * 
+     */
+    protected class OptionalElementCtTypeVisitor extends
+            SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+
+        protected final VariableElement parameterElement;
+
+        protected OptionalElementCtTypeVisitor(VariableElement parameterElement) {
+            this.parameterElement = parameterElement;
+        }
+
+        @Override
+        public Void visitDomainCtType(final DomainCtType ctType, Void p)
+                throws RuntimeException {
+            if (ctType.isRawType()) {
+                throw new AptException(Message.DOMA4238, env, parameterElement,
+                        ctType.getQualifiedName());
+            }
+            if (ctType.isWildcardType()) {
+                throw new AptException(Message.DOMA4239, env, parameterElement,
+                        ctType.getQualifiedName());
+            }
+            return null;
+        }
+    }
+
+    /**
+     * 
+     * @author nakamura-to
+     * 
+     */
+    protected class IterationCallbackTargetCtTypeVisitor extends
+            SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+
+        protected final VariableElement parameterElement;
+
+        protected IterationCallbackTargetCtTypeVisitor(
+                VariableElement parameterElement) {
+            this.parameterElement = parameterElement;
+        }
+
+        @Override
+        public Void visitDomainCtType(final DomainCtType ctType, Void p)
+                throws RuntimeException {
+            if (ctType.isRawType()) {
+                throw new AptException(Message.DOMA4216, env, parameterElement,
+                        ctType.getQualifiedName());
+            }
+            if (ctType.isWildcardType()) {
+                throw new AptException(Message.DOMA4217, env, parameterElement,
+                        ctType.getQualifiedName());
+            }
+            return null;
+        }
+    }
+
+    /**
+     * 
+     * @author nakamura-to
+     * 
+     */
+    protected class ReferenceReferentCtTypeVisitor extends
+            SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+
+        protected final VariableElement parameterElement;
+
+        protected ReferenceReferentCtTypeVisitor(
+                VariableElement parameterElement) {
+            this.parameterElement = parameterElement;
+        }
+
+        @Override
+        public Void visitDomainCtType(final DomainCtType ctType, Void p)
+                throws RuntimeException {
+            if (ctType.isRawType()) {
+                throw new AptException(Message.DOMA4218, env, parameterElement,
+                        ctType.getQualifiedName());
+            }
+            if (ctType.isWildcardType()) {
+                throw new AptException(Message.DOMA4219, env, parameterElement,
+                        ctType.getQualifiedName());
+            }
+            return null;
+        }
+    }
 }

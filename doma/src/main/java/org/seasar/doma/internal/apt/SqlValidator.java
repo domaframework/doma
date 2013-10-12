@@ -143,15 +143,16 @@ public class SqlValidator implements BindVariableNodeVisitor<Void, Void>,
 
     protected boolean isBindableIterable(TypeDeclaration typeDeclaration) {
         TypeMirror typeMirror = typeDeclaration.getType();
-        IterableCtType iterableCtType = IterableCtType.newInstance(typeMirror, env);
+        IterableCtType iterableCtType = IterableCtType.newInstance(typeMirror,
+                env);
         if (iterableCtType != null) {
-            return iterableCtType.getElementType().accept(
+            return iterableCtType.getElementCtType().accept(
                     new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(
                             false) {
 
                         @Override
-                        public Boolean visitBasicCtType(BasicCtType ctType, Void p)
-                                throws RuntimeException {
+                        public Boolean visitBasicCtType(BasicCtType ctType,
+                                Void p) throws RuntimeException {
                             return true;
                         }
 

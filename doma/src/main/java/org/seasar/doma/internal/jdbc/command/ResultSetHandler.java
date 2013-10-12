@@ -24,7 +24,7 @@ import org.seasar.doma.internal.jdbc.query.SelectQuery;
  * @author taedium
  * 
  */
-public interface ResultSetHandler<R> {
+public interface ResultSetHandler<RESULT> {
 
-    R handle(ResultSet resultSet, SelectQuery query) throws SQLException;
+    RESULT handle(ResultSet resultSet, SelectQuery query) throws SQLException;
 }

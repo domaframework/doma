@@ -15,49 +15,28 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.internal.jdbc.query.SelectQuery;
-import org.seasar.doma.internal.wrapper.Holder;
-import org.seasar.doma.jdbc.NoResultException;
-import org.seasar.doma.jdbc.NonUniqueResultException;
-import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.domain.DomainType;
 
 /**
  * @author taedium
  * 
  */
-public class DomainSingleResultHandler<D> implements ResultSetHandler<D> {
+public class DomainSingleResultHandler<DOMAIN> extends
+        AbstractSingleResultHandler<DOMAIN> {
 
-    protected final DomainType<?, D> domainType;
+    protected final DomainType<?, DOMAIN> domainType;
 
-    public DomainSingleResultHandler(DomainType<?, D> domainType) {
+    public DomainSingleResultHandler(DomainType<?, DOMAIN> domainType) {
         assertNotNull(domainType);
         this.domainType = domainType;
     }
 
     @Override
-    public D handle(ResultSet resultSet, SelectQuery query) throws SQLException {
-        BasicFetcher fetcher = new BasicFetcher(query);
-        if (resultSet.next()) {
-            Holder<?, D> holder = domainType.createDomainHolder();
-            fetcher.fetch(resultSet, holder.getWrapper());
-            if (resultSet.next()) {
-                Sql<?> sql = query.getSql();
-                throw new NonUniqueResultException(query.getConfig()
-                        .getExceptionSqlLogType(), sql);
-            }
-            return holder.get();
-        } else if (query.isResultEnsured()) {
-            Sql<?> sql = query.getSql();
-            throw new NoResultException(query.getConfig()
-                    .getExceptionSqlLogType(), sql);
-        }
-        return null;
+    protected ResultProvider<DOMAIN> createResultProvider(SelectQuery query) {
+        return new DomainResultProvider<>(
+                () -> domainType.createDomainHolder(), query);
     }
-
 }

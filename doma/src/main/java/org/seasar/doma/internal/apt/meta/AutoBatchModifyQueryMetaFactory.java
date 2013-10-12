@@ -134,7 +134,7 @@ public class AutoBatchModifyQueryMetaFactory extends
 
                 }, null);
         EntityCtType entityCtType = iterableCtType
-                .getElementType()
+                .getElementCtType()
                 .accept(new SimpleCtTypeVisitor<EntityCtType, Void, RuntimeException>() {
 
                     @Override

@@ -1,27 +1,42 @@
 package org.seasar.doma.internal.wrapper;
 
+import java.util.function.Supplier;
+
 import org.seasar.doma.internal.util.AssertionUtil;
 import org.seasar.doma.wrapper.Wrapper;
 
-public class ValueHolder<V> implements Holder<V, V> {
+public class BasicHolder<V> implements Holder<V, V> {
 
     protected final Wrapper<V> wrapper;
 
     protected final boolean primitive;
 
-    public ValueHolder(Wrapper<V> wrapper, boolean primitive) {
-        AssertionUtil.assertNotNull(wrapper);
-        this.wrapper = wrapper;
+    public BasicHolder(Supplier<Wrapper<V>> supplier, boolean primitive) {
+        AssertionUtil.assertNotNull(supplier);
+        this.wrapper = supplier.get();
+        AssertionUtil.assertNotNull(this.wrapper);
         this.primitive = primitive;
     }
 
     @Override
     public V get() {
         V value = wrapper.get();
-        if (value == null && primitive) {
-            return wrapper.getDefault();
+        if (value == null) {
+            return getDefaultInternal();
         }
         return value;
+    }
+
+    @Override
+    public V getDefault() {
+        return getDefaultInternal();
+    }
+
+    protected V getDefaultInternal() {
+        if (primitive) {
+            return wrapper.getDefault();
+        }
+        return null;
     }
 
     @SuppressWarnings("unchecked")

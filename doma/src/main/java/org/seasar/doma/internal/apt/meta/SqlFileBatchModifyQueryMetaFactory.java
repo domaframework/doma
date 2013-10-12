@@ -138,7 +138,7 @@ public class SqlFileBatchModifyQueryMetaFactory extends
                     }
 
                 }, null);
-        CtType elementCtType = iterableCtType.getElementType();
+        CtType elementCtType = iterableCtType.getElementCtType();
         queryMeta.setElementCtType(elementCtType);
         queryMeta.setElementsParameterName(parameterMeta.getName());
         elementCtType.accept(

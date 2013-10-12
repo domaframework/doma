@@ -28,7 +28,6 @@ import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
 import org.seasar.doma.jdbc.NoResultException;
 import org.seasar.doma.jdbc.NonSingleColumnException;
-import org.seasar.doma.wrapper.StringWrapper;
 
 /**
  * @author taedium
@@ -54,7 +53,8 @@ public class BasicIterationHandlerTest extends TestCase {
         query.prepare();
 
         BasicIterationHandler<String, String> handler = new BasicIterationHandler<String, String>(
-                new StringWrapper(), new IterationCallback<String, String>() {
+                () -> new org.seasar.doma.wrapper.StringWrapper(),
+                new IterationCallback<String, String>() {
 
                     private String result = "";
 
@@ -85,7 +85,8 @@ public class BasicIterationHandlerTest extends TestCase {
         query.prepare();
 
         BasicIterationHandler<String, String> handler = new BasicIterationHandler<String, String>(
-                new StringWrapper(), new IterationCallback<String, String>() {
+                () -> new org.seasar.doma.wrapper.StringWrapper(),
+                new IterationCallback<String, String>() {
 
                     private String result = "";
 
@@ -118,7 +119,8 @@ public class BasicIterationHandlerTest extends TestCase {
         query.prepare();
 
         BasicIterationHandler<String, String> handler = new BasicIterationHandler<String, String>(
-                new StringWrapper(), new IterationCallback<String, String>() {
+                () -> new org.seasar.doma.wrapper.StringWrapper(),
+                new IterationCallback<String, String>() {
 
                     private String result = "";
 
@@ -151,7 +153,8 @@ public class BasicIterationHandlerTest extends TestCase {
         query.prepare();
 
         BasicIterationHandler<String, String> handler = new BasicIterationHandler<String, String>(
-                new StringWrapper(), new IterationCallback<String, String>() {
+                () -> new org.seasar.doma.wrapper.StringWrapper(),
+                new IterationCallback<String, String>() {
 
                     private String result = "";
 

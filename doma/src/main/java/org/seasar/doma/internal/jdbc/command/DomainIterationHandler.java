@@ -15,62 +15,32 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import org.seasar.doma.internal.jdbc.query.SelectQuery;
-import org.seasar.doma.internal.wrapper.Holder;
 import org.seasar.doma.jdbc.IterationCallback;
-import org.seasar.doma.jdbc.IterationContext;
-import org.seasar.doma.jdbc.NoResultException;
-import org.seasar.doma.jdbc.PostIterationCallback;
-import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.domain.DomainType;
 
 /**
  * @author taedium
  * 
  */
-public class DomainIterationHandler<R, D> implements ResultSetHandler<R> {
+public class DomainIterationHandler<RESULT, DOMAIN> extends
+        AbstractIterationHandler<RESULT, DOMAIN> {
 
-    protected final DomainType<?, D> domainType;
+    protected final DomainType<?, DOMAIN> domainType;
 
-    protected final IterationCallback<R, D> iterationCallback;
-
-    public DomainIterationHandler(DomainType<?, D> domainType,
-            IterationCallback<R, D> iterationCallback) {
-        assertNotNull(domainType, iterationCallback);
+    public DomainIterationHandler(DomainType<?, DOMAIN> domainType,
+            IterationCallback<RESULT, DOMAIN> iterationCallback) {
+        super(iterationCallback);
+        assertNotNull(domainType);
         this.domainType = domainType;
-        this.iterationCallback = iterationCallback;
     }
 
     @Override
-    public R handle(ResultSet resultSet, SelectQuery query) throws SQLException {
-        BasicFetcher fetcher = new BasicFetcher(query);
-        IterationContext iterationContext = new IterationContext();
-        boolean existent = false;
-        R result = null;
-        while (resultSet.next()) {
-            existent = true;
-            Holder<?, D> holder = domainType.createDomainHolder();
-            fetcher.fetch(resultSet, holder.getWrapper());
-            result = iterationCallback.iterate(holder.get(), iterationContext);
-            if (iterationContext.isExited()) {
-                return result;
-            }
-        }
-        if (query.isResultEnsured() && !existent) {
-            Sql<?> sql = query.getSql();
-            throw new NoResultException(query.getConfig()
-                    .getExceptionSqlLogType(), sql);
-        }
-        if (iterationCallback instanceof PostIterationCallback) {
-            result = ((PostIterationCallback<R, D>) iterationCallback)
-                    .postIterate(result, iterationContext);
-        }
-        return result;
+    protected ResultProvider<DOMAIN> createResultProvider(SelectQuery query) {
+        return new DomainResultProvider<>(
+                () -> domainType.createDomainHolder(), query);
     }
 
 }

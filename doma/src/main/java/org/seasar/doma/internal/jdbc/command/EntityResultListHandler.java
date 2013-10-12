@@ -17,45 +17,26 @@ package org.seasar.doma.internal.jdbc.command;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.seasar.doma.internal.jdbc.query.SelectQuery;
-import org.seasar.doma.jdbc.NoResultException;
-import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.entity.EntityType;
 
 /**
  * @author taedium
  * 
  */
-public class EntityResultListHandler<E> implements ResultSetHandler<List<E>> {
+public class EntityResultListHandler<ENTITY> extends
+        AbstractResultListHandler<ENTITY> {
 
-    protected final EntityType<E> entityType;
+    protected final EntityType<ENTITY> entityType;
 
-    public EntityResultListHandler(EntityType<E> entityType) {
+    public EntityResultListHandler(EntityType<ENTITY> entityType) {
         assertNotNull(entityType);
         this.entityType = entityType;
     }
 
     @Override
-    public List<E> handle(ResultSet resultSet, SelectQuery query)
-            throws SQLException {
-        EntityBuilder<E> builder = new EntityBuilder<E>(query, entityType,
-                query.isResultMappingEnsured());
-        List<E> entities = new ArrayList<E>();
-        while (resultSet.next()) {
-            E entity = builder.build(resultSet);
-            entities.add(entity);
-        }
-        if (query.isResultEnsured() && entities.isEmpty()) {
-            Sql<?> sql = query.getSql();
-            throw new NoResultException(query.getConfig()
-                    .getExceptionSqlLogType(), sql);
-        }
-        return entities;
+    protected ResultProvider<ENTITY> createResultProvider(SelectQuery query) {
+        return new EntityResultProvider<>(entityType, query, entity -> entity);
     }
 
 }

@@ -2,11 +2,13 @@ package org.seasar.doma.internal.wrapper;
 
 import org.seasar.doma.wrapper.Wrapper;
 
-public interface Holder<V, C> {
+public interface Holder<BASIC, CONTAINER> {
 
-    C get();
+    CONTAINER get();
+
+    CONTAINER getDefault();
 
     void set(Object container);
 
-    Wrapper<V> getWrapper();
+    Wrapper<BASIC> getWrapper();
 }

@@ -52,17 +52,30 @@ public class OptionalCtType extends AbstractCtType {
                 isWildcardType = true;
                 elementCtType = null;
             } else {
-                DomainCtType domainCtType = DomainCtType.newInstance(typeArg,
+                EntityCtType entityCtType = EntityCtType.newInstance(typeArg,
                         env);
-                if (domainCtType != null) {
-                    elementCtType = domainCtType;
+                if (entityCtType != null) {
+                    elementCtType = entityCtType;
                 } else {
-                    BasicCtType basicCtType = BasicCtType.newInstance(typeArg,
-                            env);
-                    if (basicCtType != null) {
-                        elementCtType = basicCtType;
+                    DomainCtType domainCtType = DomainCtType.newInstance(
+                            typeArg, env);
+                    if (domainCtType != null) {
+                        elementCtType = domainCtType;
                     } else {
-                        elementCtType = null;
+                        BasicCtType basicCtType = BasicCtType.newInstance(
+                                typeArg, env);
+                        if (basicCtType != null) {
+                            elementCtType = basicCtType;
+                        } else {
+                            MapCtType mapCtType = MapCtType.newInstance(
+                                    typeArg, env);
+                            if (mapCtType != null) {
+                                elementCtType = mapCtType;
+                            } else {
+                                elementCtType = AnyCtType.newInstance(typeArg,
+                                        env);
+                            }
+                        }
                     }
                 }
             }

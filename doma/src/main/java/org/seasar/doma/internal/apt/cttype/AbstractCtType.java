@@ -50,18 +50,16 @@ public abstract class AbstractCtType implements CtType {
 
     protected final String packageExcludedBinaryName;
 
-    protected String qualifiedName;
+    protected final String qualifiedName;
 
     protected AbstractCtType(TypeMirror typeMirror, ProcessingEnvironment env) {
         assertNotNull(typeMirror, env);
         this.typeMirror = typeMirror;
         this.env = env;
         this.typeName = TypeMirrorUtil.getTypeName(typeMirror, env);
-        this.boxedTypeName = TypeMirrorUtil
-                .getBoxedTypeName(typeMirror, env);
+        this.boxedTypeName = TypeMirrorUtil.getBoxedTypeName(typeMirror, env);
         this.metaTypeName = MetaUtil.getMetaTypeName(typeName);
-        this.boxedMetaTypeName = MetaUtil
-                .getMetaTypeName(boxedTypeName);
+        this.boxedMetaTypeName = MetaUtil.getMetaTypeName(boxedTypeName);
         this.typeElement = TypeMirrorUtil.toTypeElement(typeMirror, env);
         if (typeElement != null) {
             qualifiedName = typeElement.getQualifiedName().toString();

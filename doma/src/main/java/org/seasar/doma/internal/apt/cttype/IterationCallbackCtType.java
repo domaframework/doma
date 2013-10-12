@@ -15,7 +15,7 @@
  */
 package org.seasar.doma.internal.apt.cttype;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.util.List;
 
@@ -79,17 +79,21 @@ public class IterationCallbackCtType extends AbstractCtType {
             callbackType.targetCtType = EntityCtType.newInstance(
                     targetTypeMirror, env);
             if (callbackType.targetCtType == null) {
-                callbackType.targetCtType = DomainCtType.newInstance(
+                callbackType.targetCtType = OptionalCtType.newInstance(
                         targetTypeMirror, env);
                 if (callbackType.targetCtType == null) {
-                    callbackType.targetCtType = BasicCtType.newInstance(
+                    callbackType.targetCtType = DomainCtType.newInstance(
                             targetTypeMirror, env);
                     if (callbackType.targetCtType == null) {
-                        callbackType.targetCtType = MapCtType.newInstance(
+                        callbackType.targetCtType = BasicCtType.newInstance(
                                 targetTypeMirror, env);
                         if (callbackType.targetCtType == null) {
-                            callbackType.targetCtType = AnyCtType.newInstance(
+                            callbackType.targetCtType = MapCtType.newInstance(
                                     targetTypeMirror, env);
+                            if (callbackType.targetCtType == null) {
+                                callbackType.targetCtType = AnyCtType
+                                        .newInstance(targetTypeMirror, env);
+                            }
                         }
                     }
                 }

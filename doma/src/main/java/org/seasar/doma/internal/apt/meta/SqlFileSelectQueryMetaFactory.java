@@ -220,7 +220,7 @@ public class SqlFileSelectQueryMetaFactory extends
             if (!ctType.isList()) {
                 defaultAction(ctType, p);
             }
-            ctType.getElementType().accept(
+            ctType.getElementCtType().accept(
                     new ReturnIterableElementCtTypeVisitor(returnMeta), p);
             return null;
         }
@@ -312,6 +312,12 @@ public class SqlFileSelectQueryMetaFactory extends
 
         @Override
         public Void visitDomainCtType(DomainCtType ctType, Void p)
+                throws RuntimeException {
+            return null;
+        }
+
+        @Override
+        public Void visitMapCtType(MapCtType ctType, Void p)
                 throws RuntimeException {
             return null;
         }

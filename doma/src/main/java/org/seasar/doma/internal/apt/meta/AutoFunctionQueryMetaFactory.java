@@ -104,7 +104,7 @@ public class AutoFunctionQueryMetaFactory extends
                             defaultAction(ctType, p);
                         }
                         return ctType
-                                .getElementType()
+                                .getElementCtType()
                                 .accept(new SimpleCtTypeVisitor<ResultParameterMeta, Void, RuntimeException>() {
 
                                     @Override

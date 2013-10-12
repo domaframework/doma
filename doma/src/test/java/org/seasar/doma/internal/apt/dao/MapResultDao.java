@@ -15,22 +15,31 @@
  */
 package org.seasar.doma.internal.apt.dao;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
-import org.seasar.doma.jdbc.SelectOptions;
-
-import example.entity.Emp;
+import org.seasar.doma.jdbc.IterationCallback;
 
 /**
- * 
  * @author nakamura-to
  * 
  */
 @Dao(config = MyConfig.class)
-public interface OptionalDao {
+public interface MapResultDao {
 
     @Select
-    Emp selectById(Optional<Integer> id, SelectOptions options);
+    Map<String, Object> selectSingleResult();
+
+    @Select
+    Optional<Map<String, Object>> selectOptionalSingleResult();
+
+    @Select
+    List<Map<String, Object>> selectResultList();
+
+    @Select(iterate = true)
+    <R> R iterate(IterationCallback<R, Map<String, Object>> callback);
+
 }

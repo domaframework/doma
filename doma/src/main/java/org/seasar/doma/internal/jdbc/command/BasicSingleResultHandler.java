@@ -17,56 +17,33 @@ package org.seasar.doma.internal.jdbc.command;
 
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.function.Supplier;
 
 import org.seasar.doma.internal.jdbc.query.SelectQuery;
-import org.seasar.doma.jdbc.NoResultException;
-import org.seasar.doma.jdbc.NonUniqueResultException;
-import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * @author taedium
  * 
  */
-public class BasicSingleResultHandler<V> implements ResultSetHandler<V> {
+public class BasicSingleResultHandler<R> extends AbstractSingleResultHandler<R> {
 
-    protected final Wrapper<V> wrapper;
+    protected final Supplier<Wrapper<R>> supplier;
 
-    protected final boolean primitveResult;
+    protected final boolean primitive;
 
-    public BasicSingleResultHandler(Wrapper<V> wrapper, boolean primitveResult) {
-        assertNotNull(wrapper);
-        if (primitveResult) {
-            assertNotNull(wrapper.getDefault());
-        }
-        this.wrapper = wrapper;
-        this.primitveResult = primitveResult;
+    public BasicSingleResultHandler(Supplier<Wrapper<R>> supplier,
+            boolean primitive) {
+        assertNotNull(supplier);
+        this.supplier = supplier;
+        this.primitive = primitive;
     }
 
     @Override
-    public V handle(ResultSet resultSet, SelectQuery query) throws SQLException {
-        BasicFetcher fetcher = new BasicFetcher(query);
-        if (resultSet.next()) {
-            fetcher.fetch(resultSet, wrapper);
-            if (resultSet.next()) {
-                Sql<?> sql = query.getSql();
-                throw new NonUniqueResultException(query.getConfig()
-                        .getExceptionSqlLogType(), sql);
-            }
-        } else if (query.isResultEnsured()) {
-            Sql<?> sql = query.getSql();
-            throw new NoResultException(query.getConfig()
-                    .getExceptionSqlLogType(), sql);
-        }
-        V result = wrapper.get();
-        if (result == null && primitveResult) {
-            result = wrapper.getDefault();
-            if (result == null) {
-                assertNotNull(result);
-            }
-        }
-        return result;
+    protected ResultProvider<R> createResultProvider(SelectQuery query) {
+        return new BasicResultProvider<R, R>(
+                () -> new org.seasar.doma.internal.wrapper.BasicHolder<>(
+                        supplier, primitive), query);
     }
+
 }

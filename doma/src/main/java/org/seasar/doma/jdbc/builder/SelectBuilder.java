@@ -288,16 +288,8 @@ public class SelectBuilder {
                 return new DomainSingleResultHandler<R>(domainType);
             }
         }
-        try {
-            @SuppressWarnings("unchecked")
-            Wrapper<R> wrapper = (Wrapper<R>) Wrappers.wrap(null, resultClass,
-                    config.getClassHelper());
-            return new BasicSingleResultHandler<R>(wrapper,
-                    resultClass.isPrimitive());
-        } catch (WrapperException e) {
-            throw new DomaIllegalArgumentException("resultClass",
-                    Message.DOMA2204.getMessage(resultClass, e));
-        }
+        return new BasicSingleResultHandler<R>(() -> createWrapper(
+                "resultClass", resultClass), resultClass.isPrimitive());
     }
 
     /**
@@ -381,15 +373,8 @@ public class SelectBuilder {
                 return new DomainResultListHandler<R>(domainType);
             }
         }
-        try {
-            @SuppressWarnings("unchecked")
-            Wrapper<R> wrapper = (Wrapper<R>) Wrappers.wrap(null, resultClass,
-                    config.getClassHelper());
-            return new BasicResultListHandler<R>(wrapper);
-        } catch (WrapperException e) {
-            throw new DomaIllegalArgumentException("resultClass",
-                    Message.DOMA2204.getMessage(resultClass, e));
-        }
+        return new BasicResultListHandler<R>(() -> createWrapper("resultClass",
+                resultClass));
     }
 
     /**
@@ -485,15 +470,8 @@ public class SelectBuilder {
                         iterationCallback);
             }
         }
-        try {
-            @SuppressWarnings("unchecked")
-            Wrapper<T> wrapper = (Wrapper<T>) Wrappers.wrap(null, targetClass,
-                    config.getClassHelper());
-            return new BasicIterationHandler<R, T>(wrapper, iterationCallback);
-        } catch (WrapperException e) {
-            throw new DomaIllegalArgumentException("resultClass",
-                    Message.DOMA2204.getMessage(targetClass, e));
-        }
+        return new BasicIterationHandler<R, T>(() -> createWrapper(
+                "targetClass", targetClass), iterationCallback);
     }
 
     private <R> R execute(ResultSetHandler<R> resultSetHandler) {
@@ -631,6 +609,17 @@ public class SelectBuilder {
         query.setSqlNode(helper.getSqlNode());
         query.prepare();
         return query.getSql();
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> Wrapper<T> createWrapper(String parameterName, Class<T> clazz) {
+        try {
+            return (Wrapper<T>) Wrappers.wrap(null, clazz,
+                    config.getClassHelper());
+        } catch (WrapperException e) {
+            throw new DomaIllegalArgumentException(parameterName,
+                    Message.DOMA2204.getMessage(clazz, e));
+        }
     }
 
     private static class SubsequentSelectBuilder extends SelectBuilder {
